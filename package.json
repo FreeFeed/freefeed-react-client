@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "browser-sync": "^2.7.13",
     "flummox": "^3.5.2",
     "immutable": "^3.7.3",
     "isomorphic-fetch": "^2.1.0",
+    "lodash": "^3.10.0",
     "react": "^0.13.3",
     "react-bootstrap": "^0.23.0",
     "react-router": "^0.13.3",
@@ -16,7 +16,9 @@
   "devDependencies": {
     "babel-runtime": "^5.5.8",
     "babelify": "^6.1.2",
+    "browser-sync": "^2.7.13",
     "browserify": "^10.2.3",
+    "connect-history-api-fallback": "^1.1.0",
     "gulp": "^3.8.11",
     "vinyl-source-stream": "^1.1.0"
   },

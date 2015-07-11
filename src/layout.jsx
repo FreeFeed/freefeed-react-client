@@ -1,17 +1,42 @@
 import React from 'react';
 import {RouteHandler, Link} from 'react-router';
+import FluxComponent from 'flummox/component';
 
 import Footer from './footer.jsx';
+import Sidebar from './sidebar.jsx';
+import Signin from './signin.jsx';
 
-var Layout = React.createClass({
-  render: function () {
+class InternalLayout extends React.Component {
+  render() {
+    if (!this.props.got_response || !this.props.authenticated) {
+      return (
+        <div className="col-md-12">
+          <div className="content">
+            <RouteHandler/>
+          </div>
+        </div>
+      )
+    } else {
+      return (
+        <div className="col-md-9">
+          <div className="content">
+            <RouteHandler/>
+          </div>
+        </div>
+      )
+    }
+  }
+}
+
+export default class Layout extends React.Component {
+  render() {
     return (
       <div className="container">
         <div className="row header-row">
           <div className="col-md-4">
             <div className="header">
               <h1 className="title">
-                <Link to="timeline.home" query={{offset: "0"}}>freefeed</Link>
+                <Link to="timeline.home">freefeed</Link>
               </h1>
             </div>
           </div>
@@ -26,9 +51,7 @@ var Layout = React.createClass({
               </div>
 
               <div className="col-md-6">
-                <div className="signin-toolbar">
-                  <Link to="session.new">Sign In</Link>
-                </div>
+                <Signin />
               </div>
 
 
@@ -37,21 +60,15 @@ var Layout = React.createClass({
         </div>
 
         <div className="row">
-          <div className="col-md-12">
-            <div className="content">
-              <div className="box">
-                <div className="box-header-timeline">
-                  Hello
-                </div>
-                <div className="box-body">
-                  <RouteHandler/>
-                </div>
-                <div className="box-footer">
-
-                </div>
-              </div>
-            </div>
-          </div>
+          <FluxComponent connectToStores={{
+            auth: store => ({
+              got_response: store.state.got_response,
+              authenticated: store.state.authenticated,
+            })
+          }}>
+            <InternalLayout/>
+          </FluxComponent>
+          <Sidebar/>
         </div>
 
         <div className="row">
@@ -62,12 +79,4 @@ var Layout = React.createClass({
       </div>
     );
   }
-});
-
-export default React.createClass({
-  render: function() {
-    return (
-      <Layout />
-    );
-  }
-})
+}

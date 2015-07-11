@@ -6,6 +6,7 @@ var babelify = require('babelify');
 var browserify = require('browserify');
 var browserSync = require('browser-sync').create();
 var source = require('vinyl-source-stream');
+var historyApiFallback = require('connect-history-api-fallback');
 
 gulp.task('build', function () {
   browserify({
@@ -28,7 +29,8 @@ gulp.task("watch", function(){
 gulp.task('serve', ['build'], function() {
   browserSync.init({
     server: {
-      baseDir: "./public"
+      baseDir: "./public",
+      middleware: [ historyApiFallback() ]
     },
     port: 3333
   });
