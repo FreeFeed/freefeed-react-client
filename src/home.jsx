@@ -5,6 +5,25 @@ import moment from 'moment';
 
 import {fromNowOrNow} from './helpers/moment'
 
+class PostLikes extends React.Component {
+  render() {
+    if (true) {
+      return <noscript />
+    }
+
+    return <div className="likes">
+      <i className="fa fa-heart icon"></i>
+      …
+    </div>
+  }
+}
+
+class PostComments extends React.Component {
+  render() {
+    return <noscript/>
+  }
+}
+
 class FeedPost extends React.Component {
   render() {
     var user = this.props.users.get(this.props.data.get('createdBy'))
@@ -51,7 +70,14 @@ class FeedPost extends React.Component {
                 <time dateTime={createdAtISO} title={createdAtISO}>{createdAgo}</time>
               </Link>
             </span>
+
+            <span className="post-controls">
+            </span>
+
+            <PostLikes/>
           </div>
+
+          <PostComments/>
         </div>
       </div>
     )
