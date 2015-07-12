@@ -20,6 +20,8 @@ var routes = (
     <Route path="/:username/subscruptions" name="timeline.subscriptions" handler={About} />
     <Route path="/groups" name="groups.home" handler={About} />
 
+    <Route path="/:username/:postId" name="post" handler={About} />
+
     <NotFoundRoute handler={NotFound}/>
   </Route>
 );

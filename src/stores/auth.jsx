@@ -2,6 +2,8 @@ import { Store } from 'flummox';
 import { Map, List } from 'immutable'
 import _ from 'lodash'
 
+import {userParser} from '../helpers/user_parser'
+
 class AuthStore extends Store {
 
   constructor(flux) {
@@ -29,14 +31,9 @@ class AuthStore extends Store {
 
     if (whoami.ok) {
       data.authenticated = whoami.authenticated
+
       if (whoami.authenticated) {
-        if (_.isEmpty(whoami.body.users.profilePictureMediumUrl)) {
-          whoami.body.users.profilePictureMediumUrl = '/img/default-userpic-48.png'
-        }
-        if (_.isEmpty(whoami.body.users.profilePictureLargeUrl)) {
-          whoami.body.users.profilePictureLargeUrl = '/img/default-userpic-75.png'
-        }
-        data.user = this.state.user.merge(whoami.body.users)
+        data.user = this.state.user.merge(userParser(whoami.body.users))
       }
     }
 
