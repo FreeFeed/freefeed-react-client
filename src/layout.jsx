@@ -61,9 +61,9 @@ export default class Layout extends React.Component {
 
         <div className="row">
           <FluxComponent connectToStores={{
-            auth: store => ({
+            main: store => ({
               got_response: store.state.got_response,
-              authenticated: store.state.authenticated,
+              authenticated: store.state.authenticated
             })
           }}>
             <InternalLayout/>

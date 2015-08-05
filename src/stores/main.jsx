@@ -4,18 +4,25 @@ import _ from 'lodash'
 
 import {userParser} from '../helpers/user_parser'
 
-export default class PostsStore extends Store {
-
+export default class MainStore extends Store {
   constructor(flux) {
     super() // Don't forget this step
 
     const postsIds = flux.getActionIds('posts')
-    this.register(postsIds.getHome, this.handleHome)
+    const authIds  = flux.getActionIds('auth')
+
+    this.register(postsIds.getHome,  this.handleHome)
+    this.register(authIds.getWhoami, this.handleAuthData)
 
     this.state = {
       got_response: false,
       server_error: false,
       authenticated: false,
+      me: {
+        user: Map(),
+        subscribers: List(),
+        subscriptions: List()
+      },
       home: List(),
       posts: Map(),
       users: Map()
@@ -48,5 +55,32 @@ export default class PostsStore extends Store {
     }
 
     this.setState(data)
+  }
+
+  handleAuthData(whoami) {
+    var data = {
+      got_response: true,
+      me: {}
+    }
+
+    data.server_error = !whoami.ok
+
+    if (whoami.ok) {
+      data.authenticated = whoami.authenticated
+
+      if (whoami.authenticated) {
+        data.me.user = this.state.me.user.merge(userParser(whoami.body.users))
+      }
+    }
+
+    this.setState(data)
+  }
+
+  getUser() {
+    if (!this.state.authenticated) {
+      return null
+    }
+
+    return this.state.me.user
   }
 }

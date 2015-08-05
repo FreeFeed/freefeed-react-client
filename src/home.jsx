@@ -97,7 +97,12 @@ class HomeFeed extends React.Component {
     }
 
     let posts = this.props.posts
-    let posts_with_data = this.props.home.map(post_id => posts.get(post_id))
+    let post_tags = []
+
+    if (posts.count() > 0) {
+      let posts_with_data = this.props.home.map(post_id => posts.get(post_id))
+      post_tags = posts_with_data.map(post => <FeedPost data={post} key={post.get('id')} users={this.props.users}/>)
+    }
 
     return (
       <div className="posts">
@@ -105,12 +110,12 @@ class HomeFeed extends React.Component {
         <p>pagination (if not first page)</p>
         <div className="posts">
           <FluxComponent connectToStores={{
-            auth: store => ({
+            main: store => ({
               current_user: store.getUser(),
               authenticated: store.state.authenticated
             })
           }}>
-            {posts_with_data.map(post => <FeedPost data={post} key={post.get('id')} users={this.props.users}/>)}
+            {post_tags}
           </FluxComponent>
         </div>
         <p>hidden-posts</p>
@@ -129,7 +134,7 @@ export default class HomeHandler extends React.Component {
         </div>
         <div className="box-body">
           <FluxComponent connectToStores={{
-            posts: store => ({
+            main: store => ({
               authenticated: store.state.authenticated,
               posts: store.state.posts,
               home: store.state.home,

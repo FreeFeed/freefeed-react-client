@@ -142,7 +142,7 @@ export default class SidebarWrapper extends React.Component {
   render() {
     return(
       <FluxComponent connectToStores={{
-            auth: store => ({
+            main: store => ({
               user: store.getUser(),
               got_response: store.state.got_response,
               authenticated: store.state.authenticated,
