@@ -1,9 +1,10 @@
 import React from 'react';
-import FluxComponent from 'flummox/component';
+import { connect } from 'react-redux';
 import {Link} from 'react-router';
 import moment from 'moment';
 
-import {fromNowOrNow} from './helpers/moment'
+import {fromNowOrNow} from './helpers/moment.jsx'
+import {getHome} from './api.jsx'
 
 class PostLikes extends React.Component {
   render() {
@@ -26,10 +27,10 @@ class PostComments extends React.Component {
 
 class FeedPost extends React.Component {
   render() {
-    var user = this.props.users.get(this.props.data.get('createdBy'))
-    var screenName = user.get('screenName')
+    var user = this.props.users[this.props.data.createdBy]
+    var screenName = user.screenName
 
-    if (this.props.current_user.get('id') == user.get('id')) {
+    if (this.props.current_user.id == user.id) {
       screenName = 'You'
     }
 
@@ -39,34 +40,34 @@ class FeedPost extends React.Component {
       directMarker = <span>»</span>;
     }
 
-    let createdAt = new Date(this.props.data.get('createdAt') - 0)
+    let createdAt = new Date(this.props.data.createdAt - 0)
     let createdAtISO = moment(createdAt).format()
     let createdAgo = fromNowOrNow(createdAt)
 
-    let firstFeedName = user.get('username')  // FIXME
+    let firstFeedName = user.username  // FIXME
 
     return (
       <div className="timeline-post-container">
         <div className="avatar">
-          <Link to="timeline.index" params={{username: user.get('username')}}>
-            <img src={ user.get('profilePictureMediumUrl') } />
+          <Link to="timeline.index" params={{username: user.username}}>
+            <img src={ user.profilePictureMediumUrl } />
           </Link>
         </div>
         <div className="post-body p-timeline-post">
           <div className="title">
-            <Link to="timeline.index" params={{username: user.get('username')}} className="post-author">{screenName}</Link>
+            <Link to="timeline.index" params={{username: user.username}} className="post-author">{screenName}</Link>
           </div>
 
           <div className="body">
             <div className="text">
-              {this.props.data.get('body')}
+              {this.props.data.body}
             </div>
           </div>
 
           <div className="info p-timeline-post-info">
             {directMarker}
             <span className="post-date">
-              <Link to="post" params={{username: firstFeedName, postId: this.props.data.get('id')}} className="datetime">
+              <Link to="post" params={{username: firstFeedName, postId: this.props.data.id}} className="datetime">
                 <time dateTime={createdAtISO} title={createdAtISO}>{createdAgo}</time>
               </Link>
             </span>
@@ -86,7 +87,7 @@ class FeedPost extends React.Component {
 
 class HomeFeed extends React.Component {
   componentDidMount() {
-    this.props.flux.getActions('posts').getHome(0)
+    this.getHomePromise = getHome(0)
   }
 
   render() {
@@ -99,9 +100,9 @@ class HomeFeed extends React.Component {
     let posts = this.props.posts
     let post_tags = []
 
-    if (posts.count() > 0) {
-      let posts_with_data = this.props.home.map(post_id => posts.get(post_id))
-      post_tags = posts_with_data.map(post => <FeedPost data={post} key={post.get('id')} users={this.props.users}/>)
+    if (this.props.home.length > 0) {
+      let posts_with_data = this.props.home.map(post_id => posts[post_id])
+      post_tags = posts_with_data.map(post => <FeedPost data={post} key={post.id} users={this.props.users} current_user={this.props.me.user} authenticated={this.props.authenticated}/>)
     }
 
     return (
@@ -109,14 +110,7 @@ class HomeFeed extends React.Component {
         <p>submit-post</p>
         <p>pagination (if not first page)</p>
         <div className="posts">
-          <FluxComponent connectToStores={{
-            main: store => ({
-              current_user: store.getUser(),
-              authenticated: store.state.authenticated
-            })
-          }}>
-            {post_tags}
-          </FluxComponent>
+          {post_tags}
         </div>
         <p>hidden-posts</p>
         <p>pagination</p>
@@ -125,7 +119,7 @@ class HomeFeed extends React.Component {
   }
 }
 
-export default class HomeHandler extends React.Component {
+class HomeHandler extends React.Component {
   render() {
     return (
       <div className="box">
@@ -133,16 +127,7 @@ export default class HomeHandler extends React.Component {
           Home
         </div>
         <div className="box-body">
-          <FluxComponent connectToStores={{
-            main: store => ({
-              authenticated: store.state.authenticated,
-              posts: store.state.posts,
-              home: store.state.home,
-              users: store.state.users
-            })
-          }}>
-            <HomeFeed/>
-          </FluxComponent>
+          <HomeFeed authenticated={this.props.authenticated} users={this.props.users} posts={this.props.posts} home={this.props.home} me={this.props.me}/>
         </div>
         <div className="box-footer">
 
@@ -151,3 +136,9 @@ export default class HomeHandler extends React.Component {
     )
   }
 }
+
+function select(state) {
+  return state.toJS();
+}
+
+export default connect(select)(HomeHandler);

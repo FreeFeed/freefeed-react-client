@@ -1,24 +1,17 @@
-import FluxComponent from 'flummox/component';
-import React from 'react';
-import r from 'react-router';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import {history} from 'react-router/lib/BrowserHistory';
+import {Router} from 'react-router';
+import { Provider } from 'react-redux';
 
-import Flux from './Flux.jsx';
 import routes from './routing.jsx';
+import {initState, getStore} from './store.jsx'
 
-var flux = new Flux();
+initState();
 
-var router = r.create({
-  routes: routes,
-  location: r.HistoryLocation
-});
-
-router.run(async (Handler, state) => {
-  flux.getActions('auth').getWhoami()
-
-  React.render(
-    <FluxComponent flux={flux}>
-      <Handler {...state} />
-    </FluxComponent>,
-    document.getElementById('app')
-  );
-});
+ReactDOM.render(
+  <Provider store={getStore()}>
+    {() => <Router history={history}>{routes}</Router>}
+  </Provider>,
+  document.getElementById('app')
+);

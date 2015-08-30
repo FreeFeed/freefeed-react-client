@@ -1,10 +1,12 @@
 import React from 'react';
-import {RouteHandler, Link} from 'react-router';
-import FluxComponent from 'flummox/component';
+import { Link} from 'react-router';
+import { connect } from 'react-redux';
 
+import {getStore} from './store.jsx'
 import Footer from './footer.jsx';
 import Sidebar from './sidebar.jsx';
 import Signin from './signin.jsx';
+import {getWhoami} from './api.jsx'
 
 class InternalLayout extends React.Component {
   render() {
@@ -12,7 +14,7 @@ class InternalLayout extends React.Component {
       return (
         <div className="col-md-12">
           <div className="content">
-            <RouteHandler/>
+            {this.props.children}
           </div>
         </div>
       )
@@ -20,7 +22,7 @@ class InternalLayout extends React.Component {
       return (
         <div className="col-md-9">
           <div className="content">
-            <RouteHandler/>
+            {this.props.children}
           </div>
         </div>
       )
@@ -28,7 +30,11 @@ class InternalLayout extends React.Component {
   }
 }
 
-export default class Layout extends React.Component {
+class Layout extends React.Component {
+  componentWillMount() {
+    this.whoAmIPromise = getWhoami()
+  }
+
   render() {
     return (
       <div className="container">
@@ -51,7 +57,7 @@ export default class Layout extends React.Component {
               </div>
 
               <div className="col-md-6">
-                <Signin />
+                <Signin got_response={this.props.got_response} authenticated={this.props.authenticated}/>
               </div>
 
 
@@ -60,15 +66,8 @@ export default class Layout extends React.Component {
         </div>
 
         <div className="row">
-          <FluxComponent connectToStores={{
-            main: store => ({
-              got_response: store.state.got_response,
-              authenticated: store.state.authenticated
-            })
-          }}>
-            <InternalLayout/>
-          </FluxComponent>
-          <Sidebar/>
+          <InternalLayout got_response={this.props.got_response} authenticated={this.props.authenticated} children={this.props.children}/>
+          <Sidebar authenticated={this.props.authenticated} user={this.props.me.user}/>
         </div>
 
         <div className="row">
@@ -80,3 +79,9 @@ export default class Layout extends React.Component {
     );
   }
 }
+
+function select(state) {
+  return state.toJS();
+}
+
+export default connect(select)(Layout);

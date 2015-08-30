@@ -1,5 +1,4 @@
 import React from 'react';
-import FluxComponent from 'flummox/component';
 import {Link} from 'react-router';
 
 export default class Signin extends React.Component {

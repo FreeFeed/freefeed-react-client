@@ -1,23 +1,24 @@
 import React from 'react';
-import FluxComponent from 'flummox/component';
 import {Link} from 'react-router';
 
-class Sidebar extends React.Component {
+export default class Sidebar extends React.Component {
   render() {
     if (!this.props.authenticated) {
       return (<noscript/>)
     }
 
+    console.dir(this.props)
+
     return (
       <div className="col-md-3 sidebar">
         <div className="logged">
           <div className="logged-avatar">
-            <Link to="timeline.index" params={{username: this.props.user.get('username')}}><img className="media-object" src={this.props.user.get('profilePictureMediumUrl')}/></Link>
+            <Link to="timeline.index" params={{username: this.props.user.username}}><img className="media-object" src={this.props.user.profilePictureMediumUrl}/></Link>
           </div>
 
           <div className="logged-user">
             <div className="author">
-              <Link to="timeline.index" params={{username: this.props.user.get('username')}}>{this.props.user.get('screenName')}</Link>
+              <Link to="timeline.index" params={{username: this.props.user.username}}>{this.props.user.screenName}</Link>
             </div>
             <div>
               <Link to="settings.index">settings</Link>
@@ -39,7 +40,7 @@ class Sidebar extends React.Component {
             </ul>
           </div>
           <div className="box-footer">
-            <Link to="timeline.subscriptions" params={{username: this.props.user.get('username')}}>Browse/edit friends</Link>
+            <Link to="timeline.subscriptions" params={{username: this.props.user.username}}>Browse/edit friends</Link>
           </div>
         </div>
 
@@ -106,9 +107,9 @@ class Sidebar extends React.Component {
                     <tr><td style={{paddingBottom: "5px"}}>
                       <input type="hidden" name="on0" value="Pick monthly donation amount" style={{padding:"5px 0"}}/>Choose your option:
                     </td></tr>
-                    <tr><td><select name="os0">
+                    <tr><td><select name="os0" defaultValue="Advanced">
                       <option value="Basic">€5.00 EUR / month</option>
-                      <option value="Advanced" selected="selected">€10.00 EUR / month</option>
+                      <option value="Advanced">€10.00 EUR / month</option>
                       <option value="Sizable">€15.00 EUR / month</option>
                       <option value="Luxurious">€20.00 EUR / month</option>
                       <option value="King size">€30.00 EUR / month</option>
@@ -138,19 +139,3 @@ class Sidebar extends React.Component {
   }
 }
 
-export default class SidebarWrapper extends React.Component {
-  render() {
-    return(
-      <FluxComponent connectToStores={{
-            main: store => ({
-              user: store.getUser(),
-              got_response: store.state.got_response,
-              authenticated: store.state.authenticated,
-              server_error: store.state.server_error
-            })
-          }}>
-        <Sidebar />
-      </FluxComponent>
-    )
-  }
-}
