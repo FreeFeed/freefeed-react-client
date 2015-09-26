@@ -3,8 +3,7 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import moment from 'moment'
 
-import {fromNowOrNow} from './utils/moment'
-import {getHome} from './api'
+import {fromNowOrNow} from '../Utils/moment'
 
 const PostLikes = (props) => (<div/>)
 

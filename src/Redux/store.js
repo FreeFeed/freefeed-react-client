@@ -2,7 +2,7 @@ import { createStore } from 'redux'
 import Immutable from 'immutable'
 import _ from 'lodash'
 
-import {userParser} from './utils/user_parser'
+import {userParser} from '../Utils/user-parser'
 
 
 export const WHO_AM_I = 'Who am I?'

@@ -2,11 +2,9 @@ import React from 'react'
 import { Link} from 'react-router'
 import { connect } from 'react-redux'
 
-import {getStore} from './store.jsx'
 import Footer from './footer.jsx'
 import Sidebar from './sidebar.jsx'
 import Signin from './signin.jsx'
-import {getWhoami} from './api.jsx'
 
 const InternalLayout = (props) => (
   <div className={!props.got_response || !props.authenticated ? 'col-md-12' : 'col-md-9'}>

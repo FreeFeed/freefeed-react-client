@@ -2,14 +2,14 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {history} from 'react-router/lib/History'
 import {Router, Route} from 'react-router'
-import { Provider } from 'react-redux'
+import {Provider} from 'react-redux'
 
-import {initState, getStore} from './store'
+import {initState, getStore} from './Redux/store'
 
-import Layout from './layout'
-import Home from './home'
-import About from './about'
-import NotFound from './notfound'
+import Layout from './Components/layout'
+import Home from './Components/home'
+import About from './Components/about'
+import NotFound from './Components/not-found'
 
 initState()
 
