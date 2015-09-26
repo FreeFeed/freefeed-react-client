@@ -1,87 +1,66 @@
-import React from 'react';
-import { Link} from 'react-router';
-import { connect } from 'react-redux';
+import React from 'react'
+import { Link} from 'react-router'
+import { connect } from 'react-redux'
 
 import {getStore} from './store.jsx'
-import Footer from './footer.jsx';
-import Sidebar from './sidebar.jsx';
-import Signin from './signin.jsx';
+import Footer from './footer.jsx'
+import Sidebar from './sidebar.jsx'
+import Signin from './signin.jsx'
 import {getWhoami} from './api.jsx'
 
-class InternalLayout extends React.Component {
-  render() {
-    if (!this.props.got_response || !this.props.authenticated) {
-      return (
-        <div className="col-md-12">
-          <div className="content">
-            {this.props.children}
-          </div>
-        </div>
-      )
-    } else {
-      return (
-        <div className="col-md-9">
-          <div className="content">
-            {this.props.children}
-          </div>
-        </div>
-      )
-    }
-  }
-}
-
-class Layout extends React.Component {
-  componentWillMount() {
-    this.whoAmIPromise = getWhoami()
-  }
-
-  render() {
-    return (
-      <div className="container">
-        <div className="row header-row">
-          <div className="col-md-4">
-            <div className="header">
-              <h1 className="title">
-                <Link to="timeline.home">freefeed</Link>
-              </h1>
-            </div>
-          </div>
-
-          <div className="col-md-8">
-            <div className="row">
-              <div className="col-md-6 search-field">
-                <div className="form-inline">
-                  {/*<input className="form-control input-sm search-input p-search-input" />
-                   <button className="btn btn-default btn-sm p-search-action">Search</button>*/}
-                </div>
-              </div>
-
-              <div className="col-md-6">
-                <Signin got_response={this.props.got_response} authenticated={this.props.authenticated}/>
-              </div>
+const InternalLayout = (props) => (
+  <div className={!props.got_response || !props.authenticated ? 'col-md-12' : 'col-md-9'}>
+    <div className="content">
+      {props.children}
+    </div>
+  </div>
+)
 
 
-            </div>
-          </div>
-        </div>
-
-        <div className="row">
-          <InternalLayout got_response={this.props.got_response} authenticated={this.props.authenticated} children={this.props.children}/>
-          <Sidebar authenticated={this.props.authenticated} user={this.props.me.user}/>
-        </div>
-
-        <div className="row">
-          <div className="col-md-12">
-            <Footer/>
-          </div>
+const Layout = (props) => (
+  <div className="container">
+    <div className="row header-row">
+      <div className="col-md-4">
+        <div className="header">
+          <h1 className="title">
+            <Link to="timeline.home">freefeed</Link>
+          </h1>
         </div>
       </div>
-    );
-  }
-}
+
+      <div className="col-md-8">
+        <div className="row">
+          <div className="col-md-6 search-field">
+            <div className="form-inline">
+              {/*<input className="form-control input-sm search-input p-search-input" />
+               <button className="btn btn-default btn-sm p-search-action">Search</button>*/}
+            </div>
+          </div>
+
+          <div className="col-md-6">
+            {!props.got_response || props.authenticated ? false : (<Signin {...props}/>)}
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div className="row">
+      <InternalLayout {...props}/>
+      <Sidebar authenticated={props.authenticated} user={props.me.user}/>
+    </div>
+
+    <div className="row">
+      <div className="col-md-12">
+        <Footer/>
+      </div>
+    </div>
+  </div>
+)
 
 function select(state) {
-  return state.toJS();
+  return state.toJS()
 }
 
-export default connect(select)(Layout);
+export default connect(select)(Layout)

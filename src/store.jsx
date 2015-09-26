@@ -2,12 +2,12 @@ import { createStore } from 'redux'
 import Immutable from 'immutable'
 import _ from 'lodash'
 
-import {userParser} from './helpers/user_parser'
+import {userParser} from './utils/user_parser'
 
 
-export const WHO_AM_I = 'Who am I?';
-export const HOME = 'Home timeline';
-export const SERVER_ERROR = 'Server error';
+export const WHO_AM_I = 'Who am I?'
+export const HOME = 'Home timeline'
+export const SERVER_ERROR = 'Server error'
 
 export function whoAmIAction(authenticated, users) {
   return {
@@ -48,17 +48,17 @@ let initialState = {
   home: [],
   posts: {},
   users: {}
-};
+}
 
 function theReducer(state, action) {
   switch (action.type) {
     case SERVER_ERROR: {
       state = state.set('server_error', true)
-      break;
+      break
     }
 
     case WHO_AM_I: {
-      let whoami = action.payload;
+      let whoami = action.payload
 
       state = state.set('got_response', true)
       state = state.set('authenticated', whoami.authenticated)
@@ -66,11 +66,11 @@ function theReducer(state, action) {
       if (whoami.authenticated) {
         state = state.mergeDeep({me: {user: userParser(whoami.users)}})
       }
-      break;
+      break
     }
 
     case HOME: {
-      let home_data = action.payload;
+      let home_data = action.payload
 
       state = state.set('got_response', true)
       state = state.set('authenticated', home_data.authenticated)
@@ -91,21 +91,21 @@ function theReducer(state, action) {
         })
         state = state.set('home', ids)
       }
-      break;
+      break
     }
   }
 
-  return state;
+  return state
 }
 
-let store;
+let store
 
 export function initState(state=initialState) {
-  let immutableState = Immutable.fromJS(state);
-  store = createStore(theReducer, immutableState);
-  return store;
+  let immutableState = Immutable.fromJS(state)
+  store = createStore(theReducer, immutableState)
+  return store
 }
 
 export function getStore() {
-  return store;
+  return store
 }

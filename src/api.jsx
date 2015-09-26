@@ -1,8 +1,8 @@
-import fetch from 'isomorphic-fetch';
+import fetch from 'isomorphic-fetch'
 
 import {whoAmIAction, serverErrorAction, homeAction, getStore} from './store'
 
-const API_HOST = 'http://localhost:3000';
+const API_HOST = 'http://freefeed.net'
 
 export async function getWhoami() {
   var promise = fetch(
@@ -13,11 +13,11 @@ export async function getWhoami() {
         'X-Authentication-Token': window.localStorage.getItem('authToken')
       }
     }
-  );
+  )
 
   try {
     var response = await promise
-    var parsedBody = response.json();
+    var parsedBody = response.json()
 
     if (response.status === 200) {
       getStore().dispatch(whoAmIAction(true, (await parsedBody).users))
@@ -32,7 +32,7 @@ export async function getWhoami() {
 }
 
 export async function getHome(offset) {
-  var token = window.localStorage.getItem('authToken');
+  var token = window.localStorage.getItem('authToken')
 
   if (!token) {
     getStore().dispatch(whoAmIAction(false))
@@ -47,11 +47,11 @@ export async function getHome(offset) {
         'X-Authentication-Token': token
       }
     }
-  );
+  )
 
   try {
     var response = await promise
-    var parsedBody = await response.json();
+    var parsedBody = await response.json()
 
     if (response.status === 200) {
       getStore().dispatch(homeAction(true, parsedBody.posts, parsedBody.users))

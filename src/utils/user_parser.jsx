@@ -8,5 +8,5 @@ export function userParser(user) {
     user.profilePictureLargeUrl = '/img/default-userpic-75.png'
   }
 
-  return user;
+  return user
 }

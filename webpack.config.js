@@ -13,7 +13,7 @@ var env = process.env, opts = {
 }
 
 babelExcludeRE = new RegExp(
-  '^node_modules*$'
+  'node_modules'
 )
 
 module.exports = {

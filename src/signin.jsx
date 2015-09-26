@@ -1,16 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router';
 
-export default class Signin extends React.Component {
-  render() {
-    if (!this.props.got_response || this.props.authenticated) {
-      return (<noscript/>)
-    }
-
-    return (
-      <div className="signin-toolbar">
-        <Link to="session.new">Sign In</Link>
-      </div>
-    )
-  }
-}
+export default (props) => (
+  <div className="signin-toolbar">
+    <Link to="session.new">Sign In</Link>
+  </div>
+)
