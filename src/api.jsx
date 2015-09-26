@@ -2,7 +2,7 @@ import fetch from 'isomorphic-fetch';
 
 import {whoAmIAction, serverErrorAction, homeAction, getStore} from './store'
 
-const API_HOST = 'https://freefeed.net';
+const API_HOST = 'http://localhost:3000';
 
 export async function getWhoami() {
   var promise = fetch(
