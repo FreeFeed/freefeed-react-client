@@ -2,7 +2,7 @@ import React from 'react'
 import {Link} from 'react-router'
 
 export default (props) => {
-  return props.authenticated ? (<noscript/>) : (
+  return !props.authenticated ? (<noscript/>) : (
   <div className="col-md-3 sidebar">
     <div className="logged">
       <div className="logged-avatar">

@@ -19,7 +19,8 @@ babelExcludeRE = new RegExp(
 module.exports = {
   entry: {
     app: [
-      opts.hot && 'webpack/hot/dev-server',
+      opts.hot && 'webpack-dev-server/client?http://localhost:5783', // WebpackDevServer host and port
+      opts.hot && 'webpack/hot/only-dev-server',
       './src'
     ]
     .filter(skipFalsy)
@@ -42,7 +43,7 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: babelExcludeRE,
-        loader: 'babel?optional[]=runtime,optional[]=es7.decorators,optional[]=es7.classProperties,optional[]=es7.objectRestSpread'
+        loaders: ['babel?optional[]=runtime,optional[]=es7.asyncFunctions,optional[]=es7.decorators,optional[]=es7.classProperties,optional[]=es7.objectRestSpread']
       },
       {
         test: /[/]styles[/][^/]+[.]css$/,
@@ -63,7 +64,6 @@ module.exports = {
   },
   plugins: [
     new webpack.ContextReplacementPlugin(/moment[/]locale$/, /(?:en|ru)[.]js/),
-    new webpack.HotModuleReplacementPlugin(),
     !opts.dev && new webpack.DefinePlugin({
       'process.env': {
         // This has effect on the react lib size

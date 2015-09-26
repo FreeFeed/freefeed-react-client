@@ -7,7 +7,7 @@ import Sidebar from './sidebar.jsx'
 import Signin from './signin.jsx'
 
 const InternalLayout = (props) => (
-  <div className={!props.got_response || !props.authenticated ? 'col-md-12' : 'col-md-9'}>
+  <div className={!props.gotResponse || !props.authenticated ? 'col-md-12' : 'col-md-9'}>
     <div className="content">
       {props.children}
     </div>
@@ -36,7 +36,7 @@ const Layout = (props) => (
           </div>
 
           <div className="col-md-6">
-            {!props.got_response || props.authenticated ? false : (<Signin {...props}/>)}
+            {!props.gotResponse || props.authenticated ? false : (<Signin {...props}/>)}
           </div>
 
 
@@ -46,7 +46,7 @@ const Layout = (props) => (
 
     <div className="row">
       <InternalLayout {...props}/>
-      <Sidebar authenticated={props.authenticated} user={props.me.user}/>
+      <Sidebar {...props.authenticated}/>
     </div>
 
     <div className="row">
@@ -58,7 +58,7 @@ const Layout = (props) => (
 )
 
 function select(state) {
-  return state.toJS()
+  return state
 }
 
 export default connect(select)(Layout)

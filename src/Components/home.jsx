@@ -62,7 +62,7 @@ const FeedPost = (props) => {
 const HomeFeed = (props) => {
   const post_tags = props.home
   .map(id => props.posts[id])
-  .map(post => (<FeedPost data={post} key={post.id} users={props.users} current_user={props.me.user} authenticated={props.authenticated}/>))
+  .map(post => (<FeedPost data={post} key={post.id} users={props.users} current_user={props.user} authenticated={props.authenticated}/>))
 
   return (
     <div className="posts">
