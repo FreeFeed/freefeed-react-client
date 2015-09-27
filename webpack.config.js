@@ -9,29 +9,30 @@ var env = process.env, opts = {
   livereload: strToBool(env.LIVERELOAD, false),
   hot: process.argv.indexOf('--hot') !== -1,
   hash: strToBool(env.HASH, false),
-  uglify: strToBool(env.UGLIFY, false)
+  uglify: strToBool(env.UGLIFY, false),
+  port: env.PORT || '8080'
 }
 
-babelExcludeRE = new RegExp(
-  'node_modules'
+var cssCommonExtractor = new ExtractTextPlugin(
+  opts.hash ? 'common-[contenthash].css' : 'common-dev.css',
+  { allChunks: true }
 )
 
-var commonExtractTextPlugin = new ExtractTextPlugin('styles/common.css'),
-    appExtractTextPlugin = new ExtractTextPlugin('styles/app.css')
+var cssAppExtractor = new ExtractTextPlugin(
+  opts.hash ? 'app-[contenthash].css' : 'app-dev.css',
+  { allChunks: true }
+)
 
 module.exports = {
   entry: {
-    app: [
-      opts.hot && 'webpack-dev-server/client?http://localhost:5783', // WebpackDevServer host and port
-      opts.hot && 'webpack/hot/only-dev-server',
+    app: skipFalsy([
+      opts.hot && 'webpack/hot/dev-server',
       './src'
-    ]
-    .filter(skipFalsy)
+    ])
   },
   output: {
     path: opts.dstDir,
-    filename: 'bundle.js',
-    // filename: opts.hash ? '[name]-[chunkhash].js' : '[name]-dev.js',
+    filename: opts.hash ? '[name]-[chunkhash].js' : '[name]-dev.js',
     pathinfo: opts.dev
   },
   resolve: {
@@ -39,49 +40,51 @@ module.exports = {
     root: path.resolve(__dirname, 'src'),
     fallback: [ __dirname ]
   },
-  devtool: 'source-map',
+  devtool: opts.dev ? 'cheap-module-eval-source-map' : 'source-map',
   debug: opts.dev,
   module: {
     loaders: [
-      {
-        test: /\.jsx?$/,
-        exclude: babelExcludeRE,
-        loaders: ['babel?optional[]=runtime,optional[]=es7.asyncFunctions,optional[]=es7.decorators,optional[]=es7.classProperties,optional[]=es7.objectRestSpread']
+      { test: /\.jsx?$/,
+        exclude: /node_modules[/]/,
+        loader: 'babel?optional[]=runtime,optional[]=es7.asyncFunctions,optional[]=es7.decorators,optional[]=es7.classProperties,optional[]=es7.objectRestSpread'
       },
-      {
-        test: /[/]styles[/]common[/].*[.]scss$/,
-        loader: styleLoader('css!sass', commonExtractTextPlugin)
+      { test: /[/]styles[/]common[/].*[.]scss$/,
+        loader: styleLoader('css?-mergeIdents&-mergeRules&-uniqueSelectors!sass', cssCommonExtractor)
       },
-      {
-        test: /[/]styles[/]helvetica[/].*[.]scss$/,
-        loader: styleLoader('css!sass', appExtractTextPlugin)
+      { test: /[/]styles[/]helvetica[/].*[.]scss$/,
+        loader: styleLoader('css?-mergeIdents&-mergeRules&-uniqueSelectors!sass', cssAppExtractor)
       },
-      {
-        test: /[.]html$/,
+      { test: /[.]html$/,
         loader: PathRewriter.rewriteAndEmit({
-          name: opts.hash ? '[path][name]-[hash].[ext]' : '[path][name].[ext]'
+          name: '[path][name].html'
         })
       },
-      {
-        test: /[/]assets[/]/,
-        exclude: /[.](jade|html)$/,
+      { test: /[.]jade$/,
+        loader: PathRewriter.rewriteAndEmit({
+          name: '[path][name].html',
+          loader: 'jade-html?' + JSON.stringify({ pretty: true, opts: opts })
+        })
+      },
+      { test: /[/]assets[/]fonts[/]fontawesome[^/]*$/i,
+        loader: 'file?name=[path][name].[ext]'
+      },
+      { test: /[/]assets[/]/,
+        exclude: /[/]fonts[/]fontawesome[^/]*$/i,
         loader: 'file?name=' + (opts.hash ? '[path][name]-[hash].[ext]' : '[path][name]-dev.[ext]')
       }
     ]
   },
-  plugins: [
+  plugins: skipFalsy([
     new webpack.ContextReplacementPlugin(/moment[/]locale$/, /(?:en|ru)[.]js/),
-    !opts.dev && new webpack.DefinePlugin({
-      'process.env': {
-        // This has effect on the react lib size
-        'NODE_ENV': '"production"'
-      }
+
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': opts.dev ? '"development"' : '"production"'
     }),
 
     new webpack.optimize.OccurenceOrderPlugin(),
 
-    commonExtractTextPlugin,
-    appExtractTextPlugin,
+    cssCommonExtractor,
+    cssAppExtractor,
 
     new PathRewriter({
       includeHash: opts.livereload,
@@ -89,23 +92,23 @@ module.exports = {
       silent: false
     }),
 
-    opts.uglify && new webpack.optimize.UglifyJsPlugin(),
-  ]
-  .filter(skipFalsy),
-  postcss: {
-    defaults: [require('postcss-import')({glob:true}), require('postcss-mixins'), require('postcss-simple-vars'), require('postcss-calc')(), require('postcss-color-function')(), require('postcss-nested'), require('autoprefixer-core'), require('csswring')]
-  },
+    opts.uglify && new webpack.optimize.UglifyJsPlugin()
+  ])
 }
 
-/*
- * TODO: enable CSS source maps in hot mode when
- * https://github.com/webpack/css-loader/issues/29
- * get fixed
- */
-function styleLoader(loader, instance) {
+
+function styleLoader(loader, extractor) {
   return opts.hot
-    ? 'style!' + loader
-    : instance.extract(loader.replace(/(?:^|!)[^!]*/g, '$&?sourceMap'))
+    ? addSourceMapArg('style!' + loader)
+    : extractor.extract(addSourceMapArg(loader))
+}
+
+
+function addSourceMapArg(loader) {
+  return loader
+    .split('!')
+    .map(function(l) { return l.indexOf('?') == -1 ? l + '?sourceMap' : l + '&sourceMap' })
+    .join('!')
 }
 
 
@@ -117,6 +120,6 @@ function strToBool(val, def) {
 }
 
 
-function skipFalsy(item){
-  return !!item
+function skipFalsy(array) {
+  return array.filter(function(item) { return !!item })
 }
