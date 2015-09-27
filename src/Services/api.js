@@ -11,7 +11,7 @@ export function getWhoAmI(){
   })
 }
 
-export function getHome(offset) {
+export function getHome({offset}) {
   return fetch(
     `${API_HOST}/v1/timelines/home?offset=${offset}`,
     {

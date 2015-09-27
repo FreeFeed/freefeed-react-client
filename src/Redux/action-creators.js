@@ -16,9 +16,7 @@ export function unauthenticated() {
 }
 
 export const request = (type) =>`${type}_REQUEST`
-
 export const response = (type) => `${type}_RESPONSE`
-
 export const fail = (type) => `${type}_FAIL`
 
 import {getWhoAmI, getHome} from '../Services/api'
@@ -34,7 +32,7 @@ export function whoAmI(){
 
 export const HOME = 'HOME'
 
-export function home(offset){
+export function home(offset = 0){
   return {
     type: HOME,
     apiRequest: getHome,
