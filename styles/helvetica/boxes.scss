@@ -1,0 +1,106 @@
+.box {
+  margin-bottom: 23px;
+  border: 0;
+  border-radius: 8px;
+}
+
+// --- Block headers ---
+.box-header {
+  line-height: 28px;
+  height: 28px;
+  border-bottom: 2px black solid;
+  color: #000;
+}
+
+// User profile, group profile
+.box-header-empty {
+  @extend .box-header;
+  background-color: #fff;
+}
+
+// Timeline header
+.box-header-timeline {
+  @extend .box-header;
+  font-size: 170%;
+  font-weight: 700;
+  margin-bottom: 7px;
+  margin-left: 10px;
+  @media (max-width: 991px){ margin-left: 0; }
+  padding-bottom: 2px;
+}
+
+.box-message {
+  margin: 0 0 0 10px;
+  @media (max-width: 991px){ margin-left: 0; }
+  padding: 5px 10px;
+}
+
+// Sidebar Friend block header
+.box-header-friends {
+  @extend .box-header;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+// Sidebar Group block header
+.box-header-groups {
+  @extend .box-header;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+// Content and footer
+.content {
+  .box-body {
+      padding: 0 0 0 11px;
+      @media (max-width: 991px){ padding: 0 0 0 0; }
+      background-color: #fff;
+      @include clearfix;
+  }
+  .box-footer {
+      padding: 5px 0 5px 11px;
+      @media (max-width: 991px){ padding: 15px 0 0 0; }
+      font-size: 11px;
+      background-color: #fff;
+  }
+}
+
+.sidebar {
+  .box-body {
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    padding: 10px 0 3px 0;
+    background-color: #fff;
+    a {
+      color: #0000cc;
+      text-decoration: none;
+    }
+    @include clearfix;
+
+    ul{
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      li{
+        padding-bottom: 3px;
+        white-space: nowrap;
+        overflow: hidden;
+        a{
+          color: #000;
+          font-size: 15px;
+        }
+      }
+    }
+    .updated-ago{
+      font-size: 11px;
+    }
+  }
+  .box-footer {
+    padding: 5px 0 10px 0;
+    font-size: 11px;
+    a {
+      color: #000;
+    }
+  }
+}

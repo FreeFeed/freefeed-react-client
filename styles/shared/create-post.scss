@@ -1,0 +1,151 @@
+.create-post {
+  padding-bottom: 14px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 14px;
+
+  .attachments {
+    margin: 0 0 5px 0;
+
+    // Clearfix (http://www.cssmojo.com/latest_new_clearfix_so_far/)
+    &:after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+  }
+
+  .image-attachments {
+    > .ember-view {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .attachment {
+      display: inline-block;
+      vertical-align: middle;
+      border: 1px solid silver;
+      padding: 1px;
+      margin: 0 8px 8px 0;
+
+      img {
+        max-width: 525px;
+        max-height: 175px;
+      }
+    }
+  }
+
+  .audio-attachments {
+    .attachment {
+      display: inline-block;
+      margin: 0 8px 8px 0;
+
+      .full-player {
+        width: 400px !important;
+      }
+
+      .audio-wrapper {
+        position: relative;
+
+        .inner {
+          padding-bottom: 5px;
+        }
+      }
+
+      i {
+        color: #666666;
+        padding: 0 1px;
+      }
+    }
+  }
+
+  .general-attachments {
+    .attachment {
+      display: inline-block;
+      margin: 0 8px 8px 0;
+
+      i {
+        color: #666666;
+        padding: 0 1px;
+      }
+    }
+  }
+
+  .uploading-attachments {
+    > .ember-view {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .attachment {
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 8px 8px 0;
+
+      // Progress colors
+      $progressCircleColor: #d43e1b;
+      $progressCenterColor: #ffffff;
+      $progressBackgroundColor: #f9b616;
+
+      // Progress container
+      .upload-progress {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-color: $progressCircleColor; // default 100%
+      }
+
+      // Mixin for progress-% classes
+      $step: 1; // step of % for created classes
+      $loops: round(100 / $step);
+      $increment: 360 / $loops;
+      $half: round($loops / 2);
+      @for $i from 0 through $loops {
+        .progress-#{$i*$step} {
+          @if $i < $half {
+            $nextdeg: 90deg + ( $increment * $i );
+            background-image: linear-gradient(90deg, $progressBackgroundColor 50%, transparent 50%, transparent),
+              linear-gradient($nextdeg, $progressCircleColor 50%, $progressBackgroundColor 50%, $progressBackgroundColor);
+          } @else {
+            $nextdeg: -90deg + ( $increment * ( $i - $half ) );
+            background-image: linear-gradient($nextdeg, $progressCircleColor 50%, transparent 50%, transparent),
+              linear-gradient(270deg, $progressCircleColor 50%, $progressBackgroundColor 50%, $progressBackgroundColor);
+          }
+        }
+      }
+
+      // Centered circle with text
+      .upload-progress .center {
+        position: absolute;
+        width: 54px;
+        height: 54px;
+        background-color: $progressCenterColor;
+        border-radius: 50%;
+        margin-left: 23px;
+        margin-top: 23px;
+        color: #888888;
+        text-align: center;
+        line-height: 54px;
+      }
+    }
+  }
+
+  .create-attachment {
+    cursor: pointer;
+    color: #555;
+    font-weight: normal;
+    margin: 0;
+
+    input[type="file"] {
+      position: fixed;
+      top: -1000px;
+    }
+
+    i {
+      padding-right: 1px;
+    }
+
+    &:hover span {
+      text-decoration: underline;
+    }
+  }
+}

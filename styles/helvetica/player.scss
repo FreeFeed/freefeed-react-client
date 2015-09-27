@@ -1,0 +1,10 @@
+$player-radius: 4px;
+
+.mejs-container {
+  border-radius: $player-radius;
+
+  .mejs-controls {
+    background: #333 !important;
+    border-radius: $player-radius;
+  }
+}

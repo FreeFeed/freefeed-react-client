@@ -1,0 +1,19 @@
+.sidebar {
+
+  a{
+    color: #000;
+  }
+
+  .logged {
+    margin-bottom: 23px;
+
+    .logged-avatar {
+      float: left;
+      margin-right: 8px;
+    }
+
+    .logged-user .author a {
+      font-weight: 600;
+    }
+  }
+}

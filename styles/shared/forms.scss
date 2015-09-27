@@ -1,0 +1,73 @@
+// @import "../common/select2/4.0.0-rc.2/theme/classic/_defaults";
+// @import "../common/select2/4.0.0-rc.2/theme/classic/_multiple.scss";
+
+.send-to {
+  padding-bottom: 6px;
+}
+
+.select2-container--default {
+  &.select2-container--disabled {
+    .select2-selection--multiple {
+      border: 0 !important;
+      background-color: #fff;
+    }
+  }
+}
+
+.select2-container--default {
+  @extend .select2-container--open;
+
+  .select2-selection--multiple {
+    border: none;
+
+    .select2-selection__choice {
+      background-color: #f2f2f2;
+      border: 1px solid #d8d8d8;
+    }
+  }
+}
+
+.select2-search__field {
+  width: -moz-calc(100% - 25px) !important;
+  width: -webkit-calc(100% - 25px) !important;
+  width: calc(100% - 25px) !important;
+}
+
+&.select2-container--open {
+  .select2-selection--multiple {
+    border: 1px solid #aaa !important;
+  }
+}
+
+&.select2-container--focus {
+  .select2-selection--multiple {
+    border: 1px solid #ccc !important;
+  }
+}
+
+.send-to a {
+  position: relative;
+  left: -155px;
+  vertical-align: middle;
+}
+
+// textarea for add|edit posts and comments
+@mixin editarea {
+  border: 1px solid #b4b4b4;
+  border-top-color: #727272;
+  border-bottom-color: #dadada;
+  background: white url("/img/themes/shared/textbox-bg.png") repeat-x top;
+  background-image: linear-gradient(to bottom, #b4b4b4 0px, #fff 2px);
+  padding: 3px;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 3px;
+}
+.edit-post-area {
+  @include editarea;
+  max-height: 10 * 19px + 8px; // 10 lines + padding
+}
+.edit-comment-area {
+  @include editarea;
+  max-height: 10 * 16px + 8px; // 10 lines + padding
+}

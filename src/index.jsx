@@ -1,3 +1,6 @@
+import 'styles/common/common.scss'
+import 'styles/helvetica/app.scss'
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {history} from 'react-router/lib/History'

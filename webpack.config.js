@@ -16,6 +16,9 @@ babelExcludeRE = new RegExp(
   'node_modules'
 )
 
+var commonExtractTextPlugin = new ExtractTextPlugin('styles/common.css'),
+    appExtractTextPlugin = new ExtractTextPlugin('styles/app.css')
+
 module.exports = {
   entry: {
     app: [
@@ -34,7 +37,7 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.json', '.jsx'],
     root: path.resolve(__dirname, 'src'),
-    fallback: [ path.resolve(__dirname, 'assets') ]
+    fallback: [ __dirname ]
   },
   devtool: 'source-map',
   debug: opts.dev,
@@ -46,8 +49,12 @@ module.exports = {
         loaders: ['babel?optional[]=runtime,optional[]=es7.asyncFunctions,optional[]=es7.decorators,optional[]=es7.classProperties,optional[]=es7.objectRestSpread']
       },
       {
-        test: /[/]styles[/][^/]+[.]css$/,
-        loader: styleLoader('style-loader!css-loader!postcss-loader')
+        test: /[/]styles[/]common[/].*[.]scss$/,
+        loader: styleLoader('css!sass', commonExtractTextPlugin)
+      },
+      {
+        test: /[/]styles[/]helvetica[/].*[.]scss$/,
+        loader: styleLoader('css!sass', appExtractTextPlugin)
       },
       {
         test: /[.]html$/,
@@ -73,10 +80,8 @@ module.exports = {
 
     new webpack.optimize.OccurenceOrderPlugin(),
 
-    !opts.hot && new ExtractTextPlugin(
-      opts.hash ? '[name]-[contenthash].css' : '[name]-dev.css',
-      { allChunks: true }
-    ),
+    commonExtractTextPlugin,
+    appExtractTextPlugin,
 
     new PathRewriter({
       includeHash: opts.livereload,
@@ -97,10 +102,10 @@ module.exports = {
  * https://github.com/webpack/css-loader/issues/29
  * get fixed
  */
-function styleLoader(loader) {
+function styleLoader(loader, instance) {
   return opts.hot
     ? 'style!' + loader
-    : ExtractTextPlugin.extract(loader.replace(/(?:^|!)[^!]*/g, '$&?sourceMap'))
+    : instance.extract(loader.replace(/(?:^|!)[^!]*/g, '$&?sourceMap'))
 }
 
 
