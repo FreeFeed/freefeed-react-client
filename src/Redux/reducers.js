@@ -1,13 +1,13 @@
-import {WHO_AM_I_RESPONSE, HOME_RESPONSE, SERVER_ERROR} from './action-creators'
+import {response, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME} from './action-creators'
 import _ from 'lodash'
 import {userParser} from '../Utils/user-parser'
 
 export function gotResponse(state = false, action){
   switch (action.type) {
-    case WHO_AM_I_RESPONSE: {
+    case response(WHO_AM_I): {
       return true
     }
-    case HOME_RESPONSE: {
+    case response(HOME): {
       return true
     }
   }
@@ -25,7 +25,7 @@ export function serverError(state = false, action){
 
 export function home(state = [], action){
   switch (action.type) {
-    case HOME_RESPONSE: {
+    case response(HOME): {
       return action.posts.map(post => post.id)
     }
   }
@@ -34,7 +34,7 @@ export function home(state = [], action){
 
 export function posts(state = {}, action){
   switch (action.type) {
-    case HOME_RESPONSE: {
+    case response(HOME): {
       return { ...state, ..._.indexBy(action.posts, 'id') }
     }
   }
@@ -43,7 +43,7 @@ export function posts(state = {}, action){
 
 export function users(state = {}, action){
   switch (action.type) {
-    case HOME_RESPONSE: {
+    case response(HOME): {
       const userData = _.indexBy(action.users.map(userParser), 'id')
       return { ...state, ...userData }
     }
@@ -53,8 +53,11 @@ export function users(state = {}, action){
 
 export function authenticated (state = false, action){
    switch (action.type) {
-    case WHO_AM_I_RESPONSE: {
-      return action.authenticated
+    case response(WHO_AM_I): {
+      return true
+    }
+    case UNAUTHENTICATED: {
+      return false
     }
   }
   return state
@@ -62,10 +65,8 @@ export function authenticated (state = false, action){
 
 export function user (state = {}, action){
   switch (action.type) {
-    case WHO_AM_I_RESPONSE: {
-      if (action.authenticated) {
-        return userParser(action.users)
-      }
+    case response(WHO_AM_I): {
+      return userParser(action.users)
     }
   }
   return state
