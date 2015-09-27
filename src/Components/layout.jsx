@@ -8,7 +8,7 @@ import Signin from './signin.jsx'
 
 const InternalLayout = (props) => (
   <div className={!props.gotResponse || !props.authenticated ? 'col-md-12' : 'col-md-9'}>
-    <div className="content">
+    <div className='content'>
       {props.children}
     </div>
   </div>
@@ -16,26 +16,26 @@ const InternalLayout = (props) => (
 
 
 const Layout = (props) => (
-  <div className="container">
-    <div className="row header-row">
-      <div className="col-md-4">
-        <div className="header">
-          <h1 className="title">
-            <Link to="timeline.home">freefeed</Link>
+  <div className='container'>
+    <div className='row header-row'>
+      <div className='col-md-4'>
+        <div className='header'>
+          <h1 className='title'>
+            <Link to='timeline.home'>freefeed</Link>
           </h1>
         </div>
       </div>
 
-      <div className="col-md-8">
-        <div className="row">
-          <div className="col-md-6 search-field">
-            <div className="form-inline">
-              {/*<input className="form-control input-sm search-input p-search-input" />
-               <button className="btn btn-default btn-sm p-search-action">Search</button>*/}
+      <div className='col-md-8'>
+        <div className='row'>
+          <div className='col-md-6 search-field'>
+            <div className='form-inline'>
+              {/*<input className='form-control input-sm search-input p-search-input' />
+               <button className='btn btn-default btn-sm p-search-action'>Search</button>*/}
             </div>
           </div>
 
-          <div className="col-md-6">
+          <div className='col-md-6'>
             {!props.gotResponse || props.authenticated ? false : (<Signin {...props}/>)}
           </div>
 
@@ -44,13 +44,13 @@ const Layout = (props) => (
       </div>
     </div>
 
-    <div className="row">
+    <div className='row'>
       <InternalLayout {...props}/>
-      <Sidebar {...props.authenticated}/>
+      <Sidebar {...props}/>
     </div>
 
-    <div className="row">
-      <div className="col-md-12">
+    <div className='row'>
+      <div className='col-md-12'>
         <Footer/>
       </div>
     </div>
