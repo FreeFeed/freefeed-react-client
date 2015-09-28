@@ -21,7 +21,6 @@ export const apiMiddleware = store => next => async (action) => {
       return next({...obj, type: fail(action.type)})
     }
   } catch (e) {
-    debugger
     return next(serverError(e))
   }
 }

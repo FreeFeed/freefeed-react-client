@@ -1,6 +1,6 @@
 import {response, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME} from './action-creators'
 import _ from 'lodash'
-import {userParser} from '../Utils/user-parser'
+import {userParser} from '../utils'
 
 export function gotResponse(state = false, action){
   switch (action.type) {
