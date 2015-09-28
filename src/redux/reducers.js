@@ -1,6 +1,17 @@
-import {response, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME, SHOW_MORE_COMMENTS} from './action-creators'
+import {response, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME, SHOW_MORE_COMMENTS, SIGN_IN_CHANGE} from './action-creators'
 import _ from 'lodash'
 import {userParser} from '../utils'
+
+export function signInForm(state={login:'', password:''}, action){
+  switch(action.type) {
+    case SIGN_IN_CHANGE: {
+      return {login: action.login || state.login,
+        password: action.password || state.password,
+      }
+    }
+  }
+  return state
+}
 
 export function gotResponse(state = false, action){
   switch (action.type) {
@@ -42,7 +53,7 @@ export function posts(state = {}, action){
       let post = {}
 
       post[postId] = action.payload.posts
-      
+
       return { ...state, ...post }
     }
   }

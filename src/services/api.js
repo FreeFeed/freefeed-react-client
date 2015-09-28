@@ -25,3 +25,14 @@ export function getPostDetails(postId) {
   return fetch(
     `${API_HOST}/v1/posts/${postId}?maxComments=all&maxLikes=${MAX_LIKES}`, getRequestOptions())
 }
+
+export function signIn(credentials){
+  debugger
+  return fetch(`${API_HOST}/v1/session`, {
+    headers:{
+      Accept: 'application/json'
+    },
+    method: 'POST',
+    body: new FormData(credentials),
+  })
+}

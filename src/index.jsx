@@ -17,6 +17,7 @@ import Layout from './components/layout'
 import Home from './components/home'
 import About from './components/about'
 import NotFound from './components/not-found'
+import Login from './components/login'
 
 const store = configureStore()
 
@@ -40,6 +41,7 @@ ReactDOM.render(
         <IndexRoute component={Home}/>
         <Route name='timeline.home' component={Home} />
         <Route path='about' name='about' component={About} />
+        <Route path='login' component={Login}/>
       </Route>
     </Router>
   </Provider>,
