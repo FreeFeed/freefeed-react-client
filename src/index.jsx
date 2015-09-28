@@ -13,10 +13,10 @@ import {Provider} from 'react-redux'
 import configureStore from './Redux/configure-store'
 import {whoAmI, home} from './Redux/action-creators'
 
-import Layout from './Components/layout'
-import Home from './Components/home'
-import About from './Components/about'
-import NotFound from './Components/not-found'
+import Layout from './components/layout'
+import Home from './components/home'
+import About from './components/about'
+import NotFound from './components/not-found'
 
 const store = configureStore()
 

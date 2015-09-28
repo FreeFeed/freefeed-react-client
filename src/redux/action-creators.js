@@ -19,7 +19,7 @@ export const request = (type) =>`${type}_REQUEST`
 export const response = (type) => `${type}_RESPONSE`
 export const fail = (type) => `${type}_FAIL`
 
-import {getWhoAmI, getHome} from '../Services/api'
+import {getWhoAmI, getHome} from '../services/api'
 
 export const WHO_AM_I = 'WHO_AM_I'
 
