@@ -1,0 +1,35 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width,initial-scale=1')
+    title Reactive Pepyatka
+    link(rel='stylesheet', href='[[ assets/vendor-css/font-awesome.min.css ]]')
+    unless opts.hot
+        link(rel='stylesheet', href='[[ common-*.css ]]')
+        link(rel='stylesheet', href='[[ app-*.css ]]')
+    noscript
+      style.
+        .jsonly { display: none }
+    link(rel='icon', href='[[ assets/images/favicon.ico ]]', type='image/x-icon')
+  body
+    #app
+      .container
+        .row.header-row
+          .col-md-4
+            .header
+              h1.title
+                a(href='/') freefeed
+              .jsonly
+                p Hold on there, tiger.
+        .row
+          .col-md-9
+            .content
+              .box
+                noscript
+                  #js-disabled-warn.alert.alert-danger(role='alert')
+                    strong Javascript is disabled!
+                    |  Looks like you have JavaScript disabled in your browser. Please enable it to enjoy our service.
+    if opts.livereload
+      script( src="/webpack-dev-server.js" )
+    script(src='[[ app-*.js ]]')

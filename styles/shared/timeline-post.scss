@@ -1,0 +1,31 @@
+.timeline-post-container {
+  padding-top: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #eee;
+  line-height: 19px;
+
+  .avatar {
+    float: left;
+    line-height: 0;
+    @media (max-width: 767px) { margin: 0 10px 3px 0; }
+  }
+
+  .post-body {
+    margin-left: 63px;
+    @media (max-width: 767px) { margin-left: 0; }
+
+    .title {
+      font-size: 15px;
+      margin-bottom: 2px;
+    }
+
+    .text {
+      font-size: 16px;
+      line-height: 21px;
+
+      p {
+        margin: 6px 0 12px;
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+.single-post-container {
+  padding-top: 0;
+  padding-bottom: 0;
+  border-bottom: 0 none;
+  line-height: 19px;
+
+  .avatar {
+    float: left;
+    line-height: 0;
+    @media (max-width: 767px) { margin: 0 10px 3px 0; }
+  }
+
+  .post-body {
+    margin-left: 88px;
+    @media (max-width: 767px) { margin-left: 0; }
+    font-size: 13px;
+    line-height: 16px;
+    color: #666;
+
+    .title {
+      font-size: 21px;
+      line-height: 26px;
+      margin-bottom: 2px;
+    }
+
+    .text {
+      font-size: 21px;
+      line-height: 26px;
+    }
+  }
+}

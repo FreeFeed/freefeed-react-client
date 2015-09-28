@@ -1,0 +1,80 @@
+.comments {
+  font-size: 14px;
+  line-height: 18px;
+  clear: both;
+
+  .comment {
+    margin-top: 8px;
+
+    .icon {
+      margin-top: 2px;
+      float: left;
+      margin-right: 4px;
+    }
+
+    // Hover on date field
+    a.date {
+      display: inline;
+      float: left;
+      height: 16px;
+      width: 16px;
+    }
+
+    div.body {
+      margin-left: 19px;
+    }
+
+    span.comment-text {
+    }
+    span.author {
+    }
+    span.controls {
+    }
+
+    // Edit comment form
+    div.edit {
+    }
+  }
+
+  .more-comments-wrapper {
+    margin-top: 8px;
+  }
+
+  .more-comments {
+    padding-left: 19px;
+    font-style: italic;
+
+    &.loading {
+      background: url('/img/throbber-16.gif') top left no-repeat;
+      padding-left: 21px;
+      margin-left: -2px;
+    }
+  }
+
+  .add-comment-block {
+    .add-comment-link {
+      font-style: italic;
+      margin-left: 6px;
+    }
+
+    .fa-stack {
+      margin-top: 1px;
+      float: left;
+      width: 1em;
+      height: 1em;
+      line-height: 1em;
+    }
+
+    .fa-plus,
+    .fa-square {
+      font-size: 60%;
+      top: 3px;
+      left: 4px;
+    }
+
+    .fa-plus {
+      top: 3px;
+      left: 4px;
+    }
+  }
+}

@@ -1,0 +1,177 @@
+.post-body {
+  color: #666;
+
+  a {
+    color: #555599;
+  }
+
+  .title {
+    font-size: 15px;
+    margin-bottom: 2px;
+
+    a {
+      font-weight: bold;
+      color: #000088;
+    }
+  }
+
+  .body {
+    margin-bottom: 8px;
+
+    .text {
+      color: #000;
+
+      a {
+        color: #000088;
+      }
+    }
+  }
+
+  .attachments {
+    margin-bottom: 2px;
+
+    a {
+      color: #000088;
+      text-decoration: none;
+
+      &:hover span {
+        text-decoration: underline;
+      }
+    }
+
+    // Clearfix (http://www.cssmojo.com/latest_new_clearfix_so_far/)
+    &:after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+  }
+
+  .image-attachments {
+    > .ember-view {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .attachment {
+      display: inline-block;
+      vertical-align: middle;
+      border: 1px solid silver;
+      padding: 1px;
+      margin: 0 8px 8px 0;
+
+      img {
+        max-width: 525px;
+        max-height: 175px;
+      }
+
+      &.surplus {
+        display: none;
+      }
+    }
+
+    &.expanded .attachment.surplus {
+      display: inline-block;
+    }
+
+    .toggle-surplus {
+      display: none;
+      color: #fad889; // logotype yellow (#f9b616) with lower saturation;
+      font-size: 2em;
+      text-decoration: none;
+      position: relative;
+      top: 2px;
+    }
+
+    &.has-surplus .toggle-surplus {
+      display: inline-block;
+
+      // fa-chevron-circle-right
+      &:before {
+        content: "\f138";
+      }
+    }
+
+    &.has-surplus.expanded .toggle-surplus {
+      // fa-chevron-circle-left
+      &:before {
+        content: "\f137";
+      }
+    }
+  }
+
+  .audio-attachments {
+    .attachment {
+      display: inline-block;
+      margin: 0 8px 8px 0;
+
+      .full-player {
+        width: 400px !important;
+      }
+
+      .audio-wrapper {
+        position: relative;
+
+        .inner {
+          padding-bottom: 5px;
+        }
+      }
+
+      i {
+        color: #666666;
+        padding: 0 1px;
+      }
+    }
+  }
+
+  .general-attachments {
+    .attachment {
+      display: inline-block;
+      margin: 0 8px 8px 0;
+
+      i {
+        color: #666666;
+        padding: 0 1px;
+      }
+    }
+  }
+
+  .info {
+    font-size: 14px;
+    line-height: 18px;
+
+    .post-date a {
+      color: #666;
+    }
+  }
+
+  .likes {
+    margin-top: 8px;
+
+    .icon {
+      margin-top: 2px;
+      float: left;
+      color: #ffb914;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 4px 10px 19px;
+
+      li {
+        display: inline;
+      }
+
+      .throbber {
+        position: absolute;
+
+        img {
+          position: relative;
+          top: -1px;
+          left: 4px;
+        }
+      }
+    }
+  }
+}
