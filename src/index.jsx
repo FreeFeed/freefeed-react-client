@@ -10,8 +10,8 @@ import {createHashHistory} from 'history'
 import {Router, Route, IndexRoute} from 'react-router'
 import {Provider} from 'react-redux'
 
-import configureStore from './Redux/configure-store'
-import {whoAmI, home} from './Redux/action-creators'
+import configureStore from './redux/configure-store'
+import {whoAmI, home} from './redux/action-creators'
 
 import Layout from './components/layout'
 import Home from './components/home'
