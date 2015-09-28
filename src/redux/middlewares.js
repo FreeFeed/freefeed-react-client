@@ -14,11 +14,11 @@ export const apiMiddleware = store => next => async (action) => {
     const apiResponse = await action.apiRequest(action.payload)
     const obj = await apiResponse.json()
     if (apiResponse.status === 200) {
-      return next({...obj, type: response(action.type)})
+      return next({payload: obj, type: response(action.type)})
     } else if (apiResponse.status === 401) {
       return next(unauthenticated(...obj))
     } else {
-      return next({...obj, type: fail(action.type)})
+      return next({payload: obj, type: fail(action.type)})
     }
   } catch (e) {
     return next(serverError(e))
