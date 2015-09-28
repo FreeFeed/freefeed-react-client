@@ -1,4 +1,4 @@
-import {response, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME} from './action-creators'
+import {response, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME, SHOW_MORE_COMMENTS} from './action-creators'
 import _ from 'lodash'
 import {userParser} from '../utils'
 
@@ -36,6 +36,23 @@ export function posts(state = {}, action){
   switch (action.type) {
     case response(HOME): {
       return { ...state, ..._.indexBy(action.payload.posts, 'id') }
+    }
+    case response(SHOW_MORE_COMMENTS): {
+      let p = {}
+      p[action.payload.posts.id] = action.payload.posts
+      return { ...state, ...p }
+    }
+  }
+  return state
+}
+
+export function comments(state = {}, action){
+  switch (action.type) {
+    case response(HOME): {
+      return { ...state, ..._.indexBy(action.payload.comments, 'id') }
+    }
+    case response(SHOW_MORE_COMMENTS): {
+      return { ...state, ..._.indexBy(action.payload.comments, 'id') }
     }
   }
   return state
