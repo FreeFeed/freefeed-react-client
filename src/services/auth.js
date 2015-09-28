@@ -1,18 +1,15 @@
 import {getCookie} from '../utils/'
+import {auth as authConfig} from '../config'
 
-const config = {
-  tokenPrefix: 'freefeed_',
-  exdays: 365,
-  domain:'localhost',
-  path: '/',
-}
+const EXP_DAYS = 365
+const PATH = '/'
 
 export function getToken(){
-  return getCookie(`${config.tokenPrefix}authToken`)
+  return getCookie(`${authConfig.tokenPrefix}authToken`)
 }
 
 export function setToken(token){
-  const expiresTime = (new Date().setTime(d.getTime() + (config.exdays * 24 * 60 * 60 * 1000))).toUTCString()
-  const cookie = `${config.tokenPrefix}authToken=${token};expires=${expiresTime};domain=${config.domain};path=${config.path}`
+  const expiresTime = (new Date().setTime(d.getTime() + (EXP_DAYS * 24 * 60 * 60 * 1000))).toUTCString()
+  const cookie = `${authConfig.tokenPrefix}authToken=${token};expires=${expiresTime};domain=${authConfig.cookieDomain};path=${PATH}`
   return document.cookie = cookie
 }
