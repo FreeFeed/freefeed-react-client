@@ -25,6 +25,7 @@
     "react-router": "1.0.0-rc1",
     "redux": "^3.0.2",
     "redux-logger": "^2.0.0",
+    "redux-router": "^1.0.0-beta3",
     "sass-loader": "^2.0.1",
     "style-loader": "^0.12.4",
     "webpack": "^1.12.2",

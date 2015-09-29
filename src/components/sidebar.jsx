@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router'
+import {preventDefault} from '../utils'
 
 export default (props) => {
   return !props.authenticated ? (<noscript/>) : (
@@ -16,7 +17,7 @@ export default (props) => {
         <div>
           <Link to='settings.index'>settings</Link>
           &nbsp;-&nbsp;
-          <Link to='session.destroy'>sign out</Link>
+          <a onClick={preventDefault(props.signOut)}>sign out</a>
         </div>
       </div>
     </div>

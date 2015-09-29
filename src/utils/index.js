@@ -37,3 +37,11 @@ export function userParser(user) {
 
   return user
 }
+
+
+export function preventDefault(realFunction) {
+  return (event) => {
+    event.preventDefault()
+    return realFunction()
+  }
+}

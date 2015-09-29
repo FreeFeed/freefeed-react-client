@@ -2,9 +2,10 @@ import React from 'react'
 import { Link} from 'react-router'
 import { connect } from 'react-redux'
 
-import Footer from './footer.jsx'
-import Sidebar from './sidebar.jsx'
-import Signin from './signin.jsx'
+import {unauthenticated} from '../redux/action-creators'
+import Footer from './footer'
+import Sidebar from './sidebar'
+import Signin from './signin'
 
 const InternalLayout = (props) => (
   <div className={!props.gotResponse || !props.authenticated ? 'col-md-12' : 'col-md-9'}>
@@ -61,4 +62,10 @@ function select(state) {
   return state
 }
 
-export default connect(select)(Layout)
+function mapDispatchToProps(dispatch){
+  return {
+    signOut: ()=>dispatch(unauthenticated())
+  }
+}
+
+export default connect(select, mapDispatchToProps)(Layout)

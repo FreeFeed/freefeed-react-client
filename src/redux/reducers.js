@@ -1,6 +1,22 @@
-import {response, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME, SHOW_MORE_COMMENTS} from './action-creators'
+import {response, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME, SHOW_MORE_COMMENTS, SIGN_IN_CHANGE} from './action-creators'
 import _ from 'lodash'
 import {userParser} from '../utils'
+
+export function signInForm(state={username:'', password:'', error:''}, action){
+  switch(action.type) {
+    case SIGN_IN_CHANGE: {
+      return {
+        ...state,
+        username: action.username || state.username,
+        password: action.password || state.password,
+      }
+    }
+    case UNAUTHENTICATED: {
+      return {...state, error: action.payload.err}
+    }
+  }
+  return state
+}
 
 export function gotResponse(state = false, action){
   switch (action.type) {
@@ -42,7 +58,7 @@ export function posts(state = {}, action){
       let post = {}
 
       post[postId] = action.payload.posts
-      
+
       return { ...state, ...post }
     }
   }
@@ -74,7 +90,9 @@ export function users(state = {}, action){
   return state
 }
 
-export function authenticated(state = false, action){
+import {getToken} from '../services/auth'
+
+export function authenticated(state = !!getToken(), action){
    switch (action.type) {
     case response(WHO_AM_I): {
       return true
