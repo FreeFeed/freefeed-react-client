@@ -53,8 +53,9 @@ const FeedPost = (props) => {
           <PostLikes/>
         </div>
 
-        <PostComments comments={props.comments}
-                      showMoreComments={props.showMoreComments}/>
+        <PostComments post={props.data}
+                      comments={props.comments}
+                      showMoreComments={props.showMoreComments} />
       </div>
     </div>
   )
@@ -70,7 +71,7 @@ const HomeFeed = (props) => {
       comment.user = props.users[comment.createdBy]
       return comment
     })
-    console.log(comments)
+
     return (<FeedPost data={post}
                       key={post.id}
                       users={props.users}

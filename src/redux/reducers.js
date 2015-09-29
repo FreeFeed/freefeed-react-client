@@ -38,9 +38,12 @@ export function posts(state = {}, action){
       return { ...state, ..._.indexBy(action.payload.posts, 'id') }
     }
     case response(SHOW_MORE_COMMENTS): {
-      let p = {}
-      p[action.payload.posts.id] = action.payload.posts
-      return { ...state, ...p }
+      const postId = action.payload.posts.id
+      let post = {}
+
+      post[postId] = action.payload.posts
+      
+      return { ...state, ...post }
     }
   }
   return state
@@ -63,6 +66,9 @@ export function users(state = {}, action){
     case response(HOME): {
       const userData = _.indexBy(action.payload.users.map(userParser), 'id')
       return { ...state, ...userData }
+    }
+    case response(SHOW_MORE_COMMENTS): {
+      return { ...state, ..._.indexBy(action.payload.users, 'id') }
     }
   }
   return state
