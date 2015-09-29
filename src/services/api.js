@@ -28,12 +28,12 @@ export function getPostDetails(postId) {
 }
 
 export function signIn(credentials){
-  debugger
   return fetch(`${apiConfig.host}/v1/session`, {
     headers:{
-      Accept: 'application/json'
+      'Accept': 'application/json',
+      'Content-Type':'application/x-www-form-urlencoded',
     },
     method: 'POST',
-    body: new FormData(credentials),
+    body: `username=${credentials.username}&password=${credentials.password}`,
   })
 }

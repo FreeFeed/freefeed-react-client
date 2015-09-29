@@ -1,15 +1,15 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import loggerMiddleware from 'redux-logger'
-import {apiMiddleware} from './middlewares'
+import {apiMiddleware, authMiddleware} from './middlewares'
 import * as reducers from './reducers'
 
-let middleware = [ apiMiddleware ]
+let middleware = [ apiMiddleware, authMiddleware ]
 
 if (process.env.NODE_ENV != 'production') {
   middleware.push(loggerMiddleware())
 }
 
-const storeEnhancer = applyMiddleware.apply(null, middleware)
+const storeEnhancer = applyMiddleware(...middleware)
 const createStoreWithMiddleware = storeEnhancer(createStore)
 const reducer = combineReducers(reducers)
 

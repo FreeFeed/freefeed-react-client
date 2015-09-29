@@ -11,7 +11,8 @@ export const UNAUTHENTICATED = 'UNAUTHENTICATED'
 
 export function unauthenticated() {
   return {
-    type: UNAUTHENTICATED
+    type: UNAUTHENTICATED,
+    payload: {authToken: ''},
   }
 }
 
@@ -52,22 +53,22 @@ export function showMoreComments(postId){
 
 export const SIGN_IN_CHANGE = 'SIGN_IN_CHANGE'
 
-export function signInChange(login, password){
+export function signInChange(username, password){
   return {
     type: SIGN_IN_CHANGE,
-    login,
+    username,
     password,
   }
 }
 
 export const SIGN_IN = 'SIGN_IN'
 
-export function signIn(login, password){
+export function signIn(username, password){
   return {
     type: SIGN_IN,
     apiRequest: Api.signIn,
     payload: {
-      login,
+      username,
       password,
     },
   }

@@ -1,4 +1,4 @@
-import {unauthenticated, serverError, request, response, fail} from './action-creators'
+import {unauthenticated, serverError, request, response, fail, SIGN_IN, UNAUTHENTICATED} from './action-creators'
 
 //middleware for api requests
 export const apiMiddleware = store => next => async (action) => {
@@ -23,4 +23,17 @@ export const apiMiddleware = store => next => async (action) => {
   } catch (e) {
     return next(serverError(e))
   }
+}
+
+import {setToken} from '../services/auth'
+
+export const authMiddleware = store => next => action => {
+  if ([response(SIGN_IN), UNAUTHENTICATED].indexOf(action.type) !== -1){
+    setToken(action.payload.authToken)
+    // if (!action.payload.authToken) {
+    //   window.location.assign('../login')
+    // }
+  }
+
+  return next(action)
 }
