@@ -1,7 +1,8 @@
 import fetch from 'isomorphic-fetch'
 import {getToken} from './auth'
 
-const API_HOST = 'http://localhost:3000'
+import {api as apiConfig} from '../config'
+
 
 const getRequestOptions = () => ({
   headers:{
@@ -11,24 +12,24 @@ const getRequestOptions = () => ({
 })
 
 export function getWhoAmI(){
-  return fetch(`${API_HOST}/v1/users/whoami`, getRequestOptions())
+  return fetch(`${apiConfig.host}/v1/users/whoami`, getRequestOptions())
 }
 
 export function getHome({offset}) {
   return fetch(
-    `${API_HOST}/v1/timelines/home?offset=${offset}`, getRequestOptions())
+    `${apiConfig.host}/v1/timelines/home?offset=${offset}`, getRequestOptions())
 }
 
 const MAX_LIKES = 4
 
 export function getPostDetails(postId) {
   return fetch(
-    `${API_HOST}/v1/posts/${postId}?maxComments=all&maxLikes=${MAX_LIKES}`, getRequestOptions())
+    `${apiConfig.host}/v1/posts/${postId}?maxComments=all&maxLikes=${MAX_LIKES}`, getRequestOptions())
 }
 
 export function signIn(credentials){
   debugger
-  return fetch(`${API_HOST}/v1/session`, {
+  return fetch(`${apiConfig.host}/v1/session`, {
     headers:{
       Accept: 'application/json'
     },
