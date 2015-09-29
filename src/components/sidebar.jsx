@@ -16,7 +16,7 @@ export default (props) => {
         <div>
           <Link to='settings.index'>settings</Link>
           &nbsp;-&nbsp;
-          <Link to='session.destroy'>sign out</Link>
+          <div onClick={props.signOut}>sign out</div>
         </div>
       </div>
     </div>

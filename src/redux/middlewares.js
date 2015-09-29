@@ -26,13 +26,17 @@ export const apiMiddleware = store => next => async (action) => {
 }
 
 import {setToken} from '../services/auth'
+import {pushState} from 'redux-router'
 
 export const authMiddleware = store => next => action => {
   if ([response(SIGN_IN), UNAUTHENTICATED].indexOf(action.type) !== -1){
+    debugger
     setToken(action.payload.authToken)
-    // if (!action.payload.authToken) {
-    //   window.location.assign('../login')
-    // }
+    if (!action.payload.authToken) {
+      next(pushState(null, '/login', {}))
+    } else {
+      next(pushState(null, '/', {}))
+    }
   }
 
   return next(action)

@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {signInChange, signIn} from '../redux/action-creators'
+import {preventDefault} from '../utils'
 
 function mapStateToProps (state){
   return {...state.signInForm}
@@ -24,7 +25,7 @@ function Login (props) {
         <h2 className='p-signin-header'>Sign in</h2>
         <div className='row'>
           <div className='col-md-6'>
-            <form onSubmit={(e) => props.signIn(props.username, props.password)} className='p-signin'>
+            <form onSubmit={preventDefault(() => props.signIn(props.username, props.password))} className='p-signin'>
               <div className='form-group'>
                 <label htmlFor='username'>Username</label>
                 <input id='username' className='ember-view ember-text-field form-control' type='text' onChange={e => props.signInChange(e.target.value)}/>

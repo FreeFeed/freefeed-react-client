@@ -14,7 +14,8 @@ if (process.env.NODE_ENV != 'production') {
 
 const storeEnhancer = compose(
   applyMiddleware(...middleware),
-  reduxReactRouter({ createHistory: createHashHistory })                        )
+  reduxReactRouter({ createHistory: createHashHistory })
+)
 
 const createStoreWithMiddleware = storeEnhancer(createStore)
 const reducer = combineReducers({...reducers, router: routerStateReducer})
