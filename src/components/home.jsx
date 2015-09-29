@@ -6,6 +6,7 @@ import moment from 'moment'
 import {fromNowOrNow} from '../utils'
 import {showMoreComments} from '../redux/action-creators'
 import PostComments from './post-comments'
+import Linkify from'react-linkify'
 
 const PostLikes = (props) => (<div/>)
 
@@ -35,7 +36,7 @@ const FeedPost = (props) => {
 
         <div className='body'>
           <div className='text'>
-            {props.data.body}
+            <Linkify>{props.data.body}</Linkify>
           </div>
         </div>
 

@@ -1,4 +1,5 @@
 import React from 'react'
+import Linkify from'react-linkify'
 
 export default (props) => (
   <div className='comment p-comment'>
@@ -7,7 +8,7 @@ export default (props) => (
     </a>
     <div className='body p-comment-body'>
       <span className='comment-text'>
-        {props.body}
+        <Linkify>{props.body}</Linkify>
       </span>
       &nbsp;-&nbsp;
       <span className='author'>
