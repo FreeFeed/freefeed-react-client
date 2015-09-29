@@ -37,7 +37,7 @@ export function serverError(state = false, action){
 export function home(state = [], action){
   switch (action.type) {
     case response(HOME): {
-      return action.response.posts.map(post => post.id)
+      return action.payload.posts.map(post => post.id)
     }
   }
   return state
@@ -46,7 +46,7 @@ export function home(state = [], action){
 export function posts(state = {}, action){
   switch (action.type) {
     case response(HOME): {
-      return { ...state, ..._.indexBy(action.response.posts, 'id') }
+      return { ...state, ..._.indexBy(action.payload.posts, 'id') }
     }
     case response(SHOW_MORE_COMMENTS): {
       const postId = action.payload.posts.id
@@ -75,7 +75,7 @@ export function comments(state = {}, action){
 export function users(state = {}, action){
   switch (action.type) {
     case response(HOME): {
-      const userData = _.indexBy(action.response.users.map(userParser), 'id')
+      const userData = _.indexBy(action.payload.users.map(userParser), 'id')
       return { ...state, ...userData }
     }
     case response(SHOW_MORE_COMMENTS): {
@@ -100,7 +100,7 @@ export function authenticated(state = false, action){
 export function user(state = {}, action){
   switch (action.type) {
     case response(WHO_AM_I): {
-      return userParser(action.response.users)
+      return userParser(action.payload.users)
     }
   }
   return state
