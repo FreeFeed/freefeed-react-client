@@ -22,16 +22,16 @@ import Login from './components/login'
 const store = configureStore()
 
 //request main info for user
-store.dispatch(whoAmI())
-//request feed
-store.dispatch(home())
+if (store.getState().authenticated){
+  store.dispatch(whoAmI())
+}
 
 ReactDOM.render(
   <Provider store={store}>
     <ReduxRouter>
       <Route path='/' component={Layout}>
-        <IndexRoute component={Home}/>
-        <Route name='timeline.home' component={Home} />
+        <IndexRoute component={Home} onEnter={()=>store.dispatch(home())}/>
+        <Route name='timeline.home' component={Home} onEnter={()=>store.dispatch(home())}/>
         <Route path='about' name='about' component={About} />
         <Route path='login' component={Login}/>
       </Route>

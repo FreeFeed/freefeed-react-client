@@ -1,4 +1,4 @@
-import {unauthenticated, serverError, request, response, fail, SIGN_IN, UNAUTHENTICATED} from './action-creators'
+import {unauthenticated, serverError, request, response, fail, SIGN_IN, UNAUTHENTICATED, whoAmI} from './action-creators'
 
 //middleware for api requests
 export const apiMiddleware = store => next => async (action) => {
@@ -16,7 +16,7 @@ export const apiMiddleware = store => next => async (action) => {
     if (apiResponse.status === 200) {
       return next({payload: obj, type: response(action.type)})
     } else if (apiResponse.status === 401) {
-      return next(unauthenticated(...obj))
+      return next(unauthenticated(obj))
     } else {
       return next({payload: obj, type: fail(action.type)})
     }
@@ -30,11 +30,12 @@ import {pushState} from 'redux-router'
 
 export const authMiddleware = store => next => action => {
   if ([response(SIGN_IN), UNAUTHENTICATED].indexOf(action.type) !== -1){
-    debugger
     setToken(action.payload.authToken)
     if (!action.payload.authToken) {
       next(pushState(null, '/login', {}))
     } else {
+      //to throw it through all middlewares — apiMiddleware included
+      store.dispatch(whoAmI())
       next(pushState(null, '/', {}))
     }
   }

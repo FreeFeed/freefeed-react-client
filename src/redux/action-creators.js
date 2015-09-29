@@ -9,10 +9,10 @@ export function serverError(error) {
 
 export const UNAUTHENTICATED = 'UNAUTHENTICATED'
 
-export function unauthenticated() {
+export function unauthenticated(payload) {
   return {
     type: UNAUTHENTICATED,
-    payload: {authToken: ''},
+    payload: {...payload, authToken: ''},
   }
 }
 

@@ -3,6 +3,6 @@ import {Link} from 'react-router'
 
 export default (props) => (
   <div className='signin-toolbar'>
-    <Link to='session.new'>Sign In</Link>
+    <Link to='Login'>Sign In</Link>
   </div>
 )
