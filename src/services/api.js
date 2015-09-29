@@ -5,9 +5,9 @@ const API_HOST = 'http://localhost:3000'
 
 const getRequestOptions = () => ({
   headers:{
-      'Accept': 'application/json',
-      'X-Authentication-Token': getToken()
-    }
+    'Accept': 'application/json',
+    'X-Authentication-Token': getToken()
+  }
 })
 
 export function getWhoAmI(){
@@ -17,4 +17,11 @@ export function getWhoAmI(){
 export function getHome({offset}) {
   return fetch(
     `${API_HOST}/v1/timelines/home?offset=${offset}`, getRequestOptions())
+}
+
+const MAX_LIKES = 4
+
+export function getPostDetails(postId) {
+  return fetch(
+    `${API_HOST}/v1/posts/${postId}?maxComments=all&maxLikes=${MAX_LIKES}`, getRequestOptions())
 }

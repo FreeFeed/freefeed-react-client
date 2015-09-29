@@ -19,7 +19,7 @@ export const request = (type) =>`${type}_REQUEST`
 export const response = (type) => `${type}_RESPONSE`
 export const fail = (type) => `${type}_FAIL`
 
-import {getWhoAmI, getHome} from '../services/api'
+import {getWhoAmI, getHome, getPostDetails} from '../services/api'
 
 export const WHO_AM_I = 'WHO_AM_I'
 
@@ -37,5 +37,15 @@ export function home(offset = 0){
     type: HOME,
     apiRequest: getHome,
     payload: {offset}
+  }
+}
+
+export const SHOW_MORE_COMMENTS = 'SHOW_MORE_COMMENTS'
+
+export function showMoreComments(postId){
+  return {
+    type: SHOW_MORE_COMMENTS,
+    apiRequest: getPostDetails,
+    payload: postId
   }
 }

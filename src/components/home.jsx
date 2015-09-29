@@ -4,10 +4,11 @@ import {Link} from 'react-router'
 import moment from 'moment'
 
 import {fromNowOrNow} from '../utils'
+import {showMoreComments} from '../redux/action-creators'
+import PostComments from './post-comments'
+import Linkify from'react-linkify'
 
 const PostLikes = (props) => (<div/>)
-
-const PostComments = (props) => (<div/>)
 
 const FeedPost = (props) => {
   const user = props.users[props.data.createdBy]
@@ -35,7 +36,7 @@ const FeedPost = (props) => {
 
         <div className='body'>
           <div className='text'>
-            {props.data.body}
+            <Linkify>{props.data.body}</Linkify>
           </div>
         </div>
 
@@ -53,16 +54,33 @@ const FeedPost = (props) => {
           <PostLikes/>
         </div>
 
-        <PostComments/>
+        <PostComments post={props.data}
+                      comments={props.comments}
+                      showMoreComments={props.showMoreComments} />
       </div>
     </div>
   )
 }
 
+
 const HomeFeed = (props) => {
   const post_tags = props.home
   .map(id => props.posts[id])
-  .map(post => (<FeedPost data={post} key={post.id} users={props.users} current_user={props.user} authenticated={props.authenticated}/>))
+  .map(post => {
+    let comments = _.map(post.comments, commentId => {
+      let comment = props.comments[commentId]
+      comment.user = props.users[comment.createdBy]
+      return comment
+    })
+
+    return (<FeedPost data={post}
+                      key={post.id}
+                      users={props.users}
+                      comments={comments}
+                      current_user={props.user}
+                      authenticated={props.authenticated}
+                      showMoreComments={props.showMoreComments}/>)
+  })
 
   return (
     <div className='posts'>
@@ -90,8 +108,14 @@ const HomeHandler = (props) => (
   </div>
 )
 
-function select(state) {
+function selectState(state) {
   return state
 }
 
-export default connect(select)(HomeHandler)
+function selectActions(dispatch) {
+  return {
+    showMoreComments: (postId) => dispatch(showMoreComments(postId))
+  }
+}
+
+export default connect(selectState, selectActions)(HomeHandler)
