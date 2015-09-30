@@ -1,8 +1,6 @@
 import fetch from 'isomorphic-fetch'
 import {getToken} from './auth'
-
 import {api as apiConfig} from '../config'
-
 
 const getRequestOptions = () => ({
   headers:{
@@ -22,9 +20,18 @@ export function getHome({offset}) {
 
 const MAX_LIKES = 4
 
-export function getPostDetails(postId) {
+export function getMoreComments({postId, likesExpanded}) {
+  const maxLikes = likesExpanded ? 'all' : `${MAX_LIKES}`
   return fetch(
-    `${apiConfig.host}/v1/posts/${postId}?maxComments=all&maxLikes=${MAX_LIKES}`, getRequestOptions())
+    `${apiConfig.host}/v1/posts/${postId}?maxComments=all&maxLikes=${maxLikes}`, getRequestOptions())
+}
+
+const MAX_COMMENTS = 2
+
+export function getMoreLikes({postId, commentsExpanded}) {
+  const maxComments = commentsExpanded ? 'all' : `${MAX_COMMENTS}`
+  return fetch(
+    `${apiConfig.host}/v1/posts/${postId}?maxComments=${maxComments}&maxLikes=all`, getRequestOptions())
 }
 
 export function signIn(credentials){

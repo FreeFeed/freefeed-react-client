@@ -4,11 +4,10 @@ import {Link} from 'react-router'
 import moment from 'moment'
 
 import {fromNowOrNow} from '../utils'
-import {showMoreComments} from '../redux/action-creators'
+import {showMoreComments, showMoreLikes} from '../redux/action-creators'
 import PostComments from './post-comments'
+import PostLikes from './post-likes'
 import Linkify from'react-linkify'
-
-const PostLikes = (props) => (<div/>)
 
 const FeedPost = (props) => {
   const user = props.users[props.data.createdBy]
@@ -51,7 +50,7 @@ const FeedPost = (props) => {
           <span className='post-controls'>
           </span>
 
-          <PostLikes/>
+          <PostLikes post={props.data} likes={props.likes} showMoreLikes={props.showMoreLikes} />
         </div>
 
         <PostComments post={props.data}
@@ -73,13 +72,17 @@ const HomeFeed = (props) => {
       return comment
     })
 
+    let likes = _.map(post.likes, userId => props.users[userId])
+
     return (<FeedPost data={post}
                       key={post.id}
                       users={props.users}
                       comments={comments}
+                      likes={likes}
                       current_user={props.user}
                       authenticated={props.authenticated}
-                      showMoreComments={props.showMoreComments}/>)
+                      showMoreComments={props.showMoreComments}
+                      showMoreLikes={props.showMoreLikes}/>)
   })
 
   return (
@@ -114,7 +117,8 @@ function selectState(state) {
 
 function selectActions(dispatch) {
   return {
-    showMoreComments: (postId) => dispatch(showMoreComments(postId))
+    showMoreComments: (postId, likesExpanded) => dispatch(showMoreComments(postId, likesExpanded)),
+    showMoreLikes: (postId, commentsExpanded) => dispatch(showMoreLikes(postId, commentsExpanded))
   }
 }
 

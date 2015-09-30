@@ -1,8 +1,9 @@
-import {response, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME, SHOW_MORE_COMMENTS, SIGN_IN_CHANGE} from './action-creators'
+import {response, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME,
+        SHOW_MORE_COMMENTS, SIGN_IN_CHANGE, SHOW_MORE_LIKES} from './action-creators'
 import _ from 'lodash'
 import {userParser} from '../utils'
 
-export function signInForm(state={username:'', password:'', error:''}, action){
+export function signInForm(state={username:'', password:'', error:''}, action) {
   switch(action.type) {
     case SIGN_IN_CHANGE: {
       return {
@@ -18,7 +19,7 @@ export function signInForm(state={username:'', password:'', error:''}, action){
   return state
 }
 
-export function gotResponse(state = false, action){
+export function gotResponse(state = false, action) {
   switch (action.type) {
     case response(WHO_AM_I): {
       return true
@@ -30,7 +31,7 @@ export function gotResponse(state = false, action){
   return state
 }
 
-export function serverError(state = false, action){
+export function serverError(state = false, action) {
   switch (action.type) {
     case SERVER_ERROR: {
       return true
@@ -39,7 +40,7 @@ export function serverError(state = false, action){
   return state
 }
 
-export function home(state = [], action){
+export function home(state = [], action) {
   switch (action.type) {
     case response(HOME): {
       return action.payload.posts.map(post => post.id)
@@ -48,24 +49,31 @@ export function home(state = [], action){
   return state
 }
 
-export function posts(state = {}, action){
+function updatePostData(state, action) {
+  const postId = action.payload.posts.id
+  let post = {}
+
+  post[postId] = action.payload.posts
+
+  return { ...state, ...post }
+}
+
+export function posts(state = {}, action) {
   switch (action.type) {
     case response(HOME): {
       return { ...state, ..._.indexBy(action.payload.posts, 'id') }
     }
     case response(SHOW_MORE_COMMENTS): {
-      const postId = action.payload.posts.id
-      let post = {}
-
-      post[postId] = action.payload.posts
-
-      return { ...state, ...post }
+      return updatePostData(state, action)
+    }
+    case response(SHOW_MORE_LIKES): {
+      return updatePostData(state, action)
     }
   }
   return state
 }
 
-export function comments(state = {}, action){
+export function comments(state = {}, action) {
   switch (action.type) {
     case response(HOME): {
       return { ...state, ..._.indexBy(action.payload.comments, 'id') }
@@ -77,22 +85,30 @@ export function comments(state = {}, action){
   return state
 }
 
-export function users(state = {}, action){
+function mergeWithNewUsers(state, action) {
+  return { ...state, ..._.indexBy(action.payload.users, 'id') }
+}
+
+export function users(state = {}, action) {
   switch (action.type) {
     case response(HOME): {
       const userData = _.indexBy(action.payload.users.map(userParser), 'id')
       return { ...state, ...userData }
     }
     case response(SHOW_MORE_COMMENTS): {
-      return { ...state, ..._.indexBy(action.payload.users, 'id') }
+      return mergeWithNewUsers(state, action)
     }
+    case response(SHOW_MORE_LIKES): {
+      return mergeWithNewUsers(state, action)
+    }
+
   }
   return state
 }
 
 import {getToken} from '../services/auth'
 
-export function authenticated(state = !!getToken(), action){
+export function authenticated(state = !!getToken(), action) {
    switch (action.type) {
     case response(WHO_AM_I): {
       return true
@@ -104,7 +120,7 @@ export function authenticated(state = !!getToken(), action){
   return state
 }
 
-export function user(state = {}, action){
+export function user(state = {}, action) {
   switch (action.type) {
     case response(WHO_AM_I): {
       return userParser(action.payload.users)

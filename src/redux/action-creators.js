@@ -43,11 +43,21 @@ export function home(offset = 0){
 
 export const SHOW_MORE_COMMENTS = 'SHOW_MORE_COMMENTS'
 
-export function showMoreComments(postId){
+export function showMoreComments(postId, likesExpanded){
   return {
     type: SHOW_MORE_COMMENTS,
-    apiRequest: Api.getPostDetails,
-    payload: postId
+    apiRequest: Api.getMoreComments,
+    payload: {postId, likesExpanded}
+  }
+}
+
+export const SHOW_MORE_LIKES = 'SHOW_MORE_LIKES'
+
+export function showMoreLikes(postId, commentsExpanded){
+  return {
+    type: SHOW_MORE_LIKES,
+    apiRequest: Api.getMoreLikes,
+    payload: {postId, commentsExpanded}
   }
 }
 
