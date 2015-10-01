@@ -13,8 +13,21 @@ const display = (mode, user) => {
   return `${user.screenName} (${user.username})`
 }
 
-export default (props) => (
-  <a href={`../${props.user.username}`} onClick={preventDefault()} className='user-name-info'>
-    {display(props.mode, props.user)}
-  </a>
-)
+class UserName extends React.Component {
+  constructor(props, context){
+    super(props, context)
+  }
+  render(){
+    return (
+      <a href={`../${this.props.user.username}`} onClick={preventDefault()} className='user-name-info'>
+        {display(this.context.settings.userNameMode, this.props.user)}
+      </a>
+    )
+  }
+}
+
+UserName.contextTypes = {
+  settings: React.PropTypes.object
+}
+
+export default UserName

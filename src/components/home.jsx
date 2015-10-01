@@ -41,18 +41,30 @@ const HomeFeed = (props) => {
   )
 }
 
-const HomeHandler = (props) => (
-  <div className='box'>
-    <div className='box-header-timeline'>
-      Home
-    </div>
-    <div className='box-body'>
-      {props.authenticated ? (<HomeFeed {...props}/>) : false}
-    </div>
-    <div className='box-footer'>
-    </div>
-  </div>
-)
+class HomeHandler extends React.Component {
+
+  getChildContext(){
+    return {
+      settings: this.props.user.settings
+    }
+  }
+
+  render(){
+    return (
+      <div className='box'>
+        <div className='box-header-timeline'>
+          Home
+        </div>
+        <div className='box-body'>
+          {this.props.authenticated ? (<HomeFeed {...this.props}/>) : false}
+        </div>
+        <div className='box-footer'>
+        </div>
+      </div>)
+  }
+}
+
+HomeHandler.childContextTypes = {settings: React.PropTypes.object}
 
 function selectState(state) {
   return state
