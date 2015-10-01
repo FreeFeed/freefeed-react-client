@@ -120,10 +120,13 @@ export function authenticated(state = !!getToken(), action) {
   return state
 }
 
-export function user(state = {}, action) {
+//we're faking for now
+import {user as defaultUserSettings} from '../config'
+
+export function user(state = {settings: defaultUserSettings}, action) {
   switch (action.type) {
     case response(WHO_AM_I): {
-      return userParser(action.payload.users)
+      return {...state, ...userParser(action.payload.users)}
     }
   }
   return state

@@ -1,8 +1,10 @@
 import React from 'react'
 
+import UserName from './user-name'
+
 const renderLike = (user, isLast=false, omittedLikes = 0, showMoreLikes = null) => (
   <li className="p-timeline-user-like" key={user.id}>
-    <a href={`/${user.username}`}>{user.screenName}</a>
+    <UserName user={user}/>
     {isLast ? (
       <span>
       { omittedLikes > 0 ? (

@@ -1,5 +1,6 @@
 import React from 'react'
 import Linkify from'react-linkify'
+import UserName from './user-name'
 
 export default (props) => (
   <div className='comment p-comment'>
@@ -12,7 +13,7 @@ export default (props) => (
       </span>
       &nbsp;-&nbsp;
       <span className='author'>
-        <a href={`/${props.user.username}`}>{props.user.screenName}</a>
+        <UserName user={props.user}/>
       </span>
 
       <span className='controls'>

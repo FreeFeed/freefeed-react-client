@@ -42,6 +42,6 @@ export function userParser(user) {
 export function preventDefault(realFunction) {
   return (event) => {
     event.preventDefault()
-    return realFunction()
+    return realFunction && realFunction()
   }
 }

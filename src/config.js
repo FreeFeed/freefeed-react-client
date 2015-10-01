@@ -6,6 +6,9 @@ const config = {
     cookieDomain: 'localhost',
     tokenPrefix: 'freefeed_'
   },
+  user:{
+    userNameMode: 'user'
+  },
 }
 
 export default config
