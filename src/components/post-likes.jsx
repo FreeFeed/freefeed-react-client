@@ -4,7 +4,7 @@ import UserName from './user-name'
 
 const renderLike = (user, isLast=false, omittedLikes = 0, showMoreLikes = null) => (
   <li className="p-timeline-user-like" key={user.id}>
-    <UserName mode='screen' user={user}/>
+    <UserName user={user}/>
     {isLast ? (
       <span>
       { omittedLikes > 0 ? (

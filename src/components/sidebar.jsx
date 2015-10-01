@@ -14,7 +14,7 @@ export default (props) => {
 
       <div className='logged-user'>
         <div className='author'>
-          <UserName mode='user' user={props.user} />
+          <UserName user={props.user} />
         </div>
         <div>
           <Link to='settings.index'>settings</Link>

@@ -30,7 +30,7 @@ export default (props) => {
       </div>
       <div className='post-body p-timeline-post'>
         <div className='title'>
-          <UserName className='post-author' mode='screen' user={user}/>
+          <UserName className='post-author' user={user}/>
         </div>
 
         <div className='body'>

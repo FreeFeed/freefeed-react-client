@@ -13,7 +13,7 @@ export default (props) => (
       </span>
       &nbsp;-&nbsp;
       <span className='author'>
-        <UserName mode='screen' user={props.user}/>
+        <UserName user={props.user}/>
       </span>
 
       <span className='controls'>
