@@ -56,7 +56,7 @@ class Layout extends React.Component {
 
        <div className='row'>
          <InternalLayout {...this.props}/>
-         <Sidebar {...this.props}/>
+         {this.props.authenticated ? <Sidebar {...this.props}/> : false}
        </div>
 
        <div className='row'>
