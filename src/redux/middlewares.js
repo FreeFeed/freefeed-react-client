@@ -1,4 +1,4 @@
-import {unauthenticated, serverError, request, response, fail, SIGN_IN, UNAUTHENTICATED, WHO_AM_I, whoAmI} from './action-creators'
+import {unauthenticated, serverError, request, response, fail, SIGN_IN, UNAUTHENTICATED, WHO_AM_I, whoAmI, requiresAuth} from './action-creators'
 
 //middleware for api requests
 export const apiMiddleware = store => next => async (action) => {
@@ -9,19 +9,19 @@ export const apiMiddleware = store => next => async (action) => {
 
   //dispatch request begin action
   //clean apiRequest to not get caught by this middleware
-  next({...action, type: request(action.type), apiRequest: null})
+  var t = store.dispatch({...action, type: request(action.type), apiRequest: null})
   try {
     const apiResponse = await action.apiRequest(action.payload)
     const obj = await apiResponse.json()
     if (apiResponse.status === 200) {
-      return next({payload: obj, type: response(action.type)})
+      return store.dispatch({payload: obj, type: response(action.type)})
     } else if (apiResponse.status === 401) {
-      return next(unauthenticated(obj))
+      return store.dispatch(unauthenticated(obj))
     } else {
-      return next({payload: obj, type: fail(action.type)})
+      return store.dispatch({payload: obj, type: fail(action.type)})
     }
   } catch (e) {
-    return next(serverError(e))
+    return store.dispatch(serverError(e))
   }
 }
 
@@ -30,21 +30,26 @@ import {userParser} from '../utils'
 import {pushState} from 'redux-router'
 
 export const authMiddleware = store => next => action => {
+
+  //stop action propagation if it should be authed and user is not authed
+  if (requiresAuth(action) && !store.getState().authenticated) {
+    return
+  }
+
   switch(action.type){
     case UNAUTHENTICATED: {
       setToken()
       persistUser()
-      next(pushState(null, '/login', {}))
-
-      break
+      next(action)
+      return store.dispatch(pushState(null, '/login', {}))
     }
     case response(SIGN_IN): {
       setToken(action.payload.authToken)
+      next(action)
+
       //to throw it through all middlewares — apiMiddleware included
       store.dispatch(whoAmI())
-      next(pushState(null, '/', {}))
-
-      break
+      return store.dispatch(pushState(null, '/', {}))
     }
     case response(WHO_AM_I): {
       persistUser(userParser(action.payload.users))

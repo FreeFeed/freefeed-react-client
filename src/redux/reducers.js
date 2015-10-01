@@ -1,5 +1,5 @@
 import {response, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME,
-        SHOW_MORE_COMMENTS, SIGN_IN_CHANGE, SHOW_MORE_LIKES} from './action-creators'
+        SHOW_MORE_COMMENTS, SIGN_IN, SIGN_IN_CHANGE, SHOW_MORE_LIKES} from './action-creators'
 import _ from 'lodash'
 import {userParser} from '../utils'
 
@@ -110,7 +110,7 @@ import {getToken, getPersistedUser} from '../services/auth'
 
 export function authenticated(state = !!getToken(), action) {
    switch (action.type) {
-    case response(WHO_AM_I): {
+    case response(SIGN_IN): {
       return true
     }
     case UNAUTHENTICATED: {

@@ -16,6 +16,10 @@ export function unauthenticated(payload) {
   }
 }
 
+export function requiresAuth(action) {
+  return action.requireAuth
+}
+
 export const request = (type) =>`${type}_REQUEST`
 export const response = (type) => `${type}_RESPONSE`
 export const fail = (type) => `${type}_FAIL`
@@ -28,6 +32,7 @@ export function whoAmI(){
   return {
     type: WHO_AM_I,
     apiRequest: Api.getWhoAmI,
+    requireAuth: true,
   }
 }
 
@@ -37,7 +42,8 @@ export function home(offset = 0){
   return {
     type: HOME,
     apiRequest: Api.getHome,
-    payload: {offset}
+    payload: {offset},
+    requireAuth: true,
   }
 }
 
@@ -47,7 +53,8 @@ export function showMoreComments(postId, likesExpanded){
   return {
     type: SHOW_MORE_COMMENTS,
     apiRequest: Api.getMoreComments,
-    payload: {postId, likesExpanded}
+    payload: {postId, likesExpanded},
+    requireAuth: true,
   }
 }
 
@@ -57,7 +64,8 @@ export function showMoreLikes(postId, commentsExpanded){
   return {
     type: SHOW_MORE_LIKES,
     apiRequest: Api.getMoreLikes,
-    payload: {postId, commentsExpanded}
+    payload: {postId, commentsExpanded},
+    requireAuth: true,
   }
 }
 
