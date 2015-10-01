@@ -13,7 +13,7 @@ export function signInForm(state={username:'', password:'', error:''}, action) {
       }
     }
     case UNAUTHENTICATED: {
-      return {...state, error: action.payload.err}
+      return {...state, error: (action.payload || {}).err}
     }
   }
   return state

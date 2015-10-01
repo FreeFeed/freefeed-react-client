@@ -29,14 +29,20 @@ import {setToken} from '../services/auth'
 import {pushState} from 'redux-router'
 
 export const authMiddleware = store => next => action => {
-  if ([response(SIGN_IN), UNAUTHENTICATED].indexOf(action.type) !== -1){
-    setToken(action.payload.authToken)
-    if (!action.payload.authToken) {
+  switch(action.type){
+    case UNAUTHENTICATED: {
+      setToken()
       next(pushState(null, '/login', {}))
-    } else {
+
+      break
+    }
+    case response(SIGN_IN): {
+      setToken(action.payload.authToken)
       //to throw it through all middlewares — apiMiddleware included
       store.dispatch(whoAmI())
       next(pushState(null, '/', {}))
+
+      break
     }
   }
 
