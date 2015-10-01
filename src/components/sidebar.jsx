@@ -1,5 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router'
+
+import UserName from './user-name'
 import {preventDefault} from '../utils'
 
 export default (props) => {
@@ -12,7 +14,7 @@ export default (props) => {
 
       <div className='logged-user'>
         <div className='author'>
-          <Link to='timeline.index' params={{username: props.user.username}}>{props.user.screenName}</Link>
+          <UserName mode='user' user={props.user} />
         </div>
         <div>
           <Link to='settings.index'>settings</Link>

@@ -1,78 +1,21 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router'
-import moment from 'moment'
 
-import {fromNowOrNow} from '../utils'
 import {showMoreComments, showMoreLikes} from '../redux/action-creators'
-import PostComments from './post-comments'
-import PostLikes from './post-likes'
-import Linkify from'react-linkify'
-
-const FeedPost = (props) => {
-  const user = props.users[props.data.createdBy]
-  const screenName = props.current_user.id === user.id ? 'You' : user.screenName
-
-  const isDirect = false
-
-  const createdAt = new Date(props.data.createdAt - 0)
-  const createdAtISO = moment(createdAt).format()
-  const createdAgo = fromNowOrNow(createdAt)
-
-  const firstFeedName = user.username  // FIXME
-
-  return (
-    <div className='timeline-post-container'>
-      <div className='avatar'>
-        <Link to='timeline.index' params={{username: user.username}}>
-          <img src={ user.profilePictureMediumUrl } />
-        </Link>
-      </div>
-      <div className='post-body p-timeline-post'>
-        <div className='title'>
-          <Link to='timeline.index' params={{username: user.username}} className='post-author'>{screenName}</Link>
-        </div>
-
-        <div className='body'>
-          <div className='text'>
-            <Linkify>{props.data.body}</Linkify>
-          </div>
-        </div>
-
-        <div className='info p-timeline-post-info'>
-          {isDirect ? (<span>»</span>) : false}
-          <span className='post-date'>
-            <Link to='post' params={{username: firstFeedName, postId: props.data.id}} className='datetime'>
-              <time dateTime={createdAtISO} title={createdAtISO}>{createdAgo}</time>
-            </Link>
-          </span>
-
-          <span className='post-controls'>
-          </span>
-
-          <PostLikes post={props.data} likes={props.likes} showMoreLikes={props.showMoreLikes} />
-        </div>
-
-        <PostComments post={props.data}
-                      comments={props.comments}
-                      showMoreComments={props.showMoreComments} />
-      </div>
-    </div>
-  )
-}
+import FeedPost from './feed-post'
 
 
 const HomeFeed = (props) => {
   const post_tags = props.home
   .map(id => props.posts[id])
   .map(post => {
-    let comments = _.map(post.comments, commentId => {
-      let comment = props.comments[commentId]
+    const comments = _.map(post.comments, commentId => {
+      const comment = props.comments[commentId]
       comment.user = props.users[comment.createdBy]
       return comment
     })
 
-    let likes = _.map(post.likes, userId => props.users[userId])
+    const likes = _.map(post.likes, userId => props.users[userId])
 
     return (<FeedPost data={post}
                       key={post.id}
