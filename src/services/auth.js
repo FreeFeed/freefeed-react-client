@@ -12,3 +12,14 @@ export function getToken(){
 export function setToken(token){
   return setCookie(NAME, token, EXP_DAYS, PATH)
 }
+
+const USER_KEY = 'USER_KEY'
+
+export function getPersistedUser(){
+  return JSON.parse(window.localStorage.getItem(USER_KEY))
+}
+
+export function persistUser(user){
+  return user ? window.localStorage.setItem(USER_KEY, JSON.stringify(user)) :
+  window.localStorage.removeItem(USER_KEY)
+}

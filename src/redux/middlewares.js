@@ -1,4 +1,4 @@
-import {unauthenticated, serverError, request, response, fail, SIGN_IN, UNAUTHENTICATED, whoAmI} from './action-creators'
+import {unauthenticated, serverError, request, response, fail, SIGN_IN, UNAUTHENTICATED, WHO_AM_I, whoAmI} from './action-creators'
 
 //middleware for api requests
 export const apiMiddleware = store => next => async (action) => {
@@ -25,13 +25,15 @@ export const apiMiddleware = store => next => async (action) => {
   }
 }
 
-import {setToken} from '../services/auth'
+import {setToken, persistUser} from '../services/auth'
+import {userParser} from '../utils'
 import {pushState} from 'redux-router'
 
 export const authMiddleware = store => next => action => {
   switch(action.type){
     case UNAUTHENTICATED: {
       setToken()
+      persistUser()
       next(pushState(null, '/login', {}))
 
       break
@@ -42,6 +44,10 @@ export const authMiddleware = store => next => action => {
       store.dispatch(whoAmI())
       next(pushState(null, '/', {}))
 
+      break
+    }
+    case response(WHO_AM_I): {
+      persistUser(userParser(action.payload.users))
       break
     }
   }

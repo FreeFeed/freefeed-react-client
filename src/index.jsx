@@ -11,7 +11,7 @@ import {Provider} from 'react-redux'
 import {ReduxRouter} from 'redux-router'
 
 import configureStore from './redux/configure-store'
-import {whoAmI, home} from './redux/action-creators'
+import {whoAmI, home, unauthenticated} from './redux/action-creators'
 
 import Layout from './components/layout'
 import Home from './components/home'
@@ -24,6 +24,8 @@ const store = configureStore()
 //request main info for user
 if (store.getState().authenticated){
   store.dispatch(whoAmI())
+} else {
+  store.dispatch(unauthenticated())
 }
 
 ReactDOM.render(

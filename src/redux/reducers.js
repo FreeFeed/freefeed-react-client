@@ -106,7 +106,7 @@ export function users(state = {}, action) {
   return state
 }
 
-import {getToken} from '../services/auth'
+import {getToken, getPersistedUser} from '../services/auth'
 
 export function authenticated(state = !!getToken(), action) {
    switch (action.type) {
@@ -123,7 +123,7 @@ export function authenticated(state = !!getToken(), action) {
 //we're faking for now
 import {user as defaultUserSettings} from '../config'
 
-export function user(state = {settings: defaultUserSettings}, action) {
+export function user(state = {settings: defaultUserSettings, ...getPersistedUser()}, action) {
   switch (action.type) {
     case response(WHO_AM_I): {
       return {...state, ...userParser(action.payload.users)}
