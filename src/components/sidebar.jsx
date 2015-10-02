@@ -4,8 +4,7 @@ import {Link} from 'react-router'
 import UserName from './user-name'
 import {preventDefault} from '../utils'
 
-export default (props) => {
-  return !props.authenticated ? (<noscript/>) : (
+export default (props) => (
   <div className='col-md-3 sidebar'>
     <div className='logged'>
       <div className='logged-avatar'>
@@ -131,4 +130,4 @@ export default (props) => {
       </div>
     </div>
   </div>
-)}
+)

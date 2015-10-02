@@ -5,7 +5,8 @@ import {reduxReactRouter, routerStateReducer} from 'redux-router'
 import {apiMiddleware, authMiddleware} from './middlewares'
 import * as reducers from './reducers'
 
-let middleware = [ apiMiddleware, authMiddleware ]
+//order matters — we need to stop unauthed async fetching before request, see authMiddleware
+let middleware = [ authMiddleware, apiMiddleware ]
 
 //tells webpack to include logging middleware in dev mode
 if (process.env.NODE_ENV != 'production') {

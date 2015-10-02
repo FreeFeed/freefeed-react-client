@@ -1,5 +1,5 @@
 import {response, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME,
-        SHOW_MORE_COMMENTS, SIGN_IN_CHANGE, SHOW_MORE_LIKES} from './action-creators'
+        SHOW_MORE_COMMENTS, SIGN_IN, SIGN_IN_CHANGE, SHOW_MORE_LIKES} from './action-creators'
 import _ from 'lodash'
 import {userParser} from '../utils'
 
@@ -13,7 +13,7 @@ export function signInForm(state={username:'', password:'', error:''}, action) {
       }
     }
     case UNAUTHENTICATED: {
-      return {...state, error: action.payload.err}
+      return {...state, error: (action.payload || {}).err}
     }
   }
   return state
@@ -106,11 +106,11 @@ export function users(state = {}, action) {
   return state
 }
 
-import {getToken} from '../services/auth'
+import {getToken, getPersistedUser} from '../services/auth'
 
 export function authenticated(state = !!getToken(), action) {
    switch (action.type) {
-    case response(WHO_AM_I): {
+    case response(SIGN_IN): {
       return true
     }
     case UNAUTHENTICATED: {
@@ -123,7 +123,7 @@ export function authenticated(state = !!getToken(), action) {
 //we're faking for now
 import {user as defaultUserSettings} from '../config'
 
-export function user(state = {settings: defaultUserSettings}, action) {
+export function user(state = {settings: defaultUserSettings, ...getPersistedUser()}, action) {
   switch (action.type) {
     case response(WHO_AM_I): {
       return {...state, ...userParser(action.payload.users)}

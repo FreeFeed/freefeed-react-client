@@ -10,6 +10,14 @@ export function getCookie(name){
   return token.trim()
 }
 
+export function setCookie(name, value = '', expireDays, path) {
+  const expiresDate = Date.now() + expireDays * 24 * 60 * 60 * 1000
+  const expiresTime = new Date(expiresDate).toUTCString()
+  //http://stackoverflow.com/questions/1134290/cookies-on-localhost-with-explicit-domain
+  const cookie = `${name}=${value}; expires=${expiresTime}; path=${path}`
+  return document.cookie = cookie
+}
+
 import moment from 'moment'
 
 export function fromNowOrNow(date) {
@@ -22,20 +30,16 @@ export function fromNowOrNow(date) {
   return now.fromNow()
 }
 
-import _ from 'lodash'
-
 import defaultUserpic48Path from 'assets/images/default-userpic-48.png'
 import defaultUserpic75Path from 'assets/images/default-userpic-75.png'
 
-export function userParser(user) {
-  if (_.isEmpty(user.profilePictureMediumUrl)) {
-    user.profilePictureMediumUrl = defaultUserpic48Path
-  }
-  if (_.isEmpty(user.profilePictureLargeUrl)) {
-    user.profilePictureLargeUrl = defaultUserpic75Path
-  }
+const userDefaults = {
+  profilePictureMediumUrl: defaultUserpic48Path,
+  profilePictureLargeUrl: defaultUserpic75Path,
+}
 
-  return user
+export function userParser(user) {
+  return {...userDefaults, ...user}
 }
 
 

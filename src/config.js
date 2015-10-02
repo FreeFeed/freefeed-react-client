@@ -4,7 +4,8 @@ const config = {
   },
   auth: {
     cookieDomain: 'localhost',
-    tokenPrefix: 'freefeed_'
+    tokenPrefix: 'freefeed_',
+    userStorageKey: 'USER_KEY',
   },
   user:{
     userNameMode: 'user'
