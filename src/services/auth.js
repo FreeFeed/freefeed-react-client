@@ -13,13 +13,11 @@ export function setToken(token){
   return setCookie(NAME, token, EXP_DAYS, PATH)
 }
 
-const USER_KEY = 'USER_KEY'
-
 export function getPersistedUser(){
-  return JSON.parse(window.localStorage.getItem(USER_KEY))
+  return JSON.parse(window.localStorage.getItem(authConfig.userStorageKey))
 }
 
 export function persistUser(user){
-  return user ? window.localStorage.setItem(USER_KEY, JSON.stringify(user)) :
-  window.localStorage.removeItem(USER_KEY)
+  return user ? window.localStorage.setItem(authConfig.userStorageKey, JSON.stringify(user)) :
+  window.localStorage.removeItem(authConfig.userStorageKey)
 }
