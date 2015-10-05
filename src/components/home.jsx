@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import {showMoreComments, showMoreLikes,
-        toggleEditingPost, cancelEditingPost, saveEditingPost } from '../redux/action-creators'
+        toggleEditingPost, cancelEditingPost, saveEditingPost, deletePost } from '../redux/action-creators'
 import FeedPost from './feed-post'
 
 
@@ -23,7 +23,8 @@ const HomeFeed = (props) => {
               showMoreLikes={props.showMoreLikes}
               toggleEditingPost={props.toggleEditingPost}
               cancelEditingPost={props.cancelEditingPost}
-              saveEditingPost={saveEditingPost} />) 
+              saveEditingPost={saveEditingPost}
+              deletePost={props.deletePost} />) 
   })
 
   return (
@@ -106,7 +107,8 @@ function selectActions(dispatch) {
     showMoreLikes: (postId) => dispatch(showMoreLikes(postId)),
     toggleEditingPost: (postId, newValue) => dispatch(toggleEditingPost(postId, newValue)),
     cancelEditingPost: (postId, newValue) => dispatch(cancelEditingPost(postId, newValue)),
-    saveEditingPost: (postId, newPost) => dispatch(saveEditingPost(postId, newPost))
+    saveEditingPost: (postId, newPost) => dispatch(saveEditingPost(postId, newPost)),
+    deletePost: (postId) => dispatch(deletePost(postId))
   }
 }
 

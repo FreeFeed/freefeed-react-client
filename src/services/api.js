@@ -43,6 +43,16 @@ export function updatePost({postId, newPost}) {
   })
 }
 
+export function deletePost({postId}) {
+  return fetch(`${apiConfig.host}/v1/posts/${postId}`, {
+    'method': 'DELETE',
+    'headers': {
+      'Accept': 'application/json',
+      'X-Authentication-Token': getToken()
+    }
+  })
+}
+
 export function signIn(credentials){
   return fetch(`${apiConfig.host}/v1/session`, {
     headers:{

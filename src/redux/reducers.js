@@ -1,7 +1,7 @@
 import {response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME,
         SHOW_MORE_COMMENTS, SIGN_IN, SIGN_IN_CHANGE,
         SHOW_MORE_LIKES_SYNC, SHOW_MORE_LIKES_ASYNC,
-        TOGGLE_EDITING_POST, CANCEL_EDITING_POST, SAVE_EDITING_POST} from './action-creators'
+        TOGGLE_EDITING_POST, CANCEL_EDITING_POST, SAVE_EDITING_POST, DELETE_POST} from './action-creators'
 import _ from 'lodash'
 import {userParser} from '../utils'
 
@@ -47,6 +47,10 @@ export function feedViewState(state = { feed: [] }, action) {
     case response(HOME): {
       const feed = action.payload.posts.map(post => post.id)
       return { ...state, feed }
+    }
+    case response(DELETE_POST): {
+      const postId = action.request.postId
+      return { feed: _.without(state.feed, postId) }
     }
   }
   return state
@@ -120,9 +124,15 @@ export function postsViewState(state = {}, action) {
 
       return { ...state, [id]: { ...state[id], isEditing, isError, errorString} }
     }
+    case fail(DELETE_POST): {
+      const id = action.request.postId
+
+      const isError = true
+      const errorString = 'Something went wrong while deleting the post...'
+
+      return { ...state, [id]: { ...state[id], isError, errorString} }
+    }
   }
-
-
 
   return state
 }
