@@ -92,7 +92,9 @@ function selectState(state) {
       usersLikedPost = usersLikedPost.slice(0, MAX_LIKES)
     }
 
-    return { ...post, comments, usersLikedPost, createdBy, ...postViewState }
+    const isEditable = post.createdBy == user.id
+
+    return { ...post, comments, usersLikedPost, createdBy, ...postViewState, isEditable }
   })
 
   return { feed, user, posts, timelines }

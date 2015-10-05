@@ -71,14 +71,28 @@ export default (props) => {
           </span>
 
           <span className='post-controls'>
-            <span>&nbsp;-&nbsp;</span>
-            <a className='p-timeline-post-comment-action' onClick={preventDefault(()=>toggleEditingPost())}>
-              Update
-            </a>
+            {props.isEditable ? (
+              <span>
+                <span>&nbsp;-&nbsp;</span>
+                <a className='p-timeline-post-comment-action' onClick={preventDefault(()=>toggleEditingPost())}>
+                  Update
+                </a>
+                <span>&nbsp;-&nbsp;</span>
+                <a className='p-timeline-post-comment-action' onClick={preventDefault(()=>toggleEditingPost())}>
+                  Delete
+                </a>
+              </span>
+            ) : false}
           </span>
 
           <PostLikes post={props} likes={props.usersLikedPost} showMoreLikes={props.showMoreLikes} />
         </div>
+        
+        {props.isError ? (
+          <div className='post-error'>
+            {props.errorString}
+          </div>
+        ) : false}
 
         <PostComments post={props}
                       comments={props.comments}

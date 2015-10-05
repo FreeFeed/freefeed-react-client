@@ -20,7 +20,7 @@ export const apiMiddleware = store => next => async (action) => {
     } else if (apiResponse.status === 401) {
       return store.dispatch(unauthenticated(obj))
     } else {
-      return store.dispatch({payload: obj, type: fail(action.type)})
+      return store.dispatch({payload: obj, type: fail(action.type), request: action.payload})
     }
   } catch (e) {
     return store.dispatch(serverError(e))

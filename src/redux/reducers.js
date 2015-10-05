@@ -1,4 +1,4 @@
-import {response, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME,
+import {response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME,
         SHOW_MORE_COMMENTS, SIGN_IN, SIGN_IN_CHANGE,
         SHOW_MORE_LIKES_SYNC, SHOW_MORE_LIKES_ASYNC,
         TOGGLE_EDITING_POST, CANCEL_EDITING_POST, SAVE_EDITING_POST} from './action-creators'
@@ -52,6 +52,11 @@ export function feedViewState(state = { feed: [] }, action) {
   return state
 }
 
+const NO_ERROR_IN_POST = {
+  isError: false,
+  errorString: ''
+}
+
 export function postsViewState(state = {}, action) {
   switch (action.type) {
     case response(HOME): {
@@ -63,7 +68,7 @@ export function postsViewState(state = {}, action) {
         const isEditing = false
         const editingText = post.body
 
-        return { omittedComments, omittedLikes, id, isEditing, editingText }
+        return { omittedComments, omittedLikes, id, isEditing, editingText, ...NO_ERROR_IN_POST }
       })
       return { ...state, ..._.indexBy(postsViewState, 'id') }
     }
@@ -71,42 +76,54 @@ export function postsViewState(state = {}, action) {
       const id = action.payload.posts.id
       const omittedLikes = 0
      
-      return { ...state, [id]: { ...state[id], omittedLikes} }
+      return { ...state, [id]: { ...state[id], omittedLikes, ...NO_ERROR_IN_POST } }
     }
     case response(SHOW_MORE_COMMENTS): {
       const id = action.payload.posts.id
       const omittedComments = 0
      
-      return { ...state, [id]: { ...state[id], omittedComments} }
+      return { ...state, [id]: { ...state[id], omittedComments, ...NO_ERROR_IN_POST } }
     }
     case SHOW_MORE_LIKES_SYNC: {
       const id = action.payload.postId
       const omittedLikes = 0
 
-      return { ...state, [id]: { ...state[id], omittedLikes} }
+      return { ...state, [id]: { ...state[id], omittedLikes, ...NO_ERROR_IN_POST } }
     }
     case TOGGLE_EDITING_POST: {
       const id = action.payload.postId
       const editingText = action.payload.newValue
       const isEditing = !state[id].isEditing
 
-      return { ...state, [id]: { ...state[id], isEditing, editingText} }
+      return { ...state, [id]: { ...state[id], isEditing, editingText, ...NO_ERROR_IN_POST } }
     }
     case CANCEL_EDITING_POST: {
       const id = action.payload.postId
       const editingText = action.payload.newValue
       const isEditing = false
 
-      return { ...state, [id]: { ...state[id], isEditing, editingText} }
+      return { ...state, [id]: { ...state[id], isEditing, editingText, ...NO_ERROR_IN_POST } }
     }
     case response(SAVE_EDITING_POST): {
       const id = action.payload.posts.id
       const editingText = action.payload.posts.body
       const isEditing = false
 
-      return { ...state, [id]: { ...state[id], isEditing, editingText} }
+      return { ...state, [id]: { ...state[id], isEditing, editingText, ...NO_ERROR_IN_POST } }
+    }
+    case fail(SAVE_EDITING_POST): {
+      const id = action.request.postId
+      const isEditing = false
+
+      const isError = true
+      const errorString = 'Something went wrong while editing the post...'
+
+      return { ...state, [id]: { ...state[id], isEditing, isError, errorString} }
     }
   }
+
+
+
   return state
 }
 
