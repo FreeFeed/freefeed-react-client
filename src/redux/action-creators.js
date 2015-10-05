@@ -49,23 +49,41 @@ export function home(offset = 0){
 
 export const SHOW_MORE_COMMENTS = 'SHOW_MORE_COMMENTS'
 
-export function showMoreComments(postId, likesExpanded){
+export function showMoreComments(postId){
   return {
     type: SHOW_MORE_COMMENTS,
-    apiRequest: Api.getMoreComments,
-    payload: {postId, likesExpanded},
+    apiRequest: Api.getPostWithAllCommentsAndLikes,
+    payload: {postId},
     requireAuth: true,
   }
 }
 
 export const SHOW_MORE_LIKES = 'SHOW_MORE_LIKES'
 
-export function showMoreLikes(postId, commentsExpanded){
+export function showMoreLikes(postId){
   return {
     type: SHOW_MORE_LIKES,
-    apiRequest: Api.getMoreLikes,
-    payload: {postId, commentsExpanded},
+    payload: {postId},
+  }
+}
+
+export const SHOW_MORE_LIKES_ASYNC = 'SHOW_MORE_LIKES_ASYNC'
+
+export function showMoreLikesAsync(postId){
+  return {
+    type: SHOW_MORE_LIKES_ASYNC,
+    apiRequest: Api.getLikesOnly,
+    payload: {postId},
     requireAuth: true,
+  }
+}
+
+export const SHOW_MORE_LIKES_SYNC = 'SHOW_MORE_LIKES_SYNC'
+
+export function showMoreLikesSync(postId){
+  return {
+    type: SHOW_MORE_LIKES_SYNC,
+    payload: {postId},
   }
 }
 

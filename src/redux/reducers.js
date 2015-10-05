@@ -1,5 +1,6 @@
 import {response, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME,
-        SHOW_MORE_COMMENTS, SIGN_IN, SIGN_IN_CHANGE, SHOW_MORE_LIKES} from './action-creators'
+        SHOW_MORE_COMMENTS, SIGN_IN, SIGN_IN_CHANGE,
+        SHOW_MORE_LIKES_SYNC, SHOW_MORE_LIKES_ASYNC} from './action-creators'
 import _ from 'lodash'
 import {userParser} from '../utils'
 
@@ -40,10 +41,46 @@ export function serverError(state = false, action) {
   return state
 }
 
-export function home(state = [], action) {
+export function feedViewState(state = { feed: [] }, action) {
   switch (action.type) {
     case response(HOME): {
-      return action.payload.posts.map(post => post.id)
+      const feed = action.payload.posts.map(post => post.id)
+      return { ...state, feed }
+    }
+  }
+  return state
+}
+
+export function postsViewState(state = {}, action) {
+  switch (action.type) {
+    case response(HOME): {
+      const postsViewState = action.payload.posts.map(post => {
+        const id = post.id
+
+        const omittedComments = post.omittedComments
+        const omittedLikes = post.omittedLikes
+
+        return { omittedComments, omittedLikes, id }
+      })
+      return { ...state, ..._.indexBy(postsViewState, 'id') }
+    }
+    case response(SHOW_MORE_LIKES_ASYNC): {
+      const id = action.payload.posts.id
+      const omittedLikes = 0
+     
+      return { ...state, [id]: { ...state[id], omittedLikes} }
+    }
+    case response(SHOW_MORE_COMMENTS): {
+      const id = action.payload.posts.id
+      const omittedComments = 0
+     
+      return { ...state, [id]: { ...state[id], omittedComments} }
+    }
+    case SHOW_MORE_LIKES_SYNC: {
+      const id = action.payload.postId
+      const omittedLikes = 0
+
+      return { ...state, [id]: { ...state[id], omittedLikes} }
     }
   }
   return state
@@ -51,11 +88,7 @@ export function home(state = [], action) {
 
 function updatePostData(state, action) {
   const postId = action.payload.posts.id
-  let post = {}
-
-  post[postId] = action.payload.posts
-
-  return { ...state, ...post }
+  return { ...state, [postId]: action.payload.posts }
 }
 
 export function posts(state = {}, action) {
@@ -66,20 +99,28 @@ export function posts(state = {}, action) {
     case response(SHOW_MORE_COMMENTS): {
       return updatePostData(state, action)
     }
-    case response(SHOW_MORE_LIKES): {
+    case response(SHOW_MORE_LIKES_ASYNC): {
       return updatePostData(state, action)
     }
   }
+
   return state
+}
+
+function updateCommentData(state, action) {
+  return { ...state, ..._.indexBy(action.payload.comments, 'id') }
 }
 
 export function comments(state = {}, action) {
   switch (action.type) {
     case response(HOME): {
-      return { ...state, ..._.indexBy(action.payload.comments, 'id') }
+      return updateCommentData(state, action)
     }
     case response(SHOW_MORE_COMMENTS): {
-      return { ...state, ..._.indexBy(action.payload.comments, 'id') }
+      return updateCommentData(state, action)
+    }
+    case response(SHOW_MORE_LIKES_ASYNC): {
+      return updateCommentData(state, action)
     }
   }
   return state
@@ -98,7 +139,7 @@ export function users(state = {}, action) {
     case response(SHOW_MORE_COMMENTS): {
       return mergeWithNewUsers(state, action)
     }
-    case response(SHOW_MORE_LIKES): {
+    case response(SHOW_MORE_LIKES_ASYNC): {
       return mergeWithNewUsers(state, action)
     }
 

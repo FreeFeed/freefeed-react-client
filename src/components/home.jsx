@@ -1,39 +1,24 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {showMoreComments, showMoreLikes} from '../redux/action-creators'
+import {showMoreComments, showMoreLikes } from '../redux/action-creators'
 import FeedPost from './feed-post'
 
 
 const HomeFeed = (props) => {
-  const post_tags = props.home
-  .map(id => props.posts[id])
-  .map(post => {
-    const comments = _.map(post.comments, commentId => {
-      const comment = props.comments[commentId]
-      comment.user = props.users[comment.createdBy]
-      return comment
-    })
-
-    const likes = _.map(post.likes, userId => props.users[userId])
-
-    return (<FeedPost data={post}
-                      key={post.id}
-                      users={props.users}
-                      comments={comments}
-                      likes={likes}
-                      current_user={props.user}
-                      authenticated={props.authenticated}
-                      showMoreComments={props.showMoreComments}
-                      showMoreLikes={props.showMoreLikes}/>)
-  })
+  const feed_posts = props.feed.map(post => (
+    <FeedPost {...post} 
+              key={post.id}
+              showMoreComments={props.showMoreComments}
+              showMoreLikes={props.showMoreLikes} />
+  ))
 
   return (
     <div className='posts'>
       <p>submit-post</p>
       <p>pagination (if not first page)</p>
       <div className='posts'>
-        {post_tags}
+        {feed_posts}
       </div>
       <p>hidden-posts</p>
       <p>pagination</p>
@@ -56,7 +41,7 @@ class HomeHandler extends React.Component {
           Home
         </div>
         <div className='box-body'>
-          {this.props.authenticated ? (<HomeFeed {...this.props}/>) : false}
+          <HomeFeed {...this.props}/>
         </div>
         <div className='box-footer'>
         </div>
@@ -66,14 +51,42 @@ class HomeHandler extends React.Component {
 
 HomeHandler.childContextTypes = {settings: React.PropTypes.object}
 
+const MAX_LIKES = 4
+
 function selectState(state) {
-  return state
+  const user = state.user
+  const feed = state.feedViewState.feed
+  .map(id => state.posts[id])
+  .map(post => {
+    let comments = _.map(post.comments, commentId => {
+      const comment = state.comments[commentId]
+      const user = state.users[comment.createdBy]
+      return { ...comment, user } 
+    })
+
+    let usersLikedPost = _.map(post.likes, userId => state.users[userId])
+
+    const createdBy = state.users[post.createdBy]
+    const postViewState = state.postsViewState[post.id]
+
+    if (postViewState.omittedComments !== 0) {
+      comments = [ comments[0], comments[comments.length - 1] ]
+    }
+
+    if (postViewState.omittedLikes !== 0) {
+      usersLikedPost = usersLikedPost.slice(0, MAX_LIKES)
+    }
+
+    return { ...post, comments, usersLikedPost, createdBy, ...postViewState }
+  })
+
+  return { feed, user }
 }
 
 function selectActions(dispatch) {
   return {
-    showMoreComments: (postId, likesExpanded) => dispatch(showMoreComments(postId, likesExpanded)),
-    showMoreLikes: (postId, commentsExpanded) => dispatch(showMoreLikes(postId, commentsExpanded))
+    showMoreComments: (postId) => dispatch(showMoreComments(postId)),
+    showMoreLikes: (postId) => dispatch(showMoreLikes(postId))
   }
 }
 

@@ -10,39 +10,34 @@ import UserName from './user-name'
 import FeedPost from './feed-post'
 
 export default (props) => {
-  const user = props.users[props.data.createdBy]
-  const screenName = props.current_user.id === user.id ? 'You' : user.screenName
-
   const isDirect = false
 
-  const createdAt = new Date(props.data.createdAt - 0)
+  const createdAt = new Date(props.createdAt - 0)
   const createdAtISO = moment(createdAt).format()
   const createdAgo = fromNowOrNow(createdAt)
-
-  const firstFeedName = user.username  // FIXME
 
   return (
     <div className='timeline-post-container'>
       <div className='avatar'>
-        <Link to='timeline.index' params={{username: user.username}}>
-          <img src={ user.profilePictureMediumUrl } />
+        <Link to='timeline.index' params={{username: props.createdBy.username}}>
+          <img src={ props.createdBy.profilePictureMediumUrl } />
         </Link>
       </div>
       <div className='post-body p-timeline-post'>
         <div className='title'>
-          <UserName className='post-author' user={user}/>
+          <UserName className='post-author' user={props.createdBy}/>
         </div>
 
         <div className='body'>
           <div className='text'>
-            <Linkify>{props.data.body}</Linkify>
+            <Linkify>{props.body}</Linkify>
           </div>
         </div>
 
         <div className='info p-timeline-post-info'>
           {isDirect ? (<span>»</span>) : false}
           <span className='post-date'>
-            <Link to='post' params={{username: firstFeedName, postId: props.data.id}} className='datetime'>
+            <Link to='post' params={{username: props.createdBy.username, postId: props.id}} className='datetime'>
               <time dateTime={createdAtISO} title={createdAtISO}>{createdAgo}</time>
             </Link>
           </span>
@@ -50,10 +45,10 @@ export default (props) => {
           <span className='post-controls'>
           </span>
 
-          <PostLikes post={props.data} likes={props.likes} showMoreLikes={props.showMoreLikes} />
+          <PostLikes post={props} likes={props.usersLikedPost} showMoreLikes={props.showMoreLikes} />
         </div>
 
-        <PostComments post={props.data}
+        <PostComments post={props}
                       comments={props.comments}
                       showMoreComments={props.showMoreComments} />
       </div>

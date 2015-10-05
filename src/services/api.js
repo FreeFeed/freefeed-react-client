@@ -18,20 +18,17 @@ export function getHome({offset}) {
     `${apiConfig.host}/v1/timelines/home?offset=${offset}`, getRequestOptions())
 }
 
-const MAX_LIKES = 4
-
-export function getMoreComments({postId, likesExpanded}) {
-  const maxLikes = likesExpanded ? 'all' : `${MAX_LIKES}`
-  return fetch(
-    `${apiConfig.host}/v1/posts/${postId}?maxComments=all&maxLikes=${maxLikes}`, getRequestOptions())
-}
-
 const MAX_COMMENTS = 2
 
-export function getMoreLikes({postId, commentsExpanded}) {
+export function getLikesOnly({postId, commentsExpanded}) {
   const maxComments = commentsExpanded ? 'all' : `${MAX_COMMENTS}`
   return fetch(
     `${apiConfig.host}/v1/posts/${postId}?maxComments=${maxComments}&maxLikes=all`, getRequestOptions())
+}
+
+export function getPostWithAllCommentsAndLikes({postId}) {
+  return fetch(
+    `${apiConfig.host}/v1/posts/${postId}?maxComments=all&maxLikes=all`, getRequestOptions())
 }
 
 export function signIn(credentials){
