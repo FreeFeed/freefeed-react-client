@@ -1,17 +1,30 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {showMoreComments, showMoreLikes } from '../redux/action-creators'
+import {showMoreComments, showMoreLikes,
+        toggleEditingPost, cancelEditingPost, saveEditingPost } from '../redux/action-creators'
 import FeedPost from './feed-post'
 
 
 const HomeFeed = (props) => {
-  const feed_posts = props.feed.map(post => (
-    <FeedPost {...post} 
+  const feed_posts = props.feed.map(post => {
+    const saveEditingPost = (postId, newValue) => {
+      let newPost =  {...props.posts[postId]}
+      newPost.body = newValue
+      newPost.timeline = props.timelines.id
+      delete newPost['id']
+
+      props.saveEditingPost(postId, newPost)
+    }
+
+    return (<FeedPost {...post} 
               key={post.id}
               showMoreComments={props.showMoreComments}
-              showMoreLikes={props.showMoreLikes} />
-  ))
+              showMoreLikes={props.showMoreLikes}
+              toggleEditingPost={props.toggleEditingPost}
+              cancelEditingPost={props.cancelEditingPost}
+              saveEditingPost={saveEditingPost} />) 
+  })
 
   return (
     <div className='posts'>
@@ -55,6 +68,8 @@ const MAX_LIKES = 4
 
 function selectState(state) {
   const user = state.user
+  const posts = state.posts
+  const timelines = state.timelines
   const feed = state.feedViewState.feed
   .map(id => state.posts[id])
   .map(post => {
@@ -80,13 +95,16 @@ function selectState(state) {
     return { ...post, comments, usersLikedPost, createdBy, ...postViewState }
   })
 
-  return { feed, user }
+  return { feed, user, posts, timelines }
 }
 
 function selectActions(dispatch) {
   return {
     showMoreComments: (postId) => dispatch(showMoreComments(postId)),
-    showMoreLikes: (postId) => dispatch(showMoreLikes(postId))
+    showMoreLikes: (postId) => dispatch(showMoreLikes(postId)),
+    toggleEditingPost: (postId, newValue) => dispatch(toggleEditingPost(postId, newValue)),
+    cancelEditingPost: (postId, newValue) => dispatch(cancelEditingPost(postId, newValue)),
+    saveEditingPost: (postId, newPost) => dispatch(saveEditingPost(postId, newPost))
   }
 }
 

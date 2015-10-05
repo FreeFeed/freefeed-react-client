@@ -1,6 +1,7 @@
 import {response, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME,
         SHOW_MORE_COMMENTS, SIGN_IN, SIGN_IN_CHANGE,
-        SHOW_MORE_LIKES_SYNC, SHOW_MORE_LIKES_ASYNC} from './action-creators'
+        SHOW_MORE_LIKES_SYNC, SHOW_MORE_LIKES_ASYNC,
+        TOGGLE_EDITING_POST, CANCEL_EDITING_POST, SAVE_EDITING_POST} from './action-creators'
 import _ from 'lodash'
 import {userParser} from '../utils'
 
@@ -59,8 +60,10 @@ export function postsViewState(state = {}, action) {
 
         const omittedComments = post.omittedComments
         const omittedLikes = post.omittedLikes
+        const isEditing = false
+        const editingText = post.body
 
-        return { omittedComments, omittedLikes, id }
+        return { omittedComments, omittedLikes, id, isEditing, editingText }
       })
       return { ...state, ..._.indexBy(postsViewState, 'id') }
     }
@@ -82,6 +85,27 @@ export function postsViewState(state = {}, action) {
 
       return { ...state, [id]: { ...state[id], omittedLikes} }
     }
+    case TOGGLE_EDITING_POST: {
+      const id = action.payload.postId
+      const editingText = action.payload.newValue
+      const isEditing = !state[id].isEditing
+
+      return { ...state, [id]: { ...state[id], isEditing, editingText} }
+    }
+    case CANCEL_EDITING_POST: {
+      const id = action.payload.postId
+      const editingText = action.payload.newValue
+      const isEditing = false
+
+      return { ...state, [id]: { ...state[id], isEditing, editingText} }
+    }
+    case response(SAVE_EDITING_POST): {
+      const id = action.payload.posts.id
+      const editingText = action.payload.posts.body
+      const isEditing = false
+
+      return { ...state, [id]: { ...state[id], isEditing, editingText} }
+    }
   }
   return state
 }
@@ -100,6 +124,9 @@ export function posts(state = {}, action) {
       return updatePostData(state, action)
     }
     case response(SHOW_MORE_LIKES_ASYNC): {
+      return updatePostData(state, action)
+    }
+    case response(SAVE_EDITING_POST): {
       return updatePostData(state, action)
     }
   }
@@ -170,5 +197,15 @@ export function user(state = {settings: defaultUserSettings, ...getPersistedUser
       return {...state, ...userParser(action.payload.users)}
     }
   }
+  return state
+}
+
+export function timelines(state = {}, action) {
+  switch (action.type) {
+    case response(HOME): {
+      return {...action.payload.timelines}
+    }
+  }
+
   return state
 }

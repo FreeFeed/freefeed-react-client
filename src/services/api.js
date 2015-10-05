@@ -31,6 +31,18 @@ export function getPostWithAllCommentsAndLikes({postId}) {
     `${apiConfig.host}/v1/posts/${postId}?maxComments=all&maxLikes=all`, getRequestOptions())
 }
 
+export function updatePost({postId, newPost}) {
+  return fetch(`${apiConfig.host}/v1/posts/${postId}`, {
+    'method': 'PUT',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+    'body': JSON.stringify({post: newPost})
+  })
+}
+
 export function signIn(credentials){
   return fetch(`${apiConfig.host}/v1/session`, {
     headers:{

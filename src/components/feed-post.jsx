@@ -8,6 +8,7 @@ import PostComments from './post-comments'
 import PostLikes from './post-likes'
 import UserName from './user-name'
 import FeedPost from './feed-post'
+import {preventDefault} from '../utils'
 
 export default (props) => {
   const isDirect = false
@@ -15,6 +16,14 @@ export default (props) => {
   const createdAt = new Date(props.createdAt - 0)
   const createdAtISO = moment(createdAt).format()
   const createdAgo = fromNowOrNow(createdAt)
+  
+  let editingPostText = props.editingText
+  let editingPostTextChange = (e) => {
+    editingPostText = e.target.value
+  }
+  const toggleEditingPost = () => props.toggleEditingPost(props.id, editingPostText)
+  const cancelEditingPost = () => props.cancelEditingPost(props.id, editingPostText)
+  const saveEditingPost = () => props.saveEditingPost(props.id, editingPostText)
 
   return (
     <div className='timeline-post-container'>
@@ -28,11 +37,30 @@ export default (props) => {
           <UserName className='post-author' user={props.createdBy}/>
         </div>
 
-        <div className='body'>
-          <div className='text'>
-            <Linkify>{props.body}</Linkify>
+        {props.isEditing ? (
+          <div className='edit-post'>
+            <div>
+              <textarea className='edit-post-area'
+                        rows='2'
+                        data-autosize-on='true'
+                        defaultValue={props.editingText}
+                        onChange={editingPostTextChange} />
+            </div>
+            <div>
+              <button className='btn btn-default btn-xs'
+                      onClick={preventDefault(()=>saveEditingPost())}>
+                Update
+              </button>
+              <a className="action-link" onClick={preventDefault(()=>cancelEditingPost())}>Cancel</a>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className='body'>
+            <div className='text'>
+              <Linkify>{props.body}</Linkify>
+            </div>
+          </div>
+        )}
 
         <div className='info p-timeline-post-info'>
           {isDirect ? (<span>»</span>) : false}
@@ -43,6 +71,10 @@ export default (props) => {
           </span>
 
           <span className='post-controls'>
+            <span>&nbsp;-&nbsp;</span>
+            <a className='p-timeline-post-comment-action' onClick={preventDefault(()=>toggleEditingPost())}>
+              Update
+            </a>
           </span>
 
           <PostLikes post={props} likes={props.usersLikedPost} showMoreLikes={props.showMoreLikes} />

@@ -87,6 +87,35 @@ export function showMoreLikesSync(postId){
   }
 }
 
+export const TOGGLE_EDITING_POST = 'TOGGLE_EDITING_POST'
+
+export function toggleEditingPost(postId, newValue){
+  return {
+    type: TOGGLE_EDITING_POST,
+    payload: {postId, newValue},
+  }
+}
+
+export const CANCEL_EDITING_POST = 'CANCEL_EDITING_POST'
+
+export function cancelEditingPost(postId, newValue){
+  return {
+    type: CANCEL_EDITING_POST,
+    payload: {postId, newValue},
+  }
+}
+
+export const SAVE_EDITING_POST = 'SAVE_EDITING_POST'
+
+export function saveEditingPost(postId, newPost){
+  return {
+    type: SAVE_EDITING_POST,
+    apiRequest: Api.updatePost,
+    payload: {postId, newPost},
+    requireAuth: true,
+  }
+}
+
 export const SIGN_IN_CHANGE = 'SIGN_IN_CHANGE'
 
 export function signInChange(username, password){
