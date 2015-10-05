@@ -17,7 +17,7 @@ const renderLike = (user, isLast=false, omittedLikes = 0, showMoreLikes = null) 
       ) : false }
       &nbsp;liked this
       </span>
-    ) : (<span>,&nbsp;</span>)}
+    ) : (<span>,&#32;</span>)}
   </li>
 )
 
@@ -25,9 +25,7 @@ export default (props) => {
   const hasLikes = props.likes.length > 0
   const likes_exclude_last = props.likes.slice(0, props.likes.length - 2).map((user) => renderLike(user))
   const last = props.likes.length > 0 && props.likes[props.likes.length - 1]
-
-  const commentsExpanded = (props.post.omittedComments == 0)
-  const showMoreLikes = () => props.showMoreLikes(props.post.id, commentsExpanded)
+  const showMoreLikes = () => props.showMoreLikes(props.post.id)
 
   return (
     <div className="likes">

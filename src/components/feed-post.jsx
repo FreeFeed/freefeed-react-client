@@ -8,52 +8,93 @@ import PostComments from './post-comments'
 import PostLikes from './post-likes'
 import UserName from './user-name'
 import FeedPost from './feed-post'
+import {preventDefault} from '../utils'
 
 export default (props) => {
-  const user = props.users[props.data.createdBy]
-  const screenName = props.current_user.id === user.id ? 'You' : user.screenName
-
   const isDirect = false
 
-  const createdAt = new Date(props.data.createdAt - 0)
+  const createdAt = new Date(props.createdAt - 0)
   const createdAtISO = moment(createdAt).format()
   const createdAgo = fromNowOrNow(createdAt)
-
-  const firstFeedName = user.username  // FIXME
+  
+  let editingPostText = props.editingText
+  let editingPostTextChange = (e) => {
+    editingPostText = e.target.value
+  }
+  const toggleEditingPost = () => props.toggleEditingPost(props.id, editingPostText)
+  const cancelEditingPost = () => props.cancelEditingPost(props.id, editingPostText)
+  const saveEditingPost = () => props.saveEditingPost(props.id, editingPostText)
 
   return (
     <div className='timeline-post-container'>
       <div className='avatar'>
-        <Link to='timeline.index' params={{username: user.username}}>
-          <img src={ user.profilePictureMediumUrl } />
+        <Link to='timeline.index' params={{username: props.createdBy.username}}>
+          <img src={ props.createdBy.profilePictureMediumUrl } />
         </Link>
       </div>
       <div className='post-body p-timeline-post'>
         <div className='title'>
-          <UserName className='post-author' user={user}/>
+          <UserName className='post-author' user={props.createdBy}/>
         </div>
 
-        <div className='body'>
-          <div className='text'>
-            <Linkify>{props.data.body}</Linkify>
+        {props.isEditing ? (
+          <div className='edit-post'>
+            <div>
+              <textarea className='edit-post-area'
+                        rows='2'
+                        data-autosize-on='true'
+                        defaultValue={props.editingText}
+                        onChange={editingPostTextChange} />
+            </div>
+            <div>
+              <button className='btn btn-default btn-xs'
+                      onClick={preventDefault(()=>saveEditingPost())}>
+                Update
+              </button>
+              <a className="action-link" onClick={preventDefault(()=>cancelEditingPost())}>Cancel</a>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className='body'>
+            <div className='text'>
+              <Linkify>{props.body}</Linkify>
+            </div>
+          </div>
+        )}
 
         <div className='info p-timeline-post-info'>
           {isDirect ? (<span>»</span>) : false}
           <span className='post-date'>
-            <Link to='post' params={{username: firstFeedName, postId: props.data.id}} className='datetime'>
+            <Link to='post' params={{username: props.createdBy.username, postId: props.id}} className='datetime'>
               <time dateTime={createdAtISO} title={createdAtISO}>{createdAgo}</time>
             </Link>
           </span>
 
           <span className='post-controls'>
+            {props.isEditable ? (
+              <span>
+                <span>&nbsp;-&nbsp;</span>
+                <a className='p-timeline-post-comment-action' onClick={preventDefault(()=>toggleEditingPost())}>
+                  Update
+                </a>
+                <span>&nbsp;-&nbsp;</span>
+                <a className='p-timeline-post-comment-action' onClick={preventDefault(()=>toggleEditingPost())}>
+                  Delete
+                </a>
+              </span>
+            ) : false}
           </span>
 
-          <PostLikes post={props.data} likes={props.likes} showMoreLikes={props.showMoreLikes} />
+          <PostLikes post={props} likes={props.usersLikedPost} showMoreLikes={props.showMoreLikes} />
         </div>
+        
+        {props.isError ? (
+          <div className='post-error'>
+            {props.errorString}
+          </div>
+        ) : false}
 
-        <PostComments post={props.data}
+        <PostComments post={props}
                       comments={props.comments}
                       showMoreComments={props.showMoreComments} />
       </div>

@@ -1,4 +1,6 @@
-import {unauthenticated, serverError, request, response, fail, SIGN_IN, UNAUTHENTICATED, WHO_AM_I, whoAmI, requiresAuth} from './action-creators'
+import {unauthenticated, serverError, request, response, fail, SIGN_IN,
+        UNAUTHENTICATED, WHO_AM_I, whoAmI, requiresAuth,
+        SHOW_MORE_LIKES, showMoreLikesSync, showMoreLikesAsync} from './action-creators'
 
 //middleware for api requests
 export const apiMiddleware = store => next => async (action) => {
@@ -18,7 +20,7 @@ export const apiMiddleware = store => next => async (action) => {
     } else if (apiResponse.status === 401) {
       return store.dispatch(unauthenticated(obj))
     } else {
-      return store.dispatch({payload: obj, type: fail(action.type)})
+      return store.dispatch({payload: obj, type: fail(action.type), request: action.payload})
     }
   } catch (e) {
     return store.dispatch(serverError(e))
@@ -54,6 +56,23 @@ export const authMiddleware = store => next => action => {
     case response(WHO_AM_I): {
       persistUser(userParser(action.payload.users))
       break
+    }
+  }
+
+  return next(action)
+}
+
+export const likesLogicMiddleware = store => next => action => {
+  switch(action.type){
+    case SHOW_MORE_LIKES: {
+      const postId = action.payload.postId
+      const post = store.getState().posts[postId]
+      const isSync = (post.omittedLikes === 0)
+      if (isSync) {
+        return store.dispatch(showMoreLikesSync(postId))
+      } else {
+        return store.dispatch(showMoreLikesAsync(postId))
+      }
     }
   }
 
