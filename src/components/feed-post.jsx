@@ -55,36 +55,40 @@ export default (props) => {
             </div>
           </div>
         ) : (
-          <div className='body'>
-            <div className='text'>
-              <Linkify>{props.body}</Linkify>
+          <div>
+            <div className='body'>
+              <div className='text'>
+                <Linkify>{props.body}</Linkify>
+              </div>
+            </div>
+
+            <div className='info p-timeline-post-info'>
+              {isDirect ? (<span>»</span>) : false}
+              <span className='post-date'>
+                <Link to='post' params={{username: props.createdBy.username, postId: props.id}} className='datetime'>
+                  <time dateTime={createdAtISO} title={createdAtISO}>{createdAgo}</time>
+                </Link>
+              </span>
+
+              <span className='post-controls'>
+                {props.isEditable ? (
+                  <span>
+                    <span>&nbsp;-&nbsp;</span>
+                    <a className='p-timeline-post-comment-action' onClick={preventDefault(()=>toggleEditingPost())}>
+                      Update
+                    </a>
+                    <span>&nbsp;-&nbsp;</span>
+                    <a className='p-timeline-post-comment-action' onClick={preventDefault(()=>toggleEditingPost())}>
+                      Delete
+                    </a>
+                  </span>
+                ) : false}
+              </span>
             </div>
           </div>
         )}
 
         <div className='info p-timeline-post-info'>
-          {isDirect ? (<span>»</span>) : false}
-          <span className='post-date'>
-            <Link to='post' params={{username: props.createdBy.username, postId: props.id}} className='datetime'>
-              <time dateTime={createdAtISO} title={createdAtISO}>{createdAgo}</time>
-            </Link>
-          </span>
-
-          <span className='post-controls'>
-            {props.isEditable ? (
-              <span>
-                <span>&nbsp;-&nbsp;</span>
-                <a className='p-timeline-post-comment-action' onClick={preventDefault(()=>toggleEditingPost())}>
-                  Update
-                </a>
-                <span>&nbsp;-&nbsp;</span>
-                <a className='p-timeline-post-comment-action' onClick={preventDefault(()=>toggleEditingPost())}>
-                  Delete
-                </a>
-              </span>
-            ) : false}
-          </span>
-
           <PostLikes post={props} likes={props.usersLikedPost} showMoreLikes={props.showMoreLikes} />
         </div>
         
