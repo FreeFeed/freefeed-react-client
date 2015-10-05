@@ -116,6 +116,18 @@ export function saveEditingPost(postId, newPost){
   }
 }
 
+export const DELETE_POST = 'DELETE_POST'
+
+export function deletePost(postId){
+  return {
+    type: DELETE_POST,
+    apiRequest: Api.deletePost,
+    payload: {postId},
+    requireAuth: true,
+  }
+}
+
+
 export const SIGN_IN_CHANGE = 'SIGN_IN_CHANGE'
 
 export function signInChange(username, password){

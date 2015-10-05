@@ -24,6 +24,7 @@ export default (props) => {
   const toggleEditingPost = () => props.toggleEditingPost(props.id, editingPostText)
   const cancelEditingPost = () => props.cancelEditingPost(props.id, editingPostText)
   const saveEditingPost = () => props.saveEditingPost(props.id, editingPostText)
+  const deletePost = () => props.deletePost(props.id)
 
   return (
     <div className='timeline-post-container'>
@@ -78,7 +79,7 @@ export default (props) => {
                       Edit
                     </a>
                     <span>&nbsp;-&nbsp;</span>
-                    <a className='p-timeline-post-comment-action' onClick={preventDefault(()=>toggleEditingPost())}>
+                    <a className='p-timeline-post-comment-action' onClick={preventDefault(()=>deletePost())}>
                       Delete
                     </a>
                   </span>
