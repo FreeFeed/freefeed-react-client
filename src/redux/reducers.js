@@ -1,7 +1,9 @@
 import {response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME,
         SHOW_MORE_COMMENTS, SIGN_IN, SIGN_IN_CHANGE,
         SHOW_MORE_LIKES_SYNC, SHOW_MORE_LIKES_ASYNC,
-        TOGGLE_EDITING_POST, CANCEL_EDITING_POST, SAVE_EDITING_POST, DELETE_POST} from './action-creators'
+        TOGGLE_EDITING_POST, CANCEL_EDITING_POST, SAVE_EDITING_POST, DELETE_POST,
+        TOGGLE_EDITING_COMMENT, CANCEL_EDITING_COMMENT, SAVE_EDITING_COMMENT} from './action-creators'
+
 import _ from 'lodash'
 import {userParser} from '../utils'
 
@@ -79,13 +81,13 @@ export function postsViewState(state = {}, action) {
     case response(SHOW_MORE_LIKES_ASYNC): {
       const id = action.payload.posts.id
       const omittedLikes = 0
-     
+
       return { ...state, [id]: { ...state[id], omittedLikes, ...NO_ERROR_IN_POST } }
     }
     case response(SHOW_MORE_COMMENTS): {
       const id = action.payload.posts.id
       const omittedComments = 0
-     
+
       return { ...state, [id]: { ...state[id], omittedComments, ...NO_ERROR_IN_POST } }
     }
     case SHOW_MORE_LIKES_SYNC: {
@@ -175,6 +177,36 @@ export function comments(state = {}, action) {
     }
     case response(SHOW_MORE_LIKES_ASYNC): {
       return updateCommentData(state, action)
+    }
+    case response(SAVE_EDITING_COMMENT): {
+      return {...state, [action.payload.comments.id]: {...state[action.payload.comments.id], ...action.payload.comments}}
+    }
+  }
+  return state
+}
+
+export function commentViewState(state={}, action){
+  switch(action.type){
+    case response(HOME): {
+      const commentsViewState = action.payload.comments.map(comment => ({
+        id: comment.id,
+        isEditing: false,
+        editText: comment.body
+      }))
+      const viewStateMap = _.indexBy(commentsViewState, 'id')
+      return {...viewStateMap, ...state}
+    }
+    case TOGGLE_EDITING_COMMENT: {
+      return {
+        ...state,
+        [action.commentId]: {
+          ...state[action.commentId],
+          isEditing: !state[action.commentId].isEditing
+        }
+      }
+    }
+    case response(SAVE_EDITING_COMMENT): {
+      return {...state, [action.payload.comments.id]: {...state[action.payload.comments.id], isEditing: false, editText: action.payload.comments.body}}
     }
   }
   return state

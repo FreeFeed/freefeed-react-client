@@ -16,7 +16,7 @@ export default (props) => {
   const createdAt = new Date(props.createdAt - 0)
   const createdAtISO = moment(createdAt).format()
   const createdAgo = fromNowOrNow(createdAt)
-  
+
   let editingPostText = props.editingText
   let editingPostTextChange = (e) => {
     editingPostText = e.target.value
@@ -75,11 +75,11 @@ export default (props) => {
                 {props.isEditable ? (
                   <span>
                     <span>&nbsp;-&nbsp;</span>
-                    <a className='p-timeline-post-comment-action' onClick={preventDefault(()=>toggleEditingPost())}>
+                    <a className='p-timeline-post-comment-action' onClick={preventDefault(toggleEditingPost)}>
                       Edit
                     </a>
                     <span>&nbsp;-&nbsp;</span>
-                    <a className='p-timeline-post-comment-action' onClick={preventDefault(()=>deletePost())}>
+                    <a className='p-timeline-post-comment-action' onClick={preventDefault(deletePost)}>
                       Delete
                     </a>
                   </span>
@@ -92,7 +92,7 @@ export default (props) => {
         <div className='info p-timeline-post-info'>
           <PostLikes post={props} likes={props.usersLikedPost} showMoreLikes={props.showMoreLikes} />
         </div>
-        
+
         {props.isError ? (
           <div className='post-error'>
             {props.errorString}
@@ -101,7 +101,8 @@ export default (props) => {
 
         <PostComments post={props}
                       comments={props.comments}
-                      showMoreComments={props.showMoreComments} />
+                      showMoreComments={props.showMoreComments}
+                      commentEdit={props.commentEdit} />
       </div>
     </div>
   )
