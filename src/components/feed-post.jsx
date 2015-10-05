@@ -75,7 +75,7 @@ export default (props) => {
                   <span>
                     <span>&nbsp;-&nbsp;</span>
                     <a className='p-timeline-post-comment-action' onClick={preventDefault(()=>toggleEditingPost())}>
-                      Update
+                      Edit
                     </a>
                     <span>&nbsp;-&nbsp;</span>
                     <a className='p-timeline-post-comment-action' onClick={preventDefault(()=>toggleEditingPost())}>
