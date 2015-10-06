@@ -60,10 +60,12 @@ export function feedViewState(state = { feed: [] }, action) {
 
 const NO_ERROR = {
   isError: false,
-  errorString: ''
+  errorString: '',
+  commentError: ''
 }
 
 const POST_SAVE_ERROR = 'Something went wrong while editing the post...'
+const NEW_COMMENT_ERROR = 'Failed to add comment'
 
 export function postsViewState(state = {}, action) {
   switch (action.type) {
@@ -150,6 +152,15 @@ export function postsViewState(state = {}, action) {
           ...post,
           isCommenting: false,
           newCommentText: action.payload.comments.body,
+        }
+      }
+    }
+    case fail(ADD_COMMENT): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id] : {
+          ...post,
+          commentError: NEW_COMMENT_ERROR
         }
       }
     }
