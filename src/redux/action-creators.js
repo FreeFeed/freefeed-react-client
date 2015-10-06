@@ -127,6 +127,24 @@ export function deletePost(postId){
   }
 }
 
+export const TOGGLE_EDITING_COMMENT = 'TOGGLE_EDITING_COMMENT'
+
+export function toggleEditingComment(commentId){
+  return {
+    type: TOGGLE_EDITING_COMMENT,
+    commentId,
+  }
+}
+
+export const SAVE_EDITING_COMMENT = 'SAVE_EDITING_COMMENT'
+
+export function saveEditingComment(commentId, newCommentBoby){
+  return {
+    type: SAVE_EDITING_COMMENT,
+    apiRequest: Api.updateComment,
+    payload: {commentId, newCommentBoby}
+  }
+}
 
 export const SIGN_IN_CHANGE = 'SIGN_IN_CHANGE'
 

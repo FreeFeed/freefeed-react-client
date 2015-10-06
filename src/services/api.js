@@ -53,6 +53,18 @@ export function deletePost({postId}) {
   })
 }
 
+export function updateComment({commentId, newCommentBoby}) {
+  return fetch(`${apiConfig.host}/v1/comments/${commentId}`, {
+    'method': 'PUT',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+    'body': JSON.stringify({comment: {body: newCommentBoby}})
+  })
+}
+
 export function signIn(credentials){
   return fetch(`${apiConfig.host}/v1/session`, {
     headers:{

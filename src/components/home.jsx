@@ -2,7 +2,9 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import {showMoreComments, showMoreLikes,
-        toggleEditingPost, cancelEditingPost, saveEditingPost, deletePost } from '../redux/action-creators'
+        toggleEditingPost, cancelEditingPost, saveEditingPost, deletePost,
+        toggleEditingComment, cancelEditingComment, saveEditingComment } from '../redux/action-creators'
+
 import FeedPost from './feed-post'
 
 
@@ -17,14 +19,15 @@ const HomeFeed = (props) => {
       props.saveEditingPost(postId, newPost)
     }
 
-    return (<FeedPost {...post} 
+    return (<FeedPost {...post}
               key={post.id}
               showMoreComments={props.showMoreComments}
               showMoreLikes={props.showMoreLikes}
               toggleEditingPost={props.toggleEditingPost}
               cancelEditingPost={props.cancelEditingPost}
               saveEditingPost={saveEditingPost}
-              deletePost={props.deletePost} />) 
+              deletePost={props.deletePost}
+              commentEdit={props.commentEdit} />)
   })
 
   return (
@@ -76,8 +79,10 @@ function selectState(state) {
   .map(post => {
     let comments = _.map(post.comments, commentId => {
       const comment = state.comments[commentId]
-      const user = state.users[comment.createdBy]
-      return { ...comment, user } 
+      const commentViewState = state.commentViewState[commentId]
+      const author = state.users[comment.createdBy]
+      const isEditable = user.id === comment.createdBy
+      return { ...comment, ...commentViewState, user: author, isEditable }
     })
 
     let usersLikedPost = _.map(post.likes, userId => state.users[userId])
@@ -108,7 +113,11 @@ function selectActions(dispatch) {
     toggleEditingPost: (postId, newValue) => dispatch(toggleEditingPost(postId, newValue)),
     cancelEditingPost: (postId, newValue) => dispatch(cancelEditingPost(postId, newValue)),
     saveEditingPost: (postId, newPost) => dispatch(saveEditingPost(postId, newPost)),
-    deletePost: (postId) => dispatch(deletePost(postId))
+    deletePost: (postId) => dispatch(deletePost(postId)),
+    commentEdit: {
+      toggleEditingComment: (commentId) => dispatch(toggleEditingComment(commentId)),
+      saveEditingComment: (commentId, newValue) => dispatch(saveEditingComment(commentId, newValue)),
+    },
   }
 }
 
