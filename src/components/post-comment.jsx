@@ -19,6 +19,7 @@ export default class PostComment extends React.Component{
                         <button className='p-comment-post' onClick={_=>this.props.saveEditingComment(this.props.id, this.refs.commentText.value)}>Post</button>
                         <a className='p-comment-cancel' onClick={preventDefault(_=>this.props.toggleEditingComment(this.props.id))}>Cancel</a>
                       </div>
+                      {props.errorString ? (<div className='comment-error'>{props.errorString}</div>) : false}
                     </div>)
         :
               (<span>
@@ -33,9 +34,9 @@ export default class PostComment extends React.Component{
 
 
         {this.props.isEditable && !this.props.isEditing ? (<span className='controls'>
-                (
+                &nbsp;(
                 <a onClick={preventDefault(_=>this.props.toggleEditingComment(this.props.id))}>edit</a>
-                |
+                &nbsp;|&nbsp;
                 <a onClick={preventDefault(_=>this.props.deleteComment(this.props.id))}>delete</a>
                 )
               </span>) : false}
