@@ -65,6 +65,16 @@ export function updateComment({commentId, newCommentBoby}) {
   })
 }
 
+export function deleteComment({commentId}) {
+  return fetch(`${apiConfig.host}/v1/comments/${commentId}`, {
+    'method': 'DELETE',
+    'headers': {
+      'Accept': 'application/json',
+      'X-Authentication-Token': getToken()
+    }
+  })
+}
+
 export function signIn(credentials){
   return fetch(`${apiConfig.host}/v1/session`, {
     headers:{
