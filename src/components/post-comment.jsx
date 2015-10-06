@@ -14,6 +14,7 @@ export default class PostComment extends React.Component{
         {this.props.isEditing ? (<div className='edit'>
                       <div>
                         <textarea
+                          autoFocus
                           ref='commentText'
                           defaultValue={this.props.editText}
                           className='edit-comment-area'
