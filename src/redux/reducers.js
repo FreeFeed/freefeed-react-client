@@ -2,7 +2,7 @@ import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME,
         SHOW_MORE_COMMENTS, SIGN_IN, SIGN_IN_CHANGE,
         SHOW_MORE_LIKES_SYNC, SHOW_MORE_LIKES_ASYNC,
         TOGGLE_EDITING_POST, CANCEL_EDITING_POST, SAVE_EDITING_POST, DELETE_POST,
-        TOGGLE_EDITING_COMMENT, CANCEL_EDITING_COMMENT, SAVE_EDITING_COMMENT} from './action-creators'
+        TOGGLE_EDITING_COMMENT, CANCEL_EDITING_COMMENT, SAVE_EDITING_COMMENT, DELETE_COMMENT} from './action-creators'
 
 import _ from 'lodash'
 import {userParser} from '../utils'
@@ -159,6 +159,12 @@ export function posts(state = {}, action) {
     case response(SAVE_EDITING_POST): {
       return updatePostData(state, action)
     }
+    case response(DELETE_COMMENT): {
+      const commentId = action.request.commentId
+      const commentedPost = _(state).find(post => (post.comments||[]).indexOf(commentId) !== -1)
+      const comments = _.without(commentedPost.comments, commentId)
+      return {...state, [commentedPost.id] : {...commentedPost, comments}}
+    }
   }
 
   return state
@@ -181,6 +187,9 @@ export function comments(state = {}, action) {
     }
     case response(SAVE_EDITING_COMMENT): {
       return {...state, [action.payload.comments.id]: {...state[action.payload.comments.id], ...action.payload.comments}}
+    }
+    case response(DELETE_COMMENT): {
+      return {...state, [action.request.commentId] : undefined}
     }
   }
   return state
@@ -209,13 +218,16 @@ export function commentViewState(state={}, action){
       }
     }
     case request(SAVE_EDITING_COMMENT): {
-      return {...state, [action.payload.comments.id]: {...state[action.payload.commentId], editText: action.payload.newCommentBoby}}
+      return {...state, [action.payload.commentId]: {...state[action.payload.commentId], editText: action.payload.newCommentBoby}}
     }
     case response(SAVE_EDITING_COMMENT): {
       return {...state, [action.payload.comments.id]: {...state[action.payload.comments.id], isEditing: false, editText: action.payload.comments.body, ...NO_ERROR}}
     }
     case fail(SAVE_EDITING_COMMENT): {
       return {...state, [action.payload.comments.id]: {...state[action.payload.comments.id], isEditing: true, errorString: COMMENT_SAVE_ERROR}}
+    }
+    case response(DELETE_COMMENT): {
+      return {...state, [action.request.commentId] : undefined}
     }
   }
   return state

@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 import {showMoreComments, showMoreLikes,
         toggleEditingPost, cancelEditingPost, saveEditingPost, deletePost,
-        toggleEditingComment, cancelEditingComment, saveEditingComment } from '../redux/action-creators'
+        toggleEditingComment, cancelEditingComment, saveEditingComment, deleteComment } from '../redux/action-creators'
 
 import FeedPost from './feed-post'
 
@@ -117,6 +117,7 @@ function selectActions(dispatch) {
     commentEdit: {
       toggleEditingComment: (commentId) => dispatch(toggleEditingComment(commentId)),
       saveEditingComment: (commentId, newValue) => dispatch(saveEditingComment(commentId, newValue)),
+      deleteComment: (commentId) => dispatch(deleteComment(commentId)),
     },
   }
 }

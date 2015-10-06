@@ -146,6 +146,16 @@ export function saveEditingComment(commentId, newCommentBoby){
   }
 }
 
+export const DELETE_COMMENT = 'DELETE_COMMENT'
+
+export function deleteComment(commentId){
+  return {
+    type: DELETE_COMMENT,
+    payload: {commentId},
+    apiRequest: Api.deleteComment,
+  }
+}
+
 export const SIGN_IN_CHANGE = 'SIGN_IN_CHANGE'
 
 export function signInChange(username, password){
