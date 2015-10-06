@@ -2,8 +2,8 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import {showMoreComments, showMoreLikes,
-        toggleEditingPost, cancelEditingPost, saveEditingPost, deletePost,
-        toggleEditingComment, cancelEditingComment, saveEditingComment, deleteComment } from '../redux/action-creators'
+        toggleEditingPost, cancelEditingPost, saveEditingPost, deletePost, likePost, toggleCommenting,
+        addComment, toggleEditingComment, cancelEditingComment, saveEditingComment, deleteComment } from '../redux/action-creators'
 
 import FeedPost from './feed-post'
 
@@ -27,6 +27,9 @@ const HomeFeed = (props) => {
               cancelEditingPost={props.cancelEditingPost}
               saveEditingPost={saveEditingPost}
               deletePost={props.deletePost}
+              toggleCommenting={props.toggleCommenting}
+              addComment={props.addComment}
+              likePost={props.likePost}
               commentEdit={props.commentEdit} />)
   })
 
@@ -114,6 +117,9 @@ function selectActions(dispatch) {
     cancelEditingPost: (postId, newValue) => dispatch(cancelEditingPost(postId, newValue)),
     saveEditingPost: (postId, newPost) => dispatch(saveEditingPost(postId, newPost)),
     deletePost: (postId) => dispatch(deletePost(postId)),
+    toggleCommenting: (postId) => dispatch(toggleCommenting(postId)),
+    addComment:(postId, commentText) => dispatch(addComment(postId, commentText)),
+    likePost: (postId) => dispatch(likePost(postId)),
     commentEdit: {
       toggleEditingComment: (commentId) => dispatch(toggleEditingComment(commentId)),
       saveEditingComment: (commentId, newValue) => dispatch(saveEditingComment(commentId, newValue)),

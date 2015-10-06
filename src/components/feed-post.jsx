@@ -25,6 +25,8 @@ export default (props) => {
   const cancelEditingPost = () => props.cancelEditingPost(props.id, editingPostText)
   const saveEditingPost = () => props.saveEditingPost(props.id, editingPostText)
   const deletePost = () => props.deletePost(props.id)
+  const toggleCommenting = () => props.toggleCommenting(props.id)
+  const likePost = () => props.likePost(props.id)
 
   return (
     <div className='timeline-post-container'>
@@ -72,6 +74,16 @@ export default (props) => {
               </span>
 
               <span className='post-controls'>
+                <span>
+                  <span>&nbsp;-&nbsp;</span>
+                  <a className='p-timeline-post-comment-action' onClick={preventDefault(toggleCommenting)}>
+                    Comment
+                  </a>
+                  <span>&nbsp;-&nbsp;</span>
+                  <a className='p-timeline-post-comment-action' onClick={preventDefault(likePost)}>
+                    Like
+                  </a>
+                </span>
                 {props.isEditable ? (
                   <span>
                     <span>&nbsp;-&nbsp;</span>
@@ -101,6 +113,9 @@ export default (props) => {
 
         <PostComments post={props}
                       comments={props.comments}
+                      creatingNewComment={props.isCommenting}
+                      addComment={props.addComment}
+                      toggleCommenting={props.toggleCommenting}
                       showMoreComments={props.showMoreComments}
                       commentEdit={props.commentEdit} />
       </div>

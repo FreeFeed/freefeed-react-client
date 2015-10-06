@@ -23,7 +23,8 @@ export default class PostComment extends React.Component{
                         />
                       </div>
                       <div className='p-comment-actions'>
-                        <button className='p-comment-post' onClick={this.saveComment}>Post</button>
+                        <button className='p-comment-post' onClick={this.saveComment}>Update</button>
+                        &nbsp;
                         <a className='p-comment-cancel' onClick={preventDefault(_=>this.props.toggleEditingComment(this.props.id))}>Cancel</a>
                       </div>
                       {this.props.errorString ? (<div className='comment-error'>{this.props.errorString}</div>) : false}

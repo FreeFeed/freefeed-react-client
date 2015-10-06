@@ -127,6 +127,37 @@ export function deletePost(postId){
   }
 }
 
+export const TOGGLE_COMMENTING = 'TOGGLE_COMMENTING'
+
+export function toggleCommenting(postId){
+  return {
+    type: TOGGLE_COMMENTING,
+    postId,
+  }
+}
+
+export const ADD_COMMENT = 'ADD_COMMENT'
+
+export function addComment(postId, commentText){
+  return {
+    type: ADD_COMMENT,
+    apiRequest: Api.addComment,
+    payload: {
+      postId,
+      commentText,
+    }
+  }
+}
+
+export const LIKE_POST = 'LIKE_POST'
+
+export function likePost(postId){
+  return {
+    type: LIKE_POST,
+    postId,
+  }
+}
+
 export const TOGGLE_EDITING_COMMENT = 'TOGGLE_EDITING_COMMENT'
 
 export function toggleEditingComment(commentId){
