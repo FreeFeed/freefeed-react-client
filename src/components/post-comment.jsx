@@ -13,13 +13,20 @@ export default class PostComment extends React.Component{
       <div className='body p-comment-body'>
         {this.props.isEditing ? (<div className='edit'>
                       <div>
-                        <textarea ref='commentText' defaultValue={this.props.editText} className='edit-comment-area' rows='2' style={{overflow: 'hidden', wordWrap: 'break-word', resize: 'horizontal', height: '44px'}}></textarea>
+                        <textarea
+                          ref='commentText'
+                          defaultValue={this.props.editText}
+                          className='edit-comment-area'
+                          rows='2'
+                          onKeyDown={this.checkSave}
+                          style={{overflow: 'hidden', wordWrap: 'break-word', resize: 'horizontal', height: '44px'}}
+                        />
                       </div>
                       <div className='p-comment-actions'>
-                        <button className='p-comment-post' onClick={_=>this.props.saveEditingComment(this.props.id, this.refs.commentText.value)}>Post</button>
+                        <button className='p-comment-post' onClick={this.saveComment}>Post</button>
                         <a className='p-comment-cancel' onClick={preventDefault(_=>this.props.toggleEditingComment(this.props.id))}>Cancel</a>
                       </div>
-                      {props.errorString ? (<div className='comment-error'>{props.errorString}</div>) : false}
+                      {this.props.errorString ? (<div className='comment-error'>{this.props.errorString}</div>) : false}
                     </div>)
         :
               (<span>
@@ -43,4 +50,14 @@ export default class PostComment extends React.Component{
       </div>
     </div>
   )}
+  saveComment = () => {
+    this.props.saveEditingComment(this.props.id, this.refs.commentText.value)
+  }
+  checkSave = (event) => {
+    const isEnter = event.keyCode === 13
+    if (isEnter) {
+      event.preventDefault()
+      this.saveComment()
+    }
+  }
 }
