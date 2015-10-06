@@ -3,6 +3,13 @@ import PostComment from './post-comment'
 import MoreCommentsWrapper from './more-comments-wrapper'
 
 const renderComment = commentEdit => comment => (<PostComment key={comment.id} {...comment} {...commentEdit}/>)
+const renderAddingComment = props => (<PostComment
+  id={props.post.id}
+  isEditing={true}
+  editText={props.post.newCommentText}
+  saveEditingComment={props.addComment}
+  toggleEditingComment={props.toggleCommenting}
+  errorString={props.commentError}/>)
 
 export default (props) => {
   const commentMapper = renderComment(props.commentEdit)
@@ -18,6 +25,7 @@ export default (props) => {
       {props.post.omittedComments > 0 ? <MoreCommentsWrapper omittedComments={props.post.omittedComments}
                                                              showMoreComments={showMoreComments} /> : false}
       {last ? commentMapper(last) : false}
+      {props.post.isCommenting ? renderAddingComment(props): false}
     </div>
   )
 }

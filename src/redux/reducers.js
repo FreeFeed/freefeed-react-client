@@ -1,8 +1,8 @@
 import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME,
         SHOW_MORE_COMMENTS, SIGN_IN, SIGN_IN_CHANGE,
         SHOW_MORE_LIKES_SYNC, SHOW_MORE_LIKES_ASYNC,
-        TOGGLE_EDITING_POST, CANCEL_EDITING_POST, SAVE_EDITING_POST, DELETE_POST,
-        TOGGLE_EDITING_COMMENT, CANCEL_EDITING_COMMENT, SAVE_EDITING_COMMENT, DELETE_COMMENT} from './action-creators'
+        TOGGLE_EDITING_POST, CANCEL_EDITING_POST, SAVE_EDITING_POST, DELETE_POST, TOGGLE_COMMENTING,
+        ADD_COMMENT, TOGGLE_EDITING_COMMENT, CANCEL_EDITING_COMMENT, SAVE_EDITING_COMMENT, DELETE_COMMENT} from './action-creators'
 
 import _ from 'lodash'
 import {userParser} from '../utils'
@@ -60,10 +60,12 @@ export function feedViewState(state = { feed: [] }, action) {
 
 const NO_ERROR = {
   isError: false,
-  errorString: ''
+  errorString: '',
+  commentError: ''
 }
 
 const POST_SAVE_ERROR = 'Something went wrong while editing the post...'
+const NEW_COMMENT_ERROR = 'Failed to add comment'
 
 export function postsViewState(state = {}, action) {
   switch (action.type) {
@@ -135,6 +137,33 @@ export function postsViewState(state = {}, action) {
 
       return { ...state, [id]: { ...state[id], isError, errorString} }
     }
+    case TOGGLE_COMMENTING: {
+      return {...state,
+        [action.postId] : {
+          ...state[action.postId],
+          isCommenting:!state[action.postId].isCommenting,
+          newCommentText: state[action.postId].newCommentText || '' }
+        }
+    }
+    case response(ADD_COMMENT): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id] : {
+          ...post,
+          isCommenting: false,
+          newCommentText: action.payload.comments.body,
+        }
+      }
+    }
+    case fail(ADD_COMMENT): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id] : {
+          ...post,
+          commentError: NEW_COMMENT_ERROR
+        }
+      }
+    }
   }
 
   return state
@@ -165,6 +194,15 @@ export function posts(state = {}, action) {
       const comments = _.without(commentedPost.comments, commentId)
       return {...state, [commentedPost.id] : {...commentedPost, comments}}
     }
+    case response(ADD_COMMENT): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id] : {
+          ...post,
+          comments: [...post.comments, action.payload.comments.id],
+        }
+      }
+    }
   }
 
   return state
@@ -190,6 +228,11 @@ export function comments(state = {}, action) {
     }
     case response(DELETE_COMMENT): {
       return {...state, [action.request.commentId] : undefined}
+    }
+    case response(ADD_COMMENT): {
+      return {...state,
+        [action.payload.comments.id] : action.payload.comments
+      }
     }
   }
   return state
@@ -228,6 +271,15 @@ export function commentViewState(state={}, action){
     }
     case response(DELETE_COMMENT): {
       return {...state, [action.request.commentId] : undefined}
+    }
+    case response(ADD_COMMENT): {
+      return {...state,
+        [action.payload.comments.id] : {
+          id: action.payload.comments.id,
+          isEditing: false,
+          editText: action.payload.comments.body,
+        }
+      }
     }
   }
   return state
