@@ -7,7 +7,7 @@ import {fromNowOrNow} from '../utils'
 import PostComments from './post-comments'
 import PostLikes from './post-likes'
 import UserName from './user-name'
-import FeedPost from './feed-post'
+import LoaderContainer from './loader-container'
 import {preventDefault} from '../utils'
 
 export default (props) => {
@@ -23,10 +23,21 @@ export default (props) => {
   }
   const toggleEditingPost = () => props.toggleEditingPost(props.id, editingPostText)
   const cancelEditingPost = () => props.cancelEditingPost(props.id, editingPostText)
-  const saveEditingPost = () => props.saveEditingPost(props.id, editingPostText)
+  const saveEditingPost = () => {
+    if (!props.isSaving){
+      props.saveEditingPost(props.id, editingPostText)
+    }
+  }
   const deletePost = () => props.deletePost(props.id)
   const toggleCommenting = () => props.toggleCommenting(props.id)
   const likePost = () => props.likePost(props.id)
+  const checkSave = (event) => {
+    const isEnter = event.keyCode === 13
+    if (isEnter) {
+      event.preventDefault()
+      saveEditingPost()
+    }
+  }
 
   return (
     <div className='timeline-post-container'>
@@ -42,20 +53,23 @@ export default (props) => {
 
         {props.isEditing ? (
           <div className='edit-post'>
-            <div>
-              <textarea className='edit-post-area'
-                        rows='2'
-                        data-autosize-on='true'
-                        defaultValue={props.editingText}
-                        onChange={editingPostTextChange} />
-            </div>
-            <div>
-              <button className='btn btn-default btn-xs'
-                      onClick={preventDefault(()=>saveEditingPost())}>
-                Update
-              </button>
-              <a className="action-link" onClick={preventDefault(()=>cancelEditingPost())}>Cancel</a>
-            </div>
+            <LoaderContainer loading={props.isSaving}>
+              <div>
+                <textarea className='edit-post-area'
+                          rows='2'
+                          data-autosize-on='true'
+                          defaultValue={props.editingText}
+                          onKeyDown={checkSave}
+                          onChange={editingPostTextChange} />
+              </div>
+              <div>
+                <button className='btn btn-default btn-xs'
+                        onClick={preventDefault(()=>saveEditingPost())}>
+                  Update
+                </button>
+                <a className="action-link" onClick={preventDefault(()=>cancelEditingPost())}>Cancel</a>
+              </div>
+            </LoaderContainer>
           </div>
         ) : (
           <div>
