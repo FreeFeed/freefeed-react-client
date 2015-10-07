@@ -225,6 +225,16 @@ export const USER_SETTINGS_CHANGE = 'USER_SETTINGS_CHANGE'
 export function userSettingsChange(payload){
   return {
     type: USER_SETTINGS_CHANGE,
-    payload
+    payload,
+  }
+}
+
+export const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
+
+export function updatePassword(payload){
+  return {
+    type: UPDATE_PASSWORD,
+    apiRequest: Api.updatePassword,
+    payload,
   }
 }

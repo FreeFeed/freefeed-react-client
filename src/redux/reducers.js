@@ -1,5 +1,6 @@
 import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME,
         UPDATE_USER, USER_SETTINGS_CHANGE,
+        UPDATE_PASSWORD,
         SHOW_MORE_COMMENTS, SIGN_IN, SIGN_IN_CHANGE,
         SHOW_MORE_LIKES_SYNC, SHOW_MORE_LIKES_ASYNC,
         TOGGLE_EDITING_POST, CANCEL_EDITING_POST, SAVE_EDITING_POST, DELETE_POST, TOGGLE_COMMENTING,
@@ -351,6 +352,27 @@ export function user(state = {settings: defaultUserSettings, ...getPersistedUser
   return state
 }
 
+const DEFAULT_PASSWORD_FORM_STATE = {
+  isSaving:false,
+  success:false,
+  error:false,
+  errorText: '',
+}
+
+export function passwordForm(state={...DEFAULT_PASSWORD_FORM_STATE}, action){
+  switch(action.type){
+    case request(UPDATE_PASSWORD): {
+      return {...state, isSaving: true, error: false, success: false}
+    }
+    case response(UPDATE_PASSWORD): {
+      return {...state, isSaving: false, success: true, error: false}
+    }
+    case fail(UPDATE_PASSWORD):{
+      return {...state, isSaving: false, success: false, error: true, errorText: action.payload.err}
+    }
+  }
+  return state
+}
 export function timelines(state = {}, action) {
   switch (action.type) {
     case response(HOME): {

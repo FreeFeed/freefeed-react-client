@@ -3,7 +3,6 @@ import {preventDefault} from '../utils'
 
 export default class UserSettingsForm extends React.Component {
   render(){
-    console.log('user to render settings', this.props.user)
     return (
       <form onSubmit={preventDefault(this.updateUser)}>
         <div className='form-group p-settings-screenname'>

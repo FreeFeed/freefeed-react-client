@@ -109,3 +109,15 @@ export function updateUser({id, screenName, email, isPrivate}) {
     'body': JSON.stringify({user: {screenName, email, isPrivate}})
   })
 }
+
+export function updatePassword({currentPassword, password, passwordConfirmation}){
+  return fetch(`${apiConfig.host}/v1/users/updatePassword`, {
+    'method': 'PUT',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type':'application/x-www-form-urlencoded',
+      'X-Authentication-Token': getToken()
+    },
+    'body': `password=${password}&passwordConfirmation=${passwordConfirmation}&currentPassword=${currentPassword}`
+  })
+}
