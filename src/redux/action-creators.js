@@ -238,3 +238,13 @@ export function updatePassword(payload){
     payload,
   }
 }
+
+export const UPDATE_USER_PHOTO = 'UPDATE_USER_PHOTO'
+
+export function updateUserPhoto(picture){
+  return {
+    type: UPDATE_USER_PHOTO,
+    apiRequest: Api.updateProfilePicture,
+    payload: {picture},
+  }
+}

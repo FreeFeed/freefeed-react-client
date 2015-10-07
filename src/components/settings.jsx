@@ -1,8 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {updateUser, userSettingsChange, updatePassword} from '../redux/action-creators'
+import {updateUser, userSettingsChange, updatePassword, updateUserPhoto} from '../redux/action-creators'
 import UserSettingsForm from './user-settings-form'
 import ChangePasswordForm from './change-password-form'
+import UserPhotoForm from './user-photo-form'
 
 const Settings = (props) => (
   <div className='content'>
@@ -15,13 +16,7 @@ const Settings = (props) => (
         <hr/>
         <ChangePasswordForm {...props.passwordForm} updatePassword={props.updatePassword} />
         <hr/>
-        <h2 className='p-settings-updateprofilepicture-header'>Update Profile Picture</h2>
-        <div className='form-group'>
-          <input className='' type='file'/>
-        </div>
-        <p>
-          <button className='btn btn-default p-settings-updateprofilepicture'>Update</button>
-        </p>
+        <UserPhotoForm {...props.userPhotoForm} updateUserPhoto={props.updateUserPhoto}/>
         </div>
       </div>
   </div>
@@ -32,6 +27,7 @@ function mapStateToProps(state){
     user: state.user,
     userSettingsForm: state.userSettingsForm,
     passwordForm: state.passwordForm,
+    userPhotoForm: state.userPhotoForm,
   }
 }
 
@@ -40,6 +36,7 @@ function mapDispatchToProps(dispatch){
     updateUser: (...args) => dispatch(updateUser(...args)),
     userSettingsChange: (...args) => dispatch(userSettingsChange(...args)),
     updatePassword: (...args) => dispatch(updatePassword(...args)),
+    updateUserPhoto: (...args) => dispatch(updateUserPhoto(...args)),
   }
 }
 

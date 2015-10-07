@@ -121,3 +121,16 @@ export function updatePassword({currentPassword, password, passwordConfirmation}
     'body': `password=${password}&passwordConfirmation=${passwordConfirmation}&currentPassword=${currentPassword}`
   })
 }
+
+export function updateProfilePicture({picture}){
+  let data = new FormData()
+  data.append('file', picture)
+
+  return fetch(`${apiConfig.host}/v1/users/updateProfilePicture`, {
+    'method': 'POST',
+    'headers': {
+      'X-Authentication-Token': getToken()
+    },
+    'body': data
+  })
+}

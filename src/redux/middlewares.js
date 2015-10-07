@@ -1,5 +1,5 @@
 import {unauthenticated, serverError, request, response, fail, SIGN_IN,
-        UNAUTHENTICATED, WHO_AM_I, whoAmI, requiresAuth, UPDATE_USER,
+        UNAUTHENTICATED, WHO_AM_I, whoAmI, requiresAuth, UPDATE_USER, UPDATE_USER_PHOTO,
         SHOW_MORE_LIKES, showMoreLikesSync, showMoreLikesAsync} from './action-creators'
 
 //middleware for api requests
@@ -48,8 +48,6 @@ export const authMiddleware = store => next => action => {
     case response(SIGN_IN): {
       setToken(action.payload.authToken)
       next(action)
-
-      //to throw it through all middlewares — apiMiddleware included
       store.dispatch(whoAmI())
       return store.dispatch(pushState(null, '/', {}))
     }
@@ -78,6 +76,15 @@ export const likesLogicMiddleware = store => next => action => {
         return store.dispatch(showMoreLikesAsync(postId))
       }
     }
+  }
+
+  return next(action)
+}
+
+export const userPhotoLogicMiddleware = store => next => action => {
+  if (action.type === response(UPDATE_USER_PHOTO)) {
+    //update data after new photo posted
+    store.dispatch(whoAmI())
   }
 
   return next(action)

@@ -2,11 +2,11 @@ import {compose, createStore, applyMiddleware, combineReducers} from 'redux'
 import loggerMiddleware from 'redux-logger'
 import {createHashHistory} from 'history'
 import {reduxReactRouter, routerStateReducer} from 'redux-router'
-import {apiMiddleware, authMiddleware, likesLogicMiddleware} from './middlewares'
+import {apiMiddleware, authMiddleware, likesLogicMiddleware, userPhotoLogicMiddleware} from './middlewares'
 import * as reducers from './reducers'
 
 //order matters — we need to stop unauthed async fetching before request, see authMiddleware
-let middleware = [ authMiddleware, apiMiddleware, likesLogicMiddleware ]
+let middleware = [ authMiddleware, apiMiddleware, likesLogicMiddleware, userPhotoLogicMiddleware ]
 
 //tells webpack to include logging middleware in dev mode
 if (process.env.NODE_ENV != 'production') {
