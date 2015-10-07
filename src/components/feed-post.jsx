@@ -38,6 +38,7 @@ export default (props) => {
       saveEditingPost()
     }
   }
+  const ILikedPost = _.find(props.usersLikedPost, {id:props.user.id})
 
   return (
     <div className='timeline-post-container'>
@@ -95,7 +96,7 @@ export default (props) => {
                   </a>
                   <span>&nbsp;-&nbsp;</span>
                   <a className='p-timeline-post-comment-action' onClick={preventDefault(likePost)}>
-                    Like
+                    {ILikedPost ? 'Un-like' : 'Like'}
                   </a>
                 </span>
                 {props.isEditable ? (
