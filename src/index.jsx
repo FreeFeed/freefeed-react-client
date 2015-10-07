@@ -18,6 +18,7 @@ import Home from './components/home'
 import About from './components/about'
 import NotFound from './components/not-found'
 import Login from './components/login'
+import Settings from './components/settings'
 
 const store = configureStore()
 
@@ -36,6 +37,7 @@ ReactDOM.render(
         <Route name='timeline.home' component={Home} onEnter={()=>store.dispatch(home())}/>
         <Route path='about' name='about' component={About} />
         <Route path='login' component={Login}/>
+        <Route path='settings' component={Settings}/>
       </Route>
     </ReduxRouter>
   </Provider>,
