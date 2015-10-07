@@ -1,0 +1,23 @@
+.loader-container {
+  position:relative;
+  .loader-overlay {
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index: 10;
+    opacity: 0.3;
+    background-color: #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    >img {
+        max-height: 80%;
+        max-width: 80%;
+    }
+    // background-image: url('../assets/images/throbber.gif');
+    // background-position: center;
+    // background-repeat: no-repeat;
+  }
+}

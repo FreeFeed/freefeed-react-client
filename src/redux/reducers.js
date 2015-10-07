@@ -114,12 +114,17 @@ export function postsViewState(state = {}, action) {
 
       return { ...state, [id]: { ...state[id], isEditing, editingText, ...NO_ERROR } }
     }
+    case request(SAVE_EDITING_POST): {
+      const id = action.payload.postId
+      return { ...state, [id]: { ...state[id], isSaving: true } }
+    }
     case response(SAVE_EDITING_POST): {
       const id = action.payload.posts.id
       const editingText = action.payload.posts.body
       const isEditing = false
+      const isSaving = false
 
-      return { ...state, [id]: { ...state[id], isEditing, editingText, ...NO_ERROR } }
+      return { ...state, [id]: { ...state[id], isEditing, isSaving, editingText, ...NO_ERROR } }
     }
     case fail(SAVE_EDITING_POST): {
       const id = action.request.postId
@@ -127,7 +132,7 @@ export function postsViewState(state = {}, action) {
 
       const isError = true
 
-      return { ...state, [id]: { ...state[id], isEditing, isError, errorString: POST_SAVE_ERROR} }
+      return { ...state, [id]: { ...state[id], isEditing, isSaving, isError, errorString: POST_SAVE_ERROR} }
     }
     case fail(DELETE_POST): {
       const id = action.request.postId
@@ -145,13 +150,22 @@ export function postsViewState(state = {}, action) {
           newCommentText: state[action.postId].newCommentText || '' }
         }
     }
+    case request(ADD_COMMENT): {
+      const post = state[action.payload.postId]
+      return {...state,
+        [post.id] : {
+          ...post,
+          savingComment: true,
+        }}
+    }
     case response(ADD_COMMENT): {
       const post = state[action.request.postId]
       return {...state,
         [post.id] : {
           ...post,
           isCommenting: false,
-          newCommentText: action.payload.comments.body,
+          savingComment: false,
+          newCommentText: '',
         }
       }
     }
@@ -160,6 +174,7 @@ export function postsViewState(state = {}, action) {
       return {...state,
         [post.id] : {
           ...post,
+          savingComment: false,
           commentError: NEW_COMMENT_ERROR
         }
       }
@@ -261,13 +276,13 @@ export function commentViewState(state={}, action){
       }
     }
     case request(SAVE_EDITING_COMMENT): {
-      return {...state, [action.payload.commentId]: {...state[action.payload.commentId], editText: action.payload.newCommentBoby}}
+      return {...state, [action.payload.commentId]: {...state[action.payload.commentId], editText: action.payload.newCommentBoby, isSaving: true}}
     }
     case response(SAVE_EDITING_COMMENT): {
-      return {...state, [action.payload.comments.id]: {...state[action.payload.comments.id], isEditing: false, editText: action.payload.comments.body, ...NO_ERROR}}
+      return {...state, [action.payload.comments.id]: {...state[action.payload.comments.id], isEditing: false, isSaving: false, editText: action.payload.comments.body, ...NO_ERROR}}
     }
     case fail(SAVE_EDITING_COMMENT): {
-      return {...state, [action.payload.comments.id]: {...state[action.payload.comments.id], isEditing: true, errorString: COMMENT_SAVE_ERROR}}
+      return {...state, [action.payload.comments.id]: {...state[action.payload.comments.id], isEditing: true, isSaving: false, errorString: COMMENT_SAVE_ERROR}}
     }
     case response(DELETE_COMMENT): {
       return {...state, [action.request.commentId] : undefined}

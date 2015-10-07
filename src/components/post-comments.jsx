@@ -9,9 +9,13 @@ const renderAddingComment = props => (<PostComment
   editText={props.post.newCommentText}
   saveEditingComment={props.addComment}
   toggleEditingComment={props.toggleCommenting}
-  errorString={props.commentError}/>)
+  errorString={props.commentError}
+  isSaving={props.post.savingComment}/>)
 
 export default (props) => {
+  if(props.post.savingComment){
+    console.log('saving comment', props.post)
+  }
   const commentMapper = renderComment(props.commentEdit)
   const first = props.comments[0]
   const last = props.comments.length > 1 && props.comments[props.comments.length - 1]
