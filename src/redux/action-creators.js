@@ -17,7 +17,7 @@ export function unauthenticated(payload) {
 }
 
 export function requiresAuth(action) {
-  return action.requireAuth
+  return action.apiRequest && !action.nonAuthRequest
 }
 
 export const request = (type) =>`${type}_REQUEST`
@@ -32,7 +32,6 @@ export function whoAmI(){
   return {
     type: WHO_AM_I,
     apiRequest: Api.getWhoAmI,
-    requireAuth: true,
   }
 }
 
@@ -43,7 +42,6 @@ export function home(offset = 0){
     type: HOME,
     apiRequest: Api.getHome,
     payload: {offset},
-    requireAuth: true,
   }
 }
 
@@ -54,7 +52,6 @@ export function showMoreComments(postId){
     type: SHOW_MORE_COMMENTS,
     apiRequest: Api.getPostWithAllCommentsAndLikes,
     payload: {postId},
-    requireAuth: true,
   }
 }
 
@@ -74,7 +71,6 @@ export function showMoreLikesAsync(postId){
     type: SHOW_MORE_LIKES_ASYNC,
     apiRequest: Api.getLikesOnly,
     payload: {postId},
-    requireAuth: true,
   }
 }
 
@@ -112,7 +108,6 @@ export function saveEditingPost(postId, newPost){
     type: SAVE_EDITING_POST,
     apiRequest: Api.updatePost,
     payload: {postId, newPost},
-    requireAuth: true,
   }
 }
 
@@ -123,7 +118,6 @@ export function deletePost(postId){
     type: DELETE_POST,
     apiRequest: Api.deletePost,
     payload: {postId},
-    requireAuth: true,
   }
 }
 
@@ -203,6 +197,7 @@ export function signIn(username, password){
   return {
     type: SIGN_IN,
     apiRequest: Api.signIn,
+    nonAuthRequest: true,
     payload: {
       username,
       password,
