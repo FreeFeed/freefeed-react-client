@@ -1,4 +1,5 @@
 import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME,
+        UPDATE_USER, USER_SETTINGS_CHANGE,
         SHOW_MORE_COMMENTS, SIGN_IN, SIGN_IN_CHANGE,
         SHOW_MORE_LIKES_SYNC, SHOW_MORE_LIKES_ASYNC,
         TOGGLE_EDITING_POST, CANCEL_EDITING_POST, SAVE_EDITING_POST, DELETE_POST, TOGGLE_COMMENTING,
@@ -343,6 +344,9 @@ export function user(state = {settings: defaultUserSettings, ...getPersistedUser
     case response(WHO_AM_I): {
       return {...state, ...userParser(action.payload.users)}
     }
+    case response(UPDATE_USER): {
+      return {...state, ...userParser(action.payload.users)}
+    }
   }
   return state
 }
@@ -354,5 +358,23 @@ export function timelines(state = {}, action) {
     }
   }
 
+  return state
+}
+
+export function userSettingsForm(state={saved: false}, action) {
+  switch (action.type) {
+    case USER_SETTINGS_CHANGE: {
+      return {...state, ...action.payload, success: false, error: false}
+    }
+    case request(UPDATE_USER): {
+      return {...state, isSaving: true, error: false}
+    }
+    case response(UPDATE_USER): {
+      return {...state, isSaving: false, success: true, error: false}
+    }
+    case fail(UPDATE_USER): {
+      return {...state, isSaving: false, success: false, error: true}
+    }
+  }
   return state
 }

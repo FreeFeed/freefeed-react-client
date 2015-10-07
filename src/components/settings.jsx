@@ -1,5 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {updateUser, userSettingsChange} from '../redux/action-creators'
+import UserSettingsForm from './user-settings-form'
 
 const Settings = (props) => (
   <div className='content'>
@@ -8,24 +10,7 @@ const Settings = (props) => (
         Settings
       </div>
       <div className='box-body'>
-        <div className='form-group p-settings-screenname'>
-          <label htmlFor='screenName'>Screen name:</label>
-          <input id='screenName' className='form-control' name='screenName' type='text' defaultValue={props.user.username}/>
-        </div>
-        <div className='form-group p-settings-email'>
-          <label htmlFor='email'>Email:</label>
-          <input id='email' className='form-control' name='email' type='text' defaultValue={props.user.email}/>
-        </div>
-        <div className='checkbox p-settings-private'>
-          <label>
-            <input type='checkbox' name='isPrivate'/>
-            Private feed
-            <small>(only let people I approve see my feed)</small>
-          </label>
-        </div>
-        <p>
-          <button className='btn btn-default p-settings-update'>Update</button>
-        </p>
+        <UserSettingsForm user={props.user} updateUser={props.updateUser} userSettingsChange={props.userSettingsChange} {...props.userSettingsForm}/>
         <hr/>
         <h2 className='p-settings-changepassword-header'>Change password</h2>
         <div className='form-group p-settings-currentpassword'>
@@ -59,8 +44,16 @@ const Settings = (props) => (
 
 function mapStateToProps(state){
   return {
-    user: state.user
+    user: state.user,
+    userSettingsForm: state.userSettingsForm
   }
 }
 
-export default connect(state=>state)(Settings)
+function mapDispatchToProps(dispatch){
+  return {
+    updateUser: (...args) => dispatch(updateUser(...args)),
+    userSettingsChange: (...args) => dispatch(userSettingsChange(...args)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Settings)

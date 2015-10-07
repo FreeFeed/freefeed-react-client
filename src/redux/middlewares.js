@@ -1,5 +1,5 @@
 import {unauthenticated, serverError, request, response, fail, SIGN_IN,
-        UNAUTHENTICATED, WHO_AM_I, whoAmI, requiresAuth,
+        UNAUTHENTICATED, WHO_AM_I, whoAmI, requiresAuth, UPDATE_USER,
         SHOW_MORE_LIKES, showMoreLikesSync, showMoreLikesAsync} from './action-creators'
 
 //middleware for api requests
@@ -54,6 +54,10 @@ export const authMiddleware = store => next => action => {
       return store.dispatch(pushState(null, '/', {}))
     }
     case response(WHO_AM_I): {
+      persistUser(userParser(action.payload.users))
+      break
+    }
+    case response(UPDATE_USER): {
       persistUser(userParser(action.payload.users))
       break
     }

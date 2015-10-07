@@ -209,3 +209,22 @@ export function signIn(username, password){
     },
   }
 }
+
+export const UPDATE_USER = 'UPDATE_USER'
+
+export function updateUser(id, screenName, email, isPrivate){
+  return {
+    type: UPDATE_USER,
+    payload: {id, screenName, email, isPrivate},
+    apiRequest: Api.updateUser,
+  }
+}
+
+export const USER_SETTINGS_CHANGE = 'USER_SETTINGS_CHANGE'
+
+export function userSettingsChange(payload){
+  return {
+    type: USER_SETTINGS_CHANGE,
+    payload
+  }
+}
