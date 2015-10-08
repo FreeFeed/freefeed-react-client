@@ -30,7 +30,8 @@ export default (props) => {
   }
   const deletePost = () => props.deletePost(props.id)
   const toggleCommenting = () => props.toggleCommenting(props.id)
-  const likePost = () => props.likePost(props.id)
+  const likePost = () => props.likePost(props.id, props.user.id)
+  const unlikePost = () => props.unlikePost(props.id, props.user.id)
   const checkSave = (event) => {
     const isEnter = event.keyCode === 13
     if (isEnter) {
@@ -95,7 +96,7 @@ export default (props) => {
                     Comment
                   </a>
                   <span>&nbsp;-&nbsp;</span>
-                  <a className='p-timeline-post-comment-action' onClick={preventDefault(likePost)}>
+                  <a className='p-timeline-post-comment-action' onClick={preventDefault(ILikedPost ? unlikePost : likePost)}>
                     {ILikedPost ? 'Un-like' : 'Like'}
                   </a>
                 </span>

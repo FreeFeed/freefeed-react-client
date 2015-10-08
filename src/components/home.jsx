@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import {showMoreComments, showMoreLikes, toggleEditingPost, cancelEditingPost,
-        saveEditingPost, deletePost, likePost, toggleCommenting, addComment,
+        saveEditingPost, deletePost, likePost, unlikePost, toggleCommenting, addComment,
         toggleEditingComment, cancelEditingComment, saveEditingComment,
         deleteComment, createPost } from '../redux/action-creators'
 
@@ -33,6 +33,7 @@ const HomeFeed = (props) => {
               toggleCommenting={props.toggleCommenting}
               addComment={props.addComment}
               likePost={props.likePost}
+              unlikePost={props.unlikePost}
               commentEdit={props.commentEdit} />)
   })
 
@@ -129,7 +130,8 @@ function selectActions(dispatch) {
     deletePost: (postId) => dispatch(deletePost(postId)),
     toggleCommenting: (postId) => dispatch(toggleCommenting(postId)),
     addComment:(postId, commentText) => dispatch(addComment(postId, commentText)),
-    likePost: (postId) => dispatch(likePost(postId)),
+    likePost: (postId, userId) => dispatch(likePost(postId, userId)),
+    unlikePost: (postId, userId) => dispatch(unlikePost(postId, userId)),
     createPost: (postText, feedName) => dispatch(createPost(postText, feedName)),
     commentEdit: {
       toggleEditingComment: (commentId) => dispatch(toggleEditingComment(commentId)),
