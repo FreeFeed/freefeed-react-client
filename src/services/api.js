@@ -87,6 +87,21 @@ export function deleteComment({commentId}) {
   })
 }
 
+export function createPost({postText, feedName}) {
+  return fetch(`${apiConfig.host}/v1/posts`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+    'body': JSON.stringify({
+      post: { body: postText},
+      meta: { feeds: feedName}
+    })
+  })
+}
+
 export function signIn({username, password}){
   return fetch(`${apiConfig.host}/v1/session`, {
     headers:{

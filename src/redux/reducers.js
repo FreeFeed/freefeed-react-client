@@ -4,8 +4,9 @@ import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME,
         UPDATE_USER_PHOTO,
         SHOW_MORE_COMMENTS, SIGN_IN, SIGN_IN_CHANGE,
         SHOW_MORE_LIKES_SYNC, SHOW_MORE_LIKES_ASYNC,
-        TOGGLE_EDITING_POST, CANCEL_EDITING_POST, SAVE_EDITING_POST, DELETE_POST, TOGGLE_COMMENTING,
-        ADD_COMMENT, TOGGLE_EDITING_COMMENT, CANCEL_EDITING_COMMENT, SAVE_EDITING_COMMENT, DELETE_COMMENT} from './action-creators'
+        TOGGLE_EDITING_POST, CANCEL_EDITING_POST, SAVE_EDITING_POST, DELETE_POST,
+        TOGGLE_COMMENTING, ADD_COMMENT, TOGGLE_EDITING_COMMENT, CANCEL_EDITING_COMMENT,
+        SAVE_EDITING_COMMENT, DELETE_COMMENT, CREATE_POST} from './action-creators'
 
 import _ from 'lodash'
 import {userParser} from '../utils'
@@ -47,6 +48,35 @@ export function serverError(state = false, action) {
   return state
 }
 
+const CREATE_POST_ERROR = 'Something went wrong while creating the post...'
+
+export function createPostViewState(state = {}, action) {
+  switch (action.type) {
+    case response(CREATE_POST): {
+      return {
+        isError: false,
+        errorString: '',
+        isPending: false
+      }
+    }
+    case request(CREATE_POST): {
+      return {
+        isError: false,
+        errorString: '',
+        isPending: true
+      }
+    }
+    case fail(CREATE_POST): {
+      return {
+        isError: true,
+        errorString: CREATE_POST_ERROR,
+        isPending: false
+      }
+    }
+  }
+  return state
+}
+
 export function feedViewState(state = { feed: [] }, action) {
   switch (action.type) {
     case response(HOME): {
@@ -56,6 +86,10 @@ export function feedViewState(state = { feed: [] }, action) {
     case response(DELETE_POST): {
       const postId = action.request.postId
       return { feed: _.without(state.feed, postId) }
+    }
+    case response(CREATE_POST): {
+      const postId = action.payload.posts.id
+      return { feed: [].concat([postId], state.feed) }
     }
   }
   return state
@@ -182,6 +216,17 @@ export function postsViewState(state = {}, action) {
         }
       }
     }
+    case response(CREATE_POST): {
+      const post = action.payload.posts
+      const id = post.id
+
+      const omittedComments = post.omittedComments
+      const omittedLikes = post.omittedLikes
+      const isEditing = false
+      const editingText = post.body
+
+      return { ...state, [id]: { omittedComments, omittedLikes, id, isEditing, editingText, ...NO_ERROR } }
+    }
   }
 
   return state
@@ -220,6 +265,9 @@ export function posts(state = {}, action) {
           comments: [...post.comments, action.payload.comments.id],
         }
       }
+    }
+    case response(CREATE_POST): {
+      return updatePostData(state, action)
     }
   }
 
