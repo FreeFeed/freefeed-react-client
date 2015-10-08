@@ -21,6 +21,7 @@ const HomeFeed = (props) => {
 
     return (<FeedPost {...post}
               key={post.id}
+              user={props.user}
               showMoreComments={props.showMoreComments}
               showMoreLikes={props.showMoreLikes}
               toggleEditingPost={props.toggleEditingPost}
