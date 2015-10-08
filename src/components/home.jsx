@@ -1,11 +1,13 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {showMoreComments, showMoreLikes,
-        toggleEditingPost, cancelEditingPost, saveEditingPost, deletePost, likePost, toggleCommenting,
-        addComment, toggleEditingComment, cancelEditingComment, saveEditingComment, deleteComment } from '../redux/action-creators'
+import {showMoreComments, showMoreLikes, toggleEditingPost, cancelEditingPost,
+        saveEditingPost, deletePost, likePost, toggleCommenting, addComment,
+        toggleEditingComment, cancelEditingComment, saveEditingComment,
+        deleteComment, createPost } from '../redux/action-creators'
 
 import FeedPost from './feed-post'
+import CreatePost from './create-post'
 
 
 const HomeFeed = (props) => {
@@ -36,7 +38,6 @@ const HomeFeed = (props) => {
 
   return (
     <div className='posts'>
-      <p>submit-post</p>
       <p>pagination (if not first page)</p>
       <div className='posts'>
         {feed_posts}
@@ -56,12 +57,19 @@ class HomeHandler extends React.Component {
   }
 
   render(){
+    const createPost = (postText) => {
+      const feedName = this.props.user.username
+      this.props.createPost(postText, feedName)
+    }
+
     return (
       <div className='box'>
         <div className='box-header-timeline'>
           Home
         </div>
         <div className='box-body'>
+          <CreatePost createPostViewState={this.props.createPostViewState}
+                      createPost={createPost} />
           <HomeFeed {...this.props}/>
         </div>
         <div className='box-footer'>
@@ -76,6 +84,7 @@ const MAX_LIKES = 4
 
 function selectState(state) {
   const user = state.user
+  const createPostViewState = state.createPostViewState
   const posts = state.posts
   const timelines = state.timelines
   const feed = state.feedViewState.feed
@@ -107,7 +116,7 @@ function selectState(state) {
     return { ...post, comments, usersLikedPost, createdBy, ...postViewState, isEditable }
   })
 
-  return { feed, user, posts, timelines }
+  return { feed, user, posts, timelines, createPostViewState }
 }
 
 function selectActions(dispatch) {
@@ -121,6 +130,7 @@ function selectActions(dispatch) {
     toggleCommenting: (postId) => dispatch(toggleCommenting(postId)),
     addComment:(postId, commentText) => dispatch(addComment(postId, commentText)),
     likePost: (postId) => dispatch(likePost(postId)),
+    createPost: (postText, feedName) => dispatch(createPost(postText, feedName)),
     commentEdit: {
       toggleEditingComment: (commentId) => dispatch(toggleEditingComment(commentId)),
       saveEditingComment: (commentId, newValue) => dispatch(saveEditingComment(commentId, newValue)),

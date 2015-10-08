@@ -181,6 +181,16 @@ export function deleteComment(commentId){
   }
 }
 
+export const CREATE_POST = 'CREATE_POST'
+
+export function createPost(postText, feedName){
+  return {
+    type: CREATE_POST,
+    payload: {postText, feedName},
+    apiRequest: Api.createPost
+  }
+}
+
 export const SIGN_IN_CHANGE = 'SIGN_IN_CHANGE'
 
 export function signInChange(username, password){
