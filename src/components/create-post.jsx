@@ -32,7 +32,7 @@ export default class CreatePost extends React.Component {
 
               {this.props.createPostViewState.isPending ? (
                 <span className="throbber">
-                  <img width="16" height="16" src='../assets/images/throbber.gif'/>
+                  <img width="16" height="16" src='/assets/images/throbber.gif'/>
                 </span>
               ) : false}
 
