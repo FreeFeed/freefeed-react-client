@@ -87,13 +87,50 @@ export function deleteComment({commentId}) {
   })
 }
 
-export function signIn(credentials){
+export function signIn({username, password}){
   return fetch(`${apiConfig.host}/v1/session`, {
     headers:{
       'Accept': 'application/json',
       'Content-Type':'application/x-www-form-urlencoded',
     },
     method: 'POST',
-    body: `username=${credentials.username}&password=${credentials.password}`,
+    body: `username=${username}&password=${password}`,
+  })
+}
+
+export function updateUser({id, screenName, email, isPrivate}) {
+  return fetch(`${apiConfig.host}/v1/users/${id}`, {
+    'method': 'PUT',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+    'body': JSON.stringify({user: {screenName, email, isPrivate}})
+  })
+}
+
+export function updatePassword({currentPassword, password, passwordConfirmation}){
+  return fetch(`${apiConfig.host}/v1/users/updatePassword`, {
+    'method': 'PUT',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type':'application/x-www-form-urlencoded',
+      'X-Authentication-Token': getToken()
+    },
+    'body': `password=${password}&passwordConfirmation=${passwordConfirmation}&currentPassword=${currentPassword}`
+  })
+}
+
+export function updateProfilePicture({picture}){
+  let data = new FormData()
+  data.append('file', picture)
+
+  return fetch(`${apiConfig.host}/v1/users/updateProfilePicture`, {
+    'method': 'POST',
+    'headers': {
+      'X-Authentication-Token': getToken()
+    },
+    'body': data
   })
 }

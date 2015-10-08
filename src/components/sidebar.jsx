@@ -16,7 +16,7 @@ export default (props) => (
           <UserName user={props.user} />
         </div>
         <div>
-          <Link to='settings.index'>settings</Link>
+          <Link to='/settings'>settings</Link>
           &nbsp;-&nbsp;
           <a onClick={preventDefault(props.signOut)}>sign out</a>
         </div>

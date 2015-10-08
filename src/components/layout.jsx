@@ -8,7 +8,7 @@ import Sidebar from './sidebar'
 import Signin from './signin'
 
 const InternalLayout = (props) => (
-  <div className={!props.gotResponse || !props.authenticated ? 'col-md-12' : 'col-md-9'}>
+  <div className={props.authenticated ? 'col-md-9' : 'col-md-12'}>
     <div className='content'>
       {props.children}
     </div>
