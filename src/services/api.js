@@ -102,6 +102,30 @@ export function createPost({postText, feedName}) {
   })
 }
 
+export function likePost({postId}) {
+  return fetch(`${apiConfig.host}/v1/posts/${postId}/like`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+    'body': '{}'
+  })
+}
+
+export function unlikePost({postId}) {
+  return fetch(`${apiConfig.host}/v1/posts/${postId}/unlike`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+    'body': '{}'
+  })
+}
+
 export function signIn({username, password}){
   return fetch(`${apiConfig.host}/v1/session`, {
     headers:{

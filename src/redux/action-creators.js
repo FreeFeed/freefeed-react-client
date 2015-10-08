@@ -145,10 +145,27 @@ export function addComment(postId, commentText){
 
 export const LIKE_POST = 'LIKE_POST'
 
-export function likePost(postId){
+export function likePost(postId, userId){
   return {
     type: LIKE_POST,
-    postId,
+    apiRequest: Api.likePost,
+    payload: {
+      postId,
+      userId
+    }
+  }
+}
+
+export const UNLIKE_POST = 'UNLIKE_POST'
+
+export function unlikePost(postId, userId){
+  return {
+    type: UNLIKE_POST,
+    apiRequest: Api.unlikePost,
+    payload: {
+      postId,
+      userId
+    }
   }
 }
 
