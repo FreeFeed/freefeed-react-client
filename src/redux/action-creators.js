@@ -163,11 +163,11 @@ export function toggleEditingComment(commentId){
 
 export const SAVE_EDITING_COMMENT = 'SAVE_EDITING_COMMENT'
 
-export function saveEditingComment(commentId, newCommentBoby){
+export function saveEditingComment(commentId, newCommentBody){
   return {
     type: SAVE_EDITING_COMMENT,
     apiRequest: Api.updateComment,
-    payload: {commentId, newCommentBoby}
+    payload: {commentId, newCommentBody}
   }
 }
 
