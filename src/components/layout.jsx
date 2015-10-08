@@ -1,6 +1,6 @@
 import React from 'react'
-import { Link} from 'react-router'
-import { connect } from 'react-redux'
+import {Link} from 'react-router'
+import {connect } from 'react-redux'
 
 import {unauthenticated} from '../redux/action-creators'
 import Footer from './footer'
@@ -31,7 +31,7 @@ class Layout extends React.Component {
          <div className='col-md-4'>
            <div className='header'>
              <h1 className='title'>
-               <Link to='timeline.home'>freefeed</Link>
+               <Link to='/'>freefeed</Link>
              </h1>
            </div>
          </div>
