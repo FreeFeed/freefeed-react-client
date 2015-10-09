@@ -6,7 +6,8 @@ import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME,
         SHOW_MORE_LIKES_SYNC, SHOW_MORE_LIKES_ASYNC,
         TOGGLE_EDITING_POST, CANCEL_EDITING_POST, SAVE_EDITING_POST, DELETE_POST,
         TOGGLE_COMMENTING, ADD_COMMENT, TOGGLE_EDITING_COMMENT, CANCEL_EDITING_COMMENT,
-        SAVE_EDITING_COMMENT, DELETE_COMMENT, CREATE_POST} from './action-creators'
+        SAVE_EDITING_COMMENT, DELETE_COMMENT, CREATE_POST,
+        LIKE_POST, UNLIKE_POST} from './action-creators'
 
 import _ from 'lodash'
 import {userParser} from '../utils'
@@ -216,6 +217,62 @@ export function postsViewState(state = {}, action) {
         }
       }
     }
+    case request(LIKE_POST): {
+      const post = state[action.payload.postId]
+      return {...state,
+        [post.id] : {
+          ...post,
+          liking: true,
+        }}
+    }
+    case response(LIKE_POST): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id] : {
+          ...post,
+          liking: false,
+        }
+      }
+    }
+    case fail(LIKE_POST): {
+      const post = state[action.request.postId]
+      const errorString = 'Something went wrong while liking the post...'
+      return {...state,
+        [post.id] : {
+          ...post,
+          liking: false,
+          likeError: errorString,
+        }
+      }
+    }
+    case request(UNLIKE_POST): {
+      const post = state[action.payload.postId]
+      return {...state,
+        [post.id] : {
+          ...post,
+          liking: true,
+        }}
+    }
+    case response(UNLIKE_POST): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id] : {
+          ...post,
+          liking: false,
+        }
+      }
+    }
+    case fail(UNLIKE_POST): {
+      const post = state[action.request.postId]
+      const errorString = 'Something went wrong while un-liking the post...'
+      return {...state,
+        [post.id] : {
+          ...post,
+          liking: false,
+          likeError: errorString,
+        }
+      }
+    }
     case response(CREATE_POST): {
       const post = action.payload.posts
       const id = post.id
@@ -263,6 +320,29 @@ export function posts(state = {}, action) {
         [post.id] : {
           ...post,
           comments: [...post.comments, action.payload.comments.id],
+        }
+      }
+    }
+    case response(LIKE_POST): {
+      console.log('LIKE_POST posts')
+      console.dir(state)
+      const post = state[action.request.postId]
+      // @todo Update omittedLikes properly here
+      //const omitted = post.omittedLikes > 0 ? post.omittedLikes+1 : 0
+      return {...state,
+        [post.id] : {
+          ...post,
+          likes: [action.request.userId, ...post.likes],
+          //omittedLikes: omitted,
+        }
+      }
+    }
+    case response(UNLIKE_POST): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id] : {
+          ...post,
+          likes: _.without(post.likes, action.request.userId),
         }
       }
     }
