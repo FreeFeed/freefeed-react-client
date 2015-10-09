@@ -319,7 +319,7 @@ export function posts(state = {}, action) {
       return {...state,
         [post.id] : {
           ...post,
-          comments: [...post.comments, action.payload.comments.id],
+          comments: [...(post.comments || []), action.payload.comments.id],
         }
       }
     }
