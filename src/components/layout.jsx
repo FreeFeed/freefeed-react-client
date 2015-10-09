@@ -31,7 +31,7 @@ class Layout extends React.Component {
          <div className='col-md-4'>
            <div className='header'>
              <h1 className='title'>
-               <Link to='/'>freefeed</Link>
+               <Link to='/'>FreeFeed-beta</Link>
              </h1>
            </div>
          </div>

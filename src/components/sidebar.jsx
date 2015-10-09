@@ -53,13 +53,12 @@ export default (props) => (
 
     <div className='box'>
       <div className='box-header-groups'>
-        Ministry of Truth
+        Info
       </div>
       <div className='box-body'>
         <ul>
-          <li><a href='http://about.freefeed.net' target='_blank'>About</a></li>
-          <li><a href='http://news.freefeed.net' target='_blank'>News</a></li>
-          <li><a href='https://twitter.com/freefeednet' target='_blank'>Twitter</a></li>
+          <li>News</li>
+          <li>Support</li>
         </ul>
       </div>
       <div className='box-footer'>
@@ -69,24 +68,22 @@ export default (props) => (
 
     <div className='box'>
       <div className='box-header-groups'>
-        Ministry of Love
-      </div>
-      <div className='box-body'>
-        <ul>
-          <li><a href='https://docs.google.com/forms/d/1N6zo9BGu8Hv6aORTfbdjWoFt6xyikTfv-CJA4JoTzmo/viewform?usp=send_form' target='_blank'>Ask a question</a></li>
-          <li><a href='https://freefeed.net/bugreport'>Report an issue</a></li>
-          <li><a href='https://freefeed.net/support'>Get updates</a></li>
-          <li><a href='http://freefeed.reformal.ru/'>Suggest a feature</a></li>
-        </ul>
+        Bookmarklet
       </div>
       <div className='box-footer'>
-
+        Once added to your toolbar, this button will let you share web pages on your FreeFeed.
+        You can even attach thumbnails of images from the page you share!
+      </div>
+      <div className='box-footer'>
+        Click and drag ​
+        <a className='bookmarklet-button' href="BOOKMARKLET_PLACEHOLDER" onclick='return false'>Share on FreeFeed</a>
+        to&nbsp;your toolbar.
       </div>
     </div>
 
     <div className='box'>
       <div className='box-header-groups'>
-        Ministry of Plenty
+        Coin Jar
       </div>
       <div className='box-body'>
       </div>
