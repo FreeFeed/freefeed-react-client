@@ -232,6 +232,14 @@ export function signIn(username, password){
   }
 }
 
+export const SIGN_IN_EMPTY = 'SIGN_IN_EMPTY'
+
+export function signInEmpty(){
+  return {
+    type: SIGN_IN_EMPTY
+  }
+}
+
 export const UPDATE_USER = 'UPDATE_USER'
 
 export function updateUser(id, screenName, email, isPrivate){

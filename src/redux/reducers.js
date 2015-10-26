@@ -2,7 +2,7 @@ import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME,
         UPDATE_USER, USER_SETTINGS_CHANGE,
         UPDATE_PASSWORD,
         UPDATE_USER_PHOTO,
-        SHOW_MORE_COMMENTS, SIGN_IN, SIGN_IN_CHANGE,
+        SHOW_MORE_COMMENTS, SIGN_IN, SIGN_IN_CHANGE, SIGN_IN_EMPTY,
         SHOW_MORE_LIKES_SYNC, SHOW_MORE_LIKES_ASYNC,
         TOGGLE_EDITING_POST, CANCEL_EDITING_POST, SAVE_EDITING_POST, DELETE_POST,
         TOGGLE_COMMENTING, ADD_COMMENT, TOGGLE_EDITING_COMMENT, CANCEL_EDITING_COMMENT,
@@ -12,17 +12,27 @@ import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME,
 import _ from 'lodash'
 import {userParser} from '../utils'
 
-export function signInForm(state={username:'', password:'', error:''}, action) {
+export function signInForm(state={username:'', password:'', error:'', loading: false}, action) {
   switch(action.type) {
     case SIGN_IN_CHANGE: {
       return {
         ...state,
         username: action.username || state.username,
         password: action.password || state.password,
+        loading: false,
       }
     }
     case UNAUTHENTICATED: {
-      return {...state, error: (action.payload || {}).err}
+      return {...state, error: (action.payload || {}).err, loading: false }
+    }
+    case SIGN_IN_EMPTY: {
+      return {...state, error: 'Enter login and password', loading: false }
+    }
+    case request(SIGN_IN): {
+      return {...state, loading: true }
+    }
+    case response(SIGN_IN): {
+      return {...state, loading: false }
     }
   }
   return state
