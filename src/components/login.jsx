@@ -1,7 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {signInChange, signIn} from '../redux/action-creators'
+import {signInChange, signIn, signInEmpty} from '../redux/action-creators'
 import {preventDefault} from '../utils'
+import LoaderContainer from './loader-container'
 
 function mapStateToProps (state){
   return {...state.signInForm}
@@ -11,6 +12,15 @@ function mapDispatchToProps(dispatch){
   return {
     signInChange: (...args) => dispatch(signInChange(...args)),
     signIn: (...args) => dispatch(signIn(...args)),
+    signInEmpty: (...args) => dispatch(signInEmpty(...args)),
+  }
+}
+
+function signInFunc(props){
+  if (props.username && props.password){
+    props.signIn(props.username, props.password)
+  } else {
+    props.signInEmpty()
   }
 }
 
@@ -28,19 +38,21 @@ function Login (props) {
                         </div>) : false}
         <div className='row'>
           <div className='col-md-6'>
-            <form onSubmit={preventDefault(() => props.signIn(props.username, props.password))} className='p-signin'>
-              <div className='form-group'>
-                <label htmlFor='username'>Username</label>
-                <input id='username' className='ember-view ember-text-field form-control' type='text' onChange={e => props.signInChange(e.target.value)}/>
-              </div>
-              <div className='form-group'>
-                <label htmlFor='password'>Password</label>
-                <input id='password' className='ember-view ember-text-field form-control' type='password' onChange={e => props.signInChange(undefined, e.target.value)}/>
-              </div>
-              <div className='form-group'>
-                <button className='btn btn-default p-singin-action' type='submit'>Sign in</button>
-              </div>
-            </form>
+            <LoaderContainer loading={props.loading}>
+              <form onSubmit={preventDefault(() => signInFunc(props))} className='p-signin'>
+                <div className='form-group'>
+                  <label htmlFor='username'>Username</label>
+                  <input id='username' className='ember-view ember-text-field form-control' type='text' onChange={e => props.signInChange(e.target.value)}/>
+                </div>
+                <div className='form-group'>
+                  <label htmlFor='password'>Password</label>
+                  <input id='password' className='ember-view ember-text-field form-control' type='password' onChange={e => props.signInChange(undefined, e.target.value)}/>
+                </div>
+                <div className='form-group'>
+                  <button className='btn btn-default p-singin-action' type='submit'>Sign in</button>
+                </div>
+              </form>
+            </LoaderContainer>
             <p>New to freefeed? <a href='https://docs.google.com/forms/d/1P4cyYUZlxABbWvZrM5jHRcMUFQFpc8qfbZWjGulobsA/viewform?c=0&amp;w=1' target='_blank'>Create an account »</a></p>
           </div>
         </div>
