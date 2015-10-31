@@ -6,12 +6,12 @@ import {preventDefault} from '../utils'
 
 export default (props) => (
   <div className='col-md-3 sidebar'>
-    <div className='logged'>
-      <div className='logged-avatar'>
+    <div className='logged-in'>
+      <div className='avatar'>
         <Link to='timeline.index' params={{username: props.user.username}}><img className='media-object' src={props.user.profilePictureMediumUrl}/></Link>
       </div>
 
-      <div className='logged-user'>
+      <div className='user'>
         <div className='author'>
           <UserName user={props.user} />
         </div>
