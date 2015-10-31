@@ -91,6 +91,10 @@ function selectState(state) {
   const feed = state.feedViewState.feed
   .map(id => state.posts[id])
   .map(post => {
+    let attachments = _.map(post.attachments, attachmentId => {
+      return state.attachments[attachmentId]
+    })
+
     let comments = _.map(post.comments, commentId => {
       const comment = state.comments[commentId]
       const commentViewState = state.commentViewState[commentId]
@@ -114,7 +118,7 @@ function selectState(state) {
 
     const isEditable = post.createdBy == user.id
 
-    return { ...post, comments, usersLikedPost, createdBy, ...postViewState, isEditable }
+    return { ...post, attachments, comments, usersLikedPost, createdBy, ...postViewState, isEditable }
   })
 
   return { feed, user, posts, timelines, createPostViewState }

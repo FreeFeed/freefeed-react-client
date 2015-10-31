@@ -366,6 +366,19 @@ export function posts(state = {}, action) {
   return state
 }
 
+function updateAttachmentData(state, action) {
+  return { ...state, ..._.indexBy(action.payload.attachments, 'id') }
+}
+
+export function attachments(state = {}, action) {
+  switch (action.type) {
+    case response(HOME): {
+      return updateAttachmentData(state, action)
+    }
+  }
+  return state
+}
+
 function updateCommentData(state, action) {
   return { ...state, ..._.indexBy(action.payload.comments, 'id') }
 }

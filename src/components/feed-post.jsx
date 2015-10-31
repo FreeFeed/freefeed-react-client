@@ -4,6 +4,7 @@ import moment from 'moment'
 import Linkify from 'react-linkify'
 
 import {fromNowOrNow} from '../utils'
+import PostAttachments from './post-attachments'
 import PostComments from './post-comments'
 import PostLikes from './post-likes'
 import UserName from './user-name'
@@ -80,6 +81,8 @@ export default (props) => {
                 <Linkify>{props.body}</Linkify>
               </div>
             </div>
+
+            <PostAttachments attachments={props.attachments} />
 
             <div className='info p-timeline-post-info'>
               {isDirect ? (<span>»</span>) : false}
