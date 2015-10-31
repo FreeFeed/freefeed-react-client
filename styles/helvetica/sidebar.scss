@@ -4,15 +4,15 @@
     color: #000;
   }
 
-  .logged {
+  .logged-in {
     margin-bottom: 23px;
 
-    .logged-avatar {
+    .avatar {
       float: left;
       margin-right: 8px;
     }
 
-    .logged-user .author a {
+    .user .author a {
       font-weight: 600;
     }
   }
