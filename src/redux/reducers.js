@@ -91,7 +91,8 @@ export function createPostViewState(state = {}, action) {
 export function feedViewState(state = { feed: [] }, action) {
   switch (action.type) {
     case response(HOME): {
-      const feed = action.payload.posts.map(post => post.id)
+      const posts = action.payload.posts || []
+      const feed = posts.map(post => post.id)
       return { ...state, feed }
     }
     case response(DELETE_POST): {
@@ -118,7 +119,8 @@ const NEW_COMMENT_ERROR = 'Failed to add comment'
 export function postsViewState(state = {}, action) {
   switch (action.type) {
     case response(HOME): {
-      const postsViewState = action.payload.posts.map(post => {
+      const posts = action.payload.posts || []
+      const postsViewState = posts.map(post => {
         const id = post.id
 
         const omittedComments = post.omittedComments
@@ -396,10 +398,11 @@ export function comments(state = {}, action) {
 
 const COMMENT_SAVE_ERROR = 'Something went wrong while saving comment'
 
-export function commentViewState(state={}, action){
+export function commentViewState(state={}, action) {
   switch(action.type){
     case response(HOME): {
-      const commentsViewState = action.payload.comments.map(comment => ({
+      const comments = action.payload.comments || []
+      const commentsViewState = comments.map(comment => ({
         id: comment.id,
         isEditing: false,
         editText: comment.body
