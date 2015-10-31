@@ -39,7 +39,9 @@ const userDefaults = {
 }
 
 export function userParser(user) {
-  return {...userDefaults, ...user}
+  user.profilePictureMediumUrl = user.profilePictureMediumUrl || userDefaults.profilePictureMediumUrl
+  user.profilePictureLargeUrl = user.profilePictureLargeUrl || userDefaults.profilePictureLargeUrl
+  return {...user}
 }
 
 
