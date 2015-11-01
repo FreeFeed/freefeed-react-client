@@ -36,7 +36,7 @@ export default class PostComment extends React.Component{
         :
               (<span>
                   <span className='comment-text'>
-                    <Linkify>{this.props.body}</Linkify>
+                    <Linkify properties={{target: '_blank'}}>{this.props.body}</Linkify>
                   </span>
                   &nbsp;-&nbsp;
                   <span className='author'>
