@@ -36,20 +36,8 @@
 
   .audio-attachments {
     .attachment {
-      display: inline-block;
+      display: block;
       margin: 0 8px 8px 0;
-
-      .full-player {
-        width: 400px !important;
-      }
-
-      .audio-wrapper {
-        position: relative;
-
-        .inner {
-          padding-bottom: 5px;
-        }
-      }
 
       i {
         color: #666666;
