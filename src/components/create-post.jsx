@@ -1,5 +1,6 @@
 import React from 'react'
 import {preventDefault} from '../utils'
+import Textarea from 'react-textarea-autosize'
 
 export default class CreatePost extends React.Component {
   constructor(props) {
@@ -21,11 +22,11 @@ export default class CreatePost extends React.Component {
     return (
       <div className='create-post p-timeline-post-create'>
         <div className='p-create-post-view'>
-          <textarea className='edit-post-area'
+          <Textarea className='edit-post-area'
                     ref='postText'
-                    rows='2'
-                    data-autosize-on='true'
-                    onChange={this.checkCreatPostAvailability.bind(this)} />
+                    onChange={this.checkCreatPostAvailability.bind(this)}
+                    minRows={2}
+                    maxRows={10}/>
         </div>
           <div className='row'>
             <div className='pull-right'>
@@ -36,7 +37,7 @@ export default class CreatePost extends React.Component {
                 </span>
               ) : false}
 
-              <button className='btn btn-default btn-xs p-create-post-action'
+              <button className='btn btn-default btn-xs create-post-action'
                       onClick={preventDefault(_ => this.createPost())}
                       disabled={this.state.disabled || this.props.createPostViewState.isPending}>Post</button>
             </div>
