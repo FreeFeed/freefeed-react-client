@@ -19,12 +19,18 @@
       margin-bottom: 2px;
     }
 
-    .text {
-      font-size: 16px;
-      line-height: 21px;
+    .body {
+      margin-bottom: 8px;
+      @media (max-width: 767px) { margin-bottom: 18px; }
 
-      p {
-        margin: 6px 0 12px;
+      .text {
+        color: #000;
+        font-size: 16px;
+        line-height: 21px;
+
+        a {
+          color: #000088;
+        }
       }
     }
   }
