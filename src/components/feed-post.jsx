@@ -78,7 +78,7 @@ export default (props) => {
           <div>
             <div className='body'>
               <div className='text'>
-                <Linkify>{props.body}</Linkify>
+                <Linkify properties={{target: '_blank'}}>{props.body}</Linkify>
               </div>
             </div>
 
