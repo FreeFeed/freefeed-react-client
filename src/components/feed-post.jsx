@@ -8,8 +8,8 @@ import PostAttachments from './post-attachments'
 import PostComments from './post-comments'
 import PostLikes from './post-likes'
 import UserName from './user-name'
-import LoaderContainer from './loader-container'
 import {preventDefault} from '../utils'
+import Textarea from 'react-textarea-autosize'
 
 export default (props) => {
   const isDirect = false
@@ -56,23 +56,26 @@ export default (props) => {
 
         {props.isEditing ? (
           <div className='edit-post'>
-            <LoaderContainer loading={props.isSaving}>
-              <div>
-                <textarea className='edit-post-area'
-                          rows='2'
-                          data-autosize-on='true'
-                          defaultValue={props.editingText}
-                          onKeyDown={checkSave}
-                          onChange={editingPostTextChange} />
-              </div>
-              <div>
-                <button className='btn btn-default btn-xs'
-                        onClick={preventDefault(()=>saveEditingPost())}>
-                  Update
-                </button>
-                <a className="action-link" onClick={preventDefault(()=>cancelEditingPost())}>Cancel</a>
-              </div>
-            </LoaderContainer>
+            <div>
+              <Textarea className='edit-post-area'
+                        defaultValue={props.editingText}
+                        onKeyDown={checkSave}
+                        onChange={editingPostTextChange}
+                        minRows={2}
+                        maxRows={10}/>
+            </div>
+            <div className='post-actions'>
+              {props.isSaving ? (
+                  <span className="throbber">
+                    <img width="16" height="16" src='/assets/images/throbber.gif'/>
+                  </span>
+                ) : false}
+              <a className="action-link post-cancel" onClick={preventDefault(()=>cancelEditingPost())}>Cancel</a>
+              <button className='btn btn-default btn-xs'
+                      onClick={preventDefault(()=>saveEditingPost())}>
+                Update
+              </button>
+            </div>
           </div>
         ) : (
           <div>

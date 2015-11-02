@@ -65,7 +65,7 @@ export function addComment({postId, commentText}){
   })
 }
 
-export function updateComment({commentId, newCommentBoby}) {
+export function updateComment({commentId, newCommentBody}) {
   return fetch(`${apiConfig.host}/v1/comments/${commentId}`, {
     'method': 'PUT',
     'headers': {
@@ -73,7 +73,7 @@ export function updateComment({commentId, newCommentBoby}) {
       'Content-Type': 'application/json',
       'X-Authentication-Token': getToken()
     },
-    'body': JSON.stringify({comment: {body: newCommentBoby}})
+    'body': JSON.stringify({comment: {body: newCommentBody}})
   })
 }
 

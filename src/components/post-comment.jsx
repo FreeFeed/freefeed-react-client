@@ -1,8 +1,8 @@
 import React from 'react'
 import Linkify from'react-linkify'
 import UserName from './user-name'
-import LoaderContainer from './loader-container'
 import {preventDefault} from '../utils'
+import Textarea from 'react-textarea-autosize'
 
 export default class PostComment extends React.Component{
   render() {
@@ -13,25 +13,30 @@ export default class PostComment extends React.Component{
       </a>
       <div className='body p-comment-body'>
         {this.props.isEditing ? (<div className='edit'>
-                      <LoaderContainer loading={this.props.isSaving}>
                         <div>
-                          <textarea
+                          <Textarea
                             autoFocus
                             ref='commentText'
-                            defaultValue={this.props.editText}
                             className='edit-comment-area'
-                            rows='2'
+                            defaultValue={this.props.editText}
                             onKeyDown={this.checkSave}
-                            style={{overflow: 'hidden', wordWrap: 'break-word', resize: 'horizontal', height: '44px'}}
-                          />
+                            style={{ overflow: 'hidden', wordWrap: 'break-word' }}
+                            minRows={2}
+                            maxRows={10}
+                            />
                         </div>
-                        <div className='p-comment-actions'>
-                          <button className='p-comment-post' onClick={this.saveComment}>Update</button>
+                        <div className='comment-actions'>
+                          {this.props.isSaving ? (
+                                <span className="throbber">
+                                  <img width="16" height="16" src='/assets/images/throbber.gif'/>
+                                </span>
+                              ) : false}
                           &nbsp;
-                          <a className='p-comment-cancel' onClick={preventDefault(_=>this.props.toggleEditingComment(this.props.id))}>Cancel</a>
+                          <a className='comment-cancel' onClick={preventDefault(_=>this.props.toggleEditingComment(this.props.id))}>Cancel</a>
+                          &nbsp;
+                          <button className='btn btn-default btn-xs comment-post' onClick={this.saveComment}>Update</button>
                         </div>
                         {this.props.errorString ? (<div className='comment-error'>{this.props.errorString}</div>) : false}
-                      </LoaderContainer>
                     </div>)
         :
               (<span>
@@ -57,7 +62,6 @@ export default class PostComment extends React.Component{
   )}
   saveComment = () => {
     if(!this.props.isSaving){
-      this.refs.commentText.blur()
       this.props.saveEditingComment(this.props.id, this.refs.commentText.value)
     }
   }
