@@ -103,6 +103,9 @@ export function feedViewState(state = { feed: [] }, action) {
       const postId = action.payload.posts.id
       return { feed: [].concat([postId], state.feed) }
     }
+    case UNAUTHENTICATED: {
+      return {feed: []}
+    }
   }
   return state
 }
@@ -296,6 +299,9 @@ export function postsViewState(state = {}, action) {
 
       return { ...state, [id]: { omittedComments, omittedLikes, id, isEditing, editingText, ...NO_ERROR } }
     }
+    case UNAUTHENTICATED: {
+      return {}
+    }
   }
 
   return state
@@ -360,6 +366,9 @@ export function posts(state = {}, action) {
     }
     case response(CREATE_POST): {
       return updatePostData(state, action)
+    }
+    case UNAUTHENTICATED: {
+      return {}
     }
   }
 
@@ -453,6 +462,9 @@ export function commentViewState(state={}, action) {
         }
       }
     }
+    case UNAUTHENTICATED: {
+      return {}
+    }
   }
   return state
 }
@@ -473,7 +485,9 @@ export function users(state = {}, action) {
     case response(SHOW_MORE_LIKES_ASYNC): {
       return mergeWithNewUsers(state, action)
     }
-
+    case UNAUTHENTICATED: {
+      return {}
+    }
   }
   return state
 }
