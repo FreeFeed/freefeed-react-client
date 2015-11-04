@@ -19,8 +19,9 @@
     "moment": "^2.10.6",
     "node-sass": "^3.3.3",
     "numeral": "^1.5.3",
-    "react": "0.14.0-rc1",
-    "react-dom": "0.14.0-rc1",
+    "raw-loader": "^0.5.1",
+    "react": "0.14.2",
+    "react-dom": "0.14.2",
     "react-linkify": "0.0.4",
     "react-redux": "^3.0.0",
     "react-router": "1.0.0-rc1",
@@ -28,13 +29,16 @@
     "redux-logger": "^2.0.0",
     "redux-router": "^1.0.0-beta3",
     "sass-loader": "^2.0.1",
+    "skin-deep": "^0.12.0",
     "style-loader": "^0.12.4",
+    "tap-webpack-plugin": "^1.0.0",
+    "tape": "^4.2.2",
     "webpack": "^1.12.2",
     "webpack-dev-server": "^1.12.0",
     "webpack-path-rewriter": "^1.1.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/webpack"
   },
   "author": "FreeFeed contributors",
   "repository": {
