@@ -448,7 +448,7 @@ export function commentViewState(state={}, action) {
       }
     }
     case request(SAVE_EDITING_COMMENT): {
-      return {...state, [action.payload.commentId]: {...state[action.payload.commentId], editText: action.payload.newCommentBoby, isSaving: true}}
+      return {...state, [action.payload.commentId]: {...state[action.payload.commentId], editText: action.payload.newCommentBody, isSaving: true}}
     }
     case response(SAVE_EDITING_COMMENT): {
       return {...state, [action.payload.comments.id]: {...state[action.payload.comments.id], isEditing: false, isSaving: false, editText: action.payload.comments.body, ...NO_ERROR}}
