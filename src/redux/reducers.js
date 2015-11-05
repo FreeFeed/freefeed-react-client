@@ -103,6 +103,9 @@ export function feedViewState(state = { feed: [] }, action) {
       const postId = action.payload.posts.id
       return { feed: [].concat([postId], state.feed) }
     }
+    case UNAUTHENTICATED: {
+      return {feed: []}
+    }
   }
   return state
 }
@@ -115,6 +118,9 @@ const NO_ERROR = {
 
 const POST_SAVE_ERROR = 'Something went wrong while editing the post...'
 const NEW_COMMENT_ERROR = 'Failed to add comment'
+
+const indexById = list => _.indexBy(list || [], 'id')
+const mergeByIds = (state, array) => ({...state, ...indexById(array)})
 
 export function postsViewState(state = {}, action) {
   switch (action.type) {
@@ -130,7 +136,7 @@ export function postsViewState(state = {}, action) {
 
         return { omittedComments, omittedLikes, id, isEditing, editingText, ...NO_ERROR }
       })
-      return { ...state, ..._.indexBy(postsViewState, 'id') }
+      return mergeByIds(state, postsViewState)
     }
     case response(SHOW_MORE_LIKES_ASYNC): {
       const id = action.payload.posts.id
@@ -296,6 +302,9 @@ export function postsViewState(state = {}, action) {
 
       return { ...state, [id]: { omittedComments, omittedLikes, id, isEditing, editingText, ...NO_ERROR } }
     }
+    case UNAUTHENTICATED: {
+      return {}
+    }
   }
 
   return state
@@ -309,7 +318,7 @@ function updatePostData(state, action) {
 export function posts(state = {}, action) {
   switch (action.type) {
     case response(HOME): {
-      return { ...state, ..._.indexBy(action.payload.posts, 'id') }
+      return mergeByIds(state, action.payload.posts)
     }
     case response(SHOW_MORE_COMMENTS): {
       return updatePostData(state, action)
@@ -361,26 +370,25 @@ export function posts(state = {}, action) {
     case response(CREATE_POST): {
       return updatePostData(state, action)
     }
+    case UNAUTHENTICATED: {
+      return {}
+    }
   }
 
   return state
 }
 
-function updateAttachmentData(state, action) {
-  return { ...state, ..._.indexBy(action.payload.attachments, 'id') }
-}
-
 export function attachments(state = {}, action) {
   switch (action.type) {
     case response(HOME): {
-      return updateAttachmentData(state, action)
+      return mergeByIds(state, action.payload.attachments)
     }
   }
   return state
 }
 
 function updateCommentData(state, action) {
-  return { ...state, ..._.indexBy(action.payload.comments, 'id') }
+  return mergeByIds(state, action.payload.comments)
 }
 
 export function comments(state = {}, action) {
@@ -420,7 +428,7 @@ export function commentViewState(state={}, action) {
         isEditing: false,
         editText: comment.body
       }))
-      const viewStateMap = _.indexBy(commentsViewState, 'id')
+      const viewStateMap = indexById(commentsViewState)
       return {...viewStateMap, ...state}
     }
     case TOGGLE_EDITING_COMMENT: {
@@ -453,27 +461,27 @@ export function commentViewState(state={}, action) {
         }
       }
     }
+    case UNAUTHENTICATED: {
+      return {}
+    }
   }
   return state
-}
-
-function mergeWithNewUsers(state, action) {
-  return { ...state, ..._.indexBy(action.payload.users, 'id') }
 }
 
 export function users(state = {}, action) {
   switch (action.type) {
     case response(HOME): {
-      const userData = _.indexBy(action.payload.users.map(userParser), 'id')
-      return { ...state, ...userData }
+      return mergeByIds(state, (action.payload.users || []).map(userParser))
     }
     case response(SHOW_MORE_COMMENTS): {
-      return mergeWithNewUsers(state, action)
+      return mergeByIds(state, action.payload.users)
     }
     case response(SHOW_MORE_LIKES_ASYNC): {
-      return mergeWithNewUsers(state, action)
+      return mergeByIds(state, action.payload.users)
     }
-
+    case UNAUTHENTICATED: {
+      return {}
+    }
   }
   return state
 }

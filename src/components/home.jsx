@@ -85,17 +85,13 @@ const MAX_LIKES = 4
 
 function selectState(state) {
   const user = state.user
-  const createPostViewState = state.createPostViewState
   const posts = state.posts
-  const timelines = state.timelines
   const feed = state.feedViewState.feed
   .map(id => state.posts[id])
   .map(post => {
-    let attachments = _.map(post.attachments, attachmentId => {
-      return state.attachments[attachmentId]
-    })
+    const attachments = (post.attachments || []).map(attachmentId => state.attachments[attachmentId])
 
-    let comments = _.map(post.comments, commentId => {
+    let comments = (post.comments || []).map(commentId => {
       const comment = state.comments[commentId]
       const commentViewState = state.commentViewState[commentId]
       const author = state.users[comment.createdBy]
@@ -103,23 +99,26 @@ function selectState(state) {
       return { ...comment, ...commentViewState, user: author, isEditable }
     })
 
-    let usersLikedPost = _.map(post.likes, userId => state.users[userId])
-
-    const createdBy = state.users[post.createdBy]
     const postViewState = state.postsViewState[post.id]
 
     if (postViewState.omittedComments !== 0) {
       comments = [ comments[0], comments[comments.length - 1] ]
     }
 
+    let usersLikedPost = _.map(post.likes, userId => state.users[userId])
+
     if (postViewState.omittedLikes !== 0) {
       usersLikedPost = usersLikedPost.slice(0, MAX_LIKES)
     }
 
+    const createdBy = state.users[post.createdBy]
     const isEditable = post.createdBy == user.id
 
     return { ...post, attachments, comments, usersLikedPost, createdBy, ...postViewState, isEditable }
   })
+
+  const createPostViewState = state.createPostViewState
+  const timelines = state.timelines
 
   return { feed, user, posts, timelines, createPostViewState }
 }
