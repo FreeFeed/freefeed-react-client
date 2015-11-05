@@ -419,17 +419,24 @@ export function comments(state = {}, action) {
 
 const COMMENT_SAVE_ERROR = 'Something went wrong while saving comment'
 
+function updateCommentViewState(state, action) {
+  const comments = action.payload.comments || []
+  const commentsViewState = comments.map(comment => ({
+    id: comment.id,
+    isEditing: false,
+    editText: comment.body
+  }))
+  const viewStateMap = indexById(commentsViewState)
+  return {...viewStateMap, ...state}
+}
+
 export function commentViewState(state={}, action) {
   switch(action.type){
     case response(HOME): {
-      const comments = action.payload.comments || []
-      const commentsViewState = comments.map(comment => ({
-        id: comment.id,
-        isEditing: false,
-        editText: comment.body
-      }))
-      const viewStateMap = indexById(commentsViewState)
-      return {...viewStateMap, ...state}
+      return updateCommentViewState(state, action)
+    }
+    case response(SHOW_MORE_COMMENTS): {
+      return updateCommentViewState(state, action)
     }
     case TOGGLE_EDITING_COMMENT: {
       return {
@@ -441,7 +448,7 @@ export function commentViewState(state={}, action) {
       }
     }
     case request(SAVE_EDITING_COMMENT): {
-      return {...state, [action.payload.commentId]: {...state[action.payload.commentId], editText: action.payload.newCommentBoby, isSaving: true}}
+      return {...state, [action.payload.commentId]: {...state[action.payload.commentId], editText: action.payload.newCommentBody, isSaving: true}}
     }
     case response(SAVE_EDITING_COMMENT): {
       return {...state, [action.payload.comments.id]: {...state[action.payload.comments.id], isEditing: false, isSaving: false, editText: action.payload.comments.body, ...NO_ERROR}}
