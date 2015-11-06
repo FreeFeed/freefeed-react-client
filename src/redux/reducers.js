@@ -1,4 +1,4 @@
-import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME,
+import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME, DISCUSSIONS,
         UPDATE_USER, USER_SETTINGS_CHANGE,
         UPDATE_PASSWORD,
         UPDATE_USER_PHOTO,
@@ -88,10 +88,16 @@ export function feedViewState(state = initFeed, action) {
     case request(HOME): {
       return initFeed
     }
+    case request(DISCUSSIONS): {
+      return initFeed
+    }
     case UNAUTHENTICATED: {
       return initFeed
     }
     case response(HOME): {
+      return loadFeedViewState(action.payload.posts)
+    }
+    case response(DISCUSSIONS): {
       return loadFeedViewState(action.payload.posts)
     }
     case response(DELETE_POST): {
@@ -117,22 +123,24 @@ const NEW_COMMENT_ERROR = 'Failed to add comment'
 
 const indexById = list => _.indexBy(list || [], 'id')
 const mergeByIds = (state, array) => ({...state, ...indexById(array)})
+const initPostViewState = post => {
+  const id = post.id
+
+  const omittedComments = post.omittedComments
+  const omittedLikes = post.omittedLikes
+  const isEditing = false
+  const editingText = post.body
+
+  return { omittedComments, omittedLikes, id, isEditing, editingText, ...NO_ERROR }
+}
 
 export function postsViewState(state = {}, action) {
   switch (action.type) {
     case response(HOME): {
-      const posts = action.payload.posts || []
-      const postsViewState = posts.map(post => {
-        const id = post.id
-
-        const omittedComments = post.omittedComments
-        const omittedLikes = post.omittedLikes
-        const isEditing = false
-        const editingText = post.body
-
-        return { omittedComments, omittedLikes, id, isEditing, editingText, ...NO_ERROR }
-      })
-      return mergeByIds(state, postsViewState)
+      return mergeByIds(state, (action.payload.posts || []).map(initPostViewState))
+    }
+    case response(DISCUSSIONS): {
+      return mergeByIds(state, (action.payload.posts || []).map(initPostViewState))
     }
     case response(SHOW_MORE_LIKES_ASYNC): {
       const id = action.payload.posts.id
@@ -316,6 +324,9 @@ export function posts(state = {}, action) {
     case response(HOME): {
       return mergeByIds(state, action.payload.posts)
     }
+    case response(DISCUSSIONS): {
+      return mergeByIds(state, action.payload.posts)
+    }
     case response(SHOW_MORE_COMMENTS): {
       return updatePostData(state, action)
     }
@@ -377,6 +388,9 @@ export function attachments(state = {}, action) {
     case response(HOME): {
       return mergeByIds(state, action.payload.attachments)
     }
+    case response(DISCUSSIONS): {
+      return mergeByIds(state, action.payload.attachments)
+    }
   }
   return state
 }
@@ -388,6 +402,9 @@ function updateCommentData(state, action) {
 export function comments(state = {}, action) {
   switch (action.type) {
     case response(HOME): {
+      return updateCommentData(state, action)
+    }
+    case response(DISCUSSIONS): {
       return updateCommentData(state, action)
     }
     case response(SHOW_MORE_COMMENTS): {
@@ -427,6 +444,9 @@ function updateCommentViewState(state, action) {
 export function commentViewState(state={}, action) {
   switch(action.type){
     case response(HOME): {
+      return updateCommentViewState(state, action)
+    }
+    case response(DISCUSSIONS): {
       return updateCommentViewState(state, action)
     }
     case response(SHOW_MORE_COMMENTS): {
@@ -472,6 +492,9 @@ export function commentViewState(state={}, action) {
 export function users(state = {}, action) {
   switch (action.type) {
     case response(HOME): {
+      return mergeByIds(state, (action.payload.users || []).map(userParser))
+    }
+    case response(DISCUSSIONS): {
       return mergeByIds(state, (action.payload.users || []).map(userParser))
     }
     case response(SHOW_MORE_COMMENTS): {
@@ -542,6 +565,9 @@ export function timelines(state = {}, action) {
     case response(HOME): {
       return {...action.payload.timelines}
     }
+    case response(DISCUSSIONS): {
+      return {...action.payload.timelines}
+    }
   }
 
   return state
@@ -582,6 +608,27 @@ export function userPhotoForm(state=DEFAULT_PHOTO_FORM_STATE, action){
     }
     case fail(UPDATE_USER_PHOTO): {
       return {isSaving: false, success: false, error: true, errorText: action.payload.err}
+    }
+  }
+  return state
+}
+
+export function routeLoadingState(state = false, action){
+  switch(action.type){
+    case request(HOME): {
+      return true
+    }
+    case request(DISCUSSIONS): {
+      return true
+    }
+    case response(HOME): {
+      return false
+    }
+    case response(DISCUSSIONS): {
+      return false
+    }
+    case UNAUTHENTICATED: {
+      return false
     }
   }
   return state

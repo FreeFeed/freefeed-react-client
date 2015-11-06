@@ -11,7 +11,7 @@ import {Provider} from 'react-redux'
 import {ReduxRouter} from 'redux-router'
 
 import configureStore from './redux/configure-store'
-import {whoAmI, home, unauthenticated} from './redux/action-creators'
+import {whoAmI, home, discussions, unauthenticated} from './redux/action-creators'
 
 import Layout from './components/layout'
 import Home from './components/home'
@@ -34,10 +34,11 @@ ReactDOM.render(
     <ReduxRouter>
       <Route path='/' component={Layout}>
         <IndexRoute component={Home} onEnter={()=>store.dispatch(home())}/>
-        <Route name='timeline.home' component={Home} onEnter={()=>store.dispatch(home())}/>
-        <Route path='about' name='about' component={About} />
+        <Route path='home' component={Home} onEnter={()=>store.dispatch(home())}/>
+        <Route path='about' component={About} />
         <Route path='login' component={Login}/>
         <Route path='settings' component={Settings}/>
+        <Route path='filter/discussions' component={Home} onEnter={()=>store.dispatch(discussions())}/>
       </Route>
     </ReduxRouter>
   </Provider>,

@@ -6,11 +6,12 @@ import {unauthenticated} from '../redux/action-creators'
 import Footer from './footer'
 import Sidebar from './sidebar'
 import Signin from './signin'
+import LoaderContainer from './loader-container'
 
-const InternalLayout = (props) => (
-  <div className={props.authenticated ? 'col-md-9' : 'col-md-12'}>
+const InternalLayout = ({authenticated, children}) => (
+  <div className={authenticated ? 'col-md-9' : 'col-md-12'}>
     <div className='content'>
-      {props.children}
+      {children}
     </div>
   </div>
 )
@@ -26,45 +27,44 @@ class Layout extends React.Component {
   render()
    {
     return (
-     <div className='container'>
-       <div className='row header-row'>
-         <div className='col-md-4'>
-           <div className='header'>
-             <h1 className='title'>
-               <Link to='/'>FreeFeed-beta</Link>
-             </h1>
-           </div>
-         </div>
+      <div className='container'>
+        <div className='row header-row'>
+          <div className='col-md-4'>
+            <div className='header'>
+              <h1 className='title'>
+                <Link to='/'>FreeFeed-beta</Link>
+              </h1>
+            </div>
+          </div>
 
-         <div className='col-md-8'>
-           <div className='row'>
-             <div className='col-md-6 search-field'>
-               <div className='form-inline'>
-                 {/*<input className='form-control input-sm search-input p-search-input' />
-                  <button className='btn btn-default btn-sm p-search-action'>Search</button>*/}
-               </div>
-             </div>
+          <div className='col-md-8'>
+            <div className='row'>
+              <div className='col-md-6 search-field'>
+                <div className='form-inline'>
+                {/*<input className='form-control input-sm search-input p-search-input' />
+                <button className='btn btn-default btn-sm p-search-action'>Search</button>*/}
+                </div>
+              </div>
+              <div className='col-md-6'>
+                {this.props.authenticated ? false : (<Signin {...this.props}/>)}
+              </div>
+            </div>
+          </div>
+        </div>
 
-             <div className='col-md-6'>
-               {!this.props.gotResponse || this.props.authenticated ? false : (<Signin {...this.props}/>)}
-             </div>
+        <LoaderContainer loading={this.props.loadingView} fullPage={true}>
+          <div className='row'>
+            <InternalLayout {...this.props}/>
+            {this.props.authenticated ? <Sidebar {...this.props}/> : false}
+          </div>
+        </LoaderContainer>
 
-
-           </div>
-         </div>
-       </div>
-
-       <div className='row'>
-         <InternalLayout {...this.props}/>
-         {this.props.authenticated ? <Sidebar {...this.props}/> : false}
-       </div>
-
-       <div className='row'>
-         <div className='col-md-12'>
-           <Footer/>
-         </div>
-       </div>
-     </div>
+        <div className='row'>
+          <div className='col-md-12'>
+          <Footer/>
+          </div>
+        </div>
+      </div>
     )
   }
 }
@@ -72,7 +72,11 @@ class Layout extends React.Component {
 Layout.childContextTypes = {settings: React.PropTypes.object}
 
 function select(state) {
-  return state
+  return {
+    user: state.user,
+    authenticated: state.authenticated,
+    loadingView: state.routeLoadingState,
+  }
 }
 
 function mapDispatchToProps(dispatch){

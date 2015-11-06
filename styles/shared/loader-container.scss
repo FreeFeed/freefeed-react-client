@@ -20,4 +20,10 @@
     // background-position: center;
     // background-repeat: no-repeat;
   }
+
+  &.-full .loader-overlay{
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+  }
 }
