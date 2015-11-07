@@ -17,13 +17,14 @@ export default (props) => {
   const first = props.comments[0]
   const last = props.comments.length > 1 && props.comments[props.comments.length - 1]
   const middle = props.comments.slice(1, props.comments.length - 1).map(commentMapper)
+  const showOmittedNumber = props.post.omittedComments > 0
   const showMoreComments = () => props.showMoreComments(props.post.id)
 
   return (
     <div className="comments">
       {first ? commentMapper(first): false}
       {middle}
-      {props.post.omittedComments > 0 ? <MoreCommentsWrapper omittedComments={props.post.omittedComments}
+      {showOmittedNumber ? <MoreCommentsWrapper omittedComments={props.post.omittedComments}
                                                              showMoreComments={showMoreComments} /> : false}
       {last ? commentMapper(last) : false}
       {props.post.isCommenting ? renderAddingComment(props): false}
