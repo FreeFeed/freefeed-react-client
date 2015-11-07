@@ -4,21 +4,21 @@ import {Link} from 'react-router'
 import UserName from './user-name'
 import {preventDefault} from '../utils'
 
-export default (props) => (
+export default ({user, signOut}) => (
   <div className='col-md-3 sidebar'>
     <div className='logged-in'>
       <div className='avatar'>
-        <Link to='timeline.index' params={{username: props.user.username}}><img className='media-object' src={props.user.profilePictureMediumUrl}/></Link>
+        <Link to='timeline.index' params={{username: user.username}}><img className='media-object' src={user.profilePictureMediumUrl}/></Link>
       </div>
 
       <div className='user'>
         <div className='author'>
-          <UserName user={props.user} />
+          <UserName user={user} />
         </div>
         <div>
           <Link to='/settings'>settings</Link>
           &nbsp;-&nbsp;
-          <a onClick={preventDefault(props.signOut)}>sign out</a>
+          <a onClick={preventDefault(signOut)}>sign out</a>
         </div>
       </div>
     </div>
@@ -29,13 +29,13 @@ export default (props) => (
       </div>
       <div className='box-body'>
         <ul>
-          <li className='p-home'><Link to='timeline.home'>Home</Link></li>
+          <li className='p-home'><Link to='/home'>Home</Link></li>
           <li className='p-direct-messages'><Link to='timeline.directs'>Direct messages</Link></li>
-          <li className='p-my-discussions'><Link to='timeline.discussions'>My discussions</Link></li>
+          <li className='p-my-discussions'><Link to='/filter/discussions'>My discussions</Link></li>
         </ul>
       </div>
       <div className='box-footer'>
-        <Link to='timeline.subscriptions' params={{username: props.user.username}}>Browse/edit friends</Link>
+        <Link to='timeline.subscriptions' params={{username: user.username}}>Browse/edit friends</Link>
       </div>
     </div>
 

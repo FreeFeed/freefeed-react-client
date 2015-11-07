@@ -18,6 +18,11 @@ export function getHome({offset}) {
     `${apiConfig.host}/v1/timelines/home?offset=${offset}`, getRequestOptions())
 }
 
+export function getDiscussions({offset}) {
+  return fetch(
+    `${apiConfig.host}/v1/timelines/filter/discussions?offset=${offset}`, getRequestOptions())
+}
+
 const MAX_COMMENTS = 2
 
 export function getLikesOnly({postId, commentsExpanded}) {

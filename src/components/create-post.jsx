@@ -8,14 +8,25 @@ export default class CreatePost extends React.Component {
     this.state = {disabled: true}
   }
 
-  createPost() {
+  createPost = _ => {
     this.props.createPost(this.refs.postText.value)
     this.refs.postText.value = ''
     this.setState({disabled: true})
   }
 
-  checkCreatPostAvailability(e) {
+  checkCreatePostAvailability = (e) => {
     this.setState({disabled: e.target.value === ''})
+  }
+
+  checkSave = (e) => {
+    const isEnter = e.keyCode === 13
+    const isShiftPressed = e.shiftKey
+    if (isEnter && !isShiftPressed) {
+      e.preventDefault()
+      if (!this.state.disabled && !this.props.createPostViewState.isPending){
+        this.createPost()
+      }
+    }
   }
 
   render() {
@@ -24,9 +35,10 @@ export default class CreatePost extends React.Component {
         <div className='p-create-post-view'>
           <Textarea className='edit-post-area'
                     ref='postText'
-                    onChange={this.checkCreatPostAvailability.bind(this)}
+                    onChange={this.checkCreatePostAvailability}
                     minRows={2}
-                    maxRows={10}/>
+                    maxRows={10}
+                    onKeyDown={this.checkSave}/>
         </div>
           <div className='row'>
             <div className='pull-right'>
@@ -37,8 +49,8 @@ export default class CreatePost extends React.Component {
                 </span>
               ) : false}
 
-              <button className='btn btn-default btn-xs create-post-action'
-                      onClick={preventDefault(_ => this.createPost())}
+              <button className='btn btn-default btn-xs p-create-post-action'
+                      onClick={preventDefault(this.createPost)}
                       disabled={this.state.disabled || this.props.createPostViewState.isPending}>Post</button>
             </div>
           </div>

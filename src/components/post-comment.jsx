@@ -67,7 +67,8 @@ export default class PostComment extends React.Component{
   }
   checkSave = (event) => {
     const isEnter = event.keyCode === 13
-    if (isEnter) {
+    const isShiftPressed = e.shiftKey
+    if (isEnter && !isShiftPressed) {
       event.preventDefault()
       this.saveComment()
     }

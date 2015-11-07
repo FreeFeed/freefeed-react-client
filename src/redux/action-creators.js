@@ -45,6 +45,16 @@ export function home(offset = 0){
   }
 }
 
+export const DISCUSSIONS = 'DISCUSSIONS'
+
+export function discussions(offset = 0){
+  return {
+    type: DISCUSSIONS,
+    apiRequest: Api.getDiscussions,
+    payload: {offset},
+  }
+}
+
 export const SHOW_MORE_COMMENTS = 'SHOW_MORE_COMMENTS'
 
 export function showMoreComments(postId){
