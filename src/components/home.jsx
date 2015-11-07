@@ -49,34 +49,25 @@ const HomeFeed = (props) => {
   )
 }
 
-class HomeHandler extends React.Component {
-
-  getChildContext(){
-    return {
-      settings: this.props.user.settings
-    }
+const HomeHandler = (props) => {
+  const createPost = (postText) => {
+    const feedName = props.user.username
+    props.createPost(postText, feedName)
   }
 
-  render(){
-    const createPost = (postText) => {
-      const feedName = this.props.user.username
-      this.props.createPost(postText, feedName)
-    }
-
-    return (
-      <div className='box'>
-        <div className='box-header-timeline'>
-          Home
-        </div>
-        <div className='box-body'>
-          <CreatePost createPostViewState={this.props.createPostViewState}
-                      createPost={createPost} />
-          <HomeFeed {...this.props}/>
-        </div>
-        <div className='box-footer'>
-        </div>
-      </div>)
-  }
+  return (
+    <div className='box'>
+      <div className='box-header-timeline'>
+        Home
+      </div>
+      <div className='box-body'>
+        <CreatePost createPostViewState={props.createPostViewState}
+                    createPost={createPost} />
+        <HomeFeed {...props}/>
+      </div>
+      <div className='box-footer'>
+      </div>
+    </div>)
 }
 
 HomeHandler.childContextTypes = {settings: React.PropTypes.object}

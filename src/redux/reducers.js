@@ -1,4 +1,4 @@
-import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME, DISCUSSIONS,
+import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME, DISCUSSIONS, GET_USER_FEED,
         UPDATE_USER, USER_SETTINGS_CHANGE,
         UPDATE_PASSWORD,
         UPDATE_USER_PHOTO,
@@ -11,6 +11,14 @@ import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME, 
 
 import _ from 'lodash'
 import {userParser} from '../utils'
+
+const feedGeneratingActions = [HOME, DISCUSSIONS, GET_USER_FEED]
+const feedRequests = feedGeneratingActions.map(request)
+const feedResponses = feedGeneratingActions.map(response)
+const feedFails = feedGeneratingActions.map(fail)
+const isFeedRequest = action => feedRequests.indexOf(action.type) !== -1
+const isFeedResponse = action => feedResponses.indexOf(action.type) !== -1
+const isFeedFail = action => feedFails.indexOf(action.type) !== -1
 
 export function signInForm(state={username:'', password:'', error:'', loading: false}, action) {
   switch(action.type) {
@@ -84,21 +92,16 @@ const loadFeedViewState = posts => {
 }
 
 export function feedViewState(state = initFeed, action) {
+  if (isFeedRequest(action)){
+    return initFeed
+  }
+  if (isFeedResponse(action)){
+    return loadFeedViewState(action.payload.posts)
+  }
+
   switch (action.type) {
-    case request(HOME): {
-      return initFeed
-    }
-    case request(DISCUSSIONS): {
-      return initFeed
-    }
     case UNAUTHENTICATED: {
       return initFeed
-    }
-    case response(HOME): {
-      return loadFeedViewState(action.payload.posts)
-    }
-    case response(DISCUSSIONS): {
-      return loadFeedViewState(action.payload.posts)
     }
     case response(DELETE_POST): {
       const postId = action.request.postId
@@ -135,13 +138,10 @@ const initPostViewState = post => {
 }
 
 export function postsViewState(state = {}, action) {
+  if (isFeedResponse(action)){
+    return mergeByIds(state, (action.payload.posts || []).map(initPostViewState))
+  }
   switch (action.type) {
-    case response(HOME): {
-      return mergeByIds(state, (action.payload.posts || []).map(initPostViewState))
-    }
-    case response(DISCUSSIONS): {
-      return mergeByIds(state, (action.payload.posts || []).map(initPostViewState))
-    }
     case response(SHOW_MORE_LIKES_ASYNC): {
       const id = action.payload.posts.id
       const omittedLikes = 0
@@ -320,13 +320,10 @@ function updatePostData(state, action) {
 }
 
 export function posts(state = {}, action) {
+  if (isFeedResponse(action)){
+    return mergeByIds(state, action.payload.posts)
+  }
   switch (action.type) {
-    case response(HOME): {
-      return mergeByIds(state, action.payload.posts)
-    }
-    case response(DISCUSSIONS): {
-      return mergeByIds(state, action.payload.posts)
-    }
     case response(SHOW_MORE_COMMENTS): {
       return updatePostData(state, action)
     }
@@ -384,13 +381,8 @@ export function posts(state = {}, action) {
 }
 
 export function attachments(state = {}, action) {
-  switch (action.type) {
-    case response(HOME): {
-      return mergeByIds(state, action.payload.attachments)
-    }
-    case response(DISCUSSIONS): {
-      return mergeByIds(state, action.payload.attachments)
-    }
+  if (isFeedResponse(action)){
+    return mergeByIds(state, action.payload.attachments)
   }
   return state
 }
@@ -400,13 +392,10 @@ function updateCommentData(state, action) {
 }
 
 export function comments(state = {}, action) {
+  if (isFeedResponse(action)){
+    return updateCommentData(state, action)
+  }
   switch (action.type) {
-    case response(HOME): {
-      return updateCommentData(state, action)
-    }
-    case response(DISCUSSIONS): {
-      return updateCommentData(state, action)
-    }
     case response(SHOW_MORE_COMMENTS): {
       return updateCommentData(state, action)
     }
@@ -442,13 +431,10 @@ function updateCommentViewState(state, action) {
 }
 
 export function commentViewState(state={}, action) {
+  if (isFeedResponse(action)){
+    return updateCommentViewState(state, action)
+  }
   switch(action.type){
-    case response(HOME): {
-      return updateCommentViewState(state, action)
-    }
-    case response(DISCUSSIONS): {
-      return updateCommentViewState(state, action)
-    }
     case response(SHOW_MORE_COMMENTS): {
       return updateCommentViewState(state, action)
     }
@@ -490,13 +476,10 @@ export function commentViewState(state={}, action) {
 }
 
 export function users(state = {}, action) {
+  if (isFeedResponse(action)){
+    return mergeByIds(state, (action.payload.users || []).map(userParser))
+  }
   switch (action.type) {
-    case response(HOME): {
-      return mergeByIds(state, (action.payload.users || []).map(userParser))
-    }
-    case response(DISCUSSIONS): {
-      return mergeByIds(state, (action.payload.users || []).map(userParser))
-    }
     case response(SHOW_MORE_COMMENTS): {
       return mergeByIds(state, action.payload.users)
     }
@@ -561,13 +544,8 @@ export function passwordForm(state=DEFAULT_PASSWORD_FORM_STATE, action){
   return state
 }
 export function timelines(state = {}, action) {
-  switch (action.type) {
-    case response(HOME): {
-      return {...action.payload.timelines}
-    }
-    case response(DISCUSSIONS): {
-      return {...action.payload.timelines}
-    }
+  if (isFeedResponse(action)){
+    return {...action.payload.timelines}
   }
 
   return state
@@ -614,19 +592,13 @@ export function userPhotoForm(state=DEFAULT_PHOTO_FORM_STATE, action){
 }
 
 export function routeLoadingState(state = false, action){
+  if (isFeedRequest(action)){
+    return true
+  }
+  if (isFeedResponse(action) || isFeedFail(action)){
+    return false
+  }
   switch(action.type){
-    case request(HOME): {
-      return true
-    }
-    case request(DISCUSSIONS): {
-      return true
-    }
-    case response(HOME): {
-      return false
-    }
-    case response(DISCUSSIONS): {
-      return false
-    }
     case UNAUTHENTICATED: {
       return false
     }

@@ -8,7 +8,7 @@ export default ({user, signOut}) => (
   <div className='col-md-3 sidebar'>
     <div className='logged-in'>
       <div className='avatar'>
-        <Link to='timeline.index' params={{username: user.username}}><img className='media-object' src={user.profilePictureMediumUrl}/></Link>
+        <Link to={`/${user.username}`} ><img className='media-object' src={user.profilePictureMediumUrl}/></Link>
       </div>
 
       <div className='user'>
