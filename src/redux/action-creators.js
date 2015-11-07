@@ -55,6 +55,16 @@ export function discussions(offset = 0){
   }
 }
 
+export const GET_USER_FEED = 'GET_USER_FEED'
+
+export function getUserFeed(username, offset = 0){
+  return {
+    type: GET_USER_FEED,
+    apiRequest: Api.getUserFeed,
+    payload: {username, offset},
+  }
+}
+
 export const SHOW_MORE_COMMENTS = 'SHOW_MORE_COMMENTS'
 
 export function showMoreComments(postId){

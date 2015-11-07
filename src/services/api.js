@@ -23,6 +23,11 @@ export function getDiscussions({offset}) {
     `${apiConfig.host}/v1/timelines/filter/discussions?offset=${offset}`, getRequestOptions())
 }
 
+export function getUserFeed({username, offset}){
+  return fetch(
+    `${apiConfig.host}/v1/timelines/${username}?offset=${offset}`, getRequestOptions())
+}
+
 const MAX_COMMENTS = 2
 
 export function getLikesOnly({postId, commentsExpanded}) {

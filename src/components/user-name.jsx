@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router'
 import {preventDefault} from '../utils'
 
 const display = (mode, user) => {
@@ -14,8 +15,7 @@ const display = (mode, user) => {
 }
 
 const UserName = (props, context) => (
-  <a href={`../${props.user.username}`}
-     onClick={preventDefault()}
+  <Link to={`/${props.user.username}`}
      className='user-name-info be-fe-nameFixed'
      dangerouslySetInnerHTML={display(context.settings.userNameMode, props.user)}/>
 )

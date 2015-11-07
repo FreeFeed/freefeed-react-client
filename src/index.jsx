@@ -11,7 +11,7 @@ import {Provider} from 'react-redux'
 import {ReduxRouter} from 'redux-router'
 
 import configureStore from './redux/configure-store'
-import {whoAmI, home, discussions, unauthenticated} from './redux/action-creators'
+import {whoAmI, home, discussions, getUserFeed, unauthenticated} from './redux/action-creators'
 
 import Layout from './components/layout'
 import Home from './components/home'
@@ -39,6 +39,7 @@ ReactDOM.render(
         <Route path='login' component={Login}/>
         <Route path='settings' component={Settings}/>
         <Route path='filter/discussions' component={Home} onEnter={()=>store.dispatch(discussions())}/>
+        <Route name='userFeed' path='/:userName' component={Home} onEnter={nextRouter=>store.dispatch(getUserFeed(nextRouter.params.userName))}/>
       </Route>
     </ReduxRouter>
   </Provider>,

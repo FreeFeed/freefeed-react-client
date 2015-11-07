@@ -1,4 +1,4 @@
-import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME, DISCUSSIONS,
+import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME, DISCUSSIONS, GET_USER_FEED,
         UPDATE_USER, USER_SETTINGS_CHANGE,
         UPDATE_PASSWORD,
         UPDATE_USER_PHOTO,
@@ -12,7 +12,7 @@ import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME, 
 import _ from 'lodash'
 import {userParser} from '../utils'
 
-const feedGeneratingActions = [HOME, DISCUSSIONS]
+const feedGeneratingActions = [HOME, DISCUSSIONS, GET_USER_FEED]
 const feedRequests = feedGeneratingActions.map(request)
 const feedResponses = feedGeneratingActions.map(response)
 const feedFails = feedGeneratingActions.map(fail)
