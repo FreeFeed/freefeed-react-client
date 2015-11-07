@@ -12,11 +12,11 @@ import CreatePost from './create-post'
 
 const HomeFeed = (props) => {
   const feed_posts = props.feed.map(post => {
+
     const saveEditingPost = (postId, newValue) => {
-      let newPost =  {...props.posts[postId]}
+      let newPost =  {...post}
       newPost.body = newValue
       newPost.timeline = props.timelines.id
-      delete newPost['id']
 
       props.saveEditingPost(postId, newPost)
     }
@@ -85,7 +85,6 @@ const MAX_LIKES = 4
 
 function selectState(state) {
   const user = state.user
-  const posts = state.posts
   const feed = state.feedViewState.feed
   .map(id => state.posts[id])
   .map(post => {
@@ -120,7 +119,7 @@ function selectState(state) {
   const createPostViewState = state.createPostViewState
   const timelines = state.timelines
 
-  return { feed, user, posts, timelines, createPostViewState }
+  return { feed, user, timelines, createPostViewState }
 }
 
 function selectActions(dispatch) {

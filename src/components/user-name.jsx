@@ -13,16 +13,12 @@ const display = (mode, user) => {
   return {__html:`${user.screenName} <span class='be-fe-username'>(${user.username})</span>`}
 }
 
-class UserName extends React.Component {
-  constructor(props, context){
-    super(props, context)
-  }
-  render(){
-    return (
-      <a href={`../${this.props.user.username}`} onClick={preventDefault()} className='user-name-info be-fe-nameFixed' dangerouslySetInnerHTML={display(this.context.settings.userNameMode, this.props.user)}/>
-    )
-  }
-}
+const UserName = (props, context) => (
+  <a href={`../${props.user.username}`}
+     onClick={preventDefault()}
+     className='user-name-info be-fe-nameFixed'
+     dangerouslySetInnerHTML={display(context.settings.userNameMode, props.user)}/>
+)
 
 UserName.contextTypes = {
   settings: React.PropTypes.object

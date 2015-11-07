@@ -70,9 +70,9 @@ export default (props) => {
                     <img width="16" height="16" src='/assets/images/throbber.gif'/>
                   </span>
                 ) : false}
-              <a className="action-link post-cancel" onClick={preventDefault(()=>cancelEditingPost())}>Cancel</a>
+              <a className="action-link post-cancel" onClick={preventDefault(cancelEditingPost)}>Cancel</a>
               <button className='btn btn-default btn-xs'
-                      onClick={preventDefault(()=>saveEditingPost())}>
+                      onClick={preventDefault(saveEditingPost)}>
                 Update
               </button>
             </div>

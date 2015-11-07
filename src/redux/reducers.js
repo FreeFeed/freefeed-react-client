@@ -38,18 +38,6 @@ export function signInForm(state={username:'', password:'', error:'', loading: f
   return state
 }
 
-export function gotResponse(state = false, action) {
-  switch (action.type) {
-    case response(WHO_AM_I): {
-      return true
-    }
-    case response(HOME): {
-      return true
-    }
-  }
-  return state
-}
-
 export function serverError(state = false, action) {
   switch (action.type) {
     case SERVER_ERROR: {
@@ -88,12 +76,23 @@ export function createPostViewState(state = {}, action) {
   return state
 }
 
-export function feedViewState(state = { feed: [] }, action) {
+const initFeed = {feed: []}
+
+const loadFeedViewState = posts => {
+  const feed = (posts || []).map(post => post.id)
+  return { feed }
+}
+
+export function feedViewState(state = initFeed, action) {
   switch (action.type) {
+    case request(HOME): {
+      return initFeed
+    }
+    case UNAUTHENTICATED: {
+      return initFeed
+    }
     case response(HOME): {
-      const posts = action.payload.posts || []
-      const feed = posts.map(post => post.id)
-      return { ...state, feed }
+      return loadFeedViewState(action.payload.posts)
     }
     case response(DELETE_POST): {
       const postId = action.request.postId
@@ -101,10 +100,7 @@ export function feedViewState(state = { feed: [] }, action) {
     }
     case response(CREATE_POST): {
       const postId = action.payload.posts.id
-      return { feed: [].concat([postId], state.feed) }
-    }
-    case UNAUTHENTICATED: {
-      return {feed: []}
+      return { feed: [postId, ...state.feed] }
     }
   }
   return state
@@ -345,15 +341,13 @@ export function posts(state = {}, action) {
       }
     }
     case response(LIKE_POST): {
-      console.log('LIKE_POST posts')
-      console.dir(state)
       const post = state[action.request.postId]
       // @todo Update omittedLikes properly here
       //const omitted = post.omittedLikes > 0 ? post.omittedLikes+1 : 0
       return {...state,
         [post.id] : {
           ...post,
-          likes: [action.request.userId, ...post.likes],
+          likes: [action.request.userId, ...(post.likes || [])],
           //omittedLikes: omitted,
         }
       }
