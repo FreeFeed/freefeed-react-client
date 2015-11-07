@@ -1,5 +1,5 @@
 import React from 'react'
-import Linkify from'react-linkify'
+import PostText from'./post-text'
 import UserName from './user-name'
 import {preventDefault} from '../utils'
 import Textarea from 'react-textarea-autosize'
@@ -41,7 +41,7 @@ export default class PostComment extends React.Component{
         :
               (<span>
                   <span className='comment-text'>
-                    <Linkify properties={{target: '_blank'}}>{this.props.body}</Linkify>
+                    <PostText text={this.props.body}/>
                   </span>
                   &nbsp;-&nbsp;
                   <span className='author'>

@@ -51,3 +51,7 @@ export function preventDefault(realFunction) {
     return realFunction && realFunction()
   }
 }
+
+export function showHtmlEnters(text) {
+  return text.replace(/\n/g,'<br/>')
+}
