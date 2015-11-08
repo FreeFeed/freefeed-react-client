@@ -6,48 +6,9 @@ import {showMoreComments, showMoreLikes, toggleEditingPost, cancelEditingPost,
         toggleEditingComment, cancelEditingComment, saveEditingComment,
         deleteComment, createPost } from '../redux/action-creators'
 
-import FeedPost from './feed-post'
+
 import CreatePost from './create-post'
-
-
-const HomeFeed = (props) => {
-  const feed_posts = props.feed.map(post => {
-
-    const saveEditingPost = (postId, newValue) => {
-      let newPost =  {...post}
-      newPost.body = newValue
-      newPost.timeline = props.timelines.id
-
-      props.saveEditingPost(postId, newPost)
-    }
-
-    return (<FeedPost {...post}
-              key={post.id}
-              user={props.user}
-              showMoreComments={props.showMoreComments}
-              showMoreLikes={props.showMoreLikes}
-              toggleEditingPost={props.toggleEditingPost}
-              cancelEditingPost={props.cancelEditingPost}
-              saveEditingPost={saveEditingPost}
-              deletePost={props.deletePost}
-              toggleCommenting={props.toggleCommenting}
-              addComment={props.addComment}
-              likePost={props.likePost}
-              unlikePost={props.unlikePost}
-              commentEdit={props.commentEdit} />)
-  })
-
-  return (
-    <div className='posts'>
-      <p>pagination (if not first page)</p>
-      <div className='posts'>
-        {feed_posts}
-      </div>
-      <p>hidden-posts</p>
-      <p>pagination</p>
-    </div>
-  )
-}
+import HomeFeed from './home-feed'
 
 const HomeHandler = (props) => {
   const createPost = (postText) => {
@@ -58,7 +19,7 @@ const HomeHandler = (props) => {
   return (
     <div className='box'>
       <div className='box-header-timeline'>
-        Home
+        {props.boxHeader}
       </div>
       <div className='box-body'>
         <CreatePost createPostViewState={props.createPostViewState}
@@ -109,8 +70,9 @@ function selectState(state) {
 
   const createPostViewState = state.createPostViewState
   const timelines = state.timelines
+  const boxHeader = state.boxHeader
 
-  return { feed, user, timelines, createPostViewState }
+  return { feed, user, timelines, createPostViewState, boxHeader }
 }
 
 function selectActions(dispatch) {

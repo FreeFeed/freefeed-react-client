@@ -605,3 +605,15 @@ export function routeLoadingState(state = false, action){
   }
   return state
 }
+
+export function boxHeader(state = "", action){
+  switch(action.type){
+    case request(HOME): {
+      return 'Home'
+    }
+    case request(DISCUSSIONS): {
+      return 'My discussions'
+    }
+  }
+  return state
+}
