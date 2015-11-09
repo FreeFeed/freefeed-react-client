@@ -3,6 +3,7 @@ import Linkify from'react-linkify'
 import UserName from './user-name'
 import {preventDefault} from '../utils'
 import Textarea from 'react-textarea-autosize'
+import throbber from 'assets/images/throbber.gif'
 
 export default class PostComment extends React.Component{
   render() {
@@ -44,7 +45,7 @@ export default class PostComment extends React.Component{
 
                           {this.props.isSaving ? (
                                 <span className="throbber">
-                                  <img width="16" height="16" src='/assets/images/throbber.gif'/>
+                                  <img width="16" height="16" src={throbber}/>
                                 </span>
                               ) : false}
                         </div>

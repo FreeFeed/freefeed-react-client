@@ -10,6 +10,7 @@ import PostLikes from './post-likes'
 import UserName from './user-name'
 import {preventDefault} from '../utils'
 import Textarea from 'react-textarea-autosize'
+import throbber from 'assets/images/throbber.gif'
 
 export default (props) => {
   const isDirect = false
@@ -40,7 +41,7 @@ export default (props) => {
     }
   }
   const ILikedPost = _.find(props.usersLikedPost, {id:props.user.id})
-  const profilePicture = props.isSinglePost ? 
+  const profilePicture = props.isSinglePost ?
     props.createdBy.profilePictureLargeUrl : props.createdBy.profilePictureMediumUrl
   const postClass = props.isSinglePost ?
     'single-post-container' : 'timeline-post-container'
@@ -71,7 +72,7 @@ export default (props) => {
             <div className='post-actions'>
               {props.isSaving ? (
                   <span className="throbber">
-                    <img width="16" height="16" src='/assets/images/throbber.gif'/>
+                    <img width="16" height="16" src={throbber}/>
                   </span>
                 ) : false}
               <a className="action-link post-cancel" onClick={preventDefault(cancelEditingPost)}>Cancel</a>

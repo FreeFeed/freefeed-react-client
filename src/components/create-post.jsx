@@ -1,6 +1,7 @@
 import React from 'react'
 import {preventDefault} from '../utils'
 import Textarea from 'react-textarea-autosize'
+import throbber from 'assets/images/throbber.gif'
 
 export default class CreatePost extends React.Component {
   constructor(props) {
@@ -45,7 +46,7 @@ export default class CreatePost extends React.Component {
 
               {this.props.createPostViewState.isPending ? (
                 <span className="throbber">
-                  <img width="16" height="16" src='/assets/images/throbber.gif'/>
+                  <img width="16" height="16" src={throbber}/>
                 </span>
               ) : false}
 
