@@ -3,15 +3,6 @@ import FeedPost from './feed-post'
 
 export default (props) => {
   const feed_posts = props.feed.map(post => {
-
-    const saveEditingPost = (postId, newValue) => {
-      let newPost =  {...post}
-      newPost.body = newValue
-      newPost.timeline = props.timelines.id
-
-      props.saveEditingPost(postId, newPost)
-    }
-
     return (<FeedPost {...post}
               key={post.id}
               user={props.user}
@@ -19,7 +10,7 @@ export default (props) => {
               showMoreLikes={props.showMoreLikes}
               toggleEditingPost={props.toggleEditingPost}
               cancelEditingPost={props.cancelEditingPost}
-              saveEditingPost={saveEditingPost}
+              saveEditingPost={props.saveEditingPost}
               deletePost={props.deletePost}
               toggleCommenting={props.toggleCommenting}
               addComment={props.addComment}

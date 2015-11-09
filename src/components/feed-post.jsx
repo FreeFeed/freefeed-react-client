@@ -26,7 +26,7 @@ export default (props) => {
   const cancelEditingPost = () => props.cancelEditingPost(props.id, editingPostText)
   const saveEditingPost = () => {
     if (!props.isSaving){
-      props.saveEditingPost(props.id, editingPostText)
+      props.saveEditingPost(props.id, { body: editingPostText })
     }
   }
   const deletePost = () => props.deletePost(props.id)
@@ -90,7 +90,7 @@ export default (props) => {
             <div className='info p-timeline-post-info'>
               {isDirect ? (<span>»</span>) : false}
               <span className='post-date'>
-                <Link to='post' params={{username: props.createdBy.username, postId: props.id}} className='datetime'>
+                <Link to={`/${props.createdBy.username}/${props.id}`} className='datetime'>
                   <time dateTime={createdAtISO} title={createdAtISO}>{createdAgo}</time>
                 </Link>
               </span>

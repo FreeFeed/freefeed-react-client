@@ -11,7 +11,7 @@ import {Provider} from 'react-redux'
 import {ReduxRouter} from 'redux-router'
 
 import configureStore from './redux/configure-store'
-import {whoAmI, home, discussions, getUserFeed, unauthenticated} from './redux/action-creators'
+import {whoAmI, home, discussions, getUserFeed, unauthenticated, getSinglePost} from './redux/action-creators'
 
 import Layout from './components/layout'
 import Home from './components/home'
@@ -19,6 +19,7 @@ import About from './components/about'
 import NotFound from './components/not-found'
 import Login from './components/login'
 import Settings from './components/settings'
+import SinglePost from './components/single-post'
 
 const store = configureStore()
 
@@ -40,6 +41,7 @@ ReactDOM.render(
         <Route path='settings' component={Settings}/>
         <Route path='filter/discussions' component={Home} onEnter={()=>store.dispatch(discussions())}/>
         <Route name='userFeed' path='/:userName' component={Home} onEnter={nextRouter=>store.dispatch(getUserFeed(nextRouter.params.userName))}/>
+        <Route name='post' path='/:userName/:postId' component={SinglePost} onEnter={nextRouter=>store.dispatch(getSinglePost(nextRouter.params.postId))}/>
       </Route>
     </ReduxRouter>
   </Provider>,

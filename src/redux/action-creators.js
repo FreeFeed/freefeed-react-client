@@ -298,3 +298,13 @@ export function updateUserPhoto(picture){
     payload: {picture},
   }
 }
+
+export const GET_SINGLE_POST = 'GET_SINGLE_POST'
+
+export function getSinglePost(postId){
+  return {
+    type: GET_SINGLE_POST,
+    apiRequest: Api.getPostWithAllCommentsAndLikes,
+    payload: {postId},
+  }
+}
