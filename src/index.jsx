@@ -41,7 +41,7 @@ ReactDOM.render(
         <Route path='settings' component={Settings}/>
         <Route path='filter/discussions' component={Home} onEnter={()=>store.dispatch(discussions())}/>
         <Route name='userFeed' path='/:userName' component={Home} onEnter={nextRouter=>store.dispatch(getUserFeed(nextRouter.params.userName))}/>
-        <Route name='post' path='/:userName/:postId' component={SinglePost} onEnter={nextRouter=>store.dispatch(getSinglePost(nextRouter.params.postId))}/>
+        <Route name='post' path='/:userName/:postId' component={SinglePost} onEnter={nextRouter=>{window.scrollTo(0, 0);store.dispatch(getSinglePost(nextRouter.params.postId))}}/>
       </Route>
     </ReduxRouter>
   </Provider>,

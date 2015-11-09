@@ -1,6 +1,6 @@
 import {unauthenticated, serverError, request, response, fail, SIGN_IN,
         UNAUTHENTICATED, WHO_AM_I, whoAmI, requiresAuth, UPDATE_USER, UPDATE_USER_PHOTO,
-        SHOW_MORE_LIKES, showMoreLikesSync, showMoreLikesAsync} from './action-creators'
+        SHOW_MORE_LIKES, showMoreLikesSync, showMoreLikesAsync, DELETE_POST} from './action-creators'
 
 //middleware for api requests
 export const apiMiddleware = store => next => async (action) => {
@@ -85,6 +85,15 @@ export const userPhotoLogicMiddleware = store => next => action => {
   if (action.type === response(UPDATE_USER_PHOTO)) {
     //update data after new photo posted
     store.dispatch(whoAmI())
+  }
+
+  return next(action)
+}
+
+export const redirectionMiddleware = store => next => action => {
+  //go to home if single post has been removed
+  if (action.type === response(DELETE_POST) && store.getState().singlePostId) { 
+    return store.dispatch(pushState(null, '/', {}))
   }
 
   return next(action)

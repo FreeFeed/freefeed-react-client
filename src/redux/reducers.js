@@ -115,6 +115,9 @@ export function feedViewState(state = initFeed, action) {
       const postId = action.request.postId
       return { feed: [postId] }
     }
+    case fail(GET_SINGLE_POST): {
+      return { feed: [] }
+    }
   }
   return state
 }
@@ -127,6 +130,7 @@ const NO_ERROR = {
 
 const POST_SAVE_ERROR = 'Something went wrong while editing the post...'
 const NEW_COMMENT_ERROR = 'Failed to add comment'
+const GET_SINGLE_POST_ERROR = 'Can\'t find the post'
 
 const indexById = list => _.indexBy(list || [], 'id')
 const mergeByIds = (state, array) => ({...state, ...indexById(array)})
@@ -161,6 +165,14 @@ export function postsViewState(state = {}, action) {
     case response(GET_SINGLE_POST): {
       const id = action.payload.posts.id
       return { ...state, [id]: initPostViewState(action.payload.posts) }
+    }
+    case fail(GET_SINGLE_POST): {
+      const id = action.request.postId
+      const isEditing = false
+
+      const isError = true
+
+      return { ...state, [id]: { id, isEditing, isError, errorString: GET_SINGLE_POST_ERROR }}
     }
     case SHOW_MORE_LIKES_SYNC: {
       const id = action.payload.postId
@@ -624,7 +636,7 @@ export function routeLoadingState(state = false, action){
   if (action.type == request(GET_SINGLE_POST)){
     return true
   }
-  if (action.type == response(GET_SINGLE_POST)){
+  if (action.type == response(GET_SINGLE_POST) || action.type == fail(GET_SINGLE_POST)){
     return false
   }
   switch(action.type){
@@ -646,6 +658,17 @@ export function boxHeader(state = "", action){
     case request(GET_SINGLE_POST): {
       return ''
     }
+  }
+  return state
+}
+
+export function singlePostId(state = null, action) {
+  if (isFeedRequest(action)){
+    return null
+  }
+  if (action.type == request(GET_SINGLE_POST)){
+    console.log(action.payload.postId)
+    return action.payload.postId
   }
   return state
 }
