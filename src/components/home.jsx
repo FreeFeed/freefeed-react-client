@@ -27,8 +27,6 @@ const HomeHandler = (props) => {
     </div>)
 }
 
-HomeHandler.childContextTypes = {settings: React.PropTypes.object}
-
 function selectState(state) {
   const user = state.user
   const feed = state.feedViewState.feed.map(id => joinPostData(id, state))

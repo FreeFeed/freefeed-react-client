@@ -30,7 +30,6 @@ export default (props) => {
     }
   }
   const deletePost = () => props.deletePost(props.id)
-  const toggleCommenting = () => props.toggleCommenting(props.id)
   const likePost = () => props.likePost(props.id, props.user.id)
   const unlikePost = () => props.unlikePost(props.id, props.user.id)
   const checkSave = (event) => {
@@ -41,12 +40,17 @@ export default (props) => {
     }
   }
   const ILikedPost = _.find(props.usersLikedPost, {id:props.user.id})
+  const profilePicture = props.isSinglePost ? 
+    props.createdBy.profilePictureLargeUrl : props.createdBy.profilePictureMediumUrl
+  const postClass = props.isSinglePost ?
+    'single-post-container' : 'timeline-post-container'
+  const toggleCommenting = props.isSinglePost ? () => {} : () => props.toggleCommenting(props.id)
 
   return (
-    <div className='timeline-post-container'>
+    <div className={postClass}>
       <div className='avatar'>
         <Link to='timeline.index' params={{username: props.createdBy.username}}>
-          <img src={ props.createdBy.profilePictureMediumUrl } />
+          <img src={ profilePicture } />
         </Link>
       </div>
       <div className='post-body p-timeline-post'>

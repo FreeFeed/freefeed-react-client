@@ -5,18 +5,20 @@ import {joinPostData, postActions} from './select-utils'
 import FeedPost from './feed-post'
 
 const SinglePostHandler = (props) => {
-  const post = props.post
-  const postsViewState = props.postsViewState
+  let post = props.post
+  let errorString = props.errorString
 
   let postBody = <div></div>
 
-  if (postsViewState && postsViewState.isError) {
-    postBody = <div className='single-post-error'>{postsViewState.errorString}</div>
+  if (errorString) {
+    postBody = <div className='single-post-error'>{errorString}</div>
   }
 
   if (post) {
+    post.isCommenting = true
     postBody = <FeedPost {...post}
                   key={post.id}
+                  isSinglePost={true}
                   user={props.user}
                   showMoreComments={props.showMoreComments}
                   showMoreLikes={props.showMoreLikes}
@@ -45,16 +47,15 @@ const SinglePostHandler = (props) => {
   )
 }
 
-SinglePostHandler.childContextTypes = {settings: React.PropTypes.object}
-
 function selectState(state) {
   const boxHeader = state.boxHeader
   const user = state.user
 
   const post = state.feedViewState.feed[0] ? joinPostData(state.feedViewState.feed[0], state) : null
-  const postsViewState = state.postsViewState[state.singlePostId] ? state.postsViewState[state.singlePostId] : null
+  const viewState = state.postsViewState[state.singlePostId]
+  const errorString = viewState && viewState.isError ? viewState.errorString : null
 
-  return { post, user, boxHeader, postsViewState }
+  return { post, user, boxHeader, errorString }
 }
 
 function selectActions(dispatch) {

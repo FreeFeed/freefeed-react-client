@@ -6,6 +6,7 @@ const renderComment = commentEdit => comment => (<PostComment key={comment.id} {
 const renderAddingComment = props => (<PostComment
   id={props.post.id}
   isEditing={true}
+  isSinglePost={props.post.isSinglePost}
   editText={props.post.newCommentText}
   saveEditingComment={props.addComment}
   toggleEditingComment={props.toggleCommenting}
