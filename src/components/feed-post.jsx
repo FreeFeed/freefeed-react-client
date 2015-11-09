@@ -1,7 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router'
 import moment from 'moment'
-import Linkify from 'react-linkify'
 
 import {fromNowOrNow} from '../utils'
 import PostAttachments from './post-attachments'
@@ -9,6 +8,7 @@ import PostComments from './post-comments'
 import PostLikes from './post-likes'
 import UserName from './user-name'
 import {preventDefault} from '../utils'
+import PostText from './post-text'
 import Textarea from 'react-textarea-autosize'
 import throbber from 'assets/images/throbber.gif'
 
@@ -86,7 +86,7 @@ export default (props) => {
           <div>
             <div className='body'>
               <div className='text'>
-                <Linkify properties={{target: '_blank'}}>{props.body}</Linkify>
+                <PostText text={props.body}/>
               </div>
             </div>
 

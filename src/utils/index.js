@@ -51,3 +51,18 @@ export function preventDefault(realFunction) {
     return realFunction && realFunction()
   }
 }
+
+function brAndTrim(text){
+  return text.split(/\n/g).map(line => line.trim()).join('<br/>')
+}
+
+function p(text){
+  return `<p>${text}</p>`
+}
+
+export function showHtmlEnters(text){
+  const paragraphs = text.split(/\n{2,}/g)
+  .filter(line => line)
+  .map(line => p(brAndTrim(line)))
+  return paragraphs.join('')
+}
