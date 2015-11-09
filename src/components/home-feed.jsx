@@ -21,12 +21,12 @@ export default (props) => {
 
   return (
     <div className='posts'>
-      <p>pagination (if not first page)</p>
+      {/*<p>pagination (if not first page)</p>*/}
       <div className='posts'>
         {feed_posts}
       </div>
-      <p>hidden-posts</p>
-      <p>pagination</p>
+      {/*<p>hidden-posts</p>*/}
+      {/*<p>pagination</p>*/}
     </div>
   )
 }
