@@ -49,8 +49,6 @@ const SinglePostHandler = (props) => {
   )
 }
 
-SinglePostHandler.childContextTypes = {settings: React.PropTypes.object}
-
 function selectState(state) {
   const boxHeader = state.boxHeader
   const user = state.user
