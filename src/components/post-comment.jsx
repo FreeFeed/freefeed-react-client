@@ -6,6 +6,8 @@ import Textarea from 'react-textarea-autosize'
 
 export default class PostComment extends React.Component{
   render() {
+    const isSinglePost = this.props.isSinglePost
+
     return (
     <div className='comment p-comment'>
       <a className='date' title={this.props.createdAgo}>
@@ -15,7 +17,7 @@ export default class PostComment extends React.Component{
         {this.props.isEditing ? (<div className='edit'>
                         <div>
                           <Textarea
-                            autoFocus
+                            autoFocus={!isSinglePost}
                             ref='commentText'
                             className='edit-comment-area'
                             defaultValue={this.props.editText}
@@ -26,15 +28,25 @@ export default class PostComment extends React.Component{
                             />
                         </div>
                         <div className='comment-actions'>
+                          {this.props.isSinglePost? (
+                            <span>
+                              <button className='btn btn-default btn-xs comment-post' onClick={this.saveComment}>Comment</button>
+                              &nbsp;
+                            </span>
+                            ) : (
+                            <span>
+                              <button className='btn btn-default btn-xs comment-post' onClick={this.saveComment}>Post</button>
+                              &nbsp;
+                              <a className='comment-cancel' onClick={preventDefault(_=>this.props.toggleEditingComment(this.props.id))}>Cancel</a>
+                              &nbsp;
+                            </span>
+                          )}
+
                           {this.props.isSaving ? (
                                 <span className="throbber">
                                   <img width="16" height="16" src='/assets/images/throbber.gif'/>
                                 </span>
                               ) : false}
-                          &nbsp;
-                          <a className='comment-cancel' onClick={preventDefault(_=>this.props.toggleEditingComment(this.props.id))}>Cancel</a>
-                          &nbsp;
-                          <button className='btn btn-default btn-xs comment-post' onClick={this.saveComment}>Update</button>
                         </div>
                         {this.props.errorString ? (<div className='comment-error'>{this.props.errorString}</div>) : false}
                     </div>)

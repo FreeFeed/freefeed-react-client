@@ -5,7 +5,8 @@ import {joinPostData, postActions} from './select-utils'
 import FeedPost from './feed-post'
 
 const SinglePostHandler = (props) => {
-  const post = props.post
+  let post = props.post
+
   const postsViewState = props.postsViewState
 
   let postBody = <div></div>
@@ -15,8 +16,11 @@ const SinglePostHandler = (props) => {
   }
 
   if (post) {
+    post.isCommenting = true
+    
     postBody = <FeedPost {...post}
                   key={post.id}
+                  isSinglePost={true}
                   user={props.user}
                   showMoreComments={props.showMoreComments}
                   showMoreLikes={props.showMoreLikes}
