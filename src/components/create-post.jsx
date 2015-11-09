@@ -49,7 +49,7 @@ export default class CreatePost extends React.Component {
                 </span>
               ) : false}
 
-              <button className='btn btn-default btn-xs p-create-post-action'
+              <button className='btn btn-default btn-xs create-post-action'
                       onClick={preventDefault(this.createPost)}
                       disabled={this.state.disabled || this.props.createPostViewState.isPending}>Post</button>
             </div>

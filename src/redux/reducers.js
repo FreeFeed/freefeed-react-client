@@ -7,7 +7,7 @@ import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME, 
         TOGGLE_EDITING_POST, CANCEL_EDITING_POST, SAVE_EDITING_POST, DELETE_POST,
         TOGGLE_COMMENTING, ADD_COMMENT, TOGGLE_EDITING_COMMENT, CANCEL_EDITING_COMMENT,
         SAVE_EDITING_COMMENT, DELETE_COMMENT, CREATE_POST,
-        LIKE_POST, UNLIKE_POST} from './action-creators'
+        LIKE_POST, UNLIKE_POST, GET_SINGLE_POST} from './action-creators'
 
 import _ from 'lodash'
 import {userParser} from '../utils'
@@ -111,6 +111,13 @@ export function feedViewState(state = initFeed, action) {
       const postId = action.payload.posts.id
       return { feed: [postId, ...state.feed] }
     }
+    case response(GET_SINGLE_POST): {
+      const postId = action.request.postId
+      return { feed: [postId] }
+    }
+    case fail(GET_SINGLE_POST): {
+      return { feed: [] }
+    }
   }
   return state
 }
@@ -123,6 +130,7 @@ const NO_ERROR = {
 
 const POST_SAVE_ERROR = 'Something went wrong while editing the post...'
 const NEW_COMMENT_ERROR = 'Failed to add comment'
+const GET_SINGLE_POST_ERROR = 'Can\'t find the post'
 
 const indexById = list => _.indexBy(list || [], 'id')
 const mergeByIds = (state, array) => ({...state, ...indexById(array)})
@@ -153,6 +161,18 @@ export function postsViewState(state = {}, action) {
       const omittedComments = 0
 
       return { ...state, [id]: { ...state[id], omittedComments, ...NO_ERROR } }
+    }
+    case response(GET_SINGLE_POST): {
+      const id = action.payload.posts.id
+      return { ...state, [id]: initPostViewState(action.payload.posts) }
+    }
+    case fail(GET_SINGLE_POST): {
+      const id = action.request.postId
+      const isEditing = false
+
+      const isError = true
+
+      return { ...state, [id]: { id, isEditing, isError, errorString: GET_SINGLE_POST_ERROR }}
     }
     case SHOW_MORE_LIKES_SYNC: {
       const id = action.payload.postId
@@ -372,6 +392,9 @@ export function posts(state = {}, action) {
     case response(CREATE_POST): {
       return updatePostData(state, action)
     }
+    case response(GET_SINGLE_POST): {
+      return updatePostData(state, action)
+    }
     case UNAUTHENTICATED: {
       return {}
     }
@@ -382,6 +405,9 @@ export function posts(state = {}, action) {
 
 export function attachments(state = {}, action) {
   if (isFeedResponse(action)){
+    return mergeByIds(state, action.payload.attachments)
+  }
+  if(action.type == response(GET_SINGLE_POST)){
     return mergeByIds(state, action.payload.attachments)
   }
   return state
@@ -397,6 +423,9 @@ export function comments(state = {}, action) {
   }
   switch (action.type) {
     case response(SHOW_MORE_COMMENTS): {
+      return updateCommentData(state, action)
+    }
+    case response(GET_SINGLE_POST): {
       return updateCommentData(state, action)
     }
     case response(SHOW_MORE_LIKES_ASYNC): {
@@ -436,6 +465,9 @@ export function commentViewState(state={}, action) {
   }
   switch(action.type){
     case response(SHOW_MORE_COMMENTS): {
+      return updateCommentViewState(state, action)
+    }
+    case response(GET_SINGLE_POST): {
       return updateCommentViewState(state, action)
     }
     case TOGGLE_EDITING_COMMENT: {
@@ -481,6 +513,9 @@ export function users(state = {}, action) {
   }
   switch (action.type) {
     case response(SHOW_MORE_COMMENTS): {
+      return mergeByIds(state, action.payload.users)
+    }
+    case response(GET_SINGLE_POST): {
       return mergeByIds(state, action.payload.users)
     }
     case response(SHOW_MORE_LIKES_ASYNC): {
@@ -598,10 +633,42 @@ export function routeLoadingState(state = false, action){
   if (isFeedResponse(action) || isFeedFail(action)){
     return false
   }
+  if (action.type == request(GET_SINGLE_POST)){
+    return true
+  }
+  if (action.type == response(GET_SINGLE_POST) || action.type == fail(GET_SINGLE_POST)){
+    return false
+  }
   switch(action.type){
     case UNAUTHENTICATED: {
       return false
     }
+  }
+  return state
+}
+
+export function boxHeader(state = "", action){
+  switch(action.type){
+    case request(HOME): {
+      return 'Home'
+    }
+    case request(DISCUSSIONS): {
+      return 'My discussions'
+    }
+    case request(GET_SINGLE_POST): {
+      return ''
+    }
+  }
+  return state
+}
+
+export function singlePostId(state = null, action) {
+  if (isFeedRequest(action)){
+    return null
+  }
+  if (action.type == request(GET_SINGLE_POST)){
+    console.log(action.payload.postId)
+    return action.payload.postId
   }
   return state
 }
