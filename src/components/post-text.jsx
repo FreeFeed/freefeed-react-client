@@ -1,7 +1,26 @@
 import React from 'react'
 import Linkify from'react-linkify'
-import {showHtmlEnters} from '../utils'
 
-const getEntered = text => <span dangerouslySetInnerHTML={{__html:showHtmlEnters(text)}}></span>
+const allButLast = arr => arr.slice(0, arr.length-1)
+
+const brAndTrim = (text) => {
+  const lines = text.split(/\n/g).map(line => line.trim()).filter(line=>line)
+  const linesWithBrs = allButLast(lines).map(line => <span>{line}<br/></span>)
+  return [...linesWithBrs, lines[lines.length-1]]
+}
+
+const p = (text) => <p>{text}</p>
+
+const getEntered = text => {
+  if (!/\n/.test(text)){
+    return text
+  }
+  const lines = text.split(/\n{2,}/g)
+  .filter(line => line)
+  .map(brAndTrim)
+
+  const paragraphs = allButLast(lines).map(p)
+  return [...paragraphs, lines[lines.length-1]]
+}
 
 export default ({text}) => (<Linkify properties={{target: '_blank'}}>{getEntered(text)}</Linkify>)
