@@ -10,3 +10,13 @@ test('multiline texts are correctly processed', t => {
 
   t.end()
 })
+
+test('single-line texts are correctly processed', t => {
+
+  const text = 'ururu ururu3'
+  const expectation = 'ururu ururu3'
+
+  t.equal(showHtmlEnters(text), expectation)
+
+  t.end()
+})

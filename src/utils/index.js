@@ -61,6 +61,9 @@ function p(text){
 }
 
 export function showHtmlEnters(text){
+  if (!/\n/.test(text)){
+    return text
+  }
   const paragraphs = text.split(/\n{2,}/g)
   .filter(line => line)
   .map(line => p(brAndTrim(line)))
