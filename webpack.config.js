@@ -28,6 +28,7 @@ module.exports = [{
   entry: {
     app: skipFalsy([
       opts.hot && 'webpack/hot/dev-server',
+      'babel-polyfill',
       './src'
     ])
   },

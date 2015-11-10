@@ -6,6 +6,7 @@
   "dependencies": {
     "babel-core": "^5.8.25",
     "babel-loader": "^5.3.2",
+    "babel-polyfill": "^6.0.16",
     "babel-runtime": "^5.8.25",
     "css-loader": "^0.19.0",
     "extract-text-webpack-plugin": "^0.8.2",
