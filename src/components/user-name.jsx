@@ -3,22 +3,26 @@ import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import {preventDefault} from '../utils'
 
-const display = (mode, user) => {
+const DisplayUsername = ({mode, user}) => {
   switch(mode){
     case 'screen':{
-      return {__html: user.screenName}
+      return <span>{user.screenName}</span>
     }
     case 'user':{
-      return {__html:user.username}
+      return <span>{user.username}</span>
     }
   }
-  return {__html:`${user.screenName} <span class='be-fe-username'>(${user.username})</span>`}
+
+  return <span>{`${user.screenName} `}<span class='be-fe-username'>{user.username}</span></span>
 }
 
 const UserName = (props) => (
-  <Link to={`/${props.user.username}`}
-     className='user-name-info be-fe-nameFixed'
-     dangerouslySetInnerHTML={display(props.settings.userNameMode, props.user)}/>
+  <Link
+    className='user-name-info be-fe-nameFixed'
+    to={`/${props.user.username}`}
+  >
+    <DisplayUsername mode={props.settings.userNameMode} user={props.user}/>
+  </Link>
 )
 
 const mapStateToProps = (state) =>{
