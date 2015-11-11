@@ -667,7 +667,6 @@ export function singlePostId(state = null, action) {
     return null
   }
   if (action.type == request(GET_SINGLE_POST)){
-    console.log(action.payload.postId)
     return action.payload.postId
   }
   return state
