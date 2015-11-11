@@ -29,7 +29,7 @@ const HomeHandler = (props) => {
 
 function selectState(state) {
   const user = state.user
-  const feed = state.feedViewState.feed.map(id => joinPostData(id, state))
+  const feed = state.feedViewState.feed.map(joinPostData(state))
   const createPostViewState = state.createPostViewState
   const timelines = state.timelines
   const boxHeader = state.boxHeader
@@ -38,7 +38,7 @@ function selectState(state) {
 }
 
 function selectActions(dispatch) {
-  return { 
+  return {
     ...postActions(dispatch),
     createPost: (postText, feedName) => dispatch(createPost(postText, feedName))
   }

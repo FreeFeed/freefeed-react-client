@@ -5,10 +5,13 @@ import {showMoreComments, showMoreLikes, toggleEditingPost, cancelEditingPost,
 
 const MAX_LIKES = 4
 
-export function joinPostData(postId, state) {
+export const joinPostData = state => postId => {
   const post = state.posts[postId]
+  if (!post){
+    return
+  }
   const user = state.user
-  
+
   const attachments = (post.attachments || []).map(attachmentId => state.attachments[attachmentId])
   let comments = (post.comments || []).map(commentId => {
     const comment = state.comments[commentId]
