@@ -76,6 +76,7 @@ export default class PostComment extends React.Component{
   saveComment = () => {
     if(!this.props.isSaving){
       this.props.saveEditingComment(this.props.id, this.refs.commentText.value)
+      this.refs.commentText.value = ''
     }
   }
   checkSave = (event) => {
