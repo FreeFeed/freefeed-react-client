@@ -5,7 +5,8 @@ import PaginationLinks from './pagination-links'
 
 const PaginatedView = props => (
   <div className='box-body'>
-    {props.offset > 0 ? <PaginationLinks {...props}/> : props.firstPageHead}
+    {props.pageHead}
+    {props.offset > 0 ? props.children ? <PaginationLinks {...props}/> : false : props.firstPageHead}
     {props.children}
     <PaginationLinks {...props}/>
   </div>

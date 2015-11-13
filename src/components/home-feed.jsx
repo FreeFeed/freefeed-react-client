@@ -19,14 +19,7 @@ export default (props) => {
               commentEdit={props.commentEdit} />)
   })
 
-  return (
-    <div className='posts'>
-      {/*<p>pagination (if not first page)</p>*/}
-      <div className='posts'>
-        {feed_posts}
-      </div>
-      {/*<p>hidden-posts</p>*/}
-      {/*<p>pagination</p>*/}
-    </div>
-  )
+  return (<div className='posts'>
+            {feed_posts}
+          </div>)
 }
