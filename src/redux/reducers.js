@@ -1,4 +1,4 @@
-import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME, DISCUSSIONS, GET_USER_FEED,
+import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME, DISCUSSIONS, GET_USER_FEED, DIRECT,
         UPDATE_USER, USER_SETTINGS_CHANGE,
         UPDATE_PASSWORD,
         UPDATE_USER_PHOTO,
@@ -12,7 +12,7 @@ import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME, 
 import _ from 'lodash'
 import {userParser} from '../utils'
 
-const feedGeneratingActions = [HOME, DISCUSSIONS, GET_USER_FEED]
+const feedGeneratingActions = [HOME, DISCUSSIONS, GET_USER_FEED, DIRECT]
 const feedRequests = feedGeneratingActions.map(request)
 const feedResponses = feedGeneratingActions.map(response)
 const feedFails = feedGeneratingActions.map(fail)
@@ -657,6 +657,9 @@ export function boxHeader(state = "", action){
     }
     case request(GET_SINGLE_POST): {
       return ''
+    }
+    case request(DIRECT): {
+      return 'Direct messages'
     }
   }
   return state
