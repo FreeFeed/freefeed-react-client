@@ -51,7 +51,7 @@ function selectState(state) {
   const boxHeader = state.boxHeader
   const user = state.user
 
-  const post = state.feedViewState.feed[0] ? joinPostData(state.feedViewState.feed[0], state) : null
+  const post = joinPostData(state)(state.singlePostId)
   const viewState = state.postsViewState[state.singlePostId]
   const errorString = viewState && viewState.isError ? viewState.errorString : null
 
