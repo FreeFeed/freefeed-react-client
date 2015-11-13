@@ -2,9 +2,11 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {createPost} from '../redux/action-creators'
 import {joinPostData, postActions} from './select-utils'
+import {getQuery} from '../utils'
 
 import CreatePost from './create-post'
 import HomeFeed from './home-feed'
+import PaginatedView from './paginated-view'
 
 const HomeHandler = (props) => {
   const createPost = (postText) => {
@@ -12,16 +14,17 @@ const HomeHandler = (props) => {
     props.createPost(postText, feedName)
   }
 
+  const createPostForm = (<CreatePost createPostViewState={props.createPostViewState}
+                                      createPost={createPost} />)
+
   return (
     <div className='box'>
       <div className='box-header-timeline'>
         {props.boxHeader}
       </div>
-      <div className='box-body'>
-        <CreatePost createPostViewState={props.createPostViewState}
-                    createPost={createPost} />
+      <PaginatedView firstPageHead={createPostForm}>
         <HomeFeed {...props}/>
-      </div>
+      </PaginatedView>
       <div className='box-footer'>
       </div>
     </div>)
@@ -40,7 +43,7 @@ function selectState(state) {
 function selectActions(dispatch) {
   return {
     ...postActions(dispatch),
-    createPost: (postText, feedName) => dispatch(createPost(postText, feedName))
+    createPost: (postText, feedName) => dispatch(createPost(postText, feedName)),
   }
 }
 

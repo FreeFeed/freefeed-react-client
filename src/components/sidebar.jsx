@@ -29,7 +29,7 @@ export default ({user, signOut}) => (
       </div>
       <div className='box-body'>
         <ul>
-          <li className='p-home'><Link to='/home'>Home</Link></li>
+          <li className='p-home'><Link to='/'>Home</Link></li>
           <li className='p-direct-messages'><Link to='timeline.directs'>Direct messages</Link></li>
           <li className='p-my-discussions'><Link to='/filter/discussions'>My discussions</Link></li>
         </ul>
