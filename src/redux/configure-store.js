@@ -22,7 +22,7 @@ let enhancers = [applyMiddleware(...middleware),
 
 //tells webpack to include devtool enhancer in dev mode
 if (isDevelopment) {
-  enhancers.push(window.devToolsExtension || (f => f))
+  enhancers.push(window.devToolsExtension() || (f => f))
 }
 
 const storeEnhancer = compose(...enhancers)
