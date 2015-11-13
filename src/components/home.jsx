@@ -8,7 +8,7 @@ import CreatePost from './create-post'
 import HomeFeed from './home-feed'
 import PaginatedView from './paginated-view'
 
-const HomeHandler = (props) => {
+const FeedHandler = (props) => {
   const createPost = (postText) => {
     const feedName = props.user.username
     props.createPost(postText, feedName)
@@ -23,7 +23,7 @@ const HomeHandler = (props) => {
         {props.boxHeader}
       </div>
       <PaginatedView firstPageHead={createPostForm}>
-        <HomeFeed {...props}/>
+        {props.feed && props.feed.length ? <HomeFeed {...props}/> : false}
       </PaginatedView>
       <div className='box-footer'>
       </div>
@@ -47,4 +47,4 @@ function selectActions(dispatch) {
   }
 }
 
-export default connect(selectState, selectActions)(HomeHandler)
+export default connect(selectState, selectActions)(FeedHandler)
