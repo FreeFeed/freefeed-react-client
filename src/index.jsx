@@ -43,6 +43,7 @@ ReactDOM.render(
         <Route path='login' component={Login}/>
         <Route path='settings' component={Settings}/>
         <Route name='discussions' path='filter/discussions' component={Home} onEnter={boundRouteActions('discussions')}/>
+        <Route name='direct' path='filter/direct' component={Home} onEnter={boundRouteActions('direct')}/>
         <Route name='userFeed' path='/:userName' component={Home} onEnter={boundRouteActions('userFeed')}/>
         <Route name='post' path='/:userName/:postId' component={SinglePost} onEnter={boundRouteActions('post')}/>
       </Route>

@@ -1,6 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router'
 import moment from 'moment'
+import classnames from 'classnames'
 
 import {fromNowOrNow} from '../utils'
 import PostAttachments from './post-attachments'
@@ -13,8 +14,6 @@ import Textarea from 'react-textarea-autosize'
 import throbber from 'assets/images/throbber.gif'
 
 export default (props) => {
-  const isDirect = false
-
   const createdAt = new Date(props.createdAt - 0)
   const createdAtISO = moment(createdAt).format()
   const createdAgo = fromNowOrNow(createdAt)
@@ -43,9 +42,16 @@ export default (props) => {
   const ILikedPost = _.find(props.usersLikedPost, {id:props.user.id})
   const profilePicture = props.isSinglePost ?
     props.createdBy.profilePictureLargeUrl : props.createdBy.profilePictureMediumUrl
-  const postClass = props.isSinglePost ?
-    'single-post-container' : 'timeline-post-container'
+  const postClass = classnames({
+    'single-post-container' : props.isSinglePost,
+    'timeline-post-container':!props.isSinglePost,
+    'direct-post': props.isDirect,
+  })
+
   const toggleCommenting = props.isSinglePost ? () => {} : () => props.toggleCommenting(props.id)
+
+  const directReceivers = props.directReceivers
+                                .map((receiver, index) => ( <span key={index}><UserName className='post-addressee post-addressee-direct' user={receiver}/>{index !== props.directReceivers.length -1 ? ',' : false}</span>))
 
   return (
     <div className={postClass}>
@@ -57,6 +63,8 @@ export default (props) => {
       <div className='post-body p-timeline-post'>
         <div className='title'>
           <UserName className='post-author' user={props.createdBy}/>
+          {props.isDirect ? (<span>&nbsp;to&nbsp;</span>) : false}
+          {props.isDirect ? directReceivers : false}
         </div>
 
         {props.isEditing ? (
@@ -93,7 +101,7 @@ export default (props) => {
             <PostAttachments attachments={props.attachments} />
 
             <div className='info p-timeline-post-info'>
-              {isDirect ? (<span>»</span>) : false}
+              {props.isDirect ? (<span>»&nbsp;</span>) : false}
               <span className='post-date'>
                 <Link to={`/${props.createdBy.username}/${props.id}`} className='datetime'>
                   <time dateTime={createdAtISO} title={createdAtISO}>{createdAgo}</time>

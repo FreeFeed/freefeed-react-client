@@ -1,4 +1,4 @@
-import {home, discussions, getUserFeed, getSinglePost} from './action-creators'
+import {home, discussions, direct, getUserFeed, getSinglePost} from './action-creators'
 
 const scrollToTop = value => {
   scrollTo(0, 0)
@@ -13,6 +13,7 @@ export const routeActions = {
   'discussions': next => scrollToTop(discussions(getOffset(next))),
   'userFeed': next => scrollToTop(getUserFeed(next.params.userName, getOffset(next))),
   'post': next => scrollToTop(getSinglePost(next.params.postId)),
+  'direct': next => scrollToTop(direct(getOffset(next))),
 }
 
 export const bindRouteActions = dispatch => route => next => {

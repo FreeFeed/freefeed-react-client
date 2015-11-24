@@ -23,6 +23,11 @@ export function getDiscussions({offset}) {
     `${apiConfig.host}/v1/timelines/filter/discussions?offset=${offset}`, getRequestOptions())
 }
 
+export function getDirect({offset}) {
+  return fetch(
+    `${apiConfig.host}/v1/timelines/filter/directs?offset=${offset}`, getRequestOptions())
+}
+
 export function getUserFeed({username, offset}){
   return fetch(
     `${apiConfig.host}/v1/timelines/${username}?offset=${offset}`, getRequestOptions())

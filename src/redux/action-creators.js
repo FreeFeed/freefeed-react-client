@@ -55,6 +55,16 @@ export function discussions(offset = 0){
   }
 }
 
+export const DIRECT = 'DIRECT'
+
+export function direct(offset = 0){
+  return {
+    type: DIRECT,
+    apiRequest: Api.getDirect,
+    payload: {offset},
+  }
+}
+
 export const GET_USER_FEED = 'GET_USER_FEED'
 
 export function getUserFeed(username, offset = 0){
