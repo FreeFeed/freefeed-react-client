@@ -35,7 +35,11 @@ export const joinPostData = state => postId => {
 
   const createdBy = state.users[post.createdBy]
   const isEditable = post.createdBy == user.id
-  return { ...post, attachments, comments, usersLikedPost, createdBy, ...postViewState, isEditable }
+  const directFeeds = post.postedTo.map(feedId => state.timelines[feedId]).filter(feed => feed && feed.name === 'Directs')
+  const isDirect = directFeeds.length
+  const directReceivers = post.postedTo.map(subscriptionId => (state.subscriptions[subscriptionId]||{}).user).map(userId=>state.users[userId]).filter(user=>user)
+
+  return { ...post, attachments, comments, usersLikedPost, createdBy, ...postViewState, isEditable, isDirect, directReceivers }
 }
 
 export function postActions(dispatch) {

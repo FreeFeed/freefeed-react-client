@@ -13,12 +13,12 @@ const DisplayUsername = ({mode, user}) => {
     }
   }
 
-  return <span>{`${user.screenName} `}<span class='be-fe-username'>{user.username}</span></span>
+  return <span>{`${user.screenName} `}<span className='be-fe-username'>{user.username}</span></span>
 }
 
 const UserName = (props) => (
   <Link
-    className='user-name-info be-fe-nameFixed'
+    className={`user-name-info ${props.className}`}
     to={`/${props.user.username}`}
   >
     <DisplayUsername mode={props.settings.userNameMode} user={props.user}/>

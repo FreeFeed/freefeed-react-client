@@ -509,7 +509,8 @@ export function commentViewState(state={}, action) {
 
 export function users(state = {}, action) {
   if (isFeedResponse(action)){
-    return mergeByIds(state, (action.payload.users || []).map(userParser))
+    const usersArray = [...(action.payload.users || []), ...(action.payload.subscribers || [])]
+    return mergeByIds(state, usersArray.map(userParser))
   }
   switch (action.type) {
     case response(SHOW_MORE_COMMENTS): {
@@ -578,9 +579,18 @@ export function passwordForm(state=DEFAULT_PASSWORD_FORM_STATE, action){
   }
   return state
 }
+
 export function timelines(state = {}, action) {
   if (isFeedResponse(action)){
-    return {...action.payload.timelines}
+    return mergeByIds(state, [action.payload.timelines])
+  }
+
+  return state
+}
+
+export function subscriptions(state = {}, action) {
+  if (isFeedResponse(action)){
+    return mergeByIds(state, action.payload.subscriptions)
   }
 
   return state
