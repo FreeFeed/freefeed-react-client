@@ -38,7 +38,7 @@
     "tap-webpack-plugin": "^1.0.0",
     "tape": "^4.2.2",
     "webpack": "^1.12.2",
-    "webpack-dev-server": "^1.12.0",
+    "webpack-dev-server": "1.12.1",
     "webpack-path-rewriter": "^1.1.2"
   },
   "scripts": {
