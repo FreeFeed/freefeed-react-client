@@ -21,8 +21,8 @@ let enhancers = [applyMiddleware(...middleware),
   reduxReactRouter({ createHistory: history}),]
 
 //tells webpack to include devtool enhancer in dev mode
-if (isDevelopment) {
-  enhancers.push(window.devToolsExtension() || (f => f))
+if (isDevelopment && window.devToolsExtension) {
+  enhancers.push(window.devToolsExtension())
 }
 
 const storeEnhancer = compose(...enhancers)
