@@ -235,7 +235,7 @@ export function postsViewState(state = {}, action) {
       return {...state,
         [post.id] : {
           ...post,
-          savingComment: true,
+          isSavingComment: true,
         }}
     }
     case response(ADD_COMMENT): {
@@ -244,7 +244,7 @@ export function postsViewState(state = {}, action) {
         [post.id] : {
           ...post,
           isCommenting: false,
-          savingComment: false,
+          isSavingComment: false,
           newCommentText: '',
         }
       }
@@ -254,7 +254,7 @@ export function postsViewState(state = {}, action) {
       return {...state,
         [post.id] : {
           ...post,
-          savingComment: false,
+          isSavingComment: false,
           commentError: NEW_COMMENT_ERROR
         }
       }

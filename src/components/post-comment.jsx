@@ -3,7 +3,7 @@ import PostText from'./post-text'
 import UserName from './user-name'
 import {preventDefault} from '../utils'
 import Textarea from 'react-textarea-autosize'
-import throbber from 'assets/images/throbber.gif'
+import throbber16 from 'assets/images/throbber-16.gif'
 
 export default class PostComment extends React.Component{
   render() {
@@ -32,20 +32,17 @@ export default class PostComment extends React.Component{
                           {this.props.isSinglePost? (
                             <span>
                               <button className='btn btn-default btn-xs comment-post' onClick={this.saveComment}>Comment</button>
-                              &nbsp;
                             </span>
                             ) : (
                             <span>
                               <button className='btn btn-default btn-xs comment-post' onClick={this.saveComment}>Post</button>
-                              &nbsp;
                               <a className='comment-cancel' onClick={preventDefault(_=>this.props.toggleEditingComment(this.props.id))}>Cancel</a>
-                              &nbsp;
                             </span>
                           )}
 
                           {this.props.isSaving ? (
                                 <span className="throbber">
-                                  <img width="16" height="16" src={throbber}/>
+                                  <img width="16" height="16" src={throbber16}/>
                                 </span>
                               ) : false}
                         </div>
