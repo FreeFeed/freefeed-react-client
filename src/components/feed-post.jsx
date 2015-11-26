@@ -12,6 +12,7 @@ import {preventDefault} from '../utils'
 import PostText from './post-text'
 import Textarea from 'react-textarea-autosize'
 import throbber from 'assets/images/throbber.gif'
+import throbber16 from 'assets/images/throbber-16.gif'
 
 export default (props) => {
   const createdAt = new Date(props.createdAt - 0)
@@ -118,6 +119,11 @@ export default (props) => {
                   <a className='p-timeline-post-comment-action' onClick={preventDefault(ILikedPost ? unlikePost : likePost)}>
                     {ILikedPost ? 'Un-like' : 'Like'}
                   </a>
+                  {props.isLiking ? (
+                    <span className='throbber'>
+                      <img width="16" height="16" src={throbber16}/>
+                    </span>
+                  ) : false}
                 </span>
                 {props.isEditable ? (
                   <span>
