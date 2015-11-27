@@ -11,7 +11,7 @@ const renderAddingComment = props => (<PostComment
   saveEditingComment={props.addComment}
   toggleEditingComment={props.toggleCommenting}
   errorString={props.commentError}
-  isSaving={props.post.savingComment}/>)
+  isSaving={props.post.isSavingComment}/>)
 
 export default (props) => {
   const commentMapper = renderComment(props.commentEdit)

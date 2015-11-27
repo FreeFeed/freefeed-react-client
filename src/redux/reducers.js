@@ -235,7 +235,7 @@ export function postsViewState(state = {}, action) {
       return {...state,
         [post.id] : {
           ...post,
-          savingComment: true,
+          isSavingComment: true,
         }}
     }
     case response(ADD_COMMENT): {
@@ -244,7 +244,7 @@ export function postsViewState(state = {}, action) {
         [post.id] : {
           ...post,
           isCommenting: false,
-          savingComment: false,
+          isSavingComment: false,
           newCommentText: '',
         }
       }
@@ -254,7 +254,7 @@ export function postsViewState(state = {}, action) {
       return {...state,
         [post.id] : {
           ...post,
-          savingComment: false,
+          isSavingComment: false,
           commentError: NEW_COMMENT_ERROR
         }
       }
@@ -264,7 +264,7 @@ export function postsViewState(state = {}, action) {
       return {...state,
         [post.id] : {
           ...post,
-          liking: true,
+          isLiking: true,
         }}
     }
     case response(LIKE_POST): {
@@ -272,7 +272,7 @@ export function postsViewState(state = {}, action) {
       return {...state,
         [post.id] : {
           ...post,
-          liking: false,
+          isLiking: false,
         }
       }
     }
@@ -282,7 +282,7 @@ export function postsViewState(state = {}, action) {
       return {...state,
         [post.id] : {
           ...post,
-          liking: false,
+          isLiking: false,
           likeError: errorString,
         }
       }
@@ -292,7 +292,7 @@ export function postsViewState(state = {}, action) {
       return {...state,
         [post.id] : {
           ...post,
-          liking: true,
+          isLiking: true,
         }}
     }
     case response(UNLIKE_POST): {
@@ -300,7 +300,7 @@ export function postsViewState(state = {}, action) {
       return {...state,
         [post.id] : {
           ...post,
-          liking: false,
+          isLiking: false,
         }
       }
     }
@@ -310,7 +310,7 @@ export function postsViewState(state = {}, action) {
       return {...state,
         [post.id] : {
           ...post,
-          liking: false,
+          isLiking: false,
           likeError: errorString,
         }
       }
