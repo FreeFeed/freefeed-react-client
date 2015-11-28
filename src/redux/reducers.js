@@ -1,4 +1,4 @@
-import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME, DISCUSSIONS, GET_USER_FEED, DIRECT,
+import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME, DISCUSSIONS, GET_USER_FEED, GET_USER_COMMENTS, GET_USER_LIKES, DIRECT,
         UPDATE_USER, USER_SETTINGS_CHANGE,
         UPDATE_PASSWORD,
         UPDATE_USER_PHOTO,
@@ -7,18 +7,24 @@ import {request, response, fail, WHO_AM_I, SERVER_ERROR, UNAUTHENTICATED, HOME, 
         TOGGLE_EDITING_POST, CANCEL_EDITING_POST, SAVE_EDITING_POST, DELETE_POST,
         TOGGLE_COMMENTING, ADD_COMMENT, TOGGLE_EDITING_COMMENT, CANCEL_EDITING_COMMENT,
         SAVE_EDITING_COMMENT, DELETE_COMMENT, CREATE_POST,
-        LIKE_POST, UNLIKE_POST, GET_SINGLE_POST} from './action-creators'
+        LIKE_POST, UNLIKE_POST, GET_SINGLE_POST,
+        BAN, UNBAN, SUBSCRIBE, UNSUBSCRIBE,
+      } from './action-creators'
 
 import _ from 'lodash'
 import {userParser} from '../utils'
 
-const feedGeneratingActions = [HOME, DISCUSSIONS, GET_USER_FEED, DIRECT]
+const feedGeneratingActions = [HOME, DISCUSSIONS, GET_USER_FEED, GET_USER_COMMENTS, GET_USER_LIKES, DIRECT]
 const feedRequests = feedGeneratingActions.map(request)
 const feedResponses = feedGeneratingActions.map(response)
 const feedFails = feedGeneratingActions.map(fail)
 const isFeedRequest = action => feedRequests.indexOf(action.type) !== -1
 const isFeedResponse = action => feedResponses.indexOf(action.type) !== -1
 const isFeedFail = action => feedFails.indexOf(action.type) !== -1
+
+const userChangeActions = [SUBSCRIBE, UNSUBSCRIBE]
+const userChangeResponses = userChangeActions.map(response)
+const isUserChangeResponse = action => userChangeResponses.indexOf(action.type) !== -1
 
 export function signInForm(state={username:'', password:'', error:'', loading: false}, action) {
   switch(action.type) {
@@ -509,8 +515,7 @@ export function commentViewState(state={}, action) {
 
 export function users(state = {}, action) {
   if (isFeedResponse(action)){
-    const usersArray = [...(action.payload.users || []), ...(action.payload.subscribers || [])]
-    return mergeByIds(state, usersArray.map(userParser))
+    return mergeByIds(state, (action.payload.users || []).map(userParser))
   }
   switch (action.type) {
     case response(SHOW_MORE_COMMENTS): {
@@ -525,6 +530,13 @@ export function users(state = {}, action) {
     case UNAUTHENTICATED: {
       return {}
     }
+  }
+  return state
+}
+
+export function subscribers(state = {}, action) {
+  if (isFeedResponse(action)){
+    return mergeByIds(state, (action.payload.subscribers || []).map(userParser))
   }
   return state
 }
@@ -547,12 +559,19 @@ export function authenticated(state = !!getToken(), action) {
 import {user as defaultUserSettings} from '../config'
 
 export function user(state = {settings: defaultUserSettings, ...getPersistedUser()}, action) {
+  if (isUserChangeResponse(action) || action.type === response(WHO_AM_I)){
+    const subscriptions = _.uniq(action.payload.subscriptions.map(sub => sub.user))
+    return {...state, ...userParser(action.payload.users), subscriptions}
+  }
   switch (action.type) {
-    case response(WHO_AM_I): {
-      return {...state, ...userParser(action.payload.users)}
-    }
     case response(UPDATE_USER): {
       return {...state, ...userParser(action.payload.users)}
+    }
+    case response(BAN): {
+      return {...state, banIds: [...state.banIds, action.request.id]}
+    }
+    case response(UNBAN): {
+      return {...state, banIds: _.without(state.banIds, action.request.id)}
     }
   }
   return state
