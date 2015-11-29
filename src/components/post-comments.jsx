@@ -1,17 +1,40 @@
 import React from 'react'
 import PostComment from './post-comment'
 import MoreCommentsWrapper from './more-comments-wrapper'
+import {preventDefault} from '../utils'
 
 const renderComment = commentEdit => comment => (<PostComment key={comment.id} {...comment} {...commentEdit}/>)
-const renderAddingComment = props => (<PostComment
-  id={props.post.id}
-  isEditing={true}
-  isSinglePost={props.post.isSinglePost}
-  editText={props.post.newCommentText}
-  saveEditingComment={props.addComment}
-  toggleEditingComment={props.toggleCommenting}
-  errorString={props.commentError}
-  isSaving={props.post.isSavingComment}/>)
+
+const renderAddingComment = props => (
+  <PostComment
+    id={props.post.id}
+    isEditing={true}
+    isSinglePost={props.post.isSinglePost}
+    editText={props.post.newCommentText}
+    saveEditingComment={props.addComment}
+    toggleEditingComment={props.toggleCommenting}
+    errorString={props.commentError}
+    isSaving={props.post.isSavingComment}/>
+)
+
+const renderAddCommentLink = props => {
+  const toggleCommenting = props.post.isSinglePost ? () => {} : () => props.toggleCommenting(props.post.id)
+
+  if (props.comments.length > 2 && !props.post.omittedComments /* TODO: && user_is_signed_in */) {
+    return (
+      <div className="add-comment-block">
+        <a className="fa-stack fa-1x" onClick={preventDefault(toggleCommenting)}>
+          <i className="fa fa-comment-o fa-stack-1x"></i>
+          <i className="fa fa-square fa-inverse fa-stack-1x"></i>
+          <i className="fa fa-plus fa-stack-1x"></i>
+        </a>
+        <a className="add-comment-link" onClick={preventDefault(toggleCommenting)}>Add comment</a>
+      </div>
+    )
+  }
+
+  return false
+}
 
 export default (props) => {
   const commentMapper = renderComment(props.commentEdit)
@@ -25,10 +48,11 @@ export default (props) => {
     <div className="comments">
       {first ? commentMapper(first): false}
       {middle}
-      {showOmittedNumber ? <MoreCommentsWrapper omittedComments={props.post.omittedComments}
-                                                             showMoreComments={showMoreComments} /> : false}
+      {showOmittedNumber
+        ? <MoreCommentsWrapper omittedComments={props.post.omittedComments} showMoreComments={showMoreComments} />
+        : false}
       {last ? commentMapper(last) : false}
-      {props.post.isCommenting ? renderAddingComment(props): false}
+      {props.post.isCommenting ? renderAddingComment(props) : renderAddCommentLink(props)}
     </div>
   )
 }
