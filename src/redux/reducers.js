@@ -99,7 +99,7 @@ const loadFeedViewState = posts => {
 
 export function feedViewState(state = initFeed, action) {
   if (isFeedRequest(action)){
-    return initFeed
+    return state
   }
   if (isFeedResponse(action)){
     return loadFeedViewState(action.payload.posts)
