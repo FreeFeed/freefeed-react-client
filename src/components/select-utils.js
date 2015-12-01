@@ -1,7 +1,7 @@
 import {showMoreComments, showMoreLikes, toggleEditingPost, cancelEditingPost,
         saveEditingPost, deletePost, likePost, unlikePost, toggleCommenting, addComment,
-        toggleEditingComment, cancelEditingComment, saveEditingComment,
-        deleteComment } from '../redux/action-creators'
+        toggleEditingComment, cancelEditingComment, saveEditingComment, deleteComment,
+        ban, unban, subscribe, unsubscribe, } from '../redux/action-creators'
 
 const MAX_LIKES = 4
 
@@ -37,7 +37,10 @@ export const joinPostData = state => postId => {
   const isEditable = post.createdBy == user.id
   const directFeeds = post.postedTo.map(feedId => state.timelines[feedId]).filter(feed => feed && feed.name === 'Directs')
   const isDirect = directFeeds.length
-  const directReceivers = post.postedTo.map(subscriptionId => (state.subscriptions[subscriptionId]||{}).user).map(userId=>state.users[userId]).filter(user=>user)
+  const directReceivers = post.postedTo
+                              .map(subscriptionId => (state.subscriptions[subscriptionId]||{}).user)
+                              .map(userId=>state.users[userId] || state.subscribers[userId])
+                              .filter(user=>user)
 
   return { ...post, attachments, comments, usersLikedPost, createdBy, ...postViewState, isEditable, isDirect, directReceivers }
 }
@@ -59,5 +62,14 @@ export function postActions(dispatch) {
       saveEditingComment: (commentId, newValue) => dispatch(saveEditingComment(commentId, newValue)),
       deleteComment: (commentId) => dispatch(deleteComment(commentId)),
     },
+  }
+}
+
+export function userActions(dispatch) {
+  return {
+    ban: username => dispatch(ban(username)),
+    unban: username => dispatch(unban(username)),
+    subscribe: username => dispatch(subscribe(username)),
+    unsubscribe: username => dispatch(unsubscribe(username)),
   }
 }

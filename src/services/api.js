@@ -188,3 +188,26 @@ export function updateProfilePicture({picture}){
     'body': data
   })
 }
+
+const userAction = action => ({username}) => {
+  return fetch(`${apiConfig.host}/v1/users/${username}/${action}`, {
+    method: 'POST',
+    'headers': {
+      'X-Authentication-Token': getToken(),
+    },
+  })
+}
+
+export const ban = userAction('ban')
+export const unban = userAction('unban')
+export const subscribe = userAction('subscribe')
+export const unsubscribe = userAction('unsubscribe')
+
+
+export function getUserComments({username, offset}){
+  return fetch(`${apiConfig.host}/v1/timelines/${username}/comments?offset=${offset}`, getRequestOptions())
+}
+
+export function getUserLikes({username, offset}){
+  return fetch(`${apiConfig.host}/v1/timelines/${username}/likes?offset=${offset}`, getRequestOptions())
+}

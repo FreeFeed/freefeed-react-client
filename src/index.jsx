@@ -20,6 +20,7 @@ import NotFound from './components/not-found'
 import Login from './components/login'
 import Settings from './components/settings'
 import SinglePost from './components/single-post'
+import UserFeed from './components/user-feed'
 
 const store = configureStore()
 
@@ -44,7 +45,9 @@ ReactDOM.render(
         <Route path='settings' component={Settings}/>
         <Route name='discussions' path='filter/discussions' component={Home} onEnter={boundRouteActions('discussions')}/>
         <Route name='direct' path='filter/direct' component={Home} onEnter={boundRouteActions('direct')}/>
-        <Route name='userFeed' path='/:userName' component={Home} onEnter={boundRouteActions('userFeed')}/>
+        <Route name='userFeed' path='/:userName' component={UserFeed} onEnter={boundRouteActions('userFeed')}/>
+        <Route name='userComments' path='/:userName/comments' component={UserFeed} onEnter={boundRouteActions('userComments')}/>
+        <Route name='userLikes' path='/:userName/likes' component={UserFeed} onEnter={boundRouteActions('userLikes')}/>
         <Route name='post' path='/:userName/:postId' component={SinglePost} onEnter={boundRouteActions('post')}/>
       </Route>
     </ReduxRouter>

@@ -1,0 +1,58 @@
+import React from 'react'
+import {Link} from 'react-router'
+import {preventDefault} from '../utils'
+import CreatePost from './create-post'
+
+export default props => (
+<div>
+  <div className='profile p-user-profile'>
+    <div className='row'>
+      <div className='col-md-9'>
+        <div className='avatar'>
+          <img src={props.profilePictureLargeUrl}/>
+        </div>
+        <div className='description'>
+          <div className='name'>{props.username}</div>
+        </div>
+      </div>
+      {props.blocked && !props.statistics ? false :
+      <div className='col-md-3'>
+        <div className='stats'>
+          {props.statistics.subscriptions >= 0 ? <div className='p-stats-subscriptions'>
+            <Link to={`/${props.username}/subscriptions`}>{props.statistics.subscriptions} subscriptions</Link>
+          </div> : false}
+          {props.statistics.subscribers >= 0 ? <div className='p-stats-subscribers'>
+            <Link to={`/${props.username}/subscribers`}>{props.statistics.subscribers} subscribers</Link>
+          </div> : false}
+          {props.statistics.comments >= 0 ? <div className='p-stats-comments'>
+            <Link to={`/${props.username}/comments`}>{props.statistics.comments} comments</Link>
+          </div> : false}
+          {props.statistics.likes >= 0 ? <div className='p-stats-likes'>
+            <Link to={`/${props.username}/likes`}>{props.statistics.likes} likes</Link>
+          </div> : false}
+        </div>
+      </div>}
+    </div>
+  </div>
+  {props.me ?
+    <CreatePost createPostViewState={props.createPostViewState} createPost={postText => props.createPost(postText, props.username)}/>
+   : props.blocked ?
+    <div>
+      You have blocked {props.username}, so all of {props.username}'s posts and comments are invisible to you.
+      <a onClick={preventDefault(_=>props.unban({username: props.username, id: props.id}))}>Un-block this user</a>
+    </div> :
+    <div className='profile-controls'>
+      <div className='row'>
+        <div className='col-md-7 subscribe-controls'>
+          {props.subscribed ?
+            <a onClick={preventDefault(_=>props.unsubscribe({username: props.username}))} className='p-unsubscribe'>Unsubscribe</a> :
+            <a onClick={preventDefault(_=>props.subscribe({username: props.username}))} className='p-unsubscribe'>Subscribe</a>}
+        </div>
+        <div className='col-md-5 block-controls'>
+          {props.subscribed ?
+            false :
+            <a onClick={preventDefault(_=>props.ban({username: props.username, id: props.id}))}>Block this user</a>}
+        </div>
+      </div>
+    </div>}
+</div>)

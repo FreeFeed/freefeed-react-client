@@ -2,10 +2,10 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {bindRouteActions} from '../redux/route-actions'
 import PaginationLinks from './pagination-links'
+import {getCurrentRouteName} from '../utils'
 
 const PaginatedView = props => (
   <div className='box-body'>
-    {props.pageHead}
     {props.offset > 0 ? props.children ? <PaginationLinks {...props}/> : false : props.firstPageHead}
     {props.children}
     <PaginationLinks {...props}/>
@@ -14,7 +14,7 @@ const PaginatedView = props => (
 
 const mapStateToProps = state => {
   const offset = (+state.router.location.query.offset || 0)
-  const routename = state.router.routes[state.router.routes.length - 1].name
+  const routename = getCurrentRouteName(state.router)
   const router = state.router
   return { offset, routename, router}
 }

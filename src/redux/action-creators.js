@@ -318,3 +318,48 @@ export function getSinglePost(postId){
     payload: {postId},
   }
 }
+
+const userChangeAction = (type, apiRequest) => (payload) => {
+  return {
+    payload,
+    type,
+    apiRequest,
+  }
+}
+
+export const BAN = 'BAN'
+
+export const ban = userChangeAction(BAN, Api.ban)
+
+export const UNBAN = 'UNBAN'
+
+export const unban = userChangeAction(UNBAN, Api.unban)
+
+export const SUBSCRIBE = 'SUBSCRIBE'
+
+export const subscribe = userChangeAction(SUBSCRIBE, Api.subscribe)
+
+export const UNSUBSCRIBE = 'UNSUBSCRIBE'
+
+export const unsubscribe = userChangeAction(UNSUBSCRIBE, Api.unsubscribe)
+
+export const GET_USER_COMMENTS = 'GET_USER_COMMENTS'
+
+export function getUserComments(username, offset = 0){
+  return {
+    type: GET_USER_COMMENTS,
+    payload:{username, offset},
+    apiRequest: Api.getUserComments,
+  }
+}
+
+export const GET_USER_LIKES = 'GET_USER_LIKES'
+
+export function getUserLikes(username, offset = 0){
+  return {
+    type: GET_USER_LIKES,
+    payload:{username, offset},
+    apiRequest: Api.getUserLikes,
+  }
+}
+
