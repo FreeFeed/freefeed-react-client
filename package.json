@@ -29,6 +29,7 @@
     "react-linkify": "0.0.4",
     "react-redux": "^4.0.0",
     "react-router": "1.0.0-rc1",
+    "react-select": "^1.0.0-beta6",
     "react-textarea-autosize": "^3.1.0",
     "redux": "^3.0.2",
     "redux-logger": "^2.0.0",

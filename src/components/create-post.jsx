@@ -2,21 +2,40 @@ import React from 'react'
 import {preventDefault} from '../utils'
 import Textarea from 'react-textarea-autosize'
 import throbber from 'assets/images/throbber.gif'
+import SendTo from './send-to'
 
 export default class CreatePost extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {disabled: true}
+    this.state = {
+      disabled: true,
+      isSendToVisible: false
+    }
   }
 
   createPost = _ => {
-    this.props.createPost(this.refs.postText.value)
+    let postText = this.refs.postText.value
+    let feeds = this.refs.selectFeeds.values
+
+    this.props.createPost(postText, feeds)
+    
     this.refs.postText.value = ''
-    this.setState({disabled: true})
-  }
+    this.setState({
+      disabled: true,
+      isSendToVisible: false
+    })
+  }  
 
   checkCreatePostAvailability = (e) => {
-    this.setState({disabled: e.target.value === ''})
+    this.setState({
+      disabled: e.target.value === ''
+    })
+  }
+
+  makeSendToVisible = (e) => {
+    this.setState({
+      isSendToVisible: true
+    })
   }
 
   checkSave = (e) => {
@@ -34,12 +53,19 @@ export default class CreatePost extends React.Component {
     return (
       <div className='create-post p-timeline-post-create'>
         <div className='p-create-post-view'>
+          {this.state.isSendToVisible ? (
+            <SendTo ref="selectFeeds"
+                    feeds={this.props.feeds}
+                    user={this.props.user}/>
+          ) : false}
+
           <Textarea className='edit-post-area'
                     ref='postText'
                     onChange={this.checkCreatePostAvailability}
-                    minRows={2}
+                    minRows={3}
                     maxRows={10}
-                    onKeyDown={this.checkSave}/>
+                    onKeyDown={this.checkSave}
+                    onFocus={this.makeSendToVisible}/>
         </div>
           <div className='row'>
             <div className='pull-right'>

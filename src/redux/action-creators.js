@@ -230,10 +230,10 @@ export function deleteComment(commentId){
 
 export const CREATE_POST = 'CREATE_POST'
 
-export function createPost(postText, feedName){
+export function createPost(postText, feeds){
   return {
     type: CREATE_POST,
-    payload: {postText, feedName},
+    payload: {postText, feeds},
     apiRequest: Api.createPost
   }
 }

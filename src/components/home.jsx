@@ -9,13 +9,10 @@ import HomeFeed from './home-feed'
 import PaginatedView from './paginated-view'
 
 const FeedHandler = (props) => {
-  const createPost = (postText) => {
-    const feedName = props.user.username
-    props.createPost(postText, feedName)
-  }
-
   const createPostForm = (<CreatePost createPostViewState={props.createPostViewState}
-                                      createPost={createPost} />)
+                                      feeds={props.feeds}
+                                      user={props.user}
+                                      createPost={props.createPost} />)
 
   return (
     <div className='box'>
@@ -36,14 +33,15 @@ function selectState(state) {
   const createPostViewState = state.createPostViewState
   const timelines = state.timelines
   const boxHeader = state.boxHeader
+  const feeds = state.feeds
 
-  return { feed, user, timelines, createPostViewState, boxHeader }
+  return { feed, user, timelines, createPostViewState, boxHeader, feeds }
 }
 
 function selectActions(dispatch) {
   return {
     ...postActions(dispatch),
-    createPost: (postText, feedName) => dispatch(createPost(postText, feedName)),
+    createPost: (postText, feeds) => dispatch(createPost(postText, feeds)),
   }
 }
 
