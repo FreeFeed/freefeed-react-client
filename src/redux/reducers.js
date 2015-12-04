@@ -742,7 +742,7 @@ function calculateFeeds(state) {
     })
   }
 
-  return feeds.map(i => i.user.username)
+  return feeds
 }
 
 export function feeds(state = [], action) {

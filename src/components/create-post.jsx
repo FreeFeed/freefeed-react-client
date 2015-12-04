@@ -28,7 +28,7 @@ export default class CreatePost extends React.Component {
 
   checkCreatePostAvailability = (e) => {
     this.setState({
-      disabled: e.target.value === ''
+      disabled: (this.refs.postText.value === '' || this.refs.selectFeeds.values == 0)
     })
   }
 
@@ -56,7 +56,8 @@ export default class CreatePost extends React.Component {
           {this.state.isSendToVisible ? (
             <SendTo ref="selectFeeds"
                     feeds={this.props.feeds}
-                    user={this.props.user}/>
+                    user={this.props.user} 
+                    onChange={this.checkCreatePostAvailability}/>
           ) : false}
 
           <Textarea className='edit-post-area'

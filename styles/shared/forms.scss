@@ -64,6 +64,11 @@
   margin-bottom: 3px;
 }
 .edit-post-area {
-  min-height: 68px;
   @include editarea;
+  min-height: 68px;
+  border: 1px solid #ccc;
+  border-bottom-color: #ccc;
+  border-top-color: #ccc;
+  background-image: none;
+  
 }
