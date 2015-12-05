@@ -8,72 +8,62 @@ import throbber16 from 'assets/images/throbber-16.gif'
 
 export default class PostComment extends React.Component{
   render() {
-    const isSinglePost = this.props.isSinglePost
     const createdAgo = fromNowOrNow(+this.props.createdAt)
 
     return (
-    <div className='comment p-comment'>
-      <a className='date' title={createdAgo}>
-        <i className='fa fa-comment-o icon'></i>
-      </a>
-      <div className='body p-comment-body'>
-        {this.props.isEditing ? (<div className='edit'>
-                        <div>
-                          <Textarea
-                            autoFocus={!isSinglePost}
-                            ref='commentText'
-                            className='edit-comment-area'
-                            defaultValue={this.props.editText}
-                            onKeyDown={this.checkSave}
-                            style={{ overflow: 'hidden', wordWrap: 'break-word' }}
-                            minRows={2}
-                            maxRows={10}
-                            />
-                        </div>
-                        <div className='comment-actions'>
-                          {this.props.isSinglePost? (
-                            <span>
-                              <button className='btn btn-default btn-xs comment-post' onClick={this.saveComment}>Comment</button>
-                            </span>
-                            ) : (
-                            <span>
-                              <button className='btn btn-default btn-xs comment-post' onClick={this.saveComment}>Post</button>
-                              <a className='comment-cancel' onClick={preventDefault(_=>this.props.toggleEditingComment(this.props.id))}>Cancel</a>
-                            </span>
-                          )}
-
-                          {this.props.isSaving ? (
-                                <span className="throbber">
-                                  <img width="16" height="16" src={throbber16}/>
-                                </span>
-                              ) : false}
-                        </div>
-                        {this.props.errorString ? (<div className='comment-error'>{this.props.errorString}</div>) : false}
-                    </div>)
-        :
-              (<span>
-                  <span className='comment-text'>
-                    <PostText text={this.props.body}/>
-                  </span>
-                  &nbsp;-&nbsp;
-                  <span className='author'>
-                   <UserName user={this.props.user}/>
-                  </span>
-                </span>)}
-
-
-        {this.props.isEditable && !this.props.isEditing ? (<span className='controls'>
-                &nbsp;(
-                <a onClick={preventDefault(_=>this.props.toggleEditingComment(this.props.id))}>edit</a>
-                &nbsp;|&nbsp;
-                <a onClick={preventDefault(_=>this.props.deleteComment(this.props.id))}>delete</a>
-                )
-              </span>) : false}
-      </div>
+    <div className="comment">
+      <a className="comment-icon fa fa-comment-o" title={createdAgo}></a>
+      {this.props.isEditing ? (
+        <div className="comment-body">
+          <div>
+            <Textarea
+              autoFocus={!this.props.isSinglePost}
+              ref="commentText"
+              className="comment-textarea"
+              defaultValue={this.props.editText}
+              onKeyDown={this.checkSave}
+              style={{ overflow: 'hidden', wordWrap: 'break-word' }}
+              minRows={2}
+              maxRows={10}
+            />
+          </div>
+          {this.props.isSinglePost ? (
+            <span>
+              <button className="btn btn-default btn-xs comment-post" onClick={this.saveComment}>Comment</button>
+            </span>
+          ) : (
+            <span>
+              <button className="btn btn-default btn-xs comment-post" onClick={this.saveComment}>Post</button>
+              <a className="comment-cancel" onClick={preventDefault(_=>this.props.toggleEditingComment(this.props.id))}>Cancel</a>
+            </span>
+          )}
+          {this.props.isSaving ? (
+            <span className="comment-throbber">
+              <img width="16" height="16" src={throbber16}/>
+            </span>
+          ) : false}
+          {this.props.errorString ? (
+            <span className="comment-error">{this.props.errorString}</span>
+          ) : false}
+        </div>
+      ) : (
+        <div className="comment-body">
+          <PostText text={this.props.body}/>
+          {' -'}&nbsp;
+          <UserName user={this.props.user}/>
+          {this.props.isEditable ? (
+            <span>
+              {' '}(<a onClick={preventDefault(_=>this.props.toggleEditingComment(this.props.id))}>edit</a>
+              &nbsp;|&nbsp;
+              <a onClick={preventDefault(_=>this.props.deleteComment(this.props.id))}>delete</a>)
+            </span>
+          ) : false}
+        </div>
+      )}
     </div>
   )}
   saveComment = () => {
-    if(!this.props.isSaving){
+    if (!this.props.isSaving) {
       this.props.saveEditingComment(this.props.id, this.refs.commentText.value)
       this.refs.commentText.value = ''
     }

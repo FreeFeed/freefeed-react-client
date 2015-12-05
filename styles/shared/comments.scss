@@ -3,52 +3,6 @@
   line-height: 18px;
   clear: both;
 
-  .comment {
-    margin-top: 8px;
-
-    .icon {
-      margin-top: 2px;
-      float: left;
-      margin-right: 4px;
-    }
-
-    // Hover on date field
-    a.date {
-      display: inline;
-      float: left;
-      height: 16px;
-      width: 16px;
-    }
-
-    div.body {
-      margin-left: 19px;
-    }
-
-    span.comment-text {
-    }
-    span.author {
-    }
-    span.controls {
-    }
-
-    // Edit comment form
-    div.edit {
-    }
-
-    .comment-error {
-      font-size: 12px;
-      color: #FF5A5F;
-    }
-
-    .comment-cancel {
-      margin-left: 10px;
-    }
-
-    .throbber {
-      margin-left: 10px;
-    }
-  }
-
   .more-comments-wrapper {
     margin-top: 8px;
   }
@@ -89,5 +43,38 @@
       top: 3px;
       left: 4px;
     }
+  }
+}
+
+.comment {
+  margin-top: 8px;
+
+  .comment-icon {
+    float: left;
+    height: 16px;
+    width: 16px;
+    margin-top: 2px;
+    margin-right: 3px;
+  }
+
+  .comment-body {
+    margin-left: 19px;
+  }
+
+  .comment-textarea {
+    @include editarea;
+  }
+
+  .comment-cancel {
+    margin-left: 10px;
+  }
+
+  .comment-throbber {
+    margin-left: 10px;
+  }
+
+  .comment-error {
+    font-size: 12px;
+    color: #FF5A5F;
   }
 }
