@@ -2,16 +2,18 @@ import React from 'react'
 import PostText from'./post-text'
 import UserName from './user-name'
 import {preventDefault} from '../utils'
+import {fromNowOrNow} from '../utils'
 import Textarea from 'react-textarea-autosize'
 import throbber16 from 'assets/images/throbber-16.gif'
 
 export default class PostComment extends React.Component{
   render() {
     const isSinglePost = this.props.isSinglePost
+    const createdAgo = fromNowOrNow(+this.props.createdAt)
 
     return (
     <div className='comment p-comment'>
-      <a className='date' title={this.props.createdAgo}>
+      <a className='date' title={createdAgo}>
         <i className='fa fa-comment-o icon'></i>
       </a>
       <div className='body p-comment-body'>
