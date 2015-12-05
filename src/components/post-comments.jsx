@@ -22,8 +22,8 @@ const renderAddCommentLink = props => {
 
   if (props.comments.length > 2 && !props.post.omittedComments /* TODO: && user_is_signed_in */) {
     return (
-      <div className="add-comment-block">
-        <a className="fa-stack fa-1x" onClick={preventDefault(toggleCommenting)}>
+      <div className="comment">
+        <a className="comment-icon fa-stack fa-1x" onClick={preventDefault(toggleCommenting)}>
           <i className="fa fa-comment-o fa-stack-1x"></i>
           <i className="fa fa-square fa-inverse fa-stack-1x"></i>
           <i className="fa fa-plus fa-stack-1x"></i>

@@ -17,33 +17,6 @@
       margin-left: -2px;
     }
   }
-
-  .add-comment-block {
-    .add-comment-link {
-      font-style: italic;
-      margin-left: 6px;
-    }
-
-    .fa-stack {
-      margin-top: 1px;
-      float: left;
-      width: 1em;
-      height: 1em;
-      line-height: 1em;
-    }
-
-    .fa-plus,
-    .fa-square {
-      font-size: 60%;
-      top: 3px;
-      left: 4px;
-    }
-
-    .fa-plus {
-      top: 3px;
-      left: 4px;
-    }
-  }
 }
 
 .comment {
@@ -55,6 +28,24 @@
     width: 16px;
     margin-top: 2px;
     margin-right: 3px;
+    text-decoration: none;
+
+    &.fa-stack {
+      width: 14px;
+      margin-top: 1px;
+      margin-right: 6px;
+      line-height: 1em;
+    }
+    .fa-plus,
+    .fa-square {
+      font-size: 60%;
+      top: 3px;
+      left: 4px;
+    }
+    .fa-plus {
+      top: 3px;
+      left: 4px;
+    }
   }
 
   .comment-body {
@@ -76,5 +67,9 @@
   .comment-error {
     font-size: 12px;
     color: #FF5A5F;
+  }
+
+  .add-comment-link {
+    font-style: italic;
   }
 }
