@@ -25,7 +25,7 @@
 
     .body {
       margin-bottom: 8px;
-      @media (max-width: 767px) { margin-bottom: 30px; }
+      @media (max-width: 767px) { min-height: 49px; }
 
       .text {
         color: #000;
