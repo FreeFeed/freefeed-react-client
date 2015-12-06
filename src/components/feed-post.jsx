@@ -9,7 +9,7 @@ import PostComments from './post-comments'
 import PostLikes from './post-likes'
 import UserName from './user-name'
 import {preventDefault} from '../utils'
-import PostText from './post-text'
+import PieceOfText from './piece-of-text'
 import Textarea from 'react-textarea-autosize'
 import throbber from 'assets/images/throbber.gif'
 import throbber16 from 'assets/images/throbber-16.gif'
@@ -95,7 +95,7 @@ export default (props) => {
           <div>
             <div className='body'>
               <div className='text'>
-                <PostText text={props.body}/>
+                <PieceOfText text={props.body}/>
               </div>
             </div>
 

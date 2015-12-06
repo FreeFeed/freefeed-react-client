@@ -1,5 +1,5 @@
 import React from 'react'
-import PostText from'./post-text'
+import PieceOfText from'./piece-of-text'
 import UserName from './user-name'
 import {preventDefault} from '../utils'
 import {fromNowOrNow} from '../utils'
@@ -48,7 +48,7 @@ export default class PostComment extends React.Component{
         </div>
       ) : (
         <div className="comment-body">
-          <PostText text={this.props.body}/>
+          <PieceOfText text={this.props.body}/>
           {' -'}&nbsp;
           <UserName user={this.props.user}/>
           {this.props.isEditable ? (
