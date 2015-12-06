@@ -5,10 +5,10 @@
 @import "header";
 @import "sidebar";
 @import "../shared/forms";
-@import "post";
 @import "../shared/post";
-@import "../shared/comments";
+@import "../shared/attachments";
 @import "../shared/likes";
+@import "../shared/comments";
 @import "user";
 @import "../shared/timeline";
 @import "../shared/loader-container";
