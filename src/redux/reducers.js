@@ -140,11 +140,18 @@ export function postsViewState(state = {}, action) {
 
       return { ...state, [id]: { ...state[id], omittedLikes, ...NO_ERROR } }
     }
+    case request(ActionCreators.SHOW_MORE_COMMENTS): {
+      const id = action.payload.postId
+      const isLoadingComments = true
+
+      return { ...state, [id]: { ...state[id], isLoadingComments } }
+    }
     case response(ActionCreators.SHOW_MORE_COMMENTS): {
       const id = action.payload.posts.id
+      const isLoadingComments = false
       const omittedComments = 0
 
-      return { ...state, [id]: { ...state[id], omittedComments, ...NO_ERROR } }
+      return { ...state, [id]: { ...state[id], isLoadingComments, omittedComments, ...NO_ERROR } }
     }
     case response(ActionCreators.GET_SINGLE_POST): {
       const id = action.payload.posts.id

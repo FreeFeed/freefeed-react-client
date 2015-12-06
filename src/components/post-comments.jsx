@@ -49,7 +49,10 @@ export default (props) => {
       {first ? commentMapper(first): false}
       {middle}
       {showOmittedNumber
-        ? <MoreCommentsWrapper omittedComments={props.post.omittedComments} showMoreComments={showMoreComments} />
+        ? <MoreCommentsWrapper
+            omittedComments={props.post.omittedComments}
+            showMoreComments={showMoreComments}
+            isLoading={props.post.isLoadingComments}/>
         : false}
       {last ? commentMapper(last) : false}
       {props.post.isCommenting ? renderAddingComment(props) : renderAddCommentLink(props)}

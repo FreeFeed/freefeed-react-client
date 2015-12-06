@@ -2,21 +2,6 @@
   font-size: 14px;
   line-height: 18px;
   clear: both;
-
-  .more-comments-wrapper {
-    margin-top: 8px;
-  }
-
-  .more-comments {
-    padding-left: 19px;
-    font-style: italic;
-
-    &.loading {
-      background: url('/img/throbber-16.gif') top left no-repeat;
-      padding-left: 21px;
-      margin-left: -2px;
-    }
-  }
 }
 
 .comment {
@@ -67,6 +52,17 @@
   .comment-error {
     font-size: 12px;
     color: #FF5A5F;
+  }
+
+  .more-comments-throbber {
+    display: inline-block;
+    width: 16px;
+    margin-left: -1px;
+    margin-right: 4px;
+  }
+
+  .more-comments-link {
+    font-style: italic;
   }
 
   .add-comment-link {
