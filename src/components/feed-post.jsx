@@ -11,7 +11,6 @@ import UserName from './user-name'
 import {preventDefault} from '../utils'
 import PieceOfText from './piece-of-text'
 import Textarea from 'react-textarea-autosize'
-import throbber from 'assets/images/throbber.gif'
 import throbber16 from 'assets/images/throbber-16.gif'
 
 export default (props) => {
@@ -44,9 +43,10 @@ export default (props) => {
   const profilePicture = props.isSinglePost ?
     props.createdBy.profilePictureLargeUrl : props.createdBy.profilePictureMediumUrl
   const postClass = classnames({
-    'single-post-container' : props.isSinglePost,
-    'timeline-post-container':!props.isSinglePost,
-    'direct-post': props.isDirect,
+    'post': true,
+    'single-post': props.isSinglePost,
+    'timeline-post': !props.isSinglePost,
+    'direct-post': props.isDirect
   })
 
   const toggleCommenting = props.isSinglePost ? () => {} : () => props.toggleCommenting(props.id)
@@ -56,94 +56,70 @@ export default (props) => {
 
   return (
     <div className={postClass}>
-      <div className='avatar'>
-        <Link to='timeline.index' params={{username: props.createdBy.username}}>
-          <img src={ profilePicture } />
+      <div className="post-userpic">
+        <Link to="timeline.index" params={{username: props.createdBy.username}}>
+          <img src={profilePicture}/>
         </Link>
       </div>
-      <div className='post-body p-timeline-post'>
-        <div className='title'>
-          <UserName className='post-author' user={props.createdBy}/>
+      <div className="post-body">
+        <div className="post-header">
+          <UserName className="post-author" user={props.createdBy}/>
           {props.isDirect ? (<span>&nbsp;to&nbsp;</span>) : false}
           {props.isDirect ? directReceivers : false}
         </div>
 
         {props.isEditing ? (
-          <div className='edit-post'>
+          <div>
             <div>
-              <Textarea className='edit-post-area'
-                        defaultValue={props.editingText}
-                        onKeyDown={checkSave}
-                        onChange={editingPostTextChange}
-                        minRows={2}
-                        maxRows={10}/>
+              <Textarea
+                className="post-textarea"
+                defaultValue={props.editingText}
+                onKeyDown={checkSave}
+                onChange={editingPostTextChange}
+                minRows={2}
+                maxRows={10}/>
             </div>
-            <div className='post-actions'>
+
+            <div className="post-edit-actions">
               {props.isSaving ? (
-                  <span className="throbber">
-                    <img width="16" height="16" src={throbber}/>
-                  </span>
-                ) : false}
-              <a className="action-link post-cancel" onClick={preventDefault(cancelEditingPost)}>Cancel</a>
-              <button className='btn btn-default btn-xs'
-                      onClick={preventDefault(saveEditingPost)}>
-                Update
-              </button>
+                <span className="post-edit-throbber">
+                  <img width="16" height="16" src={throbber16}/>
+                </span>
+              ) : false}
+              <a className="post-cancel" onClick={preventDefault(cancelEditingPost)}>Cancel</a>
+              <button className="btn btn-default btn-xs" onClick={preventDefault(saveEditingPost)}>Update</button>
             </div>
           </div>
         ) : (
-          <div>
-            <div className='body'>
-              <div className='text'>
-                <PieceOfText text={props.body}/>
-              </div>
-            </div>
-
-            <PostAttachments attachments={props.attachments} />
-
-            <div className='info p-timeline-post-info'>
-              {props.isDirect ? (<span>»&nbsp;</span>) : false}
-              <span className='post-date'>
-                <Link to={`/${props.createdBy.username}/${props.id}`} className='datetime'>
-                  <time dateTime={createdAtISO} title={createdAtISO}>{createdAgo}</time>
-                </Link>
-              </span>
-
-              <span className='post-controls'>
-                <span>
-                  <span>&nbsp;-&nbsp;</span>
-                  <a className='p-timeline-post-comment-action' onClick={preventDefault(toggleCommenting)}>
-                    Comment
-                  </a>
-                  <span>&nbsp;-&nbsp;</span>
-                  <a className='p-timeline-post-comment-action' onClick={preventDefault(ILikedPost ? unlikePost : likePost)}>
-                    {ILikedPost ? 'Un-like' : 'Like'}
-                  </a>
-                  {props.isLiking ? (
-                    <span className='throbber'>
-                      <img width="16" height="16" src={throbber16}/>
-                    </span>
-                  ) : false}
-                </span>
-                {props.isEditable ? (
-                  <span>
-                    <span>&nbsp;-&nbsp;</span>
-                    <a className='p-timeline-post-comment-action' onClick={preventDefault(toggleEditingPost)}>
-                      Edit
-                    </a>
-                    <span>&nbsp;-&nbsp;</span>
-                    <a className='p-timeline-post-comment-action' onClick={preventDefault(deletePost)}>
-                      Delete
-                    </a>
-                  </span>
-                ) : false}
-              </span>
-            </div>
+          <div className="post-text">
+            <PieceOfText text={props.body}/>
           </div>
         )}
 
-        <div className='info p-timeline-post-info'>
-          <PostLikes post={props} likes={props.usersLikedPost} showMoreLikes={props.showMoreLikes} />
+        <PostAttachments attachments={props.attachments}/>
+
+        <div className="post-footer">
+          {props.isDirect ? (<span>»&nbsp;</span>) : false}
+          <Link to={`/${props.createdBy.username}/${props.id}`} className="post-timestamp">
+            <time dateTime={createdAtISO} title={createdAtISO}>{createdAgo}</time>
+          </Link>
+          {' - '}
+          <a onClick={preventDefault(toggleCommenting)}>Comment</a>
+          {' - '}
+          <a onClick={preventDefault(ILikedPost ? unlikePost : likePost)}>{ILikedPost ? 'Un-like' : 'Like'}</a>
+          {props.isLiking ? (
+            <span className="post-like-throbber">
+              <img width="16" height="16" src={throbber16}/>
+            </span>
+          ) : false}
+          {props.isEditable ? (
+            <span>
+              {' - '}
+              <a onClick={preventDefault(toggleEditingPost)}>Edit</a>
+              {' - '}
+              <a onClick={preventDefault(deletePost)}>Delete</a>
+            </span>
+          ) : false}
         </div>
 
         {props.isError ? (
@@ -152,13 +128,19 @@ export default (props) => {
           </div>
         ) : false}
 
-        <PostComments post={props}
-                      comments={props.comments}
-                      creatingNewComment={props.isCommenting}
-                      addComment={props.addComment}
-                      toggleCommenting={props.toggleCommenting}
-                      showMoreComments={props.showMoreComments}
-                      commentEdit={props.commentEdit} />
+        <PostLikes
+          post={props}
+          likes={props.usersLikedPost}
+          showMoreLikes={props.showMoreLikes}/>
+
+        <PostComments
+          post={props}
+          comments={props.comments}
+          creatingNewComment={props.isCommenting}
+          addComment={props.addComment}
+          toggleCommenting={props.toggleCommenting}
+          showMoreComments={props.showMoreComments}
+          commentEdit={props.commentEdit}/>
       </div>
     </div>
   )
