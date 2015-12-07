@@ -2,11 +2,11 @@ import {compose, createStore, applyMiddleware, combineReducers} from 'redux'
 import loggerMiddleware from 'redux-logger'
 import {createHistory, createHashHistory} from 'history'
 import {reduxReactRouter, routerStateReducer} from 'redux-router'
-import {apiMiddleware, authMiddleware, likesLogicMiddleware, userPhotoLogicMiddleware, redirectionMiddleware} from './middlewares'
+import {apiMiddleware, authMiddleware, likesLogicMiddleware, userPhotoLogicMiddleware, redirectionMiddleware, scrollMiddleware} from './middlewares'
 import * as reducers from './reducers'
 
 //order matters — we need to stop unauthed async fetching before request, see authMiddleware
-let middleware = [ authMiddleware, apiMiddleware, likesLogicMiddleware, userPhotoLogicMiddleware, redirectionMiddleware ]
+let middleware = [ authMiddleware, apiMiddleware, likesLogicMiddleware, userPhotoLogicMiddleware, redirectionMiddleware, scrollMiddleware ]
 
 const isDevelopment = process.env.NODE_ENV != 'production'
 

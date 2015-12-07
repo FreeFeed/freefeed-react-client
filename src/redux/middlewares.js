@@ -97,3 +97,10 @@ export const redirectionMiddleware = store => next => action => {
 
   return next(action)
 }
+
+export const scrollMiddleware = store => next => action => {
+  if (ActionCreators.isFeedResponse(action) || action.type === ActionCreators.response(ActionCreators.GET_SINGLE_POST)){
+    scrollTo(0, 0)
+  }
+  return next(action)
+}

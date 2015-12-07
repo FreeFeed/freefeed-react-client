@@ -71,7 +71,6 @@ export function createPostViewState(state = {}, action) {
 const initFeed = {feed: []}
 
 const loadFeedViewState = posts => {
-  scrollTo(0, 0)
   const feed = (posts || []).map(post => post.id)
   return { feed }
 }
@@ -97,7 +96,6 @@ export function feedViewState(state = initFeed, action) {
       return { feed: [postId, ...state.feed] }
     }
     case response(ActionCreators.GET_SINGLE_POST): {
-      scrollTo(0, 0)
       const postId = action.request.postId
       return { feed: [postId] }
     }
