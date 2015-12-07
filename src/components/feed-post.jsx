@@ -25,8 +25,9 @@ export default (props) => {
   const toggleEditingPost = () => props.toggleEditingPost(props.id, editingPostText)
   const cancelEditingPost = () => props.cancelEditingPost(props.id, editingPostText)
   const saveEditingPost = () => {
-    if (!props.isSaving){
-      props.saveEditingPost(props.id, { body: editingPostText })
+    if (!props.isSaving) {
+      let attachmentIds = props.attachments.map(item => item.id) || []
+      props.saveEditingPost(props.id, { body: editingPostText, attachments: attachmentIds })
     }
   }
   const deletePost = () => props.deletePost(props.id)
