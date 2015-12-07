@@ -18,17 +18,17 @@ export default (props) => {
     .filter(attachment => attachment.mediaType === 'general')
     .map(attachment => (<GeneralAttachment key={attachment.id} {...attachment}/>))
 
-  return (
-    <div className='attachments'>
-      <div className='image-attachments'>
+  return (attachments.length > 0 ? (
+    <div className="attachments">
+      <div className="image-attachments">
         {imageAttachments}
       </div>
-      <div className='audio-attachments'>
+      <div className="audio-attachments">
         {audioAttachments}
       </div>
-      <div className='general-attachments'>
+      <div className="general-attachments">
         {generalAttachments}
       </div>
     </div>
-  )
+  ) : <div/>)
 }

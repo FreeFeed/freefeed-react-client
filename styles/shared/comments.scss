@@ -2,92 +2,70 @@
   font-size: 14px;
   line-height: 18px;
   clear: both;
+}
 
-  .comment {
-    margin-top: 8px;
+.comment {
+  margin-top: 8px;
 
-    .icon {
-      margin-top: 2px;
-      float: left;
-      margin-right: 4px;
-    }
+  .comment-icon {
+    float: left;
+    height: 16px;
+    width: 16px;
+    margin-top: 2px;
+    margin-right: 3px;
+    text-decoration: none;
 
-    // Hover on date field
-    a.date {
-      display: inline;
-      float: left;
-      height: 16px;
-      width: 16px;
-    }
-
-    div.body {
-      margin-left: 19px;
-    }
-
-    span.comment-text {
-    }
-    span.author {
-    }
-    span.controls {
-    }
-
-    // Edit comment form
-    div.edit {
-    }
-
-    .comment-error {
-      font-size: 12px;
-      color: #FF5A5F;
-    }
-
-    .comment-cancel {
-      margin-left: 10px;
-    }
-
-    .throbber {
-      margin-left: 10px;
-    }
-  }
-
-  .more-comments-wrapper {
-    margin-top: 8px;
-  }
-
-  .more-comments {
-    padding-left: 19px;
-    font-style: italic;
-
-    &.loading {
-      background: url('/img/throbber-16.gif') top left no-repeat;
-      padding-left: 21px;
-      margin-left: -2px;
-    }
-  }
-
-  .add-comment-block {
-    .add-comment-link {
-      font-style: italic;
-      margin-left: 6px;
-    }
-
-    .fa-stack {
+    &.fa-stack {
+      width: 14px;
       margin-top: 1px;
-      float: left;
-      width: 1em;
-      height: 1em;
+      margin-right: 6px;
       line-height: 1em;
     }
-
     .fa-plus,
     .fa-square {
       font-size: 60%;
       top: 3px;
       left: 4px;
     }
-
     .fa-plus {
       top: 3px;
       left: 4px;
     }
+  }
+
+  .comment-body {
+    margin-left: 19px;
+  }
+
+  .comment-textarea {
+    @include editarea;
+  }
+
+  .comment-cancel {
+    margin-left: 10px;
+  }
+
+  .comment-throbber {
+    margin-left: 10px;
+  }
+
+  .comment-error {
+    font-size: 12px;
+    color: #FF5A5F;
+  }
+
+  .more-comments-throbber {
+    display: inline-block;
+    width: 16px;
+    margin-left: -1px;
+    margin-right: 4px;
+  }
+
+  .more-comments-link {
+    font-style: italic;
+  }
+
+  .add-comment-link {
+    font-style: italic;
   }
 }

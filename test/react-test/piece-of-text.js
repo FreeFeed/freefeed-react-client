@@ -1,11 +1,11 @@
 import test from 'tape'
 import React from 'react'
 
-import PostText from 'src/components/post-text'
+import PieceOfText from 'src/components/piece-of-text'
 import sd from 'skin-deep'
 
 const renderText = (text) => {
-  const tree = sd.shallowRender(React.createElement(PostText, {text}))
+  const tree = sd.shallowRender(React.createElement(PieceOfText, {text}))
   return tree.getRenderOutput().props.children
 }
 
