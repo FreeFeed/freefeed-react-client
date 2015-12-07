@@ -15,10 +15,8 @@ if (isDevelopment) {
   middleware.push(loggerMiddleware())
 }
 
-const history = isDevelopment ? createHashHistory : createHistory
-
 let enhancers = [applyMiddleware(...middleware),
-  reduxReactRouter({ createHistory: history}),]
+  reduxReactRouter({ createHistory }),]
 
 //tells webpack to include devtool enhancer in dev mode
 if (isDevelopment && window.devToolsExtension) {

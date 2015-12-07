@@ -43,6 +43,9 @@ module.exports = [{
     fallback: [ __dirname ]
   },
   devtool: opts.dev ? 'cheap-module-eval-source-map' : 'source-map',
+  devServer: {
+    historyApiFallback: true
+  },
   debug: opts.dev,
   module: {
     loaders: [
