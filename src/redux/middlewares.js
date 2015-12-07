@@ -1,6 +1,5 @@
-import {unauthenticated, serverError, request, response, fail, SIGN_IN,
-        UNAUTHENTICATED, WHO_AM_I, whoAmI, requiresAuth, UPDATE_USER, UPDATE_USER_PHOTO,
-        SHOW_MORE_LIKES, showMoreLikesSync, showMoreLikesAsync, DELETE_POST} from './action-creators'
+import * as ActionCreators from './action-creators'
+const {request, response, fail} = ActionCreators
 
 //middleware for api requests
 export const apiMiddleware = store => next => async (action) => {
@@ -18,12 +17,12 @@ export const apiMiddleware = store => next => async (action) => {
     if (apiResponse.status === 200) {
       return store.dispatch({payload: obj, type: response(action.type), request: action.payload})
     } else if (apiResponse.status === 401) {
-      return store.dispatch(unauthenticated(obj))
+      return store.dispatch(ActionCreators.unauthenticated(obj))
     } else {
       return store.dispatch({payload: obj, type: fail(action.type), request: action.payload})
     }
   } catch (e) {
-    return store.dispatch(serverError(e))
+    return store.dispatch(ActionCreators.serverError(e))
   }
 }
 
@@ -34,28 +33,28 @@ import {pushState} from 'redux-router'
 export const authMiddleware = store => next => action => {
 
   //stop action propagation if it should be authed and user is not authed
-  if (requiresAuth(action) && !store.getState().authenticated) {
+  if (ActionCreators.requiresAuth(action) && !store.getState().authenticated) {
     return
   }
 
   switch(action.type){
-    case UNAUTHENTICATED: {
+    case ActionCreators.UNAUTHENTICATED: {
       setToken()
       persistUser()
       next(action)
       return store.dispatch(pushState(null, '/login', {}))
     }
-    case response(SIGN_IN): {
+    case response(ActionCreators.SIGN_IN): {
       setToken(action.payload.authToken)
       next(action)
       store.dispatch(whoAmI())
       return store.dispatch(pushState(null, '/', {}))
     }
-    case response(WHO_AM_I): {
+    case response(ActionCreators.WHO_AM_I): {
       persistUser(userParser(action.payload.users))
       break
     }
-    case response(UPDATE_USER): {
+    case response(ActionCreators.UPDATE_USER): {
       persistUser(userParser(action.payload.users))
       break
     }
@@ -66,14 +65,14 @@ export const authMiddleware = store => next => action => {
 
 export const likesLogicMiddleware = store => next => action => {
   switch(action.type){
-    case SHOW_MORE_LIKES: {
+    case ActionCreators.SHOW_MORE_LIKES: {
       const postId = action.payload.postId
       const post = store.getState().posts[postId]
       const isSync = (post.omittedLikes === 0)
       if (isSync) {
-        return store.dispatch(showMoreLikesSync(postId))
+        return store.dispatch(ActionCreators.showMoreLikesSync(postId))
       } else {
-        return store.dispatch(showMoreLikesAsync(postId))
+        return store.dispatch(ActionCreators.showMoreLikesAsync(postId))
       }
     }
   }
@@ -82,7 +81,7 @@ export const likesLogicMiddleware = store => next => action => {
 }
 
 export const userPhotoLogicMiddleware = store => next => action => {
-  if (action.type === response(UPDATE_USER_PHOTO)) {
+  if (action.type === response(ActionCreators.UPDATE_USER_PHOTO)) {
     //update data after new photo posted
     store.dispatch(whoAmI())
   }
@@ -92,7 +91,7 @@ export const userPhotoLogicMiddleware = store => next => action => {
 
 export const redirectionMiddleware = store => next => action => {
   //go to home if single post has been removed
-  if (action.type === response(DELETE_POST) && store.getState().singlePostId) { 
+  if (action.type === response(ActionCreators.DELETE_POST) && store.getState().singlePostId) {
     return store.dispatch(pushState(null, '/', {}))
   }
 
