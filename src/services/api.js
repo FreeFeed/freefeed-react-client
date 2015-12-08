@@ -152,6 +152,17 @@ export function signIn({username, password}){
   })
 }
 
+export function signUp({username, password, email, captcha}){
+  return fetch(`${apiConfig.host}/v1/users`, {
+    headers:{
+      'Accept': 'application/json',
+      'Content-Type':'application/x-www-form-urlencoded',
+    },
+    method: 'POST',
+    body: `username=${username}&password=${password}&email=${email}&captcha=${captcha}`,
+  })
+}
+
 export function updateUser({id, screenName, email, isPrivate}) {
   return fetch(`${apiConfig.host}/v1/users/${id}`, {
     'method': 'PUT',

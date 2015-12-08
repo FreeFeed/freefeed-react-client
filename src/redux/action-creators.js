@@ -270,6 +270,34 @@ export function signInEmpty(){
   }
 }
 
+export const SIGN_UP_CHANGE = 'SIGN_UP_CHANGE'
+
+export function signUpChange(signUpData){
+  return {
+    type: SIGN_UP_CHANGE,
+    ...signUpData,
+  }
+}
+
+export const SIGN_UP = 'SIGN_UP'
+
+export function signUp(signUpData){
+  return {
+    type: SIGN_UP,
+    apiRequest: Api.signUp,
+    nonAuthRequest: true,
+    payload: { ...signUpData },
+  }
+}
+
+export const SIGN_UP_EMPTY = 'SIGN_UP_EMPTY'
+
+export function signUpEmpty(){
+  return {
+    type: SIGN_UP_EMPTY
+  }
+}
+
 export const UPDATE_USER = 'UPDATE_USER'
 
 export function updateUser(id, screenName, email, isPrivate){

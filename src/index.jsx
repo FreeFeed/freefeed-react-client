@@ -18,6 +18,7 @@ import Home from './components/home'
 import About from './components/about'
 import NotFound from './components/not-found'
 import Login from './components/login'
+import Signup from './components/signup'
 import Settings from './components/settings'
 import SinglePost from './components/single-post'
 import UserFeed from './components/user-feed'
@@ -28,7 +29,8 @@ const store = configureStore()
 if (store.getState().authenticated){
   store.dispatch(whoAmI())
 } else {
-  store.dispatch(unauthenticated())
+  // just commented for develop sign up form
+  // store.dispatch(unauthenticated())
 }
 
 import {bindRouteActions} from './redux/route-actions'
@@ -42,6 +44,7 @@ ReactDOM.render(
         <IndexRoute name='home' component={Home} onEnter={boundRouteActions('home')}/>
         <Route path='about' component={About} />
         <Route path='login' component={Login}/>
+        <Route path='signup' component={Signup}/>
         <Route path='settings' component={Settings}/>
         <Route name='discussions' path='filter/discussions' component={Home} onEnter={boundRouteActions('discussions')}/>
         <Route name='direct' path='filter/direct' component={Home} onEnter={boundRouteActions('direct')}/>
