@@ -53,5 +53,5 @@ export function preventDefault(realFunction) {
 }
 
 export function getCurrentRouteName(router) {
-  return router.routes[router.routes.length - 1].name
+  return router && router.routes[router.routes.length - 1].name
 }

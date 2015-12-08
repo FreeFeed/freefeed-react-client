@@ -27,7 +27,7 @@ export const apiMiddleware = store => next => async (action) => {
 }
 
 import {setToken, persistUser} from '../services/auth'
-import {userParser} from '../utils'
+import {userParser, getCurrentRouteName} from '../utils'
 import {pushState} from 'redux-router'
 
 export const authMiddleware = store => next => action => {
@@ -42,6 +42,10 @@ export const authMiddleware = store => next => action => {
       setToken()
       persistUser()
       next(action)
+      const routeName = getCurrentRouteName(store.getState().router)
+      if (!routeName || ['login', 'signup'].indexOf(routeName) !== -1){
+        return
+      }
       return store.dispatch(pushState(null, '/login', {}))
     }
     case response(ActionCreators.SIGN_IN): {

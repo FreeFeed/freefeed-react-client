@@ -30,7 +30,7 @@ if (store.getState().authenticated){
   store.dispatch(whoAmI())
 } else {
   // just commented for develop sign up form
-  // store.dispatch(unauthenticated())
+  store.dispatch(unauthenticated())
 }
 
 import {bindRouteActions} from './redux/route-actions'
