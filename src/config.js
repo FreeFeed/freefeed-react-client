@@ -13,6 +13,9 @@ const config = {
     userNameMode: 'user',
     sentinel: null // keep always last
   },
+  captcha: {
+    siteKey: ''
+  }
 }
 
 export default config

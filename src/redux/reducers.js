@@ -30,6 +30,41 @@ export function signInForm(state={username:'', password:'', error:'', loading: f
   return state
 }
 
+const INITIAL_SIGN_UP_FORM_STATE = {
+  username: '',
+  password: '',
+  email: '',
+  captcha: null,
+  error: '',
+  loading: false,
+}
+
+export function signUpForm(state=INITIAL_SIGN_UP_FORM_STATE, action) {
+  switch(action.type) {
+    case ActionCreators.SIGN_UP_CHANGE: {
+      return {
+        ...state,
+        username: action.username || state.username,
+        password: action.password || state.password,
+        email: action.email || state.email,
+        captcha: typeof action.captcha == 'undefined' ? state.captcha : action.captcha,
+        loading: false,
+        error: ''
+      }
+    }
+    case ActionCreators.SIGN_UP_EMPTY: {
+      return {...state, error: action.message, loading: false }
+    }
+    case request(ActionCreators.SIGN_UP): {
+      return {...state, loading: true }
+    }
+    case response(ActionCreators.SIGN_UP): {
+      return {...state, loading: false }
+    }
+  }
+  return state
+}
+
 export function serverError(state = false, action) {
   switch (action.type) {
     case ActionCreators.SERVER_ERROR: {

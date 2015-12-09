@@ -25,6 +25,7 @@
     "react": "0.14.3",
     "react-addons-test-utils": "^0.14.3",
     "react-dom": "0.14.3",
+    "react-google-recaptcha": "^0.5.2",
     "react-linkify": "0.0.4",
     "react-redux": "^4.0.0",
     "react-router": "1.0.0-rc1",
@@ -37,6 +38,7 @@
     "style-loader": "^0.12.4",
     "tap-webpack-plugin": "^1.0.0",
     "tape": "^4.2.2",
+    "validator": "^4.4.0",
     "webpack": "^1.12.2",
     "webpack-dev-server": "1.12.1",
     "webpack-path-rewriter": "^1.1.2"
