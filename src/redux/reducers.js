@@ -47,12 +47,13 @@ export function signUpForm(state=INITIAL_SIGN_UP_FORM_STATE, action) {
         username: action.username || state.username,
         password: action.password || state.password,
         email: action.email || state.email,
-        captcha: action.captcha, // because it can expire
+        captcha: typeof action.captcha == 'undefined' ? state.captcha : action.captcha,
         loading: false,
+        error: ''
       }
     }
     case ActionCreators.SIGN_UP_EMPTY: {
-      return {...state, error: 'Enter login, email, password and fill the captcha', loading: false }
+      return {...state, error: action.message, loading: false }
     }
     case request(ActionCreators.SIGN_UP): {
       return {...state, loading: true }

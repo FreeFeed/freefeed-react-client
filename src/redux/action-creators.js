@@ -292,9 +292,10 @@ export function signUp(signUpData){
 
 export const SIGN_UP_EMPTY = 'SIGN_UP_EMPTY'
 
-export function signUpEmpty(){
+export function signUpEmpty(errorMessage){
   return {
-    type: SIGN_UP_EMPTY
+    type: SIGN_UP_EMPTY,
+    message: errorMessage
   }
 }
 

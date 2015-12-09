@@ -5,12 +5,13 @@ import {preventDefault} from '../utils'
 import LoaderContainer from './loader-container'
 import {captcha as captchaConfig} from '../config'
 import Recaptcha from 'react-google-recaptcha'
+import validator from 'validator'
 
-function mapStateToProps (state){
+function mapStateToProps (state) {
   return {...state.signUpForm}
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
   return {
     signUpChange: (...args) => dispatch(signUpChange(...args)),
     signUp: (...args) => dispatch(signUp(...args)),
@@ -18,11 +19,64 @@ function mapDispatchToProps(dispatch){
   }
 }
 
-function signUpFunc(props){
-  if (props.username && props.password && props.email && props.captcha) {
+const USERNAME_STOP_LIST = [
+  'anonymous', 'public', 'about', 'signin', 'logout',
+  'signup', 'filter', 'settings', 'account', 'groups',
+  'friends', 'list', 'search', 'summary', 'share', '404',
+  'iphone', 'attachments', 'files', 'profilepics'
+]
+
+function isValidUsername(username) {
+  let valid = username
+        && username.length >= 3
+        && username.length <= 25
+        && username.match(/^[A-Za-z0-9]+$/)
+        && USERNAME_STOP_LIST.indexOf(username) == -1
+
+  return valid
+}
+
+function isValidEmail(email) {
+  return email && validator.isEmail(email)
+}
+
+function isValidPassword(password) {
+  return password && password.length > 4
+}
+
+function capitalizeFirstLetter(str) {
+  return str.replace(/^\w/g, l => l.toUpperCase())
+}
+
+function validate(props) {
+  let errorMessages = []
+
+  if (!isValidUsername(props.username)) {
+    errorMessages.push('invalid username')
+  }
+
+  if (!isValidPassword(props.password)) {
+    errorMessages.push('invalid password')
+  }
+
+  if (!isValidEmail(props.email)) {
+    errorMessages.push('invalid email')
+  }
+
+  if(!props.captcha) {
+    errorMessages.push('сaptcha has not filled')
+  }
+
+  return errorMessages.length == 0 ? null : capitalizeFirstLetter(errorMessages.join(', '))
+}
+
+function signUpFunc(props) {
+  let errorMessage = validate(props)
+
+  if(!errorMessage) {
     props.signUp({...props})
   } else {
-    props.signUpEmpty()
+    props.signUpEmpty(errorMessage)
   }
 }
 
