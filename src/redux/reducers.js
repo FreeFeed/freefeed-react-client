@@ -542,7 +542,7 @@ export function users(state = {}, action) {
       return mergeByIds(state, action.payload.users)
     }
     case response(ActionCreators.GET_SINGLE_POST): {
-      return mergeByIds(state, action.payload.users)
+      return mergeByIds(state, (action.payload.users || []).map(userParser))
     }
     case response(ActionCreators.SHOW_MORE_LIKES_ASYNC): {
       return mergeByIds(state, action.payload.users)
