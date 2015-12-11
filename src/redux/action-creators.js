@@ -392,6 +392,14 @@ export function getUserLikes(username, offset = 0){
   }
 }
 
+export const EXPAND_SEND_TO = 'EXPAND_SEND_TO'
+
+export function expandSendTo(){
+  return {
+    type: EXPAND_SEND_TO
+  }
+}
+
 export const feedGeneratingActions = [HOME, DISCUSSIONS, GET_USER_FEED, GET_USER_COMMENTS, GET_USER_LIKES, DIRECT]
 export const feedRequests = feedGeneratingActions.map(request)
 export const feedResponses = feedGeneratingActions.map(response)

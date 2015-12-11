@@ -745,10 +745,34 @@ function calculateFeeds(state) {
   return feeds
 }
 
-export function feeds(state = [], action) {
-  if (action.type === response(WHO_AM_I)) {
-    return calculateFeeds(action.payload)
-  } else {
-    return state
+const INITIAL_SEND_TO_STATE = { expanded: false, feeds: [] }
+
+function getHiddenSendTo(state) {
+  return {
+    expanded: false,
+    feeds: state.feeds
   }
+}
+
+export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
+  if (ActionCreators.isFeedRequest(action)){
+    return getHiddenSendTo(state)
+  }
+
+  switch(action.type){
+    case response(ActionCreators.WHO_AM_I): {
+      return {
+        expanded: false,
+        feeds: calculateFeeds(action.payload)
+      }
+    }
+    case ActionCreators.EXPAND_SEND_TO: {
+      return {
+        expanded: true,
+        feeds: state.feeds
+      }
+    }
+  }
+
+  return state
 }

@@ -8,8 +8,7 @@ export default class CreatePost extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      disabled: true,
-      isSendToVisible: false
+      disabled: true
     }
   }
 
@@ -21,20 +20,20 @@ export default class CreatePost extends React.Component {
     
     this.refs.postText.value = ''
     this.setState({
-      disabled: true,
-      isSendToVisible: false
-    })
-  }  
-
-  checkCreatePostAvailability = (e) => {
-    this.setState({
-      disabled: (this.refs.postText.value === '' || this.refs.selectFeeds.values == 0)
+      disabled: true
     })
   }
 
-  makeSendToVisible = (e) => {
+  isPostTextEmpty = (postText) => {
+    return postText == '' || /^\s+$/.test(postText)
+  }
+
+  checkCreatePostAvailability = (e) => {
+    let isPostDisabled = this.isPostTextEmpty(this.refs.postText.value)
+                      || this.refs.selectFeeds.values == 0
+
     this.setState({
-      isSendToVisible: true
+      disabled: (isPostDisabled)
     })
   }
 
@@ -53,9 +52,9 @@ export default class CreatePost extends React.Component {
     return (
       <div className='create-post p-timeline-post-create'>
         <div className='p-create-post-view'>
-          {this.state.isSendToVisible ? (
+          {this.props.sendTo.expanded ? (
             <SendTo ref="selectFeeds"
-                    feeds={this.props.feeds}
+                    feeds={this.props.sendTo.feeds}
                     user={this.props.user} 
                     onChange={this.checkCreatePostAvailability}/>
           ) : false}
@@ -66,7 +65,7 @@ export default class CreatePost extends React.Component {
                     minRows={3}
                     maxRows={10}
                     onKeyDown={this.checkSave}
-                    onFocus={this.makeSendToVisible}/>
+                    onFocus={this.props.expandSendTo}/>
         </div>
           <div className='row'>
             <div className='pull-right'>

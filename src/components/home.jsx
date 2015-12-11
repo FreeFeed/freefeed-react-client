@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {createPost} from '../redux/action-creators'
+import {createPost, expandSendTo} from '../redux/action-creators'
 import {joinPostData, postActions} from './select-utils'
 import {getQuery} from '../utils'
 
@@ -10,9 +10,10 @@ import PaginatedView from './paginated-view'
 
 const FeedHandler = (props) => {
   const createPostForm = (<CreatePost createPostViewState={props.createPostViewState}
-                                      feeds={props.feeds}
+                                      sendTo={props.sendTo}
                                       user={props.user}
-                                      createPost={props.createPost} />)
+                                      createPost={props.createPost}
+                                      expandSendTo={props.expandSendTo} />)
 
   return (
     <div className='box'>
@@ -33,15 +34,16 @@ function selectState(state) {
   const createPostViewState = state.createPostViewState
   const timelines = state.timelines
   const boxHeader = state.boxHeader
-  const feeds = state.feeds
+  const sendTo = state.sendTo
 
-  return { feed, user, timelines, createPostViewState, boxHeader, feeds }
+  return { feed, user, timelines, createPostViewState, boxHeader, sendTo }
 }
 
 function selectActions(dispatch) {
   return {
     ...postActions(dispatch),
     createPost: (postText, feeds) => dispatch(createPost(postText, feeds)),
+    expandSendTo: () => dispatch(expandSendTo())
   }
 }
 
