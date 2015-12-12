@@ -47,8 +47,8 @@
 
 .send-to a {
   position: relative;
-  left: -155px;
   vertical-align: middle;
+  line-height: 33px;
 }
 
 // textarea for add|edit posts and comments
@@ -65,4 +65,10 @@
 }
 .edit-post-area {
   @include editarea;
+  min-height: 68px;
+  border: 1px solid #ccc;
+  border-bottom-color: #ccc;
+  border-top-color: #ccc;
+  background-image: none;
+  
 }

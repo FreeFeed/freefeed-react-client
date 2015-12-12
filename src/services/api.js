@@ -102,7 +102,7 @@ export function deleteComment({commentId}) {
   })
 }
 
-export function createPost({postText, feedName}) {
+export function createPost({postText, feeds}) {
   return fetch(`${apiConfig.host}/v1/posts`, {
     'method': 'POST',
     'headers': {
@@ -111,8 +111,8 @@ export function createPost({postText, feedName}) {
       'X-Authentication-Token': getToken()
     },
     'body': JSON.stringify({
-      post: { body: postText},
-      meta: { feeds: feedName}
+      post: { body: postText },
+      meta: { feeds: feeds }
     })
   })
 }

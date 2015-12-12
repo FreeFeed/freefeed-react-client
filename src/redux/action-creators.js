@@ -230,10 +230,10 @@ export function deleteComment(commentId){
 
 export const CREATE_POST = 'CREATE_POST'
 
-export function createPost(postText, feedName){
+export function createPost(postText, feeds){
   return {
     type: CREATE_POST,
-    payload: {postText, feedName},
+    payload: {postText, feeds},
     apiRequest: Api.createPost
   }
 }
@@ -389,6 +389,14 @@ export function getUserLikes(username, offset = 0){
     type: GET_USER_LIKES,
     payload:{username, offset},
     apiRequest: Api.getUserLikes,
+  }
+}
+
+export const EXPAND_SEND_TO = 'EXPAND_SEND_TO'
+
+export function expandSendTo(){
+  return {
+    type: EXPAND_SEND_TO
   }
 }
 

@@ -2,21 +2,39 @@ import React from 'react'
 import {preventDefault} from '../utils'
 import Textarea from 'react-textarea-autosize'
 import throbber from 'assets/images/throbber.gif'
+import SendTo from './send-to'
 
 export default class CreatePost extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {disabled: true}
+    this.state = {
+      disabled: true
+    }
   }
 
   createPost = _ => {
-    this.props.createPost(this.refs.postText.value)
+    let postText = this.refs.postText.value
+    let feeds = this.refs.selectFeeds.values
+
+    this.props.createPost(postText, feeds)
+    
     this.refs.postText.value = ''
-    this.setState({disabled: true})
+    this.setState({
+      disabled: true
+    })
+  }
+
+  isPostTextEmpty = (postText) => {
+    return postText == '' || /^\s+$/.test(postText)
   }
 
   checkCreatePostAvailability = (e) => {
-    this.setState({disabled: e.target.value === ''})
+    let isPostDisabled = this.isPostTextEmpty(this.refs.postText.value)
+                      || this.refs.selectFeeds.values == 0
+
+    this.setState({
+      disabled: (isPostDisabled)
+    })
   }
 
   checkSave = (e) => {
@@ -34,12 +52,20 @@ export default class CreatePost extends React.Component {
     return (
       <div className='create-post p-timeline-post-create'>
         <div className='p-create-post-view'>
+          {this.props.sendTo.expanded ? (
+            <SendTo ref="selectFeeds"
+                    feeds={this.props.sendTo.feeds}
+                    user={this.props.user} 
+                    onChange={this.checkCreatePostAvailability}/>
+          ) : false}
+
           <Textarea className='edit-post-area'
                     ref='postText'
                     onChange={this.checkCreatePostAvailability}
-                    minRows={2}
+                    minRows={3}
                     maxRows={10}
-                    onKeyDown={this.checkSave}/>
+                    onKeyDown={this.checkSave}
+                    onFocus={this.props.expandSendTo}/>
         </div>
           <div className='row'>
             <div className='pull-right'>

@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {createPost} from '../redux/action-creators'
+import {createPost, expandSendTo} from '../redux/action-creators'
 import {joinPostData, postActions, userActions} from './select-utils'
 import {getQuery, getCurrentRouteName} from '../utils'
 
@@ -21,6 +21,9 @@ const UserFeedHandler = (props) => {
         <UserProfile
           {...props.viewUser}
           {...props.userActions}
+          user={props.user}
+          sendTo={props.sendTo}
+          expandSendTo={props.expandSendTo}
           createPostViewState={props.createPostViewState}
           createPost={props.createPost}/>
       </div>
@@ -62,13 +65,16 @@ function selectState(state) {
     breadcrumb: currentRouteName.replace('user','')
   }
 
-  return { feed, user, timelines, createPostViewState, boxHeader, viewUser, breadcrumbs }
+  const sendTo = state.sendTo
+
+  return { feed, user, timelines, createPostViewState, boxHeader, viewUser, breadcrumbs, sendTo }
 }
 
 function selectActions(dispatch) {
   return {
     ...postActions(dispatch),
-    createPost: (postText, feedName) => dispatch(createPost(postText, feedName)),
+    createPost: (postText, feeds) => dispatch(createPost(postText, feeds)),
+    expandSendTo: () => dispatch(expandSendTo()),
     userActions: userActions(dispatch),
   }
 }
