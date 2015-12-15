@@ -126,7 +126,7 @@ function Signup (props) {
                 </div>
 
                 <div className='form-group'>
-                  <button className='btn btn-default p-singin-action' type='submit'>Sign up</button>
+                  <button className='btn btn-default p-signin-action' type='submit'>Sign up</button>
                 </div>
               </form>
             </LoaderContainer>
