@@ -64,7 +64,7 @@ function validate(props) {
   }
 
   if(!props.captcha) {
-    errorMessages.push('сaptcha has not filled')
+    errorMessages.push('captcha is not filled')
   }
 
   return errorMessages.length == 0 ? null : capitalizeFirstLetter(errorMessages.join(', '))
@@ -122,7 +122,9 @@ function Signup (props) {
 
                 <div className='form-group'>
                   <Recaptcha sitekey={captchaConfig.siteKey}
-                             onChange={v => props.signUpChange({captcha: v})} />
+                             theme='light' type='image'
+                             onChange={v => props.signUpChange({captcha: v})}
+                             onExpired={v => props.signUpChange({captcha: null})} />
                 </div>
 
                 <div className='form-group'>
