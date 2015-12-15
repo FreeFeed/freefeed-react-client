@@ -534,22 +534,16 @@ export function commentViewState(state={}, action) {
 }
 
 export function users(state = {}, action) {
-  if (ActionCreators.isFeedResponse(action)){
+  if (ActionCreators.isFeedResponse(action)) {
     return mergeByIds(state, (action.payload.users || []).map(userParser))
   }
   switch (action.type) {
-    case response(ActionCreators.SHOW_MORE_COMMENTS): {
-      return mergeByIds(state, action.payload.users)
-    }
-    case response(ActionCreators.GET_SINGLE_POST): {
+    case response(ActionCreators.SHOW_MORE_COMMENTS):
+    case response(ActionCreators.SHOW_MORE_LIKES_ASYNC):
+    case response(ActionCreators.GET_SINGLE_POST):
       return mergeByIds(state, (action.payload.users || []).map(userParser))
-    }
-    case response(ActionCreators.SHOW_MORE_LIKES_ASYNC): {
-      return mergeByIds(state, action.payload.users)
-    }
-    case ActionCreators.UNAUTHENTICATED: {
+    case ActionCreators.UNAUTHENTICATED:
       return {}
-    }
   }
   return state
 }
