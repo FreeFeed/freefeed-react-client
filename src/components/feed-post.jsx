@@ -58,7 +58,7 @@ export default (props) => {
   return (
     <div className={postClass}>
       <div className="post-userpic">
-        <Link to="timeline.index" params={{username: props.createdBy.username}}>
+        <Link to={`/${props.createdBy.username}`}>
           <img src={profilePicture}/>
         </Link>
       </div>
