@@ -379,6 +379,15 @@ export function posts(state = {}, action) {
     case response(ActionCreators.SAVE_EDITING_POST): {
       return updatePostData(state, action)
     }
+    case ActionCreators.ADD_ATTACHMENT_RESPONSE: {
+      const post = state[action.payload.postId]
+      return {...state,
+        [post.id]: {
+          ...post,
+          attachments: [...(post.attachments || []), action.payload.attachments.id]
+        }
+      }
+    }
     case response(ActionCreators.DELETE_COMMENT): {
       const commentId = action.request.commentId
       const commentedPost = _(state).find(post => (post.comments||[]).indexOf(commentId) !== -1)
@@ -430,11 +439,18 @@ export function posts(state = {}, action) {
 }
 
 export function attachments(state = {}, action) {
-  if (ActionCreators.isFeedResponse(action)){
+  if (ActionCreators.isFeedResponse(action)) {
     return mergeByIds(state, action.payload.attachments)
   }
-  if(action.type == response(ActionCreators.GET_SINGLE_POST)){
-    return mergeByIds(state, action.payload.attachments)
+  switch (action.type) {
+    case response(ActionCreators.GET_SINGLE_POST): {
+      return mergeByIds(state, action.payload.attachments)
+    }
+    case ActionCreators.ADD_ATTACHMENT_RESPONSE: {
+      return {...state,
+        [action.payload.attachments.id]: action.payload.attachments
+      }
+    }
   }
   return state
 }

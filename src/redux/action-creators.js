@@ -238,6 +238,15 @@ export function createPost(postText, feeds){
   }
 }
 
+export const ADD_ATTACHMENT_RESPONSE = 'ADD_ATTACHMENT_RESPONSE'
+
+export function addAttachmentResponse(postId, attachments) {
+  return {
+    type: ADD_ATTACHMENT_RESPONSE,
+    payload: {postId, attachments}
+  }
+}
+
 export const SIGN_IN_CHANGE = 'SIGN_IN_CHANGE'
 
 export function signInChange(username, password){

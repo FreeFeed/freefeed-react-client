@@ -97,3 +97,15 @@
   }
 }
 
+.dropzone {
+  min-height: 0;
+  padding: 0;
+
+  .dz-message {
+    margin: 0;
+  }
+}
+
+.dropzone-previews {
+  display: none;
+}

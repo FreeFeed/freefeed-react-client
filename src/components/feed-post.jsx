@@ -12,6 +12,9 @@ import {preventDefault} from '../utils'
 import PieceOfText from './piece-of-text'
 import Textarea from 'react-textarea-autosize'
 import throbber16 from 'assets/images/throbber-16.gif'
+import DropzoneComponent from 'react-dropzone-component'
+import {api as apiConfig} from '../config'
+import {getToken} from '../services/auth'
 
 export default (props) => {
   const createdAt = new Date(props.createdAt - 0)
@@ -55,6 +58,26 @@ export default (props) => {
   const directReceivers = props.directReceivers
                                 .map((receiver, index) => ( <span key={index}><UserName className='post-addressee post-addressee-direct' user={receiver}/>{index !== props.directReceivers.length -1 ? ',' : false}</span>))
 
+  // DropzoneJS configuration
+  const dropzoneComponentConfig = {
+    postUrl: `${apiConfig.host}/v1/attachments`
+  }
+  const dropzoneConfig = {
+    dictDefaultMessage: '^', // The message that gets displayed before any files are dropped.
+    previewsContainer: '.dropzone-previews', // Define the container to display the previews.
+    clickable: '.dropzone-trigger', // Define the element that should be used as click trigger to select files.
+    headers: {
+      'Cache-Control': null,
+      'X-Authentication-Token': getToken()
+    }
+  }
+  const dropzoneEventHandlers = {
+    success: function(file, response) {
+      // 'attachments' in this response will be an attachment object, not an array of objects
+      props.addAttachmentResponse(props.id, response.attachments)
+    }
+  }
+
   return (
     <div className={postClass}>
       <div className="post-userpic">
@@ -81,6 +104,12 @@ export default (props) => {
                 maxRows={10}/>
             </div>
 
+            <div className="post-edit-add-attachments">
+              <DropzoneComponent config={dropzoneComponentConfig} djsConfig={dropzoneConfig} eventHandlers={dropzoneEventHandlers}/>
+            </div>
+
+            <div className="dropzone-trigger">Add photos or files</div>
+
             <div className="post-edit-actions">
               {props.isSaving ? (
                 <span className="post-edit-throbber">
@@ -98,6 +127,8 @@ export default (props) => {
         )}
 
         <PostAttachments attachments={props.attachments}/>
+
+        <div className="dropzone-previews"></div>
 
         <div className="post-footer">
           {props.isDirect ? (<span>»&nbsp;</span>) : false}
