@@ -26,7 +26,7 @@
     "react-addons-test-utils": "^0.14.3",
     "react-dom": "0.14.3",
     "react-linkify": "0.0.4",
-    "react-recaptcha": "^2.0.1",
+    "react-google-recaptcha": "^0.5.2",
     "react-redux": "^4.0.0",
     "react-router": "1.0.0-rc1",
     "react-select": "^1.0.0-beta6",
