@@ -63,6 +63,7 @@ function select(state) {
     user: state.user,
     authenticated: state.authenticated,
     loadingView: state.routeLoadingState,
+    recentGroups: state.recentGroups,
   }
 }
 
