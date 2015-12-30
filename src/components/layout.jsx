@@ -35,6 +35,13 @@ class Layout extends React.Component {
     this.dragSecondLevel = false
   }
 
+  containsFiles(e) {
+    if (e.dataTransfer && e.dataTransfer.types) {
+      return (e.dataTransfer.types.indexOf('Files') !== -1)
+    }
+    return false
+  }
+
   handleDragEnter(e) {
     if (this.dragFirstLevel) {
       this.dragSecondLevel = true
@@ -42,7 +49,9 @@ class Layout extends React.Component {
     }
     this.dragFirstLevel = true
 
-    this.setState({ isDragOver: true })
+    if (this.containsFiles(e)) {
+      this.setState({ isDragOver: true })
+    }
 
     e.preventDefault()
   }
