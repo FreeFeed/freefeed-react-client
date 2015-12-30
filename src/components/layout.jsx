@@ -1,6 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router'
-import {connect } from 'react-redux'
+import {connect} from 'react-redux'
+import classnames from 'classnames'
 
 import {unauthenticated} from '../redux/action-creators'
 import Footer from './footer'
@@ -17,11 +18,68 @@ const InternalLayout = ({authenticated, children}) => (
 
 
 class Layout extends React.Component {
+  // Here we have some handling of drag-n-drop, because standard dragenter
+  // and dragleave events suck. Current implementation is using ideas from
+  // Ben Smithett, see http://bensmithett.github.io/dragster/ for details
+
+  constructor(props) {
+    super(props)
+
+    this.state = { isDragOver: false }
+
+    this.handleDragEnter = this.handleDragEnter.bind(this)
+    this.handleDragLeave = this.handleDragLeave.bind(this)
+
+    this.dragFirstLevel = false
+    this.dragSecondLevel = false
+  }
+
+  handleDragEnter(e) {
+    if (this.dragFirstLevel) {
+      this.dragSecondLevel = true
+      return
+    }
+    this.dragFirstLevel = true
+
+    this.setState({ isDragOver: true })
+
+    e.preventDefault()
+  }
+
+  handleDragLeave(e) {
+    if (this.dragSecondLevel) {
+      this.dragSecondLevel = false
+    } else if (this.dragFirstLevel) {
+      this.dragFirstLevel = false
+    }
+
+    if (!this.dragFirstLevel && !this.dragSecondLevel) {
+      this.setState({ isDragOver: false })
+    }
+
+    e.preventDefault()
+  }
+
+  componentDidMount() {
+    window.addEventListener('dragenter', this.handleDragEnter)
+    window.addEventListener('dragleave', this.handleDragLeave)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('dragenter', this.handleDragEnter)
+    window.removeEventListener('dragleave', this.handleDragLeave)
+  }
+
   render() {
     let props = this.props
 
+    let layoutClassNames = classnames({
+      'container': true,
+      'dragover': this.state.isDragOver
+    })
+
     return (
-      <div className='container'>
+      <div className={layoutClassNames}>
         <div className='row header-row'>
           <div className='col-md-4'>
             <div className='header'>
