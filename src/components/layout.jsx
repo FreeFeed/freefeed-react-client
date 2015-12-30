@@ -29,6 +29,7 @@ class Layout extends React.Component {
 
     this.handleDragEnter = this.handleDragEnter.bind(this)
     this.handleDragLeave = this.handleDragLeave.bind(this)
+    this.handleDrop = this.handleDrop.bind(this)
 
     this.dragFirstLevel = false
     this.dragSecondLevel = false
@@ -60,14 +61,30 @@ class Layout extends React.Component {
     e.preventDefault()
   }
 
+  // Prevent browser from loading the file if user drops it outside of a dropzone
+  // (both `handleDragOver` and `handleDrop` are necessary)
+  handleDragOver(e) {
+    e.preventDefault()
+  }
+  handleDrop(e) {
+    this.setState({ isDragOver: false })
+    this.dragFirstLevel = false
+    this.dragSecondLevel = false
+    e.preventDefault()
+  }
+
   componentDidMount() {
     window.addEventListener('dragenter', this.handleDragEnter)
     window.addEventListener('dragleave', this.handleDragLeave)
+    window.addEventListener('dragover', this.handleDragOver)
+    window.addEventListener('drop', this.handleDrop)
   }
 
   componentWillUnmount() {
     window.removeEventListener('dragenter', this.handleDragEnter)
     window.removeEventListener('dragleave', this.handleDragLeave)
+    window.removeEventListener('dragover', this.handleDragOver)
+    window.removeEventListener('drop', this.handleDrop)
   }
 
   render() {
