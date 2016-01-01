@@ -18,7 +18,7 @@ import {getToken} from '../services/auth'
 
 export default class FeedPost extends React.Component {
   render() {
-    let props = this.props;
+    let props = this.props
 
     const createdAt = new Date(props.createdAt - 0)
     const createdAtISO = moment(createdAt).format()
@@ -71,7 +71,7 @@ export default class FeedPost extends React.Component {
       postUrl: `${apiConfig.host}/v1/attachments`
     }
     const dropzoneConfig = {
-      dictDefaultMessage: '^', // The message that gets displayed before any files are dropped.
+      dictDefaultMessage: 'Drop files here', // The message that gets displayed before any files are dropped.
       previewsContainer: '.dropzone-previews', // Define the container to display the previews.
       clickable: '.dropzone-trigger', // Define the element that should be used as click trigger to select files.
       headers: {
@@ -80,7 +80,20 @@ export default class FeedPost extends React.Component {
       }
     }
     const dropzoneEventHandlers = {
-      success: function (file, response) {
+      // DropzoneJS uses stopPropagation() for dragenter and drop events, so
+      // they are not being propagated to window and it breaks crafty handling
+      // of those events we have in the Layout component. So here we have to
+      // re-dispatch them to let event handlers in Layout work as they should.
+      dragenter: function() {
+        var dragEnterEvent = new DragEvent('dragenter')
+        window.dispatchEvent(dragEnterEvent)
+      },
+      drop: function() {
+        var dropEvent = new DragEvent('drop')
+        window.dispatchEvent(dropEvent)
+      },
+
+      success: function(file, response) {
         // 'attachments' in this response will be an attachment object, not an array of objects
         props.addAttachmentResponse(props.id, response.attachments)
       }
@@ -101,7 +114,12 @@ export default class FeedPost extends React.Component {
           </div>
 
           {props.isEditing ? (
-            <div>
+            <div className="post-editor">
+              <DropzoneComponent
+                config={dropzoneComponentConfig}
+                djsConfig={dropzoneConfig}
+                eventHandlers={dropzoneEventHandlers}/>
+
               <div>
                 <Textarea
                   className="post-textarea"
@@ -112,14 +130,11 @@ export default class FeedPost extends React.Component {
                   maxRows={10}/>
               </div>
 
-              <div className="post-edit-add-attachments">
-                <DropzoneComponent
-                  config={dropzoneComponentConfig}
-                  djsConfig={dropzoneConfig}
-                  eventHandlers={dropzoneEventHandlers}/>
+              <div className="post-edit-attachments dropzone-trigger">
+                <i className="fa fa-cloud-upload"></i>
+                {' '}
+                Add photos or files
               </div>
-
-              <div className="dropzone-trigger">Add photos or files</div>
 
               <div className="post-edit-actions">
                 {props.isSaving ? (

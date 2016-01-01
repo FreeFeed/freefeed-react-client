@@ -46,16 +46,26 @@
       }
     }
 
+    .post-editor {
+      position: relative; // necessary for proper width of dropzone inside this container
+    }
+
     .post-textarea {
       @include editarea;
     }
 
-    .post-edit-add-attachments {
+    .post-edit-attachments {
       float: left;
+      cursor: pointer;
+
+      &:hover span:last-child {
+        text-decoration: underline;
+      }
     }
 
     .post-edit-actions {
       text-align: right;
+      margin-bottom: 8px;
     }
 
     .post-cancel {
