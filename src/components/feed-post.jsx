@@ -84,12 +84,19 @@ export default class FeedPost extends React.Component {
       // they are not being propagated to window and it breaks crafty handling
       // of those events we have in the Layout component. So here we have to
       // re-dispatch them to let event handlers in Layout work as they should.
-      dragenter: function() {
-        var dragEnterEvent = new DragEvent('dragenter')
+      // The events don't need to be real, just mimic some important parts.
+      dragenter: function(e) {
+        var dragEnterEvent = new Event('dragenter')
+        if (e.dataTransfer && e.dataTransfer.types) {
+          dragEnterEvent.dataTransfer = { types: e.dataTransfer.types }
+        }
         window.dispatchEvent(dragEnterEvent)
       },
-      drop: function() {
-        var dropEvent = new DragEvent('drop')
+      drop: function(e) {
+        var dropEvent = new Event('drop')
+        if (e.dataTransfer && e.dataTransfer.types) {
+          dropEvent.dataTransfer = { types: e.dataTransfer.types }
+        }
         window.dispatchEvent(dropEvent)
       },
 

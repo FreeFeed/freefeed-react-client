@@ -29,6 +29,7 @@ class Layout extends React.Component {
 
     this.handleDragEnter = this.handleDragEnter.bind(this)
     this.handleDragLeave = this.handleDragLeave.bind(this)
+    this.handleDragOver = this.handleDragOver.bind(this)
     this.handleDrop = this.handleDrop.bind(this)
 
     this.dragFirstLevel = false
@@ -43,43 +44,49 @@ class Layout extends React.Component {
   }
 
   handleDragEnter(e) {
-    if (this.dragFirstLevel) {
-      this.dragSecondLevel = true
-      return
-    }
-    this.dragFirstLevel = true
-
     if (this.containsFiles(e)) {
-      this.setState({ isDragOver: true })
-    }
+      if (this.dragFirstLevel) {
+        this.dragSecondLevel = true
+        return
+      }
+      this.dragFirstLevel = true
 
-    e.preventDefault()
+      this.setState({ isDragOver: true })
+
+      e.preventDefault()
+    }
   }
 
   handleDragLeave(e) {
-    if (this.dragSecondLevel) {
-      this.dragSecondLevel = false
-    } else if (this.dragFirstLevel) {
-      this.dragFirstLevel = false
-    }
+    if (this.containsFiles(e)) {
+      if (this.dragSecondLevel) {
+        this.dragSecondLevel = false
+      } else if (this.dragFirstLevel) {
+        this.dragFirstLevel = false
+      }
 
-    if (!this.dragFirstLevel && !this.dragSecondLevel) {
-      this.setState({ isDragOver: false })
-    }
+      if (!this.dragFirstLevel && !this.dragSecondLevel) {
+        this.setState({ isDragOver: false })
+      }
 
-    e.preventDefault()
+      e.preventDefault()
+    }
   }
 
   // Prevent browser from loading the file if user drops it outside of a dropzone
   // (both `handleDragOver` and `handleDrop` are necessary)
   handleDragOver(e) {
-    e.preventDefault()
+    if (this.containsFiles(e)) {
+      e.preventDefault()
+    }
   }
   handleDrop(e) {
-    this.setState({ isDragOver: false })
-    this.dragFirstLevel = false
-    this.dragSecondLevel = false
-    e.preventDefault()
+    if (this.containsFiles(e)) {
+      this.setState({ isDragOver: false })
+      this.dragFirstLevel = false
+      this.dragSecondLevel = false
+      e.preventDefault()
+    }
   }
 
   componentDidMount() {
