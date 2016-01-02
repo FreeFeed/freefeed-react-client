@@ -3,8 +3,9 @@ import {Link} from 'react-router'
 
 import UserName from './user-name'
 import {preventDefault} from '../utils'
+import RecentGroups from './recent-groups'
 
-export default ({user, signOut}) => (
+export default ({user, signOut, recentGroups}) => (
   <div className='col-md-3 sidebar'>
     <div className='logged-in'>
       <div className='avatar'>
@@ -44,7 +45,7 @@ export default ({user, signOut}) => (
         Groups
       </div>
       <div className='box-body'>
-        groups
+        <RecentGroups recentGroups={recentGroups}/>
       </div>
       <div className='box-footer'>
         <Link to='groups.home'>Browse/edit groups</Link>

@@ -770,3 +770,16 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
 
   return state
 }
+
+const GROUPS_SIDEBAR_LIST_LENGTH = 4
+
+export function recentGroups(state = [], action) {
+  if (action.type == response(ActionCreators.WHO_AM_I)) {
+    let subscribers = [].concat(action.payload.subscribers)
+    return subscribers.filter(i => i.type == 'group')
+                      .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
+                      .slice(0, GROUPS_SIDEBAR_LIST_LENGTH)
+  }
+
+  return state
+}
