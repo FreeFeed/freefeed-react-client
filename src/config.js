@@ -14,7 +14,8 @@ const config = {
     sentinel: null // keep always last
   },
   captcha: {
-    siteKey: ''
+    siteKey: '',
+    sentinel: null // keep always last
   }
 }
 
