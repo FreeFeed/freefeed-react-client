@@ -46,7 +46,7 @@ export function getPostWithAllCommentsAndLikes({postId}) {
     `${apiConfig.host}/v1/posts/${postId}?maxComments=all&maxLikes=all`, getRequestOptions())
 }
 
-export function createPost({postText, feeds}) {
+export function createPost({postText, feeds, attachmentIds}) {
   return fetch(`${apiConfig.host}/v1/posts`, {
     'method': 'POST',
     'headers': {
@@ -55,7 +55,10 @@ export function createPost({postText, feeds}) {
       'X-Authentication-Token': getToken()
     },
     'body': JSON.stringify({
-      post: { body: postText },
+      post: {
+        body: postText,
+        attachments: attachmentIds
+      },
       meta: { feeds: feeds }
     })
   })

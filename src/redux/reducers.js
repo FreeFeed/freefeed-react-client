@@ -380,6 +380,12 @@ export function posts(state = {}, action) {
       return updatePostData(state, action)
     }
     case ActionCreators.ADD_ATTACHMENT_RESPONSE: {
+      // If this is an attachment for create-post (non-existent post),
+      // it should be handled in createPostForm(), not here
+      if (!action.payload.postId) {
+        return state
+      }
+
       const post = state[action.payload.postId]
       return {...state,
         [post.id]: {
@@ -780,6 +786,24 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
       return {
         expanded: true,
         feeds: state.feeds
+      }
+    }
+  }
+
+  return state
+}
+
+export function createPostForm(state = {}, action) {
+  switch (action.type) {
+    case ActionCreators.ADD_ATTACHMENT_RESPONSE: {
+      // If this is an attachment for edit-post (existent post),
+      // it should be handled in posts(), not here
+      if (action.payload.postId) {
+        return state
+      }
+
+      return {...state,
+        attachments: [...(state.attachments || []), action.payload.attachments.id]
       }
     }
   }

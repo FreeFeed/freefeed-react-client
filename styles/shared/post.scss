@@ -46,36 +46,6 @@
       }
     }
 
-    .post-editor {
-      position: relative; // necessary for proper width of dropzone inside this container
-    }
-
-    .post-textarea {
-      @include editarea;
-    }
-
-    .post-edit-attachments {
-      float: left;
-      cursor: pointer;
-
-      &:hover span:last-child {
-        text-decoration: underline;
-      }
-    }
-
-    .post-edit-actions {
-      text-align: right;
-      margin-bottom: 8px;
-    }
-
-    .post-cancel {
-      margin-right: 10px;
-    }
-
-    .post-edit-throbber {
-      margin-right: 10px;
-    }
-
     .post-footer {
       .post-timestamp {
         color: #666;
@@ -85,6 +55,37 @@
         margin-left: 10px;
       }
     }
+  }
+}
+
+// Used in both create-post and edit-post
+.post-editor {
+  position: relative; // necessary for proper width of dropzone inside this container
+
+  .post-textarea {
+    @include editarea;
+  }
+
+  .post-edit-attachments {
+    float: left;
+    cursor: pointer;
+
+    &:hover span:last-child {
+      text-decoration: underline;
+    }
+  }
+
+  .post-edit-actions {
+    text-align: right;
+    margin-bottom: 8px;
+  }
+
+  .post-cancel {
+    margin-right: 10px;
+  }
+
+  .post-edit-throbber {
+    margin-right: 10px;
   }
 }
 

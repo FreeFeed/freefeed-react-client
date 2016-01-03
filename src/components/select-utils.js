@@ -45,6 +45,13 @@ export const joinPostData = state => postId => {
   return { ...post, attachments, comments, usersLikedPost, createdBy, ...postViewState, isEditable, isDirect, directReceivers }
 }
 
+export function joinCreatePostData(state) {
+  const createPostForm = state.createPostForm
+  return {...createPostForm,
+    attachments: (createPostForm.attachments || []).map(attachmentId => state.attachments[attachmentId])
+  }
+}
+
 export function postActions(dispatch) {
   return {
     showMoreComments: (postId) => dispatch(showMoreComments(postId)),
