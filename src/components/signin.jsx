@@ -3,6 +3,6 @@ import {Link} from 'react-router'
 
 export default _ => (
   <div className='signin-toolbar'>
-    <Link to='login'>Sign In</Link>
+    <Link to='/login'>Sign In</Link>
   </div>
 )

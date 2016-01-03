@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import {signInChange, signIn, signInEmpty} from '../redux/action-creators'
 import {preventDefault} from '../utils'
@@ -53,7 +54,7 @@ function Login (props) {
                 </div>
               </form>
             </LoaderContainer>
-            <p>New to freefeed? <Link to='signup'>Create an account »</Link></p>
+            <p>New to freefeed? <Link to='/signup'>Create an account »</Link></p>
           </div>
         </div>
       </div>
