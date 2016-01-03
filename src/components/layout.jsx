@@ -38,7 +38,7 @@ const Layout = (props) => (
           <div className='col-md-6'>
             {props.authenticated ? false : (
               <div className='signin-toolbar'>
-                <Link to='/login'>Sign In</Link>
+                <Link to='/signin'>Sign In</Link>
               </div>
             )}
           </div>

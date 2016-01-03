@@ -43,10 +43,10 @@ export const authMiddleware = store => next => action => {
       persistUser()
       next(action)
       const routeName = getCurrentRouteName(store.getState().router)
-      if (!routeName || ['login', 'signup'].indexOf(routeName) !== -1){
+      if (!routeName || ['signin', 'signup'].indexOf(routeName) !== -1){
         return
       }
-      return store.dispatch(pushState(null, '/login', {}))
+      return store.dispatch(pushState(null, '/signin', {}))
     }
     case response(ActionCreators.SIGN_IN): {
       setToken(action.payload.authToken)

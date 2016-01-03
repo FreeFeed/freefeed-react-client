@@ -25,7 +25,7 @@ function signInFunc(props){
   }
 }
 
-function Login (props) {
+function Signin(props) {
   return (
   <div className='box'>
     <div className='box-header-timeline'>
@@ -64,4 +64,4 @@ function Login (props) {
   </div>
 )}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Signin)
