@@ -5,7 +5,6 @@ import {connect } from 'react-redux'
 import {unauthenticated} from '../redux/action-creators'
 import Footer from './footer'
 import Sidebar from './sidebar'
-import Signin from './signin'
 import LoaderContainer from './loader-container'
 
 const InternalLayout = ({authenticated, children}) => (
@@ -37,7 +36,11 @@ const Layout = (props) => (
             </div>
           </div>
           <div className='col-md-6'>
-            {props.authenticated ? false : (<Signin {...props}/>)}
+            {props.authenticated ? false : (
+              <div className='signin-toolbar'>
+                <Link to='/login'>Sign In</Link>
+              </div>
+            )}
           </div>
         </div>
       </div>
