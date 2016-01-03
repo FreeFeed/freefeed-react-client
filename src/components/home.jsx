@@ -7,6 +7,7 @@ import {getQuery} from '../utils'
 import CreatePost from './create-post'
 import HomeFeed from './home-feed'
 import PaginatedView from './paginated-view'
+import Welcome from './welcome'
 
 const FeedHandler = (props) => {
   const createPostComponent = (
@@ -26,9 +27,13 @@ const FeedHandler = (props) => {
       <div className='box-header-timeline'>
         {props.boxHeader}
       </div>
-      <PaginatedView firstPageHead={createPostComponent}>
-        {props.feed && props.feed.length ? <HomeFeed {...props}/> : false}
-      </PaginatedView>
+      {props.authenticated ? (
+        <PaginatedView firstPageHead={createPostComponent}>
+          {props.feed && props.feed.length ? <HomeFeed {...props}/> : false}
+        </PaginatedView>
+      ) : (
+        <Welcome/>
+      )}
       <div className='box-footer'>
       </div>
     </div>)
@@ -36,6 +41,7 @@ const FeedHandler = (props) => {
 
 function selectState(state) {
   const user = state.user
+  const authenticated = state.authenticated
   const feed = state.feedViewState.feed.map(joinPostData(state))
   const createPostViewState = state.createPostViewState
   const createPostForm = joinCreatePostData(state)
@@ -43,7 +49,7 @@ function selectState(state) {
   const boxHeader = state.boxHeader
   const sendTo = state.sendTo
 
-  return { feed, user, timelines, createPostViewState, createPostForm, boxHeader, sendTo }
+  return { user, authenticated, feed, createPostViewState, createPostForm, timelines, boxHeader, sendTo }
 }
 
 function selectActions(dispatch) {
