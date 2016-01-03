@@ -35,11 +35,14 @@ export default props => (
     </div>
   </div>
   {props.me ?
-    <CreatePost createPostViewState={props.createPostViewState}
-                sendTo={props.sendTo}
-                user={props.user}
-                createPost={props.createPost}
-                expandSendTo={props.expandSendTo} />
+    <CreatePost
+      createPostViewState={props.createPostViewState}
+      sendTo={props.sendTo}
+      user={props.user}
+      createPost={props.createPost}
+      expandSendTo={props.expandSendTo}
+      createPostForm={props.createPostForm}
+      addAttachmentResponse={props.addAttachmentResponse}/>
    : props.blocked ?
     <div>
       You have blocked {props.username}, so all of {props.username}'s posts and comments are invisible to you.

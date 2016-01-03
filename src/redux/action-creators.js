@@ -230,11 +230,29 @@ export function deleteComment(commentId){
 
 export const CREATE_POST = 'CREATE_POST'
 
-export function createPost(postText, feeds){
+export function createPost(postText, feeds, attachmentIds) {
   return {
     type: CREATE_POST,
-    payload: {postText, feeds},
+    payload: {postText, feeds, attachmentIds},
     apiRequest: Api.createPost
+  }
+}
+
+export const ADD_ATTACHMENT_RESPONSE = 'ADD_ATTACHMENT_RESPONSE'
+
+export function addAttachmentResponse(postId, attachments) {
+  return {
+    type: ADD_ATTACHMENT_RESPONSE,
+    payload: {postId, attachments}
+  }
+}
+
+export const REMOVE_ATTACHMENT = 'REMOVE_ATTACHMENT'
+
+export function removeAttachment(postId, attachmentId) {
+  return {
+    type: REMOVE_ATTACHMENT,
+    payload: {postId, attachmentId}
   }
 }
 

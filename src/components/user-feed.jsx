@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {createPost, expandSendTo} from '../redux/action-creators'
-import {joinPostData, postActions, userActions} from './select-utils'
+import {joinPostData, joinCreatePostData, postActions, userActions} from './select-utils'
 import {getQuery, getCurrentRouteName} from '../utils'
 
 import CreatePost from './create-post'
@@ -25,7 +25,9 @@ const UserFeedHandler = (props) => {
           sendTo={props.sendTo}
           expandSendTo={props.expandSendTo}
           createPostViewState={props.createPostViewState}
-          createPost={props.createPost}/>
+          createPost={props.createPost}
+          createPostForm={props.createPostForm}
+          addAttachmentResponse={props.addAttachmentResponse}/>
       </div>
       {props.viewUser.blocked ?
         false :
@@ -41,6 +43,7 @@ function selectState(state) {
   const user = state.user
   const feed = state.feedViewState.feed.map(joinPostData(state))
   const createPostViewState = state.createPostViewState
+  const createPostForm = joinCreatePostData(state)
   const timelines = state.timelines
   const boxHeader = state.boxHeader
   const foundUser = Object.getOwnPropertyNames(state.users)
@@ -67,13 +70,13 @@ function selectState(state) {
 
   const sendTo = state.sendTo
 
-  return { feed, user, timelines, createPostViewState, boxHeader, viewUser, breadcrumbs, sendTo }
+  return { feed, user, timelines, createPostViewState, createPostForm, boxHeader, viewUser, breadcrumbs, sendTo }
 }
 
 function selectActions(dispatch) {
   return {
     ...postActions(dispatch),
-    createPost: (postText, feeds) => dispatch(createPost(postText, feeds)),
+    createPost: (postText, feeds, attachmentIds) => dispatch(createPost(postText, feeds, attachmentIds)),
     expandSendTo: () => dispatch(expandSendTo()),
     userActions: userActions(dispatch),
   }

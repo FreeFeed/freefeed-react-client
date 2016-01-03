@@ -1,5 +1,6 @@
 import {showMoreComments, showMoreLikes, toggleEditingPost, cancelEditingPost,
-        saveEditingPost, deletePost, likePost, unlikePost, toggleCommenting, addComment,
+        saveEditingPost, deletePost, addAttachmentResponse, removeAttachment,
+        likePost, unlikePost, toggleCommenting, addComment,
         toggleEditingComment, cancelEditingComment, saveEditingComment, deleteComment,
         ban, unban, subscribe, unsubscribe, } from '../redux/action-creators'
 
@@ -45,6 +46,13 @@ export const joinPostData = state => postId => {
   return { ...post, attachments, comments, usersLikedPost, createdBy, ...postViewState, isEditable, isDirect, directReceivers }
 }
 
+export function joinCreatePostData(state) {
+  const createPostForm = state.createPostForm
+  return {...createPostForm,
+    attachments: (createPostForm.attachments || []).map(attachmentId => state.attachments[attachmentId])
+  }
+}
+
 export function postActions(dispatch) {
   return {
     showMoreComments: (postId) => dispatch(showMoreComments(postId)),
@@ -57,6 +65,8 @@ export function postActions(dispatch) {
     addComment:(postId, commentText) => dispatch(addComment(postId, commentText)),
     likePost: (postId, userId) => dispatch(likePost(postId, userId)),
     unlikePost: (postId, userId) => dispatch(unlikePost(postId, userId)),
+    addAttachmentResponse:(postId, attachments) => dispatch(addAttachmentResponse(postId, attachments)),
+    removeAttachment:(postId, attachmentId) => dispatch(removeAttachment(postId, attachmentId)),
     commentEdit: {
       toggleEditingComment: (commentId) => dispatch(toggleEditingComment(commentId)),
       saveEditingComment: (commentId, newValue) => dispatch(saveEditingComment(commentId, newValue)),

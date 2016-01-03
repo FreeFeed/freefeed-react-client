@@ -379,6 +379,21 @@ export function posts(state = {}, action) {
     case response(ActionCreators.SAVE_EDITING_POST): {
       return updatePostData(state, action)
     }
+    case ActionCreators.ADD_ATTACHMENT_RESPONSE: {
+      // If this is an attachment for create-post (non-existent post),
+      // it should be handled in createPostForm(), not here
+      if (!action.payload.postId) {
+        return state
+      }
+
+      const post = state[action.payload.postId]
+      return {...state,
+        [post.id]: {
+          ...post,
+          attachments: [...(post.attachments || []), action.payload.attachments.id]
+        }
+      }
+    }
     case response(ActionCreators.DELETE_COMMENT): {
       const commentId = action.request.commentId
       const commentedPost = _(state).find(post => (post.comments||[]).indexOf(commentId) !== -1)
@@ -430,11 +445,18 @@ export function posts(state = {}, action) {
 }
 
 export function attachments(state = {}, action) {
-  if (ActionCreators.isFeedResponse(action)){
+  if (ActionCreators.isFeedResponse(action)) {
     return mergeByIds(state, action.payload.attachments)
   }
-  if(action.type == response(ActionCreators.GET_SINGLE_POST)){
-    return mergeByIds(state, action.payload.attachments)
+  switch (action.type) {
+    case response(ActionCreators.GET_SINGLE_POST): {
+      return mergeByIds(state, action.payload.attachments)
+    }
+    case ActionCreators.ADD_ATTACHMENT_RESPONSE: {
+      return {...state,
+        [action.payload.attachments.id]: action.payload.attachments
+      }
+    }
   }
   return state
 }
@@ -764,6 +786,35 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
       return {
         expanded: true,
         feeds: state.feeds
+      }
+    }
+  }
+
+  return state
+}
+
+export function createPostForm(state = {}, action) {
+  switch (action.type) {
+    case ActionCreators.ADD_ATTACHMENT_RESPONSE: {
+      // If this is an attachment for edit-post (existent post),
+      // it should be handled in posts(), not here
+      if (action.payload.postId) {
+        return state
+      }
+
+      return {...state,
+        attachments: [...(state.attachments || []), action.payload.attachments.id]
+      }
+    }
+    case ActionCreators.REMOVE_ATTACHMENT: {
+      // If this is an attachment for edit-post (existent post),
+      // it should be handled in posts(), not here
+      if (action.payload.postId) {
+        return state
+      }
+
+      return {...state,
+        attachments: _.without((state.attachments || []), action.payload.attachmentId)
       }
     }
   }
