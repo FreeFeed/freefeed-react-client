@@ -26,6 +26,7 @@ const SinglePostHandler = (props) => {
                   cancelEditingPost={props.cancelEditingPost}
                   saveEditingPost={props.saveEditingPost}
                   deletePost={props.deletePost}
+                  addAttachmentResponse={props.addAttachmentResponse}
                   toggleCommenting={props.toggleCommenting}
                   addComment={props.addComment}
                   likePost={props.likePost}

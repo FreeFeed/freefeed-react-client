@@ -17,7 +17,7 @@ import Layout from './components/layout'
 import Home from './components/home'
 import About from './components/about'
 import NotFound from './components/not-found'
-import Login from './components/login'
+import Signin from './components/signin'
 import Signup from './components/signup'
 import Settings from './components/settings'
 import SinglePost from './components/single-post'
@@ -43,7 +43,7 @@ ReactDOM.render(
       <Route path='/' component={Layout}>
         <IndexRoute name='home' component={Home} onEnter={boundRouteActions('home')}/>
         <Route path='about' component={About} />
-        <Route path='login' component={Login}/>
+        <Route path='signin' component={Signin}/>
         <Route path='signup' component={Signup}/>
         <Route path='settings' component={Settings}/>
         <Route name='discussions' path='filter/discussions' component={Home} onEnter={boundRouteActions('discussions')}/>

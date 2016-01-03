@@ -25,6 +25,7 @@
     "react": "0.14.5",
     "react-addons-test-utils": "^0.14.3",
     "react-dom": "^0.14.3",
+    "react-dropzone-component": "^0.8.1",
     "react-linkify": "0.0.4",
     "react-google-recaptcha": "^0.5.2",
     "react-redux": "^4.0.0",

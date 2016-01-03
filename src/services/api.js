@@ -46,6 +46,24 @@ export function getPostWithAllCommentsAndLikes({postId}) {
     `${apiConfig.host}/v1/posts/${postId}?maxComments=all&maxLikes=all`, getRequestOptions())
 }
 
+export function createPost({postText, feeds, attachmentIds}) {
+  return fetch(`${apiConfig.host}/v1/posts`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+    'body': JSON.stringify({
+      post: {
+        body: postText,
+        attachments: attachmentIds
+      },
+      meta: { feeds: feeds }
+    })
+  })
+}
+
 export function updatePost({postId, newPost}) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}`, {
     'method': 'PUT',
@@ -99,21 +117,6 @@ export function deleteComment({commentId}) {
       'Accept': 'application/json',
       'X-Authentication-Token': getToken()
     }
-  })
-}
-
-export function createPost({postText, feeds}) {
-  return fetch(`${apiConfig.host}/v1/posts`, {
-    'method': 'POST',
-    'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'X-Authentication-Token': getToken()
-    },
-    'body': JSON.stringify({
-      post: { body: postText },
-      meta: { feeds: feeds }
-    })
   })
 }
 
