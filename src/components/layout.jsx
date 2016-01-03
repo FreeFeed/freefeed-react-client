@@ -38,7 +38,13 @@ class Layout extends React.Component {
 
   containsFiles(e) {
     if (e.dataTransfer && e.dataTransfer.types) {
-      return (e.dataTransfer.types.indexOf('Files') !== -1)
+      // Event.dataTransfer.types is DOMStringList (not Array) in Firefox,
+      // so we can't just use indexOf().
+      for (let i=0; i<e.dataTransfer.types.length; i++) {
+        if (e.dataTransfer.types[i] === 'Files') {
+          return true
+        }
+      }
     }
     return false
   }
