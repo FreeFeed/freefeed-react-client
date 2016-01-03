@@ -53,7 +53,7 @@ function Login (props) {
                 </div>
               </form>
             </LoaderContainer>
-            <p>New to freefeed? <a href='https://docs.google.com/forms/d/1P4cyYUZlxABbWvZrM5jHRcMUFQFpc8qfbZWjGulobsA/viewform?c=0&amp;w=1' target='_blank'>Create an account »</a></p>
+            <p>New to freefeed? <Link to='signup'>Create an account »</Link></p>
           </div>
         </div>
       </div>
