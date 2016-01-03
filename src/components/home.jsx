@@ -7,6 +7,7 @@ import {getQuery} from '../utils'
 import CreatePost from './create-post'
 import HomeFeed from './home-feed'
 import PaginatedView from './paginated-view'
+import Welcome from './welcome'
 
 const FeedHandler = (props) => {
   const createPostComponent = (
@@ -31,7 +32,7 @@ const FeedHandler = (props) => {
           {props.feed && props.feed.length ? <HomeFeed {...props}/> : false}
         </PaginatedView>
       ) : (
-        <h3 className='box-body'>Welcome to FreeFeed!</h3>
+        <Welcome/>
       )}
       <div className='box-footer'>
       </div>
