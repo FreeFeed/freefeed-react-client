@@ -27,6 +27,7 @@ export default class CreatePost extends React.Component {
     this.setState({
       disabled: true
     })
+    attachmentIds.forEach(attachmentId => this.props.removeAttachment(null, attachmentId))
   }
 
   isPostTextEmpty = (postText) => {

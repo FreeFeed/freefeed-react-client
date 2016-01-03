@@ -1,5 +1,6 @@
 import {showMoreComments, showMoreLikes, toggleEditingPost, cancelEditingPost,
-        saveEditingPost, deletePost, addAttachmentResponse, likePost, unlikePost, toggleCommenting, addComment,
+        saveEditingPost, deletePost, addAttachmentResponse, removeAttachment,
+        likePost, unlikePost, toggleCommenting, addComment,
         toggleEditingComment, cancelEditingComment, saveEditingComment, deleteComment,
         ban, unban, subscribe, unsubscribe, } from '../redux/action-creators'
 
@@ -65,6 +66,7 @@ export function postActions(dispatch) {
     likePost: (postId, userId) => dispatch(likePost(postId, userId)),
     unlikePost: (postId, userId) => dispatch(unlikePost(postId, userId)),
     addAttachmentResponse:(postId, attachments) => dispatch(addAttachmentResponse(postId, attachments)),
+    removeAttachment:(postId, attachmentId) => dispatch(removeAttachment(postId, attachmentId)),
     commentEdit: {
       toggleEditingComment: (commentId) => dispatch(toggleEditingComment(commentId)),
       saveEditingComment: (commentId, newValue) => dispatch(saveEditingComment(commentId, newValue)),

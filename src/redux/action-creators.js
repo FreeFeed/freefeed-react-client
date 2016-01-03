@@ -247,6 +247,15 @@ export function addAttachmentResponse(postId, attachments) {
   }
 }
 
+export const REMOVE_ATTACHMENT = 'REMOVE_ATTACHMENT'
+
+export function removeAttachment(postId, attachmentId) {
+  return {
+    type: REMOVE_ATTACHMENT,
+    payload: {postId, attachmentId}
+  }
+}
+
 export const SIGN_IN_CHANGE = 'SIGN_IN_CHANGE'
 
 export function signInChange(username, password){

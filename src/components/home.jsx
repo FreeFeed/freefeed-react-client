@@ -17,7 +17,8 @@ const FeedHandler = (props) => {
       createPost={props.createPost}
       expandSendTo={props.expandSendTo}
       createPostForm={props.createPostForm}
-      addAttachmentResponse={props.addAttachmentResponse}/>
+      addAttachmentResponse={props.addAttachmentResponse}
+      removeAttachment={props.removeAttachment}/>
   )
 
   return (

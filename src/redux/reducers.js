@@ -806,6 +806,17 @@ export function createPostForm(state = {}, action) {
         attachments: [...(state.attachments || []), action.payload.attachments.id]
       }
     }
+    case ActionCreators.REMOVE_ATTACHMENT: {
+      // If this is an attachment for edit-post (existent post),
+      // it should be handled in posts(), not here
+      if (action.payload.postId) {
+        return state
+      }
+
+      return {...state,
+        attachments: _.without((state.attachments || []), action.payload.attachmentId)
+      }
+    }
   }
 
   return state
