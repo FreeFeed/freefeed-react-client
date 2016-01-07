@@ -37,31 +37,29 @@ export const authMiddleware = store => next => action => {
     return
   }
 
-  switch(action.type){
-    case ActionCreators.UNAUTHENTICATED: {
-      setToken()
-      persistUser()
-      next(action)
-      const routeName = getCurrentRouteName(store.getState().router)
-      if (!routeName || ['signin', 'signup'].indexOf(routeName) !== -1){
-        return
-      }
-      return store.dispatch(pushState(null, '/signin', {}))
+  if(action.type === ActionCreators.UNAUTHENTICATED) {
+    setToken()
+    persistUser()
+    next(action)
+    const routeName = getCurrentRouteName(store.getState().router)
+    if (!routeName || ['signin', 'signup'].indexOf(routeName) !== -1){
+      return
     }
-    case response(ActionCreators.SIGN_IN): {
-      setToken(action.payload.authToken)
-      next(action)
-      store.dispatch(whoAmI())
-      return store.dispatch(pushState(null, '/', {}))
-    }
-    case response(ActionCreators.WHO_AM_I): {
-      persistUser(userParser(action.payload.users))
-      break
-    }
-    case response(ActionCreators.UPDATE_USER): {
-      persistUser(userParser(action.payload.users))
-      break
-    }
+    return store.dispatch(pushState(null, '/signin', {}))
+  }
+
+  if(action.type === response(ActionCreators.SIGN_IN) ||
+     action.type === response(ActionCreators.SIGN_UP) ) {
+    setToken(action.payload.authToken)
+    next(action)
+    store.dispatch(ActionCreators.whoAmI())
+    return store.dispatch(pushState(null, '/', {}))
+  }
+
+  if(action.type === response(ActionCreators.WHO_AM_I) ||
+     action.type === response(ActionCreators.UPDATE_USER) ) {
+    persistUser(userParser(action.payload.users))
+    return next(action)
   }
 
   return next(action)
