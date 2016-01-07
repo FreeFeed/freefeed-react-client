@@ -371,10 +371,20 @@ export function posts(state = {}, action) {
   }
   switch (action.type) {
     case response(ActionCreators.SHOW_MORE_COMMENTS): {
-      return updatePostData(state, action)
+      const post = state[action.payload.posts.id]
+      return {...state,
+        [post.id]: {...post,
+          comments: action.payload.posts.comments
+        }
+      }
     }
     case response(ActionCreators.SHOW_MORE_LIKES_ASYNC): {
-      return updatePostData(state, action)
+      const post = state[action.payload.posts.id]
+      return {...state,
+        [post.id]: {...post,
+          likes: action.payload.posts.likes
+        }
+      }
     }
     case response(ActionCreators.SAVE_EDITING_POST): {
       const post = state[action.payload.posts.id]
