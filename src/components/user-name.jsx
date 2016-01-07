@@ -21,7 +21,9 @@ const UserName = (props) => (
     className={`user-name-info ${props.className}`}
     to={`/${props.user.username}`}
   >
-    <DisplayUsername mode={props.settings.userNameMode} user={props.user}/>
+    {props.display
+      ? <span>{props.display}</span>
+      : <DisplayUsername mode={props.settings.userNameMode} user={props.user}/>}
   </Link>
 )
 

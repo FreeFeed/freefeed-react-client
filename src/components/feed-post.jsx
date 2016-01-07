@@ -59,9 +59,23 @@ export default class FeedPost extends React.Component {
     const toggleCommenting = props.isSinglePost ? () => {
     } : () => props.toggleCommenting(props.id)
 
+    const recipientCustomDisplay = function(recipient) {
+      if (recipient.id !== props.createdBy.id) {
+        return false
+      }
+      if (recipient.username[recipient.username.length - 1] === 's') {
+        return recipient.username + "' feed"
+      } else {
+        return recipient.username + "'s feed"
+      }
+    }
+
     const recipients = props.recipients.map((recipient, index) => (
       <span key={index}>
-        <UserName className="post-recipient" user={recipient}/>
+        <UserName
+          className="post-recipient"
+          user={recipient}
+          display={recipientCustomDisplay(recipient)}/>
         {index < props.recipients.length - 2 ? ', ' : false}
         {index === props.recipients.length - 2 ? ' and ' : false}
       </span>
