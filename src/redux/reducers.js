@@ -275,7 +275,7 @@ export function postsViewState(state = {}, action) {
           isCommenting: false,
           isSavingComment: false,
           newCommentText: '',
-          omittedComments: post.omittedComments + 1
+          omittedComments: (post.omittedComments ? post.omittedComments + 1 : 0)
         }
       }
     }
@@ -289,6 +289,21 @@ export function postsViewState(state = {}, action) {
         }
       }
     }
+    // This doesn't work currently, since there's no information in the server
+    // response, and just with request.commentId it's currently impossible to
+    // find the post in postsViewState's state.
+    // TODO: Fix this.
+    /*
+    case response(ActionCreators.DELETE_COMMENT): {
+      const commentId = action.request.commentId
+      const post = _(state).find(post => (post.comments||[]).indexOf(commentId) !== -1)
+      return {...state,
+        [post.id]: {...post,
+          omittedComments: (post.omittedComments ? post.omittedComments - 1 : 0)
+        }
+      }
+    }
+    */
     case request(ActionCreators.LIKE_POST): {
       const post = state[action.payload.postId]
       return {...state,
@@ -303,6 +318,7 @@ export function postsViewState(state = {}, action) {
         [post.id] : {
           ...post,
           isLiking: false,
+          omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes + 1 : 0)
         }
       }
     }
@@ -331,6 +347,7 @@ export function postsViewState(state = {}, action) {
         [post.id] : {
           ...post,
           isLiking: false,
+          omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes - 1 : 0)
         }
       }
     }
@@ -378,6 +395,7 @@ export function posts(state = {}, action) {
       const post = state[action.payload.posts.id]
       return {...state,
         [post.id]: {...post,
+          omittedComments: 0,
           comments: action.payload.posts.comments
         }
       }
@@ -386,6 +404,7 @@ export function posts(state = {}, action) {
       const post = state[action.payload.posts.id]
       return {...state,
         [post.id]: {...post,
+          omittedLikes: 0,
           likes: action.payload.posts.likes
         }
       }
@@ -417,9 +436,14 @@ export function posts(state = {}, action) {
     }
     case response(ActionCreators.DELETE_COMMENT): {
       const commentId = action.request.commentId
-      const commentedPost = _(state).find(post => (post.comments||[]).indexOf(commentId) !== -1)
-      const comments = _.without(commentedPost.comments, commentId)
-      return {...state, [commentedPost.id] : {...commentedPost, comments}}
+      const post = _(state).find(post => (post.comments||[]).indexOf(commentId) !== -1)
+      const comments = _.without(post.comments, commentId)
+      return {...state,
+        [post.id]: {...post,
+          comments,
+          omittedComments: (post.omittedComments > 0 ? post.omittedComments - 1 : 0)
+        }
+      }
     }
     case response(ActionCreators.ADD_COMMENT): {
       const post = state[action.request.postId]
@@ -427,19 +451,17 @@ export function posts(state = {}, action) {
         [post.id] : {
           ...post,
           comments: [...(post.comments || []), action.payload.comments.id],
-          omittedComments: post.omittedComments + 1
+          omittedComments: (post.omittedComments > 0 ? post.omittedComments + 1 : 0)
         }
       }
     }
     case response(ActionCreators.LIKE_POST): {
       const post = state[action.request.postId]
-      // @todo Update omittedLikes properly here
-      //const omitted = post.omittedLikes > 0 ? post.omittedLikes+1 : 0
       return {...state,
         [post.id] : {
           ...post,
           likes: [action.request.userId, ...(post.likes || [])],
-          //omittedLikes: omitted,
+          omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes + 1 : 0)
         }
       }
     }
@@ -449,6 +471,7 @@ export function posts(state = {}, action) {
         [post.id] : {
           ...post,
           likes: _.without(post.likes, action.request.userId),
+          omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes - 1 : 0)
         }
       }
     }
