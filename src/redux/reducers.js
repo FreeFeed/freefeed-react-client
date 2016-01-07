@@ -377,7 +377,14 @@ export function posts(state = {}, action) {
       return updatePostData(state, action)
     }
     case response(ActionCreators.SAVE_EDITING_POST): {
-      return updatePostData(state, action)
+      const post = state[action.payload.posts.id]
+      return {...state,
+        [post.id]: {...post,
+          body: action.payload.posts.body,
+          updatedAt: action.payload.posts.updatedAt,
+          attachments: action.payload.posts.attachments || []
+        }
+      }
     }
     case ActionCreators.ADD_ATTACHMENT_RESPONSE: {
       // If this is an attachment for create-post (non-existent post),
