@@ -31,6 +31,10 @@
         font-weight: bold;
         color: #000088;
       }
+
+      .post-recipient {
+        font-weight: 500;
+      }
     }
 
     .post-text {
@@ -143,10 +147,4 @@
 
 .single-post-error {
   color: #FF5A5F;
-}
-
-.post-addressee-direct {
-  padding-left: 13px;
-  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 48 48'><path fill='%23666666' d='M24 24c4.42 0 8-3.59 8-8 0-4.42-3.58-8-8-8s-8 3.58-8 8c0 4.41 3.58 8 8 8zm0 4c-5.33 0-16 2.67-16 8v4h32v-4c0-5.33-10.67-8-16-8z'/></svg>") no-repeat left center;
-  white-space: nowrap;
 }

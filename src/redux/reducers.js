@@ -61,6 +61,9 @@ export function signUpForm(state=INITIAL_SIGN_UP_FORM_STATE, action) {
     case response(ActionCreators.SIGN_UP): {
       return {...state, loading: false }
     }
+    case fail(ActionCreators.SIGN_UP): {
+      return {...state, error: action.payload.err, loading: false }
+    }
   }
   return state
 }
@@ -272,6 +275,7 @@ export function postsViewState(state = {}, action) {
           isCommenting: false,
           isSavingComment: false,
           newCommentText: '',
+          omittedComments: post.omittedComments + 1
         }
       }
     }
@@ -371,13 +375,30 @@ export function posts(state = {}, action) {
   }
   switch (action.type) {
     case response(ActionCreators.SHOW_MORE_COMMENTS): {
-      return updatePostData(state, action)
+      const post = state[action.payload.posts.id]
+      return {...state,
+        [post.id]: {...post,
+          comments: action.payload.posts.comments
+        }
+      }
     }
     case response(ActionCreators.SHOW_MORE_LIKES_ASYNC): {
-      return updatePostData(state, action)
+      const post = state[action.payload.posts.id]
+      return {...state,
+        [post.id]: {...post,
+          likes: action.payload.posts.likes
+        }
+      }
     }
     case response(ActionCreators.SAVE_EDITING_POST): {
-      return updatePostData(state, action)
+      const post = state[action.payload.posts.id]
+      return {...state,
+        [post.id]: {...post,
+          body: action.payload.posts.body,
+          updatedAt: action.payload.posts.updatedAt,
+          attachments: action.payload.posts.attachments || []
+        }
+      }
     }
     case ActionCreators.ADD_ATTACHMENT_RESPONSE: {
       // If this is an attachment for create-post (non-existent post),
@@ -406,6 +427,7 @@ export function posts(state = {}, action) {
         [post.id] : {
           ...post,
           comments: [...(post.comments || []), action.payload.comments.id],
+          omittedComments: post.omittedComments + 1
         }
       }
     }
@@ -584,6 +606,9 @@ export function authenticated(state = !!getToken(), action) {
     case response(ActionCreators.SIGN_IN): {
       return true
     }
+    case response(ActionCreators.SIGN_UP): {
+      return true
+    }
     case ActionCreators.UNAUTHENTICATED: {
       return false
     }
@@ -595,7 +620,9 @@ export function authenticated(state = !!getToken(), action) {
 import {user as defaultUserSettings} from '../config'
 
 export function user(state = {settings: defaultUserSettings, ...getPersistedUser()}, action) {
-  if (ActionCreators.isUserChangeResponse(action) || action.type === response(ActionCreators.WHO_AM_I)){
+  if (ActionCreators.isUserChangeResponse(action) ||
+      action.type === response(ActionCreators.WHO_AM_I) ||
+      action.type === response(ActionCreators.SIGN_UP)){
     const subscriptions = _.uniq(action.payload.subscriptions.map(sub => sub.user))
     return {...state, ...userParser(action.payload.users), subscriptions}
   }
