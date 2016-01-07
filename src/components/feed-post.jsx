@@ -59,10 +59,10 @@ export default class FeedPost extends React.Component {
     const toggleCommenting = props.isSinglePost ? () => {
     } : () => props.toggleCommenting(props.id)
 
-    const directReceivers = props.directReceivers.map((receiver, index) => (
+    const recipients = props.recipients.map((recipient, index) => (
       <span key={index}>
-        <UserName className="post-addressee post-addressee-direct" user={receiver}/>
-        {index !== props.directReceivers.length - 1 ? ',' : false}
+        <UserName className="post-recipient" user={recipient}/>
+        {index !== props.recipients.length - 1 ? ',' : false}
       </span>
     ))
 
@@ -116,8 +116,8 @@ export default class FeedPost extends React.Component {
         <div className="post-body">
           <div className="post-header">
             <UserName className="post-author" user={props.createdBy}/>
-            {props.isDirect ? (<span>&nbsp;to&nbsp;</span>) : false}
-            {props.isDirect ? directReceivers : false}
+            {recipients.length > 0 ? ' to ' : false}
+            {recipients}
           </div>
 
           {props.isEditing ? (

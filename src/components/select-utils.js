@@ -38,12 +38,32 @@ export const joinPostData = state => postId => {
   const isEditable = post.createdBy == user.id
   const directFeeds = post.postedTo.map(feedId => state.timelines[feedId]).filter(feed => feed && feed.name === 'Directs')
   const isDirect = directFeeds.length
-  const directReceivers = post.postedTo
-                              .map(subscriptionId => (state.subscriptions[subscriptionId]||{}).user)
-                              .map(userId=>state.users[userId] || state.subscribers[userId])
-                              .filter(user=>user)
 
-  return { ...post, attachments, comments, usersLikedPost, createdBy, ...postViewState, isEditable, isDirect, directReceivers }
+  // Get the list of post's recipients
+  let recipients = post.postedTo
+    .map(function(subscriptionId) {
+      let userId = (state.subscriptions[subscriptionId]||{}).user
+      let subscriptionType = (state.subscriptions[subscriptionId]||{}).name
+      if (userId === post.createdBy && subscriptionType === 'Directs') {
+        // Remove "directs to yourself" from the list
+        return false
+      } else {
+        return userId
+      }
+    })
+    .map(userId => state.subscribers[userId])
+    .filter(user => user)
+
+  // Check if the post has been only submitted to home feed
+  if (recipients.length === 1 && recipients[0].id === post.createdBy) {
+    recipients = []
+  }
+
+  return {...post,
+    createdBy, isDirect, recipients,
+    attachments, usersLikedPost, comments,
+    ...postViewState, isEditable
+  }
 }
 
 export function joinCreatePostData(state) {
