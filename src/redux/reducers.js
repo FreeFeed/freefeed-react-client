@@ -61,6 +61,9 @@ export function signUpForm(state=INITIAL_SIGN_UP_FORM_STATE, action) {
     case response(ActionCreators.SIGN_UP): {
       return {...state, loading: false }
     }
+    case fail(ActionCreators.SIGN_UP): {
+      return {...state, error: action.payload.err, loading: false }
+    }
   }
   return state
 }
@@ -603,6 +606,9 @@ export function authenticated(state = !!getToken(), action) {
     case response(ActionCreators.SIGN_IN): {
       return true
     }
+    case response(ActionCreators.SIGN_UP): {
+      return true
+    }
     case ActionCreators.UNAUTHENTICATED: {
       return false
     }
@@ -614,7 +620,9 @@ export function authenticated(state = !!getToken(), action) {
 import {user as defaultUserSettings} from '../config'
 
 export function user(state = {settings: defaultUserSettings, ...getPersistedUser()}, action) {
-  if (ActionCreators.isUserChangeResponse(action) || action.type === response(ActionCreators.WHO_AM_I)){
+  if (ActionCreators.isUserChangeResponse(action) ||
+      action.type === response(ActionCreators.WHO_AM_I) ||
+      action.type === response(ActionCreators.SIGN_UP)){
     const subscriptions = _.uniq(action.payload.subscriptions.map(sub => sub.user))
     return {...state, ...userParser(action.payload.users), subscriptions}
   }
