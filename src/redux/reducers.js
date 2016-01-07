@@ -272,6 +272,7 @@ export function postsViewState(state = {}, action) {
           isCommenting: false,
           isSavingComment: false,
           newCommentText: '',
+          omittedComments: post.omittedComments + 1
         }
       }
     }
@@ -423,6 +424,7 @@ export function posts(state = {}, action) {
         [post.id] : {
           ...post,
           comments: [...(post.comments || []), action.payload.comments.id],
+          omittedComments: post.omittedComments + 1
         }
       }
     }
