@@ -62,7 +62,8 @@ export default class FeedPost extends React.Component {
     const recipients = props.recipients.map((recipient, index) => (
       <span key={index}>
         <UserName className="post-recipient" user={recipient}/>
-        {index !== props.recipients.length - 1 ? ',' : false}
+        {index < props.recipients.length - 2 ? ', ' : false}
+        {index === props.recipients.length - 2 ? ' and ' : false}
       </span>
     ))
 
