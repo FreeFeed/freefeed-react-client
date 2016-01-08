@@ -32,7 +32,7 @@ const UserFeedHandler = (props) => {
       {props.viewUser.blocked ?
         false :
         <PaginatedView>
-          <HomeFeed {...props}/>
+          <HomeFeed {...props} isInUserFeed={true}/>
         </PaginatedView>}
       <div className='box-footer'>
       </div>

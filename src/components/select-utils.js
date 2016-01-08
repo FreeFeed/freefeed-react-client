@@ -54,11 +54,6 @@ export const joinPostData = state => postId => {
     .map(userId => state.subscribers[userId])
     .filter(user => user)
 
-  // Check if the post has been only submitted to home feed
-  if (recipients.length === 1 && recipients[0].id === post.createdBy) {
-    recipients = []
-  }
-
   return {...post,
     createdBy, isDirect, recipients,
     attachments, usersLikedPost, comments,
