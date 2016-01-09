@@ -16,7 +16,12 @@ const config = {
   captcha: {
     siteKey: '',
     sentinel: null // keep always last
-  }
+  },
+  siteDomains: [ // for transform links in the posts, comments, etc.
+    'freefeed.net',
+    'm.freefeed.net',
+    'beta.freefeed.net',
+  ] 
 }
 
 export default config
