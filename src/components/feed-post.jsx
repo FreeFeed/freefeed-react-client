@@ -70,7 +70,23 @@ export default class FeedPost extends React.Component {
       }
     }
 
-    const recipients = props.recipients.map((recipient, index) => (
+    let recipients = props.recipients
+    // Check if the post has been only submitted to one recipient
+    // and if we can omit it
+    if (recipients.length === 1) {
+      // If the post is in user/group feed (one-source list), we should omit
+      // the only recipient, since it would be that feed.
+      if (props.isInUserFeed) {
+        recipients = []
+      } else {
+        // When in a many-sources list (Home, Direct messages, My discussions),
+        // we should omit the only recipient if it's the author's feed.
+        if (recipients[0].id === props.createdBy.id) {
+          recipients = []
+        }
+      }
+    }
+    recipients = recipients.map((recipient, index) => (
       <span key={index}>
         <UserName
           className="post-recipient"

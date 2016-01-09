@@ -6,6 +6,7 @@ export default (props) => {
     return (<FeedPost {...post}
               key={post.id}
               user={props.user}
+              isInUserFeed={props.isInUserFeed}
               showMoreComments={props.showMoreComments}
               showMoreLikes={props.showMoreLikes}
               toggleEditingPost={props.toggleEditingPost}
