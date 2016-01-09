@@ -2,7 +2,7 @@ import * as ActionCreators from './action-creators'
 const {request, response, fail} = ActionCreators
 
 import _ from 'lodash'
-import {userParser} from '../utils'
+import {userParser, postParser} from '../utils'
 
 export function signInForm(state={username:'', password:'', error:'', loading: false}, action) {
   switch(action.type) {
@@ -383,12 +383,12 @@ export function postsViewState(state = {}, action) {
 
 function updatePostData(state, action) {
   const postId = action.payload.posts.id
-  return { ...state, [postId]: action.payload.posts }
+  return { ...state, [postId]: postParser(action.payload.posts) }
 }
 
 export function posts(state = {}, action) {
   if (ActionCreators.isFeedResponse(action)){
-    return mergeByIds(state, action.payload.posts)
+    return mergeByIds(state, (action.payload.posts || []).map(postParser))
   }
   switch (action.type) {
     case response(ActionCreators.SHOW_MORE_COMMENTS): {

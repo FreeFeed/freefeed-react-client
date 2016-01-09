@@ -137,6 +137,28 @@ export default class FeedPost extends React.Component {
       }
     }
 
+    // "Comments disabled" / "Comment"
+    let commentLink
+    if (props.commentsDisabled) {
+      if (props.isEditable) {
+        commentLink = (
+          <span>
+            <i>Comments disabled (not for you)</i>
+            {' - '}
+            <a onClick={preventDefault(toggleCommenting)}>Comment</a>
+          </span>
+        )
+      } else {
+        commentLink = (
+          <i>Comments disabled</i>
+        )
+      }
+    } else {
+      commentLink = (
+        <a onClick={preventDefault(toggleCommenting)}>Comment</a>
+      )
+    }
+
     return (
       <div className={postClass}>
         <div className="post-userpic">
@@ -200,7 +222,7 @@ export default class FeedPost extends React.Component {
               <time dateTime={createdAtISO} title={createdAtISO}>{createdAgo}</time>
             </Link>
             {' - '}
-            <a onClick={preventDefault(toggleCommenting)}>Comment</a>
+            {commentLink}
             {' - '}
             <a onClick={preventDefault(ILikedPost ? unlikePost : likePost)}>{ILikedPost ? 'Un-like' : 'Like'}</a>
             {props.isLiking ? (
