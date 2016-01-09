@@ -1,5 +1,5 @@
 import React from 'react'
-import Linkify from'react-linkify'
+import Linkify from'./linkify'
 
 const allButLast = arr => arr.slice(0, arr.length-1)
 
