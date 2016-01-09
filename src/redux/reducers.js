@@ -605,6 +605,14 @@ export function users(state = {}, action) {
     return mergeByIds(state, (action.payload.users || []).map(userParser))
   }
   switch (action.type) {
+    case response(ActionCreators.WHO_AM_I): {
+      let userId = action.payload.users.id
+      let oldUser = state[userId] || {}
+      let newUser = action.payload.users
+      return {...state,
+        [userId]: {...oldUser, ...userParser(newUser)}
+      }
+    }
     case response(ActionCreators.SHOW_MORE_COMMENTS):
     case response(ActionCreators.SHOW_MORE_LIKES_ASYNC):
     case response(ActionCreators.GET_SINGLE_POST):
