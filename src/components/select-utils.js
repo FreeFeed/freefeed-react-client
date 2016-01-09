@@ -18,7 +18,7 @@ export const joinPostData = state => postId => {
     const comment = state.comments[commentId]
     const commentViewState = state.commentViewState[commentId]
     const author = state.users[comment.createdBy]
-    const isEditable = user.id === comment.createdBy
+    const isEditable = (user.id === comment.createdBy)
     return { ...comment, ...commentViewState, user: author, isEditable }
   })
 
@@ -35,7 +35,7 @@ export const joinPostData = state => postId => {
   }
 
   const createdBy = state.users[post.createdBy]
-  const isEditable = post.createdBy == user.id
+  const isEditable = (post.createdBy === user.id)
   const directFeeds = post.postedTo.map(feedId => state.timelines[feedId]).filter(feed => feed && feed.name === 'Directs')
   const isDirect = directFeeds.length
 
