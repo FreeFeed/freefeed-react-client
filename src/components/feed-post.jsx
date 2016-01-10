@@ -40,6 +40,10 @@ export default class FeedPost extends React.Component {
     const deletePost = () => props.deletePost(props.id)
     const likePost = () => props.likePost(props.id, props.user.id)
     const unlikePost = () => props.unlikePost(props.id, props.user.id)
+
+    const disableComments = () => props.disableComments(props.id)
+    const enableComments = () => props.enableComments(props.id)
+
     const checkSave = (event) => {
       const isEnter = event.keyCode === 13
       if (isEnter) {
@@ -235,7 +239,10 @@ export default class FeedPost extends React.Component {
               <span>
                 {' - '}
                 <PostMoreMenu
+                  post={props}
                   toggleEditingPost={toggleEditingPost}
+                  disableComments={disableComments}
+                  enableComments={enableComments}
                   deletePost={deletePost}/>
               </span>
             ) : false}

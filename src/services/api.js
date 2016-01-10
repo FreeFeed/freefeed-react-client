@@ -144,6 +144,30 @@ export function unlikePost({postId}) {
   })
 }
 
+export function disableComments({postId}) {
+  return fetch(`${apiConfig.host}/v1/posts/${postId}/disableComments`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+    'body': '{}'
+  })
+}
+
+export function enableComments({postId}) {
+  return fetch(`${apiConfig.host}/v1/posts/${postId}/enableComments`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+    'body': '{}'
+  })
+}
+
 export function signIn({username, password}){
   return fetch(`${apiConfig.host}/v1/session`, {
     headers:{
