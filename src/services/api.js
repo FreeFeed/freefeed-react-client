@@ -46,7 +46,7 @@ export function getPostWithAllCommentsAndLikes({postId}) {
     `${apiConfig.host}/v1/posts/${postId}?maxComments=all&maxLikes=all`, getRequestOptions())
 }
 
-export function createPost({postText, feeds, attachmentIds}) {
+export function createPost({feeds, postText, attachmentIds, more}) {
   return fetch(`${apiConfig.host}/v1/posts`, {
     'method': 'POST',
     'headers': {
@@ -59,7 +59,10 @@ export function createPost({postText, feeds, attachmentIds}) {
         body: postText,
         attachments: attachmentIds
       },
-      meta: { feeds: feeds }
+      meta: {
+        feeds: feeds,
+        commentsDisabled: !!more.commentsDisabled
+      }
     })
   })
 }

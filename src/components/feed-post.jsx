@@ -195,10 +195,12 @@ export default class FeedPost extends React.Component {
                   maxRows={10}/>
               </div>
 
-              <div className="post-edit-attachments dropzone-trigger">
-                <i className="fa fa-cloud-upload"></i>
-                {' '}
-                Add photos or files
+              <div className="post-edit-options">
+                <span className="post-edit-attachments dropzone-trigger">
+                  <i className="fa fa-cloud-upload"></i>
+                  {' '}
+                  Add photos or files
+                </span>
               </div>
 
               <div className="post-edit-actions">

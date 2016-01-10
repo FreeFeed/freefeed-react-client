@@ -12,20 +12,29 @@ export default class CreatePost extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      disabled: true
+      disabled: true,
+      isMoreOpen: false
     }
   }
 
   createPost = _ => {
-    let postText = this.refs.postText.value
+    // Get all the values
     let feeds = this.refs.selectFeeds.values
+    let postText = this.refs.postText.value
     let attachmentIds = this.props.createPostForm.attachments.map(attachment => attachment.id)
+    let more = {
+      commentsDisabled: (this.refs.commentsDisabled && this.refs.commentsDisabled.checked)
+    }
 
-    this.props.createPost(postText, feeds, attachmentIds)
+    // Send to the server
+    this.props.createPost(feeds, postText, attachmentIds, more)
 
+    // Clear the form afterwards
     this.refs.postText.value = ''
+    this.refs.commentsDisabled.checked = false
     this.setState({
-      disabled: true
+      disabled: true,
+      isMoreOpen: false
     })
     attachmentIds.forEach(attachmentId => this.props.removeAttachment(null, attachmentId))
   }
@@ -52,6 +61,10 @@ export default class CreatePost extends React.Component {
         this.createPost()
       }
     }
+  }
+
+  toggleMore() {
+    this.setState({ isMoreOpen: !this.state.isMoreOpen })
   }
 
   render() {
@@ -122,10 +135,27 @@ export default class CreatePost extends React.Component {
             onFocus={this.props.expandSendTo}/>
         </div>
 
-        <div className="post-edit-attachments dropzone-trigger">
-          <i className="fa fa-cloud-upload"></i>
-          {' '}
-          Add photos or files
+        <div className="post-edit-options">
+          <span className="post-edit-attachments dropzone-trigger">
+            <i className="fa fa-cloud-upload"></i>
+            {' '}
+            Add photos or files
+          </span>
+
+          <a className="post-edit-more-trigger" onClick={this.toggleMore.bind(this)}>More&nbsp;&#x25be;</a>
+
+          {this.state.isMoreOpen ? (
+            <div className="post-edit-more">
+              <label>
+                <input
+                  className="post-edit-more-checkbox"
+                  type="checkbox"
+                  ref="commentsDisabled"
+                  defaultChecked={false}/>
+                <span className="post-edit-more-labeltext">Comments disabled</span>
+              </label>
+            </div>
+          ) : false}
         </div>
 
         <div className="post-edit-actions">
