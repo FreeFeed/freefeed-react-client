@@ -199,6 +199,30 @@ export function unlikePost(postId, userId){
   }
 }
 
+export const DISABLE_COMMENTS = 'DISABLE_COMMENTS'
+
+export function disableComments(postId) {
+  return {
+    type: DISABLE_COMMENTS,
+    apiRequest: Api.disableComments,
+    payload: {
+      postId
+    }
+  }
+}
+
+export const ENABLE_COMMENTS = 'ENABLE_COMMENTS'
+
+export function enableComments(postId) {
+  return {
+    type: ENABLE_COMMENTS,
+    apiRequest: Api.enableComments,
+    payload: {
+      postId
+    }
+  }
+}
+
 export const TOGGLE_EDITING_COMMENT = 'TOGGLE_EDITING_COMMENT'
 
 export function toggleEditingComment(commentId){

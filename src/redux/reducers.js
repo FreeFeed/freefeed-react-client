@@ -362,6 +362,56 @@ export function postsViewState(state = {}, action) {
         }
       }
     }
+    case request(ActionCreators.DISABLE_COMMENTS): {
+      const post = state[action.payload.postId]
+      return {...state,
+        [post.id]: {...post,
+          isDisablingComments: true
+        }}
+    }
+    case response(ActionCreators.DISABLE_COMMENTS): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isDisablingComments: false,
+          commentsDisabled: true
+        }
+      }
+    }
+    case fail(ActionCreators.DISABLE_COMMENTS): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isDisablingComments: false,
+          disableCommentsError: 'Something went wrong while disabling comments.'
+        }
+      }
+    }
+    case request(ActionCreators.ENABLE_COMMENTS): {
+      const post = state[action.payload.postId]
+      return {...state,
+        [post.id]: {...post,
+          isDisablingComments: true
+        }}
+    }
+    case response(ActionCreators.ENABLE_COMMENTS): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isDisablingComments: false,
+          commentsDisabled: false
+        }
+      }
+    }
+    case fail(ActionCreators.ENABLE_COMMENTS): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isDisablingComments: false,
+          disableCommentsError: 'Something went wrong while enabling comments.'
+        }
+      }
+    }
     case response(ActionCreators.CREATE_POST): {
       const post = action.payload.posts
       const id = post.id
@@ -472,6 +522,22 @@ export function posts(state = {}, action) {
           ...post,
           likes: _.without(post.likes, action.request.userId),
           omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes - 1 : 0)
+        }
+      }
+    }
+    case response(ActionCreators.DISABLE_COMMENTS): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          commentsDisabled: true
+        }
+      }
+    }
+    case response(ActionCreators.ENABLE_COMMENTS): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          commentsDisabled: false
         }
       }
     }

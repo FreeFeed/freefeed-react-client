@@ -29,6 +29,9 @@ export default class PostMoreMenu extends React.Component {
     return (
       <DropdownMenu {...menuOptions}>
         <li className="dd-menu-item"><a className="dd-menu-item-link" onClick={this.props.toggleEditingPost}>Edit</a></li>
+        {this.props.post.commentsDisabled
+          ? <li className="dd-menu-item"><a className="dd-menu-item-link" onClick={this.props.enableComments}>Enable comments</a></li>
+          : <li className="dd-menu-item"><a className="dd-menu-item-link" onClick={this.props.disableComments}>Disable comments</a></li>}
         <li className="dd-menu-item dd-menu-item-danger"><a className="dd-menu-item-link" onClick={this.props.deletePost}>Delete</a></li>
       </DropdownMenu>
     )
