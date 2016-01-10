@@ -90,16 +90,44 @@
 .post-editor {
   position: relative; // necessary for proper width of dropzone inside this container
 
+  // Clearfix (http://www.cssmojo.com/latest_new_clearfix_so_far/)
+  &:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+
   .post-textarea {
     @include editarea;
   }
 
-  .post-edit-attachments {
+  .post-edit-options {
     float: left;
-    cursor: pointer;
+    margin-bottom: 11px;
 
-    &:hover span:last-child {
-      text-decoration: underline;
+    .post-edit-attachments {
+      cursor: pointer;
+
+      &:hover span:last-child {
+        text-decoration: underline;
+      }
+    }
+
+    .post-edit-more-trigger {
+      color: #333;
+      margin-left: 15px;
+    }
+
+    .post-edit-more {
+      margin-top: 5px;
+
+      .post-edit-more-checkbox {
+        margin: 0 5px 0 1px;
+      }
+      .post-edit-more-labeltext {
+        font-weight: normal;
+        vertical-align: middle;
+      }
     }
   }
 
