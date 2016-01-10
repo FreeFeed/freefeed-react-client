@@ -62,6 +62,30 @@
   }
 }
 
+// "More" menu in post footer
+// (it's just an override, default styles are in react-dd-menu/src/scss/react-dd-menu.scss)
+.dd-menu .dd-menu-items .dd-menu-item {
+  &:hover {
+    background-color: #eee !important;
+  }
+  &.dd-menu-item-danger:hover {
+    color: #300 !important;
+    background-color: #fcc !important;
+  }
+
+  .dd-menu-item-link {
+    padding: 6px 12px !important;
+  }
+  &:first-child .dd-menu-item-link {
+    padding-top: 8px !important;
+    padding-bottom: 5px !important;
+  }
+  &:last-child .dd-menu-item-link {
+    padding-top: 5px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
 // Used in both create-post and edit-post
 .post-editor {
   position: relative; // necessary for proper width of dropzone inside this container
