@@ -15,6 +15,7 @@ import throbber16 from 'assets/images/throbber-16.gif'
 import DropzoneComponent from 'react-dropzone-component'
 import {api as apiConfig} from '../config'
 import {getToken} from '../services/auth'
+import PostMoreMenu from './post-more-menu'
 
 export default class FeedPost extends React.Component {
   render() {
@@ -233,9 +234,9 @@ export default class FeedPost extends React.Component {
             {props.isEditable ? (
               <span>
                 {' - '}
-                <a onClick={preventDefault(toggleEditingPost)}>Edit</a>
-                {' - '}
-                <a onClick={preventDefault(deletePost)}>Delete</a>
+                <PostMoreMenu
+                  toggleEditingPost={toggleEditingPost}
+                  deletePost={deletePost}/>
               </span>
             ) : false}
           </div>

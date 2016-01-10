@@ -25,6 +25,7 @@
     "raw-loader": "^0.5.1",
     "react": "~0.14.6",
     "react-addons-test-utils": "~0.14.6",
+    "react-dd-menu": "^1.0.5",
     "react-dom": "~0.14.6",
     "react-dropzone-component": "^0.8.1",
     "react-google-recaptcha": "^0.5.2",
