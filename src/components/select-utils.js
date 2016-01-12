@@ -1,6 +1,6 @@
 import {showMoreComments, showMoreLikes, toggleEditingPost, cancelEditingPost,
         saveEditingPost, deletePost, addAttachmentResponse, removeAttachment,
-        likePost, unlikePost, toggleCommenting, addComment,
+        likePost, unlikePost, disableComments, enableComments, toggleCommenting, addComment,
         toggleEditingComment, cancelEditingComment, saveEditingComment, deleteComment,
         ban, unban, subscribe, unsubscribe, } from '../redux/action-creators'
 
@@ -18,7 +18,7 @@ export const joinPostData = state => postId => {
     const comment = state.comments[commentId]
     const commentViewState = state.commentViewState[commentId]
     const author = state.users[comment.createdBy]
-    const isEditable = user.id === comment.createdBy
+    const isEditable = (user.id === comment.createdBy)
     return { ...comment, ...commentViewState, user: author, isEditable }
   })
 
@@ -35,7 +35,7 @@ export const joinPostData = state => postId => {
   }
 
   const createdBy = state.users[post.createdBy]
-  const isEditable = post.createdBy == user.id
+  const isEditable = (post.createdBy === user.id)
   const directFeeds = post.postedTo.map(feedId => state.timelines[feedId]).filter(feed => feed && feed.name === 'Directs')
   const isDirect = directFeeds.length
 
@@ -80,6 +80,8 @@ export function postActions(dispatch) {
     addComment:(postId, commentText) => dispatch(addComment(postId, commentText)),
     likePost: (postId, userId) => dispatch(likePost(postId, userId)),
     unlikePost: (postId, userId) => dispatch(unlikePost(postId, userId)),
+    disableComments: (postId) => dispatch(disableComments(postId)),
+    enableComments: (postId) => dispatch(enableComments(postId)),
     addAttachmentResponse:(postId, attachments) => dispatch(addAttachmentResponse(postId, attachments)),
     removeAttachment:(postId, attachmentId) => dispatch(removeAttachment(postId, attachmentId)),
     commentEdit: {

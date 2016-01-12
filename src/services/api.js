@@ -46,7 +46,7 @@ export function getPostWithAllCommentsAndLikes({postId}) {
     `${apiConfig.host}/v1/posts/${postId}?maxComments=all&maxLikes=all`, getRequestOptions())
 }
 
-export function createPost({postText, feeds, attachmentIds}) {
+export function createPost({feeds, postText, attachmentIds, more}) {
   return fetch(`${apiConfig.host}/v1/posts`, {
     'method': 'POST',
     'headers': {
@@ -59,7 +59,10 @@ export function createPost({postText, feeds, attachmentIds}) {
         body: postText,
         attachments: attachmentIds
       },
-      meta: { feeds: feeds }
+      meta: {
+        feeds: feeds,
+        commentsDisabled: !!more.commentsDisabled
+      }
     })
   })
 }
@@ -134,6 +137,30 @@ export function likePost({postId}) {
 
 export function unlikePost({postId}) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}/unlike`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+    'body': '{}'
+  })
+}
+
+export function disableComments({postId}) {
+  return fetch(`${apiConfig.host}/v1/posts/${postId}/disableComments`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+    'body': '{}'
+  })
+}
+
+export function enableComments({postId}) {
+  return fetch(`${apiConfig.host}/v1/posts/${postId}/enableComments`, {
     'method': 'POST',
     'headers': {
       'Accept': 'application/json',

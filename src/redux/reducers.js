@@ -2,7 +2,7 @@ import * as ActionCreators from './action-creators'
 const {request, response, fail} = ActionCreators
 
 import _ from 'lodash'
-import {userParser} from '../utils'
+import {userParser, postParser} from '../utils'
 
 export function signInForm(state={username:'', password:'', error:'', loading: false}, action) {
   switch(action.type) {
@@ -362,6 +362,56 @@ export function postsViewState(state = {}, action) {
         }
       }
     }
+    case request(ActionCreators.DISABLE_COMMENTS): {
+      const post = state[action.payload.postId]
+      return {...state,
+        [post.id]: {...post,
+          isDisablingComments: true
+        }}
+    }
+    case response(ActionCreators.DISABLE_COMMENTS): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isDisablingComments: false,
+          commentsDisabled: true
+        }
+      }
+    }
+    case fail(ActionCreators.DISABLE_COMMENTS): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isDisablingComments: false,
+          disableCommentsError: 'Something went wrong while disabling comments.'
+        }
+      }
+    }
+    case request(ActionCreators.ENABLE_COMMENTS): {
+      const post = state[action.payload.postId]
+      return {...state,
+        [post.id]: {...post,
+          isDisablingComments: true
+        }}
+    }
+    case response(ActionCreators.ENABLE_COMMENTS): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isDisablingComments: false,
+          commentsDisabled: false
+        }
+      }
+    }
+    case fail(ActionCreators.ENABLE_COMMENTS): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isDisablingComments: false,
+          disableCommentsError: 'Something went wrong while enabling comments.'
+        }
+      }
+    }
     case response(ActionCreators.CREATE_POST): {
       const post = action.payload.posts
       const id = post.id
@@ -383,12 +433,12 @@ export function postsViewState(state = {}, action) {
 
 function updatePostData(state, action) {
   const postId = action.payload.posts.id
-  return { ...state, [postId]: action.payload.posts }
+  return { ...state, [postId]: postParser(action.payload.posts) }
 }
 
 export function posts(state = {}, action) {
   if (ActionCreators.isFeedResponse(action)){
-    return mergeByIds(state, action.payload.posts)
+    return mergeByIds(state, (action.payload.posts || []).map(postParser))
   }
   switch (action.type) {
     case response(ActionCreators.SHOW_MORE_COMMENTS): {
@@ -472,6 +522,22 @@ export function posts(state = {}, action) {
           ...post,
           likes: _.without(post.likes, action.request.userId),
           omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes - 1 : 0)
+        }
+      }
+    }
+    case response(ActionCreators.DISABLE_COMMENTS): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          commentsDisabled: true
+        }
+      }
+    }
+    case response(ActionCreators.ENABLE_COMMENTS): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          commentsDisabled: false
         }
       }
     }

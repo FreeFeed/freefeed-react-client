@@ -31,6 +31,8 @@ const SinglePostHandler = (props) => {
                   addComment={props.addComment}
                   likePost={props.likePost}
                   unlikePost={props.unlikePost}
+                  disableComments={props.disableComments}
+                  enableComments={props.enableComments}
                   commentEdit={props.commentEdit} />
   }
 

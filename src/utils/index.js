@@ -44,6 +44,10 @@ export function userParser(user) {
   return {...user}
 }
 
+export function postParser(post) {
+  post.commentsDisabled = (post.commentsDisabled === '1')
+  return {...post}
+}
 
 export function preventDefault(realFunction) {
   return (event) => {

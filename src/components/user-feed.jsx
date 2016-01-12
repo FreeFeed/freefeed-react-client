@@ -76,7 +76,7 @@ function selectState(state) {
 function selectActions(dispatch) {
   return {
     ...postActions(dispatch),
-    createPost: (postText, feeds, attachmentIds) => dispatch(createPost(postText, feeds, attachmentIds)),
+    createPost: (feeds, postText, attachmentIds, more) => dispatch(createPost(feeds, postText, attachmentIds, more)),
     expandSendTo: () => dispatch(expandSendTo()),
     userActions: userActions(dispatch),
   }

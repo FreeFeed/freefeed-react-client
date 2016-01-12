@@ -62,20 +62,72 @@
   }
 }
 
+// "More" menu in post footer
+// (it's just an override, default styles are in react-dd-menu/src/scss/react-dd-menu.scss)
+.dd-menu .dd-menu-items .dd-menu-item {
+  &:hover {
+    background-color: #eee !important;
+  }
+  &.dd-menu-item-danger:hover {
+    color: #300 !important;
+    background-color: #fcc !important;
+  }
+
+  .dd-menu-item-link {
+    padding: 6px 12px !important;
+  }
+  &:first-child .dd-menu-item-link {
+    padding-top: 8px !important;
+    padding-bottom: 5px !important;
+  }
+  &:last-child .dd-menu-item-link {
+    padding-top: 5px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
 // Used in both create-post and edit-post
 .post-editor {
   position: relative; // necessary for proper width of dropzone inside this container
+
+  // Clearfix (http://www.cssmojo.com/latest_new_clearfix_so_far/)
+  &:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
 
   .post-textarea {
     @include editarea;
   }
 
-  .post-edit-attachments {
+  .post-edit-options {
     float: left;
-    cursor: pointer;
+    margin-bottom: 11px;
 
-    &:hover span:last-child {
-      text-decoration: underline;
+    .post-edit-attachments {
+      cursor: pointer;
+
+      &:hover span:last-child {
+        text-decoration: underline;
+      }
+    }
+
+    .post-edit-more-trigger {
+      color: #333;
+      margin-left: 15px;
+    }
+
+    .post-edit-more {
+      margin-top: 5px;
+
+      .post-edit-more-checkbox {
+        margin: 0 5px 0 1px;
+      }
+      .post-edit-more-labeltext {
+        font-weight: normal;
+        vertical-align: middle;
+      }
     }
   }
 

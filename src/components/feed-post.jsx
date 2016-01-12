@@ -15,6 +15,7 @@ import throbber16 from 'assets/images/throbber-16.gif'
 import DropzoneComponent from 'react-dropzone-component'
 import {api as apiConfig} from '../config'
 import {getToken} from '../services/auth'
+import PostMoreMenu from './post-more-menu'
 
 export default class FeedPost extends React.Component {
   render() {
@@ -39,6 +40,10 @@ export default class FeedPost extends React.Component {
     const deletePost = () => props.deletePost(props.id)
     const likePost = () => props.likePost(props.id, props.user.id)
     const unlikePost = () => props.unlikePost(props.id, props.user.id)
+
+    const disableComments = () => props.disableComments(props.id)
+    const enableComments = () => props.enableComments(props.id)
+
     const checkSave = (event) => {
       const isEnter = event.keyCode === 13
       if (isEnter) {
@@ -137,6 +142,28 @@ export default class FeedPost extends React.Component {
       }
     }
 
+    // "Comments disabled" / "Comment"
+    let commentLink
+    if (props.commentsDisabled) {
+      if (props.isEditable) {
+        commentLink = (
+          <span>
+            <i>Comments disabled (not for you)</i>
+            {' - '}
+            <a onClick={preventDefault(toggleCommenting)}>Comment</a>
+          </span>
+        )
+      } else {
+        commentLink = (
+          <i>Comments disabled</i>
+        )
+      }
+    } else {
+      commentLink = (
+        <a onClick={preventDefault(toggleCommenting)}>Comment</a>
+      )
+    }
+
     return (
       <div className={postClass}>
         <div className="post-userpic">
@@ -168,10 +195,12 @@ export default class FeedPost extends React.Component {
                   maxRows={10}/>
               </div>
 
-              <div className="post-edit-attachments dropzone-trigger">
-                <i className="fa fa-cloud-upload"></i>
-                {' '}
-                Add photos or files
+              <div className="post-edit-options">
+                <span className="post-edit-attachments dropzone-trigger">
+                  <i className="fa fa-cloud-upload"></i>
+                  {' '}
+                  Add photos or files
+                </span>
               </div>
 
               <div className="post-edit-actions">
@@ -200,7 +229,7 @@ export default class FeedPost extends React.Component {
               <time dateTime={createdAtISO} title={createdAtISO}>{createdAgo}</time>
             </Link>
             {' - '}
-            <a onClick={preventDefault(toggleCommenting)}>Comment</a>
+            {commentLink}
             {' - '}
             <a onClick={preventDefault(ILikedPost ? unlikePost : likePost)}>{ILikedPost ? 'Un-like' : 'Like'}</a>
             {props.isLiking ? (
@@ -211,9 +240,12 @@ export default class FeedPost extends React.Component {
             {props.isEditable ? (
               <span>
                 {' - '}
-                <a onClick={preventDefault(toggleEditingPost)}>Edit</a>
-                {' - '}
-                <a onClick={preventDefault(deletePost)}>Delete</a>
+                <PostMoreMenu
+                  post={props}
+                  toggleEditingPost={toggleEditingPost}
+                  disableComments={disableComments}
+                  enableComments={enableComments}
+                  deletePost={deletePost}/>
               </span>
             ) : false}
           </div>

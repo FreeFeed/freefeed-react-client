@@ -43,6 +43,7 @@ export default (props) => {
   const middle = props.comments.slice(1, props.comments.length - 1).map(commentMapper)
   const showOmittedNumber = props.post.omittedComments > 0
   const showMoreComments = () => props.showMoreComments(props.post.id)
+  const canAddComment = (!props.post.commentsDisabled || props.post.isEditable)
 
   return (
     <div className="comments">
@@ -55,7 +56,11 @@ export default (props) => {
             isLoading={props.post.isLoadingComments}/>
         : false}
       {last ? commentMapper(last) : false}
-      {props.post.isCommenting ? renderAddingComment(props) : renderAddCommentLink(props)}
+      {canAddComment
+        ? (props.post.isCommenting
+            ? renderAddingComment(props)
+            : renderAddCommentLink(props))
+        : false}
     </div>
   )
 }
