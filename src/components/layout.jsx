@@ -3,7 +3,7 @@ import {IndexLink, Link} from 'react-router'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 
-import {unauthenticated} from '../redux/action-creators'
+import {home, unauthenticated} from '../redux/action-creators'
 import Footer from './footer'
 import Sidebar from './sidebar'
 import LoaderContainer from './loader-container'
@@ -109,6 +109,12 @@ class Layout extends React.Component {
     window.removeEventListener('drop', this.handleDrop)
   }
 
+  handleLogoClick() {
+    if (location.pathname === '/') {
+      this.props.refreshHomeFeed()
+    }
+  }
+
   render() {
     let props = this.props
 
@@ -123,7 +129,7 @@ class Layout extends React.Component {
           <div className='col-md-4'>
             <div className='header'>
               <h1 className='title'>
-                <IndexLink to='/'>FreeFeed-beta</IndexLink>
+                <IndexLink to='/' onClick={this.handleLogoClick.bind(this)}>FreeFeed-beta</IndexLink>
               </h1>
             </div>
           </div>
@@ -173,9 +179,10 @@ function select(state) {
   }
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
   return {
-    signOut: ()=>dispatch(unauthenticated())
+    refreshHomeFeed: () => dispatch(home()),
+    signOut: () => dispatch(unauthenticated())
   }
 }
 
