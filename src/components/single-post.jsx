@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {joinPostData, postActions} from './select-utils'
 
-import FeedPost from './feed-post'
+import Post from './post'
 
 const SinglePostHandler = (props) => {
   let post = props.post
@@ -16,24 +16,26 @@ const SinglePostHandler = (props) => {
 
   if (post) {
     post.isCommenting = true
-    postBody = <FeedPost {...post}
-                  key={post.id}
-                  isSinglePost={true}
-                  user={props.user}
-                  showMoreComments={props.showMoreComments}
-                  showMoreLikes={props.showMoreLikes}
-                  toggleEditingPost={props.toggleEditingPost}
-                  cancelEditingPost={props.cancelEditingPost}
-                  saveEditingPost={props.saveEditingPost}
-                  deletePost={props.deletePost}
-                  addAttachmentResponse={props.addAttachmentResponse}
-                  toggleCommenting={props.toggleCommenting}
-                  addComment={props.addComment}
-                  likePost={props.likePost}
-                  unlikePost={props.unlikePost}
-                  disableComments={props.disableComments}
-                  enableComments={props.enableComments}
-                  commentEdit={props.commentEdit} />
+    postBody = (
+      <Post {...post}
+        key={post.id}
+        isSinglePost={true}
+        user={props.user}
+        showMoreComments={props.showMoreComments}
+        showMoreLikes={props.showMoreLikes}
+        toggleEditingPost={props.toggleEditingPost}
+        cancelEditingPost={props.cancelEditingPost}
+        saveEditingPost={props.saveEditingPost}
+        deletePost={props.deletePost}
+        addAttachmentResponse={props.addAttachmentResponse}
+        toggleCommenting={props.toggleCommenting}
+        addComment={props.addComment}
+        likePost={props.likePost}
+        unlikePost={props.unlikePost}
+        disableComments={props.disableComments}
+        enableComments={props.enableComments}
+        commentEdit={props.commentEdit} />
+    )
   }
 
   return (

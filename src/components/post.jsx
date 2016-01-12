@@ -17,7 +17,7 @@ import {api as apiConfig} from '../config'
 import {getToken} from '../services/auth'
 import PostMoreMenu from './post-more-menu'
 
-export default class FeedPost extends React.Component {
+export default class Post extends React.Component {
   render() {
     let props = this.props
 
