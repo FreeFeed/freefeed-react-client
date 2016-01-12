@@ -17,7 +17,7 @@ const renderAddingComment = props => (
     isSaving={props.post.isSavingComment}/>
 )
 
-const renderAddCommentLink = props => {
+const renderAddCommentLink = (props, disabledForOthers) => {
   const toggleCommenting = props.post.isSinglePost ? () => {} : () => props.toggleCommenting(props.post.id)
 
   if (props.comments.length > 2 && !props.post.omittedComments /* TODO: && user_is_signed_in */) {
@@ -29,6 +29,9 @@ const renderAddCommentLink = props => {
           <i className="fa fa-plus fa-stack-1x"></i>
         </a>
         <a className="add-comment-link" onClick={preventDefault(toggleCommenting)}>Add comment</a>
+        {disabledForOthers
+          ? <i> - disabled for others</i>
+          : false}
       </div>
     )
   }
@@ -44,6 +47,7 @@ export default (props) => {
   const showOmittedNumber = props.post.omittedComments > 0
   const showMoreComments = () => props.showMoreComments(props.post.id)
   const canAddComment = (!props.post.commentsDisabled || props.post.isEditable)
+  const disabledForOthers = (props.post.commentsDisabled && props.post.isEditable)
 
   return (
     <div className="comments">
@@ -59,7 +63,7 @@ export default (props) => {
       {canAddComment
         ? (props.post.isCommenting
             ? renderAddingComment(props)
-            : renderAddCommentLink(props))
+            : renderAddCommentLink(props, disabledForOthers))
         : false}
     </div>
   )
