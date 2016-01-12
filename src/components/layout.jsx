@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router'
+import {IndexLink, Link} from 'react-router'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 
@@ -123,7 +123,7 @@ class Layout extends React.Component {
           <div className='col-md-4'>
             <div className='header'>
               <h1 className='title'>
-                <Link to='/'>FreeFeed-beta</Link>
+                <IndexLink to='/'>FreeFeed-beta</IndexLink>
               </h1>
             </div>
           </div>
