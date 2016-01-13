@@ -8,7 +8,6 @@ import PostAttachments from './post-attachments'
 import PostComments from './post-comments'
 import PostLikes from './post-likes'
 import UserName from './user-name'
-import {preventDefault} from '../utils'
 import PieceOfText from './piece-of-text'
 import Textarea from 'react-textarea-autosize'
 import throbber16 from 'assets/images/throbber-16.gif'
@@ -150,7 +149,7 @@ export default class Post extends React.Component {
             {' - '}
             <i>Comments disabled (not for you)</i>
             {' - '}
-            <a onClick={preventDefault(toggleCommenting)}>Comment</a>
+            <a onClick={toggleCommenting}>Comment</a>
           </span>
         )
       } else {
@@ -165,7 +164,7 @@ export default class Post extends React.Component {
       commentLink = (
         <span>
           {' - '}
-          <a onClick={preventDefault(toggleCommenting)}>Comment</a>
+          <a onClick={toggleCommenting}>Comment</a>
         </span>
       )
     }
@@ -175,7 +174,7 @@ export default class Post extends React.Component {
     const likeLink = (
       <span>
         {' - '}
-        <a onClick={preventDefault(didILikePost ? unlikePost : likePost)}>{didILikePost ? 'Un-like' : 'Like'}</a>
+        <a onClick={didILikePost ? unlikePost : likePost}>{didILikePost ? 'Un-like' : 'Like'}</a>
         {props.isLiking ? (
           <span className="post-like-throbber">
             <img width="16" height="16" src={throbber16}/>
@@ -242,8 +241,8 @@ export default class Post extends React.Component {
                     <img width="16" height="16" src={throbber16}/>
                   </span>
                 ) : false}
-                <a className="post-cancel" onClick={preventDefault(cancelEditingPost)}>Cancel</a>
-                <button className="btn btn-default btn-xs" onClick={preventDefault(saveEditingPost)}>Update</button>
+                <a className="post-cancel" onClick={cancelEditingPost}>Cancel</a>
+                <button className="btn btn-default btn-xs" onClick={saveEditingPost}>Update</button>
               </div>
             </div>
           ) : (
