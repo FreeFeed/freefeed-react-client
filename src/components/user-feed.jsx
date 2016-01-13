@@ -5,7 +5,7 @@ import {joinPostData, joinCreatePostData, postActions, userActions} from './sele
 import {getQuery, getCurrentRouteName} from '../utils'
 
 import CreatePost from './create-post'
-import HomeFeed from './home-feed'
+import Feed from './feed'
 import PaginatedView from './paginated-view'
 import UserProfile from './user-profile'
 import Breadcrumbs from './breadcrumbs'
@@ -32,7 +32,7 @@ const UserFeedHandler = (props) => {
       {props.viewUser.blocked ?
         false :
         <PaginatedView>
-          <HomeFeed {...props} isInUserFeed={true}/>
+          <Feed {...props} isInUserFeed={true}/>
         </PaginatedView>}
       <div className='box-footer'>
       </div>

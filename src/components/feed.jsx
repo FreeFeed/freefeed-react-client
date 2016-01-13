@@ -2,7 +2,7 @@ import React from 'react'
 import Post from './post'
 
 export default (props) => {
-  const feed_posts = props.feed.map(post => {
+  const feedPosts = props.feed.map(post => {
     return (
       <Post {...post}
         key={post.id}
@@ -25,7 +25,9 @@ export default (props) => {
     )
   })
 
-  return (<div className='posts'>
-            {feed_posts}
-          </div>)
+  return (
+    <div className="posts">
+      {feedPosts}
+    </div>
+  )
 }

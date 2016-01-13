@@ -5,7 +5,7 @@ import {joinPostData, joinCreatePostData, postActions} from './select-utils'
 import {getQuery} from '../utils'
 
 import CreatePost from './create-post'
-import HomeFeed from './home-feed'
+import Feed from './feed'
 import PaginatedView from './paginated-view'
 import Welcome from './welcome'
 
@@ -29,7 +29,7 @@ const FeedHandler = (props) => {
       </div>
       {props.authenticated ? (
         <PaginatedView firstPageHead={createPostComponent}>
-          {props.feed && props.feed.length ? <HomeFeed {...props}/> : false}
+          {props.feed && props.feed.length ? <Feed {...props}/> : false}
         </PaginatedView>
       ) : (
         <Welcome/>
