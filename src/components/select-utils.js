@@ -1,8 +1,21 @@
-import {showMoreComments, showMoreLikes, toggleEditingPost, cancelEditingPost,
-        saveEditingPost, deletePost, addAttachmentResponse, removeAttachment,
-        likePost, unlikePost, disableComments, enableComments, toggleCommenting, addComment,
-        toggleEditingComment, cancelEditingComment, saveEditingComment, deleteComment,
-        ban, unban, subscribe, unsubscribe, } from '../redux/action-creators'
+import {
+  // User actions
+  subscribe, unsubscribe,
+  ban, unban,
+
+  // Post actions
+  showMoreComments, showMoreLikes,
+  addAttachmentResponse, removeAttachment,
+  likePost, unlikePost,
+  disableComments, enableComments,
+  toggleEditingPost, cancelEditingPost, saveEditingPost,
+  deletePost,
+
+  // Comment actions
+  toggleCommenting, addComment,
+  toggleEditingComment, cancelEditingComment, saveEditingComment,
+  deleteComment
+} from '../redux/action-creators'
 
 const MAX_LIKES = 4
 
