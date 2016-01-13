@@ -27,15 +27,11 @@ const FeedHandler = (props) => {
       <div className='box-header-timeline'>
         {props.boxHeader}
       </div>
-      {props.authenticated ? (
-        <PaginatedView firstPageHead={createPostComponent}>
-          {props.feed && props.feed.length ? (
-            <Feed {...props} isInHomeFeed={true}/>
-          ) : false}
-        </PaginatedView>
-      ) : (
-        <Welcome/>
-      )}
+      <PaginatedView firstPageHead={createPostComponent}>
+        {props.feed && props.feed.length ? (
+          <Feed {...props}/>
+        ) : false}
+      </PaginatedView>
       <div className='box-footer'>
       </div>
     </div>)

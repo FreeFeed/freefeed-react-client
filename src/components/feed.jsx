@@ -7,6 +7,7 @@ export default (props) => {
       <Post {...post}
         key={post.id}
         user={props.user}
+        isInHomeFeed={props.isInHomeFeed}
         isInUserFeed={props.isInUserFeed}
         showMoreComments={props.showMoreComments}
         showMoreLikes={props.showMoreLikes}

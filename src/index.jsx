@@ -15,6 +15,7 @@ import {whoAmI, home, discussions, getUserFeed, unauthenticated, getSinglePost} 
 
 import Layout from './components/layout'
 import Home from './components/home'
+import Discussions from './components/discussions'
 import About from './components/about'
 import NotFound from './components/not-found'
 import Signin from './components/signin'
@@ -46,8 +47,8 @@ ReactDOM.render(
         <Route path='signin' component={Signin}/>
         <Route path='signup' component={Signup}/>
         <Route path='settings' component={Settings}/>
-        <Route name='discussions' path='filter/discussions' component={Home} onEnter={boundRouteActions('discussions')}/>
-        <Route name='direct' path='filter/direct' component={Home} onEnter={boundRouteActions('direct')}/>
+        <Route name='discussions' path='filter/discussions' component={Discussions} onEnter={boundRouteActions('discussions')}/>
+        <Route name='direct' path='filter/direct' component={Discussions} onEnter={boundRouteActions('direct')}/>
         <Route name='userFeed' path='/:userName' component={UserFeed} onEnter={boundRouteActions('userFeed')}/>
         <Route name='userComments' path='/:userName/comments' component={UserFeed} onEnter={boundRouteActions('userComments')}/>
         <Route name='userLikes' path='/:userName/likes' component={UserFeed} onEnter={boundRouteActions('userLikes')}/>
