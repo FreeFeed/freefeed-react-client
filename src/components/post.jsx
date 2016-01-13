@@ -51,7 +51,6 @@ export default class Post extends React.Component {
         saveEditingPost()
       }
     }
-    const ILikedPost = _.find(props.usersLikedPost, {id: props.user.id})
     const profilePicture = props.isSinglePost ?
       props.createdBy.profilePictureLargeUrl : props.createdBy.profilePictureMediumUrl
     const postClass = classnames({
@@ -148,6 +147,7 @@ export default class Post extends React.Component {
       if (props.isEditable) {
         commentLink = (
           <span>
+            {' - '}
             <i>Comments disabled (not for you)</i>
             {' - '}
             <a onClick={preventDefault(toggleCommenting)}>Comment</a>
@@ -155,14 +155,47 @@ export default class Post extends React.Component {
         )
       } else {
         commentLink = (
-          <i>Comments disabled</i>
+          <span>
+            {' - '}
+            <i>Comments disabled</i>
+          </span>
         )
       }
     } else {
       commentLink = (
-        <a onClick={preventDefault(toggleCommenting)}>Comment</a>
+        <span>
+          {' - '}
+          <a onClick={preventDefault(toggleCommenting)}>Comment</a>
+        </span>
       )
     }
+
+    // "Like" / "Un-like"
+    const didILikePost = _.find(props.usersLikedPost, {id: props.user.id})
+    const likeLink = (
+      <span>
+        {' - '}
+        <a onClick={preventDefault(didILikePost ? unlikePost : likePost)}>{didILikePost ? 'Un-like' : 'Like'}</a>
+        {props.isLiking ? (
+          <span className="post-like-throbber">
+            <img width="16" height="16" src={throbber16}/>
+          </span>
+        ) : false}
+      </span>
+    )
+
+    // "More" menu
+    const moreLink = (props.isEditable ? (
+      <span>
+        {' - '}
+        <PostMoreMenu
+          post={props}
+          toggleEditingPost={toggleEditingPost}
+          disableComments={disableComments}
+          enableComments={enableComments}
+          deletePost={deletePost}/>
+      </span>
+    ) : false)
 
     return (
       <div className={postClass}>
@@ -228,26 +261,9 @@ export default class Post extends React.Component {
             <Link to={`/${props.createdBy.username}/${props.id}`} className="post-timestamp">
               <time dateTime={createdAtISO} title={createdAtISO}>{createdAgo}</time>
             </Link>
-            {' - '}
             {commentLink}
-            {' - '}
-            <a onClick={preventDefault(ILikedPost ? unlikePost : likePost)}>{ILikedPost ? 'Un-like' : 'Like'}</a>
-            {props.isLiking ? (
-              <span className="post-like-throbber">
-                <img width="16" height="16" src={throbber16}/>
-              </span>
-            ) : false}
-            {props.isEditable ? (
-              <span>
-                {' - '}
-                <PostMoreMenu
-                  post={props}
-                  toggleEditingPost={toggleEditingPost}
-                  disableComments={disableComments}
-                  enableComments={enableComments}
-                  deletePost={deletePost}/>
-              </span>
-            ) : false}
+            {likeLink}
+            {moreLink}
           </div>
 
           {props.isError ? (
