@@ -29,6 +29,7 @@ class Linkify extends React.Component {
       )
     } else {
       props['href'] = href
+      props['target'] = '_blank'
 
       return React.createElement(
         'a',

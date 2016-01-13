@@ -56,7 +56,8 @@ a, a:hover, a:focus {
 }
 
 .footer {
-  margin-bottom: 20px;
-  padding-left: 10px;
   font-size: 14px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  @media (max-width: 991px){ margin-left: 0; }
 }
