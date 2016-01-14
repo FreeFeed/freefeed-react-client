@@ -110,7 +110,8 @@ const initFeed = {feed: []}
 
 const loadFeedViewState = posts => {
   const feed = (posts || []).map(post => post.id)
-  return { feed }
+  const isHiddenRevealed = false
+  return { feed, isHiddenRevealed }
 }
 
 export function feedViewState(state = initFeed, action) {
@@ -139,6 +140,11 @@ export function feedViewState(state = initFeed, action) {
     }
     case fail(ActionCreators.GET_SINGLE_POST): {
       return { feed: [] }
+    }
+    case ActionCreators.TOGGLE_HIDDEN_POSTS: {
+      return {...state,
+        isHiddenRevealed: !state.isHiddenRevealed
+      }
     }
   }
   return state

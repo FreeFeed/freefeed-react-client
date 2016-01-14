@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {createPost, expandSendTo} from '../redux/action-creators'
+import {createPost, expandSendTo, toggleHiddenPosts} from '../redux/action-creators'
 import {joinPostData, joinCreatePostData, postActions} from './select-utils'
 import {getQuery} from '../utils'
 
@@ -45,20 +45,22 @@ function selectState(state) {
   const user = state.user
   const authenticated = state.authenticated
   const feed = state.feedViewState.feed.map(joinPostData(state))
+  const isHiddenRevealed = state.feedViewState.isHiddenRevealed
   const createPostViewState = state.createPostViewState
   const createPostForm = joinCreatePostData(state)
   const timelines = state.timelines
   const boxHeader = state.boxHeader
   const sendTo = state.sendTo
 
-  return { user, authenticated, feed, createPostViewState, createPostForm, timelines, boxHeader, sendTo }
+  return { user, authenticated, feed, isHiddenRevealed, createPostViewState, createPostForm, timelines, boxHeader, sendTo }
 }
 
 function selectActions(dispatch) {
   return {
     ...postActions(dispatch),
     createPost: (feeds, postText, attachmentIds, more) => dispatch(createPost(feeds, postText, attachmentIds, more)),
-    expandSendTo: () => dispatch(expandSendTo())
+    expandSendTo: () => dispatch(expandSendTo()),
+    toggleHiddenPosts: () => dispatch(toggleHiddenPosts())
   }
 }
 

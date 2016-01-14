@@ -2,8 +2,11 @@ import React from 'react'
 import Post from './post'
 
 export default (props) => {
-  const feedPosts = props.feed.map(post => {
-    return (
+  let visiblePosts = []
+  let hiddenPosts = []
+
+  props.feed.forEach(post => {
+    const p = (
       <Post {...post}
         key={post.id}
         user={props.user}
@@ -26,11 +29,28 @@ export default (props) => {
         enableComments={props.enableComments}
         commentEdit={props.commentEdit} />
     )
+
+    if (post.isHidden) {
+      hiddenPosts.push(p)
+    } else {
+      visiblePosts.push(p)
+    }
   })
 
   return (
     <div className="posts">
-      {feedPosts}
+      {visiblePosts}
+
+      {hiddenPosts.length > 0 ? (
+        <div>
+          <div className="hidden-posts-toggle">
+            {props.isHiddenRevealed
+              ? <a onClick={props.toggleHiddenPosts}>&#x25bc; <span>Don't show {hiddenPosts.length} hidden entries</span></a>
+              : <a onClick={props.toggleHiddenPosts}>&#x25ba; <span>Show {hiddenPosts.length} hidden entries</span></a>}
+          </div>
+          {props.isHiddenRevealed ? hiddenPosts : false}
+        </div>
+      ) : false}
     </div>
   )
 }

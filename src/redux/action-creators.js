@@ -466,6 +466,14 @@ export function expandSendTo(){
   }
 }
 
+export const TOGGLE_HIDDEN_POSTS = 'TOGGLE_HIDDEN_POSTS'
+
+export function toggleHiddenPosts() {
+  return {
+    type: TOGGLE_HIDDEN_POSTS
+  }
+}
+
 export const feedGeneratingActions = [HOME, DISCUSSIONS, GET_USER_FEED, GET_USER_COMMENTS, GET_USER_LIKES, DIRECT]
 export const feedRequests = feedGeneratingActions.map(request)
 export const feedResponses = feedGeneratingActions.map(response)
