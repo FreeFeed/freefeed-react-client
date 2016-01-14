@@ -37,17 +37,23 @@ export default (props) => {
     }
   })
 
+  let toggleLink
+  const entriesForm = (hiddenPosts.length > 1 ? 'entries' : 'entry')
+  if (props.isHiddenRevealed) {
+    const text = <span>Don't show {hiddenPosts.length} hidden {entriesForm}</span>
+    toggleLink = <a onClick={props.toggleHiddenPosts}>&#x25bc; {text}</a>
+  } else {
+    const text = <span>Show {hiddenPosts.length} hidden {entriesForm}</span>
+    toggleLink = <a onClick={props.toggleHiddenPosts}>&#x25ba; {text}</a>
+  }
+
   return (
     <div className="posts">
       {visiblePosts}
 
       {hiddenPosts.length > 0 ? (
         <div>
-          <div className="hidden-posts-toggle">
-            {props.isHiddenRevealed
-              ? <a onClick={props.toggleHiddenPosts}>&#x25bc; <span>Don't show {hiddenPosts.length} hidden entries</span></a>
-              : <a onClick={props.toggleHiddenPosts}>&#x25ba; <span>Show {hiddenPosts.length} hidden entries</span></a>}
-          </div>
+          <div className="hidden-posts-toggle">{toggleLink}</div>
           {props.isHiddenRevealed ? hiddenPosts : false}
         </div>
       ) : false}
