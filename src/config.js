@@ -10,7 +10,7 @@ const config = {
     sentinel: null // keep always last
   },
   user:{
-    userNameMode: 'user',
+    userNameMode: 'screen',
     sentinel: null // keep always last
   },
   captcha: {
