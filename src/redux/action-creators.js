@@ -199,6 +199,30 @@ export function unlikePost(postId, userId){
   }
 }
 
+export const HIDE_POST = 'HIDE_POST'
+
+export function hidePost(postId) {
+  return {
+    type: HIDE_POST,
+    apiRequest: Api.hidePost,
+    payload: {
+      postId
+    }
+  }
+}
+
+export const UNHIDE_POST = 'UNHIDE_POST'
+
+export function unhidePost(postId) {
+  return {
+    type: UNHIDE_POST,
+    apiRequest: Api.unhidePost,
+    payload: {
+      postId
+    }
+  }
+}
+
 export const DISABLE_COMMENTS = 'DISABLE_COMMENTS'
 
 export function disableComments(postId) {

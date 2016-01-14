@@ -362,6 +362,57 @@ export function postsViewState(state = {}, action) {
         }
       }
     }
+
+    case request(ActionCreators.HIDE_POST): {
+      const post = state[action.payload.postId]
+      return {...state,
+        [post.id]: {...post,
+          isHiding: true
+        }}
+    }
+    case response(ActionCreators.HIDE_POST): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isHiding: false
+        }
+      }
+    }
+    case fail(ActionCreators.HIDE_POST): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isHiding: false,
+          hideError: 'Something went wrong while hiding the post.'
+        }
+      }
+    }
+
+    case request(ActionCreators.UNHIDE_POST): {
+      const post = state[action.payload.postId]
+      return {...state,
+        [post.id]: {...post,
+          isHiding: true
+        }}
+    }
+    case response(ActionCreators.UNHIDE_POST): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isHiding: false
+        }
+      }
+    }
+    case fail(ActionCreators.UNHIDE_POST): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isHiding: false,
+          hideError: 'Something went wrong while un-hiding the post.'
+        }
+      }
+    }
+
     case request(ActionCreators.DISABLE_COMMENTS): {
       const post = state[action.payload.postId]
       return {...state,
@@ -387,6 +438,7 @@ export function postsViewState(state = {}, action) {
         }
       }
     }
+
     case request(ActionCreators.ENABLE_COMMENTS): {
       const post = state[action.payload.postId]
       return {...state,
@@ -412,6 +464,7 @@ export function postsViewState(state = {}, action) {
         }
       }
     }
+
     case response(ActionCreators.CREATE_POST): {
       const post = action.payload.posts
       const id = post.id
@@ -522,6 +575,22 @@ export function posts(state = {}, action) {
           ...post,
           likes: _.without(post.likes, action.request.userId),
           omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes - 1 : 0)
+        }
+      }
+    }
+    case response(ActionCreators.HIDE_POST): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isHidden: true
+        }
+      }
+    }
+    case response(ActionCreators.UNHIDE_POST): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isHidden: false
         }
       }
     }

@@ -40,6 +40,9 @@ export default class Post extends React.Component {
     const likePost = () => props.likePost(props.id, props.user.id)
     const unlikePost = () => props.unlikePost(props.id, props.user.id)
 
+    const hidePost = () => props.hidePost(props.id)
+    const unhidePost = () => props.unhidePost(props.id)
+
     const disableComments = () => props.disableComments(props.id)
     const enableComments = () => props.enableComments(props.id)
 
@@ -183,6 +186,19 @@ export default class Post extends React.Component {
       </span>
     )
 
+    // "Hide" / "Un-hide"
+    const hideLink = (props.isInHomeFeed ? (
+      <span>
+        {' - '}
+        <a onClick={props.isHidden ? unhidePost : hidePost}>{props.isHidden ? 'Un-hide' : 'Hide'}</a>
+        {props.isHiding ? (
+          <span className="post-hide-throbber">
+            <img width="16" height="16" src={throbber16}/>
+          </span>
+        ) : false}
+      </span>
+    ) : false)
+
     // "More" menu
     const moreLink = (props.isEditable ? (
       <span>
@@ -262,6 +278,7 @@ export default class Post extends React.Component {
             </Link>
             {commentLink}
             {likeLink}
+            {hideLink}
             {moreLink}
           </div>
 
