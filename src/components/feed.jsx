@@ -2,16 +2,16 @@ import React from 'react'
 import Post from './post'
 
 export default (props) => {
-  let visiblePosts = []
-  let hiddenPosts = []
+  const getEntryComponent = section => post => {
+    const isRecentlyHidden = (post.isHidden && (section === 'visible'))
 
-  props.visibleEntries.forEach(post => {
-    const p = (
+    return (
       <Post {...post}
         key={post.id}
         user={props.user}
         isInHomeFeed={props.isInHomeFeed}
         isInUserFeed={props.isInUserFeed}
+        isRecentlyHidden={isRecentlyHidden}
         showMoreComments={props.showMoreComments}
         showMoreLikes={props.showMoreLikes}
         toggleEditingPost={props.toggleEditingPost}
@@ -27,34 +27,31 @@ export default (props) => {
         unhidePost={props.unhidePost}
         disableComments={props.disableComments}
         enableComments={props.enableComments}
-        commentEdit={props.commentEdit} />
+        commentEdit={props.commentEdit}/>
     )
+  }
 
-    if (post.isHidden) {
-      hiddenPosts.push(p)
-    } else {
-      visiblePosts.push(p)
-    }
-  })
+  const visibleEntries = props.visibleEntries.map(getEntryComponent('visible'))
+  const hiddenEntries = (props.hiddenEntries || []).map(getEntryComponent('hidden'))
 
   let toggleLink
-  const entriesForm = (hiddenPosts.length > 1 ? 'entries' : 'entry')
+  const entriesForm = (hiddenEntries.length > 1 ? 'entries' : 'entry')
   if (props.isHiddenRevealed) {
-    const text = <span>Don't show {hiddenPosts.length} hidden {entriesForm}</span>
+    const text = <span>Don't show {hiddenEntries.length} hidden {entriesForm}</span>
     toggleLink = <a onClick={props.toggleHiddenPosts}>&#x25bc; {text}</a>
   } else {
-    const text = <span>Show {hiddenPosts.length} hidden {entriesForm}</span>
+    const text = <span>Show {hiddenEntries.length} hidden {entriesForm}</span>
     toggleLink = <a onClick={props.toggleHiddenPosts}>&#x25ba; {text}</a>
   }
 
   return (
     <div className="posts">
-      {visiblePosts}
+      {visibleEntries}
 
-      {hiddenPosts.length > 0 ? (
+      {hiddenEntries.length > 0 ? (
         <div>
           <div className="hidden-posts-toggle">{toggleLink}</div>
-          {props.isHiddenRevealed ? hiddenPosts : false}
+          {props.isHiddenRevealed ? hiddenEntries : false}
         </div>
       ) : false}
     </div>

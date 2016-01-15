@@ -212,7 +212,12 @@ export default class Post extends React.Component {
       </span>
     ) : false)
 
-    return (
+    return (props.isRecentlyHidden ? (
+      <div className="post recently-hidden-post">
+        <i>Entry hidden - </i>
+        <a onClick={unhidePost}>undo</a>.
+      </div>
+    ) : (
       <div className={postClass}>
         <div className="post-userpic">
           <Link to={`/${props.createdBy.username}`}>
@@ -303,6 +308,6 @@ export default class Post extends React.Component {
             commentEdit={props.commentEdit}/>
         </div>
       </div>
-    )
+    ))
   }
 }

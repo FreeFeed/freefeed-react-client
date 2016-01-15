@@ -106,12 +106,10 @@ export function createPostViewState(state = {}, action) {
   return state
 }
 
-const initFeed = {visibleEntries: []}
-
-const loadFeedViewState = posts => {
-  const visibleEntries = (posts || []).map(post => post.id)
-  const isHiddenRevealed = false
-  return { visibleEntries, isHiddenRevealed }
+const initFeed = {
+  visibleEntries: [],
+  hiddenEntries: [],
+  isHiddenRevealed: false
 }
 
 export function feedViewState(state = initFeed, action) {
@@ -119,7 +117,14 @@ export function feedViewState(state = initFeed, action) {
     return state
   }
   if (ActionCreators.isFeedResponse(action)){
-    return loadFeedViewState(action.payload.posts)
+    const visibleEntries = (action.payload.posts || []).filter(post => !post.isHidden).map(post => post.id)
+    const hiddenEntries = (action.payload.posts || []).filter(post => post.isHidden).map(post => post.id)
+    const isHiddenRevealed = false
+    return {
+      visibleEntries,
+      hiddenEntries,
+      isHiddenRevealed
+    }
   }
 
   switch (action.type) {
@@ -140,6 +145,25 @@ export function feedViewState(state = initFeed, action) {
     }
     case fail(ActionCreators.GET_SINGLE_POST): {
       return { visibleEntries: [] }
+    }
+
+    case response(ActionCreators.HIDE_POST): {
+      // Add it to hiddenEntries, but don't remove from visibleEntries just yet
+      // (for the sake of "Undo")
+      const postId = action.request.postId
+      return {...state,
+        hiddenEntries: [postId, ...state.hiddenEntries]
+      }
+    }
+    case response(ActionCreators.UNHIDE_POST): {
+      // Remove it from hiddenEntries and add to visibleEntries
+      // (but check first if it's already in there, since this might be an "Undo" happening)
+      const postId = action.request.postId
+      const itsStillThere = (state.visibleEntries.indexOf(postId) > -1)
+      return {...state,
+        visibleEntries: (itsStillThere ? state.visibleEntries : [...state.visibleEntries, postId]),
+        hiddenEntries: _.without(state.hiddenEntries, postId)
+      }
     }
     case ActionCreators.TOGGLE_HIDDEN_POSTS: {
       return {...state,
