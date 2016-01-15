@@ -5,7 +5,7 @@ export default (props) => {
   let visiblePosts = []
   let hiddenPosts = []
 
-  props.feed.forEach(post => {
+  props.visibleEntries.forEach(post => {
     const p = (
       <Post {...post}
         key={post.id}

@@ -106,12 +106,12 @@ export function createPostViewState(state = {}, action) {
   return state
 }
 
-const initFeed = {feed: []}
+const initFeed = {visibleEntries: []}
 
 const loadFeedViewState = posts => {
-  const feed = (posts || []).map(post => post.id)
+  const visibleEntries = (posts || []).map(post => post.id)
   const isHiddenRevealed = false
-  return { feed, isHiddenRevealed }
+  return { visibleEntries, isHiddenRevealed }
 }
 
 export function feedViewState(state = initFeed, action) {
@@ -128,18 +128,18 @@ export function feedViewState(state = initFeed, action) {
     }
     case response(ActionCreators.DELETE_POST): {
       const postId = action.request.postId
-      return { feed: _.without(state.feed, postId) }
+      return { visibleEntries: _.without(state.visibleEntries, postId) }
     }
     case response(ActionCreators.CREATE_POST): {
       const postId = action.payload.posts.id
-      return { feed: [postId, ...state.feed] }
+      return { visibleEntries: [postId, ...state.visibleEntries] }
     }
     case response(ActionCreators.GET_SINGLE_POST): {
       const postId = action.request.postId
-      return { feed: [postId] }
+      return { visibleEntries: [postId] }
     }
     case fail(ActionCreators.GET_SINGLE_POST): {
-      return { feed: [] }
+      return { visibleEntries: [] }
     }
     case ActionCreators.TOGGLE_HIDDEN_POSTS: {
       return {...state,

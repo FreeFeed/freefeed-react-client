@@ -28,9 +28,7 @@ const FeedHandler = (props) => {
         {props.boxHeader}
       </div>
       <PaginatedView firstPageHead={createPostComponent}>
-        {props.feed && props.feed.length ? (
-          <Feed {...props}/>
-        ) : false}
+        <Feed {...props}/>
       </PaginatedView>
       <div className='box-footer'>
       </div>
@@ -40,14 +38,14 @@ const FeedHandler = (props) => {
 function selectState(state) {
   const user = state.user
   const authenticated = state.authenticated
-  const feed = state.feedViewState.feed.map(joinPostData(state))
+  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state))
   const createPostViewState = state.createPostViewState
   const createPostForm = joinCreatePostData(state)
   const timelines = state.timelines
   const boxHeader = state.boxHeader
   const sendTo = state.sendTo
 
-  return { user, authenticated, feed, createPostViewState, createPostForm, timelines, boxHeader, sendTo }
+  return { user, authenticated, visibleEntries, createPostViewState, createPostForm, timelines, boxHeader, sendTo }
 }
 
 function selectActions(dispatch) {

@@ -29,9 +29,7 @@ const FeedHandler = (props) => {
       </div>
       {props.authenticated ? (
         <PaginatedView firstPageHead={createPostComponent}>
-          {props.feed && props.feed.length ? (
-            <Feed {...props} isInHomeFeed={true}/>
-          ) : false}
+          <Feed {...props} isInHomeFeed={true}/>
         </PaginatedView>
       ) : (
         <Welcome/>
@@ -44,7 +42,7 @@ const FeedHandler = (props) => {
 function selectState(state) {
   const user = state.user
   const authenticated = state.authenticated
-  const feed = state.feedViewState.feed.map(joinPostData(state))
+  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state))
   const isHiddenRevealed = state.feedViewState.isHiddenRevealed
   const createPostViewState = state.createPostViewState
   const createPostForm = joinCreatePostData(state)
@@ -52,7 +50,7 @@ function selectState(state) {
   const boxHeader = state.boxHeader
   const sendTo = state.sendTo
 
-  return { user, authenticated, feed, isHiddenRevealed, createPostViewState, createPostForm, timelines, boxHeader, sendTo }
+  return { user, authenticated, visibleEntries, isHiddenRevealed, createPostViewState, createPostForm, timelines, boxHeader, sendTo }
 }
 
 function selectActions(dispatch) {
