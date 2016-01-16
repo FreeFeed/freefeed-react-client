@@ -9,7 +9,7 @@ export default ({user, signOut, recentGroups}) => (
   <div className='col-md-3 sidebar'>
     <div className='logged-in'>
       <div className='avatar'>
-        <Link to={`/${user.username}`} ><img className='media-object' src={user.profilePictureMediumUrl}/></Link>
+        <Link to={`/${user.username}`} ><img src={user.profilePictureMediumUrl} width="50" height="50"/></Link>
       </div>
 
       <div className='user'>

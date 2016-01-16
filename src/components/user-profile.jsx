@@ -9,7 +9,7 @@ export default props => (
     <div className='row'>
       <div className='col-md-9'>
         <div className='avatar'>
-          <img src={props.profilePictureLargeUrl}/>
+          <img src={props.profilePictureLargeUrl} width="75" height="75"/>
         </div>
         <div className='description'>
           <div className='name'>{props.username}</div>
