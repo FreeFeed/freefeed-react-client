@@ -30,11 +30,11 @@ export function fromNowOrNow(date) {
   return now.fromNow()
 }
 
-import defaultUserpic48Path from 'assets/images/default-userpic-48.png'
+import defaultUserpic50Path from 'assets/images/default-userpic-50.png'
 import defaultUserpic75Path from 'assets/images/default-userpic-75.png'
 
 const userDefaults = {
-  profilePictureMediumUrl: defaultUserpic48Path,
+  profilePictureMediumUrl: defaultUserpic50Path,
   profilePictureLargeUrl: defaultUserpic75Path,
 }
 
