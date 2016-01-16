@@ -133,18 +133,25 @@ export function feedViewState(state = initFeed, action) {
     }
     case response(ActionCreators.DELETE_POST): {
       const postId = action.request.postId
-      return { visibleEntries: _.without(state.visibleEntries, postId) }
+      return {...state,
+        visibleEntries: _.without(state.visibleEntries, postId),
+        hiddenEntries: _.without(state.hiddenEntries, postId)
+      }
     }
     case response(ActionCreators.CREATE_POST): {
       const postId = action.payload.posts.id
-      return { visibleEntries: [postId, ...state.visibleEntries] }
+      return {...state,
+        visibleEntries: [postId, ...state.visibleEntries]
+      }
     }
     case response(ActionCreators.GET_SINGLE_POST): {
       const postId = action.request.postId
-      return { visibleEntries: [postId] }
+      return {...initFeed,
+        visibleEntries: [postId]
+      }
     }
     case fail(ActionCreators.GET_SINGLE_POST): {
-      return { visibleEntries: [] }
+      return initFeed
     }
 
     case response(ActionCreators.HIDE_POST): {
