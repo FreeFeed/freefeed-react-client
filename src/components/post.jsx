@@ -221,7 +221,7 @@ export default class Post extends React.Component {
       <div className={postClass}>
         <div className="post-userpic">
           <Link to={`/${props.createdBy.username}`}>
-            <img src={profilePicture}/>
+            <img src={profilePicture} width="50" height="50"/>
           </Link>
         </div>
         <div className="post-body">
