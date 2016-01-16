@@ -36,12 +36,12 @@ export default ({likes, showMoreLikes, post}) => {
 
   const rendered_likes = rendered_last ? [...likes_exclude_last, rendered_last] : likes_exclude_last
 
-  return (
+  return (hasLikes ? (
     <div className="likes">
-      {hasLikes ? (<i className="fa fa-heart icon"></i>) : false}
+      <i className="fa fa-heart icon"></i>
       <ul className="p-timeline-user-likes">
         {rendered_likes}
       </ul>
     </div>
-  )
+  ) : <div/>)
 }
