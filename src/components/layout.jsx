@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router'
+import {IndexLink, Link} from 'react-router'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 
@@ -119,33 +119,29 @@ class Layout extends React.Component {
 
     return (
       <div className={layoutClassNames}>
-        <div className='row header-row'>
-          <div className='col-md-4'>
-            <div className='header'>
-              <h1 className='title'>
-                <Link to='/'>FreeFeed-beta</Link>
-              </h1>
-            </div>
+        <header className="row">
+          <div className="col-xs-9 col-sm-6">
+            <h1>
+              <IndexLink to="/">FreeFeed-beta</IndexLink>
+            </h1>
           </div>
 
-          <div className='col-md-8'>
-            <div className='row'>
-              <div className='col-md-6 search-field'>
-                <div className='form-inline'>
-                {/*<input className='form-control input-sm search-input p-search-input' />
-                <button className='btn btn-default btn-sm p-search-action'>Search</button>*/}
-                </div>
-              </div>
-              <div className='col-md-6'>
-                {props.authenticated ? false : (
-                  <div className='signin-toolbar'>
-                    <Link to='/signin'>Sign In</Link>
-                  </div>
-                )}
+          {props.authenticated ? (
+            <div className="col-xs-12 col-sm-6">
+              <div className="mobile-shortcuts">
+                <Link to="/filter/discussions">My discussions</Link>
+                <Link to="/filter/direct">Direct messages</Link>
+                <Link to={`/${props.user.username}`}>My feed</Link>
               </div>
             </div>
-          </div>
-        </div>
+          ) : (
+            <div className="col-xs-3 col-sm-6 text-right">
+              <div className="signin-link">
+                <Link to="/signin">Sign In</Link>
+              </div>
+            </div>
+          )}
+        </header>
 
         <LoaderContainer loading={props.loadingView} fullPage={true}>
           <div className='row'>

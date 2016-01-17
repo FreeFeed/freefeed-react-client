@@ -1,47 +1,34 @@
 // Header
 
-@media (max-width: 991px) {
-  .header {
-    height: 40px;
-  }
+header {
+  h1 {
+    @media (max-width: 767px) { font-size: 30px; }
+    @media (min-width: 768px) { margin-bottom: 20px; }
+    @media (min-width: 992px) { margin-left: 10px; }
 
-  .search-field {
-    margin-top: 10px;
-    margin-bottom: 20px;
-    .search-input {
-      width: 80%;
-    }
-    .form-control {
-      display: inline !important;
-    }
-  }
+    a {
+      color: #222;
 
-  .signin-toolbar {
-    margin-bottom: 20px;
-  }
-}
-@media (min-width: 992px) {
-  .header {
-    margin-left: 10px;
-  }
-
-  .search-field {
-    margin-top: 24px;
-    .search-input{
-      width: 70%;
+      &:hover {
+        text-decoration: none;
+      }
     }
   }
 
-  .signin-toolbar {
-    margin-top: 36px;
-    float: right;
+  .mobile-shortcuts {
+    display: none;
+    @media (min-width: 768px) { margin-top: 34px; }
+    @media (max-width: 991px) { display: block; }
+
+    margin: 10px 0 20px 0;
+
+    a {
+      margin-right: 30px;
+    }
   }
-}
 
-h1.title a {
-  color: #222;
-}
-
-h1.title a:hover {
-  text-decoration: none;
+  .signin-link {
+    @media (max-width: 767px) { margin-top: 30px; }
+    @media (min-width: 768px) { margin-top: 34px; }
+  }
 }
