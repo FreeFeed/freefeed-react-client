@@ -950,11 +950,14 @@ export function boxHeader(state = "", action){
     case request(ActionCreators.DISCUSSIONS): {
       return 'My discussions'
     }
-    case request(ActionCreators.GET_SINGLE_POST): {
-      return ''
-    }
     case request(ActionCreators.DIRECT): {
       return 'Direct messages'
+    }
+    case request(ActionCreators.GET_USER_FEED): {
+      return ''
+    }
+    case request(ActionCreators.GET_SINGLE_POST): {
+      return ''
     }
   }
   return state
