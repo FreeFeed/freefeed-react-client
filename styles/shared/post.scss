@@ -56,7 +56,11 @@
       }
 
       .post-like-throbber {
-        margin-left: 10px;
+        margin-left: 5px;
+      }
+
+      .post-hide-throbber {
+        margin-left: 5px;
       }
     }
   }
@@ -144,6 +148,10 @@
   .post-edit-throbber {
     margin-right: 10px;
   }
+}
+
+.recently-hidden-post {
+  padding-left: 63px;
 }
 
 .single-post {

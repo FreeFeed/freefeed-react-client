@@ -31,7 +31,6 @@ export default class CreatePost extends React.Component {
 
     // Clear the form afterwards
     this.refs.postText.value = ''
-    this.refs.commentsDisabled.checked = false
     this.setState({
       disabled: true,
       isMoreOpen: false

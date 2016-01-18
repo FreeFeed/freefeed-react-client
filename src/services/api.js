@@ -147,6 +147,30 @@ export function unlikePost({postId}) {
   })
 }
 
+export function hidePost({postId}) {
+  return fetch(`${apiConfig.host}/v1/posts/${postId}/hide`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+    'body': '{}'
+  })
+}
+
+export function unhidePost({postId}) {
+  return fetch(`${apiConfig.host}/v1/posts/${postId}/unhide`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+    'body': '{}'
+  })
+}
+
 export function disableComments({postId}) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}/disableComments`, {
     'method': 'POST',

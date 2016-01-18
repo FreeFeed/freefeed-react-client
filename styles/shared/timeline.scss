@@ -1,4 +1,12 @@
-.show-hidden{
+.hidden-posts-toggle {
   padding: 14px 0 14px 0;
   border-bottom: 1px solid #eee;
+
+  a:hover {
+    text-decoration: none;
+
+    span:last-child {
+      text-decoration: underline;
+    }
+  }
 }

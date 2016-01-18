@@ -106,11 +106,10 @@ export function createPostViewState(state = {}, action) {
   return state
 }
 
-const initFeed = {feed: []}
-
-const loadFeedViewState = posts => {
-  const feed = (posts || []).map(post => post.id)
-  return { feed }
+const initFeed = {
+  visibleEntries: [],
+  hiddenEntries: [],
+  isHiddenRevealed: false
 }
 
 export function feedViewState(state = initFeed, action) {
@@ -118,7 +117,14 @@ export function feedViewState(state = initFeed, action) {
     return state
   }
   if (ActionCreators.isFeedResponse(action)){
-    return loadFeedViewState(action.payload.posts)
+    const visibleEntries = (action.payload.posts || []).filter(post => !post.isHidden).map(post => post.id)
+    const hiddenEntries = (action.payload.posts || []).filter(post => post.isHidden).map(post => post.id)
+    const isHiddenRevealed = false
+    return {
+      visibleEntries,
+      hiddenEntries,
+      isHiddenRevealed
+    }
   }
 
   switch (action.type) {
@@ -127,18 +133,49 @@ export function feedViewState(state = initFeed, action) {
     }
     case response(ActionCreators.DELETE_POST): {
       const postId = action.request.postId
-      return { feed: _.without(state.feed, postId) }
+      return {...state,
+        visibleEntries: _.without(state.visibleEntries, postId),
+        hiddenEntries: _.without(state.hiddenEntries, postId)
+      }
     }
     case response(ActionCreators.CREATE_POST): {
       const postId = action.payload.posts.id
-      return { feed: [postId, ...state.feed] }
+      return {...state,
+        visibleEntries: [postId, ...state.visibleEntries]
+      }
     }
     case response(ActionCreators.GET_SINGLE_POST): {
       const postId = action.request.postId
-      return { feed: [postId] }
+      return {...initFeed,
+        visibleEntries: [postId]
+      }
     }
     case fail(ActionCreators.GET_SINGLE_POST): {
-      return { feed: [] }
+      return initFeed
+    }
+
+    case response(ActionCreators.HIDE_POST): {
+      // Add it to hiddenEntries, but don't remove from visibleEntries just yet
+      // (for the sake of "Undo")
+      const postId = action.request.postId
+      return {...state,
+        hiddenEntries: [postId, ...state.hiddenEntries]
+      }
+    }
+    case response(ActionCreators.UNHIDE_POST): {
+      // Remove it from hiddenEntries and add to visibleEntries
+      // (but check first if it's already in there, since this might be an "Undo" happening)
+      const postId = action.request.postId
+      const itsStillThere = (state.visibleEntries.indexOf(postId) > -1)
+      return {...state,
+        visibleEntries: (itsStillThere ? state.visibleEntries : [...state.visibleEntries, postId]),
+        hiddenEntries: _.without(state.hiddenEntries, postId)
+      }
+    }
+    case ActionCreators.TOGGLE_HIDDEN_POSTS: {
+      return {...state,
+        isHiddenRevealed: !state.isHiddenRevealed
+      }
     }
   }
   return state
@@ -362,6 +399,57 @@ export function postsViewState(state = {}, action) {
         }
       }
     }
+
+    case request(ActionCreators.HIDE_POST): {
+      const post = state[action.payload.postId]
+      return {...state,
+        [post.id]: {...post,
+          isHiding: true
+        }}
+    }
+    case response(ActionCreators.HIDE_POST): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isHiding: false
+        }
+      }
+    }
+    case fail(ActionCreators.HIDE_POST): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isHiding: false,
+          hideError: 'Something went wrong while hiding the post.'
+        }
+      }
+    }
+
+    case request(ActionCreators.UNHIDE_POST): {
+      const post = state[action.payload.postId]
+      return {...state,
+        [post.id]: {...post,
+          isHiding: true
+        }}
+    }
+    case response(ActionCreators.UNHIDE_POST): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isHiding: false
+        }
+      }
+    }
+    case fail(ActionCreators.UNHIDE_POST): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isHiding: false,
+          hideError: 'Something went wrong while un-hiding the post.'
+        }
+      }
+    }
+
     case request(ActionCreators.DISABLE_COMMENTS): {
       const post = state[action.payload.postId]
       return {...state,
@@ -387,6 +475,7 @@ export function postsViewState(state = {}, action) {
         }
       }
     }
+
     case request(ActionCreators.ENABLE_COMMENTS): {
       const post = state[action.payload.postId]
       return {...state,
@@ -412,6 +501,7 @@ export function postsViewState(state = {}, action) {
         }
       }
     }
+
     case response(ActionCreators.CREATE_POST): {
       const post = action.payload.posts
       const id = post.id
@@ -522,6 +612,22 @@ export function posts(state = {}, action) {
           ...post,
           likes: _.without(post.likes, action.request.userId),
           omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes - 1 : 0)
+        }
+      }
+    }
+    case response(ActionCreators.HIDE_POST): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isHidden: true
+        }
+      }
+    }
+    case response(ActionCreators.UNHIDE_POST): {
+      const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isHidden: false
         }
       }
     }
@@ -844,11 +950,14 @@ export function boxHeader(state = "", action){
     case request(ActionCreators.DISCUSSIONS): {
       return 'My discussions'
     }
-    case request(ActionCreators.GET_SINGLE_POST): {
-      return ''
-    }
     case request(ActionCreators.DIRECT): {
       return 'Direct messages'
+    }
+    case request(ActionCreators.GET_USER_FEED): {
+      return ''
+    }
+    case request(ActionCreators.GET_SINGLE_POST): {
+      return ''
     }
   }
   return state

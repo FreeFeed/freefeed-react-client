@@ -8,7 +8,6 @@ import PostAttachments from './post-attachments'
 import PostComments from './post-comments'
 import PostLikes from './post-likes'
 import UserName from './user-name'
-import {preventDefault} from '../utils'
 import PieceOfText from './piece-of-text'
 import Textarea from 'react-textarea-autosize'
 import throbber16 from 'assets/images/throbber-16.gif'
@@ -17,7 +16,7 @@ import {api as apiConfig} from '../config'
 import {getToken} from '../services/auth'
 import PostMoreMenu from './post-more-menu'
 
-export default class FeedPost extends React.Component {
+export default class Post extends React.Component {
   render() {
     let props = this.props
 
@@ -41,6 +40,9 @@ export default class FeedPost extends React.Component {
     const likePost = () => props.likePost(props.id, props.user.id)
     const unlikePost = () => props.unlikePost(props.id, props.user.id)
 
+    const hidePost = () => props.hidePost(props.id)
+    const unhidePost = () => props.unhidePost(props.id)
+
     const disableComments = () => props.disableComments(props.id)
     const enableComments = () => props.enableComments(props.id)
 
@@ -51,7 +53,6 @@ export default class FeedPost extends React.Component {
         saveEditingPost()
       }
     }
-    const ILikedPost = _.find(props.usersLikedPost, {id: props.user.id})
     const profilePicture = props.isSinglePost ?
       props.createdBy.profilePictureLargeUrl : props.createdBy.profilePictureMediumUrl
     const postClass = classnames({
@@ -148,27 +149,79 @@ export default class FeedPost extends React.Component {
       if (props.isEditable) {
         commentLink = (
           <span>
+            {' - '}
             <i>Comments disabled (not for you)</i>
             {' - '}
-            <a onClick={preventDefault(toggleCommenting)}>Comment</a>
+            <a onClick={toggleCommenting}>Comment</a>
           </span>
         )
       } else {
         commentLink = (
-          <i>Comments disabled</i>
+          <span>
+            {' - '}
+            <i>Comments disabled</i>
+          </span>
         )
       }
     } else {
       commentLink = (
-        <a onClick={preventDefault(toggleCommenting)}>Comment</a>
+        <span>
+          {' - '}
+          <a onClick={toggleCommenting}>Comment</a>
+        </span>
       )
     }
 
-    return (
+    // "Like" / "Un-like"
+    const didILikePost = _.find(props.usersLikedPost, {id: props.user.id})
+    const likeLink = (
+      <span>
+        {' - '}
+        <a onClick={didILikePost ? unlikePost : likePost}>{didILikePost ? 'Un-like' : 'Like'}</a>
+        {props.isLiking ? (
+          <span className="post-like-throbber">
+            <img width="16" height="16" src={throbber16}/>
+          </span>
+        ) : false}
+      </span>
+    )
+
+    // "Hide" / "Un-hide"
+    const hideLink = (props.isInHomeFeed ? (
+      <span>
+        {' - '}
+        <a onClick={props.isHidden ? unhidePost : hidePost}>{props.isHidden ? 'Un-hide' : 'Hide'}</a>
+        {props.isHiding ? (
+          <span className="post-hide-throbber">
+            <img width="16" height="16" src={throbber16}/>
+          </span>
+        ) : false}
+      </span>
+    ) : false)
+
+    // "More" menu
+    const moreLink = (props.isEditable ? (
+      <span>
+        {' - '}
+        <PostMoreMenu
+          post={props}
+          toggleEditingPost={toggleEditingPost}
+          disableComments={disableComments}
+          enableComments={enableComments}
+          deletePost={deletePost}/>
+      </span>
+    ) : false)
+
+    return (props.isRecentlyHidden ? (
+      <div className="post recently-hidden-post">
+        <i>Entry hidden - </i>
+        <a onClick={unhidePost}>undo</a>.
+      </div>
+    ) : (
       <div className={postClass}>
         <div className="post-userpic">
           <Link to={`/${props.createdBy.username}`}>
-            <img src={profilePicture}/>
+            <img src={profilePicture} width="50" height="50"/>
           </Link>
         </div>
         <div className="post-body">
@@ -191,6 +244,7 @@ export default class FeedPost extends React.Component {
                   defaultValue={props.editingText}
                   onKeyDown={checkSave}
                   onChange={editingPostTextChange}
+                  autoFocus={true}
                   minRows={2}
                   maxRows={10}/>
               </div>
@@ -209,8 +263,8 @@ export default class FeedPost extends React.Component {
                     <img width="16" height="16" src={throbber16}/>
                   </span>
                 ) : false}
-                <a className="post-cancel" onClick={preventDefault(cancelEditingPost)}>Cancel</a>
-                <button className="btn btn-default btn-xs" onClick={preventDefault(saveEditingPost)}>Update</button>
+                <a className="post-cancel" onClick={cancelEditingPost}>Cancel</a>
+                <button className="btn btn-default btn-xs" onClick={saveEditingPost}>Update</button>
               </div>
             </div>
           ) : (
@@ -228,26 +282,10 @@ export default class FeedPost extends React.Component {
             <Link to={`/${props.createdBy.username}/${props.id}`} className="post-timestamp">
               <time dateTime={createdAtISO} title={createdAtISO}>{createdAgo}</time>
             </Link>
-            {' - '}
             {commentLink}
-            {' - '}
-            <a onClick={preventDefault(ILikedPost ? unlikePost : likePost)}>{ILikedPost ? 'Un-like' : 'Like'}</a>
-            {props.isLiking ? (
-              <span className="post-like-throbber">
-                <img width="16" height="16" src={throbber16}/>
-              </span>
-            ) : false}
-            {props.isEditable ? (
-              <span>
-                {' - '}
-                <PostMoreMenu
-                  post={props}
-                  toggleEditingPost={toggleEditingPost}
-                  disableComments={disableComments}
-                  enableComments={enableComments}
-                  deletePost={deletePost}/>
-              </span>
-            ) : false}
+            {likeLink}
+            {hideLink}
+            {moreLink}
           </div>
 
           {props.isError ? (
@@ -271,6 +309,6 @@ export default class FeedPost extends React.Component {
             commentEdit={props.commentEdit}/>
         </div>
       </div>
-    )
+    ))
   }
 }

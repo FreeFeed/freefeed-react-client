@@ -199,6 +199,30 @@ export function unlikePost(postId, userId){
   }
 }
 
+export const HIDE_POST = 'HIDE_POST'
+
+export function hidePost(postId) {
+  return {
+    type: HIDE_POST,
+    apiRequest: Api.hidePost,
+    payload: {
+      postId
+    }
+  }
+}
+
+export const UNHIDE_POST = 'UNHIDE_POST'
+
+export function unhidePost(postId) {
+  return {
+    type: UNHIDE_POST,
+    apiRequest: Api.unhidePost,
+    payload: {
+      postId
+    }
+  }
+}
+
 export const DISABLE_COMMENTS = 'DISABLE_COMMENTS'
 
 export function disableComments(postId) {
@@ -439,6 +463,14 @@ export const EXPAND_SEND_TO = 'EXPAND_SEND_TO'
 export function expandSendTo(){
   return {
     type: EXPAND_SEND_TO
+  }
+}
+
+export const TOGGLE_HIDDEN_POSTS = 'TOGGLE_HIDDEN_POSTS'
+
+export function toggleHiddenPosts() {
+  return {
+    type: TOGGLE_HIDDEN_POSTS
   }
 }
 

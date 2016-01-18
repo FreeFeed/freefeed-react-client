@@ -1,8 +1,22 @@
-import {showMoreComments, showMoreLikes, toggleEditingPost, cancelEditingPost,
-        saveEditingPost, deletePost, addAttachmentResponse, removeAttachment,
-        likePost, unlikePost, disableComments, enableComments, toggleCommenting, addComment,
-        toggleEditingComment, cancelEditingComment, saveEditingComment, deleteComment,
-        ban, unban, subscribe, unsubscribe, } from '../redux/action-creators'
+import {
+  // User actions
+  subscribe, unsubscribe,
+  ban, unban,
+
+  // Post actions
+  showMoreComments, showMoreLikes,
+  addAttachmentResponse, removeAttachment,
+  likePost, unlikePost,
+  hidePost, unhidePost,
+  disableComments, enableComments,
+  toggleEditingPost, cancelEditingPost, saveEditingPost,
+  deletePost,
+
+  // Comment actions
+  toggleCommenting, addComment,
+  toggleEditingComment, cancelEditingComment, saveEditingComment,
+  deleteComment
+} from '../redux/action-creators'
 
 const MAX_LIKES = 4
 
@@ -80,6 +94,8 @@ export function postActions(dispatch) {
     addComment:(postId, commentText) => dispatch(addComment(postId, commentText)),
     likePost: (postId, userId) => dispatch(likePost(postId, userId)),
     unlikePost: (postId, userId) => dispatch(unlikePost(postId, userId)),
+    hidePost: (postId) => dispatch(hidePost(postId)),
+    unhidePost: (postId) => dispatch(unhidePost(postId)),
     disableComments: (postId) => dispatch(disableComments(postId)),
     enableComments: (postId) => dispatch(enableComments(postId)),
     addAttachmentResponse:(postId, attachments) => dispatch(addAttachmentResponse(postId, attachments)),

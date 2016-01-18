@@ -5,7 +5,7 @@ import {joinPostData, joinCreatePostData, postActions, userActions} from './sele
 import {getQuery, getCurrentRouteName} from '../utils'
 
 import CreatePost from './create-post'
-import HomeFeed from './home-feed'
+import Feed from './feed'
 import PaginatedView from './paginated-view'
 import UserProfile from './user-profile'
 import Breadcrumbs from './breadcrumbs'
@@ -32,7 +32,7 @@ const UserFeedHandler = (props) => {
       {props.viewUser.blocked ?
         false :
         <PaginatedView>
-          <HomeFeed {...props} isInUserFeed={true}/>
+          <Feed {...props} isInUserFeed={true}/>
         </PaginatedView>}
       <div className='box-footer'>
       </div>
@@ -41,7 +41,7 @@ const UserFeedHandler = (props) => {
 
 function selectState(state) {
   const user = state.user
-  const feed = state.feedViewState.feed.map(joinPostData(state))
+  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state))
   const createPostViewState = state.createPostViewState
   const createPostForm = joinCreatePostData(state)
   const timelines = state.timelines
@@ -70,7 +70,7 @@ function selectState(state) {
 
   const sendTo = state.sendTo
 
-  return { feed, user, timelines, createPostViewState, createPostForm, boxHeader, viewUser, breadcrumbs, sendTo }
+  return { user, visibleEntries, timelines, createPostViewState, createPostForm, boxHeader, viewUser, breadcrumbs, sendTo }
 }
 
 function selectActions(dispatch) {
