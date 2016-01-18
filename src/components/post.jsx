@@ -55,6 +55,8 @@ export default class Post extends React.Component {
     }
     const profilePicture = props.isSinglePost ?
       props.createdBy.profilePictureLargeUrl : props.createdBy.profilePictureMediumUrl
+    const profilePictureSize = props.isSinglePost ? 75 : 50
+
     const postClass = classnames({
       'post': true,
       'single-post': props.isSinglePost,
@@ -221,7 +223,7 @@ export default class Post extends React.Component {
       <div className={postClass}>
         <div className="post-userpic">
           <Link to={`/${props.createdBy.username}`}>
-            <img src={profilePicture} width="50" height="50"/>
+            <img src={profilePicture} width={profilePictureSize} height={profilePictureSize}/>
           </Link>
         </div>
         <div className="post-body">
