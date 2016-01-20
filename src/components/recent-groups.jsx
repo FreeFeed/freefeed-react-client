@@ -6,7 +6,7 @@ import {fromNowOrNow} from '../utils'
 const renderRecentGroup = recentGroup => {
   const updatedAgo = fromNowOrNow(parseInt(recentGroup.updatedAt))
   return (
-    <li className="p-my-groups-link">
+    <li className="p-my-groups-link" key={recentGroup.id}>
       <Link to={`/${recentGroup.username}`}>{recentGroup.screenName}</Link>
       <div className="updated-ago">{updatedAgo}</div>
     </li>
