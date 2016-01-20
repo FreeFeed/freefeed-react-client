@@ -1067,3 +1067,32 @@ export function recentGroups(state = [], action) {
 
   return state
 }
+
+// for /:username/subscribers
+export function usernameSubscribers(state = {}, action) {
+  if (action.type == request(ActionCreators.SUBSCRIBERS)) {
+    return {
+      payload: [],
+      isPending: true,
+      errorString: ''
+    }
+  }
+
+  if (action.type == response(ActionCreators.SUBSCRIBERS)) {
+    return {
+      payload: (action.payload.subscribers || []).map(userParser),
+      isPending: false,
+      errorString: ''
+    }
+  }
+
+  if (action.type == fail(ActionCreators.SUBSCRIBERS)) {
+    return {
+      payload: [],
+      isPending: false,
+      errorString: 'error occured while fetching subscribers'
+    }
+  }
+
+  return state
+}
