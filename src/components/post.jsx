@@ -218,6 +218,12 @@ export default class Post extends React.Component {
       <div className="post recently-hidden-post">
         <i>Entry hidden - </i>
         <a onClick={unhidePost}>undo</a>.
+        {' '}
+        {props.isHiding ? (
+          <span className="post-hide-throbber">
+            <img width="16" height="16" src={throbber16}/>
+          </span>
+        ) : false}
       </div>
     ) : (
       <div className={postClass}>
