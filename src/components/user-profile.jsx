@@ -16,23 +16,24 @@ export default props => (
           <p>{props.description}</p>
         </div>
       </div>
-      {props.blocked && !props.statistics ? false :
-      <div className='col-md-3'>
-        <div className='stats'>
-          {props.statistics.subscriptions >= 0 ? <div className='p-stats-subscriptions'>
-            <Link to={`/${props.username}/subscriptions`}>{props.statistics.subscriptions} subscriptions</Link>
-          </div> : false}
-          {props.statistics.subscribers >= 0 ? <div className='p-stats-subscribers'>
-            <Link to={`/${props.username}/subscribers`}>{props.statistics.subscribers} subscribers</Link>
-          </div> : false}
-          {props.statistics.comments >= 0 ? <div className='p-stats-comments'>
-            <Link to={`/${props.username}/comments`}>{props.statistics.comments} comments</Link>
-          </div> : false}
-          {props.statistics.likes >= 0 ? <div className='p-stats-likes'>
-            <Link to={`/${props.username}/likes`}>{props.statistics.likes} likes</Link>
-          </div> : false}
+      {props.statistics && !props.blocked ? (
+        <div className='col-md-3'>
+          <div className='stats'>
+            {props.statistics.subscriptions >= 0 ? <div className='p-stats-subscriptions'>
+              <Link to={`/${props.username}/subscriptions`}>{props.statistics.subscriptions} subscriptions</Link>
+            </div> : false}
+            {props.statistics.subscribers >= 0 ? <div className='p-stats-subscribers'>
+              <Link to={`/${props.username}/subscribers`}>{props.statistics.subscribers} subscribers</Link>
+            </div> : false}
+            {props.statistics.comments >= 0 ? <div className='p-stats-comments'>
+              <Link to={`/${props.username}/comments`}>{props.statistics.comments} comments</Link>
+            </div> : false}
+            {props.statistics.likes >= 0 ? <div className='p-stats-likes'>
+              <Link to={`/${props.username}/likes`}>{props.statistics.likes} likes</Link>
+            </div> : false}
+          </div>
         </div>
-      </div>}
+      ) : false}
     </div>
   </div>
   {props.me ?

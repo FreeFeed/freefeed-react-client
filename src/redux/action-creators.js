@@ -71,6 +71,7 @@ export function getUserFeed(username, offset = 0){
   return {
     type: GET_USER_FEED,
     apiRequest: Api.getUserFeed,
+    nonAuthRequest: true,
     payload: {username, offset},
   }
 }
