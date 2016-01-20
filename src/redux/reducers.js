@@ -826,7 +826,7 @@ export function user(state = {settings: defaultUserSettings, ...getPersistedUser
   if (ActionCreators.isUserChangeResponse(action) ||
       action.type === response(ActionCreators.WHO_AM_I) ||
       action.type === response(ActionCreators.SIGN_UP)){
-    const subscriptions = _.uniq(action.payload.subscriptions.map(sub => sub.user))
+    const subscriptions = _.uniq((action.payload.subscriptions || []).map(sub => sub.user))
     return {...state, ...userParser(action.payload.users), subscriptions}
   }
   switch (action.type) {
@@ -1059,7 +1059,7 @@ const GROUPS_SIDEBAR_LIST_LENGTH = 4
 
 export function recentGroups(state = [], action) {
   if (action.type == response(ActionCreators.WHO_AM_I)) {
-    let subscribers = [].concat(action.payload.subscribers)
+    const subscribers = (action.payload.subscribers || [])
     return subscribers.filter(i => i.type == 'group')
                       .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
                       .slice(0, GROUPS_SIDEBAR_LIST_LENGTH)
