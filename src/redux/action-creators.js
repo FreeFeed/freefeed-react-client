@@ -410,6 +410,7 @@ export function getSinglePost(postId){
   return {
     type: GET_SINGLE_POST,
     apiRequest: Api.getPostWithAllCommentsAndLikes,
+    nonAuthRequest: true,
     payload: {postId},
   }
 }
