@@ -276,3 +276,7 @@ export function getUserComments({username, offset}){
 export function getUserLikes({username, offset}){
   return fetch(`${apiConfig.host}/v1/timelines/${username}/likes?offset=${offset}`, getRequestOptions())
 }
+
+export function getSubscribers({username}){
+  return fetch(`${apiConfig.host}/v1/users/${username}/subscribers`, getRequestOptions())
+}

@@ -474,6 +474,16 @@ export function toggleHiddenPosts() {
   }
 }
 
+export const SUBSCRIBERS = 'SUBSCRIBERS'
+
+export function subscribers(username){
+  return {
+    type: SUBSCRIBERS,
+    apiRequest: Api.getSubscribers,
+    payload: {username},
+  }
+}
+
 export const feedGeneratingActions = [HOME, DISCUSSIONS, GET_USER_FEED, GET_USER_COMMENTS, GET_USER_LIKES, DIRECT]
 export const feedRequests = feedGeneratingActions.map(request)
 export const feedResponses = feedGeneratingActions.map(response)
