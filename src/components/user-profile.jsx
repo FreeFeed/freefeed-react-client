@@ -36,7 +36,7 @@ export default props => (
       ) : false}
     </div>
   </div>
-  {props.me ?
+  {props.me ? (
     <CreatePost
       createPostViewState={props.createPostViewState}
       sendTo={props.sendTo}
@@ -45,11 +45,12 @@ export default props => (
       expandSendTo={props.expandSendTo}
       createPostForm={props.createPostForm}
       addAttachmentResponse={props.addAttachmentResponse}/>
-   : props.blocked ?
+  ) : props.blocked ? (
     <div>
       You have blocked {props.username}, so all of {props.username}'s posts and comments are invisible to you.
       <a onClick={preventDefault(_=>props.unban({username: props.username, id: props.id}))}>Un-block this user</a>
-    </div> :
+    </div>
+  ) : props.authenticated ? (
     <div className='profile-controls'>
       <div className='row'>
         <div className='col-md-7 subscribe-controls'>
@@ -63,5 +64,6 @@ export default props => (
             <a onClick={preventDefault(_=>props.ban({username: props.username, id: props.id}))}>Block this user</a>}
         </div>
       </div>
-    </div>}
+    </div>
+  ) : false}
 </div>)

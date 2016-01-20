@@ -52,6 +52,7 @@ function selectState(state) {
   .filter(user => user.username === state.router.params.userName)[0]
 
   const statusExtension = {
+    authenticated,
     me: !foundUser || foundUser.username === user.username,
     subscribed: authenticated && foundUser && (user.subscriptions.indexOf(foundUser.id) !== -1),
     blocked: authenticated && foundUser && (user.banIds.indexOf(foundUser.id) > -1),
