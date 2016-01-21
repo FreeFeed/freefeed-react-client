@@ -13,6 +13,7 @@ export default props => (
         </div>
         <div className='description'>
           <div className='name'>{props.username}</div>
+          <p>{props.description}</p>
         </div>
       </div>
       {props.blocked && !props.statistics ? false :

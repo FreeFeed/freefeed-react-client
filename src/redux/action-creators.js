@@ -367,10 +367,10 @@ export function signUpEmpty(errorMessage){
 
 export const UPDATE_USER = 'UPDATE_USER'
 
-export function updateUser(id, screenName, email, isPrivate){
+export function updateUser(id, screenName, email, isPrivate, description) {
   return {
     type: UPDATE_USER,
-    payload: {id, screenName, email, isPrivate},
+    payload: {id, screenName, email, isPrivate, description},
     apiRequest: Api.updateUser,
   }
 }
