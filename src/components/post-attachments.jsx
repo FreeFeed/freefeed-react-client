@@ -8,15 +8,33 @@ export default (props) => {
 
   const imageAttachments = attachments
     .filter(attachment => attachment.mediaType === 'image')
-    .map(attachment => (<ImageAttachment key={attachment.id} {...attachment}/>))
+    .map(attachment => (
+      <ImageAttachment
+        key={attachment.id}
+        isEditing={props.isEditing}
+        removeAttachment={props.removeAttachment}
+        {...attachment}/>
+    ))
 
   const audioAttachments = attachments
     .filter(attachment => attachment.mediaType === 'audio')
-    .map(attachment => (<AudioAttachment key={attachment.id} {...attachment}/>))
+    .map(attachment => (
+      <AudioAttachment
+        key={attachment.id}
+        isEditing={props.isEditing}
+        removeAttachment={props.removeAttachment}
+        {...attachment}/>
+    ))
 
   const generalAttachments = attachments
     .filter(attachment => attachment.mediaType === 'general')
-    .map(attachment => (<GeneralAttachment key={attachment.id} {...attachment}/>))
+    .map(attachment => (
+      <GeneralAttachment
+        key={attachment.id}
+        isEditing={props.isEditing}
+        removeAttachment={props.removeAttachment}
+        {...attachment}/>
+    ))
 
   return (attachments.length > 0 ? (
     <div className="attachments">
