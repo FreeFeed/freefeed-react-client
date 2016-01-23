@@ -7,6 +7,32 @@ import Textarea from 'react-textarea-autosize'
 import throbber16 from 'assets/images/throbber-16.gif'
 
 export default class PostComment extends React.Component{
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      editText: this.props.editText || ''
+    }
+  }
+
+  componentWillReceiveProps = (newProps) => {
+    this.setState({
+      editText: newProps.editText || ''
+    })
+  }
+
+  handleChange = (event) => {
+    this.setState({
+      editText: event.target.value
+    });
+  }
+
+  openAnsweringComment = () => {
+    if (this.props.openAnsweringComment) {
+      this.props.openAnsweringComment(this.props.user.username)
+    }
+  }
+
   render() {
     const createdAgo = fromNowOrNow(+this.props.createdAt)
 
@@ -14,7 +40,7 @@ export default class PostComment extends React.Component{
     <div className="comment">
       <a className="comment-icon fa fa-comment-o"
          title={createdAgo}
-         onClick={this.props.openAnsweringComment}></a>
+         onClick={this.openAnsweringComment}></a>
       {this.props.isEditing ? (
         <div className="comment-body">
           <div>
@@ -22,7 +48,8 @@ export default class PostComment extends React.Component{
               autoFocus={!this.props.isSinglePost}
               ref="commentText"
               className="comment-textarea"
-              defaultValue={this.props.editText}
+              value={this.state.editText}
+              onChange={this.handleChange}
               onBlur={this.updateCommentingText}
               onKeyDown={this.checkSave}
               style={{ overflow: 'hidden', wordWrap: 'break-word' }}
