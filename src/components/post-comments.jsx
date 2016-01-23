@@ -47,10 +47,13 @@ const renderAddCommentLink = (props, disabledForOthers) => {
 }
 
 export default (props) => {
-  const openAnsweringComment = () => {
+  const openAnsweringComment = (username) => {
     if (!props.post.isCommenting && !props.post.isSinglePost) {
       props.toggleCommenting(props.post.id)
     }
+
+    const updatedCommentText = `@${username} ` + (props.post.newCommentText || '')
+    props.updateCommentingText(props.post.id, updatedCommentText)
   }
 
   const commentMapper = renderComment(openAnsweringComment, props.commentEdit)
