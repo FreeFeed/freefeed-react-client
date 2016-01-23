@@ -160,6 +160,16 @@ export function toggleCommenting(postId){
   }
 }
 
+export const UPDATE_COMMENTING_TEXT = 'UPDATE_COMMENTING_TEXT'
+
+export function updateCommentingText(postId, commentText) {
+  return {
+    type: UPDATE_COMMENTING_TEXT,
+    postId,
+    commentText
+  }
+}
+
 export const ADD_COMMENT = 'ADD_COMMENT'
 
 export function addComment(postId, commentText){
