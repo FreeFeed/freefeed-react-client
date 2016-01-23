@@ -296,6 +296,14 @@ export function postsViewState(state = {}, action) {
           newCommentText: state[action.postId].newCommentText || '' }
         }
     }
+    case ActionCreators.UPDATE_COMMENTING_TEXT: {
+      const postState = state[action.postId]
+      return {...state,
+        [action.postId]: {...postState,
+          newCommentText: action.commentText
+        }
+      }
+    }
     case request(ActionCreators.ADD_COMMENT): {
       const post = state[action.payload.postId]
       return {...state,

@@ -13,7 +13,7 @@ import {
   deletePost,
 
   // Comment actions
-  toggleCommenting, addComment,
+  toggleCommenting, updateCommentingText, addComment,
   toggleEditingComment, cancelEditingComment, saveEditingComment,
   deleteComment
 } from '../redux/action-creators'
@@ -91,6 +91,7 @@ export function postActions(dispatch) {
     saveEditingPost: (postId, newPost) => dispatch(saveEditingPost(postId, newPost)),
     deletePost: (postId) => dispatch(deletePost(postId)),
     toggleCommenting: (postId) => dispatch(toggleCommenting(postId)),
+    updateCommentingText: (postId, commentText) => dispatch(updateCommentingText(postId, commentText)),
     addComment:(postId, commentText) => dispatch(addComment(postId, commentText)),
     likePost: (postId, userId) => dispatch(likePost(postId, userId)),
     unlikePost: (postId, userId) => dispatch(unlikePost(postId, userId)),

@@ -12,7 +12,9 @@ export default class PostComment extends React.Component{
 
     return (
     <div className="comment">
-      <a className="comment-icon fa fa-comment-o" title={createdAgo}></a>
+      <a className="comment-icon fa fa-comment-o"
+         title={createdAgo}
+         onClick={this.props.openAnsweringComment}></a>
       {this.props.isEditing ? (
         <div className="comment-body">
           <div>
@@ -21,6 +23,7 @@ export default class PostComment extends React.Component{
               ref="commentText"
               className="comment-textarea"
               defaultValue={this.props.editText}
+              onBlur={this.updateCommentingText}
               onKeyDown={this.checkSave}
               style={{ overflow: 'hidden', wordWrap: 'break-word' }}
               minRows={2}
@@ -62,6 +65,11 @@ export default class PostComment extends React.Component{
       )}
     </div>
   )}
+  updateCommentingText = () => {
+    if (this.props.updateCommentingText) {
+      this.props.updateCommentingText(this.props.id, this.refs.commentText.value)
+    }
+  }
   saveComment = () => {
     if (!this.props.isSaving) {
       this.props.saveEditingComment(this.props.id, this.refs.commentText.value)
