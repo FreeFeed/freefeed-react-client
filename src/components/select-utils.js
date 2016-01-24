@@ -8,6 +8,7 @@ import {
   addAttachmentResponse, removeAttachment,
   likePost, unlikePost,
   hidePost, unhidePost,
+  toggleModeratingComments,
   disableComments, enableComments,
   toggleEditingPost, cancelEditingPost, saveEditingPost,
   deletePost,
@@ -33,7 +34,8 @@ export const joinPostData = state => postId => {
     const commentViewState = state.commentViewState[commentId]
     const author = state.users[comment.createdBy]
     const isEditable = (user.id === comment.createdBy)
-    return { ...comment, ...commentViewState, user: author, isEditable }
+    const isDeletable = (user.id === post.createdBy)
+    return { ...comment, ...commentViewState, user: author, isEditable, isDeletable }
   })
 
   const postViewState = state.postsViewState[post.id]
@@ -103,6 +105,7 @@ export function postActions(dispatch) {
     unlikePost: (postId, userId) => dispatch(unlikePost(postId, userId)),
     hidePost: (postId) => dispatch(hidePost(postId)),
     unhidePost: (postId) => dispatch(unhidePost(postId)),
+    toggleModeratingComments: (postId) => dispatch(toggleModeratingComments(postId)),
     disableComments: (postId) => dispatch(disableComments(postId)),
     enableComments: (postId) => dispatch(enableComments(postId)),
     addAttachmentResponse:(postId, attachments) => dispatch(addAttachmentResponse(postId, attachments)),

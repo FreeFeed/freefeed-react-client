@@ -125,6 +125,10 @@ export default class PostComment extends React.Component{
               &nbsp;|&nbsp;
               <a onClick={preventDefault(_=>this.props.deleteComment(this.props.id))}>delete</a>)
             </span>
+          ) : (this.props.isDeletable && this.props.isModeratingComments) ? (
+            <span>
+              {' '}(<a onClick={preventDefault(_=>this.props.deleteComment(this.props.id))}>delete</a>)
+            </span>
           ) : false}
         </div>
       )}

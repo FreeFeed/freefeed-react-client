@@ -45,6 +45,7 @@ export default (props) => {
         unlikePost={props.unlikePost}
         hidePost={props.hidePost}
         unhidePost={props.unhidePost}
+        toggleModeratingComments={props.toggleModeratingComments}
         disableComments={props.disableComments}
         enableComments={props.enableComments}
         commentEdit={props.commentEdit}/>

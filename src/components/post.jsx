@@ -43,6 +43,8 @@ export default class Post extends React.Component {
     const hidePost = () => props.hidePost(props.id)
     const unhidePost = () => props.unhidePost(props.id)
 
+    const toggleModeratingComments = () => props.toggleModeratingComments(props.id)
+
     const disableComments = () => props.disableComments(props.id)
     const enableComments = () => props.enableComments(props.id)
 
@@ -208,6 +210,7 @@ export default class Post extends React.Component {
         <PostMoreMenu
           post={props}
           toggleEditingPost={toggleEditingPost}
+          toggleModeratingComments={toggleModeratingComments}
           disableComments={disableComments}
           enableComments={enableComments}
           deletePost={deletePost}/>
