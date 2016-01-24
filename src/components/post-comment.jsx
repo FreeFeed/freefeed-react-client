@@ -7,12 +7,77 @@ import Textarea from 'react-textarea-autosize'
 import throbber16 from 'assets/images/throbber-16.gif'
 
 export default class PostComment extends React.Component{
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      editText: this.props.editText || ''
+    }
+  }
+
+  componentWillReceiveProps = (newProps) => {
+    this.setState({
+      editText: newProps.editText || ''
+    })
+  }
+
+  handleChange = (event) => {
+    this.setState({
+      editText: event.target.value
+    });
+  }
+
+  openAnsweringComment = () => {
+    if (this.props.openAnsweringComment) {
+      this.props.openAnsweringComment(this.props.user.username)
+    }
+  }
+
+  setCaretToTextEnd = (event) => {
+    setTimeout(function() {
+      const input = event.target
+      if (typeof input.selectionStart === 'number') {
+        input.selectionStart = input.selectionEnd = input.value.length
+      } else if (input.createTextRange !== undefined) {
+        input.focus()
+        const range = input.createTextRange()
+        range.collapse(false)
+        range.select()
+      }
+    }, 0)
+  }
+
+  updateCommentingText = () => {
+    if (this.props.updateCommentingText) {
+      this.props.updateCommentingText(this.props.id, this.refs.commentText.value)
+    }
+  }
+
+  checkSave = (event) => {
+    const isEnter = event.keyCode === 13
+    const isShiftPressed = event.shiftKey
+    if (isEnter && !isShiftPressed) {
+      event.preventDefault()
+      event.target.blur()
+      setTimeout(this.saveComment, 0)
+    }
+  }
+
+  saveComment = () => {
+    if (!this.props.isSaving) {
+      this.props.saveEditingComment(this.props.id, this.refs.commentText.value)
+      this.refs.commentText.value = ''
+    }
+  }
+
   render() {
     const createdAgo = fromNowOrNow(+this.props.createdAt)
 
     return (
     <div className="comment">
-      <a className="comment-icon fa fa-comment-o" title={createdAgo}></a>
+      <a className="comment-icon fa fa-comment-o"
+         title={createdAgo}
+         onClick={this.openAnsweringComment}></a>
       {this.props.isEditing ? (
         <div className="comment-body">
           <div>
@@ -20,12 +85,15 @@ export default class PostComment extends React.Component{
               autoFocus={!this.props.isSinglePost}
               ref="commentText"
               className="comment-textarea"
-              defaultValue={this.props.editText}
+              value={this.state.editText}
+              onFocus={this.setCaretToTextEnd}
+              onChange={this.handleChange}
               onKeyDown={this.checkSave}
+              onBlur={this.updateCommentingText}
               style={{ overflow: 'hidden', wordWrap: 'break-word' }}
               minRows={2}
               maxRows={10}
-            />
+              maxLength="1500"/>
           </div>
           {this.props.isSinglePost ? (
             <span>
@@ -62,18 +130,4 @@ export default class PostComment extends React.Component{
       )}
     </div>
   )}
-  saveComment = () => {
-    if (!this.props.isSaving) {
-      this.props.saveEditingComment(this.props.id, this.refs.commentText.value)
-      this.refs.commentText.value = ''
-    }
-  }
-  checkSave = (event) => {
-    const isEnter = event.keyCode === 13
-    const isShiftPressed = event.shiftKey
-    if (isEnter && !isShiftPressed) {
-      event.preventDefault()
-      this.saveComment()
-    }
-  }
 }

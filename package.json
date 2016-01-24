@@ -24,6 +24,8 @@
     "numeral": "^1.5.3",
     "raw-loader": "^0.5.1",
     "react": "~0.14.6",
+    "react-addons-css-transition-group": "~0.14.6",
+    "react-addons-pure-render-mixin": "~0.14.6",
     "react-addons-test-utils": "~0.14.6",
     "react-dd-menu": "^1.0.5",
     "react-dom": "~0.14.6",

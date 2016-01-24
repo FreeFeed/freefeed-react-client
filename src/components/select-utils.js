@@ -13,7 +13,7 @@ import {
   deletePost,
 
   // Comment actions
-  toggleCommenting, addComment,
+  toggleCommenting, updateCommentingText, addComment,
   toggleEditingComment, cancelEditingComment, saveEditingComment,
   deleteComment
 } from '../redux/action-creators'
@@ -50,12 +50,18 @@ export const joinPostData = state => postId => {
 
   const createdBy = state.users[post.createdBy]
   const isEditable = (post.createdBy === user.id)
-  const directFeeds = post.postedTo.map(feedId => state.timelines[feedId]).filter(feed => feed && feed.name === 'Directs')
-  const isDirect = directFeeds.length
+
+  // Check if the post is a direct message
+  const directRecipients = post.postedTo
+    .filter((subscriptionId) => {
+      let subscriptionType = (state.subscriptions[subscriptionId]||{}).name
+      return (subscriptionType === 'Directs')
+    })
+  const isDirect = !!directRecipients.length
 
   // Get the list of post's recipients
-  let recipients = post.postedTo
-    .map(function(subscriptionId) {
+  const recipients = post.postedTo
+    .map((subscriptionId) => {
       let userId = (state.subscriptions[subscriptionId]||{}).user
       let subscriptionType = (state.subscriptions[subscriptionId]||{}).name
       if (userId === post.createdBy && subscriptionType === 'Directs') {
@@ -91,6 +97,7 @@ export function postActions(dispatch) {
     saveEditingPost: (postId, newPost) => dispatch(saveEditingPost(postId, newPost)),
     deletePost: (postId) => dispatch(deletePost(postId)),
     toggleCommenting: (postId) => dispatch(toggleCommenting(postId)),
+    updateCommentingText: (postId, commentText) => dispatch(updateCommentingText(postId, commentText)),
     addComment:(postId, commentText) => dispatch(addComment(postId, commentText)),
     likePost: (postId, userId) => dispatch(likePost(postId, userId)),
     unlikePost: (postId, userId) => dispatch(unlikePost(postId, userId)),

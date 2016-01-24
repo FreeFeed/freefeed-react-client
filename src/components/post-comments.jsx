@@ -3,7 +3,13 @@ import PostComment from './post-comment'
 import MoreCommentsWrapper from './more-comments-wrapper'
 import {preventDefault} from '../utils'
 
-const renderComment = commentEdit => comment => (<PostComment key={comment.id} {...comment} {...commentEdit}/>)
+const renderComment = (openAnsweringComment, commentEdit) => comment => (
+  <PostComment
+    key={comment.id}
+    {...comment}
+    openAnsweringComment={openAnsweringComment}
+    {...commentEdit}/>
+)
 
 const renderAddingComment = props => (
   <PostComment
@@ -11,6 +17,7 @@ const renderAddingComment = props => (
     isEditing={true}
     isSinglePost={props.post.isSinglePost}
     editText={props.post.newCommentText}
+    updateCommentingText={props.updateCommentingText}
     saveEditingComment={props.addComment}
     toggleEditingComment={props.toggleCommenting}
     errorString={props.commentError}
@@ -40,7 +47,16 @@ const renderAddCommentLink = (props, disabledForOthers) => {
 }
 
 export default (props) => {
-  const commentMapper = renderComment(props.commentEdit)
+  const openAnsweringComment = (username) => {
+    if (!props.post.isCommenting && !props.post.isSinglePost) {
+      props.toggleCommenting(props.post.id)
+    }
+
+    const updatedCommentText = `@${username} ` + (props.post.newCommentText || '')
+    props.updateCommentingText(props.post.id, updatedCommentText)
+  }
+
+  const commentMapper = renderComment(openAnsweringComment, props.commentEdit)
   const first = props.comments[0]
   const last = props.comments.length > 1 && props.comments[props.comments.length - 1]
   const middle = props.comments.slice(1, props.comments.length - 1).map(commentMapper)
@@ -62,7 +78,7 @@ export default (props) => {
       {last ? commentMapper(last) : false}
       {canAddComment
         ? (props.post.isCommenting
-            ? renderAddingComment(props)
+            ? renderAddingComment(props, openAnsweringComment)
             : renderAddCommentLink(props, disabledForOthers))
         : false}
     </div>

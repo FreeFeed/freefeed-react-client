@@ -71,6 +71,7 @@ export function getUserFeed(username, offset = 0){
   return {
     type: GET_USER_FEED,
     apiRequest: Api.getUserFeed,
+    nonAuthRequest: true,
     payload: {username, offset},
   }
 }
@@ -157,6 +158,16 @@ export function toggleCommenting(postId){
   return {
     type: TOGGLE_COMMENTING,
     postId,
+  }
+}
+
+export const UPDATE_COMMENTING_TEXT = 'UPDATE_COMMENTING_TEXT'
+
+export function updateCommentingText(postId, commentText) {
+  return {
+    type: UPDATE_COMMENTING_TEXT,
+    postId,
+    commentText
   }
 }
 
@@ -367,10 +378,10 @@ export function signUpEmpty(errorMessage){
 
 export const UPDATE_USER = 'UPDATE_USER'
 
-export function updateUser(id, screenName, email, isPrivate){
+export function updateUser(id, screenName, email, isPrivate, description) {
   return {
     type: UPDATE_USER,
-    payload: {id, screenName, email, isPrivate},
+    payload: {id, screenName, email, isPrivate, description},
     apiRequest: Api.updateUser,
   }
 }
@@ -410,6 +421,7 @@ export function getSinglePost(postId){
   return {
     type: GET_SINGLE_POST,
     apiRequest: Api.getPostWithAllCommentsAndLikes,
+    nonAuthRequest: true,
     payload: {postId},
   }
 }
@@ -471,6 +483,16 @@ export const TOGGLE_HIDDEN_POSTS = 'TOGGLE_HIDDEN_POSTS'
 export function toggleHiddenPosts() {
   return {
     type: TOGGLE_HIDDEN_POSTS
+  }
+}
+
+export const SUBSCRIBERS = 'SUBSCRIBERS'
+
+export function subscribers(username){
+  return {
+    type: SUBSCRIBERS,
+    apiRequest: Api.getSubscribers,
+    payload: {username},
   }
 }
 

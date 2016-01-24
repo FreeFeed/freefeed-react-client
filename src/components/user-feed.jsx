@@ -41,6 +41,7 @@ const UserFeedHandler = (props) => {
 
 function selectState(state) {
   const user = state.user
+  const authenticated = state.authenticated
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state))
   const createPostViewState = state.createPostViewState
   const createPostForm = joinCreatePostData(state)
@@ -51,9 +52,10 @@ function selectState(state) {
   .filter(user => user.username === state.router.params.userName)[0]
 
   const statusExtension = {
+    authenticated,
     me: !foundUser || foundUser.username === user.username,
-    subscribed: foundUser && user.subscriptions.indexOf(foundUser.id) !== -1,
-    blocked: foundUser && user.banIds.indexOf(foundUser.id) > -1,
+    subscribed: authenticated && foundUser && (user.subscriptions.indexOf(foundUser.id) !== -1),
+    blocked: authenticated && foundUser && (user.banIds.indexOf(foundUser.id) > -1),
   }
 
   const viewUser = {...(foundUser || state.user), ...statusExtension}

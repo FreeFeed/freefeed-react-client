@@ -13,6 +13,10 @@ export default class UserSettingsForm extends React.Component {
           <label htmlFor='email'>Email:</label>
           <input id='email' className='form-control' name='email' type='text' defaultValue={this.props.user.email} onChange={this.updateSetting('email')}/>
         </div>
+        <div className='form-group'>
+          <label htmlFor='description'>Description:</label>
+          <textarea id='description' className='form-control' name='description' defaultValue={this.props.user.description} onChange={this.updateSetting('description')} maxLength="1500"/>
+        </div>
         <div className='checkbox p-settings-private'>
           <label>
             <input className='ember-checkbox' type='checkbox' name='isPrivate' defaultChecked={this.props.user.isPrivate == '1' ? true : false} onChange={this.updateChecked}/>
@@ -36,7 +40,7 @@ export default class UserSettingsForm extends React.Component {
   }
   updateUser = () => {
     if (!this.props.isSaving){
-      this.props.updateUser(this.props.user.id, this.props.screenName, this.props.email, this.props.isPrivate)
+      this.props.updateUser(this.props.user.id, this.props.screenName, this.props.email, this.props.isPrivate, this.props.description)
     }
   }
   updateSetting = (setting) => (e) => {

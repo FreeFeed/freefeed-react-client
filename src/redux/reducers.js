@@ -296,6 +296,14 @@ export function postsViewState(state = {}, action) {
           newCommentText: state[action.postId].newCommentText || '' }
         }
     }
+    case ActionCreators.UPDATE_COMMENTING_TEXT: {
+      const postState = state[action.postId]
+      return {...state,
+        [action.postId]: {...postState,
+          newCommentText: action.commentText
+        }
+      }
+    }
     case request(ActionCreators.ADD_COMMENT): {
       const post = state[action.payload.postId]
       return {...state,
@@ -1063,6 +1071,35 @@ export function recentGroups(state = [], action) {
     return subscribers.filter(i => i.type == 'group')
                       .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
                       .slice(0, GROUPS_SIDEBAR_LIST_LENGTH)
+  }
+
+  return state
+}
+
+// for /:username/subscribers
+export function usernameSubscribers(state = {}, action) {
+  if (action.type == request(ActionCreators.SUBSCRIBERS)) {
+    return {
+      payload: [],
+      isPending: true,
+      errorString: ''
+    }
+  }
+
+  if (action.type == response(ActionCreators.SUBSCRIBERS)) {
+    return {
+      payload: (action.payload.subscribers || []).map(userParser),
+      isPending: false,
+      errorString: ''
+    }
+  }
+
+  if (action.type == fail(ActionCreators.SUBSCRIBERS)) {
+    return {
+      payload: [],
+      isPending: false,
+      errorString: 'error occured while fetching subscribers'
+    }
   }
 
   return state
