@@ -15,7 +15,7 @@ export default class UserSettingsForm extends React.Component {
         </div>
         <div className='form-group'>
           <label htmlFor='description'>Description:</label>
-          <textarea id='description' className='form-control' name='description' defaultValue={this.props.user.description} onChange={this.updateSetting('description')} maxlength="1500"/>
+          <textarea id='description' className='form-control' name='description' defaultValue={this.props.user.description} onChange={this.updateSetting('description')} maxLength="1500"/>
         </div>
         <div className='checkbox p-settings-private'>
           <label>
