@@ -127,11 +127,12 @@ export default class CreatePost extends React.Component {
           <Textarea
             className="post-textarea"
             ref="postText"
+            onFocus={this.props.expandSendTo}
+            onKeyDown={this.checkSave}
             onChange={this.checkCreatePostAvailability}
             minRows={3}
             maxRows={10}
-            onKeyDown={this.checkSave}
-            onFocus={this.props.expandSendTo}/>
+            maxLength="1500"/>
         </div>
 
         <div className="post-edit-options">

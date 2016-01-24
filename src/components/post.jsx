@@ -254,7 +254,8 @@ export default class Post extends React.Component {
                   onChange={editingPostTextChange}
                   autoFocus={true}
                   minRows={2}
-                  maxRows={10}/>
+                  maxRows={10}
+                  maxLength="1500"/>
               </div>
 
               <div className="post-edit-options">
