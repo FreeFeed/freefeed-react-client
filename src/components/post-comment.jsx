@@ -93,7 +93,7 @@ export default class PostComment extends React.Component{
               style={{ overflow: 'hidden', wordWrap: 'break-word' }}
               minRows={2}
               maxRows={10}
-            />
+              maxLength="1500"/>
           </div>
           {this.props.isSinglePost ? (
             <span>
