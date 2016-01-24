@@ -234,6 +234,15 @@ export function unhidePost(postId) {
   }
 }
 
+export const TOGGLE_MODERATING_COMMENTS = 'TOGGLE_MODERATING_COMMENTS'
+
+export function toggleModeratingComments(postId) {
+  return {
+    type: TOGGLE_MODERATING_COMMENTS,
+    postId
+  }
+}
+
 export const DISABLE_COMMENTS = 'DISABLE_COMMENTS'
 
 export function disableComments(postId) {

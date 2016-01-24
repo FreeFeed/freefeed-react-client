@@ -458,12 +458,22 @@ export function postsViewState(state = {}, action) {
       }
     }
 
+    case ActionCreators.TOGGLE_MODERATING_COMMENTS: {
+      const post = state[action.postId]
+      return {...state,
+        [post.id]: {...post,
+          isModeratingComments: !post.isModeratingComments
+        }
+      }
+    }
+
     case request(ActionCreators.DISABLE_COMMENTS): {
       const post = state[action.payload.postId]
       return {...state,
         [post.id]: {...post,
           isDisablingComments: true
-        }}
+        }
+      }
     }
     case response(ActionCreators.DISABLE_COMMENTS): {
       const post = state[action.request.postId]

@@ -3,11 +3,12 @@ import PostComment from './post-comment'
 import MoreCommentsWrapper from './more-comments-wrapper'
 import {preventDefault} from '../utils'
 
-const renderComment = (openAnsweringComment, commentEdit) => comment => (
+const renderComment = (openAnsweringComment, isModeratingComments, commentEdit) => comment => (
   <PostComment
     key={comment.id}
     {...comment}
     openAnsweringComment={openAnsweringComment}
+    isModeratingComments={isModeratingComments}
     {...commentEdit}/>
 )
 
@@ -56,7 +57,7 @@ export default (props) => {
     props.updateCommentingText(props.post.id, updatedCommentText)
   }
 
-  const commentMapper = renderComment(openAnsweringComment, props.commentEdit)
+  const commentMapper = renderComment(openAnsweringComment, props.post.isModeratingComments, props.commentEdit)
   const first = props.comments[0]
   const last = props.comments.length > 1 && props.comments[props.comments.length - 1]
   const middle = props.comments.slice(1, props.comments.length - 1).map(commentMapper)
