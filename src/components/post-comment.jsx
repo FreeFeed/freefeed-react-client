@@ -47,6 +47,29 @@ export default class PostComment extends React.Component{
     }, 0)
   }
 
+  updateCommentingText = () => {
+    if (this.props.updateCommentingText) {
+      this.props.updateCommentingText(this.props.id, this.refs.commentText.value)
+    }
+  }
+
+  checkSave = (event) => {
+    const isEnter = event.keyCode === 13
+    const isShiftPressed = event.shiftKey
+    if (isEnter && !isShiftPressed) {
+      event.preventDefault()
+      event.target.blur()
+      setTimeout(this.saveComment, 0)
+    }
+  }
+
+  saveComment = () => {
+    if (!this.props.isSaving) {
+      this.props.saveEditingComment(this.props.id, this.refs.commentText.value)
+      this.refs.commentText.value = ''
+    }
+  }
+
   render() {
     const createdAgo = fromNowOrNow(+this.props.createdAt)
 
@@ -107,24 +130,4 @@ export default class PostComment extends React.Component{
       )}
     </div>
   )}
-  updateCommentingText = () => {
-    if (this.props.updateCommentingText) {
-      this.props.updateCommentingText(this.props.id, this.refs.commentText.value)
-    }
-  }
-  saveComment = () => {
-    if (!this.props.isSaving) {
-      this.props.saveEditingComment(this.props.id, this.refs.commentText.value)
-      this.refs.commentText.value = ''
-    }
-  }
-  checkSave = (event) => {
-    const isEnter = event.keyCode === 13
-    const isShiftPressed = event.shiftKey
-    if (isEnter && !isShiftPressed) {
-      event.preventDefault()
-      event.target.blur()
-      setTimeout(this.saveComment, 0)
-    }
-  }
 }
