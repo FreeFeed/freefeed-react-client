@@ -33,6 +33,20 @@ export default class PostComment extends React.Component{
     }
   }
 
+  setCaretToTextEnd = (event) => {
+    setTimeout(function() {
+      const input = event.target
+      if (typeof input.selectionStart === 'number') {
+        input.selectionStart = input.selectionEnd = input.value.length
+      } else if (input.createTextRange !== undefined) {
+        input.focus()
+        const range = input.createTextRange()
+        range.collapse(false)
+        range.select()
+      }
+    }, 0)
+  }
+
   render() {
     const createdAgo = fromNowOrNow(+this.props.createdAt)
 
@@ -49,9 +63,10 @@ export default class PostComment extends React.Component{
               ref="commentText"
               className="comment-textarea"
               value={this.state.editText}
+              onFocus={this.setCaretToTextEnd}
               onChange={this.handleChange}
-              onBlur={this.updateCommentingText}
               onKeyDown={this.checkSave}
+              onBlur={this.updateCommentingText}
               style={{ overflow: 'hidden', wordWrap: 'break-word' }}
               minRows={2}
               maxRows={10}
@@ -108,7 +123,8 @@ export default class PostComment extends React.Component{
     const isShiftPressed = event.shiftKey
     if (isEnter && !isShiftPressed) {
       event.preventDefault()
-      this.saveComment()
+      event.target.blur()
+      setTimeout(this.saveComment, 0)
     }
   }
 }
