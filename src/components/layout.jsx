@@ -122,7 +122,7 @@ class Layout extends React.Component {
         <header className="row">
           <div className="col-xs-9 col-sm-6">
             <h1>
-              <IndexLink to="/">FreeFeed-beta</IndexLink>
+              <IndexLink to="/">FreeFeed</IndexLink>
             </h1>
           </div>
 
