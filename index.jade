@@ -3,7 +3,7 @@ html(lang='en')
   head
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width,initial-scale=1')
-    title Reactive Pepyatka
+    title FreeFeed
     link(rel='stylesheet', href='[[ assets/vendor-css/font-awesome.min.css ]]')
     unless opts.hot
         link(rel='stylesheet', href='[[ common-*.css ]]')
@@ -11,6 +11,10 @@ html(lang='en')
     noscript
       style.
         .jsonly { display: none }
+    style.
+      body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 16px }
+      h1 { font-size: 36px; font-weight: 500 }
+      h1 a { color: #222; text-decoration: none }
     link(rel='icon', href='[[ assets/images/favicon.ico ]]', type='image/x-icon')
   body
     #app
@@ -19,9 +23,9 @@ html(lang='en')
           .col-md-4
             .header
               h1.title
-                a(href='/') freefeed
+                a(href='/') FreeFeed
               .jsonly
-                p Hold on there, tiger.
+                p Loading...
         .row
           .col-md-9
             .content
