@@ -10,8 +10,10 @@ test('unauthenticated action clears reducer state', t => {
 
   ordinaryReducersReduced.forEach(reducedResult => t.equal(Object.keys(reducedResult).length, 0))
 
-  const feedViewStateReduced = feedViewState({feed: ['1','2']}, unauthenticated())
-  t.equal(feedViewStateReduced.feed.length, 0)
+  const feedViewStateReduced = feedViewState({visibleEntries: ['1','2'], hiddenEntries:['3','4'], isHiddenRevealed: true}, unauthenticated())
+  t.equal(feedViewStateReduced.visibleEntries.length, 0)
+  t.equal(feedViewStateReduced.hiddenEntries.length, 0)
+  t.notOk(feedViewStateReduced.isHiddenRevealed)
 
   t.end()
 })
