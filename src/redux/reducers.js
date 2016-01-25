@@ -1086,9 +1086,9 @@ export function recentGroups(state = [], action) {
   return state
 }
 
-// for /:username/subscribers
-export function usernameSubscribers(state = {}, action) {
-  if (action.type == request(ActionCreators.SUBSCRIBERS)) {
+
+const handleSubs = (state, action, type) => {
+  if (action.type == request(type)) {
     return {
       payload: [],
       isPending: true,
@@ -1096,7 +1096,7 @@ export function usernameSubscribers(state = {}, action) {
     }
   }
 
-  if (action.type == response(ActionCreators.SUBSCRIBERS)) {
+  if (action.type == response(type)) {
     return {
       payload: (action.payload.subscribers || []).map(userParser),
       isPending: false,
@@ -1104,7 +1104,7 @@ export function usernameSubscribers(state = {}, action) {
     }
   }
 
-  if (action.type == fail(ActionCreators.SUBSCRIBERS)) {
+  if (action.type == fail(type)) {
     return {
       payload: [],
       isPending: false,
@@ -1113,4 +1113,14 @@ export function usernameSubscribers(state = {}, action) {
   }
 
   return state
+}
+
+// for /:username/subscribers
+export function usernameSubscribers(state = {}, action) {
+  return handleSubs(state, action, ActionCreators.SUBSCRIBERS)
+}
+
+// for /:username/subscriptions
+export function usernameSubscriptions(state = {}, action) {
+  return handleSubs(state, action, ActionCreators.SUBSCRIPTIONS)
 }

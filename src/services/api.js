@@ -280,3 +280,7 @@ export function getUserLikes({username, offset}){
 export function getSubscribers({username}){
   return fetch(`${apiConfig.host}/v1/users/${username}/subscribers`, getRequestOptions())
 }
+
+export function getSubscriptions({username}){
+  return fetch(`${apiConfig.host}/v1/users/${username}/subscriptions`, getRequestOptions())
+}

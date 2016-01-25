@@ -24,6 +24,7 @@ import Settings from './components/settings'
 import SinglePost from './components/single-post'
 import UserFeed from './components/user-feed'
 import Subscribers from './components/subscribers'
+import Subscriptions from './components/subscriptions'
 
 const store = configureStore()
 
@@ -52,6 +53,7 @@ ReactDOM.render(
         <Route name='direct' path='filter/direct' component={Discussions} onEnter={boundRouteActions('direct')}/>
         <Route name='userFeed' path='/:userName' component={UserFeed} onEnter={boundRouteActions('userFeed')}/>
         <Route name='subscribers' path='/:userName/subscribers' component={Subscribers} onEnter={boundRouteActions('subscribers')}/>
+        <Route name='subscriptions' path='/:userName/subscriptions' component={Subscriptions} onEnter={boundRouteActions('subscriptions')}/>
         <Route name='userComments' path='/:userName/comments' component={UserFeed} onEnter={boundRouteActions('userComments')}/>
         <Route name='userLikes' path='/:userName/likes' component={UserFeed} onEnter={boundRouteActions('userLikes')}/>
         <Route name='post' path='/:userName/:postId' component={SinglePost} onEnter={boundRouteActions('post')}/>

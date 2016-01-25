@@ -505,6 +505,16 @@ export function subscribers(username){
   }
 }
 
+export const SUBSCRIPTIONS = 'SUBSCRIPTIONS'
+
+export function subscriptions(username){
+  return {
+    type: SUBSCRIPTIONS,
+    apiRequest: Api.getSubscriptions,
+    payload: {username},
+  }
+}
+
 export const feedGeneratingActions = [HOME, DISCUSSIONS, GET_USER_FEED, GET_USER_COMMENTS, GET_USER_LIKES, DIRECT]
 export const feedRequests = feedGeneratingActions.map(request)
 export const feedResponses = feedGeneratingActions.map(response)
