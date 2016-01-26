@@ -804,6 +804,14 @@ export function users(state = {}, action) {
         [userId]: {...oldUser, ...newUser}
       }
     }
+    case response(ActionCreators.UPDATE_GROUP): {
+      let userId = action.payload.groups.id
+      let oldUser = state[userId] || {}
+      let newUser = userParser(action.payload.groups)
+      return {...state,
+        [userId]: {...oldUser, ...newUser}
+      }
+    }
     case response(ActionCreators.SHOW_MORE_COMMENTS):
     case response(ActionCreators.SHOW_MORE_LIKES_ASYNC):
     case response(ActionCreators.GET_SINGLE_POST):
@@ -1076,11 +1084,24 @@ export function createPostForm(state = {}, action) {
 const GROUPS_SIDEBAR_LIST_LENGTH = 4
 
 export function recentGroups(state = [], action) {
-  if (action.type == response(ActionCreators.WHO_AM_I)) {
-    const subscribers = (action.payload.subscribers || [])
-    return subscribers.filter(i => i.type == 'group')
-                      .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
-                      .slice(0, GROUPS_SIDEBAR_LIST_LENGTH)
+  switch (action.type) {
+    case response(ActionCreators.WHO_AM_I): {
+      const subscribers = (action.payload.subscribers || [])
+      return subscribers.filter(i => i.type == 'group')
+                        .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
+                        .slice(0, GROUPS_SIDEBAR_LIST_LENGTH)
+    }
+    case response(ActionCreators.UPDATE_GROUP): {
+      const groupId = (action.payload.groups.id || null)
+      const groupIndex = _.findIndex(state, { 'id': groupId })
+      if (groupIndex > -1) {
+        const oldGroup = state[groupIndex]
+        const newGroup = (action.payload.groups || {})
+        state[groupIndex] = {...oldGroup, ...newGroup}
+        return [...state]
+      }
+      return state
+    }
   }
 
   return state
