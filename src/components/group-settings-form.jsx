@@ -1,5 +1,6 @@
 import React from 'react'
 import {preventDefault} from '../utils'
+import throbber16 from 'assets/images/throbber-16.gif'
 
 export default class GroupSettingsForm extends React.Component {
   constructor(props) {
@@ -43,6 +44,11 @@ export default class GroupSettingsForm extends React.Component {
         </div>
         <p>
           <button className="btn btn-default" type="submit">Update</button>
+          {this.props.isSaving ? (
+            <span className="settings-throbber">
+              <img width="16" height="16" src={throbber16}/>
+            </span>
+          ) : false}
         </p>
         {this.props.success ? (
           <div className="alert alert-info" role="alert">Updated!</div>
