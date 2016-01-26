@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import _ from 'lodash'
 
@@ -9,7 +10,7 @@ const GroupSettings = (props) => (
   <div className="content">
     <div className="box">
       <div className="box-header-timeline">
-        Settings
+        <Link to={`/${props.group.username}`}>{props.group.username}</Link>: group settings
       </div>
       <div className="box-body">
         <GroupSettingsForm
