@@ -947,6 +947,21 @@ export function userPhotoForm(state=DEFAULT_PHOTO_FORM_STATE, action){
   return state
 }
 
+export function groupSettingsForm(state={saved: false}, action) {
+  switch (action.type) {
+    case request(ActionCreators.UPDATE_GROUP): {
+      return {...state, isSaving: true, success: false, error: false}
+    }
+    case response(ActionCreators.UPDATE_GROUP): {
+      return {...state, isSaving: false, success: true, error: false}
+    }
+    case fail(ActionCreators.UPDATE_GROUP): {
+      return {...state, isSaving: false, success: false, error: true}
+    }
+  }
+  return state
+}
+
 export function routeLoadingState(state = false, action){
   if (ActionCreators.isFeedRequest(action)){
     return true

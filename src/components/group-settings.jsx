@@ -14,7 +14,8 @@ const GroupSettings = (props) => (
       <div className="box-body">
         <GroupSettingsForm
           group={props.group}
-          updateGroup={props.updateGroup}/>
+          updateGroup={props.updateGroup}
+          {...props.groupSettingsForm}/>
       </div>
     </div>
   </div>
@@ -22,7 +23,8 @@ const GroupSettings = (props) => (
 
 function mapStateToProps(state) {
   return {
-    group: (_.find(state.users, { 'username': state.router.params.userName }) || {})
+    group: (_.find(state.users, { 'username': state.router.params.userName }) || {}),
+    groupSettingsForm: state.groupSettingsForm
   }
 }
 
