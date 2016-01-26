@@ -58,8 +58,8 @@ export default ({user, signOut, recentGroups}) => (
       </div>
       <div className='box-body'>
         <ul>
-          <li>News</li>
-          <li>Support</li>
+          <li><Link to='/freefeed'>News</Link></li>
+          <li><Link to='/support'>Support</Link></li>
         </ul>
       </div>
       <div className='box-footer'>
@@ -86,9 +86,6 @@ export default ({user, signOut, recentGroups}) => (
       <div className='box-header-groups'>
         Coin Jar
       </div>
-      <div className='box-body'>
-      </div>
-
       <div className='box-footer'>
         <p style={{marginBottom: '10px'}}>Subscribe to Freefeed today! Arrangement is plain and simple — you wire funds to Freefeed, it gets better every week.</p>
         <span style={{display: 'block', marginLeft: 'auto', marginRight: 'auto'}}>
