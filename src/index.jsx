@@ -25,6 +25,7 @@ import SinglePost from './components/single-post'
 import UserFeed from './components/user-feed'
 import Subscribers from './components/subscribers'
 import Subscriptions from './components/subscriptions'
+import GroupSettings from './components/group-settings'
 
 const store = configureStore()
 
@@ -49,6 +50,7 @@ ReactDOM.render(
         <Route path='signin' component={Signin}/>
         <Route path='signup' component={Signup}/>
         <Route path='settings' component={Settings}/>
+        <Route name='groupSettings' path='/:userName/settings' component={GroupSettings} onEnter={boundRouteActions('getUserInfo')}/>
         <Route name='discussions' path='filter/discussions' component={Discussions} onEnter={boundRouteActions('discussions')}/>
         <Route name='direct' path='filter/direct' component={Discussions} onEnter={boundRouteActions('direct')}/>
         <Route name='userFeed' path='/:userName' component={UserFeed} onEnter={boundRouteActions('userFeed')}/>

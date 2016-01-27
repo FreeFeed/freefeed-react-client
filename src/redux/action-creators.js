@@ -525,6 +525,16 @@ export function getUserInfo(username) {
   }
 }
 
+export const UPDATE_GROUP = 'UPDATE_GROUP'
+
+export function updateGroup(id, screenName, description) {
+  return {
+    type: UPDATE_GROUP,
+    payload: {id, screenName, description},
+    apiRequest: Api.updateGroup
+  }
+}
+
 export const feedGeneratingActions = [HOME, DISCUSSIONS, GET_USER_FEED, GET_USER_COMMENTS, GET_USER_LIKES, DIRECT]
 export const feedRequests = feedGeneratingActions.map(request)
 export const feedResponses = feedGeneratingActions.map(response)

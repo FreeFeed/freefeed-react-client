@@ -288,3 +288,15 @@ export function getSubscriptions({username}) {
 export function getUserInfo({username}) {
   return fetch(`${apiConfig.host}/v1/users/${username}`, getRequestOptions())
 }
+
+export function updateGroup({id, screenName, description}) {
+  return fetch(`${apiConfig.host}/v1/users/${id}`, {
+    'method': 'PUT',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+    'body': JSON.stringify({user: {screenName, description}})
+  })
+}
