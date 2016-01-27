@@ -28,7 +28,7 @@ import * as Api from '../services/api'
 
 export const WHO_AM_I = 'WHO_AM_I'
 
-export function whoAmI(){
+export function whoAmI() {
   return {
     type: WHO_AM_I,
     apiRequest: Api.getWhoAmI,
@@ -37,7 +37,7 @@ export function whoAmI(){
 
 export const HOME = 'HOME'
 
-export function home(offset = 0){
+export function home(offset = 0) {
   return {
     type: HOME,
     apiRequest: Api.getHome,
@@ -47,7 +47,7 @@ export function home(offset = 0){
 
 export const DISCUSSIONS = 'DISCUSSIONS'
 
-export function discussions(offset = 0){
+export function discussions(offset = 0) {
   return {
     type: DISCUSSIONS,
     apiRequest: Api.getDiscussions,
@@ -57,7 +57,7 @@ export function discussions(offset = 0){
 
 export const DIRECT = 'DIRECT'
 
-export function direct(offset = 0){
+export function direct(offset = 0) {
   return {
     type: DIRECT,
     apiRequest: Api.getDirect,
@@ -67,7 +67,7 @@ export function direct(offset = 0){
 
 export const GET_USER_FEED = 'GET_USER_FEED'
 
-export function getUserFeed(username, offset = 0){
+export function getUserFeed(username, offset = 0) {
   return {
     type: GET_USER_FEED,
     apiRequest: Api.getUserFeed,
@@ -78,7 +78,7 @@ export function getUserFeed(username, offset = 0){
 
 export const SHOW_MORE_COMMENTS = 'SHOW_MORE_COMMENTS'
 
-export function showMoreComments(postId){
+export function showMoreComments(postId) {
   return {
     type: SHOW_MORE_COMMENTS,
     apiRequest: Api.getPostWithAllCommentsAndLikes,
@@ -88,7 +88,7 @@ export function showMoreComments(postId){
 
 export const SHOW_MORE_LIKES = 'SHOW_MORE_LIKES'
 
-export function showMoreLikes(postId){
+export function showMoreLikes(postId) {
   return {
     type: SHOW_MORE_LIKES,
     payload: {postId},
@@ -97,7 +97,7 @@ export function showMoreLikes(postId){
 
 export const SHOW_MORE_LIKES_ASYNC = 'SHOW_MORE_LIKES_ASYNC'
 
-export function showMoreLikesAsync(postId){
+export function showMoreLikesAsync(postId) {
   return {
     type: SHOW_MORE_LIKES_ASYNC,
     apiRequest: Api.getLikesOnly,
@@ -107,7 +107,7 @@ export function showMoreLikesAsync(postId){
 
 export const SHOW_MORE_LIKES_SYNC = 'SHOW_MORE_LIKES_SYNC'
 
-export function showMoreLikesSync(postId){
+export function showMoreLikesSync(postId) {
   return {
     type: SHOW_MORE_LIKES_SYNC,
     payload: {postId},
@@ -116,7 +116,7 @@ export function showMoreLikesSync(postId){
 
 export const TOGGLE_EDITING_POST = 'TOGGLE_EDITING_POST'
 
-export function toggleEditingPost(postId, newValue){
+export function toggleEditingPost(postId, newValue) {
   return {
     type: TOGGLE_EDITING_POST,
     payload: {postId, newValue},
@@ -125,7 +125,7 @@ export function toggleEditingPost(postId, newValue){
 
 export const CANCEL_EDITING_POST = 'CANCEL_EDITING_POST'
 
-export function cancelEditingPost(postId, newValue){
+export function cancelEditingPost(postId, newValue) {
   return {
     type: CANCEL_EDITING_POST,
     payload: {postId, newValue},
@@ -134,7 +134,7 @@ export function cancelEditingPost(postId, newValue){
 
 export const SAVE_EDITING_POST = 'SAVE_EDITING_POST'
 
-export function saveEditingPost(postId, newPost){
+export function saveEditingPost(postId, newPost) {
   return {
     type: SAVE_EDITING_POST,
     apiRequest: Api.updatePost,
@@ -144,7 +144,7 @@ export function saveEditingPost(postId, newPost){
 
 export const DELETE_POST = 'DELETE_POST'
 
-export function deletePost(postId){
+export function deletePost(postId) {
   return {
     type: DELETE_POST,
     apiRequest: Api.deletePost,
@@ -154,7 +154,7 @@ export function deletePost(postId){
 
 export const TOGGLE_COMMENTING = 'TOGGLE_COMMENTING'
 
-export function toggleCommenting(postId){
+export function toggleCommenting(postId) {
   return {
     type: TOGGLE_COMMENTING,
     postId,
@@ -173,7 +173,7 @@ export function updateCommentingText(postId, commentText) {
 
 export const ADD_COMMENT = 'ADD_COMMENT'
 
-export function addComment(postId, commentText){
+export function addComment(postId, commentText) {
   return {
     type: ADD_COMMENT,
     apiRequest: Api.addComment,
@@ -186,7 +186,7 @@ export function addComment(postId, commentText){
 
 export const LIKE_POST = 'LIKE_POST'
 
-export function likePost(postId, userId){
+export function likePost(postId, userId) {
   return {
     type: LIKE_POST,
     apiRequest: Api.likePost,
@@ -199,7 +199,7 @@ export function likePost(postId, userId){
 
 export const UNLIKE_POST = 'UNLIKE_POST'
 
-export function unlikePost(postId, userId){
+export function unlikePost(postId, userId) {
   return {
     type: UNLIKE_POST,
     apiRequest: Api.unlikePost,
@@ -269,7 +269,7 @@ export function enableComments(postId) {
 
 export const TOGGLE_EDITING_COMMENT = 'TOGGLE_EDITING_COMMENT'
 
-export function toggleEditingComment(commentId){
+export function toggleEditingComment(commentId) {
   return {
     type: TOGGLE_EDITING_COMMENT,
     commentId,
@@ -278,7 +278,7 @@ export function toggleEditingComment(commentId){
 
 export const SAVE_EDITING_COMMENT = 'SAVE_EDITING_COMMENT'
 
-export function saveEditingComment(commentId, newCommentBody){
+export function saveEditingComment(commentId, newCommentBody) {
   return {
     type: SAVE_EDITING_COMMENT,
     apiRequest: Api.updateComment,
@@ -288,11 +288,11 @@ export function saveEditingComment(commentId, newCommentBody){
 
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 
-export function deleteComment(commentId){
+export function deleteComment(commentId) {
   return {
     type: DELETE_COMMENT,
-    payload: {commentId},
     apiRequest: Api.deleteComment,
+    payload: {commentId},
   }
 }
 
@@ -301,8 +301,8 @@ export const CREATE_POST = 'CREATE_POST'
 export function createPost(feeds, postText, attachmentIds, more) {
   return {
     type: CREATE_POST,
+    apiRequest: Api.createPost,
     payload: {feeds, postText, attachmentIds, more},
-    apiRequest: Api.createPost
   }
 }
 
@@ -326,7 +326,7 @@ export function removeAttachment(postId, attachmentId) {
 
 export const SIGN_IN_CHANGE = 'SIGN_IN_CHANGE'
 
-export function signInChange(username, password){
+export function signInChange(username, password) {
   return {
     type: SIGN_IN_CHANGE,
     username,
@@ -336,7 +336,7 @@ export function signInChange(username, password){
 
 export const SIGN_IN = 'SIGN_IN'
 
-export function signIn(username, password){
+export function signIn(username, password) {
   return {
     type: SIGN_IN,
     apiRequest: Api.signIn,
@@ -350,7 +350,7 @@ export function signIn(username, password){
 
 export const SIGN_IN_EMPTY = 'SIGN_IN_EMPTY'
 
-export function signInEmpty(){
+export function signInEmpty() {
   return {
     type: SIGN_IN_EMPTY
   }
@@ -358,7 +358,7 @@ export function signInEmpty(){
 
 export const SIGN_UP_CHANGE = 'SIGN_UP_CHANGE'
 
-export function signUpChange(signUpData){
+export function signUpChange(signUpData) {
   return {
     type: SIGN_UP_CHANGE,
     ...signUpData,
@@ -367,7 +367,7 @@ export function signUpChange(signUpData){
 
 export const SIGN_UP = 'SIGN_UP'
 
-export function signUp(signUpData){
+export function signUp(signUpData) {
   return {
     type: SIGN_UP,
     apiRequest: Api.signUp,
@@ -378,7 +378,7 @@ export function signUp(signUpData){
 
 export const SIGN_UP_EMPTY = 'SIGN_UP_EMPTY'
 
-export function signUpEmpty(errorMessage){
+export function signUpEmpty(errorMessage) {
   return {
     type: SIGN_UP_EMPTY,
     message: errorMessage
@@ -390,14 +390,14 @@ export const UPDATE_USER = 'UPDATE_USER'
 export function updateUser(id, screenName, email, isPrivate, description) {
   return {
     type: UPDATE_USER,
-    payload: {id, screenName, email, isPrivate, description},
     apiRequest: Api.updateUser,
+    payload: {id, screenName, email, isPrivate, description},
   }
 }
 
 export const USER_SETTINGS_CHANGE = 'USER_SETTINGS_CHANGE'
 
-export function userSettingsChange(payload){
+export function userSettingsChange(payload) {
   return {
     type: USER_SETTINGS_CHANGE,
     payload,
@@ -406,7 +406,7 @@ export function userSettingsChange(payload){
 
 export const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
 
-export function updatePassword(payload){
+export function updatePassword(payload) {
   return {
     type: UPDATE_PASSWORD,
     apiRequest: Api.updatePassword,
@@ -416,7 +416,7 @@ export function updatePassword(payload){
 
 export const UPDATE_USER_PHOTO = 'UPDATE_USER_PHOTO'
 
-export function updateUserPhoto(picture){
+export function updateUserPhoto(picture) {
   return {
     type: UPDATE_USER_PHOTO,
     apiRequest: Api.updateProfilePicture,
@@ -426,7 +426,7 @@ export function updateUserPhoto(picture){
 
 export const GET_SINGLE_POST = 'GET_SINGLE_POST'
 
-export function getSinglePost(postId){
+export function getSinglePost(postId) {
   return {
     type: GET_SINGLE_POST,
     apiRequest: Api.getPostWithAllCommentsAndLikes,
@@ -437,9 +437,9 @@ export function getSinglePost(postId){
 
 const userChangeAction = (type, apiRequest) => (payload) => {
   return {
-    payload,
     type,
     apiRequest,
+    payload,
   }
 }
 
@@ -461,27 +461,27 @@ export const unsubscribe = userChangeAction(UNSUBSCRIBE, Api.unsubscribe)
 
 export const GET_USER_COMMENTS = 'GET_USER_COMMENTS'
 
-export function getUserComments(username, offset = 0){
+export function getUserComments(username, offset = 0) {
   return {
     type: GET_USER_COMMENTS,
-    payload:{username, offset},
     apiRequest: Api.getUserComments,
+    payload: {username, offset},
   }
 }
 
 export const GET_USER_LIKES = 'GET_USER_LIKES'
 
-export function getUserLikes(username, offset = 0){
+export function getUserLikes(username, offset = 0) {
   return {
     type: GET_USER_LIKES,
-    payload:{username, offset},
     apiRequest: Api.getUserLikes,
+    payload: {username, offset},
   }
 }
 
 export const EXPAND_SEND_TO = 'EXPAND_SEND_TO'
 
-export function expandSendTo(){
+export function expandSendTo() {
   return {
     type: EXPAND_SEND_TO
   }
@@ -497,7 +497,7 @@ export function toggleHiddenPosts() {
 
 export const SUBSCRIBERS = 'SUBSCRIBERS'
 
-export function subscribers(username){
+export function subscribers(username) {
   return {
     type: SUBSCRIBERS,
     apiRequest: Api.getSubscribers,
@@ -507,7 +507,7 @@ export function subscribers(username){
 
 export const SUBSCRIPTIONS = 'SUBSCRIPTIONS'
 
-export function subscriptions(username){
+export function subscriptions(username) {
   return {
     type: SUBSCRIPTIONS,
     apiRequest: Api.getSubscriptions,
