@@ -63,23 +63,24 @@ export const joinPostData = state => postId => {
 
   // Get the list of post's recipients
   const recipients = post.postedTo
-    .map((subscriptionId) => {
-      let userId = (state.subscriptions[subscriptionId]||{}).user
-      let subscriptionType = (state.subscriptions[subscriptionId]||{}).name
-      if (userId === post.createdBy && subscriptionType === 'Directs') {
-        // Remove "directs to yourself" from the list
-        return false
-      } else {
-        return userId
-      }
+    .map(subscriptionId => {
+      const userId = (state.subscriptions[subscriptionId]||{}).user
+      const subscriptionType = (state.subscriptions[subscriptionId]||{}).name
+      const isDirectToSelf = userId === post.createdBy && subscriptionType === 'Directs'
+      return !isDirectToSelf ? userId : false
     })
     .map(userId => state.subscribers[userId])
     .filter(user => user)
 
   return {...post,
-    createdBy, isDirect, recipients,
-    attachments, usersLikedPost, comments,
-    ...postViewState, isEditable
+    createdBy,
+    isDirect,
+    recipients,
+    attachments,
+    usersLikedPost,
+    comments,
+    ...postViewState,
+    isEditable
   }
 }
 
