@@ -1,4 +1,4 @@
-import {home, discussions, direct, getUserFeed, getUserComments, getUserLikes, getSinglePost, subscribers, subscriptions} from './action-creators'
+import {home, discussions, direct, getUserFeed, getUserComments, getUserLikes, getSinglePost, subscribers, subscriptions, getUserInfo} from './action-creators'
 
 //query params are strings, so + hack to convert to number
 const getOffset = nextRoute => +nextRoute.location.query.offset || 0
@@ -16,7 +16,8 @@ export const routeActions = {
   'post': next => getSinglePost(next.params.postId),
   'direct': next => direct(getOffset(next)),
   'subscribers': next => subscribers(getUserName(next)),
-  'subscriptions': next => subscriptions(getUserName(next))
+  'subscriptions': next => subscriptions(getUserName(next)),
+  'getUserInfo': next => getUserInfo(getUserName(next))
 }
 
 export const bindRouteActions = dispatch => route => next => {
