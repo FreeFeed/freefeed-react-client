@@ -947,16 +947,31 @@ export function userPhotoForm(state=DEFAULT_PHOTO_FORM_STATE, action){
   return state
 }
 
-export function groupSettingsForm(state={saved: false}, action) {
+export function groupSettings(state={}, action) {
+  switch (action.type) {
+    case request(ActionCreators.GET_USER_INFO): {
+      return {...state, status: 'loading'}
+    }
+    case response(ActionCreators.GET_USER_INFO): {
+      return {...state, status: 'success'}
+    }
+    case fail(ActionCreators.GET_USER_INFO): {
+      return {...state, status: 'error', errorMessage: (action.payload || {}).err}
+    }
+  }
+  return state
+}
+
+export function groupSettingsForm(state={}, action) {
   switch (action.type) {
     case request(ActionCreators.UPDATE_GROUP): {
-      return {...state, isSaving: true, success: false, error: false}
+      return {...state, status: 'loading'}
     }
     case response(ActionCreators.UPDATE_GROUP): {
-      return {...state, isSaving: false, success: true, error: false}
+      return {...state, status: 'success'}
     }
     case fail(ActionCreators.UPDATE_GROUP): {
-      return {...state, isSaving: false, success: false, error: true}
+      return {...state, status: 'error', errorMessage: (action.payload || {}).err}
     }
   }
   return state

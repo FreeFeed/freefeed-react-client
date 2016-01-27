@@ -26,7 +26,7 @@ export default class GroupSettingsForm extends React.Component {
   }
 
   saveSettings = () => {
-    if (!this.props.isSaving) {
+    if (this.props.status !== 'loading') {
       this.props.updateGroup(this.props.group.id, this.state.screenName, this.state.description)
     }
   }
@@ -44,16 +44,15 @@ export default class GroupSettingsForm extends React.Component {
         </div>
         <p>
           <button className="btn btn-default" type="submit">Update</button>
-          {this.props.isSaving ? (
+          {this.props.status === 'loading' ? (
             <span className="settings-throbber">
               <img width="16" height="16" src={throbber16}/>
             </span>
           ) : false}
         </p>
-        {this.props.success ? (
+        {this.props.status === 'success' ? (
           <div className="alert alert-info" role="alert">Updated!</div>
-        ) : false}
-        {this.props.error ? (
+        ) : this.props.status === 'error' ? (
           <div className="alert alert-danger" role="alert">Something went wrong during group settings update</div>
         ) : false}
       </form>)

@@ -5,9 +5,19 @@ import _ from 'lodash'
 
 import {updateGroup} from '../redux/action-creators'
 import GroupSettingsForm from './group-settings-form'
+import throbber100 from 'assets/images/throbber.gif'
 
 const GroupSettings = (props) => (
-  <div className="content">
+  props.groupSettings.status === 'loading' ? (
+    <div className="box">
+      <div className="box-header-timeline">
+        Group settings
+      </div>
+      <div className="box-body">
+        <img width="100" height="100" src={throbber100}/>
+      </div>
+    </div>
+  ) : props.groupSettings.status === 'success' ? (
     <div className="box">
       <div className="box-header-timeline">
         <Link to={`/${props.group.username}`}>{props.group.username}</Link>: group settings
@@ -19,12 +29,22 @@ const GroupSettings = (props) => (
           {...props.groupSettingsForm}/>
       </div>
     </div>
-  </div>
+  ) : props.groupSettings.status === 'error' ? (
+    <div className="box">
+      <div className="box-header-timeline">
+        Group settings
+      </div>
+      <div className="box-body">
+        <div className="alert alert-danger">{props.groupSettings.errorMessage}</div>
+      </div>
+    </div>
+  ) : false
 )
 
 function mapStateToProps(state) {
   return {
     group: (_.find(state.users, { 'username': state.router.params.userName }) || {}),
+    groupSettings: state.groupSettings,
     groupSettingsForm: state.groupSettingsForm
   }
 }
