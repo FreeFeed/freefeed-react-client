@@ -515,6 +515,16 @@ export function subscriptions(username) {
   }
 }
 
+export const GET_USER_INFO = 'GET_USER_INFO'
+
+export function getUserInfo(username) {
+  return {
+    type: GET_USER_INFO,
+    apiRequest: Api.getUserInfo,
+    payload: {username},
+  }
+}
+
 export const feedGeneratingActions = [HOME, DISCUSSIONS, GET_USER_FEED, GET_USER_COMMENTS, GET_USER_LIKES, DIRECT]
 export const feedRequests = feedGeneratingActions.map(request)
 export const feedResponses = feedGeneratingActions.map(response)

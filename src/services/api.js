@@ -284,3 +284,7 @@ export function getSubscribers({username}) {
 export function getSubscriptions({username}) {
   return fetch(`${apiConfig.host}/v1/users/${username}/subscriptions`, getRequestOptions())
 }
+
+export function getUserInfo({username}) {
+  return fetch(`${apiConfig.host}/v1/users/${username}`, getRequestOptions())
+}
