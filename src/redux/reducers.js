@@ -814,7 +814,7 @@ export function users(state = {}, action) {
 }
 
 export function subscribers(state = {}, action) {
-  if (ActionCreators.isFeedResponse(action)){
+  if (ActionCreators.isFeedResponse(action) || action.type === response(ActionCreators.GET_SINGLE_POST)){
     return mergeByIds(state, (action.payload.subscribers || []).map(userParser))
   }
   return state
@@ -892,10 +892,9 @@ export function timelines(state = {}, action) {
 }
 
 export function subscriptions(state = {}, action) {
-  if (ActionCreators.isFeedResponse(action)){
+  if (ActionCreators.isFeedResponse(action) || action.type === response(ActionCreators.GET_SINGLE_POST)){
     return mergeByIds(state, action.payload.subscriptions)
   }
-
   return state
 }
 
