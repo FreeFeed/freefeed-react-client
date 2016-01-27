@@ -13,7 +13,7 @@ export default props => (
         </div>
         <div className='description'>
           <div className='name'>{props.username}</div>
-          {props.type === 'group' ? (
+          {props.amIGroupAdmin ? (
             <p><Link to={`/${props.username}/settings`}>Settings</Link></p>
           ) : false}
           <p>{props.description}</p>
