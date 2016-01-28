@@ -13,9 +13,6 @@ export default props => (
         </div>
         <div className='description'>
           <div className='name'>{props.screenName}</div>
-          {props.amIGroupAdmin ? (
-            <p><Link to={`/${props.username}/settings`}>Settings</Link></p>
-          ) : false}
           <p>{props.description}</p>
         </div>
       </div>
@@ -39,7 +36,37 @@ export default props => (
       ) : false}
     </div>
   </div>
-  {props.me ? (
+
+  {props.authenticated && !props.me ? (
+    props.blocked ? (
+      <div>
+        You have blocked {props.username}, so all of their posts and comments are invisible to you.
+        {' '}
+        <a onClick={preventDefault(_=>props.unban({username: props.username, id: props.id}))}>Un-block this user</a>
+      </div>
+    ) : (
+      <div className="profile-controls">
+        <div className="row">
+          <div className="col-md-7 subscribe-controls">
+            {props.subscribed
+              ? <a onClick={preventDefault(_=>props.unsubscribe({username: props.username}))}>Unsubscribe</a>
+              : <a onClick={preventDefault(_=>props.subscribe({username: props.username}))}>Subscribe</a>}
+          </div>
+          {props.type !== 'group' && !props.subscribed ? (
+            <div className="col-md-5 text-right">
+              <a onClick={preventDefault(_=>props.ban({username: props.username, id: props.id}))}>Block this user</a>
+            </div>
+          ) : props.amIGroupAdmin ? (
+            <div className="col-md-5 text-right">
+              <Link to={`/${props.username}/settings`}>Settings</Link>
+            </div>
+          ) : false}
+        </div>
+      </div>
+    )
+  ) : false}
+
+  {props.me || (props.type === 'group' && props.subscribed) ? (
     <CreatePost
       createPostViewState={props.createPostViewState}
       sendTo={props.sendTo}
@@ -48,25 +75,5 @@ export default props => (
       expandSendTo={props.expandSendTo}
       createPostForm={props.createPostForm}
       addAttachmentResponse={props.addAttachmentResponse}/>
-  ) : props.blocked ? (
-    <div>
-      You have blocked {props.username}, so all of {props.username}'s posts and comments are invisible to you.
-      <a onClick={preventDefault(_=>props.unban({username: props.username, id: props.id}))}>Un-block this user</a>
-    </div>
-  ) : props.authenticated ? (
-    <div className='profile-controls'>
-      <div className='row'>
-        <div className='col-md-7 subscribe-controls'>
-          {props.subscribed ?
-            <a onClick={preventDefault(_=>props.unsubscribe({username: props.username}))} className='p-unsubscribe'>Unsubscribe</a> :
-            <a onClick={preventDefault(_=>props.subscribe({username: props.username}))} className='p-unsubscribe'>Subscribe</a>}
-        </div>
-        <div className='col-md-5 block-controls'>
-          {props.subscribed ?
-            false :
-            <a onClick={preventDefault(_=>props.ban({username: props.username, id: props.id}))}>Block this user</a>}
-        </div>
-      </div>
-    </div>
   ) : false}
 </div>)

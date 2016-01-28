@@ -1,18 +1,19 @@
-.avatar{
-  img{
+.avatar {
+  img {
     border: 1px #c1c1c1 solid;
   }
 }
 
-.profile{
-  padding-bottom: 16px;
+.profile {
+  padding-bottom: 14px;
   border-bottom: 1px solid #eee;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   margin-top: 7px;
 
   .avatar {
     float: left;
-    img{
+
+    img {
       width: 75px;
       height: 75px;
     }
@@ -34,13 +35,8 @@
   }
 }
 .profile-controls {
-  margin-bottom: 19px;
-  .block-controls {
-    text-align: right;
-    float: right;
-  }
-  .subscribe-controls {
-    float: left;
-  }
+  padding-bottom: 14px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 14px;
 }
 
