@@ -53,7 +53,7 @@ export default class GroupSettingsForm extends React.Component {
         {this.props.status === 'success' ? (
           <div className="alert alert-info" role="alert">Updated!</div>
         ) : this.props.status === 'error' ? (
-          <div className="alert alert-danger" role="alert">Something went wrong during group settings update</div>
+          <div className="alert alert-danger" role="alert">{this.props.errorMessage}</div>
         ) : false}
       </form>)
   }
