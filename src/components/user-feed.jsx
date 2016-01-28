@@ -66,7 +66,7 @@ function selectState(state) {
     blocked: authenticated && foundUser && (user.banIds.indexOf(foundUser.id) > -1),
   }
 
-  const viewUser = {...(foundUser || state.user), ...statusExtension}
+  const viewUser = {...(foundUser), ...statusExtension}
 
   const currentRouteName = getCurrentRouteName(state.router)
 
