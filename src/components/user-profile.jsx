@@ -12,7 +12,7 @@ export default props => (
           <img src={props.profilePictureLargeUrl} width="75" height="75"/>
         </div>
         <div className='description'>
-          <div className='name'>{props.username}</div>
+          <div className='name'>{props.screenName}</div>
           {props.amIGroupAdmin ? (
             <p><Link to={`/${props.username}/settings`}>Settings</Link></p>
           ) : false}
