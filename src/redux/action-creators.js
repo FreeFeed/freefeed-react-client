@@ -1,181 +1,139 @@
-export const SERVER_ERROR = 'SERVER_ERROR'
+import * as ActionTypes from './action-types'
 
 export function serverError(error) {
   return {
-    type: SERVER_ERROR,
+    type: ActionTypes.SERVER_ERROR,
     error
   }
 }
 
-export const UNAUTHENTICATED = 'UNAUTHENTICATED'
-
 export function unauthenticated(payload) {
   return {
-    type: UNAUTHENTICATED,
+    type: ActionTypes.UNAUTHENTICATED,
     payload: {...payload, authToken: ''},
   }
 }
 
-export function requiresAuth(action) {
-  return action.apiRequest && !action.nonAuthRequest
-}
-
-export const request = (type) =>`${type}_REQUEST`
-export const response = (type) => `${type}_RESPONSE`
-export const fail = (type) => `${type}_FAIL`
-
 import * as Api from '../services/api'
-
-export const WHO_AM_I = 'WHO_AM_I'
 
 export function whoAmI() {
   return {
-    type: WHO_AM_I,
+    type: ActionTypes.WHO_AM_I,
     apiRequest: Api.getWhoAmI,
   }
 }
 
-export const HOME = 'HOME'
-
 export function home(offset = 0) {
   return {
-    type: HOME,
+    type: ActionTypes.HOME,
     apiRequest: Api.getHome,
     payload: {offset},
   }
 }
 
-export const DISCUSSIONS = 'DISCUSSIONS'
-
 export function discussions(offset = 0) {
   return {
-    type: DISCUSSIONS,
+    type: ActionTypes.DISCUSSIONS,
     apiRequest: Api.getDiscussions,
     payload: {offset},
   }
 }
 
-export const DIRECT = 'DIRECT'
-
 export function direct(offset = 0) {
   return {
-    type: DIRECT,
+    type: ActionTypes.DIRECT,
     apiRequest: Api.getDirect,
     payload: {offset},
   }
 }
 
-export const GET_USER_FEED = 'GET_USER_FEED'
-
 export function getUserFeed(username, offset = 0) {
   return {
-    type: GET_USER_FEED,
+    type: ActionTypes.GET_USER_FEED,
     apiRequest: Api.getUserFeed,
     nonAuthRequest: true,
     payload: {username, offset},
   }
 }
 
-export const SHOW_MORE_COMMENTS = 'SHOW_MORE_COMMENTS'
-
 export function showMoreComments(postId) {
   return {
-    type: SHOW_MORE_COMMENTS,
+    type: ActionTypes.SHOW_MORE_COMMENTS,
     apiRequest: Api.getPostWithAllCommentsAndLikes,
     payload: {postId},
   }
 }
 
-export const SHOW_MORE_LIKES = 'SHOW_MORE_LIKES'
-
 export function showMoreLikes(postId) {
   return {
-    type: SHOW_MORE_LIKES,
+    type: ActionTypes.SHOW_MORE_LIKES,
     payload: {postId},
   }
 }
 
-export const SHOW_MORE_LIKES_ASYNC = 'SHOW_MORE_LIKES_ASYNC'
-
 export function showMoreLikesAsync(postId) {
   return {
-    type: SHOW_MORE_LIKES_ASYNC,
+    type: ActionTypes.SHOW_MORE_LIKES_ASYNC,
     apiRequest: Api.getLikesOnly,
     payload: {postId},
   }
 }
 
-export const SHOW_MORE_LIKES_SYNC = 'SHOW_MORE_LIKES_SYNC'
-
 export function showMoreLikesSync(postId) {
   return {
-    type: SHOW_MORE_LIKES_SYNC,
+    type: ActionTypes.SHOW_MORE_LIKES_SYNC,
     payload: {postId},
   }
 }
 
-export const TOGGLE_EDITING_POST = 'TOGGLE_EDITING_POST'
-
 export function toggleEditingPost(postId, newValue) {
   return {
-    type: TOGGLE_EDITING_POST,
+    type: ActionTypes.TOGGLE_EDITING_POST,
     payload: {postId, newValue},
   }
 }
-
-export const CANCEL_EDITING_POST = 'CANCEL_EDITING_POST'
 
 export function cancelEditingPost(postId, newValue) {
   return {
-    type: CANCEL_EDITING_POST,
+    type: ActionTypes.CANCEL_EDITING_POST,
     payload: {postId, newValue},
   }
 }
 
-export const SAVE_EDITING_POST = 'SAVE_EDITING_POST'
-
 export function saveEditingPost(postId, newPost) {
   return {
-    type: SAVE_EDITING_POST,
+    type: ActionTypes.SAVE_EDITING_POST,
     apiRequest: Api.updatePost,
     payload: {postId, newPost},
   }
 }
 
-export const DELETE_POST = 'DELETE_POST'
-
 export function deletePost(postId) {
   return {
-    type: DELETE_POST,
+    type: ActionTypes.DELETE_POST,
     apiRequest: Api.deletePost,
     payload: {postId},
   }
 }
 
-export const TOGGLE_COMMENTING = 'TOGGLE_COMMENTING'
-
 export function toggleCommenting(postId) {
   return {
-    type: TOGGLE_COMMENTING,
+    type: ActionTypes.TOGGLE_COMMENTING,
     postId,
   }
 }
 
-export const UPDATE_COMMENTING_TEXT = 'UPDATE_COMMENTING_TEXT'
-
 export function updateCommentingText(postId, commentText) {
   return {
-    type: UPDATE_COMMENTING_TEXT,
+    type: ActionTypes.UPDATE_COMMENTING_TEXT,
     postId,
     commentText
   }
 }
 
-export const ADD_COMMENT = 'ADD_COMMENT'
-
 export function addComment(postId, commentText) {
   return {
-    type: ADD_COMMENT,
+    type: ActionTypes.ADD_COMMENT,
     apiRequest: Api.addComment,
     payload: {
       postId,
@@ -184,11 +142,9 @@ export function addComment(postId, commentText) {
   }
 }
 
-export const LIKE_POST = 'LIKE_POST'
-
 export function likePost(postId, userId) {
   return {
-    type: LIKE_POST,
+    type: ActionTypes.LIKE_POST,
     apiRequest: Api.likePost,
     payload: {
       postId,
@@ -197,11 +153,9 @@ export function likePost(postId, userId) {
   }
 }
 
-export const UNLIKE_POST = 'UNLIKE_POST'
-
 export function unlikePost(postId, userId) {
   return {
-    type: UNLIKE_POST,
+    type: ActionTypes.UNLIKE_POST,
     apiRequest: Api.unlikePost,
     payload: {
       postId,
@@ -210,11 +164,9 @@ export function unlikePost(postId, userId) {
   }
 }
 
-export const HIDE_POST = 'HIDE_POST'
-
 export function hidePost(postId) {
   return {
-    type: HIDE_POST,
+    type: ActionTypes.HIDE_POST,
     apiRequest: Api.hidePost,
     payload: {
       postId
@@ -222,11 +174,9 @@ export function hidePost(postId) {
   }
 }
 
-export const UNHIDE_POST = 'UNHIDE_POST'
-
 export function unhidePost(postId) {
   return {
-    type: UNHIDE_POST,
+    type: ActionTypes.UNHIDE_POST,
     apiRequest: Api.unhidePost,
     payload: {
       postId
@@ -234,20 +184,16 @@ export function unhidePost(postId) {
   }
 }
 
-export const TOGGLE_MODERATING_COMMENTS = 'TOGGLE_MODERATING_COMMENTS'
-
 export function toggleModeratingComments(postId) {
   return {
-    type: TOGGLE_MODERATING_COMMENTS,
+    type: ActionTypes.TOGGLE_MODERATING_COMMENTS,
     postId
   }
 }
 
-export const DISABLE_COMMENTS = 'DISABLE_COMMENTS'
-
 export function disableComments(postId) {
   return {
-    type: DISABLE_COMMENTS,
+    type: ActionTypes.DISABLE_COMMENTS,
     apiRequest: Api.disableComments,
     payload: {
       postId
@@ -255,11 +201,9 @@ export function disableComments(postId) {
   }
 }
 
-export const ENABLE_COMMENTS = 'ENABLE_COMMENTS'
-
 export function enableComments(postId) {
   return {
-    type: ENABLE_COMMENTS,
+    type: ActionTypes.ENABLE_COMMENTS,
     apiRequest: Api.enableComments,
     payload: {
       postId
@@ -267,78 +211,62 @@ export function enableComments(postId) {
   }
 }
 
-export const TOGGLE_EDITING_COMMENT = 'TOGGLE_EDITING_COMMENT'
-
 export function toggleEditingComment(commentId) {
   return {
-    type: TOGGLE_EDITING_COMMENT,
+    type: ActionTypes.TOGGLE_EDITING_COMMENT,
     commentId,
   }
 }
 
-export const SAVE_EDITING_COMMENT = 'SAVE_EDITING_COMMENT'
-
 export function saveEditingComment(commentId, newCommentBody) {
   return {
-    type: SAVE_EDITING_COMMENT,
+    type: ActionTypes.SAVE_EDITING_COMMENT,
     apiRequest: Api.updateComment,
     payload: {commentId, newCommentBody}
   }
 }
 
-export const DELETE_COMMENT = 'DELETE_COMMENT'
-
 export function deleteComment(commentId) {
   return {
-    type: DELETE_COMMENT,
+    type: ActionTypes.DELETE_COMMENT,
     apiRequest: Api.deleteComment,
     payload: {commentId},
   }
 }
 
-export const CREATE_POST = 'CREATE_POST'
-
 export function createPost(feeds, postText, attachmentIds, more) {
   return {
-    type: CREATE_POST,
+    type: ActionTypes.CREATE_POST,
     apiRequest: Api.createPost,
     payload: {feeds, postText, attachmentIds, more},
   }
 }
 
-export const ADD_ATTACHMENT_RESPONSE = 'ADD_ATTACHMENT_RESPONSE'
-
 export function addAttachmentResponse(postId, attachments) {
   return {
-    type: ADD_ATTACHMENT_RESPONSE,
+    type: ActionTypes.ADD_ATTACHMENT_RESPONSE,
     payload: {postId, attachments}
   }
 }
 
-export const REMOVE_ATTACHMENT = 'REMOVE_ATTACHMENT'
-
 export function removeAttachment(postId, attachmentId) {
   return {
-    type: REMOVE_ATTACHMENT,
+    type: ActionTypes.REMOVE_ATTACHMENT,
     payload: {postId, attachmentId}
   }
 }
 
-export const SIGN_IN_CHANGE = 'SIGN_IN_CHANGE'
-
 export function signInChange(username, password) {
   return {
-    type: SIGN_IN_CHANGE,
+    type: ActionTypes.SIGN_IN_CHANGE,
     username,
     password,
   }
 }
 
-export const SIGN_IN = 'SIGN_IN'
-
 export function signIn(username, password) {
   return {
-    type: SIGN_IN,
+    type: ActionTypes.SIGN_IN,
     apiRequest: Api.signIn,
     nonAuthRequest: true,
     payload: {
@@ -348,87 +276,69 @@ export function signIn(username, password) {
   }
 }
 
-export const SIGN_IN_EMPTY = 'SIGN_IN_EMPTY'
-
 export function signInEmpty() {
   return {
-    type: SIGN_IN_EMPTY
+    type: ActionTypes.SIGN_IN_EMPTY
   }
 }
 
-export const SIGN_UP_CHANGE = 'SIGN_UP_CHANGE'
-
 export function signUpChange(signUpData) {
   return {
-    type: SIGN_UP_CHANGE,
+    type: ActionTypes.SIGN_UP_CHANGE,
     ...signUpData,
   }
 }
 
-export const SIGN_UP = 'SIGN_UP'
-
 export function signUp(signUpData) {
   return {
-    type: SIGN_UP,
+    type: ActionTypes.SIGN_UP,
     apiRequest: Api.signUp,
     nonAuthRequest: true,
     payload: { ...signUpData },
   }
 }
 
-export const SIGN_UP_EMPTY = 'SIGN_UP_EMPTY'
-
 export function signUpEmpty(errorMessage) {
   return {
-    type: SIGN_UP_EMPTY,
+    type: ActionTypes.SIGN_UP_EMPTY,
     message: errorMessage
   }
 }
 
-export const UPDATE_USER = 'UPDATE_USER'
-
 export function updateUser(id, screenName, email, isPrivate, description) {
   return {
-    type: UPDATE_USER,
+    type: ActionTypes.UPDATE_USER,
     apiRequest: Api.updateUser,
     payload: {id, screenName, email, isPrivate, description},
   }
 }
 
-export const USER_SETTINGS_CHANGE = 'USER_SETTINGS_CHANGE'
-
 export function userSettingsChange(payload) {
   return {
-    type: USER_SETTINGS_CHANGE,
+    type: ActionTypes.USER_SETTINGS_CHANGE,
     payload,
   }
 }
 
-export const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
-
 export function updatePassword(payload) {
   return {
-    type: UPDATE_PASSWORD,
+    type: ActionTypes.UPDATE_PASSWORD,
     apiRequest: Api.updatePassword,
     payload,
   }
 }
 
-export const UPDATE_USER_PHOTO = 'UPDATE_USER_PHOTO'
-
 export function updateUserPhoto(picture) {
   return {
-    type: UPDATE_USER_PHOTO,
+    type: ActionTypes.UPDATE_USER_PHOTO,
     apiRequest: Api.updateProfilePicture,
     payload: {picture},
   }
 }
 
-export const GET_SINGLE_POST = 'GET_SINGLE_POST'
-
 export function getSinglePost(postId) {
   return {
-    type: GET_SINGLE_POST,
+    type: ActionTypes.GET_SINGLE_POST,
     apiRequest: Api.getPostWithAllCommentsAndLikes,
     nonAuthRequest: true,
     payload: {postId},
@@ -443,106 +353,67 @@ const userChangeAction = (type, apiRequest) => (payload) => {
   }
 }
 
-export const BAN = 'BAN'
-
-export const ban = userChangeAction(BAN, Api.ban)
-
-export const UNBAN = 'UNBAN'
-
-export const unban = userChangeAction(UNBAN, Api.unban)
-
-export const SUBSCRIBE = 'SUBSCRIBE'
-
-export const subscribe = userChangeAction(SUBSCRIBE, Api.subscribe)
-
-export const UNSUBSCRIBE = 'UNSUBSCRIBE'
-
-export const unsubscribe = userChangeAction(UNSUBSCRIBE, Api.unsubscribe)
-
-export const GET_USER_COMMENTS = 'GET_USER_COMMENTS'
+export const ban = userChangeAction(ActionTypes.BAN, Api.ban)
+export const unban = userChangeAction(ActionTypes.UNBAN, Api.unban)
+export const subscribe = userChangeAction(ActionTypes.SUBSCRIBE, Api.subscribe)
+export const unsubscribe = userChangeAction(ActionTypes.UNSUBSCRIBE, Api.unsubscribe)
 
 export function getUserComments(username, offset = 0) {
   return {
-    type: GET_USER_COMMENTS,
+    type: ActionTypes.GET_USER_COMMENTS,
     apiRequest: Api.getUserComments,
     payload: {username, offset},
   }
 }
 
-export const GET_USER_LIKES = 'GET_USER_LIKES'
-
 export function getUserLikes(username, offset = 0) {
   return {
-    type: GET_USER_LIKES,
+    type: ActionTypes.GET_USER_LIKES,
     apiRequest: Api.getUserLikes,
     payload: {username, offset},
   }
 }
 
-export const EXPAND_SEND_TO = 'EXPAND_SEND_TO'
-
 export function expandSendTo() {
   return {
-    type: EXPAND_SEND_TO
+    type: ActionTypes.EXPAND_SEND_TO
   }
 }
-
-export const TOGGLE_HIDDEN_POSTS = 'TOGGLE_HIDDEN_POSTS'
 
 export function toggleHiddenPosts() {
   return {
-    type: TOGGLE_HIDDEN_POSTS
+    type: ActionTypes.TOGGLE_HIDDEN_POSTS
   }
 }
 
-export const SUBSCRIBERS = 'SUBSCRIBERS'
-
 export function subscribers(username) {
   return {
-    type: SUBSCRIBERS,
+    type: ActionTypes.SUBSCRIBERS,
     apiRequest: Api.getSubscribers,
     payload: {username},
   }
 }
 
-export const SUBSCRIPTIONS = 'SUBSCRIPTIONS'
-
 export function subscriptions(username) {
   return {
-    type: SUBSCRIPTIONS,
+    type: ActionTypes.SUBSCRIPTIONS,
     apiRequest: Api.getSubscriptions,
     payload: {username},
   }
 }
 
-export const GET_USER_INFO = 'GET_USER_INFO'
-
 export function getUserInfo(username) {
   return {
-    type: GET_USER_INFO,
+    type: ActionTypes.GET_USER_INFO,
     apiRequest: Api.getUserInfo,
     payload: {username},
   }
 }
 
-export const UPDATE_GROUP = 'UPDATE_GROUP'
-
 export function updateGroup(id, screenName, description) {
   return {
-    type: UPDATE_GROUP,
+    type: ActionTypes.UPDATE_GROUP,
     payload: {id, screenName, description},
     apiRequest: Api.updateGroup
   }
 }
-
-export const feedGeneratingActions = [HOME, DISCUSSIONS, GET_USER_FEED, GET_USER_COMMENTS, GET_USER_LIKES, DIRECT]
-export const feedRequests = feedGeneratingActions.map(request)
-export const feedResponses = feedGeneratingActions.map(response)
-export const feedFails = feedGeneratingActions.map(fail)
-export const isFeedRequest = action => feedRequests.indexOf(action.type) !== -1
-export const isFeedResponse = action => feedResponses.indexOf(action.type) !== -1
-export const isFeedFail = action => feedFails.indexOf(action.type) !== -1
-
-export const userChangeActions = [SUBSCRIBE, UNSUBSCRIBE]
-export const userChangeResponses = userChangeActions.map(response)
-export const isUserChangeResponse = action => userChangeResponses.indexOf(action.type) !== -1
