@@ -8,8 +8,10 @@ header {
 
     a {
       color: #222;
+      text-decoration: none;
 
-      &:hover {
+      &:active, &:focus, &:hover, &:visited {
+        color: #222;
         text-decoration: none;
       }
     }

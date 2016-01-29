@@ -4,15 +4,16 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import TileUserList from './tile-user-list'
 
-const SubscribersHandler = (props) => {
+
+const SubscriptionsHandler = (props) => {
   return (
     <div className='box'>
       <div className='box-header-timeline'>
         {props.boxHeader}
       </div>
       <div className='box-body'>
-        <div><Link to={`/${props.username}`}>{props.username}</Link> › Subscribers</div>
-        <TileUserList title='Subscribers' users={props.subscribers} />
+        <div><Link to={`/${props.username}`}>{props.username}</Link> › Subscriptions</div>
+        <TileUserList title='Subscriptions' users={props.subscriptions} />
       </div>
       <div className='box-footer'></div>
     </div>
@@ -22,9 +23,9 @@ const SubscribersHandler = (props) => {
 function selectState(state) {
   const boxHeader = state.boxHeader
   const username = state.router.params.userName
-  const subscribers = state.usernameSubscribers
+  const subscriptions = state.usernameSubscriptions
 
-  return { boxHeader, username, subscribers }
+  return { boxHeader, username, subscriptions }
 }
 
-export default connect(selectState)(SubscribersHandler)
+export default connect(selectState)(SubscriptionsHandler)

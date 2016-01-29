@@ -9,7 +9,7 @@ const getRequestOptions = () => ({
   }
 })
 
-export function getWhoAmI(){
+export function getWhoAmI() {
   return fetch(`${apiConfig.host}/v1/users/whoami`, getRequestOptions())
 }
 
@@ -28,7 +28,7 @@ export function getDirect({offset}) {
     `${apiConfig.host}/v1/timelines/filter/directs?offset=${offset}`, getRequestOptions())
 }
 
-export function getUserFeed({username, offset}){
+export function getUserFeed({username, offset}) {
   return fetch(
     `${apiConfig.host}/v1/timelines/${username}?offset=${offset}`, getRequestOptions())
 }
@@ -89,7 +89,7 @@ export function deletePost({postId}) {
   })
 }
 
-export function addComment({postId, commentText}){
+export function addComment({postId, commentText}) {
   return fetch(`${apiConfig.host}/v1/comments`, {
     method: 'POST',
     headers: {
@@ -195,7 +195,7 @@ export function enableComments({postId}) {
   })
 }
 
-export function signIn({username, password}){
+export function signIn({username, password}) {
   return fetch(`${apiConfig.host}/v1/session`, {
     headers:{
       'Accept': 'application/json',
@@ -206,7 +206,7 @@ export function signIn({username, password}){
   })
 }
 
-export function signUp({username, password, email, captcha}){
+export function signUp({username, password, email, captcha}) {
   return fetch(`${apiConfig.host}/v1/users`, {
     headers:{
       'Accept': 'application/json',
@@ -229,7 +229,7 @@ export function updateUser({id, screenName, email, isPrivate, description}) {
   })
 }
 
-export function updatePassword({currentPassword, password, passwordConfirmation}){
+export function updatePassword({currentPassword, password, passwordConfirmation}) {
   return fetch(`${apiConfig.host}/v1/users/updatePassword`, {
     'method': 'PUT',
     'headers': {
@@ -241,7 +241,7 @@ export function updatePassword({currentPassword, password, passwordConfirmation}
   })
 }
 
-export function updateProfilePicture({picture}){
+export function updateProfilePicture({picture}) {
   let data = new FormData()
   data.append('file', picture)
 
@@ -269,14 +269,34 @@ export const subscribe = userAction('subscribe')
 export const unsubscribe = userAction('unsubscribe')
 
 
-export function getUserComments({username, offset}){
+export function getUserComments({username, offset}) {
   return fetch(`${apiConfig.host}/v1/timelines/${username}/comments?offset=${offset}`, getRequestOptions())
 }
 
-export function getUserLikes({username, offset}){
+export function getUserLikes({username, offset}) {
   return fetch(`${apiConfig.host}/v1/timelines/${username}/likes?offset=${offset}`, getRequestOptions())
 }
 
-export function getSubscribers({username}){
+export function getSubscribers({username}) {
   return fetch(`${apiConfig.host}/v1/users/${username}/subscribers`, getRequestOptions())
+}
+
+export function getSubscriptions({username}) {
+  return fetch(`${apiConfig.host}/v1/users/${username}/subscriptions`, getRequestOptions())
+}
+
+export function getUserInfo({username}) {
+  return fetch(`${apiConfig.host}/v1/users/${username}`, getRequestOptions())
+}
+
+export function updateGroup({id, screenName, description}) {
+  return fetch(`${apiConfig.host}/v1/users/${id}`, {
+    'method': 'PUT',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+    'body': JSON.stringify({user: {screenName, description}})
+  })
 }

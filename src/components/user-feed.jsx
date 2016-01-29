@@ -51,14 +51,22 @@ function selectState(state) {
   .map(key => state.users[key] || state.subscribers[key])
   .filter(user => user.username === state.router.params.userName)[0]
 
+  const amIGroupAdmin = (
+    authenticated &&
+    foundUser &&
+    foundUser.type === 'group' &&
+    ((foundUser.administrators || []).indexOf(state.user.id) > -1)
+  )
+
   const statusExtension = {
     authenticated,
     me: !foundUser || foundUser.username === user.username,
+    amIGroupAdmin: amIGroupAdmin,
     subscribed: authenticated && foundUser && (user.subscriptions.indexOf(foundUser.id) !== -1),
     blocked: authenticated && foundUser && (user.banIds.indexOf(foundUser.id) > -1),
   }
 
-  const viewUser = {...(foundUser || state.user), ...statusExtension}
+  const viewUser = {...(foundUser), ...statusExtension}
 
   const currentRouteName = getCurrentRouteName(state.router)
 

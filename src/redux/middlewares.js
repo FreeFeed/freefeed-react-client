@@ -1,5 +1,6 @@
 import * as ActionCreators from './action-creators'
-const {request, response, fail} = ActionCreators
+import * as ActionTypes from './action-types'
+import {request, response, fail, requiresAuth, isFeedResponse} from './action-helpers'
 
 //middleware for api requests
 export const apiMiddleware = store => next => async (action) => {
@@ -33,11 +34,11 @@ import {pushState} from 'redux-router'
 export const authMiddleware = store => next => action => {
 
   //stop action propagation if it should be authed and user is not authed
-  if (ActionCreators.requiresAuth(action) && !store.getState().authenticated) {
+  if (requiresAuth(action) && !store.getState().authenticated) {
     return
   }
 
-  if(action.type === ActionCreators.UNAUTHENTICATED) {
+  if(action.type === ActionTypes.UNAUTHENTICATED) {
     setToken()
     persistUser()
     next(action)
@@ -48,16 +49,16 @@ export const authMiddleware = store => next => action => {
     return store.dispatch(pushState(null, '/signin', {}))
   }
 
-  if(action.type === response(ActionCreators.SIGN_IN) ||
-     action.type === response(ActionCreators.SIGN_UP) ) {
+  if(action.type === response(ActionTypes.SIGN_IN) ||
+     action.type === response(ActionTypes.SIGN_UP) ) {
     setToken(action.payload.authToken)
     next(action)
     store.dispatch(ActionCreators.whoAmI())
     return store.dispatch(pushState(null, '/', {}))
   }
 
-  if(action.type === response(ActionCreators.WHO_AM_I) ||
-     action.type === response(ActionCreators.UPDATE_USER) ) {
+  if(action.type === response(ActionTypes.WHO_AM_I) ||
+     action.type === response(ActionTypes.UPDATE_USER) ) {
     persistUser(userParser(action.payload.users))
     return next(action)
   }
@@ -67,7 +68,7 @@ export const authMiddleware = store => next => action => {
 
 export const likesLogicMiddleware = store => next => action => {
   switch(action.type){
-    case ActionCreators.SHOW_MORE_LIKES: {
+    case ActionTypes.SHOW_MORE_LIKES: {
       const postId = action.payload.postId
       const post = store.getState().posts[postId]
       const isSync = (post.omittedLikes === 0)
@@ -101,7 +102,7 @@ export const redirectionMiddleware = store => next => action => {
 }
 
 export const scrollMiddleware = store => next => action => {
-  if (ActionCreators.isFeedResponse(action) || action.type === ActionCreators.response(ActionCreators.GET_SINGLE_POST)){
+  if (isFeedResponse(action) || action.type === response(ActionCreators.GET_SINGLE_POST)){
     scrollTo(0, 0)
   }
   return next(action)
