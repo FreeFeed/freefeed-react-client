@@ -1139,6 +1139,24 @@ export function recentGroups(state = [], action) {
   return state
 }
 
+export function groups(state = {}, action) {
+  switch (action.type) {
+    case response(ActionTypes.WHO_AM_I): {
+      const groups = (action.payload.subscribers || []).filter((u) => u.type == 'group')
+      return mergeByIds(state, groups.map(userParser))
+    }
+    case response(ActionTypes.UPDATE_GROUP): {
+      let groupId = action.payload.groups.id
+      let oldGroup = state[groupId] || {}
+      let newGroup = userParser(action.payload.groups)
+      return {...state,
+        [groupId]: {...oldGroup, ...newGroup}
+      }
+    }
+  }
+
+  return state
+}
 
 const handleSubs = (state, action, type) => {
   if (action.type == request(type)) {

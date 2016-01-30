@@ -48,7 +48,7 @@ export default ({user, signOut, recentGroups}) => (
         <RecentGroups recentGroups={recentGroups}/>
       </div>
       <div className='box-footer'>
-        <Link to='groups.home'>Browse/edit groups</Link>
+        <Link to='/groups'>Browse/edit groups</Link>
       </div>
     </div>
 
