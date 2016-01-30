@@ -1,6 +1,8 @@
 import React from 'react'
 import DropdownMenu from 'react-dd-menu';
 
+import {confirmFirst} from '../utils'
+
 export default class PostMoreMenu extends React.Component {
   constructor(props) {
     super(props)
@@ -38,7 +40,7 @@ export default class PostMoreMenu extends React.Component {
           ? <li className="dd-menu-item"><a className="dd-menu-item-link" onClick={this.props.enableComments}>Enable comments</a></li>
           : <li className="dd-menu-item"><a className="dd-menu-item-link" onClick={this.props.disableComments}>Disable comments</a></li>}
 
-        <li className="dd-menu-item dd-menu-item-danger"><a className="dd-menu-item-link" onClick={this.props.deletePost}>Delete</a></li>
+        <li className="dd-menu-item dd-menu-item-danger"><a className="dd-menu-item-link" onClick={confirmFirst(this.props.deletePost)}>Delete</a></li>
       </DropdownMenu>
     )
   }
