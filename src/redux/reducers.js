@@ -977,7 +977,8 @@ export function groupCreateForm(state={}, action) {
       return {...state, status: 'loading'}
     }
     case response(ActionTypes.CREATE_GROUP): {
-      return {...state, status: 'success'}
+      const groupUrl = '/' + action.payload.groups.username
+      return {...state, status: 'success', groupUrl }
     }
     case fail(ActionTypes.CREATE_GROUP): {
       return {...state, status: 'error', errorMessage: (action.payload || {}).err}
