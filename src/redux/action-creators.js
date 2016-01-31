@@ -410,6 +410,14 @@ export function getUserInfo(username) {
   }
 }
 
+export function createGroup(username, screenName, description) {
+  return {
+    type: ActionTypes.CREATE_GROUP,
+    payload: {username, screenName, description},
+    apiRequest: Api.createGroup
+  }
+}
+
 export function updateGroup(id, screenName, description) {
   return {
     type: ActionTypes.UPDATE_GROUP,

@@ -12,7 +12,15 @@ const GroupsHandler = (props) => {
         Groups
       </div>
       <div className="box-body">
-        <div>All your groups, sorted alphabetically</div>
+        <div className="row">
+          <div className="col-md-6">
+            All your groups, sorted alphabetically
+          </div>
+          <div className="col-md-6 text-right">
+            <Link to="/groups/create">Create a group</Link>
+          </div>
+        </div>
+
         <TileUserList {...props} size="large" />
       </div>
       <div className="box-footer"></div>

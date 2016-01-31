@@ -806,6 +806,13 @@ export function users(state = {}, action) {
         [userId]: {...oldUser, ...newUser}
       }
     }
+    case response(ActionTypes.CREATE_GROUP): {
+      let userId = action.payload.groups.id
+      let newUser = userParser(action.payload.groups)
+      return {...state,
+        [userId]: {...newUser}
+      }
+    }
     case response(ActionTypes.UPDATE_GROUP): {
       let userId = action.payload.groups.id
       let oldUser = state[userId] || {}
@@ -958,6 +965,21 @@ export function groupSettings(state={}, action) {
       return {...state, status: 'success'}
     }
     case fail(ActionTypes.GET_USER_INFO): {
+      return {...state, status: 'error', errorMessage: (action.payload || {}).err}
+    }
+  }
+  return state
+}
+
+export function groupCreateForm(state={}, action) {
+  switch (action.type) {
+    case request(ActionTypes.CREATE_GROUP): {
+      return {...state, status: 'loading'}
+    }
+    case response(ActionTypes.CREATE_GROUP): {
+      return {...state, status: 'success'}
+    }
+    case fail(ActionTypes.CREATE_GROUP): {
       return {...state, status: 'error', errorMessage: (action.payload || {}).err}
     }
   }
@@ -1123,6 +1145,11 @@ export function recentGroups(state = [], action) {
                         .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
                         .slice(0, GROUPS_SIDEBAR_LIST_LENGTH)
     }
+    case response(ActionTypes.CREATE_GROUP): {
+      const newGroup = action.payload.groups
+      state.unshift(newGroup)
+      return [...state]
+    }
     case response(ActionTypes.UPDATE_GROUP): {
       const groupId = (action.payload.groups.id || null)
       const groupIndex = _.findIndex(state, { 'id': groupId })
@@ -1144,6 +1171,13 @@ export function groups(state = {}, action) {
     case response(ActionTypes.WHO_AM_I): {
       const groups = (action.payload.subscribers || []).filter((u) => u.type == 'group')
       return mergeByIds(state, groups.map(userParser))
+    }
+    case response(ActionTypes.CREATE_GROUP): {
+      let groupId = action.payload.groups.id
+      let newGroup = userParser(action.payload.groups)
+      return {...state,
+        [groupId]: {...newGroup}
+      }
     }
     case response(ActionTypes.UPDATE_GROUP): {
       let groupId = action.payload.groups.id
