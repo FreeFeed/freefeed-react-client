@@ -84,7 +84,7 @@ export const likesLogicMiddleware = store => next => action => {
 }
 
 export const userPhotoLogicMiddleware = store => next => action => {
-  if (action.type === response(ActionCreators.UPDATE_USER_PHOTO)) {
+  if (action.type === response(ActionTypes.UPDATE_USER_PHOTO)) {
     //update data after new photo posted
     store.dispatch(whoAmI())
   }
@@ -94,7 +94,7 @@ export const userPhotoLogicMiddleware = store => next => action => {
 
 export const redirectionMiddleware = store => next => action => {
   //go to home if single post has been removed
-  if (action.type === response(ActionCreators.DELETE_POST) && store.getState().singlePostId) {
+  if (action.type === response(ActionTypes.DELETE_POST) && store.getState().singlePostId) {
     return store.dispatch(pushState(null, '/', {}))
   }
 
@@ -102,7 +102,7 @@ export const redirectionMiddleware = store => next => action => {
 }
 
 export const scrollMiddleware = store => next => action => {
-  if (isFeedResponse(action) || action.type === response(ActionCreators.GET_SINGLE_POST)){
+  if (isFeedResponse(action) || action.type === response(ActionTypes.GET_SINGLE_POST)){
     scrollTo(0, 0)
   }
   return next(action)
