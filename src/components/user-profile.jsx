@@ -5,32 +5,43 @@ import CreatePost from './create-post'
 
 export default props => (
 <div>
-  <div className='profile p-user-profile'>
-    <div className='row'>
-      <div className='col-md-9'>
-        <div className='avatar'>
+  <div className="profile">
+    <div className="row">
+      <div className="col-sm-9 col-xs-12">
+        <div className="avatar">
           <img src={props.profilePictureLargeUrl} width="75" height="75"/>
         </div>
-        <div className='description'>
-          <div className='name'>{props.screenName}</div>
-          <p>{props.description}</p>
+        <div className="description">
+          <div className="name">{props.screenName}</div>
+          <div>{props.description}</div>
         </div>
       </div>
       {props.statistics && !props.blocked ? (
-        <div className='col-md-3'>
-          <div className='stats'>
-            {props.statistics.subscriptions >= 0 ? <div className='p-stats-subscriptions'>
-              <Link to={`/${props.username}/subscriptions`}>{props.statistics.subscriptions} subscriptions</Link>
-            </div> : false}
-            {props.statistics.subscribers >= 0 ? <div className='p-stats-subscribers'>
-              <Link to={`/${props.username}/subscribers`}>{props.statistics.subscribers} subscribers</Link>
-            </div> : false}
-            {props.statistics.comments >= 0 ? <div className='p-stats-comments'>
-              <Link to={`/${props.username}/comments`}>{props.statistics.comments} comments</Link>
-            </div> : false}
-            {props.statistics.likes >= 0 ? <div className='p-stats-likes'>
-              <Link to={`/${props.username}/likes`}>{props.statistics.likes} likes</Link>
-            </div> : false}
+        <div className="col-sm-3 col-xs-12">
+          <div className="profile-stats">
+            {props.statistics.subscriptions >= 0 ? (
+              <div className="profile-stats-item">
+                <Link to={`/${props.username}/subscriptions`}>{props.statistics.subscriptions} subscriptions</Link>
+              </div>
+            ) : false}
+            <wbr/>
+            {props.statistics.subscribers >= 0 ? (
+              <div className="profile-stats-item">
+                <Link to={`/${props.username}/subscribers`}>{props.statistics.subscribers} subscribers</Link>
+              </div>
+            ) : false}
+            <wbr/>
+            {props.statistics.comments >= 0 ? (
+              <div className="profile-stats-item">
+                <Link to={`/${props.username}/comments`}>{props.statistics.comments} comments</Link>
+              </div>
+            ) : false}
+            <wbr/>
+            {props.statistics.likes >= 0 ? (
+              <div className="profile-stats-item">
+                <Link to={`/${props.username}/likes`}>{props.statistics.likes} likes</Link>
+              </div>
+            ) : false}
           </div>
         </div>
       ) : false}
