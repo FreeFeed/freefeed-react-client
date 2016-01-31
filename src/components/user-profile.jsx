@@ -5,50 +5,54 @@ import CreatePost from './create-post'
 
 export default props => (
 <div>
-  <div className="profile">
-    <div className="row">
-      <div className="col-sm-9 col-xs-12">
-        <div className="avatar">
-          <img src={props.profilePictureLargeUrl} width="75" height="75"/>
-        </div>
-        <div className="description">
-          <div className="name">{props.screenName}</div>
-          <div>{props.description}</div>
-        </div>
-      </div>
-      {props.statistics && !props.blocked ? (
-        <div className="col-sm-3 col-xs-12">
-          <div className="profile-stats">
-            {props.statistics.subscriptions >= 0 ? (
-              <div className="profile-stats-item">
-                <Link to={`/${props.username}/subscriptions`}>{props.statistics.subscriptions} subscriptions</Link>
-              </div>
-            ) : false}
-            <wbr/>
-            {props.statistics.subscribers >= 0 ? (
-              <div className="profile-stats-item">
-                <Link to={`/${props.username}/subscribers`}>{props.statistics.subscribers} subscribers</Link>
-              </div>
-            ) : false}
-            <wbr/>
-            {props.statistics.comments >= 0 ? (
-              <div className="profile-stats-item">
-                <Link to={`/${props.username}/comments`}>{props.statistics.comments} comments</Link>
-              </div>
-            ) : false}
-            <wbr/>
-            {props.statistics.likes >= 0 ? (
-              <div className="profile-stats-item">
-                <Link to={`/${props.username}/likes`}>{props.statistics.likes} likes</Link>
-              </div>
-            ) : false}
+  {!props.isLoading && !props.isUserFound ? (
+    <h2>404 Not Found</h2>
+  ) : (
+    <div className="profile">
+      <div className="row">
+        <div className="col-sm-9 col-xs-12">
+          <div className="avatar">
+            <img src={props.profilePictureLargeUrl} width="75" height="75"/>
+          </div>
+          <div className="description">
+            <div className="name">{props.screenName}</div>
+            <div>{props.description}</div>
           </div>
         </div>
-      ) : false}
+        {props.statistics && !props.blocked ? (
+          <div className="col-sm-3 col-xs-12">
+            <div className="profile-stats">
+              {props.statistics.subscriptions >= 0 ? (
+                <div className="profile-stats-item">
+                  <Link to={`/${props.username}/subscriptions`}>{props.statistics.subscriptions} subscriptions</Link>
+                </div>
+              ) : false}
+              <wbr/>
+              {props.statistics.subscribers >= 0 ? (
+                <div className="profile-stats-item">
+                  <Link to={`/${props.username}/subscribers`}>{props.statistics.subscribers} subscribers</Link>
+                </div>
+              ) : false}
+              <wbr/>
+              {props.statistics.comments >= 0 ? (
+                <div className="profile-stats-item">
+                  <Link to={`/${props.username}/comments`}>{props.statistics.comments} comments</Link>
+                </div>
+              ) : false}
+              <wbr/>
+              {props.statistics.likes >= 0 ? (
+                <div className="profile-stats-item">
+                  <Link to={`/${props.username}/likes`}>{props.statistics.likes} likes</Link>
+                </div>
+              ) : false}
+            </div>
+          </div>
+        ) : false}
+      </div>
     </div>
-  </div>
+  )}
 
-  {props.authenticated && !props.me ? (
+  {props.authenticated && props.isUserFound && !props.isItMe ? (
     props.blocked ? (
       <div>
         You have blocked {props.username}, so all of their posts and comments are invisible to you.
@@ -77,7 +81,7 @@ export default props => (
     )
   ) : false}
 
-  {props.me || (props.type === 'group' && props.subscribed) ? (
+  {props.isItMe || (props.type === 'group' && props.subscribed) ? (
     <CreatePost
       createPostViewState={props.createPostViewState}
       sendTo={props.sendTo}
