@@ -30,10 +30,30 @@
       margin-bottom: 3px;
     }
   }
-  .stats {
-    text-align: right;
+}
+
+.profile-stats {
+  text-align: right;
+
+  .profile-stats-item {
+    white-space: nowrap;
+  }
+
+  @media (max-width: 767px) {
+    margin-top: 14px;
+    border-top: 1px solid #eee;
+    padding-top: 4px;
+
+    text-align: left;
+
+    .profile-stats-item {
+      display: inline-block;
+      margin-right: 20px;
+      margin-top: 10px;
+    }
   }
 }
+
 .profile-controls {
   padding-bottom: 14px;
   border-bottom: 1px solid #eee;
