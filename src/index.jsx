@@ -26,6 +26,7 @@ import UserFeed from './components/user-feed'
 import Subscribers from './components/subscribers'
 import Subscriptions from './components/subscriptions'
 import GroupSettings from './components/group-settings'
+import GroupCreate from './components/group-create'
 import Groups from './components/groups'
 
 const store = configureStore()
@@ -55,6 +56,7 @@ ReactDOM.render(
         <Route name='discussions' path='filter/discussions' component={Discussions} onEnter={boundRouteActions('discussions')}/>
         <Route name='direct' path='filter/direct' component={Discussions} onEnter={boundRouteActions('direct')}/>
         <Route name='groups' path='/groups' component={Groups}/>
+        <Route name='groupCreate' path='/groups/create' component={GroupCreate}/>
         <Route name='userFeed' path='/:userName' component={UserFeed} onEnter={boundRouteActions('userFeed')}/>
         <Route name='subscribers' path='/:userName/subscribers' component={Subscribers} onEnter={boundRouteActions('subscribers')}/>
         <Route name='subscriptions' path='/:userName/subscriptions' component={Subscriptions} onEnter={boundRouteActions('subscriptions')}/>
