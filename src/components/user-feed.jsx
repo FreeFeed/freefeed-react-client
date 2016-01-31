@@ -60,7 +60,9 @@ function selectState(state) {
 
   const statusExtension = {
     authenticated,
-    me: !foundUser || foundUser.username === user.username,
+    isLoading: state.routeLoadingState,
+    isUserFound: !!foundUser,
+    isItMe: (foundUser ? foundUser.username === user.username : false),
     amIGroupAdmin: amIGroupAdmin,
     subscribed: authenticated && foundUser && (user.subscriptions.indexOf(foundUser.id) !== -1),
     blocked: authenticated && foundUser && (user.banIds.indexOf(foundUser.id) > -1),
