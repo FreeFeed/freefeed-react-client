@@ -38,7 +38,9 @@ const GroupSettings = (props) => (
         <div className="alert alert-danger">{props.groupSettings.errorMessage}</div>
       </div>
     </div>
-  ) : false
+  ) : (
+    <div/>
+  )
 )
 
 function mapStateToProps(state) {

@@ -12,7 +12,7 @@ const SubscribersHandler = (props) => {
       </div>
       <div className='box-body'>
         <div><Link to={`/${props.username}`}>{props.username}</Link> › Subscribers</div>
-        <TileUserList title='Subscribers' users={props.subscribers} />
+        <TileUserList {...props} title='Subscribers' />
       </div>
       <div className='box-footer'></div>
     </div>
@@ -22,9 +22,11 @@ const SubscribersHandler = (props) => {
 function selectState(state) {
   const boxHeader = state.boxHeader
   const username = state.router.params.userName
-  const subscribers = state.usernameSubscribers
+  const users = _.sortBy(state.usernameSubscribers.payload, 'username')
+  const isPending = state.usernameSubscribers.isPending
+  const errorString = state.usernameSubscribers.errorString
 
-  return { boxHeader, username, subscribers }
+  return { boxHeader, username, users, isPending, errorString }
 }
 
 export default connect(selectState)(SubscribersHandler)

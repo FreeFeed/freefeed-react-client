@@ -24,6 +24,10 @@ ul.tile-list {
     }
   }
 
+  &.large-pics li {
+    height: 140px;
+  }
+
   @include clearfix();
 }
 

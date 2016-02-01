@@ -1,9 +1,9 @@
 import React from 'react'
+import Textarea from 'react-textarea-autosize'
+
 import PieceOfText from'./piece-of-text'
 import UserName from './user-name'
-import {preventDefault} from '../utils'
-import {fromNowOrNow} from '../utils'
-import Textarea from 'react-textarea-autosize'
+import {preventDefault, confirmFirst, fromNowOrNow} from '../utils'
 import throbber16 from 'assets/images/throbber-16.gif'
 
 export default class PostComment extends React.Component{
@@ -123,11 +123,11 @@ export default class PostComment extends React.Component{
             <span>
               {' '}(<a onClick={preventDefault(_=>this.props.toggleEditingComment(this.props.id))}>edit</a>
               &nbsp;|&nbsp;
-              <a onClick={preventDefault(_=>this.props.deleteComment(this.props.id))}>delete</a>)
+              <a onClick={confirmFirst(_=>this.props.deleteComment(this.props.id))}>delete</a>)
             </span>
           ) : (this.props.isDeletable && this.props.isModeratingComments) ? (
             <span>
-              {' '}(<a onClick={preventDefault(_=>this.props.deleteComment(this.props.id))}>delete</a>)
+              {' '}(<a onClick={confirmFirst(_=>this.props.deleteComment(this.props.id))}>delete</a>)
             </span>
           ) : false}
         </div>

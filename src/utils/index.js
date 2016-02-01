@@ -56,6 +56,14 @@ export function preventDefault(realFunction) {
   }
 }
 
+export function confirmFirst(realFunction) {
+  return () => {
+    if (confirm('Are you sure?')) {
+      return realFunction && realFunction()
+    }
+  }
+}
+
 export function getCurrentRouteName(router) {
   return router && router.routes[router.routes.length - 1].name
 }
