@@ -34,8 +34,9 @@ export default class PostComment extends React.Component{
   }
 
   setCaretToTextEnd = (event) => {
-    setTimeout(function() {
-      const input = event.target
+    const input = event.target
+
+    setTimeout(() => {
       if (typeof input.selectionStart === 'number') {
         input.selectionStart = input.selectionEnd = input.value.length
       } else if (input.createTextRange !== undefined) {
