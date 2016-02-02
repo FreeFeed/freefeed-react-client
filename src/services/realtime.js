@@ -10,9 +10,12 @@ export function init(eventHandlers){
     changeSubscription: function(newSubscription) {
       if (this.subscription){
         this.socket.emit('unsubscribe', this.subscription)
+        this.socket.off('reconnect', this.subscribe)
       }
       this.subscription = newSubscription
-      this.socket.emit('subscribe', this.subscription)
+      this.subscribe = () => this.socket.emit('subscribe', this.subscription)
+      this.socket.on('reconnect', this.subscribe)
+      this.subscribe()
     },
     disconnect: function() {
       this.socket.disconnect()
