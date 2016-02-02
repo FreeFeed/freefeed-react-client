@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router' 
+import {Link} from 'react-router'
 import URLFinder from 'ff-url-finder'
 import config from '../config'
 
@@ -40,7 +40,6 @@ class Linkify extends React.Component {
   }
 
   parseCounter = 0
-  idx = 0
 
   parseString(string) {
     let elements = []
@@ -48,35 +47,39 @@ class Linkify extends React.Component {
       return elements
     }
 
-    this.idx = 0
+    try {
+      finder.parse(string).map(it => {
+        let displayedLink
+        let href
 
-    finder.parse(string).map(it => {
-      let displayedLink
-      let href
+        if (it.type === LINK) {
+          displayedLink = URLFinder.shorten(it.text, MAX_URL_LENGTH)
+          href = it.url
+        } else if (it.type === AT_LINK) {
+          displayedLink = it.text
+          href = `/${it.username}`
+        } else if (it.type === LOCAL_LINK) {
+          displayedLink = URLFinder.shorten(it.text, MAX_URL_LENGTH)
+          href = it.uri
+        } else if (it.type === EMAIL) {
+          displayedLink = it.text
+          href = `mailto:${it.address}`
+        } else {
+          elements.push(it.text)
+          return
+        }
 
-      if (it.type === LINK) {
-        displayedLink = URLFinder.shorten(it.text, MAX_URL_LENGTH)
-        href = it.url
-      } else if (it.type === AT_LINK) {
-        displayedLink = it.text
-        href = `/${it.username}`
-      } else if (it.type === LOCAL_LINK) {
-        displayedLink = URLFinder.shorten(it.text, MAX_URL_LENGTH)
-        href = it.uri
-      } else if (it.type === EMAIL) {
-        displayedLink = it.text
-        href = `mailto:${it.address}`
-      } else {
-        elements.push(it.text)
-        return
-      }
+        let linkElement = this.createLinkElement(it.type, displayedLink, href)
 
-      let linkElement = this.createLinkElement(it.type, displayedLink, href)
+        elements.push(linkElement)
+      })
 
-      elements.push(linkElement)
-    })
-
-    return (elements.length === 1) ? elements[0] : elements
+      return (elements.length === 1) ? elements[0] : elements
+    }
+    catch(err){
+      console.log('Error while liknifying text', string, err)
+    }
+    return [string]
   }
 
   parse(children) {
