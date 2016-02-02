@@ -875,6 +875,9 @@ export function user(state = {settings: defaultUserSettings, ...getPersistedUser
     case response(ActionTypes.UNBAN): {
       return {...state, banIds: _.without(state.banIds, action.request.id)}
     }
+    case response(ActionTypes.CREATE_GROUP): {
+      return {...state, subscriptions: [...state.subscriptions, action.payload.groups.id]}
+    }
   }
   return state
 }

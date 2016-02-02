@@ -40,12 +40,15 @@ class Linkify extends React.Component {
   }
 
   parseCounter = 0
+  idx = 0
 
   parseString(string) {
     let elements = []
     if (string === '') {
       return elements
     }
+
+    this.idx = 0
 
     try {
       finder.parse(string).map(it => {
