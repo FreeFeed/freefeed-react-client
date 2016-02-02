@@ -290,6 +290,9 @@ export default class Post extends React.Component {
           <div className="dropzone-previews"></div>
 
           <div className="post-footer">
+            {props.createdBy.isPrivate === '1' ? (
+              <i className="post-lock-icon fa fa-lock"></i>
+            ) : false}
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
             <Link to={`/${props.createdBy.username}/${props.id}`} className="post-timestamp">
               <time dateTime={createdAtISO} title={createdAtISO}>{createdAgo}</time>
