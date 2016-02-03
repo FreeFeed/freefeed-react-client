@@ -27,19 +27,19 @@ export default props => (
                   <Link to={`/${props.username}/subscriptions`}>{props.statistics.subscriptions} subscriptions</Link>
                 </div>
               ) : false}
-              <wbr/>
+              {' '}
               {props.statistics.subscribers >= 0 ? (
                 <div className="profile-stats-item">
                   <Link to={`/${props.username}/subscribers`}>{props.statistics.subscribers} subscribers</Link>
                 </div>
               ) : false}
-              <wbr/>
+              {' '}
               {props.type !== 'group' && props.statistics.comments >= 0 ? (
                 <div className="profile-stats-item">
                   <Link to={`/${props.username}/comments`}>{props.statistics.comments} comments</Link>
                 </div>
               ) : false}
-              <wbr/>
+              {' '}
               {props.type !== 'group' && props.statistics.likes >= 0 ? (
                 <div className="profile-stats-item">
                   <Link to={`/${props.username}/likes`}>{props.statistics.likes} likes</Link>
