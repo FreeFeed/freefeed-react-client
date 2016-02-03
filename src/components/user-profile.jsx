@@ -22,7 +22,7 @@ export default props => (
         {props.statistics && !props.blocked ? (
           <div className="col-sm-3 col-xs-12">
             <div className="profile-stats">
-              {props.statistics.subscriptions >= 0 ? (
+              {props.type !== 'group' && props.statistics.subscriptions >= 0 ? (
                 <div className="profile-stats-item">
                   <Link to={`/${props.username}/subscriptions`}>{props.statistics.subscriptions} subscriptions</Link>
                 </div>
@@ -34,13 +34,13 @@ export default props => (
                 </div>
               ) : false}
               <wbr/>
-              {props.statistics.comments >= 0 ? (
+              {props.type !== 'group' && props.statistics.comments >= 0 ? (
                 <div className="profile-stats-item">
                   <Link to={`/${props.username}/comments`}>{props.statistics.comments} comments</Link>
                 </div>
               ) : false}
               <wbr/>
-              {props.statistics.likes >= 0 ? (
+              {props.type !== 'group' && props.statistics.likes >= 0 ? (
                 <div className="profile-stats-item">
                   <Link to={`/${props.username}/likes`}>{props.statistics.likes} likes</Link>
                 </div>
