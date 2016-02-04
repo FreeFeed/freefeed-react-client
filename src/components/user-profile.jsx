@@ -1,7 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router'
 
-import {preventDefault} from '../utils'
+import {preventDefault, pluralForm} from '../utils'
 import CreatePost from './create-post'
 import PieceOfText from './piece-of-text'
 
@@ -26,25 +26,25 @@ export default props => (
             <div className="profile-stats">
               {props.type !== 'group' && props.statistics.subscriptions >= 0 ? (
                 <div className="profile-stats-item">
-                  <Link to={`/${props.username}/subscriptions`}>{props.statistics.subscriptions} subscriptions</Link>
+                  <Link to={`/${props.username}/subscriptions`}>{pluralForm(props.statistics.subscriptions, 'subscription')}</Link>
                 </div>
               ) : false}
               {' '}
               {props.statistics.subscribers >= 0 ? (
                 <div className="profile-stats-item">
-                  <Link to={`/${props.username}/subscribers`}>{props.statistics.subscribers} subscribers</Link>
+                  <Link to={`/${props.username}/subscribers`}>{pluralForm(props.statistics.subscribers, 'subscriber')}</Link>
                 </div>
               ) : false}
               {' '}
               {props.type !== 'group' && props.statistics.comments >= 0 ? (
                 <div className="profile-stats-item">
-                  <Link to={`/${props.username}/comments`}>{props.statistics.comments} comments</Link>
+                  <Link to={`/${props.username}/comments`}>{pluralForm(props.statistics.comments, 'comment')}</Link>
                 </div>
               ) : false}
               {' '}
               {props.type !== 'group' && props.statistics.likes >= 0 ? (
                 <div className="profile-stats-item">
-                  <Link to={`/${props.username}/likes`}>{props.statistics.likes} likes</Link>
+                  <Link to={`/${props.username}/likes`}>{pluralForm(props.statistics.likes, 'like')}</Link>
                 </div>
               ) : false}
             </div>
