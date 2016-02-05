@@ -1,7 +1,9 @@
 import React from 'react'
 import {Link} from 'react-router'
+
 import {preventDefault} from '../utils'
 import CreatePost from './create-post'
+import PieceOfText from './piece-of-text'
 
 export default props => (
 <div>
@@ -16,7 +18,7 @@ export default props => (
           </div>
           <div className="description">
             <div className="name">{props.screenName}</div>
-            <div>{props.description}</div>
+            <PieceOfText text={props.description}/>
           </div>
         </div>
         {props.statistics && !props.blocked ? (
