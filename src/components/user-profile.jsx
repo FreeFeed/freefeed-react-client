@@ -83,7 +83,7 @@ export default props => (
     )
   ) : false}
 
-  {props.isItMe || (props.type === 'group' && props.subscribed) ? (
+  {(props.isItMe && props.isItPostsPage) || (props.type === 'group' && props.subscribed) ? (
     <CreatePost
       createPostViewState={props.createPostViewState}
       sendTo={props.sendTo}
