@@ -2,51 +2,49 @@ import React from 'react'
 import {preventDefault} from '../utils'
 
 export default class UserSettingsForm extends React.Component {
-  render(){
-    return (
-      <form onSubmit={preventDefault(this.updateUser)}>
-        <div className='form-group p-settings-screenname'>
-          <label htmlFor='screenName'>Screen name:</label>
-          <input id='screenName' className='form-control' name='screenName' type='text' defaultValue={this.props.user.screenName} onChange={this.updateSetting('screenName')}/>
-        </div>
-        <div className='form-group p-settings-email'>
-          <label htmlFor='email'>Email:</label>
-          <input id='email' className='form-control' name='email' type='text' defaultValue={this.props.user.email} onChange={this.updateSetting('email')}/>
-        </div>
-        <div className='form-group'>
-          <label htmlFor='description'>Description:</label>
-          <textarea id='description' className='form-control' name='description' defaultValue={this.props.user.description} onChange={this.updateSetting('description')} maxLength="1500"/>
-        </div>
-        <div className='checkbox p-settings-private'>
-          <label>
-            <input className='ember-checkbox' type='checkbox' name='isPrivate' defaultChecked={this.props.user.isPrivate == '1' ? true : false} onChange={this.updateChecked}/>
-            Private feed
-            {' '}
-            <small>(only let people I approve see my feed)</small>
-          </label>
-        </div>
-        <p>
-          <button className='btn btn-default p-settings-update' type='submit'>Update</button>
-        </p>
-        {this.props.success ?
-          (<div className='alert alert-info p-settings-alert' role='alert'>
-              <span id='error-message'>Updated!</span>
-            </div>) : false}
-        {this.props.error ?
-          (<div className='alert alert-danger p-settings-alert' role='alert'>
-              <span id='error-message'>Something went wrong during user settings update</span>
-            </div>) : false}
-      </form>)
-  }
-  updateUser = () => {
-    if (!this.props.isSaving){
-      this.props.updateUser(this.props.user.id, this.props.screenName, this.props.email, this.props.isPrivate, this.props.description)
-    }
-  }
   updateSetting = (setting) => (e) => {
     this.props.userSettingsChange({[setting]: e.target.value})
   }
-  updateChecked = (e) =>{
+  updateChecked = (e) => {
     this.props.userSettingsChange({isPrivate: e.target.checked ? '1' : '0'})
+  }
+  updateUser = () => {
+    if (!this.props.isSaving) {
+      this.props.updateUser(this.props.user.id, this.props.screenName, this.props.email, this.props.isPrivate, this.props.description)
+    }
+  }
+
+  render() {
+    return (
+      <form onSubmit={preventDefault(this.updateUser)}>
+        <div className="form-group">
+          <label htmlFor="screenName">Screen name:</label>
+          <input id="screenName" className="form-control" name="screenName" type="text" defaultValue={this.props.user.screenName} onChange={this.updateSetting('screenName')}/>
+        </div>
+        <div className="form-group">
+          <label htmlFor="email">Email:</label>
+          <input id="email" className="form-control" name="email" type="text" defaultValue={this.props.user.email} onChange={this.updateSetting('email')}/>
+        </div>
+        <div className="form-group">
+          <label htmlFor="description">Description:</label>
+          <textarea id="description" className="form-control" name="description" defaultValue={this.props.user.description} onChange={this.updateSetting('description')} maxLength="1500"/>
+        </div>
+        <div className="checkbox">
+          <label>
+            <input type="checkbox" name="isPrivate" defaultChecked={this.props.user.isPrivate == '1' ? true : false} onChange={this.updateChecked}/>
+            Private feed
+            <small> (only let people I approve see my feed)</small>
+          </label>
+        </div>
+        <p>
+          <button className="btn btn-default" type="submit">Update</button>
+        </p>
+        {this.props.success ? (
+          <div className="alert alert-info" role="alert">Updated!</div>
+        ) : this.props.error ? (
+          <div className="alert alert-danger" role="alert">Something went wrong during user settings update</div>
+        ) : false}
+      </form>
+    )
   }
 }
