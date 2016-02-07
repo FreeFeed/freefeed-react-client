@@ -196,24 +196,32 @@ export function enableComments({postId}) {
 }
 
 export function signIn({username, password}) {
+  const encodedBody = _.map({username, password},
+    (value, key) => key + '=' + encodeURIComponent(value)
+  ).join('&')
+
   return fetch(`${apiConfig.host}/v1/session`, {
     headers:{
       'Accept': 'application/json',
       'Content-Type':'application/x-www-form-urlencoded',
     },
     method: 'POST',
-    body: `username=${username}&password=${password}`,
+    body: encodedBody
   })
 }
 
 export function signUp({username, password, email, captcha}) {
+  const encodedBody = _.map({username, password, email, captcha},
+    (value, key) => key + '=' + encodeURIComponent(value)
+  ).join('&')
+
   return fetch(`${apiConfig.host}/v1/users`, {
     headers:{
       'Accept': 'application/json',
       'Content-Type':'application/x-www-form-urlencoded',
     },
     method: 'POST',
-    body: `username=${username}&password=${password}&email=${email}&captcha=${captcha}`,
+    body: encodedBody
   })
 }
 
@@ -230,6 +238,10 @@ export function updateUser({id, screenName, email, isPrivate, description}) {
 }
 
 export function updatePassword({currentPassword, password, passwordConfirmation}) {
+  const encodedBody = _.map({currentPassword, password, passwordConfirmation},
+    (value, key) => key + '=' + encodeURIComponent(value)
+  ).join('&')
+
   return fetch(`${apiConfig.host}/v1/users/updatePassword`, {
     'method': 'PUT',
     'headers': {
@@ -237,7 +249,7 @@ export function updatePassword({currentPassword, password, passwordConfirmation}
       'Content-Type':'application/x-www-form-urlencoded',
       'X-Authentication-Token': getToken()
     },
-    'body': `password=${password}&passwordConfirmation=${passwordConfirmation}&currentPassword=${currentPassword}`
+    'body': encodedBody
   })
 }
 
