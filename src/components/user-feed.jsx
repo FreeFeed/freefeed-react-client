@@ -27,7 +27,8 @@ const UserFeedHandler = (props) => {
           createPostViewState={props.createPostViewState}
           createPost={props.createPost}
           createPostForm={props.createPostForm}
-          addAttachmentResponse={props.addAttachmentResponse}/>
+          addAttachmentResponse={props.addAttachmentResponse}
+          removeAttachment={props.removeAttachment}/>
       </div>
       {props.viewUser.blocked ?
         false :
