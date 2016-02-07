@@ -594,6 +594,21 @@ export function posts(state = {}, action) {
         }
       }
     }
+    case ActionTypes.REMOVE_ATTACHMENT: {
+      // If this is an attachment for create-post (non-existent post),
+      // it should be handled in createPostForm(), not here
+      if (!action.payload.postId) {
+        return state
+      }
+
+      const post = state[action.payload.postId]
+      return {...state,
+        [post.id]: {
+          ...post,
+          attachments: _.without((post.attachments || []), action.payload.attachmentId)
+        }
+      }
+    }
     case response(ActionTypes.DELETE_COMMENT): {
       const commentId = action.request.commentId
       const post = _(state).find(post => (post.comments||[]).indexOf(commentId) !== -1)
