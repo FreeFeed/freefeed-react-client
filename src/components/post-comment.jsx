@@ -78,7 +78,9 @@ export default class PostComment extends React.Component{
     <div className="comment">
       <a className="comment-icon fa fa-comment-o"
          title={createdAgo}
-         onClick={this.openAnsweringComment}></a>
+         id={`comment-${this.props.id}`}
+         href={`${this.props.entryUrl}#comment-${this.props.id}`}
+         onClick={preventDefault(this.openAnsweringComment)}></a>
       {this.props.isEditing ? (
         <div className="comment-body">
           <div>
