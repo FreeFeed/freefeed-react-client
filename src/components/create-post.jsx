@@ -35,8 +35,10 @@ export default class CreatePost extends React.Component {
       disabled: true,
       isMoreOpen: false
     })
-    attachmentIds.forEach(attachmentId => this.props.removeAttachment(null, attachmentId))
+    attachmentIds.forEach(this.removeAttachment)
   }
+
+  removeAttachment = (attachmentId) => this.props.removeAttachment(null, attachmentId)
 
   isPostTextEmpty = (postText) => {
     return postText == '' || /^\s+$/.test(postText)
@@ -170,7 +172,10 @@ export default class CreatePost extends React.Component {
             disabled={this.state.disabled || this.props.createPostViewState.isPending}>Post</button>
         </div>
 
-        <PostAttachments attachments={this.props.createPostForm.attachments}/>
+        <PostAttachments
+          attachments={this.props.createPostForm.attachments}
+          isEditing={true}
+          removeAttachment={this.removeAttachment}/>
 
         <div className="dropzone-previews"></div>
 

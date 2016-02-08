@@ -1,3 +1,5 @@
+// General
+
 .attachments {
   clear: both;
   margin-bottom: 2px;
@@ -11,6 +13,10 @@
     }
   }
 
+  .remove-attachment {
+    display: none;
+  }
+
   // Clearfix (http://www.cssmojo.com/latest_new_clearfix_so_far/)
   &:after {
     content: '';
@@ -20,12 +26,8 @@
 }
 
 .image-attachments {
-  > .ember-view {
-    display: inline-block;
-    vertical-align: middle;
-  }
-
   .attachment {
+    position: relative;
     display: inline-block;
     vertical-align: middle;
     border: 1px solid silver;
@@ -72,8 +74,10 @@
   }
 }
 
-.audio-attachments {
+.audio-attachments,
+.general-attachments {
   .attachment {
+    position: relative;
     display: block;
     margin: 0 8px 8px 0;
 
@@ -85,18 +89,68 @@
   }
 }
 
-.general-attachments {
-  .attachment {
-    display: inline-block;
-    margin: 0 8px 8px 0;
 
-    i {
-      color: #666666;
-      padding: 0 1px;
-      margin-right: 4px;
+// Editing entries
+
+.image-attachments {
+  .attachment:hover .remove-attachment {
+    display: block;
+    position: absolute;
+    right: 1px;
+    top: 1px;
+    cursor: pointer;
+    color: #000;
+    font-size: 20px;
+    padding: 6px 8px 7px 9px;
+    z-index: 100;
+    background-color: silver;
+    opacity: 0.7;
+    border-bottom-left-radius: 5px;
+
+    &:hover {
+      opacity: 1;
     }
   }
+
+  .attachment.removed {
+    border: 2px solid #e33;
+    padding: 0;
+  }
+
+  .attachment.added {
+    border: 2px solid #3d3;
+    padding: 0;
+  }
 }
+
+.audio-attachments,
+.general-attachments {
+  .attachment:hover .remove-attachment {
+    display: block;
+    position: absolute;
+    left: -3px;
+    bottom: 0;
+    cursor: pointer;
+    padding: 3px 4px 3px 5px;
+    background-color: #fff;
+    border-radius: 2px;
+
+    &:hover {
+      background-color: #ddd;
+    }
+  }
+
+  .attachment.removed {
+    background-color: #fbb;
+  }
+
+  .attachment.added {
+    background-color: #bfb;
+  }
+}
+
+
+// Dropzone
 
 .dropzone {
   display: none;

@@ -1,7 +1,9 @@
 import React from 'react'
 import {Link} from 'react-router'
-import {preventDefault} from '../utils'
+
+import {preventDefault, pluralForm} from '../utils'
 import CreatePost from './create-post'
+import PieceOfText from './piece-of-text'
 
 export default props => (
 <div>
@@ -16,33 +18,33 @@ export default props => (
           </div>
           <div className="description">
             <div className="name">{props.screenName}</div>
-            <div>{props.description}</div>
+            <PieceOfText text={props.description}/>
           </div>
         </div>
         {props.statistics && !props.blocked ? (
           <div className="col-sm-3 col-xs-12">
             <div className="profile-stats">
-              {props.statistics.subscriptions >= 0 ? (
+              {props.type !== 'group' && props.statistics.subscriptions >= 0 ? (
                 <div className="profile-stats-item">
-                  <Link to={`/${props.username}/subscriptions`}>{props.statistics.subscriptions} subscriptions</Link>
+                  <Link to={`/${props.username}/subscriptions`}>{pluralForm(props.statistics.subscriptions, 'subscription')}</Link>
                 </div>
               ) : false}
-              <wbr/>
+              {' '}
               {props.statistics.subscribers >= 0 ? (
                 <div className="profile-stats-item">
-                  <Link to={`/${props.username}/subscribers`}>{props.statistics.subscribers} subscribers</Link>
+                  <Link to={`/${props.username}/subscribers`}>{pluralForm(props.statistics.subscribers, 'subscriber')}</Link>
                 </div>
               ) : false}
-              <wbr/>
-              {props.statistics.comments >= 0 ? (
+              {' '}
+              {props.type !== 'group' && props.statistics.comments >= 0 ? (
                 <div className="profile-stats-item">
-                  <Link to={`/${props.username}/comments`}>{props.statistics.comments} comments</Link>
+                  <Link to={`/${props.username}/comments`}>{pluralForm(props.statistics.comments, 'comment')}</Link>
                 </div>
               ) : false}
-              <wbr/>
-              {props.statistics.likes >= 0 ? (
+              {' '}
+              {props.type !== 'group' && props.statistics.likes >= 0 ? (
                 <div className="profile-stats-item">
-                  <Link to={`/${props.username}/likes`}>{props.statistics.likes} likes</Link>
+                  <Link to={`/${props.username}/likes`}>{pluralForm(props.statistics.likes, 'like')}</Link>
                 </div>
               ) : false}
             </div>
@@ -81,7 +83,7 @@ export default props => (
     )
   ) : false}
 
-  {props.isItMe || (props.type === 'group' && props.subscribed) ? (
+  {(props.isItMe && props.isItPostsPage) || (props.type === 'group' && props.subscribed) ? (
     <CreatePost
       createPostViewState={props.createPostViewState}
       sendTo={props.sendTo}
@@ -89,6 +91,7 @@ export default props => (
       createPost={props.createPost}
       expandSendTo={props.expandSendTo}
       createPostForm={props.createPostForm}
-      addAttachmentResponse={props.addAttachmentResponse}/>
+      addAttachmentResponse={props.addAttachmentResponse}
+      removeAttachment={props.removeAttachment}/>
   ) : false}
 </div>)

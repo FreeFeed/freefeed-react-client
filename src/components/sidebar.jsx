@@ -76,8 +76,10 @@ export default ({user, signOut, recentGroups}) => (
         You can even attach thumbnails of images from the page you share!
       </div>
       <div className='box-footer'>
-        Click and drag ​
-        <a className='bookmarklet-button' href="BOOKMARKLET_PLACEHOLDER" onclick='return false'>Share on FreeFeed</a>
+        Click and drag
+        {' '}
+        <a className="bookmarklet-button" href="BOOKMARKLET_PLACEHOLDER" onClick={preventDefault(() => false)}>Share on FreeFeed</a>
+        {' '}
         to&nbsp;your toolbar.
       </div>
     </div>

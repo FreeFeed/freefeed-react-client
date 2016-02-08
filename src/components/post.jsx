@@ -17,6 +17,8 @@ import {getToken} from '../services/auth'
 import PostMoreMenu from './post-more-menu'
 
 export default class Post extends React.Component {
+  removeAttachment = (attachmentId) => this.props.removeAttachment(this.props.id, attachmentId)
+
   render() {
     let props = this.props
 
@@ -285,7 +287,10 @@ export default class Post extends React.Component {
             </div>
           )}
 
-          <PostAttachments attachments={props.attachments}/>
+          <PostAttachments
+            attachments={props.attachments}
+            isEditing={props.isEditing}
+            removeAttachment={this.removeAttachment}/>
 
           <div className="dropzone-previews"></div>
 

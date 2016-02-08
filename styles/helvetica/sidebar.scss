@@ -1,7 +1,23 @@
 .sidebar {
 
-  a{
+  a {
     color: #000;
+  }
+
+  a.bookmarklet-button {
+    color: #000;
+    background-color: #ddd;
+    border-radius: 4px;
+    padding: 3px 6px;
+    margin: 0;// -3px;
+    white-space: nowrap;
+    text-decoration: none;
+
+    &:hover {
+      color: #fff;
+      background-color: #333;
+      text-decoration: none;
+    }
   }
 
   .logged-in {

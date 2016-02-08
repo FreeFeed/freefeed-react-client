@@ -27,7 +27,8 @@ const UserFeedHandler = (props) => {
           createPostViewState={props.createPostViewState}
           createPost={props.createPost}
           createPostForm={props.createPostForm}
-          addAttachmentResponse={props.addAttachmentResponse}/>
+          addAttachmentResponse={props.addAttachmentResponse}
+          removeAttachment={props.removeAttachment}/>
       </div>
       {props.viewUser.blocked ?
         false :
@@ -48,8 +49,8 @@ function selectState(state) {
   const timelines = state.timelines
   const boxHeader = state.boxHeader
   const foundUser = Object.getOwnPropertyNames(state.users)
-  .map(key => state.users[key] || state.subscribers[key])
-  .filter(user => user.username === state.router.params.userName)[0]
+    .map(key => state.users[key] || state.subscribers[key])
+    .filter(user => user.username === state.router.params.userName)[0]
 
   const amIGroupAdmin = (
     authenticated &&
@@ -58,24 +59,24 @@ function selectState(state) {
     ((foundUser.administrators || []).indexOf(state.user.id) > -1)
   )
 
+  const currentRouteName = getCurrentRouteName(state.router)
+  const isItPostsPage = ['userComments', 'userLikes'].indexOf(currentRouteName) === -1
+
   const statusExtension = {
     authenticated,
     isLoading: state.routeLoadingState,
     isUserFound: !!foundUser,
     isItMe: (foundUser ? foundUser.username === user.username : false),
-    amIGroupAdmin: amIGroupAdmin,
+    isItPostsPage,
+    amIGroupAdmin,
     subscribed: authenticated && foundUser && (user.subscriptions.indexOf(foundUser.id) !== -1),
     blocked: authenticated && foundUser && (user.banIds.indexOf(foundUser.id) > -1),
   }
 
   const viewUser = {...(foundUser), ...statusExtension}
 
-  const currentRouteName = getCurrentRouteName(state.router)
-
-  const shouldShowBreadcrumbs = ['userComments', 'userLikes'].indexOf(currentRouteName) !== -1
-
   const breadcrumbs = {
-    shouldShowBreadcrumbs,
+    shouldShowBreadcrumbs: !isItPostsPage,
     user: viewUser,
     breadcrumb: currentRouteName.replace('user','')
   }
