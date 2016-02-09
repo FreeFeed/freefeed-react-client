@@ -19,3 +19,27 @@ export function init(eventHandlers){
     }
   }
 }
+
+const dummyPost = {
+  getBoundingClientRect: _ => ({top:0})
+}
+
+export const scrollCompensator = dispatchAction => (...actionParams) => {
+  //we hope that markup will remain the same — best tradeoff between this and code all over components
+  const postCommentNodes = [...document.querySelectorAll('.post, .comment')]
+
+  const firstVisible = postCommentNodes.filter(element => element.getBoundingClientRect().top > 0)[0]
+                              || dummyPost
+
+  const topBefore = firstVisible.getBoundingClientRect().top
+
+  //here we're dispatching, so render is called internally and after call we have new page
+  const res = dispatchAction(...actionParams)
+
+  const topAfter = firstVisible.getBoundingClientRect().top
+
+  if (topAfter !== topBefore) {
+    scrollBy(0, topAfter - topBefore)
+  }
+  return res
+}
