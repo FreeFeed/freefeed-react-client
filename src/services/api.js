@@ -41,9 +41,9 @@ export function getLikesOnly({postId, commentsExpanded}) {
     `${apiConfig.host}/v1/posts/${postId}?maxComments=${maxComments}&maxLikes=all`, getRequestOptions())
 }
 
-export function getPostWithAllCommentsAndLikes({postId}) {
+export function getPostWithAllComments({postId}) {
   return fetch(
-    `${apiConfig.host}/v1/posts/${postId}?maxComments=all&maxLikes=all`, getRequestOptions())
+    `${apiConfig.host}/v1/posts/${postId}?maxComments=all`, getRequestOptions())
 }
 
 export function createPost({feeds, postText, attachmentIds, more}) {
