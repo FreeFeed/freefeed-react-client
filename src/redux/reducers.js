@@ -1218,8 +1218,8 @@ export function singlePostId(state = null, action) {
 }
 
 function calculateFeeds(state) {
-  let rawSubscriptions = state.users.subscriptions
-  let rawSubscribers = state.users.subscribers
+  let rawSubscriptions = state.users.subscriptions || []
+  let rawSubscribers = state.users.subscribers || []
   let feeds = []
   if(rawSubscriptions && rawSubscribers) {
     let subscriptions = _.map(rawSubscriptions, (rs) => {
@@ -1263,6 +1263,14 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
       return {
         expanded: true,
         feeds: state.feeds
+      }
+    }
+    case response(ActionTypes.CREATE_GROUP): {
+      let groupId = action.payload.groups.id
+      let group = userParser(action.payload.groups)
+      return {
+        expanded: state.expanded,
+        feeds: [ ...state.feeds, { id: groupId, user: group } ]
       }
     }
   }
