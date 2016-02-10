@@ -64,17 +64,17 @@ export default props => (
     ) : (
       <div className="profile-controls">
         <div className="row">
-          <div className="col-md-7 subscribe-controls">
+          <div className="col-xs-7 subscribe-controls">
             {props.subscribed
               ? <a onClick={preventDefault(_=>props.unsubscribe({username: props.username}))}>Unsubscribe</a>
               : <a onClick={preventDefault(_=>props.subscribe({username: props.username}))}>Subscribe</a>}
           </div>
           {props.type !== 'group' && !props.subscribed ? (
-            <div className="col-md-5 text-right">
+            <div className="col-xs-5 text-right">
               <a onClick={preventDefault(_=>props.ban({username: props.username, id: props.id}))}>Block this user</a>
             </div>
           ) : props.amIGroupAdmin ? (
-            <div className="col-md-5 text-right">
+            <div className="col-xs-5 text-right">
               <Link to={`/${props.username}/settings`}>Settings</Link>
             </div>
           ) : false}
