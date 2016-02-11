@@ -22,7 +22,7 @@ import Signin from './components/signin'
 import Signup from './components/signup'
 import Settings from './components/settings'
 import SinglePost from './components/single-post'
-import UserFeed from './components/user-feed'
+import User from './components/user'
 import Subscribers from './components/subscribers'
 import Subscriptions from './components/subscriptions'
 import GroupSettings from './components/group-settings'
@@ -57,11 +57,11 @@ ReactDOM.render(
         <Route name='direct' path='filter/direct' component={Discussions} onEnter={boundRouteActions('direct')}/>
         <Route name='groups' path='/groups' component={Groups}/>
         <Route name='groupCreate' path='/groups/create' component={GroupCreate}/>
-        <Route name='userFeed' path='/:userName' component={UserFeed} onEnter={boundRouteActions('userFeed')}/>
+        <Route name='userFeed' path='/:userName' component={User} onEnter={boundRouteActions('userFeed')}/>
         <Route name='subscribers' path='/:userName/subscribers' component={Subscribers} onEnter={boundRouteActions('subscribers')}/>
         <Route name='subscriptions' path='/:userName/subscriptions' component={Subscriptions} onEnter={boundRouteActions('subscriptions')}/>
-        <Route name='userComments' path='/:userName/comments' component={UserFeed} onEnter={boundRouteActions('userComments')}/>
-        <Route name='userLikes' path='/:userName/likes' component={UserFeed} onEnter={boundRouteActions('userLikes')}/>
+        <Route name='userComments' path='/:userName/comments' component={User} onEnter={boundRouteActions('userComments')}/>
+        <Route name='userLikes' path='/:userName/likes' component={User} onEnter={boundRouteActions('userLikes')}/>
         <Route name='post' path='/:userName/:postId' component={SinglePost} onEnter={boundRouteActions('post')}/>
       </Route>
     </ReduxRouter>
