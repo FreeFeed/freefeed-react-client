@@ -302,7 +302,7 @@ export function getUserInfo({username}) {
   return fetch(`${apiConfig.host}/v1/users/${username}`, getRequestOptions())
 }
 
-export function createGroup({username, screenName, description}) {
+export function createGroup(groupSettings) {
   return fetch(`${apiConfig.host}/v1/groups`, {
     'method': 'POST',
     'headers': {
@@ -310,11 +310,11 @@ export function createGroup({username, screenName, description}) {
       'Content-Type': 'application/json',
       'X-Authentication-Token': getToken()
     },
-    'body': JSON.stringify({group: {username, screenName, description}})
+    'body': JSON.stringify({group: groupSettings})
   })
 }
 
-export function updateGroup({id, screenName, description}) {
+export function updateGroup({id, groupSettings}) {
   return fetch(`${apiConfig.host}/v1/users/${id}`, {
     'method': 'PUT',
     'headers': {
@@ -322,6 +322,6 @@ export function updateGroup({id, screenName, description}) {
       'Content-Type': 'application/json',
       'X-Authentication-Token': getToken()
     },
-    'body': JSON.stringify({user: {screenName, description}})
+    'body': JSON.stringify({user: groupSettings})
   })
 }
