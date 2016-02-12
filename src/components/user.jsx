@@ -3,12 +3,10 @@ import {connect} from 'react-redux'
 
 import {createPost, expandSendTo} from '../redux/action-creators'
 import {joinPostData, joinCreatePostData, postActions, userActions} from './select-utils'
-import {getQuery, getCurrentRouteName} from '../utils'
-import CreatePost from './create-post'
-import Feed from './feed'
-import PaginatedView from './paginated-view'
-import UserProfile from './user-profile'
+import {getCurrentRouteName} from '../utils'
 import Breadcrumbs from './breadcrumbs'
+import UserProfile from './user-profile'
+import UserFeed from './user-feed'
 
 const UserHandler = (props) => {
   return (
@@ -33,14 +31,9 @@ const UserHandler = (props) => {
           removeAttachment={props.removeAttachment}/>
       </div>
 
-      {props.viewUser.blocked ?
-        false :
-        <PaginatedView>
-          <Feed {...props} isInUserFeed={true}/>
-        </PaginatedView>}
-
-      <div className="box-footer"></div>
-    </div>)
+      <UserFeed {...props}/>
+    </div>
+  )
 }
 
 function selectState(state) {
