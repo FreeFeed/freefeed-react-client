@@ -357,6 +357,7 @@ export const ban = userChangeAction(ActionTypes.BAN, Api.ban)
 export const unban = userChangeAction(ActionTypes.UNBAN, Api.unban)
 export const subscribe = userChangeAction(ActionTypes.SUBSCRIBE, Api.subscribe)
 export const unsubscribe = userChangeAction(ActionTypes.UNSUBSCRIBE, Api.unsubscribe)
+export const sendSubscriptionRequest = userChangeAction(ActionTypes.SEND_SUBSCRIPTION_REQUEST, Api.sendSubscriptionRequest)
 
 export function getUserComments(username, offset = 0) {
   return {
