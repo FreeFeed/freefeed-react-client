@@ -1428,3 +1428,11 @@ export function usernameSubscribers(state = {}, action) {
 export function usernameSubscriptions(state = {}, action) {
   return handleSubs(state, action, ActionTypes.SUBSCRIPTIONS)
 }
+
+export function groupRequests(state = [], action) {
+  if (action.type === response(ActionTypes.GROUP_REQUESTS)) {
+    return action.payload
+  }
+
+  return state
+}
