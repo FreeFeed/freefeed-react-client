@@ -699,6 +699,10 @@ export function posts(state = {}, action) {
     }
     case response(ActionTypes.ADD_COMMENT): {
       const post = state[action.request.postId]
+      const commentAlreadyAdded = post.comments && post.comments.indexOf(action.payload.comments.id)!==-1
+      if (commentAlreadyAdded) {
+        return state
+      }
       return {...state,
         [post.id] : {
           ...post,
@@ -709,6 +713,10 @@ export function posts(state = {}, action) {
     }
     case response(ActionTypes.LIKE_POST): {
       const post = state[action.request.postId]
+      const likeAlreadyAdded = post.likes && post.likes.indexOf(action.request.userId)!==-1
+      if (likeAlreadyAdded) {
+        return state
+      }
       return {...state,
         [post.id] : {
           ...post,
@@ -835,6 +843,10 @@ export function attachments(state = {}, action) {
   switch (action.type) {
     case response(ActionTypes.GET_SINGLE_POST): {
       return mergeByIds(state, action.payload.attachments)
+    }
+    case ActionTypes.REALTIME_POST_NEW:
+    case ActionTypes.REALTIME_POST_UPDATE: {
+      return mergeByIds(state, action.attachments)
     }
     case ActionTypes.ADD_ATTACHMENT_RESPONSE: {
       return {...state,
@@ -982,6 +994,10 @@ export function users(state = {}, action) {
     case response(ActionTypes.GET_SINGLE_POST): {
       return mergeByIds(state, (action.payload.users || []).map(userParser))
     }
+    case ActionTypes.REALTIME_POST_NEW:
+    case ActionTypes.REALTIME_COMMENT_NEW: {
+      return mergeByIds(state, (action.users || []).map(userParser))
+    }
     case ActionTypes.REALTIME_LIKE_NEW: {
       return mergeByIds(state, ([action.user]).map(userParser))
     }
@@ -994,6 +1010,10 @@ export function users(state = {}, action) {
 export function subscribers(state = {}, action) {
   if (ActionHelpers.isFeedResponse(action) || action.type === response(ActionTypes.GET_SINGLE_POST)){
     return mergeByIds(state, (action.payload.subscribers || []).map(userParser))
+  }
+  if (action.type === ActionTypes.REALTIME_POST_NEW
+    || action.type === ActionTypes.REALTIME_COMMENT_NEW){
+    return mergeByIds(state, (action.subscribers || []).map(userParser))
   }
   return state
 }
