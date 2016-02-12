@@ -54,33 +54,34 @@ export default props => (
     </div>
   )}
 
-  {props.authenticated && props.isUserFound && !props.isItMe ? (
-    props.blocked ? (
-      <div>
-        You have blocked {props.username}, so all of their posts and comments are invisible to you.
-        {' '}
-        <a onClick={preventDefault(_=>props.unban({username: props.username, id: props.id}))}>Un-block this user</a>
-      </div>
-    ) : (
-      <div className="profile-controls">
-        <div className="row">
-          <div className="col-xs-7 subscribe-controls">
-            {props.subscribed
-              ? <a onClick={preventDefault(_=>props.unsubscribe({username: props.username}))}>Unsubscribe</a>
-              : <a onClick={preventDefault(_=>props.subscribe({username: props.username}))}>Subscribe</a>}
-          </div>
+  {props.authenticated && props.isUserFound && !props.isItMe && !props.blocked ? (
+    <div className="profile-controls">
+      <div className="row">
+        <div className="col-xs-7 subscribe-controls">
+          {props.isPrivate === '1' && !props.subscribed ? (
+            props.hasRequestBeenSent ? (
+              <span><b>{props.screenName}</b> has been sent your subscription request.</span>
+            ) : (
+              <a onClick={()=>props.sendSubscriptionRequest({username: props.username, id: props.id})}>Request a subscription</a>
+            )
+          ) : (
+            props.subscribed ? (
+              <a onClick={()=>props.unsubscribe({username: props.username})}>Unsubscribe</a>
+            ) : (
+              <a onClick={()=>props.subscribe({username: props.username})}>Subscribe</a>
+            )
+          )}
+        </div>
+
+        <div className="col-xs-5 text-right">
           {props.type !== 'group' && !props.subscribed ? (
-            <div className="col-xs-5 text-right">
-              <a onClick={preventDefault(_=>props.ban({username: props.username, id: props.id}))}>Block this user</a>
-            </div>
+            <a onClick={preventDefault(_=>props.ban({username: props.username, id: props.id}))}>Block this user</a>
           ) : props.amIGroupAdmin ? (
-            <div className="col-xs-5 text-right">
-              <Link to={`/${props.username}/settings`}>Settings</Link>
-            </div>
+            <Link to={`/${props.username}/settings`}>Settings</Link>
           ) : false}
         </div>
       </div>
-    )
+    </div>
   ) : false}
 
   {(props.isItMe && props.isItPostsPage) || (props.type === 'group' && props.subscribed) ? (
