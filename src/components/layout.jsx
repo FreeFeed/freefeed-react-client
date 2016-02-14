@@ -1,6 +1,7 @@
 import React from 'react'
 import {IndexLink, Link} from 'react-router'
 import {connect} from 'react-redux'
+import Helmet from 'react-helmet'
 import classnames from 'classnames'
 
 import {unauthenticated, home} from '../redux/action-creators'
@@ -127,6 +128,8 @@ class Layout extends React.Component {
 
     return (
       <div className={layoutClassNames}>
+        <Helmet title={props.title} />
+
         <header className="row">
           <div className="col-xs-9 col-sm-6">
             <h1>
@@ -175,6 +178,7 @@ function select(state, ownProps) {
     loadingView: state.routeLoadingState,
     recentGroups: state.recentGroups,
     routeName: getCurrentRouteName(ownProps),
+    title: state.title
   }
 }
 
