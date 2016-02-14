@@ -2,9 +2,16 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import {Link} from 'react-router'
-import TileUserList from './tile-user-list'
+import {acceptGroupRequest, rejectGroupRequest} from '../redux/action-creators'
+import {tileUserListFactroy, PLAIN, REQUESTS} from './tile-user-list'
+
+const RequestsList = tileUserListFactroy({type: REQUESTS})
+const SubscribersList = tileUserListFactroy({type: PLAIN})
 
 const SubscribersHandler = (props) => {
+  const acceptRequest = (userName) => props.acceptGroupRequest(props.username, userName)
+  const rejectRequest = (userName) => props.rejectGroupRequest(props.username, userName)
+
   return (
     <div className='box'>
       <div className='box-header-timeline'>
@@ -12,7 +19,15 @@ const SubscribersHandler = (props) => {
       </div>
       <div className='box-body'>
         <div><Link to={`/${props.username}`}>{props.username}</Link> › Subscribers</div>
-        <TileUserList {...props} title='Subscribers' />
+        {props.groupRequests
+          ? <RequestsList title='Subscription requests'
+                          acceptRequest={acceptRequest}
+                          rejectRequest={rejectRequest}
+                          {...props.groupRequests} />
+          : false}
+        
+        <SubscribersList title='Subscribers'
+                         {...props.subscribers} />
       </div>
       <div className='box-footer'></div>
     </div>
@@ -20,13 +35,35 @@ const SubscribersHandler = (props) => {
 }
 
 function selectState(state) {
-  const boxHeader = state.boxHeader
-  const username = state.router.params.userName
-  const users = _.sortBy(state.usernameSubscribers.payload, 'username')
-  const isPending = state.usernameSubscribers.isPending
-  const errorString = state.usernameSubscribers.errorString
+  const selectedState = {}
 
-  return { boxHeader, username, users, isPending, errorString }
+  selectedState.boxHeader = state.boxHeader
+  selectedState.username = state.router.params.userName
+  
+  selectedState.subscribers = {
+    users: _.sortBy(state.usernameSubscribers.payload, 'username'),
+    isPending: state.usernameSubscribers.isPending,
+    errorString: state.usernameSubscribers.errorString
+  }
+
+  const groupRequests = state.groupRequests.find(group => group.username === state.router.params.userName)
+  if (groupRequests && groupRequests.requests.length != 0) {
+    const requests = {
+      users: groupRequests.requests,
+      isPending: false,
+      errorString: false
+    }
+    selectedState.groupRequests = requests
+  }
+
+  return selectedState
 }
 
-export default connect(selectState)(SubscribersHandler)
+function selectActions(dispatch) {
+  return {
+    acceptGroupRequest: (...args) => dispatch(acceptGroupRequest(...args)),
+    rejectGroupRequest: (...args) => dispatch(rejectGroupRequest(...args))
+  }
+}
+
+export default connect(selectState, selectActions)(SubscribersHandler)

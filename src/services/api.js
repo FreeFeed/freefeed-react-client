@@ -329,3 +329,25 @@ export function updateGroup({id, groupSettings}) {
 export function groupRequests() {
   return fetch(`${apiConfig.host}/v2/groupRequests`, getRequestOptions())
 }
+
+export function acceptGroupRequest({groupName, userName}) {
+  return fetch(`${apiConfig.host}/v1/groups/${groupName}/acceptRequest/${userName}`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    }
+  })
+}
+
+export function rejectGroupRequest({groupName, userName}) {
+    return fetch(`${apiConfig.host}/v1/groups/${groupName}/rejectRequest/${userName}`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    }
+  })
+}

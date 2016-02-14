@@ -433,3 +433,19 @@ export function groupRequests() {
     apiRequest: Api.groupRequests
   }
 }
+
+export function acceptGroupRequest(groupName, userName) {
+  return {
+    type: ActionTypes.ACCEPT_GROUP_REQUESTS,
+    payload: {groupName, userName},
+    apiRequest: Api.acceptGroupRequest
+  }
+}
+
+export function rejectGroupRequest(groupName, userName) {
+  return {
+    type: ActionTypes.REJECT_GROUP_REQUESTS,
+    payload: {groupName, userName},
+    apiRequest: Api.rejectGroupRequest
+  }
+}

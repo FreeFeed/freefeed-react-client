@@ -2,8 +2,8 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 
-import TileUserList from './tile-user-list'
-
+import {tileUserListFactroy, PLAIN} from './tile-user-list'
+const TileUserList = tileUserListFactroy({type: PLAIN, size: 'large'})
 
 const GroupsHandler = (props) => {
   return (
@@ -21,7 +21,7 @@ const GroupsHandler = (props) => {
           </div>
         </div>
 
-        <TileUserList {...props} size="large" />
+        <TileUserList {...props}/>
       </div>
       <div className="box-footer"></div>
     </div>

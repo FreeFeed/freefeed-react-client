@@ -173,7 +173,22 @@ export const pendingGroupRequestsMiddleware = store => next => action => {
       store.dispatch(ActionCreators.groupRequests())
     }
 
-  } else {
-    return next(action)
-  } 
+    return
+  }
+  
+  /* TODO: acceptRequest and rejectRequest endpoints should respond with the
+    accepted or rejected user object which can be handled in the reducers. In
+    this case we can drop the code under the comment */
+  if (action.type === response(ActionTypes.ACCEPT_GROUP_REQUESTS)) {
+    next(action)
+
+    const groupName = store.getState().router.params.userName
+    if (groupName) {
+      store.dispatch(ActionCreators.subscribers(groupName))
+    }
+
+    return
+  }
+
+  return next(action)
 }
