@@ -17,6 +17,7 @@ import Layout from './components/layout'
 import Home from './components/home'
 import Discussions from './components/discussions'
 import About from './components/about'
+import Dev from './components/dev'
 import NotFound from './components/not-found'
 import Signin from './components/signin'
 import Signup from './components/signup'
@@ -48,7 +49,8 @@ ReactDOM.render(
     <ReduxRouter>
       <Route path='/' component={Layout}>
         <IndexRoute name='home' component={Home} onEnter={boundRouteActions('home')}/>
-        <Route path='about' component={About} />
+        <Route path='about' component={About}/>
+        <Route path='dev' component={Dev}/>
         <Route path='signin' component={Signin}/>
         <Route path='signup' component={Signup}/>
         <Route path='settings' component={Settings}/>
