@@ -1,6 +1,8 @@
 import React from 'react'
 import {Link} from 'react-router'
 
+import screenshot from 'assets/images/screenshot.png'
+
 export default (props) => (
   <div className="box">
     <div className="box-header-timeline"></div>
@@ -13,7 +15,7 @@ export default (props) => (
       <p><b><Link to="/signup">Sign up</Link></b> now or <Link to="/signin">sign in</Link> if
         you already have an account.</p>
 
-      <p><img src="/assets/images/sample.png" width="450" height="431" style={{border: '1px solid #ccc'}}/></p>
+      <p><img src={screenshot} width="450" height="431" style={{border: '1px solid #ccc'}}/></p>
 
       <h3>Why FreeFeed?</h3>
 
