@@ -2,15 +2,16 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import {Link} from 'react-router'
-import {acceptGroupRequest, rejectGroupRequest} from '../redux/action-creators'
+import {acceptGroupRequest, rejectGroupRequest,
+        acceptUserRequest, rejectUserRequest} from '../redux/action-creators'
 import {tileUserListFactroy, PLAIN, REQUESTS} from './tile-user-list'
 
 const RequestsList = tileUserListFactroy({type: REQUESTS})
 const SubscribersList = tileUserListFactroy({type: PLAIN})
 
 const SubscribersHandler = (props) => {
-  const acceptRequest = (userName) => props.acceptGroupRequest(props.username, userName)
-  const rejectRequest = (userName) => props.rejectGroupRequest(props.username, userName)
+  const acceptGroupRequest = (userName) => props.acceptGroupRequest(props.username, userName)
+  const rejectGroupRequest = (userName) => props.rejectGroupRequest(props.username, userName)
 
   return (
     <div className='box'>
@@ -21,9 +22,16 @@ const SubscribersHandler = (props) => {
         <div><Link to={`/${props.username}`}>{props.username}</Link> › Subscribers</div>
         {props.groupRequests
           ? <RequestsList title='Subscription requests'
-                          acceptRequest={acceptRequest}
-                          rejectRequest={rejectRequest}
+                          acceptRequest={acceptGroupRequest}
+                          rejectRequest={rejectGroupRequest}
                           {...props.groupRequests} />
+          : false}
+
+        {props.userRequests
+          ? <RequestsList title='Subscription requests'
+                          acceptRequest={props.acceptUserRequest}
+                          rejectRequest={props.rejectUserRequest}
+                          {...props.userRequests} />
           : false}
         
         <SubscribersList title='Subscribers'
@@ -56,13 +64,26 @@ function selectState(state) {
     selectedState.groupRequests = requests
   }
 
+  const isItMySubsPage = state.user && state.user.username === state.router.params.userName
+  const rawRequests = state.requests
+  if (isItMySubsPage && rawRequests && rawRequests.length != 0) {
+    const requests = {
+      users: rawRequests,
+      isPending: false,
+      errorString: false
+    }
+    selectedState.userRequests = requests
+  }
+
   return selectedState
 }
 
 function selectActions(dispatch) {
   return {
     acceptGroupRequest: (...args) => dispatch(acceptGroupRequest(...args)),
-    rejectGroupRequest: (...args) => dispatch(rejectGroupRequest(...args))
+    rejectGroupRequest: (...args) => dispatch(rejectGroupRequest(...args)),
+    acceptUserRequest: (...args) => dispatch(acceptUserRequest(...args)),
+    rejectUserRequest: (...args) => dispatch(rejectUserRequest(...args))
   }
 }
 

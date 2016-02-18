@@ -449,3 +449,19 @@ export function rejectGroupRequest(groupName, userName) {
     apiRequest: Api.rejectGroupRequest
   }
 }
+
+export function acceptUserRequest(userName) {
+  return {
+    type: ActionTypes.ACCEPT_USER_REQUESTS,
+    payload: {userName},
+    apiRequest: Api.acceptUserRequest
+  }
+}
+
+export function rejectUserRequest(userName) {
+  return {
+    type: ActionTypes.REJECT_USER_REQUESTS,
+    payload: {userName},
+    apiRequest: Api.rejectUserRequest
+  }
+}

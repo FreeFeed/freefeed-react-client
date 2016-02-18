@@ -4,7 +4,7 @@ import {createHistory, createHashHistory} from 'history'
 import {reduxReactRouter, routerStateReducer} from 'redux-router'
 import {apiMiddleware, authMiddleware, likesLogicMiddleware, userPhotoLogicMiddleware,
         redirectionMiddleware, scrollMiddleware, realtimeMiddleware,
-        pendingGroupRequestsMiddleware} from './middlewares'
+        pendingRequestsMiddleware} from './middlewares'
 import * as reducers from './reducers'
 
 //order matters — we need to stop unauthed async fetching before request, see authMiddleware
@@ -16,7 +16,7 @@ let middleware = [
   redirectionMiddleware,
   scrollMiddleware,
   realtimeMiddleware,
-  pendingGroupRequestsMiddleware
+  pendingRequestsMiddleware
 ]
 
 const isDevelopment = process.env.NODE_ENV != 'production'

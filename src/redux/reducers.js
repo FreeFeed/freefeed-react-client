@@ -1466,3 +1466,17 @@ export function groupRequests(state = [], action) {
 
   return state
 }
+
+export function requests(state = [], action) {
+  if (action.type === response(ActionTypes.WHO_AM_I)) {
+    return action.payload.requests.map(userParser)
+  }
+
+  if (action.type === response(ActionTypes.ACCEPT_USER_REQUESTS) ||
+      action.type === response(ActionTypes.REJECT_USER_REQUESTS)) {
+    const userName = action.request.userName
+    return state.filter((u) => u.username !== userName)
+  }
+
+  return state
+}

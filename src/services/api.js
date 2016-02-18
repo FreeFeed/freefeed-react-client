@@ -351,3 +351,25 @@ export function rejectGroupRequest({groupName, userName}) {
     }
   })
 }
+
+export function acceptUserRequest({userName}) {
+  return fetch(`${apiConfig.host}/v1/users/acceptRequest/${userName}`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    }
+  })
+}
+
+export function rejectUserRequest({userName}) {
+    return fetch(`${apiConfig.host}/v1/users/rejectRequest/${userName}`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    }
+  })
+}

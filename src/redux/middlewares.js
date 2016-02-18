@@ -165,7 +165,7 @@ export const realtimeMiddleware = store => {
   }
 }
 
-export const pendingGroupRequestsMiddleware = store => next => action => {
+export const pendingRequestsMiddleware = store => next => action => {
   if (action.type === response(ActionTypes.WHO_AM_I)) {
     next(action)
 
@@ -179,12 +179,13 @@ export const pendingGroupRequestsMiddleware = store => next => action => {
   /* TODO: acceptRequest and rejectRequest endpoints should respond with the
     accepted or rejected user object which can be handled in the reducers. In
     this case we can drop the code under the comment */
-  if (action.type === response(ActionTypes.ACCEPT_GROUP_REQUESTS)) {
+  if (action.type === response(ActionTypes.ACCEPT_GROUP_REQUESTS) ||
+      action.type === response(ActionTypes.ACCEPT_USER_REQUESTS)) {
     next(action)
 
-    const groupName = store.getState().router.params.userName
-    if (groupName) {
-      store.dispatch(ActionCreators.subscribers(groupName))
+    const userName = store.getState().router.params.userName
+    if (userName) {
+      store.dispatch(ActionCreators.subscribers(userName))
     }
 
     return
