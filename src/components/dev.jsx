@@ -12,10 +12,12 @@ export default (props) => (
 
       <p>We need help with both development and testing.</p>
 
-      <p>FreeFeed.net <a href="https://github.com/FreeFeed/freefeed-server" target="_blank">server</a> currently
-        built with Node.js and Redis and is being re-written to use PostgreSQL instead of Redis.</p>
+      <p>FreeFeed is open-source: <a href="https://github.com/FreeFeed/" target="_blank">https://github.com/FreeFeed/</a></p>
 
-      <p>FreeFeed.net <a href="https://github.com/FreeFeed/freefeed-react-client" target="_blank">frontend</a> built
+      <p>The <a href="https://github.com/FreeFeed/freefeed-server" target="_blank">backend</a> is
+        built with Node.js and Redis. It is now being re-written to use PostgreSQL instead of Redis.</p>
+
+      <p>The <a href="https://github.com/FreeFeed/freefeed-react-client" target="_blank">frontend</a> is built
         with React.</p>
 
       <h3>Roadmap</h3>
