@@ -1,23 +1,25 @@
 import React from 'react'
 import {connect} from 'react-redux'
+
 import {createPost, expandSendTo} from '../redux/action-creators'
 import {joinPostData, joinCreatePostData, postActions, userActions} from './select-utils'
 import {getQuery, getCurrentRouteName} from '../utils'
-
 import CreatePost from './create-post'
 import Feed from './feed'
 import PaginatedView from './paginated-view'
 import UserProfile from './user-profile'
 import Breadcrumbs from './breadcrumbs'
 
-const UserFeedHandler = (props) => {
+const UserHandler = (props) => {
   return (
-    <div className='box'>
-      <div className='box-header-timeline'>
+    <div className="box">
+      <div className="box-header-timeline">
         {props.boxHeader}
       </div>
-      <div className='box-body'>
+
+      <div className="box-body">
         {props.breadcrumbs.shouldShowBreadcrumbs ? <Breadcrumbs {...props.breadcrumbs}/> : false}
+
         <UserProfile
           {...props.viewUser}
           {...props.userActions}
@@ -30,13 +32,14 @@ const UserFeedHandler = (props) => {
           addAttachmentResponse={props.addAttachmentResponse}
           removeAttachment={props.removeAttachment}/>
       </div>
+
       {props.viewUser.blocked ?
         false :
         <PaginatedView>
           <Feed {...props} isInUserFeed={true}/>
         </PaginatedView>}
-      <div className='box-footer'>
-      </div>
+
+      <div className="box-footer"></div>
     </div>)
 }
 
@@ -95,4 +98,4 @@ function selectActions(dispatch) {
   }
 }
 
-export default connect(selectState, selectActions)(UserFeedHandler)
+export default connect(selectState, selectActions)(UserHandler)
