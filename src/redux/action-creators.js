@@ -411,18 +411,18 @@ export function getUserInfo(username) {
   }
 }
 
-export function createGroup(username, screenName, description) {
+export function createGroup(groupSettings) {
   return {
     type: ActionTypes.CREATE_GROUP,
-    payload: {username, screenName, description},
+    payload: groupSettings,
     apiRequest: Api.createGroup
   }
 }
 
-export function updateGroup(id, screenName, description) {
+export function updateGroup(id, groupSettings) {
   return {
     type: ActionTypes.UPDATE_GROUP,
-    payload: {id, screenName, description},
+    payload: {id, groupSettings},
     apiRequest: Api.updateGroup
   }
 }

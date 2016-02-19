@@ -1,0 +1,28 @@
+@import "bootstrap/bootstrap.3.3.4.scss";
+
+.form-group {
+  .left-block {
+    padding: 3px 0 10px 0;
+    @extend .col-sm-3;
+  }
+
+  .right-block {
+    padding: 3px 0 0 0;
+    @extend .col-sm-9;
+
+    label {
+      display: block;
+
+      .input {
+        display: table-cell;
+      }
+
+      .option {
+        display: table-cell;
+        font-weight: normal;
+        padding-left: 10px;
+        padding-bottom: 5px;
+      }
+    }
+  }
+}
