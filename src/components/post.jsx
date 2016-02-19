@@ -109,6 +109,23 @@ export default class Post extends React.Component {
       </span>
     ))
 
+    // "Lock icon": check if the post is truly private, "partly private" or public.
+    // Truly private:
+    // - posted to author's own private feed and/or
+    // - sent to users as a direct message and/or
+    // - posted into private groups
+    // Public:
+    // - posted to author's own public feed and/or
+    // - posted into public groups
+    // "Partly private":
+    // - has mix of private and public recipients
+    const publicRecipients = props.recipients.filter((recipient) => (
+      recipient.isPrivate === '0' &&
+      (recipient.id === props.createdBy.id || recipient.type === 'group')
+    ))
+    const isReallyPrivate = (publicRecipients.length === 0)
+    const isPartlyPrivate = (publicRecipients.length < recipients.length && publicRecipients.length > 0)
+
     // DropzoneJS configuration
     const dropzoneComponentConfig = {
       postUrl: `${apiConfig.host}/v1/attachments`
@@ -295,8 +312,10 @@ export default class Post extends React.Component {
           <div className="dropzone-previews"></div>
 
           <div className="post-footer">
-            {props.createdBy.isPrivate === '1' ? (
+            {isReallyPrivate ? (
               <i className="post-lock-icon fa fa-lock"></i>
+            ) : isPartlyPrivate ? (
+              <i className="post-lock-icon fa fa-unlock"></i>
             ) : false}
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
             <Link to={`/${props.createdBy.username}/${props.id}`} className="post-timestamp">
