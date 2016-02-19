@@ -2,10 +2,13 @@ import React from 'react'
 import {Link} from 'react-router'
 
 export default _ => (
-  <div className='box-body'>
+  <div className="box-body">
     <h3>Welcome to FreeFeed</h3>
-    <p>&lt;Here's the description of what FreeFeed is. We need a copywriter!&gt;</p>
-    <p>If you already have an account, you might want to <Link to='/signin'>sign in</Link>.</p>
-    <p>Otherwise, consider <Link to='/signup'>signing up</Link> to enjoy all the fun stuff.</p>
+
+    <p>FreeFeed is a social network that enables you to discover and discuss
+      the interesting stuff your friends find on the web. <Link to="/about">Read more</Link>.</p>
+
+    <p><Link to="/signup">Sign up</Link> now or <Link to='/signin'>sign in</Link> if
+      you already have an account.</p>
   </div>
 )

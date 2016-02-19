@@ -1,0 +1,37 @@
+import React from 'react'
+import {Link} from 'react-router'
+
+export default (props) => (
+  <div className="box">
+    <div className="box-header-timeline"></div>
+    <div className="box-body">
+      <h3>Help us build FreeFeed</h3>
+
+      <p>We are looking for volunteers to help us build FreeFeed, an open-source
+        social network, replacement of FriendFeed.com.</p>
+
+      <p>We need help with both development and testing.</p>
+
+      <p>FreeFeed.net <a href="https://github.com/FreeFeed/freefeed-server" target="_blank">server</a> currently
+        built with Node.js and Redis and is being re-written to use PostgreSQL instead of Redis.</p>
+
+      <p>FreeFeed.net <a href="https://github.com/FreeFeed/freefeed-react-client" target="_blank">frontend</a> built
+        with React.</p>
+
+      <h3>Roadmap</h3>
+
+      <p>[x] v 0.6 React frontend<br/>
+        [ &nbsp;] v 0.7 Add real-time updates to the frontend<br/>
+        [ &nbsp;] v 0.8 Add support for private groups<br/>
+        [ &nbsp;] v 0.9 Migrate to Postgres<br/>
+        [ &nbsp;] v 1.0 Support for search and #hashtags</p>
+
+      <p>Please <a href="mailto:freefeed.net@gmail.com">contact us</a> to join
+        our team of volunteers.</p>
+
+      <p>P.S. We welcome contributions of features outside of the core ones
+        outlined above, however we feel that the core has higher priority
+        (especially switching the primary data store).</p>
+    </div>
+  </div>
+)
