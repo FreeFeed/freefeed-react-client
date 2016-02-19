@@ -59,7 +59,7 @@ export function getUserFeed(username, offset = 0) {
 export function showMoreComments(postId) {
   return {
     type: ActionTypes.SHOW_MORE_COMMENTS,
-    apiRequest: Api.getPostWithAllCommentsAndLikes,
+    apiRequest: Api.getPostWithAllComments,
     payload: {postId},
   }
 }
@@ -339,7 +339,7 @@ export function updateUserPhoto(picture) {
 export function getSinglePost(postId) {
   return {
     type: ActionTypes.GET_SINGLE_POST,
-    apiRequest: Api.getPostWithAllCommentsAndLikes,
+    apiRequest: Api.getPostWithAllComments,
     nonAuthRequest: true,
     payload: {postId},
   }
