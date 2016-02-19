@@ -124,7 +124,6 @@ export default class Post extends React.Component {
       (recipient.id === props.createdBy.id || recipient.type === 'group')
     ))
     const isReallyPrivate = (publicRecipients.length === 0)
-    const isPartlyPrivate = (publicRecipients.length < recipients.length && publicRecipients.length > 0)
 
     // DropzoneJS configuration
     const dropzoneComponentConfig = {
@@ -314,8 +313,6 @@ export default class Post extends React.Component {
           <div className="post-footer">
             {isReallyPrivate ? (
               <i className="post-lock-icon fa fa-lock" title="This entry is private"></i>
-            ) : isPartlyPrivate ? (
-              <i className="post-lock-icon fa fa-unlock" title="This entry is not private, since it is posted to both private and public feeds"></i>
             ) : false}
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
             <Link to={`/${props.createdBy.username}/${props.id}`} className="post-timestamp">
