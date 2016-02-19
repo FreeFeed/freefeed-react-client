@@ -279,6 +279,7 @@ export const ban = userAction('ban')
 export const unban = userAction('unban')
 export const subscribe = userAction('subscribe')
 export const unsubscribe = userAction('unsubscribe')
+export const sendSubscriptionRequest = userAction('sendRequest')
 
 
 export function getUserComments({username, offset}) {

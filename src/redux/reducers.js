@@ -884,6 +884,13 @@ export function user(state = {settings: defaultUserSettings, ...getPersistedUser
     case response(ActionTypes.UPDATE_USER): {
       return {...state, ...userParser(action.payload.users)}
     }
+    case response(ActionTypes.SEND_SUBSCRIPTION_REQUEST): {
+      return {...state,
+        pendingSubscriptionRequests: [...(state.pendingSubscriptionRequests || []),
+          action.request.id
+        ]
+      }
+    }
     case response(ActionTypes.BAN): {
       return {...state, banIds: [...state.banIds, action.request.id]}
     }
