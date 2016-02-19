@@ -4,6 +4,8 @@ import {Link} from 'react-router'
 import {preventDefault} from '../utils'
 import throbber16 from 'assets/images/throbber-16.gif'
 
+import GroupFeedTypePicker from './group-feed-type-picker'
+
 export default class GroupCreateForm extends React.Component {
   constructor(props) {
     super(props)
@@ -11,19 +13,25 @@ export default class GroupCreateForm extends React.Component {
     this.state = {
       username: '',
       screenName: '',
-      description: ''
+      description: '',
+      isPrivate: '0',
+      isRestricted: '0'
     }
   }
 
   handleChange = (property) => (event) => {
     const newState = {}
     newState[property] = event.target.value
-    this.setState(newState);
+    this.setState(newState)
+  }
+
+  handlePrivacyTypeChange = (privacySettings) => {
+    this.setState(privacySettings)
   }
 
   saveSettings = () => {
     if (this.props.status !== 'loading') {
-      this.props.createGroup(this.state.username, this.state.screenName, this.state.description)
+      this.props.createGroup(this.state)
     }
   }
 
@@ -44,6 +52,9 @@ export default class GroupCreateForm extends React.Component {
               <label htmlFor="description">Description:</label>
               <textarea id="description" className="form-control" name="description" value={this.state.description} onChange={this.handleChange('description')} maxLength="1500"/>
             </div>
+            <GroupFeedTypePicker isPrivate={this.state.isPrivate}
+                                 isRestricted={this.state.isRestricted}
+                                 updateGroupPrivacySettings={this.handlePrivacyTypeChange} />
             <p>
               <button className="btn btn-default" type="submit">Create</button>
               {this.props.status === 'loading' ? (
