@@ -28,6 +28,19 @@ export default (props) => (
         down the website on April 9, 2015, a small group of Russian-speaking
         FriendFeed users decided to build an open-source free-for-all replacement.</p>
 
+      <h3>Help us build better FreeFeed</h3>
+
+      <p>FreeFeed is an open-source project. We are <Link to="/dev">looking
+        for volunteers</Link> to help us with the development of FreeFeed.net.</p>
+
+      <h3>Important pages</h3>
+
+      <p><Link to="/support">https://freefeed.net/support</Link> –
+        Tech support (we speak English, Russian as well as some other languages :))</p>
+
+      <p><Link to="/freefeed">https://freefeed.net/freefeed</Link> -
+        Important service announcements</p>
+
       <h3>The team behind FreeFeed</h3>
 
       <p>A team of volunteers registered a non-profit organization, FreeFeed.net MTÜ,
@@ -44,19 +57,6 @@ export default (props) => (
 
       <p>You can <b><Link to="/signup">sign up</Link></b> now and use the beta
         version today.</p>
-
-      <h3>Help us build better FreeFeed</h3>
-
-      <p>FreeFeed is an open-source project. We are <Link to="/dev">looking
-        for volunteers</Link> to help us with the development of FreeFeed.net.</p>
-
-      <h3>Important pages</h3>
-
-      <p><Link to="/support">https://beta.freefeed.net/support</Link> –
-        Tech support (we speak English, Russian as well as some other languages :))</p>
-
-      <p><Link to="/freefeed">https://beta.freefeed.net/freefeed</Link> -
-        Important service announcements</p>
     </div>
   </div>
 )
