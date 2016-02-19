@@ -77,6 +77,7 @@ export default (props) => {
         ? <MoreCommentsWrapper
             omittedComments={props.post.omittedComments}
             showMoreComments={showMoreComments}
+            entryUrl={entryUrl}
             isLoading={props.post.isLoadingComments}/>
         : false}
       {last ? commentMapper(last) : false}
