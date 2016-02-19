@@ -111,13 +111,13 @@ export const scrollMiddleware = store => next => action => {
 import {init, scrollCompensator} from '../services/realtime'
 
 const bindHandlers = dispatch => ({
-  'post:new': scrollCompensator(data => dispatch({type: ActionTypes.REALTIME_POST_NEW, post : data.posts})),
-  'post:update': scrollCompensator(data => dispatch({type: ActionTypes.REALTIME_POST_UPDATE, post : data.posts})),
+  'post:new': scrollCompensator(data => dispatch({...data, type: ActionTypes.REALTIME_POST_NEW, post: data.posts})),
+  'post:update': scrollCompensator(data => dispatch({...data, type: ActionTypes.REALTIME_POST_UPDATE, post: data.posts})),
   'post:destroy': scrollCompensator(data => dispatch({type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId})),
   'post:hide': scrollCompensator(data => dispatch({type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId})),
   'post:unhide': scrollCompensator(data => dispatch({type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId})),
-  'comment:new': scrollCompensator(data => dispatch({type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments})),
-  'comment:update': scrollCompensator(data => dispatch({type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments})),
+  'comment:new': scrollCompensator(data => dispatch({...data, type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments})),
+  'comment:update': scrollCompensator(data => dispatch({...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments})),
   'comment:destroy': scrollCompensator(data => dispatch({type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId})),
   'like:new': scrollCompensator(data => dispatch({type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, user: data.users})),
   'like:remove': scrollCompensator(data => dispatch({type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId})),
