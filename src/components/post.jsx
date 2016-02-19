@@ -313,9 +313,9 @@ export default class Post extends React.Component {
 
           <div className="post-footer">
             {isReallyPrivate ? (
-              <i className="post-lock-icon fa fa-lock"></i>
+              <i className="post-lock-icon fa fa-lock" title="This entry is private"></i>
             ) : isPartlyPrivate ? (
-              <i className="post-lock-icon fa fa-unlock"></i>
+              <i className="post-lock-icon fa fa-unlock" title="This entry is not private, since it is posted to both private and public feeds"></i>
             ) : false}
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
             <Link to={`/${props.createdBy.username}/${props.id}`} className="post-timestamp">
