@@ -1,3 +1,5 @@
+import {frontendPreferences as frontendPrefsConfig} from '../config'
+
 export function getCookie(name){
   const begin = document.cookie.indexOf(name)
   if (begin === -1){
@@ -36,11 +38,23 @@ import defaultUserpic75Path from 'assets/images/default-userpic-75.png'
 const userDefaults = {
   profilePictureMediumUrl: defaultUserpic50Path,
   profilePictureLargeUrl: defaultUserpic75Path,
+  frontendPreferences: {
+    displayNames: {
+      displayOption: 1,
+      useYou: true
+    }
+  }
 }
 
 export function userParser(user) {
+  // Profile pictures
   user.profilePictureMediumUrl = user.profilePictureMediumUrl || userDefaults.profilePictureMediumUrl
   user.profilePictureLargeUrl = user.profilePictureLargeUrl || userDefaults.profilePictureLargeUrl
+
+  // Frontend preferences (only use this client's subtree)
+  const prefSubTree = user.frontendPreferences && user.frontendPreferences[frontendPrefsConfig.clientId]
+  user.frontendPreferences = _.merge(userDefaults.frontendPreferences, prefSubTree)
+
   return {...user}
 }
 

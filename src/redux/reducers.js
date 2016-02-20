@@ -881,7 +881,8 @@ export function user(state = {settings: defaultUserSettings, ...getPersistedUser
     return {...state, ...userParser(action.payload.users), subscriptions}
   }
   switch (action.type) {
-    case response(ActionTypes.UPDATE_USER): {
+    case response(ActionTypes.UPDATE_USER):
+    case response(ActionTypes.UPDATE_FRONTEND_PREFERENCES): {
       return {...state, ...userParser(action.payload.users)}
     }
     case response(ActionTypes.SEND_SUBSCRIPTION_REQUEST): {
@@ -954,6 +955,21 @@ export function userSettingsForm(state={saved: false}, action) {
     }
     case fail(ActionTypes.UPDATE_USER): {
       return {...state, isSaving: false, success: false, error: true}
+    }
+  }
+  return state
+}
+
+export function frontendPreferencesForm(state={}, action) {
+  switch (action.type) {
+    case request(ActionTypes.UPDATE_FRONTEND_PREFERENCES): {
+      return {...state, status: 'loading'}
+    }
+    case response(ActionTypes.UPDATE_FRONTEND_PREFERENCES): {
+      return {...state, status: 'success'}
+    }
+    case fail(ActionTypes.UPDATE_FRONTEND_PREFERENCES): {
+      return {...state, status: 'error', errorMessage: (action.payload || {}).err}
     }
   }
   return state
