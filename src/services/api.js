@@ -302,7 +302,7 @@ export function getUserInfo({username}) {
   return fetch(`${apiConfig.host}/v1/users/${username}`, getRequestOptions())
 }
 
-export function createGroup({username, screenName, description}) {
+export function createGroup(groupSettings) {
   return fetch(`${apiConfig.host}/v1/groups`, {
     'method': 'POST',
     'headers': {
@@ -310,11 +310,11 @@ export function createGroup({username, screenName, description}) {
       'Content-Type': 'application/json',
       'X-Authentication-Token': getToken()
     },
-    'body': JSON.stringify({group: {username, screenName, description}})
+    'body': JSON.stringify({group: groupSettings})
   })
 }
 
-export function updateGroup({id, screenName, description}) {
+export function updateGroup({id, groupSettings}) {
   return fetch(`${apiConfig.host}/v1/users/${id}`, {
     'method': 'PUT',
     'headers': {
@@ -322,6 +322,54 @@ export function updateGroup({id, screenName, description}) {
       'Content-Type': 'application/json',
       'X-Authentication-Token': getToken()
     },
-    'body': JSON.stringify({user: {screenName, description}})
+    'body': JSON.stringify({user: groupSettings})
+  })
+}
+
+export function groupRequests() {
+  return fetch(`${apiConfig.host}/v2/groupRequests`, getRequestOptions())
+}
+
+export function acceptGroupRequest({groupName, userName}) {
+  return fetch(`${apiConfig.host}/v1/groups/${groupName}/acceptRequest/${userName}`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    }
+  })
+}
+
+export function rejectGroupRequest({groupName, userName}) {
+    return fetch(`${apiConfig.host}/v1/groups/${groupName}/rejectRequest/${userName}`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    }
+  })
+}
+
+export function acceptUserRequest({userName}) {
+  return fetch(`${apiConfig.host}/v1/users/acceptRequest/${userName}`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    }
+  })
+}
+
+export function rejectUserRequest({userName}) {
+    return fetch(`${apiConfig.host}/v1/users/rejectRequest/${userName}`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    }
   })
 }
