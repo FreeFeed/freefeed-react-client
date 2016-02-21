@@ -1,4 +1,5 @@
 import {frontendPreferences as frontendPrefsConfig} from '../config'
+import * as FrontendPrefsOptions from '../utils/frontend-preferences-options'
 
 export function getCookie(name){
   const begin = document.cookie.indexOf(name)
@@ -40,7 +41,7 @@ const userDefaults = {
   profilePictureLargeUrl: defaultUserpic75Path,
   frontendPreferences: {
     displayNames: {
-      displayOption: 1,
+      displayOption: FrontendPrefsOptions.DISPLAYNAMES_DISPLAYNAME,
       useYou: true
     }
   }

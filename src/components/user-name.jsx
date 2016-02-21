@@ -1,7 +1,9 @@
 import React from 'react'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
+
 import {preventDefault} from '../utils'
+import * as FrontendPrefsOptions from '../utils/frontend-preferences-options'
 
 const DisplayOption = ({user, me, preferences}) => {
   if (user.username === me && preferences.useYou) {
@@ -13,13 +15,13 @@ const DisplayOption = ({user, me, preferences}) => {
   }
 
   switch (preferences.displayOption) {
-    case 1: {
+    case FrontendPrefsOptions.DISPLAYNAMES_DISPLAYNAME: {
       return <span>{user.screenName}</span>
     }
-    case 2: {
+    case FrontendPrefsOptions.DISPLAYNAMES_BOTH: {
       return <span>{user.screenName} ({user.username})</span>
     }
-    case 3: {
+    case FrontendPrefsOptions.DISPLAYNAMES_USERNAME: {
       return <span>{user.username}</span>
     }
   }

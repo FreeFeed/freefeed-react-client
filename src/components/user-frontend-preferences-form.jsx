@@ -1,6 +1,7 @@
 import React from 'react'
 
 import {preventDefault} from '../utils'
+import * as FrontendPrefsOptions from '../utils/frontend-preferences-options'
 import throbber16 from 'assets/images/throbber-16.gif'
 
 export default class UserFrontendPreferencesForm extends React.Component {
@@ -46,19 +47,34 @@ export default class UserFrontendPreferencesForm extends React.Component {
 
         <div className="radio">
           <label>
-            <input type="radio" name="displayOption" value="1" checked={this.state.displayNames.displayOption === 1} onChange={this.changeDisplayOption}/>
+            <input
+              type="radio"
+              name="displayOption"
+              value={FrontendPrefsOptions.DISPLAYNAMES_DISPLAYNAME}
+              checked={this.state.displayNames.displayOption === FrontendPrefsOptions.DISPLAYNAMES_DISPLAYNAME}
+              onChange={this.changeDisplayOption}/>
             Display name only
           </label>
         </div>
         <div className="radio">
           <label>
-            <input type="radio" name="displayOption" value="2" checked={this.state.displayNames.displayOption === 2} onChange={this.changeDisplayOption}/>
+            <input
+              type="radio"
+              name="displayOption"
+              value={FrontendPrefsOptions.DISPLAYNAMES_BOTH}
+              checked={this.state.displayNames.displayOption === FrontendPrefsOptions.DISPLAYNAMES_BOTH}
+              onChange={this.changeDisplayOption}/>
             Display name + username
           </label>
         </div>
         <div className="radio">
           <label>
-            <input type="radio" name="displayOption" value="3" checked={this.state.displayNames.displayOption === 3} onChange={this.changeDisplayOption}/>
+            <input
+              type="radio"
+              name="displayOption"
+              value={FrontendPrefsOptions.DISPLAYNAMES_USERNAME}
+              checked={this.state.displayNames.displayOption === FrontendPrefsOptions.DISPLAYNAMES_USERNAME}
+              onChange={this.changeDisplayOption}/>
             Username only
           </label>
         </div>
