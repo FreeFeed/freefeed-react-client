@@ -1035,10 +1035,7 @@ export function authenticated(state = !!getToken(), action) {
   return state
 }
 
-//we're faking for now
-import {user as defaultUserSettings} from '../config'
-
-export function user(state = {settings: defaultUserSettings, ...getPersistedUser()}, action) {
+export function user(state = getPersistedUser(), action) {
   if (ActionHelpers.isUserChangeResponse(action) ||
       action.type === response(ActionTypes.WHO_AM_I) ||
       action.type === response(ActionTypes.SIGN_UP)){
@@ -1046,7 +1043,8 @@ export function user(state = {settings: defaultUserSettings, ...getPersistedUser
     return {...state, ...userParser(action.payload.users), subscriptions}
   }
   switch (action.type) {
-    case response(ActionTypes.UPDATE_USER): {
+    case response(ActionTypes.UPDATE_USER):
+    case response(ActionTypes.UPDATE_FRONTEND_PREFERENCES): {
       return {...state, ...userParser(action.payload.users)}
     }
     case response(ActionTypes.SEND_SUBSCRIPTION_REQUEST): {
@@ -1119,6 +1117,21 @@ export function userSettingsForm(state={saved: false}, action) {
     }
     case fail(ActionTypes.UPDATE_USER): {
       return {...state, isSaving: false, success: false, error: true}
+    }
+  }
+  return state
+}
+
+export function frontendPreferencesForm(state={}, action) {
+  switch (action.type) {
+    case request(ActionTypes.UPDATE_FRONTEND_PREFERENCES): {
+      return {...state, status: 'loading'}
+    }
+    case response(ActionTypes.UPDATE_FRONTEND_PREFERENCES): {
+      return {...state, status: 'success'}
+    }
+    case fail(ActionTypes.UPDATE_FRONTEND_PREFERENCES): {
+      return {...state, status: 'error', errorMessage: (action.payload || {}).err}
     }
   }
   return state

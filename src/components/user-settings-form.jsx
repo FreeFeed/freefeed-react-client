@@ -20,16 +20,16 @@ export default class UserSettingsForm extends React.Component {
     return (
       <form onSubmit={preventDefault(this.updateUser)}>
         <div className="form-group">
-          <label htmlFor="screenName">Screen name:</label>
-          <input id="screenName" className="form-control" name="screenName" type="text" defaultValue={this.props.user.screenName} onChange={this.updateSetting('screenName')}/>
+          <label htmlFor="displayName-input">Display name:</label>
+          <input id="displayName-input" className="form-control" name="screenName" type="text" defaultValue={this.props.user.screenName} onChange={this.updateSetting('screenName')}/>
         </div>
         <div className="form-group">
-          <label htmlFor="email">Email:</label>
-          <input id="email" className="form-control" name="email" type="text" defaultValue={this.props.user.email} onChange={this.updateSetting('email')}/>
+          <label htmlFor="email-input">Email:</label>
+          <input id="email-input" className="form-control" name="email" type="text" defaultValue={this.props.user.email} onChange={this.updateSetting('email')}/>
         </div>
         <div className="form-group">
-          <label htmlFor="description">Description:</label>
-          <textarea id="description" className="form-control" name="description" defaultValue={this.props.user.description} onChange={this.updateSetting('description')} maxLength="1500"/>
+          <label htmlFor="description-textarea">Description:</label>
+          <textarea id="description-textarea" className="form-control" name="description" defaultValue={this.props.user.description} onChange={this.updateSetting('description')} maxLength="1500"/>
         </div>
         <div className="checkbox">
           <label>

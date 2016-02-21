@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch'
 import {getToken} from './auth'
-import {api as apiConfig} from '../config'
+import {api as apiConfig, frontendPreferences as frontendPrefsConfig} from '../config'
 
 const getRequestOptions = () => ({
   headers:{
@@ -234,6 +234,22 @@ export function updateUser({id, screenName, email, isPrivate, description}) {
       'X-Authentication-Token': getToken()
     },
     'body': JSON.stringify({user: {screenName, email, isPrivate, description}})
+  })
+}
+
+export function updateFrontendPreferences({userId, prefs}) {
+  const frontendPreferences = {
+    [frontendPrefsConfig.clientId]: prefs
+  }
+
+  return fetch(`${apiConfig.host}/v1/users/${userId}`, {
+    'method': 'PUT',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+    'body': JSON.stringify({user: {frontendPreferences}})
   })
 }
 

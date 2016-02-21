@@ -14,7 +14,7 @@ export default ({user, signOut, recentGroups}) => (
 
       <div className='user'>
         <div className='author'>
-          <UserName user={user} />
+          <UserName user={user} display={user.screenName}/>
         </div>
         <div>
           <Link to='/settings'>settings</Link>
