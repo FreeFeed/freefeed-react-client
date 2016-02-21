@@ -9,10 +9,6 @@ const config = {
     userStorageKey: 'USER_KEY',
     sentinel: null // keep always last
   },
-  user:{
-    userNameMode: 'screen',
-    sentinel: null // keep always last
-  },
   captcha: {
     siteKey: '',
     sentinel: null // keep always last

@@ -3,33 +3,43 @@ import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import {preventDefault} from '../utils'
 
-const DisplayUsername = ({mode, user}) => {
-  switch(mode){
-    case 'screen':{
+const DisplayOption = ({user, me, preferences}) => {
+  if (user.username === me && preferences.useYou) {
+    return <span>You</span>
+  }
+
+  switch (preferences.displayOption) {
+    case 1: {
       return <span>{user.screenName}</span>
     }
-    case 'user':{
+    case 2: {
+      return <span>{user.screenName} ({user.username})</span>
+    }
+    case 3: {
       return <span>{user.username}</span>
     }
   }
 
-  return <span>{`${user.screenName} `}<span className='be-fe-username'>{user.username}</span></span>
+  return <span>{user.screenName}</span>
 }
 
 const UserName = (props) => (
-  <Link
-    className={`user-name-info ${props.className}`}
-    to={`/${props.user.username}`}
-  >
-    {props.display
-      ? <span>{props.display}</span>
-      : <DisplayUsername mode={props.settings.userNameMode} user={props.user}/>}
+  <Link to={`/${props.user.username}`} className={`user-name-info ${props.className}`}>
+    {props.display ? (
+      <span>{props.display}</span>
+    ) : (
+      <DisplayOption
+        user={props.user}
+        me={props.me}
+        preferences={props.frontendPreferences.displayNames}/>
+    )}
   </Link>
 )
 
-const mapStateToProps = (state) =>{
+const mapStateToProps = (state) => {
   return {
-    settings: state.user.settings
+    me: state.user.username,
+    frontendPreferences: state.user.frontendPreferences
   }
 }
 
