@@ -47,15 +47,17 @@ const userDefaults = {
 }
 
 export function userParser(user) {
+  const newUser = {...user}
+
   // Profile pictures
-  user.profilePictureMediumUrl = user.profilePictureMediumUrl || userDefaults.profilePictureMediumUrl
-  user.profilePictureLargeUrl = user.profilePictureLargeUrl || userDefaults.profilePictureLargeUrl
+  newUser.profilePictureMediumUrl = user.profilePictureMediumUrl || userDefaults.profilePictureMediumUrl
+  newUser.profilePictureLargeUrl = user.profilePictureLargeUrl || userDefaults.profilePictureLargeUrl
 
   // Frontend preferences (only use this client's subtree)
   const prefSubTree = user.frontendPreferences && user.frontendPreferences[frontendPrefsConfig.clientId]
-  user.frontendPreferences = _.merge(userDefaults.frontendPreferences, prefSubTree)
+  newUser.frontendPreferences = _.merge({}, userDefaults.frontendPreferences, prefSubTree)
 
-  return {...user}
+  return newUser
 }
 
 export function postParser(post) {
