@@ -8,6 +8,10 @@ const DisplayOption = ({user, me, preferences}) => {
     return <span>You</span>
   }
 
+  if (user.screenName === user.username) {
+    return <span>{user.screenName}</span>
+  }
+
   switch (preferences.displayOption) {
     case 1: {
       return <span>{user.screenName}</span>
