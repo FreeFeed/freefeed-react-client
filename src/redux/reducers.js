@@ -1276,3 +1276,16 @@ export function usernameSubscribers(state = {}, action) {
 export function usernameSubscriptions(state = {}, action) {
   return handleSubs(state, action, ActionTypes.SUBSCRIPTIONS)
 }
+
+export function groupRequests(state = [], action) {
+  switch (action.type) {
+    case response(ActionTypes.GROUP_REQUESTS): {
+      return action.payload.map(group => {
+        group.requests = group.requests.map(userParser)
+        return {...group}
+      })
+    }
+  }
+
+  return state
+}

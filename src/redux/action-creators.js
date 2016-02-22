@@ -434,3 +434,11 @@ export function updateGroup(id, groupSettings) {
     apiRequest: Api.updateGroup
   }
 }
+
+export function groupRequests() {
+  return {
+    type: ActionTypes.GROUP_REQUESTS,
+    apiRequest: Api.getGroupRequests
+  }
+}
+
