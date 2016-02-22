@@ -325,3 +325,7 @@ export function updateGroup({id, groupSettings}) {
     'body': JSON.stringify({user: groupSettings})
   })
 }
+
+export function getGroupRequests() {
+  return fetch(`${apiConfig.host}/v2/groupRequests`, getRequestOptions())
+}
