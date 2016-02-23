@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import {Link} from 'react-router'
-import TileUserList from './tile-user-list'
+import SubsList from './subs-list'
 
 const SubscribersHandler = (props) => {
   return (
@@ -12,7 +12,7 @@ const SubscribersHandler = (props) => {
       </div>
       <div className='box-body'>
         <div><Link to={`/${props.username}`}>{props.username}</Link> › Subscribers</div>
-        <TileUserList {...props} title='Subscribers' />
+        <SubsList {...props} title='Subscribers' />
       </div>
       <div className='box-footer'></div>
     </div>
