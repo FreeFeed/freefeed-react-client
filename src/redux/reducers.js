@@ -1277,6 +1277,24 @@ export function usernameSubscriptions(state = {}, action) {
   return handleSubs(state, action, ActionTypes.SUBSCRIPTIONS)
 }
 
+const removeItemFromGroupRequests = (state, action) => {
+  const userName = action.request.userName
+  const groupName = action.request.groupName
+  
+  const group = state.find(group => group.username === groupName)
+
+  if (group && group.requests.length !== 0) {
+    let newGroup = {
+      ...group, 
+      requests: group.requests.filter(user => user.username !== userName)
+    }
+
+    return _(state).without(group).push(newGroup).value()
+  }
+
+  return state
+}
+
 export function groupRequests(state = [], action) {
   switch (action.type) {
     case response(ActionTypes.GROUP_REQUESTS): {
@@ -1284,6 +1302,25 @@ export function groupRequests(state = [], action) {
         group.requests = group.requests.map(userParser)
         return {...group}
       })
+    }
+    case response(ActionTypes.ACCEPT_GROUP_REQUEST):
+    case response(ActionTypes.REJECT_GROUP_REQUEST): {
+      return removeItemFromGroupRequests(state, action)
+    }
+  }
+
+  return state
+}
+
+export function requests(state = [], action) {
+  switch (action.type) {
+    case response(ActionTypes.WHO_AM_I): {
+      return action.payload.requests.map(userParser)
+    }
+    case response(ActionTypes.ACCEPT_USER_REQUEST):
+    case response(ActionTypes.REJECT_USER_REQUEST): {
+      const userName = action.request.userName
+      return state.filter((user) => user.username !== userName)
     }
   }
 
