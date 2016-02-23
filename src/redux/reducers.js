@@ -1326,3 +1326,33 @@ export function requests(state = [], action) {
 
   return state
 }
+
+export function groupRequestsCount(state = 0, action) {
+  switch (action.type) {
+    case response(ActionTypes.GROUP_REQUESTS): {
+      return action.payload.reduce((acc, group) => {
+        return acc + group.requests.length
+      }, 0)
+    }
+    case response(ActionTypes.ACCEPT_GROUP_REQUEST):
+    case response(ActionTypes.REJECT_GROUP_REQUEST): {
+      return Math.max(0, state - 1)
+    }
+  }
+
+  return state
+}
+
+export function userRequestsCount(state = 0, action) {
+  switch (action.type) {
+    case response(ActionTypes.WHO_AM_I): {
+      return action.payload.requests.length
+    }
+    case response(ActionTypes.ACCEPT_USER_REQUEST):
+    case response(ActionTypes.REJECT_USER_REQUEST): {
+      return Math.max(0, state - 1)
+    }
+  }
+
+  return state
+}
