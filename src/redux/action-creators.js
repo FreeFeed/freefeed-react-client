@@ -320,6 +320,14 @@ export function userSettingsChange(payload) {
   }
 }
 
+export function updateFrontendPreferences(userId, prefs) {
+  return {
+    type: ActionTypes.UPDATE_FRONTEND_PREFERENCES,
+    apiRequest: Api.updateFrontendPreferences,
+    payload: {userId, prefs}
+  }
+}
+
 export function updatePassword(payload) {
   return {
     type: ActionTypes.UPDATE_PASSWORD,
