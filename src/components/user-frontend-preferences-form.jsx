@@ -10,10 +10,6 @@ export default class UserFrontendPreferencesForm extends React.Component {
     this.state = this.props.preferences
   }
 
-  componentWillReceiveProps = (newProps) => {
-    this.setState(newProps.preferences)
-  }
-
   changeDisplayOption = (event) => {
     this.setState({
       displayNames: {
