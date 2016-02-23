@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {createPost, expandSendTo, toggleHiddenPosts} from '../redux/action-creators'
 import {joinPostData, joinCreatePostData, postActions} from './select-utils'
 import {getQuery} from '../utils'
+import {Link} from 'react-router'
 
 import CreatePost from './create-post'
 import Feed from './feed'
@@ -27,6 +28,17 @@ const FeedHandler = (props) => {
       <div className='box-header-timeline'>
         {props.boxHeader}
       </div>
+
+      {props.authenticated && props.totalRequestsCount > 0 ? (
+        <div className="box-message alert alert-info">
+          <span className="message">
+            <Link to="/requests">
+              You have {props.totalRequestsCount} subscription requests to review.
+            </Link>
+          </span>
+        </div>
+      ) : false}
+
       {props.authenticated ? (
         <PaginatedView firstPageHead={createPostComponent}>
           <Feed {...props} isInHomeFeed={true}/>
@@ -51,11 +63,13 @@ function selectState(state) {
   const boxHeader = state.boxHeader
   const sendTo = state.sendTo
 
+  const totalRequestsCount = state.groupRequestsCount + state.requestsCount 
+
   return {
     user, authenticated,
     visibleEntries, hiddenEntries, isHiddenRevealed,
     createPostViewState, createPostForm,
-    timelines, boxHeader, sendTo
+    timelines, boxHeader, sendTo, totalRequestsCount
   }
 }
 
