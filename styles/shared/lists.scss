@@ -7,7 +7,6 @@ ul.tile-list {
     height: 110px;
     display: block;
     float: left;
-    overflow: hidden;
     list-style-type: none;
     padding-top: 10px;
     text-align: center;
@@ -20,6 +19,14 @@ ul.tile-list {
 
       .avatar {
         margin-bottom: 5px;
+      }
+    }
+
+    .user-actions {
+      color: #337ab7;
+      a { 
+        display: inline;
+        color: #337ab7;
       }
     }
   }
