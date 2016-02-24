@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import {Link} from 'react-router'
-import TileUserList from './tile-user-list'
+import SubsList from './subs-list'
 
 
 const SubscriptionsHandler = (props) => {
@@ -13,7 +13,7 @@ const SubscriptionsHandler = (props) => {
       </div>
       <div className='box-body'>
         <div><Link to={`/${props.username}`}>{props.username}</Link> › Subscriptions</div>
-        <TileUserList {...props} title='Subscriptions' />
+        <SubsList {...props} title='Subscriptions' />
       </div>
       <div className='box-footer'></div>
     </div>

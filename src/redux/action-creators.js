@@ -419,18 +419,57 @@ export function getUserInfo(username) {
   }
 }
 
-export function createGroup(username, screenName, description) {
+export function createGroup(groupSettings) {
   return {
     type: ActionTypes.CREATE_GROUP,
-    payload: {username, screenName, description},
+    payload: groupSettings,
     apiRequest: Api.createGroup
   }
 }
 
-export function updateGroup(id, screenName, description) {
+export function updateGroup(id, groupSettings) {
   return {
     type: ActionTypes.UPDATE_GROUP,
-    payload: {id, screenName, description},
+    payload: {id, groupSettings},
     apiRequest: Api.updateGroup
+  }
+}
+
+export function groupRequests() {
+  return {
+    type: ActionTypes.GROUP_REQUESTS,
+    apiRequest: Api.getGroupRequests
+  }
+}
+
+export function acceptGroupRequest(groupName, userName) {
+  return {
+    type: ActionTypes.ACCEPT_GROUP_REQUEST,
+    payload: {groupName, userName},
+    apiRequest: Api.acceptGroupRequest
+  }
+}
+
+export function rejectGroupRequest(groupName, userName) {
+  return {
+    type: ActionTypes.REJECT_GROUP_REQUEST,
+    payload: {groupName, userName},
+    apiRequest: Api.rejectGroupRequest
+  }
+}
+
+export function acceptUserRequest(userName) {
+  return {
+    type: ActionTypes.ACCEPT_USER_REQUEST,
+    payload: {userName},
+    apiRequest: Api.acceptUserRequest
+  }
+}
+
+export function rejectUserRequest(userName) {
+  return {
+    type: ActionTypes.REJECT_USER_REQUEST,
+    payload: {userName},
+    apiRequest: Api.rejectUserRequest
   }
 }

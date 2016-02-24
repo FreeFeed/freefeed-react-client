@@ -1,3 +1,4 @@
+@import "../common/common";
 // @import "../common/select2/4.0.0-rc.2/theme/classic/_defaults";
 // @import "../common/select2/4.0.0-rc.2/theme/classic/_multiple.scss";
 
@@ -62,4 +63,31 @@
   width: 100%;
   max-width: 100%;
   margin-bottom: 3px;
+}
+
+.form-group {
+  .left-block {
+    padding: 3px 0 10px 0;
+    @extend .col-sm-3;
+  }
+
+  .right-block {
+    padding: 3px 0 0 0;
+    @extend .col-sm-9;
+
+    label {
+      display: block;
+
+      .input {
+        display: table-cell;
+      }
+
+      .option {
+        display: table-cell;
+        font-weight: normal;
+        padding-left: 10px;
+        padding-bottom: 5px;
+      }
+    }
+  }
 }
