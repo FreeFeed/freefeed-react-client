@@ -5,6 +5,7 @@ const {request, response, fail} = ActionHelpers
 
 import _ from 'lodash'
 import {userParser, postParser} from '../utils'
+import {frontendPreferences as frontendPrefsConfig} from '../config'
 
 export function signInForm(state={username:'', password:'', error:'', loading: false}, action) {
   switch(action.type) {
@@ -1035,7 +1036,12 @@ export function authenticated(state = !!getToken(), action) {
   return state
 }
 
-export function user(state = getPersistedUser(), action) {
+const initUser = {
+  frontendPreferences: frontendPrefsConfig.defaultValues,
+  ...getPersistedUser()
+}
+
+export function user(state = initUser, action) {
   if (ActionHelpers.isUserChangeResponse(action) ||
       action.type === response(ActionTypes.WHO_AM_I) ||
       action.type === response(ActionTypes.SIGN_UP)){
