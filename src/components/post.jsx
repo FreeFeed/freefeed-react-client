@@ -196,7 +196,7 @@ export default class Post extends React.Component {
 
     // "Like" / "Un-like"
     const didILikePost = _.find(props.usersLikedPost, {id: props.user.id})
-    const likeLink = (
+    const likeLink = (!props.isEditable ? (
       <span>
         {' - '}
         <a onClick={didILikePost ? unlikePost : likePost}>{didILikePost ? 'Un-like' : 'Like'}</a>
@@ -206,7 +206,7 @@ export default class Post extends React.Component {
           </span>
         ) : false}
       </span>
-    )
+    ) : false)
 
     // "Hide" / "Un-hide"
     const hideLink = (props.isInHomeFeed ? (
