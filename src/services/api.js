@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch'
 import {getToken} from './auth'
-import {api as apiConfig} from '../config'
+import {api as apiConfig, frontendPreferences as frontendPrefsConfig} from '../config'
 
 const getRequestOptions = () => ({
   headers:{
@@ -41,9 +41,9 @@ export function getLikesOnly({postId, commentsExpanded}) {
     `${apiConfig.host}/v1/posts/${postId}?maxComments=${maxComments}&maxLikes=all`, getRequestOptions())
 }
 
-export function getPostWithAllCommentsAndLikes({postId}) {
+export function getPostWithAllComments({postId}) {
   return fetch(
-    `${apiConfig.host}/v1/posts/${postId}?maxComments=all&maxLikes=all`, getRequestOptions())
+    `${apiConfig.host}/v1/posts/${postId}?maxComments=all`, getRequestOptions())
 }
 
 export function createPost({feeds, postText, attachmentIds, more}) {
@@ -237,6 +237,22 @@ export function updateUser({id, screenName, email, isPrivate, description}) {
   })
 }
 
+export function updateFrontendPreferences({userId, prefs}) {
+  const frontendPreferences = {
+    [frontendPrefsConfig.clientId]: prefs
+  }
+
+  return fetch(`${apiConfig.host}/v1/users/${userId}`, {
+    'method': 'PUT',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+    'body': JSON.stringify({user: {frontendPreferences}})
+  })
+}
+
 export function updatePassword({currentPassword, password, passwordConfirmation}) {
   const encodedBody = _.map({currentPassword, password, passwordConfirmation},
     (value, key) => key + '=' + encodeURIComponent(value)
@@ -279,6 +295,7 @@ export const ban = userAction('ban')
 export const unban = userAction('unban')
 export const subscribe = userAction('subscribe')
 export const unsubscribe = userAction('unsubscribe')
+export const sendSubscriptionRequest = userAction('sendRequest')
 
 
 export function getUserComments({username, offset}) {

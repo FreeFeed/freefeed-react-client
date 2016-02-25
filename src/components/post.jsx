@@ -109,6 +109,22 @@ export default class Post extends React.Component {
       </span>
     ))
 
+    // "Lock icon": check if the post is truly private, "partly private" or public.
+    // Truly private:
+    // - posted to author's own private feed and/or
+    // - sent to users as a direct message and/or
+    // - posted into private groups
+    // Public:
+    // - posted to author's own public feed and/or
+    // - posted into public groups
+    // "Partly private":
+    // - has mix of private and public recipients
+    const publicRecipients = props.recipients.filter((recipient) => (
+      recipient.isPrivate === '0' &&
+      (recipient.id === props.createdBy.id || recipient.type === 'group')
+    ))
+    const isReallyPrivate = (publicRecipients.length === 0)
+
     // DropzoneJS configuration
     const dropzoneComponentConfig = {
       postUrl: `${apiConfig.host}/v1/attachments`
@@ -180,7 +196,7 @@ export default class Post extends React.Component {
 
     // "Like" / "Un-like"
     const didILikePost = _.find(props.usersLikedPost, {id: props.user.id})
-    const likeLink = (
+    const likeLink = (!props.isEditable ? (
       <span>
         {' - '}
         <a onClick={didILikePost ? unlikePost : likePost}>{didILikePost ? 'Un-like' : 'Like'}</a>
@@ -190,7 +206,7 @@ export default class Post extends React.Component {
           </span>
         ) : false}
       </span>
-    )
+    ) : false)
 
     // "Hide" / "Un-hide"
     const hideLink = (props.isInHomeFeed ? (
@@ -295,8 +311,8 @@ export default class Post extends React.Component {
           <div className="dropzone-previews"></div>
 
           <div className="post-footer">
-            {props.createdBy.isPrivate === '1' ? (
-              <i className="post-lock-icon fa fa-lock"></i>
+            {isReallyPrivate ? (
+              <i className="post-lock-icon fa fa-lock" title="This entry is private"></i>
             ) : false}
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
             <Link to={`/${props.createdBy.username}/${props.id}`} className="post-timestamp">

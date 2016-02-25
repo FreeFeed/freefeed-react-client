@@ -63,7 +63,7 @@ function validate(props) {
     errorMessages.push('invalid email')
   }
 
-  if(!props.captcha) {
+  if (captchaConfig.siteKey !== '' && !props.captcha) {
     errorMessages.push('captcha is not filled')
   }
 

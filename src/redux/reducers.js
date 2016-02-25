@@ -5,6 +5,7 @@ const {request, response, fail} = ActionHelpers
 
 import _ from 'lodash'
 import {userParser, postParser} from '../utils'
+import {frontendPreferences as frontendPrefsConfig} from '../config'
 
 export function signInForm(state={username:'', password:'', error:'', loading: false}, action) {
   switch(action.type) {
@@ -870,10 +871,12 @@ export function authenticated(state = !!getToken(), action) {
   return state
 }
 
-//we're faking for now
-import {user as defaultUserSettings} from '../config'
+const initUser = {
+  frontendPreferences: frontendPrefsConfig.defaultValues,
+  ...getPersistedUser()
+}
 
-export function user(state = {settings: defaultUserSettings, ...getPersistedUser()}, action) {
+export function user(state = initUser, action) {
   if (ActionHelpers.isUserChangeResponse(action) ||
       action.type === response(ActionTypes.WHO_AM_I) ||
       action.type === response(ActionTypes.SIGN_UP)){
@@ -881,8 +884,16 @@ export function user(state = {settings: defaultUserSettings, ...getPersistedUser
     return {...state, ...userParser(action.payload.users), subscriptions}
   }
   switch (action.type) {
-    case response(ActionTypes.UPDATE_USER): {
+    case response(ActionTypes.UPDATE_USER):
+    case response(ActionTypes.UPDATE_FRONTEND_PREFERENCES): {
       return {...state, ...userParser(action.payload.users)}
+    }
+    case response(ActionTypes.SEND_SUBSCRIPTION_REQUEST): {
+      return {...state,
+        pendingSubscriptionRequests: [...(state.pendingSubscriptionRequests || []),
+          action.request.id
+        ]
+      }
     }
     case response(ActionTypes.BAN): {
       return {...state, banIds: [...state.banIds, action.request.id]}
@@ -947,6 +958,21 @@ export function userSettingsForm(state={saved: false}, action) {
     }
     case fail(ActionTypes.UPDATE_USER): {
       return {...state, isSaving: false, success: false, error: true}
+    }
+  }
+  return state
+}
+
+export function frontendPreferencesForm(state={}, action) {
+  switch (action.type) {
+    case request(ActionTypes.UPDATE_FRONTEND_PREFERENCES): {
+      return {...state, status: 'loading'}
+    }
+    case response(ActionTypes.UPDATE_FRONTEND_PREFERENCES): {
+      return {...state, status: 'success'}
+    }
+    case fail(ActionTypes.UPDATE_FRONTEND_PREFERENCES): {
+      return {...state, status: 'error', errorMessage: (action.payload || {}).err}
     }
   }
   return state
@@ -1073,8 +1099,8 @@ export function singlePostId(state = null, action) {
 }
 
 function calculateFeeds(state) {
-  let rawSubscriptions = state.users.subscriptions
-  let rawSubscribers = state.users.subscribers
+  let rawSubscriptions = state.users.subscriptions || []
+  let rawSubscribers = state.users.subscribers || []
   let feeds = []
   if(rawSubscriptions && rawSubscribers) {
     let subscriptions = _.map(rawSubscriptions, (rs) => {
@@ -1118,6 +1144,14 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
       return {
         expanded: true,
         feeds: state.feeds
+      }
+    }
+    case response(ActionTypes.CREATE_GROUP): {
+      let groupId = action.payload.groups.id
+      let group = userParser(action.payload.groups)
+      return {
+        expanded: state.expanded,
+        feeds: [ ...state.feeds, { id: groupId, user: group } ]
       }
     }
   }
