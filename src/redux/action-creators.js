@@ -328,6 +328,16 @@ export function updateFrontendPreferences(userId, prefs) {
   }
 }
 
+export function updateFrontendRealtimePreferences(userId, realtimePrefs) {
+  return {
+    type: ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES,
+    apiRequest: Api.updateFrontendPreferences,
+    payload: {userId,
+      prefs: realtimePrefs,
+    }
+  }
+}
+
 export function updatePassword(payload) {
   return {
     type: ActionTypes.UPDATE_PASSWORD,
@@ -471,5 +481,11 @@ export function rejectUserRequest(userName) {
     type: ActionTypes.REJECT_USER_REQUEST,
     payload: {userName},
     apiRequest: Api.rejectUserRequest
+  }
+}
+
+export function toggleRealtime() {
+  return {
+    type: ActionTypes.TOGGLE_REALTIME,
   }
 }
