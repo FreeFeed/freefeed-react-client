@@ -42,7 +42,7 @@ export const authMiddleware = store => next => action => {
     setToken()
     persistUser()
     next(action)
-    const pathname = store.getState().routing.locationBeforeTransitions.pathname
+    const pathname = (store.getState().routing.locationBeforeTransitions || {}).pathname
     if (!pathname || pathname.indexOf('signin') !== -1 || pathname.indexOf('signup') !== -1){
       return
     }
@@ -117,8 +117,7 @@ const bindHandlers = store => ({
     const isFirstPage = !state.routing.locationBeforeTransitions.query.offset
     if (isFirstPage){
 
-      const routeName = getCurrentRouteName(state.router)
-      const isHomeFeed = routeName === 'home'
+      const isHomeFeed = state.routing.locationBeforeTransitions.pathname === '/'
       const useRealtimePreference = state.user.frontendPreferences.realtimeActive
 
       if (!isHomeFeed || (useRealtimePreference && isHomeFeed)){
