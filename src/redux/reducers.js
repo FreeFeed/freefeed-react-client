@@ -1058,7 +1058,8 @@ export function user(state = initUser, action) {
   }
   switch (action.type) {
     case response(ActionTypes.UPDATE_USER):
-    case response(ActionTypes.UPDATE_FRONTEND_PREFERENCES): {
+    case response(ActionTypes.UPDATE_FRONTEND_PREFERENCES):
+    case response(ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES): {
       return {...state, ...userParser(action.payload.users)}
     }
     case response(ActionTypes.SEND_SUBSCRIPTION_REQUEST): {
@@ -1144,6 +1145,9 @@ export function userSettingsForm(state={saved: false}, action) {
 
 export function frontendPreferencesForm(state={}, action) {
   switch (action.type) {
+    case response(ActionTypes.WHO_AM_I): {
+      return {...state, ...action.payload.users.frontendPreferences[frontendPrefsConfig.clientId]}
+    }
     case request(ActionTypes.UPDATE_FRONTEND_PREFERENCES): {
       return {...state, status: 'loading'}
     }
@@ -1460,4 +1464,31 @@ export function usernameSubscribers(state = {}, action) {
 // for /:username/subscriptions
 export function usernameSubscriptions(state = {}, action) {
   return handleSubs(state, action, ActionTypes.SUBSCRIPTIONS)
+}
+
+const initialRealtimeSettings = {
+  realtimeActive: false,
+  status: '',
+  errorMessage: '',
+}
+
+export function frontendRealtimePreferencesForm(state=initialRealtimeSettings, action) {
+  switch (action.type) {
+    case ActionTypes.TOGGLE_REALTIME: {
+      return {...state, realtimeActive: !state.realtimeActive, status: ''}
+    }
+    case response(ActionTypes.WHO_AM_I): {
+      return {...state, realtimeActive: action.payload.users.frontendPreferences[frontendPrefsConfig.clientId].realtimeActive}
+    }
+    case request(ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES): {
+      return {...state, status: 'loading'}
+    }
+    case response(ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES): {
+      return {...state, status: 'success'}
+    }
+    case fail(ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES): {
+      return {...state, status: 'error', errorMessage: (action.payload || {}).err}
+    }
+  }
+  return state
 }
