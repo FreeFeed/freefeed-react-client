@@ -43,9 +43,9 @@ const GroupSettings = (props) => (
   )
 )
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
-    group: (_.find(state.users, { 'username': state.router.params.userName }) || {}),
+    group: (_.find(state.users, { 'username': ownProps.params.userName }) || {}),
     groupSettings: state.groupSettings,
     groupSettingsForm: state.groupSettingsForm
   }
