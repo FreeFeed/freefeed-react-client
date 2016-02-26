@@ -1009,12 +1009,18 @@ export function users(state = {}, action) {
 }
 
 export function subscribers(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action) || action.type === response(ActionTypes.GET_SINGLE_POST)){
+  if (ActionHelpers.isFeedResponse(action)) {
     return mergeByIds(state, (action.payload.subscribers || []).map(userParser))
   }
-  if (action.type === ActionTypes.REALTIME_POST_NEW
-    || action.type === ActionTypes.REALTIME_COMMENT_NEW){
-    return mergeByIds(state, (action.subscribers || []).map(userParser))
+  switch (action.type) {
+    case ActionTypes.REALTIME_POST_NEW:
+    case ActionTypes.REALTIME_COMMENT_NEW: {
+      return mergeByIds(state, (action.subscribers || []).map(userParser))
+    }
+    case response(ActionTypes.GET_SINGLE_POST):
+    case response(ActionTypes.CREATE_POST): {
+      return mergeByIds(state, (action.payload.subscribers || []).map(userParser))
+    }
   }
   return state
 }
@@ -1104,8 +1110,14 @@ export function timelines(state = {}, action) {
 }
 
 export function subscriptions(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action) || action.type === response(ActionTypes.GET_SINGLE_POST)){
+  if (ActionHelpers.isFeedResponse(action)) {
     return mergeByIds(state, action.payload.subscriptions)
+  }
+  switch (action.type) {
+    case response(ActionTypes.GET_SINGLE_POST):
+    case response(ActionTypes.CREATE_POST): {
+      return mergeByIds(state, action.payload.subscriptions)
+    }
   }
   return state
 }

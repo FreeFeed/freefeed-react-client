@@ -17,8 +17,8 @@ const InternalLayout = ({authenticated, children}) => (
   </div>
 )
 
-const logoHandler = (router, cb) => _ => {
-  if (getCurrentRouteName(router) === 'home') {
+const logoHandler = (routeName, cb) => _ => {
+  if (routeName === 'home') {
     return cb()
   }
   return false
@@ -130,7 +130,7 @@ class Layout extends React.Component {
         <header className="row">
           <div className="col-xs-9 col-sm-6">
             <h1>
-              <IndexLink to="/" onClick={logoHandler(props.router, props.home)}>FreeFeed</IndexLink>
+              <IndexLink to="/" onClick={logoHandler(props.routeName, props.home)}>FreeFeed</IndexLink>
             </h1>
           </div>
 
@@ -168,13 +168,13 @@ class Layout extends React.Component {
   }
 }
 
-function select(state) {
+function select(state, ownProps) {
   return {
     user: state.user,
     authenticated: state.authenticated,
     loadingView: state.routeLoadingState,
     recentGroups: state.recentGroups,
-    router: state.router,
+    routeName: getCurrentRouteName(ownProps),
   }
 }
 
