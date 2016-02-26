@@ -1,6 +1,5 @@
 import {compose, createStore, applyMiddleware, combineReducers} from 'redux'
 import {createHistory, createHashHistory} from 'history'
-import {reduxReactRouter, routerStateReducer} from 'redux-router'
 import {apiMiddleware, authMiddleware, likesLogicMiddleware, userPhotoLogicMiddleware, redirectionMiddleware, scrollMiddleware} from './middlewares'
 import {routerReducer} from 'react-router-redux'
 import * as reducers from './reducers'
