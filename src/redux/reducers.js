@@ -141,6 +141,12 @@ export function feedViewState(state = initFeed, action) {
         hiddenEntries: _.without(state.hiddenEntries, postId)
       }
     }
+    case ActionTypes.REALTIME_POST_DESTROY: {
+      return {...state,
+        visibleEntries: _.without(state.visibleEntries, action.postId),
+        hiddenEntries: _.without(state.hiddenEntries, action.postId)
+      }
+    }
     case response(ActionTypes.CREATE_POST): {
       const postId = action.payload.posts.id
       return {...state,
@@ -153,10 +159,15 @@ export function feedViewState(state = initFeed, action) {
         visibleEntries: [postId]
       }
     }
+    case ActionTypes.REALTIME_POST_NEW: {
+      return {
+        ...state,
+        visibleEntries: [action.post.id, ...state.visibleEntries],
+      }
+    }
     case fail(ActionTypes.GET_SINGLE_POST): {
       return initFeed
     }
-
     case response(ActionTypes.HIDE_POST): {
       // Add it to hiddenEntries, but don't remove from visibleEntries just yet
       // (for the sake of "Undo")
@@ -165,10 +176,23 @@ export function feedViewState(state = initFeed, action) {
         hiddenEntries: [postId, ...state.hiddenEntries]
       }
     }
+    case ActionTypes.REALTIME_POST_HIDE: {
+      return {...state,
+        hiddenEntries: [action.postId, ...state.hiddenEntries]
+      }
+    }
     case response(ActionTypes.UNHIDE_POST): {
       // Remove it from hiddenEntries and add to visibleEntries
       // (but check first if it's already in there, since this might be an "Undo" happening)
       const postId = action.request.postId
+      const itsStillThere = (state.visibleEntries.indexOf(postId) > -1)
+      return {...state,
+        visibleEntries: (itsStillThere ? state.visibleEntries : [...state.visibleEntries, postId]),
+        hiddenEntries: _.without(state.hiddenEntries, postId)
+      }
+    }
+    case ActionTypes.REALTIME_POST_UNHIDE: {
+      const postId = action.postId
       const itsStillThere = (state.visibleEntries.indexOf(postId) > -1)
       return {...state,
         visibleEntries: (itsStillThere ? state.visibleEntries : [...state.visibleEntries, postId]),
@@ -234,6 +258,11 @@ export function postsViewState(state = {}, action) {
     case response(ActionTypes.GET_SINGLE_POST): {
       const id = action.payload.posts.id
       return { ...state, [id]: initPostViewState(action.payload.posts) }
+    }
+    case ActionTypes.REALTIME_POST_NEW:
+    case ActionTypes.REALTIME_POST_UPDATE: {
+      const id = action.post.id
+      return { ...state, [id]: initPostViewState(action.post) }
     }
     case fail(ActionTypes.GET_SINGLE_POST): {
       const id = action.request.postId
@@ -399,6 +428,19 @@ export function postsViewState(state = {}, action) {
         }
       }
     }
+    case ActionTypes.REALTIME_LIKE_REMOVE: {
+      const post = state[action.postId]
+      if (!post) {
+        return state
+      }
+      return {...state,
+        [post.id] : {
+          ...post,
+          isLiking: false,
+          omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes - 1 : 0)
+        }
+      }
+    }
     case fail(ActionTypes.UNLIKE_POST): {
       const post = state[action.request.postId]
       const errorString = 'Something went wrong while un-liking the post...'
@@ -426,6 +468,17 @@ export function postsViewState(state = {}, action) {
         }
       }
     }
+    case ActionTypes.REALTIME_POST_HIDE: {
+      const post = state[action.postId]
+      if (!post) {
+        return state
+      }
+      return {...state,
+        [post.id]: {...post,
+          isHiding: false
+        }
+      }
+    }
     case fail(ActionTypes.HIDE_POST): {
       const post = state[action.request.postId]
       return {...state,
@@ -445,6 +498,17 @@ export function postsViewState(state = {}, action) {
     }
     case response(ActionTypes.UNHIDE_POST): {
       const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isHiding: false
+        }
+      }
+    }
+    case ActionTypes.REALTIME_POST_UNHIDE: {
+      const post = state[action.postId]
+      if (!post) {
+        return state
+      }
       return {...state,
         [post.id]: {...post,
           isHiding: false
@@ -621,6 +685,19 @@ export function posts(state = {}, action) {
         }
       }
     }
+    case ActionTypes.REALTIME_COMMENT_DESTROY: {
+      const post = Object.keys(state)
+                          .map(id => state[id])
+                          .filter(post => post.comments &&
+                                          post.comments.indexOf(action.commentId) !== -1)[0]
+      if (!post) {
+        return state
+      }
+      return {...state, [post.id] : {
+        ...post,
+        comments: _.without(post.comments, action.commentId),
+      }}
+    }
     case response(ActionTypes.ADD_COMMENT): {
       const post = state[action.request.postId]
       return {...state,
@@ -641,12 +718,38 @@ export function posts(state = {}, action) {
         }
       }
     }
+    case ActionTypes.REALTIME_LIKE_NEW: {
+      const post = state[action.postId]
+      if (!post || post.likes && post.likes.indexOf(action.user.id) !== -1) {
+        return state
+      }
+      return {...state,
+        [post.id] : {
+          ...post,
+          likes: [action.user.id, ...(post.likes || [])],
+          omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes + 1 : 0)
+        }
+      }
+    }
     case response(ActionTypes.UNLIKE_POST): {
       const post = state[action.request.postId]
       return {...state,
         [post.id] : {
           ...post,
           likes: _.without(post.likes, action.request.userId),
+          omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes - 1 : 0)
+        }
+      }
+    }
+    case ActionTypes.REALTIME_LIKE_REMOVE: {
+      const post = state[action.postId]
+      if (!post) {
+        return state
+      }
+      return {...state,
+        [post.id] : {
+          ...post,
+          likes: _.without(post.likes, action.userId),
           omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes - 1 : 0)
         }
       }
@@ -661,6 +764,17 @@ export function posts(state = {}, action) {
     }
     case response(ActionTypes.UNHIDE_POST): {
       const post = state[action.request.postId]
+      return {...state,
+        [post.id]: {...post,
+          isHidden: false
+        }
+      }
+    }
+    case ActionTypes.REALTIME_POST_UNHIDE: {
+      const post = state[action.postId]
+      if (!post) {
+        return state
+      }
       return {...state,
         [post.id]: {...post,
           isHidden: false
@@ -688,6 +802,24 @@ export function posts(state = {}, action) {
     }
     case response(ActionTypes.GET_SINGLE_POST): {
       return updatePostData(state, action)
+    }
+    case ActionTypes.REALTIME_POST_NEW:
+    case ActionTypes.REALTIME_POST_UPDATE: {
+      return { ...state, [action.post.id]: postParser(action.post) }
+    }
+    case ActionTypes.REALTIME_COMMENT_NEW: {
+      const post = state[action.comment.postId]
+      if (!post) {
+        return state
+      }
+      const commentAlreadyAdded = post.comments && post.comments.indexOf(action.comment.id)!==-1
+      if (commentAlreadyAdded) {
+        return state
+      }
+      return {...state, [post.id]: {
+        ...post,
+        comments: [...(post.comments || []), action.comment.id]
+      }}
     }
     case ActionTypes.UNAUTHENTICATED: {
       return {}
@@ -737,6 +869,15 @@ export function comments(state = {}, action) {
     }
     case response(ActionTypes.DELETE_COMMENT): {
       return {...state, [action.request.commentId] : undefined}
+    }
+    case ActionTypes.REALTIME_COMMENT_NEW: {
+      return mergeByIds(state, [action.comment])
+    }
+    case ActionTypes.REALTIME_COMMENT_UPDATE: {
+      return mergeByIds(state, [action.comment])
+    }
+    case ActionTypes.REALTIME_COMMENT_DESTROY: {
+      return {...state, [action.commentId] : undefined}
     }
     case response(ActionTypes.ADD_COMMENT): {
       return {...state,
@@ -839,8 +980,12 @@ export function users(state = {}, action) {
     }
     case response(ActionTypes.SHOW_MORE_COMMENTS):
     case response(ActionTypes.SHOW_MORE_LIKES_ASYNC):
-    case response(ActionTypes.GET_SINGLE_POST):
+    case response(ActionTypes.GET_SINGLE_POST): {
       return mergeByIds(state, (action.payload.users || []).map(userParser))
+    }
+    case ActionTypes.REALTIME_LIKE_NEW: {
+      return mergeByIds(state, ([action.user]).map(userParser))
+    }
     case ActionTypes.UNAUTHENTICATED:
       return {}
   }

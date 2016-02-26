@@ -107,3 +107,60 @@ export const scrollMiddleware = store => next => action => {
   }
   return next(action)
 }
+
+import {init} from '../services/realtime'
+
+const bindHandlers = dispatch => ({
+  'post:new': data => dispatch({type: ActionTypes.REALTIME_POST_NEW, post : data.posts}),
+  'post:update': data => dispatch({type: ActionTypes.REALTIME_POST_UPDATE, post : data.posts}),
+  'post:destroy': data => dispatch({type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId}),
+  'post:hide': data => dispatch({type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId}),
+  'post:unhide': data => dispatch({type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId}),
+  'comment:new': data => dispatch({type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments}),
+  'comment:update': data => dispatch({type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments}),
+  'comment:destroy': data => dispatch({type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId}),
+  'like:new': data => dispatch({type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, user: data.users}),
+  'like:remove': data => dispatch({type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId}),
+})
+
+export const realtimeMiddleware = store => {
+  let realtimeConnection
+  return next => action => {
+
+    switch(action.type){
+      case ActionTypes.UNAUTHENTICATED: {
+        if (realtimeConnection){
+          realtimeConnection.disconnect()
+          realtimeConnection = undefined
+        }
+        break
+      }
+      case response(ActionTypes.SIGN_IN): {
+        if (!realtimeConnection){
+          realtimeConnection = init(bindHandlers(store.dispatch))
+        }
+        break
+      }
+      case response(ActionTypes.WHO_AM_I): {
+        if (!realtimeConnection){
+          realtimeConnection = init(bindHandlers(store.dispatch))
+        }
+        break
+      }
+    }
+
+    if (isFeedResponse(action)){
+      if (realtimeConnection){
+        realtimeConnection.changeSubscription({timeline:[action.payload.timelines.id]})
+      }
+    }
+
+    if (action.type === response(ActionTypes.GET_SINGLE_POST)){
+      if (realtimeConnection){
+        realtimeConnection.changeSubscription({post:[action.payload.posts.id]})
+      }
+    }
+
+    return next(action)
+  }
+}
