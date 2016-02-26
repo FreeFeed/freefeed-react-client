@@ -70,6 +70,9 @@ function selectState(state) {
     hasRequestBeenSent: authenticated && foundUser && ((user.pendingSubscriptionRequests || []).indexOf(foundUser.id) > -1)
   }
 
+  statusExtension.canISeeSubsList = statusExtension.isUserFound &&
+    (foundUser.isPrivate === '0' || statusExtension.subscribed || statusExtension.isItMe)
+
   const viewUser = {...(foundUser), ...statusExtension}
 
   const breadcrumbs = {

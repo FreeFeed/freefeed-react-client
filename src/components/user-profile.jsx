@@ -26,13 +26,21 @@ export default props => (
             <div className="profile-stats">
               {props.type !== 'group' && props.statistics.subscriptions >= 0 ? (
                 <div className="profile-stats-item">
-                  <Link to={`/${props.username}/subscriptions`}>{pluralForm(props.statistics.subscriptions, 'subscription')}</Link>
+                  {props.canISeeSubsList ? (
+                    <Link to={`/${props.username}/subscriptions`}>{pluralForm(props.statistics.subscriptions, 'subscription')}</Link>
+                  ) : (
+                    pluralForm(props.statistics.subscriptions, 'subscription')
+                  )}
                 </div>
               ) : false}
               {' '}
               {props.statistics.subscribers >= 0 ? (
                 <div className="profile-stats-item">
-                  <Link to={`/${props.username}/subscribers`}>{pluralForm(props.statistics.subscribers, 'subscriber')}</Link>
+                  {props.canISeeSubsList ? (
+                    <Link to={`/${props.username}/subscribers`}>{pluralForm(props.statistics.subscribers, 'subscriber')}</Link>
+                  ) : (
+                    pluralForm(props.statistics.subscribers, 'subscriber')
+                  )}
                 </div>
               ) : false}
               {' '}
