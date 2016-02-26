@@ -1,6 +1,7 @@
 import {
   // User actions
   subscribe, unsubscribe,
+  sendSubscriptionRequest,
   ban, unban,
 
   // Post actions
@@ -136,5 +137,6 @@ export function userActions(dispatch) {
     unban: username => dispatch(unban(username)),
     subscribe: username => dispatch(subscribe(username)),
     unsubscribe: username => dispatch(unsubscribe(username)),
+    sendSubscriptionRequest: username => dispatch(sendSubscriptionRequest(username))
   }
 }

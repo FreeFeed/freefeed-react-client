@@ -1,8 +1,9 @@
 import React from 'react'
+import {Link} from 'react-router'
 
 export default (props) => (
-  <footer className='footer p-footer'>
-    &copy; FreeFeed 0.6.3 (February 8, 2016)<br/>
-    <a href="https://about.freefeed.net" target="_blank">About</a> | <a href="http://news.freefeed.net" target="_blank">Public News</a> | <a href="https://twitter.com/freefeednet" target="_blank">Twitter</a> | <a href="http://freefeed.reformal.ru/" target="_blank">Reformal: suggest new features</a>
+  <footer className="footer">
+    &copy; FreeFeed 0.6.4 (February 25, 2016)<br/>
+    <Link to="/about">About</Link> | <Link to="/freefeed">News</Link> | <a href="https://twitter.com/freefeednet" target="_blank">Twitter</a> | <a href="https://status.freefeed.net/" target="_blank">Status</a>
   </footer>
 )

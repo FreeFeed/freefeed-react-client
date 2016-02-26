@@ -5,7 +5,7 @@ export default class UserPhotoForm extends React.Component {
   render(){
     return (
       <form onSubmit={preventDefault(this.updatePhoto)}>
-        <h2 className='p-settings-updateprofilepicture-header'>Update Profile Picture</h2>
+        <h3>Update profile picture</h3>
         <div className='form-group'>
           <input type='file' ref='photo'/>
         </div>

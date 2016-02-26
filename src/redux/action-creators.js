@@ -59,7 +59,7 @@ export function getUserFeed(username, offset = 0) {
 export function showMoreComments(postId) {
   return {
     type: ActionTypes.SHOW_MORE_COMMENTS,
-    apiRequest: Api.getPostWithAllCommentsAndLikes,
+    apiRequest: Api.getPostWithAllComments,
     payload: {postId},
   }
 }
@@ -320,6 +320,14 @@ export function userSettingsChange(payload) {
   }
 }
 
+export function updateFrontendPreferences(userId, prefs) {
+  return {
+    type: ActionTypes.UPDATE_FRONTEND_PREFERENCES,
+    apiRequest: Api.updateFrontendPreferences,
+    payload: {userId, prefs}
+  }
+}
+
 export function updatePassword(payload) {
   return {
     type: ActionTypes.UPDATE_PASSWORD,
@@ -339,7 +347,7 @@ export function updateUserPhoto(picture) {
 export function getSinglePost(postId) {
   return {
     type: ActionTypes.GET_SINGLE_POST,
-    apiRequest: Api.getPostWithAllCommentsAndLikes,
+    apiRequest: Api.getPostWithAllComments,
     nonAuthRequest: true,
     payload: {postId},
   }
@@ -357,6 +365,7 @@ export const ban = userChangeAction(ActionTypes.BAN, Api.ban)
 export const unban = userChangeAction(ActionTypes.UNBAN, Api.unban)
 export const subscribe = userChangeAction(ActionTypes.SUBSCRIBE, Api.subscribe)
 export const unsubscribe = userChangeAction(ActionTypes.UNSUBSCRIBE, Api.unsubscribe)
+export const sendSubscriptionRequest = userChangeAction(ActionTypes.SEND_SUBSCRIPTION_REQUEST, Api.sendSubscriptionRequest)
 
 export function getUserComments(username, offset = 0) {
   return {

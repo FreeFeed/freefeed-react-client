@@ -1,11 +1,11 @@
 import React from 'react'
 import {preventDefault} from '../utils'
 
-export default class ChangePasswordForm extends React.Component {
+export default class UserChangePasswordForm extends React.Component {
   render(){
     return (
       <form onSubmit={preventDefault(this.updatePassword)}>
-        <h2 className='p-settings-changepassword-header'>Change password</h2>
+        <h3>Change password</h3>
         <div className='form-group p-settings-currentpassword'>
           <label htmlFor='currentPassword'>Current password:</label>
           <input id='currentPassword' className='form-control' ref='currentPassword' type='password'/>

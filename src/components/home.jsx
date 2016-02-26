@@ -28,7 +28,7 @@ const FeedHandler = (props) => {
         {props.boxHeader}
       </div>
       {props.authenticated ? (
-        <PaginatedView firstPageHead={createPostComponent}>
+        <PaginatedView firstPageHead={createPostComponent} {...props}>
           <Feed {...props} isInHomeFeed={true}/>
         </PaginatedView>
       ) : (

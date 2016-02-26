@@ -1,3 +1,5 @@
+import {frontendPreferences as frontendPrefsConfig} from '../config'
+
 export function getCookie(name){
   const begin = document.cookie.indexOf(name)
   if (begin === -1){
@@ -36,12 +38,21 @@ import defaultUserpic75Path from 'assets/images/default-userpic-75.png'
 const userDefaults = {
   profilePictureMediumUrl: defaultUserpic50Path,
   profilePictureLargeUrl: defaultUserpic75Path,
+  frontendPreferences: frontendPrefsConfig.defaultValues
 }
 
 export function userParser(user) {
-  user.profilePictureMediumUrl = user.profilePictureMediumUrl || userDefaults.profilePictureMediumUrl
-  user.profilePictureLargeUrl = user.profilePictureLargeUrl || userDefaults.profilePictureLargeUrl
-  return {...user}
+  const newUser = {...user}
+
+  // Profile pictures
+  newUser.profilePictureMediumUrl = user.profilePictureMediumUrl || userDefaults.profilePictureMediumUrl
+  newUser.profilePictureLargeUrl = user.profilePictureLargeUrl || userDefaults.profilePictureLargeUrl
+
+  // Frontend preferences (only use this client's subtree)
+  const prefSubTree = user.frontendPreferences && user.frontendPreferences[frontendPrefsConfig.clientId]
+  newUser.frontendPreferences = _.merge({}, userDefaults.frontendPreferences, prefSubTree)
+
+  return newUser
 }
 
 export function postParser(post) {
@@ -65,7 +76,7 @@ export function confirmFirst(realFunction) {
 }
 
 export function getCurrentRouteName(router) {
-  return router && router.routes[router.routes.length - 1].name
+  return router && router.routes && router.routes[router.routes.length - 1].name
 }
 
 export function pluralForm(n, singular, plural = null, format = 'n w') {

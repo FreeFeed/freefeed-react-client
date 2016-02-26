@@ -1,98 +1,24 @@
 import React from 'react'
-import {connect} from 'react-redux'
-import {createPost, expandSendTo} from '../redux/action-creators'
-import {joinPostData, joinCreatePostData, postActions, userActions} from './select-utils'
-import {getQuery, getCurrentRouteName} from '../utils'
+import {Link} from 'react-router'
 
-import CreatePost from './create-post'
-import Feed from './feed'
 import PaginatedView from './paginated-view'
-import UserProfile from './user-profile'
-import Breadcrumbs from './breadcrumbs'
+import Feed from './feed'
 
-const UserFeedHandler = (props) => {
-  return (
-    <div className='box'>
-      <div className='box-header-timeline'>
-        {props.boxHeader}
+export default props => (
+  <div>
+    {props.viewUser.blocked ? (
+      <div className="box-body">
+        <p>You have blocked <b>{props.viewUser.screenName}</b>, so all of their posts and comments are invisible to you.</p>
+        <p><a onClick={()=>props.userActions.unban({username: props.viewUser.username, id: props.viewUser.id})}>Un-block</a></p>
       </div>
-      <div className='box-body'>
-        {props.breadcrumbs.shouldShowBreadcrumbs ? <Breadcrumbs {...props.breadcrumbs}/> : false}
-        <UserProfile
-          {...props.viewUser}
-          {...props.userActions}
-          user={props.user}
-          sendTo={props.sendTo}
-          expandSendTo={props.expandSendTo}
-          createPostViewState={props.createPostViewState}
-          createPost={props.createPost}
-          createPostForm={props.createPostForm}
-          addAttachmentResponse={props.addAttachmentResponse}
-          removeAttachment={props.removeAttachment}/>
+    ) : props.viewUser.isPrivate === '1' && !props.viewUser.subscribed && !props.viewUser.isItMe ? (
+      <div className="box-body">
+        <p><b>{props.viewUser.screenName}</b> has a private feed.</p>
       </div>
-      {props.viewUser.blocked ?
-        false :
-        <PaginatedView>
-          <Feed {...props} isInUserFeed={true}/>
-        </PaginatedView>}
-      <div className='box-footer'>
-      </div>
-    </div>)
-}
-
-function selectState(state) {
-  const user = state.user
-  const authenticated = state.authenticated
-  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state))
-  const createPostViewState = state.createPostViewState
-  const createPostForm = joinCreatePostData(state)
-  const timelines = state.timelines
-  const boxHeader = state.boxHeader
-  const foundUser = Object.getOwnPropertyNames(state.users)
-    .map(key => state.users[key] || state.subscribers[key])
-    .filter(user => user.username === state.router.params.userName)[0]
-
-  const amIGroupAdmin = (
-    authenticated &&
-    foundUser &&
-    foundUser.type === 'group' &&
-    ((foundUser.administrators || []).indexOf(state.user.id) > -1)
-  )
-
-  const currentRouteName = getCurrentRouteName(state.router)
-  const isItPostsPage = ['userComments', 'userLikes'].indexOf(currentRouteName) === -1
-
-  const statusExtension = {
-    authenticated,
-    isLoading: state.routeLoadingState,
-    isUserFound: !!foundUser,
-    isItMe: (foundUser ? foundUser.username === user.username : false),
-    isItPostsPage,
-    amIGroupAdmin,
-    subscribed: authenticated && foundUser && (user.subscriptions.indexOf(foundUser.id) !== -1),
-    blocked: authenticated && foundUser && (user.banIds.indexOf(foundUser.id) > -1),
-  }
-
-  const viewUser = {...(foundUser), ...statusExtension}
-
-  const breadcrumbs = {
-    shouldShowBreadcrumbs: !isItPostsPage,
-    user: viewUser,
-    breadcrumb: currentRouteName.replace('user','')
-  }
-
-  const sendTo = state.sendTo
-
-  return { user, visibleEntries, timelines, createPostViewState, createPostForm, boxHeader, viewUser, breadcrumbs, sendTo }
-}
-
-function selectActions(dispatch) {
-  return {
-    ...postActions(dispatch),
-    createPost: (feeds, postText, attachmentIds, more) => dispatch(createPost(feeds, postText, attachmentIds, more)),
-    expandSendTo: () => dispatch(expandSendTo()),
-    userActions: userActions(dispatch),
-  }
-}
-
-export default connect(selectState, selectActions)(UserFeedHandler)
+    ) : (
+      <PaginatedView>
+        <Feed {...props} isInUserFeed={true}/>
+      </PaginatedView>
+    )}
+  </div>
+)
