@@ -36,7 +36,7 @@ const UserHandler = (props) => {
   )
 }
 
-function selectState(state) {
+function selectState(state, ownProps) {
   const user = state.user
   const authenticated = state.authenticated
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state))
@@ -46,7 +46,7 @@ function selectState(state) {
   const boxHeader = state.boxHeader
   const foundUser = Object.getOwnPropertyNames(state.users)
     .map(key => state.users[key] || state.subscribers[key])
-    .filter(user => user.username === state.router.params.userName)[0]
+    .filter(user => user.username === ownProps.params.userName)[0]
 
   const amIGroupAdmin = (
     authenticated &&
@@ -55,7 +55,7 @@ function selectState(state) {
     ((foundUser.administrators || []).indexOf(state.user.id) > -1)
   )
 
-  const currentRouteName = getCurrentRouteName(state.router)
+  const currentRouteName = getCurrentRouteName(ownProps)
   const isItPostsPage = ['userComments', 'userLikes'].indexOf(currentRouteName) === -1
 
   const statusExtension = {
@@ -69,6 +69,9 @@ function selectState(state) {
     blocked: authenticated && foundUser && (user.banIds.indexOf(foundUser.id) > -1),
     hasRequestBeenSent: authenticated && foundUser && ((user.pendingSubscriptionRequests || []).indexOf(foundUser.id) > -1)
   }
+
+  statusExtension.canISeeSubsList = statusExtension.isUserFound &&
+    (foundUser.isPrivate === '0' || statusExtension.subscribed || statusExtension.isItMe)
 
   const viewUser = {...(foundUser), ...statusExtension}
 

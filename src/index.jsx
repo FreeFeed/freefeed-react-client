@@ -6,9 +6,9 @@ require.context('assets/fonts', true, /fontawesome.*/i)
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {Route, IndexRoute} from 'react-router'
+import {Router, Route, IndexRoute, browserHistory} from 'react-router'
 import {Provider} from 'react-redux'
-import {ReduxRouter} from 'redux-router'
+import {syncHistoryWithStore} from 'react-router-redux'
 
 import configureStore from './redux/configure-store'
 import {whoAmI, home, discussions, getUserFeed, unauthenticated, getSinglePost} from './redux/action-creators'
@@ -37,7 +37,6 @@ const store = configureStore()
 if (store.getState().authenticated){
   store.dispatch(whoAmI())
 } else {
-  // just commented for develop sign up form
   store.dispatch(unauthenticated())
 }
 
@@ -45,9 +44,11 @@ import {bindRouteActions} from './redux/route-actions'
 
 const boundRouteActions = bindRouteActions(store.dispatch)
 
+const history = syncHistoryWithStore(browserHistory, store)
+
 ReactDOM.render(
   <Provider store={store}>
-    <ReduxRouter>
+    <Router history={history}>
       <Route path='/' component={Layout}>
         <IndexRoute name='home' component={Home} onEnter={boundRouteActions('home')}/>
         <Route path='about' component={About}/>
@@ -68,7 +69,7 @@ ReactDOM.render(
         <Route name='userLikes' path='/:userName/likes' component={User} onEnter={boundRouteActions('userLikes')}/>
         <Route name='post' path='/:userName/:postId' component={SinglePost} onEnter={boundRouteActions('post')}/>
       </Route>
-    </ReduxRouter>
+    </Router>
   </Provider>,
   document.getElementById('app')
 )

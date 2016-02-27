@@ -5,6 +5,7 @@ const {request, response, fail} = ActionHelpers
 
 import _ from 'lodash'
 import {userParser, postParser} from '../utils'
+import {frontendPreferences as frontendPrefsConfig} from '../config'
 
 export function signInForm(state={username:'', password:'', error:'', loading: false}, action) {
   switch(action.type) {
@@ -847,8 +848,14 @@ export function users(state = {}, action) {
 }
 
 export function subscribers(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action) || action.type === response(ActionTypes.GET_SINGLE_POST)){
+  if (ActionHelpers.isFeedResponse(action)) {
     return mergeByIds(state, (action.payload.subscribers || []).map(userParser))
+  }
+  switch (action.type) {
+    case response(ActionTypes.GET_SINGLE_POST):
+    case response(ActionTypes.CREATE_POST): {
+      return mergeByIds(state, (action.payload.subscribers || []).map(userParser))
+    }
   }
   return state
 }
@@ -870,7 +877,12 @@ export function authenticated(state = !!getToken(), action) {
   return state
 }
 
-export function user(state = getPersistedUser(), action) {
+const initUser = _ => ({
+  frontendPreferences: frontendPrefsConfig.defaultValues,
+  ...getPersistedUser()
+})
+
+export function user(state = initUser(), action) {
   if (ActionHelpers.isUserChangeResponse(action) ||
       action.type === response(ActionTypes.WHO_AM_I) ||
       action.type === response(ActionTypes.SIGN_UP)){
@@ -933,8 +945,14 @@ export function timelines(state = {}, action) {
 }
 
 export function subscriptions(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action) || action.type === response(ActionTypes.GET_SINGLE_POST)){
+  if (ActionHelpers.isFeedResponse(action)) {
     return mergeByIds(state, action.payload.subscriptions)
+  }
+  switch (action.type) {
+    case response(ActionTypes.GET_SINGLE_POST):
+    case response(ActionTypes.CREATE_POST): {
+      return mergeByIds(state, action.payload.subscriptions)
+    }
   }
   return state
 }

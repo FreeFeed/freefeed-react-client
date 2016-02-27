@@ -3,10 +3,11 @@ import {IndexLink, Link} from 'react-router'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 
-import {unauthenticated} from '../redux/action-creators'
+import {unauthenticated, home} from '../redux/action-creators'
 import Footer from './footer'
 import Sidebar from './sidebar'
 import LoaderContainer from './loader-container'
+import {getCurrentRouteName} from '../utils'
 
 const InternalLayout = ({authenticated, children}) => (
   <div className={authenticated ? 'col-md-9' : 'col-md-12'}>
@@ -15,6 +16,13 @@ const InternalLayout = ({authenticated, children}) => (
     </div>
   </div>
 )
+
+const logoHandler = (routeName, cb) => _ => {
+  if (routeName === 'home') {
+    return cb()
+  }
+  return false
+}
 
 
 class Layout extends React.Component {
@@ -122,7 +130,7 @@ class Layout extends React.Component {
         <header className="row">
           <div className="col-xs-9 col-sm-6">
             <h1>
-              <IndexLink to="/">FreeFeed</IndexLink>
+              <IndexLink to="/" onClick={logoHandler(props.routeName, props.home)}>FreeFeed</IndexLink>
             </h1>
           </div>
 
@@ -160,18 +168,20 @@ class Layout extends React.Component {
   }
 }
 
-function select(state) {
+function select(state, ownProps) {
   return {
     user: state.user,
     authenticated: state.authenticated,
     loadingView: state.routeLoadingState,
     recentGroups: state.recentGroups,
+    routeName: getCurrentRouteName(ownProps),
   }
 }
 
 function mapDispatchToProps(dispatch){
   return {
-    signOut: ()=>dispatch(unauthenticated())
+    signOut: ()=>dispatch(unauthenticated()),
+    home: ()=> dispatch(home()),
   }
 }
 

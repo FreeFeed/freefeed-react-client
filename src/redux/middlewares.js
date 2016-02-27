@@ -28,8 +28,8 @@ export const apiMiddleware = store => next => async (action) => {
 }
 
 import {setToken, persistUser} from '../services/auth'
-import {userParser, getCurrentRouteName} from '../utils'
-import {pushState} from 'redux-router'
+import {userParser} from '../utils'
+import {browserHistory} from 'react-router'
 
 export const authMiddleware = store => next => action => {
 
@@ -42,11 +42,11 @@ export const authMiddleware = store => next => action => {
     setToken()
     persistUser()
     next(action)
-    const routeName = getCurrentRouteName(store.getState().router)
-    if (!routeName || ['signin', 'signup'].indexOf(routeName) !== -1){
+    const pathname = (store.getState().routing.locationBeforeTransitions || {}).pathname
+    if (!pathname || pathname.indexOf('signin') !== -1 || pathname.indexOf('signup') !== -1){
       return
     }
-    return store.dispatch(pushState(null, '/signin', {}))
+    return browserHistory.push('/signin')
   }
 
   if(action.type === response(ActionTypes.SIGN_IN) ||
@@ -54,7 +54,7 @@ export const authMiddleware = store => next => action => {
     setToken(action.payload.authToken)
     next(action)
     store.dispatch(ActionCreators.whoAmI())
-    return store.dispatch(pushState(null, '/', {}))
+    return browserHistory.push('/')
   }
 
   if(action.type === response(ActionTypes.WHO_AM_I) ||
@@ -95,7 +95,7 @@ export const userPhotoLogicMiddleware = store => next => action => {
 export const redirectionMiddleware = store => next => action => {
   //go to home if single post has been removed
   if (action.type === response(ActionTypes.DELETE_POST) && store.getState().singlePostId) {
-    return store.dispatch(pushState(null, '/', {}))
+    return browserHistory.push('/')
   }
 
   return next(action)
