@@ -32,7 +32,7 @@ const RequestsHandler = (props) => {
       <div className='box-body'>
         <div><Link to={`/${props.username}`}>{props.username}</Link> › Requests</div>
         <div>
-          {props.feedRequests
+          {props.feedRequests && props.feedRequests.length
           ? <div>
               <h3>Requests to your feed</h3>
               <TileList users={props.feedRequests}
@@ -53,23 +53,16 @@ const RequestsHandler = (props) => {
   )
 }
 
-function selectState(state) {
-  const selectedState = {}
-  
-  selectedState.boxHeader = state.boxHeader
-  selectedState.username = state.router.params.userName
+function selectState(state, ownProps) {
+
+  const boxHeader = state.boxHeader
+  const username = ownProps.params.userName
 
   const feedRequests = state.requests
-  if (feedRequests && feedRequests.length != 0) {
-    selectedState.feedRequests = feedRequests
-  }
 
-  const groupRequests = state.groupRequests.filter(group => group.requests.length != 0)
-  if (groupRequests) {
-    selectedState.groupRequests = groupRequests
-  }
+  const groupRequests = state.groupRequests.filter(group => group.requests.length) || []
 
-  return selectedState
+  return {boxHeader, username, feedRequests, groupRequests}
 }
 
 function selectActions(dispatch) {
