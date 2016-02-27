@@ -42,7 +42,7 @@ export const authMiddleware = store => next => action => {
     setToken()
     persistUser()
     next(action)
-    const pathname = store.getState().routing.locationBeforeTransitions.pathname
+    const pathname = (store.getState().routing.locationBeforeTransitions || {}).pathname
     if (!pathname || pathname.indexOf('signin') !== -1 || pathname.indexOf('signup') !== -1){
       return
     }
