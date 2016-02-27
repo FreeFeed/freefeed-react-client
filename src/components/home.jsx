@@ -8,6 +8,7 @@ import {Link} from 'react-router'
 import CreatePost from './create-post'
 import Feed from './feed'
 import PaginatedView from './paginated-view'
+import RealtimeSwitch from './realitme-switch'
 import Welcome from './welcome'
 
 const FeedHandler = (props) => {
@@ -27,6 +28,9 @@ const FeedHandler = (props) => {
     <div className='box'>
       <div className='box-header-timeline'>
         {props.boxHeader}
+        <div className='pull-right'>
+          {props.areOnFirstHomePage ? <RealtimeSwitch/> : false}
+        </div>
       </div>
 
       {props.authenticated && props.totalRequestsCount > 0 ? (
@@ -69,7 +73,8 @@ function selectState(state) {
     user, authenticated,
     visibleEntries, hiddenEntries, isHiddenRevealed,
     createPostViewState, createPostForm,
-    timelines, boxHeader, sendTo, totalRequestsCount
+    timelines, boxHeader, sendTo, totalRequestsCount,
+    areOnFirstHomePage: !state.routing.locationBeforeTransitions.query.offset,
   }
 }
 

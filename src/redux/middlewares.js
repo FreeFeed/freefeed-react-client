@@ -117,8 +117,7 @@ const bindHandlers = store => ({
     const isFirstPage = !state.routing.locationBeforeTransitions.query.offset
     if (isFirstPage){
 
-      const routeName = getCurrentRouteName(state.router)
-      const isHomeFeed = routeName === 'home'
+      const isHomeFeed = state.routing.locationBeforeTransitions.pathname === '/'
       const useRealtimePreference = state.user.frontendPreferences.realtimeActive
 
       if (!isHomeFeed || (useRealtimePreference && isHomeFeed)){
