@@ -32,14 +32,17 @@ export const scrollCompensator = dispatchAction => (...actionParams) => {
   const postCommentNodes = [...document.querySelectorAll('.post, .comment')]
 
   const firstVisible = postCommentNodes.filter(element => element.getBoundingClientRect().top > 0)[0]
-                              || dummyPost
 
-  const topBefore = firstVisible.getBoundingClientRect().top
+  const nearestTopIndex = postCommentNodes.indexOf(firstVisible) - 1
+
+  const nearestTop = postCommentNodes[nearestTopIndex] || dummyPost
+
+  const topBefore = nearestTop.getBoundingClientRect().top
 
   //here we're dispatching, so render is called internally and after call we have new page
   const res = dispatchAction(...actionParams)
 
-  const topAfter = firstVisible.getBoundingClientRect().top
+  const topAfter = nearestTop.getBoundingClientRect().top
 
   if (topAfter !== topBefore) {
     scrollBy(0, topAfter - topBefore)
