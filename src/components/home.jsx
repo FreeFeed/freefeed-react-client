@@ -28,7 +28,7 @@ const FeedHandler = (props) => {
       <div className='box-header-timeline'>
         {props.boxHeader}
         <div className='pull-right'>
-          {props.areOnFirstHomePage ? <RealtimeSwitch/> : false}
+          {props.areOnFirstHomePage && props.authenticated ? <RealtimeSwitch/> : false}
         </div>
       </div>
       {props.authenticated ? (
