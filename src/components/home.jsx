@@ -49,7 +49,7 @@ function selectState(state) {
   const createPostForm = joinCreatePostData(state)
   const timelines = state.timelines
   const boxHeader = state.boxHeader
-  const sendTo = state.sendTo
+  const sendTo = {...state.sendTo, defaultFeed: user.username}
 
   return {
     user, authenticated,
