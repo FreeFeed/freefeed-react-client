@@ -7,7 +7,7 @@ import {getQuery} from '../utils'
 import CreatePost from './create-post'
 import Feed from './feed'
 import PaginatedView from './paginated-view'
-import RealtimeSwitch from './realitme-switch'
+import RealtimeSwitch from './realtime-switch'
 import Welcome from './welcome'
 
 const FeedHandler = (props) => {
