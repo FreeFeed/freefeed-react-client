@@ -28,7 +28,7 @@ export const apiMiddleware = store => next => async (action) => {
 }
 
 import {setToken, persistUser} from '../services/auth'
-import {userParser} from '../utils'
+import {userParser, getCurrentRouteName} from '../utils'
 import {browserHistory} from 'react-router'
 
 export const authMiddleware = store => next => action => {
@@ -106,4 +106,75 @@ export const scrollMiddleware = store => next => action => {
     scrollTo(0, 0)
   }
   return next(action)
+}
+
+import {init, scrollCompensator} from '../services/realtime'
+import {frontendPreferences as frontendPrefsConfig} from '../config'
+
+const bindHandlers = store => ({
+  'post:new': scrollCompensator(data => {
+    const state = store.getState()
+    const isFirstPage = !state.routing.locationBeforeTransitions.query.offset
+    if (isFirstPage){
+
+      const isHomeFeed = state.routing.locationBeforeTransitions.pathname === '/'
+      const useRealtimePreference = state.user.frontendPreferences.realtimeActive
+
+      if (!isHomeFeed || (useRealtimePreference && isHomeFeed)){
+        return store.dispatch({...data, type: ActionTypes.REALTIME_POST_NEW, post: data.posts})
+      }
+    }
+    return false
+  }),
+  'post:update': scrollCompensator(data => store.dispatch({...data, type: ActionTypes.REALTIME_POST_UPDATE, post: data.posts})),
+  'post:destroy': scrollCompensator(data => store.dispatch({type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId})),
+  'post:hide': scrollCompensator(data => store.dispatch({type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId})),
+  'post:unhide': scrollCompensator(data => store.dispatch({type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId})),
+  'comment:new': scrollCompensator(data => store.dispatch({...data, type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments})),
+  'comment:update': scrollCompensator(data => store.dispatch({...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments})),
+  'comment:destroy': scrollCompensator(data => store.dispatch({type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId, postId: data.postId})),
+  'like:new': scrollCompensator(data => store.dispatch({type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, user: data.users})),
+  'like:remove': scrollCompensator(data => store.dispatch({type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId})),
+})
+
+export const realtimeMiddleware = store => {
+  let realtimeConnection
+  return next => action => {
+
+    switch(action.type){
+      case ActionTypes.UNAUTHENTICATED: {
+        if (realtimeConnection){
+          realtimeConnection.disconnect()
+          realtimeConnection = undefined
+        }
+        break
+      }
+      case response(ActionTypes.SIGN_IN): {
+        if (!realtimeConnection){
+          realtimeConnection = init(bindHandlers(store))
+        }
+        break
+      }
+      case response(ActionTypes.WHO_AM_I): {
+        if (!realtimeConnection){
+          realtimeConnection = init(bindHandlers(store))
+        }
+        break
+      }
+    }
+
+    if (isFeedResponse(action)){
+      if (realtimeConnection){
+        realtimeConnection.changeSubscription({timeline:[action.payload.timelines.id]})
+      }
+    }
+
+    if (action.type === response(ActionTypes.GET_SINGLE_POST)){
+      if (realtimeConnection){
+        realtimeConnection.changeSubscription({post:[action.payload.posts.id]})
+      }
+    }
+
+    return next(action)
+  }
 }

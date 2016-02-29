@@ -7,6 +7,7 @@ import {getQuery} from '../utils'
 import CreatePost from './create-post'
 import Feed from './feed'
 import PaginatedView from './paginated-view'
+import RealtimeSwitch from './realtime-switch'
 import Welcome from './welcome'
 
 const FeedHandler = (props) => {
@@ -26,6 +27,9 @@ const FeedHandler = (props) => {
     <div className='box'>
       <div className='box-header-timeline'>
         {props.boxHeader}
+        <div className='pull-right'>
+          {props.areOnFirstHomePage && props.authenticated ? <RealtimeSwitch/> : false}
+        </div>
       </div>
       {props.authenticated ? (
         <PaginatedView firstPageHead={createPostComponent} {...props}>
@@ -55,7 +59,8 @@ function selectState(state) {
     user, authenticated,
     visibleEntries, hiddenEntries, isHiddenRevealed,
     createPostViewState, createPostForm,
-    timelines, boxHeader, sendTo
+    timelines, boxHeader, sendTo,
+    areOnFirstHomePage: !state.routing.locationBeforeTransitions.query.offset,
   }
 }
 
