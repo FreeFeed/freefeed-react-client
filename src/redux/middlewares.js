@@ -132,7 +132,7 @@ const bindHandlers = store => ({
   'post:unhide': scrollCompensator(data => store.dispatch({type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId})),
   'comment:new': scrollCompensator(data => store.dispatch({...data, type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments})),
   'comment:update': scrollCompensator(data => store.dispatch({...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments})),
-  'comment:destroy': scrollCompensator(data => store.dispatch({type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId})),
+  'comment:destroy': scrollCompensator(data => store.dispatch({type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId, postId: data.postId})),
   'like:new': scrollCompensator(data => store.dispatch({type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, user: data.users})),
   'like:remove': scrollCompensator(data => store.dispatch({type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId})),
 })
