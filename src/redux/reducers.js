@@ -366,6 +366,28 @@ export function postsViewState(state = {}, action) {
         }
       }
     }
+    case ActionTypes.REALTIME_COMMENT_NEW: {
+      const post = state[action.comment.postId]
+      return {...state,
+        [post.id] : {
+          ...post,
+          omittedComments: (post.omittedComments ? post.omittedComments + 1 : 0)
+        }
+      }
+    }
+    case ActionTypes.REALTIME_COMMENT_DESTROY: {
+      if (!action.postId) {
+        return state
+      }
+      const postsViewState = state[action.postId]
+      return {
+        ...state,
+        [action.postId] : {
+          ...postsViewState,
+          omittedComments: (postsViewState.omittedComments ? postsViewState.omittedComments - 1 : 0)
+        }
+      }
+    }
     // This doesn't work currently, since there's no information in the server
     // response, and just with request.commentId it's currently impossible to
     // find the post in postsViewState's state.
@@ -686,14 +708,13 @@ export function posts(state = {}, action) {
       }
     }
     case ActionTypes.REALTIME_COMMENT_DESTROY: {
-      const post = Object.keys(state)
-                          .map(id => state[id])
-                          .filter(post => post.comments &&
-                                          post.comments.indexOf(action.commentId) !== -1)[0]
-      if (!post) {
+      if (!action.postId) {
         return state
       }
-      return {...state, [post.id] : {
+
+      const post = state[action.postId]
+
+      return {...state, [action.postId] : {
         ...post,
         comments: _.without(post.comments, action.commentId),
       }}
@@ -824,10 +845,13 @@ export function posts(state = {}, action) {
       if (commentAlreadyAdded) {
         return state
       }
-      return {...state, [post.id]: {
-        ...post,
-        comments: [...(post.comments || []), action.comment.id]
-      }}
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
+          comments: [...(post.comments || []), action.comment.id],
+        }
+      }
     }
     case ActionTypes.UNAUTHENTICATED: {
       return {}
