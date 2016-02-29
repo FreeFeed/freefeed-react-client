@@ -117,6 +117,7 @@ export default class CreatePost extends React.Component {
           {this.props.sendTo.expanded ? (
             <SendTo ref="selectFeeds"
               feeds={this.props.sendTo.feeds}
+              defaultFeed={this.props.sendTo.defaultFeed}
               user={this.props.user}
               onChange={this.checkCreatePostAvailability}/>
           ) : false}

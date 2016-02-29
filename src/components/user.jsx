@@ -81,7 +81,7 @@ function selectState(state, ownProps) {
     breadcrumb: currentRouteName.replace('user','')
   }
 
-  const sendTo = state.sendTo
+  const sendTo = {...state.sendTo, defaultFeed: (foundUser ? foundUser.username : null)}
 
   return { user, visibleEntries, timelines, createPostViewState, createPostForm, boxHeader, viewUser, breadcrumbs, sendTo }
 }
