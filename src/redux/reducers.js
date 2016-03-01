@@ -1295,9 +1295,9 @@ const removeItemFromGroupRequests = (state, action) => {
   return state
 }
 
-export function groupRequests(state = [], action) {
+export function managedGroups(state = [], action) {
   switch (action.type) {
-    case response(ActionTypes.GROUP_REQUESTS): {
+    case response(ActionTypes.MANAGED_GROUPS): {
       return action.payload.map(group => {
         group.requests = group.requests.map(userParser)
         return {...group}
@@ -1329,7 +1329,7 @@ export function requests(state = [], action) {
 
 export function groupRequestsCount(state = 0, action) {
   switch (action.type) {
-    case response(ActionTypes.GROUP_REQUESTS): {
+    case response(ActionTypes.MANAGED_GROUPS): {
       return action.payload.reduce((acc, group) => {
         return acc + group.requests.length
       }, 0)

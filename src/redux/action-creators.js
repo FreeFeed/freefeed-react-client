@@ -435,10 +435,10 @@ export function updateGroup(id, groupSettings) {
   }
 }
 
-export function groupRequests() {
+export function managedGroups() {
   return {
-    type: ActionTypes.GROUP_REQUESTS,
-    apiRequest: Api.getGroupRequests
+    type: ActionTypes.MANAGED_GROUPS,
+    apiRequest: Api.getManagedGroups
   }
 }
 

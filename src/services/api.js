@@ -342,8 +342,8 @@ export function updateGroup({id, groupSettings}) {
   })
 }
 
-export function getGroupRequests() {
-  return fetch(`${apiConfig.host}/v2/groupRequests`, getRequestOptions())
+export function getManagedGroups() {
+  return fetch(`${apiConfig.host}/v2/managedGroups`, getRequestOptions())
 }
 
 export function acceptGroupRequest({groupName, userName}) {

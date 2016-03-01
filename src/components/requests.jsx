@@ -64,7 +64,7 @@ function selectState(state) {
     selectedState.feedRequests = feedRequests
   }
 
-  const groupRequests = state.groupRequests.filter(group => group.requests.length != 0)
+  const groupRequests = state.managedGroups.filter(group => group.requests.length != 0)
   if (groupRequests) {
     selectedState.groupRequests = groupRequests
   }
