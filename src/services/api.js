@@ -390,3 +390,35 @@ export function rejectUserRequest({userName}) {
   })
 }
 
+export function unsubscribeFromGroup({groupName, userName}) {
+    return fetch(`${apiConfig.host}/v1/groups/${groupName}/unsubscribeFromGroup/${userName}`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    }
+  })
+}
+
+export function makeGroupAdmin({groupName, user}) {
+    return fetch(`${apiConfig.host}/v1/groups/${groupName}/subscribers/${user.username}/admin`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    }
+  })
+}
+
+export function unadminGroupAdmin({groupName, user}) {
+    return fetch(`${apiConfig.host}/v1/groups/${groupName}/subscribers/${user.username}/unadmin`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    }
+  })
+}
