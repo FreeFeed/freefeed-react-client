@@ -1306,25 +1306,23 @@ export function singlePostId(state = null, action) {
   return state
 }
 
-function calculateFeeds(state) {
-  let rawSubscriptions = state.users.subscriptions || []
-  let rawSubscribers = state.users.subscribers || []
-  let feeds = []
-  if(rawSubscriptions && rawSubscribers) {
-    let subscriptions = _.map(rawSubscriptions, (rs) => {
-      let sub = _.find(state.subscriptions, { 'id': rs })
-      let user = null
-      if (sub && sub.name == 'Posts')
-        user = _.find(state.subscribers, { 'id': sub.user })
-      if (user)
-        return {id: rs, user: user}
-    }).filter(Boolean)
-    feeds = _.filter(subscriptions, (sub) => {
-      return sub.user.type == 'group' || (_.find(rawSubscribers, { 'id': sub.user.id }) != null)
-    })
-  }
+function getValidRecipients(state) {
+  const subscriptions = _.map(state.subscriptions || [], (rs) => {
+    let sub = _.find(state.subscriptions || [], { 'id': rs.id })
+    let user = null
+    if (sub && sub.name == 'Posts') {
+      user = _.find(state.subscribers || [], { 'id': sub.user })
+    }
+    if (user) {
+      return {id: rs.id, user: user}
+    }
+  }).filter(Boolean)
 
-  return feeds
+  const validRecipients = _.filter(subscriptions, (sub) => {
+    return sub.user.type === 'group' || (_.find(state.subscribers || [], { 'id': sub.user.id }) !== null)
+  })
+
+  return validRecipients
 }
 
 const INITIAL_SEND_TO_STATE = { expanded: false, feeds: [] }
@@ -1345,7 +1343,7 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
     case response(ActionTypes.WHO_AM_I): {
       return {
         expanded: false,
-        feeds: calculateFeeds(action.payload)
+        feeds: getValidRecipients(action.payload)
       }
     }
     case ActionTypes.EXPAND_SEND_TO: {
