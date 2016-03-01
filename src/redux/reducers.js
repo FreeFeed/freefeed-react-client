@@ -1315,7 +1315,7 @@ export function groupRequests(state = [], action) {
 export function requests(state = [], action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
-      return action.payload.requests.map(userParser)
+      return (action.payload.requests || []).map(userParser)
     }
     case response(ActionTypes.ACCEPT_USER_REQUEST):
     case response(ActionTypes.REJECT_USER_REQUEST): {
@@ -1346,7 +1346,8 @@ export function groupRequestsCount(state = 0, action) {
 export function userRequestsCount(state = 0, action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
-      return action.payload.requests.length
+      const requests = action.payload.requests
+      return requests ? requests.length : 0
     }
     case response(ActionTypes.ACCEPT_USER_REQUEST):
     case response(ActionTypes.REJECT_USER_REQUEST): {
