@@ -1357,6 +1357,13 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
         feeds: [ ...state.feeds, { id: groupId, user: group } ]
       }
     }
+    case response(ActionTypes.SUBSCRIBE):
+    case response(ActionTypes.UNSUBSCRIBE): {
+      return {
+        ...state,
+        feeds: getValidRecipients(action.payload)
+      }
+    }
   }
 
   return state
