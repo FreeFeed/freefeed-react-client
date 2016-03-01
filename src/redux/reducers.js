@@ -1579,7 +1579,8 @@ export function frontendRealtimePreferencesForm(state=initialRealtimeSettings, a
       return {...state, realtimeActive: !state.realtimeActive, status: ''}
     }
     case response(ActionTypes.WHO_AM_I): {
-      return {...state, realtimeActive: action.payload.users.frontendPreferences[frontendPrefsConfig.clientId].realtimeActive}
+      const fp = action.payload.users.frontendPreferences[frontendPrefsConfig.clientId]
+      return {...state, realtimeActive: (fp ? fp.realtimeActive : false)}
     }
     case request(ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES): {
       return {...state, status: 'loading'}
