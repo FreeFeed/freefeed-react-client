@@ -1312,7 +1312,7 @@ export function managedGroups(state = [], action) {
   return state
 }
 
-export function requests(state = [], action) {
+export function userRequests(state = [], action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
       return (action.payload.requests || []).map(userParser)

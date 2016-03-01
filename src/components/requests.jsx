@@ -59,7 +59,7 @@ function selectState(state) {
   selectedState.boxHeader = state.boxHeader
   selectedState.username = state.router.params.userName
 
-  const feedRequests = state.requests
+  const feedRequests = state.userRequests
   if (feedRequests && feedRequests.length != 0) {
     selectedState.feedRequests = feedRequests
   }
