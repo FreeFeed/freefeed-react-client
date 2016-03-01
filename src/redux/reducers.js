@@ -749,13 +749,13 @@ export function posts(state = {}, action) {
     }
     case ActionTypes.REALTIME_LIKE_NEW: {
       const post = state[action.postId]
-      if (!post || post.likes && post.likes.indexOf(action.user.id) !== -1) {
+      if (!post || post.likes && post.likes.indexOf(action.users[0].id) !== -1) {
         return state
       }
       return {...state,
         [post.id] : {
           ...post,
-          likes: [action.user.id, ...(post.likes || [])],
+          likes: [action.users[0].id, ...(post.likes || [])],
           omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes + 1 : 0)
         }
       }
@@ -1020,11 +1020,14 @@ export function users(state = {}, action) {
       return mergeByIds(state, (action.payload.users || []).map(userParser))
     }
     case ActionTypes.REALTIME_POST_NEW:
+    case ActionTypes.REALTIME_LIKE_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW: {
-      return mergeByIds(state, (action.users || []).map(userParser))
-    }
-    case ActionTypes.REALTIME_LIKE_NEW: {
-      return mergeByIds(state, ([action.user]).map(userParser))
+      const safeUsers = action.users || [{}]
+      const userAlreadyAdded = state[safeUsers[0].id]
+      if (userAlreadyAdded) {
+        return state
+      }
+      return mergeByIds(state, safeUsers.map(userParser))
     }
     case ActionTypes.UNAUTHENTICATED:
       return {}
