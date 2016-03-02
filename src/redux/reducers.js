@@ -1315,6 +1315,11 @@ export function managedGroups(state = [], action) {
     case response(ActionTypes.REJECT_GROUP_REQUEST): {
       return removeItemFromGroupRequests(state, action)
     }
+    case response(ActionTypes.UNADMIN_GROUP_ADMIN): {
+      if(action.request.isItMe) {
+        return state.filter(group => group.username !== action.request.groupName)
+      }
+    }
   }
 
   return state
