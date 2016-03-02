@@ -7,11 +7,18 @@ export default (props) => {
 
   const removeAttachment = () => props.removeAttachment(props.id)
 
+  const imageAttributes = {
+    src: props.thumbnailUrl,
+    alt: nameAndSize,
+    width: props.imageSizes.t ? props.imageSizes.t.w : undefined,
+    height: props.imageSizes.t ? props.imageSizes.t.h : undefined
+  }
+
   return (
     <div className="attachment">
       <a href={props.url} title={nameAndSize} target="_blank">
         {props.thumbnailUrl ? (
-          <img src={props.thumbnailUrl} alt={nameAndSize} />
+          <img {...imageAttributes}/>
         ) : (
           props.id
         )}
