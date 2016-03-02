@@ -27,7 +27,7 @@ const FeedHandler = (props) => {
       <div className='box-header-timeline'>
         {props.boxHeader}
       </div>
-      <PaginatedView firstPageHead={createPostComponent}>
+      <PaginatedView firstPageHead={createPostComponent} {...props}>
         <Feed {...props}/>
       </PaginatedView>
       <div className='box-footer'>
@@ -43,7 +43,7 @@ function selectState(state) {
   const createPostForm = joinCreatePostData(state)
   const timelines = state.timelines
   const boxHeader = state.boxHeader
-  const sendTo = state.sendTo
+  const sendTo = {...state.sendTo, defaultFeed: user.username}
 
   return { user, authenticated, visibleEntries, createPostViewState, createPostForm, timelines, boxHeader, sendTo }
 }
