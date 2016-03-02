@@ -19,9 +19,9 @@ const SubscribersHandler = (props) => {
   )
 }
 
-function selectState(state, ownProps) {
+function selectState(state) {
   const boxHeader = state.boxHeader
-  const username = ownProps.params.userName
+  const username = state.router.params.userName
   const users = _.sortBy(state.usernameSubscribers.payload, 'username')
   const isPending = state.usernameSubscribers.isPending
   const errorString = state.usernameSubscribers.errorString

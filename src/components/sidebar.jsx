@@ -36,7 +36,7 @@ export default ({user, signOut, recentGroups}) => (
         </ul>
       </div>
       <div className='box-footer'>
-        <Link to={{pathname:'timeline.subscriptions', params:{username: user.username}}} >Browse/edit friends</Link>
+        <Link to='timeline.subscriptions' params={{username: user.username}}>Browse/edit friends</Link>
       </div>
     </div>
 

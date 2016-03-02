@@ -2,47 +2,46 @@ import React from 'react'
 import Select from 'react-select'
 import {preventDefault} from '../utils'
 
-const MY_FEED_LABEL = 'My feed'
+const MY_FEED = 'My feed'
 
 export default class SendTo extends React.Component {
   constructor(props) {
     super(props)
 
-    let options = props.feeds.map((item) => ({
-      label: item.user.username,
-      value: item.user.username,
-      type: item.user.type
-    }))
+    let options = props.feeds.map( function (item) {
+      let name = item.user.username
+      return { label: name, value: name, type: item.user.type }
+    })
 
-    let myFeedUsername = props.user.username
-    options.unshift({ label: MY_FEED_LABEL, value: myFeedUsername, type: 'group' })
+    let currentUsername = props.user.username
+    options.unshift({ label: MY_FEED, value: currentUsername, type: 'group' })
 
-    this._values = [props.defaultFeed]
+    this._values = [currentUsername]
 
     this.state = {
-      values: this._values,
+      value: this._values,
       options: options,
       showFeedsOption: false,
       isWarningDisplayed: false
     }
   }
-
+  
   get values() {
     return this._values
   }
 
-  isGroupsOrDirectsOnly = (values) => {
+  isGroupsOrDirectsOnly = (value) => {
     let types = {}
-    for (let v of values) {
+    for (let v of value) {
       types[v.type] = v
     }
     return Object.keys(types).length <= 1
   }
 
-  selectChanged = (values) => {
-    this._values = values.map(item => item.value)
-    let isWarningDisplayed = !this.isGroupsOrDirectsOnly(values)
-    this.setState({ values, isWarningDisplayed })
+  selectChanged = (value) => {
+    this._values = value.map(item => item.value)
+    let isWarningDisplayed = !this.isGroupsOrDirectsOnly(value)
+    this.setState({ value, isWarningDisplayed })
     this.props.onChange()
   }
 
@@ -52,14 +51,12 @@ export default class SendTo extends React.Component {
   }
 
   render() {
-    const defaultFeedLabel = (this.state.values[0] === this.props.user.username ? MY_FEED_LABEL : this.state.values[0])
-
     return (
       <div className="send-to">
         {!this.state.showFeedsOption ? (
           <div>
             To:&nbsp;
-            <span className="Select-value-label-standalone">{defaultFeedLabel}</span>&nbsp;
+            <span className="Select-value-label-standalone">My feed</span>&nbsp;
             <a className="p-sendto-toggler" onClick={preventDefault(_=>this.toggleSendTo())}>Add/Edit</a>
           </div>
         ) : (
@@ -67,7 +64,7 @@ export default class SendTo extends React.Component {
             <Select
               name="select-feeds"
               placeholder="Select feeds..."
-              value={this.state.values}
+              value={this.state.value}
               options={this.state.options}
               onChange={this.selectChanged}
               multi={true}

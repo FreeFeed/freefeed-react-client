@@ -3,9 +3,9 @@ import {Link} from 'react-router'
 
 const PAGE_SIZE = 30
 
-const offsetObject = offset => offset ? ({offset}) : undefined
-const minOffset = offset => Math.max(offset - PAGE_SIZE, 0)
+const minOffset = offset => Math.max(offset - PAGE_SIZE,0)
 const maxOffset = offset => offset + PAGE_SIZE
+const offsetObject = offset => offset ? ({offset}) : {}
 
 //deep merge is deep indeed
 const getNextRoute = (router, offset) => ({
@@ -19,20 +19,22 @@ const getNextRoute = (router, offset) => ({
   }
 })
 
-const routingCallback = (props, offsetSelector) => _ => props.routingActions(props.routename)(getNextRoute(props, offsetSelector(props.offset)))
+const routingCallback = ({offset, routename, router, routingActions}, offsetSelector) => _ => routingActions(routename)(getNextRoute(router, offsetSelector(offset)))
 
 export default props => (
   <ul className="pager p-pagination-controls">
     {props.offset > 0 ?
       <li>
-        <Link to={{pathname:'', query: offsetObject(minOffset(props.offset))}}
-              onClick={routingCallback(props, minOffset)}
+        <Link onClick={routingCallback(props, minOffset)}
+              to={props.router.location.pathname}
+              query={offsetObject(minOffset(props.offset))}
               className="p-pagination-newer">« Newer items</Link>
       </li>
       : false}
     <li>
-      <Link to={{pathname:'', query:offsetObject(maxOffset(props.offset))}}
+      <Link to={props.router.location.pathname}
             onClick={routingCallback(props, maxOffset)}
+            query={offsetObject(maxOffset(props.offset))}
             className="p-pagination-older">Older items »</Link>
       </li>
   </ul>

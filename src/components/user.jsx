@@ -36,7 +36,7 @@ const UserHandler = (props) => {
   )
 }
 
-function selectState(state, ownProps) {
+function selectState(state) {
   const user = state.user
   const authenticated = state.authenticated
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state))
@@ -46,7 +46,7 @@ function selectState(state, ownProps) {
   const boxHeader = state.boxHeader
   const foundUser = Object.getOwnPropertyNames(state.users)
     .map(key => state.users[key] || state.subscribers[key])
-    .filter(user => user.username === ownProps.params.userName)[0]
+    .filter(user => user.username === state.router.params.userName)[0]
 
   const amIGroupAdmin = (
     authenticated &&
@@ -55,7 +55,7 @@ function selectState(state, ownProps) {
     ((foundUser.administrators || []).indexOf(state.user.id) > -1)
   )
 
-  const currentRouteName = getCurrentRouteName(ownProps)
+  const currentRouteName = getCurrentRouteName(state.router)
   const isItPostsPage = ['userComments', 'userLikes'].indexOf(currentRouteName) === -1
 
   const statusExtension = {
@@ -81,7 +81,7 @@ function selectState(state, ownProps) {
     breadcrumb: currentRouteName.replace('user','')
   }
 
-  const sendTo = {...state.sendTo, defaultFeed: (foundUser ? foundUser.username : null)}
+  const sendTo = state.sendTo
 
   return { user, visibleEntries, timelines, createPostViewState, createPostForm, boxHeader, viewUser, breadcrumbs, sendTo }
 }

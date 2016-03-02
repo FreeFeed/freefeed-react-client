@@ -12,10 +12,11 @@ const PaginatedView = props => (
   </div>
 )
 
-const mapStateToProps = (state, ownProps) => {
-  const offset = +state.routing.locationBeforeTransitions.query.offset || 0
-  const routename = getCurrentRouteName(ownProps)
-  return { offset, routename }
+const mapStateToProps = state => {
+  const offset = (+state.router.location.query.offset || 0)
+  const routename = getCurrentRouteName(state.router)
+  const router = state.router
+  return { offset, routename, router}
 }
 
 const mapDispatchToProps = dispatch => ({

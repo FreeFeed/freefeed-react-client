@@ -141,12 +141,6 @@ export function feedViewState(state = initFeed, action) {
         hiddenEntries: _.without(state.hiddenEntries, postId)
       }
     }
-    case ActionTypes.REALTIME_POST_DESTROY: {
-      return {...state,
-        visibleEntries: _.without(state.visibleEntries, action.postId),
-        hiddenEntries: _.without(state.hiddenEntries, action.postId)
-      }
-    }
     case response(ActionTypes.CREATE_POST): {
       const postId = action.payload.posts.id
       return {...state,
@@ -159,15 +153,10 @@ export function feedViewState(state = initFeed, action) {
         visibleEntries: [postId]
       }
     }
-    case ActionTypes.REALTIME_POST_NEW: {
-      return {
-        ...state,
-        visibleEntries: [action.post.id, ...state.visibleEntries],
-      }
-    }
     case fail(ActionTypes.GET_SINGLE_POST): {
       return initFeed
     }
+
     case response(ActionTypes.HIDE_POST): {
       // Add it to hiddenEntries, but don't remove from visibleEntries just yet
       // (for the sake of "Undo")
@@ -176,23 +165,10 @@ export function feedViewState(state = initFeed, action) {
         hiddenEntries: [postId, ...state.hiddenEntries]
       }
     }
-    case ActionTypes.REALTIME_POST_HIDE: {
-      return {...state,
-        hiddenEntries: [action.postId, ...state.hiddenEntries]
-      }
-    }
     case response(ActionTypes.UNHIDE_POST): {
       // Remove it from hiddenEntries and add to visibleEntries
       // (but check first if it's already in there, since this might be an "Undo" happening)
       const postId = action.request.postId
-      const itsStillThere = (state.visibleEntries.indexOf(postId) > -1)
-      return {...state,
-        visibleEntries: (itsStillThere ? state.visibleEntries : [...state.visibleEntries, postId]),
-        hiddenEntries: _.without(state.hiddenEntries, postId)
-      }
-    }
-    case ActionTypes.REALTIME_POST_UNHIDE: {
-      const postId = action.postId
       const itsStillThere = (state.visibleEntries.indexOf(postId) > -1)
       return {...state,
         visibleEntries: (itsStillThere ? state.visibleEntries : [...state.visibleEntries, postId]),
@@ -258,11 +234,6 @@ export function postsViewState(state = {}, action) {
     case response(ActionTypes.GET_SINGLE_POST): {
       const id = action.payload.posts.id
       return { ...state, [id]: initPostViewState(action.payload.posts) }
-    }
-    case ActionTypes.REALTIME_POST_NEW:
-    case ActionTypes.REALTIME_POST_UPDATE: {
-      const id = action.post.id
-      return { ...state, [id]: initPostViewState(action.post) }
     }
     case fail(ActionTypes.GET_SINGLE_POST): {
       const id = action.request.postId
@@ -366,28 +337,6 @@ export function postsViewState(state = {}, action) {
         }
       }
     }
-    case ActionTypes.REALTIME_COMMENT_NEW: {
-      const post = state[action.comment.postId]
-      return {...state,
-        [post.id] : {
-          ...post,
-          omittedComments: (post.omittedComments ? post.omittedComments + 1 : 0)
-        }
-      }
-    }
-    case ActionTypes.REALTIME_COMMENT_DESTROY: {
-      if (!action.postId) {
-        return state
-      }
-      const postsViewState = state[action.postId]
-      return {
-        ...state,
-        [action.postId] : {
-          ...postsViewState,
-          omittedComments: (postsViewState.omittedComments ? postsViewState.omittedComments - 1 : 0)
-        }
-      }
-    }
     // This doesn't work currently, since there's no information in the server
     // response, and just with request.commentId it's currently impossible to
     // find the post in postsViewState's state.
@@ -450,19 +399,6 @@ export function postsViewState(state = {}, action) {
         }
       }
     }
-    case ActionTypes.REALTIME_LIKE_REMOVE: {
-      const post = state[action.postId]
-      if (!post) {
-        return state
-      }
-      return {...state,
-        [post.id] : {
-          ...post,
-          isLiking: false,
-          omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes - 1 : 0)
-        }
-      }
-    }
     case fail(ActionTypes.UNLIKE_POST): {
       const post = state[action.request.postId]
       const errorString = 'Something went wrong while un-liking the post...'
@@ -490,17 +426,6 @@ export function postsViewState(state = {}, action) {
         }
       }
     }
-    case ActionTypes.REALTIME_POST_HIDE: {
-      const post = state[action.postId]
-      if (!post) {
-        return state
-      }
-      return {...state,
-        [post.id]: {...post,
-          isHiding: false
-        }
-      }
-    }
     case fail(ActionTypes.HIDE_POST): {
       const post = state[action.request.postId]
       return {...state,
@@ -520,17 +445,6 @@ export function postsViewState(state = {}, action) {
     }
     case response(ActionTypes.UNHIDE_POST): {
       const post = state[action.request.postId]
-      return {...state,
-        [post.id]: {...post,
-          isHiding: false
-        }
-      }
-    }
-    case ActionTypes.REALTIME_POST_UNHIDE: {
-      const post = state[action.postId]
-      if (!post) {
-        return state
-      }
       return {...state,
         [post.id]: {...post,
           isHiding: false
@@ -707,24 +621,8 @@ export function posts(state = {}, action) {
         }
       }
     }
-    case ActionTypes.REALTIME_COMMENT_DESTROY: {
-      if (!action.postId) {
-        return state
-      }
-
-      const post = state[action.postId]
-
-      return {...state, [action.postId] : {
-        ...post,
-        comments: _.without(post.comments, action.commentId),
-      }}
-    }
     case response(ActionTypes.ADD_COMMENT): {
       const post = state[action.request.postId]
-      const commentAlreadyAdded = post.comments && post.comments.indexOf(action.payload.comments.id)!==-1
-      if (commentAlreadyAdded) {
-        return state
-      }
       return {...state,
         [post.id] : {
           ...post,
@@ -735,27 +633,10 @@ export function posts(state = {}, action) {
     }
     case response(ActionTypes.LIKE_POST): {
       const post = state[action.request.postId]
-      const likeAlreadyAdded = post.likes && post.likes.indexOf(action.request.userId)!==-1
-      if (likeAlreadyAdded) {
-        return state
-      }
       return {...state,
         [post.id] : {
           ...post,
           likes: [action.request.userId, ...(post.likes || [])],
-          omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes + 1 : 0)
-        }
-      }
-    }
-    case ActionTypes.REALTIME_LIKE_NEW: {
-      const post = state[action.postId]
-      if (!post || post.likes && post.likes.indexOf(action.users[0].id) !== -1) {
-        return state
-      }
-      return {...state,
-        [post.id] : {
-          ...post,
-          likes: [action.users[0].id, ...(post.likes || [])],
           omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes + 1 : 0)
         }
       }
@@ -770,19 +651,6 @@ export function posts(state = {}, action) {
         }
       }
     }
-    case ActionTypes.REALTIME_LIKE_REMOVE: {
-      const post = state[action.postId]
-      if (!post) {
-        return state
-      }
-      return {...state,
-        [post.id] : {
-          ...post,
-          likes: _.without(post.likes, action.userId),
-          omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes - 1 : 0)
-        }
-      }
-    }
     case response(ActionTypes.HIDE_POST): {
       const post = state[action.request.postId]
       return {...state,
@@ -793,17 +661,6 @@ export function posts(state = {}, action) {
     }
     case response(ActionTypes.UNHIDE_POST): {
       const post = state[action.request.postId]
-      return {...state,
-        [post.id]: {...post,
-          isHidden: false
-        }
-      }
-    }
-    case ActionTypes.REALTIME_POST_UNHIDE: {
-      const post = state[action.postId]
-      if (!post) {
-        return state
-      }
       return {...state,
         [post.id]: {...post,
           isHidden: false
@@ -832,27 +689,6 @@ export function posts(state = {}, action) {
     case response(ActionTypes.GET_SINGLE_POST): {
       return updatePostData(state, action)
     }
-    case ActionTypes.REALTIME_POST_NEW:
-    case ActionTypes.REALTIME_POST_UPDATE: {
-      return { ...state, [action.post.id]: postParser(action.post) }
-    }
-    case ActionTypes.REALTIME_COMMENT_NEW: {
-      const post = state[action.comment.postId]
-      if (!post) {
-        return state
-      }
-      const commentAlreadyAdded = post.comments && post.comments.indexOf(action.comment.id)!==-1
-      if (commentAlreadyAdded) {
-        return state
-      }
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          comments: [...(post.comments || []), action.comment.id],
-        }
-      }
-    }
     case ActionTypes.UNAUTHENTICATED: {
       return {}
     }
@@ -868,10 +704,6 @@ export function attachments(state = {}, action) {
   switch (action.type) {
     case response(ActionTypes.GET_SINGLE_POST): {
       return mergeByIds(state, action.payload.attachments)
-    }
-    case ActionTypes.REALTIME_POST_NEW:
-    case ActionTypes.REALTIME_POST_UPDATE: {
-      return mergeByIds(state, action.attachments)
     }
     case ActionTypes.ADD_ATTACHMENT_RESPONSE: {
       return {...state,
@@ -905,15 +737,6 @@ export function comments(state = {}, action) {
     }
     case response(ActionTypes.DELETE_COMMENT): {
       return {...state, [action.request.commentId] : undefined}
-    }
-    case ActionTypes.REALTIME_COMMENT_NEW: {
-      return mergeByIds(state, [action.comment])
-    }
-    case ActionTypes.REALTIME_COMMENT_UPDATE: {
-      return mergeByIds(state, [action.comment])
-    }
-    case ActionTypes.REALTIME_COMMENT_DESTROY: {
-      return {...state, [action.commentId] : undefined}
     }
     case response(ActionTypes.ADD_COMMENT): {
       return {...state,
@@ -1016,19 +839,8 @@ export function users(state = {}, action) {
     }
     case response(ActionTypes.SHOW_MORE_COMMENTS):
     case response(ActionTypes.SHOW_MORE_LIKES_ASYNC):
-    case response(ActionTypes.GET_SINGLE_POST): {
+    case response(ActionTypes.GET_SINGLE_POST):
       return mergeByIds(state, (action.payload.users || []).map(userParser))
-    }
-    case ActionTypes.REALTIME_POST_NEW:
-    case ActionTypes.REALTIME_LIKE_NEW:
-    case ActionTypes.REALTIME_COMMENT_NEW: {
-      const safeUsers = action.users || [{}]
-      const userAlreadyAdded = state[safeUsers[0].id]
-      if (userAlreadyAdded) {
-        return state
-      }
-      return mergeByIds(state, safeUsers.map(userParser))
-    }
     case ActionTypes.UNAUTHENTICATED:
       return {}
   }
@@ -1036,18 +848,8 @@ export function users(state = {}, action) {
 }
 
 export function subscribers(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action)) {
+  if (ActionHelpers.isFeedResponse(action) || action.type === response(ActionTypes.GET_SINGLE_POST)){
     return mergeByIds(state, (action.payload.subscribers || []).map(userParser))
-  }
-  switch (action.type) {
-    case ActionTypes.REALTIME_POST_NEW:
-    case ActionTypes.REALTIME_COMMENT_NEW: {
-      return mergeByIds(state, (action.subscribers || []).map(userParser))
-    }
-    case response(ActionTypes.GET_SINGLE_POST):
-    case response(ActionTypes.CREATE_POST): {
-      return mergeByIds(state, (action.payload.subscribers || []).map(userParser))
-    }
   }
   return state
 }
@@ -1069,12 +871,12 @@ export function authenticated(state = !!getToken(), action) {
   return state
 }
 
-const initUser = _ => ({
+const initUser = {
   frontendPreferences: frontendPrefsConfig.defaultValues,
   ...getPersistedUser()
-})
+}
 
-export function user(state = initUser(), action) {
+export function user(state = initUser, action) {
   if (ActionHelpers.isUserChangeResponse(action) ||
       action.type === response(ActionTypes.WHO_AM_I) ||
       action.type === response(ActionTypes.SIGN_UP)){
@@ -1083,8 +885,7 @@ export function user(state = initUser(), action) {
   }
   switch (action.type) {
     case response(ActionTypes.UPDATE_USER):
-    case response(ActionTypes.UPDATE_FRONTEND_PREFERENCES):
-    case response(ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES): {
+    case response(ActionTypes.UPDATE_FRONTEND_PREFERENCES): {
       return {...state, ...userParser(action.payload.users)}
     }
     case response(ActionTypes.SEND_SUBSCRIPTION_REQUEST): {
@@ -1138,14 +939,8 @@ export function timelines(state = {}, action) {
 }
 
 export function subscriptions(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action)) {
+  if (ActionHelpers.isFeedResponse(action) || action.type === response(ActionTypes.GET_SINGLE_POST)){
     return mergeByIds(state, action.payload.subscriptions)
-  }
-  switch (action.type) {
-    case response(ActionTypes.GET_SINGLE_POST):
-    case response(ActionTypes.CREATE_POST): {
-      return mergeByIds(state, action.payload.subscriptions)
-    }
   }
   return state
 }
@@ -1170,9 +965,6 @@ export function userSettingsForm(state={saved: false}, action) {
 
 export function frontendPreferencesForm(state={}, action) {
   switch (action.type) {
-    case response(ActionTypes.WHO_AM_I): {
-      return {...state, ...action.payload.users.frontendPreferences[frontendPrefsConfig.clientId]}
-    }
     case request(ActionTypes.UPDATE_FRONTEND_PREFERENCES): {
       return {...state, status: 'loading'}
     }
@@ -1306,23 +1098,25 @@ export function singlePostId(state = null, action) {
   return state
 }
 
-function getValidRecipients(state) {
-  const subscriptions = _.map(state.subscriptions || [], (rs) => {
-    let sub = _.find(state.subscriptions || [], { 'id': rs.id })
-    let user = null
-    if (sub && sub.name == 'Posts') {
-      user = _.find(state.subscribers || [], { 'id': sub.user })
-    }
-    if (user) {
-      return {id: rs.id, user: user}
-    }
-  }).filter(Boolean)
+function calculateFeeds(state) {
+  let rawSubscriptions = state.users.subscriptions || []
+  let rawSubscribers = state.users.subscribers || []
+  let feeds = []
+  if(rawSubscriptions && rawSubscribers) {
+    let subscriptions = _.map(rawSubscriptions, (rs) => {
+      let sub = _.find(state.subscriptions, { 'id': rs })
+      let user = null
+      if (sub && sub.name == 'Posts')
+        user = _.find(state.subscribers, { 'id': sub.user })
+      if (user)
+        return {id: rs, user: user}
+    }).filter(Boolean)
+    feeds = _.filter(subscriptions, (sub) => {
+      return sub.user.type == 'group' || (_.find(rawSubscribers, { 'id': sub.user.id }) != null)
+    })
+  }
 
-  const validRecipients = _.filter(subscriptions, (sub) => {
-    return sub.user.type === 'group' || (_.find(state.subscribers || [], { 'id': sub.user.id }) !== null)
-  })
-
-  return validRecipients
+  return feeds
 }
 
 const INITIAL_SEND_TO_STATE = { expanded: false, feeds: [] }
@@ -1343,7 +1137,7 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
     case response(ActionTypes.WHO_AM_I): {
       return {
         expanded: false,
-        feeds: getValidRecipients(action.payload)
+        feeds: calculateFeeds(action.payload)
       }
     }
     case ActionTypes.EXPAND_SEND_TO: {
@@ -1358,13 +1152,6 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
       return {
         expanded: state.expanded,
         feeds: [ ...state.feeds, { id: groupId, user: group } ]
-      }
-    }
-    case response(ActionTypes.SUBSCRIBE):
-    case response(ActionTypes.UNSUBSCRIBE): {
-      return {
-        ...state,
-        feeds: getValidRecipients(action.payload)
       }
     }
   }
@@ -1494,32 +1281,4 @@ export function usernameSubscribers(state = {}, action) {
 // for /:username/subscriptions
 export function usernameSubscriptions(state = {}, action) {
   return handleSubs(state, action, ActionTypes.SUBSCRIPTIONS)
-}
-
-const initialRealtimeSettings = {
-  realtimeActive: false,
-  status: '',
-  errorMessage: '',
-}
-
-export function frontendRealtimePreferencesForm(state=initialRealtimeSettings, action) {
-  switch (action.type) {
-    case ActionTypes.TOGGLE_REALTIME: {
-      return {...state, realtimeActive: !state.realtimeActive, status: ''}
-    }
-    case response(ActionTypes.WHO_AM_I): {
-      const fp = action.payload.users.frontendPreferences[frontendPrefsConfig.clientId]
-      return {...state, realtimeActive: (fp ? fp.realtimeActive : initialRealtimeSettings.realtimeActive)}
-    }
-    case request(ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES): {
-      return {...state, status: 'loading'}
-    }
-    case response(ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES): {
-      return {...state, status: 'success'}
-    }
-    case fail(ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES): {
-      return {...state, status: 'error', errorMessage: (action.payload || {}).err}
-    }
-  }
-  return state
 }

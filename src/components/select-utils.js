@@ -33,11 +33,7 @@ export const joinPostData = state => postId => {
   let comments = (post.comments || []).map(commentId => {
     const comment = state.comments[commentId]
     const commentViewState = state.commentViewState[commentId]
-    const placeholderUser = {id: comment.createdBy}
-    const author = state.users[comment.createdBy] || placeholderUser
-    if (author === placeholderUser) {
-      console.log('We\'ve got comment with unknown author with id', placeholderUser.id)
-    }
+    const author = state.users[comment.createdBy]
     const isEditable = (user.id === comment.createdBy)
     const isDeletable = (user.id === post.createdBy)
     return { ...comment, ...commentViewState, user: author, isEditable, isDeletable }
@@ -55,14 +51,7 @@ export const joinPostData = state => postId => {
     usersLikedPost = usersLikedPost.slice(0, MAX_LIKES)
   }
 
-  const placeholderUser = {id: post.createdBy}
-
-  const createdBy = state.users[post.createdBy] || placeholderUser
-
-  if (createdBy === placeholderUser) {
-    console.log('We\'ve got post with unknown author with id', placeholderUser.id)
-  }
-
+  const createdBy = state.users[post.createdBy]
   const isEditable = (post.createdBy === user.id)
 
   // Check if the post is a direct message

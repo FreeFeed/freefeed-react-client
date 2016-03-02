@@ -25,9 +25,15 @@ div.jsonly>p {
   padding-left: 2px;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1200px){
   .container {
-    width: 970px !important;
+    width: 961px;
+  }
+}
+
+@media (min-width: 992px){
+  .container {
+    width: 961px;
   }
 }
 
