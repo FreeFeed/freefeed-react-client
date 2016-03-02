@@ -3,7 +3,6 @@ import {connect} from 'react-redux'
 import {updateUser, userSettingsChange, updateFrontendPreferences, updatePassword, updateUserPhoto, toggleRealtime, updateFrontendRealtimePreferences} from '../redux/action-creators'
 import UserSettingsForm from './user-settings-form'
 import UserFrontendPreferencesForm from './user-frontend-preferences-form'
-import UserFrontendRealtimePreferencesForm from './user-frontend-realtime-preferences-form'
 import UserChangePasswordForm from './user-change-password-form'
 import UserPhotoForm from './user-photo-form'
 
@@ -29,12 +28,6 @@ const Settings = (props) => (
           {...props.frontendPreferencesForm}/>
 
         <hr/>
-
-        <UserFrontendRealtimePreferencesForm
-          toggleRealtime={props.toggleRealtime}
-          userId={props.user.id}
-          updateFrontendRealtimePreferences={props.updateFrontendRealtimePreferences}
-          {...props.frontendRealtimePreferencesForm}/>
 
         <hr/>
 
