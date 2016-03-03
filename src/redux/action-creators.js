@@ -445,10 +445,10 @@ export function updateGroup(id, groupSettings) {
   }
 }
 
-export function groupRequests() {
+export function managedGroups() {
   return {
-    type: ActionTypes.GROUP_REQUESTS,
-    apiRequest: Api.getGroupRequests
+    type: ActionTypes.MANAGED_GROUPS,
+    apiRequest: Api.getManagedGroups
   }
 }
 
@@ -487,5 +487,29 @@ export function rejectUserRequest(userName) {
 export function toggleRealtime() {
   return {
     type: ActionTypes.TOGGLE_REALTIME,
+  }
+}
+
+export function unsubscribeFromGroup(groupName, userName) {
+  return {
+    type: ActionTypes.UNSUBSCRIBE_FROM_GROUP,
+    payload: {groupName, userName},
+    apiRequest: Api.unsubscribeFromGroup
+  }
+}
+
+export function makeGroupAdmin(groupName, user) {
+  return {
+    type: ActionTypes.MAKE_GROUP_ADMIN,
+    payload: {groupName, user},
+    apiRequest: Api.makeGroupAdmin
+  }
+}
+
+export function unadminGroupAdmin(groupName, user, isItMe) {
+  return {
+    type: ActionTypes.UNADMIN_GROUP_ADMIN,
+    payload: {groupName, user, isItMe},
+    apiRequest: Api.unadminGroupAdmin
   }
 }

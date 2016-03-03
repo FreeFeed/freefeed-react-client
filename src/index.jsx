@@ -11,7 +11,7 @@ import {Provider} from 'react-redux'
 import {syncHistoryWithStore} from 'react-router-redux'
 
 import configureStore from './redux/configure-store'
-import {whoAmI, home, discussions, getUserFeed, unauthenticated, getSinglePost} from './redux/action-creators'
+import * as ActionCreators from './redux/action-creators'
 
 import Layout from './components/layout'
 import Home from './components/home'
@@ -30,14 +30,17 @@ import GroupSettings from './components/group-settings'
 import GroupCreate from './components/group-create'
 import Groups from './components/groups'
 import Requests from './components/requests'
+import ManageSubscribers from './components/manage-subscribers'
 
 const store = configureStore()
 
 //request main info for user
 if (store.getState().authenticated){
-  store.dispatch(whoAmI())
+  store.dispatch(ActionCreators.whoAmI())
+  store.dispatch(ActionCreators.managedGroups())
 } else {
-  store.dispatch(unauthenticated())
+  // just commented for develop sign up form
+  store.dispatch(ActionCreators.unauthenticated())
 }
 
 import {bindRouteActions} from './redux/route-actions'
@@ -45,6 +48,12 @@ import {bindRouteActions} from './redux/route-actions'
 const boundRouteActions = bindRouteActions(store.dispatch)
 
 const history = syncHistoryWithStore(browserHistory, store)
+
+const manageSubscribersActions = next => {
+  const username = next.params.userName
+  store.dispatch(ActionCreators.getUserInfo(username))
+  store.dispatch(ActionCreators.subscribers(username))
+}
 
 ReactDOM.render(
   <Provider store={store}>
@@ -65,6 +74,7 @@ ReactDOM.render(
         <Route name='userFeed' path='/:userName' component={User} onEnter={boundRouteActions('userFeed')}/>
         <Route name='subscribers' path='/:userName/subscribers' component={Subscribers} onEnter={boundRouteActions('subscribers')}/>
         <Route name='subscriptions' path='/:userName/subscriptions' component={Subscriptions} onEnter={boundRouteActions('subscriptions')}/>
+        <Route name='manage-subscribers' path='/:userName/manage-subscribers' component={ManageSubscribers} onEnter={manageSubscribersActions}/>
         <Route name='userComments' path='/:userName/comments' component={User} onEnter={boundRouteActions('userComments')}/>
         <Route name='userLikes' path='/:userName/likes' component={User} onEnter={boundRouteActions('userLikes')}/>
         <Route name='post' path='/:userName/:postId' component={SinglePost} onEnter={boundRouteActions('post')}/>

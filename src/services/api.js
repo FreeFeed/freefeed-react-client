@@ -342,8 +342,8 @@ export function updateGroup({id, groupSettings}) {
   })
 }
 
-export function getGroupRequests() {
-  return fetch(`${apiConfig.host}/v2/groupRequests`, getRequestOptions())
+export function getManagedGroups() {
+  return fetch(`${apiConfig.host}/v2/managedGroups`, getRequestOptions())
 }
 
 export function acceptGroupRequest({groupName, userName}) {
@@ -390,3 +390,35 @@ export function rejectUserRequest({userName}) {
   })
 }
 
+export function unsubscribeFromGroup({groupName, userName}) {
+    return fetch(`${apiConfig.host}/v1/groups/${groupName}/unsubscribeFromGroup/${userName}`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    }
+  })
+}
+
+export function makeGroupAdmin({groupName, user}) {
+    return fetch(`${apiConfig.host}/v1/groups/${groupName}/subscribers/${user.username}/admin`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    }
+  })
+}
+
+export function unadminGroupAdmin({groupName, user}) {
+    return fetch(`${apiConfig.host}/v1/groups/${groupName}/subscribers/${user.username}/unadmin`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    }
+  })
+}

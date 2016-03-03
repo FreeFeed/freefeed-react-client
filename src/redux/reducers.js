@@ -1488,6 +1488,14 @@ const handleSubs = (state, action, type) => {
 
 // for /:username/subscribers
 export function usernameSubscribers(state = {}, action) {
+  if (action.type == response(ActionTypes.UNSUBSCRIBE_FROM_GROUP)) {
+    const userName = action.request.userName
+    return {
+      ...state,
+      payload: state.payload.filter((user) => user.username !== userName)
+    }
+  }
+
   return handleSubs(state, action, ActionTypes.SUBSCRIBERS)
 }
 
@@ -1514,9 +1522,9 @@ const removeItemFromGroupRequests = (state, action) => {
   return state
 }
 
-export function groupRequests(state = [], action) {
+export function managedGroups(state = [], action) {
   switch (action.type) {
-    case response(ActionTypes.GROUP_REQUESTS): {
+    case response(ActionTypes.MANAGED_GROUPS): {
       return action.payload.map(group => {
         group.requests = group.requests.map(userParser)
         return {...group}
@@ -1526,12 +1534,17 @@ export function groupRequests(state = [], action) {
     case response(ActionTypes.REJECT_GROUP_REQUEST): {
       return removeItemFromGroupRequests(state, action)
     }
+    case response(ActionTypes.UNADMIN_GROUP_ADMIN): {
+      if(action.request.isItMe) {
+        return state.filter(group => group.username !== action.request.groupName)
+      }
+    }
   }
 
   return state
 }
 
-export function requests(state = [], action) {
+export function userRequests(state = [], action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
       return (action.payload.requests || []).map(userParser)
@@ -1548,7 +1561,7 @@ export function requests(state = [], action) {
 
 export function groupRequestsCount(state = 0, action) {
   switch (action.type) {
-    case response(ActionTypes.GROUP_REQUESTS): {
+    case response(ActionTypes.MANAGED_GROUPS): {
       return action.payload.reduce((acc, group) => {
         return acc + group.requests.length
       }, 0)
@@ -1600,5 +1613,23 @@ export function frontendRealtimePreferencesForm(state=initialRealtimeSettings, a
       return {...state, status: 'error', errorMessage: (action.payload || {}).err}
     }
   }
+  return state
+}
+
+export function groupAdmins(state = [], action) {
+  switch (action.type) {
+    case response(ActionTypes.GET_USER_INFO): {
+      return (action.payload.admins || []).map(userParser)
+    }
+    case response(ActionTypes.MAKE_GROUP_ADMIN): {
+      const user = action.request.user
+      return [...state, user].map(userParser)
+    }
+    case response(ActionTypes.UNADMIN_GROUP_ADMIN): {
+      const user = action.request.user
+      return state.filter((u) => u.username !== user.username)
+    }
+  }
+
   return state
 }

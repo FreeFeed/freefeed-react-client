@@ -54,6 +54,7 @@ export const authMiddleware = store => next => action => {
     setToken(action.payload.authToken)
     next(action)
     store.dispatch(ActionCreators.whoAmI())
+    store.dispatch(ActionCreators.managedGroups())
     return browserHistory.push('/')
   }
 
@@ -96,6 +97,11 @@ export const redirectionMiddleware = store => next => action => {
   //go to home if single post has been removed
   if (action.type === response(ActionTypes.DELETE_POST) && store.getState().singlePostId) {
     return browserHistory.push('/')
+  }
+
+  if (action.type === response(ActionTypes.UNADMIN_GROUP_ADMIN) &&
+      store.getState().user.id === action.request.user.id) {
+    store.dispatch(pushState(null, `/${action.request.groupName}/subscribers`, {}))
   }
 
   return next(action)
