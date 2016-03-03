@@ -49,6 +49,12 @@ const boundRouteActions = bindRouteActions(store.dispatch)
 
 const history = syncHistoryWithStore(browserHistory, store)
 
+const manageSubscribersActions = next => {
+  const username = next.params.userName
+  store.dispatch(ActionCreators.getUserInfo(username))
+  store.dispatch(ActionCreators.subscribers(username))
+}
+
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
@@ -68,7 +74,7 @@ ReactDOM.render(
         <Route name='userFeed' path='/:userName' component={User} onEnter={boundRouteActions('userFeed')}/>
         <Route name='subscribers' path='/:userName/subscribers' component={Subscribers} onEnter={boundRouteActions('subscribers')}/>
         <Route name='subscriptions' path='/:userName/subscriptions' component={Subscriptions} onEnter={boundRouteActions('subscriptions')}/>
-        <Route name='manage-subscribers' path='/:userName/manage-subscribers' component={ManageSubscribers} onEnter={boundRouteActions('userFeed')}/>
+        <Route name='manage-subscribers' path='/:userName/manage-subscribers' component={ManageSubscribers} onEnter={manageSubscribersActions}/>
         <Route name='userComments' path='/:userName/comments' component={User} onEnter={boundRouteActions('userComments')}/>
         <Route name='userLikes' path='/:userName/likes' component={User} onEnter={boundRouteActions('userLikes')}/>
         <Route name='post' path='/:userName/:postId' component={SinglePost} onEnter={boundRouteActions('post')}/>

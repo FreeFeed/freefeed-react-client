@@ -1488,6 +1488,14 @@ const handleSubs = (state, action, type) => {
 
 // for /:username/subscribers
 export function usernameSubscribers(state = {}, action) {
+  if (action.type == response(ActionTypes.UNSUBSCRIBE_FROM_GROUP)) {
+    const userName = action.request.userName
+    return {
+      ...state,
+      payload: state.payload.filter((user) => user.username !== userName)
+    }
+  }
+
   return handleSubs(state, action, ActionTypes.SUBSCRIBERS)
 }
 
@@ -1600,5 +1608,23 @@ export function frontendRealtimePreferencesForm(state=initialRealtimeSettings, a
       return {...state, status: 'error', errorMessage: (action.payload || {}).err}
     }
   }
+  return state
+}
+
+export function groupAdmins(state = [], action) {
+  switch (action.type) {
+    case response(ActionTypes.GET_USER_INFO): {
+      return (action.payload.admins || []).map(userParser)
+    }
+    case response(ActionTypes.MAKE_GROUP_ADMIN): {
+      const user = action.request.user
+      return [...state, user].map(userParser)
+    }
+    case response(ActionTypes.UNADMIN_GROUP_ADMIN): {
+      const user = action.request.user
+      return state.filter((u) => u.username !== user.username)
+    }
+  }
+
   return state
 }

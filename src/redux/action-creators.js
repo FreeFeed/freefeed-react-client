@@ -489,3 +489,27 @@ export function toggleRealtime() {
     type: ActionTypes.TOGGLE_REALTIME,
   }
 }
+
+export function unsubscribeFromGroup(groupName, userName) {
+  return {
+    type: ActionTypes.UNSUBSCRIBE_FROM_GROUP,
+    payload: {groupName, userName},
+    apiRequest: Api.unsubscribeFromGroup
+  }
+}
+
+export function makeGroupAdmin(groupName, user) {
+  return {
+    type: ActionTypes.MAKE_GROUP_ADMIN,
+    payload: {groupName, user},
+    apiRequest: Api.makeGroupAdmin
+  }
+}
+
+export function unadminGroupAdmin(groupName, user) {
+  return {
+    type: ActionTypes.UNADMIN_GROUP_ADMIN,
+    payload: {groupName, user},
+    apiRequest: Api.unadminGroupAdmin
+  }
+}
