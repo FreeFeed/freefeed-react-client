@@ -11,7 +11,7 @@ import {Provider} from 'react-redux'
 import {syncHistoryWithStore} from 'react-router-redux'
 
 import configureStore from './redux/configure-store'
-import {whoAmI, home, discussions, getUserFeed, unauthenticated, getSinglePost} from './redux/action-creators'
+import * as ActionCreators from './redux/action-creators'
 
 import Layout from './components/layout'
 import Home from './components/home'
@@ -35,9 +35,11 @@ const store = configureStore()
 
 //request main info for user
 if (store.getState().authenticated){
-  store.dispatch(whoAmI())
+  store.dispatch(ActionCreators.whoAmI())
+  store.dispatch(ActionCreators.managedGroups())
 } else {
-  store.dispatch(unauthenticated())
+  // just commented for develop sign up form
+  store.dispatch(ActionCreators.unauthenticated())
 }
 
 import {bindRouteActions} from './redux/route-actions'
