@@ -23,7 +23,7 @@ export default (props) => (
       <h3>Roadmap</h3>
 
       <p>[x] v 0.6 React frontend<br/>
-        [ &nbsp;] v 0.7 Add real-time updates to the frontend<br/>
+        [x] v 0.7 Add real-time updates to the frontend<br/>
         [ &nbsp;] v 0.8 Add support for private groups<br/>
         [ &nbsp;] v 0.9 Migrate to Postgres<br/>
         [ &nbsp;] v 1.0 Support for search and #hashtags</p>
