@@ -1572,7 +1572,7 @@ export function userRequestsCount(state = 0, action) {
       return Math.max(0, state - 1)
     }
   }
-  return state
+  return state;
 }
 
 const initialRealtimeSettings = {
