@@ -8,6 +8,7 @@ import {Link} from 'react-router'
 import CreatePost from './create-post'
 import Feed from './feed'
 import PaginatedView from './paginated-view'
+import RealtimeSwitch from './realtime-switch'
 import Welcome from './welcome'
 
 const FeedHandler = (props) => {
@@ -27,6 +28,9 @@ const FeedHandler = (props) => {
     <div className='box'>
       <div className='box-header-timeline'>
         {props.boxHeader}
+        <div className='pull-right'>
+          {props.areOnFirstHomePage && props.authenticated ? <RealtimeSwitch/> : false}
+        </div>
       </div>
 
       {props.authenticated && props.totalRequestsCount > 0 ? (
@@ -61,7 +65,7 @@ function selectState(state) {
   const createPostForm = joinCreatePostData(state)
   const timelines = state.timelines
   const boxHeader = state.boxHeader
-  const sendTo = state.sendTo
+  const sendTo = {...state.sendTo, defaultFeed: user.username}
 
   const totalRequestsCount = state.groupRequestsCount + state.userRequestsCount 
 
@@ -69,7 +73,8 @@ function selectState(state) {
     user, authenticated,
     visibleEntries, hiddenEntries, isHiddenRevealed,
     createPostViewState, createPostForm,
-    timelines, boxHeader, sendTo, totalRequestsCount
+    timelines, boxHeader, sendTo, totalRequestsCount,
+    areOnFirstHomePage: !state.routing.locationBeforeTransitions.query.offset,
   }
 }
 

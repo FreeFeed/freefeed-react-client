@@ -26,7 +26,8 @@ const config = {
       displayNames: {
         displayOption: FrontendPrefsOptions.DISPLAYNAMES_DISPLAYNAME,
         useYou: true
-      }
+      },
+      realtimeActive: false,
     }
   }
 }
