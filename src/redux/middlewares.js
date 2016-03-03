@@ -99,6 +99,11 @@ export const redirectionMiddleware = store => next => action => {
     return browserHistory.push('/')
   }
 
+  if (action.type === response(ActionTypes.UNADMIN_GROUP_ADMIN) &&
+      store.getState().user.id === action.request.user.id) {
+    store.dispatch(pushState(null, `/${action.request.groupName}/subscribers`, {}))
+  }
+
   return next(action)
 }
 

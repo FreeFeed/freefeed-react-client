@@ -506,10 +506,10 @@ export function makeGroupAdmin(groupName, user) {
   }
 }
 
-export function unadminGroupAdmin(groupName, user) {
+export function unadminGroupAdmin(groupName, user, isItMe) {
   return {
     type: ActionTypes.UNADMIN_GROUP_ADMIN,
-    payload: {groupName, user},
+    payload: {groupName, user, isItMe},
     apiRequest: Api.unadminGroupAdmin
   }
 }
