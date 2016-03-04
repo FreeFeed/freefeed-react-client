@@ -15,12 +15,6 @@ export default class PostComment extends React.Component{
     }
   }
 
-  componentWillReceiveProps = (newProps) => {
-    this.setState({
-      editText: newProps.editText || ''
-    })
-  }
-
   handleChange = (event) => {
     this.setState({
       editText: event.target.value

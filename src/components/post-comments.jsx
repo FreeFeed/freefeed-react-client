@@ -16,6 +16,7 @@ const renderComment = (entryUrl, openAnsweringComment, isModeratingComments, com
 const renderAddingComment = props => (
   <PostComment
     id={props.post.id}
+    key={`${props.post.id}-comment-adding`}
     isEditing={true}
     isSinglePost={props.post.isSinglePost}
     editText={props.post.newCommentText}
