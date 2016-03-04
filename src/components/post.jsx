@@ -195,8 +195,9 @@ export default class Post extends React.Component {
     }
 
     // "Like" / "Un-like"
+    const amIAuthenticated = !!props.user.id
     const didILikePost = _.find(props.usersLikedPost, {id: props.user.id})
-    const likeLink = (!props.isEditable ? (
+    const likeLink = (amIAuthenticated && !props.isEditable ? (
       <span>
         {' - '}
         <a onClick={didILikePost ? unlikePost : likePost}>{didILikePost ? 'Un-like' : 'Like'}</a>

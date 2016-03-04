@@ -4,7 +4,7 @@ import PostComments from 'src/components/post-comments'
 import sd from 'skin-deep'
 
 const renderComments = (comments, omittedComments = 0, isCommenting = false) => {
-  const post = {omittedComments, isCommenting}
+  const post = {omittedComments, isCommenting, createdBy: {username:''}}
 
   const tree = sd.shallowRender(React.createElement(PostComments, {comments, post}))
 
