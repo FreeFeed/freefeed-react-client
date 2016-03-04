@@ -842,9 +842,18 @@ export function posts(state = {}, action) {
     case response(ActionTypes.GET_SINGLE_POST): {
       return updatePostData(state, action)
     }
-    case ActionTypes.REALTIME_POST_NEW:
-    case ActionTypes.REALTIME_POST_UPDATE: {
+    case ActionTypes.REALTIME_POST_NEW: {
       return { ...state, [action.post.id]: postParser(action.post) }
+    }
+    case ActionTypes.REALTIME_POST_UPDATE: {
+      const post = state[action.post.id]
+      return {...state,
+        [post.id]: {...post,
+          body: action.post.body,
+          updatedAt: action.post.updatedAt,
+          attachments: action.post.attachments || []
+        }
+      }
     }
     case ActionTypes.REALTIME_COMMENT_NEW: {
       const post = state[action.comment.postId]
