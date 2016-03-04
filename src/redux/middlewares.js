@@ -138,41 +138,29 @@ const bindHandlers = store => ({
 })
 
 export const realtimeMiddleware = store => {
+  const handlers = bindHandlers(store)
   let realtimeConnection
   return next => action => {
 
-    switch(action.type){
-      case ActionTypes.UNAUTHENTICATED: {
-        if (realtimeConnection){
-          realtimeConnection.disconnect()
-          realtimeConnection = undefined
-        }
-        break
-      }
-      case response(ActionTypes.SIGN_IN): {
-        if (!realtimeConnection){
-          realtimeConnection = init(bindHandlers(store))
-        }
-        break
-      }
-      case response(ActionTypes.WHO_AM_I): {
-        if (!realtimeConnection){
-          realtimeConnection = init(bindHandlers(store))
-        }
-        break
+    if (action.type === ActionTypes.UNAUTHENTICATED) {
+      if (realtimeConnection){
+        realtimeConnection.disconnect()
+        realtimeConnection = undefined
       }
     }
 
     if (isFeedResponse(action)){
-      if (realtimeConnection){
-        realtimeConnection.changeSubscription({timeline:[action.payload.timelines.id]})
+      if (!realtimeConnection){
+        realtimeConnection = init(handlers)
       }
+      realtimeConnection.changeSubscription({timeline:[action.payload.timelines.id]})
     }
 
     if (action.type === response(ActionTypes.GET_SINGLE_POST)){
-      if (realtimeConnection){
-        realtimeConnection.changeSubscription({post:[action.payload.posts.id]})
+      if (!realtimeConnection){
+        realtimeConnection = init(handlers)
       }
+      realtimeConnection.changeSubscription({post:[action.payload.posts.id]})
     }
 
     return next(action)
