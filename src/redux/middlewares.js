@@ -119,7 +119,7 @@ export const pendingRequestsMiddleware = store => next => action => {
     next(action)
 
     if (store.getState().user.pendingGroupRequests) {
-      store.dispatch(ActionCreators.groupRequests())
+      store.dispatch(ActionCreators.managedGroups())
     }
 
     return

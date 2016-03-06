@@ -60,7 +60,7 @@ function selectState(state, ownProps) {
 
   const feedRequests = state.requests
 
-  const groupRequests = state.groupRequests.filter(group => group.requests.length) || []
+  const groupRequests = state.managedGroups.filter(group => group.requests.length) || []
 
   return {boxHeader, username, feedRequests, groupRequests}
 }
