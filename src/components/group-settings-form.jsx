@@ -12,7 +12,8 @@ export default class GroupSettingsForm extends React.Component {
       screenName: this.props.group.screenName,
       description: this.props.group.description,
       isPrivate: this.props.group.isPrivate,
-      isRestricted:  this.props.group.isRestricted
+      isRestricted:  this.props.group.isRestricted,
+      isWarningDisplayed: false
     }
   }
 
@@ -22,7 +23,8 @@ export default class GroupSettingsForm extends React.Component {
         screenName: newProps.group.screenName,
         description: newProps.group.description,
         isPrivate: newProps.group.isPrivate,
-        isRestricted: newProps.group.isRestricted
+        isRestricted: newProps.group.isRestricted,
+        isWarningDisplayed: false
       })
     }
   }
@@ -34,10 +36,19 @@ export default class GroupSettingsForm extends React.Component {
   }
 
   handlePrivacyTypeChange = (privacySettings) => {
-    this.setState(privacySettings)
+    const newState = {
+      ...privacySettings,
+      isWarningDisplayed: (
+        this.props.group.isPrivate == 1 &&
+        privacySettings.hasOwnProperty('isPrivate') &&
+        privacySettings.isPrivate == 0
+      )
+    }
+    this.setState(newState)
   }
 
   saveSettings = () => {
+    this.setState({ isWarningDisplayed: false })
     if (this.props.status !== 'loading') {
       this.props.updateGroup(this.props.group.id, this.state)
     }
@@ -65,6 +76,11 @@ export default class GroupSettingsForm extends React.Component {
             </span>
           ) : false}
         </p>
+        {this.state.isWarningDisplayed ? (
+          <div className="alert alert-warning" role="alert">
+            You are about to change the group type from private to public. It means anyone will be able to read its posts and comments, which are only available to group members now.
+          </div>
+        ) : false}  
         {this.props.status === 'success' ? (
           <div className="alert alert-info" role="alert">Updated!</div>
         ) : this.props.status === 'error' ? (
