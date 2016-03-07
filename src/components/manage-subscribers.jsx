@@ -63,9 +63,9 @@ const ManageSubscribersHandler = (props) => {
   )
 }
 
-function selectState(state) {
+function selectState(state, ownProps) {
   const boxHeader = state.boxHeader
-  const groupName = state.router.params.userName
+  const groupName = ownProps.params.userName
   const user = state.user
   const groupAdmins = state.groupAdmins
   const usersWhoAreNotAdmins = _.filter(state.usernameSubscribers.payload, user => {
