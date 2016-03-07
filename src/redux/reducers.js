@@ -262,6 +262,10 @@ export function postsViewState(state = {}, action) {
     case ActionTypes.REALTIME_POST_NEW:
     case ActionTypes.REALTIME_POST_UPDATE: {
       const id = action.post.id
+      const postAlreadyAdded = !!state[id]
+      if (postAlreadyAdded){
+        return state
+      }
       return { ...state, [id]: initPostViewState(action.post) }
     }
     case fail(ActionTypes.GET_SINGLE_POST): {
@@ -368,6 +372,9 @@ export function postsViewState(state = {}, action) {
     }
     case ActionTypes.REALTIME_COMMENT_NEW: {
       const post = state[action.comment.postId]
+      if (!post){
+        return state
+      }
       return {...state,
         [post.id] : {
           ...post,
@@ -698,7 +705,10 @@ export function posts(state = {}, action) {
     }
     case response(ActionTypes.DELETE_COMMENT): {
       const commentId = action.request.commentId
-      const post = _(state).find(post => (post.comments||[]).indexOf(commentId) !== -1)
+      const post = _(state).find(_post => (_post.comments||[]).indexOf(commentId) !== -1)
+      if (!post){
+        return state
+      }
       const comments = _.without(post.comments, commentId)
       return {...state,
         [post.id]: {...post,
@@ -832,9 +842,18 @@ export function posts(state = {}, action) {
     case response(ActionTypes.GET_SINGLE_POST): {
       return updatePostData(state, action)
     }
-    case ActionTypes.REALTIME_POST_NEW:
-    case ActionTypes.REALTIME_POST_UPDATE: {
+    case ActionTypes.REALTIME_POST_NEW: {
       return { ...state, [action.post.id]: postParser(action.post) }
+    }
+    case ActionTypes.REALTIME_POST_UPDATE: {
+      const post = state[action.post.id]
+      return {...state,
+        [post.id]: {...post,
+          body: action.post.body,
+          updatedAt: action.post.updatedAt,
+          attachments: action.post.attachments || []
+        }
+      }
     }
     case ActionTypes.REALTIME_COMMENT_NEW: {
       const post = state[action.comment.postId]
@@ -1022,12 +1041,14 @@ export function users(state = {}, action) {
     case ActionTypes.REALTIME_POST_NEW:
     case ActionTypes.REALTIME_LIKE_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW: {
-      const safeUsers = action.users || [{}]
-      const userAlreadyAdded = state[safeUsers[0].id]
+      if (!action.users || !action.users.length){
+        return state
+      }
+      const userAlreadyAdded = state[action.users[0].id]
       if (userAlreadyAdded) {
         return state
       }
-      return mergeByIds(state, safeUsers.map(userParser))
+      return mergeByIds(state, action.users.map(userParser))
     }
     case ActionTypes.UNAUTHENTICATED:
       return {}

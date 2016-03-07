@@ -2,24 +2,47 @@ import {api as apiConfig} from '../config'
 import {getToken} from './auth'
 import io from 'socket.io-client'
 
-export function init(eventHandlers){
-  const socket = io.connect(`${apiConfig.host}/`, {query: `token=${getToken()}`})
+const bindSocketLog = socket => eventName => socket.on(eventName, data => console.log(`socket ${eventName}`, data))
+
+const bindSocketActionsLog = socket => events => events.forEach(bindSocketLog(socket))
+
+const eventsToLog = [
+  'connect',
+  'error',
+  'disconnect',
+  'reconnect',
+]
+
+const bindSocketEventHandlers = socket => eventHandlers => {
   Object.keys(eventHandlers).forEach((event) => socket.on(event, eventHandlers[event]))
+}
+
+const openSocket = _ => io.connect(`${apiConfig.host}/`, {query: `token=${getToken()}`})
+
+export function init(eventHandlers){
+  const socket = openSocket()
+
+  bindSocketEventHandlers(socket)(eventHandlers)
+
+  bindSocketActionsLog(socket)(eventsToLog)
+
+  let subscription
+  let subscribe
+
   return {
-    socket,
-    changeSubscription: function(newSubscription) {
-      if (this.subscription){
-        this.socket.emit('unsubscribe', this.subscription)
-        this.socket.off('reconnect', this.subscribe)
+    changeSubscription: newSubscription => {
+      if (subscription){
+        console.log('unsubscribing from ', subscription)
+        socket.emit('unsubscribe', subscription)
+        socket.off('reconnect', subscribe)
       }
-      this.subscription = newSubscription
-      this.subscribe = () => this.socket.emit('subscribe', this.subscription)
-      this.socket.on('reconnect', this.subscribe)
-      this.subscribe()
+      subscription = newSubscription
+      console.log('subscribing to ', subscription)
+      subscribe = () => socket.emit('subscribe', subscription)
+      socket.on('reconnect', subscribe)
+      subscribe()
     },
-    disconnect: function() {
-      this.socket.disconnect()
-    }
+    disconnect: _ => socket.disconnect()
   }
 }
 

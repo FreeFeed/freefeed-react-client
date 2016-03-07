@@ -25,13 +25,13 @@ export default props => (
   <ul className="pager p-pagination-controls">
     {props.offset > 0 ?
       <li>
-        <Link to={{pathname:'', query: offsetObject(minOffset(props.offset))}}
+        <Link to={{pathname: props.location.pathname, query: offsetObject(minOffset(props.offset))}}
               onClick={routingCallback(props, minOffset)}
               className="p-pagination-newer">« Newer items</Link>
       </li>
       : false}
     <li>
-      <Link to={{pathname:'', query:offsetObject(maxOffset(props.offset))}}
+      <Link to={{pathname: props.location.pathname, query: offsetObject(maxOffset(props.offset))}}
             onClick={routingCallback(props, maxOffset)}
             className="p-pagination-older">Older items »</Link>
       </li>
