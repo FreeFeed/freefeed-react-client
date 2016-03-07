@@ -31,22 +31,24 @@ const RequestsHandler = (props) => {
       </div>
       <div className='box-body'>
         <div><Link to={`/${props.username}`}>{props.username}</Link> › Requests</div>
-        <div>
-          {props.feedRequests && props.feedRequests.length
-          ? <div>
-              <h3>Requests to your feed</h3>
-              <TileList users={props.feedRequests}
-                        acceptRequest={props.acceptUserRequest}
-                        rejectRequest={props.rejectUserRequest}/>
-            </div>
-          : false}
+        {props.overallRequestsCount == 0
+        ? <p>You have no request</p>
+        : <div>
+            {props.feedRequests && props.feedRequests.length
+            ? <div>
+                <h3>Requests to your feed</h3>
+                <TileList users={props.feedRequests}
+                          acceptRequest={props.acceptUserRequest}
+                          rejectRequest={props.rejectUserRequest}/>
+              </div>
+            : false}
 
-          {groupRequests
-          ? <div>
-              {groupRequests}
-            </div>
-          : false}
-        </div>
+            {groupRequests
+            ? <div>
+                {groupRequests}
+              </div>
+            : false}
+          </div>}
       </div>
       <div className='box-footer'></div>
     </div>
@@ -58,11 +60,12 @@ function selectState(state, ownProps) {
   const boxHeader = state.boxHeader
   const username = ownProps.params.userName
 
-  const feedRequests = state.requests
+  const overallRequestsCount = state.userRequestsCount + state.groupRequestsCount
 
+  const feedRequests = state.userRequests
   const groupRequests = state.managedGroups.filter(group => group.requests.length) || []
 
-  return {boxHeader, username, feedRequests, groupRequests}
+  return {boxHeader, username, feedRequests, groupRequests, overallRequestsCount}
 }
 
 function selectActions(dispatch) {
