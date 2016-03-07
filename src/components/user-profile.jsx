@@ -65,7 +65,7 @@ export default props => (
   {props.authenticated && props.isUserFound && !props.isItMe && !props.blocked ? (
     <div className="profile-controls">
       <div className="row">
-        <div className="col-xs-7 subscribe-controls">
+        <div className="col-xs-7 col-sm-9 subscribe-controls">
           {props.isPrivate === '1' && !props.subscribed ? (
             props.hasRequestBeenSent ? (
               <span><b>{props.screenName}</b> has been sent your subscription request.</span>
@@ -81,7 +81,7 @@ export default props => (
           )}
         </div>
 
-        <div className="col-xs-5 text-right">
+        <div className="col-xs-5 col-sm-3 text-right">
           {props.type !== 'group' && !props.subscribed ? (
             <a onClick={preventDefault(_=>props.ban({username: props.username, id: props.id}))}>Block this user</a>
           ) : props.amIGroupAdmin ? (
