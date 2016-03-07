@@ -186,17 +186,3 @@ export const realtimeMiddleware = store => {
     return next(action)
   }
 }
-
-export const pendingRequestsMiddleware = store => next => action => {
-  if (action.type === response(ActionTypes.WHO_AM_I)) {
-    next(action)
-
-    if (store.getState().user.pendingGroupRequests) {
-      store.dispatch(ActionCreators.groupRequests())
-    }
-
-    return
-  }
-
-  return next(action)
-}
