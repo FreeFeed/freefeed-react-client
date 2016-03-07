@@ -58,7 +58,7 @@ function selectState(state, ownProps) {
   const boxHeader = state.boxHeader
   const username = ownProps.params.userName
 
-  const feedRequests = state.requests
+  const feedRequests = state.userRequests
 
   const groupRequests = state.managedGroups.filter(group => group.requests.length) || []
 
