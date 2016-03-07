@@ -16,7 +16,7 @@ export default props => (
         <p><b>{props.viewUser.screenName}</b> has a private feed.</p>
       </div>
     ) : (
-      <PaginatedView>
+      <PaginatedView {...props}>
         <Feed {...props} isInUserFeed={true}/>
       </PaginatedView>
     )}
