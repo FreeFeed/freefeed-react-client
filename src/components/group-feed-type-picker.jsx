@@ -9,12 +9,12 @@ export default class GroupFeedTypePicker extends React.Component {
   render() {
     return (
       <div>
-        <div className="form-group">
-          <div className="left-block">
+        <div className="row form-group">
+          <div className="col-sm-3">
             <label>Who can view posts:</label>
           </div>
           
-          <div className="right-block">
+          <div className="col-sm-9">
             <label className="option-box">
               <div className="input">
                 <input type="radio"
@@ -43,12 +43,12 @@ export default class GroupFeedTypePicker extends React.Component {
           </div>
         </div>
 
-        <div className="form-group">
-          <div className="left-block">
+        <div className="row form-group">
+          <div className="col-sm-3">
             <label>Who can write posts:</label>
           </div>
           
-          <div className="right-block">
+          <div className="col-sm-9">
             <label className="option-box">
               <div className="input">
                 <input type="radio"
