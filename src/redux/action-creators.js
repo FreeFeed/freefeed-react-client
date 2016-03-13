@@ -60,6 +60,7 @@ export function showMoreComments(postId) {
   return {
     type: ActionTypes.SHOW_MORE_COMMENTS,
     apiRequest: Api.getPostWithAllComments,
+    nonAuthRequest: true,
     payload: {postId},
   }
 }
@@ -75,6 +76,7 @@ export function showMoreLikesAsync(postId) {
   return {
     type: ActionTypes.SHOW_MORE_LIKES_ASYNC,
     apiRequest: Api.getLikesOnly,
+    nonAuthRequest: true,
     payload: {postId},
   }
 }
