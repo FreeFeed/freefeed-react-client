@@ -122,7 +122,7 @@ export default class UserProfile extends React.Component {
           </div>
         ) : false}
 
-        {(props.isItMe && props.isItPostsPage) || (props.type === 'group' && props.subscribed) ? (
+        {props.canIPostHere ? (
           <CreatePost
             createPostViewState={props.createPostViewState}
             sendTo={props.sendTo}
