@@ -383,6 +383,7 @@ export function getUserComments(username, offset = 0) {
   return {
     type: ActionTypes.GET_USER_COMMENTS,
     apiRequest: Api.getUserComments,
+    nonAuthRequest: true,
     payload: {username, offset},
   }
 }
@@ -391,6 +392,7 @@ export function getUserLikes(username, offset = 0) {
   return {
     type: ActionTypes.GET_USER_LIKES,
     apiRequest: Api.getUserLikes,
+    nonAuthRequest: true,
     payload: {username, offset},
   }
 }
