@@ -455,6 +455,12 @@ export function resetGroupCreateForm() {
   }
 }
 
+export function resetGroupUpdateForm() {
+  return {
+    type: ActionTypes.RESET_GROUP_UPDATE_FORM
+  }
+}
+
 export function toggleRealtime() {
   return {
     type: ActionTypes.TOGGLE_REALTIME,

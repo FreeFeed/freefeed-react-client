@@ -31,6 +31,10 @@ export default class GroupSettingsForm extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.resetGroupUpdateForm()
+  }
+
   render() {
     return (
       <form onSubmit={preventDefault(this.saveSettings)}>

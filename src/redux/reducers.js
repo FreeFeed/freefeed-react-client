@@ -1274,6 +1274,9 @@ export function groupSettingsForm(state={}, action) {
     case fail(ActionTypes.UPDATE_GROUP): {
       return {...state, status: 'error', errorMessage: (action.payload || {}).err}
     }
+    case ActionTypes.RESET_GROUP_UPDATE_FORM: {
+      return {}
+    }
   }
   return state
 }
