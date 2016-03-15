@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {createPost, expandSendTo, toggleHiddenPosts} from '../redux/action-creators'
 import {joinPostData, joinCreatePostData, postActions} from './select-utils'
-import {getQuery} from '../utils'
+import {getQuery, pluralForm} from '../utils'
 import {Link} from 'react-router'
 
 import CreatePost from './create-post'
@@ -37,7 +37,7 @@ const FeedHandler = (props) => {
         <div className="box-message alert alert-info">
           <span className="message">
             <Link to="/requests">
-              You have {props.totalRequestsCount} subscription requests to review.
+              You have {pluralForm(props.totalRequestsCount, 'subscription request')} to review.
             </Link>
           </span>
         </div>
