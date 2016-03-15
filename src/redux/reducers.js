@@ -1474,6 +1474,9 @@ export function groups(state = {}, action) {
         [groupId]: {...oldGroup, ...newGroup}
       }
     }
+    case ActionTypes.UNAUTHENTICATED: {
+      return {}
+    }
   }
 
   return state
