@@ -1339,8 +1339,22 @@ function getValidRecipients(state) {
     }
   }).filter(Boolean)
 
+  const canPostToGroup = function(subUser) {
+    return (
+      (subUser.isRestricted === '0') ||
+      ((subUser.administrators || []).indexOf(state.users.id) > -1)
+    )
+  }
+
+  const canSendDirect = function(subUser) {
+    return (_.find(state.subscribers || [], { 'id': subUser.id }) !== null)
+  }
+
   const validRecipients = _.filter(subscriptions, (sub) => {
-    return sub.user.type === 'group' || (_.find(state.subscribers || [], { 'id': sub.user.id }) !== null)
+    return (
+      (sub.user.type === 'group' && canPostToGroup(sub.user)) ||
+      (sub.user.type === 'user' && canSendDirect(sub.user))
+    )
   })
 
   return validRecipients

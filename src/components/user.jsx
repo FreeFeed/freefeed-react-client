@@ -73,6 +73,11 @@ function selectState(state, ownProps) {
   statusExtension.canISeeSubsList = statusExtension.isUserFound &&
     (foundUser.isPrivate === '0' || statusExtension.subscribed || statusExtension.isItMe)
 
+  const canIPostToGroup = statusExtension.subscribed && (foundUser.isRestricted === '0' || amIGroupAdmin)
+
+  statusExtension.canIPostHere = statusExtension.isUserFound &&
+    ((statusExtension.isItMe && isItPostsPage) || (foundUser.type === 'group' && canIPostToGroup))
+
   const viewUser = {...(foundUser), ...statusExtension}
 
   const breadcrumbs = {
