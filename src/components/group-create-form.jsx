@@ -37,7 +37,7 @@ export default class GroupCreateForm extends React.Component {
               <input id="username" className="form-control" name="username" type="text" value={this.state.username} onChange={this.handleChange('username')}/>
             </div>
             <div className="form-group">
-              <label htmlFor="screenName">Screen name:</label>
+              <label htmlFor="screenName">Display name:</label>
               <input id="screenName" className="form-control" name="screenName" type="text" value={this.state.screenName} onChange={this.handleChange('screenName')}/>
             </div>
             <div className="form-group">
