@@ -105,6 +105,9 @@ export function createPostViewState(state = {}, action) {
         isPending: false
       }
     }
+    case ActionTypes.RESET_POST_CREATE_FORM: {
+      return {}
+    }
   }
   return state
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {createPost, expandSendTo} from '../redux/action-creators'
+import {createPost, resetPostCreateForm, expandSendTo} from '../redux/action-creators'
 import {joinPostData, joinCreatePostData, postActions, userActions} from './select-utils'
 import {getCurrentRouteName} from '../utils'
 import Breadcrumbs from './breadcrumbs'
@@ -26,6 +26,7 @@ const UserHandler = (props) => {
           expandSendTo={props.expandSendTo}
           createPostViewState={props.createPostViewState}
           createPost={props.createPost}
+          resetPostCreateForm={props.resetPostCreateForm}
           createPostForm={props.createPostForm}
           addAttachmentResponse={props.addAttachmentResponse}
           removeAttachment={props.removeAttachment}/>
@@ -90,6 +91,7 @@ function selectActions(dispatch) {
   return {
     ...postActions(dispatch),
     createPost: (feeds, postText, attachmentIds, more) => dispatch(createPost(feeds, postText, attachmentIds, more)),
+    resetPostCreateForm: (...args) => dispatch(resetPostCreateForm(...args)),
     expandSendTo: () => dispatch(expandSendTo()),
     userActions: userActions(dispatch),
   }

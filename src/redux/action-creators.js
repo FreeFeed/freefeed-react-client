@@ -449,6 +449,12 @@ export function updateGroup(id, screenName, description) {
   }
 }
 
+export function resetPostCreateForm() {
+  return {
+    type: ActionTypes.RESET_POST_CREATE_FORM
+  }
+}
+
 export function resetGroupCreateForm() {
   return {
     type: ActionTypes.RESET_GROUP_CREATE_FORM
