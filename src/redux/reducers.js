@@ -1256,6 +1256,9 @@ export function groupCreateForm(state={}, action) {
     case fail(ActionTypes.CREATE_GROUP): {
       return {...state, status: 'error', errorMessage: (action.payload || {}).err}
     }
+    case ActionTypes.RESET_GROUP_CREATE_FORM: {
+      return {}
+    }
   }
   return state
 }
