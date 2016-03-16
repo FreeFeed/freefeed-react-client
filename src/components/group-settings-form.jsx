@@ -58,7 +58,7 @@ export default class GroupSettingsForm extends React.Component {
     return (
       <form onSubmit={preventDefault(this.saveSettings)}>
         <div className="form-group">
-          <label htmlFor="screenName">Screen name:</label>
+          <label htmlFor="screenName">Display name:</label>
           <input id="screenName" className="form-control" name="screenName" type="text" value={this.state.screenName} onChange={this.handleChange('screenName')}/>
         </div>
         <div className="form-group">
