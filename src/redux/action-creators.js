@@ -488,6 +488,24 @@ export function rejectUserRequest(userName) {
   }
 }
 
+export function resetPostCreateForm() {
+  return {
+    type: ActionTypes.RESET_POST_CREATE_FORM
+  }
+}
+
+export function resetGroupCreateForm() {
+  return {
+    type: ActionTypes.RESET_GROUP_CREATE_FORM
+  }
+}
+
+export function resetGroupUpdateForm() {
+  return {
+    type: ActionTypes.RESET_GROUP_UPDATE_FORM
+  }
+}
+
 export function toggleRealtime() {
   return {
     type: ActionTypes.TOGGLE_REALTIME,

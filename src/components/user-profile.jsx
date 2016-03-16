@@ -128,6 +128,7 @@ export default class UserProfile extends React.Component {
             sendTo={props.sendTo}
             user={props.user}
             createPost={props.createPost}
+            resetPostCreateForm={props.resetPostCreateForm}
             expandSendTo={props.expandSendTo}
             createPostForm={props.createPostForm}
             addAttachmentResponse={props.addAttachmentResponse}
