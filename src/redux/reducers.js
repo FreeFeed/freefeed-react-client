@@ -105,6 +105,9 @@ export function createPostViewState(state = {}, action) {
         isPending: false
       }
     }
+    case ActionTypes.RESET_POST_CREATE_FORM: {
+      return {}
+    }
   }
   return state
 }
@@ -1256,6 +1259,9 @@ export function groupCreateForm(state={}, action) {
     case fail(ActionTypes.CREATE_GROUP): {
       return {...state, status: 'error', errorMessage: (action.payload || {}).err}
     }
+    case ActionTypes.RESET_GROUP_CREATE_FORM: {
+      return {}
+    }
   }
   return state
 }
@@ -1270,6 +1276,9 @@ export function groupSettingsForm(state={}, action) {
     }
     case fail(ActionTypes.UPDATE_GROUP): {
       return {...state, status: 'error', errorMessage: (action.payload || {}).err}
+    }
+    case ActionTypes.RESET_GROUP_UPDATE_FORM: {
+      return {}
     }
   }
   return state

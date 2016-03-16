@@ -27,6 +27,10 @@ export default class GroupCreateForm extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.resetGroupCreateForm()
+  }
+
   render() {
     return (
       <div>

@@ -68,6 +68,10 @@ export default class CreatePost extends React.Component {
     this.setState({ isMoreOpen: !this.state.isMoreOpen })
   }
 
+  componentWillUnmount() {
+    this.props.resetPostCreateForm()
+  }
+
   render() {
     let props = this.props
 
