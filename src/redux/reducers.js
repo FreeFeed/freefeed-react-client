@@ -36,6 +36,10 @@ export function title(state = '', action) {
     case fail(ActionTypes.GET_SINGLE_POST): {
       return 'Error - FreeFeed'
     }
+
+    case ActionTypes.STATIC_PAGE: {
+      return `${action.payload.title} - FreeFeed`
+    }
   }
   return state
 }
