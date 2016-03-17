@@ -54,6 +54,7 @@ export const authMiddleware = store => next => action => {
     setToken(action.payload.authToken)
     next(action)
     store.dispatch(ActionCreators.whoAmI())
+    store.dispatch(ActionCreators.managedGroups())
     return browserHistory.push('/')
   }
 
@@ -98,6 +99,11 @@ export const redirectionMiddleware = store => next => action => {
     return browserHistory.push('/')
   }
 
+  if (action.type === response(ActionTypes.UNADMIN_GROUP_ADMIN) &&
+      store.getState().user.id === action.request.user.id) {
+    browserHistory.push(`/${action.request.groupName}/subscribers`)
+  }
+
   return next(action)
 }
 
@@ -105,6 +111,20 @@ export const scrollMiddleware = store => next => action => {
   if (isFeedResponse(action) || action.type === response(ActionTypes.GET_SINGLE_POST)){
     scrollTo(0, 0)
   }
+  return next(action)
+}
+
+export const pendingRequestsMiddleware = store => next => action => {
+  if (action.type === response(ActionTypes.WHO_AM_I)) {
+    next(action)
+
+    if (store.getState().user.pendingGroupRequests) {
+      store.dispatch(ActionCreators.managedGroups())
+    }
+
+    return
+  }
+
   return next(action)
 }
 

@@ -1,11 +1,11 @@
 @import "../shared/mixins";
 @import "../shared/user-name";
 @import "base";
-@import "boxes";
 @import "header";
 @import "sidebar";
 @import "../shared/forms";
 @import "../shared/post";
+@import "boxes";
 @import "../shared/attachments";
 @import "../shared/likes";
 @import "../shared/comments";
@@ -17,6 +17,7 @@
 @import "../shared/pagination";
 @import "../shared/settings";
 @import "../shared/realtime-switch";
+@import "../shared/groups";
 @import "player";
 @import "react-select";
 @import "~react-dd-menu/src/scss/react-dd-menu.scss";

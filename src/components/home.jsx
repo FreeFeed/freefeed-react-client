@@ -2,7 +2,8 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {createPost, resetPostCreateForm, expandSendTo, toggleHiddenPosts} from '../redux/action-creators'
 import {joinPostData, joinCreatePostData, postActions} from './select-utils'
-import {getQuery} from '../utils'
+import {getQuery, pluralForm} from '../utils'
+import {Link} from 'react-router'
 
 import CreatePost from './create-post'
 import Feed from './feed'
@@ -32,6 +33,17 @@ const FeedHandler = (props) => {
           {props.areOnFirstHomePage && props.authenticated ? <RealtimeSwitch/> : false}
         </div>
       </div>
+
+      {props.authenticated && props.totalRequestsCount > 0 ? (
+        <div className="box-message alert alert-info">
+          <span className="message">
+            <Link to="/requests">
+              You have {pluralForm(props.totalRequestsCount, 'subscription request')} to review.
+            </Link>
+          </span>
+        </div>
+      ) : false}
+
       {props.authenticated ? (
         <PaginatedView firstPageHead={createPostComponent} {...props}>
           <Feed {...props} isInHomeFeed={true}/>
@@ -56,11 +68,13 @@ function selectState(state) {
   const boxHeader = state.boxHeader
   const sendTo = {...state.sendTo, defaultFeed: user.username}
 
+  const totalRequestsCount = state.groupRequestsCount + state.userRequestsCount 
+
   return {
     user, authenticated,
     visibleEntries, hiddenEntries, isHiddenRevealed,
     createPostViewState, createPostForm,
-    timelines, boxHeader, sendTo,
+    timelines, boxHeader, sendTo, totalRequestsCount,
     areOnFirstHomePage: !state.routing.locationBeforeTransitions.query.offset,
   }
 }
