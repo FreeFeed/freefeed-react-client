@@ -3,7 +3,7 @@ import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import _ from 'lodash'
 
-import {updateGroup} from '../redux/action-creators'
+import {updateGroup, resetGroupUpdateForm} from '../redux/action-creators'
 import GroupSettingsForm from './group-settings-form'
 import throbber100 from 'assets/images/throbber.gif'
 
@@ -26,6 +26,7 @@ const GroupSettings = (props) => (
         <GroupSettingsForm
           group={props.group}
           updateGroup={props.updateGroup}
+          resetGroupUpdateForm={props.resetGroupUpdateForm}
           {...props.groupSettingsForm}/>
       </div>
     </div>
@@ -53,7 +54,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateGroup: (...args) => dispatch(updateGroup(...args))
+    updateGroup: (...args) => dispatch(updateGroup(...args)),
+    resetGroupUpdateForm: (...args) => dispatch(resetGroupUpdateForm(...args))
   }
 }
 

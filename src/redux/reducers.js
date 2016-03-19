@@ -2,10 +2,47 @@ import * as ActionTypes from './action-types'
 import * as ActionHelpers from './action-helpers'
 const {request, response, fail} = ActionHelpers
 
-
 import _ from 'lodash'
 import {userParser, postParser} from '../utils'
 import {frontendPreferences as frontendPrefsConfig} from '../config'
+
+export function title(state = '', action) {
+  switch (action.type) {
+    case response(ActionTypes.HOME): {
+      return 'FreeFeed'
+    }
+    case response(ActionTypes.DIRECT): {
+      return 'Direct messages - FreeFeed'
+    }
+    case response(ActionTypes.DISCUSSIONS): {
+      return 'My discussions - FreeFeed'
+    }
+    case response(ActionTypes.GET_USER_FEED): {
+      const user = (action.payload.users || []).filter(user => user.username === action.request.username)[0]
+      const author = user.screenName + (user.username !== user.screenName ? ' (' + user.username + ')' : '')
+      return `${author} - FreeFeed`
+    }
+    case response(ActionTypes.GET_SINGLE_POST): {
+      const text = action.payload.posts.body.substr(0, 60)
+      const user = (action.payload.users || [])[0]
+      const author = user.screenName + (user.username !== user.screenName ? ' (' + user.username + ')' : '')
+      return `${text} - ${author} - FreeFeed`
+    }
+
+    case fail(ActionTypes.HOME):
+    case fail(ActionTypes.DIRECT):
+    case fail(ActionTypes.DISCUSSIONS):
+    case fail(ActionTypes.GET_USER_FEED):
+    case fail(ActionTypes.GET_SINGLE_POST): {
+      return 'Error - FreeFeed'
+    }
+
+    case ActionTypes.STATIC_PAGE: {
+      return `${action.payload.title} - FreeFeed`
+    }
+  }
+  return state
+}
 
 export function signInForm(state={username:'', password:'', error:'', loading: false}, action) {
   switch(action.type) {
@@ -104,6 +141,9 @@ export function createPostViewState(state = {}, action) {
         errorString: CREATE_POST_ERROR,
         isPending: false
       }
+    }
+    case ActionTypes.RESET_POST_CREATE_FORM: {
+      return {}
     }
   }
   return state
@@ -842,9 +882,18 @@ export function posts(state = {}, action) {
     case response(ActionTypes.GET_SINGLE_POST): {
       return updatePostData(state, action)
     }
-    case ActionTypes.REALTIME_POST_NEW:
-    case ActionTypes.REALTIME_POST_UPDATE: {
+    case ActionTypes.REALTIME_POST_NEW: {
       return { ...state, [action.post.id]: postParser(action.post) }
+    }
+    case ActionTypes.REALTIME_POST_UPDATE: {
+      const post = state[action.post.id]
+      return {...state,
+        [post.id]: {...post,
+          body: action.post.body,
+          updatedAt: action.post.updatedAt,
+          attachments: action.post.attachments || []
+        }
+      }
     }
     case ActionTypes.REALTIME_COMMENT_NEW: {
       const post = state[action.comment.postId]
@@ -1247,6 +1296,9 @@ export function groupCreateForm(state={}, action) {
     case fail(ActionTypes.CREATE_GROUP): {
       return {...state, status: 'error', errorMessage: (action.payload || {}).err}
     }
+    case ActionTypes.RESET_GROUP_CREATE_FORM: {
+      return {}
+    }
   }
   return state
 }
@@ -1261,6 +1313,9 @@ export function groupSettingsForm(state={}, action) {
     }
     case fail(ActionTypes.UPDATE_GROUP): {
       return {...state, status: 'error', errorMessage: (action.payload || {}).err}
+    }
+    case ActionTypes.RESET_GROUP_UPDATE_FORM: {
+      return {}
     }
   }
   return state
@@ -1330,8 +1385,22 @@ function getValidRecipients(state) {
     }
   }).filter(Boolean)
 
+  const canPostToGroup = function(subUser) {
+    return (
+      (subUser.isRestricted === '0') ||
+      ((subUser.administrators || []).indexOf(state.users.id) > -1)
+    )
+  }
+
+  const canSendDirect = function(subUser) {
+    return (_.find(state.subscribers || [], { 'id': subUser.id }) !== null)
+  }
+
   const validRecipients = _.filter(subscriptions, (sub) => {
-    return sub.user.type === 'group' || (_.find(state.subscribers || [], { 'id': sub.user.id }) !== null)
+    return (
+      (sub.user.type === 'group' && canPostToGroup(sub.user)) ||
+      (sub.user.type === 'user' && canSendDirect(sub.user))
+    )
   })
 
   return validRecipients
@@ -1465,6 +1534,9 @@ export function groups(state = {}, action) {
         [groupId]: {...oldGroup, ...newGroup}
       }
     }
+    case ActionTypes.UNAUTHENTICATED: {
+      return {}
+    }
   }
 
   return state
@@ -1500,12 +1572,104 @@ const handleSubs = (state, action, type) => {
 
 // for /:username/subscribers
 export function usernameSubscribers(state = {}, action) {
+  if (action.type == response(ActionTypes.UNSUBSCRIBE_FROM_GROUP)) {
+    const userName = action.request.userName
+    return {
+      ...state,
+      payload: state.payload.filter((user) => user.username !== userName)
+    }
+  }
+
   return handleSubs(state, action, ActionTypes.SUBSCRIBERS)
 }
 
 // for /:username/subscriptions
 export function usernameSubscriptions(state = {}, action) {
   return handleSubs(state, action, ActionTypes.SUBSCRIPTIONS)
+}
+
+const removeItemFromGroupRequests = (state, action) => {
+  const userName = action.request.userName
+  const groupName = action.request.groupName
+
+  const group = state.find(group => group.username === groupName)
+
+  if (group && group.requests.length !== 0) {
+    let newGroup = {
+      ...group,
+      requests: group.requests.filter(user => user.username !== userName)
+    }
+
+    return _(state).without(group).push(newGroup).value()
+  }
+
+  return state
+}
+
+export function managedGroups(state = [], action) {
+  switch (action.type) {
+    case response(ActionTypes.MANAGED_GROUPS): {
+      return action.payload.map(group => {
+        group.requests = group.requests.map(userParser)
+        return {...group}
+      })
+    }
+    case response(ActionTypes.ACCEPT_GROUP_REQUEST):
+    case response(ActionTypes.REJECT_GROUP_REQUEST): {
+      return removeItemFromGroupRequests(state, action)
+    }
+    case response(ActionTypes.UNADMIN_GROUP_ADMIN): {
+      if(action.request.isItMe) {
+        return state.filter(group => group.username !== action.request.groupName)
+      }
+    }
+  }
+
+  return state
+}
+
+export function userRequests(state = [], action) {
+  switch (action.type) {
+    case response(ActionTypes.WHO_AM_I): {
+      return (action.payload.requests || []).map(userParser)
+    }
+    case response(ActionTypes.ACCEPT_USER_REQUEST):
+    case response(ActionTypes.REJECT_USER_REQUEST): {
+      const userName = action.request.userName
+      return state.filter((user) => user.username !== userName)
+    }
+  }
+
+  return state
+}
+
+export function groupRequestsCount(state = 0, action) {
+  switch (action.type) {
+    case response(ActionTypes.MANAGED_GROUPS): {
+      return action.payload.reduce((acc, group) => {
+        return acc + group.requests.length
+      }, 0)
+    }
+    case response(ActionTypes.ACCEPT_GROUP_REQUEST):
+    case response(ActionTypes.REJECT_GROUP_REQUEST): {
+      return Math.max(0, state - 1)
+    }
+  }
+
+  return state
+}
+
+export function userRequestsCount(state = 0, action) {
+  switch (action.type) {
+    case response(ActionTypes.WHO_AM_I): {
+      return (action.payload.requests || []).length
+    }
+    case response(ActionTypes.ACCEPT_USER_REQUEST):
+    case response(ActionTypes.REJECT_USER_REQUEST): {
+      return Math.max(0, state - 1)
+    }
+  }
+  return state;
 }
 
 const initialRealtimeSettings = {
@@ -1533,5 +1697,23 @@ export function frontendRealtimePreferencesForm(state=initialRealtimeSettings, a
       return {...state, status: 'error', errorMessage: (action.payload || {}).err}
     }
   }
+  return state
+}
+
+export function groupAdmins(state = [], action) {
+  switch (action.type) {
+    case response(ActionTypes.GET_USER_INFO): {
+      return (action.payload.admins || []).map(userParser)
+    }
+    case response(ActionTypes.MAKE_GROUP_ADMIN): {
+      const user = action.request.user
+      return [...state, user].map(userParser)
+    }
+    case response(ActionTypes.UNADMIN_GROUP_ADMIN): {
+      const user = action.request.user
+      return state.filter((u) => u.username !== user.username)
+    }
+  }
+
   return state
 }

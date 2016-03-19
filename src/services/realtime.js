@@ -2,32 +2,11 @@ import {api as apiConfig} from '../config'
 import {getToken} from './auth'
 import io from 'socket.io-client'
 
-export function init(eventHandlers){
-  const socket = io.connect(`${apiConfig.host}/`, {query: `token=${getToken()}`})
-  Object.keys(eventHandlers).forEach((event) => socket.on(event, eventHandlers[event]))
-  return {
-    socket,
-    changeSubscription: function(newSubscription) {
-      if (this.subscription){
-        this.socket.emit('unsubscribe', this.subscription)
-        this.socket.off('reconnect', this.subscribe)
-      }
-      this.subscription = newSubscription
-      this.subscribe = () => this.socket.emit('subscribe', this.subscription)
-      this.socket.on('reconnect', this.subscribe)
-      this.subscribe()
-    },
-    disconnect: function() {
-      this.socket.disconnect()
-    }
-  }
-}
-
 const dummyPost = {
   getBoundingClientRect: _ => ({top:0})
 }
 
-export const scrollCompensator = dispatchAction => (...actionParams) => {
+const scrollCompensator = dispatchAction => (...actionParams) => {
   //we hope that markup will remain the same — best tradeoff between this and code all over components
   const postCommentNodes = [...document.querySelectorAll('.post, .comment')]
 
@@ -48,4 +27,50 @@ export const scrollCompensator = dispatchAction => (...actionParams) => {
     scrollBy(0, topAfter - topBefore)
   }
   return res
+}
+
+const bindSocketLog = socket => eventName => socket.on(eventName, data => console.log(`socket ${eventName}`, data))
+
+const bindSocketActionsLog = socket => events => events.forEach(bindSocketLog(socket))
+
+const eventsToLog = [
+  'connect',
+  'error',
+  'disconnect',
+  'reconnect',
+]
+
+const bindSocketEventHandlers = socket => eventHandlers => {
+  Object.keys(eventHandlers).forEach((event) => socket.on(event, scrollCompensator(eventHandlers[event])))
+}
+
+const openSocket = _ => io.connect(`${apiConfig.host}/`, {query: `token=${getToken()}`})
+
+export function init(eventHandlers){
+  const socket = openSocket()
+
+  bindSocketEventHandlers(socket)(eventHandlers)
+
+  bindSocketActionsLog(socket)(eventsToLog)
+
+  let subscription
+  let subscribe
+
+  return {
+    unsubscribe: _ => {
+      if (subscription){
+        console.log('unsubscribing from ', subscription)
+        socket.emit('unsubscribe', subscription)
+        socket.off('reconnect', subscribe)
+      }
+    },
+    subscribe: newSubscription => {
+      subscription = newSubscription
+      console.log('subscribing to ', subscription)
+      subscribe = () => socket.emit('subscribe', subscription)
+      socket.on('reconnect', subscribe)
+      subscribe()
+    },
+    disconnect: _ => socket.disconnect()
+  }
 }

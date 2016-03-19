@@ -14,6 +14,13 @@ export function unauthenticated(payload) {
   }
 }
 
+export function staticPage(title) {
+  return {
+    type: ActionTypes.STATIC_PAGE,
+    payload: {title}
+  }
+}
+
 import * as Api from '../services/api'
 
 export function whoAmI() {
@@ -60,6 +67,7 @@ export function showMoreComments(postId) {
   return {
     type: ActionTypes.SHOW_MORE_COMMENTS,
     apiRequest: Api.getPostWithAllComments,
+    nonAuthRequest: true,
     payload: {postId},
   }
 }
@@ -75,6 +83,7 @@ export function showMoreLikesAsync(postId) {
   return {
     type: ActionTypes.SHOW_MORE_LIKES_ASYNC,
     apiRequest: Api.getLikesOnly,
+    nonAuthRequest: true,
     payload: {postId},
   }
 }
@@ -381,6 +390,7 @@ export function getUserComments(username, offset = 0) {
   return {
     type: ActionTypes.GET_USER_COMMENTS,
     apiRequest: Api.getUserComments,
+    nonAuthRequest: true,
     payload: {username, offset},
   }
 }
@@ -389,6 +399,7 @@ export function getUserLikes(username, offset = 0) {
   return {
     type: ActionTypes.GET_USER_LIKES,
     apiRequest: Api.getUserLikes,
+    nonAuthRequest: true,
     payload: {username, offset},
   }
 }
@@ -429,24 +440,105 @@ export function getUserInfo(username) {
   }
 }
 
-export function createGroup(username, screenName, description) {
+export function createGroup(groupSettings) {
   return {
     type: ActionTypes.CREATE_GROUP,
-    payload: {username, screenName, description},
+    payload: groupSettings,
     apiRequest: Api.createGroup
   }
 }
 
-export function updateGroup(id, screenName, description) {
+export function updateGroup(id, groupSettings) {
   return {
     type: ActionTypes.UPDATE_GROUP,
-    payload: {id, screenName, description},
+    payload: {id, groupSettings},
     apiRequest: Api.updateGroup
+  }
+}
+
+export function managedGroups() {
+  return {
+    type: ActionTypes.MANAGED_GROUPS,
+    apiRequest: Api.getManagedGroups
+  }
+}
+
+export function acceptGroupRequest(groupName, userName) {
+  return {
+    type: ActionTypes.ACCEPT_GROUP_REQUEST,
+    payload: {groupName, userName},
+    apiRequest: Api.acceptGroupRequest
+  }
+}
+
+export function rejectGroupRequest(groupName, userName) {
+  return {
+    type: ActionTypes.REJECT_GROUP_REQUEST,
+    payload: {groupName, userName},
+    apiRequest: Api.rejectGroupRequest
+  }
+}
+
+export function acceptUserRequest(userName) {
+  return {
+    type: ActionTypes.ACCEPT_USER_REQUEST,
+    payload: {userName},
+    apiRequest: Api.acceptUserRequest
+  }
+}
+
+export function rejectUserRequest(userName) {
+  return {
+    type: ActionTypes.REJECT_USER_REQUEST,
+    payload: {userName},
+    apiRequest: Api.rejectUserRequest
+  }
+}
+
+export function resetPostCreateForm() {
+  return {
+    type: ActionTypes.RESET_POST_CREATE_FORM
+  }
+}
+
+export function resetGroupCreateForm() {
+  return {
+    type: ActionTypes.RESET_GROUP_CREATE_FORM
+  }
+}
+
+export function resetGroupUpdateForm() {
+  return {
+    type: ActionTypes.RESET_GROUP_UPDATE_FORM
   }
 }
 
 export function toggleRealtime() {
   return {
     type: ActionTypes.TOGGLE_REALTIME,
+  }
+}
+
+export function unsubscribeFromGroup(groupName, userName) {
+  return {
+    type: ActionTypes.UNSUBSCRIBE_FROM_GROUP,
+    payload: {groupName, userName},
+    apiRequest: Api.unsubscribeFromGroup
+  }
+}
+
+export function makeGroupAdmin(groupName, user) {
+  return {
+    type: ActionTypes.MAKE_GROUP_ADMIN,
+    payload: {groupName, user},
+    apiRequest: Api.makeGroupAdmin
+  }
+}
+
+export function unadminGroupAdmin(groupName, user, isItMe) {
+  return {
+    type: ActionTypes.UNADMIN_GROUP_ADMIN,
+    payload: {groupName, user, isItMe},
+    apiRequest: Api.unadminGroupAdmin
   }
 }

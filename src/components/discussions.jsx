@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {createPost, expandSendTo} from '../redux/action-creators'
+import {createPost, resetPostCreateForm, expandSendTo} from '../redux/action-creators'
 import {joinPostData, joinCreatePostData, postActions} from './select-utils'
 import {getQuery} from '../utils'
 
@@ -16,6 +16,7 @@ const FeedHandler = (props) => {
       sendTo={props.sendTo}
       user={props.user}
       createPost={props.createPost}
+      resetPostCreateForm={props.resetPostCreateForm}
       expandSendTo={props.expandSendTo}
       createPostForm={props.createPostForm}
       addAttachmentResponse={props.addAttachmentResponse}
@@ -43,7 +44,7 @@ function selectState(state) {
   const createPostForm = joinCreatePostData(state)
   const timelines = state.timelines
   const boxHeader = state.boxHeader
-  const sendTo = {...state.sendTo, defaultFeed: user.username}
+  const sendTo = {...state.sendTo, defaultFeed: null}
 
   return { user, authenticated, visibleEntries, createPostViewState, createPostForm, timelines, boxHeader, sendTo }
 }
@@ -52,6 +53,7 @@ function selectActions(dispatch) {
   return {
     ...postActions(dispatch),
     createPost: (feeds, postText, attachmentIds, more) => dispatch(createPost(feeds, postText, attachmentIds, more)),
+    resetPostCreateForm: (...args) => dispatch(resetPostCreateForm(...args)),
     expandSendTo: () => dispatch(expandSendTo())
   }
 }

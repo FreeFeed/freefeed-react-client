@@ -17,12 +17,12 @@ export default class SendTo extends React.Component {
     let myFeedUsername = props.user.username
     options.unshift({ label: MY_FEED_LABEL, value: myFeedUsername, type: 'group' })
 
-    this._values = [props.defaultFeed]
+    this._values = (props.defaultFeed ? [props.defaultFeed] : [])
 
     this.state = {
       values: this._values,
       options: options,
-      showFeedsOption: false,
+      showFeedsOption: !props.defaultFeed,
       isWarningDisplayed: false
     }
   }

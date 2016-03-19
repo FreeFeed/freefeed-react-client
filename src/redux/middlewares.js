@@ -1,6 +1,6 @@
 import * as ActionCreators from './action-creators'
 import * as ActionTypes from './action-types'
-import {request, response, fail, requiresAuth, isFeedResponse} from './action-helpers'
+import {request, response, fail, requiresAuth, isFeedRequest, isFeedResponse} from './action-helpers'
 
 //middleware for api requests
 export const apiMiddleware = store => next => async (action) => {
@@ -54,6 +54,7 @@ export const authMiddleware = store => next => action => {
     setToken(action.payload.authToken)
     next(action)
     store.dispatch(ActionCreators.whoAmI())
+    store.dispatch(ActionCreators.managedGroups())
     return browserHistory.push('/')
   }
 
@@ -98,6 +99,11 @@ export const redirectionMiddleware = store => next => action => {
     return browserHistory.push('/')
   }
 
+  if (action.type === response(ActionTypes.UNADMIN_GROUP_ADMIN) &&
+      store.getState().user.id === action.request.user.id) {
+    browserHistory.push(`/${action.request.groupName}/subscribers`)
+  }
+
   return next(action)
 }
 
@@ -108,13 +114,29 @@ export const scrollMiddleware = store => next => action => {
   return next(action)
 }
 
-import {init, scrollCompensator} from '../services/realtime'
+export const pendingRequestsMiddleware = store => next => action => {
+  if (action.type === response(ActionTypes.WHO_AM_I)) {
+    next(action)
+
+    if (store.getState().user.pendingGroupRequests) {
+      store.dispatch(ActionCreators.managedGroups())
+    }
+
+    return
+  }
+
+  return next(action)
+}
+
+import {init} from '../services/realtime'
 import {frontendPreferences as frontendPrefsConfig} from '../config'
 
 const bindHandlers = store => ({
-  'post:new': scrollCompensator(data => {
+  'post:new': data => {
     const state = store.getState()
+
     const isFirstPage = !state.routing.locationBeforeTransitions.query.offset
+
     if (isFirstPage){
 
       const isHomeFeed = state.routing.locationBeforeTransitions.pathname === '/'
@@ -125,54 +147,49 @@ const bindHandlers = store => ({
       }
     }
     return false
-  }),
-  'post:update': scrollCompensator(data => store.dispatch({...data, type: ActionTypes.REALTIME_POST_UPDATE, post: data.posts})),
-  'post:destroy': scrollCompensator(data => store.dispatch({type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId})),
-  'post:hide': scrollCompensator(data => store.dispatch({type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId})),
-  'post:unhide': scrollCompensator(data => store.dispatch({type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId})),
-  'comment:new': scrollCompensator(data => store.dispatch({...data, type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments})),
-  'comment:update': scrollCompensator(data => store.dispatch({...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments})),
-  'comment:destroy': scrollCompensator(data => store.dispatch({type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId, postId: data.postId})),
-  'like:new': scrollCompensator(data => store.dispatch({type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, users:[data.users]})),
-  'like:remove': scrollCompensator(data => store.dispatch({type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId})),
+  },
+  'post:update': data => store.dispatch({...data, type: ActionTypes.REALTIME_POST_UPDATE, post: data.posts}),
+  'post:destroy': data => store.dispatch({type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId}),
+  'post:hide': data => store.dispatch({type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId}),
+  'post:unhide': data => store.dispatch({type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId}),
+  'comment:new': data => store.dispatch({...data, type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments}),
+  'comment:update': data => store.dispatch({...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments}),
+  'comment:destroy': data => store.dispatch({type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId, postId: data.postId}),
+  'like:new': data => store.dispatch({type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, users:[data.users]}),
+  'like:remove': data => store.dispatch({type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId}),
 })
 
 export const realtimeMiddleware = store => {
+  const handlers = bindHandlers(store)
   let realtimeConnection
   return next => action => {
 
-    switch(action.type){
-      case ActionTypes.UNAUTHENTICATED: {
-        if (realtimeConnection){
-          realtimeConnection.disconnect()
-          realtimeConnection = undefined
-        }
-        break
+    if (action.type === ActionTypes.UNAUTHENTICATED) {
+      if (realtimeConnection){
+        realtimeConnection.disconnect()
+        realtimeConnection = undefined
       }
-      case response(ActionTypes.SIGN_IN): {
-        if (!realtimeConnection){
-          realtimeConnection = init(bindHandlers(store))
-        }
-        break
-      }
-      case response(ActionTypes.WHO_AM_I): {
-        if (!realtimeConnection){
-          realtimeConnection = init(bindHandlers(store))
-        }
-        break
+    }
+
+    if (isFeedRequest(action) ||
+      action.type === request(ActionTypes.GET_SINGLE_POST)){
+      if (realtimeConnection){
+        realtimeConnection.unsubscribe()
       }
     }
 
     if (isFeedResponse(action)){
-      if (realtimeConnection){
-        realtimeConnection.changeSubscription({timeline:[action.payload.timelines.id]})
+      if (!realtimeConnection){
+        realtimeConnection = init(handlers)
       }
+      realtimeConnection.subscribe({timeline:[action.payload.timelines.id]})
     }
 
     if (action.type === response(ActionTypes.GET_SINGLE_POST)){
-      if (realtimeConnection){
-        realtimeConnection.changeSubscription({post:[action.payload.posts.id]})
+      if (!realtimeConnection){
+        realtimeConnection = init(handlers)
       }
+      realtimeConnection.subscribe({post:[action.payload.posts.id]})
     }
 
     return next(action)

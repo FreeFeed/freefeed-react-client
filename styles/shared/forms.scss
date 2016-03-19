@@ -63,3 +63,18 @@
   max-width: 100%;
   margin-bottom: 3px;
 }
+
+label.option-box {
+  display: block;
+
+  .input {
+    display: table-cell;
+  }
+
+  .option {
+    display: table-cell;
+    font-weight: normal;
+    padding-left: 10px;
+    padding-bottom: 5px;
+  }
+}
