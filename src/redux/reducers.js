@@ -155,6 +155,24 @@ const initFeed = {
   isHiddenRevealed: false
 }
 
+const hidePostInFeed = function(state, postId) {
+  // Add it to hiddenEntries, but don't remove from visibleEntries just yet
+  // (for the sake of "Undo")
+  return {...state,
+    hiddenEntries: [postId, ...state.hiddenEntries]
+  }
+}
+
+const unhidePostInFeed = function(state, postId) {
+  // Remove it from hiddenEntries and add to visibleEntries
+  // (but check first if it's already in there, since this might be an "Undo" happening)
+  const itsStillThere = (state.visibleEntries.indexOf(postId) > -1)
+  return {...state,
+    visibleEntries: (itsStillThere ? state.visibleEntries : [...state.visibleEntries, postId]),
+    hiddenEntries: _.without(state.hiddenEntries, postId)
+  }
+}
+
 export function feedViewState(state = initFeed, action) {
   if (ActionHelpers.isFeedRequest(action)){
     return state
@@ -209,35 +227,16 @@ export function feedViewState(state = initFeed, action) {
       return initFeed
     }
     case response(ActionTypes.HIDE_POST): {
-      // Add it to hiddenEntries, but don't remove from visibleEntries just yet
-      // (for the sake of "Undo")
-      const postId = action.request.postId
-      return {...state,
-        hiddenEntries: [postId, ...state.hiddenEntries]
-      }
+      return hidePostInFeed(state, action.request.postId)
     }
     case ActionTypes.REALTIME_POST_HIDE: {
-      return {...state,
-        hiddenEntries: [action.postId, ...state.hiddenEntries]
-      }
+      return hidePostInFeed(state, action.postId)
     }
     case response(ActionTypes.UNHIDE_POST): {
-      // Remove it from hiddenEntries and add to visibleEntries
-      // (but check first if it's already in there, since this might be an "Undo" happening)
-      const postId = action.request.postId
-      const itsStillThere = (state.visibleEntries.indexOf(postId) > -1)
-      return {...state,
-        visibleEntries: (itsStillThere ? state.visibleEntries : [...state.visibleEntries, postId]),
-        hiddenEntries: _.without(state.hiddenEntries, postId)
-      }
+      return unhidePostInFeed(state, action.request.postId)
     }
     case ActionTypes.REALTIME_POST_UNHIDE: {
-      const postId = action.postId
-      const itsStillThere = (state.visibleEntries.indexOf(postId) > -1)
-      return {...state,
-        visibleEntries: (itsStillThere ? state.visibleEntries : [...state.visibleEntries, postId]),
-        hiddenEntries: _.without(state.hiddenEntries, postId)
-      }
+      return unhidePostInFeed(state, action.postId)
     }
     case ActionTypes.TOGGLE_HIDDEN_POSTS: {
       return {...state,
