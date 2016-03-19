@@ -1662,7 +1662,7 @@ export function groupRequestsCount(state = 0, action) {
 export function userRequestsCount(state = 0, action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
-      return (action.payload.requests || []).length
+      return (action.payload.users.subscriptionRequests || []).length
     }
     case response(ActionTypes.ACCEPT_USER_REQUEST):
     case response(ActionTypes.REJECT_USER_REQUEST): {
