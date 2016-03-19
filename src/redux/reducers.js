@@ -1631,7 +1631,12 @@ export function managedGroups(state = [], action) {
 export function userRequests(state = [], action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
-      return (action.payload.requests || []).map(userParser)
+      const incomingRequestIds = (action.payload.users.subscriptionRequests || [])
+      const allRequests = action.payload.requests
+      const incomingRequests = incomingRequestIds
+        .map(userId => _.find(allRequests || [], { 'id': userId }))
+        .filter(Boolean)
+      return incomingRequests.map(userParser)
     }
     case response(ActionTypes.ACCEPT_USER_REQUEST):
     case response(ActionTypes.REJECT_USER_REQUEST): {
