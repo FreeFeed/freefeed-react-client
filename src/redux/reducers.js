@@ -157,7 +157,12 @@ const initFeed = {
 
 const hidePostInFeed = function(state, postId) {
   // Add it to hiddenEntries, but don't remove from visibleEntries just yet
-  // (for the sake of "Undo")
+  // (for the sake of "Undo"). And check first if it's already in hiddenEntries,
+  // since realtime event might come first.
+  const itsAlreadyThere = (state.hiddenEntries.indexOf(postId) > -1)
+  if (itsAlreadyThere) {
+    return state
+  }
   return {...state,
     hiddenEntries: [postId, ...state.hiddenEntries]
   }
@@ -165,7 +170,8 @@ const hidePostInFeed = function(state, postId) {
 
 const unhidePostInFeed = function(state, postId) {
   // Remove it from hiddenEntries and add to visibleEntries
-  // (but check first if it's already in there, since this might be an "Undo" happening)
+  // (but check first if it's already in there, since this might be an "Undo" happening,
+  // and/or realtime event might come first).
   const itsStillThere = (state.visibleEntries.indexOf(postId) > -1)
   return {...state,
     visibleEntries: (itsStillThere ? state.visibleEntries : [...state.visibleEntries, postId]),
