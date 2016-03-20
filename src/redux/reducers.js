@@ -1628,10 +1628,19 @@ export function managedGroups(state = [], action) {
   return state
 }
 
+const findByIds = (collection, ids) => {
+  return _.filter(collection, (item) => _.contains(ids, item.id))
+}
+
+const subscriptionRequests = (whoamiPayload) => {
+  const subscriptionRequestsIds = whoamiPayload.users.subscriptionRequests || []
+  return findByIds(whoamiPayload.requests || [], subscriptionRequestsIds).map(userParser)
+}
+
 export function userRequests(state = [], action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
-      return (action.payload.requests || []).map(userParser)
+      return subscriptionRequests(action.payload)
     }
     case response(ActionTypes.ACCEPT_USER_REQUEST):
     case response(ActionTypes.REJECT_USER_REQUEST): {
@@ -1662,7 +1671,7 @@ export function groupRequestsCount(state = 0, action) {
 export function userRequestsCount(state = 0, action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
-      return (action.payload.requests || []).length
+      return subscriptionRequests(action.payload).length
     }
     case response(ActionTypes.ACCEPT_USER_REQUEST):
     case response(ActionTypes.REJECT_USER_REQUEST): {
