@@ -9,6 +9,7 @@ import ReactDOM from 'react-dom'
 import {Router, Route, IndexRoute, browserHistory} from 'react-router'
 import {Provider} from 'react-redux'
 import {syncHistoryWithStore} from 'react-router-redux'
+import Autotrack from 'autotrack'
 
 import configureStore from './redux/configure-store'
 import * as ActionCreators from './redux/action-creators'

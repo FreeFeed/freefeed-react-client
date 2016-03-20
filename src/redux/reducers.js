@@ -155,6 +155,30 @@ const initFeed = {
   isHiddenRevealed: false
 }
 
+const hidePostInFeed = function(state, postId) {
+  // Add it to hiddenEntries, but don't remove from visibleEntries just yet
+  // (for the sake of "Undo"). And check first if it's already in hiddenEntries,
+  // since realtime event might come first.
+  const itsAlreadyThere = (state.hiddenEntries.indexOf(postId) > -1)
+  if (itsAlreadyThere) {
+    return state
+  }
+  return {...state,
+    hiddenEntries: [postId, ...state.hiddenEntries]
+  }
+}
+
+const unhidePostInFeed = function(state, postId) {
+  // Remove it from hiddenEntries and add to visibleEntries
+  // (but check first if it's already in there, since this might be an "Undo" happening,
+  // and/or realtime event might come first).
+  const itsStillThere = (state.visibleEntries.indexOf(postId) > -1)
+  return {...state,
+    visibleEntries: (itsStillThere ? state.visibleEntries : [...state.visibleEntries, postId]),
+    hiddenEntries: _.without(state.hiddenEntries, postId)
+  }
+}
+
 export function feedViewState(state = initFeed, action) {
   if (ActionHelpers.isFeedRequest(action)){
     return state
@@ -209,35 +233,16 @@ export function feedViewState(state = initFeed, action) {
       return initFeed
     }
     case response(ActionTypes.HIDE_POST): {
-      // Add it to hiddenEntries, but don't remove from visibleEntries just yet
-      // (for the sake of "Undo")
-      const postId = action.request.postId
-      return {...state,
-        hiddenEntries: [postId, ...state.hiddenEntries]
-      }
+      return hidePostInFeed(state, action.request.postId)
     }
     case ActionTypes.REALTIME_POST_HIDE: {
-      return {...state,
-        hiddenEntries: [action.postId, ...state.hiddenEntries]
-      }
+      return hidePostInFeed(state, action.postId)
     }
     case response(ActionTypes.UNHIDE_POST): {
-      // Remove it from hiddenEntries and add to visibleEntries
-      // (but check first if it's already in there, since this might be an "Undo" happening)
-      const postId = action.request.postId
-      const itsStillThere = (state.visibleEntries.indexOf(postId) > -1)
-      return {...state,
-        visibleEntries: (itsStillThere ? state.visibleEntries : [...state.visibleEntries, postId]),
-        hiddenEntries: _.without(state.hiddenEntries, postId)
-      }
+      return unhidePostInFeed(state, action.request.postId)
     }
     case ActionTypes.REALTIME_POST_UNHIDE: {
-      const postId = action.postId
-      const itsStillThere = (state.visibleEntries.indexOf(postId) > -1)
-      return {...state,
-        visibleEntries: (itsStillThere ? state.visibleEntries : [...state.visibleEntries, postId]),
-        hiddenEntries: _.without(state.hiddenEntries, postId)
-      }
+      return unhidePostInFeed(state, action.postId)
     }
     case ActionTypes.TOGGLE_HIDDEN_POSTS: {
       return {...state,
@@ -1393,7 +1398,7 @@ function getValidRecipients(state) {
   }
 
   const canSendDirect = function(subUser) {
-    return (_.find(state.subscribers || [], { 'id': subUser.id }) !== null)
+    return (_.findIndex(state.users.subscribers || [], { 'id': subUser.id }) > -1)
   }
 
   const validRecipients = _.filter(subscriptions, (sub) => {
@@ -1628,10 +1633,19 @@ export function managedGroups(state = [], action) {
   return state
 }
 
+const findByIds = (collection, ids) => {
+  return _.filter(collection, (item) => _.contains(ids, item.id))
+}
+
+const subscriptionRequests = (whoamiPayload) => {
+  const subscriptionRequestsIds = whoamiPayload.users.subscriptionRequests || []
+  return findByIds(whoamiPayload.requests || [], subscriptionRequestsIds).map(userParser)
+}
+
 export function userRequests(state = [], action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
-      return (action.payload.requests || []).map(userParser)
+      return subscriptionRequests(action.payload)
     }
     case response(ActionTypes.ACCEPT_USER_REQUEST):
     case response(ActionTypes.REJECT_USER_REQUEST): {
@@ -1662,7 +1676,7 @@ export function groupRequestsCount(state = 0, action) {
 export function userRequestsCount(state = 0, action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
-      return (action.payload.requests || []).length
+      return subscriptionRequests(action.payload).length
     }
     case response(ActionTypes.ACCEPT_USER_REQUEST):
     case response(ActionTypes.REJECT_USER_REQUEST): {
