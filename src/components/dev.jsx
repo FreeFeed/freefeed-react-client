@@ -24,12 +24,11 @@ export default (props) => (
 
       <p>[x] v 0.6 React frontend<br/>
         [x] v 0.7 Add real-time updates to the frontend<br/>
-        [ &nbsp;] v 0.8 Add support for private groups<br/>
+        [x] v 0.8 Add support for private groups<br/>
         [ &nbsp;] v 0.9 Migrate to Postgres<br/>
         [ &nbsp;] v 1.0 Support for search and #hashtags</p>
 
-      <p>Please <a href="mailto:freefeed.net@gmail.com">contact us</a> to join
-        our team of volunteers.</p>
+      <p><a href="https://dev.freefeed.net" target="_blank">Join</a> our team of volunteers!</p>
 
       <p>P.S. We welcome contributions of features outside of the core ones
         outlined above, however we feel that the core has higher priority
