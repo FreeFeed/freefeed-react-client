@@ -1393,7 +1393,7 @@ function getValidRecipients(state) {
   }
 
   const canSendDirect = function(subUser) {
-    return (_.find(state.subscribers || [], { 'id': subUser.id }) !== null)
+    return (_.findIndex(state.users.subscribers || [], { 'id': subUser.id }) > -1)
   }
 
   const validRecipients = _.filter(subscriptions, (sub) => {
