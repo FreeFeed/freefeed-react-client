@@ -1433,23 +1433,20 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
       }
     }
     case ActionTypes.EXPAND_SEND_TO: {
-      return {
-        expanded: true,
-        feeds: state.feeds
+      return {...state,
+        expanded: true
       }
     }
     case response(ActionTypes.CREATE_GROUP): {
       let groupId = action.payload.groups.id
       let group = userParser(action.payload.groups)
-      return {
-        expanded: state.expanded,
+      return {...state,
         feeds: [ ...state.feeds, { id: groupId, user: group } ]
       }
     }
     case response(ActionTypes.SUBSCRIBE):
     case response(ActionTypes.UNSUBSCRIBE): {
-      return {
-        ...state,
+      return {...state,
         feeds: getValidRecipients(action.payload)
       }
     }
