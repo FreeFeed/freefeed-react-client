@@ -1437,6 +1437,11 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
         expanded: true
       }
     }
+    case response(ActionTypes.CREATE_POST): {
+      return {...state,
+        expanded: false
+      }
+    }
     case response(ActionTypes.CREATE_GROUP): {
       let groupId = action.payload.groups.id
       let group = userParser(action.payload.groups)
