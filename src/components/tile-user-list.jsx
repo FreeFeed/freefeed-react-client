@@ -9,12 +9,13 @@ import {preventDefault} from '../utils'
 const renderUsers = (type) => (user) => {
   return (
     <li key={user.id}>
-      <Link to={`/${user.username}`}>
-        <div className="avatar">
+      <div className="avatar">
+        <Link to={`/${user.username}`}>
           <img src={user.profilePictureUrl}/>
-        </div>
-        <UserName user={user}/>
-      </Link>
+        </Link>
+      </div>
+
+      <UserName user={user}/>
 
       {type == WITH_REQUEST_HANDLES ? (
         <div className='user-actions'>
@@ -76,7 +77,8 @@ export const tileUserListFactory = (config) => (props) => {
 
   const listClasses = classnames({
     'tile-list': true,
-    'large-pics': config.size === 'large'
+    'large-pics': config.size === 'large',
+    'with-actions': config.type !== PLAIN
   })
 
   return (

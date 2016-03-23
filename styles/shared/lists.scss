@@ -11,15 +11,15 @@ ul.tile-list {
     padding-top: 10px;
     text-align: center;
 
+    .avatar {
+      margin-bottom: 5px;
+    }
+
     a {
       display: block;
       line-height: 130%;
       font-size: 12px;
       color: #4c4c4c;
-
-      .avatar {
-        margin-bottom: 5px;
-      }
     }
 
     .user-actions {
@@ -31,8 +31,16 @@ ul.tile-list {
     }
   }
 
+  &.with-actions li {
+    height: 130px;
+  }
+
   &.large-pics li {
     height: 140px;
+  }
+
+  &.with-actions.large-pics li {
+    height: 160px;
   }
 
   @include clearfix();
