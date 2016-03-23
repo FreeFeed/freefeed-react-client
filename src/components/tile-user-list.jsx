@@ -3,6 +3,7 @@ import {Link} from 'react-router'
 import classnames from 'classnames'
 import _ from 'lodash'
 
+import UserName from './user-name'
 import {preventDefault} from '../utils'
 
 const renderUsers = (type) => (user) => {
@@ -12,7 +13,7 @@ const renderUsers = (type) => (user) => {
         <div className="avatar">
           <img src={user.profilePictureUrl}/>
         </div>
-        <span>{user.screenName}</span>
+        <UserName user={user}/>
       </Link>
 
       {type == WITH_REQUEST_HANDLES ? (
