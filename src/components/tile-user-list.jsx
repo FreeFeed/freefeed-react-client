@@ -68,7 +68,12 @@ export const tileUserListFactory = (config) => (props) => {
   const usersData = props.users.map(user => {
     return {
       ..._.pick(user, ['id', 'screenName', 'username']),
-      profilePictureUrl: (config.size === 'large') ? user.profilePictureLargeUrl : user.profilePictureMediumUrl,
+      profilePictureUrl:
+        (user.profilePictureUrl
+          ? user.profilePictureUrl
+          : (config.size === 'large'
+            ? user.profilePictureLargeUrl
+            : user.profilePictureMediumUrl)),
       ...pickActions(config.type, props)
     }
   })
