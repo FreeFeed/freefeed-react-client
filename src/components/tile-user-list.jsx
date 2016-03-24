@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import _ from 'lodash'
 
 import UserName from './user-name'
-import {preventDefault} from '../utils'
+import {confirmFirst} from '../utils'
 
 const renderUsers = (type) => (user) => {
   return (
@@ -18,24 +18,24 @@ const renderUsers = (type) => (user) => {
       <UserName user={user}/>
 
       {type == WITH_REQUEST_HANDLES ? (
-        <div className='user-actions'>
-          <a onClick={preventDefault(() => user.acceptRequest(user.username))}>Accept</a>
-          <span> | </span>
-          <a onClick={preventDefault(() => user.rejectRequest(user.username))}>Reject</a>
+        <div className="user-actions">
+          <a onClick={() => user.acceptRequest(user.username)}>Accept</a>
+          <span> - </span>
+          <a onClick={() => user.rejectRequest(user.username)}>Reject</a>
         </div>
       ) : false}
 
       {type == WITH_REMOVE_AND_MAKE_ADMIN_HANDLES ? (
-        <div className='user-actions'>
-          <a onClick={preventDefault(() => user.remove(user.username))}>Remove</a>
-          <br/>
-          <a onClick={preventDefault(() => user.makeAdmin(user))}>Make admin</a>
+        <div className="user-actions">
+          <a onClick={() => user.makeAdmin(user)} title="Promote user to admin">Promote</a>
+          <span> - </span>
+          <a onClick={confirmFirst(() => user.remove(user.username))} title="Unsubscribe user from the group">Unsub</a>
         </div>
       ) : false}
 
       {type == WITH_REMOVE_ADMIN_RIGHTS ? (
-        <div className='user-actions'>
-          <a onClick={preventDefault(() => user.removeAdminRights(user))}>Remove admin rights</a>
+        <div className="user-actions">
+          <a onClick={() => user.removeAdminRights(user)} title="Demote user from admin">Demote</a>
         </div>
       ) : false}
       
