@@ -1,4 +1,49 @@
-.be-fe-username {
-  opacity: .66;
-  font-weight: 400;
+.user-name-wrapper {
+  display: inline;
+  position: relative;
+}
+
+.user-card {
+  position: absolute;
+  z-index: 10000;
+  top: 30px;
+  left: 0;
+  width: 250px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.5);
+
+  &:before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    left: 14px;
+    top: -5px;
+    width: 12px;
+    height: 12px;
+    background: inherit;
+    transform: rotate(45deg);
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.5);
+  }
+
+  .user-card-info {
+    height: 97px; // 75px + 2px + 20px
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 2px;
+  }
+
+  .userpic {
+    float: left;
+    border: 1px #ccc solid;
+    margin: 0 10px 0 0;
+  }
+
+  .display-name {
+    font-weight: bold;
+  }
+
+  .username {
+    color: #666;
+  }
 }
