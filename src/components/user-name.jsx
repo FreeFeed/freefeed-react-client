@@ -2,7 +2,6 @@ import React from 'react'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
 
-import {preventDefault} from '../utils'
 import * as FrontendPrefsOptions from '../utils/frontend-preferences-options'
 
 const DisplayOption = ({user, me, preferences}) => {
@@ -29,18 +28,22 @@ const DisplayOption = ({user, me, preferences}) => {
   return <span>{user.screenName}</span>
 }
 
-const UserName = (props) => (
-  <Link to={`/${props.user.username}`} className={`user-name-info ${props.className}`}>
-    {props.display ? (
-      <span>{props.display}</span>
-    ) : (
-      <DisplayOption
-        user={props.user}
-        me={props.me}
-        preferences={props.frontendPreferences.displayNames}/>
-    )}
-  </Link>
-)
+class UserName extends React.Component {
+  render() {
+    return (
+      <Link to={`/${this.props.user.username}`} className={`user-name-info ${this.props.className}`}>
+        {this.props.display ? (
+          <span>{this.props.display}</span>
+        ) : (
+          <DisplayOption
+            user={this.props.user}
+            me={this.props.me}
+            preferences={this.props.frontendPreferences.displayNames}/>
+        )}
+      </Link>
+    )
+  }
+}
 
 const mapStateToProps = (state) => {
   return {
