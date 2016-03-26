@@ -30,20 +30,37 @@
     height: 97px; // 75px + 2px + 20px
     padding: 10px;
     background-color: #fff;
-    border-radius: 2px;
+    border-top-right-radius: 2px;
+    border-top-left-radius: 2px;
+
+    .userpic {
+      float: left;
+      border: 1px #ccc solid;
+      margin: 0 10px 0 0;
+    }
+
+    .display-name {
+      font-weight: bold;
+    }
+
+    .username {
+      color: #666;
+    }
   }
 
-  .userpic {
-    float: left;
-    border: 1px #ccc solid;
-    margin: 0 10px 0 0;
-  }
+  .user-card-actions {
+    border-top: 1px #e4e4e4 solid;
+    padding: 5px 10px 6px 10px;
+    background-color: #f4f4f4;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
 
-  .display-name {
-    font-weight: bold;
-  }
-
-  .username {
     color: #666;
+    font-size: 14px !important;
+
+    a {
+      color: #555599 !important;
+      font-weight: normal !important;
+    }
   }
 }

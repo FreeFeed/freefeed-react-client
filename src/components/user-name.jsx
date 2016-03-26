@@ -77,7 +77,7 @@ class UserName extends React.Component {
         </Link>
 
         {this.state.isCardOpen ? (
-          <UserCard user={this.props.user}/>
+          <UserCard username={this.props.user.username}/>
         ) : false}
       </div>
     )
