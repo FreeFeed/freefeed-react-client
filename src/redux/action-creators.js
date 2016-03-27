@@ -14,6 +14,13 @@ export function unauthenticated(payload) {
   }
 }
 
+export function staticPage(title) {
+  return {
+    type: ActionTypes.STATIC_PAGE,
+    payload: {title}
+  }
+}
+
 import * as Api from '../services/api'
 
 export function whoAmI() {

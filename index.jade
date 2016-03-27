@@ -44,6 +44,15 @@ html(lang='en')
                   #js-disabled-warn.alert.alert-danger(role='alert')
                     strong Javascript is disabled!
                     |  Looks like you have JavaScript disabled in your browser. Please enable it to enjoy our service.
+
     if opts.livereload
       script( src="/webpack-dev-server.js" )
+
+    script.
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-62517081-1', 'auto');
+      ga('require', 'autotrack');
+      ga('send', 'pageview');
+    script(async src='https://www.google-analytics.com/analytics.js')
+
     script(src='[[ app-*.js ]]')

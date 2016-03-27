@@ -9,6 +9,7 @@ import ReactDOM from 'react-dom'
 import {Router, Route, IndexRoute, browserHistory} from 'react-router'
 import {Provider} from 'react-redux'
 import {syncHistoryWithStore} from 'react-router-redux'
+import Autotrack from 'autotrack'
 
 import configureStore from './redux/configure-store'
 import * as ActionCreators from './redux/action-creators'
@@ -55,22 +56,26 @@ const manageSubscribersActions = next => {
   store.dispatch(ActionCreators.subscribers(username))
 }
 
+const enterStaticPage = title => () => {
+  store.dispatch(ActionCreators.staticPage(title))
+}
+
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
       <Route path='/' component={Layout}>
         <IndexRoute name='home' component={Home} onEnter={boundRouteActions('home')}/>
-        <Route path='about' component={About}/>
-        <Route path='dev' component={Dev}/>
-        <Route path='signin' component={Signin}/>
-        <Route path='signup' component={Signup}/>
-        <Route path='settings' component={Settings}/>
+        <Route path='about' component={About} onEnter={enterStaticPage('About')}/>
+        <Route path='dev' component={Dev} onEnter={enterStaticPage('Developers')}/>
+        <Route path='signin' component={Signin} onEnter={enterStaticPage('Sign in')}/>
+        <Route path='signup' component={Signup} onEnter={enterStaticPage('Sign up')}/>
+        <Route path='settings' component={Settings} onEnter={enterStaticPage('Settings')}/>
         <Route name='groupSettings' path='/:userName/settings' component={GroupSettings} onEnter={boundRouteActions('getUserInfo')}/>
         <Route name='discussions' path='filter/discussions' component={Discussions} onEnter={boundRouteActions('discussions')}/>
         <Route name='direct' path='filter/direct' component={Discussions} onEnter={boundRouteActions('direct')}/>
-        <Route name='groups' path='/groups' component={Groups}/>
-        <Route name='groupCreate' path='/groups/create' component={GroupCreate}/>
-        <Route name='requests' path='/requests' component={Requests}/>
+        <Route name='groups' path='/groups' component={Groups} onEnter={enterStaticPage('Groups')}/>
+        <Route name='groupCreate' path='/groups/create' component={GroupCreate} onEnter={enterStaticPage('Create a group')}/>
+        <Route name='requests' path='/requests' component={Requests} onEnter={enterStaticPage('Subscription requests')}/>
         <Route name='userFeed' path='/:userName' component={User} onEnter={boundRouteActions('userFeed')}/>
         <Route name='subscribers' path='/:userName/subscribers' component={Subscribers} onEnter={boundRouteActions('subscribers')}/>
         <Route name='subscriptions' path='/:userName/subscriptions' component={Subscriptions} onEnter={boundRouteActions('subscriptions')}/>

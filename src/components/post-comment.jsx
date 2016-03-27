@@ -64,11 +64,12 @@ export default class PostComment extends React.Component{
     }
   }
 
-  componentWillReceiveProps(newProps){
-    const justSaved = this.props.isSaving && !newProps.isSaving
-    const noError = !newProps.errorString
-    const shouldClearText = justSaved && noError
-    if (shouldClearText){
+  componentWillReceiveProps(newProps) {
+    const wasCommentJustSaved = this.props.isSaving && !newProps.isSaving
+    const wasThereNoError = !newProps.errorString
+    const isItSinglePostAddingComment = newProps.isSinglePost
+    const shouldClearText = (wasCommentJustSaved && wasThereNoError && isItSinglePostAddingComment)
+    if (shouldClearText) {
       this.setState({editText: ''})
     }
   }

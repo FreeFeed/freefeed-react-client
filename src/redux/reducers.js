@@ -2,10 +2,47 @@ import * as ActionTypes from './action-types'
 import * as ActionHelpers from './action-helpers'
 const {request, response, fail} = ActionHelpers
 
-
 import _ from 'lodash'
 import {userParser, postParser} from '../utils'
 import {frontendPreferences as frontendPrefsConfig} from '../config'
+
+export function title(state = '', action) {
+  switch (action.type) {
+    case response(ActionTypes.HOME): {
+      return 'FreeFeed'
+    }
+    case response(ActionTypes.DIRECT): {
+      return 'Direct messages - FreeFeed'
+    }
+    case response(ActionTypes.DISCUSSIONS): {
+      return 'My discussions - FreeFeed'
+    }
+    case response(ActionTypes.GET_USER_FEED): {
+      const user = (action.payload.users || []).filter(user => user.username === action.request.username)[0]
+      const author = user.screenName + (user.username !== user.screenName ? ' (' + user.username + ')' : '')
+      return `${author} - FreeFeed`
+    }
+    case response(ActionTypes.GET_SINGLE_POST): {
+      const text = action.payload.posts.body.substr(0, 60)
+      const user = (action.payload.users || [])[0]
+      const author = user.screenName + (user.username !== user.screenName ? ' (' + user.username + ')' : '')
+      return `${text} - ${author} - FreeFeed`
+    }
+
+    case fail(ActionTypes.HOME):
+    case fail(ActionTypes.DIRECT):
+    case fail(ActionTypes.DISCUSSIONS):
+    case fail(ActionTypes.GET_USER_FEED):
+    case fail(ActionTypes.GET_SINGLE_POST): {
+      return 'Error - FreeFeed'
+    }
+
+    case ActionTypes.STATIC_PAGE: {
+      return `${action.payload.title} - FreeFeed`
+    }
+  }
+  return state
+}
 
 export function signInForm(state={username:'', password:'', error:'', loading: false}, action) {
   switch(action.type) {
@@ -118,6 +155,30 @@ const initFeed = {
   isHiddenRevealed: false
 }
 
+const hidePostInFeed = function(state, postId) {
+  // Add it to hiddenEntries, but don't remove from visibleEntries just yet
+  // (for the sake of "Undo"). And check first if it's already in hiddenEntries,
+  // since realtime event might come first.
+  const itsAlreadyThere = (state.hiddenEntries.indexOf(postId) > -1)
+  if (itsAlreadyThere) {
+    return state
+  }
+  return {...state,
+    hiddenEntries: [postId, ...state.hiddenEntries]
+  }
+}
+
+const unhidePostInFeed = function(state, postId) {
+  // Remove it from hiddenEntries and add to visibleEntries
+  // (but check first if it's already in there, since this might be an "Undo" happening,
+  // and/or realtime event might come first).
+  const itsStillThere = (state.visibleEntries.indexOf(postId) > -1)
+  return {...state,
+    visibleEntries: (itsStillThere ? state.visibleEntries : [...state.visibleEntries, postId]),
+    hiddenEntries: _.without(state.hiddenEntries, postId)
+  }
+}
+
 export function feedViewState(state = initFeed, action) {
   if (ActionHelpers.isFeedRequest(action)){
     return state
@@ -172,35 +233,16 @@ export function feedViewState(state = initFeed, action) {
       return initFeed
     }
     case response(ActionTypes.HIDE_POST): {
-      // Add it to hiddenEntries, but don't remove from visibleEntries just yet
-      // (for the sake of "Undo")
-      const postId = action.request.postId
-      return {...state,
-        hiddenEntries: [postId, ...state.hiddenEntries]
-      }
+      return hidePostInFeed(state, action.request.postId)
     }
     case ActionTypes.REALTIME_POST_HIDE: {
-      return {...state,
-        hiddenEntries: [action.postId, ...state.hiddenEntries]
-      }
+      return hidePostInFeed(state, action.postId)
     }
     case response(ActionTypes.UNHIDE_POST): {
-      // Remove it from hiddenEntries and add to visibleEntries
-      // (but check first if it's already in there, since this might be an "Undo" happening)
-      const postId = action.request.postId
-      const itsStillThere = (state.visibleEntries.indexOf(postId) > -1)
-      return {...state,
-        visibleEntries: (itsStillThere ? state.visibleEntries : [...state.visibleEntries, postId]),
-        hiddenEntries: _.without(state.hiddenEntries, postId)
-      }
+      return unhidePostInFeed(state, action.request.postId)
     }
     case ActionTypes.REALTIME_POST_UNHIDE: {
-      const postId = action.postId
-      const itsStillThere = (state.visibleEntries.indexOf(postId) > -1)
-      return {...state,
-        visibleEntries: (itsStillThere ? state.visibleEntries : [...state.visibleEntries, postId]),
-        hiddenEntries: _.without(state.hiddenEntries, postId)
-      }
+      return unhidePostInFeed(state, action.postId)
     }
     case ActionTypes.TOGGLE_HIDDEN_POSTS: {
       return {...state,
@@ -1356,7 +1398,7 @@ function getValidRecipients(state) {
   }
 
   const canSendDirect = function(subUser) {
-    return (_.find(state.subscribers || [], { 'id': subUser.id }) !== null)
+    return (_.findIndex(state.users.subscribers || [], { 'id': subUser.id }) > -1)
   }
 
   const validRecipients = _.filter(subscriptions, (sub) => {
@@ -1391,23 +1433,25 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
       }
     }
     case ActionTypes.EXPAND_SEND_TO: {
-      return {
-        expanded: true,
-        feeds: state.feeds
+      return {...state,
+        expanded: true
+      }
+    }
+    case response(ActionTypes.CREATE_POST): {
+      return {...state,
+        expanded: false
       }
     }
     case response(ActionTypes.CREATE_GROUP): {
       let groupId = action.payload.groups.id
       let group = userParser(action.payload.groups)
-      return {
-        expanded: state.expanded,
+      return {...state,
         feeds: [ ...state.feeds, { id: groupId, user: group } ]
       }
     }
     case response(ActionTypes.SUBSCRIBE):
     case response(ActionTypes.UNSUBSCRIBE): {
-      return {
-        ...state,
+      return {...state,
         feeds: getValidRecipients(action.payload)
       }
     }
@@ -1591,10 +1635,19 @@ export function managedGroups(state = [], action) {
   return state
 }
 
+const findByIds = (collection, ids) => {
+  return _.filter(collection, (item) => _.contains(ids, item.id))
+}
+
+const subscriptionRequests = (whoamiPayload) => {
+  const subscriptionRequestsIds = whoamiPayload.users.subscriptionRequests || []
+  return findByIds(whoamiPayload.requests || [], subscriptionRequestsIds).map(userParser)
+}
+
 export function userRequests(state = [], action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
-      return (action.payload.requests || []).map(userParser)
+      return subscriptionRequests(action.payload)
     }
     case response(ActionTypes.ACCEPT_USER_REQUEST):
     case response(ActionTypes.REJECT_USER_REQUEST): {
@@ -1625,7 +1678,7 @@ export function groupRequestsCount(state = 0, action) {
 export function userRequestsCount(state = 0, action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
-      return (action.payload.requests || []).length
+      return subscriptionRequests(action.payload).length
     }
     case response(ActionTypes.ACCEPT_USER_REQUEST):
     case response(ActionTypes.REJECT_USER_REQUEST): {

@@ -18,11 +18,11 @@ const ManageSubscribersHandler = (props) => {
   }
 
   return (
-    <div className='box'>
-      <div className='box-header-timeline'>
+    <div className="box">
+      <div className="box-header-timeline">
         {props.boxHeader}
       </div>
-      <div className='box-body'>
+      <div className="box-body">
         <div className="row">
           <div className="col-md-6">
             <Link to={`/${props.groupName}`}>{props.groupName}</Link> › Manage subscribers
@@ -31,34 +31,36 @@ const ManageSubscribersHandler = (props) => {
             <Link to={`/${props.groupName}/subscribers`}>Browse subscribers</Link>
           </div>       
         </div>
-        <div className='manage-subscribers-body'>
+        <div className="manage-subscribers-body">
           {props.users ? (
             <div>
               <h3>Subscribers</h3>
+
               {props.users.length == 0 ? (
                 <div>There's not a single one subscriber yet. You might invite some friends to change that.</div>
               ) : (
-                <SubsList users={props.users}
-                         makeAdmin={makeAdmin}
-                         remove={remove}/>
+                <SubsList
+                  users={props.users}
+                  makeAdmin={makeAdmin}
+                  remove={remove}/>
               )}
             </div>
-          ) : false}          
+          ) : false}
 
-          <div className='manage-subscribers-admins'>
+          <div className="manage-subscribers-admins">
             <h3>Admins</h3>
+
             {props.amILastGroupAdmin ? (
               <div>You are the only Admin for this group. Before you can drop administrative privileges
-                   or leave this group, you have to promote another group member to Admin first.</div>
+                or leave this group, you have to promote another group member to Admin first.</div>
             ) : (
-              <AdminsList users={props.groupAdmins}
-                          removeAdminRights={removeAdminRights}/>
+              <AdminsList
+                users={props.groupAdmins}
+                removeAdminRights={removeAdminRights}/>
             )}
           </div>
-
         </div>
       </div>
-      <div className='box-footer'></div>
     </div>
   )
 }
