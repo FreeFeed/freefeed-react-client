@@ -26,11 +26,27 @@ const UserCard = (props) => {
           <img src={props.user.profilePictureLargeUrl} width="75" height="75"/>
         </Link>
 
-        <Link to={`/${props.user.username}`} className="display-name">{props.user.screenName}</Link>
+        <div className="names">
+          <Link to={`/${props.user.username}`} className="display-name">{props.user.screenName}</Link><br/>
 
-        {props.user.screenName !== props.user.username ? (
-          <span className="username">{props.user.username}</span>
-        ) : false}
+          {props.user.screenName !== props.user.username ? (
+            <span className="username">@{props.user.username}</span>
+          ) : false}
+        </div>
+
+        <div className="description">
+          {props.isItMe ? (
+            "It's you!"
+          ) : props.user.type === 'user' && props.user.isPrivate === '1' ? (
+            'Private feed'
+          ) : props.user.type === 'user' && props.user.isPrivate === '0' ? (
+            'Public feed'
+          ) : props.user.type === 'group' && props.user.isPrivate === '1' ? (
+            'Private group'
+          ) : props.user.type === 'group' && props.user.isPrivate === '0' ? (
+            'Public group'
+          ) : false}
+        </div>
       </div>
 
       {props.blocked ? (
