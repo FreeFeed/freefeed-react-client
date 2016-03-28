@@ -456,6 +456,14 @@ export function updateGroup(id, groupSettings) {
   }
 }
 
+export function updateGroupPicture(groupName, file) {
+  return {
+    type: ActionTypes.UPDATE_GROUP_PICTURE,
+    payload: {groupName, file},
+    apiRequest: Api.updateGroupPicture
+  }
+}
+
 export function managedGroups() {
   return {
     type: ActionTypes.MANAGED_GROUPS,

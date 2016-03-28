@@ -1326,6 +1326,24 @@ export function groupSettingsForm(state={}, action) {
   return state
 }
 
+export function groupPictureForm(state={}, action) {
+  switch (action.type) {
+    case request(ActionTypes.UPDATE_GROUP_PICTURE): {
+      return {...state, status: 'loading'}
+    }
+    case response(ActionTypes.UPDATE_GROUP_PICTURE): {
+      return {...state, status: 'success'}
+    }
+    case fail(ActionTypes.UPDATE_GROUP_PICTURE): {
+      return {...state, status: 'error', errorMessage: (action.payload || {}).err}
+    }
+    case ActionTypes.RESET_GROUP_UPDATE_FORM: {
+      return {}
+    }
+  }
+  return state
+}
+
 export function routeLoadingState(state = false, action){
   if (ActionHelpers.isFeedRequest(action)){
     return true
