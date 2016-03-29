@@ -1669,6 +1669,10 @@ export function sentRequests(state = [], action) {
     case response(ActionTypes.WHO_AM_I): {
       return pendingSubscriptionRequests(action.payload)
     }
+    case response(ActionTypes.REVOKE_USER_REQUEST): {
+      const userName = action.request.userName
+      return state.filter((user) => user.username !== userName)
+    }
   }
 
   return state
@@ -1707,6 +1711,9 @@ export function sentRequestsCount(state = 0, action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
       return pendingSubscriptionRequests(action.payload).length
+    }
+    case response(ActionTypes.REVOKE_USER_REQUEST): {
+      return Math.max(0, state - 1)
     }
   }
 
