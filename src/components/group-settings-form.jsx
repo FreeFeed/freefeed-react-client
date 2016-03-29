@@ -84,7 +84,7 @@ export default class GroupSettingsForm extends React.Component {
           <div className="alert alert-warning" role="alert">
             You are about to change the group type from private to public. It means anyone will be able to read its posts and comments, which are only available to group members now.
           </div>
-        ) : false}  
+        ) : false}
         {this.props.status === 'success' ? (
           <div className="alert alert-info" role="alert">Updated!</div>
         ) : this.props.status === 'error' ? (
