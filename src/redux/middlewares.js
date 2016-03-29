@@ -93,6 +93,15 @@ export const userPhotoLogicMiddleware = store => next => action => {
   return next(action)
 }
 
+export const groupPictureLogicMiddleware = store => next => action => {
+  if (action.type === response(ActionTypes.UPDATE_GROUP_PICTURE)) {
+    // Update data after group picture is updated
+    store.dispatch(ActionCreators.getUserInfo(action.request.groupName))
+  }
+
+  return next(action)
+}
+
 export const redirectionMiddleware = store => next => action => {
   //go to home if single post has been removed
   if (action.type === response(ActionTypes.DELETE_POST) && store.getState().singlePostId) {
