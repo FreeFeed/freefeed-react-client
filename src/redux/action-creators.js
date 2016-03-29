@@ -542,3 +542,11 @@ export function unadminGroupAdmin(groupName, user, isItMe) {
     apiRequest: Api.unadminGroupAdmin
   }
 }
+
+export function revokeSentRequest(userName) {
+  return {
+    type: ActionTypes.REVOKE_USER_REQUEST,
+    payload: {userName},
+    apiRequest: Api.revokeSentRequest
+  }
+}
