@@ -2,7 +2,7 @@ import React from 'react'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
 
-import UserCard from './user-card'
+import {preventDefault} from '../utils'
 import * as FrontendPrefsOptions from '../utils/frontend-preferences-options'
 
 const DisplayOption = ({user, me, preferences}) => {
@@ -29,60 +29,18 @@ const DisplayOption = ({user, me, preferences}) => {
   return <span>{user.screenName}</span>
 }
 
-class UserName extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      isHovered: false,
-      isCardOpen: false
-    }
-  }
-
-  enterUserName() {
-    this.setState({isHovered: true})
-
-    setTimeout(() => {
-      if (this.state.isHovered) {
-        this.setState({isCardOpen: true})
-      }
-    }, 500)
-  }
-
-  leaveUserName() {
-    this.setState({isHovered: false})
-
-    setTimeout(() => {
-      if (!this.state.isHovered) {
-        this.setState({isCardOpen: false})
-      }
-    }, 500)
-  }
-
-  render() {
-    return (
-      <div className="user-name-wrapper"
-        onMouseEnter={this.enterUserName.bind(this)}
-        onMouseLeave={this.leaveUserName.bind(this)}>
-
-        <Link to={`/${this.props.user.username}`} className={this.props.className}>
-          {this.props.display ? (
-            <span>{this.props.display}</span>
-          ) : (
-            <DisplayOption
-              user={this.props.user}
-              me={this.props.me}
-              preferences={this.props.frontendPreferences.displayNames}/>
-          )}
-        </Link>
-
-        {this.state.isCardOpen ? (
-          <UserCard username={this.props.user.username}/>
-        ) : false}
-      </div>
-    )
-  }
-}
+const UserName = (props) => (
+  <Link to={`/${props.user.username}`} className={`user-name-info ${props.className}`}>
+    {props.display ? (
+      <span>{props.display}</span>
+    ) : (
+      <DisplayOption
+        user={props.user}
+        me={props.me}
+        preferences={props.frontendPreferences.displayNames}/>
+    )}
+  </Link>
+)
 
 const mapStateToProps = (state) => {
   return {

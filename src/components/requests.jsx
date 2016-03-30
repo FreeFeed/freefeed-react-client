@@ -3,12 +3,10 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router'
 
 import {acceptGroupRequest, rejectGroupRequest,
-        acceptUserRequest, rejectUserRequest,
-        revokeSentRequest} from '../redux/action-creators'
-import {tileUserListFactory, WITH_REQUEST_HANDLES, WITH_REVOKE_SENT_REQUEST} from './tile-user-list'
+        acceptUserRequest, rejectUserRequest} from '../redux/action-creators'
+import {tileUserListFactory, WITH_REQUEST_HANDLES} from './tile-user-list'
 
-const TileListWithAcceptAndReject = tileUserListFactory({type: WITH_REQUEST_HANDLES})
-const TileListWithRevoke = tileUserListFactory({type: WITH_REVOKE_SENT_REQUEST})
+const TileList = tileUserListFactory({type: WITH_REQUEST_HANDLES})
 
 const renderRequestsToGroup = (accept, reject) => (groupRequests) => {
   const acceptGroupRequest = (userName) => accept(groupRequests.username, userName)
@@ -17,7 +15,7 @@ const renderRequestsToGroup = (accept, reject) => (groupRequests) => {
   return (
     <div key={groupRequests.id}>
       <h3>{groupRequests.screenName}</h3>
-      <TileListWithAcceptAndReject
+      <TileList
         users={groupRequests.requests}
         acceptRequest={acceptGroupRequest}
         rejectRequest={rejectGroupRequest}/>
@@ -42,7 +40,7 @@ const RequestsHandler = (props) => {
             {props.feedRequests && props.feedRequests.length ? (
               <div>
                 <h3>Requests to your feed</h3>
-                <TileListWithAcceptAndReject
+                <TileList
                   users={props.feedRequests}
                   acceptRequest={props.acceptUserRequest}
                   rejectRequest={props.rejectUserRequest}/>
@@ -52,15 +50,6 @@ const RequestsHandler = (props) => {
             {groupRequests ? (
               <div>
                 {groupRequests}
-              </div>
-            ) : false}
-
-            {props.sentRequests && props.sentRequests.length ? (
-              <div>
-                <h3>Sent requests</h3>
-                <TileListWithRevoke
-                  users={props.sentRequests}
-                  revokeSentRequest={props.revokeSentRequest}/>
               </div>
             ) : false}
           </div>
@@ -74,15 +63,12 @@ function selectState(state, ownProps) {
   const boxHeader = state.boxHeader
   const username = ownProps.params.userName
 
-  const overallRequestsCount = state.userRequestsCount +
-                               state.groupRequestsCount +
-                               state.sentRequestsCount
+  const overallRequestsCount = state.userRequestsCount + state.groupRequestsCount
 
   const feedRequests = state.userRequests
   const groupRequests = state.managedGroups.filter(group => group.requests.length) || []
-  const sentRequests = state.sentRequests
 
-  return {boxHeader, username, feedRequests, groupRequests, sentRequests, overallRequestsCount}
+  return {boxHeader, username, feedRequests, groupRequests, overallRequestsCount}
 }
 
 function selectActions(dispatch) {
@@ -90,8 +76,7 @@ function selectActions(dispatch) {
     acceptGroupRequest: (...args) => dispatch(acceptGroupRequest(...args)),
     rejectGroupRequest: (...args) => dispatch(rejectGroupRequest(...args)),
     acceptUserRequest: (...args) => dispatch(acceptUserRequest(...args)),
-    rejectUserRequest: (...args) => dispatch(rejectUserRequest(...args)),
-    revokeSentRequest: (...args) => dispatch(revokeSentRequest(...args))
+    rejectUserRequest: (...args) => dispatch(rejectUserRequest(...args))
   }
 }
 

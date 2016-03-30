@@ -11,37 +11,28 @@ ul.tile-list {
     padding-top: 10px;
     text-align: center;
 
-    .avatar {
-      margin-bottom: 5px;
-    }
-
     a {
       display: block;
       line-height: 130%;
       font-size: 12px;
       color: #4c4c4c;
+
+      .avatar {
+        margin-bottom: 5px;
+      }
     }
 
     .user-actions {
-      color: #666;
-
-      a {
+      color: #337ab7;
+      a { 
         display: inline;
-        color: #555599;
+        color: #337ab7;
       }
     }
   }
 
-  &.with-actions li {
-    height: 130px;
-  }
-
   &.large-pics li {
     height: 140px;
-  }
-
-  &.with-actions.large-pics li {
-    height: 160px;
   }
 
   @include clearfix();

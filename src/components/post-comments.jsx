@@ -84,7 +84,7 @@ export default (props) => {
       {last ? commentMapper(last) : false}
       {canAddComment
         ? (props.post.isCommenting
-            ? renderAddingComment(props)
+            ? renderAddingComment(props, openAnsweringComment)
             : renderAddCommentLink(props, disabledForOthers))
         : false}
     </div>

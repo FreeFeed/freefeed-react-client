@@ -68,9 +68,7 @@ function selectState(state) {
   const boxHeader = state.boxHeader
   const sendTo = {...state.sendTo, defaultFeed: user.username}
 
-  const totalRequestsCount = state.groupRequestsCount +
-                             state.userRequestsCount +
-                             state.sentRequestsCount
+  const totalRequestsCount = state.groupRequestsCount + state.userRequestsCount 
 
   return {
     user, authenticated,

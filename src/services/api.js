@@ -422,14 +422,3 @@ export function unadminGroupAdmin({groupName, user}) {
     }
   })
 }
-
-export function revokeSentRequest({userName}) {
-    return fetch(`${apiConfig.host}/v2/requests/${userName}/revoke`, {
-    'method': 'POST',
-    'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'X-Authentication-Token': getToken()
-    }
-  })
-}
