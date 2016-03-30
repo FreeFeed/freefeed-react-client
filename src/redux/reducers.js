@@ -193,6 +193,9 @@ export function feedViewState(state = initFeed, action) {
       isHiddenRevealed
     }
   }
+  if (ActionHelpers.isFeedFail(action)) {
+    return initFeed
+  }
 
   switch (action.type) {
     case ActionTypes.UNAUTHENTICATED: {
