@@ -38,7 +38,13 @@ const renderUsers = (type) => (user) => {
           <a onClick={() => user.removeAdminRights(user)} title="Demote user from admin">Demote</a>
         </div>
       ) : false}
-      
+
+      {type == WITH_REVOKE_SENT_REQUEST ? (
+        <div className="user-actions">
+          <a onClick={() => user.revokeSentRequest(user.username)} title="Revoke sent request">Revoke</a>
+        </div>
+      ) : false}
+
     </li>
   )
 }
@@ -47,6 +53,7 @@ export const PLAIN = 'PLAIN'
 export const WITH_REQUEST_HANDLES = 'WITH_REQUEST_HANDLES'
 export const WITH_REMOVE_AND_MAKE_ADMIN_HANDLES = 'WITH_REMOVE_AND_MAKE_ADMIN_HANDLES'
 export const WITH_REMOVE_ADMIN_RIGHTS = 'WITH_REMOVE_ADMIN_RIGHTS'
+export const WITH_REVOKE_SENT_REQUEST = 'WITH_REVOKE_SENT_REQUEST'
 
 function pickActions(type, props) {
   switch (type) {
@@ -58,6 +65,9 @@ function pickActions(type, props) {
     }
     case WITH_REMOVE_ADMIN_RIGHTS: {
       return { removeAdminRights: props.removeAdminRights }
+    }
+    case WITH_REVOKE_SENT_REQUEST: {
+      return { revokeSentRequest: props.revokeSentRequest }
     }
   }
 

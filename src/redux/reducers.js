@@ -1644,6 +1644,11 @@ const subscriptionRequests = (whoamiPayload) => {
   return findByIds(whoamiPayload.requests || [], subscriptionRequestsIds).map(userParser)
 }
 
+const pendingSubscriptionRequests = (whoamiPayload) => {
+  const pendingSubscriptionRequestsIds = whoamiPayload.users.pendingSubscriptionRequests || []
+  return findByIds(whoamiPayload.requests || [], pendingSubscriptionRequestsIds).map(userParser)
+}
+
 export function userRequests(state = [], action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
@@ -1651,6 +1656,20 @@ export function userRequests(state = [], action) {
     }
     case response(ActionTypes.ACCEPT_USER_REQUEST):
     case response(ActionTypes.REJECT_USER_REQUEST): {
+      const userName = action.request.userName
+      return state.filter((user) => user.username !== userName)
+    }
+  }
+
+  return state
+}
+
+export function sentRequests(state = [], action) {
+  switch (action.type) {
+    case response(ActionTypes.WHO_AM_I): {
+      return pendingSubscriptionRequests(action.payload)
+    }
+    case response(ActionTypes.REVOKE_USER_REQUEST): {
       const userName = action.request.userName
       return state.filter((user) => user.username !== userName)
     }
@@ -1686,6 +1705,19 @@ export function userRequestsCount(state = 0, action) {
     }
   }
   return state;
+}
+
+export function sentRequestsCount(state = 0, action) {
+  switch (action.type) {
+    case response(ActionTypes.WHO_AM_I): {
+      return pendingSubscriptionRequests(action.payload).length
+    }
+    case response(ActionTypes.REVOKE_USER_REQUEST): {
+      return Math.max(0, state - 1)
+    }
+  }
+
+  return state
 }
 
 const initialRealtimeSettings = {

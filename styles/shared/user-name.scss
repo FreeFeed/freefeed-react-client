@@ -1,4 +1,82 @@
-.be-fe-username {
-  opacity: .66;
-  font-weight: 400;
+.user-name-wrapper {
+  display: inline;
+  position: relative;
+}
+
+.user-card {
+  position: absolute;
+  z-index: 10000;
+  top: 30px;
+  left: 0;
+  width: 250px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.5);
+
+  &:before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    left: 14px;
+    top: -5px;
+    width: 12px;
+    height: 12px;
+    background: inherit;
+    transform: rotate(45deg);
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.5);
+  }
+
+  .user-card-info {
+    height: 97px; // 75px + 2px + 20px
+    padding: 10px;
+    background-color: #fff;
+    border-top-right-radius: 2px;
+    border-top-left-radius: 2px;
+
+    font-size: 13px !important;
+    line-height: 17px;
+
+    .userpic {
+      float: left;
+      border: 1px #ccc solid;
+      margin: 0 10px 0 0;
+    }
+
+    .names {
+      height: 60px;
+
+      .display-name {
+        color: #000088;
+        font-weight: bold;
+      }
+
+      .username {
+        color: #555;
+        font-size: 12px;
+      }
+    }
+
+    .description {
+      font-size: 13px;
+      color: #888;
+      font-style: italic;
+    }
+  }
+
+  .user-card-actions {
+    border-top: 1px #e4e4e4 solid;
+    padding: 5px 10px 6px 10px;
+    background-color: #f4f4f4;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+
+    color: #666;
+    font-size: 13px !important;
+    line-height: 17px;
+
+    a {
+      color: #555599 !important;
+      font-weight: normal !important;
+    }
+  }
 }
