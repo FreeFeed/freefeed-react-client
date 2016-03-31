@@ -3,8 +3,18 @@ import {Link} from 'react-router'
 import {connect} from 'react-redux'
 
 import {userActions} from './select-utils'
+import {getUserInfo} from '../redux/action-creators'
 
 class UserCard extends React.Component {
+  constructor(props) {
+    super(props)
+
+    // Load this user's info if it's not in the store already
+    if (!props.user.id) {
+      setTimeout(() => props.getUserInfo(props.username), 0)
+    }
+  }
+
   unsubscribe = () => {
     if (this.props.amIGroupAdmin) {
       alert('You are the Admin for this group. If you want to unsubscribe please drop administrative privileges first.')
@@ -101,7 +111,10 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 function mapDispatchToProps(dispatch) {
-  return userActions(dispatch)
+  return {
+    ...userActions(dispatch),
+    getUserInfo: (username) => dispatch(getUserInfo(username))
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserCard)
