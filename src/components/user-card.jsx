@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 
 import {userActions} from './select-utils'
 import {getUserInfo} from '../redux/action-creators'
+import throbber16 from 'assets/images/throbber-16.gif'
 
 class UserCard extends React.Component {
   constructor(props) {
@@ -29,7 +30,10 @@ class UserCard extends React.Component {
     return (!props.user.id ? (
       <div className="user-card">
         <div className="user-card-info">
-          <i>No information.</i>
+          <div className="userpic loading"></div>
+          <div className="names">
+            <img width="16" height="16" src={throbber16}/>
+          </div>
         </div>
       </div>
     ) : (
