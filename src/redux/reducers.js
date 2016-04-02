@@ -264,7 +264,6 @@ const NO_ERROR = {
 
 const POST_SAVE_ERROR = 'Something went wrong while editing the post...';
 const NEW_COMMENT_ERROR = 'Failed to add comment';
-const GET_SINGLE_POST_ERROR = 'Can\'t find the post';
 
 const indexById = list => _.indexBy(list || [], 'id');
 const mergeByIds = (state, array) => ({...state, ...indexById(array)});
@@ -321,8 +320,9 @@ export function postsViewState(state = {}, action) {
       const isEditing = false;
 
       const isError = true;
+      const errorString = action.response.status + ' ' + action.response.statusText;
 
-      return { ...state, [id]: { id, isEditing, isError, errorString: GET_SINGLE_POST_ERROR }};
+      return { ...state, [id]: { id, isEditing, isError, errorString }};
     }
     case ActionTypes.SHOW_MORE_LIKES_SYNC: {
       const id = action.payload.postId;

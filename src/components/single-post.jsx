@@ -6,12 +6,11 @@ import Post from './post';
 
 const SinglePostHandler = (props) => {
   let post = props.post;
-  let errorString = props.errorString;
 
   let postBody = <div></div>;
 
-  if (errorString) {
-    postBody = <div className='single-post-error'>{errorString}</div>;
+  if (props.errorString) {
+    postBody = <h2>{props.errorString}</h2>;
   }
 
   if (post) {
