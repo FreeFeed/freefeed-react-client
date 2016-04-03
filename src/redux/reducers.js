@@ -1124,7 +1124,7 @@ export function subscribers(state = {}, action) {
 import {getToken, getPersistedUser} from '../services/auth';
 
 export function authenticated(state = !!getToken(), action) {
-   switch (action.type) {
+  switch (action.type) {
     case response(ActionTypes.SIGN_IN): {
       return true;
     }

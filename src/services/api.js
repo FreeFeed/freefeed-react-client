@@ -371,7 +371,7 @@ export function acceptGroupRequest({groupName, userName}) {
 }
 
 export function rejectGroupRequest({groupName, userName}) {
-    return fetch(`${apiConfig.host}/v1/groups/${groupName}/rejectRequest/${userName}`, {
+  return fetch(`${apiConfig.host}/v1/groups/${groupName}/rejectRequest/${userName}`, {
     'method': 'POST',
     'headers': {
       'Accept': 'application/json',
@@ -393,7 +393,7 @@ export function acceptUserRequest({userName}) {
 }
 
 export function rejectUserRequest({userName}) {
-    return fetch(`${apiConfig.host}/v1/users/rejectRequest/${userName}`, {
+  return fetch(`${apiConfig.host}/v1/users/rejectRequest/${userName}`, {
     'method': 'POST',
     'headers': {
       'Accept': 'application/json',
@@ -404,7 +404,7 @@ export function rejectUserRequest({userName}) {
 }
 
 export function unsubscribeFromGroup({groupName, userName}) {
-    return fetch(`${apiConfig.host}/v1/groups/${groupName}/unsubscribeFromGroup/${userName}`, {
+  return fetch(`${apiConfig.host}/v1/groups/${groupName}/unsubscribeFromGroup/${userName}`, {
     'method': 'POST',
     'headers': {
       'Accept': 'application/json',
@@ -415,7 +415,7 @@ export function unsubscribeFromGroup({groupName, userName}) {
 }
 
 export function makeGroupAdmin({groupName, user}) {
-    return fetch(`${apiConfig.host}/v1/groups/${groupName}/subscribers/${user.username}/admin`, {
+  return fetch(`${apiConfig.host}/v1/groups/${groupName}/subscribers/${user.username}/admin`, {
     'method': 'POST',
     'headers': {
       'Accept': 'application/json',
@@ -426,7 +426,7 @@ export function makeGroupAdmin({groupName, user}) {
 }
 
 export function unadminGroupAdmin({groupName, user}) {
-    return fetch(`${apiConfig.host}/v1/groups/${groupName}/subscribers/${user.username}/unadmin`, {
+  return fetch(`${apiConfig.host}/v1/groups/${groupName}/subscribers/${user.username}/unadmin`, {
     'method': 'POST',
     'headers': {
       'Accept': 'application/json',
@@ -437,7 +437,7 @@ export function unadminGroupAdmin({groupName, user}) {
 }
 
 export function revokeSentRequest({userName}) {
-    return fetch(`${apiConfig.host}/v2/requests/${userName}/revoke`, {
+  return fetch(`${apiConfig.host}/v2/requests/${userName}/revoke`, {
     'method': 'POST',
     'headers': {
       'Accept': 'application/json',
