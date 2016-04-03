@@ -1,100 +1,100 @@
-import React from 'react'
-import {Link} from 'react-router'
-import moment from 'moment'
-import classnames from 'classnames'
+import React from 'react';
+import {Link} from 'react-router';
+import moment from 'moment';
+import classnames from 'classnames';
 
-import {fromNowOrNow} from '../utils'
-import PostAttachments from './post-attachments'
-import PostComments from './post-comments'
-import PostLikes from './post-likes'
-import UserName from './user-name'
-import PieceOfText from './piece-of-text'
-import Textarea from 'react-textarea-autosize'
-import throbber16 from 'assets/images/throbber-16.gif'
-import DropzoneComponent from 'react-dropzone-component'
-import {api as apiConfig} from '../config'
-import {getToken} from '../services/auth'
-import PostMoreMenu from './post-more-menu'
+import {fromNowOrNow} from '../utils';
+import PostAttachments from './post-attachments';
+import PostComments from './post-comments';
+import PostLikes from './post-likes';
+import UserName from './user-name';
+import PieceOfText from './piece-of-text';
+import Textarea from 'react-textarea-autosize';
+import throbber16 from 'assets/images/throbber-16.gif';
+import DropzoneComponent from 'react-dropzone-component';
+import {api as apiConfig} from '../config';
+import {getToken} from '../services/auth';
+import PostMoreMenu from './post-more-menu';
 
 export default class Post extends React.Component {
   removeAttachment = (attachmentId) => this.props.removeAttachment(this.props.id, attachmentId)
 
   render() {
-    let props = this.props
+    let props = this.props;
 
-    const createdAt = new Date(props.createdAt - 0)
-    const createdAtISO = moment(createdAt).format()
-    const createdAgo = fromNowOrNow(createdAt)
+    const createdAt = new Date(props.createdAt - 0);
+    const createdAtISO = moment(createdAt).format();
+    const createdAgo = fromNowOrNow(createdAt);
 
-    let editingPostText = props.editingText
+    let editingPostText = props.editingText;
     let editingPostTextChange = (e) => {
-      editingPostText = e.target.value
-    }
-    const toggleEditingPost = () => props.toggleEditingPost(props.id, editingPostText)
-    const cancelEditingPost = () => props.cancelEditingPost(props.id, editingPostText)
+      editingPostText = e.target.value;
+    };
+    const toggleEditingPost = () => props.toggleEditingPost(props.id, editingPostText);
+    const cancelEditingPost = () => props.cancelEditingPost(props.id, editingPostText);
     const saveEditingPost = () => {
       if (!props.isSaving) {
-        let attachmentIds = props.attachments.map(item => item.id) || []
-        props.saveEditingPost(props.id, {body: editingPostText, attachments: attachmentIds})
+        let attachmentIds = props.attachments.map(item => item.id) || [];
+        props.saveEditingPost(props.id, {body: editingPostText, attachments: attachmentIds});
       }
-    }
-    const deletePost = () => props.deletePost(props.id)
-    const likePost = () => props.likePost(props.id, props.user.id)
-    const unlikePost = () => props.unlikePost(props.id, props.user.id)
+    };
+    const deletePost = () => props.deletePost(props.id);
+    const likePost = () => props.likePost(props.id, props.user.id);
+    const unlikePost = () => props.unlikePost(props.id, props.user.id);
 
-    const hidePost = () => props.hidePost(props.id)
-    const unhidePost = () => props.unhidePost(props.id)
+    const hidePost = () => props.hidePost(props.id);
+    const unhidePost = () => props.unhidePost(props.id);
 
-    const toggleModeratingComments = () => props.toggleModeratingComments(props.id)
+    const toggleModeratingComments = () => props.toggleModeratingComments(props.id);
 
-    const disableComments = () => props.disableComments(props.id)
-    const enableComments = () => props.enableComments(props.id)
+    const disableComments = () => props.disableComments(props.id);
+    const enableComments = () => props.enableComments(props.id);
 
     const checkSave = (event) => {
-      const isEnter = event.keyCode === 13
+      const isEnter = event.keyCode === 13;
       if (isEnter) {
-        event.preventDefault()
-        saveEditingPost()
+        event.preventDefault();
+        saveEditingPost();
       }
-    }
+    };
     const profilePicture = props.isSinglePost ?
-      props.createdBy.profilePictureLargeUrl : props.createdBy.profilePictureMediumUrl
-    const profilePictureSize = props.isSinglePost ? 75 : 50
+      props.createdBy.profilePictureLargeUrl : props.createdBy.profilePictureMediumUrl;
+    const profilePictureSize = props.isSinglePost ? 75 : 50;
 
     const postClass = classnames({
       'post': true,
       'single-post': props.isSinglePost,
       'timeline-post': !props.isSinglePost,
       'direct-post': props.isDirect
-    })
+    });
 
     const toggleCommenting = props.isSinglePost ? () => {
-    } : () => props.toggleCommenting(props.id)
+    } : () => props.toggleCommenting(props.id);
 
     const recipientCustomDisplay = function(recipient) {
       if (recipient.id !== props.createdBy.id) {
-        return false
+        return false;
       }
       if (recipient.username[recipient.username.length - 1] === 's') {
-        return recipient.username + "' feed"
+        return recipient.username + "' feed";
       } else {
-        return recipient.username + "'s feed"
+        return recipient.username + "'s feed";
       }
-    }
+    };
 
-    let recipients = props.recipients
+    let recipients = props.recipients;
     // Check if the post has been only submitted to one recipient
     // and if we can omit it
     if (recipients.length === 1) {
       // If the post is in user/group feed (one-source list), we should omit
       // the only recipient, since it would be that feed.
       if (props.isInUserFeed) {
-        recipients = []
+        recipients = [];
       } else {
         // When in a many-sources list (Home, Direct messages, My discussions),
         // we should omit the only recipient if it's the author's feed.
         if (recipients[0].id === props.createdBy.id) {
-          recipients = []
+          recipients = [];
         }
       }
     }
@@ -107,7 +107,7 @@ export default class Post extends React.Component {
         {index < props.recipients.length - 2 ? ', ' : false}
         {index === props.recipients.length - 2 ? ' and ' : false}
       </span>
-    ))
+    ));
 
     // "Lock icon": check if the post is truly private, "partly private" or public.
     // Truly private:
@@ -122,13 +122,13 @@ export default class Post extends React.Component {
     const publicRecipients = props.recipients.filter((recipient) => (
       recipient.isPrivate === '0' &&
       (recipient.id === props.createdBy.id || recipient.type === 'group')
-    ))
-    const isReallyPrivate = (publicRecipients.length === 0)
+    ));
+    const isReallyPrivate = (publicRecipients.length === 0);
 
     // DropzoneJS configuration
     const dropzoneComponentConfig = {
       postUrl: `${apiConfig.host}/v1/attachments`
-    }
+    };
     const dropzoneConfig = {
       dictDefaultMessage: 'Drop files here', // The message that gets displayed before any files are dropped.
       previewsContainer: '.dropzone-previews', // Define the container to display the previews.
@@ -137,7 +137,7 @@ export default class Post extends React.Component {
         'Cache-Control': null,
         'X-Authentication-Token': getToken()
       }
-    }
+    };
     const dropzoneEventHandlers = {
       // DropzoneJS uses stopPropagation() for dragenter and drop events, so
       // they are not being propagated to window and it breaks crafty handling
@@ -145,28 +145,28 @@ export default class Post extends React.Component {
       // re-dispatch them to let event handlers in Layout work as they should.
       // The events don't need to be real, just mimic some important parts.
       dragenter: function(e) {
-        var dragEnterEvent = new Event('dragenter')
+        var dragEnterEvent = new Event('dragenter');
         if (e.dataTransfer && e.dataTransfer.types) {
-          dragEnterEvent.dataTransfer = { types: e.dataTransfer.types }
+          dragEnterEvent.dataTransfer = { types: e.dataTransfer.types };
         }
-        window.dispatchEvent(dragEnterEvent)
+        window.dispatchEvent(dragEnterEvent);
       },
       drop: function(e) {
-        var dropEvent = new Event('drop')
+        var dropEvent = new Event('drop');
         if (e.dataTransfer && e.dataTransfer.types) {
-          dropEvent.dataTransfer = { types: e.dataTransfer.types }
+          dropEvent.dataTransfer = { types: e.dataTransfer.types };
         }
-        window.dispatchEvent(dropEvent)
+        window.dispatchEvent(dropEvent);
       },
 
       success: function(file, response) {
         // 'attachments' in this response will be an attachment object, not an array of objects
-        props.addAttachmentResponse(props.id, response.attachments)
+        props.addAttachmentResponse(props.id, response.attachments);
       }
-    }
+    };
 
     // "Comments disabled" / "Comment"
-    let commentLink
+    let commentLink;
     if (props.commentsDisabled) {
       if (props.isEditable) {
         commentLink = (
@@ -176,14 +176,14 @@ export default class Post extends React.Component {
             {' - '}
             <a onClick={toggleCommenting}>Comment</a>
           </span>
-        )
+        );
       } else {
         commentLink = (
           <span>
             {' - '}
             <i>Comments disabled</i>
           </span>
-        )
+        );
       }
     } else {
       commentLink = (
@@ -191,12 +191,12 @@ export default class Post extends React.Component {
           {' - '}
           <a onClick={toggleCommenting}>Comment</a>
         </span>
-      )
+      );
     }
 
     // "Like" / "Un-like"
-    const amIAuthenticated = !!props.user.id
-    const didILikePost = _.find(props.usersLikedPost, {id: props.user.id})
+    const amIAuthenticated = !!props.user.id;
+    const didILikePost = _.find(props.usersLikedPost, {id: props.user.id});
     const likeLink = (amIAuthenticated && !props.isEditable ? (
       <span>
         {' - '}
@@ -207,7 +207,7 @@ export default class Post extends React.Component {
           </span>
         ) : false}
       </span>
-    ) : false)
+    ) : false);
 
     // "Hide" / "Un-hide"
     const hideLink = (props.isInHomeFeed ? (
@@ -220,7 +220,7 @@ export default class Post extends React.Component {
           </span>
         ) : false}
       </span>
-    ) : false)
+    ) : false);
 
     // "More" menu
     const moreLink = (props.isEditable ? (
@@ -234,7 +234,7 @@ export default class Post extends React.Component {
           enableComments={enableComments}
           deletePost={deletePost}/>
       </span>
-    ) : false)
+    ) : false);
 
     return (props.isRecentlyHidden ? (
       <div className="post recently-hidden-post">
@@ -347,6 +347,6 @@ export default class Post extends React.Component {
             commentEdit={props.commentEdit}/>
         </div>
       </div>
-    ))
+    ));
   }
 }

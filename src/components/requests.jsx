@@ -1,18 +1,18 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {Link} from 'react-router'
+import React from 'react';
+import {connect} from 'react-redux';
+import {Link} from 'react-router';
 
 import {acceptGroupRequest, rejectGroupRequest,
         acceptUserRequest, rejectUserRequest,
-        revokeSentRequest} from '../redux/action-creators'
-import {tileUserListFactory, WITH_REQUEST_HANDLES, WITH_REVOKE_SENT_REQUEST} from './tile-user-list'
+        revokeSentRequest} from '../redux/action-creators';
+import {tileUserListFactory, WITH_REQUEST_HANDLES, WITH_REVOKE_SENT_REQUEST} from './tile-user-list';
 
-const TileListWithAcceptAndReject = tileUserListFactory({type: WITH_REQUEST_HANDLES})
-const TileListWithRevoke = tileUserListFactory({type: WITH_REVOKE_SENT_REQUEST})
+const TileListWithAcceptAndReject = tileUserListFactory({type: WITH_REQUEST_HANDLES});
+const TileListWithRevoke = tileUserListFactory({type: WITH_REVOKE_SENT_REQUEST});
 
 const renderRequestsToGroup = (accept, reject) => (groupRequests) => {
-  const acceptGroupRequest = (userName) => accept(groupRequests.username, userName)
-  const rejectGroupRequest = (userName) => reject(groupRequests.username, userName)
+  const acceptGroupRequest = (userName) => accept(groupRequests.username, userName);
+  const rejectGroupRequest = (userName) => reject(groupRequests.username, userName);
 
   return (
     <div key={groupRequests.id}>
@@ -22,11 +22,11 @@ const renderRequestsToGroup = (accept, reject) => (groupRequests) => {
         acceptRequest={acceptGroupRequest}
         rejectRequest={rejectGroupRequest}/>
     </div>
-  )
-}
+  );
+};
 
 const RequestsHandler = (props) => {
-  const groupRequests = props.groupRequests.map(renderRequestsToGroup(props.acceptGroupRequest, props.rejectGroupRequest))
+  const groupRequests = props.groupRequests.map(renderRequestsToGroup(props.acceptGroupRequest, props.rejectGroupRequest));
 
   return (
     <div className='box'>
@@ -67,22 +67,22 @@ const RequestsHandler = (props) => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
 function selectState(state, ownProps) {
-  const boxHeader = state.boxHeader
-  const username = ownProps.params.userName
+  const boxHeader = state.boxHeader;
+  const username = ownProps.params.userName;
 
   const overallRequestsCount = state.userRequestsCount +
                                state.groupRequestsCount +
-                               state.sentRequestsCount
+                               state.sentRequestsCount;
 
-  const feedRequests = state.userRequests
-  const groupRequests = state.managedGroups.filter(group => group.requests.length) || []
-  const sentRequests = state.sentRequests
+  const feedRequests = state.userRequests;
+  const groupRequests = state.managedGroups.filter(group => group.requests.length) || [];
+  const sentRequests = state.sentRequests;
 
-  return {boxHeader, username, feedRequests, groupRequests, sentRequests, overallRequestsCount}
+  return {boxHeader, username, feedRequests, groupRequests, sentRequests, overallRequestsCount};
 }
 
 function selectActions(dispatch) {
@@ -92,7 +92,7 @@ function selectActions(dispatch) {
     acceptUserRequest: (...args) => dispatch(acceptUserRequest(...args)),
     rejectUserRequest: (...args) => dispatch(rejectUserRequest(...args)),
     revokeSentRequest: (...args) => dispatch(revokeSentRequest(...args))
-  }
+  };
 }
 
-export default connect(selectState, selectActions)(RequestsHandler)
+export default connect(selectState, selectActions)(RequestsHandler);

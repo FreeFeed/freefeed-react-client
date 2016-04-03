@@ -1,8 +1,8 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {bindRouteActions} from '../redux/route-actions'
-import PaginationLinks from './pagination-links'
-import {getCurrentRouteName} from '../utils'
+import React from 'react';
+import {connect} from 'react-redux';
+import {bindRouteActions} from '../redux/route-actions';
+import PaginationLinks from './pagination-links';
+import {getCurrentRouteName} from '../utils';
 
 const PaginatedView = props => (
   <div className='box-body'>
@@ -10,16 +10,16 @@ const PaginatedView = props => (
     {props.children}
     <PaginationLinks {...props}/>
   </div>
-)
+);
 
 const mapStateToProps = (state, ownProps) => {
-  const offset = +state.routing.locationBeforeTransitions.query.offset || 0
-  const routename = getCurrentRouteName(ownProps)
-  return { offset, routename }
-}
+  const offset = +state.routing.locationBeforeTransitions.query.offset || 0;
+  const routename = getCurrentRouteName(ownProps);
+  return { offset, routename };
+};
 
 const mapDispatchToProps = dispatch => ({
   routingActions: bindRouteActions(dispatch)
-})
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(PaginatedView)
+export default connect(mapStateToProps, mapDispatchToProps)(PaginatedView);

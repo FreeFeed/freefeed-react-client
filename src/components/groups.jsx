@@ -1,9 +1,9 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {Link} from 'react-router'
+import React from 'react';
+import {connect} from 'react-redux';
+import {Link} from 'react-router';
 
-import {tileUserListFactory, PLAIN} from './tile-user-list'
-const TileList = tileUserListFactory({type: PLAIN, size: 'large'})
+import {tileUserListFactory, PLAIN} from './tile-user-list';
+const TileList = tileUserListFactory({type: PLAIN, size: 'large'});
 
 const GroupsHandler = (props) => {
   return (
@@ -25,13 +25,13 @@ const GroupsHandler = (props) => {
       </div>
       <div className="box-footer"></div>
     </div>
-  )
-}
+  );
+};
 
 function selectState(state) {
-  const users = _.sortBy(state.groups, 'username')
+  const users = _.sortBy(state.groups, 'username');
 
-  return { users }
+  return { users };
 }
 
-export default connect(selectState)(GroupsHandler)
+export default connect(selectState)(GroupsHandler);

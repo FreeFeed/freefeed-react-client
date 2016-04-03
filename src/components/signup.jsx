@@ -1,14 +1,14 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {signUpChange, signUp, signUpEmpty} from '../redux/action-creators'
-import {preventDefault} from '../utils'
-import LoaderContainer from './loader-container'
-import {captcha as captchaConfig} from '../config'
-import Recaptcha from 'react-google-recaptcha'
-import validator from 'validator'
+import React from 'react';
+import {connect} from 'react-redux';
+import {signUpChange, signUp, signUpEmpty} from '../redux/action-creators';
+import {preventDefault} from '../utils';
+import LoaderContainer from './loader-container';
+import {captcha as captchaConfig} from '../config';
+import Recaptcha from 'react-google-recaptcha';
+import validator from 'validator';
 
 function mapStateToProps (state) {
-  return {...state.signUpForm}
+  return {...state.signUpForm};
 }
 
 function mapDispatchToProps(dispatch) {
@@ -16,7 +16,7 @@ function mapDispatchToProps(dispatch) {
     signUpChange: (...args) => dispatch(signUpChange(...args)),
     signUp: (...args) => dispatch(signUp(...args)),
     signUpEmpty: (...args) => dispatch(signUpEmpty(...args)),
-  }
+  };
 }
 
 const USERNAME_STOP_LIST = [
@@ -24,59 +24,59 @@ const USERNAME_STOP_LIST = [
   'signup', 'filter', 'settings', 'account', 'groups',
   'friends', 'list', 'search', 'summary', 'share', '404',
   'iphone', 'attachments', 'files', 'profilepics'
-]
+];
 
 function isValidUsername(username) {
   let valid = username
         && username.length >= 3
         && username.length <= 25
         && username.match(/^[A-Za-z0-9]+$/)
-        && USERNAME_STOP_LIST.indexOf(username) == -1
+        && USERNAME_STOP_LIST.indexOf(username) == -1;
 
-  return valid
+  return valid;
 }
 
 function isValidEmail(email) {
-  return email && validator.isEmail(email)
+  return email && validator.isEmail(email);
 }
 
 function isValidPassword(password) {
-  return password && password.length > 4
+  return password && password.length > 4;
 }
 
 function capitalizeFirstLetter(str) {
-  return str.replace(/^\w/g, l => l.toUpperCase())
+  return str.replace(/^\w/g, l => l.toUpperCase());
 }
 
 function validate(props) {
-  let errorMessages = []
+  let errorMessages = [];
 
   if (!isValidUsername(props.username)) {
-    errorMessages.push('invalid username')
+    errorMessages.push('invalid username');
   }
 
   if (!isValidPassword(props.password)) {
-    errorMessages.push('invalid password')
+    errorMessages.push('invalid password');
   }
 
   if (!isValidEmail(props.email)) {
-    errorMessages.push('invalid email')
+    errorMessages.push('invalid email');
   }
 
   if (captchaConfig.siteKey !== '' && !props.captcha) {
-    errorMessages.push('captcha is not filled')
+    errorMessages.push('captcha is not filled');
   }
 
-  return errorMessages.length == 0 ? null : capitalizeFirstLetter(errorMessages.join(', '))
+  return errorMessages.length == 0 ? null : capitalizeFirstLetter(errorMessages.join(', '));
 }
 
 function signUpFunc(props) {
-  let errorMessage = validate(props)
+  let errorMessage = validate(props);
 
   if(!errorMessage) {
-    props.signUp({...props})
+    props.signUp({...props});
   } else {
-    props.signUpEmpty(errorMessage)
+    props.signUpEmpty(errorMessage);
   }
 }
 
@@ -139,6 +139,6 @@ function Signup (props) {
     <div className='box-footer'>
     </div>
   </div>
-)}
+);}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Signup)
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

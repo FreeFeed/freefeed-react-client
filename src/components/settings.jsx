@@ -1,10 +1,10 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {updateUser, userSettingsChange, updateFrontendPreferences, updatePassword, updateUserPhoto, toggleRealtime, updateFrontendRealtimePreferences} from '../redux/action-creators'
-import UserSettingsForm from './user-settings-form'
-import UserFrontendPreferencesForm from './user-frontend-preferences-form'
-import UserChangePasswordForm from './user-change-password-form'
-import UserPhotoForm from './user-photo-form'
+import React from 'react';
+import {connect} from 'react-redux';
+import {updateUser, userSettingsChange, updateFrontendPreferences, updatePassword, updateUserPhoto, toggleRealtime, updateFrontendRealtimePreferences} from '../redux/action-creators';
+import UserSettingsForm from './user-settings-form';
+import UserFrontendPreferencesForm from './user-frontend-preferences-form';
+import UserChangePasswordForm from './user-change-password-form';
+import UserPhotoForm from './user-photo-form';
 
 const Settings = (props) => (
   <div className="content">
@@ -43,7 +43,7 @@ const Settings = (props) => (
       </div>
     </div>
   </div>
-)
+);
 
 function mapStateToProps(state){
   return {
@@ -53,7 +53,7 @@ function mapStateToProps(state){
     frontendRealtimePreferencesForm: state.frontendRealtimePreferencesForm,
     passwordForm: state.passwordForm,
     userPhotoForm: state.userPhotoForm,
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch){
@@ -65,7 +65,7 @@ function mapDispatchToProps(dispatch){
     updatePassword: (...args) => dispatch(updatePassword(...args)),
     updateUserPhoto: (...args) => dispatch(updateUserPhoto(...args)),
     toggleRealtime: () => dispatch(toggleRealtime()),
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Settings)
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

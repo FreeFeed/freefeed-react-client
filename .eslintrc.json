@@ -10,5 +10,8 @@
     "ecmaFeatures": {
       "jsx": true
     }
+  },
+  "rules": {
+    "semi": ["error", "always"]
   }
 }

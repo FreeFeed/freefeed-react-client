@@ -1,41 +1,41 @@
-import React from 'react'
-import {Link} from 'react-router'
-import URLFinder from 'ff-url-finder'
-import config from '../config'
+import React from 'react';
+import {Link} from 'react-router';
+import URLFinder from 'ff-url-finder';
+import config from '../config';
 
-const MAX_URL_LENGTH = 50
+const MAX_URL_LENGTH = 50;
 
-const LINK = 'link'
-const AT_LINK = 'atLink'
-const LOCAL_LINK = 'localLink'
-const EMAIL = 'email'
+const LINK = 'link';
+const AT_LINK = 'atLink';
+const LOCAL_LINK = 'localLink';
+const EMAIL = 'email';
 
 const finder = new URLFinder(
   ['ru', 'com', 'net', 'org', 'info', 'gov', 'edu', 'рф', 'ua'],
   config.siteDomains,
-)
+);
 
 class Linkify extends React.Component {
   createLinkElement(type, displayedLink, href) {
-    let props = { key: `match${++this.idx}` }
+    let props = { key: `match${++this.idx}` };
 
     if(type == AT_LINK || type == LOCAL_LINK) {
-      props['to'] = href
+      props['to'] = href;
 
       return React.createElement(
         Link,
         props,
         displayedLink
-      )
+      );
     } else {
-      props['href'] = href
-      props['target'] = '_blank'
+      props['href'] = href;
+      props['target'] = '_blank';
 
       return React.createElement(
         'a',
         props,
         displayedLink
-      )
+      );
     }
   }
 
@@ -43,74 +43,74 @@ class Linkify extends React.Component {
   idx = 0
 
   parseString(string) {
-    let elements = []
+    let elements = [];
     if (string === '') {
-      return elements
+      return elements;
     }
 
-    this.idx = 0
+    this.idx = 0;
 
     try {
       finder.parse(string).map(it => {
-        let displayedLink
-        let href
+        let displayedLink;
+        let href;
 
         if (it.type === LINK) {
-          displayedLink = URLFinder.shorten(it.text, MAX_URL_LENGTH)
-          href = it.url
+          displayedLink = URLFinder.shorten(it.text, MAX_URL_LENGTH);
+          href = it.url;
         } else if (it.type === AT_LINK) {
-          displayedLink = it.text
-          href = `/${it.username}`
+          displayedLink = it.text;
+          href = `/${it.username}`;
         } else if (it.type === LOCAL_LINK) {
-          displayedLink = URLFinder.shorten(it.text, MAX_URL_LENGTH)
-          href = it.uri
+          displayedLink = URLFinder.shorten(it.text, MAX_URL_LENGTH);
+          href = it.uri;
         } else if (it.type === EMAIL) {
-          displayedLink = it.text
-          href = `mailto:${it.address}`
+          displayedLink = it.text;
+          href = `mailto:${it.address}`;
         } else {
-          elements.push(it.text)
-          return
+          elements.push(it.text);
+          return;
         }
 
-        let linkElement = this.createLinkElement(it.type, displayedLink, href)
+        let linkElement = this.createLinkElement(it.type, displayedLink, href);
 
-        elements.push(linkElement)
-      })
+        elements.push(linkElement);
+      });
 
-      return (elements.length === 1) ? elements[0] : elements
+      return (elements.length === 1) ? elements[0] : elements;
     }
     catch(err){
-      console.log('Error while liknifying text', string, err)
+      console.log('Error while liknifying text', string, err);
     }
-    return [string]
+    return [string];
   }
 
   parse(children) {
-    let parsed = children
+    let parsed = children;
 
     if (typeof children === 'string') {
-      parsed = this.parseString(children)
+      parsed = this.parseString(children);
     } else if (React.isValidElement(children) && (children.type !== 'a') && (children.type !== 'button')) {
       parsed = React.cloneElement(
         children,
         {key: `parse${++this.parseCounter}`},
         this.parse(children.props.children)
-      )
+      );
     } else if (children instanceof Array) {
       parsed = children.map(child => {
-        return this.parse(child)
-      })
+        return this.parse(child);
+      });
     }
 
-    return parsed
+    return parsed;
   }
 
   render() {
-    this.parseCounter = 0
-    const parsedChildren = this.parse(this.props.children)
+    this.parseCounter = 0;
+    const parsedChildren = this.parse(this.props.children);
 
-    return <span className='Linkify'>{parsedChildren}</span>
+    return <span className='Linkify'>{parsedChildren}</span>;
   }
 }
 
-export default Linkify
+export default Linkify;

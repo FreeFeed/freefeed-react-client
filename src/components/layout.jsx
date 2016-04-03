@@ -1,14 +1,14 @@
-import React from 'react'
-import {IndexLink, Link} from 'react-router'
-import {connect} from 'react-redux'
-import Helmet from 'react-helmet'
-import classnames from 'classnames'
+import React from 'react';
+import {IndexLink, Link} from 'react-router';
+import {connect} from 'react-redux';
+import Helmet from 'react-helmet';
+import classnames from 'classnames';
 
-import {unauthenticated, home} from '../redux/action-creators'
-import Footer from './footer'
-import Sidebar from './sidebar'
-import LoaderContainer from './loader-container'
-import {getCurrentRouteName} from '../utils'
+import {unauthenticated, home} from '../redux/action-creators';
+import Footer from './footer';
+import Sidebar from './sidebar';
+import LoaderContainer from './loader-container';
+import {getCurrentRouteName} from '../utils';
 
 const InternalLayout = ({authenticated, children}) => (
   <div className={authenticated ? 'col-md-9' : 'col-md-12'}>
@@ -16,14 +16,14 @@ const InternalLayout = ({authenticated, children}) => (
       {children}
     </div>
   </div>
-)
+);
 
 const logoHandler = (routeName, cb) => _ => {
   if (routeName === 'home') {
-    return cb()
+    return cb();
   }
-  return false
-}
+  return false;
+};
 
 
 class Layout extends React.Component {
@@ -32,17 +32,17 @@ class Layout extends React.Component {
   // Ben Smithett, see http://bensmithett.github.io/dragster/ for details
 
   constructor(props) {
-    super(props)
+    super(props);
 
-    this.state = { isDragOver: false }
+    this.state = { isDragOver: false };
 
-    this.handleDragEnter = this.handleDragEnter.bind(this)
-    this.handleDragLeave = this.handleDragLeave.bind(this)
-    this.handleDragOver = this.handleDragOver.bind(this)
-    this.handleDrop = this.handleDrop.bind(this)
+    this.handleDragEnter = this.handleDragEnter.bind(this);
+    this.handleDragLeave = this.handleDragLeave.bind(this);
+    this.handleDragOver = this.handleDragOver.bind(this);
+    this.handleDrop = this.handleDrop.bind(this);
 
-    this.dragFirstLevel = false
-    this.dragSecondLevel = false
+    this.dragFirstLevel = false;
+    this.dragSecondLevel = false;
   }
 
   containsFiles(e) {
@@ -51,40 +51,40 @@ class Layout extends React.Component {
       // so we can't just use indexOf().
       for (let i=0; i<e.dataTransfer.types.length; i++) {
         if (e.dataTransfer.types[i] === 'Files') {
-          return true
+          return true;
         }
       }
     }
-    return false
+    return false;
   }
 
   handleDragEnter(e) {
     if (this.containsFiles(e)) {
       if (this.dragFirstLevel) {
-        this.dragSecondLevel = true
-        return
+        this.dragSecondLevel = true;
+        return;
       }
-      this.dragFirstLevel = true
+      this.dragFirstLevel = true;
 
-      this.setState({ isDragOver: true })
+      this.setState({ isDragOver: true });
 
-      e.preventDefault()
+      e.preventDefault();
     }
   }
 
   handleDragLeave(e) {
     if (this.containsFiles(e)) {
       if (this.dragSecondLevel) {
-        this.dragSecondLevel = false
+        this.dragSecondLevel = false;
       } else if (this.dragFirstLevel) {
-        this.dragFirstLevel = false
+        this.dragFirstLevel = false;
       }
 
       if (!this.dragFirstLevel && !this.dragSecondLevel) {
-        this.setState({ isDragOver: false })
+        this.setState({ isDragOver: false });
       }
 
-      e.preventDefault()
+      e.preventDefault();
     }
   }
 
@@ -92,39 +92,39 @@ class Layout extends React.Component {
   // (both `handleDragOver` and `handleDrop` are necessary)
   handleDragOver(e) {
     if (this.containsFiles(e)) {
-      e.preventDefault()
+      e.preventDefault();
     }
   }
   handleDrop(e) {
     if (this.containsFiles(e)) {
-      this.setState({ isDragOver: false })
-      this.dragFirstLevel = false
-      this.dragSecondLevel = false
-      e.preventDefault()
+      this.setState({ isDragOver: false });
+      this.dragFirstLevel = false;
+      this.dragSecondLevel = false;
+      e.preventDefault();
     }
   }
 
   componentDidMount() {
-    window.addEventListener('dragenter', this.handleDragEnter)
-    window.addEventListener('dragleave', this.handleDragLeave)
-    window.addEventListener('dragover', this.handleDragOver)
-    window.addEventListener('drop', this.handleDrop)
+    window.addEventListener('dragenter', this.handleDragEnter);
+    window.addEventListener('dragleave', this.handleDragLeave);
+    window.addEventListener('dragover', this.handleDragOver);
+    window.addEventListener('drop', this.handleDrop);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('dragenter', this.handleDragEnter)
-    window.removeEventListener('dragleave', this.handleDragLeave)
-    window.removeEventListener('dragover', this.handleDragOver)
-    window.removeEventListener('drop', this.handleDrop)
+    window.removeEventListener('dragenter', this.handleDragEnter);
+    window.removeEventListener('dragleave', this.handleDragLeave);
+    window.removeEventListener('dragover', this.handleDragOver);
+    window.removeEventListener('drop', this.handleDrop);
   }
 
   render() {
-    let props = this.props
+    let props = this.props;
 
     let layoutClassNames = classnames({
       'container': true,
       'dragover': this.state.isDragOver
-    })
+    });
 
     return (
       <div className={layoutClassNames}>
@@ -167,7 +167,7 @@ class Layout extends React.Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
@@ -179,14 +179,14 @@ function select(state, ownProps) {
     recentGroups: state.recentGroups,
     routeName: getCurrentRouteName(ownProps),
     title: state.title
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch){
   return {
     signOut: ()=>dispatch(unauthenticated()),
     home: ()=> dispatch(home()),
-  }
+  };
 }
 
-export default connect(select, mapDispatchToProps)(Layout)
+export default connect(select, mapDispatchToProps)(Layout);

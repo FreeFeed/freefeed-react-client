@@ -1,21 +1,21 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {joinPostData, postActions} from './select-utils'
+import React from 'react';
+import {connect} from 'react-redux';
+import {joinPostData, postActions} from './select-utils';
 
-import Post from './post'
+import Post from './post';
 
 const SinglePostHandler = (props) => {
-  let post = props.post
-  let errorString = props.errorString
+  let post = props.post;
+  let errorString = props.errorString;
 
-  let postBody = <div></div>
+  let postBody = <div></div>;
 
   if (errorString) {
-    postBody = <div className='single-post-error'>{errorString}</div>
+    postBody = <div className='single-post-error'>{errorString}</div>;
   }
 
   if (post) {
-    post.isCommenting = true
+    post.isCommenting = true;
     postBody = (
       <Post {...post}
         key={post.id}
@@ -38,7 +38,7 @@ const SinglePostHandler = (props) => {
         disableComments={props.disableComments}
         enableComments={props.enableComments}
         commentEdit={props.commentEdit} />
-    )
+    );
   }
 
   return (
@@ -52,22 +52,22 @@ const SinglePostHandler = (props) => {
       <div className='box-footer'>
       </div>
     </div>
-  )
-}
+  );
+};
 
 function selectState(state) {
-  const boxHeader = state.boxHeader
-  const user = state.user
+  const boxHeader = state.boxHeader;
+  const user = state.user;
 
-  const post = joinPostData(state)(state.singlePostId)
-  const viewState = state.postsViewState[state.singlePostId]
-  const errorString = viewState && viewState.isError ? viewState.errorString : null
+  const post = joinPostData(state)(state.singlePostId);
+  const viewState = state.postsViewState[state.singlePostId];
+  const errorString = viewState && viewState.isError ? viewState.errorString : null;
 
-  return { post, user, boxHeader, errorString }
+  return { post, user, boxHeader, errorString };
 }
 
 function selectActions(dispatch) {
-  return { ...postActions(dispatch) }
+  return { ...postActions(dispatch) };
 }
 
-export default connect(selectState, selectActions)(SinglePostHandler)
+export default connect(selectState, selectActions)(SinglePostHandler);

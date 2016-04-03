@@ -1,13 +1,13 @@
-import React from 'react'
+import React from 'react';
 
-import {preventDefault} from '../utils'
-import * as FrontendPrefsOptions from '../utils/frontend-preferences-options'
-import throbber16 from 'assets/images/throbber-16.gif'
+import {preventDefault} from '../utils';
+import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
+import throbber16 from 'assets/images/throbber-16.gif';
 
 export default class UserFrontendPreferencesForm extends React.Component {
   constructor(props) {
-    super(props)
-    this.state = this.props.preferences
+    super(props);
+    this.state = this.props.preferences;
   }
 
   changeDisplayOption = (event) => {
@@ -16,7 +16,7 @@ export default class UserFrontendPreferencesForm extends React.Component {
         ...this.state.displayNames,
         displayOption: parseInt(event.target.value, 10)
       }
-    })
+    });
   }
 
   changeUseYou = (event) => {
@@ -25,12 +25,12 @@ export default class UserFrontendPreferencesForm extends React.Component {
         ...this.state.displayNames,
         useYou: event.target.checked
       }
-    })
+    });
   }
 
   savePreferences = () => {
     if (this.props.status !== 'loading') {
-      this.props.updateFrontendPreferences(this.props.userId, this.state)
+      this.props.updateFrontendPreferences(this.props.userId, this.state);
     }
   }
 
@@ -97,6 +97,6 @@ export default class UserFrontendPreferencesForm extends React.Component {
           <div className="alert alert-danger" role="alert">{this.props.errorMessage}</div>
         ) : false}
       </form>
-    )
+    );
   }
 }

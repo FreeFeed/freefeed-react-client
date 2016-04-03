@@ -1,21 +1,21 @@
-import React from 'react'
-import {connect} from 'react-redux'
+import React from 'react';
+import {connect} from 'react-redux';
 
-import {Link} from 'react-router'
+import {Link} from 'react-router';
 import {unsubscribeFromGroup, makeGroupAdmin,
-        unadminGroupAdmin} from '../redux/action-creators'
+        unadminGroupAdmin} from '../redux/action-creators';
 
-import {tileUserListFactory, WITH_REMOVE_AND_MAKE_ADMIN_HANDLES, WITH_REMOVE_ADMIN_RIGHTS} from './tile-user-list'
-const SubsList = tileUserListFactory({type: WITH_REMOVE_AND_MAKE_ADMIN_HANDLES})
-const AdminsList = tileUserListFactory({type: WITH_REMOVE_ADMIN_RIGHTS})
+import {tileUserListFactory, WITH_REMOVE_AND_MAKE_ADMIN_HANDLES, WITH_REMOVE_ADMIN_RIGHTS} from './tile-user-list';
+const SubsList = tileUserListFactory({type: WITH_REMOVE_AND_MAKE_ADMIN_HANDLES});
+const AdminsList = tileUserListFactory({type: WITH_REMOVE_ADMIN_RIGHTS});
 
 const ManageSubscribersHandler = (props) => {
-  const remove = (username) => props.unsubscribeFromGroup(props.groupName, username)
-  const makeAdmin = (user) => props.makeGroupAdmin(props.groupName, user)
+  const remove = (username) => props.unsubscribeFromGroup(props.groupName, username);
+  const makeAdmin = (user) => props.makeGroupAdmin(props.groupName, user);
   const removeAdminRights = (user) => {
-    const isItMe = props.user.id === user.id
-    props.unadminGroupAdmin(props.groupName, user, isItMe)
-  }
+    const isItMe = props.user.id === user.id;
+    props.unadminGroupAdmin(props.groupName, user, isItMe);
+  };
 
   return (
     <div className="box">
@@ -62,25 +62,25 @@ const ManageSubscribersHandler = (props) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 function selectState(state, ownProps) {
-  const boxHeader = state.boxHeader
-  const groupName = ownProps.params.userName
-  const user = state.user
-  const groupAdmins = state.groupAdmins
+  const boxHeader = state.boxHeader;
+  const groupName = ownProps.params.userName;
+  const user = state.user;
+  const groupAdmins = state.groupAdmins;
   const usersWhoAreNotAdmins = _.filter(state.usernameSubscribers.payload, user => {
-    return groupAdmins.find(u => u.username == user.username) == null
-  })
-  const users = _.sortBy(usersWhoAreNotAdmins, 'username')
+    return groupAdmins.find(u => u.username == user.username) == null;
+  });
+  const users = _.sortBy(usersWhoAreNotAdmins, 'username');
 
   const amILastGroupAdmin = (
     groupAdmins.find(u => u.username == state.user.username ) != null &&
     groupAdmins.length == 1
-  )
+  );
 
-  return { boxHeader, groupName, user, groupAdmins, users, amILastGroupAdmin }
+  return { boxHeader, groupName, user, groupAdmins, users, amILastGroupAdmin };
 }
 
 function selectActions(dispatch) {
@@ -88,7 +88,7 @@ function selectActions(dispatch) {
     unsubscribeFromGroup: (...args) => dispatch(unsubscribeFromGroup(...args)),
     makeGroupAdmin: (...args) => dispatch(makeGroupAdmin(...args)),
     unadminGroupAdmin: (...args) => dispatch(unadminGroupAdmin(...args))
-  }
+  };
 }
 
-export default connect(selectState, selectActions)(ManageSubscribersHandler)
+export default connect(selectState, selectActions)(ManageSubscribersHandler);

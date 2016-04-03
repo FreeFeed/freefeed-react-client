@@ -1,31 +1,31 @@
-import React from 'react'
-import {Link} from 'react-router'
-import {connect} from 'react-redux'
+import React from 'react';
+import {Link} from 'react-router';
+import {connect} from 'react-redux';
 
-import {userActions} from './select-utils'
-import {getUserInfo} from '../redux/action-creators'
-import throbber16 from 'assets/images/throbber-16.gif'
+import {userActions} from './select-utils';
+import {getUserInfo} from '../redux/action-creators';
+import throbber16 from 'assets/images/throbber-16.gif';
 
 class UserCard extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     // Load this user's info if it's not in the store already
     if (!props.user.id) {
-      setTimeout(() => props.getUserInfo(props.username), 0)
+      setTimeout(() => props.getUserInfo(props.username), 0);
     }
   }
 
   unsubscribe = () => {
     if (this.props.amIGroupAdmin) {
-      alert('You are the Admin for this group. If you want to unsubscribe please drop administrative privileges first.')
+      alert('You are the Admin for this group. If you want to unsubscribe please drop administrative privileges first.');
     } else {
-      this.props.unsubscribe({username: this.props.user.username})
+      this.props.unsubscribe({username: this.props.user.username});
     }
   }
 
   render() {
-    const props = this.props
+    const props = this.props;
 
     return (!props.user.id ? (
       <div className="user-card">
@@ -96,13 +96,13 @@ class UserCard extends React.Component {
           </div>
         ) : false}
       </div>
-    ))
+    ));
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const me = state.user
-  const user = (_.find(state.users, {username: ownProps.username}) || {})
+  const me = state.user;
+  const user = (_.find(state.users, {username: ownProps.username}) || {});
 
   return {
     user,
@@ -111,14 +111,14 @@ const mapStateToProps = (state, ownProps) => {
     hasRequestBeenSent: ((me.pendingSubscriptionRequests || []).indexOf(user.id) > -1),
     blocked: ((me.banIds || []).indexOf(user.id) > -1),
     amIGroupAdmin: (user.type === 'group' && (user.administrators || []).indexOf(me.id) > -1)
-  }
-}
+  };
+};
 
 function mapDispatchToProps(dispatch) {
   return {
     ...userActions(dispatch),
     getUserInfo: (username) => dispatch(getUserInfo(username))
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserCard)
+export default connect(mapStateToProps, mapDispatchToProps)(UserCard);

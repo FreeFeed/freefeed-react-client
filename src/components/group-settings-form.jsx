@@ -1,12 +1,12 @@
-import React from 'react'
-import {preventDefault} from '../utils'
-import throbber16 from 'assets/images/throbber-16.gif'
+import React from 'react';
+import {preventDefault} from '../utils';
+import throbber16 from 'assets/images/throbber-16.gif';
 
-import GroupFeedTypePicker from './group-feed-type-picker'
+import GroupFeedTypePicker from './group-feed-type-picker';
 
 export default class GroupSettingsForm extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       screenName: this.props.group.screenName,
@@ -14,7 +14,7 @@ export default class GroupSettingsForm extends React.Component {
       isPrivate: this.props.group.isPrivate,
       isRestricted:  this.props.group.isRestricted,
       isWarningDisplayed: false
-    }
+    };
   }
 
   componentWillReceiveProps = (newProps) => {
@@ -25,14 +25,14 @@ export default class GroupSettingsForm extends React.Component {
         isPrivate: newProps.group.isPrivate,
         isRestricted: newProps.group.isRestricted,
         isWarningDisplayed: false
-      })
+      });
     }
   }
 
   handleChange = (property) => (event) => {
-    const newState = {}
-    newState[property] = event.target.value
-    this.setState(newState)
+    const newState = {};
+    newState[property] = event.target.value;
+    this.setState(newState);
   }
 
   handlePrivacyTypeChange = (privacySettings) => {
@@ -43,19 +43,19 @@ export default class GroupSettingsForm extends React.Component {
         privacySettings.hasOwnProperty('isPrivate') &&
         privacySettings.isPrivate == 0
       )
-    }
-    this.setState(newState)
+    };
+    this.setState(newState);
   }
 
   saveSettings = () => {
-    this.setState({ isWarningDisplayed: false })
+    this.setState({ isWarningDisplayed: false });
     if (this.props.status !== 'loading') {
-      this.props.updateGroup(this.props.group.id, this.state)
+      this.props.updateGroup(this.props.group.id, this.state);
     }
   }
 
   componentWillUnmount() {
-    this.props.resetGroupUpdateForm()
+    this.props.resetGroupUpdateForm();
   }
 
   render() {
@@ -90,6 +90,6 @@ export default class GroupSettingsForm extends React.Component {
         ) : this.props.status === 'error' ? (
           <div className="alert alert-danger" role="alert">{this.props.errorMessage}</div>
         ) : false}
-      </form>)
+      </form>);
   }
 }

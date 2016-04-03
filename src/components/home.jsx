@@ -1,15 +1,15 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {createPost, resetPostCreateForm, expandSendTo, toggleHiddenPosts} from '../redux/action-creators'
-import {joinPostData, joinCreatePostData, postActions} from './select-utils'
-import {getQuery, pluralForm} from '../utils'
-import {Link} from 'react-router'
+import React from 'react';
+import {connect} from 'react-redux';
+import {createPost, resetPostCreateForm, expandSendTo, toggleHiddenPosts} from '../redux/action-creators';
+import {joinPostData, joinCreatePostData, postActions} from './select-utils';
+import {getQuery, pluralForm} from '../utils';
+import {Link} from 'react-router';
 
-import CreatePost from './create-post'
-import Feed from './feed'
-import PaginatedView from './paginated-view'
-import RealtimeSwitch from './realtime-switch'
-import Welcome from './welcome'
+import CreatePost from './create-post';
+import Feed from './feed';
+import PaginatedView from './paginated-view';
+import RealtimeSwitch from './realtime-switch';
+import Welcome from './welcome';
 
 const FeedHandler = (props) => {
   const createPostComponent = (
@@ -23,7 +23,7 @@ const FeedHandler = (props) => {
       createPostForm={props.createPostForm}
       addAttachmentResponse={props.addAttachmentResponse}
       removeAttachment={props.removeAttachment}/>
-  )
+  );
 
   return (
     <div className='box'>
@@ -53,24 +53,24 @@ const FeedHandler = (props) => {
       )}
       <div className='box-footer'>
       </div>
-    </div>)
-}
+    </div>);
+};
 
 function selectState(state) {
-  const user = state.user
-  const authenticated = state.authenticated
-  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state))
-  const hiddenEntries = state.feedViewState.hiddenEntries.map(joinPostData(state))
-  const isHiddenRevealed = state.feedViewState.isHiddenRevealed
-  const createPostViewState = state.createPostViewState
-  const createPostForm = joinCreatePostData(state)
-  const timelines = state.timelines
-  const boxHeader = state.boxHeader
-  const sendTo = {...state.sendTo, defaultFeed: user.username}
+  const user = state.user;
+  const authenticated = state.authenticated;
+  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
+  const hiddenEntries = state.feedViewState.hiddenEntries.map(joinPostData(state));
+  const isHiddenRevealed = state.feedViewState.isHiddenRevealed;
+  const createPostViewState = state.createPostViewState;
+  const createPostForm = joinCreatePostData(state);
+  const timelines = state.timelines;
+  const boxHeader = state.boxHeader;
+  const sendTo = {...state.sendTo, defaultFeed: user.username};
 
   const totalRequestsCount = state.groupRequestsCount +
                              state.userRequestsCount +
-                             state.sentRequestsCount
+                             state.sentRequestsCount;
 
   return {
     user, authenticated,
@@ -78,7 +78,7 @@ function selectState(state) {
     createPostViewState, createPostForm,
     timelines, boxHeader, sendTo, totalRequestsCount,
     areOnFirstHomePage: !state.routing.locationBeforeTransitions.query.offset,
-  }
+  };
 }
 
 function selectActions(dispatch) {
@@ -88,7 +88,7 @@ function selectActions(dispatch) {
     resetPostCreateForm: (...args) => dispatch(resetPostCreateForm(...args)),
     expandSendTo: () => dispatch(expandSendTo()),
     toggleHiddenPosts: () => dispatch(toggleHiddenPosts())
-  }
+  };
 }
 
-export default connect(selectState, selectActions)(FeedHandler)
+export default connect(selectState, selectActions)(FeedHandler);

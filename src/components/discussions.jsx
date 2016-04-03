@@ -1,13 +1,13 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {createPost, resetPostCreateForm, expandSendTo} from '../redux/action-creators'
-import {joinPostData, joinCreatePostData, postActions} from './select-utils'
-import {getQuery} from '../utils'
+import React from 'react';
+import {connect} from 'react-redux';
+import {createPost, resetPostCreateForm, expandSendTo} from '../redux/action-creators';
+import {joinPostData, joinCreatePostData, postActions} from './select-utils';
+import {getQuery} from '../utils';
 
-import CreatePost from './create-post'
-import Feed from './feed'
-import PaginatedView from './paginated-view'
-import Welcome from './welcome'
+import CreatePost from './create-post';
+import Feed from './feed';
+import PaginatedView from './paginated-view';
+import Welcome from './welcome';
 
 const FeedHandler = (props) => {
   const createPostComponent = (
@@ -21,7 +21,7 @@ const FeedHandler = (props) => {
       createPostForm={props.createPostForm}
       addAttachmentResponse={props.addAttachmentResponse}
       removeAttachment={props.removeAttachment}/>
-  )
+  );
 
   return (
     <div className='box'>
@@ -33,20 +33,20 @@ const FeedHandler = (props) => {
       </PaginatedView>
       <div className='box-footer'>
       </div>
-    </div>)
-}
+    </div>);
+};
 
 function selectState(state) {
-  const user = state.user
-  const authenticated = state.authenticated
-  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state))
-  const createPostViewState = state.createPostViewState
-  const createPostForm = joinCreatePostData(state)
-  const timelines = state.timelines
-  const boxHeader = state.boxHeader
-  const sendTo = {...state.sendTo, defaultFeed: null}
+  const user = state.user;
+  const authenticated = state.authenticated;
+  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
+  const createPostViewState = state.createPostViewState;
+  const createPostForm = joinCreatePostData(state);
+  const timelines = state.timelines;
+  const boxHeader = state.boxHeader;
+  const sendTo = {...state.sendTo, defaultFeed: null};
 
-  return { user, authenticated, visibleEntries, createPostViewState, createPostForm, timelines, boxHeader, sendTo }
+  return { user, authenticated, visibleEntries, createPostViewState, createPostForm, timelines, boxHeader, sendTo };
 }
 
 function selectActions(dispatch) {
@@ -55,7 +55,7 @@ function selectActions(dispatch) {
     createPost: (feeds, postText, attachmentIds, more) => dispatch(createPost(feeds, postText, attachmentIds, more)),
     resetPostCreateForm: (...args) => dispatch(resetPostCreateForm(...args)),
     expandSendTo: () => dispatch(expandSendTo())
-  }
+  };
 }
 
-export default connect(selectState, selectActions)(FeedHandler)
+export default connect(selectState, selectActions)(FeedHandler);

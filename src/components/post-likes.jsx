@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
-import UserName from './user-name'
-import {preventDefault} from '../utils'
+import UserName from './user-name';
+import {preventDefault} from '../utils';
 
 const renderLike = (item, i, items) => (
   <li key={item.id}>
@@ -19,29 +19,29 @@ const renderLike = (item, i, items) => (
       <span> liked this</span>
     )}
   </li>
-)
+);
 
 export default ({likes, showMoreLikes, post}) => {
   if (!likes.length) {
-    return <div/>
+    return <div/>;
   }
 
-  const likeList = likes
+  const likeList = likes;
 
   if (post.omittedLikes) {
     likeList.push({
       id: 'more-likes',
       omittedLikes: post.omittedLikes,
       showMoreLikes: () => showMoreLikes(post.id)
-    })
+    });
   }
 
-  const renderedLikes = likeList.map(renderLike)
+  const renderedLikes = likeList.map(renderLike);
 
   return (
     <div className="likes">
       <i className="fa fa-heart icon"></i>
       <ul>{renderedLikes}</ul>
     </div>
-  )
-}
+  );
+};

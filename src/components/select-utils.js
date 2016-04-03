@@ -18,71 +18,71 @@ import {
   toggleCommenting, updateCommentingText, addComment,
   toggleEditingComment, cancelEditingComment, saveEditingComment,
   deleteComment
-} from '../redux/action-creators'
+} from '../redux/action-creators';
 
-const MAX_LIKES = 4
+const MAX_LIKES = 4;
 
 export const joinPostData = state => postId => {
-  const post = state.posts[postId]
+  const post = state.posts[postId];
   if (!post){
-    return
+    return;
   }
-  const user = state.user
+  const user = state.user;
 
-  const attachments = (post.attachments || []).map(attachmentId => state.attachments[attachmentId])
+  const attachments = (post.attachments || []).map(attachmentId => state.attachments[attachmentId]);
   let comments = (post.comments || []).map(commentId => {
-    const comment = state.comments[commentId]
-    const commentViewState = state.commentViewState[commentId]
-    const placeholderUser = {id: comment.createdBy}
-    const author = state.users[comment.createdBy] || placeholderUser
+    const comment = state.comments[commentId];
+    const commentViewState = state.commentViewState[commentId];
+    const placeholderUser = {id: comment.createdBy};
+    const author = state.users[comment.createdBy] || placeholderUser;
     if (author === placeholderUser) {
-      console.log('We\'ve got comment with unknown author with id', placeholderUser.id)
+      console.log('We\'ve got comment with unknown author with id', placeholderUser.id);
     }
-    const isEditable = (user.id === comment.createdBy)
-    const isDeletable = (user.id === post.createdBy)
-    return { ...comment, ...commentViewState, user: author, isEditable, isDeletable }
-  })
+    const isEditable = (user.id === comment.createdBy);
+    const isDeletable = (user.id === post.createdBy);
+    return { ...comment, ...commentViewState, user: author, isEditable, isDeletable };
+  });
 
-  const postViewState = state.postsViewState[post.id]
+  const postViewState = state.postsViewState[post.id];
 
   if (postViewState.omittedComments !== 0) {
-    comments = [ comments[0], comments[comments.length - 1] ]
+    comments = [ comments[0], comments[comments.length - 1] ];
   }
 
-  let usersLikedPost = _.map(post.likes, userId => state.users[userId])
+  let usersLikedPost = _.map(post.likes, userId => state.users[userId]);
 
   if (postViewState.omittedLikes !== 0) {
-    usersLikedPost = usersLikedPost.slice(0, MAX_LIKES)
+    usersLikedPost = usersLikedPost.slice(0, MAX_LIKES);
   }
 
-  const placeholderUser = {id: post.createdBy}
+  const placeholderUser = {id: post.createdBy};
 
-  const createdBy = state.users[post.createdBy] || placeholderUser
+  const createdBy = state.users[post.createdBy] || placeholderUser;
 
   if (createdBy === placeholderUser) {
-    console.log('We\'ve got post with unknown author with id', placeholderUser.id)
+    console.log('We\'ve got post with unknown author with id', placeholderUser.id);
   }
 
-  const isEditable = (post.createdBy === user.id)
+  const isEditable = (post.createdBy === user.id);
 
   // Check if the post is a direct message
   const directRecipients = post.postedTo
     .filter((subscriptionId) => {
-      let subscriptionType = (state.subscriptions[subscriptionId]||{}).name
-      return (subscriptionType === 'Directs')
-    })
-  const isDirect = !!directRecipients.length
+      let subscriptionType = (state.subscriptions[subscriptionId]||{}).name;
+      return (subscriptionType === 'Directs');
+    });
+  const isDirect = !!directRecipients.length;
 
   // Get the list of post's recipients
   const recipients = post.postedTo
     .map(subscriptionId => {
-      const userId = (state.subscriptions[subscriptionId]||{}).user
-      const subscriptionType = (state.subscriptions[subscriptionId]||{}).name
-      const isDirectToSelf = userId === post.createdBy && subscriptionType === 'Directs'
-      return !isDirectToSelf ? userId : false
+      const userId = (state.subscriptions[subscriptionId]||{}).user;
+      const subscriptionType = (state.subscriptions[subscriptionId]||{}).name;
+      const isDirectToSelf = userId === post.createdBy && subscriptionType === 'Directs';
+      return !isDirectToSelf ? userId : false;
     })
     .map(userId => state.subscribers[userId])
-    .filter(user => user)
+    .filter(user => user);
 
   return {...post,
     createdBy,
@@ -93,14 +93,14 @@ export const joinPostData = state => postId => {
     comments,
     ...postViewState,
     isEditable
-  }
-}
+  };
+};
 
 export function joinCreatePostData(state) {
-  const createPostForm = state.createPostForm
+  const createPostForm = state.createPostForm;
   return {...createPostForm,
     attachments: (createPostForm.attachments || []).map(attachmentId => state.attachments[attachmentId])
-  }
+  };
 }
 
 export function postActions(dispatch) {
@@ -128,7 +128,7 @@ export function postActions(dispatch) {
       saveEditingComment: (commentId, newValue) => dispatch(saveEditingComment(commentId, newValue)),
       deleteComment: (commentId) => dispatch(deleteComment(commentId)),
     },
-  }
+  };
 }
 
 export function userActions(dispatch) {
@@ -138,5 +138,5 @@ export function userActions(dispatch) {
     subscribe: username => dispatch(subscribe(username)),
     unsubscribe: username => dispatch(unsubscribe(username)),
     sendSubscriptionRequest: username => dispatch(sendSubscriptionRequest(username))
-  }
+  };
 }

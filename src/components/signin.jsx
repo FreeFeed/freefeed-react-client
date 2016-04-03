@@ -1,12 +1,12 @@
-import React from 'react'
-import {Link} from 'react-router'
-import {connect} from 'react-redux'
-import {signInChange, signIn, signInEmpty} from '../redux/action-creators'
-import {preventDefault} from '../utils'
-import LoaderContainer from './loader-container'
+import React from 'react';
+import {Link} from 'react-router';
+import {connect} from 'react-redux';
+import {signInChange, signIn, signInEmpty} from '../redux/action-creators';
+import {preventDefault} from '../utils';
+import LoaderContainer from './loader-container';
 
 function mapStateToProps (state){
-  return {...state.signInForm}
+  return {...state.signInForm};
 }
 
 function mapDispatchToProps(dispatch){
@@ -14,14 +14,14 @@ function mapDispatchToProps(dispatch){
     signInChange: (...args) => dispatch(signInChange(...args)),
     signIn: (...args) => dispatch(signIn(...args)),
     signInEmpty: (...args) => dispatch(signInEmpty(...args)),
-  }
+  };
 }
 
 function signInFunc(props){
   if (props.username && props.password){
-    props.signIn(props.username, props.password)
+    props.signIn(props.username, props.password);
   } else {
-    props.signInEmpty()
+    props.signInEmpty();
   }
 }
 
@@ -62,6 +62,6 @@ function Signin(props) {
     <div className='box-footer'>
     </div>
   </div>
-)}
+);}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Signin)
+export default connect(mapStateToProps, mapDispatchToProps)(Signin);

@@ -1,7 +1,7 @@
-import React from 'react'
-import {Link} from 'react-router'
+import React from 'react';
+import {Link} from 'react-router';
 
-import screenshot from 'assets/images/screenshot.png'
+import screenshot from 'assets/images/screenshot.png';
 
 export default (props) => (
   <div className="box">
@@ -59,4 +59,4 @@ export default (props) => (
         version today.</p>
     </div>
   </div>
-)
+);

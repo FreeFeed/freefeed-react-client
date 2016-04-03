@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
-import {preventDefault} from '../utils'
-import throbber16 from 'assets/images/throbber-16.gif'
+import {preventDefault} from '../utils';
+import throbber16 from 'assets/images/throbber-16.gif';
 
 export default (props) => (
   <div className="comment">
@@ -16,4 +16,4 @@ export default (props) => (
       {`${props.omittedComments}`} more comments
     </a>
   </div>
-)
+);

@@ -1,17 +1,17 @@
-import React from 'react'
-import {preventDefault} from '../utils'
-import throbber16 from 'assets/images/throbber-16.gif'
+import React from 'react';
+import {preventDefault} from '../utils';
+import throbber16 from 'assets/images/throbber-16.gif';
 
 export default class GroupPictureForm extends React.Component {
   savePicture = () => {
-    const newFile = this.refs.pictureFile.files[0]
+    const newFile = this.refs.pictureFile.files[0];
     if (newFile && this.props.status !== 'loading') {
-      this.props.updateGroupPicture(this.props.group.username, newFile)
+      this.props.updateGroupPicture(this.props.group.username, newFile);
     }
   }
 
   componentWillUnmount() {
-    this.props.resetGroupUpdateForm()
+    this.props.resetGroupUpdateForm();
   }
 
   render() {
@@ -41,6 +41,6 @@ export default class GroupPictureForm extends React.Component {
           <div className="alert alert-danger" role="alert">{this.props.errorMessage}</div>
         ) : false}
       </form>
-    )
+    );
   }
 }

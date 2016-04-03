@@ -1,5 +1,5 @@
-import React from 'react'
-import {Link} from 'react-router'
+import React from 'react';
+import {Link} from 'react-router';
 
 export default _ => (
   <div className="box-body">
@@ -13,4 +13,4 @@ export default _ => (
     <p><b><Link to="/signup">Sign up</Link></b> now or <Link to='/signin'>sign in</Link> if
       you already have an account.</p>
   </div>
-)
+);

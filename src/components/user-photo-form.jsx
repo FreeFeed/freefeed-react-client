@@ -1,5 +1,5 @@
-import React from 'react'
-import {preventDefault} from '../utils'
+import React from 'react';
+import {preventDefault} from '../utils';
 
 export default class UserPhotoForm extends React.Component {
   render(){
@@ -20,11 +20,11 @@ export default class UserPhotoForm extends React.Component {
           (<div className='alert alert-danger p-settings-alert' role='alert'>
               <span id='error-message'>{this.props.errorText}</span>
             </div>) : false}
-      </form>)
+      </form>);
   }
   updatePhoto = () => {
     if (!this.props.isSaving){
-      this.props.updateUserPhoto(this.refs.photo.files[0])
+      this.props.updateUserPhoto(this.refs.photo.files[0]);
     }
   }
 }

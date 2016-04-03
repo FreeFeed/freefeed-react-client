@@ -12,14 +12,14 @@ import {
   subscribers,
   subscriptions,
   getSinglePost
-} from './action-creators'
+} from './action-creators';
 
 //query params are strings, so + hack to convert to number
-const getOffset = nextRoute => +nextRoute.location.query.offset || 0
+const getOffset = nextRoute => +nextRoute.location.query.offset || 0;
 
 const getUserName = nextRoute => {
-  return nextRoute.params.userName
-}
+  return nextRoute.params.userName;
+};
 
 export const routeActions = {
   'home': next => home(getOffset(next)),
@@ -33,8 +33,8 @@ export const routeActions = {
   'subscribers': next => subscribers(getUserName(next)),
   'subscriptions': next => subscriptions(getUserName(next)),
   'post': next => getSinglePost(next.params.postId)
-}
+};
 
 export const bindRouteActions = dispatch => route => next => {
-  return dispatch(routeActions[route](next))
-}
+  return dispatch(routeActions[route](next));
+};
