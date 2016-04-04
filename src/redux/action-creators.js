@@ -558,3 +558,10 @@ export function revokeSentRequest(userName) {
     apiRequest: Api.revokeSentRequest
   }
 }
+
+export function blockedByMe() {
+  return {
+    type: ActionTypes.BLOCKED_BY_ME,
+    apiRequest: Api.getBlockedByMe
+  }
+}

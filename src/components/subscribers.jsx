@@ -19,7 +19,7 @@ const SubscribersHandler = (props) => {
           ? <div className="col-md-6 text-right">
               <Link to={`/${props.username}/manage-subscribers`}>Manage subscribers</Link>
             </div>
-          : false}          
+          : false}
         </div>
         <SubsList {...props} title='Subscribers' />
       </div>
@@ -31,12 +31,12 @@ const SubscribersHandler = (props) => {
 function selectState(state, ownProps) {
   const boxHeader = state.boxHeader
   const username = ownProps.params.userName
-  const users = _.sortBy(state.usernameSubscribers.payload, 'username')
+  const subs = _.sortBy(state.usernameSubscribers.payload, 'username')
   const isPending = state.usernameSubscribers.isPending
   const errorString = state.usernameSubscribers.errorString
   const amIGroupAdmin = (state.managedGroups.find(group => group.username == username) != null)
-  
-  return { boxHeader, username, amIGroupAdmin, users, isPending, errorString }
+
+  return { boxHeader, username, amIGroupAdmin, subs, isPending, errorString }
 }
 
 export default connect(selectState)(SubscribersHandler)
