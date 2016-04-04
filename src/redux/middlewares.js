@@ -38,7 +38,7 @@ export const authMiddleware = store => next => action => {
     return;
   }
 
-  if(action.type === ActionTypes.UNAUTHENTICATED) {
+  if (action.type === ActionTypes.UNAUTHENTICATED) {
     setToken();
     persistUser();
     next(action);
@@ -49,7 +49,7 @@ export const authMiddleware = store => next => action => {
     return browserHistory.push('/signin');
   }
 
-  if(action.type === response(ActionTypes.SIGN_IN) ||
+  if (action.type === response(ActionTypes.SIGN_IN) ||
      action.type === response(ActionTypes.SIGN_UP) ) {
     setToken(action.payload.authToken);
     next(action);
@@ -58,7 +58,7 @@ export const authMiddleware = store => next => action => {
     return browserHistory.push('/');
   }
 
-  if(action.type === response(ActionTypes.WHO_AM_I) ||
+  if (action.type === response(ActionTypes.WHO_AM_I) ||
      action.type === response(ActionTypes.UPDATE_USER) ) {
     persistUser(userParser(action.payload.users));
     return next(action);
@@ -68,7 +68,7 @@ export const authMiddleware = store => next => action => {
 };
 
 export const likesLogicMiddleware = store => next => action => {
-  switch(action.type) {
+  switch (action.type) {
     case ActionTypes.SHOW_MORE_LIKES: {
       const postId = action.payload.postId;
       const post = store.getState().posts[postId];

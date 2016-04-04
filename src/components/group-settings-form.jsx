@@ -18,7 +18,7 @@ export default class GroupSettingsForm extends React.Component {
   }
 
   componentWillReceiveProps = (newProps) => {
-    if(newProps.status !== "loading") {
+    if (newProps.status !== "loading") {
       this.setState({
         screenName: newProps.group.screenName,
         description: newProps.group.description,

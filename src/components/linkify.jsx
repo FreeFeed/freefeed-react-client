@@ -19,7 +19,7 @@ class Linkify extends React.Component {
   createLinkElement(type, displayedLink, href) {
     let props = { key: `match${++this.idx}` };
 
-    if(type == AT_LINK || type == LOCAL_LINK) {
+    if (type == AT_LINK || type == LOCAL_LINK) {
       props['to'] = href;
 
       return React.createElement(
@@ -79,7 +79,7 @@ class Linkify extends React.Component {
 
       return (elements.length === 1) ? elements[0] : elements;
     }
-    catch(err) {
+    catch (err) {
       console.log('Error while liknifying text', string, err);
     }
     return [string];

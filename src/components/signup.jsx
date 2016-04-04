@@ -73,7 +73,7 @@ function validate(props) {
 function signUpFunc(props) {
   let errorMessage = validate(props);
 
-  if(!errorMessage) {
+  if (!errorMessage) {
     props.signUp({...props});
   } else {
     props.signUpEmpty(errorMessage);

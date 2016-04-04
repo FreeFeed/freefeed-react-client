@@ -1,7 +1,7 @@
 import React from 'react';
 import Textarea from 'react-textarea-autosize';
 
-import PieceOfText from'./piece-of-text';
+import PieceOfText from './piece-of-text';
 import UserName from './user-name';
 import {preventDefault, confirmFirst, fromNowOrNow} from '../utils';
 import throbber16 from 'assets/images/throbber-16.gif';

@@ -45,7 +45,7 @@ export function title(state = '', action) {
 }
 
 export function signInForm(state={username:'', password:'', error:'', loading: false}, action) {
-  switch(action.type) {
+  switch (action.type) {
     case ActionTypes.SIGN_IN_CHANGE: {
       return {
         ...state,
@@ -80,7 +80,7 @@ const INITIAL_SIGN_UP_FORM_STATE = {
 };
 
 export function signUpForm(state=INITIAL_SIGN_UP_FORM_STATE, action) {
-  switch(action.type) {
+  switch (action.type) {
     case ActionTypes.SIGN_UP_CHANGE: {
       return {
         ...state,
@@ -1008,7 +1008,7 @@ export function commentViewState(state={}, action) {
   if (ActionHelpers.isFeedResponse(action)) {
     return updateCommentViewState(state, action);
   }
-  switch(action.type) {
+  switch (action.type) {
     case response(ActionTypes.SHOW_MORE_COMMENTS): {
       return updateCommentViewState(state, action);
     }
@@ -1184,7 +1184,7 @@ const DEFAULT_PASSWORD_FORM_STATE = {
 };
 
 export function passwordForm(state=DEFAULT_PASSWORD_FORM_STATE, action) {
-  switch(action.type) {
+  switch (action.type) {
     case request(ActionTypes.UPDATE_PASSWORD): {
       return {...state, isSaving: true, error: false, success: false};
     }
@@ -1263,7 +1263,7 @@ const DEFAULT_PHOTO_FORM_STATE = {
 };
 
 export function userPhotoForm(state=DEFAULT_PHOTO_FORM_STATE, action) {
-  switch(action.type) {
+  switch (action.type) {
     case request(ActionTypes.UPDATE_USER_PHOTO): {
       return {isSaving: true, error: false, success: false};
     }
@@ -1360,7 +1360,7 @@ export function routeLoadingState(state = false, action) {
   if (action.type == response(ActionTypes.GET_SINGLE_POST) || action.type == fail(ActionTypes.GET_SINGLE_POST)) {
     return false;
   }
-  switch(action.type) {
+  switch (action.type) {
     case ActionTypes.UNAUTHENTICATED: {
       return false;
     }
@@ -1369,7 +1369,7 @@ export function routeLoadingState(state = false, action) {
 }
 
 export function boxHeader(state = "", action) {
-  switch(action.type) {
+  switch (action.type) {
     case request(ActionTypes.HOME): {
       return 'Home';
     }
@@ -1446,7 +1446,7 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
     return getHiddenSendTo(state);
   }
 
-  switch(action.type) {
+  switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
       return {
         expanded: false,
@@ -1647,7 +1647,7 @@ export function managedGroups(state = [], action) {
       return removeItemFromGroupRequests(state, action);
     }
     case response(ActionTypes.UNADMIN_GROUP_ADMIN): {
-      if(action.request.isItMe) {
+      if (action.request.isItMe) {
         return state.filter(group => group.username !== action.request.groupName);
       }
     }

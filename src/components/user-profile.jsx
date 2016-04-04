@@ -19,7 +19,7 @@ export default class UserProfile extends React.Component {
     let props = this.props;
 
     const unsubscribe = () => {
-      if(props.amIGroupAdmin) {
+      if (props.amIGroupAdmin) {
         this.setState({ isUnsubWarningDisplayed: true });
       } else {
         props.unsubscribe({ username: props.username });
