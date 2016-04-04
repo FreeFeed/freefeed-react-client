@@ -13,7 +13,14 @@ const SubscriptionsHandler = (props) => {
       </div>
       <div className='box-body'>
         <div><Link to={`/${props.username}`}>{props.username}</Link> › Subscriptions</div>
-        <SubsList {...props} title='Subscriptions' />
+        <SubsList {...props}
+                  subs={props.users}
+                  emptyString='No user subscriptions'
+                  title='Users'/>
+        <SubsList {...props}
+                  subs={props.groups}
+                  emptyString='No group subscriptions'
+                  title='Groups'/>
       </div>
       <div className='box-footer'></div>
     </div>
@@ -23,11 +30,16 @@ const SubscriptionsHandler = (props) => {
 function selectState(state, ownProps) {
   const boxHeader = state.boxHeader
   const username = ownProps.params.userName
-  const users = _.sortBy(state.usernameSubscriptions.payload, 'username')
+  const subs = _.sortBy(state.usernameSubscriptions.payload, 'username')
+
+  const groups = _.filter(subs, (item) => item.type == 'group')
+  const users = _.filter(subs, (item) => item.type == 'user')
+
   const isPending = state.usernameSubscriptions.isPending
   const errorString = state.usernameSubscriptions.errorString
+  const displayQuantity = true
 
-  return { boxHeader, username, users, isPending, errorString }
+  return { boxHeader, username, users, groups, isPending, errorString, displayQuantity }
 }
 
 export default connect(selectState)(SubscriptionsHandler)
