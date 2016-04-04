@@ -3,88 +3,106 @@ import {Link} from 'react-router'
 import {connect} from 'react-redux'
 
 import {userActions} from './select-utils'
+import {getUserInfo} from '../redux/action-creators'
+import throbber16 from 'assets/images/throbber-16.gif'
 
-const UserCard = (props) => {
-  const unsubscribe = () => {
-    if (props.amIGroupAdmin) {
-      alert('You are the Admin for this group. If you want to unsubscribe please drop administrative privileges first.')
-    } else {
-      props.unsubscribe({username: props.user.username})
+class UserCard extends React.Component {
+  constructor(props) {
+    super(props)
+
+    // Load this user's info if it's not in the store already
+    if (!props.user.id) {
+      setTimeout(() => props.getUserInfo(props.username), 0)
     }
   }
 
-  return (!props.user.id ? (
-    <div className="user-card">
-      <div className="user-card-info">
-        <i>No information.</i>
-      </div>
-    </div>
-  ) : (
-    <div className="user-card">
-      <div className="user-card-info">
-        <Link to={`/${props.user.username}`} className="userpic">
-          <img src={props.user.profilePictureLargeUrl} width="75" height="75"/>
-        </Link>
+  unsubscribe = () => {
+    if (this.props.amIGroupAdmin) {
+      alert('You are the Admin for this group. If you want to unsubscribe please drop administrative privileges first.')
+    } else {
+      this.props.unsubscribe({username: this.props.user.username})
+    }
+  }
 
-        <div className="names">
-          <Link to={`/${props.user.username}`} className="display-name">{props.user.screenName}</Link><br/>
+  render() {
+    const props = this.props
 
-          {props.user.screenName !== props.user.username ? (
-            <span className="username">@{props.user.username}</span>
-          ) : false}
-        </div>
-
-        <div className="description">
-          {props.isItMe ? (
-            "It's you!"
-          ) : props.user.type === 'user' && props.user.isPrivate === '1' ? (
-            'Private feed'
-          ) : props.user.type === 'user' && props.user.isPrivate === '0' ? (
-            'Public feed'
-          ) : props.user.type === 'group' && props.user.isPrivate === '1' ? (
-            'Private group'
-          ) : props.user.type === 'group' && props.user.isPrivate === '0' ? (
-            'Public group'
-          ) : false}
+    return (!props.user.id ? (
+      <div className="user-card">
+        <div className="user-card-info">
+          <div className="userpic loading"></div>
+          <div className="names">
+            <img width="16" height="16" src={throbber16}/>
+          </div>
         </div>
       </div>
+    ) : (
+      <div className="user-card">
+        <div className="user-card-info">
+          <Link to={`/${props.user.username}`} className="userpic">
+            <img src={props.user.profilePictureLargeUrl} width="75" height="75"/>
+          </Link>
 
-      {props.blocked ? (
-        <div className="user-card-actions">
-          <span>Blocked user - </span>
-          <a onClick={()=>props.unban({username: props.user.username, id: props.user.id})}>Un-block</a>
+          <div className="names">
+            <Link to={`/${props.user.username}`} className="display-name">{props.user.screenName}</Link><br/>
+
+            {props.user.screenName !== props.user.username ? (
+              <span className="username">@{props.user.username}</span>
+            ) : false}
+          </div>
+
+          <div className="description">
+            {props.isItMe ? (
+              "It's you!"
+            ) : props.user.type === 'user' && props.user.isPrivate === '1' ? (
+              'Private feed'
+            ) : props.user.type === 'user' && props.user.isPrivate === '0' ? (
+              'Public feed'
+            ) : props.user.type === 'group' && props.user.isPrivate === '1' ? (
+              'Private group'
+            ) : props.user.type === 'group' && props.user.isPrivate === '0' ? (
+              'Public group'
+            ) : false}
+          </div>
         </div>
-      ) : !props.isItMe ? (
-        <div className="user-card-actions">
-          {props.user.isPrivate === '1' && !props.subscribed ? (
-            props.hasRequestBeenSent ? (
-              <span>Subscription request sent</span>
-            ) : (
-              <a onClick={()=>props.sendSubscriptionRequest({username: props.user.username, id: props.user.id})}>Request a subscription</a>
-            )
-          ) : (
-            props.subscribed ? (
-              <a onClick={unsubscribe}>Unsubscribe</a>
-            ) : (
-              <a onClick={()=>props.subscribe({username: props.user.username})}>Subscribe</a>
-            )
-          )}
 
-          {props.user.type !== 'group' && !props.subscribed ? (
-            <span> - <a onClick={()=>props.ban({username: props.user.username, id: props.user.id})}>Block</a></span>
-          ) : props.amIGroupAdmin ? (
-            <span> - <Link to={`/${props.user.username}/settings`}>Settings</Link></span>
-          ) : false}
+        {props.blocked ? (
+          <div className="user-card-actions">
+            <span>Blocked user - </span>
+            <a onClick={()=>props.unban({username: props.user.username, id: props.user.id})}>Un-block</a>
+          </div>
+        ) : !props.isItMe ? (
+          <div className="user-card-actions">
+            {props.user.isPrivate === '1' && !props.subscribed ? (
+              props.hasRequestBeenSent ? (
+                <span>Subscription request sent</span>
+              ) : (
+                <a onClick={()=>props.sendSubscriptionRequest({username: props.user.username, id: props.user.id})}>Request a subscription</a>
+              )
+            ) : (
+              props.subscribed ? (
+                <a onClick={this.unsubscribe}>Unsubscribe</a>
+              ) : (
+                <a onClick={()=>props.subscribe({username: props.user.username})}>Subscribe</a>
+              )
+            )}
 
-        </div>
-      ) : false}
-    </div>
-  ))
+            {props.user.type !== 'group' && !props.subscribed ? (
+              <span> - <a onClick={()=>props.ban({username: props.user.username, id: props.user.id})}>Block</a></span>
+            ) : props.amIGroupAdmin ? (
+              <span> - <Link to={`/${props.user.username}/settings`}>Settings</Link></span>
+            ) : false}
+
+          </div>
+        ) : false}
+      </div>
+    ))
+  }
 }
 
 const mapStateToProps = (state, ownProps) => {
   const me = state.user
-  const user = (_.find(state.users, {'username': ownProps.username}) || {})
+  const user = (_.find(state.users, {username: ownProps.username}) || {})
 
   return {
     user,
@@ -97,7 +115,10 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 function mapDispatchToProps(dispatch) {
-  return userActions(dispatch)
+  return {
+    ...userActions(dispatch),
+    getUserInfo: (username) => dispatch(getUserInfo(username))
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserCard)

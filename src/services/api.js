@@ -342,6 +342,19 @@ export function updateGroup({id, groupSettings}) {
   })
 }
 
+export function updateGroupPicture({groupName, file}) {
+  let data = new FormData()
+  data.append('file', file)
+
+  return fetch(`${apiConfig.host}/v1/groups/${groupName}/updateProfilePicture`, {
+    'method': 'POST',
+    'headers': {
+      'X-Authentication-Token': getToken()
+    },
+    'body': data
+  })
+}
+
 export function getManagedGroups() {
   return fetch(`${apiConfig.host}/v2/managedGroups`, getRequestOptions())
 }

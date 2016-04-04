@@ -29,8 +29,6 @@ const Settings = (props) => (
 
         <hr/>
 
-        <hr/>
-
         <UserChangePasswordForm
           updatePassword={props.updatePassword}
           {...props.passwordForm}/>
