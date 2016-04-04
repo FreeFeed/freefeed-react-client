@@ -18,7 +18,7 @@ export default class PostComment extends React.Component{
   handleChange = (event) => {
     this.setState({
       editText: event.target.value
-    });
+    })
   }
 
   openAnsweringComment = () => {
@@ -71,6 +71,9 @@ export default class PostComment extends React.Component{
     const shouldClearText = (wasCommentJustSaved && wasThereNoError && isItSinglePostAddingComment)
     if (shouldClearText) {
       this.setState({editText: ''})
+    }
+    if (this.state.editText.length < newProps.editText.length){
+      this.setState({editText: newProps.editText})
     }
   }
 

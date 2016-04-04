@@ -57,8 +57,12 @@ export default (props) => {
       props.toggleCommenting(props.post.id)
     }
 
-    const updatedCommentText = `@${username} ` + (props.post.newCommentText || '')
-    props.updateCommentingText(props.post.id, updatedCommentText)
+    const text = (props.post.newCommentText || '')
+    const prefix = `@${username}`
+
+    if (text.indexOf(prefix) === -1){
+      props.updateCommentingText(props.post.id, `${prefix} ${text}`)
+    }
   }
 
   const commentMapper = renderComment(entryUrl, openAnsweringComment, props.post.isModeratingComments, props.commentEdit)
