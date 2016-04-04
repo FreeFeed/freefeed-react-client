@@ -7,7 +7,7 @@ import {captcha as captchaConfig} from '../config';
 import Recaptcha from 'react-google-recaptcha';
 import validator from 'validator';
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {...state.signUpForm};
 }
 
@@ -80,7 +80,7 @@ function signUpFunc(props) {
   }
 }
 
-function Signup (props) {
+function Signup(props) {
   return (
   <div className='box'>
     <div className='box-header-timeline'>
