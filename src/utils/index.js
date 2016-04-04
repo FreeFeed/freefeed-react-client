@@ -1,8 +1,8 @@
 import {frontendPreferences as frontendPrefsConfig} from '../config';
 
-export function getCookie(name){
+export function getCookie(name) {
   const begin = document.cookie.indexOf(name);
-  if (begin === -1){
+  if (begin === -1) {
     return '';
   }
   const fromBegin = document.cookie.substr(begin);

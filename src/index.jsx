@@ -36,7 +36,7 @@ import ManageSubscribers from './components/manage-subscribers';
 const store = configureStore();
 
 //request main info for user
-if (store.getState().authenticated){
+if (store.getState().authenticated) {
   store.dispatch(ActionCreators.whoAmI());
   store.dispatch(ActionCreators.managedGroups());
 } else {

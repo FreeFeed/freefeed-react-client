@@ -2,7 +2,7 @@ import React from 'react';
 import {preventDefault} from '../utils';
 
 export default class UserChangePasswordForm extends React.Component {
-  render(){
+  render() {
     return (
       <form onSubmit={preventDefault(this.updatePassword)}>
         <h3>Change password</h3>

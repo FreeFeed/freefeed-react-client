@@ -182,7 +182,7 @@ function select(state, ownProps) {
   };
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
   return {
     signOut: ()=>dispatch(unauthenticated()),
     home: ()=> dispatch(home()),

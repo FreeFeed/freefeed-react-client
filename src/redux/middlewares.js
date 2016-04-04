@@ -5,7 +5,7 @@ import {request, response, fail, requiresAuth, isFeedRequest, isFeedResponse} fr
 //middleware for api requests
 export const apiMiddleware = store => next => async (action) => {
   //ignore normal actions
-  if (!action.apiRequest){
+  if (!action.apiRequest) {
     return next(action);
   }
 
@@ -43,7 +43,7 @@ export const authMiddleware = store => next => action => {
     persistUser();
     next(action);
     const pathname = (store.getState().routing.locationBeforeTransitions || {}).pathname;
-    if (!pathname || pathname.indexOf('signin') !== -1 || pathname.indexOf('signup') !== -1){
+    if (!pathname || pathname.indexOf('signin') !== -1 || pathname.indexOf('signup') !== -1) {
       return;
     }
     return browserHistory.push('/signin');
@@ -68,7 +68,7 @@ export const authMiddleware = store => next => action => {
 };
 
 export const likesLogicMiddleware = store => next => action => {
-  switch(action.type){
+  switch(action.type) {
     case ActionTypes.SHOW_MORE_LIKES: {
       const postId = action.payload.postId;
       const post = store.getState().posts[postId];
@@ -117,7 +117,7 @@ export const redirectionMiddleware = store => next => action => {
 };
 
 export const scrollMiddleware = store => next => action => {
-  if (isFeedResponse(action) || action.type === response(ActionTypes.GET_SINGLE_POST)){
+  if (isFeedResponse(action) || action.type === response(ActionTypes.GET_SINGLE_POST)) {
     scrollTo(0, 0);
   }
   return next(action);
@@ -146,12 +146,12 @@ const bindHandlers = store => ({
 
     const isFirstPage = !state.routing.locationBeforeTransitions.query.offset;
 
-    if (isFirstPage){
+    if (isFirstPage) {
 
       const isHomeFeed = state.routing.locationBeforeTransitions.pathname === '/';
       const useRealtimePreference = state.user.frontendPreferences.realtimeActive;
 
-      if (!isHomeFeed || (useRealtimePreference && isHomeFeed)){
+      if (!isHomeFeed || (useRealtimePreference && isHomeFeed)) {
         return store.dispatch({...data, type: ActionTypes.REALTIME_POST_NEW, post: data.posts});
       }
     }
@@ -174,28 +174,28 @@ export const realtimeMiddleware = store => {
   return next => action => {
 
     if (action.type === ActionTypes.UNAUTHENTICATED) {
-      if (realtimeConnection){
+      if (realtimeConnection) {
         realtimeConnection.disconnect();
         realtimeConnection = undefined;
       }
     }
 
     if (isFeedRequest(action) ||
-      action.type === request(ActionTypes.GET_SINGLE_POST)){
-      if (realtimeConnection){
+      action.type === request(ActionTypes.GET_SINGLE_POST)) {
+      if (realtimeConnection) {
         realtimeConnection.unsubscribe();
       }
     }
 
-    if (isFeedResponse(action)){
-      if (!realtimeConnection){
+    if (isFeedResponse(action)) {
+      if (!realtimeConnection) {
         realtimeConnection = init(handlers);
       }
       realtimeConnection.subscribe({timeline:[action.payload.timelines.id]});
     }
 
-    if (action.type === response(ActionTypes.GET_SINGLE_POST)){
-      if (!realtimeConnection){
+    if (action.type === response(ActionTypes.GET_SINGLE_POST)) {
+      if (!realtimeConnection) {
         realtimeConnection = init(handlers);
       }
       realtimeConnection.subscribe({post:[action.payload.posts.id]});

@@ -12,7 +12,7 @@ const brAndTrim = (text) => {
 const p = (text, i) => <p key={i}>{text}</p>;
 
 const getEntered = text => {
-  if (!/\n/.test(text)){
+  if (!/\n/.test(text)) {
     return text;
   }
   const lines = text.split(/\n{2,}/g)

@@ -6,7 +6,7 @@ import UserName from './user-name';
 import {preventDefault, confirmFirst, fromNowOrNow} from '../utils';
 import throbber16 from 'assets/images/throbber-16.gif';
 
-export default class PostComment extends React.Component{
+export default class PostComment extends React.Component {
   constructor(props) {
     super(props);
 

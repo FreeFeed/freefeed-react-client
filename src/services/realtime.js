@@ -46,7 +46,7 @@ const bindSocketEventHandlers = socket => eventHandlers => {
 
 const openSocket = _ => io.connect(`${apiConfig.host}/`, {query: `token=${getToken()}`});
 
-export function init(eventHandlers){
+export function init(eventHandlers) {
   const socket = openSocket();
 
   bindSocketEventHandlers(socket)(eventHandlers);
@@ -58,7 +58,7 @@ export function init(eventHandlers){
 
   return {
     unsubscribe: _ => {
-      if (subscription){
+      if (subscription) {
         console.log('unsubscribing from ', subscription);
         socket.emit('unsubscribe', subscription);
         socket.off('reconnect', subscribe);

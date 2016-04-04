@@ -180,10 +180,10 @@ const unhidePostInFeed = function(state, postId) {
 };
 
 export function feedViewState(state = initFeed, action) {
-  if (ActionHelpers.isFeedRequest(action)){
+  if (ActionHelpers.isFeedRequest(action)) {
     return state;
   }
-  if (ActionHelpers.isFeedResponse(action)){
+  if (ActionHelpers.isFeedResponse(action)) {
     const visibleEntries = (action.payload.posts || []).filter(post => !post.isHidden).map(post => post.id);
     const hiddenEntries = (action.payload.posts || []).filter(post => post.isHidden).map(post => post.id);
     const isHiddenRevealed = false;
@@ -280,7 +280,7 @@ const initPostViewState = post => {
 };
 
 export function postsViewState(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action)){
+  if (ActionHelpers.isFeedResponse(action)) {
     return mergeByIds(state, (action.payload.posts || []).map(initPostViewState));
   }
   switch (action.type) {
@@ -311,7 +311,7 @@ export function postsViewState(state = {}, action) {
     case ActionTypes.REALTIME_POST_UPDATE: {
       const id = action.post.id;
       const postAlreadyAdded = !!state[id];
-      if (postAlreadyAdded){
+      if (postAlreadyAdded) {
         return state;
       }
       return { ...state, [id]: initPostViewState(action.post) };
@@ -420,7 +420,7 @@ export function postsViewState(state = {}, action) {
     }
     case ActionTypes.REALTIME_COMMENT_NEW: {
       const post = state[action.comment.postId];
-      if (!post){
+      if (!post) {
         return state;
       }
       return {...state,
@@ -689,7 +689,7 @@ function updatePostData(state, action) {
 }
 
 export function posts(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action)){
+  if (ActionHelpers.isFeedResponse(action)) {
     return mergeByIds(state, (action.payload.posts || []).map(postParser));
   }
   switch (action.type) {
@@ -754,7 +754,7 @@ export function posts(state = {}, action) {
     case response(ActionTypes.DELETE_COMMENT): {
       const commentId = action.request.commentId;
       const post = _(state).find(_post => (_post.comments||[]).indexOf(commentId) !== -1);
-      if (!post){
+      if (!post) {
         return state;
       }
       const comments = _.without(post.comments, commentId);
@@ -954,7 +954,7 @@ function updateCommentData(state, action) {
 }
 
 export function comments(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action)){
+  if (ActionHelpers.isFeedResponse(action)) {
     return updateCommentData(state, action);
   }
   switch (action.type) {
@@ -1005,10 +1005,10 @@ function updateCommentViewState(state, action) {
 }
 
 export function commentViewState(state={}, action) {
-  if (ActionHelpers.isFeedResponse(action)){
+  if (ActionHelpers.isFeedResponse(action)) {
     return updateCommentViewState(state, action);
   }
-  switch(action.type){
+  switch(action.type) {
     case response(ActionTypes.SHOW_MORE_COMMENTS): {
       return updateCommentViewState(state, action);
     }
@@ -1089,7 +1089,7 @@ export function users(state = {}, action) {
     case ActionTypes.REALTIME_POST_NEW:
     case ActionTypes.REALTIME_LIKE_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW: {
-      if (!action.users || !action.users.length){
+      if (!action.users || !action.users.length) {
         return state;
       }
       const userAlreadyAdded = state[action.users[0].id];
@@ -1146,7 +1146,7 @@ const initUser = _ => ({
 export function user(state = initUser(), action) {
   if (ActionHelpers.isUserChangeResponse(action) ||
       action.type === response(ActionTypes.WHO_AM_I) ||
-      action.type === response(ActionTypes.SIGN_UP)){
+      action.type === response(ActionTypes.SIGN_UP)) {
     const subscriptions = _.uniq((action.payload.subscriptions || []).map(sub => sub.user));
     return {...state, ...userParser(action.payload.users), subscriptions};
   }
@@ -1183,15 +1183,15 @@ const DEFAULT_PASSWORD_FORM_STATE = {
   errorText: '',
 };
 
-export function passwordForm(state=DEFAULT_PASSWORD_FORM_STATE, action){
-  switch(action.type){
+export function passwordForm(state=DEFAULT_PASSWORD_FORM_STATE, action) {
+  switch(action.type) {
     case request(ActionTypes.UPDATE_PASSWORD): {
       return {...state, isSaving: true, error: false, success: false};
     }
     case response(ActionTypes.UPDATE_PASSWORD): {
       return {...state, isSaving: false, success: true, error: false};
     }
-    case fail(ActionTypes.UPDATE_PASSWORD):{
+    case fail(ActionTypes.UPDATE_PASSWORD): {
       return {...state, isSaving: false, success: false, error: true, errorText: action.payload.err};
     }
   }
@@ -1199,7 +1199,7 @@ export function passwordForm(state=DEFAULT_PASSWORD_FORM_STATE, action){
 }
 
 export function timelines(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action)){
+  if (ActionHelpers.isFeedResponse(action)) {
     return mergeByIds(state, [action.payload.timelines]);
   }
 
@@ -1262,8 +1262,8 @@ const DEFAULT_PHOTO_FORM_STATE = {
   errorText: '',
 };
 
-export function userPhotoForm(state=DEFAULT_PHOTO_FORM_STATE, action){
-  switch(action.type){
+export function userPhotoForm(state=DEFAULT_PHOTO_FORM_STATE, action) {
+  switch(action.type) {
     case request(ActionTypes.UPDATE_USER_PHOTO): {
       return {isSaving: true, error: false, success: false};
     }
@@ -1347,20 +1347,20 @@ export function groupPictureForm(state={}, action) {
   return state;
 }
 
-export function routeLoadingState(state = false, action){
-  if (ActionHelpers.isFeedRequest(action)){
+export function routeLoadingState(state = false, action) {
+  if (ActionHelpers.isFeedRequest(action)) {
     return true;
   }
-  if (ActionHelpers.isFeedResponse(action) || ActionHelpers.isFeedFail(action)){
+  if (ActionHelpers.isFeedResponse(action) || ActionHelpers.isFeedFail(action)) {
     return false;
   }
-  if (action.type == request(ActionTypes.GET_SINGLE_POST)){
+  if (action.type == request(ActionTypes.GET_SINGLE_POST)) {
     return true;
   }
-  if (action.type == response(ActionTypes.GET_SINGLE_POST) || action.type == fail(ActionTypes.GET_SINGLE_POST)){
+  if (action.type == response(ActionTypes.GET_SINGLE_POST) || action.type == fail(ActionTypes.GET_SINGLE_POST)) {
     return false;
   }
-  switch(action.type){
+  switch(action.type) {
     case ActionTypes.UNAUTHENTICATED: {
       return false;
     }
@@ -1368,8 +1368,8 @@ export function routeLoadingState(state = false, action){
   return state;
 }
 
-export function boxHeader(state = "", action){
-  switch(action.type){
+export function boxHeader(state = "", action) {
+  switch(action.type) {
     case request(ActionTypes.HOME): {
       return 'Home';
     }
@@ -1390,10 +1390,10 @@ export function boxHeader(state = "", action){
 }
 
 export function singlePostId(state = null, action) {
-  if (ActionHelpers.isFeedRequest(action)){
+  if (ActionHelpers.isFeedRequest(action)) {
     return null;
   }
-  if (action.type == request(ActionTypes.GET_SINGLE_POST)){
+  if (action.type == request(ActionTypes.GET_SINGLE_POST)) {
     return action.payload.postId;
   }
   return state;
@@ -1442,11 +1442,11 @@ function getHiddenSendTo(state) {
 }
 
 export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
-  if (ActionHelpers.isFeedRequest(action)){
+  if (ActionHelpers.isFeedRequest(action)) {
     return getHiddenSendTo(state);
   }
 
-  switch(action.type){
+  switch(action.type) {
     case response(ActionTypes.WHO_AM_I): {
       return {
         expanded: false,

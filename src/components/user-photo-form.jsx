@@ -2,7 +2,7 @@ import React from 'react';
 import {preventDefault} from '../utils';
 
 export default class UserPhotoForm extends React.Component {
-  render(){
+  render() {
     return (
       <form onSubmit={preventDefault(this.updatePhoto)}>
         <h3>Update profile picture</h3>
@@ -23,7 +23,7 @@ export default class UserPhotoForm extends React.Component {
       </form>);
   }
   updatePhoto = () => {
-    if (!this.props.isSaving){
+    if (!this.props.isSaving) {
       this.props.updateUserPhoto(this.refs.photo.files[0]);
     }
   }

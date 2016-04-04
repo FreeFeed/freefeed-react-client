@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {toggleRealtime, updateFrontendRealtimePreferences, home} from '../redux/action-creators';
 
 const getStatusIcon = (active, status) => {
-  if (status === 'loading'){
+  if (status === 'loading') {
     return 'refresh';
   }
   return active ? 'pause' : 'play';

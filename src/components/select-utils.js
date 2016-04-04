@@ -24,7 +24,7 @@ const MAX_LIKES = 4;
 
 export const joinPostData = state => postId => {
   const post = state.posts[postId];
-  if (!post){
+  if (!post) {
     return;
   }
   const user = state.user;

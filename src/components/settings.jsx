@@ -45,7 +45,7 @@ const Settings = (props) => (
   </div>
 );
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
   return {
     user: state.user,
     userSettingsForm: state.userSettingsForm,
@@ -56,7 +56,7 @@ function mapStateToProps(state){
   };
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
   return {
     updateUser: (...args) => dispatch(updateUser(...args)),
     userSettingsChange: (...args) => dispatch(userSettingsChange(...args)),

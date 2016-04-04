@@ -5,11 +5,11 @@ import {signInChange, signIn, signInEmpty} from '../redux/action-creators';
 import {preventDefault} from '../utils';
 import LoaderContainer from './loader-container';
 
-function mapStateToProps (state){
+function mapStateToProps (state) {
   return {...state.signInForm};
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
   return {
     signInChange: (...args) => dispatch(signInChange(...args)),
     signIn: (...args) => dispatch(signIn(...args)),
@@ -17,8 +17,8 @@ function mapDispatchToProps(dispatch){
   };
 }
 
-function signInFunc(props){
-  if (props.username && props.password){
+function signInFunc(props) {
+  if (props.username && props.password) {
     props.signIn(props.username, props.password);
   } else {
     props.signInEmpty();

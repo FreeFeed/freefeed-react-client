@@ -58,7 +58,7 @@ export default class CreatePost extends React.Component {
     const isShiftPressed = e.shiftKey;
     if (isEnter && !isShiftPressed) {
       e.preventDefault();
-      if (!this.state.disabled && !this.props.createPostViewState.isPending){
+      if (!this.state.disabled && !this.props.createPostViewState.isPending) {
         this.createPost();
       }
     }
