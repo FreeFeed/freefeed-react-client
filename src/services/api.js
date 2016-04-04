@@ -433,3 +433,7 @@ export function revokeSentRequest({userName}) {
     }
   })
 }
+
+export function getBlockedByMe() {
+  return fetch(`${apiConfig.host}/v2/users/blockedByMe`, getRequestOptions())
+}

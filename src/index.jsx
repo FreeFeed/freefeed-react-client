@@ -56,6 +56,16 @@ const manageSubscribersActions = next => {
   store.dispatch(ActionCreators.subscribers(username))
 }
 
+const browseSubscribersActions = next => {
+  const username = next.params.userName
+  store.dispatch(ActionCreators.subscriptions(username))
+
+  const user = store.getState().user
+  if (username == user.username) {
+    store.dispatch(ActionCreators.blockedByMe())
+  }
+}
+
 const enterStaticPage = title => () => {
   store.dispatch(ActionCreators.staticPage(title))
 }
@@ -78,7 +88,7 @@ ReactDOM.render(
         <Route name='requests' path='/requests' component={Requests} onEnter={enterStaticPage('Subscription requests')}/>
         <Route name='userFeed' path='/:userName' component={User} onEnter={boundRouteActions('userFeed')}/>
         <Route name='subscribers' path='/:userName/subscribers' component={Subscribers} onEnter={boundRouteActions('subscribers')}/>
-        <Route name='subscriptions' path='/:userName/subscriptions' component={Subscriptions} onEnter={boundRouteActions('subscriptions')}/>
+        <Route name='subscriptions' path='/:userName/subscriptions' component={Subscriptions} onEnter={browseSubscribersActions}/>
         <Route name='manage-subscribers' path='/:userName/manage-subscribers' component={ManageSubscribers} onEnter={manageSubscribersActions}/>
         <Route name='userComments' path='/:userName/comments' component={User} onEnter={boundRouteActions('userComments')}/>
         <Route name='userLikes' path='/:userName/likes' component={User} onEnter={boundRouteActions('userLikes')}/>
