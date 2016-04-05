@@ -1144,19 +1144,11 @@ const initUser = _ => ({
 });
 
 export function user(state = initUser(), action) {
-  if (ActionHelpers.isUserChangeResponse(action) ||
-      action.type === response(ActionTypes.WHO_AM_I) ||
-      action.type === response(ActionTypes.SIGN_UP)) {
+  if (ActionHelpers.isUserChangeResponse(action)) {
     const subscriptions = _.uniq((action.payload.subscriptions || []).map(sub => sub.user));
     return {...state, ...userParser(action.payload.users), subscriptions};
   }
   switch (action.type) {
-    case response(ActionTypes.UPDATE_USER):
-    case response(ActionTypes.UPDATE_FRONTEND_PREFERENCES):
-    case response(ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES): {
-      const subscriptions = _.uniq((action.payload.subscriptions || []).map(sub => sub.user));
-      return {...state, ...userParser(action.payload.users), subscriptions};
-    }
     case response(ActionTypes.SEND_SUBSCRIPTION_REQUEST): {
       return {...state,
         pendingSubscriptionRequests: [...(state.pendingSubscriptionRequests || []),
