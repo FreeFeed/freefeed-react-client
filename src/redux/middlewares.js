@@ -116,13 +116,6 @@ export const redirectionMiddleware = store => next => action => {
   return next(action);
 };
 
-export const scrollMiddleware = store => next => action => {
-  if (isFeedResponse(action) || action.type === response(ActionTypes.GET_SINGLE_POST)) {
-    scrollTo(0, 0);
-  }
-  return next(action);
-};
-
 export const pendingRequestsMiddleware = store => next => action => {
   if (action.type === response(ActionTypes.WHO_AM_I)) {
     next(action);
