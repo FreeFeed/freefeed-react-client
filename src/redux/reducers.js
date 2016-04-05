@@ -1154,7 +1154,8 @@ export function user(state = initUser(), action) {
     case response(ActionTypes.UPDATE_USER):
     case response(ActionTypes.UPDATE_FRONTEND_PREFERENCES):
     case response(ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES): {
-      return {...state, ...userParser(action.payload.users)};
+      const subscriptions = _.uniq((action.payload.subscriptions || []).map(sub => sub.user));
+      return {...state, ...userParser(action.payload.users), subscriptions};
     }
     case response(ActionTypes.SEND_SUBSCRIPTION_REQUEST): {
       return {...state,
