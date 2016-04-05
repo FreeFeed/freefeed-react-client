@@ -17,14 +17,16 @@ const scrollCompensator = dispatchAction => (...actionParams) => {
   const nearestTop = postCommentNodes[nearestTopIndex] || dummyPost;
 
   const topBefore = nearestTop.getBoundingClientRect().top;
+  const heightBefore = document.body.offsetHeight;
 
   //here we're dispatching, so render is called internally and after call we have new page
   const res = dispatchAction(...actionParams);
 
   const topAfter = nearestTop.getBoundingClientRect().top;
+  const heightAfter = document.body.offsetHeight;
 
   if (topAfter !== topBefore) {
-    scrollBy(0, topAfter - topBefore);
+    scrollBy(0, heightAfter - heightBefore);
   }
   return res;
 };
