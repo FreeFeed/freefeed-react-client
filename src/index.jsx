@@ -60,6 +60,8 @@ const enterStaticPage = title => () => {
   store.dispatch(ActionCreators.staticPage(title));
 };
 
+history.listen(_ => scrollTo(0, 0));
+
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
