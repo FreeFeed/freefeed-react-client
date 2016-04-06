@@ -1,7 +1,7 @@
 import React from 'react';
 import {preventDefault} from '../utils';
 
-export default class UserPhotoForm extends React.Component {
+export default class UserPictureForm extends React.Component {
   render() {
     return (
       <form onSubmit={preventDefault(this.updatePhoto)}>
