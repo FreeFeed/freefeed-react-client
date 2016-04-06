@@ -265,7 +265,7 @@ const NO_ERROR = {
 const POST_SAVE_ERROR = 'Something went wrong while editing the post...';
 const NEW_COMMENT_ERROR = 'Failed to add comment';
 
-const indexById = list => _.indexBy(list || [], 'id');
+const indexById = list => _.keyBy(list || [], 'id');
 const mergeByIds = (state, array) => ({...state, ...indexById(array)});
 const initPostViewState = post => {
   const id = post.id;
@@ -1646,7 +1646,7 @@ export function managedGroups(state = [], action) {
 }
 
 const findByIds = (collection, ids) => {
-  return _.filter(collection, (item) => _.contains(ids, item.id));
+  return _.filter(collection, (item) => _.includes(ids, item.id));
 };
 
 const subscriptionRequests = (whoamiPayload) => {

@@ -19,7 +19,7 @@
     "jade": "^1.11.0",
     "jade-html-loader": "bline/jade-html-loader",
     "loader-utils": "^0.2.11",
-    "lodash": "^3.10.1",
+    "lodash": "^4.8.2",
     "moment": "^2.10.6",
     "node-sass": "^3.3.3",
     "numeral": "^1.5.3",
