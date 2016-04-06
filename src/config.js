@@ -28,6 +28,9 @@ const config = {
         useYou: true
       },
       realtimeActive: false,
+      comments: {
+        omitRepeatedBubbles: true
+      }
     }
   }
 };

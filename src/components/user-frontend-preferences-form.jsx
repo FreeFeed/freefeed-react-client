@@ -28,6 +28,15 @@ export default class UserFrontendPreferencesForm extends React.Component {
     });
   }
 
+  changeOmitBubbles = (event) => {
+    this.setState({
+      comments: {
+        ...this.state.comments,
+        omitRepeatedBubbles: event.target.checked
+      }
+    });
+  }
+
   savePreferences = () => {
     if (this.props.status !== 'loading') {
       this.props.updateFrontendPreferences(this.props.userId, this.state);
@@ -81,6 +90,14 @@ export default class UserFrontendPreferencesForm extends React.Component {
             Show your own name as "You"
           </label>
         </div>
+
+        <div className="checkbox">
+          <label>
+            <input type="checkbox" name="bubbles" value="1" checked={this.state.comments.omitRepeatedBubbles} onChange={this.changeOmitBubbles}/>
+            Omit bubbles for subsequent comments from the same author
+          </label>
+        </div>
+
 
         <p>
           <button className="btn btn-default" type="submit">Update</button>
