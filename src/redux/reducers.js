@@ -1255,7 +1255,7 @@ const DEFAULT_PHOTO_FORM_STATE = {
   errorText: '',
 };
 
-export function userPhotoForm(state=DEFAULT_PHOTO_FORM_STATE, action) {
+export function userPictureForm(state=DEFAULT_PHOTO_FORM_STATE, action) {
   switch (action.type) {
     case request(ActionTypes.UPDATE_USER_PHOTO): {
       return {isSaving: true, error: false, success: false};

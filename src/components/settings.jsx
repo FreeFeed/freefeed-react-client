@@ -4,7 +4,7 @@ import {updateUser, userSettingsChange, updateFrontendPreferences, updatePasswor
 import UserSettingsForm from './user-settings-form';
 import UserFrontendPreferencesForm from './user-frontend-preferences-form';
 import UserChangePasswordForm from './user-change-password-form';
-import UserPhotoForm from './user-photo-form';
+import UserPictureForm from './user-picture-form';
 
 const Settings = (props) => (
   <div className="content">
@@ -35,9 +35,9 @@ const Settings = (props) => (
 
         <hr/>
 
-        <UserPhotoForm
+        <UserPictureForm
           updateUserPhoto={props.updateUserPhoto}
-          {...props.userPhotoForm}/>
+          {...props.userPictureForm}/>
 
         <hr/>
       </div>
@@ -52,7 +52,7 @@ function mapStateToProps(state) {
     frontendPreferencesForm: state.frontendPreferencesForm,
     frontendRealtimePreferencesForm: state.frontendRealtimePreferencesForm,
     passwordForm: state.passwordForm,
-    userPhotoForm: state.userPhotoForm,
+    userPictureForm: state.userPictureForm
   };
 }
 
