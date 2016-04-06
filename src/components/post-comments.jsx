@@ -57,8 +57,14 @@ export default (props) => {
       props.toggleCommenting(props.post.id);
     }
 
-    const updatedCommentText = `@${username} ` + (props.post.newCommentText || '');
-    props.updateCommentingText(props.post.id, updatedCommentText);
+    const text = (props.post.newCommentText || '');
+    const check = new RegExp(`@${username}$`);
+
+    if (!text.match(check)) {
+      const addSpace = text.length && !text.match(/\s$/);
+      props.updateCommentingText(props.post.id, `${text}${addSpace ? ' ' : ''}@${username}`);
+    };
+
   };
 
   const commentMapper = renderComment(entryUrl, openAnsweringComment, props.post.isModeratingComments, props.commentEdit);

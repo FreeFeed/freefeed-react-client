@@ -72,6 +72,9 @@ export default class PostComment extends React.Component {
     if (shouldClearText) {
       this.setState({editText: ''});
     }
+    if (this.props.editText !== newProps.editText) {
+      this.setState({editText: newProps.editText});
+    }
   }
 
   render() {
