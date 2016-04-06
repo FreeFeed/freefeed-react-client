@@ -30,7 +30,7 @@ export const joinPostData = state => postId => {
   const user = state.user;
 
   const attachments = (post.attachments || []).map(attachmentId => state.attachments[attachmentId]);
-  let comments = (post.comments || []).map(commentId => {
+  let comments = (post.comments || []).reduce((comments, commentId, index) => {
     const comment = state.comments[commentId];
     const commentViewState = state.commentViewState[commentId];
     const placeholderUser = {id: comment.createdBy};
@@ -38,10 +38,12 @@ export const joinPostData = state => postId => {
     if (author === placeholderUser) {
       console.log('We\'ve got comment with unknown author with id', placeholderUser.id);
     }
+    const previousAuthor = (comments[index-1] || {}).user;
+    const omitBubble = author === previousAuthor;
     const isEditable = (user.id === comment.createdBy);
     const isDeletable = (user.id === post.createdBy);
-    return { ...comment, ...commentViewState, user: author, isEditable, isDeletable };
-  });
+    return comments.concat([{ ...comment, ...commentViewState, user: author, isEditable, isDeletable, omitBubble }]);
+  }, []);
 
   const postViewState = state.postsViewState[post.id];
 

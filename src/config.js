@@ -1,4 +1,4 @@
-import * as FrontendPrefsOptions from './utils/frontend-preferences-options'
+import * as FrontendPrefsOptions from './utils/frontend-preferences-options';
 
 const config = {
   api:{
@@ -30,6 +30,6 @@ const config = {
       realtimeActive: false,
     }
   }
-}
+};
 
-export default config
+export default config;

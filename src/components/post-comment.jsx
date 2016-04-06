@@ -82,7 +82,7 @@ export default class PostComment extends React.Component {
 
     return (
     <div className="comment">
-      <a className="comment-icon fa fa-comment-o"
+      <a className={`comment-icon fa ${this.props.omitBubble ? 'feed-comment-dot' : 'fa-comment-o'}`}
          title={createdAgo}
          id={`comment-${this.props.id}`}
          href={`${this.props.entryUrl}#comment-${this.props.id}`}
