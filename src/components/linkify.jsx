@@ -15,6 +15,14 @@ const finder = new URLFinder(
   config.siteDomains,
 );
 
+const arrowDetector = /(↑+|\^+)W?/g;
+const defaultFunction = _ => _;
+const getArrowProps = ({hover = defaultFunction, leave= defaultFunction}={}, text) => ({
+  className:'arrow-span',
+  onMouseEnter: _ => hover(text.length),
+  onMouseLeave: leave
+});
+
 class Linkify extends React.Component {
   createLinkElement({type, username}, displayedLink, href) {
     let props = { key: `match${++this.idx}` };
@@ -43,8 +51,32 @@ class Linkify extends React.Component {
     }
   }
 
+  createArrowElement(arrows) {
+    return React.createElement(
+      'span',
+      {
+        ...getArrowProps(this.arrowHover, arrows),
+        key: `match${++this.idx}`,
+      },
+      arrows
+    );
+  }
+
   parseCounter = 0
   idx = 0
+
+  parseArrows(text) {
+    const pieces = text.split(arrowDetector);
+    const resPieces = pieces.map(piece => {
+      if (piece.match(arrowDetector)) {
+        return this.createArrowElement(piece);
+      }
+      return piece;
+    });
+
+
+    return resPieces;
+  }
 
   parseString(string) {
     let elements = [];
@@ -72,7 +104,8 @@ class Linkify extends React.Component {
           displayedLink = it.text;
           href = `mailto:${it.address}`;
         } else {
-          elements.push(it.text);
+          const textWithArrows = this.parseArrows(it.text);
+          elements = elements.concat(textWithArrows);
           return;
         }
 
@@ -112,6 +145,7 @@ class Linkify extends React.Component {
   render() {
     this.parseCounter = 0;
     this.userHover = this.props.userHover;
+    this.arrowHover = this.props.arrowHover;
     const parsedChildren = this.parse(this.props.children);
 
     return <span className='Linkify'>{parsedChildren}</span>;

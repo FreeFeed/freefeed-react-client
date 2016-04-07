@@ -23,11 +23,16 @@ import {
 
 const MAX_LIKES = 4;
 
-const commentHighlighter = ({postId, author}, commentsPostId) => commentAuthor => {
+const commentHighlighter = ({postId, author, arrows, baseCommentId}, commentsPostId, comments) => {
   if (commentsPostId !== postId) {
-    return false;
+    return _ => false;
   }
-  return author === commentAuthor.username;
+
+  const baseIndex = comments.indexOf(baseCommentId);
+  const highlightId = baseIndex - arrows;
+  const highlightCommentId = comments[highlightId];
+
+  return (commentId, commentAuthor) => author === commentAuthor.username || highlightCommentId === commentId;
 };
 
 export const joinPostData = state => postId => {
@@ -40,7 +45,7 @@ export const joinPostData = state => postId => {
   const attachments = (post.attachments || []).map(attachmentId => state.attachments[attachmentId]);
   const postViewState = state.postsViewState[post.id];
   const omitRepeatedBubbles = state.user.frontendPreferences.comments.omitRepeatedBubbles;
-  const highlightComment = commentHighlighter(state.commentsHighlights, postId);
+  const highlightComment = commentHighlighter(state.commentsHighlights, postId, post.comments);
   let comments = (post.comments || []).reduce((_comments, commentId, index) => {
     const comment = state.comments[commentId];
     const commentViewState = state.commentViewState[commentId];
@@ -53,7 +58,7 @@ export const joinPostData = state => postId => {
     const omitBubble = omitRepeatedBubbles && postViewState.omittedComments === 0 && author === previousAuthor;
     const isEditable = (user.id === comment.createdBy);
     const isDeletable = (user.id === post.createdBy);
-    const highlighted = highlightComment(author);
+    const highlighted = highlightComment(commentId, author);
     return _comments.concat([{ ...comment, ...commentViewState, user: author, isEditable, isDeletable, omitBubble, highlighted }]);
   }, []);
 
@@ -139,7 +144,7 @@ export function postActions(dispatch) {
       toggleEditingComment: (commentId) => dispatch(toggleEditingComment(commentId)),
       saveEditingComment: (commentId, newValue) => dispatch(saveEditingComment(commentId, newValue)),
       deleteComment: (commentId) => dispatch(deleteComment(commentId)),
-      highlightComment: (postId, author) => dispatch(highlightComment(postId, author)),
+      highlightComment: (postId, author, arrows, baseCommentId) => dispatch(highlightComment(postId, author, arrows,  baseCommentId)),
       clearHighlightComment: () => dispatch(clearHighlightComment()),
     },
   };

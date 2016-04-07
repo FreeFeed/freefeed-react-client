@@ -559,11 +559,13 @@ export function revokeSentRequest(userName) {
   };
 }
 
-export function highlightComment(postId, author) {
+export function highlightComment(postId, author, arrows, baseCommentId) {
   return {
     type: ActionTypes.HIGHLIGHT_COMMENT,
     postId,
-    author
+    author,
+    arrows,
+    baseCommentId
   };
 }
 

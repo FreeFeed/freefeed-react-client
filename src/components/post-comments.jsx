@@ -11,7 +11,8 @@ const renderComment = (entryUrl, openAnsweringComment, isModeratingComments, com
     openAnsweringComment={openAnsweringComment}
     isModeratingComments={isModeratingComments}
     {...commentEdit}
-    highlightComment={authorUserName => commentEdit.highlightComment(postId, authorUserName)}/>
+    highlightComment={authorUserName => commentEdit.highlightComment(postId, authorUserName)}
+    highlightArrowComment={arrows => commentEdit.highlightComment(postId, undefined, arrows, comment.id)}/>
 );
 
 const renderAddingComment = props => (
