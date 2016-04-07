@@ -68,6 +68,10 @@
   .add-comment-link {
     font-style: italic;
   }
+
+  &.highlighted {
+    background-color: #D9EBFF;
+  }
 }
 
 

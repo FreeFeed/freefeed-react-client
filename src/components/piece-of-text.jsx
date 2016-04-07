@@ -23,4 +23,4 @@ const getEntered = text => {
   return [...paragraphs, lines[lines.length-1]];
 };
 
-export default ({text}) => (<Linkify properties={{target: '_blank'}}>{getEntered(text)}</Linkify>);
+export default ({text, userHover}) => (<Linkify properties={{target: '_blank'}} userHover={userHover}>{getEntered(text)}</Linkify>);

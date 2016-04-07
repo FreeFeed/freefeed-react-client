@@ -1098,6 +1098,9 @@ export function users(state = {}, action) {
       }
       return mergeByIds(state, action.users.map(userParser));
     }
+    case ActionTypes.HIGHLIGHT_COMMENT: {
+      return state;
+    }
     case ActionTypes.UNAUTHENTICATED:
       return {};
   }
@@ -1770,5 +1773,19 @@ export function groupAdmins(state = [], action) {
     }
   }
 
+  return state;
+}
+
+export function commentsHighlights(state={}, action) {
+  switch (action.type) {
+    case ActionTypes.HIGHLIGHT_COMMENT: {
+      return {
+        ...action
+      };
+    }
+    case ActionTypes.CLEAR_HIGHLIGHT_COMMENT: {
+      return {};
+    }
+  }
   return state;
 }

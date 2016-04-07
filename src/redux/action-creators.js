@@ -558,3 +558,17 @@ export function revokeSentRequest(userName) {
     apiRequest: Api.revokeSentRequest
   };
 }
+
+export function highlightComment(postId, author) {
+  return {
+    type: ActionTypes.HIGHLIGHT_COMMENT,
+    postId,
+    author
+  };
+}
+
+export function clearHighlightComment() {
+  return {
+    type: ActionTypes.CLEAR_HIGHLIGHT_COMMENT,
+  };
+}

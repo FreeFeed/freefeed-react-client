@@ -16,11 +16,15 @@ const finder = new URLFinder(
 );
 
 class Linkify extends React.Component {
-  createLinkElement(type, displayedLink, href) {
+  createLinkElement({type, username}, displayedLink, href) {
     let props = { key: `match${++this.idx}` };
 
     if (type == AT_LINK || type == LOCAL_LINK) {
       props['to'] = href;
+      if (type == AT_LINK && this.userHover) {
+        props['onMouseEnter'] = _ => this.userHover.hover(username);
+        props['onMouseLeave'] = this.userHover.leave;
+      };
 
       return React.createElement(
         Link,
@@ -72,7 +76,7 @@ class Linkify extends React.Component {
           return;
         }
 
-        let linkElement = this.createLinkElement(it.type, displayedLink, href);
+        let linkElement = this.createLinkElement(it, displayedLink, href);
 
         elements.push(linkElement);
       });
@@ -107,6 +111,7 @@ class Linkify extends React.Component {
 
   render() {
     this.parseCounter = 0;
+    this.userHover = this.props.userHover;
     const parsedChildren = this.parse(this.props.children);
 
     return <span className='Linkify'>{parsedChildren}</span>;

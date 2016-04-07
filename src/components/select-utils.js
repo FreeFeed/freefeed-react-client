@@ -17,10 +17,18 @@ import {
   // Comment actions
   toggleCommenting, updateCommentingText, addComment,
   toggleEditingComment, cancelEditingComment, saveEditingComment,
+  highlightComment, clearHighlightComment,
   deleteComment
 } from '../redux/action-creators';
 
 const MAX_LIKES = 4;
+
+const commentHighlighter = ({postId, author}, commentsPostId) => commentAuthor => {
+  if (commentsPostId !== postId) {
+    return false;
+  }
+  return author === commentAuthor.username;
+};
 
 export const joinPostData = state => postId => {
   const post = state.posts[postId];
@@ -32,6 +40,7 @@ export const joinPostData = state => postId => {
   const attachments = (post.attachments || []).map(attachmentId => state.attachments[attachmentId]);
   const postViewState = state.postsViewState[post.id];
   const omitRepeatedBubbles = state.user.frontendPreferences.comments.omitRepeatedBubbles;
+  const highlightComment = commentHighlighter(state.commentsHighlights, postId);
   let comments = (post.comments || []).reduce((_comments, commentId, index) => {
     const comment = state.comments[commentId];
     const commentViewState = state.commentViewState[commentId];
@@ -44,7 +53,8 @@ export const joinPostData = state => postId => {
     const omitBubble = omitRepeatedBubbles && postViewState.omittedComments === 0 && author === previousAuthor;
     const isEditable = (user.id === comment.createdBy);
     const isDeletable = (user.id === post.createdBy);
-    return _comments.concat([{ ...comment, ...commentViewState, user: author, isEditable, isDeletable, omitBubble }]);
+    const highlighted = highlightComment(author);
+    return _comments.concat([{ ...comment, ...commentViewState, user: author, isEditable, isDeletable, omitBubble, highlighted }]);
   }, []);
 
   if (postViewState.omittedComments !== 0) {
@@ -123,12 +133,14 @@ export function postActions(dispatch) {
     toggleModeratingComments: (postId) => dispatch(toggleModeratingComments(postId)),
     disableComments: (postId) => dispatch(disableComments(postId)),
     enableComments: (postId) => dispatch(enableComments(postId)),
-    addAttachmentResponse:(postId, attachments) => dispatch(addAttachmentResponse(postId, attachments)),
-    removeAttachment:(postId, attachmentId) => dispatch(removeAttachment(postId, attachmentId)),
+    addAttachmentResponse: (postId, attachments) => dispatch(addAttachmentResponse(postId, attachments)),
+    removeAttachment: (postId, attachmentId) => dispatch(removeAttachment(postId, attachmentId)),
     commentEdit: {
       toggleEditingComment: (commentId) => dispatch(toggleEditingComment(commentId)),
       saveEditingComment: (commentId, newValue) => dispatch(saveEditingComment(commentId, newValue)),
       deleteComment: (commentId) => dispatch(deleteComment(commentId)),
+      highlightComment: (postId, author) => dispatch(highlightComment(postId, author)),
+      clearHighlightComment: () => dispatch(clearHighlightComment()),
     },
   };
 }

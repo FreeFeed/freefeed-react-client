@@ -3,14 +3,15 @@ import PostComment from './post-comment';
 import MoreCommentsWrapper from './more-comments-wrapper';
 import {preventDefault} from '../utils';
 
-const renderComment = (entryUrl, openAnsweringComment, isModeratingComments, commentEdit) => comment => (
+const renderComment = (entryUrl, openAnsweringComment, isModeratingComments, commentEdit, postId) => comment => (
   <PostComment
     key={comment.id}
     {...comment}
     entryUrl={entryUrl}
     openAnsweringComment={openAnsweringComment}
     isModeratingComments={isModeratingComments}
-    {...commentEdit}/>
+    {...commentEdit}
+    highlightComment={authorUserName => commentEdit.highlightComment(postId, authorUserName)}/>
 );
 
 const renderAddingComment = props => (
@@ -67,7 +68,7 @@ export default (props) => {
 
   };
 
-  const commentMapper = renderComment(entryUrl, openAnsweringComment, props.post.isModeratingComments, props.commentEdit);
+  const commentMapper = renderComment(entryUrl, openAnsweringComment, props.post.isModeratingComments, props.commentEdit, props.post.id);
   const first = props.comments[0];
   const last = props.comments.length > 1 && props.comments[props.comments.length - 1];
   const middle = props.comments.slice(1, props.comments.length - 1).map(commentMapper);

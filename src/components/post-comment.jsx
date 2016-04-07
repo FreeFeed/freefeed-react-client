@@ -81,7 +81,7 @@ export default class PostComment extends React.Component {
     const createdAgo = fromNowOrNow(+this.props.createdAt);
 
     return (
-    <div className="comment">
+    <div className={`comment ${this.props.highlighted ? 'highlighted' : ''}`}>
       <a className={`comment-icon fa ${this.props.omitBubble ? 'feed-comment-dot' : 'fa-comment-o'}`}
          title={createdAgo}
          id={`comment-${this.props.id}`}
@@ -125,7 +125,7 @@ export default class PostComment extends React.Component {
         </div>
       ) : (
         <div className="comment-body">
-          <PieceOfText text={this.props.body}/>
+          <PieceOfText text={this.props.body} userHover={{hover: username => this.props.highlightComment(username), leave: this.props.clearHighlightComment}}/>
           {' -'}&nbsp;
           <UserName user={this.props.user}/>
           {this.props.isEditable ? (
