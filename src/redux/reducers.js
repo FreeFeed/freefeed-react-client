@@ -1248,23 +1248,16 @@ export function frontendPreferencesForm(state={}, action) {
   return state;
 }
 
-const DEFAULT_PHOTO_FORM_STATE = {
-  isSaving:false,
-  success:false,
-  error:false,
-  errorText: '',
-};
-
-export function userPictureForm(state=DEFAULT_PHOTO_FORM_STATE, action) {
+export function userPictureForm(state={}, action) {
   switch (action.type) {
-    case request(ActionTypes.UPDATE_USER_PHOTO): {
-      return {isSaving: true, error: false, success: false};
+    case request(ActionTypes.UPDATE_USER_PICTURE): {
+      return {...state, status: 'loading'};
     }
-    case response(ActionTypes.UPDATE_USER_PHOTO): {
-      return {isSaving: false, success: true, error: false};
+    case response(ActionTypes.UPDATE_USER_PICTURE): {
+      return {...state, status: 'success'};
     }
-    case fail(ActionTypes.UPDATE_USER_PHOTO): {
-      return {isSaving: false, success: false, error: true, errorText: action.payload.err};
+    case fail(ActionTypes.UPDATE_USER_PICTURE): {
+      return {...state, status: 'error', errorMessage: (action.payload || {}).err};
     }
   }
   return state;
