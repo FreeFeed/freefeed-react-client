@@ -269,7 +269,7 @@ export function updatePassword({currentPassword, password, passwordConfirmation}
   });
 }
 
-export function updateProfilePicture({picture}) {
+export function updateUserPicture({picture}) {
   let data = new FormData();
   data.append('file', picture);
 

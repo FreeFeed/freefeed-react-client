@@ -355,10 +355,10 @@ export function updatePassword(payload) {
   };
 }
 
-export function updateUserPhoto(picture) {
+export function updateUserPicture(picture) {
   return {
-    type: ActionTypes.UPDATE_USER_PHOTO,
-    apiRequest: Api.updateProfilePicture,
+    type: ActionTypes.UPDATE_USER_PICTURE,
+    apiRequest: Api.updateUserPicture,
     payload: {picture},
   };
 }
