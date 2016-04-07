@@ -5,28 +5,54 @@ import {connect} from 'react-redux';
 import UserCard from './user-card';
 import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
 
+function chunk(str, chunkSize) {
+  const stringLength = str.length;
+
+  const chunksRequired = Math.ceil(stringLength / chunkSize);
+  let stringArray = new Array(chunksRequired);
+
+  let lengthRemaining = stringLength;
+
+  for (let i = 0; i < chunksRequired; ++i) {
+    let lengthToUse = Math.min(lengthRemaining, chunkSize);
+    let startIndex = chunkSize * i;
+
+    stringArray[i] = str.substr(startIndex, lengthToUse);
+
+    lengthRemaining = lengthRemaining - lengthToUse;
+  }
+
+  return stringArray;
+}
+
+const CHUNK_SIZE = 11;
+
+function wrap(str) {
+  return chunk(str, CHUNK_SIZE).join('\u200B');
+}
+
 const DisplayOption = ({user, me, preferences}) => {
   if (user.username === me && preferences.useYou) {
     return <span>You</span>;
   }
 
   if (user.screenName === user.username) {
-    return <span>{user.screenName}</span>;
+    return <span>{wrap(user.screenName)}</span>;
   }
 
   switch (preferences.displayOption) {
     case FrontendPrefsOptions.DISPLAYNAMES_DISPLAYNAME: {
-      return <span>{user.screenName}</span>;
+      return <span>{wrap(user.screenName)}</span>;
     }
     case FrontendPrefsOptions.DISPLAYNAMES_BOTH: {
-      return <span>{user.screenName} ({user.username})</span>;
+      return <span>{wrap(user.screenName)} ({wrap(user.username)})</span>;
     }
     case FrontendPrefsOptions.DISPLAYNAMES_USERNAME: {
-      return <span>{user.username}</span>;
+      return <span>{wrap(user.username)}</span>;
     }
   }
 
-  return <span>{user.screenName}</span>;
+  return <span>{wrap(user.screenName)}</span>;
 };
 
 class UserName extends React.Component {
