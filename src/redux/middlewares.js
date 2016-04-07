@@ -85,7 +85,7 @@ export const likesLogicMiddleware = store => next => action => {
 };
 
 export const userPhotoLogicMiddleware = store => next => action => {
-  if (action.type === response(ActionTypes.UPDATE_USER_PHOTO)) {
+  if (action.type === response(ActionTypes.UPDATE_USER_PICTURE)) {
     // Update data after userpic is updated
     store.dispatch(ActionCreators.whoAmI());
   }

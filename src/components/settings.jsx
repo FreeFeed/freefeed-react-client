@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {updateUser, userSettingsChange, updateFrontendPreferences, updatePassword, updateUserPhoto, toggleRealtime, updateFrontendRealtimePreferences} from '../redux/action-creators';
+import {updateUser, userSettingsChange, updateFrontendPreferences, updatePassword, updateUserPicture, toggleRealtime, updateFrontendRealtimePreferences} from '../redux/action-creators';
 import UserSettingsForm from './user-settings-form';
 import UserFrontendPreferencesForm from './user-frontend-preferences-form';
 import UserChangePasswordForm from './user-change-password-form';
@@ -36,7 +36,7 @@ const Settings = (props) => (
         <hr/>
 
         <UserPictureForm
-          updateUserPhoto={props.updateUserPhoto}
+          updateUserPicture={props.updateUserPicture}
           {...props.userPictureForm}/>
 
         <hr/>
@@ -63,7 +63,7 @@ function mapDispatchToProps(dispatch) {
     updateFrontendPreferences: (...args) => dispatch(updateFrontendPreferences(...args)),
     updateFrontendRealtimePreferences: (...args) => dispatch(updateFrontendRealtimePreferences(...args)),
     updatePassword: (...args) => dispatch(updatePassword(...args)),
-    updateUserPhoto: (...args) => dispatch(updateUserPhoto(...args)),
+    updateUserPicture: (...args) => dispatch(updateUserPicture(...args)),
     toggleRealtime: () => dispatch(toggleRealtime()),
   };
 }
