@@ -36,6 +36,7 @@ const Settings = (props) => (
         <hr/>
 
         <UserPictureForm
+          user={props.user}
           updateUserPicture={props.updateUserPicture}
           {...props.userPictureForm}/>
 
