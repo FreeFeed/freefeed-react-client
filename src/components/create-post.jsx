@@ -13,7 +13,8 @@ export default class CreatePost extends React.Component {
     super(props);
     this.state = {
       isFormEmpty: true,
-      isMoreOpen: false
+      isMoreOpen: false,
+      attachmentQueueLength: 0
     };
   }
 
@@ -33,7 +34,8 @@ export default class CreatePost extends React.Component {
     this.refs.postText.value = '';
     this.setState({
       isFormEmpty: true,
-      isMoreOpen: false
+      isMoreOpen: false,
+      attachmentQueueLength: 0
     });
     attachmentIds.forEach(this.removeAttachment);
   }
@@ -57,7 +59,7 @@ export default class CreatePost extends React.Component {
     const isShiftPressed = e.shiftKey;
     if (isEnter && !isShiftPressed) {
       e.preventDefault();
-      if (!this.state.isFormEmpty && !this.props.createPostViewState.isPending) {
+      if (!this.state.isFormEmpty && this.state.attachmentQueueLength === 0 && !this.props.createPostViewState.isPending) {
         this.createPost();
       }
     }
@@ -72,6 +74,7 @@ export default class CreatePost extends React.Component {
   }
 
   render() {
+    let _this = this;
     let props = this.props;
 
     // DropzoneJS configuration
@@ -128,6 +131,18 @@ export default class CreatePost extends React.Component {
         // Add uploaded attachment to the post
         // 'attachments' in this response will be an attachment object, not an array of objects
         props.addAttachmentResponse(null, response.attachments);
+      },
+
+      addedfile: function() {
+        _this.setState({
+          attachmentQueueLength: _this.state.attachmentQueueLength + 1
+        });
+      },
+
+      removedfile: function() {
+        _this.setState({
+          attachmentQueueLength: _this.state.attachmentQueueLength - 1
+        });
       }
     };
 
@@ -190,7 +205,7 @@ export default class CreatePost extends React.Component {
 
           <button className="btn btn-default btn-xs"
             onClick={preventDefault(this.createPost)}
-            disabled={this.state.isFormEmpty || this.props.createPostViewState.isPending}>Post</button>
+            disabled={this.state.isFormEmpty || this.state.attachmentQueueLength > 0 || this.props.createPostViewState.isPending}>Post</button>
         </div>
 
         <PostAttachments
