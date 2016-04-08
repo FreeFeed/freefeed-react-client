@@ -2,10 +2,37 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 
-import {tileUserListFactory, PLAIN} from './tile-user-list';
-const TileList = tileUserListFactory({type: PLAIN, size: 'large'});
+import {pluralForm} from '../utils';
+
+import {acceptGroupRequest, rejectGroupRequest} from '../redux/action-creators';
+import {tileUserListFactory, WITH_REQUEST_HANDLES, PLAIN} from './tile-user-list';
+const TileListWithAcceptAndReject = tileUserListFactory({type: WITH_REQUEST_HANDLES, displayQuantity: true});
+const TileList = tileUserListFactory({type: PLAIN, displayQuantity: true});
+
+const renderRequestsToGroup = (accept, reject) => (groupRequests) => {
+  const acceptGroupRequest = (userName) => accept(groupRequests.username, userName);
+  const rejectGroupRequest = (userName) => reject(groupRequests.username, userName);
+
+  const count = groupRequests.requests.length;
+  const groupName = groupRequests.screenName;
+  const header = `${pluralForm(count, 'Request', null, 'w')} to join ${groupName}`;
+
+  return (
+    <div key={groupRequests.id}>
+      <TileListWithAcceptAndReject
+        header={header}
+        users={groupRequests.requests}
+        acceptRequest={acceptGroupRequest}
+        rejectRequest={rejectGroupRequest}/>
+    </div>
+  );
+};
 
 const GroupsHandler = (props) => {
+  const groupRequests = props.groupRequests.map(
+    renderRequestsToGroup(props.acceptGroupRequest, props.rejectGroupRequest)
+  );
+
   return (
     <div className="box">
       <div className="box-header-timeline">
@@ -13,15 +40,22 @@ const GroupsHandler = (props) => {
       </div>
       <div className="box-body">
         <div className="row">
-          <div className="col-md-6">
-            All your groups, sorted alphabetically
+          <div className="col-md-8">
+            All the groups you are subscribed to, sorted alphabetically
           </div>
-          <div className="col-md-6 text-right">
+          <div className="col-md-4 text-right">
             <Link to="/groups/create">Create a group</Link>
           </div>
         </div>
 
-        <TileList users={props.users}/>
+        {groupRequests ? (
+          <div>
+            {groupRequests}
+          </div>
+        ) : false}
+
+        <TileList {...props.myGroups}/>
+        <TileList {...props.groupsIAmIn}/>
       </div>
       <div className="box-footer"></div>
     </div>
@@ -29,9 +63,26 @@ const GroupsHandler = (props) => {
 };
 
 function selectState(state) {
-  const users = _.sortBy(state.groups, 'username');
+  const groupRequests = state.managedGroups.filter(group => group.requests.length) || [];
 
-  return { users };
+  const myGroups = {
+    header: 'Groups I admin',
+    users: _.sortBy(state.managedGroups, 'username')
+  };
+
+  const groupsIAmIn = {
+    header: 'Groups i\'m in',
+    users: _.sortBy(state.groups, 'username')
+  };
+
+  return { groupRequests, myGroups, groupsIAmIn };
 }
 
-export default connect(selectState)(GroupsHandler);
+function selectActions(dispatch) {
+  return {
+    acceptGroupRequest: (...args) => dispatch(acceptGroupRequest(...args)),
+    rejectGroupRequest: (...args) => dispatch(rejectGroupRequest(...args))
+  };
+}
+
+export default connect(selectState, selectActions)(GroupsHandler);
