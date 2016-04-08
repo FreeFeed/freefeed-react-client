@@ -25,7 +25,7 @@ const MAX_LIKES = 4;
 
 const allFalse = _ => false;
 
-const commentHighlighter = ({commentsHighlights = {}, user, postsViewState}, commentsPostId, commentList) => {
+const commentHighlighter = ({commentsHighlights, user, postsViewState}, commentsPostId, commentList) => {
   const {postId, author, arrows, baseCommentId} = commentsHighlights;
   const {comments} = user.frontendPreferences;
   const {omittedComments} = postsViewState[commentsPostId];
@@ -38,8 +38,8 @@ const commentHighlighter = ({commentsHighlights = {}, user, postsViewState}, com
   }
 
   const baseIndex = commentList.indexOf(baseCommentId);
-  const highlightId = (baseIndex + omittedComments) - arrows;
-  const highlightCommentId = commentList[highlightId];
+  const highlightIndex = (baseIndex + omittedComments) - arrows;
+  const highlightCommentId = commentList[highlightIndex < baseIndex ? highlightIndex : -1];
 
   return (commentId, commentAuthor) => author === commentAuthor.username || highlightCommentId === commentId;
 };

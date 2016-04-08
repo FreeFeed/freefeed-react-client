@@ -46,6 +46,7 @@ const composeState = ({subsequentComments, setting, omittedComments = 0}) => {
         createdBy: user1.id
       }
     },
+    commentsHighlights: {},
     commentViewState: {
       [comment1.id]: {},
       [comment2.id]: {},
