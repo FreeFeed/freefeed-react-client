@@ -12,7 +12,7 @@ export default class CreatePost extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      disabled: true,
+      isFormEmpty: true,
       isMoreOpen: false
     };
   }
@@ -32,7 +32,7 @@ export default class CreatePost extends React.Component {
     // Clear the form afterwards
     this.refs.postText.value = '';
     this.setState({
-      disabled: true,
+      isFormEmpty: true,
       isMoreOpen: false
     });
     attachmentIds.forEach(this.removeAttachment);
@@ -45,11 +45,10 @@ export default class CreatePost extends React.Component {
   }
 
   checkCreatePostAvailability = (e) => {
-    let isPostDisabled = this.isPostTextEmpty(this.refs.postText.value)
-                      || this.refs.selectFeeds.values == 0;
+    let isFormEmpty = this.isPostTextEmpty(this.refs.postText.value) || this.refs.selectFeeds.values == 0;
 
     this.setState({
-      disabled: (isPostDisabled)
+      isFormEmpty
     });
   }
 
@@ -58,7 +57,7 @@ export default class CreatePost extends React.Component {
     const isShiftPressed = e.shiftKey;
     if (isEnter && !isShiftPressed) {
       e.preventDefault();
-      if (!this.state.disabled && !this.props.createPostViewState.isPending) {
+      if (!this.state.isFormEmpty && !this.props.createPostViewState.isPending) {
         this.createPost();
       }
     }
@@ -191,7 +190,7 @@ export default class CreatePost extends React.Component {
 
           <button className="btn btn-default btn-xs"
             onClick={preventDefault(this.createPost)}
-            disabled={this.state.disabled || this.props.createPostViewState.isPending}>Post</button>
+            disabled={this.state.isFormEmpty || this.props.createPostViewState.isPending}>Post</button>
         </div>
 
         <PostAttachments
