@@ -1559,7 +1559,7 @@ export function groups(state = {}, action) {
   return state;
 }
 
-const handleSubs = (state, action, type) => {
+const handleUsers = (state, action, type, errorString) => {
   if (action.type == request(type)) {
     return {
       payload: [],
@@ -1580,14 +1580,13 @@ const handleSubs = (state, action, type) => {
     return {
       payload: [],
       isPending: false,
-      errorString: 'error occured while fetching subscribers'
+      errorString: errorString
     };
   }
 
   return state;
 };
 
-// for /:username/subscribers
 export function usernameSubscribers(state = {}, action) {
   if (action.type == response(ActionTypes.UNSUBSCRIBE_FROM_GROUP)) {
     const userName = action.request.userName;
@@ -1597,12 +1596,30 @@ export function usernameSubscribers(state = {}, action) {
     };
   }
 
-  return handleSubs(state, action, ActionTypes.SUBSCRIBERS);
+  return handleUsers(
+    state,
+    action,
+    ActionTypes.SUBSCRIBERS,
+    'error occured while fetching subscribers'
+  );
 }
 
-// for /:username/subscriptions
 export function usernameSubscriptions(state = {}, action) {
-  return handleSubs(state, action, ActionTypes.SUBSCRIPTIONS);
+  return handleUsers(
+    state,
+    action,
+    ActionTypes.SUBSCRIPTIONS,
+    'error occured while fetching subscriptions'
+  );
+}
+
+export function usernameBlockedByMe(state = {}, action) {
+  return handleUsers(
+    state,
+    { ...action, 'payload': {'subscribers': action.payload } },
+    ActionTypes.BLOCKED_BY_ME,
+    'error occured while fetching blocked users'
+  );
 }
 
 const removeItemFromGroupRequests = (state, action) => {

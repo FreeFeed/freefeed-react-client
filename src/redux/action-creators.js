@@ -574,3 +574,10 @@ export function clearHighlightComment() {
     type: ActionTypes.CLEAR_HIGHLIGHT_COMMENT,
   };
 }
+
+export function blockedByMe() {
+  return {
+    type: ActionTypes.BLOCKED_BY_ME,
+    apiRequest: Api.getBlockedByMe
+  };
+}

@@ -30,6 +30,7 @@ import Subscriptions from './components/subscriptions';
 import GroupSettings from './components/group-settings';
 import GroupCreate from './components/group-create';
 import Groups from './components/groups';
+import Friends from './components/friends';
 import Requests from './components/requests';
 import ManageSubscribers from './components/manage-subscribers';
 
@@ -56,6 +57,13 @@ const manageSubscribersActions = next => {
   store.dispatch(ActionCreators.subscribers(username));
 };
 
+const friendsActions = next => {
+  const username = store.getState().user.username;
+  store.dispatch(ActionCreators.subscribers(username));
+  store.dispatch(ActionCreators.subscriptions(username));
+  store.dispatch(ActionCreators.blockedByMe(username));
+};
+
 const enterStaticPage = title => () => {
   store.dispatch(ActionCreators.staticPage(title));
 };
@@ -76,6 +84,7 @@ ReactDOM.render(
         <Route name='discussions' path='filter/discussions' component={Discussions} onEnter={boundRouteActions('discussions')}/>
         <Route name='direct' path='filter/direct' component={Discussions} onEnter={boundRouteActions('direct')}/>
         <Route name='groups' path='/groups' component={Groups} onEnter={enterStaticPage('Groups')}/>
+        <Route name='friends' path='/friends' component={Friends} onEnter={friendsActions}/>
         <Route name='groupCreate' path='/groups/create' component={GroupCreate} onEnter={enterStaticPage('Create a group')}/>
         <Route name='requests' path='/requests' component={Requests} onEnter={enterStaticPage('Subscription requests')}/>
         <Route name='userFeed' path='/:userName' component={User} onEnter={boundRouteActions('userFeed')}/>
