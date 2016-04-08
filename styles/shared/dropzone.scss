@@ -1,0 +1,31 @@
+// Dropzone
+
+.dropzone {
+  display: none;
+}
+.dragover .dropzone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: absolute;
+  z-index: 1000;
+
+  width: 100.16%;
+  height: 105px;
+  min-height: 0;
+  padding: 0;
+  border: 5px dotted #ccc;
+  background-color: #eee;
+  margin-left: -1px;
+
+  font-size: 16px;
+
+  .dz-message {
+    margin: 0;
+  }
+}
+
+.dropzone-previews {
+  display: none;
+}
