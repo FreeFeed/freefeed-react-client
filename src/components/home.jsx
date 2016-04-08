@@ -25,6 +25,14 @@ const FeedHandler = (props) => {
       removeAttachment={props.removeAttachment}/>
   );
 
+  const userRequestsCount = props.userRequestsCount;
+  const groupRequestsCount = props.groupRequestsCount;
+  const totalRequestsCount = userRequestsCount + groupRequestsCount;
+
+  const userRequestsText = pluralForm(userRequestsCount, 'subscription request');
+  const groupRequestsText = pluralForm(groupRequestsCount, 'group subscription request');
+  const bothRequestsDisplayed = userRequestsCount > 0 && groupRequestsCount > 0;
+
   return (
     <div className='box'>
       <div className='box-header-timeline'>
@@ -34,12 +42,17 @@ const FeedHandler = (props) => {
         </div>
       </div>
 
-      {props.authenticated && props.totalRequestsCount > 0 ? (
+      {props.authenticated && totalRequestsCount > 0 ? (
         <div className="box-message alert alert-info">
           <span className="message">
-            <Link to="/requests">
-              You have {pluralForm(props.totalRequestsCount, 'subscription request')} to review.
-            </Link>
+            {totalRequestsCount > 0 ? (
+              <span>
+                <span>You have </span>
+                {userRequestsCount > 0 ? (<Link to="/friends">{userRequestsText}</Link>) : false}
+                {bothRequestsDisplayed ? (<span> and </span>) : false}
+                {groupRequestsCount > 0 ? (<Link to="/groups">{groupRequestsText}</Link>) : false}
+              </span>
+            ):false}
           </span>
         </div>
       ) : false}
@@ -67,16 +80,14 @@ function selectState(state) {
   const timelines = state.timelines;
   const boxHeader = state.boxHeader;
   const sendTo = {...state.sendTo, defaultFeed: user.username};
-
-  const totalRequestsCount = state.groupRequestsCount +
-                             state.userRequestsCount +
-                             state.sentRequestsCount;
+  const userRequestsCount = state.userRequestsCount;
+  const groupRequestsCount = state.groupRequestsCount;
 
   return {
     user, authenticated,
     visibleEntries, hiddenEntries, isHiddenRevealed,
     createPostViewState, createPostForm,
-    timelines, boxHeader, sendTo, totalRequestsCount,
+    timelines, boxHeader, sendTo, userRequestsCount, groupRequestsCount,
     areOnFirstHomePage: !state.routing.locationBeforeTransitions.query.offset,
   };
 }
