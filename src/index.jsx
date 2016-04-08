@@ -31,7 +31,6 @@ import GroupSettings from './components/group-settings';
 import GroupCreate from './components/group-create';
 import Groups from './components/groups';
 import Friends from './components/friends';
-import Requests from './components/requests';
 import ManageSubscribers from './components/manage-subscribers';
 
 const store = configureStore();
@@ -86,7 +85,6 @@ ReactDOM.render(
         <Route name='groups' path='/groups' component={Groups} onEnter={enterStaticPage('Groups')}/>
         <Route name='friends' path='/friends' component={Friends} onEnter={friendsActions}/>
         <Route name='groupCreate' path='/groups/create' component={GroupCreate} onEnter={enterStaticPage('Create a group')}/>
-        <Route name='requests' path='/requests' component={Requests} onEnter={enterStaticPage('Subscription requests')}/>
         <Route name='userFeed' path='/:userName' component={User} onEnter={boundRouteActions('userFeed')}/>
         <Route name='subscribers' path='/:userName/subscribers' component={Subscribers} onEnter={boundRouteActions('subscribers')}/>
         <Route name='subscriptions' path='/:userName/subscriptions' component={Subscriptions} onEnter={boundRouteActions('subscriptions')}/>
