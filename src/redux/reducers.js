@@ -1626,7 +1626,7 @@ const removeItemFromGroupRequests = (state, action) => {
 export function managedGroups(state = [], action) {
   switch (action.type) {
     case response(ActionTypes.MANAGED_GROUPS): {
-      return action.payload.map(group => {
+      return action.payload.map(userParser).map(group => {
         group.requests = group.requests.map(userParser);
         return {...group};
       });
