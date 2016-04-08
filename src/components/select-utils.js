@@ -25,7 +25,10 @@ const MAX_LIKES = 4;
 
 const allFalse = _ => false;
 
-const commentHighlighter = ({postId, author, arrows, baseCommentId}, {comments}, commentsPostId, commentList) => {
+const commentHighlighter = ({commentsHighlights = {}, user, postsViewState}, commentsPostId, commentList) => {
+  const {postId, author, arrows, baseCommentId} = commentsHighlights;
+  const {comments} = user.frontendPreferences;
+  const {omittedComments} = postsViewState[commentsPostId];
   if (!comments.highlightComments) {
     return allFalse;
   }
@@ -35,7 +38,7 @@ const commentHighlighter = ({postId, author, arrows, baseCommentId}, {comments},
   }
 
   const baseIndex = commentList.indexOf(baseCommentId);
-  const highlightId = baseIndex - arrows;
+  const highlightId = (baseIndex + omittedComments) - arrows;
   const highlightCommentId = commentList[highlightId];
 
   return (commentId, commentAuthor) => author === commentAuthor.username || highlightCommentId === commentId;
@@ -51,7 +54,7 @@ export const joinPostData = state => postId => {
   const attachments = (post.attachments || []).map(attachmentId => state.attachments[attachmentId]);
   const postViewState = state.postsViewState[post.id];
   const omitRepeatedBubbles = state.user.frontendPreferences.comments.omitRepeatedBubbles;
-  const highlightComment = commentHighlighter(state.commentsHighlights, state.user.frontendPreferences, postId, post.comments);
+  const highlightComment = commentHighlighter(state, postId, post.comments);
   let comments = (post.comments || []).reduce((_comments, commentId, index) => {
     const comment = state.comments[commentId];
     const commentViewState = state.commentViewState[commentId];
