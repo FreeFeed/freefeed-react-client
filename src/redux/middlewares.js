@@ -116,12 +116,23 @@ export const redirectionMiddleware = store => next => action => {
   return next(action);
 };
 
-export const pendingRequestsMiddleware = store => next => action => {
+export const requestsMiddleware = store => next => action => {
   if (action.type === response(ActionTypes.WHO_AM_I)) {
     next(action);
 
     if (store.getState().user.pendingGroupRequests) {
       store.dispatch(ActionCreators.managedGroups());
+    }
+
+    return;
+  }
+
+  if (action.type === response(ActionTypes.ACCEPT_USER_REQUEST)) {
+    next(action);
+
+    if (store.getState().routing.locationBeforeTransitions.pathname == '/friends') {
+      const username = store.getState().user.username;
+      store.dispatch(ActionCreators.subscribers(username));
     }
 
     return;
