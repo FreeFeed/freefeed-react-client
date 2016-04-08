@@ -96,11 +96,20 @@ export const tileUserListFactory = (config) => (props) => {
     'with-actions': config.type !== PLAIN
   });
 
+  const header = props.header && config.displayQuantity ?
+    props.header + ` (${props.users.length})` :
+    props.header;
+
   return (
     <div>
-      <ul className={listClasses}>
-        {users}
-      </ul>
+      {users.length ? (
+        <div>
+          <h3>{header}</h3>
+          <ul className={listClasses}>
+            {users}
+          </ul>
+        </div>
+      ) : false}
     </div>
   );
 };
