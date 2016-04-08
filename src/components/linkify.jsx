@@ -1,19 +1,10 @@
 import React from 'react';
 import {Link} from 'react-router';
-import URLFinder from 'ff-url-finder';
-import config from '../config';
+import {finder} from '../utils';
+import {shorten} from 'ff-url-finder';
+import {LINK, AT_LINK, LOCAL_LINK, EMAIL} from '../utils/link-types';
 
 const MAX_URL_LENGTH = 50;
-
-const LINK = 'link';
-const AT_LINK = 'atLink';
-const LOCAL_LINK = 'localLink';
-const EMAIL = 'email';
-
-const finder = new URLFinder(
-  ['ru', 'com', 'net', 'org', 'info', 'gov', 'edu', 'рф', 'ua'],
-  config.siteDomains,
-);
 
 const arrowDetector = /(↑+|\^+)W?/g;
 const defaultFunction = _ => _;
@@ -92,13 +83,13 @@ class Linkify extends React.Component {
         let href;
 
         if (it.type === LINK) {
-          displayedLink = URLFinder.shorten(it.text, MAX_URL_LENGTH);
+          displayedLink = shorten(it.text, MAX_URL_LENGTH);
           href = it.url;
         } else if (it.type === AT_LINK) {
           displayedLink = it.text;
           href = `/${it.username}`;
         } else if (it.type === LOCAL_LINK) {
-          displayedLink = URLFinder.shorten(it.text, MAX_URL_LENGTH);
+          displayedLink = shorten(it.text, MAX_URL_LENGTH);
           href = it.uri;
         } else if (it.type === EMAIL) {
           displayedLink = it.text;

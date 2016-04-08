@@ -92,3 +92,35 @@ export function pluralForm(n, singular, plural = null, format = 'n w') {
 
   return format.replace('n', n).replace('w', w);
 }
+
+import URLFinder from 'ff-url-finder';
+import config from '../config';
+
+export const finder = new URLFinder(
+  ['ru', 'com', 'net', 'org', 'info', 'gov', 'edu', 'рф', 'ua'],
+  config.siteDomains,
+);
+
+import {LINK, isLink} from '../utils/link-types';
+
+const endsWithExclamation = str => str && str[str.length - 1] === '!';
+
+const previousElementCheck = (index, array) => {
+  const previousElement = array[index - 1];
+  if (!previousElement) {
+    return true;
+  }
+  if (isLink(previousElement)) {
+    return true;
+  }
+  return !endsWithExclamation(previousElement.text);
+};
+
+export function getFirstLinkToEmbed(text) {
+  return finder .parse(text)
+                .filter(({type}, index, links) => {
+                  return (type ===  LINK
+                          && previousElementCheck(index, links));
+                }).map(it => it.text)[0];
+};
+
