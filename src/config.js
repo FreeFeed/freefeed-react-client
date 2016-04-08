@@ -29,7 +29,8 @@ const config = {
       },
       realtimeActive: false,
       comments: {
-        omitRepeatedBubbles: true
+        omitRepeatedBubbles: true,
+        highlightComments: true
       }
     }
   }

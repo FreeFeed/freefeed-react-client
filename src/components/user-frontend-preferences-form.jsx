@@ -37,6 +37,15 @@ export default class UserFrontendPreferencesForm extends React.Component {
     });
   }
 
+  changeHighlightComments = (event) => {
+    this.setState({
+      comments: {
+        ...this.state.comments,
+        highlightComments: event.target.checked
+      }
+    });
+  }
+
   savePreferences = () => {
     if (this.props.status !== 'loading') {
       this.props.updateFrontendPreferences(this.props.userId, this.state);
@@ -98,6 +107,12 @@ export default class UserFrontendPreferencesForm extends React.Component {
           </label>
         </div>
 
+        <div className="checkbox">
+          <label>
+            <input type="checkbox" name="bubbles" value="1" checked={this.state.comments.highlightComments} onChange={this.changeHighlightComments}/>
+            Highlight comments when hovering on @username or ^ and ↑
+          </label>
+        </div>
 
         <p>
           <button className="btn btn-default" type="submit">Update</button>
