@@ -331,7 +331,7 @@ export default class Post extends React.Component {
             isEditing={props.isEditing}
             removeAttachment={this.removeAttachment}/>
 
-          {noImageAttachments && linkToEmbed ? (
+          {props.allowLinksPreview && noImageAttachments && linkToEmbed ? (
             <EmbedlyLink link={linkToEmbed}/>) : false}
 
           <div className="dropzone-previews"></div>
