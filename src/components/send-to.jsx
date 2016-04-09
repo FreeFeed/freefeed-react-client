@@ -1,58 +1,58 @@
-import React from 'react'
-import Select from 'react-select'
-import {preventDefault} from '../utils'
+import React from 'react';
+import Select from 'react-select';
+import {preventDefault} from '../utils';
 
-const MY_FEED_LABEL = 'My feed'
+const MY_FEED_LABEL = 'My feed';
 
 export default class SendTo extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     let options = props.feeds.map((item) => ({
       label: item.user.username,
       value: item.user.username,
       type: item.user.type
-    }))
+    }));
 
-    let myFeedUsername = props.user.username
-    options.unshift({ label: MY_FEED_LABEL, value: myFeedUsername, type: 'group' })
+    let myFeedUsername = props.user.username;
+    options.unshift({ label: MY_FEED_LABEL, value: myFeedUsername, type: 'group' });
 
-    this._values = (props.defaultFeed ? [props.defaultFeed] : [])
+    this._values = (props.defaultFeed ? [props.defaultFeed] : []);
 
     this.state = {
       values: this._values,
       options: options,
       showFeedsOption: !props.defaultFeed,
       isWarningDisplayed: false
-    }
+    };
   }
 
   get values() {
-    return this._values
+    return this._values;
   }
 
   isGroupsOrDirectsOnly = (values) => {
-    let types = {}
+    let types = {};
     for (let v of values) {
-      types[v.type] = v
+      types[v.type] = v;
     }
-    return Object.keys(types).length <= 1
+    return Object.keys(types).length <= 1;
   }
 
   selectChanged = (values) => {
-    this._values = values.map(item => item.value)
-    let isWarningDisplayed = !this.isGroupsOrDirectsOnly(values)
-    this.setState({ values, isWarningDisplayed })
-    this.props.onChange()
+    this._values = values.map(item => item.value);
+    let isWarningDisplayed = !this.isGroupsOrDirectsOnly(values);
+    this.setState({ values, isWarningDisplayed });
+    this.props.onChange();
   }
 
   toggleSendTo = _ => {
-    let newShowFeedsOption = !this.state.showFeedsOption
-    this.setState({ showFeedsOption: newShowFeedsOption })
+    let newShowFeedsOption = !this.state.showFeedsOption;
+    this.setState({ showFeedsOption: newShowFeedsOption });
   }
 
   render() {
-    const defaultFeedLabel = (this.state.values[0] === this.props.user.username ? MY_FEED_LABEL : this.state.values[0])
+    const defaultFeedLabel = (this.state.values[0] === this.props.user.username ? MY_FEED_LABEL : this.state.values[0]);
 
     return (
       <div className="send-to">
@@ -80,7 +80,7 @@ export default class SendTo extends React.Component {
           </div>
         )}
       </div>
-    )
+    );
   }
 }
  

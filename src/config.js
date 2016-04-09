@@ -1,4 +1,4 @@
-import * as FrontendPrefsOptions from './utils/frontend-preferences-options'
+import * as FrontendPrefsOptions from './utils/frontend-preferences-options';
 
 const config = {
   api:{
@@ -28,8 +28,13 @@ const config = {
         useYou: true
       },
       realtimeActive: false,
+      comments: {
+        omitRepeatedBubbles: true,
+        highlightComments: true
+      },
+      allowLinksPreview: false
     }
   }
-}
+};
 
-export default config
+export default config;

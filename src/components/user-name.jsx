@@ -1,62 +1,88 @@
-import React from 'react'
-import {Link} from 'react-router'
-import {connect} from 'react-redux'
+import React from 'react';
+import {Link} from 'react-router';
+import {connect} from 'react-redux';
 
-import UserCard from './user-card'
-import * as FrontendPrefsOptions from '../utils/frontend-preferences-options'
+import UserCard from './user-card';
+import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
+
+function chunk(str, chunkSize) {
+  const stringLength = str.length;
+
+  const chunksRequired = Math.ceil(stringLength / chunkSize);
+  let stringArray = new Array(chunksRequired);
+
+  let lengthRemaining = stringLength;
+
+  for (let i = 0; i < chunksRequired; ++i) {
+    let lengthToUse = Math.min(lengthRemaining, chunkSize);
+    let startIndex = chunkSize * i;
+
+    stringArray[i] = str.substr(startIndex, lengthToUse);
+
+    lengthRemaining = lengthRemaining - lengthToUse;
+  }
+
+  return stringArray;
+}
+
+const CHUNK_SIZE = 11;
+
+function wrap(str) {
+  return chunk(str, CHUNK_SIZE).join('\u200B');
+}
 
 const DisplayOption = ({user, me, preferences}) => {
   if (user.username === me && preferences.useYou) {
-    return <span>You</span>
+    return <span>You</span>;
   }
 
   if (user.screenName === user.username) {
-    return <span>{user.screenName}</span>
+    return <span>{wrap(user.screenName)}</span>;
   }
 
   switch (preferences.displayOption) {
     case FrontendPrefsOptions.DISPLAYNAMES_DISPLAYNAME: {
-      return <span>{user.screenName}</span>
+      return <span>{wrap(user.screenName)}</span>;
     }
     case FrontendPrefsOptions.DISPLAYNAMES_BOTH: {
-      return <span>{user.screenName} ({user.username})</span>
+      return <span>{wrap(user.screenName)} ({wrap(user.username)})</span>;
     }
     case FrontendPrefsOptions.DISPLAYNAMES_USERNAME: {
-      return <span>{user.username}</span>
+      return <span>{wrap(user.username)}</span>;
     }
   }
 
-  return <span>{user.screenName}</span>
-}
+  return <span>{wrap(user.screenName)}</span>;
+};
 
 class UserName extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       isHovered: false,
       isCardOpen: false
-    }
+    };
   }
 
   enterUserName() {
-    this.setState({isHovered: true})
+    this.setState({isHovered: true});
 
     setTimeout(() => {
       if (this.state.isHovered) {
-        this.setState({isCardOpen: true})
+        this.setState({isCardOpen: true});
       }
-    }, 500)
+    }, 500);
   }
 
   leaveUserName() {
-    this.setState({isHovered: false})
+    this.setState({isHovered: false});
 
     setTimeout(() => {
       if (!this.state.isHovered) {
-        this.setState({isCardOpen: false})
+        this.setState({isCardOpen: false});
       }
-    }, 500)
+    }, 500);
   }
 
   render() {
@@ -80,7 +106,7 @@ class UserName extends React.Component {
           <UserCard username={this.props.user.username}/>
         ) : false}
       </div>
-    )
+    );
   }
 }
 
@@ -88,7 +114,7 @@ const mapStateToProps = (state) => {
   return {
     me: state.user.username,
     frontendPreferences: state.user.frontendPreferences
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps)(UserName)
+export default connect(mapStateToProps)(UserName);

@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 
 export default class GroupFeedTypePicker extends React.Component {
 
   handleChange = (property) => (event) => {
-    this.props.updateGroupPrivacySettings({ [property]: event.target.value })
+    this.props.updateGroupPrivacySettings({ [property]: event.target.value });
   }
 
   render() {
@@ -77,6 +77,6 @@ export default class GroupFeedTypePicker extends React.Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }

@@ -68,4 +68,27 @@
   .add-comment-link {
     font-style: italic;
   }
+
+  &.highlighted {
+    background-color: #D9EBFF;
+  }
+}
+
+
+.feed-comment-dot {
+  &:after {
+    content: '';
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    background-color: #CCC;
+    margin-left: -2px;
+    margin-top: -2px;
+    border-radius: 50%;
+  }
+  &:hover:after {
+    background-color: #999;
+  }
 }

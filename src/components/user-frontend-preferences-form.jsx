@@ -1,13 +1,13 @@
-import React from 'react'
+import React from 'react';
 
-import {preventDefault} from '../utils'
-import * as FrontendPrefsOptions from '../utils/frontend-preferences-options'
-import throbber16 from 'assets/images/throbber-16.gif'
+import {preventDefault} from '../utils';
+import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
+import throbber16 from 'assets/images/throbber-16.gif';
 
 export default class UserFrontendPreferencesForm extends React.Component {
   constructor(props) {
-    super(props)
-    this.state = this.props.preferences
+    super(props);
+    this.state = this.props.preferences;
   }
 
   changeDisplayOption = (event) => {
@@ -16,7 +16,7 @@ export default class UserFrontendPreferencesForm extends React.Component {
         ...this.state.displayNames,
         displayOption: parseInt(event.target.value, 10)
       }
-    })
+    });
   }
 
   changeUseYou = (event) => {
@@ -25,12 +25,36 @@ export default class UserFrontendPreferencesForm extends React.Component {
         ...this.state.displayNames,
         useYou: event.target.checked
       }
-    })
+    });
+  }
+
+  changeOmitBubbles = (event) => {
+    this.setState({
+      comments: {
+        ...this.state.comments,
+        omitRepeatedBubbles: event.target.checked
+      }
+    });
+  }
+
+  changeHighlightComments = (event) => {
+    this.setState({
+      comments: {
+        ...this.state.comments,
+        highlightComments: event.target.checked
+      }
+    });
+  }
+
+  changeAllowLinksPreview = (event) => {
+    this.setState({
+      allowLinksPreview: event.target.checked
+    });
   }
 
   savePreferences = () => {
     if (this.props.status !== 'loading') {
-      this.props.updateFrontendPreferences(this.props.userId, this.state)
+      this.props.updateFrontendPreferences(this.props.userId, this.state);
     }
   }
 
@@ -82,6 +106,27 @@ export default class UserFrontendPreferencesForm extends React.Component {
           </label>
         </div>
 
+        <div className="checkbox">
+          <label>
+            <input type="checkbox" name="bubbles" value="1" checked={this.state.comments.omitRepeatedBubbles} onChange={this.changeOmitBubbles}/>
+            Omit bubbles for subsequent comments from the same author
+          </label>
+        </div>
+
+        <div className="checkbox">
+          <label>
+            <input type="checkbox" name="bubbles" value="1" checked={this.state.comments.highlightComments} onChange={this.changeHighlightComments}/>
+            Highlight comments when hovering on @username or ^ and ↑
+          </label>
+        </div>
+
+        <div className="checkbox">
+          <label>
+            <input type="checkbox" name="bubbles" value="1" checked={this.state.allowLinksPreview} onChange={this.changeAllowLinksPreview}/>
+              Show preview for links in post. Link should start with http(s)://, post should have no attached images. If you don't want to have link preview, add ! before a link without spaces.
+          </label>
+        </div>
+
         <p>
           <button className="btn btn-default" type="submit">Update</button>
           {this.props.status === 'loading' ? (
@@ -97,6 +142,6 @@ export default class UserFrontendPreferencesForm extends React.Component {
           <div className="alert alert-danger" role="alert">{this.props.errorMessage}</div>
         ) : false}
       </form>
-    )
+    );
   }
 }

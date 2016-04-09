@@ -1,14 +1,14 @@
-import React from 'react'
-import {Link} from 'react-router'
+import React from 'react';
+import {Link} from 'react-router';
 
-import {preventDefault} from '../utils'
-import throbber16 from 'assets/images/throbber-16.gif'
+import {preventDefault} from '../utils';
+import throbber16 from 'assets/images/throbber-16.gif';
 
-import GroupFeedTypePicker from './group-feed-type-picker'
+import GroupFeedTypePicker from './group-feed-type-picker';
 
 export default class GroupCreateForm extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       username: '',
@@ -16,27 +16,27 @@ export default class GroupCreateForm extends React.Component {
       description: '',
       isPrivate: '0',
       isRestricted: '0'
-    }
+    };
   }
 
   handleChange = (property) => (event) => {
-    const newState = {}
-    newState[property] = event.target.value
-    this.setState(newState)
+    const newState = {};
+    newState[property] = event.target.value;
+    this.setState(newState);
   }
 
   handlePrivacyTypeChange = (privacySettings) => {
-    this.setState(privacySettings)
+    this.setState(privacySettings);
   }
 
   saveSettings = () => {
     if (this.props.status !== 'loading') {
-      this.props.createGroup(this.state)
+      this.props.createGroup(this.state);
     }
   }
 
   componentWillUnmount() {
-    this.props.resetGroupCreateForm()
+    this.props.resetGroupCreateForm();
   }
 
   render() {
@@ -79,6 +79,6 @@ export default class GroupCreateForm extends React.Component {
           <div className="alert alert-danger" role="alert">{this.props.errorMessage}</div>
         ) : false}
       </div>
-    )
+    );
   }
 }

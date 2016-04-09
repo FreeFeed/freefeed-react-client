@@ -1,23 +1,23 @@
-import React from 'react'
+import React from 'react';
 import DropdownMenu from 'react-dd-menu';
 
-import {confirmFirst} from '../utils'
+import {confirmFirst} from '../utils';
 
 export default class PostMoreMenu extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       isOpen: false
-    }
+    };
   }
 
   toggle() {
-    this.setState({ isOpen: !this.state.isOpen })
+    this.setState({ isOpen: !this.state.isOpen });
   }
 
   close() {
-    this.setState({ isOpen: false })
+    this.setState({ isOpen: false });
   }
 
   render() {
@@ -26,7 +26,7 @@ export default class PostMoreMenu extends React.Component {
       close: this.close.bind(this),
       isOpen: this.state.isOpen,
       toggle: <a onClick={this.toggle.bind(this)}>More&nbsp;&#x25be;</a>
-    }
+    };
 
     return (
       <DropdownMenu {...menuOptions}>
@@ -42,6 +42,6 @@ export default class PostMoreMenu extends React.Component {
 
         <li className="dd-menu-item dd-menu-item-danger"><a className="dd-menu-item-link" onClick={confirmFirst(this.props.deletePost)}>Delete</a></li>
       </DropdownMenu>
-    )
+    );
   }
 }

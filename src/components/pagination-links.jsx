@@ -1,11 +1,11 @@
-import React from 'react'
-import {Link} from 'react-router'
+import React from 'react';
+import {Link} from 'react-router';
 
-const PAGE_SIZE = 30
+const PAGE_SIZE = 30;
 
-const offsetObject = offset => offset ? ({offset}) : undefined
-const minOffset = offset => Math.max(offset - PAGE_SIZE, 0)
-const maxOffset = offset => offset + PAGE_SIZE
+const offsetObject = offset => offset ? ({offset}) : undefined;
+const minOffset = offset => Math.max(offset - PAGE_SIZE, 0);
+const maxOffset = offset => offset + PAGE_SIZE;
 
 //deep merge is deep indeed
 const getNextRoute = (router, offset) => ({
@@ -17,9 +17,9 @@ const getNextRoute = (router, offset) => ({
       offset
     }
   }
-})
+});
 
-const routingCallback = (props, offsetSelector) => _ => props.routingActions(props.routename)(getNextRoute(props, offsetSelector(props.offset)))
+const routingCallback = (props, offsetSelector) => _ => props.routingActions(props.routename)(getNextRoute(props, offsetSelector(props.offset)));
 
 export default props => (
   <ul className="pager p-pagination-controls">
@@ -36,4 +36,4 @@ export default props => (
             className="p-pagination-older">Older items »</Link>
       </li>
   </ul>
-)
+);

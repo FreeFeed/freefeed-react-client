@@ -1,5 +1,5 @@
-import React from 'react'
-import {Link} from 'react-router'
+import React from 'react';
+import {Link} from 'react-router';
 
 export default (props) => (
   <div className="box">
@@ -35,4 +35,4 @@ export default (props) => (
         (especially switching the primary data store).</p>
     </div>
   </div>
-)
+);
