@@ -1,9 +1,9 @@
-import React from 'react'
+import React from 'react';
 
-import {tileUserListFactory, PLAIN} from './tile-user-list'
-const TileList = tileUserListFactory({type: PLAIN})
+import {tileUserListFactory, PLAIN} from './tile-user-list';
+const TileList = tileUserListFactory({type: PLAIN});
 
-import throbber16 from 'assets/images/throbber-16.gif'
+import throbber16 from 'assets/images/throbber-16.gif';
 
 export default (props) => {
   return (
@@ -25,5 +25,5 @@ export default (props) => {
 
       <TileList users={props.users}/>
     </div>
-  )
-}
+  );
+};

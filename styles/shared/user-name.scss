@@ -40,6 +40,12 @@
       float: left;
       border: 1px #ccc solid;
       margin: 0 10px 0 0;
+
+      &.loading {
+        width: 77px;
+        height: 77px;
+        background-color: #f2f2f2;
+      }
     }
 
     .names {

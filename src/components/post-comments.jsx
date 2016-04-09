@@ -1,17 +1,19 @@
-import React from 'react'
-import PostComment from './post-comment'
-import MoreCommentsWrapper from './more-comments-wrapper'
-import {preventDefault} from '../utils'
+import React from 'react';
+import PostComment from './post-comment';
+import MoreCommentsWrapper from './more-comments-wrapper';
+import {preventDefault} from '../utils';
 
-const renderComment = (entryUrl, openAnsweringComment, isModeratingComments, commentEdit) => comment => (
+const renderComment = (entryUrl, openAnsweringComment, isModeratingComments, commentEdit, postId) => comment => (
   <PostComment
     key={comment.id}
     {...comment}
     entryUrl={entryUrl}
     openAnsweringComment={openAnsweringComment}
     isModeratingComments={isModeratingComments}
-    {...commentEdit}/>
-)
+    {...commentEdit}
+    highlightComment={authorUserName => commentEdit.highlightComment(postId, authorUserName)}
+    highlightArrowComment={arrows => commentEdit.highlightComment(postId, undefined, arrows, comment.id)}/>
+);
 
 const renderAddingComment = props => (
   <PostComment
@@ -25,10 +27,10 @@ const renderAddingComment = props => (
     toggleEditingComment={props.toggleCommenting}
     errorString={props.commentError}
     isSaving={props.post.isSavingComment}/>
-)
+);
 
 const renderAddCommentLink = (props, disabledForOthers) => {
-  const toggleCommenting = props.post.isSinglePost ? () => {} : () => props.toggleCommenting(props.post.id)
+  const toggleCommenting = props.post.isSinglePost ? () => {} : () => props.toggleCommenting(props.post.id);
 
   if (props.comments.length > 2 && !props.post.omittedComments /* TODO: && user_is_signed_in */) {
     return (
@@ -43,32 +45,38 @@ const renderAddCommentLink = (props, disabledForOthers) => {
           ? <i> - disabled for others</i>
           : false}
       </div>
-    )
+    );
   }
 
-  return false
-}
+  return false;
+};
 
 export default (props) => {
-  const entryUrl = `/${props.post.createdBy.username}/${props.post.id}`
+  const entryUrl = `/${props.post.createdBy.username}/${props.post.id}`;
 
   const openAnsweringComment = (username) => {
     if (!props.post.isCommenting && !props.post.isSinglePost) {
-      props.toggleCommenting(props.post.id)
+      props.toggleCommenting(props.post.id);
     }
 
-    const updatedCommentText = `@${username} ` + (props.post.newCommentText || '')
-    props.updateCommentingText(props.post.id, updatedCommentText)
-  }
+    const text = (props.post.newCommentText || '');
+    const check = new RegExp(`@${username}$`);
 
-  const commentMapper = renderComment(entryUrl, openAnsweringComment, props.post.isModeratingComments, props.commentEdit)
-  const first = props.comments[0]
-  const last = props.comments.length > 1 && props.comments[props.comments.length - 1]
-  const middle = props.comments.slice(1, props.comments.length - 1).map(commentMapper)
-  const showOmittedNumber = props.post.omittedComments > 0
-  const showMoreComments = () => props.showMoreComments(props.post.id)
-  const canAddComment = (!props.post.commentsDisabled || props.post.isEditable)
-  const disabledForOthers = (props.post.commentsDisabled && props.post.isEditable)
+    if (!text.match(check)) {
+      const addSpace = text.length && !text.match(/\s$/);
+      props.updateCommentingText(props.post.id, `${text}${addSpace ? ' ' : ''}@${username}`);
+    };
+
+  };
+
+  const commentMapper = renderComment(entryUrl, openAnsweringComment, props.post.isModeratingComments, props.commentEdit, props.post.id);
+  const first = props.comments[0];
+  const last = props.comments.length > 1 && props.comments[props.comments.length - 1];
+  const middle = props.comments.slice(1, props.comments.length - 1).map(commentMapper);
+  const showOmittedNumber = props.post.omittedComments > 0;
+  const showMoreComments = () => props.showMoreComments(props.post.id);
+  const canAddComment = (!props.post.commentsDisabled || props.post.isEditable);
+  const disabledForOthers = (props.post.commentsDisabled && props.post.isEditable);
 
   return (
     <div className="comments">
@@ -88,5 +96,5 @@ export default (props) => {
             : renderAddCommentLink(props, disabledForOthers))
         : false}
     </div>
-  )
-}
+  );
+};

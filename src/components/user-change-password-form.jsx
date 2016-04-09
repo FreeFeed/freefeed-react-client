@@ -1,8 +1,8 @@
-import React from 'react'
-import {preventDefault} from '../utils'
+import React from 'react';
+import {preventDefault} from '../utils';
 
 export default class UserChangePasswordForm extends React.Component {
-  render(){
+  render() {
     return (
       <form onSubmit={preventDefault(this.updatePassword)}>
         <h3>Change password</h3>
@@ -30,7 +30,7 @@ export default class UserChangePasswordForm extends React.Component {
           (<div className='alert alert-danger p-settings-alert' role='alert'>
               <span id='error-message'>{this.props.errorText}</span>
             </div>) : false}
-      </form>)
+      </form>);
   }
   updatePassword = () => {
     if (!this.props.isSaving) {
@@ -38,7 +38,7 @@ export default class UserChangePasswordForm extends React.Component {
         currentPassword: this.refs.currentPassword.value,
         password: this.refs.password.value,
         passwordConfirmation: this.refs.passwordConfirmation.value,
-      })
+      });
     }
   }
 }

@@ -1,30 +1,30 @@
-import React from 'react'
-import {Link} from 'react-router'
+import React from 'react';
+import {Link} from 'react-router';
 
-import {preventDefault, pluralForm} from '../utils'
-import CreatePost from './create-post'
-import PieceOfText from './piece-of-text'
+import {preventDefault, pluralForm} from '../utils';
+import CreatePost from './create-post';
+import PieceOfText from './piece-of-text';
 
 export default class UserProfile extends React.Component {
   constructor(props) {
-    super(props)
-    this.state = { isUnsubWarningDisplayed: false }
+    super(props);
+    this.state = { isUnsubWarningDisplayed: false };
   }
 
   componentWillReceiveProps = (newProps) => {
-    this.setState({ isUnsubWarningDisplayed: false })
+    this.setState({ isUnsubWarningDisplayed: false });
   }
 
   render() {
-    let props = this.props
+    let props = this.props;
 
     const unsubscribe = () => {
-      if(props.amIGroupAdmin) {
-        this.setState({ isUnsubWarningDisplayed: true })
+      if (props.amIGroupAdmin) {
+        this.setState({ isUnsubWarningDisplayed: true });
       } else {
-        props.unsubscribe({ username: props.username })
+        props.unsubscribe({ username: props.username });
       }
-    }
+    };
 
     return (
       <div>
@@ -135,6 +135,6 @@ export default class UserProfile extends React.Component {
             removeAttachment={props.removeAttachment}/>
         ) : false}
       </div>
-    )
+    );
   }
 }

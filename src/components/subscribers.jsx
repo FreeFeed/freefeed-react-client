@@ -1,8 +1,8 @@
-import React from 'react'
-import {connect} from 'react-redux'
+import React from 'react';
+import {connect} from 'react-redux';
 
-import {Link} from 'react-router'
-import SubsList from './subs-list'
+import {Link} from 'react-router';
+import SubsList from './subs-list';
 
 const SubscribersHandler = (props) => {
   return (
@@ -25,18 +25,18 @@ const SubscribersHandler = (props) => {
       </div>
       <div className='box-footer'></div>
     </div>
-  )
-}
+  );
+};
 
 function selectState(state, ownProps) {
-  const boxHeader = state.boxHeader
-  const username = ownProps.params.userName
-  const users = _.sortBy(state.usernameSubscribers.payload, 'username')
-  const isPending = state.usernameSubscribers.isPending
-  const errorString = state.usernameSubscribers.errorString
-  const amIGroupAdmin = (state.managedGroups.find(group => group.username == username) != null)
+  const boxHeader = state.boxHeader;
+  const username = ownProps.params.userName;
+  const users = _.sortBy(state.usernameSubscribers.payload, 'username');
+  const isPending = state.usernameSubscribers.isPending;
+  const errorString = state.usernameSubscribers.errorString;
+  const amIGroupAdmin = (state.managedGroups.find(group => group.username == username) != null);
   
-  return { boxHeader, username, amIGroupAdmin, users, isPending, errorString }
+  return { boxHeader, username, amIGroupAdmin, users, isPending, errorString };
 }
 
-export default connect(selectState)(SubscribersHandler)
+export default connect(selectState)(SubscribersHandler);

@@ -1,11 +1,11 @@
-import React from 'react'
-import numeral from 'numeral'
+import React from 'react';
+import numeral from 'numeral';
 
 export default (props) => {
-  const formattedFileSize = numeral(props.fileSize).format('0.[0] b')
-  const nameAndSize = props.fileName + ' (' + formattedFileSize + ')'
+  const formattedFileSize = numeral(props.fileSize).format('0.[0] b');
+  const nameAndSize = props.fileName + ' (' + formattedFileSize + ')';
 
-  const removeAttachment = () => props.removeAttachment(props.id)
+  const removeAttachment = () => props.removeAttachment(props.id);
 
   return (
     <div className="attachment">
@@ -18,5 +18,5 @@ export default (props) => {
         <i className="remove-attachment fa fa-times" title="Remove file" onClick={removeAttachment}></i>
       ) : false}
     </div>
-  )
-}
+  );
+};

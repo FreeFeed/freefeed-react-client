@@ -1,10 +1,10 @@
-import React from 'react'
-import ImageAttachment from './post-attachment-image'
-import AudioAttachment from './post-attachment-audio'
-import GeneralAttachment from './post-attachment-general'
+import React from 'react';
+import ImageAttachment from './post-attachment-image';
+import AudioAttachment from './post-attachment-audio';
+import GeneralAttachment from './post-attachment-general';
 
 export default (props) => {
-  const attachments = props.attachments || []
+  const attachments = props.attachments || [];
 
   const imageAttachments = attachments
     .filter(attachment => attachment.mediaType === 'image')
@@ -14,7 +14,7 @@ export default (props) => {
         isEditing={props.isEditing}
         removeAttachment={props.removeAttachment}
         {...attachment}/>
-    ))
+    ));
 
   const audioAttachments = attachments
     .filter(attachment => attachment.mediaType === 'audio')
@@ -24,7 +24,7 @@ export default (props) => {
         isEditing={props.isEditing}
         removeAttachment={props.removeAttachment}
         {...attachment}/>
-    ))
+    ));
 
   const generalAttachments = attachments
     .filter(attachment => attachment.mediaType === 'general')
@@ -34,7 +34,7 @@ export default (props) => {
         isEditing={props.isEditing}
         removeAttachment={props.removeAttachment}
         {...attachment}/>
-    ))
+    ));
 
   return (attachments.length > 0 ? (
     <div className="attachments">
@@ -48,5 +48,5 @@ export default (props) => {
         {generalAttachments}
       </div>
     </div>
-  ) : <div/>)
-}
+  ) : <div/>);
+};

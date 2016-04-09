@@ -1,10 +1,10 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {updateUser, userSettingsChange, updateFrontendPreferences, updatePassword, updateUserPhoto, toggleRealtime, updateFrontendRealtimePreferences} from '../redux/action-creators'
-import UserSettingsForm from './user-settings-form'
-import UserFrontendPreferencesForm from './user-frontend-preferences-form'
-import UserChangePasswordForm from './user-change-password-form'
-import UserPhotoForm from './user-photo-form'
+import React from 'react';
+import {connect} from 'react-redux';
+import {updateUser, userSettingsChange, updateFrontendPreferences, updatePassword, updateUserPicture, toggleRealtime, updateFrontendRealtimePreferences} from '../redux/action-creators';
+import UserSettingsForm from './user-settings-form';
+import UserFrontendPreferencesForm from './user-frontend-preferences-form';
+import UserChangePasswordForm from './user-change-password-form';
+import UserPictureForm from './user-picture-form';
 
 const Settings = (props) => (
   <div className="content">
@@ -29,45 +29,44 @@ const Settings = (props) => (
 
         <hr/>
 
-        <hr/>
-
         <UserChangePasswordForm
           updatePassword={props.updatePassword}
           {...props.passwordForm}/>
 
         <hr/>
 
-        <UserPhotoForm
-          updateUserPhoto={props.updateUserPhoto}
-          {...props.userPhotoForm}/>
+        <UserPictureForm
+          user={props.user}
+          updateUserPicture={props.updateUserPicture}
+          {...props.userPictureForm}/>
 
         <hr/>
       </div>
     </div>
   </div>
-)
+);
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
   return {
     user: state.user,
     userSettingsForm: state.userSettingsForm,
     frontendPreferencesForm: state.frontendPreferencesForm,
     frontendRealtimePreferencesForm: state.frontendRealtimePreferencesForm,
     passwordForm: state.passwordForm,
-    userPhotoForm: state.userPhotoForm,
-  }
+    userPictureForm: state.userPictureForm
+  };
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
   return {
     updateUser: (...args) => dispatch(updateUser(...args)),
     userSettingsChange: (...args) => dispatch(userSettingsChange(...args)),
     updateFrontendPreferences: (...args) => dispatch(updateFrontendPreferences(...args)),
     updateFrontendRealtimePreferences: (...args) => dispatch(updateFrontendRealtimePreferences(...args)),
     updatePassword: (...args) => dispatch(updatePassword(...args)),
-    updateUserPhoto: (...args) => dispatch(updateUserPhoto(...args)),
+    updateUserPicture: (...args) => dispatch(updateUserPicture(...args)),
     toggleRealtime: () => dispatch(toggleRealtime()),
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Settings)
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

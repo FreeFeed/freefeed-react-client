@@ -1,18 +1,18 @@
-import React from 'react'
-import Textarea from 'react-textarea-autosize'
+import React from 'react';
+import Textarea from 'react-textarea-autosize';
 
-import PieceOfText from'./piece-of-text'
-import UserName from './user-name'
-import {preventDefault, confirmFirst, fromNowOrNow} from '../utils'
-import throbber16 from 'assets/images/throbber-16.gif'
+import PieceOfText from './piece-of-text';
+import UserName from './user-name';
+import {preventDefault, confirmFirst, fromNowOrNow} from '../utils';
+import throbber16 from 'assets/images/throbber-16.gif';
 
-export default class PostComment extends React.Component{
+export default class PostComment extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       editText: this.props.editText || ''
-    }
+    };
   }
 
   handleChange = (event) => {
@@ -23,63 +23,66 @@ export default class PostComment extends React.Component{
 
   openAnsweringComment = () => {
     if (this.props.openAnsweringComment) {
-      this.props.openAnsweringComment(this.props.user.username)
+      this.props.openAnsweringComment(this.props.user.username);
     }
   }
 
   setCaretToTextEnd = (event) => {
-    const input = event.target
+    const input = event.target;
 
     setTimeout(() => {
       if (typeof input.selectionStart === 'number') {
-        input.selectionStart = input.selectionEnd = input.value.length
+        input.selectionStart = input.selectionEnd = input.value.length;
       } else if (input.createTextRange !== undefined) {
-        input.focus()
-        const range = input.createTextRange()
-        range.collapse(false)
-        range.select()
+        input.focus();
+        const range = input.createTextRange();
+        range.collapse(false);
+        range.select();
       }
-    }, 0)
+    }, 0);
   }
 
   updateCommentingText = () => {
     if (this.props.updateCommentingText) {
-      this.props.updateCommentingText(this.props.id, this.refs.commentText.value)
+      this.props.updateCommentingText(this.props.id, this.refs.commentText.value);
     }
   }
 
   checkSave = (event) => {
-    const isEnter = event.keyCode === 13
-    const isShiftPressed = event.shiftKey
+    const isEnter = event.keyCode === 13;
+    const isShiftPressed = event.shiftKey;
     if (isEnter && !isShiftPressed) {
-      event.preventDefault()
-      event.target.blur()
-      setTimeout(this.saveComment, 0)
+      event.preventDefault();
+      event.target.blur();
+      setTimeout(this.saveComment, 0);
     }
   }
 
   saveComment = () => {
     if (!this.props.isSaving) {
-      this.props.saveEditingComment(this.props.id, this.refs.commentText.value)
+      this.props.saveEditingComment(this.props.id, this.refs.commentText.value);
     }
   }
 
   componentWillReceiveProps(newProps) {
-    const wasCommentJustSaved = this.props.isSaving && !newProps.isSaving
-    const wasThereNoError = !newProps.errorString
-    const isItSinglePostAddingComment = newProps.isSinglePost
-    const shouldClearText = (wasCommentJustSaved && wasThereNoError && isItSinglePostAddingComment)
+    const wasCommentJustSaved = this.props.isSaving && !newProps.isSaving;
+    const wasThereNoError = !newProps.errorString;
+    const isItSinglePostAddingComment = newProps.isSinglePost;
+    const shouldClearText = (wasCommentJustSaved && wasThereNoError && isItSinglePostAddingComment);
     if (shouldClearText) {
-      this.setState({editText: ''})
+      this.setState({editText: ''});
+    }
+    if (this.props.editText !== newProps.editText) {
+      this.setState({editText: newProps.editText});
     }
   }
 
   render() {
-    const createdAgo = fromNowOrNow(+this.props.createdAt)
+    const createdAgo = fromNowOrNow(+this.props.createdAt);
 
     return (
-    <div className="comment">
-      <a className="comment-icon fa fa-comment-o"
+    <div className={`comment ${this.props.highlighted ? 'highlighted' : ''}`}>
+      <a className={`comment-icon fa ${this.props.omitBubble ? 'feed-comment-dot' : 'fa-comment-o'}`}
          title={createdAgo}
          id={`comment-${this.props.id}`}
          href={`${this.props.entryUrl}#comment-${this.props.id}`}
@@ -122,7 +125,12 @@ export default class PostComment extends React.Component{
         </div>
       ) : (
         <div className="comment-body">
-          <PieceOfText text={this.props.body}/>
+          <PieceOfText
+            text={this.props.body}
+            userHover=  {{hover: username => this.props.highlightComment(username),
+                          leave: this.props.clearHighlightComment}}
+            arrowHover= {{hover: arrows => this.props.highlightArrowComment(arrows),
+                          leave: this.props.clearHighlightComment}}/>
           {' -'}&nbsp;
           <UserName user={this.props.user}/>
           {this.props.isEditable ? (
@@ -139,5 +147,5 @@ export default class PostComment extends React.Component{
         </div>
       )}
     </div>
-  )}
+  );}
 }

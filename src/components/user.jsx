@@ -1,12 +1,12 @@
-import React from 'react'
-import {connect} from 'react-redux'
+import React from 'react';
+import {connect} from 'react-redux';
 
-import {createPost, resetPostCreateForm, expandSendTo} from '../redux/action-creators'
-import {joinPostData, joinCreatePostData, postActions, userActions} from './select-utils'
-import {getCurrentRouteName} from '../utils'
-import Breadcrumbs from './breadcrumbs'
-import UserProfile from './user-profile'
-import UserFeed from './user-feed'
+import {createPost, resetPostCreateForm, expandSendTo} from '../redux/action-creators';
+import {joinPostData, joinCreatePostData, postActions, userActions} from './select-utils';
+import {getCurrentRouteName} from '../utils';
+import Breadcrumbs from './breadcrumbs';
+import UserProfile from './user-profile';
+import UserFeed from './user-feed';
 
 const UserHandler = (props) => {
   return (
@@ -34,30 +34,30 @@ const UserHandler = (props) => {
 
       <UserFeed {...props}/>
     </div>
-  )
-}
+  );
+};
 
 function selectState(state, ownProps) {
-  const user = state.user
-  const authenticated = state.authenticated
-  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state))
-  const createPostViewState = state.createPostViewState
-  const createPostForm = joinCreatePostData(state)
-  const timelines = state.timelines
-  const boxHeader = state.boxHeader
+  const user = state.user;
+  const authenticated = state.authenticated;
+  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
+  const createPostViewState = state.createPostViewState;
+  const createPostForm = joinCreatePostData(state);
+  const timelines = state.timelines;
+  const boxHeader = state.boxHeader;
   const foundUser = Object.getOwnPropertyNames(state.users)
     .map(key => state.users[key] || state.subscribers[key])
-    .filter(user => user.username === ownProps.params.userName)[0]
+    .filter(user => user.username === ownProps.params.userName)[0];
 
   const amIGroupAdmin = (
     authenticated &&
     foundUser &&
     foundUser.type === 'group' &&
     ((foundUser.administrators || []).indexOf(state.user.id) > -1)
-  )
+  );
 
-  const currentRouteName = getCurrentRouteName(ownProps)
-  const isItPostsPage = ['userComments', 'userLikes'].indexOf(currentRouteName) === -1
+  const currentRouteName = getCurrentRouteName(ownProps);
+  const isItPostsPage = ['userComments', 'userLikes'].indexOf(currentRouteName) === -1;
 
   const statusExtension = {
     authenticated,
@@ -69,27 +69,27 @@ function selectState(state, ownProps) {
     subscribed: authenticated && foundUser && (user.subscriptions.indexOf(foundUser.id) > -1),
     blocked: authenticated && foundUser && (user.banIds.indexOf(foundUser.id) > -1),
     hasRequestBeenSent: authenticated && foundUser && ((user.pendingSubscriptionRequests || []).indexOf(foundUser.id) > -1)
-  }
+  };
 
   statusExtension.canISeeSubsList = statusExtension.isUserFound &&
-    (foundUser.isPrivate === '0' || statusExtension.subscribed || statusExtension.isItMe)
+    (foundUser.isPrivate === '0' || statusExtension.subscribed || statusExtension.isItMe);
 
-  const canIPostToGroup = statusExtension.subscribed && (foundUser.isRestricted === '0' || amIGroupAdmin)
+  const canIPostToGroup = statusExtension.subscribed && (foundUser.isRestricted === '0' || amIGroupAdmin);
 
   statusExtension.canIPostHere = statusExtension.isUserFound &&
-    ((statusExtension.isItMe && isItPostsPage) || (foundUser.type === 'group' && canIPostToGroup))
+    ((statusExtension.isItMe && isItPostsPage) || (foundUser.type === 'group' && canIPostToGroup));
 
-  const viewUser = {...(foundUser), ...statusExtension}
+  const viewUser = {...(foundUser), ...statusExtension};
 
   const breadcrumbs = {
     shouldShowBreadcrumbs: !isItPostsPage,
     user: viewUser,
     breadcrumb: currentRouteName.replace('user','')
-  }
+  };
 
-  const sendTo = {...state.sendTo, defaultFeed: (foundUser ? foundUser.username : null)}
+  const sendTo = {...state.sendTo, defaultFeed: (foundUser ? foundUser.username : null)};
 
-  return { user, visibleEntries, timelines, createPostViewState, createPostForm, boxHeader, viewUser, breadcrumbs, sendTo }
+  return { user, visibleEntries, timelines, createPostViewState, createPostForm, boxHeader, viewUser, breadcrumbs, sendTo };
 }
 
 function selectActions(dispatch) {
@@ -99,7 +99,7 @@ function selectActions(dispatch) {
     resetPostCreateForm: (...args) => dispatch(resetPostCreateForm(...args)),
     expandSendTo: () => dispatch(expandSendTo()),
     userActions: userActions(dispatch),
-  }
+  };
 }
 
-export default connect(selectState, selectActions)(UserHandler)
+export default connect(selectState, selectActions)(UserHandler);

@@ -1,18 +1,18 @@
-import React from 'react'
+import React from 'react';
 
-import {preventDefault} from '../utils'
-import throbber16 from 'assets/images/throbber-16.gif'
+import {preventDefault} from '../utils';
+import throbber16 from 'assets/images/throbber-16.gif';
 
 export default class UserSettingsForm extends React.Component {
   updateSetting = (setting) => (e) => {
-    this.props.userSettingsChange({[setting]: e.target.value})
+    this.props.userSettingsChange({[setting]: e.target.value});
   }
   updateChecked = (e) => {
-    this.props.userSettingsChange({isPrivate: e.target.checked ? '1' : '0'})
+    this.props.userSettingsChange({isPrivate: e.target.checked ? '1' : '0'});
   }
   updateUser = () => {
     if (!this.props.isSaving) {
-      this.props.updateUser(this.props.user.id, this.props.screenName, this.props.email, this.props.isPrivate, this.props.description)
+      this.props.updateUser(this.props.user.id, this.props.screenName, this.props.email, this.props.isPrivate, this.props.description);
     }
   }
 
@@ -52,6 +52,6 @@ export default class UserSettingsForm extends React.Component {
           <div className="alert alert-danger" role="alert">Something went wrong during user settings update</div>
         ) : false}
       </form>
-    )
+    );
   }
 }

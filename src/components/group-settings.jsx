@@ -1,11 +1,12 @@
-import React from 'react'
-import {Link} from 'react-router'
-import {connect} from 'react-redux'
-import _ from 'lodash'
+import React from 'react';
+import {Link} from 'react-router';
+import {connect} from 'react-redux';
+import _ from 'lodash';
 
-import {updateGroup, resetGroupUpdateForm} from '../redux/action-creators'
-import GroupSettingsForm from './group-settings-form'
-import throbber100 from 'assets/images/throbber.gif'
+import {updateGroup, updateGroupPicture, resetGroupUpdateForm} from '../redux/action-creators';
+import GroupSettingsForm from './group-settings-form';
+import GroupPictureForm from './group-picture-form';
+import throbber100 from 'assets/images/throbber.gif';
 
 const GroupSettings = (props) => (
   props.groupSettings.status === 'loading' ? (
@@ -28,6 +29,14 @@ const GroupSettings = (props) => (
           updateGroup={props.updateGroup}
           resetGroupUpdateForm={props.resetGroupUpdateForm}
           {...props.groupSettingsForm}/>
+
+        <hr/>
+
+        <GroupPictureForm
+          group={props.group}
+          updateGroupPicture={props.updateGroupPicture}
+          resetGroupUpdateForm={props.resetGroupUpdateForm}
+          {...props.groupPictureForm}/>
       </div>
     </div>
   ) : props.groupSettings.status === 'error' ? (
@@ -42,21 +51,23 @@ const GroupSettings = (props) => (
   ) : (
     <div/>
   )
-)
+);
 
 function mapStateToProps(state, ownProps) {
   return {
     group: (_.find(state.users, { 'username': ownProps.params.userName }) || {}),
     groupSettings: state.groupSettings,
-    groupSettingsForm: state.groupSettingsForm
-  }
+    groupSettingsForm: state.groupSettingsForm,
+    groupPictureForm: state.groupPictureForm
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     updateGroup: (...args) => dispatch(updateGroup(...args)),
+    updateGroupPicture: (...args) => dispatch(updateGroupPicture(...args)),
     resetGroupUpdateForm: (...args) => dispatch(resetGroupUpdateForm(...args))
-  }
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GroupSettings)
+export default connect(mapStateToProps, mapDispatchToProps)(GroupSettings);

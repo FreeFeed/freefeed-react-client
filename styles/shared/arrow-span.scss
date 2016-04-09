@@ -1,0 +1,8 @@
+.arrow-span {
+  background-color: #eee;
+  border-radius: .25em;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(238, 238, 238);
+  }
+}

@@ -1,10 +1,10 @@
-import React from 'react'
-import {Link} from 'react-router'
-import classnames from 'classnames'
-import _ from 'lodash'
+import React from 'react';
+import {Link} from 'react-router';
+import classnames from 'classnames';
+import _ from 'lodash';
 
-import UserName from './user-name'
-import {confirmFirst} from '../utils'
+import UserName from './user-name';
+import {confirmFirst} from '../utils';
 
 const renderUsers = (type) => (user) => {
   return (
@@ -46,32 +46,32 @@ const renderUsers = (type) => (user) => {
       ) : false}
 
     </li>
-  )
-}
+  );
+};
 
-export const PLAIN = 'PLAIN'
-export const WITH_REQUEST_HANDLES = 'WITH_REQUEST_HANDLES'
-export const WITH_REMOVE_AND_MAKE_ADMIN_HANDLES = 'WITH_REMOVE_AND_MAKE_ADMIN_HANDLES'
-export const WITH_REMOVE_ADMIN_RIGHTS = 'WITH_REMOVE_ADMIN_RIGHTS'
-export const WITH_REVOKE_SENT_REQUEST = 'WITH_REVOKE_SENT_REQUEST'
+export const PLAIN = 'PLAIN';
+export const WITH_REQUEST_HANDLES = 'WITH_REQUEST_HANDLES';
+export const WITH_REMOVE_AND_MAKE_ADMIN_HANDLES = 'WITH_REMOVE_AND_MAKE_ADMIN_HANDLES';
+export const WITH_REMOVE_ADMIN_RIGHTS = 'WITH_REMOVE_ADMIN_RIGHTS';
+export const WITH_REVOKE_SENT_REQUEST = 'WITH_REVOKE_SENT_REQUEST';
 
 function pickActions(type, props) {
   switch (type) {
     case WITH_REQUEST_HANDLES: {
-      return _.pick(props, ['acceptRequest', 'rejectRequest'])
+      return _.pick(props, ['acceptRequest', 'rejectRequest']);
     }
     case WITH_REMOVE_AND_MAKE_ADMIN_HANDLES: {
-      return _.pick(props, ['makeAdmin', 'remove'])
+      return _.pick(props, ['makeAdmin', 'remove']);
     }
     case WITH_REMOVE_ADMIN_RIGHTS: {
-      return { removeAdminRights: props.removeAdminRights }
+      return { removeAdminRights: props.removeAdminRights };
     }
     case WITH_REVOKE_SENT_REQUEST: {
-      return { revokeSentRequest: props.revokeSentRequest }
+      return { revokeSentRequest: props.revokeSentRequest };
     }
   }
 
-  return {}
+  return {};
 }
 
 export const tileUserListFactory = (config) => (props) => {
@@ -85,22 +85,31 @@ export const tileUserListFactory = (config) => (props) => {
             ? user.profilePictureLargeUrl
             : user.profilePictureMediumUrl)),
       ...pickActions(config.type, props)
-    }
-  })
+    };
+  });
 
-  const users = usersData.map(renderUsers(config.type))
+  const users = usersData.map(renderUsers(config.type));
 
   const listClasses = classnames({
     'tile-list': true,
     'large-pics': config.size === 'large',
     'with-actions': config.type !== PLAIN
-  })
+  });
+
+  const header = props.header && config.displayQuantity ?
+    props.header + ` (${props.users.length})` :
+    props.header;
 
   return (
     <div>
-      <ul className={listClasses}>
-        {users}
-      </ul>
+      {users.length ? (
+        <div>
+          <h3>{header}</h3>
+          <ul className={listClasses}>
+            {users}
+          </ul>
+        </div>
+      ) : false}
     </div>
-  )
-}
+  );
+};

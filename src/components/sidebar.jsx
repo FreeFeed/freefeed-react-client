@@ -1,9 +1,9 @@
-import React from 'react'
-import {Link} from 'react-router'
+import React from 'react';
+import {Link} from 'react-router';
 
-import UserName from './user-name'
-import {preventDefault} from '../utils'
-import RecentGroups from './recent-groups'
+import UserName from './user-name';
+import {preventDefault} from '../utils';
+import RecentGroups from './recent-groups';
 
 export default ({user, signOut, recentGroups}) => (
   <div className='col-md-3 sidebar'>
@@ -36,7 +36,7 @@ export default ({user, signOut, recentGroups}) => (
         </ul>
       </div>
       <div className='box-footer'>
-        <Link to={{pathname:'timeline.subscriptions', params:{username: user.username}}} >Browse/edit friends</Link>
+        <Link to={`/friends`}>Browse/edit friends</Link>
       </div>
     </div>
 
@@ -127,4 +127,4 @@ export default ({user, signOut, recentGroups}) => (
       </div>
     </div>
   </div>
-)
+);
