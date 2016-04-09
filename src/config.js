@@ -31,7 +31,8 @@ const config = {
       comments: {
         omitRepeatedBubbles: true,
         highlightComments: true
-      }
+      },
+      allowLinksPreview: false
     }
   }
 };
