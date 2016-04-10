@@ -15,7 +15,7 @@ const renderUsers = (type) => (user) => {
         </Link>
       </div>
 
-      <UserName user={user}/>
+      <UserName user={user} applyHyphenations={true}/>
 
       {type == WITH_REQUEST_HANDLES ? (
         <div className="user-actions">
