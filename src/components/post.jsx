@@ -19,9 +19,17 @@ import EmbedlyLink from './embedly-link';
 import {getFirstLinkToEmbed} from '../utils';
 
 export default class Post extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      attachmentQueueLength: 0
+    };
+  }
+
   removeAttachment = (attachmentId) => this.props.removeAttachment(this.props.id, attachmentId)
 
   render() {
+    let _this = this;
     let props = this.props;
 
     const createdAt = new Date(props.createdAt - 0);
@@ -56,7 +64,9 @@ export default class Post extends React.Component {
       const isEnter = event.keyCode === 13;
       if (isEnter) {
         event.preventDefault();
-        saveEditingPost();
+        if (this.state.attachmentQueueLength === 0) {
+          saveEditingPost();
+        }
       }
     };
     const profilePicture = props.isSinglePost ?
@@ -181,6 +191,18 @@ export default class Post extends React.Component {
         // Add uploaded attachment to the post
         // 'attachments' in this response will be an attachment object, not an array of objects
         props.addAttachmentResponse(props.id, response.attachments);
+      },
+
+      addedfile: function() {
+        _this.setState({
+          attachmentQueueLength: _this.state.attachmentQueueLength + 1
+        });
+      },
+
+      removedfile: function() {
+        _this.setState({
+          attachmentQueueLength: _this.state.attachmentQueueLength - 1
+        });
       }
     };
 
@@ -317,7 +339,9 @@ export default class Post extends React.Component {
                   </span>
                 ) : false}
                 <a className="post-cancel" onClick={cancelEditingPost}>Cancel</a>
-                <button className="btn btn-default btn-xs" onClick={saveEditingPost}>Update</button>
+                <button className="btn btn-default btn-xs"
+                  onClick={saveEditingPost}
+                  disabled={this.state.attachmentQueueLength > 0}>Update</button>
               </div>
             </div>
           ) : (
