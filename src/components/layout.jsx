@@ -133,7 +133,7 @@ class Layout extends React.Component {
         <header className="row">
           <div className="col-xs-9 col-sm-6">
             <h1>
-              <IndexLink to="/" onClick={logoHandler(props.routeName, props.home)}>WereFeed</IndexLink>
+              <IndexLink to="/" onClick={logoHandler(props.routeName, props.home)}>FreeFeed</IndexLink>
             </h1>
           </div>
 

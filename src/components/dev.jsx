@@ -5,14 +5,14 @@ export default (props) => (
   <div className="box">
     <div className="box-header-timeline"></div>
     <div className="box-body">
-      <h3>Help us build WereFeed</h3>
+      <h3>Help us build FreeFeed</h3>
 
-      <p>We are looking for volunteers to help us build WereFeed, an open-source
+      <p>We are looking for volunteers to help us build FreeFeed, an open-source
         social network, replacement of FriendFeed.com.</p>
 
       <p>We need help with both development and testing.</p>
 
-      <p>WereFeed is open-source: <a href="https://github.com/FreeFeed/" target="_blank">https://github.com/WereFeed/</a></p>
+      <p>FreeFeed is open-source: <a href="https://github.com/FreeFeed/" target="_blank">https://github.com/FreeFeed/</a></p>
 
       <p>The <a href="https://github.com/FreeFeed/freefeed-server" target="_blank">backend</a> is
         built with Node.js and Redis. It is now being re-written to use PostgreSQL instead of Redis.</p>

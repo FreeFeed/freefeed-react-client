@@ -54,7 +54,7 @@ function Signin(props) {
                 </div>
               </form>
             </LoaderContainer>
-            <p>New to WereFeed? <Link to='/signup'>Create an account »</Link> Woof!</p>
+            <p>New to freefeed? <Link to='/signup'>Create an account »</Link></p>
           </div>
         </div>
       </div>

@@ -72,13 +72,13 @@ export default ({user, signOut, recentGroups}) => (
         Bookmarklet
       </div>
       <div className='box-footer'>
-        Once added to your toolbar, this button will let you share web pages on your WereFeed.
+        Once added to your toolbar, this button will let you share web pages on your FreeFeed.
         You can even attach thumbnails of images from the page you share!
       </div>
       <div className='box-footer'>
         Click and drag
         {' '}
-        <a className="bookmarklet-button" href="BOOKMARKLET_PLACEHOLDER" onClick={preventDefault(() => false)}>Share on WereFeed</a>
+        <a className="bookmarklet-button" href="BOOKMARKLET_PLACEHOLDER" onClick={preventDefault(() => false)}>Share on FreeFeed</a>
         {' '}
         to&nbsp;your toolbar.
       </div>
@@ -89,7 +89,7 @@ export default ({user, signOut, recentGroups}) => (
         Coin Jar
       </div>
       <div className='box-footer'>
-        <p style={{marginBottom: '10px'}}>Subscribe to WereFeed today! Arrangement is plain and simple — you wire funds to WereFeed, it gets better every week.</p>
+        <p style={{marginBottom: '10px'}}>Subscribe to Freefeed today! Arrangement is plain and simple — you wire funds to Freefeed, it gets better every week.</p>
         <span style={{display: 'block', marginLeft: 'auto', marginRight: 'auto'}}>
           <form action='https://www.paypal.com/cgi-bin/webscr' method='post' target='_top'>
             <input type='hidden' name='cmd' value='_s-xclick'/>

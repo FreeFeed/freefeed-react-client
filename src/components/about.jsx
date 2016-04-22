@@ -7,19 +7,19 @@ export default (props) => (
   <div className="box">
     <div className="box-header-timeline"></div>
     <div className="box-body">
-      <h3>What is WereFeed?</h3>
+      <h3>What is FreeFeed?</h3>
 
-      <p>WereFeed is a werewolf social network that enables you to discover and discuss
-        the interesting stuff your friends find on the web. Woooof!</p>
+      <p>FreeFeed is a social network that enables you to discover and discuss
+        the interesting stuff your friends find on the web.</p>
 
       <p><b><Link to="/signup">Sign up</Link></b> now or <Link to="/signin">sign in</Link> if
         you already have an account.</p>
 
       <p><img src={screenshot} width="450" height="431" style={{border: '1px solid #ccc'}}/></p>
 
-      <h3>Why WereFeed?</h3>
+      <h3>Why FreeFeed?</h3>
 
-      <p>WereFeed is being built as a replacement
+      <p>FreeFeed is being built as a replacement
         for <a href="https://en.wikipedia.org/wiki/FriendFeed" target="_blank">FriendFeed</a>,
         the real-time aggregator and social network where "likes" for user
         generated content were implemented for the first time.</p>
@@ -28,10 +28,10 @@ export default (props) => (
         down the website on April 9, 2015, a small group of Russian-speaking
         FriendFeed users decided to build an open-source free-for-all replacement.</p>
 
-      <h3>Help us build better WereFeed</h3>
+      <h3>Help us build better FreeFeed</h3>
 
-      <p>WereFeed is an open-source project. We are <Link to="/dev">looking
-        for volunteers</Link> to help us with the development of WereFeed.net.</p>
+      <p>FreeFeed is an open-source project. We are <Link to="/dev">looking
+        for volunteers</Link> to help us with the development of FreeFeed.net.</p>
 
       <h3>Important pages</h3>
 
@@ -41,9 +41,9 @@ export default (props) => (
       <p><Link to="/freefeed">https://freefeed.net/freefeed</Link> -
         Important service announcements</p>
 
-      <h3>The team behind WereFeed</h3>
+      <h3>The team behind FreeFeed</h3>
 
-      <p>A team of volunteers registered a non-profit organization, WereFeed.net MTÜ,
+      <p>A team of volunteers registered a non-profit organization, FreeFeed.net MTÜ,
         in Tallinn, Estonia to fund and coordinate open-source development of the
         platform.</p>
 
@@ -52,7 +52,7 @@ export default (props) => (
         actively developed. It is being used by hundreds of people now, even
         though the work is still underway.</p>
 
-      <p>WereFeed v.1 is scheduled for release in spring 2016. This version will
+      <p>FreeFeed v.1 is scheduled for release in spring 2016. This version will
         include search and hashtag support.</p>
 
       <p>You can <b><Link to="/signup">sign up</Link></b> now and use the beta
