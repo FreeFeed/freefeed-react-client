@@ -25,30 +25,47 @@ function chunk(str, chunkSize) {
   return stringArray;
 }
 
-const CHUNK_SIZE = 11;
+const CHUNK_SIZE = 12;
 
 function wrap(str) {
-  return chunk(str, CHUNK_SIZE).join('\u200B');
+  let parts = str.split(' ');
+  for (let i = 0; i < parts.length; ++i) {
+    if (parts[i].length > CHUNK_SIZE) {
+      parts[i] = chunk(parts[i], CHUNK_SIZE).join('\u200B');
+    }
+  }
+
+  return parts.join(' ');
 }
 
-const DisplayOption = ({user, me, preferences}) => {
+const DisplayOption = ({user, me, preferences, applyHyphenations}) => {
+  let username, screenName;
+
+  if (applyHyphenations) {
+    username = wrap(user.username);
+    screenName = wrap(user.screenName);
+  } else {
+    username = user.username;
+    screenName = user.screenName;
+  }
+
   if (user.username === me && preferences.useYou) {
     return <span>You</span>;
   }
 
   if (user.screenName === user.username) {
-    return <span>{wrap(user.screenName)}</span>;
+    return <span>{screenName}</span>;
   }
 
   switch (preferences.displayOption) {
     case FrontendPrefsOptions.DISPLAYNAMES_DISPLAYNAME: {
-      return <span>{wrap(user.screenName)}</span>;
+      return <span>{screenName}</span>;
     }
     case FrontendPrefsOptions.DISPLAYNAMES_BOTH: {
-      return <span>{wrap(user.screenName)} ({wrap(user.username)})</span>;
+      return <span>{screenName} ({username})</span>;
     }
     case FrontendPrefsOptions.DISPLAYNAMES_USERNAME: {
-      return <span>{wrap(user.username)}</span>;
+      return <span>{username}</span>;
     }
   }
 
@@ -98,7 +115,8 @@ class UserName extends React.Component {
             <DisplayOption
               user={this.props.user}
               me={this.props.me}
-              preferences={this.props.frontendPreferences.displayNames}/>
+              preferences={this.props.frontendPreferences.displayNames}
+              applyHyphenations={this.props.applyHyphenations}/>
           )}
         </Link>
 
