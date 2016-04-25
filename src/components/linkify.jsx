@@ -57,6 +57,9 @@ class Linkify extends React.Component {
   idx = 0
 
   parseArrows(text) {
+    if (!this.arrowHover) {
+      return [text];
+    }
     const pieces = text.split(arrowDetector);
     const resPieces = pieces.map(piece => {
       if (piece.match(arrowDetector)) {
