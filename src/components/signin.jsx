@@ -55,6 +55,7 @@ function Signin(props) {
               </form>
             </LoaderContainer>
             <p>New to freefeed? <Link to='/signup'>Create an account »</Link></p>
+            <p>Forgot your password? <Link to='/restore'>Restore password »</Link></p>
           </div>
         </div>
       </div>

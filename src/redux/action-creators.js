@@ -285,6 +285,37 @@ export function signIn(username, password) {
   };
 }
 
+export function restorePassword(mail) {
+  return {
+    type: ActionTypes.RESTORE_PASSWORD,
+    apiRequest: Api.restorePassword,
+    nonAuthRequest: true,
+    payload: {
+      mail,
+    },
+  };
+}
+
+export function resetPassword(password, token) {
+  return {
+    type: ActionTypes.RESET_PASSWORD,
+    apiRequest: Api.resetPassword,
+    nonAuthRequest: true,
+    payload: {
+      password,
+      token
+    },
+  };
+}
+
+export function resetPasswordValidationFail(error) {
+  return {
+    type: ActionTypes.RESET_PASSWORD_VALIDATION_FAIL,
+    error
+  };
+}
+
+
 export function signInEmpty() {
   return {
     type: ActionTypes.SIGN_IN_EMPTY

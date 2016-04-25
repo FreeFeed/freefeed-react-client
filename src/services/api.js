@@ -195,10 +195,10 @@ export function enableComments({postId}) {
   });
 }
 
+const encodeBody = body => _.map(body, (value, key)=> `${key}=${encodeURIComponent(value)}`,).join('&');
+
 export function signIn({username, password}) {
-  const encodedBody = _.map({username, password},
-    (value, key) => key + '=' + encodeURIComponent(value)
-  ).join('&');
+  const encodedBody = encodeBody({username, password});
 
   return fetch(`${apiConfig.host}/v1/session`, {
     headers:{
@@ -210,10 +210,37 @@ export function signIn({username, password}) {
   });
 }
 
+export function restorePassword({mail}) {
+  const encodedBody = encodeBody({email: mail});
+  return fetch(`${apiConfig.host}/v1/passwords`, {
+    headers:{
+      'Accept': 'application/json',
+      'Content-Type':'application/x-www-form-urlencoded',
+    },
+    method: 'POST',
+    body: encodedBody
+  });
+}
+
+export function resetPassword({password, token}) {
+  const params = {
+    newPassword: password,
+    passwordConfirmation: password,
+  };
+
+  const encodedBody = encodeBody(params);
+  return fetch(`${apiConfig.host}/v1/passwords/${token}`, {
+    headers:{
+      'Accept': 'application/json',
+      'Content-Type':'application/x-www-form-urlencoded',
+    },
+    method: 'PUT',
+    body: encodedBody
+  });
+}
+
 export function signUp({username, password, email, captcha}) {
-  const encodedBody = _.map({username, password, email, captcha},
-    (value, key) => key + '=' + encodeURIComponent(value)
-  ).join('&');
+  const encodedBody = encodeBody({username, password, email, captcha});
 
   return fetch(`${apiConfig.host}/v1/users`, {
     headers:{
@@ -254,9 +281,7 @@ export function updateFrontendPreferences({userId, prefs}) {
 }
 
 export function updatePassword({currentPassword, password, passwordConfirmation}) {
-  const encodedBody = _.map({currentPassword, password, passwordConfirmation},
-    (value, key) => key + '=' + encodeURIComponent(value)
-  ).join('&');
+  const encodedBody = encodeBody({currentPassword, password, passwordConfirmation});
 
   return fetch(`${apiConfig.host}/v1/users/updatePassword`, {
     'method': 'PUT',
