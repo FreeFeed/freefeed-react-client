@@ -78,7 +78,7 @@ export default ({user, signOut, recentGroups}) => (
       <div className='box-footer'>
         Click and drag
         {' '}
-        <a className="bookmarklet-button" href="BOOKMARKLET_PLACEHOLDER" onClick={preventDefault(() => false)}>Share on FreeFeed</a>
+        <a className="bookmarklet-button" href="BOOKMARKLET_PLACEHOLDER" onClick={preventDefault(_ => false)}>Share on FreeFeed</a>
         {' '}
         to&nbsp;your toolbar.
       </div>
@@ -123,7 +123,7 @@ export default ({user, signOut, recentGroups}) => (
           <input type='image' src='https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png' width='0' height='0' border='0' name='submit' alt='PayPal - The safer, easier way to pay online!'/>
           <img alt='' border='0' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' width='1' height='1' style={{display: 'none !important'}}/>
         </form>
-        <p style={{marginBottom: '10px'}}>Or <a href='#' onclick='document.forms["singlePayPalPayment"].submit(); return false;' style={{textDecoration:'underline'}}>send a one-time payment first&nbsp;→</a></p>
+        <p style={{marginBottom: '10px'}}>Or <span onClick={_ => document.forms["singlePayPalPayment"].submit()} style={{textDecoration:'underline', cursor:'pointer'}}>send a one-time payment first&nbsp;→</span></p>
       </div>
     </div>
   </div>
