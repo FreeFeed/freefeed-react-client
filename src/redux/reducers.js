@@ -1657,6 +1657,9 @@ export function managedGroups(state = [], action) {
         return state.filter(group => group.username !== action.request.groupName);
       }
     }
+    case ActionTypes.UNAUTHENTICATED: {
+      return {};
+    }
   }
 
   return state;
