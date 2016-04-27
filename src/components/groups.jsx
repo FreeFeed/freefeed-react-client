@@ -41,7 +41,7 @@ const GroupsHandler = (props) => {
       <div className="box-body">
         <div className="row">
           <div className="col-md-8">
-            All the groups you are subscribed to, sorted alphabetically
+            All the groups you are subscribed to
           </div>
           <div className="col-md-4 text-right">
             <Link to="/groups/create">Create a group</Link>
@@ -65,14 +65,20 @@ const GroupsHandler = (props) => {
 function selectState(state) {
   const groupRequests = state.managedGroups.filter(group => group.requests.length) || [];
 
+  const managedIds = _.map(state.managedGroups, g => g.id);
+  const sortingRule = g => -(g.updatedAt || g.createdAt);
+
+  const adminGroups = _.filter(state.groups, group => managedIds.indexOf(group.id) !== -1);
+  const regularGroups = _.filter(state.groups, group => managedIds.indexOf(group.id) === -1);
+
   const myGroups = {
     header: 'Groups I admin',
-    users: _.sortBy(state.managedGroups, 'username')
+    users: _.sortBy(adminGroups, sortingRule)
   };
 
   const groupsIAmIn = {
     header: 'Groups i\'m in',
-    users: _.sortBy(state.groups, 'username')
+    users: _.sortBy(regularGroups, sortingRule)
   };
 
   return { groupRequests, myGroups, groupsIAmIn };

@@ -28,8 +28,9 @@ const FriendsHandler = (props) => {
           acceptRequest={props.acceptUserRequest}
           rejectRequest={props.rejectUserRequest}/>
 
-        <TileList {...props.subscriptions}/>
+
         <TileList {...props.mutual}/>
+        <TileList {...props.subscriptions}/>
         <TileList {...props.blockedByMe}/>
 
         <TileListWithRevoke
@@ -47,14 +48,14 @@ function calculateMutual(subscriptions, subscribers) {
      !subscribers.errorString && !subscriptions.errorString) {
 
     const mutual = _.intersectionWith(
-      subscriptions.payload,
+      subscriptions.payload.filter(u=>u.type==='user'),
       subscribers.payload,
       (a, b) => a.id == b.id
     );
 
     return {
-      header: 'Mutual Friends',
-      users: _.sortBy(mutual, 'username')
+      header: 'Friends',
+      users: mutual
     };
 
   } else {
@@ -64,17 +65,23 @@ function calculateMutual(subscriptions, subscribers) {
 
 function selectState(state) {
   const feedRequests = state.userRequests;
-  const subscriptions = {
-    header: 'Friends',
-    users: _.sortBy(state.usernameSubscriptions.payload, 'username')
-  };
+  const sortingRule = 'username';
+
   const mutual = calculateMutual(
     state.usernameSubscriptions,
     state.usernameSubscribers
   );
+
+  const mutualIds = _.map(mutual.users, f => f.id);
+  const subscriptionList = _.filter(state.usernameSubscriptions.payload.filter(u=>u.type==='user'), f => mutualIds.indexOf(f.id) === -1);
+
+  const subscriptions = {
+    header: 'Subscriptions',
+    users: subscriptionList
+  };
   const blockedByMe = {
     header: 'Blocked',
-    users: _.sortBy(state.usernameBlockedByMe.payload, 'username')
+    users: state.usernameBlockedByMe.payload
   };
   const sentRequests = state.sentRequests;
 

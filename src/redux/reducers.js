@@ -70,6 +70,46 @@ export function signInForm(state={username:'', password:'', error:'', loading: f
   return state;
 }
 
+const defaultRestoreHeader = 'Restore Freefeed Password';
+const successRestoreHeader = 'Check your mail!';
+
+export function restorePassForm(state={error:'', loading: false, header: defaultRestoreHeader}, action) {
+  switch (action.type) {
+    case request(ActionTypes.RESTORE_PASSWORD): {
+      return {...state, loading: true, header: defaultRestoreHeader };
+    }
+    case response(ActionTypes.RESTORE_PASSWORD): {
+      return {...state, loading: false, header: successRestoreHeader };
+    }
+    case fail(ActionTypes.RESTORE_PASSWORD): {
+      return {...state, error: (action.payload || {}).err, loading: false};
+    }
+  }
+  return state;
+}
+
+const defaultResetHeader = 'Reset Freefeed Password';
+const successResetHeader = 'Log in with new pass!';
+
+export function resetPassForm(state={error:'', loading: false, header: defaultResetHeader}, action) {
+  switch (action.type) {
+    case request(ActionTypes.RESET_PASSWORD): {
+      return {...state, loading: true, header: defaultResetHeader };
+    }
+    case response(ActionTypes.RESET_PASSWORD): {
+      return {...state, loading: false, header: successResetHeader };
+    }
+    case ActionTypes.RESET_PASSWORD_VALIDATION_FAIL: {
+      return {...state, error: action.error, loading: false};
+    }
+    case fail(ActionTypes.RESET_PASSWORD): {
+      return {...state, error: (action.payload || {}).err, loading: false};
+    }
+  }
+  return state;
+}
+
+
 const INITIAL_SIGN_UP_FORM_STATE = {
   username: '',
   password: '',
@@ -1656,6 +1696,9 @@ export function managedGroups(state = [], action) {
       if (action.request.isItMe) {
         return state.filter(group => group.username !== action.request.groupName);
       }
+    }
+    case ActionTypes.UNAUTHENTICATED: {
+      return {};
     }
   }
 
