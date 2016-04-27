@@ -22,6 +22,8 @@ import Dev from './components/dev';
 import NotFound from './components/not-found';
 import Signin from './components/signin';
 import Signup from './components/signup';
+import RestorePassword from './components/restore-password';
+import ResetPassword from './components/reset-password';
 import Settings from './components/settings';
 import SinglePost from './components/single-post';
 import User from './components/user';
@@ -78,6 +80,8 @@ ReactDOM.render(
         <Route path='dev' component={Dev} onEnter={enterStaticPage('Developers')}/>
         <Route path='signin' component={Signin} onEnter={enterStaticPage('Sign in')}/>
         <Route path='signup' component={Signup} onEnter={enterStaticPage('Sign up')}/>
+        <Route path='restore' component={RestorePassword}/>
+        <Route path='reset' component={ResetPassword}/>
         <Route path='settings' component={Settings} onEnter={enterStaticPage('Settings')}/>
         <Route name='groupSettings' path='/:userName/settings' component={GroupSettings} onEnter={boundRouteActions('getUserInfo')}/>
         <Route name='discussions' path='filter/discussions' component={Discussions} onEnter={boundRouteActions('discussions')}/>

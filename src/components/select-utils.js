@@ -75,7 +75,7 @@ export const joinPostData = state => postId => {
     comments = [ comments[0], comments[comments.length - 1] ];
   }
 
-  let usersLikedPost = _.map(post.likes, userId => state.users[userId]);
+  let usersLikedPost = (post.likes || []).map(userId => state.users[userId]);
 
   if (postViewState.omittedLikes !== 0) {
     usersLikedPost = usersLikedPost.slice(0, MAX_LIKES);
