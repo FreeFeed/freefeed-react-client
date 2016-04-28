@@ -14,13 +14,14 @@ export default class CreatePost extends React.Component {
     this.state = {
       isFormEmpty: true,
       isMoreOpen: false,
-      attachmentQueueLength: 0
+      attachmentQueueLength: 0,
+      selectFeeds: (this.props.sendTo.defaultFeed ? [this.props.sendTo.defaultFeed] : [])
     };
   }
 
   createPost = _ => {
     // Get all the values
-    let feeds = this.refs.selectFeeds.values;
+    let feeds = this.state.selectFeeds;
     let postText = this.refs.postText.value;
     let attachmentIds = this.props.createPostForm.attachments.map(attachment => attachment.id);
     let more = {
@@ -46,8 +47,13 @@ export default class CreatePost extends React.Component {
     return postText == '' || /^\s+$/.test(postText);
   }
 
+  selectFeedsChanged = (selectFeeds) => {
+    this.setState({selectFeeds});
+    this.checkCreatePostAvailability();
+  }
+
   checkCreatePostAvailability = (e) => {
-    let isFormEmpty = this.isPostTextEmpty(this.refs.postText.value) || this.refs.selectFeeds.values == 0;
+    let isFormEmpty = this.isPostTextEmpty(this.refs.postText.value) || this.state.selectFeeds == 0;
 
     this.setState({
       isFormEmpty
@@ -150,11 +156,11 @@ export default class CreatePost extends React.Component {
       <div className="create-post post-editor">
         <div>
           {this.props.sendTo.expanded ? (
-            <SendTo ref="selectFeeds"
+            <SendTo
               feeds={this.props.sendTo.feeds}
               defaultFeed={this.props.sendTo.defaultFeed}
               user={this.props.user}
-              onChange={this.checkCreatePostAvailability}/>
+              onChange={this.selectFeedsChanged}/>
           ) : false}
 
           <DropzoneComponent
