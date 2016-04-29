@@ -142,7 +142,20 @@ export const requestsMiddleware = store => next => action => {
 };
 
 import {init} from '../services/realtime';
+import {getPostWithAllComments} from '../services/api';
 import {frontendPreferences as frontendPrefsConfig} from '../config';
+
+const isPostLoaded = ({posts}, postId) => posts[postId];
+const iLikedPost = ({user, posts}, postId) => (posts[postId] || {likes: []}).likes.indexOf(user.id) !== -1;
+const dispatchWithPost = async (store, postId, action) => {
+  if (isPostLoaded(store.getState(), postId)) {
+    return store.dispatch(action);
+  } else {
+    const postResponse = await getPostWithAllComments({postId: postId});
+    const post = await postResponse.json();
+    return store.dispatch({...action, post});
+  }
+};
 
 const bindHandlers = store => ({
   'post:new': data => {
@@ -165,14 +178,18 @@ const bindHandlers = store => ({
   'post:destroy': data => store.dispatch({type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId}),
   'post:hide': data => store.dispatch({type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId}),
   'post:unhide': data => store.dispatch({type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId}),
-  'comment:new': data => store.dispatch({...data, type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments}),
+  'comment:new': async data => {
+    const postId = data.comments.postId;
+    const action = {...data, type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments};
+    return dispatchWithPost(store, postId, action);
+  },
   'comment:update': data => store.dispatch({...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments}),
   'comment:destroy': data => store.dispatch({type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId, postId: data.postId}),
-  'like:new': data => {
-    const me = store.getState().user;
-    const postLikes = (store.getState().posts[data.meta.postId] || {}).likes;
-    const iLiked = postLikes.indexOf(me.id) !== -1;
-    return store.dispatch({type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, users:[data.users]}, iLiked);
+  'like:new': async data => {
+    const postId = data.meta.postId;
+    const iLiked = iLikedPost(store.getState(), data.meta.postId);
+    const action = {type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, users:[data.users], iLiked};
+    return dispatchWithPost(store, postId, action);
   },
   'like:remove': data => store.dispatch({type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId}),
 });

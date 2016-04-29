@@ -9,7 +9,6 @@ const testPost = {
 
 const postsViewStateBefore = {[testPost.id]: testPost};
 
-
 const newRealtimeCommentAction = {
   type: REALTIME_COMMENT_NEW,
   comment: {
@@ -164,5 +163,92 @@ test('new like adds at first position if I didn\'t like the post', t => {
   t.equal(newPostLikes.length, testLikePost.likes.length + 1);
   t.equal(newPostLikes[0], testLikeUser.id);
   t.notEqual(newPostLikes[1], testLikeUser.id);
+  t.end();
+});
+
+test('new comment with post attached adds postViewState for the post', t => {
+  const newPost = {
+    id: '1'
+  };
+  const newTestComment = {
+    postId: newPost.id,
+    id: '2'
+  };
+  const newCommentWithPost = {
+    type: REALTIME_COMMENT_NEW,
+    comment: newTestComment,
+    post: {posts: newPost}
+  };
+
+  const postsViewStateBefore = {};
+
+  const result = postsViewState(postsViewStateBefore, newCommentWithPost);
+
+  t.ok(result[newPost.id]);
+
+  t.end();
+});
+
+test('new comment with post attached adds post to the posts', t => {
+  const newPost = {
+    id: '1'
+  };
+  const newTestComment = {
+    postId: newPost.id,
+    id: '2'
+  };
+  const newCommentWithPost = {
+    type: REALTIME_COMMENT_NEW,
+    comment: newTestComment,
+    post: {posts: newPost}
+  };
+
+  const postsBefore = {};
+
+  const result = posts(postsBefore, newCommentWithPost);
+
+  t.ok(result[newPost.id]);
+
+  t.end();
+});
+
+test('new like with post attached adds postViewState for the post', t => {
+  const newPost = {
+    id: '1'
+  };
+
+  const newLikeWithPost = {
+    type: REALTIME_LIKE_NEW,
+    users: [{id:'1'}],
+    postId: newPost.id,
+    post: {posts: newPost}
+  };
+
+  const postsViewStateBefore = {};
+
+  const result = postsViewState(postsViewStateBefore, newLikeWithPost);
+
+  t.ok(result[newPost.id]);
+
+  t.end();
+});
+
+test('new like with post attached adds post to the posts', t => {
+  const newPost = {
+    id: '1',
+  };
+  const newLikeWithPost = {
+    type: REALTIME_LIKE_NEW,
+    users: [{id:'1'}],
+    postId: newPost.id,
+    post: {posts: newPost}
+  };
+
+  const postsBefore = {};
+
+  const result = posts(postsBefore, newLikeWithPost);
+
+  t.ok(result[newPost.id]);
+
   t.end();
 });
