@@ -1,6 +1,8 @@
 .user-name-wrapper {
   display: inline;
   position: relative;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .user-card {
