@@ -1198,7 +1198,7 @@ export function users(state = {}, action) {
       if (!action.users || !action.users.length) {
         return state;
       }
-      const usersToAdd = !action.post ? action.users : [...action.users, ...action.post.users];
+      const usersToAdd = !action.post ? action.users : [...(action.users || []), ...(action.post.users || [])];
 
       const notAdded = state => user => !state[user.id];
 
@@ -1221,7 +1221,7 @@ export function subscribers(state = {}, action) {
     case ActionTypes.REALTIME_POST_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW:
     case ActionTypes.REALTIME_LIKE_NEW: {
-      const subscribers = !action.post ? action.subscribers || [] : [...(action.subscribers || []), ...action.post.subscribers ];
+      const subscribers = !action.post ? action.subscribers || [] : [...(action.subscribers || []), ...(action.post.subscribers || []) ];
       return mergeByIds(state, (subscribers || []).map(userParser));
     }
     case response(ActionTypes.GET_SINGLE_POST):
