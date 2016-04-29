@@ -170,7 +170,7 @@ const bindHandlers = store => ({
   'comment:destroy': data => store.dispatch({type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId, postId: data.postId}),
   'like:new': data => {
     const me = store.getState().user;
-    const postLikes = store.getState().posts[data.meta.postId].likes;
+    const postLikes = (store.getState().posts[data.meta.postId] || {}).likes;
     const iLiked = postLikes.indexOf(me.id) !== -1;
     return store.dispatch({type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, users:[data.users]}, iLiked);
   },
