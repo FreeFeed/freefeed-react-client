@@ -1251,6 +1251,9 @@ export function subscriptions(state = {}, action) {
     case response(ActionTypes.CREATE_POST): {
       return mergeByIds(state, action.payload.subscriptions);
     }
+    case ActionTypes.REALTIME_POST_NEW: {
+      return mergeByIds(state, action.subscriptions);
+    }
   }
   return state;
 }
