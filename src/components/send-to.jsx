@@ -17,18 +17,12 @@ export default class SendTo extends React.Component {
     let myFeedUsername = props.user.username;
     options.unshift({ label: MY_FEED_LABEL, value: myFeedUsername, type: 'group' });
 
-    this._values = (props.defaultFeed ? [props.defaultFeed] : []);
-
     this.state = {
-      values: this._values,
+      values: (props.defaultFeed ? [props.defaultFeed] : []),
       options: options,
       showFeedsOption: !props.defaultFeed,
       isWarningDisplayed: false
     };
-  }
-
-  get values() {
-    return this._values;
   }
 
   isGroupsOrDirectsOnly = (values) => {
@@ -40,10 +34,9 @@ export default class SendTo extends React.Component {
   }
 
   selectChanged = (values) => {
-    this._values = values.map(item => item.value);
     let isWarningDisplayed = !this.isGroupsOrDirectsOnly(values);
     this.setState({ values, isWarningDisplayed });
-    this.props.onChange();
+    this.props.onChange(values.map(item => item.value));
   }
 
   toggleSendTo = _ => {
@@ -74,7 +67,7 @@ export default class SendTo extends React.Component {
               clearable={false} />
             {this.state.isWarningDisplayed ? (
               <div className="selector-warning">
-                You are going to send a direct message and also post this message to a feed. This means that everyone who sees this feed will be able to see your message. 
+                You are going to send a direct message and also post this message to a feed. This means that everyone who sees this feed will be able to see your message.
               </div>
             ) : false}
           </div>
@@ -83,4 +76,3 @@ export default class SendTo extends React.Component {
     );
   }
 }
- 

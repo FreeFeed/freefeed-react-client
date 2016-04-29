@@ -850,10 +850,12 @@ export function posts(state = {}, action) {
       if (!post || post.likes && post.likes.indexOf(action.users[0].id) !== -1) {
         return state;
       }
+      const likes = action.iLiked ? [post.likes[0], action.users[0].id, ...post.likes.slice(1)]
+                                  : [action.users[0].id, ...(post.likes || [])];
       return {...state,
         [post.id] : {
           ...post,
-          likes: [action.users[0].id, ...(post.likes || [])],
+          likes,
           omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes + 1 : 0)
         }
       };
@@ -1250,6 +1252,9 @@ export function subscriptions(state = {}, action) {
     case response(ActionTypes.GET_SINGLE_POST):
     case response(ActionTypes.CREATE_POST): {
       return mergeByIds(state, action.payload.subscriptions);
+    }
+    case ActionTypes.REALTIME_POST_NEW: {
+      return mergeByIds(state, action.subscriptions);
     }
   }
   return state;
