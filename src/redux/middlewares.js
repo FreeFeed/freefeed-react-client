@@ -168,7 +168,12 @@ const bindHandlers = store => ({
   'comment:new': data => store.dispatch({...data, type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments}),
   'comment:update': data => store.dispatch({...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments}),
   'comment:destroy': data => store.dispatch({type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId, postId: data.postId}),
-  'like:new': data => store.dispatch({type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, users:[data.users]}),
+  'like:new': data => {
+    const me = store.getState().user;
+    const postLikes = store.getState().posts[data.meta.postId].likes;
+    const iLiked = postLikes.indexOf(me.id) !== -1;
+    return store.dispatch({type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, users:[data.users]}, iLiked);
+  },
   'like:remove': data => store.dispatch({type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId}),
 });
 
