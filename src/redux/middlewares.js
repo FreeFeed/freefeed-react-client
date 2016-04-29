@@ -147,14 +147,29 @@ import {frontendPreferences as frontendPrefsConfig} from '../config';
 
 const isPostLoaded = ({posts}, postId) => posts[postId];
 const iLikedPost = ({user, posts}, postId) => (posts[postId] || {likes: []}).likes.indexOf(user.id) !== -1;
-const dispatchWithPost = async (store, postId, action) => {
+const dispatchWithPost = async (store, postId, action, filter = _ => true) => {
   if (isPostLoaded(store.getState(), postId)) {
     return store.dispatch(action);
   } else {
     const postResponse = await getPostWithAllComments({postId: postId});
     const post = await postResponse.json();
-    return store.dispatch({...action, post});
+    if (filter(post, action, store.getState())) {
+      return store.dispatch({...action, post});
+    }
   }
+};
+
+const isFirstFriendInteraction = (post, {users}, {subscriptions, comments}) => {
+  const newLike = users[0];
+  const myFriends = Object.keys(subscriptions).map(key => subscriptions[key]).map(sub => sub.user);
+  const likesWithoutCurrent = post.posts.likes.filter(like => like !== newLike);
+  const friendsInvolved = list => list.filter(element => myFriends.indexOf(element) !== -1).length;
+  const friendsLikedBefore = friendsInvolved(likesWithoutCurrent);
+  const newPostCommentAuthors = post.comments.map(comment => comment.createdBy);
+  const commentsAuthors = post.posts.comments.map(cId => (comments[cId] || {}).createdBy);
+  const friendsCommented = friendsInvolved([...commentsAuthors, ...newPostCommentAuthors]);
+  const wasFirstInteraction = !friendsCommented && !friendsLikedBefore;
+  return wasFirstInteraction;
 };
 
 const bindHandlers = store => ({
@@ -189,7 +204,7 @@ const bindHandlers = store => ({
     const postId = data.meta.postId;
     const iLiked = iLikedPost(store.getState(), data.meta.postId);
     const action = {type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, users:[data.users], iLiked};
-    return dispatchWithPost(store, postId, action);
+    return dispatchWithPost(store, postId, action, isFirstFriendInteraction);
   },
   'like:remove': data => store.dispatch({type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId}),
 });
