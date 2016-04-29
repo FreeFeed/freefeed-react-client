@@ -28,13 +28,24 @@ export default class CreatePost extends React.Component {
 
     // Send to the server
     this.props.createPost(feeds, postText, attachmentIds, more);
+  }
 
-    // Clear the form afterwards
+  componentWillReceiveProps(newProps) {
+    const wasCommentJustSaved = this.props.createPostViewState.isPending && !newProps.createPostViewState.isPending;
+    const wasThereNoError = !newProps.createPostViewState.isError;
+    const shouldClear = (wasCommentJustSaved && wasThereNoError);
+    if (shouldClear) {
+      this.clearForm();
+    }
+  }
+
+  clearForm = _ => {
     this.refs.postText.value = '';
     this.setState({
       isFormEmpty: true,
       isMoreOpen: false
     });
+    const attachmentIds = this.props.createPostForm.attachments.map(attachment => attachment.id);
     attachmentIds.forEach(this.removeAttachment);
   }
 
