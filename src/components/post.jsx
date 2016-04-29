@@ -3,7 +3,7 @@ import {Link} from 'react-router';
 import moment from 'moment';
 import classnames from 'classnames';
 
-import {fromNowOrNow} from '../utils';
+import {fromNowOrNow, getFullDate} from '../utils';
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
 import PostLikes from './post-likes';
@@ -32,8 +32,9 @@ export default class Post extends React.Component {
     let _this = this;
     let props = this.props;
 
-    const createdAt = new Date(props.createdAt - 0);
+    const createdAt = new Date(+props.createdAt);
     const createdAtISO = moment(createdAt).format();
+    const createdAtHuman = getFullDate(+props.createdAt);
     const createdAgo = fromNowOrNow(createdAt);
 
     let editingPostText = props.editingText;
@@ -366,7 +367,7 @@ export default class Post extends React.Component {
             ) : false}
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
             <Link to={`/${props.createdBy.username}/${props.id}`} className="post-timestamp">
-              <time dateTime={createdAtISO} title={createdAtISO}>{createdAgo}</time>
+              <time dateTime={createdAtISO} title={createdAtHuman}>{createdAgo}</time>
             </Link>
             {commentLink}
             {likeLink}
