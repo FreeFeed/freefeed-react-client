@@ -6,6 +6,8 @@ import SendTo from './send-to';
 import Dropzone from './dropzone';
 import PostAttachments from './post-attachments';
 
+const isTextEmpty = text => text == '' || /^\s+$/.test(text);
+
 export default class CreatePost extends React.Component {
   constructor(props) {
     super(props);
@@ -13,6 +15,7 @@ export default class CreatePost extends React.Component {
       isFormEmpty: true,
       isMoreOpen: false,
       attachmentQueueLength: 0,
+      postText:'',
       selectFeeds: (this.props.sendTo.defaultFeed ? [this.props.sendTo.defaultFeed] : [])
     };
   }
@@ -20,7 +23,7 @@ export default class CreatePost extends React.Component {
   createPost = _ => {
     // Get all the values
     let feeds = this.state.selectFeeds;
-    let postText = this.refs.postText.value;
+    let postText = this.state.postText;
     let attachmentIds = this.props.createPostForm.attachments.map(attachment => attachment.id);
     let more = {
       commentsDisabled: (this.refs.commentsDisabled && this.refs.commentsDisabled.checked)
@@ -40,8 +43,8 @@ export default class CreatePost extends React.Component {
   }
 
   clearForm = _ => {
-    this.refs.postText.value = '';
     this.setState({
+      postText: '',
       isFormEmpty: true,
       isMoreOpen: false
     });
@@ -51,21 +54,21 @@ export default class CreatePost extends React.Component {
 
   removeAttachment = (attachmentId) => this.props.removeAttachment(null, attachmentId)
 
-  isPostTextEmpty = (postText) => {
-    return postText == '' || /^\s+$/.test(postText);
+  checkCreatePostAvailability = (e) => {
+    let isFormEmpty = isTextEmpty(this.state.postText) || this.state.selectFeeds.length === 0;
+
+    this.setState({
+      isFormEmpty
+    });
+  }
+
+  onPostTextChange = (e) => {
+    this.setState({postText: e.target.value}, this.checkCreatePostAvailability);
   }
 
   selectFeedsChanged = (selectFeeds) => {
     this.setState({selectFeeds});
     this.checkCreatePostAvailability();
-  }
-
-  checkCreatePostAvailability = (e) => {
-    let isFormEmpty = this.isPostTextEmpty(this.refs.postText.value) || this.state.selectFeeds == 0;
-
-    this.setState({
-      isFormEmpty
-    });
   }
 
   checkSave = (e) => {
@@ -83,7 +86,7 @@ export default class CreatePost extends React.Component {
     this.setState({ isMoreOpen: !this.state.isMoreOpen });
   }
 
-  changeAttachmentQueue= (change) => _ => {
+  changeAttachmentQueue = (change) => _ => {
     this.setState({attachmentQueueLength: this.state.attachmentQueueLength + change});
   }
 
@@ -113,10 +116,10 @@ export default class CreatePost extends React.Component {
 
           <Textarea
             className="post-textarea"
-            ref="postText"
+            value={this.state.postText}
+            onChange={this.onPostTextChange}
             onFocus={this.props.expandSendTo}
             onKeyDown={this.checkSave}
-            onChange={this.checkCreatePostAvailability}
             minRows={3}
             maxRows={10}
             maxLength="1500"/>
