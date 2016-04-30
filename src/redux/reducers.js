@@ -256,6 +256,9 @@ export function feedViewState(state = initFeed, action) {
     }
     case response(ActionTypes.CREATE_POST): {
       const postId = action.payload.posts.id;
+      if (state.visibleEntries.indexOf(postId) !== -1) {
+        return state;
+      }
       return {...state,
         visibleEntries: [postId, ...state.visibleEntries]
       };
@@ -267,6 +270,9 @@ export function feedViewState(state = initFeed, action) {
       };
     }
     case ActionTypes.REALTIME_POST_NEW: {
+      if (state.visibleEntries.indexOf(action.post.id) !== -1) {
+        return state;
+      }
       return {
         ...state,
         visibleEntries: [action.post.id, ...state.visibleEntries],
