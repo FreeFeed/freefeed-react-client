@@ -7,17 +7,19 @@ import Dropzone from './dropzone';
 import PostAttachments from './post-attachments';
 
 const isTextEmpty = text => text == '' || /^\s+$/.test(text);
+const getDefaultState = defaultFeed => ({
+  isFormEmpty: true,
+  isMoreOpen: false,
+  attachmentQueueLength: 0,
+  postText:'',
+  commentsDisabled: false,
+  selectFeeds: (defaultFeed ? [defaultFeed] : []),
+});
 
 export default class CreatePost extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isFormEmpty: true,
-      isMoreOpen: false,
-      attachmentQueueLength: 0,
-      postText:'',
-      selectFeeds: (this.props.sendTo.defaultFeed ? [this.props.sendTo.defaultFeed] : [])
-    };
+    this.state = getDefaultState(this.props.sendTo.defaultFeed);
   }
 
   createPost = _ => {
@@ -26,7 +28,7 @@ export default class CreatePost extends React.Component {
     let postText = this.state.postText;
     let attachmentIds = this.props.createPostForm.attachments.map(attachment => attachment.id);
     let more = {
-      commentsDisabled: (this.refs.commentsDisabled && this.refs.commentsDisabled.checked)
+      commentsDisabled: this.state.commentsDisabled
     };
 
     // Send to the server
@@ -43,11 +45,7 @@ export default class CreatePost extends React.Component {
   }
 
   clearForm = _ => {
-    this.setState({
-      postText: '',
-      isFormEmpty: true,
-      isMoreOpen: false
-    });
+    this.setState(getDefaultState(this.props.sendTo.defaultFeed));
     const attachmentIds = this.props.createPostForm.attachments.map(attachment => attachment.id);
     attachmentIds.forEach(this.removeAttachment);
   }
@@ -140,8 +138,8 @@ export default class CreatePost extends React.Component {
                 <input
                   className="post-edit-more-checkbox"
                   type="checkbox"
-                  ref="commentsDisabled"
-                  defaultChecked={false}/>
+                  value={this.state.commentsDisabled}
+                  onChange={e=>this.setState({commentsDisabled:e.target.checked})}/>
                 <span className="post-edit-more-labeltext">Comments disabled</span>
               </label>
             </div>
