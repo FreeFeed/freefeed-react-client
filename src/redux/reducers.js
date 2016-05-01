@@ -256,6 +256,9 @@ export function feedViewState(state = initFeed, action) {
     }
     case response(ActionTypes.CREATE_POST): {
       const postId = action.payload.posts.id;
+      if (state.visibleEntries.indexOf(postId) !== -1) {
+        return state;
+      }
       return {...state,
         visibleEntries: [postId, ...state.visibleEntries]
       };
@@ -267,10 +270,23 @@ export function feedViewState(state = initFeed, action) {
       };
     }
     case ActionTypes.REALTIME_POST_NEW: {
+      if (state.visibleEntries.indexOf(action.post.id) !== -1) {
+        return state;
+      }
       return {
         ...state,
         visibleEntries: [action.post.id, ...state.visibleEntries],
       };
+    }
+    case ActionTypes.REALTIME_LIKE_NEW:
+    case ActionTypes.REALTIME_COMMENT_NEW: {
+      if (action.post) {
+        return {
+          ...state,
+          visibleEntries: [action.post.posts.id, ...state.visibleEntries],
+        };
+      }
+      return state;
     }
     case fail(ActionTypes.GET_SINGLE_POST): {
       return initFeed;
@@ -461,7 +477,14 @@ export function postsViewState(state = {}, action) {
     case ActionTypes.REALTIME_COMMENT_NEW: {
       const post = state[action.comment.postId];
       if (!post) {
-        return state;
+        if (action.post) {
+          return {
+            ...state,
+            [action.post.posts.id]: initPostViewState(action.post.posts)
+          };
+        } else {
+          return state;
+        }
       }
       return {...state,
         [post.id] : {
@@ -469,6 +492,15 @@ export function postsViewState(state = {}, action) {
           omittedComments: (post.omittedComments ? post.omittedComments + 1 : 0)
         }
       };
+    }
+    case ActionTypes.REALTIME_LIKE_NEW: {
+      if (action.post && !state[action.post.id]) {
+        return {
+          ...state,
+          [action.post.posts.id]: initPostViewState(action.post.posts),
+        };
+      }
+      return state;
     }
     case ActionTypes.REALTIME_COMMENT_DESTROY: {
       if (!action.postId) {
@@ -847,16 +879,28 @@ export function posts(state = {}, action) {
     }
     case ActionTypes.REALTIME_LIKE_NEW: {
       const post = state[action.postId];
-      if (!post || post.likes && post.likes.indexOf(action.users[0].id) !== -1) {
+      if ((!post && !action.post)) {
         return state;
       }
-      const likes = action.iLiked ? [post.likes[0], action.users[0].id, ...post.likes.slice(1)]
-                                  : [action.users[0].id, ...(post.likes || [])];
-      return {...state,
-        [post.id] : {
-          ...post,
+
+      const postToAct = post || postParser(action.post.posts);
+
+      if (postToAct.likes && postToAct.likes.indexOf(action.users[0].id) !== -1) {
+        return {
+          ...state,
+          [postToAct.id]: postToAct
+        };
+      }
+
+      const likes = action.iLiked ? [postToAct.likes[0], action.users[0].id, ...postToAct.likes.slice(1)]
+                                  : [action.users[0].id, ...(postToAct.likes || [])];
+
+      return {
+        ...state,
+        [postToAct.id] : {
+          ...postToAct,
           likes,
-          omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes + 1 : 0)
+          omittedLikes: (postToAct.omittedLikes > 0 ? postToAct.omittedLikes + 1 : 0)
         }
       };
     }
@@ -937,6 +981,9 @@ export function posts(state = {}, action) {
     }
     case ActionTypes.REALTIME_POST_UPDATE: {
       const post = state[action.post.id];
+      if (!post) {
+        return state;
+      }
       return {...state,
         [post.id]: {...post,
           body: action.post.body,
@@ -948,7 +995,14 @@ export function posts(state = {}, action) {
     case ActionTypes.REALTIME_COMMENT_NEW: {
       const post = state[action.comment.postId];
       if (!post) {
-        return state;
+        if (action.post) {
+          return {
+            ...state,
+            [action.post.posts.id]: postParser(action.post.posts)
+          };
+        } else {
+          return state;
+        }
       }
       const commentAlreadyAdded = post.comments && post.comments.indexOf(action.comment.id)!==-1;
       if (commentAlreadyAdded) {
@@ -981,6 +1035,13 @@ export function attachments(state = {}, action) {
     case ActionTypes.REALTIME_POST_NEW:
     case ActionTypes.REALTIME_POST_UPDATE: {
       return mergeByIds(state, action.attachments);
+    }
+    case ActionTypes.REALTIME_COMMENT_NEW:
+    case ActionTypes.REALTIME_LIKE_NEW: {
+      if (action.post && action.post.attachments) {
+        return mergeByIds(state, action.post.attachments);
+      }
+      return state;
     }
     case ActionTypes.ADD_ATTACHMENT_RESPONSE: {
       return {...state,
@@ -1016,7 +1077,16 @@ export function comments(state = {}, action) {
       return {...state, [action.request.commentId] : undefined};
     }
     case ActionTypes.REALTIME_COMMENT_NEW: {
+      if (action.post) {
+        return mergeByIds(state, [action.comment, ...action.post.comments]);
+      }
       return mergeByIds(state, [action.comment]);
+    }
+    case ActionTypes.REALTIME_LIKE_NEW: {
+      if (action.post) {
+        return mergeByIds(state, action.post.comments);
+      }
+      return state;
     }
     case ActionTypes.REALTIME_COMMENT_UPDATE: {
       return mergeByIds(state, [action.comment]);
@@ -1134,11 +1204,11 @@ export function users(state = {}, action) {
       if (!action.users || !action.users.length) {
         return state;
       }
-      const userAlreadyAdded = state[action.users[0].id];
-      if (userAlreadyAdded) {
-        return state;
-      }
-      return mergeByIds(state, action.users.map(userParser));
+      const usersToAdd = !action.post ? action.users : [...(action.users || []), ...(action.post.users || [])];
+
+      const notAdded = state => user => !state[user.id];
+
+      return mergeByIds(state, usersToAdd.filter(notAdded(state)).map(userParser));
     }
     case ActionTypes.HIGHLIGHT_COMMENT: {
       return state;
@@ -1155,8 +1225,10 @@ export function subscribers(state = {}, action) {
   }
   switch (action.type) {
     case ActionTypes.REALTIME_POST_NEW:
-    case ActionTypes.REALTIME_COMMENT_NEW: {
-      return mergeByIds(state, (action.subscribers || []).map(userParser));
+    case ActionTypes.REALTIME_COMMENT_NEW:
+    case ActionTypes.REALTIME_LIKE_NEW: {
+      const subscribers = !action.post ? action.subscribers || [] : [...(action.subscribers || []), ...(action.post.subscribers || []) ];
+      return mergeByIds(state, (subscribers || []).map(userParser));
     }
     case response(ActionTypes.GET_SINGLE_POST):
     case response(ActionTypes.CREATE_POST): {
@@ -1253,7 +1325,10 @@ export function subscriptions(state = {}, action) {
     case response(ActionTypes.CREATE_POST): {
       return mergeByIds(state, action.payload.subscriptions);
     }
-    case ActionTypes.REALTIME_POST_NEW: {
+    case ActionTypes.REALTIME_POST_NEW:
+    case ActionTypes.REALTIME_LIKE_NEW:
+    case ActionTypes.REALTIME_COMMENT_NEW: {
+      const subscriptions = !action.post ? action.subscriptions : action.post.subscriptions;
       return mergeByIds(state, action.subscriptions);
     }
   }

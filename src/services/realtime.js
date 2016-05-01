@@ -22,6 +22,17 @@ const scrollCompensator = dispatchAction => (...actionParams) => {
   //here we're dispatching, so render is called internally and after call we have new page
   const res = dispatchAction(...actionParams);
 
+  if (res.then) {
+    res.then(_ => {
+      const topAfter = nearestTop.getBoundingClientRect().top;
+      const heightAfter = document.body.offsetHeight;
+
+      if (topAfter !== topBefore) {
+        scrollBy(0, heightAfter - heightBefore);
+      }
+    });
+  }
+
   const topAfter = nearestTop.getBoundingClientRect().top;
   const heightAfter = document.body.offsetHeight;
 
