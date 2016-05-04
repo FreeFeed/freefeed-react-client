@@ -146,7 +146,14 @@ import {getPostWithAllComments} from '../services/api';
 import {frontendPreferences as frontendPrefsConfig} from '../config';
 
 const isPostLoaded = ({posts}, postId) => posts[postId];
-const iLikedPost = ({user, posts}, postId) => (posts[postId] || {likes: []}).likes.indexOf(user.id) !== -1;
+const iLikedPost = ({user, posts}, postId) => {
+  const post = posts[postId];
+  if (!post) {
+    return false;
+  }
+  const likes = post.likes || [];
+  return likes.indexOf(user.id) !== -1;
+};
 const dispatchWithPost = async (store, postId, action, filter = _ => true) => {
   if (isPostLoaded(store.getState(), postId)) {
     return store.dispatch(action);
