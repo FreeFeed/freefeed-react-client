@@ -33,6 +33,10 @@ export function fromNowOrNow(date) {
   return now.fromNow();
 }
 
+export function getFullDate(date) {
+  return moment(date).format('YYYY-MM-DD HH:mm:ss [UTC]Z');
+}
+
 import defaultUserpic50Path from 'assets/images/default-userpic-50.png';
 import defaultUserpic75Path from 'assets/images/default-userpic-75.png';
 

@@ -5,45 +5,12 @@ import {connect} from 'react-redux';
 import UserCard from './user-card';
 import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
 
-function chunk(str, chunkSize) {
-  const stringLength = str.length;
-
-  const chunksRequired = Math.ceil(stringLength / chunkSize);
-  let stringArray = new Array(chunksRequired);
-
-  let lengthRemaining = stringLength;
-
-  for (let i = 0; i < chunksRequired; ++i) {
-    let lengthToUse = Math.min(lengthRemaining, chunkSize);
-    let startIndex = chunkSize * i;
-
-    stringArray[i] = str.substr(startIndex, lengthToUse);
-
-    lengthRemaining = lengthRemaining - lengthToUse;
-  }
-
-  return stringArray;
-}
-
-const CHUNK_SIZE = 12;
-
-function wrap(str) {
-  let parts = str.split(' ');
-  for (let i = 0; i < parts.length; ++i) {
-    if (parts[i].length > CHUNK_SIZE) {
-      parts[i] = chunk(parts[i], CHUNK_SIZE).join('\u200B');
-    }
-  }
-
-  return parts.join(' ');
-}
-
 const DisplayOption = ({user, me, preferences, applyHyphenations}) => {
   let username, screenName;
 
   if (applyHyphenations) {
-    username = wrap(user.username);
-    screenName = wrap(user.screenName);
+    username = user.username;
+    screenName = user.screenName;
   } else {
     username = user.username;
     screenName = user.screenName;
@@ -69,7 +36,7 @@ const DisplayOption = ({user, me, preferences, applyHyphenations}) => {
     }
   }
 
-  return <span>{wrap(user.screenName)}</span>;
+  return <span>{user.screenName}</span>;
 };
 
 class UserName extends React.Component {
