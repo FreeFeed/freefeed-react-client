@@ -1,6 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router';
 
+import external from 'assets/images/external.png';
+
 import UserName from './user-name';
 import {preventDefault} from '../utils';
 import RecentGroups from './recent-groups';
@@ -37,6 +39,19 @@ export default ({user, signOut, recentGroups}) => (
       </div>
       <div className='box-footer'>
         <Link to={`/friends`}>Browse/edit friends</Link>
+      </div>
+    </div>
+
+    <div className='box'>
+      <div className='box-header-search'>
+        Search
+      </div>
+      <div className='box-body'>
+        <ul>
+          <li><a href="http://search.pepyatka.com/" target="_blank">Search.Pepyatka.com</a>
+            <img width="18" height="12" src={external} style={{paddingLeft:5}}/>
+          </li>
+        </ul>
       </div>
     </div>
 
