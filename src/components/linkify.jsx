@@ -2,7 +2,8 @@ import React from 'react';
 import {Link} from 'react-router';
 import {finder} from '../utils';
 import {shorten} from 'ff-url-finder';
-import {LINK, AT_LINK, LOCAL_LINK, EMAIL} from '../utils/link-types';
+import {LINK, AT_LINK, LOCAL_LINK, EMAIL, HASHTAG} from '../utils/link-types';
+import {search as searchConfig} from '../config';
 
 const MAX_URL_LENGTH = 50;
 
@@ -24,6 +25,15 @@ class Linkify extends React.Component {
         props['onMouseEnter'] = _ => this.userHover.hover(username);
         props['onMouseLeave'] = this.userHover.leave;
       };
+
+      return React.createElement(
+        Link,
+        props,
+        displayedLink
+      );
+    } else if (type == HASHTAG) {
+      props['to'] = href;
+      props['target'] = '_blank';
 
       return React.createElement(
         Link,
@@ -97,6 +107,9 @@ class Linkify extends React.Component {
         } else if (it.type === EMAIL) {
           displayedLink = it.text;
           href = `mailto:${it.address}`;
+        } else if (it.type === HASHTAG) {
+          displayedLink = it.text;
+          href = searchConfig.searchEngine+encodeURIComponent(it.text);
         } else {
           const textWithArrows = this.parseArrows(it.text);
           elements = elements.concat(textWithArrows);
