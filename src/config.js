@@ -15,6 +15,10 @@ const config = {
     siteKey: '',
     sentinel: null // keep always last
   },
+  search: {
+    searchEngine: 'http://search.pepyatka.com/s?q=',
+    sentinel: null // keep always last
+  },
   siteDomains: [ // for transform links in the posts, comments, etc.
     'freefeed.net',
     'm.freefeed.net',

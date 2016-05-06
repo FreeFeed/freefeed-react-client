@@ -106,6 +106,8 @@ export const finder = new URLFinder(
   config.siteDomains,
 );
 
+finder.withHashTags = true;
+
 import {LINK, isLink} from '../utils/link-types';
 
 const endsWithExclamation = str => str && str[str.length - 1] === '!';
