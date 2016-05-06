@@ -32,11 +32,11 @@ class Linkify extends React.Component {
         displayedLink
       );
     } else if (type == HASHTAG) {
-      props['to'] = href;
+      props['href'] = href;
       props['target'] = '_blank';
 
       return React.createElement(
-        Link,
+        'a',
         props,
         displayedLink
       );
