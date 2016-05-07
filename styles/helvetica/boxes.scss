@@ -49,6 +49,13 @@
   font-size: 15px;
 }
 
+// Sidebar Search block header
+.box-header-search {
+  @extend .box-header;
+  font-weight: bold;
+  font-size: 15px;
+}
+
 // Content and footer
 .content {
   .box-body {
