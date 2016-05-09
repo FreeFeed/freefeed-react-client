@@ -70,8 +70,8 @@ export function signInForm(state={username:'', password:'', error:'', loading: f
   return state;
 }
 
-const defaultRestoreHeader = 'Restore Freefeed Password';
-const successRestoreHeader = 'Check your mail!';
+const defaultRestoreHeader = 'Reset FreeFeed Password';
+const successRestoreHeader = 'Please check your email for password reset instructions.';
 
 export function restorePassForm(state={error:'', loading: false, header: defaultRestoreHeader}, action) {
   switch (action.type) {
@@ -88,8 +88,8 @@ export function restorePassForm(state={error:'', loading: false, header: default
   return state;
 }
 
-const defaultResetHeader = 'Reset Freefeed Password';
-const successResetHeader = 'Log in with new pass!';
+const defaultResetHeader = 'Reset FreeFeed Password';
+const successResetHeader = 'Please log in with your new password';
 
 export function resetPassForm(state={error:'', loading: false, header: defaultResetHeader}, action) {
   switch (action.type) {

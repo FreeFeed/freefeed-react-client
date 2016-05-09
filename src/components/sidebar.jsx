@@ -48,7 +48,7 @@ export default ({user, signOut, recentGroups}) => (
       </div>
       <div className='box-body'>
         <ul>
-          <li><a href="http://search.pepyatka.com/" target="_blank">Search.Pepyatka.com</a>
+          <li><a href="http://search.pepyatka.com/" target="_blank">Search.pepyatka.com</a>
             <img width="18" height="12" src={external} style={{paddingLeft:5}}/>
           </li>
         </ul>

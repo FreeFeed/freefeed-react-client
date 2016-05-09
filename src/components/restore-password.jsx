@@ -43,7 +43,7 @@ class RestorePassword extends React.Component {
                       <input id='mail' className='form-control' type='mail' ref='mail'/>
                     </div>
                     <div className='form-group'>
-                      <button className='btn btn-default p-singin-action' type='submit'>Restore</button>
+                      <button className='btn btn-default p-singin-action' type='submit'>Reset</button>
                     </div>
                   </form>
                 </LoaderContainer>
