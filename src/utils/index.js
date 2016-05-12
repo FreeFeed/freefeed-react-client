@@ -125,8 +125,9 @@ const previousElementCheck = (index, array) => {
 
 export function getFirstLinkToEmbed(text) {
   return finder .parse(text)
-                .filter(({type}, index, links) => {
+                .filter(({type, text}, index, links) => {
                   return (type ===  LINK
+                          && /^https?:\/\//i.test(text)
                           && previousElementCheck(index, links));
                 }).map(it => it.text)[0];
 };
