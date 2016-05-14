@@ -1,4 +1,6 @@
 import React from 'react';
+import _ from 'lodash';
+
 import PostComment from './post-comment';
 import MoreCommentsWrapper from './more-comments-wrapper';
 import {preventDefault} from '../utils';
@@ -54,25 +56,24 @@ const renderAddCommentLink = (props, disabledForOthers) => {
 export default (props) => {
   const entryUrl = `/${props.post.createdBy.username}/${props.post.id}`;
 
-  const openAnsweringComment = (username) => {
+  const openAnsweringComment = (answerText) => {
     if (!props.post.isCommenting && !props.post.isSinglePost) {
       props.toggleCommenting(props.post.id);
     }
 
     const text = (props.post.newCommentText || '');
-    const check = new RegExp(`@${username}$`);
-
+    const check = new RegExp(`(^|\\s)${_.escapeRegExp(answerText)}\\s*$`);
     if (!text.match(check)) {
       const addSpace = text.length && !text.match(/\s$/);
-      props.updateCommentingText(props.post.id, `${text}${addSpace ? ' ' : ''}@${username}`);
-    };
-
+      props.updateCommentingText(props.post.id, `${text}${addSpace ? ' ' : ''}${answerText} `);
+    }
   };
 
   const commentMapper = renderComment(entryUrl, openAnsweringComment, props.post.isModeratingComments, props.commentEdit, props.post.id);
-  const first = props.comments[0];
-  const last = props.comments.length > 1 && props.comments[props.comments.length - 1];
-  const middle = props.comments.slice(1, props.comments.length - 1).map(commentMapper);
+  const totalComments = props.comments.length + props.post.omittedComments; 
+  const first = withBackwardNumber(props.comments[0], totalComments);
+  const last = withBackwardNumber(props.comments.length > 1 && props.comments[props.comments.length - 1], 1);
+  const middle = props.comments.slice(1, props.comments.length - 1).map((c, i) => commentMapper(withBackwardNumber(c, totalComments - i - 1)));
   const showOmittedNumber = props.post.omittedComments > 0;
   const showMoreComments = () => props.showMoreComments(props.post.id);
   const canAddComment = (!props.post.commentsDisabled || props.post.isEditable);
@@ -80,7 +81,7 @@ export default (props) => {
 
   return (
     <div className="comments">
-      {first ? commentMapper(first): false}
+      {first ? commentMapper(first) : false}
       {middle}
       {showOmittedNumber
         ? <MoreCommentsWrapper
@@ -98,3 +99,10 @@ export default (props) => {
     </div>
   );
 };
+
+function withBackwardNumber(comment, bn) {
+  if (comment) {
+    comment.backwardNumber = bn;
+  }
+  return comment; 
+}
