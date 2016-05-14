@@ -2,7 +2,7 @@
 
 set PORT=5783
 
-if not exist .\node_modules3\*.* (
+if not exist .\node_modules\*.* (
   echo Installing required NPM modules...
   npm install
   echo Done!
