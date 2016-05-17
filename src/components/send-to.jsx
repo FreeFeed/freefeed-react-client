@@ -13,6 +13,10 @@ export default class SendTo extends React.Component {
       value: item.user.username,
       type: item.user.type
     }));
+    
+    options.sort((a, b) => {
+      return (a.type !== b.type) ? a.type.localeCompare(b.type) : a.value.localeCompare(b.value);
+    });
 
     let myFeedUsername = props.user.username;
     options.unshift({ label: MY_FEED_LABEL, value: myFeedUsername, type: 'group' });
@@ -44,15 +48,30 @@ export default class SendTo extends React.Component {
     this.setState({ showFeedsOption: newShowFeedsOption });
   }
 
+  labelRenderer = (opt) => {
+    const icon = (opt.type === 'group') ? 
+      ((opt.value !== this.props.user.username) ? <i className="fa fa-users" /> : <i className="fa fa-home" />) 
+      : false;
+    return <span>{icon} {opt.label}</span>;
+  }
+  
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.showFeedsOption !== this.state.showFeedsOption && this.state.showFeedsOption) {
+      this.refs.selector._openAfterFocus = true;
+      this.refs.selector.focus();
+    }
+  }
+
   render() {
-    const defaultFeedLabel = (this.state.values[0] === this.props.user.username ? MY_FEED_LABEL : this.state.values[0]);
+    const defaultFeed = this.state.values[0];
+    const defaultOpt = this.state.options.reduce((found, opt) => (!found && opt.value === defaultFeed) ? opt : found, null);
 
     return (
       <div className="send-to">
         {!this.state.showFeedsOption ? (
           <div>
             To:&nbsp;
-            <span className="Select-value-label-standalone">{defaultFeedLabel}</span>&nbsp;
+            <span className="Select-value-label-standalone">{this.labelRenderer(defaultOpt)}</span>
             <a className="p-sendto-toggler" onClick={preventDefault(_=>this.toggleSendTo())}>Add/Edit</a>
           </div>
         ) : (
@@ -63,6 +82,9 @@ export default class SendTo extends React.Component {
               value={this.state.values}
               options={this.state.options}
               onChange={this.selectChanged}
+              optionRenderer={this.labelRenderer}
+              valueRenderer={this.labelRenderer}
+              ref="selector"
               multi={true}
               clearable={false} />
             {this.state.isWarningDisplayed ? (
