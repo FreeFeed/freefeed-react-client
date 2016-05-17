@@ -15,6 +15,7 @@ const FeedHandler = (props) => {
       createPostViewState={props.createPostViewState}
       sendTo={props.sendTo}
       user={props.user}
+      isDirects={props.route.name === 'direct'}
       createPost={props.createPost}
       resetPostCreateForm={props.resetPostCreateForm}
       expandSendTo={props.expandSendTo}
