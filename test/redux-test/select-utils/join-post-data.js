@@ -1,5 +1,5 @@
 import test from 'tape';
-import {joinPostData} from 'src/components/select-utils';
+import {joinPostData, ommitBubblesThreshold} from 'src/components/select-utils';
 
 const comment1 = {
   id: 'comment1'
@@ -27,7 +27,7 @@ const post = {
   postedTo: [],
 };
 
-const composeState = ({subsequentComments, setting, omittedComments = 0}) => {
+const composeState = ({subsequentComments, setting, omittedComments = 0, withDelay = false}) => {
   return {
     posts: {
       [post.id] : post
@@ -36,14 +36,17 @@ const composeState = ({subsequentComments, setting, omittedComments = 0}) => {
       [comment1.id]: {
         ...comment1,
         createdBy: user1.id,
+        createdAt: (0).toString(10)
       },
       [comment2.id]: {
         ...comment2,
-        createdBy: subsequentComments ? user1.id : user2.id
+        createdBy: subsequentComments ? user1.id : user2.id,
+        createdAt: (1000 + (withDelay ? ommitBubblesThreshold : 0)).toString(10)
       },
       [comment3.id]: {
         ...comment3,
-        createdBy: user1.id
+        createdBy: user1.id,
+        createdAt: (2000 + (withDelay ? ommitBubblesThreshold : 0)).toString(10)
       }
     },
     commentsHighlights: {},
@@ -108,6 +111,17 @@ test('joinPostData doesn\'t set omitBubble for non-subsequent comments with sett
 
 test('joinPostData doesn\'t set omitBubble for subsequent comments with setting on and non-zero omitted comments', t => {
   const testState = composeState({subsequentComments: true, setting: true, omittedComments: 1});
+
+  const result = joinPostData(testState)(post.id);
+
+  t.notOk(result.comments[0].omitBubble);
+  t.notOk(result.comments[1].omitBubble);
+
+  t.end();
+});
+
+test('joinPostData doesn\'t set omitBubble for subsequent comments with delay between them', t => {
+  const testState = composeState({subsequentComments: true, setting: true, withDelay: true});
 
   const result = joinPostData(testState)(post.id);
 

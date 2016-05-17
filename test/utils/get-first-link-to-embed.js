@@ -4,6 +4,7 @@ import {getFirstLinkToEmbed} from 'src/utils';
 const testLink = 'http://facebook.com';
 const secondTestLink = 'http://twitter.com';
 const freefeedTestLink = 'http://freefeed.net/kadmil';
+const protocolLessTestLink = 'mail.ru';
 
 test('getFirstLinkToEmbed selects link then where\'s only link', t => {
 
@@ -64,6 +65,17 @@ test('getFirstLinkToEmbed ignores link with ! before', t => {
 test('getFirstLinkToEmbed ignores freefeed links', t => {
 
   const testText = `ururur ${freefeedTestLink} ${testLink} ararar`;
+
+  const result = getFirstLinkToEmbed(testText);
+
+  t.equal(result, testLink);
+
+  t.end();
+});
+
+test('getFirstLinkToEmbed ignores protocolless links', t => {
+
+  const testText = `ururur ${protocolLessTestLink} ${testLink} ararar`;
 
   const result = getFirstLinkToEmbed(testText);
 

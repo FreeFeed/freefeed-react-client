@@ -1,6 +1,9 @@
 .avatar {
   img {
     border: 1px #c1c1c1 solid;
+    width: 50px;
+    height: 50px;
+    box-sizing: content-box;
   }
 }
 
