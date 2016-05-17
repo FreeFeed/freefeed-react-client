@@ -17,9 +17,14 @@ export default class SendTo extends React.Component {
     options.sort((a, b) => {
       return (a.type !== b.type) ? a.type.localeCompare(b.type) : a.value.localeCompare(b.value);
     });
-
+        
     let myFeedUsername = props.user.username;
     options.unshift({ label: MY_FEED_LABEL, value: myFeedUsername, type: 'group' });
+
+    if (this.props.isDirects) {
+      // only mutual friends
+      options = options.filter(opt => opt.type === 'user');
+    }
 
     this.state = {
       values: (props.defaultFeed ? [props.defaultFeed] : []),
@@ -78,7 +83,7 @@ export default class SendTo extends React.Component {
           <div>
             <Select
               name="select-feeds"
-              placeholder="Select feeds..."
+              placeholder={this.props.isDirects ? "Select friends..." : "Select feeds..."}
               value={this.state.values}
               options={this.state.options}
               onChange={this.selectChanged}
