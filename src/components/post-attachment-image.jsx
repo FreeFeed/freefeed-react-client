@@ -19,8 +19,8 @@ export default (props) => {
     src: props.imageSizes.t && props.imageSizes.t.url || props.thumbnailUrl,
     srcSet,
     alt: nameAndSize,
-    width: props.imageSizes.t && props.imageSizes.t.w || undefined,
-    height: props.imageSizes.t && props.imageSizes.t.h || undefined
+    width: props.imageSizes.t ? props.imageSizes.t.w : (props.imageSizes.o ? props.imageSizes.o.w : undefined),
+    height: props.imageSizes.t ? props.imageSizes.t.h : (props.imageSizes.o ? props.imageSizes.o.h : undefined)
   };
 
   return (
