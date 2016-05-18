@@ -33,6 +33,11 @@
     border: 1px solid silver;
     padding: 1px;
     margin: 0 8px 8px 0;
+    height: 175px;
+    box-sizing: content-box;
+    line-height: 170px;
+    min-width: 50px;
+    text-align: center;
 
     img {
       max-width: 525px;
