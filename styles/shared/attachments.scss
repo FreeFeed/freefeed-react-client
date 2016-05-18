@@ -126,6 +126,28 @@
     border: 2px solid #3d3;
     padding: 0;
   }
+  
+  .show-more {
+    display: none;
+    width: 24px;
+    color: #8ab;
+    
+    .fa {
+      cursor: pointer;
+      transform: rotate(-180deg);
+      transition: transform 0.3s 0.1s;
+    }
+  }
+  
+  &.needs-folding {
+    .show-more {
+      display: inline-block;
+    }
+  }
+  
+  &.is-folded .show-more .fa {
+    transform: rotate(0);
+  }
 }
 
 .audio-attachments,

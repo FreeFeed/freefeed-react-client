@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import numeral from 'numeral';
 
 export default (props) => {
@@ -24,7 +25,7 @@ export default (props) => {
   };
 
   return (
-    <div className="attachment">
+    <div className={classnames({attachment: true, hidden: props.isHidden})}>
       <a href={props.url} title={nameAndSize} target="_blank">
         {props.thumbnailUrl ? (
           <img {...imageAttributes}/>
