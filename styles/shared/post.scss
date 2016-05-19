@@ -8,6 +8,18 @@
     color: #555599;
   }
 
+  .read-more {
+    color: #555599 !important;
+    font-style: italic;
+    white-space: nowrap;
+  }
+
+  .p-break {
+    display: block;
+    height: 10px;
+    font-size: 1px;
+  }
+
   .post-userpic {
     float: left;
     border: 1px #ccc solid;
