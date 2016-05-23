@@ -103,6 +103,7 @@ export default class CreatePost extends React.Component {
             <SendTo
               feeds={this.props.sendTo.feeds}
               defaultFeed={this.props.sendTo.defaultFeed}
+              isDirects={this.props.isDirects}
               user={this.props.user}
               onChange={this.selectFeedsChanged}/>
           ) : false}
