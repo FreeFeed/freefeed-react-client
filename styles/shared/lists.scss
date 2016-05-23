@@ -15,7 +15,8 @@ ul.tile-list {
       margin-bottom: 5px;
     }
 
-    a {
+    .user-name-wrapper > a, 
+    .avatar > a {
       display: block;
       line-height: 130%;
       font-size: 12px;
