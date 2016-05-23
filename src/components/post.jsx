@@ -290,6 +290,7 @@ export default class Post extends React.Component {
           <PostAttachments
             attachments={props.attachments}
             isEditing={props.isEditing}
+            isSinglePost={props.isSinglePost}
             removeAttachment={this.removeAttachment}/>
 
           {props.allowLinksPreview && noImageAttachments && linkToEmbed ? (
