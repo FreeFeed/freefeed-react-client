@@ -229,7 +229,7 @@ export default class Post extends React.Component {
         ) : false}
       </div>
     ) : (
-      <div className={postClass}>
+      <div className={postClass} data-author={props.createdBy.username}>
         <div className="post-userpic">
           <Link to={`/${props.createdBy.username}`}>
             <img src={profilePicture} width={profilePictureSize} height={profilePictureSize}/>
