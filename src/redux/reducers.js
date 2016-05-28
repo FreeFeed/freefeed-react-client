@@ -1885,15 +1885,6 @@ export function frontendRealtimePreferencesForm(state=initialRealtimeSettings, a
       const fp = action.payload.users.frontendPreferences[frontendPrefsConfig.clientId];
       return {...state, realtimeActive: (fp ? fp.realtimeActive : initialRealtimeSettings.realtimeActive)};
     }
-    case request(ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES): {
-      return {...state, status: 'loading'};
-    }
-    case response(ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES): {
-      return {...state, status: 'success'};
-    }
-    case fail(ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES): {
-      return {...state, status: 'error', errorMessage: (action.payload || {}).err};
-    }
   }
   return state;
 }
