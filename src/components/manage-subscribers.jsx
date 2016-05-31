@@ -32,33 +32,28 @@ const ManageSubscribersHandler = (props) => {
           </div>       
         </div>
         <div className="manage-subscribers-body">
-          {props.users ? (
-            <div>
-              <h3>Subscribers</h3>
-
-              {props.users.length == 0 ? (
-                <div>There's not a single one subscriber yet. You might invite some friends to change that.</div>
-              ) : (
-                <SubsList
-                  users={props.users}
-                  makeAdmin={makeAdmin}
-                  remove={remove}/>
-              )}
-            </div>
-          ) : false}
-
-          <div className="manage-subscribers-admins">
-            <h3>Admins</h3>
-
-            {props.amILastGroupAdmin ? (
-              <div>You are the only Admin for this group. Before you can drop administrative privileges
-                or leave this group, you have to promote another group member to Admin first.</div>
+          <h3>Manage subscribers</h3>
+          {props.users ? <h4 className="tile-list-subheader">Subscribers</h4> : false}
+          {props.users ? props.users.length == 0 ? (
+              <div className="tile-list-text">There's not a single one subscriber yet. You might invite some friends to change that.</div>
             ) : (
-              <AdminsList
-                users={props.groupAdmins}
-                removeAdminRights={removeAdminRights}/>
-            )}
-          </div>
+              <SubsList
+                users={props.users}
+                makeAdmin={makeAdmin}
+                remove={remove}/>
+            )
+          : false}
+
+          <h4 className="tile-list-subheader">Admins</h4>
+
+          {props.amILastGroupAdmin ? (
+            <div className="tile-list-text">You are the only Admin for this group. Before you can drop administrative privileges
+              or leave this group, you have to promote another group member to Admin first.</div>
+          ) : (
+            <AdminsList
+              users={props.groupAdmins}
+              removeAdminRights={removeAdminRights}/>
+          )}
         </div>
       </div>
     </div>

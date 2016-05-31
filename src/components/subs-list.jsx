@@ -33,22 +33,18 @@ export default (props) => {
     
   } else {
     
-    const users = [];
-    const groups = [];
-    
-    props.users.forEach(u => ((u.type === "user") ? users : groups).push(u));
-    
-    const showTitles = (users.length !== 0 && groups.length !== 0); 
-    
+    const sections = props.listSections.filter(s => s.users.length > 0);
+    const showTitles = !!props.showSectionsTitles || (sections.length > 1); 
+
     return (
       <div>
         <h3><span>{title}</span></h3>
         
-        {showTitles ? <h4 className="tile-list-subheader">Users</h4> : false}
-        <TileList users={users}/>
+        {sections.map(s => [
+          (showTitles && s.title) ? <h4 className="tile-list-subheader">{s.title}</h4> : false,
+          <TileList users={s.users}/> 
+        ])}
 
-        {showTitles ? <h4 className="tile-list-subheader">Groups</h4> : false}
-        <TileList users={groups}/>
       </div>
     );
     
