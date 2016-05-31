@@ -23,11 +23,19 @@ const SubscriptionsHandler = (props) => {
 function selectState(state, ownProps) {
   const boxHeader = state.boxHeader;
   const username = ownProps.params.userName;
-  const users = _.sortBy(state.usernameSubscriptions.payload, 'username');
   const isPending = state.usernameSubscriptions.isPending;
   const errorString = state.usernameSubscriptions.errorString;
 
-  return { boxHeader, username, users, isPending, errorString };
+  const listSections = [
+    {title: 'Users', users: []},
+    {title: 'Groups', users: []}
+  ];
+  
+  _.sortBy(state.usernameSubscriptions.payload, 'username')
+    .forEach(u => listSections[(u.type === "user") ? 0  : 1].users.push(u));
+
+
+  return { boxHeader, username, listSections, isPending, errorString };
 }
 
 export default connect(selectState)(SubscriptionsHandler);
