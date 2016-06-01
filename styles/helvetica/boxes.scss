@@ -92,7 +92,7 @@
       li{
         padding-bottom: 3px;
         white-space: nowrap;
-        overflow: hidden;
+        @include clearfix;
         a{
           color: #000;
           font-size: 15px;

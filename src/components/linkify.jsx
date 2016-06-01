@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router';
 import {finder} from '../utils';
+import UserName from './user-name';
 import {shorten} from 'ff-url-finder';
 import {LINK, AT_LINK, LOCAL_LINK, EMAIL, HASHTAG, ARROW} from '../utils/link-types';
 import {search as searchConfig} from '../config';
@@ -74,7 +75,12 @@ class Linkify extends React.Component {
           displayedLink = shorten(it.text, MAX_URL_LENGTH);
           href = it.url;
         } else if (it.type === AT_LINK) {
-          href = `/${it.username}`;
+          elements.push(<UserName 
+            user={{username: it.username}} 
+            display={it.text} 
+            userHover={this.userHover} 
+            key={`match${++this.idx}`}/>);
+          return;
         } else if (it.type === LOCAL_LINK) {
           displayedLink = shorten(it.text, MAX_URL_LENGTH);
           href = it.uri;

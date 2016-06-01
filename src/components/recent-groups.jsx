@@ -7,7 +7,7 @@ const renderRecentGroup = recentGroup => {
   const updatedAgo = fromNowOrNow(parseInt(recentGroup.updatedAt));
   return (
     <li className="p-my-groups-link" key={recentGroup.id}>
-      <Link to={`/${recentGroup.username}`}>{recentGroup.screenName}</Link>
+      <UserName user={recentGroup} applyHyphenations={true}/>
       <div className="updated-ago">{updatedAgo}</div>
     </li>
   );
