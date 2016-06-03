@@ -27,16 +27,33 @@ class UserCard extends React.Component {
   render() {
     const props = this.props;
 
-    return (!props.user.id ? (
-      <div className="user-card">
-        <div className="user-card-info">
-          <div className="userpic loading"></div>
-          <div className="names">
-            <img width="16" height="16" src={throbber16}/>
+    if (props.notFound) {
+      return (
+        <div className="user-card">
+          <div className="user-card-info">
+            <div className="userpic loading"></div>
+            <div className="names">
+              User not found
+            </div>
           </div>
         </div>
-      </div>
-    ) : (
+      );
+    }
+
+    if (!props.user.id) {
+      return (
+        <div className="user-card">
+          <div className="user-card-info">
+            <div className="userpic loading"></div>
+            <div className="names">
+              <img width="16" height="16" src={throbber16}/>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
       <div className="user-card">
         <div className="user-card-info">
           <Link to={`/${props.user.username}`} className="userpic">
@@ -96,16 +113,18 @@ class UserCard extends React.Component {
           </div>
         ) : false}
       </div>
-    ));
+    );
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   const me = state.user;
   const user = (_.find(state.users, {username: ownProps.username}) || {});
+  const notFound = (!user.id && state.usersNotFound.indexOf(ownProps.username) >= 0);
 
   return {
     user,
+    notFound,
     isItMe: (me.username === user.username),
     subscribed: ((me.subscriptions || []).indexOf(user.id) > -1),
     hasRequestBeenSent: ((me.pendingSubscriptionRequests || []).indexOf(user.id) > -1),
