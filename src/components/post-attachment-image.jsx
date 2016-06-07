@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import numeral from 'numeral';
 
 export default (props) => {
@@ -8,15 +9,23 @@ export default (props) => {
 
   const removeAttachment = () => props.removeAttachment(props.id);
 
+  let srcSet;
+  if (props.imageSizes.t2 && props.imageSizes.t2.url) {
+    srcSet = props.imageSizes.t2.url + ' 2x';
+  } else if (props.imageSizes.o && props.imageSizes.t && props.imageSizes.o.w <= props.imageSizes.t.w * 2) {
+    srcSet = (props.imageSizes.o.url || props.url) + ' 2x';
+  }
+
   const imageAttributes = {
-    src: props.thumbnailUrl,
+    src: props.imageSizes.t && props.imageSizes.t.url || props.thumbnailUrl,
+    srcSet,
     alt: nameAndSize,
-    width: props.imageSizes.t ? props.imageSizes.t.w : undefined,
-    height: props.imageSizes.t ? props.imageSizes.t.h : undefined
+    width: props.imageSizes.t ? props.imageSizes.t.w : (props.imageSizes.o ? props.imageSizes.o.w : undefined),
+    height: props.imageSizes.t ? props.imageSizes.t.h : (props.imageSizes.o ? props.imageSizes.o.h : undefined)
   };
 
   return (
-    <div className="attachment">
+    <div className={classnames({attachment: true, hidden: props.isHidden})}>
       <a href={props.url} title={nameAndSize} target="_blank">
         {props.thumbnailUrl ? (
           <img {...imageAttributes}/>

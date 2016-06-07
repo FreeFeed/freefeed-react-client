@@ -1,5 +1,8 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Textarea from 'react-textarea-autosize';
+import _ from 'lodash';
+import classnames from 'classnames';
 
 import PieceOfText from './piece-of-text';
 import UserName from './user-name';
@@ -21,9 +24,11 @@ export default class PostComment extends React.Component {
     });
   }
 
-  openAnsweringComment = () => {
-    if (this.props.openAnsweringComment) {
-      this.props.openAnsweringComment(this.props.user.username);
+  openAnsweringComment = (event) => {
+    event.preventDefault();
+    if (this.props.openAnsweringComment && event.button === 0) {
+      const answerText = (event.ctrlKey || event.metaKey) ? _.repeat('^', this.props.backwardNumber) : '@' + this.props.user.username;
+      this.props.openAnsweringComment(answerText);
     }
   }
 
@@ -76,17 +81,28 @@ export default class PostComment extends React.Component {
       this.setState({editText: newProps.editText});
     }
   }
+  
+  componentDidUpdate(prevProps) {
+    if (this.props.isEditing && this.props.editText !== prevProps.editText) {
+      ReactDOM.findDOMNode(this.refs.commentText).focus();
+    }
+  }
 
   render() {
     const createdAgo = fromNowOrNow(+this.props.createdAt);
+    const className = classnames({
+      'comment': true,
+      'highlighted': this.props.highlighted,
+      'omit-bubble': this.props.omitBubble
+    });
 
     return (
-    <div className={`comment ${this.props.highlighted ? 'highlighted' : ''}`}>
+    <div className={className} data-author={this.props.isEditing ? '' : this.props.user.username}>
       <a className={`comment-icon fa ${this.props.omitBubble ? 'feed-comment-dot' : 'fa-comment-o'}`}
          title={createdAgo}
          id={`comment-${this.props.id}`}
          href={`${this.props.entryUrl}#comment-${this.props.id}`}
-         onClick={preventDefault(this.openAnsweringComment)}></a>
+         onClick={this.openAnsweringComment}></a>
       {this.props.isEditing ? (
         <div className="comment-body">
           <div>

@@ -56,13 +56,13 @@ module.exports = [{
     ],
     loaders: [
       { test: /\.jsx?$/,
-        exclude: /(node_modules[/]|test[/])/,
+        exclude: /(node_modules[\\/]|test[\\/])/,
         loader: 'babel?optional[]=runtime,optional[]=es7.asyncFunctions,optional[]=es7.decorators,optional[]=es7.classProperties,optional[]=es7.objectRestSpread'
       },
-      { test: /[/]styles[/]common[/].*[.]scss$/,
+      { test: /[\\/]styles[\\/]common[\\/].*[.]scss$/,
         loader: styleLoader('css?-mergeIdents&-mergeRules&-uniqueSelectors!sass', cssCommonExtractor)
       },
-      { test: /[/]styles[/]helvetica[/].*[.]scss$/,
+      { test: /[\\/]styles[\\/]helvetica[\\/].*[.]scss$/,
         loader: styleLoader('css?-mergeIdents&-mergeRules&-uniqueSelectors!sass', cssAppExtractor)
       },
       { test: /[.]html$/,
@@ -76,17 +76,17 @@ module.exports = [{
           loader: 'jade-html?' + JSON.stringify({ pretty: true, opts: opts })
         })
       },
-      { test: /[/]assets[/]fonts[/]fontawesome[^/]*$/i,
+      { test: /[\\/]assets[\\/]fonts[\\/]fontawesome[^/]*$/i,
         loader: 'file?name=[path][name].[ext]'
       },
-      { test: /[/]assets[/]/,
-        exclude: /[/]fonts[/]fontawesome[^/]*$/i,
+      { test: /[\\/]assets[\\/]/,
+        exclude: /[\\/]fonts[\\/]fontawesome[^/]*$/i,
         loader: 'file?name=' + (opts.hash ? '[path][name]-[hash].[ext]' : '[path][name]-dev.[ext]')
       }
     ]
   },
   plugins: skipFalsy([
-    new webpack.ContextReplacementPlugin(/moment[/]locale$/, /(?:en|ru)[.]js/),
+    new webpack.ContextReplacementPlugin(/moment[\\/]locale$/, /(?:en|ru)[.]js/),
 
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': opts.dev ? '"development"' : '"production"'
@@ -138,13 +138,13 @@ module.exports = [{
     ],
     loaders: [
       { test: /\.jsx?$/,
-        exclude: /node_modules[/]/,
+        exclude: /node_modules[\\/]/,
         loader: 'babel?optional[]=runtime,optional[]=es7.asyncFunctions,optional[]=es7.decorators,optional[]=es7.classProperties,optional[]=es7.objectRestSpread'
       },
-      { test: /[/]styles[/]common[/].*[.]scss$/,
+      { test: /[\\/]styles[\\/]common[\\/].*[.]scss$/,
         loader: styleLoader('css?-mergeIdents&-mergeRules&-uniqueSelectors!sass', cssCommonExtractor)
       },
-      { test: /[/]styles[/]helvetica[/].*[.]scss$/,
+      { test: /[\\/]styles[\\/]helvetica[\\/].*[.]scss$/,
         loader: styleLoader('css?-mergeIdents&-mergeRules&-uniqueSelectors!sass', cssAppExtractor)
       },
       { test: /[.]html$/,
@@ -158,21 +158,21 @@ module.exports = [{
           loader: 'jade-html?' + JSON.stringify({ pretty: true, opts: opts })
         })
       },
-      { test: /[/]assets[/]fonts[/]fontawesome[^/]*$/i,
+      { test: /[\\/]assets[\\/]fonts[\\/]fontawesome[^/]*$/i,
         loader: 'file?name=[path][name].[ext]'
       },
-      { test: /[/]assets[/]/,
-        exclude: /[/]fonts[/]fontawesome[^/]*$/i,
+      { test: /[\\/]assets[\\/]/,
+        exclude: /[\\/]fonts[\\/]fontawesome[^/]*$/i,
         loader: 'file?name=' + (opts.hash ? '[path][name]-[hash].[ext]' : '[path][name]-dev.[ext]')
       },
       {
-        test: /node_modules[/].*\.json$/,
+        test: /node_modules[\\/].*\.json$/,
         loader: 'raw'
       }
     ]
   },
   plugins: skipFalsy([
-    new webpack.ContextReplacementPlugin(/moment[/]locale$/, /(?:en|ru)[.]js/),
+    new webpack.ContextReplacementPlugin(/moment[\\/]locale$/, /(?:en|ru)[.]js/),
 
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': opts.dev ? '"development"' : '"production"'

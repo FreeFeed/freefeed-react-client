@@ -106,6 +106,9 @@ export const finder = new URLFinder(
   config.siteDomains,
 );
 
+finder.withHashTags = true;
+finder.withArrows = true;
+
 import {LINK, isLink} from '../utils/link-types';
 
 const endsWithExclamation = str => str && str[str.length - 1] === '!';
@@ -123,8 +126,9 @@ const previousElementCheck = (index, array) => {
 
 export function getFirstLinkToEmbed(text) {
   return finder .parse(text)
-                .filter(({type}, index, links) => {
+                .filter(({type, text}, index, links) => {
                   return (type ===  LINK
+                          && /^https?:\/\//i.test(text)
                           && previousElementCheck(index, links));
                 }).map(it => it.text)[0];
 };

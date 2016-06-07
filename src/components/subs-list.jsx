@@ -6,24 +6,47 @@ const TileList = tileUserListFactory({type: PLAIN});
 import throbber16 from 'assets/images/throbber-16.gif';
 
 export default (props) => {
-  return (
-    <div>
-      {props.title ? (
+
+  const title = props.title || "No title";  
+  
+  if (props.isPending) {
+    
+    return (
+      <div>
         <h3>
-          <span>{props.title} </span>
-          {props.isPending ? (
-            <span className="comment-throbber">
-              <img width="16" height="16" src={throbber16}/>
-            </span>
-          ) : false}
+          <span>{title} </span>
+          <span className="comment-throbber">
+            <img width="16" height="16" src={throbber16}/>
+          </span>
         </h3>
-      ) : false}
-
-      {props.errorString ? (
+      </div>
+    );
+    
+  } else if (props.errorString) {
+    
+    return (
+      <div>
+        <h3><span>{title}</span></h3>
         <span className="error-string">{props.errorString}</span>
-      ) : false}
+      </div>
+    );
+    
+  } else {
+    
+    const sections = props.listSections.filter(s => s.users.length > 0);
+    const showTitles = !!props.showSectionsTitles || (sections.length > 1); 
 
-      <TileList users={props.users}/>
-    </div>
-  );
+    return (
+      <div>
+        <h3><span>{title}</span></h3>
+        
+        {sections.map(s => [
+          (showTitles && s.title) ? <h4 className="tile-list-subheader">{s.title}</h4> : false,
+          <TileList users={s.users}/> 
+        ])}
+
+      </div>
+    );
+    
+  }
 };

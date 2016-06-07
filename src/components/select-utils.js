@@ -23,6 +23,8 @@ import {
 
 const MAX_LIKES = 4;
 
+export const ommitBubblesThreshold = 600 * 1000; // 10 min
+
 const allFalse = _ => false;
 
 const commentHighlighter = ({commentsHighlights, user, postsViewState}, commentsPostId, commentList) => {
@@ -63,8 +65,11 @@ export const joinPostData = state => postId => {
     if (author === placeholderUser) {
       console.log('We\'ve got comment with unknown author with id', placeholderUser.id);
     }
-    const previousAuthor = (_comments[index-1] || {}).user;
-    const omitBubble = omitRepeatedBubbles && postViewState.omittedComments === 0 && author === previousAuthor;
+    const previousPost = _comments[index-1] || {createdBy: null, createdAt: "0"};
+    const omitBubble = omitRepeatedBubbles 
+      && postViewState.omittedComments === 0 
+      && comment.createdBy === previousPost.createdBy 
+      && comment.createdAt - previousPost.createdAt < ommitBubblesThreshold;
     const isEditable = (user.id === comment.createdBy);
     const isDeletable = (user.id === post.createdBy);
     const highlighted = highlightComment(commentId, author);

@@ -15,6 +15,7 @@ const FeedHandler = (props) => {
       createPostViewState={props.createPostViewState}
       sendTo={props.sendTo}
       user={props.user}
+      isDirects={props.route.name === 'direct'}
       createPost={props.createPost}
       resetPostCreateForm={props.resetPostCreateForm}
       expandSendTo={props.expandSendTo}
@@ -44,7 +45,7 @@ function selectState(state) {
   const createPostForm = joinCreatePostData(state);
   const timelines = state.timelines;
   const boxHeader = state.boxHeader;
-  const sendTo = {...state.sendTo, defaultFeed: null};
+  const sendTo = {...state.sendTo, defaultFeed: user.username};
 
   return { user, authenticated, visibleEntries, createPostViewState, createPostForm, timelines, boxHeader, sendTo };
 }

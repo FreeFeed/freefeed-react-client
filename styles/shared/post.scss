@@ -8,6 +8,12 @@
     color: #555599;
   }
 
+  .read-more {
+    color: #555599 !important;
+    font-style: italic;
+    white-space: nowrap;
+  }
+
   .post-userpic {
     float: left;
     border: 1px #ccc solid;
@@ -43,7 +49,7 @@
 
       color: #000;
       font-size: 16px;
-      line-height: 21px;
+      line-height: 20px;
 
       a {
         color: #000088;
@@ -69,6 +75,22 @@
     }
   }
 }
+
+// paragraph breaks
+.comment .p-break {
+  display: block;
+  font-size: 0;
+  height: 5px;
+}
+
+.single-post .post-text .p-break {
+  height: 7px;
+}
+
+.timeline-post .post-text .p-break {
+  height: 6px;
+}
+
 
 // "More" menu in post footer
 // (it's just an override, default styles are in react-dd-menu/src/scss/react-dd-menu.scss)

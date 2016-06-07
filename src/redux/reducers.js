@@ -70,8 +70,8 @@ export function signInForm(state={username:'', password:'', error:'', loading: f
   return state;
 }
 
-const defaultRestoreHeader = 'Restore Freefeed Password';
-const successRestoreHeader = 'Check your mail!';
+const defaultRestoreHeader = 'Reset FreeFeed Password';
+const successRestoreHeader = 'Please check your email for password reset instructions.';
 
 export function restorePassForm(state={error:'', loading: false, header: defaultRestoreHeader}, action) {
   switch (action.type) {
@@ -88,8 +88,8 @@ export function restorePassForm(state={error:'', loading: false, header: default
   return state;
 }
 
-const defaultResetHeader = 'Reset Freefeed Password';
-const successResetHeader = 'Log in with new pass!';
+const defaultResetHeader = 'Reset FreeFeed Password';
+const successResetHeader = 'Please log in with your new password';
 
 export function resetPassForm(state={error:'', loading: false, header: defaultResetHeader}, action) {
   switch (action.type) {
@@ -1164,6 +1164,21 @@ export function commentViewState(state={}, action) {
   return state;
 }
 
+export function usersNotFound(state = [], action) {
+  switch (action.type) {
+    case fail(ActionTypes.GET_USER_INFO): {
+      if (action.response.status === 404) {
+        const {username} = action.request;
+        if (state.indexOf(username) < 0) {
+          state = [...state, username];
+        } 
+        return state;
+      }
+    }
+  }
+  return state;
+}
+
 export function users(state = {}, action) {
   if (ActionHelpers.isFeedResponse(action)) {
     return mergeByIds(state, (action.payload.users || []).map(userParser));
@@ -1884,15 +1899,6 @@ export function frontendRealtimePreferencesForm(state=initialRealtimeSettings, a
     case response(ActionTypes.WHO_AM_I): {
       const fp = action.payload.users.frontendPreferences[frontendPrefsConfig.clientId];
       return {...state, realtimeActive: (fp ? fp.realtimeActive : initialRealtimeSettings.realtimeActive)};
-    }
-    case request(ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES): {
-      return {...state, status: 'loading'};
-    }
-    case response(ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES): {
-      return {...state, status: 'success'};
-    }
-    case fail(ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES): {
-      return {...state, status: 'error', errorMessage: (action.payload || {}).err};
     }
   }
   return state;

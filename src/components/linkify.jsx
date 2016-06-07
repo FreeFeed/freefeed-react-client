@@ -1,18 +1,12 @@
 import React from 'react';
 import {Link} from 'react-router';
 import {finder} from '../utils';
+import UserName from './user-name';
 import {shorten} from 'ff-url-finder';
-import {LINK, AT_LINK, LOCAL_LINK, EMAIL} from '../utils/link-types';
+import {LINK, AT_LINK, LOCAL_LINK, EMAIL, HASHTAG, ARROW} from '../utils/link-types';
+import {search as searchConfig} from '../config';
 
 const MAX_URL_LENGTH = 50;
-
-const arrowDetector = /(↑+|\^+)W?/g;
-const defaultFunction = _ => _;
-const getArrowProps = ({hover = defaultFunction, leave= defaultFunction}={}, text) => ({
-  className:'arrow-span',
-  onMouseEnter: _ => hover(text.length),
-  onMouseLeave: leave
-});
 
 class Linkify extends React.Component {
   createLinkElement({type, username}, displayedLink, href) {
@@ -30,6 +24,25 @@ class Linkify extends React.Component {
         props,
         displayedLink
       );
+    } else if (type == HASHTAG) {
+      props['href'] = href;
+      props['target'] = '_blank';
+
+      return React.createElement(
+        'a',
+        props,
+        displayedLink
+      );
+    } else if (type == ARROW) {
+      props['className'] = 'arrow-span';
+      props['onMouseEnter'] = _ => this.arrowHover.hover(displayedLink.length);
+      props['onMouseLeave'] = this.arrowHover.leave;
+      
+      return React.createElement(
+        'span',
+        props,
+        displayedLink
+      );
     } else {
       props['href'] = href;
       props['target'] = '_blank';
@@ -42,35 +55,8 @@ class Linkify extends React.Component {
     }
   }
 
-  createArrowElement(arrows) {
-    return React.createElement(
-      'span',
-      {
-        ...getArrowProps(this.arrowHover, arrows),
-        key: `match${++this.idx}`,
-      },
-      arrows
-    );
-  }
-
   parseCounter = 0
   idx = 0
-
-  parseArrows(text) {
-    if (!this.arrowHover) {
-      return [text];
-    }
-    const pieces = text.split(arrowDetector);
-    const resPieces = pieces.map(piece => {
-      if (piece.match(arrowDetector)) {
-        return this.createArrowElement(piece);
-      }
-      return piece;
-    });
-
-
-    return resPieces;
-  }
 
   parseString(string) {
     let elements = [];
@@ -82,24 +68,30 @@ class Linkify extends React.Component {
 
     try {
       finder.parse(string).map(it => {
-        let displayedLink;
+        let displayedLink = it.text;
         let href;
 
         if (it.type === LINK) {
           displayedLink = shorten(it.text, MAX_URL_LENGTH);
           href = it.url;
         } else if (it.type === AT_LINK) {
-          displayedLink = it.text;
-          href = `/${it.username}`;
+          elements.push(<UserName 
+            user={{username: it.username}} 
+            display={it.text} 
+            userHover={this.userHover} 
+            key={`match${++this.idx}`}/>);
+          return;
         } else if (it.type === LOCAL_LINK) {
           displayedLink = shorten(it.text, MAX_URL_LENGTH);
           href = it.uri;
         } else if (it.type === EMAIL) {
-          displayedLink = it.text;
           href = `mailto:${it.address}`;
+        } else if (it.type === HASHTAG) {
+          href = searchConfig.searchEngine+encodeURIComponent(it.text);
+        } else if (it.type === ARROW && this.arrowHover) {
+          // pass
         } else {
-          const textWithArrows = this.parseArrows(it.text);
-          elements = elements.concat(textWithArrows);
+          elements.push(it.text);
           return;
         }
 

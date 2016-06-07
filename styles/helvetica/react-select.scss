@@ -350,4 +350,13 @@
   border-top-right-radius: 2px;
   cursor: default;
   padding: 2px 5px;
+  margin-right: 0.5em;
+}
+
+.Select .fa,
+.Select-value-label-standalone .fa {
+    opacity: 0.8;
+    &.fa-users {
+      font-size: 12px;
+    }
 }
