@@ -127,6 +127,13 @@ export default class Post extends React.Component {
       </span>
     ));
 
+    // username in url
+    // If posted _only_ into groups, use first recipient's username 
+    let urlName = props.createdBy.username;
+    if (props.recipients.length > 0 && !props.recipients.some(r => r.type === "user")) {
+      urlName = props.recipients[0].username;
+    }
+
     // "Lock icon": check if the post is truly private, "partly private" or public.
     // Truly private:
     // - posted to author's own private feed and/or
@@ -229,7 +236,7 @@ export default class Post extends React.Component {
         ) : false}
       </div>
     ) : (
-      <div className={postClass}>
+      <div className={postClass} data-author={props.createdBy.username}>
         <div className="post-userpic">
           <Link to={`/${props.createdBy.username}`}>
             <img src={profilePicture} width={profilePictureSize} height={profilePictureSize}/>
@@ -290,6 +297,7 @@ export default class Post extends React.Component {
           <PostAttachments
             attachments={props.attachments}
             isEditing={props.isEditing}
+            isSinglePost={props.isSinglePost}
             removeAttachment={this.removeAttachment}/>
 
           {props.allowLinksPreview && noImageAttachments && linkToEmbed ? (
@@ -302,7 +310,7 @@ export default class Post extends React.Component {
               <i className="post-lock-icon fa fa-lock" title="This entry is private"></i>
             ) : false}
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
-            <Link to={`/${props.createdBy.username}/${props.id}`} className="post-timestamp">
+            <Link to={`/${urlName}/${props.id}`} className="post-timestamp">
               <time dateTime={createdAtISO} title={createdAtHuman}>{createdAgo}</time>
             </Link>
             {commentLink}
@@ -330,7 +338,8 @@ export default class Post extends React.Component {
             addComment={props.addComment}
             toggleCommenting={props.toggleCommenting}
             showMoreComments={props.showMoreComments}
-            commentEdit={props.commentEdit}/>
+            commentEdit={props.commentEdit}
+            entryUrl={`/${urlName}/${props.id}`}/>
         </div>
       </div>
     ));

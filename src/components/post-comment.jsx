@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Textarea from 'react-textarea-autosize';
 import _ from 'lodash';
+import classnames from 'classnames';
 
 import PieceOfText from './piece-of-text';
 import UserName from './user-name';
@@ -89,9 +90,14 @@ export default class PostComment extends React.Component {
 
   render() {
     const createdAgo = fromNowOrNow(+this.props.createdAt);
+    const className = classnames({
+      'comment': true,
+      'highlighted': this.props.highlighted,
+      'omit-bubble': this.props.omitBubble
+    });
 
     return (
-    <div className={`comment ${this.props.highlighted ? 'highlighted' : ''}`}>
+    <div className={className} data-author={this.props.isEditing ? '' : this.props.user.username}>
       <a className={`comment-icon fa ${this.props.omitBubble ? 'feed-comment-dot' : 'fa-comment-o'}`}
          title={createdAgo}
          id={`comment-${this.props.id}`}

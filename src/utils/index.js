@@ -107,6 +107,7 @@ export const finder = new URLFinder(
 );
 
 finder.withHashTags = true;
+finder.withArrows = true;
 
 import {LINK, isLink} from '../utils/link-types';
 

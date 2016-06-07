@@ -1,6 +1,6 @@
 {
   "name": "reactive-pepyatka",
-  "version": "0.8.4",
+  "version": "0.8.9",
   "description": "",
   "main": "index.js",
   "dependencies": {
@@ -12,7 +12,7 @@
     "classnames": "^2.2.0",
     "css-loader": "^0.19.0",
     "extract-text-webpack-plugin": "^0.8.2",
-    "ff-url-finder": "^2.1.8",
+    "ff-url-finder": "^2.3.0",
     "file-loader": "^0.8.4",
     "history": "^2.0.0",
     "isomorphic-fetch": "^2.1.1",

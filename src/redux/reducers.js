@@ -1164,6 +1164,21 @@ export function commentViewState(state={}, action) {
   return state;
 }
 
+export function usersNotFound(state = [], action) {
+  switch (action.type) {
+    case fail(ActionTypes.GET_USER_INFO): {
+      if (action.response.status === 404) {
+        const {username} = action.request;
+        if (state.indexOf(username) < 0) {
+          state = [...state, username];
+        } 
+        return state;
+      }
+    }
+  }
+  return state;
+}
+
 export function users(state = {}, action) {
   if (ActionHelpers.isFeedResponse(action)) {
     return mergeByIds(state, (action.payload.users || []).map(userParser));
@@ -1884,15 +1899,6 @@ export function frontendRealtimePreferencesForm(state=initialRealtimeSettings, a
     case response(ActionTypes.WHO_AM_I): {
       const fp = action.payload.users.frontendPreferences[frontendPrefsConfig.clientId];
       return {...state, realtimeActive: (fp ? fp.realtimeActive : initialRealtimeSettings.realtimeActive)};
-    }
-    case request(ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES): {
-      return {...state, status: 'loading'};
-    }
-    case response(ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES): {
-      return {...state, status: 'success'};
-    }
-    case fail(ActionTypes.UPDATE_FRONTEND_REALTIME_PREFERENCES): {
-      return {...state, status: 'error', errorMessage: (action.payload || {}).err};
     }
   }
   return state;

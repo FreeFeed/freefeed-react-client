@@ -15,7 +15,8 @@ ul.tile-list {
       margin-bottom: 5px;
     }
 
-    a {
+    .user-name-wrapper > a, 
+    .avatar > a {
       display: block;
       line-height: 130%;
       font-size: 12px;
@@ -24,6 +25,7 @@ ul.tile-list {
 
     .user-actions {
       color: #666;
+      font-size: 12px;
 
       a {
         display: inline;
@@ -63,4 +65,8 @@ ul.tile-list {
   h3 + & {
     margin-top: 24px;
   }
+}
+
+.tile-list-text {
+  margin: 30px 0;
 }

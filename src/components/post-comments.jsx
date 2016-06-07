@@ -54,7 +54,6 @@ const renderAddCommentLink = (props, disabledForOthers) => {
 };
 
 export default (props) => {
-  const entryUrl = `/${props.post.createdBy.username}/${props.post.id}`;
 
   const openAnsweringComment = (answerText) => {
     if (!props.post.isCommenting && !props.post.isSinglePost) {
@@ -69,7 +68,7 @@ export default (props) => {
     }
   };
 
-  const commentMapper = renderComment(entryUrl, openAnsweringComment, props.post.isModeratingComments, props.commentEdit, props.post.id);
+  const commentMapper = renderComment(props.entryUrl, openAnsweringComment, props.post.isModeratingComments, props.commentEdit, props.post.id);
   const totalComments = props.comments.length + props.post.omittedComments; 
   const first = withBackwardNumber(props.comments[0], totalComments);
   const last = withBackwardNumber(props.comments.length > 1 && props.comments[props.comments.length - 1], 1);
@@ -87,7 +86,7 @@ export default (props) => {
         ? <MoreCommentsWrapper
             omittedComments={props.post.omittedComments}
             showMoreComments={showMoreComments}
-            entryUrl={entryUrl}
+            entryUrl={props.entryUrl}
             isLoading={props.post.isLoadingComments}/>
         : false}
       {last ? commentMapper(last) : false}
