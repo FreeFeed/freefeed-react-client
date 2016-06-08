@@ -49,6 +49,11 @@
     }
   }
 
+  &.single-image .attachment {
+    height: auto;
+    line-height: normal;
+  }
+
   &.expanded .attachment.surplus {
     display: inline-block;
   }
