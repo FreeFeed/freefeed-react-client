@@ -172,7 +172,7 @@ const isFirstFriendInteraction = (post, {users}, {subscriptions, comments}) => {
   const likesWithoutCurrent = post.posts.likes.filter(like => like !== newLike);
   const friendsInvolved = list => list.filter(element => myFriends.indexOf(element) !== -1).length;
   const friendsLikedBefore = friendsInvolved(likesWithoutCurrent);
-  const newPostCommentAuthors = post.comments.map(comment => comment.createdBy);
+  const newPostCommentAuthors = (post.comments || []).map(comment => comment.createdBy);
   const commentsAuthors = post.posts.comments.map(cId => (comments[cId] || {}).createdBy);
   const friendsCommented = friendsInvolved([...commentsAuthors, ...newPostCommentAuthors]);
   const wasFirstInteraction = !friendsCommented && !friendsLikedBefore;
