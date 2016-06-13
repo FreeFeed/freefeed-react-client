@@ -107,7 +107,7 @@
 // Editing entries
 
 .image-attachments {
-  .attachment:hover .remove-attachment {
+  .attachment .remove-attachment {
     display: block;
     position: absolute;
     right: 1px;
@@ -115,7 +115,6 @@
     cursor: pointer;
     color: #000;
     font-size: 20px;
-    padding: 6px 8px 7px 9px;
     z-index: 100;
     background-color: silver;
     opacity: 0.7;
