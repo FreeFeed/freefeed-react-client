@@ -25,8 +25,7 @@ const dropzoneConfig = {
   `,
   clickable: '.dropzone-trigger', // Define the element that should be used as click trigger to select files.
   headers: {
-    'Cache-Control': null,
-    'X-Authentication-Token': getToken()
+    'Cache-Control': null
   }
 };
 
@@ -49,6 +48,10 @@ const dropzoneEventHandlers = ({addAttachmentResponse, addedFile, removedFile}) 
       dropEvent.dataTransfer = { types: e.dataTransfer.types };
     }
     window.dispatchEvent(dropEvent);
+  },
+
+  sending: function(file, xhr, form) {
+    xhr.setRequestHeader('X-Authentication-Token', getToken());
   },
 
   success: function(file, response) {
