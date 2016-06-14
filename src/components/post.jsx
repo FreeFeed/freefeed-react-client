@@ -7,6 +7,7 @@ import {fromNowOrNow, getFullDate} from '../utils';
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
 import PostLikes from './post-likes';
+import PostVia from './post-via';
 import UserName from './user-name';
 import PieceOfText from './piece-of-text';
 import Textarea from 'react-textarea-autosize';
@@ -247,6 +248,7 @@ export default class Post extends React.Component {
             <UserName className="post-author" user={props.createdBy}/>
             {recipients.length > 0 ? ' to ' : false}
             {recipients}
+            {this.props.isInHomeFeed ? <PostVia post={this.props} me={this.props.user} /> : false}
           </div>
 
           {props.isEditing ? (
