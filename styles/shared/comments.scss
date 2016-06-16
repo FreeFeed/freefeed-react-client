@@ -6,6 +6,7 @@
 
 .comment {
   margin-top: 8px;
+  position: relative;
 
   .comment-icon {
     float: left;
@@ -70,7 +71,20 @@
   }
 
   &.highlighted {
-    background-color: #D9EBFF;
+    $hl-color: #D9EBFF;
+    background-color: $hl-color;
+ 
+    &::before {
+      $border-width: 3px;
+      content: '';
+      position: absolute;
+      top: -$border-width;
+      left: -$border-width;
+      right: -$border-width;
+      bottom: -$border-width;
+      border: $border-width solid $hl-color;
+      border-radius: $border-width;
+    }
   }
 }
 
