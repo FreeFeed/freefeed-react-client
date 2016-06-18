@@ -35,7 +35,7 @@ const ManageSubscribersHandler = (props) => {
           <h3>Manage subscribers</h3>
           {props.users ? <h4 className="tile-list-subheader">Subscribers</h4> : false}
           {props.users ? props.users.length == 0 ? (
-              <div className="tile-list-text">There's not a single one subscriber yet. You might invite some friends to change that.</div>
+              <div className="tile-list-text">There&#x2019;s not a single one subscriber yet. You might invite some friends to change that.</div>
             ) : (
               <SubsList
                 users={props.users}
