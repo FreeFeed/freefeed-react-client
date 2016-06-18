@@ -30,7 +30,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     toggle: (userId, frontendPreferences) => {
-      const {realtimeActive} = props.frontendPreferences;
+      const {realtimeActive} = frontendPreferences;
       //send a request to change flag
       dispatch(updateFrontendPreferences(userId, {...frontendPreferences, realtimeActive: !realtimeActive}));
       //set a flag to show
