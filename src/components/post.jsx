@@ -95,9 +95,9 @@ export default class Post extends React.Component {
         return false;
       }
       if (recipient.username[recipient.username.length - 1] === 's') {
-        return recipient.username + "' feed";
+        return recipient.username + '\u2019 feed';
       } else {
-        return recipient.username + "'s feed";
+        return recipient.username + '\u2019s feed';
       }
     };
 

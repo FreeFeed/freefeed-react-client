@@ -70,7 +70,7 @@ class UserCard extends React.Component {
 
           <div className="description">
             {props.isItMe ? (
-              "It's you!"
+              'It\u2019s you!'
             ) : props.user.type === 'user' && props.user.isPrivate === '1' ? (
               'Private feed'
             ) : props.user.type === 'user' && props.user.isPrivate === '0' ? (
