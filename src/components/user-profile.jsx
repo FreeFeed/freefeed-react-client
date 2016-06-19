@@ -118,7 +118,7 @@ export default class UserProfile extends React.Component {
                   </p>
                 </div>
               </div>
-            ) : false} 
+            ) : false}
           </div>
         ) : false}
 
@@ -134,6 +134,12 @@ export default class UserProfile extends React.Component {
             addAttachmentResponse={props.addAttachmentResponse}
             removeAttachment={props.removeAttachment}/>
         ) : false}
+
+        {!props.canIPostHere && props.isRestricted === '1' ? (
+          <div className="create-post create-post-restricted">
+            Only administrators can post to this group.
+          </div>
+          ) : false}
       </div>
     );
   }
