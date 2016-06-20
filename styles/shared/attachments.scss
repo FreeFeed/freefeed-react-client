@@ -33,10 +33,7 @@
     border: 1px solid silver;
     padding: 1px;
     margin: 0 8px 8px 0;
-    height: 175px;
     box-sizing: content-box;
-    line-height: 170px;
-    min-width: 50px;
     text-align: center;
 
     img {
@@ -47,6 +44,18 @@
     &.surplus {
       display: none;
     }
+
+    a {
+      display: block;
+      min-width: 32px;
+      min-height: 32px;
+      line-height: 30px;
+    }
+  }
+
+  &.single-image .attachment {
+    height: auto;
+    line-height: normal;
   }
 
   &.expanded .attachment.surplus {
@@ -98,7 +107,7 @@
 // Editing entries
 
 .image-attachments {
-  .attachment:hover .remove-attachment {
+  .attachment .remove-attachment {
     display: block;
     position: absolute;
     right: 1px;
@@ -106,8 +115,6 @@
     cursor: pointer;
     color: #000;
     font-size: 20px;
-    padding: 6px 8px 7px 9px;
-    z-index: 100;
     background-color: silver;
     opacity: 0.7;
     border-bottom-left-radius: 5px;
@@ -131,6 +138,8 @@
     display: none;
     width: 24px;
     color: #8ab;
+    vertical-align: middle;
+    margin-bottom: 8px;
     
     .fa {
       cursor: pointer;

@@ -73,7 +73,7 @@ export default class SendTo extends React.Component {
 
     return (
       <div className="send-to">
-        {!this.state.showFeedsOption ? (
+        {!this.state.showFeedsOption && defaultOpt ? (
           <div>
             To:&nbsp;
             <span className="Select-value-label-standalone">{this.labelRenderer(defaultOpt)}</span>

@@ -25,6 +25,10 @@ const config = {
     'beta.freefeed.net',
     'old.freefeed.net'
   ],
+  sentry: {
+    publicDSN: null,
+    sentinel: null // keep always last
+  },
   frontendPreferences: {
     clientId: 'net.freefeed',
     defaultValues: {

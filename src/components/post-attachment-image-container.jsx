@@ -54,7 +54,8 @@ export default class PostAttachmentsImage extends React.Component {
     const className = classnames({
       'image-attachments': true,
       'is-folded': this.state.isFolded,
-      'needs-folding': this.state.needsFolding
+      'needs-folding': this.state.needsFolding,
+      'single-image': this.props.attachments.length === 1 
     });
 
     const showFolded = (this.state.needsFolding && this.state.isFolded);
