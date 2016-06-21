@@ -1171,7 +1171,7 @@ export function usersNotFound(state = [], action) {
         const {username} = action.request;
         if (state.indexOf(username) < 0) {
           state = [...state, username];
-        } 
+        }
         return state;
       }
     }
@@ -1362,7 +1362,7 @@ export function userSettingsForm(state={saved: false}, action) {
       return {...state, isSaving: false, success: true, error: false};
     }
     case fail(ActionTypes.UPDATE_USER): {
-      return {...state, isSaving: false, success: false, error: true};
+      return {...state, isSaving: false, success: false, error: true, errorMessage: (action.payload || {}).err};
     }
   }
   return state;
