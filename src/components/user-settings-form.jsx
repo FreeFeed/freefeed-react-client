@@ -18,13 +18,20 @@ export default class UserSettingsForm extends React.Component {
   }
 
   render() {
+    const className = classnames({
+      'form-group': true,
+      'has-feedback': this.props.screenName,
+      'has-error': this.props.screenName && (this.props.screenName.length < 3 || this.props.screenName.length > 25),
+      'has-success': this.props.screenName && (this.props.screenName.length >= 3 && this.props.screenName.length <= 25)
+    });
+
     return (
       <form onSubmit={preventDefault(this.updateUser)}>
-        <div className={classnames({'form-group': true, 'has-feedback': this.props.screenName, 'has-error': this.props.screenName && (this.props.screenName.length < 3 || this.props.screenName.length > 25), 'has-success': this.props.screenName && (this.props.screenName.length >= 3 && this.props.screenName.length <= 25) })}>
+        <div className={className}>
           {
             this.props.screenName ? (
               <span className="help-block displayName-input-hint">{this.props.screenName.length} of 25</span>
-              ) : false
+            ) : false
           }
           <label htmlFor="displayName-input">Display name:</label>
           <input id="displayName-input" className="form-control" name="screenName" type="text" defaultValue={this.props.user.screenName} onChange={this.updateSetting('screenName')} maxLength="100"/>
