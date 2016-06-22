@@ -1,12 +1,33 @@
 import {compose, createStore, applyMiddleware, combineReducers} from 'redux';
 import {createHistory, createHashHistory} from 'history';
 
-import {apiMiddleware, authMiddleware, likesLogicMiddleware, userPhotoLogicMiddleware, groupPictureLogicMiddleware, redirectionMiddleware, requestsMiddleware, realtimeMiddleware} from './middlewares';
+import {
+  apiMiddleware,
+  authMiddleware,
+  likesLogicMiddleware,
+  userPhotoLogicMiddleware,
+  groupPictureLogicMiddleware,
+  redirectionMiddleware,
+  requestsMiddleware,
+  realtimeMiddleware,
+  dataFixMiddleware
+} from './middlewares';
+
 import {routerReducer} from 'react-router-redux';
 import * as reducers from './reducers';
 
 //order matters — we need to stop unauthed async fetching before request, see authMiddleware
-const middleware = [ authMiddleware, apiMiddleware, likesLogicMiddleware, userPhotoLogicMiddleware, groupPictureLogicMiddleware, redirectionMiddleware, requestsMiddleware, realtimeMiddleware ];
+const middleware = [
+  authMiddleware,
+  apiMiddleware,
+  dataFixMiddleware,
+  likesLogicMiddleware,
+  userPhotoLogicMiddleware,
+  groupPictureLogicMiddleware,
+  redirectionMiddleware,
+  requestsMiddleware,
+  realtimeMiddleware
+];
 
 const isDevelopment = process.env.NODE_ENV != 'production';
 
