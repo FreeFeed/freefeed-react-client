@@ -252,3 +252,25 @@ export const realtimeMiddleware = store => {
     return next(action);
   };
 };
+
+// Fixing data structures coming from server
+export const dataFixMiddleware = store => next => action => {
+  if (action.type === response(ActionTypes.GET_SINGLE_POST)) {
+    fixBodylessPosts([action.payload.posts]);
+  }
+
+  if (
+    action.type === response(ActionTypes.GET_USER_FEED) ||
+    action.type === response(ActionTypes.GET_USER_COMMENTS) ||
+    action.type === response(ActionTypes.GET_USER_LIKES)
+  ) {
+    fixBodylessPosts(action.payload.posts);
+  }
+
+  return next(action);
+};
+
+// there are some old posts without 'body' field
+function fixBodylessPosts(posts) {
+  posts.forEach(p => p.body = p.body || '');
+}
