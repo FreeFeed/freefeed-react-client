@@ -2,6 +2,7 @@ import React from 'react';
 
 import {preventDefault} from '../utils';
 import throbber16 from 'assets/images/throbber-16.gif';
+import classnames from 'classnames';
 
 export default class UserSettingsForm extends React.Component {
   updateSetting = (setting) => (e) => {
@@ -17,11 +18,23 @@ export default class UserSettingsForm extends React.Component {
   }
 
   render() {
+    const className = classnames({
+      'form-group': true,
+      'has-feedback': this.props.screenName,
+      'has-error': this.props.screenName && (this.props.screenName.length < 3 || this.props.screenName.length > 25),
+      'has-success': this.props.screenName && (this.props.screenName.length >= 3 && this.props.screenName.length <= 25)
+    });
+
     return (
       <form onSubmit={preventDefault(this.updateUser)}>
-        <div className="form-group">
+        <div className={className}>
+          {
+            this.props.screenName ? (
+              <span className="help-block displayName-input-hint">{this.props.screenName.length} of 25</span>
+            ) : false
+          }
           <label htmlFor="displayName-input">Display name:</label>
-          <input id="displayName-input" className="form-control" name="screenName" type="text" defaultValue={this.props.user.screenName} onChange={this.updateSetting('screenName')}/>
+          <input id="displayName-input" className="form-control" name="screenName" type="text" defaultValue={this.props.user.screenName} onChange={this.updateSetting('screenName')} maxLength="100"/>
         </div>
         <div className="form-group">
           <label htmlFor="email-input">Email:</label>
@@ -49,7 +62,7 @@ export default class UserSettingsForm extends React.Component {
         {this.props.success ? (
           <div className="alert alert-info" role="alert">Updated!</div>
         ) : this.props.error ? (
-          <div className="alert alert-danger" role="alert">Something went wrong during user settings update</div>
+          <div className="alert alert-danger" role="alert">{this.props.errorMessage}</div>
         ) : false}
       </form>
     );
