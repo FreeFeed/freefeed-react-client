@@ -264,6 +264,7 @@ export const dataFixMiddleware = store => next => action => {
     action.type === response(ActionTypes.GET_USER_COMMENTS) ||
     action.type === response(ActionTypes.GET_USER_LIKES)
   ) {
+    action.payload.posts = action.payload.posts || [];
     fixBodylessPosts(action.payload.posts);
   }
 
