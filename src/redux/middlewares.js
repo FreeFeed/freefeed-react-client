@@ -172,8 +172,8 @@ const isFirstFriendInteraction = (post, {users}, {subscriptions, comments}) => {
   const likesWithoutCurrent = post.posts.likes.filter(like => like !== newLike);
   const friendsInvolved = list => list.filter(element => myFriends.indexOf(element) !== -1).length;
   const friendsLikedBefore = friendsInvolved(likesWithoutCurrent);
-  const newPostCommentAuthors = post.comments.map(comment => comment.createdBy);
-  const commentsAuthors = post.posts.comments.map(cId => (comments[cId] || {}).createdBy);
+  const newPostCommentAuthors = (post.comments || []).map(comment => comment.createdBy);
+  const commentsAuthors = (post.posts.comments || []).map(cId => (comments[cId] || {}).createdBy);
   const friendsCommented = friendsInvolved([...commentsAuthors, ...newPostCommentAuthors]);
   const wasFirstInteraction = !friendsCommented && !friendsLikedBefore;
   return wasFirstInteraction;
@@ -252,3 +252,29 @@ export const realtimeMiddleware = store => {
     return next(action);
   };
 };
+
+// Fixing data structures coming from server
+export const dataFixMiddleware = store => next => action => {
+  if (action.type === response(ActionTypes.GET_SINGLE_POST)) {
+    [action.payload, action.payload.posts].forEach(fixPostsData);
+  }
+
+  if (
+    action.type === response(ActionTypes.GET_USER_FEED) ||
+    action.type === response(ActionTypes.GET_USER_COMMENTS) ||
+    action.type === response(ActionTypes.GET_USER_LIKES)
+  ) {
+    action.payload.posts = action.payload.posts || [];
+    action.payload.posts.forEach(fixPostsData);
+  }
+
+  return next(action);
+};
+
+function fixPostsData(post) {
+  // there are some old posts without 'body' field
+  post.body = post.body || '';
+  // post may not have 'comments' field
+  post.comments = post.comments || [];
+}
+
