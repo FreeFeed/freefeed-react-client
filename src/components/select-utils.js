@@ -76,7 +76,7 @@ export const joinPostData = state => postId => {
     return _comments.concat([{ ...comment, ...commentViewState, user: author, isEditable, isDeletable, omitBubble, highlighted }]);
   }, []);
 
-  if (postViewState.omittedComments !== 0) {
+  if (postViewState.omittedComments !== 0 && comments.length > 2) {
     comments = [ comments[0], comments[comments.length - 1] ];
   }
 
