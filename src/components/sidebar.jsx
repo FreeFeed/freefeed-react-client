@@ -43,6 +43,15 @@ export default ({user, signOut, recentGroups}) => (
     </div>
 
     <div className='box'>
+      <div className='box-header-groups'>Important</div>
+      <div className='box-body'>
+        <span style={{backgroundColor: '#fffad0'}}>FreeFeed will migrate to a new database on
+          July, 4.</span> Please <Link to="/freefeed/18593bf9-0628-4ee9-9486-e8c1668b3f7e"
+          style={{textDecoration: 'underline', color: 'black'}}>see the announcement</Link> for more information.
+      </div>
+    </div>
+
+    <div className='box'>
       <div className='box-header-search'>
         Search
       </div>
