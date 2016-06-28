@@ -35,6 +35,7 @@
   }
 
   .comment-body {
+    word-wrap: break-word;
     margin-left: 19px;
   }
 
@@ -73,7 +74,7 @@
   &.highlighted {
     $hl-color: #D9EBFF;
     background-color: $hl-color;
- 
+
     &::before {
       $border-width: 3px;
       content: '';
