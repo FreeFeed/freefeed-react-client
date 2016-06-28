@@ -47,10 +47,11 @@ function selectState(state, ownProps) {
   const amIGroupAdmin = (state.managedGroups.find(group => group.username == username) != null);
   
   const thisUser = [..._.values(state.users), ..._.values(state.groups)].find(u => u.username == username);
-  const adminIds = (thisUser && thisUser.type === 'group') ? thisUser.administrators : [];
+  const thisIsGroup = thisUser && thisUser.type === 'group';
+  const adminIds = thisIsGroup ? thisUser.administrators : [];
   
   const listSections = [
-    {title: 'Members', users: []},
+    {title: thisIsGroup ? 'Members' : null, users: []},
     {title: 'Admins', users: []}
   ];
   
