@@ -120,12 +120,14 @@ function Signup(props) {
                          onChange={e => props.signUpChange({password: e.target.value})}/>
                 </div>
 
-                <div className='form-group'>
-                  <Recaptcha sitekey={captchaConfig.siteKey}
-                             theme='light' type='image'
-                             onChange={v => props.signUpChange({captcha: v})}
-                             onExpired={v => props.signUpChange({captcha: null})} />
-                </div>
+                {captchaConfig.siteKey &&
+                  <div className='form-group'>
+                    <Recaptcha sitekey={captchaConfig.siteKey}
+                               theme='light' type='image'
+                               onChange={v => props.signUpChange({captcha: v})}
+                               onExpired={v => props.signUpChange({captcha: null})}/>
+                  </div>
+                }
 
                 <div className='form-group'>
                   <button className='btn btn-default p-signin-action' type='submit'>Sign up</button>
