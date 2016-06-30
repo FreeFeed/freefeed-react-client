@@ -83,7 +83,7 @@
       left: -$border-width;
       right: -$border-width;
       bottom: -$border-width;
-      border: $border-width solid $hl-color;
+      border: $border-width+1px solid $hl-color;
       border-radius: $border-width;
     }
   }
