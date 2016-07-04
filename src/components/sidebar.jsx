@@ -44,6 +44,7 @@ export default ({user, signOut, recentGroups}) => (
 
     <div className='box'>
       <div className='box-header-groups'>Important</div>
+      <div className='box-body'>
         <span style={{backgroundColor: '#fffad0'}}>FreeFeed has <Link to="https://freefeed.net/freefeed/bb14af94-7ec0-4e58-b086-c034e60db786" style={{textDecoration: 'underline', color: 'black'}}>experienced a major data loss</Link>
           {' '}while <Link to="/freefeed/723d194b-eea2-4833-a0be-b8a342275293" style={{textDecoration: 'underline', color: 'black'}}>migrating to a new database</Link>.
           {' '}We recovered most of the content and are working on recovering more.
