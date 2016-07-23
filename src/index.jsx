@@ -86,6 +86,7 @@ ReactDOM.render(
         <Route name='groupSettings' path='/:userName/settings' component={GroupSettings} onEnter={boundRouteActions('getUserInfo')}/>
         <Route name='discussions' path='filter/discussions' component={Discussions} onEnter={boundRouteActions('discussions')}/>
         <Route name='direct' path='filter/direct' component={Discussions} onEnter={boundRouteActions('direct')}/>
+        <Route name='search' path='search' component={Discussions} onEnter={boundRouteActions('search')} onChange={(_, next) => boundRouteActions('search')(next)}/>
         <Route name='groups' path='/groups' component={Groups} onEnter={enterStaticPage('Groups')}/>
         <Route name='friends' path='/friends' component={Friends} onEnter={friendsActions}/>
         <Route name='groupCreate' path='/groups/create' component={GroupCreate} onEnter={enterStaticPage('Create a group')}/>
