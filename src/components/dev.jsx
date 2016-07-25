@@ -10,7 +10,7 @@ export default (props) => (
       <p>We are looking for volunteers to help us build FreeFeed, an open-source
         social network, replacement of FriendFeed.com.</p>
 
-      <p>We need help with both development and testing.</p>
+      <p>We <a href="https://dev.freefeed.net" target="_blank">need help</a> with both development and testing.</p>
 
       <p>FreeFeed is open-source: <a href="https://github.com/FreeFeed/" target="_blank">https://github.com/FreeFeed/</a></p>
 
@@ -25,7 +25,7 @@ export default (props) => (
       <p>[x] v 0.6 React frontend<br/>
         [x] v 0.7 Add real-time updates to the frontend<br/>
         [x] v 0.8 Add support for private groups<br/>
-        [ &nbsp;] v 0.9 Migrate to Postgres<br/>
+        [x] v 0.9 Migrate to Postgres<br/>
         [ &nbsp;] v 1.0 Support for search and #hashtags</p>
 
       <p><a href="https://dev.freefeed.net" target="_blank">Join</a> our team of volunteers!</p>
