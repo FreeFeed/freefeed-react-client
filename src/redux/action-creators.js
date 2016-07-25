@@ -602,3 +602,11 @@ export function blockedByMe() {
     apiRequest: Api.getBlockedByMe
   };
 }
+
+export function getSearch(search) {
+  return {
+    type: ActionTypes.GET_SEARCH,
+    apiRequest: Api.getSearch,
+    payload: {search},
+  };
+}

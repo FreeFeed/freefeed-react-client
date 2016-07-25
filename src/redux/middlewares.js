@@ -23,6 +23,10 @@ export const apiMiddleware = store => next => async (action) => {
       return store.dispatch({payload: obj, type: fail(action.type), request: action.payload, response: apiResponse});
     }
   } catch (e) {
+    /*global Raven*/
+    if (Raven) {
+      Raven.captureException(e, { level: 'error', tags: { area: 'redux/apiMiddleware' }, extra: { action } });
+    }
     return store.dispatch(ActionCreators.serverError(e));
   }
 };
@@ -239,7 +243,9 @@ export const realtimeMiddleware = store => {
       if (!realtimeConnection) {
         realtimeConnection = init(handlers);
       }
-      realtimeConnection.subscribe({timeline:[action.payload.timelines.id]});
+      if (action.payload.timelines) {
+        realtimeConnection.subscribe({timeline:[action.payload.timelines.id]});
+      }
     }
 
     if (action.type === response(ActionTypes.GET_SINGLE_POST)) {

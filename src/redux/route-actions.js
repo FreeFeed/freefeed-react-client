@@ -11,11 +11,14 @@ import {
   getUserLikes,
   subscribers,
   subscriptions,
-  getSinglePost
+  getSinglePost,
+  getSearch,
 } from './action-creators';
 
 //query params are strings, so + hack to convert to number
 const getOffset = nextRoute => +nextRoute.location.query.offset || 0;
+
+const getSearchQueryParam = nextRoute => nextRoute.location.query.qs;
 
 const getUserName = nextRoute => {
   return nextRoute.params.userName;
@@ -25,7 +28,7 @@ export const routeActions = {
   'home': next => home(getOffset(next)),
   'discussions': next => discussions(getOffset(next)),
   'direct': next => direct(getOffset(next)),
-
+  'search': next => getSearch(getSearchQueryParam(next)),
   'getUserInfo': next => getUserInfo(getUserName(next)),
   'userFeed': next => getUserFeed(next.params.userName, getOffset(next)),
   'userComments': next => getUserComments(next.params.userName, getOffset(next)),
