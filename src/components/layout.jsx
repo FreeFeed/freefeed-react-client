@@ -9,6 +9,7 @@ import Footer from './footer';
 import Sidebar from './sidebar';
 import LoaderContainer from './loader-container';
 import {getCurrentRouteName} from '../utils';
+import SearchForm from './search-form';
 
 const InternalLayout = ({authenticated, children}) => (
   <div className={authenticated ? 'col-md-9' : 'col-md-12'}>
@@ -131,10 +132,13 @@ class Layout extends React.Component {
         <Helmet title={props.title} />
 
         <header className="row">
-          <div className="col-xs-9 col-sm-6">
+          <div className="col-xs-9 col-sm-4">
             <h1>
               <IndexLink to="/" onClick={logoHandler(props.routeName, props.home)}>FreeFeed</IndexLink>
             </h1>
+          </div>
+          <div className="col-xs-12 col-sm-8 col-md-5">
+            <SearchForm/>
           </div>
 
           {props.authenticated ? (

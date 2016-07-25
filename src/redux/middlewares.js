@@ -243,7 +243,9 @@ export const realtimeMiddleware = store => {
       if (!realtimeConnection) {
         realtimeConnection = init(handlers);
       }
-      realtimeConnection.subscribe({timeline:[action.payload.timelines.id]});
+      if (action.payload.timelines) {
+        realtimeConnection.subscribe({timeline:[action.payload.timelines.id]});
+      }
     }
 
     if (action.type === response(ActionTypes.GET_SINGLE_POST)) {
