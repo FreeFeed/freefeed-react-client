@@ -5,6 +5,7 @@ const {request, response, fail} = ActionHelpers;
 import _ from 'lodash';
 import {userParser, postParser} from '../utils';
 import {frontendPreferences as frontendPrefsConfig} from '../config';
+import {LOCATION_CHANGE} from 'react-router-redux';
 
 export function title(state = '', action) {
   switch (action.type) {
@@ -1363,6 +1364,9 @@ export function userSettingsForm(state={saved: false}, action) {
     }
     case fail(ActionTypes.UPDATE_USER): {
       return {...state, isSaving: false, success: false, error: true, errorMessage: (action.payload || {}).err};
+    }
+    case LOCATION_CHANGE: {
+      return {...state, success: false, error: false, errorMessage: '', isSaving: false};
     }
   }
   return state;
