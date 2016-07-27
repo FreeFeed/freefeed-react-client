@@ -9,7 +9,7 @@ const fireSearch = searchText => browserHistory.push(`/search?qs=${encodeURIComp
 const subscribeOnHistory = input => {
   browserHistory.listen(newRoute=>{
     if (newRoute.pathname === '/search') {
-      input.value = newRoute.query.qs;
+      input.value = newRoute.query.qs || '';
     } else {
       input.value = '';
     }
