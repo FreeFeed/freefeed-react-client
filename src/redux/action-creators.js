@@ -603,10 +603,10 @@ export function blockedByMe() {
   };
 }
 
-export function getSearch(search) {
+export function getSearch(search, offset) {
   return {
     type: ActionTypes.GET_SEARCH,
     apiRequest: Api.getSearch,
-    payload: {search},
+    payload: {search, offset},
   };
 }
