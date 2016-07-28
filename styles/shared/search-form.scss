@@ -1,5 +1,11 @@
 .search-form{
-  margin: 28px 0 20px 0;
+  margin-bottom: 15px;
+  @media (max-width: 768px) {
+    margin-top: 15px;
+  }
+  @media (min-width: 992px) {
+    margin: 28px 0 20px 0;
+  }
   float: right;
   width: 100%;
   display: flex;
