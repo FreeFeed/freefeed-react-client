@@ -132,13 +132,10 @@ class Layout extends React.Component {
         <Helmet title={props.title} />
 
         <header className="row">
-          <div className="col-xs-9 col-sm-4">
+          <div className="col-xs-9 col-sm-4 col-md-4">
             <h1>
               <IndexLink to="/" onClick={logoHandler(props.routeName, props.home)}>FreeFeed</IndexLink>
             </h1>
-          </div>
-          <div className="col-xs-12 col-sm-8 col-md-5">
-            <SearchForm/>
           </div>
 
           {props.authenticated ? (
@@ -156,6 +153,10 @@ class Layout extends React.Component {
               </div>
             </div>
           )}
+
+          <div className="col-xs-12 col-sm-12 col-md-5">
+            <SearchForm/>
+          </div>
         </header>
 
         <LoaderContainer loading={props.loadingView} fullPage={true}>
