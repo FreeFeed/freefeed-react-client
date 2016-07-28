@@ -19,7 +19,7 @@ const searchHelper =<div className='search-memo'>
     <span className='operator'>group:</span>
     <span className='helper'>return entries from a specific group, e.g.: <span className='example'>group:travel</span></span>
   </div>
-</div>
+</div>;
 
 const FeedHandler = (props) => (
   <div className='box'>
