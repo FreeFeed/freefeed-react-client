@@ -1507,7 +1507,7 @@ export function boxHeader(state = "", action) {
       return 'Direct messages';
     }
     case request(ActionTypes.GET_SEARCH): {
-      return `Search: ${action.payload.search}`;
+      return `Search${action.payload.search ? ': ' + action.payload.search : ''}`;
     }
     case request(ActionTypes.GET_USER_FEED): {
       return '';
