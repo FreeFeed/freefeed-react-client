@@ -40,7 +40,7 @@ const UserHandler = (props) => {
 function selectState(state, ownProps) {
   const user = state.user;
   const authenticated = state.authenticated;
-  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
+  const visibleEntries = state.feedViewState.visibleEntries;
   const createPostViewState = state.createPostViewState;
   const createPostForm = joinCreatePostData(state);
   const timelines = state.timelines;

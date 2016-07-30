@@ -72,7 +72,7 @@ const FeedHandler = (props) => {
 function selectState(state) {
   const user = state.user;
   const authenticated = state.authenticated;
-  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
+  const visibleEntries = state.feedViewState.visibleEntries;
   const hiddenEntries = state.feedViewState.hiddenEntries.map(joinPostData(state));
   const isHiddenRevealed = state.feedViewState.isHiddenRevealed;
   const createPostViewState = state.createPostViewState;

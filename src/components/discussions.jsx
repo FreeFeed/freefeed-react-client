@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {createPost, resetPostCreateForm, expandSendTo} from '../redux/action-creators';
-import {joinPostData, joinCreatePostData, postActions} from './select-utils';
+import {joinCreatePostData, postActions} from './select-utils';
 import {getQuery} from '../utils';
 
 import CreatePost from './create-post';
@@ -40,7 +40,7 @@ const FeedHandler = (props) => {
 function selectState(state) {
   const user = state.user;
   const authenticated = state.authenticated;
-  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
+  const visibleEntries = state.feedViewState.visibleEntries;
   const createPostViewState = state.createPostViewState;
   const createPostForm = joinCreatePostData(state);
   const timelines = state.timelines;
