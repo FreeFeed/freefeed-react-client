@@ -48,6 +48,8 @@ export default ({user, signOut, recentGroups}) => (
       </div>
       <div className='box-body'>
         <ul>
+          <li><Link to='/search'>FreeFeed search</Link></li>
+          <li><Link to={{ pathname: "/search", query: { qs: `"@${user.username}"` } }}>Vanity search</Link></li>
           <li><a href="http://search.pepyatka.com/" target="_blank">Search.pepyatka.com</a>
             <img width="18" height="12" src={external} style={{paddingLeft:5}}/>
           </li>
