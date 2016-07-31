@@ -18,7 +18,7 @@ export function title(state = '', action) {
       return 'My discussions - FreeFeed';
     }
     case response(ActionTypes.GET_SEARCH): {
-      return `Search`;
+      return `Search - FreeFeed`;
     }
     case response(ActionTypes.GET_USER_FEED): {
       const user = (action.payload.users || []).filter(user => user.username === action.request.username)[0];
@@ -1646,9 +1646,10 @@ export function recentGroups(state = [], action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
       const subscribers = (action.payload.subscribers || []);
-      return subscribers.filter(i => i.type == 'group')
-                        .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
-                        .slice(0, GROUPS_SIDEBAR_LIST_LENGTH);
+      return subscribers
+        .filter(i => i.type == 'group')
+        .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
+        .slice(0, GROUPS_SIDEBAR_LIST_LENGTH);
     }
     case response(ActionTypes.CREATE_GROUP): {
       const newGroup = action.payload.groups;

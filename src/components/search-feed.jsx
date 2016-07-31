@@ -7,9 +7,13 @@ import SearchForm from './search-form';
 
 const searchHelper =<div className='search-memo'>
   <div className='search-memo-header'>Advanced search operators</div>
+  {/*<div className='search-operator'>*/}
+    {/*<span className='operator'>-</span>*/}
+    {/*<span className='helper'>exclude keyword from a search, e.g.: <span className='example'>jobs -steve</span></span>*/}
+  {/*</div>*/}
   <div className='search-operator'>
-    <span className='operator'>-</span>
-    <span className='helper'>exclude keyword from a search, e.g.: <span className='example'>jobs -steve</span></span>
+    <span className='operator'>"double-quotes"</span>
+    <span className='helper'>return entries having exact match, e.g.: <span className='example'>opensource "social network"</span></span>
   </div>
   <div className='search-operator'>
     <span className='operator'>from:</span>

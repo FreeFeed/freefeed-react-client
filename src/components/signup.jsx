@@ -5,7 +5,7 @@ import {preventDefault} from '../utils';
 import LoaderContainer from './loader-container';
 import {captcha as captchaConfig} from '../config';
 import Recaptcha from 'react-google-recaptcha';
-import validator from 'validator';
+import isEmail from 'validator/lib/isEmail';
 
 function mapStateToProps(state) {
   return {...state.signUpForm};
@@ -37,7 +37,7 @@ function isValidUsername(username) {
 }
 
 function isValidEmail(email) {
-  return email && validator.isEmail(email);
+  return email && isEmail(email);
 }
 
 function isValidPassword(password) {
