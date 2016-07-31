@@ -168,7 +168,8 @@ export function createPostViewState(state = {}, action) {
       return {
         isError: false,
         errorString: '',
-        isPending: false
+        isPending: false,
+        lastPostId: action.payload.posts.id
       };
     }
     case request(ActionTypes.CREATE_POST): {

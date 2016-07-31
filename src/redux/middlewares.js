@@ -59,6 +59,13 @@ export const authMiddleware = store => next => action => {
     next(action);
     store.dispatch(ActionCreators.whoAmI());
     store.dispatch(ActionCreators.managedGroups());
+
+    // Do not redirect to Home page if signed in at Bookmarklet
+    const pathname = (store.getState().routing.locationBeforeTransitions || {}).pathname;
+    if (pathname === '/bookmarklet') {
+      return;
+    }
+
     return browserHistory.push('/');
   }
 

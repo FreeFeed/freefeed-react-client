@@ -8,30 +8,55 @@ export default class SendTo extends React.Component {
   constructor(props) {
     super(props);
 
-    let options = props.feeds.map((item) => ({
+    this.state = {
+      values: (props.defaultFeed ? [props.defaultFeed] : []),
+      options: this.feedsToOptions(props.feeds, props.user.username, props.isDirects),
+      showFeedsOption: !props.defaultFeed,
+      isWarningDisplayed: false
+    };
+  }
+
+  componentWillReceiveProps(newProps) {
+    let newOptions = this.feedsToOptions(newProps.feeds, newProps.user.username, this.props.isDirects);
+
+    // If defaultFeed gets updated (it happens after sign-in), we have to
+    // set values, options and showFeedsOption. Otherwise, only update options.
+    if (this.props.defaultFeed !== newProps.defaultFeed) {
+      this.setState({
+        values: (newProps.defaultFeed ? [newProps.defaultFeed] : []),
+        options: newOptions,
+        showFeedsOption: !newProps.defaultFeed
+      });
+    } else {
+      this.setState({
+        options: newOptions
+      });
+    }
+  }
+
+  get values() {
+    return this.state.values.map(item => item.value);
+  }
+
+  feedsToOptions = (feeds, username, isDirects) => {
+    let options = feeds.map((item) => ({
       label: item.user.username,
       value: item.user.username,
       type: item.user.type
     }));
-    
+
     options.sort((a, b) => {
       return (a.type !== b.type) ? a.type.localeCompare(b.type) : a.value.localeCompare(b.value);
     });
-        
-    let myFeedUsername = props.user.username;
-    options.unshift({ label: MY_FEED_LABEL, value: myFeedUsername, type: 'group' });
 
-    if (this.props.isDirects) {
+    options.unshift({ label: MY_FEED_LABEL, value: username, type: 'group' });
+
+    if (isDirects) {
       // only mutual friends
       options = options.filter(opt => opt.type === 'user');
     }
 
-    this.state = {
-      values: (props.defaultFeed ? [props.defaultFeed] : []),
-      options: options,
-      showFeedsOption: !props.defaultFeed,
-      isWarningDisplayed: false
-    };
+    return options;
   }
 
   isGroupsOrDirectsOnly = (values) => {
@@ -54,12 +79,12 @@ export default class SendTo extends React.Component {
   }
 
   labelRenderer = (opt) => {
-    const icon = (opt.type === 'group') ? 
-      ((opt.value !== this.props.user.username) ? <i className="fa fa-users" /> : <i className="fa fa-home" />) 
+    const icon = (opt.type === 'group') ?
+      ((opt.value !== this.props.user.username) ? <i className="fa fa-users" /> : <i className="fa fa-home" />)
       : false;
     return <span>{icon} {opt.label}</span>;
   }
-  
+
   componentDidUpdate(prevProps, prevState) {
     if (prevState.showFeedsOption !== this.state.showFeedsOption && this.state.showFeedsOption) {
       this.refs.selector._openAfterFocus = true;
