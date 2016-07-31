@@ -130,15 +130,15 @@ export default ({user, signOut, recentGroups}) => (
             </table>
 
             <input type='hidden' name='currency_code' value='EUR'/>
-            <input type='image' src='https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png' border='0' name='submit' alt='PayPal - The safer, easier way to pay online!' style={{margin:'5px'}}/>
-            <img alt='' border='0' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' width='1' height='1' style={{display: 'none !important'}}/>
+            <input type='image' src='https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png' name='submit' alt='PayPal - The safer, easier way to pay online!' style={{margin:'5px'}}/>
+            <img alt='' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' width='1' height='1' style={{display: 'none !important'}}/>
           </form>
         </span>
         <form action='https://www.paypal.com/cgi-bin/webscr' method='post' target='_top' id='singlePayPalPayment'>
           <input type='hidden' name='cmd' value='_s-xclick'/>
           <input type='hidden' name='hosted_button_id' value='HMVYD6GEWNWH8'/>
-          <input type='image' src='https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png' width='0' height='0' border='0' name='submit' alt='PayPal - The safer, easier way to pay online!'/>
-          <img alt='' border='0' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' width='1' height='1' style={{display: 'none !important'}}/>
+          <input type='image' src='https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png' width='0' height='0' name='submit' alt='PayPal - The safer, easier way to pay online!'/>
+          <img alt='' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' width='1' height='1' style={{display: 'none !important'}}/>
         </form>
         <p style={{marginBottom: '10px'}}>Or <span onClick={_ => document.forms["singlePayPalPayment"].submit()} style={{textDecoration:'underline', cursor:'pointer'}}>send a one-time payment first&nbsp;→</span></p>
       </div>
