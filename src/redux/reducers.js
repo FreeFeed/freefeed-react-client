@@ -18,7 +18,7 @@ export function title(state = '', action) {
       return 'My discussions - FreeFeed';
     }
     case response(ActionTypes.GET_SEARCH): {
-      return `Search`;
+      return `Search - FreeFeed`;
     }
     case response(ActionTypes.GET_USER_FEED): {
       const user = (action.payload.users || []).filter(user => user.username === action.request.username)[0];
