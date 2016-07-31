@@ -16,7 +16,7 @@ const config = {
     sentinel: null // keep always last
   },
   search: {
-    searchEngine: 'http://search.pepyatka.com/s?q=',
+    searchEngine: null,
     sentinel: null // keep always last
   },
   siteDomains: [ // for transform links in the posts, comments, etc.
