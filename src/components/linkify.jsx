@@ -87,7 +87,12 @@ class Linkify extends React.Component {
         } else if (it.type === EMAIL) {
           href = `mailto:${it.address}`;
         } else if (it.type === HASHTAG) {
-          href = searchConfig.searchEngine+encodeURIComponent(it.text);
+          if (searchConfig.searchEngine) {
+            href = searchConfig.searchEngine+encodeURIComponent(it.text);
+          } else {
+            it.type = LOCAL_LINK;
+            href = { pathname: '/search', query: { qs: it.text } };
+          }
         } else if (it.type === ARROW && this.arrowHover) {
           // pass
         } else {
