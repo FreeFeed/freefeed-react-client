@@ -602,3 +602,12 @@ export function blockedByMe() {
     apiRequest: Api.getBlockedByMe
   };
 }
+
+export function getSearch(search, offset) {
+  return {
+    type: ActionTypes.GET_SEARCH,
+    apiRequest: Api.getSearch,
+    nonAuthRequest: true,
+    payload: {search, offset},
+  };
+}

@@ -52,11 +52,9 @@ export default (props) => (
         actively developed. It is being used by hundreds of people now, even
         though the work is still underway.</p>
 
-      <p>FreeFeed v.1 is scheduled for release in spring 2016. This version will
-        include search and hashtag support.</p>
+      <p>FreeFeed v.1 was released in August 2016.</p>
 
-      <p>You can <b><Link to="/signup">sign up</Link></b> now and use the beta
-        version today.</p>
+      <p>You can <b><Link to="/signup">sign up</Link></b> now and join FreeFeed.</p>
     </div>
   </div>
 );

@@ -17,6 +17,9 @@ export function title(state = '', action) {
     case response(ActionTypes.DISCUSSIONS): {
       return 'My discussions - FreeFeed';
     }
+    case response(ActionTypes.GET_SEARCH): {
+      return `Search - FreeFeed`;
+    }
     case response(ActionTypes.GET_USER_FEED): {
       const user = (action.payload.users || []).filter(user => user.username === action.request.username)[0];
       const author = user.screenName + (user.username !== user.screenName ? ' (' + user.username + ')' : '');
@@ -1324,7 +1327,7 @@ export function passwordForm(state=DEFAULT_PASSWORD_FORM_STATE, action) {
 }
 
 export function timelines(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action)) {
+  if (ActionHelpers.isFeedResponse(action) && action.payload.timelines) {
     return mergeByIds(state, [action.payload.timelines]);
   }
 
@@ -1503,6 +1506,9 @@ export function boxHeader(state = "", action) {
     case request(ActionTypes.DIRECT): {
       return 'Direct messages';
     }
+    case request(ActionTypes.GET_SEARCH): {
+      return `Search${action.payload.search ? ': ' + action.payload.search : ''}`;
+    }
     case request(ActionTypes.GET_USER_FEED): {
       return '';
     }
@@ -1640,9 +1646,10 @@ export function recentGroups(state = [], action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
       const subscribers = (action.payload.subscribers || []);
-      return subscribers.filter(i => i.type == 'group')
-                        .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
-                        .slice(0, GROUPS_SIDEBAR_LIST_LENGTH);
+      return subscribers
+        .filter(i => i.type == 'group')
+        .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
+        .slice(0, GROUPS_SIDEBAR_LIST_LENGTH);
     }
     case response(ActionTypes.CREATE_GROUP): {
       const newGroup = action.payload.groups;

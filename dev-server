@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-: "${PORT:=5783}"
+: "${PORT:=3333}"
 
 if ! [ -d './node_modules' ]; then
   echo 'Installing required NPM modules...'

@@ -1,5 +1,5 @@
 import {
-  HOME, DISCUSSIONS, DIRECT, GET_USER_FEED, GET_USER_COMMENTS, GET_USER_LIKES,
+  HOME, DISCUSSIONS, DIRECT, GET_USER_FEED, GET_USER_COMMENTS, GET_USER_LIKES, GET_SEARCH,
   SIGN_UP, WHO_AM_I, SUBSCRIBE, UNSUBSCRIBE,
   UPDATE_USER, UPDATE_FRONTEND_PREFERENCES
 } from './action-types';
@@ -8,7 +8,7 @@ export const request = (type) =>`${type}_REQUEST`;
 export const response = (type) => `${type}_RESPONSE`;
 export const fail = (type) => `${type}_FAIL`;
 
-export const feedGeneratingActions = [HOME, DISCUSSIONS, GET_USER_FEED, GET_USER_COMMENTS, GET_USER_LIKES, DIRECT];
+export const feedGeneratingActions = [HOME, DISCUSSIONS, GET_USER_FEED, GET_USER_COMMENTS, GET_USER_LIKES, DIRECT, GET_SEARCH];
 export const feedRequests = feedGeneratingActions.map(request);
 export const feedResponses = feedGeneratingActions.map(response);
 export const feedFails = feedGeneratingActions.map(fail);

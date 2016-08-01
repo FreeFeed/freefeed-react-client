@@ -59,6 +59,9 @@ export const joinPostData = state => postId => {
   const highlightComment = commentHighlighter(state, postId, post.comments);
   let comments = (post.comments || []).reduce((_comments, commentId, index) => {
     const comment = state.comments[commentId];
+    if (!comment) {
+      return _comments;
+    }
     const commentViewState = state.commentViewState[commentId];
     const placeholderUser = {id: comment.createdBy};
     const author = state.users[comment.createdBy] || placeholderUser;
@@ -66,9 +69,9 @@ export const joinPostData = state => postId => {
       console.log('We\'ve got comment with unknown author with id', placeholderUser.id);
     }
     const previousPost = _comments[index-1] || {createdBy: null, createdAt: "0"};
-    const omitBubble = omitRepeatedBubbles 
-      && postViewState.omittedComments === 0 
-      && comment.createdBy === previousPost.createdBy 
+    const omitBubble = omitRepeatedBubbles
+      && postViewState.omittedComments === 0
+      && comment.createdBy === previousPost.createdBy
       && comment.createdAt - previousPost.createdAt < ommitBubblesThreshold;
     const isEditable = (user.id === comment.createdBy);
     const isDeletable = (user.id === post.createdBy);
