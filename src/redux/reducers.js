@@ -1343,11 +1343,13 @@ export function subscriptions(state = {}, action) {
     case response(ActionTypes.CREATE_POST): {
       return mergeByIds(state, action.payload.subscriptions);
     }
-    case ActionTypes.REALTIME_POST_NEW:
+    case ActionTypes.REALTIME_POST_NEW: {
+      return mergeByIds(state, action.subscriptions);
+    }
     case ActionTypes.REALTIME_LIKE_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW: {
       const subscriptions = !action.post ? action.subscriptions : action.post.subscriptions;
-      return mergeByIds(state, action.subscriptions);
+      return mergeByIds(state, subscriptions);
     }
   }
   return state;
