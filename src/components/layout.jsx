@@ -147,7 +147,7 @@ class Layout extends React.Component {
               </div>
             </div>
           ) : (
-            <div className="col-xs-3 col-sm-6 text-right">
+            <div className="col-xs-3 col-sm-6 col-md-3 text-right">
               <div className="signin-link">
                 <Link to="/signin">Sign In</Link>
               </div>
