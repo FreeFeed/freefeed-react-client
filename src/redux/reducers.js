@@ -5,6 +5,7 @@ const {request, response, fail} = ActionHelpers;
 import _ from 'lodash';
 import {userParser, postParser} from '../utils';
 import {frontendPreferences as frontendPrefsConfig} from '../config';
+import {LOCATION_CHANGE} from 'react-router-redux';
 
 export function title(state = '', action) {
   switch (action.type) {
@@ -1513,6 +1514,9 @@ export function boxHeader(state = "", action) {
       return '';
     }
     case request(ActionTypes.GET_SINGLE_POST): {
+      return '';
+    }
+    case LOCATION_CHANGE: {
       return '';
     }
   }
