@@ -1087,6 +1087,9 @@ export function comments(state = {}, action) {
       }
       return mergeByIds(state, [action.comment]);
     }
+    case ActionTypes.REALTIME_POST_NEW: {
+      return mergeByIds(state, action.comments);
+    }
     case ActionTypes.REALTIME_LIKE_NEW: {
       if (action.post) {
         return mergeByIds(state, action.post.comments);
