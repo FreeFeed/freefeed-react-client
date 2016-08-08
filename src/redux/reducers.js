@@ -278,6 +278,9 @@ export function feedViewState(state = initFeed, action) {
       if (state.visibleEntries.indexOf(action.post.id) !== -1) {
         return state;
       }
+      if (!action.shouldBump) {
+        return state;
+      }
       return {
         ...state,
         visibleEntries: [action.post.id, ...state.visibleEntries],
@@ -285,7 +288,7 @@ export function feedViewState(state = initFeed, action) {
     }
     case ActionTypes.REALTIME_LIKE_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW: {
-      if (action.post) {
+      if (action.post && action.shouldBump) {
         return {
           ...state,
           visibleEntries: [action.post.posts.id, ...state.visibleEntries],
