@@ -251,6 +251,14 @@ export function createPost(feeds, postText, attachmentIds, more) {
   };
 }
 
+export function createBookmarkletPost(feeds, postText, imageUrls, commentText) {
+  return {
+    type: ActionTypes.CREATE_POST,
+    apiRequest: Api.createBookmarkletPost,
+    payload: {feeds, postText, imageUrls, commentText}
+  };
+}
+
 export function addAttachmentResponse(postId, attachments) {
   return {
     type: ActionTypes.ADD_ATTACHMENT_RESPONSE,

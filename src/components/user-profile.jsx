@@ -4,6 +4,7 @@ import {Link} from 'react-router';
 import {preventDefault, pluralForm} from '../utils';
 import CreatePost from './create-post';
 import PieceOfText from './piece-of-text';
+import throbber16 from 'assets/images/throbber-16.gif';
 
 export default class UserProfile extends React.Component {
   constructor(props) {
@@ -95,11 +96,17 @@ export default class UserProfile extends React.Component {
                   )
                 ) : (
                   props.subscribed ? (
-                    <a onClick={unsubscribe}>Unsubscribe</a>
+                    <a onClick={()=>props.unsubscribe({username: props.username, id: props.id})}>Unsubscribe</a>
                   ) : (
-                    <a onClick={()=>props.subscribe({username: props.username})}>Subscribe</a>
+                    <a onClick={()=>props.subscribe({username: props.username, id: props.id})}>Subscribe</a>
                   )
                 )}
+
+                {props.userView.isSubscribing ? (
+                  <span className="profile-controls-throbber">
+                  <img width="16" height="16" src={throbber16}/>
+                </span>
+                ) : false}
               </div>
               <div className="col-xs-5 col-sm-3 text-right">
                 {props.type !== 'group' && !props.subscribed ? (

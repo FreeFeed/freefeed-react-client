@@ -67,6 +67,25 @@ export function createPost({feeds, postText, attachmentIds, more}) {
   });
 }
 
+export function createBookmarkletPost({feeds, postText, imageUrls, commentText}) {
+  return fetch(`${apiConfig.host}/v1/bookmarklet`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+    'body': JSON.stringify({
+      title: postText,
+      images: imageUrls,
+      comment: commentText,
+      meta: {
+        feeds: feeds
+      }
+    })
+  });
+}
+
 export function updatePost({postId, newPost}) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}`, {
     'method': 'PUT',
