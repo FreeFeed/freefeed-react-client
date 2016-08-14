@@ -8,6 +8,7 @@ webpack = ./node_modules/.bin/webpack \
 
 prod: clean
 	UGLIFY=1 HASH=1 DEV=0 $(webpack)
+	cp -R ./assets/js $(out_dir)/assets/
 
 prod-nouglify: clean
 	UGLIFY=0 HASH=1 DEV=0 $(webpack)
