@@ -17,6 +17,10 @@ const renderUsers = (type) => (user) => {
 
       <UserName user={user} applyHyphenations={true}/>
 
+      {type == WITH_MUTUALS && user.isMutual ? (
+        <div className="user-ismutual">mutual</div>
+      ) : false}
+
       {type == WITH_REQUEST_HANDLES ? (
         <div className="user-actions">
           <a onClick={() => user.acceptRequest(user.username)}>Accept</a>
@@ -54,6 +58,7 @@ export const WITH_REQUEST_HANDLES = 'WITH_REQUEST_HANDLES';
 export const WITH_REMOVE_AND_MAKE_ADMIN_HANDLES = 'WITH_REMOVE_AND_MAKE_ADMIN_HANDLES';
 export const WITH_REMOVE_ADMIN_RIGHTS = 'WITH_REMOVE_ADMIN_RIGHTS';
 export const WITH_REVOKE_SENT_REQUEST = 'WITH_REVOKE_SENT_REQUEST';
+export const WITH_MUTUALS = 'WITH_MUTUALS';
 
 function pickActions(type, props) {
   switch (type) {
@@ -77,7 +82,7 @@ function pickActions(type, props) {
 export const tileUserListFactory = (config) => (props) => {
   const usersData = props.users.map(user => {
     return {
-      ..._.pick(user, ['id', 'screenName', 'username']),
+      ..._.pick(user, ['id', 'screenName', 'username', 'isMutual']),
       profilePictureUrl:
         (user.profilePictureUrl
           ? user.profilePictureUrl

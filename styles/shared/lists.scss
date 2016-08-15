@@ -15,7 +15,7 @@ ul.tile-list {
       margin-bottom: 5px;
     }
 
-    .user-name-wrapper > a, 
+    .user-name-wrapper > a,
     .avatar > a {
       display: block;
       line-height: 130%;
@@ -31,6 +31,11 @@ ul.tile-list {
         display: inline;
         color: #555599;
       }
+    }
+    .user-ismutual {
+      font-size: 11px;
+      font-variant: small-caps;
+      color: #999;
     }
   }
 
@@ -61,7 +66,7 @@ ul.tile-list {
 
 .tile-list-subheader {
   margin-bottom: -16px;
-  
+
   h3 + & {
     margin-top: 24px;
   }

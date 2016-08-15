@@ -67,6 +67,13 @@ const friendsActions = next => {
   store.dispatch(ActionCreators.blockedByMe(username));
 };
 
+// needed to display mutual friends
+const subscribersSubscriptionsActions = next => {
+  const username = store.getState().user.username;
+  store.dispatch(ActionCreators.subscribers(username));
+  store.dispatch(ActionCreators.subscriptions(username));
+};
+
 const enterStaticPage = title => () => {
   store.dispatch(ActionCreators.staticPage(title));
 };
@@ -100,8 +107,8 @@ ReactDOM.render(
         <Route name='friends' path='/friends' component={Friends} onEnter={friendsActions}/>
         <Route name='groupCreate' path='/groups/create' component={GroupCreate} onEnter={enterStaticPage('Create a group')}/>
         <Route name='userFeed' path='/:userName' component={User} {...generateRouteHooks(boundRouteActions('userFeed'))}/>
-        <Route name='subscribers' path='/:userName/subscribers' component={Subscribers} {...generateRouteHooks(boundRouteActions('subscribers'))}/>
-        <Route name='subscriptions' path='/:userName/subscriptions' component={Subscriptions} {...generateRouteHooks(boundRouteActions('subscriptions'))}/>
+        <Route name='subscribers' path='/:userName/subscribers' component={Subscribers} onEnter={subscribersSubscriptionsActions}/>
+        <Route name='subscriptions' path='/:userName/subscriptions' component={Subscriptions} onEnter={subscribersSubscriptionsActions}/>
         <Route name='manage-subscribers' path='/:userName/manage-subscribers' component={ManageSubscribers} onEnter={manageSubscribersActions}/>
         <Route name='userComments' path='/:userName/comments' component={User} {...generateRouteHooks(boundRouteActions('userComments'))}/>
         <Route name='userLikes' path='/:userName/likes' component={User} {...generateRouteHooks(boundRouteActions('userLikes'))}/>
