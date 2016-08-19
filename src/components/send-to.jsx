@@ -8,9 +8,11 @@ export default class SendTo extends React.Component {
   constructor(props) {
     super(props);
 
+    const options = this.feedsToOptions(props.feeds, props.user.username, props.isDirects);
+
     this.state = {
-      values: (props.defaultFeed ? [props.defaultFeed] : []),
-      options: this.feedsToOptions(props.feeds, props.user.username, props.isDirects),
+      values: (props.defaultFeed ? [options[0]] : []),
+      options: options,
       showFeedsOption: !props.defaultFeed,
       isWarningDisplayed: false
     };
@@ -23,7 +25,7 @@ export default class SendTo extends React.Component {
     // set values, options and showFeedsOption. Otherwise, only update options.
     if (this.props.defaultFeed !== newProps.defaultFeed) {
       this.setState({
-        values: (newProps.defaultFeed ? [newProps.defaultFeed] : []),
+        values: (newProps.defaultFeed ? [newOptions[0]] : []),
         options: newOptions,
         showFeedsOption: !newProps.defaultFeed
       });
@@ -49,6 +51,7 @@ export default class SendTo extends React.Component {
       return (a.type !== b.type) ? a.type.localeCompare(b.type) : a.value.localeCompare(b.value);
     });
 
+    // use type "group" for "my feed" option to hide the warning about direct message visibility
     options.unshift({ label: MY_FEED_LABEL, value: username, type: 'group' });
 
     if (isDirects) {
