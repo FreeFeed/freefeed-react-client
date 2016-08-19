@@ -7,7 +7,7 @@ import Dropzone from './dropzone';
 import PostAttachments from './post-attachments';
 
 const isTextEmpty = text => text == '' || /^\s+$/.test(text);
-const getDefaultState = defaultFeed => ({
+const getDefaultState = _ => ({
   isFormEmpty: true,
   isMoreOpen: false,
   attachmentQueueLength: 0,
@@ -18,7 +18,7 @@ const getDefaultState = defaultFeed => ({
 export default class CreatePost extends React.Component {
   constructor(props) {
     super(props);
-    this.state = getDefaultState(this.props.sendTo.defaultFeed);
+    this.state = getDefaultState();
   }
 
   createPost = _ => {
@@ -44,7 +44,7 @@ export default class CreatePost extends React.Component {
   }
 
   clearForm = _ => {
-    this.setState(getDefaultState(this.props.sendTo.defaultFeed));
+    this.setState(getDefaultState());
     const attachmentIds = this.props.createPostForm.attachments.map(attachment => attachment.id);
     attachmentIds.forEach(this.removeAttachment);
   }
