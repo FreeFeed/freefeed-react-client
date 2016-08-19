@@ -11,7 +11,7 @@ export default class SendTo extends React.Component {
     const options = this.feedsToOptions(props.feeds, props.user.username, props.isDirects);
 
     this.state = {
-      values: (props.defaultFeed ? [options[0]] : []),
+      values: (props.defaultFeed ? [this.defaultOption(options, props.defaultFeed)] : []),
       options: options,
       showFeedsOption: !props.defaultFeed,
       isWarningDisplayed: false
@@ -25,7 +25,7 @@ export default class SendTo extends React.Component {
     // set values, options and showFeedsOption. Otherwise, only update options.
     if (this.props.defaultFeed !== newProps.defaultFeed) {
       this.setState({
-        values: (newProps.defaultFeed ? [newOptions[0]] : []),
+        values: (newProps.defaultFeed ? [this.defaultOption(newOptions, newProps.defaultFeed)] : []),
         options: newOptions,
         showFeedsOption: !newProps.defaultFeed
       });
@@ -95,9 +95,12 @@ export default class SendTo extends React.Component {
     }
   }
 
+  defaultOption = (options, defaultFeed) => {
+    return options.reduce((found, opt) => (!found && opt.value === defaultFeed) ? opt : found, null);
+  }
+
   render() {
-    const defaultFeed = this.state.values[0];
-    const defaultOpt = this.state.options.reduce((found, opt) => (!found && opt.value === defaultFeed) ? opt : found, null);
+    const defaultOpt = this.defaultOption(this.state.options, this.state.values[0]);
 
     return (
       <div className="send-to">
