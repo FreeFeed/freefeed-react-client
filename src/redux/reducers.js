@@ -1377,6 +1377,9 @@ export function userSettingsForm(state={saved: false}, action) {
     case fail(ActionTypes.UPDATE_USER): {
       return {...state, isSaving: false, success: false, error: true, errorMessage: (action.payload || {}).err};
     }
+    case LOCATION_CHANGE: {
+      return {...state, success: false, error: false, errorMessage: '', isSaving: false};
+    }
   }
   return state;
 }
