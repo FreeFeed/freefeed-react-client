@@ -81,6 +81,7 @@ class Layout extends React.Component {
         <header>
           <h1>
             Share on <a href="/" target="_blank">FreeFeed</a>
+            {props.authenticated ? (" as " + props.user.username) : false}
           </h1>
         </header>
 
