@@ -59,6 +59,13 @@ export const authMiddleware = store => next => action => {
     next(action);
     store.dispatch(ActionCreators.whoAmI());
     store.dispatch(ActionCreators.managedGroups());
+
+    // Do not redirect to Home page if signed in at Bookmarklet
+    const pathname = (store.getState().routing.locationBeforeTransitions || {}).pathname;
+    if (pathname === '/bookmarklet') {
+      return;
+    }
+
     return browserHistory.push('/');
   }
 
@@ -149,6 +156,8 @@ import {init} from '../services/realtime';
 import {getPostWithAllComments} from '../services/api';
 import {frontendPreferences as frontendPrefsConfig} from '../config';
 
+const isFirstPage = state => !state.routing.locationBeforeTransitions.query.offset;
+
 const isPostLoaded = ({posts}, postId) => posts[postId];
 const iLikedPost = ({user, posts}, postId) => {
   const post = posts[postId];
@@ -159,13 +168,15 @@ const iLikedPost = ({user, posts}, postId) => {
   return likes.indexOf(user.id) !== -1;
 };
 const dispatchWithPost = async (store, postId, action, filter = _ => true) => {
-  if (isPostLoaded(store.getState(), postId)) {
-    return store.dispatch(action);
+  const state = store.getState();
+  const shouldBump = isFirstPage(state);
+  if (isPostLoaded(state, postId)) {
+    return store.dispatch({...action, shouldBump});
   } else {
     const postResponse = await getPostWithAllComments({postId: postId});
     const post = await postResponse.json();
     if (filter(post, action, store.getState())) {
-      return store.dispatch({...action, post});
+      return store.dispatch({...action, post, shouldBump});
     }
   }
 };
@@ -186,19 +197,13 @@ const isFirstFriendInteraction = (post, {users}, {subscriptions, comments}) => {
 const bindHandlers = store => ({
   'post:new': data => {
     const state = store.getState();
+    const isFeedFirstPage = isFirstPage(state);
+    const isHomeFeed = state.routing.locationBeforeTransitions.pathname === '/';
+    const useRealtimePreference = state.user.frontendPreferences.realtimeActive;
 
-    const isFirstPage = !state.routing.locationBeforeTransitions.query.offset;
+    const shouldBump = isFeedFirstPage && (!isHomeFeed || (useRealtimePreference && isHomeFeed));
 
-    if (isFirstPage) {
-
-      const isHomeFeed = state.routing.locationBeforeTransitions.pathname === '/';
-      const useRealtimePreference = state.user.frontendPreferences.realtimeActive;
-
-      if (!isHomeFeed || (useRealtimePreference && isHomeFeed)) {
-        return store.dispatch({...data, type: ActionTypes.REALTIME_POST_NEW, post: data.posts});
-      }
-    }
-    return false;
+    return store.dispatch({...data, type: ActionTypes.REALTIME_POST_NEW, post: data.posts, shouldBump});
   },
   'post:update': data => store.dispatch({...data, type: ActionTypes.REALTIME_POST_UPDATE, post: data.posts}),
   'post:destroy': data => store.dispatch({type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId}),

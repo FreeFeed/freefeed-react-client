@@ -35,6 +35,7 @@ import Groups from './components/groups';
 import SearchFeed from './components/search-feed';
 import Friends from './components/friends';
 import ManageSubscribers from './components/manage-subscribers';
+import Bookmarklet from './components/bookmarklet';
 
 const store = configureStore();
 
@@ -80,6 +81,8 @@ const generateRouteHooks = callback => ({
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
+      <Route name='bookmarklet' path='/bookmarklet' component={Bookmarklet}/>
+
       <Route path='/' component={Layout}>
         <IndexRoute name='home' component={Home} {...generateRouteHooks(boundRouteActions('home'))}/>
         <Route path='about' component={About} onEnter={enterStaticPage('About')}/>

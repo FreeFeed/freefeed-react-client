@@ -5,6 +5,7 @@ const {request, response, fail} = ActionHelpers;
 import _ from 'lodash';
 import {userParser, postParser} from '../utils';
 import {frontendPreferences as frontendPrefsConfig} from '../config';
+import {LOCATION_CHANGE} from 'react-router-redux';
 
 export function title(state = '', action) {
   switch (action.type) {
@@ -168,7 +169,8 @@ export function createPostViewState(state = {}, action) {
       return {
         isError: false,
         errorString: '',
-        isPending: false
+        isPending: false,
+        lastPostId: action.payload.posts.id
       };
     }
     case request(ActionTypes.CREATE_POST): {
@@ -276,6 +278,9 @@ export function feedViewState(state = initFeed, action) {
       if (state.visibleEntries.indexOf(action.post.id) !== -1) {
         return state;
       }
+      if (!action.shouldBump) {
+        return state;
+      }
       return {
         ...state,
         visibleEntries: [action.post.id, ...state.visibleEntries],
@@ -283,7 +288,7 @@ export function feedViewState(state = initFeed, action) {
     }
     case ActionTypes.REALTIME_LIKE_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW: {
-      if (action.post) {
+      if (action.post && action.shouldBump) {
         return {
           ...state,
           visibleEntries: [action.post.posts.id, ...state.visibleEntries],
@@ -1085,6 +1090,9 @@ export function comments(state = {}, action) {
       }
       return mergeByIds(state, [action.comment]);
     }
+    case ActionTypes.REALTIME_POST_NEW: {
+      return mergeByIds(state, action.comments);
+    }
     case ActionTypes.REALTIME_LIKE_NEW: {
       if (action.post) {
         return mergeByIds(state, action.post.comments);
@@ -1343,11 +1351,13 @@ export function subscriptions(state = {}, action) {
     case response(ActionTypes.CREATE_POST): {
       return mergeByIds(state, action.payload.subscriptions);
     }
-    case ActionTypes.REALTIME_POST_NEW:
+    case ActionTypes.REALTIME_POST_NEW: {
+      return mergeByIds(state, action.subscriptions);
+    }
     case ActionTypes.REALTIME_LIKE_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW: {
       const subscriptions = !action.post ? action.subscriptions : action.post.subscriptions;
-      return mergeByIds(state, action.subscriptions);
+      return mergeByIds(state, subscriptions);
     }
   }
   return state;
@@ -1513,6 +1523,9 @@ export function boxHeader(state = "", action) {
       return '';
     }
     case request(ActionTypes.GET_SINGLE_POST): {
+      return '';
+    }
+    case LOCATION_CHANGE: {
       return '';
     }
   }
@@ -1940,5 +1953,47 @@ export function commentsHighlights(state={}, action) {
       return {};
     }
   }
+  return state;
+}
+
+export function userViews(state = {}, action) {
+  switch (action.type) {
+    case request(ActionTypes.SUBSCRIBE):
+    case request(ActionTypes.SEND_SUBSCRIPTION_REQUEST):
+    case request(ActionTypes.REVOKE_USER_REQUEST):
+    case request(ActionTypes.UNSUBSCRIBE): {
+      const userId = action.payload.id;
+      const userView = state[userId];
+      return {...state, [userId]: {...userView, isSubscribing: true}};
+    }
+    case response(ActionTypes.SUBSCRIBE):
+    case response(ActionTypes.SEND_SUBSCRIPTION_REQUEST):
+    case response(ActionTypes.REVOKE_USER_REQUEST):
+    case response(ActionTypes.UNSUBSCRIBE):
+    case fail(ActionTypes.SUBSCRIBE):
+    case fail(ActionTypes.SEND_SUBSCRIPTION_REQUEST):
+    case fail(ActionTypes.REVOKE_USER_REQUEST):
+    case fail(ActionTypes.UNSUBSCRIBE): {
+      const userId = action.request.id;
+      const userView = state[userId];
+      return {...state, [userId]: {...userView, isSubscribing: false}};
+    }
+
+    case request(ActionTypes.BAN):
+    case request(ActionTypes.UNBAN): {
+      const userId = action.payload.id;
+      const userView = state[userId];
+      return {...state, [userId]: {...userView, isBlocking: true}};
+    }
+    case response(ActionTypes.BAN):
+    case response(ActionTypes.UNBAN):
+    case fail(ActionTypes.BAN):
+    case fail(ActionTypes.UNBAN): {
+      const userId = action.request.id;
+      const userView = state[userId];
+      return {...state, [userId]: {...userView, isBlocking: false}};
+    }
+  }
+
   return state;
 }
