@@ -33,8 +33,6 @@ export const routeActions = {
   'userFeed': next => getUserFeed(next.params.userName, getOffset(next)),
   'userComments': next => getUserComments(next.params.userName, getOffset(next)),
   'userLikes': next => getUserLikes(next.params.userName, getOffset(next)),
-  'subscribers': next => subscribers(getUserName(next)),
-  'subscriptions': next => subscriptions(getUserName(next)),
   'post': next => getSinglePost(next.params.postId)
 };
 
