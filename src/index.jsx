@@ -69,7 +69,7 @@ const friendsActions = next => {
 
 // needed to display mutual friends
 const subscribersSubscriptionsActions = next => {
-  const username = store.getState().user.username;
+  const username = next.params.userName;
   store.dispatch(ActionCreators.subscribers(username));
   store.dispatch(ActionCreators.subscriptions(username));
 };
