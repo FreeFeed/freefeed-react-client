@@ -100,7 +100,7 @@ export default class SendTo extends React.Component {
   }
 
   render() {
-    const defaultOpt = this.defaultOption(this.state.options, this.state.values[0]);
+    const defaultOpt = this.state.values[0];
 
     return (
       <div className="send-to">

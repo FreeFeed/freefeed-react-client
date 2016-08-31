@@ -44,7 +44,7 @@ class Layout extends React.Component {
     // Auto-select thumbnails on popular services
     const services = [{
       // Instagram
-      from: /https?:\/\/www\.instagram\.com\/p\/([\w-]{5,20})\//i,
+      from: /https?:\/\/www\.instagram\.com\/p\/([\w-]+)\//i,
       to: (id)=>('https://www.instagram.com/p/' + id + '/media/?size=l')
     }, {
       // YouTube
@@ -81,6 +81,7 @@ class Layout extends React.Component {
         <header>
           <h1>
             Share on <a href="/" target="_blank">FreeFeed</a>
+            {props.authenticated ? (" as " + props.user.username) : false}
           </h1>
         </header>
 
