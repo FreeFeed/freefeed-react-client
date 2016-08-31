@@ -60,6 +60,13 @@ export default class CreateBookmarkletPost extends React.Component {
     this.props.resetPostCreateForm();
   }
 
+  // When the SendTo became multiline, images choosen or textarea grows bookmarklet height is changed,
+  // but we can't handle this via CSS rules, so use JS to increase iframe size accordingly
+  // Only way to interact with the scripts outside the iframe is postMessage
+  componentDidUpdate() {
+    window.parent.postMessage(window.document.documentElement.offsetHeight, '*');
+  }
+
   render() {
     if (this.state.isPostSaved) {
       const postUrl = `/${this.props.user.username}/${this.props.createPostViewState.lastPostId}`;

@@ -96,6 +96,8 @@ function bookmarklet_popupInit(host) {
   jQuery(window).on('message', function(event) {
     var iframeHeight = event.originalEvent.data;
     if (iframeHeight) {
+      // set iframeHeight to default value if the height less than default
+      if (iframeHeight < 450) iframeHeight = 450;
       jQuery('#bookmarklet_popup').height(iframeHeight);
       jQuery('#bookmarklet_frame').height(iframeHeight);
     }
