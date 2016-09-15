@@ -50,6 +50,7 @@ export default ({user, signOut, recentGroups}) => (
         <ul>
           <li><Link to='/search'>FreeFeed search</Link></li>
           <li><Link to={{ pathname: "/search", query: { qs: `"@${user.username}"` } }}>Vanity search</Link></li>
+          <li><Link to='/filter/best_of'>Best of FreeFeed</Link></li>
         </ul>
       </div>
     </div>
