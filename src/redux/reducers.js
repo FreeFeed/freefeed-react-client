@@ -18,6 +18,9 @@ export function title(state = '', action) {
     case response(ActionTypes.DISCUSSIONS): {
       return 'My discussions - FreeFeed';
     }
+    case response(ActionTypes.GET_BEST_OF): {
+      return `Best Of FreeFeed`;
+    }
     case response(ActionTypes.GET_SEARCH): {
       return `Search - FreeFeed`;
     }
@@ -1521,6 +1524,9 @@ export function boxHeader(state = "", action) {
     }
     case request(ActionTypes.GET_SEARCH): {
       return `Search${action.payload.search ? ': ' + action.payload.search : ''}`;
+    }
+    case request(ActionTypes.GET_BEST_OF): {
+      return 'Best Of FreeFeed';
     }
     case request(ActionTypes.GET_USER_FEED): {
       return '';
