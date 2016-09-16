@@ -619,3 +619,12 @@ export function getSearch(search, offset) {
     payload: {search, offset},
   };
 }
+
+export function getBestOf(offset) {
+  return {
+    type: ActionTypes.GET_BEST_OF,
+    apiRequest: Api.getBestOf,
+    nonAuthRequest: true,
+    payload: {offset},
+  };
+}
