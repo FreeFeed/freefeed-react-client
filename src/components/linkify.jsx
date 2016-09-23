@@ -10,14 +10,14 @@ const MAX_URL_LENGTH = 50;
 
 class Linkify extends React.Component {
   createLinkElement({type, username}, displayedLink, href) {
-    let props = { key: `match${++this.idx}` };
+    const props = { key: `match${++this.idx}`, dir: 'ltr' };
 
     if (type == AT_LINK || type == LOCAL_LINK) {
       props['to'] = href;
       if (type == AT_LINK && this.userHover) {
         props['onMouseEnter'] = _ => this.userHover.hover(username);
         props['onMouseLeave'] = this.userHover.leave;
-      };
+      }
 
       return React.createElement(
         Link,
@@ -139,7 +139,7 @@ class Linkify extends React.Component {
     this.arrowHover = this.props.arrowHover;
     const parsedChildren = this.parse(this.props.children);
 
-    return <span className='Linkify'>{parsedChildren}</span>;
+    return <span className="Linkify" dir="auto">{parsedChildren}</span>;
   }
 }
 
