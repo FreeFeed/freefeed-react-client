@@ -39,7 +39,7 @@ export default class UserProfile extends React.Component {
                   <img src={props.profilePictureLargeUrl} width="75" height="75"/>
                 </div>
                 <div className="description">
-                  <div className="name">{props.screenName}</div>
+                  <div className="name" dir="auto">{props.screenName}</div>
                   <PieceOfText text={props.description}/>
                 </div>
               </div>

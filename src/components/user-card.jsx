@@ -61,7 +61,7 @@ class UserCard extends React.Component {
           </Link>
 
           <div className="names">
-            <Link to={`/${props.user.username}`} className="display-name">{props.user.screenName}</Link><br/>
+            <Link to={`/${props.user.username}`} className="display-name" dir="auto">{props.user.screenName}</Link><br/>
 
             {props.user.screenName !== props.user.username ? (
               <span className="username">@{props.user.username}</span>

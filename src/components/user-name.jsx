@@ -17,22 +17,22 @@ const DisplayOption = ({user, me, preferences, applyHyphenations}) => {
   }
 
   if (user.username === me && preferences.useYou) {
-    return <span>You</span>;
+    return <span dir="ltr">You</span>;
   }
 
   if (user.screenName === user.username) {
-    return <span>{screenName}</span>;
+    return <span dir="ltr">{screenName}</span>;
   }
 
   switch (preferences.displayOption) {
     case FrontendPrefsOptions.DISPLAYNAMES_DISPLAYNAME: {
-      return <span>{screenName}</span>;
+      return <span dir="auto">{screenName}</span>;
     }
     case FrontendPrefsOptions.DISPLAYNAMES_BOTH: {
-      return <span>{screenName} ({username})</span>;
+      return <span dir="auto">{screenName} <span dir="ltr">({username})</span></span>;
     }
     case FrontendPrefsOptions.DISPLAYNAMES_USERNAME: {
-      return <span>{username}</span>;
+      return <span dir="ltr">{username}</span>;
     }
   }
 
@@ -85,7 +85,7 @@ class UserName extends React.Component {
 
         <Link to={`/${this.props.user.username}`} className={this.props.className}>
           {this.props.display ? (
-            <span>{this.props.display}</span>
+            <span dir="ltr">{this.props.display}</span>
           ) : (
             <DisplayOption
               user={this.props.user}
