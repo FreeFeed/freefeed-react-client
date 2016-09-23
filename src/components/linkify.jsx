@@ -25,6 +25,7 @@ class Linkify extends React.Component {
         displayedLink
       );
     } else if (type == HASHTAG) {
+      props['dir'] = 'auto';
       props['href'] = href;
       props['target'] = '_blank';
 
@@ -92,6 +93,7 @@ class Linkify extends React.Component {
           } else {
             it.type = LOCAL_LINK;
             href = { pathname: '/search', query: { qs: it.text } };
+            displayedLink = <bdi>{displayedLink}</bdi>;
           }
         } else if (it.type === ARROW && this.arrowHover) {
           // pass
