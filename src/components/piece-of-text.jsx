@@ -70,7 +70,7 @@ const getCollapsedText = (text, expandText) => {
 
     // The text is short but has some newlines
     return [
-      <span key="text">{normalizedText}</span>,
+      <span key="text" dir="auto">{normalizedText}</span>,
       ' ',
       <a key="read-more" className="read-more" onClick={expandText}>Expand</a>
     ];
@@ -80,7 +80,7 @@ const getCollapsedText = (text, expandText) => {
   const shortenedText = shortenText(normalizedText, shortenedTextLength);
 
   return [
-    <span key="text">{shortenedText}</span>,
+    <span key="text" dir="auto">{shortenedText}</span>,
     ' ',
     <a key="read-more" className="read-more" onClick={expandText}>Read more</a>
   ];
