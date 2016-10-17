@@ -21,37 +21,34 @@ const HiddenEntriesToggle = (props) => {
 };
 
 export default (props) => {
-  const getEntryComponent = section => post => {
-    const isRecentlyHidden = (post.isHidden && (section === 'visible'));
-
-    return (
-      <Post {...post}
-        key={post.id}
-        user={props.user}
-        isInHomeFeed={props.isInHomeFeed}
-        isInUserFeed={props.isInUserFeed}
-        isRecentlyHidden={isRecentlyHidden}
-        showMoreComments={props.showMoreComments}
-        showMoreLikes={props.showMoreLikes}
-        toggleEditingPost={props.toggleEditingPost}
-        cancelEditingPost={props.cancelEditingPost}
-        saveEditingPost={props.saveEditingPost}
-        deletePost={props.deletePost}
-        addAttachmentResponse={props.addAttachmentResponse}
-        removeAttachment={props.removeAttachment}
-        toggleCommenting={props.toggleCommenting}
-        updateCommentingText={props.updateCommentingText}
-        addComment={props.addComment}
-        likePost={props.likePost}
-        unlikePost={props.unlikePost}
-        hidePost={props.hidePost}
-        unhidePost={props.unhidePost}
-        toggleModeratingComments={props.toggleModeratingComments}
-        disableComments={props.disableComments}
-        enableComments={props.enableComments}
-        commentEdit={props.commentEdit}/>
-    );
-  };
+  const getEntryComponent = section => postId => (
+    <Post
+      key={postId}
+      postId={postId}
+      user={props.user}
+      isInHomeFeed={props.isInHomeFeed}
+      isInUserFeed={props.isInUserFeed}
+      wasVisible={section === 'visible'}
+      showMoreComments={props.showMoreComments}
+      showMoreLikes={props.showMoreLikes}
+      toggleEditingPost={props.toggleEditingPost}
+      cancelEditingPost={props.cancelEditingPost}
+      saveEditingPost={props.saveEditingPost}
+      deletePost={props.deletePost}
+      addAttachmentResponse={props.addAttachmentResponse}
+      removeAttachment={props.removeAttachment}
+      toggleCommenting={props.toggleCommenting}
+      updateCommentingText={props.updateCommentingText}
+      addComment={props.addComment}
+      likePost={props.likePost}
+      unlikePost={props.unlikePost}
+      hidePost={props.hidePost}
+      unhidePost={props.unhidePost}
+      toggleModeratingComments={props.toggleModeratingComments}
+      disableComments={props.disableComments}
+      enableComments={props.enableComments}
+      commentEdit={props.commentEdit}/>
+  );
 
   const visibleEntries = props.visibleEntries.map(getEntryComponent('visible'));
   const hiddenEntries = (props.hiddenEntries || []).map(getEntryComponent('hidden'));

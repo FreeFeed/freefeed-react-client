@@ -2,7 +2,9 @@ import React from 'react';
 import {Link} from 'react-router';
 import moment from 'moment';
 import classnames from 'classnames';
+import {connect} from 'react-redux';
 
+import {joinPostData} from './select-utils';
 import {fromNowOrNow, getFullDate} from '../utils';
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
@@ -19,7 +21,7 @@ import PostMoreMenu from './post-more-menu';
 import EmbedlyLink from './embedly-link';
 import {getFirstLinkToEmbed} from '../utils';
 
-export default class Post extends React.Component {
+class Post extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -129,7 +131,7 @@ export default class Post extends React.Component {
     ));
 
     // username in url
-    // If posted _only_ into groups, use first recipient's username 
+    // If posted _only_ into groups, use first recipient's username
     let urlName = props.createdBy.username;
     if (props.recipients.length > 0 && !props.recipients.some(r => r.type === "user")) {
       urlName = props.recipients[0].username;
@@ -225,7 +227,7 @@ export default class Post extends React.Component {
     const linkToEmbed = getFirstLinkToEmbed(props.body);
     const noImageAttachments = !props.attachments.some(attachment => attachment.mediaType === 'image');
 
-    return (props.isRecentlyHidden ? (
+    return (props.isHidden && props.wasVisible ? (
       <div className="post recently-hidden-post">
         <i>Entry hidden - </i>
         <a onClick={unhidePost}>undo</a>.
@@ -347,3 +349,9 @@ export default class Post extends React.Component {
     ));
   }
 }
+
+const mapStateToProps = (state, {postId}) => {
+  return joinPostData(state)(postId);
+};
+
+export default connect(mapStateToProps)(Post);
