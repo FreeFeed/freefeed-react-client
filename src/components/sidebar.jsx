@@ -51,19 +51,7 @@ export default ({user, signOut, recentGroups}) => (
           <li><Link to='/search'>FreeFeed search</Link></li>
           <li><Link to={{ pathname: "/search", query: { qs: `"@${user.username}"` } }}>Vanity search</Link></li>
           <li>
-            <Link to='/filter/best_of'>Best of FreeFeed</Link>
-            &nbsp;&nbsp;
-            <span style={{
-              backgroundColor: '#F9CB16',
-              color: 'white',
-              display: 'inline-block',
-              fontSize: '10px',
-              padding: '0 2px',
-              verticalAlign: '1px'
-            }}>
-              NEW
-            </span>
-          </li>
+            <Link to='/filter/best_of'>Best of FreeFeed</Link></li>
         </ul>
       </div>
     </div>
