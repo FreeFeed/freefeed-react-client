@@ -133,5 +133,4 @@ export function getFirstLinkToEmbed(text) {
               && previousElementCheck(index, links));
     })
     .map(it => it.text)[0];
-};
-
+}

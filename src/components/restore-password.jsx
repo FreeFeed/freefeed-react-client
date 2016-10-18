@@ -57,6 +57,6 @@ class RestorePassword extends React.Component {
       </div>
     );
   }
-};
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(RestorePassword);
