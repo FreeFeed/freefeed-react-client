@@ -1,8 +1,8 @@
 import test from 'tape';
 import React from 'react';
-
-import PieceOfText from 'src/components/piece-of-text';
 import sd from 'skin-deep';
+
+import PieceOfText from '../../src/components/piece-of-text';
 
 const renderText = (text, isExpanded = false) => {
   const tree = sd.shallowRender(React.createElement(PieceOfText, {text, isExpanded}));

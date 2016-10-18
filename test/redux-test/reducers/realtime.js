@@ -1,6 +1,7 @@
 import test from 'tape';
-import {postsViewState, users, posts} from 'src/redux/reducers';
-import {REALTIME_COMMENT_NEW, REALTIME_COMMENT_DESTROY, REALTIME_LIKE_NEW, REALTIME_POST_NEW} from 'src/redux/action-types';
+
+import {postsViewState, users, posts} from '../../../src/redux/reducers';
+import {REALTIME_COMMENT_NEW, REALTIME_COMMENT_DESTROY, REALTIME_LIKE_NEW, REALTIME_POST_NEW} from '../../../src/redux/action-types';
 
 const testPost = {
   id: 1,

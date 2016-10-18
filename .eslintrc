@@ -22,9 +22,18 @@
   ],
   "extends": "eslint:recommended",
   "settings": {
+    "import/extensions": [
+      ".js",
+      ".jsx"
+    ],
     "import/ignore": [
       "node_modules"
-    ]
+    ],
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx"]
+      }
+    }
   },
   "rules": {
     "curly": ["error", "all"],
@@ -33,6 +42,16 @@
     "semi": ["error", "always"],
     "space-before-blocks": ["error", "always"],
     "space-before-function-paren": ["error", "never"],
+
+    "import/default": 2,
+    "import/named": 2,
+    "import/namespace": 2,
+    "import/no-duplicates": 2,
+    "import/no-extraneous-dependencies": 2,
+    "import/no-named-as-default": 2,
+    "import/no-named-as-default-member": 2,
+    "import/no-unresolved": 2,
+    "import/order": 1,
 
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error"

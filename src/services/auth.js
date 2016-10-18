@@ -1,6 +1,7 @@
 import {getCookie, setCookie} from '../utils/';
-import {auth as authConfig} from '../config';
+import config from '../config';
 
+const authConfig = config.auth;
 const NAME = `${authConfig.tokenPrefix}authToken`;
 const EXP_DAYS = 365;
 const PATH = '/';

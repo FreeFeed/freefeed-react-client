@@ -3,20 +3,19 @@ import {Link} from 'react-router';
 import moment from 'moment';
 import classnames from 'classnames';
 import _ from 'lodash';
+import Textarea from 'react-textarea-autosize';
 
-import {fromNowOrNow, getFullDate} from '../utils';
+import throbber16 from '../../assets/images/throbber-16.gif';
+import {fromNowOrNow, getFirstLinkToEmbed, getFullDate} from '../utils';
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
 import PostLikes from './post-likes';
 import PostVia from './post-via';
 import UserName from './user-name';
 import PieceOfText from './piece-of-text';
-import Textarea from 'react-textarea-autosize';
-import throbber16 from 'assets/images/throbber-16.gif';
 import Dropzone from './dropzone';
 import PostMoreMenu from './post-more-menu';
 import EmbedlyLink from './embedly-link';
-import {getFirstLinkToEmbed} from '../utils';
 
 export default class Post extends React.Component {
   constructor(props) {

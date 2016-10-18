@@ -1,11 +1,14 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import Recaptcha from 'react-google-recaptcha';
+import isEmail from 'validator/lib/isEmail';
+
+import config from '../config';
 import {signUpChange, signUp, signUpEmpty} from '../redux/action-creators';
 import {preventDefault} from '../utils';
 import LoaderContainer from './loader-container';
-import {captcha as captchaConfig} from '../config';
-import Recaptcha from 'react-google-recaptcha';
-import isEmail from 'validator/lib/isEmail';
+
+const captchaConfig = config.captcha;
 
 function mapStateToProps(state) {
   return {...state.signUpForm};

@@ -1,7 +1,8 @@
 import React from 'react';
-import {preventDefault} from '../utils';
 import Textarea from 'react-textarea-autosize';
-import throbber from 'assets/images/throbber.gif';
+
+import throbber from '../../assets/images/throbber.gif';
+import {preventDefault} from '../utils';
 import SendTo from './send-to';
 import Dropzone from './dropzone';
 import PostAttachments from './post-attachments';

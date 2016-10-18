@@ -4,10 +4,10 @@ import Textarea from 'react-textarea-autosize';
 import _ from 'lodash';
 import classnames from 'classnames';
 
+import throbber16 from '../../assets/images/throbber-16.gif';
+import {preventDefault, confirmFirst, fromNowOrNow} from '../utils';
 import PieceOfText from './piece-of-text';
 import UserName from './user-name';
-import {preventDefault, confirmFirst, fromNowOrNow} from '../utils';
-import throbber16 from 'assets/images/throbber-16.gif';
 
 export default class PostComment extends React.Component {
   constructor(props) {

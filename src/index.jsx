@@ -1,14 +1,14 @@
-import 'styles/common/common.scss';
-import 'styles/helvetica/app.scss';
-import 'index.jade';
-
-require.context('assets/fonts', true, /fontawesome.*/i);
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Router, Route, IndexRoute, browserHistory} from 'react-router';
 import {Provider} from 'react-redux';
 import {syncHistoryWithStore} from 'react-router-redux';
+
+import '../styles/common/common.scss';
+import '../styles/helvetica/app.scss';
+import '../index.jade';
+
+require.context('assets/fonts', true, /fontawesome.*/i);
 
 import configureStore from './redux/configure-store';
 import * as ActionCreators from './redux/action-creators';

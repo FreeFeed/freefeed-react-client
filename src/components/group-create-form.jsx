@@ -1,8 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router';
 
+import throbber16 from '../../assets/images/throbber-16.gif';
 import {preventDefault} from '../utils';
-import throbber16 from 'assets/images/throbber-16.gif';
 
 import GroupFeedTypePicker from './group-feed-type-picker';
 

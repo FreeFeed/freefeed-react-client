@@ -3,8 +3,8 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import _ from 'lodash';
 
-import SubsList from './subs-list';
 import {getUserInfo} from '../redux/action-creators';
+import SubsList from './subs-list';
 
 class SubscribersHandler extends React.Component {
   constructor(props) {

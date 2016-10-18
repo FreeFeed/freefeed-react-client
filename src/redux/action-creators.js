@@ -1,3 +1,4 @@
+import * as Api from '../services/api';
 import * as ActionTypes from './action-types';
 
 export function serverError(error) {
@@ -20,8 +21,6 @@ export function staticPage(title) {
     payload: {title}
   };
 }
-
-import * as Api from '../services/api';
 
 export function whoAmI() {
   return {

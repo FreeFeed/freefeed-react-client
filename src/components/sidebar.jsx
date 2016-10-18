@@ -1,8 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router';
 
-import UserName from './user-name';
 import {preventDefault} from '../utils';
+import UserName from './user-name';
 import RecentGroups from './recent-groups';
 
 export default ({user, signOut, recentGroups}) => (

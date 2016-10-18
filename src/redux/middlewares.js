@@ -1,4 +1,11 @@
 /*global Raven*/
+import {browserHistory} from 'react-router';
+
+import {getPostWithAllComments} from '../services/api';
+import {setToken, persistUser} from '../services/auth';
+import {init} from '../services/realtime';
+import {userParser} from '../utils';
+
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import {request, response, fail, requiresAuth, isFeedRequest, isFeedResponse} from './action-helpers';
@@ -30,10 +37,6 @@ export const apiMiddleware = store => next => async (action) => {
     return store.dispatch(ActionCreators.serverError(e));
   }
 };
-
-import {setToken, persistUser} from '../services/auth';
-import {userParser} from '../utils';
-import {browserHistory} from 'react-router';
 
 export const authMiddleware = store => next => action => {
 
@@ -151,9 +154,6 @@ export const requestsMiddleware = store => next => action => {
 
   return next(action);
 };
-
-import {init} from '../services/realtime';
-import {getPostWithAllComments} from '../services/api';
 
 const isFirstPage = state => !state.routing.locationBeforeTransitions.query.offset;
 

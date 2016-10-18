@@ -1,6 +1,9 @@
-import {api as apiConfig} from '../config';
-import {getToken} from './auth';
 import io from 'socket.io-client';
+
+import config from '../config';
+import {getToken} from './auth';
+
+const apiConfig = config.api;
 
 const dummyPost = {
   getBoundingClientRect: () => ({top:0})

@@ -1,4 +1,5 @@
 import {compose, createStore, applyMiddleware, combineReducers} from 'redux';
+import {routerReducer} from 'react-router-redux';
 
 import {
   apiMiddleware,
@@ -12,7 +13,6 @@ import {
   dataFixMiddleware
 } from './middlewares';
 
-import {routerReducer} from 'react-router-redux';
 import * as reducers from './reducers';
 
 //order matters — we need to stop unauthed async fetching before request, see authMiddleware

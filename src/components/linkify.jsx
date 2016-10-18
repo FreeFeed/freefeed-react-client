@@ -3,12 +3,13 @@ import React from 'react';
 import {Link} from 'react-router';
 import {shorten} from 'ff-url-finder';
 
+import config from '../config';
 import {finder} from '../utils';
-import UserName from './user-name';
 import {LINK, AT_LINK, LOCAL_LINK, EMAIL, HASHTAG, ARROW} from '../utils/link-types';
-import {search as searchConfig} from '../config';
+import UserName from './user-name';
 
 const MAX_URL_LENGTH = 50;
+const searchConfig = config.search;
 
 class Linkify extends React.Component {
   createLinkElement({type, username}, displayedLink, href) {

@@ -1,10 +1,10 @@
 import React from 'react';
 import {Link} from 'react-router';
 
+import throbber16 from '../../assets/images/throbber-16.gif';
 import {preventDefault, pluralForm} from '../utils';
 import CreatePost from './create-post';
 import PieceOfText from './piece-of-text';
-import throbber16 from 'assets/images/throbber-16.gif';
 
 export default class UserProfile extends React.Component {
   constructor(props) {

@@ -1,11 +1,16 @@
+import _ from 'lodash';
+import {LOCATION_CHANGE} from 'react-router-redux';
+
+import {userParser, postParser} from '../utils';
+import config from '../config';
+import {getToken, getPersistedUser} from '../services/auth';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
-const {request, response, fail} = ActionHelpers;
 
-import _ from 'lodash';
-import {userParser, postParser} from '../utils';
-import {frontendPreferences as frontendPrefsConfig} from '../config';
-import {LOCATION_CHANGE} from 'react-router-redux';
+
+const frontendPrefsConfig = config.frontendPreferences;
+
+const {request, response, fail} = ActionHelpers;
 
 export function title(state = '', action) {
   switch (action.type) {
@@ -1267,8 +1272,6 @@ export function subscribers(state = {}, action) {
   }
   return state;
 }
-
-import {getToken, getPersistedUser} from '../services/auth';
 
 export function authenticated(state = !!getToken(), action) {
   switch (action.type) {
