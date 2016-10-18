@@ -126,7 +126,7 @@ export default class Post extends React.Component {
     ));
 
     // username in url
-    // If posted _only_ into groups, use first recipient's username 
+    // If posted _only_ into groups, use first recipient's username
     let urlName = props.createdBy.username;
     if (props.recipients.length > 0 && !props.recipients.some(r => r.type === "user")) {
       urlName = props.recipients[0].username;

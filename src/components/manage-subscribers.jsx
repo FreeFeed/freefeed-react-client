@@ -30,7 +30,7 @@ const ManageSubscribersHandler = (props) => {
           </div>
           <div className="col-md-6 text-right">
             <Link to={`/${props.groupName}/subscribers`}>Browse subscribers</Link>
-          </div>       
+          </div>
         </div>
         <div className="manage-subscribers-body">
           <h3>Manage subscribers</h3>

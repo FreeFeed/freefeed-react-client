@@ -13,14 +13,14 @@ export default class GroupFeedTypePicker extends React.Component {
           <div className="col-sm-3">
             <label>Who can view posts:</label>
           </div>
-          
+
           <div className="col-sm-9">
             <label className="option-box">
               <div className="input">
                 <input type="radio"
                        name="isPrivate"
                        value="0"
-                       checked={this.props.isPrivate === '0'} 
+                       checked={this.props.isPrivate === '0'}
                        onChange={this.handleChange('isPrivate')}/>
               </div>
               <div className="option">
@@ -33,7 +33,7 @@ export default class GroupFeedTypePicker extends React.Component {
                 <input type="radio"
                        name="isPrivate"
                        value="1"
-                       checked={this.props.isPrivate === '1'}  
+                       checked={this.props.isPrivate === '1'}
                        onChange={this.handleChange('isPrivate')}/>
               </div>
               <div className="option">
@@ -47,14 +47,14 @@ export default class GroupFeedTypePicker extends React.Component {
           <div className="col-sm-3">
             <label>Who can write posts:</label>
           </div>
-          
+
           <div className="col-sm-9">
             <label className="option-box">
               <div className="input">
                 <input type="radio"
                        name="isRestricted"
                        value="0"
-                       checked={this.props.isRestricted === '0'}  
+                       checked={this.props.isRestricted === '0'}
                        onChange={this.handleChange('isRestricted')}/>
               </div>
               <div className="option">
@@ -67,7 +67,7 @@ export default class GroupFeedTypePicker extends React.Component {
                 <input type="radio"
                        name="isRestricted"
                        value="1"
-                       checked={this.props.isRestricted === '1'} 
+                       checked={this.props.isRestricted === '1'}
                        onChange={this.handleChange('isRestricted')}/>
               </div>
               <div className="option">
