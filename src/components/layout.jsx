@@ -19,7 +19,7 @@ const InternalLayout = ({authenticated, children}) => (
   </div>
 );
 
-const logoHandler = (routeName, cb) => _ => {
+const logoHandler = (routeName, cb) => () => {
   if (routeName === 'home') {
     return cb();
   }

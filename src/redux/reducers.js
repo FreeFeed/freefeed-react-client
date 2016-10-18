@@ -1285,7 +1285,7 @@ export function authenticated(state = !!getToken(), action) {
   return state;
 }
 
-const initUser = _ => ({
+const initUser = () => ({
   frontendPreferences: frontendPrefsConfig.defaultValues,
   ...getPersistedUser()
 });

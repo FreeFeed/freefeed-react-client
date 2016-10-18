@@ -1,11 +1,12 @@
 {
+  "parser": "babel-eslint",
   "env": {
     "browser": true,
+    "es6": true,
     "node": true
   },
-  "parser": "babel-eslint",
   "parserOptions": {
-    "ecmaVersion": 6,
+    "ecmaVersion": 2017,
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
@@ -16,6 +17,7 @@
     "import",
     "lodash",
     "promise",
+    "react",
     "you-dont-need-lodash-underscore"
   ],
   "extends": "eslint:recommended",
@@ -30,6 +32,9 @@
     "keyword-spacing": ["error", {"before": true, "after": true}],
     "semi": ["error", "always"],
     "space-before-blocks": ["error", "always"],
-    "space-before-function-paren": ["error", "never"]
+    "space-before-function-paren": ["error", "never"],
+
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error"
   }
 }

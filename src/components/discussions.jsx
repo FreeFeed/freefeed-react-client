@@ -2,12 +2,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {createPost, resetPostCreateForm, expandSendTo} from '../redux/action-creators';
 import {joinPostData, joinCreatePostData, postActions} from './select-utils';
-import {getQuery} from '../utils';
 
 import CreatePost from './create-post';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
-import Welcome from './welcome';
 
 const FeedHandler = (props) => {
   const createPostComponent = (

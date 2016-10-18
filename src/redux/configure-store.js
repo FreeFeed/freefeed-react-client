@@ -1,5 +1,4 @@
 import {compose, createStore, applyMiddleware, combineReducers} from 'redux';
-import {createHistory, createHashHistory} from 'history';
 
 import {
   apiMiddleware,

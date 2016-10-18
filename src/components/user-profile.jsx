@@ -12,7 +12,7 @@ export default class UserProfile extends React.Component {
     this.state = { isUnsubWarningDisplayed: false };
   }
 
-  componentWillReceiveProps = (newProps) => {
+  componentWillReceiveProps = () => {
     this.setState({ isUnsubWarningDisplayed: false });
   }
 
@@ -23,7 +23,7 @@ export default class UserProfile extends React.Component {
       if (props.amIGroupAdmin) {
         this.setState({ isUnsubWarningDisplayed: true });
       } else {
-        props.unsubscribe({ username: props.username });
+        props.unsubscribe({ username: props.username, id: props.id });
       }
     };
 
@@ -96,9 +96,9 @@ export default class UserProfile extends React.Component {
                   )
                 ) : (
                   props.subscribed ? (
-                    <a onClick={()=>props.unsubscribe({username: props.username, id: props.id})}>Unsubscribe</a>
+                    <a onClick={() => unsubscribe()}>Unsubscribe</a>
                   ) : (
-                    <a onClick={()=>props.subscribe({username: props.username, id: props.id})}>Subscribe</a>
+                    <a onClick={() => props.subscribe({username: props.username, id: props.id})}>Subscribe</a>
                   )
                 )}
 
@@ -110,7 +110,7 @@ export default class UserProfile extends React.Component {
               </div>
               <div className="col-xs-5 col-sm-3 text-right">
                 {props.type !== 'group' && !props.subscribed ? (
-                  <a onClick={preventDefault(_=>props.ban({username: props.username, id: props.id}))}>Block this user</a>
+                  <a onClick={preventDefault(()=>props.ban({username: props.username, id: props.id}))}>Block this user</a>
                 ) : props.amIGroupAdmin ? (
                   <Link to={`/${props.username}/settings`}>Settings</Link>
                 ) : false}

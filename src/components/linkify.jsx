@@ -1,7 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router';
 import {shorten} from 'ff-url-finder';
-import _ from 'lodash';
 
 import {finder} from '../utils';
 import UserName from './user-name';
@@ -17,7 +16,7 @@ class Linkify extends React.Component {
     if (type == AT_LINK || type == LOCAL_LINK) {
       props['to'] = href;
       if (type == AT_LINK && this.userHover) {
-        props['onMouseEnter'] = _ => this.userHover.hover(username);
+        props['onMouseEnter'] = () => this.userHover.hover(username);
         props['onMouseLeave'] = this.userHover.leave;
       }
 
@@ -38,7 +37,7 @@ class Linkify extends React.Component {
       );
     } else if (type == ARROW) {
       props['className'] = 'arrow-span';
-      props['onMouseEnter'] = _ => this.arrowHover.hover(displayedLink.length);
+      props['onMouseEnter'] = () => this.arrowHover.hover(displayedLink.length);
       props['onMouseLeave'] = this.arrowHover.leave;
       
       return React.createElement(

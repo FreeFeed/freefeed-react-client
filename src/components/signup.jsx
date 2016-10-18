@@ -125,7 +125,7 @@ function Signup(props) {
                     <Recaptcha sitekey={captchaConfig.siteKey}
                                theme='light' type='image'
                                onChange={v => props.signUpChange({captcha: v})}
-                               onExpired={v => props.signUpChange({captcha: null})}/>
+                               onExpired={() => props.signUpChange({captcha: null})}/>
                   </div>
                 }
 

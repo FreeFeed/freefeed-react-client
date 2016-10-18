@@ -37,7 +37,7 @@ class RestorePassword extends React.Component {
             <div className='row'>
               <div className='col-md-6'>
                 <LoaderContainer loading={this.props.loading}>
-                  <form onSubmit={preventDefault(_ => restoreFunc({restore: this.props.restore, mail: this.refs.mail.value}))} className='p-signin'>
+                  <form onSubmit={preventDefault(() => restoreFunc({restore: this.props.restore, mail: this.refs.mail.value}))} className='p-signin'>
                     <div className='form-group'>
                       <label htmlFor='mail'>E-mail</label>
                       <input id='mail' className='form-control' type='mail' ref='mail'/>

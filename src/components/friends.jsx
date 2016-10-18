@@ -65,7 +65,7 @@ function calculateMutual(subscriptions, subscribers) {
 
 function selectState(state) {
   const feedRequests = state.userRequests;
-  const sortingRule = 'username';
+  // const sortingRule = 'username';
 
   const mutual = calculateMutual(
     state.usernameSubscriptions,

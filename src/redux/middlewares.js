@@ -11,7 +11,7 @@ export const apiMiddleware = store => next => async (action) => {
 
   //dispatch request begin action
   //clean apiRequest to not get caught by this middleware
-  var t = store.dispatch({...action, type: request(action.type), apiRequest: null});
+  store.dispatch({...action, type: request(action.type), apiRequest: null});
   try {
     const apiResponse = await action.apiRequest(action.payload);
     const obj = await apiResponse.json();
@@ -32,7 +32,7 @@ export const apiMiddleware = store => next => async (action) => {
 };
 
 import {setToken, persistUser} from '../services/auth';
-import {userParser, getCurrentRouteName} from '../utils';
+import {userParser} from '../utils';
 import {browserHistory} from 'react-router';
 
 export const authMiddleware = store => next => action => {
@@ -154,7 +154,6 @@ export const requestsMiddleware = store => next => action => {
 
 import {init} from '../services/realtime';
 import {getPostWithAllComments} from '../services/api';
-import {frontendPreferences as frontendPrefsConfig} from '../config';
 
 const isFirstPage = state => !state.routing.locationBeforeTransitions.query.offset;
 
@@ -167,7 +166,7 @@ const iLikedPost = ({user, posts}, postId) => {
   const likes = post.likes || [];
   return likes.indexOf(user.id) !== -1;
 };
-const dispatchWithPost = async (store, postId, action, filter = _ => true) => {
+const dispatchWithPost = async (store, postId, action, filter = () => true) => {
   const state = store.getState();
   const shouldBump = isFirstPage(state);
   if (isPostLoaded(state, postId)) {
@@ -265,7 +264,7 @@ export const realtimeMiddleware = store => {
 };
 
 // Fixing data structures coming from server
-export const dataFixMiddleware = store => next => action => {
+export const dataFixMiddleware = (/*store*/) => next => action => {
   if (action.type === response(ActionTypes.GET_SINGLE_POST)) {
     [action.payload, action.payload.posts].forEach(fixPostsData);
   }

@@ -50,7 +50,7 @@ const dropzoneEventHandlers = ({addAttachmentResponse, addedFile, removedFile}) 
     window.dispatchEvent(dropEvent);
   },
 
-  sending: function(file, xhr, form) {
+  sending: function(file, xhr/*, form*/) {
     xhr.setRequestHeader('X-Authentication-Token', getToken());
   },
 

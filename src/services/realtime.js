@@ -3,7 +3,7 @@ import {getToken} from './auth';
 import io from 'socket.io-client';
 
 const dummyPost = {
-  getBoundingClientRect: _ => ({top:0})
+  getBoundingClientRect: () => ({top:0})
 };
 
 const scrollCompensator = dispatchAction => (...actionParams) => {
@@ -23,7 +23,7 @@ const scrollCompensator = dispatchAction => (...actionParams) => {
   const res = dispatchAction(...actionParams);
 
   if (res.then) {
-    res.then(_ => {
+    res.then(() => {
       const topAfter = nearestTop.getBoundingClientRect().top;
       const heightAfter = document.body.offsetHeight;
 
@@ -57,7 +57,7 @@ const bindSocketEventHandlers = socket => eventHandlers => {
   Object.keys(eventHandlers).forEach((event) => socket.on(event, scrollCompensator(eventHandlers[event])));
 };
 
-const openSocket = _ => io.connect(`${apiConfig.host}/`, {query: `token=${getToken()}`});
+const openSocket = () => io.connect(`${apiConfig.host}/`, {query: `token=${getToken()}`});
 
 export function init(eventHandlers) {
   const socket = openSocket();
@@ -70,7 +70,7 @@ export function init(eventHandlers) {
   let subscribe;
 
   return {
-    unsubscribe: _ => {
+    unsubscribe: () => {
       if (subscription) {
         console.log('unsubscribing from ', subscription);
         socket.emit('unsubscribe', subscription);
@@ -84,6 +84,6 @@ export function init(eventHandlers) {
       socket.on('reconnect', subscribe);
       subscribe();
     },
-    disconnect: _ => socket.disconnect()
+    disconnect: () => socket.disconnect()
   };
 }

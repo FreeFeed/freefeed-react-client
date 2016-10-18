@@ -1,6 +1,5 @@
 import React from 'react';
 import UserName from './user-name';
-import {Link} from 'react-router';
 import {fromNowOrNow} from '../utils';
 
 const renderRecentGroup = recentGroup => {

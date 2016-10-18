@@ -16,7 +16,7 @@ import {
 
   // Comment actions
   toggleCommenting, updateCommentingText, addComment,
-  toggleEditingComment, cancelEditingComment, saveEditingComment,
+  toggleEditingComment, saveEditingComment,
   highlightComment, clearHighlightComment,
   deleteComment
 } from '../redux/action-creators';
@@ -25,7 +25,7 @@ const MAX_LIKES = 4;
 
 export const ommitBubblesThreshold = 600 * 1000; // 10 min
 
-const allFalse = _ => false;
+const allFalse = () => false;
 
 const commentHighlighter = ({commentsHighlights, user, postsViewState}, commentsPostId, commentList) => {
   const {postId, author, arrows, baseCommentId} = commentsHighlights;

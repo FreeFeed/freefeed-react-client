@@ -7,7 +7,7 @@ import Dropzone from './dropzone';
 import PostAttachments from './post-attachments';
 
 const isTextEmpty = text => text == '' || /^\s+$/.test(text);
-const getDefaultState = _ => ({
+const getDefaultState = () => ({
   isFormEmpty: true,
   isMoreOpen: false,
   attachmentQueueLength: 0,
@@ -21,7 +21,7 @@ export default class CreatePost extends React.Component {
     this.state = getDefaultState();
   }
 
-  createPost = _ => {
+  createPost = () => {
     // Get all the values
     let feeds = this.refs.selectFeeds.values;
     let postText = this.state.postText;
@@ -43,7 +43,7 @@ export default class CreatePost extends React.Component {
     }
   }
 
-  clearForm = _ => {
+  clearForm = () => {
     this.setState(getDefaultState());
     const attachmentIds = this.props.createPostForm.attachments.map(attachment => attachment.id);
     attachmentIds.forEach(this.removeAttachment);
@@ -51,7 +51,7 @@ export default class CreatePost extends React.Component {
 
   removeAttachment = (attachmentId) => this.props.removeAttachment(null, attachmentId)
 
-  checkCreatePostAvailability = (e) => {
+  checkCreatePostAvailability = () => {
     let isFormEmpty = isTextEmpty(this.state.postText) || this.refs.selectFeeds.values === 0;
 
     this.setState({
@@ -78,7 +78,7 @@ export default class CreatePost extends React.Component {
     this.setState({ isMoreOpen: !this.state.isMoreOpen });
   }
 
-  changeAttachmentQueue = (change) => _ => {
+  changeAttachmentQueue = (change) => () => {
     this.setState({attachmentQueueLength: this.state.attachmentQueueLength + change});
   }
 
@@ -87,7 +87,6 @@ export default class CreatePost extends React.Component {
   }
 
   render() {
-    let _this = this;
     let props = this.props;
 
     return (
