@@ -426,6 +426,7 @@ export function postsViewState(state = {}, action) {
     case fail(ActionTypes.SAVE_EDITING_POST): {
       const id = action.request.postId;
       const isEditing = false;
+      const isSaving = false;
 
       const isError = true;
 

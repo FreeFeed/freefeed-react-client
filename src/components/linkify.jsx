@@ -1,8 +1,10 @@
 import React from 'react';
 import {Link} from 'react-router';
+import {shorten} from 'ff-url-finder';
+import _ from 'lodash';
+
 import {finder} from '../utils';
 import UserName from './user-name';
-import {shorten} from 'ff-url-finder';
 import {LINK, AT_LINK, LOCAL_LINK, EMAIL, HASHTAG, ARROW} from '../utils/link-types';
 import {search as searchConfig} from '../config';
 
