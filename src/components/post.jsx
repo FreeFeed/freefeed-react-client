@@ -106,12 +106,10 @@ export default class Post extends React.Component {
       // the only recipient, since it would be that feed.
       if (props.isInUserFeed) {
         recipients = [];
-      } else {
+      } else if (recipients[0].id === props.createdBy.id) {
         // When in a many-sources list (Home, Direct messages, My discussions),
         // we should omit the only recipient if it's the author's feed.
-        if (recipients[0].id === props.createdBy.id) {
-          recipients = [];
-        }
+        recipients = [];
       }
     }
     recipients = recipients.map((recipient, index) => (
