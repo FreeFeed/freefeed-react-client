@@ -46,7 +46,7 @@ export default class UserSettingsForm extends React.Component {
         </div>
         <div className="checkbox">
           <label>
-            <input type="checkbox" name="isPrivate" defaultChecked={this.props.user.isPrivate == '1' ? true : false} onChange={this.updateChecked}/>
+            <input type="checkbox" name="isPrivate" defaultChecked={this.props.user.isPrivate == '1'} onChange={this.updateChecked}/>
             Private feed
             <small> (only let people I approve see my feed)</small>
           </label>

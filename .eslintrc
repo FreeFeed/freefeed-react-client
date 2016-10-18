@@ -43,6 +43,7 @@
     "no-else-return": "error",
     "no-lonely-if": "error",
     "no-trailing-spaces": "error",
+    "no-unneeded-ternary": "error",
     "no-var": "error",
     "prefer-const": "error",
     "semi": ["error", "always"],
