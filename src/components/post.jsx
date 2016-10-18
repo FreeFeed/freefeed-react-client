@@ -77,6 +77,18 @@ export default class Post extends React.Component {
       props.createdBy.profilePictureLargeUrl : props.createdBy.profilePictureMediumUrl;
     const profilePictureSize = props.isSinglePost ? 75 : 50;
 
+    // Hidden user or group
+    if (props.isInHomeFeed) {
+      const hiddenUsers = props.user.frontendPreferences.homefeed.hideUsers;
+      if (!_.isEmpty(hiddenUsers)) {
+        const rcpNames = props.recipients.map(u => u.username);
+        rcpNames.push(props.createdBy.username);
+        if (!_.isEmpty(_.intersection(rcpNames, hiddenUsers))) {
+          return false;
+        }
+      }
+    }
+
     const postClass = classnames({
       'post': true,
       'single-post': props.isSinglePost,
