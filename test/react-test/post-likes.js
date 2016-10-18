@@ -26,9 +26,9 @@ const getRenderedOmmitedLikes = (likes, omittedLikes) => {
 
 test('PostLikes renders all likes', t => {
 
-  let likes = [];
+  const likes = [];
 
-  for (var i = 0; i < 6; i++) {
+  for (let i = 0; i < 6; i++) {
     likes.push({});
 
     const renderedLikes = renderLikes(likes);

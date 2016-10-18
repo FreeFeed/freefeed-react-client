@@ -24,10 +24,10 @@ export default class CreatePost extends React.Component {
 
   createPost = () => {
     // Get all the values
-    let feeds = this.refs.selectFeeds.values;
-    let postText = this.state.postText;
-    let attachmentIds = this.props.createPostForm.attachments.map(attachment => attachment.id);
-    let more = {
+    const feeds = this.refs.selectFeeds.values;
+    const postText = this.state.postText;
+    const attachmentIds = this.props.createPostForm.attachments.map(attachment => attachment.id);
+    const more = {
       commentsDisabled: this.state.commentsDisabled
     };
 
@@ -53,7 +53,7 @@ export default class CreatePost extends React.Component {
   removeAttachment = (attachmentId) => this.props.removeAttachment(null, attachmentId)
 
   checkCreatePostAvailability = () => {
-    let isFormEmpty = isTextEmpty(this.state.postText) || this.refs.selectFeeds.values === 0;
+    const isFormEmpty = isTextEmpty(this.state.postText) || this.refs.selectFeeds.values === 0;
 
     this.setState({
       isFormEmpty
@@ -88,7 +88,7 @@ export default class CreatePost extends React.Component {
   }
 
   render() {
-    let props = this.props;
+    const props = this.props;
 
     return (
       <div className="create-post post-editor">

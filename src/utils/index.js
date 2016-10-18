@@ -31,7 +31,7 @@ export function setCookie(name, value = '', expireDays, path) {
 }
 
 export function fromNowOrNow(date) {
-  var now = moment(date);
+  const now = moment(date);
 
   if (Math.abs(moment().diff(now)) < 1000) { // 1000 milliseconds
     return 'just now';

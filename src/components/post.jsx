@@ -32,7 +32,7 @@ export default class Post extends React.Component {
   }
 
   render() {
-    let props = this.props;
+    const props = this.props;
 
     const createdAt = new Date(+props.createdAt);
     const createdAtISO = moment(createdAt).format();
@@ -40,14 +40,14 @@ export default class Post extends React.Component {
     const createdAgo = fromNowOrNow(createdAt);
 
     let editingPostText = props.editingText;
-    let editingPostTextChange = (e) => {
+    const editingPostTextChange = (e) => {
       editingPostText = e.target.value;
     };
     const toggleEditingPost = () => props.toggleEditingPost(props.id, editingPostText);
     const cancelEditingPost = () => props.cancelEditingPost(props.id, editingPostText);
     const saveEditingPost = () => {
       if (!props.isSaving) {
-        let attachmentIds = props.attachments.map(item => item.id) || [];
+        const attachmentIds = props.attachments.map(item => item.id) || [];
         props.saveEditingPost(props.id, {body: editingPostText, attachments: attachmentIds});
       }
     };

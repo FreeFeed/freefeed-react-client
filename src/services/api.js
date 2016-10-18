@@ -320,7 +320,7 @@ export function updatePassword({currentPassword, password, passwordConfirmation}
 }
 
 export function updateUserPicture({picture}) {
-  let data = new FormData();
+  const data = new FormData();
   data.append('file', picture);
 
   return fetch(`${apiConfig.host}/v1/users/updateProfilePicture`, {
@@ -393,7 +393,7 @@ export function updateGroup({id, groupSettings}) {
 }
 
 export function updateGroupPicture({groupName, file}) {
-  let data = new FormData();
+  const data = new FormData();
   data.append('file', file);
 
   return fetch(`${apiConfig.host}/v1/groups/${groupName}/updateProfilePicture`, {

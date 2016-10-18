@@ -63,7 +63,7 @@ class Linkify extends React.Component {
   idx = 0
 
   parseString(string) {
-    let elements = [];
+    const elements = [];
     if (string === '') {
       return elements;
     }
@@ -105,7 +105,7 @@ class Linkify extends React.Component {
           return;
         }
 
-        let linkElement = this.createLinkElement(it, displayedLink, href);
+        const linkElement = this.createLinkElement(it, displayedLink, href);
 
         elements.push(linkElement);
       });

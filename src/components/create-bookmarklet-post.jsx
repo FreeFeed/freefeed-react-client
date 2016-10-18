@@ -16,7 +16,7 @@ export default class CreateBookmarkletPost extends React.Component {
 
   checkCreatePostAvailability = () => {
     const isPostTextEmpty = (this.refs.postText.value == '' || /^\s+$/.test(this.refs.postText.value));
-    let isFormEmpty = (isPostTextEmpty || this.refs.selectFeeds.values == 0);
+    const isFormEmpty = (isPostTextEmpty || this.refs.selectFeeds.values == 0);
 
     this.setState({
       isFormEmpty

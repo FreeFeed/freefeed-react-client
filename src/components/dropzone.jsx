@@ -39,14 +39,14 @@ const dropzoneEventHandlers = ({addAttachmentResponse, addedFile, removedFile}) 
   // re-dispatch them to let event handlers in Layout work as they should.
   // The events don't need to be real, just mimic some important parts.
   dragenter: function(e) {
-    var dragEnterEvent = new Event('dragenter');
+    const dragEnterEvent = new Event('dragenter');
     if (e.dataTransfer && e.dataTransfer.types) {
       dragEnterEvent.dataTransfer = { types: e.dataTransfer.types };
     }
     window.dispatchEvent(dragEnterEvent);
   },
   drop: function(e) {
-    var dropEvent = new Event('drop');
+    const dropEvent = new Event('drop');
     if (e.dataTransfer && e.dataTransfer.types) {
       dropEvent.dataTransfer = { types: e.dataTransfer.types };
     }

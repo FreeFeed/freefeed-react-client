@@ -21,7 +21,7 @@ export default class PostMoreMenu extends React.Component {
   }
 
   render() {
-    let menuOptions = {
+    const menuOptions = {
       align: 'left',
       close: this.close.bind(this),
       isOpen: this.state.isOpen,

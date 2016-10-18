@@ -107,7 +107,7 @@ export const joinPostData = state => postId => {
   // Check if the post is a direct message
   const directRecipients = post.postedTo
     .filter((subscriptionId) => {
-      let subscriptionType = (state.subscriptions[subscriptionId]||{}).name;
+      const subscriptionType = (state.subscriptions[subscriptionId]||{}).name;
       return (subscriptionType === 'Directs');
     });
   const isDirect = !!directRecipients.length;
