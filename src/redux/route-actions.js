@@ -9,8 +9,6 @@ import {
   getUserFeed,
   getUserComments,
   getUserLikes,
-  subscribers,
-  subscriptions,
   getSinglePost,
   getSearch,
   getBestOf,

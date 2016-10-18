@@ -1,3 +1,4 @@
+/* global embedly */
 import React from 'react';
 
 let previewHeights = [];

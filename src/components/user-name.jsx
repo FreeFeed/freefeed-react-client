@@ -2,8 +2,8 @@ import React from 'react';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
 
-import UserCard from './user-card';
 import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
+import UserCard from './user-card';
 
 const DisplayOption = ({user, me, preferences, applyHyphenations}) => {
   let username, screenName;

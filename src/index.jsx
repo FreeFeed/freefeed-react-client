@@ -1,15 +1,14 @@
-import 'styles/common/common.scss';
-import 'styles/helvetica/app.scss';
-import 'index.jade';
-
-require.context('assets/fonts', true, /fontawesome.*/i);
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Router, Route, IndexRoute, browserHistory} from 'react-router';
 import {Provider} from 'react-redux';
 import {syncHistoryWithStore} from 'react-router-redux';
-import Autotrack from 'autotrack';
+
+import '../styles/common/common.scss';
+import '../styles/helvetica/app.scss';
+import '../index.jade';
+
+require.context('assets/fonts', true, /fontawesome.*/i);
 
 import configureStore from './redux/configure-store';
 import * as ActionCreators from './redux/action-creators';
@@ -19,7 +18,6 @@ import Home from './components/home';
 import Discussions from './components/discussions';
 import About from './components/about';
 import Dev from './components/dev';
-import NotFound from './components/not-found';
 import Signin from './components/signin';
 import Signup from './components/signup';
 import RestorePassword from './components/restore-password';
@@ -61,7 +59,7 @@ const manageSubscribersActions = next => {
   store.dispatch(ActionCreators.subscribers(username));
 };
 
-const friendsActions = next => {
+const friendsActions = () => {
   const username = store.getState().user.username;
   store.dispatch(ActionCreators.subscribers(username));
   store.dispatch(ActionCreators.subscriptions(username));
@@ -79,7 +77,7 @@ const enterStaticPage = title => () => {
   store.dispatch(ActionCreators.staticPage(title));
 };
 
-history.listen(_ => scrollTo(0, 0));
+history.listen(() => scrollTo(0, 0));
 
 const generateRouteHooks = callback => ({
   onEnter: callback,

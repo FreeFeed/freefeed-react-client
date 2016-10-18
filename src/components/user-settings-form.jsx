@@ -1,8 +1,8 @@
 import React from 'react';
-
-import {preventDefault} from '../utils';
-import throbber16 from 'assets/images/throbber-16.gif';
 import classnames from 'classnames';
+
+import throbber16 from '../../assets/images/throbber-16.gif';
+import {preventDefault} from '../utils';
 
 export default class UserSettingsForm extends React.Component {
   updateSetting = (setting) => (e) => {

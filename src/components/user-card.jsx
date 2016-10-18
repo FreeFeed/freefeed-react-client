@@ -1,10 +1,11 @@
 import React from 'react';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
+import _ from 'lodash';
 
-import {userActions} from './select-utils';
+import throbber16 from '../../assets/images/throbber-16.gif';
 import {getUserInfo} from '../redux/action-creators';
-import throbber16 from 'assets/images/throbber-16.gif';
+import {userActions} from './select-utils';
 
 class UserCard extends React.Component {
   constructor(props) {

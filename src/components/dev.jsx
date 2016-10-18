@@ -1,7 +1,6 @@
 import React from 'react';
-import {Link} from 'react-router';
 
-export default (props) => (
+export default () => (
   <div className="box">
     <div className="box-header-timeline"></div>
     <div className="box-body">

@@ -5,10 +5,10 @@ import Helmet from 'react-helmet';
 import classnames from 'classnames';
 
 import {unauthenticated, home} from '../redux/action-creators';
+import {getCurrentRouteName} from '../utils';
 import Footer from './footer';
 import Sidebar from './sidebar';
 import LoaderContainer from './loader-container';
-import {getCurrentRouteName} from '../utils';
 import SearchForm from './search-form';
 
 const InternalLayout = ({authenticated, children}) => (
@@ -19,7 +19,7 @@ const InternalLayout = ({authenticated, children}) => (
   </div>
 );
 
-const logoHandler = (routeName, cb) => _ => {
+const logoHandler = (routeName, cb) => () => {
   if (routeName === 'home') {
     return cb();
   }

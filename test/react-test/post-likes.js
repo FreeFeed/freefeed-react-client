@@ -1,8 +1,8 @@
 import test from 'tape';
 import React from 'react';
-
-import PostLikes from 'src/components/post-likes';
 import sd from 'skin-deep';
+
+import PostLikes from '../../src/components/post-likes';
 
 const renderLikes = (likes, omittedLikes = 0) => {
   const post = {omittedLikes};

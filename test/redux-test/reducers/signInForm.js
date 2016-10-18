@@ -1,6 +1,7 @@
 import test from 'tape';
-import {signInForm} from 'src/redux/reducers';
-import {signInChange} from 'src/redux/action-creators';
+
+import {signInForm} from '../../../src/redux/reducers';
+import {signInChange} from '../../../src/redux/action-creators';
 
 test('signInForm changes username on signInChange', t => {
   const oldName = 'name';

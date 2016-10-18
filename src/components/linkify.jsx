@@ -1,12 +1,15 @@
+/*global Raven*/
 import React from 'react';
 import {Link} from 'react-router';
-import {finder} from '../utils';
-import UserName from './user-name';
 import {shorten} from 'ff-url-finder';
+
+import config from '../config';
+import {finder} from '../utils';
 import {LINK, AT_LINK, LOCAL_LINK, EMAIL, HASHTAG, ARROW} from '../utils/link-types';
-import {search as searchConfig} from '../config';
+import UserName from './user-name';
 
 const MAX_URL_LENGTH = 50;
+const searchConfig = config.search;
 
 class Linkify extends React.Component {
   createLinkElement({type, username}, displayedLink, href) {
@@ -15,7 +18,7 @@ class Linkify extends React.Component {
     if (type == AT_LINK || type == LOCAL_LINK) {
       props['to'] = href;
       if (type == AT_LINK && this.userHover) {
-        props['onMouseEnter'] = _ => this.userHover.hover(username);
+        props['onMouseEnter'] = () => this.userHover.hover(username);
         props['onMouseLeave'] = this.userHover.leave;
       }
 
@@ -36,7 +39,7 @@ class Linkify extends React.Component {
       );
     } else if (type == ARROW) {
       props['className'] = 'arrow-span';
-      props['onMouseEnter'] = _ => this.arrowHover.hover(displayedLink.length);
+      props['onMouseEnter'] = () => this.arrowHover.hover(displayedLink.length);
       props['onMouseLeave'] = this.arrowHover.leave;
       
       return React.createElement(
@@ -73,7 +76,7 @@ class Linkify extends React.Component {
         let href;
 
         if (it.type === LINK) {
-          displayedLink = shorten(it.text, MAX_URL_LENGTH);
+          displayedLink = shorten(it.text, MAX_URL_LENGTH).replace(/^https?:\/\//, '');
           href = it.url;
         } else if (it.type === AT_LINK) {
           elements.push(<UserName 
@@ -83,7 +86,7 @@ class Linkify extends React.Component {
             key={`match${++this.idx}`}/>);
           return;
         } else if (it.type === LOCAL_LINK) {
-          displayedLink = shorten(it.text, MAX_URL_LENGTH);
+          displayedLink = shorten(it.text, MAX_URL_LENGTH).replace(/^https?:\/\//, '');
           href = it.uri;
         } else if (it.type === EMAIL) {
           href = `mailto:${it.address}`;
@@ -110,7 +113,9 @@ class Linkify extends React.Component {
       return (elements.length === 1) ? elements[0] : elements;
     }
     catch (err) {
-      console.log('Error while liknifying text', string, err);
+      if (typeof Raven !== 'undefined') {
+        Raven.captureException(err, { level: 'error', tags: { area: 'component/linkify' }, extra: { string } });
+      }
     }
     return [string];
   }

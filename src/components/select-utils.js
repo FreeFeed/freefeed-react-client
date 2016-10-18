@@ -1,3 +1,4 @@
+/*global Raven*/
 import {
   // User actions
   subscribe, unsubscribe,
@@ -16,7 +17,7 @@ import {
 
   // Comment actions
   toggleCommenting, updateCommentingText, addComment,
-  toggleEditingComment, cancelEditingComment, saveEditingComment,
+  toggleEditingComment, saveEditingComment,
   highlightComment, clearHighlightComment,
   deleteComment
 } from '../redux/action-creators';
@@ -25,7 +26,7 @@ const MAX_LIKES = 4;
 
 export const ommitBubblesThreshold = 600 * 1000; // 10 min
 
-const allFalse = _ => false;
+const allFalse = () => false;
 
 const commentHighlighter = ({commentsHighlights, user, postsViewState}, commentsPostId, commentList) => {
   const {postId, author, arrows, baseCommentId} = commentsHighlights;
@@ -66,7 +67,9 @@ export const joinPostData = state => postId => {
     const placeholderUser = {id: comment.createdBy};
     const author = state.users[comment.createdBy] || placeholderUser;
     if (author === placeholderUser) {
-      console.log('We\'ve got comment with unknown author with id', placeholderUser.id);
+      if (typeof Raven !== 'undefined') {
+        Raven.captureMessage(`We've got comment with unknown author with id`, { extra: { uid: placeholderUser.id }});
+      }
     }
     const previousPost = _comments[index-1] || {createdBy: null, createdAt: "0"};
     const omitBubble = omitRepeatedBubbles
@@ -94,7 +97,9 @@ export const joinPostData = state => postId => {
   const createdBy = state.users[post.createdBy] || placeholderUser;
 
   if (createdBy === placeholderUser) {
-    console.log('We\'ve got post with unknown author with id', placeholderUser.id);
+    if (typeof Raven !== 'undefined') {
+      Raven.captureMessage(`We've got post with unknown author with id`, { extra: { uid: placeholderUser.id }});
+    }
   }
 
   const isEditable = (post.createdBy === user.id);

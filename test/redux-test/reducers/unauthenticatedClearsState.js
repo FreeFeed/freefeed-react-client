@@ -1,6 +1,7 @@
 import test from 'tape';
-import {commentViewState, feedViewState, posts, postsViewState, users} from 'src/redux/reducers';
-import {unauthenticated} from 'src/redux/action-creators';
+
+import {commentViewState, feedViewState, posts, postsViewState, users} from '../../../src/redux/reducers';
+import {unauthenticated} from '../../../src/redux/action-creators';
 
 test('unauthenticated action clears reducer state', t => {
 

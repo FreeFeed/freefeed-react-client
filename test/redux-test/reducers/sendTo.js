@@ -1,7 +1,8 @@
 import test from 'tape';
-import {sendTo} from 'src/redux/reducers';
-import {WHO_AM_I, SUBSCRIBE, UNSUBSCRIBE} from 'src/redux/action-types';
-import {response} from 'src/redux/action-helpers';
+
+import {sendTo} from '../../../src/redux/reducers';
+import {WHO_AM_I, SUBSCRIBE, UNSUBSCRIBE} from '../../../src/redux/action-types';
+import {response} from '../../../src/redux/action-helpers';
 
 
 const stateInitial = {

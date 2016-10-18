@@ -52,7 +52,7 @@ class ResetPassword extends React.Component {
             <div className='row'>
               <div className='col-md-6'>
                 <LoaderContainer loading={this.props.loading}>
-                  <form onSubmit={preventDefault(_ => resetFunc(this.refs.pass.value, this.refs.confirm.value, this.props.token, this.props.reset, this.props.validation))} className='p-signin'>
+                  <form onSubmit={preventDefault(() => resetFunc(this.refs.pass.value, this.refs.confirm.value, this.props.token, this.props.reset, this.props.validation))} className='p-signin'>
                     <div className='form-group'>
                       <label htmlFor='pass'>Password</label>
                       <input id='pass' className='form-control' type='password' ref='pass'/>
@@ -76,6 +76,6 @@ class ResetPassword extends React.Component {
       </div>
     );
   }
-};
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResetPassword);

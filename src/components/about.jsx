@@ -1,9 +1,9 @@
 import React from 'react';
 import {Link} from 'react-router';
 
-import screenshot from 'assets/images/screenshot.png';
+import screenshot from '../../assets/images/screenshot.png';
 
-export default (props) => (
+export default () => (
   <div className="box">
     <div className="box-header-timeline"></div>
     <div className="box-body">

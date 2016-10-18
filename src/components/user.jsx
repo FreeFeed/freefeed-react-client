@@ -2,8 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import {createPost, resetPostCreateForm, expandSendTo} from '../redux/action-creators';
-import {joinPostData, joinCreatePostData, postActions, userActions} from './select-utils';
 import {getCurrentRouteName} from '../utils';
+import {joinPostData, joinCreatePostData, postActions, userActions} from './select-utils';
 import Breadcrumbs from './breadcrumbs';
 import UserProfile from './user-profile';
 import UserFeed from './user-feed';

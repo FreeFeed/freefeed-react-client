@@ -3,9 +3,9 @@ import {connect} from 'react-redux';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import {joinCreatePostData} from './select-utils';
 import {createBookmarkletPost, resetPostCreateForm, addAttachmentResponse, removeAttachment} from '../redux/action-creators';
 
+import {joinCreatePostData} from './select-utils';
 import CreateBookmarkletPost from './create-bookmarklet-post';
 import SignIn from './signin';
 

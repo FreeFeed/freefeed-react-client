@@ -1,10 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router';
 
-import external from 'assets/images/external.png';
-
-import UserName from './user-name';
 import {preventDefault} from '../utils';
+import UserName from './user-name';
 import RecentGroups from './recent-groups';
 
 export default ({user, signOut, recentGroups}) => (
@@ -50,20 +48,7 @@ export default ({user, signOut, recentGroups}) => (
         <ul>
           <li><Link to='/search'>FreeFeed search</Link></li>
           <li><Link to={{ pathname: "/search", query: { qs: `"@${user.username}"` } }}>Vanity search</Link></li>
-          <li>
-            <Link to='/filter/best_of'>Best of FreeFeed</Link>
-            &nbsp;&nbsp;
-            <span style={{
-              backgroundColor: '#F9CB16',
-              color: 'white',
-              display: 'inline-block',
-              fontSize: '10px',
-              padding: '0 2px',
-              verticalAlign: '1px'
-            }}>
-              NEW
-            </span>
-          </li>
+          <li><Link to='/filter/best_of'>Best of FreeFeed</Link></li>
         </ul>
       </div>
     </div>
@@ -106,7 +91,7 @@ export default ({user, signOut, recentGroups}) => (
       <div className='box-footer'>
         Click and drag
         {' '}
-        <a className="bookmarklet-button" href="BOOKMARKLET_PLACEHOLDER" onClick={preventDefault(_ => false)}>Share on FreeFeed</a>
+        <a className="bookmarklet-button" href="BOOKMARKLET_PLACEHOLDER" onClick={preventDefault(() => false)}>Share on FreeFeed</a>
         {' '}
         to&nbsp;your toolbar.
       </div>
@@ -151,7 +136,7 @@ export default ({user, signOut, recentGroups}) => (
           <input type='image' src='https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png' width='0' height='0' name='submit' alt='PayPal - The safer, easier way to pay online!'/>
           <img alt='' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' width='1' height='1' style={{display: 'none !important'}}/>
         </form>
-        <p style={{marginBottom: '10px'}}>Or <span onClick={_ => document.forms["singlePayPalPayment"].submit()} style={{textDecoration:'underline', cursor:'pointer'}}>send a one-time payment first&nbsp;→</span></p>
+        <p style={{marginBottom: '10px'}}>Or <span onClick={() => document.forms["singlePayPalPayment"].submit()} style={{textDecoration:'underline', cursor:'pointer'}}>send a one-time payment first&nbsp;→</span></p>
       </div>
     </div>
   </div>

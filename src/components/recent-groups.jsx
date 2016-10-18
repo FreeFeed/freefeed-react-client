@@ -1,7 +1,7 @@
 import React from 'react';
-import UserName from './user-name';
-import {Link} from 'react-router';
+
 import {fromNowOrNow} from '../utils';
+import UserName from './user-name';
 
 const renderRecentGroup = recentGroup => {
   const updatedAgo = fromNowOrNow(parseInt(recentGroup.updatedAt));

@@ -1,5 +1,14 @@
-import {frontendPreferences as frontendPrefsConfig} from '../config';
 import _ from 'lodash';
+import moment from 'moment';
+import URLFinder from 'ff-url-finder';
+
+import defaultUserpic50Path from '../../assets/images/default-userpic-50.png';
+import defaultUserpic75Path from '../../assets/images/default-userpic-75.png';
+
+import {LINK, isLink} from '../utils/link-types';
+import config from '../config';
+
+const frontendPrefsConfig = config.frontendPreferences;
 
 export function getCookie(name) {
   const begin = document.cookie.indexOf(name);
@@ -21,8 +30,6 @@ export function setCookie(name, value = '', expireDays, path) {
   return document.cookie = cookie;
 }
 
-import moment from 'moment';
-
 export function fromNowOrNow(date) {
   var now = moment(date);
 
@@ -36,9 +43,6 @@ export function fromNowOrNow(date) {
 export function getFullDate(date) {
   return moment(date).format('YYYY-MM-DD HH:mm:ss [UTC]Z');
 }
-
-import defaultUserpic50Path from 'assets/images/default-userpic-50.png';
-import defaultUserpic75Path from 'assets/images/default-userpic-75.png';
 
 const userDefaults = {
   profilePictureMediumUrl: defaultUserpic50Path,
@@ -98,9 +102,6 @@ export function pluralForm(n, singular, plural = null, format = 'n w') {
   return format.replace('n', n).replace('w', w);
 }
 
-import URLFinder from 'ff-url-finder';
-import config from '../config';
-
 export const finder = new URLFinder(
   ['ru', 'com', 'net', 'org', 'info', 'gov', 'edu', 'рф', 'ua'],
   config.siteDomains,
@@ -108,8 +109,6 @@ export const finder = new URLFinder(
 
 finder.withHashTags = true;
 finder.withArrows = true;
-
-import {LINK, isLink} from '../utils/link-types';
 
 const endsWithExclamation = str => str && str[str.length - 1] === '!';
 
@@ -133,5 +132,4 @@ export function getFirstLinkToEmbed(text) {
               && previousElementCheck(index, links));
     })
     .map(it => it.text)[0];
-};
-
+}

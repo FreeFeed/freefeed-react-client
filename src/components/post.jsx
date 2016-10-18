@@ -2,22 +2,20 @@ import React from 'react';
 import {Link} from 'react-router';
 import moment from 'moment';
 import classnames from 'classnames';
+import _ from 'lodash';
+import Textarea from 'react-textarea-autosize';
 
-import {fromNowOrNow, getFullDate} from '../utils';
+import throbber16 from '../../assets/images/throbber-16.gif';
+import {fromNowOrNow, getFirstLinkToEmbed, getFullDate} from '../utils';
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
 import PostLikes from './post-likes';
 import PostVia from './post-via';
 import UserName from './user-name';
 import PieceOfText from './piece-of-text';
-import Textarea from 'react-textarea-autosize';
-import throbber16 from 'assets/images/throbber-16.gif';
 import Dropzone from './dropzone';
-import {api as apiConfig} from '../config';
-import {getToken} from '../services/auth';
 import PostMoreMenu from './post-more-menu';
 import EmbedlyLink from './embedly-link';
-import {getFirstLinkToEmbed} from '../utils';
 
 export default class Post extends React.Component {
   constructor(props) {
@@ -29,12 +27,11 @@ export default class Post extends React.Component {
 
   removeAttachment = (attachmentId) => this.props.removeAttachment(this.props.id, attachmentId)
 
-  changeAttachmentQueue= (change) => _ => {
+  changeAttachmentQueue= (change) => () => {
     this.setState({attachmentQueueLength: this.state.attachmentQueueLength + change});
   }
 
   render() {
-    let _this = this;
     let props = this.props;
 
     const createdAt = new Date(+props.createdAt);

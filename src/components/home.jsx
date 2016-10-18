@@ -1,10 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {createPost, resetPostCreateForm, expandSendTo, toggleHiddenPosts} from '../redux/action-creators';
-import {joinPostData, joinCreatePostData, postActions} from './select-utils';
-import {getQuery, pluralForm} from '../utils';
 import {Link} from 'react-router';
 
+import {createPost, resetPostCreateForm, expandSendTo, toggleHiddenPosts} from '../redux/action-creators';
+import {pluralForm} from '../utils';
+import {joinPostData, joinCreatePostData, postActions} from './select-utils';
 import CreatePost from './create-post';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
