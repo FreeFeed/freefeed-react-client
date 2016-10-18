@@ -1821,6 +1821,7 @@ export function managedGroups(state = [], action) {
       if (action.request.isItMe) {
         return state.filter(group => group.username !== action.request.groupName);
       }
+      return state;
     }
     case ActionTypes.UNAUTHENTICATED: {
       return {};
