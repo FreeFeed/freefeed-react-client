@@ -40,7 +40,7 @@ export default class UserProfile extends React.Component {
                 </div>
                 <div className="description">
                   <div className="name" dir="auto">{props.screenName}</div>
-                  <PieceOfText text={props.description}/>
+                  <PieceOfText text={props.description} isExpanded={true}/>
                 </div>
               </div>
               {props.statistics && !props.blocked ? (
