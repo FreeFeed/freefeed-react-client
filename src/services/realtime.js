@@ -42,7 +42,7 @@ const scrollCompensator = dispatchAction => (...actionParams) => {
   return res;
 };
 
-const bindSocketLog = socket => eventName => socket.on(eventName, data => console.log(`socket ${eventName}`, data));
+const bindSocketLog = socket => eventName => socket.on(eventName, data => console.log(`socket ${eventName}`, data));  // eslint-disable-line no-console
 
 const bindSocketActionsLog = socket => events => events.forEach(bindSocketLog(socket));
 
@@ -72,14 +72,14 @@ export function init(eventHandlers) {
   return {
     unsubscribe: () => {
       if (subscription) {
-        console.log('unsubscribing from ', subscription);
+        console.log('unsubscribing from ', subscription);  // eslint-disable-line no-console
         socket.emit('unsubscribe', subscription);
         socket.off('reconnect', subscribe);
       }
     },
     subscribe: newSubscription => {
       subscription = newSubscription;
-      console.log('subscribing to ', subscription);
+      console.log('subscribing to ', subscription);  // eslint-disable-line no-console
       subscribe = () => socket.emit('subscribe', subscription);
       socket.on('reconnect', subscribe);
       subscribe();

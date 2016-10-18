@@ -1,3 +1,4 @@
+/*global Raven*/
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import {request, response, fail, requiresAuth, isFeedRequest, isFeedResponse} from './action-helpers';
@@ -23,8 +24,7 @@ export const apiMiddleware = store => next => async (action) => {
       return store.dispatch({payload: obj, type: fail(action.type), request: action.payload, response: apiResponse});
     }
   } catch (e) {
-    /*global Raven*/
-    if (Raven) {
+    if (typeof Raven !== 'undefined') {
       Raven.captureException(e, { level: 'error', tags: { area: 'redux/apiMiddleware' }, extra: { action } });
     }
     return store.dispatch(ActionCreators.serverError(e));

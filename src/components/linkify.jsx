@@ -1,3 +1,4 @@
+/*global Raven*/
 import React from 'react';
 import {Link} from 'react-router';
 import {shorten} from 'ff-url-finder';
@@ -111,7 +112,9 @@ class Linkify extends React.Component {
       return (elements.length === 1) ? elements[0] : elements;
     }
     catch (err) {
-      console.log('Error while liknifying text', string, err);
+      if (typeof Raven !== 'undefined') {
+        Raven.captureException(err, { level: 'error', tags: { area: 'component/linkify' }, extra: { string } });
+      }
     }
     return [string];
   }

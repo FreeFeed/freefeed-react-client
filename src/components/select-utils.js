@@ -1,3 +1,4 @@
+/*global Raven*/
 import {
   // User actions
   subscribe, unsubscribe,
@@ -66,7 +67,9 @@ export const joinPostData = state => postId => {
     const placeholderUser = {id: comment.createdBy};
     const author = state.users[comment.createdBy] || placeholderUser;
     if (author === placeholderUser) {
-      console.log('We\'ve got comment with unknown author with id', placeholderUser.id);
+      if (typeof Raven !== 'undefined') {
+        Raven.captureMessage(`We've got comment with unknown author with id`, { extra: { uid: placeholderUser.id }});
+      }
     }
     const previousPost = _comments[index-1] || {createdBy: null, createdAt: "0"};
     const omitBubble = omitRepeatedBubbles
@@ -94,7 +97,9 @@ export const joinPostData = state => postId => {
   const createdBy = state.users[post.createdBy] || placeholderUser;
 
   if (createdBy === placeholderUser) {
-    console.log('We\'ve got post with unknown author with id', placeholderUser.id);
+    if (typeof Raven !== 'undefined') {
+      Raven.captureMessage(`We've got post with unknown author with id`, { extra: { uid: placeholderUser.id }});
+    }
   }
 
   const isEditable = (post.createdBy === user.id);
