@@ -111,8 +111,7 @@ class Linkify extends React.Component {
       });
 
       return (elements.length === 1) ? elements[0] : elements;
-    }
-    catch (err) {
+    } catch (err) {
       if (typeof Raven !== 'undefined') {
         Raven.captureException(err, { level: 'error', tags: { area: 'component/linkify' }, extra: { string } });
       }
