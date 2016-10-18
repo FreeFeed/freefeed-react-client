@@ -1,7 +1,7 @@
 import React from 'react';
 
-import UserName from './user-name';
 import {preventDefault} from '../utils';
+import UserName from './user-name';
 
 const renderLike = (item, i, items) => (
   <li key={item.id}>

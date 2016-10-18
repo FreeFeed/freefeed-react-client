@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router';
 
 import PaginatedView from './paginated-view';
 import Feed from './feed';

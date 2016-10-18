@@ -1,11 +1,16 @@
+import _ from 'lodash';
+import {LOCATION_CHANGE} from 'react-router-redux';
+
+import {userParser, postParser} from '../utils';
+import config from '../config';
+import {getToken, getPersistedUser} from '../services/auth';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
-const {request, response, fail} = ActionHelpers;
 
-import _ from 'lodash';
-import {userParser, postParser} from '../utils';
-import {frontendPreferences as frontendPrefsConfig} from '../config';
-import {LOCATION_CHANGE} from 'react-router-redux';
+
+const frontendPrefsConfig = config.frontendPreferences;
+
+const {request, response, fail} = ActionHelpers;
 
 export function title(state = '', action) {
   switch (action.type) {
@@ -426,6 +431,7 @@ export function postsViewState(state = {}, action) {
     case fail(ActionTypes.SAVE_EDITING_POST): {
       const id = action.request.postId;
       const isEditing = false;
+      const isSaving = false;
 
       const isError = true;
 
@@ -1267,8 +1273,6 @@ export function subscribers(state = {}, action) {
   return state;
 }
 
-import {getToken, getPersistedUser} from '../services/auth';
-
 export function authenticated(state = !!getToken(), action) {
   switch (action.type) {
     case response(ActionTypes.SIGN_IN): {
@@ -1284,7 +1288,7 @@ export function authenticated(state = !!getToken(), action) {
   return state;
 }
 
-const initUser = _ => ({
+const initUser = () => ({
   frontendPreferences: frontendPrefsConfig.defaultValues,
   ...getPersistedUser()
 });
@@ -1820,6 +1824,7 @@ export function managedGroups(state = [], action) {
       if (action.request.isItMe) {
         return state.filter(group => group.username !== action.request.groupName);
       }
+      return state;
     }
     case ActionTypes.UNAUTHENTICATED: {
       return {};

@@ -21,7 +21,7 @@ export default class PostAttachmentsImage extends React.Component {
     }; 
   }
 
-  handleResize = _ => {
+  handleResize = () => {
     const containerWidth = ReactDOM.findDOMNode(this).scrollWidth;
     if (containerWidth !== this.state.containerWidth) {
       this.setState({
@@ -31,7 +31,7 @@ export default class PostAttachmentsImage extends React.Component {
     }
   }
 
-  toggleFolding = _ => {
+  toggleFolding = () => {
     this.setState({isFolded: !this.state.isFolded});
   }
   

@@ -3,8 +3,8 @@ import {Link} from 'react-router';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import UserName from './user-name';
 import {confirmFirst} from '../utils';
+import UserName from './user-name';
 
 const renderUsers = (type) => (user) => {
   return (

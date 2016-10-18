@@ -1,9 +1,9 @@
 import React from 'react';
 import _ from 'lodash';
 
+import {preventDefault} from '../utils';
 import PostComment from './post-comment';
 import MoreCommentsWrapper from './more-comments-wrapper';
-import {preventDefault} from '../utils';
 
 const renderComment = (entryUrl, openAnsweringComment, isModeratingComments, commentEdit, postId) => comment => (
   <PostComment

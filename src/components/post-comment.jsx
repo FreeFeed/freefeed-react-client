@@ -4,10 +4,10 @@ import Textarea from 'react-textarea-autosize';
 import _ from 'lodash';
 import classnames from 'classnames';
 
+import throbber16 from '../../assets/images/throbber-16.gif';
+import {preventDefault, confirmFirst, fromNowOrNow} from '../utils';
 import PieceOfText from './piece-of-text';
 import UserName from './user-name';
-import {preventDefault, confirmFirst, fromNowOrNow} from '../utils';
-import throbber16 from 'assets/images/throbber-16.gif';
 
 export default class PostComment extends React.Component {
   constructor(props) {
@@ -127,7 +127,7 @@ export default class PostComment extends React.Component {
           ) : (
             <span>
               <button className="btn btn-default btn-xs comment-post" onClick={this.saveComment}>Post</button>
-              <a className="comment-cancel" onClick={preventDefault(_=>this.props.toggleEditingComment(this.props.id))}>Cancel</a>
+              <a className="comment-cancel" onClick={preventDefault(()=>this.props.toggleEditingComment(this.props.id))}>Cancel</a>
             </span>
           )}
           {this.props.isSaving ? (
@@ -151,13 +151,13 @@ export default class PostComment extends React.Component {
           <UserName user={this.props.user}/>
           {this.props.isEditable ? (
             <span>
-              {' '}(<a onClick={preventDefault(_=>this.props.toggleEditingComment(this.props.id))}>edit</a>
+              {' '}(<a onClick={preventDefault(()=>this.props.toggleEditingComment(this.props.id))}>edit</a>
               &nbsp;|&nbsp;
-              <a onClick={confirmFirst(_=>this.props.deleteComment(this.props.id))}>delete</a>)
+              <a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
             </span>
           ) : (this.props.isDeletable && this.props.isModeratingComments) ? (
             <span>
-              {' '}(<a onClick={confirmFirst(_=>this.props.deleteComment(this.props.id))}>delete</a>)
+              {' '}(<a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
             </span>
           ) : false}
         </div>

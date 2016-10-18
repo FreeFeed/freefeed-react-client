@@ -1,9 +1,12 @@
-import {api as apiConfig} from '../config';
-import {getToken} from './auth';
 import io from 'socket.io-client';
 
+import config from '../config';
+import {getToken} from './auth';
+
+const apiConfig = config.api;
+
 const dummyPost = {
-  getBoundingClientRect: _ => ({top:0})
+  getBoundingClientRect: () => ({top:0})
 };
 
 const scrollCompensator = dispatchAction => (...actionParams) => {
@@ -23,7 +26,7 @@ const scrollCompensator = dispatchAction => (...actionParams) => {
   const res = dispatchAction(...actionParams);
 
   if (res.then) {
-    res.then(_ => {
+    res.then(() => {
       const topAfter = nearestTop.getBoundingClientRect().top;
       const heightAfter = document.body.offsetHeight;
 
@@ -42,7 +45,7 @@ const scrollCompensator = dispatchAction => (...actionParams) => {
   return res;
 };
 
-const bindSocketLog = socket => eventName => socket.on(eventName, data => console.log(`socket ${eventName}`, data));
+const bindSocketLog = socket => eventName => socket.on(eventName, data => console.log(`socket ${eventName}`, data));  // eslint-disable-line no-console
 
 const bindSocketActionsLog = socket => events => events.forEach(bindSocketLog(socket));
 
@@ -57,7 +60,7 @@ const bindSocketEventHandlers = socket => eventHandlers => {
   Object.keys(eventHandlers).forEach((event) => socket.on(event, scrollCompensator(eventHandlers[event])));
 };
 
-const openSocket = _ => io.connect(`${apiConfig.host}/`, {query: `token=${getToken()}`});
+const openSocket = () => io.connect(`${apiConfig.host}/`, {query: `token=${getToken()}`});
 
 export function init(eventHandlers) {
   const socket = openSocket();
@@ -70,20 +73,20 @@ export function init(eventHandlers) {
   let subscribe;
 
   return {
-    unsubscribe: _ => {
+    unsubscribe: () => {
       if (subscription) {
-        console.log('unsubscribing from ', subscription);
+        console.log('unsubscribing from ', subscription);  // eslint-disable-line no-console
         socket.emit('unsubscribe', subscription);
         socket.off('reconnect', subscribe);
       }
     },
     subscribe: newSubscription => {
       subscription = newSubscription;
-      console.log('subscribing to ', subscription);
+      console.log('subscribing to ', subscription);  // eslint-disable-line no-console
       subscribe = () => socket.emit('subscribe', subscription);
       socket.on('reconnect', subscribe);
       subscribe();
     },
-    disconnect: _ => socket.disconnect()
+    disconnect: () => socket.disconnect()
   };
 }

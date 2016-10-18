@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {joinPostData, postActions} from './select-utils';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
-import SearchForm from './search-form';
 
 const searchHelper =<div className='search-memo'>
   <div className='search-memo-header'>Advanced search operators</div>

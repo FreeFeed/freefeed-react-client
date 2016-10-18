@@ -1,8 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
+
 import {bindRouteActions} from '../redux/route-actions';
-import PaginationLinks from './pagination-links';
 import {getCurrentRouteName} from '../utils';
+import PaginationLinks from './pagination-links';
 
 const PaginatedView = props => (
   <div className='box-body'>

@@ -1,5 +1,6 @@
 import test from 'tape';
-import {joinPostData, ommitBubblesThreshold} from 'src/components/select-utils';
+
+import {joinPostData, ommitBubblesThreshold} from '../../../src/components/select-utils';
 
 const comment1 = {
   id: 'comment1'

@@ -76,7 +76,7 @@ export default class SendTo extends React.Component {
     this.props.onChange(values.map(item => item.value));
   }
 
-  toggleSendTo = _ => {
+  toggleSendTo = () => {
     let newShowFeedsOption = !this.state.showFeedsOption;
     this.setState({ showFeedsOption: newShowFeedsOption });
   }
@@ -108,7 +108,7 @@ export default class SendTo extends React.Component {
           <div>
             To:&nbsp;
             <span className="Select-value-label-standalone">{this.labelRenderer(defaultOpt)}</span>
-            <a className="p-sendto-toggler" onClick={preventDefault(_=>this.toggleSendTo())}>Add/Edit</a>
+            <a className="p-sendto-toggler" onClick={preventDefault(() => this.toggleSendTo())}>Add/Edit</a>
           </div>
         ) : (
           <div>

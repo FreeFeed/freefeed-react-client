@@ -1,11 +1,8 @@
 import React from 'react';
-import {Link} from 'react-router';
 import {connect} from 'react-redux';
-import _ from 'lodash';
 
 import {createGroup, resetGroupCreateForm} from '../redux/action-creators';
 import GroupCreateForm from './group-create-form';
-import throbber100 from 'assets/images/throbber.gif';
 
 const GroupCreate = (props) => (
   <div className="box">

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router';
 
-export default _ => (
+export default () => (
   <div className="box-body">
     <h3>Welcome to FreeFeed</h3>
 
