@@ -11,6 +11,19 @@
       "jsx": true
     }
   },
+  "plugins": [
+    "babel",
+    "import",
+    "lodash",
+    "promise",
+    "you-dont-need-lodash-underscore"
+  ],
+  "extends": "eslint:recommended",
+  "settings": {
+    "import/ignore": [
+      "node_modules"
+    ]
+  },
   "rules": {
     "curly": ["error", "all"],
     "indent": ["error", 2, {"SwitchCase": 1}],
