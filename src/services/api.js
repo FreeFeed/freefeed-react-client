@@ -39,17 +39,17 @@ export function getUserFeed({username, offset}) {
     `${apiConfig.host}/v1/timelines/${username}?offset=${offset}`, getRequestOptions());
 }
 
-const MAX_COMMENTS = 2;
-
 export function getLikesOnly({postId, commentsExpanded}) {
-  const maxComments = commentsExpanded ? 'all' : `${MAX_COMMENTS}`;
-  return fetch(
-    `${apiConfig.host}/v1/posts/${postId}?maxComments=${maxComments}&maxLikes=all`, getRequestOptions());
+  return getPost({
+    postId,
+    maxComments: commentsExpanded ? 'all' : '',
+    maxLikes: 'all'
+  });
 }
 
-export function getPostWithAllComments({postId}) {
+export function getPost({postId, maxComments = '', maxLikes = ''}) {
   return fetch(
-    `${apiConfig.host}/v1/posts/${postId}?maxComments=all`, getRequestOptions());
+    `${apiConfig.host}/v1/posts/${postId}?maxComments=${maxComments}&maxLikes=${maxLikes}`, getRequestOptions());
 }
 
 export function createPost({feeds, postText, attachmentIds, more}) {
