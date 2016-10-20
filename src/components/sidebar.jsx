@@ -152,10 +152,29 @@ const SideBarBookmarklet = () => (
   </div>
 );
 
+const SideBarVote2016 = ({ user }) => {
+  if (!('privateMeta' in user) || !("vote2016" in user.privateMeta)) {
+    return null;
+  }
+
+  return (
+    <div className='box'>
+      <div className='box-header-groups'>
+        Выборы <Link to={{ pathname: '/search', query: { qs: "#ff_election16" } }}>#ff_election16</Link>
+      </div>
+      <div className='box-footer'>
+        <p>Голосование будет открыто 21.10.2016 12:00 MSK</p>
+        <p>Голосование продлится до 22.10.2016 12:00 MSK</p>
+      </div>
+    </div>
+  );
+};
+
 const SideBar = ({user, signOut, recentGroups}) => {
   return (
     <div className='col-md-3 sidebar'>
       <LoggedInBlock user={user} signOut={signOut} />
+      <SideBarVote2016 user={user} />
       <SideBarFriends />
       <SideBarSearch user={user} />
       <SideBarGroups recentGroups={recentGroups} />
