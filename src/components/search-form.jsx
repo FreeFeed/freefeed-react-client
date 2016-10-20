@@ -37,13 +37,14 @@ export default class SearchForm extends React.Component {
 
   handleSearchButton() {
     const searchText = this.searchInput.value;
+
     if (searchText !== '') {
       this.searchInput.blur();
       this.searchInput.value = '';
       return fireSearch(searchText);
-    } else {
-      this.searchInput.focus();
     }
+
+    this.searchInput.focus();
   }
 
   rememberInput(ref) {

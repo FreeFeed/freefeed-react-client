@@ -494,14 +494,14 @@ export function postsViewState(state = {}, action) {
     case ActionTypes.REALTIME_COMMENT_NEW: {
       const post = state[action.comment.postId];
       if (!post) {
-        if (action.post) {
-          return {
-            ...state,
-            [action.post.posts.id]: initPostViewState(action.post.posts)
-          };
-        } else {
+        if (!action.post) {
           return state;
         }
+
+        return {
+          ...state,
+          [action.post.posts.id]: initPostViewState(action.post.posts)
+        };
       }
       return {...state,
         [post.id] : {
@@ -1012,14 +1012,14 @@ export function posts(state = {}, action) {
     case ActionTypes.REALTIME_COMMENT_NEW: {
       const post = state[action.comment.postId];
       if (!post) {
-        if (action.post) {
-          return {
-            ...state,
-            [action.post.posts.id]: postParser(action.post.posts)
-          };
-        } else {
+        if (!action.post) {
           return state;
         }
+
+        return {
+          ...state,
+          [action.post.posts.id]: postParser(action.post.posts)
+        };
       }
       const commentAlreadyAdded = post.comments && post.comments.indexOf(action.comment.id)!==-1;
       if (commentAlreadyAdded) {

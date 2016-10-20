@@ -47,7 +47,7 @@ class Linkify extends React.Component {
         props,
         displayedLink
       );
-    } else {
+    } else {  // eslint-disable-line no-else-return
       props['href'] = href;
       props['target'] = '_blank';
 

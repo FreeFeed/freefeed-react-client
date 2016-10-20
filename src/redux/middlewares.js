@@ -23,13 +23,16 @@ export const apiMiddleware = store => next => async (action) => {
   try {
     const apiResponse = await action.apiRequest(action.payload);
     const obj = await apiResponse.json();
+
     if (apiResponse.status === 200) {
       return store.dispatch({payload: obj, type: response(action.type), request: action.payload});
-    } else if (apiResponse.status === 401) {
-      return store.dispatch(ActionCreators.unauthenticated(obj));
-    } else {
-      return store.dispatch({payload: obj, type: fail(action.type), request: action.payload, response: apiResponse});
     }
+
+    if (apiResponse.status === 401) {
+      return store.dispatch(ActionCreators.unauthenticated(obj));
+    }
+
+    return store.dispatch({payload: obj, type: fail(action.type), request: action.payload, response: apiResponse});
   } catch (e) {
     if (typeof Raven !== 'undefined') {
       Raven.captureException(e, { level: 'error', tags: { area: 'redux/apiMiddleware' }, extra: { action } });
@@ -87,11 +90,10 @@ export const likesLogicMiddleware = store => next => action => {
       const postId = action.payload.postId;
       const post = store.getState().posts[postId];
       const isSync = (post.omittedLikes === 0);
-      if (isSync) {
-        return store.dispatch(ActionCreators.showMoreLikesSync(postId));
-      } else {
-        return store.dispatch(ActionCreators.showMoreLikesAsync(postId));
-      }
+
+      const nextAction = isSync ? ActionCreators.showMoreLikesSync(postId) : ActionCreators.showMoreLikesAsync(postId);
+
+      return store.dispatch(nextAction);
     }
   }
 
@@ -169,14 +171,16 @@ const iLikedPost = ({user, posts}, postId) => {
 const dispatchWithPost = async (store, postId, action, filter = () => true) => {
   const state = store.getState();
   const shouldBump = isFirstPage(state);
+
   if (isPostLoaded(state, postId)) {
     return store.dispatch({...action, shouldBump});
-  } else {
-    const postResponse = await getPost({postId});
-    const post = await postResponse.json();
-    if (filter(post, action, store.getState())) {
-      return store.dispatch({...action, post, shouldBump});
-    }
+  }
+
+  const postResponse = await getPost({postId});
+  const post = await postResponse.json();
+
+  if (filter(post, action, store.getState())) {
+    return store.dispatch({...action, post, shouldBump});
   }
 };
 

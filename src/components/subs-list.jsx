@@ -7,11 +7,9 @@ const TileList = tileUserListFactory({type: WITH_MUTUALS});
 
 
 export default (props) => {
-
   const title = props.title || "No title";
 
   if (props.isPending) {
-
     return (
       <div>
         <h3>
@@ -22,32 +20,29 @@ export default (props) => {
         </h3>
       </div>
     );
+  }
 
-  } else if (props.errorString) {
-
+  if (props.errorString) {
     return (
       <div>
         <h3><span>{title}</span></h3>
         <span className="error-string">{props.errorString}</span>
       </div>
     );
-
-  } else {
-
-    const sections = props.listSections.filter(s => s.users.length > 0);
-    const showTitles = !!props.showSectionsTitles || (sections.length > 1);
-
-    return (
-      <div>
-        <h3><span>{title}</span></h3>
-
-        {sections.map(s => [
-          (showTitles && s.title) ? <h4 className="tile-list-subheader">{s.title}</h4> : false,
-          <TileList users={s.users}/>
-        ])}
-
-      </div>
-    );
-
   }
+
+  const sections = props.listSections.filter(s => s.users.length > 0);
+  const showTitles = !!props.showSectionsTitles || (sections.length > 1);
+
+  return (
+    <div>
+      <h3><span>{title}</span></h3>
+
+      {sections.map(s => [
+        (showTitles && s.title) ? <h4 className="tile-list-subheader">{s.title}</h4> : false,
+        <TileList users={s.users}/>
+      ])}
+
+    </div>
+  );
 };

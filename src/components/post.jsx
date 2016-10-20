@@ -91,11 +91,11 @@ export default class Post extends React.Component {
       if (recipient.id !== props.createdBy.id) {
         return false;
       }
-      if (recipient.username[recipient.username.length - 1] === 's') {
-        return recipient.username + '\u2019 feed';
-      } else {
-        return recipient.username + '\u2019s feed';
-      }
+
+      const lastCharacter = recipient.username[recipient.username.length - 1];
+      const suffix = lastCharacter === 's' ? '\u2019 feed' : '\u2019s feed';
+
+      return `${recipient.username}${suffix}`;
     };
 
     let recipients = props.recipients;
