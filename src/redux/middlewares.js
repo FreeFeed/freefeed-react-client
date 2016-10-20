@@ -1,7 +1,7 @@
 /*global Raven*/
 import {browserHistory} from 'react-router';
 
-import {getPostWithAllComments} from '../services/api';
+import {getPost} from '../services/api';
 import {setToken, persistUser} from '../services/auth';
 import {init} from '../services/realtime';
 import {userParser} from '../utils';
@@ -172,7 +172,7 @@ const dispatchWithPost = async (store, postId, action, filter = () => true) => {
   if (isPostLoaded(state, postId)) {
     return store.dispatch({...action, shouldBump});
   } else {
-    const postResponse = await getPostWithAllComments({postId: postId});
+    const postResponse = await getPost({postId});
     const post = await postResponse.json();
     if (filter(post, action, store.getState())) {
       return store.dispatch({...action, post, shouldBump});
