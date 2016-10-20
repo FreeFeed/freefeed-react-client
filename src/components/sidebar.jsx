@@ -157,17 +157,22 @@ const SideBarVote2016 = ({ user }) => {
     return null;
   }
 
-  return (
-    <div className='box'>
-      <div className='box-header-groups'>
-        Выборы <Link to={{ pathname: '/search', query: { qs: "#ff_election16" } }}>#ff_election16</Link>
+  const voteToken = user.privateMeta.vote2016;
+
+  if (voteToken === true) {
+    return (
+      <div className='box'>
+        <div className='box-header-groups'>
+          Выборы <Link to={{ pathname: '/search', query: { qs: "#ff_election16" } }} style={{ textDecoration: "underline" }}>#ff_election16</Link>
+        </div>
+        <div className='box-footer'>
+          <p>Голосование будет открыто<br /> 21.10.2016 12:00 MSK</p>
+          <p>Голосование продлится до<br /> 22.10.2016 12:00 MSK</p>
+        </div>
       </div>
-      <div className='box-footer'>
-        <p>Голосование будет открыто 21.10.2016 12:00 MSK</p>
-        <p>Голосование продлится до 22.10.2016 12:00 MSK</p>
+    );
+  }
       </div>
-    </div>
-  );
 };
 
 const SideBar = ({user, signOut, recentGroups}) => {
