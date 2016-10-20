@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router';
+import { isString } from 'lodash';
 
 import {preventDefault} from '../utils';
 import UserName from './user-name';
@@ -157,17 +158,40 @@ const SideBarVote2016 = ({ user }) => {
     return null;
   }
 
-  return (
-    <div className='box'>
-      <div className='box-header-groups'>
-        Выборы <Link to={{ pathname: '/search', query: { qs: "#ff_election16" } }}>#ff_election16</Link>
+  const voteToken = user.privateMeta.vote2016;
+
+  if (voteToken === true) {
+    return (
+      <div className='box'>
+        <div className='box-header-groups'>
+          Выборы <Link to={{ pathname: '/search', query: { qs: "#ff_election16" } }} style={{ textDecoration: "underline" }}>#ff_election16</Link>
+        </div>
+        <div className='box-footer'>
+          <p>Голосование будет открыто<br /> 21.10.2016 12:00 MSK</p>
+          <p>Голосование продлится до<br /> 22.10.2016 12:00 MSK</p>
+        </div>
       </div>
-      <div className='box-footer'>
-        <p>Голосование будет открыто 21.10.2016 12:00 MSK</p>
-        <p>Голосование продлится до 22.10.2016 12:00 MSK</p>
+    );
+  }
+
+  if (isString(voteToken)) {
+    return (
+      <div className='box'>
+        <div className='box-header-groups'>
+          Выборы <Link to={{ pathname: '/search', query: { qs: "#ff_election16" } }} style={{ textDecoration: "underline" }}>#ff_election16</Link>
+        </div>
+        <div className='box-body'>
+          <ul>
+            <li>Пожалуйста <a href="https://ffelection16.questionpro.com/" target="_blank" style={{ textDecoration: "underline" }}>проголосуйте</a></li>
+            <li>Your vote unique key: <strong>{voteToken}</strong></li>
+          </ul>
+        </div>
+        <div className="box-footer">
+          <p>Голосование открыто до:<br /> 22.10.2016 12:00 MSK</p>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 const SideBar = ({user, signOut, recentGroups}) => {
