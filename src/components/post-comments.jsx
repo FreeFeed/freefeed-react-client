@@ -69,7 +69,7 @@ export default (props) => {
   };
 
   const commentMapper = renderComment(props.entryUrl, openAnsweringComment, props.post.isModeratingComments, props.commentEdit, props.post.id);
-  const totalComments = props.comments.length + props.post.omittedComments; 
+  const totalComments = props.comments.length + props.post.omittedComments;
   const first = withBackwardNumber(props.comments[0], totalComments);
   const last = withBackwardNumber(props.comments.length > 1 && props.comments[props.comments.length - 1], 1);
   const middle = props.comments.slice(1, props.comments.length - 1).map((c, i) => commentMapper(withBackwardNumber(c, totalComments - i - 1)));
@@ -103,5 +103,5 @@ function withBackwardNumber(comment, bn) {
   if (comment) {
     comment.backwardNumber = bn;
   }
-  return comment; 
+  return comment;
 }

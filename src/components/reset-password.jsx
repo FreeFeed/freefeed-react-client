@@ -21,19 +21,19 @@ const NO_CONFIRM = 'Enter password confirmation';
 const NO_MATCH = 'New password and confirmation should match';
 
 function resetFunc(pass, confirm, token, reset, validation) {
-  if (pass && confirm && pass === confirm) {
-    return reset(pass, token);
-  } else {
-    if (!pass) {
-      return validation(NO_PASSWORD);
-    }
-    if (!confirm) {
-      return validation(NO_CONFIRM);
-    }
-    if (pass !== confirm) {
-      return validation(NO_MATCH);
-    }
+  if (!pass) {
+    return validation(NO_PASSWORD);
   }
+
+  if (!confirm) {
+    return validation(NO_CONFIRM);
+  }
+
+  if (pass !== confirm) {
+    return validation(NO_MATCH);
+  }
+
+  return reset(pass, token);
 }
 
 class ResetPassword extends React.Component {

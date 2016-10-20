@@ -81,7 +81,7 @@ export default class PostComment extends React.Component {
       this.setState({editText: newProps.editText});
     }
   }
-  
+
   componentDidUpdate(prevProps) {
     if (this.props.isEditing && this.props.editText !== prevProps.editText) {
       ReactDOM.findDOMNode(this.refs.commentText).focus();

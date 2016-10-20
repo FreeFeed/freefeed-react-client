@@ -10,7 +10,7 @@ const userType = React.PropTypes.shape({
 
 const commentType = React.PropTypes.shape({
   user: userType
-}); 
+});
 
 export default class PostVia extends React.Component {
   static propTypes = {
@@ -40,8 +40,8 @@ export default class PostVia extends React.Component {
     const {
       post: {
         createdBy,
-        recipients, 
-        comments, 
+        recipients,
+        comments,
         usersLikedPost
       },
       me: {

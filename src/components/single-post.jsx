@@ -5,7 +5,7 @@ import {joinPostData, postActions} from './select-utils';
 import Post from './post';
 
 const SinglePostHandler = (props) => {
-  let post = props.post;
+  const post = props.post;
 
   let postBody = <div></div>;
 

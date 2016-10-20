@@ -41,13 +41,13 @@ class Linkify extends React.Component {
       props['className'] = 'arrow-span';
       props['onMouseEnter'] = () => this.arrowHover.hover(displayedLink.length);
       props['onMouseLeave'] = this.arrowHover.leave;
-      
+
       return React.createElement(
         'span',
         props,
         displayedLink
       );
-    } else {
+    } else {  // eslint-disable-line no-else-return
       props['href'] = href;
       props['target'] = '_blank';
 
@@ -63,7 +63,7 @@ class Linkify extends React.Component {
   idx = 0
 
   parseString(string) {
-    let elements = [];
+    const elements = [];
     if (string === '') {
       return elements;
     }
@@ -79,10 +79,10 @@ class Linkify extends React.Component {
           displayedLink = shorten(it.text, MAX_URL_LENGTH).replace(/^https?:\/\//, '');
           href = it.url;
         } else if (it.type === AT_LINK) {
-          elements.push(<UserName 
-            user={{username: it.username}} 
-            display={it.text} 
-            userHover={this.userHover} 
+          elements.push(<UserName
+            user={{username: it.username}}
+            display={it.text}
+            userHover={this.userHover}
             key={`match${++this.idx}`}/>);
           return;
         } else if (it.type === LOCAL_LINK) {
@@ -105,14 +105,13 @@ class Linkify extends React.Component {
           return;
         }
 
-        let linkElement = this.createLinkElement(it, displayedLink, href);
+        const linkElement = this.createLinkElement(it, displayedLink, href);
 
         elements.push(linkElement);
       });
 
       return (elements.length === 1) ? elements[0] : elements;
-    }
-    catch (err) {
+    } catch (err) {
       if (typeof Raven !== 'undefined') {
         Raven.captureException(err, { level: 'error', tags: { area: 'component/linkify' }, extra: { string } });
       }

@@ -10,15 +10,15 @@ const arrowSize = 24;
 export default class PostAttachmentsImage extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.itemWidths = props.attachments.map(({imageSizes: {t, o}}) => t ? t.w : (o ? o.w : 0)).map(w => w + bordersSize + spaceSize);
     this.contentWidth = this.itemWidths.reduce((s, w) => s + w, 0);
-    
+
     this.state = {
       containerWidth: 0,
       isFolded: true,
       needsFolding: false
-    }; 
+    };
   }
 
   handleResize = () => {
@@ -34,7 +34,7 @@ export default class PostAttachmentsImage extends React.Component {
   toggleFolding = () => {
     this.setState({isFolded: !this.state.isFolded});
   }
-  
+
   componentDidMount() {
     if (this.props.isSinglePost) {
       return;
@@ -49,13 +49,13 @@ export default class PostAttachmentsImage extends React.Component {
     }
     window.removeEventListener('resize', this.handleResize);
   }
-    
+
   render() {
     const className = classnames({
       'image-attachments': true,
       'is-folded': this.state.isFolded,
       'needs-folding': this.state.needsFolding,
-      'single-image': this.props.attachments.length === 1 
+      'single-image': this.props.attachments.length === 1
     });
 
     const showFolded = (this.state.needsFolding && this.state.isFolded);
@@ -69,7 +69,7 @@ export default class PostAttachmentsImage extends React.Component {
         }
       });
     }
-      
+
     return (
       <div className={className} ref="cont">
         {this.props.attachments.map((a, i) => (
@@ -81,7 +81,7 @@ export default class PostAttachmentsImage extends React.Component {
               {...a} />
         ))}
         <div className="show-more">
-          <i 
+          <i
             className="fa fa-2x fa-chevron-circle-right"
             onClick={this.toggleFolding}
             title={this.state.isFolded ? `Show more (${this.props.attachments.length - lastVisibleIndex - 1})` : "Show less"}/>

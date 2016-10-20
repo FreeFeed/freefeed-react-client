@@ -120,9 +120,9 @@ class Layout extends React.Component {
   }
 
   render() {
-    let props = this.props;
+    const props = this.props;
 
-    let layoutClassNames = classnames({
+    const layoutClassNames = classnames({
       'container': true,
       'dragover': this.state.isDragOver
     });
