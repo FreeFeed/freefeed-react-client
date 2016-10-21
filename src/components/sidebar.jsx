@@ -162,9 +162,9 @@ const SideBarVote2016 = ({ user }) => {
 
   if (voteToken === true) {
     return (
-      <div className='box'>
-        <div className='box-header-groups'>
-          Выборы <Link to={{ pathname: '/search', query: { qs: "#ff_election16" } }} style={{ textDecoration: "underline" }}>#ff_election16</Link>
+      <div className='box' style={{ backgroundColor: 'rgb(255, 255, 221)', padding: '10px 10px 0px', margin: '0px -10px' }}>
+        <div className='box-header-groups' style={{ lineHeight: '20px', height: 'auto' }}>
+          Выборы в наблюдательный совет: <Link to={{ pathname: '/search', query: { qs: "#ff_election16" } }} style={{ color: 'rgb(29, 102, 191)', textDecoration: "underline" }}>#ff_election16</Link>
         </div>
         <div className='box-footer'>
           <p>Голосование будет открыто<br /> 21.10.2016 12:00 MSK</p>
@@ -176,13 +176,13 @@ const SideBarVote2016 = ({ user }) => {
 
   if (isString(voteToken)) {
     return (
-      <div className='box'>
-        <div className='box-header-groups'>
-          Выборы <Link to={{ pathname: '/search', query: { qs: "#ff_election16" } }} style={{ textDecoration: "underline" }}>#ff_election16</Link>
+      <div className='box' style={{ backgroundColor: 'rgb(255, 255, 221)', padding: '10px 10px 0px', margin: '0px -10px' }}>
+        <div className='box-header-groups' style={{ lineHeight: '20px', height: 'auto' }}>
+          Выборы в наблюдательный совет: <Link to={{ pathname: '/search', query: { qs: "#ff_election16" } }} style={{ color: 'rgb(29, 102, 191)', textDecoration: "underline" }}>#ff_election16</Link>
         </div>
-        <div className='box-body'>
+        <div className='box-body' style={{ backgroundColor: 'inherit' }}>
           <ul>
-            <li>Пожалуйста <a href="https://ffelection16.questionpro.com/" target="_blank" style={{ textDecoration: "underline" }}>проголосуйте</a></li>
+            <li>Пожалуйста <a href="https://ffelection16.questionpro.com/" target="_blank" style={{ color: 'rgb(29, 102, 191)', textDecoration: "underline" }}>проголосуйте</a></li>
             <li>Your vote unique key: <strong>{voteToken}</strong></li>
           </ul>
         </div>
