@@ -167,8 +167,7 @@ const SideBarVote2016 = ({ user }) => {
           Выборы в наблюдательный совет: <Link to={{ pathname: '/search', query: { qs: "#ff_election16" } }} style={{ color: 'rgb(29, 102, 191)', textDecoration: "underline" }}>#ff_election16</Link>
         </div>
         <div className='box-footer'>
-          <p>Голосование будет открыто<br /> 21.10.2016 12:00 MSK</p>
-          <p>Голосование продлится до<br /> 22.10.2016 12:00 MSK</p>
+          <p>Идет подсчет голосов</p>
         </div>
       </div>
     );
