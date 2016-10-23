@@ -167,7 +167,7 @@ const SideBarVote2016 = ({ user }) => {
           Выборы в наблюдательный совет: <Link to={{ pathname: '/search', query: { qs: "#ff_election16" } }} style={{ color: 'rgb(29, 102, 191)', textDecoration: "underline" }}>#ff_election16</Link>
         </div>
         <div className='box-footer'>
-          <p>Идет подсчет голосов</p>
+          <p><Link to='/freefeed/a4167856-5db3-43b7-a1d7-7a5785111b0c'>Результаты</Link></p>
         </div>
       </div>
     );
