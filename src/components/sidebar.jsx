@@ -153,51 +153,10 @@ const SideBarBookmarklet = () => (
   </div>
 );
 
-const SideBarVote2016 = ({ user }) => {
-  if (!('privateMeta' in user) || !("vote2016" in user.privateMeta)) {
-    return null;
-  }
-
-  const voteToken = user.privateMeta.vote2016;
-
-  if (voteToken === true) {
-    return (
-      <div className='box' style={{ backgroundColor: 'rgb(255, 255, 221)', padding: '10px 10px 0px', margin: '0px -10px' }}>
-        <div className='box-header-groups' style={{ lineHeight: '20px', height: 'auto' }}>
-          Выборы в наблюдательный совет: <Link to={{ pathname: '/search', query: { qs: "#ff_election16" } }} style={{ color: 'rgb(29, 102, 191)', textDecoration: "underline" }}>#ff_election16</Link>
-        </div>
-        <div className='box-footer'>
-          <p><Link to='/freefeed/a4167856-5db3-43b7-a1d7-7a5785111b0c'>Результаты</Link></p>
-        </div>
-      </div>
-    );
-  }
-
-  if (isString(voteToken)) {
-    return (
-      <div className='box' style={{ backgroundColor: 'rgb(255, 255, 221)', padding: '10px 10px 0px', margin: '0px -10px' }}>
-        <div className='box-header-groups' style={{ lineHeight: '20px', height: 'auto' }}>
-          Выборы в наблюдательный совет: <Link to={{ pathname: '/search', query: { qs: "#ff_election16" } }} style={{ color: 'rgb(29, 102, 191)', textDecoration: "underline" }}>#ff_election16</Link>
-        </div>
-        <div className='box-body' style={{ backgroundColor: 'inherit' }}>
-          <ul>
-            <li>Пожалуйста <a href="https://ffelection16.questionpro.com/" target="_blank" style={{ color: 'rgb(29, 102, 191)', textDecoration: "underline" }}>проголосуйте</a></li>
-            <li>Your vote unique key: <strong>{voteToken}</strong></li>
-          </ul>
-        </div>
-        <div className="box-footer">
-          <p>Голосование открыто до:<br /> 22.10.2016 12:00 MSK</p>
-        </div>
-      </div>
-    );
-  }
-};
-
 const SideBar = ({user, signOut, recentGroups}) => {
   return (
     <div className='col-md-3 sidebar'>
       <LoggedInBlock user={user} signOut={signOut} />
-      <SideBarVote2016 user={user} />
       <SideBarFriends />
       <SideBarSearch user={user} />
       <SideBarGroups recentGroups={recentGroups} />
