@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
+import {PhotoSwipe} from 'react-photoswipe';
 import ImageAttachment from './post-attachment-image';
 
 const bordersSize = 4;
@@ -17,11 +18,25 @@ export default class PostAttachmentsImage extends React.Component {
     this.state = {
       containerWidth: 0,
       isFolded: true,
-      needsFolding: false
+      needsFolding: false,
+      isLightboxOpen: false,
+      lightboxIndex: 0
     };
   }
 
+  lightboxOptions = {
+    shareEl: false,
+    clickToCloseNonZoomable: false,
+    bgOpacity: 0.8,
+    history: false,
+    getThumbBoundsFn: this.getThumbBounds()
+  };
+  lightboxThumbnailElement = null;
+
   handleResize = () => {
+    if (this.props.attachments.length == 1) {
+      return;
+    }
     const containerWidth = ReactDOM.findDOMNode(this).scrollWidth;
     if (containerWidth !== this.state.containerWidth) {
       this.setState({
@@ -33,6 +48,59 @@ export default class PostAttachmentsImage extends React.Component {
 
   toggleFolding = () => {
     this.setState({isFolded: !this.state.isFolded});
+  }
+
+  getThumbBounds() {
+    return (index) => {
+      // If closing lightbox not on the same image we opened it
+      if (index !== this.state.lightboxIndex) {
+        return null;
+      }
+
+      const pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
+      const rect = this.lightboxThumbnailElement.getBoundingClientRect();
+      return {
+        x: rect.left,
+        y: rect.top + pageYScroll,
+        w: rect.width
+      };
+    };
+  }
+
+  handleClickThumbnail(index) {
+    return (e) => {
+      if (e.button !== 0) {
+        return;
+      }
+      e.preventDefault();
+      this.lightboxThumbnailElement = e.target;
+      this.setState({
+        isLightboxOpen: true,
+        lightboxIndex: index
+      });
+    };
+  }
+
+  handleCloseLightbox() {
+    this.setState({isLightboxOpen: false});
+  }
+
+  getLightboxItems() {
+    return this.props.attachments.map((attachment, i) => ({
+      src: attachment.url,
+      msrc: (i === this.state.lightboxIndex && this.lightboxThumbnailElement ? this.lightboxThumbnailElement.currentSrc : null),
+      w: attachment.imageSizes && attachment.imageSizes.o && attachment.imageSizes.o.w || 0,
+      h: attachment.imageSizes && attachment.imageSizes.o && attachment.imageSizes.o.h || 0
+    }));
+  }
+
+  getLightboxData = ({items}, index) => {
+    const item = items[index];
+    if (item.w === 0) {
+      const rect = this.lightboxThumbnailElement.getBoundingClientRect();
+      item.w = 800;
+      item.h = rect.height * item.w / rect.width;
+    }
   }
 
   componentDidMount() {
@@ -70,12 +138,15 @@ export default class PostAttachmentsImage extends React.Component {
       });
     }
 
+    const lightboxItems = this.getLightboxItems();
+
     return (
       <div className={className} ref="cont">
         {this.props.attachments.map((a, i) => (
             <ImageAttachment
               key={a.id}
               isEditing={this.props.isEditing}
+              handleClick={this.handleClickThumbnail(i)}
               removeAttachment={this.props.removeAttachment}
               isHidden={showFolded && i > lastVisibleIndex}
               {...a} />
@@ -86,6 +157,12 @@ export default class PostAttachmentsImage extends React.Component {
             onClick={this.toggleFolding}
             title={this.state.isFolded ? `Show more (${this.props.attachments.length - lastVisibleIndex - 1})` : "Show less"}/>
         </div>
+        <PhotoSwipe
+          items={lightboxItems}
+          gettingData={this.getLightboxData}
+          options={{...this.lightboxOptions, index: this.state.lightboxIndex}}
+          isOpen={this.state.isLightboxOpen}
+          onClose={this.handleCloseLightbox.bind(this)}/>
       </div>
     );
   }
