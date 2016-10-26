@@ -4,6 +4,8 @@ import {Router, Route, IndexRoute, browserHistory} from 'react-router';
 import {Provider} from 'react-redux';
 import {syncHistoryWithStore} from 'react-router-redux';
 
+import 'autotrack';  // used by google-analytics in ../index.jade
+
 import '../styles/common/common.scss';
 import '../styles/helvetica/app.scss';
 import '../index.jade';
