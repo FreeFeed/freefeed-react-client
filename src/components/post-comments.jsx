@@ -7,6 +7,11 @@ import MoreCommentsWrapper from './more-comments-wrapper';
 
 export default class PostComments extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.addingCommentForm = null;
+  }
+
   openAnsweringComment = (answerText) => {
     const {post, toggleCommenting, updateCommentingText} = this.props;
 
@@ -19,6 +24,9 @@ export default class PostComments extends React.Component {
       const addSpace = text.length && !text.match(/\s$/);
       updateCommentingText(post.id, `${text}${addSpace ? ' ' : ''}${answerText} `);
     }
+    if (this.addingCommentForm) {
+      this.addingCommentForm.focus();
+    }
   }
 
   renderAddingComment() {
@@ -27,6 +35,7 @@ export default class PostComments extends React.Component {
       <PostComment
         id={props.post.id}
         key={`${props.post.id}-comment-adding`}
+        ref={(el) => this.addingCommentForm = el}
         isEditing={true}
         isSinglePost={props.post.isSinglePost}
         editText={props.post.newCommentText}
