@@ -17,6 +17,7 @@
     "moment": "~2.15.1",
     "node-sass": "^3.3.3",
     "numeral": "^1.5.3",
+    "porter-stemmer": "^0.9.1",
     "react": "~15.3.0",
     "react-addons-css-transition-group": "~15.3.0",
     "react-addons-pure-render-mixin": "~15.3.0",
