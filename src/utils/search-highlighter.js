@@ -1,0 +1,61 @@
+import React from 'react';
+import _ from 'lodash';
+import {stemmer as enStemmer} from 'porter-stemmer';
+import ruStemmer from './ru-stemmer';
+
+const enLetters = 'a-z';
+const ruLetters = '\u0400-\u04ff';
+
+const partRE = /"(.+?)"|(\S+)/g;
+const enWordRE = new RegExp(`^[${enLetters}]+$`, 'i');
+const ruWordRE = new RegExp(`^[${ruLetters}]+$`, 'i');
+
+const hlClass = 'search-highlight';
+
+export function parseQuery(query) {
+  const terms = [];
+  let m;
+  while ((m = partRE.exec(query)) !== null) {
+    if (m[2] && (m[2].indexOf(':') !== -1 || m[2].length === 1)) {
+      continue;
+    }
+    if (m[1] !== undefined) {
+      terms.push(new RegExp(`(^|[^${enLetters}${ruLetters}])(${_.escapeRegExp(m[1])})(?:$|[^${enLetters}${ruLetters}])`));
+    } else if (enWordRE.test(m[2])) {
+      terms.push(new RegExp(`(^|[^${enLetters}])(${_.escapeRegExp(enStemmer(m[2]))}[${enLetters}]*)`, 'i'));
+    } else if (ruWordRE.test(m[2])) {
+      terms.push(new RegExp(`(^|[^${ruLetters}])(${_.escapeRegExp(ruStemmer(m[2]))}[${ruLetters}]*)`, 'i'));
+    } else {
+      terms.push(new RegExp(`(^|[^${enLetters}${ruLetters}])(${_.escapeRegExp(m[2])})(?:$|[^${enLetters}${ruLetters}])`));
+    }
+  }
+  return terms;
+}
+
+export function highlightString(text, terms) {
+  if (terms.length === 0 || text === '') {
+    return [text];
+  }
+
+  const result = [];
+  while (text !== '') {
+    let match = '', minPos = 0;
+    terms.forEach(re => {
+      const m = re.exec(text);
+      if (m && (match === '' || m.index < minPos)) {
+        minPos = m.index + (m[1] || '').length;
+        match = m[2];
+      }
+    });
+
+    if (match !== '') {
+      result.push(text.substring(0, minPos));
+      result.push(<span className={hlClass}>{match}</span>);
+      text = text.substring(minPos + match.length);
+    } else {
+      result.push(text);
+      break;
+    }
+  }
+  return result;
+}

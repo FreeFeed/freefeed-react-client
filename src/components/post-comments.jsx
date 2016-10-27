@@ -82,7 +82,8 @@ export default class PostComments extends React.Component {
         isModeratingComments={props.post.isModeratingComments}
         {...props.commentEdit}
         highlightComment={authorUserName => props.commentEdit.highlightComment(props.post.id, authorUserName)}
-        highlightArrowComment={arrows => props.commentEdit.highlightComment(props.post.id, undefined, arrows, comment.id)}/>
+        highlightArrowComment={arrows => props.commentEdit.highlightComment(props.post.id, undefined, arrows, comment.id)}
+        highlightTerms={props.highlightTerms}/>
     );
   }
 

@@ -143,6 +143,7 @@ export default class PostComment extends React.Component {
         <div className="comment-body">
           <PieceOfText
             text={this.props.body}
+            highlightTerms={this.props.highlightTerms}
             userHover=  {{hover: username => this.props.highlightComment(username),
                           leave: this.props.clearHighlightComment}}
             arrowHover= {{hover: arrows => this.props.highlightArrowComment(arrows),
