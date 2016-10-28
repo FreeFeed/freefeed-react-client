@@ -15,6 +15,7 @@
     "jade": "^1.11.0",
     "lodash": "~4.16.1",
     "moment": "~2.15.1",
+    "mousetrap": "^1.6.0",
     "node-sass": "^3.3.3",
     "numeral": "^1.5.3",
     "porter-stemmer": "^0.9.1",

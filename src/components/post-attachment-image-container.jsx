@@ -1,11 +1,15 @@
 import React from 'react';
 import classnames from 'classnames';
 import {PhotoSwipe} from 'react-photoswipe';
+import Mousetrap from 'mousetrap';
 import ImageAttachment from './post-attachment-image';
 
 const bordersSize = 4;
 const spaceSize = 8;
 const arrowSize = 24;
+
+const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
+const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
 
 export default class PostAttachmentsImage extends React.Component {
   constructor(props) {
@@ -22,6 +26,7 @@ export default class PostAttachmentsImage extends React.Component {
     this.itemWidths = props.attachments.map(({imageSizes: {t, o}}) => t ? t.w : (o ? o.w : 0)).map(w => w + bordersSize + spaceSize);
     this.contentWidth = this.itemWidths.reduce((s, w) => s + w, 0);
     this.container = null;
+    this.photoSwipe = null;
 
     this.lightboxItems = this.props.attachments.map(a => ({
       src: a.url,
@@ -85,8 +90,15 @@ export default class PostAttachmentsImage extends React.Component {
     };
   }
 
-  handleCloseLightbox() {
+  onLightboxOpened = () => {
+    Mousetrap.bind(prevHotKeys, () => this.photoSwipe.prev());
+    Mousetrap.bind(nextHotKeys, () => this.photoSwipe.next());
+  }
+
+  onLightboxClosed = () => {
     this.setState({isLightboxOpen: false});
+    Mousetrap.unbind(prevHotKeys);
+    Mousetrap.unbind(nextHotKeys);
   }
 
   getLightboxData = ({items}, index) => {
@@ -155,11 +167,13 @@ export default class PostAttachmentsImage extends React.Component {
             title={this.state.isFolded ? `Show more (${this.props.attachments.length - lastVisibleIndex - 1})` : "Show less"}/>
         </div>
         <PhotoSwipe
+          ref={(el) => this.photoSwipe = el ? el.photoSwipe : null}
           items={this.lightboxItems}
           gettingData={this.getLightboxData}
           options={{...this.lightboxOptions, index: this.state.lightboxIndex}}
           isOpen={this.state.isLightboxOpen}
-          onClose={this.handleCloseLightbox.bind(this)}/>
+          onClose={this.onLightboxClosed}
+          initialZoomInEnd={this.onLightboxOpened}/>
       </div>
     );
   }
