@@ -44,8 +44,9 @@ function selectState(state) {
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
   const timelines = state.timelines;
   const boxHeader = state.boxHeader;
+  const highlightTerms = state.highlightTerms;
 
-  return { user, authenticated, visibleEntries, timelines, boxHeader };
+  return { user, authenticated, visibleEntries, timelines, boxHeader, highlightTerms };
 }
 
 function selectActions(dispatch) {

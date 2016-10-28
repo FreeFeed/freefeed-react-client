@@ -19,7 +19,7 @@ export default class SendTo extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    let newOptions = this.feedsToOptions(newProps.feeds, newProps.user.username, this.props.isDirects);
+    const newOptions = this.feedsToOptions(newProps.feeds, newProps.user.username, this.props.isDirects);
 
     // If defaultFeed gets updated (it happens after sign-in), we have to
     // set values, options and showFeedsOption. Otherwise, only update options.
@@ -63,21 +63,21 @@ export default class SendTo extends React.Component {
   }
 
   isGroupsOrDirectsOnly = (values) => {
-    let types = {};
-    for (let v of values) {
+    const types = {};
+    for (const v of values) {
       types[v.type] = v;
     }
     return Object.keys(types).length <= 1;
   }
 
   selectChanged = (values) => {
-    let isWarningDisplayed = !this.isGroupsOrDirectsOnly(values);
+    const isWarningDisplayed = !this.isGroupsOrDirectsOnly(values);
     this.setState({ values, isWarningDisplayed });
     this.props.onChange(values.map(item => item.value));
   }
 
   toggleSendTo = () => {
-    let newShowFeedsOption = !this.state.showFeedsOption;
+    const newShowFeedsOption = !this.state.showFeedsOption;
     this.setState({ showFeedsOption: newShowFeedsOption });
   }
 

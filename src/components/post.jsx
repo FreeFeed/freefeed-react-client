@@ -32,7 +32,7 @@ export default class Post extends React.Component {
   }
 
   render() {
-    let props = this.props;
+    const props = this.props;
 
     const createdAt = new Date(+props.createdAt);
     const createdAtISO = moment(createdAt).format();
@@ -40,14 +40,14 @@ export default class Post extends React.Component {
     const createdAgo = fromNowOrNow(createdAt);
 
     let editingPostText = props.editingText;
-    let editingPostTextChange = (e) => {
+    const editingPostTextChange = (e) => {
       editingPostText = e.target.value;
     };
     const toggleEditingPost = () => props.toggleEditingPost(props.id, editingPostText);
     const cancelEditingPost = () => props.cancelEditingPost(props.id, editingPostText);
     const saveEditingPost = () => {
       if (!props.isSaving) {
-        let attachmentIds = props.attachments.map(item => item.id) || [];
+        const attachmentIds = props.attachments.map(item => item.id) || [];
         props.saveEditingPost(props.id, {body: editingPostText, attachments: attachmentIds});
       }
     };
@@ -91,11 +91,11 @@ export default class Post extends React.Component {
       if (recipient.id !== props.createdBy.id) {
         return false;
       }
-      if (recipient.username[recipient.username.length - 1] === 's') {
-        return recipient.username + '\u2019 feed';
-      } else {
-        return recipient.username + '\u2019s feed';
-      }
+
+      const lastCharacter = recipient.username[recipient.username.length - 1];
+      const suffix = lastCharacter === 's' ? '\u2019 feed' : '\u2019s feed';
+
+      return `${recipient.username}${suffix}`;
     };
 
     let recipients = props.recipients;
@@ -106,12 +106,10 @@ export default class Post extends React.Component {
       // the only recipient, since it would be that feed.
       if (props.isInUserFeed) {
         recipients = [];
-      } else {
+      } else if (recipients[0].id === props.createdBy.id) {
         // When in a many-sources list (Home, Direct messages, My discussions),
         // we should omit the only recipient if it's the author's feed.
-        if (recipients[0].id === props.createdBy.id) {
-          recipients = [];
-        }
+        recipients = [];
       }
     }
     recipients = recipients.map((recipient, index) => (
@@ -126,7 +124,7 @@ export default class Post extends React.Component {
     ));
 
     // username in url
-    // If posted _only_ into groups, use first recipient's username 
+    // If posted _only_ into groups, use first recipient's username
     let urlName = props.createdBy.username;
     if (props.recipients.length > 0 && !props.recipients.some(r => r.type === "user")) {
       urlName = props.recipients[0].username;
@@ -289,7 +287,7 @@ export default class Post extends React.Component {
             </div>
           ) : (
             <div className="post-text">
-              <PieceOfText text={props.body}/>
+              <PieceOfText text={props.body} highlightTerms={props.highlightTerms}/>
             </div>
           )}
 
@@ -338,7 +336,8 @@ export default class Post extends React.Component {
             toggleCommenting={props.toggleCommenting}
             showMoreComments={props.showMoreComments}
             commentEdit={props.commentEdit}
-            entryUrl={`/${urlName}/${props.id}`}/>
+            entryUrl={`/${urlName}/${props.id}`}
+            highlightTerms={props.highlightTerms}/>
         </div>
       </div>
     ));

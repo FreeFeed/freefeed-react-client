@@ -4,6 +4,7 @@ import {LOCATION_CHANGE} from 'react-router-redux';
 import {userParser, postParser} from '../utils';
 import config from '../config';
 import {getToken, getPersistedUser} from '../services/auth';
+import {parseQuery} from '../utils/search-highlighter';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
 
@@ -494,14 +495,14 @@ export function postsViewState(state = {}, action) {
     case ActionTypes.REALTIME_COMMENT_NEW: {
       const post = state[action.comment.postId];
       if (!post) {
-        if (action.post) {
-          return {
-            ...state,
-            [action.post.posts.id]: initPostViewState(action.post.posts)
-          };
-        } else {
+        if (!action.post) {
           return state;
         }
+
+        return {
+          ...state,
+          [action.post.posts.id]: initPostViewState(action.post.posts)
+        };
       }
       return {...state,
         [post.id] : {
@@ -1012,14 +1013,14 @@ export function posts(state = {}, action) {
     case ActionTypes.REALTIME_COMMENT_NEW: {
       const post = state[action.comment.postId];
       if (!post) {
-        if (action.post) {
-          return {
-            ...state,
-            [action.post.posts.id]: postParser(action.post.posts)
-          };
-        } else {
+        if (!action.post) {
           return state;
         }
+
+        return {
+          ...state,
+          [action.post.posts.id]: postParser(action.post.posts)
+        };
       }
       const commentAlreadyAdded = post.comments && post.comments.indexOf(action.comment.id)!==-1;
       if (commentAlreadyAdded) {
@@ -1206,24 +1207,24 @@ export function users(state = {}, action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I):
     case response(ActionTypes.GET_USER_INFO): {
-      let userId = action.payload.users.id;
-      let oldUser = state[userId] || {};
-      let newUser = userParser(action.payload.users);
+      const userId = action.payload.users.id;
+      const oldUser = state[userId] || {};
+      const newUser = userParser(action.payload.users);
       return {...state,
         [userId]: {...oldUser, ...newUser}
       };
     }
     case response(ActionTypes.CREATE_GROUP): {
-      let userId = action.payload.groups.id;
-      let newUser = userParser(action.payload.groups);
+      const userId = action.payload.groups.id;
+      const newUser = userParser(action.payload.groups);
       return {...state,
         [userId]: {...newUser}
       };
     }
     case response(ActionTypes.UPDATE_GROUP): {
-      let userId = action.payload.groups.id;
-      let oldUser = state[userId] || {};
-      let newUser = userParser(action.payload.groups);
+      const userId = action.payload.groups.id;
+      const oldUser = state[userId] || {};
+      const newUser = userParser(action.payload.groups);
       return {...state,
         [userId]: {...oldUser, ...newUser}
       };
@@ -1545,6 +1546,15 @@ export function boxHeader(state = "", action) {
   return state;
 }
 
+export function highlightTerms(state = [], action) {
+  switch (action.type) {
+    case request(ActionTypes.GET_SEARCH): {
+      return parseQuery(action.payload.search || '');
+    }
+  }
+  return state;
+}
+
 export function singlePostId(state = null, action) {
   if (ActionHelpers.isFeedRequest(action)) {
     return null;
@@ -1557,7 +1567,7 @@ export function singlePostId(state = null, action) {
 
 function getValidRecipients(state) {
   const subscriptions = _.map(state.subscriptions || [], (rs) => {
-    let sub = _.find(state.subscriptions || [], { 'id': rs.id });
+    const sub = _.find(state.subscriptions || [], { 'id': rs.id });
     let user = null;
     if (sub && sub.name == 'Posts') {
       user = _.find(state.subscribers || [], { 'id': sub.user });
@@ -1620,8 +1630,8 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
       };
     }
     case response(ActionTypes.CREATE_GROUP): {
-      let groupId = action.payload.groups.id;
-      let group = userParser(action.payload.groups);
+      const groupId = action.payload.groups.id;
+      const group = userParser(action.payload.groups);
       return {...state,
         feeds: [ ...state.feeds, { id: groupId, user: group } ]
       };
@@ -1705,16 +1715,16 @@ export function groups(state = {}, action) {
       return mergeByIds(state, groups.map(userParser));
     }
     case response(ActionTypes.CREATE_GROUP): {
-      let groupId = action.payload.groups.id;
-      let newGroup = userParser(action.payload.groups);
+      const groupId = action.payload.groups.id;
+      const newGroup = userParser(action.payload.groups);
       return {...state,
         [groupId]: {...newGroup}
       };
     }
     case response(ActionTypes.UPDATE_GROUP): {
-      let groupId = action.payload.groups.id;
-      let oldGroup = state[groupId] || {};
-      let newGroup = userParser(action.payload.groups);
+      const groupId = action.payload.groups.id;
+      const oldGroup = state[groupId] || {};
+      const newGroup = userParser(action.payload.groups);
       return {...state,
         [groupId]: {...oldGroup, ...newGroup}
       };
@@ -1797,7 +1807,7 @@ const removeItemFromGroupRequests = (state, action) => {
   const group = state.find(group => group.username === groupName);
 
   if (group && group.requests.length !== 0) {
-    let newGroup = {
+    const newGroup = {
       ...group,
       requests: group.requests.filter(user => user.username !== userName)
     };

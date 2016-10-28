@@ -57,7 +57,7 @@ class UserName extends React.Component {
         this.setState({isCardOpen: true});
       }
     }, 500);
-    
+
     if (this.props.userHover) {
       this.props.userHover.hover(this.props.user.username);
     }

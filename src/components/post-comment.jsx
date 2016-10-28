@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Textarea from 'react-textarea-autosize';
 import _ from 'lodash';
 import classnames from 'classnames';
@@ -16,6 +15,7 @@ export default class PostComment extends React.Component {
     this.state = {
       editText: this.props.editText || ''
     };
+    this.commentTextArea = null;
   }
 
   handleChange = (event) => {
@@ -49,7 +49,7 @@ export default class PostComment extends React.Component {
 
   updateCommentingText = () => {
     if (this.props.updateCommentingText) {
-      this.props.updateCommentingText(this.props.id, this.refs.commentText.value);
+      this.props.updateCommentingText(this.props.id, this.commentTextArea.value);
     }
   }
 
@@ -65,7 +65,13 @@ export default class PostComment extends React.Component {
 
   saveComment = () => {
     if (!this.props.isSaving) {
-      this.props.saveEditingComment(this.props.id, this.refs.commentText.value);
+      this.props.saveEditingComment(this.props.id, this.commentTextArea.value);
+    }
+  }
+
+  focus() {
+    if (this.commentTextArea) {
+      this.commentTextArea.focus();
     }
   }
 
@@ -77,14 +83,8 @@ export default class PostComment extends React.Component {
     if (shouldClearText) {
       this.setState({editText: ''});
     }
-    if (this.props.editText !== newProps.editText) {
+    if ((this.props.editText || '') !== newProps.editText) {
       this.setState({editText: newProps.editText});
-    }
-  }
-  
-  componentDidUpdate(prevProps) {
-    if (this.props.isEditing && this.props.editText !== prevProps.editText) {
-      ReactDOM.findDOMNode(this.refs.commentText).focus();
     }
   }
 
@@ -108,7 +108,7 @@ export default class PostComment extends React.Component {
           <div>
             <Textarea
               autoFocus={!this.props.isSinglePost}
-              ref="commentText"
+              ref={(el) => this.commentTextArea = el}
               className="comment-textarea"
               value={this.state.editText}
               onFocus={this.setCaretToTextEnd}
@@ -143,6 +143,7 @@ export default class PostComment extends React.Component {
         <div className="comment-body">
           <PieceOfText
             text={this.props.body}
+            highlightTerms={this.props.highlightTerms}
             userHover=  {{hover: username => this.props.highlightComment(username),
                           leave: this.props.clearHighlightComment}}
             arrowHover= {{hover: arrows => this.props.highlightArrowComment(arrows),

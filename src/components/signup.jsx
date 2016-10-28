@@ -30,7 +30,7 @@ const USERNAME_STOP_LIST = [
 ];
 
 function isValidUsername(username) {
-  let valid = username
+  const valid = username
         && username.length >= 3
         && username.length <= 25
         && username.match(/^[A-Za-z0-9]+$/)
@@ -52,7 +52,7 @@ function capitalizeFirstLetter(str) {
 }
 
 function validate(props) {
-  let errorMessages = [];
+  const errorMessages = [];
 
   if (!isValidUsername(props.username)) {
     errorMessages.push('invalid username');
@@ -74,7 +74,7 @@ function validate(props) {
 }
 
 function signUpFunc(props) {
-  let errorMessage = validate(props);
+  const errorMessage = validate(props);
 
   if (!errorMessage) {
     props.signUp({...props});

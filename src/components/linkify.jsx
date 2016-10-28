@@ -5,6 +5,7 @@ import {shorten} from 'ff-url-finder';
 
 import config from '../config';
 import {finder} from '../utils';
+import {highlightString} from '../utils/search-highlighter';
 import {LINK, AT_LINK, LOCAL_LINK, EMAIL, HASHTAG, ARROW} from '../utils/link-types';
 import UserName from './user-name';
 
@@ -41,13 +42,13 @@ class Linkify extends React.Component {
       props['className'] = 'arrow-span';
       props['onMouseEnter'] = () => this.arrowHover.hover(displayedLink.length);
       props['onMouseLeave'] = this.arrowHover.leave;
-      
+
       return React.createElement(
         'span',
         props,
         displayedLink
       );
-    } else {
+    } else {  // eslint-disable-line no-else-return
       props['href'] = href;
       props['target'] = '_blank';
 
@@ -63,7 +64,7 @@ class Linkify extends React.Component {
   idx = 0
 
   parseString(string) {
-    let elements = [];
+    const elements = [];
     if (string === '') {
       return elements;
     }
@@ -79,10 +80,10 @@ class Linkify extends React.Component {
           displayedLink = shorten(it.text, MAX_URL_LENGTH).replace(/^https?:\/\//, '');
           href = it.url;
         } else if (it.type === AT_LINK) {
-          elements.push(<UserName 
-            user={{username: it.username}} 
-            display={it.text} 
-            userHover={this.userHover} 
+          elements.push(<UserName
+            user={{username: it.username}}
+            display={it.text}
+            userHover={this.userHover}
             key={`match${++this.idx}`}/>);
           return;
         } else if (it.type === LOCAL_LINK) {
@@ -105,14 +106,13 @@ class Linkify extends React.Component {
           return;
         }
 
-        let linkElement = this.createLinkElement(it, displayedLink, href);
+        const linkElement = this.createLinkElement(it, displayedLink, href);
 
         elements.push(linkElement);
       });
 
       return (elements.length === 1) ? elements[0] : elements;
-    }
-    catch (err) {
+    } catch (err) {
       if (typeof Raven !== 'undefined') {
         Raven.captureException(err, { level: 'error', tags: { area: 'component/linkify' }, extra: { string } });
       }
@@ -120,20 +120,22 @@ class Linkify extends React.Component {
     return [string];
   }
 
-  parse(children) {
+  parse(children, hlTerms = []) {
     let parsed = children;
 
-    if (typeof children === 'string') {
+    if (typeof children === 'string' && hlTerms.length > 0) {
+      parsed = this.parse(highlightString(children, hlTerms), []);
+    } else if (typeof children === 'string') {
       parsed = this.parseString(children);
     } else if (React.isValidElement(children) && (children.type !== 'a') && (children.type !== 'button')) {
       parsed = React.cloneElement(
         children,
         {key: `parse${++this.parseCounter}`},
-        this.parse(children.props.children)
+        this.parse(children.props.children, hlTerms)
       );
     } else if (children instanceof Array) {
       parsed = children.map(child => {
-        return this.parse(child);
+        return this.parse(child, hlTerms);
       });
     }
 
@@ -144,7 +146,7 @@ class Linkify extends React.Component {
     this.parseCounter = 0;
     this.userHover = this.props.userHover;
     this.arrowHover = this.props.arrowHover;
-    const parsedChildren = this.parse(this.props.children);
+    const parsedChildren = this.parse(this.props.children, this.props.highlightTerms);
 
     return <span className="Linkify" dir="auto">{parsedChildren}</span>;
   }
