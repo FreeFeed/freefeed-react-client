@@ -4,6 +4,7 @@ import {LOCATION_CHANGE} from 'react-router-redux';
 import {userParser, postParser} from '../utils';
 import config from '../config';
 import {getToken, getPersistedUser} from '../services/auth';
+import {parseQuery} from '../utils/search-highlighter';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
 
@@ -1540,6 +1541,15 @@ export function boxHeader(state = "", action) {
     }
     case LOCATION_CHANGE: {
       return '';
+    }
+  }
+  return state;
+}
+
+export function highlightTerms(state = [], action) {
+  switch (action.type) {
+    case request(ActionTypes.GET_SEARCH): {
+      return parseQuery(action.payload.search || '');
     }
   }
   return state;

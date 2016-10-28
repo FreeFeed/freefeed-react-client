@@ -79,6 +79,9 @@ module.exports = [{
       { test: /[\\/]assets[\\/]fonts[\\/]fontawesome[^/]*$/i,
         loader: 'file?name=[path][name].[ext]'
       },
+      { test: /photoswipe.+\.(png|svg|gif)$/,
+        loader: 'file?name=assets/images/photoswipe/' + (opts.hash ? '[name]-[hash].[ext]' : '[name]-dev.[ext]')
+      },
       { test: /[\\/]assets[\\/]/,
         exclude: /[\\/]fonts[\\/]fontawesome[^/]*$/i,
         loader: 'file?name=' + (opts.hash ? '[path][name]-[hash].[ext]' : '[path][name]-dev.[ext]')
@@ -166,6 +169,9 @@ module.exports = [{
       { test: /[\\/]assets[\\/]/,
         exclude: /[\\/]fonts[\\/]fontawesome[^/]*$/i,
         loader: 'file?name=' + (opts.hash ? '[path][name]-[hash].[ext]' : '[path][name]-dev.[ext]')
+      },
+      { test: /photoswipe.+\.(png|svg|gif)$/,
+        loader: 'file?name=assets/images/photoswipe/' + (opts.hash ? '[name]-[hash].[ext]' : '[name]-dev.[ext]')
       },
       {
         test: /node_modules[\\/].*\.json$/,

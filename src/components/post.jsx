@@ -287,7 +287,7 @@ export default class Post extends React.Component {
             </div>
           ) : (
             <div className="post-text">
-              <PieceOfText text={props.body}/>
+              <PieceOfText text={props.body} highlightTerms={props.highlightTerms}/>
             </div>
           )}
 
@@ -336,7 +336,8 @@ export default class Post extends React.Component {
             toggleCommenting={props.toggleCommenting}
             showMoreComments={props.showMoreComments}
             commentEdit={props.commentEdit}
-            entryUrl={`/${urlName}/${props.id}`}/>
+            entryUrl={`/${urlName}/${props.id}`}
+            highlightTerms={props.highlightTerms}/>
         </div>
       </div>
     ));

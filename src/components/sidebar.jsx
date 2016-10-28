@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link} from 'react-router';
-import { isString } from 'lodash';
 
 import {preventDefault} from '../utils';
 import UserName from './user-name';
