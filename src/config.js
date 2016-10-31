@@ -41,7 +41,10 @@ const config = {
         omitRepeatedBubbles: true,
         highlightComments: true
       },
-      allowLinksPreview: false
+      allowLinksPreview: false,
+      homefeed: {
+        hideUsers: []
+      }
     }
   }
 };

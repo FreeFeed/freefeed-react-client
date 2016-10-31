@@ -8,6 +8,7 @@ export default class UserFrontendPreferencesForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = this.props.preferences;
+    this.state.sHideUsers = this.state.homefeed.hideUsers.join(', ');
   }
 
   changeDisplayOption = (event) => {
@@ -52,9 +53,18 @@ export default class UserFrontendPreferencesForm extends React.Component {
     });
   }
 
+  chandeHideUsers = (event) => {
+    this.setState({
+      sHideUsers: event.target.value
+    });
+  }
+
   savePreferences = () => {
     if (this.props.status !== 'loading') {
-      this.props.updateFrontendPreferences(this.props.userId, this.state);
+      const prefs = {...this.state};
+      prefs.homefeed.hideUsers = prefs.sHideUsers.toLowerCase().match(/[\w-]+/g) || [];
+      delete prefs.sHideUsers;
+      this.props.updateFrontendPreferences(this.props.userId, prefs);
     }
   }
 
@@ -125,6 +135,12 @@ export default class UserFrontendPreferencesForm extends React.Component {
             <input type="checkbox" name="bubbles" value="1" checked={this.state.allowLinksPreview} onChange={this.changeAllowLinksPreview}/>
               Show preview for links in post. Link should start with http(s)://, post should have no attached images. If you don't want to have link preview, add ! before a link without spaces.
           </label>
+        </div>
+
+        <div className="form-group">
+          Hide posts from these users/groups in homefeed 
+          (enter comma separated list of usernames/groupnames):<br/>
+          <textarea className="form-control" value={this.state.sHideUsers} onChange={this.chandeHideUsers}/>
         </div>
 
         <p>
