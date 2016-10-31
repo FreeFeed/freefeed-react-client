@@ -138,7 +138,7 @@ export default class UserFrontendPreferencesForm extends React.Component {
         </div>
 
         <div className="form-group">
-          Hide posts from these users/groups in homefeed 
+          Hide posts from these users/groups in homefeed
           (enter comma separated list of usernames/groupnames):<br/>
           <textarea className="form-control" value={this.state.sHideUsers} onChange={this.chandeHideUsers}/>
         </div>
