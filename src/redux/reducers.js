@@ -1338,6 +1338,9 @@ export function passwordForm(state=DEFAULT_PASSWORD_FORM_STATE, action) {
     case fail(ActionTypes.UPDATE_PASSWORD): {
       return {...state, isSaving: false, success: false, error: true, errorText: action.payload.err};
     }
+    case ActionTypes.RESET_SETTINGS_FORMS: {
+      return {...state, isSaving: false, success: false, error: false, errorText: ''};
+    }
   }
   return state;
 }
@@ -1385,7 +1388,7 @@ export function userSettingsForm(state={saved: false}, action) {
     case fail(ActionTypes.UPDATE_USER): {
       return {...state, isSaving: false, success: false, error: true, errorMessage: (action.payload || {}).err};
     }
-    case LOCATION_CHANGE: {
+    case ActionTypes.RESET_SETTINGS_FORMS: {
       return {...state, success: false, error: false, errorMessage: '', isSaving: false};
     }
   }
@@ -1406,6 +1409,9 @@ export function frontendPreferencesForm(state={}, action) {
     case fail(ActionTypes.UPDATE_FRONTEND_PREFERENCES): {
       return {...state, status: 'error', errorMessage: (action.payload || {}).err};
     }
+    case ActionTypes.RESET_SETTINGS_FORMS: {
+      return {...state, status: '', errorMessage: ''};
+    }
   }
   return state;
 }
@@ -1420,6 +1426,9 @@ export function userPictureForm(state={}, action) {
     }
     case fail(ActionTypes.UPDATE_USER_PICTURE): {
       return {...state, status: 'error', errorMessage: (action.payload || {}).err};
+    }
+    case ActionTypes.RESET_SETTINGS_FORMS: {
+      return {...state, status: '', errorMessage: ''};
     }
   }
   return state;
