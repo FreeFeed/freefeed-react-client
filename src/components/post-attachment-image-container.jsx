@@ -79,7 +79,7 @@ export default class PostAttachmentsImage extends React.Component {
 
   handleClickThumbnail(index) {
     return (e) => {
-      if (e.button !== 0) {
+      if (e.button !== 0 || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) {
         return;
       }
       e.preventDefault();
