@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import _ from 'lodash';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import {getUserInfo} from '../redux/action-creators';
+import {getUserInfo, updateFrontendPreferences} from '../redux/action-creators';
 import {userActions} from './select-utils';
 
 class UserCard extends React.Component {
@@ -111,6 +111,8 @@ class UserCard extends React.Component {
               <span> - <Link to={`/${props.user.username}/settings`}>Settings</Link></span>
             ) : false}
 
+            <span> - <a onClick={()=>props.hideShowUser(props.me, props.user.username)}>{props.hidden ? 'Show' : 'Hide'} posts</a></span>
+
           </div>
         ) : false}
       </div>
@@ -124,12 +126,14 @@ const mapStateToProps = (state, ownProps) => {
   const notFound = (!user.id && state.usersNotFound.indexOf(ownProps.username) >= 0);
 
   return {
+    me,
     user,
     notFound,
     isItMe: (me.username === user.username),
     subscribed: ((me.subscriptions || []).indexOf(user.id) > -1),
     hasRequestBeenSent: ((me.pendingSubscriptionRequests || []).indexOf(user.id) > -1),
     blocked: ((me.banIds || []).indexOf(user.id) > -1),
+    hidden: (me.frontendPreferences.homefeed.hideUsers.indexOf(user.username) > -1),
     amIGroupAdmin: (user.type === 'group' && (user.administrators || []).indexOf(me.id) > -1)
   };
 };
@@ -137,7 +141,17 @@ const mapStateToProps = (state, ownProps) => {
 function mapDispatchToProps(dispatch) {
   return {
     ...userActions(dispatch),
-    getUserInfo: (username) => dispatch(getUserInfo(username))
+    getUserInfo: (username) => dispatch(getUserInfo(username)),
+    hideShowUser: (me, username) => {
+      const {homefeed: {hideUsers}} = me.frontendPreferences;
+      const p = hideUsers.indexOf(username);
+      if (p < 0) {
+        hideUsers.push(username);
+      } else {
+        hideUsers.splice(p, 1);
+      }
+      dispatch(updateFrontendPreferences(me.id, {...me.frontendPreferences, homefeed: {...me.frontendPreferences.homefeed, hideUsers}}));
+    }
   };
 }
 
