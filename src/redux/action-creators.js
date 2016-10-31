@@ -627,3 +627,9 @@ export function getBestOf(offset) {
     payload: {offset},
   };
 }
+
+export function resetSettingsForms() {
+  return {
+    type: ActionTypes.RESET_SETTINGS_FORMS
+  };
+}
