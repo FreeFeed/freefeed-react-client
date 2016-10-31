@@ -19,6 +19,7 @@ import Layout from './components/layout';
 import Home from './components/home';
 import Discussions from './components/discussions';
 import About from './components/about';
+import Terms from './components/terms';
 import Dev from './components/dev';
 import Signin from './components/signin';
 import Signup from './components/signup';
@@ -93,7 +94,10 @@ ReactDOM.render(
 
       <Route path='/' component={Layout}>
         <IndexRoute name='home' component={Home} {...generateRouteHooks(boundRouteActions('home'))}/>
-        <Route path='about' component={About} onEnter={enterStaticPage('About')}/>
+        <Route path="about">
+          <IndexRoute name='about' component={About} onEnter={enterStaticPage('About')} />
+          <Route path="terms" component={Terms} onEnter={enterStaticPage('Terms')}/>
+        </Route>
         <Route path='dev' component={Dev} onEnter={enterStaticPage('Developers')}/>
         <Route path='signin' component={Signin} onEnter={enterStaticPage('Sign in')}/>
         <Route path='signup' component={Signup} onEnter={enterStaticPage('Sign up')}/>
