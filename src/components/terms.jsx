@@ -96,11 +96,11 @@ const Terms = () => (
 
       <p>Your use of the Service is at your sole risk. The Service is provided on an &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; basis.
         The Service is provided without warranties of any kind, whether express or implied, including, but not
-        imited to, implied warranties of merchantability, fitness for a particular purpose, non-infringement or
+        limited to, implied warranties of merchantability, fitness for a particular purpose, non-infringement or
         course of performance.</p>
 
       <p>FreeFeed MT&Uuml;, its subsidiaries, affiliates, and its licensors do not warrant that a) the Service will
-        unction uninterrupted, secure or available at any particular time or location; b) any errors or defects
+        function uninterrupted, secure or available at any particular time or location; b) any errors or defects
         will be corrected; c) the Service is free of viruses or other harmful components; or d) the results of
         using the Service will meet your requirements.</p>
 
