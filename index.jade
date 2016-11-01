@@ -68,7 +68,7 @@ html(lang='en')
       })(window, document);
 
     if require('./src/config').sentry.publicDSN
-      script(src='https://cdn.ravenjs.com/3.2.1/raven.min.js')
+      script(src='https://cdn.ravenjs.com/3.7.0/raven.min.js')
       script Raven.config('#{require('./src/config').sentry.publicDSN}').install();
 
     script(src='[[ app-*.js ]]')
