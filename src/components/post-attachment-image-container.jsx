@@ -64,6 +64,9 @@ export default class PostAttachmentsImage extends React.Component {
 
   getThumbBounds() {
     return (index) => {
+      if (!this.lightboxItems[index] || !this.lightboxItems[index].thumb) {
+        return null;
+      }
       const rect = this.lightboxItems[index].thumb.getBoundingClientRect();
       if (rect.width === 0) {
         return null;
