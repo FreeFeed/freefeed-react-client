@@ -41,7 +41,7 @@ export default class PostAttachmentsImage extends React.Component {
       clickToCloseNonZoomable: false,
       bgOpacity: 0.8,
       history: false,
-      getThumbBoundsFn: this.getThumbBounds()
+      getThumbBoundsFn: this.getThumbBounds
     };
   }
 
@@ -62,21 +62,19 @@ export default class PostAttachmentsImage extends React.Component {
     this.setState({isFolded: !this.state.isFolded});
   }
 
-  getThumbBounds() {
-    return (index) => {
-      if (!this.lightboxItems[index] || !this.lightboxItems[index].thumb) {
-        return null;
-      }
-      const rect = this.lightboxItems[index].thumb.getBoundingClientRect();
-      if (rect.width === 0) {
-        return null;
-      }
-      const pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
-      return {
-        x: rect.left,
-        y: rect.top + pageYScroll,
-        w: rect.width
-      };
+  getThumbBounds = (index) => {
+    if (!this.lightboxItems[index] || !this.lightboxItems[index].thumb) {
+      return null;
+    }
+    const rect = this.lightboxItems[index].thumb.getBoundingClientRect();
+    if (rect.width === 0) {
+      return null;
+    }
+    const pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
+    return {
+      x: rect.left,
+      y: rect.top + pageYScroll,
+      w: rect.width
     };
   }
 
