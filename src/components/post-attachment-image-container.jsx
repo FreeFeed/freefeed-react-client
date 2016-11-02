@@ -104,8 +104,8 @@ export default class PostAttachmentsImage extends React.Component {
     Mousetrap.unbind(nextHotKeys);
   }
 
-  getLightboxData = ({items}, index) => {
-    const item = items[index];
+  // react-photoswipe passes 'this' as a first argument unlike the PhotoSwipe API
+  getLightboxData = (_, index, item) => {
     if (item.w === 0) {
       const rect = item.thumb.getBoundingClientRect();
       item.w = 800;
