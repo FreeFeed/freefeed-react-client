@@ -20,10 +20,7 @@ const config = {
     sentinel: null // keep always last
   },
   siteDomains: [ // for transform links in the posts, comments, etc.
-    'freefeed.net',
-    'm.freefeed.net',
-    'beta.freefeed.net',
-    'old.freefeed.net'
+    'freefeed.net'
   ],
   sentry: {
     publicDSN: null,
