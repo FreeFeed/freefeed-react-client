@@ -4,7 +4,7 @@ import {browserHistory} from 'react-router';
 import {getPost} from '../services/api';
 import {setToken, persistUser} from '../services/auth';
 import {init} from '../services/realtime';
-import {userParser} from '../utils';
+import {userParser, delay} from '../utils';
 
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
@@ -168,7 +168,7 @@ const iLikedPost = ({user, posts}, postId) => {
   const likes = post.likes || [];
   return likes.indexOf(user.id) !== -1;
 };
-const dispatchWithPost = async (store, postId, action, filter = () => true) => {
+const dispatchWithPost = async (store, postId, action, filter = () => true, maxDelay = 0) => {
   const state = store.getState();
   const shouldBump = isFirstPage(state);
 
@@ -176,6 +176,13 @@ const dispatchWithPost = async (store, postId, action, filter = () => true) => {
     return store.dispatch({...action, shouldBump});
   }
 
+  if (maxDelay > 0) {
+    await delay(Math.random() * maxDelay);
+    // if post was loaded during delay
+    if (isPostLoaded(state, postId)) {
+      return store.dispatch({...action, shouldBump});
+    }
+  }
   const postResponse = await getPost({postId});
   const post = await postResponse.json();
 
@@ -197,6 +204,7 @@ const isFirstFriendInteraction = (post, {users}, {subscriptions, comments}) => {
   return wasFirstInteraction;
 };
 
+const postFetchDelay = 20000; // 20 sec
 const bindHandlers = store => ({
   'post:new': data => {
     const state = store.getState();
@@ -215,7 +223,7 @@ const bindHandlers = store => ({
   'comment:new': async data => {
     const postId = data.comments.postId;
     const action = {...data, type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments};
-    return dispatchWithPost(store, postId, action);
+    return dispatchWithPost(store, postId, action, () => true, postFetchDelay);
   },
   'comment:update': data => store.dispatch({...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments}),
   'comment:destroy': data => store.dispatch({type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId, postId: data.postId}),
@@ -223,7 +231,7 @@ const bindHandlers = store => ({
     const postId = data.meta.postId;
     const iLiked = iLikedPost(store.getState(), data.meta.postId);
     const action = {type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, users:[data.users], iLiked};
-    return dispatchWithPost(store, postId, action, isFirstFriendInteraction);
+    return dispatchWithPost(store, postId, action, isFirstFriendInteraction, postFetchDelay);
   },
   'like:remove': data => store.dispatch({type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId}),
 });

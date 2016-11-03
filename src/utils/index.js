@@ -133,3 +133,7 @@ export function getFirstLinkToEmbed(text) {
     })
     .map(it => it.text)[0];
 }
+
+export function delay(timeout = 0) {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
