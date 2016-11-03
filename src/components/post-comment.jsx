@@ -115,7 +115,6 @@ export default class PostComment extends React.Component {
               onChange={this.handleChange}
               onKeyDown={this.checkSave}
               onBlur={this.updateCommentingText}
-              style={{ overflow: 'hidden', wordWrap: 'break-word' }}
               minRows={2}
               maxRows={10}
               maxLength="1500"/>
