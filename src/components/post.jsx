@@ -1,12 +1,11 @@
 import React from 'react';
 import {Link} from 'react-router';
-import moment from 'moment';
 import classnames from 'classnames';
 import _ from 'lodash';
 import Textarea from 'react-textarea-autosize';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import {fromNowOrNow, getFirstLinkToEmbed, getFullDate} from '../utils';
+import {getFirstLinkToEmbed} from '../utils';
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
 import PostLikes from './post-likes';
@@ -16,6 +15,7 @@ import PieceOfText from './piece-of-text';
 import Dropzone from './dropzone';
 import PostMoreMenu from './post-more-menu';
 import EmbedlyLink from './embedly-link';
+import TimeDisplay from './time-display';
 
 export default class Post extends React.Component {
   constructor(props) {
@@ -33,11 +33,6 @@ export default class Post extends React.Component {
 
   render() {
     const props = this.props;
-
-    const createdAt = new Date(+props.createdAt);
-    const createdAtISO = moment(createdAt).format();
-    const createdAtHuman = getFullDate(+props.createdAt);
-    const createdAgo = fromNowOrNow(createdAt);
 
     let editingPostText = props.editingText;
     const editingPostTextChange = (e) => {
@@ -320,7 +315,7 @@ export default class Post extends React.Component {
             ) : false}
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
             <Link to={`/${urlName}/${props.id}`} className="post-timestamp">
-              <time dateTime={createdAtISO} title={createdAtHuman}>{createdAgo}</time>
+              <TimeDisplay timeStamp={+props.createdAt}/>
             </Link>
             {commentLink}
             {likeLink}

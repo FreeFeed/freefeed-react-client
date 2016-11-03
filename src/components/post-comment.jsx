@@ -4,9 +4,10 @@ import _ from 'lodash';
 import classnames from 'classnames';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import {preventDefault, confirmFirst, fromNowOrNow} from '../utils';
+import {preventDefault, confirmFirst} from '../utils';
 import PieceOfText from './piece-of-text';
 import UserName from './user-name';
+import TimeDisplay from './time-display';
 
 export default class PostComment extends React.Component {
   constructor(props) {
@@ -89,7 +90,6 @@ export default class PostComment extends React.Component {
   }
 
   render() {
-    const createdAgo = fromNowOrNow(+this.props.createdAt);
     const className = classnames({
       'comment': true,
       'highlighted': this.props.highlighted,
@@ -98,11 +98,13 @@ export default class PostComment extends React.Component {
 
     return (
     <div className={className} data-author={this.props.isEditing ? '' : this.props.user.username}>
-      <a className={`comment-icon fa ${this.props.omitBubble ? 'feed-comment-dot' : 'fa-comment-o'}`}
-         title={createdAgo}
-         id={`comment-${this.props.id}`}
-         href={`${this.props.entryUrl}#comment-${this.props.id}`}
-         onClick={this.openAnsweringComment}></a>
+      <TimeDisplay className="comment-time" timeStamp={+this.props.createdAt} timeAgoInTitle={true}>
+        <a
+          className={`comment-icon fa ${this.props.omitBubble ? 'feed-comment-dot' : 'fa-comment-o'}`}
+          id={`comment-${this.props.id}`}
+          href={`${this.props.entryUrl}#comment-${this.props.id}`}
+          onClick={this.openAnsweringComment}></a>
+      </TimeDisplay>
       {this.props.isEditing ? (
         <div className="comment-body">
           <div>
