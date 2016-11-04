@@ -2030,3 +2030,15 @@ export function userViews(state = {}, action) {
 
   return state;
 }
+
+export function realtimeSubscription(state = {type: null, id: null}, action) {
+  switch (action.type) {
+    case response(ActionTypes.REALTIME_SUBSCRIBE): {
+      return {...state, type: action.subsType, id: action.id};
+    }
+    case response(ActionTypes.REALTIME_UNSUBSCRIBE): {
+      return {...state, type: null, id: null};
+    }
+  }
+  return state;
+}

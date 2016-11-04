@@ -169,7 +169,7 @@ const iLikedPost = ({user, posts}, postId) => {
   return likes.indexOf(user.id) !== -1;
 };
 const dispatchWithPost = async (store, postId, action, filter = () => true, maxDelay = 0) => {
-  const state = store.getState();
+  let state = store.getState();
   const shouldBump = isFirstPage(state);
 
   if (isPostLoaded(state, postId)) {
@@ -177,7 +177,13 @@ const dispatchWithPost = async (store, postId, action, filter = () => true, maxD
   }
 
   if (maxDelay > 0) {
+    const subscrId = state.realtimeSubscription.id;
     await delay(Math.random() * maxDelay);
+    state = store.getState();
+    // if subscription was changed during delay
+    if (state.realtimeSubscription.id !== subscrId) {
+      return;
+    }
     // if post was loaded during delay
     if (isPostLoaded(state, postId)) {
       return store.dispatch({...action, shouldBump});
@@ -245,6 +251,7 @@ export const realtimeMiddleware = store => {
       if (realtimeConnection) {
         realtimeConnection.disconnect();
         realtimeConnection = undefined;
+        store.dispatch(ActionCreators.realtimeUnsubscribe());
       }
     }
 
@@ -252,6 +259,7 @@ export const realtimeMiddleware = store => {
       action.type === request(ActionTypes.GET_SINGLE_POST)) {
       if (realtimeConnection) {
         realtimeConnection.unsubscribe();
+        store.dispatch(ActionCreators.realtimeUnsubscribe());
       }
     }
 
@@ -261,6 +269,7 @@ export const realtimeMiddleware = store => {
       }
       if (action.payload.timelines) {
         realtimeConnection.subscribe({timeline:[action.payload.timelines.id]});
+        store.dispatch(ActionCreators.realtimeSubscribe('timeline', action.payload.timelines.id));
       }
     }
 
@@ -269,6 +278,7 @@ export const realtimeMiddleware = store => {
         realtimeConnection = init(handlers);
       }
       realtimeConnection.subscribe({post:[action.payload.posts.id]});
+      store.dispatch(ActionCreators.realtimeSubscribe('post', action.payload.posts.id));
     }
 
     return next(action);

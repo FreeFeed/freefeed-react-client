@@ -633,3 +633,17 @@ export function resetSettingsForms() {
     type: ActionTypes.RESET_SETTINGS_FORMS
   };
 }
+
+export function realtimeSubscribe(subsType, id) {
+  return {
+    type: ActionTypes.REALTIME_SUBSCRIBE,
+    subsType,
+    id,
+  };
+}
+
+export function realtimeUnsubscribe() {
+  return {
+    type: ActionTypes.REALTIME_UNSUBSCRIBE
+  };
+}
