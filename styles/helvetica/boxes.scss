@@ -49,6 +49,15 @@
   font-size: 15px;
 }
 
+.box-header-info {
+  line-height: 28px;
+  padding-top: 3px;
+  //height: 28px;
+  float: right;
+  font-size: 12px;
+
+}
+
 // Sidebar Search block header
 .box-header-search {
   @extend .box-header;
