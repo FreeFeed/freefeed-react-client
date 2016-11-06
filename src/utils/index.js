@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import moment from 'moment';
 import URLFinder from 'ff-url-finder';
 
 import defaultUserpic50Path from '../../assets/images/default-userpic-50.png';
@@ -28,20 +27,6 @@ export function setCookie(name, value = '', expireDays, path) {
   //http://stackoverflow.com/questions/1134290/cookies-on-localhost-with-explicit-domain
   const cookie = `${name}=${value}; expires=${expiresTime}; path=${path}`;
   return document.cookie = cookie;
-}
-
-export function fromNowOrNow(date) {
-  const now = moment(date);
-
-  if (Math.abs(moment().diff(now)) < 1000) { // 1000 milliseconds
-    return 'just now';
-  }
-
-  return now.fromNow();
-}
-
-export function getFullDate(date) {
-  return moment(date).format('YYYY-MM-DD HH:mm:ss [UTC]Z');
 }
 
 const userDefaults = {
