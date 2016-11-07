@@ -26,9 +26,6 @@
       ".js",
       ".jsx"
     ],
-    "import/ignore": [
-      "node_modules"
-    ],
     "import/resolver": {
       "node": {
         "extensions": [".js", ".jsx"]

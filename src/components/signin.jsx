@@ -25,8 +25,7 @@ function signInFunc(props) {
   }
 }
 
-function Signin(props) {
-  return (
+const Signin = (props) => (
   <div className='box'>
     <div className='box-header-timeline'>
       Hello
@@ -63,6 +62,6 @@ function Signin(props) {
     <div className='box-footer'>
     </div>
   </div>
-);}
+);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Signin);

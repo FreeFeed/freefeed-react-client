@@ -447,12 +447,14 @@ export function postsViewState(state = {}, action) {
       return { ...state, [id]: { ...state[id], isError, errorString} };
     }
     case ActionTypes.TOGGLE_COMMENTING: {
-      return {...state,
-        [action.postId] : {
+      return {
+        ...state,
+        [action.postId]: {
           ...state[action.postId],
-          isCommenting:!state[action.postId].isCommenting,
-          newCommentText: state[action.postId].newCommentText || '' }
-        };
+          isCommenting: !state[action.postId].isCommenting,
+          newCommentText: state[action.postId].newCommentText || ''
+        }
+      };
     }
     case ActionTypes.UPDATE_COMMENTING_TEXT: {
       const postState = state[action.postId];
