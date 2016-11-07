@@ -5,6 +5,7 @@ import UserSettingsForm from './user-settings-form';
 import UserFrontendPreferencesForm from './user-frontend-preferences-form';
 import UserChangePasswordForm from './user-change-password-form';
 import UserPictureForm from './user-picture-form';
+import UserAdvancedSettings from './user-advanced-settings';
 
 class Settings extends React.Component {
   componentWillUnmount() {
@@ -14,7 +15,7 @@ class Settings extends React.Component {
   render() {
     const props = this.props;
     return (
-      <div className="content">
+      <div className="content settings-content">
         <div className="box">
           <div className="box-header-timeline">
             Settings
@@ -46,6 +47,10 @@ class Settings extends React.Component {
               user={props.user}
               updateUserPicture={props.updateUserPicture}
               {...props.userPictureForm}/>
+
+            <hr/>
+
+            <UserAdvancedSettings />
 
             <hr/>
           </div>
