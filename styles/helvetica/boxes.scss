@@ -49,6 +49,14 @@
   font-size: 15px;
 }
 
+// Sidebar Group block: additional info in header
+.box-header-info {
+  line-height: 28px;
+  padding-top: 3px;
+  float: right;
+  font-size: 12px;
+}
+
 // Sidebar Search block header
 .box-header-search {
   @extend .box-header;
@@ -100,6 +108,7 @@
       }
     }
     .updated-ago{
+      display: block;
       font-size: 11px;
     }
   }

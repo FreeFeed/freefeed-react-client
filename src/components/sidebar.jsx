@@ -59,6 +59,9 @@ const SideBarSearch = ({ user }) => (
 
 const SideBarGroups = ({ recentGroups }) => (
   <div className='box'>
+    <div className="box-header-info">
+      <a href="https://davidmz.me/frfrfr/all-groups/">Show All</a>
+    </div>
     <div className='box-header-groups'>
       Groups
     </div>

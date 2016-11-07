@@ -447,12 +447,14 @@ export function postsViewState(state = {}, action) {
       return { ...state, [id]: { ...state[id], isError, errorString} };
     }
     case ActionTypes.TOGGLE_COMMENTING: {
-      return {...state,
-        [action.postId] : {
+      return {
+        ...state,
+        [action.postId]: {
           ...state[action.postId],
-          isCommenting:!state[action.postId].isCommenting,
-          newCommentText: state[action.postId].newCommentText || '' }
-        };
+          isCommenting: !state[action.postId].isCommenting,
+          newCommentText: state[action.postId].newCommentText || ''
+        }
+      };
     }
     case ActionTypes.UPDATE_COMMENTING_TEXT: {
       const postState = state[action.postId];
@@ -2028,5 +2030,17 @@ export function userViews(state = {}, action) {
     }
   }
 
+  return state;
+}
+
+export function realtimeSubscription(state = {type: null, id: null}, action) {
+  switch (action.type) {
+    case response(ActionTypes.REALTIME_SUBSCRIBE): {
+      return {...state, type: action.subsType, id: action.id};
+    }
+    case response(ActionTypes.REALTIME_UNSUBSCRIBE): {
+      return {...state, type: null, id: null};
+    }
+  }
   return state;
 }
