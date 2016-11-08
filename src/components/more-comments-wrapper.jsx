@@ -4,7 +4,7 @@ import throbber16 from '../../assets/images/throbber-16.gif';
 import {preventDefault} from '../utils';
 
 export default (props) => (
-  <div className="comment">
+  <div className="comment more-comments-wrapper">
     <span className="more-comments-throbber">
       {props.isLoading ? (
         <img width="16" height="16" src={throbber16}/>
