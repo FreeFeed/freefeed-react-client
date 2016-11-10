@@ -14,8 +14,8 @@ import UserName from './user-name';
 import PieceOfText from './piece-of-text';
 import Dropzone from './dropzone';
 import PostMoreMenu from './post-more-menu';
-import EmbedlyLink from './embedly-link';
 import TimeDisplay from './time-display';
+import LinkPreview from './link-preview/preview';
 
 export default class Post extends React.Component {
   constructor(props) {
@@ -305,7 +305,8 @@ export default class Post extends React.Component {
             removeAttachment={this.removeAttachment}/>
 
           {props.allowLinksPreview && noImageAttachments && linkToEmbed ? (
-            <EmbedlyLink link={linkToEmbed}/>) : false}
+            <div className="link-preview"><LinkPreview url={linkToEmbed}/></div>
+          ) : false}
 
           <div className="dropzone-previews"></div>
 
