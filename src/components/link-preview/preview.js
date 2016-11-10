@@ -1,10 +1,20 @@
 import React from 'react';
 
+import VideoPreview, {canShowURL as videoCanShowURL} from './video';
+import TwitterPreview, {canShowURL as twitterCanShowURL} from './twitter';
+import InstagramPreview, {canShowURL as instagramCanShowURL} from './instagram';
 import EmbedlyPreview from './embedly';
 
 export default function LinkPreview({url}) {
   if (noPreviewForURL(url)) {
     return false;
+  }
+  if (videoCanShowURL(url)) {
+    return <VideoPreview url={url} />;
+  } else if (twitterCanShowURL(url)) {
+    return <TwitterPreview url={url} />;
+  } else if (instagramCanShowURL(url)) {
+    return <InstagramPreview url={url} />;
   }
   return <EmbedlyPreview url={url} />;
 }
