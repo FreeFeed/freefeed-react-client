@@ -18,8 +18,7 @@ export function canShowURL(url) {
   return getVideoType(url) !== null;
 }
 
-@ScrollSafe({foldable: false, trackResize: false})
-export default class VideoPreview extends React.Component {
+class VideoPreview extends React.Component {
   static propTypes = {
     url: React.PropTypes.string.isRequired,
   };
@@ -84,6 +83,8 @@ export default class VideoPreview extends React.Component {
     );
   }
 }
+
+export default ScrollSafe(VideoPreview, {foldable: false, trackResize: false});
 
 // Helpers
 

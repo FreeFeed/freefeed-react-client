@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import ScrollSafe from './scroll-helpers/scroll-safe';
 
 
-@ScrollSafe
 class EmbedlyPreview extends React.Component {
   static propTypes = {
     url: React.PropTypes.string.isRequired,
@@ -54,4 +53,4 @@ function select(state) {
   };
 }
 
-export default connect(select)(EmbedlyPreview);
+export default ScrollSafe(connect(select)(EmbedlyPreview));

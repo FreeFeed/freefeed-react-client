@@ -9,8 +9,7 @@ export function canShowURL(url) {
   return TWEET_RE.test(url);
 }
 
-@ScrollSafe
-export default class TwitterPreview extends React.Component {
+class TwitterPreview extends React.Component {
   async componentDidMount() {
     await loadTwitterAPI();
     try {
@@ -24,6 +23,8 @@ export default class TwitterPreview extends React.Component {
     return <div className="tweet-preview" />;
   }
 }
+
+export default ScrollSafe(TwitterPreview);
 
 // Helpers
 

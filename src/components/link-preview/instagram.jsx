@@ -10,8 +10,7 @@ export function canShowURL(url) {
   return INSTAGRAM_RE.test(url);
 }
 
-@ScrollSafe({trackResize: false})
-export default class TwitterPreview extends React.Component {
+class InstagramPreview extends React.Component {
   componentDidMount() {
     startEventListening();
   }
@@ -30,6 +29,8 @@ export default class TwitterPreview extends React.Component {
     );
   }
 }
+
+export default ScrollSafe(InstagramPreview, {trackResize: false});
 
 const startEventListening = _.once(() => window.addEventListener("message", onMessage));
 
