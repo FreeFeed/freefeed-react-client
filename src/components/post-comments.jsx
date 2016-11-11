@@ -107,6 +107,12 @@ export default class PostComments extends React.Component {
     }
   }
 
+  componentWillReceiveProps(newProps) {
+    if (this.state.folded && newProps.post.omittedComments > 0) {
+      this.setState({folded: false});
+    }
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (this.state.folded && !prevState.folded) {
       const linkEl = this.rootEl.querySelector('.more-comments-wrapper');
