@@ -277,6 +277,10 @@ export function signUp({username, password, email, captcha}) {
   });
 }
 
+export function markAllDirectsAsRead() {
+  return fetch(`${apiConfig.host}/v2/users/markAllDirectsAsRead`, getRequestOptions());
+}
+
 export function updateUser({id, screenName, email, isPrivate, description}) {
   return fetch(`${apiConfig.host}/v1/users/${id}`, {
     'method': 'PUT',

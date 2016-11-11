@@ -344,7 +344,8 @@ export default class Post extends React.Component {
             showMoreComments={props.showMoreComments}
             commentEdit={props.commentEdit}
             entryUrl={`/${urlName}/${props.id}`}
-            highlightTerms={props.highlightTerms}/>
+            highlightTerms={props.highlightTerms}
+            isSinglePost={props.isSinglePost}/>
         </div>
       </div>
     ));

@@ -111,3 +111,24 @@
     background-color: #999;
   }
 }
+
+.fold-comments {
+  font-style: italic;
+  padding: 8px 0 0 19px;
+  i {
+    display: none;
+  }
+}
+
+.fold-comments-sticky {
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0 0px 4px 8px rgba(255, 255, 255, 0.9);
+  z-index: 1;
+  i {
+    display: block;
+    position: absolute;
+    left: 0px;
+    top: 9px;
+    opacity: 0.3;
+  }
+}
