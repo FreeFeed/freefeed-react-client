@@ -13,7 +13,7 @@ class UserFeed extends React.Component {
       return false;
     }
 
-    const {viewUser, visibleEntries, location: {query}} = this.props;
+    const {viewUser, visibleEntries, authenticated, location: {query}} = this.props;
     const isBlocked = viewUser.blocked;
     const isPrivate = viewUser.isPrivate === '1' && !viewUser.subscribed && !viewUser.isItMe;
     const amIBlocked = viewUser.isPrivate === '0' && viewUser.statistics.posts !== '0' && visibleEntries.length === 0 && (!('offset' in query) || query.offset === '0');
@@ -38,7 +38,7 @@ class UserFeed extends React.Component {
     if (amIBlocked) {
       return (
         <div className="box-body">
-          <p>Nothing to show here. Perhaps <b>{viewUser.screenName}</b> has blocked you.</p>
+          <p>Nothing to show here. Perhaps <b>{viewUser.screenName}</b> has not written any post yet{authenticated ? ' or he/she has blocked you' : ''}.</p>
         </div>
       );
     }
@@ -53,7 +53,8 @@ class UserFeed extends React.Component {
 
 function select(state) {
   return {
-    feedIsLoading: state.routeLoadingState
+    feedIsLoading: state.routeLoadingState,
+    authenticated: state.authenticated,
   };
 }
 
