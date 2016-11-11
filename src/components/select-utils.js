@@ -50,7 +50,10 @@ const commentHighlighter = ({commentsHighlights, user, postsViewState}, comments
 export const joinPostData = state => postId => {
   const post = state.posts[postId];
   if (!post) {
-    return;
+    if (typeof Raven !== 'undefined') {
+      Raven.captureMessage(`We've got a post that doesn't exists in store`, { extra: { postId }});
+    }
+    return {id: postId};
   }
   const user = state.user;
 
