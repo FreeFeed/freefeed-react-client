@@ -1309,6 +1309,10 @@ export function user(state = initUser(), action) {
         ]
       };
     }
+    case response(ActionTypes.DIRECTS_ALL_READ): {
+      return {...state, unreadDirectsNumber: 0 };
+    }
+
     case response(ActionTypes.BAN): {
       return {...state, banIds: [...state.banIds, action.request.id]};
     }

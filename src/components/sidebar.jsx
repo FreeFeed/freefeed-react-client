@@ -24,7 +24,7 @@ const LoggedInBlock = ({ user, signOut }) => (
   </div>
 );
 
-const SideBarFriends = () => (
+const SideBarFriends = ({ user }) => (
   <div className='box'>
     <div className='box-header-friends'>
       Friends
@@ -32,7 +32,15 @@ const SideBarFriends = () => (
     <div className='box-body'>
       <ul>
         <li className='p-home'><Link to='/'>Home</Link></li>
-        <li className='p-direct-messages'><Link to='/filter/direct'>Direct messages</Link></li>
+        {user.unreadDirectsNumber > 0 ? (
+          <li className='p-direct-messages'>
+            <Link to='/filter/direct' style={{fontWeight: 'bold'}}>
+              Direct messages ({user.unreadDirectsNumber})
+            </Link>
+          </li>
+        ) : (
+          <li className='p-direct-messages'><Link to='/filter/direct'>Direct messages</Link></li>
+        )}
         <li className='p-my-discussions'><Link to='/filter/discussions'>My discussions</Link></li>
       </ul>
     </div>
@@ -159,7 +167,7 @@ const SideBar = ({user, signOut, recentGroups}) => {
   return (
     <div className='col-md-3 sidebar'>
       <LoggedInBlock user={user} signOut={signOut} />
-      <SideBarFriends />
+      <SideBarFriends user={user} />
       <SideBarSearch user={user} />
       <SideBarGroups recentGroups={recentGroups} />
       <SideBarLinks />

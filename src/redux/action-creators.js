@@ -29,6 +29,13 @@ export function whoAmI() {
   };
 }
 
+export function markAllDirectsAsRead() {
+  return {
+    type: ActionTypes.DIRECTS_ALL_READ,
+    apiRequest: Api.markAllDirectsAsRead,
+  };
+}
+
 export function home(offset = 0) {
   return {
     type: ActionTypes.HOME,
