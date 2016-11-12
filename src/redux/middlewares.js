@@ -294,7 +294,9 @@ export const dataFixMiddleware = (/*store*/) => next => action => {
   if (
     action.type === response(ActionTypes.GET_USER_FEED) ||
     action.type === response(ActionTypes.GET_USER_COMMENTS) ||
-    action.type === response(ActionTypes.GET_USER_LIKES)
+    action.type === response(ActionTypes.GET_USER_LIKES) ||
+    action.type === response(ActionTypes.HOME) ||
+    action.type === response(ActionTypes.DIRECT)
   ) {
     action.payload.posts = action.payload.posts || [];
     action.payload.posts.forEach(fixPostsData);

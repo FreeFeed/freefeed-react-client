@@ -343,12 +343,13 @@ const mergeByIds = (state, array) => ({...state, ...indexById(array)});
 const initPostViewState = post => {
   const id = post.id;
 
+  const totalComments = post.comments.length + post.omittedComments;
   const omittedComments = post.omittedComments;
   const omittedLikes = post.omittedLikes;
   const isEditing = false;
   const editingText = post.body;
 
-  return { omittedComments, omittedLikes, id, isEditing, editingText, ...NO_ERROR };
+  return { totalComments, omittedComments, omittedLikes, id, isEditing, editingText, ...NO_ERROR };
 };
 
 export function postsViewState(state = {}, action) {
@@ -378,6 +379,16 @@ export function postsViewState(state = {}, action) {
     case response(ActionTypes.GET_SINGLE_POST): {
       const id = action.payload.posts.id;
       return { ...state, [id]: initPostViewState(action.payload.posts) };
+    }
+    case ActionTypes.FOLD_COMMENTS: {
+      const post = state[action.payload.postId];
+      const omittedComments = Math.max(0, post.totalComments - 2);
+      return {...state, [post.id]: {...post, omittedComments}};
+    }
+    case ActionTypes.UNFOLD_COMMENTS: {
+      const post = state[action.payload.postId];
+      const omittedComments = 0;
+      return {...state, [post.id]: {...post, omittedComments}};
     }
     case ActionTypes.REALTIME_POST_NEW:
     case ActionTypes.REALTIME_POST_UPDATE: {
@@ -810,6 +821,16 @@ export function posts(state = {}, action) {
           body: action.payload.posts.body,
           updatedAt: action.payload.posts.updatedAt,
           attachments: action.payload.posts.attachments || []
+        }
+      };
+    }
+    case ActionTypes.FOLD_COMMENTS: {
+      const post = state[action.payload.postId];
+      const totalComments = post.omittedComments + post.comments.length;
+      const omittedComments = Math.max(0, totalComments - 2);
+      return {...state,
+        [post.id]: {...post,
+          omittedComments,
         }
       };
     }

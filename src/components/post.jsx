@@ -342,6 +342,8 @@ export default class Post extends React.Component {
             addComment={props.addComment}
             toggleCommenting={props.toggleCommenting}
             showMoreComments={props.showMoreComments}
+            foldComments={props.foldComments}
+            unfoldComments={props.unfoldComments}
             commentEdit={props.commentEdit}
             entryUrl={`/${urlName}/${props.id}`}
             highlightTerms={props.highlightTerms}

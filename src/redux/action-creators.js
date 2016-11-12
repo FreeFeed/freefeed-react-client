@@ -78,6 +78,20 @@ export function showMoreComments(postId) {
   };
 }
 
+export function foldComments(postId) {
+  return {
+    type: ActionTypes.FOLD_COMMENTS,
+    payload: {postId},
+  };
+}
+
+export function unfoldComments(postId) {
+  return {
+    type: ActionTypes.UNFOLD_COMMENTS,
+    payload: {postId},
+  };
+}
+
 export function showMoreLikes(postId) {
   return {
     type: ActionTypes.SHOW_MORE_LIKES,
