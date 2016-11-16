@@ -28,6 +28,10 @@ export default () => (
         down the website on April 9, 2015, a small group of Russian-speaking
         FriendFeed users decided to build an open-source free-for-all replacement.</p>
 
+      <h3>FAQ</h3>
+
+      <p>FreeFeed <a href="https://wiki.freefeed.net/w/faq" target="_blank">frequently asked questions page</a>.</p>
+
       <h3>Help us build better FreeFeed</h3>
 
       <p>FreeFeed is an open-source project. We are <Link to="/dev">looking
