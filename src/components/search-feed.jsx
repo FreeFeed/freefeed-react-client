@@ -28,6 +28,7 @@ const FeedHandler = (props) => (
   <div className='box'>
     <div className='box-header-timeline'>
       {props.boxHeader}
+      <small> {'\u2014'} {props.visibleEntries.length > 20 ? '20+' : props.visibleEntries.length} {props.visibleEntries.length === 1 ? 'result' : 'results'}</small>
     </div>
     {props.visibleEntries.length ? <PaginatedView {...props}>
       <Feed {...props}/>
