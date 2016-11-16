@@ -1,9 +1,11 @@
 import React from 'react';
 import {Link} from 'react-router';
+import {connect} from 'react-redux';
+
 
 import screenshot from '../../assets/images/screenshot.png';
 
-export default () => (
+const About = ({ authenticated }) => (
   <div className="box">
     <div className="box-header-timeline"></div>
     <div className="box-body">
@@ -12,8 +14,10 @@ export default () => (
       <p>FreeFeed is a social network that enables you to discover and discuss
         the interesting stuff your friends find on the web.</p>
 
-      <p><b><Link to="/signup">Sign up</Link></b> now or <Link to="/signin">sign in</Link> if
-        you already have an account.</p>
+      {!authenticated ? (
+        <p><b><Link to="/signup">Sign up</Link></b> now or <Link to="/signin">sign in</Link> if
+          you already have an account.</p>
+      ) : false}
 
       <p><img src={screenshot} width="450" height="431" style={{border: '1px solid #ccc'}}/></p>
 
@@ -58,7 +62,17 @@ export default () => (
 
       <p>FreeFeed v.1 was released in August 2016.</p>
 
-      <p>You can <b><Link to="/signup">sign up</Link></b> now and join FreeFeed.</p>
+      {!authenticated ? (
+        <p>You can <b><Link to="/signup">sign up</Link></b> now and join FreeFeed.</p>
+      ) : false}
     </div>
   </div>
 );
+
+function mapStateToProps(state) {
+  return {
+    authenticated: state.authenticated
+  };
+}
+
+export default connect(mapStateToProps)(About);
