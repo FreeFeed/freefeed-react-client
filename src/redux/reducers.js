@@ -343,7 +343,8 @@ const mergeByIds = (state, array) => ({...state, ...indexById(array)});
 const initPostViewState = post => {
   const id = post.id;
 
-  const totalComments = post.comments.length + post.omittedComments;
+  const loadedCommentsLength = post.comments ? post.comments.length : 0;
+  const totalComments = loadedCommentsLength + post.omittedComments;
   const omittedComments = post.omittedComments;
   const omittedLikes = post.omittedLikes;
   const isEditing = false;
