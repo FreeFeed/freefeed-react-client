@@ -76,7 +76,6 @@ export default class UserSettingsForm extends React.Component {
           <label>
             <input type="checkbox" name="isVisibleToAnonymous" onChange={this.updateCheckedAnonymous} checked={this.props.isVisibleToAnonymous == '1'} disabled={disabledAnonymousCheckbox}/>
             Visible to anonymous users and search engines
-            <small> (only let people who are logged in see my feed)</small>
           </label>
         </div>
         <p>
