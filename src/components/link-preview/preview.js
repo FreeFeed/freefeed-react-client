@@ -5,7 +5,7 @@ import TwitterPreview, {canShowURL as twitterCanShowURL} from './twitter';
 import InstagramPreview, {canShowURL as instagramCanShowURL} from './instagram';
 import EmbedlyPreview from './embedly';
 
-export default function LinkPreview({url}) {
+export default function LinkPreview({ allowEmbedly, url }) {
   if (noPreviewForURL(url)) {
     return false;
   }
@@ -16,10 +16,16 @@ export default function LinkPreview({url}) {
   } else if (instagramCanShowURL(url)) {
     return <InstagramPreview url={url} />;
   }
-  return <EmbedlyPreview url={url} />;
+
+  if (allowEmbedly) {
+    return <EmbedlyPreview url={url} />;
+  }
+
+  return false;
 }
 
 LinkPreview.propTypes = {
+  allowEmbedly: React.PropTypes.bool.isRequired,
   url: React.PropTypes.string.isRequired,
 };
 

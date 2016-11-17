@@ -304,8 +304,8 @@ export default class Post extends React.Component {
             isSinglePost={props.isSinglePost}
             removeAttachment={this.removeAttachment}/>
 
-          {props.allowLinksPreview && noImageAttachments && linkToEmbed ? (
-            <div className="link-preview"><LinkPreview url={linkToEmbed}/></div>
+          {noImageAttachments && linkToEmbed ? (
+            <div className="link-preview"><LinkPreview url={linkToEmbed} allowEmbedly={props.allowLinksPreview} /></div>
           ) : false}
 
           <div className="dropzone-previews"></div>
