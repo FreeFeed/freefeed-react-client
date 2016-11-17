@@ -6,7 +6,7 @@ import {
   ban, unban,
 
   // Post actions
-  showMoreComments, showMoreLikes,
+  showMoreComments, foldComments, unfoldComments, showMoreLikes,
   addAttachmentResponse, removeAttachment,
   likePost, unlikePost,
   hidePost, unhidePost,
@@ -58,7 +58,7 @@ export const joinPostData = state => postId => {
   const postViewState = state.postsViewState[post.id];
   const omitRepeatedBubbles = state.user.frontendPreferences.comments.omitRepeatedBubbles;
   const highlightComment = commentHighlighter(state, postId, post.comments);
-  let comments = (post.comments || []).reduce((_comments, commentId, index) => {
+  const comments = (post.comments || []).reduce((_comments, commentId, index) => {
     const comment = state.comments[commentId];
     if (!comment) {
       return _comments;
@@ -81,10 +81,6 @@ export const joinPostData = state => postId => {
     const highlighted = highlightComment(commentId, author);
     return _comments.concat([{ ...comment, ...commentViewState, user: author, isEditable, isDeletable, omitBubble, highlighted }]);
   }, []);
-
-  if (postViewState.omittedComments !== 0 && comments.length > 2) {
-    comments = [ comments[0], comments[comments.length - 1] ];
-  }
 
   let usersLikedPost = (post.likes || []).map(userId => state.users[userId]);
 
@@ -148,6 +144,8 @@ export function joinCreatePostData(state) {
 export function postActions(dispatch) {
   return {
     showMoreComments: (postId) => dispatch(showMoreComments(postId)),
+    foldComments: (postId) => dispatch(foldComments(postId)),
+    unfoldComments: (postId) => dispatch(unfoldComments(postId)),
     showMoreLikes: (postId) => dispatch(showMoreLikes(postId)),
     toggleEditingPost: (postId, newValue) => dispatch(toggleEditingPost(postId, newValue)),
     cancelEditingPost: (postId, newValue) => dispatch(cancelEditingPost(postId, newValue)),

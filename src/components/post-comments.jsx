@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {StickyContainer, Sticky} from 'react-sticky';
 import _ from 'lodash';
 
@@ -11,15 +10,10 @@ const minCommentsToFold = 12;
 
 export default class PostComments extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.addingCommentForm = null;
-    this.rootEl = null;
-    this.state = {
-      // true if user manually fold expanded comments
-      folded: false,
-    };
-  }
+  addingCommentForm = null;
+  root = null;
+
+  setRoot = el => this.root = el;
 
   openAnsweringComment = (answerText) => {
     const {post, toggleCommenting, updateCommentingText} = this.props;
@@ -86,7 +80,7 @@ export default class PostComments extends React.Component {
       <PostComment
         key={comment.id}
         {...comment}
-        omitBubble={comment.omitBubble && !this.state.folded}
+        omitBubble={comment.omitBubble}
         entryUrl={props.entryUrl}
         openAnsweringComment={this.openAnsweringComment}
         isModeratingComments={props.post.isModeratingComments}
@@ -97,42 +91,39 @@ export default class PostComments extends React.Component {
     );
   }
 
-  fold = () => this.setState({folded: true})
+  foldComments = () => this.props.foldComments(this.props.post.id);
 
   showMoreComments = () => {
-    if (this.state.folded) {
-      this.setState({folded: false});
-    } else {
-      this.props.showMoreComments(this.props.post.id);
-    }
-  }
+    const {
+      post: {id, totalComments},
+      comments,
+      showMoreComments,
+      unfoldComments,
+    } = this.props;
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.folded && !prevState.folded) {
-      const linkEl = this.rootEl.querySelector('.more-comments-wrapper');
-      const top = linkEl.getBoundingClientRect().top - 8;
-      if (top < 0) {
-        window.scrollBy(0, top);
-      }
+    if (comments.length !== totalComments) {
+      showMoreComments(id);
+    } else {
+      unfoldComments(id);
     }
   }
 
   renderMiddle() {
     const {post, comments, entryUrl, isSinglePost} = this.props;
-    const {folded} = this.state;
 
-    const totalComments = comments.length + post.omittedComments;
-    const foldedCount = folded ? comments.length - 2 : post.omittedComments;
+    const middleComments = comments.slice(1, comments.length - 1).map((c, i) => this.renderComment(withBackwardNumber(c, post.totalComments - i - 1)));
 
-    const showExpand = !isSinglePost && (folded || post.omittedComments > 0);
-    const showFold = !isSinglePost && !showExpand && totalComments >= minCommentsToFold;
+    if (isSinglePost) {
+      return middleComments;
+    }
 
-    const middleComments = folded ? [] : comments.slice(1, comments.length - 1).map((c, i) => this.renderComment(withBackwardNumber(c, totalComments - i - 1)));
+    const showExpand = post.omittedComments > 0;
+    const showFold = !showExpand && post.totalComments >= minCommentsToFold;
 
     if (showExpand) {
       return (
         <MoreCommentsWrapper
-          omittedComments={foldedCount}
+          omittedComments={post.omittedComments}
           showMoreComments={this.showMoreComments}
           entryUrl={entryUrl}
           isLoading={post.isLoadingComments}/>
@@ -144,7 +135,7 @@ export default class PostComments extends React.Component {
         <StickyContainer>
           <Sticky stickyClassName="fold-comments-sticky" className="fold-comments">
             <i className="fa fa-chevron-up"/>
-            <a onClick={this.fold}>Fold comments</a>
+            <a onClick={this.foldComments}>Fold comments</a>
           </Sticky>
           {middleComments}
         </StickyContainer>
@@ -152,6 +143,17 @@ export default class PostComments extends React.Component {
     }
 
     return middleComments;
+  }
+
+  componentDidUpdate(prevProps) {
+    // if comments was folded, scroll page to the 'more' link
+    if (prevProps.post.omittedComments === 0 && this.props.post.omittedComments !== 0) {
+      const linkEl = this.root.querySelector('.more-comments-wrapper');
+      const top = linkEl.getBoundingClientRect().top - 8;
+      if (top < 0) {
+        window.scrollBy(0, top);
+      }
+    }
   }
 
   render() {
@@ -162,7 +164,7 @@ export default class PostComments extends React.Component {
     const canAddComment = (!post.commentsDisabled || post.isEditable);
 
     return (
-      <div className="comments" ref={(el) => this.rootEl = el ? ReactDOM.findDOMNode(el) : null}>
+      <div className="comments" ref={this.setRoot}>
         {first ? this.renderComment(first) : false}
         {this.renderMiddle()}
         {last ? this.renderComment(last) : false}

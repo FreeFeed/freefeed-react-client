@@ -21,6 +21,8 @@ const SinglePostHandler = (props) => {
         isSinglePost={true}
         user={props.user}
         showMoreComments={props.showMoreComments}
+        foldComments={props.foldComments}
+        unfoldComments={props.unfoldComments}
         showMoreLikes={props.showMoreLikes}
         toggleEditingPost={props.toggleEditingPost}
         cancelEditingPost={props.cancelEditingPost}
