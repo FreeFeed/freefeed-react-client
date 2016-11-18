@@ -31,13 +31,15 @@ export default class FoldableContent extends React.Component {
 
   setContent = (el) => {
     if (el) {
-      el.addEventListener(ELEMENT_RESIZE_EVENT, this.updateHeight);
+      this.content = el;
+      this.content.addEventListener(ELEMENT_RESIZE_EVENT, this.updateHeight);
       window.addEventListener('resize', this.updateHeight);
+      this.updateHeight(); // initial height
     } else if (this.content) {
       this.content.removeEventListener(ELEMENT_RESIZE_EVENT, this.updateHeight);
       window.removeEventListener('resize', this.updateHeight);
+      this.content = null;
     }
-    this.content = el;
   };
 
   render() {
