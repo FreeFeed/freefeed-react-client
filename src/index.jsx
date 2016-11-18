@@ -43,7 +43,17 @@ const store = configureStore();
 
 //request main info for user
 if (store.getState().authenticated) {
-  store.dispatch(ActionCreators.whoAmI());
+  let delay = 0;
+
+  // Defer the whoami request to let the feed load first, if we have a cached copy of whoami already
+  if (store.getState().user.screenName) {
+    delay = 200;
+  }
+
+  setTimeout(function() {
+    store.dispatch(ActionCreators.whoAmI());
+  }, delay);
+
   store.dispatch(ActionCreators.managedGroups());
 } else {
   // just commented for develop sign up form
