@@ -11,8 +11,13 @@ export function canShowURL(url) {
 }
 
 class InstagramPreview extends React.Component {
+  iframe = null;
+  setIframe = el => this.iframe = el;
+
   componentDidMount() {
     startEventListening();
+    // set default frame height
+    this.iframe.style.height = (470 / 400 * this.iframe.offsetWidth) + 'px';
   }
 
   render() {
@@ -20,6 +25,7 @@ class InstagramPreview extends React.Component {
     return (
       <div className="instagram-preview">
         <iframe
+          ref={this.setIframe}
           src={`https://www.instagram.com/p/${id}/embed/captioned/`}
           frameBorder="0"
           scrolling="no"
