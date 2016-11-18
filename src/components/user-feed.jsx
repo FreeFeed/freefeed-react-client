@@ -38,7 +38,7 @@ class UserFeed extends React.Component {
     if (amIBlocked) {
       return (
         <div className="box-body">
-          <p>Nothing to show here. Perhaps <b>{viewUser.screenName}</b> has not written any post yet{authenticated ? ' or he/she has blocked you' : ''}.</p>
+          <p>Nothing to show here. Perhaps <b>{viewUser.screenName}</b> has not written any posts yet{authenticated ? ' or they have blocked you' : ''}.</p>
         </div>
       );
     }
