@@ -58,7 +58,7 @@ class UserName extends React.Component {
     this.setState({isHovered: true});
 
     this.cardTimeout = setTimeout(() => {
-      if (this.props.me && this.state.isHovered) { // don't show the card for anonymous users
+      if (this.state.isHovered) {
         this.setState({isCardOpen: true});
       }
     }, 500);

@@ -84,7 +84,9 @@ class UserCard extends React.Component {
           </div>
         </div>
 
-        {props.blocked ? (
+        {!props.me.id ? (
+          false
+        ) : props.blocked ? (
           <div className="user-card-actions">
             <span>Blocked user - </span>
             <a onClick={()=>props.unban({username: props.user.username, id: props.user.id})}>Un-block</a>
