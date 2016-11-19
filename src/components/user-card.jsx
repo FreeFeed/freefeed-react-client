@@ -54,6 +54,30 @@ class UserCard extends React.Component {
       );
     }
 
+    let accountTypeMessage, accountTypeIcon;
+
+    if (props.user.type === 'user') {
+      if (props.user.isPrivate === '1') {
+        accountTypeMessage = 'Private feed';
+        accountTypeIcon = <i className="fa fa-lock"></i>;
+      } else if (props.user.isVisibleToAnonymous === '0') {
+        accountTypeMessage = 'Protected feed';
+        accountTypeIcon = <i className="fa fa-shield"></i>;
+      } else {
+        accountTypeMessage = 'Public feed';
+      }
+    } else if (props.user.type === 'group') {
+      if (props.user.isPrivate === '1') {
+        accountTypeMessage = 'Private group';
+        accountTypeIcon = <i className="fa fa-lock"></i>;
+      } else {
+        accountTypeMessage = 'Public group';
+      }
+    }
+    if (props.isItMe) {
+      accountTypeMessage = 'It\u2019s you!';
+    }
+
     return (
       <div className="user-card">
         <div className="user-card-info">
@@ -63,28 +87,21 @@ class UserCard extends React.Component {
 
           <div className="names">
             <Link to={`/${props.user.username}`} className="display-name" dir="auto">{props.user.screenName}</Link><br/>
-
             {props.user.screenName !== props.user.username ? (
               <span className="username">@{props.user.username}</span>
             ) : false}
           </div>
 
           <div className="description">
-            {props.isItMe ? (
-              'It\u2019s you!'
-            ) : props.user.type === 'user' && props.user.isPrivate === '1' ? (
-              'Private feed'
-            ) : props.user.type === 'user' && props.user.isPrivate === '0' ? (
-              'Public feed'
-            ) : props.user.type === 'group' && props.user.isPrivate === '1' ? (
-              'Private group'
-            ) : props.user.type === 'group' && props.user.isPrivate === '0' ? (
-              'Public group'
-            ) : false}
+            {accountTypeIcon}
+            {' '}
+            {accountTypeMessage}
           </div>
         </div>
 
-        {props.blocked ? (
+        {!props.me.id ? (
+          false
+        ) : props.blocked ? (
           <div className="user-card-actions">
             <span>Blocked user - </span>
             <a onClick={()=>props.unban({username: props.user.username, id: props.user.id})}>Un-block</a>
