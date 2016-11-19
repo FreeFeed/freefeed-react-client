@@ -26,8 +26,8 @@ export default class UserSettingsForm extends React.Component {
     }
   }
 
-  updateCheckedAnonymous = (e) => {
-    this.props.userSettingsChange({isVisibleToAnonymous: e.target.checked ? '1' : '0'});
+  updateCheckedProtected = (e) => {
+    this.props.userSettingsChange({isVisibleToAnonymous: e.target.checked ? '0' : '1'});
   }
 
   updateUser = () => {
@@ -68,14 +68,17 @@ export default class UserSettingsForm extends React.Component {
         <div className="checkbox">
           <label>
             <input type="checkbox" name="isPrivate" checked={this.props.isPrivate == '1'} onChange={this.updateCheckedPrivate}/>
+            <i className="fa fa-lock"></i>{' '}
             Private feed
             <small> (only let people you approve see your feed)</small>
           </label>
         </div>
         <div className={'checkbox' + (disabledAnonymousCheckbox ? ' checkbox-disabled' : '')}>
           <label>
-            <input type="checkbox" name="isVisibleToAnonymous" onChange={this.updateCheckedAnonymous} checked={this.props.isVisibleToAnonymous == '1'} disabled={disabledAnonymousCheckbox}/>
-            Visible to anonymous users and search engines
+            <input type="checkbox" name="isProtected" onChange={this.updateCheckedProtected} checked={this.props.isVisibleToAnonymous === '0'} disabled={disabledAnonymousCheckbox}/>
+            <i className="fa fa-shield"></i>{' '}
+            Protected feed
+            <small> (not visible to anonymous users and search engines)</small>
           </label>
         </div>
         <p>

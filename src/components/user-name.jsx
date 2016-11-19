@@ -49,10 +49,15 @@ class UserName extends React.Component {
     };
   }
 
+  componentWillUnmount() {
+    this.cardTimeout && clearTimeout(this.cardTimeout);
+    this.cardTimeout = false;
+  }
+
   enterUserName() {
     this.setState({isHovered: true});
 
-    setTimeout(() => {
+    this.cardTimeout = setTimeout(() => {
       if (this.state.isHovered) {
         this.setState({isCardOpen: true});
       }
