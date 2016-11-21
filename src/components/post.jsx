@@ -14,8 +14,8 @@ import UserName from './user-name';
 import PieceOfText from './piece-of-text';
 import Dropzone from './dropzone';
 import PostMoreMenu from './post-more-menu';
-import EmbedlyLink from './embedly-link';
 import TimeDisplay from './time-display';
+import LinkPreview from './link-preview/preview';
 
 export default class Post extends React.Component {
   constructor(props) {
@@ -153,37 +153,41 @@ export default class Post extends React.Component {
     ));
     const isReallyPrivate = (publicRecipients.length === 0);
 
+    const amIAuthenticated = !!props.user.id;
     // "Comments disabled" / "Comment"
     let commentLink;
-    if (props.commentsDisabled) {
-      if (props.isEditable) {
-        commentLink = (
-          <span>
-            {' - '}
-            <i>Comments disabled (not for you)</i>
-            {' - '}
-            <a onClick={toggleCommenting}>Comment</a>
-          </span>
-        );
+    if (amIAuthenticated) {
+      if (props.commentsDisabled) {
+        if (props.isEditable) {
+          commentLink = (
+            <span>
+              {' - '}
+              <i>Comments disabled (not for you)</i>
+              {' - '}
+              <a onClick={toggleCommenting}>Comment</a>
+            </span>
+          );
+        } else {
+          commentLink = (
+            <span>
+              {' - '}
+              <i>Comments disabled</i>
+            </span>
+          );
+        }
       } else {
         commentLink = (
           <span>
             {' - '}
-            <i>Comments disabled</i>
+            <a onClick={toggleCommenting}>Comment</a>
           </span>
         );
       }
-    } else {
-      commentLink = (
-        <span>
-          {' - '}
-          <a onClick={toggleCommenting}>Comment</a>
-        </span>
-      );
+    } else { // don't show comment link to anonymous users
+      commentLink = false;
     }
 
     // "Like" / "Un-like"
-    const amIAuthenticated = !!props.user.id;
     const didILikePost = _.find(props.usersLikedPost, {id: props.user.id});
     const likeLink = (amIAuthenticated && !props.isEditable ? (
       <span>
@@ -304,8 +308,9 @@ export default class Post extends React.Component {
             isSinglePost={props.isSinglePost}
             removeAttachment={this.removeAttachment}/>
 
-          {props.allowLinksPreview && noImageAttachments && linkToEmbed ? (
-            <EmbedlyLink link={linkToEmbed}/>) : false}
+          {noImageAttachments && linkToEmbed ? (
+            <div className="link-preview"><LinkPreview url={linkToEmbed} allowEmbedly={props.allowLinksPreview} /></div>
+          ) : false}
 
           <div className="dropzone-previews"></div>
 

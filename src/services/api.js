@@ -281,7 +281,7 @@ export function markAllDirectsAsRead() {
   return fetch(`${apiConfig.host}/v2/users/markAllDirectsAsRead`, getRequestOptions());
 }
 
-export function updateUser({id, screenName, email, isPrivate, description}) {
+export function updateUser({id, screenName, email, isPrivate, isVisibleToAnonymous, description}) {
   return fetch(`${apiConfig.host}/v1/users/${id}`, {
     'method': 'PUT',
     'headers': {
@@ -289,7 +289,7 @@ export function updateUser({id, screenName, email, isPrivate, description}) {
       'Content-Type': 'application/json',
       'X-Authentication-Token': getToken()
     },
-    'body': JSON.stringify({user: {screenName, email, isPrivate, description}})
+    'body': JSON.stringify({user: {screenName, email, isPrivate, isVisibleToAnonymous, description}})
   });
 }
 

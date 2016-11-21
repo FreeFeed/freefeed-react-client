@@ -133,7 +133,7 @@ export default class UserFrontendPreferencesForm extends React.Component {
         <div className="checkbox">
           <label>
             <input type="checkbox" name="bubbles" value="1" checked={this.state.allowLinksPreview} onChange={this.changeAllowLinksPreview}/>
-              Show preview for links in post. Link should start with http(s)://, post should have no attached images. If you don't want to have link preview, add ! before a link without spaces.
+              Show advanced previews of links in posts (Embedly). Link should start with http(s)://, post should have no attached images. If you don't want to have link preview, add ! before a link without spaces.
           </label>
         </div>
 

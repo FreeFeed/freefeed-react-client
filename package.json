@@ -1,6 +1,6 @@
 {
   "name": "reactive-pepyatka",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
@@ -9,6 +9,7 @@
     "babel-polyfill": "^6.0.16",
     "babel-runtime": "^5.8.25",
     "classnames": "^2.2.0",
+    "custom-event": "^1.0.1",
     "ff-url-finder": "~2.3.2",
     "history": "^2.0.0",
     "isomorphic-fetch": "^2.1.1",

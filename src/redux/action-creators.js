@@ -359,11 +359,11 @@ export function signUpEmpty(errorMessage) {
   };
 }
 
-export function updateUser(id, screenName, email, isPrivate, description) {
+export function updateUser(id, screenName, email, isPrivate, isVisibleToAnonymous, description) {
   return {
     type: ActionTypes.UPDATE_USER,
     apiRequest: Api.updateUser,
-    payload: {id, screenName, email, isPrivate, description},
+    payload: {id, screenName, email, isPrivate, isVisibleToAnonymous, description},
   };
 }
 

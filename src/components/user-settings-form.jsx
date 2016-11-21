@@ -5,15 +5,34 @@ import throbber16 from '../../assets/images/throbber-16.gif';
 import {preventDefault} from '../utils';
 
 export default class UserSettingsForm extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.props.userSettingsChange({
+      isPrivate: this.props.user.isPrivate,
+      isVisibleToAnonymous: this.props.user.isVisibleToAnonymous
+    });
+  }
+
   updateSetting = (setting) => (e) => {
     this.props.userSettingsChange({[setting]: e.target.value});
   }
-  updateChecked = (e) => {
+
+  updateCheckedPrivate = (e) => {
     this.props.userSettingsChange({isPrivate: e.target.checked ? '1' : '0'});
+    if (e.target.checked) {
+      this.props.userSettingsChange({isVisibleToAnonymous: '0'}); // private users must not be visible to anonymous
+    }
   }
+
+  updateCheckedAnonymous = (e) => {
+    this.props.userSettingsChange({isVisibleToAnonymous: e.target.checked ? '1' : '0'});
+  }
+
   updateUser = () => {
     if (!this.props.isSaving) {
-      this.props.updateUser(this.props.user.id, this.props.screenName, this.props.email, this.props.isPrivate, this.props.description);
+      this.props.updateUser(this.props.user.id, this.props.screenName, this.props.email, this.props.isPrivate, this.props.isVisibleToAnonymous, this.props.description);
     }
   }
 
@@ -24,6 +43,8 @@ export default class UserSettingsForm extends React.Component {
       'has-error': this.props.screenName && (this.props.screenName.length < 3 || this.props.screenName.length > 25),
       'has-success': this.props.screenName && (this.props.screenName.length >= 3 && this.props.screenName.length <= 25)
     });
+
+    const disabledAnonymousCheckbox = this.props.isPrivate == '1';
 
     return (
       <form onSubmit={preventDefault(this.updateUser)}>
@@ -46,9 +67,15 @@ export default class UserSettingsForm extends React.Component {
         </div>
         <div className="checkbox">
           <label>
-            <input type="checkbox" name="isPrivate" defaultChecked={this.props.user.isPrivate == '1'} onChange={this.updateChecked}/>
+            <input type="checkbox" name="isPrivate" checked={this.props.isPrivate == '1'} onChange={this.updateCheckedPrivate}/>
             Private feed
-            <small> (only let people I approve see my feed)</small>
+            <small> (only let people you approve see your feed)</small>
+          </label>
+        </div>
+        <div className={'checkbox' + (disabledAnonymousCheckbox ? ' checkbox-disabled' : '')}>
+          <label>
+            <input type="checkbox" name="isVisibleToAnonymous" onChange={this.updateCheckedAnonymous} checked={this.props.isVisibleToAnonymous == '1'} disabled={disabledAnonymousCheckbox}/>
+            Visible to anonymous users and search engines
           </label>
         </div>
         <p>

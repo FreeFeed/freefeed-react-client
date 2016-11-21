@@ -73,12 +73,12 @@ function selectState(state) {
   const regularGroups = _.filter(state.groups, group => managedIds.indexOf(group.id) === -1);
 
   const myGroups = {
-    header: 'Groups I admin',
+    header: 'Groups you admin',
     users: _.sortBy(adminGroups, sortingRule)
   };
 
   const groupsIAmIn = {
-    header: 'Groups i\'m in',
+    header: 'Groups you are in',
     users: _.sortBy(regularGroups, sortingRule)
   };
 
