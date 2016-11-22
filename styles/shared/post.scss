@@ -270,7 +270,12 @@
     .preview-expand { 
       margin-top: 8px; 
       & > .fa { 
-        opacity: 0.5; 
+        opacity: 0.5;
+        cursor: pointer;
+
+        &:hover {
+          opacity: 1;
+        } 
       } 
     }
   }

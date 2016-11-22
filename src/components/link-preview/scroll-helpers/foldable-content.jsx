@@ -56,7 +56,7 @@ export default class FoldableContent extends React.Component {
         </div>
         {foldNeeded ? (
           <div className="preview-expand">
-            <i className={`fa fa-${this.state.expanded ? 'minus' : 'plus'}-square-o`}/>
+            <i onClick={this.toggleFold} className={`fa fa-${this.state.expanded ? 'minus' : 'plus'}-square-o`}/>
             {' '}
             <a onClick={this.toggleFold}>{this.state.expanded ? 'Fold' : 'Expand'} preview</a>
           </div>
