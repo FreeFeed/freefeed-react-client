@@ -34,7 +34,7 @@ const About = ({ authenticated }) => (
 
       <h3>FAQ</h3>
 
-      <p>FreeFeed <a href="https://wiki.freefeed.net/w/faq" target="_blank">frequently asked questions page</a>.</p>
+      <p>FreeFeed <a href="https://dev.freefeed.net/w/faq" target="_blank">frequently asked questions page</a>.</p>
 
       <h3>Help us build better FreeFeed</h3>
 
