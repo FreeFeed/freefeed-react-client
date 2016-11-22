@@ -122,3 +122,26 @@ export function getFirstLinkToEmbed(text) {
 export function delay(timeout = 0) {
   return new Promise(resolve => setTimeout(resolve, timeout));
 }
+
+
+// detect if localStorage is supported by attempting to set and delete an item
+// if it throws, then no localStorage for us (and we are most probably a Safari
+// in private browsing mode)
+let localStorageSupported = true;
+try {
+  const lskey = 'ff' + new Date().getTime();
+  window.localStorage.setItem(lskey, 'test');
+  window.localStorage.removeItem(lskey);
+} catch (err) {
+  localStorageSupported = false;
+}
+
+const localStorageShim = {
+  _data: {},
+  setItem: function(id, val) { return this._data[id] = String(val); },
+  getItem: function(id) { return this._data.hasOwnProperty(id) ? this._data[id] : null; },
+  removeItem: function(id) { return delete this._data[id]; },
+  clear: function() { return this._data = {}; }
+};
+
+export const localStorage = localStorageSupported ? window.localStorage : localStorageShim;
