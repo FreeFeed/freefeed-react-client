@@ -11,7 +11,7 @@ export default class UserSettingsForm extends React.Component {
 
     this.props.userSettingsChange({
       isPrivate: this.props.user.isPrivate,
-      isVisibleToAnonymous: this.props.user.isVisibleToAnonymous
+      isProtected: this.props.user.isProtected
     });
   }
 
@@ -22,17 +22,17 @@ export default class UserSettingsForm extends React.Component {
   updateCheckedPrivate = (e) => {
     this.props.userSettingsChange({isPrivate: e.target.checked ? '1' : '0'});
     if (e.target.checked) {
-      this.props.userSettingsChange({isVisibleToAnonymous: '0'}); // private users must not be visible to anonymous
+      this.props.userSettingsChange({isProtected: '1'}); // private users must not be visible to anonymous
     }
   }
 
-  updateCheckedAnonymous = (e) => {
-    this.props.userSettingsChange({isVisibleToAnonymous: e.target.checked ? '1' : '0'});
+  updateCheckedProtected = (e) => {
+    this.props.userSettingsChange({isProtected: e.target.checked ? '1' : '0'});
   }
 
   updateUser = () => {
     if (!this.props.isSaving) {
-      this.props.updateUser(this.props.user.id, this.props.screenName, this.props.email, this.props.isPrivate, this.props.isVisibleToAnonymous, this.props.description);
+      this.props.updateUser(this.props.user.id, this.props.screenName, this.props.email, this.props.isPrivate, this.props.isProtected, this.props.description);
     }
   }
 
@@ -44,7 +44,7 @@ export default class UserSettingsForm extends React.Component {
       'has-success': this.props.screenName && (this.props.screenName.length >= 3 && this.props.screenName.length <= 25)
     });
 
-    const disabledAnonymousCheckbox = this.props.isPrivate == '1';
+    const disabledProtectedCheckbox = this.props.isPrivate == '1';
 
     return (
       <form onSubmit={preventDefault(this.updateUser)}>
@@ -72,10 +72,10 @@ export default class UserSettingsForm extends React.Component {
             <small> (only let people you approve see your feed)</small>
           </label>
         </div>
-        <div className={'checkbox' + (disabledAnonymousCheckbox ? ' checkbox-disabled' : '')}>
+        <div className={'checkbox' + (disabledProtectedCheckbox ? ' checkbox-disabled' : '')}>
           <label>
-            <input type="checkbox" name="isVisibleToAnonymous" onChange={this.updateCheckedAnonymous} checked={this.props.isVisibleToAnonymous == '1'} disabled={disabledAnonymousCheckbox}/>
-            Visible to anonymous users and search engines
+            <input type="checkbox" name="isProtected" onChange={this.updateCheckedProtected} checked={this.props.isProtected == '1'} disabled={disabledProtectedCheckbox}/>
+            Hide from anonymous users and search engines
           </label>
         </div>
         <p>
