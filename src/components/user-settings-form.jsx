@@ -4,6 +4,11 @@ import classnames from 'classnames';
 import throbber16 from '../../assets/images/throbber-16.gif';
 import {preventDefault} from '../utils';
 
+const
+  PUBLIC_FEED = 'PUBLIC',
+  PROTECTED_FEED = 'PROTECTED',
+  PRIVATE_FEED = 'PRIVATE';
+
 export default class UserSettingsForm extends React.Component {
 
   constructor(props) {
@@ -19,16 +24,15 @@ export default class UserSettingsForm extends React.Component {
     this.props.userSettingsChange({[setting]: e.target.value});
   }
 
-  updateCheckedPrivate = (e) => {
-    this.props.userSettingsChange({isPrivate: e.target.checked ? '1' : '0'});
-    if (e.target.checked) {
-      this.props.userSettingsChange({isProtected: '1'}); // private users must not be visible to anonymous
+  updatePrivacy = (e) => {
+    if (e.target.value === PUBLIC_FEED) {
+      this.props.userSettingsChange({isProtected: '0', isPrivate: '0'});
+    } else if (e.target.value === PROTECTED_FEED) {
+      this.props.userSettingsChange({isProtected: '1', isPrivate: '0'});
+    } else if (e.target.value === PRIVATE_FEED) {
+      this.props.userSettingsChange({isProtected: '1', isPrivate: '1'});
     }
-  }
-
-  updateCheckedProtected = (e) => {
-    this.props.userSettingsChange({isProtected: e.target.checked ? '1' : '0'});
-  }
+  };
 
   updateUser = () => {
     if (!this.props.isSaving) {
@@ -44,7 +48,14 @@ export default class UserSettingsForm extends React.Component {
       'has-success': this.props.screenName && (this.props.screenName.length >= 3 && this.props.screenName.length <= 25)
     });
 
-    const disabledProtectedCheckbox = this.props.isPrivate == '1';
+    let feedPrivacy;
+    if (this.props.isPrivate === '1') {
+      feedPrivacy = PRIVATE_FEED;
+    } else if (this.props.isProtected === '1') {
+      feedPrivacy = PROTECTED_FEED;
+    } else {
+      feedPrivacy = PUBLIC_FEED;
+    }
 
     return (
       <form onSubmit={preventDefault(this.updateUser)}>
@@ -65,18 +76,43 @@ export default class UserSettingsForm extends React.Component {
           <label htmlFor="description-textarea">Description:</label>
           <textarea id="description-textarea" className="form-control" name="description" defaultValue={this.props.user.description} onChange={this.updateSetting('description')} maxLength="1500"/>
         </div>
-        <div className="checkbox">
-          <label>
-            <input type="checkbox" name="isPrivate" checked={this.props.isPrivate == '1'} onChange={this.updateCheckedPrivate}/>
-            Private feed
-            <small> (only let people you approve see your feed)</small>
-          </label>
-        </div>
-        <div className={'checkbox' + (disabledProtectedCheckbox ? ' checkbox-disabled' : '')}>
-          <label>
-            <input type="checkbox" name="isProtected" onChange={this.updateCheckedProtected} checked={this.props.isProtected == '1'} disabled={disabledProtectedCheckbox}/>
-            Hide from anonymous users and search engines
-          </label>
+        <div className="form-group">
+          <p>
+          Your feed is:
+          </p>
+          <div className="radio">
+            <label>
+              <input
+                type="radio"
+                name="privacy"
+                value={PUBLIC_FEED}
+                checked={feedPrivacy === PUBLIC_FEED}
+                onChange={this.updatePrivacy}/>
+              Public &mdash; anyone can see your posts
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <input
+                type="radio"
+                name="privacy"
+                value={PROTECTED_FEED}
+                checked={feedPrivacy === PROTECTED_FEED}
+                onChange={this.updatePrivacy}/>
+              Protected &mdash; anonymous users and search engines cannot see your posts
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <input
+                type="radio"
+                name="privacy"
+                value={PRIVATE_FEED}
+                checked={feedPrivacy === PRIVATE_FEED}
+                onChange={this.updatePrivacy}/>
+              Private &mdash; only people you approve can see your posts
+            </label>
+          </div>
         </div>
         <p>
           <button className="btn btn-default" type="submit">Update</button>
