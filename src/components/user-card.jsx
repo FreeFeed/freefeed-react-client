@@ -54,6 +54,20 @@ class UserCard extends React.Component {
       );
     }
 
+    let description;
+    if (props.isItMe) {
+      description = 'It\u2019s you!';
+    } else {
+      if (props.user.isPrivate === '1') {
+        description = 'Private';
+      } else if (props.user.isProtected === '1') {
+        description = 'Protected';
+      } else {
+        description = 'Public';
+      }
+      description = description + ' ' + (props.user.type === 'user' ? 'user' : 'group');
+    }
+
     return (
       <div className="user-card">
         <div className="user-card-info">
@@ -69,19 +83,7 @@ class UserCard extends React.Component {
             ) : false}
           </div>
 
-          <div className="description">
-            {props.isItMe ? (
-              'It\u2019s you!'
-            ) : props.user.type === 'user' && props.user.isPrivate === '1' ? (
-              'Private feed'
-            ) : props.user.type === 'user' && props.user.isPrivate === '0' ? (
-              'Public feed'
-            ) : props.user.type === 'group' && props.user.isPrivate === '1' ? (
-              'Private group'
-            ) : props.user.type === 'group' && props.user.isPrivate === '0' ? (
-              'Public group'
-            ) : false}
-          </div>
+          <div className="description">{description}</div>
         </div>
 
         {props.blocked ? (
