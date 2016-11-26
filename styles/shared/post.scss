@@ -361,4 +361,53 @@
     background: #eee;
     box-sizing: content-box;
   }
+
+  .google-docs-preview {
+    width: 500px;
+    max-width: 100%;
+    position: relative;
+  }
+
+  .google-docs-label {
+    position: absolute;
+    top: 6px;
+    right: 5px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgba(160,160,160,0.3);
+    background-size: 75%;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
+   	background-image: url(https://www.google.com/drive/images/drive/logo-drive.png);
+
+    &.document {
+      background-size: 50%;
+      background-image: url(https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_document_x64.png)
+    }
+    &.spreadsheets {
+      background-size: 50%;
+      background-image: url(https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_spreadsheet_x64.png)
+    }
+    &.presentation {
+      background-size: 50%;
+      background-image: url(https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_presentation_x64.png)
+    }
+  }
+
+  .google-docs-inner {
+    display: block;
+    width: 100%;
+    position: relative;
+    height: 0;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    box-sizing: content-box;
+
+    &:hover {
+      border-color: #999;
+    }
+  }
 }
