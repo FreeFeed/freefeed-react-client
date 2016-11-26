@@ -60,6 +60,16 @@
     .post-footer {
       .post-lock-icon {
         margin-right: 5px;
+
+        &.fa-eye-slash {
+          font-size: 12px;
+          position: relative;
+          top: -1px;
+        }
+      }
+
+      .post-direct-icon {
+        margin-right: 0.33em;
       }
 
       .post-timestamp {
