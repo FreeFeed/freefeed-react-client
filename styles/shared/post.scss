@@ -60,12 +60,16 @@
     .post-footer {
       .post-lock-icon {
         margin-right: 5px;
+      }
 
-        &.fa-eye-slash {
-          font-size: 12px;
-          position: relative;
-          top: -1px;
-        }
+      .post-protected-icon {
+        $borderColor: #888;
+        $borderWidth: 1px;
+        $shadowRadius: 0;
+        color: #fff;
+        text-shadow:
+            $borderWidth $borderWidth $shadowRadius $borderColor, (-$borderWidth) (-$borderWidth) $shadowRadius $borderColor,
+            $borderWidth (-$borderWidth) $shadowRadius $borderColor, (-$borderWidth) $borderWidth $shadowRadius $borderColor;
       }
 
       .post-direct-icon {
