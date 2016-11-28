@@ -300,6 +300,7 @@ export default class Post extends React.Component {
           )}
 
           <PostAttachments
+            postId={props.id}
             attachments={props.attachments}
             isEditing={props.isEditing}
             isSinglePost={props.isSinglePost}

@@ -9,7 +9,7 @@ const lightboxOptions = {
   shareEl: false,
   clickToCloseNonZoomable: false,
   bgOpacity: 0.8,
-  history: false,
+  galleryPIDs: true,
 };
 
 export default class ImageAttachmentsLightbox extends React.Component {
@@ -18,7 +18,9 @@ export default class ImageAttachmentsLightbox extends React.Component {
       src: pt.string.isRequired,
       w: pt.number.isRequired,
       h: pt.number.isRequired,
+      pid: pt.string.isRequired,
     })).isRequired,
+    postId: pt.string.isRequired,
     getThumbnail: pt.func.isRequired,
   };
 
@@ -91,7 +93,7 @@ export default class ImageAttachmentsLightbox extends React.Component {
         ref={(el) => this.photoSwipe = el ? el.photoSwipe : null}
         items={this.props.items}
         gettingData={this.getItemData}
-        options={{...lightboxOptions, getThumbBoundsFn: this.getThumbBounds, index: this.state.currentIndex}}
+        options={{...lightboxOptions, galleryUID: this.props.postId.substr(0, 8), getThumbBoundsFn: this.getThumbBounds, index: this.state.currentIndex}}
         isOpen={this.state.isOpened}
         onClose={this.whenClosed}
         initialZoomInEnd={this.whenOpened}/>
