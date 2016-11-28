@@ -33,6 +33,12 @@ class UserFeed extends React.Component {
           <p><b>{viewUser.screenName}</b> has a private feed.</p>
         </div>
       );
+    } else if (viewUser.isProtected === '1' && !authenticated) {
+      return (
+        <div className="box-body">
+          <p><b>{viewUser.screenName}</b> has a protected feed. It is only visible to FreeFeed users.</p>
+        </div>
+      );
     }
 
     if (amIBlocked) {

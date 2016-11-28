@@ -137,21 +137,18 @@ export default class Post extends React.Component {
       urlName = props.recipients[0].username;
     }
 
-    // "Lock icon": check if the post is truly private, "partly private" or public.
-    // Truly private:
-    // - posted to author's own private feed and/or
-    // - sent to users as a direct message and/or
-    // - posted into private groups
-    // Public:
-    // - posted to author's own public feed and/or
-    // - posted into public groups
-    // "Partly private":
-    // - has mix of private and public recipients
-    const publicRecipients = props.recipients.filter((recipient) => (
-      recipient.isPrivate === '0' &&
-      (recipient.id === props.createdBy.id || recipient.type === 'group')
-    ));
-    const isReallyPrivate = (publicRecipients.length === 0);
+    const authorOrGroupsRecipients = props.recipients
+      .filter(r => r.id === props.createdBy.id || r.type === 'group')
+      .map(r => {
+        // todo Remove it when we'll have garanty of isPrivate => isProtected
+        if (r.isPrivate === '1') {
+          r.isProtected = '1';
+        }
+        return r;
+      });
+    const isPublic = authorOrGroupsRecipients.some(r => r.isProtected === '0');
+    const isProtected = !isPublic && authorOrGroupsRecipients.some(r => r.isPrivate === '0');
+    const isPrivate = !isPublic && !isProtected;
 
     const amIAuthenticated = !!props.user.id;
     // "Comments disabled" / "Comment"
@@ -303,6 +300,7 @@ export default class Post extends React.Component {
           )}
 
           <PostAttachments
+            postId={props.id || 'new-post'}
             attachments={props.attachments}
             isEditing={props.isEditing}
             isSinglePost={props.isSinglePost}
@@ -315,8 +313,10 @@ export default class Post extends React.Component {
           <div className="dropzone-previews"></div>
 
           <div className="post-footer">
-            {isReallyPrivate ? (
-              <i className="post-lock-icon fa fa-lock" title="This entry is private"></i>
+            {isPrivate ? (
+              <i className="post-lock-icon fa fa-lock" title="This entry is private"/>
+            ) : isProtected ? (
+              <i className="post-lock-icon post-protected-icon fa fa-lock" title="This entry is only visible to FreeFeed users"/>
             ) : false}
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
             <Link to={`/${urlName}/${props.id}`} className="post-timestamp">

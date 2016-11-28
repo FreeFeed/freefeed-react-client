@@ -3,6 +3,7 @@ import React from 'react';
 import VideoPreview, {canShowURL as videoCanShowURL} from './video';
 import TwitterPreview, {canShowURL as twitterCanShowURL} from './twitter';
 import InstagramPreview, {canShowURL as instagramCanShowURL} from './instagram';
+import GoogleDocsPreview, {canShowURL as googleDocsCanShowURL} from './google-docs';
 import EmbedlyPreview from './embedly';
 
 export default function LinkPreview({ allowEmbedly, url }) {
@@ -15,6 +16,8 @@ export default function LinkPreview({ allowEmbedly, url }) {
     return <TwitterPreview url={url} />;
   } else if (instagramCanShowURL(url)) {
     return <InstagramPreview url={url} />;
+  } else if (googleDocsCanShowURL(url)) {
+    return <GoogleDocsPreview url={url} />;
   }
 
   if (allowEmbedly) {

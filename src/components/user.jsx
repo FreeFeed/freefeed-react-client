@@ -74,7 +74,7 @@ function selectState(state, ownProps) {
   };
 
   statusExtension.canISeeSubsList = statusExtension.isUserFound &&
-    (!anonymous || foundUser.isVisibleToAnonymous === '1') &&
+    (!anonymous || foundUser.isProtected === '0') &&
     (foundUser.isPrivate === '0' || statusExtension.subscribed || statusExtension.isItMe);
 
   const canIPostToGroup = statusExtension.subscribed && (foundUser.isRestricted === '0' || amIGroupAdmin);
