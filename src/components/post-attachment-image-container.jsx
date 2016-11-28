@@ -13,6 +13,7 @@ export default class ImageAttachmentsContainer extends React.Component {
     isSinglePost: pt.bool,
     isEditing: pt.bool,
     removeAttachment: pt.func,
+    postId: pt.string.isRequired,
   };
 
   state = {
@@ -61,6 +62,7 @@ export default class ImageAttachmentsContainer extends React.Component {
       src: a.url,
       w: a.imageSizes && a.imageSizes.o && a.imageSizes.o.w || 0,
       h: a.imageSizes && a.imageSizes.o && a.imageSizes.o.h || 0,
+      pid: a.id.substr(0, 8),
     }));
   }
 
@@ -127,6 +129,7 @@ export default class ImageAttachmentsContainer extends React.Component {
         <ImageAttachmentsLightbox
           ref={(el) => this.lightbox = el}
           items={this.getLightboxItems()}
+          postId={this.props.postId}
           getThumbnail={this.getThumbnail}/>
       </div>
     );

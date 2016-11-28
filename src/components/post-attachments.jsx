@@ -12,6 +12,7 @@ export default (props) => {
       isSinglePost={props.isSinglePost}
       removeAttachment={props.removeAttachment}
       attachments={attachments.filter(a => a.mediaType === 'image')}
+      postId={props.postId}
       />
   );
 
