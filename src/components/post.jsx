@@ -316,7 +316,7 @@ export default class Post extends React.Component {
             {isPrivate ? (
               <i className="post-lock-icon fa fa-lock" title="This entry is private"/>
             ) : isProtected ? (
-              <i className="post-lock-icon fa fa-eye-slash" title="This entry is only visible to FreeFeed users"/>
+              <i className="post-lock-icon post-protected-icon fa fa-lock" title="This entry is only visible to FreeFeed users"/>
             ) : false}
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
             <Link to={`/${urlName}/${props.id}`} className="post-timestamp">
