@@ -93,7 +93,12 @@ export default class ImageAttachmentsLightbox extends React.Component {
         ref={(el) => this.photoSwipe = el ? el.photoSwipe : null}
         items={this.props.items}
         gettingData={this.getItemData}
-        options={{...lightboxOptions, galleryUID: this.props.postId.substr(0, 8), getThumbBoundsFn: this.getThumbBounds, index: this.state.currentIndex}}
+        options={{
+          ...lightboxOptions,
+          galleryUID: (this.props.postId || 'new-post').substr(0, 8),
+          getThumbBoundsFn: this.getThumbBounds,
+          index: this.state.currentIndex,
+        }}
         isOpen={this.state.isOpened}
         onClose={this.whenClosed}
         initialZoomInEnd={this.whenOpened}/>
