@@ -170,5 +170,6 @@ export default class PostComment extends React.Component {
         </div>
       )}
     </div>
-    );}
+    );
+  }
 }
