@@ -4,7 +4,7 @@ import _ from 'lodash';
 import ScrollSafe from './scroll-helpers/scroll-safe';
 import {contentResized} from './scroll-helpers/events';
 
-const INSTAGRAM_RE = /^https?:\/\/(?:www\.)?instagram\.com\/p\/([a-z0-9]+(?:_[a-z0-9]+)?)/i;
+const INSTAGRAM_RE = /^https?:\/\/(?:www\.)?instagram\.com\/p\/([a-z0-9]+(?:[_-][a-z0-9]+)*)/i;
 
 export function canShowURL(url) {
   return INSTAGRAM_RE.test(url);
