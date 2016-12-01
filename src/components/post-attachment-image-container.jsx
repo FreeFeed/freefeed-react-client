@@ -13,7 +13,7 @@ export default class ImageAttachmentsContainer extends React.Component {
     isSinglePost: pt.bool,
     isEditing: pt.bool,
     removeAttachment: pt.func,
-    postId: pt.string.isRequired,
+    postId: pt.string,
   };
 
   state = {

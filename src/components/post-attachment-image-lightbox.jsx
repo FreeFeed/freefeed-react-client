@@ -20,7 +20,7 @@ export default class ImageAttachmentsLightbox extends React.Component {
       h: pt.number.isRequired,
       pid: pt.string.isRequired,
     })).isRequired,
-    postId: pt.string.isRequired,
+    postId: pt.string,
     getThumbnail: pt.func.isRequired,
   };
 
