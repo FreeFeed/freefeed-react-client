@@ -250,6 +250,9 @@ export function feedViewState(state = initFeed, action) {
   if (ActionHelpers.isFeedFail(action)) {
     return initFeed;
   }
+  if (ActionHelpers.isFeedFail(action)) {
+    return initFeed
+  }
 
   switch (action.type) {
     case ActionTypes.UNAUTHENTICATED: {
