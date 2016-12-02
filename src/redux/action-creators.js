@@ -499,13 +499,6 @@ export function updateGroupPicture(groupName, file) {
   };
 }
 
-export function managedGroups() {
-  return {
-    type: ActionTypes.MANAGED_GROUPS,
-    apiRequest: Api.getManagedGroups
-  };
-}
-
 export function acceptGroupRequest(groupName, userName) {
   return {
     type: ActionTypes.ACCEPT_GROUP_REQUEST,

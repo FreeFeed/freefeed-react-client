@@ -409,10 +409,6 @@ export function updateGroupPicture({groupName, file}) {
   });
 }
 
-export function getManagedGroups() {
-  return fetch(`${apiConfig.host}/v2/managedGroups`, getRequestOptions());
-}
-
 export function acceptGroupRequest({groupName, userName}) {
   return fetch(`${apiConfig.host}/v1/groups/${groupName}/acceptRequest/${userName}`, {
     'method': 'POST',

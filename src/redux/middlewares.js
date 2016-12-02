@@ -64,7 +64,6 @@ export const authMiddleware = store => next => action => {
     setToken(action.payload.authToken);
     next(action);
     store.dispatch(ActionCreators.whoAmI());
-    store.dispatch(ActionCreators.managedGroups());
 
     // Do not redirect to Home page if signed in at Bookmarklet
     const pathname = (store.getState().routing.locationBeforeTransitions || {}).pathname;
@@ -133,16 +132,6 @@ export const redirectionMiddleware = store => next => action => {
 };
 
 export const requestsMiddleware = store => next => action => {
-  if (action.type === response(ActionTypes.WHO_AM_I)) {
-    next(action);
-
-    if (store.getState().user.pendingGroupRequests) {
-      store.dispatch(ActionCreators.managedGroups());
-    }
-
-    return;
-  }
-
   if (action.type === response(ActionTypes.ACCEPT_USER_REQUEST)) {
     next(action);
 

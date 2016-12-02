@@ -53,8 +53,6 @@ if (store.getState().authenticated) {
   setTimeout(function() {
     store.dispatch(ActionCreators.whoAmI());
   }, delay);
-
-  store.dispatch(ActionCreators.managedGroups());
 } else {
   // just commented for develop sign up form
   store.dispatch(ActionCreators.unauthenticated());
