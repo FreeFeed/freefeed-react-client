@@ -161,15 +161,6 @@ export function signUpForm(state=INITIAL_SIGN_UP_FORM_STATE, action) {
   return state;
 }
 
-export function serverError(state = false, action) {
-  switch (action.type) {
-    case ActionTypes.SERVER_ERROR: {
-      return true;
-    }
-  }
-  return state;
-}
-
 const CREATE_POST_ERROR = 'Something went wrong while creating the post...';
 
 export function createPostViewState(state = {}, action) {
