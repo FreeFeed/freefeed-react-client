@@ -281,11 +281,18 @@ export const dataFixMiddleware = (/*store*/) => next => action => {
   }
 
   if (
+    action.type === response(ActionTypes.HOME) ||
+    action.type === response(ActionTypes.DISCUSSIONS) ||
     action.type === response(ActionTypes.GET_USER_FEED) ||
     action.type === response(ActionTypes.GET_USER_COMMENTS) ||
-    action.type === response(ActionTypes.GET_USER_LIKES)
+    action.type === response(ActionTypes.GET_USER_LIKES) ||
+    action.type === response(ActionTypes.GET_SEARCH) ||
+    action.type === response(ActionTypes.GET_BEST_OF)
   ) {
     action.payload.posts = action.payload.posts || [];
+  }
+
+  if (action.payload && action.payload.posts && _.isArray(action.payload.posts)) {
     action.payload.posts.forEach(fixPostsData);
   }
 
@@ -297,5 +304,6 @@ function fixPostsData(post) {
   post.body = post.body || '';
   // post may not have 'comments' field
   post.comments = post.comments || [];
+  post.likes = post.likes || [];
 }
 
