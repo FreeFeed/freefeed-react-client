@@ -1,13 +1,6 @@
 import * as Api from '../services/api';
 import * as ActionTypes from './action-types';
 
-export function serverError(error) {
-  return {
-    type: ActionTypes.SERVER_ERROR,
-    error
-  };
-}
-
 export function unauthenticated(payload) {
   return {
     type: ActionTypes.UNAUTHENTICATED,

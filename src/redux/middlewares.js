@@ -8,7 +8,7 @@ import {userParser, delay} from '../utils';
 
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
-import {request, response, fail, requiresAuth, isFeedRequest, isFeedResponse} from './action-helpers';
+import {request, response, fail, breakdown, requiresAuth, isFeedRequest, isFeedResponse} from './action-helpers';
 
 //middleware for api requests
 export const apiMiddleware = store => next => async (action) => {
@@ -37,7 +37,7 @@ export const apiMiddleware = store => next => async (action) => {
     if (typeof Raven !== 'undefined') {
       Raven.captureException(e, { level: 'error', tags: { area: 'redux/apiMiddleware' }, extra: { action } });
     }
-    return store.dispatch(ActionCreators.serverError(e));
+    return store.dispatch({...action, type: breakdown(action.type), apiRequest: null});
   }
 };
 
