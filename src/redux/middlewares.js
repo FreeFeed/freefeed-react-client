@@ -37,7 +37,7 @@ export const apiMiddleware = store => next => async (action) => {
     if (typeof Raven !== 'undefined') {
       Raven.captureException(e, { level: 'error', tags: { area: 'redux/apiMiddleware' }, extra: { action } });
     }
-    return store.dispatch(ActionCreators.serverError(e));
+    return store.dispatch({payload: {err: 'Network error'}, type: fail(action.type), request: action.payload, response: null});
   }
 };
 

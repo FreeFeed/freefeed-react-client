@@ -1,4 +1,3 @@
-export const SERVER_ERROR = 'SERVER_ERROR';
 export const UNAUTHENTICATED = 'UNAUTHENTICATED';
 export const STATIC_PAGE = 'STATIC_PAGE';
 export const WHO_AM_I = 'WHO_AM_I';
