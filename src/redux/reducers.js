@@ -1852,7 +1852,7 @@ export function managedGroups(state = [], action) {
       return state;
     }
     case ActionTypes.UNAUTHENTICATED: {
-      return {};
+      return [];
     }
   }
 
