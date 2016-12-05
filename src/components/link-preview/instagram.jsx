@@ -20,7 +20,7 @@ class InstagramPreview extends React.Component {
   state = {...initialState};
 
   onIFrameLoad = () => setTimeout(() => {
-    if (!this.iframe.dataset['loaded']) {
+    if (this.iframe && !this.iframe.dataset['loaded']) {
       this.setState({isPrivate: true});
     }
   }, 1000);
