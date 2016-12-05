@@ -16,7 +16,7 @@ const getRequestOptions = () => ({
 });
 
 export function getWhoAmI() {
-  return fetch(`${apiConfig.host}/v1/users/whoami`, getRequestOptions());
+  return fetch(`${apiConfig.host}/v2/users/whoami`, getRequestOptions());
 }
 
 export function getHome({offset}) {
@@ -407,10 +407,6 @@ export function updateGroupPicture({groupName, file}) {
     },
     'body': data
   });
-}
-
-export function getManagedGroups() {
-  return fetch(`${apiConfig.host}/v2/managedGroups`, getRequestOptions());
 }
 
 export function acceptGroupRequest({groupName, userName}) {
