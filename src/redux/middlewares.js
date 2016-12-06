@@ -1,5 +1,6 @@
 /*global Raven*/
 import {browserHistory} from 'react-router';
+import _ from 'lodash';
 
 import {getPost} from '../services/api';
 import {setToken, persistUser} from '../services/auth';
@@ -37,7 +38,7 @@ export const apiMiddleware = store => next => async (action) => {
     if (typeof Raven !== 'undefined') {
       Raven.captureException(e, { level: 'error', tags: { area: 'redux/apiMiddleware' }, extra: { action } });
     }
-    return store.dispatch(ActionCreators.serverError(e));
+    return store.dispatch({payload: {err: 'Network error'}, type: fail(action.type), request: action.payload, response: null});
   }
 };
 
@@ -93,6 +94,108 @@ export const likesLogicMiddleware = store => next => action => {
       const nextAction = isSync ? ActionCreators.showMoreLikesSync(postId) : ActionCreators.showMoreLikesAsync(postId);
 
       return store.dispatch(nextAction);
+    }
+    case ActionTypes.REALTIME_LIKE_REMOVE: {
+      const {postId, userId} = action;
+      const post = store.getState().posts[postId];
+      // it is necessary for proper update postsViewState
+      action.isLikeVisible = _.includes(post.likes, userId);
+      return next(action);
+    }
+  }
+
+  return next(action);
+};
+
+class ActionsQueue {
+  q = [];
+
+  push(action, store) {
+    this.q.push(action);
+    if (this.q.length === 1) {
+      store.dispatch(action);
+    }
+  }
+
+  next(store) {
+    this.q.shift();
+    if (this.q.length > 0) {
+      store.dispatch(this.q[0]);
+    }
+  }
+}
+
+const cleanLikeErrorTimeout = 10000;
+const likeActionsQueue = new ActionsQueue();
+const ignoreMyLikes = {};
+const ignoreMyUnlikes = {};
+const cleanLikeErrorTimers = {};
+
+export const optimisticLikesMiddleware = store => next => action => {
+  switch (action.type) {
+    case ActionTypes.LIKE_POST_OPTIMISTIC: {
+      next(action);
+
+      const {postId, userId} = action.payload;
+      ignoreMyLikes[postId] = (ignoreMyLikes[postId] || 0) + 1;
+      likeActionsQueue.push(ActionCreators.likePostRequest(postId, userId), store);
+      return;
+    }
+    case ActionTypes.UNLIKE_POST_OPTIMISTIC: {
+      next(action);
+
+      const {postId, userId} = action.payload;
+      ignoreMyUnlikes[postId] = (ignoreMyUnlikes[postId] || 0) + 1;
+      likeActionsQueue.push(ActionCreators.unlikePostRequest(postId, userId), store);
+      return;
+    }
+
+    case response(ActionTypes.LIKE_POST):
+    case response(ActionTypes.UNLIKE_POST): {
+      next(action);
+      likeActionsQueue.next(store);
+      return;
+    }
+
+    case fail(ActionTypes.LIKE_POST):
+    case fail(ActionTypes.UNLIKE_POST): {
+      next(action);
+
+      const {postId} = action.request;
+      if (cleanLikeErrorTimers[postId]) {
+        clearTimeout(cleanLikeErrorTimers[postId]);
+      }
+      cleanLikeErrorTimers[postId] = setTimeout(() => {
+        store.dispatch(ActionCreators.cleanLikeError(postId));
+        delete cleanLikeErrorTimers[postId];
+      }, cleanLikeErrorTimeout);
+
+      const ignore = _.startsWith(action.type, ActionTypes.LIKE_POST) ? ignoreMyLikes : ignoreMyUnlikes;
+      if (ignore[postId]) {
+        ignore[postId]--;
+      }
+
+      likeActionsQueue.next(store);
+      return;
+    }
+
+    case ActionTypes.REALTIME_LIKE_NEW: {
+      const myLike = action.users[0].id === store.getState().user.id;
+      if (myLike && ignoreMyLikes[action.postId]) {
+        ignoreMyLikes[action.postId]--;
+        // skip for the own optimistic likes
+        return;
+      }
+      return next(action);
+    }
+    case ActionTypes.REALTIME_LIKE_REMOVE: {
+      const myLike = action.userId === store.getState().user.id;
+      if (myLike && ignoreMyUnlikes[action.postId]) {
+        ignoreMyUnlikes[action.postId]--;
+        // skip for the own optimistic unlikes
+        return;
+      }
+      return next(action);
     }
   }
 
@@ -281,11 +384,18 @@ export const dataFixMiddleware = (/*store*/) => next => action => {
   }
 
   if (
+    action.type === response(ActionTypes.HOME) ||
+    action.type === response(ActionTypes.DISCUSSIONS) ||
     action.type === response(ActionTypes.GET_USER_FEED) ||
     action.type === response(ActionTypes.GET_USER_COMMENTS) ||
-    action.type === response(ActionTypes.GET_USER_LIKES)
+    action.type === response(ActionTypes.GET_USER_LIKES) ||
+    action.type === response(ActionTypes.GET_SEARCH) ||
+    action.type === response(ActionTypes.GET_BEST_OF)
   ) {
     action.payload.posts = action.payload.posts || [];
+  }
+
+  if (action.payload && action.payload.posts && _.isArray(action.payload.posts)) {
     action.payload.posts.forEach(fixPostsData);
   }
 
@@ -297,5 +407,6 @@ function fixPostsData(post) {
   post.body = post.body || '';
   // post may not have 'comments' field
   post.comments = post.comments || [];
+  post.likes = post.likes || [];
 }
 
