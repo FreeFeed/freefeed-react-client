@@ -1,7 +1,10 @@
 /* global embedly */
 import React from 'react';
 import {connect} from 'react-redux';
+import 'element-closest';
+
 import ScrollSafe from './scroll-helpers/scroll-safe';
+import * as heightCache from './scroll-helpers/size-cache';
 
 
 class EmbedlyPreview extends React.Component {
@@ -34,7 +37,12 @@ class EmbedlyPreview extends React.Component {
     // We use 'key' to force re-render HTML-code on
     // the feed update or on the props.url change
     return (
-      <div key={`${this.props.url}##${this.state.updCounter}`}>
+      <div
+        key={`${this.props.url}##${this.state.updCounter}`}
+        className="embedly-preview"
+        data-url={this.props.url}
+        style={{height: heightCache.get(this.props.url, 0) + 'px'}}
+        >
           <a
             ref={this.setLink}
             href={this.props.url}
@@ -54,3 +62,13 @@ function select(state) {
 }
 
 export default ScrollSafe(connect(select)(EmbedlyPreview));
+
+embedly('on', 'card.resize', function(iframe) {
+  const cont = iframe.closest('.embedly-preview');
+  if (!cont) {
+    return;
+  }
+  const height = iframe.offsetHeight;
+  cont.style.height = height + 'px';
+  heightCache.set(cont.dataset.url, height);
+});

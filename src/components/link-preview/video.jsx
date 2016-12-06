@@ -5,6 +5,7 @@ import React from 'react';
 import ScrollSafe from './scroll-helpers/scroll-safe';
 import {contentResized} from './scroll-helpers/events';
 import cachedFetch from './cached-fetch';
+import * as aspectRatio from './scroll-helpers/size-cache';
 
 const YOUTUBE_VIDEO_RE = /^https?:\/\/(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?(?:v=|.+&v=)))([a-z0-9_-]+)/i;
 const VIMEO_VIDEO_RE = /^https:\/\/vimeo\.com\/([0-9]+)/i;
@@ -59,13 +60,12 @@ class VideoPreview extends React.Component {
       return <div className="video-preview load-error">{info.error}</div>;
     }
 
-    const previewStyle = info ? {
-      backgroundImage: `url(${info.previewURL})`,
-      paddingBottom: 100/info.aspectRatio + '%',
-    } : {};
+    const previewStyle = info ? {backgroundImage: `url(${info.previewURL})`} : {};
 
     // video will have the same area as 16x9 450px-width rectangle
-    const width = 450 * Math.sqrt((info ? info.aspectRatio : getDefaultAspectRatio(url)) / (16/9));
+    const r = info ? info.aspectRatio : aspectRatio.get(url, getDefaultAspectRatio(url));
+    const width = 450 * Math.sqrt((9/16) / r);
+    previewStyle.paddingBottom = 100 * r + '%';
 
     return (
       <div className="video-preview" style={{maxWidth: width}}>
@@ -104,8 +104,8 @@ function getVideoId(url) {
 }
 
 function getDefaultAspectRatio(url) {
-  if (YOUTUBE_VIDEO_RE.test(url)) { return 16/9; }
-  if (VIMEO_VIDEO_RE.test(url)) { return 16/9; }
+  if (YOUTUBE_VIDEO_RE.test(url)) { return 9/16; }
+  if (VIMEO_VIDEO_RE.test(url)) { return 9/16; }
   if (COUB_VIDEO_RE.test(url)) { return 1; }
   return null;
 }
@@ -122,7 +122,7 @@ async function getVideoInfo(url) {
       }
       return {
         byline: `${data.title} by ${data.author_name}`,
-        aspectRatio: data.width / data.height,
+        aspectRatio: aspectRatio.set(url, data.height / data.width),
         previewURL: data.thumbnail_url,
         playerURL: `https://www.youtube.com/embed/${getVideoId(url)}?rel=0&fs=1&autoplay=1&start=${youtubeStartTime(url)}`,
       };
@@ -138,7 +138,7 @@ async function getVideoInfo(url) {
       const {hash} = urlParse(url);
       return {
         byline: `${data.title} by ${data.author_name}`,
-        aspectRatio: data.width / data.height,
+        aspectRatio: aspectRatio.set(url, data.height / data.width),
         previewURL: data.thumbnail_url.replace(/[0-9]+x[0-9]+/, '450'),
         playerURL: `https://player.vimeo.com/video/${getVideoId(url)}?autoplay=1${hash ? hash : ''}`,
       };
@@ -153,7 +153,7 @@ async function getVideoInfo(url) {
       }
       return {
         byline: `${data.title} by ${data.author_name}`,
-        aspectRatio: data.width / data.height,
+        aspectRatio: aspectRatio.set(url, data.height / data.width),
         previewURL: data.thumbnail_url,
         playerURL: `https://coub.com/embed/${getVideoId(url)}?autostart=true`,
       };
