@@ -60,6 +60,15 @@ if (store.getState().authenticated) {
 
 import {bindRouteActions} from './redux/route-actions';
 
+// Set initial history state.
+// Without this, there can be problems with third-party
+// modules using history API (specifically, PhotoSwipe).
+browserHistory.replace({
+  pathname: location.pathname,
+  search: location.search,
+  hash: location.hash,
+});
+
 const boundRouteActions = bindRouteActions(store.dispatch);
 
 const history = syncHistoryWithStore(browserHistory, store);
