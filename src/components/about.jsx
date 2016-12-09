@@ -46,7 +46,7 @@ const About = ({ authenticated }) => (
       <p><Link to="/support">https://freefeed.net/support</Link> –
         Tech support (we speak English, Russian as well as some other languages :))</p>
 
-      <p><Link to="/freefeed">https://freefeed.net/freefeed</Link> -
+      <p><Link to="/freefeed">https://freefeed.net/freefeed</Link> –
         Important service announcements</p>
 
       <h3>The team behind FreeFeed</h3>
