@@ -304,6 +304,7 @@ const isFirstFriendInteraction = (post, {users}, {subscriptions, comments}) => {
 
 const postFetchDelay = 20000; // 20 sec
 const bindHandlers = store => ({
+  'user:update': data => store.dispatch({...data, type: ActionTypes.REALTIME_USER_UPDATE}),
   'post:new': data => {
     const state = store.getState();
     const isFeedFirstPage = isFirstPage(state);
@@ -336,6 +337,7 @@ const bindHandlers = store => ({
 
 export const realtimeMiddleware = store => {
   const handlers = bindHandlers(store);
+  const state = store.getState();
   let realtimeConnection;
   return next => action => {
 
@@ -360,7 +362,10 @@ export const realtimeMiddleware = store => {
         realtimeConnection = init(handlers);
       }
       if (action.payload.timelines) {
-        realtimeConnection.subscribe({timeline:[action.payload.timelines.id]});
+        realtimeConnection.subscribe({
+          user: [state.user.id],
+          timeline:[action.payload.timelines.id]
+        });
         store.dispatch(ActionCreators.realtimeSubscribe('timeline', action.payload.timelines.id));
       }
     }
@@ -369,7 +374,10 @@ export const realtimeMiddleware = store => {
       if (!realtimeConnection) {
         realtimeConnection = init(handlers);
       }
-      realtimeConnection.subscribe({post:[action.payload.posts.id]});
+      realtimeConnection.subscribe({
+        user: [state.user.id],
+        post:[action.payload.posts.id]
+      });
       store.dispatch(ActionCreators.realtimeSubscribe('post', action.payload.posts.id));
     }
 
