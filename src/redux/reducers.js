@@ -1297,7 +1297,9 @@ export function user(state = initUser(), action) {
     case response(ActionTypes.DIRECTS_ALL_READ): {
       return {...state, unreadDirectsNumber: 0 };
     }
-
+    case ActionTypes.REALTIME_USER_UPDATE: {
+      return {...state, ...action.user};
+    }
     case response(ActionTypes.BAN): {
       return {...state, banIds: [...state.banIds, action.request.id]};
     }
