@@ -106,6 +106,7 @@ const Stats = () => (
       <StatsChart type={`active_users`} title="Daily Active Users"></StatsChart>
       <StatsChart type={`posts_creates`} title="Daily Posts"></StatsChart>
       <StatsChart type={`comments_creates`} title="Daily Comments"></StatsChart>
+      <StatsChart type={`registrations`} title="Daily Registrations"></StatsChart>
     </div>
   </div>
 );
