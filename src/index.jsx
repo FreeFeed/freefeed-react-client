@@ -20,6 +20,7 @@ import Home from './components/home';
 import Discussions from './components/discussions';
 import About from './components/about';
 import Terms from './components/terms';
+import Stats from './components/stats';
 import Dev from './components/dev';
 import Signin from './components/signin';
 import Signup from './components/signup';
@@ -121,6 +122,7 @@ ReactDOM.render(
         <Route path="about">
           <IndexRoute name='about' component={About} onEnter={enterStaticPage('About')} />
           <Route path="terms" component={Terms} onEnter={enterStaticPage('Terms')}/>
+          <Route path="stats" component={Stats} onEnter={enterStaticPage('Stats')}/>
         </Route>
         <Route path='dev' component={Dev} onEnter={enterStaticPage('Developers')}/>
         <Route path='signin' component={Signin} onEnter={enterStaticPage('Sign in')}/>
