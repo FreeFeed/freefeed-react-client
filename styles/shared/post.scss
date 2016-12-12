@@ -87,6 +87,12 @@
       .post-hide-throbber {
         margin-left: 5px;
       }
+
+      .post-like-fail {
+        margin-right: 0.2em;
+        color: #ff8265;
+        cursor: help;
+      }
     }
   }
 }
@@ -296,6 +302,10 @@
 
   .embedly-card {
     overflow: hidden;
+  }
+
+  .embedly-card-hug {
+    margin: 0 !important;
   }
 
   .video-preview {

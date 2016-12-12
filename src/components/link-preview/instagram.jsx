@@ -2,8 +2,9 @@ import React from 'react';
 import _ from 'lodash';
 
 import ScrollSafe from './scroll-helpers/scroll-safe';
+import * as aspectRatio from './scroll-helpers/size-cache';
 
-const INSTAGRAM_RE = /^https?:\/\/(?:www\.)?instagram\.com\/p\/([a-z0-9]+(?:[_-][a-z0-9]+)*)/i;
+const INSTAGRAM_RE = /^https?:\/\/(?:www\.)?instagram\.com\/p\/([a-z0-9_-]+)/i;
 
 export function canShowURL(url) {
   return INSTAGRAM_RE.test(url);
@@ -22,13 +23,15 @@ class InstagramPreview extends React.Component {
   onIFrameLoad = () => setTimeout(() => {
     if (this.iframe && !this.iframe.dataset['loaded']) {
       this.setState({isPrivate: true});
+      aspectRatio.set(this.props.url, 0);
     }
   }, 1000);
 
   componentDidMount() {
     startEventListening();
     // set default frame height
-    this.iframe.style.height = (470 / 400 * this.iframe.offsetWidth) + 'px';
+    const r = aspectRatio.get(this.props.url, 470 / 400);
+    this.iframe.style.height = (this.iframe.offsetWidth * r) + 'px';
   }
 
   componentWillReceiveProps(nextProps) {
@@ -47,6 +50,7 @@ class InstagramPreview extends React.Component {
         <iframe
           ref={this.setIframe}
           src={`https://www.instagram.com/p/${id}/embed/captioned/`}
+          data-url={this.props.url}
           onLoad={this.onIFrameLoad}
           frameBorder="0"
           scrolling="no"
@@ -86,6 +90,7 @@ function onMessage(e) {
   if (frame) {
     if (data.type === 'MEASURE') {
       frame.style.height = data.details.height + 'px';
+      aspectRatio.set(frame.dataset['url'], data.details.height / frame.offsetWidth);
     } else if (data.type === 'LOADING') {
       frame.dataset['loaded'] = '1';
     }

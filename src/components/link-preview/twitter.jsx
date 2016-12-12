@@ -1,7 +1,9 @@
 /* global twttr */
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import ScrollSafe from './scroll-helpers/scroll-safe';
+import * as heightCache from './scroll-helpers/size-cache';
 
 const TWEET_RE = /^https?:\/\/twitter\.com\/[^\/]+\/status\/([0-9]+)/i;
 
@@ -13,14 +15,22 @@ class TwitterPreview extends React.Component {
   async componentDidMount() {
     await loadTwitterAPI();
     try {
-      twttr.widgets.createTweetEmbed(getTweetId(this.props.url), ReactDOM.findDOMNode(this));
+      twttr.widgets.createTweetEmbed(getTweetId(this.props.url), ReactDOM.findDOMNode(this).firstChild);
     } catch (e) {
       // pass
     }
   }
 
   render() {
-    return <div className="tweet-preview" />;
+    return (
+      <div
+        className="tweet-preview"
+        data-url={this.props.url}
+        style={{height: heightCache.get(this.props.url, 0) + 'px'}}
+        >
+        <div style={{overflow: 'hidden'}} />
+      </div>
+    );
   }
 }
 
@@ -42,6 +52,13 @@ function loadTwitterAPI() {
       s.setAttribute('src', API_SRC);
       s.addEventListener('load', () => resolve());
       document.head.appendChild(s);
+    }).then(() => {
+      twttr.events.bind('rendered', e => {
+        const height = e.target.parentNode.offsetHeight;
+        const cont = e.target.parentNode.parentNode;
+        cont.style.height = height + 'px';
+        heightCache.set(cont.dataset.url, height);
+      });
     });
   }
   return _apiLoaded;

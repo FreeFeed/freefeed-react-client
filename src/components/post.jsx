@@ -189,6 +189,9 @@ export default class Post extends React.Component {
     const likeLink = (amIAuthenticated && !props.isEditable ? (
       <span>
         {' - '}
+        {props.likeError ? (
+          <i className="fa fa-exclamation-triangle post-like-fail" title={props.likeError} aria-hidden="true"/>
+        ) : null}
         <a onClick={didILikePost ? unlikePost : likePost}>{didILikePost ? 'Un-like' : 'Like'}</a>
         {props.isLiking ? (
           <span className="post-like-throbber">

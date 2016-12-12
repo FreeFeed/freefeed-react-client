@@ -46,7 +46,7 @@ const About = ({ authenticated }) => (
       <p><Link to="/support">https://freefeed.net/support</Link> –
         Tech support (we speak English, Russian as well as some other languages :))</p>
 
-      <p><Link to="/freefeed">https://freefeed.net/freefeed</Link> -
+      <p><Link to="/freefeed">https://freefeed.net/freefeed</Link> –
         Important service announcements</p>
 
       <h3>The team behind FreeFeed</h3>
@@ -57,7 +57,7 @@ const About = ({ authenticated }) => (
 
       <p>After launching a <a href="https://www.indiegogo.com/projects/freefeed-v-1" target="_blank">successful
         crowdfunding campaign</a> in December 2015, the platform is now being
-        actively developed. It is being used by hundreds of people now, even
+        actively developed. It is being used by <Link to="/about/stats">hundreds of people</Link> now, even
         though the work is still underway.</p>
 
       <p>FreeFeed v.1 was released in August 2016.</p>

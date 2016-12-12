@@ -1,13 +1,6 @@
 import * as Api from '../services/api';
 import * as ActionTypes from './action-types';
 
-export function serverError(error) {
-  return {
-    type: ActionTypes.SERVER_ERROR,
-    error
-  };
-}
-
 export function unauthenticated(payload) {
   return {
     type: ActionTypes.UNAUTHENTICATED,
@@ -159,6 +152,16 @@ export function addComment(postId, commentText) {
 
 export function likePost(postId, userId) {
   return {
+    type: ActionTypes.LIKE_POST_OPTIMISTIC,
+    payload: {
+      postId,
+      userId
+    }
+  };
+}
+
+export function likePostRequest(postId, userId) {
+  return {
     type: ActionTypes.LIKE_POST,
     apiRequest: Api.likePost,
     payload: {
@@ -170,12 +173,29 @@ export function likePost(postId, userId) {
 
 export function unlikePost(postId, userId) {
   return {
+    type: ActionTypes.UNLIKE_POST_OPTIMISTIC,
+    payload: {
+      postId,
+      userId
+    }
+  };
+}
+
+export function unlikePostRequest(postId, userId) {
+  return {
     type: ActionTypes.UNLIKE_POST,
     apiRequest: Api.unlikePost,
     payload: {
       postId,
       userId
     }
+  };
+}
+
+export function cleanLikeError(postId) {
+  return {
+    type: ActionTypes.CLEAN_LIKE_ERROR,
+    postId,
   };
 }
 
