@@ -391,7 +391,7 @@ export const dataFixMiddleware = (/*store*/) => next => action => {
     [action.payload, action.payload.posts].forEach(fixPostsData);
   }
 
-  if (action.type === ActionTypes.REALTIME_COMMENT_NEW) {
+  if (action.type === ActionTypes.REALTIME_COMMENT_NEW && action.post) {
     [action.post, action.post.posts].forEach(fixPostsData);
   }
   if (
