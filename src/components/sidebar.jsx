@@ -27,17 +27,6 @@ const LoggedInBlock = ({ user, signOut }) => (
 const SideBarFriends = ({ user }) => (
   <div className='box'>
     <div className='box-header-friends'>
-      <Link to={{ pathname: "/search", query: { qs: '#розоваялента' } }}>Fundraiser</Link>
-    </div>
-    <div className='box-footer'>
-      <Link to={{ pathname: "/search", query: { qs: '#розоваялента' } }}>#розоваялента</Link>: <Link to='/freefeed/547f01dc-bbd5-4aef-83f2-eb3248688f0f'><span style={{textDecoration:'underline', cursor:'pointer'}}>подари фичу фидику</span></Link>
-    </div>
-    <div style={{width: '220px', height: '60px', marginBottom: '10px', overflow: 'hidden', position: 'relative'}}>
-      <iframe src="https://www.indiegogo.com/project/freefeed-2016--3/embedded/6303633" frameBorder="0" scrolling="no"
-              style={{width: '222px', height: '445px', position: 'absolute', top: '-376px', left: '-1px'}}>
-      </iframe>
-    </div>
-    <div className='box-header-friends'>
       Friends
     </div>
     <div className='box-body'>
@@ -58,8 +47,23 @@ const SideBarFriends = ({ user }) => (
     <div className='box-footer'>
       <Link to={`/friends`}>Browse/edit friends</Link>
     </div>
+    <div className='box-header-friends'>
+      <Link to={{ pathname: "/search", query: { qs: '#розоваялента' } }}>Fundraiser</Link>
+    </div>
+    <div className='box-footer'>
+      <Link to={{ pathname: "/search", query: { qs: '#розоваялента' } }}>#розоваялента</Link>: <Link to='/freefeed/547f01dc-bbd5-4aef-83f2-eb3248688f0f'><span style={{textDecoration:'underline', cursor:'pointer'}}>подари фичу фидику</span></Link>
+    </div>
+    <div style={{width: '220px', height: '60px', marginBottom: '10px', overflow: 'hidden', position: 'relative'}}>
+      <iframe src="https://www.indiegogo.com/project/freefeed-2016--3/embedded/6303633" frameBorder="0" scrolling="no"
+              style={{width: '222px', height: '445px', position: 'absolute', top: '-376px', left: '-1px'}}>
+      </iframe>
+    </div>
+    <div>
+      <img src='https://s3-eu-west-1.amazonaws.com/freefeed-misc/ff-fundraiser-2016.png' width="220" height="62"/>
+    </div>
   </div>
 );
+
 
 const SideBarSearch = ({ user }) => (
   <div className='box'>
