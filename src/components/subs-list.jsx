@@ -43,6 +43,8 @@ export default (props) => {
         <TileList users={s.users}/>
       ])}
 
+      {!sections.length ? <div>Nobody's here!</div> : ''}
+
     </div>
   );
 };

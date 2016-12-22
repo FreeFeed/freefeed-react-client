@@ -52,7 +52,7 @@ function selectState(state, ownProps) {
   const adminIds = thisIsGroup ? thisUser.administrators : [];
 
   const isMyPage = state.user.username === username;
-  const subscriptionsUsernames = state.usernameSubscriptions.payload.map(user => user.username);
+  const subscriptionsUsernames = state.usernameSubscriptions.payload && state.usernameSubscriptions.payload.map(user => user.username);
 
   const listSections = [
     {title: thisIsGroup ? 'Members' : null, users: []},

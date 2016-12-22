@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import moment from 'moment';
 import URLFinder from 'ff-url-finder';
 
 import defaultUserpic50Path from '../../assets/images/default-userpic-50.png';
@@ -28,20 +27,6 @@ export function setCookie(name, value = '', expireDays, path) {
   //http://stackoverflow.com/questions/1134290/cookies-on-localhost-with-explicit-domain
   const cookie = `${name}=${value}; expires=${expiresTime}; path=${path}`;
   return document.cookie = cookie;
-}
-
-export function fromNowOrNow(date) {
-  const now = moment(date);
-
-  if (Math.abs(moment().diff(now)) < 1000) { // 1000 milliseconds
-    return 'just now';
-  }
-
-  return now.fromNow();
-}
-
-export function getFullDate(date) {
-  return moment(date).format('YYYY-MM-DD HH:mm:ss [UTC]Z');
 }
 
 const userDefaults = {
@@ -133,3 +118,30 @@ export function getFirstLinkToEmbed(text) {
     })
     .map(it => it.text)[0];
 }
+
+export function delay(timeout = 0) {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
+
+// detect if localStorage is supported by attempting to set and delete an item
+// if it throws, then no localStorage for us (and we are most probably a Safari
+// in private browsing mode)
+let localStorageSupported = true;
+try {
+  const lskey = 'ff' + new Date().getTime();
+  window.localStorage.setItem(lskey, 'test');
+  window.localStorage.removeItem(lskey);
+} catch (err) {
+  localStorageSupported = false;
+}
+
+const localStorageShim = {
+  _data: {},
+  setItem: function(id, val) { return this._data[id] = String(val); },
+  getItem: function(id) { return this._data.hasOwnProperty(id) ? this._data[id] : null; },
+  removeItem: function(id) { return delete this._data[id]; },
+  clear: function() { return this._data = {}; }
+};
+
+export const localStorage = localStorageSupported ? window.localStorage : localStorageShim;

@@ -20,6 +20,7 @@ import Home from './components/home';
 import Discussions from './components/discussions';
 import About from './components/about';
 import Terms from './components/terms';
+import Stats from './components/stats';
 import Dev from './components/dev';
 import Signin from './components/signin';
 import Signup from './components/signup';
@@ -43,14 +44,31 @@ const store = configureStore();
 
 //request main info for user
 if (store.getState().authenticated) {
-  store.dispatch(ActionCreators.whoAmI());
-  store.dispatch(ActionCreators.managedGroups());
+  let delay = 0;
+
+  // Defer the whoami request to let the feed load first, if we have a cached copy of whoami already
+  if (store.getState().user.screenName) {
+    delay = 200;
+  }
+
+  setTimeout(function() {
+    store.dispatch(ActionCreators.whoAmI());
+  }, delay);
 } else {
   // just commented for develop sign up form
   store.dispatch(ActionCreators.unauthenticated());
 }
 
 import {bindRouteActions} from './redux/route-actions';
+
+// Set initial history state.
+// Without this, there can be problems with third-party
+// modules using history API (specifically, PhotoSwipe).
+browserHistory.replace({
+  pathname: location.pathname,
+  search: location.search,
+  hash: location.hash,
+});
 
 const boundRouteActions = bindRouteActions(store.dispatch);
 
@@ -76,6 +94,13 @@ const subscribersSubscriptionsActions = next => {
   store.dispatch(ActionCreators.subscriptions(username));
 };
 
+// needed to mark all directs as read
+const directsActions = next => {
+  store.dispatch(ActionCreators.markAllDirectsAsRead());
+  store.dispatch(ActionCreators.direct(+next.location.query.offset || 0));
+};
+
+
 const enterStaticPage = title => () => {
   store.dispatch(ActionCreators.staticPage(title));
 };
@@ -97,6 +122,7 @@ ReactDOM.render(
         <Route path="about">
           <IndexRoute name='about' component={About} onEnter={enterStaticPage('About')} />
           <Route path="terms" component={Terms} onEnter={enterStaticPage('Terms')}/>
+          <Route path="stats" component={Stats} onEnter={enterStaticPage('Stats')}/>
         </Route>
         <Route path='dev' component={Dev} onEnter={enterStaticPage('Developers')}/>
         <Route path='signin' component={Signin} onEnter={enterStaticPage('Sign in')}/>
@@ -106,7 +132,7 @@ ReactDOM.render(
         <Route path='settings' component={Settings} onEnter={enterStaticPage('Settings')}/>
         <Route name='groupSettings' path='/:userName/settings' component={GroupSettings} {...generateRouteHooks(boundRouteActions('getUserInfo'))}/>
         <Route name='discussions' path='filter/discussions' component={Discussions} {...generateRouteHooks(boundRouteActions('discussions'))}/>
-        <Route name='direct' path='filter/direct' component={Discussions} {...generateRouteHooks(boundRouteActions('direct'))}/>
+        <Route name='direct' path='filter/direct' component={Discussions} onEnter={directsActions}/>
         <Route name='search' path='search' component={SearchFeed} {...generateRouteHooks(boundRouteActions('search'))}/>
         <Route name='best_of' path='filter/best_of' component={BestOfFeed} {...generateRouteHooks(boundRouteActions('best_of'))}/>
         <Route name='groups' path='/groups' component={Groups} onEnter={enterStaticPage('Groups')}/>

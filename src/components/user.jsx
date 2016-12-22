@@ -40,6 +40,7 @@ const UserHandler = (props) => {
 function selectState(state, ownProps) {
   const user = state.user;
   const authenticated = state.authenticated;
+  const anonymous = !authenticated;
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
   const createPostViewState = state.createPostViewState;
   const createPostForm = joinCreatePostData(state);
@@ -73,6 +74,7 @@ function selectState(state, ownProps) {
   };
 
   statusExtension.canISeeSubsList = statusExtension.isUserFound &&
+    (!anonymous || foundUser.isProtected === '0') &&
     (foundUser.isPrivate === '0' || statusExtension.subscribed || statusExtension.isItMe);
 
   const canIPostToGroup = statusExtension.subscribed && (foundUser.isRestricted === '0' || amIGroupAdmin);

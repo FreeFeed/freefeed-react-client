@@ -1,12 +1,11 @@
 import React from 'react';
 import {Link} from 'react-router';
-import moment from 'moment';
 import classnames from 'classnames';
 import _ from 'lodash';
 import Textarea from 'react-textarea-autosize';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import {fromNowOrNow, getFirstLinkToEmbed, getFullDate} from '../utils';
+import {getFirstLinkToEmbed} from '../utils';
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
 import PostLikes from './post-likes';
@@ -15,7 +14,8 @@ import UserName from './user-name';
 import PieceOfText from './piece-of-text';
 import Dropzone from './dropzone';
 import PostMoreMenu from './post-more-menu';
-import EmbedlyLink from './embedly-link';
+import TimeDisplay from './time-display';
+import LinkPreview from './link-preview/preview';
 
 export default class Post extends React.Component {
   constructor(props) {
@@ -33,11 +33,6 @@ export default class Post extends React.Component {
 
   render() {
     const props = this.props;
-
-    const createdAt = new Date(+props.createdAt);
-    const createdAtISO = moment(createdAt).format();
-    const createdAtHuman = getFullDate(+props.createdAt);
-    const createdAgo = fromNowOrNow(createdAt);
 
     let editingPostText = props.editingText;
     const editingPostTextChange = (e) => {
@@ -142,57 +137,61 @@ export default class Post extends React.Component {
       urlName = props.recipients[0].username;
     }
 
-    // "Lock icon": check if the post is truly private, "partly private" or public.
-    // Truly private:
-    // - posted to author's own private feed and/or
-    // - sent to users as a direct message and/or
-    // - posted into private groups
-    // Public:
-    // - posted to author's own public feed and/or
-    // - posted into public groups
-    // "Partly private":
-    // - has mix of private and public recipients
-    const publicRecipients = props.recipients.filter((recipient) => (
-      recipient.isPrivate === '0' &&
-      (recipient.id === props.createdBy.id || recipient.type === 'group')
-    ));
-    const isReallyPrivate = (publicRecipients.length === 0);
+    const authorOrGroupsRecipients = props.recipients
+      .filter(r => r.id === props.createdBy.id || r.type === 'group')
+      .map(r => {
+        // todo Remove it when we'll have garanty of isPrivate => isProtected
+        if (r.isPrivate === '1') {
+          r.isProtected = '1';
+        }
+        return r;
+      });
+    const isPublic = authorOrGroupsRecipients.some(r => r.isProtected === '0');
+    const isProtected = !isPublic && authorOrGroupsRecipients.some(r => r.isPrivate === '0');
+    const isPrivate = !isPublic && !isProtected;
 
+    const amIAuthenticated = !!props.user.id;
     // "Comments disabled" / "Comment"
     let commentLink;
-    if (props.commentsDisabled) {
-      if (props.isEditable) {
-        commentLink = (
-          <span>
-            {' - '}
-            <i>Comments disabled (not for you)</i>
-            {' - '}
-            <a onClick={toggleCommenting}>Comment</a>
-          </span>
-        );
+    if (amIAuthenticated) {
+      if (props.commentsDisabled) {
+        if (props.isEditable) {
+          commentLink = (
+            <span>
+              {' - '}
+              <i>Comments disabled (not for you)</i>
+              {' - '}
+              <a onClick={toggleCommenting}>Comment</a>
+            </span>
+          );
+        } else {
+          commentLink = (
+            <span>
+              {' - '}
+              <i>Comments disabled</i>
+            </span>
+          );
+        }
       } else {
         commentLink = (
           <span>
             {' - '}
-            <i>Comments disabled</i>
+            <a onClick={toggleCommenting}>Comment</a>
           </span>
         );
       }
-    } else {
-      commentLink = (
-        <span>
-          {' - '}
-          <a onClick={toggleCommenting}>Comment</a>
-        </span>
-      );
+    } else { // don't show comment link to anonymous users
+      commentLink = false;
     }
 
     // "Like" / "Un-like"
-    const amIAuthenticated = !!props.user.id;
     const didILikePost = _.find(props.usersLikedPost, {id: props.user.id});
     const likeLink = (amIAuthenticated && !props.isEditable ? (
       <span>
         {' - '}
+        {props.likeError ? (
+          <i className="fa fa-exclamation-triangle post-like-fail" title={props.likeError} aria-hidden="true"/>
+        ) : null}
         <a onClick={didILikePost ? unlikePost : likePost}>{didILikePost ? 'Un-like' : 'Like'}</a>
         {props.isLiking ? (
           <span className="post-like-throbber">
@@ -304,23 +303,27 @@ export default class Post extends React.Component {
           )}
 
           <PostAttachments
+            postId={props.id}
             attachments={props.attachments}
             isEditing={props.isEditing}
             isSinglePost={props.isSinglePost}
             removeAttachment={this.removeAttachment}/>
 
-          {props.allowLinksPreview && noImageAttachments && linkToEmbed ? (
-            <EmbedlyLink link={linkToEmbed}/>) : false}
+          {noImageAttachments && linkToEmbed ? (
+            <div className="link-preview"><LinkPreview url={linkToEmbed} allowEmbedly={props.allowLinksPreview} /></div>
+          ) : false}
 
           <div className="dropzone-previews"></div>
 
           <div className="post-footer">
-            {isReallyPrivate ? (
-              <i className="post-lock-icon fa fa-lock" title="This entry is private"></i>
+            {isPrivate ? (
+              <i className="post-lock-icon fa fa-lock" title="This entry is private"/>
+            ) : isProtected ? (
+              <i className="post-lock-icon post-protected-icon fa fa-lock" title="This entry is only visible to FreeFeed users"/>
             ) : false}
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
             <Link to={`/${urlName}/${props.id}`} className="post-timestamp">
-              <time dateTime={createdAtISO} title={createdAtHuman}>{createdAgo}</time>
+              <TimeDisplay timeStamp={+props.createdAt}/>
             </Link>
             {commentLink}
             {likeLink}
@@ -349,7 +352,8 @@ export default class Post extends React.Component {
             showMoreComments={props.showMoreComments}
             commentEdit={props.commentEdit}
             entryUrl={`/${urlName}/${props.id}`}
-            highlightTerms={props.highlightTerms}/>
+            highlightTerms={props.highlightTerms}
+            isSinglePost={props.isSinglePost}/>
         </div>
       </div>
     ));

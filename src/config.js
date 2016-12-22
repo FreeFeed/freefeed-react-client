@@ -21,9 +21,7 @@ const config = {
   },
   siteDomains: [ // for transform links in the posts, comments, etc.
     'freefeed.net',
-    'm.freefeed.net',
-    'beta.freefeed.net',
-    'old.freefeed.net'
+    'gamma.freefeed.net'
   ],
   sentry: {
     publicDSN: null,

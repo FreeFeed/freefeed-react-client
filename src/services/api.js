@@ -16,12 +16,12 @@ const getRequestOptions = () => ({
 });
 
 export function getWhoAmI() {
-  return fetch(`${apiConfig.host}/v1/users/whoami`, getRequestOptions());
+  return fetch(`${apiConfig.host}/v2/users/whoami`, getRequestOptions());
 }
 
 export function getHome({offset}) {
   return fetch(
-    `${apiConfig.host}/v1/timelines/home?offset=${offset}`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/home?offset=${offset}`, getRequestOptions());
 }
 
 export function getDiscussions({offset}) {
@@ -277,7 +277,11 @@ export function signUp({username, password, email, captcha}) {
   });
 }
 
-export function updateUser({id, screenName, email, isPrivate, description}) {
+export function markAllDirectsAsRead() {
+  return fetch(`${apiConfig.host}/v2/users/markAllDirectsAsRead`, getRequestOptions());
+}
+
+export function updateUser({id, screenName, email, isPrivate, isProtected, description}) {
   return fetch(`${apiConfig.host}/v1/users/${id}`, {
     'method': 'PUT',
     'headers': {
@@ -285,7 +289,7 @@ export function updateUser({id, screenName, email, isPrivate, description}) {
       'Content-Type': 'application/json',
       'X-Authentication-Token': getToken()
     },
-    'body': JSON.stringify({user: {screenName, email, isPrivate, description}})
+    'body': JSON.stringify({user: {screenName, email, isPrivate, isProtected, description}})
   });
 }
 
@@ -403,10 +407,6 @@ export function updateGroupPicture({groupName, file}) {
     },
     'body': data
   });
-}
-
-export function getManagedGroups() {
-  return fetch(`${apiConfig.host}/v2/managedGroups`, getRequestOptions());
 }
 
 export function acceptGroupRequest({groupName, userName}) {

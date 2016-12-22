@@ -1,13 +1,6 @@
 import * as Api from '../services/api';
 import * as ActionTypes from './action-types';
 
-export function serverError(error) {
-  return {
-    type: ActionTypes.SERVER_ERROR,
-    error
-  };
-}
-
 export function unauthenticated(payload) {
   return {
     type: ActionTypes.UNAUTHENTICATED,
@@ -26,6 +19,13 @@ export function whoAmI() {
   return {
     type: ActionTypes.WHO_AM_I,
     apiRequest: Api.getWhoAmI,
+  };
+}
+
+export function markAllDirectsAsRead() {
+  return {
+    type: ActionTypes.DIRECTS_ALL_READ,
+    apiRequest: Api.markAllDirectsAsRead,
   };
 }
 
@@ -152,6 +152,16 @@ export function addComment(postId, commentText) {
 
 export function likePost(postId, userId) {
   return {
+    type: ActionTypes.LIKE_POST_OPTIMISTIC,
+    payload: {
+      postId,
+      userId
+    }
+  };
+}
+
+export function likePostRequest(postId, userId) {
+  return {
     type: ActionTypes.LIKE_POST,
     apiRequest: Api.likePost,
     payload: {
@@ -163,12 +173,29 @@ export function likePost(postId, userId) {
 
 export function unlikePost(postId, userId) {
   return {
+    type: ActionTypes.UNLIKE_POST_OPTIMISTIC,
+    payload: {
+      postId,
+      userId
+    }
+  };
+}
+
+export function unlikePostRequest(postId, userId) {
+  return {
     type: ActionTypes.UNLIKE_POST,
     apiRequest: Api.unlikePost,
     payload: {
       postId,
       userId
     }
+  };
+}
+
+export function cleanLikeError(postId) {
+  return {
+    type: ActionTypes.CLEAN_LIKE_ERROR,
+    postId,
   };
 }
 
@@ -352,11 +379,11 @@ export function signUpEmpty(errorMessage) {
   };
 }
 
-export function updateUser(id, screenName, email, isPrivate, description) {
+export function updateUser(id, screenName, email, isPrivate, isProtected, description) {
   return {
     type: ActionTypes.UPDATE_USER,
     apiRequest: Api.updateUser,
-    payload: {id, screenName, email, isPrivate, description},
+    payload: {id, screenName, email, isPrivate, isProtected, description},
   };
 }
 
@@ -492,13 +519,6 @@ export function updateGroupPicture(groupName, file) {
   };
 }
 
-export function managedGroups() {
-  return {
-    type: ActionTypes.MANAGED_GROUPS,
-    apiRequest: Api.getManagedGroups
-  };
-}
-
 export function acceptGroupRequest(groupName, userName) {
   return {
     type: ActionTypes.ACCEPT_GROUP_REQUEST,
@@ -631,5 +651,19 @@ export function getBestOf(offset) {
 export function resetSettingsForms() {
   return {
     type: ActionTypes.RESET_SETTINGS_FORMS
+  };
+}
+
+export function realtimeSubscribe(subsType, id) {
+  return {
+    type: ActionTypes.REALTIME_SUBSCRIBE,
+    subsType,
+    id,
+  };
+}
+
+export function realtimeUnsubscribe() {
+  return {
+    type: ActionTypes.REALTIME_UNSUBSCRIBE
   };
 }

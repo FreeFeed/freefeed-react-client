@@ -28,7 +28,7 @@ function selectState(state, ownProps) {
   const errorString = state.usernameSubscriptions.errorString;
 
   const isMyPage = state.user.username === username;
-  const subscribersUsernames = state.usernameSubscribers.payload.map(user => user.username);
+  const subscribersUsernames = state.usernameSubscribers.payload && state.usernameSubscribers.payload.map(user => user.username);
 
   const listSections = [
     {title: 'Users', users: []},

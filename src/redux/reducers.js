@@ -161,15 +161,6 @@ export function signUpForm(state=INITIAL_SIGN_UP_FORM_STATE, action) {
   return state;
 }
 
-export function serverError(state = false, action) {
-  switch (action.type) {
-    case ActionTypes.SERVER_ERROR: {
-      return true;
-    }
-  }
-  return state;
-}
-
 const CREATE_POST_ERROR = 'Something went wrong while creating the post...';
 
 export function createPostViewState(state = {}, action) {
@@ -447,12 +438,14 @@ export function postsViewState(state = {}, action) {
       return { ...state, [id]: { ...state[id], isError, errorString} };
     }
     case ActionTypes.TOGGLE_COMMENTING: {
-      return {...state,
-        [action.postId] : {
+      return {
+        ...state,
+        [action.postId]: {
           ...state[action.postId],
-          isCommenting:!state[action.postId].isCommenting,
-          newCommentText: state[action.postId].newCommentText || '' }
-        };
+          isCommenting: !state[action.postId].isCommenting,
+          newCommentText: state[action.postId].newCommentText || ''
+        }
+      };
     }
     case ActionTypes.UPDATE_COMMENTING_TEXT: {
       const postState = state[action.postId];
@@ -548,74 +541,17 @@ export function postsViewState(state = {}, action) {
       }
     }
     */
-    case request(ActionTypes.LIKE_POST): {
-      const post = state[action.payload.postId];
-      return {...state,
-        [post.id] : {
-          ...post,
-          isLiking: true,
-        }};
-    }
-    case response(ActionTypes.LIKE_POST): {
-      const post = state[action.request.postId];
-      return {...state,
-        [post.id] : {
-          ...post,
-          isLiking: false,
-          omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes + 1 : 0)
-        }
-      };
-    }
-    case fail(ActionTypes.LIKE_POST): {
-      const post = state[action.request.postId];
-      const errorString = 'Something went wrong while liking the post...';
-      return {...state,
-        [post.id] : {
-          ...post,
-          isLiking: false,
-          likeError: errorString,
-        }
-      };
-    }
-    case request(ActionTypes.UNLIKE_POST): {
-      const post = state[action.payload.postId];
-      return {...state,
-        [post.id] : {
-          ...post,
-          isLiking: true,
-        }};
-    }
-    case response(ActionTypes.UNLIKE_POST): {
-      const post = state[action.request.postId];
-      return {...state,
-        [post.id] : {
-          ...post,
-          isLiking: false,
-          omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes - 1 : 0)
-        }
-      };
-    }
+
     case ActionTypes.REALTIME_LIKE_REMOVE: {
-      const post = state[action.postId];
+      const {postId, isLikeVisible} = action;
+      const post = state[postId];
       if (!post) {
         return state;
       }
       return {...state,
         [post.id] : {
           ...post,
-          isLiking: false,
-          omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes - 1 : 0)
-        }
-      };
-    }
-    case fail(ActionTypes.UNLIKE_POST): {
-      const post = state[action.request.postId];
-      const errorString = 'Something went wrong while un-liking the post...';
-      return {...state,
-        [post.id] : {
-          ...post,
-          isLiking: false,
-          likeError: errorString,
+          omittedLikes: isLikeVisible ? post.omittedLikes : Math.max(0, post.omittedLikes - 1),
         }
       };
     }
@@ -881,70 +817,121 @@ export function posts(state = {}, action) {
         }
       };
     }
-    case response(ActionTypes.LIKE_POST): {
-      const post = state[action.request.postId];
-      const likeAlreadyAdded = post.likes && post.likes.indexOf(action.request.userId)!==-1;
-      if (likeAlreadyAdded) {
+
+    // Likes
+
+    case ActionTypes.CLEAN_LIKE_ERROR: {
+      const {postId} = action;
+      const post = state[postId];
+      if (!post || !post.likeError) {
         return state;
       }
       return {...state,
-        [post.id] : {
+        [postId] : {
           ...post,
-          likes: [action.request.userId, ...(post.likes || [])],
-          omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes + 1 : 0)
+          likeError: null,
         }
       };
     }
+
+    case ActionTypes.LIKE_POST_OPTIMISTIC: {
+      const {postId, userId} = action.payload;
+      const post = state[postId];
+      if (_.includes(post.likes, userId)) {
+        return state;
+      }
+      return {...state,
+        [postId] : {
+          ...post,
+          likeError: null,
+          likes: [userId, ...post.likes],
+        }
+      };
+    }
+    case fail(ActionTypes.LIKE_POST): {
+      const {postId, userId} = action.request;
+      const post = state[postId];
+      if (!_.includes(post.likes, userId)) {
+        return state;
+      }
+      return {...state,
+        [postId] : {
+          ...post,
+          likeError: `Cannot like post: ${action.payload.err}`,
+          likes: _.without(post.likes, userId),
+        }
+      };
+    }
+
+    case ActionTypes.UNLIKE_POST_OPTIMISTIC: {
+      const {postId, userId} = action.payload;
+      const post = state[postId];
+      if (!_.includes(post.likes, userId)) {
+        return state;
+      }
+      return {...state,
+        [postId] : {
+          ...post,
+          likeError: null,
+          likes: _.without(post.likes, userId),
+        }
+      };
+    }
+    case fail(ActionTypes.UNLIKE_POST): {
+      const {postId, userId} = action.request;
+      const post = state[postId];
+      if (_.includes(post.likes, userId)) {
+        return state;
+      }
+      return {...state,
+        [postId] : {
+          ...post,
+          likeError: `Cannot unlike post: ${action.payload.err}`,
+          likes: [userId, ...post.likes],
+        }
+      };
+    }
+
     case ActionTypes.REALTIME_LIKE_NEW: {
-      const post = state[action.postId];
+      const {postId, users: [{id: userId}]} = action;
+      const post = state[postId];
       if ((!post && !action.post)) {
         return state;
       }
 
       const postToAct = post || postParser(action.post.posts);
 
-      if (postToAct.likes && postToAct.likes.indexOf(action.users[0].id) !== -1) {
+      if (postToAct.likes && _.includes(postToAct.likes, userId)) {
         return {
           ...state,
           [postToAct.id]: postToAct
         };
       }
 
-      const likes = action.iLiked ? [postToAct.likes[0], action.users[0].id, ...postToAct.likes.slice(1)]
-                                  : [action.users[0].id, ...(postToAct.likes || [])];
+      const likes = action.iLiked ? [postToAct.likes[0], userId, ...postToAct.likes.slice(1)]
+                                  : [userId, ...(postToAct.likes || [])];
 
       return {
         ...state,
-        [postToAct.id] : {
-          ...postToAct,
-          likes,
-          omittedLikes: (postToAct.omittedLikes > 0 ? postToAct.omittedLikes + 1 : 0)
-        }
+        [postToAct.id] : {...postToAct, likes}
       };
     }
-    case response(ActionTypes.UNLIKE_POST): {
-      const post = state[action.request.postId];
-      return {...state,
-        [post.id] : {
-          ...post,
-          likes: _.without(post.likes, action.request.userId),
-          omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes - 1 : 0)
-        }
-      };
-    }
+
     case ActionTypes.REALTIME_LIKE_REMOVE: {
-      const post = state[action.postId];
+      const {postId, userId, isLikeVisible} = action;
+      const post = state[postId];
       if (!post) {
         return state;
       }
+
+      const likes = _.without(post.likes, userId);
+      const omittedLikes = isLikeVisible ? post.omittedLikes : Math.max(0, post.omittedLikes - 1);
+
       return {...state,
-        [post.id] : {
-          ...post,
-          likes: _.without(post.likes, action.userId),
-          omittedLikes: (post.omittedLikes > 0 ? post.omittedLikes - 1 : 0)
-        }
+        [post.id] : {...post, likes, omittedLikes}
       };
     }
+
     case response(ActionTypes.HIDE_POST): {
       const post = state[action.request.postId];
       return {...state,
@@ -1306,6 +1293,12 @@ export function user(state = initUser(), action) {
           action.request.id
         ]
       };
+    }
+    case response(ActionTypes.DIRECTS_ALL_READ): {
+      return {...state, unreadDirectsNumber: 0 };
+    }
+    case ActionTypes.REALTIME_USER_UPDATE: {
+      return {...state, ...action.user};
     }
     case response(ActionTypes.BAN): {
       return {...state, banIds: [...state.banIds, action.request.id]};
@@ -1829,8 +1822,8 @@ const removeItemFromGroupRequests = (state, action) => {
 
 export function managedGroups(state = [], action) {
   switch (action.type) {
-    case response(ActionTypes.MANAGED_GROUPS): {
-      return action.payload.map(userParser).map(group => {
+    case response(ActionTypes.WHO_AM_I): {
+      return action.payload.managedGroups.map(userParser).map(group => {
         group.requests = group.requests.map(userParser);
         return {...group};
       });
@@ -1846,7 +1839,7 @@ export function managedGroups(state = [], action) {
       return state;
     }
     case ActionTypes.UNAUTHENTICATED: {
-      return {};
+      return [];
     }
   }
 
@@ -1898,8 +1891,8 @@ export function sentRequests(state = [], action) {
 
 export function groupRequestsCount(state = 0, action) {
   switch (action.type) {
-    case response(ActionTypes.MANAGED_GROUPS): {
-      return action.payload.reduce((acc, group) => {
+    case response(ActionTypes.WHO_AM_I): {
+      return action.payload.managedGroups.reduce((acc, group) => {
         return acc + group.requests.length;
       }, 0);
     }
@@ -2028,5 +2021,17 @@ export function userViews(state = {}, action) {
     }
   }
 
+  return state;
+}
+
+export function realtimeSubscription(state = {type: null, id: null}, action) {
+  switch (action.type) {
+    case response(ActionTypes.REALTIME_SUBSCRIBE): {
+      return {...state, type: action.subsType, id: action.id};
+    }
+    case response(ActionTypes.REALTIME_UNSUBSCRIBE): {
+      return {...state, type: null, id: null};
+    }
+  }
   return state;
 }

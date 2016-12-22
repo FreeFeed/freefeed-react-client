@@ -12,6 +12,7 @@ export default class GroupSettingsForm extends React.Component {
       screenName: this.props.group.screenName,
       description: this.props.group.description,
       isPrivate: this.props.group.isPrivate,
+      isProtected: this.props.group.isProtected,
       isRestricted:  this.props.group.isRestricted,
       isWarningDisplayed: false
     };
@@ -23,6 +24,7 @@ export default class GroupSettingsForm extends React.Component {
         screenName: newProps.group.screenName,
         description: newProps.group.description,
         isPrivate: newProps.group.isPrivate,
+        isProtected: newProps.group.isProtected,
         isRestricted: newProps.group.isRestricted,
         isWarningDisplayed: false
       });
@@ -39,9 +41,8 @@ export default class GroupSettingsForm extends React.Component {
     const newState = {
       ...privacySettings,
       isWarningDisplayed: (
-        this.props.group.isPrivate == 1 &&
-        privacySettings.hasOwnProperty('isPrivate') &&
-        privacySettings.isPrivate == 0
+        this.props.group.isPrivate === '1' &&
+        privacySettings.isPrivate === '0'
       )
     };
     this.setState(newState);
@@ -70,6 +71,7 @@ export default class GroupSettingsForm extends React.Component {
           <textarea id="description" className="form-control" name="description" value={this.state.description} onChange={this.handleChange('description')} maxLength="1500"/>
         </div>
         <GroupFeedTypePicker isPrivate={this.state.isPrivate}
+                             isProtected={this.state.isProtected}
                              isRestricted={this.state.isRestricted}
                              updateGroupPrivacySettings={this.handlePrivacyTypeChange} />
         <p>
@@ -82,7 +84,9 @@ export default class GroupSettingsForm extends React.Component {
         </p>
         {this.state.isWarningDisplayed ? (
           <div className="alert alert-warning" role="alert">
-            You are about to change the group type from private to public. It means anyone will be able to read its posts and comments, which are only available to group members now.
+            You are about to change the group type from private to {this.state.isProtected === '1' ? 'protected' : 'public'}.
+            It means {this.state.isProtected === '1' ? 'any FreeFeed user' : 'anyone'} will be able to read its posts and comments,
+            which are only available to group members now.
           </div>
         ) : false}
         {this.props.status === 'success' ? (

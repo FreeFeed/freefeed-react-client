@@ -83,8 +83,7 @@ function signUpFunc(props) {
   }
 }
 
-function Signup(props) {
-  return (
+const Signup = (props) => (
   <div className='box'>
     <div className='box-header-timeline'>
       Hello
@@ -144,6 +143,6 @@ function Signup(props) {
     <div className='box-footer'>
     </div>
   </div>
-);}
+);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Signup);

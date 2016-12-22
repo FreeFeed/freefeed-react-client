@@ -1,15 +1,24 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+import {StickyContainer, Sticky} from 'react-sticky';
 import _ from 'lodash';
 
 import {preventDefault} from '../utils';
 import PostComment from './post-comment';
 import MoreCommentsWrapper from './more-comments-wrapper';
 
+const minCommentsToFold = 12;
+
 export default class PostComments extends React.Component {
 
   constructor(props) {
     super(props);
     this.addingCommentForm = null;
+    this.rootEl = null;
+    this.state = {
+      // true if user manually fold expanded comments
+      folded: false,
+    };
   }
 
   openAnsweringComment = (answerText) => {
@@ -77,6 +86,7 @@ export default class PostComments extends React.Component {
       <PostComment
         key={comment.id}
         {...comment}
+        omitBubble={comment.omitBubble && !this.state.folded}
         entryUrl={props.entryUrl}
         openAnsweringComment={this.openAnsweringComment}
         isModeratingComments={props.post.isModeratingComments}
@@ -87,30 +97,83 @@ export default class PostComments extends React.Component {
     );
   }
 
+  fold = () => this.setState({folded: true})
+
+  showMoreComments = () => {
+    if (this.state.folded) {
+      this.setState({folded: false});
+    } else {
+      this.props.showMoreComments(this.props.post.id);
+    }
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (this.state.folded && newProps.post.omittedComments > 0) {
+      this.setState({folded: false});
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.folded && !prevState.folded) {
+      const linkEl = this.rootEl.querySelector('.more-comments-wrapper');
+      const top = linkEl.getBoundingClientRect().top - 8;
+      if (top < 0) {
+        window.scrollBy(0, top);
+      }
+    }
+  }
+
+  renderMiddle() {
+    const {post, comments, entryUrl, isSinglePost} = this.props;
+    const {folded} = this.state;
+
+    const totalComments = comments.length + post.omittedComments;
+    const foldedCount = folded ? comments.length - 2 : post.omittedComments;
+
+    const showExpand = !isSinglePost && (folded || post.omittedComments > 0);
+    const showFold = !isSinglePost && !showExpand && totalComments >= minCommentsToFold;
+
+    const middleComments = folded ? [] : comments.slice(1, comments.length - 1).map((c, i) => this.renderComment(withBackwardNumber(c, totalComments - i - 1)));
+
+    if (showExpand) {
+      return (
+        <MoreCommentsWrapper
+          omittedComments={foldedCount}
+          showMoreComments={this.showMoreComments}
+          entryUrl={entryUrl}
+          isLoading={post.isLoadingComments}/>
+      );
+    }
+
+    if (showFold) {
+      return (
+        <StickyContainer>
+          <Sticky stickyClassName="fold-comments-sticky" className="fold-comments">
+            <i className="fa fa-chevron-up"/>
+            <a onClick={this.fold}>Fold comments</a>
+          </Sticky>
+          {middleComments}
+        </StickyContainer>
+      );
+    }
+
+    return middleComments;
+  }
+
   render() {
-    const props = this.props;
-    const totalComments = props.comments.length + props.post.omittedComments;
-    const first = withBackwardNumber(props.comments[0], totalComments);
-    const last = withBackwardNumber(props.comments.length > 1 && props.comments[props.comments.length - 1], 1);
-    const middle = props.comments.slice(1, props.comments.length - 1).map((c, i) => this.renderComment(withBackwardNumber(c, totalComments - i - 1)));
-    const showOmittedNumber = props.post.omittedComments > 0;
-    const showMoreComments = () => props.showMoreComments(props.post.id);
-    const canAddComment = (!props.post.commentsDisabled || props.post.isEditable);
+    const {post, comments} = this.props;
+    const totalComments = comments.length + post.omittedComments;
+    const first = withBackwardNumber(comments[0], totalComments);
+    const last = withBackwardNumber(comments.length > 1 && comments[comments.length - 1], 1);
+    const canAddComment = (!post.commentsDisabled || post.isEditable);
 
     return (
-      <div className="comments">
+      <div className="comments" ref={(el) => this.rootEl = el ? ReactDOM.findDOMNode(el) : null}>
         {first ? this.renderComment(first) : false}
-        {middle}
-        {showOmittedNumber
-          ? <MoreCommentsWrapper
-              omittedComments={props.post.omittedComments}
-              showMoreComments={showMoreComments}
-              entryUrl={props.entryUrl}
-              isLoading={props.post.isLoadingComments}/>
-          : false}
+        {this.renderMiddle()}
         {last ? this.renderComment(last) : false}
         {canAddComment
-          ? (props.post.isCommenting
+          ? (post.isCommenting
               ? this.renderAddingComment()
               : this.renderAddCommentLink())
           : false}
