@@ -21,7 +21,7 @@ export function getWhoAmI() {
 
 export function getHome({offset}) {
   return fetch(
-    `${apiConfig.host}/v1/timelines/home?offset=${offset}`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/home?offset=${offset}`, getRequestOptions());
 }
 
 export function getDiscussions({offset}) {
