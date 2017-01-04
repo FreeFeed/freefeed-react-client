@@ -26,17 +26,17 @@ export function getHome({offset}) {
 
 export function getDiscussions({offset}) {
   return fetch(
-    `${apiConfig.host}/v1/timelines/filter/discussions?offset=${offset}`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/filter/discussions?offset=${offset}`, getRequestOptions());
 }
 
 export function getDirect({offset}) {
   return fetch(
-    `${apiConfig.host}/v1/timelines/filter/directs?offset=${offset}`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/filter/directs?offset=${offset}`, getRequestOptions());
 }
 
 export function getUserFeed({username, offset}) {
   return fetch(
-    `${apiConfig.host}/v1/timelines/${username}?offset=${offset}`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/${username}?offset=${offset}`, getRequestOptions());
 }
 
 export function getLikesOnly({postId, commentsExpanded}) {
@@ -353,11 +353,11 @@ export const sendSubscriptionRequest = userAction('sendRequest');
 
 
 export function getUserComments({username, offset}) {
-  return fetch(`${apiConfig.host}/v1/timelines/${username}/comments?offset=${offset}`, getRequestOptions());
+  return fetch(`${apiConfig.host}/v2/timelines/${username}/comments?offset=${offset}`, getRequestOptions());
 }
 
 export function getUserLikes({username, offset}) {
-  return fetch(`${apiConfig.host}/v1/timelines/${username}/likes?offset=${offset}`, getRequestOptions());
+  return fetch(`${apiConfig.host}/v2/timelines/${username}/likes?offset=${offset}`, getRequestOptions());
 }
 
 export function getSubscribers({username}) {
