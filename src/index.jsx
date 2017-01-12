@@ -94,13 +94,6 @@ const subscribersSubscriptionsActions = next => {
   store.dispatch(ActionCreators.subscriptions(username));
 };
 
-// needed to mark all directs as read
-const directsActions = next => {
-  store.dispatch(ActionCreators.markAllDirectsAsRead());
-  store.dispatch(ActionCreators.direct(+next.location.query.offset || 0));
-};
-
-
 const enterStaticPage = title => () => {
   store.dispatch(ActionCreators.staticPage(title));
 };
@@ -132,7 +125,7 @@ ReactDOM.render(
         <Route path='settings' component={Settings} onEnter={enterStaticPage('Settings')}/>
         <Route name='groupSettings' path='/:userName/settings' component={GroupSettings} {...generateRouteHooks(boundRouteActions('getUserInfo'))}/>
         <Route name='discussions' path='filter/discussions' component={Discussions} {...generateRouteHooks(boundRouteActions('discussions'))}/>
-        <Route name='direct' path='filter/direct' component={Discussions} onEnter={directsActions}/>
+        <Route name='direct' path='filter/direct' component={Discussions} {...generateRouteHooks(boundRouteActions('direct'))}/>
         <Route name='search' path='search' component={SearchFeed} {...generateRouteHooks(boundRouteActions('search'))}/>
         <Route name='best_of' path='filter/best_of' component={BestOfFeed} {...generateRouteHooks(boundRouteActions('best_of'))}/>
         <Route name='groups' path='/groups' component={Groups} onEnter={enterStaticPage('Groups')}/>
