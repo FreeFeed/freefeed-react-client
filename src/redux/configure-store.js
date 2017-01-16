@@ -10,6 +10,7 @@ import {
   groupPictureLogicMiddleware,
   redirectionMiddleware,
   requestsMiddleware,
+  markDirectsAsReadMiddleware,
   realtimeMiddleware,
   dataFixMiddleware
 } from './middlewares';
@@ -27,6 +28,7 @@ const middleware = [
   groupPictureLogicMiddleware,
   redirectionMiddleware,
   requestsMiddleware,
+  markDirectsAsReadMiddleware,
   realtimeMiddleware
 ];
 
