@@ -26,7 +26,7 @@ export function getHome({offset}) {
 
 export function getDiscussions({offset}) {
   return fetch(
-    `${apiConfig.host}/v2/timelines/filter/discussions?offset=${offset}`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/filter/discussions?with-my-posts=yes&offset=${offset}`, getRequestOptions());
 }
 
 export function getDirect({offset}) {
