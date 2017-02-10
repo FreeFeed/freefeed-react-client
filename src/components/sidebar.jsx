@@ -151,7 +151,7 @@ const SideBarBookmarklet = () => (
       Bookmarklet
     </div>
     <div className='box-footer'>
-      Once added to your toolbar, this button will let you share web pages on your FreeFeed.
+      Once added to your toolbar, this button will let you share web pages on FreeFeed.
       You can even attach thumbnails of images from the page you share!
     </div>
     <div className='box-footer'>
@@ -160,6 +160,8 @@ const SideBarBookmarklet = () => (
       <a className="bookmarklet-button" href="BOOKMARKLET_PLACEHOLDER" onClick={preventDefault(() => false)}>Share on FreeFeed</a>
       {' '}
       to&nbsp;your toolbar.
+    </div>
+    <div className='box-footer'>There is also a <a href="https://chrome.google.com/webstore/detail/share-on-freefeed/dngijpbccpnbjlpjomjmlppfgmnnilah">Chrome Extension</a> for sharing on FreeFeed.
     </div>
   </div>
 );
