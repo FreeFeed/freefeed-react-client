@@ -161,7 +161,7 @@ const SideBarBookmarklet = () => (
       {' '}
       to&nbsp;your toolbar.
     </div>
-    <div className='box-footer'>There is also a <a href="https://chrome.google.com/webstore/detail/share-on-freefeed/dngijpbccpnbjlpjomjmlppfgmnnilah">Chrome Extension</a> for sharing on FreeFeed.
+    <div className='box-footer'>There is also a <a href="https://chrome.google.com/webstore/detail/share-on-freefeed/dngijpbccpnbjlpjomjmlppfgmnnilah"><span style={{textDecoration:'underline', cursor:'pointer'}}>Chrome Extension</span></a> for sharing on FreeFeed.
     </div>
   </div>
 );
