@@ -26,7 +26,7 @@ export function getHome({offset}) {
 
 export function getDiscussions({offset}) {
   return fetch(
-    `${apiConfig.host}/v2/timelines/filter/discussions?offset=${offset}`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/filter/discussions?with-my-posts=yes&offset=${offset}`, getRequestOptions());
 }
 
 export function getDirect({offset}) {
@@ -49,7 +49,7 @@ export function getLikesOnly({postId, commentsExpanded}) {
 
 export function getPost({postId, maxComments = '', maxLikes = ''}) {
   return fetch(
-    `${apiConfig.host}/v1/posts/${postId}?maxComments=${maxComments}&maxLikes=${maxLikes}`, getRequestOptions());
+    `${apiConfig.host}/v2/posts/${postId}?maxComments=${maxComments}&maxLikes=${maxLikes}`, getRequestOptions());
 }
 
 export function createPost({feeds, postText, attachmentIds, more}) {
