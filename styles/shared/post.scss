@@ -1,8 +1,21 @@
+$post-line-height: 20px;
+
+.post .expandable.folded {
+  margin-bottom: 8px;
+}
+
 .post {
   padding-top: 14px;
   padding-bottom: 14px;
   border-bottom: 1px solid #eee;
   line-height: 19px;
+  position: relative;
+
+  .post-header-real {
+    position: absolute;
+    left: 62px;
+    top: 14px;
+  }
 
   a {
     color: #555599;
@@ -20,6 +33,21 @@
     @media (max-width: 767px) { margin: 0 10px 3px 0; }
   }
 
+  .post-header {
+    font-size: 15px;
+    line-height: 20px;
+    margin-bottom: 2px;
+
+    a {
+      font-weight: bold;
+      color: #000088;
+    }
+
+    .post-recipient {
+      font-weight: 500;
+    }
+  }
+
   .post-body {
     margin-left: 63px;
     @media (max-width: 767px) { margin-left: 0; }
@@ -28,21 +56,6 @@
     font-size: 14px;
     line-height: 19px;
 
-    .post-header {
-      font-size: 15px;
-      line-height: 20px;
-      margin-bottom: 2px;
-
-      a {
-        font-weight: bold;
-        color: #000088;
-      }
-
-      .post-recipient {
-        font-weight: 500;
-      }
-    }
-
     .post-text {
       margin-bottom: 8px;
       word-wrap: break-word;
@@ -50,7 +63,22 @@
 
       color: #000;
       font-size: 16px;
-      line-height: 20px;
+      line-height: $post-line-height;
+
+      &.modern {
+        max-height: 5*$post-line-height;
+        overflow-y: hidden;
+        position: relative;
+        display: block;
+
+        .read-more {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          background-color: white;
+          padding: 0 4px 0 4px;
+        }
+      }
 
       a {
         color: #000088;
@@ -99,7 +127,7 @@
 
 // paragraph breaks
 .p-break {
-  height: 0.35em;
+  height: $post-line-height/2;
 }
 
 // "More" menu in post footer
@@ -195,14 +223,19 @@
   padding-bottom: 0;
   border-bottom: 0 none;
 
+  .post-header-real {
+    left: 87px;
+    top: 0;
+  }
+
+  .post-header {
+    font-size: 21px;
+    line-height: 26px;
+  }
+
   .post-body {
     margin-left: 88px;
     @media (max-width: 767px) { margin-left: 0; }
-
-    .post-header {
-      font-size: 21px;
-      line-height: 26px;
-    }
 
     .post-text {
       @media (max-width: 767px) { min-height: 50px; }
@@ -264,18 +297,18 @@
       overflow: hidden;
 
       &.folded::after {
-        content: ""; 
-        position: absolute; 
-        bottom: 0; 
-        left: 0; 
-        right: 0; 
-        height: 40px; 
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 40px;
         pointer-events:none;
 
         @mixin grad($color) {
           $gradArgs: rgba($color, 0) 0%, rgba($color, 0.2) 25%, rgba($color, 0.8) 75%, rgba($color, 1) 100%;
-          background: -webkit-linear-gradient($gradArgs); 
-          background: -o-linear-gradient($gradArgs); 
+          background: -webkit-linear-gradient($gradArgs);
+          background: -o-linear-gradient($gradArgs);
           background: linear-gradient($gradArgs);
         }
 
@@ -283,20 +316,20 @@
 
         .timeline-post.direct-post & {
           @include grad(#eee);
-        } 
+        }
       }
     }
 
-    .preview-expand { 
-      margin-top: 8px; 
-      & > .fa { 
+    .preview-expand {
+      margin-top: 8px;
+      & > .fa {
         opacity: 0.5;
         cursor: pointer;
 
         &:hover {
           opacity: 1;
-        } 
-      } 
+        }
+      }
     }
   }
 
