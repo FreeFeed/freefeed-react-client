@@ -16,7 +16,8 @@ const PaginatedView = props => (
 const mapStateToProps = (state, ownProps) => {
   const offset = +state.routing.locationBeforeTransitions.query.offset || 0;
   const routename = getCurrentRouteName(ownProps);
-  return { offset, routename };
+  const isLastPage = state.feedViewState.isLastPage;
+  return { offset, routename, isLastPage };
 };
 
 const mapDispatchToProps = dispatch => ({

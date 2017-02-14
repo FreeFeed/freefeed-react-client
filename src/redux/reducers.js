@@ -197,7 +197,8 @@ export function createPostViewState(state = {}, action) {
 const initFeed = {
   visibleEntries: [],
   hiddenEntries: [],
-  isHiddenRevealed: false
+  isHiddenRevealed: false,
+  isLastPage: true,
 };
 
 const hidePostInFeed = function(state, postId) {
@@ -232,10 +233,12 @@ export function feedViewState(state = initFeed, action) {
     const visibleEntries = (action.payload.posts || []).filter(post => !post.isHidden).map(post => post.id);
     const hiddenEntries = (action.payload.posts || []).filter(post => post.isHidden).map(post => post.id);
     const isHiddenRevealed = false;
+    const isLastPage = action.payload.isLastPage;
     return {
       visibleEntries,
       hiddenEntries,
-      isHiddenRevealed
+      isHiddenRevealed,
+      isLastPage,
     };
   }
   if (ActionHelpers.isFeedFail(action)) {
