@@ -40,6 +40,7 @@ const config = {
         highlightComments: true
       },
       allowLinksPreview: false,
+      readMoreStyle: 'expandable',
       homefeed: {
         hideUsers: []
       }
