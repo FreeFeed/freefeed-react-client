@@ -51,7 +51,9 @@ html(lang='en')
     script.
       window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
       ga('create', 'UA-62517081-1', 'auto');
-      ga('require', 'autotrack');
+      ga('require', 'eventTracker');
+      ga('require', 'outboundLinkTracker');
+      ga('require', 'urlChangeTracker');
       ga('send', 'pageview');
     script(async src='https://www.google-analytics.com/analytics.js')
 
