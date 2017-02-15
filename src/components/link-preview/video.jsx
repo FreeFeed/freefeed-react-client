@@ -1,5 +1,6 @@
 import {parse as urlParse} from 'url';
 import {parse as queryParse} from 'querystring';
+import _ from 'lodash';
 import React from 'react';
 
 import ScrollSafe from './scroll-helpers/scroll-safe';
@@ -10,10 +11,12 @@ import * as aspectRatio from './scroll-helpers/size-cache';
 const YOUTUBE_VIDEO_RE = /^https?:\/\/(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?(?:v=|.+&v=)))([a-z0-9_-]+)/i;
 const VIMEO_VIDEO_RE = /^https:\/\/vimeo\.com\/([0-9]+)/i;
 const COUB_VIDEO_RE = /^https?:\/\/coub\.com\/view\/([a-z0-9]+)/i;
+const IMGUR_GIFV_RE = /^https?:\/\/i\.imgur\.com\/([a-z0-9]+)\.gifv/i;
 
 const T_YOUTUBE_VIDEO = 'T_YOUTUBE_VIDEO';
 const T_VIMEO_VIDEO = 'T_VIMEO_VIDEO';
 const T_COUB_VIDEO = 'T_COUB_VIDEO';
+const T_IMGUR_GIFV = 'T_IMGUR_GIFV';
 
 export function canShowURL(url) {
   return getVideoType(url) !== null;
@@ -29,7 +32,7 @@ class VideoPreview extends React.Component {
     player: false,
   };
 
-  loadPlayer = () => this.setState({player: true});
+  loadPlayer = () => this.setState({player: !this.state.player});
 
   loadInfo = async () => this.setState({info: await getVideoInfo(this.props.url)});
 
@@ -52,6 +55,16 @@ class VideoPreview extends React.Component {
     contentResized(this);
   }
 
+  renderPlayer() {
+    const {info} = this.state;
+    if (info.playerURL) {
+      return <iframe src={info.playerURL} frameBorder="0" allowFullScreen={true} />;
+    } else if (info.videoURL) {
+      return <video src={info.videoURL} poster={info.previewURL} autoPlay={true} loop={true}></video>;
+    }
+    return false;
+  }
+
   render() {
     const {url} = this.props;
     const {player, info} = this.state;
@@ -71,7 +84,7 @@ class VideoPreview extends React.Component {
       <div className="video-preview" style={{maxWidth: width}}>
         <div className="static-preview" style={previewStyle} onClick={this.loadPlayer}>
           {player ? (
-            <iframe src={info.playerURL} frameBorder="0" allowFullScreen={true} />
+            this.renderPlayer()
           ) : (
             <i className="fa fa-play-circle play-icon" />
           )}
@@ -92,6 +105,7 @@ function getVideoType(url) {
   if (YOUTUBE_VIDEO_RE.test(url)) { return T_YOUTUBE_VIDEO; }
   if (VIMEO_VIDEO_RE.test(url)) { return T_VIMEO_VIDEO; }
   if (COUB_VIDEO_RE.test(url)) { return T_COUB_VIDEO; }
+  if (IMGUR_GIFV_RE.test(url)) { return T_IMGUR_GIFV; }
   return null;
 }
 
@@ -100,6 +114,7 @@ function getVideoId(url) {
   if ((m = YOUTUBE_VIDEO_RE.exec(url))) { return m[1]; }
   if ((m = VIMEO_VIDEO_RE.exec(url))) { return m[1]; }
   if ((m = COUB_VIDEO_RE.exec(url))) { return m[1]; }
+  if ((m = IMGUR_GIFV_RE.exec(url))) { return m[1]; }
   return null;
 }
 
@@ -107,6 +122,7 @@ function getDefaultAspectRatio(url) {
   if (YOUTUBE_VIDEO_RE.test(url)) { return 9/16; }
   if (VIMEO_VIDEO_RE.test(url)) { return 9/16; }
   if (COUB_VIDEO_RE.test(url)) { return 1; }
+  if (IMGUR_GIFV_RE.test(url)) { return 9/16; }
   return null;
 }
 
@@ -158,6 +174,28 @@ async function getVideoInfo(url) {
         playerURL: `https://coub.com/embed/${getVideoId(url)}?autostart=true`,
       };
     }
+    case T_IMGUR_GIFV: {
+      const id = getVideoId(url);
+      const previewURL = `https://i.imgur.com/${id}h.jpg`;
+      try {
+        const [img, info] = await Promise.all([
+          loadImage(previewURL),
+          cachedFetch(`http://api.imgur.com/oembed.json?url=http://i.imgur.com/${id}`),
+        ]);
+        if (!info.html) {
+          throw new Error('Image does not exists at Imgur');
+        }
+        const byline = _.unescape(info.html.replace(/<[^>]+>/g, ''));
+        return {
+          byline,
+          previewURL,
+          aspectRatio: aspectRatio.set(url, img.height / img.width),
+          videoURL: `https://i.imgur.com/${id}.mp4`,
+        };
+      } catch (e) {
+        return {error: e.message};
+      }
+    }
   }
   return {error: 'unknown video type'};
 }
@@ -203,4 +241,13 @@ function ytSeconds(x) {
   }
 
   return 0;
+}
+
+function loadImage(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error('Cannot load image'));
+    img.src = url;
+  });
 }
