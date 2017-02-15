@@ -19,9 +19,12 @@ export default props => {
               className="p-pagination-newer">« Newer items</Link>
       </li>
       : false}
-    <li>
-      <Link to={{pathname: props.location.pathname, query: {...allQuery, ...offsetObject(maxOffset(props.offset))}}}
-            className="p-pagination-older">Older items »</Link>
+    {!props.isLastPage ?
+      <li>
+        <Link to={{pathname: props.location.pathname, query: {...allQuery, ...offsetObject(maxOffset(props.offset))}}}
+              className="p-pagination-older">Older items »</Link>
       </li>
+      : false
+    }
   </ul>);
 };
