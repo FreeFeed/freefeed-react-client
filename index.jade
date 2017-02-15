@@ -68,7 +68,7 @@ html(lang='en')
       })(window, document);
 
     if require('./src/config').default.sentry.publicDSN
-      script(src='https://cdn.ravenjs.com/3.7.0/raven.min.js')
-      script Raven.config('#{require('./src/config').default.sentry.publicDSN}').install();
+      script(src='https://cdn.ravenjs.com/3.10.0/raven.min.js')
+      script Raven.config('#{require('./src/config').default.sentry.publicDSN}', { autoBreadcrumbs: true }).install();
 
     script(src='[[ app-*.js ]]')
