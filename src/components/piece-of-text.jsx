@@ -103,7 +103,7 @@ export default class PieceOfText extends React.Component {
     super(props);
 
     this.state = {
-      isExpanded: !!props.isExpanded
+      isExpanded: !!props.isExpanded || props.readMoreStyle === 'modern'
     };
   }
 
