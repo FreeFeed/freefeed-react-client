@@ -10,25 +10,14 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(255,255,255,0.9);
+    background-color: white;
     box-shadow: 0 0 4px 8px rgba(255,255,255,0.9);
     cursor: pointer;
-    display: flex;
     line-height: 14px;
     .expand-button {
       font-size: 16px;
       color: #555599;
       font-style: italic;
-    }
-    &>* {
-      flex: 1;
-      text-align: center;
-      &:first-child {
-        text-align: left;
-      }
-      &:last-child {
-        text-align: right;
-      }
     }
   }
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
 import _ from 'lodash';
+import Portal from 'react-portal';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
 import {getUserInfo, updateFrontendPreferences} from '../redux/action-creators';
@@ -27,30 +28,35 @@ class UserCard extends React.Component {
 
   render() {
     const props = this.props;
+    const style = {top: `${this.props.top + 10}px`, left: `${this.props.left}px`};
 
     if (props.notFound) {
       return (
-        <div className="user-card">
-          <div className="user-card-info">
-            <div className="userpic loading"></div>
-            <div className="names">
-              User not found
+        <Portal isOpened={true}>
+          <div className="user-card" style={style}>
+            <div className="user-card-info">
+              <div className="userpic loading"></div>
+              <div className="names">
+                User not found
+              </div>
             </div>
           </div>
-        </div>
+        </Portal>
       );
     }
 
     if (!props.user.id) {
       return (
-        <div className="user-card">
-          <div className="user-card-info">
-            <div className="userpic loading"></div>
-            <div className="names">
-              <img width="16" height="16" src={throbber16}/>
+        <Portal isOpened={true}>
+          <div className="user-card" style={style}>
+            <div className="user-card-info">
+              <div className="userpic loading"></div>
+              <div className="names">
+                <img width="16" height="16" src={throbber16}/>
+              </div>
             </div>
           </div>
-        </div>
+        </Portal>
       );
     }
 
@@ -68,8 +74,8 @@ class UserCard extends React.Component {
       description = description + ' ' + (props.user.type === 'user' ? 'user' : 'group');
     }
 
-    return (
-      <div className="user-card">
+    return (<Portal isOpened={true}>
+      <div className="user-card" style={style}>
         <div className="user-card-info">
           <Link to={`/${props.user.username}`} className="userpic">
             <img src={props.user.profilePictureLargeUrl} width="75" height="75"/>
@@ -118,7 +124,7 @@ class UserCard extends React.Component {
           </div>
         ) : false}
       </div>
-    );
+    </Portal>);
   }
 }
 
