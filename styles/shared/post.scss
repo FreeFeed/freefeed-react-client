@@ -5,8 +5,7 @@ $post-line-height: 20px;
 }
 
 .post .expandable .expand-button {
-  margin-left: 63px;
-  @media (max-width: 767px) { margin-left: 0; }
+  @media (min-width: 767px) { margin-left: 63px; }
 }
 
 .post {
