@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
 
@@ -54,7 +55,9 @@ class UserName extends React.Component {
 
     setTimeout(() => {
       if (this.state.isHovered) {
-        this.setState({isCardOpen: true});
+        const {bottom, left} = ReactDOM.findDOMNode(this).getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        this.setState({bottom: bottom + scrollTop, left, isCardOpen: true});
       }
     }, 500);
 
@@ -78,6 +81,7 @@ class UserName extends React.Component {
   }
 
   render() {
+    const {bottom, left} = this.state;
     return (
       <div className="user-name-wrapper"
         onMouseEnter={this.enterUserName.bind(this)}
@@ -96,7 +100,7 @@ class UserName extends React.Component {
         </Link>
 
         {this.state.isCardOpen ? (
-          <UserCard username={this.props.user.username}/>
+          <UserCard username={this.props.user.username} top={bottom} left={left}/>
         ) : false}
       </div>
     );
