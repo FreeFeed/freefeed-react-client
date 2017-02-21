@@ -1,6 +1,8 @@
+$comment-line-height: 18px;
+
 .comments {
   font-size: 14px;
-  line-height: 18px;
+  line-height: $comment-line-height;
   clear: both;
 }
 
@@ -75,6 +77,10 @@
     font-style: italic;
   }
 
+  .expandable .expand-button {
+    margin-left: 0;
+  }
+
   &.highlighted {
     $hl-color: #D9EBFF;
     background-color: $hl-color;
@@ -90,6 +96,11 @@
       border: $border-width+1px solid $hl-color;
       border-radius: $border-width;
     }
+  }
+
+  // paragraph breaks
+  .p-break {
+    height: $comment-line-height/2;
   }
 }
 
