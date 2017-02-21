@@ -249,7 +249,7 @@ export default class Post extends React.Component {
                     headerHeight={31}
                     lineHeight={20}
                     maxLines={6}
-                    maxHeight={114}>
+                    maxHeight={109}>
           <div className="post-userpic">
             <Link to={`/${props.createdBy.username}`}>
               <img src={profilePicture} width={profilePictureSize} height={profilePictureSize}/>
