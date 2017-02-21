@@ -98,6 +98,7 @@ export default class PostComment extends React.Component {
     });
 
     const authorAndButtons = (<span>
+            {' -'}&nbsp;
             <UserName user={this.props.user}/>
             {this.props.isEditable ? (
               <span>
@@ -158,7 +159,7 @@ export default class PostComment extends React.Component {
       ) : (
         <div className="comment-body">
           <Expandable expanded={this.props.readMoreStyle === 'expandable'}
-                      leftPanel={authorAndButtons}
+                      bonusInfo={authorAndButtons}
                       lineHeight={18}
                       maxLines={3}
                       maxHeight={60}>
@@ -175,7 +176,7 @@ export default class PostComment extends React.Component {
                 leave: this.props.clearHighlightComment
               }}
             />
-            {' -'}&nbsp;{authorAndButtons}
+            {authorAndButtons}
           </Expandable>
         </div>
       )}

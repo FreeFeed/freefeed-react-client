@@ -27,9 +27,7 @@ export default class Expandable extends React.Component {
     return (<div className={cn} style={style}>
               {this.props.children}
               {!expanded && <div className="expand-panel" onClick={this.expand}>
-              <div>{this.props.leftPanel}</div>
-              <div className="expand-button">Read more</div>
-              <div>{this.props.rightPanel}</div>
+              <div className="expand-button">Read more {this.props.bonusInfo}</div>
               </div>}
             </div>);
   }

@@ -232,13 +232,6 @@ export default class Post extends React.Component {
     const linkToEmbed = getFirstLinkToEmbed(props.body);
     const noImageAttachments = !props.attachments.some(attachment => attachment.mediaType === 'image');
 
-    const header =  (<div className="post-header">
-                      <UserName className="post-author" user={props.createdBy}/>
-                      {recipients.length > 0 ? ' to ' : false}
-                      {recipients}
-                      {this.props.isInHomeFeed ? <PostVia post={this.props} me={this.props.user} /> : false}
-                    </div>);
-
     return (props.isRecentlyHidden ? (
       <div className="post recently-hidden-post">
         <i>Entry hidden - </i>
@@ -263,7 +256,12 @@ export default class Post extends React.Component {
             </Link>
           </div>
           <div className="post-body">
-            {header}
+            <div className="post-header">
+              <UserName className="post-author" user={props.createdBy}/>
+              {recipients.length > 0 ? ' to ' : false}
+              {recipients}
+              {this.props.isInHomeFeed ? <PostVia post={this.props} me={this.props.user} /> : false}
+            </div>
             {props.isEditing ? (
               <div className="post-editor">
                 <Dropzone
@@ -312,9 +310,6 @@ export default class Post extends React.Component {
             )}
             </div>
           </Expandable>
-          <div className="post-header-real">
-            {header}
-          </div>
 
           <div className="post-body">
           <PostAttachments
