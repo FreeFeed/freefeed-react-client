@@ -37,7 +37,8 @@ const config = {
       realtimeActive: false,
       comments: {
         omitRepeatedBubbles: true,
-        highlightComments: true
+        highlightComments: true,
+        hiddenTypes: []
       },
       allowLinksPreview: false,
       readMoreStyle: 'modern',
