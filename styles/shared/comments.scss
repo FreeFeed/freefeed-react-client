@@ -101,6 +101,17 @@ $comment-line-height: 18px;
       border-radius: $border-width;
     }
   }
+
+  &.is-hidden {
+    $hidden-color: #bbb;
+    .comment-body {
+      font-style: italic;
+      color: $hidden-color;
+    }
+    .comment-icon {
+      color: $hidden-color !important;
+    }
+  }
 }
 
 
