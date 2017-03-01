@@ -180,7 +180,7 @@ async function getVideoInfo(url) {
       try {
         const [img, info] = await Promise.all([
           loadImage(previewURL),
-          cachedFetch(`http://api.imgur.com/oembed.json?url=http://i.imgur.com/${id}`),
+          cachedFetch(`https://api.imgur.com/oembed.json?url=http://i.imgur.com/${id}`),
         ]);
         if (!info.html) {
           throw new Error('Image does not exists at Imgur');
