@@ -160,9 +160,9 @@ export default class PostComment extends React.Component {
         <div className="comment-body">
           <Expandable expanded={this.props.readMoreStyle === 'expandable'}
                       bonusInfo={authorAndButtons}
-                      lineHeight={20}
-                      maxLines={4}
-                      maxHeight={72}>
+                      lineHeight={17}
+                      breakHeight={9}
+                      maxLines={4}>
             <PieceOfText
               text={this.props.body}
               readMoreStyle={this.props.readMoreStyle}

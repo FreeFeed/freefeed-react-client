@@ -77,8 +77,9 @@ $comment-line-height: 18px;
     font-style: italic;
   }
 
-  .expandable .expand-button {
+  .expandable .expand-panel .expand-button {
     margin-left: 0;
+    font-size: 14px;
   }
 
   &.highlighted {
