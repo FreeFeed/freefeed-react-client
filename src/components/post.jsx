@@ -247,9 +247,9 @@ export default class Post extends React.Component {
       <div className={postClass} data-author={props.createdBy.username}>
         <Expandable expanded={props.isEditing || props.isSinglePost || props.readMoreStyle === 'expandable'}
                     headerHeight={31}
-                    lineHeight={20}
-                    maxLines={6}
-                    maxHeight={109}>
+                    lineHeight={18}
+                    breakHeight={10}
+                    maxLines={6}>
           <div className="post-userpic">
             <Link to={`/${props.createdBy.username}`}>
               <img src={profilePicture} width={profilePictureSize} height={profilePictureSize}/>
