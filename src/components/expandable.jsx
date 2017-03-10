@@ -73,7 +73,7 @@ function gatherContentLines(node, contentSelector, breakSelector) {
       res[res.length - 1].bottom = last.bottom > bottom ? last.bottom : bottom;
       res[res.length - 1].left = last.left < left ? last.left : left;
       res[res.length - 1].right = last.right > right ? last.right : right;
-    };
+    }
     return res;
   }, []);
 
