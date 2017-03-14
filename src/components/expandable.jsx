@@ -28,8 +28,8 @@ export default class Expandable extends React.Component {
     const style = {maxHeight: expanded ? "300vh" : `${this.state.maxHeight}px`};
     return (<div className={cn} style={style}>
               {this.props.children}
-              {!expanded && <div className="expand-panel" onClick={this.expand}>
-              <div className="expand-button"><i>Read more</i> {this.props.bonusInfo}</div>
+              {!expanded && <div className="expand-panel">
+              <div className="expand-button"><i onClick={this.expand}>Read more</i> {this.props.bonusInfo}</div>
               </div>}
             </div>);
   }

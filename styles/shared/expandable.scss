@@ -11,11 +11,13 @@
     left: 0;
     right: 0;
     background-color: white;
-    cursor: pointer;
     line-height: 20px;
     .expand-button {
       font-size: 16px;
       color: #555599;
+      i {
+        cursor: pointer;
+      }
     }
   }
 }
