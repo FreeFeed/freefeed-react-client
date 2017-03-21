@@ -9,6 +9,7 @@ import PieceOfText from './piece-of-text';
 import Expandable from './expandable';
 import UserName from './user-name';
 import TimeDisplay from './time-display';
+import {READMORE_STYLE_COMPACT} from '../utils/frontend-preferences-options';
 
 export default class PostComment extends React.Component {
   constructor(props) {
@@ -158,7 +159,7 @@ export default class PostComment extends React.Component {
         </div>
       ) : (
         <div className="comment-body">
-          <Expandable expanded={this.props.readMoreStyle === 'expandable'}
+          <Expandable expanded={this.props.readMoreStyle === READMORE_STYLE_COMPACT}
                       bonusInfo={authorAndButtons}
                       lineHeight={17}
                       breakHeight={9}

@@ -55,7 +55,7 @@ export default class UserFrontendPreferencesForm extends React.Component {
 
   changeReadMoreStyle = (event) => {
     this.setState({
-      readMoreStyle: event.target.checked ? 'modern' : 'expandable'
+      readMoreStyle: event.target.value
     });
   }
 
@@ -143,10 +143,28 @@ export default class UserFrontendPreferencesForm extends React.Component {
           </label>
         </div>
 
-        <div className="checkbox">
+        <p>Text display style:</p>
+
+        <div className="radio">
           <label>
-            <input type="checkbox" name="bubbles" value="1" checked={this.state.readMoreStyle !== 'expandable'} onChange={this.changeReadMoreStyle}/>
-              Use readmore-style with always expanded line breaks
+            <input
+              type="radio"
+              name="readmoreStyle"
+              value={FrontendPrefsOptions.READMORE_STYLE_COMPACT}
+              checked={this.state.readMoreStyle === FrontendPrefsOptions.READMORE_STYLE_COMPACT}
+              onChange={this.changeReadMoreStyle}/>
+            Compact (no line breaks)
+          </label>
+        </div>
+        <div className="radio">
+          <label>
+            <input
+              type="radio"
+              name="readmoreStyle"
+              value={FrontendPrefsOptions.READMORE_STYLE_COMFORT}
+              checked={this.state.readMoreStyle === FrontendPrefsOptions.READMORE_STYLE_COMFORT}
+              onChange={this.changeReadMoreStyle}/>
+            Comfortable (line breaks and Read More)
           </label>
         </div>
 
