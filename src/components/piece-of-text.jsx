@@ -1,6 +1,9 @@
 import React from 'react';
-import Linkify from './linkify';
+
 import {READMORE_STYLE_COMFORT} from '../utils/frontend-preferences-options';
+
+import Linkify from './linkify';
+
 
 // Texts longer than thresholdTextLength should be cut to shortenedTextLength
 const thresholdTextLength = 800;

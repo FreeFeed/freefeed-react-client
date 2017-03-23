@@ -5,11 +5,13 @@ import classnames from 'classnames';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
 import {preventDefault, confirmFirst} from '../utils';
+import {READMORE_STYLE_COMPACT} from '../utils/frontend-preferences-options';
+
 import PieceOfText from './piece-of-text';
 import Expandable from './expandable';
 import UserName from './user-name';
 import TimeDisplay from './time-display';
-import {READMORE_STYLE_COMPACT} from '../utils/frontend-preferences-options';
+
 
 export default class PostComment extends React.Component {
   constructor(props) {
