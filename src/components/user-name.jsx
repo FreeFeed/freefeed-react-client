@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
+import Portal from 'react-portal';
 
 import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
 import UserCard from './user-card';
@@ -48,6 +49,8 @@ class UserName extends React.Component {
       isHovered: false,
       isCardOpen: false
     };
+    this.enterUserName = this.enterUserName.bind(this)
+    this.leaveUserName = this.leaveUserName.bind(this)
   }
 
   enterUserName() {
@@ -84,8 +87,8 @@ class UserName extends React.Component {
     const {bottom, left} = this.state;
     return (
       <div className="user-name-wrapper"
-        onMouseEnter={this.enterUserName.bind(this)}
-        onMouseLeave={this.leaveUserName.bind(this)}>
+        onMouseEnter={this.enterUserName}
+        onMouseLeave={this.leaveUserName}>
 
         <Link to={`/${this.props.user.username}`} className={this.props.className}>
           {this.props.display ? (
@@ -100,7 +103,16 @@ class UserName extends React.Component {
         </Link>
 
         {this.state.isCardOpen ? (
-          <UserCard username={this.props.user.username} top={bottom} left={left}/>
+          <Portal isOpened={true}>
+            <div
+              onMouseEnter={this.enterUserName}
+              onMouseLeave={this.leaveUserName}>
+              <UserCard
+                username={this.props.user.username}
+                top={bottom}
+                left={left}/>
+            </div>
+          </Portal>
         ) : false}
       </div>
     );
