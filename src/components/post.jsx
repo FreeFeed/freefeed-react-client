@@ -17,6 +17,7 @@ import Dropzone from './dropzone';
 import PostMoreMenu from './post-more-menu';
 import TimeDisplay from './time-display';
 import LinkPreview from './link-preview/preview';
+import {READMORE_STYLE_COMPACT} from '../utils/frontend-preferences-options';
 
 export default class Post extends React.Component {
   constructor(props) {
@@ -245,7 +246,7 @@ export default class Post extends React.Component {
       </div>
     ) : (
       <div className={postClass} data-author={props.createdBy.username}>
-        <Expandable expanded={props.isEditing || props.isSinglePost || props.readMoreStyle === 'expandable'}
+        <Expandable expanded={props.isEditing || props.isSinglePost || props.readMoreStyle === READMORE_STYLE_COMPACT}
                     headerHeight={31}
                     lineHeight={18}
                     breakHeight={10}

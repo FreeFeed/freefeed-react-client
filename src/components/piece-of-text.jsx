@@ -1,5 +1,6 @@
 import React from 'react';
 import Linkify from './linkify';
+import {READMORE_STYLE_COMFORT} from '../utils/frontend-preferences-options';
 
 // Texts longer than thresholdTextLength should be cut to shortenedTextLength
 const thresholdTextLength = 800;
@@ -103,7 +104,7 @@ export default class PieceOfText extends React.Component {
     super(props);
 
     this.state = {
-      isExpanded: !!props.isExpanded || props.readMoreStyle === 'modern'
+      isExpanded: !!props.isExpanded || props.readMoreStyle === READMORE_STYLE_COMFORT
     };
   }
 
