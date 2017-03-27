@@ -53,6 +53,12 @@ export default class UserFrontendPreferencesForm extends React.Component {
     });
   }
 
+  changeReadMoreStyle = (event) => {
+    this.setState({
+      readMoreStyle: event.target.value
+    });
+  }
+
   chandeHideUsers = (event) => {
     this.setState({
       sHideUsers: event.target.value
@@ -116,6 +122,30 @@ export default class UserFrontendPreferencesForm extends React.Component {
           </label>
         </div>
 
+        <p style={{marginBottom: '20px'}}>Text display style:
+          <div className="radio">
+            <label>
+              <input
+                type="radio"
+                name="readmoreStyle"
+                value={FrontendPrefsOptions.READMORE_STYLE_COMPACT}
+                checked={this.state.readMoreStyle === FrontendPrefsOptions.READMORE_STYLE_COMPACT}
+                onChange={this.changeReadMoreStyle}/>
+              Compact: hides line breaks (until 'Expand' is clicked)
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <input
+                type="radio"
+                name="readmoreStyle"
+                value={FrontendPrefsOptions.READMORE_STYLE_COMFORT}
+                checked={this.state.readMoreStyle === FrontendPrefsOptions.READMORE_STYLE_COMFORT}
+                onChange={this.changeReadMoreStyle}/>
+              Comfortable: displays line breaks, shows 'Read more' for longer posts and comments
+            </label>
+          </div>
+        </p>
         <div className="checkbox">
           <label>
             <input type="checkbox" name="bubbles" value="1" checked={this.state.comments.omitRepeatedBubbles} onChange={this.changeOmitBubbles}/>
