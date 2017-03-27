@@ -6,20 +6,16 @@ import Textarea from 'react-textarea-autosize';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
 import {getFirstLinkToEmbed} from '../utils';
-import {READMORE_STYLE_COMPACT} from '../utils/frontend-preferences-options';
-
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
 import PostLikes from './post-likes';
 import PostVia from './post-via';
 import UserName from './user-name';
-import Expandable from './expandable';
 import PieceOfText from './piece-of-text';
 import Dropzone from './dropzone';
 import PostMoreMenu from './post-more-menu';
 import TimeDisplay from './time-display';
 import LinkPreview from './link-preview/preview';
-
 
 export default class Post extends React.Component {
   constructor(props) {
@@ -248,73 +244,64 @@ export default class Post extends React.Component {
       </div>
     ) : (
       <div className={postClass} data-author={props.createdBy.username}>
-        <Expandable expanded={props.isEditing || props.isSinglePost || props.readMoreStyle === READMORE_STYLE_COMPACT}
-                    headerHeight={31}
-                    lineHeight={18}
-                    breakHeight={10}
-                    maxLines={6}>
-          <div className="post-userpic">
-            <Link to={`/${props.createdBy.username}`}>
-              <img src={profilePicture} width={profilePictureSize} height={profilePictureSize}/>
-            </Link>
+        <div className="post-userpic">
+          <Link to={`/${props.createdBy.username}`}>
+            <img src={profilePicture} width={profilePictureSize} height={profilePictureSize}/>
+          </Link>
+        </div>
+        <div className="post-body">
+          <div className="post-header">
+            <UserName className="post-author" user={props.createdBy}/>
+            {recipients.length > 0 ? ' to ' : false}
+            {recipients}
+            {this.props.isInHomeFeed ? <PostVia post={this.props} me={this.props.user} /> : false}
           </div>
-          <div className="post-body">
-            <div className="post-header">
-              <UserName className="post-author" user={props.createdBy}/>
-              {recipients.length > 0 ? ' to ' : false}
-              {recipients}
-              {this.props.isInHomeFeed ? <PostVia post={this.props} me={this.props.user} /> : false}
-            </div>
-            {props.isEditing ? (
-              <div className="post-editor">
-                <Dropzone
-                  addAttachmentResponse={att => props.addAttachmentResponse(this.props.id, att)}
-                  addedFile={this.changeAttachmentQueue(1)}
-                  removedFile={this.changeAttachmentQueue(-1)}/>
 
-                <div>
-                  <Textarea
-                    className="post-textarea"
-                    defaultValue={props.editingText}
-                    onKeyDown={checkSave}
-                    onChange={editingPostTextChange}
-                    autoFocus={true}
-                    minRows={2}
-                    maxRows={10}
-                    maxLength="1500"/>
-                </div>
+          {props.isEditing ? (
+            <div className="post-editor">
+              <Dropzone
+                addAttachmentResponse={att => props.addAttachmentResponse(this.props.id, att)}
+                addedFile={this.changeAttachmentQueue(1)}
+                removedFile={this.changeAttachmentQueue(-1)}/>
 
-                <div className="post-edit-options">
-                  <span className="post-edit-attachments dropzone-trigger">
-                    <i className="fa fa-cloud-upload"></i>
-                    {' '}
-                    Add photos or files
+              <div>
+                <Textarea
+                  className="post-textarea"
+                  defaultValue={props.editingText}
+                  onKeyDown={checkSave}
+                  onChange={editingPostTextChange}
+                  autoFocus={true}
+                  minRows={2}
+                  maxRows={10}
+                  maxLength="1500"/>
+              </div>
+
+              <div className="post-edit-options">
+                <span className="post-edit-attachments dropzone-trigger">
+                  <i className="fa fa-cloud-upload"></i>
+                  {' '}
+                  Add photos or files
+                </span>
+              </div>
+
+              <div className="post-edit-actions">
+                {props.isSaving ? (
+                  <span className="post-edit-throbber">
+                    <img width="16" height="16" src={throbber16}/>
                   </span>
-                </div>
-
-                <div className="post-edit-actions">
-                  {props.isSaving ? (
-                    <span className="post-edit-throbber">
-                      <img width="16" height="16" src={throbber16}/>
-                    </span>
-                  ) : false}
-                  <a className="post-cancel" onClick={cancelEditingPost}>Cancel</a>
-                  <button className="btn btn-default btn-xs"
-                    onClick={saveEditingPost}
-                    disabled={this.state.attachmentQueueLength > 0}>Update</button>
-                </div>
+                ) : false}
+                <a className="post-cancel" onClick={cancelEditingPost}>Cancel</a>
+                <button className="btn btn-default btn-xs"
+                  onClick={saveEditingPost}
+                  disabled={this.state.attachmentQueueLength > 0}>Update</button>
               </div>
-            ) : (
-              <div className="post-text">
-                <PieceOfText  text={props.body}
-                              readMoreStyle={props.readMoreStyle}
-                              highlightTerms={props.highlightTerms}/>
-              </div>
-            )}
             </div>
-          </Expandable>
+          ) : (
+            <div className="post-text">
+              <PieceOfText text={props.body} highlightTerms={props.highlightTerms}/>
+            </div>
+          )}
 
-          <div className="post-body">
           <PostAttachments
             postId={props.id}
             attachments={props.attachments}
@@ -364,7 +351,6 @@ export default class Post extends React.Component {
             toggleCommenting={props.toggleCommenting}
             showMoreComments={props.showMoreComments}
             commentEdit={props.commentEdit}
-            readMoreStyle={props.readMoreStyle}
             entryUrl={`/${urlName}/${props.id}`}
             highlightTerms={props.highlightTerms}
             isSinglePost={props.isSinglePost}/>

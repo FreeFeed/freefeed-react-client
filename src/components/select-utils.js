@@ -124,7 +124,6 @@ export const joinPostData = state => postId => {
     .filter(user => user);
 
   const allowLinksPreview = state.user.frontendPreferences.allowLinksPreview;
-  const readMoreStyle = state.user.frontendPreferences.readMoreStyle;
 
   return {...post,
     createdBy,
@@ -135,8 +134,7 @@ export const joinPostData = state => postId => {
     comments,
     ...postViewState,
     isEditable,
-    allowLinksPreview,
-    readMoreStyle,
+    allowLinksPreview
   };
 };
 

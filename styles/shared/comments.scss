@@ -1,8 +1,6 @@
-$comment-line-height: 18px;
-
 .comments {
   font-size: 14px;
-  line-height: $comment-line-height;
+  line-height: 18px;
   clear: both;
 }
 
@@ -75,14 +73,6 @@ $comment-line-height: 18px;
 
   .add-comment-link {
     font-style: italic;
-  }
-
-  .expandable .expand-panel {
-    line-height: 18px;
-    .expand-button {
-      margin-left: 0;
-      font-size: 14px;
-    }
   }
 
   &.highlighted {

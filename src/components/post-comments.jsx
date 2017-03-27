@@ -93,7 +93,6 @@ export default class PostComments extends React.Component {
         {...props.commentEdit}
         highlightComment={authorUserName => props.commentEdit.highlightComment(props.post.id, authorUserName)}
         highlightArrowComment={arrows => props.commentEdit.highlightComment(props.post.id, undefined, arrows, comment.id)}
-        readMoreStyle={props.readMoreStyle}
         highlightTerms={props.highlightTerms}/>
     );
   }
