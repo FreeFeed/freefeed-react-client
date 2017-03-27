@@ -6,6 +6,8 @@ import Textarea from 'react-textarea-autosize';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
 import {getFirstLinkToEmbed} from '../utils';
+import {READMORE_STYLE_COMPACT} from '../utils/frontend-preferences-options';
+
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
 import PostLikes from './post-likes';
@@ -17,7 +19,7 @@ import Dropzone from './dropzone';
 import PostMoreMenu from './post-more-menu';
 import TimeDisplay from './time-display';
 import LinkPreview from './link-preview/preview';
-import {READMORE_STYLE_COMPACT} from '../utils/frontend-preferences-options';
+
 
 export default class Post extends React.Component {
   constructor(props) {
