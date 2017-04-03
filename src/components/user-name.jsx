@@ -48,12 +48,14 @@ class UserName extends React.Component {
       isHovered: false,
       isCardOpen: false
     };
+    this.enterUserName = this.enterUserName.bind(this);
+    this.leaveUserName = this.leaveUserName.bind(this);
   }
 
   enterUserName() {
     this.setState({isHovered: true});
 
-    setTimeout(() => {
+    this.enterTimeout = setTimeout(() => {
       if (this.state.isHovered) {
         const {bottom, left} = ReactDOM.findDOMNode(this).getBoundingClientRect();
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -69,7 +71,7 @@ class UserName extends React.Component {
   leaveUserName() {
     this.setState({isHovered: false});
 
-    setTimeout(() => {
+    this.leaveTimeout = setTimeout(() => {
       if (!this.state.isHovered) {
         this.setState({isCardOpen: false});
       }
@@ -104,6 +106,15 @@ class UserName extends React.Component {
         ) : false}
       </div>
     );
+  }
+
+  componentWillUnmount() {
+    if (this.enterTimeout) {
+      clearTimeout(this.enterTimeout);
+    }
+    if (this.leaveTimeout) {
+      clearTimeout(this.leaveTimeout);
+    }
   }
 }
 
