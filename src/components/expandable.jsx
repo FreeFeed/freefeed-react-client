@@ -2,6 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import classnames from "classnames";
 
+const DEFAULT_MAX_LINES = 8;
+const DEFAULT_ABOVE_FOLD_LINES = 5;
+
 export default class Expandable extends React.Component {
   constructor(props) {
     super(props);
@@ -29,7 +32,7 @@ export default class Expandable extends React.Component {
     return (<div className={cn} style={style}>
               {this.props.children}
               {!expanded && <div className="expand-panel">
-              <div className="expand-button"><i onClick={this.expand}>Read more</i> {this.props.bonusInfo}</div>
+              <div className="expand-button"><i onClick={this.expand}>↪ Read more</i> {this.props.bonusInfo}</div>
               </div>}
             </div>);
   }
@@ -39,11 +42,11 @@ export default class Expandable extends React.Component {
   }
 
   rewrap() {
-    const {maxLines} = this.props;
+    const {maxLines, aboveFoldLines} = this.props;
     const lines = gatherContentLines(ReactDOM.findDOMNode(this), ".Linkify", ".p-break");
-    const maxHeight = lines.length <= maxLines ? "5000": lines[maxLines-1].bottom;
+    const maxHeight = lines.length <= (maxLines || DEFAULT_MAX_LINES) ? "5000": lines[(aboveFoldLines || maxLines || DEFAULT_ABOVE_FOLD_LINES)].bottom;
     this.setState({maxHeight});
-    if (lines.length <= maxLines) {
+    if (lines.length <= (maxLines || DEFAULT_MAX_LINES)) {
       this.expand();
     }
   }
