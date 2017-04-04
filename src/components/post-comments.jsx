@@ -46,7 +46,6 @@ export default class PostComments extends React.Component {
         key={`${props.post.id}-comment-adding`}
         ref={(el) => this.addingCommentForm = el}
         isEditing={true}
-        isSinglePost={props.post.isSinglePost}
         editText={props.post.newCommentText}
         updateCommentingText={props.updateCommentingText}
         saveEditingComment={props.addComment}
@@ -88,6 +87,7 @@ export default class PostComments extends React.Component {
         {...comment}
         omitBubble={comment.omitBubble && !this.state.folded}
         entryUrl={props.entryUrl}
+        isSinglePost={this.props.isSinglePost}
         openAnsweringComment={this.openAnsweringComment}
         isModeratingComments={props.post.isModeratingComments}
         {...props.commentEdit}
