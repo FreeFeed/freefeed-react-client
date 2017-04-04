@@ -122,6 +122,30 @@ export default class UserFrontendPreferencesForm extends React.Component {
           </label>
         </div>
 
+        <p style={{marginBottom: '20px'}}>Text display style:
+          <div className="radio">
+            <label>
+              <input
+                type="radio"
+                name="readmoreStyle"
+                value={FrontendPrefsOptions.READMORE_STYLE_COMPACT}
+                checked={this.state.readMoreStyle === FrontendPrefsOptions.READMORE_STYLE_COMPACT}
+                onChange={this.changeReadMoreStyle}/>
+              Compact: hides line breaks (until 'Expand' is clicked)
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <input
+                type="radio"
+                name="readmoreStyle"
+                value={FrontendPrefsOptions.READMORE_STYLE_COMFORT}
+                checked={this.state.readMoreStyle === FrontendPrefsOptions.READMORE_STYLE_COMFORT}
+                onChange={this.changeReadMoreStyle}/>
+              Comfortable: displays line breaks, shows 'Read more' for longer posts and comments
+            </label>
+          </div>
+        </p>
         <div className="checkbox">
           <label>
             <input type="checkbox" name="bubbles" value="1" checked={this.state.comments.omitRepeatedBubbles} onChange={this.changeOmitBubbles}/>
@@ -140,31 +164,6 @@ export default class UserFrontendPreferencesForm extends React.Component {
           <label>
             <input type="checkbox" name="bubbles" value="1" checked={this.state.allowLinksPreview} onChange={this.changeAllowLinksPreview}/>
               Show advanced previews of links in posts (Embedly). Link should start with http(s)://, post should have no attached images. If you don't want to have link preview, add ! before a link without spaces.
-          </label>
-        </div>
-
-        <p>Text display style:</p>
-
-        <div className="radio">
-          <label>
-            <input
-              type="radio"
-              name="readmoreStyle"
-              value={FrontendPrefsOptions.READMORE_STYLE_COMPACT}
-              checked={this.state.readMoreStyle === FrontendPrefsOptions.READMORE_STYLE_COMPACT}
-              onChange={this.changeReadMoreStyle}/>
-            Compact (no line breaks)
-          </label>
-        </div>
-        <div className="radio">
-          <label>
-            <input
-              type="radio"
-              name="readmoreStyle"
-              value={FrontendPrefsOptions.READMORE_STYLE_COMFORT}
-              checked={this.state.readMoreStyle === FrontendPrefsOptions.READMORE_STYLE_COMFORT}
-              onChange={this.changeReadMoreStyle}/>
-            Comfortable (line breaks and Read More)
           </label>
         </div>
 
