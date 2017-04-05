@@ -7,6 +7,7 @@ import Textarea from 'react-textarea-autosize';
 import throbber16 from '../../assets/images/throbber-16.gif';
 import {getFirstLinkToEmbed} from '../utils';
 import {READMORE_STYLE_COMPACT} from '../utils/frontend-preferences-options';
+import {postReadmoreConfig} from '../utils/readmore-config';
 
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
@@ -19,7 +20,6 @@ import Dropzone from './dropzone';
 import PostMoreMenu from './post-more-menu';
 import TimeDisplay from './time-display';
 import LinkPreview from './link-preview/preview';
-
 
 export default class Post extends React.Component {
   constructor(props) {
@@ -249,8 +249,7 @@ export default class Post extends React.Component {
     ) : (
       <div className={postClass} data-author={props.createdBy.username}>
         <Expandable expanded={props.isEditing || props.isSinglePost || props.readMoreStyle === READMORE_STYLE_COMPACT}
-                    aboveFoldLines={5}
-                    maxLines={8}>
+                    config={postReadmoreConfig}>
           <div className="post-userpic">
             <Link to={`/${props.createdBy.username}`}>
               <img src={profilePicture} width={profilePictureSize} height={profilePictureSize}/>

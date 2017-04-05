@@ -4,6 +4,7 @@ import classnames from "classnames";
 
 const DEFAULT_MAX_LINES = 8;
 const DEFAULT_ABOVE_FOLD_LINES = 5;
+const DEFAULT_KEY = "default";
 
 export default class Expandable extends React.Component {
   constructor(props) {
@@ -43,7 +44,7 @@ export default class Expandable extends React.Component {
   }
 
   rewrap() {
-    const {maxLines, aboveFoldLines} = this.props;
+    const {maxLines, aboveFoldLines} = chooseLineCounts(this.props.config, window.innerWidth);
     const lines = gatherContentLines(ReactDOM.findDOMNode(this), ".Linkify", ".p-break");
     const shouldExpand = lines.length <= (maxLines || DEFAULT_MAX_LINES);
     const maxHeight = shouldExpand ? "5000": lines[(aboveFoldLines || maxLines || DEFAULT_ABOVE_FOLD_LINES)].bottom;
@@ -89,4 +90,10 @@ function gatherContentLines(node, contentSelector, breakSelector) {
       right: nodeClientRect.right - right,
     };
   });
+}
+
+function chooseLineCounts(config = {}, windowWidth) {
+  const breakpoints = Object.keys(config).filter(key=>key !== DEFAULT_KEY).map(Number).sort((a,b)=>a-b);
+  const breakpointToUse = breakpoints.filter(b => b >= windowWidth)[0] || DEFAULT_KEY;
+  return config[breakpointToUse] || {maxLines: DEFAULT_MAX_LINES, aboveFoldLines: DEFAULT_ABOVE_FOLD_LINES};
 }
