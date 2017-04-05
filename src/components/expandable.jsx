@@ -10,9 +10,10 @@ export default class Expandable extends React.Component {
     super(props);
     this.state = {
       expanded: false,
+      userExpanded: false,
       maxHeight: 5000,
     };
-    this.expand = this.expand.bind(this);
+    this.userExpand = this.userExpand.bind(this);
     this.rewrap = this.rewrap.bind(this);
   }
 
@@ -26,29 +27,27 @@ export default class Expandable extends React.Component {
   }
 
   render() {
-    const expanded = this.state.expanded || this.props.expanded;
+    const expanded = this.state.expanded || this.state.userExpanded || this.props.expanded;
     const cn = classnames(["expandable", {expanded: expanded, folded: !expanded}]);
     const style = {maxHeight: expanded ? "300vh" : `${this.state.maxHeight}px`};
     return (<div className={cn} style={style}>
               {this.props.children}
               {!expanded && <div className="expand-panel">
-              <div className="expand-button"><i onClick={this.expand}>↪ Read more</i> {this.props.bonusInfo}</div>
+              <div className="expand-button"><i onClick={this.userExpand}>↪ Read more</i> {this.props.bonusInfo}</div>
               </div>}
             </div>);
   }
 
-  expand() {
-    this.setState({expanded: true});
+  userExpand() {
+    this.setState({userExpanded: true});
   }
 
   rewrap() {
     const {maxLines, aboveFoldLines} = this.props;
     const lines = gatherContentLines(ReactDOM.findDOMNode(this), ".Linkify", ".p-break");
-    const maxHeight = lines.length <= (maxLines || DEFAULT_MAX_LINES) ? "5000": lines[(aboveFoldLines || maxLines || DEFAULT_ABOVE_FOLD_LINES)].bottom;
-    this.setState({maxHeight});
-    if (lines.length <= (maxLines || DEFAULT_MAX_LINES)) {
-      this.expand();
-    }
+    const shouldExpand = lines.length <= (maxLines || DEFAULT_MAX_LINES);
+    const maxHeight = shouldExpand ? "5000": lines[(aboveFoldLines || maxLines || DEFAULT_ABOVE_FOLD_LINES)].bottom;
+    this.setState({expanded: shouldExpand, maxHeight});
   }
 }
 
