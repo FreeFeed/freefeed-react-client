@@ -2,14 +2,19 @@ import React from "react";
 import ReactDOM from "react-dom";
 import classnames from "classnames";
 
+const DEFAULT_MAX_LINES = 8;
+const DEFAULT_ABOVE_FOLD_LINES = 5;
+const DEFAULT_KEY = "default";
+
 export default class Expandable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       expanded: false,
+      userExpanded: false,
       maxHeight: 5000,
     };
-    this.expand = this.expand.bind(this);
+    this.userExpand = this.userExpand.bind(this);
     this.rewrap = this.rewrap.bind(this);
   }
 
@@ -23,29 +28,27 @@ export default class Expandable extends React.Component {
   }
 
   render() {
-    const expanded = this.state.expanded || this.props.expanded;
+    const expanded = this.state.expanded || this.state.userExpanded || this.props.expanded;
     const cn = classnames(["expandable", {expanded: expanded, folded: !expanded}]);
     const style = {maxHeight: expanded ? "300vh" : `${this.state.maxHeight}px`};
     return (<div className={cn} style={style}>
               {this.props.children}
               {!expanded && <div className="expand-panel">
-              <div className="expand-button"><i onClick={this.expand}>Read more</i> {this.props.bonusInfo}</div>
+                <div className="expand-button"><i onClick={this.userExpand}><span className="expand-icon"><i className="fa fa-chevron-down"></i></span> Read more</i> {this.props.bonusInfo}</div>
               </div>}
             </div>);
   }
 
-  expand() {
-    this.setState({expanded: true});
+  userExpand() {
+    this.setState({userExpanded: true});
   }
 
   rewrap() {
-    const {maxLines} = this.props;
+    const {maxLines, aboveFoldLines} = chooseLineCounts(this.props.config, window.innerWidth);
     const lines = gatherContentLines(ReactDOM.findDOMNode(this), ".Linkify", ".p-break");
-    const maxHeight = lines.length <= maxLines ? "5000": lines[maxLines-1].bottom;
-    this.setState({maxHeight});
-    if (lines.length <= maxLines) {
-      this.expand();
-    }
+    const shouldExpand = lines.length <= (maxLines || DEFAULT_MAX_LINES);
+    const maxHeight = shouldExpand ? "5000": lines[(aboveFoldLines || maxLines || DEFAULT_ABOVE_FOLD_LINES)].bottom;
+    this.setState({expanded: shouldExpand, maxHeight});
   }
 }
 
@@ -87,4 +90,10 @@ function gatherContentLines(node, contentSelector, breakSelector) {
       right: nodeClientRect.right - right,
     };
   });
+}
+
+function chooseLineCounts(config = {}, windowWidth) {
+  const breakpoints = Object.keys(config).filter(key=>key !== DEFAULT_KEY).map(Number).sort((a,b)=>a-b);
+  const breakpointToUse = breakpoints.filter(b => b >= windowWidth)[0] || DEFAULT_KEY;
+  return config[breakpointToUse] || {maxLines: DEFAULT_MAX_LINES, aboveFoldLines: DEFAULT_ABOVE_FOLD_LINES};
 }

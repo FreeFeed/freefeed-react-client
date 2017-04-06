@@ -333,7 +333,13 @@ const POST_SAVE_ERROR = 'Something went wrong while editing the post...';
 const NEW_COMMENT_ERROR = 'Failed to add comment';
 
 const indexById = list => _.keyBy(list || [], 'id');
-const mergeByIds = (state, array) => ({...state, ...indexById(array)});
+const mergeByIds = (state, array) => {
+  const mergeMap = (array || []).reduce((res, obj) => {
+    res[obj.id] = !state[obj.id] ? obj : {...state[obj.id], ...obj};
+    return res;
+  }, {});
+  return {...state, ...mergeMap};
+};
 const initPostViewState = post => {
   const id = post.id;
 
@@ -1079,7 +1085,7 @@ export function comments(state = {}, action) {
       return updateCommentData(state, action);
     }
     case response(ActionTypes.SAVE_EDITING_COMMENT): {
-      return {...state, [action.payload.comments.id]: {...state[action.payload.comments.id], ...action.payload.comments}};
+      return {...state, [action.payload.comments.id]: {...state[action.payload.comments.id], ...action.payload.comments, isExpanded: true}};
     }
     case response(ActionTypes.DELETE_COMMENT): {
       return {...state, [action.request.commentId] : undefined};
@@ -1107,7 +1113,7 @@ export function comments(state = {}, action) {
     }
     case response(ActionTypes.ADD_COMMENT): {
       return {...state,
-        [action.payload.comments.id] : action.payload.comments
+        [action.payload.comments.id] : {...action.payload.comments, isExpanded: true}
       };
     }
   }

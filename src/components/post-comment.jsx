@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import throbber16 from '../../assets/images/throbber-16.gif';
 import {preventDefault, confirmFirst} from '../utils';
 import {READMORE_STYLE_COMPACT} from '../utils/frontend-preferences-options';
+import {commentReadmoreConfig} from '../utils/readmore-config';
 
 import PieceOfText from './piece-of-text';
 import Expandable from './expandable';
@@ -161,11 +162,9 @@ export default class PostComment extends React.Component {
         </div>
       ) : (
         <div className="comment-body">
-          <Expandable expanded={this.props.readMoreStyle === READMORE_STYLE_COMPACT}
+          <Expandable expanded={this.props.readMoreStyle === READMORE_STYLE_COMPACT || this.props.isSinglePost || this.props.isExpanded}
                       bonusInfo={authorAndButtons}
-                      lineHeight={17}
-                      breakHeight={9}
-                      maxLines={4}>
+                      config={commentReadmoreConfig}>
             <PieceOfText
               text={this.props.body}
               readMoreStyle={this.props.readMoreStyle}
