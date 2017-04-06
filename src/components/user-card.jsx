@@ -27,31 +27,28 @@ class UserCard extends React.Component {
 
   render() {
     const props = this.props;
+    const style = {top: `${this.props.top + 10}px`, left: `${this.props.left}px`};
 
     if (props.notFound) {
-      return (
-        <div className="user-card">
-          <div className="user-card-info">
-            <div className="userpic loading"></div>
-            <div className="names">
-              User not found
+      return (<div className="user-card" style={style}>
+            <div className="user-card-info">
+              <div className="userpic loading"></div>
+              <div className="names">
+                User not found
+              </div>
             </div>
-          </div>
-        </div>
-      );
+          </div>);
     }
 
     if (!props.user.id) {
-      return (
-        <div className="user-card">
-          <div className="user-card-info">
-            <div className="userpic loading"></div>
-            <div className="names">
-              <img width="16" height="16" src={throbber16}/>
+      return (<div className="user-card" style={style}>
+            <div className="user-card-info">
+              <div className="userpic loading"></div>
+              <div className="names">
+                <img width="16" height="16" src={throbber16}/>
+              </div>
             </div>
-          </div>
-        </div>
-      );
+          </div>);
     }
 
     let description;
@@ -69,7 +66,7 @@ class UserCard extends React.Component {
     }
 
     return (
-      <div className="user-card">
+      <div className="user-card" style={style}>
         <div className="user-card-info">
           <Link to={`/${props.user.username}`} className="userpic">
             <img src={props.user.profilePictureLargeUrl} width="75" height="75"/>
@@ -117,8 +114,7 @@ class UserCard extends React.Component {
 
           </div>
         ) : false}
-      </div>
-    );
+      </div>);
   }
 }
 

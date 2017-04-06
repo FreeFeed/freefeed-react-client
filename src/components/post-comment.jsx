@@ -5,9 +5,13 @@ import classnames from 'classnames';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
 import {preventDefault, confirmFirst} from '../utils';
+import {READMORE_STYLE_COMPACT} from '../utils/frontend-preferences-options';
+
 import PieceOfText from './piece-of-text';
+import Expandable from './expandable';
 import UserName from './user-name';
 import TimeDisplay from './time-display';
+
 
 export default class PostComment extends React.Component {
   constructor(props) {
@@ -96,6 +100,21 @@ export default class PostComment extends React.Component {
       'omit-bubble': this.props.omitBubble
     });
 
+    const authorAndButtons = (<span>
+            {' -'}&nbsp;
+            <UserName user={this.props.user}/>
+            {this.props.isEditable ? (
+              <span>
+                {' '}(<a onClick={preventDefault(()=>this.props.toggleEditingComment(this.props.id))}>edit</a>
+                &nbsp;|&nbsp;
+                <a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
+              </span>
+            ) : (this.props.isDeletable && this.props.isModeratingComments) ? (
+              <span>
+                {' '}(<a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
+              </span>
+            ) : false}</span>);
+
     return (
     <div className={className} data-author={this.props.isEditing ? '' : this.props.user.username}>
       <TimeDisplay className="comment-time" timeStamp={+this.props.createdAt} timeAgoInTitle={true}>
@@ -142,31 +161,26 @@ export default class PostComment extends React.Component {
         </div>
       ) : (
         <div className="comment-body">
-          <PieceOfText
-            text={this.props.body}
-            highlightTerms={this.props.highlightTerms}
-            userHover={{
-              hover: username => this.props.highlightComment(username),
-              leave: this.props.clearHighlightComment
-            }}
-            arrowHover={{
-              hover: arrows => this.props.highlightArrowComment(arrows),
-              leave: this.props.clearHighlightComment
-            }}
-          />
-          {' -'}&nbsp;
-          <UserName user={this.props.user}/>
-          {this.props.isEditable ? (
-            <span>
-              {' '}(<a onClick={preventDefault(()=>this.props.toggleEditingComment(this.props.id))}>edit</a>
-              &nbsp;|&nbsp;
-              <a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
-            </span>
-          ) : (this.props.isDeletable && this.props.isModeratingComments) ? (
-            <span>
-              {' '}(<a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
-            </span>
-          ) : false}
+          <Expandable expanded={this.props.readMoreStyle === READMORE_STYLE_COMPACT}
+                      bonusInfo={authorAndButtons}
+                      lineHeight={17}
+                      breakHeight={9}
+                      maxLines={4}>
+            <PieceOfText
+              text={this.props.body}
+              readMoreStyle={this.props.readMoreStyle}
+              highlightTerms={this.props.highlightTerms}
+              userHover={{
+                hover: username => this.props.highlightComment(username),
+                leave: this.props.clearHighlightComment
+              }}
+              arrowHover={{
+                hover: arrows => this.props.highlightArrowComment(arrows),
+                leave: this.props.clearHighlightComment
+              }}
+            />
+            {authorAndButtons}
+          </Expandable>
         </div>
       )}
     </div>

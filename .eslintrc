@@ -68,7 +68,7 @@
     "import/no-named-as-default": "error",
     "import/no-named-as-default-member": "error",
     "import/no-unresolved": "error",
-    "import/order": 1,
+    "import/order": "error",
 
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error"
