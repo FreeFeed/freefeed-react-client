@@ -166,11 +166,30 @@ const SideBarBookmarklet = () => (
   </div>
 );
 
+const SideBarArchive = ({user}) => {
+  if (!user.privateMeta.archives) {
+    return null;
+  }
+  return (
+    <div className='box'>
+      <div className='box-header-groups'>
+        Clio Archives
+      </div>
+      <div className='box-body'>
+        <ul>
+          <li><Link to='/settings/archive'>Restore your archive!</Link></li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
 const SideBar = ({user, signOut, recentGroups}) => {
   return (
     <div className='col-md-3 sidebar'>
       <LoggedInBlock user={user} signOut={signOut} />
       <SideBarFriends user={user} />
+      <SideBarArchive user={user} />
       <SideBarSearch user={user} />
       <SideBarGroups recentGroups={recentGroups} />
       <SideBarLinks />
