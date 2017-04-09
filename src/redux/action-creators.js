@@ -669,6 +669,12 @@ export function resetSettingsForms() {
   };
 }
 
+export function resetArchiveForms() {
+  return {
+    type: ActionTypes.RESET_ARCHIVE_FORMS
+  };
+}
+
 export function realtimeSubscribe(subsType, id) {
   return {
     type: ActionTypes.REALTIME_SUBSCRIBE,
