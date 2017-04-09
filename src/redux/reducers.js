@@ -1403,6 +1403,9 @@ function formState(reqActionType, resetActionType = '') {
   };
 }
 
+export const archiveActivityForm = formState(ActionTypes.ARCHIVE_ACTIVITY_REQUEST, ActionTypes.RESET_ARCHIVE_FORMS);
+export const archiveRestorationForm = formState(ActionTypes.ARCHIVE_RESTORATION_REQUEST, ActionTypes.RESET_ARCHIVE_FORMS);
+
 export function timelines(state = {}, action) {
   if (ActionHelpers.isFeedResponse(action) && action.payload.timelines) {
     return mergeByIds(state, [action.payload.timelines]);
