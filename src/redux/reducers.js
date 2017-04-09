@@ -1321,6 +1321,24 @@ export function user(state = initUser(), action) {
     case response(ActionTypes.CREATE_GROUP): {
       return {...state, subscriptions: [...state.subscriptions, action.payload.groups.id]};
     }
+    case response(ActionTypes.ARCHIVE_ACTIVITY_REQUEST): {
+      return {...state,
+        privateMeta: {...state.privateMeta,
+          archives: {...state.privateMeta.archives,
+            restore_comments_and_likes: true,
+          }
+        }
+      };
+    }
+    case response(ActionTypes.ARCHIVE_RESTORATION_REQUEST): {
+      return {...state,
+        privateMeta: {...state.privateMeta,
+          archives: {...state.privateMeta.archives,
+            recovery_status: 1,
+          }
+        }
+      };
+    }
   }
   return state;
 }
