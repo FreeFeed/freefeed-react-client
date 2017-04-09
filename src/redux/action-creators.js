@@ -607,6 +607,21 @@ export function revokeSentRequest(userName) {
   };
 }
 
+export function archiveRestoreActivity() {
+  return {
+    type: ActionTypes.ARCHIVE_ACTIVITY_REQUEST,
+    apiRequest: Api.archiveRestoreActivity
+  };
+}
+
+export function archiveStartRestoration(params) {
+  return {
+    type: ActionTypes.ARCHIVE_RESTORATION_REQUEST,
+    apiRequest: Api.archiveStartRestoration,
+    payload: params,
+  };
+}
+
 export function highlightComment(postId, author, arrows, baseCommentId) {
   return {
     type: ActionTypes.HIGHLIGHT_COMMENT,
