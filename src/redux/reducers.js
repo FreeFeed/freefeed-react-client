@@ -1350,6 +1350,41 @@ export function passwordForm(state=DEFAULT_PASSWORD_FORM_STATE, action) {
   return state;
 }
 
+const DEFAULT_FORM_STATE = {
+  inProgress: false,
+  success: false,
+  error: false,
+  errorText: '',
+};
+
+/**
+ * Common helper for forms.
+ * Returns a reducer that reacts on request/response/fail of reqActionType and on resetActionType.
+ * reqActionType is an action of the form itself, resetActionType is used to reset the form state.
+ * @param {string} reqActionType
+ * @param {string} resetActionType
+ * @return {function}
+ */
+function formState(reqActionType, resetActionType = '') {
+  return (state = DEFAULT_FORM_STATE, action) => {
+    switch (action.type) {
+      case request(reqActionType): {
+        return {...DEFAULT_FORM_STATE, inProgress: true};
+      }
+      case response(reqActionType): {
+        return {...DEFAULT_FORM_STATE, success: true};
+      }
+      case fail(reqActionType): {
+        return {...DEFAULT_FORM_STATE, error: true, errorText: action.payload.err};
+      }
+      case resetActionType: {
+        return {...DEFAULT_FORM_STATE};
+      }
+    }
+    return state;
+  };
+}
+
 export function timelines(state = {}, action) {
   if (ActionHelpers.isFeedResponse(action) && action.payload.timelines) {
     return mergeByIds(state, [action.payload.timelines]);
