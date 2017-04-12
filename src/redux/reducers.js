@@ -333,13 +333,8 @@ const POST_SAVE_ERROR = 'Something went wrong while editing the post...';
 const NEW_COMMENT_ERROR = 'Failed to add comment';
 
 const indexById = list => _.keyBy(list || [], 'id');
-const mergeByIds = (state, array) => {
-  const mergeMap = (array || []).reduce((res, obj) => {
-    res[obj.id] = !state[obj.id] ? obj : {...state[obj.id], ...obj};
-    return res;
-  }, {});
-  return {...state, ...mergeMap};
-};
+const mergeByIds = (state, array) => ({...state, ...indexById(array)});
+
 const initPostViewState = post => {
   const id = post.id;
 
@@ -1091,6 +1086,10 @@ export function comments(state = {}, action) {
       return {...state, [action.request.commentId] : undefined};
     }
     case ActionTypes.REALTIME_COMMENT_NEW: {
+      //we already have that comment
+      if (action.comment && state[action.comment.id]) {
+        return state;
+      }
       if (action.post) {
         return mergeByIds(state, [action.comment, ...action.post.comments]);
       }
@@ -1106,7 +1105,11 @@ export function comments(state = {}, action) {
       return state;
     }
     case ActionTypes.REALTIME_COMMENT_UPDATE: {
-      return mergeByIds(state, [action.comment]);
+      const newComment = {
+        ...action.comment,
+        isExpanded: (state[action.comment.id] || {}).isExpanded,
+      };
+      return mergeByIds(state, [newComment]);
     }
     case ActionTypes.REALTIME_COMMENT_DESTROY: {
       return {...state, [action.commentId] : undefined};
