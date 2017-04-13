@@ -10,17 +10,16 @@ export default class ArchiveRestorationForm extends React.Component {
       error:      React.PropTypes.bool.isRequired,
       errorText:  React.PropTypes.string.isRequired,
     }),
-    sources:   React.PropTypes.array.isRequired,
+    sources:     React.PropTypes.array.isRequired,
+    oldUsername: React.PropTypes.string.isRequired,
   };
 
   state = {
     disable_comments:      false,
-    restore_self_comments: true,
     via_restore:           [],
   };
 
   setDisableComments = e => this.setState({disable_comments: e.target.checked});
-  setRestoreSelfComments = e => this.setState({restore_self_comments: e.target.checked});
   setViaSource = e => {
     const {checked, value} = e.target;
     if (checked) {
@@ -49,8 +48,8 @@ export default class ArchiveRestorationForm extends React.Component {
   };
 
   render() {
-    const {via_restore, disable_comments, restore_self_comments} = this.state;
-    const {formState, sources} = this.props;
+    const {via_restore, disable_comments} = this.state;
+    const {formState, sources, oldUsername} = this.props;
     const totalCount = sources.reduce((p, s) => p + s.count, 0);
     const selectedCount = sources.filter(s => via_restore.includes(s.url)).reduce((p, s) => p + s.count, 0);
 
@@ -61,8 +60,9 @@ export default class ArchiveRestorationForm extends React.Component {
     return (
         <form onSubmit={this.action}>
           <p>
-            You have {totalCount} posts in your archive.
-            Posts from which sources do you want to restore?
+            You have {totalCount} posts in your
+            <strong>friendfeed.com/{oldUsername}</strong>
+            archive. Posts from which source would you like to restore?
           </p>
           <div className="checkbox">
             <label>
@@ -77,14 +77,9 @@ export default class ArchiveRestorationForm extends React.Component {
             />
           <div className="checkbox">
             <label>
-              <input type="checkbox" checked={restore_self_comments} onClick={this.setRestoreSelfComments} />
-              Restore your comments under your posts
-            </label>
-          </div>
-          <div className="checkbox">
-            <label>
               <input type="checkbox" checked={disable_comments} onClick={this.setDisableComments} />
-              Disable commenting your restored posts
+              Disable new comments for your posts restored from archive
+              (you can enable comments for individual posts after the restoring has been completed)
             </label>
           </div>
           <div className="form-group">

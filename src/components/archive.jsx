@@ -14,26 +14,48 @@ class Archive extends React.Component {
     const {archives} = this.props;
     if (!archives) {
       return (
-        <p>
-          We do not have any records about your old Friendfeed account. If you think this is a mistake,
-          write to us: <a href="mailto:freefeed.net@gmail.com">freefeed.net@gmail.com</a>.
-        </p>
+        <div className="content">
+          <div className="box">
+            <div className="box-header-timeline">
+              Restore from FriendFeed.com Archives
+            </div>
+            <div className="box-body">
+              <p>
+                We do not have any records about your old Friendfeed account. If you think this is a mistake,
+                write to us: <a href="mailto:freefeed.net@gmail.com">freefeed.net@gmail.com</a>.
+              </p>
+            </div>
+          </div>
+        </div>
       );
     }
     return (
       <div className="content">
         <div className="box">
           <div className="box-header-timeline">
-            Clio Archives
+            Restore from FriendFeed.com Archives
           </div>
           <div className="box-body">
             <p>
-              Some text about Clio and archives.
+              In April 2015, before FriendFeed was shut down, a group of volunteers had created
+              an archive of posts for 1234 users and 321 groups of FriendFeed.com. These archives
+              are available at <a href="https://clio.freefeed.net/" target="_blank">clio.freefeed.net</a>.
             </p>
-            <h3>Your archived posts</h3>
-            {this.renderRestorationForm()}
-            <h3>Your comments and likes</h3>
+            <p>
+              If you have an archive of your posts at
+              <a href="https://clio.freefeed.net/" target="_blank">clio.freefeed.net</a>,
+              you can now restore it to FreeFeed.
+            </p>
+            <p>
+              Please note that all restore requests are processed manually and may take a few days to complete.
+            </p>
+            <p>
+              <a href="https://dev.freefeed.net/w/archives-faq/" target="_blank">Restore from archives FAQ</a> (in Russian)
+            </p>
+            <h3>Restore your comments and likes</h3>
             {this.renderActivityForm()}
+            <h3>Restore your posts</h3>
+            {this.renderRestorationForm()}
           </div>
         </div>
       </div>
@@ -69,6 +91,7 @@ class Archive extends React.Component {
       return (
         <ArchiveRestorationForm
           sources={archives.via_sources}
+          oldUsername={archives.old_username}
           action={archiveStartRestoration}
           formState={archiveRestorationFormState}
           />

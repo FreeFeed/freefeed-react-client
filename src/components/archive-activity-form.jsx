@@ -36,7 +36,7 @@ export default class ArchiveActivityForm extends React.Component {
           <div className="checkbox">
             <label>
               <input type="checkbox" checked={checked} onClick={this.setChecked} />
-              I allow to restore my comments and likes under other people's posts
+              I allow to restore my comments and likes of other users’ posts
             </label>
           </div>
           <div className="form-group">

@@ -124,7 +124,7 @@ ReactDOM.render(
         <Route path='restore' component={RestorePassword}/>
         <Route path='reset' component={ResetPassword}/>
         <Route path='settings' component={Settings} onEnter={enterStaticPage('Settings')}/>
-        <Route path='settings/archive' component={Archive} onEnter={enterStaticPage('Clio Archives')}/>
+        <Route path='settings/archive' component={Archive} onEnter={enterStaticPage('Restore from FriendFeed.com Archives')}/>
         <Route name='groupSettings' path='/:userName/settings' component={GroupSettings} {...generateRouteHooks(boundRouteActions('getUserInfo'))}/>
         <Route name='discussions' path='filter/discussions' component={Discussions} {...generateRouteHooks(boundRouteActions('discussions'))}/>
         <Route name='direct' path='filter/direct' component={Discussions} {...generateRouteHooks(boundRouteActions('direct'))}/>

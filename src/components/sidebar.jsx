@@ -173,7 +173,7 @@ const SideBarArchive = ({user}) => {
   return (
     <div className='box'>
       <div className='box-header-groups'>
-        Clio Archives
+        FriendFeed.com Archives
       </div>
       <div className='box-body'>
         <ul>
