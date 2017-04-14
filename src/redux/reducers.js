@@ -334,6 +334,7 @@ const NEW_COMMENT_ERROR = 'Failed to add comment';
 
 const indexById = list => _.keyBy(list || [], 'id');
 const mergeByIds = (state, array) => ({...state, ...indexById(array)});
+
 const initPostViewState = post => {
   const id = post.id;
 
@@ -1079,12 +1080,16 @@ export function comments(state = {}, action) {
       return updateCommentData(state, action);
     }
     case response(ActionTypes.SAVE_EDITING_COMMENT): {
-      return {...state, [action.payload.comments.id]: {...state[action.payload.comments.id], ...action.payload.comments}};
+      return {...state, [action.payload.comments.id]: {...state[action.payload.comments.id], ...action.payload.comments, isExpanded: true}};
     }
     case response(ActionTypes.DELETE_COMMENT): {
       return {...state, [action.request.commentId] : undefined};
     }
     case ActionTypes.REALTIME_COMMENT_NEW: {
+      //we already have that comment
+      if (action.comment && state[action.comment.id]) {
+        return state;
+      }
       if (action.post) {
         return mergeByIds(state, [action.comment, ...action.post.comments]);
       }
@@ -1100,14 +1105,18 @@ export function comments(state = {}, action) {
       return state;
     }
     case ActionTypes.REALTIME_COMMENT_UPDATE: {
-      return mergeByIds(state, [action.comment]);
+      const newComment = {
+        ...action.comment,
+        isExpanded: (state[action.comment.id] || {}).isExpanded,
+      };
+      return mergeByIds(state, [newComment]);
     }
     case ActionTypes.REALTIME_COMMENT_DESTROY: {
       return {...state, [action.commentId] : undefined};
     }
     case response(ActionTypes.ADD_COMMENT): {
       return {...state,
-        [action.payload.comments.id] : action.payload.comments
+        [action.payload.comments.id] : {...action.payload.comments, isExpanded: true}
       };
     }
   }

@@ -12,11 +12,13 @@ const YOUTUBE_VIDEO_RE = /^https?:\/\/(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\
 const VIMEO_VIDEO_RE = /^https:\/\/vimeo\.com\/([0-9]+)/i;
 const COUB_VIDEO_RE = /^https?:\/\/coub\.com\/view\/([a-z0-9]+)/i;
 const IMGUR_GIFV_RE = /^https?:\/\/i\.imgur\.com\/([a-z0-9]+)\.gifv/i;
+const GFYCAT_RE = /^https?:\/\/(?:[a-z]+\.)?gfycat\.com\/([A-Z][a-zA-Z0-9]+)/;
 
 const T_YOUTUBE_VIDEO = 'T_YOUTUBE_VIDEO';
 const T_VIMEO_VIDEO = 'T_VIMEO_VIDEO';
 const T_COUB_VIDEO = 'T_COUB_VIDEO';
 const T_IMGUR_GIFV = 'T_IMGUR_GIFV';
+const T_GFYCAT = 'T_GFYCAT';
 
 export function canShowURL(url) {
   return getVideoType(url) !== null;
@@ -106,6 +108,7 @@ function getVideoType(url) {
   if (VIMEO_VIDEO_RE.test(url)) { return T_VIMEO_VIDEO; }
   if (COUB_VIDEO_RE.test(url)) { return T_COUB_VIDEO; }
   if (IMGUR_GIFV_RE.test(url)) { return T_IMGUR_GIFV; }
+  if (GFYCAT_RE.test(url)) { return T_GFYCAT; }
   return null;
 }
 
@@ -115,6 +118,7 @@ function getVideoId(url) {
   if ((m = VIMEO_VIDEO_RE.exec(url))) { return m[1]; }
   if ((m = COUB_VIDEO_RE.exec(url))) { return m[1]; }
   if ((m = IMGUR_GIFV_RE.exec(url))) { return m[1]; }
+  if ((m = GFYCAT_RE.exec(url))) { return m[1]; }
   return null;
 }
 
@@ -123,6 +127,7 @@ function getDefaultAspectRatio(url) {
   if (VIMEO_VIDEO_RE.test(url)) { return 9/16; }
   if (COUB_VIDEO_RE.test(url)) { return 1; }
   if (IMGUR_GIFV_RE.test(url)) { return 9/16; }
+  if (GFYCAT_RE.test(url)) { return 9/16; }
   return null;
 }
 
@@ -191,6 +196,21 @@ async function getVideoInfo(url) {
           previewURL,
           aspectRatio: aspectRatio.set(url, img.height / img.width),
           videoURL: `https://i.imgur.com/${id}.mp4`,
+        };
+      } catch (e) {
+        return {error: e.message};
+      }
+    }
+    case T_GFYCAT: {
+      const id = getVideoId(url);
+      const previewURL = `https://thumbs.gfycat.com/${id}-mobile.jpg`;
+      try {
+        const img = await loadImage(previewURL);
+        return {
+          byline: 'View at Gfycat',
+          previewURL,
+          aspectRatio: aspectRatio.set(url, img.height / img.width),
+          playerURL: `https://gfycat.com/ifr/${id}`,
         };
       } catch (e) {
         return {error: e.message};

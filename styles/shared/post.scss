@@ -5,7 +5,7 @@ $post-line-height: 20px;
 }
 
 .post .expandable .expand-button {
-  @media (min-width: 767px) { margin-left: 63px; }
+  @media (min-width: 768px) { margin-left: 63px; }
 }
 
 .post {
@@ -261,6 +261,10 @@ $post-line-height: 20px;
   }
   &.fa-inverse {
     color: #eee;
+  }
+
+  .expand-panel {
+    background-color: #eee;
   }
 }
 
