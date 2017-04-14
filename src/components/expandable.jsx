@@ -45,9 +45,13 @@ export default class Expandable extends React.Component {
 
   rewrap() {
     const {maxLines, aboveFoldLines} = chooseLineCounts(this.props.config, window.innerWidth);
-    const lines = gatherContentLines(ReactDOM.findDOMNode(this), ".Linkify", ".p-break");
+    const node = ReactDOM.findDOMNode(this);
+    const lines = gatherContentLines(node, ".Linkify", ".p-break");
     const shouldExpand = lines.length <= (maxLines || DEFAULT_MAX_LINES);
-    const maxHeight = shouldExpand ? "5000": lines[(aboveFoldLines || maxLines || DEFAULT_ABOVE_FOLD_LINES)].bottom;
+    const readMorePanel = node.querySelectorAll(".expand-panel")[0];
+    const readMorePanelHeight = readMorePanel ? readMorePanel.clientHeight : 0;
+    const foldedLines = aboveFoldLines || maxLines || DEFAULT_ABOVE_FOLD_LINES;
+    const maxHeight = shouldExpand ? "5000": lines[foldedLines - 1].bottom + readMorePanelHeight;
     this.setState({expanded: shouldExpand, maxHeight});
   }
 }
