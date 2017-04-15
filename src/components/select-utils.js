@@ -44,7 +44,7 @@ const commentHighlighter = ({commentsHighlights, user, postsViewState}, comments
   const highlightIndex = (baseIndex + omittedComments) - arrows;
   const highlightCommentId = commentList[highlightIndex < baseIndex ? highlightIndex : -1];
 
-  return (commentId, commentAuthor) => author === commentAuthor.username || highlightCommentId === commentId;
+  return (commentId, commentAuthor) => author && author === commentAuthor.username || highlightCommentId === commentId;
 };
 
 export const joinPostData = state => postId => {
