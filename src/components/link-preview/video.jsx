@@ -2,6 +2,7 @@ import {parse as urlParse} from 'url';
 import {parse as queryParse} from 'querystring';
 import _ from 'lodash';
 import React from 'react';
+import {connect} from 'react-redux';
 
 import ScrollSafe from './scroll-helpers/scroll-safe';
 import {contentResized} from './scroll-helpers/events';
@@ -44,6 +45,9 @@ class VideoPreview extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (this.props.feedIsLoading && !nextProps.feedIsLoading) {
+      this.setState({player: false});
+    }
     if (this.props.url !== nextProps.url) {
       this.setState({
         info: null,
@@ -99,7 +103,13 @@ class VideoPreview extends React.Component {
   }
 }
 
-export default ScrollSafe(VideoPreview, {foldable: false, trackResize: false});
+function select(state) {
+  return {
+    feedIsLoading: state.routeLoadingState,
+  };
+}
+
+export default ScrollSafe(connect(select)(VideoPreview), {foldable: false, trackResize: false});
 
 // Helpers
 
