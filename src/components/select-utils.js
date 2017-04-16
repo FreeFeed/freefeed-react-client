@@ -44,7 +44,7 @@ const commentHighlighter = ({commentsHighlights, user, postsViewState}, comments
   const highlightIndex = (baseIndex + omittedComments) - arrows;
   const highlightCommentId = commentList[highlightIndex < baseIndex ? highlightIndex : -1];
 
-  return (commentId, commentAuthor) => author === commentAuthor.username || highlightCommentId === commentId;
+  return (commentId, commentAuthor) => author && author === commentAuthor.username || highlightCommentId === commentId;
 };
 
 export const joinPostData = state => postId => {
@@ -74,6 +74,8 @@ export const joinPostData = state => postId => {
     const previousPost = _comments[index-1] || {createdBy: null, createdAt: "0"};
     const omitBubble = omitRepeatedBubbles
       && postViewState.omittedComments === 0
+      && !comment.hideType
+      && !previousPost.hideType
       && comment.createdBy === previousPost.createdBy
       && comment.createdAt - previousPost.createdAt < ommitBubblesThreshold;
     const isEditable = (user.id === comment.createdBy);
