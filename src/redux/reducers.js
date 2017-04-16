@@ -1321,6 +1321,24 @@ export function user(state = initUser(), action) {
     case response(ActionTypes.CREATE_GROUP): {
       return {...state, subscriptions: [...state.subscriptions, action.payload.groups.id]};
     }
+    case response(ActionTypes.ARCHIVE_ACTIVITY_REQUEST): {
+      return {...state,
+        privateMeta: {...state.privateMeta,
+          archives: {...state.privateMeta.archives,
+            restore_comments_and_likes: true,
+          }
+        }
+      };
+    }
+    case response(ActionTypes.ARCHIVE_RESTORATION_REQUEST): {
+      return {...state,
+        privateMeta: {...state.privateMeta,
+          archives: {...state.privateMeta.archives,
+            recovery_status: 1,
+          }
+        }
+      };
+    }
   }
   return state;
 }
@@ -1349,6 +1367,44 @@ export function passwordForm(state=DEFAULT_PASSWORD_FORM_STATE, action) {
   }
   return state;
 }
+
+const DEFAULT_FORM_STATE = {
+  inProgress: false,
+  success: false,
+  error: false,
+  errorText: '',
+};
+
+/**
+ * Common helper for forms.
+ * Returns a reducer that reacts on request/response/fail of reqActionType and on resetActionType.
+ * reqActionType is an action of the form itself, resetActionType is used to reset the form state.
+ * @param {string} reqActionType
+ * @param {string} resetActionType
+ * @return {function}
+ */
+function formState(reqActionType, resetActionType = '') {
+  return (state = DEFAULT_FORM_STATE, action) => {
+    switch (action.type) {
+      case request(reqActionType): {
+        return {...DEFAULT_FORM_STATE, inProgress: true};
+      }
+      case response(reqActionType): {
+        return {...DEFAULT_FORM_STATE, success: true};
+      }
+      case fail(reqActionType): {
+        return {...DEFAULT_FORM_STATE, error: true, errorText: action.payload.err};
+      }
+      case resetActionType: {
+        return {...DEFAULT_FORM_STATE};
+      }
+    }
+    return state;
+  };
+}
+
+export const archiveActivityForm = formState(ActionTypes.ARCHIVE_ACTIVITY_REQUEST, ActionTypes.RESET_ARCHIVE_FORMS);
+export const archiveRestorationForm = formState(ActionTypes.ARCHIVE_RESTORATION_REQUEST, ActionTypes.RESET_ARCHIVE_FORMS);
 
 export function timelines(state = {}, action) {
   if (ActionHelpers.isFeedResponse(action) && action.payload.timelines) {

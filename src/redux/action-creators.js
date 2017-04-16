@@ -607,6 +607,21 @@ export function revokeSentRequest(userName) {
   };
 }
 
+export function archiveRestoreActivity() {
+  return {
+    type: ActionTypes.ARCHIVE_ACTIVITY_REQUEST,
+    apiRequest: Api.archiveRestoreActivity
+  };
+}
+
+export function archiveStartRestoration(params) {
+  return {
+    type: ActionTypes.ARCHIVE_RESTORATION_REQUEST,
+    apiRequest: Api.archiveStartRestoration,
+    payload: params,
+  };
+}
+
 export function highlightComment(postId, author, arrows, baseCommentId) {
   return {
     type: ActionTypes.HIGHLIGHT_COMMENT,
@@ -651,6 +666,12 @@ export function getBestOf(offset) {
 export function resetSettingsForms() {
   return {
     type: ActionTypes.RESET_SETTINGS_FORMS
+  };
+}
+
+export function resetArchiveForms() {
+  return {
+    type: ActionTypes.RESET_ARCHIVE_FORMS
   };
 }
 
