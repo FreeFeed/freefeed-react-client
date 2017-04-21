@@ -166,7 +166,7 @@ export default class PostComments extends React.Component {
     const totalComments = comments.length + post.omittedComments;
     const first = withBackwardNumber(comments[0], totalComments);
     const last = withBackwardNumber(comments.length > 1 && comments[comments.length - 1], 1);
-    const canAddComment = (!!post.user.id && (!post.commentsDisabled || post.isEditable));
+    const canAddComment = (!!post.user && (!post.commentsDisabled || post.isEditable));
 
     return (
       <div className="comments" ref={(el) => this.rootEl = el ? ReactDOM.findDOMNode(el) : null}>
