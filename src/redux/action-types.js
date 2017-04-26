@@ -5,6 +5,7 @@ export const HOME = 'HOME';
 export const DISCUSSIONS = 'DISCUSSIONS';
 export const DIRECT = 'DIRECT';
 export const GET_USER_FEED = 'GET_USER_FEED';
+export const GET_NOTIFICATIONS = 'GET_NOTIFICATIONS';
 export const SHOW_MORE_COMMENTS = 'SHOW_MORE_COMMENTS';
 export const SHOW_MORE_LIKES = 'SHOW_MORE_LIKES';
 export const SHOW_MORE_LIKES_ASYNC = 'SHOW_MORE_LIKES_ASYNC';

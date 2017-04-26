@@ -62,6 +62,17 @@ export function getUserFeed(username, offset = 0) {
   };
 }
 
+export function getNotifications(offset = 0, filter = '') {
+  return {
+    type: ActionTypes.GET_NOTIFICATIONS,
+    apiRequest: Api.getNotifications,
+    payload: {
+      offset,
+      filter,
+    },
+  };
+}
+
 export function showMoreComments(postId) {
   return {
     type: ActionTypes.SHOW_MORE_COMMENTS,
