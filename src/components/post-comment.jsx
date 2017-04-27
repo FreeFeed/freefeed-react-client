@@ -33,6 +33,10 @@ export default class PostComment extends React.Component {
   openAnsweringComment = (event) => {
     event.preventDefault();
     if (this.props.openAnsweringComment && event.button === 0) {
+      const withCtrl = event.ctrlKey || event.metaKey;
+      if (!withCtrl && this.props.hideType) {
+        return;
+      }
       const answerText = (event.ctrlKey || event.metaKey) ? _.repeat('^', this.props.backwardNumber) : '@' + this.props.user.username;
       this.props.openAnsweringComment(answerText);
     }
@@ -94,38 +98,13 @@ export default class PostComment extends React.Component {
     }
   }
 
-  render() {
-    const className = classnames({
-      'comment': true,
-      'highlighted': this.props.highlighted,
-      'omit-bubble': this.props.omitBubble
-    });
+  renderBody() {
+    if (this.props.hideType) {
+      return <div className="comment-body">{this.props.body}</div>;
+    }
 
-    const authorAndButtons = (<span>
-            {' -'}&nbsp;
-            <UserName user={this.props.user}/>
-            {this.props.isEditable ? (
-              <span>
-                {' '}(<a onClick={preventDefault(()=>this.props.toggleEditingComment(this.props.id))}>edit</a>
-                &nbsp;|&nbsp;
-                <a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
-              </span>
-            ) : (this.props.isDeletable && this.props.isModeratingComments) ? (
-              <span>
-                {' '}(<a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
-              </span>
-            ) : false}</span>);
-
-    return (
-    <div className={className} data-author={this.props.isEditing ? '' : this.props.user.username}>
-      <TimeDisplay className="comment-time" timeStamp={+this.props.createdAt} timeAgoInTitle={true}>
-        <a
-          className={`comment-icon fa ${this.props.omitBubble ? 'feed-comment-dot' : 'fa-comment-o'}`}
-          id={`comment-${this.props.id}`}
-          href={`${this.props.entryUrl}#comment-${this.props.id}`}
-          onClick={this.openAnsweringComment}></a>
-      </TimeDisplay>
-      {this.props.isEditing ? (
+    if (this.props.isEditing) {
+      return (
         <div className="comment-body">
           <div>
             <Textarea
@@ -160,29 +139,67 @@ export default class PostComment extends React.Component {
             <span className="comment-error">{this.props.errorString}</span>
           ) : false}
         </div>
-      ) : (
-        <div className="comment-body">
-          <Expandable expanded={this.props.readMoreStyle === READMORE_STYLE_COMPACT || this.props.isSinglePost || this.props.isExpanded}
-                      bonusInfo={authorAndButtons}
-                      config={commentReadmoreConfig}>
-            <PieceOfText
-              text={this.props.body}
-              readMoreStyle={this.props.readMoreStyle}
-              highlightTerms={this.props.highlightTerms}
-              userHover={{
-                hover: username => this.props.highlightComment(username),
-                leave: this.props.clearHighlightComment
-              }}
-              arrowHover={{
-                hover: arrows => this.props.highlightArrowComment(arrows),
-                leave: this.props.clearHighlightComment
-              }}
-            />
-            {authorAndButtons}
-          </Expandable>
-        </div>
-      )}
-    </div>
+      );
+    }
+
+    const authorAndButtons = (<span>
+            {' -'}&nbsp;
+            <UserName user={this.props.user}/>
+            {this.props.isEditable ? (
+              <span>
+                {' '}(<a onClick={preventDefault(()=>this.props.toggleEditingComment(this.props.id))}>edit</a>
+                &nbsp;|&nbsp;
+                <a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
+              </span>
+            ) : (this.props.isDeletable && this.props.isModeratingComments) ? (
+              <span>
+                {' '}(<a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
+              </span>
+            ) : false}</span>);
+
+    return (
+      <div className="comment-body">
+        <Expandable expanded={this.props.readMoreStyle === READMORE_STYLE_COMPACT || this.props.isSinglePost || this.props.isExpanded}
+                    bonusInfo={authorAndButtons}
+                    config={commentReadmoreConfig}>
+          <PieceOfText
+            text={this.props.body}
+            readMoreStyle={this.props.readMoreStyle}
+            highlightTerms={this.props.highlightTerms}
+            userHover={{
+              hover: username => this.props.highlightComment(username),
+              leave: this.props.clearHighlightComment
+            }}
+            arrowHover={{
+              hover: arrows => this.props.highlightArrowComment(arrows),
+              leave: this.props.clearHighlightComment
+            }}
+          />
+          {authorAndButtons}
+        </Expandable>
+      </div>
+    );
+  }
+
+  render() {
+    const className = classnames({
+      'comment': true,
+      'highlighted': this.props.highlighted,
+      'omit-bubble': this.props.omitBubble,
+      'is-hidden': !!this.props.hideType,
+    });
+
+    return (
+      <div className={className} data-author={this.props.isEditing ? '' : this.props.user.username}>
+        <TimeDisplay className="comment-time" timeStamp={+this.props.createdAt} timeAgoInTitle={true}>
+          <a
+            className={`comment-icon fa ${this.props.omitBubble ? 'feed-comment-dot' : 'fa-comment-o'}`}
+            id={`comment-${this.props.id}`}
+            href={`${this.props.entryUrl}#comment-${this.props.id}`}
+            onClick={this.openAnsweringComment}></a>
+        </TimeDisplay>
+        {this.renderBody()}
+      </div>
     );
   }
 }

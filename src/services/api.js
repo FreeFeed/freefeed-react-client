@@ -508,3 +508,27 @@ export function getSearch({search='', offset=0}) {
 export function getBestOf({offset=0}) {
   return fetch(`${apiConfig.host}/v2/bestof?offset=${offset}`, getRequestOptions());
 }
+
+export function archiveRestoreActivity() {
+  return fetch(`${apiConfig.host}/v2/archives/activities`, {
+    'method': 'PUT',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+    'body': JSON.stringify({restore: true})
+  });
+}
+
+export function archiveStartRestoration(params) {
+  return fetch(`${apiConfig.host}/v2/archives/restoration`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+    'body': JSON.stringify(params)
+  });
+}
