@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
 import {preventDefault} from '../utils';
@@ -63,6 +64,24 @@ export default class UserFrontendPreferencesForm extends React.Component {
     this.setState({
       sHideUsers: event.target.value
     });
+  }
+
+  isCommentTypeHidden = (hideType) => _.includes(this.state.comments.hiddenTypes, hideType);
+
+  changeHideComments = (event) => {
+    const {target} = event;
+    const hideType = parseInt(target.value, 10);
+
+    if (target.checked !== this.isCommentTypeHidden(hideType)) {
+      const stComments = this.state.comments;
+      let hiddenTypes;
+      if (target.checked) {
+        hiddenTypes = [...stComments.hiddenTypes, hideType];
+      } else {
+        hiddenTypes = _.without(stComments.hiddenTypes, hideType);
+      }
+      this.setState({comments: {...stComments, hiddenTypes}});
+    }
   }
 
   savePreferences = () => {
@@ -157,6 +176,18 @@ export default class UserFrontendPreferencesForm extends React.Component {
           <label>
             <input type="checkbox" name="bubbles" value="1" checked={this.state.comments.highlightComments} onChange={this.changeHighlightComments}/>
             Highlight comments when hovering on @username or ^ and ↑
+          </label>
+        </div>
+
+        <div className="checkbox">
+          <label>
+            <input
+              type="checkbox"
+              value={FrontendPrefsOptions.COMMENT_HIDDEN_BANNED}
+              checked={this.isCommentTypeHidden(FrontendPrefsOptions.COMMENT_HIDDEN_BANNED)}
+              onChange={this.changeHideComments}
+              />
+            Hide comments from blocked users (don't show placeholder)
           </label>
         </div>
 

@@ -25,7 +25,7 @@ export const apiMiddleware = store => next => async (action) => {
     const apiResponse = await action.apiRequest(action.payload);
     const obj = await apiResponse.json();
 
-    if (apiResponse.status === 200) {
+    if (apiResponse.status >= 200 && apiResponse.status < 300) {
       return store.dispatch({payload: obj, type: response(action.type), request: action.payload});
     }
 
