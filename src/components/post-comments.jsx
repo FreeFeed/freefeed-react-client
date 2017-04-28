@@ -60,7 +60,7 @@ export default class PostComments extends React.Component {
     const disabledForOthers = (props.post.commentsDisabled && props.post.isEditable);
     const toggleCommenting = props.post.isSinglePost ? () => {} : () => props.toggleCommenting(props.post.id);
 
-    if (props.comments.length > 2 && !props.post.omittedComments /* TODO: && user_is_signed_in */) {
+    if (props.comments.length > 2 && !props.post.omittedComments) {
       return (
         <div className="comment">
           <a className="comment-icon fa-stack fa-1x" onClick={preventDefault(toggleCommenting)}>
@@ -166,7 +166,7 @@ export default class PostComments extends React.Component {
     const totalComments = comments.length + post.omittedComments;
     const first = withBackwardNumber(comments[0], totalComments);
     const last = withBackwardNumber(comments.length > 1 && comments[comments.length - 1], 1);
-    const canAddComment = (!post.commentsDisabled || post.isEditable);
+    const canAddComment = (!!post.user && (!post.commentsDisabled || post.isEditable));
 
     return (
       <div className="comments" ref={(el) => this.rootEl = el ? ReactDOM.findDOMNode(el) : null}>
