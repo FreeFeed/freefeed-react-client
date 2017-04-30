@@ -21,8 +21,8 @@ class Archive extends React.Component {
             </div>
             <div className="box-body">
               <p>
-                We do not have any records about your old Friendfeed account. If you think this is a mistake,
-                write to us: <a href="mailto:freefeed.net@gmail.com">freefeed.net@gmail.com</a>.
+                We do not have any records about your old FriendFeed account. If you think this is a mistake,
+                please contact us at <a href="mailto:freefeed.net@gmail.com">freefeed.net@gmail.com</a>.
               </p>
             </div>
           </div>
@@ -38,12 +38,11 @@ class Archive extends React.Component {
           <div className="box-body">
             <p>
               In April 2015, before FriendFeed was shut down, a group of volunteers had created
-              an archive of posts for 1234 users and 321 groups of FriendFeed.com. These archives
+              an archive of posts for 5356 users and 1231 groups of FriendFeed.com. These archives
               are available at <a href="https://clio.freefeed.net/" target="_blank">clio.freefeed.net</a>.
             </p>
             <p>
-              If you have an archive of your posts at
-              <a href="https://clio.freefeed.net/" target="_blank">clio.freefeed.net</a>,
+              If you have an archive of your posts at <a href="https://clio.freefeed.net/" target="_blank">clio.freefeed.net</a>,
               you can now restore it to FreeFeed.
             </p>
             <p>
@@ -69,7 +68,7 @@ class Archive extends React.Component {
     }
     return (
       <p>
-        You were allow to restore your comments and likes under other people's posts.
+        You allowed to restore your comments and likes of other users’ posts.
       </p>
     );
   }
@@ -80,9 +79,9 @@ class Archive extends React.Component {
     if (!archives.has_archive) {
       return (
         <p>
-          We have not archive of your Friendfeed account (<code>{archives.old_username}</code>).
-          If you think this is a mistake,
-          write to us: <a href="mailto:freefeed.net@gmail.com">freefeed.net@gmail.com</a>.
+          We do not have archive of your FriendFeed account (<code>{archives.old_username}</code>).
+          If you think this is a mistake, please
+          contact us at <a href="mailto:freefeed.net@gmail.com">freefeed.net@gmail.com</a>.
         </p>
       );
     }
@@ -101,14 +100,14 @@ class Archive extends React.Component {
     if (archives.recovery_status === 1) {
       return (
         <p>
-          Your archive restoration is in progress. Requests are handled manually, so be prepared to wait a bit.
+          Your archive restoration is in progress. Requests are processed manually and may take a few days to complete.
         </p>
       );
     }
 
     return (
       <p>
-        Your archive is already restored. Thank you!
+        Your archive has been restored. Thank you!
       </p>
     );
   }
