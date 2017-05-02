@@ -60,9 +60,8 @@ export default class ArchiveRestorationForm extends React.Component {
     return (
         <form onSubmit={this.action}>
           <p>
-            You have {totalCount} posts in your
-            <strong>friendfeed.com/{oldUsername}</strong>
-            archive. Posts from which source would you like to restore?
+            You have {totalCount} posts in your <strong>friendfeed.com/{oldUsername}</strong> archive.
+            Posts from which source would you like to restore?
           </p>
           <div className="checkbox">
             <label>
