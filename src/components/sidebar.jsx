@@ -167,7 +167,8 @@ const SideBarBookmarklet = () => (
 );
 
 const SideBarArchive = ({user}) => {
-  if (!user.privateMeta.archives) {
+  const {archives} = user.privateMeta;
+  if (!archives || archives.recovery_status === 2 && archives.restore_comments_and_likes) {
     return null;
   }
   return (
