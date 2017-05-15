@@ -249,6 +249,9 @@ export function feedViewState(state = initFeed, action) {
     case ActionTypes.UNAUTHENTICATED: {
       return initFeed;
     }
+    case response(ActionTypes.GET_NOTIFICATIONS): {
+      return {...state, isLastPage: action.payload.isLastPage};
+    }
     case response(ActionTypes.DELETE_POST): {
       const postId = action.request.postId;
       return {...state,
@@ -1228,6 +1231,7 @@ export function users(state = {}, action) {
         [userId]: {...oldUser, ...newUser}
       };
     }
+    case response(ActionTypes.GET_NOTIFICATIONS):
     case response(ActionTypes.SHOW_MORE_COMMENTS):
     case response(ActionTypes.SHOW_MORE_LIKES_ASYNC):
     case response(ActionTypes.GET_SINGLE_POST): {
@@ -1265,6 +1269,7 @@ export function subscribers(state = {}, action) {
       const subscribers = !action.post ? action.subscribers || [] : [...(action.subscribers || []), ...(action.post.subscribers || []) ];
       return mergeByIds(state, (subscribers || []).map(userParser));
     }
+    case response(ActionTypes.WHO_AM_I):
     case response(ActionTypes.GET_SINGLE_POST):
     case response(ActionTypes.CREATE_POST): {
       return mergeByIds(state, (action.payload.subscribers || []).map(userParser));
@@ -1419,6 +1424,7 @@ export function subscriptions(state = {}, action) {
     return mergeByIds(state, action.payload.subscriptions);
   }
   switch (action.type) {
+    case response(ActionTypes.WHO_AM_I):
     case response(ActionTypes.GET_SINGLE_POST):
     case response(ActionTypes.CREATE_POST): {
       return mergeByIds(state, action.payload.subscriptions);
@@ -2103,3 +2109,30 @@ export function realtimeSubscription(state = {type: null, id: null}, action) {
   }
   return state;
 }
+
+export function notifications(state = [], action) {
+  switch (action.type) {
+    case request(ActionTypes.GET_NOTIFICATIONS): {
+      return {
+        loading: true,
+        error: false,
+      };
+    }
+    case response(ActionTypes.GET_NOTIFICATIONS): {
+      return {
+        events: action.payload.Notifications,
+        error: false,
+        loading: false,
+      };
+    }
+    case fail(ActionTypes.GET_NOTIFICATIONS): {
+      return {
+        events: [],
+        error: true,
+        loading: false,
+      };
+    }
+  }
+  return state;
+}
+
