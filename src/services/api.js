@@ -39,6 +39,11 @@ export function getUserFeed({username, offset}) {
     `${apiConfig.host}/v2/timelines/${username}?offset=${offset}`, getRequestOptions());
 }
 
+export function getNotifications({offset, filter}) {
+  return fetch(
+    `${apiConfig.host}/v2/notifications?offset=${offset}&filter=${filter}`, getRequestOptions());
+}
+
 export function getLikesOnly({postId, commentsExpanded}) {
   return getPost({
     postId,
