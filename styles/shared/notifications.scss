@@ -1,0 +1,28 @@
+.notifications {
+  .filter {
+    margin-left: 10px;
+    @media (max-width: 991px){ margin-left: 0; }
+    display: flex;
+    flex-wrap: wrap;
+    &>* {
+      margin-right: 10px;
+      text-decoration: none;
+    }
+    &>:not(.active) {
+      border-bottom: 1px solid transparent;
+    }
+    &>.active {
+      border-bottom: 1px solid #000088;
+    }
+  }
+
+  .notification-list {
+    margin-top: 20px;
+  }
+
+  .single-notification {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+}

@@ -142,6 +142,7 @@ class Layout extends React.Component {
             <div className="col-xs-12 col-sm-6">
               <div className="mobile-shortcuts">
                 <Link to="/filter/discussions">My discussions</Link>
+                <Link to="/filter/notifications">Notifications</Link>
                 <Link to="/filter/direct">Direct messages</Link>
                 <Link to={`/${props.user.username}`}>My feed</Link>
               </div>
