@@ -8,6 +8,7 @@ import {preventDefault, confirmFirst} from '../utils';
 import {READMORE_STYLE_COMPACT} from '../utils/frontend-preferences-options';
 import {commentReadmoreConfig} from '../utils/readmore-config';
 
+import CommentLikes from './comment-likes';
 import PieceOfText from './piece-of-text';
 import Expandable from './expandable';
 import UserName from './user-name';
@@ -83,6 +84,16 @@ export default class PostComment extends React.Component {
     if (this.commentTextArea) {
       this.commentTextArea.focus();
     }
+  }
+
+  toggleLike = () => {
+    return this.props.hasOwnLike
+    ? this.props.unlikeComment(this.props.id)
+    : this.props.likeComment(this.props.id);
+  }
+
+  getCommentLikes = () => {
+    this.props.getCommentLikes(this.props.id);
   }
 
   componentWillReceiveProps(newProps) {
@@ -181,6 +192,17 @@ export default class PostComment extends React.Component {
     );
   }
 
+  renderCommentLikes() {
+    if (this.props.hideType || this.props.isEditing) {
+      return false;
+    }
+    return <CommentLikes likes={this.props.likes}
+                              hasOwnLike={this.props.hasOwnLike}
+                              toggleLike={this.toggleLike}
+                              likesList={this.props.likesList}
+                              getCommentLikes={this.getCommentLikes}/>;
+  }
+
   render() {
     const className = classnames({
       'comment': true,
@@ -198,6 +220,7 @@ export default class PostComment extends React.Component {
             href={`${this.props.entryUrl}#comment-${this.props.id}`}
             onClick={this.openAnsweringComment}></a>
         </TimeDisplay>
+        {this.renderCommentLikes()}
         {this.renderBody()}
       </div>
     );
