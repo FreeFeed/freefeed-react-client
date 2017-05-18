@@ -5,7 +5,7 @@ import classnames from 'classnames';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
 import {preventDefault, confirmFirst} from '../utils';
-import {READMORE_STYLE_COMPACT} from '../utils/frontend-preferences-options';
+import {READMORE_STYLE_COMPACT, COMMENT_DELETED} from '../utils/frontend-preferences-options';
 import {commentReadmoreConfig} from '../utils/readmore-config';
 
 import PieceOfText from './piece-of-text';
@@ -100,7 +100,17 @@ export default class PostComment extends React.Component {
 
   renderBody() {
     if (this.props.hideType) {
-      return <div className="comment-body">{this.props.body}</div>;
+      const isDeletable = this.props.isDeletable && this.props.hideType !== COMMENT_DELETED;
+      return (
+        <div className="comment-body">
+          <span className="comment-text">{this.props.body}</span>
+          {(isDeletable && this.props.isModeratingComments) ? (
+              <span>
+                {' - '}(<a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
+              </span>
+            ) : false}
+        </div>
+      );
     }
 
     if (this.props.isEditing) {
