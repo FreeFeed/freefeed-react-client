@@ -1119,6 +1119,30 @@ export function comments(state = {}, action) {
         [action.payload.comments.id] : {...action.payload.comments, isExpanded: true}
       };
     }
+    case request(ActionTypes.LIKE_COMMENT): {
+      const comment = state[action.payload.commentId];
+      return {...state,
+        [action.payload.commentId]: {...comment, likes: comment.likes + 1, hasOwnLike: true},
+      };
+    }
+    case fail(ActionTypes.LIKE_COMMENT): {
+      const comment = state[action.request.commentId];
+      return {...state,
+        [action.payload.commentId]: {...comment, likes: comment.likes - 1, hasOwnLike: false},
+      };
+    }
+    case request(ActionTypes.UNLIKE_COMMENT): {
+      const comment = state[action.payload.commentId];
+      return {...state,
+        [action.payload.commentId]: {...comment, likes: comment.likes - 1, hasOwnLike: false},
+      };
+    }
+    case fail(ActionTypes.UNLIKE_COMMENT): {
+      const comment = state[action.request.commentId];
+      return {...state,
+        [action.payload.commentId]: {...comment, likes: comment.likes + 1, hasOwnLike: true},
+      };
+    }
   }
   return state;
 }
@@ -1184,6 +1208,31 @@ export function commentViewState(state={}, action) {
   return state;
 }
 
+export function commentLikes(state = {}, action) {
+  switch (action.type) {
+    case request(ActionTypes.GET_COMMENT_LIKES): {
+      return {...state,
+        [action.payload.commentId]: {loading: true},
+      };
+    }
+    case fail(ActionTypes.GET_COMMENT_LIKES): {
+      return {...state,
+        [action.payload.commentId]: {loading: false, error: true},
+      };
+    }
+    case response(ActionTypes.GET_COMMENT_LIKES): {
+      return {...state,
+        [action.request.commentId]: {
+          loading: false,
+          error: false,
+          likes: action.payload.likes,
+        },
+      };
+    }
+  }
+  return state;
+}
+
 export function usersNotFound(state = [], action) {
   switch (action.type) {
     case fail(ActionTypes.GET_USER_INFO): {
@@ -1219,6 +1268,9 @@ export function users(state = {}, action) {
       return {...state,
         [userId]: {...newUser}
       };
+    }
+    case response(ActionTypes.GET_COMMENT_LIKES): {
+      return mergeByIds((action.payload.users || []).map(userParser), state);
     }
     case response(ActionTypes.UPDATE_GROUP): {
       const userId = action.payload.groups.id;
