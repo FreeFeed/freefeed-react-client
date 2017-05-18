@@ -104,7 +104,7 @@ $comment-line-height: 18px;
 
   &.is-hidden {
     $hidden-color: #bbb;
-    .comment-body {
+    .comment-text {
       font-style: italic;
       color: $hidden-color;
     }
