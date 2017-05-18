@@ -51,6 +51,7 @@ const composeState = ({subsequentComments, setting, omittedComments = 0, withDel
       }
     },
     commentsHighlights: {},
+    commentLikes: {},
     commentViewState: {
       [comment1.id]: {},
       [comment2.id]: {},

@@ -258,7 +258,7 @@ function ytSeconds(x) {
     return parseInt(x);
   }
 
-  const m = /^(?:(?:([0-9]+)h)?([0-9]+)m)?(?:([0-9]+)s)$/;
+  const m = /^(?:(?:([0-9]+)h)?([0-9]+)m)?(?:([0-9]+)s)$/.exec(x);
   if (m) {
     let t = parseInt(m[3]);
     if (m[2]) {

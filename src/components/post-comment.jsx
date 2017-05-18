@@ -5,9 +5,10 @@ import classnames from 'classnames';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
 import {preventDefault, confirmFirst} from '../utils';
-import {READMORE_STYLE_COMPACT} from '../utils/frontend-preferences-options';
+import {READMORE_STYLE_COMPACT, COMMENT_DELETED} from '../utils/frontend-preferences-options';
 import {commentReadmoreConfig} from '../utils/readmore-config';
 
+import CommentLikes from './comment-likes';
 import PieceOfText from './piece-of-text';
 import Expandable from './expandable';
 import UserName from './user-name';
@@ -85,6 +86,16 @@ export default class PostComment extends React.Component {
     }
   }
 
+  toggleLike = () => {
+    return this.props.hasOwnLike
+    ? this.props.unlikeComment(this.props.id)
+    : this.props.likeComment(this.props.id);
+  }
+
+  getCommentLikes = () => {
+    this.props.getCommentLikes(this.props.id);
+  }
+
   componentWillReceiveProps(newProps) {
     const wasCommentJustSaved = this.props.isSaving && !newProps.isSaving;
     const wasThereNoError = !newProps.errorString;
@@ -100,7 +111,17 @@ export default class PostComment extends React.Component {
 
   renderBody() {
     if (this.props.hideType) {
-      return <div className="comment-body">{this.props.body}</div>;
+      const isDeletable = this.props.isDeletable && this.props.hideType !== COMMENT_DELETED;
+      return (
+        <div className="comment-body">
+          <span className="comment-text">{this.props.body}</span>
+          {(isDeletable && this.props.isModeratingComments) ? (
+              <span>
+                {' - '}(<a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
+              </span>
+            ) : false}
+        </div>
+      );
     }
 
     if (this.props.isEditing) {
@@ -181,6 +202,17 @@ export default class PostComment extends React.Component {
     );
   }
 
+  renderCommentLikes() {
+    if (this.props.hideType || this.props.isEditing) {
+      return false;
+    }
+    return <CommentLikes likes={this.props.likes}
+                              hasOwnLike={this.props.hasOwnLike}
+                              toggleLike={this.toggleLike}
+                              likesList={this.props.likesList}
+                              getCommentLikes={this.getCommentLikes}/>;
+  }
+
   render() {
     const className = classnames({
       'comment': true,
@@ -198,6 +230,7 @@ export default class PostComment extends React.Component {
             href={`${this.props.entryUrl}#comment-${this.props.id}`}
             onClick={this.openAnsweringComment}></a>
         </TimeDisplay>
+        {this.renderCommentLikes()}
         {this.renderBody()}
       </div>
     );
