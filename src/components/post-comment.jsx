@@ -66,6 +66,14 @@ export default class PostComment extends React.Component {
   checkSave = (event) => {
     const isEnter = event.keyCode === 13;
     const isShiftPressed = event.shiftKey;
+
+    const arrows = event.target.value.match(/^\^+/);
+    if (arrows) {
+      this.props.highlightArrowComment(arrows[0].length - 1);
+    } else {
+      this.props.clearHighlightComment();
+    }
+
     if (isEnter && !isShiftPressed) {
       event.preventDefault();
       event.target.blur();

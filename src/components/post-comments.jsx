@@ -38,7 +38,7 @@ export default class PostComments extends React.Component {
     }
   }
 
-  renderAddingComment() {
+  renderAddingComment(last) {
     const props = this.props;
     return (
       <PostComment
@@ -51,6 +51,8 @@ export default class PostComments extends React.Component {
         saveEditingComment={props.addComment}
         toggleEditingComment={props.toggleCommenting}
         errorString={props.commentError}
+        highlightArrowComment={arrows => props.commentEdit.highlightComment(props.post.id, undefined, arrows, last.id)}
+        clearHighlightComment={props.commentEdit.clearHighlightComment}
         isSaving={props.post.isSavingComment}/>
     );
   }
@@ -175,7 +177,7 @@ export default class PostComments extends React.Component {
         {last ? this.renderComment(last) : false}
         {canAddComment
           ? (post.isCommenting
-              ? this.renderAddingComment()
+              ? this.renderAddingComment(last)
               : this.renderAddCommentLink())
           : false}
       </div>
