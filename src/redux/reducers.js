@@ -1805,6 +1805,9 @@ export function groups(state = {}, action) {
         [groupId]: {...oldGroup, ...newGroup}
       };
     }
+    case response(ActionTypes.GET_NOTIFICATIONS): {
+      return mergeByIds(state, action.payload.groups);
+    }
     case ActionTypes.UNAUTHENTICATED: {
       return {};
     }
