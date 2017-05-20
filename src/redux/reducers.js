@@ -1273,7 +1273,7 @@ export function users(state = {}, action) {
       };
     }
     case response(ActionTypes.GET_COMMENT_LIKES): {
-      return mergeByIds((action.payload.users || []).map(userParser), state);
+      return mergeByIds(state, (action.payload.users || []).map(userParser));
     }
     case response(ActionTypes.UPDATE_GROUP): {
       const userId = action.payload.groups.id;
