@@ -56,6 +56,9 @@
     font-size: 12px;
     width: 7px;
     color: #898989;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   &.has-my-like {
@@ -85,6 +88,9 @@
     padding: 6px;
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
     white-space: nowrap;
+    .user-name-wrapper {
+      display: block;
+    }
   }
 }
 
