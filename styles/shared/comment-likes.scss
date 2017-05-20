@@ -1,0 +1,100 @@
+.comment-likes {
+  position: absolute;
+  top: 2px;
+  left: -34px;
+  display: flex;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+
+  &:not(.liked) {
+    opacity: 0;
+    transition: opacity .25s;
+  }
+
+  .comment-heart {
+    position: relative;
+
+  }
+  .comment-heart:hover .icon {
+    transform: scale(1.5);
+    transition: transform .25s;
+  }
+
+  .comment-heart:before {
+    content: "Like";
+    white-space: nowrap;
+    color: #999;
+    opacity: 0;
+    font-size: 12px;
+    position: absolute;
+    top: -15px;
+    left: -3px;
+    display: inline;
+    transition: opacity .25s .25s;
+  }
+
+  &.has-my-like .comment-heart:before {
+    left: -10px;
+    content: "Un-like";
+  }
+
+  .comment-heart:hover:before {
+    opacity: 1;
+    transition: opacity .25s .25s;
+  }
+
+  .icon {
+    color: #ffb914;
+    transition: transform .25s;
+  }
+
+  .comment-count {
+    cursor: pointer;
+    margin-right: 6px;
+    font-size: 12px;
+    width: 7px;
+    color: #898989;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &.has-my-like {
+    .icon, .comment-count {
+      color: #e66;
+    }
+  }
+
+  .comment-like-hint {
+    position: absolute;
+    top: -15px;
+    opacity: 0;
+    transition: opacity .3 s;
+  }
+
+  &:hover .comment-like-hint {
+    opacity: 1;
+    transition: opacity .3 s;
+  }
+
+  .comment-likes-list {
+    position: absolute;
+    background: white;
+    z-index: 1;
+    color: #898989;
+    border: 1px solid #898989;
+    padding: 6px;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
+    .user-name-wrapper {
+      display: block;
+    }
+  }
+}
+
+.comment:hover .comment-likes:not(.liked) {
+  opacity: 1;
+  transition: opacity .25s;
+}
