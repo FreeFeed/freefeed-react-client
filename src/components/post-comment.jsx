@@ -206,11 +206,12 @@ export default class PostComment extends React.Component {
     if (this.props.hideType || this.props.isEditing) {
       return false;
     }
-    return <CommentLikes likes={this.props.likes}
-                              hasOwnLike={this.props.hasOwnLike}
-                              toggleLike={this.toggleLike}
-                              likesList={this.props.likesList}
-                              getCommentLikes={this.getCommentLikes}/>;
+    return <CommentLikes  likes={this.props.likes}
+                          forbidLiking={this.props.isEditable}
+                          hasOwnLike={this.props.hasOwnLike}
+                          toggleLike={this.toggleLike}
+                          likesList={this.props.likesList}
+                          getCommentLikes={this.getCommentLikes}/>;
   }
 
   render() {
