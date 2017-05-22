@@ -9,22 +9,27 @@ export default class CommentLikes extends React.Component {
     this.state = {likeListVisible: false};
   }
   render() {
-    const classNames = classnames('comment-likes', {'has-my-like': this.props.hasOwnLike, 'liked': this.props.likes > 0});
+    const classNames = classnames("comment-likes", {"has-my-like": this.props.hasOwnLike, "liked": this.props.likes > 0, "non-likable": this.props.forbidLiking});
     return <div className={classNames}>
       <div className="comment-count" onClick={this.toggleLikeList}>
         {this.props.likes > 0 ? this.props.likes : ""}
         {this.state.likeListVisible ? this.renderLikesList() : ""}
       </div>
-      <div className="comment-heart" onClick={this.props.toggleLike}><i className="fa fa-heart icon"></i></div>
+      <div className="comment-heart" onClick={this.toggleLike}><i className={`fa fa-heart${this.props.forbidLiking ? "-o" : ""} icon`}></i></div>
     </div>;
+  }
+  toggleLike = () => {
+    if (!this.props.forbidLiking) {
+      this.props.toggleLike();
+    }
   }
   toggleLikeList = () => {
     const likeListVisible = !this.state.likeListVisible;
     this.setState({likeListVisible});
     if (likeListVisible) {
-      window.addEventListener('click', this.toggleLikeList, true);
+      window.addEventListener("click", this.toggleLikeList, true);
     } else {
-      window.removeEventListener('click', this.toggleLikeList, true);
+      window.removeEventListener("click", this.toggleLikeList, true);
     }
     if (likeListVisible && this.props.likesList.likes.length === 0 && !this.props.likesList.loading) {
       this.props.getCommentLikes();
