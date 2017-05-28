@@ -57,6 +57,11 @@ export function getPost({postId, maxComments = '', maxLikes = ''}) {
     `${apiConfig.host}/v2/posts/${postId}?maxComments=${maxComments}&maxLikes=${maxLikes}`, getRequestOptions());
 }
 
+export function getPostIdByOldName({ oldName }) {
+  return fetch(
+    `${apiConfig.host}/v2/archives/post-by-old-name/${encodeURIComponent(oldName)}`, getRequestOptions());
+}
+
 export function createPost({feeds, postText, attachmentIds, more}) {
   return fetch(`${apiConfig.host}/v1/posts`, {
     'method': 'POST',
