@@ -1223,6 +1223,9 @@ export function users(state = {}, action) {
         [userId]: {...newUser}
       };
     }
+    case response(ActionTypes.GET_COMMENT_LIKES): {
+      return mergeByIds(state, (action.payload.users || []).map(userParser));
+    }
     case response(ActionTypes.UPDATE_GROUP): {
       const userId = action.payload.groups.id;
       const oldUser = state[userId] || {};
