@@ -32,16 +32,10 @@ const middleware = [
   realtimeMiddleware
 ];
 
-const isDevelopment = process.env.NODE_ENV != 'production';
-
 const enhancers = [applyMiddleware(...middleware),];
 
-//tells webpack to include devtool enhancer in dev mode
-if (isDevelopment && window.devToolsExtension) {
-  enhancers.push(window.devToolsExtension());
-}
-
-const storeEnhancer = compose(...enhancers);
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const storeEnhancer = composeEnhancers(...enhancers);
 
 const createStoreWithMiddleware = storeEnhancer(createStore);
 const reducer = combineReducers({...reducers, routing: routerReducer});
