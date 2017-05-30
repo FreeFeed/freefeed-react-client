@@ -37,6 +37,7 @@ import GroupCreate from './components/group-create';
 import Groups from './components/groups';
 import SearchFeed from './components/search-feed';
 import BestOfFeed from './components/best-of-feed';
+import Notifications from './components/notifications';
 import Friends from './components/friends';
 import ManageSubscribers from './components/manage-subscribers';
 import Bookmarklet from './components/bookmarklet';
@@ -129,6 +130,7 @@ ReactDOM.render(
         <Route name='discussions' path='filter/discussions' component={Discussions} {...generateRouteHooks(boundRouteActions('discussions'))}/>
         <Route name='direct' path='filter/direct' component={Discussions} {...generateRouteHooks(boundRouteActions('direct'))}/>
         <Route name='search' path='search' component={SearchFeed} {...generateRouteHooks(boundRouteActions('search'))}/>
+        <Route name='notifications' path='filter/notifications' component={Notifications} {...generateRouteHooks(boundRouteActions('notifications'))}/>
         <Route name='best_of' path='filter/best_of' component={BestOfFeed} {...generateRouteHooks(boundRouteActions('best_of'))}/>
         <Route name='groups' path='/groups' component={Groups} onEnter={enterStaticPage('Groups')}/>
         <Route name='friends' path='/friends' component={Friends} onEnter={friendsActions}/>

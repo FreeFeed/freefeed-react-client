@@ -42,6 +42,7 @@ const SideBarFriends = ({ user }) => (
           <li className='p-direct-messages'><Link to='/filter/direct'>Direct messages</Link></li>
         )}
         <li className='p-my-discussions'><Link to='/filter/discussions'>My discussions</Link></li>
+        <li className='p-home'><Link to='/filter/notifications'>Notifications</Link></li>
       </ul>
     </div>
     <div className='box-footer'>
