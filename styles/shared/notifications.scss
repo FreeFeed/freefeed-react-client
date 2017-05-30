@@ -8,11 +8,8 @@
       margin-right: 10px;
       text-decoration: none;
     }
-    &>:not(.active) {
-      border-bottom: 1px solid transparent;
-    }
     &>.active {
-      border-bottom: 1px solid #000088;
+      text-decoration: underline;
     }
   }
 
