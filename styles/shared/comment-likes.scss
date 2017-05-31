@@ -2,10 +2,10 @@
   position: absolute;
   top: 2px;
   left: -34px;
-  display: flex;
+  display: none;
 
-  @media (max-width: 768px) {
-    display: none;
+  @media (min-width: 1025px) {
+    display: flex;
   }
 
   &:not(.liked) {
@@ -21,29 +21,6 @@
     transition: transform .25s;
   }
 
-  .comment-heart:before {
-    content: "Like";
-    white-space: nowrap;
-    color: #999;
-    opacity: 0;
-    font-size: 12px;
-    position: absolute;
-    top: -15px;
-    left: -3px;
-    display: inline;
-    transition: opacity .25s .25s;
-  }
-
-  &.has-my-like .comment-heart:before {
-    left: -10px;
-    content: "Un-like";
-  }
-
-  .comment-heart:hover:before {
-    opacity: 1;
-    transition: opacity .25s .25s;
-  }
-
   .icon {
     color: #ffb914;
     transition: transform .25s;
@@ -53,9 +30,6 @@
   &.non-likable {
     .comment-heart:hover .icon {
       transform: none;
-    }
-    .comment-heart:before {
-      content: "";
     }
     .icon {
       cursor: auto;

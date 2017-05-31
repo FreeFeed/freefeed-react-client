@@ -15,7 +15,11 @@ export default class CommentLikes extends React.Component {
         {this.props.likes > 0 ? this.props.likes : ""}
         {this.state.likeListVisible ? this.renderLikesList() : ""}
       </div>
-      <div className="comment-heart" onClick={this.toggleLike}><i className={`fa fa-heart${this.props.forbidLiking ? "-o" : ""} icon`}></i></div>
+      <div className="comment-heart" onClick={this.toggleLike}>
+        <i  className={`fa fa-heart${this.props.forbidLiking ? "-o" : ""} icon`}
+            title={this.props.forbidLiking ? "Your own comment" : this.props.hasOwnLike ? "Un-like" : "Like"}>
+        </i>
+      </div>
     </div>;
   }
   toggleLike = () => {
