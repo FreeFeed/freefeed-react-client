@@ -272,6 +272,30 @@ export function saveEditingComment(commentId, newCommentBody) {
   };
 }
 
+export function likeComment(commentId) {
+  return {
+    type: ActionTypes.LIKE_COMMENT,
+    apiRequest: Api.likeComment,
+    payload: {commentId},
+  };
+}
+
+export function unlikeComment(commentId) {
+  return {
+    type: ActionTypes.UNLIKE_COMMENT,
+    apiRequest: Api.unlikeComment,
+    payload: {commentId},
+  };
+}
+
+export function getCommentLikes(commentId) {
+  return {
+    type: ActionTypes.GET_COMMENT_LIKES,
+    apiRequest: Api.getCommentLikes,
+    payload: {commentId},
+  };
+}
+
 export function deleteComment(commentId) {
   return {
     type: ActionTypes.DELETE_COMMENT,
