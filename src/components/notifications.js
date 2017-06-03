@@ -15,7 +15,7 @@ const notificationTemplates = {
   subscription_request_revoked: (event) => <Linkify>{`You revoked your subscription request to @${event.targetUser.username}`}</Linkify>,
 
   mention_in_post: (event) => <div><Linkify>{`@${event.createdUser.username} mentioned you in the `}</Linkify>{postLink(event)}<Linkify>{` ${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify></div>,
-  mention_in_comment: (event) => <div><Linkify>{`@${event.createdUser.username} mentioned you in a comment to the `}</Linkify>{postLink(event)}<Linkify>{`${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify></div>,
+  mention_in_comment: (event) => <div><Linkify>{`@${event.createdUser.username} mentioned you in a `}</Linkify>{commentLink(event, 'comment')}{` to the `}{postLink(event)}<Linkify>{`${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify></div>,
   mention_comment_to: (event) => <div><Linkify>{`@${event.createdUser.username} `}</Linkify>{commentLink(event, 'replied')}{` to you in the `}{postLink(event)}<Linkify>{` ${event.group.username ? `[in @${event.group.username}]` : ''}`}</Linkify></div>,
   banned_user: (event) => <Linkify>{`You blocked @${event.affectedUser.username}`}</Linkify>,
   unbanned_user: (event) => <Linkify>{`You unblocked @${event.affectedUser.username}`}</Linkify>,

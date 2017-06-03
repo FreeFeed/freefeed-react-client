@@ -2,57 +2,71 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {joinPostData, postActions} from './select-utils';
 
-import Post from './post';
+import Post, {canonicalURI} from './post';
 
-const SinglePostHandler = (props) => {
-  const post = props.post;
-
-  let postBody = <div></div>;
-
-  if (props.errorString) {
-    postBody = <h2>{props.errorString}</h2>;
+class SinglePostHandler extends React.Component {
+  componentWillReceiveProps(nextProps) {
+    const {post, router} = nextProps;
+    if (!post) {
+      return;
+    }
+    const canonicalPostURI = canonicalURI(post);
+    if (router.location.pathname !== canonicalPostURI) {
+      router.replace(canonicalPostURI);
+    }
   }
 
-  if (post) {
-    post.isCommenting = true;
-    postBody = (
-      <Post {...post}
-        key={post.id}
-        isSinglePost={true}
-        user={props.user}
-        showMoreComments={props.showMoreComments}
-        showMoreLikes={props.showMoreLikes}
-        toggleEditingPost={props.toggleEditingPost}
-        cancelEditingPost={props.cancelEditingPost}
-        saveEditingPost={props.saveEditingPost}
-        deletePost={props.deletePost}
-        addAttachmentResponse={props.addAttachmentResponse}
-        removeAttachment={props.removeAttachment}
-        toggleCommenting={props.toggleCommenting}
-        updateCommentingText={props.updateCommentingText}
-        addComment={props.addComment}
-        likePost={props.likePost}
-        unlikePost={props.unlikePost}
-        toggleModeratingComments={props.toggleModeratingComments}
-        disableComments={props.disableComments}
-        enableComments={props.enableComments}
-        commentEdit={props.commentEdit} />
+  render() {
+    const {props} = this;
+    const post = props.post;
+
+    let postBody = <div></div>;
+
+    if (props.errorString) {
+      postBody = <h2>{props.errorString}</h2>;
+    }
+
+    if (post) {
+      post.isCommenting = true;
+      postBody = (
+        <Post {...post}
+          key={post.id}
+          isSinglePost={true}
+          user={props.user}
+          showMoreComments={props.showMoreComments}
+          showMoreLikes={props.showMoreLikes}
+          toggleEditingPost={props.toggleEditingPost}
+          cancelEditingPost={props.cancelEditingPost}
+          saveEditingPost={props.saveEditingPost}
+          deletePost={props.deletePost}
+          addAttachmentResponse={props.addAttachmentResponse}
+          removeAttachment={props.removeAttachment}
+          toggleCommenting={props.toggleCommenting}
+          updateCommentingText={props.updateCommentingText}
+          addComment={props.addComment}
+          likePost={props.likePost}
+          unlikePost={props.unlikePost}
+          toggleModeratingComments={props.toggleModeratingComments}
+          disableComments={props.disableComments}
+          enableComments={props.enableComments}
+          commentEdit={props.commentEdit} />
+      );
+    }
+
+    return (
+      <div className='box'>
+        <div className='box-header-timeline'>
+          {props.boxHeader}
+        </div>
+        <div className='box-body'>
+        {postBody}
+        </div>
+        <div className='box-footer'>
+        </div>
+      </div>
     );
   }
-
-  return (
-    <div className='box'>
-      <div className='box-header-timeline'>
-        {props.boxHeader}
-      </div>
-      <div className='box-body'>
-       {postBody}
-      </div>
-      <div className='box-footer'>
-      </div>
-    </div>
-  );
-};
+}
 
 function selectState(state) {
   const boxHeader = state.boxHeader;
