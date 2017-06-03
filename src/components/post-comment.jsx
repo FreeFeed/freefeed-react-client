@@ -10,6 +10,7 @@ import {commentReadmoreConfig} from '../utils/readmore-config';
 
 import CommentLikes from './comment-likes';
 import PieceOfText from './piece-of-text';
+import CommentActionsMobile from './comment-actions-mobile';
 import Expandable from './expandable';
 import UserName from './user-name';
 import TimeDisplay from './time-display';
@@ -38,9 +39,20 @@ export default class PostComment extends React.Component {
       if (!withCtrl && this.props.hideType) {
         return;
       }
-      const answerText = (event.ctrlKey || event.metaKey) ? _.repeat('^', this.props.backwardNumber) : '@' + this.props.user.username;
-      this.props.openAnsweringComment(answerText);
+      if (event.ctrlKey || event.metaKey) {
+        this.reply();
+      } else {
+        this.mention();
+      }
     }
+  }
+
+  reply = () => {
+    this.props.openAnsweringComment(_.repeat('^', this.props.backwardNumber));
+  }
+
+  mention = () => {
+    this.props.openAnsweringComment('@' + this.props.user.username);
   }
 
   setCaretToTextEnd = (event) => {
@@ -202,6 +214,27 @@ export default class PostComment extends React.Component {
     );
   }
 
+  renderTimer() {
+    return <div>
+              <TimeDisplay className="comment-time" timeStamp={+this.props.createdAt} timeAgoInTitle={true}>
+               <a
+                  className={`comment-icon fa ${this.props.omitBubble ? 'feed-comment-dot' : 'fa-comment-o'}`}
+                  id={`comment-${this.props.id}`}
+                  href={`${this.props.entryUrl}#comment-${this.props.id}`}
+                  onClick={this.openAnsweringComment}></a>
+              </TimeDisplay>
+              <CommentActionsMobile omitBubble={this.props.omitBubble}
+                                    likes={this.props.likes}
+                                    forbidLiking={this.props.isEditable}
+                                    hasOwnLike={this.props.hasOwnLike}
+                                    toggleLike={this.toggleLike}
+                                    likesList={this.props.likesList}
+                                    getCommentLikes={this.getCommentLikes}
+                                    reply={this.reply}
+                                    mention={this.mention}/>
+            </div>;
+  }
+
   renderCommentLikes() {
     if (this.props.hideType || this.props.isEditing) {
       return false;
@@ -224,13 +257,7 @@ export default class PostComment extends React.Component {
 
     return (
       <div className={className} data-author={this.props.isEditing ? '' : this.props.user.username}>
-        <TimeDisplay className="comment-time" timeStamp={+this.props.createdAt} timeAgoInTitle={true}>
-          <a
-            className={`comment-icon fa ${this.props.omitBubble ? 'feed-comment-dot' : 'fa-comment-o'}`}
-            id={`comment-${this.props.id}`}
-            href={`${this.props.entryUrl}#comment-${this.props.id}`}
-            onClick={this.openAnsweringComment}></a>
-        </TimeDisplay>
+        {this.renderTimer()}
         {this.renderCommentLikes()}
         {this.renderBody()}
       </div>

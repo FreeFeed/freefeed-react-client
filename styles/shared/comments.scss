@@ -1,8 +1,6 @@
-$comment-line-height: 18px;
-
 .comments {
   font-size: 14px;
-  line-height: $comment-line-height;
+  line-height: 18px;
   clear: both;
 }
 
@@ -14,6 +12,14 @@ $comment-line-height: 18px;
     float: left;
     margin-top: 2px;
     margin-right: 3px;
+    display: none;
+    @media (min-width: 1025px) {
+      display: block;
+    }
+  }
+
+  .comment-actions-mobile {
+    float: left;
   }
 
   .comment-icon {
