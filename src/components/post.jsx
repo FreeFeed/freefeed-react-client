@@ -134,12 +134,7 @@ export default class Post extends React.Component {
       </span>
     ));
 
-    // username in url
-    // If posted _only_ into groups, use first recipient's username
-    let urlName = props.createdBy.username;
-    if (props.recipients.length > 0 && !props.recipients.some(r => r.type === "user")) {
-      urlName = props.recipients[0].username;
-    }
+    const canonicalPostURI = canonicalURI(props);
 
     const authorOrGroupsRecipients = props.recipients
       .filter(r => r.id === props.createdBy.id || r.type === 'group')
@@ -332,7 +327,7 @@ export default class Post extends React.Component {
               <i className="post-lock-icon post-protected-icon fa fa-lock" title="This entry is only visible to FreeFeed users"/>
             ) : false}
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
-            <Link to={`/${urlName}/${props.id}`} className="post-timestamp">
+            <Link to={canonicalPostURI} className="post-timestamp">
               <TimeDisplay timeStamp={+props.createdAt}/>
             </Link>
             {commentLink}
@@ -362,11 +357,21 @@ export default class Post extends React.Component {
             showMoreComments={props.showMoreComments}
             commentEdit={props.commentEdit}
             readMoreStyle={props.readMoreStyle}
-            entryUrl={`/${urlName}/${props.id}`}
+            entryUrl={canonicalPostURI}
             highlightTerms={props.highlightTerms}
             isSinglePost={props.isSinglePost}/>
         </div>
       </div>
     ));
   }
+}
+
+// Canonical post URI (pathname)
+export function canonicalURI(post) {
+  // If posted _only_ into groups, use first recipient's username
+  let urlName = post.createdBy.username;
+  if (post.recipients.length > 0 && !post.recipients.some(r => r.type === "user")) {
+    urlName = post.recipients[0].username;
+  }
+  return `/${encodeURIComponent(urlName)}/${encodeURIComponent(post.id)}`;
 }
