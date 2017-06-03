@@ -51,7 +51,8 @@ export default class PostComments extends React.Component {
         saveEditingComment={props.addComment}
         toggleEditingComment={props.toggleCommenting}
         errorString={props.commentError}
-        isSaving={props.post.isSavingComment}/>
+        isSaving={props.post.isSavingComment}
+        isSinglePost={props.post.isSinglePost}/>
     );
   }
 
