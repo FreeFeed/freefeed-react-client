@@ -6,7 +6,7 @@ import {shorten} from 'ff-url-finder';
 import config from '../config';
 import {finder} from '../utils';
 import {highlightString} from '../utils/search-highlighter';
-import {LINK, AT_LINK, LOCAL_LINK, EMAIL, HASHTAG, ARROW} from '../utils/link-types';
+import {LINK, AT_LINK, LOCAL_LINK, EMAIL, HASHTAG, ARROW, FRIENDFEED_POST} from '../utils/link-types';
 import UserName from './user-name';
 
 const MAX_URL_LENGTH = 50;
@@ -49,6 +49,14 @@ class Linkify extends React.Component {
         displayedLink
       );
     } else {  // eslint-disable-line no-else-return
+      if (href.match(FRIENDFEED_POST)) {
+        return React.createElement(
+          Link,
+          { key: props.key, to: { pathname: '/archivePost', query: { url: href } } },
+          displayedLink
+        );
+      }
+
       props['href'] = href;
       props['target'] = '_blank';
 
