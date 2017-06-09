@@ -32,7 +32,9 @@ const dropzoneConfig = {
   }
 };
 
-const dropzoneEventHandlers = ({addAttachmentResponse, addedFile, removedFile}) => ({
+const dropzoneEventHandlers = (props) => ({
+  init: props.onInit,
+
   // DropzoneJS uses stopPropagation() for dragenter and drop events, so
   // they are not being propagated to window and it breaks crafty handling
   // of those events we have in the Layout component. So here we have to
@@ -63,16 +65,12 @@ const dropzoneEventHandlers = ({addAttachmentResponse, addedFile, removedFile}) 
 
     // Add uploaded attachment to the post
     // 'attachments' in this response will be an attachment object, not an array of objects
-    addAttachmentResponse(response.attachments);
+    props.addAttachmentResponse(response.attachments);
   },
 
-  addedfile: function() {
-    addedFile();
-  },
+  addedfile: props.onAddedFile,
 
-  removedfile: function() {
-    removedFile();
-  }
+  removedfile: props.onRemovedFile
 });
 
 
