@@ -1,38 +1,30 @@
 // Header
 
-header {
-  h1 {
-    @media (max-width: 767px) { font-size: 30px; }
-    @media (min-width: 768px) { margin-bottom: 20px; }
-    @media (min-width: 992px) { margin-left: 10px; }
+header {}
 
-    a {
-      color: #222;
-      text-decoration: none;
+.site-logo {
+  @media (max-width: 767px) { font-size: 30px; }
+  @media (min-width: 768px) { margin-bottom: 20px; }
+  @media (min-width: 992px) { margin-left: 10px; }
+}
 
-      &:active, &:focus, &:hover, &:visited {
-        color: #222;
-        text-decoration: none;
-      }
-    }
-  }
+.site-logo-link {
+  color: #222;
+  text-decoration: none;
+}
 
-  .mobile-shortcuts {
-    display: none;
-    @media (min-width: 768px) { margin-top: 34px; }
-    @media (max-width: 991px) { display: block; }
-    @media (max-width: 400px) { display: flex; justify-content: space-between; }
+.mobile-shortcuts {
+  @media (min-width: 768px) { margin-top: 34px; }
+  @media (max-width: 400px) { display: flex; justify-content: space-between; }
+  margin-top: 10px;
+}
 
-    margin-top: 10px;
+.mobile-shortcut-link {
+  margin-right: 30px;
+  @media (max-width: 400px) { margin-right: 0; }
+}
 
-    a {
-      margin-right: 30px;
-      @media (max-width: 400px) { margin-right: 0; }
-    }
-  }
-
-  .signin-link {
-    @media (max-width: 767px) { margin-top: 30px; }
-    @media (min-width: 768px) { margin-top: 34px; }
-  }
+.signin-link {
+  @media (max-width: 767px) { margin-top: 30px; }
+  @media (min-width: 768px) { margin-top: 34px; }
 }

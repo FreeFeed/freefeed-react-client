@@ -4,19 +4,19 @@ import {preventDefault} from '../utils';
 import UserName from './user-name';
 
 const renderLike = (item, i, items) => (
-  <li key={item.id}>
+  <li key={item.id} className="like">
     {item.id !== 'more-likes' ? (
       <UserName user={item}/>
     ) : (
-      <a onClick={preventDefault(item.showMoreLikes)}>{item.omittedLikes} other people</a>
+      <a className="more-likes-link" onClick={preventDefault(item.showMoreLikes)}>{item.omittedLikes} other people</a>
     )}
 
     {i < items.length - 2 ? (
-      <span>, </span>
+      ', '
     ) : i === items.length - 2 ? (
-      <span> and </span>
+      ' and '
     ) : (
-      <span> liked this</span>
+      ' liked this '
     )}
   </li>
 );
@@ -41,7 +41,7 @@ export default ({likes, showMoreLikes, post}) => {
   return (
     <div className="likes">
       <i className="fa fa-heart icon"></i>
-      <ul>{renderedLikes}</ul>
+      <ul className="likes-list">{renderedLikes}</ul>
     </div>
   );
 };
