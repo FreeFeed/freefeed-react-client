@@ -1,5 +1,4 @@
 .user-name-wrapper {
-  display: inline;
   position: relative;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -28,7 +27,7 @@
     transform: rotate(45deg);
     box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.5);
   }
-  
+
   .user-card-info {
     height: 97px; // 75px + 2px + 20px
     padding: 10px;
