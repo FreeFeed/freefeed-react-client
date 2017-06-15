@@ -24,7 +24,7 @@ class TwitterPreview extends React.Component {
   render() {
     return (
       <div
-        className="tweet-preview"
+        className="tweet-preview link-preview-content"
         data-url={this.props.url}
         style={{height: heightCache.get(this.props.url, 0) + 'px'}}
         >
