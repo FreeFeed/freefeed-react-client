@@ -2139,3 +2139,22 @@ export function notifications(state = [], action) {
   return state;
 }
 
+const defaultArchivePostState = {
+  ...DEFAULT_FORM_STATE,
+  id: null,
+};
+
+export function archivePost(state = DEFAULT_FORM_STATE, action) {
+  switch (action.type) {
+    case request(ActionTypes.GET_POST_ID_BY_OLD_NAME): {
+      return { ...defaultArchivePostState, inProgress: true };
+    }
+    case response(ActionTypes.GET_POST_ID_BY_OLD_NAME): {
+      return { ...defaultArchivePostState, success: true, id: action.payload.postId };
+    }
+    case fail(ActionTypes.GET_POST_ID_BY_OLD_NAME): {
+      return { ...defaultArchivePostState, error: true, errorText: action.payload.err };
+    }
+  }
+  return state;
+}

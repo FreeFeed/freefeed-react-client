@@ -90,11 +90,12 @@ export default class ImageAttachmentsContainer extends React.Component {
   }
 
   render() {
+    const isSingleImage = this.props.attachments.length === 1;
     const className = classnames({
       'image-attachments': true,
       'is-folded': this.state.isFolded,
       'needs-folding': this.state.needsFolding,
-      'single-image': this.props.attachments.length === 1
+      'single-image': isSingleImage
     });
 
     const showFolded = (this.state.needsFolding && this.state.isFolded);
@@ -120,12 +121,12 @@ export default class ImageAttachmentsContainer extends React.Component {
             isHidden={showFolded && i > lastVisibleIndex}
             {...a} />
         ))}
-        <div className="show-more">
+        {isSingleImage ? false : (<div className="show-more">
           <i
             className="fa fa-2x fa-chevron-circle-right"
             onClick={this.toggleFolding}
             title={this.state.isFolded ? `Show more (${this.props.attachments.length - lastVisibleIndex - 1})` : "Show less"}/>
-        </div>
+        </div>)}
         <ImageAttachmentsLightbox
           ref={(el) => this.lightbox = el}
           items={this.getLightboxItems()}
