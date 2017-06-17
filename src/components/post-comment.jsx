@@ -198,6 +198,7 @@ export default class PostComment extends React.Component {
       'highlighted': this.props.highlighted,
       'omit-bubble': this.props.omitBubble,
       'is-hidden': !!this.props.hideType,
+      'my-comment': this.props.currentUser && this.props.user && (this.props.currentUser.id === this.props.user.id)
     });
 
     return this.props.createdAt ? (

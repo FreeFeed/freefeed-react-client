@@ -52,7 +52,8 @@ export default class PostComments extends React.Component {
         toggleEditingComment={props.toggleCommenting}
         errorString={props.commentError}
         isSaving={props.post.isSavingComment}
-        isSinglePost={props.post.isSinglePost}/>
+        isSinglePost={props.post.isSinglePost}
+        currentUser={props.post.user}/>
     );
   }
 
@@ -95,7 +96,8 @@ export default class PostComments extends React.Component {
         highlightComment={authorUserName => props.commentEdit.highlightComment(props.post.id, authorUserName)}
         highlightArrowComment={arrows => props.commentEdit.highlightComment(props.post.id, undefined, arrows, comment.id)}
         readMoreStyle={props.readMoreStyle}
-        highlightTerms={props.highlightTerms}/>
+        highlightTerms={props.highlightTerms}
+        currentUser={props.post.user}/>
     );
   }
 
