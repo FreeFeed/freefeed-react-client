@@ -11,6 +11,9 @@ header {}
 .site-logo-link {
   color: #222;
   text-decoration: none;
+  &:hover {
+    color: #222;
+  }
 }
 
 .mobile-shortcuts {
