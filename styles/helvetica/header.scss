@@ -11,6 +11,10 @@ header {}
 .site-logo-link {
   color: #222;
   text-decoration: none;
+  &:active, &:focus, &:hover, &:visited {
+    color: #222;
+    text-decoration: none;
+  }
 }
 
 .mobile-shortcuts {
