@@ -144,7 +144,7 @@
   }
 
   .show-more {
-    display: inline-block;
+    display: none;
     width: 24px;
     color: #8ab;
     vertical-align: middle;
@@ -154,6 +154,12 @@
       cursor: pointer;
       transform: rotate(-180deg);
       transition: transform 0.3s 0.1s;
+    }
+  }
+
+  &.needs-folding {
+    .show-more {
+      display: inline-block;
     }
   }
 
