@@ -6,45 +6,52 @@ import GeneralAttachment from './post-attachment-general';
 export default (props) => {
   const attachments = props.attachments || [];
 
-  const imageAttachmentsContainer = (
+  const imageAttachments = attachments.filter(attachment => attachment.mediaType === 'image');
+  const imageAttachmentsContainer = imageAttachments.length ? (
     <ImageAttachmentsContainer
       isEditing={props.isEditing}
       isSinglePost={props.isSinglePost}
       removeAttachment={props.removeAttachment}
-      attachments={attachments.filter(a => a.mediaType === 'image')}
+      attachments={imageAttachments}
       postId={props.postId}
       />
-  );
+  ) : false;
 
-  const audioAttachments = attachments
-    .filter(attachment => attachment.mediaType === 'audio')
-    .map(attachment => (
-      <AudioAttachment
-        key={attachment.id}
-        isEditing={props.isEditing}
-        removeAttachment={props.removeAttachment}
-        {...attachment}/>
-    ));
+  const audioAttachments = attachments.filter(attachment => attachment.mediaType === 'audio');
+  const audioAttachmentsNodes = audioAttachments.map(attachment => (
+    <AudioAttachment
+      key={attachment.id}
+      isEditing={props.isEditing}
+      removeAttachment={props.removeAttachment}
+      {...attachment}
+      />
+  ));
+  const audioAttachmentsContainer = audioAttachments.length ? (
+    <div className="audio-attachments">
+      {audioAttachmentsNodes}
+    </div>
+  ) : false;
 
-  const generalAttachments = attachments
-    .filter(attachment => attachment.mediaType === 'general')
-    .map(attachment => (
-      <GeneralAttachment
-        key={attachment.id}
-        isEditing={props.isEditing}
-        removeAttachment={props.removeAttachment}
-        {...attachment}/>
-    ));
+  const generalAttachments = attachments.filter(attachment => attachment.mediaType === 'general');
+  const generalAttachmentsNodes = generalAttachments.map(attachment => (
+    <GeneralAttachment
+      key={attachment.id}
+      isEditing={props.isEditing}
+      removeAttachment={props.removeAttachment}
+      {...attachment}
+      />
+  ));
+  const generalAttachmentsContainer = generalAttachments.length ? (
+    <div className="general-attachments">
+      {generalAttachmentsNodes}
+    </div>
+  ) : false;
 
   return (attachments.length > 0 ? (
     <div className="attachments">
       {imageAttachmentsContainer}
-      <div className="audio-attachments">
-        {audioAttachments}
-      </div>
-      <div className="general-attachments">
-        {generalAttachments}
-      </div>
+      {audioAttachmentsContainer}
+      {generalAttachmentsContainer}
     </div>
-  ) : <div/>);
+  ) : false );
 };

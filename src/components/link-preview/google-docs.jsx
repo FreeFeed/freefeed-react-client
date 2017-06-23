@@ -53,7 +53,7 @@ class GoogleDocsPreview extends React.Component {
     }
 
     return (
-      <div className="google-docs-preview">
+      <div className="google-docs-preview link-preview-content">
         <div className={`google-docs-label ${type}`}/>
         <a
           className="google-docs-inner"

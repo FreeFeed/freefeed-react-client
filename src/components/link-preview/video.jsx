@@ -76,7 +76,7 @@ class VideoPreview extends React.Component {
     const {player, info} = this.state;
 
     if (info && ('error' in info)) {
-      return <div className="video-preview load-error">{info.error}</div>;
+      return <div className="video-preview link-preview-content load-error">{info.error}</div>;
     }
 
     const previewStyle = info ? {backgroundImage: `url(${info.previewURL})`} : {};
@@ -87,7 +87,7 @@ class VideoPreview extends React.Component {
     previewStyle.paddingBottom = 100 * r + '%';
 
     return (
-      <div className="video-preview" style={{maxWidth: width}}>
+      <div className="video-preview link-preview-content" style={{maxWidth: width}}>
         <div className="static-preview" style={previewStyle} onClick={this.loadPlayer}>
           {player ? (
             this.renderPlayer()
