@@ -133,17 +133,18 @@ class Layout extends React.Component {
 
         <header className="row">
           <div className="col-xs-9 col-sm-4 col-md-4">
-            <h1>
-              <IndexLink to="/" onClick={logoHandler(props.routeName, props.home)}>FreeFeed</IndexLink>
+            <h1 className="site-logo">
+              <IndexLink className="site-logo-link" to="/" onClick={logoHandler(props.routeName, props.home)}>FreeFeed</IndexLink>
             </h1>
           </div>
 
           {props.authenticated ? (
-            <div className="col-xs-12 col-sm-6">
+            <div className="col-xs-12 col-sm-8 hidden-md hidden-lg">
               <div className="mobile-shortcuts">
-                <Link to="/filter/discussions">My discussions</Link>
-                <Link to="/filter/direct">Direct messages</Link>
-                <Link to={`/${props.user.username}`}>My feed</Link>
+                <Link className="mobile-shortcut-link" to="/filter/discussions">Discussions</Link>
+                <Link className="mobile-shortcut-link" to="/filter/notifications">Notifications</Link>
+                <Link className="mobile-shortcut-link" to="/filter/direct">Directs</Link>
+                <Link className="mobile-shortcut-link" to={`/${props.user.username}`}>My feed</Link>
               </div>
             </div>
           ) : (

@@ -46,7 +46,7 @@ class InstagramPreview extends React.Component {
       return null;
     }
     return (
-      <div className="instagram-preview">
+      <div className="instagram-preview link-preview-content">
         <iframe
           ref={this.setIframe}
           src={`https://www.instagram.com/p/${id}/embed/captioned/`}

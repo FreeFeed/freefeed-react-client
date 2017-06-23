@@ -1,0 +1,31 @@
+.notifications {
+  .notifications-throbber {
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    margin-left: 7px;
+  }
+  .filter {
+    margin-left: 10px;
+    @media (max-width: 991px){ margin-left: 0; }
+    display: flex;
+    flex-wrap: wrap;
+    &>* {
+      margin-right: 10px;
+      text-decoration: none;
+    }
+    &>.active {
+      text-decoration: underline;
+    }
+  }
+
+  .notification-list {
+    margin-top: 20px;
+  }
+
+  .single-notification {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+}

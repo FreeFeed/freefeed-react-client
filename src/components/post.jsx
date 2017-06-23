@@ -29,6 +29,27 @@ export default class Post extends React.Component {
     };
   }
 
+  handleDropzoneInit = (d) => {
+    this.dropzoneObject = d;
+  };
+
+  handlePaste = (e) => {
+    if (e.clipboardData) {
+      const items = e.clipboardData.items;
+      if (items) {
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].type.indexOf('image/') > -1) {
+            const blob = items[i].getAsFile();
+            if (!blob.name) {
+              blob.name = 'image.png';
+            }
+            this.dropzoneObject.addFile(blob);
+          }
+        }
+      }
+    }
+  };
+
   removeAttachment = (attachmentId) => this.props.removeAttachment(this.props.id, attachmentId)
 
   changeAttachmentQueue= (change) => () => {
@@ -134,12 +155,7 @@ export default class Post extends React.Component {
       </span>
     ));
 
-    // username in url
-    // If posted _only_ into groups, use first recipient's username
-    let urlName = props.createdBy.username;
-    if (props.recipients.length > 0 && !props.recipients.some(r => r.type === "user")) {
-      urlName = props.recipients[0].username;
-    }
+    const canonicalPostURI = canonicalURI(props);
 
     const authorOrGroupsRecipients = props.recipients
       .filter(r => r.id === props.createdBy.id || r.type === 'group')
@@ -165,7 +181,7 @@ export default class Post extends React.Component {
               {' - '}
               <i>Comments disabled (not for you)</i>
               {' - '}
-              <a onClick={toggleCommenting}>Comment</a>
+              <a className="post-action" onClick={toggleCommenting}>Comment</a>
             </span>
           );
         } else {
@@ -180,7 +196,7 @@ export default class Post extends React.Component {
         commentLink = (
           <span>
             {' - '}
-            <a onClick={toggleCommenting}>Comment</a>
+            <a className="post-action" onClick={toggleCommenting}>Comment</a>
           </span>
         );
       }
@@ -196,7 +212,7 @@ export default class Post extends React.Component {
         {props.likeError ? (
           <i className="fa fa-exclamation-triangle post-like-fail" title={props.likeError} aria-hidden="true"/>
         ) : null}
-        <a onClick={didILikePost ? unlikePost : likePost}>{didILikePost ? 'Un-like' : 'Like'}</a>
+        <a className="post-action" onClick={didILikePost ? unlikePost : likePost}>{didILikePost ? 'Un-like' : 'Like'}</a>
         {props.isLiking ? (
           <span className="post-like-throbber">
             <img width="16" height="16" src={throbber16}/>
@@ -209,7 +225,7 @@ export default class Post extends React.Component {
     const hideLink = (props.isInHomeFeed ? (
       <span>
         {' - '}
-        <a onClick={props.isHidden ? unhidePost : hidePost}>{props.isHidden ? 'Un-hide' : 'Hide'}</a>
+        <a className="post-action" onClick={props.isHidden ? unhidePost : hidePost}>{props.isHidden ? 'Un-hide' : 'Hide'}</a>
         {props.isHiding ? (
           <span className="post-hide-throbber">
             <img width="16" height="16" src={throbber16}/>
@@ -238,7 +254,7 @@ export default class Post extends React.Component {
     return (props.isRecentlyHidden ? (
       <div className="post recently-hidden-post">
         <i>Entry hidden - </i>
-        <a onClick={unhidePost}>undo</a>.
+        <a className="post-action" onClick={unhidePost}>undo</a>.
         {' '}
         {props.isHiding ? (
           <span className="post-hide-throbber">
@@ -252,7 +268,7 @@ export default class Post extends React.Component {
                     config={postReadmoreConfig}>
           <div className="post-userpic">
             <Link to={`/${props.createdBy.username}`}>
-              <img src={profilePicture} width={profilePictureSize} height={profilePictureSize}/>
+              <img className="post-userpic-img" src={profilePicture} width={profilePictureSize} height={profilePictureSize}/>
             </Link>
           </div>
           <div className="post-body">
@@ -265,6 +281,7 @@ export default class Post extends React.Component {
             {props.isEditing ? (
               <div className="post-editor">
                 <Dropzone
+                  onInit={this.handleDropzoneInit}
                   addAttachmentResponse={att => props.addAttachmentResponse(this.props.id, att)}
                   addedFile={this.changeAttachmentQueue(1)}
                   removedFile={this.changeAttachmentQueue(-1)}/>
@@ -275,6 +292,7 @@ export default class Post extends React.Component {
                     defaultValue={props.editingText}
                     onKeyDown={checkSave}
                     onChange={editingPostTextChange}
+                    onPaste={this.handlePaste}
                     autoFocus={true}
                     minRows={2}
                     maxRows={10}
@@ -332,7 +350,7 @@ export default class Post extends React.Component {
               <i className="post-lock-icon post-protected-icon fa fa-lock" title="This entry is only visible to FreeFeed users"/>
             ) : false}
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
-            <Link to={`/${urlName}/${props.id}`} className="post-timestamp">
+            <Link to={canonicalPostURI} className="post-timestamp">
               <TimeDisplay timeStamp={+props.createdAt}/>
             </Link>
             {commentLink}
@@ -362,11 +380,21 @@ export default class Post extends React.Component {
             showMoreComments={props.showMoreComments}
             commentEdit={props.commentEdit}
             readMoreStyle={props.readMoreStyle}
-            entryUrl={`/${urlName}/${props.id}`}
+            entryUrl={canonicalPostURI}
             highlightTerms={props.highlightTerms}
             isSinglePost={props.isSinglePost}/>
         </div>
       </div>
     ));
   }
+}
+
+// Canonical post URI (pathname)
+export function canonicalURI(post) {
+  // If posted _only_ into groups, use first recipient's username
+  let urlName = post.createdBy.username;
+  if (post.recipients.length > 0 && !post.recipients.some(r => r.type === "user")) {
+    urlName = post.recipients[0].username;
+  }
+  return `/${encodeURIComponent(urlName)}/${encodeURIComponent(post.id)}`;
 }

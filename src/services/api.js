@@ -39,6 +39,11 @@ export function getUserFeed({username, offset}) {
     `${apiConfig.host}/v2/timelines/${username}?offset=${offset}`, getRequestOptions());
 }
 
+export function getNotifications({offset, filter}) {
+  return fetch(
+    `${apiConfig.host}/v2/notifications?offset=${offset}&filter=${filter}`, getRequestOptions());
+}
+
 export function getLikesOnly({postId, commentsExpanded}) {
   return getPost({
     postId,
@@ -50,6 +55,11 @@ export function getLikesOnly({postId, commentsExpanded}) {
 export function getPost({postId, maxComments = '', maxLikes = ''}) {
   return fetch(
     `${apiConfig.host}/v2/posts/${postId}?maxComments=${maxComments}&maxLikes=${maxLikes}`, getRequestOptions());
+}
+
+export function getPostIdByOldName({ oldName }) {
+  return fetch(
+    `${apiConfig.host}/v2/archives/post-by-old-name/${encodeURIComponent(oldName)}`, getRequestOptions());
 }
 
 export function createPost({feeds, postText, attachmentIds, more}) {

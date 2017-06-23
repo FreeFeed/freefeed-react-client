@@ -217,11 +217,11 @@ export default class PostComment extends React.Component {
   renderTimer() {
     return <div>
               <TimeDisplay className="comment-time" timeStamp={+this.props.createdAt} timeAgoInTitle={true}>
-               <a
+                <a
                   className={`comment-icon fa ${this.props.omitBubble ? 'feed-comment-dot' : 'fa-comment-o'}`}
                   id={`comment-${this.props.id}`}
                   href={`${this.props.entryUrl}#comment-${this.props.id}`}
-                  onClick={this.openAnsweringComment}></a>
+                  onClick={this.openAnsweringComment} />
               </TimeDisplay>
               <CommentActionsMobile omitBubble={this.props.omitBubble}
                                     likes={this.props.likes}
@@ -248,17 +248,26 @@ export default class PostComment extends React.Component {
   }
 
   render() {
+
     const className = classnames({
       'comment': true,
       'highlighted': this.props.highlighted,
       'omit-bubble': this.props.omitBubble,
       'is-hidden': !!this.props.hideType,
+      'my-comment': this.props.currentUser && this.props.user && (this.props.currentUser.id === this.props.user.id)
     });
 
-    return (
+    return this.props.createdAt ? (
       <div className={className} data-author={this.props.isEditing ? '' : this.props.user.username}>
         {this.renderTimer()}
         {this.renderCommentLikes()}
+        {this.renderBody()}
+      </div>
+    ) : (
+      <div className={className}>
+        <span className="comment-time">
+          <span className={`comment-icon fa ${this.props.omitBubble ? 'feed-comment-dot' : 'fa-comment-o'}`} />
+        </span>
         {this.renderBody()}
       </div>
     );

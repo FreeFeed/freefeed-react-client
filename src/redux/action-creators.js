@@ -62,6 +62,17 @@ export function getUserFeed(username, offset = 0) {
   };
 }
 
+export function getNotifications(offset = 0, filter = '') {
+  return {
+    type: ActionTypes.GET_NOTIFICATIONS,
+    apiRequest: Api.getNotifications,
+    payload: {
+      offset,
+      filter,
+    },
+  };
+}
+
 export function showMoreComments(postId) {
   return {
     type: ActionTypes.SHOW_MORE_COMMENTS,
@@ -448,6 +459,15 @@ export function getSinglePost(postId) {
     apiRequest: Api.getPost,
     nonAuthRequest: true,
     payload: {postId, maxComments: 'all'},
+  };
+}
+
+export function getPostIdByOldName(oldName) {
+  return {
+    type: ActionTypes.GET_POST_ID_BY_OLD_NAME,
+    apiRequest: Api.getPostIdByOldName,
+    nonAuthRequest: true,
+    payload: { oldName },
   };
 }
 

@@ -39,7 +39,7 @@ class EmbedlyPreview extends React.Component {
     return (
       <div
         key={`${this.props.url}##${this.state.updCounter}`}
-        className="embedly-preview"
+        className="embedly-preview link-preview-content"
         data-url={this.props.url}
         style={{height: heightCache.get(this.props.url, 0) + 'px'}}
         >
