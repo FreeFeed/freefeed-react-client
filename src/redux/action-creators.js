@@ -462,6 +462,15 @@ export function getSinglePost(postId) {
   };
 }
 
+export function getPostIdByOldName(oldName) {
+  return {
+    type: ActionTypes.GET_POST_ID_BY_OLD_NAME,
+    apiRequest: Api.getPostIdByOldName,
+    nonAuthRequest: true,
+    payload: { oldName },
+  };
+}
+
 const userChangeAction = (type, apiRequest) => (payload) => {
   return {
     type,

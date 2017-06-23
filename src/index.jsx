@@ -41,6 +41,7 @@ import Notifications from './components/notifications';
 import Friends from './components/friends';
 import ManageSubscribers from './components/manage-subscribers';
 import Bookmarklet from './components/bookmarklet';
+import ArchivePost from './components/archive-post';
 
 const store = configureStore();
 
@@ -135,6 +136,7 @@ ReactDOM.render(
         <Route name='groups' path='/groups' component={Groups} onEnter={enterStaticPage('Groups')}/>
         <Route name='friends' path='/friends' component={Friends} onEnter={friendsActions}/>
         <Route name='groupCreate' path='/groups/create' component={GroupCreate} onEnter={enterStaticPage('Create a group')}/>
+        <Route name='archivePost' path='/archivePost' component={ArchivePost} {...generateRouteHooks(boundRouteActions('archivePost'))}/>
         <Route name='userFeed' path='/:userName' component={User} {...generateRouteHooks(boundRouteActions('userFeed'))}/>
         <Route name='subscribers' path='/:userName/subscribers' component={Subscribers} onEnter={subscribersSubscriptionsActions}/>
         <Route name='subscriptions' path='/:userName/subscriptions' component={Subscriptions} onEnter={subscribersSubscriptionsActions}/>

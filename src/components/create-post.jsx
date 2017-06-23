@@ -44,6 +44,30 @@ export default class CreatePost extends React.Component {
     }
   }
 
+  //
+  // Handling attachments
+
+  handleDropzoneInit = (d) => {
+    this.dropzoneObject = d;
+  };
+
+  handlePaste = (e) => {
+    if (e.clipboardData) {
+      const items = e.clipboardData.items;
+      if (items) {
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].type.indexOf('image/') > -1) {
+            const blob = items[i].getAsFile();
+            if (!blob.name) {
+              blob.name = 'image.png';
+            }
+            this.dropzoneObject.addFile(blob);
+          }
+        }
+      }
+    }
+  };
+
   clearForm = () => {
     this.setState(getDefaultState());
     const attachmentIds = this.props.createPostForm.attachments.map(attachment => attachment.id);
@@ -103,6 +127,7 @@ export default class CreatePost extends React.Component {
           ) : false}
 
           <Dropzone
+            onInit={this.handleDropzoneInit}
             addAttachmentResponse={att => props.addAttachmentResponse(null, att)}
             addedFile={this.changeAttachmentQueue(1)}
             removedFile={this.changeAttachmentQueue(-1)}/>
@@ -113,6 +138,7 @@ export default class CreatePost extends React.Component {
             onChange={this.onPostTextChange}
             onFocus={this.props.expandSendTo}
             onKeyDown={this.checkSave}
+            onPaste={this.handlePaste}
             minRows={3}
             maxRows={10}
             maxLength="1500"/>

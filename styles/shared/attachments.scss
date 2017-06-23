@@ -30,31 +30,35 @@
     position: relative;
     display: inline-block;
     vertical-align: middle;
-    border: 1px solid silver;
-    padding: 1px;
     margin: 0 8px 8px 0;
     box-sizing: content-box;
     text-align: center;
 
-    img {
-      max-width: 525px;
-      max-height: 175px;
-      @media (max-width: 400px) {
-        max-width: 250px;
-        height: auto;
-     }
-    }
-
     &.surplus {
       display: none;
     }
+  }
 
-    a {
-      display: block;
-      min-width: 32px;
-      min-height: 32px;
-      line-height: 30px;
-      cursor: zoom-in;
+  .image-attachment-img {
+    max-width: 525px;
+    max-height: 175px;
+    @media (max-width: 400px) {
+      max-width: 250px;
+      height: auto;
+   }
+  }
+
+  .image-attachment-link {
+    display: block;
+    min-width: 32px;
+    min-height: 32px;
+    line-height: 30px;
+    cursor: zoom-in;
+    border: 1px solid silver;
+    padding: 1px;
+
+    &:hover {
+      border-color: #aaa;
     }
   }
 
