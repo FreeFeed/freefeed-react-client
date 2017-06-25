@@ -8,44 +8,6 @@
   margin-top: 8px;
   position: relative;
 
-  .comment-time {
-    float: left;
-    margin-top: 2px;
-    margin-right: 3px;
-    display: none;
-    @media (min-width: 1025px) {
-      display: block;
-    }
-  }
-
-  .comment-actions-mobile {
-    float: left;
-  }
-
-  .comment-icon {
-    float: left;
-    height: 16px;
-    width: 16px;
-    text-decoration: none;
-
-    &.fa-stack {
-      width: 14px;
-      margin-top: 1px;
-      margin-right: 6px;
-      line-height: 1em;
-    }
-    .fa-plus,
-    .fa-square {
-      font-size: 60%;
-      top: 3px;
-      left: 4px;
-    }
-    .fa-plus {
-      top: 3px;
-      left: 4px;
-    }
-  }
-
   .comment-body {
     word-wrap: break-word;
     margin-left: 19px;
