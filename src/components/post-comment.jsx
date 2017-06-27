@@ -206,6 +206,7 @@ export default class PostComment extends React.Component {
                           omitBubble={this.props.omitBubble}
                           likes={this.props.likes}
                           forbidLiking={this.props.isEditable}
+                          omitLikes={this.props.isEditing}
                           hasOwnLike={this.props.hasOwnLike}
                           toggleLike={this.toggleLike}
                           likesList={this.props.likesList}

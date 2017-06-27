@@ -21,6 +21,9 @@ export default class CommentLikes extends React.Component {
       </div>;
   }
   renderHeart = () => {
+    if (this.props.omitLikes) {
+      return false;
+    }
     const classNames = classnames("comment-likes", {"has-my-like": this.props.hasOwnLike, "liked": this.props.likes > 0, "non-likable": this.props.forbidLiking});
     return <div className={classNames}>
       <div className="comment-count" onClick={this.toggleLikeList}>
@@ -69,7 +72,7 @@ export default class CommentLikes extends React.Component {
                   <div className="arrow" onClick={this.arrowClick}><i className="fa fa-angle-left" aria-hidden="true"/></div>
                   <div className="likes">
                     {this.state.showActionButtons
-                      ? renderLikesLabel(this.props.likes, this.props.hasOwnLike, this.showLikesList)
+                      ? renderLikesLabel(this.props.likes, this.props.hasOwnLike, this.props.forbidLiking, this.showLikesList)
                       : renderMobileLikesList(this.props.likesList)
                     }
                   </div>
@@ -109,7 +112,8 @@ export default class CommentLikes extends React.Component {
       this.props.toggleLike();
     }
   }
-  toggleLikeList = () => {
+  toggleLikeList = (e) => {
+    e.stopPropagation();
     const likeListVisible = !this.state.likeListVisible;
     this.setState({likeListVisible});
     if (likeListVisible) {
@@ -168,7 +172,7 @@ function renderMobileLikesList(likesList) {
 
 const usersPluralize = count => `user${count > 1 ? "s" : ""}`;
 
-function renderLikesLabel(likes, hasOwnLike, showLikesList) {
+function renderLikesLabel(likes, hasOwnLike, forbidLiking, showLikesList) {
   return likes > 0
     ? hasOwnLike
       ? <span>You{likes-1 > 0 &&
@@ -180,5 +184,5 @@ function renderLikesLabel(likes, hasOwnLike, showLikesList) {
         <span> liked this comment</span>
         </span>
       : <span><a className="likes-list-toggle" onClick={showLikesList} href="#">{likes} {usersPluralize(likes)}</a> liked this comment</span>
-    : <i>No one has liked this comment yet. You will be the first to like it!</i>;
+    : <i>No one has liked this comment yet. {!forbidLiking && 'You will be the first to like it!'}</i>;
 }
