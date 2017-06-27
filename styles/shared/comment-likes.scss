@@ -111,6 +111,7 @@
     padding: 6px;
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
     white-space: nowrap;
+    text-align: left;
     .user-name-wrapper {
       display: block;
     }
@@ -120,6 +121,11 @@
 .comment:hover .comment-likes:not(.liked) {
   opacity: 1;
   transition: opacity .25s;
+  @media (max-width: 768px) {
+    &:not(.has-my-like, .liked) {
+      display: inline-flex;
+    }
+  }
 }
 
 .actions-overlay {
@@ -166,6 +172,7 @@
       font-size: 16px;
       margin: 0;
       padding-right: 15px;
+      overflow-y: auto;
     }
   }
 
