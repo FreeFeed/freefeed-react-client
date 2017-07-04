@@ -204,6 +204,7 @@ export default class PostComment extends React.Component {
     return <CommentLikes  commentId={this.props.id}
                           entryUrl={this.props.entryUrl}
                           omitBubble={this.props.omitBubble}
+                          createdAt={this.props.createdAt}
                           likes={this.props.likes}
                           forbidLiking={this.props.isEditable}
                           omitLikes={this.props.isEditing}
@@ -225,18 +226,10 @@ export default class PostComment extends React.Component {
       'my-comment': this.props.currentUser && this.props.user && (this.props.currentUser.id === this.props.user.id)
     });
 
-    return this.props.createdAt ? (
-      <div className={className} data-author={this.props.isEditing ? '' : this.props.user.username}>
-        {this.renderCommentLikes()}
-        {this.renderBody()}
-      </div>
-    ) : (
-      <div className={className}>
-        <span className="comment-time">
-          <span className={`comment-icon fa ${this.props.omitBubble ? 'feed-comment-dot' : 'fa-comment-o'}`} />
-        </span>
-        {this.renderBody()}
-      </div>
-    );
+
+    return <div className={className} data-author={this.props.isEditing ? '' : this.props.user.username}>
+            {this.renderCommentLikes()}
+            {this.renderBody()}
+          </div>;
   }
 }
