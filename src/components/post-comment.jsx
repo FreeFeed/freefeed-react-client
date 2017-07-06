@@ -8,10 +8,10 @@ import {preventDefault, confirmFirst} from '../utils';
 import {READMORE_STYLE_COMPACT, COMMENT_DELETED} from '../utils/frontend-preferences-options';
 import {commentReadmoreConfig} from '../utils/readmore-config';
 
+import CommentLikes from './comment-likes';
 import PieceOfText from './piece-of-text';
 import Expandable from './expandable';
 import UserName from './user-name';
-import TimeDisplay from './time-display';
 
 
 export default class PostComment extends React.Component {
@@ -30,16 +30,12 @@ export default class PostComment extends React.Component {
     });
   }
 
-  openAnsweringComment = (event) => {
-    event.preventDefault();
-    if (this.props.openAnsweringComment && event.button === 0) {
-      const withCtrl = event.ctrlKey || event.metaKey;
-      if (!withCtrl && this.props.hideType) {
-        return;
-      }
-      const answerText = (event.ctrlKey || event.metaKey) ? _.repeat('^', this.props.backwardNumber) : '@' + this.props.user.username;
-      this.props.openAnsweringComment(answerText);
-    }
+  reply = () => {
+    this.props.openAnsweringComment(_.repeat('^', this.props.backwardNumber));
+  }
+
+  mention = () => {
+    this.props.openAnsweringComment('@' + this.props.user.username);
   }
 
   setCaretToTextEnd = (event) => {
@@ -83,6 +79,16 @@ export default class PostComment extends React.Component {
     if (this.commentTextArea) {
       this.commentTextArea.focus();
     }
+  }
+
+  toggleLike = () => {
+    return this.props.hasOwnLike
+    ? this.props.unlikeComment(this.props.id)
+    : this.props.likeComment(this.props.id);
+  }
+
+  getCommentLikes = () => {
+    this.props.getCommentLikes(this.props.id);
   }
 
   componentWillReceiveProps(newProps) {
@@ -191,6 +197,25 @@ export default class PostComment extends React.Component {
     );
   }
 
+  renderCommentLikes() {
+    if (this.props.hideType) {
+      return false;
+    }
+    return <CommentLikes  commentId={this.props.id}
+                          entryUrl={this.props.entryUrl}
+                          omitBubble={this.props.omitBubble}
+                          createdAt={this.props.createdAt}
+                          likes={this.props.likes}
+                          forbidLiking={this.props.isEditable}
+                          omitLikes={this.props.isEditing}
+                          hasOwnLike={this.props.hasOwnLike}
+                          toggleLike={this.toggleLike}
+                          likesList={this.props.likesList}
+                          getCommentLikes={this.getCommentLikes}
+                          reply={this.reply}
+                          mention={this.mention}/>;
+  }
+
   render() {
 
     const className = classnames({
@@ -201,24 +226,10 @@ export default class PostComment extends React.Component {
       'my-comment': this.props.currentUser && this.props.user && (this.props.currentUser.id === this.props.user.id)
     });
 
-    return this.props.createdAt ? (
-      <div className={className} data-author={this.props.isEditing ? '' : this.props.user.username}>
-        <TimeDisplay className="comment-time" timeStamp={+this.props.createdAt} timeAgoInTitle={true}>
-          <a
-            className={`comment-icon fa ${this.props.omitBubble ? 'feed-comment-dot' : 'fa-comment-o'}`}
-            id={`comment-${this.props.id}`}
-            href={`${this.props.entryUrl}#comment-${this.props.id}`}
-            onClick={this.openAnsweringComment} />
-        </TimeDisplay>
-        {this.renderBody()}
-      </div>
-    ) : (
-      <div className={className}>
-        <span className="comment-time">
-          <span className={`comment-icon fa ${this.props.omitBubble ? 'feed-comment-dot' : 'fa-comment-o'}`} />
-        </span>
-        {this.renderBody()}
-      </div>
-    );
+
+    return <div className={className} data-author={this.props.isEditing ? '' : this.props.user.username}>
+            {this.renderCommentLikes()}
+            {this.renderBody()}
+          </div>;
   }
 }
