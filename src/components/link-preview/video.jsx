@@ -1,6 +1,5 @@
 import {parse as urlParse} from 'url';
 import {parse as queryParse} from 'querystring';
-import _ from 'lodash';
 import React from 'react';
 import {connect} from 'react-redux';
 
@@ -193,16 +192,9 @@ async function getVideoInfo(url) {
       const id = getVideoId(url);
       const previewURL = `https://i.imgur.com/${id}h.jpg`;
       try {
-        const [img, info] = await Promise.all([
-          loadImage(previewURL),
-          cachedFetch(`https://api.imgur.com/oembed.json?url=http://i.imgur.com/${id}`),
-        ]);
-        if (!info.html) {
-          throw new Error('Image does not exists at Imgur');
-        }
-        const byline = _.unescape(info.html.replace(/<[^>]+>/g, ''));
+        const img = await loadImage(previewURL);
         return {
-          byline,
+          byline: 'View at Imgur',
           previewURL,
           aspectRatio: aspectRatio.set(url, img.height / img.width),
           videoURL: `https://i.imgur.com/${id}.mp4`,
