@@ -6,7 +6,7 @@ import Linkify from "./linkify";
 import TimeDisplay from "./time-display";
 import PaginatedView from "./paginated-view";
 
-const getAuthorName = ({postAuthor, createdUser, group, post_id}) => {
+const getAuthorName = ({postAuthor, createdUser, group}) => {
   if (group && group.username) {
     return group.username;
   }
@@ -14,7 +14,7 @@ const getAuthorName = ({postAuthor, createdUser, group, post_id}) => {
     return postAuthor.username;
   }
   return createdUser.username;
-}
+};
 
 const generatePostUrl = ({...event, post_id}) => `/${getAuthorName(event)}/${post_id}`;
 const generateCommentUrl = ({...event, post_id, comment_id}) => `/${getAuthorName(event)}/${post_id}#comment-${comment_id}`;

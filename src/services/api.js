@@ -148,6 +148,32 @@ export function updateComment({commentId, newCommentBody}) {
   });
 }
 
+export function likeComment({commentId}) {
+  return fetch(`${apiConfig.host}/v2/comments/${commentId}/like`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+  });
+}
+
+export function unlikeComment({commentId}) {
+  return fetch(`${apiConfig.host}/v2/comments/${commentId}/unlike`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken()
+    },
+  });
+}
+
+export function getCommentLikes({commentId}) {
+  return fetch(`${apiConfig.host}/v2/comments/${commentId}/likes`, getRequestOptions());
+}
+
 export function deleteComment({commentId}) {
   return fetch(`${apiConfig.host}/v1/comments/${commentId}`, {
     'method': 'DELETE',

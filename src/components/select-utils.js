@@ -19,6 +19,7 @@ import {
   toggleCommenting, updateCommentingText, addComment,
   toggleEditingComment, saveEditingComment,
   highlightComment, clearHighlightComment,
+  likeComment, unlikeComment, getCommentLikes,
   deleteComment
 } from '../redux/action-creators';
 
@@ -45,6 +46,14 @@ const commentHighlighter = ({commentsHighlights, user, postsViewState}, comments
   const highlightCommentId = commentList[highlightIndex < baseIndex ? highlightIndex : -1];
 
   return (commentId, commentAuthor) => author && author === commentAuthor.username || highlightCommentId === commentId;
+};
+
+const selectCommentLikes = ({commentLikes, users}, commentId) => {
+  if (!commentLikes[commentId]) {
+    return {likes: []};
+  }
+  const likes = (commentLikes[commentId].likes || []).map(({userId}) => users[userId]);
+  return {...commentLikes[commentId], likes};
 };
 
 export const joinPostData = state => postId => {
@@ -81,7 +90,8 @@ export const joinPostData = state => postId => {
     const isEditable = (user.id === comment.createdBy);
     const isDeletable = (user.id === post.createdBy);
     const highlighted = highlightComment(commentId, author);
-    return _comments.concat([{ ...comment, ...commentViewState, user: author, isEditable, isDeletable, omitBubble, highlighted }]);
+    const likesList = selectCommentLikes(state, commentId);
+    return _comments.concat([{ ...comment, ...commentViewState, user: author, isEditable, isDeletable, omitBubble, highlighted, likesList }]);
   }, []);
 
   if (postViewState.omittedComments !== 0 && comments.length > 2) {
@@ -175,6 +185,9 @@ export function postActions(dispatch) {
       deleteComment: (commentId) => dispatch(deleteComment(commentId)),
       highlightComment: (postId, author, arrows, baseCommentId) => dispatch(highlightComment(postId, author, arrows,  baseCommentId)),
       clearHighlightComment: () => dispatch(clearHighlightComment()),
+      likeComment: (commentId) => dispatch(likeComment(commentId)),
+      unlikeComment: (commentId) => dispatch(unlikeComment(commentId)),
+      getCommentLikes: (commentId) => dispatch(getCommentLikes(commentId)),
     },
   };
 }
