@@ -459,4 +459,30 @@ $post-line-height: 20px;
       border-color: #999;
     }
   }
+
+  .wikipedia-preview {
+    border: 1px solid #ccc;
+    padding: 10px 10px 0 10px;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Wikipedia-W-bold-in-square.svg/512px-Wikipedia-W-bold-in-square.svg.png);
+    background-position: top right 5px;
+    background-size: 32px;
+    background-repeat: no-repeat;
+    width: 500px;
+    max-width: 100%;
+
+    a {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+    }
+  }
+
+  .wikipedia-preview-image {
+    border: 1px solid #999;
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
 }
