@@ -46,6 +46,7 @@
 
 .comment-likes {
   display: inline-flex;
+  opacity: 0.3;
   align-items: flex-end;
   margin-right: 2px;
   margin-top: 1px;
@@ -116,6 +117,10 @@
       display: block;
     }
   }
+}
+
+.comment-likes:hover {
+  opacity: 1;
 }
 
 .comment:hover .comment-likes:not(.liked) {
