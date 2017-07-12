@@ -1232,6 +1232,15 @@ export function commentLikes(state = {}, action) {
         },
       };
     }
+    case ActionTypes.REALTIME_COMMENT_UPDATE: {
+      return {...state,
+        [action.comment.id]: {
+          loading: false,
+          error: false,
+          likes: [],
+        },
+      };
+    }
   }
   return state;
 }

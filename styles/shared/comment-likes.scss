@@ -59,6 +59,7 @@
 
   .comment-heart {
     position: relative;
+    font-size: 10px;
   }
   .comment-heart:hover .icon {
     transform: scale(1.3);
@@ -118,13 +119,31 @@
   }
 }
 
-.comment:hover .comment-likes:not(.liked) {
+.comment-likes-container:hover .comment-likes:not(.liked) {
   opacity: 1;
   transition: opacity .25s;
   @media (max-width: 768px) {
     &:not(.has-my-like, .liked) {
       display: inline-flex;
     }
+  }
+}
+
+@keyframes show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
   }
 }
 
@@ -135,6 +154,7 @@
   left: 0;
   right: 0;
   background-color: rgba(153, 153, 153, 0.7);
+  animation: 0.2s show;
   .container {
     position: absolute;
     bottom: 0;
@@ -147,6 +167,10 @@
   margin-left: -15px;
   margin-right: -15px;
   background-color: #dddddd;
+
+  animation: 0.2s 0.2s slide;
+  transform: translateY(100%);
+  animation-fill-mode: forwards;
 
   @media (min-width: 768px) {
     margin-left: 63px;
