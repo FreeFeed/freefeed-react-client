@@ -14,7 +14,7 @@ export default class CommentLikes extends React.Component {
     };
   }
   render() {
-    return <div className="comment-likes-container" onTouchStart={this.showPopup} onTouchEnd={e => e.preventDefault()}>
+    return <div className="comment-likes-container" onTouchStart={this.startTouch} onTouchEnd={this.endTouch}>
         {this.renderHeart()}
         {this.renderBubble()}
         {this.renderPopup()}
@@ -52,9 +52,28 @@ export default class CommentLikes extends React.Component {
               </span>
             ;
   }
-  showPopup = (e) => {
+  clearTouchTimeout = () => {
+    clearTimeout(this.popupTimeout);
+    this.popupTimeout = undefined;
+  }
+  startTouch = (e) => {
     e.preventDefault();
-    this.setState({showActionsPanel: true});
+    this.popupTimeout = setTimeout(() => {
+      this.setState({showActionsPanel: true})
+      this.clearTouchTimeout();
+    }, 300);
+  }
+  endTouch = (e) => {
+    e.preventDefault();
+    if (this.popupTimeout) {
+      this.clearTouchTimeout();
+      if (isBubble(e.target)) {
+        this.props.mention();
+      }
+      if (isHeart(e.target)) {
+        this.toggleLike(e);
+      }
+    }
   }
   openAnsweringComment = (event) => {
     event.preventDefault();
@@ -191,4 +210,15 @@ function renderLikesLabel(likes, hasOwnLike, forbidLiking, showLikesList) {
         </span>
       : <span><a className="likes-list-toggle" onClick={showLikesList} href="#">{likes} {usersPluralize(likes)}</a> liked this comment</span>
     : <i>No one has liked this comment yet. {!forbidLiking && 'You will be the first to like it!'}</i>;
+}
+
+function isBubble(vNode) {
+  return vNode.classList.contains('comment-time')
+  || vNode.classList.contains('comment-icon');
+}
+
+function isHeart(vNode) {
+  return vNode.classList.contains('comment-heart')
+  || vNode.classList.contains('fa-heart')
+  || vNode.classList.contains('comment-likes');
 }
