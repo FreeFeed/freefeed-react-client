@@ -119,11 +119,7 @@
   }
 }
 
-.comment-likes:hover {
-  opacity: 1;
-}
-
-.comment:hover .comment-likes:not(.liked) {
+.comment-likes-container:hover .comment-likes:not(.liked) {
   opacity: 1;
   transition: opacity .25s;
   @media (max-width: 768px) {
