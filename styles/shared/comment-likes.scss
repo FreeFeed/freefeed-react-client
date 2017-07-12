@@ -129,6 +129,24 @@
   }
 }
 
+@keyframes show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 .actions-overlay {
   position: fixed;
   top: 0;
@@ -136,6 +154,7 @@
   left: 0;
   right: 0;
   background-color: rgba(153, 153, 153, 0.7);
+  animation: 0.2s show;
   .container {
     position: absolute;
     bottom: 0;
@@ -148,6 +167,10 @@
   margin-left: -15px;
   margin-right: -15px;
   background-color: #dddddd;
+
+  animation: 0.2s 0.2s slide;
+  transform: translateY(100%);
+  animation-fill-mode: forwards;
 
   @media (min-width: 768px) {
     margin-left: 63px;
