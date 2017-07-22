@@ -18,6 +18,8 @@
 
 .comment-time {
   margin-right: 2px;
+  flex-shrink: 0;
+  flex-basis: auto;
 }
 
 .comment-icon {
@@ -58,6 +60,8 @@
   }
 
   .comment-heart {
+    flex-shrink: 0;
+    flex-basis: auto;
     position: relative;
     font-size: 10px;
     .icon.liked {
