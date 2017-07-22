@@ -145,6 +145,8 @@ export default class PostComments extends React.Component {
           omittedComments={foldedCount}
           showMoreComments={this.showMoreComments}
           entryUrl={entryUrl}
+          omittedCommentLikes={post.omittedCommentLikes}
+          omittedOwnCommentLikes={post.omittedOwnCommentLikes}
           isLoading={post.isLoadingComments}/>
       );
     }
