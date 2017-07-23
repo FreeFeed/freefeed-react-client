@@ -215,7 +215,7 @@ export default class CommentLikes extends React.Component {
     const {loading, likes: likeUsers} = likesList;
     if (loading) {
       const likesNumber = hasOwnLike ? likes-1 : likes;
-      return <span>{hasOwnLike && "You and "}{likesNumber > 0 &&
+      return <span>{hasOwnLike && `You${likesNumber > 0 ? " and " : ""}`}{likesNumber > 0 &&
           <a className="likes-list-toggle" onClick={this.showLikesList} href="#">{likesNumber} {usersPluralize(likesNumber)}</a>}
           <span> liked this comment</span>
         </span>;
