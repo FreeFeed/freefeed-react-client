@@ -71,6 +71,7 @@
     "sass-loader": "4.0.x",
     "skin-deep": "~1.0.0",
     "style-loader": "0.13.x",
+    "sw-precache-webpack-plugin": "^0.11.4",
     "tap-spec": "4.1.x",
     "tap-webpack-plugin": "1.1.x",
     "tape": "4.6.x",
