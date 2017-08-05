@@ -19,7 +19,7 @@ header {}
 
 .mobile-shortcuts {
   @media (min-width: 768px) { margin-top: 34px; }
-  @media (max-width: 400px) { display: flex; justify-content: space-between; }
+  @media (max-width: 400px) { display: flex; justify-content: space-between; flex-wrap: wrap; }
   margin-top: 10px;
 }
 
