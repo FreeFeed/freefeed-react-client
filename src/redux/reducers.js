@@ -1375,6 +1375,9 @@ export function user(state = initUser(), action) {
     case response(ActionTypes.DIRECTS_ALL_READ): {
       return {...state, unreadDirectsNumber: 0 };
     }
+    case response(ActionTypes.NOTIFICATIONS_ALL_READ): {
+      return {...state, unreadNotificationsNumber: 0 };
+    }
     case ActionTypes.REALTIME_USER_UPDATE: {
       return {...state, ...action.user};
     }

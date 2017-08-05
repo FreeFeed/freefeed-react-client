@@ -317,6 +317,17 @@ export function markAllDirectsAsRead() {
   return fetch(`${apiConfig.host}/v2/users/markAllDirectsAsRead`, getRequestOptions());
 }
 
+export function markAllNotificationsAsRead() {
+  return fetch(`${apiConfig.host}/v2/users/markAllNotificationsAsRead`, {
+    method: 'POST',
+    headers: {
+     'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken(),
+    }
+  });
+}
+
 export function updateUser({id, screenName, email, isPrivate, isProtected, description}) {
   return fetch(`${apiConfig.host}/v1/users/${id}`, {
     'method': 'PUT',
