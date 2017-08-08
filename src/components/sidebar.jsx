@@ -32,17 +32,17 @@ const SideBarFriends = ({ user }) => (
     <div className='box-body'>
       <ul>
         <li className='p-home'><Link to='/'>Home</Link></li>
-        {user.unreadDirectsNumber > 0 ? (
-          <li className='p-direct-messages'>
-            <Link to='/filter/direct' style={{fontWeight: 'bold'}}>
-              Direct messages ({user.unreadDirectsNumber})
-            </Link>
-          </li>
-        ) : (
-          <li className='p-direct-messages'><Link to='/filter/direct'>Direct messages</Link></li>
-        )}
+        <li className='p-direct-messages'>
+          <Link to='/filter/direct' style={user.unreadDirectsNumber > 0 ? {fontWeight: 'bold'} : {}}>
+            Direct messages {user.unreadDirectsNumber > 0 ? `(${user.unreadDirectsNumber})` : ''}
+          </Link>
+        </li>
         <li className='p-my-discussions'><Link to='/filter/discussions'>My discussions</Link></li>
-        <li className='p-home'><Link to='/filter/notifications'>Notifications</Link></li>
+        <li className='p-home'>
+          <Link to='/filter/notifications' style={user.unreadNotificationsNumber > 0 ? {fontWeight: 'bold'} : {}}>
+            Notifications {user.unreadNotificationsNumber > 0 ? `(${user.unreadNotificationsNumber})` : ''}
+          </Link>
+        </li>
       </ul>
     </div>
     <div className='box-footer'>

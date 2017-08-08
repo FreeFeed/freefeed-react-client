@@ -11,6 +11,7 @@ import {
   redirectionMiddleware,
   requestsMiddleware,
   markDirectsAsReadMiddleware,
+  markNotificationsAsReadMiddleware,
   realtimeMiddleware,
   dataFixMiddleware
 } from './middlewares';
@@ -29,6 +30,7 @@ const middleware = [
   redirectionMiddleware,
   requestsMiddleware,
   markDirectsAsReadMiddleware,
+  markNotificationsAsReadMiddleware,
   realtimeMiddleware
 ];
 

@@ -257,6 +257,14 @@ export const markDirectsAsReadMiddleware = store => next => action => {
   next(action);
 };
 
+export const markNotificationsAsReadMiddleware = store => next => action => {
+  if (action.type === request(ActionTypes.GET_NOTIFICATIONS) && action.payload.offset == 0) {
+    // needed to mark all notifications as read
+    store.dispatch(ActionCreators.markAllNotificationsAsRead());
+  }
+  next(action);
+};
+
 const isFirstPage = state => !state.routing.locationBeforeTransitions.query.offset;
 
 const isPostLoaded = ({posts}, postId) => posts[postId];
