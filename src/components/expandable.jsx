@@ -59,6 +59,9 @@ export default class Expandable extends React.Component {
 function gatherContentLines(node, contentSelector, breakSelector) {
 
   const content = node.querySelectorAll(contentSelector || ".wrapper")[0];
+  if (!content) {
+    return [];
+  }
   const breaks = [...content.querySelectorAll(breakSelector || ".text")];
   const rects = [...content.getClientRects()];
   const breakRects = breaks.map(br => br.getBoundingClientRect());
