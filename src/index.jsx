@@ -43,7 +43,7 @@ import ManageSubscribers from './components/manage-subscribers';
 import Bookmarklet from './components/bookmarklet';
 import ArchivePost from './components/archive-post';
 
-if("serviceWorker" in navigator) {
+if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/service-worker.js");
 }
 
