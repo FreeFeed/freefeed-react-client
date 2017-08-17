@@ -200,11 +200,15 @@ export function createPostViewState(state = {}, action) {
 const initFeed = {
   visibleEntries: [],
   hiddenEntries: [],
+  separateHiddenEntries: false,
   isHiddenRevealed: false,
   isLastPage: true,
 };
 
 const hidePostInFeed = function(state, postId) {
+  if (!state.separateHiddenEntries) {
+    return state;
+  }
   // Add it to hiddenEntries, but don't remove from visibleEntries just yet
   // (for the sake of "Undo"). And check first if it's already in hiddenEntries,
   // since realtime event might come first.
@@ -218,6 +222,9 @@ const hidePostInFeed = function(state, postId) {
 };
 
 const unhidePostInFeed = function(state, postId) {
+  if (!state.separateHiddenEntries) {
+    return state;
+  }
   // Remove it from hiddenEntries and add to visibleEntries
   // (but check first if it's already in there, since this might be an "Undo" happening,
   // and/or realtime event might come first).
@@ -233,13 +240,21 @@ export function feedViewState(state = initFeed, action) {
     return state;
   }
   if (ActionHelpers.isFeedResponse(action)) {
-    const visibleEntries = (action.payload.posts || []).filter(post => !post.isHidden).map(post => post.id);
-    const hiddenEntries = (action.payload.posts || []).filter(post => post.isHidden).map(post => post.id);
+    let visibleEntries = action.payload.timelines.posts;
+    let hiddenEntries = [];
+    // Separate hidden entries only in 'RiverOfNews' feed
+    const separateHiddenEntries = (action.payload.timelines.name === 'RiverOfNews');
+    if (separateHiddenEntries) {
+      visibleEntries = (action.payload.posts || []).filter(post => !post.isHidden).map(post => post.id);
+      hiddenEntries  = (action.payload.posts || []).filter(post =>  post.isHidden).map(post => post.id);
+    }
     const isHiddenRevealed = false;
     const isLastPage = action.payload.isLastPage;
     return {
+      ...state,
       visibleEntries,
       hiddenEntries,
+      separateHiddenEntries,
       isHiddenRevealed,
       isLastPage,
     };
@@ -298,6 +313,12 @@ export function feedViewState(state = initFeed, action) {
     case ActionTypes.REALTIME_LIKE_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW: {
       if (action.post && action.shouldBump) {
+        if (action.post.isHidden && state.separateHiddenEntries) {
+          return {
+            ...state,
+            hiddenEntries: [action.post.posts.id, ...state.hiddenEntries],
+          };
+        }
         return {
           ...state,
           visibleEntries: [action.post.posts.id, ...state.visibleEntries],
