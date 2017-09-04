@@ -23,7 +23,7 @@ const directPostLink = event => <Link to={generatePostUrl(event)}>direct message
 const commentLink = (event, text = 'comment') => <Link to={generateCommentUrl(event)}>{text}</Link>;
 
 const notificationTemplates = {
-  subscription_request_revoked: (event) => <Linkify>{`You revoked your subscription request to @${event.targetUser.username}`}</Linkify>,
+  subscription_request_revoked: (event) => <Linkify>{`@${event.createdUser.username} revoked subscription request to you`}</Linkify>,
 
   mention_in_post: (event) => <div><Linkify>{`@${event.createdUser.username} mentioned you in the `}</Linkify>{postLink(event)}<Linkify>{` ${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify></div>,
   mention_in_comment: (event) => <div><Linkify>{`@${event.createdUser.username} mentioned you in a `}</Linkify>{commentLink(event, 'comment')}{` to the `}{postLink(event)}<Linkify>{`${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify></div>,
@@ -33,8 +33,8 @@ const notificationTemplates = {
   subscription_requested: (event) => <Linkify>{`@${event.createdUser.username} sent you a subscription request`}</Linkify>,
   user_subscribed: (event) => <Linkify>{`@${event.createdUser.username} subscribed to your feed`}</Linkify>,
   user_unsubscribed: (event) => <Linkify>{`@${event.createdUser.username} unsubscribed from your feed`}</Linkify>,
-  subscription_request_approved: (event) => <Linkify>{`Your subscription request to @${event.affectedUser.username} name was approved`}</Linkify>,
-  subscription_request_rejected: (event) => <Linkify>{`Your subscription request to @${event.affectedUser.username} name was rejected`}</Linkify>,
+  subscription_request_approved: (event) => <Linkify>{`Your subscription request to @${event.createdUser.username} was approved`}</Linkify>,
+  subscription_request_rejected: (event) => <Linkify>{`Your subscription request to @${event.createdUser.username} was rejected`}</Linkify>,
   group_created: (event) => <Linkify>{`You created a group @${event.group.username}`}</Linkify>,
   group_subscription_requested: (event) => <Linkify>{`@${event.createdUser.username} sent a subscription request to join @${event.group.username} that you admin `}</Linkify>,
   group_admin_promoted: (event) => <Linkify>{`@${event.createdUser.username} promoted @${event.affectedUser.username} to admin in the group @${event.group.username}`}</Linkify>,
