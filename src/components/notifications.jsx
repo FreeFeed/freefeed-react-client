@@ -132,9 +132,7 @@ const mapStateToProps = (state) => {
       return {
         ...event,
         createdUser: state.users[event.created_user_id] || state.subscribers[event.created_user_id] || mock,
-        createdByUser: state.users[event.created_by_user_id] || state.subscribers[event.created_by_user_id] || mock,
         affectedUser: state.users[event.affected_user_id] || state.subscribers[event.affected_user_id] || mock,
-        targetUser: state.users[event.target_user_id] || state.subscribers[event.target_user_id] || mock,
         group: state.groups[event.group_id] || mock,
         postAuthor: state.users[event.post_author_id],
         post: state.posts[event.post_id] || mock,
