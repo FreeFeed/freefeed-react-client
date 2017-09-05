@@ -2,8 +2,7 @@ var path = require('path'),
     webpack = require('webpack'),
     ExtractTextPlugin = require('extract-text-webpack-plugin'),
     PathRewriter = require('webpack-path-rewriter'),
-    TapWebpackPlugin = require('tap-webpack-plugin'),
-    SwPrecache = require('sw-precache-webpack-plugin')
+    TapWebpackPlugin = require('tap-webpack-plugin')
 
 var env = process.env, opts = {
   dstDir: env.DST_DIR || path.join(__dirname, '_dist'),
@@ -109,12 +108,7 @@ module.exports = [{
       silent: false
     }),
 
-    opts.uglify && new webpack.optimize.UglifyJsPlugin(),
-
-    opts.dev ? false : new SwPrecache({
-      minify: true,
-      stripPrefix: '_dist/',
-    }),
+    opts.uglify && new webpack.optimize.UglifyJsPlugin()
   ])
 },
 //test build config
