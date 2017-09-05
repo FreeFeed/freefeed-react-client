@@ -321,7 +321,7 @@ export function markAllNotificationsAsRead() {
   return fetch(`${apiConfig.host}/v2/users/markAllNotificationsAsRead`, {
     method: 'POST',
     headers: {
-     'Accept': 'application/json',
+      'Accept': 'application/json',
       'Content-Type': 'application/json',
       'X-Authentication-Token': getToken(),
     }

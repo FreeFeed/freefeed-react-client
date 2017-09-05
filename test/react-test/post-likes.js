@@ -1,14 +1,15 @@
 import test from 'tape';
 import React from 'react';
-import sd from 'skin-deep';
+import { createRenderer as createShallowRenderer } from 'react-addons-test-utils';
 
 import PostLikes from '../../src/components/post-likes';
 
 const renderLikes = (likes, omittedLikes = 0) => {
   const post = {omittedLikes};
 
-  const tree = sd.shallowRender(React.createElement(PostLikes, {likes, post}));
-  return tree.getRenderOutput().props.children[1].props.children;
+  const renderer = createShallowRenderer();
+  renderer.render(<PostLikes {...{likes, post}}/>);
+  return renderer.getRenderOutput().props.children[1].props.children;
 };
 
 const getRenderedOmmitedLikes = (likes, omittedLikes) => {

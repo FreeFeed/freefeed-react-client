@@ -1,12 +1,13 @@
 import test from 'tape';
 import React from 'react';
-import sd from 'skin-deep';
+import { createRenderer as createShallowRenderer } from 'react-addons-test-utils';
 
 import PieceOfText from '../../src/components/piece-of-text';
 
 const renderText = (text, isExpanded = false) => {
-  const tree = sd.shallowRender(React.createElement(PieceOfText, {text, isExpanded}));
-  return tree.getRenderOutput().props.children;
+  const renderer = createShallowRenderer();
+  renderer.render(<PieceOfText {...{text, isExpanded}}/>);
+  return renderer.getRenderOutput().props.children;
 };
 
 test('multiline texts are correctly processed (short text with newlines)', t => {
