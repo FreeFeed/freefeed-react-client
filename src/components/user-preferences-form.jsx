@@ -190,7 +190,7 @@ export default class UserPreferencesForm extends React.Component {
               value={FrontendPrefsOptions.COMMENT_HIDDEN_BANNED}
               checked={this.isCommentTypeHidden(FrontendPrefsOptions.COMMENT_HIDDEN_BANNED)}
               onChange={this.changeHideComments}
-              />
+            />
             Hide comments from blocked users (don't show placeholder)
           </label>
         </div>

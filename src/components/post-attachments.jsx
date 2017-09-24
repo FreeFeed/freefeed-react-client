@@ -14,7 +14,7 @@ export default (props) => {
       removeAttachment={props.removeAttachment}
       attachments={imageAttachments}
       postId={props.postId}
-      />
+    />
   ) : false;
 
   const audioAttachments = attachments.filter(attachment => attachment.mediaType === 'audio');
@@ -24,7 +24,7 @@ export default (props) => {
       isEditing={props.isEditing}
       removeAttachment={props.removeAttachment}
       {...attachment}
-      />
+    />
   ));
   const audioAttachmentsContainer = audioAttachments.length ? (
     <div className="audio-attachments">
@@ -39,7 +39,7 @@ export default (props) => {
       isEditing={props.isEditing}
       removeAttachment={props.removeAttachment}
       {...attachment}
-      />
+    />
   ));
   const generalAttachmentsContainer = generalAttachments.length ? (
     <div className="general-attachments">

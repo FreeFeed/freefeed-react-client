@@ -31,24 +31,24 @@ class UserCard extends React.Component {
 
     if (props.notFound) {
       return (<div className="user-card" style={style}>
-            <div className="user-card-info">
-              <div className="userpic loading"></div>
-              <div className="names">
+        <div className="user-card-info">
+          <div className="userpic loading"></div>
+          <div className="names">
                 User not found
-              </div>
-            </div>
-          </div>);
+          </div>
+        </div>
+      </div>);
     }
 
     if (!props.user.id) {
       return (<div className="user-card" style={style}>
-            <div className="user-card-info">
-              <div className="userpic loading"></div>
-              <div className="names">
-                <img width="16" height="16" src={throbber16}/>
-              </div>
-            </div>
-          </div>);
+        <div className="user-card-info">
+          <div className="userpic loading"></div>
+          <div className="names">
+            <img width="16" height="16" src={throbber16}/>
+          </div>
+        </div>
+      </div>);
     }
 
     let description;

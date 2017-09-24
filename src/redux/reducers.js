@@ -916,7 +916,7 @@ export function posts(state = {}, action) {
       }
 
       const likes = action.iLiked ? [postToAct.likes[0], userId, ...postToAct.likes.slice(1)]
-                                  : [userId, ...(postToAct.likes || [])];
+        : [userId, ...(postToAct.likes || [])];
 
       return {
         ...state,
