@@ -5,11 +5,12 @@ import throbber16 from '../../assets/images/throbber-16.gif';
 import {preventDefault} from '../utils';
 import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
 
-export default class UserFrontendPreferencesForm extends React.Component {
+export default class UserPreferencesForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = this.props.preferences;
+    this.state = this.props.frontendPreferences;
     this.state.sHideUsers = this.state.homefeed.hideUsers.join(', ');
+    this.state.hideCommentsOfTypes = this.props.backendPreferences.hideCommentsOfTypes;
   }
 
   changeDisplayOption = (event) => {
@@ -66,30 +67,33 @@ export default class UserFrontendPreferencesForm extends React.Component {
     });
   }
 
-  isCommentTypeHidden = (hideType) => _.includes(this.state.comments.hiddenTypes, hideType);
+  isCommentTypeHidden = (hideType) => _.includes(this.state.hideCommentsOfTypes, hideType);
 
   changeHideComments = (event) => {
     const {target} = event;
     const hideType = parseInt(target.value, 10);
 
     if (target.checked !== this.isCommentTypeHidden(hideType)) {
-      const stComments = this.state.comments;
-      let hiddenTypes;
+      const { hideCommentsOfTypes } = this.state;
       if (target.checked) {
-        hiddenTypes = [...stComments.hiddenTypes, hideType];
+        hideCommentsOfTypes.push(hideType);
       } else {
-        hiddenTypes = _.without(stComments.hiddenTypes, hideType);
+        _.pull(hideCommentsOfTypes, hideType);
       }
-      this.setState({comments: {...stComments, hiddenTypes}});
+      this.setState({ hideCommentsOfTypes });
     }
   }
 
   savePreferences = () => {
     if (this.props.status !== 'loading') {
-      const prefs = {...this.state};
-      prefs.homefeed.hideUsers = prefs.sHideUsers.toLowerCase().match(/[\w-]+/g) || [];
-      delete prefs.sHideUsers;
-      this.props.updateFrontendPreferences(this.props.userId, prefs);
+      const { sHideUsers, hideCommentsOfTypes } = this.state;
+
+      const backPrefs = { hideCommentsOfTypes };
+
+      const frontPrefs = _.omit(this.state, ['sHideUsers', 'hideCommentsOfTypes']);
+      frontPrefs.homefeed.hideUsers = sHideUsers.toLowerCase().match(/[\w-]+/g) || [];
+
+      this.props.updateUserPreferences(this.props.userId, frontPrefs, backPrefs);
     }
   }
 
@@ -141,7 +145,7 @@ export default class UserFrontendPreferencesForm extends React.Component {
           </label>
         </div>
 
-        <p style={{marginBottom: '20px'}}>Text display style:
+        <div style={{marginBottom: '20px'}}>Text display style:
           <div className="radio">
             <label>
               <input
@@ -164,7 +168,7 @@ export default class UserFrontendPreferencesForm extends React.Component {
               Comfortable: displays line breaks, shows 'Read more' for longer posts and comments
             </label>
           </div>
-        </p>
+        </div>
         <div className="checkbox">
           <label>
             <input type="checkbox" name="bubbles" value="1" checked={this.state.comments.omitRepeatedBubbles} onChange={this.changeOmitBubbles}/>

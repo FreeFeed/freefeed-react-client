@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import _ from 'lodash';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import {getUserInfo, updateFrontendPreferences} from '../redux/action-creators';
+import {getUserInfo, updateUserPreferences} from '../redux/action-creators';
 import {userActions} from './select-utils';
 
 class UserCard extends React.Component {
@@ -148,7 +148,7 @@ function mapDispatchToProps(dispatch) {
       } else {
         hideUsers.splice(p, 1);
       }
-      dispatch(updateFrontendPreferences(me.id, {...me.frontendPreferences, homefeed: {...me.frontendPreferences.homefeed, hideUsers}}));
+      dispatch(updateUserPreferences(me.id, {...me.frontendPreferences, homefeed: {...me.frontendPreferences.homefeed, hideUsers}}));
     }
   };
 }
