@@ -69,10 +69,10 @@ class UserCard extends React.Component {
           </div>
 
           {!props.isItMe && (
-              <div className="feed-status">
-                <UserFeedStatus {...props.user}/>
-              </div>
-            )}
+            <div className="feed-status">
+              <UserFeedStatus {...props.user}/>
+            </div>
+          )}
           <div className="relationship-status">
             {props.isItMe ? 'It\'s you!' : <UserRelationshipStatus type={props.user.type} {...props}/>}
           </div>
