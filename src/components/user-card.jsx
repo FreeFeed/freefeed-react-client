@@ -5,6 +5,8 @@ import _ from 'lodash';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
 import {getUserInfo, updateUserPreferences} from '../redux/action-creators';
+import UserFeedStatus from './user-feed-status';
+import UserRelationshipStatus from './user-relationships-status';
 import {userActions} from './select-utils';
 
 class UserCard extends React.Component {
@@ -51,20 +53,6 @@ class UserCard extends React.Component {
       </div>);
     }
 
-    let description;
-    if (props.isItMe) {
-      description = 'It\u2019s you!';
-    } else {
-      if (props.user.isPrivate === '1') {
-        description = 'Private';
-      } else if (props.user.isProtected === '1') {
-        description = 'Protected';
-      } else {
-        description = 'Public';
-      }
-      description = description + ' ' + (props.user.type === 'user' ? 'user' : 'group');
-    }
-
     return (
       <div className="user-card" style={style}>
         <div className="user-card-info">
@@ -80,7 +68,14 @@ class UserCard extends React.Component {
             ) : false}
           </div>
 
-          <div className="description">{description}</div>
+          {!props.isItMe && (
+              <div className="feed-status">
+                <UserFeedStatus {...props.user}/>
+              </div>
+            )}
+          <div className="relationship-status">
+            {props.isItMe ? 'It\'s you!' : <UserRelationshipStatus type={props.user.type} {...props}/>}
+          </div>
         </div>
 
         {props.blocked ? (
@@ -128,6 +123,9 @@ const mapStateToProps = (state, ownProps) => {
     user,
     notFound,
     isItMe: (me.username === user.username),
+    amISubscribedToUser: ((me.subscriptions || []).indexOf(user.id) > -1),
+    isUserSubscribedToMe: (_.findIndex(me.subscribers, { id: user.id }) > -1),
+    isUserBlockedByMe: ((me.banIds || []).indexOf(user.id) > -1),
     subscribed: ((me.subscriptions || []).indexOf(user.id) > -1),
     hasRequestBeenSent: ((me.pendingSubscriptionRequests || []).indexOf(user.id) > -1),
     blocked: ((me.banIds || []).indexOf(user.id) > -1),
