@@ -59,7 +59,7 @@ class SinglePostHandler extends React.Component {
           {props.boxHeader}
         </div>
         <div className='box-body'>
-          {postBody}
+        {postBody}
         </div>
         <div className='box-footer'>
         </div>

@@ -92,8 +92,8 @@ const Signup = (props) => (
       <div className='col-md-12'>
         <h2 className='p-signin-header'>Sign up</h2>
         {props.error ? (<div className='alert alert-danger p-signin-error' role='alert'>
-          <span id='error-message'>{props.error}</span>
-        </div>) : false}
+                          <span id='error-message'>{props.error}</span>
+                        </div>) : false}
         <div className='row'>
           <div className='col-md-6'>
             <LoaderContainer loading={props.loading}>
@@ -101,33 +101,33 @@ const Signup = (props) => (
                 <div className='form-group'>
                   <label htmlFor='username'>Username</label>
                   <input id='username'
-                    className='ember-view ember-text-field form-control'
-                    type='text'
-                    onChange={e => props.signUpChange({username: e.target.value})}/>
+                         className='ember-view ember-text-field form-control'
+                         type='text'
+                         onChange={e => props.signUpChange({username: e.target.value})}/>
                 </div>
 
                 <div className='form-group'>
                   <label htmlFor='email'>Email</label>
                   <input id='email'
-                    className='ember-view ember-text-field form-control'
-                    type='text'
-                    onChange={e => props.signUpChange({email: e.target.value})}/>
+                         className='ember-view ember-text-field form-control'
+                         type='text'
+                         onChange={e => props.signUpChange({email: e.target.value})}/>
                 </div>
 
                 <div className='form-group'>
                   <label htmlFor='password'>Password</label>
                   <input id='password'
-                    className='ember-view ember-text-field form-control'
-                    type='password'
-                    onChange={e => props.signUpChange({password: e.target.value})}/>
+                         className='ember-view ember-text-field form-control'
+                         type='password'
+                         onChange={e => props.signUpChange({password: e.target.value})}/>
                 </div>
 
                 {captchaConfig.siteKey &&
                   <div className='form-group'>
                     <Recaptcha sitekey={captchaConfig.siteKey}
-                      theme='light' type='image'
-                      onChange={v => props.signUpChange({captcha: v})}
-                      onExpired={() => props.signUpChange({captcha: null})}/>
+                               theme='light' type='image'
+                               onChange={v => props.signUpChange({captcha: v})}
+                               onExpired={() => props.signUpChange({captcha: null})}/>
                   </div>
                 }
 

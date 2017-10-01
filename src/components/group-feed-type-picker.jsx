@@ -46,10 +46,10 @@ export default class GroupFeedTypePicker extends React.Component {
             <label className="option-box">
               <div className="input">
                 <input type="radio"
-                  name="privacy"
-                  value={PUBLIC}
-                  checked={getPrivacyMode(this.props) === PUBLIC}
-                  onChange={this.handleChange}/>
+                       name="privacy"
+                       value={PUBLIC}
+                       checked={getPrivacyMode(this.props) === PUBLIC}
+                       onChange={this.handleChange}/>
               </div>
               <div className="option">
                 Everyone (public group)
@@ -59,10 +59,10 @@ export default class GroupFeedTypePicker extends React.Component {
             <label className="option-box">
               <div className="input">
                 <input type="radio"
-                  name="privacy"
-                  value={PROTECTED}
-                  checked={getPrivacyMode(this.props) === PROTECTED}
-                  onChange={this.handleChange}/>
+                       name="privacy"
+                       value={PROTECTED}
+                       checked={getPrivacyMode(this.props) === PROTECTED}
+                       onChange={this.handleChange}/>
               </div>
               <div className="option">
                 FreeFeed users (protected group)
@@ -72,10 +72,10 @@ export default class GroupFeedTypePicker extends React.Component {
             <label className="option-box">
               <div className="input">
                 <input type="radio"
-                  name="privacy"
-                  value={PRIVATE}
-                  checked={getPrivacyMode(this.props) === PRIVATE}
-                  onChange={this.handleChange}/>
+                       name="privacy"
+                       value={PRIVATE}
+                       checked={getPrivacyMode(this.props) === PRIVATE}
+                       onChange={this.handleChange}/>
               </div>
               <div className="option">
                 Group members (private group)
@@ -93,10 +93,10 @@ export default class GroupFeedTypePicker extends React.Component {
             <label className="option-box">
               <div className="input">
                 <input type="radio"
-                  name="isRestricted"
-                  value="0"
-                  checked={this.props.isRestricted === '0'}
-                  onChange={this.handleChange}/>
+                       name="isRestricted"
+                       value="0"
+                       checked={this.props.isRestricted === '0'}
+                       onChange={this.handleChange}/>
               </div>
               <div className="option">
                 Every group member
@@ -106,10 +106,10 @@ export default class GroupFeedTypePicker extends React.Component {
             <label className="option-box">
               <div className="input">
                 <input type="radio"
-                  name="isRestricted"
-                  value="1"
-                  checked={this.props.isRestricted === '1'}
-                  onChange={this.handleChange}/>
+                       name="isRestricted"
+                       value="1"
+                       checked={this.props.isRestricted === '1'}
+                       onChange={this.handleChange}/>
               </div>
               <div className="option">
                 Group administrators only

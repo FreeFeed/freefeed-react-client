@@ -55,46 +55,46 @@ export default class ArchiveRestorationForm extends React.Component {
 
     const buttonText = (totalCount === selectedCount) ? 'Restore all my posts'
       : (selectedCount === 0) ? 'Restore my posts'
-        : `Restore my ${selectedCount} ${selectedCount === 1 ? 'post' : 'posts'}`;
+      : `Restore my ${selectedCount} ${selectedCount === 1 ? 'post' : 'posts'}`;
 
     return (
-      <form onSubmit={this.action}>
-        <p>
+        <form onSubmit={this.action}>
+          <p>
             You have {totalCount} posts in your <strong>friendfeed.com/{oldUsername}</strong> archive.
             Posts from which source would you like to restore?
-        </p>
-        <div className="checkbox">
-          <label>
-            <input type="checkbox" checked={via_restore.length === sources.length} onClick={this.selectAllSources} />
+          </p>
+          <div className="checkbox">
+            <label>
+              <input type="checkbox" checked={via_restore.length === sources.length} onClick={this.selectAllSources} />
               Restore all {totalCount} posts (or select specific sources below)
-          </label>
-        </div>
-        <SourceList
-          sources={sources}
-          selected={via_restore}
-          onClick={this.setViaSource}
-        />
-        <div className="checkbox">
-          <label>
-            <input type="checkbox" checked={disable_comments} onClick={this.setDisableComments} />
+            </label>
+          </div>
+          <SourceList
+            sources={sources}
+            selected={via_restore}
+            onClick={this.setViaSource}
+            />
+          <div className="checkbox">
+            <label>
+              <input type="checkbox" checked={disable_comments} onClick={this.setDisableComments} />
               Disable new comments for your posts restored from archive
               (you can enable comments for individual posts after the restoring has been completed)
-          </label>
-        </div>
-        <div className="form-group">
-          <button
-            type="submit"
-            className="btn btn-default"
-            disabled={!this.canSubmit()}
-          >{buttonText}</button>
-        </div>
-        {formState.error ? (
-          <div className="alert alert-danger" role="alert">{formState.errorText}</div>
-        ) : false}
-        <p>
-          <em>Requests are handled manually, so be prepared to wait a bit.</em>
-        </p>
-      </form>
+            </label>
+          </div>
+          <div className="form-group">
+            <button
+              type="submit"
+              className="btn btn-default"
+              disabled={!this.canSubmit()}
+              >{buttonText}</button>
+          </div>
+          {formState.error ? (
+            <div className="alert alert-danger" role="alert">{formState.errorText}</div>
+          ) : false}
+          <p>
+            <em>Requests are handled manually, so be prepared to wait a bit.</em>
+          </p>
+        </form>
     );
   }
 }

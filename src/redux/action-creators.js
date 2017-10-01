@@ -436,11 +436,11 @@ export function userSettingsChange(payload) {
   };
 }
 
-export function updateUserPreferences(userId, frontendPrefs = {}, backendPrefs = {}) {
+export function updateFrontendPreferences(userId, prefs) {
   return {
-    type: ActionTypes.UPDATE_USER_PREFERENCES,
-    apiRequest: Api.updateUserPreferences,
-    payload: {userId, frontendPrefs, backendPrefs},
+    type: ActionTypes.UPDATE_FRONTEND_PREFERENCES,
+    apiRequest: Api.updateFrontendPreferences,
+    payload: {userId, prefs}
   };
 }
 

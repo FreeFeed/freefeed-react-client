@@ -93,7 +93,7 @@ class Archive extends React.Component {
           oldUsername={archives.old_username}
           action={archiveStartRestoration}
           formState={archiveRestorationFormState}
-        />
+          />
       );
     }
 

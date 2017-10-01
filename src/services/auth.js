@@ -20,5 +20,5 @@ export function getPersistedUser() {
 
 export function persistUser(user) {
   return user ? localStorage.setItem(authConfig.userStorageKey, JSON.stringify(user)) :
-    localStorage.removeItem(authConfig.userStorageKey);
+  localStorage.removeItem(authConfig.userStorageKey);
 }

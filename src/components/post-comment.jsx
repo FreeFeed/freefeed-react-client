@@ -83,8 +83,8 @@ export default class PostComment extends React.Component {
 
   toggleLike = () => {
     return this.props.hasOwnLike
-      ? this.props.unlikeComment(this.props.id)
-      : this.props.likeComment(this.props.id);
+    ? this.props.unlikeComment(this.props.id)
+    : this.props.likeComment(this.props.id);
   }
 
   getCommentLikes = () => {
@@ -111,10 +111,10 @@ export default class PostComment extends React.Component {
         <div className="comment-body">
           <span className="comment-text">{this.props.body}</span>
           {(isDeletable && this.props.isModeratingComments) ? (
-            <span>
-              {' - '}(<a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
-            </span>
-          ) : false}
+              <span>
+                {' - '}(<a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
+              </span>
+            ) : false}
         </div>
       );
     }
@@ -159,25 +159,25 @@ export default class PostComment extends React.Component {
     }
 
     const authorAndButtons = (<span>
-      {' -'}&nbsp;
-      <UserName user={this.props.user}/>
-      {this.props.isEditable ? (
-        <span>
-          {' '}(<a onClick={preventDefault(()=>this.props.toggleEditingComment(this.props.id))}>edit</a>
+            {' -'}&nbsp;
+            <UserName user={this.props.user}/>
+            {this.props.isEditable ? (
+              <span>
+                {' '}(<a onClick={preventDefault(()=>this.props.toggleEditingComment(this.props.id))}>edit</a>
                 &nbsp;|&nbsp;
-          <a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
-        </span>
-      ) : (this.props.isDeletable && this.props.isModeratingComments) ? (
-        <span>
-          {' '}(<a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
-        </span>
-      ) : false}</span>);
+                <a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
+              </span>
+            ) : (this.props.isDeletable && this.props.isModeratingComments) ? (
+              <span>
+                {' '}(<a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
+              </span>
+            ) : false}</span>);
 
     return (
       <div className="comment-body">
         <Expandable expanded={this.props.readMoreStyle === READMORE_STYLE_COMPACT || this.props.isSinglePost || this.props.isExpanded}
-          bonusInfo={authorAndButtons}
-          config={commentReadmoreConfig}>
+                    bonusInfo={authorAndButtons}
+                    config={commentReadmoreConfig}>
           <PieceOfText
             text={this.props.body}
             readMoreStyle={this.props.readMoreStyle}
@@ -202,18 +202,18 @@ export default class PostComment extends React.Component {
       return false;
     }
     return <CommentLikes  commentId={this.props.id}
-      entryUrl={this.props.entryUrl}
-      omitBubble={this.props.omitBubble}
-      createdAt={this.props.createdAt}
-      likes={this.props.likes}
-      forbidLiking={this.props.isEditable}
-      omitLikes={this.props.isEditing}
-      hasOwnLike={this.props.hasOwnLike}
-      toggleLike={this.toggleLike}
-      likesList={this.props.likesList}
-      getCommentLikes={this.getCommentLikes}
-      reply={this.reply}
-      mention={this.mention}/>;
+                          entryUrl={this.props.entryUrl}
+                          omitBubble={this.props.omitBubble}
+                          createdAt={this.props.createdAt}
+                          likes={this.props.likes}
+                          forbidLiking={this.props.isEditable}
+                          omitLikes={this.props.isEditing}
+                          hasOwnLike={this.props.hasOwnLike}
+                          toggleLike={this.toggleLike}
+                          likesList={this.props.likesList}
+                          getCommentLikes={this.getCommentLikes}
+                          reply={this.reply}
+                          mention={this.mention}/>;
   }
 
   render() {
@@ -228,8 +228,8 @@ export default class PostComment extends React.Component {
 
 
     return <div className={className} data-author={this.props.isEditing ? '' : this.props.user.username}>
-      {this.renderCommentLikes()}
-      {this.renderBody()}
-    </div>;
+            {this.renderCommentLikes()}
+            {this.renderBody()}
+          </div>;
   }
 }

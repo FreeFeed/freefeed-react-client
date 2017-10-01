@@ -71,9 +71,9 @@ export default class GroupSettingsForm extends React.Component {
           <textarea id="description" className="form-control" name="description" value={this.state.description} onChange={this.handleChange('description')} maxLength="1500"/>
         </div>
         <GroupFeedTypePicker isPrivate={this.state.isPrivate}
-          isProtected={this.state.isProtected}
-          isRestricted={this.state.isRestricted}
-          updateGroupPrivacySettings={this.handlePrivacyTypeChange} />
+                             isProtected={this.state.isProtected}
+                             isRestricted={this.state.isRestricted}
+                             updateGroupPrivacySettings={this.handlePrivacyTypeChange} />
         <p>
           <button className="btn btn-default" type="submit">Update</button>
           {this.props.status === 'loading' ? (

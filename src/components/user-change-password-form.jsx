@@ -24,12 +24,12 @@ export default class UserChangePasswordForm extends React.Component {
         </p>
         {this.props.success ?
           (<div className='alert alert-info p-settings-alert' role='alert'>
-            <span id='error-message'>Your password has been changed</span>
-          </div>) : false}
+              <span id='error-message'>Your password has been changed</span>
+            </div>) : false}
         {this.props.error ?
           (<div className='alert alert-danger p-settings-alert' role='alert'>
-            <span id='error-message'>{this.props.errorText}</span>
-          </div>) : false}
+              <span id='error-message'>{this.props.errorText}</span>
+            </div>) : false}
       </form>);
   }
   updatePassword = () => {

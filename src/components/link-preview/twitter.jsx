@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import ScrollSafe from './scroll-helpers/scroll-safe';
 import * as heightCache from './scroll-helpers/size-cache';
 
-const TWEET_RE = /^https?:\/\/twitter\.com\/[^/]+\/status\/([0-9]+)/i;
+const TWEET_RE = /^https?:\/\/twitter\.com\/[^\/]+\/status\/([0-9]+)/i;
 
 export function canShowURL(url) {
   return TWEET_RE.test(url);
@@ -27,7 +27,7 @@ class TwitterPreview extends React.Component {
         className="tweet-preview link-preview-content"
         data-url={this.props.url}
         style={{height: heightCache.get(this.props.url, 0) + 'px'}}
-      >
+        >
         <div style={{overflow: 'hidden'}} />
       </div>
     );

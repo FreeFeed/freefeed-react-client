@@ -7,8 +7,8 @@ import PaginatedView from './paginated-view';
 const searchHelper =<div className='search-memo'>
   <div className='search-memo-header'>Advanced search operators</div>
   {/*<div className='search-operator'>*/}
-  {/*<span className='operator'>-</span>*/}
-  {/*<span className='helper'>exclude keyword from a search, e.g.: <span className='example'>jobs -steve</span></span>*/}
+    {/*<span className='operator'>-</span>*/}
+    {/*<span className='helper'>exclude keyword from a search, e.g.: <span className='example'>jobs -steve</span></span>*/}
   {/*</div>*/}
   <div className='search-operator'>
     <span className='operator'>"double-quotes"</span>

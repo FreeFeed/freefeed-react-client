@@ -4,9 +4,7 @@ import {connect} from 'react-redux';
 import _ from 'lodash';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import {getUserInfo, updateUserPreferences} from '../redux/action-creators';
-import UserFeedStatus from './user-feed-status';
-import UserRelationshipStatus from './user-relationships-status';
+import {getUserInfo, updateFrontendPreferences} from '../redux/action-creators';
 import {userActions} from './select-utils';
 
 class UserCard extends React.Component {
@@ -33,24 +31,38 @@ class UserCard extends React.Component {
 
     if (props.notFound) {
       return (<div className="user-card" style={style}>
-        <div className="user-card-info">
-          <div className="userpic loading"></div>
-          <div className="names">
+            <div className="user-card-info">
+              <div className="userpic loading"></div>
+              <div className="names">
                 User not found
-          </div>
-        </div>
-      </div>);
+              </div>
+            </div>
+          </div>);
     }
 
     if (!props.user.id) {
       return (<div className="user-card" style={style}>
-        <div className="user-card-info">
-          <div className="userpic loading"></div>
-          <div className="names">
-            <img width="16" height="16" src={throbber16}/>
-          </div>
-        </div>
-      </div>);
+            <div className="user-card-info">
+              <div className="userpic loading"></div>
+              <div className="names">
+                <img width="16" height="16" src={throbber16}/>
+              </div>
+            </div>
+          </div>);
+    }
+
+    let description;
+    if (props.isItMe) {
+      description = 'It\u2019s you!';
+    } else {
+      if (props.user.isPrivate === '1') {
+        description = 'Private';
+      } else if (props.user.isProtected === '1') {
+        description = 'Protected';
+      } else {
+        description = 'Public';
+      }
+      description = description + ' ' + (props.user.type === 'user' ? 'user' : 'group');
     }
 
     return (
@@ -68,14 +80,7 @@ class UserCard extends React.Component {
             ) : false}
           </div>
 
-          {!props.isItMe && (
-            <div className="feed-status">
-              <UserFeedStatus {...props.user}/>
-            </div>
-          )}
-          <div className="relationship-status">
-            {props.isItMe ? 'It\'s you!' : <UserRelationshipStatus type={props.user.type} {...props}/>}
-          </div>
+          <div className="description">{description}</div>
         </div>
 
         {props.blocked ? (
@@ -123,9 +128,6 @@ const mapStateToProps = (state, ownProps) => {
     user,
     notFound,
     isItMe: (me.username === user.username),
-    amISubscribedToUser: ((me.subscriptions || []).indexOf(user.id) > -1),
-    isUserSubscribedToMe: (_.findIndex(me.subscribers, { id: user.id }) > -1),
-    isUserBlockedByMe: ((me.banIds || []).indexOf(user.id) > -1),
     subscribed: ((me.subscriptions || []).indexOf(user.id) > -1),
     hasRequestBeenSent: ((me.pendingSubscriptionRequests || []).indexOf(user.id) > -1),
     blocked: ((me.banIds || []).indexOf(user.id) > -1),
@@ -146,7 +148,7 @@ function mapDispatchToProps(dispatch) {
       } else {
         hideUsers.splice(p, 1);
       }
-      dispatch(updateUserPreferences(me.id, {...me.frontendPreferences, homefeed: {...me.frontendPreferences.homefeed, hideUsers}}));
+      dispatch(updateFrontendPreferences(me.id, {...me.frontendPreferences, homefeed: {...me.frontendPreferences.homefeed, hideUsers}}));
     }
   };
 }

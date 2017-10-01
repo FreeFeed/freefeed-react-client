@@ -4,7 +4,7 @@ import {Link} from 'react-router';
 import _ from 'lodash';
 
 import {unsubscribeFromGroup, makeGroupAdmin,
-  unadminGroupAdmin} from '../redux/action-creators';
+        unadminGroupAdmin} from '../redux/action-creators';
 
 import {tileUserListFactory, WITH_REMOVE_AND_MAKE_ADMIN_HANDLES, WITH_REMOVE_ADMIN_RIGHTS} from './tile-user-list';
 const SubsList = tileUserListFactory({type: WITH_REMOVE_AND_MAKE_ADMIN_HANDLES});
@@ -36,14 +36,14 @@ const ManageSubscribersHandler = (props) => {
           <h3>Manage subscribers</h3>
           {props.users ? <h4 className="tile-list-subheader">Subscribers</h4> : false}
           {props.users ? props.users.length == 0 ? (
-            <div className="tile-list-text">There&#x2019;s not a single one subscriber yet. You might invite some friends to change that.</div>
-          ) : (
-            <SubsList
-              users={props.users}
-              makeAdmin={makeAdmin}
-              remove={remove}/>
-          )
-            : false}
+              <div className="tile-list-text">There&#x2019;s not a single one subscriber yet. You might invite some friends to change that.</div>
+            ) : (
+              <SubsList
+                users={props.users}
+                makeAdmin={makeAdmin}
+                remove={remove}/>
+            )
+          : false}
 
           <h4 className="tile-list-subheader">Admins</h4>
 

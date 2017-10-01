@@ -12,19 +12,19 @@ export default props => {
   delete allQuery.offset;
 
   return (
-    <ul className="pager p-pagination-controls">
-      {props.offset > 0 ?
-        <li>
-          <Link to={{pathname: props.location.pathname, query: {...allQuery, ...offsetObject(minOffset(props.offset))}}}
-            className="p-pagination-newer">« Newer items</Link>
-        </li>
-        : false}
-      {!props.isLastPage ?
-        <li>
-          <Link to={{pathname: props.location.pathname, query: {...allQuery, ...offsetObject(maxOffset(props.offset))}}}
-            className="p-pagination-older">Older items »</Link>
-        </li>
-        : false
-      }
-    </ul>);
+  <ul className="pager p-pagination-controls">
+    {props.offset > 0 ?
+      <li>
+        <Link to={{pathname: props.location.pathname, query: {...allQuery, ...offsetObject(minOffset(props.offset))}}}
+              className="p-pagination-newer">« Newer items</Link>
+      </li>
+      : false}
+    {!props.isLastPage ?
+      <li>
+        <Link to={{pathname: props.location.pathname, query: {...allQuery, ...offsetObject(maxOffset(props.offset))}}}
+              className="p-pagination-older">Older items »</Link>
+      </li>
+      : false
+    }
+  </ul>);
 };
