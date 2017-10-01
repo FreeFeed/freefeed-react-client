@@ -42,14 +42,14 @@ class EmbedlyPreview extends React.Component {
         className="embedly-preview link-preview-content"
         data-url={this.props.url}
         style={{height: heightCache.get(this.props.url, 0) + 'px'}}
-        >
-          <a
-            ref={this.setLink}
-            href={this.props.url}
-            data-card-controls="0"
-            data-card-width="400px"
-            data-card-recommend="0"
-            data-card-align="left"/>
+      >
+        <a
+          ref={this.setLink}
+          href={this.props.url}
+          data-card-controls="0"
+          data-card-width="400px"
+          data-card-recommend="0"
+          data-card-align="left"/>
       </div>
     );
   }

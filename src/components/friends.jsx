@@ -5,7 +5,7 @@ import _ from 'lodash';
 import {pluralForm} from '../utils';
 
 import {acceptUserRequest, rejectUserRequest,
-        revokeSentRequest} from '../redux/action-creators';
+  revokeSentRequest} from '../redux/action-creators';
 import {tileUserListFactory, PLAIN, WITH_REQUEST_HANDLES, WITH_REVOKE_SENT_REQUEST} from './tile-user-list';
 
 const TileList = tileUserListFactory({type: PLAIN, displayQuantity: true});

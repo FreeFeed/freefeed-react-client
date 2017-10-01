@@ -169,7 +169,7 @@ class Layout extends React.Component {
 
         <div className='row'>
           <div className='col-md-12'>
-          <Footer/>
+            <Footer/>
           </div>
         </div>
       </div>

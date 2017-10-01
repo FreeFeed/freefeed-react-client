@@ -340,11 +340,7 @@ export function updateUser({id, screenName, email, isPrivate, isProtected, descr
   });
 }
 
-export function updateFrontendPreferences({userId, prefs}) {
-  const frontendPreferences = {
-    [frontendPrefsConfig.clientId]: prefs
-  };
-
+export function updateUserPreferences({userId, frontendPrefs = {}, backendPrefs = {}}) {
   return fetch(`${apiConfig.host}/v1/users/${userId}`, {
     'method': 'PUT',
     'headers': {
@@ -352,7 +348,12 @@ export function updateFrontendPreferences({userId, prefs}) {
       'Content-Type': 'application/json',
       'X-Authentication-Token': getToken()
     },
-    'body': JSON.stringify({user: {frontendPreferences}})
+    'body': JSON.stringify({
+      user: {
+        frontendPreferences: { [frontendPrefsConfig.clientId]: frontendPrefs },
+        preferences:         backendPrefs,
+      }
+    })
   });
 }
 

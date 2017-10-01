@@ -12,7 +12,7 @@ import * as ActionTypes from './action-types';
 import {request, response, fail, requiresAuth, isFeedRequest, isFeedResponse} from './action-helpers';
 
 //middleware for api requests
-export const apiMiddleware = store => next => async (action) => {
+export const apiMiddleware = store => next => async(action) => {
   //ignore normal actions
   if (!action.apiRequest) {
     return next(action);
@@ -276,7 +276,7 @@ const iLikedPost = ({user, posts}, postId) => {
   const likes = post.likes || [];
   return likes.indexOf(user.id) !== -1;
 };
-const dispatchWithPost = async (store, postId, action, filter = () => true, maxDelay = 0) => {
+const dispatchWithPost = async(store, postId, action, filter = () => true, maxDelay = 0) => {
   let state = store.getState();
   const shouldBump = isFirstPage(state);
 

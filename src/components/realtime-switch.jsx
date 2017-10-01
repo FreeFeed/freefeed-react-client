@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {toggleRealtime, updateFrontendPreferences, home} from '../redux/action-creators';
+import {toggleRealtime, updateUserPreferences, home} from '../redux/action-creators';
 
 const getStatusIcon = (active, status) => {
   if (status === 'loading') {
@@ -32,7 +32,7 @@ const mapDispatchToProps = (dispatch) => {
     toggle: (userId, frontendPreferences) => {
       const {realtimeActive} = frontendPreferences;
       //send a request to change flag
-      dispatch(updateFrontendPreferences(userId, {...frontendPreferences, realtimeActive: !realtimeActive}));
+      dispatch(updateUserPreferences(userId, {...frontendPreferences, realtimeActive: !realtimeActive}));
       //set a flag to show
       dispatch(toggleRealtime());
       if (!realtimeActive) {

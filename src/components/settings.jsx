@@ -1,8 +1,16 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {updateUser, userSettingsChange, updateFrontendPreferences, updatePassword, updateUserPicture, toggleRealtime, resetSettingsForms} from '../redux/action-creators';
+import {
+  updateUser,
+  userSettingsChange,
+  updateUserPreferences,
+  updatePassword,
+  updateUserPicture,
+  toggleRealtime,
+  resetSettingsForms,
+} from '../redux/action-creators';
 import UserSettingsForm from './user-settings-form';
-import UserFrontendPreferencesForm from './user-frontend-preferences-form';
+import UserPreferencesForm from './user-preferences-form';
 import UserChangePasswordForm from './user-change-password-form';
 import UserPictureForm from './user-picture-form';
 
@@ -28,10 +36,11 @@ class Settings extends React.Component {
 
             <hr/>
 
-            <UserFrontendPreferencesForm
+            <UserPreferencesForm
               userId={props.user.id}
-              preferences={props.user.frontendPreferences}
-              updateFrontendPreferences={props.updateFrontendPreferences}
+              frontendPreferences={props.user.frontendPreferences}
+              backendPreferences={props.user.preferences}
+              updateUserPreferences={props.updateUserPreferences}
               {...props.frontendPreferencesForm}/>
 
             <hr/>
@@ -70,7 +79,7 @@ function mapDispatchToProps(dispatch) {
   return {
     updateUser: (...args) => dispatch(updateUser(...args)),
     userSettingsChange: (...args) => dispatch(userSettingsChange(...args)),
-    updateFrontendPreferences: (...args) => dispatch(updateFrontendPreferences(...args)),
+    updateUserPreferences: (...args) => dispatch(updateUserPreferences(...args)),
     updatePassword: (...args) => dispatch(updatePassword(...args)),
     updateUserPicture: (...args) => dispatch(updateUserPicture(...args)),
     toggleRealtime: () => dispatch(toggleRealtime()),
