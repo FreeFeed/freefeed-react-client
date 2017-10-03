@@ -53,10 +53,7 @@
     }
   }
 
-  &.highlighted {
-    $hl-color: #D9EBFF;
-    background-color: $hl-color;
-
+  &.highlighted, &.highlight-from-url {
     &::before {
       $border-width: 3px;
       content: '';
@@ -65,8 +62,26 @@
       left: -$border-width;
       right: -$border-width;
       bottom: -$border-width;
-      border: $border-width+1px solid $hl-color;
+      border: $border-width+1px solid;
       border-radius: $border-width;
+    }
+  }
+
+  &.highlighted{
+    $hl-color: #D9EBFF;
+    background-color: $hl-color;
+
+    &::before {
+      border-color: $hl-color;
+    }
+  }
+
+  &.highlight-from-url {
+    $hl-url-color: #FFDC89;
+    background-color: $hl-url-color;
+
+    &::before {
+      border-color: $hl-url-color;
     }
   }
 

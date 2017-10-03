@@ -70,6 +70,10 @@ const composeState = ({subsequentComments, setting, omittedComments = 0, withDel
     users: {
       [user1.id]: user1,
       [user2.id]: user2,
+    },
+    routing: {
+      locationBeforeTransitions: {
+      }
     }
   };
 };
