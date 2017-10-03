@@ -43,7 +43,8 @@ function selectState(state) {
   const createPostForm = joinCreatePostData(state);
   const timelines = state.timelines;
   const boxHeader = state.boxHeader;
-  const sendTo = {...state.sendTo, defaultFeed: user.username};
+  const defaultFeed = state.routing.locationBeforeTransitions.query.to || user.username;
+  const sendTo = {...state.sendTo, defaultFeed};
 
   return { user, authenticated, visibleEntries, createPostViewState, createPostForm, timelines, boxHeader, sendTo };
 }
