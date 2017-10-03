@@ -56,6 +56,13 @@ const selectCommentLikes = ({commentLikes, users}, commentId) => {
   return {...commentLikes[commentId], likes};
 };
 
+const getCommentId = hash => {
+  if (!hash) {
+    return '';
+  }
+  return hash.replace('#comment-', '');
+};
+
 export const joinPostData = state => postId => {
   const post = state.posts[postId];
   if (!post) {
@@ -66,6 +73,7 @@ export const joinPostData = state => postId => {
   const attachments = (post.attachments || []).map(attachmentId => state.attachments[attachmentId]);
   const postViewState = state.postsViewState[post.id];
   const omitRepeatedBubbles = state.user.frontendPreferences.comments.omitRepeatedBubbles;
+  const hashedCommentId = getCommentId(state.routing.locationBeforeTransitions.hash);
   const highlightComment = commentHighlighter(state, postId, post.comments);
   let comments = (post.comments || []).reduce((_comments, commentId, index) => {
     const comment = state.comments[commentId];
@@ -91,7 +99,8 @@ export const joinPostData = state => postId => {
     const isDeletable = (user.id === post.createdBy);
     const highlighted = highlightComment(commentId, author);
     const likesList = selectCommentLikes(state, commentId);
-    return _comments.concat([{ ...comment, ...commentViewState, user: author, isEditable, isDeletable, omitBubble, highlighted, likesList }]);
+    const highlightedFromUrl = commentId === hashedCommentId;
+    return _comments.concat([{ ...comment, ...commentViewState, user: author, isEditable, isDeletable, omitBubble, highlighted, likesList, highlightedFromUrl }]);
   }, []);
 
   if (postViewState.omittedComments !== 0 && comments.length > 2) {
