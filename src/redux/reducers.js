@@ -2091,6 +2091,26 @@ export function frontendRealtimePreferencesForm(state=initialRealtimeSettings, a
   return state;
 }
 
+const initialNotificationsForm = {};
+
+export function userNotificationsForm(state=initialNotificationsForm, action) {
+  switch (action.type) {
+    case request(ActionTypes.UPDATE_USER_NOTIFICATION_PREFERENCES): {
+      return {...state, status: 'loading'};
+    }
+    case response(ActionTypes.UPDATE_USER_NOTIFICATION_PREFERENCES): {
+      return {...state, status: 'success'};
+    }
+    case fail(ActionTypes.UPDATE_USER_NOTIFICATION_PREFERENCES): {
+      return {...state, status: 'error', errorMessage: (action.payload || {}).err};
+    }
+    case ActionTypes.RESET_SETTINGS_FORMS: {
+      return {...state, status: '', errorMessage: ''};
+    }
+  }
+  return state;
+}
+
 export function groupAdmins(state = [], action) {
   switch (action.type) {
     case response(ActionTypes.GET_USER_INFO): {

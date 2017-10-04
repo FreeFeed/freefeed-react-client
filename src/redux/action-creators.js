@@ -444,6 +444,14 @@ export function updateUserPreferences(userId, frontendPrefs = {}, backendPrefs =
   };
 }
 
+export function updateUserNotificationPreferences(userId, backendPrefs = {}) {
+  return {
+    type: ActionTypes.UPDATE_USER_NOTIFICATION_PREFERENCES,
+    apiRequest: Api.updateUserPreferences,
+    payload: {userId, backendPrefs, frontendPrefs: {}},
+  };
+}
+
 export function updatePassword(payload) {
   return {
     type: ActionTypes.UPDATE_PASSWORD,
