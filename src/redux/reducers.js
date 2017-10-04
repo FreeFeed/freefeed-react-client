@@ -1755,7 +1755,7 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
       return {
-        expanded: false,
+        expanded: state.expanded,
         feeds: getValidRecipients(action.payload)
       };
     }
