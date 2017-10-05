@@ -85,6 +85,12 @@ class UserCard extends React.Component {
           </div>
         ) : !props.isItMe ? (
           <div className="user-card-actions">
+            {props.isUserSubscribedToMe && props.amISubscribedToUser && props.user.type === 'user' &&
+              <span>
+                <Link to={`/filter/direct?to=${props.user.username}`}>Direct message</Link>
+                <span> - </span>
+              </span>
+            }
             {props.user.isPrivate === '1' && !props.subscribed ? (
               props.hasRequestBeenSent ? (
                 <span>Subscription request sent</span>
