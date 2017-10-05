@@ -11,8 +11,8 @@ export default (props) => (
       ) : false}
     </span>
     <a className="more-comments-link"
-       href={props.entryUrl}
-       onClick={preventDefault(()=>props.showMoreComments())}>
+      href={props.entryUrl}
+      onClick={preventDefault(()=>props.showMoreComments())}>
       {getText(props)}
     </a>
   </div>

@@ -5,7 +5,7 @@ import ScrollSafe from './scroll-helpers/scroll-safe';
 import FoldableContent from './scroll-helpers/foldable-content';
 import * as heightCache from './scroll-helpers/size-cache';
 
-const WIKIPEDIA_RE = /^https?:\/\/(\w+)\.wikipedia\.org\/wiki\/([^\/]+)/i;
+const WIKIPEDIA_RE = /^https?:\/\/(\w+)\.wikipedia\.org\/wiki\/([^/]+)/i;
 
 export function canShowURL(url) {
   return WIKIPEDIA_RE.test(url);
@@ -75,28 +75,28 @@ class WikipediaPreview extends React.Component {
             <div
               ref={this.setElement}
               className="wikipedia-preview"
-              >
-                <a href={url} target="_blank">
-                  <div>
-                    {previewData.thumbnail ? (
-                        <img
-                          src={previewData.thumbnail.source}
-                          alt={previewData.title}
-                          className="wikipedia-preview-image"
-                          width={imgWidth}
-                          height={imgHeight}
-                          />
-                    ) : null}
-                    <p><strong>{previewData.title}</strong></p>
-                    <p>{previewData.extract}</p>
-                  </div>
-                </a>
+            >
+              <a href={url} target="_blank">
+                <div>
+                  {previewData.thumbnail ? (
+                    <img
+                      src={previewData.thumbnail.source}
+                      alt={previewData.title}
+                      className="wikipedia-preview-image"
+                      width={imgWidth}
+                      height={imgHeight}
+                    />
+                  ) : null}
+                  <p><strong>{previewData.title}</strong></p>
+                  <p>{previewData.extract}</p>
+                </div>
+              </a>
             </div>
           ) : (
             <div
               className="wikipedia-preview"
               style={{height: heightCache.get(this.props.url, 0) + 'px'}}
-              >
+            >
               Loading…
             </div>
           )}

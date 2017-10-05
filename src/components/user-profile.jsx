@@ -104,8 +104,8 @@ export default class UserProfile extends React.Component {
 
                 {props.userView.isSubscribing ? (
                   <span className="profile-controls-throbber">
-                  <img width="16" height="16" src={throbber16}/>
-                </span>
+                    <img width="16" height="16" src={throbber16}/>
+                  </span>
                 ) : false}
               </div>
               <div className="col-xs-5 col-sm-3 text-right">
@@ -146,7 +146,7 @@ export default class UserProfile extends React.Component {
           <div className="create-post create-post-restricted">
             Only administrators can post to this group.
           </div>
-          ) : false}
+        ) : false}
       </div>
     );
   }

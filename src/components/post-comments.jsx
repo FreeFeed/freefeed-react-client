@@ -180,8 +180,8 @@ export default class PostComments extends React.Component {
         {last ? this.renderComment(last) : false}
         {canAddComment
           ? (post.isCommenting
-              ? this.renderAddingComment()
-              : this.renderAddCommentLink())
+            ? this.renderAddingComment()
+            : this.renderAddCommentLink())
           : false}
       </div>
     );

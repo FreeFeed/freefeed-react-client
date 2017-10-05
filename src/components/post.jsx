@@ -265,7 +265,7 @@ export default class Post extends React.Component {
     ) : (
       <div className={postClass} data-author={props.createdBy.username}>
         <Expandable expanded={props.isEditing || props.isSinglePost || props.readMoreStyle === READMORE_STYLE_COMPACT}
-                    config={postReadmoreConfig}>
+          config={postReadmoreConfig}>
           <div className="post-userpic">
             <Link to={`/${props.createdBy.username}`}>
               <img className="post-userpic-img" src={profilePicture} width={profilePictureSize} height={profilePictureSize}/>
@@ -322,14 +322,14 @@ export default class Post extends React.Component {
             ) : (
               <div className="post-text">
                 <PieceOfText  text={props.body}
-                              readMoreStyle={props.readMoreStyle}
-                              highlightTerms={props.highlightTerms}/>
+                  readMoreStyle={props.readMoreStyle}
+                  highlightTerms={props.highlightTerms}/>
               </div>
             )}
-            </div>
-          </Expandable>
+          </div>
+        </Expandable>
 
-          <div className="post-body">
+        <div className="post-body">
           <PostAttachments
             postId={props.id}
             attachments={props.attachments}
