@@ -6,7 +6,7 @@ import Linkify from "./linkify";
 import TimeDisplay from "./time-display";
 import PaginatedView from "./paginated-view";
 
-const getAuthorName = ({postAuthor, createdUser, group, post_id}) => {
+const getAuthorName = ({postAuthor, createdUser, group}) => {
   if (group && group.username) {
     return group.username;
   }
@@ -14,7 +14,7 @@ const getAuthorName = ({postAuthor, createdUser, group, post_id}) => {
     return postAuthor.username;
   }
   return createdUser.username;
-}
+};
 
 const generatePostUrl = ({...event, post_id}) => `/${getAuthorName(event)}/${post_id}`;
 const generateCommentUrl = ({...event, post_id, comment_id}) => `/${getAuthorName(event)}/${post_id}#comment-${comment_id}`;
@@ -23,7 +23,7 @@ const directPostLink = event => <Link to={generatePostUrl(event)}>direct message
 const commentLink = (event, text = 'comment') => <Link to={generateCommentUrl(event)}>{text}</Link>;
 
 const notificationTemplates = {
-  subscription_request_revoked: (event) => <Linkify>{`You revoked your subscription request to @${event.targetUser.username}`}</Linkify>,
+  subscription_request_revoked: (event) => <Linkify>{`@${event.createdUser.username} revoked subscription request to you`}</Linkify>,
 
   mention_in_post: (event) => <div><Linkify>{`@${event.createdUser.username} mentioned you in the `}</Linkify>{postLink(event)}<Linkify>{` ${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify></div>,
   mention_in_comment: (event) => <div><Linkify>{`@${event.createdUser.username} mentioned you in a `}</Linkify>{commentLink(event, 'comment')}{` to the `}{postLink(event)}<Linkify>{`${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify></div>,
@@ -33,8 +33,8 @@ const notificationTemplates = {
   subscription_requested: (event) => <Linkify>{`@${event.createdUser.username} sent you a subscription request`}</Linkify>,
   user_subscribed: (event) => <Linkify>{`@${event.createdUser.username} subscribed to your feed`}</Linkify>,
   user_unsubscribed: (event) => <Linkify>{`@${event.createdUser.username} unsubscribed from your feed`}</Linkify>,
-  subscription_request_approved: (event) => <Linkify>{`Your subscription request to @${event.affectedUser.username} name was approved`}</Linkify>,
-  subscription_request_rejected: (event) => <Linkify>{`Your subscription request to @${event.affectedUser.username} name was rejected`}</Linkify>,
+  subscription_request_approved: (event) => <Linkify>{`Your subscription request to @${event.createdUser.username} was approved`}</Linkify>,
+  subscription_request_rejected: (event) => <Linkify>{`Your subscription request to @${event.createdUser.username} was rejected`}</Linkify>,
   group_created: (event) => <Linkify>{`You created a group @${event.group.username}`}</Linkify>,
   group_subscription_requested: (event) => <Linkify>{`@${event.createdUser.username} sent a subscription request to join @${event.group.username} that you admin `}</Linkify>,
   group_admin_promoted: (event) => <Linkify>{`@${event.createdUser.username} promoted @${event.affectedUser.username} to admin in the group @${event.group.username}`}</Linkify>,
@@ -132,9 +132,7 @@ const mapStateToProps = (state) => {
       return {
         ...event,
         createdUser: state.users[event.created_user_id] || state.subscribers[event.created_user_id] || mock,
-        createdByUser: state.users[event.created_by_user_id] || state.subscribers[event.created_by_user_id] || mock,
         affectedUser: state.users[event.affected_user_id] || state.subscribers[event.affected_user_id] || mock,
-        targetUser: state.users[event.target_user_id] || state.subscribers[event.target_user_id] || mock,
         group: state.groups[event.group_id] || mock,
         postAuthor: state.users[event.post_author_id],
         post: state.posts[event.post_id] || mock,

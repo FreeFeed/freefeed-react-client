@@ -11,9 +11,18 @@ export default (props) => (
       ) : false}
     </span>
     <a className="more-comments-link"
-       href={props.entryUrl}
-       onClick={preventDefault(()=>props.showMoreComments())}>
-      {`${props.omittedComments}`} more comments
+      href={props.entryUrl}
+      onClick={preventDefault(()=>props.showMoreComments())}>
+      {getText(props)}
     </a>
   </div>
 );
+
+function getText({omittedComments, omittedCommentLikes}) {
+  const ommitedLikes = omittedCommentLikes > 0 ? ` with ${omittedCommentLikes} like${plural(omittedCommentLikes)}` : "";
+  return `${omittedComments} more comment${plural(omittedComments)}${ommitedLikes}`;
+}
+
+function plural(count) {
+  return count > 1 ? "s" : "";
+}

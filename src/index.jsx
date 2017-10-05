@@ -19,6 +19,7 @@ import Layout from './components/layout';
 import Home from './components/home';
 import Discussions from './components/discussions';
 import About from './components/about';
+import Donate from './components/donate';
 import Terms from './components/terms';
 import Stats from './components/stats';
 import Dev from './components/dev';
@@ -42,6 +43,7 @@ import Friends from './components/friends';
 import ManageSubscribers from './components/manage-subscribers';
 import Bookmarklet from './components/bookmarklet';
 import ArchivePost from './components/archive-post';
+
 
 const store = configureStore();
 
@@ -119,6 +121,7 @@ ReactDOM.render(
           <IndexRoute name='about' component={About} onEnter={enterStaticPage('About')} />
           <Route path="terms" component={Terms} onEnter={enterStaticPage('Terms')}/>
           <Route path="stats" component={Stats} onEnter={enterStaticPage('Stats')}/>
+          <Route path="donate" component={Donate} onEnter={enterStaticPage('Donate')}/>
         </Route>
         <Route path='dev' component={Dev} onEnter={enterStaticPage('Developers')}/>
         <Route path='signin' component={Signin} onEnter={enterStaticPage('Sign in')}/>

@@ -6,16 +6,16 @@ const MY_FEED_LABEL = 'My feed';
 export default class SendTo extends React.Component {
   constructor(props) {
     super(props);
-    this.state = this.stateFromProps(props);
+    this.state = this.stateFromProps(props, this.optionsFromProps(props));
   }
 
   componentWillReceiveProps(newProps) {
-    // If defaultFeed gets updated (it happens after sign-in), we have to
-    // fully update state. Otherwise, only update options.
-    if (this.props.defaultFeed !== newProps.defaultFeed) {
-      this.setState(this.stateFromProps(newProps));
+    const options = this.optionsFromProps(newProps);
+    if (this.props.defaultFeed !== newProps.defaultFeed ||
+        options.length !== 0 && this.state.options.length === 0) {
+      this.setState(this.stateFromProps(newProps, options));
     } else {
-      this.setState({options: this.optionsFromProps(newProps)});
+      this.setState({options});
     }
   }
 
@@ -23,8 +23,7 @@ export default class SendTo extends React.Component {
     return this.state.values.map(item => item.value);
   }
 
-  stateFromProps(props) {
-    const options = this.optionsFromProps(props);
+  stateFromProps(props, options) {
     return {
       values: options.filter(opt => opt.value === props.defaultFeed),
       options: options,

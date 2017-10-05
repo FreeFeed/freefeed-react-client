@@ -117,14 +117,14 @@ export default class CreatePost extends React.Component {
     return (
       <div className="create-post post-editor">
         <div>
-          {this.props.sendTo.expanded ? (
+          {this.props.sendTo.expanded &&
             <SendTo ref="selectFeeds"
               feeds={this.props.sendTo.feeds}
               defaultFeed={this.props.sendTo.defaultFeed}
               isDirects={this.props.isDirects}
               user={this.props.user}
               onChange={this.checkCreatePostAvailability}/>
-          ) : false}
+          }
 
           <Dropzone
             onInit={this.handleDropzoneInit}

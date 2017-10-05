@@ -32,17 +32,17 @@ const SideBarFriends = ({ user }) => (
     <div className='box-body'>
       <ul>
         <li className='p-home'><Link to='/'>Home</Link></li>
-        {user.unreadDirectsNumber > 0 ? (
-          <li className='p-direct-messages'>
-            <Link to='/filter/direct' style={{fontWeight: 'bold'}}>
-              Direct messages ({user.unreadDirectsNumber})
-            </Link>
-          </li>
-        ) : (
-          <li className='p-direct-messages'><Link to='/filter/direct'>Direct messages</Link></li>
-        )}
+        <li className='p-direct-messages'>
+          <Link to='/filter/direct' style={user.unreadDirectsNumber > 0 ? {fontWeight: 'bold'} : {}}>
+            Direct messages {user.unreadDirectsNumber > 0 ? `(${user.unreadDirectsNumber})` : ''}
+          </Link>
+        </li>
         <li className='p-my-discussions'><Link to='/filter/discussions'>My discussions</Link></li>
-        <li className='p-home'><Link to='/filter/notifications'>Notifications</Link></li>
+        <li className='p-home'>
+          <Link to='/filter/notifications' style={user.unreadNotificationsNumber > 0 ? {fontWeight: 'bold'} : {}}>
+            Notifications {user.unreadNotificationsNumber > 0 ? `(${user.unreadNotificationsNumber})` : ''}
+          </Link>
+        </li>
       </ul>
     </div>
     <div className='box-footer'>
@@ -104,10 +104,10 @@ const SideBarLinks = () => (
 const SideBarCoinJar = () => (
   <div className='box'>
     <div className='box-header-groups'>
-      Coin Jar
+      Donate
     </div>
     <div className='box-footer'>
-      <p style={{marginBottom: '10px'}}>Subscribe to Freefeed today! Arrangement is plain and simple — you wire funds to Freefeed, it gets better every week.</p>
+      <p style={{marginBottom: '10px'}}><Link to='/about/donate'><span style={{textDecoration:'underline', cursor:'pointer'}}>Donate</span></Link> to FreeFeed! Your regular donations pay for hosting and keep FreeFeed running.</p>
       <span style={{display: 'block', marginLeft: 'auto', marginRight: 'auto'}}>
         <form action='https://www.paypal.com/cgi-bin/webscr' method='post' target='_top'>
           <input type='hidden' name='cmd' value='_s-xclick'/>
@@ -141,7 +141,7 @@ const SideBarCoinJar = () => (
         <input type='image' src='https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png' width='0' height='0' name='submit' alt='PayPal - The safer, easier way to pay online!'/>
         <img alt='' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' width='1' height='1' style={{display: 'none !important'}}/>
       </form>
-      <p style={{marginBottom: '10px'}}>Or <span onClick={() => document.forms["singlePayPalPayment"].submit()} style={{textDecoration:'underline', cursor:'pointer'}}>send a one-time payment first&nbsp;→</span></p>
+      <p style={{marginBottom: '10px'}}>Make a <span onClick={() => document.forms["singlePayPalPayment"].submit()} style={{textDecoration:'underline', cursor:'pointer'}}>one-time donation&nbsp;→</span></p>
     </div>
   </div>
 );

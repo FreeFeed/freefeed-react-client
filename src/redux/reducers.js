@@ -916,7 +916,7 @@ export function posts(state = {}, action) {
       }
 
       const likes = action.iLiked ? [postToAct.likes[0], userId, ...postToAct.likes.slice(1)]
-                                  : [userId, ...(postToAct.likes || [])];
+        : [userId, ...(postToAct.likes || [])];
 
       return {
         ...state,
@@ -1232,6 +1232,15 @@ export function commentLikes(state = {}, action) {
         },
       };
     }
+    case ActionTypes.REALTIME_COMMENT_UPDATE: {
+      return {...state,
+        [action.comment.id]: {
+          loading: false,
+          error: false,
+          likes: [],
+        },
+      };
+    }
   }
   return state;
 }
@@ -1365,6 +1374,9 @@ export function user(state = initUser(), action) {
     }
     case response(ActionTypes.DIRECTS_ALL_READ): {
       return {...state, unreadDirectsNumber: 0 };
+    }
+    case response(ActionTypes.NOTIFICATIONS_ALL_READ): {
+      return {...state, unreadNotificationsNumber: 0 };
     }
     case ActionTypes.REALTIME_USER_UPDATE: {
       return {...state, ...action.user};
@@ -1519,13 +1531,13 @@ export function frontendPreferencesForm(state={}, action) {
     case response(ActionTypes.WHO_AM_I): {
       return {...state, ...action.payload.users.frontendPreferences[frontendPrefsConfig.clientId]};
     }
-    case request(ActionTypes.UPDATE_FRONTEND_PREFERENCES): {
+    case request(ActionTypes.UPDATE_USER_PREFERENCES): {
       return {...state, status: 'loading'};
     }
-    case response(ActionTypes.UPDATE_FRONTEND_PREFERENCES): {
+    case response(ActionTypes.UPDATE_USER_PREFERENCES): {
       return {...state, status: 'success'};
     }
-    case fail(ActionTypes.UPDATE_FRONTEND_PREFERENCES): {
+    case fail(ActionTypes.UPDATE_USER_PREFERENCES): {
       return {...state, status: 'error', errorMessage: (action.payload || {}).err};
     }
     case ActionTypes.RESET_SETTINGS_FORMS: {
@@ -1743,7 +1755,7 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
       return {
-        expanded: false,
+        expanded: state.expanded,
         feeds: getValidRecipients(action.payload)
       };
     }

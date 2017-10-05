@@ -142,8 +142,8 @@ class Layout extends React.Component {
             <div className="col-xs-12 col-sm-8 hidden-md hidden-lg">
               <div className="mobile-shortcuts">
                 <Link className="mobile-shortcut-link" to="/filter/discussions">Discussions</Link>
-                <Link className="mobile-shortcut-link" to="/filter/notifications">Notifications</Link>
-                <Link className="mobile-shortcut-link" to="/filter/direct">Directs</Link>
+                <Link className="mobile-shortcut-link" to="/filter/notifications">Notifications{props.user.unreadNotificationsNumber > 0 && ` (${props.user.unreadNotificationsNumber})`}</Link>
+                <Link className="mobile-shortcut-link" to="/filter/direct">Directs{props.user.unreadDirectsNumber > 0 && ` (${props.user.unreadDirectsNumber})`}</Link>
                 <Link className="mobile-shortcut-link" to={`/${props.user.username}`}>My feed</Link>
               </div>
             </div>
@@ -169,7 +169,7 @@ class Layout extends React.Component {
 
         <div className='row'>
           <div className='col-md-12'>
-          <Footer/>
+            <Footer/>
           </div>
         </div>
       </div>

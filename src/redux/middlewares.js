@@ -12,7 +12,7 @@ import * as ActionTypes from './action-types';
 import {request, response, fail, requiresAuth, isFeedRequest, isFeedResponse} from './action-helpers';
 
 //middleware for api requests
-export const apiMiddleware = store => next => async (action) => {
+export const apiMiddleware = store => next => async(action) => {
   //ignore normal actions
   if (!action.apiRequest) {
     return next(action);
@@ -254,6 +254,19 @@ export const markDirectsAsReadMiddleware = store => next => action => {
     // needed to mark all directs as read
     store.dispatch(ActionCreators.markAllDirectsAsRead());
   }
+  if (action.type === response(ActionTypes.DIRECT)) {
+    if (store.getState().routing.locationBeforeTransitions.query.to) {
+      store.dispatch(ActionCreators.expandSendTo());
+    }
+  }
+  next(action);
+};
+
+export const markNotificationsAsReadMiddleware = store => next => action => {
+  if (action.type === request(ActionTypes.GET_NOTIFICATIONS) && action.payload.offset == 0) {
+    // needed to mark all notifications as read
+    store.dispatch(ActionCreators.markAllNotificationsAsRead());
+  }
   next(action);
 };
 
@@ -268,7 +281,7 @@ const iLikedPost = ({user, posts}, postId) => {
   const likes = post.likes || [];
   return likes.indexOf(user.id) !== -1;
 };
-const dispatchWithPost = async (store, postId, action, filter = () => true, maxDelay = 0) => {
+const dispatchWithPost = async(store, postId, action, filter = () => true, maxDelay = 0) => {
   let state = store.getState();
   const shouldBump = isFirstPage(state);
 

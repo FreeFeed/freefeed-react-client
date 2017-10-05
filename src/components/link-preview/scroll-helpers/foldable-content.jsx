@@ -50,8 +50,8 @@ export default class FoldableContent extends React.Component {
       <div className="folder-container">
         <div
           className={classnames({'content-wrapper': true, folded: foldNeeded && !this.state.expanded})}
-          style={{height: wrapperHeight + 'px'}}
-          >
+          style={{height: (wrapperHeight + 1) + 'px'}}
+        >
           <div ref={this.setContent}>{this.props.children}</div>
         </div>
         {foldNeeded ? (
