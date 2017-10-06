@@ -24,6 +24,32 @@ export default class PostComment extends React.Component {
     this.commentTextArea = null;
   }
 
+  scrollToComment = () => {
+    if (this.commentContainer) {
+      const rect = this.commentContainer.getBoundingClientRect();
+      const middleScreenPosition = window.pageYOffset + ((rect.top + rect.bottom) / 2) - (window.innerHeight / 2);
+      if (rect.top < 0 || rect.bottom > window.innerHeight) {
+        window.scrollTo(0, middleScreenPosition);
+      }
+    }
+  };
+
+  componentDidMount() {
+    if (this.props.highlightedFromUrl) {
+      setTimeout(this.scrollToComment, 0);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.highlightedFromUrl && this.props.highlightedFromUrl) {
+      setTimeout(this.scrollToComment, 0);
+    }
+  }
+
+  refCommentContainer = (element) => {
+    this.commentContainer = element;
+  };
+
   handleChange = (event) => {
     this.setState({
       editText: event.target.value
@@ -228,7 +254,9 @@ export default class PostComment extends React.Component {
     });
 
 
-    return <div className={className} data-author={this.props.isEditing ? '' : this.props.user.username}>
+    return <div className={className}
+                data-author={this.props.isEditing ? '' : this.props.user.username}
+                ref={this.refCommentContainer}>
       {this.renderCommentLikes()}
       {this.renderBody()}
     </div>;
