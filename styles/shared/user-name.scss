@@ -52,7 +52,6 @@
 
     .names {
       min-height: 40px;
-      height: 40px;
 
       .display-name {
         color: #000088;
@@ -74,16 +73,17 @@
       font-size: 13px;
       color: #666;
     }
+    .status-icon {
+      min-width: 13px;
+    }
     .feed-status {
       color: #666;
 
       .icon-protected {
         width: 13px;
         height: 10px;
-
-        .icon-protected-bg { top: 1px; left: 50%; }
-        .icon-protected-shadow { top: 1px; left: -4%; }
-        .icon-protected-fg { top: 1px; left: 2%; }
+        color: white;
+        text-shadow: 1px 1px 0 #888, -1px -1px 0 #888, 1px -1px 0 #888, -1px 1px 0 #888;
       }
     }
   }
