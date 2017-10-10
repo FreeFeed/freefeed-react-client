@@ -51,7 +51,7 @@ export default class UserNotificationsForm extends React.Component {
 
   savePreference = () => {
     if (this.props.status !== "loading") {
-      this.props.updateUserNotificationPreferences(this.props.userId, undefined, {sendNotificationsDigest: this.state.sendNotificationsDigest});
+      this.props.updateUserNotificationPreferences(this.props.userId, {sendNotificationsDigest: this.state.sendNotificationsDigest});
     }
   }
 }
