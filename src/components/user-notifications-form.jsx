@@ -27,11 +27,12 @@ export default class UserNotificationsForm extends React.Component {
       <div className="checkbox">
         <label>
           <input type="checkbox"
-                  name="dailyMessages"
-                  value="1"
-                  checked={this.state.sendNotificationsDigest}
-                  onChange={this.toggleNotifications}/>
-            Daily unread notifications
+            name="dailyMessages"
+            value="1"
+            checked={this.state.sendNotificationsDigest}
+            onChange={this.toggleNotifications}
+          />
+          Daily unread notifications
         </label>
       </div>
 
