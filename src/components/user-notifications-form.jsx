@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import {preventDefault} from "../utils";
 import throbber16 from "../../assets/images/throbber-16.gif";
 
@@ -10,9 +11,16 @@ export default class UserNotificationsForm extends React.Component {
     };
   }
 
+  componentDidMount() {
+    if (window.location.hash === "#notifications") {
+      const node = ReactDOM.findDOMNode(this);
+      setTimeout(_ => window.scrollTo(0, node.getBoundingClientRect().bottom), 500);
+    }
+  }
+
   render() {
     return <form onSubmit={preventDefault(this.savePreference)}>
-      <h3>Notifications preferences</h3>
+      <h3><a className="setting-link" href="#notifications">Notifications preferences</a></h3>
 
       <p>Email me:</p>
 

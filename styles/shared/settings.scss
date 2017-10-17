@@ -2,6 +2,15 @@
   margin-left: 10px;
 }
 
+.setting-link {
+  &, &:hover {
+    color: rgb(51,51,51);
+    text-decoration: none;
+    outline: none;
+    cursor: default;
+  }
+}
+
 .checkbox-displayNames-useYou {
   margin-top: 20px;
   margin-bottom: 15px;
