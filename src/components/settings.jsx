@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router';
 import {connect} from 'react-redux';
 import {
   updateUser,
@@ -23,6 +24,15 @@ class Settings extends React.Component {
 
   render() {
     const props = this.props;
+
+    if (!props.authenticated) {
+      return (
+        <div className="content">
+          <div className="alert alert-danger" role="alert">You must <Link to="/signin">sign in</Link> or <Link to="/signup">sign up</Link> before visiting this page.</div>
+        </div>
+      );
+    }
+
     return (
       <div className="content">
         <div className="box">
@@ -82,7 +92,8 @@ function mapStateToProps(state) {
     frontendRealtimePreferencesForm: state.frontendRealtimePreferencesForm,
     userNotificationsForm: state.userNotificationsForm,
     passwordForm: state.passwordForm,
-    userPictureForm: state.userPictureForm
+    userPictureForm: state.userPictureForm,
+    authenticated: state.authenticated
   };
 }
 
