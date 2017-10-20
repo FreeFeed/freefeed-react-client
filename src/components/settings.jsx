@@ -1,9 +1,11 @@
 import React from 'react';
+import {Link} from 'react-router';
 import {connect} from 'react-redux';
 import {
   updateUser,
   userSettingsChange,
   updateUserPreferences,
+  updateUserNotificationPreferences,
   updatePassword,
   updateUserPicture,
   toggleRealtime,
@@ -13,6 +15,7 @@ import UserSettingsForm from './user-settings-form';
 import UserPreferencesForm from './user-preferences-form';
 import UserChangePasswordForm from './user-change-password-form';
 import UserPictureForm from './user-picture-form';
+import UserNotificationsForm from './user-notifications-form';
 
 class Settings extends React.Component {
   componentWillUnmount() {
@@ -21,6 +24,15 @@ class Settings extends React.Component {
 
   render() {
     const props = this.props;
+
+    if (!props.authenticated) {
+      return (
+        <div className="content">
+          <div className="alert alert-danger" role="alert">You must <Link to="/signin">sign in</Link> or <Link to="/signup">sign up</Link> before visiting this page.</div>
+        </div>
+      );
+    }
+
     return (
       <div className="content">
         <div className="box">
@@ -57,6 +69,14 @@ class Settings extends React.Component {
               {...props.userPictureForm}/>
 
             <hr/>
+
+            <UserNotificationsForm
+              userId={props.user.id}
+              backendPreferences={props.user.preferences}
+              updateUserNotificationPreferences={props.updateUserNotificationPreferences}
+              {...props.userNotificationsForm}/>
+
+            <hr/>
           </div>
         </div>
       </div>
@@ -70,8 +90,10 @@ function mapStateToProps(state) {
     userSettingsForm: state.userSettingsForm,
     frontendPreferencesForm: state.frontendPreferencesForm,
     frontendRealtimePreferencesForm: state.frontendRealtimePreferencesForm,
+    userNotificationsForm: state.userNotificationsForm,
     passwordForm: state.passwordForm,
-    userPictureForm: state.userPictureForm
+    userPictureForm: state.userPictureForm,
+    authenticated: state.authenticated
   };
 }
 
@@ -80,6 +102,7 @@ function mapDispatchToProps(dispatch) {
     updateUser: (...args) => dispatch(updateUser(...args)),
     userSettingsChange: (...args) => dispatch(userSettingsChange(...args)),
     updateUserPreferences: (...args) => dispatch(updateUserPreferences(...args)),
+    updateUserNotificationPreferences: (...args) => dispatch(updateUserNotificationPreferences(...args)),
     updatePassword: (...args) => dispatch(updatePassword(...args)),
     updateUserPicture: (...args) => dispatch(updateUserPicture(...args)),
     toggleRealtime: () => dispatch(toggleRealtime()),
