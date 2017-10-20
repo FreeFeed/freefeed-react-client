@@ -14,7 +14,7 @@ export default class UserNotificationsForm extends React.Component {
   componentDidMount() {
     if (window.location.hash === "#notifications") {
       const node = ReactDOM.findDOMNode(this);
-      setTimeout(_ => window.scrollTo(0, node.getBoundingClientRect().bottom), 500);
+      setTimeout(() => window.scrollTo(0, node.getBoundingClientRect().bottom), 500);
     }
   }
 
