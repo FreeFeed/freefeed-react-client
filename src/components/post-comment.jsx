@@ -254,11 +254,14 @@ export default class PostComment extends React.Component {
     });
 
 
-    return <div className={className}
-                data-author={this.props.isEditing ? '' : this.props.user.username}
-                ref={this.refCommentContainer}>
-      {this.renderCommentLikes()}
-      {this.renderBody()}
-    </div>;
+    return (
+      <div className={className}
+        data-author={this.props.isEditing ? '' : this.props.user.username}
+        ref={this.refCommentContainer}
+      >
+        {this.renderCommentLikes()}
+        {this.renderBody()}
+      </div>
+    );
   }
 }
