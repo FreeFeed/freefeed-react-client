@@ -66,6 +66,12 @@ export default class UserProfile extends React.Component {
                       </div>
                     ) : false}
                     {' '}
+                    {props.type === 'group' && (
+                      <div className="profile-stats-item">
+                        <Link to={`/filter/direct?invite=${props.username}`}>Send invite</Link>
+                      </div>
+                    )}
+                    {' '}
                     {props.type !== 'group' && props.statistics.comments >= 0 ? (
                       <div className="profile-stats-item">
                         <Link to={`/${props.username}/comments`}>{pluralForm(props.statistics.comments, 'comment')}</Link>

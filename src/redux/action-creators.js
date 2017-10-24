@@ -747,3 +747,10 @@ export function realtimeUnsubscribe() {
     type: ActionTypes.REALTIME_UNSUBSCRIBE
   };
 }
+
+export function sendInvite(groupId) {
+  return {
+    type: ActionTypes.SEND_INVITE,
+    groupId,
+  };
+}
