@@ -8,18 +8,18 @@ import Dropzone from './dropzone';
 import PostAttachments from './post-attachments';
 
 const isTextEmpty = text => text == '' || /^\s+$/.test(text);
-const getDefaultState = () => ({
+const getDefaultState = (invitation = '') => ({
   isFormEmpty: true,
   isMoreOpen: false,
   attachmentQueueLength: 0,
-  postText:'',
-  commentsDisabled: false
+  postText: invitation,
+  commentsDisabled: false,
 });
 
 export default class CreatePost extends React.Component {
   constructor(props) {
     super(props);
-    this.state = getDefaultState();
+    this.state = getDefaultState(props.sendTo.invitation);
   }
 
   createPost = () => {
@@ -41,6 +41,9 @@ export default class CreatePost extends React.Component {
     const shouldClear = (wasCommentJustSaved && wasThereNoError);
     if (shouldClear) {
       this.clearForm();
+    }
+    if (this.props.sendTo.invitation !== newProps.sendTo.invitation) {
+      this.setState({postText: newProps.sendTo.invitation});
     }
   }
 
