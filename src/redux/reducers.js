@@ -79,6 +79,9 @@ export function signInForm(state={username:'', password:'', error:'', loading: f
     case response(ActionTypes.SIGN_IN): {
       return {...state, loading: false };
     }
+    case ActionTypes.REQUIRE_AUTHENTICATION: {
+      return {...state, error: 'You need to sign in'};
+    }
   }
   return state;
 }

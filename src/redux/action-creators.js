@@ -15,6 +15,12 @@ export function staticPage(title) {
   };
 }
 
+export function requireAuthentication() {
+  return {
+    type: ActionTypes.REQUIRE_AUTHENTICATION,
+  };
+}
+
 export function whoAmI() {
   return {
     type: ActionTypes.WHO_AM_I,
