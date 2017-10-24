@@ -66,12 +66,6 @@ export default class UserProfile extends React.Component {
                       </div>
                     ) : false}
                     {' '}
-                    {props.type === 'group' && (
-                      <div className="profile-stats-item">
-                        <Link to={`/filter/direct?invite=${props.username}`}>Send invite</Link>
-                      </div>
-                    )}
-                    {' '}
                     {props.type !== 'group' && props.statistics.comments >= 0 ? (
                       <div className="profile-stats-item">
                         <Link to={`/${props.username}/comments`}>{pluralForm(props.statistics.comments, 'comment')}</Link>
@@ -115,6 +109,12 @@ export default class UserProfile extends React.Component {
                 ) : false}
               </div>
               <div className="col-xs-5 col-sm-3 text-right">
+                {props.type === 'group' && (
+                  <span className="profile-stats-item">
+                    <Link to={`/filter/direct?invite=${props.username}`}>Send invite</Link>
+                    {((props.type !== 'group' && !props.subscribed) || props.amIGroupAdmin) && ' | '}
+                  </span>
+                )}
                 {props.type !== 'group' && !props.subscribed ? (
                   <a onClick={preventDefault(()=>props.ban({username: props.username, id: props.id}))}>Block this user</a>
                 ) : props.amIGroupAdmin ? (
