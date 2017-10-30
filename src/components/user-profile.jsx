@@ -109,7 +109,7 @@ export default class UserProfile extends React.Component {
                 ) : false}
               </div>
               <div className="col-xs-5 col-sm-3 text-right">
-                {props.type === 'group' && (
+                {props.type === 'group' && props.subscribed && (
                   <span className="profile-stats-item">
                     <Link to={`/filter/direct?invite=${props.username}`}>Invite</Link>
                     {((props.type !== 'group' && !props.subscribed) || props.amIGroupAdmin) && ' | '}
