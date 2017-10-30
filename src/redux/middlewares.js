@@ -243,6 +243,11 @@ export const groupPictureLogicMiddleware = store => next => action => {
   return next(action);
 };
 
+function isInvitation({locationBeforeTransitions}) {
+  const {pathname, query} = locationBeforeTransitions;
+  return pathname === '/filter/direct' && !!query.invite;
+}
+
 export const redirectionMiddleware = store => next => action => {
   //go to home if single post has been removed
   if (action.type === response(ActionTypes.DELETE_POST) && store.getState().singlePostId) {
@@ -252,6 +257,10 @@ export const redirectionMiddleware = store => next => action => {
   if (action.type === response(ActionTypes.UNADMIN_GROUP_ADMIN) &&
       store.getState().user.id === action.request.user.id) {
     browserHistory.push(`/${action.request.groupName}/subscribers`);
+  }
+
+  if (action.type === response(ActionTypes.CREATE_POST) && isInvitation(store.getState().routing)) {
+    browserHistory.push('/filter/direct');
   }
 
   return next(action);

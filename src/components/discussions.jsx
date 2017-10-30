@@ -47,6 +47,9 @@ function selectState(state) {
   const defaultFeed = state.routing.locationBeforeTransitions.query.to || user.username;
   const invitation = formatInvitation(state.routing.locationBeforeTransitions.query.invite);
   const sendTo = {...state.sendTo, defaultFeed, invitation};
+  if (invitation) {
+    sendTo.expanded = true;
+  }
 
   return { user, authenticated, visibleEntries, createPostViewState, createPostForm, timelines, boxHeader, sendTo };
 }
