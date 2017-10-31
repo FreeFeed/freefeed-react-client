@@ -33,6 +33,10 @@ class Settings extends React.Component {
       );
     }
 
+    if (!props.user.frontendPreferences || !props.user.preferences) {
+      return null;
+    }
+
     return (
       <div className="content">
         <div className="box">

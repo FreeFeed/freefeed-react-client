@@ -33,9 +33,12 @@ const Signin = (props) => (
     <div className='box-body'>
       <div className='col-md-12'>
         <h2 className='p-signin-header'>Sign in</h2>
-        {props.error ? (<div className='alert alert-danger p-signin-error' role='alert'>
+        {props.error && (<div className='alert alert-danger p-signin-error' role='alert'>
           <span id='error-message'>{props.error}</span>
-        </div>) : false}
+        </div>)}
+        {props.requireAuth && (<div className='alert alert-danger p-signin-error' role='alert'>
+          <span id='error-message'>Please sign in or <Link to='/signup'>sign up</Link> before visiting this page.</span>
+        </div>)}
         <div className='row'>
           <div className='col-md-6'>
             <LoaderContainer loading={props.loading}>

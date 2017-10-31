@@ -15,6 +15,12 @@ export function staticPage(title) {
   };
 }
 
+export function requireAuthentication() {
+  return {
+    type: ActionTypes.REQUIRE_AUTHENTICATION,
+  };
+}
+
 export function whoAmI() {
   return {
     type: ActionTypes.WHO_AM_I,
@@ -745,5 +751,12 @@ export function realtimeSubscribe(subsType, id) {
 export function realtimeUnsubscribe() {
   return {
     type: ActionTypes.REALTIME_UNSUBSCRIBE
+  };
+}
+
+export function sendInvite(groupId) {
+  return {
+    type: ActionTypes.SEND_INVITE,
+    groupId,
   };
 }

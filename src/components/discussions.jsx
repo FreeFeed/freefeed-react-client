@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {createPost, resetPostCreateForm, expandSendTo} from '../redux/action-creators';
+import formatInvitation from '../utils/format-invitation';
 import {joinPostData, joinCreatePostData, postActions} from './select-utils';
 
 import CreatePost from './create-post';
@@ -44,7 +45,11 @@ function selectState(state) {
   const timelines = state.timelines;
   const boxHeader = state.boxHeader;
   const defaultFeed = state.routing.locationBeforeTransitions.query.to || user.username;
-  const sendTo = {...state.sendTo, defaultFeed};
+  const invitation = formatInvitation(state.routing.locationBeforeTransitions.query.invite);
+  const sendTo = {...state.sendTo, defaultFeed, invitation};
+  if (invitation) {
+    sendTo.expanded = true;
+  }
 
   return { user, authenticated, visibleEntries, createPostViewState, createPostForm, timelines, boxHeader, sendTo };
 }

@@ -68,7 +68,7 @@ export function signInForm(state={username:'', password:'', error:'', loading: f
       };
     }
     case ActionTypes.UNAUTHENTICATED: {
-      return {...state, error: (action.payload || {}).err, loading: false };
+      return {...state, error: (action.payload || {}).err, loading: false, requireAuth: false };
     }
     case ActionTypes.SIGN_IN_EMPTY: {
       return {...state, error: 'Enter login and password', loading: false };
@@ -78,6 +78,9 @@ export function signInForm(state={username:'', password:'', error:'', loading: f
     }
     case response(ActionTypes.SIGN_IN): {
       return {...state, loading: false };
+    }
+    case ActionTypes.REQUIRE_AUTHENTICATION: {
+      return {...state, requireAuth: true};
     }
   }
   return state;
