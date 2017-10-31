@@ -76,7 +76,7 @@ export const authMiddleware = store => {
           return browserHistory.push(`/signin?back=${pathname}`);
         }
       }
-      return browserHistory.push(`/signin`);
+      return;
     }
 
 
