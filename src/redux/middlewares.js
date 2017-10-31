@@ -42,46 +42,69 @@ export const apiMiddleware = store => next => async(action) => {
   }
 };
 
-export const authMiddleware = store => next => action => {
+const paths = ['friends',
+  'settings',
+  'filter/notifications',
+  'filter/direct',
+  'groups',
+  'groups/create',
+];
 
-  //stop action propagation if it should be authed and user is not authed
-  if (requiresAuth(action) && !store.getState().authenticated) {
-    return;
-  }
+function shouldGoToSignIn(pathname) {
+  return pathname && paths.some(path => pathname.indexOf(path) != -1);
+}
 
-  if (action.type === ActionTypes.UNAUTHENTICATED) {
-    setToken();
-    persistUser();
-    next(action);
-    const pathname = (store.getState().routing.locationBeforeTransitions || {}).pathname;
-    if (!pathname || pathname.indexOf('signin') !== -1 || pathname.indexOf('signup') !== -1) {
-      return;
-    }
-    return browserHistory.push('/signin');
-  }
+export const authMiddleware = store => {
+  let firstUnauthenticated = true;
 
-  if (action.type === response(ActionTypes.SIGN_IN) ||
-     action.type === response(ActionTypes.SIGN_UP) ) {
-    setToken(action.payload.authToken);
-    next(action);
-    store.dispatch(ActionCreators.whoAmI());
+  return next => action => {
 
-    // Do not redirect to Home page if signed in at Bookmarklet
-    const pathname = (store.getState().routing.locationBeforeTransitions || {}).pathname;
-    if (pathname === '/bookmarklet') {
+    //stop action propagation if it should be authed and user is not authed
+    if (requiresAuth(action) && !store.getState().authenticated) {
       return;
     }
 
-    return browserHistory.push('/');
-  }
+    if (action.type === ActionTypes.UNAUTHENTICATED) {
+      setToken();
+      persistUser();
+      next(action);
+      if (firstUnauthenticated) {
+        firstUnauthenticated = false;
+        const pathname = window.location.pathname;
+        if (shouldGoToSignIn(pathname)) {
+          store.dispatch(ActionCreators.requireAuthentication());
+          return browserHistory.push(`/signin?back=${pathname}`);
+        }
+      }
+      return;
+    }
 
-  if (action.type === response(ActionTypes.WHO_AM_I) ||
-     action.type === response(ActionTypes.UPDATE_USER) ) {
-    persistUser(userParser(action.payload.users));
+
+    if (action.type === response(ActionTypes.SIGN_IN) ||
+       action.type === response(ActionTypes.SIGN_UP) ) {
+      firstUnauthenticated = false;
+      setToken(action.payload.authToken);
+      next(action);
+      store.dispatch(ActionCreators.whoAmI());
+
+      // Do not redirect to Home page if signed in at Bookmarklet
+      const pathname = (store.getState().routing.locationBeforeTransitions || {}).pathname;
+      if (pathname === '/bookmarklet') {
+        return;
+      }
+
+      const backTo = store.getState().routing.locationBeforeTransitions.query.back || '/';
+      return browserHistory.push(`${backTo}`);
+    }
+
+    if (action.type === response(ActionTypes.WHO_AM_I) ||
+       action.type === response(ActionTypes.UPDATE_USER) ) {
+      persistUser(userParser(action.payload.users));
+      return next(action);
+    }
+
     return next(action);
-  }
-
-  return next(action);
+  };
 };
 
 export const likesLogicMiddleware = store => next => action => {
@@ -220,6 +243,11 @@ export const groupPictureLogicMiddleware = store => next => action => {
   return next(action);
 };
 
+function isInvitation({locationBeforeTransitions}) {
+  const {pathname, query} = locationBeforeTransitions;
+  return pathname === '/filter/direct' && !!query.invite;
+}
+
 export const redirectionMiddleware = store => next => action => {
   //go to home if single post has been removed
   if (action.type === response(ActionTypes.DELETE_POST) && store.getState().singlePostId) {
@@ -229,6 +257,10 @@ export const redirectionMiddleware = store => next => action => {
   if (action.type === response(ActionTypes.UNADMIN_GROUP_ADMIN) &&
       store.getState().user.id === action.request.user.id) {
     browserHistory.push(`/${action.request.groupName}/subscribers`);
+  }
+
+  if (action.type === response(ActionTypes.CREATE_POST) && isInvitation(store.getState().routing)) {
+    browserHistory.push('/filter/direct');
   }
 
   return next(action);
