@@ -240,13 +240,16 @@ export function feedViewState(state = initFeed, action) {
     return state;
   }
   if (ActionHelpers.isFeedResponse(action)) {
-    let visibleEntries = action.payload.timelines.posts;
-    let hiddenEntries = [];
     // Separate hidden entries only in 'RiverOfNews' feed
-    const separateHiddenEntries = (action.payload.timelines.name === 'RiverOfNews');
+    const separateHiddenEntries =  (action.payload.timelines && action.payload.timelines.name === 'RiverOfNews');
+
+    let visibleEntries, hiddenEntries;
     if (separateHiddenEntries) {
       visibleEntries = (action.payload.posts || []).filter(post => !post.isHidden).map(post => post.id);
       hiddenEntries  = (action.payload.posts || []).filter(post =>  post.isHidden).map(post => post.id);
+    } else {
+      visibleEntries = (action.payload.posts || []).map(post => post.id);
+      hiddenEntries = [];
     }
     const isHiddenRevealed = false;
     const isLastPage = action.payload.isLastPage;
