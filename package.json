@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "animated-scrollto": "1.1.0",
     "autotrack": "1.0.x",
     "classnames": "2.2.x",
     "custom-event": "1.0.x",

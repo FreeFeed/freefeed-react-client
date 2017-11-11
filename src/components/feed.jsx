@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import scrollTo from '../utils/animated-scrollto';
 import Post from './post';
 
 const HiddenEntriesToggle = (props) => {
@@ -20,10 +21,45 @@ const HiddenEntriesToggle = (props) => {
   );
 };
 
-export default (props) => {
-  const getEntryComponent = section => post => {
-    const isRecentlyHidden = (props.isInHomeFeed && post.isHidden && (section === 'visible'));
+export default class Feed extends Component {
+  constructor(props) {
+    super(props);
+  }
+  current = -1;
+  handleKey = (e) => {
+    const nodeName = e.target.nodeName;
+    let node = this.postsDom.childNodes[this.current]; // current node
+    const l = this.postsDom.childNodes.length; // posts length
+    const keyCode = (window.event) ? e.which : e.keyCode;
+    if (nodeName !== 'INPUT' && nodeName !== 'TEXTAREA') {
+      if (keyCode === 74 || keyCode === 75) { // 74 -> j and 75 -> k
+        if (keyCode === 74 && this.current < l - 1) {
 
+          this.current++;
+
+        } else if (keyCode === 75 && this.current > 0) {
+
+          this.current--;
+
+        }
+        node = this.postsDom.childNodes[this.current];
+        if (node) {
+
+          scrollTo(node, 200);
+
+        }
+      }
+    }
+  }
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKey, false);
+  }
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKey, false);
+  }
+  getEntryComponent = section => post => {
+    const isRecentlyHidden = (post.isHidden && (section === 'visible'));
+    const props = this.props;
     return (
       <Post {...post}
         key={post.id}
@@ -50,27 +86,28 @@ export default (props) => {
         disableComments={props.disableComments}
         enableComments={props.enableComments}
         commentEdit={props.commentEdit}
-        highlightTerms={props.highlightTerms}/>
+        highlightTerms={props.highlightTerms} />
     );
   };
+  render() {
+    const props = this.props;
+    const visibleEntries = props.visibleEntries.map(this.getEntryComponent('visible'));
+    const hiddenEntries = (props.hiddenEntries || []).map(this.getEntryComponent('hidden'));
+    return (
+      <div className="posts" style={{ outline: 'none' }} ref={(c) => this.postsDom = c}>
+        {visibleEntries}
 
-  const visibleEntries = props.visibleEntries.map(getEntryComponent('visible'));
-  const hiddenEntries = (props.hiddenEntries || []).map(getEntryComponent('hidden'));
+        {hiddenEntries.length > 0 ? (
+          <div>
+            <HiddenEntriesToggle
+              count={hiddenEntries.length}
+              isOpen={props.isHiddenRevealed}
+              toggle={props.toggleHiddenPosts} />
 
-  return (
-    <div className="posts">
-      {visibleEntries}
-
-      {hiddenEntries.length > 0 ? (
-        <div>
-          <HiddenEntriesToggle
-            count={hiddenEntries.length}
-            isOpen={props.isHiddenRevealed}
-            toggle={props.toggleHiddenPosts}/>
-
-          {props.isHiddenRevealed ? hiddenEntries : false}
-        </div>
-      ) : false}
-    </div>
-  );
-};
+            {props.isHiddenRevealed ? hiddenEntries : false}
+          </div>
+        ) : false}
+      </div>
+    );
+  }
+}

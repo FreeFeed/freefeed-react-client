@@ -2,3 +2,6 @@
 /public/js/bundle.js
 /_dist/
 .module-cache
+.vscode
+package-lock.json
+yarn-error.log
