@@ -22,7 +22,7 @@ const HiddenEntriesToggle = (props) => {
 
 export default (props) => {
   const getEntryComponent = section => post => {
-    const isRecentlyHidden = (post.isHidden && (section === 'visible'));
+    const isRecentlyHidden = (props.isInHomeFeed && post.isHidden && (section === 'visible'));
 
     return (
       <Post {...post}

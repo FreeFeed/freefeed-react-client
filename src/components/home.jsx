@@ -59,7 +59,7 @@ const FeedHandler = (props) => {
 
       {props.authenticated ? (
         <PaginatedView firstPageHead={createPostComponent} {...props}>
-          <Feed {...props} isInHomeFeed={true}/>
+          <Feed {...props} isInHomeFeed={!props.feedIsLoading}/>
         </PaginatedView>
       ) : (
         <Welcome/>
@@ -82,12 +82,14 @@ function selectState(state) {
   const sendTo = {...state.sendTo, defaultFeed: user.username};
   const userRequestsCount = state.userRequestsCount;
   const groupRequestsCount = state.groupRequestsCount;
+  const feedIsLoading = state.routeLoadingState;
 
   return {
     user, authenticated,
     visibleEntries, hiddenEntries, isHiddenRevealed,
     createPostViewState, createPostForm,
     timelines, boxHeader, sendTo, userRequestsCount, groupRequestsCount,
+    feedIsLoading,
     areOnFirstHomePage: !state.routing.locationBeforeTransitions.query.offset,
   };
 }
