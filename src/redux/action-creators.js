@@ -710,6 +710,23 @@ export function blockedByMe() {
   };
 }
 
+export function getSummary(days) {
+  return {
+    type: ActionTypes.GET_SUMMARY,
+    apiRequest: Api.getSummary,
+    payload: { days }
+  };
+}
+
+export function getUserSummary(username, days) {
+  return {
+    type: ActionTypes.GET_USER_SUMMARY,
+    apiRequest: Api.getUserSummary,
+    nonAuthRequest: true,
+    payload: { username, days }
+  };
+}
+
 export function getSearch(search, offset) {
   return {
     type: ActionTypes.GET_SEARCH,

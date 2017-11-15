@@ -1703,6 +1703,12 @@ export function boxHeader(state = "", action) {
     case request(ActionTypes.GET_USER_FEED): {
       return '';
     }
+    case request(ActionTypes.GET_SUMMARY): {
+      return `Best of ${action.payload.days} days`;
+    }
+    case request(ActionTypes.GET_USER_SUMMARY): {
+      return `Best of ${action.payload.days} days`;
+    }
     case request(ActionTypes.GET_SINGLE_POST): {
       return '';
     }
