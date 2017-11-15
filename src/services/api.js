@@ -551,6 +551,14 @@ export function getBlockedByMe() {
   return fetch(`${apiConfig.host}/v2/users/blockedByMe`, getRequestOptions());
 }
 
+export function getSummary({ days }) {
+  return fetch(`${apiConfig.host}/v2/summary/${days}`, getRequestOptions());
+}
+
+export function getUserSummary({ username, days }) {
+  return fetch(`${apiConfig.host}/v2/summary/${username}/${days}`, getRequestOptions());
+}
+
 export function getSearch({search='', offset=0}) {
   return fetch(`${apiConfig.host}/v2/search?qs=${encodeURIComponent(search)}&offset=${offset}`, getRequestOptions());
 }
