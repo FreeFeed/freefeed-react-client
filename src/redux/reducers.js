@@ -1704,6 +1704,17 @@ export function boxHeader(state = "", action) {
       return '';
     }
     case request(ActionTypes.GET_SUMMARY): {
+      switch (action.payload.days) {
+        case `1`: {
+          return `Best of day`;
+        }
+        case `7`: {
+          return `Best of week`;
+        }
+        case `30`: {
+          return `Best of month`;
+        }
+      }
       return `Best of ${action.payload.days} days`;
     }
     case request(ActionTypes.GET_USER_SUMMARY): {
