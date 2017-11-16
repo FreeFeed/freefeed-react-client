@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import {joinPostData, postActions} from './select-utils';
-import PaginatedView from './paginated-view';
 import Feed from './feed';
 
 class Summary extends React.Component {
@@ -16,13 +15,11 @@ class Summary extends React.Component {
         </div>
 
         {props.isLoading || props.visibleEntries.length ? (
-          <PaginatedView {...props}>
-            <Feed {...props}/>
-          </PaginatedView>
+          <Feed {...props}/>
         ) : (
-          <div className="search-no-results">
-            <h4>No results</h4>
-            <p>Please make sure that all words are spelled correctly or try different keywords.</p>
+          <div className="summary-no-results">
+            <h4>No summary posts</h4>
+            <p>This feed has no best posts for this period of time</p>
           </div>
         )}
       </div>
