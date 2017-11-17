@@ -1703,22 +1703,15 @@ export function boxHeader(state = "", action) {
     case request(ActionTypes.GET_USER_FEED): {
       return '';
     }
-    case request(ActionTypes.GET_SUMMARY): {
-      switch (action.payload.days) {
-        case `1`: {
-          return `Best of day`;
-        }
-        case `7`: {
-          return `Best of week`;
-        }
-        case `30`: {
-          return `Best of month`;
-        }
-      }
-      return `Best of ${action.payload.days} days`;
-    }
+    case request(ActionTypes.GET_SUMMARY):
     case request(ActionTypes.GET_USER_SUMMARY): {
-      return `Best of ${action.payload.days} days`;
+      let period = action.payload.days + ' days';
+      switch (+action.payload.days) {
+        case 1: period = 'day'; break;
+        case 7: period = 'week'; break;
+        case 30: period = 'month'; break;
+      }
+      return `Best of ${period}`;
     }
     case request(ActionTypes.GET_SINGLE_POST): {
       return '';
