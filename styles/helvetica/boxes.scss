@@ -27,6 +27,13 @@
   margin-left: 10px;
   @media (max-width: 991px){ margin-left: 0; }
   padding-bottom: 2px;
+
+  .sidelinks {
+    float: right;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 28px;
+  }
 }
 
 .box-message {

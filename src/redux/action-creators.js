@@ -710,7 +710,7 @@ export function blockedByMe() {
   };
 }
 
-export function getSummary(days) {
+export function getSummary(days = 7) {
   return {
     type: ActionTypes.GET_SUMMARY,
     apiRequest: Api.getSummary,
@@ -718,7 +718,7 @@ export function getSummary(days) {
   };
 }
 
-export function getUserSummary(username, days) {
+export function getUserSummary(username, days = 7) {
   return {
     type: ActionTypes.GET_USER_SUMMARY,
     apiRequest: Api.getUserSummary,
