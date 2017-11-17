@@ -18,8 +18,7 @@ class Summary extends React.Component {
           <Feed {...props}/>
         ) : (
           <div className="summary-no-results">
-            <h4>No summary posts</h4>
-            <p>This feed has no best posts for this period of time</p>
+            <p>No entries here yet. You might want to subscribe for more users and groups.</p>
           </div>
         )}
       </div>
