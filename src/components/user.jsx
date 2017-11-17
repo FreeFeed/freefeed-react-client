@@ -92,7 +92,9 @@ function selectState(state, ownProps) {
 
   const sendTo = {...state.sendTo, defaultFeed: (foundUser ? foundUser.username : null)};
 
-  return { user, visibleEntries, timelines, createPostViewState, createPostForm, boxHeader, viewUser, breadcrumbs, sendTo };
+  const showSummaryHeader = (currentRouteName === 'userSummary');
+
+  return { user, visibleEntries, timelines, createPostViewState, createPostForm, boxHeader, showSummaryHeader, viewUser, breadcrumbs, sendTo };
 }
 
 function selectActions(dispatch) {

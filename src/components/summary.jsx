@@ -1,8 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
 import {joinPostData, postActions} from './select-utils';
-import PaginatedView from './paginated-view';
 import Feed from './feed';
 
 class Summary extends React.Component {
@@ -12,23 +12,23 @@ class Summary extends React.Component {
     return (
       <div className="box">
         <div className="box-header-timeline">
-          {props.boxHeader.title}
+          {props.boxHeader}
 
-          {props.boxHeader.page > 1 ? (
-            <div className="pull-right">
-              <span className="subheader">Page {props.boxHeader.page}</span>
-            </div>
-          ) : false}
+          <div className="sidelinks">
+            {'View best of: '}
+            {+props.params.days === 1 ? <b>day</b> : <Link to={`/summary/1`}>day</Link>}
+            {' - '}
+            {+(props.params.days||7) === 7 ? <b>week</b> : <Link to={`/summary/7`}>week</Link>}
+            {' - '}
+            {+props.params.days === 30 ? <b>month</b> : <Link to={`/summary/30`}>month</Link>}
+          </div>
         </div>
 
         {props.isLoading || props.visibleEntries.length ? (
-          <PaginatedView {...props}>
-            <Feed {...props}/>
-          </PaginatedView>
+          <Feed {...props}/>
         ) : (
-          <div className="search-no-results">
-            <h4>No results</h4>
-            <p>Please make sure that all words are spelled correctly or try different keywords.</p>
+          <div className="summary-no-results">
+            <p>No entries here yet. You might want to subscribe for more users and groups.</p>
           </div>
         )}
       </div>
