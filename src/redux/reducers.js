@@ -13,6 +13,15 @@ const frontendPrefsConfig = config.frontendPreferences;
 
 const {request, response, fail} = ActionHelpers;
 
+const getSummaryPeriod = (days) => {
+  switch (+days) {
+    case 1: return 'day';
+    case 7: return 'week';
+    case 30: return 'month';
+    default: return days + ' days';
+  }
+};
+
 export function title(state = '', action) {
   switch (action.type) {
     case response(ActionTypes.HOME): {
@@ -41,7 +50,18 @@ export function title(state = '', action) {
       const author = user.screenName + (user.username !== user.screenName ? ' (' + user.username + ')' : '');
       return `${text} - ${author} - FreeFeed`;
     }
-
+    case response(ActionTypes.GET_SUMMARY): {
+      const period = getSummaryPeriod(action.request.days);
+      return `Best of ${period} - FreeFeed`;
+    }
+    case response(ActionTypes.GET_USER_SUMMARY): {
+      const period = getSummaryPeriod(action.request.days);
+      const user = (action.payload.users || []).filter(user => user.username === action.request.username)[0];
+      const author = user
+        ? user.screenName + (user.username !== user.screenName ? ' (' + user.username + ')' : '')
+        : action.request.username;
+      return `Best of ${period} - ${author} - FreeFeed`;
+    }
     case fail(ActionTypes.HOME):
     case fail(ActionTypes.DIRECT):
     case fail(ActionTypes.DISCUSSIONS):
