@@ -133,7 +133,7 @@ ReactDOM.render(
         <Route path='settings/archive' component={Archive} onEnter={enterStaticPage('Restore from FriendFeed.com Archives')}/>
         <Route name='groupSettings' path='/:userName/settings' component={GroupSettings} {...generateRouteHooks(boundRouteActions('getUserInfo'))}/>
         <Route name='discussions' path='filter/discussions' component={Discussions} {...generateRouteHooks(boundRouteActions('discussions'))}/>
-        <Route name='summary' path='/summary/:days' component={Summary} {...generateRouteHooks(boundRouteActions('summary'))}/>
+        <Route name='summary' path='/summary(/:days)' component={Summary} {...generateRouteHooks(boundRouteActions('summary'))}/>
         <Route name='direct' path='filter/direct' component={Discussions} {...generateRouteHooks(boundRouteActions('direct'))}/>
         <Route name='search' path='search' component={SearchFeed} {...generateRouteHooks(boundRouteActions('search'))}/>
         <Route name='notifications' path='filter/notifications' component={Notifications} {...generateRouteHooks(boundRouteActions('notifications'))}/>
@@ -143,7 +143,7 @@ ReactDOM.render(
         <Route name='groupCreate' path='/groups/create' component={GroupCreate} onEnter={enterStaticPage('Create a group')}/>
         <Route name='archivePost' path='/archivePost' component={ArchivePost} {...generateRouteHooks(boundRouteActions('archivePost'))}/>
         <Route name='userFeed' path='/:userName' component={User} {...generateRouteHooks(boundRouteActions('userFeed'))}/>
-        <Route name='userSummary' path='/:userName/summary/:days' component={User} {...generateRouteHooks(boundRouteActions('userSummary'))}/>
+        <Route name='userSummary' path='/:userName/summary(/:days)' component={User} {...generateRouteHooks(boundRouteActions('userSummary'))}/>
         <Route name='subscribers' path='/:userName/subscribers' component={Subscribers} onEnter={subscribersSubscriptionsActions}/>
         <Route name='subscriptions' path='/:userName/subscriptions' component={Subscriptions} onEnter={subscribersSubscriptionsActions}/>
         <Route name='manage-subscribers' path='/:userName/manage-subscribers' component={ManageSubscribers} onEnter={manageSubscribersActions}/>

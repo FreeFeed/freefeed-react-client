@@ -15,7 +15,7 @@ const PaginatedView = props => (
           {'View best of: '}
           {+props.params.days === 1 ? <b>day</b> : <Link to={`/${props.viewUser.username}/summary/1`}>day</Link>}
           {' - '}
-          {+props.params.days === 7 ? <b>week</b> : <Link to={`/${props.viewUser.username}/summary/7`}>week</Link>}
+          {+(props.params.days||7) === 7 ? <b>week</b> : <Link to={`/${props.viewUser.username}/summary/7`}>week</Link>}
           {' - '}
           {+props.params.days === 30 ? <b>month</b> : <Link to={`/${props.viewUser.username}/summary/30`}>month</Link>}
         </div>
