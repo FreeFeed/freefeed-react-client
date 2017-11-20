@@ -31,14 +31,14 @@ function ArchivePostHandler({ router, inProgress, success, id }) {
   }
 
   return (
-    <div className='box'>
-      <div className='box-header-timeline'>
+    <div className="box">
+      <div className="box-header-timeline">
         Friendfeed Post
       </div>
-      <div className='box-body'>
+      <div className="box-body">
         {postBody}
       </div>
-      <div className='box-footer'>
+      <div className="box-footer">
       </div>
     </div>
   );

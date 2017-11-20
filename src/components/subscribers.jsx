@@ -17,11 +17,11 @@ class SubscribersHandler extends React.Component {
   render() {
     const { props } = this;
     return (
-      <div className='box'>
-        <div className='box-header-timeline'>
+      <div className="box">
+        <div className="box-header-timeline">
           {props.boxHeader}
         </div>
-        <div className='box-body'>
+        <div className="box-body">
           <div className="row">
             <div className="col-md-6">
               <Link to={`/${props.username}`}>{props.username}</Link> › Subscribers
@@ -32,9 +32,9 @@ class SubscribersHandler extends React.Component {
               </div>
               : false}
           </div>
-          <SubsList {...props} title='Subscribers' />
+          <SubsList {...props} title="Subscribers" />
         </div>
-        <div className='box-footer'></div>
+        <div className="box-footer"></div>
       </div>
     );
   }

@@ -360,7 +360,7 @@ export default class Post extends React.Component {
           </div>
 
           {props.isError ? (
-            <div className='post-error'>
+            <div className="post-error">
               {props.errorString}
             </div>
           ) : false}

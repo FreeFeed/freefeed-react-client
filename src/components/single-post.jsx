@@ -54,14 +54,14 @@ class SinglePostHandler extends React.Component {
     }
 
     return (
-      <div className='box'>
-        <div className='box-header-timeline'>
+      <div className="box">
+        <div className="box-header-timeline">
           {props.boxHeader}
         </div>
-        <div className='box-body'>
+        <div className="box-body">
           {postBody}
         </div>
-        <div className='box-footer'>
+        <div className="box-footer">
         </div>
       </div>
     );

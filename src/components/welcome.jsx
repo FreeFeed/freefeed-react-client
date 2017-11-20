@@ -10,7 +10,7 @@ export default () => (
 
     <p><Link to="/about">Read more</Link> about FreeFeed.</p>
 
-    <p><b><Link to="/signup">Sign up</Link></b> now or <Link to='/signin'>sign in</Link> if
+    <p><b><Link to="/signup">Sign up</Link></b> now or <Link to="/signin">sign in</Link> if
       you already have an account.</p>
   </div>
 );

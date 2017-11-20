@@ -120,7 +120,7 @@ export default class CommentLikes extends React.Component {
                     }
                   </div>
                 </div>
-                <div className='mention-actions' style={{ transform:`translateY(${this.state.showActionButtons ? "0%" : "100%"})` }}>
+                <div className="mention-actions" style={{ transform:`translateY(${this.state.showActionButtons ? "0%" : "100%"})` }}>
                   {this.props.forbidLiking
                     ? <div className="mention-action non-likable">
                       <i className="fa fa-heart-o" aria-hidden="true"/>

@@ -7,7 +7,7 @@ import { getCurrentRouteName } from '../utils';
 import PaginationLinks from './pagination-links';
 
 const PaginatedView = (props) => (
-  <div className='box-body'>
+  <div className="box-body">
     {props.showSummaryHeader ? (
       <h4 className="user-subheader">
         {props.boxHeader.title}

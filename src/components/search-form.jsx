@@ -55,9 +55,9 @@ export default class SearchForm extends React.Component {
 
   render() {
     return (
-      <div className='search-form'>
-        <input placeholder='Search request' onKeyDown={this.handleSearch} className='search-input' ref={this.rememberInput}/>
-        <button type='button' className='search-button' onClick={this.handleSearchButton}>Search</button>
+      <div className="search-form">
+        <input placeholder="Search request" onKeyDown={this.handleSearch} className="search-input" ref={this.rememberInput}/>
+        <button type="button" className="search-button" onClick={this.handleSearchButton}>Search</button>
       </div>
     );
   }

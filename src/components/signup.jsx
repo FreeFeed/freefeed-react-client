@@ -84,55 +84,55 @@ function signUpFunc(props) {
 }
 
 const Signup = (props) => (
-  <div className='box'>
-    <div className='box-header-timeline'>
+  <div className="box">
+    <div className="box-header-timeline">
       Hello
     </div>
-    <div className='box-body'>
-      <div className='col-md-12'>
-        <h2 className='p-signin-header'>Sign up</h2>
-        {props.error ? (<div className='alert alert-danger p-signin-error' role='alert'>
-          <span id='error-message'>{props.error}</span>
+    <div className="box-body">
+      <div className="col-md-12">
+        <h2 className="p-signin-header">Sign up</h2>
+        {props.error ? (<div className="alert alert-danger p-signin-error" role="alert">
+          <span id="error-message">{props.error}</span>
         </div>) : false}
-        <div className='row'>
-          <div className='col-md-6'>
+        <div className="row">
+          <div className="col-md-6">
             <LoaderContainer loading={props.loading}>
-              <form onSubmit={preventDefault(() => signUpFunc(props))} className='p-signin'>
-                <div className='form-group'>
-                  <label htmlFor='username'>Username</label>
-                  <input id='username'
-                    className='ember-view ember-text-field form-control'
-                    type='text'
+              <form onSubmit={preventDefault(() => signUpFunc(props))} className="p-signin">
+                <div className="form-group">
+                  <label htmlFor="username">Username</label>
+                  <input id="username"
+                    className="ember-view ember-text-field form-control"
+                    type="text"
                     onChange={(e) => props.signUpChange({ username: e.target.value })}/>
                 </div>
 
-                <div className='form-group'>
-                  <label htmlFor='email'>Email</label>
-                  <input id='email'
-                    className='ember-view ember-text-field form-control'
-                    type='text'
+                <div className="form-group">
+                  <label htmlFor="email">Email</label>
+                  <input id="email"
+                    className="ember-view ember-text-field form-control"
+                    type="text"
                     onChange={(e) => props.signUpChange({ email: e.target.value })}/>
                 </div>
 
-                <div className='form-group'>
-                  <label htmlFor='password'>Password</label>
-                  <input id='password'
-                    className='ember-view ember-text-field form-control'
-                    type='password'
+                <div className="form-group">
+                  <label htmlFor="password">Password</label>
+                  <input id="password"
+                    className="ember-view ember-text-field form-control"
+                    type="password"
                     onChange={(e) => props.signUpChange({ password: e.target.value })}/>
                 </div>
 
                 {captchaConfig.siteKey &&
-                  <div className='form-group'>
+                  <div className="form-group">
                     <Recaptcha sitekey={captchaConfig.siteKey}
-                      theme='light' type='image'
+                      theme="light" type="image"
                       onChange={(v) => props.signUpChange({ captcha: v })}
                       onExpired={() => props.signUpChange({ captcha: null })}/>
                   </div>
                 }
 
-                <div className='form-group'>
-                  <button className='btn btn-default p-signin-action' type='submit'>Sign up</button>
+                <div className="form-group">
+                  <button className="btn btn-default p-signin-action" type="submit">Sign up</button>
                 </div>
               </form>
             </LoaderContainer>
@@ -140,7 +140,7 @@ const Signup = (props) => (
         </div>
       </div>
     </div>
-    <div className='box-footer'>
+    <div className="box-footer">
     </div>
   </div>
 );

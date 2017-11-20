@@ -24,14 +24,14 @@ const FeedHandler = (props) => {
   );
 
   return (
-    <div className='box'>
-      <div className='box-header-timeline'>
+    <div className="box">
+      <div className="box-header-timeline">
         {props.boxHeader}
       </div>
       <PaginatedView firstPageHead={createPostComponent} {...props}>
         <Feed {...props}/>
       </PaginatedView>
-      <div className='box-footer'>
+      <div className="box-footer">
       </div>
     </div>);
 };

@@ -5,14 +5,14 @@ import Feed from './feed';
 import PaginatedView from './paginated-view';
 
 const FeedHandler = (props) => (
-  <div className='box'>
-    <div className='box-header-timeline'>
+  <div className="box">
+    <div className="box-header-timeline">
       {props.boxHeader}
     </div>
     <PaginatedView {...props}>
       <Feed {...props}/>
     </PaginatedView>
-    <div className='box-footer'>
+    <div className="box-footer">
     </div>
   </div>
 );

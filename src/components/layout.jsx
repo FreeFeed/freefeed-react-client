@@ -13,7 +13,7 @@ import SearchForm from './search-form';
 
 const InternalLayout = ({ authenticated, children }) => (
   <div className={authenticated ? 'col-md-9' : 'col-md-12'}>
-    <div className='content'>
+    <div className="content">
       {children}
     </div>
   </div>
@@ -161,14 +161,14 @@ class Layout extends React.Component {
         </header>
 
         <LoaderContainer loading={props.loadingView} fullPage={true}>
-          <div className='row'>
+          <div className="row">
             <InternalLayout {...props}/>
             {props.authenticated ? <Sidebar {...props}/> : false}
           </div>
         </LoaderContainer>
 
-        <div className='row'>
-          <div className='col-md-12'>
+        <div className="row">
+          <div className="col-md-12">
             <Footer/>
           </div>
         </div>
