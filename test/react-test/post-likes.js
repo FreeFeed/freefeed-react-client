@@ -13,7 +13,6 @@ const renderLikes = (likes, omittedLikes = 0) => {
 };
 
 const getRenderedOmmitedLikes = (likes, omittedLikes) => {
-
   const likeList = renderLikes(likes, omittedLikes);
 
   const lastLike = likeList[likeList.length - 1];
@@ -26,7 +25,6 @@ const getRenderedOmmitedLikes = (likes, omittedLikes) => {
 };
 
 test('PostLikes renders all likes', (t) => {
-
   const likes = [];
 
   for (let i = 0; i < 6; i++) {
@@ -41,7 +39,6 @@ test('PostLikes renders all likes', (t) => {
 });
 
 test('PostLikes renders omitted likes number', (t) => {
-
   const ommitLikes = 10;
 
   const ommitedLikes = getRenderedOmmitedLikes([{}], ommitLikes);

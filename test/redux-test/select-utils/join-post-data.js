@@ -79,7 +79,6 @@ const composeState = ({subsequentComments, setting, omittedComments = 0, withDel
 };
 
 test('joinPostData sets omitBubble for subsequent comments with setting on', (t) => {
-
   const testState = composeState({subsequentComments: true, setting: true});
 
   const result = joinPostData(testState)(post.id);

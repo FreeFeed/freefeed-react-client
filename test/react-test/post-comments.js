@@ -26,7 +26,6 @@ const renderedCommentsAndOmitted = commentArrays.map((comments) => renderComment
 const renderedCommentsWithoutOmitted = commentArrays.map((comments) => renderComments(comments, 0));
 
 test('PostComments renders first comment if there\'s any comments', (t) => {
-
   t.notOk(firstCommentRendered(renderedCommentsAndOmitted[0]));
 
   renderedCommentsAndOmitted.slice(1).map((renderedComment) => {
@@ -37,7 +36,6 @@ test('PostComments renders first comment if there\'s any comments', (t) => {
 });
 
 test('PostComments renders right number of middle comments', (t) => {
-
   renderedCommentsWithoutOmitted.map((renderedComment, index) => {
     t.equals(middleCommentsRendered(renderedComment).length, Math.max(index - 2, 0));
   });
@@ -62,7 +60,6 @@ test('PostComments does not render omitted number then there\'s none', (t) => {
 });
 
 test('PostComments renders last comment if there\'s more than one comment', (t) => {
-
   renderedCommentsAndOmitted.slice(0, 2).map((renderedComment) => {
     t.notOk(lastCommentRendered(renderedComment));
   });
@@ -72,7 +69,6 @@ test('PostComments renders last comment if there\'s more than one comment', (t) 
   });
 
   t.end();
-
 });
 
 test('PostComments renders commenting section only if post is commented', (t) => {

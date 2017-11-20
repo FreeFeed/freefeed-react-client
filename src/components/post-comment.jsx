@@ -243,7 +243,6 @@ export default class PostComment extends React.Component {
   }
 
   render() {
-
     const className = classnames({
       'comment': true,
       'highlighted': this.props.highlighted,

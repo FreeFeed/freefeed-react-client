@@ -58,7 +58,6 @@ export const authMiddleware = (store) => {
   let firstUnauthenticated = true;
 
   return (next) => (action) => {
-
     //stop action propagation if it should be authed and user is not authed
     if (requiresAuth(action) && !store.getState().authenticated) {
       return;
@@ -395,7 +394,6 @@ export const realtimeMiddleware = (store) => {
   const state = store.getState();
   let realtimeConnection;
   return (next) => (action) => {
-
     if (action.type === ActionTypes.UNAUTHENTICATED) {
       if (realtimeConnection) {
         realtimeConnection.disconnect();

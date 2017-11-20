@@ -4,7 +4,6 @@ import {commentViewState, feedViewState, posts, postsViewState, users} from '../
 import {unauthenticated} from '../../../src/redux/action-creators';
 
 test('unauthenticated action clears reducer state', (t) => {
-
   const ordinaryReducers = [commentViewState, posts, postsViewState, users];
 
   const ordinaryReducersReduced = ordinaryReducers.map((reducer) => reducer({'1':{}, '2':{}}, unauthenticated()));

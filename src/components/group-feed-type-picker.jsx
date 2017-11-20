@@ -24,7 +24,6 @@ function getPrivacyMode(flags) {
 }
 
 export default class GroupFeedTypePicker extends React.Component {
-
   handleChange = (event) => {
     const {target: {name, value}} = event;
     if (name === 'privacy') {

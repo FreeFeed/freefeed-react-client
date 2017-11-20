@@ -60,6 +60,7 @@
     "no-var": "error",
     "no-warning-comments": 1,
     "object-shorthand": 2,
+    "padded-blocks": [2, "never"],
     "prefer-const": "error",
     "semi": ["error", "always"],
     "space-before-blocks": ["error", "always"],

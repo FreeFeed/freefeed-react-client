@@ -10,7 +10,6 @@ const
   PRIVATE_FEED = 'PRIVATE';
 
 export default class UserSettingsForm extends React.Component {
-
   constructor(props) {
     super(props);
 

@@ -10,7 +10,6 @@ import MoreCommentsWrapper from './more-comments-wrapper';
 const minCommentsToFold = 12;
 
 export default class PostComments extends React.Component {
-
   constructor(props) {
     super(props);
     this.addingCommentForm = null;
