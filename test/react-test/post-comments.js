@@ -18,7 +18,7 @@ const omittedCommentsRendered = (renderedComments) => renderedComments[1];
 const lastCommentRendered = (renderedComments) => renderedComments[2];
 const isCommenting = (renderedComments) => renderedComments[3];
 
-const generateArray = (n) => Array.apply(null, Array(n)).map(() => ({}));
+const generateArray = (n) => [...Array(n).keys()].map(() => ({}));
 
 const commentArrays = generateArray(5).map((_, index) => generateArray(index));
 
