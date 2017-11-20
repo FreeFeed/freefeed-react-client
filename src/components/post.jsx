@@ -50,11 +50,11 @@ export default class Post extends React.Component {
     }
   };
 
-  removeAttachment = (attachmentId) => this.props.removeAttachment(this.props.id, attachmentId)
+  removeAttachment = (attachmentId) => this.props.removeAttachment(this.props.id, attachmentId);
 
   changeAttachmentQueue= (change) => () => {
     this.setState({attachmentQueueLength: this.state.attachmentQueueLength + change});
-  }
+  };
 
   render() {
     const { props } = this;

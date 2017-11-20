@@ -54,15 +54,15 @@ export default class PostComment extends React.Component {
     this.setState({
       editText: event.target.value
     });
-  }
+  };
 
   reply = () => {
     this.props.openAnsweringComment(_.repeat('^', this.props.backwardNumber));
-  }
+  };
 
   mention = () => {
     this.props.openAnsweringComment(`@${this.props.user.username}`);
-  }
+  };
 
   setCaretToTextEnd = (event) => {
     const input = event.target;
@@ -77,13 +77,13 @@ export default class PostComment extends React.Component {
         range.select();
       }
     }, 0);
-  }
+  };
 
   updateCommentingText = () => {
     if (this.props.updateCommentingText) {
       this.props.updateCommentingText(this.props.id, this.commentTextArea.value);
     }
-  }
+  };
 
   checkSave = (event) => {
     const isEnter = event.keyCode === 13;
@@ -93,13 +93,13 @@ export default class PostComment extends React.Component {
       event.target.blur();
       setTimeout(this.saveComment, 0);
     }
-  }
+  };
 
   saveComment = () => {
     if (!this.props.isSaving) {
       this.props.saveEditingComment(this.props.id, this.commentTextArea.value);
     }
-  }
+  };
 
   focus() {
     if (this.commentTextArea) {
@@ -111,11 +111,11 @@ export default class PostComment extends React.Component {
     return this.props.hasOwnLike
       ? this.props.unlikeComment(this.props.id)
       : this.props.likeComment(this.props.id);
-  }
+  };
 
   getCommentLikes = () => {
     this.props.getCommentLikes(this.props.id);
-  }
+  };
 
   componentWillReceiveProps(newProps) {
     const wasCommentJustSaved = this.props.isSaving && !newProps.isSaving;

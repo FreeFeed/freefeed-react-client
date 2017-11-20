@@ -46,7 +46,7 @@ export default class ImageAttachmentsLightbox extends React.Component {
       y: rect.top + pageYScroll,
       w: rect.width,
     };
-  }
+  };
 
   // react-photoswipe passes 'this' as a first argument unlike the PhotoSwipe API
   getItemData = (_, index, item) => {
@@ -66,19 +66,19 @@ export default class ImageAttachmentsLightbox extends React.Component {
     if (!item.msrc && thumb) {
       item.msrc = thumb.currentSrc;
     }
-  }
+  };
 
   whenOpened = () => {
     Mousetrap.bind(prevHotKeys, () => this.photoSwipe.prev());
     Mousetrap.bind(nextHotKeys, () => this.photoSwipe.next());
-  }
+  };
 
   whenClosed = () => {
     this.setState({isOpened: false});
 
     Mousetrap.unbind(prevHotKeys);
     Mousetrap.unbind(nextHotKeys);
-  }
+  };
 
   open(index) {
     this.setState({

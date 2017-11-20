@@ -23,17 +23,17 @@ export default class GroupCreateForm extends React.Component {
     const newState = {};
     newState[property] = event.target.value;
     this.setState(newState);
-  }
+  };
 
   handlePrivacyTypeChange = (privacySettings) => {
     this.setState(privacySettings);
-  }
+  };
 
   saveSettings = () => {
     if (this.props.status !== 'loading') {
       this.props.createGroup(this.state);
     }
-  }
+  };
 
   componentWillUnmount() {
     this.props.resetGroupCreateForm();

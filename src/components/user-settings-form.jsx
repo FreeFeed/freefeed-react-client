@@ -21,7 +21,7 @@ export default class UserSettingsForm extends React.Component {
 
   updateSetting = (setting) => (e) => {
     this.props.userSettingsChange({[setting]: e.target.value});
-  }
+  };
 
   updatePrivacy = (e) => {
     if (e.target.value === PUBLIC_FEED) {
@@ -37,7 +37,7 @@ export default class UserSettingsForm extends React.Component {
     if (!this.props.isSaving) {
       this.props.updateUser(this.props.user.id, this.props.screenName, this.props.email, this.props.isPrivate, this.props.isProtected, this.props.description);
     }
-  }
+  };
 
   render() {
     const className = classnames({

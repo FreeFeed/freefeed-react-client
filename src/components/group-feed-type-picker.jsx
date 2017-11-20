@@ -31,7 +31,7 @@ export default class GroupFeedTypePicker extends React.Component {
     } else if (name === 'isRestricted') {
       this.props.updateGroupPrivacySettings({ [name]: value });
     }
-  }
+  };
 
   render() {
     return (

@@ -27,7 +27,7 @@ export default class FoldableContent extends React.Component {
     if (contentHeight !== this.state.contentHeight) {
       this.setState({contentHeight});
     }
-  }
+  };
 
   setContent = (el) => {
     if (el) {

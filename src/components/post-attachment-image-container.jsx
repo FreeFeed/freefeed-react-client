@@ -41,11 +41,11 @@ export default class ImageAttachmentsContainer extends React.Component {
         needsFolding: containerWidth < this.getContentWidth()
       });
     }
-  }
+  };
 
   toggleFolding = () => {
     this.setState({isFolded: !this.state.isFolded});
-  }
+  };
 
   handleClickThumbnail(index) {
     return (e) => {
@@ -74,7 +74,7 @@ export default class ImageAttachmentsContainer extends React.Component {
       }
     }
     return null;
-  }
+  };
 
   componentDidMount() {
     if (!this.props.isSinglePost && this.props.attachments.length > 1) {

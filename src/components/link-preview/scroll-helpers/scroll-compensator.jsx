@@ -13,7 +13,7 @@ export default class ScrollCompensator extends React.Component {
       this.root.removeEventListener(ELEMENT_RESIZE_EVENT, this.compensateScroll);
     }
     this.root = el;
-  }
+  };
 
   compensateScroll = () => {
     const newHeight = this.root ? this.root.offsetHeight : this.prevHeight;
@@ -39,7 +39,7 @@ export default class ScrollCompensator extends React.Component {
     }
 
     this.prevHeight = newHeight;
-  }
+  };
 
   render() {
     return (

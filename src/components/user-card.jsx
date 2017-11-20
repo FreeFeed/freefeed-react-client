@@ -25,7 +25,7 @@ class UserCard extends React.Component {
     } else {
       this.props.unsubscribe({username: this.props.user.username});
     }
-  }
+  };
 
   render() {
     const { props } = this;

@@ -9,7 +9,7 @@ export default class UserPictureForm extends React.Component {
     if (newFile && this.props.status !== 'loading') {
       this.props.updateUserPicture(newFile);
     }
-  }
+  };
 
   render() {
     return (

@@ -40,5 +40,5 @@ export default class UserChangePasswordForm extends React.Component {
         passwordConfirmation: this.refs.passwordConfirmation.value,
       });
     }
-  }
+  };
 }

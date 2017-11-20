@@ -29,13 +29,13 @@ export default class GroupSettingsForm extends React.Component {
         isWarningDisplayed: false
       });
     }
-  }
+  };
 
   handleChange = (property) => (event) => {
     const newState = {};
     newState[property] = event.target.value;
     this.setState(newState);
-  }
+  };
 
   handlePrivacyTypeChange = (privacySettings) => {
     const newState = {
@@ -46,14 +46,14 @@ export default class GroupSettingsForm extends React.Component {
       )
     };
     this.setState(newState);
-  }
+  };
 
   saveSettings = () => {
     this.setState({ isWarningDisplayed: false });
     if (this.props.status !== 'loading') {
       this.props.updateGroup(this.props.group.id, this.state);
     }
-  }
+  };
 
   componentWillUnmount() {
     this.props.resetGroupUpdateForm();

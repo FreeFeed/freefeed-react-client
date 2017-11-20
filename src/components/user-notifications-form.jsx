@@ -56,11 +56,11 @@ export default class UserNotificationsForm extends React.Component {
 
   toggleNotifications = (e) => {
     this.setState({sendNotificationsDigest: e.target.checked});
-  }
+  };
 
   savePreference = () => {
     if (this.props.status !== "loading") {
       this.props.updateUserNotificationPreferences(this.props.userId, {sendNotificationsDigest: this.state.sendNotificationsDigest});
     }
-  }
+  };
 }

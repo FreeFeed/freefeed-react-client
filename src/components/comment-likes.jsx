@@ -41,7 +41,7 @@ export default class CommentLikes extends React.Component {
         </i>
       </div>
     </div>;
-  }
+  };
   renderBubble = () => {
     return this.props.createdAt
       ? <TimeDisplay className="comment-time" timeStamp={+this.props.createdAt} timeAgoInTitle={true}>
@@ -54,18 +54,18 @@ export default class CommentLikes extends React.Component {
         <span className={`comment-icon fa ${this.props.omitBubble ? "feed-comment-dot" : "fa-comment-o"}`}/>
       </span>
     ;
-  }
+  };
   clearTouchTimeout = () => {
     clearTimeout(this.popupTimeout);
     this.popupTimeout = undefined;
-  }
+  };
   startTouch = (e) => {
     e.preventDefault();
     this.popupTimeout = setTimeout(() => {
       this.setState({showActionsPanel: true});
       this.clearTouchTimeout();
     }, 300);
-  }
+  };
   endMouseDown = () => this.clearTouchTimeout();
   endTouch = (e) => {
     e.preventDefault();
@@ -78,7 +78,7 @@ export default class CommentLikes extends React.Component {
         this.toggleLike(e);
       }
     }
-  }
+  };
   startMouseDown = () => {
     if (!this.state.showActionsPanel) {
       this.popupTimeout = setTimeout(() => {
@@ -86,7 +86,7 @@ export default class CommentLikes extends React.Component {
         this.clearTouchTimeout();
       }, 300);
     }
-  }
+  };
   openAnsweringComment = (e) => {
     e.preventDefault();
     this.clearTouchTimeout();
@@ -98,7 +98,7 @@ export default class CommentLikes extends React.Component {
         this.props.mention();
       }
     }
-  }
+  };
   renderPopup = () => {
     const likesStyle = {
       height: !this.state.showActionButtons && this.state.panelHeight || "auto",
@@ -148,14 +148,14 @@ export default class CommentLikes extends React.Component {
           </div></div>
       </div>
     </Portal>;
-  }
+  };
   toggleLike = () => {
     this.clearTouchTimeout();
     if (!this.props.forbidLiking) {
       this.setState({liked: !this.props.hasOwnLike});
       this.props.toggleLike();
     }
-  }
+  };
   toggleLikeList = (e) => {
     e.stopPropagation();
     this.clearTouchTimeout();
@@ -169,10 +169,10 @@ export default class CommentLikes extends React.Component {
     if (likeListVisible) {
       this.getCommentLikes();
     }
-  }
+  };
   toggleActionsPanel = () => {
     this.setState({showActionsPanel: !this.state.showActionsPanel, showActionButtons: true});
-  }
+  };
   renderLikesList = () => {
     const {loading, likes, error} = this.props.likesList;
     if (loading) {
@@ -182,7 +182,7 @@ export default class CommentLikes extends React.Component {
       return <div className="comment-likes-list error">Error</div>;
     }
     return <div className="comment-likes-list">{likes.map((likeUser, i) => <UserName user={likeUser} key={i}/>)}</div>;
-  }
+  };
   showLikesList = (e) => {
     e.preventDefault();
     const panelHeight = this.actionsPanel && this.actionsPanel.getBoundingClientRect().height;
@@ -191,19 +191,19 @@ export default class CommentLikes extends React.Component {
       panelHeight,
     });
     this.getCommentLikes();
-  }
+  };
   arrowClick = () => {
     if (this.state.showActionButtons) {
       this.toggleActionsPanel();
     } else {
       this.setState({showActionButtons: true});
     }
-  }
+  };
   getCommentLikes = () => {
     if ((this.props.likesList.likes.length === 0 || this.props.likesList.likes.length !== this.props.likes) && !this.props.likesList.loading) {
       this.props.getCommentLikes();
     }
-  }
+  };
   renderLikesLabel = () => {
     const {likes, hasOwnLike, forbidLiking, likesList} = this.props;
     if (likes === 0) {
@@ -222,7 +222,7 @@ export default class CommentLikes extends React.Component {
     const otherLikes = renderUserLikesList(otherLikesToRender);
     const hiddenLikesNumber = likes - otherLikes.length;
     return <span>{otherLikes}{hiddenLikesNumber > 0 && <span> and <a className="likes-list-toggle" onClick={this.showLikesList} href="#">{hiddenLikesNumber} more {usersPluralize(hiddenLikesNumber)}</a></span>} liked this comment</span>;
-  }
+  };
 }
 
 function renderMobileLikesList(likesList) {

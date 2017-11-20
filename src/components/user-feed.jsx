@@ -5,7 +5,7 @@ import PaginatedView from './paginated-view';
 import Feed from './feed';
 
 class UserFeed extends React.Component {
-  unblock = () => this.props.userActions.unban({username: this.props.viewUser.username, id: this.props.viewUser.id})
+  unblock = () => this.props.userActions.unban({username: this.props.viewUser.username, id: this.props.viewUser.id});
 
   render() {
     if (this.props.feedIsLoading) {

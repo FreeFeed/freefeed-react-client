@@ -68,8 +68,8 @@ class Linkify extends React.Component {
     }
   }
 
-  parseCounter = 0
-  idx = 0
+  parseCounter = 0;
+  idx = 0;
 
   parseString(string) {
     const elements = [];

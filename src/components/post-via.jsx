@@ -25,7 +25,7 @@ export default class PostVia extends React.Component {
       id: React.PropTypes.string,
       subscriptions: React.PropTypes.arrayOf(React.PropTypes.string)
     }).isRequired
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -34,7 +34,7 @@ export default class PostVia extends React.Component {
     };
   }
 
-  expand = () => this.setState({expanded: true})
+  expand = () => this.setState({expanded: true});
 
   render() {
     const {

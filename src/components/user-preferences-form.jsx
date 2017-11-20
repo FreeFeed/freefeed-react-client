@@ -20,7 +20,7 @@ export default class UserPreferencesForm extends React.Component {
         displayOption: parseInt(event.target.value, 10)
       }
     });
-  }
+  };
 
   changeUseYou = (event) => {
     this.setState({
@@ -29,7 +29,7 @@ export default class UserPreferencesForm extends React.Component {
         useYou: event.target.checked
       }
     });
-  }
+  };
 
   changeOmitBubbles = (event) => {
     this.setState({
@@ -38,7 +38,7 @@ export default class UserPreferencesForm extends React.Component {
         omitRepeatedBubbles: event.target.checked
       }
     });
-  }
+  };
 
   changeHighlightComments = (event) => {
     this.setState({
@@ -47,25 +47,25 @@ export default class UserPreferencesForm extends React.Component {
         highlightComments: event.target.checked
       }
     });
-  }
+  };
 
   changeAllowLinksPreview = (event) => {
     this.setState({
       allowLinksPreview: event.target.checked
     });
-  }
+  };
 
   changeReadMoreStyle = (event) => {
     this.setState({
       readMoreStyle: event.target.value
     });
-  }
+  };
 
   chandeHideUsers = (event) => {
     this.setState({
       sHideUsers: event.target.value
     });
-  }
+  };
 
   isCommentTypeHidden = (hideType) => _.includes(this.state.hideCommentsOfTypes, hideType);
 
@@ -82,7 +82,7 @@ export default class UserPreferencesForm extends React.Component {
       }
       this.setState({ hideCommentsOfTypes });
     }
-  }
+  };
 
   savePreferences = () => {
     if (this.props.status !== 'loading') {
@@ -95,7 +95,7 @@ export default class UserPreferencesForm extends React.Component {
 
       this.props.updateUserPreferences(this.props.userId, frontPrefs, backPrefs);
     }
-  }
+  };
 
   render() {
     return (

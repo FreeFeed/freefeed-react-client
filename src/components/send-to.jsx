@@ -60,19 +60,19 @@ export default class SendTo extends React.Component {
     const isWarningDisplayed = !this.isGroupsOrDirectsOnly(values);
     this.setState({ values, isWarningDisplayed });
     this.props.onChange(values.map((item) => item.value));
-  }
+  };
 
   toggleSendTo = () => {
     const newShowFeedsOption = !this.state.showFeedsOption;
     this.setState({ showFeedsOption: newShowFeedsOption });
-  }
+  };
 
   labelRenderer = (opt) => {
     const icon = (opt.type === 'group') ?
       ((opt.value !== this.props.user.username) ? <i className="fa fa-users" /> : <i className="fa fa-home" />)
       : false;
     return <span>{icon} {opt.label}</span>;
-  }
+  };
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.showFeedsOption !== this.state.showFeedsOption && this.state.showFeedsOption) {

@@ -33,7 +33,7 @@ export default class CreatePost extends React.Component {
 
     // Send to the server
     this.props.createPost(feeds, postText, attachmentIds, more);
-  }
+  };
 
   componentWillReceiveProps(newProps) {
     const wasCommentJustSaved = this.props.createPostViewState.isPending && !newProps.createPostViewState.isPending;
@@ -75,9 +75,9 @@ export default class CreatePost extends React.Component {
     this.setState(getDefaultState());
     const attachmentIds = this.props.createPostForm.attachments.map((attachment) => attachment.id);
     attachmentIds.forEach(this.removeAttachment);
-  }
+  };
 
-  removeAttachment = (attachmentId) => this.props.removeAttachment(null, attachmentId)
+  removeAttachment = (attachmentId) => this.props.removeAttachment(null, attachmentId);
 
   checkCreatePostAvailability = () => {
     const isFormEmpty = isTextEmpty(this.state.postText) || this.refs.selectFeeds.values === 0;
@@ -85,11 +85,11 @@ export default class CreatePost extends React.Component {
     this.setState({
       isFormEmpty
     });
-  }
+  };
 
   onPostTextChange = (e) => {
     this.setState({postText: e.target.value}, this.checkCreatePostAvailability);
-  }
+  };
 
   checkSave = (e) => {
     const isEnter = e.keyCode === 13;
@@ -100,7 +100,7 @@ export default class CreatePost extends React.Component {
         this.createPost();
       }
     }
-  }
+  };
 
   toggleMore() {
     this.setState({ isMoreOpen: !this.state.isMoreOpen });
@@ -108,7 +108,7 @@ export default class CreatePost extends React.Component {
 
   changeAttachmentQueue = (change) => () => {
     this.setState({attachmentQueueLength: this.state.attachmentQueueLength + change});
-  }
+  };
 
   componentWillUnmount() {
     this.props.resetPostCreateForm();

@@ -35,7 +35,7 @@ export default class PostComments extends React.Component {
     if (this.addingCommentForm) {
       this.addingCommentForm.focus();
     }
-  }
+  };
 
   renderAddingComment() {
     const { props } = this;
@@ -100,7 +100,7 @@ export default class PostComments extends React.Component {
     );
   }
 
-  fold = () => this.setState({folded: true})
+  fold = () => this.setState({folded: true});
 
   showMoreComments = () => {
     if (this.state.folded) {
@@ -108,7 +108,7 @@ export default class PostComments extends React.Component {
     } else {
       this.props.showMoreComments(this.props.post.id);
     }
-  }
+  };
 
   componentWillReceiveProps(newProps) {
     if (this.state.folded && newProps.post.omittedComments > 0) {

@@ -9,7 +9,7 @@ export default class GroupPictureForm extends React.Component {
     if (newFile && this.props.status !== 'loading') {
       this.props.updateGroupPicture(this.props.group.username, newFile);
     }
-  }
+  };
 
   componentWillUnmount() {
     this.props.resetGroupUpdateForm();
