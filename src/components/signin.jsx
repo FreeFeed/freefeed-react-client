@@ -1,12 +1,12 @@
 import React from 'react';
-import {Link} from 'react-router';
-import {connect} from 'react-redux';
-import {signInChange, signIn, signInEmpty} from '../redux/action-creators';
-import {preventDefault} from '../utils';
+import { Link } from 'react-router';
+import { connect } from 'react-redux';
+import { signInChange, signIn, signInEmpty } from '../redux/action-creators';
+import { preventDefault } from '../utils';
 import LoaderContainer from './loader-container';
 
 function mapStateToProps(state) {
-  return {...state.signInForm};
+  return { ...state.signInForm };
 }
 
 function mapDispatchToProps(dispatch) {

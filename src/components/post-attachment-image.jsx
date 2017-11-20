@@ -25,7 +25,7 @@ export default (props) => {
   };
 
   return (
-    <div className={classnames({attachment: true, hidden: props.isHidden})}>
+    <div className={classnames({ attachment: true, hidden: props.isHidden })}>
       <a href={props.url} title={nameAndSize} onClick={props.handleClick} target="_blank" className="image-attachment-link">
         {props.thumbnailUrl ? (
           <img className="image-attachment-img" {...imageAttributes}/>

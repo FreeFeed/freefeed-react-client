@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 
-import {contentResized} from './events';
+import { contentResized } from './events';
 
 /**
  * Component that track resize of it's content and trigger 'elementResize' event.

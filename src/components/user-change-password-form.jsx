@@ -1,5 +1,5 @@
 import React from 'react';
-import {preventDefault} from '../utils';
+import { preventDefault } from '../utils';
 
 export default class UserChangePasswordForm extends React.Component {
   render() {

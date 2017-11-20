@@ -15,7 +15,7 @@ export default class ArchiveActivityForm extends React.Component {
     checked: false,
   };
 
-  setChecked = (e) => this.setState({checked: e.target.checked});
+  setChecked = (e) => this.setState({ checked: e.target.checked });
 
   action = (e) => {
     e.preventDefault();
@@ -29,8 +29,8 @@ export default class ArchiveActivityForm extends React.Component {
   }
 
   render() {
-    const {checked} = this.state;
-    const {formState} = this.props;
+    const { checked } = this.state;
+    const { formState } = this.props;
     return (
       <form onSubmit={this.action}>
         <div className="checkbox">

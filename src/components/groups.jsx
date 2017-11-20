@@ -1,14 +1,14 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {Link} from 'react-router';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import _ from 'lodash';
 
-import {pluralForm} from '../utils';
+import { pluralForm } from '../utils';
 
-import {acceptGroupRequest, rejectGroupRequest} from '../redux/action-creators';
-import {tileUserListFactory, WITH_REQUEST_HANDLES, PLAIN} from './tile-user-list';
-const TileListWithAcceptAndReject = tileUserListFactory({type: WITH_REQUEST_HANDLES, displayQuantity: true});
-const TileList = tileUserListFactory({type: PLAIN, displayQuantity: true});
+import { acceptGroupRequest, rejectGroupRequest } from '../redux/action-creators';
+import { tileUserListFactory, WITH_REQUEST_HANDLES, PLAIN } from './tile-user-list';
+const TileListWithAcceptAndReject = tileUserListFactory({ type: WITH_REQUEST_HANDLES, displayQuantity: true });
+const TileList = tileUserListFactory({ type: PLAIN, displayQuantity: true });
 
 const renderRequestsToGroup = (accept, reject) => (groupRequests) => {
   const acceptGroupRequest = (userName) => accept(groupRequests.username, userName);

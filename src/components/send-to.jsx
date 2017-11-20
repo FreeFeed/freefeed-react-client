@@ -15,7 +15,7 @@ export default class SendTo extends React.Component {
         options.length !== 0 && this.state.options.length === 0) {
       this.setState(this.stateFromProps(newProps, options));
     } else {
-      this.setState({options});
+      this.setState({ options });
     }
   }
 
@@ -32,8 +32,8 @@ export default class SendTo extends React.Component {
     };
   }
 
-  optionsFromProps({feeds, user: {username}, isDirects}) {
-    const options = feeds.map(({user: {username, type}}) => ({
+  optionsFromProps({ feeds, user: { username }, isDirects }) {
+    const options = feeds.map(({ user: { username, type } }) => ({
       label: username,
       value: username,
       type,

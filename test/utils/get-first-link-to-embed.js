@@ -1,6 +1,6 @@
 import test from 'tape';
 
-import {getFirstLinkToEmbed} from '../../src/utils';
+import { getFirstLinkToEmbed } from '../../src/utils';
 
 const testLink = 'http://facebook.com';
 const secondTestLink = 'http://twitter.com';

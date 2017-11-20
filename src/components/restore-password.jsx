@@ -1,12 +1,12 @@
 import React from 'react';
-import {Link} from 'react-router';
-import {connect} from 'react-redux';
-import {restorePassword} from '../redux/action-creators';
-import {preventDefault} from '../utils';
+import { Link } from 'react-router';
+import { connect } from 'react-redux';
+import { restorePassword } from '../redux/action-creators';
+import { preventDefault } from '../utils';
 import LoaderContainer from './loader-container';
 
 function mapStateToProps(state) {
-  return {...state.restorePassForm};
+  return { ...state.restorePassForm };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -15,7 +15,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-function restoreFunc({mail, restore}) {
+function restoreFunc({ mail, restore }) {
   if (mail) {
     restore(mail);
   }
@@ -37,7 +37,7 @@ class RestorePassword extends React.Component {
             <div className='row'>
               <div className='col-md-6'>
                 <LoaderContainer loading={this.props.loading}>
-                  <form onSubmit={preventDefault(() => restoreFunc({restore: this.props.restore, mail: this.refs.mail.value}))} className='p-signin'>
+                  <form onSubmit={preventDefault(() => restoreFunc({ restore: this.props.restore, mail: this.refs.mail.value }))} className='p-signin'>
                     <div className='form-group'>
                       <label htmlFor='mail'>E-mail</label>
                       <input id='mail' className='form-control' type='mail' ref='mail'/>

@@ -1,12 +1,12 @@
 import React from 'react';
-import {Link} from 'react-router';
-import {connect} from 'react-redux';
-import {resetPassword, resetPasswordValidationFail} from '../redux/action-creators';
-import {preventDefault} from '../utils';
+import { Link } from 'react-router';
+import { connect } from 'react-redux';
+import { resetPassword, resetPasswordValidationFail } from '../redux/action-creators';
+import { preventDefault } from '../utils';
 import LoaderContainer from './loader-container';
 
 function mapStateToProps(state, ownProps) {
-  return {...state.resetPassForm, token: ownProps.location.query.token};
+  return { ...state.resetPassForm, token: ownProps.location.query.token };
 }
 
 function mapDispatchToProps(dispatch) {

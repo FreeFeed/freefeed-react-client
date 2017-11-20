@@ -1,6 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {Link} from 'react-router';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import _ from 'lodash';
 
 import SubsList from './subs-list';
@@ -30,8 +30,8 @@ function selectState(state, ownProps) {
   const subscribersUsernames = state.usernameSubscribers.payload && state.usernameSubscribers.payload.map((user) => user.username);
 
   const listSections = [
-    {title: 'Users', users: []},
-    {title: 'Groups', users: []}
+    { title: 'Users', users: [] },
+    { title: 'Groups', users: [] }
   ];
 
   _.sortBy(state.usernameSubscriptions.payload, 'username')

@@ -1,4 +1,4 @@
-import React, {PropTypes as pt} from 'react';
+import React, { PropTypes as pt } from 'react';
 import classnames from 'classnames';
 import ImageAttachment from './post-attachment-image';
 import ImageAttachmentsLightbox from './post-attachment-image-lightbox';
@@ -26,7 +26,7 @@ export default class ImageAttachmentsContainer extends React.Component {
   lightbox = null;
 
   getItemWidths() {
-    return this.props.attachments.map(({imageSizes: {t, o}}) => t ? t.w : (o ? o.w : 0)).map((w) => w + bordersSize + spaceSize);
+    return this.props.attachments.map(({ imageSizes: { t, o } }) => t ? t.w : (o ? o.w : 0)).map((w) => w + bordersSize + spaceSize);
   }
 
   getContentWidth() {
@@ -44,7 +44,7 @@ export default class ImageAttachmentsContainer extends React.Component {
   };
 
   toggleFolding = () => {
-    this.setState({isFolded: !this.state.isFolded});
+    this.setState({ isFolded: !this.state.isFolded });
   };
 
   handleClickThumbnail(index) {

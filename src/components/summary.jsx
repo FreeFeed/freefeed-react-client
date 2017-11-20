@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
-import {joinPostData, postActions} from './select-utils';
+import { joinPostData, postActions } from './select-utils';
 import Feed from './feed';
 
 class Summary extends React.Component {

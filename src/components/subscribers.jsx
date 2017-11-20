@@ -1,9 +1,9 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {Link} from 'react-router';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import _ from 'lodash';
 
-import {getUserInfo} from '../redux/action-creators';
+import { getUserInfo } from '../redux/action-creators';
 import SubsList from './subs-list';
 
 class SubscribersHandler extends React.Component {
@@ -54,8 +54,8 @@ function selectState(state, ownProps) {
   const subscriptionsUsernames = state.usernameSubscriptions.payload && state.usernameSubscriptions.payload.map((user) => user.username);
 
   const listSections = [
-    {title: thisIsGroup ? 'Members' : null, users: []},
-    {title: 'Admins', users: []}
+    { title: thisIsGroup ? 'Members' : null, users: [] },
+    { title: 'Admins', users: [] }
   ];
 
   _.sortBy(state.usernameSubscribers.payload, 'username')

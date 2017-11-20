@@ -1,14 +1,14 @@
 import test from 'tape';
 
-import {postsViewState, users, posts} from '../../../src/redux/reducers';
-import {REALTIME_COMMENT_NEW, REALTIME_COMMENT_DESTROY, REALTIME_LIKE_NEW, REALTIME_POST_NEW} from '../../../src/redux/action-types';
+import { postsViewState, users, posts } from '../../../src/redux/reducers';
+import { REALTIME_COMMENT_NEW, REALTIME_COMMENT_DESTROY, REALTIME_LIKE_NEW, REALTIME_POST_NEW } from '../../../src/redux/action-types';
 
 const testPost = {
   id: 1,
   omittedComments: 1,
 };
 
-const postsViewStateBefore = {[testPost.id]: testPost};
+const postsViewStateBefore = { [testPost.id]: testPost };
 
 const newRealtimeCommentAction = {
   type: REALTIME_COMMENT_NEW,
@@ -45,12 +45,12 @@ const testUser = {
   name: 'Ururu'
 };
 
-const usersBefore = {[testUser.id]: testUser};
+const usersBefore = { [testUser.id]: testUser };
 
 test('new post doesn\'t add user if presented', (t) => {
   const result = users(usersBefore, {
     type: REALTIME_POST_NEW,
-    users: [{id: 1}],
+    users: [{ id: 1 }],
   });
 
   t.equal(result[testUser.id], testUser);
@@ -61,7 +61,7 @@ test('new post doesn\'t add user if presented', (t) => {
 test('new comment doesn\'t add user if presented', (t) => {
   const result = users(usersBefore, {
     type: REALTIME_COMMENT_NEW,
-    users: [{id: 1}],
+    users: [{ id: 1 }],
   });
 
   t.equal(result[testUser.id], testUser);
@@ -72,7 +72,7 @@ test('new comment doesn\'t add user if presented', (t) => {
 test('new like doesn\'t add user if presented', (t) => {
   const result = users(usersBefore, {
     type: REALTIME_LIKE_NEW,
-    users: [{id: 1}],
+    users: [{ id: 1 }],
   });
 
   t.equal(result[testUser.id], testUser);
@@ -178,7 +178,7 @@ test('new comment with post attached adds postViewState for the post', (t) => {
   const newCommentWithPost = {
     type: REALTIME_COMMENT_NEW,
     comment: newTestComment,
-    post: {posts: newPost}
+    post: { posts: newPost }
   };
 
   const postsViewStateBefore = {};
@@ -201,7 +201,7 @@ test('new comment with post attached adds post to the posts', (t) => {
   const newCommentWithPost = {
     type: REALTIME_COMMENT_NEW,
     comment: newTestComment,
-    post: {posts: newPost}
+    post: { posts: newPost }
   };
 
   const postsBefore = {};
@@ -220,9 +220,9 @@ test('new like with post attached adds postViewState for the post', (t) => {
 
   const newLikeWithPost = {
     type: REALTIME_LIKE_NEW,
-    users: [{id:'1'}],
+    users: [{ id:'1' }],
     postId: newPost.id,
-    post: {posts: newPost}
+    post: { posts: newPost }
   };
 
   const postsViewStateBefore = {};
@@ -240,9 +240,9 @@ test('new like with post attached adds post to the posts', (t) => {
   };
   const newLikeWithPost = {
     type: REALTIME_LIKE_NEW,
-    users: [{id:'1'}],
+    users: [{ id:'1' }],
     postId: newPost.id,
-    post: {posts: newPost}
+    post: { posts: newPost }
   };
 
   const postsBefore = {};

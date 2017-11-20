@@ -1,5 +1,5 @@
-import {compose, createStore, applyMiddleware, combineReducers} from 'redux';
-import {routerReducer} from 'react-router-redux';
+import { compose, createStore, applyMiddleware, combineReducers } from 'redux';
+import { routerReducer } from 'react-router-redux';
 
 import {
   apiMiddleware,
@@ -40,7 +40,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const storeEnhancer = composeEnhancers(...enhancers);
 
 const createStoreWithMiddleware = storeEnhancer(createStore);
-const reducer = combineReducers({...reducers, routing: routerReducer});
+const reducer = combineReducers({ ...reducers, routing: routerReducer });
 
 export default function configureStore(initialState) {
   return createStoreWithMiddleware(reducer, initialState);

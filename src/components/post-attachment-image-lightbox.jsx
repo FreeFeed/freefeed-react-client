@@ -1,5 +1,5 @@
-import React, {PropTypes as pt} from 'react';
-import {PhotoSwipe} from 'react-photoswipe';
+import React, { PropTypes as pt } from 'react';
+import { PhotoSwipe } from 'react-photoswipe';
 import Mousetrap from 'mousetrap';
 
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
@@ -74,7 +74,7 @@ export default class ImageAttachmentsLightbox extends React.Component {
   };
 
   whenClosed = () => {
-    this.setState({isOpened: false});
+    this.setState({ isOpened: false });
 
     Mousetrap.unbind(prevHotKeys);
     Mousetrap.unbind(nextHotKeys);

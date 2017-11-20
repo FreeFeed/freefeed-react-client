@@ -1,10 +1,10 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {Link} from 'react-router';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
 
-import {createPost, resetPostCreateForm, expandSendTo, toggleHiddenPosts} from '../redux/action-creators';
-import {pluralForm} from '../utils';
-import {joinPostData, joinCreatePostData, postActions} from './select-utils';
+import { createPost, resetPostCreateForm, expandSendTo, toggleHiddenPosts } from '../redux/action-creators';
+import { pluralForm } from '../utils';
+import { joinPostData, joinCreatePostData, postActions } from './select-utils';
 import CreatePost from './create-post';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
@@ -75,7 +75,7 @@ function selectState(state) {
   const hiddenEntries = state.feedViewState.hiddenEntries.map(joinPostData(state));
   const { isHiddenRevealed } = state.feedViewState;
   const createPostForm = joinCreatePostData(state);
-  const sendTo = {...state.sendTo, defaultFeed: user.username};
+  const sendTo = { ...state.sendTo, defaultFeed: user.username };
   const feedIsLoading = state.routeLoadingState;
 
   return {

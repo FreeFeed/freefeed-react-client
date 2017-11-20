@@ -29,7 +29,7 @@ export default class CommentLikes extends React.Component {
     if (this.props.omitLikes) {
       return false;
     }
-    const classNames = classnames("comment-likes", {"has-my-like": this.props.hasOwnLike, "liked": this.props.likes > 0, "non-likable": this.props.forbidLiking});
+    const classNames = classnames("comment-likes", { "has-my-like": this.props.hasOwnLike, "liked": this.props.likes > 0, "non-likable": this.props.forbidLiking });
     return <div className={classNames}>
       <div className="comment-count" onClick={this.toggleLikeList}>
         {this.props.likes > 0 ? this.props.likes : ""}
@@ -62,7 +62,7 @@ export default class CommentLikes extends React.Component {
   startTouch = (e) => {
     e.preventDefault();
     this.popupTimeout = setTimeout(() => {
-      this.setState({showActionsPanel: true});
+      this.setState({ showActionsPanel: true });
       this.clearTouchTimeout();
     }, 300);
   };
@@ -82,7 +82,7 @@ export default class CommentLikes extends React.Component {
   startMouseDown = () => {
     if (!this.state.showActionsPanel) {
       this.popupTimeout = setTimeout(() => {
-        this.setState({showActionsPanel: true});
+        this.setState({ showActionsPanel: true });
         this.clearTouchTimeout();
       }, 300);
     }
@@ -120,7 +120,7 @@ export default class CommentLikes extends React.Component {
                     }
                   </div>
                 </div>
-                <div className='mention-actions' style={{transform:`translateY(${this.state.showActionButtons ? "0%" : "100%"})`}}>
+                <div className='mention-actions' style={{ transform:`translateY(${this.state.showActionButtons ? "0%" : "100%"})` }}>
                   {this.props.forbidLiking
                     ? <div className="mention-action non-likable">
                       <i className="fa fa-heart-o" aria-hidden="true"/>
@@ -152,7 +152,7 @@ export default class CommentLikes extends React.Component {
   toggleLike = () => {
     this.clearTouchTimeout();
     if (!this.props.forbidLiking) {
-      this.setState({liked: !this.props.hasOwnLike});
+      this.setState({ liked: !this.props.hasOwnLike });
       this.props.toggleLike();
     }
   };
@@ -160,7 +160,7 @@ export default class CommentLikes extends React.Component {
     e.stopPropagation();
     this.clearTouchTimeout();
     const likeListVisible = !this.state.likeListVisible;
-    this.setState({likeListVisible});
+    this.setState({ likeListVisible });
     if (likeListVisible) {
       window.addEventListener("click", this.toggleLikeList, true);
     } else {
@@ -171,10 +171,10 @@ export default class CommentLikes extends React.Component {
     }
   };
   toggleActionsPanel = () => {
-    this.setState({showActionsPanel: !this.state.showActionsPanel, showActionButtons: true});
+    this.setState({ showActionsPanel: !this.state.showActionsPanel, showActionButtons: true });
   };
   renderLikesList = () => {
-    const {loading, likes, error} = this.props.likesList;
+    const { loading, likes, error } = this.props.likesList;
     if (loading) {
       return <div className="comment-likes-list loading">Loading...</div>;
     }
@@ -196,7 +196,7 @@ export default class CommentLikes extends React.Component {
     if (this.state.showActionButtons) {
       this.toggleActionsPanel();
     } else {
-      this.setState({showActionButtons: true});
+      this.setState({ showActionButtons: true });
     }
   };
   getCommentLikes = () => {
@@ -205,12 +205,12 @@ export default class CommentLikes extends React.Component {
     }
   };
   renderLikesLabel = () => {
-    const {likes, hasOwnLike, forbidLiking, likesList} = this.props;
+    const { likes, hasOwnLike, forbidLiking, likesList } = this.props;
     if (likes === 0) {
       return <i>No one has liked this comment yet. {!forbidLiking && "You will be the first to like it!"}</i>;
     }
     setTimeout(this.getCommentLikes, 0);
-    const {loading, likes: likeUsers} = likesList;
+    const { loading, likes: likeUsers } = likesList;
     if (loading) {
       const likesNumber = hasOwnLike ? likes - 1 : likes;
       return <span>{hasOwnLike && `You${likesNumber > 0 ? " and " : ""}`}{likesNumber > 0 &&
@@ -226,7 +226,7 @@ export default class CommentLikes extends React.Component {
 }
 
 function renderMobileLikesList(likesList) {
-  const {loading, likes, error} = likesList;
+  const { loading, likes, error } = likesList;
   if (loading) {
     return <div className="comment-likes-list loading">Loading...</div>;
   }

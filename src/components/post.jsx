@@ -1,13 +1,13 @@
 import React from 'react';
-import {Link} from 'react-router';
+import { Link } from 'react-router';
 import classnames from 'classnames';
 import _ from 'lodash';
 import Textarea from 'react-textarea-autosize';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import {getFirstLinkToEmbed} from '../utils';
-import {READMORE_STYLE_COMPACT} from '../utils/frontend-preferences-options';
-import {postReadmoreConfig} from '../utils/readmore-config';
+import { getFirstLinkToEmbed } from '../utils';
+import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
+import { postReadmoreConfig } from '../utils/readmore-config';
 
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
@@ -53,7 +53,7 @@ export default class Post extends React.Component {
   removeAttachment = (attachmentId) => this.props.removeAttachment(this.props.id, attachmentId);
 
   changeAttachmentQueue= (change) => () => {
-    this.setState({attachmentQueueLength: this.state.attachmentQueueLength + change});
+    this.setState({ attachmentQueueLength: this.state.attachmentQueueLength + change });
   };
 
   render() {
@@ -68,7 +68,7 @@ export default class Post extends React.Component {
     const saveEditingPost = () => {
       if (!props.isSaving) {
         const attachmentIds = props.attachments.map((item) => item.id) || [];
-        props.saveEditingPost(props.id, {body: editingPostText, attachments: attachmentIds});
+        props.saveEditingPost(props.id, { body: editingPostText, attachments: attachmentIds });
       }
     };
     const deletePost = () => props.deletePost(props.id);
@@ -205,7 +205,7 @@ export default class Post extends React.Component {
     }
 
     // "Like" / "Un-like"
-    const didILikePost = _.find(props.usersLikedPost, {id: props.user.id});
+    const didILikePost = _.find(props.usersLikedPost, { id: props.user.id });
     const likeLink = (amIAuthenticated && !props.isEditable ? (
       <span>
         {' - '}

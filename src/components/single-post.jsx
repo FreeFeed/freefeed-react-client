@@ -1,12 +1,12 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {joinPostData, postActions} from './select-utils';
+import { connect } from 'react-redux';
+import { joinPostData, postActions } from './select-utils';
 
-import Post, {canonicalURI} from './post';
+import Post, { canonicalURI } from './post';
 
 class SinglePostHandler extends React.Component {
   componentWillReceiveProps(nextProps) {
-    const {post, router} = nextProps;
+    const { post, router } = nextProps;
     if (!post) {
       return;
     }

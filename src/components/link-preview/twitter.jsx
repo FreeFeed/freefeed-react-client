@@ -26,9 +26,9 @@ class TwitterPreview extends React.Component {
       <div
         className="tweet-preview link-preview-content"
         data-url={this.props.url}
-        style={{height: `${heightCache.get(this.props.url, 0)}px`}}
+        style={{ height: `${heightCache.get(this.props.url, 0)}px` }}
       >
-        <div style={{overflow: 'hidden'}} />
+        <div style={{ overflow: 'hidden' }} />
       </div>
     );
   }

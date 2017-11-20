@@ -1,6 +1,6 @@
 import React from 'react';
-import {Link} from 'react-router';
-import {connect} from 'react-redux';
+import { Link } from 'react-router';
+import { connect } from 'react-redux';
 
 
 import screenshot from '../../assets/images/screenshot.png';
@@ -19,7 +19,7 @@ const About = ({ authenticated }) => (
           you already have an account.</p>
       ) : false}
 
-      <p><img src={screenshot} width="450" height="431" style={{border: '1px solid #ccc'}}/></p>
+      <p><img src={screenshot} width="450" height="431" style={{ border: '1px solid #ccc' }}/></p>
 
       <h3>Why FreeFeed?</h3>
 

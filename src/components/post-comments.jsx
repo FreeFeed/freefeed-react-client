@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {StickyContainer, Sticky} from 'react-sticky';
+import { StickyContainer, Sticky } from 'react-sticky';
 import _ from 'lodash';
 
-import {preventDefault} from '../utils';
+import { preventDefault } from '../utils';
 import PostComment from './post-comment';
 import MoreCommentsWrapper from './more-comments-wrapper';
 
@@ -21,7 +21,7 @@ export default class PostComments extends React.Component {
   }
 
   openAnsweringComment = (answerText) => {
-    const {post, toggleCommenting, updateCommentingText} = this.props;
+    const { post, toggleCommenting, updateCommentingText } = this.props;
 
     if (!post.isCommenting && !post.isSinglePost) {
       toggleCommenting(post.id);
@@ -100,11 +100,11 @@ export default class PostComments extends React.Component {
     );
   }
 
-  fold = () => this.setState({folded: true});
+  fold = () => this.setState({ folded: true });
 
   showMoreComments = () => {
     if (this.state.folded) {
-      this.setState({folded: false});
+      this.setState({ folded: false });
     } else {
       this.props.showMoreComments(this.props.post.id);
     }
@@ -112,7 +112,7 @@ export default class PostComments extends React.Component {
 
   componentWillReceiveProps(newProps) {
     if (this.state.folded && newProps.post.omittedComments > 0) {
-      this.setState({folded: false});
+      this.setState({ folded: false });
     }
   }
 
@@ -127,8 +127,8 @@ export default class PostComments extends React.Component {
   }
 
   renderMiddle() {
-    const {post, comments, entryUrl, isSinglePost} = this.props;
-    const {folded} = this.state;
+    const { post, comments, entryUrl, isSinglePost } = this.props;
+    const { folded } = this.state;
 
     const totalComments = comments.length + post.omittedComments;
     const foldedCount = folded ? comments.length - 2 : post.omittedComments;
@@ -166,7 +166,7 @@ export default class PostComments extends React.Component {
   }
 
   render() {
-    const {post, comments} = this.props;
+    const { post, comments } = this.props;
     const totalComments = comments.length + post.omittedComments;
     const first = withBackwardNumber(comments[0], totalComments);
     const last = withBackwardNumber(comments.length > 1 && comments[comments.length - 1], 1);

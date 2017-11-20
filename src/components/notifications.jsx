@@ -1,12 +1,12 @@
 import React from "react";
-import {connect} from "react-redux";
-import {Link} from "react-router";
+import { connect } from "react-redux";
+import { Link } from "react-router";
 import throbber16 from '../../assets/images/throbber-16.gif';
 import Linkify from "./linkify";
 import TimeDisplay from "./time-display";
 import PaginatedView from "./paginated-view";
 
-const getAuthorName = ({postAuthor, createdUser, group}) => {
+const getAuthorName = ({ postAuthor, createdUser, group }) => {
   if (group && group.username) {
     return group.username;
   }
@@ -16,8 +16,8 @@ const getAuthorName = ({postAuthor, createdUser, group}) => {
   return createdUser.username;
 };
 
-const generatePostUrl = ({...event, post_id}) => `/${getAuthorName(event)}/${post_id}`;
-const generateCommentUrl = ({...event, post_id, comment_id}) => `/${getAuthorName(event)}/${post_id}#comment-${comment_id}`;
+const generatePostUrl = ({ ...event, post_id }) => `/${getAuthorName(event)}/${post_id}`;
+const generateCommentUrl = ({ ...event, post_id, comment_id }) => `/${getAuthorName(event)}/${post_id}#comment-${comment_id}`;
 const postLink = (event) => <Link to={generatePostUrl(event)}>post</Link>;
 const directPostLink = (event) => <Link to={generatePostUrl(event)}>direct message</Link>;
 const commentLink = (event, text = 'comment') => <Link to={generateCommentUrl(event)}>{text}</Link>;
@@ -84,7 +84,7 @@ const notificationClasses = {
 
 const nop = () => false;
 
-const Notification = ({event_type, ...props}) => {
+const Notification = ({ event_type, ...props }) => {
   return (
     <div key={props.id} className={`single-notification ${notificationClasses[event_type] || ""}`}>
       {(notificationTemplates[event_type] || nop)(props)}
@@ -104,12 +104,12 @@ const Notifications = (props) => (
     </div>
     <div className="filter">
       <div>Show: </div>
-      <Link className={!props.location.query.filter ? "active" : ""} to={{pathname: props.location.pathname, query: {}}}>Everything</Link>
-      <Link className={isFilterActive("mentions", props.location.query.filter) ? "active" : ""} to={{pathname: props.location.pathname, query: {filter:"mentions"}}}>Mentions</Link>
-      <Link className={isFilterActive("subscriptions", props.location.query.filter) ? "active" : ""} to={{pathname: props.location.pathname, query: {filter:"subscriptions"}}}>Subscriptions</Link>
-      <Link className={isFilterActive("groups", props.location.query.filter) ? "active" : ""} to={{pathname: props.location.pathname, query: {filter: "groups"}}}>Groups</Link>
-      <Link className={isFilterActive("directs", props.location.query.filter) ? "active" : ""} to={{pathname: props.location.pathname, query: {filter: "directs"}}}>Direct messages</Link>
-      <Link className={isFilterActive("bans", props.location.query.filter) ? "active" : ""} to={{pathname: props.location.pathname, query: {filter: "bans"}}}>Bans</Link>
+      <Link className={!props.location.query.filter ? "active" : ""} to={{ pathname: props.location.pathname, query: {} }}>Everything</Link>
+      <Link className={isFilterActive("mentions", props.location.query.filter) ? "active" : ""} to={{ pathname: props.location.pathname, query: { filter:"mentions" } }}>Mentions</Link>
+      <Link className={isFilterActive("subscriptions", props.location.query.filter) ? "active" : ""} to={{ pathname: props.location.pathname, query: { filter:"subscriptions" } }}>Subscriptions</Link>
+      <Link className={isFilterActive("groups", props.location.query.filter) ? "active" : ""} to={{ pathname: props.location.pathname, query: { filter: "groups" } }}>Groups</Link>
+      <Link className={isFilterActive("directs", props.location.query.filter) ? "active" : ""} to={{ pathname: props.location.pathname, query: { filter: "directs" } }}>Direct messages</Link>
+      <Link className={isFilterActive("bans", props.location.query.filter) ? "active" : ""} to={{ pathname: props.location.pathname, query: { filter: "bans" } }}>Bans</Link>
     </div>
     {props.authenticated
       ? <PaginatedView routes={props.routes} location={props.location}>

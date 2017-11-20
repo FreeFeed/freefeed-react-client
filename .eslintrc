@@ -59,6 +59,7 @@
     "no-useless-computed-key": "error",
     "no-var": "error",
     "no-warning-comments": 1,
+    "babel/object-curly-spacing": [2, "always"],
     "object-shorthand": 2,
     "padded-blocks": [2, "never"],
     "prefer-arrow-callback": [2, { "allowNamedFunctions": true }],

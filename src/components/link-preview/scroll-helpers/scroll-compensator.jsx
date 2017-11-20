@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {ELEMENT_RESIZE_EVENT} from './events';
+import { ELEMENT_RESIZE_EVENT } from './events';
 
 export default class ScrollCompensator extends React.Component {
   root = null;

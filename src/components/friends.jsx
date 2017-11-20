@@ -1,16 +1,16 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import {pluralForm} from '../utils';
+import { pluralForm } from '../utils';
 
-import {acceptUserRequest, rejectUserRequest,
-  revokeSentRequest} from '../redux/action-creators';
-import {tileUserListFactory, PLAIN, WITH_REQUEST_HANDLES, WITH_REVOKE_SENT_REQUEST} from './tile-user-list';
+import { acceptUserRequest, rejectUserRequest,
+  revokeSentRequest } from '../redux/action-creators';
+import { tileUserListFactory, PLAIN, WITH_REQUEST_HANDLES, WITH_REVOKE_SENT_REQUEST } from './tile-user-list';
 
-const TileList = tileUserListFactory({type: PLAIN, displayQuantity: true});
-const TileListWithAcceptAndReject = tileUserListFactory({type: WITH_REQUEST_HANDLES, displayQuantity: true});
-const TileListWithRevoke = tileUserListFactory({type: WITH_REVOKE_SENT_REQUEST, displayQuantity: true});
+const TileList = tileUserListFactory({ type: PLAIN, displayQuantity: true });
+const TileListWithAcceptAndReject = tileUserListFactory({ type: WITH_REQUEST_HANDLES, displayQuantity: true });
+const TileListWithRevoke = tileUserListFactory({ type: WITH_REVOKE_SENT_REQUEST, displayQuantity: true });
 
 const FriendsHandler = (props) => {
   const feedRequestsHeader = `Subscription ${pluralForm(props.feedRequests.length, 'request', null, 'w')}`;

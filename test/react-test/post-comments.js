@@ -5,10 +5,10 @@ import { createRenderer as createShallowRenderer } from 'react-addons-test-utils
 import PostComments from '../../src/components/post-comments';
 
 const renderComments = (comments, omittedComments = 0, isCommenting = false, currentUser = {}) => {
-  const post = {omittedComments, isCommenting, createdBy: {username:''}, user: currentUser};
+  const post = { omittedComments, isCommenting, createdBy: { username:'' }, user: currentUser };
 
   const renderer = createShallowRenderer();
-  renderer.render(<PostComments {...{comments, post}}/>);
+  renderer.render(<PostComments {...{ comments, post }}/>);
   return renderer.getRenderOutput().props.children;
 };
 

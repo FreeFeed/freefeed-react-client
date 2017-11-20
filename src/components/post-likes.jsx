@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {preventDefault} from '../utils';
+import { preventDefault } from '../utils';
 import UserName from './user-name';
 
 const renderLike = (item, i, items) => (
@@ -21,7 +21,7 @@ const renderLike = (item, i, items) => (
   </li>
 );
 
-export default ({likes, showMoreLikes, post}) => {
+export default ({ likes, showMoreLikes, post }) => {
   if (!likes.length) {
     return <div/>;
   }

@@ -1,10 +1,10 @@
-import {parse as urlParse} from 'url';
-import {parse as queryParse} from 'querystring';
+import { parse as urlParse } from 'url';
+import { parse as queryParse } from 'querystring';
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import ScrollSafe from './scroll-helpers/scroll-safe';
-import {contentResized} from './scroll-helpers/events';
+import { contentResized } from './scroll-helpers/events';
 import cachedFetch from './cached-fetch';
 import * as aspectRatio from './scroll-helpers/size-cache';
 
@@ -34,9 +34,9 @@ class VideoPreview extends React.Component {
     player: false,
   };
 
-  loadPlayer = () => this.setState({player: !this.state.player});
+  loadPlayer = () => this.setState({ player: !this.state.player });
 
-  loadInfo = async () => this.setState({info: await getVideoInfo(this.props.url)});
+  loadInfo = async () => this.setState({ info: await getVideoInfo(this.props.url) });
 
   constructor(props) {
     super(props);
@@ -45,7 +45,7 @@ class VideoPreview extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.feedIsLoading && !nextProps.feedIsLoading) {
-      this.setState({player: false});
+      this.setState({ player: false });
     }
     if (this.props.url !== nextProps.url) {
       this.setState({
@@ -61,7 +61,7 @@ class VideoPreview extends React.Component {
   }
 
   renderPlayer() {
-    const {info} = this.state;
+    const { info } = this.state;
     if (info.playerURL) {
       return <iframe src={info.playerURL} frameBorder="0" allowFullScreen={true} />;
     } else if (info.videoURL) {
@@ -71,14 +71,14 @@ class VideoPreview extends React.Component {
   }
 
   render() {
-    const {url} = this.props;
-    const {player, info} = this.state;
+    const { url } = this.props;
+    const { player, info } = this.state;
 
     if (info && ('error' in info)) {
       return <div className="video-preview link-preview-content load-error">{info.error}</div>;
     }
 
-    const previewStyle = info ? {backgroundImage: `url(${info.previewURL})`} : {};
+    const previewStyle = info ? { backgroundImage: `url(${info.previewURL})` } : {};
 
     // video will have the same area as 16x9 450px-width rectangle
     const r = info ? info.aspectRatio : aspectRatio.get(url, getDefaultAspectRatio(url));
@@ -86,7 +86,7 @@ class VideoPreview extends React.Component {
     previewStyle.paddingBottom = `${100 * r}%`;
 
     return (
-      <div className="video-preview link-preview-content" style={{maxWidth: width}}>
+      <div className="video-preview link-preview-content" style={{ maxWidth: width }}>
         <div className="static-preview" style={previewStyle} onClick={this.loadPlayer}>
           {player ? (
             this.renderPlayer()
@@ -108,7 +108,7 @@ function select(state) {
   };
 }
 
-export default ScrollSafe(connect(select)(VideoPreview), {foldable: false, trackResize: false});
+export default ScrollSafe(connect(select)(VideoPreview), { foldable: false, trackResize: false });
 
 // Helpers
 
@@ -145,10 +145,10 @@ async function getVideoInfo(url) {
     case T_YOUTUBE_VIDEO: {
       const data = await cachedFetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`);
       if (data.error) {
-        return {error: data.error};
+        return { error: data.error };
       }
       if (!('title' in data)) {
-        return {error: data.error ? data.error : 'error loading data'};
+        return { error: data.error ? data.error : 'error loading data' };
       }
       return {
         byline: `${data.title} by ${data.author_name}`,
@@ -160,12 +160,12 @@ async function getVideoInfo(url) {
     case T_VIMEO_VIDEO: {
       const data = await cachedFetch(`https://vimeo.com/api/oembed.json?url=${encodeURIComponent(url)}`);
       if (data.error) {
-        return {error: data.error};
+        return { error: data.error };
       }
       if (!('title' in data)) {
-        return {error: data.error ? data.error : 'error loading data'};
+        return { error: data.error ? data.error : 'error loading data' };
       }
-      const {hash} = urlParse(url);
+      const { hash } = urlParse(url);
       return {
         byline: `${data.title} by ${data.author_name}`,
         aspectRatio: aspectRatio.set(url, data.height / data.width),
@@ -176,10 +176,10 @@ async function getVideoInfo(url) {
     case T_COUB_VIDEO: {
       const data = await cachedFetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`);
       if (data.error) {
-        return {error: data.error};
+        return { error: data.error };
       }
       if (!('title' in data)) {
-        return {error: data.error ? data.error : 'error loading data'};
+        return { error: data.error ? data.error : 'error loading data' };
       }
       return {
         byline: `${data.title} by ${data.author_name}`,
@@ -200,7 +200,7 @@ async function getVideoInfo(url) {
           videoURL: `https://i.imgur.com/${id}.mp4`,
         };
       } catch (e) {
-        return {error: e.message};
+        return { error: e.message };
       }
     }
     case T_GFYCAT: {
@@ -215,11 +215,11 @@ async function getVideoInfo(url) {
           playerURL: `https://gfycat.com/ifr/${id}`,
         };
       } catch (e) {
-        return {error: e.message};
+        return { error: e.message };
       }
     }
   }
-  return {error: 'unknown video type'};
+  return { error: 'unknown video type' };
 }
 
 /**
@@ -228,12 +228,12 @@ async function getVideoInfo(url) {
  * @return {Number}
  */
 function youtubeStartTime(url) {
-  const {hash, query: {t}} = urlParse(url, true);
+  const { hash, query: { t } } = urlParse(url, true);
   if (t) {
     return ytSeconds(t);
   }
   if (hash && /t=/.test(hash)) {
-    const {t} = queryParse(hash.substring(1));
+    const { t } = queryParse(hash.substring(1));
     if (t) {
       return ytSeconds(t);
     }

@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {preventDefault} from "../utils";
+import { preventDefault } from "../utils";
 import throbber16 from "../../assets/images/throbber-16.gif";
 
 export default class UserNotificationsForm extends React.Component {
@@ -55,12 +55,12 @@ export default class UserNotificationsForm extends React.Component {
   }
 
   toggleNotifications = (e) => {
-    this.setState({sendNotificationsDigest: e.target.checked});
+    this.setState({ sendNotificationsDigest: e.target.checked });
   };
 
   savePreference = () => {
     if (this.props.status !== "loading") {
-      this.props.updateUserNotificationPreferences(this.props.userId, {sendNotificationsDigest: this.state.sendNotificationsDigest});
+      this.props.updateUserNotificationPreferences(this.props.userId, { sendNotificationsDigest: this.state.sendNotificationsDigest });
     }
   };
 }

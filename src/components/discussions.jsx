@@ -1,8 +1,8 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {createPost, resetPostCreateForm, expandSendTo} from '../redux/action-creators';
+import { connect } from 'react-redux';
+import { createPost, resetPostCreateForm, expandSendTo } from '../redux/action-creators';
 import formatInvitation from '../utils/format-invitation';
-import {joinPostData, joinCreatePostData, postActions} from './select-utils';
+import { joinPostData, joinCreatePostData, postActions } from './select-utils';
 
 import CreatePost from './create-post';
 import Feed from './feed';
@@ -42,7 +42,7 @@ function selectState(state) {
   const createPostForm = joinCreatePostData(state);
   const defaultFeed = state.routing.locationBeforeTransitions.query.to || user.username;
   const invitation = formatInvitation(state.routing.locationBeforeTransitions.query.invite);
-  const sendTo = {...state.sendTo, defaultFeed, invitation};
+  const sendTo = { ...state.sendTo, defaultFeed, invitation };
   if (invitation) {
     sendTo.expanded = true;
   }

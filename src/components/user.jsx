@@ -1,9 +1,9 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
-import {createPost, resetPostCreateForm, expandSendTo} from '../redux/action-creators';
-import {getCurrentRouteName} from '../utils';
-import {joinPostData, joinCreatePostData, postActions, userActions} from './select-utils';
+import { createPost, resetPostCreateForm, expandSendTo } from '../redux/action-creators';
+import { getCurrentRouteName } from '../utils';
+import { joinPostData, joinCreatePostData, postActions, userActions } from './select-utils';
 import Breadcrumbs from './breadcrumbs';
 import UserProfile from './user-profile';
 import UserFeed from './user-feed';
@@ -78,7 +78,7 @@ function selectState(state, ownProps) {
   statusExtension.canIPostHere = statusExtension.isUserFound &&
     ((statusExtension.isItMe && isItPostsPage) || (foundUser.type === 'group' && canIPostToGroup));
 
-  const viewUser = {...(foundUser), ...statusExtension};
+  const viewUser = { ...(foundUser), ...statusExtension };
 
   const breadcrumbs = {
     shouldShowBreadcrumbs: !isItPostsPage,
@@ -86,7 +86,7 @@ function selectState(state, ownProps) {
     breadcrumb: currentRouteName.replace('user', '')
   };
 
-  const sendTo = {...state.sendTo, defaultFeed: (foundUser ? foundUser.username : null)};
+  const sendTo = { ...state.sendTo, defaultFeed: (foundUser ? foundUser.username : null) };
 
   const showSummaryHeader = (currentRouteName === 'userSummary');
 

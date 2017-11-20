@@ -1,17 +1,17 @@
 import React from 'react';
-import {IndexLink, Link} from 'react-router';
-import {connect} from 'react-redux';
+import { IndexLink, Link } from 'react-router';
+import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
 
-import {unauthenticated, home} from '../redux/action-creators';
-import {getCurrentRouteName} from '../utils';
+import { unauthenticated, home } from '../redux/action-creators';
+import { getCurrentRouteName } from '../utils';
 import Footer from './footer';
 import Sidebar from './sidebar';
 import LoaderContainer from './loader-container';
 import SearchForm from './search-form';
 
-const InternalLayout = ({authenticated, children}) => (
+const InternalLayout = ({ authenticated, children }) => (
   <div className={authenticated ? 'col-md-9' : 'col-md-12'}>
     <div className='content'>
       {children}

@@ -1,11 +1,11 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import PaginatedView from './paginated-view';
 import Feed from './feed';
 
 class UserFeed extends React.Component {
-  unblock = () => this.props.userActions.unban({username: this.props.viewUser.username, id: this.props.viewUser.id});
+  unblock = () => this.props.userActions.unban({ username: this.props.viewUser.username, id: this.props.viewUser.id });
 
   render() {
     if (this.props.feedIsLoading) {
@@ -13,7 +13,7 @@ class UserFeed extends React.Component {
       return false;
     }
 
-    const {viewUser, visibleEntries, authenticated, location: {query}} = this.props;
+    const { viewUser, visibleEntries, authenticated, location: { query } } = this.props;
     const isBlocked = viewUser.blocked;
     const isPrivate = viewUser.isPrivate === '1' && !viewUser.subscribed && !viewUser.isItMe;
     const amIBlocked = viewUser.isPrivate === '0' && viewUser.statistics.posts !== '0' && visibleEntries.length === 0 && (!('offset' in query) || query.offset === '0');

@@ -1,12 +1,12 @@
 import io from 'socket.io-client';
 
 import config from '../config';
-import {getToken} from './auth';
+import { getToken } from './auth';
 
 const apiConfig = config.api;
 
 const dummyPost = {
-  getBoundingClientRect: () => ({top:0})
+  getBoundingClientRect: () => ({ top:0 })
 };
 
 const scrollCompensator = (dispatchAction) => (...actionParams) => {
@@ -60,7 +60,7 @@ const bindSocketEventHandlers = (socket) => (eventHandlers) => {
   Object.keys(eventHandlers).forEach((event) => socket.on(event, scrollCompensator(eventHandlers[event])));
 };
 
-const openSocket = () => io.connect(`${apiConfig.host}/`, {query: `token=${getToken()}`});
+const openSocket = () => io.connect(`${apiConfig.host}/`, { query: `token=${getToken()}` });
 
 export function init(eventHandlers) {
   const socket = openSocket();

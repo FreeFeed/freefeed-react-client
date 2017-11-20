@@ -1,9 +1,9 @@
 import React from 'react';
-import {Link} from 'react-router';
+import { Link } from 'react-router';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import {confirmFirst} from '../utils';
+import { confirmFirst } from '../utils';
 import UserName from './user-name';
 
 const renderUsers = (type) => (user) => {

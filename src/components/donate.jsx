@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router';
+import { Link } from 'react-router';
 
 const Donate = () => (
   <div className="box">
@@ -11,7 +11,7 @@ const Donate = () => (
         <input type='hidden' name='cmd' value='_s-xclick'/>
         <input type='hidden' name='hosted_button_id' value='HMVYD6GEWNWH8'/>
         <input type='image' src='https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png' width='0' height='0' name='submit' alt='PayPal - The safer, easier way to pay online!'/>
-        <img alt='' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' width='1' height='1' style={{display: 'none !important'}}/>
+        <img alt='' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' width='1' height='1' style={{ display: 'none !important' }}/>
       </form>
 
       <p><Link to='/about'>FreeFeed</Link> is an open-source small scale social network without ads or censorship. It was created by
@@ -19,14 +19,14 @@ const Donate = () => (
 
       <p>All the hosting expenses are covered by donations only.</p>
 
-      <span style={{display: 'block', marginLeft: 'auto', marginRight: 'auto'}}>
+      <span style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
         <form action='https://www.paypal.com/cgi-bin/webscr' method='post' target='_top'>
           <input type='hidden' name='cmd' value='_s-xclick'/>
           <input type='hidden' name='hosted_button_id' value='97PAKQ6S97XMW'/>
           <table>
             <tbody>
-              <tr><td style={{paddingBottom: '5px'}}>
-                <input type='hidden' name='on0' value='Pick monthly donation amount' style={{padding:'5px 0'}}/>You can help us to pay for the hosting by setting up a monthly donation:
+              <tr><td style={{ paddingBottom: '5px' }}>
+                <input type='hidden' name='on0' value='Pick monthly donation amount' style={{ padding:'5px 0' }}/>You can help us to pay for the hosting by setting up a monthly donation:
               </td></tr>
               <tr><td><select name='os0' defaultValue='Advanced'>
                 <option value="Entry Level Supporter">€5.00 EUR / month</option>
@@ -42,12 +42,12 @@ const Donate = () => (
           </table>
 
           <input type='hidden' name='currency_code' value='EUR'/>
-          <input type='image' src='https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png' name='submit' alt='PayPal - The safer, easier way to pay online!' style={{margin:'5px'}}/>
-          <img alt='' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' width='1' height='1' style={{display: 'none !important'}}/>
+          <input type='image' src='https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png' name='submit' alt='PayPal - The safer, easier way to pay online!' style={{ margin:'5px' }}/>
+          <img alt='' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' width='1' height='1' style={{ display: 'none !important' }}/>
         </form>
       </span>
 
-      <p style={{marginTop: '15px'}}>Make a <span onClick={() => document.forms["singlePayPalPayment"].submit()} style={{textDecoration:'underline', cursor:'pointer'}}>one-time donation</span>.</p>
+      <p style={{ marginTop: '15px' }}>Make a <span onClick={() => document.forms["singlePayPalPayment"].submit()} style={{ textDecoration:'underline', cursor:'pointer' }}>one-time donation</span>.</p>
 
       <p>Thank you!</p>
 
@@ -63,14 +63,14 @@ const Donate = () => (
         пользователей-волонтёров. С момента запуска FreeFeed.net мы стремимся сделать так, чтобы проект был полностью
         самостоятельным: расходы на хостинг сервиса полностью покрывались бы взносами пользователей.</p>
 
-      <span style={{display: 'block', marginLeft: 'auto', marginRight: 'auto'}}>
+      <span style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
         <form action='https://www.paypal.com/cgi-bin/webscr' method='post' target='_top'>
           <input type='hidden' name='cmd' value='_s-xclick'/>
           <input type='hidden' name='hosted_button_id' value='97PAKQ6S97XMW'/>
           <table>
             <tbody>
-              <tr><td style={{paddingBottom: '5px'}}>
-                <input type='hidden' name='on0' value='Pick monthly donation amount' style={{padding:'5px 0'}}/>Вы можете помочь нам, настроив автоматический ежемесячный платёж:
+              <tr><td style={{ paddingBottom: '5px' }}>
+                <input type='hidden' name='on0' value='Pick monthly donation amount' style={{ padding:'5px 0' }}/>Вы можете помочь нам, настроив автоматический ежемесячный платёж:
               </td></tr>
               <tr><td><select name='os0' defaultValue='Advanced'>
                 <option value="Entry Level Supporter">€5.00 EUR / месяц</option>
@@ -86,13 +86,13 @@ const Donate = () => (
           </table>
 
           <input type='hidden' name='currency_code' value='EUR'/>
-          <input type='image' src='https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png' name='submit' alt='PayPal - The safer, easier way to pay online!' style={{margin:'5px'}}/>
-          <img alt='' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' width='1' height='1' style={{display: 'none !important'}}/>
+          <input type='image' src='https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png' name='submit' alt='PayPal - The safer, easier way to pay online!' style={{ margin:'5px' }}/>
+          <img alt='' src='https://www.paypalobjects.com/en_US/i/scr/pixel.gif' width='1' height='1' style={{ display: 'none !important' }}/>
         </form>
       </span>
 
 
-      <p style={{marginTop: '15px'}}>Cделать <span onClick={() => document.forms["singlePayPalPayment"].submit()} style={{textDecoration:'underline', cursor:'pointer'}}>единовременный взнос</span>.</p>
+      <p style={{ marginTop: '15px' }}>Cделать <span onClick={() => document.forms["singlePayPalPayment"].submit()} style={{ textDecoration:'underline', cursor:'pointer' }}>единовременный взнос</span>.</p>
 
       <p>Спасибо!</p>
     </div>

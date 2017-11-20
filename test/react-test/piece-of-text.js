@@ -6,7 +6,7 @@ import PieceOfText from '../../src/components/piece-of-text';
 
 const renderText = (text, isExpanded = false) => {
   const renderer = createShallowRenderer();
-  renderer.render(<PieceOfText {...{text, isExpanded}}/>);
+  renderer.render(<PieceOfText {...{ text, isExpanded }}/>);
   return renderer.getRenderOutput().props.children;
 };
 

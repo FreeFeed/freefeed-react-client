@@ -40,7 +40,7 @@ export default function ScrollSafe(arg1, arg2) {
   }
 
   const Child = arg1;
-  const {foldable, trackResize} = {...defaultOptions, ...(arg2 || {})};
+  const { foldable, trackResize } = { ...defaultOptions, ...(arg2 || {}) };
 
   const foo = function (props) {
     let content = <Child {...props}/>;

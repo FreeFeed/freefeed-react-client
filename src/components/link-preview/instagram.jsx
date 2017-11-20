@@ -18,11 +18,11 @@ class InstagramPreview extends React.Component {
   iframe = null;
   setIframe = (el) => this.iframe = el;
 
-  state = {...initialState};
+  state = { ...initialState };
 
   onIFrameLoad = () => setTimeout(() => {
     if (this.iframe && !this.iframe.dataset['loaded']) {
-      this.setState({isPrivate: true});
+      this.setState({ isPrivate: true });
       aspectRatio.set(this.props.url, 0);
     }
   }, 1000);
@@ -36,7 +36,7 @@ class InstagramPreview extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.url !== nextProps.url) {
-      this.setState({...initialState});
+      this.setState({ ...initialState });
     }
   }
 

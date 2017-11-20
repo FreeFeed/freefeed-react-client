@@ -1,11 +1,11 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import {createBookmarkletPost, resetPostCreateForm, addAttachmentResponse, removeAttachment} from '../redux/action-creators';
+import { createBookmarkletPost, resetPostCreateForm, addAttachmentResponse, removeAttachment } from '../redux/action-creators';
 
-import {joinCreatePostData} from './select-utils';
+import { joinCreatePostData } from './select-utils';
 import CreateBookmarkletPost from './create-bookmarklet-post';
 import SignIn from './signin';
 
@@ -26,7 +26,7 @@ class Layout extends React.Component {
     const { imageUrls } = this.state;
     if (imageUrls.indexOf(url) === -1) {
       imageUrls.push(url);
-      this.setState({imageUrls});
+      this.setState({ imageUrls });
     }
 
     // Clear the #hash immediately
@@ -35,7 +35,7 @@ class Layout extends React.Component {
 
   removeImage = (url) => {
     const imageUrls = _.without(this.state.imageUrls, url);
-    this.setState({imageUrls});
+    this.setState({ imageUrls });
   };
 
   componentDidMount() {
@@ -60,7 +60,7 @@ class Layout extends React.Component {
         imageUrls.push(imageUrl);
       }
     });
-    this.setState({imageUrls});
+    this.setState({ imageUrls });
   }
 
   componentWillUnmount() {
@@ -110,7 +110,7 @@ class Layout extends React.Component {
 
 function selectState(state) {
   const { authenticated, createPostViewState, user } = state;
-  const sendTo = {...state.sendTo, defaultFeed: user.username};
+  const sendTo = { ...state.sendTo, defaultFeed: user.username };
   const createPostForm = joinCreatePostData(state);
 
   return {

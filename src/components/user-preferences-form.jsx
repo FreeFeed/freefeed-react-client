@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import {preventDefault} from '../utils';
+import { preventDefault } from '../utils';
 import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
 
 export default class UserPreferencesForm extends React.Component {
@@ -70,7 +70,7 @@ export default class UserPreferencesForm extends React.Component {
   isCommentTypeHidden = (hideType) => _.includes(this.state.hideCommentsOfTypes, hideType);
 
   changeHideComments = (event) => {
-    const {target} = event;
+    const { target } = event;
     const hideType = parseInt(target.value, 10);
 
     if (target.checked !== this.isCommentTypeHidden(hideType)) {
@@ -145,7 +145,7 @@ export default class UserPreferencesForm extends React.Component {
           </label>
         </div>
 
-        <div style={{marginBottom: '20px'}}>Text display style:
+        <div style={{ marginBottom: '20px' }}>Text display style:
           <div className="radio">
             <label>
               <input

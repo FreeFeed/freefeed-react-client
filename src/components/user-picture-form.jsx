@@ -1,7 +1,7 @@
 import React from 'react';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import {preventDefault} from '../utils';
+import { preventDefault } from '../utils';
 
 export default class UserPictureForm extends React.Component {
   savePicture = () => {

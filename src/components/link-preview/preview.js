@@ -1,11 +1,11 @@
 import React from 'react';
 
-import VideoPreview, {canShowURL as videoCanShowURL} from './video';
-import TwitterPreview, {canShowURL as twitterCanShowURL} from './twitter';
-import InstagramPreview, {canShowURL as instagramCanShowURL} from './instagram';
-import GoogleDocsPreview, {canShowURL as googleDocsCanShowURL} from './google-docs';
-import YandexMusicPreview, {canShowURL as yandexMusicCanShowURL} from './yandex-music';
-import WikipediaPreview, {canShowURL as wikipediaCanShowURL} from './wikipedia';
+import VideoPreview, { canShowURL as videoCanShowURL } from './video';
+import TwitterPreview, { canShowURL as twitterCanShowURL } from './twitter';
+import InstagramPreview, { canShowURL as instagramCanShowURL } from './instagram';
+import GoogleDocsPreview, { canShowURL as googleDocsCanShowURL } from './google-docs';
+import YandexMusicPreview, { canShowURL as yandexMusicCanShowURL } from './yandex-music';
+import WikipediaPreview, { canShowURL as wikipediaCanShowURL } from './wikipedia';
 import EmbedlyPreview from './embedly';
 
 export default function LinkPreview({ allowEmbedly, url }) {

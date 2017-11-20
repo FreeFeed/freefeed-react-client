@@ -19,20 +19,20 @@ export default class ArchiveRestorationForm extends React.Component {
     via_restore:           [],
   };
 
-  setDisableComments = (e) => this.setState({disable_comments: e.target.checked});
+  setDisableComments = (e) => this.setState({ disable_comments: e.target.checked });
   setViaSource = (e) => {
-    const {checked, value} = e.target;
+    const { checked, value } = e.target;
     if (checked) {
-      this.setState({via_restore: _.union(this.state.via_restore, [value])});
+      this.setState({ via_restore: _.union(this.state.via_restore, [value]) });
     } else {
-      this.setState({via_restore: _.without(this.state.via_restore, value)});
+      this.setState({ via_restore: _.without(this.state.via_restore, value) });
     }
   };
   selectAllSources = (e) => {
     if (e.target.checked) {
-      this.setState({via_restore: this.props.sources.map((s) => s.url)});
+      this.setState({ via_restore: this.props.sources.map((s) => s.url) });
     } else {
-      this.setState({via_restore: []});
+      this.setState({ via_restore: [] });
     }
   };
 
@@ -48,8 +48,8 @@ export default class ArchiveRestorationForm extends React.Component {
   };
 
   render() {
-    const {via_restore, disable_comments} = this.state;
-    const {formState, sources, oldUsername} = this.props;
+    const { via_restore, disable_comments } = this.state;
+    const { formState, sources, oldUsername } = this.props;
     const totalCount = sources.reduce((p, s) => p + s.count, 0);
     const selectedCount = sources.filter((s) => via_restore.includes(s.url)).reduce((p, s) => p + s.count, 0);
 
@@ -108,7 +108,7 @@ class SourceList extends React.Component {
     onClick:  React.PropTypes.func.isRequired,
   };
 
-  renderSource({name, url}) {
+  renderSource({ name, url }) {
     if (url === FRF_URL) {
       return <span>Posts on FriendFeed</span>;
     }
@@ -124,7 +124,7 @@ class SourceList extends React.Component {
   }
 
   render() {
-    const {selected, onClick} = this.props;
+    const { selected, onClick } = this.props;
     const sources = this.props.sources.sort((a, b) => {
       if (a.url === FRF_URL) { return -1; }
       if (b.url === FRF_URL) { return 1; }

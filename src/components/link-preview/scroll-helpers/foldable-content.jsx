@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import {ELEMENT_RESIZE_EVENT} from './events';
+import { ELEMENT_RESIZE_EVENT } from './events';
 
 export default class FoldableContent extends React.Component {
   static propTypes = {
@@ -20,12 +20,12 @@ export default class FoldableContent extends React.Component {
     expanded: false,
   };
 
-  toggleFold = () => this.setState({expanded: !this.state.expanded});
+  toggleFold = () => this.setState({ expanded: !this.state.expanded });
 
   updateHeight = () => {
     const contentHeight = this.content.offsetHeight;
     if (contentHeight !== this.state.contentHeight) {
-      this.setState({contentHeight});
+      this.setState({ contentHeight });
     }
   };
 
@@ -49,8 +49,8 @@ export default class FoldableContent extends React.Component {
     return (
       <div className="folder-container">
         <div
-          className={classnames({'content-wrapper': true, folded: foldNeeded && !this.state.expanded})}
-          style={{height: `${wrapperHeight + 1}px`}}
+          className={classnames({ 'content-wrapper': true, folded: foldNeeded && !this.state.expanded })}
+          style={{ height: `${wrapperHeight + 1}px` }}
         >
           <div ref={this.setContent}>{this.props.children}</div>
         </div>

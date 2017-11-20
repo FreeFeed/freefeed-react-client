@@ -1,9 +1,9 @@
 import React from 'react';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import {tileUserListFactory, WITH_MUTUALS} from './tile-user-list';
+import { tileUserListFactory, WITH_MUTUALS } from './tile-user-list';
 
-const TileList = tileUserListFactory({type: WITH_MUTUALS});
+const TileList = tileUserListFactory({ type: WITH_MUTUALS });
 
 
 export default (props) => {

@@ -2,7 +2,7 @@ import React from 'react';
 import Textarea from 'react-textarea-autosize';
 
 import throbber from '../../assets/images/throbber.gif';
-import {preventDefault} from '../utils';
+import { preventDefault } from '../utils';
 import SendTo from './send-to';
 import Dropzone from './dropzone';
 import PostAttachments from './post-attachments';
@@ -43,7 +43,7 @@ export default class CreatePost extends React.Component {
       this.clearForm();
     }
     if (this.props.sendTo.invitation !== newProps.sendTo.invitation) {
-      this.setState({postText: newProps.sendTo.invitation});
+      this.setState({ postText: newProps.sendTo.invitation });
     }
   }
 
@@ -88,7 +88,7 @@ export default class CreatePost extends React.Component {
   };
 
   onPostTextChange = (e) => {
-    this.setState({postText: e.target.value}, this.checkCreatePostAvailability);
+    this.setState({ postText: e.target.value }, this.checkCreatePostAvailability);
   };
 
   checkSave = (e) => {
@@ -107,7 +107,7 @@ export default class CreatePost extends React.Component {
   }
 
   changeAttachmentQueue = (change) => () => {
-    this.setState({attachmentQueueLength: this.state.attachmentQueueLength + change});
+    this.setState({ attachmentQueueLength: this.state.attachmentQueueLength + change });
   };
 
   componentWillUnmount() {
@@ -163,7 +163,7 @@ export default class CreatePost extends React.Component {
                   className="post-edit-more-checkbox"
                   type="checkbox"
                   value={this.state.commentsDisabled}
-                  onChange={(e) => this.setState({commentsDisabled:e.target.checked})}/>
+                  onChange={(e) => this.setState({ commentsDisabled:e.target.checked })}/>
                 <span className="post-edit-more-labeltext">Comments disabled</span>
               </label>
             </div>

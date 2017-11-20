@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Router, Route, IndexRoute, browserHistory} from 'react-router';
-import {Provider} from 'react-redux';
-import {syncHistoryWithStore} from 'react-router-redux';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { Provider } from 'react-redux';
+import { syncHistoryWithStore } from 'react-router-redux';
 
 import 'autotrack';  // used by google-analytics in ../index.jade
 
@@ -65,7 +65,7 @@ if (store.getState().authenticated) {
   store.dispatch(ActionCreators.unauthenticated());
 }
 
-import {bindRouteActions} from './redux/route-actions';
+import { bindRouteActions } from './redux/route-actions';
 
 // Set initial history state.
 // Without this, there can be problems with third-party

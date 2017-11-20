@@ -1,7 +1,7 @@
 import React from 'react';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import {preventDefault} from '../utils';
+import { preventDefault } from '../utils';
 
 export default (props) => (
   <div className="comment more-comments-wrapper">
@@ -18,7 +18,7 @@ export default (props) => (
   </div>
 );
 
-function getText({omittedComments, omittedCommentLikes}) {
+function getText({ omittedComments, omittedCommentLikes }) {
   const ommitedLikes = omittedCommentLikes > 0 ? ` with ${omittedCommentLikes} like${plural(omittedCommentLikes)}` : "";
   return `${omittedComments} more comment${plural(omittedComments)}${ommitedLikes}`;
 }

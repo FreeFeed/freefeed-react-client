@@ -1,6 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {joinPostData, postActions} from './select-utils';
+import { connect } from 'react-redux';
+import { joinPostData, postActions } from './select-utils';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
 

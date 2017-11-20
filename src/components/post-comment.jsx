@@ -4,9 +4,9 @@ import _ from 'lodash';
 import classnames from 'classnames';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import {preventDefault, confirmFirst} from '../utils';
-import {READMORE_STYLE_COMPACT, COMMENT_DELETED} from '../utils/frontend-preferences-options';
-import {commentReadmoreConfig} from '../utils/readmore-config';
+import { preventDefault, confirmFirst } from '../utils';
+import { READMORE_STYLE_COMPACT, COMMENT_DELETED } from '../utils/frontend-preferences-options';
+import { commentReadmoreConfig } from '../utils/readmore-config';
 
 import CommentLikes from './comment-likes';
 import PieceOfText from './piece-of-text';
@@ -123,10 +123,10 @@ export default class PostComment extends React.Component {
     const isItSinglePostAddingComment = newProps.isSinglePost;
     const shouldClearText = (wasCommentJustSaved && wasThereNoError && isItSinglePostAddingComment);
     if (shouldClearText) {
-      this.setState({editText: ''});
+      this.setState({ editText: '' });
     }
     if ((this.props.editText || '') !== newProps.editText) {
-      this.setState({editText: newProps.editText});
+      this.setState({ editText: newProps.editText });
     }
   }
 

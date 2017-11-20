@@ -7,11 +7,11 @@ const
 
 function getPrivacyFlags(mode) {
   if (mode === PRIVATE) {
-    return {isProtected: '1', isPrivate: '1'};
+    return { isProtected: '1', isPrivate: '1' };
   } else if (mode === PROTECTED) {
-    return {isProtected: '1', isPrivate: '0'};
+    return { isProtected: '1', isPrivate: '0' };
   }
-  return {isProtected: '0', isPrivate: '0'};
+  return { isProtected: '0', isPrivate: '0' };
 }
 
 function getPrivacyMode(flags) {
@@ -25,7 +25,7 @@ function getPrivacyMode(flags) {
 
 export default class GroupFeedTypePicker extends React.Component {
   handleChange = (event) => {
-    const {target: {name, value}} = event;
+    const { target: { name, value } } = event;
     if (name === 'privacy') {
       this.props.updateGroupPrivacySettings(getPrivacyFlags(value));
     } else if (name === 'isRestricted') {

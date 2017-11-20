@@ -1,6 +1,6 @@
 /* global embedly */
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import 'element-closest';
 
 import ScrollSafe from './scroll-helpers/scroll-safe';
@@ -29,7 +29,7 @@ class EmbedlyPreview extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.feedIsLoading && !nextProps.feedIsLoading) {
-      this.setState({updCounter: this.state.updCounter + 1});
+      this.setState({ updCounter: this.state.updCounter + 1 });
     }
   }
 
@@ -41,7 +41,7 @@ class EmbedlyPreview extends React.Component {
         key={`${this.props.url}##${this.state.updCounter}`}
         className="embedly-preview link-preview-content"
         data-url={this.props.url}
-        style={{height: `${heightCache.get(this.props.url, 0)}px`}}
+        style={{ height: `${heightCache.get(this.props.url, 0)}px` }}
       >
         <a
           ref={this.setLink}

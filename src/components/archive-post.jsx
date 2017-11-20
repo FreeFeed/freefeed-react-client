@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 function ArchivePostHandler({ router, inProgress, success, id }) {
   if (success) {
@@ -22,7 +22,7 @@ function ArchivePostHandler({ router, inProgress, success, id }) {
           {' '}
           <a
             target="_blank"
-            style={{textDecoration: 'underline'}}
+            style={{ textDecoration: 'underline' }}
             href={`https://web.archive.org/web/20150410000000/${encodeURIComponent(router.location.query.url)}`}
           >copy of this post on archive.org</a>.
         </p>

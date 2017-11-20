@@ -1,5 +1,5 @@
 import React from 'react';
-import {browserHistory} from 'react-router';
+import { browserHistory } from 'react-router';
 
 const isEscape = (keyCode) => keyCode && keyCode === 27;
 const isEnter = (keyCode) => keyCode && keyCode === 13;
@@ -24,7 +24,7 @@ export default class SearchForm extends React.Component {
     this.rememberInput = this.rememberInput.bind(this);
   }
 
-  handleSearch({keyCode, target}) {
+  handleSearch({ keyCode, target }) {
     if (isEscape(keyCode)) {
       this.searchInput.blur();
       return this.searchInput.value = '';

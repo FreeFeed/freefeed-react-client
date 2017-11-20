@@ -34,7 +34,7 @@ export default class PostVia extends React.Component {
     };
   }
 
-  expand = () => this.setState({expanded: true});
+  expand = () => this.setState({ expanded: true });
 
   render() {
     const {
@@ -50,8 +50,8 @@ export default class PostVia extends React.Component {
       }
     } = this.props;
 
-    const isMe = ({id}) => myId === id;
-    const inSubscriptions = ({id}) => myId === id || subscriptions && subscriptions.some((s) => s == id);
+    const isMe = ({ id }) => myId === id;
+    const inSubscriptions = ({ id }) => myId === id || subscriptions && subscriptions.some((s) => s == id);
 
     if (inSubscriptions(createdBy) || recipients.some(inSubscriptions)) {
       return false;

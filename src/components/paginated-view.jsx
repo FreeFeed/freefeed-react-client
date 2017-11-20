@@ -1,9 +1,9 @@
 import React from 'react';
-import {Link} from 'react-router';
-import {connect} from 'react-redux';
+import { Link } from 'react-router';
+import { connect } from 'react-redux';
 
-import {bindRouteActions} from '../redux/route-actions';
-import {getCurrentRouteName} from '../utils';
+import { bindRouteActions } from '../redux/route-actions';
+import { getCurrentRouteName } from '../utils';
 import PaginationLinks from './pagination-links';
 
 const PaginatedView = (props) => (

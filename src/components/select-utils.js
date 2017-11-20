@@ -29,10 +29,10 @@ export const ommitBubblesThreshold = 600 * 1000; // 10 min
 
 const allFalse = () => false;
 
-const commentHighlighter = ({commentsHighlights, user, postsViewState}, commentsPostId, commentList) => {
-  const {postId, author, arrows, baseCommentId} = commentsHighlights;
-  const {comments} = user.frontendPreferences;
-  const {omittedComments} = postsViewState[commentsPostId];
+const commentHighlighter = ({ commentsHighlights, user, postsViewState }, commentsPostId, commentList) => {
+  const { postId, author, arrows, baseCommentId } = commentsHighlights;
+  const { comments } = user.frontendPreferences;
+  const { omittedComments } = postsViewState[commentsPostId];
   if (!comments.highlightComments) {
     return allFalse;
   }
@@ -48,12 +48,12 @@ const commentHighlighter = ({commentsHighlights, user, postsViewState}, comments
   return (commentId, commentAuthor) => author && author === commentAuthor.username || highlightCommentId === commentId;
 };
 
-const selectCommentLikes = ({commentLikes, users}, commentId) => {
+const selectCommentLikes = ({ commentLikes, users }, commentId) => {
   if (!commentLikes[commentId]) {
-    return {likes: []};
+    return { likes: [] };
   }
-  const likes = (commentLikes[commentId].likes || []).map(({userId}) => users[userId]);
-  return {...commentLikes[commentId], likes};
+  const likes = (commentLikes[commentId].likes || []).map(({ userId }) => users[userId]);
+  return { ...commentLikes[commentId], likes };
 };
 
 const getCommentId = (hash) => {
@@ -81,14 +81,14 @@ export const joinPostData = (state) => (postId) => {
       return _comments;
     }
     const commentViewState = state.commentViewState[commentId];
-    const placeholderUser = {id: comment.createdBy};
+    const placeholderUser = { id: comment.createdBy };
     const author = state.users[comment.createdBy] || placeholderUser;
     if (author === placeholderUser) {
       if (typeof Raven !== 'undefined') {
-        Raven.captureMessage(`We've got comment with unknown author with id`, { extra: { uid: placeholderUser.id }});
+        Raven.captureMessage(`We've got comment with unknown author with id`, { extra: { uid: placeholderUser.id } });
       }
     }
-    const previousPost = _comments[index - 1] || {createdBy: null, createdAt: "0"};
+    const previousPost = _comments[index - 1] || { createdBy: null, createdAt: "0" };
     const omitBubble = omitRepeatedBubbles
       && postViewState.omittedComments === 0
       && !comment.hideType
@@ -113,13 +113,13 @@ export const joinPostData = (state) => (postId) => {
     usersLikedPost = usersLikedPost.slice(0, MAX_LIKES);
   }
 
-  const placeholderUser = {id: post.createdBy};
+  const placeholderUser = { id: post.createdBy };
 
   const createdBy = state.users[post.createdBy] || placeholderUser;
 
   if (createdBy === placeholderUser) {
     if (typeof Raven !== 'undefined') {
-      Raven.captureMessage(`We've got post with unknown author with id`, { extra: { uid: placeholderUser.id }});
+      Raven.captureMessage(`We've got post with unknown author with id`, { extra: { uid: placeholderUser.id } });
     }
   }
 
@@ -146,7 +146,7 @@ export const joinPostData = (state) => (postId) => {
 
   const { allowLinksPreview, readMoreStyle } = state.user.frontendPreferences;
 
-  return {...post,
+  return { ...post,
     createdBy,
     isDirect,
     recipients,
@@ -162,7 +162,7 @@ export const joinPostData = (state) => (postId) => {
 
 export function joinCreatePostData(state) {
   const { createPostForm } = state;
-  return {...createPostForm,
+  return { ...createPostForm,
     attachments: (createPostForm.attachments || []).map((attachmentId) => state.attachments[attachmentId])
   };
 }

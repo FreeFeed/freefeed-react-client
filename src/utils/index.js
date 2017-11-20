@@ -4,7 +4,7 @@ import URLFinder from 'ff-url-finder';
 import defaultUserpic50Path from '../../assets/images/default-userpic-50.png';
 import defaultUserpic75Path from '../../assets/images/default-userpic-75.png';
 
-import {LINK, isLink} from '../utils/link-types';
+import { LINK, isLink } from '../utils/link-types';
 import config from '../config';
 
 const frontendPrefsConfig = config.frontendPreferences;
@@ -36,7 +36,7 @@ const userDefaults = {
 };
 
 export function userParser(user) {
-  const newUser = {...user};
+  const newUser = { ...user };
 
   // Profile pictures
   newUser.profilePictureMediumUrl = user.profilePictureMediumUrl || userDefaults.profilePictureMediumUrl;
@@ -51,7 +51,7 @@ export function userParser(user) {
 
 export function postParser(post) {
   post.commentsDisabled = (post.commentsDisabled === '1');
-  return {...post};
+  return { ...post };
 }
 
 export function preventDefault(realFunction) {
@@ -111,7 +111,7 @@ const previousElementCheck = (index, array) => {
 export function getFirstLinkToEmbed(text) {
   return finder
     .parse(text)
-    .filter(({type, text}, index, links) => {
+    .filter(({ type, text }, index, links) => {
       return (type ===  LINK
               && /^https?:\/\//i.test(text)
               && previousElementCheck(index, links));

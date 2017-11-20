@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Link} from 'react-router';
-import {connect} from 'react-redux';
+import { Link } from 'react-router';
+import { connect } from 'react-redux';
 import Portal from 'react-portal';
 
 import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
 import UserCard from './user-card';
 
-const DisplayOption = ({user, me, preferences}) => {
+const DisplayOption = ({ user, me, preferences }) => {
   const { username, screenName } = user;
 
   if (username === me && preferences.useYou) {
@@ -46,13 +46,13 @@ class UserName extends React.Component {
   }
 
   enterUserName() {
-    this.setState({isHovered: true});
+    this.setState({ isHovered: true });
 
     this.enterTimeout = setTimeout(() => {
       if (this.state.isHovered) {
-        const {bottom, left} = ReactDOM.findDOMNode(this).getBoundingClientRect();
+        const { bottom, left } = ReactDOM.findDOMNode(this).getBoundingClientRect();
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        this.setState({bottom: bottom + scrollTop, left, isCardOpen: true});
+        this.setState({ bottom: bottom + scrollTop, left, isCardOpen: true });
       }
     }, 500);
 
@@ -62,11 +62,11 @@ class UserName extends React.Component {
   }
 
   leaveUserName() {
-    this.setState({isHovered: false});
+    this.setState({ isHovered: false });
 
     this.leaveTimeout = setTimeout(() => {
       if (!this.state.isHovered) {
-        this.setState({isCardOpen: false});
+        this.setState({ isCardOpen: false });
       }
     }, 500);
 
@@ -76,7 +76,7 @@ class UserName extends React.Component {
   }
 
   render() {
-    const {bottom, left} = this.state;
+    const { bottom, left } = this.state;
     return (
       <span className="user-name-wrapper"
         onMouseEnter={this.enterUserName}

@@ -2,7 +2,7 @@ import fetch from 'isomorphic-fetch';
 import _ from 'lodash';
 
 import config from '../config';
-import {getToken} from './auth';
+import { getToken } from './auth';
 
 
 const apiConfig = config.api;
@@ -19,32 +19,32 @@ export function getWhoAmI() {
   return fetch(`${apiConfig.host}/v2/users/whoami`, getRequestOptions());
 }
 
-export function getHome({offset}) {
+export function getHome({ offset }) {
   return fetch(
     `${apiConfig.host}/v2/timelines/home?offset=${offset}`, getRequestOptions());
 }
 
-export function getDiscussions({offset}) {
+export function getDiscussions({ offset }) {
   return fetch(
     `${apiConfig.host}/v2/timelines/filter/discussions?with-my-posts=yes&offset=${offset}`, getRequestOptions());
 }
 
-export function getDirect({offset}) {
+export function getDirect({ offset }) {
   return fetch(
     `${apiConfig.host}/v2/timelines/filter/directs?offset=${offset}`, getRequestOptions());
 }
 
-export function getUserFeed({username, offset}) {
+export function getUserFeed({ username, offset }) {
   return fetch(
     `${apiConfig.host}/v2/timelines/${username}?offset=${offset}`, getRequestOptions());
 }
 
-export function getNotifications({offset, filter}) {
+export function getNotifications({ offset, filter }) {
   return fetch(
     `${apiConfig.host}/v2/notifications?offset=${offset}&filter=${filter}`, getRequestOptions());
 }
 
-export function getLikesOnly({postId, commentsExpanded}) {
+export function getLikesOnly({ postId, commentsExpanded }) {
   return getPost({
     postId,
     maxComments: commentsExpanded ? 'all' : '',
@@ -52,7 +52,7 @@ export function getLikesOnly({postId, commentsExpanded}) {
   });
 }
 
-export function getPost({postId, maxComments = '', maxLikes = ''}) {
+export function getPost({ postId, maxComments = '', maxLikes = '' }) {
   return fetch(
     `${apiConfig.host}/v2/posts/${postId}?maxComments=${maxComments}&maxLikes=${maxLikes}`, getRequestOptions());
 }
@@ -62,7 +62,7 @@ export function getPostIdByOldName({ oldName }) {
     `${apiConfig.host}/v2/archives/post-by-old-name/${encodeURIComponent(oldName)}`, getRequestOptions());
 }
 
-export function createPost({feeds, postText, attachmentIds, more}) {
+export function createPost({ feeds, postText, attachmentIds, more }) {
   return fetch(`${apiConfig.host}/v1/posts`, {
     'method': 'POST',
     'headers': {
@@ -83,7 +83,7 @@ export function createPost({feeds, postText, attachmentIds, more}) {
   });
 }
 
-export function createBookmarkletPost({feeds, postText, imageUrls, commentText}) {
+export function createBookmarkletPost({ feeds, postText, imageUrls, commentText }) {
   return fetch(`${apiConfig.host}/v1/bookmarklet`, {
     'method': 'POST',
     'headers': {
@@ -102,7 +102,7 @@ export function createBookmarkletPost({feeds, postText, imageUrls, commentText})
   });
 }
 
-export function updatePost({postId, newPost}) {
+export function updatePost({ postId, newPost }) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}`, {
     'method': 'PUT',
     'headers': {
@@ -110,11 +110,11 @@ export function updatePost({postId, newPost}) {
       'Content-Type': 'application/json',
       'X-Authentication-Token': getToken()
     },
-    'body': JSON.stringify({post: newPost})
+    'body': JSON.stringify({ post: newPost })
   });
 }
 
-export function deletePost({postId}) {
+export function deletePost({ postId }) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}`, {
     'method': 'DELETE',
     'headers': {
@@ -124,7 +124,7 @@ export function deletePost({postId}) {
   });
 }
 
-export function addComment({postId, commentText}) {
+export function addComment({ postId, commentText }) {
   return fetch(`${apiConfig.host}/v1/comments`, {
     method: 'POST',
     headers: {
@@ -132,11 +132,11 @@ export function addComment({postId, commentText}) {
       'Content-Type': 'application/json',
       'X-Authentication-Token': getToken()
     },
-    'body': JSON.stringify({comment: {body:commentText, postId}})
+    'body': JSON.stringify({ comment: { body:commentText, postId } })
   });
 }
 
-export function updateComment({commentId, newCommentBody}) {
+export function updateComment({ commentId, newCommentBody }) {
   return fetch(`${apiConfig.host}/v1/comments/${commentId}`, {
     'method': 'PUT',
     'headers': {
@@ -144,11 +144,11 @@ export function updateComment({commentId, newCommentBody}) {
       'Content-Type': 'application/json',
       'X-Authentication-Token': getToken()
     },
-    'body': JSON.stringify({comment: {body: newCommentBody}})
+    'body': JSON.stringify({ comment: { body: newCommentBody } })
   });
 }
 
-export function likeComment({commentId}) {
+export function likeComment({ commentId }) {
   return fetch(`${apiConfig.host}/v2/comments/${commentId}/like`, {
     method: 'POST',
     headers: {
@@ -159,7 +159,7 @@ export function likeComment({commentId}) {
   });
 }
 
-export function unlikeComment({commentId}) {
+export function unlikeComment({ commentId }) {
   return fetch(`${apiConfig.host}/v2/comments/${commentId}/unlike`, {
     method: 'POST',
     headers: {
@@ -170,11 +170,11 @@ export function unlikeComment({commentId}) {
   });
 }
 
-export function getCommentLikes({commentId}) {
+export function getCommentLikes({ commentId }) {
   return fetch(`${apiConfig.host}/v2/comments/${commentId}/likes`, getRequestOptions());
 }
 
-export function deleteComment({commentId}) {
+export function deleteComment({ commentId }) {
   return fetch(`${apiConfig.host}/v1/comments/${commentId}`, {
     'method': 'DELETE',
     'headers': {
@@ -184,7 +184,7 @@ export function deleteComment({commentId}) {
   });
 }
 
-export function likePost({postId}) {
+export function likePost({ postId }) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}/like`, {
     'method': 'POST',
     'headers': {
@@ -196,7 +196,7 @@ export function likePost({postId}) {
   });
 }
 
-export function unlikePost({postId}) {
+export function unlikePost({ postId }) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}/unlike`, {
     'method': 'POST',
     'headers': {
@@ -208,7 +208,7 @@ export function unlikePost({postId}) {
   });
 }
 
-export function hidePost({postId}) {
+export function hidePost({ postId }) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}/hide`, {
     'method': 'POST',
     'headers': {
@@ -220,7 +220,7 @@ export function hidePost({postId}) {
   });
 }
 
-export function unhidePost({postId}) {
+export function unhidePost({ postId }) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}/unhide`, {
     'method': 'POST',
     'headers': {
@@ -232,7 +232,7 @@ export function unhidePost({postId}) {
   });
 }
 
-export function disableComments({postId}) {
+export function disableComments({ postId }) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}/disableComments`, {
     'method': 'POST',
     'headers': {
@@ -244,7 +244,7 @@ export function disableComments({postId}) {
   });
 }
 
-export function enableComments({postId}) {
+export function enableComments({ postId }) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}/enableComments`, {
     'method': 'POST',
     'headers': {
@@ -258,8 +258,8 @@ export function enableComments({postId}) {
 
 const encodeBody = (body) => _.map(body, (value, key) => `${key}=${encodeURIComponent(value)}`).join('&');
 
-export function signIn({username, password}) {
-  const encodedBody = encodeBody({username, password});
+export function signIn({ username, password }) {
+  const encodedBody = encodeBody({ username, password });
 
   return fetch(`${apiConfig.host}/v1/session`, {
     headers:{
@@ -271,8 +271,8 @@ export function signIn({username, password}) {
   });
 }
 
-export function restorePassword({mail}) {
-  const encodedBody = encodeBody({email: mail});
+export function restorePassword({ mail }) {
+  const encodedBody = encodeBody({ email: mail });
   return fetch(`${apiConfig.host}/v1/passwords`, {
     headers:{
       'Accept': 'application/json',
@@ -283,7 +283,7 @@ export function restorePassword({mail}) {
   });
 }
 
-export function resetPassword({password, token}) {
+export function resetPassword({ password, token }) {
   const params = {
     newPassword: password,
     passwordConfirmation: password,
@@ -300,8 +300,8 @@ export function resetPassword({password, token}) {
   });
 }
 
-export function signUp({username, password, email, captcha}) {
-  const encodedBody = encodeBody({username, password, email, captcha});
+export function signUp({ username, password, email, captcha }) {
+  const encodedBody = encodeBody({ username, password, email, captcha });
 
   return fetch(`${apiConfig.host}/v1/users`, {
     headers:{
@@ -328,7 +328,7 @@ export function markAllNotificationsAsRead() {
   });
 }
 
-export function updateUser({id, screenName, email, isPrivate, isProtected, description}) {
+export function updateUser({ id, screenName, email, isPrivate, isProtected, description }) {
   return fetch(`${apiConfig.host}/v1/users/${id}`, {
     'method': 'PUT',
     'headers': {
@@ -336,11 +336,11 @@ export function updateUser({id, screenName, email, isPrivate, isProtected, descr
       'Content-Type': 'application/json',
       'X-Authentication-Token': getToken()
     },
-    'body': JSON.stringify({user: {screenName, email, isPrivate, isProtected, description}})
+    'body': JSON.stringify({ user: { screenName, email, isPrivate, isProtected, description } })
   });
 }
 
-export function updateUserPreferences({userId, frontendPrefs, backendPrefs}) {
+export function updateUserPreferences({ userId, frontendPrefs, backendPrefs }) {
   const user = {};
   if (frontendPrefs) {
     user.frontendPreferences = { [frontendPrefsConfig.clientId]: frontendPrefs };
@@ -359,8 +359,8 @@ export function updateUserPreferences({userId, frontendPrefs, backendPrefs}) {
   });
 }
 
-export function updatePassword({currentPassword, password, passwordConfirmation}) {
-  const encodedBody = encodeBody({currentPassword, password, passwordConfirmation});
+export function updatePassword({ currentPassword, password, passwordConfirmation }) {
+  const encodedBody = encodeBody({ currentPassword, password, passwordConfirmation });
 
   return fetch(`${apiConfig.host}/v1/users/updatePassword`, {
     'method': 'PUT',
@@ -373,7 +373,7 @@ export function updatePassword({currentPassword, password, passwordConfirmation}
   });
 }
 
-export function updateUserPicture({picture}) {
+export function updateUserPicture({ picture }) {
   const data = new FormData();
   data.append('file', picture);
 
@@ -386,7 +386,7 @@ export function updateUserPicture({picture}) {
   });
 }
 
-const userAction = (action) => ({username}) => {
+const userAction = (action) => ({ username }) => {
   return fetch(`${apiConfig.host}/v1/users/${username}/${action}`, {
     method: 'POST',
     'headers': {
@@ -402,23 +402,23 @@ export const unsubscribe = userAction('unsubscribe');
 export const sendSubscriptionRequest = userAction('sendRequest');
 
 
-export function getUserComments({username, offset}) {
+export function getUserComments({ username, offset }) {
   return fetch(`${apiConfig.host}/v2/timelines/${username}/comments?offset=${offset}`, getRequestOptions());
 }
 
-export function getUserLikes({username, offset}) {
+export function getUserLikes({ username, offset }) {
   return fetch(`${apiConfig.host}/v2/timelines/${username}/likes?offset=${offset}`, getRequestOptions());
 }
 
-export function getSubscribers({username}) {
+export function getSubscribers({ username }) {
   return fetch(`${apiConfig.host}/v1/users/${username}/subscribers`, getRequestOptions());
 }
 
-export function getSubscriptions({username}) {
+export function getSubscriptions({ username }) {
   return fetch(`${apiConfig.host}/v1/users/${username}/subscriptions`, getRequestOptions());
 }
 
-export function getUserInfo({username}) {
+export function getUserInfo({ username }) {
   return fetch(`${apiConfig.host}/v1/users/${username}`, getRequestOptions());
 }
 
@@ -430,11 +430,11 @@ export function createGroup(groupSettings) {
       'Content-Type': 'application/json',
       'X-Authentication-Token': getToken()
     },
-    'body': JSON.stringify({group: groupSettings})
+    'body': JSON.stringify({ group: groupSettings })
   });
 }
 
-export function updateGroup({id, groupSettings}) {
+export function updateGroup({ id, groupSettings }) {
   return fetch(`${apiConfig.host}/v1/users/${id}`, {
     'method': 'PUT',
     'headers': {
@@ -442,11 +442,11 @@ export function updateGroup({id, groupSettings}) {
       'Content-Type': 'application/json',
       'X-Authentication-Token': getToken()
     },
-    'body': JSON.stringify({user: groupSettings})
+    'body': JSON.stringify({ user: groupSettings })
   });
 }
 
-export function updateGroupPicture({groupName, file}) {
+export function updateGroupPicture({ groupName, file }) {
   const data = new FormData();
   data.append('file', file);
 
@@ -459,7 +459,7 @@ export function updateGroupPicture({groupName, file}) {
   });
 }
 
-export function acceptGroupRequest({groupName, userName}) {
+export function acceptGroupRequest({ groupName, userName }) {
   return fetch(`${apiConfig.host}/v1/groups/${groupName}/acceptRequest/${userName}`, {
     'method': 'POST',
     'headers': {
@@ -470,7 +470,7 @@ export function acceptGroupRequest({groupName, userName}) {
   });
 }
 
-export function rejectGroupRequest({groupName, userName}) {
+export function rejectGroupRequest({ groupName, userName }) {
   return fetch(`${apiConfig.host}/v1/groups/${groupName}/rejectRequest/${userName}`, {
     'method': 'POST',
     'headers': {
@@ -481,7 +481,7 @@ export function rejectGroupRequest({groupName, userName}) {
   });
 }
 
-export function acceptUserRequest({userName}) {
+export function acceptUserRequest({ userName }) {
   return fetch(`${apiConfig.host}/v1/users/acceptRequest/${userName}`, {
     'method': 'POST',
     'headers': {
@@ -492,7 +492,7 @@ export function acceptUserRequest({userName}) {
   });
 }
 
-export function rejectUserRequest({userName}) {
+export function rejectUserRequest({ userName }) {
   return fetch(`${apiConfig.host}/v1/users/rejectRequest/${userName}`, {
     'method': 'POST',
     'headers': {
@@ -503,7 +503,7 @@ export function rejectUserRequest({userName}) {
   });
 }
 
-export function unsubscribeFromGroup({groupName, userName}) {
+export function unsubscribeFromGroup({ groupName, userName }) {
   return fetch(`${apiConfig.host}/v1/groups/${groupName}/unsubscribeFromGroup/${userName}`, {
     'method': 'POST',
     'headers': {
@@ -514,7 +514,7 @@ export function unsubscribeFromGroup({groupName, userName}) {
   });
 }
 
-export function makeGroupAdmin({groupName, user}) {
+export function makeGroupAdmin({ groupName, user }) {
   return fetch(`${apiConfig.host}/v1/groups/${groupName}/subscribers/${user.username}/admin`, {
     'method': 'POST',
     'headers': {
@@ -525,7 +525,7 @@ export function makeGroupAdmin({groupName, user}) {
   });
 }
 
-export function unadminGroupAdmin({groupName, user}) {
+export function unadminGroupAdmin({ groupName, user }) {
   return fetch(`${apiConfig.host}/v1/groups/${groupName}/subscribers/${user.username}/unadmin`, {
     'method': 'POST',
     'headers': {
@@ -536,7 +536,7 @@ export function unadminGroupAdmin({groupName, user}) {
   });
 }
 
-export function revokeSentRequest({userName}) {
+export function revokeSentRequest({ userName }) {
   return fetch(`${apiConfig.host}/v2/requests/${userName}/revoke`, {
     'method': 'POST',
     'headers': {
@@ -559,11 +559,11 @@ export function getUserSummary({ username, days }) {
   return fetch(`${apiConfig.host}/v2/summary/${username}/${days}`, getRequestOptions());
 }
 
-export function getSearch({search = '', offset = 0}) {
+export function getSearch({ search = '', offset = 0 }) {
   return fetch(`${apiConfig.host}/v2/search?qs=${encodeURIComponent(search)}&offset=${offset}`, getRequestOptions());
 }
 
-export function getBestOf({offset = 0}) {
+export function getBestOf({ offset = 0 }) {
   return fetch(`${apiConfig.host}/v2/bestof?offset=${offset}`, getRequestOptions());
 }
 
@@ -575,7 +575,7 @@ export function archiveRestoreActivity() {
       'Content-Type': 'application/json',
       'X-Authentication-Token': getToken()
     },
-    'body': JSON.stringify({restore: true})
+    'body': JSON.stringify({ restore: true })
   });
 }
 

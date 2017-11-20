@@ -1,4 +1,4 @@
-import {FRIENDFEED_POST} from '../utils/link-types';
+import { FRIENDFEED_POST } from '../utils/link-types';
 import {
   // Private (content depends on current user)
   home,

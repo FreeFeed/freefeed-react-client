@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import {preventDefault} from '../utils';
+import { preventDefault } from '../utils';
 
 const
   PUBLIC_FEED = 'PUBLIC',
@@ -20,16 +20,16 @@ export default class UserSettingsForm extends React.Component {
   }
 
   updateSetting = (setting) => (e) => {
-    this.props.userSettingsChange({[setting]: e.target.value});
+    this.props.userSettingsChange({ [setting]: e.target.value });
   };
 
   updatePrivacy = (e) => {
     if (e.target.value === PUBLIC_FEED) {
-      this.props.userSettingsChange({isProtected: '0', isPrivate: '0'});
+      this.props.userSettingsChange({ isProtected: '0', isPrivate: '0' });
     } else if (e.target.value === PROTECTED_FEED) {
-      this.props.userSettingsChange({isProtected: '1', isPrivate: '0'});
+      this.props.userSettingsChange({ isProtected: '1', isPrivate: '0' });
     } else if (e.target.value === PRIVATE_FEED) {
-      this.props.userSettingsChange({isProtected: '1', isPrivate: '1'});
+      this.props.userSettingsChange({ isProtected: '1', isPrivate: '1' });
     }
   };
 
