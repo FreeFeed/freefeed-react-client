@@ -5,7 +5,7 @@ import {preventDefault} from '../utils';
 
 export default class UserPictureForm extends React.Component {
   savePicture = () => {
-    const newFile = this.refs.pictureFile.files[0];
+    const [newFile] = this.refs.pictureFile.files;
     if (newFile && this.props.status !== 'loading') {
       this.props.updateUserPicture(newFile);
     }

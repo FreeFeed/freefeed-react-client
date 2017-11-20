@@ -38,17 +38,13 @@ const UserHandler = (props) => {
 };
 
 function selectState(state, ownProps) {
-  const user = state.user;
-  const authenticated = state.authenticated;
+  const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
   const anonymous = !authenticated;
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
-  const createPostViewState = state.createPostViewState;
   const createPostForm = joinCreatePostData(state);
-  const timelines = state.timelines;
-  const boxHeader = state.boxHeader;
-  const foundUser = Object.getOwnPropertyNames(state.users)
+  const [foundUser] = Object.getOwnPropertyNames(state.users)
     .map((key) => state.users[key] || state.subscribers[key])
-    .filter((user) => user.username === ownProps.params.userName)[0];
+    .filter((user) => user.username === ownProps.params.userName);
 
   const amIGroupAdmin = (
     authenticated &&

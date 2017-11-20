@@ -69,7 +69,7 @@ export const authMiddleware = (store) => {
       next(action);
       if (firstUnauthenticated) {
         firstUnauthenticated = false;
-        const pathname = window.location.pathname;
+        const { pathname } = window.location;
         if (shouldGoToSignIn(pathname)) {
           store.dispatch(ActionCreators.requireAuthentication());
           return browserHistory.push(`/signin?back=${pathname}`);
@@ -87,7 +87,7 @@ export const authMiddleware = (store) => {
       store.dispatch(ActionCreators.whoAmI());
 
       // Do not redirect to Home page if signed in at Bookmarklet
-      const pathname = (store.getState().routing.locationBeforeTransitions || {}).pathname;
+      const { pathname } = (store.getState().routing.locationBeforeTransitions || {});
       if (pathname === '/bookmarklet') {
         return;
       }
@@ -109,7 +109,7 @@ export const authMiddleware = (store) => {
 export const likesLogicMiddleware = (store) => (next) => (action) => {
   switch (action.type) {
     case ActionTypes.SHOW_MORE_LIKES: {
-      const postId = action.payload.postId;
+      const { postId } = action.payload;
       const post = store.getState().posts[postId];
       const isSync = (post.omittedLikes === 0);
 
@@ -270,7 +270,7 @@ export const requestsMiddleware = (store) => (next) => (action) => {
     next(action);
 
     if (store.getState().routing.locationBeforeTransitions.pathname == '/friends') {
-      const username = store.getState().user.username;
+      const { username } = store.getState().user;
       store.dispatch(ActionCreators.subscribers(username));
     }
 
@@ -342,7 +342,7 @@ const dispatchWithPost = async(store, postId, action, filter = () => true, maxDe
 };
 
 const isFirstFriendInteraction = (post, {users}, {subscriptions, comments}) => {
-  const newLike = users[0];
+  const [newLike] = users;
   const myFriends = Object.keys(subscriptions).map((key) => subscriptions[key]).map((sub) => sub.user);
   const likesWithoutCurrent = post.posts.likes.filter((like) => like !== newLike);
   const friendsInvolved = (list) => list.filter((element) => myFriends.indexOf(element) !== -1).length;
@@ -372,14 +372,14 @@ const bindHandlers = (store) => ({
   'post:hide': (data) => store.dispatch({type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId}),
   'post:unhide': (data) => store.dispatch({type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId}),
   'comment:new': async(data) => {
-    const postId = data.comments.postId;
+    const { postId } = data.comments;
     const action = {...data, type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments};
     return dispatchWithPost(store, postId, action, () => true, postFetchDelay);
   },
   'comment:update': (data) => store.dispatch({...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments}),
   'comment:destroy': (data) => store.dispatch({type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId, postId: data.postId}),
   'like:new': async(data) => {
-    const postId = data.meta.postId;
+    const { postId } = data.meta;
     const iLiked = iLikedPost(store.getState(), data.meta.postId);
     const action = {type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, users:[data.users], iLiked};
     return dispatchWithPost(store, postId, action, isFirstFriendInteraction, postFetchDelay);

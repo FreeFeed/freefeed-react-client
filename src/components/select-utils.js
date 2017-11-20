@@ -68,11 +68,11 @@ export const joinPostData = (state) => (postId) => {
   if (!post) {
     return;
   }
-  const user = state.user;
+  const { user } = state;
 
   const attachments = (post.attachments || []).map((attachmentId) => state.attachments[attachmentId]);
   const postViewState = state.postsViewState[post.id];
-  const omitRepeatedBubbles = state.user.frontendPreferences.comments.omitRepeatedBubbles;
+  const { omitRepeatedBubbles } = state.user.frontendPreferences.comments;
   const hashedCommentId = getCommentId(state.routing.locationBeforeTransitions.hash);
   const highlightComment = commentHighlighter(state, postId, post.comments);
   let comments = (post.comments || []).reduce((_comments, commentId, index) => {
@@ -144,8 +144,7 @@ export const joinPostData = (state) => (postId) => {
     .map((userId) => state.subscribers[userId])
     .filter((user) => user);
 
-  const allowLinksPreview = state.user.frontendPreferences.allowLinksPreview;
-  const readMoreStyle = state.user.frontendPreferences.readMoreStyle;
+  const { allowLinksPreview, readMoreStyle } = state.user.frontendPreferences;
 
   return {...post,
     createdBy,
@@ -162,7 +161,7 @@ export const joinPostData = (state) => (postId) => {
 };
 
 export function joinCreatePostData(state) {
-  const createPostForm = state.createPostForm;
+  const { createPostForm } = state;
   return {...createPostForm,
     attachments: (createPostForm.attachments || []).map((attachmentId) => state.attachments[attachmentId])
   };

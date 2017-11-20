@@ -22,10 +22,9 @@ const SubscriptionsHandler = (props) => {
 };
 
 function selectState(state, ownProps) {
-  const boxHeader = state.boxHeader;
+  const { boxHeader } = state;
+  const { errorString, isPending } = state.usernameSubscriptions;
   const username = ownProps.params.userName;
-  const isPending = state.usernameSubscriptions.isPending;
-  const errorString = state.usernameSubscriptions.errorString;
 
   const isMyPage = state.user.username === username;
   const subscribersUsernames = state.usernameSubscribers.payload && state.usernameSubscribers.payload.map((user) => user.username);

@@ -25,7 +25,7 @@ export default class CreatePost extends React.Component {
   createPost = () => {
     // Get all the values
     const feeds = this.refs.selectFeeds.values;
-    const postText = this.state.postText;
+    const { postText } = this.state;
     const attachmentIds = this.props.createPostForm.attachments.map((attachment) => attachment.id);
     const more = {
       commentsDisabled: this.state.commentsDisabled
@@ -56,7 +56,7 @@ export default class CreatePost extends React.Component {
 
   handlePaste = (e) => {
     if (e.clipboardData) {
-      const items = e.clipboardData.items;
+      const { items } = e.clipboardData;
       if (items) {
         for (let i = 0; i < items.length; i++) {
           if (items[i].type.indexOf('image/') > -1) {
@@ -115,7 +115,7 @@ export default class CreatePost extends React.Component {
   }
 
   render() {
-    const props = this.props;
+    const { props } = this;
 
     return (
       <div className="create-post post-editor">

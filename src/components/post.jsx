@@ -35,7 +35,7 @@ export default class Post extends React.Component {
 
   handlePaste = (e) => {
     if (e.clipboardData) {
-      const items = e.clipboardData.items;
+      const { items } = e.clipboardData;
       if (items) {
         for (let i = 0; i < items.length; i++) {
           if (items[i].type.indexOf('image/') > -1) {
@@ -57,7 +57,7 @@ export default class Post extends React.Component {
   }
 
   render() {
-    const props = this.props;
+    const { props } = this;
 
     let editingPostText = props.editingText;
     const editingPostTextChange = (e) => {
@@ -130,7 +130,7 @@ export default class Post extends React.Component {
       return `${recipient.username}${suffix}`;
     };
 
-    let recipients = props.recipients;
+    let { recipients } = props;
     // Check if the post has been only submitted to one recipient
     // and if we can omit it
     if (recipients.length === 1) {

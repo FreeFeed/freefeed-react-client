@@ -28,7 +28,7 @@ class UserCard extends React.Component {
   }
 
   render() {
-    const props = this.props;
+    const { props } = this;
     const style = {top: `${this.props.top + 10}px`, left: `${this.props.left}px`};
 
     if (props.notFound) {

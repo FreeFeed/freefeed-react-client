@@ -15,7 +15,7 @@ class SubscribersHandler extends React.Component {
   }
 
   render() {
-    const props = this.props;
+    const { props } = this;
     return (
       <div className='box'>
         <div className='box-header-timeline'>
@@ -41,10 +41,9 @@ class SubscribersHandler extends React.Component {
 }
 
 function selectState(state, ownProps) {
-  const boxHeader = state.boxHeader;
+  const { boxHeader } = state;
+  const { errorString, isPending } = state.usernameSubscribers;
   const username = ownProps.params.userName;
-  const isPending = state.usernameSubscribers.isPending;
-  const errorString = state.usernameSubscribers.errorString;
   const amIGroupAdmin = (state.managedGroups.find((group) => group.username == username) != null);
 
   const thisUser = [..._.values(state.users), ..._.values(state.groups)].find((u) => u.username == username);

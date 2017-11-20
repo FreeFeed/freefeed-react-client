@@ -17,7 +17,7 @@ export default class UserProfile extends React.Component {
   }
 
   render() {
-    const props = this.props;
+    const { props } = this;
 
     const unsubscribe = () => {
       if (props.amIGroupAdmin) {

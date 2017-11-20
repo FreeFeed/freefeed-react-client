@@ -62,10 +62,8 @@ const ManageSubscribersHandler = (props) => {
 };
 
 function selectState(state, ownProps) {
-  const boxHeader = state.boxHeader;
+  const { boxHeader, groupAdmins, user } = state;
   const groupName = ownProps.params.userName;
-  const user = state.user;
-  const groupAdmins = state.groupAdmins;
   const usersWhoAreNotAdmins = _.filter(state.usernameSubscribers.payload, (user) => {
     return groupAdmins.find((u) => u.username == user.username) == null;
   });

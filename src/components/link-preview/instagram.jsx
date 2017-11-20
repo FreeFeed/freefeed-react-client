@@ -41,7 +41,7 @@ class InstagramPreview extends React.Component {
   }
 
   render() {
-    const id = INSTAGRAM_RE.exec(this.props.url)[1];
+    const [, id] = INSTAGRAM_RE.exec(this.props.url);
     if (this.state.isPrivate) {
       return null;
     }

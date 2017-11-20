@@ -7,7 +7,7 @@ import Feed from './feed';
 
 class Summary extends React.Component {
   render() {
-    const props = this.props;
+    const { props } = this;
 
     return (
       <div className="box">
@@ -38,10 +38,8 @@ class Summary extends React.Component {
 
 function mapStateToProps(state) {
   const isLoading = state.routeLoadingState;
-  const user = state.user;
-  const authenticated = state.authenticated;
+  const { authenticated, boxHeader, user } = state;
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
-  const boxHeader = state.boxHeader;
 
   return { isLoading, user, authenticated, visibleEntries, boxHeader };
 }

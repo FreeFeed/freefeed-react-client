@@ -40,13 +40,13 @@ export function title(state = '', action) {
       return `Search - FreeFeed`;
     }
     case response(ActionTypes.GET_USER_FEED): {
-      const user = (action.payload.users || []).filter((user) => user.username === action.request.username)[0];
+      const [user] = (action.payload.users || []).filter((user) => user.username === action.request.username);
       const author = user.screenName + (user.username !== user.screenName ? ' (' + user.username + ')' : '');
       return `${author} - FreeFeed`;
     }
     case response(ActionTypes.GET_SINGLE_POST): {
       const text = action.payload.posts.body.substr(0, 60);
-      const user = (action.payload.users || [])[0];
+      const [user] = (action.payload.users || []);
       const author = user.screenName + (user.username !== user.screenName ? ' (' + user.username + ')' : '');
       return `${text} - ${author} - FreeFeed`;
     }
@@ -56,7 +56,7 @@ export function title(state = '', action) {
     }
     case response(ActionTypes.GET_USER_SUMMARY): {
       const period = getSummaryPeriod(action.request.days);
-      const user = (action.payload.users || []).filter((user) => user.username === action.request.username)[0];
+      const [user] = (action.payload.users || []).filter((user) => user.username === action.request.username);
       const author = user
         ? user.screenName + (user.username !== user.screenName ? ' (' + user.username + ')' : '')
         : action.request.username;
@@ -272,7 +272,7 @@ export function feedViewState(state = initFeed, action) {
       hiddenEntries = [];
     }
     const isHiddenRevealed = false;
-    const isLastPage = action.payload.isLastPage;
+    const { isLastPage } = action.payload;
     return {
       ...state,
       visibleEntries,
@@ -294,7 +294,7 @@ export function feedViewState(state = initFeed, action) {
       return {...state, isLastPage: action.payload.isLastPage};
     }
     case response(ActionTypes.DELETE_POST): {
-      const postId = action.request.postId;
+      const { postId } = action.request;
       return {...state,
         visibleEntries: _.without(state.visibleEntries, postId),
         hiddenEntries: _.without(state.hiddenEntries, postId)
@@ -316,7 +316,7 @@ export function feedViewState(state = initFeed, action) {
       };
     }
     case response(ActionTypes.GET_SINGLE_POST): {
-      const postId = action.request.postId;
+      const { postId } = action.request;
       return {...initFeed,
         visibleEntries: [postId]
       };
@@ -386,10 +386,7 @@ const indexById = (list) => _.keyBy(list || [], 'id');
 const mergeByIds = (state, array) => ({...state, ...indexById(array)});
 
 const initPostViewState = (post) => {
-  const id = post.id;
-
-  const omittedComments = post.omittedComments;
-  const omittedLikes = post.omittedLikes;
+  const { id, omittedComments, omittedLikes } = post;
   const isEditing = false;
   const editingText = post.body;
 
@@ -402,7 +399,7 @@ export function postsViewState(state = {}, action) {
   }
   switch (action.type) {
     case response(ActionTypes.SHOW_MORE_LIKES_ASYNC): {
-      const id = action.payload.posts.id;
+      const { id } = action.payload.posts;
       const omittedLikes = 0;
 
       return { ...state, [id]: { ...state[id], omittedLikes, ...NO_ERROR } };
@@ -414,19 +411,19 @@ export function postsViewState(state = {}, action) {
       return { ...state, [id]: { ...state[id], isLoadingComments } };
     }
     case response(ActionTypes.SHOW_MORE_COMMENTS): {
-      const id = action.payload.posts.id;
+      const { id } = action.payload.posts;
       const isLoadingComments = false;
       const omittedComments = 0;
 
       return { ...state, [id]: { ...state[id], isLoadingComments, omittedComments, ...NO_ERROR } };
     }
     case response(ActionTypes.GET_SINGLE_POST): {
-      const id = action.payload.posts.id;
+      const { id } = action.payload.posts;
       return { ...state, [id]: initPostViewState(action.payload.posts) };
     }
     case ActionTypes.REALTIME_POST_NEW:
     case ActionTypes.REALTIME_POST_UPDATE: {
-      const id = action.post.id;
+      const { id } = action.post;
       const postAlreadyAdded = !!state[id];
       if (postAlreadyAdded) {
         return state;
@@ -467,7 +464,7 @@ export function postsViewState(state = {}, action) {
       return { ...state, [id]: { ...state[id], isSaving: true } };
     }
     case response(ActionTypes.SAVE_EDITING_POST): {
-      const id = action.payload.posts.id;
+      const { id } = action.payload.posts;
       const editingText = action.payload.posts.body;
       const isEditing = false;
       const isSaving = false;
@@ -746,10 +743,7 @@ export function postsViewState(state = {}, action) {
 
     case response(ActionTypes.CREATE_POST): {
       const post = action.payload.posts;
-      const id = post.id;
-
-      const omittedComments = post.omittedComments;
-      const omittedLikes = post.omittedLikes;
+      const { id, omittedComments, omittedLikes } = post.omittedLikes;
       const isEditing = false;
       const editingText = post.body;
 
@@ -832,7 +826,7 @@ export function posts(state = {}, action) {
       };
     }
     case response(ActionTypes.DELETE_COMMENT): {
-      const commentId = action.request.commentId;
+      const { commentId } = action.request;
       const post = _(state).find((_post) => (_post.comments||[]).indexOf(commentId) !== -1);
       if (!post) {
         return state;
@@ -1967,7 +1961,7 @@ const handleUsers = (state, action, type, errorString) => {
 
 export function usernameSubscribers(state = {}, action) {
   if (action.type == response(ActionTypes.UNSUBSCRIBE_FROM_GROUP)) {
-    const userName = action.request.userName;
+    const { userName } = action.request;
     return {
       ...state,
       payload: state.payload.filter((user) => user.username !== userName)
@@ -2001,8 +1995,7 @@ export function usernameBlockedByMe(state = {}, action) {
 }
 
 const removeItemFromGroupRequests = (state, action) => {
-  const userName = action.request.userName;
-  const groupName = action.request.groupName;
+  const { userName, groupName } = action.request;
 
   const group = state.find((group) => group.username === groupName);
 
@@ -2065,7 +2058,7 @@ export function userRequests(state = [], action) {
     }
     case response(ActionTypes.ACCEPT_USER_REQUEST):
     case response(ActionTypes.REJECT_USER_REQUEST): {
-      const userName = action.request.userName;
+      const { userName } = action.request;
       return state.filter((user) => user.username !== userName);
     }
   }
@@ -2079,7 +2072,7 @@ export function sentRequests(state = [], action) {
       return pendingSubscriptionRequests(action.payload);
     }
     case response(ActionTypes.REVOKE_USER_REQUEST): {
-      const userName = action.request.userName;
+      const { userName } = action.request;
       return state.filter((user) => user.username !== userName);
     }
   }
@@ -2174,11 +2167,11 @@ export function groupAdmins(state = [], action) {
       return (action.payload.admins || []).map(userParser);
     }
     case response(ActionTypes.MAKE_GROUP_ADMIN): {
-      const user = action.request.user;
+      const { user } = action.request;
       return [...state, user].map(userParser);
     }
     case response(ActionTypes.UNADMIN_GROUP_ADMIN): {
-      const user = action.request.user;
+      const { user } = action.request;
       return state.filter((u) => u.username !== user.username);
     }
   }

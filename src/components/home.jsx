@@ -25,8 +25,7 @@ const FeedHandler = (props) => {
       removeAttachment={props.removeAttachment}/>
   );
 
-  const userRequestsCount = props.userRequestsCount;
-  const groupRequestsCount = props.groupRequestsCount;
+  const { userRequestsCount, groupRequestsCount } = props;
   const totalRequestsCount = userRequestsCount + groupRequestsCount;
 
   const userRequestsText = pluralForm(userRequestsCount, 'subscription request');
@@ -70,18 +69,13 @@ const FeedHandler = (props) => {
 };
 
 function selectState(state) {
-  const user = state.user;
-  const authenticated = state.authenticated;
+  const { authenticated, boxHeader, createPostViewState, groupRequestsCount, timelines, user, userRequestsCount } = state;
+
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
   const hiddenEntries = state.feedViewState.hiddenEntries.map(joinPostData(state));
-  const isHiddenRevealed = state.feedViewState.isHiddenRevealed;
-  const createPostViewState = state.createPostViewState;
+  const { isHiddenRevealed } = state.feedViewState;
   const createPostForm = joinCreatePostData(state);
-  const timelines = state.timelines;
-  const boxHeader = state.boxHeader;
   const sendTo = {...state.sendTo, defaultFeed: user.username};
-  const userRequestsCount = state.userRequestsCount;
-  const groupRequestsCount = state.groupRequestsCount;
   const feedIsLoading = state.routeLoadingState;
 
   return {

@@ -17,8 +17,8 @@ class SinglePostHandler extends React.Component {
   }
 
   render() {
-    const {props} = this;
-    const post = props.post;
+    const { props } = this;
+    const { post } = props;
 
     let postBody = <div></div>;
 
@@ -69,8 +69,7 @@ class SinglePostHandler extends React.Component {
 }
 
 function selectState(state) {
-  const boxHeader = state.boxHeader;
-  const user = state.user;
+  const { boxHeader, user } = state;
 
   const post = joinPostData(state)(state.singlePostId);
   const viewState = state.postsViewState[state.singlePostId];

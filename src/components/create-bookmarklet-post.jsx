@@ -38,7 +38,7 @@ export default class CreateBookmarkletPost extends React.Component {
     // Get all the values
     const feeds = this.refs.selectFeeds.values;
     const postText = this.refs.postText.value;
-    const imageUrls = this.props.imageUrls;
+    const { imageUrls } = this.props;
     const commentText = this.refs.commentText.value;
 
     // Send to the server

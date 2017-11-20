@@ -13,7 +13,7 @@ const scrollCompensator = (dispatchAction) => (...actionParams) => {
   //we hope that markup will remain the same — best tradeoff between this and code all over components
   const postCommentNodes = [...document.querySelectorAll('.post, .comment')];
 
-  const firstVisible = postCommentNodes.filter((element) => element.getBoundingClientRect().top > 0)[0];
+  const [firstVisible] = postCommentNodes.filter((element) => element.getBoundingClientRect().top > 0);
 
   const nearestTopIndex = postCommentNodes.indexOf(firstVisible) - 1;
 

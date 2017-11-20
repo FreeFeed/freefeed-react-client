@@ -7,22 +7,14 @@ import Portal from 'react-portal';
 import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
 import UserCard from './user-card';
 
-const DisplayOption = ({user, me, preferences, applyHyphenations}) => {
-  let username, screenName;
+const DisplayOption = ({user, me, preferences}) => {
+  const { username, screenName } = user;
 
-  if (applyHyphenations) {
-    username = user.username;
-    screenName = user.screenName;
-  } else {
-    username = user.username;
-    screenName = user.screenName;
-  }
-
-  if (user.username === me && preferences.useYou) {
+  if (username === me && preferences.useYou) {
     return <span dir="ltr">You</span>;
   }
 
-  if (user.screenName === user.username) {
+  if (screenName === username) {
     return <span dir="ltr">{screenName}</span>;
   }
 
@@ -98,7 +90,7 @@ class UserName extends React.Component {
               user={this.props.user}
               me={this.props.me}
               preferences={this.props.frontendPreferences.displayNames}
-              applyHyphenations={this.props.applyHyphenations}/>
+            />
           )}
         </Link>
 

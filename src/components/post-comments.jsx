@@ -38,7 +38,7 @@ export default class PostComments extends React.Component {
   }
 
   renderAddingComment() {
-    const props = this.props;
+    const { props } = this;
     return (
       <PostComment
         id={props.post.id}
@@ -57,7 +57,7 @@ export default class PostComments extends React.Component {
   }
 
   renderAddCommentLink() {
-    const props = this.props;
+    const { props } = this;
     const disabledForOthers = (props.post.commentsDisabled && props.post.isEditable);
     const toggleCommenting = props.post.isSinglePost ? () => {} : () => props.toggleCommenting(props.post.id);
 
@@ -81,7 +81,7 @@ export default class PostComments extends React.Component {
   }
 
   renderComment(comment) {
-    const props = this.props;
+    const { props } = this;
     return (
       <PostComment
         key={comment.id}

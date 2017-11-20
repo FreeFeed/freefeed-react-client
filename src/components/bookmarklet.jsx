@@ -23,7 +23,7 @@ class Layout extends React.Component {
   handleHashChange = () => {
     // Add the image passed via #hash
     const url = window.location.hash.slice(1);
-    const imageUrls = this.state.imageUrls;
+    const { imageUrls } = this.state;
     if (imageUrls.indexOf(url) === -1) {
       imageUrls.push(url);
       this.setState({imageUrls});
@@ -68,7 +68,7 @@ class Layout extends React.Component {
   }
 
   render() {
-    const props = this.props;
+    const { props } = this;
 
     const layoutClassNames = classnames({
       'container': true,
@@ -109,11 +109,9 @@ class Layout extends React.Component {
 }
 
 function selectState(state) {
-  const authenticated = state.authenticated;
-  const user = state.user;
+  const { authenticated, createPostViewState, user } = state;
   const sendTo = {...state.sendTo, defaultFeed: user.username};
   const createPostForm = joinCreatePostData(state);
-  const createPostViewState = state.createPostViewState;
 
   return {
     authenticated,

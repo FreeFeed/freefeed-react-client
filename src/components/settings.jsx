@@ -23,7 +23,7 @@ class Settings extends React.Component {
   }
 
   render() {
-    const props = this.props;
+    const { props } = this;
 
     if (!props.authenticated) {
       return (

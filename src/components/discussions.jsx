@@ -37,13 +37,9 @@ const FeedHandler = (props) => {
 };
 
 function selectState(state) {
-  const user = state.user;
-  const authenticated = state.authenticated;
+  const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
-  const createPostViewState = state.createPostViewState;
   const createPostForm = joinCreatePostData(state);
-  const timelines = state.timelines;
-  const boxHeader = state.boxHeader;
   const defaultFeed = state.routing.locationBeforeTransitions.query.to || user.username;
   const invitation = formatInvitation(state.routing.locationBeforeTransitions.query.invite);
   const sendTo = {...state.sendTo, defaultFeed, invitation};

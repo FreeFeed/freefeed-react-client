@@ -17,7 +17,7 @@ export function getCookie(name) {
   const fromBegin = document.cookie.substr(begin);
   const tokenWithName = fromBegin.split(';');
   const tokenWithNameSplit = tokenWithName[0].split('=');
-  const token = tokenWithNameSplit[1];
+  const [, token] = tokenWithNameSplit;
   return token.trim();
 }
 

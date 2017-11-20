@@ -82,7 +82,7 @@ export default class SendTo extends React.Component {
   }
 
   render() {
-    const defaultOpt = this.state.values[0];
+    const [defaultOpt] = this.state.values;
 
     return (
       <div className="send-to">

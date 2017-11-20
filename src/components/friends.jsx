@@ -83,7 +83,7 @@ function selectState(state) {
     header: 'Blocked',
     users: state.usernameBlockedByMe.payload
   };
-  const sentRequests = state.sentRequests;
+  const { sentRequests } = state;
 
   return { feedRequests, subscriptions, mutual, blockedByMe, sentRequests };
 }

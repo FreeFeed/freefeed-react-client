@@ -120,7 +120,7 @@ class Layout extends React.Component {
   }
 
   render() {
-    const props = this.props;
+    const { props } = this;
 
     const layoutClassNames = classnames({
       'container': true,

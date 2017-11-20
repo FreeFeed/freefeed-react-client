@@ -81,13 +81,13 @@ const boundRouteActions = bindRouteActions(store.dispatch);
 const history = syncHistoryWithStore(browserHistory, store);
 
 const manageSubscribersActions = (next) => {
-  const username = next.params.userName;
-  store.dispatch(ActionCreators.getUserInfo(username));
-  store.dispatch(ActionCreators.subscribers(username));
+  const { userName } = next.params;
+  store.dispatch(ActionCreators.getUserInfo(userName));
+  store.dispatch(ActionCreators.subscribers(userName));
 };
 
 const friendsActions = () => {
-  const username = store.getState().user.username;
+  const { username } = store.getState().user;
   store.dispatch(ActionCreators.subscribers(username));
   store.dispatch(ActionCreators.subscriptions(username));
   store.dispatch(ActionCreators.blockedByMe(username));
@@ -95,9 +95,9 @@ const friendsActions = () => {
 
 // needed to display mutual friends
 const subscribersSubscriptionsActions = (next) => {
-  const username = next.params.userName;
-  store.dispatch(ActionCreators.subscribers(username));
-  store.dispatch(ActionCreators.subscriptions(username));
+  const { userName } = next.params;
+  store.dispatch(ActionCreators.subscribers(userName));
+  store.dispatch(ActionCreators.subscriptions(userName));
 };
 
 const enterStaticPage = (title) => () => {
