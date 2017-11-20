@@ -104,7 +104,7 @@ export const joinPostData = state => postId => {
   }, []);
 
   if (postViewState.omittedComments !== 0 && comments.length > 2) {
-    comments = [ comments[0], comments[comments.length - 1] ];
+    comments = [comments[0], comments[comments.length - 1]];
   }
 
   let usersLikedPost = (post.likes || []).map(userId => state.users[userId]);

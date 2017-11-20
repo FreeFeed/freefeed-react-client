@@ -33,6 +33,7 @@
     }
   },
   "rules": {
+    "array-bracket-spacing": 2,
     "brace-style": [2, "1tbs", { "allowSingleLine": true }],
     "curly": ["error", "all"],
     "eol-last": "error",

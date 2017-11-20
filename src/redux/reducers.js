@@ -1374,7 +1374,7 @@ export function subscribers(state = {}, action) {
     case ActionTypes.REALTIME_POST_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW:
     case ActionTypes.REALTIME_LIKE_NEW: {
-      const subscribers = !action.post ? action.subscribers || [] : [...(action.subscribers || []), ...(action.post.subscribers || []) ];
+      const subscribers = !action.post ? action.subscribers || [] : [...(action.subscribers || []), ...(action.post.subscribers || [])];
       return mergeByIds(state, (subscribers || []).map(userParser));
     }
     case response(ActionTypes.WHO_AM_I):
@@ -1830,7 +1830,7 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
       const groupId = action.payload.groups.id;
       const group = userParser(action.payload.groups);
       return {...state,
-        feeds: [ ...state.feeds, { id: groupId, user: group } ]
+        feeds: [...state.feeds, { id: groupId, user: group }]
       };
     }
     case response(ActionTypes.SUBSCRIBE):
