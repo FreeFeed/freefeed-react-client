@@ -57,7 +57,7 @@ if (store.getState().authenticated) {
     delay = 200;
   }
 
-  setTimeout(function() {
+  setTimeout(() => {
     store.dispatch(ActionCreators.whoAmI());
   }, delay);
 } else {

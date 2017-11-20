@@ -63,7 +63,7 @@ function select(state) {
 
 export default ScrollSafe(connect(select)(EmbedlyPreview));
 
-embedly('on', 'card.resize', function(iframe) {
+embedly('on', 'card.resize', (iframe) => {
   const cont = iframe.closest('.embedly-preview');
   if (!cont) {
     return;
