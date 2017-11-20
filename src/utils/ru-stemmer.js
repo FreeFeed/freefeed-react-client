@@ -16,7 +16,7 @@ const
   P = /ь$/i,
   NN = /нн$/i;
 
-export default function(word) {
+export default function (word) {
   word = word.replace(/ё/gi, 'e');
   const wParts = word.match(RVRE);
   if (!wParts) {

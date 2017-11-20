@@ -225,7 +225,7 @@ const initFeed = {
   isLastPage: true,
 };
 
-const hidePostInFeed = function(state, postId) {
+const hidePostInFeed = function (state, postId) {
   if (!state.separateHiddenEntries) {
     return state;
   }
@@ -241,7 +241,7 @@ const hidePostInFeed = function(state, postId) {
   };
 };
 
-const unhidePostInFeed = function(state, postId) {
+const unhidePostInFeed = function (state, postId) {
   if (!state.separateHiddenEntries) {
     return state;
   }
@@ -1768,14 +1768,14 @@ function getValidRecipients(state) {
     }
   }).filter(Boolean);
 
-  const canPostToGroup = function(subUser) {
+  const canPostToGroup = function (subUser) {
     return (
       (subUser.isRestricted === '0') ||
       ((subUser.administrators || []).indexOf(state.users.id) > -1)
     );
   };
 
-  const canSendDirect = function(subUser) {
+  const canSendDirect = function (subUser) {
     return (_.findIndex(state.users.subscribers || [], { 'id': subUser.id }) > -1);
   };
 

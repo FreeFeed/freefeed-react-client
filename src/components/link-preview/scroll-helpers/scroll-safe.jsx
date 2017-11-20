@@ -42,7 +42,7 @@ export default function ScrollSafe(arg1, arg2) {
   const Child = arg1;
   const {foldable, trackResize} = {...defaultOptions, ...(arg2 || {})};
 
-  const foo = function(props) {
+  const foo = function (props) {
     let content = <Child {...props}/>;
     if (trackResize) {
       content = <ResizeTracker>{content}</ResizeTracker>;

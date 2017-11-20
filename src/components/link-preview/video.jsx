@@ -36,7 +36,7 @@ class VideoPreview extends React.Component {
 
   loadPlayer = () => this.setState({player: !this.state.player});
 
-  loadInfo = async() => this.setState({info: await getVideoInfo(this.props.url)});
+  loadInfo = async () => this.setState({info: await getVideoInfo(this.props.url)});
 
   constructor(props) {
     super(props);

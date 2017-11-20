@@ -12,7 +12,7 @@ import * as ActionTypes from './action-types';
 import {request, response, fail, requiresAuth, isFeedRequest, isFeedResponse} from './action-helpers';
 
 //middleware for api requests
-export const apiMiddleware = (store) => (next) => async(action) => {
+export const apiMiddleware = (store) => (next) => async (action) => {
   //ignore normal actions
   if (!action.apiRequest) {
     return next(action);
@@ -312,7 +312,7 @@ const iLikedPost = ({user, posts}, postId) => {
   const likes = post.likes || [];
   return likes.indexOf(user.id) !== -1;
 };
-const dispatchWithPost = async(store, postId, action, filter = () => true, maxDelay = 0) => {
+const dispatchWithPost = async (store, postId, action, filter = () => true, maxDelay = 0) => {
   let state = store.getState();
   const shouldBump = isFirstPage(state);
 
@@ -371,14 +371,14 @@ const bindHandlers = (store) => ({
   'post:destroy': (data) => store.dispatch({type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId}),
   'post:hide': (data) => store.dispatch({type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId}),
   'post:unhide': (data) => store.dispatch({type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId}),
-  'comment:new': async(data) => {
+  'comment:new': async (data) => {
     const { postId } = data.comments;
     const action = {...data, type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments};
     return dispatchWithPost(store, postId, action, () => true, postFetchDelay);
   },
   'comment:update': (data) => store.dispatch({...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments}),
   'comment:destroy': (data) => store.dispatch({type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId, postId: data.postId}),
-  'like:new': async(data) => {
+  'like:new': async (data) => {
     const { postId } = data.meta;
     const iLiked = iLikedPost(store.getState(), data.meta.postId);
     const action = {type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, users:[data.users], iLiked};

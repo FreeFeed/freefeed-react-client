@@ -119,7 +119,7 @@ export default class Post extends React.Component {
     const toggleCommenting = props.isSinglePost ? () => {
     } : () => props.toggleCommenting(props.id);
 
-    const recipientCustomDisplay = function(recipient) {
+    const recipientCustomDisplay = function (recipient) {
       if (recipient.id !== props.createdBy.id) {
         return false;
       }
