@@ -73,6 +73,7 @@
       "asyncArrow": "always",
       "named": "never"
     }],
+    "space-in-parens": [2, "never"],
     "template-curly-spacing": 2,
 
     "import/default": "error",

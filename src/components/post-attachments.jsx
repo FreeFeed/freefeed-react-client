@@ -53,5 +53,5 @@ export default (props) => {
       {audioAttachmentsContainer}
       {generalAttachmentsContainer}
     </div>
-  ) : false );
+  ) : false);
 };

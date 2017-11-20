@@ -70,7 +70,7 @@ function selectState(state, ownProps) {
   const users = _.sortBy(usersWhoAreNotAdmins, 'username');
 
   const amILastGroupAdmin = (
-    groupAdmins.find((u) => u.username == state.user.username ) != null &&
+    groupAdmins.find((u) => u.username == state.user.username) != null &&
     groupAdmins.length == 1
   );
 
