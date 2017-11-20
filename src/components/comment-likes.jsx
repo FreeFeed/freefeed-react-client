@@ -126,7 +126,7 @@ export default class CommentLikes extends React.Component {
                       <i className="fa fa-heart-o" aria-hidden="true"/>
                       It"s your own comment
                     </div>
-                    : <button  className={`mention-action ${this.props.hasOwnLike ? "un":""}like`}
+                    : <button  className={`mention-action ${this.props.hasOwnLike ? "un" : ""}like`}
                       onClick={this.props.toggleLike}>
                       <i className="fa fa-heart" aria-hidden="true"/>
                       {`${this.props.hasOwnLike ? "Un-like" : "Like"} comment`}
@@ -212,7 +212,7 @@ export default class CommentLikes extends React.Component {
     setTimeout(this.getCommentLikes, 0);
     const {loading, likes: likeUsers} = likesList;
     if (loading) {
-      const likesNumber = hasOwnLike ? likes-1 : likes;
+      const likesNumber = hasOwnLike ? likes - 1 : likes;
       return <span>{hasOwnLike && `You${likesNumber > 0 ? " and " : ""}`}{likesNumber > 0 &&
           <a className="likes-list-toggle" onClick={this.showLikesList} href="#">{likesNumber} {usersPluralize(likesNumber)}</a>}
       <span> liked this comment</span>
@@ -241,7 +241,7 @@ function renderMobileLikesList(likesList) {
 function renderUserLikesList(userLikes) {
   const maxIndex = userLikes.length - 1;
   return userLikes.map((likeUser, i) => <span key={i}>
-    <UserName user={likeUser}/>{i < maxIndex ? ", ": ""}
+    <UserName user={likeUser}/>{i < maxIndex ? ", " : ""}
   </span>);
 }
 

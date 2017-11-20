@@ -101,7 +101,7 @@ class Linkify extends React.Component {
           href = `mailto:${it.address}`;
         } else if (it.type === HASHTAG) {
           if (searchConfig.searchEngine) {
-            href = searchConfig.searchEngine+encodeURIComponent(it.text);
+            href = searchConfig.searchEngine + encodeURIComponent(it.text);
           } else {
             it.type = LOCAL_LINK;
             href = { pathname: '/search', query: { qs: it.text } };

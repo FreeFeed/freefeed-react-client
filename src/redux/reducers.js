@@ -77,7 +77,7 @@ export function title(state = '', action) {
   return state;
 }
 
-export function signInForm(state={username:'', password:'', error:'', loading: false}, action) {
+export function signInForm(state = {username:'', password:'', error:'', loading: false}, action) {
   switch (action.type) {
     case ActionTypes.SIGN_IN_CHANGE: {
       return {
@@ -109,7 +109,7 @@ export function signInForm(state={username:'', password:'', error:'', loading: f
 const defaultRestoreHeader = 'Reset FreeFeed Password';
 const successRestoreHeader = 'Please check your email for password reset instructions.';
 
-export function restorePassForm(state={error:'', loading: false, header: defaultRestoreHeader}, action) {
+export function restorePassForm(state = {error:'', loading: false, header: defaultRestoreHeader}, action) {
   switch (action.type) {
     case request(ActionTypes.RESTORE_PASSWORD): {
       return {...state, loading: true, header: defaultRestoreHeader };
@@ -127,7 +127,7 @@ export function restorePassForm(state={error:'', loading: false, header: default
 const defaultResetHeader = 'Reset FreeFeed Password';
 const successResetHeader = 'Please log in with your new password';
 
-export function resetPassForm(state={error:'', loading: false, header: defaultResetHeader}, action) {
+export function resetPassForm(state = {error:'', loading: false, header: defaultResetHeader}, action) {
   switch (action.type) {
     case request(ActionTypes.RESET_PASSWORD): {
       return {...state, loading: true, header: defaultResetHeader };
@@ -155,7 +155,7 @@ const INITIAL_SIGN_UP_FORM_STATE = {
   loading: false,
 };
 
-export function signUpForm(state=INITIAL_SIGN_UP_FORM_STATE, action) {
+export function signUpForm(state = INITIAL_SIGN_UP_FORM_STATE, action) {
   switch (action.type) {
     case ActionTypes.SIGN_UP_CHANGE: {
       return {
@@ -827,7 +827,7 @@ export function posts(state = {}, action) {
     }
     case response(ActionTypes.DELETE_COMMENT): {
       const { commentId } = action.request;
-      const post = _(state).find((_post) => (_post.comments||[]).indexOf(commentId) !== -1);
+      const post = _(state).find((_post) => (_post.comments || []).indexOf(commentId) !== -1);
       if (!post) {
         return state;
       }
@@ -853,7 +853,7 @@ export function posts(state = {}, action) {
     }
     case response(ActionTypes.ADD_COMMENT): {
       const post = state[action.request.postId];
-      const commentAlreadyAdded = post.comments && post.comments.indexOf(action.payload.comments.id)!==-1;
+      const commentAlreadyAdded = post.comments && post.comments.indexOf(action.payload.comments.id) !== -1;
       if (commentAlreadyAdded) {
         return state;
       }
@@ -1057,7 +1057,7 @@ export function posts(state = {}, action) {
           [action.post.posts.id]: postParser(action.post.posts)
         };
       }
-      const commentAlreadyAdded = post.comments && post.comments.indexOf(action.comment.id)!==-1;
+      const commentAlreadyAdded = post.comments && post.comments.indexOf(action.comment.id) !== -1;
       if (commentAlreadyAdded) {
         return state;
       }
@@ -1204,7 +1204,7 @@ function updateCommentViewState(state, action) {
   return {...viewStateMap, ...state};
 }
 
-export function commentViewState(state={}, action) {
+export function commentViewState(state = {}, action) {
   if (ActionHelpers.isFeedResponse(action)) {
     return updateCommentViewState(state, action);
   }
@@ -1460,7 +1460,7 @@ const DEFAULT_PASSWORD_FORM_STATE = {
   errorText: '',
 };
 
-export function passwordForm(state=DEFAULT_PASSWORD_FORM_STATE, action) {
+export function passwordForm(state = DEFAULT_PASSWORD_FORM_STATE, action) {
   switch (action.type) {
     case request(ActionTypes.UPDATE_PASSWORD): {
       return {...state, isSaving: true, error: false, success: false};
@@ -1546,7 +1546,7 @@ export function subscriptions(state = {}, action) {
   return state;
 }
 
-export function userSettingsForm(state={saved: false}, action) {
+export function userSettingsForm(state = {saved: false}, action) {
   switch (action.type) {
     case ActionTypes.USER_SETTINGS_CHANGE: {
       return {...state, ...action.payload, success: false, error: false};
@@ -1567,7 +1567,7 @@ export function userSettingsForm(state={saved: false}, action) {
   return state;
 }
 
-export function frontendPreferencesForm(state={}, action) {
+export function frontendPreferencesForm(state = {}, action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
       return {...state, ...action.payload.users.frontendPreferences[frontendPrefsConfig.clientId]};
@@ -1588,7 +1588,7 @@ export function frontendPreferencesForm(state={}, action) {
   return state;
 }
 
-export function userPictureForm(state={}, action) {
+export function userPictureForm(state = {}, action) {
   switch (action.type) {
     case request(ActionTypes.UPDATE_USER_PICTURE): {
       return {...state, status: 'loading'};
@@ -1606,7 +1606,7 @@ export function userPictureForm(state={}, action) {
   return state;
 }
 
-export function groupSettings(state={}, action) {
+export function groupSettings(state = {}, action) {
   switch (action.type) {
     case request(ActionTypes.GET_USER_INFO): {
       return {...state, status: 'loading'};
@@ -1621,7 +1621,7 @@ export function groupSettings(state={}, action) {
   return state;
 }
 
-export function groupCreateForm(state={}, action) {
+export function groupCreateForm(state = {}, action) {
   switch (action.type) {
     case request(ActionTypes.CREATE_GROUP): {
       return {...state, status: 'loading'};
@@ -1640,7 +1640,7 @@ export function groupCreateForm(state={}, action) {
   return state;
 }
 
-export function groupSettingsForm(state={}, action) {
+export function groupSettingsForm(state = {}, action) {
   switch (action.type) {
     case request(ActionTypes.UPDATE_GROUP): {
       return {...state, status: 'loading'};
@@ -1658,7 +1658,7 @@ export function groupSettingsForm(state={}, action) {
   return state;
 }
 
-export function groupPictureForm(state={}, action) {
+export function groupPictureForm(state = {}, action) {
   switch (action.type) {
     case request(ActionTypes.UPDATE_GROUP_PICTURE): {
       return {...state, status: 'loading'};
@@ -2128,7 +2128,7 @@ const initialRealtimeSettings = {
   errorMessage: '',
 };
 
-export function frontendRealtimePreferencesForm(state=initialRealtimeSettings, action) {
+export function frontendRealtimePreferencesForm(state = initialRealtimeSettings, action) {
   switch (action.type) {
     case ActionTypes.TOGGLE_REALTIME: {
       return {...state, realtimeActive: !state.realtimeActive, status: ''};
@@ -2143,7 +2143,7 @@ export function frontendRealtimePreferencesForm(state=initialRealtimeSettings, a
 
 const initialNotificationsForm = {};
 
-export function userNotificationsForm(state=initialNotificationsForm, action) {
+export function userNotificationsForm(state = initialNotificationsForm, action) {
   switch (action.type) {
     case request(ActionTypes.UPDATE_USER_NOTIFICATION_PREFERENCES): {
       return {...state, status: 'loading'};
@@ -2179,7 +2179,7 @@ export function groupAdmins(state = [], action) {
   return state;
 }
 
-export function commentsHighlights(state={}, action) {
+export function commentsHighlights(state = {}, action) {
   switch (action.type) {
     case ActionTypes.HIGHLIGHT_COMMENT: {
       return {

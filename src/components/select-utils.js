@@ -88,7 +88,7 @@ export const joinPostData = (state) => (postId) => {
         Raven.captureMessage(`We've got comment with unknown author with id`, { extra: { uid: placeholderUser.id }});
       }
     }
-    const previousPost = _comments[index-1] || {createdBy: null, createdAt: "0"};
+    const previousPost = _comments[index - 1] || {createdBy: null, createdAt: "0"};
     const omitBubble = omitRepeatedBubbles
       && postViewState.omittedComments === 0
       && !comment.hideType
@@ -128,7 +128,7 @@ export const joinPostData = (state) => (postId) => {
   // Check if the post is a direct message
   const directRecipients = post.postedTo
     .filter((subscriptionId) => {
-      const subscriptionType = (state.subscriptions[subscriptionId]||{}).name;
+      const subscriptionType = (state.subscriptions[subscriptionId] || {}).name;
       return (subscriptionType === 'Directs');
     });
   const isDirect = !!directRecipients.length;
@@ -136,8 +136,8 @@ export const joinPostData = (state) => (postId) => {
   // Get the list of post's recipients
   const recipients = post.postedTo
     .map((subscriptionId) => {
-      const userId = (state.subscriptions[subscriptionId]||{}).user;
-      const subscriptionType = (state.subscriptions[subscriptionId]||{}).name;
+      const userId = (state.subscriptions[subscriptionId] || {}).user;
+      const subscriptionType = (state.subscriptions[subscriptionId] || {}).name;
       const isDirectToSelf = userId === post.createdBy && subscriptionType === 'Directs';
       return !isDirectToSelf ? userId : false;
     })

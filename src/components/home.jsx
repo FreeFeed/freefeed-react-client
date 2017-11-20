@@ -51,7 +51,7 @@ const FeedHandler = (props) => {
                 {bothRequestsDisplayed ? (<span> and </span>) : false}
                 {groupRequestsCount > 0 ? (<Link to="/groups">{groupRequestsText}</Link>) : false}
               </span>
-            ):false}
+            ) : false}
           </span>
         </div>
       ) : false}

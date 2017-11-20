@@ -82,7 +82,7 @@ class VideoPreview extends React.Component {
 
     // video will have the same area as 16x9 450px-width rectangle
     const r = info ? info.aspectRatio : aspectRatio.get(url, getDefaultAspectRatio(url));
-    const width = 450 * Math.sqrt((9/16) / r);
+    const width = 450 * Math.sqrt((9 / 16) / r);
     previewStyle.paddingBottom = `${100 * r}%`;
 
     return (
@@ -132,11 +132,11 @@ function getVideoId(url) {
 }
 
 function getDefaultAspectRatio(url) {
-  if (YOUTUBE_VIDEO_RE.test(url)) { return 9/16; }
-  if (VIMEO_VIDEO_RE.test(url)) { return 9/16; }
+  if (YOUTUBE_VIDEO_RE.test(url)) { return 9 / 16; }
+  if (VIMEO_VIDEO_RE.test(url)) { return 9 / 16; }
   if (COUB_VIDEO_RE.test(url)) { return 1; }
-  if (IMGUR_GIFV_RE.test(url)) { return 9/16; }
-  if (GFYCAT_RE.test(url)) { return 9/16; }
+  if (IMGUR_GIFV_RE.test(url)) { return 9 / 16; }
+  if (GFYCAT_RE.test(url)) { return 9 / 16; }
   return null;
 }
 

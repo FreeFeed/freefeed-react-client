@@ -27,7 +27,7 @@ class GoogleDocsPreview extends React.Component {
     const type = t1 || t2;
     this.setState({type});
     const img = new Image();
-    img.onload = () => this.setState({preview: img.src, aspectRatio: img.width/img.height});
+    img.onload = () => this.setState({preview: img.src, aspectRatio: img.width / img.height});
     img.onerror = () => this.setState({isError: true});
     const imgWidth = 500 * zoomRate(type);
     img.src = `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&authuser=0&sz=w${imgWidth}`;
@@ -62,7 +62,7 @@ class GoogleDocsPreview extends React.Component {
           style={{
             backgroundSize: `${zoomRate(type) * 100}%`,
             backgroundImage: preview ? `url(${preview})` : null,
-            paddingBottom: `${100/(aspectRatio >= maxAspectRatio ? aspectRatio : defaultAspectRatio)}%`,
+            paddingBottom: `${100 / (aspectRatio >= maxAspectRatio ? aspectRatio : defaultAspectRatio)}%`,
             backgroundPosition: `center ${55 * aspectRatio * (zoomRate(type) - 1)}%`,
           }}/>
       </div>

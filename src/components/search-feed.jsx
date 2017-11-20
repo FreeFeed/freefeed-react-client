@@ -4,7 +4,7 @@ import {joinPostData, postActions} from './select-utils';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
 
-const searchHelper =<div className='search-memo'>
+const searchHelper = <div className='search-memo'>
   <div className='search-memo-header'>Advanced search operators</div>
   {/*<div className='search-operator'>*/}
   {/*<span className='operator'>-</span>*/}

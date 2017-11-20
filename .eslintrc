@@ -74,6 +74,7 @@
       "named": "never"
     }],
     "space-in-parens": [2, "never"],
+    "space-infix-ops": 2,
     "template-curly-spacing": 2,
 
     "import/default": "error",

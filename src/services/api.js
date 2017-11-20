@@ -559,11 +559,11 @@ export function getUserSummary({ username, days }) {
   return fetch(`${apiConfig.host}/v2/summary/${username}/${days}`, getRequestOptions());
 }
 
-export function getSearch({search='', offset=0}) {
+export function getSearch({search = '', offset = 0}) {
   return fetch(`${apiConfig.host}/v2/search?qs=${encodeURIComponent(search)}&offset=${offset}`, getRequestOptions());
 }
 
-export function getBestOf({offset=0}) {
+export function getBestOf({offset = 0}) {
   return fetch(`${apiConfig.host}/v2/bestof?offset=${offset}`, getRequestOptions());
 }
 
