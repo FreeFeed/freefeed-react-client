@@ -80,7 +80,7 @@ class Linkify extends React.Component {
     this.idx = 0;
 
     try {
-      finder.parse(string).map(it => {
+      finder.parse(string).map((it) => {
         let displayedLink = it.text;
         let href;
 
@@ -142,7 +142,7 @@ class Linkify extends React.Component {
         this.parse(children.props.children, hlTerms)
       );
     } else if (children instanceof Array) {
-      parsed = children.map(child => {
+      parsed = children.map((child) => {
         return this.parse(child, hlTerms);
       });
     }

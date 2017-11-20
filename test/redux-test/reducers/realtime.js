@@ -24,7 +24,7 @@ const removeRealtimeCommentAction = {
   commentId: 2,
 };
 
-test('number of omitted comments raised by new realtime comment', t => {
+test('number of omitted comments raised by new realtime comment', (t) => {
   const result = postsViewState(postsViewStateBefore, newRealtimeCommentAction);
 
   t.equal(result[testPost.id].omittedComments, testPost.omittedComments + 1);
@@ -32,7 +32,7 @@ test('number of omitted comments raised by new realtime comment', t => {
   t.end();
 });
 
-test('number of omitted comments decreased by realtime comment deletion', t => {
+test('number of omitted comments decreased by realtime comment deletion', (t) => {
   const result = postsViewState(postsViewStateBefore, removeRealtimeCommentAction);
 
   t.equal(result[testPost.id].omittedComments, testPost.omittedComments - 1);
@@ -47,7 +47,7 @@ const testUser = {
 
 const usersBefore = {[testUser.id]: testUser};
 
-test('new post doesn\'t add user if presented', t => {
+test('new post doesn\'t add user if presented', (t) => {
   const result = users(usersBefore, {
     type: REALTIME_POST_NEW,
     users: [{id: 1}],
@@ -58,7 +58,7 @@ test('new post doesn\'t add user if presented', t => {
   t.end();
 });
 
-test('new comment doesn\'t add user if presented', t => {
+test('new comment doesn\'t add user if presented', (t) => {
   const result = users(usersBefore, {
     type: REALTIME_COMMENT_NEW,
     users: [{id: 1}],
@@ -69,7 +69,7 @@ test('new comment doesn\'t add user if presented', t => {
   t.end();
 });
 
-test('new like doesn\'t add user if presented', t => {
+test('new like doesn\'t add user if presented', (t) => {
   const result = users(usersBefore, {
     type: REALTIME_LIKE_NEW,
     users: [{id: 1}],
@@ -86,7 +86,7 @@ const anotherTestUser = {
   name: 'Arara',
 };
 
-test('new post adds user if not presented', t => {
+test('new post adds user if not presented', (t) => {
   const result = users(usersBefore, {
     type: REALTIME_POST_NEW,
     users: [anotherTestUser],
@@ -98,7 +98,7 @@ test('new post adds user if not presented', t => {
   t.end();
 });
 
-test('new comment adds user if not presented', t => {
+test('new comment adds user if not presented', (t) => {
   const result = users(usersBefore, {
     type: REALTIME_COMMENT_NEW,
     users: [anotherTestUser],
@@ -109,7 +109,7 @@ test('new comment adds user if not presented', t => {
   t.end();
 });
 
-test('new like adds user if not presented', t => {
+test('new like adds user if not presented', (t) => {
   const result = users(usersBefore, {
     type: REALTIME_LIKE_NEW,
     users: [anotherTestUser],
@@ -133,7 +133,7 @@ const testLikePosts = {
   [testLikePost.id]: testLikePost
 };
 
-test('new like adds after me if I liked the post', t => {
+test('new like adds after me if I liked the post', (t) => {
   const newLikeAfterMe = {
     type: REALTIME_LIKE_NEW,
     postId: testLikePost.id,
@@ -150,7 +150,7 @@ test('new like adds after me if I liked the post', t => {
   t.end();
 });
 
-test('new like adds at first position if I didn\'t like the post', t => {
+test('new like adds at first position if I didn\'t like the post', (t) => {
   const newLikeWithoutMe = {
     type: REALTIME_LIKE_NEW,
     postId: testLikePost.id,
@@ -167,7 +167,7 @@ test('new like adds at first position if I didn\'t like the post', t => {
   t.end();
 });
 
-test('new comment with post attached adds postViewState for the post', t => {
+test('new comment with post attached adds postViewState for the post', (t) => {
   const newPost = {
     id: '1'
   };
@@ -190,7 +190,7 @@ test('new comment with post attached adds postViewState for the post', t => {
   t.end();
 });
 
-test('new comment with post attached adds post to the posts', t => {
+test('new comment with post attached adds post to the posts', (t) => {
   const newPost = {
     id: '1'
   };
@@ -213,7 +213,7 @@ test('new comment with post attached adds post to the posts', t => {
   t.end();
 });
 
-test('new like with post attached adds postViewState for the post', t => {
+test('new like with post attached adds postViewState for the post', (t) => {
   const newPost = {
     id: '1'
   };
@@ -234,7 +234,7 @@ test('new like with post attached adds postViewState for the post', t => {
   t.end();
 });
 
-test('new like with post attached adds post to the posts', t => {
+test('new like with post attached adds post to the posts', (t) => {
   const newPost = {
     id: '1',
   };

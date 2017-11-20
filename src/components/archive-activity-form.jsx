@@ -15,9 +15,9 @@ export default class ArchiveActivityForm extends React.Component {
     checked: false,
   };
 
-  setChecked = e => this.setState({checked: e.target.checked});
+  setChecked = (e) => this.setState({checked: e.target.checked});
 
-  action = e => {
+  action = (e) => {
     e.preventDefault();
     if (this.canSubmit()) {
       this.props.action();

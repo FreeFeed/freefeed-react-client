@@ -45,14 +45,14 @@ function selectState(state, ownProps) {
   const username = ownProps.params.userName;
   const isPending = state.usernameSubscribers.isPending;
   const errorString = state.usernameSubscribers.errorString;
-  const amIGroupAdmin = (state.managedGroups.find(group => group.username == username) != null);
+  const amIGroupAdmin = (state.managedGroups.find((group) => group.username == username) != null);
 
-  const thisUser = [..._.values(state.users), ..._.values(state.groups)].find(u => u.username == username);
+  const thisUser = [..._.values(state.users), ..._.values(state.groups)].find((u) => u.username == username);
   const thisIsGroup = thisUser && thisUser.type === 'group';
   const adminIds = thisIsGroup ? thisUser.administrators : [];
 
   const isMyPage = state.user.username === username;
-  const subscriptionsUsernames = state.usernameSubscriptions.payload && state.usernameSubscriptions.payload.map(user => user.username);
+  const subscriptionsUsernames = state.usernameSubscriptions.payload && state.usernameSubscriptions.payload.map((user) => user.username);
 
   const listSections = [
     {title: thisIsGroup ? 'Members' : null, users: []},
@@ -60,8 +60,8 @@ function selectState(state, ownProps) {
   ];
 
   _.sortBy(state.usernameSubscribers.payload, 'username')
-    .forEach(u => {
-      const isAdmin = adminIds.some(id => id === u.id);
+    .forEach((u) => {
+      const isAdmin = adminIds.some((id) => id === u.id);
       // "mutual" markings should be displayed only if browsing my own subscribers
       u.isMutual = isMyPage && subscriptionsUsernames.indexOf(u.username) > -1;
       listSections[isAdmin ? 1 : 0].users.push(u);

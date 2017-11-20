@@ -25,7 +25,7 @@ const getRenderedOmmitedLikes = (likes, omittedLikes) => {
   return ommitedLikesNumber;
 };
 
-test('PostLikes renders all likes', t => {
+test('PostLikes renders all likes', (t) => {
 
   const likes = [];
 
@@ -40,7 +40,7 @@ test('PostLikes renders all likes', t => {
   t.end();
 });
 
-test('PostLikes renders omitted likes number', t => {
+test('PostLikes renders omitted likes number', (t) => {
 
   const ommitLikes = 10;
 

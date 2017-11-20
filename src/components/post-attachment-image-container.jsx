@@ -26,7 +26,7 @@ export default class ImageAttachmentsContainer extends React.Component {
   lightbox = null;
 
   getItemWidths() {
-    return this.props.attachments.map(({imageSizes: {t, o}}) => t ? t.w : (o ? o.w : 0)).map(w => w + bordersSize + spaceSize);
+    return this.props.attachments.map(({imageSizes: {t, o}}) => t ? t.w : (o ? o.w : 0)).map((w) => w + bordersSize + spaceSize);
   }
 
   getContentWidth() {
@@ -58,7 +58,7 @@ export default class ImageAttachmentsContainer extends React.Component {
   }
 
   getLightboxItems() {
-    return this.props.attachments.map(a => ({
+    return this.props.attachments.map((a) => ({
       src: a.url,
       w: a.imageSizes && a.imageSizes.o && a.imageSizes.o.w || 0,
       h: a.imageSizes && a.imageSizes.o && a.imageSizes.o.h || 0,

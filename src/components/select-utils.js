@@ -56,21 +56,21 @@ const selectCommentLikes = ({commentLikes, users}, commentId) => {
   return {...commentLikes[commentId], likes};
 };
 
-const getCommentId = hash => {
+const getCommentId = (hash) => {
   if (!hash) {
     return '';
   }
   return hash.replace('#comment-', '');
 };
 
-export const joinPostData = state => postId => {
+export const joinPostData = (state) => (postId) => {
   const post = state.posts[postId];
   if (!post) {
     return;
   }
   const user = state.user;
 
-  const attachments = (post.attachments || []).map(attachmentId => state.attachments[attachmentId]);
+  const attachments = (post.attachments || []).map((attachmentId) => state.attachments[attachmentId]);
   const postViewState = state.postsViewState[post.id];
   const omitRepeatedBubbles = state.user.frontendPreferences.comments.omitRepeatedBubbles;
   const hashedCommentId = getCommentId(state.routing.locationBeforeTransitions.hash);
@@ -107,7 +107,7 @@ export const joinPostData = state => postId => {
     comments = [comments[0], comments[comments.length - 1]];
   }
 
-  let usersLikedPost = (post.likes || []).map(userId => state.users[userId]);
+  let usersLikedPost = (post.likes || []).map((userId) => state.users[userId]);
 
   if (postViewState.omittedLikes !== 0) {
     usersLikedPost = usersLikedPost.slice(0, MAX_LIKES);
@@ -135,14 +135,14 @@ export const joinPostData = state => postId => {
 
   // Get the list of post's recipients
   const recipients = post.postedTo
-    .map(subscriptionId => {
+    .map((subscriptionId) => {
       const userId = (state.subscriptions[subscriptionId]||{}).user;
       const subscriptionType = (state.subscriptions[subscriptionId]||{}).name;
       const isDirectToSelf = userId === post.createdBy && subscriptionType === 'Directs';
       return !isDirectToSelf ? userId : false;
     })
-    .map(userId => state.subscribers[userId])
-    .filter(user => user);
+    .map((userId) => state.subscribers[userId])
+    .filter((user) => user);
 
   const allowLinksPreview = state.user.frontendPreferences.allowLinksPreview;
   const readMoreStyle = state.user.frontendPreferences.readMoreStyle;
@@ -164,7 +164,7 @@ export const joinPostData = state => postId => {
 export function joinCreatePostData(state) {
   const createPostForm = state.createPostForm;
   return {...createPostForm,
-    attachments: (createPostForm.attachments || []).map(attachmentId => state.attachments[attachmentId])
+    attachments: (createPostForm.attachments || []).map((attachmentId) => state.attachments[attachmentId])
   };
 }
 
@@ -203,10 +203,10 @@ export function postActions(dispatch) {
 
 export function userActions(dispatch) {
   return {
-    ban: username => dispatch(ban(username)),
-    unban: username => dispatch(unban(username)),
-    subscribe: username => dispatch(subscribe(username)),
-    unsubscribe: username => dispatch(unsubscribe(username)),
-    sendSubscriptionRequest: username => dispatch(sendSubscriptionRequest(username))
+    ban: (username) => dispatch(ban(username)),
+    unban: (username) => dispatch(unban(username)),
+    subscribe: (username) => dispatch(subscribe(username)),
+    unsubscribe: (username) => dispatch(unsubscribe(username)),
+    sendSubscriptionRequest: (username) => dispatch(sendSubscriptionRequest(username))
   };
 }

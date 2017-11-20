@@ -40,7 +40,7 @@ export function highlightString(text, terms) {
   const result = [];
   while (text !== '') {
     let match = '', minPos = 0;
-    terms.forEach(re => {
+    terms.forEach((re) => {
       const m = re.exec(text);
       if (m && (match === '' || m.index < minPos)) {
         minPos = m.index + (m[1] || '').length;

@@ -209,11 +209,11 @@ export default class PostComment extends React.Component {
             readMoreStyle={this.props.readMoreStyle}
             highlightTerms={this.props.highlightTerms}
             userHover={{
-              hover: username => this.props.highlightComment(username),
+              hover: (username) => this.props.highlightComment(username),
               leave: this.props.clearHighlightComment
             }}
             arrowHover={{
-              hover: arrows => this.props.highlightArrowComment(arrows),
+              hover: (arrows) => this.props.highlightArrowComment(arrows),
               leave: this.props.clearHighlightComment
             }}
           />

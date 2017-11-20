@@ -17,7 +17,7 @@ class EmbedlyPreview extends React.Component {
     updCounter: 0,
   };
 
-  setLink = el => this.link = el;
+  setLink = (el) => this.link = el;
 
   componentDidMount() {
     embedly('card', this.link);

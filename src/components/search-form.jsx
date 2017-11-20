@@ -4,9 +4,9 @@ import {browserHistory} from 'react-router';
 const isEscape = (keyCode) => keyCode && keyCode === 27;
 const isEnter = (keyCode) => keyCode && keyCode === 13;
 
-const fireSearch = searchText => browserHistory.push(`/search?qs=${encodeURIComponent(searchText)}`);
+const fireSearch = (searchText) => browserHistory.push(`/search?qs=${encodeURIComponent(searchText)}`);
 
-const subscribeOnHistory = input => {
+const subscribeOnHistory = (input) => {
   browserHistory.listen((newRoute) => {
     if (newRoute.pathname === '/search') {
       input.value = newRoute.query.qs || '';

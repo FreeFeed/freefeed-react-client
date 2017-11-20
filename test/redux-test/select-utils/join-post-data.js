@@ -78,7 +78,7 @@ const composeState = ({subsequentComments, setting, omittedComments = 0, withDel
   };
 };
 
-test('joinPostData sets omitBubble for subsequent comments with setting on', t => {
+test('joinPostData sets omitBubble for subsequent comments with setting on', (t) => {
 
   const testState = composeState({subsequentComments: true, setting: true});
 
@@ -91,7 +91,7 @@ test('joinPostData sets omitBubble for subsequent comments with setting on', t =
   t.end();
 });
 
-test('joinPostData doesn\'t set omitBubble for subsequent comments with setting off', t => {
+test('joinPostData doesn\'t set omitBubble for subsequent comments with setting off', (t) => {
   const testState = composeState({subsequentComments: true, setting: false});
 
   const result = joinPostData(testState)(post.id);
@@ -103,7 +103,7 @@ test('joinPostData doesn\'t set omitBubble for subsequent comments with setting 
   t.end();
 });
 
-test('joinPostData doesn\'t set omitBubble for non-subsequent comments with setting on', t => {
+test('joinPostData doesn\'t set omitBubble for non-subsequent comments with setting on', (t) => {
   const testState = composeState({subsequentComments: false, setting: true});
 
   const result = joinPostData(testState)(post.id);
@@ -115,7 +115,7 @@ test('joinPostData doesn\'t set omitBubble for non-subsequent comments with sett
   t.end();
 });
 
-test('joinPostData doesn\'t set omitBubble for subsequent comments with setting on and non-zero omitted comments', t => {
+test('joinPostData doesn\'t set omitBubble for subsequent comments with setting on and non-zero omitted comments', (t) => {
   const testState = composeState({subsequentComments: true, setting: true, omittedComments: 1});
 
   const result = joinPostData(testState)(post.id);
@@ -126,7 +126,7 @@ test('joinPostData doesn\'t set omitBubble for subsequent comments with setting 
   t.end();
 });
 
-test('joinPostData doesn\'t set omitBubble for subsequent comments with delay between them', t => {
+test('joinPostData doesn\'t set omitBubble for subsequent comments with delay between them', (t) => {
   const testState = composeState({subsequentComments: true, setting: true, withDelay: true});
 
   const result = joinPostData(testState)(post.id);

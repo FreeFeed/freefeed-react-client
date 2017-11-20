@@ -51,7 +51,7 @@ export default class PostVia extends React.Component {
     } = this.props;
 
     const isMe = ({id}) => myId === id;
-    const inSubscriptions = ({id}) => myId === id || subscriptions && subscriptions.some(s => s == id);
+    const inSubscriptions = ({id}) => myId === id || subscriptions && subscriptions.some((s) => s == id);
 
     if (inSubscriptions(createdBy) || recipients.some(inSubscriptions)) {
       return false;
@@ -69,7 +69,7 @@ export default class PostVia extends React.Component {
       textPrefix = 'your like';
     }
 
-    const users = _.unionBy(inComments, inLikes, _.property('id')).filter(u => !isMe(u));
+    const users = _.unionBy(inComments, inLikes, _.property('id')).filter((u) => !isMe(u));
     const cutAt = textPrefix ? 2 : 3;
     const foldedCount = (!this.state.expanded && users.length > cutAt + 1) ? users.length - cutAt : 0;
 

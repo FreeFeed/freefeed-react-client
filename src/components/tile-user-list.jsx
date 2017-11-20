@@ -80,7 +80,7 @@ function pickActions(type, props) {
 }
 
 export const tileUserListFactory = (config) => (props) => {
-  const usersData = props.users.map(user => {
+  const usersData = props.users.map((user) => {
     return {
       ..._.pick(user, ['id', 'screenName', 'username', 'isMutual']),
       profilePictureUrl:

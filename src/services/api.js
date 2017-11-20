@@ -256,7 +256,7 @@ export function enableComments({postId}) {
   });
 }
 
-const encodeBody = body => _.map(body, (value, key) => `${key}=${encodeURIComponent(value)}`,).join('&');
+const encodeBody = (body) => _.map(body, (value, key) => `${key}=${encodeURIComponent(value)}`,).join('&');
 
 export function signIn({username, password}) {
   const encodedBody = encodeBody({username, password});
@@ -386,7 +386,7 @@ export function updateUserPicture({picture}) {
   });
 }
 
-const userAction = action => ({username}) => {
+const userAction = (action) => ({username}) => {
   return fetch(`${apiConfig.host}/v1/users/${username}/${action}`, {
     method: 'POST',
     'headers': {

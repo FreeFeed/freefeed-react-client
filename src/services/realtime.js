@@ -9,11 +9,11 @@ const dummyPost = {
   getBoundingClientRect: () => ({top:0})
 };
 
-const scrollCompensator = dispatchAction => (...actionParams) => {
+const scrollCompensator = (dispatchAction) => (...actionParams) => {
   //we hope that markup will remain the same — best tradeoff between this and code all over components
   const postCommentNodes = [...document.querySelectorAll('.post, .comment')];
 
-  const firstVisible = postCommentNodes.filter(element => element.getBoundingClientRect().top > 0)[0];
+  const firstVisible = postCommentNodes.filter((element) => element.getBoundingClientRect().top > 0)[0];
 
   const nearestTopIndex = postCommentNodes.indexOf(firstVisible) - 1;
 
@@ -45,9 +45,9 @@ const scrollCompensator = dispatchAction => (...actionParams) => {
   return res;
 };
 
-const bindSocketLog = socket => eventName => socket.on(eventName, data => console.log(`socket ${eventName}`, data));  // eslint-disable-line no-console
+const bindSocketLog = (socket) => (eventName) => socket.on(eventName, (data) => console.log(`socket ${eventName}`, data));  // eslint-disable-line no-console
 
-const bindSocketActionsLog = socket => events => events.forEach(bindSocketLog(socket));
+const bindSocketActionsLog = (socket) => (events) => events.forEach(bindSocketLog(socket));
 
 const eventsToLog = [
   'connect',
@@ -56,7 +56,7 @@ const eventsToLog = [
   'reconnect',
 ];
 
-const bindSocketEventHandlers = socket => eventHandlers => {
+const bindSocketEventHandlers = (socket) => (eventHandlers) => {
   Object.keys(eventHandlers).forEach((event) => socket.on(event, scrollCompensator(eventHandlers[event])));
 };
 
@@ -80,7 +80,7 @@ export function init(eventHandlers) {
         socket.off('reconnect', subscribe);
       }
     },
-    subscribe: newSubscription => {
+    subscribe: (newSubscription) => {
       subscription = newSubscription;
       console.log('subscribing to ', subscription);  // eslint-disable-line no-console
       subscribe = () => socket.emit('subscribe', subscription);

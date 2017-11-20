@@ -36,7 +36,7 @@ export default function ScrollSafe(arg1, arg2) {
 
   if (_.isPlainObject(arg1)) {
     // Call as a decorator with parameters: @ScrollSafe(opts)
-    return Child => ScrollSafe(Child, arg1);
+    return (Child) => ScrollSafe(Child, arg1);
   }
 
   const Child = arg1;

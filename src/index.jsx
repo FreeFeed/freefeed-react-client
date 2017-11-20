@@ -80,7 +80,7 @@ const boundRouteActions = bindRouteActions(store.dispatch);
 
 const history = syncHistoryWithStore(browserHistory, store);
 
-const manageSubscribersActions = next => {
+const manageSubscribersActions = (next) => {
   const username = next.params.userName;
   store.dispatch(ActionCreators.getUserInfo(username));
   store.dispatch(ActionCreators.subscribers(username));
@@ -94,19 +94,19 @@ const friendsActions = () => {
 };
 
 // needed to display mutual friends
-const subscribersSubscriptionsActions = next => {
+const subscribersSubscriptionsActions = (next) => {
   const username = next.params.userName;
   store.dispatch(ActionCreators.subscribers(username));
   store.dispatch(ActionCreators.subscriptions(username));
 };
 
-const enterStaticPage = title => () => {
+const enterStaticPage = (title) => () => {
   store.dispatch(ActionCreators.staticPage(title));
 };
 
 history.listen(() => scrollTo(0, 0));
 
-const generateRouteHooks = callback => ({
+const generateRouteHooks = (callback) => ({
   onEnter: callback,
   onChange: (_, next) => callback(next),
 });

@@ -40,7 +40,7 @@ export function title(state = '', action) {
       return `Search - FreeFeed`;
     }
     case response(ActionTypes.GET_USER_FEED): {
-      const user = (action.payload.users || []).filter(user => user.username === action.request.username)[0];
+      const user = (action.payload.users || []).filter((user) => user.username === action.request.username)[0];
       const author = user.screenName + (user.username !== user.screenName ? ' (' + user.username + ')' : '');
       return `${author} - FreeFeed`;
     }
@@ -56,7 +56,7 @@ export function title(state = '', action) {
     }
     case response(ActionTypes.GET_USER_SUMMARY): {
       const period = getSummaryPeriod(action.request.days);
-      const user = (action.payload.users || []).filter(user => user.username === action.request.username)[0];
+      const user = (action.payload.users || []).filter((user) => user.username === action.request.username)[0];
       const author = user
         ? user.screenName + (user.username !== user.screenName ? ' (' + user.username + ')' : '')
         : action.request.username;
@@ -265,10 +265,10 @@ export function feedViewState(state = initFeed, action) {
 
     let visibleEntries, hiddenEntries;
     if (separateHiddenEntries) {
-      visibleEntries = (action.payload.posts || []).filter(post => !post.isHidden).map(post => post.id);
-      hiddenEntries  = (action.payload.posts || []).filter(post =>  post.isHidden).map(post => post.id);
+      visibleEntries = (action.payload.posts || []).filter((post) => !post.isHidden).map((post) => post.id);
+      hiddenEntries  = (action.payload.posts || []).filter((post) =>  post.isHidden).map((post) => post.id);
     } else {
-      visibleEntries = (action.payload.posts || []).map(post => post.id);
+      visibleEntries = (action.payload.posts || []).map((post) => post.id);
       hiddenEntries = [];
     }
     const isHiddenRevealed = false;
@@ -382,10 +382,10 @@ const NO_ERROR = {
 const POST_SAVE_ERROR = 'Something went wrong while editing the post...';
 const NEW_COMMENT_ERROR = 'Failed to add comment';
 
-const indexById = list => _.keyBy(list || [], 'id');
+const indexById = (list) => _.keyBy(list || [], 'id');
 const mergeByIds = (state, array) => ({...state, ...indexById(array)});
 
-const initPostViewState = post => {
+const initPostViewState = (post) => {
   const id = post.id;
 
   const omittedComments = post.omittedComments;
@@ -833,7 +833,7 @@ export function posts(state = {}, action) {
     }
     case response(ActionTypes.DELETE_COMMENT): {
       const commentId = action.request.commentId;
-      const post = _(state).find(_post => (_post.comments||[]).indexOf(commentId) !== -1);
+      const post = _(state).find((_post) => (_post.comments||[]).indexOf(commentId) !== -1);
       if (!post) {
         return state;
       }
@@ -1201,7 +1201,7 @@ const COMMENT_SAVE_ERROR = 'Something went wrong while saving comment';
 
 function updateCommentViewState(state, action) {
   const comments = action.payload.comments || [];
-  const commentsViewState = comments.map(comment => ({
+  const commentsViewState = comments.map((comment) => ({
     id: comment.id,
     isEditing: false,
     editText: comment.body
@@ -1353,7 +1353,7 @@ export function users(state = {}, action) {
       }
       const usersToAdd = !action.post ? action.users : [...(action.users || []), ...(action.post.users || [])];
 
-      const notAdded = state => user => !state[user.id];
+      const notAdded = (state) => (user) => !state[user.id];
 
       return mergeByIds(state, usersToAdd.filter(notAdded(state)).map(userParser));
     }
@@ -1408,7 +1408,7 @@ const initUser = () => ({
 
 export function user(state = initUser(), action) {
   if (ActionHelpers.isUserChangeResponse(action)) {
-    const subscriptions = _.uniq((action.payload.subscriptions || []).map(sub => sub.user));
+    const subscriptions = _.uniq((action.payload.subscriptions || []).map((sub) => sub.user));
     return {...state, ...userParser(action.payload.users), subscriptions};
   }
   switch (action.type) {
@@ -1880,7 +1880,7 @@ export function recentGroups(state = [], action) {
     case response(ActionTypes.WHO_AM_I): {
       const subscribers = (action.payload.subscribers || []);
       return subscribers
-        .filter(i => i.type == 'group')
+        .filter((i) => i.type == 'group')
         .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
         .slice(0, GROUPS_SIDEBAR_LIST_LENGTH);
     }
@@ -2004,12 +2004,12 @@ const removeItemFromGroupRequests = (state, action) => {
   const userName = action.request.userName;
   const groupName = action.request.groupName;
 
-  const group = state.find(group => group.username === groupName);
+  const group = state.find((group) => group.username === groupName);
 
   if (group && group.requests.length !== 0) {
     const newGroup = {
       ...group,
-      requests: group.requests.filter(user => user.username !== userName)
+      requests: group.requests.filter((user) => user.username !== userName)
     };
 
     return _(state).without(group).push(newGroup).value();
@@ -2021,7 +2021,7 @@ const removeItemFromGroupRequests = (state, action) => {
 export function managedGroups(state = [], action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
-      return action.payload.managedGroups.map(userParser).map(group => {
+      return action.payload.managedGroups.map(userParser).map((group) => {
         group.requests = group.requests.map(userParser);
         return {...group};
       });
@@ -2032,7 +2032,7 @@ export function managedGroups(state = [], action) {
     }
     case response(ActionTypes.UNADMIN_GROUP_ADMIN): {
       if (action.request.isItMe) {
-        return state.filter(group => group.username !== action.request.groupName);
+        return state.filter((group) => group.username !== action.request.groupName);
       }
       return state;
     }

@@ -28,7 +28,7 @@ function selectState(state, ownProps) {
   const errorString = state.usernameSubscriptions.errorString;
 
   const isMyPage = state.user.username === username;
-  const subscribersUsernames = state.usernameSubscribers.payload && state.usernameSubscribers.payload.map(user => user.username);
+  const subscribersUsernames = state.usernameSubscribers.payload && state.usernameSubscribers.payload.map((user) => user.username);
 
   const listSections = [
     {title: 'Users', users: []},
@@ -36,7 +36,7 @@ function selectState(state, ownProps) {
   ];
 
   _.sortBy(state.usernameSubscriptions.payload, 'username')
-    .forEach(u => {
+    .forEach((u) => {
       // "mutual" markings should be displayed only if browsing my own subscriptions
       u.isMutual = isMyPage && subscribersUsernames.indexOf(u.username) > -1;
       listSections[(u.type === "user") ? 0  : 1].users.push(u);

@@ -72,8 +72,8 @@ function selectState(state) {
     state.usernameSubscribers
   );
 
-  const mutualIds = _.map(mutual.users, f => f.id);
-  const subscriptionList = _.filter(state.usernameSubscriptions.payload.filter((u) => u.type==='user'), f => mutualIds.indexOf(f.id) === -1);
+  const mutualIds = _.map(mutual.users, (f) => f.id);
+  const subscriptionList = _.filter(state.usernameSubscriptions.payload.filter((u) => u.type==='user'), (f) => mutualIds.indexOf(f.id) === -1);
 
   const subscriptions = {
     header: 'Subscriptions',

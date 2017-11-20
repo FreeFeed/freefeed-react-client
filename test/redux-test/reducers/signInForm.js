@@ -3,7 +3,7 @@ import test from 'tape';
 import {signInForm} from '../../../src/redux/reducers';
 import {signInChange} from '../../../src/redux/action-creators';
 
-test('signInForm changes username on signInChange', t => {
+test('signInForm changes username on signInChange', (t) => {
   const oldName = 'name';
   const newName = oldName + '2';
 
@@ -14,7 +14,7 @@ test('signInForm changes username on signInChange', t => {
   t.end();
 });
 
-test('signInForm changes password and preserves username on signInChange', t => {
+test('signInForm changes password and preserves username on signInChange', (t) => {
   const username = 'name';
   const password = 'password';
 

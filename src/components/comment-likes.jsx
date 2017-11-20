@@ -245,7 +245,7 @@ function renderUserLikesList(userLikes) {
   </span>);
 }
 
-const usersPluralize = count => `user${count > 1 ? "s" : ""}`;
+const usersPluralize = (count) => `user${count > 1 ? "s" : ""}`;
 
 function isBubble(vNode) {
   return vNode.classList.contains("comment-time")

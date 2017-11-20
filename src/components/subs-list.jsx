@@ -31,14 +31,14 @@ export default (props) => {
     );
   }
 
-  const sections = props.listSections.filter(s => s.users.length > 0);
+  const sections = props.listSections.filter((s) => s.users.length > 0);
   const showTitles = !!props.showSectionsTitles || (sections.length > 1);
 
   return (
     <div>
       <h3><span>{title}</span></h3>
 
-      {sections.map(s => [
+      {sections.map((s) => [
         (showTitles && s.title) ? <h4 className="tile-list-subheader">{s.title}</h4> : false,
         <TileList users={s.users}/>
       ])}

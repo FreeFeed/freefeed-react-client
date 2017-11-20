@@ -95,7 +95,7 @@ export const finder = new URLFinder(
 finder.withHashTags = true;
 finder.withArrows = true;
 
-const endsWithExclamation = str => str && str[str.length - 1] === '!';
+const endsWithExclamation = (str) => str && str[str.length - 1] === '!';
 
 const previousElementCheck = (index, array) => {
   const previousElement = array[index - 1];
@@ -116,11 +116,11 @@ export function getFirstLinkToEmbed(text) {
               && /^https?:\/\//i.test(text)
               && previousElementCheck(index, links));
     })
-    .map(it => it.text)[0];
+    .map((it) => it.text)[0];
 }
 
 export function delay(timeout = 0) {
-  return new Promise(resolve => setTimeout(resolve, timeout));
+  return new Promise((resolve) => setTimeout(resolve, timeout));
 }
 
 

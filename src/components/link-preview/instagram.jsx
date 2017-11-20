@@ -16,7 +16,7 @@ const initialState = {
 
 class InstagramPreview extends React.Component {
   iframe = null;
-  setIframe = el => this.iframe = el;
+  setIframe = (el) => this.iframe = el;
 
   state = {...initialState};
 
@@ -86,7 +86,7 @@ function onMessage(e) {
   }
 
   const frames = document.querySelectorAll('iframe.instagram-iframe');
-  const frame = [...frames].find(fr => fr.contentWindow === e.source);
+  const frame = [...frames].find((fr) => fr.contentWindow === e.source);
   if (frame) {
     if (data.type === 'MEASURE') {
       frame.style.height = data.details.height + 'px';

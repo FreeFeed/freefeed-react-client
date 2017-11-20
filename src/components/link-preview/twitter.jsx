@@ -53,7 +53,7 @@ function loadTwitterAPI() {
       s.addEventListener('load', () => resolve());
       document.head.appendChild(s);
     }).then(() => {
-      twttr.events.bind('rendered', e => {
+      twttr.events.bind('rendered', (e) => {
         const height = e.target.parentNode.offsetHeight;
         const cont = e.target.parentNode.parentNode;
         cont.style.height = height + 'px';

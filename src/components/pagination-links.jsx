@@ -3,11 +3,11 @@ import {Link} from 'react-router';
 
 const PAGE_SIZE = 30;
 
-const offsetObject = offset => offset ? ({offset}) : undefined;
-const minOffset = offset => Math.max(offset - PAGE_SIZE, 0);
-const maxOffset = offset => offset + PAGE_SIZE;
+const offsetObject = (offset) => offset ? ({offset}) : undefined;
+const minOffset = (offset) => Math.max(offset - PAGE_SIZE, 0);
+const maxOffset = (offset) => offset + PAGE_SIZE;
 
-export default props => {
+export default (props) => {
   const allQuery = { ...props.location.query };
   delete allQuery.offset;
 

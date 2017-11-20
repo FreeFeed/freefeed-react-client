@@ -12,7 +12,7 @@ import * as ActionTypes from './action-types';
 import {request, response, fail, requiresAuth, isFeedRequest, isFeedResponse} from './action-helpers';
 
 //middleware for api requests
-export const apiMiddleware = store => next => async(action) => {
+export const apiMiddleware = (store) => (next) => async(action) => {
   //ignore normal actions
   if (!action.apiRequest) {
     return next(action);
@@ -51,13 +51,13 @@ const paths = ['friends',
 ];
 
 function shouldGoToSignIn(pathname) {
-  return pathname && paths.some(path => pathname.indexOf(path) != -1);
+  return pathname && paths.some((path) => pathname.indexOf(path) != -1);
 }
 
-export const authMiddleware = store => {
+export const authMiddleware = (store) => {
   let firstUnauthenticated = true;
 
-  return next => action => {
+  return (next) => (action) => {
 
     //stop action propagation if it should be authed and user is not authed
     if (requiresAuth(action) && !store.getState().authenticated) {
@@ -107,7 +107,7 @@ export const authMiddleware = store => {
   };
 };
 
-export const likesLogicMiddleware = store => next => action => {
+export const likesLogicMiddleware = (store) => (next) => (action) => {
   switch (action.type) {
     case ActionTypes.SHOW_MORE_LIKES: {
       const postId = action.payload.postId;
@@ -154,7 +154,7 @@ const ignoreMyLikes = {};
 const ignoreMyUnlikes = {};
 const cleanLikeErrorTimers = {};
 
-export const optimisticLikesMiddleware = store => next => action => {
+export const optimisticLikesMiddleware = (store) => (next) => (action) => {
   switch (action.type) {
     case ActionTypes.LIKE_POST_OPTIMISTIC: {
       next(action);
@@ -225,7 +225,7 @@ export const optimisticLikesMiddleware = store => next => action => {
   return next(action);
 };
 
-export const userPhotoLogicMiddleware = store => next => action => {
+export const userPhotoLogicMiddleware = (store) => (next) => (action) => {
   if (action.type === response(ActionTypes.UPDATE_USER_PICTURE)) {
     // Update data after userpic is updated
     store.dispatch(ActionCreators.whoAmI());
@@ -234,7 +234,7 @@ export const userPhotoLogicMiddleware = store => next => action => {
   return next(action);
 };
 
-export const groupPictureLogicMiddleware = store => next => action => {
+export const groupPictureLogicMiddleware = (store) => (next) => (action) => {
   if (action.type === response(ActionTypes.UPDATE_GROUP_PICTURE)) {
     // Update data after group picture is updated
     store.dispatch(ActionCreators.getUserInfo(action.request.groupName));
@@ -248,7 +248,7 @@ function isInvitation({locationBeforeTransitions}) {
   return pathname === '/filter/direct' && !!query.invite;
 }
 
-export const redirectionMiddleware = store => next => action => {
+export const redirectionMiddleware = (store) => (next) => (action) => {
   //go to home if single post has been removed
   if (action.type === response(ActionTypes.DELETE_POST) && store.getState().singlePostId) {
     return browserHistory.push('/');
@@ -266,7 +266,7 @@ export const redirectionMiddleware = store => next => action => {
   return next(action);
 };
 
-export const requestsMiddleware = store => next => action => {
+export const requestsMiddleware = (store) => (next) => (action) => {
   if (action.type === response(ActionTypes.ACCEPT_USER_REQUEST)) {
     next(action);
 
@@ -281,7 +281,7 @@ export const requestsMiddleware = store => next => action => {
   return next(action);
 };
 
-export const markDirectsAsReadMiddleware = store => next => action => {
+export const markDirectsAsReadMiddleware = (store) => (next) => (action) => {
   if (action.type === request(ActionTypes.DIRECT) && action.payload.offset == 0) {
     // needed to mark all directs as read
     store.dispatch(ActionCreators.markAllDirectsAsRead());
@@ -294,7 +294,7 @@ export const markDirectsAsReadMiddleware = store => next => action => {
   next(action);
 };
 
-export const markNotificationsAsReadMiddleware = store => next => action => {
+export const markNotificationsAsReadMiddleware = (store) => (next) => (action) => {
   if (action.type === request(ActionTypes.GET_NOTIFICATIONS) && action.payload.offset == 0) {
     // needed to mark all notifications as read
     store.dispatch(ActionCreators.markAllNotificationsAsRead());
@@ -302,7 +302,7 @@ export const markNotificationsAsReadMiddleware = store => next => action => {
   next(action);
 };
 
-const isFirstPage = state => !state.routing.locationBeforeTransitions.query.offset;
+const isFirstPage = (state) => !state.routing.locationBeforeTransitions.query.offset;
 
 const isPostLoaded = ({posts}, postId) => posts[postId];
 const iLikedPost = ({user, posts}, postId) => {
@@ -344,21 +344,21 @@ const dispatchWithPost = async(store, postId, action, filter = () => true, maxDe
 
 const isFirstFriendInteraction = (post, {users}, {subscriptions, comments}) => {
   const newLike = users[0];
-  const myFriends = Object.keys(subscriptions).map(key => subscriptions[key]).map(sub => sub.user);
-  const likesWithoutCurrent = post.posts.likes.filter(like => like !== newLike);
-  const friendsInvolved = list => list.filter(element => myFriends.indexOf(element) !== -1).length;
+  const myFriends = Object.keys(subscriptions).map((key) => subscriptions[key]).map((sub) => sub.user);
+  const likesWithoutCurrent = post.posts.likes.filter((like) => like !== newLike);
+  const friendsInvolved = (list) => list.filter((element) => myFriends.indexOf(element) !== -1).length;
   const friendsLikedBefore = friendsInvolved(likesWithoutCurrent);
-  const newPostCommentAuthors = (post.comments || []).map(comment => comment.createdBy);
-  const commentsAuthors = (post.posts.comments || []).map(cId => (comments[cId] || {}).createdBy);
+  const newPostCommentAuthors = (post.comments || []).map((comment) => comment.createdBy);
+  const commentsAuthors = (post.posts.comments || []).map((cId) => (comments[cId] || {}).createdBy);
   const friendsCommented = friendsInvolved([...commentsAuthors, ...newPostCommentAuthors]);
   const wasFirstInteraction = !friendsCommented && !friendsLikedBefore;
   return wasFirstInteraction;
 };
 
 const postFetchDelay = 20000; // 20 sec
-const bindHandlers = store => ({
-  'user:update': data => store.dispatch({...data, type: ActionTypes.REALTIME_USER_UPDATE}),
-  'post:new': data => {
+const bindHandlers = (store) => ({
+  'user:update': (data) => store.dispatch({...data, type: ActionTypes.REALTIME_USER_UPDATE}),
+  'post:new': (data) => {
     const state = store.getState();
     const isFeedFirstPage = isFirstPage(state);
     const isHomeFeed = state.routing.locationBeforeTransitions.pathname === '/';
@@ -368,33 +368,33 @@ const bindHandlers = store => ({
 
     return store.dispatch({...data, type: ActionTypes.REALTIME_POST_NEW, post: data.posts, shouldBump});
   },
-  'post:update': data => store.dispatch({...data, type: ActionTypes.REALTIME_POST_UPDATE, post: data.posts}),
-  'post:destroy': data => store.dispatch({type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId}),
-  'post:hide': data => store.dispatch({type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId}),
-  'post:unhide': data => store.dispatch({type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId}),
-  'comment:new': async data => {
+  'post:update': (data) => store.dispatch({...data, type: ActionTypes.REALTIME_POST_UPDATE, post: data.posts}),
+  'post:destroy': (data) => store.dispatch({type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId}),
+  'post:hide': (data) => store.dispatch({type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId}),
+  'post:unhide': (data) => store.dispatch({type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId}),
+  'comment:new': async(data) => {
     const postId = data.comments.postId;
     const action = {...data, type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments};
     return dispatchWithPost(store, postId, action, () => true, postFetchDelay);
   },
-  'comment:update': data => store.dispatch({...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments}),
-  'comment:destroy': data => store.dispatch({type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId, postId: data.postId}),
-  'like:new': async data => {
+  'comment:update': (data) => store.dispatch({...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments}),
+  'comment:destroy': (data) => store.dispatch({type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId, postId: data.postId}),
+  'like:new': async(data) => {
     const postId = data.meta.postId;
     const iLiked = iLikedPost(store.getState(), data.meta.postId);
     const action = {type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, users:[data.users], iLiked};
     return dispatchWithPost(store, postId, action, isFirstFriendInteraction, postFetchDelay);
   },
-  'like:remove': data => store.dispatch({type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId}),
-  'comment_like:new': data => store.dispatch({type: ActionTypes.REALTIME_COMMENT_UPDATE, comment:data.comments}),
-  'comment_like:remove': data => store.dispatch({type: ActionTypes.REALTIME_COMMENT_UPDATE, comment:data.comments}),
+  'like:remove': (data) => store.dispatch({type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId}),
+  'comment_like:new': (data) => store.dispatch({type: ActionTypes.REALTIME_COMMENT_UPDATE, comment:data.comments}),
+  'comment_like:remove': (data) => store.dispatch({type: ActionTypes.REALTIME_COMMENT_UPDATE, comment:data.comments}),
 });
 
-export const realtimeMiddleware = store => {
+export const realtimeMiddleware = (store) => {
   const handlers = bindHandlers(store);
   const state = store.getState();
   let realtimeConnection;
-  return next => action => {
+  return (next) => (action) => {
 
     if (action.type === ActionTypes.UNAUTHENTICATED) {
       if (realtimeConnection) {
@@ -441,7 +441,7 @@ export const realtimeMiddleware = store => {
 };
 
 // Fixing data structures coming from server
-export const dataFixMiddleware = (/*store*/) => next => action => {
+export const dataFixMiddleware = (/*store*/) => (next) => (action) => {
   if (action.type === response(ActionTypes.GET_SINGLE_POST)) {
     [action.payload, action.payload.posts].forEach(fixPostsData);
   }

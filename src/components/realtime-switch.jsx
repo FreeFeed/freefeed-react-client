@@ -9,7 +9,7 @@ const getStatusIcon = (active, status) => {
   return active ? 'pause' : 'play';
 };
 
-const realtimeSwitch = props => {
+const realtimeSwitch = (props) => {
   const {realtimeActive} = props.frontendPreferences;
   return (
     <div className='realtime-switch' onClick={() => props.toggle(props.userId, props.frontendPreferences)}>

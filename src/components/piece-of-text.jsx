@@ -58,7 +58,7 @@ const injectSeparator = (array, separator) => {
 
 // Replace single newlines with <br/> and trim every line
 const brAndTrim = (text) => {
-  const lines = text.split(/\n/g).map(line => line.trim());
+  const lines = text.split(/\n/g).map((line) => line.trim());
   return injectSeparator(lines, <br/>);
 };
 

@@ -20,12 +20,12 @@ export default class SendTo extends React.Component {
   }
 
   get values() {
-    return this.state.values.map(item => item.value);
+    return this.state.values.map((item) => item.value);
   }
 
   stateFromProps(props, options) {
     return {
-      values: options.filter(opt => opt.value === props.defaultFeed),
+      values: options.filter((opt) => opt.value === props.defaultFeed),
       options: options,
       showFeedsOption: !props.defaultFeed,
       isWarningDisplayed: false
@@ -45,7 +45,7 @@ export default class SendTo extends React.Component {
     options.unshift({ label: MY_FEED_LABEL, value: username, type: 'group' });
 
     // only mutual friends on Directs page
-    return isDirects ? options.filter(opt => opt.type === 'user') : options;
+    return isDirects ? options.filter((opt) => opt.type === 'user') : options;
   }
 
   isGroupsOrDirectsOnly(values) {
@@ -59,7 +59,7 @@ export default class SendTo extends React.Component {
   selectChanged = (values) => {
     const isWarningDisplayed = !this.isGroupsOrDirectsOnly(values);
     this.setState({ values, isWarningDisplayed });
-    this.props.onChange(values.map(item => item.value));
+    this.props.onChange(values.map((item) => item.value));
   }
 
   toggleSendTo = () => {

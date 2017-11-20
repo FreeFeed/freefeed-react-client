@@ -103,25 +103,25 @@ const payloadZeroSubs = {
 };
 
 
-test('sendTo: WHO_AM_I adds one existing recipient into the initially empty state', t => {
+test('sendTo: WHO_AM_I adds one existing recipient into the initially empty state', (t) => {
   const state = sendTo(stateInitial, {type: response(WHO_AM_I), payload: payloadOneSub});
   t.deepEqual(state, stateOneSub);
   t.end();
 });
 
-test('sendTo: SUBSCRIBE adds a new recipient, increasing their number to two', t => {
+test('sendTo: SUBSCRIBE adds a new recipient, increasing their number to two', (t) => {
   const state = sendTo(stateOneSub, {type: response(SUBSCRIBE), payload: payloadTwoSubs});
   t.deepEqual(state, stateTwoSubs);
   t.end();
 });
 
-test('sendTo: UNSUBSCRIBE removes one of the two recipients, decreasing their number to one', t => {
+test('sendTo: UNSUBSCRIBE removes one of the two recipients, decreasing their number to one', (t) => {
   const state = sendTo(stateTwoSubs, {type: response(UNSUBSCRIBE), payload: payloadOneSub});
   t.deepEqual(state, stateOneSub);
   t.end();
 });
 
-test('sendTo: UNSUBSCRIBE removes the only recipient, decreasing their number to zero', t => {
+test('sendTo: UNSUBSCRIBE removes the only recipient, decreasing their number to zero', (t) => {
   const state = sendTo(stateOneSub, {type: response(UNSUBSCRIBE), payload: payloadZeroSubs});
   t.deepEqual(state, stateInitial);
   t.end();

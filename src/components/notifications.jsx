@@ -18,8 +18,8 @@ const getAuthorName = ({postAuthor, createdUser, group}) => {
 
 const generatePostUrl = ({...event, post_id}) => `/${getAuthorName(event)}/${post_id}`;
 const generateCommentUrl = ({...event, post_id, comment_id}) => `/${getAuthorName(event)}/${post_id}#comment-${comment_id}`;
-const postLink = event => <Link to={generatePostUrl(event)}>post</Link>;
-const directPostLink = event => <Link to={generatePostUrl(event)}>direct message</Link>;
+const postLink = (event) => <Link to={generatePostUrl(event)}>post</Link>;
+const directPostLink = (event) => <Link to={generatePostUrl(event)}>direct message</Link>;
 const commentLink = (event, text = 'comment') => <Link to={generateCommentUrl(event)}>{text}</Link>;
 
 const notificationTemplates = {
@@ -132,7 +132,7 @@ const mapStateToProps = (state) => {
     isLoading: state.notifications.loading,
     filter: state.routing.locationBeforeTransitions.query.filter,
     authenticated: state.authenticated,
-    events: (state.notifications.events || []).map(event => {
+    events: (state.notifications.events || []).map((event) => {
       return {
         ...event,
         createdUser: state.users[event.created_user_id] || state.subscribers[event.created_user_id] || mock,

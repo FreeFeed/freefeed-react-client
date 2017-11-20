@@ -47,8 +47,8 @@ function selectState(state, ownProps) {
   const timelines = state.timelines;
   const boxHeader = state.boxHeader;
   const foundUser = Object.getOwnPropertyNames(state.users)
-    .map(key => state.users[key] || state.subscribers[key])
-    .filter(user => user.username === ownProps.params.userName)[0];
+    .map((key) => state.users[key] || state.subscribers[key])
+    .filter((user) => user.username === ownProps.params.userName)[0];
 
   const amIGroupAdmin = (
     authenticated &&

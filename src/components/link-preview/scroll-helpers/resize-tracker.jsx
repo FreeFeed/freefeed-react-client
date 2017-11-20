@@ -21,9 +21,9 @@ export default class ResizeTracker extends React.Component {
   expSensor = null;
   colSensor = null;
 
-  setRoot = el => this.root = el;
-  setExpSensor = el => this.expSensor = el;
-  setColSensor = el => this.colSensor = el;
+  setRoot = (el) => this.root = el;
+  setExpSensor = (el) => this.expSensor = el;
+  setColSensor = (el) => this.colSensor = el;
 
   scrollHandler = () => {
     if (this.expSensor) { // Expand

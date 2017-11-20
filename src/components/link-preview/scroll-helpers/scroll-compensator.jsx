@@ -6,7 +6,7 @@ export default class ScrollCompensator extends React.Component {
   root = null;
   prevHeight = 0;
 
-  setRoot = el => {
+  setRoot = (el) => {
     if (el) {
       el.addEventListener(ELEMENT_RESIZE_EVENT, this.compensateScroll);
     } else if (this.root) {

@@ -7,7 +7,7 @@ import SendTo from './send-to';
 import Dropzone from './dropzone';
 import PostAttachments from './post-attachments';
 
-const isTextEmpty = text => text == '' || /^\s+$/.test(text);
+const isTextEmpty = (text) => text == '' || /^\s+$/.test(text);
 const getDefaultState = (invitation = '') => ({
   isFormEmpty: true,
   isMoreOpen: false,
@@ -26,7 +26,7 @@ export default class CreatePost extends React.Component {
     // Get all the values
     const feeds = this.refs.selectFeeds.values;
     const postText = this.state.postText;
-    const attachmentIds = this.props.createPostForm.attachments.map(attachment => attachment.id);
+    const attachmentIds = this.props.createPostForm.attachments.map((attachment) => attachment.id);
     const more = {
       commentsDisabled: this.state.commentsDisabled
     };
@@ -73,7 +73,7 @@ export default class CreatePost extends React.Component {
 
   clearForm = () => {
     this.setState(getDefaultState());
-    const attachmentIds = this.props.createPostForm.attachments.map(attachment => attachment.id);
+    const attachmentIds = this.props.createPostForm.attachments.map((attachment) => attachment.id);
     attachmentIds.forEach(this.removeAttachment);
   }
 
@@ -131,7 +131,7 @@ export default class CreatePost extends React.Component {
 
           <Dropzone
             onInit={this.handleDropzoneInit}
-            addAttachmentResponse={att => props.addAttachmentResponse(null, att)}
+            addAttachmentResponse={(att) => props.addAttachmentResponse(null, att)}
             addedFile={this.changeAttachmentQueue(1)}
             removedFile={this.changeAttachmentQueue(-1)}/>
 

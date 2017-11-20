@@ -67,7 +67,7 @@ export default class Post extends React.Component {
     const cancelEditingPost = () => props.cancelEditingPost(props.id, editingPostText);
     const saveEditingPost = () => {
       if (!props.isSaving) {
-        const attachmentIds = props.attachments.map(item => item.id) || [];
+        const attachmentIds = props.attachments.map((item) => item.id) || [];
         props.saveEditingPost(props.id, {body: editingPostText, attachments: attachmentIds});
       }
     };
@@ -101,7 +101,7 @@ export default class Post extends React.Component {
     if (props.isInHomeFeed) {
       const hiddenUsers = props.user.frontendPreferences.homefeed.hideUsers;
       if (!_.isEmpty(hiddenUsers)) {
-        const rcpNames = props.recipients.map(u => u.username);
+        const rcpNames = props.recipients.map((u) => u.username);
         rcpNames.push(props.createdBy.username);
         if (!_.isEmpty(_.intersection(rcpNames, hiddenUsers))) {
           return false;
@@ -158,16 +158,16 @@ export default class Post extends React.Component {
     const canonicalPostURI = canonicalURI(props);
 
     const authorOrGroupsRecipients = props.recipients
-      .filter(r => r.id === props.createdBy.id || r.type === 'group')
-      .map(r => {
+      .filter((r) => r.id === props.createdBy.id || r.type === 'group')
+      .map((r) => {
         // todo Remove it when we'll have garanty of isPrivate => isProtected
         if (r.isPrivate === '1') {
           r.isProtected = '1';
         }
         return r;
       });
-    const isPublic = authorOrGroupsRecipients.some(r => r.isProtected === '0');
-    const isProtected = !isPublic && authorOrGroupsRecipients.some(r => r.isPrivate === '0');
+    const isPublic = authorOrGroupsRecipients.some((r) => r.isProtected === '0');
+    const isProtected = !isPublic && authorOrGroupsRecipients.some((r) => r.isPrivate === '0');
     const isPrivate = !isPublic && !isProtected;
 
     const amIAuthenticated = !!props.user.id;
@@ -249,7 +249,7 @@ export default class Post extends React.Component {
     ) : false);
 
     const linkToEmbed = getFirstLinkToEmbed(props.body);
-    const noImageAttachments = !props.attachments.some(attachment => attachment.mediaType === 'image');
+    const noImageAttachments = !props.attachments.some((attachment) => attachment.mediaType === 'image');
 
     return (props.isRecentlyHidden ? (
       <div className="post recently-hidden-post">
@@ -282,7 +282,7 @@ export default class Post extends React.Component {
               <div className="post-editor">
                 <Dropzone
                   onInit={this.handleDropzoneInit}
-                  addAttachmentResponse={att => props.addAttachmentResponse(this.props.id, att)}
+                  addAttachmentResponse={(att) => props.addAttachmentResponse(this.props.id, att)}
                   addedFile={this.changeAttachmentQueue(1)}
                   removedFile={this.changeAttachmentQueue(-1)}/>
 
@@ -393,7 +393,7 @@ export default class Post extends React.Component {
 export function canonicalURI(post) {
   // If posted _only_ into groups, use first recipient's username
   let urlName = post.createdBy.username;
-  if (post.recipients.length > 0 && !post.recipients.some(r => r.type === "user")) {
+  if (post.recipients.length > 0 && !post.recipients.some((r) => r.type === "user")) {
     urlName = post.recipients[0].username;
   }
   return `/${encodeURIComponent(urlName)}/${encodeURIComponent(post.id)}`;

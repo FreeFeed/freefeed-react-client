@@ -6,7 +6,7 @@ import GeneralAttachment from './post-attachment-general';
 export default (props) => {
   const attachments = props.attachments || [];
 
-  const imageAttachments = attachments.filter(attachment => attachment.mediaType === 'image');
+  const imageAttachments = attachments.filter((attachment) => attachment.mediaType === 'image');
   const imageAttachmentsContainer = imageAttachments.length ? (
     <ImageAttachmentsContainer
       isEditing={props.isEditing}
@@ -17,8 +17,8 @@ export default (props) => {
     />
   ) : false;
 
-  const audioAttachments = attachments.filter(attachment => attachment.mediaType === 'audio');
-  const audioAttachmentsNodes = audioAttachments.map(attachment => (
+  const audioAttachments = attachments.filter((attachment) => attachment.mediaType === 'audio');
+  const audioAttachmentsNodes = audioAttachments.map((attachment) => (
     <AudioAttachment
       key={attachment.id}
       isEditing={props.isEditing}
@@ -32,8 +32,8 @@ export default (props) => {
     </div>
   ) : false;
 
-  const generalAttachments = attachments.filter(attachment => attachment.mediaType === 'general');
-  const generalAttachmentsNodes = generalAttachments.map(attachment => (
+  const generalAttachments = attachments.filter((attachment) => attachment.mediaType === 'general');
+  const generalAttachmentsNodes = generalAttachments.map((attachment) => (
     <GeneralAttachment
       key={attachment.id}
       isEditing={props.isEditing}

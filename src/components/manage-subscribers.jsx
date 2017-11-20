@@ -66,13 +66,13 @@ function selectState(state, ownProps) {
   const groupName = ownProps.params.userName;
   const user = state.user;
   const groupAdmins = state.groupAdmins;
-  const usersWhoAreNotAdmins = _.filter(state.usernameSubscribers.payload, user => {
-    return groupAdmins.find(u => u.username == user.username) == null;
+  const usersWhoAreNotAdmins = _.filter(state.usernameSubscribers.payload, (user) => {
+    return groupAdmins.find((u) => u.username == user.username) == null;
   });
   const users = _.sortBy(usersWhoAreNotAdmins, 'username');
 
   const amILastGroupAdmin = (
-    groupAdmins.find(u => u.username == state.user.username ) != null &&
+    groupAdmins.find((u) => u.username == state.user.username ) != null &&
     groupAdmins.length == 1
   );
 
