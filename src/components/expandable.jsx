@@ -100,7 +100,7 @@ function gatherContentLines(node, contentSelector, breakSelector) {
 }
 
 function chooseLineCounts(config = {}, windowWidth) {
-  const breakpoints = Object.keys(config).filter((key) => key !== DEFAULT_KEY).map(Number).sort((a,b) => a-b);
+  const breakpoints = Object.keys(config).filter((key) => key !== DEFAULT_KEY).map(Number).sort((a, b) => a-b);
   const breakpointToUse = breakpoints.filter((b) => b >= windowWidth)[0] || DEFAULT_KEY;
   return config[breakpointToUse] || {maxLines: DEFAULT_MAX_LINES, aboveFoldLines: DEFAULT_ABOVE_FOLD_LINES};
 }

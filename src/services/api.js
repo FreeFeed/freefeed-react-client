@@ -256,7 +256,7 @@ export function enableComments({postId}) {
   });
 }
 
-const encodeBody = (body) => _.map(body, (value, key) => `${key}=${encodeURIComponent(value)}`,).join('&');
+const encodeBody = (body) => _.map(body, (value, key) => `${key}=${encodeURIComponent(value)}`, ).join('&');
 
 export function signIn({username, password}) {
   const encodedBody = encodeBody({username, password});

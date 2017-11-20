@@ -218,7 +218,7 @@ export default class CommentLikes extends React.Component {
       <span> liked this comment</span>
       </span>;
     }
-    const otherLikesToRender = likeUsers.slice(0,4);
+    const otherLikesToRender = likeUsers.slice(0, 4);
     const otherLikes = renderUserLikesList(otherLikesToRender);
     const hiddenLikesNumber = likes - otherLikes.length;
     return <span>{otherLikes}{hiddenLikesNumber > 0 && <span> and <a className="likes-list-toggle" onClick={this.showLikesList} href="#">{hiddenLikesNumber} more {usersPluralize(hiddenLikesNumber)}</a></span>} liked this comment</span>;

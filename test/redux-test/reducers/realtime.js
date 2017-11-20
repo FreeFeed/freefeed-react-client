@@ -122,7 +122,7 @@ test('new like adds user if not presented', (t) => {
 
 const testLikePost = {
   id: '1',
-  likes: ['1','2']
+  likes: ['1', '2']
 };
 
 const testLikeUser = {

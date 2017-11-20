@@ -34,7 +34,7 @@ const middleware = [
   realtimeMiddleware
 ];
 
-const enhancers = [applyMiddleware(...middleware),];
+const enhancers = [applyMiddleware(...middleware)];
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const storeEnhancer = composeEnhancers(...enhancers);

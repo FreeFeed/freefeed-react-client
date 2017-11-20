@@ -87,7 +87,7 @@ function selectState(state, ownProps) {
   const breadcrumbs = {
     shouldShowBreadcrumbs: !isItPostsPage,
     user: viewUser,
-    breadcrumb: currentRouteName.replace('user','')
+    breadcrumb: currentRouteName.replace('user', '')
   };
 
   const sendTo = {...state.sendTo, defaultFeed: (foundUser ? foundUser.username : null)};

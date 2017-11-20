@@ -37,6 +37,7 @@
     "arrow-parens": 2,
     "arrow-spacing": 2,
     "brace-style": [2, "1tbs", { "allowSingleLine": true }],
+    "comma-spacing": 2,
     "curly": ["error", "all"],
     "eol-last": "error",
     "indent": ["error", 2, {"SwitchCase": 1}],
