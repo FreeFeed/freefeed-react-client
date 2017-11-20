@@ -45,11 +45,11 @@ class Layout extends React.Component {
     const services = [{
       // Instagram
       from: /https?:\/\/www\.instagram\.com\/p\/([\w-]+)\//i,
-      to: (id)=>('https://www.instagram.com/p/' + id + '/media/?size=l')
+      to: (id) => ('https://www.instagram.com/p/' + id + '/media/?size=l')
     }, {
       // YouTube
       from: /https?:\/\/(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\S*[^\w\s-])([\w-]{11})(?=[^\w-]|$)[?=&+%\w.-]*/i,
-      to: (id)=>('https://i.ytimg.com/vi/' + id + '/hqdefault.jpg')
+      to: (id) => ('https://i.ytimg.com/vi/' + id + '/hqdefault.jpg')
     }];
     const pageUrl = this.props.location.query.url;
     const imageUrls = [];

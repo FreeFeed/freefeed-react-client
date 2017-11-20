@@ -163,7 +163,7 @@ export default class CreatePost extends React.Component {
                   className="post-edit-more-checkbox"
                   type="checkbox"
                   value={this.state.commentsDisabled}
-                  onChange={e=>this.setState({commentsDisabled:e.target.checked})}/>
+                  onChange={(e) => this.setState({commentsDisabled:e.target.checked})}/>
                 <span className="post-edit-more-labeltext">Comments disabled</span>
               </label>
             </div>

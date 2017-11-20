@@ -92,7 +92,7 @@ export default class UserProfile extends React.Component {
                   props.hasRequestBeenSent ? (
                     <span><b>{props.screenName}</b> has been sent your subscription request.</span>
                   ) : (
-                    <a onClick={()=>props.sendSubscriptionRequest({username: props.username, id: props.id})}>Request a subscription</a>
+                    <a onClick={() => props.sendSubscriptionRequest({username: props.username, id: props.id})}>Request a subscription</a>
                   )
                 ) : (
                   props.subscribed ? (
@@ -116,7 +116,7 @@ export default class UserProfile extends React.Component {
                   </span>
                 )}
                 {props.type !== 'group' && !props.subscribed ? (
-                  <a onClick={preventDefault(()=>props.ban({username: props.username, id: props.id}))}>Block this user</a>
+                  <a onClick={preventDefault(() => props.ban({username: props.username, id: props.id}))}>Block this user</a>
                 ) : props.amIGroupAdmin ? (
                   <Link to={`/${props.username}/settings`}>Settings</Link>
                 ) : false}

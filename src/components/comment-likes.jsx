@@ -108,9 +108,9 @@ export default class CommentLikes extends React.Component {
         <div className="container">
           <div className="row">
             <div className="col-md-9">
-              <div className="actions-panel" ref={r=>this.actionsPanel = r}>
+              <div className="actions-panel" ref={(r) => this.actionsPanel = r}>
                 <div className={`likes-panel ${this.state.showActionButtons ? "padded" : ""}`}
-                  onClick={e=>e.stopPropagation()}
+                  onClick={(e) => e.stopPropagation()}
                   style={likesStyle}>
                   <div className="arrow" onClick={this.arrowClick}><i className="fa fa-angle-left" aria-hidden="true"/></div>
                   <div className="likes">

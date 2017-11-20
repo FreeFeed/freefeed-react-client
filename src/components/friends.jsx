@@ -52,7 +52,7 @@ function calculateMutual(subscriptions, subscribers) {
   }
 
   const mutual = _.intersectionWith(
-    subscriptions.payload.filter(u=>u.type==='user'),
+    subscriptions.payload.filter((u) => u.type==='user'),
     subscribers.payload,
     (a, b) => a.id == b.id
   );
@@ -73,7 +73,7 @@ function selectState(state) {
   );
 
   const mutualIds = _.map(mutual.users, f => f.id);
-  const subscriptionList = _.filter(state.usernameSubscriptions.payload.filter(u=>u.type==='user'), f => mutualIds.indexOf(f.id) === -1);
+  const subscriptionList = _.filter(state.usernameSubscriptions.payload.filter((u) => u.type==='user'), f => mutualIds.indexOf(f.id) === -1);
 
   const subscriptions = {
     header: 'Subscriptions',

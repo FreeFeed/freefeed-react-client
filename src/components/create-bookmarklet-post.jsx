@@ -80,7 +80,7 @@ export default class CreateBookmarkletPost extends React.Component {
     }
 
     const linkedImages = this.props.imageUrls.map((url, i) => (
-      <div className="post-linked-image" key={i} onClick={()=>this.props.removeImage(url)} title="Remove image">
+      <div className="post-linked-image" key={i} onClick={() => this.props.removeImage(url)} title="Remove image">
         <img src={url} />
       </div>
     ));

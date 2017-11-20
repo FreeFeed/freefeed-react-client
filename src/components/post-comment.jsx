@@ -138,7 +138,7 @@ export default class PostComment extends React.Component {
           <span className="comment-text">{this.props.body}</span>
           {(isDeletable && this.props.isModeratingComments) ? (
             <span>
-              {' - '}(<a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
+              {' - '}(<a onClick={confirmFirst(() => this.props.deleteComment(this.props.id))}>delete</a>)
             </span>
           ) : false}
         </div>
@@ -169,7 +169,7 @@ export default class PostComment extends React.Component {
           ) : (
             <span>
               <button className="btn btn-default btn-xs comment-post" onClick={this.saveComment}>Post</button>
-              <a className="comment-cancel" onClick={preventDefault(()=>this.props.toggleEditingComment(this.props.id))}>Cancel</a>
+              <a className="comment-cancel" onClick={preventDefault(() => this.props.toggleEditingComment(this.props.id))}>Cancel</a>
             </span>
           )}
           {this.props.isSaving ? (
@@ -189,13 +189,13 @@ export default class PostComment extends React.Component {
       <UserName user={this.props.user}/>
       {this.props.isEditable ? (
         <span>
-          {' '}(<a onClick={preventDefault(()=>this.props.toggleEditingComment(this.props.id))}>edit</a>
+          {' '}(<a onClick={preventDefault(() => this.props.toggleEditingComment(this.props.id))}>edit</a>
                 &nbsp;|&nbsp;
-          <a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
+          <a onClick={confirmFirst(() => this.props.deleteComment(this.props.id))}>delete</a>)
         </span>
       ) : (this.props.isDeletable && this.props.isModeratingComments) ? (
         <span>
-          {' '}(<a onClick={confirmFirst(()=>this.props.deleteComment(this.props.id))}>delete</a>)
+          {' '}(<a onClick={confirmFirst(() => this.props.deleteComment(this.props.id))}>delete</a>)
         </span>
       ) : false}</span>);
 

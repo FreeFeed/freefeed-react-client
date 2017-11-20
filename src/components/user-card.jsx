@@ -81,7 +81,7 @@ class UserCard extends React.Component {
         {props.blocked ? (
           <div className="user-card-actions">
             <span>Blocked user - </span>
-            <a onClick={()=>props.unban({username: props.user.username, id: props.user.id})}>Un-block</a>
+            <a onClick={() => props.unban({username: props.user.username, id: props.user.id})}>Un-block</a>
           </div>
         ) : !props.isItMe ? (
           <div className="user-card-actions">
@@ -95,23 +95,23 @@ class UserCard extends React.Component {
               props.hasRequestBeenSent ? (
                 <span>Subscription request sent</span>
               ) : (
-                <a onClick={()=>props.sendSubscriptionRequest({username: props.user.username, id: props.user.id})}>Request a subscription</a>
+                <a onClick={() => props.sendSubscriptionRequest({username: props.user.username, id: props.user.id})}>Request a subscription</a>
               )
             ) : (
               props.subscribed ? (
                 <a onClick={this.unsubscribe}>Unsubscribe</a>
               ) : (
-                <a onClick={()=>props.subscribe({username: props.user.username})}>Subscribe</a>
+                <a onClick={() => props.subscribe({username: props.user.username})}>Subscribe</a>
               )
             )}
 
             {props.user.type !== 'group' && !props.subscribed ? (
-              <span> - <a onClick={()=>props.ban({username: props.user.username, id: props.user.id})}>Block</a></span>
+              <span> - <a onClick={() => props.ban({username: props.user.username, id: props.user.id})}>Block</a></span>
             ) : props.amIGroupAdmin ? (
               <span> - <Link to={`/${props.user.username}/settings`}>Settings</Link></span>
             ) : false}
 
-            <span> - <a onClick={()=>props.hideShowUser(props.me, props.user.username)}>{props.hidden ? 'Show' : 'Hide'} posts</a></span>
+            <span> - <a onClick={() => props.hideShowUser(props.me, props.user.username)}>{props.hidden ? 'Show' : 'Hide'} posts</a></span>
 
           </div>
         ) : false}
