@@ -45,11 +45,11 @@ class Layout extends React.Component {
     const services = [{
       // Instagram
       from: /https?:\/\/www\.instagram\.com\/p\/([\w-]+)\//i,
-      to: (id) => ('https://www.instagram.com/p/' + id + '/media/?size=l')
+      to: (id) => (`https://www.instagram.com/p/${id}/media/?size=l`)
     }, {
       // YouTube
       from: /https?:\/\/(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\S*[^\w\s-])([\w-]{11})(?=[^\w-]|$)[?=&+%\w.-]*/i,
-      to: (id) => ('https://i.ytimg.com/vi/' + id + '/hqdefault.jpg')
+      to: (id) => (`https://i.ytimg.com/vi/${id}/hqdefault.jpg`)
     }];
     const pageUrl = this.props.location.query.url;
     const imageUrls = [];
@@ -81,7 +81,7 @@ class Layout extends React.Component {
         <header>
           <h1>
             Share on <a href="/" target="_blank">FreeFeed</a>
-            {props.authenticated ? (" as " + props.user.username) : false}
+            {props.authenticated ? (` as ${props.user.username}`) : false}
           </h1>
         </header>
 
@@ -90,7 +90,7 @@ class Layout extends React.Component {
             createPostViewState={props.createPostViewState}
             sendTo={props.sendTo}
             user={props.user}
-            postText={props.location.query.title + ' - ' + props.location.query.url}
+            postText={`${props.location.query.title} - ${props.location.query.url}`}
             imageUrls={this.state.imageUrls}
             commentText={props.location.query.comment}
             createPostForm={props.createPostForm}

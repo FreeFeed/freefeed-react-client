@@ -5,7 +5,7 @@ import {signInChange} from '../../../src/redux/action-creators';
 
 test('signInForm changes username on signInChange', (t) => {
   const oldName = 'name';
-  const newName = oldName + '2';
+  const newName = `${oldName}2`;
 
   const result = signInForm({username:oldName}, signInChange(newName));
 

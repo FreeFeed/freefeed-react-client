@@ -60,7 +60,7 @@ class GoogleDocsPreview extends React.Component {
           href={this.props.url}
           target="_blank"
           style={{
-            backgroundSize: zoomRate(type) * 100 + '%',
+            backgroundSize: `${zoomRate(type) * 100}%`,
             backgroundImage: preview ? `url(${preview})` : null,
             paddingBottom: `${100/(aspectRatio >= maxAspectRatio ? aspectRatio : defaultAspectRatio)}%`,
             backgroundPosition: `center ${55 * aspectRatio * (zoomRate(type) - 1)}%`,

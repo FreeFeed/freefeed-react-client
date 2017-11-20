@@ -6,11 +6,11 @@ export default (props) => {
 
   let artistAndTitle = '';
   if (props.title && props.artist) {
-    artistAndTitle = props.artist + ' – ' + props.title + ' (' + formattedFileSize + ')';
+    artistAndTitle = `${props.artist} – ${props.title} (${formattedFileSize})`;
   } else if (props.title) {
-    artistAndTitle = props.title + ' (' + formattedFileSize + ')';
+    artistAndTitle = `${props.title} (${formattedFileSize})`;
   } else {
-    artistAndTitle = props.fileName + ' (' + formattedFileSize + ')';
+    artistAndTitle = `${props.fileName} (${formattedFileSize})`;
   }
 
   const removeAttachment = () => props.removeAttachment(props.id);

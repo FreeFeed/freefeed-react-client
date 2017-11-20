@@ -5,15 +5,15 @@ import numeral from 'numeral';
 export default (props) => {
   const formattedFileSize = numeral(props.fileSize).format('0.[0] b');
   const formattedImageSize = (props.imageSizes.o ? `, ${props.imageSizes.o.w}×${props.imageSizes.o.h}px` : '');
-  const nameAndSize = props.fileName + ' (' + formattedFileSize + formattedImageSize + ')';
+  const nameAndSize = `${props.fileName} (${formattedFileSize}${formattedImageSize})`;
 
   const removeAttachment = () => props.removeAttachment(props.id);
 
   let srcSet;
   if (props.imageSizes.t2 && props.imageSizes.t2.url) {
-    srcSet = props.imageSizes.t2.url + ' 2x';
+    srcSet = `${props.imageSizes.t2.url} 2x`;
   } else if (props.imageSizes.o && props.imageSizes.t && props.imageSizes.o.w <= props.imageSizes.t.w * 2) {
-    srcSet = (props.imageSizes.o.url || props.url) + ' 2x';
+    srcSet = `${props.imageSizes.o.url || props.url} 2x`;
   }
 
   const imageAttributes = {

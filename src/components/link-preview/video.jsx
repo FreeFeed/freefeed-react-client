@@ -83,7 +83,7 @@ class VideoPreview extends React.Component {
     // video will have the same area as 16x9 450px-width rectangle
     const r = info ? info.aspectRatio : aspectRatio.get(url, getDefaultAspectRatio(url));
     const width = 450 * Math.sqrt((9/16) / r);
-    previewStyle.paddingBottom = 100 * r + '%';
+    previewStyle.paddingBottom = `${100 * r}%`;
 
     return (
       <div className="video-preview link-preview-content" style={{maxWidth: width}}>

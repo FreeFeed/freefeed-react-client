@@ -31,7 +31,7 @@ class InstagramPreview extends React.Component {
     startEventListening();
     // set default frame height
     const r = aspectRatio.get(this.props.url, 470 / 400);
-    this.iframe.style.height = (this.iframe.offsetWidth * r) + 'px';
+    this.iframe.style.height = `${this.iframe.offsetWidth * r}px`;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -89,7 +89,7 @@ function onMessage(e) {
   const frame = [...frames].find((fr) => fr.contentWindow === e.source);
   if (frame) {
     if (data.type === 'MEASURE') {
-      frame.style.height = data.details.height + 'px';
+      frame.style.height = `${data.details.height}px`;
       aspectRatio.set(frame.dataset['url'], data.details.height / frame.offsetWidth);
     } else if (data.type === 'LOADING') {
       frame.dataset['loaded'] = '1';

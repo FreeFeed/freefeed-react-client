@@ -3,7 +3,7 @@ import numeral from 'numeral';
 
 export default (props) => {
   const formattedFileSize = numeral(props.fileSize).format('0.[0] b');
-  const nameAndSize = props.fileName + ' (' + formattedFileSize + ')';
+  const nameAndSize = `${props.fileName} (${formattedFileSize})`;
 
   const removeAttachment = () => props.removeAttachment(props.id);
 

@@ -18,7 +18,7 @@ const getSummaryPeriod = (days) => {
     case 1: return 'day';
     case 7: return 'week';
     case 30: return 'month';
-    default: return days + ' days';
+    default: return `${days} days`;
   }
 };
 
@@ -41,13 +41,13 @@ export function title(state = '', action) {
     }
     case response(ActionTypes.GET_USER_FEED): {
       const [user] = (action.payload.users || []).filter((user) => user.username === action.request.username);
-      const author = user.screenName + (user.username !== user.screenName ? ' (' + user.username + ')' : '');
+      const author = user.screenName + (user.username !== user.screenName ? ` (${user.username})` : '');
       return `${author} - FreeFeed`;
     }
     case response(ActionTypes.GET_SINGLE_POST): {
       const text = action.payload.posts.body.substr(0, 60);
       const [user] = (action.payload.users || []);
-      const author = user.screenName + (user.username !== user.screenName ? ' (' + user.username + ')' : '');
+      const author = user.screenName + (user.username !== user.screenName ? ` (${user.username})` : '');
       return `${text} - ${author} - FreeFeed`;
     }
     case response(ActionTypes.GET_SUMMARY): {
@@ -58,7 +58,7 @@ export function title(state = '', action) {
       const period = getSummaryPeriod(action.request.days);
       const [user] = (action.payload.users || []).filter((user) => user.username === action.request.username);
       const author = user
-        ? user.screenName + (user.username !== user.screenName ? ' (' + user.username + ')' : '')
+        ? user.screenName + (user.username !== user.screenName ? ` (${user.username})` : '')
         : action.request.username;
       return `Best of ${period} - ${author} - FreeFeed`;
     }
@@ -435,7 +435,7 @@ export function postsViewState(state = {}, action) {
       const isEditing = false;
 
       const isError = true;
-      const errorString = action.response.status + ' ' + action.response.statusText;
+      const errorString = `${action.response.status} ${action.response.statusText}`;
 
       return { ...state, [id]: { id, isEditing, isError, errorString }};
     }
@@ -1627,7 +1627,7 @@ export function groupCreateForm(state={}, action) {
       return {...state, status: 'loading'};
     }
     case response(ActionTypes.CREATE_GROUP): {
-      const groupUrl = '/' + action.payload.groups.username;
+      const groupUrl = `/${action.payload.groups.username}`;
       return {...state, status: 'success', groupUrl };
     }
     case fail(ActionTypes.CREATE_GROUP): {
@@ -1709,7 +1709,7 @@ export function boxHeader(state = "", action) {
       return 'Direct messages';
     }
     case request(ActionTypes.GET_SEARCH): {
-      return `Search${action.payload.search ? ': ' + action.payload.search : ''}`;
+      return `Search${action.payload.search ? `: ${action.payload.search}` : ''}`;
     }
     case request(ActionTypes.GET_BEST_OF): {
       return 'Best Of FreeFeed';
@@ -1719,7 +1719,7 @@ export function boxHeader(state = "", action) {
     }
     case request(ActionTypes.GET_SUMMARY):
     case request(ActionTypes.GET_USER_SUMMARY): {
-      let period = action.payload.days + ' days';
+      let period = `${action.payload.days} days`;
       switch (+action.payload.days) {
         case 1: period = 'day'; break;
         case 7: period = 'week'; break;

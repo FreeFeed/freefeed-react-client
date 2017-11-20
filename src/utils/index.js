@@ -81,7 +81,7 @@ export function pluralForm(n, singular, plural = null, format = 'n w') {
   } else if (plural) {
     w = plural;
   } else {
-    w = singular + 's';
+    w = `${singular}s`;
   }
 
   return format.replace('n', n).replace('w', w);
@@ -129,7 +129,7 @@ export function delay(timeout = 0) {
 // in private browsing mode)
 let localStorageSupported = true;
 try {
-  const lskey = 'ff' + new Date().getTime();
+  const lskey = `ff${new Date().getTime()}`;
   window.localStorage.setItem(lskey, 'test');
   window.localStorage.removeItem(lskey);
 } catch (err) {

@@ -31,8 +31,8 @@ export default class ResizeTracker extends React.Component {
       const slider = sensor.firstChild;
       const height = sensor.offsetHeight + 100;
       const width = sensor.offsetWidth + 100;
-      slider.style.width = width + 'px';
-      slider.style.height = height + 'px';
+      slider.style.width = `${width}px`;
+      slider.style.height = `${height}px`;
       sensor.scrollLeft = width;
       sensor.scrollTop = height;
     }

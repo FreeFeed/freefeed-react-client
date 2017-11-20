@@ -61,7 +61,7 @@ export default class PostComment extends React.Component {
   }
 
   mention = () => {
-    this.props.openAnsweringComment('@' + this.props.user.username);
+    this.props.openAnsweringComment(`@${this.props.user.username}`);
   }
 
   setCaretToTextEnd = (event) => {

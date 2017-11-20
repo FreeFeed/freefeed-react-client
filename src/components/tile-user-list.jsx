@@ -102,7 +102,7 @@ export const tileUserListFactory = (config) => (props) => {
   });
 
   const header = props.header && config.displayQuantity ?
-    props.header + ` (${props.users.length})` :
+    `${props.header} (${props.users.length})` :
     props.header;
 
   return (

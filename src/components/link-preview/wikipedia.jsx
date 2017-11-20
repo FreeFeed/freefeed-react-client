@@ -95,7 +95,7 @@ class WikipediaPreview extends React.Component {
           ) : (
             <div
               className="wikipedia-preview"
-              style={{height: heightCache.get(this.props.url, 0) + 'px'}}
+              style={{height: `${heightCache.get(this.props.url, 0)}px`}}
             >
               Loading…
             </div>

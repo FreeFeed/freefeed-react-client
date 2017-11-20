@@ -41,7 +41,7 @@ class EmbedlyPreview extends React.Component {
         key={`${this.props.url}##${this.state.updCounter}`}
         className="embedly-preview link-preview-content"
         data-url={this.props.url}
-        style={{height: heightCache.get(this.props.url, 0) + 'px'}}
+        style={{height: `${heightCache.get(this.props.url, 0)}px`}}
       >
         <a
           ref={this.setLink}
@@ -69,6 +69,6 @@ embedly('on', 'card.resize', (iframe) => {
     return;
   }
   const height = iframe.offsetHeight;
-  cont.style.height = height + 'px';
+  cont.style.height = `${height}px`;
   heightCache.set(cont.dataset.url, height);
 });
