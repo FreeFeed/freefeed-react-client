@@ -26,7 +26,7 @@ export default class SendTo extends React.Component {
   stateFromProps(props, options) {
     return {
       values: options.filter((opt) => opt.value === props.defaultFeed),
-      options: options,
+      options,
       showFeedsOption: !props.defaultFeed,
       isWarningDisplayed: false
     };

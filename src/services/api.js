@@ -76,7 +76,7 @@ export function createPost({feeds, postText, attachmentIds, more}) {
         attachments: attachmentIds
       },
       meta: {
-        feeds: feeds,
+        feeds,
         commentsDisabled: !!more.commentsDisabled
       }
     })
@@ -96,7 +96,7 @@ export function createBookmarkletPost({feeds, postText, imageUrls, commentText})
       images: imageUrls,
       comment: commentText,
       meta: {
-        feeds: feeds
+        feeds
       }
     })
   });

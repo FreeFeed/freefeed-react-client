@@ -1770,7 +1770,7 @@ function getValidRecipients(state) {
       user = _.find(state.subscribers || [], { 'id': sub.user });
     }
     if (user) {
-      return {id: rs.id, user: user};
+      return {id: rs.id, user};
     }
   }).filter(Boolean);
 
@@ -1958,7 +1958,7 @@ const handleUsers = (state, action, type, errorString) => {
     return {
       payload: [],
       isPending: false,
-      errorString: errorString
+      errorString
     };
   }
 
