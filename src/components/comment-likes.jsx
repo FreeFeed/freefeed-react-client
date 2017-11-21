@@ -16,7 +16,8 @@ export default class CommentLikes extends React.Component {
   }
   render() {
     return (
-      <div className="comment-likes-container"
+      <div
+        className="comment-likes-container"
         onTouchStart={this.startTouch}
         onTouchEnd={this.endTouch}
         onMouseDown={this.startMouseDown}
@@ -40,7 +41,8 @@ export default class CommentLikes extends React.Component {
           {this.state.likeListVisible ? this.renderLikesList() : ""}
         </div>
         <div className="comment-heart" onClick={this.toggleLike}>
-          <i  className={`fa fa-heart${this.props.forbidLiking ? "-o" : ""} ${this.state.liked ? "liked" : ""} icon`}
+          <i
+            className={`fa fa-heart${this.props.forbidLiking ? "-o" : ""} ${this.state.liked ? "liked" : ""} icon`}
             title={this.props.forbidLiking ? "Your own comment" : this.props.hasOwnLike ? "Un-like" : "Like"}
           >
           </i>
@@ -119,7 +121,8 @@ export default class CommentLikes extends React.Component {
             <div className="row">
               <div className="col-md-9">
                 <div className="actions-panel" ref={(r) => this.actionsPanel = r}>
-                  <div className={`likes-panel ${this.state.showActionButtons ? "padded" : ""}`}
+                  <div
+                    className={`likes-panel ${this.state.showActionButtons ? "padded" : ""}`}
                     onClick={(e) => e.stopPropagation()}
                     style={likesStyle}
                   >
@@ -139,20 +142,23 @@ export default class CommentLikes extends React.Component {
                         It"s your own comment
                       </div>
                       :
-                      <button  className={`mention-action ${this.props.hasOwnLike ? "un" : ""}like`}
+                      <button
+                        className={`mention-action ${this.props.hasOwnLike ? "un" : ""}like`}
                         onClick={this.props.toggleLike}
                       >
                         <i className="fa fa-heart" aria-hidden="true"/>
                         {`${this.props.hasOwnLike ? "Un-like" : "Like"} comment`}
                       </button>
                     }
-                    <button  className="mention-action reply"
+                    <button
+                      className="mention-action reply"
                       onClick={this.props.reply}
                     >
                       <i className="fa fa-angle-up" aria-hidden="true"/>
                       Reply to comment
                     </button>
-                    <button  className="mention-action mention"
+                    <button
+                      className="mention-action mention"
                       onClick={this.props.mention}
                     >
                       <i className="fa fa-at" aria-hidden="true"/>

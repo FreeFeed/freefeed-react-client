@@ -40,14 +40,15 @@ const SideBarFriends = ({ user }) => (
         <li className="p-my-discussions"><Link to="/filter/discussions">My discussions</Link></li>
         <li className="p-best-of"><Link to="/summary/1">Best of day</Link>
           &nbsp;&nbsp;
-          <span style={{
-            backgroundColor: '#F9CB16',
-            color: 'white',
-            display: 'inline-block',
-            fontSize: '10px',
-            padding: '0 2px',
-            verticalAlign: '1px'
-          }}
+          <span
+            style={{
+              backgroundColor: '#F9CB16',
+              color: 'white',
+              display: 'inline-block',
+              fontSize: '10px',
+              padding: '0 2px',
+              verticalAlign: '1px'
+            }}
           >
             NEW
           </span>

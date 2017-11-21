@@ -102,7 +102,8 @@ const Signup = (props) => (
               <form onSubmit={preventDefault(() => signUpFunc(props))} className="p-signin">
                 <div className="form-group">
                   <label htmlFor="username">Username</label>
-                  <input id="username"
+                  <input
+                    id="username"
                     className="ember-view ember-text-field form-control"
                     type="text"
                     onChange={(e) => props.signUpChange({ username: e.target.value })}
@@ -111,7 +112,8 @@ const Signup = (props) => (
 
                 <div className="form-group">
                   <label htmlFor="email">Email</label>
-                  <input id="email"
+                  <input
+                    id="email"
                     className="ember-view ember-text-field form-control"
                     type="text"
                     onChange={(e) => props.signUpChange({ email: e.target.value })}
@@ -120,7 +122,8 @@ const Signup = (props) => (
 
                 <div className="form-group">
                   <label htmlFor="password">Password</label>
-                  <input id="password"
+                  <input
+                    id="password"
                     className="ember-view ember-text-field form-control"
                     type="password"
                     onChange={(e) => props.signUpChange({ password: e.target.value })}
@@ -129,7 +132,8 @@ const Signup = (props) => (
 
                 {captchaConfig.siteKey &&
                   <div className="form-group">
-                    <Recaptcha sitekey={captchaConfig.siteKey}
+                    <Recaptcha
+                      sitekey={captchaConfig.siteKey}
                       theme="light" type="image"
                       onChange={(v) => props.signUpChange({ captcha: v })}
                       onExpired={() => props.signUpChange({ captcha: null })}

@@ -205,7 +205,8 @@ export default class PostComment extends React.Component {
 
     return (
       <div className="comment-body">
-        <Expandable expanded={this.props.readMoreStyle === READMORE_STYLE_COMPACT || this.props.isSinglePost || this.props.isExpanded}
+        <Expandable
+          expanded={this.props.readMoreStyle === READMORE_STYLE_COMPACT || this.props.isSinglePost || this.props.isExpanded}
           bonusInfo={authorAndButtons}
           config={commentReadmoreConfig}
         >
@@ -233,7 +234,8 @@ export default class PostComment extends React.Component {
       return false;
     }
     return (
-      <CommentLikes  commentId={this.props.id}
+      <CommentLikes
+        commentId={this.props.id}
         entryUrl={this.props.entryUrl}
         omitBubble={this.props.omitBubble}
         createdAt={this.props.createdAt}
@@ -262,7 +264,8 @@ export default class PostComment extends React.Component {
 
 
     return (
-      <div className={className}
+      <div
+        className={className}
         data-author={this.props.isEditing ? '' : this.props.user.username}
         ref={this.refCommentContainer}
       >

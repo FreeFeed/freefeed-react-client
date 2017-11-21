@@ -29,7 +29,8 @@ class SinglePostHandler extends React.Component {
     if (post) {
       post.isCommenting = true;
       postBody = (
-        <Post {...post}
+        <Post
+          {...post}
           key={post.id}
           isSinglePost={true}
           user={props.user}

@@ -56,7 +56,8 @@ export default class GroupCreateForm extends React.Component {
               <label htmlFor="description">Description:</label>
               <textarea id="description" className="form-control" name="description" value={this.state.description} onChange={this.handleChange('description')} maxLength="1500"/>
             </div>
-            <GroupFeedTypePicker isPrivate={this.state.isPrivate}
+            <GroupFeedTypePicker
+              isPrivate={this.state.isPrivate}
               isRestricted={this.state.isRestricted}
               updateGroupPrivacySettings={this.handlePrivacyTypeChange}
             />

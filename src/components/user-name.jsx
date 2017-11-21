@@ -78,7 +78,8 @@ class UserName extends React.Component {
   render() {
     const { bottom, left } = this.state;
     return (
-      <span className="user-name-wrapper"
+      <span
+        className="user-name-wrapper"
         onMouseEnter={this.enterUserName}
         onMouseLeave={this.leaveUserName}
       >

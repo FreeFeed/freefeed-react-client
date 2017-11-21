@@ -91,6 +91,7 @@
 
     "react/jsx-closing-bracket-location": 2,
     "react/jsx-closing-tag-location": 2,
+    "react/jsx-first-prop-new-line": [2, "multiline"],
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error"
   }

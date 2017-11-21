@@ -10,7 +10,8 @@ export default (props) => (
         <img width="16" height="16" src={throbber16}/>
       ) : false}
     </span>
-    <a className="more-comments-link"
+    <a
+      className="more-comments-link"
       href={props.entryUrl}
       onClick={preventDefault(() => props.showMoreComments())}
     >

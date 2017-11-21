@@ -25,7 +25,8 @@ export default (props) => {
     const isRecentlyHidden = (props.isInHomeFeed && post.isHidden && (section === 'visible'));
 
     return (
-      <Post {...post}
+      <Post
+        {...post}
         key={post.id}
         user={props.user}
         isInHomeFeed={props.isInHomeFeed}

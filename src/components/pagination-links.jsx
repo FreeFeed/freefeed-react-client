@@ -15,7 +15,8 @@ export default (props) => {
     <ul className="pager p-pagination-controls">
       {props.offset > 0 ?
         <li>
-          <Link to={{ pathname: props.location.pathname, query: { ...allQuery, ...offsetObject(minOffset(props.offset)) } }}
+          <Link
+            to={{ pathname: props.location.pathname, query: { ...allQuery, ...offsetObject(minOffset(props.offset)) } }}
             className="p-pagination-newer"
           >
             « Newer items
@@ -24,7 +25,8 @@ export default (props) => {
         : false}
       {!props.isLastPage ?
         <li>
-          <Link to={{ pathname: props.location.pathname, query: { ...allQuery, ...offsetObject(maxOffset(props.offset)) } }}
+          <Link
+            to={{ pathname: props.location.pathname, query: { ...allQuery, ...offsetObject(maxOffset(props.offset)) } }}
             className="p-pagination-older"
           >
             Older items »

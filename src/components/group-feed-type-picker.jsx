@@ -44,7 +44,8 @@ export default class GroupFeedTypePicker extends React.Component {
           <div className="col-sm-9">
             <label className="option-box">
               <div className="input">
-                <input type="radio"
+                <input
+                  type="radio"
                   name="privacy"
                   value={PUBLIC}
                   checked={getPrivacyMode(this.props) === PUBLIC}
@@ -58,7 +59,8 @@ export default class GroupFeedTypePicker extends React.Component {
 
             <label className="option-box">
               <div className="input">
-                <input type="radio"
+                <input
+                  type="radio"
                   name="privacy"
                   value={PROTECTED}
                   checked={getPrivacyMode(this.props) === PROTECTED}
@@ -72,7 +74,8 @@ export default class GroupFeedTypePicker extends React.Component {
 
             <label className="option-box">
               <div className="input">
-                <input type="radio"
+                <input
+                  type="radio"
                   name="privacy"
                   value={PRIVATE}
                   checked={getPrivacyMode(this.props) === PRIVATE}
@@ -94,7 +97,8 @@ export default class GroupFeedTypePicker extends React.Component {
           <div className="col-sm-9">
             <label className="option-box">
               <div className="input">
-                <input type="radio"
+                <input
+                  type="radio"
                   name="isRestricted"
                   value="0"
                   checked={this.props.isRestricted === '0'}
@@ -108,7 +112,8 @@ export default class GroupFeedTypePicker extends React.Component {
 
             <label className="option-box">
               <div className="input">
-                <input type="radio"
+                <input
+                  type="radio"
                   name="isRestricted"
                   value="1"
                   checked={this.props.isRestricted === '1'}

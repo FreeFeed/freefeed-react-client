@@ -266,7 +266,8 @@ export default class Post extends React.Component {
       </div>
     ) : (
       <div className={postClass} data-author={props.createdBy.username}>
-        <Expandable expanded={props.isEditing || props.isSinglePost || props.readMoreStyle === READMORE_STYLE_COMPACT}
+        <Expandable
+          expanded={props.isEditing || props.isSinglePost || props.readMoreStyle === READMORE_STYLE_COMPACT}
           config={postReadmoreConfig}
         >
           <div className="post-userpic">
@@ -319,7 +320,8 @@ export default class Post extends React.Component {
                     </span>
                   ) : false}
                   <a className="post-cancel" onClick={cancelEditingPost}>Cancel</a>
-                  <button className="btn btn-default btn-xs"
+                  <button
+                    className="btn btn-default btn-xs"
                     onClick={saveEditingPost}
                     disabled={this.state.attachmentQueueLength > 0}
                   >
@@ -329,7 +331,8 @@ export default class Post extends React.Component {
               </div>
             ) : (
               <div className="post-text">
-                <PieceOfText  text={props.body}
+                <PieceOfText
+                  text={props.body}
                   readMoreStyle={props.readMoreStyle}
                   highlightTerms={props.highlightTerms}
                 />

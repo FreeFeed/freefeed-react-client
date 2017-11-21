@@ -93,7 +93,8 @@ export default class CreateBookmarkletPost extends React.Component {
           </div>
         ) : false}
 
-        <SendTo ref="selectFeeds"
+        <SendTo
+          ref="selectFeeds"
           feeds={this.props.sendTo.feeds}
           defaultFeed={this.props.sendTo.defaultFeed}
           user={this.props.user}
@@ -142,7 +143,8 @@ export default class CreateBookmarkletPost extends React.Component {
             </span>
           ) : false}
 
-          <button className="btn btn-default"
+          <button
+            className="btn btn-default"
             onClick={preventDefault(this.submitForm)}
             disabled={this.state.isFormEmpty || this.props.createPostViewState.isPending}
           >

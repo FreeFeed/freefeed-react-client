@@ -121,7 +121,8 @@ export default class CreatePost extends React.Component {
       <div className="create-post post-editor">
         <div>
           {this.props.sendTo.expanded &&
-            <SendTo ref="selectFeeds"
+            <SendTo
+              ref="selectFeeds"
               feeds={this.props.sendTo.feeds}
               defaultFeed={this.props.sendTo.defaultFeed}
               isDirects={this.props.isDirects}
@@ -181,7 +182,8 @@ export default class CreatePost extends React.Component {
             </span>
           ) : false}
 
-          <button className="btn btn-default btn-xs"
+          <button
+            className="btn btn-default btn-xs"
             onClick={preventDefault(this.createPost)}
             disabled={this.state.isFormEmpty || this.state.attachmentQueueLength > 0 || this.props.createPostViewState.isPending}
           >
