@@ -15,7 +15,7 @@ export default (props) => {
         <h3>
           <span>{title} </span>
           <span className="comment-throbber">
-            <img width="16" height="16" src={throbber16}/>
+            <img width="16" height="16" src={throbber16} />
           </span>
         </h3>
       </div>
@@ -40,7 +40,7 @@ export default (props) => {
 
       {sections.map((s) => [
         (showTitles && s.title) ? <h4 className="tile-list-subheader">{s.title}</h4> : false,
-        <TileList key={s.title} users={s.users}/>
+        <TileList key={s.title} users={s.users} />
       ])}
 
       {!sections.length ? <div>Nobody's here!</div> : ''}

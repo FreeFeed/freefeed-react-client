@@ -51,7 +51,7 @@ class Settings extends React.Component {
               {...props.userSettingsForm}
             />
 
-            <hr/>
+            <hr />
 
             <UserPreferencesForm
               userId={props.user.id}
@@ -61,14 +61,14 @@ class Settings extends React.Component {
               {...props.frontendPreferencesForm}
             />
 
-            <hr/>
+            <hr />
 
             <UserChangePasswordForm
               updatePassword={props.updatePassword}
               {...props.passwordForm}
             />
 
-            <hr/>
+            <hr />
 
             <UserPictureForm
               user={props.user}
@@ -76,7 +76,7 @@ class Settings extends React.Component {
               {...props.userPictureForm}
             />
 
-            <hr/>
+            <hr />
 
             <UserNotificationsForm
               userId={props.user.id}
@@ -85,7 +85,7 @@ class Settings extends React.Component {
               {...props.userNotificationsForm}
             />
 
-            <hr/>
+            <hr />
           </div>
         </div>
       </div>

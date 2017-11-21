@@ -21,11 +21,11 @@ export default class GroupPictureForm extends React.Component {
         <h3>Profile picture</h3>
 
         <div className="form-group avatar">
-          <img src={this.props.group.profilePictureLargeUrl} width="75" height="75"/>
+          <img src={this.props.group.profilePictureLargeUrl} width="75" height="75" />
         </div>
 
         <div className="form-group">
-          <input type="file" ref="pictureFile"/>
+          <input type="file" ref="pictureFile" />
         </div>
 
         <div className="form-group">
@@ -33,7 +33,7 @@ export default class GroupPictureForm extends React.Component {
 
           {this.props.status === 'loading' ? (
             <span className="settings-throbber">
-              <img width="16" height="16" src={throbber16}/>
+              <img width="16" height="16" src={throbber16} />
             </span>
           ) : false}
         </div>

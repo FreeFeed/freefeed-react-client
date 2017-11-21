@@ -56,8 +56,8 @@ const GroupsHandler = (props) => {
           </div>
         ) : false}
 
-        <TileList {...props.myGroups}/>
-        <TileList {...props.groupsIAmIn}/>
+        <TileList {...props.myGroups} />
+        <TileList {...props.groupsIAmIn} />
       </div>
       <div className="box-footer"></div>
     </div>

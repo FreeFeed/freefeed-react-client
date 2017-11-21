@@ -73,7 +73,7 @@ export default class CreateBookmarkletPost extends React.Component {
       const postUrl = `/${this.props.user.username}/${this.props.createPostViewState.lastPostId}`;
       return (
         <div className="brand-new-post">
-          Done! Check out<br/>
+          Done! Check out<br />
           <a href={postUrl} target="_blank">your brand new post</a>
         </div>
       );
@@ -114,7 +114,7 @@ export default class CreateBookmarkletPost extends React.Component {
         {this.props.imageUrls.length ? (
           linkedImages
         ) : (
-          <div className="post-linked-image-empty">Click on images<br/>to share them</div>
+          <div className="post-linked-image-empty">Click on images<br />to share them</div>
         )}
 
         <div className="comment">
@@ -139,7 +139,7 @@ export default class CreateBookmarkletPost extends React.Component {
         <div className="post-edit-actions">
           {this.props.createPostViewState.isPending ? (
             <span className="post-edit-throbber">
-              <img width="16" height="16" src={throbber16}/>
+              <img width="16" height="16" src={throbber16} />
             </span>
           ) : false}
 

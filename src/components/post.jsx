@@ -211,12 +211,12 @@ export default class Post extends React.Component {
       <span>
         {' - '}
         {props.likeError ? (
-          <i className="fa fa-exclamation-triangle post-like-fail" title={props.likeError} aria-hidden="true"/>
+          <i className="fa fa-exclamation-triangle post-like-fail" title={props.likeError} aria-hidden="true" />
         ) : null}
         <a className="post-action" onClick={didILikePost ? unlikePost : likePost}>{didILikePost ? 'Un-like' : 'Like'}</a>
         {props.isLiking ? (
           <span className="post-like-throbber">
-            <img width="16" height="16" src={throbber16}/>
+            <img width="16" height="16" src={throbber16} />
           </span>
         ) : false}
       </span>
@@ -229,7 +229,7 @@ export default class Post extends React.Component {
         <a className="post-action" onClick={props.isHidden ? unhidePost : hidePost}>{props.isHidden ? 'Un-hide' : 'Hide'}</a>
         {props.isHiding ? (
           <span className="post-hide-throbber">
-            <img width="16" height="16" src={throbber16}/>
+            <img width="16" height="16" src={throbber16} />
           </span>
         ) : false}
       </span>
@@ -260,7 +260,7 @@ export default class Post extends React.Component {
         {' '}
         {props.isHiding ? (
           <span className="post-hide-throbber">
-            <img width="16" height="16" src={throbber16}/>
+            <img width="16" height="16" src={throbber16} />
           </span>
         ) : false}
       </div>
@@ -272,12 +272,12 @@ export default class Post extends React.Component {
         >
           <div className="post-userpic">
             <Link to={`/${props.createdBy.username}`}>
-              <img className="post-userpic-img" src={profilePicture} width={profilePictureSize} height={profilePictureSize}/>
+              <img className="post-userpic-img" src={profilePicture} width={profilePictureSize} height={profilePictureSize} />
             </Link>
           </div>
           <div className="post-body">
             <div className="post-header">
-              <UserName className="post-author" user={props.createdBy}/>
+              <UserName className="post-author" user={props.createdBy} />
               {recipients.length > 0 ? ' to ' : false}
               {recipients}
               {this.props.isInHomeFeed ? <PostVia post={this.props} me={this.props.user} /> : false}
@@ -316,7 +316,7 @@ export default class Post extends React.Component {
                 <div className="post-edit-actions">
                   {props.isSaving ? (
                     <span className="post-edit-throbber">
-                      <img width="16" height="16" src={throbber16}/>
+                      <img width="16" height="16" src={throbber16} />
                     </span>
                   ) : false}
                   <a className="post-cancel" onClick={cancelEditingPost}>Cancel</a>
@@ -358,13 +358,13 @@ export default class Post extends React.Component {
 
           <div className="post-footer">
             {isPrivate ? (
-              <i className="post-lock-icon fa fa-lock" title="This entry is private"/>
+              <i className="post-lock-icon fa fa-lock" title="This entry is private" />
             ) : isProtected ? (
-              <i className="post-lock-icon post-protected-icon fa fa-lock" title="This entry is only visible to FreeFeed users"/>
+              <i className="post-lock-icon post-protected-icon fa fa-lock" title="This entry is only visible to FreeFeed users" />
             ) : false}
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
             <Link to={canonicalPostURI} className="post-timestamp">
-              <TimeDisplay timeStamp={+props.createdAt}/>
+              <TimeDisplay timeStamp={+props.createdAt} />
             </Link>
             {commentLink}
             {likeLink}

@@ -8,7 +8,7 @@ export default ({ loading, children, fullPage }) => (
     {loading
       ? (
         <div className="loader-overlay">
-          <img src={throbber}/>
+          <img src={throbber} />
         </div>
       )
       : false

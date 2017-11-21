@@ -137,7 +137,7 @@ class SourceList extends React.Component {
         {sources.map((s) => (
           <div className="checkbox" key={s.url}>
             <label>
-              <input type="checkbox" value={s.url} checked={selected.includes(s.url)} onClick={onClick}/>
+              <input type="checkbox" value={s.url} checked={selected.includes(s.url)} onClick={onClick} />
               {this.renderSource(s)} <span className="text-muted">({s.count})</span>
             </label>
           </div>

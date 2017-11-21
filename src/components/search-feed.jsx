@@ -34,7 +34,7 @@ const FeedHandler = (props) => (
     {props.visibleEntries.length
       ? (
         <PaginatedView {...props}>
-          <Feed {...props}/>
+          <Feed {...props} />
         </PaginatedView>
       )
       : searchHelper

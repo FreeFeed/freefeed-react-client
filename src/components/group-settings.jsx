@@ -15,7 +15,7 @@ const GroupSettings = (props) => (
         Group settings
       </div>
       <div className="box-body">
-        <img width="100" height="100" src={throbber100}/>
+        <img width="100" height="100" src={throbber100} />
       </div>
     </div>
   ) : props.groupSettings.status === 'success' ? (
@@ -31,7 +31,7 @@ const GroupSettings = (props) => (
           {...props.groupSettingsForm}
         />
 
-        <hr/>
+        <hr />
 
         <GroupPictureForm
           group={props.group}
@@ -51,7 +51,7 @@ const GroupSettings = (props) => (
       </div>
     </div>
   ) : (
-    <div/>
+    <div />
   )
 );
 

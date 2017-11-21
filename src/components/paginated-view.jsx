@@ -22,11 +22,11 @@ const PaginatedView = (props) => (
       </h4>
     ) : props.offset > 0
       ? props.children
-        ? <PaginationLinks location={props.location} offset={props.offset} isLastPage={props.isLastPage}/>
+        ? <PaginationLinks location={props.location} offset={props.offset} isLastPage={props.isLastPage} />
         : false
       : props.firstPageHead}
     {props.children}
-    <PaginationLinks location={props.location} offset={props.offset} isLastPage={props.isLastPage}/>
+    <PaginationLinks location={props.location} offset={props.offset} isLastPage={props.isLastPage} />
   </div>
 );
 

@@ -178,7 +178,7 @@ export default class CreatePost extends React.Component {
         <div className="post-edit-actions">
           {this.props.createPostViewState.isPending ? (
             <span className="throbber">
-              <img width="16" height="16" src={throbber}/>
+              <img width="16" height="16" src={throbber} />
             </span>
           ) : false}
 

@@ -175,7 +175,7 @@ export default class PostComment extends React.Component {
           )}
           {this.props.isSaving ? (
             <span className="comment-throbber">
-              <img width="16" height="16" src={throbber16}/>
+              <img width="16" height="16" src={throbber16} />
             </span>
           ) : false}
           {this.props.errorString ? (
@@ -188,7 +188,7 @@ export default class PostComment extends React.Component {
     const authorAndButtons = (
       <span>
         {' -'}&nbsp;
-        <UserName user={this.props.user}/>
+        <UserName user={this.props.user} />
         {this.props.isEditable ? (
           <span>
             {' '}(<a onClick={preventDefault(() => this.props.toggleEditingComment(this.props.id))}>edit</a>

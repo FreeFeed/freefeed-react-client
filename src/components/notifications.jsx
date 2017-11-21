@@ -88,7 +88,7 @@ const Notification = ({ event_type, ...props }) => {
   return (
     <div key={props.id} className={`single-notification ${notificationClasses[event_type] || ""}`}>
       {(notificationTemplates[event_type] || nop)(props)}
-      <TimeDisplay timeStamp={props.date}/>
+      <TimeDisplay timeStamp={props.date} />
     </div>);
 };
 
@@ -100,7 +100,7 @@ const Notifications = (props) => (
       Notifications
       {props.isLoading && (
         <span className="notifications-throbber">
-          <img width="16" height="16" src={throbber16}/>
+          <img width="16" height="16" src={throbber16} />
         </span>
       )}
     </div>

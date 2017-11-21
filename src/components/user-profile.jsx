@@ -36,11 +36,11 @@ export default class UserProfile extends React.Component {
             <div className="row">
               <div className="col-sm-9 col-xs-12">
                 <div className="avatar">
-                  <img src={props.profilePictureLargeUrl} width="75" height="75"/>
+                  <img src={props.profilePictureLargeUrl} width="75" height="75" />
                 </div>
                 <div className="description">
                   <div className="name" dir="auto">{props.screenName}</div>
-                  <PieceOfText text={props.description} isExpanded={true}/>
+                  <PieceOfText text={props.description} isExpanded={true} />
                 </div>
               </div>
               {props.statistics && !props.blocked ? (
@@ -104,7 +104,7 @@ export default class UserProfile extends React.Component {
 
                 {props.userView.isSubscribing ? (
                   <span className="profile-controls-throbber">
-                    <img width="16" height="16" src={throbber16}/>
+                    <img width="16" height="16" src={throbber16} />
                   </span>
                 ) : false}
               </div>

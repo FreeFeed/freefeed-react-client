@@ -50,7 +50,7 @@ class UserCard extends React.Component {
           <div className="user-card-info">
             <div className="userpic loading"></div>
             <div className="names">
-              <img width="16" height="16" src={throbber16}/>
+              <img width="16" height="16" src={throbber16} />
             </div>
           </div>
         </div>
@@ -61,11 +61,11 @@ class UserCard extends React.Component {
       <div className="user-card" style={style}>
         <div className="user-card-info">
           <Link to={`/${props.user.username}`} className="userpic">
-            <img src={props.user.profilePictureLargeUrl} width="75" height="75"/>
+            <img src={props.user.profilePictureLargeUrl} width="75" height="75" />
           </Link>
 
           <div className="names">
-            <Link to={`/${props.user.username}`} className="display-name" dir="auto">{props.user.screenName}</Link><br/>
+            <Link to={`/${props.user.username}`} className="display-name" dir="auto">{props.user.screenName}</Link><br />
 
             {props.user.screenName !== props.user.username ? (
               <span className="username">@{props.user.username}</span>
@@ -74,11 +74,11 @@ class UserCard extends React.Component {
 
           {!props.isItMe && (
             <div className="feed-status">
-              <UserFeedStatus {...props.user}/>
+              <UserFeedStatus {...props.user} />
             </div>
           )}
           <div className="relationship-status">
-            {props.isItMe ? 'It\'s you!' : <UserRelationshipStatus type={props.user.type} {...props}/>}
+            {props.isItMe ? 'It\'s you!' : <UserRelationshipStatus type={props.user.type} {...props} />}
           </div>
         </div>
 

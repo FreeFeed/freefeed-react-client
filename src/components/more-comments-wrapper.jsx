@@ -7,7 +7,7 @@ export default (props) => (
   <div className="comment more-comments-wrapper">
     <span className="more-comments-throbber">
       {props.isLoading ? (
-        <img width="16" height="16" src={throbber16}/>
+        <img width="16" height="16" src={throbber16} />
       ) : false}
     </span>
     <a

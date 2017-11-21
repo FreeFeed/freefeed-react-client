@@ -14,7 +14,7 @@ const realtimeSwitch = (props) => {
   return (
     <div className="realtime-switch" onClick={() => props.toggle(props.userId, props.frontendPreferences)}>
       {realtimeActive ? false : 'Paused'}
-      <span className={`glyphicon glyphicon-${getStatusIcon(realtimeActive, props.status)}`}/>
+      <span className={`glyphicon glyphicon-${getStatusIcon(realtimeActive, props.status)}`} />
     </div>
   );
 };

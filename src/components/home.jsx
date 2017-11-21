@@ -38,7 +38,7 @@ const FeedHandler = (props) => {
       <div className="box-header-timeline">
         {props.boxHeader}
         <div className="pull-right">
-          {props.areOnFirstHomePage && props.authenticated ? <RealtimeSwitch/> : false}
+          {props.areOnFirstHomePage && props.authenticated ? <RealtimeSwitch /> : false}
         </div>
       </div>
 
@@ -59,10 +59,10 @@ const FeedHandler = (props) => {
 
       {props.authenticated ? (
         <PaginatedView firstPageHead={createPostComponent} {...props}>
-          <Feed {...props} isInHomeFeed={!props.feedIsLoading}/>
+          <Feed {...props} isInHomeFeed={!props.feedIsLoading} />
         </PaginatedView>
       ) : (
-        <Welcome/>
+        <Welcome />
       )}
       <div className="box-footer">
       </div>

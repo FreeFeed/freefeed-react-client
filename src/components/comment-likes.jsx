@@ -63,7 +63,7 @@ export default class CommentLikes extends React.Component {
       )
       : (
         <span className="comment-time">
-          <span className={`comment-icon fa ${this.props.omitBubble ? "feed-comment-dot" : "fa-comment-o"}`}/>
+          <span className={`comment-icon fa ${this.props.omitBubble ? "feed-comment-dot" : "fa-comment-o"}`} />
         </span>
       )
     ;
@@ -128,7 +128,7 @@ export default class CommentLikes extends React.Component {
                     onClick={(e) => e.stopPropagation()}
                     style={likesStyle}
                   >
-                    <div className="arrow" onClick={this.arrowClick}><i className="fa fa-angle-left" aria-hidden="true"/></div>
+                    <div className="arrow" onClick={this.arrowClick}><i className="fa fa-angle-left" aria-hidden="true" /></div>
                     <div className="likes">
                       {this.state.showActionButtons
                         ? this.renderLikesLabel(this.props)
@@ -140,7 +140,7 @@ export default class CommentLikes extends React.Component {
                     {this.props.forbidLiking
                       ? (
                         <div className="mention-action non-likable">
-                          <i className="fa fa-heart-o" aria-hidden="true"/>
+                          <i className="fa fa-heart-o" aria-hidden="true" />
                           It's your own comment
                         </div>
                       )
@@ -149,7 +149,7 @@ export default class CommentLikes extends React.Component {
                           className={`mention-action ${this.props.hasOwnLike ? "un" : ""}like`}
                           onClick={this.props.toggleLike}
                         >
-                          <i className="fa fa-heart" aria-hidden="true"/>
+                          <i className="fa fa-heart" aria-hidden="true" />
                           {`${this.props.hasOwnLike ? "Un-like" : "Like"} comment`}
                         </button>
                       )
@@ -158,14 +158,14 @@ export default class CommentLikes extends React.Component {
                       className="mention-action reply"
                       onClick={this.props.reply}
                     >
-                      <i className="fa fa-angle-up" aria-hidden="true"/>
+                      <i className="fa fa-angle-up" aria-hidden="true" />
                       Reply to comment
                     </button>
                     <button
                       className="mention-action mention"
                       onClick={this.props.mention}
                     >
-                      <i className="fa fa-at" aria-hidden="true"/>
+                      <i className="fa fa-at" aria-hidden="true" />
                       Mention username
                     </button>
                   </div>
@@ -210,7 +210,7 @@ export default class CommentLikes extends React.Component {
     if (error) {
       return <div className="comment-likes-list error">Error</div>;
     }
-    return <div className="comment-likes-list">{likes.map((likeUser, i) => <UserName user={likeUser} key={i}/>)}</div>;
+    return <div className="comment-likes-list">{likes.map((likeUser, i) => <UserName user={likeUser} key={i} />)}</div>;
   };
   showLikesList = (e) => {
     e.preventDefault();
@@ -278,7 +278,7 @@ function renderUserLikesList(userLikes) {
   const maxIndex = userLikes.length - 1;
   return userLikes.map((likeUser, i) => (
     <span key={i}>
-      <UserName user={likeUser}/>{i < maxIndex ? ", " : ""}
+      <UserName user={likeUser} />{i < maxIndex ? ", " : ""}
     </span>
   ));
 }

@@ -143,7 +143,7 @@ export default class UserPreferencesForm extends React.Component {
 
         <div className="checkbox checkbox-displayNames-useYou">
           <label>
-            <input type="checkbox" name="useYou" value="1" checked={this.state.displayNames.useYou} onChange={this.changeUseYou}/>
+            <input type="checkbox" name="useYou" value="1" checked={this.state.displayNames.useYou} onChange={this.changeUseYou} />
             Show your own name as "You"
           </label>
         </div>
@@ -176,14 +176,14 @@ export default class UserPreferencesForm extends React.Component {
         </div>
         <div className="checkbox">
           <label>
-            <input type="checkbox" name="bubbles" value="1" checked={this.state.comments.omitRepeatedBubbles} onChange={this.changeOmitBubbles}/>
+            <input type="checkbox" name="bubbles" value="1" checked={this.state.comments.omitRepeatedBubbles} onChange={this.changeOmitBubbles} />
             Omit bubbles for subsequent comments from the same author
           </label>
         </div>
 
         <div className="checkbox">
           <label>
-            <input type="checkbox" name="bubbles" value="1" checked={this.state.comments.highlightComments} onChange={this.changeHighlightComments}/>
+            <input type="checkbox" name="bubbles" value="1" checked={this.state.comments.highlightComments} onChange={this.changeHighlightComments} />
             Highlight comments when hovering on @username or ^ and ↑
           </label>
         </div>
@@ -202,22 +202,22 @@ export default class UserPreferencesForm extends React.Component {
 
         <div className="checkbox">
           <label>
-            <input type="checkbox" name="bubbles" value="1" checked={this.state.allowLinksPreview} onChange={this.changeAllowLinksPreview}/>
+            <input type="checkbox" name="bubbles" value="1" checked={this.state.allowLinksPreview} onChange={this.changeAllowLinksPreview} />
               Show advanced previews of links in posts (Embedly). Link should start with http(s)://, post should have no attached images. If you don't want to have link preview, add ! before a link without spaces.
           </label>
         </div>
 
         <div className="form-group">
           Hide posts from these users/groups in homefeed
-          (enter comma separated list of usernames/groupnames):<br/>
-          <textarea className="form-control" value={this.state.sHideUsers} onChange={this.chandeHideUsers}/>
+          (enter comma separated list of usernames/groupnames):<br />
+          <textarea className="form-control" value={this.state.sHideUsers} onChange={this.chandeHideUsers} />
         </div>
 
         <p>
           <button className="btn btn-default" type="submit">Update</button>
           {this.props.status === 'loading' ? (
             <span className="settings-throbber">
-              <img width="16" height="16" src={throbber16}/>
+              <img width="16" height="16" src={throbber16} />
             </span>
           ) : false}
         </p>

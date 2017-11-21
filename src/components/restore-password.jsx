@@ -42,7 +42,7 @@ class RestorePassword extends React.Component {
                   <form onSubmit={preventDefault(() => restoreFunc({ restore: this.props.restore, mail: this.refs.mail.value }))} className="p-signin">
                     <div className="form-group">
                       <label htmlFor="mail">E-mail</label>
-                      <input id="mail" className="form-control" type="mail" ref="mail"/>
+                      <input id="mail" className="form-control" type="mail" ref="mail" />
                     </div>
                     <div className="form-group">
                       <button className="btn btn-default p-singin-action" type="submit">Reset</button>

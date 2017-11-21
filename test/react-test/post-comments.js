@@ -8,7 +8,7 @@ const renderComments = (comments, omittedComments = 0, isCommenting = false, cur
   const post = { omittedComments, isCommenting, createdBy: { username:'' }, user: currentUser };
 
   const renderer = createShallowRenderer();
-  renderer.render(<PostComments {...{ comments, post }}/>);
+  renderer.render(<PostComments {...{ comments, post }} />);
   return renderer.getRenderOutput().props.children;
 };
 

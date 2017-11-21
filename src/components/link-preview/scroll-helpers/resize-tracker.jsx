@@ -57,8 +57,8 @@ export default class ResizeTracker extends React.Component {
     return (
       <div style={trackerStyle} ref={this.setRoot}>
         {this.props.children}
-        <div style={sensorStyle} ref={this.setExpSensor} onScroll={this.scrollHandler}><div/></div>
-        <div style={sensorStyle} ref={this.setColSensor} onScroll={this.scrollHandler}><div style={colSliderStyle}/></div>
+        <div style={sensorStyle} ref={this.setExpSensor} onScroll={this.scrollHandler}><div /></div>
+        <div style={sensorStyle} ref={this.setColSensor} onScroll={this.scrollHandler}><div style={colSliderStyle} /></div>
       </div>
     );
   }

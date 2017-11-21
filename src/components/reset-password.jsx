@@ -57,11 +57,11 @@ class ResetPassword extends React.Component {
                   <form onSubmit={preventDefault(() => resetFunc(this.refs.pass.value, this.refs.confirm.value, this.props.token, this.props.reset, this.props.validation))} className="p-signin">
                     <div className="form-group">
                       <label htmlFor="pass">Password</label>
-                      <input id="pass" className="form-control" type="password" ref="pass"/>
+                      <input id="pass" className="form-control" type="password" ref="pass" />
                     </div>
                     <div className="form-group">
                       <label htmlFor="confirm">Password confirmation</label>
-                      <input id="confirm" className="form-control" type="password" ref="confirm"/>
+                      <input id="confirm" className="form-control" type="password" ref="confirm" />
                     </div>
                     <div className="form-group">
                       <button className="btn btn-default p-singin-action" type="submit">Reset password</button>

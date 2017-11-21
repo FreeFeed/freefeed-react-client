@@ -83,7 +83,7 @@ export default class PostVia extends React.Component {
         {users.map((u, i) => (
           <span key={`via-${u.username}`}>
             {(i || textPrefix) ? ((!foldedCount && i === users.length - 1) ? ' and ' : ', ') : false}
-            <UserName user={u}/>
+            <UserName user={u} />
           </span>
         ))}
         {foldedCount ? <span> and <a className="post-via-more" onClick={this.expand}>{foldedCount} more</a></span> : false}

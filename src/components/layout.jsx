@@ -156,20 +156,20 @@ class Layout extends React.Component {
           )}
 
           <div className="col-xs-12 col-sm-12 col-md-5">
-            <SearchForm/>
+            <SearchForm />
           </div>
         </header>
 
         <LoaderContainer loading={props.loadingView} fullPage={true}>
           <div className="row">
-            <InternalLayout {...props}/>
-            {props.authenticated ? <Sidebar {...props}/> : false}
+            <InternalLayout {...props} />
+            {props.authenticated ? <Sidebar {...props} /> : false}
           </div>
         </LoaderContainer>
 
         <div className="row">
           <div className="col-md-12">
-            <Footer/>
+            <Footer />
           </div>
         </div>
       </div>

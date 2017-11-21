@@ -65,15 +65,15 @@ export default class UserSettingsForm extends React.Component {
             ) : false
           }
           <label htmlFor="displayName-input">Display name:</label>
-          <input id="displayName-input" className="form-control" name="screenName" type="text" defaultValue={this.props.user.screenName} onChange={this.updateSetting('screenName')} maxLength="100"/>
+          <input id="displayName-input" className="form-control" name="screenName" type="text" defaultValue={this.props.user.screenName} onChange={this.updateSetting('screenName')} maxLength="100" />
         </div>
         <div className="form-group">
           <label htmlFor="email-input">Email:</label>
-          <input id="email-input" className="form-control" name="email" type="text" defaultValue={this.props.user.email} onChange={this.updateSetting('email')}/>
+          <input id="email-input" className="form-control" name="email" type="text" defaultValue={this.props.user.email} onChange={this.updateSetting('email')} />
         </div>
         <div className="form-group">
           <label htmlFor="description-textarea">Description:</label>
-          <textarea id="description-textarea" className="form-control" name="description" defaultValue={this.props.user.description} onChange={this.updateSetting('description')} maxLength="1500"/>
+          <textarea id="description-textarea" className="form-control" name="description" defaultValue={this.props.user.description} onChange={this.updateSetting('description')} maxLength="1500" />
         </div>
         <div className="form-group">
           <p>
@@ -120,7 +120,7 @@ export default class UserSettingsForm extends React.Component {
           <button className="btn btn-default" type="submit">Update</button>
           {this.props.isSaving ? (
             <span className="settings-throbber">
-              <img width="16" height="16" src={throbber16}/>
+              <img width="16" height="16" src={throbber16} />
             </span>
           ) : false}
         </p>

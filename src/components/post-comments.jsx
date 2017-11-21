@@ -157,7 +157,7 @@ export default class PostComments extends React.Component {
       return (
         <StickyContainer>
           <Sticky stickyClassName="fold-comments-sticky" className="fold-comments">
-            <i className="fa fa-chevron-up"/>
+            <i className="fa fa-chevron-up" />
             <a onClick={this.fold}>Fold comments</a>
           </Sticky>
           {middleComments}

@@ -101,7 +101,7 @@ class Layout extends React.Component {
         ) : (
           <div>
             <div className="box-message alert alert-warning">You need to sign in first.</div>
-            <SignIn/>
+            <SignIn />
           </div>
         )}
       </div>

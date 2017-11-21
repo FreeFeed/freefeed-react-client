@@ -21,7 +21,7 @@ const About = ({ authenticated }) => (
         </p>
       ) : false}
 
-      <p><img src={screenshot} width="450" height="431" style={{ border: '1px solid #ccc' }}/></p>
+      <p><img src={screenshot} width="450" height="431" style={{ border: '1px solid #ccc' }} /></p>
 
       <h3>Why FreeFeed?</h3>
 

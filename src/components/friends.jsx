@@ -30,9 +30,9 @@ const FriendsHandler = (props) => {
         />
 
 
-        <TileList {...props.mutual}/>
-        <TileList {...props.subscriptions}/>
-        <TileList {...props.blockedByMe}/>
+        <TileList {...props.mutual} />
+        <TileList {...props.subscriptions} />
+        <TileList {...props.blockedByMe} />
 
         <TileListWithRevoke
           header={sentRequestsHeader}

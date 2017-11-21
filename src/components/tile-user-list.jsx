@@ -11,11 +11,11 @@ const renderUsers = (type) => (user) => {
     <li key={user.id}>
       <div className="avatar">
         <Link to={`/${user.username}`}>
-          <img src={user.profilePictureUrl}/>
+          <img src={user.profilePictureUrl} />
         </Link>
       </div>
 
-      <UserName user={user} applyHyphenations={true}/>
+      <UserName user={user} applyHyphenations={true} />
 
       {type == WITH_MUTUALS && user.isMutual ? (
         <div className="user-ismutual">mutual</div>

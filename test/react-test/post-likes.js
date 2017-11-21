@@ -8,7 +8,7 @@ const renderLikes = (likes, omittedLikes = 0) => {
   const post = { omittedLikes };
 
   const renderer = createShallowRenderer();
-  renderer.render(<PostLikes {...{ likes, post }}/>);
+  renderer.render(<PostLikes {...{ likes, post }} />);
   return renderer.getRenderOutput().props.children[1].props.children;
 };
 

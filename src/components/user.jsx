@@ -16,7 +16,7 @@ const UserHandler = (props) => {
       </div>
 
       <div className="box-body">
-        {props.breadcrumbs.shouldShowBreadcrumbs ? <Breadcrumbs {...props.breadcrumbs}/> : false}
+        {props.breadcrumbs.shouldShowBreadcrumbs ? <Breadcrumbs {...props.breadcrumbs} /> : false}
 
         <UserProfile
           {...props.viewUser}
@@ -33,7 +33,7 @@ const UserHandler = (props) => {
         />
       </div>
 
-      <UserFeed {...props}/>
+      <UserFeed {...props} />
     </div>
   );
 };

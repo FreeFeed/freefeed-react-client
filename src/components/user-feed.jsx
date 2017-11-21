@@ -51,7 +51,7 @@ class UserFeed extends React.Component {
 
     return (
       <PaginatedView {...this.props}>
-        <Feed {...this.props} isInUserFeed={true}/>
+        <Feed {...this.props} isInUserFeed={true} />
       </PaginatedView>
     );
   }

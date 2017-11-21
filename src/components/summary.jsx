@@ -25,7 +25,7 @@ class Summary extends React.Component {
         </div>
 
         {props.isLoading || props.visibleEntries.length ? (
-          <Feed {...props}/>
+          <Feed {...props} />
         ) : (
           <div className="summary-no-results">
             <p>No entries here yet. You might want to subscribe for more users and groups.</p>

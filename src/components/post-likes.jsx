@@ -6,7 +6,7 @@ import UserName from './user-name';
 const renderLike = (item, i, items) => (
   <li key={item.id} className="post-like">
     {item.id !== 'more-likes' ? (
-      <UserName user={item}/>
+      <UserName user={item} />
     ) : (
       <a className="more-post-likes-link" onClick={preventDefault(item.showMoreLikes)}>{item.omittedLikes} other people</a>
     )}
@@ -23,7 +23,7 @@ const renderLike = (item, i, items) => (
 
 export default ({ likes, showMoreLikes, post }) => {
   if (!likes.length) {
-    return <div/>;
+    return <div />;
   }
 
   const likeList = likes;
