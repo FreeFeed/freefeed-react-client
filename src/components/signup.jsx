@@ -150,8 +150,7 @@ const Signup = (props) => (
         </div>
       </div>
     </div>
-    <div className="box-footer">
-    </div>
+    <div className="box-footer" />
   </div>
 );
 

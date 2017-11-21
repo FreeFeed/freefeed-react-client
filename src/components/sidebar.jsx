@@ -110,9 +110,7 @@ const SideBarLinks = () => (
         <li><Link to="/support">Support</Link></li>
       </ul>
     </div>
-    <div className="box-footer">
-
-    </div>
+    <div className="box-footer" />
   </div>
 );
 

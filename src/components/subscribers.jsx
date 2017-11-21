@@ -36,7 +36,7 @@ class SubscribersHandler extends React.Component {
           </div>
           <SubsList {...props} title="Subscribers" />
         </div>
-        <div className="box-footer"></div>
+        <div className="box-footer" />
       </div>
     );
   }

@@ -35,7 +35,7 @@ export default (props) => {
       </a>
 
       {props.isEditing ? (
-        <a className="remove-attachment fa fa-times" title="Remove image" onClick={removeAttachment}></a>
+        <a className="remove-attachment fa fa-times" title="Remove image" onClick={removeAttachment} />
       ) : false}
     </div>
   );

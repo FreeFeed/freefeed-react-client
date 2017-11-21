@@ -20,7 +20,7 @@ class SinglePostHandler extends React.Component {
     const { props } = this;
     const { post } = props;
 
-    let postBody = <div></div>;
+    let postBody = <div />;
 
     if (props.errorString) {
       postBody = <h2>{props.errorString}</h2>;
@@ -63,8 +63,7 @@ class SinglePostHandler extends React.Component {
         <div className="box-body">
           {postBody}
         </div>
-        <div className="box-footer">
-        </div>
+        <div className="box-footer" />
       </div>
     );
   }

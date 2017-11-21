@@ -40,7 +40,7 @@ export default ({ likes, showMoreLikes, post }) => {
 
   return (
     <div className="post-likes">
-      <i className="fa fa-heart icon"></i>
+      <i className="fa fa-heart icon" />
       <ul className="post-likes-list">{renderedLikes}</ul>
     </div>
   );

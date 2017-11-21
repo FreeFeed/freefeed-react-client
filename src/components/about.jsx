@@ -7,7 +7,7 @@ import screenshot from '../../assets/images/screenshot.png';
 
 const About = ({ authenticated }) => (
   <div className="box">
-    <div className="box-header-timeline"></div>
+    <div className="box-header-timeline" />
     <div className="box-body">
       <h3>What is FreeFeed?</h3>
 

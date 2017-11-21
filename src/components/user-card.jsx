@@ -35,7 +35,7 @@ class UserCard extends React.Component {
       return (
         <div className="user-card" style={style}>
           <div className="user-card-info">
-            <div className="userpic loading"></div>
+            <div className="userpic loading" />
             <div className="names">
               User not found
             </div>
@@ -48,7 +48,7 @@ class UserCard extends React.Component {
       return (
         <div className="user-card" style={style}>
           <div className="user-card-info">
-            <div className="userpic loading"></div>
+            <div className="userpic loading" />
             <div className="names">
               <img width="16" height="16" src={throbber16} />
             </div>

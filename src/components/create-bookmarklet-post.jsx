@@ -119,8 +119,8 @@ export default class CreateBookmarkletPost extends React.Component {
 
         <div className="comment">
           <a className="comment-icon comment-icon-special fa-stack">
-            <i className="fa fa-comment fa-stack-1x"></i>
-            <i className="fa fa-comment-o fa-stack-1x"></i>
+            <i className="fa fa-comment fa-stack-1x" />
+            <i className="fa fa-comment-o fa-stack-1x" />
           </a>
 
           <div className="comment-body">

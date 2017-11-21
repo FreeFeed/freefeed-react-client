@@ -59,7 +59,7 @@ const GroupsHandler = (props) => {
         <TileList {...props.myGroups} />
         <TileList {...props.groupsIAmIn} />
       </div>
-      <div className="box-footer"></div>
+      <div className="box-footer" />
     </div>
   );
 };

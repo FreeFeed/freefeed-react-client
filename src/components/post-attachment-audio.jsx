@@ -18,16 +18,16 @@ export default (props) => {
   return (
     <div className="attachment">
       <div>
-        <audio src={props.url} title={artistAndTitle} preload="none" controls></audio>
+        <audio src={props.url} title={artistAndTitle} preload="none" controls />
       </div>
       <div>
         <a href={props.url} title={artistAndTitle} target="_blank">
-          <i className="fa fa-file-audio-o"></i>
+          <i className="fa fa-file-audio-o" />
           <span>{artistAndTitle}</span>
         </a>
 
         {props.isEditing ? (
-          <i className="remove-attachment fa fa-times" title="Remove audio file" onClick={removeAttachment}></i>
+          <i className="remove-attachment fa fa-times" title="Remove audio file" onClick={removeAttachment} />
         ) : false}
       </div>
     </div>

@@ -10,12 +10,12 @@ export default (props) => {
   return (
     <div className="attachment">
       <a href={props.url} title={nameAndSize} target="_blank">
-        <i className="fa fa-file-o"></i>
+        <i className="fa fa-file-o" />
         <span>{nameAndSize}</span>
       </a>
 
       {props.isEditing ? (
-        <i className="remove-attachment fa fa-times" title="Remove file" onClick={removeAttachment}></i>
+        <i className="remove-attachment fa fa-times" title="Remove file" onClick={removeAttachment} />
       ) : false}
     </div>
   );

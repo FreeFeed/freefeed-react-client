@@ -39,8 +39,7 @@ const FeedHandler = (props) => (
       )
       : searchHelper
     }
-    <div className="box-footer">
-    </div>
+    <div className="box-footer" />
   </div>
 );
 

@@ -2,7 +2,7 @@ import React from 'react';
 
 export default () => (
   <div className="box">
-    <div className="box-header-timeline"></div>
+    <div className="box-header-timeline" />
     <div className="box-body">
       <h3>Help us build FreeFeed</h3>
 

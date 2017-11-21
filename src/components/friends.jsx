@@ -40,7 +40,7 @@ const FriendsHandler = (props) => {
           revokeSentRequest={props.revokeSentRequest}
         />
       </div>
-      <div className="box-footer"></div>
+      <div className="box-footer" />
     </div>
   );
 };

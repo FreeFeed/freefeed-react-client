@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 const Donate = () => (
   <div className="box">
-    <div className="box-header-timeline"></div>
+    <div className="box-header-timeline" />
     <div className="box-body">
       <h3>Donate to FreeFeed</h3>
 

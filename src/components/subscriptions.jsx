@@ -16,7 +16,7 @@ const SubscriptionsHandler = (props) => {
         <div><Link to={`/${props.username}`}>{props.username}</Link> › Subscriptions</div>
         <SubsList {...props} title="Subscriptions" />
       </div>
-      <div className="box-footer"></div>
+      <div className="box-footer" />
     </div>
   );
 };

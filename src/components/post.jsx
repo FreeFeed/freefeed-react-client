@@ -307,7 +307,7 @@ export default class Post extends React.Component {
 
                 <div className="post-edit-options">
                   <span className="post-edit-attachments dropzone-trigger">
-                    <i className="fa fa-cloud-upload"></i>
+                    <i className="fa fa-cloud-upload" />
                     {' '}
                     Add photos or files
                   </span>
@@ -354,7 +354,7 @@ export default class Post extends React.Component {
             <div className="link-preview"><LinkPreview url={linkToEmbed} allowEmbedly={props.allowLinksPreview} /></div>
           ) : false}
 
-          <div className="dropzone-previews"></div>
+          <div className="dropzone-previews" />
 
           <div className="post-footer">
             {isPrivate ? (

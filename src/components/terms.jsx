@@ -2,7 +2,7 @@ import React from 'react';
 
 const Terms = () => (
   <div className="box">
-    <div className="box-header-timeline"></div>
+    <div className="box-header-timeline" />
     <div className="box-body">
       <h3>FreeFeed Terms of Service (&quot;Terms&quot;)</h3>
 

@@ -64,8 +64,7 @@ const FeedHandler = (props) => {
       ) : (
         <Welcome />
       )}
-      <div className="box-footer">
-      </div>
+      <div className="box-footer" />
     </div>);
 };
 

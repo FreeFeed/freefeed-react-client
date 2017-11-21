@@ -40,8 +40,7 @@ function ArchivePostHandler({ router, inProgress, success, id }) {
       <div className="box-body">
         {postBody}
       </div>
-      <div className="box-footer">
-      </div>
+      <div className="box-footer" />
     </div>
   );
 }

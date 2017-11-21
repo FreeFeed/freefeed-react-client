@@ -66,9 +66,9 @@ export default class PostComments extends React.Component {
       return (
         <div className="comment">
           <a className="comment-icon fa-stack fa-1x" onClick={preventDefault(toggleCommenting)}>
-            <i className="fa fa-comment-o fa-stack-1x"></i>
-            <i className="fa fa-square fa-inverse fa-stack-1x"></i>
-            <i className="fa fa-plus fa-stack-1x"></i>
+            <i className="fa fa-comment-o fa-stack-1x" />
+            <i className="fa fa-square fa-inverse fa-stack-1x" />
+            <i className="fa fa-plus fa-stack-1x" />
           </a>
           <a className="add-comment-link" onClick={preventDefault(toggleCommenting)}>Add comment</a>
           {disabledForOthers

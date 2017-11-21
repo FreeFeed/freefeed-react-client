@@ -44,8 +44,7 @@ export default class CommentLikes extends React.Component {
           <i
             className={`fa fa-heart${this.props.forbidLiking ? "-o" : ""} ${this.state.liked ? "liked" : ""} icon`}
             title={this.props.forbidLiking ? "Your own comment" : this.props.hasOwnLike ? "Un-like" : "Like"}
-          >
-          </i>
+          />
         </div>
       </div>
     );
@@ -171,7 +170,7 @@ export default class CommentLikes extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="col-md-3"></div>
+              <div className="col-md-3" />
             </div>
           </div>
         </div>

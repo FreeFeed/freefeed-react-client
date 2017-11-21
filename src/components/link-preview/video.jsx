@@ -65,7 +65,7 @@ class VideoPreview extends React.Component {
     if (info.playerURL) {
       return <iframe src={info.playerURL} frameBorder="0" allowFullScreen={true} />;
     } else if (info.videoURL) {
-      return <video src={info.videoURL} poster={info.previewURL} autoPlay={true} loop={true}></video>;
+      return <video src={info.videoURL} poster={info.previewURL} autoPlay={true} loop={true} />;
     }
     return false;
   }

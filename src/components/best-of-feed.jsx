@@ -12,8 +12,7 @@ const FeedHandler = (props) => (
     <PaginatedView {...props}>
       <Feed {...props} />
     </PaginatedView>
-    <div className="box-footer">
-    </div>
+    <div className="box-footer" />
   </div>
 );
 

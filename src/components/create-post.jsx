@@ -153,7 +153,7 @@ export default class CreatePost extends React.Component {
 
         <div className="post-edit-options">
           <span className="post-edit-attachments dropzone-trigger">
-            <i className="fa fa-cloud-upload"></i>
+            <i className="fa fa-cloud-upload" />
             {' '}
             Add photos or files
           </span>
@@ -197,7 +197,7 @@ export default class CreatePost extends React.Component {
           removeAttachment={this.removeAttachment}
         />
 
-        <div className="dropzone-previews"></div>
+        <div className="dropzone-previews" />
 
         {this.props.createPostViewState.isError ? (
           <div className="create-post-error">
