@@ -145,3 +145,12 @@ const localStorageShim = {
 };
 
 export const localStorage = localStorageSupported ? window.localStorage : localStorageShim;
+
+export function getSummaryPeriod(days) {
+  switch (+days) {
+    case 1: return 'day';
+    case 7: return 'week';
+    case 30: return 'month';
+    default: return `${days} days`;
+  }
+}
