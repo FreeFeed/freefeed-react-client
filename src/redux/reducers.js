@@ -1,26 +1,16 @@
 import _ from 'lodash';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
-import { userParser, postParser } from '../utils';
+import { userParser, postParser, getSummaryPeriod } from '../utils';
 import config from '../config';
 import { getToken, getPersistedUser } from '../services/auth';
 import { parseQuery } from '../utils/search-highlighter';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
 
-
 const frontendPrefsConfig = config.frontendPreferences;
 
 const { request, response, fail } = ActionHelpers;
-
-const getSummaryPeriod = (days) => {
-  switch (+days) {
-    case 1: return 'day';
-    case 7: return 'week';
-    case 30: return 'month';
-    default: return `${days} days`;
-  }
-};
 
 export function title(state = '', action) {
   switch (action.type) {
@@ -1719,12 +1709,7 @@ export function boxHeader(state = "", action) {
     }
     case request(ActionTypes.GET_SUMMARY):
     case request(ActionTypes.GET_USER_SUMMARY): {
-      let period = `${action.payload.days} days`;
-      switch (+action.payload.days) {
-        case 1: period = 'day'; break;
-        case 7: period = 'week'; break;
-        case 30: period = 'month'; break;
-      }
+      const period = getSummaryPeriod(action.payload.days);
       return `Best of ${period}`;
     }
     case request(ActionTypes.GET_SINGLE_POST): {

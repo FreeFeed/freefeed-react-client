@@ -15,7 +15,7 @@ class Summary extends React.Component {
           {props.boxHeader}
 
           <div className="sidelinks">
-            {'View best of: '}
+            <span>View best of: </span>
             {+props.params.days === 1 ? <b>day</b> : <Link to={`/summary/1`}>day</Link>}
             {' - '}
             {+(props.params.days || 7) === 7 ? <b>week</b> : <Link to={`/summary/7`}>week</Link>}
