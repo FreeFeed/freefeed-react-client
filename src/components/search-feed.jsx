@@ -32,10 +32,11 @@ const FeedHandler = (props) => (
       {props.boxHeader}
     </div>
     {props.visibleEntries.length
-      ?
-      <PaginatedView {...props}>
-        <Feed {...props}/>
-      </PaginatedView>
+      ? (
+        <PaginatedView {...props}>
+          <Feed {...props}/>
+        </PaginatedView>
+      )
       : searchHelper
     }
     <div className="box-footer">

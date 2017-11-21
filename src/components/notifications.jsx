@@ -114,17 +114,21 @@ const Notifications = (props) => (
       <Link className={isFilterActive("bans", props.location.query.filter) ? "active" : ""} to={{ pathname: props.location.pathname, query: { filter: "bans" } }}>Bans</Link>
     </div>
     {props.authenticated
-      ?
-      <PaginatedView routes={props.routes} location={props.location}>
-        <div className="notification-list">
-          {props.loading
-            ? "Loading"
-            : props.events.length > 0 ? props.events.map(Notification) : "No notifications yet"
-          }
+      ? (
+        <PaginatedView routes={props.routes} location={props.location}>
+          <div className="notification-list">
+            {props.loading
+              ? "Loading"
+              : props.events.length > 0 ? props.events.map(Notification) : "No notifications yet"
+            }
+          </div>
+        </PaginatedView>
+      )
+      : (
+        <div className="alert alert-danger" role="alert">
+          You must <Link to="/signin">sign in</Link> or <Link to="/signup">sign up</Link> before visiting this page.
         </div>
-      </PaginatedView>
-      :
-      <div className="alert alert-danger" role="alert">You must <Link to="/signin">sign in</Link> or <Link to="/signup">sign up</Link> before visiting this page.</div>
+      )
     }
   </div>
 );

@@ -52,18 +52,20 @@ export default class CommentLikes extends React.Component {
   };
   renderBubble = () => {
     return this.props.createdAt
-      ?
-      <TimeDisplay className="comment-time" timeStamp={+this.props.createdAt} timeAgoInTitle={true}>
-        <span
-          className={`comment-icon fa ${this.props.omitBubble ? "feed-comment-dot" : "fa-comment-o"}`}
-          id={`comment-${this.props.commentId}`}
-          onClick={this.openAnsweringComment}
-        />
-      </TimeDisplay>
-      :
-      <span className="comment-time">
-        <span className={`comment-icon fa ${this.props.omitBubble ? "feed-comment-dot" : "fa-comment-o"}`}/>
-      </span>
+      ? (
+        <TimeDisplay className="comment-time" timeStamp={+this.props.createdAt} timeAgoInTitle={true}>
+          <span
+            className={`comment-icon fa ${this.props.omitBubble ? "feed-comment-dot" : "fa-comment-o"}`}
+            id={`comment-${this.props.commentId}`}
+            onClick={this.openAnsweringComment}
+          />
+        </TimeDisplay>
+      )
+      : (
+        <span className="comment-time">
+          <span className={`comment-icon fa ${this.props.omitBubble ? "feed-comment-dot" : "fa-comment-o"}`}/>
+        </span>
+      )
     ;
   };
   clearTouchTimeout = () => {
@@ -136,19 +138,21 @@ export default class CommentLikes extends React.Component {
                   </div>
                   <div className="mention-actions" style={{ transform:`translateY(${this.state.showActionButtons ? "0%" : "100%"})` }}>
                     {this.props.forbidLiking
-                      ?
-                      <div className="mention-action non-likable">
-                        <i className="fa fa-heart-o" aria-hidden="true"/>
-                        It"s your own comment
-                      </div>
-                      :
-                      <button
-                        className={`mention-action ${this.props.hasOwnLike ? "un" : ""}like`}
-                        onClick={this.props.toggleLike}
-                      >
-                        <i className="fa fa-heart" aria-hidden="true"/>
-                        {`${this.props.hasOwnLike ? "Un-like" : "Like"} comment`}
-                      </button>
+                      ? (
+                        <div className="mention-action non-likable">
+                          <i className="fa fa-heart-o" aria-hidden="true"/>
+                          It's your own comment
+                        </div>
+                      )
+                      : (
+                        <button
+                          className={`mention-action ${this.props.hasOwnLike ? "un" : ""}like`}
+                          onClick={this.props.toggleLike}
+                        >
+                          <i className="fa fa-heart" aria-hidden="true"/>
+                          {`${this.props.hasOwnLike ? "Un-like" : "Like"} comment`}
+                        </button>
+                      )
                     }
                     <button
                       className="mention-action reply"
