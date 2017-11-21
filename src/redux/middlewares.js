@@ -48,6 +48,7 @@ const paths = ['friends',
   'filter/direct',
   'groups',
   'groups/create',
+  'summary',
 ];
 
 function shouldGoToSignIn(pathname) {
