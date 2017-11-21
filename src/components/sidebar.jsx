@@ -114,19 +114,25 @@ const SideBarCoinJar = () => (
           <input type="hidden" name="hosted_button_id" value="DRR5XU73QLD7Y"/>
           <table>
             <tbody>
-              <tr><td style={{ paddingBottom: '5px' }}>
-                <input type="hidden" name="on0" value="Pick monthly donation amount" style={{ padding:'5px 0' }}/>Choose your option:
-              </td></tr>
-              <tr><td><select name="os0" defaultValue="Advanced">
-                <option value="Basic">€5.00 EUR / month</option>
-                <option value="Advanced">€10.00 EUR / month</option>
-                <option value="Sizable">€15.00 EUR / month</option>
-                <option value="Luxurious">€20.00 EUR / month</option>
-                <option value="King size">€30.00 EUR / month</option>
-                <option value="Master of the Universe">€50.00 EUR / month</option>
-                <option value="Chuck Norris">€75.00 EUR / month</option>
-                <option value="Duke Nukem">€100.00 EUR / month</option>
-              </select></td></tr>
+              <tr>
+                <td style={{ paddingBottom: '5px' }}>
+                  <input type="hidden" name="on0" value="Pick monthly donation amount" style={{ padding:'5px 0' }}/>Choose your option:
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <select name="os0" defaultValue="Advanced">
+                    <option value="Basic">€5.00 EUR / month</option>
+                    <option value="Advanced">€10.00 EUR / month</option>
+                    <option value="Sizable">€15.00 EUR / month</option>
+                    <option value="Luxurious">€20.00 EUR / month</option>
+                    <option value="King size">€30.00 EUR / month</option>
+                    <option value="Master of the Universe">€50.00 EUR / month</option>
+                    <option value="Chuck Norris">€75.00 EUR / month</option>
+                    <option value="Duke Nukem">€100.00 EUR / month</option>
+                  </select>
+                </td>
+              </tr>
             </tbody>
           </table>
 

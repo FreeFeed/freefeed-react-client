@@ -98,9 +98,11 @@ const Notifications = (props) => (
   <div className="box notifications">
     <div className="box-header-timeline">
       Notifications
-      {props.isLoading && <span className="notifications-throbber">
-        <img width="16" height="16" src={throbber16}/>
-      </span>}
+      {props.isLoading && (
+        <span className="notifications-throbber">
+          <img width="16" height="16" src={throbber16}/>
+        </span>
+      )}
     </div>
     <div className="filter">
       <div>Show: </div>
@@ -112,7 +114,8 @@ const Notifications = (props) => (
       <Link className={isFilterActive("bans", props.location.query.filter) ? "active" : ""} to={{ pathname: props.location.pathname, query: { filter: "bans" } }}>Bans</Link>
     </div>
     {props.authenticated
-      ? <PaginatedView routes={props.routes} location={props.location}>
+      ?
+      <PaginatedView routes={props.routes} location={props.location}>
         <div className="notification-list">
           {props.loading
             ? "Loading"
@@ -120,7 +123,8 @@ const Notifications = (props) => (
           }
         </div>
       </PaginatedView>
-      : <div className="alert alert-danger" role="alert">You must <Link to="/signin">sign in</Link> or <Link to="/signup">sign up</Link> before visiting this page.</div>
+      :
+      <div className="alert alert-danger" role="alert">You must <Link to="/signin">sign in</Link> or <Link to="/signup">sign up</Link> before visiting this page.</div>
     }
   </div>
 );

@@ -24,7 +24,9 @@ function ArchivePostHandler({ router, inProgress, success, id }) {
             target="_blank"
             style={{ textDecoration: 'underline' }}
             href={`https://web.archive.org/web/20150410000000/${encodeURIComponent(router.location.query.url)}`}
-          >copy of this post on archive.org</a>.
+          >
+            copy of this post on archive.org
+          </a>.
         </p>
       </div>
     );

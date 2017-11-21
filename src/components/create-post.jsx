@@ -184,7 +184,9 @@ export default class CreatePost extends React.Component {
           <button className="btn btn-default btn-xs"
             onClick={preventDefault(this.createPost)}
             disabled={this.state.isFormEmpty || this.state.attachmentQueueLength > 0 || this.props.createPostViewState.isPending}
-          >Post</button>
+          >
+            Post
+          </button>
         </div>
 
         <PostAttachments

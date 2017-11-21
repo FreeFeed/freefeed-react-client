@@ -50,7 +50,8 @@ const ManageSubscribersHandler = (props) => {
 
           {props.amILastGroupAdmin ? (
             <div className="tile-list-text">You are the only Admin for this group. Before you can drop administrative privileges
-              or leave this group, you have to promote another group member to Admin first.</div>
+              or leave this group, you have to promote another group member to Admin first.
+            </div>
           ) : (
             <AdminsList
               users={props.groupAdmins}

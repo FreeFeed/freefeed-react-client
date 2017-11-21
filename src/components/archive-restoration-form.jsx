@@ -86,7 +86,9 @@ export default class ArchiveRestorationForm extends React.Component {
             type="submit"
             className="btn btn-default"
             disabled={!this.canSubmit()}
-          >{buttonText}</button>
+          >
+            {buttonText}
+          </button>
         </div>
         {formState.error ? (
           <div className="alert alert-danger" role="alert">{formState.errorText}</div>

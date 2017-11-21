@@ -91,9 +91,11 @@ const Signup = (props) => (
     <div className="box-body">
       <div className="col-md-12">
         <h2 className="p-signin-header">Sign up</h2>
-        {props.error ? (<div className="alert alert-danger p-signin-error" role="alert">
-          <span id="error-message">{props.error}</span>
-        </div>) : false}
+        {props.error ? (
+          <div className="alert alert-danger p-signin-error" role="alert">
+            <span id="error-message">{props.error}</span>
+          </div>
+        ) : false}
         <div className="row">
           <div className="col-md-6">
             <LoaderContainer loading={props.loading}>

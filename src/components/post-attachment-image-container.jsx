@@ -122,13 +122,15 @@ export default class ImageAttachmentsContainer extends React.Component {
             {...a}
           />
         ))}
-        {isSingleImage ? false : (<div className="show-more">
-          <i
-            className="fa fa-2x fa-chevron-circle-right"
-            onClick={this.toggleFolding}
-            title={this.state.isFolded ? `Show more (${this.props.attachments.length - lastVisibleIndex - 1})` : "Show less"}
-          />
-        </div>)}
+        {isSingleImage ? false : (
+          <div className="show-more">
+            <i
+              className="fa fa-2x fa-chevron-circle-right"
+              onClick={this.toggleFolding}
+              title={this.state.isFolded ? `Show more (${this.props.attachments.length - lastVisibleIndex - 1})` : "Show less"}
+            />
+          </div>
+        )}
         <ImageAttachmentsLightbox
           ref={(el) => this.lightbox = el}
           items={this.getLightboxItems()}

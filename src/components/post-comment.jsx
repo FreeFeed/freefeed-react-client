@@ -185,20 +185,23 @@ export default class PostComment extends React.Component {
       );
     }
 
-    const authorAndButtons = (<span>
-      {' -'}&nbsp;
-      <UserName user={this.props.user}/>
-      {this.props.isEditable ? (
-        <span>
-          {' '}(<a onClick={preventDefault(() => this.props.toggleEditingComment(this.props.id))}>edit</a>
-                &nbsp;|&nbsp;
-          <a onClick={confirmFirst(() => this.props.deleteComment(this.props.id))}>delete</a>)
-        </span>
-      ) : (this.props.isDeletable && this.props.isModeratingComments) ? (
-        <span>
-          {' '}(<a onClick={confirmFirst(() => this.props.deleteComment(this.props.id))}>delete</a>)
-        </span>
-      ) : false}</span>);
+    const authorAndButtons = (
+      <span>
+        {' -'}&nbsp;
+        <UserName user={this.props.user}/>
+        {this.props.isEditable ? (
+          <span>
+            {' '}(<a onClick={preventDefault(() => this.props.toggleEditingComment(this.props.id))}>edit</a>
+                  &nbsp;|&nbsp;
+            <a onClick={confirmFirst(() => this.props.deleteComment(this.props.id))}>delete</a>)
+          </span>
+        ) : (this.props.isDeletable && this.props.isModeratingComments) ? (
+          <span>
+            {' '}(<a onClick={confirmFirst(() => this.props.deleteComment(this.props.id))}>delete</a>)
+          </span>
+        ) : false}
+      </span>
+    );
 
     return (
       <div className="comment-body">

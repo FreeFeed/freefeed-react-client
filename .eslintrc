@@ -90,6 +90,7 @@
     "import/order": "error",
 
     "react/jsx-closing-bracket-location": 2,
+    "react/jsx-closing-tag-location": 2,
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error"
   }

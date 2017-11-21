@@ -27,7 +27,8 @@ class SubscribersHandler extends React.Component {
               <Link to={`/${props.username}`}>{props.username}</Link> › Subscribers
             </div>
             {props.amIGroupAdmin
-              ? <div className="col-md-6 text-right">
+              ?
+              <div className="col-md-6 text-right">
                 <Link to={`/${props.username}/manage-subscribers`}>Manage subscribers</Link>
               </div>
               : false}

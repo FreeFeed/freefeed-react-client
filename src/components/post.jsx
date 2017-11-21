@@ -322,7 +322,9 @@ export default class Post extends React.Component {
                   <button className="btn btn-default btn-xs"
                     onClick={saveEditingPost}
                     disabled={this.state.attachmentQueueLength > 0}
-                  >Update</button>
+                  >
+                    Update
+                  </button>
                 </div>
               </div>
             ) : (

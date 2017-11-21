@@ -145,7 +145,9 @@ export default class CreateBookmarkletPost extends React.Component {
           <button className="btn btn-default"
             onClick={preventDefault(this.submitForm)}
             disabled={this.state.isFormEmpty || this.props.createPostViewState.isPending}
-          >Post</button>
+          >
+            Post
+          </button>
         </div>
       </div>
     );

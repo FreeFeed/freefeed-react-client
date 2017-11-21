@@ -46,9 +46,11 @@ class ResetPassword extends React.Component {
         <div className="box-body">
           <div className="col-md-12">
             <h2 className="p-signin-header">{this.props.header}</h2>
-            {this.props.error ? (<div className="alert alert-danger p-signin-error" role="alert">
-              <span id="error-message">{this.props.error}</span>
-            </div>) : false}
+            {this.props.error ? (
+              <div className="alert alert-danger p-signin-error" role="alert">
+                <span id="error-message">{this.props.error}</span>
+              </div>
+            ) : false}
             <div className="row">
               <div className="col-md-6">
                 <LoaderContainer loading={this.props.loading}>

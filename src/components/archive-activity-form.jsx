@@ -44,7 +44,9 @@ export default class ArchiveActivityForm extends React.Component {
             type="submit"
             className="btn btn-default"
             disabled={!this.canSubmit()}
-          >Yes, I allow</button>
+          >
+            Yes, I allow
+          </button>
         </div>
         {formState.error ? (
           <div className="alert alert-danger" role="alert">{formState.errorText}</div>
