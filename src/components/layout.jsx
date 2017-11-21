@@ -1,19 +1,19 @@
 import React from 'react';
-import {IndexLink, Link} from 'react-router';
-import {connect} from 'react-redux';
+import { IndexLink, Link } from 'react-router';
+import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import classnames from 'classnames';
 
-import {unauthenticated, home} from '../redux/action-creators';
-import {getCurrentRouteName} from '../utils';
+import { unauthenticated, home } from '../redux/action-creators';
+import { getCurrentRouteName } from '../utils';
 import Footer from './footer';
 import Sidebar from './sidebar';
 import LoaderContainer from './loader-container';
 import SearchForm from './search-form';
 
-const InternalLayout = ({authenticated, children}) => (
+const InternalLayout = ({ authenticated, children }) => (
   <div className={authenticated ? 'col-md-9' : 'col-md-12'}>
-    <div className='content'>
+    <div className="content">
       {children}
     </div>
   </div>
@@ -50,7 +50,7 @@ class Layout extends React.Component {
     if (e.dataTransfer && e.dataTransfer.types) {
       // Event.dataTransfer.types is DOMStringList (not Array) in Firefox,
       // so we can't just use indexOf().
-      for (let i=0; i<e.dataTransfer.types.length; i++) {
+      for (let i = 0; i < e.dataTransfer.types.length; i++) {
         if (e.dataTransfer.types[i] === 'Files') {
           return true;
         }
@@ -120,7 +120,7 @@ class Layout extends React.Component {
   }
 
   render() {
-    const props = this.props;
+    const { props } = this;
 
     const layoutClassNames = classnames({
       'container': true,
@@ -156,20 +156,20 @@ class Layout extends React.Component {
           )}
 
           <div className="col-xs-12 col-sm-12 col-md-5">
-            <SearchForm/>
+            <SearchForm />
           </div>
         </header>
 
         <LoaderContainer loading={props.loadingView} fullPage={true}>
-          <div className='row'>
-            <InternalLayout {...props}/>
-            {props.authenticated ? <Sidebar {...props}/> : false}
+          <div className="row">
+            <InternalLayout {...props} />
+            {props.authenticated ? <Sidebar {...props} /> : false}
           </div>
         </LoaderContainer>
 
-        <div className='row'>
-          <div className='col-md-12'>
-            <Footer/>
+        <div className="row">
+          <div className="col-md-12">
+            <Footer />
           </div>
         </div>
       </div>
@@ -190,8 +190,8 @@ function select(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    signOut: ()=>dispatch(unauthenticated()),
-    home: ()=> dispatch(home()),
+    signOut: () => dispatch(unauthenticated()),
+    home: () => dispatch(home()),
   };
 }
 

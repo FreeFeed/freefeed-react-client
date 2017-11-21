@@ -1,10 +1,10 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {Link} from 'react-router';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
 
-import {createPost, resetPostCreateForm, expandSendTo, toggleHiddenPosts} from '../redux/action-creators';
-import {pluralForm} from '../utils';
-import {joinPostData, joinCreatePostData, postActions} from './select-utils';
+import { createPost, resetPostCreateForm, expandSendTo, toggleHiddenPosts } from '../redux/action-creators';
+import { pluralForm } from '../utils';
+import { joinPostData, joinCreatePostData, postActions } from './select-utils';
 import CreatePost from './create-post';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
@@ -22,11 +22,11 @@ const FeedHandler = (props) => {
       expandSendTo={props.expandSendTo}
       createPostForm={props.createPostForm}
       addAttachmentResponse={props.addAttachmentResponse}
-      removeAttachment={props.removeAttachment}/>
+      removeAttachment={props.removeAttachment}
+    />
   );
 
-  const userRequestsCount = props.userRequestsCount;
-  const groupRequestsCount = props.groupRequestsCount;
+  const { userRequestsCount, groupRequestsCount } = props;
   const totalRequestsCount = userRequestsCount + groupRequestsCount;
 
   const userRequestsText = pluralForm(userRequestsCount, 'subscription request');
@@ -34,11 +34,11 @@ const FeedHandler = (props) => {
   const bothRequestsDisplayed = userRequestsCount > 0 && groupRequestsCount > 0;
 
   return (
-    <div className='box'>
-      <div className='box-header-timeline'>
+    <div className="box">
+      <div className="box-header-timeline">
         {props.boxHeader}
-        <div className='pull-right'>
-          {props.areOnFirstHomePage && props.authenticated ? <RealtimeSwitch/> : false}
+        <div className="pull-right">
+          {props.areOnFirstHomePage && props.authenticated ? <RealtimeSwitch /> : false}
         </div>
       </div>
 
@@ -52,36 +52,30 @@ const FeedHandler = (props) => {
                 {bothRequestsDisplayed ? (<span> and </span>) : false}
                 {groupRequestsCount > 0 ? (<Link to="/groups">{groupRequestsText}</Link>) : false}
               </span>
-            ):false}
+            ) : false}
           </span>
         </div>
       ) : false}
 
       {props.authenticated ? (
         <PaginatedView firstPageHead={createPostComponent} {...props}>
-          <Feed {...props} isInHomeFeed={!props.feedIsLoading}/>
+          <Feed {...props} isInHomeFeed={!props.feedIsLoading} />
         </PaginatedView>
       ) : (
-        <Welcome/>
+        <Welcome />
       )}
-      <div className='box-footer'>
-      </div>
+      <div className="box-footer" />
     </div>);
 };
 
 function selectState(state) {
-  const user = state.user;
-  const authenticated = state.authenticated;
+  const { authenticated, boxHeader, createPostViewState, groupRequestsCount, timelines, user, userRequestsCount } = state;
+
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
   const hiddenEntries = state.feedViewState.hiddenEntries.map(joinPostData(state));
-  const isHiddenRevealed = state.feedViewState.isHiddenRevealed;
-  const createPostViewState = state.createPostViewState;
+  const { isHiddenRevealed } = state.feedViewState;
   const createPostForm = joinCreatePostData(state);
-  const timelines = state.timelines;
-  const boxHeader = state.boxHeader;
-  const sendTo = {...state.sendTo, defaultFeed: user.username};
-  const userRequestsCount = state.userRequestsCount;
-  const groupRequestsCount = state.groupRequestsCount;
+  const sendTo = { ...state.sendTo, defaultFeed: user.username };
   const feedIsLoading = state.routeLoadingState;
 
   return {

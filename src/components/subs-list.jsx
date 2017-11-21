@@ -1,9 +1,9 @@
 import React from 'react';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import {tileUserListFactory, WITH_MUTUALS} from './tile-user-list';
+import { tileUserListFactory, WITH_MUTUALS } from './tile-user-list';
 
-const TileList = tileUserListFactory({type: WITH_MUTUALS});
+const TileList = tileUserListFactory({ type: WITH_MUTUALS });
 
 
 export default (props) => {
@@ -15,7 +15,7 @@ export default (props) => {
         <h3>
           <span>{title} </span>
           <span className="comment-throbber">
-            <img width="16" height="16" src={throbber16}/>
+            <img width="16" height="16" src={throbber16} />
           </span>
         </h3>
       </div>
@@ -31,19 +31,19 @@ export default (props) => {
     );
   }
 
-  const sections = props.listSections.filter(s => s.users.length > 0);
+  const sections = props.listSections.filter((s) => s.users.length > 0);
   const showTitles = !!props.showSectionsTitles || (sections.length > 1);
 
   return (
     <div>
       <h3><span>{title}</span></h3>
 
-      {sections.map(s => [
+      {sections.map((s) => [
         (showTitles && s.title) ? <h4 className="tile-list-subheader">{s.title}</h4> : false,
-        <TileList users={s.users}/>
+        <TileList key={s.title} users={s.users} />
       ])}
 
-      {!sections.length ? <div>Nobody's here!</div> : ''}
+      {!sections.length ? <div>Nobody{"'"}s here!</div> : ''}
 
     </div>
   );

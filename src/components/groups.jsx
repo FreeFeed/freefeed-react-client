@@ -1,14 +1,14 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {Link} from 'react-router';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import _ from 'lodash';
 
-import {pluralForm} from '../utils';
+import { pluralForm } from '../utils';
 
-import {acceptGroupRequest, rejectGroupRequest} from '../redux/action-creators';
-import {tileUserListFactory, WITH_REQUEST_HANDLES, PLAIN} from './tile-user-list';
-const TileListWithAcceptAndReject = tileUserListFactory({type: WITH_REQUEST_HANDLES, displayQuantity: true});
-const TileList = tileUserListFactory({type: PLAIN, displayQuantity: true});
+import { acceptGroupRequest, rejectGroupRequest } from '../redux/action-creators';
+import { tileUserListFactory, WITH_REQUEST_HANDLES, PLAIN } from './tile-user-list';
+const TileListWithAcceptAndReject = tileUserListFactory({ type: WITH_REQUEST_HANDLES, displayQuantity: true });
+const TileList = tileUserListFactory({ type: PLAIN, displayQuantity: true });
 
 const renderRequestsToGroup = (accept, reject) => (groupRequests) => {
   const acceptGroupRequest = (userName) => accept(groupRequests.username, userName);
@@ -24,7 +24,8 @@ const renderRequestsToGroup = (accept, reject) => (groupRequests) => {
         header={header}
         users={groupRequests.requests}
         acceptRequest={acceptGroupRequest}
-        rejectRequest={rejectGroupRequest}/>
+        rejectRequest={rejectGroupRequest}
+      />
     </div>
   );
 };
@@ -55,22 +56,22 @@ const GroupsHandler = (props) => {
           </div>
         ) : false}
 
-        <TileList {...props.myGroups}/>
-        <TileList {...props.groupsIAmIn}/>
+        <TileList {...props.myGroups} />
+        <TileList {...props.groupsIAmIn} />
       </div>
-      <div className="box-footer"></div>
+      <div className="box-footer" />
     </div>
   );
 };
 
 function selectState(state) {
-  const groupRequests = state.managedGroups.filter(group => group.requests.length) || [];
+  const groupRequests = state.managedGroups.filter((group) => group.requests.length) || [];
 
-  const managedIds = _.map(state.managedGroups, g => g.id);
-  const sortingRule = g => -(g.updatedAt || g.createdAt);
+  const managedIds = _.map(state.managedGroups, (g) => g.id);
+  const sortingRule = (g) => -(g.updatedAt || g.createdAt);
 
-  const adminGroups = _.filter(state.groups, group => managedIds.indexOf(group.id) !== -1);
-  const regularGroups = _.filter(state.groups, group => managedIds.indexOf(group.id) === -1);
+  const adminGroups = _.filter(state.groups, (group) => managedIds.indexOf(group.id) !== -1);
+  const regularGroups = _.filter(state.groups, (group) => managedIds.indexOf(group.id) === -1);
 
   const myGroups = {
     header: 'Groups you admin',

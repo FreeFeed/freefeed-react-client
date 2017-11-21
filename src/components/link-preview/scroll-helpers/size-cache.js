@@ -1,11 +1,11 @@
-import {debounce} from 'lodash';
+import { debounce } from 'lodash';
 import LRU from "lru-cache";
 
 const lsKey = 'previewSize';
 const lruSize = 500;
 const lruSaveTimeout = 10000;
 
-const lru = new LRU({max: lruSize});
+const lru = new LRU({ max: lruSize });
 
 try {
   const stored = localStorage.getItem(lsKey);

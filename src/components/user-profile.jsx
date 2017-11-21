@@ -1,8 +1,8 @@
 import React from 'react';
-import {Link} from 'react-router';
+import { Link } from 'react-router';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import {preventDefault, pluralForm} from '../utils';
+import { preventDefault, pluralForm } from '../utils';
 import CreatePost from './create-post';
 import PieceOfText from './piece-of-text';
 
@@ -14,10 +14,10 @@ export default class UserProfile extends React.Component {
 
   componentWillReceiveProps = () => {
     this.setState({ isUnsubWarningDisplayed: false });
-  }
+  };
 
   render() {
-    const props = this.props;
+    const { props } = this;
 
     const unsubscribe = () => {
       if (props.amIGroupAdmin) {
@@ -36,11 +36,11 @@ export default class UserProfile extends React.Component {
             <div className="row">
               <div className="col-sm-9 col-xs-12">
                 <div className="avatar">
-                  <img src={props.profilePictureLargeUrl} width="75" height="75"/>
+                  <img src={props.profilePictureLargeUrl} width="75" height="75" />
                 </div>
                 <div className="description">
                   <div className="name" dir="auto">{props.screenName}</div>
-                  <PieceOfText text={props.description} isExpanded={true}/>
+                  <PieceOfText text={props.description} isExpanded={true} />
                 </div>
               </div>
               {props.statistics && !props.blocked ? (
@@ -92,19 +92,19 @@ export default class UserProfile extends React.Component {
                   props.hasRequestBeenSent ? (
                     <span><b>{props.screenName}</b> has been sent your subscription request.</span>
                   ) : (
-                    <a onClick={()=>props.sendSubscriptionRequest({username: props.username, id: props.id})}>Request a subscription</a>
+                    <a onClick={() => props.sendSubscriptionRequest({ username: props.username, id: props.id })}>Request a subscription</a>
                   )
                 ) : (
                   props.subscribed ? (
                     <a onClick={() => unsubscribe()}>Unsubscribe</a>
                   ) : (
-                    <a onClick={() => props.subscribe({username: props.username, id: props.id})}>Subscribe</a>
+                    <a onClick={() => props.subscribe({ username: props.username, id: props.id })}>Subscribe</a>
                   )
                 )}
 
                 {props.userView.isSubscribing ? (
                   <span className="profile-controls-throbber">
-                    <img width="16" height="16" src={throbber16}/>
+                    <img width="16" height="16" src={throbber16} />
                   </span>
                 ) : false}
               </div>
@@ -116,7 +116,7 @@ export default class UserProfile extends React.Component {
                   </span>
                 )}
                 {props.type !== 'group' && !props.subscribed ? (
-                  <a onClick={preventDefault(()=>props.ban({username: props.username, id: props.id}))}>Block this user</a>
+                  <a onClick={preventDefault(() => props.ban({ username: props.username, id: props.id }))}>Block this user</a>
                 ) : props.amIGroupAdmin ? (
                   <Link to={`/${props.username}/settings`}>Settings</Link>
                 ) : false}
@@ -145,7 +145,8 @@ export default class UserProfile extends React.Component {
             expandSendTo={props.expandSendTo}
             createPostForm={props.createPostForm}
             addAttachmentResponse={props.addAttachmentResponse}
-            removeAttachment={props.removeAttachment}/>
+            removeAttachment={props.removeAttachment}
+          />
         ) : false}
 
         {!props.canIPostHere && props.isRestricted === '1' ? (

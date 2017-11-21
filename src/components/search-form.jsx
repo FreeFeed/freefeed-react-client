@@ -1,13 +1,13 @@
 import React from 'react';
-import {browserHistory} from 'react-router';
+import { browserHistory } from 'react-router';
 
 const isEscape = (keyCode) => keyCode && keyCode === 27;
 const isEnter = (keyCode) => keyCode && keyCode === 13;
 
-const fireSearch = searchText => browserHistory.push(`/search?qs=${encodeURIComponent(searchText)}`);
+const fireSearch = (searchText) => browserHistory.push(`/search?qs=${encodeURIComponent(searchText)}`);
 
-const subscribeOnHistory = input => {
-  browserHistory.listen(newRoute=>{
+const subscribeOnHistory = (input) => {
+  browserHistory.listen((newRoute) => {
     if (newRoute.pathname === '/search') {
       input.value = newRoute.query.qs || '';
     } else {
@@ -24,7 +24,7 @@ export default class SearchForm extends React.Component {
     this.rememberInput = this.rememberInput.bind(this);
   }
 
-  handleSearch({keyCode, target}) {
+  handleSearch({ keyCode, target }) {
     if (isEscape(keyCode)) {
       this.searchInput.blur();
       return this.searchInput.value = '';
@@ -55,9 +55,9 @@ export default class SearchForm extends React.Component {
 
   render() {
     return (
-      <div className='search-form'>
-        <input placeholder='Search request' onKeyDown={this.handleSearch} className='search-input' ref={this.rememberInput}/>
-        <button type='button' className='search-button' onClick={this.handleSearchButton}>Search</button>
+      <div className="search-form">
+        <input placeholder="Search request" onKeyDown={this.handleSearch} className="search-input" ref={this.rememberInput} />
+        <button type="button" className="search-button" onClick={this.handleSearchButton}>Search</button>
       </div>
     );
   }

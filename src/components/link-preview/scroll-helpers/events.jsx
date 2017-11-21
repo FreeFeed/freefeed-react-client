@@ -13,7 +13,7 @@ export function contentResized(el) {
     } else {
       return;
     }
-    el.dispatchEvent(new CustomEvent(ELEMENT_RESIZE_EVENT, {bubbles: true}));
+    el.dispatchEvent(new CustomEvent(ELEMENT_RESIZE_EVENT, { bubbles: true }));
   } catch (e) {
     // pass
   }

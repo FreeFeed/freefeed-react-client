@@ -1,11 +1,11 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import {createBookmarkletPost, resetPostCreateForm, addAttachmentResponse, removeAttachment} from '../redux/action-creators';
+import { createBookmarkletPost, resetPostCreateForm, addAttachmentResponse, removeAttachment } from '../redux/action-creators';
 
-import {joinCreatePostData} from './select-utils';
+import { joinCreatePostData } from './select-utils';
 import CreateBookmarkletPost from './create-bookmarklet-post';
 import SignIn from './signin';
 
@@ -23,10 +23,10 @@ class Layout extends React.Component {
   handleHashChange = () => {
     // Add the image passed via #hash
     const url = window.location.hash.slice(1);
-    const imageUrls = this.state.imageUrls;
+    const { imageUrls } = this.state;
     if (imageUrls.indexOf(url) === -1) {
       imageUrls.push(url);
-      this.setState({imageUrls});
+      this.setState({ imageUrls });
     }
 
     // Clear the #hash immediately
@@ -35,7 +35,7 @@ class Layout extends React.Component {
 
   removeImage = (url) => {
     const imageUrls = _.without(this.state.imageUrls, url);
-    this.setState({imageUrls});
+    this.setState({ imageUrls });
   };
 
   componentDidMount() {
@@ -45,11 +45,11 @@ class Layout extends React.Component {
     const services = [{
       // Instagram
       from: /https?:\/\/www\.instagram\.com\/p\/([\w-]+)\//i,
-      to: (id)=>('https://www.instagram.com/p/' + id + '/media/?size=l')
+      to: (id) => (`https://www.instagram.com/p/${id}/media/?size=l`)
     }, {
       // YouTube
       from: /https?:\/\/(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\S*[^\w\s-])([\w-]{11})(?=[^\w-]|$)[?=&+%\w.-]*/i,
-      to: (id)=>('https://i.ytimg.com/vi/' + id + '/hqdefault.jpg')
+      to: (id) => (`https://i.ytimg.com/vi/${id}/hqdefault.jpg`)
     }];
     const pageUrl = this.props.location.query.url;
     const imageUrls = [];
@@ -60,7 +60,7 @@ class Layout extends React.Component {
         imageUrls.push(imageUrl);
       }
     });
-    this.setState({imageUrls});
+    this.setState({ imageUrls });
   }
 
   componentWillUnmount() {
@@ -68,7 +68,7 @@ class Layout extends React.Component {
   }
 
   render() {
-    const props = this.props;
+    const { props } = this;
 
     const layoutClassNames = classnames({
       'container': true,
@@ -81,7 +81,7 @@ class Layout extends React.Component {
         <header>
           <h1>
             Share on <a href="/" target="_blank">FreeFeed</a>
-            {props.authenticated ? (" as " + props.user.username) : false}
+            {props.authenticated ? (` as ${props.user.username}`) : false}
           </h1>
         </header>
 
@@ -90,17 +90,18 @@ class Layout extends React.Component {
             createPostViewState={props.createPostViewState}
             sendTo={props.sendTo}
             user={props.user}
-            postText={props.location.query.title + ' - ' + props.location.query.url}
+            postText={`${props.location.query.title} - ${props.location.query.url}`}
             imageUrls={this.state.imageUrls}
             commentText={props.location.query.comment}
             createPostForm={props.createPostForm}
             createPost={props.createBookmarkletPost}
             resetPostCreateForm={props.resetPostCreateForm}
-            removeImage={this.removeImage}/>
+            removeImage={this.removeImage}
+          />
         ) : (
           <div>
             <div className="box-message alert alert-warning">You need to sign in first.</div>
-            <SignIn/>
+            <SignIn />
           </div>
         )}
       </div>
@@ -109,11 +110,9 @@ class Layout extends React.Component {
 }
 
 function selectState(state) {
-  const authenticated = state.authenticated;
-  const user = state.user;
-  const sendTo = {...state.sendTo, defaultFeed: user.username};
+  const { authenticated, createPostViewState, user } = state;
+  const sendTo = { ...state.sendTo, defaultFeed: user.username };
   const createPostForm = joinCreatePostData(state);
-  const createPostViewState = state.createPostViewState;
 
   return {
     authenticated,

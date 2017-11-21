@@ -7,11 +7,11 @@ const
 
 function getPrivacyFlags(mode) {
   if (mode === PRIVATE) {
-    return {isProtected: '1', isPrivate: '1'};
+    return { isProtected: '1', isPrivate: '1' };
   } else if (mode === PROTECTED) {
-    return {isProtected: '1', isPrivate: '0'};
+    return { isProtected: '1', isPrivate: '0' };
   }
-  return {isProtected: '0', isPrivate: '0'};
+  return { isProtected: '0', isPrivate: '0' };
 }
 
 function getPrivacyMode(flags) {
@@ -24,15 +24,14 @@ function getPrivacyMode(flags) {
 }
 
 export default class GroupFeedTypePicker extends React.Component {
-
   handleChange = (event) => {
-    const {target: {name, value}} = event;
+    const { target: { name, value } } = event;
     if (name === 'privacy') {
       this.props.updateGroupPrivacySettings(getPrivacyFlags(value));
     } else if (name === 'isRestricted') {
       this.props.updateGroupPrivacySettings({ [name]: value });
     }
-  }
+  };
 
   render() {
     return (
@@ -45,11 +44,13 @@ export default class GroupFeedTypePicker extends React.Component {
           <div className="col-sm-9">
             <label className="option-box">
               <div className="input">
-                <input type="radio"
+                <input
+                  type="radio"
                   name="privacy"
                   value={PUBLIC}
                   checked={getPrivacyMode(this.props) === PUBLIC}
-                  onChange={this.handleChange}/>
+                  onChange={this.handleChange}
+                />
               </div>
               <div className="option">
                 Everyone (public group)
@@ -58,11 +59,13 @@ export default class GroupFeedTypePicker extends React.Component {
 
             <label className="option-box">
               <div className="input">
-                <input type="radio"
+                <input
+                  type="radio"
                   name="privacy"
                   value={PROTECTED}
                   checked={getPrivacyMode(this.props) === PROTECTED}
-                  onChange={this.handleChange}/>
+                  onChange={this.handleChange}
+                />
               </div>
               <div className="option">
                 FreeFeed users (protected group)
@@ -71,11 +74,13 @@ export default class GroupFeedTypePicker extends React.Component {
 
             <label className="option-box">
               <div className="input">
-                <input type="radio"
+                <input
+                  type="radio"
                   name="privacy"
                   value={PRIVATE}
                   checked={getPrivacyMode(this.props) === PRIVATE}
-                  onChange={this.handleChange}/>
+                  onChange={this.handleChange}
+                />
               </div>
               <div className="option">
                 Group members (private group)
@@ -92,11 +97,13 @@ export default class GroupFeedTypePicker extends React.Component {
           <div className="col-sm-9">
             <label className="option-box">
               <div className="input">
-                <input type="radio"
+                <input
+                  type="radio"
                   name="isRestricted"
                   value="0"
                   checked={this.props.isRestricted === '0'}
-                  onChange={this.handleChange}/>
+                  onChange={this.handleChange}
+                />
               </div>
               <div className="option">
                 Every group member
@@ -105,11 +112,13 @@ export default class GroupFeedTypePicker extends React.Component {
 
             <label className="option-box">
               <div className="input">
-                <input type="radio"
+                <input
+                  type="radio"
                   name="isRestricted"
                   value="1"
                   checked={this.props.isRestricted === '1'}
-                  onChange={this.handleChange}/>
+                  onChange={this.handleChange}
+                />
               </div>
               <div className="option">
                 Group administrators only

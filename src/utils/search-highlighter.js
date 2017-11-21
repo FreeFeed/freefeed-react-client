@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import {stemmer as enStemmer} from 'porter-stemmer';
+import { stemmer as enStemmer } from 'porter-stemmer';
 import ruStemmer from './ru-stemmer';
 
 const enLetters = 'a-z';
@@ -40,11 +40,11 @@ export function highlightString(text, terms) {
   const result = [];
   while (text !== '') {
     let match = '', minPos = 0;
-    terms.forEach(re => {
+    terms.forEach((re) => {
       const m = re.exec(text);
       if (m && (match === '' || m.index < minPos)) {
         minPos = m.index + (m[1] || '').length;
-        match = m[2];
+        match = m[2];  // eslint-disable-line prefer-destructuring
       }
     });
 

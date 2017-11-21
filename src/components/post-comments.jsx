@@ -1,16 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {StickyContainer, Sticky} from 'react-sticky';
+import { StickyContainer, Sticky } from 'react-sticky';
 import _ from 'lodash';
 
-import {preventDefault} from '../utils';
+import { preventDefault } from '../utils';
 import PostComment from './post-comment';
 import MoreCommentsWrapper from './more-comments-wrapper';
 
 const minCommentsToFold = 12;
 
 export default class PostComments extends React.Component {
-
   constructor(props) {
     super(props);
     this.addingCommentForm = null;
@@ -22,7 +21,7 @@ export default class PostComments extends React.Component {
   }
 
   openAnsweringComment = (answerText) => {
-    const {post, toggleCommenting, updateCommentingText} = this.props;
+    const { post, toggleCommenting, updateCommentingText } = this.props;
 
     if (!post.isCommenting && !post.isSinglePost) {
       toggleCommenting(post.id);
@@ -36,10 +35,10 @@ export default class PostComments extends React.Component {
     if (this.addingCommentForm) {
       this.addingCommentForm.focus();
     }
-  }
+  };
 
   renderAddingComment() {
-    const props = this.props;
+    const { props } = this;
     return (
       <PostComment
         id={props.post.id}
@@ -53,12 +52,13 @@ export default class PostComments extends React.Component {
         errorString={props.commentError}
         isSaving={props.post.isSavingComment}
         isSinglePost={props.post.isSinglePost}
-        currentUser={props.post.user}/>
+        currentUser={props.post.user}
+      />
     );
   }
 
   renderAddCommentLink() {
-    const props = this.props;
+    const { props } = this;
     const disabledForOthers = (props.post.commentsDisabled && props.post.isEditable);
     const toggleCommenting = props.post.isSinglePost ? () => {} : () => props.toggleCommenting(props.post.id);
 
@@ -66,9 +66,9 @@ export default class PostComments extends React.Component {
       return (
         <div className="comment">
           <a className="comment-icon fa-stack fa-1x" onClick={preventDefault(toggleCommenting)}>
-            <i className="fa fa-comment-o fa-stack-1x"></i>
-            <i className="fa fa-square fa-inverse fa-stack-1x"></i>
-            <i className="fa fa-plus fa-stack-1x"></i>
+            <i className="fa fa-comment-o fa-stack-1x" />
+            <i className="fa fa-square fa-inverse fa-stack-1x" />
+            <i className="fa fa-plus fa-stack-1x" />
           </a>
           <a className="add-comment-link" onClick={preventDefault(toggleCommenting)}>Add comment</a>
           {disabledForOthers
@@ -82,7 +82,7 @@ export default class PostComments extends React.Component {
   }
 
   renderComment(comment) {
-    const props = this.props;
+    const { props } = this;
     return (
       <PostComment
         key={comment.id}
@@ -93,27 +93,28 @@ export default class PostComments extends React.Component {
         openAnsweringComment={this.openAnsweringComment}
         isModeratingComments={props.post.isModeratingComments}
         {...props.commentEdit}
-        highlightComment={authorUserName => props.commentEdit.highlightComment(props.post.id, authorUserName)}
-        highlightArrowComment={arrows => props.commentEdit.highlightComment(props.post.id, undefined, arrows, comment.id)}
+        highlightComment={(authorUserName) => props.commentEdit.highlightComment(props.post.id, authorUserName)}
+        highlightArrowComment={(arrows) => props.commentEdit.highlightComment(props.post.id, undefined, arrows, comment.id)}
         readMoreStyle={props.readMoreStyle}
         highlightTerms={props.highlightTerms}
-        currentUser={props.post.user}/>
+        currentUser={props.post.user}
+      />
     );
   }
 
-  fold = () => this.setState({folded: true})
+  fold = () => this.setState({ folded: true });
 
   showMoreComments = () => {
     if (this.state.folded) {
-      this.setState({folded: false});
+      this.setState({ folded: false });
     } else {
       this.props.showMoreComments(this.props.post.id);
     }
-  }
+  };
 
   componentWillReceiveProps(newProps) {
     if (this.state.folded && newProps.post.omittedComments > 0) {
-      this.setState({folded: false});
+      this.setState({ folded: false });
     }
   }
 
@@ -128,8 +129,8 @@ export default class PostComments extends React.Component {
   }
 
   renderMiddle() {
-    const {post, comments, entryUrl, isSinglePost} = this.props;
-    const {folded} = this.state;
+    const { post, comments, entryUrl, isSinglePost } = this.props;
+    const { folded } = this.state;
 
     const totalComments = comments.length + post.omittedComments;
     const foldedCount = folded ? comments.length - 2 : post.omittedComments;
@@ -147,7 +148,8 @@ export default class PostComments extends React.Component {
           entryUrl={entryUrl}
           omittedCommentLikes={post.omittedCommentLikes}
           omittedOwnCommentLikes={post.omittedOwnCommentLikes}
-          isLoading={post.isLoadingComments}/>
+          isLoading={post.isLoadingComments}
+        />
       );
     }
 
@@ -155,7 +157,7 @@ export default class PostComments extends React.Component {
       return (
         <StickyContainer>
           <Sticky stickyClassName="fold-comments-sticky" className="fold-comments">
-            <i className="fa fa-chevron-up"/>
+            <i className="fa fa-chevron-up" />
             <a onClick={this.fold}>Fold comments</a>
           </Sticky>
           {middleComments}
@@ -167,7 +169,7 @@ export default class PostComments extends React.Component {
   }
 
   render() {
-    const {post, comments} = this.props;
+    const { post, comments } = this.props;
     const totalComments = comments.length + post.omittedComments;
     const first = withBackwardNumber(comments[0], totalComments);
     const last = withBackwardNumber(comments.length > 1 && comments[comments.length - 1], 1);

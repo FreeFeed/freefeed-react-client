@@ -6,11 +6,11 @@ export default (props) => {
 
   let artistAndTitle = '';
   if (props.title && props.artist) {
-    artistAndTitle = props.artist + ' – ' + props.title + ' (' + formattedFileSize + ')';
+    artistAndTitle = `${props.artist} – ${props.title} (${formattedFileSize})`;
   } else if (props.title) {
-    artistAndTitle = props.title + ' (' + formattedFileSize + ')';
+    artistAndTitle = `${props.title} (${formattedFileSize})`;
   } else {
-    artistAndTitle = props.fileName + ' (' + formattedFileSize + ')';
+    artistAndTitle = `${props.fileName} (${formattedFileSize})`;
   }
 
   const removeAttachment = () => props.removeAttachment(props.id);
@@ -18,16 +18,16 @@ export default (props) => {
   return (
     <div className="attachment">
       <div>
-        <audio src={props.url} title={artistAndTitle} preload="none" controls></audio>
+        <audio src={props.url} title={artistAndTitle} preload="none" controls />
       </div>
       <div>
         <a href={props.url} title={artistAndTitle} target="_blank">
-          <i className="fa fa-file-audio-o"></i>
+          <i className="fa fa-file-audio-o" />
           <span>{artistAndTitle}</span>
         </a>
 
         {props.isEditing ? (
-          <i className="remove-attachment fa fa-times" title="Remove audio file" onClick={removeAttachment}></i>
+          <i className="remove-attachment fa fa-times" title="Remove audio file" onClick={removeAttachment} />
         ) : false}
       </div>
     </div>

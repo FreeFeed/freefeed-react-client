@@ -1,12 +1,12 @@
 import React from 'react';
-import {Link} from 'react-router';
-import {connect} from 'react-redux';
-import {resetPassword, resetPasswordValidationFail} from '../redux/action-creators';
-import {preventDefault} from '../utils';
+import { Link } from 'react-router';
+import { connect } from 'react-redux';
+import { resetPassword, resetPasswordValidationFail } from '../redux/action-creators';
+import { preventDefault } from '../utils';
 import LoaderContainer from './loader-container';
 
 function mapStateToProps(state, ownProps) {
-  return {...state.resetPassForm, token: ownProps.location.query.token};
+  return { ...state.resetPassForm, token: ownProps.location.query.token };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -39,40 +39,41 @@ function resetFunc(pass, confirm, token, reset, validation) {
 class ResetPassword extends React.Component {
   render() {
     return (
-      <div className='box'>
-        <div className='box-header-timeline'>
+      <div className="box">
+        <div className="box-header-timeline">
           Hello
         </div>
-        <div className='box-body'>
-          <div className='col-md-12'>
-            <h2 className='p-signin-header'>{this.props.header}</h2>
-            {this.props.error ? (<div className='alert alert-danger p-signin-error' role='alert'>
-              <span id='error-message'>{this.props.error}</span>
-            </div>) : false}
-            <div className='row'>
-              <div className='col-md-6'>
+        <div className="box-body">
+          <div className="col-md-12">
+            <h2 className="p-signin-header">{this.props.header}</h2>
+            {this.props.error ? (
+              <div className="alert alert-danger p-signin-error" role="alert">
+                <span id="error-message">{this.props.error}</span>
+              </div>
+            ) : false}
+            <div className="row">
+              <div className="col-md-6">
                 <LoaderContainer loading={this.props.loading}>
-                  <form onSubmit={preventDefault(() => resetFunc(this.refs.pass.value, this.refs.confirm.value, this.props.token, this.props.reset, this.props.validation))} className='p-signin'>
-                    <div className='form-group'>
-                      <label htmlFor='pass'>Password</label>
-                      <input id='pass' className='form-control' type='password' ref='pass'/>
+                  <form onSubmit={preventDefault(() => resetFunc(this.refs.pass.value, this.refs.confirm.value, this.props.token, this.props.reset, this.props.validation))} className="p-signin">
+                    <div className="form-group">
+                      <label htmlFor="pass">Password</label>
+                      <input id="pass" className="form-control" type="password" ref="pass" />
                     </div>
-                    <div className='form-group'>
-                      <label htmlFor='confirm'>Password confirmation</label>
-                      <input id='confirm' className='form-control' type='password' ref='confirm'/>
+                    <div className="form-group">
+                      <label htmlFor="confirm">Password confirmation</label>
+                      <input id="confirm" className="form-control" type="password" ref="confirm" />
                     </div>
-                    <div className='form-group'>
-                      <button className='btn btn-default p-singin-action' type='submit'>Reset password</button>
+                    <div className="form-group">
+                      <button className="btn btn-default p-singin-action" type="submit">Reset password</button>
                     </div>
                   </form>
                 </LoaderContainer>
-                <p>New to freefeed? <Link to='/signup'>Create an account »</Link></p>
+                <p>New to freefeed? <Link to="/signup">Create an account »</Link></p>
               </div>
             </div>
           </div>
         </div>
-        <div className='box-footer'>
-        </div>
+        <div className="box-footer" />
       </div>
     );
   }

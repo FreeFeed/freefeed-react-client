@@ -1,18 +1,18 @@
 /*global Raven*/
-import {browserHistory} from 'react-router';
+import { browserHistory } from 'react-router';
 import _ from 'lodash';
 
-import {getPost} from '../services/api';
-import {setToken, persistUser} from '../services/auth';
-import {init} from '../services/realtime';
-import {userParser, delay} from '../utils';
+import { getPost } from '../services/api';
+import { setToken, persistUser } from '../services/auth';
+import { init } from '../services/realtime';
+import { userParser, delay } from '../utils';
 
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
-import {request, response, fail, requiresAuth, isFeedRequest, isFeedResponse} from './action-helpers';
+import { request, response, fail, requiresAuth, isFeedRequest, isFeedResponse } from './action-helpers';
 
 //middleware for api requests
-export const apiMiddleware = store => next => async(action) => {
+export const apiMiddleware = (store) => (next) => async (action) => {
   //ignore normal actions
   if (!action.apiRequest) {
     return next(action);
@@ -20,25 +20,25 @@ export const apiMiddleware = store => next => async(action) => {
 
   //dispatch request begin action
   //clean apiRequest to not get caught by this middleware
-  store.dispatch({...action, type: request(action.type), apiRequest: null});
+  store.dispatch({ ...action, type: request(action.type), apiRequest: null });
   try {
     const apiResponse = await action.apiRequest(action.payload);
     const obj = await apiResponse.json();
 
     if (apiResponse.status >= 200 && apiResponse.status < 300) {
-      return store.dispatch({payload: obj, type: response(action.type), request: action.payload});
+      return store.dispatch({ payload: obj, type: response(action.type), request: action.payload });
     }
 
     if (apiResponse.status === 401) {
       return store.dispatch(ActionCreators.unauthenticated(obj));
     }
 
-    return store.dispatch({payload: obj, type: fail(action.type), request: action.payload, response: apiResponse});
+    return store.dispatch({ payload: obj, type: fail(action.type), request: action.payload, response: apiResponse });
   } catch (e) {
     if (typeof Raven !== 'undefined') {
       Raven.captureException(e, { level: 'error', tags: { area: 'redux/apiMiddleware' }, extra: { action } });
     }
-    return store.dispatch({payload: {err: 'Network error'}, type: fail(action.type), request: action.payload, response: null});
+    return store.dispatch({ payload: { err: 'Network error' }, type: fail(action.type), request: action.payload, response: null });
   }
 };
 
@@ -48,17 +48,17 @@ const paths = ['friends',
   'filter/direct',
   'groups',
   'groups/create',
+  'summary',
 ];
 
 function shouldGoToSignIn(pathname) {
-  return pathname && paths.some(path => pathname.indexOf(path) != -1);
+  return pathname && paths.some((path) => pathname.indexOf(path) != -1);
 }
 
-export const authMiddleware = store => {
+export const authMiddleware = (store) => {
   let firstUnauthenticated = true;
 
-  return next => action => {
-
+  return (next) => (action) => {
     //stop action propagation if it should be authed and user is not authed
     if (requiresAuth(action) && !store.getState().authenticated) {
       return;
@@ -70,7 +70,7 @@ export const authMiddleware = store => {
       next(action);
       if (firstUnauthenticated) {
         firstUnauthenticated = false;
-        const pathname = window.location.pathname;
+        const { pathname } = window.location;
         if (shouldGoToSignIn(pathname)) {
           store.dispatch(ActionCreators.requireAuthentication());
           return browserHistory.push(`/signin?back=${pathname}`);
@@ -81,14 +81,14 @@ export const authMiddleware = store => {
 
 
     if (action.type === response(ActionTypes.SIGN_IN) ||
-       action.type === response(ActionTypes.SIGN_UP) ) {
+       action.type === response(ActionTypes.SIGN_UP)) {
       firstUnauthenticated = false;
       setToken(action.payload.authToken);
       next(action);
       store.dispatch(ActionCreators.whoAmI());
 
       // Do not redirect to Home page if signed in at Bookmarklet
-      const pathname = (store.getState().routing.locationBeforeTransitions || {}).pathname;
+      const { pathname } = (store.getState().routing.locationBeforeTransitions || {});
       if (pathname === '/bookmarklet') {
         return;
       }
@@ -98,7 +98,7 @@ export const authMiddleware = store => {
     }
 
     if (action.type === response(ActionTypes.WHO_AM_I) ||
-       action.type === response(ActionTypes.UPDATE_USER) ) {
+       action.type === response(ActionTypes.UPDATE_USER)) {
       persistUser(userParser(action.payload.users));
       return next(action);
     }
@@ -107,10 +107,10 @@ export const authMiddleware = store => {
   };
 };
 
-export const likesLogicMiddleware = store => next => action => {
+export const likesLogicMiddleware = (store) => (next) => (action) => {
   switch (action.type) {
     case ActionTypes.SHOW_MORE_LIKES: {
-      const postId = action.payload.postId;
+      const { postId } = action.payload;
       const post = store.getState().posts[postId];
       const isSync = (post.omittedLikes === 0);
 
@@ -119,7 +119,7 @@ export const likesLogicMiddleware = store => next => action => {
       return store.dispatch(nextAction);
     }
     case ActionTypes.REALTIME_LIKE_REMOVE: {
-      const {postId, userId} = action;
+      const { postId, userId } = action;
       const post = store.getState().posts[postId];
       // it is necessary for proper update postsViewState
       action.isLikeVisible = _.includes(post.likes, userId);
@@ -154,12 +154,12 @@ const ignoreMyLikes = {};
 const ignoreMyUnlikes = {};
 const cleanLikeErrorTimers = {};
 
-export const optimisticLikesMiddleware = store => next => action => {
+export const optimisticLikesMiddleware = (store) => (next) => (action) => {
   switch (action.type) {
     case ActionTypes.LIKE_POST_OPTIMISTIC: {
       next(action);
 
-      const {postId, userId} = action.payload;
+      const { postId, userId } = action.payload;
       ignoreMyLikes[postId] = (ignoreMyLikes[postId] || 0) + 1;
       likeActionsQueue.push(ActionCreators.likePostRequest(postId, userId), store);
       return;
@@ -167,7 +167,7 @@ export const optimisticLikesMiddleware = store => next => action => {
     case ActionTypes.UNLIKE_POST_OPTIMISTIC: {
       next(action);
 
-      const {postId, userId} = action.payload;
+      const { postId, userId } = action.payload;
       ignoreMyUnlikes[postId] = (ignoreMyUnlikes[postId] || 0) + 1;
       likeActionsQueue.push(ActionCreators.unlikePostRequest(postId, userId), store);
       return;
@@ -184,7 +184,7 @@ export const optimisticLikesMiddleware = store => next => action => {
     case fail(ActionTypes.UNLIKE_POST): {
       next(action);
 
-      const {postId} = action.request;
+      const { postId } = action.request;
       if (cleanLikeErrorTimers[postId]) {
         clearTimeout(cleanLikeErrorTimers[postId]);
       }
@@ -225,7 +225,7 @@ export const optimisticLikesMiddleware = store => next => action => {
   return next(action);
 };
 
-export const userPhotoLogicMiddleware = store => next => action => {
+export const userPhotoLogicMiddleware = (store) => (next) => (action) => {
   if (action.type === response(ActionTypes.UPDATE_USER_PICTURE)) {
     // Update data after userpic is updated
     store.dispatch(ActionCreators.whoAmI());
@@ -234,7 +234,7 @@ export const userPhotoLogicMiddleware = store => next => action => {
   return next(action);
 };
 
-export const groupPictureLogicMiddleware = store => next => action => {
+export const groupPictureLogicMiddleware = (store) => (next) => (action) => {
   if (action.type === response(ActionTypes.UPDATE_GROUP_PICTURE)) {
     // Update data after group picture is updated
     store.dispatch(ActionCreators.getUserInfo(action.request.groupName));
@@ -243,12 +243,12 @@ export const groupPictureLogicMiddleware = store => next => action => {
   return next(action);
 };
 
-function isInvitation({locationBeforeTransitions}) {
-  const {pathname, query} = locationBeforeTransitions;
+function isInvitation({ locationBeforeTransitions }) {
+  const { pathname, query } = locationBeforeTransitions;
   return pathname === '/filter/direct' && !!query.invite;
 }
 
-export const redirectionMiddleware = store => next => action => {
+export const redirectionMiddleware = (store) => (next) => (action) => {
   //go to home if single post has been removed
   if (action.type === response(ActionTypes.DELETE_POST) && store.getState().singlePostId) {
     return browserHistory.push('/');
@@ -266,12 +266,12 @@ export const redirectionMiddleware = store => next => action => {
   return next(action);
 };
 
-export const requestsMiddleware = store => next => action => {
+export const requestsMiddleware = (store) => (next) => (action) => {
   if (action.type === response(ActionTypes.ACCEPT_USER_REQUEST)) {
     next(action);
 
     if (store.getState().routing.locationBeforeTransitions.pathname == '/friends') {
-      const username = store.getState().user.username;
+      const { username } = store.getState().user;
       store.dispatch(ActionCreators.subscribers(username));
     }
 
@@ -281,7 +281,7 @@ export const requestsMiddleware = store => next => action => {
   return next(action);
 };
 
-export const markDirectsAsReadMiddleware = store => next => action => {
+export const markDirectsAsReadMiddleware = (store) => (next) => (action) => {
   if (action.type === request(ActionTypes.DIRECT) && action.payload.offset == 0) {
     // needed to mark all directs as read
     store.dispatch(ActionCreators.markAllDirectsAsRead());
@@ -294,7 +294,7 @@ export const markDirectsAsReadMiddleware = store => next => action => {
   next(action);
 };
 
-export const markNotificationsAsReadMiddleware = store => next => action => {
+export const markNotificationsAsReadMiddleware = (store) => (next) => (action) => {
   if (action.type === request(ActionTypes.GET_NOTIFICATIONS) && action.payload.offset == 0) {
     // needed to mark all notifications as read
     store.dispatch(ActionCreators.markAllNotificationsAsRead());
@@ -302,10 +302,10 @@ export const markNotificationsAsReadMiddleware = store => next => action => {
   next(action);
 };
 
-const isFirstPage = state => !state.routing.locationBeforeTransitions.query.offset;
+const isFirstPage = (state) => !state.routing.locationBeforeTransitions.query.offset;
 
-const isPostLoaded = ({posts}, postId) => posts[postId];
-const iLikedPost = ({user, posts}, postId) => {
+const isPostLoaded = ({ posts }, postId) => posts[postId];
+const iLikedPost = ({ user, posts }, postId) => {
   const post = posts[postId];
   if (!post) {
     return false;
@@ -313,12 +313,12 @@ const iLikedPost = ({user, posts}, postId) => {
   const likes = post.likes || [];
   return likes.indexOf(user.id) !== -1;
 };
-const dispatchWithPost = async(store, postId, action, filter = () => true, maxDelay = 0) => {
+const dispatchWithPost = async (store, postId, action, filter = () => true, maxDelay = 0) => {
   let state = store.getState();
   const shouldBump = isFirstPage(state);
 
   if (isPostLoaded(state, postId)) {
-    return store.dispatch({...action, shouldBump});
+    return store.dispatch({ ...action, shouldBump });
   }
 
   if (maxDelay > 0) {
@@ -331,34 +331,34 @@ const dispatchWithPost = async(store, postId, action, filter = () => true, maxDe
     }
     // if post was loaded during delay
     if (isPostLoaded(state, postId)) {
-      return store.dispatch({...action, shouldBump});
+      return store.dispatch({ ...action, shouldBump });
     }
   }
-  const postResponse = await getPost({postId});
+  const postResponse = await getPost({ postId });
   const post = await postResponse.json();
 
   if (filter(post, action, store.getState())) {
-    return store.dispatch({...action, post, shouldBump});
+    return store.dispatch({ ...action, post, shouldBump });
   }
 };
 
-const isFirstFriendInteraction = (post, {users}, {subscriptions, comments}) => {
-  const newLike = users[0];
-  const myFriends = Object.keys(subscriptions).map(key => subscriptions[key]).map(sub => sub.user);
-  const likesWithoutCurrent = post.posts.likes.filter(like => like !== newLike);
-  const friendsInvolved = list => list.filter(element => myFriends.indexOf(element) !== -1).length;
+const isFirstFriendInteraction = (post, { users }, { subscriptions, comments }) => {
+  const [newLike] = users;
+  const myFriends = Object.keys(subscriptions).map((key) => subscriptions[key]).map((sub) => sub.user);
+  const likesWithoutCurrent = post.posts.likes.filter((like) => like !== newLike);
+  const friendsInvolved = (list) => list.filter((element) => myFriends.indexOf(element) !== -1).length;
   const friendsLikedBefore = friendsInvolved(likesWithoutCurrent);
-  const newPostCommentAuthors = (post.comments || []).map(comment => comment.createdBy);
-  const commentsAuthors = (post.posts.comments || []).map(cId => (comments[cId] || {}).createdBy);
+  const newPostCommentAuthors = (post.comments || []).map((comment) => comment.createdBy);
+  const commentsAuthors = (post.posts.comments || []).map((cId) => (comments[cId] || {}).createdBy);
   const friendsCommented = friendsInvolved([...commentsAuthors, ...newPostCommentAuthors]);
   const wasFirstInteraction = !friendsCommented && !friendsLikedBefore;
   return wasFirstInteraction;
 };
 
 const postFetchDelay = 20000; // 20 sec
-const bindHandlers = store => ({
-  'user:update': data => store.dispatch({...data, type: ActionTypes.REALTIME_USER_UPDATE}),
-  'post:new': data => {
+const bindHandlers = (store) => ({
+  'user:update': (data) => store.dispatch({ ...data, type: ActionTypes.REALTIME_USER_UPDATE }),
+  'post:new': (data) => {
     const state = store.getState();
     const isFeedFirstPage = isFirstPage(state);
     const isHomeFeed = state.routing.locationBeforeTransitions.pathname === '/';
@@ -366,36 +366,35 @@ const bindHandlers = store => ({
 
     const shouldBump = isFeedFirstPage && (!isHomeFeed || (useRealtimePreference && isHomeFeed));
 
-    return store.dispatch({...data, type: ActionTypes.REALTIME_POST_NEW, post: data.posts, shouldBump});
+    return store.dispatch({ ...data, type: ActionTypes.REALTIME_POST_NEW, post: data.posts, shouldBump });
   },
-  'post:update': data => store.dispatch({...data, type: ActionTypes.REALTIME_POST_UPDATE, post: data.posts}),
-  'post:destroy': data => store.dispatch({type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId}),
-  'post:hide': data => store.dispatch({type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId}),
-  'post:unhide': data => store.dispatch({type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId}),
-  'comment:new': async data => {
-    const postId = data.comments.postId;
-    const action = {...data, type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments};
+  'post:update': (data) => store.dispatch({ ...data, type: ActionTypes.REALTIME_POST_UPDATE, post: data.posts }),
+  'post:destroy': (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId }),
+  'post:hide': (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId }),
+  'post:unhide': (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId }),
+  'comment:new': async (data) => {
+    const { postId } = data.comments;
+    const action = { ...data, type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments };
     return dispatchWithPost(store, postId, action, () => true, postFetchDelay);
   },
-  'comment:update': data => store.dispatch({...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments}),
-  'comment:destroy': data => store.dispatch({type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId, postId: data.postId}),
-  'like:new': async data => {
-    const postId = data.meta.postId;
+  'comment:update': (data) => store.dispatch({ ...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments }),
+  'comment:destroy': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId, postId: data.postId }),
+  'like:new': async (data) => {
+    const { postId } = data.meta;
     const iLiked = iLikedPost(store.getState(), data.meta.postId);
-    const action = {type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, users:[data.users], iLiked};
+    const action = { type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, users:[data.users], iLiked };
     return dispatchWithPost(store, postId, action, isFirstFriendInteraction, postFetchDelay);
   },
-  'like:remove': data => store.dispatch({type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId}),
-  'comment_like:new': data => store.dispatch({type: ActionTypes.REALTIME_COMMENT_UPDATE, comment:data.comments}),
-  'comment_like:remove': data => store.dispatch({type: ActionTypes.REALTIME_COMMENT_UPDATE, comment:data.comments}),
+  'like:remove': (data) => store.dispatch({ type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId }),
+  'comment_like:new': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment:data.comments }),
+  'comment_like:remove': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment:data.comments }),
 });
 
-export const realtimeMiddleware = store => {
+export const realtimeMiddleware = (store) => {
   const handlers = bindHandlers(store);
   const state = store.getState();
   let realtimeConnection;
-  return next => action => {
-
+  return (next) => (action) => {
     if (action.type === ActionTypes.UNAUTHENTICATED) {
       if (realtimeConnection) {
         realtimeConnection.disconnect();
@@ -441,7 +440,7 @@ export const realtimeMiddleware = store => {
 };
 
 // Fixing data structures coming from server
-export const dataFixMiddleware = (/*store*/) => next => action => {
+export const dataFixMiddleware = (/*store*/) => (next) => (action) => {
   if (action.type === response(ActionTypes.GET_SINGLE_POST)) {
     [action.payload, action.payload.posts].forEach(fixPostsData);
   }

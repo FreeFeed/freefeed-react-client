@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {contentResized} from './scroll-helpers/events';
+import { contentResized } from './scroll-helpers/events';
 import ScrollSafe from './scroll-helpers/scroll-safe';
 
 const GOOGLE_DOCS_RE = /^https?:\/\/(?:docs\.google\.com\/(document|spreadsheets|presentation)\/d\/|(drive)\.google\.com\/(?:file\/d\/|open\?id=))([\w-]+)/i;
@@ -20,15 +20,15 @@ const initialState = {
 };
 
 class GoogleDocsPreview extends React.Component {
-  state = {...initialState};
+  state = { ...initialState };
 
   updatePreview() {
     const [, t1, t2, id] = GOOGLE_DOCS_RE.exec(this.props.url);
     const type = t1 || t2;
-    this.setState({type});
+    this.setState({ type });
     const img = new Image();
-    img.onload = () => this.setState({preview: img.src, aspectRatio: img.width/img.height});
-    img.onerror = () => this.setState({isError: true});
+    img.onload = () => this.setState({ preview: img.src, aspectRatio: img.width / img.height });
+    img.onerror = () => this.setState({ isError: true });
     const imgWidth = 500 * zoomRate(type);
     img.src = `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&authuser=0&sz=w${imgWidth}`;
   }
@@ -39,14 +39,14 @@ class GoogleDocsPreview extends React.Component {
 
   componentDidUpdate(newProps) {
     if (newProps.url !== this.props.url) {
-      this.setState({...initialState});
+      this.setState({ ...initialState });
       this.updatePreview();
     }
     contentResized(this);
   }
 
   render() {
-    const {preview, aspectRatio, type, isError} = this.state;
+    const { preview, aspectRatio, type, isError } = this.state;
 
     if (isError) {
       return null;
@@ -54,23 +54,24 @@ class GoogleDocsPreview extends React.Component {
 
     return (
       <div className="google-docs-preview link-preview-content">
-        <div className={`google-docs-label ${type}`}/>
+        <div className={`google-docs-label ${type}`} />
         <a
           className="google-docs-inner"
           href={this.props.url}
           target="_blank"
           style={{
-            backgroundSize: zoomRate(type) * 100 + '%',
+            backgroundSize: `${zoomRate(type) * 100}%`,
             backgroundImage: preview ? `url(${preview})` : null,
-            paddingBottom: `${100/(aspectRatio >= maxAspectRatio ? aspectRatio : defaultAspectRatio)}%`,
+            paddingBottom: `${100 / (aspectRatio >= maxAspectRatio ? aspectRatio : defaultAspectRatio)}%`,
             backgroundPosition: `center ${55 * aspectRatio * (zoomRate(type) - 1)}%`,
-          }}/>
+          }}
+        />
       </div>
     );
   }
 }
 
-export default ScrollSafe(GoogleDocsPreview, {trackResize: false, foldable: false});
+export default ScrollSafe(GoogleDocsPreview, { trackResize: false, foldable: false });
 
 function zoomRate(type) {
   if (type === 'document') {

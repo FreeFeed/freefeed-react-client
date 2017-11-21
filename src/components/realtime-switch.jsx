@@ -1,6 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {toggleRealtime, updateUserPreferences, home} from '../redux/action-creators';
+import { connect } from 'react-redux';
+import { toggleRealtime, updateUserPreferences, home } from '../redux/action-creators';
 
 const getStatusIcon = (active, status) => {
   if (status === 'loading') {
@@ -9,12 +9,12 @@ const getStatusIcon = (active, status) => {
   return active ? 'pause' : 'play';
 };
 
-const realtimeSwitch = props => {
-  const {realtimeActive} = props.frontendPreferences;
+const realtimeSwitch = (props) => {
+  const { realtimeActive } = props.frontendPreferences;
   return (
-    <div className='realtime-switch' onClick={() => props.toggle(props.userId, props.frontendPreferences)}>
+    <div className="realtime-switch" onClick={() => props.toggle(props.userId, props.frontendPreferences)}>
       {realtimeActive ? false : 'Paused'}
-      <span className={`glyphicon glyphicon-${getStatusIcon(realtimeActive, props.status)}`}/>
+      <span className={`glyphicon glyphicon-${getStatusIcon(realtimeActive, props.status)}`} />
     </div>
   );
 };
@@ -30,9 +30,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     toggle: (userId, frontendPreferences) => {
-      const {realtimeActive} = frontendPreferences;
+      const { realtimeActive } = frontendPreferences;
       //send a request to change flag
-      dispatch(updateUserPreferences(userId, {...frontendPreferences, realtimeActive: !realtimeActive}));
+      dispatch(updateUserPreferences(userId, { ...frontendPreferences, realtimeActive: !realtimeActive }));
       //set a flag to show
       dispatch(toggleRealtime());
       if (!realtimeActive) {

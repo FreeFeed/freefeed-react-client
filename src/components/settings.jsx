@@ -1,6 +1,6 @@
 import React from 'react';
-import {Link} from 'react-router';
-import {connect} from 'react-redux';
+import { Link } from 'react-router';
+import { connect } from 'react-redux';
 import {
   updateUser,
   userSettingsChange,
@@ -23,7 +23,7 @@ class Settings extends React.Component {
   }
 
   render() {
-    const props = this.props;
+    const { props } = this;
 
     if (!props.authenticated) {
       return (
@@ -48,39 +48,44 @@ class Settings extends React.Component {
               user={props.user}
               updateUser={props.updateUser}
               userSettingsChange={props.userSettingsChange}
-              {...props.userSettingsForm}/>
+              {...props.userSettingsForm}
+            />
 
-            <hr/>
+            <hr />
 
             <UserPreferencesForm
               userId={props.user.id}
               frontendPreferences={props.user.frontendPreferences}
               backendPreferences={props.user.preferences}
               updateUserPreferences={props.updateUserPreferences}
-              {...props.frontendPreferencesForm}/>
+              {...props.frontendPreferencesForm}
+            />
 
-            <hr/>
+            <hr />
 
             <UserChangePasswordForm
               updatePassword={props.updatePassword}
-              {...props.passwordForm}/>
+              {...props.passwordForm}
+            />
 
-            <hr/>
+            <hr />
 
             <UserPictureForm
               user={props.user}
               updateUserPicture={props.updateUserPicture}
-              {...props.userPictureForm}/>
+              {...props.userPictureForm}
+            />
 
-            <hr/>
+            <hr />
 
             <UserNotificationsForm
               userId={props.user.id}
               backendPreferences={props.user.preferences}
               updateUserNotificationPreferences={props.updateUserNotificationPreferences}
-              {...props.userNotificationsForm}/>
+              {...props.userNotificationsForm}
+            />
 
-            <hr/>
+            <hr />
           </div>
         </div>
       </div>

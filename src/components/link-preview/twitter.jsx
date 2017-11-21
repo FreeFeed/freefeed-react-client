@@ -26,9 +26,9 @@ class TwitterPreview extends React.Component {
       <div
         className="tweet-preview link-preview-content"
         data-url={this.props.url}
-        style={{height: heightCache.get(this.props.url, 0) + 'px'}}
+        style={{ height: `${heightCache.get(this.props.url, 0)}px` }}
       >
-        <div style={{overflow: 'hidden'}} />
+        <div style={{ overflow: 'hidden' }} />
       </div>
     );
   }
@@ -53,10 +53,10 @@ function loadTwitterAPI() {
       s.addEventListener('load', () => resolve());
       document.head.appendChild(s);
     }).then(() => {
-      twttr.events.bind('rendered', e => {
+      twttr.events.bind('rendered', (e) => {
         const height = e.target.parentNode.offsetHeight;
         const cont = e.target.parentNode.parentNode;
-        cont.style.height = height + 'px';
+        cont.style.height = `${height}px`;
         heightCache.set(cont.dataset.url, height);
       });
     });

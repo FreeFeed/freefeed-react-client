@@ -1,7 +1,7 @@
 import React from 'react';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import {preventDefault} from '../utils';
+import { preventDefault } from '../utils';
 import SendTo from './send-to';
 
 export default class CreateBookmarkletPost extends React.Component {
@@ -38,7 +38,7 @@ export default class CreateBookmarkletPost extends React.Component {
     // Get all the values
     const feeds = this.refs.selectFeeds.values;
     const postText = this.refs.postText.value;
-    const imageUrls = this.props.imageUrls;
+    const { imageUrls } = this.props;
     const commentText = this.refs.commentText.value;
 
     // Send to the server
@@ -73,14 +73,14 @@ export default class CreateBookmarkletPost extends React.Component {
       const postUrl = `/${this.props.user.username}/${this.props.createPostViewState.lastPostId}`;
       return (
         <div className="brand-new-post">
-          Done! Check out<br/>
+          Done! Check out<br />
           <a href={postUrl} target="_blank">your brand new post</a>
         </div>
       );
     }
 
     const linkedImages = this.props.imageUrls.map((url, i) => (
-      <div className="post-linked-image" key={i} onClick={()=>this.props.removeImage(url)} title="Remove image">
+      <div className="post-linked-image" key={i} onClick={() => this.props.removeImage(url)} title="Remove image">
         <img src={url} />
       </div>
     ));
@@ -89,15 +89,17 @@ export default class CreateBookmarkletPost extends React.Component {
       <div className="create-post post-editor expanded">
         {this.props.createPostViewState.isError ? (
           <div className="post-error alert alert-danger" role="alert">
-            Post has not been saved. Server response: "{this.props.createPostViewState.errorString}"
+            Post has not been saved. Server response: {`"${this.props.createPostViewState.errorString}"`}
           </div>
         ) : false}
 
-        <SendTo ref="selectFeeds"
+        <SendTo
+          ref="selectFeeds"
           feeds={this.props.sendTo.feeds}
           defaultFeed={this.props.sendTo.defaultFeed}
           user={this.props.user}
-          onChange={this.checkCreatePostAvailability}/>
+          onChange={this.checkCreatePostAvailability}
+        />
 
         <textarea
           className="post-textarea"
@@ -106,18 +108,19 @@ export default class CreateBookmarkletPost extends React.Component {
           onKeyDown={this.checkSave}
           onChange={this.checkCreatePostAvailability}
           rows={3}
-          maxLength="1500"/>
+          maxLength="1500"
+        />
 
         {this.props.imageUrls.length ? (
           linkedImages
         ) : (
-          <div className="post-linked-image-empty">Click on images<br/>to share them</div>
+          <div className="post-linked-image-empty">Click on images<br />to share them</div>
         )}
 
         <div className="comment">
           <a className="comment-icon comment-icon-special fa-stack">
-            <i className="fa fa-comment fa-stack-1x"></i>
-            <i className="fa fa-comment-o fa-stack-1x"></i>
+            <i className="fa fa-comment fa-stack-1x" />
+            <i className="fa fa-comment-o fa-stack-1x" />
           </a>
 
           <div className="comment-body">
@@ -128,20 +131,25 @@ export default class CreateBookmarkletPost extends React.Component {
               onKeyDown={this.checkSave}
               onChange={this.checkCreatePostAvailability}
               rows={4}
-              maxLength="1500"/>
+              maxLength="1500"
+            />
           </div>
         </div>
 
         <div className="post-edit-actions">
           {this.props.createPostViewState.isPending ? (
             <span className="post-edit-throbber">
-              <img width="16" height="16" src={throbber16}/>
+              <img width="16" height="16" src={throbber16} />
             </span>
           ) : false}
 
-          <button className="btn btn-default"
+          <button
+            className="btn btn-default"
             onClick={preventDefault(this.submitForm)}
-            disabled={this.state.isFormEmpty || this.props.createPostViewState.isPending}>Post</button>
+            disabled={this.state.isFormEmpty || this.props.createPostViewState.isPending}
+          >
+            Post
+          </button>
         </div>
       </div>
     );

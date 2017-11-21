@@ -1,5 +1,5 @@
 import EventEmitter from 'events';
-import React, {PropTypes as pt} from 'react';
+import React, { PropTypes as pt } from 'react';
 import moment from 'moment';
 
 class Ticker extends EventEmitter {

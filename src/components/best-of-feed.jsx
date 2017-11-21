@@ -1,29 +1,25 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {joinPostData, postActions} from './select-utils';
+import { connect } from 'react-redux';
+import { joinPostData, postActions } from './select-utils';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
 
 const FeedHandler = (props) => (
-  <div className='box'>
-    <div className='box-header-timeline'>
+  <div className="box">
+    <div className="box-header-timeline">
       {props.boxHeader}
     </div>
     <PaginatedView {...props}>
-      <Feed {...props}/>
+      <Feed {...props} />
     </PaginatedView>
-    <div className='box-footer'>
-    </div>
+    <div className="box-footer" />
   </div>
 );
 
 
 function selectState(state) {
-  const user = state.user;
-  const authenticated = state.authenticated;
+  const { authenticated, boxHeader, timelines, user } = state;
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
-  const timelines = state.timelines;
-  const boxHeader = state.boxHeader;
 
   return { user, authenticated, visibleEntries, timelines, boxHeader };
 }

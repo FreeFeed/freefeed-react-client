@@ -1,8 +1,8 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {createPost, resetPostCreateForm, expandSendTo} from '../redux/action-creators';
+import { connect } from 'react-redux';
+import { createPost, resetPostCreateForm, expandSendTo } from '../redux/action-creators';
 import formatInvitation from '../utils/format-invitation';
-import {joinPostData, joinCreatePostData, postActions} from './select-utils';
+import { joinPostData, joinCreatePostData, postActions } from './select-utils';
 
 import CreatePost from './create-post';
 import Feed from './feed';
@@ -20,33 +20,29 @@ const FeedHandler = (props) => {
       expandSendTo={props.expandSendTo}
       createPostForm={props.createPostForm}
       addAttachmentResponse={props.addAttachmentResponse}
-      removeAttachment={props.removeAttachment}/>
+      removeAttachment={props.removeAttachment}
+    />
   );
 
   return (
-    <div className='box'>
-      <div className='box-header-timeline'>
+    <div className="box">
+      <div className="box-header-timeline">
         {props.boxHeader}
       </div>
       <PaginatedView firstPageHead={createPostComponent} {...props}>
-        <Feed {...props}/>
+        <Feed {...props} />
       </PaginatedView>
-      <div className='box-footer'>
-      </div>
+      <div className="box-footer" />
     </div>);
 };
 
 function selectState(state) {
-  const user = state.user;
-  const authenticated = state.authenticated;
+  const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
-  const createPostViewState = state.createPostViewState;
   const createPostForm = joinCreatePostData(state);
-  const timelines = state.timelines;
-  const boxHeader = state.boxHeader;
   const defaultFeed = state.routing.locationBeforeTransitions.query.to || user.username;
   const invitation = formatInvitation(state.routing.locationBeforeTransitions.query.invite);
-  const sendTo = {...state.sendTo, defaultFeed, invitation};
+  const sendTo = { ...state.sendTo, defaultFeed, invitation };
   if (invitation) {
     sendTo.expanded = true;
   }

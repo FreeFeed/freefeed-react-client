@@ -1,13 +1,13 @@
 import React from 'react';
-import {Link} from 'react-router';
+import { Link } from 'react-router';
 import classnames from 'classnames';
 import _ from 'lodash';
 import Textarea from 'react-textarea-autosize';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import {getFirstLinkToEmbed} from '../utils';
-import {READMORE_STYLE_COMPACT} from '../utils/frontend-preferences-options';
-import {postReadmoreConfig} from '../utils/readmore-config';
+import { getFirstLinkToEmbed } from '../utils';
+import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
+import { postReadmoreConfig } from '../utils/readmore-config';
 
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
@@ -35,7 +35,7 @@ export default class Post extends React.Component {
 
   handlePaste = (e) => {
     if (e.clipboardData) {
-      const items = e.clipboardData.items;
+      const { items } = e.clipboardData;
       if (items) {
         for (let i = 0; i < items.length; i++) {
           if (items[i].type.indexOf('image/') > -1) {
@@ -50,14 +50,14 @@ export default class Post extends React.Component {
     }
   };
 
-  removeAttachment = (attachmentId) => this.props.removeAttachment(this.props.id, attachmentId)
+  removeAttachment = (attachmentId) => this.props.removeAttachment(this.props.id, attachmentId);
 
   changeAttachmentQueue= (change) => () => {
-    this.setState({attachmentQueueLength: this.state.attachmentQueueLength + change});
-  }
+    this.setState({ attachmentQueueLength: this.state.attachmentQueueLength + change });
+  };
 
   render() {
-    const props = this.props;
+    const { props } = this;
 
     let editingPostText = props.editingText;
     const editingPostTextChange = (e) => {
@@ -67,8 +67,8 @@ export default class Post extends React.Component {
     const cancelEditingPost = () => props.cancelEditingPost(props.id, editingPostText);
     const saveEditingPost = () => {
       if (!props.isSaving) {
-        const attachmentIds = props.attachments.map(item => item.id) || [];
-        props.saveEditingPost(props.id, {body: editingPostText, attachments: attachmentIds});
+        const attachmentIds = props.attachments.map((item) => item.id) || [];
+        props.saveEditingPost(props.id, { body: editingPostText, attachments: attachmentIds });
       }
     };
     const deletePost = () => props.deletePost(props.id);
@@ -101,7 +101,7 @@ export default class Post extends React.Component {
     if (props.isInHomeFeed) {
       const hiddenUsers = props.user.frontendPreferences.homefeed.hideUsers;
       if (!_.isEmpty(hiddenUsers)) {
-        const rcpNames = props.recipients.map(u => u.username);
+        const rcpNames = props.recipients.map((u) => u.username);
         rcpNames.push(props.createdBy.username);
         if (!_.isEmpty(_.intersection(rcpNames, hiddenUsers))) {
           return false;
@@ -119,7 +119,7 @@ export default class Post extends React.Component {
     const toggleCommenting = props.isSinglePost ? () => {
     } : () => props.toggleCommenting(props.id);
 
-    const recipientCustomDisplay = function(recipient) {
+    const recipientCustomDisplay = function (recipient) {
       if (recipient.id !== props.createdBy.id) {
         return false;
       }
@@ -130,7 +130,7 @@ export default class Post extends React.Component {
       return `${recipient.username}${suffix}`;
     };
 
-    let recipients = props.recipients;
+    let { recipients } = props;
     // Check if the post has been only submitted to one recipient
     // and if we can omit it
     if (recipients.length === 1) {
@@ -149,7 +149,8 @@ export default class Post extends React.Component {
         <UserName
           className="post-recipient"
           user={recipient}
-          display={recipientCustomDisplay(recipient)}/>
+          display={recipientCustomDisplay(recipient)}
+        />
         {index < props.recipients.length - 2 ? ', ' : false}
         {index === props.recipients.length - 2 ? ' and ' : false}
       </span>
@@ -158,16 +159,16 @@ export default class Post extends React.Component {
     const canonicalPostURI = canonicalURI(props);
 
     const authorOrGroupsRecipients = props.recipients
-      .filter(r => r.id === props.createdBy.id || r.type === 'group')
-      .map(r => {
+      .filter((r) => r.id === props.createdBy.id || r.type === 'group')
+      .map((r) => {
         // todo Remove it when we'll have garanty of isPrivate => isProtected
         if (r.isPrivate === '1') {
           r.isProtected = '1';
         }
         return r;
       });
-    const isPublic = authorOrGroupsRecipients.some(r => r.isProtected === '0');
-    const isProtected = !isPublic && authorOrGroupsRecipients.some(r => r.isPrivate === '0');
+    const isPublic = authorOrGroupsRecipients.some((r) => r.isProtected === '0');
+    const isProtected = !isPublic && authorOrGroupsRecipients.some((r) => r.isPrivate === '0');
     const isPrivate = !isPublic && !isProtected;
 
     const amIAuthenticated = !!props.user.id;
@@ -205,17 +206,17 @@ export default class Post extends React.Component {
     }
 
     // "Like" / "Un-like"
-    const didILikePost = _.find(props.usersLikedPost, {id: props.user.id});
+    const didILikePost = _.find(props.usersLikedPost, { id: props.user.id });
     const likeLink = (amIAuthenticated && !props.isEditable ? (
       <span>
         {' - '}
         {props.likeError ? (
-          <i className="fa fa-exclamation-triangle post-like-fail" title={props.likeError} aria-hidden="true"/>
+          <i className="fa fa-exclamation-triangle post-like-fail" title={props.likeError} aria-hidden="true" />
         ) : null}
         <a className="post-action" onClick={didILikePost ? unlikePost : likePost}>{didILikePost ? 'Un-like' : 'Like'}</a>
         {props.isLiking ? (
           <span className="post-like-throbber">
-            <img width="16" height="16" src={throbber16}/>
+            <img width="16" height="16" src={throbber16} />
           </span>
         ) : false}
       </span>
@@ -228,7 +229,7 @@ export default class Post extends React.Component {
         <a className="post-action" onClick={props.isHidden ? unhidePost : hidePost}>{props.isHidden ? 'Un-hide' : 'Hide'}</a>
         {props.isHiding ? (
           <span className="post-hide-throbber">
-            <img width="16" height="16" src={throbber16}/>
+            <img width="16" height="16" src={throbber16} />
           </span>
         ) : false}
       </span>
@@ -244,12 +245,13 @@ export default class Post extends React.Component {
           toggleModeratingComments={toggleModeratingComments}
           disableComments={disableComments}
           enableComments={enableComments}
-          deletePost={deletePost}/>
+          deletePost={deletePost}
+        />
       </span>
     ) : false);
 
     const linkToEmbed = getFirstLinkToEmbed(props.body);
-    const noImageAttachments = !props.attachments.some(attachment => attachment.mediaType === 'image');
+    const noImageAttachments = !props.attachments.some((attachment) => attachment.mediaType === 'image');
 
     return (props.isRecentlyHidden ? (
       <div className="post recently-hidden-post">
@@ -258,22 +260,24 @@ export default class Post extends React.Component {
         {' '}
         {props.isHiding ? (
           <span className="post-hide-throbber">
-            <img width="16" height="16" src={throbber16}/>
+            <img width="16" height="16" src={throbber16} />
           </span>
         ) : false}
       </div>
     ) : (
       <div className={postClass} data-author={props.createdBy.username}>
-        <Expandable expanded={props.isEditing || props.isSinglePost || props.readMoreStyle === READMORE_STYLE_COMPACT}
-          config={postReadmoreConfig}>
+        <Expandable
+          expanded={props.isEditing || props.isSinglePost || props.readMoreStyle === READMORE_STYLE_COMPACT}
+          config={postReadmoreConfig}
+        >
           <div className="post-userpic">
             <Link to={`/${props.createdBy.username}`}>
-              <img className="post-userpic-img" src={profilePicture} width={profilePictureSize} height={profilePictureSize}/>
+              <img className="post-userpic-img" src={profilePicture} width={profilePictureSize} height={profilePictureSize} />
             </Link>
           </div>
           <div className="post-body">
             <div className="post-header">
-              <UserName className="post-author" user={props.createdBy}/>
+              <UserName className="post-author" user={props.createdBy} />
               {recipients.length > 0 ? ' to ' : false}
               {recipients}
               {this.props.isInHomeFeed ? <PostVia post={this.props} me={this.props.user} /> : false}
@@ -282,9 +286,10 @@ export default class Post extends React.Component {
               <div className="post-editor">
                 <Dropzone
                   onInit={this.handleDropzoneInit}
-                  addAttachmentResponse={att => props.addAttachmentResponse(this.props.id, att)}
+                  addAttachmentResponse={(att) => props.addAttachmentResponse(this.props.id, att)}
                   addedFile={this.changeAttachmentQueue(1)}
-                  removedFile={this.changeAttachmentQueue(-1)}/>
+                  removedFile={this.changeAttachmentQueue(-1)}
+                />
 
                 <div>
                   <Textarea
@@ -296,12 +301,13 @@ export default class Post extends React.Component {
                     autoFocus={true}
                     minRows={2}
                     maxRows={10}
-                    maxLength="1500"/>
+                    maxLength="1500"
+                  />
                 </div>
 
                 <div className="post-edit-options">
                   <span className="post-edit-attachments dropzone-trigger">
-                    <i className="fa fa-cloud-upload"></i>
+                    <i className="fa fa-cloud-upload" />
                     {' '}
                     Add photos or files
                   </span>
@@ -310,20 +316,26 @@ export default class Post extends React.Component {
                 <div className="post-edit-actions">
                   {props.isSaving ? (
                     <span className="post-edit-throbber">
-                      <img width="16" height="16" src={throbber16}/>
+                      <img width="16" height="16" src={throbber16} />
                     </span>
                   ) : false}
                   <a className="post-cancel" onClick={cancelEditingPost}>Cancel</a>
-                  <button className="btn btn-default btn-xs"
+                  <button
+                    className="btn btn-default btn-xs"
                     onClick={saveEditingPost}
-                    disabled={this.state.attachmentQueueLength > 0}>Update</button>
+                    disabled={this.state.attachmentQueueLength > 0}
+                  >
+                    Update
+                  </button>
                 </div>
               </div>
             ) : (
               <div className="post-text">
-                <PieceOfText  text={props.body}
+                <PieceOfText
+                  text={props.body}
                   readMoreStyle={props.readMoreStyle}
-                  highlightTerms={props.highlightTerms}/>
+                  highlightTerms={props.highlightTerms}
+                />
               </div>
             )}
           </div>
@@ -335,23 +347,24 @@ export default class Post extends React.Component {
             attachments={props.attachments}
             isEditing={props.isEditing}
             isSinglePost={props.isSinglePost}
-            removeAttachment={this.removeAttachment}/>
+            removeAttachment={this.removeAttachment}
+          />
 
           {noImageAttachments && linkToEmbed ? (
             <div className="link-preview"><LinkPreview url={linkToEmbed} allowEmbedly={props.allowLinksPreview} /></div>
           ) : false}
 
-          <div className="dropzone-previews"></div>
+          <div className="dropzone-previews" />
 
           <div className="post-footer">
             {isPrivate ? (
-              <i className="post-lock-icon fa fa-lock" title="This entry is private"/>
+              <i className="post-lock-icon fa fa-lock" title="This entry is private" />
             ) : isProtected ? (
-              <i className="post-lock-icon post-protected-icon fa fa-lock" title="This entry is only visible to FreeFeed users"/>
+              <i className="post-lock-icon post-protected-icon fa fa-lock" title="This entry is only visible to FreeFeed users" />
             ) : false}
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
             <Link to={canonicalPostURI} className="post-timestamp">
-              <TimeDisplay timeStamp={+props.createdAt}/>
+              <TimeDisplay timeStamp={+props.createdAt} />
             </Link>
             {commentLink}
             {likeLink}
@@ -360,7 +373,7 @@ export default class Post extends React.Component {
           </div>
 
           {props.isError ? (
-            <div className='post-error'>
+            <div className="post-error">
               {props.errorString}
             </div>
           ) : false}
@@ -368,7 +381,8 @@ export default class Post extends React.Component {
           <PostLikes
             post={props}
             likes={props.usersLikedPost}
-            showMoreLikes={props.showMoreLikes}/>
+            showMoreLikes={props.showMoreLikes}
+          />
 
           <PostComments
             post={props}
@@ -382,7 +396,8 @@ export default class Post extends React.Component {
             readMoreStyle={props.readMoreStyle}
             entryUrl={canonicalPostURI}
             highlightTerms={props.highlightTerms}
-            isSinglePost={props.isSinglePost}/>
+            isSinglePost={props.isSinglePost}
+          />
         </div>
       </div>
     ));
@@ -393,7 +408,7 @@ export default class Post extends React.Component {
 export function canonicalURI(post) {
   // If posted _only_ into groups, use first recipient's username
   let urlName = post.createdBy.username;
-  if (post.recipients.length > 0 && !post.recipients.some(r => r.type === "user")) {
+  if (post.recipients.length > 0 && !post.recipients.some((r) => r.type === "user")) {
     urlName = post.recipients[0].username;
   }
   return `/${encodeURIComponent(urlName)}/${encodeURIComponent(post.id)}`;

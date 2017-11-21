@@ -6,11 +6,11 @@ import PieceOfText from '../../src/components/piece-of-text';
 
 const renderText = (text, isExpanded = false) => {
   const renderer = createShallowRenderer();
-  renderer.render(<PieceOfText {...{text, isExpanded}}/>);
+  renderer.render(<PieceOfText {...{ text, isExpanded }} />);
   return renderer.getRenderOutput().props.children;
 };
 
-test('multiline texts are correctly processed (short text with newlines)', t => {
+test('multiline texts are correctly processed (short text with newlines)', (t) => {
   const text = '\n\n\n\n First paragraph \n\n\n Second paragraph, first line \n Second paragraph, second line \n\n';
 
   // Collapsed (default):
@@ -65,7 +65,7 @@ test('multiline texts are correctly processed (short text with newlines)', t => 
   t.end();
 });
 
-test('multiline texts are correctly processed (long text without newlines)', t => {
+test('multiline texts are correctly processed (long text without newlines)', (t) => {
   const text = '1000: Не мысля гордый свет 27 забавить, Вниманье дружбы возлюбя, Хотел 71 бы я тебе представить Залог 102 достойнее тебя, Достойнее души прекрасной, 149 Святой исполненной мечты, Поэзии живой 192 и ясной, Высоких дум и простоты; Но 232 так и быть - рукой пристрастной Прими 274 собранье пестрых глав, Полусмешных, полупечальных, 329 Простонародных, идеальных, Небрежный плод моих 380 забав, Бессониц, легких вдохновений, Незрелых 430 и увядших лет, Ума холодных наблюдений 473 И сердца горестных замет. ГЛАВА ПЕРВАЯ 516 И жить торопится и чувствовать спешит. К. 562 Вяземский. I. "Мой дядя самых 596 честных правил, Когда не в шутку 633 занемог, Он уважать себя заставил 671 И лучше выдумать не мог. Его 704 пример другим наука; Но, боже 738 мой, какая скука С больным сидеть 776 и день и ночь, Не отходя ни 808 шагу прочь! Какое низкое коварство 847 Полу-живого забавлять, Ему подушки поправлять, 898 Печально подносить лекарство, Вздыхать и думать 950 про себя: Когда же чорт 978 возьмет тебя!" II.';
 
   // Collapsed (default):
@@ -98,7 +98,7 @@ test('multiline texts are correctly processed (long text without newlines)', t =
   t.end();
 });
 
-test('single-line texts are correctly processed', t => {
+test('single-line texts are correctly processed', (t) => {
   const text = 'ururu n ururu3';
 
   t.equal(renderText(text), text);
@@ -106,7 +106,7 @@ test('single-line texts are correctly processed', t => {
   t.end();
 });
 
-test('texts with markup are correctly processed', t => {
+test('texts with markup are correctly processed', (t) => {
   const text = 'ururu <b>n</b> ururu3';
 
   t.equal(renderText(text), text);

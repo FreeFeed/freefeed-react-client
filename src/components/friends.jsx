@@ -1,16 +1,16 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import {pluralForm} from '../utils';
+import { pluralForm } from '../utils';
 
-import {acceptUserRequest, rejectUserRequest,
-  revokeSentRequest} from '../redux/action-creators';
-import {tileUserListFactory, PLAIN, WITH_REQUEST_HANDLES, WITH_REVOKE_SENT_REQUEST} from './tile-user-list';
+import { acceptUserRequest, rejectUserRequest,
+  revokeSentRequest } from '../redux/action-creators';
+import { tileUserListFactory, PLAIN, WITH_REQUEST_HANDLES, WITH_REVOKE_SENT_REQUEST } from './tile-user-list';
 
-const TileList = tileUserListFactory({type: PLAIN, displayQuantity: true});
-const TileListWithAcceptAndReject = tileUserListFactory({type: WITH_REQUEST_HANDLES, displayQuantity: true});
-const TileListWithRevoke = tileUserListFactory({type: WITH_REVOKE_SENT_REQUEST, displayQuantity: true});
+const TileList = tileUserListFactory({ type: PLAIN, displayQuantity: true });
+const TileListWithAcceptAndReject = tileUserListFactory({ type: WITH_REQUEST_HANDLES, displayQuantity: true });
+const TileListWithRevoke = tileUserListFactory({ type: WITH_REVOKE_SENT_REQUEST, displayQuantity: true });
 
 const FriendsHandler = (props) => {
   const feedRequestsHeader = `Subscription ${pluralForm(props.feedRequests.length, 'request', null, 'w')}`;
@@ -26,19 +26,21 @@ const FriendsHandler = (props) => {
           header={feedRequestsHeader}
           users={props.feedRequests}
           acceptRequest={props.acceptUserRequest}
-          rejectRequest={props.rejectUserRequest}/>
+          rejectRequest={props.rejectUserRequest}
+        />
 
 
-        <TileList {...props.mutual}/>
-        <TileList {...props.subscriptions}/>
-        <TileList {...props.blockedByMe}/>
+        <TileList {...props.mutual} />
+        <TileList {...props.subscriptions} />
+        <TileList {...props.blockedByMe} />
 
         <TileListWithRevoke
           header={sentRequestsHeader}
           users={props.sentRequests}
-          revokeSentRequest={props.revokeSentRequest}/>
+          revokeSentRequest={props.revokeSentRequest}
+        />
       </div>
-      <div className="box-footer"></div>
+      <div className="box-footer" />
     </div>
   );
 };
@@ -52,7 +54,7 @@ function calculateMutual(subscriptions, subscribers) {
   }
 
   const mutual = _.intersectionWith(
-    subscriptions.payload.filter(u=>u.type==='user'),
+    subscriptions.payload.filter((u) => u.type === 'user'),
     subscribers.payload,
     (a, b) => a.id == b.id
   );
@@ -72,8 +74,8 @@ function selectState(state) {
     state.usernameSubscribers
   );
 
-  const mutualIds = _.map(mutual.users, f => f.id);
-  const subscriptionList = _.filter(state.usernameSubscriptions.payload.filter(u=>u.type==='user'), f => mutualIds.indexOf(f.id) === -1);
+  const mutualIds = _.map(mutual.users, (f) => f.id);
+  const subscriptionList = _.filter(state.usernameSubscriptions.payload.filter((u) => u.type === 'user'), (f) => mutualIds.indexOf(f.id) === -1);
 
   const subscriptions = {
     header: 'Subscriptions',
@@ -83,7 +85,7 @@ function selectState(state) {
     header: 'Blocked',
     users: state.usernameBlockedByMe.payload
   };
-  const sentRequests = state.sentRequests;
+  const { sentRequests } = state;
 
   return { feedRequests, subscriptions, mutual, blockedByMe, sentRequests };
 }
