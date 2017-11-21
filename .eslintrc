@@ -93,6 +93,7 @@
     "react/jsx-closing-tag-location": 2,
     "react/jsx-first-prop-new-line": [2, "multiline"],
     "react/jsx-indent": [2, 2],
+    "react/jsx-key": 2,
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error"
   }

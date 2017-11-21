@@ -40,7 +40,7 @@ export default (props) => {
 
       {sections.map((s) => [
         (showTitles && s.title) ? <h4 className="tile-list-subheader">{s.title}</h4> : false,
-        <TileList users={s.users}/>
+        <TileList key={s.title} users={s.users}/>
       ])}
 
       {!sections.length ? <div>Nobody's here!</div> : ''}
