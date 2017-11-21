@@ -27,7 +27,7 @@ const About = ({ authenticated }) => (
 
       <p>FreeFeed is being built as a replacement
         for <a href="https://en.wikipedia.org/wiki/FriendFeed" target="_blank">FriendFeed</a>,
-        the real-time aggregator and social network where "likes" for user
+        the real-time aggregator and social network where {'"'}likes{'"'} for user
         generated content were implemented for the first time.
       </p>
 

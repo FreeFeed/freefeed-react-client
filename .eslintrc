@@ -128,6 +128,7 @@
     "react/no-redundant-should-component-update": 2,
     "react/no-set-state": 0,
     "react/no-typos": 2,
+    "react/no-unescaped-entities": 2,
     "react/no-unknown-property": 2
   }
 }

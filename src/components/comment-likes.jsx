@@ -141,7 +141,7 @@ export default class CommentLikes extends React.Component {
                       ? (
                         <div className="mention-action non-likable">
                           <i className="fa fa-heart-o" aria-hidden="true" />
-                          It's your own comment
+                          It{"'"}s your own comment
                         </div>
                       )
                       : (

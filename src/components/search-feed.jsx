@@ -12,8 +12,8 @@ const searchHelper = (
     {/*<span className='helper'>exclude keyword from a search, e.g.: <span className='example'>jobs -steve</span></span>*/}
     {/*</div>*/}
     <div className="search-operator">
-      <span className="operator">"double-quotes"</span>
-      <span className="helper">return entries having exact match, e.g.: <span className="example">opensource "social network"</span></span>
+      <span className="operator">{'"'}double-quotes{'"'}</span>
+      <span className="helper">return entries having exact match, e.g.: <span className="example">opensource {'"'}social network{'"'}</span></span>
     </div>
     <div className="search-operator">
       <span className="operator">from:</span>

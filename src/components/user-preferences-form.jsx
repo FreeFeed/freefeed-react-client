@@ -144,7 +144,7 @@ export default class UserPreferencesForm extends React.Component {
         <div className="checkbox checkbox-displayNames-useYou">
           <label>
             <input type="checkbox" name="useYou" value="1" checked={this.state.displayNames.useYou} onChange={this.changeUseYou} />
-            Show your own name as "You"
+            Show your own name as {'"'}You{'"'}
           </label>
         </div>
 
@@ -158,7 +158,7 @@ export default class UserPreferencesForm extends React.Component {
                 checked={this.state.readMoreStyle === FrontendPrefsOptions.READMORE_STYLE_COMPACT}
                 onChange={this.changeReadMoreStyle}
               />
-              Compact: hides line breaks (until 'Expand' is clicked)
+              Compact: hides line breaks (until {'"'}Expand{'"'} is clicked)
             </label>
           </div>
           <div className="radio">
@@ -170,7 +170,7 @@ export default class UserPreferencesForm extends React.Component {
                 checked={this.state.readMoreStyle === FrontendPrefsOptions.READMORE_STYLE_COMFORT}
                 onChange={this.changeReadMoreStyle}
               />
-              Comfortable: displays line breaks, shows 'Read more' for longer posts and comments
+              Comfortable: displays line breaks, shows {'"'}Read more{'"'} for longer posts and comments
             </label>
           </div>
         </div>
@@ -196,14 +196,14 @@ export default class UserPreferencesForm extends React.Component {
               checked={this.isCommentTypeHidden(FrontendPrefsOptions.COMMENT_HIDDEN_BANNED)}
               onChange={this.changeHideComments}
             />
-            Hide comments from blocked users (don't show placeholder)
+            Hide comments from blocked users (don{"'"}t show placeholder)
           </label>
         </div>
 
         <div className="checkbox">
           <label>
             <input type="checkbox" name="bubbles" value="1" checked={this.state.allowLinksPreview} onChange={this.changeAllowLinksPreview} />
-              Show advanced previews of links in posts (Embedly). Link should start with http(s)://, post should have no attached images. If you don't want to have link preview, add ! before a link without spaces.
+              Show advanced previews of links in posts (Embedly). Link should start with http(s)://, post should have no attached images. If you don{"'"}t want to have link preview, add ! before a link without spaces.
           </label>
         </div>
 

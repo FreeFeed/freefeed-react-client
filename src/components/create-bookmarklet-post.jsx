@@ -89,7 +89,7 @@ export default class CreateBookmarkletPost extends React.Component {
       <div className="create-post post-editor expanded">
         {this.props.createPostViewState.isError ? (
           <div className="post-error alert alert-danger" role="alert">
-            Post has not been saved. Server response: "{this.props.createPostViewState.errorString}"
+            Post has not been saved. Server response: {`"${this.props.createPostViewState.errorString}"`}
           </div>
         ) : false}
 

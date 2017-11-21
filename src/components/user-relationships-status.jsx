@@ -4,11 +4,11 @@ export default function UserRelationshipStatus(props) {
   return (
     <span>
       {props.isUserBlockedByMe ? (
-        <span><i className="status-icon fa fa-ban"></i>You've blocked the user</span>
+        <span><i className="status-icon fa fa-ban"></i>You{"'"}ve blocked the user</span>
       ) : props.amIBlockedByUser ? (
         <span><i className="status-icon fa fa-question-circle"></i>User may have blocked you</span>
       ) : props.hasRequestBeenSent ? (
-        <span><i className="status-icon fa fa-clock-o"></i>You've sent sub request</span>
+        <span><i className="status-icon fa fa-clock-o"></i>You{"'"}ve sent sub request</span>
       ) : props.amISubscribedToUser ? (
         props.type === 'user' ? (
           props.isUserSubscribedToMe ? (

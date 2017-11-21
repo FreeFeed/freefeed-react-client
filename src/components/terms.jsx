@@ -68,7 +68,7 @@ const Terms = () => (
         Infringement.
       </p>
 
-      <p>You may be held accountable for damages (including costs and attorneys' fees) for misrepresenting that any
+      <p>You may be held accountable for damages (including costs and attorneys{"'"} fees) for misrepresenting that any
         Content is infringing your copyright.
       </p>
 
