@@ -17,6 +17,8 @@ const getDefaultState = (invitation = '') => ({
 });
 
 export default class CreatePost extends React.Component {
+  selectFeeds;
+
   constructor(props) {
     super(props);
     this.state = getDefaultState(props.sendTo.invitation);
@@ -24,7 +26,7 @@ export default class CreatePost extends React.Component {
 
   createPost = () => {
     // Get all the values
-    const feeds = this.refs.selectFeeds.values;
+    const feeds = this.selectFeeds.values;
     const { postText } = this.state;
     const attachmentIds = this.props.createPostForm.attachments.map((attachment) => attachment.id);
     const more = {
@@ -80,7 +82,7 @@ export default class CreatePost extends React.Component {
   removeAttachment = (attachmentId) => this.props.removeAttachment(null, attachmentId);
 
   checkCreatePostAvailability = () => {
-    const isFormEmpty = isTextEmpty(this.state.postText) || this.refs.selectFeeds.values === 0;
+    const isFormEmpty = isTextEmpty(this.state.postText) || this.selectFeeds.values === 0;
 
     this.setState({
       isFormEmpty
@@ -114,6 +116,10 @@ export default class CreatePost extends React.Component {
     this.props.resetPostCreateForm();
   }
 
+  registerSelectFeeds = (el) => {
+    this.selectFeeds = el;
+  };
+
   render() {
     const { props } = this;
 
@@ -122,7 +128,7 @@ export default class CreatePost extends React.Component {
         <div>
           {this.props.sendTo.expanded &&
             <SendTo
-              ref="selectFeeds"
+              ref={this.registerSelectFeeds}
               feeds={this.props.sendTo.feeds}
               defaultFeed={this.props.sendTo.defaultFeed}
               isDirects={this.props.isDirects}

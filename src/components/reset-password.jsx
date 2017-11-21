@@ -37,6 +37,21 @@ function resetFunc(pass, confirm, token, reset, validation) {
 }
 
 class ResetPassword extends React.Component {
+  confirm;
+  pass;
+
+  handleSubmit = preventDefault(() => {
+    resetFunc(this.pass.value, this.confirm.value, this.props.token, this.props.reset, this.props.validation);
+  });
+
+  registerConfirm = (el) => {
+    this.confirm = el;
+  };
+
+  registerPass = (el) => {
+    this.pass = el;
+  };
+
   render() {
     return (
       <div className="box">
@@ -54,14 +69,14 @@ class ResetPassword extends React.Component {
             <div className="row">
               <div className="col-md-6">
                 <LoaderContainer loading={this.props.loading}>
-                  <form onSubmit={preventDefault(() => resetFunc(this.refs.pass.value, this.refs.confirm.value, this.props.token, this.props.reset, this.props.validation))} className="p-signin">
+                  <form onSubmit={this.handleSubmit} className="p-signin">
                     <div className="form-group">
                       <label htmlFor="pass">Password</label>
-                      <input id="pass" className="form-control" type="password" ref="pass" />
+                      <input id="pass" className="form-control" type="password" ref={this.registerPass} />
                     </div>
                     <div className="form-group">
                       <label htmlFor="confirm">Password confirmation</label>
-                      <input id="confirm" className="form-control" type="password" ref="confirm" />
+                      <input id="confirm" className="form-control" type="password" ref={this.registerConfirm} />
                     </div>
                     <div className="form-group">
                       <button className="btn btn-default p-singin-action" type="submit">Reset password</button>

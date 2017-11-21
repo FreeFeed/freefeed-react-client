@@ -4,11 +4,17 @@ import throbber16 from '../../assets/images/throbber-16.gif';
 import { preventDefault } from '../utils';
 
 export default class UserPictureForm extends React.Component {
+  pictureFile;
+
   savePicture = () => {
-    const [newFile] = this.refs.pictureFile.files;
+    const [newFile] = this.pictureFile.files;
     if (newFile && this.props.status !== 'loading') {
       this.props.updateUserPicture(newFile);
     }
+  };
+
+  registerPictureFile = (el) => {
+    this.pictureFile = el;
   };
 
   render() {
@@ -21,7 +27,7 @@ export default class UserPictureForm extends React.Component {
         </div>
 
         <div className="form-group">
-          <input type="file" ref="pictureFile" />
+          <input type="file" ref={this.registerPictureFile} />
         </div>
 
         <div className="form-group">
