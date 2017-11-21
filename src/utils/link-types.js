@@ -7,7 +7,7 @@ export const ARROW = 'arrow';
 
 const linkTypes = [LINK, AT_LINK, LOCAL_LINK, EMAIL, HASHTAG, ARROW];
 
-export function isLink({type}) {
+export function isLink({ type }) {
   return linkTypes.indexOf(type) !== -1;
 }
 

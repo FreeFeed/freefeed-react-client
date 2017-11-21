@@ -2,7 +2,7 @@ import React from 'react';
 import DropzoneComponent from 'react-dropzone-component';
 
 import config from '../config';
-import {getToken} from '../services/auth';
+import { getToken } from '../services/auth';
 
 
 const apiConfig = config.api;
@@ -40,14 +40,14 @@ const dropzoneEventHandlers = (props) => ({
   // of those events we have in the Layout component. So here we have to
   // re-dispatch them to let event handlers in Layout work as they should.
   // The events don't need to be real, just mimic some important parts.
-  dragenter: function(e) {
+  dragenter(e) {
     const dragEnterEvent = new Event('dragenter');
     if (e.dataTransfer && e.dataTransfer.types) {
       dragEnterEvent.dataTransfer = { types: e.dataTransfer.types };
     }
     window.dispatchEvent(dragEnterEvent);
   },
-  drop: function(e) {
+  drop(e) {
     const dropEvent = new Event('drop');
     if (e.dataTransfer && e.dataTransfer.types) {
       dropEvent.dataTransfer = { types: e.dataTransfer.types };
@@ -55,11 +55,11 @@ const dropzoneEventHandlers = (props) => ({
     window.dispatchEvent(dropEvent);
   },
 
-  sending: function(file, xhr/*, form*/) {
+  sending(file, xhr/*, form*/) {
     xhr.setRequestHeader('X-Authentication-Token', getToken());
   },
 
-  success: function(file, response) {
+  success(file, response) {
     // Remove file preview after upload
     this.removeFile(file);
 
@@ -78,5 +78,6 @@ export default (props) => (
   <DropzoneComponent
     config={dropzoneComponentConfig}
     djsConfig={dropzoneConfig}
-    eventHandlers={dropzoneEventHandlers(props)}/>
+    eventHandlers={dropzoneEventHandlers(props)}
+  />
 );

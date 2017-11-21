@@ -1,7 +1,7 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
-import {archiveRestoreActivity, archiveStartRestoration, resetArchiveForms} from '../redux/action-creators';
+import { archiveRestoreActivity, archiveStartRestoration, resetArchiveForms } from '../redux/action-creators';
 import ArchiveActivityForm from './archive-activity-form';
 import ArchiveRestorationForm from './archive-restoration-form';
 
@@ -11,7 +11,7 @@ class Archive extends React.Component {
   }
 
   render() {
-    const {archives} = this.props;
+    const { archives } = this.props;
     if (!archives) {
       return (
         <div className="content">
@@ -62,7 +62,7 @@ class Archive extends React.Component {
   }
 
   renderActivityForm() {
-    const {archives, archiveRestoreActivity, archiveActivityFormState} = this.props;
+    const { archives, archiveRestoreActivity, archiveActivityFormState } = this.props;
     if (archives && !archives.restore_comments_and_likes) {
       return <ArchiveActivityForm action={archiveRestoreActivity} formState={archiveActivityFormState} />;
     }
@@ -74,7 +74,7 @@ class Archive extends React.Component {
   }
 
   renderRestorationForm() {
-    const {archives, archiveStartRestoration, archiveRestorationFormState} = this.props;
+    const { archives, archiveStartRestoration, archiveRestorationFormState } = this.props;
 
     if (!archives.has_archive) {
       return (

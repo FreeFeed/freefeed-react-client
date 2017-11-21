@@ -19,20 +19,20 @@ export default class ArchiveRestorationForm extends React.Component {
     via_restore:           [],
   };
 
-  setDisableComments = e => this.setState({disable_comments: e.target.checked});
-  setViaSource = e => {
-    const {checked, value} = e.target;
+  setDisableComments = (e) => this.setState({ disable_comments: e.target.checked });
+  setViaSource = (e) => {
+    const { checked, value } = e.target;
     if (checked) {
-      this.setState({via_restore: _.union(this.state.via_restore, [value])});
+      this.setState({ via_restore: _.union(this.state.via_restore, [value]) });
     } else {
-      this.setState({via_restore: _.without(this.state.via_restore, value)});
+      this.setState({ via_restore: _.without(this.state.via_restore, value) });
     }
   };
-  selectAllSources = e => {
+  selectAllSources = (e) => {
     if (e.target.checked) {
-      this.setState({via_restore: this.props.sources.map(s => s.url)});
+      this.setState({ via_restore: this.props.sources.map((s) => s.url) });
     } else {
-      this.setState({via_restore: []});
+      this.setState({ via_restore: [] });
     }
   };
 
@@ -40,7 +40,7 @@ export default class ArchiveRestorationForm extends React.Component {
     return this.state.via_restore.length > 0 && !this.props.formState.inProgress;
   }
 
-  action = e => {
+  action = (e) => {
     e.preventDefault();
     if (this.canSubmit()) {
       this.props.action(this.state);
@@ -48,10 +48,10 @@ export default class ArchiveRestorationForm extends React.Component {
   };
 
   render() {
-    const {via_restore, disable_comments} = this.state;
-    const {formState, sources, oldUsername} = this.props;
+    const { via_restore, disable_comments } = this.state;
+    const { formState, sources, oldUsername } = this.props;
     const totalCount = sources.reduce((p, s) => p + s.count, 0);
-    const selectedCount = sources.filter(s => via_restore.includes(s.url)).reduce((p, s) => p + s.count, 0);
+    const selectedCount = sources.filter((s) => via_restore.includes(s.url)).reduce((p, s) => p + s.count, 0);
 
     const buttonText = (totalCount === selectedCount) ? 'Restore all my posts'
       : (selectedCount === 0) ? 'Restore my posts'
@@ -86,7 +86,9 @@ export default class ArchiveRestorationForm extends React.Component {
             type="submit"
             className="btn btn-default"
             disabled={!this.canSubmit()}
-          >{buttonText}</button>
+          >
+            {buttonText}
+          </button>
         </div>
         {formState.error ? (
           <div className="alert alert-danger" role="alert">{formState.errorText}</div>
@@ -108,7 +110,7 @@ class SourceList extends React.Component {
     onClick:  React.PropTypes.func.isRequired,
   };
 
-  renderSource({name, url}) {
+  renderSource({ name, url }) {
     if (url === FRF_URL) {
       return <span>Posts on FriendFeed</span>;
     }
@@ -124,7 +126,7 @@ class SourceList extends React.Component {
   }
 
   render() {
-    const {selected, onClick} = this.props;
+    const { selected, onClick } = this.props;
     const sources = this.props.sources.sort((a, b) => {
       if (a.url === FRF_URL) { return -1; }
       if (b.url === FRF_URL) { return 1; }
@@ -132,10 +134,10 @@ class SourceList extends React.Component {
     });
     return (
       <div className="archive-source-list">
-        {sources.map(s => (
+        {sources.map((s) => (
           <div className="checkbox" key={s.url}>
             <label>
-              <input type="checkbox" value={s.url} checked={selected.includes(s.url)} onClick={onClick}/>
+              <input type="checkbox" value={s.url} checked={selected.includes(s.url)} onClick={onClick} />
               {this.renderSource(s)} <span className="text-muted">({s.count})</span>
             </label>
           </div>

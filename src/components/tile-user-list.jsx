@@ -1,9 +1,9 @@
 import React from 'react';
-import {Link} from 'react-router';
+import { Link } from 'react-router';
 import classnames from 'classnames';
 import _ from 'lodash';
 
-import {confirmFirst} from '../utils';
+import { confirmFirst } from '../utils';
 import UserName from './user-name';
 
 const renderUsers = (type) => (user) => {
@@ -11,11 +11,11 @@ const renderUsers = (type) => (user) => {
     <li key={user.id}>
       <div className="avatar">
         <Link to={`/${user.username}`}>
-          <img src={user.profilePictureUrl}/>
+          <img src={user.profilePictureUrl} />
         </Link>
       </div>
 
-      <UserName user={user} applyHyphenations={true}/>
+      <UserName user={user} applyHyphenations={true} />
 
       {type == WITH_MUTUALS && user.isMutual ? (
         <div className="user-ismutual">mutual</div>
@@ -80,7 +80,7 @@ function pickActions(type, props) {
 }
 
 export const tileUserListFactory = (config) => (props) => {
-  const usersData = props.users.map(user => {
+  const usersData = props.users.map((user) => {
     return {
       ..._.pick(user, ['id', 'screenName', 'username', 'isMutual']),
       profilePictureUrl:
@@ -102,7 +102,7 @@ export const tileUserListFactory = (config) => (props) => {
   });
 
   const header = props.header && config.displayQuantity ?
-    props.header + ` (${props.users.length})` :
+    `${props.header} (${props.users.length})` :
     props.header;
 
   return (

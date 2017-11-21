@@ -1,7 +1,7 @@
 import React from 'react';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import {preventDefault} from '../utils';
+import { preventDefault } from '../utils';
 import GroupFeedTypePicker from './group-feed-type-picker';
 
 export default class GroupSettingsForm extends React.Component {
@@ -29,13 +29,13 @@ export default class GroupSettingsForm extends React.Component {
         isWarningDisplayed: false
       });
     }
-  }
+  };
 
   handleChange = (property) => (event) => {
     const newState = {};
     newState[property] = event.target.value;
     this.setState(newState);
-  }
+  };
 
   handlePrivacyTypeChange = (privacySettings) => {
     const newState = {
@@ -46,14 +46,14 @@ export default class GroupSettingsForm extends React.Component {
       )
     };
     this.setState(newState);
-  }
+  };
 
   saveSettings = () => {
     this.setState({ isWarningDisplayed: false });
     if (this.props.status !== 'loading') {
       this.props.updateGroup(this.props.group.id, this.state);
     }
-  }
+  };
 
   componentWillUnmount() {
     this.props.resetGroupUpdateForm();
@@ -64,21 +64,23 @@ export default class GroupSettingsForm extends React.Component {
       <form onSubmit={preventDefault(this.saveSettings)}>
         <div className="form-group">
           <label htmlFor="screenName">Display name:</label>
-          <input id="screenName" className="form-control" name="screenName" type="text" value={this.state.screenName} onChange={this.handleChange('screenName')}/>
+          <input id="screenName" className="form-control" name="screenName" type="text" value={this.state.screenName} onChange={this.handleChange('screenName')} />
         </div>
         <div className="form-group">
           <label htmlFor="description">Description:</label>
-          <textarea id="description" className="form-control" name="description" value={this.state.description} onChange={this.handleChange('description')} maxLength="1500"/>
+          <textarea id="description" className="form-control" name="description" value={this.state.description} onChange={this.handleChange('description')} maxLength="1500" />
         </div>
-        <GroupFeedTypePicker isPrivate={this.state.isPrivate}
+        <GroupFeedTypePicker
+          isPrivate={this.state.isPrivate}
           isProtected={this.state.isProtected}
           isRestricted={this.state.isRestricted}
-          updateGroupPrivacySettings={this.handlePrivacyTypeChange} />
+          updateGroupPrivacySettings={this.handlePrivacyTypeChange}
+        />
         <p>
           <button className="btn btn-default" type="submit">Update</button>
           {this.props.status === 'loading' ? (
             <span className="settings-throbber">
-              <img width="16" height="16" src={throbber16}/>
+              <img width="16" height="16" src={throbber16} />
             </span>
           ) : false}
         </p>

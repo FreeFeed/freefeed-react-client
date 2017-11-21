@@ -1,4 +1,4 @@
-import React, {PropTypes as pt} from 'react';
+import React, { PropTypes as pt } from 'react';
 import classnames from 'classnames';
 import ImageAttachment from './post-attachment-image';
 import ImageAttachmentsLightbox from './post-attachment-image-lightbox';
@@ -26,7 +26,7 @@ export default class ImageAttachmentsContainer extends React.Component {
   lightbox = null;
 
   getItemWidths() {
-    return this.props.attachments.map(({imageSizes: {t, o}}) => t ? t.w : (o ? o.w : 0)).map(w => w + bordersSize + spaceSize);
+    return this.props.attachments.map(({ imageSizes: { t, o } }) => t ? t.w : (o ? o.w : 0)).map((w) => w + bordersSize + spaceSize);
   }
 
   getContentWidth() {
@@ -41,11 +41,11 @@ export default class ImageAttachmentsContainer extends React.Component {
         needsFolding: containerWidth < this.getContentWidth()
       });
     }
-  }
+  };
 
   toggleFolding = () => {
-    this.setState({isFolded: !this.state.isFolded});
-  }
+    this.setState({ isFolded: !this.state.isFolded });
+  };
 
   handleClickThumbnail(index) {
     return (e) => {
@@ -58,7 +58,7 @@ export default class ImageAttachmentsContainer extends React.Component {
   }
 
   getLightboxItems() {
-    return this.props.attachments.map(a => ({
+    return this.props.attachments.map((a) => ({
       src: a.url,
       w: a.imageSizes && a.imageSizes.o && a.imageSizes.o.w || 0,
       h: a.imageSizes && a.imageSizes.o && a.imageSizes.o.h || 0,
@@ -74,7 +74,7 @@ export default class ImageAttachmentsContainer extends React.Component {
       }
     }
     return null;
-  }
+  };
 
   componentDidMount() {
     if (!this.props.isSinglePost && this.props.attachments.length > 1) {
@@ -119,19 +119,24 @@ export default class ImageAttachmentsContainer extends React.Component {
             handleClick={this.handleClickThumbnail(i)}
             removeAttachment={this.props.removeAttachment}
             isHidden={showFolded && i > lastVisibleIndex}
-            {...a} />
+            {...a}
+          />
         ))}
-        {isSingleImage ? false : (<div className="show-more">
-          <i
-            className="fa fa-2x fa-chevron-circle-right"
-            onClick={this.toggleFolding}
-            title={this.state.isFolded ? `Show more (${this.props.attachments.length - lastVisibleIndex - 1})` : "Show less"}/>
-        </div>)}
+        {isSingleImage ? false : (
+          <div className="show-more">
+            <i
+              className="fa fa-2x fa-chevron-circle-right"
+              onClick={this.toggleFolding}
+              title={this.state.isFolded ? `Show more (${this.props.attachments.length - lastVisibleIndex - 1})` : "Show less"}
+            />
+          </div>
+        )}
         <ImageAttachmentsLightbox
           ref={(el) => this.lightbox = el}
           items={this.getLightboxItems()}
           postId={this.props.postId}
-          getThumbnail={this.getThumbnail}/>
+          getThumbnail={this.getThumbnail}
+        />
       </div>
     );
   }

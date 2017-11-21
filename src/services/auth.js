@@ -1,4 +1,4 @@
-import {getCookie, setCookie, localStorage} from '../utils/';
+import { getCookie, setCookie, localStorage } from '../utils/';
 import config from '../config';
 
 const authConfig = config.auth;

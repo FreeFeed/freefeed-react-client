@@ -15,25 +15,25 @@ export default class SendTo extends React.Component {
         options.length !== 0 && this.state.options.length === 0) {
       this.setState(this.stateFromProps(newProps, options));
     } else {
-      this.setState({options});
+      this.setState({ options });
     }
   }
 
   get values() {
-    return this.state.values.map(item => item.value);
+    return this.state.values.map((item) => item.value);
   }
 
   stateFromProps(props, options) {
     return {
-      values: options.filter(opt => opt.value === props.defaultFeed),
-      options: options,
+      values: options.filter((opt) => opt.value === props.defaultFeed),
+      options,
       showFeedsOption: !props.defaultFeed,
       isWarningDisplayed: false
     };
   }
 
-  optionsFromProps({feeds, user: {username}, isDirects}) {
-    const options = feeds.map(({user: {username, type}}) => ({
+  optionsFromProps({ feeds, user: { username }, isDirects }) {
+    const options = feeds.map(({ user: { username, type } }) => ({
       label: username,
       value: username,
       type,
@@ -45,7 +45,7 @@ export default class SendTo extends React.Component {
     options.unshift({ label: MY_FEED_LABEL, value: username, type: 'group' });
 
     // only mutual friends on Directs page
-    return isDirects ? options.filter(opt => opt.type === 'user') : options;
+    return isDirects ? options.filter((opt) => opt.type === 'user') : options;
   }
 
   isGroupsOrDirectsOnly(values) {
@@ -59,20 +59,20 @@ export default class SendTo extends React.Component {
   selectChanged = (values) => {
     const isWarningDisplayed = !this.isGroupsOrDirectsOnly(values);
     this.setState({ values, isWarningDisplayed });
-    this.props.onChange(values.map(item => item.value));
-  }
+    this.props.onChange(values.map((item) => item.value));
+  };
 
   toggleSendTo = () => {
     const newShowFeedsOption = !this.state.showFeedsOption;
     this.setState({ showFeedsOption: newShowFeedsOption });
-  }
+  };
 
   labelRenderer = (opt) => {
     const icon = (opt.type === 'group') ?
       ((opt.value !== this.props.user.username) ? <i className="fa fa-users" /> : <i className="fa fa-home" />)
       : false;
     return <span>{icon} {opt.label}</span>;
-  }
+  };
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.showFeedsOption !== this.state.showFeedsOption && this.state.showFeedsOption) {
@@ -82,7 +82,7 @@ export default class SendTo extends React.Component {
   }
 
   render() {
-    const defaultOpt = this.state.values[0];
+    const [defaultOpt] = this.state.values;
 
     return (
       <div className="send-to">
@@ -104,7 +104,8 @@ export default class SendTo extends React.Component {
               valueRenderer={this.labelRenderer}
               ref="selector"
               multi={true}
-              clearable={false} />
+              clearable={false}
+            />
             {this.state.isWarningDisplayed ? (
               <div className="selector-warning">
                 You are going to send a direct message and also post this message to a feed. This means that everyone who sees this feed will be able to see your message.

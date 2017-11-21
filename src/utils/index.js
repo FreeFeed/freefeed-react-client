@@ -4,7 +4,7 @@ import URLFinder from 'ff-url-finder';
 import defaultUserpic50Path from '../../assets/images/default-userpic-50.png';
 import defaultUserpic75Path from '../../assets/images/default-userpic-75.png';
 
-import {LINK, isLink} from '../utils/link-types';
+import { LINK, isLink } from '../utils/link-types';
 import config from '../config';
 
 const frontendPrefsConfig = config.frontendPreferences;
@@ -17,7 +17,7 @@ export function getCookie(name) {
   const fromBegin = document.cookie.substr(begin);
   const tokenWithName = fromBegin.split(';');
   const tokenWithNameSplit = tokenWithName[0].split('=');
-  const token = tokenWithNameSplit[1];
+  const [, token] = tokenWithNameSplit;
   return token.trim();
 }
 
@@ -36,7 +36,7 @@ const userDefaults = {
 };
 
 export function userParser(user) {
-  const newUser = {...user};
+  const newUser = { ...user };
 
   // Profile pictures
   newUser.profilePictureMediumUrl = user.profilePictureMediumUrl || userDefaults.profilePictureMediumUrl;
@@ -51,7 +51,7 @@ export function userParser(user) {
 
 export function postParser(post) {
   post.commentsDisabled = (post.commentsDisabled === '1');
-  return {...post};
+  return { ...post };
 }
 
 export function preventDefault(realFunction) {
@@ -81,7 +81,7 @@ export function pluralForm(n, singular, plural = null, format = 'n w') {
   } else if (plural) {
     w = plural;
   } else {
-    w = singular + 's';
+    w = `${singular}s`;
   }
 
   return format.replace('n', n).replace('w', w);
@@ -95,7 +95,7 @@ export const finder = new URLFinder(
 finder.withHashTags = true;
 finder.withArrows = true;
 
-const endsWithExclamation = str => str && str[str.length - 1] === '!';
+const endsWithExclamation = (str) => str && str[str.length - 1] === '!';
 
 const previousElementCheck = (index, array) => {
   const previousElement = array[index - 1];
@@ -111,16 +111,16 @@ const previousElementCheck = (index, array) => {
 export function getFirstLinkToEmbed(text) {
   return finder
     .parse(text)
-    .filter(({type, text}, index, links) => {
+    .filter(({ type, text }, index, links) => {
       return (type ===  LINK
               && /^https?:\/\//i.test(text)
               && previousElementCheck(index, links));
     })
-    .map(it => it.text)[0];
+    .map((it) => it.text)[0];
 }
 
 export function delay(timeout = 0) {
-  return new Promise(resolve => setTimeout(resolve, timeout));
+  return new Promise((resolve) => setTimeout(resolve, timeout));
 }
 
 
@@ -129,7 +129,7 @@ export function delay(timeout = 0) {
 // in private browsing mode)
 let localStorageSupported = true;
 try {
-  const lskey = 'ff' + new Date().getTime();
+  const lskey = `ff${new Date().getTime()}`;
   window.localStorage.setItem(lskey, 'test');
   window.localStorage.removeItem(lskey);
 } catch (err) {
@@ -138,10 +138,19 @@ try {
 
 const localStorageShim = {
   _data: {},
-  setItem: function(id, val) { return this._data[id] = String(val); },
-  getItem: function(id) { return this._data.hasOwnProperty(id) ? this._data[id] : null; },
-  removeItem: function(id) { return delete this._data[id]; },
-  clear: function() { return this._data = {}; }
+  setItem(id, val) { return this._data[id] = String(val); },
+  getItem(id) { return this._data.hasOwnProperty(id) ? this._data[id] : null; },
+  removeItem(id) { return delete this._data[id]; },
+  clear() { return this._data = {}; }
 };
 
 export const localStorage = localStorageSupported ? window.localStorage : localStorageShim;
+
+export function getSummaryPeriod(days) {
+  switch (+days) {
+    case 1: return 'day';
+    case 7: return 'week';
+    case 30: return 'month';
+    default: return `${days} days`;
+  }
+}

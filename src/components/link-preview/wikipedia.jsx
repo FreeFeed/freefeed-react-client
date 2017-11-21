@@ -17,7 +17,7 @@ const initialState = {
 };
 
 class WikipediaPreview extends React.Component {
-  state = {...initialState};
+  state = { ...initialState };
 
   element = null;
   setElement = (el) => this.element = el;
@@ -26,9 +26,9 @@ class WikipediaPreview extends React.Component {
     const [, lang, term] = WIKIPEDIA_RE.exec(url);
     const data = await cachedFetch(`https://${lang}.wikipedia.org/api/rest_v1/page/summary/${term}`);
     if (data.error) {
-      this.setState({previewData: null, isError: true});
+      this.setState({ previewData: null, isError: true });
     } else {
-      this.setState({previewData: data, isError: false});
+      this.setState({ previewData: data, isError: false });
     }
   }
 
@@ -38,7 +38,7 @@ class WikipediaPreview extends React.Component {
 
   componentWillReceiveProps(newProps) {
     if (newProps.url !== this.props.url) {
-      this.setState({...initialState});
+      this.setState({ ...initialState });
       this.updatePreview(newProps.url);
     }
   }
@@ -51,8 +51,8 @@ class WikipediaPreview extends React.Component {
 
 
   render() {
-    const {url} = this.props;
-    const {previewData, isError} = this.state;
+    const { url } = this.props;
+    const { previewData, isError } = this.state;
     const cachedHeight = heightCache.get(this.props.url, 0);
 
     if (isError || !previewData && cachedHeight === 0) {
@@ -62,7 +62,7 @@ class WikipediaPreview extends React.Component {
     const maxImgWidth = 200, maxImgHeight = 180;
     let imgWidth = 0, imgHeight = 0;
     if (previewData && previewData.thumbnail) {
-      const {width, height} = previewData.thumbnail;
+      const { width, height } = previewData.thumbnail;
       const r = Math.min(1, maxImgWidth / width, maxImgHeight / height);
       imgWidth = Math.floor(r * width);
       imgHeight = Math.floor(r * height);
@@ -95,7 +95,7 @@ class WikipediaPreview extends React.Component {
           ) : (
             <div
               className="wikipedia-preview"
-              style={{height: heightCache.get(this.props.url, 0) + 'px'}}
+              style={{ height: `${heightCache.get(this.props.url, 0)}px` }}
             >
               Loading…
             </div>
@@ -106,4 +106,4 @@ class WikipediaPreview extends React.Component {
   }
 }
 
-export default ScrollSafe(WikipediaPreview, {foldable: false});
+export default ScrollSafe(WikipediaPreview, { foldable: false });

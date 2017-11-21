@@ -1,28 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Link} from 'react-router';
-import {connect} from 'react-redux';
+import { Link } from 'react-router';
+import { connect } from 'react-redux';
 import Portal from 'react-portal';
 
 import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
 import UserCard from './user-card';
 
-const DisplayOption = ({user, me, preferences, applyHyphenations}) => {
-  let username, screenName;
+const DisplayOption = ({ user, me, preferences }) => {
+  const { username, screenName } = user;
 
-  if (applyHyphenations) {
-    username = user.username;
-    screenName = user.screenName;
-  } else {
-    username = user.username;
-    screenName = user.screenName;
-  }
-
-  if (user.username === me && preferences.useYou) {
+  if (username === me && preferences.useYou) {
     return <span dir="ltr">You</span>;
   }
 
-  if (user.screenName === user.username) {
+  if (screenName === username) {
     return <span dir="ltr">{screenName}</span>;
   }
 
@@ -54,13 +46,13 @@ class UserName extends React.Component {
   }
 
   enterUserName() {
-    this.setState({isHovered: true});
+    this.setState({ isHovered: true });
 
     this.enterTimeout = setTimeout(() => {
       if (this.state.isHovered) {
-        const {bottom, left} = ReactDOM.findDOMNode(this).getBoundingClientRect();
+        const { bottom, left } = ReactDOM.findDOMNode(this).getBoundingClientRect();
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        this.setState({bottom: bottom + scrollTop, left, isCardOpen: true});
+        this.setState({ bottom: bottom + scrollTop, left, isCardOpen: true });
       }
     }, 500);
 
@@ -70,11 +62,11 @@ class UserName extends React.Component {
   }
 
   leaveUserName() {
-    this.setState({isHovered: false});
+    this.setState({ isHovered: false });
 
     this.leaveTimeout = setTimeout(() => {
       if (!this.state.isHovered) {
-        this.setState({isCardOpen: false});
+        this.setState({ isCardOpen: false });
       }
     }, 500);
 
@@ -84,11 +76,13 @@ class UserName extends React.Component {
   }
 
   render() {
-    const {bottom, left} = this.state;
+    const { bottom, left } = this.state;
     return (
-      <span className="user-name-wrapper"
+      <span
+        className="user-name-wrapper"
         onMouseEnter={this.enterUserName}
-        onMouseLeave={this.leaveUserName}>
+        onMouseLeave={this.leaveUserName}
+      >
 
         <Link to={`/${this.props.user.username}`} className={this.props.className}>
           {this.props.display ? (
@@ -98,7 +92,7 @@ class UserName extends React.Component {
               user={this.props.user}
               me={this.props.me}
               preferences={this.props.frontendPreferences.displayNames}
-              applyHyphenations={this.props.applyHyphenations}/>
+            />
           )}
         </Link>
 
@@ -106,11 +100,13 @@ class UserName extends React.Component {
           <Portal isOpened={true}>
             <div
               onMouseEnter={this.enterUserName}
-              onMouseLeave={this.leaveUserName}>
+              onMouseLeave={this.leaveUserName}
+            >
               <UserCard
                 username={this.props.user.username}
                 top={bottom}
-                left={left}/>
+                left={left}
+              />
             </div>
           </Portal>
         ) : false}

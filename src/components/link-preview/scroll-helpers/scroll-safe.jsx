@@ -36,14 +36,14 @@ export default function ScrollSafe(arg1, arg2) {
 
   if (_.isPlainObject(arg1)) {
     // Call as a decorator with parameters: @ScrollSafe(opts)
-    return Child => ScrollSafe(Child, arg1);
+    return (Child) => ScrollSafe(Child, arg1);
   }
 
   const Child = arg1;
-  const {foldable, trackResize} = {...defaultOptions, ...(arg2 || {})};
+  const { foldable, trackResize } = { ...defaultOptions, ...(arg2 || {}) };
 
-  const foo = function(props) {
-    let content = <Child {...props}/>;
+  const foo = function (props) {
+    let content = <Child {...props} />;
     if (trackResize) {
       content = <ResizeTracker>{content}</ResizeTracker>;
     }

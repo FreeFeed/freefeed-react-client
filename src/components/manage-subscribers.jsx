@@ -1,14 +1,14 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {Link} from 'react-router';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import _ from 'lodash';
 
-import {unsubscribeFromGroup, makeGroupAdmin,
-  unadminGroupAdmin} from '../redux/action-creators';
+import { unsubscribeFromGroup, makeGroupAdmin,
+  unadminGroupAdmin } from '../redux/action-creators';
 
-import {tileUserListFactory, WITH_REMOVE_AND_MAKE_ADMIN_HANDLES, WITH_REMOVE_ADMIN_RIGHTS} from './tile-user-list';
-const SubsList = tileUserListFactory({type: WITH_REMOVE_AND_MAKE_ADMIN_HANDLES});
-const AdminsList = tileUserListFactory({type: WITH_REMOVE_ADMIN_RIGHTS});
+import { tileUserListFactory, WITH_REMOVE_AND_MAKE_ADMIN_HANDLES, WITH_REMOVE_ADMIN_RIGHTS } from './tile-user-list';
+const SubsList = tileUserListFactory({ type: WITH_REMOVE_AND_MAKE_ADMIN_HANDLES });
+const AdminsList = tileUserListFactory({ type: WITH_REMOVE_ADMIN_RIGHTS });
 
 const ManageSubscribersHandler = (props) => {
   const remove = (username) => props.unsubscribeFromGroup(props.groupName, username);
@@ -41,7 +41,8 @@ const ManageSubscribersHandler = (props) => {
             <SubsList
               users={props.users}
               makeAdmin={makeAdmin}
-              remove={remove}/>
+              remove={remove}
+            />
           )
             : false}
 
@@ -49,11 +50,13 @@ const ManageSubscribersHandler = (props) => {
 
           {props.amILastGroupAdmin ? (
             <div className="tile-list-text">You are the only Admin for this group. Before you can drop administrative privileges
-              or leave this group, you have to promote another group member to Admin first.</div>
+              or leave this group, you have to promote another group member to Admin first.
+            </div>
           ) : (
             <AdminsList
               users={props.groupAdmins}
-              removeAdminRights={removeAdminRights}/>
+              removeAdminRights={removeAdminRights}
+            />
           )}
         </div>
       </div>
@@ -62,17 +65,15 @@ const ManageSubscribersHandler = (props) => {
 };
 
 function selectState(state, ownProps) {
-  const boxHeader = state.boxHeader;
+  const { boxHeader, groupAdmins, user } = state;
   const groupName = ownProps.params.userName;
-  const user = state.user;
-  const groupAdmins = state.groupAdmins;
-  const usersWhoAreNotAdmins = _.filter(state.usernameSubscribers.payload, user => {
-    return groupAdmins.find(u => u.username == user.username) == null;
+  const usersWhoAreNotAdmins = _.filter(state.usernameSubscribers.payload, (user) => {
+    return groupAdmins.find((u) => u.username == user.username) == null;
   });
   const users = _.sortBy(usersWhoAreNotAdmins, 'username');
 
   const amILastGroupAdmin = (
-    groupAdmins.find(u => u.username == state.user.username ) != null &&
+    groupAdmins.find((u) => u.username == state.user.username) != null &&
     groupAdmins.length == 1
   );
 

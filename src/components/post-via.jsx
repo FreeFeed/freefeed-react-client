@@ -25,7 +25,7 @@ export default class PostVia extends React.Component {
       id: React.PropTypes.string,
       subscriptions: React.PropTypes.arrayOf(React.PropTypes.string)
     }).isRequired
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -34,7 +34,7 @@ export default class PostVia extends React.Component {
     };
   }
 
-  expand = () => this.setState({expanded: true})
+  expand = () => this.setState({ expanded: true });
 
   render() {
     const {
@@ -50,8 +50,8 @@ export default class PostVia extends React.Component {
       }
     } = this.props;
 
-    const isMe = ({id}) => myId === id;
-    const inSubscriptions = ({id}) => myId === id || subscriptions && subscriptions.some(s => s == id);
+    const isMe = ({ id }) => myId === id;
+    const inSubscriptions = ({ id }) => myId === id || subscriptions && subscriptions.some((s) => s == id);
 
     if (inSubscriptions(createdBy) || recipients.some(inSubscriptions)) {
       return false;
@@ -69,7 +69,7 @@ export default class PostVia extends React.Component {
       textPrefix = 'your like';
     }
 
-    const users = _.unionBy(inComments, inLikes, _.property('id')).filter(u => !isMe(u));
+    const users = _.unionBy(inComments, inLikes, _.property('id')).filter((u) => !isMe(u));
     const cutAt = textPrefix ? 2 : 3;
     const foldedCount = (!this.state.expanded && users.length > cutAt + 1) ? users.length - cutAt : 0;
 
@@ -83,7 +83,7 @@ export default class PostVia extends React.Component {
         {users.map((u, i) => (
           <span key={`via-${u.username}`}>
             {(i || textPrefix) ? ((!foldedCount && i === users.length - 1) ? ' and ' : ', ') : false}
-            <UserName user={u}/>
+            <UserName user={u} />
           </span>
         ))}
         {foldedCount ? <span> and <a className="post-via-more" onClick={this.expand}>{foldedCount} more</a></span> : false}

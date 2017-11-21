@@ -1,7 +1,7 @@
 import React from 'react';
 import DropdownMenu from 'react-dd-menu';
 
-import {confirmFirst} from '../utils';
+import { confirmFirst } from '../utils';
 
 export default class PostMoreMenu extends React.Component {
   constructor(props) {

@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import {preventDefault} from '../utils';
+import { preventDefault } from '../utils';
 import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
 
 export default class UserPreferencesForm extends React.Component {
@@ -20,7 +20,7 @@ export default class UserPreferencesForm extends React.Component {
         displayOption: parseInt(event.target.value, 10)
       }
     });
-  }
+  };
 
   changeUseYou = (event) => {
     this.setState({
@@ -29,7 +29,7 @@ export default class UserPreferencesForm extends React.Component {
         useYou: event.target.checked
       }
     });
-  }
+  };
 
   changeOmitBubbles = (event) => {
     this.setState({
@@ -38,7 +38,7 @@ export default class UserPreferencesForm extends React.Component {
         omitRepeatedBubbles: event.target.checked
       }
     });
-  }
+  };
 
   changeHighlightComments = (event) => {
     this.setState({
@@ -47,30 +47,30 @@ export default class UserPreferencesForm extends React.Component {
         highlightComments: event.target.checked
       }
     });
-  }
+  };
 
   changeAllowLinksPreview = (event) => {
     this.setState({
       allowLinksPreview: event.target.checked
     });
-  }
+  };
 
   changeReadMoreStyle = (event) => {
     this.setState({
       readMoreStyle: event.target.value
     });
-  }
+  };
 
   chandeHideUsers = (event) => {
     this.setState({
       sHideUsers: event.target.value
     });
-  }
+  };
 
   isCommentTypeHidden = (hideType) => _.includes(this.state.hideCommentsOfTypes, hideType);
 
   changeHideComments = (event) => {
-    const {target} = event;
+    const { target } = event;
     const hideType = parseInt(target.value, 10);
 
     if (target.checked !== this.isCommentTypeHidden(hideType)) {
@@ -82,7 +82,7 @@ export default class UserPreferencesForm extends React.Component {
       }
       this.setState({ hideCommentsOfTypes });
     }
-  }
+  };
 
   savePreferences = () => {
     if (this.props.status !== 'loading') {
@@ -95,7 +95,7 @@ export default class UserPreferencesForm extends React.Component {
 
       this.props.updateUserPreferences(this.props.userId, frontPrefs, backPrefs);
     }
-  }
+  };
 
   render() {
     return (
@@ -111,7 +111,8 @@ export default class UserPreferencesForm extends React.Component {
               name="displayOption"
               value={FrontendPrefsOptions.DISPLAYNAMES_DISPLAYNAME}
               checked={this.state.displayNames.displayOption === FrontendPrefsOptions.DISPLAYNAMES_DISPLAYNAME}
-              onChange={this.changeDisplayOption}/>
+              onChange={this.changeDisplayOption}
+            />
             Display name only
           </label>
         </div>
@@ -122,7 +123,8 @@ export default class UserPreferencesForm extends React.Component {
               name="displayOption"
               value={FrontendPrefsOptions.DISPLAYNAMES_BOTH}
               checked={this.state.displayNames.displayOption === FrontendPrefsOptions.DISPLAYNAMES_BOTH}
-              onChange={this.changeDisplayOption}/>
+              onChange={this.changeDisplayOption}
+            />
             Display name + username
           </label>
         </div>
@@ -133,19 +135,20 @@ export default class UserPreferencesForm extends React.Component {
               name="displayOption"
               value={FrontendPrefsOptions.DISPLAYNAMES_USERNAME}
               checked={this.state.displayNames.displayOption === FrontendPrefsOptions.DISPLAYNAMES_USERNAME}
-              onChange={this.changeDisplayOption}/>
+              onChange={this.changeDisplayOption}
+            />
             Username only
           </label>
         </div>
 
         <div className="checkbox checkbox-displayNames-useYou">
           <label>
-            <input type="checkbox" name="useYou" value="1" checked={this.state.displayNames.useYou} onChange={this.changeUseYou}/>
-            Show your own name as "You"
+            <input type="checkbox" name="useYou" value="1" checked={this.state.displayNames.useYou} onChange={this.changeUseYou} />
+            Show your own name as {'"'}You{'"'}
           </label>
         </div>
 
-        <div style={{marginBottom: '20px'}}>Text display style:
+        <div style={{ marginBottom: '20px' }}>Text display style:
           <div className="radio">
             <label>
               <input
@@ -153,8 +156,9 @@ export default class UserPreferencesForm extends React.Component {
                 name="readmoreStyle"
                 value={FrontendPrefsOptions.READMORE_STYLE_COMPACT}
                 checked={this.state.readMoreStyle === FrontendPrefsOptions.READMORE_STYLE_COMPACT}
-                onChange={this.changeReadMoreStyle}/>
-              Compact: hides line breaks (until 'Expand' is clicked)
+                onChange={this.changeReadMoreStyle}
+              />
+              Compact: hides line breaks (until {'"'}Expand{'"'} is clicked)
             </label>
           </div>
           <div className="radio">
@@ -164,21 +168,22 @@ export default class UserPreferencesForm extends React.Component {
                 name="readmoreStyle"
                 value={FrontendPrefsOptions.READMORE_STYLE_COMFORT}
                 checked={this.state.readMoreStyle === FrontendPrefsOptions.READMORE_STYLE_COMFORT}
-                onChange={this.changeReadMoreStyle}/>
-              Comfortable: displays line breaks, shows 'Read more' for longer posts and comments
+                onChange={this.changeReadMoreStyle}
+              />
+              Comfortable: displays line breaks, shows {'"'}Read more{'"'} for longer posts and comments
             </label>
           </div>
         </div>
         <div className="checkbox">
           <label>
-            <input type="checkbox" name="bubbles" value="1" checked={this.state.comments.omitRepeatedBubbles} onChange={this.changeOmitBubbles}/>
+            <input type="checkbox" name="bubbles" value="1" checked={this.state.comments.omitRepeatedBubbles} onChange={this.changeOmitBubbles} />
             Omit bubbles for subsequent comments from the same author
           </label>
         </div>
 
         <div className="checkbox">
           <label>
-            <input type="checkbox" name="bubbles" value="1" checked={this.state.comments.highlightComments} onChange={this.changeHighlightComments}/>
+            <input type="checkbox" name="bubbles" value="1" checked={this.state.comments.highlightComments} onChange={this.changeHighlightComments} />
             Highlight comments when hovering on @username or ^ and ↑
           </label>
         </div>
@@ -191,28 +196,28 @@ export default class UserPreferencesForm extends React.Component {
               checked={this.isCommentTypeHidden(FrontendPrefsOptions.COMMENT_HIDDEN_BANNED)}
               onChange={this.changeHideComments}
             />
-            Hide comments from blocked users (don't show placeholder)
+            Hide comments from blocked users (don{"'"}t show placeholder)
           </label>
         </div>
 
         <div className="checkbox">
           <label>
-            <input type="checkbox" name="bubbles" value="1" checked={this.state.allowLinksPreview} onChange={this.changeAllowLinksPreview}/>
-              Show advanced previews of links in posts (Embedly). Link should start with http(s)://, post should have no attached images. If you don't want to have link preview, add ! before a link without spaces.
+            <input type="checkbox" name="bubbles" value="1" checked={this.state.allowLinksPreview} onChange={this.changeAllowLinksPreview} />
+              Show advanced previews of links in posts (Embedly). Link should start with http(s)://, post should have no attached images. If you don{"'"}t want to have link preview, add ! before a link without spaces.
           </label>
         </div>
 
         <div className="form-group">
           Hide posts from these users/groups in homefeed
-          (enter comma separated list of usernames/groupnames):<br/>
-          <textarea className="form-control" value={this.state.sHideUsers} onChange={this.chandeHideUsers}/>
+          (enter comma separated list of usernames/groupnames):<br />
+          <textarea className="form-control" value={this.state.sHideUsers} onChange={this.chandeHideUsers} />
         </div>
 
         <p>
           <button className="btn btn-default" type="submit">Update</button>
           {this.props.status === 'loading' ? (
             <span className="settings-throbber">
-              <img width="16" height="16" src={throbber16}/>
+              <img width="16" height="16" src={throbber16} />
             </span>
           ) : false}
         </p>

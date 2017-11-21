@@ -1,7 +1,7 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
-import {createGroup, resetGroupCreateForm} from '../redux/action-creators';
+import { createGroup, resetGroupCreateForm } from '../redux/action-creators';
 import GroupCreateForm from './group-create-form';
 
 const GroupCreate = (props) => (
@@ -13,7 +13,8 @@ const GroupCreate = (props) => (
       <GroupCreateForm
         createGroup={props.createGroup}
         resetGroupCreateForm={props.resetGroupCreateForm}
-        {...props.groupCreateForm}/>
+        {...props.groupCreateForm}
+      />
     </div>
   </div>
 );

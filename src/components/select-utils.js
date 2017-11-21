@@ -29,10 +29,10 @@ export const ommitBubblesThreshold = 600 * 1000; // 10 min
 
 const allFalse = () => false;
 
-const commentHighlighter = ({commentsHighlights, user, postsViewState}, commentsPostId, commentList) => {
-  const {postId, author, arrows, baseCommentId} = commentsHighlights;
-  const {comments} = user.frontendPreferences;
-  const {omittedComments} = postsViewState[commentsPostId];
+const commentHighlighter = ({ commentsHighlights, user, postsViewState }, commentsPostId, commentList) => {
+  const { postId, author, arrows, baseCommentId } = commentsHighlights;
+  const { comments } = user.frontendPreferences;
+  const { omittedComments } = postsViewState[commentsPostId];
   if (!comments.highlightComments) {
     return allFalse;
   }
@@ -48,31 +48,31 @@ const commentHighlighter = ({commentsHighlights, user, postsViewState}, comments
   return (commentId, commentAuthor) => author && author === commentAuthor.username || highlightCommentId === commentId;
 };
 
-const selectCommentLikes = ({commentLikes, users}, commentId) => {
+const selectCommentLikes = ({ commentLikes, users }, commentId) => {
   if (!commentLikes[commentId]) {
-    return {likes: []};
+    return { likes: [] };
   }
-  const likes = (commentLikes[commentId].likes || []).map(({userId}) => users[userId]);
-  return {...commentLikes[commentId], likes};
+  const likes = (commentLikes[commentId].likes || []).map(({ userId }) => users[userId]);
+  return { ...commentLikes[commentId], likes };
 };
 
-const getCommentId = hash => {
+const getCommentId = (hash) => {
   if (!hash) {
     return '';
   }
   return hash.replace('#comment-', '');
 };
 
-export const joinPostData = state => postId => {
+export const joinPostData = (state) => (postId) => {
   const post = state.posts[postId];
   if (!post) {
     return;
   }
-  const user = state.user;
+  const { user } = state;
 
-  const attachments = (post.attachments || []).map(attachmentId => state.attachments[attachmentId]);
+  const attachments = (post.attachments || []).map((attachmentId) => state.attachments[attachmentId]);
   const postViewState = state.postsViewState[post.id];
-  const omitRepeatedBubbles = state.user.frontendPreferences.comments.omitRepeatedBubbles;
+  const { omitRepeatedBubbles } = state.user.frontendPreferences.comments;
   const hashedCommentId = getCommentId(state.routing.locationBeforeTransitions.hash);
   const highlightComment = commentHighlighter(state, postId, post.comments);
   let comments = (post.comments || []).reduce((_comments, commentId, index) => {
@@ -81,14 +81,14 @@ export const joinPostData = state => postId => {
       return _comments;
     }
     const commentViewState = state.commentViewState[commentId];
-    const placeholderUser = {id: comment.createdBy};
+    const placeholderUser = { id: comment.createdBy };
     const author = state.users[comment.createdBy] || placeholderUser;
     if (author === placeholderUser) {
       if (typeof Raven !== 'undefined') {
-        Raven.captureMessage(`We've got comment with unknown author with id`, { extra: { uid: placeholderUser.id }});
+        Raven.captureMessage(`We've got comment with unknown author with id`, { extra: { uid: placeholderUser.id } });
       }
     }
-    const previousPost = _comments[index-1] || {createdBy: null, createdAt: "0"};
+    const previousPost = _comments[index - 1] || { createdBy: null, createdAt: "0" };
     const omitBubble = omitRepeatedBubbles
       && postViewState.omittedComments === 0
       && !comment.hideType
@@ -104,22 +104,22 @@ export const joinPostData = state => postId => {
   }, []);
 
   if (postViewState.omittedComments !== 0 && comments.length > 2) {
-    comments = [ comments[0], comments[comments.length - 1] ];
+    comments = [comments[0], comments[comments.length - 1]];
   }
 
-  let usersLikedPost = (post.likes || []).map(userId => state.users[userId]);
+  let usersLikedPost = (post.likes || []).map((userId) => state.users[userId]);
 
   if (postViewState.omittedLikes !== 0) {
     usersLikedPost = usersLikedPost.slice(0, MAX_LIKES);
   }
 
-  const placeholderUser = {id: post.createdBy};
+  const placeholderUser = { id: post.createdBy };
 
   const createdBy = state.users[post.createdBy] || placeholderUser;
 
   if (createdBy === placeholderUser) {
     if (typeof Raven !== 'undefined') {
-      Raven.captureMessage(`We've got post with unknown author with id`, { extra: { uid: placeholderUser.id }});
+      Raven.captureMessage(`We've got post with unknown author with id`, { extra: { uid: placeholderUser.id } });
     }
   }
 
@@ -128,26 +128,25 @@ export const joinPostData = state => postId => {
   // Check if the post is a direct message
   const directRecipients = post.postedTo
     .filter((subscriptionId) => {
-      const subscriptionType = (state.subscriptions[subscriptionId]||{}).name;
+      const subscriptionType = (state.subscriptions[subscriptionId] || {}).name;
       return (subscriptionType === 'Directs');
     });
   const isDirect = !!directRecipients.length;
 
   // Get the list of post's recipients
   const recipients = post.postedTo
-    .map(subscriptionId => {
-      const userId = (state.subscriptions[subscriptionId]||{}).user;
-      const subscriptionType = (state.subscriptions[subscriptionId]||{}).name;
+    .map((subscriptionId) => {
+      const userId = (state.subscriptions[subscriptionId] || {}).user;
+      const subscriptionType = (state.subscriptions[subscriptionId] || {}).name;
       const isDirectToSelf = userId === post.createdBy && subscriptionType === 'Directs';
       return !isDirectToSelf ? userId : false;
     })
-    .map(userId => state.subscribers[userId])
-    .filter(user => user);
+    .map((userId) => state.subscribers[userId])
+    .filter((user) => user);
 
-  const allowLinksPreview = state.user.frontendPreferences.allowLinksPreview;
-  const readMoreStyle = state.user.frontendPreferences.readMoreStyle;
+  const { allowLinksPreview, readMoreStyle } = state.user.frontendPreferences;
 
-  return {...post,
+  return { ...post,
     createdBy,
     isDirect,
     recipients,
@@ -162,9 +161,9 @@ export const joinPostData = state => postId => {
 };
 
 export function joinCreatePostData(state) {
-  const createPostForm = state.createPostForm;
-  return {...createPostForm,
-    attachments: (createPostForm.attachments || []).map(attachmentId => state.attachments[attachmentId])
+  const { createPostForm } = state;
+  return { ...createPostForm,
+    attachments: (createPostForm.attachments || []).map((attachmentId) => state.attachments[attachmentId])
   };
 }
 
@@ -203,10 +202,10 @@ export function postActions(dispatch) {
 
 export function userActions(dispatch) {
   return {
-    ban: username => dispatch(ban(username)),
-    unban: username => dispatch(unban(username)),
-    subscribe: username => dispatch(subscribe(username)),
-    unsubscribe: username => dispatch(unsubscribe(username)),
-    sendSubscriptionRequest: username => dispatch(sendSubscriptionRequest(username))
+    ban: (username) => dispatch(ban(username)),
+    unban: (username) => dispatch(unban(username)),
+    subscribe: (username) => dispatch(subscribe(username)),
+    unsubscribe: (username) => dispatch(unsubscribe(username)),
+    sendSubscriptionRequest: (username) => dispatch(sendSubscriptionRequest(username))
   };
 }

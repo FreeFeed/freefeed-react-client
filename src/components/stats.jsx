@@ -93,22 +93,22 @@ class StatsChart extends React.Component {
     config.series[0].data = this.state.metrics;
 
     return (
-      <ReactHighcharts config={config}></ReactHighcharts>
+      <ReactHighcharts config={config} />
     );
   }
 }
 
 const Stats = () => (
   <div className="box">
-    <div className="box-header-timeline"></div>
+    <div className="box-header-timeline" />
     <div className="box-body">
       <h3>FreeFeed Stats</h3>
-      <StatsChart type={`active_users`} title="Daily Active Users"></StatsChart>
-      <StatsChart type={`registrations`} title="Daily Registrations"></StatsChart>
-      <StatsChart type={`posts_creates`} title="Daily Posts"></StatsChart>
-      <StatsChart type={`comments_creates`} title="Daily Comments"></StatsChart>
-      <StatsChart type={`likes_creates`} title="Daily Likes"></StatsChart>
-      <StatsChart type={`comment_likes_creates`} title="Daily Comment Likes"></StatsChart>
+      <StatsChart type={`active_users`} title="Daily Active Users" />
+      <StatsChart type={`registrations`} title="Daily Registrations" />
+      <StatsChart type={`posts_creates`} title="Daily Posts" />
+      <StatsChart type={`comments_creates`} title="Daily Comments" />
+      <StatsChart type={`likes_creates`} title="Daily Likes" />
+      <StatsChart type={`comment_likes_creates`} title="Daily Comment Likes" />
     </div>
   </div>
 );

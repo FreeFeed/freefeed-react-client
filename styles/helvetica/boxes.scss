@@ -33,6 +33,14 @@
     font-size: 14px;
     font-weight: normal;
     line-height: 28px;
+
+    @media (max-width: 512px) {
+      text-transform: capitalize;
+
+      span {
+        display: none;
+      }
+    }
   }
 }
 

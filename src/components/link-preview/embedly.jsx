@@ -1,6 +1,6 @@
 /* global embedly */
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import 'element-closest';
 
 import ScrollSafe from './scroll-helpers/scroll-safe';
@@ -17,7 +17,7 @@ class EmbedlyPreview extends React.Component {
     updCounter: 0,
   };
 
-  setLink = el => this.link = el;
+  setLink = (el) => this.link = el;
 
   componentDidMount() {
     embedly('card', this.link);
@@ -29,7 +29,7 @@ class EmbedlyPreview extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.feedIsLoading && !nextProps.feedIsLoading) {
-      this.setState({updCounter: this.state.updCounter + 1});
+      this.setState({ updCounter: this.state.updCounter + 1 });
     }
   }
 
@@ -41,7 +41,7 @@ class EmbedlyPreview extends React.Component {
         key={`${this.props.url}##${this.state.updCounter}`}
         className="embedly-preview link-preview-content"
         data-url={this.props.url}
-        style={{height: heightCache.get(this.props.url, 0) + 'px'}}
+        style={{ height: `${heightCache.get(this.props.url, 0)}px` }}
       >
         <a
           ref={this.setLink}
@@ -49,7 +49,8 @@ class EmbedlyPreview extends React.Component {
           data-card-controls="0"
           data-card-width="400px"
           data-card-recommend="0"
-          data-card-align="left"/>
+          data-card-align="left"
+        />
       </div>
     );
   }
@@ -63,12 +64,12 @@ function select(state) {
 
 export default ScrollSafe(connect(select)(EmbedlyPreview));
 
-embedly('on', 'card.resize', function(iframe) {
+embedly('on', 'card.resize', (iframe) => {
   const cont = iframe.closest('.embedly-preview');
   if (!cont) {
     return;
   }
   const height = iframe.offsetHeight;
-  cont.style.height = height + 'px';
+  cont.style.height = `${height}px`;
   heightCache.set(cont.dataset.url, height);
 });

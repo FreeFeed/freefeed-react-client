@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {READMORE_STYLE_COMFORT} from '../utils/frontend-preferences-options';
+import { READMORE_STYLE_COMFORT } from '../utils/frontend-preferences-options';
 
 import Linkify from './linkify';
 
@@ -16,7 +16,7 @@ const thresholdTextLines = 5;
 const suffix = '...';
 
 // Separator element for "paragraphs"
-const paragraphBreak = <div className="p-break"><br/></div>;
+const paragraphBreak = <div className="p-break"><br /></div>;
 
 // Shorten text without cutting words
 const shortenText = (text, maxLength) => {
@@ -47,8 +47,8 @@ const injectSeparator = (array, separator) => {
   const result = [];
 
   array.forEach((item, i) => {
-    result.push(<span key={'item-' + i}>{item}</span>);
-    result.push(React.cloneElement(separator, {key: 'separator-' + i}, separator.props.children));
+    result.push(<span key={`item-${i}`}>{item}</span>);
+    result.push(React.cloneElement(separator, { key: `separator-${i}` }, separator.props.children));
   });
 
   result.pop();
@@ -58,8 +58,8 @@ const injectSeparator = (array, separator) => {
 
 // Replace single newlines with <br/> and trim every line
 const brAndTrim = (text) => {
-  const lines = text.split(/\n/g).map(line => line.trim());
-  return injectSeparator(lines, <br/>);
+  const lines = text.split(/\n/g).map((line) => line.trim());
+  return injectSeparator(lines, <br />);
 };
 
 const getCollapsedText = (text, expandText) => {
@@ -112,7 +112,7 @@ export default class PieceOfText extends React.Component {
   }
 
   expandText() {
-    this.setState({isExpanded: true});
+    this.setState({ isExpanded: true });
   }
 
   render() {
@@ -122,6 +122,6 @@ export default class PieceOfText extends React.Component {
           ? getExpandedText(this.props.text)
           : getCollapsedText(this.props.text, this.expandText.bind(this))}
       </Linkify>
-    ) : <span/>);
+    ) : <span />);
   }
 }

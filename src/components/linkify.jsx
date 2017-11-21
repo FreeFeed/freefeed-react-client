@@ -1,19 +1,19 @@
 /*global Raven*/
 import React from 'react';
-import {Link} from 'react-router';
-import {shorten} from 'ff-url-finder';
+import { Link } from 'react-router';
+import { shorten } from 'ff-url-finder';
 
 import config from '../config';
-import {finder} from '../utils';
-import {highlightString} from '../utils/search-highlighter';
-import {LINK, AT_LINK, LOCAL_LINK, EMAIL, HASHTAG, ARROW, FRIENDFEED_POST} from '../utils/link-types';
+import { finder } from '../utils';
+import { highlightString } from '../utils/search-highlighter';
+import { LINK, AT_LINK, LOCAL_LINK, EMAIL, HASHTAG, ARROW, FRIENDFEED_POST } from '../utils/link-types';
 import UserName from './user-name';
 
 const MAX_URL_LENGTH = 50;
 const searchConfig = config.search;
 
 class Linkify extends React.Component {
-  createLinkElement({type, username}, displayedLink, href) {
+  createLinkElement({ type, username }, displayedLink, href) {
     const props = { key: `match${++this.idx}`, dir: 'ltr' };
 
     if (type == AT_LINK || type == LOCAL_LINK) {
@@ -68,8 +68,8 @@ class Linkify extends React.Component {
     }
   }
 
-  parseCounter = 0
-  idx = 0
+  parseCounter = 0;
+  idx = 0;
 
   parseString(string) {
     const elements = [];
@@ -80,7 +80,7 @@ class Linkify extends React.Component {
     this.idx = 0;
 
     try {
-      finder.parse(string).map(it => {
+      finder.parse(string).map((it) => {
         let displayedLink = it.text;
         let href;
 
@@ -88,11 +88,14 @@ class Linkify extends React.Component {
           displayedLink = shorten(it.text, MAX_URL_LENGTH).replace(/^https?:\/\//, '');
           href = it.url;
         } else if (it.type === AT_LINK) {
-          elements.push(<UserName
-            user={{username: it.username}}
-            display={it.text}
-            userHover={this.userHover}
-            key={`match${++this.idx}`}/>);
+          elements.push(
+            <UserName
+              user={{ username: it.username }}
+              display={it.text}
+              userHover={this.userHover}
+              key={`match${++this.idx}`}
+            />
+          );
           return;
         } else if (it.type === LOCAL_LINK) {
           displayedLink = shorten(it.text, MAX_URL_LENGTH).replace(/^https?:\/\//, '');
@@ -101,7 +104,7 @@ class Linkify extends React.Component {
           href = `mailto:${it.address}`;
         } else if (it.type === HASHTAG) {
           if (searchConfig.searchEngine) {
-            href = searchConfig.searchEngine+encodeURIComponent(it.text);
+            href = searchConfig.searchEngine + encodeURIComponent(it.text);
           } else {
             it.type = LOCAL_LINK;
             href = { pathname: '/search', query: { qs: it.text } };
@@ -138,11 +141,11 @@ class Linkify extends React.Component {
     } else if (React.isValidElement(children) && (children.type !== 'a') && (children.type !== 'button')) {
       parsed = React.cloneElement(
         children,
-        {key: `parse${++this.parseCounter}`},
+        { key: `parse${++this.parseCounter}` },
         this.parse(children.props.children, hlTerms)
       );
     } else if (children instanceof Array) {
-      parsed = children.map(child => {
+      parsed = children.map((child) => {
         return this.parse(child, hlTerms);
       });
     }

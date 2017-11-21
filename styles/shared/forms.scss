@@ -33,13 +33,13 @@
   width: calc(100% - 25px) !important;
 }
 
-&.select2-container--open {
+.select2-container--open {
   .select2-selection--multiple {
     border: 1px solid #aaa !important;
   }
 }
 
-&.select2-container--focus {
+.select2-container--focus {
   .select2-selection--multiple {
     border: 1px solid #ccc !important;
   }

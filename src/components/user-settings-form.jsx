@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import {preventDefault} from '../utils';
+import { preventDefault } from '../utils';
 
 const
   PUBLIC_FEED = 'PUBLIC',
@@ -10,7 +10,6 @@ const
   PRIVATE_FEED = 'PRIVATE';
 
 export default class UserSettingsForm extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -21,16 +20,16 @@ export default class UserSettingsForm extends React.Component {
   }
 
   updateSetting = (setting) => (e) => {
-    this.props.userSettingsChange({[setting]: e.target.value});
-  }
+    this.props.userSettingsChange({ [setting]: e.target.value });
+  };
 
   updatePrivacy = (e) => {
     if (e.target.value === PUBLIC_FEED) {
-      this.props.userSettingsChange({isProtected: '0', isPrivate: '0'});
+      this.props.userSettingsChange({ isProtected: '0', isPrivate: '0' });
     } else if (e.target.value === PROTECTED_FEED) {
-      this.props.userSettingsChange({isProtected: '1', isPrivate: '0'});
+      this.props.userSettingsChange({ isProtected: '1', isPrivate: '0' });
     } else if (e.target.value === PRIVATE_FEED) {
-      this.props.userSettingsChange({isProtected: '1', isPrivate: '1'});
+      this.props.userSettingsChange({ isProtected: '1', isPrivate: '1' });
     }
   };
 
@@ -38,7 +37,7 @@ export default class UserSettingsForm extends React.Component {
     if (!this.props.isSaving) {
       this.props.updateUser(this.props.user.id, this.props.screenName, this.props.email, this.props.isPrivate, this.props.isProtected, this.props.description);
     }
-  }
+  };
 
   render() {
     const className = classnames({
@@ -66,15 +65,15 @@ export default class UserSettingsForm extends React.Component {
             ) : false
           }
           <label htmlFor="displayName-input">Display name:</label>
-          <input id="displayName-input" className="form-control" name="screenName" type="text" defaultValue={this.props.user.screenName} onChange={this.updateSetting('screenName')} maxLength="100"/>
+          <input id="displayName-input" className="form-control" name="screenName" type="text" defaultValue={this.props.user.screenName} onChange={this.updateSetting('screenName')} maxLength="100" />
         </div>
         <div className="form-group">
           <label htmlFor="email-input">Email:</label>
-          <input id="email-input" className="form-control" name="email" type="text" defaultValue={this.props.user.email} onChange={this.updateSetting('email')}/>
+          <input id="email-input" className="form-control" name="email" type="text" defaultValue={this.props.user.email} onChange={this.updateSetting('email')} />
         </div>
         <div className="form-group">
           <label htmlFor="description-textarea">Description:</label>
-          <textarea id="description-textarea" className="form-control" name="description" defaultValue={this.props.user.description} onChange={this.updateSetting('description')} maxLength="1500"/>
+          <textarea id="description-textarea" className="form-control" name="description" defaultValue={this.props.user.description} onChange={this.updateSetting('description')} maxLength="1500" />
         </div>
         <div className="form-group">
           <p>
@@ -87,7 +86,8 @@ export default class UserSettingsForm extends React.Component {
                 name="privacy"
                 value={PUBLIC_FEED}
                 checked={feedPrivacy === PUBLIC_FEED}
-                onChange={this.updatePrivacy}/>
+                onChange={this.updatePrivacy}
+              />
               Public &mdash; anyone can see your posts
             </label>
           </div>
@@ -98,7 +98,8 @@ export default class UserSettingsForm extends React.Component {
                 name="privacy"
                 value={PROTECTED_FEED}
                 checked={feedPrivacy === PROTECTED_FEED}
-                onChange={this.updatePrivacy}/>
+                onChange={this.updatePrivacy}
+              />
               Protected &mdash; anonymous users and search engines cannot see your posts
             </label>
           </div>
@@ -109,7 +110,8 @@ export default class UserSettingsForm extends React.Component {
                 name="privacy"
                 value={PRIVATE_FEED}
                 checked={feedPrivacy === PRIVATE_FEED}
-                onChange={this.updatePrivacy}/>
+                onChange={this.updatePrivacy}
+              />
               Private &mdash; only people you approve can see your posts
             </label>
           </div>
@@ -118,7 +120,7 @@ export default class UserSettingsForm extends React.Component {
           <button className="btn btn-default" type="submit">Update</button>
           {this.props.isSaving ? (
             <span className="settings-throbber">
-              <img width="16" height="16" src={throbber16}/>
+              <img width="16" height="16" src={throbber16} />
             </span>
           ) : false}
         </p>

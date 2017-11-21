@@ -1,12 +1,12 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {joinPostData, postActions} from './select-utils';
+import { connect } from 'react-redux';
+import { joinPostData, postActions } from './select-utils';
 
-import Post, {canonicalURI} from './post';
+import Post, { canonicalURI } from './post';
 
 class SinglePostHandler extends React.Component {
   componentWillReceiveProps(nextProps) {
-    const {post, router} = nextProps;
+    const { post, router } = nextProps;
     if (!post) {
       return;
     }
@@ -17,10 +17,10 @@ class SinglePostHandler extends React.Component {
   }
 
   render() {
-    const {props} = this;
-    const post = props.post;
+    const { props } = this;
+    const { post } = props;
 
-    let postBody = <div></div>;
+    let postBody = <div />;
 
     if (props.errorString) {
       postBody = <h2>{props.errorString}</h2>;
@@ -29,7 +29,8 @@ class SinglePostHandler extends React.Component {
     if (post) {
       post.isCommenting = true;
       postBody = (
-        <Post {...post}
+        <Post
+          {...post}
           key={post.id}
           isSinglePost={true}
           user={props.user}
@@ -49,28 +50,27 @@ class SinglePostHandler extends React.Component {
           toggleModeratingComments={props.toggleModeratingComments}
           disableComments={props.disableComments}
           enableComments={props.enableComments}
-          commentEdit={props.commentEdit} />
+          commentEdit={props.commentEdit}
+        />
       );
     }
 
     return (
-      <div className='box'>
-        <div className='box-header-timeline'>
+      <div className="box">
+        <div className="box-header-timeline">
           {props.boxHeader}
         </div>
-        <div className='box-body'>
+        <div className="box-body">
           {postBody}
         </div>
-        <div className='box-footer'>
-        </div>
+        <div className="box-footer" />
       </div>
     );
   }
 }
 
 function selectState(state) {
-  const boxHeader = state.boxHeader;
-  const user = state.user;
+  const { boxHeader, user } = state;
 
   const post = joinPostData(state)(state.singlePostId);
   const viewState = state.postsViewState[state.singlePostId];

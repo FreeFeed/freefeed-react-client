@@ -1,9 +1,9 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
-import {createPost, resetPostCreateForm, expandSendTo} from '../redux/action-creators';
-import {getCurrentRouteName} from '../utils';
-import {joinPostData, joinCreatePostData, postActions, userActions} from './select-utils';
+import { createPost, resetPostCreateForm, expandSendTo } from '../redux/action-creators';
+import { getCurrentRouteName } from '../utils';
+import { joinPostData, joinCreatePostData, postActions, userActions } from './select-utils';
 import Breadcrumbs from './breadcrumbs';
 import UserProfile from './user-profile';
 import UserFeed from './user-feed';
@@ -16,7 +16,7 @@ const UserHandler = (props) => {
       </div>
 
       <div className="box-body">
-        {props.breadcrumbs.shouldShowBreadcrumbs ? <Breadcrumbs {...props.breadcrumbs}/> : false}
+        {props.breadcrumbs.shouldShowBreadcrumbs ? <Breadcrumbs {...props.breadcrumbs} /> : false}
 
         <UserProfile
           {...props.viewUser}
@@ -29,26 +29,23 @@ const UserHandler = (props) => {
           resetPostCreateForm={props.resetPostCreateForm}
           createPostForm={props.createPostForm}
           addAttachmentResponse={props.addAttachmentResponse}
-          removeAttachment={props.removeAttachment}/>
+          removeAttachment={props.removeAttachment}
+        />
       </div>
 
-      <UserFeed {...props}/>
+      <UserFeed {...props} />
     </div>
   );
 };
 
 function selectState(state, ownProps) {
-  const user = state.user;
-  const authenticated = state.authenticated;
+  const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
   const anonymous = !authenticated;
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
-  const createPostViewState = state.createPostViewState;
   const createPostForm = joinCreatePostData(state);
-  const timelines = state.timelines;
-  const boxHeader = state.boxHeader;
-  const foundUser = Object.getOwnPropertyNames(state.users)
-    .map(key => state.users[key] || state.subscribers[key])
-    .filter(user => user.username === ownProps.params.userName)[0];
+  const [foundUser] = Object.getOwnPropertyNames(state.users)
+    .map((key) => state.users[key] || state.subscribers[key])
+    .filter((user) => user.username === ownProps.params.userName);
 
   const amIGroupAdmin = (
     authenticated &&
@@ -82,15 +79,15 @@ function selectState(state, ownProps) {
   statusExtension.canIPostHere = statusExtension.isUserFound &&
     ((statusExtension.isItMe && isItPostsPage) || (foundUser.type === 'group' && canIPostToGroup));
 
-  const viewUser = {...(foundUser), ...statusExtension};
+  const viewUser = { ...(foundUser), ...statusExtension };
 
   const breadcrumbs = {
     shouldShowBreadcrumbs: !isItPostsPage,
     user: viewUser,
-    breadcrumb: currentRouteName.replace('user','')
+    breadcrumb: currentRouteName.replace('user', '')
   };
 
-  const sendTo = {...state.sendTo, defaultFeed: (foundUser ? foundUser.username : null)};
+  const sendTo = { ...state.sendTo, defaultFeed: (foundUser ? foundUser.username : null) };
 
   const showSummaryHeader = (currentRouteName === 'userSummary');
 

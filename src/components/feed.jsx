@@ -21,11 +21,12 @@ const HiddenEntriesToggle = (props) => {
 };
 
 export default (props) => {
-  const getEntryComponent = section => post => {
+  const getEntryComponent = (section) => (post) => {
     const isRecentlyHidden = (props.isInHomeFeed && post.isHidden && (section === 'visible'));
 
     return (
-      <Post {...post}
+      <Post
+        {...post}
         key={post.id}
         user={props.user}
         isInHomeFeed={props.isInHomeFeed}
@@ -50,7 +51,8 @@ export default (props) => {
         disableComments={props.disableComments}
         enableComments={props.enableComments}
         commentEdit={props.commentEdit}
-        highlightTerms={props.highlightTerms}/>
+        highlightTerms={props.highlightTerms}
+      />
     );
   };
 
@@ -66,7 +68,8 @@ export default (props) => {
           <HiddenEntriesToggle
             count={hiddenEntries.length}
             isOpen={props.isHiddenRevealed}
-            toggle={props.toggleHiddenPosts}/>
+            toggle={props.toggleHiddenPosts}
+          />
 
           {props.isHiddenRevealed ? hiddenEntries : false}
         </div>
