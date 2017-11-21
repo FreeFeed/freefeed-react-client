@@ -119,19 +119,22 @@ export default class ImageAttachmentsContainer extends React.Component {
             handleClick={this.handleClickThumbnail(i)}
             removeAttachment={this.props.removeAttachment}
             isHidden={showFolded && i > lastVisibleIndex}
-            {...a} />
+            {...a}
+          />
         ))}
         {isSingleImage ? false : (<div className="show-more">
           <i
             className="fa fa-2x fa-chevron-circle-right"
             onClick={this.toggleFolding}
-            title={this.state.isFolded ? `Show more (${this.props.attachments.length - lastVisibleIndex - 1})` : "Show less"}/>
+            title={this.state.isFolded ? `Show more (${this.props.attachments.length - lastVisibleIndex - 1})` : "Show less"}
+          />
         </div>)}
         <ImageAttachmentsLightbox
           ref={(el) => this.lightbox = el}
           items={this.getLightboxItems()}
           postId={this.props.postId}
-          getThumbnail={this.getThumbnail}/>
+          getThumbnail={this.getThumbnail}
+        />
       </div>
     );
   }

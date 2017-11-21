@@ -28,7 +28,8 @@ const GroupSettings = (props) => (
           group={props.group}
           updateGroup={props.updateGroup}
           resetGroupUpdateForm={props.resetGroupUpdateForm}
-          {...props.groupSettingsForm}/>
+          {...props.groupSettingsForm}
+        />
 
         <hr/>
 
@@ -36,7 +37,8 @@ const GroupSettings = (props) => (
           group={props.group}
           updateGroupPicture={props.updateGroupPicture}
           resetGroupUpdateForm={props.resetGroupUpdateForm}
-          {...props.groupPictureForm}/>
+          {...props.groupPictureForm}
+        />
       </div>
     </div>
   ) : props.groupSettings.status === 'error' ? (

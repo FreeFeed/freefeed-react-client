@@ -58,7 +58,8 @@ export default class GroupCreateForm extends React.Component {
             </div>
             <GroupFeedTypePicker isPrivate={this.state.isPrivate}
               isRestricted={this.state.isRestricted}
-              updateGroupPrivacySettings={this.handlePrivacyTypeChange} />
+              updateGroupPrivacySettings={this.handlePrivacyTypeChange}
+            />
             <p>
               <button className="btn btn-default" type="submit">Create</button>
               {this.props.status === 'loading' ? (

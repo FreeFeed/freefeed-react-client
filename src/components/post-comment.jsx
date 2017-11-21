@@ -160,7 +160,8 @@ export default class PostComment extends React.Component {
               onBlur={this.updateCommentingText}
               minRows={2}
               maxRows={10}
-              maxLength="1500"/>
+              maxLength="1500"
+            />
           </div>
           {this.props.isSinglePost ? (
             <span>
@@ -203,7 +204,8 @@ export default class PostComment extends React.Component {
       <div className="comment-body">
         <Expandable expanded={this.props.readMoreStyle === READMORE_STYLE_COMPACT || this.props.isSinglePost || this.props.isExpanded}
           bonusInfo={authorAndButtons}
-          config={commentReadmoreConfig}>
+          config={commentReadmoreConfig}
+        >
           <PieceOfText
             text={this.props.body}
             readMoreStyle={this.props.readMoreStyle}
@@ -227,19 +229,22 @@ export default class PostComment extends React.Component {
     if (this.props.hideType) {
       return false;
     }
-    return <CommentLikes  commentId={this.props.id}
-      entryUrl={this.props.entryUrl}
-      omitBubble={this.props.omitBubble}
-      createdAt={this.props.createdAt}
-      likes={this.props.likes}
-      forbidLiking={this.props.isEditable}
-      omitLikes={this.props.isEditing}
-      hasOwnLike={this.props.hasOwnLike}
-      toggleLike={this.toggleLike}
-      likesList={this.props.likesList}
-      getCommentLikes={this.getCommentLikes}
-      reply={this.reply}
-      mention={this.mention}/>;
+    return (
+      <CommentLikes  commentId={this.props.id}
+        entryUrl={this.props.entryUrl}
+        omitBubble={this.props.omitBubble}
+        createdAt={this.props.createdAt}
+        likes={this.props.likes}
+        forbidLiking={this.props.isEditable}
+        omitLikes={this.props.isEditing}
+        hasOwnLike={this.props.hasOwnLike}
+        toggleLike={this.toggleLike}
+        likesList={this.props.likesList}
+        getCommentLikes={this.getCommentLikes}
+        reply={this.reply}
+        mention={this.mention}
+      />
+    );
   }
 
   render() {

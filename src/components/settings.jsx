@@ -48,7 +48,8 @@ class Settings extends React.Component {
               user={props.user}
               updateUser={props.updateUser}
               userSettingsChange={props.userSettingsChange}
-              {...props.userSettingsForm}/>
+              {...props.userSettingsForm}
+            />
 
             <hr/>
 
@@ -57,20 +58,23 @@ class Settings extends React.Component {
               frontendPreferences={props.user.frontendPreferences}
               backendPreferences={props.user.preferences}
               updateUserPreferences={props.updateUserPreferences}
-              {...props.frontendPreferencesForm}/>
+              {...props.frontendPreferencesForm}
+            />
 
             <hr/>
 
             <UserChangePasswordForm
               updatePassword={props.updatePassword}
-              {...props.passwordForm}/>
+              {...props.passwordForm}
+            />
 
             <hr/>
 
             <UserPictureForm
               user={props.user}
               updateUserPicture={props.updateUserPicture}
-              {...props.userPictureForm}/>
+              {...props.userPictureForm}
+            />
 
             <hr/>
 
@@ -78,7 +82,8 @@ class Settings extends React.Component {
               userId={props.user.id}
               backendPreferences={props.user.preferences}
               updateUserNotificationPreferences={props.updateUserNotificationPreferences}
-              {...props.userNotificationsForm}/>
+              {...props.userNotificationsForm}
+            />
 
             <hr/>
           </div>

@@ -13,7 +13,8 @@ const GroupCreate = (props) => (
       <GroupCreateForm
         createGroup={props.createGroup}
         resetGroupCreateForm={props.resetGroupCreateForm}
-        {...props.groupCreateForm}/>
+        {...props.groupCreateForm}
+      />
     </div>
   </div>
 );

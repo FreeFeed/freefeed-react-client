@@ -22,7 +22,8 @@ const FeedHandler = (props) => {
       expandSendTo={props.expandSendTo}
       createPostForm={props.createPostForm}
       addAttachmentResponse={props.addAttachmentResponse}
-      removeAttachment={props.removeAttachment}/>
+      removeAttachment={props.removeAttachment}
+    />
   );
 
   const { userRequestsCount, groupRequestsCount } = props;

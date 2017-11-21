@@ -145,7 +145,8 @@ export default class UserProfile extends React.Component {
             expandSendTo={props.expandSendTo}
             createPostForm={props.createPostForm}
             addAttachmentResponse={props.addAttachmentResponse}
-            removeAttachment={props.removeAttachment}/>
+            removeAttachment={props.removeAttachment}
+          />
         ) : false}
 
         {!props.canIPostHere && props.isRestricted === '1' ? (

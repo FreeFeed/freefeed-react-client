@@ -104,7 +104,8 @@ export default class SendTo extends React.Component {
               valueRenderer={this.labelRenderer}
               ref="selector"
               multi={true}
-              clearable={false} />
+              clearable={false}
+            />
             {this.state.isWarningDisplayed ? (
               <div className="selector-warning">
                 You are going to send a direct message and also post this message to a feed. This means that everyone who sees this feed will be able to see your message.

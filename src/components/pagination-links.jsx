@@ -16,13 +16,15 @@ export default (props) => {
       {props.offset > 0 ?
         <li>
           <Link to={{ pathname: props.location.pathname, query: { ...allQuery, ...offsetObject(minOffset(props.offset)) } }}
-            className="p-pagination-newer">« Newer items</Link>
+            className="p-pagination-newer"
+          >« Newer items</Link>
         </li>
         : false}
       {!props.isLastPage ?
         <li>
           <Link to={{ pathname: props.location.pathname, query: { ...allQuery, ...offsetObject(maxOffset(props.offset)) } }}
-            className="p-pagination-older">Older items »</Link>
+            className="p-pagination-older"
+          >Older items »</Link>
         </li>
         : false
       }

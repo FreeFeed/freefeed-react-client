@@ -29,7 +29,8 @@ const UserHandler = (props) => {
           resetPostCreateForm={props.resetPostCreateForm}
           createPostForm={props.createPostForm}
           addAttachmentResponse={props.addAttachmentResponse}
-          removeAttachment={props.removeAttachment}/>
+          removeAttachment={props.removeAttachment}
+        />
       </div>
 
       <UserFeed {...props}/>

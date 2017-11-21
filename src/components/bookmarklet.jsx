@@ -96,7 +96,8 @@ class Layout extends React.Component {
             createPostForm={props.createPostForm}
             createPost={props.createBookmarkletPost}
             resetPostCreateForm={props.resetPostCreateForm}
-            removeImage={this.removeImage}/>
+            removeImage={this.removeImage}
+          />
         ) : (
           <div>
             <div className="box-message alert alert-warning">You need to sign in first.</div>

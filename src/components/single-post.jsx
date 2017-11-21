@@ -49,7 +49,8 @@ class SinglePostHandler extends React.Component {
           toggleModeratingComments={props.toggleModeratingComments}
           disableComments={props.disableComments}
           enableComments={props.enableComments}
-          commentEdit={props.commentEdit} />
+          commentEdit={props.commentEdit}
+        />
       );
     }
 

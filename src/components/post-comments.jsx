@@ -52,7 +52,8 @@ export default class PostComments extends React.Component {
         errorString={props.commentError}
         isSaving={props.post.isSavingComment}
         isSinglePost={props.post.isSinglePost}
-        currentUser={props.post.user}/>
+        currentUser={props.post.user}
+      />
     );
   }
 
@@ -96,7 +97,8 @@ export default class PostComments extends React.Component {
         highlightArrowComment={(arrows) => props.commentEdit.highlightComment(props.post.id, undefined, arrows, comment.id)}
         readMoreStyle={props.readMoreStyle}
         highlightTerms={props.highlightTerms}
-        currentUser={props.post.user}/>
+        currentUser={props.post.user}
+      />
     );
   }
 
@@ -146,7 +148,8 @@ export default class PostComments extends React.Component {
           entryUrl={entryUrl}
           omittedCommentLikes={post.omittedCommentLikes}
           omittedOwnCommentLikes={post.omittedOwnCommentLikes}
-          isLoading={post.isLoadingComments}/>
+          isLoading={post.isLoadingComments}
+        />
       );
     }
 

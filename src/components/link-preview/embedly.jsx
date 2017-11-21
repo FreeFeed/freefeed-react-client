@@ -49,7 +49,8 @@ class EmbedlyPreview extends React.Component {
           data-card-controls="0"
           data-card-width="400px"
           data-card-recommend="0"
-          data-card-align="left"/>
+          data-card-align="left"
+        />
       </div>
     );
   }

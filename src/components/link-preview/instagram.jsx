@@ -55,7 +55,8 @@ class InstagramPreview extends React.Component {
           frameBorder="0"
           scrolling="no"
           allowTransparency={true}
-          className="instagram-iframe"/>
+          className="instagram-iframe"
+        />
       </div>
     );
   }

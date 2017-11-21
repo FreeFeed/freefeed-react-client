@@ -97,7 +97,8 @@ export default class CreateBookmarkletPost extends React.Component {
           feeds={this.props.sendTo.feeds}
           defaultFeed={this.props.sendTo.defaultFeed}
           user={this.props.user}
-          onChange={this.checkCreatePostAvailability}/>
+          onChange={this.checkCreatePostAvailability}
+        />
 
         <textarea
           className="post-textarea"
@@ -106,7 +107,8 @@ export default class CreateBookmarkletPost extends React.Component {
           onKeyDown={this.checkSave}
           onChange={this.checkCreatePostAvailability}
           rows={3}
-          maxLength="1500"/>
+          maxLength="1500"
+        />
 
         {this.props.imageUrls.length ? (
           linkedImages
@@ -128,7 +130,8 @@ export default class CreateBookmarkletPost extends React.Component {
               onKeyDown={this.checkSave}
               onChange={this.checkCreatePostAvailability}
               rows={4}
-              maxLength="1500"/>
+              maxLength="1500"
+            />
           </div>
         </div>
 
@@ -141,7 +144,8 @@ export default class CreateBookmarkletPost extends React.Component {
 
           <button className="btn btn-default"
             onClick={preventDefault(this.submitForm)}
-            disabled={this.state.isFormEmpty || this.props.createPostViewState.isPending}>Post</button>
+            disabled={this.state.isFormEmpty || this.props.createPostViewState.isPending}
+          >Post</button>
         </div>
       </div>
     );

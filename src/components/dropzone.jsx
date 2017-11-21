@@ -78,5 +78,6 @@ export default (props) => (
   <DropzoneComponent
     config={dropzoneComponentConfig}
     djsConfig={dropzoneConfig}
-    eventHandlers={dropzoneEventHandlers(props)}/>
+    eventHandlers={dropzoneEventHandlers(props)}
+  />
 );

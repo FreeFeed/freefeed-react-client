@@ -111,7 +111,8 @@ export default class UserPreferencesForm extends React.Component {
               name="displayOption"
               value={FrontendPrefsOptions.DISPLAYNAMES_DISPLAYNAME}
               checked={this.state.displayNames.displayOption === FrontendPrefsOptions.DISPLAYNAMES_DISPLAYNAME}
-              onChange={this.changeDisplayOption}/>
+              onChange={this.changeDisplayOption}
+            />
             Display name only
           </label>
         </div>
@@ -122,7 +123,8 @@ export default class UserPreferencesForm extends React.Component {
               name="displayOption"
               value={FrontendPrefsOptions.DISPLAYNAMES_BOTH}
               checked={this.state.displayNames.displayOption === FrontendPrefsOptions.DISPLAYNAMES_BOTH}
-              onChange={this.changeDisplayOption}/>
+              onChange={this.changeDisplayOption}
+            />
             Display name + username
           </label>
         </div>
@@ -133,7 +135,8 @@ export default class UserPreferencesForm extends React.Component {
               name="displayOption"
               value={FrontendPrefsOptions.DISPLAYNAMES_USERNAME}
               checked={this.state.displayNames.displayOption === FrontendPrefsOptions.DISPLAYNAMES_USERNAME}
-              onChange={this.changeDisplayOption}/>
+              onChange={this.changeDisplayOption}
+            />
             Username only
           </label>
         </div>
@@ -153,7 +156,8 @@ export default class UserPreferencesForm extends React.Component {
                 name="readmoreStyle"
                 value={FrontendPrefsOptions.READMORE_STYLE_COMPACT}
                 checked={this.state.readMoreStyle === FrontendPrefsOptions.READMORE_STYLE_COMPACT}
-                onChange={this.changeReadMoreStyle}/>
+                onChange={this.changeReadMoreStyle}
+              />
               Compact: hides line breaks (until 'Expand' is clicked)
             </label>
           </div>
@@ -164,7 +168,8 @@ export default class UserPreferencesForm extends React.Component {
                 name="readmoreStyle"
                 value={FrontendPrefsOptions.READMORE_STYLE_COMFORT}
                 checked={this.state.readMoreStyle === FrontendPrefsOptions.READMORE_STYLE_COMFORT}
-                onChange={this.changeReadMoreStyle}/>
+                onChange={this.changeReadMoreStyle}
+              />
               Comfortable: displays line breaks, shows 'Read more' for longer posts and comments
             </label>
           </div>

@@ -50,7 +50,8 @@ export default (props) => {
         disableComments={props.disableComments}
         enableComments={props.enableComments}
         commentEdit={props.commentEdit}
-        highlightTerms={props.highlightTerms}/>
+        highlightTerms={props.highlightTerms}
+      />
     );
   };
 
@@ -66,7 +67,8 @@ export default (props) => {
           <HiddenEntriesToggle
             count={hiddenEntries.length}
             isOpen={props.isHiddenRevealed}
-            toggle={props.toggleHiddenPosts}/>
+            toggle={props.toggleHiddenPosts}
+          />
 
           {props.isHiddenRevealed ? hiddenEntries : false}
         </div>

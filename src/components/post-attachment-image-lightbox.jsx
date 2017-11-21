@@ -101,7 +101,8 @@ export default class ImageAttachmentsLightbox extends React.Component {
         }}
         isOpen={this.state.isOpened}
         onClose={this.whenClosed}
-        initialZoomInEnd={this.whenOpened}/>
+        initialZoomInEnd={this.whenOpened}
+      />
     );
   }
 }

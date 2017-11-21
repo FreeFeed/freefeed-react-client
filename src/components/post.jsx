@@ -149,7 +149,8 @@ export default class Post extends React.Component {
         <UserName
           className="post-recipient"
           user={recipient}
-          display={recipientCustomDisplay(recipient)}/>
+          display={recipientCustomDisplay(recipient)}
+        />
         {index < props.recipients.length - 2 ? ', ' : false}
         {index === props.recipients.length - 2 ? ' and ' : false}
       </span>
@@ -244,7 +245,8 @@ export default class Post extends React.Component {
           toggleModeratingComments={toggleModeratingComments}
           disableComments={disableComments}
           enableComments={enableComments}
-          deletePost={deletePost}/>
+          deletePost={deletePost}
+        />
       </span>
     ) : false);
 
@@ -265,7 +267,8 @@ export default class Post extends React.Component {
     ) : (
       <div className={postClass} data-author={props.createdBy.username}>
         <Expandable expanded={props.isEditing || props.isSinglePost || props.readMoreStyle === READMORE_STYLE_COMPACT}
-          config={postReadmoreConfig}>
+          config={postReadmoreConfig}
+        >
           <div className="post-userpic">
             <Link to={`/${props.createdBy.username}`}>
               <img className="post-userpic-img" src={profilePicture} width={profilePictureSize} height={profilePictureSize}/>
@@ -284,7 +287,8 @@ export default class Post extends React.Component {
                   onInit={this.handleDropzoneInit}
                   addAttachmentResponse={(att) => props.addAttachmentResponse(this.props.id, att)}
                   addedFile={this.changeAttachmentQueue(1)}
-                  removedFile={this.changeAttachmentQueue(-1)}/>
+                  removedFile={this.changeAttachmentQueue(-1)}
+                />
 
                 <div>
                   <Textarea
@@ -296,7 +300,8 @@ export default class Post extends React.Component {
                     autoFocus={true}
                     minRows={2}
                     maxRows={10}
-                    maxLength="1500"/>
+                    maxLength="1500"
+                  />
                 </div>
 
                 <div className="post-edit-options">
@@ -316,14 +321,16 @@ export default class Post extends React.Component {
                   <a className="post-cancel" onClick={cancelEditingPost}>Cancel</a>
                   <button className="btn btn-default btn-xs"
                     onClick={saveEditingPost}
-                    disabled={this.state.attachmentQueueLength > 0}>Update</button>
+                    disabled={this.state.attachmentQueueLength > 0}
+                  >Update</button>
                 </div>
               </div>
             ) : (
               <div className="post-text">
                 <PieceOfText  text={props.body}
                   readMoreStyle={props.readMoreStyle}
-                  highlightTerms={props.highlightTerms}/>
+                  highlightTerms={props.highlightTerms}
+                />
               </div>
             )}
           </div>
@@ -335,7 +342,8 @@ export default class Post extends React.Component {
             attachments={props.attachments}
             isEditing={props.isEditing}
             isSinglePost={props.isSinglePost}
-            removeAttachment={this.removeAttachment}/>
+            removeAttachment={this.removeAttachment}
+          />
 
           {noImageAttachments && linkToEmbed ? (
             <div className="link-preview"><LinkPreview url={linkToEmbed} allowEmbedly={props.allowLinksPreview} /></div>
@@ -368,7 +376,8 @@ export default class Post extends React.Component {
           <PostLikes
             post={props}
             likes={props.usersLikedPost}
-            showMoreLikes={props.showMoreLikes}/>
+            showMoreLikes={props.showMoreLikes}
+          />
 
           <PostComments
             post={props}
@@ -382,7 +391,8 @@ export default class Post extends React.Component {
             readMoreStyle={props.readMoreStyle}
             entryUrl={canonicalPostURI}
             highlightTerms={props.highlightTerms}
-            isSinglePost={props.isSinglePost}/>
+            isSinglePost={props.isSinglePost}
+          />
         </div>
       </div>
     ));

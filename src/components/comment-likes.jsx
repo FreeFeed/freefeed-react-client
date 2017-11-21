@@ -15,15 +15,18 @@ export default class CommentLikes extends React.Component {
     };
   }
   render() {
-    return <div className="comment-likes-container"
-      onTouchStart={this.startTouch}
-      onTouchEnd={this.endTouch}
-      onMouseDown={this.startMouseDown}
-      onMouseUp={this.endMouseDown}>
-      {this.renderHeart()}
-      {this.renderBubble()}
-      {this.renderPopup()}
-    </div>;
+    return (
+      <div className="comment-likes-container"
+        onTouchStart={this.startTouch}
+        onTouchEnd={this.endTouch}
+        onMouseDown={this.startMouseDown}
+        onMouseUp={this.endMouseDown}
+      >
+        {this.renderHeart()}
+        {this.renderBubble()}
+        {this.renderPopup()}
+      </div>
+    );
   }
   renderHeart = () => {
     if (this.props.omitLikes) {
@@ -37,7 +40,8 @@ export default class CommentLikes extends React.Component {
       </div>
       <div className="comment-heart" onClick={this.toggleLike}>
         <i  className={`fa fa-heart${this.props.forbidLiking ? "-o" : ""} ${this.state.liked ? "liked" : ""} icon`}
-          title={this.props.forbidLiking ? "Your own comment" : this.props.hasOwnLike ? "Un-like" : "Like"}>
+          title={this.props.forbidLiking ? "Your own comment" : this.props.hasOwnLike ? "Un-like" : "Like"}
+        >
         </i>
       </div>
     </div>;
@@ -48,7 +52,8 @@ export default class CommentLikes extends React.Component {
         <span
           className={`comment-icon fa ${this.props.omitBubble ? "feed-comment-dot" : "fa-comment-o"}`}
           id={`comment-${this.props.commentId}`}
-          onClick={this.openAnsweringComment}/>
+          onClick={this.openAnsweringComment}
+        />
       </TimeDisplay>
       : <span className="comment-time">
         <span className={`comment-icon fa ${this.props.omitBubble ? "feed-comment-dot" : "fa-comment-o"}`}/>
@@ -111,7 +116,8 @@ export default class CommentLikes extends React.Component {
               <div className="actions-panel" ref={(r) => this.actionsPanel = r}>
                 <div className={`likes-panel ${this.state.showActionButtons ? "padded" : ""}`}
                   onClick={(e) => e.stopPropagation()}
-                  style={likesStyle}>
+                  style={likesStyle}
+                >
                   <div className="arrow" onClick={this.arrowClick}><i className="fa fa-angle-left" aria-hidden="true"/></div>
                   <div className="likes">
                     {this.state.showActionButtons
@@ -126,18 +132,23 @@ export default class CommentLikes extends React.Component {
                       <i className="fa fa-heart-o" aria-hidden="true"/>
                       It"s your own comment
                     </div>
-                    : <button  className={`mention-action ${this.props.hasOwnLike ? "un" : ""}like`}
-                      onClick={this.props.toggleLike}>
+                    :
+                    <button  className={`mention-action ${this.props.hasOwnLike ? "un" : ""}like`}
+                      onClick={this.props.toggleLike}
+                    >
                       <i className="fa fa-heart" aria-hidden="true"/>
                       {`${this.props.hasOwnLike ? "Un-like" : "Like"} comment`}
-                    </button>}
+                    </button>
+                  }
                   <button  className="mention-action reply"
-                    onClick={this.props.reply}>
+                    onClick={this.props.reply}
+                  >
                     <i className="fa fa-angle-up" aria-hidden="true"/>
                     Reply to comment
                   </button>
                   <button  className="mention-action mention"
-                    onClick={this.props.mention}>
+                    onClick={this.props.mention}
+                  >
                     <i className="fa fa-at" aria-hidden="true"/>
                     Mention username
                   </button>

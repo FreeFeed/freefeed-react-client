@@ -64,7 +64,8 @@ class GoogleDocsPreview extends React.Component {
             backgroundImage: preview ? `url(${preview})` : null,
             paddingBottom: `${100 / (aspectRatio >= maxAspectRatio ? aspectRatio : defaultAspectRatio)}%`,
             backgroundPosition: `center ${55 * aspectRatio * (zoomRate(type) - 1)}%`,
-          }}/>
+          }}
+        />
       </div>
     );
   }

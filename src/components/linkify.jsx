@@ -88,11 +88,14 @@ class Linkify extends React.Component {
           displayedLink = shorten(it.text, MAX_URL_LENGTH).replace(/^https?:\/\//, '');
           href = it.url;
         } else if (it.type === AT_LINK) {
-          elements.push(<UserName
-            user={{ username: it.username }}
-            display={it.text}
-            userHover={this.userHover}
-            key={`match${++this.idx}`}/>);
+          elements.push(
+            <UserName
+              user={{ username: it.username }}
+              display={it.text}
+              userHover={this.userHover}
+              key={`match${++this.idx}`}
+            />
+          );
           return;
         } else if (it.type === LOCAL_LINK) {
           displayedLink = shorten(it.text, MAX_URL_LENGTH).replace(/^https?:\/\//, '');

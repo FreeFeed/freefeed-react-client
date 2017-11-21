@@ -26,7 +26,8 @@ const FriendsHandler = (props) => {
           header={feedRequestsHeader}
           users={props.feedRequests}
           acceptRequest={props.acceptUserRequest}
-          rejectRequest={props.rejectUserRequest}/>
+          rejectRequest={props.rejectUserRequest}
+        />
 
 
         <TileList {...props.mutual}/>
@@ -36,7 +37,8 @@ const FriendsHandler = (props) => {
         <TileListWithRevoke
           header={sentRequestsHeader}
           users={props.sentRequests}
-          revokeSentRequest={props.revokeSentRequest}/>
+          revokeSentRequest={props.revokeSentRequest}
+        />
       </div>
       <div className="box-footer"></div>
     </div>

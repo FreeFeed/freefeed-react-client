@@ -80,7 +80,8 @@ class UserName extends React.Component {
     return (
       <span className="user-name-wrapper"
         onMouseEnter={this.enterUserName}
-        onMouseLeave={this.leaveUserName}>
+        onMouseLeave={this.leaveUserName}
+      >
 
         <Link to={`/${this.props.user.username}`} className={this.props.className}>
           {this.props.display ? (
@@ -98,11 +99,13 @@ class UserName extends React.Component {
           <Portal isOpened={true}>
             <div
               onMouseEnter={this.enterUserName}
-              onMouseLeave={this.leaveUserName}>
+              onMouseLeave={this.leaveUserName}
+            >
               <UserCard
                 username={this.props.user.username}
                 top={bottom}
-                left={left}/>
+                left={left}
+              />
             </div>
           </Portal>
         ) : false}

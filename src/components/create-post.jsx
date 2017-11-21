@@ -126,14 +126,16 @@ export default class CreatePost extends React.Component {
               defaultFeed={this.props.sendTo.defaultFeed}
               isDirects={this.props.isDirects}
               user={this.props.user}
-              onChange={this.checkCreatePostAvailability}/>
+              onChange={this.checkCreatePostAvailability}
+            />
           }
 
           <Dropzone
             onInit={this.handleDropzoneInit}
             addAttachmentResponse={(att) => props.addAttachmentResponse(null, att)}
             addedFile={this.changeAttachmentQueue(1)}
-            removedFile={this.changeAttachmentQueue(-1)}/>
+            removedFile={this.changeAttachmentQueue(-1)}
+          />
 
           <Textarea
             className="post-textarea"
@@ -144,7 +146,8 @@ export default class CreatePost extends React.Component {
             onPaste={this.handlePaste}
             minRows={3}
             maxRows={10}
-            maxLength="1500"/>
+            maxLength="1500"
+          />
         </div>
 
         <div className="post-edit-options">
@@ -163,7 +166,8 @@ export default class CreatePost extends React.Component {
                   className="post-edit-more-checkbox"
                   type="checkbox"
                   value={this.state.commentsDisabled}
-                  onChange={(e) => this.setState({ commentsDisabled:e.target.checked })}/>
+                  onChange={(e) => this.setState({ commentsDisabled:e.target.checked })}
+                />
                 <span className="post-edit-more-labeltext">Comments disabled</span>
               </label>
             </div>
@@ -179,13 +183,15 @@ export default class CreatePost extends React.Component {
 
           <button className="btn btn-default btn-xs"
             onClick={preventDefault(this.createPost)}
-            disabled={this.state.isFormEmpty || this.state.attachmentQueueLength > 0 || this.props.createPostViewState.isPending}>Post</button>
+            disabled={this.state.isFormEmpty || this.state.attachmentQueueLength > 0 || this.props.createPostViewState.isPending}
+          >Post</button>
         </div>
 
         <PostAttachments
           attachments={this.props.createPostForm.attachments}
           isEditing={true}
-          removeAttachment={this.removeAttachment}/>
+          removeAttachment={this.removeAttachment}
+        />
 
         <div className="dropzone-previews"></div>
 

@@ -86,7 +86,8 @@ export default class UserSettingsForm extends React.Component {
                 name="privacy"
                 value={PUBLIC_FEED}
                 checked={feedPrivacy === PUBLIC_FEED}
-                onChange={this.updatePrivacy}/>
+                onChange={this.updatePrivacy}
+              />
               Public &mdash; anyone can see your posts
             </label>
           </div>
@@ -97,7 +98,8 @@ export default class UserSettingsForm extends React.Component {
                 name="privacy"
                 value={PROTECTED_FEED}
                 checked={feedPrivacy === PROTECTED_FEED}
-                onChange={this.updatePrivacy}/>
+                onChange={this.updatePrivacy}
+              />
               Protected &mdash; anonymous users and search engines cannot see your posts
             </label>
           </div>
@@ -108,7 +110,8 @@ export default class UserSettingsForm extends React.Component {
                 name="privacy"
                 value={PRIVATE_FEED}
                 checked={feedPrivacy === PRIVATE_FEED}
-                onChange={this.updatePrivacy}/>
+                onChange={this.updatePrivacy}
+              />
               Private &mdash; only people you approve can see your posts
             </label>
           </div>

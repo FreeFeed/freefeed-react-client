@@ -89,6 +89,7 @@
     "import/no-unresolved": "error",
     "import/order": "error",
 
+    "react/jsx-closing-bracket-location": 2,
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error"
   }

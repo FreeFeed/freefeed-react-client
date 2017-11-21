@@ -41,7 +41,8 @@ const ManageSubscribersHandler = (props) => {
             <SubsList
               users={props.users}
               makeAdmin={makeAdmin}
-              remove={remove}/>
+              remove={remove}
+            />
           )
             : false}
 
@@ -53,7 +54,8 @@ const ManageSubscribersHandler = (props) => {
           ) : (
             <AdminsList
               users={props.groupAdmins}
-              removeAdminRights={removeAdminRights}/>
+              removeAdminRights={removeAdminRights}
+            />
           )}
         </div>
       </div>

@@ -24,7 +24,8 @@ const renderRequestsToGroup = (accept, reject) => (groupRequests) => {
         header={header}
         users={groupRequests.requests}
         acceptRequest={acceptGroupRequest}
-        rejectRequest={rejectGroupRequest}/>
+        rejectRequest={rejectGroupRequest}
+      />
     </div>
   );
 };
