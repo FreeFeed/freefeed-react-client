@@ -104,9 +104,9 @@ export default class CreatePost extends React.Component {
     }
   };
 
-  toggleMore() {
+  toggleMore = () => {
     this.setState({ isMoreOpen: !this.state.isMoreOpen });
-  }
+  };
 
   changeAttachmentQueue = (change) => () => {
     this.setState({ attachmentQueueLength: this.state.attachmentQueueLength + change });
@@ -116,13 +116,19 @@ export default class CreatePost extends React.Component {
     this.props.resetPostCreateForm();
   }
 
+  handleAddAttachmentResponse = (att) => {
+    this.props.addAttachmentResponse(null, att);
+  };
+
+  handleChangeOfMoreCheckbox = (e) => {
+    this.setState({ commentsDisabled: e.target.checked });
+  };
+
   registerSelectFeeds = (el) => {
     this.selectFeeds = el;
   };
 
   render() {
-    const { props } = this;
-
     return (
       <div className="create-post post-editor">
         <div>
@@ -139,7 +145,7 @@ export default class CreatePost extends React.Component {
 
           <Dropzone
             onInit={this.handleDropzoneInit}
-            addAttachmentResponse={(att) => props.addAttachmentResponse(null, att)}
+            addAttachmentResponse={this.handleAddAttachmentResponse}
             addedFile={this.changeAttachmentQueue(1)}
             removedFile={this.changeAttachmentQueue(-1)}
           />
@@ -164,7 +170,7 @@ export default class CreatePost extends React.Component {
             Add photos or files
           </span>
 
-          <a className="post-edit-more-trigger" onClick={this.toggleMore.bind(this)}>More&nbsp;&#x25be;</a>
+          <a className="post-edit-more-trigger" onClick={this.toggleMore}>More&nbsp;&#x25be;</a>
 
           {this.state.isMoreOpen ? (
             <div className="post-edit-more">
@@ -173,7 +179,7 @@ export default class CreatePost extends React.Component {
                   className="post-edit-more-checkbox"
                   type="checkbox"
                   value={this.state.commentsDisabled}
-                  onChange={(e) => this.setState({ commentsDisabled:e.target.checked })}
+                  onChange={this.handleChangeOfMoreCheckbox}
                 />
                 <span className="post-edit-more-labeltext">Comments disabled</span>
               </label>

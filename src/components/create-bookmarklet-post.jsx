@@ -4,6 +4,24 @@ import throbber16 from '../../assets/images/throbber-16.gif';
 import { preventDefault } from '../utils';
 import SendTo from './send-to';
 
+
+class LinkedImage extends React.PureComponent {
+  handleClick = () => {
+    const { removeImage, url } = this.props;
+
+    removeImage(url);
+  };
+
+  render() {
+    const { url } = this.props;
+    return (
+      <div className="post-linked-image" onClick={this.handleClick} title="Remove image">
+        <img src={url} />
+      </div>
+    );
+  }
+}
+
 export default class CreateBookmarkletPost extends React.Component {
   commentText;
   postText;
@@ -95,11 +113,9 @@ export default class CreateBookmarkletPost extends React.Component {
       );
     }
 
-    const linkedImages = this.props.imageUrls.map((url, i) => (
-      <div className="post-linked-image" key={i} onClick={() => this.props.removeImage(url)} title="Remove image">
-        <img src={url} />
-      </div>
-    ));
+    const linkedImages = this.props.imageUrls.map((url, i) =>
+      <LinkedImage key={i} removeImage={this.props.removeImage} url={url} />
+    );
 
     return (
       <div className="create-post post-editor expanded">

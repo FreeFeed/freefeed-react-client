@@ -16,16 +16,33 @@ export default class UserProfile extends React.Component {
     this.setState({ isUnsubWarningDisplayed: false });
   };
 
+  handleRequestSubscriptionClick = preventDefault(() => {
+    const { id, sendSubscriptionRequest, username } = this.props;
+    sendSubscriptionRequest({ username, id });
+  });
+
+  handleSubscribeClick = preventDefault(() => {
+    const { id, subscribe, username } = this.props;
+    subscribe({ username, id });
+  });
+
+  handleUnsubscribeClick = preventDefault(() => {
+    const { amIGroupAdmin, id, unsubscribe, username } = this.props;
+
+    if (amIGroupAdmin) {
+      this.setState({ isUnsubWarningDisplayed: true });
+    } else {
+      unsubscribe({ username, id });
+    }
+  });
+
+  handleBlockUserClick = preventDefault(() => {
+    const { ban, id, username } = this.props;
+    ban({ username, id });
+  });
+
   render() {
     const { props } = this;
-
-    const unsubscribe = () => {
-      if (props.amIGroupAdmin) {
-        this.setState({ isUnsubWarningDisplayed: true });
-      } else {
-        props.unsubscribe({ username: props.username, id: props.id });
-      }
-    };
 
     return (
       <div>
@@ -92,13 +109,13 @@ export default class UserProfile extends React.Component {
                   props.hasRequestBeenSent ? (
                     <span><b>{props.screenName}</b> has been sent your subscription request.</span>
                   ) : (
-                    <a onClick={() => props.sendSubscriptionRequest({ username: props.username, id: props.id })}>Request a subscription</a>
+                    <a onClick={this.handleRequestSubscriptionClick}>Request a subscription</a>
                   )
                 ) : (
                   props.subscribed ? (
-                    <a onClick={() => unsubscribe()}>Unsubscribe</a>
+                    <a onClick={this.handleUnsubscribeClick}>Unsubscribe</a>
                   ) : (
-                    <a onClick={() => props.subscribe({ username: props.username, id: props.id })}>Subscribe</a>
+                    <a onClick={this.handleSubscribeClick}>Subscribe</a>
                   )
                 )}
 
@@ -116,7 +133,7 @@ export default class UserProfile extends React.Component {
                   </span>
                 )}
                 {props.type !== 'group' && !props.subscribed ? (
-                  <a onClick={preventDefault(() => props.ban({ username: props.username, id: props.id }))}>Block this user</a>
+                  <a onClick={this.handleBlockUserClick}>Block this user</a>
                 ) : props.amIGroupAdmin ? (
                   <Link to={`/${props.username}/settings`}>Settings</Link>
                 ) : false}

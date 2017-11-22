@@ -10,6 +10,9 @@ import MoreCommentsWrapper from './more-comments-wrapper';
 const minCommentsToFold = 12;
 
 export default class PostComments extends React.Component {
+  addingCommentForm;
+  rootEl;
+
   constructor(props) {
     super(props);
     this.addingCommentForm = null;
@@ -37,13 +40,17 @@ export default class PostComments extends React.Component {
     }
   };
 
+  registerCommentForm = (el) => {
+    this.addingCommentForm = el;
+  };
+
   renderAddingComment() {
     const { props } = this;
     return (
       <PostComment
         id={props.post.id}
         key={`${props.post.id}-comment-adding`}
-        ref={(el) => this.addingCommentForm = el}
+        ref={this.registerCommentForm}
         isEditing={true}
         editText={props.post.newCommentText}
         updateCommentingText={props.updateCommentingText}
@@ -81,6 +88,14 @@ export default class PostComments extends React.Component {
     return false;
   }
 
+  handleHighlightCommentByAuthor = (authorUserName) => {
+    this.props.commentEdit.highlightComment(this.props.post.id, authorUserName);
+  };
+
+  handleHighlightCommentByArrows = (comment_id, arrows) => {
+    this.props.commentEdit.highlightComment(this.props.post.id, undefined, arrows, comment_id);
+  };
+
   renderComment(comment) {
     const { props } = this;
     return (
@@ -93,8 +108,8 @@ export default class PostComments extends React.Component {
         openAnsweringComment={this.openAnsweringComment}
         isModeratingComments={props.post.isModeratingComments}
         {...props.commentEdit}
-        highlightComment={(authorUserName) => props.commentEdit.highlightComment(props.post.id, authorUserName)}
-        highlightArrowComment={(arrows) => props.commentEdit.highlightComment(props.post.id, undefined, arrows, comment.id)}
+        highlightComment={this.handleHighlightCommentByAuthor}
+        highlightArrowComment={this.handleHighlightCommentByArrows}
         readMoreStyle={props.readMoreStyle}
         highlightTerms={props.highlightTerms}
         currentUser={props.post.user}
@@ -168,6 +183,10 @@ export default class PostComments extends React.Component {
     return middleComments;
   }
 
+  registerRootEl = (el) => {
+    this.rootEl = el ? ReactDOM.findDOMNode(el) : null;
+  };
+
   render() {
     const { post, comments } = this.props;
     const totalComments = comments.length + post.omittedComments;
@@ -176,7 +195,7 @@ export default class PostComments extends React.Component {
     const canAddComment = (!!post.user && (!post.commentsDisabled || post.isEditable));
 
     return (
-      <div className="comments" ref={(el) => this.rootEl = el ? ReactDOM.findDOMNode(el) : null}>
+      <div className="comments" ref={this.registerRootEl}>
         {first ? this.renderComment(first) : false}
         {this.renderMiddle()}
         {last ? this.renderComment(last) : false}
