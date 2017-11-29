@@ -1,6 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+
+const handleClickOnOneTimeDonation = () => {
+  document.forms["singlePayPalPayment"].submit();
+};
+
 const Donate = () => (
   <div className="box">
     <div className="box-header-timeline" />
@@ -54,7 +59,7 @@ const Donate = () => (
         </form>
       </span>
 
-      <p style={{ marginTop: '15px' }}>Make a <span onClick={() => document.forms["singlePayPalPayment"].submit()} style={{ textDecoration:'underline', cursor:'pointer' }}>one-time donation</span>.</p>
+      <p style={{ marginTop: '15px' }}>Make a <span onClick={handleClickOnOneTimeDonation} style={{ textDecoration:'underline', cursor:'pointer' }}>one-time donation</span>.</p>
 
       <p>Thank you!</p>
 
@@ -107,7 +112,7 @@ const Donate = () => (
       </span>
 
 
-      <p style={{ marginTop: '15px' }}>Cделать <span onClick={() => document.forms["singlePayPalPayment"].submit()} style={{ textDecoration:'underline', cursor:'pointer' }}>единовременный взнос</span>.</p>
+      <p style={{ marginTop: '15px' }}>Cделать <span onClick={handleClickOnOneTimeDonation} style={{ textDecoration:'underline', cursor:'pointer' }}>единовременный взнос</span>.</p>
 
       <p>Спасибо!</p>
     </div>

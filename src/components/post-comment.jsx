@@ -15,6 +15,9 @@ import UserName from './user-name';
 
 
 export default class PostComment extends React.Component {
+  commentContainer;
+  commentTextArea;
+
   constructor(props) {
     super(props);
 
@@ -45,10 +48,6 @@ export default class PostComment extends React.Component {
       setTimeout(this.scrollToComment, 0);
     }
   }
-
-  refCommentContainer = (element) => {
-    this.commentContainer = element;
-  };
 
   handleChange = (event) => {
     this.setState({
@@ -130,6 +129,26 @@ export default class PostComment extends React.Component {
     }
   }
 
+  registerCommentContainer = (el) => {
+    this.commentContainer = el;
+  };
+
+  registerCommentTextArea = (el) => {
+    this.commentTextArea = el;
+  };
+
+  handleEditOrCancel = preventDefault(() => this.props.toggleEditingComment(this.props.id));
+
+  handleDeleteComment = confirmFirst(() => this.props.deleteComment(this.props.id));
+
+  handleHoverOnUsername = (username) => {
+    this.props.highlightComment(username);
+  };
+
+  handleHoverOverArrow = (arrows) => {
+    this.props.highlightArrowComment(this.props.id, arrows);
+  };
+
   renderBody() {
     if (this.props.hideType) {
       const isDeletable = this.props.isDeletable && this.props.hideType !== COMMENT_DELETED;
@@ -138,7 +157,7 @@ export default class PostComment extends React.Component {
           <span className="comment-text">{this.props.body}</span>
           {(isDeletable && this.props.isModeratingComments) ? (
             <span>
-              {' - '}(<a onClick={confirmFirst(() => this.props.deleteComment(this.props.id))}>delete</a>)
+              {' - '}(<a onClick={this.handleDeleteComment}>delete</a>)
             </span>
           ) : false}
         </div>
@@ -151,7 +170,7 @@ export default class PostComment extends React.Component {
           <div>
             <Textarea
               autoFocus={!this.props.isSinglePost}
-              ref={(el) => this.commentTextArea = el}
+              ref={this.registerCommentTextArea}
               className="comment-textarea"
               value={this.state.editText}
               onFocus={this.setCaretToTextEnd}
@@ -170,7 +189,7 @@ export default class PostComment extends React.Component {
           ) : (
             <span>
               <button className="btn btn-default btn-xs comment-post" onClick={this.saveComment}>Post</button>
-              <a className="comment-cancel" onClick={preventDefault(() => this.props.toggleEditingComment(this.props.id))}>Cancel</a>
+              <a className="comment-cancel" onClick={this.handleEditOrCancel}>Cancel</a>
             </span>
           )}
           {this.props.isSaving ? (
@@ -191,13 +210,13 @@ export default class PostComment extends React.Component {
         <UserName user={this.props.user} />
         {this.props.isEditable ? (
           <span>
-            {' '}(<a onClick={preventDefault(() => this.props.toggleEditingComment(this.props.id))}>edit</a>
+            {' '}(<a onClick={this.handleEditOrCancel}>edit</a>
                   &nbsp;|&nbsp;
-            <a onClick={confirmFirst(() => this.props.deleteComment(this.props.id))}>delete</a>)
+            <a onClick={this.handleDeleteComment}>delete</a>)
           </span>
         ) : (this.props.isDeletable && this.props.isModeratingComments) ? (
           <span>
-            {' '}(<a onClick={confirmFirst(() => this.props.deleteComment(this.props.id))}>delete</a>)
+            {' '}(<a onClick={this.handleDeleteComment}>delete</a>)
           </span>
         ) : false}
       </span>
@@ -215,11 +234,11 @@ export default class PostComment extends React.Component {
             readMoreStyle={this.props.readMoreStyle}
             highlightTerms={this.props.highlightTerms}
             userHover={{
-              hover: (username) => this.props.highlightComment(username),
+              hover: this.handleHoverOnUsername,
               leave: this.props.clearHighlightComment
             }}
             arrowHover={{
-              hover: (arrows) => this.props.highlightArrowComment(arrows),
+              hover: this.handleHoverOverArrow,
               leave: this.props.clearHighlightComment
             }}
           />
@@ -267,7 +286,7 @@ export default class PostComment extends React.Component {
       <div
         className={className}
         data-author={this.props.isEditing ? '' : this.props.user.username}
-        ref={this.refCommentContainer}
+        ref={this.registerCommentContainer}
       >
         {this.renderCommentLikes()}
         {this.renderBody()}

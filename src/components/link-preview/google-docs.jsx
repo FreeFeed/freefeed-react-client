@@ -22,8 +22,8 @@ const initialState = {
 class GoogleDocsPreview extends React.Component {
   state = { ...initialState };
 
-  updatePreview() {
-    const [, t1, t2, id] = GOOGLE_DOCS_RE.exec(this.props.url);
+  updatePreview(url) {
+    const [, t1, t2, id] = GOOGLE_DOCS_RE.exec(url);
     const type = t1 || t2;
     this.setState({ type });
     const img = new Image();
@@ -33,15 +33,18 @@ class GoogleDocsPreview extends React.Component {
     img.src = `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&authuser=0&sz=w${imgWidth}`;
   }
 
-  componentDidMount() {
-    this.updatePreview();
+  componentWillMount() {
+    this.updatePreview(this.props.url);
   }
 
-  componentDidUpdate(newProps) {
+  componentWillReceiveProps(newProps) {
     if (newProps.url !== this.props.url) {
       this.setState({ ...initialState });
-      this.updatePreview();
+      this.updatePreview(newProps.url);
     }
+  }
+
+  componentDidUpdate() {
     contentResized(this);
   }
 

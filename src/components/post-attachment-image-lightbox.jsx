@@ -87,10 +87,14 @@ export default class ImageAttachmentsLightbox extends React.Component {
     });
   }
 
+  registerPhotoSwipe = (el) => {
+    this.photoSwipe = el ? el.photoSwipe : null;
+  };
+
   render() {
     return (
       <PhotoSwipe
-        ref={(el) => this.photoSwipe = el ? el.photoSwipe : null}
+        ref={this.registerPhotoSwipe}
         items={this.props.items}
         gettingData={this.getItemData}
         options={{

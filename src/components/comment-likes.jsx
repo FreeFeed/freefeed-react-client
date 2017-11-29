@@ -6,6 +6,8 @@ import TimeDisplay from "./time-display";
 
 
 export default class CommentLikes extends React.Component {
+  actionsPanel;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -111,6 +113,15 @@ export default class CommentLikes extends React.Component {
       }
     }
   };
+
+  handleClickOnLikesPanel = (e) => {
+    e.stopPropagation();
+  };
+
+  registerActionsPanel = (el) => {
+    this.actionsPanel = el;
+  };
+
   renderPopup = () => {
     const likesStyle = {
       height: !this.state.showActionButtons && this.state.panelHeight || "auto",
@@ -121,10 +132,10 @@ export default class CommentLikes extends React.Component {
           <div className="container">
             <div className="row">
               <div className="col-md-9">
-                <div className="actions-panel" ref={(r) => this.actionsPanel = r}>
+                <div className="actions-panel" ref={this.registerActionsPanel}>
                   <div
                     className={`likes-panel ${this.state.showActionButtons ? "padded" : ""}`}
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={this.handleClickOnLikesPanel}
                     style={likesStyle}
                   >
                     <div className="arrow" onClick={this.arrowClick}><i className="fa fa-angle-left" aria-hidden="true" /></div>
