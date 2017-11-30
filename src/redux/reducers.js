@@ -733,7 +733,7 @@ export function postsViewState(state = {}, action) {
 
     case response(ActionTypes.CREATE_POST): {
       const post = action.payload.posts;
-      const { id, omittedComments, omittedLikes } = post.omittedLikes;
+      const { id, omittedComments, omittedLikes } = post;
       const isEditing = false;
       const editingText = post.body;
 
