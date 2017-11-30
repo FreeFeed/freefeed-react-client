@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 
 import { createPost, resetPostCreateForm, expandSendTo } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
@@ -66,6 +67,7 @@ function selectState(state, ownProps) {
     isItPostsPage,
     amIGroupAdmin,
     subscribed: authenticated && foundUser && (user.subscriptions.indexOf(foundUser.id) > -1),
+    subscribedToMe: authenticated && foundUser && (_.findIndex(state.user.subscribers, { id: foundUser.id }) > -1),
     blocked: authenticated && foundUser && (user.banIds.indexOf(foundUser.id) > -1),
     hasRequestBeenSent: authenticated && foundUser && ((user.pendingSubscriptionRequests || []).indexOf(foundUser.id) > -1)
   };
