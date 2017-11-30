@@ -14,7 +14,7 @@ const FeedHandler = (props) => {
       createPostViewState={props.createPostViewState}
       sendTo={props.sendTo}
       user={props.user}
-      isDirects={props.route.name === 'direct'}
+      isDirects={props.isDirects}
       createPost={props.createPost}
       resetPostCreateForm={props.resetPostCreateForm}
       expandSendTo={props.expandSendTo}
@@ -36,18 +36,19 @@ const FeedHandler = (props) => {
     </div>);
 };
 
-function selectState(state) {
+function selectState(state, props) {
   const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
   const createPostForm = joinCreatePostData(state);
-  const defaultFeed = state.routing.locationBeforeTransitions.query.to || user.username;
+  const isDirects = (props.route.name === 'direct');
+  const defaultFeed = state.routing.locationBeforeTransitions.query.to || (isDirects ? null : user.username);
   const invitation = formatInvitation(state.routing.locationBeforeTransitions.query.invite);
   const sendTo = { ...state.sendTo, defaultFeed, invitation };
-  if (invitation) {
+  if (invitation || isDirects) {
     sendTo.expanded = true;
   }
 
-  return { user, authenticated, visibleEntries, createPostViewState, createPostForm, timelines, boxHeader, sendTo };
+  return { user, authenticated, visibleEntries, createPostViewState, createPostForm, timelines, boxHeader, sendTo, isDirects };
 }
 
 function selectActions(dispatch) {
