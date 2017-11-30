@@ -50,6 +50,17 @@ export function home(offset = 0) {
   };
 }
 
+export function getMemories(_from, offset = 0) {
+  return {
+    type: ActionTypes.MEMORIES,
+    apiRequest: Api.getMemories,
+    payload: {
+      from: _from,
+      offset,
+    },
+  };
+}
+
 export function discussions(offset = 0) {
   return {
     type: ActionTypes.DISCUSSIONS,
@@ -521,6 +532,15 @@ export function getUserLikes(username, offset = 0) {
     apiRequest: Api.getUserLikes,
     nonAuthRequest: true,
     payload: { username, offset },
+  };
+}
+
+export function getUserMemories(username, from, offset = 0) {
+  return {
+    type: ActionTypes.GET_USER_MEMORIES,
+    apiRequest: Api.getUserMemories,
+    nonAuthRequest: true,
+    payload: { username, from, offset },
   };
 }
 
