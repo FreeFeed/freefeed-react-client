@@ -4,7 +4,29 @@ import throbber16 from '../../assets/images/throbber-16.gif';
 import { preventDefault } from '../utils';
 import SendTo from './send-to';
 
+
+class LinkedImage extends React.PureComponent {
+  handleClick = () => {
+    const { removeImage, url } = this.props;
+
+    removeImage(url);
+  };
+
+  render() {
+    const { url } = this.props;
+    return (
+      <div className="post-linked-image" onClick={this.handleClick} title="Remove image">
+        <img src={url} />
+      </div>
+    );
+  }
+}
+
 export default class CreateBookmarkletPost extends React.Component {
+  commentText;
+  postText;
+  selectFeeds;
+
   constructor(props) {
     super(props);
 
@@ -15,8 +37,8 @@ export default class CreateBookmarkletPost extends React.Component {
   }
 
   checkCreatePostAvailability = () => {
-    const isPostTextEmpty = (this.refs.postText.value == '' || /^\s+$/.test(this.refs.postText.value));
-    const isFormEmpty = (isPostTextEmpty || this.refs.selectFeeds.values == 0);
+    const isPostTextEmpty = (this.postText.value == '' || /^\s+$/.test(this.postText.value));
+    const isFormEmpty = (isPostTextEmpty || this.selectFeeds.values == 0);
 
     this.setState({
       isFormEmpty
@@ -36,10 +58,10 @@ export default class CreateBookmarkletPost extends React.Component {
 
   submitForm = () => {
     // Get all the values
-    const feeds = this.refs.selectFeeds.values;
-    const postText = this.refs.postText.value;
+    const feeds = this.selectFeeds.values;
+    const postText = this.postText.value;
     const { imageUrls } = this.props;
-    const commentText = this.refs.commentText.value;
+    const commentText = this.commentText.value;
 
     // Send to the server
     this.props.createPost(feeds, postText, imageUrls, commentText);
@@ -68,6 +90,18 @@ export default class CreateBookmarkletPost extends React.Component {
     window.parent.postMessage(window.document.documentElement.offsetHeight, '*');
   }
 
+  registerCommentText = (el) => {
+    this.commentText = el;
+  };
+
+  registerPostText = (el) => {
+    this.postText = el;
+  };
+
+  registerSelectFeeds = (el) => {
+    this.selectFeeds = el;
+  };
+
   render() {
     if (this.state.isPostSaved) {
       const postUrl = `/${this.props.user.username}/${this.props.createPostViewState.lastPostId}`;
@@ -79,11 +113,9 @@ export default class CreateBookmarkletPost extends React.Component {
       );
     }
 
-    const linkedImages = this.props.imageUrls.map((url, i) => (
-      <div className="post-linked-image" key={i} onClick={() => this.props.removeImage(url)} title="Remove image">
-        <img src={url} />
-      </div>
-    ));
+    const linkedImages = this.props.imageUrls.map((url, i) =>
+      <LinkedImage key={i} removeImage={this.props.removeImage} url={url} />
+    );
 
     return (
       <div className="create-post post-editor expanded">
@@ -94,7 +126,7 @@ export default class CreateBookmarkletPost extends React.Component {
         ) : false}
 
         <SendTo
-          ref="selectFeeds"
+          ref={this.registerSelectFeeds}
           feeds={this.props.sendTo.feeds}
           defaultFeed={this.props.sendTo.defaultFeed}
           user={this.props.user}
@@ -103,7 +135,7 @@ export default class CreateBookmarkletPost extends React.Component {
 
         <textarea
           className="post-textarea"
-          ref="postText"
+          ref={this.registerPostText}
           defaultValue={this.props.postText}
           onKeyDown={this.checkSave}
           onChange={this.checkCreatePostAvailability}
@@ -126,7 +158,7 @@ export default class CreateBookmarkletPost extends React.Component {
           <div className="comment-body">
             <textarea
               className="comment-textarea"
-              ref="commentText"
+              ref={this.registerCommentText}
               defaultValue={this.props.commentText}
               onKeyDown={this.checkSave}
               onChange={this.checkCreatePostAvailability}

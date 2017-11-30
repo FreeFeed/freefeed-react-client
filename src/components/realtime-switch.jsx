@@ -9,15 +9,23 @@ const getStatusIcon = (active, status) => {
   return active ? 'pause' : 'play';
 };
 
-const realtimeSwitch = (props) => {
-  const { realtimeActive } = props.frontendPreferences;
-  return (
-    <div className="realtime-switch" onClick={() => props.toggle(props.userId, props.frontendPreferences)}>
-      {realtimeActive ? false : 'Paused'}
-      <span className={`glyphicon glyphicon-${getStatusIcon(realtimeActive, props.status)}`} />
-    </div>
-  );
-};
+class RealtimeSwitch extends React.PureComponent {
+  handleSwitch = () => {
+    this.props.toggle(this.props.userId, this.props.frontendPreferences);
+  };
+
+  render() {
+    const { props } = this;
+    const { realtimeActive } = this.props.frontendPreferences;
+
+    return (
+      <div className="realtime-switch" onClick={this.handleSwitch}>
+        {realtimeActive ? false : 'Paused'}
+        <span className={`glyphicon glyphicon-${getStatusIcon(realtimeActive, props.status)}`} />
+      </div>
+    );
+  }
+}
 
 const mapStateToProps = (state) => {
   return {
@@ -42,4 +50,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(realtimeSwitch);
+export default connect(mapStateToProps, mapDispatchToProps)(RealtimeSwitch);

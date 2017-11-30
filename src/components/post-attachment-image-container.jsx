@@ -89,6 +89,14 @@ export default class ImageAttachmentsContainer extends React.Component {
     }
   }
 
+  registerContainer = (el) => {
+    this.container = el;
+  };
+
+  registerLightbox = (el) => {
+    this.lightbox = el;
+  };
+
   render() {
     const isSingleImage = this.props.attachments.length === 1;
     const className = classnames({
@@ -111,7 +119,7 @@ export default class ImageAttachmentsContainer extends React.Component {
     }
 
     return (
-      <div className={className} ref={(el) => this.container = el}>
+      <div className={className} ref={this.registerContainer}>
         {this.props.attachments.map((a, i) => (
           <ImageAttachment
             key={a.id}
@@ -132,7 +140,7 @@ export default class ImageAttachmentsContainer extends React.Component {
           </div>
         )}
         <ImageAttachmentsLightbox
-          ref={(el) => this.lightbox = el}
+          ref={this.registerLightbox}
           items={this.getLightboxItems()}
           postId={this.props.postId}
           getThumbnail={this.getThumbnail}

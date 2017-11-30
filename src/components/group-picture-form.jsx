@@ -4,8 +4,10 @@ import throbber16 from '../../assets/images/throbber-16.gif';
 import { preventDefault } from '../utils';
 
 export default class GroupPictureForm extends React.Component {
+  pictureFile;
+
   savePicture = () => {
-    const [newFile] = this.refs.pictureFile.files;
+    const [newFile] = this.pictureFile.files;
     if (newFile && this.props.status !== 'loading') {
       this.props.updateGroupPicture(this.props.group.username, newFile);
     }
@@ -14,6 +16,10 @@ export default class GroupPictureForm extends React.Component {
   componentWillUnmount() {
     this.props.resetGroupUpdateForm();
   }
+
+  registerPictureFile = (el) => {
+    this.pictureFile = el;
+  };
 
   render() {
     return (
@@ -25,7 +31,7 @@ export default class GroupPictureForm extends React.Component {
         </div>
 
         <div className="form-group">
-          <input type="file" ref="pictureFile" />
+          <input type="file" ref={this.registerPictureFile} />
         </div>
 
         <div className="form-group">

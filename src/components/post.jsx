@@ -56,43 +56,91 @@ export default class Post extends React.Component {
     this.setState({ attachmentQueueLength: this.state.attachmentQueueLength + change });
   };
 
+  handleCommentClick = () => {
+    if (this.props.isSinglePost) {
+      return;
+    }
+
+    this.props.toggleCommenting(this.props.id);
+  };
+
+  handleDeletePost = () => {
+    this.props.deletePost(this.props.id);
+  };
+
+  handleUnhideClick = () => {
+    this.props.unhidePost(this.props.id);
+  };
+
+  handleHideClick = () => {
+    this.props.hidePost(this.props.id);
+  };
+
+  likePost = () => {
+    this.props.likePost(this.props.id, this.props.user.id);
+  };
+
+  unlikePost = () => {
+    this.props.unlikePost(this.props.id, this.props.user.id);
+  };
+
+  toggleModeratingComments = () => {
+    this.props.toggleModeratingComments(this.props.id);
+  };
+
+  disableComments = () => {
+    this.props.disableComments(this.props.id);
+  };
+
+  enableComments = () => {
+    this.props.enableComments(this.props.id);
+  };
+
+  editingPostText;
+
+  handlePostTextChange = (e) => {
+    this.editingPostText = e.target.value;
+  };
+
+  toggleEditingPost = () => {
+    this.props.toggleEditingPost(this.props.id, this.editingPostText);
+  };
+
+  cancelEditingPost = () => {
+    this.props.cancelEditingPost(this.props.id, this.editingPostText);
+  };
+
+  saveEditingPost = () => {
+    const { props } = this;
+
+    if (!props.isSaving) {
+      const attachmentIds = props.attachments.map((item) => item.id) || [];
+      props.saveEditingPost(props.id, { body: this.editingPostText, attachments: attachmentIds });
+    }
+  };
+
+  handleKeyDown = (event) => {
+    const isEnter = event.keyCode === 13;
+    const isShiftPressed = event.shiftKey;
+
+    if (isEnter && !isShiftPressed) {
+      event.preventDefault();
+
+      if (this.state.attachmentQueueLength === 0) {
+        this.saveEditingPost();
+      }
+    }
+  };
+
+  handleAttachmentResponse = (att) => {
+    this.props.addAttachmentResponse(this.props.id, att);
+  };
+
   render() {
     const { props } = this;
 
-    let editingPostText = props.editingText;
-    const editingPostTextChange = (e) => {
-      editingPostText = e.target.value;
-    };
-    const toggleEditingPost = () => props.toggleEditingPost(props.id, editingPostText);
-    const cancelEditingPost = () => props.cancelEditingPost(props.id, editingPostText);
-    const saveEditingPost = () => {
-      if (!props.isSaving) {
-        const attachmentIds = props.attachments.map((item) => item.id) || [];
-        props.saveEditingPost(props.id, { body: editingPostText, attachments: attachmentIds });
-      }
-    };
-    const deletePost = () => props.deletePost(props.id);
-    const likePost = () => props.likePost(props.id, props.user.id);
-    const unlikePost = () => props.unlikePost(props.id, props.user.id);
+    this.editingPostText = props.editingText;
 
-    const hidePost = () => props.hidePost(props.id);
-    const unhidePost = () => props.unhidePost(props.id);
-
-    const toggleModeratingComments = () => props.toggleModeratingComments(props.id);
-
-    const disableComments = () => props.disableComments(props.id);
-    const enableComments = () => props.enableComments(props.id);
-
-    const checkSave = (event) => {
-      const isEnter = event.keyCode === 13;
-      const isShiftPressed = event.shiftKey;
-      if (isEnter && !isShiftPressed) {
-        event.preventDefault();
-        if (this.state.attachmentQueueLength === 0) {
-          saveEditingPost();
-        }
-      }
-    };
     const profilePicture = props.isSinglePost ?
       props.createdBy.profilePictureLargeUrl : props.createdBy.profilePictureMediumUrl;
     const profilePictureSize = props.isSinglePost ? 75 : 50;
@@ -115,9 +163,6 @@ export default class Post extends React.Component {
       'timeline-post': !props.isSinglePost,
       'direct-post': props.isDirect
     });
-
-    const toggleCommenting = props.isSinglePost ? () => {
-    } : () => props.toggleCommenting(props.id);
 
     const recipientCustomDisplay = function (recipient) {
       if (recipient.id !== props.createdBy.id) {
@@ -182,7 +227,7 @@ export default class Post extends React.Component {
               {' - '}
               <i>Comments disabled (not for you)</i>
               {' - '}
-              <a className="post-action" onClick={toggleCommenting}>Comment</a>
+              <a className="post-action" onClick={this.handleCommentClick}>Comment</a>
             </span>
           );
         } else {
@@ -197,7 +242,7 @@ export default class Post extends React.Component {
         commentLink = (
           <span>
             {' - '}
-            <a className="post-action" onClick={toggleCommenting}>Comment</a>
+            <a className="post-action" onClick={this.handleCommentClick}>Comment</a>
           </span>
         );
       }
@@ -213,7 +258,7 @@ export default class Post extends React.Component {
         {props.likeError ? (
           <i className="fa fa-exclamation-triangle post-like-fail" title={props.likeError} aria-hidden="true" />
         ) : null}
-        <a className="post-action" onClick={didILikePost ? unlikePost : likePost}>{didILikePost ? 'Un-like' : 'Like'}</a>
+        <a className="post-action" onClick={didILikePost ? this.unlikePost : this.likePost}>{didILikePost ? 'Un-like' : 'Like'}</a>
         {props.isLiking ? (
           <span className="post-like-throbber">
             <img width="16" height="16" src={throbber16} />
@@ -226,7 +271,7 @@ export default class Post extends React.Component {
     const hideLink = (props.isInHomeFeed ? (
       <span>
         {' - '}
-        <a className="post-action" onClick={props.isHidden ? unhidePost : hidePost}>{props.isHidden ? 'Un-hide' : 'Hide'}</a>
+        <a className="post-action" onClick={props.isHidden ? this.handleUnhideClick : this.handleHideClick}>{props.isHidden ? 'Un-hide' : 'Hide'}</a>
         {props.isHiding ? (
           <span className="post-hide-throbber">
             <img width="16" height="16" src={throbber16} />
@@ -241,11 +286,11 @@ export default class Post extends React.Component {
         {' - '}
         <PostMoreMenu
           post={props}
-          toggleEditingPost={toggleEditingPost}
-          toggleModeratingComments={toggleModeratingComments}
-          disableComments={disableComments}
-          enableComments={enableComments}
-          deletePost={deletePost}
+          toggleEditingPost={this.toggleEditingPost}
+          toggleModeratingComments={this.toggleModeratingComments}
+          disableComments={this.disableComments}
+          enableComments={this.enableComments}
+          deletePost={this.handleDeletePost}
         />
       </span>
     ) : false);
@@ -256,7 +301,7 @@ export default class Post extends React.Component {
     return (props.isRecentlyHidden ? (
       <div className="post recently-hidden-post">
         <i>Entry hidden - </i>
-        <a className="post-action" onClick={unhidePost}>undo</a>.
+        <a className="post-action" onClick={this.handleUnhideClick}>undo</a>.
         {' '}
         {props.isHiding ? (
           <span className="post-hide-throbber">
@@ -286,7 +331,7 @@ export default class Post extends React.Component {
               <div className="post-editor">
                 <Dropzone
                   onInit={this.handleDropzoneInit}
-                  addAttachmentResponse={(att) => props.addAttachmentResponse(this.props.id, att)}
+                  addAttachmentResponse={this.handleAttachmentResponse}
                   addedFile={this.changeAttachmentQueue(1)}
                   removedFile={this.changeAttachmentQueue(-1)}
                 />
@@ -295,8 +340,8 @@ export default class Post extends React.Component {
                   <Textarea
                     className="post-textarea"
                     defaultValue={props.editingText}
-                    onKeyDown={checkSave}
-                    onChange={editingPostTextChange}
+                    onKeyDown={this.handleKeyDown}
+                    onChange={this.handlePostTextChange}
                     onPaste={this.handlePaste}
                     autoFocus={true}
                     minRows={2}
@@ -319,10 +364,10 @@ export default class Post extends React.Component {
                       <img width="16" height="16" src={throbber16} />
                     </span>
                   ) : false}
-                  <a className="post-cancel" onClick={cancelEditingPost}>Cancel</a>
+                  <a className="post-cancel" onClick={this.cancelEditingPost}>Cancel</a>
                   <button
                     className="btn btn-default btn-xs"
-                    onClick={saveEditingPost}
+                    onClick={this.saveEditingPost}
                     disabled={this.state.attachmentQueueLength > 0}
                   >
                     Update

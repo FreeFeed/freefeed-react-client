@@ -4,6 +4,8 @@ import Select from 'react-select';
 const MY_FEED_LABEL = 'My feed';
 
 export default class SendTo extends React.Component {
+  selector;
+
   constructor(props) {
     super(props);
     this.state = this.stateFromProps(props, this.optionsFromProps(props));
@@ -76,10 +78,14 @@ export default class SendTo extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.showFeedsOption !== this.state.showFeedsOption && this.state.showFeedsOption) {
-      this.refs.selector._openAfterFocus = true;
-      this.refs.selector.focus();
+      this.selector._openAfterFocus = true;
+      this.selector.focus();
     }
   }
+
+  registerSelector = (el) => {
+    this.selector = el;
+  };
 
   render() {
     const [defaultOpt] = this.state.values;
@@ -102,7 +108,7 @@ export default class SendTo extends React.Component {
               onChange={this.selectChanged}
               optionRenderer={this.labelRenderer}
               valueRenderer={this.labelRenderer}
-              ref="selector"
+              ref={this.registerSelector}
               multi={true}
               clearable={false}
             />

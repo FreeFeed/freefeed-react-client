@@ -22,6 +22,16 @@ function restoreFunc({ mail, restore }) {
 }
 
 class RestorePassword extends React.Component {
+  mail;
+
+  handleSubmit = preventDefault(() => {
+    restoreFunc({ restore: this.props.restore, mail: this.mail.value });
+  });
+
+  registerMail = (el) => {
+    this.mail = el;
+  };
+
   render() {
     return (
       <div className="box">
@@ -39,10 +49,10 @@ class RestorePassword extends React.Component {
             <div className="row">
               <div className="col-md-6">
                 <LoaderContainer loading={this.props.loading}>
-                  <form onSubmit={preventDefault(() => restoreFunc({ restore: this.props.restore, mail: this.refs.mail.value }))} className="p-signin">
+                  <form onSubmit={this.handleSubmit} className="p-signin">
                     <div className="form-group">
                       <label htmlFor="mail">E-mail</label>
-                      <input id="mail" className="form-control" type="mail" ref="mail" />
+                      <input id="mail" className="form-control" type="mail" ref={this.registerMail} />
                     </div>
                     <div className="form-group">
                       <button className="btn btn-default p-singin-action" type="submit">Reset</button>

@@ -10,30 +10,40 @@ import { tileUserListFactory, WITH_REQUEST_HANDLES, PLAIN } from './tile-user-li
 const TileListWithAcceptAndReject = tileUserListFactory({ type: WITH_REQUEST_HANDLES, displayQuantity: true });
 const TileList = tileUserListFactory({ type: PLAIN, displayQuantity: true });
 
-const renderRequestsToGroup = (accept, reject) => (groupRequests) => {
-  const acceptGroupRequest = (userName) => accept(groupRequests.username, userName);
-  const rejectGroupRequest = (userName) => reject(groupRequests.username, userName);
 
-  const count = groupRequests.requests.length;
-  const groupName = groupRequests.screenName;
-  const header = `${pluralForm(count, 'Request', null, 'w')} to join ${groupName}`;
+class RequestsToGroup extends React.PureComponent {
+  handleAccept = (username) => {
+    this.props.accept(this.props.groupRequest.username, username);
+  };
 
-  return (
-    <div key={groupRequests.id}>
-      <TileListWithAcceptAndReject
-        header={header}
-        users={groupRequests.requests}
-        acceptRequest={acceptGroupRequest}
-        rejectRequest={rejectGroupRequest}
-      />
-    </div>
-  );
-};
+  handleReject = (username) => {
+    this.props.reject(this.props.groupRequest.username, username);
+  };
+
+  render() {
+    const { groupRequest } = this.props;
+
+    const count = groupRequest.requests.length;
+    const groupName = groupRequest.screenName;
+    const header = `${pluralForm(count, 'Request', null, 'w')} to join ${groupName}`;
+
+    return (
+      <div>
+        <TileListWithAcceptAndReject
+          header={header}
+          users={groupRequest.requests}
+          acceptRequest={this.handleAccept}
+          rejectRequest={this.handleReject}
+        />
+      </div>
+    );
+  }
+}
 
 const GroupsHandler = (props) => {
-  const groupRequests = props.groupRequests.map(
-    renderRequestsToGroup(props.acceptGroupRequest, props.rejectGroupRequest)
-  );
+  const groupRequests = props.groupRequests.map((groupRequest) => {
+    return <RequestsToGroup key={groupRequest.id} accept={props.accept} reject={props.reject} groupRequest={groupRequest} />;
+  });
 
   return (
     <div className="box">
