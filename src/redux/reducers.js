@@ -1703,10 +1703,10 @@ export function boxHeader(state = "", action) {
       return `Search${action.payload.search ? `: ${action.payload.search}` : ''}`;
     }
     case request(ActionTypes.MEMORIES): {
-      return `Memories: posts from ${formatDateFromShortString(action.payload.from)}`;
+      return `Memories: posts from ${formatDateFromShortString(action.payload.from)} and earlier`;
     }
     case request(ActionTypes.GET_USER_MEMORIES): {
-      return `${action.payload.username} memories: posts from ${formatDateFromShortString(action.payload.from)}`;
+      return `${action.payload.username} memories: posts from ${formatDateFromShortString(action.payload.from)} and earlier`;
     }
     case request(ActionTypes.GET_BEST_OF): {
       return 'Best Of FreeFeed';
