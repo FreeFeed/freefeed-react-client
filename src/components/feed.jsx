@@ -61,6 +61,8 @@ export default (props) => {
 
   return (
     <div className="posts">
+      {visibleEntries.length === 0 && 'No posts here'}
+
       {visibleEntries}
 
       {hiddenEntries.length > 0 ? (
