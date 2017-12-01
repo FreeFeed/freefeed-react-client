@@ -43,16 +43,17 @@ export const apiMiddleware = (store) => (next) => async (action) => {
 };
 
 const paths = ['friends',
-  'settings',
-  'filter/notifications',
-  'filter/direct',
-  'groups',
-  'groups/create',
-  'summary',
+  '/settings',
+  '/filter/notifications',
+  '/filter/direct',
+  '/groups',
+  '/groups/create',
+  '/summary',
+  '/memories',
 ];
 
 function shouldGoToSignIn(pathname) {
-  return pathname && paths.some((path) => pathname.indexOf(path) != -1);
+  return pathname && paths.some((path) => pathname.indexOf(path) === 0);
 }
 
 export const authMiddleware = (store) => {
@@ -303,6 +304,7 @@ export const markNotificationsAsReadMiddleware = (store) => (next) => (action) =
 };
 
 const isFirstPage = (state) => !state.routing.locationBeforeTransitions.query.offset;
+const isMemories = (state) => state.routing.locationBeforeTransitions.pathname.indexOf('memories') !== -1;
 
 const isPostLoaded = ({ posts }, postId) => posts[postId];
 const iLikedPost = ({ user, posts }, postId) => {
@@ -315,7 +317,7 @@ const iLikedPost = ({ user, posts }, postId) => {
 };
 const dispatchWithPost = async (store, postId, action, filter = () => true, maxDelay = 0) => {
   let state = store.getState();
-  const shouldBump = isFirstPage(state);
+  const shouldBump = isFirstPage(state) && !isMemories(state);
 
   if (isPostLoaded(state, postId)) {
     return store.dispatch({ ...action, shouldBump });
@@ -362,9 +364,9 @@ const bindHandlers = (store) => ({
     const state = store.getState();
     const isFeedFirstPage = isFirstPage(state);
     const isHomeFeed = state.routing.locationBeforeTransitions.pathname === '/';
+    const isMemoriesFeed = isMemories(state);
     const useRealtimePreference = state.user.frontendPreferences.realtimeActive;
-
-    const shouldBump = isFeedFirstPage && (!isHomeFeed || (useRealtimePreference && isHomeFeed));
+    const shouldBump = isFeedFirstPage && (!isHomeFeed || (useRealtimePreference && isHomeFeed)) && !isMemoriesFeed;
 
     return store.dispatch({ ...data, type: ActionTypes.REALTIME_POST_NEW, post: data.posts, shouldBump });
   },
