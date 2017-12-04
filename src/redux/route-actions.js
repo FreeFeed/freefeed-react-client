@@ -5,12 +5,14 @@ import {
   discussions,
   direct,
   getSummary,
+  getMemories,
 
   // Public (content depends on URL params)
   getUserInfo,
   getUserFeed,
   getUserComments,
   getUserLikes,
+  getUserMemories,
   getSinglePost,
   getSearch,
   getBestOf,
@@ -33,8 +35,14 @@ const getUserName = (nextRoute) => {
   return nextRoute.params.userName;
 };
 
+const getFrom = (nextRoute) => {
+  return nextRoute.params.from;
+};
+
 export const routeActions = {
   home: (next) => home(getOffset(next)),
+  memories: (next) => getMemories(getFrom(next), getOffset(next)),
+  userMemories: (next) => getUserMemories(getUserName(next), getFrom(next), getOffset(next)),
   discussions: (next) => discussions(getOffset(next)),
   direct: (next) => direct(getOffset(next)),
   summary: (next) => getSummary(next.params.days),

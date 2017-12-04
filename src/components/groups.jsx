@@ -42,7 +42,7 @@ class RequestsToGroup extends React.PureComponent {
 
 const GroupsHandler = (props) => {
   const groupRequests = props.groupRequests.map((groupRequest) => {
-    return <RequestsToGroup key={groupRequest.id} accept={props.accept} reject={props.reject} groupRequest={groupRequest} />;
+    return <RequestsToGroup key={groupRequest.id} accept={props.acceptGroupRequest} reject={props.rejectGroupRequest} groupRequest={groupRequest} />;
   });
 
   return (

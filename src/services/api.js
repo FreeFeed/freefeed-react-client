@@ -2,6 +2,7 @@ import fetch from 'isomorphic-fetch';
 import _ from 'lodash';
 
 import config from '../config';
+import { getDateForMemoriesRequest } from '../utils/get-date-from-short-string';
 import { getToken } from './auth';
 
 
@@ -22,6 +23,12 @@ export function getWhoAmI() {
 export function getHome({ offset }) {
   return fetch(
     `${apiConfig.host}/v2/timelines/home?offset=${offset}`, getRequestOptions());
+}
+
+export function getMemories({ from, offset }) {
+  const ISOFrom = (getDateForMemoriesRequest(from)).toISOString();
+  return fetch(
+    `${apiConfig.host}/v2/timelines/home?offset=${offset}&created-before=${ISOFrom}&sort=created`, getRequestOptions());
 }
 
 export function getDiscussions({ offset }) {
@@ -408,6 +415,12 @@ export function getUserComments({ username, offset }) {
 
 export function getUserLikes({ username, offset }) {
   return fetch(`${apiConfig.host}/v2/timelines/${username}/likes?offset=${offset}`, getRequestOptions());
+}
+
+export function getUserMemories({ username, from, offset }) {
+  const ISOFrom = (getDateForMemoriesRequest(from)).toISOString();
+  return fetch(
+    `${apiConfig.host}/v2/timelines/${username}?offset=${offset}&created-before=${ISOFrom}&sort=created`, getRequestOptions());
 }
 
 export function getSubscribers({ username }) {
