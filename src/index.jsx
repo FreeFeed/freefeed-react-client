@@ -38,7 +38,7 @@ import GroupSettings from './components/group-settings';
 import GroupCreate from './components/group-create';
 import Groups from './components/groups';
 import SearchFeed from './components/search-feed';
-import BestOfFeed from './components/best-of-feed';
+import PlainFeed from './components/plain-feed';
 import Notifications from './components/notifications';
 import Friends from './components/friends';
 import ManageSubscribers from './components/manage-subscribers';
@@ -137,12 +137,14 @@ ReactDOM.render(
         <Route name="direct" path="filter/direct" component={Discussions} {...generateRouteHooks(boundRouteActions('direct'))} />
         <Route name="search" path="search" component={SearchFeed} {...generateRouteHooks(boundRouteActions('search'))} />
         <Route name="notifications" path="filter/notifications" component={Notifications} {...generateRouteHooks(boundRouteActions('notifications'))} />
-        <Route name="best_of" path="filter/best_of" component={BestOfFeed} {...generateRouteHooks(boundRouteActions('best_of'))} />
+        <Route name="best_of" path="filter/best_of" component={PlainFeed} {...generateRouteHooks(boundRouteActions('best_of'))} />
         <Route name="groups" path="/groups" component={Groups} onEnter={enterStaticPage('Groups')} />
         <Route name="friends" path="/friends" component={Friends} onEnter={friendsActions} />
         <Route name="groupCreate" path="/groups/create" component={GroupCreate} onEnter={enterStaticPage('Create a group')} />
         <Route name="archivePost" path="/archivePost" component={ArchivePost} {...generateRouteHooks(boundRouteActions('archivePost'))} />
         <Route name="userFeed" path="/:userName" component={User} {...generateRouteHooks(boundRouteActions('userFeed'))} />
+        <Route name="memories" path="/memories/:from" component={PlainFeed} {...generateRouteHooks(boundRouteActions('memories'))} />
+        <Route name="userMemories" path="/:userName/memories/:from" component={PlainFeed} {...generateRouteHooks(boundRouteActions('userMemories'))} />
         <Route name="userSummary" path="/:userName/summary(/:days)" component={User} {...generateRouteHooks(boundRouteActions('userSummary'))} />
         <Route name="subscribers" path="/:userName/subscribers" component={Subscribers} onEnter={subscribersSubscriptionsActions} />
         <Route name="subscriptions" path="/:userName/subscriptions" component={Subscriptions} onEnter={subscribersSubscriptionsActions} />

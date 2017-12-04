@@ -5,6 +5,7 @@ import { userParser, postParser, getSummaryPeriod } from '../utils';
 import config from '../config';
 import { getToken, getPersistedUser } from '../services/auth';
 import { parseQuery } from '../utils/search-highlighter';
+import { formatDateFromShortString } from '../utils/get-date-from-short-string';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
 
@@ -1700,6 +1701,12 @@ export function boxHeader(state = "", action) {
     }
     case request(ActionTypes.GET_SEARCH): {
       return `Search${action.payload.search ? `: ${action.payload.search}` : ''}`;
+    }
+    case request(ActionTypes.MEMORIES): {
+      return `Memories: posts from ${formatDateFromShortString(action.payload.from)} and earlier`;
+    }
+    case request(ActionTypes.GET_USER_MEMORIES): {
+      return `${action.payload.username} memories: posts from ${formatDateFromShortString(action.payload.from)} and earlier`;
     }
     case request(ActionTypes.GET_BEST_OF): {
       return 'Best Of FreeFeed';

@@ -10,6 +10,7 @@ const FeedHandler = (props) => (
       {props.boxHeader}
     </div>
     <PaginatedView {...props}>
+      {props.visibleEntries.length === 0 && 'No posts here'}
       <Feed {...props} />
     </PaginatedView>
     <div className="box-footer" />
