@@ -8,7 +8,7 @@ class AudioAttachment extends React.PureComponent {
 
   render() {
     const { props } = this;
-    const formattedFileSize = numeral(props.fileSize).format('0.[0] b');
+    const formattedFileSize = numeral(props.fileSize).format('0.[0] ib');
 
     let artistAndTitle = '';
     if (props.title && props.artist) {
