@@ -6,6 +6,7 @@ import InstagramPreview, { canShowURL as instagramCanShowURL } from './instagram
 import GoogleDocsPreview, { canShowURL as googleDocsCanShowURL } from './google-docs';
 import YandexMusicPreview, { canShowURL as yandexMusicCanShowURL } from './yandex-music';
 import WikipediaPreview, { canShowURL as wikipediaCanShowURL } from './wikipedia';
+import TelegramPreview, { canShowURL as telegramCanShowURL } from './telegram';
 import EmbedlyPreview from './embedly';
 
 export default function LinkPreview({ allowEmbedly, url }) {
@@ -24,6 +25,8 @@ export default function LinkPreview({ allowEmbedly, url }) {
     return <YandexMusicPreview url={url} />;
   } else if (wikipediaCanShowURL(url)) {
     return <WikipediaPreview url={url} />;
+  } else if (telegramCanShowURL(url)) {
+    return <TelegramPreview url={url} />;
   }
 
   if (allowEmbedly) {
