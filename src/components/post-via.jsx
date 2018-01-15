@@ -1,29 +1,30 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import _ from 'lodash';
 import UserName from './user-name';
 
 // props types
-const userType = React.PropTypes.shape({
-  id: React.PropTypes.string,
-  username: React.PropTypes.string
+const userType = PropTypes.shape({
+  id: PropTypes.string,
+  username: PropTypes.string
 });
 
-const commentType = React.PropTypes.shape({
+const commentType = PropTypes.shape({
   user: userType
 });
 
 export default class PostVia extends React.Component {
   static propTypes = {
-    post: React.PropTypes.shape({
+    post: PropTypes.shape({
       createdBy: userType,
-      recipients: React.PropTypes.arrayOf(userType),
-      comments: React.PropTypes.arrayOf(commentType),
-      usersLikedPost: React.PropTypes.arrayOf(userType)
+      recipients: PropTypes.arrayOf(userType),
+      comments: PropTypes.arrayOf(commentType),
+      usersLikedPost: PropTypes.arrayOf(userType)
     }).isRequired,
 
-    me: React.PropTypes.shape({
-      id: React.PropTypes.string,
-      subscriptions: React.PropTypes.arrayOf(React.PropTypes.string)
+    me: PropTypes.shape({
+      id: PropTypes.string,
+      subscriptions: PropTypes.arrayOf(PropTypes.string)
     }).isRequired
   };
 

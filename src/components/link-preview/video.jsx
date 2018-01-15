@@ -1,5 +1,7 @@
 import { parse as urlParse } from 'url';
 import { parse as queryParse } from 'querystring';
+
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -26,7 +28,7 @@ export function canShowURL(url) {
 
 class VideoPreview extends React.Component {
   static propTypes = {
-    url: React.PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
   };
 
   state = {

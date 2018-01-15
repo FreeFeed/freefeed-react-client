@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import VideoPreview, { canShowURL as videoCanShowURL } from './video';
@@ -37,8 +38,8 @@ export default function LinkPreview({ allowEmbedly, url }) {
 }
 
 LinkPreview.propTypes = {
-  allowEmbedly: React.PropTypes.bool.isRequired,
-  url: React.PropTypes.string.isRequired,
+  allowEmbedly: PropTypes.bool.isRequired,
+  url: PropTypes.string.isRequired,
 };
 
 function noPreviewForURL(url) {

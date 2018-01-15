@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import _ from 'lodash';
 
@@ -10,7 +11,7 @@ import { contentResized } from './events';
  */
 export default class ResizeTracker extends React.Component {
   static propTypes = {
-    debounce: React.PropTypes.number.isRequired, // fixed, only applies at creation time
+    debounce: PropTypes.number.isRequired, // fixed, only applies at creation time
   };
 
   static defaultProps = {

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { once } from 'lodash';
 
@@ -12,7 +13,7 @@ export function canShowURL(url) {
 
 class TelegramPreview extends React.Component {
   static propTypes = {
-    url: React.PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
   };
 
   componentDidMount() {

@@ -1,4 +1,5 @@
-import React, { PropTypes as pt } from 'react';
+import pt from 'prop-types';
+import React from 'react';
 import classnames from 'classnames';
 import ImageAttachment from './post-attachment-image';
 import ImageAttachmentsLightbox from './post-attachment-image-lightbox';
