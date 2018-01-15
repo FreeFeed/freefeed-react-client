@@ -16,8 +16,8 @@ const getAuthorName = ({ postAuthor, createdUser, group }) => {
   return createdUser.username;
 };
 
-const generatePostUrl = ({ ...event, post_id }) => `/${getAuthorName(event)}/${post_id}`;
-const generateCommentUrl = ({ ...event, post_id, comment_id }) => `/${getAuthorName(event)}/${post_id}#comment-${comment_id}`;
+const generatePostUrl = ({ post_id, ...event }) => `/${getAuthorName(event)}/${post_id}`;
+const generateCommentUrl = ({ post_id, comment_id, ...event }) => `/${getAuthorName(event)}/${post_id}#comment-${comment_id}`;
 const postLink = (event) => <Link to={generatePostUrl(event)}>post</Link>;
 const directPostLink = (event) => <Link to={generatePostUrl(event)}>direct message</Link>;
 const commentLink = (event, text = 'comment') => <Link to={generateCommentUrl(event)}>{text}</Link>;

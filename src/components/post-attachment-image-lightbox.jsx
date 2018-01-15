@@ -1,4 +1,5 @@
-import React, { PropTypes as pt } from 'react';
+import pt from 'prop-types';
+import React from 'react';
 import { PhotoSwipe } from 'react-photoswipe';
 import Mousetrap from 'mousetrap';
 

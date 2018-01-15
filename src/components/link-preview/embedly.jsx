@@ -1,4 +1,6 @@
 /* global embedly */
+import PropTypes from 'prop-types';
+
 import React from 'react';
 import { connect } from 'react-redux';
 import 'element-closest';
@@ -9,7 +11,7 @@ import * as heightCache from './scroll-helpers/size-cache';
 
 class EmbedlyPreview extends React.Component {
   static propTypes = {
-    url: React.PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
   };
 
   link = null;
