@@ -43,7 +43,7 @@ function selectState(state) {
   const defaultFeed = state.routing.locationBeforeTransitions.query.to || user.username;
   const invitation = formatInvitation(state.routing.locationBeforeTransitions.query.invite);
   const sendTo = { ...state.sendTo, defaultFeed, invitation };
-  const isDirects = state.routing.locationBeforeTransitions.pathname.indexOf('direct') !== -1
+  const isDirects = state.routing.locationBeforeTransitions.pathname.indexOf('direct') !== -1;
   if (isDirects) {
     sendTo.expanded = true;
   }
