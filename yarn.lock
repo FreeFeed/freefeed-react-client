@@ -1797,9 +1797,9 @@ domain-browser@^1.1.1:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.1.7.tgz#867aa4b093faa05f1de08c06f4d7b21fdf8698bc"
 
-dropzone@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-4.3.0.tgz#48b0b8f2ad092872e4b535b672a7c3f1a1d67c91"
+dropzone@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-5.2.0.tgz#2fdf6ac6472f4c62d03d3e9fc22aaa0229d299de"
 
 duplexer@^0.1.1:
   version "0.1.1"
@@ -2165,7 +2165,7 @@ express@^4.13.3:
     utils-merge "1.0.1"
     vary "~1.1.2"
 
-extend@~3.0.0, extend@~3.0.1:
+extend@^3.0.1, extend@~3.0.0, extend@~3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.1.tgz#a755ea7bc1adfcc5a31ce7e762dbaadc5e636444"
 
@@ -4285,11 +4285,12 @@ react-dom@~15.6.2:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
-react-dropzone-component@~1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/react-dropzone-component/-/react-dropzone-component-1.4.1.tgz#956f00e2fe2224c87261bff2d9327da09312879e"
+react-dropzone-component@~3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-dropzone-component/-/react-dropzone-component-3.0.0.tgz#83f6f220af11208070d3b6e106fdd7caf749f14c"
   dependencies:
-    dropzone "^4.3.0"
+    dropzone "^5.2.0"
+    extend "^3.0.1"
 
 react-google-recaptcha@~0.9.9:
   version "0.9.9"
