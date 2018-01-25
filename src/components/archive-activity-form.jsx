@@ -1,13 +1,14 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 export default class ArchiveActivityForm extends React.Component {
   static propTypes = {
-    action:    React.PropTypes.func.isRequired,
-    formState: React.PropTypes.shape({
-      inProgress: React.PropTypes.bool.isRequired,
-      success:    React.PropTypes.bool.isRequired,
-      error:      React.PropTypes.bool.isRequired,
-      errorText:  React.PropTypes.string.isRequired,
+    action:    PropTypes.func.isRequired,
+    formState: PropTypes.shape({
+      inProgress: PropTypes.bool.isRequired,
+      success:    PropTypes.bool.isRequired,
+      error:      PropTypes.bool.isRequired,
+      errorText:  PropTypes.string.isRequired,
     }),
   };
 

@@ -252,7 +252,7 @@ export function feedViewState(state = initFeed, action) {
   }
   if (ActionHelpers.isFeedResponse(action)) {
     // Separate hidden entries only in 'RiverOfNews' feed
-    const separateHiddenEntries =  (action.payload.timelines && action.payload.timelines.name === 'RiverOfNews');
+    const separateHiddenEntries = (action.type === response(ActionTypes.HOME));
 
     let visibleEntries, hiddenEntries;
     if (separateHiddenEntries) {

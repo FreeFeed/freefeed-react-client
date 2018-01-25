@@ -54,7 +54,7 @@ export default class CommentLikes extends React.Component {
   renderBubble = () => {
     return this.props.createdAt
       ? (
-        <TimeDisplay className="comment-time" timeStamp={+this.props.createdAt} timeAgoInTitle={true}>
+        <TimeDisplay className="comment-time" timeStamp={+this.props.createdAt} timeAgoInTitle={false}>
           <span
             className={`comment-icon fa ${this.props.omitBubble ? "feed-comment-dot" : "fa-comment-o"}`}
             id={`comment-${this.props.commentId}`}

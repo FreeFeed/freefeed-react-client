@@ -50,7 +50,7 @@ export default class PostComments extends React.Component {
       <PostComment
         id={props.post.id}
         key={`${props.post.id}-comment-adding`}
-        ref={this.registerCommentForm}
+        inputRef={this.registerCommentForm}
         isEditing={true}
         editText={props.post.newCommentText}
         updateCommentingText={props.updateCommentingText}
