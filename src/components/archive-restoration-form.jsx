@@ -1,17 +1,18 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import _ from 'lodash';
 
 export default class ArchiveRestorationForm extends React.Component {
   static propTypes = {
-    action:    React.PropTypes.func.isRequired,
-    formState: React.PropTypes.shape({
-      inProgress: React.PropTypes.bool.isRequired,
-      success:    React.PropTypes.bool.isRequired,
-      error:      React.PropTypes.bool.isRequired,
-      errorText:  React.PropTypes.string.isRequired,
+    action:    PropTypes.func.isRequired,
+    formState: PropTypes.shape({
+      inProgress: PropTypes.bool.isRequired,
+      success:    PropTypes.bool.isRequired,
+      error:      PropTypes.bool.isRequired,
+      errorText:  PropTypes.string.isRequired,
     }),
-    sources:     React.PropTypes.array.isRequired,
-    oldUsername: React.PropTypes.string.isRequired,
+    sources:     PropTypes.array.isRequired,
+    oldUsername: PropTypes.string.isRequired,
   };
 
   state = {
@@ -105,9 +106,9 @@ const FRF_URL = 'http://friendfeed.com';
 
 class SourceList extends React.Component {
   static propTypes = {
-    sources:  React.PropTypes.array.isRequired,
-    selected: React.PropTypes.array.isRequired,
-    onClick:  React.PropTypes.func.isRequired,
+    sources:  PropTypes.array.isRequired,
+    selected: PropTypes.array.isRequired,
+    onClick:  PropTypes.func.isRequired,
   };
 
   renderSource({ name, url }) {

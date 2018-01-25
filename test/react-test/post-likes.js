@@ -1,6 +1,6 @@
 import test from 'tape';
 import React from 'react';
-import { createRenderer as createShallowRenderer } from 'react-addons-test-utils';
+import { createRenderer as createShallowRenderer } from 'react-test-renderer/shallow';
 
 import PostLikes from '../../src/components/post-likes';
 
