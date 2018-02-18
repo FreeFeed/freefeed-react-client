@@ -148,7 +148,8 @@ export default class UserPreferencesForm extends React.Component {
           </label>
         </div>
 
-        <div style={{ marginBottom: '20px' }}>Text display style:
+        <div style={{ marginBottom: '20px' }}>
+          Text display style:
           <div className="radio">
             <label>
               <input
