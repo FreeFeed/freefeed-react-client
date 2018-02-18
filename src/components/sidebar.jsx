@@ -39,21 +39,7 @@ const SideBarFriends = ({ user }) => (
           </Link>
         </li>
         <li className="p-my-discussions"><Link to="/filter/discussions">My discussions</Link></li>
-        <li className="p-best-of"><Link to="/summary/1">Best of day</Link>
-          &nbsp;&nbsp;
-          <span
-            style={{
-              backgroundColor: '#F9CB16',
-              color: 'white',
-              display: 'inline-block',
-              fontSize: '10px',
-              padding: '0 2px',
-              verticalAlign: '1px'
-            }}
-          >
-            NEW
-          </span>
-        </li>
+        <li className="p-best-of"><Link to="/summary/1">Best of day</Link></li>
         <li className="p-home">
           <Link to="/filter/notifications" style={user.unreadNotificationsNumber > 0 ? { fontWeight: 'bold' } : {}}>
             Notifications {user.unreadNotificationsNumber > 0 ? `(${user.unreadNotificationsNumber})` : ''}
@@ -77,7 +63,7 @@ const SideBarSearch = ({ user }) => (
       <ul>
         <li><Link to="/search">FreeFeed search</Link></li>
         <li><Link to={{ pathname: "/search", query: { qs: `"@${user.username}"` } }}>Vanity search</Link></li>
-        <li><Link to="/filter/best_of">Best of FreeFeed</Link></li>
+        {/*<li><Link to="/filter/best_of">Best of FreeFeed</Link></li>*/}
       </ul>
     </div>
   </div>
