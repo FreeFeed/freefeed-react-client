@@ -8,6 +8,8 @@ import { signUpChange, signUp, signUpEmpty } from '../redux/action-creators';
 import { preventDefault } from '../utils';
 import LoaderContainer from './loader-container';
 
+import OauthButtons from './oauth-buttons';
+
 const captchaConfig = config.captcha;
 
 function mapStateToProps(state) {
@@ -169,6 +171,7 @@ class Signup extends React.PureComponent {
                       <button className="btn btn-default p-signin-action" type="submit">Sign up</button>
                     </div>
                   </form>
+                  <OauthButtons />
                 </LoaderContainer>
               </div>
             </div>

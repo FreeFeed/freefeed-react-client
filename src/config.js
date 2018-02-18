@@ -9,6 +9,7 @@ const config = {
     cookieDomain: 'localhost',
     tokenPrefix: 'freefeed_',
     userStorageKey: 'USER_KEY',
+    oauth: false, // array of enabled providers (e.g. ['facebook', 'google', 'github'])
     sentinel: null // keep always last
   },
   captcha: {

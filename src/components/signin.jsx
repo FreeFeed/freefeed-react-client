@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { signInChange, signIn, signInEmpty } from '../redux/action-creators';
 import { preventDefault } from '../utils';
 import LoaderContainer from './loader-container';
+import OauthButtons from './oauth-buttons';
 
 function mapStateToProps(state) {
   return { ...state.signInForm };
@@ -73,6 +74,7 @@ class Signin extends React.PureComponent {
                       <button className="btn btn-default p-singin-action" type="submit">Sign in</button>
                     </div>
                   </form>
+                  <OauthButtons />
                 </LoaderContainer>
                 <p>New to freefeed? <Link to="/signup">Create an account »</Link></p>
                 <p>Forgot your password? <Link to="/restore">Request password reset instructions »</Link></p>
