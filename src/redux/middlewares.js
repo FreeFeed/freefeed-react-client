@@ -82,7 +82,8 @@ export const authMiddleware = (store) => {
 
 
     if (action.type === response(ActionTypes.SIGN_IN) ||
-       action.type === response(ActionTypes.SIGN_UP)) {
+        action.type === response(ActionTypes.SIGN_UP) ||
+        action.type === ActionTypes.SIGN_IN_WITH_TOKEN) {
       firstUnauthenticated = false;
       setToken(action.payload.authToken);
       next(action);

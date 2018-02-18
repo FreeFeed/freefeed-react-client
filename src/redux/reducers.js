@@ -1419,6 +1419,9 @@ export function authenticated(state = !!getToken(), action) {
     case response(ActionTypes.SIGN_UP): {
       return true;
     }
+    case ActionTypes.SIGN_IN_WITH_TOKEN: {
+      return true;
+    }
     case ActionTypes.UNAUTHENTICATED: {
       return false;
     }

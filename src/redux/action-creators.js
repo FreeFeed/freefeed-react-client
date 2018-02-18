@@ -378,6 +378,15 @@ export function signIn(username, password) {
   };
 }
 
+export function signInWithToken(authToken) {
+  return {
+    type: ActionTypes.SIGN_IN_WITH_TOKEN,
+    payload: {
+      authToken,
+    },
+  };
+}
+
 export function restorePassword(mail) {
   return {
     type: ActionTypes.RESTORE_PASSWORD,
