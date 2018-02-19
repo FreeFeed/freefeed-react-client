@@ -7,7 +7,7 @@ set out_dir=%thisdir%_dist
 set public_path=/
 
 set webpack=%thisdir%node_modules\.bin\webpack ^
-	--config webpack.config.js ^
+	--config webpack.config.babel.js ^
 	--output-path %out_dir% ^
 	--output-public-path %public_path%
 
