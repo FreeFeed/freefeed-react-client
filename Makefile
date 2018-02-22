@@ -2,7 +2,7 @@ out_dir ?= ./_dist
 public_path ?= /
 
 webpack = ./node_modules/.bin/webpack \
-	--config webpack.config.js \
+	--config webpack.config.babel.js \
 	--output-path $(out_dir) \
 	--output-public-path $(public_path)
 

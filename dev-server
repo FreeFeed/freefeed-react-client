@@ -15,7 +15,7 @@ if [ "$1" != "-O" ]; then
 fi
 
 set -x; PORT="$PORT" DEV=1 LIVERELOAD=1 exec ./node_modules/.bin/webpack-dev-server \
-  --config webpack.config.js \
+  --config webpack.config.babel.js \
   --port $PORT \
   --host 0.0.0.0 \
   --output-public-path "http://localhost:$PORT/" \
