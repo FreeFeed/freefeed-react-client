@@ -13,6 +13,7 @@ const dropzoneComponentConfig = {
 const dropzoneConfig = {
   dictDefaultMessage: 'Drop files here', // The message that gets displayed before any files are dropped.
   previewsContainer: '.dropzone-previews', // Define the container to display the previews.
+  timeout: 0,  // default is 30000 miliseconds which is too low for some cases
   previewTemplate: `
     <div class="dz-preview dz-file-preview">
       <div class="dz-image"><img data-dz-thumbnail /></div>

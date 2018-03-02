@@ -13,7 +13,7 @@ set DEV=1
 set LIVERELOAD=1
 
 ./node_modules/.bin/webpack-dev-server ^
-  --config webpack.config.js ^
+  --config webpack.config.babel.js ^
   --port %PORT% ^
   --host 0.0.0.0 ^
   --output-public-path "http://localhost:%PORT%/" ^
