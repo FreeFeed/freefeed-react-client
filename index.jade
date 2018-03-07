@@ -75,7 +75,7 @@ html(lang='en')
       })(window, document);
 
     if appConfig.sentry.publicDSN
-      script(src='https://cdn.ravenjs.com/3.20.0/raven.min.js')
+      script(src='https://cdn.ravenjs.com/3.23.1/raven.min.js', crossorigin="anonymous")
       script Raven.config('#{appConfig.sentry.publicDSN}', { autoBreadcrumbs: true }).install();
 
     script(src='[[ app-*.js ]]')

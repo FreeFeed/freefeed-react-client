@@ -35,7 +35,7 @@ const config = {
     new PathRewriter(),
     rules.commonCssExtractor,
     rules.appCssExtractor,
-    opts.uglify && new webpack.optimize.UglifyJsPlugin()
+    opts.uglify && new webpack.optimize.UglifyJsPlugin({ sourceMap: true })
   ])
 };
 
