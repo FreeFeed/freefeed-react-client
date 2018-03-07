@@ -67,6 +67,12 @@ export default class UserPreferencesForm extends React.Component {
     });
   };
 
+  hideUnreadNotifications = (event) => {
+    this.setState({
+      hideUnreadNotifications: event.target.checked
+    });
+  };
+
   isCommentTypeHidden = (hideType) => _.includes(this.state.hideCommentsOfTypes, hideType);
 
   changeHideComments = (event) => {
@@ -175,6 +181,13 @@ export default class UserPreferencesForm extends React.Component {
             </label>
           </div>
         </div>
+        <div className="checkbox">
+          <label>
+            <input type="checkbox" name="bubbles" value="1" checked={this.state.hideUnreadNotifications} onChange={this.hideUnreadNotifications} />
+            Hide unread notifications counter
+          </label>
+        </div>
+
         <div className="checkbox">
           <label>
             <input type="checkbox" name="bubbles" value="1" checked={this.state.comments.omitRepeatedBubbles} onChange={this.changeOmitBubbles} />
