@@ -29,10 +29,13 @@ const cssAppExtractor = new ExtractTextPlugin(
 const rules = new RulesGenerator(opts, cssCommonExtractor, cssAppExtractor);
 
 
+const filename = opts.hash ? '[name]-[chunkhash]' : '[name]-dev';
+
 const baseConfig = {
   output: {
     path: opts.dstDir,
-    filename: opts.hash ? '[name]-[chunkhash].js' : '[name]-dev.js',
+    filename: `${filename}.js`,
+    sourceMapFilename: `[file].map`,
     devtoolModuleFilenameTemplate: '/[absolute-resource-path]',
     pathinfo: opts.dev
   },
