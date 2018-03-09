@@ -54,7 +54,6 @@ class InstagramPreview extends React.Component {
           onLoad={this.onIFrameLoad}
           frameBorder="0"
           scrolling="no"
-          allowTransparency={true}
           className="instagram-iframe"
         />
       </div>
