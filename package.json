@@ -81,7 +81,7 @@
   },
   "scripts": {
     "start": "./dev-server",
-    "test": "cross-env NODE_ENV=development webpack --config webpack.config.tests.babel.js ./test && node _dist/test.js | tap-spec",
+    "test": "cross-env NODE_ENV=development mocha-webpack --webpack-config webpack.config.tests.babel.js --recursive test/unit",
     "lint": "eslint --ext .js --ext .jsx src test"
   },
   "author": "FreeFeed contributors",

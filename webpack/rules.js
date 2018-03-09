@@ -50,6 +50,28 @@ class RuleGenerator {
     };
   }
 
+  get babelForNode() {
+    return {
+      test: /\.jsx?$/,
+      exclude: /(node_modules[\\/])/,
+      loader: 'babel-loader',
+      options: {
+        babelrc: false,
+        ignore: /(node_modules)/,
+        presets: [
+          "react",
+          ["env", {
+            modules: false,
+            targets: {
+              node: "8.9",
+            }
+          }],
+          "stage-1"
+        ],
+      }
+    };
+  }
+
   get template() {
     const query = JSON.stringify({ pretty: true, opts: this.opts, appConfig });
 

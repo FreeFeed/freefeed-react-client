@@ -1,28 +1,17 @@
-import TapWebpackPlugin from 'tap-webpack-plugin';
-
+import webpackNodeExternals from 'webpack-node-externals';
 import { baseConfig, rules } from "./webpack/base";
 
 
 const config = {
   ...baseConfig,
-  entry: {
-    test: './test',
-  },
   target: 'node',
-  node: {
-    fs: 'empty',
-  },
-  devtool: 'inline-source-map',
   module: {
     rules: [
-      rules.babel,
+      rules.babelForNode,
       rules.otherAssets
     ]
   },
-  plugins: [
-    ...baseConfig.plugins,
-    new TapWebpackPlugin(),
-  ]
+  externals: [webpackNodeExternals()],
 };
 
 config.output.filename = '[name].js';
