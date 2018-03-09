@@ -21,8 +21,6 @@
     "porter-stemmer": "0.9.x",
     "prop-types": "~15.6.1",
     "react": "~16.2.0",
-    "react-addons-css-transition-group": "~15.6.2",
-    "react-addons-pure-render-mixin": "~15.6.2",
     "react-async-script": "~0.9.1",
     "react-dd-menu": "~2.0.2",
     "react-dom": "~16.2.0",
