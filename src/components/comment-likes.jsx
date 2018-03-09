@@ -1,6 +1,6 @@
 import React from "react";
 import classnames from "classnames";
-import Portal from "react-portal";
+import { Portal } from "react-portal";
 import UserName from "./user-name";
 import TimeDisplay from "./time-display";
 

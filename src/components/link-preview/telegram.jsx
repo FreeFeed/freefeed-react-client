@@ -30,7 +30,6 @@ class TelegramPreview extends React.Component {
           data-url={baseURL}
           frameBorder="0"
           scrolling="no"
-          allowTransparency={true}
           className="telegram-iframe"
           style={{ height: heightCache.get(baseURL, 0) }}
         />
