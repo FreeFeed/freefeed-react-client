@@ -171,9 +171,16 @@ export default class PostComments extends React.Component {
     if (showFold) {
       return (
         <StickyContainer>
-          <Sticky stickyClassName="fold-comments-sticky" className="fold-comments">
-            <i className="fa fa-chevron-up" />
-            <a onClick={this.fold}>Fold comments</a>
+          <Sticky>
+            {({ isSticky, style }) => {
+              const containerClass = isSticky ? 'fold-comments fold-comments-sticky' : 'fold-comments';
+              return (
+                <div className={containerClass} style={style}>
+                  <i className="fa fa-chevron-up" />
+                  <a onClick={this.fold}>Fold comments</a>
+                </div>
+              );
+            }}
           </Sticky>
           {middleComments}
         </StickyContainer>
