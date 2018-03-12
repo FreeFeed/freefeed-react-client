@@ -96,7 +96,7 @@ export default class PostComment extends React.Component {
 
   saveComment = () => {
     if (!this.props.isSaving) {
-      this.props.saveEditingComment(this.props.id, this.state.editText);
+      this.props.saveEditingComment(this.props.id, this.state.editText || this.props.editText);
     }
   };
 
@@ -172,7 +172,7 @@ export default class PostComment extends React.Component {
               autoFocus={!this.props.isSinglePost}
               inputRef={this.registerCommentTextArea}
               className="comment-textarea"
-              value={this.state.editText}
+              value={this.state.editText || this.props.editText}
               onFocus={this.setCaretToTextEnd}
               onChange={this.handleChange}
               onKeyDown={this.checkSave}
