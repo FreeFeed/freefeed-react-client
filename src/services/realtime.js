@@ -1,4 +1,5 @@
 import io from 'socket.io-client';
+import _ from 'lodash';
 
 import config from '../config';
 import { getToken } from './auth';
@@ -56,37 +57,77 @@ const eventsToLog = [
   'reconnect',
 ];
 
-const bindSocketEventHandlers = (socket) => (eventHandlers) => {
-  Object.keys(eventHandlers).forEach((event) => socket.on(event, scrollCompensator(eventHandlers[event])));
-};
+export class Connection {
+  socket;
+  rooms = [];
 
-const openSocket = () => io.connect(`${apiConfig.host}/`, { query: `token=${getToken()}` });
+  constructor(eventHandlers) {
+    this.socket = improveSocket(io(`${apiConfig.host}/`));
+    bindSocketActionsLog(this.socket)(eventsToLog);
 
-export function init(eventHandlers) {
-  const socket = openSocket();
+    this.socket.on('connect', async () => {
+      await this.socket.emitAsync('auth', { authToken: getToken() }); // should always be first
+      await this.socket.emitAsync('subscribe', roomsToHash(this.rooms));
+    });
 
-  bindSocketEventHandlers(socket)(eventHandlers);
-
-  bindSocketActionsLog(socket)(eventsToLog);
-
-  let subscription;
-  let subscribe;
-
-  return {
-    unsubscribe: () => {
-      if (subscription) {
-        console.log('unsubscribing from ', subscription);  // eslint-disable-line no-console
-        socket.emit('unsubscribe', subscription);
-        socket.off('reconnect', subscribe);
+    this.socket.on('*', (event, data) => {
+      if (data.realtimeChannels && _.intersection(data.realtimeChannels, this.rooms).length === 0) {
+        return;
       }
-    },
-    subscribe: (newSubscription) => {
-      subscription = newSubscription;
-      console.log('subscribing to ', subscription);  // eslint-disable-line no-console
-      subscribe = () => socket.emit('subscribe', subscription);
-      socket.on('reconnect', subscribe);
-      subscribe();
-    },
-    disconnect: () => socket.disconnect()
+      if (eventHandlers[event]) {
+        scrollCompensator(eventHandlers[event])(data);
+      }
+    });
+  }
+
+  async reAuthorize() {
+    if (this.socket.connected) {
+      await this.socket.emitAsync('auth', { authToken: getToken() });
+    }
+  }
+
+  async subscribe(...newRooms) {
+    const diff = _.difference(newRooms, this.rooms);
+    if (diff.length > 0) {
+      console.log('subscribing to ', diff);  // eslint-disable-line no-console
+      this.rooms = _.union(this.rooms, newRooms);
+      if (this.socket.connected) {
+        await this.socket.emitAsync('subscribe', roomsToHash(diff));
+      }
+    }
+  }
+
+  async unsubscribe(predicate = () => true) {
+    const diff = this.rooms.filter(predicate);
+    if (diff.length > 0) {
+      console.log('unsubscribing from ', diff);  // eslint-disable-line no-console
+      this.rooms = _.difference(this.rooms, diff);
+      if (this.socket.connected) {
+        await this.socket.emitAsync('unsubscribe', roomsToHash(diff));
+      }
+    }
+  }
+}
+
+function improveSocket(socket) {
+  // Asynt emitter
+  socket.emitAsync = (event, ...args) => new Promise((resolve) => socket.emit(event, ...[...args, resolve]));
+
+  // Catch-all event handler (https://stackoverflow.com/a/33960032)
+  const { onevent } = socket;
+  socket.onevent = (packet) => {
+    onevent.call(socket, packet);
+    packet.data = ["*"].concat(packet.data || []);
+    onevent.call(socket, packet);
   };
+  return socket;
+}
+
+function roomsToHash(rooms) {
+  return rooms.reduce((hash, room) => {
+    const [type, id] = room.split(':', 2);
+    hash[type] = hash[type] || [];
+    hash[type].push(id);
+    return hash;
+  }, {});
 }

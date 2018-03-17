@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import { getPost } from '../services/api';
 import { setToken, persistUser } from '../services/auth';
-import { init } from '../services/realtime';
+import { Connection as RTConnection } from '../services/realtime';
 import { userParser, delay } from '../utils';
 
 import * as ActionCreators from './action-creators';
@@ -390,51 +390,42 @@ const bindHandlers = (store) => ({
   'like:remove': (data) => store.dispatch({ type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId }),
   'comment_like:new': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment:data.comments }),
   'comment_like:remove': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment:data.comments }),
+  'global:user:update': (data) => store.dispatch({ type: ActionTypes.REALTIME_GLOBAL_USER_UPDATE, user: data.user }),
 });
 
 export const realtimeMiddleware = (store) => {
-  const handlers = bindHandlers(store);
+  const conn = new RTConnection(bindHandlers(store));
+
+  const initialSubscriptions = [`global:users`];
   const state = store.getState();
-  let realtimeConnection;
+  if (state.user.id) {
+    initialSubscriptions.push(`user:${state.user.id}`);
+  }
+  conn.subscribe(...initialSubscriptions);
+
   return (next) => (action) => {
+    if (action.type === response(ActionTypes.SIGN_IN) || action.type === response(ActionTypes.SIGN_UP)) {
+      conn.reAuthorize().then(() => {
+        const state = store.getState();
+        conn.subscribe(`user:${state.user.id}`);
+      });
+    }
+
     if (action.type === ActionTypes.UNAUTHENTICATED) {
-      if (realtimeConnection) {
-        realtimeConnection.disconnect();
-        realtimeConnection = undefined;
-        store.dispatch(ActionCreators.realtimeUnsubscribe());
-      }
+      conn.unsubscribe((room) => /^user:/.test(room));
+      conn.reAuthorize();
     }
 
-    if (isFeedRequest(action) ||
-      action.type === request(ActionTypes.GET_SINGLE_POST)) {
-      if (realtimeConnection) {
-        realtimeConnection.unsubscribe();
-        store.dispatch(ActionCreators.realtimeUnsubscribe());
-      }
+    if (isFeedRequest(action) || action.type === request(ActionTypes.GET_SINGLE_POST)) {
+      conn.unsubscribe((room) => /^(post|timeline):/.test(room));
     }
 
-    if (isFeedResponse(action)) {
-      if (!realtimeConnection) {
-        realtimeConnection = init(handlers);
-      }
-      if (action.payload.timelines) {
-        realtimeConnection.subscribe({
-          user: [state.user.id],
-          timeline:[action.payload.timelines.id]
-        });
-        store.dispatch(ActionCreators.realtimeSubscribe('timeline', action.payload.timelines.id));
-      }
+    if (isFeedResponse(action) && action.payload.timelines) {
+      conn.subscribe(`timeline:${action.payload.timelines.id}`);
     }
 
     if (action.type === response(ActionTypes.GET_SINGLE_POST)) {
-      if (!realtimeConnection) {
-        realtimeConnection = init(handlers);
-      }
-      realtimeConnection.subscribe({
-        user: [state.user.id],
-        post:[action.payload.posts.id]
-      });
-      store.dispatch(ActionCreators.realtimeSubscribe('post', action.payload.posts.id));
+      conn.subscribe(`post:${action.payload.posts.id}`);
     }
 
     return next(action);
