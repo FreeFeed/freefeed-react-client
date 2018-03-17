@@ -389,6 +389,7 @@ const bindHandlers = (store) => ({
   'like:remove': (data) => store.dispatch({ type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId }),
   'comment_like:new': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment:data.comments }),
   'comment_like:remove': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment:data.comments }),
+  'global:user:update': (data) => store.dispatch({ type: ActionTypes.REALTIME_GLOBAL_USER_UPDATE, user: data.user }),
 });
 
 export const realtimeMiddleware = (store) => {
@@ -423,6 +424,9 @@ export const realtimeMiddleware = (store) => {
       .filter((r) => regex.test(r))
       .forEach((r) => store.dispatch(ActionCreators.realtimeUnsubscribe(r)));
   };
+
+  // Initial subscription
+  store.dispatch(ActionCreators.realtimeSubscribe('global:users'));
 
   return (next) => (action) => {
     if (action.type === ActionTypes.REALTIME_SUBSCRIBE) {

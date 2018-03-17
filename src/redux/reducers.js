@@ -1345,8 +1345,17 @@ export function users(state = {}, action) {
     case ActionTypes.HIGHLIGHT_COMMENT: {
       return state;
     }
-    case ActionTypes.UNAUTHENTICATED:
+    case ActionTypes.UNAUTHENTICATED: {
       return {};
+    }
+    case ActionTypes.REALTIME_GLOBAL_USER_UPDATE: {
+      const userId = action.user.id;
+      if (state[userId]) {
+        const newUser = userParser(action.user);
+        return { ...state, [userId]: { ...state[userId], ...newUser } };
+      }
+      return state;
+    }
   }
   return state;
 }
@@ -1439,6 +1448,14 @@ export function user(state = initUser(), action) {
           }
         }
       };
+    }
+    case ActionTypes.REALTIME_GLOBAL_USER_UPDATE: {
+      const userId = action.user.id;
+      if (state.id === userId) {
+        const newUser = userParser(action.user);
+        return { ...state, ...newUser };
+      }
+      return state;
     }
   }
   return state;
