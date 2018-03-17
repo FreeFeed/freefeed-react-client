@@ -2227,13 +2227,21 @@ export function userViews(state = {}, action) {
   return state;
 }
 
-export function realtimeSubscription(state = { type: null, id: null }, action) {
+export function realtimeSubscriptions(state = [], action) {
   switch (action.type) {
-    case response(ActionTypes.REALTIME_SUBSCRIBE): {
-      return { ...state, type: action.subsType, id: action.id };
+    case ActionTypes.REALTIME_SUBSCRIBE: {
+      const { room } = action.payload;
+      if (!state.includes(room)) {
+        return [...state, room];
+      }
+      return state;
     }
-    case response(ActionTypes.REALTIME_UNSUBSCRIBE): {
-      return { ...state, type: null, id: null };
+    case ActionTypes.REALTIME_UNSUBSCRIBE: {
+      const { room } = action.payload;
+      if (state.includes(room)) {
+        return _.without(state, room);
+      }
+      return state;
     }
   }
   return state;

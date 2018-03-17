@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import { getPost } from '../services/api';
 import { setToken, persistUser } from '../services/auth';
-import { init } from '../services/realtime';
+import { Connection } from '../services/realtime';
 import { userParser, delay } from '../utils';
 
 import * as ActionCreators from './action-creators';
@@ -324,11 +324,10 @@ const dispatchWithPost = async (store, postId, action, filter = () => true, maxD
   }
 
   if (maxDelay > 0) {
-    const subscrId = state.realtimeSubscription.id;
     await delay(Math.random() * maxDelay);
     state = store.getState();
     // if subscription was changed during delay
-    if (state.realtimeSubscription.id !== subscrId) {
+    if (action.realtimeChannels && _.intersection(action.realtimeChannels, state.realtimeSubscriptions).length === 0) {
       return;
     }
     // if post was loaded during delay
@@ -384,7 +383,7 @@ const bindHandlers = (store) => ({
   'like:new': async (data) => {
     const { postId } = data.meta;
     const iLiked = iLikedPost(store.getState(), data.meta.postId);
-    const action = { type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, users:[data.users], iLiked };
+    const action = { ...data, type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, iLiked };
     return dispatchWithPost(store, postId, action, isFirstFriendInteraction, postFetchDelay);
   },
   'like:remove': (data) => store.dispatch({ type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId }),
@@ -394,47 +393,67 @@ const bindHandlers = (store) => ({
 
 export const realtimeMiddleware = (store) => {
   const handlers = bindHandlers(store);
-  const state = store.getState();
-  let realtimeConnection;
+
+  for (const key of Object.keys(handlers)) {
+    const prevHandler = handlers[key];
+    handlers[key] = (data) => {
+      if (data.realtimeChannels) {
+        const { realtimeSubscriptions } = store.getState();
+        if (_.intersection(data.realtimeChannels, realtimeSubscriptions).length === 0) {
+          // Do not handle events if we are not subscribed to their channels
+          return null;
+        }
+      }
+      return prevHandler(data);
+    };
+  }
+
+  handlers['connect'] = async () => {
+    store.dispatch(ActionCreators.realtimeConnected());
+    await conn.reAuthorize(); // should always be first
+    const { realtimeSubscriptions } = store.getState();
+    await Promise.all(realtimeSubscriptions.map((room) => conn.subscribeTo(room)));
+  };
+
+  const conn = new Connection(handlers);
+
+  const unsubscribeByRegexp = (regex) => {
+    store.getState()
+      .realtimeSubscriptions
+      .filter((r) => regex.test(r))
+      .forEach((r) => store.dispatch(ActionCreators.realtimeUnsubscribe(r)));
+  };
+
   return (next) => (action) => {
+    if (action.type === ActionTypes.REALTIME_SUBSCRIBE) {
+      conn.subscribeTo(action.payload.room);
+    }
+
+    if (action.type === ActionTypes.REALTIME_UNSUBSCRIBE) {
+      conn.unsubscribeFrom(action.payload.room);
+    }
+
     if (action.type === ActionTypes.UNAUTHENTICATED) {
-      if (realtimeConnection) {
-        realtimeConnection.disconnect();
-        realtimeConnection = undefined;
-        store.dispatch(ActionCreators.realtimeUnsubscribe());
-      }
+      conn.reAuthorize().then(() => unsubscribeByRegexp(/^user:/));
     }
 
-    if (isFeedRequest(action) ||
-      action.type === request(ActionTypes.GET_SINGLE_POST)) {
-      if (realtimeConnection) {
-        realtimeConnection.unsubscribe();
-        store.dispatch(ActionCreators.realtimeUnsubscribe());
-      }
+    if (action.type === response(ActionTypes.SIGN_IN) || action.type === response(ActionTypes.SIGN_UP)) {
+      conn.reAuthorize().then(() => {
+        const state = store.getState();
+        store.dispatch(ActionCreators.realtimeSubscribe(`user:${state.user.id}`));
+      });
     }
 
-    if (isFeedResponse(action)) {
-      if (!realtimeConnection) {
-        realtimeConnection = init(handlers);
-      }
-      if (action.payload.timelines) {
-        realtimeConnection.subscribe({
-          user: [state.user.id],
-          timeline:[action.payload.timelines.id]
-        });
-        store.dispatch(ActionCreators.realtimeSubscribe('timeline', action.payload.timelines.id));
-      }
+    if (isFeedRequest(action) || action.type === request(ActionTypes.GET_SINGLE_POST)) {
+      unsubscribeByRegexp(/^(post|timeline):/);
+    }
+
+    if (isFeedResponse(action) && action.payload.timelines) {
+      store.dispatch(ActionCreators.realtimeSubscribe(`timeline:${action.payload.timelines.id}`));
     }
 
     if (action.type === response(ActionTypes.GET_SINGLE_POST)) {
-      if (!realtimeConnection) {
-        realtimeConnection = init(handlers);
-      }
-      realtimeConnection.subscribe({
-        user: [state.user.id],
-        post:[action.payload.posts.id]
-      });
-      store.dispatch(ActionCreators.realtimeSubscribe('post', action.payload.posts.id));
+      store.dispatch(ActionCreators.realtimeSubscribe(`post:${action.payload.posts.id}`));
     }
 
     return next(action);
