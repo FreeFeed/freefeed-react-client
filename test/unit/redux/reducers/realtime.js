@@ -1,8 +1,14 @@
 import { describe, it } from 'mocha';
 import expect from 'unexpected';
 
-import { postsViewState, users, posts, realtimeSubscriptions } from '../../../../src/redux/reducers';
-import { REALTIME_COMMENT_NEW, REALTIME_COMMENT_DESTROY, REALTIME_LIKE_NEW, REALTIME_POST_NEW } from '../../../../src/redux/action-types';
+import { postsViewState, users, user, posts, realtimeSubscriptions } from '../../../../src/redux/reducers';
+import {
+  REALTIME_COMMENT_NEW,
+  REALTIME_COMMENT_DESTROY,
+  REALTIME_LIKE_NEW,
+  REALTIME_POST_NEW,
+  REALTIME_GLOBAL_USER_UPDATE,
+} from '../../../../src/redux/action-types';
 import {
   realtimeSubscribe,
   realtimeUnsubscribe,
@@ -69,6 +75,48 @@ describe('realtime events', () => {
       });
 
       expect(result[anotherTestUser.id].name, 'to equal', anotherTestUser.name);
+    });
+
+    it('should update user on REALTIME_GLOBAL_USER_UPDATE if present', () => {
+      const result = users(usersBefore, {
+        type: REALTIME_GLOBAL_USER_UPDATE,
+        user: { ...testUser, name: 'New name' },
+      });
+
+      expect(result[testUser.id].name, 'to equal', 'New name');
+    });
+
+    it('should not touch state on REALTIME_GLOBAL_USER_UPDATE if user is not present', () => {
+      const result = users(usersBefore, {
+        type: REALTIME_GLOBAL_USER_UPDATE,
+        user: anotherTestUser,
+      });
+
+      expect(result, 'to be', usersBefore);
+    });
+  });
+
+  describe('user()', () => {
+    const testUser = { id: 1, name: 'Ururu' };
+    const userBefore = { ...testUser };
+    const anotherTestUser = { id: 2, name: 'Arara' };
+
+    it('should update user on REALTIME_GLOBAL_USER_UPDATE if present', () => {
+      const result = user(userBefore, {
+        type: REALTIME_GLOBAL_USER_UPDATE,
+        user: { ...testUser, name: 'New name' },
+      });
+
+      expect(result.name, 'to equal', 'New name');
+    });
+
+    it('should not touch state on REALTIME_GLOBAL_USER_UPDATE if user is not present', () => {
+      const result = user(userBefore, {
+        type: REALTIME_GLOBAL_USER_UPDATE,
+        user: anotherTestUser,
+      });
+
+      expect(result, 'to be', userBefore);
     });
   });
 
