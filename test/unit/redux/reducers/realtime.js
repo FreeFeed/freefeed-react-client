@@ -1,8 +1,12 @@
 import { describe, it } from 'mocha';
 import expect from 'unexpected';
 
-import { postsViewState, users, posts } from '../../../../src/redux/reducers';
+import { postsViewState, users, posts, realtimeSubscriptions } from '../../../../src/redux/reducers';
 import { REALTIME_COMMENT_NEW, REALTIME_COMMENT_DESTROY, REALTIME_LIKE_NEW, REALTIME_POST_NEW } from '../../../../src/redux/action-types';
+import {
+  realtimeSubscribe,
+  realtimeUnsubscribe,
+} from '../../../../src/redux/action-creators';
 
 
 describe('realtime events', () => {
@@ -188,6 +192,38 @@ describe('realtime events', () => {
       const result = postsViewState(postsViewStateBefore, newLikeWithPost);
 
       expect(result, 'to have key', newPost.id);
+    });
+  });
+
+  describe('realtimeSubscriptions()', () => {
+    it('should add a new room on REALTIME_SUBSCRIBE', () => {
+      const state = [];
+      const result = realtimeSubscriptions(state, realtimeSubscribe('room1'));
+      expect(result, 'to equal', ['room1']);
+    });
+
+    it('should add a second room on REALTIME_SUBSCRIBE', () => {
+      const state = ['room1'];
+      const result = realtimeSubscriptions(state, realtimeSubscribe('room2'));
+      expect(result, 'to equal', ['room1', 'room2']);
+    });
+
+    it('should not add a new room if already subscribed', () => {
+      const state = ['room1'];
+      const result = realtimeSubscriptions(state, realtimeSubscribe('room1'));
+      expect(result, 'to be', state);
+    });
+
+    it('should remove a room on REALTIME_UNSUBSCRIBE', () => {
+      const state = ['room1'];
+      const result = realtimeSubscriptions(state, realtimeUnsubscribe('room1'));
+      expect(result, 'to equal', []);
+    });
+
+    it('should not remove a room if not subscribed', () => {
+      const state = ['room1'];
+      const result = realtimeSubscriptions(state, realtimeUnsubscribe('room2'));
+      expect(result, 'to be', state);
     });
   });
 });
