@@ -9,7 +9,7 @@ const dummyPost = {
   getBoundingClientRect: () => ({ top:0 })
 };
 
-const scrollCompensator = (dispatchAction) => (...actionParams) => {
+export const scrollCompensator = (dispatchAction) => (...actionParams) => {
   //we hope that markup will remain the same — best tradeoff between this and code all over components
   const postCommentNodes = [...document.querySelectorAll('.post, .comment')];
 
@@ -59,22 +59,14 @@ const eventsToLog = [
 export class Connection {
   socket;
 
-  constructor(eventHandlers) {
+  constructor() {
     this.socket = improveSocket(io(`${apiConfig.host}/`));
     bindSocketActionsLog(this.socket)(eventsToLog);
-
-    this.socket.on('connect', () => {
-      if ('connect' in eventHandlers) {
-        eventHandlers.connect();
-      }
-    });
-
-    this.socket.on('*', (event, data) => {
-      if (event in eventHandlers) {
-        scrollCompensator(eventHandlers[event])(data);
-      }
-    });
   }
+
+  onConnect(handler) { this.socket.on('connect', handler); }
+
+  onEvent(handler) { this.socket.on('*', handler); }
 
   async reAuthorize() {
     if (this.socket.connected) {

@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import { getPost } from '../services/api';
 import { setToken, persistUser } from '../services/auth';
-import { Connection } from '../services/realtime';
+import { Connection, scrollCompensator } from '../services/realtime';
 import { userParser, delay } from '../utils';
 
 import * as ActionCreators from './action-creators';
@@ -396,28 +396,16 @@ export const realtimeMiddleware = (store) => {
   const handlers = bindHandlers(store);
 
   for (const key of Object.keys(handlers)) {
-    const prevHandler = handlers[key];
-    handlers[key] = (data) => {
-      if (data.realtimeChannels) {
-        const { realtimeSubscriptions } = store.getState();
-        if (_.intersection(data.realtimeChannels, realtimeSubscriptions).length === 0) {
-          // Do not handle events if we are not subscribed to their channels
-          return null;
-        }
-      }
-      return prevHandler(data);
-    };
+    handlers[key] = scrollCompensator(handlers[key]);
   }
 
-  handlers['connect'] = async () => {
-    store.dispatch(ActionCreators.realtimeConnected());
-    await conn.reAuthorize(); // should always be first
-    const { realtimeSubscriptions } = store.getState();
-    await Promise.all(realtimeSubscriptions.map((room) => conn.subscribeTo(room)));
-  };
+  // Initial subscription
+  store.dispatch(ActionCreators.realtimeSubscribe('global:users'));
 
-  const conn = new Connection(handlers);
+  return createRealtimeMiddleware(store, new Connection(), handlers);
+};
 
+export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
   const unsubscribeByRegexp = (regex) => {
     store.getState()
       .realtimeSubscriptions
@@ -425,10 +413,32 @@ export const realtimeMiddleware = (store) => {
       .forEach((r) => store.dispatch(ActionCreators.realtimeUnsubscribe(r)));
   };
 
-  // Initial subscription
-  store.dispatch(ActionCreators.realtimeSubscribe('global:users'));
+  conn.onConnect(() => store.dispatch(ActionCreators.realtimeConnected()));
+
+  conn.onEvent((event, data) => store.dispatch(ActionCreators.realtimeIncomingEvent(event, data)));
 
   return (next) => (action) => {
+    if (action.type === ActionTypes.REALTIME_INCOMING_EVENT) {
+      const { payload: { event, data } } = action;
+      if (data.realtimeChannels) {
+        const { realtimeSubscriptions } = store.getState();
+        if (_.intersection(data.realtimeChannels, realtimeSubscriptions).length === 0) {
+          // Do not handle events if we are not subscribed to their channels
+          return next(action);
+        }
+      }
+      if (event in eventHandlers) {
+        eventHandlers[event](data);
+      }
+    }
+
+    if (action.type === ActionTypes.REALTIME_CONNECTED) {
+      conn.reAuthorize().then(async () => {
+        const { realtimeSubscriptions } = store.getState();
+        await Promise.all(realtimeSubscriptions.map((room) => conn.subscribeTo(room)));
+      });
+    }
+
     if (action.type === ActionTypes.REALTIME_SUBSCRIBE) {
       conn.subscribeTo(action.payload.room);
     }
@@ -441,7 +451,7 @@ export const realtimeMiddleware = (store) => {
       conn.reAuthorize().then(() => unsubscribeByRegexp(/^user:/));
     }
 
-    if (action.type === response(ActionTypes.SIGN_IN) || action.type === response(ActionTypes.SIGN_UP)) {
+    if (action.type === response(ActionTypes.WHO_AM_I) || action.type === response(ActionTypes.SIGN_UP)) {
       conn.reAuthorize().then(() => {
         const state = store.getState();
         store.dispatch(ActionCreators.realtimeSubscribe(`user:${state.user.id}`));
