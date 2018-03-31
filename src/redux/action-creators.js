@@ -797,6 +797,13 @@ export function realtimeUnsubscribe(room) {
   };
 }
 
+export function realtimeIncomingEvent(event, data) {
+  return {
+    type: ActionTypes.REALTIME_INCOMING_EVENT,
+    payload: { event, data },
+  };
+}
+
 export function sendInvite(groupId) {
   return {
     type: ActionTypes.SEND_INVITE,
