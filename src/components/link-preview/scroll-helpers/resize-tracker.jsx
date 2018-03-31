@@ -33,7 +33,7 @@ export default class ResizeTracker extends React.Component {
   setColSensor = (el) => this.colSensor = el;
 
   scrollHandler = () => {
-    if (this.prevRootHeight === this.root.offsetHeight) {
+    if (!this.root || this.prevRootHeight === this.root.offsetHeight) {
       return;
     }
     this.prevRootHeight = this.root.offsetHeight;
