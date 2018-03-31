@@ -1457,6 +1457,9 @@ export function user(state = initUser(), action) {
       }
       return state;
     }
+    case ActionTypes.UNAUTHENTICATED: {
+      return {};
+    }
   }
   return state;
 }
