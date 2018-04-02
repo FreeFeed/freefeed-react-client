@@ -9,7 +9,7 @@ const dummyPost = {
   getBoundingClientRect: () => ({ top:0 })
 };
 
-const scrollCompensator = (dispatchAction) => (...actionParams) => {
+export const scrollCompensator = (dispatchAction) => (...actionParams) => {
   //we hope that markup will remain the same — best tradeoff between this and code all over components
   const postCommentNodes = [...document.querySelectorAll('.post, .comment')];
 
@@ -56,37 +56,54 @@ const eventsToLog = [
   'reconnect',
 ];
 
-const bindSocketEventHandlers = (socket) => (eventHandlers) => {
-  Object.keys(eventHandlers).forEach((event) => socket.on(event, scrollCompensator(eventHandlers[event])));
-};
+export class Connection {
+  socket;
 
-const openSocket = () => io.connect(`${apiConfig.host}/`, { query: `token=${getToken()}` });
+  constructor() {
+    this.socket = improveSocket(io(`${apiConfig.host}/`));
+    bindSocketActionsLog(this.socket)(eventsToLog);
+  }
 
-export function init(eventHandlers) {
-  const socket = openSocket();
+  onConnect(handler) { this.socket.on('connect', handler); }
 
-  bindSocketEventHandlers(socket)(eventHandlers);
+  onEvent(handler) { this.socket.on('*', handler); }
 
-  bindSocketActionsLog(socket)(eventsToLog);
+  async reAuthorize() {
+    if (this.socket.connected) {
+      await this.socket.emitAsync('auth', { authToken: getToken() });
+    }
+  }
 
-  let subscription;
-  let subscribe;
+  async subscribeTo(room) {
+    if (this.socket.connected) {
+      console.log('subscribing to', room);  // eslint-disable-line no-console
+      await this.socket.emitAsync('subscribe', roomToHash(room));
+    }
+  }
 
-  return {
-    unsubscribe: () => {
-      if (subscription) {
-        console.log('unsubscribing from ', subscription);  // eslint-disable-line no-console
-        socket.emit('unsubscribe', subscription);
-        socket.off('reconnect', subscribe);
-      }
-    },
-    subscribe: (newSubscription) => {
-      subscription = newSubscription;
-      console.log('subscribing to ', subscription);  // eslint-disable-line no-console
-      subscribe = () => socket.emit('subscribe', subscription);
-      socket.on('reconnect', subscribe);
-      subscribe();
-    },
-    disconnect: () => socket.disconnect()
+  async unsubscribeFrom(room) {
+    if (this.socket.connected) {
+      console.log('unsubscribing from', room);  // eslint-disable-line no-console
+      await this.socket.emitAsync('unsubscribe', roomToHash(room));
+    }
+  }
+}
+
+function improveSocket(socket) {
+  // Asynt emitter
+  socket.emitAsync = (event, ...args) => new Promise((resolve) => socket.emit(event, ...[...args, resolve]));
+
+  // Catch-all event handler (https://stackoverflow.com/a/33960032)
+  const { onevent } = socket;
+  socket.onevent = (packet) => {
+    onevent.call(socket, packet);
+    packet.data = ["*"].concat(packet.data || []);
+    onevent.call(socket, packet);
   };
+  return socket;
+}
+
+function roomToHash(room) {
+  const [type, id] = room.split(':', 2);
+  return { [type]: [id] };
 }
