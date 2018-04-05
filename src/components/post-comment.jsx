@@ -51,7 +51,7 @@ export default class PostComment extends React.Component {
 
   handleChange = (event) => {
     this.setState({
-      editText: event.target.value
+      editText: event.target.value || ''
     });
   };
 
@@ -172,7 +172,7 @@ export default class PostComment extends React.Component {
               autoFocus={!this.props.isSinglePost}
               inputRef={this.registerCommentTextArea}
               className="comment-textarea"
-              value={this.state.editText || this.props.editText}
+              defaultValue={this.props.editText}
               onFocus={this.setCaretToTextEnd}
               onChange={this.handleChange}
               onKeyDown={this.checkSave}
