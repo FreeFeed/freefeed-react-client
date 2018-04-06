@@ -777,17 +777,30 @@ export function resetArchiveForms() {
   };
 }
 
-export function realtimeSubscribe(subsType, id) {
+export function realtimeConnected() {
   return {
-    type: ActionTypes.REALTIME_SUBSCRIBE,
-    subsType,
-    id,
+    type: ActionTypes.REALTIME_CONNECTED,
   };
 }
 
-export function realtimeUnsubscribe() {
+export function realtimeSubscribe(room) {
   return {
-    type: ActionTypes.REALTIME_UNSUBSCRIBE
+    type: ActionTypes.REALTIME_SUBSCRIBE,
+    payload: { room },
+  };
+}
+
+export function realtimeUnsubscribe(room) {
+  return {
+    type: ActionTypes.REALTIME_UNSUBSCRIBE,
+    payload: { room },
+  };
+}
+
+export function realtimeIncomingEvent(event, data) {
+  return {
+    type: ActionTypes.REALTIME_INCOMING_EVENT,
+    payload: { event, data },
   };
 }
 
