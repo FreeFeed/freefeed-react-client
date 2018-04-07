@@ -43,8 +43,10 @@ export function userParser(user) {
   newUser.profilePictureLargeUrl = user.profilePictureLargeUrl || userDefaults.profilePictureLargeUrl;
 
   // Frontend preferences (only use this client's subtree)
-  const prefSubTree = user.frontendPreferences && user.frontendPreferences[frontendPrefsConfig.clientId];
-  newUser.frontendPreferences = _.merge({}, userDefaults.frontendPreferences, prefSubTree);
+  if (user.frontendPreferences) {
+    const prefSubTree = user.frontendPreferences[frontendPrefsConfig.clientId];
+    newUser.frontendPreferences = _.merge({}, userDefaults.frontendPreferences, prefSubTree);
+  }
 
   return newUser;
 }

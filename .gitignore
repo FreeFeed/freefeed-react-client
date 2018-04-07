@@ -2,3 +2,4 @@
 /public/js/bundle.js
 /_dist/
 .module-cache
+/yarn-error.log
