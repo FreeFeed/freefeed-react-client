@@ -1,8 +1,9 @@
-import test from 'tape';
+import { describe, it } from 'mocha';
+import expect from 'unexpected';
 
-import { sendTo } from '../../../src/redux/reducers';
-import { WHO_AM_I, SUBSCRIBE, UNSUBSCRIBE } from '../../../src/redux/action-types';
-import { response } from '../../../src/redux/action-helpers';
+import { sendTo } from '../../../../src/redux/reducers';
+import { WHO_AM_I, SUBSCRIBE, UNSUBSCRIBE } from '../../../../src/redux/action-types';
+import { response } from '../../../../src/redux/action-helpers';
 
 
 const stateInitial = {
@@ -103,26 +104,24 @@ const payloadZeroSubs = {
 };
 
 
-test('sendTo: WHO_AM_I adds one existing recipient into the initially empty state', (t) => {
-  const state = sendTo(stateInitial, { type: response(WHO_AM_I), payload: payloadOneSub });
-  t.deepEqual(state, stateOneSub);
-  t.end();
-});
+describe('sendTo()', () => {
+  it('should add one existing recipient into the initially empty state after getting WHO_AM_I', () => {
+    const state = sendTo(stateInitial, { type: response(WHO_AM_I), payload: payloadOneSub });
+    expect(state, 'to equal', stateOneSub);
+  });
 
-test('sendTo: SUBSCRIBE adds a new recipient, increasing their number to two', (t) => {
-  const state = sendTo(stateOneSub, { type: response(SUBSCRIBE), payload: payloadTwoSubs });
-  t.deepEqual(state, stateTwoSubs);
-  t.end();
-});
+  it('should add a new recipient, increasing their number to two after getting SUBSCRIBE', () => {
+    const state = sendTo(stateOneSub, { type: response(SUBSCRIBE), payload: payloadTwoSubs });
+    expect(state, 'to equal', stateTwoSubs);
+  });
 
-test('sendTo: UNSUBSCRIBE removes one of the two recipients, decreasing their number to one', (t) => {
-  const state = sendTo(stateTwoSubs, { type: response(UNSUBSCRIBE), payload: payloadOneSub });
-  t.deepEqual(state, stateOneSub);
-  t.end();
-});
+  it('should remove one of the two recipients, decreasing their number to one after getting UNSUBSCRIBE', () => {
+    const state = sendTo(stateTwoSubs, { type: response(UNSUBSCRIBE), payload: payloadOneSub });
+    expect(state, 'to equal', stateOneSub);
+  });
 
-test('sendTo: UNSUBSCRIBE removes the only recipient, decreasing their number to zero', (t) => {
-  const state = sendTo(stateOneSub, { type: response(UNSUBSCRIBE), payload: payloadZeroSubs });
-  t.deepEqual(state, stateInitial);
-  t.end();
+  it('should remove the only recipient, decreasing their number to zero after getting UNSUBSCRIBE', () => {
+    const state = sendTo(stateOneSub, { type: response(UNSUBSCRIBE), payload: payloadZeroSubs });
+    expect(state, 'to equal', stateInitial);
+  });
 });

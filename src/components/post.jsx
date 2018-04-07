@@ -181,9 +181,7 @@ export default class Post extends React.Component {
     if (recipients.length === 1) {
       // If the post is in user/group feed (one-source list), we should omit
       // the only recipient, since it would be that feed.
-      if (props.isInUserFeed) {
-        recipients = [];
-      } else if (recipients[0].id === props.createdBy.id) {
+      if (recipients[0].id === props.createdBy.id) {
         // When in a many-sources list (Home, Direct messages, My discussions),
         // we should omit the only recipient if it's the author's feed.
         recipients = [];

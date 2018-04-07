@@ -1345,8 +1345,17 @@ export function users(state = {}, action) {
     case ActionTypes.HIGHLIGHT_COMMENT: {
       return state;
     }
-    case ActionTypes.UNAUTHENTICATED:
+    case ActionTypes.UNAUTHENTICATED: {
       return {};
+    }
+    case ActionTypes.REALTIME_GLOBAL_USER_UPDATE: {
+      const userId = action.user.id;
+      if (state[userId]) {
+        const newUser = userParser(action.user);
+        return { ...state, [userId]: { ...state[userId], ...newUser } };
+      }
+      return state;
+    }
   }
   return state;
 }
@@ -1439,6 +1448,17 @@ export function user(state = initUser(), action) {
           }
         }
       };
+    }
+    case ActionTypes.REALTIME_GLOBAL_USER_UPDATE: {
+      const userId = action.user.id;
+      if (state.id === userId) {
+        const newUser = userParser(action.user);
+        return { ...state, ...newUser };
+      }
+      return state;
+    }
+    case ActionTypes.UNAUTHENTICATED: {
+      return {};
     }
   }
   return state;
@@ -2227,13 +2247,21 @@ export function userViews(state = {}, action) {
   return state;
 }
 
-export function realtimeSubscription(state = { type: null, id: null }, action) {
+export function realtimeSubscriptions(state = [], action) {
   switch (action.type) {
-    case response(ActionTypes.REALTIME_SUBSCRIBE): {
-      return { ...state, type: action.subsType, id: action.id };
+    case ActionTypes.REALTIME_SUBSCRIBE: {
+      const { room } = action.payload;
+      if (!state.includes(room)) {
+        return [...state, room];
+      }
+      return state;
     }
-    case response(ActionTypes.REALTIME_UNSUBSCRIBE): {
-      return { ...state, type: null, id: null };
+    case ActionTypes.REALTIME_UNSUBSCRIBE: {
+      const { room } = action.payload;
+      if (state.includes(room)) {
+        return _.without(state, room);
+      }
+      return state;
     }
   }
   return state;

@@ -31,6 +31,9 @@
         "extensions": [".js", ".jsx"]
       }
     },
+    "react": {
+      "version": "15.4"
+    }
   },
   "rules": {
     "array-bracket-spacing": 2,
