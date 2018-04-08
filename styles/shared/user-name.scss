@@ -82,7 +82,8 @@
       .icon-protected {
         position: relative;
         display: inline-block;
-        min-width: 16px;
+        transform: scale(0.9);
+        min-width: 14px;
         height: 10px;
 
         .icon-protected-bg {

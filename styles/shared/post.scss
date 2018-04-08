@@ -91,7 +91,8 @@ $post-line-height: 20px;
       .post-protected-icon {
         position: relative;
         display: inline-block;
-        width: 15px;
+        transform: scale(0.9);
+        width: 14px;
         height: 11px;
 
         .post-protected-icon-bg {
