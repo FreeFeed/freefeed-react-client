@@ -8,7 +8,9 @@ export default function UserFeedStatus(props) {
       ) : props.isProtected === '1' ? (
         <span>
           <i className="icon-protected">
-            <i className="status-icon fa fa-lock" />
+            <i className="icon-protected-fg fa fa-user" />
+            <i className="icon-protected-shadow fa fa-user fa-inverse" />
+            <i className="icon-protected-bg fa fa-user" />
           </i>Protected
         </span>
       ) : (
