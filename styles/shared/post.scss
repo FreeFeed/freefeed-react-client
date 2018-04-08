@@ -89,13 +89,31 @@ $post-line-height: 20px;
       }
 
       .post-protected-icon {
-        $borderColor: #888;
-        $borderWidth: 1px;
-        $shadowRadius: 0;
-        color: #fff;
-        text-shadow:
-            $borderWidth $borderWidth $shadowRadius $borderColor, (-$borderWidth) (-$borderWidth) $shadowRadius $borderColor,
-            $borderWidth (-$borderWidth) $shadowRadius $borderColor, (-$borderWidth) $borderWidth $shadowRadius $borderColor;
+        position: relative;
+        display: inline-block;
+        width: 15px;
+        height: 11px;
+
+        .post-protected-icon-bg {
+          font-size: 0.75em;
+          top: 0.75px;
+          position: absolute;
+          z-index: 12;
+          left: 7px;
+        }
+
+        .post-protected-icon-shadow {
+          font-size: 0.9em;
+          position: absolute;
+          left: 0.1px;
+          z-index: 13;
+        }
+
+        .post-protected-icon-fg {
+          font-size: 0.9em;
+          position: absolute;
+          z-index: 14;
+        }
       }
 
       .post-direct-icon {
