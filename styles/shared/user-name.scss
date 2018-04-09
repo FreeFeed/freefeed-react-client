@@ -80,10 +80,33 @@
       color: #666;
 
       .icon-protected {
-        width: 13px;
+        position: relative;
+        display: inline-block;
+        transform: scale(0.9);
+        min-width: 14px;
         height: 10px;
-        color: white;
-        text-shadow: 1px 1px 0 #888, -1px -1px 0 #888, 1px -1px 0 #888, -1px 1px 0 #888;
+
+        .icon-protected-bg {
+          font-size: 0.75em;
+          top: 1px;
+          position: absolute;
+          z-index: 12;
+          left: 5px;
+        }
+
+        .icon-protected-shadow {
+          font-size: 0.9em;
+          position: absolute;
+          left: -1px;
+          z-index: 13;
+        }
+
+        .icon-protected-fg {
+          font-size: 0.9em;
+          position: absolute;
+          left: -2px;
+          z-index: 14;
+        }
       }
     }
   }
