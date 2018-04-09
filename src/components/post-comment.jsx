@@ -172,7 +172,7 @@ export default class PostComment extends React.Component {
               autoFocus={!this.props.isSinglePost}
               inputRef={this.registerCommentTextArea}
               className="comment-textarea"
-              defaultValue={this.props.editText}
+              value={this.state.editText || ''}
               onFocus={this.setCaretToTextEnd}
               onChange={this.handleChange}
               onKeyDown={this.checkSave}
