@@ -382,8 +382,8 @@ const bindHandlers = (store) => ({
   'comment:destroy': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId, postId: data.postId }),
   'like:new': async (data) => {
     const { postId } = data.meta;
-    const iLiked = iLikedPost(store.getState(), data.meta.postId);
-    const action = { ...data, type: ActionTypes.REALTIME_LIKE_NEW, postId: data.meta.postId, iLiked };
+    const iLiked = iLikedPost(store.getState(), postId);
+    const action = { type: ActionTypes.REALTIME_LIKE_NEW, postId, users: [data.users], iLiked };
     return dispatchWithPost(store, postId, action, isFirstFriendInteraction, postFetchDelay);
   },
   'like:remove': (data) => store.dispatch({ type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId }),
