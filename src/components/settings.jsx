@@ -16,6 +16,7 @@ import UserPreferencesForm from './user-preferences-form';
 import UserChangePasswordForm from './user-change-password-form';
 import UserPictureForm from './user-picture-form';
 import UserNotificationsForm from './user-notifications-form';
+import UserOauthEditor from './user-oauth-editor';
 
 class Settings extends React.Component {
   componentWillUnmount() {
@@ -84,6 +85,10 @@ class Settings extends React.Component {
               updateUserNotificationPreferences={props.updateUserNotificationPreferences}
               {...props.userNotificationsForm}
             />
+
+            <hr />
+
+            <UserOauthEditor />
 
             <hr />
           </div>
