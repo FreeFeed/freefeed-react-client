@@ -320,6 +320,17 @@ export function signUp({ username, password, email, captcha }) {
   });
 }
 
+export function unlinkOauthAccount({ provider }) {
+  return fetch(`${apiConfig.host}/v2/oauth/${provider}/unlink`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken(),
+    },
+  });
+}
+
 export function markAllDirectsAsRead() {
   return fetch(`${apiConfig.host}/v2/users/markAllDirectsAsRead`, getRequestOptions());
 }

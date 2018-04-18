@@ -1494,6 +1494,13 @@ export function user(state = initUser(), action) {
     case ActionTypes.UNAUTHENTICATED: {
       return initUser();
     }
+    case ActionTypes.LINK_OAUTH_ACCOUNT:
+    case response(ActionTypes.UNLINK_OAUTH_ACCOUNT): {
+      return {
+        ...state,
+        providers: action.payload.providers,
+      };
+    }
   }
   return state;
 }

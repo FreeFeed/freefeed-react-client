@@ -387,6 +387,26 @@ export function signInWithToken(authToken) {
   };
 }
 
+// Just for updating `users.providers`. Pass the whole `providers` object.
+export function linkOauthAccount(providers) {
+  return {
+    type: ActionTypes.LINK_OAUTH_ACCOUNT,
+    payload: {
+      providers,
+    },
+  };
+}
+
+export function unlinkOauthAccount(provider) {
+  return {
+    type: ActionTypes.UNLINK_OAUTH_ACCOUNT,
+    apiRequest: Api.unlinkOauthAccount,
+    payload: {
+      provider,
+    },
+  };
+}
+
 export function restorePassword(mail) {
   return {
     type: ActionTypes.RESTORE_PASSWORD,
