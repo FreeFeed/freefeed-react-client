@@ -1206,6 +1206,9 @@ export function commentViewState(state = {}, action) {
     case response(ActionTypes.GET_SINGLE_POST): {
       return updateCommentViewState(state, action);
     }
+    case ActionTypes.REALTIME_COMMENT_NEW: {
+      return updateCommentViewState(state, { payload: { comments: [action.comment] } });
+    }
     case ActionTypes.TOGGLE_EDITING_COMMENT: {
       return {
         ...state,
