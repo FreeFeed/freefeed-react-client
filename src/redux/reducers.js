@@ -417,6 +417,9 @@ export function postsViewState(state = {}, action) {
       const { id } = action.post;
       const postAlreadyAdded = !!state[id];
       if (postAlreadyAdded) {
+        if (state[id].editingText !== action.post.body) {
+          return { ...state, [id]: { ...state[id], editingText: action.post.body } };
+        }
         return state;
       }
       return { ...state, [id]: initPostViewState(action.post) };
