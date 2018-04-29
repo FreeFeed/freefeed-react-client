@@ -417,6 +417,9 @@ export function postsViewState(state = {}, action) {
       const { id } = action.post;
       const postAlreadyAdded = !!state[id];
       if (postAlreadyAdded) {
+        if (state[id].editingText !== action.post.body) {
+          return { ...state, [id]: { ...state[id], editingText: action.post.body } };
+        }
         return state;
       }
       return { ...state, [id]: initPostViewState(action.post) };
@@ -1205,6 +1208,9 @@ export function commentViewState(state = {}, action) {
     }
     case response(ActionTypes.GET_SINGLE_POST): {
       return updateCommentViewState(state, action);
+    }
+    case ActionTypes.REALTIME_COMMENT_NEW: {
+      return updateCommentViewState(state, { payload: { comments: [action.comment] } });
     }
     case ActionTypes.TOGGLE_EDITING_COMMENT: {
       return {
