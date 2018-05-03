@@ -64,8 +64,8 @@ export default () => (
       пользователям Фрифида.
     </p>
 
-    <p><b><Link to="/signup" className="inline-header">Зарегистрироваться</Link></b>
-      или <Link to="/signin" className="inline-header">Войти</Link> если у вас уже есть аккаунт.
+    <p><b><Link to="/signup" className="inline-header">Зарегистрироваться</Link></b> или
+      <Link to="/signin" className="inline-header">Войти</Link> если у вас уже есть аккаунт.
     </p>
   </div>
 );
