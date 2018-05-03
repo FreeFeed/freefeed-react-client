@@ -32,3 +32,18 @@ header {}
   @media (max-width: 767px) { margin-top: 30px; }
   @media (min-width: 768px) { margin-top: 34px; }
 }
+
+// This is effectively inline version of <h3>, because we cannot use the latter inside of <p>
+.inline-header {
+  font-size: 24px;
+  margin: 0 3px;
+  white-space: nowrap;
+
+  &.line-start {
+    margin-left: 0;
+  }
+
+  @media (max-width: 767px) {
+    font-size: 20px;
+  }
+}
