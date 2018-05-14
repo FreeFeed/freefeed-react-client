@@ -118,42 +118,85 @@ function pickActions(type, props) {
   return {};
 }
 
-export const tileUserListFactory = (config) => (props) => {
-  const usersData = props.users.map((user) => {
-    return {
-      ..._.pick(user, ['id', 'screenName', 'username', 'isMutual']),
-      profilePictureUrl:
-        (user.profilePictureUrl
-          ? user.profilePictureUrl
-          : (config.size === 'large'
-            ? user.profilePictureLargeUrl
-            : user.profilePictureMediumUrl)),
-      ...pickActions(config.type, props)
+class TileUserList extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedOrder: props.sorting && props.sorting[0].key || null,
+      isReverse: props.sorting && props.sorting[0].isReverse || false
     };
-  });
+  }
 
-  const users = usersData.map(renderUsers(config.type));
+  render() {
+    const { props } = this;
+    const { config } = props;
 
-  const listClasses = classnames({
-    'tile-list': true,
-    'large-pics': config.size === 'large',
-    'with-actions': config.type !== PLAIN
-  });
+    const usersData = props.users.map((user) => {
+      return {
+        ..._.pick(user, ['id', 'screenName', 'username', 'isMutual']),
+        profilePictureUrl:
+          (user.profilePictureUrl
+            ? user.profilePictureUrl
+            : (config.size === 'large'
+              ? user.profilePictureLargeUrl
+              : user.profilePictureMediumUrl)),
+        ...pickActions(config.type, props)
+      };
+    });
 
-  const header = props.header && config.displayQuantity ?
-    `${props.header} (${props.users.length})` :
-    props.header;
+    const users = usersData.map(renderUsers(config.type));
 
-  return (
-    <div>
-      {users.length ? (
-        <div>
-          <h3>{header}</h3>
-          <ul className={listClasses}>
-            {users}
-          </ul>
-        </div>
-      ) : false}
-    </div>
-  );
-};
+    const listClasses = classnames({
+      'tile-list': true,
+      'large-pics': config.size === 'large',
+      'with-actions': config.type !== PLAIN
+    });
+
+    const header = props.header && config.displayQuantity ?
+      `${props.header} (${props.users.length})` :
+      props.header;
+
+    const sorting = [
+      { 'key': 'id', 'label': 'date they subscribed (most recent first)' },
+      { 'key': 'username', 'label': 'username' },
+      { 'key': 'screenName', 'label': 'display name' }
+    ];
+
+    const state = {
+      selectedOrder: 'id'
+    };
+
+    const sortingOptions = (sorting ? (
+      <p>
+        Ordered by:
+        {sorting.map((option, index) => (
+          <span key={index}>
+            {index > 0 ? ', ' : ' '}
+            {option.key === state.selectedOrder ? (
+              <b>{option.label}</b>
+            ) : (
+              <a onClick="">{option.label}</a>
+            )}
+          </span>
+        ))}
+      </p>
+    ) : false);
+
+    return (
+      <div>
+        {users.length ? (
+          <div>
+            <h3>{header}</h3>
+            {sortingOptions}
+            <ul className={listClasses}>
+              {users}
+            </ul>
+          </div>
+        ) : false}
+      </div>
+    );
+  }
+}
+
+export const tileUserListFactory = (config) => (props) => <TileUserList config={config} {...props} />;
