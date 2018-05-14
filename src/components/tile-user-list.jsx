@@ -128,11 +128,18 @@ class TileUserList extends React.Component {
     };
   }
 
+  switchOrder = (key, isReverse) => () => {
+    this.setState({
+      selectedOrder: key,
+      isReverse
+    });
+  };
+
   render() {
     const { props } = this;
     const { config } = props;
 
-    const usersData = props.users.map((user) => {
+    let usersData = props.users.map((user) => {
       return {
         ..._.pick(user, ['id', 'screenName', 'username', 'isMutual']),
         profilePictureUrl:
@@ -144,6 +151,14 @@ class TileUserList extends React.Component {
         ...pickActions(config.type, props)
       };
     });
+
+    if (this.state.selectedOrder) {
+      usersData = _.sortBy(usersData, (user) => user[this.state.selectedOrder].toLowerCase());
+
+      if (this.state.isReverse) {
+        usersData = usersData.reverse();
+      }
+    }
 
     const users = usersData.map(renderUsers(config.type));
 
@@ -158,14 +173,10 @@ class TileUserList extends React.Component {
       props.header;
 
     const sorting = [
-      { 'key': 'id', 'label': 'date they subscribed (most recent first)' },
+      { 'key': null, 'label': 'date they subscribed (most recent first)' },
       { 'key': 'username', 'label': 'username' },
       { 'key': 'screenName', 'label': 'display name' }
     ];
-
-    const state = {
-      selectedOrder: 'id'
-    };
 
     const sortingOptions = (sorting ? (
       <p>
@@ -173,10 +184,10 @@ class TileUserList extends React.Component {
         {sorting.map((option, index) => (
           <span key={index}>
             {index > 0 ? ', ' : ' '}
-            {option.key === state.selectedOrder ? (
+            {option.key === this.state.selectedOrder ? (
               <b>{option.label}</b>
             ) : (
-              <a onClick="">{option.label}</a>
+              <a onClick={this.switchOrder(option.key, !!option.isReverse)}>{option.label}</a>
             )}
           </span>
         ))}
