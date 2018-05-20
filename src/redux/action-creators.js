@@ -839,3 +839,11 @@ export function sendInvite(groupId) {
     groupId,
   };
 }
+
+export function getFacebookFriends(payload = {}) {
+  return {
+    type: ActionTypes.GET_FACEBOOK_FRIENDS,
+    apiRequest: Api.facebookFriends,
+    payload,
+  };
+}

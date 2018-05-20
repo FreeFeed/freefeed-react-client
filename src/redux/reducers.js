@@ -1355,6 +1355,7 @@ export function users(state = {}, action) {
         [userId]: { ...oldUser, ...newUser }
       };
     }
+    case response(ActionTypes.GET_FACEBOOK_FRIENDS):
     case response(ActionTypes.GET_NOTIFICATIONS):
     case response(ActionTypes.SHOW_MORE_COMMENTS):
     case response(ActionTypes.SHOW_MORE_LIKES_ASYNC):
@@ -2351,5 +2352,33 @@ export function archivePost(state = DEFAULT_FORM_STATE, action) {
       return { ...defaultArchivePostState, error: true, errorText: action.payload.err };
     }
   }
+  return state;
+}
+
+const DEFAUTLT_FACEBOOK_FRIENDS_STATE = {
+  inProgress: false,
+  friendIds: [],
+  needReauthorization: false,
+};
+
+export function facebookFriends(state = DEFAUTLT_FACEBOOK_FRIENDS_STATE, action) {
+  switch (action.type) {
+    case request(ActionTypes.GET_FACEBOOK_FRIENDS): {
+      return { ...DEFAUTLT_FACEBOOK_FRIENDS_STATE, inProgress: true };
+    }
+    case response(ActionTypes.GET_FACEBOOK_FRIENDS): {
+      const friendIds = action.payload.users.map((user) => user.id);
+      return { ...DEFAUTLT_FACEBOOK_FRIENDS_STATE, friendIds };
+    }
+    case fail(ActionTypes.GET_FACEBOOK_FRIENDS): {
+      return {
+        ...DEFAUTLT_FACEBOOK_FRIENDS_STATE,
+        error: true,
+        errorText: action.payload.err,
+        needReauthorization: !!action.payload.needReauthorization,
+      };
+    }
+  }
+
   return state;
 }
