@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
+import { get } from 'lodash';
 
 import 'autotrack';  // used by google-analytics in ../index.jade
 
@@ -88,10 +89,15 @@ const manageSubscribersActions = (next) => {
 };
 
 const friendsActions = () => {
-  const { username } = store.getState().user;
+  const { user } = store.getState();
+  const { username } = user;
   store.dispatch(ActionCreators.subscribers(username));
   store.dispatch(ActionCreators.subscriptions(username));
   store.dispatch(ActionCreators.blockedByMe(username));
+
+  if (get(user, 'providers.facebook.id')) {
+    store.dispatch(ActionCreators.getFacebookFriends());
+  }
 };
 
 // needed to display mutual friends

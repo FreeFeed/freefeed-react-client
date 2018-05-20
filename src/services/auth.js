@@ -77,6 +77,13 @@ export function openOauthLinkPopup(provider) {
   return openOauthPopup(uri);
 }
 
+export function openOauthAuthzPopup(provider) {
+  checkOauthProvider(provider);
+
+  const uri = `${apiConfig.host}/v2/oauth/${provider}/authz`;
+  return openOauthPopup(uri);
+}
+
 function checkOauthProvider(provider) {
   if (!isArray(authConfig.oauth) || !authConfig.oauth.includes(provider)) {
     throw Error(`Unsupported OAuth provider "${provider}"`);

@@ -7,6 +7,7 @@ import { pluralForm } from '../utils';
 import { acceptUserRequest, rejectUserRequest,
   revokeSentRequest } from '../redux/action-creators';
 import { tileUserListFactory, PLAIN, WITH_REQUEST_HANDLES, WITH_REVOKE_SENT_REQUEST } from './tile-user-list';
+import FacebookFriendList from './facebook-friend-list';
 
 const TileList = tileUserListFactory({ type: PLAIN, displayQuantity: true });
 const TileListWithAcceptAndReject = tileUserListFactory({ type: WITH_REQUEST_HANDLES, displayQuantity: true });
@@ -33,6 +34,8 @@ const FriendsHandler = (props) => {
         <TileList {...props.mutual} />
         <TileList {...props.subscriptions} />
         <TileList {...props.blockedByMe} />
+
+        <FacebookFriendList />
 
         <TileListWithRevoke
           header={sentRequestsHeader}
