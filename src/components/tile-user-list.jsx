@@ -146,14 +146,14 @@ export const tileUserListFactory = (config) => (props) => {
 
   return (
     <div>
-      {users.length ? (
-        <div>
-          <h3>{header}</h3>
-          <ul className={listClasses}>
-            {users}
-          </ul>
-        </div>
-      ) : false}
+      {header && (!!users.length || config.alwaysShowHeader) &&
+        <h3>{header}</h3>
+      }
+      {!!users.length &&
+        <ul className={listClasses}>
+          {users}
+        </ul>
+      }
     </div>
   );
 };
