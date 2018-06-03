@@ -66,7 +66,7 @@ export default class PostComments extends React.Component {
 
   renderAddCommentLink() {
     const { props } = this;
-    const disabledForOthers = (props.post.commentsDisabled && props.post.isEditable);
+    const disabledForOthers = (props.post.commentsDisabled && (props.post.isEditable || props.post.isModeratable));
     const toggleCommenting = props.post.isSinglePost ? () => {} : () => props.toggleCommenting(props.post.id);
 
     if (props.comments.length > 2 && !props.post.omittedComments) {
@@ -192,7 +192,7 @@ export default class PostComments extends React.Component {
     const totalComments = comments.length + post.omittedComments;
     const first = withBackwardNumber(comments[0], totalComments);
     const last = withBackwardNumber(comments.length > 1 && comments[comments.length - 1], 1);
-    const canAddComment = (!!post.user && (!post.commentsDisabled || post.isEditable));
+    const canAddComment = (!!post.user && (!post.commentsDisabled || post.isEditable || post.isModeratable));
 
     return (
       <div className="comments" ref={this.registerRootEl}>
