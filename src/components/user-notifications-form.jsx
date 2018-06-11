@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { Link } from 'react-router';
 import { preventDefault } from "../utils";
 import throbber16 from "../../assets/images/throbber-16.gif";
 
@@ -8,6 +9,8 @@ export default class UserNotificationsForm extends React.Component {
     super(props);
     this.state = {
       sendNotificationsDigest: this.props.backendPreferences.sendNotificationsDigest || false,
+      sendDailyBestOfDigest:   this.props.backendPreferences.sendDailyBestOfDigest || false,
+      sendWeeklyBestOfDigest:  this.props.backendPreferences.sendWeeklyBestOfDigest || false,
     };
   }
 
@@ -38,6 +41,32 @@ export default class UserNotificationsForm extends React.Component {
           </label>
         </div>
 
+        <div className="checkbox">
+          <label>
+            <input
+              type="checkbox"
+              name="dailyBestOfMessages"
+              value="1"
+              checked={this.state.sendDailyBestOfDigest}
+              onChange={this.toggleDailyBestOfDigest}
+            />
+            Daily <Link to="/summary/1">Best of Day</Link>
+          </label>
+        </div>
+
+        <div className="checkbox">
+          <label>
+            <input
+              type="checkbox"
+              name="weeklyBestOfMessages"
+              value="1"
+              checked={this.state.sendWeeklyBestOfDigest}
+              onChange={this.toggleWeeklyBestOfDigest}
+            />
+            Weekly <Link to="/summary/7">Best of Week</Link>
+          </label>
+        </div>
+
         <p>
           <button className="btn btn-default" type="submit">Update</button>
           {this.props.status === "loading" ? (
@@ -61,9 +90,21 @@ export default class UserNotificationsForm extends React.Component {
     this.setState({ sendNotificationsDigest: e.target.checked });
   };
 
+  toggleDailyBestOfDigest = (e) => {
+    this.setState({ sendDailyBestOfDigest: e.target.checked });
+  };
+
+  toggleWeeklyBestOfDigest = (e) => {
+    this.setState({ sendWeeklyBestOfDigest: e.target.checked });
+  };
+
   savePreference = () => {
     if (this.props.status !== "loading") {
-      this.props.updateUserNotificationPreferences(this.props.userId, { sendNotificationsDigest: this.state.sendNotificationsDigest });
+      this.props.updateUserNotificationPreferences(this.props.userId,
+        { sendNotificationsDigest: this.state.sendNotificationsDigest,
+          sendDailyBestOfDigest:   this.state.sendDailyBestOfDigest,
+          sendWeeklyBestOfDigest:  this.state.sendWeeklyBestOfDigest
+        });
     }
   };
 }
