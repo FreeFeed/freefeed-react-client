@@ -178,6 +178,7 @@ export default class PostComment extends React.Component {
           {this.props.isSinglePost ? (
             <span>
               <button className="btn btn-default btn-xs comment-post" onClick={this.saveComment}>Comment</button>
+              {!this.props.isAddingComment && <a className="comment-cancel" onClick={this.handleEditOrCancel}>Cancel</a>}
             </span>
           ) : (
             <span>
