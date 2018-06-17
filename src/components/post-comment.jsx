@@ -117,7 +117,7 @@ export default class PostComment extends React.Component {
   };
 
   componentWillReceiveProps(newProps) {
-    if ((this.props.editText || '') !== newProps.editText) {
+    if ((this.props.editText || '') !== (newProps.editText || '')) {
       this.setState({ editText: newProps.editText });
     }
   }
