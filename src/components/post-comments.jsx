@@ -60,6 +60,7 @@ export default class PostComments extends React.Component {
         isSaving={props.post.isSavingComment}
         isSinglePost={props.post.isSinglePost}
         currentUser={props.post.user}
+        isAddingComment={true}
       />
     );
   }
