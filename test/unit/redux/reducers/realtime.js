@@ -290,6 +290,39 @@ describe('realtime events', () => {
         expect(newState.hiddenEntries, 'not to contain', '1');
       });
     });
+
+    describe('on REALTIME_COMMENT_NEW on hidden post', () => {
+      const action = {
+        type: REALTIME_COMMENT_NEW,
+        post: { posts: { id: '1', isHidden: true } },
+        shouldBump: true,
+      };
+
+      it('should not touch state if post is already hidden', () => {
+        state = {
+          ...state,
+          hiddenEntries: [...state.hiddenEntries, '1'],
+        };
+        const newState = feedViewState(state, action);
+        expect(newState, 'to be', state);
+      });
+
+      it('should add post to hiddens if it is not', () => {
+        const newState = feedViewState(state, action);
+        expect(newState.visibleEntries, 'not to contain', '1');
+        expect(newState.hiddenEntries, 'to contain', '1');
+      });
+
+      it('should add post to visibles if it is not and separateHiddenEntries is false', () => {
+        state = {
+          ...state,
+          separateHiddenEntries: false,
+        };
+        const newState = feedViewState(state, action);
+        expect(newState.visibleEntries, 'to contain', '1');
+        expect(newState.hiddenEntries, 'not to contain', '1');
+      });
+    });
   });
 
   describe('postsViewState()', () => {

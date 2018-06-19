@@ -333,16 +333,20 @@ export function feedViewState(state = initFeed, action) {
     case ActionTypes.REALTIME_LIKE_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW: {
       if (action.post && action.shouldBump) {
-        if (action.post.isHidden && state.separateHiddenEntries) {
+        const postId = action.post.posts.id;
+        const addToHiddens = action.post.posts.isHidden && state.separateHiddenEntries;
+        if (addToHiddens && !state.hiddenEntries.includes(postId)) {
           return {
             ...state,
-            hiddenEntries: [action.post.posts.id, ...state.hiddenEntries],
+            hiddenEntries: [postId, ...state.hiddenEntries],
           };
         }
-        return {
-          ...state,
-          visibleEntries: [action.post.posts.id, ...state.visibleEntries],
-        };
+        if (!addToHiddens && !state.visibleEntries.includes(postId)) {
+          return {
+            ...state,
+            visibleEntries: [postId, ...state.visibleEntries],
+          };
+        }
       }
       return state;
     }
