@@ -1,7 +1,7 @@
-import { describe, it } from 'mocha';
+import { describe, it, beforeEach } from 'mocha';
 import expect from 'unexpected';
 
-import { postsViewState, users, user, posts, realtimeSubscriptions } from '../../../../src/redux/reducers';
+import { postsViewState, users, user, posts, realtimeSubscriptions, feedViewState } from '../../../../src/redux/reducers';
 import {
   REALTIME_COMMENT_NEW,
   REALTIME_COMMENT_DESTROY,
@@ -223,6 +223,72 @@ describe('realtime events', () => {
       };
       const newState = posts(state, action);
       expect(newState, 'to be', state);
+    });
+  });
+
+  describe('feedViewState()', () => {
+    let state;
+    beforeEach(() => {
+      state = {
+        ...feedViewState(undefined, { type: 'init action' }),
+        separateHiddenEntries: true,
+      };
+    });
+
+    describe('on REALTIME_POST_HIDE', () => {
+      const action = { type: REALTIME_POST_HIDE, postId: '1' };
+
+      it('should not touch state if post is not on page', () => {
+        const newState = feedViewState(state, action);
+        expect(newState, 'to be', state);
+      });
+
+      it('should not touch state if post is already hidden', () => {
+        state = {
+          ...state,
+          hiddenEntries: [...state.hiddenEntries, '1'],
+        };
+        const newState = feedViewState(state, action);
+        expect(newState, 'to be', state);
+      });
+
+      it('should add post to hiddenEntries but also keep it in visibleEntries', () => {
+        state = {
+          ...state,
+          visibleEntries: [...state.visibleEntries, '1'],
+        };
+        const newState = feedViewState(state, action);
+        expect(newState.visibleEntries, 'to be', state.visibleEntries);
+        expect(newState.hiddenEntries, 'to contain', '1');
+      });
+    });
+
+    describe('on REALTIME_POST_UNHIDE', () => {
+      const action = { type: REALTIME_POST_UNHIDE, postId: '1' };
+
+      it('should not touch state if post is not on page', () => {
+        const newState = feedViewState(state, action);
+        expect(newState, 'to be', state);
+      });
+
+      it('should not touch state if post is not hidden', () => {
+        state = {
+          ...state,
+          visibleEntries: [...state.visibleEntries, '1'],
+        };
+        const newState = feedViewState(state, action);
+        expect(newState, 'to be', state);
+      });
+
+      it('should add post to visibleEntries and remove it from hiddenEntries', () => {
+        state = {
+          ...state,
+          hiddenEntries: [...state.hiddenEntries, '1'],
+        };
+        const newState = feedViewState(state, action);
+        expect(newState.visibleEntries, 'to contain', '1');
+        expect(newState.hiddenEntries, 'not to contain', '1');
+      });
     });
   });
 

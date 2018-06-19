@@ -221,10 +221,12 @@ const hidePostInFeed = function (state, postId) {
     return state;
   }
   // Add it to hiddenEntries, but don't remove from visibleEntries just yet
-  // (for the sake of "Undo"). And check first if it's already in hiddenEntries,
-  // since realtime event might come first.
-  const itsAlreadyThere = (state.hiddenEntries.indexOf(postId) > -1);
-  if (itsAlreadyThere) {
+  // (for the sake of "Undo"). Do not touch state if if post is already in
+  // hiddenEntries (since realtime event might come first) or is not at the
+  // page at all.
+  const inHidden = (state.hiddenEntries.indexOf(postId) > -1);
+  const inVisible = (state.visibleEntries.indexOf(postId) > -1);
+  if (inHidden || !inHidden && !inVisible) {
     return state;
   }
   return { ...state,
@@ -239,9 +241,13 @@ const unhidePostInFeed = function (state, postId) {
   // Remove it from hiddenEntries and add to visibleEntries
   // (but check first if it's already in there, since this might be an "Undo" happening,
   // and/or realtime event might come first).
-  const itsStillThere = (state.visibleEntries.indexOf(postId) > -1);
+  const inHidden = (state.hiddenEntries.indexOf(postId) > -1);
+  const inVisible = (state.visibleEntries.indexOf(postId) > -1);
+  if (!inHidden) {
+    return state;
+  }
   return { ...state,
-    visibleEntries: (itsStillThere ? state.visibleEntries : [...state.visibleEntries, postId]),
+    visibleEntries: (inVisible ? state.visibleEntries : [...state.visibleEntries, postId]),
     hiddenEntries: _.without(state.hiddenEntries, postId)
   };
 };
