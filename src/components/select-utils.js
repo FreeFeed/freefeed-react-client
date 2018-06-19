@@ -1,4 +1,6 @@
 /*global Raven*/
+import { intersectionBy, differenceBy } from 'lodash';
+
 import {
   // User actions
   subscribe, unsubscribe,
@@ -70,6 +72,21 @@ export const joinPostData = (state) => (postId) => {
   }
   const { user } = state;
 
+  // Get the list of post's recipients
+  const recipients = post.postedTo
+    .map((subscriptionId) => {
+      const userId = (state.subscriptions[subscriptionId] || {}).user;
+      const subscriptionType = (state.subscriptions[subscriptionId] || {}).name;
+      const isDirectToSelf = userId === post.createdBy && subscriptionType === 'Directs';
+      return !isDirectToSelf ? userId : false;
+    })
+    .map((userId) => state.subscribers[userId])
+    .filter((user) => user);
+
+  const isEditable = (post.createdBy === user.id);
+  const isModeratable = !isEditable && intersectionBy(recipients, state.managedGroups, 'id').length > 0;
+  const isFullyRemovable = isEditable || differenceBy(recipients, state.managedGroups, 'id').length === 0;
+
   const attachments = (post.attachments || []).map((attachmentId) => state.attachments[attachmentId]);
   const postViewState = state.postsViewState[post.id];
   const { omitRepeatedBubbles } = state.user.frontendPreferences.comments;
@@ -96,7 +113,7 @@ export const joinPostData = (state) => (postId) => {
       && comment.createdBy === previousPost.createdBy
       && comment.createdAt - previousPost.createdAt < ommitBubblesThreshold;
     const isEditable = (user.id === comment.createdBy);
-    const isDeletable = (user.id === post.createdBy);
+    const isDeletable = isModeratable || isModeratable;
     const highlighted = highlightComment(commentId, author);
     const likesList = selectCommentLikes(state, commentId);
     const highlightedFromUrl = commentId === hashedCommentId;
@@ -123,8 +140,6 @@ export const joinPostData = (state) => (postId) => {
     }
   }
 
-  const isEditable = (post.createdBy === user.id);
-
   // Check if the post is a direct message
   const directRecipients = post.postedTo
     .filter((subscriptionId) => {
@@ -132,17 +147,6 @@ export const joinPostData = (state) => (postId) => {
       return (subscriptionType === 'Directs');
     });
   const isDirect = !!directRecipients.length;
-
-  // Get the list of post's recipients
-  const recipients = post.postedTo
-    .map((subscriptionId) => {
-      const userId = (state.subscriptions[subscriptionId] || {}).user;
-      const subscriptionType = (state.subscriptions[subscriptionId] || {}).name;
-      const isDirectToSelf = userId === post.createdBy && subscriptionType === 'Directs';
-      return !isDirectToSelf ? userId : false;
-    })
-    .map((userId) => state.subscribers[userId])
-    .filter((user) => user);
 
   const { allowLinksPreview, readMoreStyle } = state.user.frontendPreferences;
 
@@ -155,6 +159,8 @@ export const joinPostData = (state) => (postId) => {
     comments,
     ...postViewState,
     isEditable,
+    isModeratable,
+    isFullyRemovable,
     allowLinksPreview,
     readMoreStyle,
   };

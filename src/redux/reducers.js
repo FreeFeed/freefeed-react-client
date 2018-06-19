@@ -285,6 +285,9 @@ export function feedViewState(state = initFeed, action) {
       return { ...state, isLastPage: action.payload.isLastPage };
     }
     case response(ActionTypes.DELETE_POST): {
+      if (action.payload.postStillAvailable) {
+        return state;
+      }
       const { postId } = action.request;
       return { ...state,
         visibleEntries: _.without(state.visibleEntries, postId),
@@ -1035,7 +1038,8 @@ export function posts(state = {}, action) {
         [post.id]: { ...post,
           body: action.post.body,
           updatedAt: action.post.updatedAt,
-          attachments: action.post.attachments || []
+          attachments: action.post.attachments || [],
+          postedTo: action.post.postedTo,
         }
       };
     }
