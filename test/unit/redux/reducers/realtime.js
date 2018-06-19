@@ -8,6 +8,8 @@ import {
   REALTIME_LIKE_NEW,
   REALTIME_POST_NEW,
   REALTIME_GLOBAL_USER_UPDATE,
+  REALTIME_POST_HIDE,
+  REALTIME_POST_UNHIDE,
 } from '../../../../src/redux/action-types';
 import {
   realtimeSubscribe,
@@ -181,6 +183,46 @@ describe('realtime events', () => {
       const result = posts(postsBefore, newLikeWithPost);
 
       expect(result, 'to have key', newPost.id);
+    });
+
+    it('should hide post on REALTIME_POST_HIDE', () => {
+      const state = { '1': { id: '1', isHidden: false } };
+      const action = {
+        type: REALTIME_POST_HIDE,
+        postId: '1',
+      };
+      const newState = posts(state, action);
+      expect(newState['1'], 'to satisfy', { id: '1', isHidden: true });
+    });
+
+    it('should not hide missing post on REALTIME_POST_HIDE', () => {
+      const state = { '1': { id: '1', isHidden: false } };
+      const action = {
+        type: REALTIME_POST_HIDE,
+        postId: '2',
+      };
+      const newState = posts(state, action);
+      expect(newState, 'to be', state);
+    });
+
+    it('should unhide post on REALTIME_POST_UNHIDE', () => {
+      const state = { '1': { id: '1', isHidden: true } };
+      const action = {
+        type: REALTIME_POST_UNHIDE,
+        postId: '1',
+      };
+      const newState = posts(state, action);
+      expect(newState['1'], 'to satisfy', { id: '1', isHidden: false });
+    });
+
+    it('should not unhide missing post on REALTIME_POST_UNHIDE', () => {
+      const state = { '1': { id: '1', isHidden: true } };
+      const action = {
+        type: REALTIME_POST_UNHIDE,
+        postId: '2',
+      };
+      const newState = posts(state, action);
+      expect(newState, 'to be', state);
     });
   });
 

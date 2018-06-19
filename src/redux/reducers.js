@@ -982,6 +982,17 @@ export function posts(state = {}, action) {
         }
       };
     }
+    case ActionTypes.REALTIME_POST_HIDE: {
+      const post = state[action.postId];
+      if (!post) {
+        return state;
+      }
+      return { ...state,
+        [post.id]: { ...post,
+          isHidden: true
+        }
+      };
+    }
     case response(ActionTypes.UNHIDE_POST): {
       const post = state[action.request.postId];
       return { ...state,
