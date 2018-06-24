@@ -388,22 +388,30 @@ export function signInWithToken(authToken) {
 }
 
 // Just for updating `users.providers`. Pass the whole `providers` object.
-export function linkOauthAccount(providers) {
+export function linkOauthAccount(authMethods) {
   return {
     type: ActionTypes.LINK_OAUTH_ACCOUNT,
     payload: {
-      providers,
+      authMethods,
     },
   };
 }
 
-export function unlinkOauthAccount(provider) {
+export function unlinkOauthAccount(provider, providerId) {
   return {
     type: ActionTypes.UNLINK_OAUTH_ACCOUNT,
     apiRequest: Api.unlinkOauthAccount,
     payload: {
       provider,
+      providerId,
     },
+  };
+}
+
+export function getAuthMethods() {
+  return {
+    type: ActionTypes.GET_AUTH_METHODS,
+    apiRequest: Api.getAuthMethods,
   };
 }
 
@@ -840,10 +848,17 @@ export function sendInvite(groupId) {
   };
 }
 
-export function getFacebookFriends(payload = {}) {
+export function getFacebookFriends(facebookId, accessToken = null) {
   return {
     type: ActionTypes.GET_FACEBOOK_FRIENDS,
     apiRequest: Api.facebookFriends,
-    payload,
+    payload: { facebookId, accessToken },
+  };
+}
+
+export function getAllFacebookFriends() {
+  return {
+    type: ActionTypes.GET_ALL_FACEBOOK_FRIENDS,
+    apiRequest: Api.allFacebookFriends,
   };
 }

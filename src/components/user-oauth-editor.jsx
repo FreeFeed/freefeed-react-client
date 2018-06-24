@@ -9,9 +9,9 @@ import { openOauthLinkPopup } from '../services/auth';
 const oauthConfig = config.auth.oauth;
 
 function selectState(state) {
-  const { authenticated, user } = state;
+  const { authMethods } = state;
 
-  return { user, authenticated };
+  return { authMethods };
 }
 
 function selectActions(dispatch) {
@@ -27,65 +27,68 @@ function getProviderIcon(provider) {
   );
 }
 
-class ProviderButton extends React.PureComponent {
-  handleClick = () => {
-    if (this.isLinked()) {
-      this.props.onUnlink();
-    } else {
-      this.props.onLink();
-    }
+class Account extends React.PureComponent {
+  handleUnlink = () => {
+    this.props.onUnlink(this.props.profile.id);
   };
-
-  isLinked() {
-    const { user, provider } = this.props;
-    return isObject(user.providers[provider]);
-  }
 
   render() {
     const {
-      provider,
+      profile,
     } = this.props;
 
-    if (!oauthConfig.includes(provider)) {
-      return null;
-    }
-
-    let className = 'btn btn-default oauth-editor-button';
-    if (this.isLinked()) {
-      className = 'btn btn-success oauth-editor-button';
-    }
-
     return (
-      <button className={className} onClick={this.handleClick}>
-        {getProviderIcon(provider)}
-      </button>
+      <div className="oauth-account">
+        <div className="oauth-account-logo">{getProviderIcon(profile.provider)}</div>
+        <div className="oauth-account-name">{profile.displayName}</div>
+        <button className="btn btn-danger oauth-account-remove" onClick={this.handleUnlink}>
+          <i className="fa fa-trash" aria-hidden="true" />
+        </button>
+      </div>
+    );
+  }
+}
+
+class AddProviderButtons extends React.PureComponent {
+  linkHandlers = oauthConfig.reduce((acc, provider) => {
+    acc[provider] = this.props.onLink.bind(this, provider);
+    return acc;
+  }, {});
+
+  render() {
+    return (
+      <div>
+        <div><label>Add new account:</label></div>
+        <div className="btn-group btn-group-lg">
+          {oauthConfig.map((provider) => (
+            <button className="btn btn-default" key={provider} onClick={this.linkHandlers[provider]}>
+              {getProviderIcon(provider)}
+            </button>
+          ))}
+        </div>
+      </div>
     );
   }
 }
 
 class UserSettingsOauthEditor extends React.PureComponent {
-  async linkAccount(provider) {
+  linkAccount = async (provider) => {
     const response = await openOauthLinkPopup(provider);
-    if (isObject(response.providers)) {
-      this.props.linkOauthAccount(response.providers);
+    if (isObject(response.authMethods)) {
+      this.props.linkOauthAccount(response.authMethods);
     } else {
       // eslint-disable-next-line no-console
-      console.error(`'providers' field is not present in`, response);
+      console.error(`'authMethods' field is not present in response`, response);
     }
-  }
+  };
 
-  async unlinkAccount(provider) {
+  async unlinkAccount(provider, providerId) {
     if (confirm(`Unlink ${provider} account?`)) {
-      this.props.unlinkOauthAccount(provider);
+      this.props.unlinkOauthAccount(provider, providerId);
     }
   }
 
-  linkHandlers = isArray(oauthConfig) && oauthConfig.reduce((acc, provider) => {
-    acc[provider] = this.linkAccount.bind(this, provider);
-    return acc;
-  }, {});
-
-  unlinkHandlers = isArray(oauthConfig) && oauthConfig.reduce((acc, provider) => {
+  unlinkHandlers = oauthConfig.reduce((acc, provider) => {
     acc[provider] = this.unlinkAccount.bind(this, provider);
     return acc;
   }, {});
@@ -95,23 +98,22 @@ class UserSettingsOauthEditor extends React.PureComponent {
       return null;
     }
 
-    const { user } = this.props;
+    const { authMethods: { profiles } } = this.props;
 
     return (
       <div>
         <h3>External accounts</h3>
-        <div className="input-group">
-          <div className="input-group-btn oauth-editor">
-            {oauthConfig.map((provider, index) => (
-              <ProviderButton
-                key={index}
-                user={user}
-                provider={provider}
-                onLink={this.linkHandlers[provider]}
-                onUnlink={this.unlinkHandlers[provider]}
-              />
-            ))}
-          </div>
+        <div>
+          {profiles.map((profile, index) => (
+            <Account
+              key={index}
+              profile={profile}
+              onUnlink={this.unlinkHandlers[profile.provider]}
+            />
+          ))}
+          <AddProviderButtons
+            onLink={this.linkAccount}
+          />
         </div>
       </div>
     );

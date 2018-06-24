@@ -1388,6 +1388,14 @@ export function users(state = {}, action) {
       }
       return state;
     }
+    case ActionTypes.GET_ALL_FACEBOOK_FRIENDS: {
+      let users = [];
+      for (const value of Object.values(action.payload)) {
+        users = users.concat(value.users);
+      }
+
+      return mergeByIds(state, users).map(userParser);
+    }
   }
   return state;
 }
@@ -1494,13 +1502,6 @@ export function user(state = initUser(), action) {
     }
     case ActionTypes.UNAUTHENTICATED: {
       return initUser();
-    }
-    case ActionTypes.LINK_OAUTH_ACCOUNT:
-    case response(ActionTypes.UNLINK_OAUTH_ACCOUNT): {
-      return {
-        ...state,
-        providers: action.payload.providers,
-      };
     }
   }
   return state;
@@ -2355,27 +2356,90 @@ export function archivePost(state = DEFAULT_FORM_STATE, action) {
   return state;
 }
 
-const DEFAUTLT_FACEBOOK_FRIENDS_STATE = {
-  inProgress: false,
-  friendIds: [],
-  needReauthorization: false,
+const DEFAULT_AUTH_METHODS_STATE = {
+  profiles: [],
 };
 
-export function facebookFriends(state = DEFAUTLT_FACEBOOK_FRIENDS_STATE, action) {
+export function authMethods(state = DEFAULT_AUTH_METHODS_STATE, action) {
+  switch (action.type) {
+    case request(ActionTypes.GET_AUTH_METHODS): {
+      return { ...DEFAULT_AUTH_METHODS_STATE, inProgress: true };
+    }
+    case ActionTypes.LINK_OAUTH_ACCOUNT:
+    case response(ActionTypes.UNLINK_OAUTH_ACCOUNT):
+    case response(ActionTypes.GET_AUTH_METHODS): {
+      const profiles = action.payload.authMethods
+        .map((authMethod) => authMethod.profile);
+      return { profiles };
+    }
+    case fail(ActionTypes.GET_AUTH_METHODS): {
+      return {
+        ...DEFAULT_AUTH_METHODS_STATE,
+        error: true,
+        errorText: action.payload.err,
+      };
+    }
+  }
+
+  return state;
+}
+
+const DEFAULT_FACEBOOK_FRIEND_STATE = {
+  friendIds: [],
+};
+
+// Grouped by facebook account id
+export function facebookFriends(state = {}, action) {
   switch (action.type) {
     case request(ActionTypes.GET_FACEBOOK_FRIENDS): {
-      return { ...DEFAUTLT_FACEBOOK_FRIENDS_STATE, inProgress: true };
+      return {
+        ...state,
+        [action.payload.facebookId]: { ...DEFAULT_FACEBOOK_FRIEND_STATE, inProgress: true },
+      };
     }
     case response(ActionTypes.GET_FACEBOOK_FRIENDS): {
       const friendIds = action.payload.users.map((user) => user.id);
-      return { ...DEFAUTLT_FACEBOOK_FRIENDS_STATE, friendIds };
+      return {
+        ...state,
+        [action.payload.facebookId]: { friendIds },
+      };
+    }
+    case response(ActionTypes.GET_ALL_FACEBOOK_FRIENDS): {
+      state = { ...state };
+      for (const facebookId of Object.keys(action.payload)) {
+        if (action.payload[facebookId].err) {
+          state[facebookId] = {
+            ...DEFAULT_FACEBOOK_FRIEND_STATE,
+            ...action.payload[facebookId],
+          };
+        } else {
+          const friendIds = action.payload[facebookId].users.map((user) => user.id);
+          state[facebookId] = { friendIds };
+        }
+      }
+      return state;
+    }
+    // GET_ALL_FACEBOOK_FRIENDS and GET_AUTH_METHODS are dispatched at the same time.
+    // If the response for GET_AUTH_METHODS arrives first,
+    // initialize state for each linked account with `inProgress`.
+    case response(ActionTypes.GET_AUTH_METHODS): {
+      state = { ...state };
+      for (const authMethod of action.payload.authMethods) {
+        if (!state[authMethod.providerId]) {
+          state[authMethod.providerId] = { ...DEFAULT_FACEBOOK_FRIEND_STATE, inProgress: true };
+        }
+      }
+      return state;
     }
     case fail(ActionTypes.GET_FACEBOOK_FRIENDS): {
       return {
-        ...DEFAUTLT_FACEBOOK_FRIENDS_STATE,
-        error: true,
-        errorText: action.payload.err,
-        needReauthorization: !!action.payload.needReauthorization,
+        ...state,
+        [action.payload.facebookId]: {
+          ...DEFAULT_FACEBOOK_FRIEND_STATE,
+          error: true,
+          errorText: action.payload.err,
+          needReauthorization: !!action.payload.needReauthorization,
+        }
       };
     }
   }

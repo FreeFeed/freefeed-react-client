@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
-import { get } from 'lodash';
 
 import 'autotrack';  // used by google-analytics in ../index.jade
 
@@ -94,10 +93,12 @@ const friendsActions = () => {
   store.dispatch(ActionCreators.subscribers(username));
   store.dispatch(ActionCreators.subscriptions(username));
   store.dispatch(ActionCreators.blockedByMe(username));
+  store.dispatch(ActionCreators.getAuthMethods());
+  store.dispatch(ActionCreators.getAllFacebookFriends()); // FIXME(dm): replace with multiple getFacebookFriends if possible
+};
 
-  if (get(user, 'providers.facebook.id')) {
-    store.dispatch(ActionCreators.getFacebookFriends());
-  }
+const settingsActions = () => {
+  store.dispatch(ActionCreators.getAuthMethods());
 };
 
 // needed to display mutual friends
@@ -137,7 +138,7 @@ ReactDOM.render(
         <Route path="signup" component={Signup} onEnter={enterStaticPage('Sign up')} />
         <Route path="restore" component={RestorePassword} />
         <Route path="reset" component={ResetPassword} />
-        <Route path="settings" component={Settings} onEnter={enterStaticPage('Settings')} />
+        <Route path="settings" component={Settings} onEnter={settingsActions} />
         <Route path="settings/archive" component={Archive} onEnter={enterStaticPage('Restore from FriendFeed.com Archives')} />
         <Route name="groupSettings" path="/:userName/settings" component={GroupSettings} {...generateRouteHooks(boundRouteActions('getUserInfo'))} />
         <Route name="discussions" path="filter/discussions" component={Discussions} {...generateRouteHooks(boundRouteActions('discussions'))} />

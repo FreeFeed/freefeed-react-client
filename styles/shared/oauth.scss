@@ -1,5 +1,21 @@
-.oauth-editor-button {
-  font-size: 56px;
-  width: 90px;
-  height: 90px;
+.oauth-account {
+  margin-bottom: 10px;
+  display: flex;
+
+  > * {
+    align-items: center;
+    align-self: center;
+  }
+
+  .oauth-account-logo {
+    min-width: 1em;
+    font-size: 30px;
+  }
+
+  .oauth-account-name {
+    flex-grow: 1;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 15px;
+  }
 }

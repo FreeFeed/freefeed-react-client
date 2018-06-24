@@ -320,8 +320,19 @@ export function signUp({ username, password, email, captcha }) {
   });
 }
 
-export function unlinkOauthAccount({ provider }) {
-  return fetch(`${apiConfig.host}/v2/oauth/${provider}/unlink`, {
+export function getAuthMethods() {
+  return fetch(`${apiConfig.host}/v2/oauth/methods`, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken(),
+    },
+  });
+}
+
+export function unlinkOauthAccount({ provider, providerId }) {
+  return fetch(`${apiConfig.host}/v2/oauth/${provider}/${providerId}/unlink`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -335,8 +346,23 @@ export function unlinkOauthAccount({ provider }) {
  * It may be called without the accessToken (it is cached on the server),
  * but may fail if the token had expired.
  */
-export function facebookFriends({ accessToken = null }) {
-  const url = new URL(`${apiConfig.host}/v2/oauth/facebook/friends`);
+export function facebookFriends({ accessToken = null, facebookId }) {
+  const url = new URL(`${apiConfig.host}/v2/oauth/facebook/${facebookId}/friends`);
+  if (accessToken) {
+    url.searchParams.append('accessToken', accessToken);
+  }
+
+  return fetch(url, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken(),
+    },
+  });
+}
+
+export function allFacebookFriends({ accessToken = null } = {}) {
+  const url = new URL(`${apiConfig.host}/v2/oauth/facebook/allFriends`);
   if (accessToken) {
     url.searchParams.append('accessToken', accessToken);
   }

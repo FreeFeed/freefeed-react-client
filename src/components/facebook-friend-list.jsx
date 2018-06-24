@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { get } from 'lodash';
+import { find } from 'lodash';
 
+import throbber16 from '../../assets/images/throbber-16.gif';
 import { getFacebookFriends } from '../redux/action-creators';
 import { openOauthAuthzPopup } from '../services/auth';
 import { tileUserListFactory, WITH_MUTUALS } from './tile-user-list';
@@ -13,8 +14,8 @@ const TileList = tileUserListFactory({
 });
 
 function selectState(state) {
-  const { facebookFriends, users, user } = state;
-  return { facebookFriends, users, user };
+  const { facebookFriends, users, authMethods } = state;
+  return { facebookFriends, users, authMethods };
 }
 
 function selectActions(dispatch) {
@@ -23,31 +24,29 @@ function selectActions(dispatch) {
   };
 }
 
-class FacebookFriendList extends React.PureComponent {
+class FriendList extends React.PureComponent {
   openAuthzPopup = async () => {
     const { accessToken } = await openOauthAuthzPopup('facebook');
-    this.props.getFacebookFriends({ accessToken });
+    this.props.getFacebookFriends(this.props.profile.id, accessToken);
   };
 
   render() {
-    const {
-      facebookFriends,
-      users,
-      user,
-    } = this.props;
+    const { profile, facebookFriends, users } = this.props;
+    const friends = facebookFriends.friendIds.map((id) => users[id]);
 
-    if (!get(user, 'providers.facebook.id')) {
+    if (!profile) {
       return null;
     }
 
-    const friends = facebookFriends.friendIds.map((id) => users[id]);
-
     return (
-      <div className="box">
-        <TileList header="Facebook friends" users={friends} />
+      <div>
+        <TileList header={`Facebook friends: ${profile.displayName}`} users={friends} />
+        {facebookFriends.inProgress &&
+          <img width="16" height="16" src={throbber16} />
+        }
 
         {facebookFriends.errorString &&
-          <span className="error-string">{this.props.errorString}</span>
+          <span className="error-string">{facebookFriends.errorString}</span>
         }
 
         {facebookFriends.needReauthorization &&
@@ -63,4 +62,40 @@ class FacebookFriendList extends React.PureComponent {
   }
 }
 
-export default connect(selectState, selectActions)(FacebookFriendList);
+class FacebookFriendLists extends React.PureComponent {
+  render() {
+    const {
+      facebookFriends,
+      users,
+      authMethods,
+      getFacebookFriends,
+    } = this.props;
+
+    if (!find(authMethods.profiles, { provider: 'facebook' })) {
+      return null;
+    }
+
+    const lists = Object.keys(facebookFriends)
+      .map((facebookId) => {
+        const profile = find(authMethods.profiles, { provider: 'facebook', id: facebookId });
+
+        return (
+          <FriendList
+            facebookFriends={facebookFriends[facebookId]}
+            getFacebookFriends={getFacebookFriends}
+            key={facebookId}
+            profile={profile}
+            users={users}
+          />
+        );
+      });
+
+    return (
+      <div className="box">
+        {lists}
+      </div>
+    );
+  }
+}
+
+export default connect(selectState, selectActions)(FacebookFriendLists);

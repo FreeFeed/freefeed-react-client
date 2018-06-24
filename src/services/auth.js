@@ -66,7 +66,7 @@ export function openOauthPopup(uri) {
 export function openOauthAuthPopup(provider) {
   checkOauthProvider(provider);
 
-  const uri = `${apiConfig.host}/v2/oauth/${provider}`;
+  const uri = `${apiConfig.host}/v2/oauth/${provider}/auth`;
   return openOauthPopup(uri);
 }
 
