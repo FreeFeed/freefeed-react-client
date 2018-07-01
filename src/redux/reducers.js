@@ -221,10 +221,12 @@ const hidePostInFeed = function (state, postId) {
     return state;
   }
   // Add it to hiddenEntries, but don't remove from visibleEntries just yet
-  // (for the sake of "Undo"). And check first if it's already in hiddenEntries,
-  // since realtime event might come first.
-  const itsAlreadyThere = (state.hiddenEntries.indexOf(postId) > -1);
-  if (itsAlreadyThere) {
+  // (for the sake of "Undo"). Do not touch state if if post is already in
+  // hiddenEntries (since realtime event might come first) or is not at the
+  // page at all.
+  const inHidden = (state.hiddenEntries.indexOf(postId) > -1);
+  const inVisible = (state.visibleEntries.indexOf(postId) > -1);
+  if (inHidden || !inHidden && !inVisible) {
     return state;
   }
   return { ...state,
@@ -239,9 +241,13 @@ const unhidePostInFeed = function (state, postId) {
   // Remove it from hiddenEntries and add to visibleEntries
   // (but check first if it's already in there, since this might be an "Undo" happening,
   // and/or realtime event might come first).
-  const itsStillThere = (state.visibleEntries.indexOf(postId) > -1);
+  const inHidden = (state.hiddenEntries.indexOf(postId) > -1);
+  const inVisible = (state.visibleEntries.indexOf(postId) > -1);
+  if (!inHidden) {
+    return state;
+  }
   return { ...state,
-    visibleEntries: (itsStillThere ? state.visibleEntries : [...state.visibleEntries, postId]),
+    visibleEntries: (inVisible ? state.visibleEntries : [...state.visibleEntries, postId]),
     hiddenEntries: _.without(state.hiddenEntries, postId)
   };
 };
@@ -285,6 +291,9 @@ export function feedViewState(state = initFeed, action) {
       return { ...state, isLastPage: action.payload.isLastPage };
     }
     case response(ActionTypes.DELETE_POST): {
+      if (action.payload.postStillAvailable) {
+        return state;
+      }
       const { postId } = action.request;
       return { ...state,
         visibleEntries: _.without(state.visibleEntries, postId),
@@ -327,16 +336,20 @@ export function feedViewState(state = initFeed, action) {
     case ActionTypes.REALTIME_LIKE_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW: {
       if (action.post && action.shouldBump) {
-        if (action.post.isHidden && state.separateHiddenEntries) {
+        const postId = action.post.posts.id;
+        const addToHiddens = action.post.posts.isHidden && state.separateHiddenEntries;
+        if (addToHiddens && !state.hiddenEntries.includes(postId)) {
           return {
             ...state,
-            hiddenEntries: [action.post.posts.id, ...state.hiddenEntries],
+            hiddenEntries: [postId, ...state.hiddenEntries],
           };
         }
-        return {
-          ...state,
-          visibleEntries: [action.post.posts.id, ...state.visibleEntries],
-        };
+        if (!addToHiddens && !state.visibleEntries.includes(postId)) {
+          return {
+            ...state,
+            visibleEntries: [postId, ...state.visibleEntries],
+          };
+        }
       }
       return state;
     }
@@ -982,6 +995,17 @@ export function posts(state = {}, action) {
         }
       };
     }
+    case ActionTypes.REALTIME_POST_HIDE: {
+      const post = state[action.postId];
+      if (!post) {
+        return state;
+      }
+      return { ...state,
+        [post.id]: { ...post,
+          isHidden: true
+        }
+      };
+    }
     case response(ActionTypes.UNHIDE_POST): {
       const post = state[action.request.postId];
       return { ...state,
@@ -1035,7 +1059,8 @@ export function posts(state = {}, action) {
         [post.id]: { ...post,
           body: action.post.body,
           updatedAt: action.post.updatedAt,
-          attachments: action.post.attachments || []
+          attachments: action.post.attachments || [],
+          postedTo: action.post.postedTo,
         }
       };
     }

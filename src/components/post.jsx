@@ -219,7 +219,7 @@ export default class Post extends React.Component {
     let commentLink;
     if (amIAuthenticated) {
       if (props.commentsDisabled) {
-        if (props.isEditable) {
+        if (props.isEditable || props.isModeratable) {
           commentLink = (
             <span>
               {' - '}
@@ -279,7 +279,7 @@ export default class Post extends React.Component {
     ) : false);
 
     // "More" menu
-    const moreLink = (props.isEditable ? (
+    const moreLink = (props.isEditable || props.isModeratable ? (
       <span>
         {' - '}
         <PostMoreMenu

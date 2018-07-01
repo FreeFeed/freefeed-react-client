@@ -51,6 +51,36 @@ const notificationTemplates = {
 
   banned_by_user: () => `Notification shouldn't be shown`,
   unbanned_by_user: () => `Notification shouldn't be shown`,
+
+  comment_moderated: (event) => (
+    <div>
+      <Linkify>{`@${event.createdUser.username} has deleted your comment to the `}</Linkify>
+      {postLink(event)}
+      {event.group ? <Linkify>{` in the group @${event.group.username}`}</Linkify> : null}
+    </div>
+  ),
+  comment_moderated_by_another_admin: (event) => (
+    <div>
+      <Linkify>{`@${event.createdUser.username} has removed a comment from @${event.affectedUser.username} to the `}</Linkify>
+      {postLink(event)}
+      <Linkify>{` in the group @${event.group.username}`}</Linkify>
+    </div>
+  ),
+  post_moderated: (event) =>  (
+    <div>
+      <Linkify>{`@${event.createdUser.username} has removed your `}</Linkify>
+      {event.post ? postLink(event) : 'post'}
+      {event.group ? <Linkify>{` from the group @${event.group.username}`}</Linkify> : null}
+    </div>
+  ),
+  post_moderated_by_another_admin: (event) => (
+    <div>
+      <Linkify>{`@${event.createdUser.username} has removed the `}</Linkify>
+      {event.post ? postLink(event) : 'post'}
+      <Linkify>{`from @${event.affectedUser.username} `}</Linkify>
+      {event.group ? <Linkify>{` from the group @${event.group.username}`}</Linkify> : null}
+    </div>
+  ),
 };
 
 const notificationClasses = {
@@ -80,6 +110,10 @@ const notificationClasses = {
   direct_comment: 'direct',
   banned_by_user: 'ban',
   unbanned_by_user: 'ban',
+  comment_moderated: 'group',
+  comment_moderated_by_another_admin: 'group',
+  post_moderated: 'group',
+  post_moderated_by_another_admin: 'group',
 };
 
 const nop = () => false;
