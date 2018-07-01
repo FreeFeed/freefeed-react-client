@@ -22,6 +22,7 @@ import Summary from './components/summary';
 import About from './components/about';
 import Donate from './components/donate';
 import Terms from './components/terms';
+import Privacy from './components/privacy';
 import Stats from './components/stats';
 import Dev from './components/dev';
 import Signin from './components/signin';
@@ -121,6 +122,7 @@ ReactDOM.render(
         <Route path="about">
           <IndexRoute name="about" component={About} onEnter={enterStaticPage('About')} />
           <Route path="terms" component={Terms} onEnter={enterStaticPage('Terms')} />
+          <Route path="privacy" component={Privacy} onEnter={enterStaticPage('Privacy')} />
           <Route path="stats" component={Stats} onEnter={enterStaticPage('Stats')} />
           <Route path="donate" component={Donate} onEnter={enterStaticPage('Donate')} />
         </Route>
