@@ -17,7 +17,7 @@ const Privacy = () => (
       <p className="legal-paragraph">1.5 In this policy, {'"'}we{'"'}, {'"'}us{'"'} and {'"'}our{'"'} refer to FreeFeed.net run by FreeFeed MTÜ. For more information about us, see Section 18</p>
 
       <h3>2. How we use your personal data</h3>
-      <p className="legal-paragraph">2.1. In this Section 2 we have set out:<br />
+      <p className="legal-paragraph">2.1 In this Section 2 we have set out:<br />
         (a) the general categories of personal data that we may process;<br />
         (b) in the case of personal data that we did not obtain directly from you, the source and specific categories of that data;<br />
         (c) the purposes for which we may process personal data; and<br />
