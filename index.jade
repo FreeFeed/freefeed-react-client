@@ -20,6 +20,13 @@ html(lang='en')
       body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px }
       h1 { font-size: 36px; font-weight: 500 }
       h1 a { color: #222; text-decoration: none }
+    style.
+      .privacy-popup {position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; color: white; background-color: rgba(16,16,16,0.8); padding: 24px; display: flex; flex-flow: column; align-items: center;}
+      .privacy-text {line-height: 1.42857; font-size: 16px; margin-bottom: 16px; max-width: 600px;}
+      .privacy-button {font-size: 16px; font-weight: bold; color: #F6C944; border: solid 2px #F6C944; border-radius: 8px; padding: 12px 24px; line-height: 1.42857; cursor: pointer; background-color: white;}
+      .privacy-button:hover {color: #E84B34; border-color: #E84B34;}
+      a.privacy-link {color: white; font-weight: bold; text-decoration: underline;}
+      a.privacy-link:hover {color: #F6C944; font-weight: bold;}
     link(rel='icon', href='[[ assets/images/favicon.ico ]]', type='image/x-icon')
     link(rel='apple-touch-icon', sizes='512x512', href='[[ assets/images/ios/icon_512_512.png ]]')
     link(rel='apple-touch-icon', sizes='256x256', href='[[ assets/images/ios/icon_256_256.png ]]')
@@ -77,5 +84,49 @@ html(lang='en')
     if appConfig.sentry.publicDSN
       script(src='https://cdn.ravenjs.com/3.23.1/raven.min.js', crossorigin="anonymous")
       script Raven.config('#{appConfig.sentry.publicDSN}', { autoBreadcrumbs: true }).install();
+
+    script.
+      (function(w,d){
+        var PRIVACY_COOKIE_NAME = 'privacy'
+        function parseCookies() {
+          return (d.cookie || '').split(';').reduce(function(res, cookieStr){
+            var cookieData = cookieStr.trim().split('=')
+            res[cookieData[0]] = cookieData[1]
+            return res
+          }, {})
+        }
+        function combineCookies(cookieObj) {
+          return Object.keys(cookieObj).map(function(cookieKey){
+            return cookieKey + '=' +cookieObj[cookieKey]
+          }).join('; ')
+        }
+        function getCookie(a) {
+          return parseCookies()[a]
+        }
+        function setCookie(a, v) {
+          d.cookie = a+'='+v
+        }
+        function showPrivacyPopup(){
+          var privacyPopup = document.createElement('DIV')
+          privacyPopup.classList.add('privacy-popup')
+          var privacyText = document.createElement('DIV')
+          privacyText.innerHTML = 'This site uses cookies and other technologies to collect data and enhance your experience. Visit our <a href="/about/privacy" class="privacy-link">Privacy Policy</a> to learn more. By clicking "Accept" or by continuing to use our site you agree to this use of cookies and data.'
+          privacyText.classList.add('privacy-text')
+          var acceptButton = document.createElement('BUTTON')
+          acceptButton.innerText = 'Accept'
+          acceptButton.classList.add('privacy-button')
+          acceptButton.addEventListener('click', function(){
+            setCookie(PRIVACY_COOKIE_NAME, 'true')
+            document.body.removeChild(privacyPopup)
+          })
+          privacyPopup.appendChild(privacyText)
+          privacyPopup.appendChild(acceptButton)
+          document.body.appendChild(privacyPopup)
+        }
+        var privacyCookie = getCookie(PRIVACY_COOKIE_NAME)
+        if (!privacyCookie) {
+          showPrivacyPopup()
+        }
+      })(window, document);
 
     script(src='[[ app-*.js ]]')
