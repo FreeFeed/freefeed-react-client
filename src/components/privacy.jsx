@@ -7,7 +7,7 @@ const Privacy = () => (
     <div className="box-body">
       <h3>FreeFeed Privacy Policy</h3>
 
-      <p>Last updated: <b>July 2, 2018</b></p>
+      <p>Last updated: <b>July 3, 2018</b></p>
 
       <h3>1. Introduction</h3>
       <p className="legal-paragraph">1.1 FreeFeed MTÜ is a not for profit Association registered in Tallinn, Estonia. We are committed to safeguarding the privacy of FreeFeed.net visitors and service users, member accounts data.</p>
