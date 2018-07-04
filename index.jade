@@ -103,11 +103,11 @@ html(lang='en')
         function getCookie(a) {
           return parseCookies()[a]
         }
-        function setCookie(a, v, d) {
+        function setCookie(a, v, days) {
           var e = '';
-          if (d) {
+          if (days) {
             var date = new Date();
-            date.setTime(date.getTime() + (d * 24 * 60 * 60 * 1000));
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
             e = "; expires=" + date.toUTCString();
           }
           d.cookie = a+'='+v+e+"; path=/"
