@@ -62,7 +62,7 @@ class Signin extends React.PureComponent {
                 <LoaderContainer loading={props.loading}>
                   <form onSubmit={this.handleFormSubmit} className="p-signin">
                     <div className="form-group">
-                      <label htmlFor="username">Username</label>
+                      <label htmlFor="username">Username or e-mail address</label>
                       <input id="username" className="ember-view ember-text-field form-control" type="text" onChange={this.handleUsernameChange} />
                     </div>
                     <div className="form-group">
