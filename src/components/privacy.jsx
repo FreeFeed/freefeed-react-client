@@ -7,7 +7,7 @@ const Privacy = () => (
     <div className="box-body">
       <h3>FreeFeed Privacy Policy</h3>
 
-      <p>Last updated: <b>July 3, 2018</b></p>
+      <p>Last updated: <b>July 16, 2018</b></p>
 
       <h3>1. Introduction</h3>
       <p className="legal-paragraph">1.1 FreeFeed MTÜ is a not for profit Association registered in Tallinn, Estonia. We are committed to safeguarding the privacy of FreeFeed.net visitors and service users, member accounts data.</p>
@@ -32,6 +32,9 @@ const Privacy = () => (
       <p className="legal-paragraph">2.8 We may process any of your personal data identified in this policy where necessary for the establishment, exercise or defence of legal claims, whether in court proceedings or in an administrative or out-of-court procedure. The legal basis for this processing is our legitimate interests, namely the protection and assertion of our legal rights, your legal rights and the legal rights of others.</p>
       <p className="legal-paragraph">2.9 We may process any of your personal data identified in this policy where necessary for the purposes of obtaining or maintaining insurance coverage, managing risks, using volunteer work or obtaining professional advice. The legal basis for this processing is our legitimate interests, namely the proper protection of FreeFeed MTÜ against risks.</p>
       <p className="legal-paragraph">2.10 In addition to the specific purposes for which we may process your personal data set out in this Section 2, we may also process any of your personal data where such processing is necessary for compliance with a legal obligation to which we are subject, or in order to protect your vital interests or the vital interests of another natural person.</p>
+
+      <h3>3. Automated decision-making</h3>
+      <p className="legal-paragraph">3.1 We do not believe that we use your personal data for the purposes of automated decision-making in relation to significant consequences as defined in the GDPR.</p>
 
       <h3>4. Providing your personal data to others</h3>
       <p className="legal-paragraph">4.1 We may disclose your personal data to our insurers and/or professional advisers and/or lawyers insofar as reasonably necessary for the purposes of obtaining or maintaining insurance coverage, managing risks, obtaining professional advice, or the establishment, exercise or defenсe of legal claims, whether in court proceedings or in an administrative or out-of-court procedure.</p>
