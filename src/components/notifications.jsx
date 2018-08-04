@@ -56,7 +56,7 @@ const notificationTemplates = {
     <div>
       <Linkify>{`@${event.createdUser.username} has deleted your comment to the `}</Linkify>
       {postLink(event)}
-      {event.group ? <Linkify>{` in the group @${event.group.username}`}</Linkify> : null}
+      {event.group_id ? <Linkify>{` in the group @${event.group.username}`}</Linkify> : null}
     </div>
   ),
   comment_moderated_by_another_admin: (event) => (
@@ -69,16 +69,16 @@ const notificationTemplates = {
   post_moderated: (event) =>  (
     <div>
       <Linkify>{`@${event.createdUser.username} has removed your `}</Linkify>
-      {event.post ? postLink(event) : 'post'}
-      {event.group ? <Linkify>{` from the group @${event.group.username}`}</Linkify> : null}
+      {event.post_id ? postLink(event) : 'post'}
+      {event.group_id ? <Linkify>{` from the group @${event.group.username}`}</Linkify> : null}
     </div>
   ),
   post_moderated_by_another_admin: (event) => (
     <div>
       <Linkify>{`@${event.createdUser.username} has removed the `}</Linkify>
-      {event.post ? postLink(event) : 'post'}
+      {event.post_id ? postLink(event) : 'post'}
       <Linkify>{`from @${event.affectedUser.username} `}</Linkify>
-      {event.group ? <Linkify>{` from the group @${event.group.username}`}</Linkify> : null}
+      {event.group_id ? <Linkify>{` from the group @${event.group.username}`}</Linkify> : null}
     </div>
   ),
 };
