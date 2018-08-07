@@ -22,13 +22,19 @@ export default class ImageAttachmentsLightbox extends React.Component {
       pid: pt.string.isRequired,
     })).isRequired,
     postId: pt.string,
+    index: pt.number.isRequired,
     getThumbnail: pt.func.isRequired,
+    onDestroy: pt.func.isRequired,
   };
 
   state = {
-    isOpened: false,
     currentIndex: 0,
   };
+
+  constructor(props) {
+    super(props);
+    this.state.currentIndex = props.index;
+  }
 
   photoSwipe = null;
 
@@ -75,18 +81,9 @@ export default class ImageAttachmentsLightbox extends React.Component {
   };
 
   whenClosed = () => {
-    this.setState({ isOpened: false });
-
     Mousetrap.unbind(prevHotKeys);
     Mousetrap.unbind(nextHotKeys);
   };
-
-  open(index) {
-    this.setState({
-      isOpened: true,
-      currentIndex: index,
-    });
-  }
 
   registerPhotoSwipe = (el) => {
     this.photoSwipe = el ? el.photoSwipe : null;
@@ -104,9 +101,10 @@ export default class ImageAttachmentsLightbox extends React.Component {
           getThumbBoundsFn: this.getThumbBounds,
           index: this.state.currentIndex,
         }}
-        isOpen={this.state.isOpened}
+        isOpen={true}
         onClose={this.whenClosed}
         initialZoomInEnd={this.whenOpened}
+        destroy={this.props.onDestroy}
       />
     );
   }
