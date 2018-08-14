@@ -12,6 +12,10 @@ const Select = Loadable({
     return <div>Loading selector...</div>;
   },
   loader: () => import('react-select'),
+  render(loaded, props) {
+    const { Creatable } = loaded;
+    return <Creatable {...props} />;
+  }
 });
 
 export default class SendTo extends React.Component {
@@ -37,8 +41,15 @@ export default class SendTo extends React.Component {
   }
 
   stateFromProps(props, options) {
+    const values = options.filter((opt) => opt.value === props.defaultFeed);
+    if (values.length === 0 && props.defaultFeed) {
+      values.push({
+        label: props.defaultFeed,
+        value: props.defaultFeed,
+      });
+    }
     return {
-      values: options.filter((opt) => opt.value === props.defaultFeed),
+      values,
       options,
       showFeedsOption: !props.defaultFeed || props.alwaysShowSelect,
       isWarningDisplayed: false
@@ -90,6 +101,8 @@ export default class SendTo extends React.Component {
     return <span>{icon} {opt.label}</span>;
   };
 
+  promptTextCreator = (label) => `Send direct message to @${label}`;
+
   registerSelector = (el) => {
     this.selector = el;
   };
@@ -120,6 +133,7 @@ export default class SendTo extends React.Component {
               clearable={false}
               autoFocus={this.state.showFeedsOption && !this.props.disableAutoFocus}
               openOnFocus={true}
+              promptTextCreator={this.promptTextCreator}
             />
             {this.state.isWarningDisplayed ? (
               <div className="selector-warning">
