@@ -148,17 +148,6 @@ const INITIAL_SIGN_UP_FORM_STATE = {
 
 export function signUpForm(state = INITIAL_SIGN_UP_FORM_STATE, action) {
   switch (action.type) {
-    case ActionTypes.SIGN_UP_CHANGE: {
-      return {
-        ...state,
-        username: action.username || state.username,
-        password: action.password || state.password,
-        email: action.email || state.email,
-        captcha: typeof action.captcha == 'undefined' ? state.captcha : action.captcha,
-        loading: false,
-        error: ''
-      };
-    }
     case ActionTypes.SIGN_UP_EMPTY: {
       return { ...state, error: action.message, loading: false };
     }
@@ -170,6 +159,21 @@ export function signUpForm(state = INITIAL_SIGN_UP_FORM_STATE, action) {
     }
     case fail(ActionTypes.SIGN_UP): {
       return { ...state, error: action.payload.err, loading: false };
+    }
+  }
+  return state;
+}
+
+export function currentInvitation(state = DEFAULT_FORM_STATE, action) {
+  switch (action.type) {
+    case request(ActionTypes.GET_INVITATION): {
+      return { ...state, loading: true };
+    }
+    case response(ActionTypes.GET_INVITATION): {
+      return { ...state, loading: false, success: true, invitation: action.payload.invitation };
+    }
+    case fail(ActionTypes.GET_INVITATION): {
+      return { ...state, loading: false, error: true, errorText: action.payload.err };
     }
   }
   return state;
@@ -2339,6 +2343,21 @@ export function archivePost(state = DEFAULT_FORM_STATE, action) {
     }
     case fail(ActionTypes.GET_POST_ID_BY_OLD_NAME): {
       return { ...defaultArchivePostState, error: true, errorText: action.payload.err };
+    }
+  }
+  return state;
+}
+
+export function createInvitationForm(state = DEFAULT_FORM_STATE, action) {
+  switch (action.type) {
+    case request(ActionTypes.CREATE_FREEFEED_INVITATION): {
+      return { ...state, isSaving: true, error: false, success: false };
+    }
+    case response(ActionTypes.CREATE_FREEFEED_INVITATION): {
+      return { ...state, isSaving: false, success: true, invitationId: action.payload.invitation.secure_id };
+    }
+    case fail(ActionTypes.CREATE_FREEFEED_INVITATION): {
+      return { ...state, isSaving: false, error: true, errorText: action.payload.err || "Something went wrong" };
     }
   }
   return state;

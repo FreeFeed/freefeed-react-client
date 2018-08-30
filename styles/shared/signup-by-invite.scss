@@ -1,0 +1,11 @@
+.signup-by-invite {
+  .personal-message {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 10px;
+    @media (min-width: 992px) {
+      width: 50%;
+    }
+  }
+}
