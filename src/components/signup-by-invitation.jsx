@@ -5,7 +5,9 @@ import SignupForm from "./signup-form";
 import { INVITATION_LANGUAGE_OPTIONS } from "./invitation-creation-form";
 
 function mapStateToProps(state) {
-  return { ...state.signUpForm, currentInvitation: state.currentInvitation };
+  const { invitation = {} } = state.currentInvitation;
+  const { username } = state.users[invitation.author] || {};
+  return { ...state.signUpForm, invitation: state.currentInvitation.invitation, authorUsername: username };
 }
 
 const FREEFEED_INVITATION = {
@@ -50,20 +52,26 @@ class SignupByInvitation extends React.PureComponent {
   }
 
   renderInvitation = () => {
-    const { currentInvitation } = this.props;
-    const { message, lang, recommendations = { users: [] }, registrations_count, single_use } =
-      currentInvitation.invitation || {};
-    const userInvited = USER_INVITED[lang || "en"](recommendations.users[0]);
+    const { message, lang, registrations_count, single_use } =
+      this.props.invitation || {};
+    const userInvited = USER_INVITED[lang || "en"](this.props.authorUsername);
     const expired = registrations_count === 1 && single_use;
+    if (!message) {
+      return (
+        <div>
+          <p>{FREEFEED_INVITATION[lang]}</p>
+          <p>Still loading...</p>
+        </div>);
+    }
     return (
       <div>
         <p>{FREEFEED_INVITATION[lang]}</p>
         <p><PieceOfText text={userInvited} isExpanded={true} /></p>
-        <div className="personal-message"><PieceOfText text={message || "still loading"} isExpanded={true} /></div>
+        <div className="personal-message"><PieceOfText text={message} isExpanded={true} /></div>
         {expired && INVITE_EXPIRED[lang]}
         {!expired &&
-          <div className="col-md-6">
-            <SignupForm invitation={currentInvitation.invitation} lang={lang} />
+          <div className="signup-form-container">
+            <SignupForm invitation={this.props.invitation} lang={lang} />
           </div>
         }
       </div>);

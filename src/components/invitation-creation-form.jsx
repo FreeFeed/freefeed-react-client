@@ -49,6 +49,7 @@ class InvitationCreationForm extends React.Component {
               defaultFeed={user && user.username}
               user={user}
               excludeMyFeed={true}
+              disableAutoFocus={true}
               onChange={this.suggestedSubscriptionsChanged}
             />
             <div>Suggested groups</div>
@@ -58,6 +59,7 @@ class InvitationCreationForm extends React.Component {
               feeds={groupFeeds}
               user={user}
               excludeMyFeed={true}
+              disableAutoFocus={true}
               onChange={this.suggestedSubscriptionsChanged}
             />
             <div>Invitation page language</div>
@@ -158,8 +160,8 @@ class InvitationCreationForm extends React.Component {
 
 function mapStateToProps(state) {
   const { authenticated, user, createInvitationForm, users, groups } = state;
-  const userFeeds = Object.keys(users).map(id => ({ id, user: users[id] })).filter(({user}) => user.type === "user");
-  const groupFeeds = Object.keys(groups).map(id => ({ id, user: groups[id] }));
+  const userFeeds = Object.keys(users).map((id) => ({ id, user: users[id] })).filter(({ user }) => user.type === "user");
+  const groupFeeds = Object.keys(groups).map((id) => ({ id, user: groups[id] }));
   const feedsDescriptions = getFeedsDescriptions(users, groups);
   return {
     baseLocation: window.location.origin,

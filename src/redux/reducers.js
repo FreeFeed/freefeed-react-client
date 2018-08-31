@@ -1365,6 +1365,10 @@ export function users(state = {}, action) {
     case response(ActionTypes.GET_SINGLE_POST): {
       return mergeByIds(state, (action.payload.users || []).map(userParser));
     }
+    case response(ActionTypes.GET_INVITATION): {
+      const { users = [], groups = [] } = action.payload;
+      return mergeByIds(state, users.concat(groups).map(userParser));
+    }
     case ActionTypes.REALTIME_POST_NEW:
     case ActionTypes.REALTIME_LIKE_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW: {
@@ -1969,6 +1973,10 @@ export function groups(state = {}, action) {
     }
     case response(ActionTypes.GET_NOTIFICATIONS): {
       return mergeByIds(state, action.payload.groups);
+    }
+    case response(ActionTypes.GET_INVITATION): {
+      const { groups = [] } = action.payload;
+      return mergeByIds(state, groups.map(userParser));
     }
     case ActionTypes.UNAUTHENTICATED: {
       return {};

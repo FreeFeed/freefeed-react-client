@@ -311,7 +311,9 @@ export function signUp({ username, password, email, captcha, invitation = {}, su
   const body = { username, password, email, captcha };
   if (invitation) {
     body.invitaiton = invitation.secure_id;
-    body.cancel_subscription = !subscribe;
+    if (!subscribe) {
+      body.cancel_subscription = true;
+    }
   }
   const encodedBody = encodeBody(body);
 
