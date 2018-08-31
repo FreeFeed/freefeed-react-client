@@ -74,11 +74,11 @@ function validate({ username, password, email, captcha }) {
   return errorMessages.length == 0 ? null : capitalizeFirstLetter(errorMessages.join(', '));
 }
 
-function signUpFunc(form, { signUp, signUpEmpty, invitation }) {
+function signUpFunc(form, { signUp, signUpEmpty, invitationId }) {
   const errorMessage = validate(form);
 
   if (!errorMessage) {
-    signUp({ ...form, invitation });
+    signUp({ ...form, invitationId });
   } else {
     signUpEmpty(errorMessage);
   }
@@ -124,7 +124,7 @@ class Signup extends React.Component {
   handleRecaptchaExpiration = () => this.setState({ captcha: null });
 
   render() {
-    const { loading, invitation, lang = 'en' } = this.props;
+    const { loading, invitationId, lang = 'en' } = this.props;
 
     return (
       <LoaderContainer loading={loading}>
@@ -170,7 +170,7 @@ class Signup extends React.Component {
             </div>
           }
 
-          {invitation &&
+          {invitationId &&
             <div className="form-group checkbox">
               <label>
                 <input type="checkbox" name="subscribe-groups" value="0" checked={this.state.subscribe} onChange={this.toggleSubscribe} />

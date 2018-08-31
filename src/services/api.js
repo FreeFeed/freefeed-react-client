@@ -307,12 +307,12 @@ export function resetPassword({ password, token }) {
   });
 }
 
-export function signUp({ username, password, email, captcha, invitation = {}, subscribe }) {
+export function signUp({ username, password, email, captcha, invitationId, subscribe }) {
   const body = { username, password, email, captcha };
-  if (invitation) {
-    body.invitaiton = invitation.secure_id;
+  if (invitationId) {
+    body.invitation = invitationId;
     if (!subscribe) {
-      body.cancel_subscription = true;
+      body.cancel_subscription = !subscribe;
     }
   }
   const encodedBody = encodeBody(body);

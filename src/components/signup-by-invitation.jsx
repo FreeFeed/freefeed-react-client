@@ -52,7 +52,7 @@ class SignupByInvitation extends React.PureComponent {
   }
 
   renderInvitation = () => {
-    const { message, lang, registrations_count, single_use } =
+    const { message, lang, registrations_count, single_use, secure_id } =
       this.props.invitation || {};
     const userInvited = USER_INVITED[lang || "en"](this.props.authorUsername);
     const expired = registrations_count === 1 && single_use;
@@ -71,7 +71,7 @@ class SignupByInvitation extends React.PureComponent {
         {expired && INVITE_EXPIRED[lang]}
         {!expired &&
           <div className="signup-form-container">
-            <SignupForm invitation={this.props.invitation} lang={lang} />
+            <SignupForm invitationId={secure_id} lang={lang} />
           </div>
         }
       </div>);
