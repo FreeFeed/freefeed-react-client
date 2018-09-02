@@ -307,8 +307,15 @@ export function resetPassword({ password, token }) {
   });
 }
 
-export function signUp({ username, password, email, captcha }) {
-  const encodedBody = encodeBody({ username, password, email, captcha });
+export function signUp({ username, password, email, captcha, invitationId, subscribe }) {
+  const body = { username, password, email, captcha };
+  if (invitationId) {
+    body.invitation = invitationId;
+    if (!subscribe) {
+      body.cancel_subscription = !subscribe;
+    }
+  }
+  const encodedBody = encodeBody(body);
 
   return fetch(`${apiConfig.host}/v1/users`, {
     headers:{
@@ -602,4 +609,20 @@ export function archiveStartRestoration(params) {
     },
     'body': JSON.stringify(params)
   });
+}
+
+export function createFreefeedInvitation(params) {
+  return fetch(`${apiConfig.host}/v2/invitations`, {
+    method: 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-Authentication-Token': getToken(),
+    },
+    body: JSON.stringify(params),
+  });
+}
+
+export function getInvitation({ invitationId }) {
+  return fetch(`${apiConfig.host}/v2/invitations/${invitationId}`, getRequestOptions());
 }

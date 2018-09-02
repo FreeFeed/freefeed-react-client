@@ -37,6 +37,8 @@ import Friends from './components/friends';
 import ManageSubscribers from './components/manage-subscribers';
 import Bookmarklet from './components/bookmarklet';
 import ArchivePost from './components/archive-post';
+import InvitationCreationForm from './components/invitation-creation-form';
+import SignupByInvitation from './components/signup-by-invitation';
 
 
 const store = configureStore();
@@ -149,6 +151,8 @@ ReactDOM.render(
         <Route name="friends" path="/friends" component={Friends} onEnter={friendsActions} />
         <Route name="groupCreate" path="/groups/create" component={GroupCreate} onEnter={enterStaticPage('Create a group')} />
         <Route name="archivePost" path="/archivePost" component={ArchivePost} {...generateRouteHooks(boundRouteActions('archivePost'))} />
+        <Route name="createIinvitation" path="/invite" component={InvitationCreationForm} />
+        <Route name="signupByInvitation" path="/invited/:invitationId" component={SignupByInvitation} onEnter={boundRouteActions('signupByInvitation')} />
         <Route name="userFeed" path="/:userName" component={User} {...generateRouteHooks(boundRouteActions('userFeed'))} />
         <Route name="memories" path="/memories/:from" component={PlainFeed} {...generateRouteHooks(boundRouteActions('memories'))} />
         <Route name="userMemories" path="/:userName/memories/:from" component={PlainFeed} {...generateRouteHooks(boundRouteActions('userMemories'))} />
