@@ -25,7 +25,7 @@ export default class SendTo extends React.Component {
   componentWillReceiveProps(newProps) {
     const options = this.optionsFromProps(newProps);
     if (this.props.defaultFeed !== newProps.defaultFeed ||
-        options.length !== 0 && this.state.options.length === 0) {
+      options.length !== 0 && this.state.options.length === 0) {
       this.setState(this.stateFromProps(newProps, options));
     } else {
       this.setState({ options });
@@ -40,12 +40,12 @@ export default class SendTo extends React.Component {
     return {
       values: options.filter((opt) => opt.value === props.defaultFeed),
       options,
-      showFeedsOption: !props.defaultFeed,
+      showFeedsOption: !props.defaultFeed || props.alwaysShowSelect,
       isWarningDisplayed: false
     };
   }
 
-  optionsFromProps({ feeds, user: { username }, isDirects }) {
+  optionsFromProps({ feeds, user: { username }, isDirects, excludeMyFeed }) {
     const options = feeds.map(({ user: { username, type } }) => ({
       label: username,
       value: username,
@@ -54,8 +54,10 @@ export default class SendTo extends React.Component {
 
     options.sort((a, b) => (a.type !== b.type) ? a.type.localeCompare(b.type) : a.value.localeCompare(b.value));
 
-    // use type "group" for "my feed" option to hide the warning about direct message visibility
-    options.unshift({ label: MY_FEED_LABEL, value: username, type: 'group' });
+    if (!excludeMyFeed) {
+      // use type "group" for "my feed" option to hide the warning about direct message visibility
+      options.unshift({ label: MY_FEED_LABEL, value: username, type: 'group' });
+    }
 
     // only mutual friends on Directs page
     return isDirects ? options.filter((opt) => opt.type === 'user') : options;
@@ -71,8 +73,9 @@ export default class SendTo extends React.Component {
 
   selectChanged = (values) => {
     const isWarningDisplayed = !this.isGroupsOrDirectsOnly(values);
-    this.setState({ values, isWarningDisplayed });
-    this.props.onChange(values.map((item) => item.value));
+    this.setState({ values, isWarningDisplayed }, () => {
+      this.props.onChange && this.props.onChange(values.map((item) => item.value));
+    });
   };
 
   toggleSendTo = () => {
@@ -115,7 +118,7 @@ export default class SendTo extends React.Component {
               ref={this.registerSelector}
               multi={true}
               clearable={false}
-              autoFocus={this.state.showFeedsOption}
+              autoFocus={this.state.showFeedsOption && !this.props.disableAutoFocus}
               openOnFocus={true}
             />
             {this.state.isWarningDisplayed ? (
