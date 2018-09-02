@@ -84,7 +84,7 @@ export const joinPostData = (state) => (postId) => {
     .filter((user) => user);
 
   const isEditable = (post.createdBy === user.id);
-  const isModeratable = !isEditable && intersectionBy(recipients, state.managedGroups, 'id').length > 0;
+  const isModeratable = isEditable || intersectionBy(recipients, state.managedGroups, 'id').length > 0;
   const isFullyRemovable = isEditable || differenceBy(recipients, state.managedGroups, 'id').length === 0;
 
   const attachments = (post.attachments || []).map((attachmentId) => state.attachments[attachmentId]);

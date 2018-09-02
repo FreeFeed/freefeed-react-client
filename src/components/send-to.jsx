@@ -1,7 +1,18 @@
 import React from 'react';
-import Select from 'react-select';
+import Loadable from 'react-loadable';
 
 const MY_FEED_LABEL = 'My feed';
+
+const Select = Loadable({
+  loading: ({ error }) => {
+    if (error) {
+      console.error(`Cannot load 'react-select'`, error);  // eslint-disable-line no-console
+      return <div>Cannot load selector</div>;
+    }
+    return <div>Loading selector...</div>;
+  },
+  loader: () => import('react-select'),
+});
 
 export default class SendTo extends React.Component {
   selector;
@@ -76,13 +87,6 @@ export default class SendTo extends React.Component {
     return <span>{icon} {opt.label}</span>;
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.showFeedsOption !== this.state.showFeedsOption && this.state.showFeedsOption) {
-      this.selector._openAfterFocus = true;
-      this.selector.focus();
-    }
-  }
-
   registerSelector = (el) => {
     this.selector = el;
   };
@@ -111,6 +115,8 @@ export default class SendTo extends React.Component {
               ref={this.registerSelector}
               multi={true}
               clearable={false}
+              autoFocus={this.state.showFeedsOption}
+              openOnFocus={true}
             />
             {this.state.isWarningDisplayed ? (
               <div className="selector-warning">

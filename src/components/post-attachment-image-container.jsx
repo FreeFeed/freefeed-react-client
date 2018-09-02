@@ -1,12 +1,29 @@
 import pt from 'prop-types';
 import React from 'react';
 import classnames from 'classnames';
+import Loadable from 'react-loadable';
+
 import ImageAttachment from './post-attachment-image';
-import ImageAttachmentsLightbox from './post-attachment-image-lightbox';
 
 const bordersSize = 4;
 const spaceSize = 8;
 const arrowSize = 24;
+
+const ImageAttachmentsLightbox = Loadable({
+  loading: ({ error, pastDelay }) => {
+    if (error) {
+      console.error(`Cannot load 'post-attachment-image-lightbox'`, error);  // eslint-disable-line no-console
+      return <div style={{ color: 'red' }}>Cannot load lightbox. Please try again.</div>;
+    }
+    if (pastDelay) {
+      return <div className="lightbox-loading"><span>Loading lightbox...</span></div>;
+    }
+    return null;
+  },
+  loader: () => import('./post-attachment-image-lightbox'),
+  delay: 500,
+  timeout: 10000,
+});
 
 export default class ImageAttachmentsContainer extends React.Component {
   static propTypes = {
@@ -21,10 +38,10 @@ export default class ImageAttachmentsContainer extends React.Component {
     containerWidth: 0,
     isFolded: true,
     needsFolding: false,
+    lightboxIndex: -1, // lightbox is hidden if lightboxIndex < 0
   };
 
   container = null;
-  lightbox = null;
 
   getItemWidths() {
     return this.props.attachments.map(({ imageSizes: { t, o } }) => t ? t.w : (o ? o.w : 0)).map((w) => w + bordersSize + spaceSize);
@@ -54,9 +71,11 @@ export default class ImageAttachmentsContainer extends React.Component {
         return;
       }
       e.preventDefault();
-      this.lightbox.open(index);
+      this.setState({ lightboxIndex: index });
     };
   }
+
+  onLightboxDestroy = () => this.setState({ lightboxIndex: -1 });
 
   getLightboxItems() {
     return this.props.attachments.map((a) => ({
@@ -92,10 +111,6 @@ export default class ImageAttachmentsContainer extends React.Component {
 
   registerContainer = (el) => {
     this.container = el;
-  };
-
-  registerLightbox = (el) => {
-    this.lightbox = el;
   };
 
   render() {
@@ -140,12 +155,15 @@ export default class ImageAttachmentsContainer extends React.Component {
             />
           </div>
         )}
-        <ImageAttachmentsLightbox
-          ref={this.registerLightbox}
-          items={this.getLightboxItems()}
-          postId={this.props.postId}
-          getThumbnail={this.getThumbnail}
-        />
+        {this.state.lightboxIndex >= 0 ? (
+          <ImageAttachmentsLightbox
+            items={this.getLightboxItems()}
+            index={this.state.lightboxIndex}
+            postId={this.props.postId}
+            getThumbnail={this.getThumbnail}
+            onDestroy={this.onLightboxDestroy}
+          />
+        ) : false}
       </div>
     );
   }
