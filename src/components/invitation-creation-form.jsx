@@ -117,7 +117,7 @@ class InvitationCreationForm extends React.Component {
             {form.success ? (
               <div className="alert alert-info" role="alert">
                 Created invitation:&nbsp;
-                <a href={`${baseLocation}/invited/${form.invitationId}`}>{`${baseLocation}/invited/${form.invitationId}`}</a>
+                <a target="_blank" href={`${baseLocation}/invited/${form.invitationId}`}>{`${baseLocation}/invited/${form.invitationId}`}</a>
               </div>
             ) : form.error ? (
               <div className="alert alert-danger" role="alert">{form.errorText}</div>
@@ -159,10 +159,10 @@ class InvitationCreationForm extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { authenticated, user, createInvitationForm, users, groups } = state;
-  const userFeeds = Object.keys(users).map((id) => ({ id, user: users[id] })).filter(({ user }) => user.type === "user");
-  const groupFeeds = Object.keys(groups).map((id) => ({ id, user: groups[id] }));
-  const feedsDescriptions = getFeedsDescriptions(users, groups);
+  const { authenticated, user, createInvitationForm, users, groups, usernameSubscriptions } = state;
+  const userFeeds = [user].concat(usernameSubscriptions.payload.filter((u) => u.type === "user")).map((user) => ({ id: user.id, user }));
+  const groupFeeds = usernameSubscriptions.payload.filter((u) => u.type === "group").map((user) => ({ id: user.id, user }));
+  const feedsDescriptions = getFeedsDescriptions(userFeeds, groupFeeds);
   return {
     baseLocation: window.location.origin,
     authenticated,
@@ -176,8 +176,8 @@ function mapStateToProps(state) {
 
 function getFeedsDescriptions(...feeds) {
   return feeds.reduce((result, feedList) => {
-    return Object.keys(feedList).map((feedId) => feedList[feedId]).reduce((res, feed) => {
-      res[feed.username] = feed.description;
+    return feedList.reduce((res, { user }) => {
+      res[user.username] = user.description;
       return res;
     }, result);
   }, {});
@@ -229,7 +229,9 @@ function formatSuggest(suggest, description) {
   if (!description || !description.trim()) {
     return `@${suggest}`;
   }
-  const formattedDescription = description.replace(/\n/g, "");
+  const trimmedDescription = description.trim();
+  const firstNewlineIndex = trimmedDescription.indexOf("\n");
+  const formattedDescription = firstNewlineIndex === -1 ? trimmedDescription : trimmedDescription.substring(0, firstNewlineIndex);
   return `@${suggest} — ${formattedDescription}`;
 }
 
