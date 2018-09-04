@@ -89,7 +89,7 @@ const LABELS = {
     username: 'Username',
     email: 'Email',
     password: 'Password',
-    subscribe: 'Subscribe to proposed users and groups',
+    subscribe: 'Subscribe to recommended users and groups',
     signup: 'Sign up',
   },
   'ru': {

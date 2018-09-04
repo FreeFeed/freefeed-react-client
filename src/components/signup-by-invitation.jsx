@@ -31,7 +31,7 @@ class SignupByInvitation extends React.PureComponent {
     return (
       <div className="box signup-by-invite">
         <div className="box-header-timeline">
-          Sign up by invitation
+          Welcome to FreeFeed!
         </div>
         <div className="box-body">
           <div className="col-md-12">
