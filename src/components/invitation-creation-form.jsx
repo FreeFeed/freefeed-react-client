@@ -229,7 +229,9 @@ function formatSuggest(suggest, description) {
   if (!description || !description.trim()) {
     return `@${suggest}`;
   }
-  const formattedDescription = description.replace(/\n/g, "");
+  const trimmedDescription = description.trim();
+  const firstNewlineIndex = trimmedDescription.indexOf("\n");
+  const formattedDescription = firstNewlineIndex === -1 ? trimmedDescription : trimmedDescription.substring(0, firstNewlineIndex);
   return `@${suggest} — ${formattedDescription}`;
 }
 
