@@ -19,6 +19,7 @@ import {
   getNotifications,
   getPostIdByOldName,
   getUserSummary,
+  getInvitation,
 } from './action-creators';
 
 //query params are strings, so + hack to convert to number
@@ -56,8 +57,7 @@ export const routeActions = {
   post: (next) => getSinglePost(next.params.postId),
   notifications: (next) => getNotifications(getOffset(next), next.location.query.filter),
   archivePost: (next) => getPostIdByOldName(getPostName(next.location.query.url)),
+  signupByInvitation: ({ params }) => getInvitation(params.invitationId),
 };
 
-export const bindRouteActions = (dispatch) => (route) => (next) => {
-  return dispatch(routeActions[route](next));
-};
+export const bindRouteActions = (dispatch) => (route) => (next) => dispatch(routeActions[route](next));
