@@ -117,7 +117,7 @@ class InvitationCreationForm extends React.Component {
             {form.success ? (
               <div className="alert alert-info" role="alert">
                 Created invitation:&nbsp;
-                <a href={`${baseLocation}/invited/${form.invitationId}`}>{`${baseLocation}/invited/${form.invitationId}`}</a>
+                <a target="_blank" href={`${baseLocation}/invited/${form.invitationId}`}>{`${baseLocation}/invited/${form.invitationId}`}</a>
               </div>
             ) : form.error ? (
               <div className="alert alert-danger" role="alert">{form.errorText}</div>
