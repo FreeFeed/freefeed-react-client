@@ -159,7 +159,7 @@ class InvitationCreationForm extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { authenticated, user, createInvitationForm, users, groups, usernameSubscriptions } = state;
+  const { authenticated, user, createInvitationForm, usernameSubscriptions } = state;
   const userFeeds = [user].concat(usernameSubscriptions.payload.filter((u) => u.type === "user")).map((user) => ({ id: user.id, user }));
   const groupFeeds = usernameSubscriptions.payload.filter((u) => u.type === "group").map((user) => ({ id: user.id, user }));
   const feedsDescriptions = getFeedsDescriptions(userFeeds, groupFeeds);
