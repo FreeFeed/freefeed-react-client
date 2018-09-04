@@ -7,7 +7,7 @@ import { INVITATION_LANGUAGE_OPTIONS } from "./invitation-creation-form";
 function mapStateToProps(state) {
   const { invitation = {} } = state.currentInvitation;
   const { username } = state.users[invitation.author] || {};
-  return { ...state.signUpForm, invitation: state.currentInvitation.invitation, authorUsername: username };
+  return { ...state.signUpForm, authenticated: state.authenticated, invitation: state.currentInvitation.invitation, authorUsername: username };
 }
 
 const FREEFEED_INVITATION = {
@@ -16,8 +16,8 @@ const FREEFEED_INVITATION = {
 };
 
 const USER_INVITED = {
-  [INVITATION_LANGUAGE_OPTIONS.ENGLISH]: (username) => `@${username} invited you to join Freefeed:`,
-  [INVITATION_LANGUAGE_OPTIONS.RUSSIAN]: (username) => `Вы получили приглашение от @${username}:`
+  [INVITATION_LANGUAGE_OPTIONS.ENGLISH]: (username, authenticated) => !authenticated ? `@${username} invited you to join Freefeed:` : `Invitation created by @${username}:`,
+  [INVITATION_LANGUAGE_OPTIONS.RUSSIAN]: (username, authenticated) => !authenticated ? `Вы получили приглашение от @${username}:` : `Приглашение, созданное @${username}:`
 };
 
 const INVITE_EXPIRED = {
@@ -52,9 +52,10 @@ class SignupByInvitation extends React.PureComponent {
   }
 
   renderInvitation = () => {
+    const { authenticated } = this.props;
     const { message, lang, registrations_count, single_use, secure_id } =
       this.props.invitation || {};
-    const userInvited = USER_INVITED[lang || "en"](this.props.authorUsername);
+    const userInvited = USER_INVITED[lang || "en"](this.props.authorUsername, authenticated);
     const expired = registrations_count === 1 && single_use;
     if (!message) {
       return (
@@ -69,7 +70,7 @@ class SignupByInvitation extends React.PureComponent {
         <p><PieceOfText text={userInvited} isExpanded={true} /></p>
         <div className="personal-message"><PieceOfText text={message} isExpanded={true} /></div>
         {expired && INVITE_EXPIRED[lang]}
-        {!expired &&
+        {!expired && !authenticated &&
           <div className="signup-form-container">
             <SignupForm invitationId={secure_id} lang={lang} />
           </div>
