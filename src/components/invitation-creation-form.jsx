@@ -159,10 +159,10 @@ class InvitationCreationForm extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { authenticated, user, createInvitationForm, users, groups } = state;
-  const userFeeds = Object.keys(users).map((id) => ({ id, user: users[id] })).filter(({ user }) => user.type === "user");
-  const groupFeeds = Object.keys(groups).map((id) => ({ id, user: groups[id] }));
-  const feedsDescriptions = getFeedsDescriptions(users, groups);
+  const { authenticated, user, createInvitationForm, users, groups, usernameSubscriptions } = state;
+  const userFeeds = [user].concat(usernameSubscriptions.payload.filter((u) => u.type === "user")).map((user) => ({ id: user.id, user }));
+  const groupFeeds = usernameSubscriptions.payload.filter((u) => u.type === "group").map((user) => ({ id: user.id, user }));
+  const feedsDescriptions = getFeedsDescriptions(userFeeds, groupFeeds);
   return {
     baseLocation: window.location.origin,
     authenticated,
@@ -176,8 +176,8 @@ function mapStateToProps(state) {
 
 function getFeedsDescriptions(...feeds) {
   return feeds.reduce((result, feedList) => {
-    return Object.keys(feedList).map((feedId) => feedList[feedId]).reduce((res, feed) => {
-      res[feed.username] = feed.description;
+    return feedList.reduce((res, { user }) => {
+      res[user.username] = user.description;
       return res;
     }, result);
   }, {});
