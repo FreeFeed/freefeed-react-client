@@ -48,7 +48,7 @@ const notificationTemplates = {
   group_subscription_rejected: (event) => <Linkify>{`Your request to join group @${event.group.username} was rejected`}</Linkify>,
   group_subscribed: (event) => <Linkify>{`@${event.createdUser.username} subscribed to @${event.group.username}`}</Linkify>,
   group_unsubscribed: (event) => <Linkify>{`@${event.createdUser.username} unsubscribed from @${event.group.username}`}</Linkify>,
-  invitation_used: (event) => <Linkify>{`@${event.createdUser.username} signed up by your invitation`}</Linkify>,
+  invitation_used: (event) => <Linkify>{`@${event.createdUser.username} has joined FreeFeed using your invitation`}</Linkify>,
 
   banned_by_user: () => `Notification shouldn't be shown`,
   unbanned_by_user: () => `Notification shouldn't be shown`,
