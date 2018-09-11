@@ -68,8 +68,8 @@ class SignupByInvitation extends React.PureComponent {
       <div>
         <p>{FREEFEED_INVITATION[lang]}</p>
         <p><PieceOfText text={userInvited} isExpanded={true} /></p>
-        <div className="personal-message"><PieceOfText text={message} isExpanded={true} /></div>
         {expired && INVITE_EXPIRED[lang]}
+        {!expired && <div className="personal-message"><PieceOfText text={message} isExpanded={true} /></div>}
         {!expired && !authenticated &&
           <div className="signup-form-container">
             <SignupForm invitationId={secure_id} lang={lang} />
