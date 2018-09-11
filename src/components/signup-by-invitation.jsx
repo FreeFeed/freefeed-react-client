@@ -21,8 +21,8 @@ const USER_INVITED = {
 };
 
 const INVITE_EXPIRED = {
-  [INVITATION_LANGUAGE_OPTIONS.ENGLISH]: <span>This invitation has already expired. Check out <a href="../">Freefeed!</a></span>,
-  [INVITATION_LANGUAGE_OPTIONS.RUSSIAN]: <span>Это приглашение уже было использовано. Посмотрите <a href="../">Freefeed!</a></span>,
+  [INVITATION_LANGUAGE_OPTIONS.ENGLISH]: <span>This invitation has already expired. Check out <a href="../">FreeFeed</a></span>,
+  [INVITATION_LANGUAGE_OPTIONS.RUSSIAN]: <span>Приглашение истекло или уже было использовано. <a href="../">Продолжить</a></span>,
 };
 
 class SignupByInvitation extends React.PureComponent {
