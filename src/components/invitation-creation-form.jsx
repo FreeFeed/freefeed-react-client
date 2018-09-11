@@ -243,7 +243,7 @@ function formatSuggestionsText(suggestions = {}, userDescriptions = [], groupDes
 }
 
 function findDescription(username, descriptions) {
-  const [descriptionString] = descriptions.filter((d) => d.indexOf(username) === 1);
+  const [descriptionString] = descriptions.filter((d) => d === username || d.indexOf(`${username} `) === 1);
   return descriptionString && descriptionString.replace(new RegExp(`@(${username})( — )?`, "g"), "");
 }
 
