@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
+import Loadable from 'react-loadable';
 
 import 'autotrack';  // used by google-analytics in ../index.jade
 
@@ -19,18 +20,10 @@ import Layout from './components/layout';
 import Home from './components/home';
 import Discussions from './components/discussions';
 import Summary from './components/summary';
-import About from './components/about';
-import Donate from './components/donate';
-import Terms from './components/terms';
-import Privacy from './components/privacy';
-import Stats from './components/stats';
-import Dev from './components/dev';
 import Signin from './components/signin';
 import Signup from './components/signup';
 import RestorePassword from './components/restore-password';
 import ResetPassword from './components/reset-password';
-import Settings from './components/settings';
-import Archive from './components/archive';
 import SinglePost from './components/single-post';
 import User from './components/user';
 import Subscribers from './components/subscribers';
@@ -40,11 +33,12 @@ import GroupCreate from './components/group-create';
 import Groups from './components/groups';
 import SearchFeed from './components/search-feed';
 import PlainFeed from './components/plain-feed';
-import Notifications from './components/notifications';
 import Friends from './components/friends';
 import ManageSubscribers from './components/manage-subscribers';
 import Bookmarklet from './components/bookmarklet';
 import ArchivePost from './components/archive-post';
+import InvitationCreationForm from './components/invitation-creation-form';
+import SignupByInvitation from './components/signup-by-invitation';
 
 
 const store = configureStore();
@@ -94,6 +88,11 @@ const friendsActions = () => {
   store.dispatch(ActionCreators.blockedByMe(username));
 };
 
+const inviteActions = () => {
+  const { username } = store.getState().user;
+  store.dispatch(ActionCreators.subscriptions(username));
+};
+
 // needed to display mutual friends
 const subscribersSubscriptionsActions = (next) => {
   const { userName } = next.params;
@@ -112,6 +111,19 @@ const generateRouteHooks = (callback) => ({
   onChange: (_, next) => callback(next),
 });
 
+const lazyLoad = (path) => Loadable({
+  loading: ({ error }) => {
+    if (error) {
+      return <div>Cannot load page</div>;
+    }
+    return <div>Loading page...</div>;
+  },
+  // For some reason, the import() argument must have an explicit string type.
+  // See https://github.com/webpack/webpack/issues/4921#issuecomment-357147299
+  loader: () => import(`${path}`),
+});
+
+
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
@@ -120,30 +132,32 @@ ReactDOM.render(
       <Route path="/" component={Layout}>
         <IndexRoute name="home" component={Home} {...generateRouteHooks(boundRouteActions('home'))} />
         <Route path="about">
-          <IndexRoute name="about" component={About} onEnter={enterStaticPage('About')} />
-          <Route path="terms" component={Terms} onEnter={enterStaticPage('Terms')} />
-          <Route path="privacy" component={Privacy} onEnter={enterStaticPage('Privacy')} />
-          <Route path="stats" component={Stats} onEnter={enterStaticPage('Stats')} />
-          <Route path="donate" component={Donate} onEnter={enterStaticPage('Donate')} />
+          <IndexRoute name="about" component={lazyLoad('./components/about')} onEnter={enterStaticPage('About')} />
+          <Route path="terms" component={lazyLoad('./components/terms')} onEnter={enterStaticPage('Terms')} />
+          <Route path="privacy" component={lazyLoad('./components/privacy')} onEnter={enterStaticPage('Privacy')} />
+          <Route path="stats" component={lazyLoad('./components/stats')} onEnter={enterStaticPage('Stats')} />
+          <Route path="donate" component={lazyLoad('./components/donate')} onEnter={enterStaticPage('Donate')} />
         </Route>
-        <Route path="dev" component={Dev} onEnter={enterStaticPage('Developers')} />
+        <Route path="dev" component={lazyLoad('./components/dev')} onEnter={enterStaticPage('Developers')} />
         <Route path="signin" component={Signin} onEnter={enterStaticPage('Sign in')} />
         <Route path="signup" component={Signup} onEnter={enterStaticPage('Sign up')} />
         <Route path="restore" component={RestorePassword} />
         <Route path="reset" component={ResetPassword} />
-        <Route path="settings" component={Settings} onEnter={enterStaticPage('Settings')} />
-        <Route path="settings/archive" component={Archive} onEnter={enterStaticPage('Restore from FriendFeed.com Archives')} />
+        <Route path="settings" component={lazyLoad('./components/settings')} onEnter={enterStaticPage('Settings')} />
+        <Route path="settings/archive" component={lazyLoad('./components/archive')} onEnter={enterStaticPage('Restore from FriendFeed.com Archives')} />
         <Route name="groupSettings" path="/:userName/settings" component={GroupSettings} {...generateRouteHooks(boundRouteActions('getUserInfo'))} />
         <Route name="discussions" path="filter/discussions" component={Discussions} {...generateRouteHooks(boundRouteActions('discussions'))} />
         <Route name="summary" path="/summary(/:days)" component={Summary} {...generateRouteHooks(boundRouteActions('summary'))} />
         <Route name="direct" path="filter/direct" component={Discussions} {...generateRouteHooks(boundRouteActions('direct'))} />
         <Route name="search" path="search" component={SearchFeed} {...generateRouteHooks(boundRouteActions('search'))} />
-        <Route name="notifications" path="filter/notifications" component={Notifications} {...generateRouteHooks(boundRouteActions('notifications'))} />
+        <Route name="notifications" path="filter/notifications" component={lazyLoad('./components/notifications')} {...generateRouteHooks(boundRouteActions('notifications'))} />
         <Route name="best_of" path="filter/best_of" component={PlainFeed} {...generateRouteHooks(boundRouteActions('best_of'))} />
         <Route name="groups" path="/groups" component={Groups} onEnter={enterStaticPage('Groups')} />
         <Route name="friends" path="/friends" component={Friends} onEnter={friendsActions} />
         <Route name="groupCreate" path="/groups/create" component={GroupCreate} onEnter={enterStaticPage('Create a group')} />
         <Route name="archivePost" path="/archivePost" component={ArchivePost} {...generateRouteHooks(boundRouteActions('archivePost'))} />
+        <Route name="createInvitation" path="/invite" component={InvitationCreationForm} onEnter={inviteActions} />
+        <Route name="signupByInvitation" path="/invited/:invitationId" component={SignupByInvitation} onEnter={boundRouteActions('signupByInvitation')} />
         <Route name="userFeed" path="/:userName" component={User} {...generateRouteHooks(boundRouteActions('userFeed'))} />
         <Route name="memories" path="/memories/:from" component={PlainFeed} {...generateRouteHooks(boundRouteActions('memories'))} />
         <Route name="userMemories" path="/:userName/memories/:from" component={PlainFeed} {...generateRouteHooks(boundRouteActions('userMemories'))} />

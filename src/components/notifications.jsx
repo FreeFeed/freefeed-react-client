@@ -48,6 +48,7 @@ const notificationTemplates = {
   group_subscription_rejected: (event) => <Linkify>{`Your request to join group @${event.group.username} was rejected`}</Linkify>,
   group_subscribed: (event) => <Linkify>{`@${event.createdUser.username} subscribed to @${event.group.username}`}</Linkify>,
   group_unsubscribed: (event) => <Linkify>{`@${event.createdUser.username} unsubscribed from @${event.group.username}`}</Linkify>,
+  invitation_used: (event) => <Linkify>{`@${event.createdUser.username} has joined FreeFeed using your invitation`}</Linkify>,
 
   banned_by_user: () => `Notification shouldn't be shown`,
   unbanned_by_user: () => `Notification shouldn't be shown`,
@@ -56,7 +57,7 @@ const notificationTemplates = {
     <div>
       <Linkify>{`@${event.createdUser.username} has deleted your comment to the `}</Linkify>
       {postLink(event)}
-      {event.group ? <Linkify>{` in the group @${event.group.username}`}</Linkify> : null}
+      {event.group_id ? <Linkify>{` in the group @${event.group.username}`}</Linkify> : null}
     </div>
   ),
   comment_moderated_by_another_admin: (event) => (
@@ -69,16 +70,16 @@ const notificationTemplates = {
   post_moderated: (event) =>  (
     <div>
       <Linkify>{`@${event.createdUser.username} has removed your `}</Linkify>
-      {event.post ? postLink(event) : 'post'}
-      {event.group ? <Linkify>{` from the group @${event.group.username}`}</Linkify> : null}
+      {event.post_id ? postLink(event) : 'post'}
+      {event.group_id ? <Linkify>{` from the group @${event.group.username}`}</Linkify> : null}
     </div>
   ),
   post_moderated_by_another_admin: (event) => (
     <div>
       <Linkify>{`@${event.createdUser.username} has removed the `}</Linkify>
-      {event.post ? postLink(event) : 'post'}
+      {event.post_id ? postLink(event) : 'post'}
       <Linkify>{`from @${event.affectedUser.username} `}</Linkify>
-      {event.group ? <Linkify>{` from the group @${event.group.username}`}</Linkify> : null}
+      {event.group_id ? <Linkify>{` from the group @${event.group.username}`}</Linkify> : null}
     </div>
   ),
 };
@@ -89,6 +90,7 @@ const notificationClasses = {
   mention_comment_to: 'mention',
   banned_user: 'ban',
   unbanned_user: 'ban',
+  invitation_used: 'subscription',
   subscription_requested: 'subscription',
   subscription_request_revoked: 'subscription',
   user_subscribed: 'subscription',

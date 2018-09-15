@@ -810,3 +810,26 @@ export function sendInvite(groupId) {
     groupId,
   };
 }
+
+export function createFreefeedInvitation(message, lang, singleUse, users, groups) {
+  return {
+    type: ActionTypes.CREATE_FREEFEED_INVITATION,
+    apiRequest: Api.createFreefeedInvitation,
+    payload: {
+      message,
+      lang,
+      singleUse,
+      users,
+      groups,
+    },
+  };
+}
+
+export function getInvitation(invitationId) {
+  return {
+    type: ActionTypes.GET_INVITATION,
+    apiRequest: Api.getInvitation,
+    nonAuthRequest: true,
+    payload: { invitationId },
+  };
+}
