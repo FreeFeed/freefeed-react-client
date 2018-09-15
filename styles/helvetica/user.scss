@@ -67,3 +67,18 @@
   }
 }
 
+.profile-actions {
+  li {
+    display: inline-block;
+    white-space: nowrap;
+    &::before {
+      content: "\2022";
+      color: #999;
+      margin: 0 0.3em;
+    }
+    &:first-child::before {
+      content: none;
+    }
+  }
+}
+

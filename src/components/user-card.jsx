@@ -7,14 +7,15 @@ import throbber16 from '../../assets/images/throbber-16.gif';
 import { getUserInfo, updateUserPreferences } from '../redux/action-creators';
 import UserFeedStatus from './user-feed-status';
 import UserRelationshipStatus from './user-relationships-status';
-import { userActions } from './select-utils';
+import { userActions, canAcceptDirects } from './select-utils';
 
 class UserCard extends React.Component {
   constructor(props) {
     super(props);
 
     // Load this user's info if it's not in the store already
-    if (!props.user.id) {
+    // or we have not its 'acceptsDirects' field
+    if (!props.user.id || props.canAcceptDirects === undefined) {
       setTimeout(() => props.getUserInfo(props.username), 0);
     }
   }
@@ -116,11 +117,12 @@ class UserCard extends React.Component {
           </div>
         ) : !props.isItMe ? (
           <div className="user-card-actions">
-            {props.isUserSubscribedToMe && props.amISubscribedToUser && props.user.type === 'user' &&
+            {props.canAcceptDirects ? (
               <span>
                 <Link to={`/filter/direct?to=${props.user.username}`}>Direct message</Link>
                 <span> - </span>
               </span>
+            ) : false
             }
             {props.user.isPrivate === '1' && !props.subscribed ? (
               props.hasRequestBeenSent ? (
@@ -167,7 +169,8 @@ const mapStateToProps = (state, ownProps) => {
     hasRequestBeenSent: ((me.pendingSubscriptionRequests || []).indexOf(user.id) > -1),
     blocked: ((me.banIds || []).indexOf(user.id) > -1),
     hidden: (me.frontendPreferences.homefeed.hideUsers.indexOf(user.username) > -1),
-    amIGroupAdmin: (user.type === 'group' && (user.administrators || []).indexOf(me.id) > -1)
+    amIGroupAdmin: (user.type === 'group' && (user.administrators || []).indexOf(me.id) > -1),
+    canAcceptDirects: canAcceptDirects(user, state),
   };
 };
 

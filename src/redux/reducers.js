@@ -1327,6 +1327,25 @@ export function usersNotFound(state = [], action) {
   return state;
 }
 
+/**
+ * state is a map [username => status]
+ * status is boolean (user can or canot receive directs from us)
+ */
+export function directsReceivers(state = {}, action) {
+  switch (action.type) {
+    case response(ActionTypes.GET_USER_INFO): {
+      const { payload: { users: { username }, acceptsDirects } } = action;
+      if (state[username] !== acceptsDirects) {
+        return {
+          ...state,
+          [username]: acceptsDirects,
+        };
+      }
+    }
+  }
+  return state;
+}
+
 export function users(state = {}, action) {
   if (ActionHelpers.isFeedResponse(action)) {
     return mergeByIds(state, (action.payload.users || []).map(userParser));
