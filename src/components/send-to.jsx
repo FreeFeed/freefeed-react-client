@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Loadable from 'react-loadable';
 
 const MY_FEED_LABEL = 'My feed';
@@ -18,7 +19,7 @@ const Select = Loadable({
   }
 });
 
-export default class SendTo extends React.Component {
+class SendTo extends React.Component {
   selector;
 
   constructor(props) {
@@ -150,3 +151,9 @@ export default class SendTo extends React.Component {
     );
   }
 }
+
+function selectState({ sendTo: { feeds } }) {
+  return { feeds };
+}
+
+export default connect(selectState, null, null, { withRef:true })(SendTo);

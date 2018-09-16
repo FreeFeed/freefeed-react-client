@@ -125,7 +125,8 @@ export default class CreatePost extends React.Component {
   };
 
   registerSelectFeeds = (el) => {
-    this.selectFeeds = el;
+    // SendTo is a redux-connected component so we need to use getWrappedInstance
+    this.selectFeeds = el ? el.getWrappedInstance() : null;
   };
 
   canSubmitForm = () => {
