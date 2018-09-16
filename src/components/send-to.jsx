@@ -52,8 +52,12 @@ export default class SendTo extends React.Component {
       values,
       options,
       showFeedsOption: !props.defaultFeed || props.alwaysShowSelect,
-      isWarningDisplayed: false
+      isIncorrectDestinations: false
     };
+  }
+
+  get isIncorrectDestinations() {
+    return this.state.isIncorrectDestinations;
   }
 
   optionsFromProps({ feeds, user: { username }, isDirects, excludeMyFeed }) {
@@ -83,8 +87,8 @@ export default class SendTo extends React.Component {
   }
 
   selectChanged = (values) => {
-    const isWarningDisplayed = !this.isGroupsOrDirectsOnly(values);
-    this.setState({ values, isWarningDisplayed }, () => {
+    const isIncorrectDestinations = !this.isGroupsOrDirectsOnly(values);
+    this.setState({ values, isIncorrectDestinations }, () => {
       this.props.onChange && this.props.onChange(values.map((item) => item.value));
     });
   };
@@ -122,7 +126,7 @@ export default class SendTo extends React.Component {
           <div>
             <Select
               name="select-feeds"
-              placeholder={this.props.isDirects ? "Select friends..." : "Select feeds..."}
+              placeholder={this.props.isDirects ? "Select recipients..." : "Select feeds..."}
               value={this.state.values}
               options={this.state.options}
               onChange={this.selectChanged}
@@ -135,9 +139,9 @@ export default class SendTo extends React.Component {
               openOnFocus={true}
               promptTextCreator={this.promptTextCreator}
             />
-            {this.state.isWarningDisplayed ? (
+            {this.state.isIncorrectDestinations ? (
               <div className="selector-warning">
-                You are going to send a direct message and also post this message to a feed. This means that everyone who sees this feed will be able to see your message.
+                Unable to create a direct message: direct messages could be sent to user(s) only. Please create a regular post for publish it in your feed or groups.
               </div>
             ) : false}
           </div>

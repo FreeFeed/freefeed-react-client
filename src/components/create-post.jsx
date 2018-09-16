@@ -128,6 +128,13 @@ export default class CreatePost extends React.Component {
     this.selectFeeds = el;
   };
 
+  canSubmitForm = () => {
+    return !this.state.isFormEmpty
+      && this.state.attachmentQueueLength == 0
+      && !this.props.createPostViewState.isPending
+      && !this.selectFeeds.isIncorrectDestinations;
+  };
+
   render() {
     return (
       <div className="create-post post-editor">
@@ -197,7 +204,7 @@ export default class CreatePost extends React.Component {
           <button
             className="btn btn-default btn-xs"
             onClick={preventDefault(this.createPost)}
-            disabled={this.state.isFormEmpty || this.state.attachmentQueueLength > 0 || this.props.createPostViewState.isPending}
+            disabled={!this.canSubmitForm()}
           >
             Post
           </button>
