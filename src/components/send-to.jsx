@@ -136,7 +136,7 @@ class SendTo extends React.Component {
               ref={this.registerSelector}
               multi={true}
               clearable={false}
-              autoFocus={this.state.showFeedsOption && !this.props.disableAutoFocus}
+              autoFocus={this.state.showFeedsOption && !this.props.disableAutoFocus && !this.props.isDirects}
               openOnFocus={true}
               promptTextCreator={this.promptTextCreator}
             />
