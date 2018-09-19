@@ -14,7 +14,10 @@ const Select = Loadable({
   },
   loader: () => import('react-select'),
   render(loaded, props) {
-    const { Creatable } = loaded;
+    const { default: Selectable, Creatable } = loaded;
+    if (props.fixedOptions) {
+      return <Selectable {...props} />;
+    }
     return <Creatable {...props} />;
   }
 });
