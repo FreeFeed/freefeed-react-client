@@ -20,8 +20,11 @@ import Dropzone from './dropzone';
 import PostMoreMenu from './post-more-menu';
 import TimeDisplay from './time-display';
 import LinkPreview from './link-preview/preview';
+import SendTo from './send-to';
 
 export default class Post extends React.Component {
+  selectFeeds;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -115,7 +118,11 @@ export default class Post extends React.Component {
 
     if (!props.isSaving) {
       const attachmentIds = props.attachments.map((item) => item.id) || [];
-      props.saveEditingPost(props.id, { body: this.editingPostText, attachments: attachmentIds });
+      const reqBody = { body: this.editingPostText, attachments: attachmentIds };
+      if (this.selectFeeds) {
+        reqBody.feeds = this.selectFeeds.values;
+      }
+      props.saveEditingPost(props.id, reqBody);
     }
   };
 
@@ -134,6 +141,11 @@ export default class Post extends React.Component {
 
   handleAttachmentResponse = (att) => {
     this.props.addAttachmentResponse(this.props.id, att);
+  };
+
+  registerSelectFeeds = (el) => {
+    // SendTo is a redux-connected component so we need to use getWrappedInstance
+    this.selectFeeds = el ? el.getWrappedInstance() : null;
   };
 
   render() {
@@ -319,12 +331,25 @@ export default class Post extends React.Component {
             </Link>
           </div>
           <div className="post-body">
-            <div className="post-header">
-              <UserName className="post-author" user={props.createdBy} />
-              {recipients.length > 0 ? ' to ' : false}
-              {recipients}
-              {this.props.isInHomeFeed ? <PostVia post={this.props} me={this.props.user} /> : false}
-            </div>
+            {props.isEditing ? (
+              <div>
+                <SendTo
+                  ref={this.registerSelectFeeds}
+                  defaultFeed={props.recipients.map((r) => r.username)}
+                  isDirects={props.isDirect}
+                  isEditing={true}
+                  disableAutoFocus={true}
+                  user={props.createdBy}
+                />
+              </div>
+            ) : (
+              <div className="post-header">
+                <UserName className="post-author" user={props.createdBy} />
+                {recipients.length > 0 ? ' to ' : false}
+                {recipients}
+                {this.props.isInHomeFeed ? <PostVia post={this.props} me={this.props.user} /> : false}
+              </div>
+            )}
             {props.isEditing ? (
               <div className="post-editor">
                 <Dropzone
