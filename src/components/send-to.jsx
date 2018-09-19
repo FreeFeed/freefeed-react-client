@@ -45,17 +45,30 @@ class SendTo extends React.Component {
   }
 
   stateFromProps(props, options) {
-    const values = options.filter((opt) => opt.value === props.defaultFeed);
-    if (values.length === 0 && props.defaultFeed) {
-      values.push({
-        label: props.defaultFeed,
-        value: props.defaultFeed,
-      });
+    const defaultFeeds = [];
+    if (props.defaultFeed) {
+      if (Array.isArray(props.defaultFeed)) {
+        defaultFeeds.push(...props.defaultFeed);
+      } else {
+        defaultFeeds.push(props.defaultFeed);
+      }
+    }
+    const values = options.filter((opt) => defaultFeeds.includes(opt.value));
+    if (values.length === 0 && defaultFeeds.length > 0) {
+      values.push(...defaultFeeds.map((f) => ({ label: f, value: f })));
+    }
+    if (props.isDirects && props.isEditing) {
+      // freeze default values
+      for (const val of values) {
+        if (defaultFeeds.includes(val.value)) {
+          val.clearableValue = false;
+        }
+      }
     }
     return {
       values,
       options,
-      showFeedsOption: !props.defaultFeed || props.alwaysShowSelect,
+      showFeedsOption: defaultFeeds.length === 0 || props.alwaysShowSelect || props.isEditing,
       isIncorrectDestinations: false
     };
   }
@@ -64,7 +77,7 @@ class SendTo extends React.Component {
     return this.state.isIncorrectDestinations;
   }
 
-  optionsFromProps({ feeds, user: { username }, isDirects, excludeMyFeed }) {
+  optionsFromProps({ feeds, user: { username }, isDirects, excludeMyFeed, isEditing }) {
     const options = feeds.map(({ user: { username, type } }) => ({
       label: username,
       value: username,
@@ -79,7 +92,13 @@ class SendTo extends React.Component {
     }
 
     // only mutual friends on Directs page
-    return isDirects ? options.filter((opt) => opt.type === 'user') : options;
+    if (isDirects) {
+      return options.filter((opt) => opt.type === 'user');
+    }
+    if (isEditing) {
+      return options.filter((opt) => opt.type === 'group');
+    }
+    return options;
   }
 
   isGroupsOrDirectsOnly(values) {
@@ -142,6 +161,7 @@ class SendTo extends React.Component {
               autoFocus={this.state.showFeedsOption && !this.props.disableAutoFocus && !this.props.isDirects}
               openOnFocus={true}
               promptTextCreator={this.promptTextCreator}
+              fixedOptions={this.props.isEditing && !this.props.isDirects}
             />
             {this.state.isIncorrectDestinations ? (
               <div className="selector-warning">
