@@ -233,6 +233,7 @@ export function canAcceptDirects(user, state) {
   const { user: me, usersNotFound, directsReceivers } = state;
 
   if (
+    !me.id ||
     user.type === 'group' ||
     me.username === user.username ||
     usersNotFound.includes(user.username)
