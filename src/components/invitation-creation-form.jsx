@@ -40,7 +40,7 @@ class InvitationCreationForm extends React.Component {
     return (
       <div className="box">
         <div className="box-header-timeline">
-          Invite to Freefeed
+          Invite to FreeFeed
         </div>
         <div className="box-body">
           <form onSubmit={preventDefault(this.createInvitation)}>
