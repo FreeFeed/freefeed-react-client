@@ -215,3 +215,35 @@ export function userActions(dispatch) {
     sendSubscriptionRequest: (username) => dispatch(sendSubscriptionRequest(username))
   };
 }
+
+/**
+ * Returns true/false if this user can (not) accept
+ * direct message from us. Returns undefined if this
+ * information isn't loaded yet.
+ *
+ * @param {object} user
+ * @param {object} state
+ * @returns {boolean|undefined}
+ */
+export function canAcceptDirects(user, state) {
+  if (!user || !user.username) {
+    return undefined;
+  }
+
+  const { user: me, usersNotFound, directsReceivers } = state;
+
+  if (
+    user.type === 'group' ||
+    me.username === user.username ||
+    usersNotFound.includes(user.username)
+  ) {
+    return false;
+  }
+
+  // If user subscribed to us
+  if (me.subscribers.some((s) => s.username === user.username)) {
+    return true;
+  }
+
+  return directsReceivers[user.username];
+}

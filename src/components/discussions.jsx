@@ -40,10 +40,10 @@ function selectState(state) {
   const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
   const createPostForm = joinCreatePostData(state);
-  const defaultFeed = state.routing.locationBeforeTransitions.query.to || user.username;
+  const isDirects = state.routing.locationBeforeTransitions.pathname.indexOf('direct') !== -1;
+  const defaultFeed = state.routing.locationBeforeTransitions.query.to || !isDirects && user.username;
   const invitation = formatInvitation(state.routing.locationBeforeTransitions.query.invite);
   const sendTo = { ...state.sendTo, defaultFeed, invitation };
-  const isDirects = state.routing.locationBeforeTransitions.pathname.indexOf('direct') !== -1;
   if (isDirects) {
     sendTo.expanded = true;
   }
