@@ -140,6 +140,14 @@ $post-line-height: 20px;
       }
     }
   }
+
+  .post-timestamps-show {
+    display: inline-block;
+    width: 1.3em;
+    text-align: center;
+    margin-left: 0.25em;
+    color: #888888;
+  }
 }
 
 // paragraph breaks

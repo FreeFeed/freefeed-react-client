@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import classnames from 'classnames';
 import _ from 'lodash';
 import Textarea from 'react-textarea-autosize';
+import moment from 'moment';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
 import { getFirstLinkToEmbed } from '../utils';
@@ -25,7 +26,8 @@ export default class Post extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      attachmentQueueLength: 0
+      attachmentQueueLength: 0,
+      showTimestamps: false,
     };
   }
 
@@ -134,6 +136,10 @@ export default class Post extends React.Component {
 
   handleAttachmentResponse = (att) => {
     this.props.addAttachmentResponse(this.props.id, att);
+  };
+
+  toggleTimestamps = () => {
+    this.setState({ showTimestamps: !this.state.showTimestamps });
   };
 
   render() {
@@ -411,8 +417,13 @@ export default class Post extends React.Component {
             ) : false}
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
             <Link to={canonicalPostURI} className="post-timestamp">
-              <TimeDisplay timeStamp={+props.createdAt} />
+              {this.state.showTimestamps ? (
+                moment(+props.createdAt).format('YYYY-MM-DD HH:mm')
+              ) : (
+                <TimeDisplay timeStamp={+props.createdAt} />
+              )}
             </Link>
+            <a className="post-timestamps-show" onClick={this.toggleTimestamps} title="Toggle timestamps"><i className="fa fa-clock-o" /></a>
             {commentLink}
             {likeLink}
             {hideLink}
@@ -444,6 +455,7 @@ export default class Post extends React.Component {
             entryUrl={canonicalPostURI}
             highlightTerms={props.highlightTerms}
             isSinglePost={props.isSinglePost}
+            showTimestamps={this.state.showTimestamps}
           />
         </div>
       </div>
