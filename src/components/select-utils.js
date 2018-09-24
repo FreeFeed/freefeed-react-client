@@ -248,3 +248,24 @@ export function canAcceptDirects(user, state) {
 
   return directsReceivers[user.username];
 }
+
+/**
+ * Returns privacy flags of non-direct post posted to the given
+ * destinations. Destinations should be a current users feed or groups.
+ *
+ * @param {string[]} destNames
+ * @param {object} state
+ */
+export function destinationsPrivacy(destNames, state) {
+  const { user: me, groups } = state;
+  const dests = [me, ...Object.values(groups)];
+  let isPrivate = true;
+  let isProtected = true;
+  for (const d of dests) {
+    if (destNames.includes(d.username)) {
+      isPrivate = isPrivate && d.isPrivate === '1';
+      isProtected = isProtected && d.isProtected === '1';
+    }
+  }
+  return { isPrivate, isProtected };
+}
