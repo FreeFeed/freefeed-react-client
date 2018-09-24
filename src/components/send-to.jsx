@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { xor } from 'lodash';
 import Loadable from 'react-loadable';
 
 const MY_FEED_LABEL = 'My feed';
@@ -32,7 +33,7 @@ class SendTo extends React.Component {
 
   componentWillReceiveProps(newProps) {
     const options = this.optionsFromProps(newProps);
-    if (this.props.defaultFeed !== newProps.defaultFeed ||
+    if (!isSameFeeds(this.props.defaultFeed, newProps.defaultFeed) ||
       options.length !== 0 && this.state.options.length === 0) {
       this.setState(this.stateFromProps(newProps, options));
     } else {
@@ -173,6 +174,13 @@ class SendTo extends React.Component {
       </div>
     );
   }
+}
+
+function isSameFeeds(feeds1, feeds2) {
+  if (Array.isArray(feeds1) && Array.isArray(feeds2)) {
+    return feeds1.length === feeds2.length && xor(feeds1, feeds2).length === 0;
+  }
+  return feeds1 == feeds2;
 }
 
 function selectState({ sendTo: { feeds } }) {
