@@ -802,7 +802,8 @@ export function posts(state = {}, action) {
         [post.id]: { ...post,
           body: action.payload.posts.body,
           updatedAt: action.payload.posts.updatedAt,
-          attachments: action.payload.posts.attachments || []
+          attachments: action.payload.posts.attachments || [],
+          postedTo: action.payload.posts.postedTo,
         }
       };
     }

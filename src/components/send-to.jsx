@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { xor } from 'lodash';
 import Loadable from 'react-loadable';
 
 const MY_FEED_LABEL = 'My feed';
@@ -13,12 +15,15 @@ const Select = Loadable({
   },
   loader: () => import('react-select'),
   render(loaded, props) {
-    const { Creatable } = loaded;
+    const { default: Selectable, Creatable } = loaded;
+    if (props.fixedOptions) {
+      return <Selectable {...props} />;
+    }
     return <Creatable {...props} />;
   }
 });
 
-export default class SendTo extends React.Component {
+class SendTo extends React.Component {
   selector;
 
   constructor(props) {
@@ -28,7 +33,7 @@ export default class SendTo extends React.Component {
 
   componentWillReceiveProps(newProps) {
     const options = this.optionsFromProps(newProps);
-    if (this.props.defaultFeed !== newProps.defaultFeed ||
+    if (!isSameFeeds(this.props.defaultFeed, newProps.defaultFeed) ||
       options.length !== 0 && this.state.options.length === 0) {
       this.setState(this.stateFromProps(newProps, options));
     } else {
@@ -41,22 +46,39 @@ export default class SendTo extends React.Component {
   }
 
   stateFromProps(props, options) {
-    const values = options.filter((opt) => opt.value === props.defaultFeed);
-    if (values.length === 0 && props.defaultFeed) {
-      values.push({
-        label: props.defaultFeed,
-        value: props.defaultFeed,
-      });
+    const defaultFeeds = [];
+    if (props.defaultFeed) {
+      if (Array.isArray(props.defaultFeed)) {
+        defaultFeeds.push(...props.defaultFeed);
+      } else {
+        defaultFeeds.push(props.defaultFeed);
+      }
+    }
+    const values = options.filter((opt) => defaultFeeds.includes(opt.value));
+    if (values.length === 0 && defaultFeeds.length > 0) {
+      values.push(...defaultFeeds.map((f) => ({ label: f, value: f })));
+    }
+    if (props.isDirects && props.isEditing) {
+      // freeze default values
+      for (const val of values) {
+        if (defaultFeeds.includes(val.value)) {
+          val.clearableValue = false;
+        }
+      }
     }
     return {
       values,
       options,
-      showFeedsOption: !props.defaultFeed || props.alwaysShowSelect,
-      isWarningDisplayed: false
+      showFeedsOption: defaultFeeds.length === 0 || props.alwaysShowSelect || props.isEditing,
+      isIncorrectDestinations: false
     };
   }
 
-  optionsFromProps({ feeds, user: { username }, isDirects, excludeMyFeed }) {
+  get isIncorrectDestinations() {
+    return this.state.isIncorrectDestinations;
+  }
+
+  optionsFromProps({ feeds, user: { username }, isDirects, excludeMyFeed, isEditing }) {
     const options = feeds.map(({ user: { username, type } }) => ({
       label: username,
       value: username,
@@ -71,7 +93,13 @@ export default class SendTo extends React.Component {
     }
 
     // only mutual friends on Directs page
-    return isDirects ? options.filter((opt) => opt.type === 'user') : options;
+    if (isDirects) {
+      return options.filter((opt) => opt.type === 'user');
+    }
+    if (isEditing) {
+      return options.filter((opt) => opt.type === 'group');
+    }
+    return options;
   }
 
   isGroupsOrDirectsOnly(values) {
@@ -83,8 +111,8 @@ export default class SendTo extends React.Component {
   }
 
   selectChanged = (values) => {
-    const isWarningDisplayed = !this.isGroupsOrDirectsOnly(values);
-    this.setState({ values, isWarningDisplayed }, () => {
+    const isIncorrectDestinations = !this.isGroupsOrDirectsOnly(values);
+    this.setState({ values, isIncorrectDestinations }, () => {
       this.props.onChange && this.props.onChange(values.map((item) => item.value));
     });
   };
@@ -122,7 +150,7 @@ export default class SendTo extends React.Component {
           <div>
             <Select
               name="select-feeds"
-              placeholder={this.props.isDirects ? "Select friends..." : "Select feeds..."}
+              placeholder={this.props.isDirects ? "Select recipients..." : "Select feeds..."}
               value={this.state.values}
               options={this.state.options}
               onChange={this.selectChanged}
@@ -134,10 +162,11 @@ export default class SendTo extends React.Component {
               autoFocus={this.state.showFeedsOption && !this.props.disableAutoFocus && !this.props.isDirects}
               openOnFocus={true}
               promptTextCreator={this.promptTextCreator}
+              fixedOptions={this.props.isEditing && !this.props.isDirects}
             />
-            {this.state.isWarningDisplayed ? (
+            {this.state.isIncorrectDestinations ? (
               <div className="selector-warning">
-                You are going to send a direct message and also post this message to a feed. This means that everyone who sees this feed will be able to see your message.
+                Unable to create a direct message: direct messages could be sent to user(s) only. Please create a regular post for publish it in your feed or groups.
               </div>
             ) : false}
           </div>
@@ -146,3 +175,16 @@ export default class SendTo extends React.Component {
     );
   }
 }
+
+function isSameFeeds(feeds1, feeds2) {
+  if (Array.isArray(feeds1) && Array.isArray(feeds2)) {
+    return feeds1.length === feeds2.length && xor(feeds1, feeds2).length === 0;
+  }
+  return feeds1 == feeds2;
+}
+
+function selectState({ sendTo: { feeds } }) {
+  return { feeds };
+}
+
+export default connect(selectState, null, null, { withRef:true })(SendTo);
