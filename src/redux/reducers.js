@@ -802,7 +802,8 @@ export function posts(state = {}, action) {
         [post.id]: { ...post,
           body: action.payload.posts.body,
           updatedAt: action.payload.posts.updatedAt,
-          attachments: action.payload.posts.attachments || []
+          attachments: action.payload.posts.attachments || [],
+          postedTo: action.payload.posts.postedTo,
         }
       };
     }
@@ -1321,6 +1322,25 @@ export function usersNotFound(state = [], action) {
           state = [...state, username];
         }
         return state;
+      }
+    }
+  }
+  return state;
+}
+
+/**
+ * state is a map [username => status]
+ * status is boolean (user can or canot receive directs from us)
+ */
+export function directsReceivers(state = {}, action) {
+  switch (action.type) {
+    case response(ActionTypes.GET_USER_INFO): {
+      const { payload: { users: { username }, acceptsDirects } } = action;
+      if (state[username] !== acceptsDirects) {
+        return {
+          ...state,
+          [username]: acceptsDirects,
+        };
       }
     }
   }

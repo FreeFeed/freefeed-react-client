@@ -15,12 +15,17 @@ export default class UserSettingsForm extends React.Component {
 
     this.props.userSettingsChange({
       isPrivate: this.props.user.isPrivate,
-      isProtected: this.props.user.isProtected
+      isProtected: this.props.user.isProtected,
+      directsFromAll: this.props.user.preferences.acceptDirectsFrom === 'all',
     });
   }
 
   updateSetting = (setting) => (e) => {
-    this.props.userSettingsChange({ [setting]: e.target.value });
+    if (e.target.type === 'checkbox') {
+      this.props.userSettingsChange({ [setting]: e.target.checked });
+    } else {
+      this.props.userSettingsChange({ [setting]: e.target.value });
+    }
   };
 
   updatePrivacy = (e) => {
@@ -35,7 +40,17 @@ export default class UserSettingsForm extends React.Component {
 
   updateUser = () => {
     if (!this.props.isSaving) {
-      this.props.updateUser(this.props.user.id, this.props.screenName, this.props.email, this.props.isPrivate, this.props.isProtected, this.props.description);
+      this.props.updateUser(
+        this.props.user.id,
+        this.props.screenName,
+        this.props.email,
+        this.props.isPrivate,
+        this.props.isProtected,
+        this.props.description,
+      );
+      this.props.updateUserPreferences(this.props.user.id, this.props.user.frontendPreferences, {
+        acceptDirectsFrom: this.props.directsFromAll ? 'all' : 'friends'
+      });
     }
   };
 
@@ -113,6 +128,19 @@ export default class UserSettingsForm extends React.Component {
                 onChange={this.updatePrivacy}
               />
               Private &mdash; only people you approve can see your posts
+            </label>
+          </div>
+        </div>
+        <div className="form-group">
+          <div className="checkbox">
+            <label>
+              <input
+                type="checkbox"
+                name="directsFromAll"
+                checked={this.props.directsFromAll || false}
+                onChange={this.updateSetting('directsFromAll')}
+              />
+              Accept direct messages from all users
             </label>
           </div>
         </div>

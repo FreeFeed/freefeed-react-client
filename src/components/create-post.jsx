@@ -125,7 +125,15 @@ export default class CreatePost extends React.Component {
   };
 
   registerSelectFeeds = (el) => {
-    this.selectFeeds = el;
+    // SendTo is a redux-connected component so we need to use getWrappedInstance
+    this.selectFeeds = el ? el.getWrappedInstance() : null;
+  };
+
+  canSubmitForm = () => {
+    return !this.state.isFormEmpty
+      && this.state.attachmentQueueLength == 0
+      && !this.props.createPostViewState.isPending
+      && !this.selectFeeds.isIncorrectDestinations;
   };
 
   render() {
@@ -197,7 +205,7 @@ export default class CreatePost extends React.Component {
           <button
             className="btn btn-default btn-xs"
             onClick={preventDefault(this.createPost)}
-            disabled={this.state.isFormEmpty || this.state.attachmentQueueLength > 0 || this.props.createPostViewState.isPending}
+            disabled={!this.canSubmitForm()}
           >
             Post
           </button>

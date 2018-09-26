@@ -21,8 +21,8 @@ const USER_INVITED = {
 };
 
 const INVITE_EXPIRED = {
-  [INVITATION_LANGUAGE_OPTIONS.ENGLISH]: <span>This invitation has already expired. Check out <a href="../">Freefeed!</a></span>,
-  [INVITATION_LANGUAGE_OPTIONS.RUSSIAN]: <span>Это приглашение уже было использовано. Посмотрите <a href="../">Freefeed!</a></span>,
+  [INVITATION_LANGUAGE_OPTIONS.ENGLISH]: <span>This invitation has already expired. Check out <a href="../">FreeFeed</a></span>,
+  [INVITATION_LANGUAGE_OPTIONS.RUSSIAN]: <span>Приглашение истекло или уже было использовано. <a href="../">Продолжить</a></span>,
 };
 
 class SignupByInvitation extends React.PureComponent {
@@ -67,9 +67,9 @@ class SignupByInvitation extends React.PureComponent {
     return (
       <div>
         <p>{FREEFEED_INVITATION[lang]}</p>
-        <p><PieceOfText text={userInvited} isExpanded={true} /></p>
-        <div className="personal-message"><PieceOfText text={message} isExpanded={true} /></div>
+        {!expired && <p><PieceOfText text={userInvited} isExpanded={true} /></p>}
         {expired && INVITE_EXPIRED[lang]}
+        {!expired && <div className="personal-message"><PieceOfText text={message} isExpanded={true} /></div>}
         {!expired && !authenticated &&
           <div className="signup-form-container">
             <SignupForm invitationId={secure_id} lang={lang} />

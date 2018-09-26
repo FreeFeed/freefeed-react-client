@@ -1,6 +1,6 @@
 {
   "name": "reactive-pepyatka",
-  "version": "1.50.0",
+  "version": "1.53.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
@@ -38,7 +38,7 @@
     "react-sticky": "5.0.x",
     "react-textarea-autosize": "~5.2.1",
     "redux": "~3.7.2",
-    "socket.io-client": "~2.0.4",
+    "socket.io-client": "~2.1.1",
     "validator": "~9.4.1"
   },
   "devDependencies": {

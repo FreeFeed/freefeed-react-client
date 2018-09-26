@@ -16,6 +16,14 @@ export default class UserProfile extends React.Component {
     this.setState({ isUnsubWarningDisplayed: false });
   };
 
+  componentDidUpdate(prevProps) {
+    if (this.props.username !== prevProps.username) {
+      if (this.props.username && this.props.canAcceptDirects === undefined) {
+        this.props.getUserInfo(this.props.username);
+      }
+    }
+  }
+
   handleRequestSubscriptionClick = preventDefault(() => {
     const { id, sendSubscriptionRequest, username } = this.props;
     sendSubscriptionRequest({ username, id });
@@ -104,7 +112,7 @@ export default class UserProfile extends React.Component {
         {props.authenticated && props.isUserFound && !props.isItMe && !props.blocked ? (
           <div className="profile-controls">
             <div className="row">
-              <div className="col-xs-7 col-sm-9 subscribe-controls">
+              <div className="col-xs-7 col-sm-7 subscribe-controls">
                 {props.isPrivate === '1' && !props.subscribed ? (
                   props.hasRequestBeenSent ? (
                     <span><b>{props.screenName}</b> has been sent your subscription request.</span>
@@ -125,23 +133,23 @@ export default class UserProfile extends React.Component {
                   </span>
                 ) : false}
               </div>
-              <div className="col-xs-5 col-sm-3 text-right">
-                {props.type === 'user' && props.subscribed && props.subscribedToMe && (
-                  <span className="profile-stats-item">
-                    <Link to={`/filter/direct?to=${props.username}`}>Direct message</Link>
-                  </span>
-                )}
-                {props.type === 'group' && props.subscribed && (
-                  <span className="profile-stats-item">
-                    <Link to={`/filter/direct?invite=${props.username}`}>Invite</Link>
-                    {((props.type !== 'group' && !props.subscribed) || props.amIGroupAdmin) && ' | '}
-                  </span>
-                )}
-                {props.type !== 'group' && !props.subscribed ? (
-                  <a onClick={this.handleBlockUserClick}>Block this user</a>
-                ) : props.amIGroupAdmin ? (
-                  <Link to={`/${props.username}/settings`}>Settings</Link>
-                ) : false}
+              <div className="col-xs-5 col-sm-5 text-right">
+                <ul className="profile-actions">
+                  {props.canAcceptDirects ? (
+                    <li><Link to={`/filter/direct?to=${props.username}`}>Direct message</Link></li>
+                  ) : false}
+                  {props.type === 'group' && props.subscribed && (
+                    <li>
+                      <Link to={`/filter/direct?invite=${props.username}`}>Invite</Link>
+                      {((props.type !== 'group' && !props.subscribed) || props.amIGroupAdmin) && ' | '}
+                    </li>
+                  )}
+                  {props.type !== 'group' && !props.subscribed ? (
+                    <li><a onClick={this.handleBlockUserClick}>Block this user</a></li>
+                  ) : props.amIGroupAdmin ? (
+                    <li><Link to={`/${props.username}/settings`}>Settings</Link></li>
+                  ) : false}
+                </ul>
               </div>
             </div>
             {this.state.isUnsubWarningDisplayed ? (

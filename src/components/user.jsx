@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { createPost, resetPostCreateForm, expandSendTo } from '../redux/action-creators';
+import { createPost, resetPostCreateForm, expandSendTo, getUserInfo } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
-import { joinPostData, joinCreatePostData, postActions, userActions } from './select-utils';
+import { joinPostData, joinCreatePostData, postActions, userActions, canAcceptDirects } from './select-utils';
 import Breadcrumbs from './breadcrumbs';
 import UserProfile from './user-profile';
 import UserFeed from './user-feed';
@@ -31,6 +31,7 @@ const UserHandler = (props) => {
           createPostForm={props.createPostForm}
           addAttachmentResponse={props.addAttachmentResponse}
           removeAttachment={props.removeAttachment}
+          getUserInfo={props.getUserInfo}
         />
       </div>
 
@@ -69,7 +70,8 @@ function selectState(state, ownProps) {
     subscribed: authenticated && foundUser && (user.subscriptions.indexOf(foundUser.id) > -1),
     subscribedToMe: authenticated && foundUser && (_.findIndex(state.user.subscribers, { id: foundUser.id }) > -1),
     blocked: authenticated && foundUser && (user.banIds.indexOf(foundUser.id) > -1),
-    hasRequestBeenSent: authenticated && foundUser && ((user.pendingSubscriptionRequests || []).indexOf(foundUser.id) > -1)
+    hasRequestBeenSent: authenticated && foundUser && ((user.pendingSubscriptionRequests || []).indexOf(foundUser.id) > -1),
+    canAcceptDirects: canAcceptDirects(foundUser, state),
   };
 
   statusExtension.canISeeSubsList = statusExtension.isUserFound &&
@@ -103,6 +105,7 @@ function selectActions(dispatch) {
     resetPostCreateForm: (...args) => dispatch(resetPostCreateForm(...args)),
     expandSendTo: () => dispatch(expandSendTo()),
     userActions: userActions(dispatch),
+    getUserInfo: (username) => dispatch(getUserInfo(username)),
   };
 }
 

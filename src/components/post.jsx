@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import classnames from 'classnames';
 import _ from 'lodash';
@@ -20,12 +21,17 @@ import Dropzone from './dropzone';
 import PostMoreMenu from './post-more-menu';
 import TimeDisplay from './time-display';
 import LinkPreview from './link-preview/preview';
+import SendTo from './send-to';
+import { destinationsPrivacy } from './select-utils';
 
-export default class Post extends React.Component {
+class Post extends React.Component {
+  selectFeeds;
+
   constructor(props) {
     super(props);
     this.state = {
-      attachmentQueueLength: 0
+      attachmentQueueLength: 0,
+      privacyWarning: null,
     };
   }
 
@@ -115,7 +121,11 @@ export default class Post extends React.Component {
 
     if (!props.isSaving) {
       const attachmentIds = props.attachments.map((item) => item.id) || [];
-      props.saveEditingPost(props.id, { body: this.editingPostText, attachments: attachmentIds });
+      const reqBody = { body: this.editingPostText, attachments: attachmentIds };
+      if (this.selectFeeds) {
+        reqBody.feeds = this.selectFeeds.values;
+      }
+      props.saveEditingPost(props.id, reqBody);
     }
   };
 
@@ -135,6 +145,38 @@ export default class Post extends React.Component {
   handleAttachmentResponse = (att) => {
     this.props.addAttachmentResponse(this.props.id, att);
   };
+
+  registerSelectFeeds = (el) => {
+    // SendTo is a redux-connected component so we need to use getWrappedInstance
+    this.selectFeeds = el ? el.getWrappedInstance() : null;
+    this.setState({ privacyWarning: null });
+  };
+
+  onDestsChange = (destNames) => {
+    if (this.props.isDirect) {
+      return;
+    }
+    const postPrivacy = this.getPostPrivacy();
+    const destPrivacy = this.props.destinationsPrivacy(destNames);
+    if (
+      postPrivacy.isPrivate && !destPrivacy.isPrivate ||
+      postPrivacy.isProtected && !destPrivacy.isProtected
+    ) {
+      const pp = postPrivacy.isPrivate ? 'private' : postPrivacy.isProtected ? 'protected' : 'public';
+      const dp = destPrivacy.isPrivate ? 'private' : destPrivacy.isProtected ? 'protected' : 'public';
+      this.setState({ privacyWarning: `This action will make this ${pp} post ${dp}.` });
+    } else {
+      this.setState({ privacyWarning: null });
+    }
+  };
+
+  getPostPrivacy() {
+    const authorOrGroupsRecipients = this.props.recipients
+      .filter((r) => r.id === this.props.createdBy.id || r.type === 'group');
+    const isPrivate = !authorOrGroupsRecipients.some((r) => r.isPrivate === '0');
+    const isProtected = isPrivate || !authorOrGroupsRecipients.some((r) => r.isProtected === '0');
+    return { isPrivate, isProtected };
+  }
 
   render() {
     const { props } = this;
@@ -201,18 +243,7 @@ export default class Post extends React.Component {
 
     const canonicalPostURI = canonicalURI(props);
 
-    const authorOrGroupsRecipients = props.recipients
-      .filter((r) => r.id === props.createdBy.id || r.type === 'group')
-      .map((r) => {
-        // todo Remove it when we'll have garanty of isPrivate => isProtected
-        if (r.isPrivate === '1') {
-          r.isProtected = '1';
-        }
-        return r;
-      });
-    const isPublic = authorOrGroupsRecipients.some((r) => r.isProtected === '0');
-    const isProtected = !isPublic && authorOrGroupsRecipients.some((r) => r.isPrivate === '0');
-    const isPrivate = !isPublic && !isProtected;
+    const { isPrivate, isProtected } = this.getPostPrivacy();
 
     const amIAuthenticated = !!props.user.id;
     // "Comments disabled" / "Comment"
@@ -319,12 +350,27 @@ export default class Post extends React.Component {
             </Link>
           </div>
           <div className="post-body">
-            <div className="post-header">
-              <UserName className="post-author" user={props.createdBy} />
-              {recipients.length > 0 ? ' to ' : false}
-              {recipients}
-              {this.props.isInHomeFeed ? <PostVia post={this.props} me={this.props.user} /> : false}
-            </div>
+            {props.isEditing ? (
+              <div>
+                <SendTo
+                  ref={this.registerSelectFeeds}
+                  defaultFeed={props.recipients.map((r) => r.username)}
+                  isDirects={props.isDirect}
+                  isEditing={true}
+                  disableAutoFocus={true}
+                  user={props.createdBy}
+                  onChange={this.onDestsChange}
+                />
+                <div className="post-privacy-warning">{this.state.privacyWarning}</div>
+              </div>
+            ) : (
+              <div className="post-header">
+                <UserName className="post-author" user={props.createdBy} />
+                {recipients.length > 0 ? ' to ' : false}
+                {recipients}
+                {this.props.isInHomeFeed ? <PostVia post={this.props} me={this.props.user} /> : false}
+              </div>
+            )}
             {props.isEditing ? (
               <div className="post-editor">
                 <Dropzone
@@ -460,3 +506,11 @@ export function canonicalURI(post) {
   }
   return `/${encodeURIComponent(urlName)}/${encodeURIComponent(post.id)}`;
 }
+
+function selectState(state, ownProps) {
+  return {
+    destinationsPrivacy: ownProps.isEditing ? (destNames) => destinationsPrivacy(destNames, state) : null,
+  };
+}
+
+export default connect(selectState)(Post);

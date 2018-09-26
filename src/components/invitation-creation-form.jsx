@@ -15,7 +15,10 @@ export const INVITATION_LANGUAGE_OPTIONS = {
 class InvitationCreationForm extends React.Component {
   state = {
     message: "",
-    suggestions: "",
+    suggestions: {
+      users: [],
+      groups: [],
+    },
     singleUse: false,
     lang: INVITATION_LANGUAGE_OPTIONS.RUSSIAN,
   };
@@ -37,7 +40,7 @@ class InvitationCreationForm extends React.Component {
     return (
       <div className="box">
         <div className="box-header-timeline">
-          Invite to Freefeed
+          Invite to FreeFeed
         </div>
         <div className="box-body">
           <form onSubmit={preventDefault(this.createInvitation)}>
@@ -139,15 +142,18 @@ class InvitationCreationForm extends React.Component {
   toggleOneTime = ({ target }) => this.setState({ singleUse: target.checked });
 
   suggestedSubscriptionsChanged = () => {
-    const usersSuggests = this.userFeedsSelector.values;
-    const groupsSuggests = this.groupFeedsSelector.values;
-    const descriptions = this.props.feedsDescriptions;
-    const myUsername = this.props.user.username;
-    const { lang } = this.state;
-    const suggestions = formatSuggestionsText(usersSuggests, groupsSuggests, descriptions, myUsername, lang);
-    const customMessage = this.state.message.replace(this.state.suggestions, "").trim();
-    const message = `${customMessage}${(customMessage && suggestions) ? "\n\n" : ""}${suggestions || ""}`;
-    this.setState({ message, suggestions });
+    const { users: userDescriptions, groups: groupDescriptions } = selectUsersAndGroupsFromText(this.state.message, this.state.suggestions);
+    const { message, lang } = this.state;
+    const customMessage = clearMessageFromUsersAndGroups(message, this.state.suggestions);
+    const suggestions = {
+      users: this.userFeedsSelector.values,
+      groups: this.groupFeedsSelector.values,
+    };
+    const descriptions = patchDescriptions(this.props.feedsDescriptions, this.props.user.username, this.state.lang);
+    const suggestionsText = formatSuggestionsText(suggestions, userDescriptions, groupDescriptions, descriptions, lang);
+
+    const newMessage = `${customMessage}${(customMessage && suggestionsText) ? "\n\n" : ""}${suggestionsText || ""}`;
+    this.setState({ message: newMessage, suggestions });
   };
 
   createInvitation = () => {
@@ -203,14 +209,25 @@ const ONLY_GROUP_PREFIXES = {
   [INVITATION_LANGUAGE_OPTIONS.ENGLISH]: "Here are the groups that I recommend you to follow:",
 };
 
-function formatSuggestionsText(users = [], groups = [], descriptions, myUsername, lang = INVITATION_LANGUAGE_OPTIONS.ENGLISH) {
+const prefixes = [USER_PREFIXES, GROUP_PREFIXES, ONLY_GROUP_PREFIXES].reduce((res, o) => {
+  return res.concat(Object.keys(o).map((key) => o[key]));
+}, []);
+
+function formatSuggestionsText(suggestions = {}, userDescriptions = [], groupDescriptions = [], descriptions, lang = INVITATION_LANGUAGE_OPTIONS.ENGLISH) {
+  const { users = [], groups = [] } = suggestions;
   if (!users.length && !groups.length) {
     return "";
   }
 
-  const patchedDescriptions = { ...descriptions, [myUsername]: `${SELF_DESCRIPTION[lang]} ${descriptions[myUsername] || ''}` };
-  const usersSuggestion = users.map((suggest) => formatSuggest(suggest, patchedDescriptions[suggest])).join("\n");
-  const groupsSuggestion = groups.map((suggest) => formatSuggest(suggest, patchedDescriptions[suggest])).join("\n");
+  const usersSuggestion = users.map((username) => {
+    const description = findDescription(username, userDescriptions) || descriptions[username];
+    return formatSuggest(username, description);
+  }).join("\n");
+
+  const groupsSuggestion = groups.map((groupname) => {
+    const description = findDescription(groupname, groupDescriptions) || descriptions[groupname];
+    return formatSuggest(groupname, description);
+  }).join("\n");
 
   if (!users.length) {
     const onlyGroupsPrefix = ONLY_GROUP_PREFIXES[lang];
@@ -223,6 +240,39 @@ function formatSuggestionsText(users = [], groups = [], descriptions, myUsername
   return groups.length
     ? `${usersPrefix}\n${usersSuggestion}\n\n${groupsPrefix}\n${groupsSuggestion}`
     : `${usersPrefix}\n${usersSuggestion}`;
+}
+
+function findDescription(username, descriptions) {
+  const [descriptionString] = descriptions.filter((d) => d === username || d.indexOf(`${username} `) === 1);
+  return descriptionString && descriptionString.replace(new RegExp(`@(${username})( — )?`, "g"), "");
+}
+
+function selectUsersAndGroupsFromText(message, { users, groups }) {
+  const usernameRegexp = formatAllUsernameRegexp(users, groups);
+  const usersAndGroupsMentions = message.match(usernameRegexp) || [];
+  return {
+    users: usersAndGroupsMentions.filter((str) => users.some((user) => str.indexOf(user) === 1)),
+    groups: usersAndGroupsMentions.filter((str) => groups.some((group) => str.indexOf(group) === 1)),
+  };
+}
+
+function patchDescriptions(descriptions = {}, myUsername, lang) {
+  return {
+    ...descriptions,
+    [myUsername]: `${SELF_DESCRIPTION[lang]}${descriptions[myUsername] ? ";" : ""} ${descriptions[myUsername] || ''}`.trim()
+  };
+}
+
+function clearMessageFromUsersAndGroups(message, users, groups) {
+  const usernameRegexp = formatAllUsernameRegexp(users, groups);
+  const prefixesRegexp = new RegExp(`(${prefixes.join("|")})`, "g");
+  return message.replace(usernameRegexp, "").replace(prefixesRegexp, "").trim();
+}
+
+function formatAllUsernameRegexp(...usernameArrays) {
+  const allUsernames = usernameArrays.reduce((res, usernames) => res.concat(usernames), []);
+  const allUsernamesString = allUsernames.join("|");
+  return new RegExp(`@(${allUsernamesString}).*\n?`, "g");
 }
 
 function formatSuggest(suggest, description) {
