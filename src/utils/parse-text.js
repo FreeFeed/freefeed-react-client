@@ -1,4 +1,4 @@
-import { URL } from 'url';
+import { URL as nodeURL } from 'url';
 import { includes } from 'lodash';
 import {
   withText,
@@ -12,6 +12,11 @@ import {
 } from 'social-text-tokenizer';
 
 import config from '../config';
+
+// Webpack can not fully emulate WHATWG URL API object for now,
+// so we use global.URL in browser and nodeURL in node.
+// see https://github.com/webpack/node-libs-browser/issues/69
+const URL = nodeURL || global.URL;
 
 export class Link extends TLink {
   url = null;

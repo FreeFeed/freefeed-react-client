@@ -1,167 +1,130 @@
-/*global Raven*/
 import React from 'react';
 import { Link } from 'react-router';
-import { shorten } from 'ff-url-finder';
+import { Mention, Email, HashTag, Arrows, Link as TLink } from 'social-text-tokenizer';
 
 import config from '../config';
-import { finder } from '../utils';
+import { parseText } from '../utils/parse-text';
 import { highlightString } from '../utils/search-highlighter';
-import { LINK, AT_LINK, LOCAL_LINK, EMAIL, HASHTAG, ARROW, FRIENDFEED_POST } from '../utils/link-types';
+import { FRIENDFEED_POST } from '../utils/link-types';
 import UserName from './user-name';
 
 const MAX_URL_LENGTH = 50;
 const searchConfig = config.search;
 
-class Linkify extends React.Component {
-  createLinkElement({ type, username }, displayedLink, href) {
-    const props = { key: `match${++this.idx}`, dir: 'ltr' };
+export default class Linkify extends React.Component {
+  parseCounter = 0;
 
-    if (type == AT_LINK || type == LOCAL_LINK) {
-      props['to'] = href;
-      if (type == AT_LINK && this.userHover) {
-        props['onMouseEnter'] = () => this.userHover.hover(username);
-        props['onMouseLeave'] = this.userHover.leave;
-      }
-
-      return React.createElement(
-        Link,
-        props,
-        displayedLink
+  processStrings(children, processor, excludeTags) {
+    if (typeof children === 'string') {
+      return processor(children);
+    } else if (React.isValidElement(children) && !excludeTags.includes(children.type)) {
+      return React.cloneElement(children, {},
+        this.processStrings(children.props.children, processor, excludeTags)
       );
-    } else if (type == HASHTAG) {
-      props['dir'] = 'auto';
-      props['href'] = href;
-      props['target'] = '_blank';
+    } else if (Array.isArray(children)) {
+      return children.map((ch) => this.processStrings(ch, processor, excludeTags));
+    }
+    return children;
+  }
 
-      return React.createElement(
-        'a',
-        props,
-        displayedLink
-      );
-    } else if (type == ARROW) {
-      props['className'] = 'arrow-span';
-      props['onMouseEnter'] = () => this.arrowHover.hover(displayedLink.length);
-      props['onMouseLeave'] = this.arrowHover.leave;
+  parseString = (text) => {
+    if (text === '') {
+      return [];
+    }
 
-      return React.createElement(
-        'span',
-        props,
-        displayedLink
-      );
-    } else {  // eslint-disable-line no-else-return
-      if (href.match(FRIENDFEED_POST)) {
-        return React.createElement(
-          Link,
-          { key: props.key, to: { pathname: '/archivePost', query: { url: href } } },
-          displayedLink
+    return parseText(text).map((token, i) => {
+      const key = i;
+
+      const anchorEl = anchorElWithKey(key);
+      const linkEl = linkElWithKey(key);
+
+      if (token instanceof Mention) {
+        return (
+          <UserName
+            user={{ username: token.text.substring(1) }}
+            userHover={this.props.userHover}
+            key={key}
+          >
+            {token.text}
+          </UserName>
         );
       }
 
-      props['href'] = href;
-      props['target'] = '_blank';
+      if (token instanceof Email) {
+        return anchorEl(`mailto:${token.text}`, token.pretty);
+      }
 
-      return React.createElement(
-        'a',
-        props,
-        displayedLink
-      );
-    }
-  }
-
-  parseCounter = 0;
-  idx = 0;
-
-  parseString(string) {
-    const elements = [];
-    if (string === '') {
-      return elements;
-    }
-
-    this.idx = 0;
-
-    try {
-      finder.parse(string).map((it) => {
-        let displayedLink = it.text;
-        let href;
-
-        if (it.type === LINK) {
-          displayedLink = shorten(it.text, MAX_URL_LENGTH).replace(/^https?:\/\//, '');
-          href = it.url;
-        } else if (it.type === AT_LINK) {
-          elements.push(
-            <UserName
-              user={{ username: it.username }}
-              userHover={this.userHover}
-              key={`match${++this.idx}`}
-            >
-              {it.text}
-            </UserName>
+      if (token instanceof HashTag) {
+        if (searchConfig.searchEngine) {
+          return anchorEl(
+            searchConfig.searchEngine + encodeURIComponent(token.text),
+            token.text,
           );
-          return;
-        } else if (it.type === LOCAL_LINK) {
-          displayedLink = shorten(it.text, MAX_URL_LENGTH).replace(/^https?:\/\//, '');
-          href = it.uri;
-        } else if (it.type === EMAIL) {
-          href = `mailto:${it.address}`;
-        } else if (it.type === HASHTAG) {
-          if (searchConfig.searchEngine) {
-            href = searchConfig.searchEngine + encodeURIComponent(it.text);
-          } else {
-            it.type = LOCAL_LINK;
-            href = { pathname: '/search', query: { qs: it.text } };
-            displayedLink = <bdi>{displayedLink}</bdi>;
-          }
-        } else if (it.type === ARROW && this.arrowHover) {
-          // pass
-        } else {
-          elements.push(it.text);
-          return;
         }
 
-        const linkElement = this.createLinkElement(it, displayedLink, href);
-
-        elements.push(linkElement);
-      });
-
-      return (elements.length === 1) ? elements[0] : elements;
-    } catch (err) {
-      if (typeof Raven !== 'undefined') {
-        Raven.captureException(err, { level: 'error', tags: { area: 'component/linkify' }, extra: { string } });
+        return linkEl(
+          { pathname: '/search', query: { qs: token.text } },
+          <bdi>{token.text}</bdi>,
+        );
       }
-    }
-    return [string];
-  }
 
-  parse(children, hlTerms = []) {
-    let parsed = children;
+      if (token instanceof Arrows && this.props.arrowHover) {
+        return (
+          <span
+            className="arrow-span"
+            // eslint-disable-next-line react/jsx-no-bind
+            onMouseEnter={() => this.props.arrowHover.hover(token.text.length)}
+            onMouseLeave={this.props.arrowHover.leave}
+            key={key}
+          >{token.text}
+          </span>
+        );
+      }
 
-    if (typeof children === 'string' && hlTerms.length > 0) {
-      parsed = this.parse(highlightString(children, hlTerms), []);
-    } else if (typeof children === 'string') {
-      parsed = this.parseString(children);
-    } else if (React.isValidElement(children) && (children.type !== 'a') && (children.type !== 'button')) {
-      parsed = React.cloneElement(
-        children,
-        { key: `parse${++this.parseCounter}` },
-        this.parse(children.props.children, hlTerms)
-      );
-    } else if (children instanceof Array) {
-      parsed = children.map((child) => {
-        return this.parse(child, hlTerms);
-      });
-    }
+      if (token instanceof TLink) {
+        if (token.isLocal) {
+          return linkEl(token.localURI, token.shorten(MAX_URL_LENGTH));
+        }
 
-    return parsed;
-  }
+        if (token.href.match(FRIENDFEED_POST)) {
+          return linkEl(
+            { pathname: '/archivePost', query: { url: token.href } },
+            token.shorten(MAX_URL_LENGTH),
+          );
+        }
+
+        return anchorEl(token.href, token.shorten(MAX_URL_LENGTH));
+      }
+
+      return (token.text);
+    });
+  };
 
   render() {
     this.parseCounter = 0;
-    this.userHover = this.props.userHover;
-    this.arrowHover = this.props.arrowHover;
-    const parsedChildren = this.parse(this.props.children, this.props.highlightTerms);
-
-    return <span className="Linkify" dir="auto">{parsedChildren}</span>;
+    const hl = this.props.highlightTerms;
+    const parsed = this.processStrings(this.props.children, this.parseString, ['a', 'button', UserName]);
+    if (!hl || hl.length === 0) {
+      return <span className="Linkify" dir="auto">{parsed}</span>;
+    }
+    const highlighted = this.processStrings(parsed, (str) => highlightString(str, hl), ['button']);
+    return <span className="Linkify" dir="auto">{highlighted}</span>;
   }
 }
 
-export default Linkify;
+function anchorElWithKey(key) {
+  return function (href, content) {
+    return (
+      <a href={href} target="_blank" dir="ltr" key={key}>{content}</a>
+    );
+  };
+}
+
+function linkElWithKey(key) {
+  return function (to, content) {
+    return (
+      <Link to={to} dir="ltr" key={key}>{content}</Link>
+    );
+  };
+}
+
