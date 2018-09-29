@@ -231,11 +231,9 @@ class Post extends React.Component {
     }
     recipients = recipients.map((recipient, index) => (
       <span key={index}>
-        <UserName
-          className="post-recipient"
-          user={recipient}
-          display={recipientCustomDisplay(recipient)}
-        />
+        <UserName className="post-recipient" user={recipient}>
+          {recipientCustomDisplay(recipient)}
+        </UserName>
         {index < props.recipients.length - 2 ? ', ' : false}
         {index === props.recipients.length - 2 ? ' and ' : false}
       </span>

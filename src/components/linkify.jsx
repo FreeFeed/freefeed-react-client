@@ -91,10 +91,11 @@ class Linkify extends React.Component {
           elements.push(
             <UserName
               user={{ username: it.username }}
-              display={it.text}
               userHover={this.userHover}
               key={`match${++this.idx}`}
-            />
+            >
+              {it.text}
+            </UserName>
           );
           return;
         } else if (it.type === LOCAL_LINK) {
