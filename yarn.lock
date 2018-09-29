@@ -3224,13 +3224,6 @@ fbjs@^0.8.9:
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.18"
 
-ff-url-finder@~2.3.7:
-  version "2.3.7"
-  resolved "https://registry.yarnpkg.com/ff-url-finder/-/ff-url-finder-2.3.7.tgz#3d88c37ebc1b10b3b9040a6eedb49d3d3163e79b"
-  integrity sha512-S+V2fnTZECIXg7ux7gwkGUHynsTjQGxa/QRkKOoPxtXXDsCOTouCBNhpv0a+7mA0Bbp4JGdX6SRroZS2MZcE7w==
-  dependencies:
-    punycode "^1.3.2"
-
 figures@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/figures/-/figures-2.0.0.tgz#3ab1a2d2a62c8bfb431a0c94cb797a2fce27c962"
@@ -6148,7 +6141,7 @@ punycode@1.3.2:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.3.2.tgz#9653a036fb7c1ee42342f2325cceefea3926c48d"
   integrity sha1-llOgNvt8HuQjQvIyXM7v6jkmxI0=
 
-punycode@^1.2.4, punycode@^1.3.2, punycode@^1.4.1:
+punycode@^1.2.4, punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
   integrity sha1-wNWmOycYgArY4esPpSachN1BhF4=
