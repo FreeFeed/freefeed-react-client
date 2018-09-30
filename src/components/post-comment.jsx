@@ -1,7 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router';
 import Textarea from 'react-textarea-autosize';
 import _ from 'lodash';
 import classnames from 'classnames';
+import moment from 'moment';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
 import { preventDefault, confirmFirst } from '../utils';
@@ -237,6 +239,14 @@ export default class PostComment extends React.Component {
             }}
           />
           {authorAndButtons}
+          {this.props.showTimestamp ? (
+            <span className="comment-timestamp">
+              {' - '}
+              <Link to={`${this.props.entryUrl}#comment-${this.props.id}`}>
+                {moment(+this.props.createdAt).format('YYYY-MM-DD HH:mm')}
+              </Link>
+            </span>
+          ) : false}
         </Expandable>
       </div>
     );
