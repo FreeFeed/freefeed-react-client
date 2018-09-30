@@ -150,6 +150,7 @@ class Post extends React.Component {
 
   toggleTimestamps = () => {
     this.setState({ showTimestamps: !this.state.showTimestamps });
+  };
 
   registerSelectFeeds = (el) => {
     // SendTo is a redux-connected component so we need to use getWrappedInstance
