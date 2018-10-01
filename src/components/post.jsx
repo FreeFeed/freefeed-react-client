@@ -452,6 +452,7 @@ class Post extends React.Component {
           <div className="dropzone-previews" />
 
           <div className="post-footer">
+            <span className="post-timestamps-toggle" onClick={this.toggleTimestamps}>
               {isPrivate ? (
                 <i className="post-lock-icon fa fa-lock" title="This entry is private" />
               ) : isProtected ? (
@@ -463,6 +464,7 @@ class Post extends React.Component {
               ) : (
                 <i className="post-lock-icon fa fa-globe" title="This entry is public" />
               )}
+            </span>
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
             <Link to={canonicalPostURI} className="post-timestamp">
               {this.state.showTimestamps ? (
@@ -471,7 +473,6 @@ class Post extends React.Component {
                 <TimeDisplay timeStamp={+props.createdAt} />
               )}
             </Link>
-            <a className="post-timestamps-show" onClick={this.toggleTimestamps} title="Toggle timestamps"><i className="fa fa-clock-o" /></a>
             {commentLink}
             {likeLink}
             {hideLink}

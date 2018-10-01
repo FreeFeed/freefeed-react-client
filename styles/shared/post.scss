@@ -141,12 +141,9 @@ $post-line-height: 20px;
     }
   }
 
-  .post-timestamps-show {
+  .post-timestamps-toggle {
     display: inline-block;
-    width: 1.3em;
-    text-align: center;
-    margin-left: 0.25em;
-    color: #888888;
+    cursor: pointer;
   }
 }
 
