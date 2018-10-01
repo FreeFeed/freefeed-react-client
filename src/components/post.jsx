@@ -452,15 +452,17 @@ class Post extends React.Component {
           <div className="dropzone-previews" />
 
           <div className="post-footer">
-            {isPrivate ? (
-              <i className="post-lock-icon fa fa-lock" title="This entry is private" />
-            ) : isProtected ? (
+              {isPrivate ? (
+                <i className="post-lock-icon fa fa-lock" title="This entry is private" />
+              ) : isProtected ? (
               <i className="post-lock-icon post-protected-icon" title="This entry is only visible to FreeFeed users">
                 <i className="post-protected-icon-fg fa fa-user" />
                 <i className="post-protected-icon-shadow fa fa-user fa-inverse" />
                 <i className="post-protected-icon-bg fa fa-user" />
               </i>
-            ) : false}
+              ) : (
+                <i className="post-lock-icon fa fa-globe" title="This entry is public" />
+              )}
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
             <Link to={canonicalPostURI} className="post-timestamp">
               {this.state.showTimestamps ? (
