@@ -456,11 +456,11 @@ class Post extends React.Component {
               {isPrivate ? (
                 <i className="post-lock-icon fa fa-lock" title="This entry is private" />
               ) : isProtected ? (
-              <i className="post-lock-icon post-protected-icon" title="This entry is only visible to FreeFeed users">
-                <i className="post-protected-icon-fg fa fa-user" />
-                <i className="post-protected-icon-shadow fa fa-user fa-inverse" />
-                <i className="post-protected-icon-bg fa fa-user" />
-              </i>
+                <i className="post-lock-icon post-protected-icon" title="This entry is only visible to FreeFeed users">
+                  <i className="post-protected-icon-fg fa fa-user" />
+                  <i className="post-protected-icon-shadow fa fa-user fa-inverse" />
+                  <i className="post-protected-icon-bg fa fa-user" />
+                </i>
               ) : (
                 <i className="post-lock-icon fa fa-globe" title="This entry is public" />
               )}
@@ -468,7 +468,7 @@ class Post extends React.Component {
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
             <Link to={canonicalPostURI} className="post-timestamp">
               {this.state.showTimestamps ? (
-                moment(+props.createdAt).format('YYYY-MM-DD HH:mm')
+                moment(+props.createdAt).format('MMM 1, YYYY HH:mm')
               ) : (
                 <TimeDisplay timeStamp={+props.createdAt} />
               )}

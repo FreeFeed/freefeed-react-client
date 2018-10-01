@@ -243,7 +243,7 @@ export default class PostComment extends React.Component {
             <span className="comment-timestamp">
               {' - '}
               <Link to={`${this.props.entryUrl}#comment-${this.props.id}`}>
-                {moment(+this.props.createdAt).format('YYYY-MM-DD HH:mm')}
+                {moment(+this.props.createdAt).format('MMM 1, YYYY HH:mm')}
               </Link>
             </span>
           ) : false}
