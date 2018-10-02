@@ -4,11 +4,13 @@ import { Link } from 'react-router';
 import classnames from 'classnames';
 import _ from 'lodash';
 import Textarea from 'react-textarea-autosize';
+import moment from 'moment';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
 import { getFirstLinkToEmbed } from '../utils';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
+import { datetimeFormat } from '../utils/get-date-from-short-string';
 
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
@@ -31,6 +33,7 @@ class Post extends React.Component {
     super(props);
     this.state = {
       attachmentQueueLength: 0,
+      showTimestamps: false,
       privacyWarning: null,
     };
   }
@@ -144,6 +147,10 @@ class Post extends React.Component {
 
   handleAttachmentResponse = (att) => {
     this.props.addAttachmentResponse(this.props.id, att);
+  };
+
+  toggleTimestamps = () => {
+    this.setState({ showTimestamps: !this.state.showTimestamps });
   };
 
   registerSelectFeeds = (el) => {
@@ -446,18 +453,26 @@ class Post extends React.Component {
           <div className="dropzone-previews" />
 
           <div className="post-footer">
-            {isPrivate ? (
-              <i className="post-lock-icon fa fa-lock" title="This entry is private" />
-            ) : isProtected ? (
-              <i className="post-lock-icon post-protected-icon" title="This entry is only visible to FreeFeed users">
-                <i className="post-protected-icon-fg fa fa-user" />
-                <i className="post-protected-icon-shadow fa fa-user fa-inverse" />
-                <i className="post-protected-icon-bg fa fa-user" />
-              </i>
-            ) : false}
+            <span className="post-timestamps-toggle" onClick={this.toggleTimestamps}>
+              {isPrivate ? (
+                <i className="post-lock-icon fa fa-lock" title="This entry is private" />
+              ) : isProtected ? (
+                <i className="post-lock-icon post-protected-icon" title="This entry is only visible to FreeFeed users">
+                  <i className="post-protected-icon-fg fa fa-user" />
+                  <i className="post-protected-icon-shadow fa fa-user fa-inverse" />
+                  <i className="post-protected-icon-bg fa fa-user" />
+                </i>
+              ) : (
+                <i className="post-lock-icon fa fa-globe" title="This entry is public" />
+              )}
+            </span>
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
             <Link to={canonicalPostURI} className="post-timestamp">
-              <TimeDisplay timeStamp={+props.createdAt} />
+              {this.state.showTimestamps ? (
+                moment(+props.createdAt).format(datetimeFormat)
+              ) : (
+                <TimeDisplay timeStamp={+props.createdAt} />
+              )}
             </Link>
             {commentLink}
             {likeLink}
@@ -490,6 +505,7 @@ class Post extends React.Component {
             entryUrl={canonicalPostURI}
             highlightTerms={props.highlightTerms}
             isSinglePost={props.isSinglePost}
+            showTimestamps={this.state.showTimestamps}
           />
         </div>
       </div>
