@@ -3,6 +3,9 @@ import pt from 'prop-types';
 import React from 'react';
 import moment from 'moment';
 
+import { datetimeFormat } from '../utils/get-date-from-short-string';
+
+
 class Ticker extends EventEmitter {
   tick = () => this.emit('tick');
 
@@ -37,7 +40,7 @@ export default class TimeDisplay extends React.Component {
     const timeAgo = Math.abs(moment().diff(time)) < 1000 ? 'just now' : time.fromNow();
     const timeISO = time.format();
 
-    const title = this.props.timeAgoInTitle ? timeAgo : time.format('lll');
+    const title = this.props.timeAgoInTitle ? timeAgo : time.format(datetimeFormat);
     const contents = this.props.children ? this.props.children : timeAgo;
 
     return (

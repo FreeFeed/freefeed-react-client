@@ -9,6 +9,7 @@ import throbber16 from '../../assets/images/throbber-16.gif';
 import { preventDefault, confirmFirst } from '../utils';
 import { READMORE_STYLE_COMPACT, COMMENT_DELETED } from '../utils/frontend-preferences-options';
 import { commentReadmoreConfig } from '../utils/readmore-config';
+import { datetimeFormat } from '../utils/get-date-from-short-string';
 
 import CommentLikes from './comment-likes';
 import PieceOfText from './piece-of-text';
@@ -243,7 +244,7 @@ export default class PostComment extends React.Component {
             <span className="comment-timestamp">
               {' - '}
               <Link to={`${this.props.entryUrl}#comment-${this.props.id}`}>
-                {moment(+this.props.createdAt).format('MMM 1, YYYY HH:mm')}
+                {moment(+this.props.createdAt).format(datetimeFormat)}
               </Link>
             </span>
           ) : false}

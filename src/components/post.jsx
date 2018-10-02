@@ -10,6 +10,7 @@ import throbber16 from '../../assets/images/throbber-16.gif';
 import { getFirstLinkToEmbed } from '../utils';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
+import { datetimeFormat } from '../utils/get-date-from-short-string';
 
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
@@ -468,7 +469,7 @@ class Post extends React.Component {
             {props.isDirect ? (<span>»&nbsp;</span>) : false}
             <Link to={canonicalPostURI} className="post-timestamp">
               {this.state.showTimestamps ? (
-                moment(+props.createdAt).format('MMM 1, YYYY HH:mm')
+                moment(+props.createdAt).format(datetimeFormat)
               ) : (
                 <TimeDisplay timeStamp={+props.createdAt} />
               )}
