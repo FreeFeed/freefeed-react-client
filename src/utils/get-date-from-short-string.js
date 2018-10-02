@@ -1,5 +1,9 @@
 import moment from "moment";
 
+
+export const dateFormat = 'MMM D, YYYY';
+export const datetimeFormat = 'MMM D, YYYY HH:MM';
+
 function getDateParamsFromString(dateString) {
   return {
     year: dateString.substring(0, 4),
@@ -16,5 +20,6 @@ export function getDateForMemoriesRequest(dateString) {
 export function formatDateFromShortString(dateString) {
   const { year, month, date } = getDateParamsFromString(dateString);
   const fullDate = new Date(year, Number(month) - 1, date);
-  return moment(fullDate).format("MMM D, YYYY");
+  return moment(fullDate).format(dateFormat);
 }
+
