@@ -106,7 +106,6 @@ class InvitationCreationForm extends React.Component {
                 onChange={this.onInvitationTextChange}
                 minRows={3}
                 maxRows={10}
-                maxLength="1500"
               />
             </div>
             <p>
