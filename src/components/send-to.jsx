@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { xor } from 'lodash';
 import Loadable from 'react-loadable';
+import propTypes from 'prop-types';
 
 const MY_FEED_LABEL = 'My feed';
 
@@ -24,6 +25,22 @@ const Select = Loadable({
 });
 
 class SendTo extends React.Component {
+  static propTypes = {
+    isDirects: propTypes.bool,
+    isEditing: propTypes.bool,
+    excludeMyFeed: propTypes.bool,
+    alwaysShowSelect: propTypes.bool,
+    disableAutoFocus: propTypes.bool,
+    showFeedsOption: propTypes.bool,
+
+    defaultFeed: propTypes.oneOfType([propTypes.string, propTypes.arrayOf(propTypes.string)]),
+    user: propTypes.shape({ username: propTypes.string }),
+    feeds: propTypes.arrayOf(propTypes.shape({
+      username: propTypes.string,
+      type: propTypes.oneOf(['user', 'group']),
+    })),
+  };
+
   selector;
 
   constructor(props) {
