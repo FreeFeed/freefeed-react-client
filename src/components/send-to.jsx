@@ -32,6 +32,7 @@ class SendTo extends React.Component {
     alwaysShowSelect: propTypes.bool,
     disableAutoFocus: propTypes.bool,
     showFeedsOption: propTypes.bool,
+    fixedOptions: propTypes.bool,
 
     defaultFeed: propTypes.oneOfType([propTypes.string, propTypes.arrayOf(propTypes.string)]),
     user: propTypes.shape({ username: propTypes.string }),
@@ -179,7 +180,7 @@ class SendTo extends React.Component {
               autoFocus={this.state.showFeedsOption && !this.props.disableAutoFocus && !this.props.isDirects}
               openOnFocus={true}
               promptTextCreator={this.promptTextCreator}
-              fixedOptions={this.props.isEditing && !this.props.isDirects}
+              fixedOptions={this.props.fixedOptions || this.props.isEditing && !this.props.isDirects}
             />
             {this.state.isIncorrectDestinations ? (
               <div className="selector-warning">
