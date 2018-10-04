@@ -128,7 +128,6 @@ export default class CreateBookmarkletPost extends React.Component {
 
         <SendTo
           ref={this.registerSelectFeeds}
-          feeds={this.props.sendTo.feeds}
           defaultFeed={this.props.sendTo.defaultFeed}
           user={this.props.user}
           onChange={this.checkCreatePostAvailability}

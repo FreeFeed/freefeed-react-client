@@ -86,15 +86,14 @@ function signUpFunc(form, { signUp, signUpEmpty, invitationId }) {
 
 const LABELS = {
   'en': {
-    username: 'Username',
+    username: 'Username (At least 3 characters: latin letters a..z, digits 0..9)',
     email: 'Email',
     password: 'Password',
     subscribe: 'Subscribe to recommended users and groups',
     signup: 'Sign up',
   },
   'ru': {
-    // username: 'Имя пользователя (username, латинские буквы и цифры, от трех символов и больше)',
-    username: 'Имя пользователя',
+    username: 'Имя пользователя (Не менее трех символов: латинские буквы a..z, цифры 0..9)',
     email: 'Email',
     password: 'Пароль',
     subscribe: 'Подписаться на рекомендованных пользователей и группы',
