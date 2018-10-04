@@ -201,7 +201,10 @@ function isSameFeeds(feeds1, feeds2) {
   return feeds1 == feeds2;
 }
 
-function selectState({ sendTo: { feeds } }) {
+function selectState({ sendTo: { feeds } }, ownProps) {
+  if ('feeds' in ownProps) {
+    return { fixedOptions: true };
+  }
   return { feeds };
 }
 
