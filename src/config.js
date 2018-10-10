@@ -31,7 +31,7 @@ const config = {
     clientId: 'net.freefeed',
     defaultValues: {
       displayNames: {
-        displayOption: FrontendPrefsOptions.DISPLAYNAMES_DISPLAYNAME,
+        displayOption: FrontendPrefsOptions.DISPLAYNAMES_BOTH,
         useYou: true
       },
       realtimeActive: false,
