@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import URLFinder from 'ff-url-finder';
 
-import defaultUserpic50Path from '../../assets/images/default-userpic-50.png';
-import defaultUserpic75Path from '../../assets/images/default-userpic-75.png';
+import defaultUserpicPath from '../../assets/images/default-userpic.svg';
 
 import { LINK, isLink } from '../utils/link-types';
 import config from '../config';
@@ -30,8 +29,8 @@ export function setCookie(name, value = '', expireDays, path) {
 }
 
 const userDefaults = {
-  profilePictureMediumUrl: defaultUserpic50Path,
-  profilePictureLargeUrl: defaultUserpic75Path,
+  profilePictureMediumUrl: defaultUserpicPath,
+  profilePictureLargeUrl: defaultUserpicPath,
   frontendPreferences: frontendPrefsConfig.defaultValues
 };
 
