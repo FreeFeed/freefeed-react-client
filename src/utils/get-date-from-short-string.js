@@ -2,7 +2,7 @@ import moment from "moment";
 
 
 export const dateFormat = 'MMM D, YYYY';
-export const datetimeFormat = 'MMM D, YYYY HH:MM';
+export const datetimeFormat = 'MMM D, YYYY HH:mm';
 
 function getDateParamsFromString(dateString) {
   return {
