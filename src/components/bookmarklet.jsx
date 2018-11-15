@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import _ from 'lodash';
+import memoize from 'memoize-one';
 
 import { createBookmarkletPost, resetPostCreateForm, addAttachmentResponse, removeAttachment } from '../redux/action-creators';
 
@@ -9,24 +10,49 @@ import { joinCreatePostData } from './select-utils';
 import CreateBookmarkletPost from './create-bookmarklet-post';
 import SignIn from './signin';
 
+// Auto-select thumbnails on popular services
+const imagesFromURL = memoize((url) => {
+  const services = [{
+    // Instagram
+    from: /https?:\/\/www\.instagram\.com\/p\/([\w-]+)\//i,
+    to: ([, id]) => (`https://www.instagram.com/p/${id}/media/?size=l`)
+  }, {
+    // YouTube
+    from: /https?:\/\/(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\S*[^\w\s-])([\w-]{11})(?=[^\w-]|$)[?=&+%\w.-]*/i,
+    to: ([, id]) => (`https://i.ytimg.com/vi/${id}/hqdefault.jpg`)
+  }];
+
+  const imageUrls = [];
+  services.forEach((service) => {
+    const m = url.match(service.from);
+    if (m) {
+      const imageUrl = service.to(m);
+      imageUrls.push(imageUrl);
+    }
+  });
+  return imageUrls;
+});
 
 class Layout extends React.Component {
-  constructor(props) {
-    super(props);
+  state = {
+    imageUrls: null
+  };
 
-    this.state = {
-      imageUrls: []
-    };
+  /**
+   * Returns this.state.imageUrls if it was modified (i.e. not null) or the
+   * initial image list by page URL
+   */
+  get imageUrls() {
+    return this.state.imageUrls || imagesFromURL(this.props.location.query.url);
   }
 
   // User has selected an image on parent frame
   handleHashChange = () => {
     // Add the image passed via #hash
     const url = window.location.hash.slice(1);
-    const { imageUrls } = this.state;
-    if (imageUrls.indexOf(url) === -1) {
-      imageUrls.push(url);
-      this.setState({ imageUrls });
+    const { imageUrls } = this;
+    if (!imageUrls.includes(url)) {
+      this.setState({ imageUrls: [...imageUrls, url] });
     }
 
     // Clear the #hash immediately
@@ -34,33 +60,11 @@ class Layout extends React.Component {
   };
 
   removeImage = (url) => {
-    const imageUrls = _.without(this.state.imageUrls, url);
-    this.setState({ imageUrls });
+    this.setState({ imageUrls: _.without(this.imageUrls, url) });
   };
 
   componentDidMount() {
     window.addEventListener('hashchange', this.handleHashChange);
-
-    // Auto-select thumbnails on popular services
-    const services = [{
-      // Instagram
-      from: /https?:\/\/www\.instagram\.com\/p\/([\w-]+)\//i,
-      to: (id) => (`https://www.instagram.com/p/${id}/media/?size=l`)
-    }, {
-      // YouTube
-      from: /https?:\/\/(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\S*[^\w\s-])([\w-]{11})(?=[^\w-]|$)[?=&+%\w.-]*/i,
-      to: (id) => (`https://i.ytimg.com/vi/${id}/hqdefault.jpg`)
-    }];
-    const pageUrl = this.props.location.query.url;
-    const imageUrls = [];
-    services.forEach((service) => {
-      const m = pageUrl.match(service.from);
-      if (m && m[1]) {
-        const imageUrl = service.to(m[1]);
-        imageUrls.push(imageUrl);
-      }
-    });
-    this.setState({ imageUrls });
   }
 
   componentWillUnmount() {
@@ -91,7 +95,7 @@ class Layout extends React.Component {
             sendTo={props.sendTo}
             user={props.user}
             postText={`${props.location.query.title} - ${props.location.query.url}`}
-            imageUrls={this.state.imageUrls}
+            imageUrls={this.imageUrls}
             commentText={props.location.query.comment}
             createPostForm={props.createPostForm}
             createPost={props.createBookmarkletPost}

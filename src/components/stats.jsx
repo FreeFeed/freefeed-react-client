@@ -33,6 +33,9 @@ class StatsChart extends React.Component {
     } catch (e) {
       metrics.push(e);
     }
+
+    // This is an async function i.e. setState is not a problem here.
+    // eslint-disable-next-line react/no-did-mount-set-state
     this.setState({ metrics });
   }
 
