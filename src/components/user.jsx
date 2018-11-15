@@ -14,14 +14,16 @@ import UserFeed from './user-feed';
 const UserHandler = (props) => {
   return (
     <div className="box">
-      <Helmet>
-        <link
-          rel="alternate"
-          type="application/rss+xml"
-          title={props.viewUser.type === 'user' ? `Posts of ${props.viewUser.username}` : `Posts in group ${props.viewUser.username}`}
-          href={`${config.api.host}/v2/timelines-rss/${props.viewUser.username}`}
-        />
-      </Helmet>
+      {props.viewUser.id && (
+        <Helmet>
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            title={props.viewUser.type === 'user' ? `Posts of ${props.viewUser.username}` : `Posts in group ${props.viewUser.username}`}
+            href={`${config.api.host}/v2/timelines-rss/${props.viewUser.username}`}
+          />
+        </Helmet>
+      )}
 
       <div className="box-header-timeline">
         {props.boxHeader}
