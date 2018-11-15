@@ -8,7 +8,6 @@
     "classnames": "2.2.x",
     "custom-event": "1.0.x",
     "element-closest": "~2.0.2",
-    "ff-url-finder": "~2.3.7",
     "highcharts": "~6.0.7",
     "isomorphic-fetch": "2.2.x",
     "jade": "~1.11.0",
@@ -39,6 +38,7 @@
     "react-sticky": "5.0.x",
     "react-textarea-autosize": "~5.2.1",
     "redux": "~3.7.2",
+    "social-text-tokenizer": "~1.0.0",
     "socket.io-client": "~2.1.1",
     "validator": "~9.4.1"
   },

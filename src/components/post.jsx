@@ -7,7 +7,7 @@ import Textarea from 'react-textarea-autosize';
 import moment from 'moment';
 
 import throbber16 from '../../assets/images/throbber-16.gif';
-import { getFirstLinkToEmbed } from '../utils';
+import { getFirstLinkToEmbed } from '../utils/parse-text';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
 import { datetimeFormat } from '../utils/get-date-from-short-string';
@@ -238,11 +238,9 @@ class Post extends React.Component {
     }
     recipients = recipients.map((recipient, index) => (
       <span key={index}>
-        <UserName
-          className="post-recipient"
-          user={recipient}
-          display={recipientCustomDisplay(recipient)}
-        />
+        <UserName className="post-recipient" user={recipient}>
+          {recipientCustomDisplay(recipient)}
+        </UserName>
         {index < props.recipients.length - 2 ? ', ' : false}
         {index === props.recipients.length - 2 ? ' and ' : false}
       </span>
