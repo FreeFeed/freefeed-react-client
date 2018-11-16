@@ -14,7 +14,7 @@ const LoggedInBlock = ({ user, signOut }) => (
 
     <div className="user">
       <div className="author">
-        <UserName user={user} display={user.screenName} />
+        <UserName user={user}>{user.screenName}</UserName>
       </div>
       <div>
         <Link to="/settings">settings</Link>

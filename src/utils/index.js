@@ -1,9 +1,7 @@
 import _ from 'lodash';
-import URLFinder from 'ff-url-finder';
 
 import defaultUserpicPath from '../../assets/images/default-userpic.svg';
 
-import { LINK, isLink } from '../utils/link-types';
 import config from '../config';
 
 const frontendPrefsConfig = config.frontendPreferences;
@@ -86,38 +84,6 @@ export function pluralForm(n, singular, plural = null, format = 'n w') {
   }
 
   return format.replace('n', n).replace('w', w);
-}
-
-export const finder = new URLFinder(
-  ['ru', 'com', 'net', 'org', 'info', 'gov', 'edu', 'рф', 'ua'],
-  config.siteDomains,
-);
-
-finder.withHashTags = true;
-finder.withArrows = true;
-
-const endsWithExclamation = (str) => str && str[str.length - 1] === '!';
-
-const previousElementCheck = (index, array) => {
-  const previousElement = array[index - 1];
-  if (!previousElement) {
-    return true;
-  }
-  if (isLink(previousElement)) {
-    return true;
-  }
-  return !endsWithExclamation(previousElement.text);
-};
-
-export function getFirstLinkToEmbed(text) {
-  return finder
-    .parse(text)
-    .filter(({ type, text }, index, links) => {
-      return (type ===  LINK
-              && /^https?:\/\//i.test(text)
-              && previousElementCheck(index, links));
-    })
-    .map((it) => it.text)[0];
 }
 
 export function delay(timeout = 0) {

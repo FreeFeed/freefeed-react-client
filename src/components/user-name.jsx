@@ -85,8 +85,8 @@ class UserName extends React.Component {
       >
 
         <Link to={`/${this.props.user.username}`} className={this.props.className}>
-          {this.props.display ? (
-            <span dir="ltr">{this.props.display}</span>
+          {this.props.children ? (
+            <span dir="ltr">{this.props.children}</span>
           ) : (
             <DisplayOption
               user={this.props.user}

@@ -1,11 +1,11 @@
 import { describe, it } from 'mocha';
 import expect from 'unexpected';
 
-import { getFirstLinkToEmbed } from '../../../src/utils';
+import { getFirstLinkToEmbed } from '../../../src/utils/parse-text';
 
 
-const testLink = 'http://facebook.com';
-const secondTestLink = 'http://twitter.com';
+const testLink = 'http://facebook.com/';
+const secondTestLink = 'http://twitter.com/';
 const freefeedTestLink = 'http://freefeed.net/kadmil';
 const protocolLessTestLink = 'mail.ru';
 
