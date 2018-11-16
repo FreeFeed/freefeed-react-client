@@ -1,4 +1,5 @@
 import EventEmitter from 'events';
+import { connect } from 'react-redux';
 import pt from 'prop-types';
 import React from 'react';
 import moment from 'moment';
@@ -18,11 +19,12 @@ class Ticker extends EventEmitter {
 
 const ticker = new Ticker(30000); // 30 sec
 
-export default class TimeDisplay extends React.Component {
+class TimeDisplay extends React.Component {
   static propTypes = {
     timeStamp: pt.oneOfType([pt.number.isRequired, pt.string.isRequired]),
     className: pt.string,
     timeAgoInTitle: pt.bool,
+    serverTimeAhead: pt.number.isRequired,
   };
 
   refresh = () => this.forceUpdate();
@@ -37,7 +39,8 @@ export default class TimeDisplay extends React.Component {
 
   render() {
     const time = moment(this.props.timeStamp);
-    const timeAgo = Math.abs(moment().diff(time)) < 1000 ? 'just now' : time.fromNow();
+    const serverNow = moment().add(this.props.serverTimeAhead);
+    const timeAgo = Math.abs(serverNow.diff(time)) < 1000 ? 'just now' : time.from(serverNow);
     const timeISO = time.format();
 
     const title = this.props.timeAgoInTitle ? timeAgo : time.format(datetimeFormat);
@@ -48,3 +51,5 @@ export default class TimeDisplay extends React.Component {
     );
   }
 }
+
+export default connect(({ serverTimeAhead }) => ({ serverTimeAhead }))(TimeDisplay);

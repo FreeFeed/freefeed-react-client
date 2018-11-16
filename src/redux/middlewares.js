@@ -11,6 +11,11 @@ import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import { request, response, fail, requiresAuth, isFeedRequest, isFeedResponse } from './action-helpers';
 
+const adjustTime = _.throttle(
+  (dispatch, delta) => dispatch(ActionCreators.serverTimeAhead(delta)),
+  30000, // 30 sec
+);
+
 //middleware for api requests
 export const apiMiddleware = (store) => (next) => async (action) => {
   //ignore normal actions
@@ -26,6 +31,13 @@ export const apiMiddleware = (store) => (next) => async (action) => {
     const obj = await apiResponse.json();
 
     if (apiResponse.status >= 200 && apiResponse.status < 300) {
+      if (apiResponse.headers.has("Date")) {
+        const serverTime = new Date(apiResponse.headers.get("Date"));
+        if (!isNaN(serverTime)) {
+          // valid date time
+          adjustTime(store.dispatch, serverTime - Date.now());
+        }
+      }
       return store.dispatch({ payload: obj, type: response(action.type), request: action.payload });
     }
 

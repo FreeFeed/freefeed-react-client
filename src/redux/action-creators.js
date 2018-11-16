@@ -833,3 +833,10 @@ export function getInvitation(invitationId) {
     payload: { invitationId },
   };
 }
+
+export function serverTimeAhead(delta) {
+  return {
+    type: ActionTypes.SERVER_TIME_AHEAD,
+    payload: delta,
+  };
+}
