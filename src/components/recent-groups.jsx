@@ -5,7 +5,7 @@ import TimeDisplay from './time-display';
 
 const renderRecentGroup = (recentGroup) => (
   <li className="p-my-groups-link" key={recentGroup.id}>
-    <UserName user={recentGroup} display={recentGroup.screenName} applyHyphenations={true} />
+    <UserName user={recentGroup} applyHyphenations={true}>{recentGroup.screenName}</UserName>
     <TimeDisplay className="updated-ago" timeStamp={+recentGroup.updatedAt} />
   </li>
 );

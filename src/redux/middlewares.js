@@ -403,9 +403,6 @@ export const realtimeMiddleware = (store) => {
     handlers[key] = scrollCompensator(handlers[key]);
   }
 
-  // Initial subscription
-  store.dispatch(ActionCreators.realtimeSubscribe('global:users'));
-
   return createRealtimeMiddleware(store, new Connection(), handlers);
 };
 

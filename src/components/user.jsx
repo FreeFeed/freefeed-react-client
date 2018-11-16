@@ -1,9 +1,11 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import { createPost, resetPostCreateForm, expandSendTo, getUserInfo } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
+import config from '../config';
 import { joinPostData, joinCreatePostData, postActions, userActions, canAcceptDirects } from './select-utils';
 import Breadcrumbs from './breadcrumbs';
 import UserProfile from './user-profile';
@@ -12,6 +14,15 @@ import UserFeed from './user-feed';
 const UserHandler = (props) => {
   return (
     <div className="box">
+      <Helmet>
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title={props.viewUser.type === 'user' ? `Posts of ${props.viewUser.username}` : `Posts in group ${props.viewUser.username}`}
+          href={`${config.api.host}/v2/timelines-rss/${props.viewUser.username}`}
+        />
+      </Helmet>
+
       <div className="box-header-timeline">
         {props.boxHeader}
       </div>
