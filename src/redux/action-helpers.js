@@ -24,3 +24,10 @@ export const isUserChangeResponse = (action) => userChangeResponses.indexOf(acti
 export function requiresAuth(action) {
   return action.apiRequest && !action.nonAuthRequest;
 }
+
+export function getFeedName(action) {
+  if (action.type === request(HOME) || action.type === HOME) {
+    return HOME;
+  }
+  return `${GET_USER_FEED}_${action.payload.username}`;
+}

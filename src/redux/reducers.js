@@ -2394,23 +2394,23 @@ export function createInvitationForm(state = DEFAULT_FORM_STATE, action) {
 
 const getInitialSortingState = () => {
   const { homeFeedSort } = getPersistedUser().frontendPreferences;
-  return { sort: homeFeedSort, homeFeedSort, currentFeedType: request(ActionTypes.HOME) };
+  return { sort: homeFeedSort, homeFeedSort, currentFeed: request(ActionTypes.HOME) };
 };
 
 export function feedSort(state = getInitialSortingState(), action) {
   if (action.type === response(ActionTypes.WHO_AM_I)) {
     const { homeFeedSort } = action.payload.users.frontendPreferences[frontendPrefsConfig.clientId];
-    const sort = state.currentFeedType === request(ActionTypes.HOME) ? homeFeedSort : state.sort;
+    const sort = state.currentFeed === ActionTypes.HOME ? homeFeedSort : state.sort;
     return { ...state, homeFeedSort, sort };
   }
   if (ActionHelpers.isFeedRequest(action)) {
     let { sort } = state;
-    if (state.currentFeedType !== action.type) {
+    if (state.currentFeed !== ActionHelpers.getFeedName(action)) {
       sort = action.type === request(ActionTypes.HOME) ? state.homeFeedSort : FeedSortOptions.ACTIVITY;
     }
     return {
       ...state,
-      currentFeedType: action.type,
+      currentFeed: ActionHelpers.getFeedName(action),
       sort,
     };
   }
@@ -2419,7 +2419,7 @@ export function feedSort(state = getInitialSortingState(), action) {
     return {
       ...state,
       sort,
-      homeFeedSort: state.currentFeedType === request(ActionTypes.HOME) ? sort : state.homeFeedSort,
+      homeFeedSort: state.currentFeed === ActionTypes.HOME ? sort : state.homeFeedSort,
     };
   }
   return state;

@@ -10,15 +10,15 @@ import * as FeedSortOptions from '../utils/feed-sort-options';
 
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
-import { request, response, fail, requiresAuth, isFeedRequest, isFeedResponse, isFeedGeneratingAction } from './action-helpers';
+import { request, response, fail, requiresAuth, isFeedRequest, isFeedResponse, isFeedGeneratingAction, getFeedName } from './action-helpers';
 
 export const feedSortMiddleware = (store) => (next) => (action) => {
   if (isFeedGeneratingAction(action)) {
     //add sorting params to feed request if needed
     const state = store.getState();
-    const { sort: currentFeedSort, currentFeedType } = state.feedSort;
+    const { sort: currentFeedSort, currentFeed } = state.feedSort;
     const { homeFeedSort } = state.user.frontendPreferences;
-    if (currentFeedType === request(action.type)) {
+    if (currentFeed === getFeedName(action)) {
       action.payload.sortChronologically = currentFeedSort === FeedSortOptions.CHRONOLOGIC;
     } else {
       //use home feed setting if we get back to home feed
@@ -28,8 +28,8 @@ export const feedSortMiddleware = (store) => (next) => (action) => {
   }
   if (action.type === ActionTypes.TOGGLE_FEED_SORT) {
     //here we persist home sort preference change
-    const { currentFeedType } = store.getState().feedSort;
-    if (currentFeedType === request(ActionTypes.HOME)) {
+    const { currentFeed } = store.getState().feedSort;
+    if (currentFeed === ActionTypes.HOME) {
       //we get reducer process sort toggling and do our job updating setting after that
       next(action);
       //and request next state only after update is done
