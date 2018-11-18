@@ -6,6 +6,7 @@ import config from '../config';
 import { getToken, getPersistedUser } from '../services/auth';
 import { parseQuery } from '../utils/search-highlighter';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
+import * as FeedSortOptions from '../utils/feed-sort-options';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
 
@@ -2387,6 +2388,34 @@ export function createInvitationForm(state = DEFAULT_FORM_STATE, action) {
     case fail(ActionTypes.CREATE_FREEFEED_INVITATION): {
       return { ...state, isSaving: false, error: true, errorText: action.payload.err || "Something went wrong" };
     }
+  }
+  return state;
+}
+
+export function feedSort(state = { sort: FeedSortOptions.ACTIVITY, homeFeedSort: FeedSortOptions.ACTIVITY, currentFeedType: request(ActionTypes.HOME) }, action) {
+  if (action.type === response(ActionTypes.WHO_AM_I)) {
+    const { homeFeedSort } = action.payload.users.frontendPreferences[frontendPrefsConfig.clientId];
+    const sort = state.currentFeedType === request(ActionTypes.HOME) ? homeFeedSort : state.sort;
+    return { ...state, homeFeedSort, sort };
+  }
+  if (ActionHelpers.isFeedRequest(action)) {
+    let { sort } = state;
+    if (state.currentFeedType !== action.type) {
+      sort = action.type === request(ActionTypes.HOME) ? state.homeFeedSort : FeedSortOptions.ACTIVITY;
+    }
+    return {
+      ...state,
+      currentFeedType: action.type,
+      sort,
+    };
+  }
+  if (action.type === ActionTypes.TOGGLE_FEED_SORT) {
+    const sort = state.sort === FeedSortOptions.ACTIVITY ? FeedSortOptions.CHRONOLOGIC : FeedSortOptions.ACTIVITY;
+    return {
+      ...state,
+      sort,
+      homeFeedSort: state.currentFeedType === request(ActionTypes.HOME) ? sort : state.homeFeedSort,
+    };
   }
   return state;
 }

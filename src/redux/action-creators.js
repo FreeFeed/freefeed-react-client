@@ -833,3 +833,9 @@ export function getInvitation(invitationId) {
     payload: { invitationId },
   };
 }
+
+export function toggleFeedSort() {
+  return {
+    type: ActionTypes.TOGGLE_FEED_SORT,
+  };
+}

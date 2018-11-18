@@ -9,7 +9,43 @@ import { userParser, delay } from '../utils';
 
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
-import { request, response, fail, requiresAuth, isFeedRequest, isFeedResponse } from './action-helpers';
+import { request, response, fail, requiresAuth, isFeedRequest, isFeedResponse, isFeedGeneratingAction } from './action-helpers';
+
+export const feedSortMiddleware = (store) => (next) => (action) => {
+  if (isFeedGeneratingAction(action)) {
+    const state = store.getState();
+    const { sort: currentFeedSort, currentFeedType } = state.feedSort;
+    const { homeFeedSort } = state.user.frontendPreferences;
+    if (currentFeedType === request(action.type)) {
+      action.payload.sort = currentFeedSort === 'CHRONOLOGIC' && 'created';
+    } else {
+      action.payload.sort = action.type === 'HOME' && homeFeedSort === 'CHRONOLOGIC' && 'created';
+    }
+  }
+  if (action.type === ActionTypes.TOGGLE_FEED_SORT) {
+    const { currentFeedType } = store.getState().feedSort;
+    if (currentFeedType === request(ActionTypes.HOME)) {
+      //we get reducer process sort toggling and do our job updating setting after that
+      next(action);
+      //and request next state only after update is done
+      const state = store.getState();
+      const { id } = state.user;
+      const { sort: homeFeedSort } = state.feedSort;
+      return store.dispatch(ActionCreators.updateUserPreferences(id, { ...state.user.frontendPreferences, homeFeedSort }));
+    }
+  }
+  if (action.type === response(ActionTypes.WHO_AM_I)) {
+    next(action);
+    const state = store.getState();
+    const { homeFeedSort } = state.user.frontendPreferences;
+    const isHomeFeed = state.routing.locationBeforeTransitions.pathname === '/';
+    if (homeFeedSort !== 'ACTIVITY' && isHomeFeed) {
+      return store.dispatch(ActionCreators.home());
+    }
+    return;
+  }
+  return next(action);
+};
 
 //middleware for api requests
 export const apiMiddleware = (store) => (next) => async (action) => {
