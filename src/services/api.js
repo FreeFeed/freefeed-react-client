@@ -10,7 +10,7 @@ const apiConfig = config.api;
 const frontendPrefsConfig = config.frontendPreferences;
 
 const getRequestOptions = () => ({
-  headers:{
+  headers: {
     'Accept': 'application/json',
     'X-Authentication-Token': getToken()
   }
@@ -139,7 +139,7 @@ export function addComment({ postId, commentText }) {
       'Content-Type': 'application/json',
       'X-Authentication-Token': getToken()
     },
-    'body': JSON.stringify({ comment: { body:commentText, postId } })
+    'body': JSON.stringify({ comment: { body: commentText, postId } })
   });
 }
 
@@ -269,9 +269,9 @@ export function signIn({ username, password }) {
   const encodedBody = encodeBody({ username, password });
 
   return fetch(`${apiConfig.host}/v1/session`, {
-    headers:{
+    headers: {
       'Accept': 'application/json',
-      'Content-Type':'application/x-www-form-urlencoded',
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
     method: 'POST',
     body: encodedBody
@@ -281,9 +281,9 @@ export function signIn({ username, password }) {
 export function restorePassword({ mail }) {
   const encodedBody = encodeBody({ email: mail });
   return fetch(`${apiConfig.host}/v1/passwords`, {
-    headers:{
+    headers: {
       'Accept': 'application/json',
-      'Content-Type':'application/x-www-form-urlencoded',
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
     method: 'POST',
     body: encodedBody
@@ -298,9 +298,9 @@ export function resetPassword({ password, token }) {
 
   const encodedBody = encodeBody(params);
   return fetch(`${apiConfig.host}/v1/passwords/${token}`, {
-    headers:{
+    headers: {
       'Accept': 'application/json',
-      'Content-Type':'application/x-www-form-urlencoded',
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
     method: 'PUT',
     body: encodedBody
@@ -318,9 +318,9 @@ export function signUp({ username, password, email, captcha, invitationId, subsc
   const encodedBody = encodeBody(body);
 
   return fetch(`${apiConfig.host}/v1/users`, {
-    headers:{
+    headers: {
       'Accept': 'application/json',
-      'Content-Type':'application/x-www-form-urlencoded',
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
     method: 'POST',
     body: encodedBody
@@ -380,7 +380,7 @@ export function updatePassword({ currentPassword, password, passwordConfirmation
     'method': 'PUT',
     'headers': {
       'Accept': 'application/json',
-      'Content-Type':'application/x-www-form-urlencoded',
+      'Content-Type': 'application/x-www-form-urlencoded',
       'X-Authentication-Token': getToken()
     },
     'body': encodedBody

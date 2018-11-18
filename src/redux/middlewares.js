@@ -82,7 +82,7 @@ export const authMiddleware = (store) => {
 
 
     if (action.type === response(ActionTypes.SIGN_IN) ||
-       action.type === response(ActionTypes.SIGN_UP)) {
+      action.type === response(ActionTypes.SIGN_UP)) {
       firstUnauthenticated = false;
       setToken(action.payload.authToken);
       next(action);
@@ -99,7 +99,7 @@ export const authMiddleware = (store) => {
     }
 
     if (action.type === response(ActionTypes.WHO_AM_I) ||
-       action.type === response(ActionTypes.UPDATE_USER)) {
+      action.type === response(ActionTypes.UPDATE_USER)) {
       persistUser(userParser(action.payload.users));
       return next(action);
     }
@@ -260,7 +260,7 @@ export const redirectionMiddleware = (store) => (next) => (action) => {
   }
 
   if (action.type === response(ActionTypes.UNADMIN_GROUP_ADMIN) &&
-      store.getState().user.id === action.request.user.id) {
+    store.getState().user.id === action.request.user.id) {
     browserHistory.push(`/${action.request.groupName}/subscribers`);
   }
 
@@ -391,8 +391,8 @@ const bindHandlers = (store) => ({
     return dispatchWithPost(store, postId, action, isFirstFriendInteraction, postFetchDelay);
   },
   'like:remove': (data) => store.dispatch({ type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId }),
-  'comment_like:new': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment:data.comments }),
-  'comment_like:remove': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment:data.comments }),
+  'comment_like:new': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments }),
+  'comment_like:remove': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments }),
   'global:user:update': (data) => store.dispatch({ type: ActionTypes.REALTIME_GLOBAL_USER_UPDATE, user: data.user }),
 });
 
@@ -517,4 +517,3 @@ function fixPostsData(post) {
   post.comments = post.comments || [];
   post.likes = post.likes || [];
 }
-
