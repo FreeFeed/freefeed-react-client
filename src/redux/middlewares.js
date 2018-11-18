@@ -35,11 +35,12 @@ export const feedSortMiddleware = (store) => (next) => (action) => {
     }
   }
   if (action.type === response(ActionTypes.WHO_AM_I)) {
+    const sortBefore = store.getState().user.frontendPreferences.homeFeedSort;
     next(action);
     const state = store.getState();
     const { homeFeedSort } = state.user.frontendPreferences;
     const isHomeFeed = state.routing.locationBeforeTransitions.pathname === '/';
-    if (homeFeedSort !== 'ACTIVITY' && isHomeFeed) {
+    if (homeFeedSort !== sortBefore && isHomeFeed) {
       return store.dispatch(ActionCreators.home());
     }
     return;

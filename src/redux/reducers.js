@@ -2392,7 +2392,12 @@ export function createInvitationForm(state = DEFAULT_FORM_STATE, action) {
   return state;
 }
 
-export function feedSort(state = { sort: FeedSortOptions.ACTIVITY, homeFeedSort: FeedSortOptions.ACTIVITY, currentFeedType: request(ActionTypes.HOME) }, action) {
+const getInitialSortingState = () => {
+  const { homeFeedSort } = getPersistedUser().frontendPreferences;
+  return { sort: homeFeedSort, homeFeedSort, currentFeedType: request(ActionTypes.HOME) };
+};
+
+export function feedSort(state = getInitialSortingState(), action) {
   if (action.type === response(ActionTypes.WHO_AM_I)) {
     const { homeFeedSort } = action.payload.users.frontendPreferences[frontendPrefsConfig.clientId];
     const sort = state.currentFeedType === request(ActionTypes.HOME) ? homeFeedSort : state.sort;
