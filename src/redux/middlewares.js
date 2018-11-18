@@ -6,6 +6,7 @@ import { getPost } from '../services/api';
 import { setToken, persistUser } from '../services/auth';
 import { Connection, scrollCompensator } from '../services/realtime';
 import { userParser, delay } from '../utils';
+import * as FeedSortOptions from '../utils/feed-sort-options';
 
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
@@ -17,9 +18,9 @@ export const feedSortMiddleware = (store) => (next) => (action) => {
     const { sort: currentFeedSort, currentFeedType } = state.feedSort;
     const { homeFeedSort } = state.user.frontendPreferences;
     if (currentFeedType === request(action.type)) {
-      action.payload.sort = currentFeedSort === 'CHRONOLOGIC' && 'created';
+      action.payload.sort = currentFeedSort === FeedSortOptions.CHRONOLOGIC && 'created';
     } else {
-      action.payload.sort = action.type === 'HOME' && homeFeedSort === 'CHRONOLOGIC' && 'created';
+      action.payload.sort = action.type === ActionTypes.HOME && homeFeedSort === FeedSortOptions.CHRONOLOGIC && 'created';
     }
   }
   if (action.type === ActionTypes.TOGGLE_FEED_SORT) {

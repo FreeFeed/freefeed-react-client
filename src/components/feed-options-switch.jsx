@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import DropdownMenu from 'react-dd-menu';
+import * as FeedSortOptions from '../utils/feed-sort-options';
 import { toggleRealtime, updateUserPreferences, home, toggleFeedSort } from '../redux/action-creators';
 
 class FeedOptionsSwitch extends React.PureComponent {
@@ -35,8 +36,8 @@ class FeedOptionsSwitch extends React.PureComponent {
       <div className="feed-options-switch">
         <DropdownMenu {...menuOptions}>
           <div className="dropdown">
-            <div className={`drop-option ${feedSort.sort === 'ACTIVITY' && 'active'}`} onClick={this.switchSortToActivity}><span className="check fa fa-check" />Most Recent Activity</div>
-            <div className={`drop-option ${feedSort.sort === 'CHRONOLOGIC' && 'active'}`} onClick={this.switchSortToChronologic}><span className="check fa fa-check" />Most Recent Posts</div>
+            <div className={`drop-option ${feedSort.sort === FeedSortOptions.ACTIVITY && 'active'}`} onClick={this.switchSortToActivity}><span className="check fa fa-check" />Most Recent Activity</div>
+            <div className={`drop-option ${feedSort.sort === FeedSortOptions.CHRONOLOGIC && 'active'}`} onClick={this.switchSortToChronologic}><span className="check fa fa-check" />Most Recent Posts</div>
             {showRealtime && <div className="spacer" />}
             {showRealtime && <div className={`drop-option ${realtimeActive && 'active'}`} onClick={this.toggleRealtime}><span className="check fa fa-check" />Realtime updates</div>}
           </div>
@@ -46,13 +47,13 @@ class FeedOptionsSwitch extends React.PureComponent {
   }
 
   switchSortToActivity = () => {
-    if (this.props.feedSort.sort !== 'ACTIVITY') {
+    if (this.props.feedSort.sort !== FeedSortOptions.ACTIVITY) {
       this.props.toggleFeedSort(this.props.route);
     }
   };
 
   switchSortToChronologic = () => {
-    if (this.props.feedSort.sort !== 'CHRONOLOGIC') {
+    if (this.props.feedSort.sort !== FeedSortOptions.CHRONOLOGIC) {
       this.props.toggleFeedSort(this.props.route);
     }
   };
