@@ -14,28 +14,33 @@ import { request, response, fail, requiresAuth, isFeedRequest, isFeedResponse, i
 
 export const feedSortMiddleware = (store) => (next) => (action) => {
   if (isFeedGeneratingAction(action)) {
+    //add sorting params to feed request if needed
     const state = store.getState();
     const { sort: currentFeedSort, currentFeedType } = state.feedSort;
     const { homeFeedSort } = state.user.frontendPreferences;
     if (currentFeedType === request(action.type)) {
-      action.payload.sort = currentFeedSort === FeedSortOptions.CHRONOLOGIC && 'created';
+      action.payload.sortChronologically = currentFeedSort === FeedSortOptions.CHRONOLOGIC;
     } else {
-      action.payload.sort = action.type === ActionTypes.HOME && homeFeedSort === FeedSortOptions.CHRONOLOGIC && 'created';
+      //use home feed setting if we get back to home feed
+      //this change isn't yet in reducer, and we don't get it there before real feed request fires
+      action.payload.sortChronologically = action.type === ActionTypes.HOME && homeFeedSort === FeedSortOptions.CHRONOLOGIC;
     }
   }
   if (action.type === ActionTypes.TOGGLE_FEED_SORT) {
+    //here we persist home sort preference change
     const { currentFeedType } = store.getState().feedSort;
     if (currentFeedType === request(ActionTypes.HOME)) {
       //we get reducer process sort toggling and do our job updating setting after that
       next(action);
       //and request next state only after update is done
-      const state = store.getState();
-      const { id } = state.user;
-      const { sort: homeFeedSort } = state.feedSort;
-      return store.dispatch(ActionCreators.updateUserPreferences(id, { ...state.user.frontendPreferences, homeFeedSort }));
+      const { user, feedSort } = store.getState();
+      const { id, frontendPreferences } = user;
+      const { sort: homeFeedSort } = feedSort;
+      return store.dispatch(ActionCreators.updateUserPreferences(id, { ...frontendPreferences, homeFeedSort }));
     }
   }
   if (action.type === response(ActionTypes.WHO_AM_I)) {
+    //here we handle home sort settings changed on another machine
     const sortBefore = store.getState().user.frontendPreferences.homeFeedSort;
     next(action);
     const state = store.getState();
