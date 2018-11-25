@@ -78,7 +78,7 @@ function selectState(state, ownProps) {
     isLoading:          state.routeLoadingState,
     isUserFound:        !!foundUser,
     isItMe:             (foundUser ? foundUser.username === user.username : false),
-    userView:           (foundUser && state.userViews[foundUser.id] || {}),
+    userView:           ((foundUser && state.userViews[foundUser.id]) || {}),
     isItPostsPage,
     amIGroupAdmin,
     subscribed:         authenticated && foundUser && (user.subscriptions.indexOf(foundUser.id) > -1),

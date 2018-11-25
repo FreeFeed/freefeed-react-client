@@ -167,8 +167,8 @@ class Post extends React.Component {
     const postPrivacy = this.getPostPrivacy();
     const destPrivacy = this.props.destinationsPrivacy(destNames);
     if (
-      postPrivacy.isPrivate && !destPrivacy.isPrivate ||
-      postPrivacy.isProtected && !destPrivacy.isProtected
+      (postPrivacy.isPrivate && !destPrivacy.isPrivate) ||
+      (postPrivacy.isProtected && !destPrivacy.isProtected)
     ) {
       const pp = postPrivacy.isPrivate ? 'private' : postPrivacy.isProtected ? 'protected' : 'public';
       const dp = destPrivacy.isPrivate ? 'private' : destPrivacy.isProtected ? 'protected' : 'public';

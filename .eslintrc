@@ -68,6 +68,7 @@
     "no-else-return": 2,
     "no-global-assign": 2,
     "no-lonely-if": 2,
+    "no-mixed-operators": 2,
     "no-multiple-empty-lines": 2,
     "no-multi-spaces": [2, { "ignoreEOLComments": true }],
     "no-native-reassign": 2,

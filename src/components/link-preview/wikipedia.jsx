@@ -56,7 +56,7 @@ class WikipediaPreview extends React.Component {
     const { previewData, isError } = this.state;
     const cachedHeight = heightCache.get(this.props.url, 0);
 
-    if (isError || !previewData && cachedHeight === 0) {
+    if (isError || (!previewData && cachedHeight === 0)) {
       return null;
     }
 

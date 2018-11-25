@@ -52,8 +52,10 @@ class SendTo extends React.Component {
 
   componentWillReceiveProps(newProps) {
     const options = this.optionsFromProps(newProps);
-    if (!isSameFeeds(this.props.defaultFeed, newProps.defaultFeed) ||
-      options.length !== 0 && this.state.options.length === 0) {
+    if (
+      !isSameFeeds(this.props.defaultFeed, newProps.defaultFeed) ||
+      (options.length !== 0 && this.state.options.length === 0)
+    ) {
       this.setState(this.stateFromProps(newProps, options));
     } else {
       this.setState({ options });
@@ -181,7 +183,7 @@ class SendTo extends React.Component {
               autoFocus={this.state.showFeedsOption && !this.props.disableAutoFocus && !this.props.isDirects}
               openOnFocus={true}
               promptTextCreator={this.promptTextCreator}
-              fixedOptions={this.props.fixedOptions || this.props.isEditing && !this.props.isDirects}
+              fixedOptions={this.props.fixedOptions || (this.props.isEditing && !this.props.isDirects)}
             />
             {this.state.isIncorrectDestinations ? (
               <div className="selector-warning">

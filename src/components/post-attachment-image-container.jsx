@@ -81,8 +81,8 @@ export default class ImageAttachmentsContainer extends React.Component {
   getLightboxItems() {
     return this.props.attachments.map((a) => ({
       src: a.url,
-      w:   a.imageSizes && a.imageSizes.o && a.imageSizes.o.w || 0,
-      h:   a.imageSizes && a.imageSizes.o && a.imageSizes.o.h || 0,
+      w:   (a.imageSizes && a.imageSizes.o && a.imageSizes.o.w) || 0,
+      h:   (a.imageSizes && a.imageSizes.o && a.imageSizes.o.h) || 0,
       pid: a.id.substr(0, 8),
     }));
   }

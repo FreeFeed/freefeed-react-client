@@ -211,11 +211,12 @@ const SideBarArchive = ({ user }) => {
     return null;
   }
   const { archives } = user.privateMeta;
-  if (!user
-    || !user.privateMeta
-    || !archives
-    || archives.recovery_status === 2
-    && archives.restore_comments_and_likes) {
+  if (
+    !user ||
+    !user.privateMeta ||
+    !archives ||
+    (archives.recovery_status === 2 && archives.restore_comments_and_likes)
+  ) {
     return null;
   }
   return (

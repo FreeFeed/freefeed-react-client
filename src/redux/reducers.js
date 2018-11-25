@@ -231,7 +231,7 @@ const hidePostInFeed = function (state, postId) {
   // page at all.
   const inHidden = (state.hiddenEntries.indexOf(postId) > -1);
   const inVisible = (state.visibleEntries.indexOf(postId) > -1);
-  if (inHidden || !inHidden && !inVisible) {
+  if (inHidden || (!inHidden && !inVisible)) {
     return state;
   }
   return {

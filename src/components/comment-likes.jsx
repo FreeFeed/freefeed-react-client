@@ -123,7 +123,7 @@ export default class CommentLikes extends React.Component {
   };
 
   renderPopup = () => {
-    const likesStyle = { height: !this.state.showActionButtons && this.state.panelHeight || "auto", };
+    const likesStyle = { height: (!this.state.showActionButtons && this.state.panelHeight) || "auto", };
     return this.state.showActionsPanel && (
       <Portal isOpened={true}>
         <div className="actions-overlay" onClick={this.toggleActionsPanel}>

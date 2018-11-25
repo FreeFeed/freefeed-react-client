@@ -48,7 +48,7 @@ export default class PostVia extends React.Component {
     } = this.props;
 
     const isMe = ({ id }) => myId === id;
-    const inSubscriptions = ({ id }) => myId === id || subscriptions && subscriptions.some((s) => s == id);
+    const inSubscriptions = ({ id }) => myId === id || (subscriptions && subscriptions.some((s) => s == id));
 
     if (inSubscriptions(createdBy) || recipients.some(inSubscriptions)) {
       return false;
