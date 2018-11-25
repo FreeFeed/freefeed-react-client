@@ -62,6 +62,7 @@
     "key-spacing": [2, { "align": "value" }],
     "keyword-spacing": [2, {"before": true, "after": true}],
     "linebreak-style": 2,
+    "max-statements-per-line": [2, { "max": 1 }],
     "no-debugger": 2,
     "no-duplicate-imports": 2,
     "no-else-return": 2,

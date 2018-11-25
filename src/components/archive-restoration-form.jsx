@@ -130,8 +130,12 @@ class SourceList extends React.Component {
   render() {
     const { selected, onClick } = this.props;
     const sources = this.props.sources.sort((a, b) => {
-      if (a.url === FRF_URL) { return -1; }
-      if (b.url === FRF_URL) { return 1; }
+      if (a.url === FRF_URL) {
+        return -1;
+      }
+      if (b.url === FRF_URL) {
+        return 1;
+      }
       return b.count - a.count;
     });
     return (

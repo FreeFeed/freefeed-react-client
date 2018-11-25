@@ -112,30 +112,60 @@ export default ScrollSafe(connect(select)(VideoPreview), { foldable: false, trac
 // Helpers
 
 function getVideoType(url) {
-  if (YOUTUBE_VIDEO_RE.test(url)) { return T_YOUTUBE_VIDEO; }
-  if (VIMEO_VIDEO_RE.test(url)) { return T_VIMEO_VIDEO; }
-  if (COUB_VIDEO_RE.test(url)) { return T_COUB_VIDEO; }
-  if (IMGUR_GIFV_RE.test(url)) { return T_IMGUR_GIFV; }
-  if (GFYCAT_RE.test(url)) { return T_GFYCAT; }
+  if (YOUTUBE_VIDEO_RE.test(url)) {
+    return T_YOUTUBE_VIDEO;
+  }
+  if (VIMEO_VIDEO_RE.test(url)) {
+    return T_VIMEO_VIDEO;
+  }
+  if (COUB_VIDEO_RE.test(url)) {
+    return T_COUB_VIDEO;
+  }
+  if (IMGUR_GIFV_RE.test(url)) {
+    return T_IMGUR_GIFV;
+  }
+  if (GFYCAT_RE.test(url)) {
+    return T_GFYCAT;
+  }
   return null;
 }
 
 function getVideoId(url) {
   let m;
-  if ((m = YOUTUBE_VIDEO_RE.exec(url))) { return m[1]; }
-  if ((m = VIMEO_VIDEO_RE.exec(url))) { return m[1]; }
-  if ((m = COUB_VIDEO_RE.exec(url))) { return m[1]; }
-  if ((m = IMGUR_GIFV_RE.exec(url))) { return m[1]; }
-  if ((m = GFYCAT_RE.exec(url))) { return m[1]; }
+  if ((m = YOUTUBE_VIDEO_RE.exec(url))) {
+    return m[1];
+  }
+  if ((m = VIMEO_VIDEO_RE.exec(url))) {
+    return m[1];
+  }
+  if ((m = COUB_VIDEO_RE.exec(url))) {
+    return m[1];
+  }
+  if ((m = IMGUR_GIFV_RE.exec(url))) {
+    return m[1];
+  }
+  if ((m = GFYCAT_RE.exec(url))) {
+    return m[1];
+  }
   return null;
 }
 
 function getDefaultAspectRatio(url) {
-  if (YOUTUBE_VIDEO_RE.test(url)) { return 9 / 16; }
-  if (VIMEO_VIDEO_RE.test(url)) { return 9 / 16; }
-  if (COUB_VIDEO_RE.test(url)) { return 1; }
-  if (IMGUR_GIFV_RE.test(url)) { return 9 / 16; }
-  if (GFYCAT_RE.test(url)) { return 9 / 16; }
+  if (YOUTUBE_VIDEO_RE.test(url)) {
+    return 9 / 16;
+  }
+  if (VIMEO_VIDEO_RE.test(url)) {
+    return 9 / 16;
+  }
+  if (COUB_VIDEO_RE.test(url)) {
+    return 1;
+  }
+  if (IMGUR_GIFV_RE.test(url)) {
+    return 9 / 16;
+  }
+  if (GFYCAT_RE.test(url)) {
+    return 9 / 16;
+  }
   return null;
 }
 
