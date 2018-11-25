@@ -94,8 +94,10 @@ export const authMiddleware = (store) => {
     }
 
 
-    if (action.type === response(ActionTypes.SIGN_IN) ||
-       action.type === response(ActionTypes.SIGN_UP)) {
+    if (
+      action.type === response(ActionTypes.SIGN_IN) ||
+      action.type === response(ActionTypes.SIGN_UP)
+    ) {
       firstUnauthenticated = false;
       setToken(action.payload.authToken);
       next(action);
@@ -111,8 +113,10 @@ export const authMiddleware = (store) => {
       return browserHistory.push(`${backTo}`);
     }
 
-    if (action.type === response(ActionTypes.WHO_AM_I) ||
-       action.type === response(ActionTypes.UPDATE_USER)) {
+    if (
+      action.type === response(ActionTypes.WHO_AM_I) ||
+      action.type === response(ActionTypes.UPDATE_USER)
+    ) {
       persistUser(userParser(action.payload.users));
       return next(action);
     }
@@ -272,12 +276,17 @@ export const redirectionMiddleware = (store) => (next) => (action) => {
     return browserHistory.push('/');
   }
 
-  if (action.type === response(ActionTypes.UNADMIN_GROUP_ADMIN) &&
-      store.getState().user.id === action.request.user.id) {
+  if (
+    action.type === response(ActionTypes.UNADMIN_GROUP_ADMIN) &&
+    store.getState().user.id === action.request.user.id
+  ) {
     browserHistory.push(`/${action.request.groupName}/subscribers`);
   }
 
-  if (action.type === response(ActionTypes.CREATE_POST) && isInvitation(store.getState().routing)) {
+  if (
+    action.type === response(ActionTypes.CREATE_POST) &&
+    isInvitation(store.getState().routing)
+  ) {
     browserHistory.push('/filter/direct');
   }
 
