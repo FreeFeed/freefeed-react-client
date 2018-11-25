@@ -6,6 +6,7 @@ import Linkify from "./linkify";
 import TimeDisplay from "./time-display";
 import PaginatedView from "./paginated-view";
 
+
 const getAuthorName = ({ postAuthor, createdUser, group }) => {
   if (group && group.username) {
     return group.username;

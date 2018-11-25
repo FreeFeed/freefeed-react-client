@@ -5,6 +5,7 @@ import Loadable from 'react-loadable';
 
 import ImageAttachment from './post-attachment-image';
 
+
 const bordersSize = 4;
 const spaceSize = 8;
 const arrowSize = 24;

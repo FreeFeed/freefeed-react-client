@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+
 export default class ArchiveActivityForm extends React.Component {
   static propTypes = {
     action:    PropTypes.func.isRequired,

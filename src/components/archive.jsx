@@ -5,6 +5,7 @@ import { archiveRestoreActivity, archiveStartRestoration, resetArchiveForms } fr
 import ArchiveActivityForm from './archive-activity-form';
 import ArchiveRestorationForm from './archive-restoration-form';
 
+
 class Archive extends React.Component {
   componentWillUnmount() {
     this.props.resetArchiveForms();

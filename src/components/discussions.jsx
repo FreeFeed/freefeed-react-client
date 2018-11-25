@@ -8,6 +8,7 @@ import CreatePost from './create-post';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
 
+
 const FeedHandler = (props) => {
   const createPostComponent = (
     <CreatePost

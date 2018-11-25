@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import _ from 'lodash';
 
+
 export default class ArchiveRestorationForm extends React.Component {
   static propTypes = {
     action:    PropTypes.func.isRequired,

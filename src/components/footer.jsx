@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+
 export default () => (
   <footer className="footer">
     &copy; FreeFeed 1.57.1 (November 16, 2018)<br />

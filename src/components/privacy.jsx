@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+
 const Privacy = () => (
   <div className="box">
     <div className="box-header-timeline" />

@@ -10,6 +10,7 @@ import {
 } from '../redux/action-creators';
 import { tileUserListFactory, PLAIN, WITH_REQUEST_HANDLES, WITH_REVOKE_SENT_REQUEST } from './tile-user-list';
 
+
 const TileList = tileUserListFactory({ type: PLAIN, displayQuantity: true });
 const TileListWithAcceptAndReject = tileUserListFactory({ type: WITH_REQUEST_HANDLES, displayQuantity: true });
 const TileListWithRevoke = tileUserListFactory({ type: WITH_REVOKE_SENT_REQUEST, displayQuantity: true });

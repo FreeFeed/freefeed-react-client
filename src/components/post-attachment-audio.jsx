@@ -1,6 +1,7 @@
 import React from 'react';
 import numeral from 'numeral';
 
+
 class AudioAttachment extends React.PureComponent {
   handleClickOnRemoveAttachment = () => {
     this.props.removeAttachment(this.props.id);

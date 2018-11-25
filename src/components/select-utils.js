@@ -25,6 +25,7 @@ import {
   deleteComment
 } from '../redux/action-creators';
 
+
 const MAX_LIKES = 4;
 
 export const ommitBubblesThreshold = 600 * 1000; // 10 min

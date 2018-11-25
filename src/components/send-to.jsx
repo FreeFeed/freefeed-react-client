@@ -4,6 +4,7 @@ import { xor } from 'lodash';
 import Loadable from 'react-loadable';
 import propTypes from 'prop-types';
 
+
 const MY_FEED_LABEL = 'My feed';
 
 const Select = Loadable({

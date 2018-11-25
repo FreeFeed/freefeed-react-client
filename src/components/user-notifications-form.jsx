@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { preventDefault } from "../utils";
 import throbber16 from "../../assets/images/throbber-16.gif";
 
+
 export default class UserNotificationsForm extends React.Component {
   constructor(props) {
     super(props);

@@ -1,6 +1,7 @@
 import * as Api from '../services/api';
 import * as ActionTypes from './action-types';
 
+
 export function unauthenticated(payload) {
   return {
     type:    ActionTypes.UNAUTHENTICATED,

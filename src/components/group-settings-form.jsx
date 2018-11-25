@@ -4,6 +4,7 @@ import throbber16 from '../../assets/images/throbber-16.gif';
 import { preventDefault } from '../utils';
 import GroupFeedTypePicker from './group-feed-type-picker';
 
+
 export default class GroupSettingsForm extends React.Component {
   constructor(props) {
     super(props);

@@ -4,6 +4,7 @@ import defaultUserpicPath from '../../assets/images/default-userpic.svg';
 
 import config from '../config';
 
+
 const frontendPrefsConfig = config.frontendPreferences;
 
 export function getCookie(name) {

@@ -6,6 +6,7 @@ import { preventDefault } from '../utils';
 
 import GroupFeedTypePicker from './group-feed-type-picker';
 
+
 export default class GroupCreateForm extends React.Component {
   constructor(props) {
     super(props);

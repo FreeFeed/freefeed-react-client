@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import screenshot from '../../assets/images/screenshot.png';
 
+
 const About = ({ authenticated }) => (
   <div className="box">
     <div className="box-header-timeline" />

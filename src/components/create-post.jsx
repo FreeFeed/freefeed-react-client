@@ -7,6 +7,7 @@ import SendTo from './send-to';
 import Dropzone from './dropzone';
 import PostAttachments from './post-attachments';
 
+
 const isTextEmpty = (text) => text == '' || /^\s+$/.test(text);
 const getDefaultState = (invitation = '') => ({
   isFormEmpty:           true,

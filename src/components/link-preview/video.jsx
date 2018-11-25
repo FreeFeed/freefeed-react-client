@@ -10,6 +10,7 @@ import { contentResized } from './scroll-helpers/events';
 import cachedFetch from './cached-fetch';
 import * as aspectRatio from './scroll-helpers/size-cache';
 
+
 const YOUTUBE_VIDEO_RE = /^https?:\/\/(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?(?:v=|.+&v=)))([a-z0-9_-]+)/i;
 const VIMEO_VIDEO_RE = /^https:\/\/vimeo\.com\/([0-9]+)/i;
 const COUB_VIDEO_RE = /^https?:\/\/coub\.com\/view\/([a-z0-9]+)/i;

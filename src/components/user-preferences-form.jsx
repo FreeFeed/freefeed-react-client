@@ -5,6 +5,7 @@ import throbber16 from '../../assets/images/throbber-16.gif';
 import { preventDefault } from '../utils';
 import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
 
+
 export default class UserPreferencesForm extends React.Component {
   constructor(props) {
     super(props);

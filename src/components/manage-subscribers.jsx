@@ -9,6 +9,8 @@ import {
 } from '../redux/action-creators';
 
 import { tileUserListFactory, WITH_REMOVE_AND_MAKE_ADMIN_HANDLES, WITH_REMOVE_ADMIN_RIGHTS } from './tile-user-list';
+
+
 const SubsList = tileUserListFactory({ type: WITH_REMOVE_AND_MAKE_ADMIN_HANDLES });
 const AdminsList = tileUserListFactory({ type: WITH_REMOVE_ADMIN_RIGHTS });
 

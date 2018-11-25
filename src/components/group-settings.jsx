@@ -8,6 +8,7 @@ import { updateGroup, updateGroupPicture, resetGroupUpdateForm } from '../redux/
 import GroupSettingsForm from './group-settings-form';
 import GroupPictureForm from './group-picture-form';
 
+
 const GroupSettings = (props) => (
   props.groupSettings.status === 'loading' ? (
     <div className="box">

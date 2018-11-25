@@ -2,6 +2,7 @@ import React from 'react';
 
 import { ELEMENT_RESIZE_EVENT } from './events';
 
+
 export default class ScrollCompensator extends React.Component {
   root = null;
   prevHeight = 0;

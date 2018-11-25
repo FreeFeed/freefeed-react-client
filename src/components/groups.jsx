@@ -7,6 +7,8 @@ import { pluralForm } from '../utils';
 
 import { acceptGroupRequest, rejectGroupRequest } from '../redux/action-creators';
 import { tileUserListFactory, WITH_REQUEST_HANDLES, PLAIN } from './tile-user-list';
+
+
 const TileListWithAcceptAndReject = tileUserListFactory({ type: WITH_REQUEST_HANDLES, displayQuantity: true });
 const TileList = tileUserListFactory({ type: PLAIN, displayQuantity: true });
 

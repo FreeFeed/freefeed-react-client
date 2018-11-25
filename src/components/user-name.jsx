@@ -7,6 +7,7 @@ import Portal from 'react-portal';
 import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
 import UserCard from './user-card';
 
+
 const DisplayOption = ({ user, me, preferences }) => {
   const { username, screenName } = user;
 

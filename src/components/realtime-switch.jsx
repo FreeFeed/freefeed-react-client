@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { toggleRealtime, updateUserPreferences, home } from '../redux/action-creators';
 
+
 const getStatusIcon = (active, status) => {
   if (status === 'loading') {
     return 'refresh';

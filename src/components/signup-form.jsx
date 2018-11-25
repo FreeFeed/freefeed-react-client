@@ -8,6 +8,7 @@ import { signUpChange, signUp, signUpEmpty } from '../redux/action-creators';
 import { preventDefault } from '../utils';
 import LoaderContainer from './loader-container';
 
+
 const captchaConfig = config.captcha;
 
 function mapStateToProps(state) {

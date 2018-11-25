@@ -4,6 +4,7 @@ import classnames from 'classnames';
 
 import { ELEMENT_RESIZE_EVENT } from './events';
 
+
 export default class FoldableContent extends React.Component {
   static propTypes = {
     maxUnfoldedHeight: PropTypes.number.isRequired,

@@ -11,6 +11,7 @@ import '../styles/common/common.scss';
 import '../styles/helvetica/app.scss';
 import '../index.jade';
 
+
 require.context('../assets/fonts', true, /fontawesome.*/i);
 
 import configureStore from './redux/configure-store';

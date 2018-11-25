@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import SignupForm from './signup-form';
 
+
 function mapStateToProps(state) {
   return { error: state.signUpForm.error };
 }

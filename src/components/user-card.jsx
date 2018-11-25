@@ -9,6 +9,7 @@ import UserFeedStatus from './user-feed-status';
 import UserRelationshipStatus from './user-relationships-status';
 import { userActions, canAcceptDirects } from './select-utils';
 
+
 class UserCard extends React.Component {
   constructor(props) {
     super(props);

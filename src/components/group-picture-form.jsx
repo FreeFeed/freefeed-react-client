@@ -3,6 +3,7 @@ import React from 'react';
 import throbber16 from '../../assets/images/throbber-16.gif';
 import { preventDefault } from '../utils';
 
+
 export default class GroupPictureForm extends React.Component {
   pictureFile;
 

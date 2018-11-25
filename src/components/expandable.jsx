@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import classnames from "classnames";
 
+
 const DEFAULT_MAX_LINES = 8;
 const DEFAULT_ABOVE_FOLD_LINES = 5;
 const DEFAULT_KEY = "default";

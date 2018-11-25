@@ -3,6 +3,7 @@ import React from 'react';
 import { PhotoSwipe } from 'react-photoswipe';
 import Mousetrap from 'mousetrap';
 
+
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
 const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
 

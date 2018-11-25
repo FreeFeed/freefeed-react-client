@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+
 export default () => (
   <div className="box-body">
     <h3>What is FreeFeed</h3>

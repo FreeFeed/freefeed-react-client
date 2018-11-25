@@ -7,6 +7,7 @@ import { preventDefault } from "../utils";
 import { createFreefeedInvitation } from "../redux/action-creators";
 import SendTo from "./send-to";
 
+
 export const INVITATION_LANGUAGE_OPTIONS = {
   RUSSIAN: "ru",
   ENGLISH: "en",

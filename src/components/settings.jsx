@@ -17,6 +17,7 @@ import UserChangePasswordForm from './user-change-password-form';
 import UserPictureForm from './user-picture-form';
 import UserNotificationsForm from './user-notifications-form';
 
+
 class Settings extends React.Component {
   componentWillUnmount() {
     this.props.resetSettingsForms();

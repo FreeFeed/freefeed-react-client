@@ -4,6 +4,7 @@ import ReactHighcharts from 'react-highcharts';
 import moment from 'moment';
 import config from '../config';
 
+
 class StatsChart extends React.Component {
   constructor(props) {
     super(props);

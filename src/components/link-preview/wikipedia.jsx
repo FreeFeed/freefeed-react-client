@@ -5,6 +5,7 @@ import ScrollSafe from './scroll-helpers/scroll-safe';
 import FoldableContent from './scroll-helpers/foldable-content';
 import * as heightCache from './scroll-helpers/size-cache';
 
+
 const WIKIPEDIA_RE = /^https?:\/\/(\w+)\.wikipedia\.org\/wiki\/([^/]+)/i;
 
 export function canShowURL(url) {

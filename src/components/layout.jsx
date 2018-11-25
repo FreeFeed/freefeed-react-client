@@ -11,6 +11,7 @@ import Sidebar from './sidebar';
 import LoaderContainer from './loader-container';
 import SearchForm from './search-form';
 
+
 const InternalLayout = ({ authenticated, children }) => (
   <div className={authenticated ? 'col-md-9' : 'col-md-12'}>
     <div className="content">

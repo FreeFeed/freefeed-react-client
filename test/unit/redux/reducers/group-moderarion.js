@@ -5,6 +5,7 @@ import { feedViewState, posts } from '../../../../src/redux/reducers';
 import { response } from '../../../../src/redux/action-helpers';
 import { DELETE_POST, REALTIME_POST_UPDATE } from '../../../../src/redux/action-types';
 
+
 describe('Group moderation', () => {
   describe('feedViewState', () => {
     let state, action;

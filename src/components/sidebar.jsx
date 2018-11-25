@@ -6,6 +6,7 @@ import { preventDefault } from '../utils';
 import UserName from './user-name';
 import RecentGroups from './recent-groups';
 
+
 const LoggedInBlock = ({ user, signOut }) => (
   <div className="logged-in">
     <div className="avatar">

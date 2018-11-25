@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { createGroup, resetGroupCreateForm } from '../redux/action-creators';
 import GroupCreateForm from './group-create-form';
 
+
 const GroupCreate = (props) => (
   <div className="box">
     <div className="box-header-timeline">

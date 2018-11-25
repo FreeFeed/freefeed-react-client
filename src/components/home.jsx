@@ -11,6 +11,7 @@ import PaginatedView from './paginated-view';
 import RealtimeSwitch from './realtime-switch';
 import Welcome from './welcome';
 
+
 const FeedHandler = (props) => {
   const createPostComponent = (
     <CreatePost

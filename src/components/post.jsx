@@ -26,6 +26,7 @@ import LinkPreview from './link-preview/preview';
 import SendTo from './send-to';
 import { destinationsPrivacy } from './select-utils';
 
+
 class Post extends React.Component {
   selectFeeds;
 
