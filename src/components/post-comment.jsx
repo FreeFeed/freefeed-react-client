@@ -278,12 +278,12 @@ export default class PostComment extends React.Component {
 
   render() {
     const className = classnames({
-      'comment': true,
-      'highlighted': this.props.highlighted,
-      'omit-bubble': this.props.omitBubble,
-      'is-hidden': !!this.props.hideType,
+      'comment':            true,
+      'highlighted':        this.props.highlighted,
+      'omit-bubble':        this.props.omitBubble,
+      'is-hidden':          !!this.props.hideType,
       'highlight-from-url': this.props.highlightedFromUrl,
-      'my-comment': this.props.currentUser && this.props.user && (this.props.currentUser.id === this.props.user.id)
+      'my-comment':         this.props.currentUser && this.props.user && (this.props.currentUser.id === this.props.user.id)
     });
 
 

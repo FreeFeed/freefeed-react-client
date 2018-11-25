@@ -15,11 +15,11 @@ const imagesFromURL = memoize((url) => {
   const services = [{
     // Instagram
     from: /https?:\/\/www\.instagram\.com\/p\/([\w-]+)\//i,
-    to: ([, id]) => (`https://www.instagram.com/p/${id}/media/?size=l`)
+    to:   ([, id]) => (`https://www.instagram.com/p/${id}/media/?size=l`)
   }, {
     // YouTube
     from: /https?:\/\/(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\S*[^\w\s-])([\w-]{11})(?=[^\w-]|$)[?=&+%\w.-]*/i,
-    to: ([, id]) => (`https://i.ytimg.com/vi/${id}/hqdefault.jpg`)
+    to:   ([, id]) => (`https://i.ytimg.com/vi/${id}/hqdefault.jpg`)
   }];
 
   const imageUrls = [];
@@ -75,8 +75,8 @@ class Layout extends React.Component {
     const { props } = this;
 
     const layoutClassNames = classnames({
-      'container': true,
-      'bookmarklet': true,
+      'container':       true,
+      'bookmarklet':     true,
       'unauthenticated': !props.authenticated
     });
 
@@ -130,9 +130,9 @@ function selectState(state) {
 function mapDispatchToProps(dispatch) {
   return {
     createBookmarkletPost: (...args) => dispatch(createBookmarkletPost(...args)),
-    resetPostCreateForm: (...args) => dispatch(resetPostCreateForm(...args)),
+    resetPostCreateForm:   (...args) => dispatch(resetPostCreateForm(...args)),
     addAttachmentResponse: (...args) => dispatch(addAttachmentResponse(...args)),
-    removeAttachment: (...args) => dispatch(removeAttachment(...args))
+    removeAttachment:      (...args) => dispatch(removeAttachment(...args))
   };
 }
 

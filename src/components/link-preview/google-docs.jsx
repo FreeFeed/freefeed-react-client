@@ -13,10 +13,10 @@ const defaultAspectRatio = 2.2;
 const maxAspectRatio = 1.5;
 
 const initialState = {
-  preview: null,
-  type: '',
+  preview:     null,
+  type:        '',
   aspectRatio: defaultAspectRatio,
-  isError: false,
+  isError:     false,
 };
 
 class GoogleDocsPreview extends React.Component {
@@ -63,9 +63,9 @@ class GoogleDocsPreview extends React.Component {
           href={this.props.url}
           target="_blank"
           style={{
-            backgroundSize: `${zoomRate(type) * 100}%`,
-            backgroundImage: preview ? `url(${preview})` : null,
-            paddingBottom: `${100 / (aspectRatio >= maxAspectRatio ? aspectRatio : defaultAspectRatio)}%`,
+            backgroundSize:     `${zoomRate(type) * 100}%`,
+            backgroundImage:    preview ? `url(${preview})` : null,
+            paddingBottom:      `${100 / (aspectRatio >= maxAspectRatio ? aspectRatio : defaultAspectRatio)}%`,
             backgroundPosition: `center ${55 * aspectRatio * (zoomRate(type) - 1)}%`,
           }}
         />

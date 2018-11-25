@@ -38,7 +38,7 @@ class UserName extends React.Component {
     super(props);
 
     this.state = {
-      isHovered: false,
+      isHovered:  false,
       isCardOpen: false
     };
     this.enterUserName = this.enterUserName.bind(this);
@@ -126,7 +126,7 @@ class UserName extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    me: state.user.username,
+    me:                  state.user.username,
     frontendPreferences: state.user.frontendPreferences
   };
 };

@@ -33,8 +33,8 @@ class Post extends React.Component {
     super(props);
     this.state = {
       attachmentQueueLength: 0,
-      showTimestamps: false,
-      privacyWarning: null,
+      showTimestamps:        false,
+      privacyWarning:        null,
     };
   }
 
@@ -207,10 +207,10 @@ class Post extends React.Component {
     }
 
     const postClass = classnames({
-      'post': true,
-      'single-post': props.isSinglePost,
+      'post':          true,
+      'single-post':   props.isSinglePost,
       'timeline-post': !props.isSinglePost,
-      'direct-post': props.isDirect
+      'direct-post':   props.isDirect
     });
 
     const recipientCustomDisplay = function (recipient) {

@@ -13,7 +13,7 @@ export function canShowURL(url) {
 
 const initialState = {
   previewData: null,
-  isError: false,
+  isError:     false,
 };
 
 class WikipediaPreview extends React.Component {

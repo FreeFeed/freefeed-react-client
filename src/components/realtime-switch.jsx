@@ -29,9 +29,9 @@ class RealtimeSwitch extends React.PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    userId: state.user.id,
+    userId:              state.user.id,
     frontendPreferences: state.user.frontendPreferences,
-    status: state.frontendRealtimePreferencesForm.status,
+    status:              state.frontendRealtimePreferencesForm.status,
   };
 };
 

@@ -27,7 +27,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    createGroup: (...args) => dispatch(createGroup(...args)),
+    createGroup:          (...args) => dispatch(createGroup(...args)),
     resetGroupCreateForm: (...args) => dispatch(resetGroupCreateForm(...args))
   };
 }

@@ -61,7 +61,7 @@ function calculateMutual(subscriptions, subscribers) {
 
   return {
     header: 'Friends',
-    users: mutual
+    users:  mutual
   };
 }
 
@@ -79,11 +79,11 @@ function selectState(state) {
 
   const subscriptions = {
     header: 'Subscriptions',
-    users: subscriptionList
+    users:  subscriptionList
   };
   const blockedByMe = {
     header: 'Blocked',
-    users: state.usernameBlockedByMe.payload
+    users:  state.usernameBlockedByMe.payload
   };
   const { sentRequests } = state;
 

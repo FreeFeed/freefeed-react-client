@@ -10,9 +10,9 @@ export default class Expandable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      expanded: false,
+      expanded:     false,
       userExpanded: false,
-      maxHeight: 5000,
+      maxHeight:    5000,
     };
     this.userExpand = this.userExpand.bind(this);
     this.rewrap = this.rewrap.bind(this);
@@ -94,10 +94,10 @@ function gatherContentLines(node, contentSelector, breakSelector) {
 
   return lineRects.map(({ top, bottom, left, right }) => {
     return {
-      top: top - nodeClientRect.top,
+      top:    top - nodeClientRect.top,
       bottom: bottom - nodeClientRect.top,
-      left: left - nodeClientRect.left,
-      right: nodeClientRect.right - right,
+      left:   left - nodeClientRect.left,
+      right:  nodeClientRect.right - right,
     };
   });
 }

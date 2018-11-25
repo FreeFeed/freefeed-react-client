@@ -11,10 +11,10 @@ export default class GroupCreateForm extends React.Component {
     super(props);
 
     this.state = {
-      username: '',
-      screenName: '',
-      description: '',
-      isPrivate: '0',
+      username:     '',
+      screenName:   '',
+      description:  '',
+      isPrivate:    '0',
       isRestricted: '0'
     };
   }

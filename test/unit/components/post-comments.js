@@ -34,7 +34,7 @@ const commentArrays = generateArray(5).map((_, index) => generateArray(index));
 
 describe('<PostComments>', () => {
   it(`should render first comment if there're any comments`, () => {
-    const post = { omittedComments: 1, isCommenting: false, createdBy: { username:'' }, user: {} };
+    const post = { omittedComments: 1, isCommenting: false, createdBy: { username: '' }, user: {} };
 
     expect(
       <PostComments comments={[]} post={post} />,
@@ -57,7 +57,7 @@ describe('<PostComments>', () => {
   });
 
   it('should render right number of comments', async () => {
-    const post = { omittedComments: 0, isCommenting: false, createdBy: { username:'' }, user: {} };
+    const post = { omittedComments: 0, isCommenting: false, createdBy: { username: '' }, user: {} };
 
     expect(
       <PostComments comments={[]} post={post} />,
@@ -86,7 +86,7 @@ describe('<PostComments>', () => {
   });
 
   it('should render omitted number properly', () => {
-    const post = { omittedComments: 2, isCommenting: false, createdBy: { username:'' }, user: {} };
+    const post = { omittedComments: 2, isCommenting: false, createdBy: { username: '' }, user: {} };
 
     expect(
       <PostComments comments={[{}, {}]} post={post} />,
@@ -98,7 +98,7 @@ describe('<PostComments>', () => {
 
   it(`should not render omitted number when there're no omitted comments`, () => {
     commentArrays.map((comments) => {
-      const post = { omittedComments: 0, isCommenting: false, createdBy: { username:'' }, user: {} };
+      const post = { omittedComments: 0, isCommenting: false, createdBy: { username: '' }, user: {} };
       expect(
         <PostComments comments={comments} post={post} />,
         'when rendered',
@@ -141,7 +141,7 @@ describe('<PostComments>', () => {
   });
 
   it('should render commenting section only if post is commented', () => {
-    const post = { omittedComments: 1, isCommenting: false, createdBy: { username:'' }, user: {} };
+    const post = { omittedComments: 1, isCommenting: false, createdBy: { username: '' }, user: {} };
     expect(
       <PostComments comments={[]} post={post} />,
       'when rendered',

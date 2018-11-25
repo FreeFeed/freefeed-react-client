@@ -9,11 +9,11 @@ import PostAttachments from './post-attachments';
 
 const isTextEmpty = (text) => text == '' || /^\s+$/.test(text);
 const getDefaultState = (invitation = '') => ({
-  isFormEmpty: true,
-  isMoreOpen: false,
+  isFormEmpty:           true,
+  isMoreOpen:            false,
   attachmentQueueLength: 0,
-  postText: invitation,
-  commentsDisabled: false,
+  postText:              invitation,
+  commentsDisabled:      false,
 });
 
 export default class CreatePost extends React.Component {

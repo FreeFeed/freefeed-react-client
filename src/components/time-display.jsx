@@ -21,9 +21,9 @@ const ticker = new Ticker(30000); // 30 sec
 
 class TimeDisplay extends React.Component {
   static propTypes = {
-    timeStamp: pt.oneOfType([pt.number.isRequired, pt.string.isRequired]),
-    className: pt.string,
-    timeAgoInTitle: pt.bool,
+    timeStamp:       pt.oneOfType([pt.number.isRequired, pt.string.isRequired]),
+    className:       pt.string,
+    timeAgoInTitle:  pt.bool,
     serverTimeAhead: pt.number.isRequired,
   };
 

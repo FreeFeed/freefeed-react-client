@@ -28,8 +28,8 @@ export function setCookie(name, value = '', expireDays, path) {
 
 const userDefaults = {
   profilePictureMediumUrl: defaultUserpicPath,
-  profilePictureLargeUrl: defaultUserpicPath,
-  frontendPreferences: frontendPrefsConfig.defaultValues
+  profilePictureLargeUrl:  defaultUserpicPath,
+  frontendPreferences:     frontendPrefsConfig.defaultValues
 };
 
 export function userParser(user) {

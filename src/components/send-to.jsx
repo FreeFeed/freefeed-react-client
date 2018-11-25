@@ -26,19 +26,19 @@ const Select = Loadable({
 
 class SendTo extends React.Component {
   static propTypes = {
-    isDirects: propTypes.bool,
-    isEditing: propTypes.bool,
-    excludeMyFeed: propTypes.bool,
+    isDirects:        propTypes.bool,
+    isEditing:        propTypes.bool,
+    excludeMyFeed:    propTypes.bool,
     alwaysShowSelect: propTypes.bool,
     disableAutoFocus: propTypes.bool,
-    showFeedsOption: propTypes.bool,
-    fixedOptions: propTypes.bool,
+    showFeedsOption:  propTypes.bool,
+    fixedOptions:     propTypes.bool,
 
     defaultFeed: propTypes.oneOfType([propTypes.string, propTypes.arrayOf(propTypes.string)]),
-    user: propTypes.shape({ username: propTypes.string }),
-    feeds: propTypes.arrayOf(propTypes.shape({
+    user:        propTypes.shape({ username: propTypes.string }),
+    feeds:       propTypes.arrayOf(propTypes.shape({
       username: propTypes.string,
-      type: propTypes.oneOf(['user', 'group']),
+      type:     propTypes.oneOf(['user', 'group']),
     })),
   };
 
@@ -87,7 +87,7 @@ class SendTo extends React.Component {
     return {
       values,
       options,
-      showFeedsOption: defaultFeeds.length === 0 || props.alwaysShowSelect || props.isEditing,
+      showFeedsOption:         defaultFeeds.length === 0 || props.alwaysShowSelect || props.isEditing,
       isIncorrectDestinations: false
     };
   }
@@ -208,4 +208,4 @@ function selectState({ sendTo: { feeds } }, ownProps) {
   return { feeds };
 }
 
-export default connect(selectState, null, null, { withRef:true })(SendTo);
+export default connect(selectState, null, null, { withRef: true })(SendTo);

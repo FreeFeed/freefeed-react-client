@@ -12,8 +12,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     signInChange: (...args) => dispatch(signInChange(...args)),
-    signIn: (...args) => dispatch(signIn(...args)),
-    signInEmpty: (...args) => dispatch(signInEmpty(...args)),
+    signIn:       (...args) => dispatch(signIn(...args)),
+    signInEmpty:  (...args) => dispatch(signInEmpty(...args)),
   };
 }
 

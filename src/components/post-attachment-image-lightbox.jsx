@@ -7,24 +7,24 @@ const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
 const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
 
 const lightboxOptions = {
-  shareEl: false,
+  shareEl:                 false,
   clickToCloseNonZoomable: false,
-  bgOpacity: 0.8,
-  galleryPIDs: true,
+  bgOpacity:               0.8,
+  galleryPIDs:             true,
 };
 
 export default class ImageAttachmentsLightbox extends React.Component {
   static propTypes = {
     items: pt.arrayOf(pt.shape({
       src: pt.string.isRequired,
-      w: pt.number.isRequired,
-      h: pt.number.isRequired,
+      w:   pt.number.isRequired,
+      h:   pt.number.isRequired,
       pid: pt.string.isRequired,
     })).isRequired,
-    postId: pt.string,
-    index: pt.number.isRequired,
+    postId:       pt.string,
+    index:        pt.number.isRequired,
     getThumbnail: pt.func.isRequired,
-    onDestroy: pt.func.isRequired,
+    onDestroy:    pt.func.isRequired,
   };
 
   state = {
@@ -97,9 +97,9 @@ export default class ImageAttachmentsLightbox extends React.Component {
         gettingData={this.getItemData}
         options={{
           ...lightboxOptions,
-          galleryUID: (this.props.postId || 'new-post').substr(0, 8),
+          galleryUID:       (this.props.postId || 'new-post').substr(0, 8),
           getThumbBoundsFn: this.getThumbBounds,
-          index: this.state.currentIndex,
+          index:            this.state.currentIndex,
         }}
         isOpen={true}
         onClose={this.whenClosed}

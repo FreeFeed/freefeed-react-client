@@ -91,10 +91,10 @@ function selectState(state) {
 function selectActions(dispatch) {
   return {
     ...postActions(dispatch),
-    createPost: (feeds, postText, attachmentIds, more) => dispatch(createPost(feeds, postText, attachmentIds, more)),
+    createPost:          (feeds, postText, attachmentIds, more) => dispatch(createPost(feeds, postText, attachmentIds, more)),
     resetPostCreateForm: (...args) => dispatch(resetPostCreateForm(...args)),
-    expandSendTo: () => dispatch(expandSendTo()),
-    toggleHiddenPosts: () => dispatch(toggleHiddenPosts())
+    expandSendTo:        () => dispatch(expandSendTo()),
+    toggleHiddenPosts:   () => dispatch(toggleHiddenPosts())
   };
 }
 

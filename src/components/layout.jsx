@@ -124,7 +124,7 @@ class Layout extends React.Component {
 
     const layoutClassNames = classnames({
       'container': true,
-      'dragover': this.state.isDragOver
+      'dragover':  this.state.isDragOver
     });
 
     return (
@@ -179,19 +179,19 @@ class Layout extends React.Component {
 
 function select(state, ownProps) {
   return {
-    user: state.user,
+    user:          state.user,
     authenticated: state.authenticated,
-    loadingView: state.routeLoadingState,
-    recentGroups: state.recentGroups,
-    routeName: getCurrentRouteName(ownProps),
-    title: state.title
+    loadingView:   state.routeLoadingState,
+    recentGroups:  state.recentGroups,
+    routeName:     getCurrentRouteName(ownProps),
+    title:         state.title
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     signOut: () => dispatch(unauthenticated()),
-    home: () => dispatch(home()),
+    home:    () => dispatch(home()),
   };
 }
 

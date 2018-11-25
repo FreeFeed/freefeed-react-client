@@ -375,7 +375,7 @@ const isFirstFriendInteraction = (post, { users }, { subscriptions, comments }) 
 const postFetchDelay = 20000; // 20 sec
 const bindHandlers = (store) => ({
   'user:update': (data) => store.dispatch({ ...data, type: ActionTypes.REALTIME_USER_UPDATE }),
-  'post:new': (data) => {
+  'post:new':    (data) => {
     const state = store.getState();
     const isFeedFirstPage = isFirstPage(state);
     const isHomeFeed = state.routing.locationBeforeTransitions.pathname === '/';
@@ -385,27 +385,27 @@ const bindHandlers = (store) => ({
 
     return store.dispatch({ ...data, type: ActionTypes.REALTIME_POST_NEW, post: data.posts, shouldBump });
   },
-  'post:update': (data) => store.dispatch({ ...data, type: ActionTypes.REALTIME_POST_UPDATE, post: data.posts }),
+  'post:update':  (data) => store.dispatch({ ...data, type: ActionTypes.REALTIME_POST_UPDATE, post: data.posts }),
   'post:destroy': (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId }),
-  'post:hide': (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId }),
-  'post:unhide': (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId }),
-  'comment:new': async (data) => {
+  'post:hide':    (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId }),
+  'post:unhide':  (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId }),
+  'comment:new':  async (data) => {
     const { postId } = data.comments;
     const action = { ...data, type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments };
     return dispatchWithPost(store, postId, action, () => true, postFetchDelay);
   },
-  'comment:update': (data) => store.dispatch({ ...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments }),
+  'comment:update':  (data) => store.dispatch({ ...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments }),
   'comment:destroy': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId, postId: data.postId }),
-  'like:new': async (data) => {
+  'like:new':        async (data) => {
     const { postId } = data.meta;
     const iLiked = iLikedPost(store.getState(), postId);
     const action = { type: ActionTypes.REALTIME_LIKE_NEW, postId, users: [data.users], iLiked };
     return dispatchWithPost(store, postId, action, isFirstFriendInteraction, postFetchDelay);
   },
-  'like:remove': (data) => store.dispatch({ type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId }),
-  'comment_like:new': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment:data.comments }),
-  'comment_like:remove': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment:data.comments }),
-  'global:user:update': (data) => store.dispatch({ type: ActionTypes.REALTIME_GLOBAL_USER_UPDATE, user: data.user }),
+  'like:remove':         (data) => store.dispatch({ type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId }),
+  'comment_like:new':    (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments }),
+  'comment_like:remove': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments }),
+  'global:user:update':  (data) => store.dispatch({ type: ActionTypes.REALTIME_GLOBAL_USER_UPDATE, user: data.user }),
 });
 
 export const realtimeMiddleware = (store) => {

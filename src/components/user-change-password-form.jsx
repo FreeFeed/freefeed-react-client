@@ -9,8 +9,8 @@ export default class UserChangePasswordForm extends React.Component {
   handleSubmit = preventDefault(() => {
     if (!this.props.isSaving) {
       this.props.updatePassword({
-        currentPassword: this.currentPassword.value,
-        password: this.password.value,
+        currentPassword:      this.currentPassword.value,
+        password:             this.password.value,
         passwordConfirmation: this.passwordConfirmation.value,
       });
     }

@@ -20,25 +20,25 @@ const ImageAttachmentsLightbox = Loadable({
     }
     return null;
   },
-  loader: () => import('./post-attachment-image-lightbox'),
-  delay: 500,
+  loader:  () => import('./post-attachment-image-lightbox'),
+  delay:   500,
   timeout: 10000,
 });
 
 export default class ImageAttachmentsContainer extends React.Component {
   static propTypes = {
-    attachments: pt.array.isRequired,
-    isSinglePost: pt.bool,
-    isEditing: pt.bool,
+    attachments:      pt.array.isRequired,
+    isSinglePost:     pt.bool,
+    isEditing:        pt.bool,
     removeAttachment: pt.func,
-    postId: pt.string,
+    postId:           pt.string,
   };
 
   state = {
     containerWidth: 0,
-    isFolded: true,
-    needsFolding: false,
-    lightboxIndex: -1, // lightbox is hidden if lightboxIndex < 0
+    isFolded:       true,
+    needsFolding:   false,
+    lightboxIndex:  -1, // lightbox is hidden if lightboxIndex < 0
   };
 
   container = null;
@@ -80,8 +80,8 @@ export default class ImageAttachmentsContainer extends React.Component {
   getLightboxItems() {
     return this.props.attachments.map((a) => ({
       src: a.url,
-      w: a.imageSizes && a.imageSizes.o && a.imageSizes.o.w || 0,
-      h: a.imageSizes && a.imageSizes.o && a.imageSizes.o.h || 0,
+      w:   a.imageSizes && a.imageSizes.o && a.imageSizes.o.w || 0,
+      h:   a.imageSizes && a.imageSizes.o && a.imageSizes.o.h || 0,
       pid: a.id.substr(0, 8),
     }));
   }
@@ -117,9 +117,9 @@ export default class ImageAttachmentsContainer extends React.Component {
     const isSingleImage = this.props.attachments.length === 1;
     const className = classnames({
       'image-attachments': true,
-      'is-folded': this.state.isFolded,
-      'needs-folding': this.state.needsFolding,
-      'single-image': isSingleImage
+      'is-folded':         this.state.isFolded,
+      'needs-folding':     this.state.needsFolding,
+      'single-image':      isSingleImage
     });
 
     const showFolded = (this.state.needsFolding && this.state.isFolded);

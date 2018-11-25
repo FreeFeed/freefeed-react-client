@@ -82,18 +82,18 @@ const trackerStyle = {
 };
 
 const sensorStyle = {
-  position: 'absolute',
-  top: '0',
-  left: '0',
-  width: '100%',
-  height: '100%',
-  overflow: 'scroll',
+  position:      'absolute',
+  top:           '0',
+  left:          '0',
+  width:         '100%',
+  height:        '100%',
+  overflow:      'scroll',
   pointerEvents: 'none',
-  zIndex: -1,
-  opacity: 0,
+  zIndex:        -1,
+  opacity:       0,
 };
 
 const colSliderStyle = {
-  width: '200%',
+  width:  '200%',
   height: '200%',
 };

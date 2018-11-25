@@ -11,8 +11,8 @@ export default class CommentLikes extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      likeListVisible: false,
-      showActionsPanel: false,
+      likeListVisible:   false,
+      showActionsPanel:  false,
       showActionButtons: true,
     };
   }
@@ -146,7 +146,7 @@ export default class CommentLikes extends React.Component {
                       }
                     </div>
                   </div>
-                  <div className="mention-actions" style={{ transform:`translateY(${this.state.showActionButtons ? "0%" : "100%"})` }}>
+                  <div className="mention-actions" style={{ transform: `translateY(${this.state.showActionButtons ? "0%" : "100%"})` }}>
                     {this.props.forbidLiking
                       ? (
                         <div className="mention-action non-likable">

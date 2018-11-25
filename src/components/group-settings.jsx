@@ -57,17 +57,17 @@ const GroupSettings = (props) => (
 
 function mapStateToProps(state, ownProps) {
   return {
-    group: (_.find(state.users, { 'username': ownProps.params.userName }) || {}),
-    groupSettings: state.groupSettings,
+    group:             (_.find(state.users, { 'username': ownProps.params.userName }) || {}),
+    groupSettings:     state.groupSettings,
     groupSettingsForm: state.groupSettingsForm,
-    groupPictureForm: state.groupPictureForm
+    groupPictureForm:  state.groupPictureForm
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateGroup: (...args) => dispatch(updateGroup(...args)),
-    updateGroupPicture: (...args) => dispatch(updateGroupPicture(...args)),
+    updateGroup:          (...args) => dispatch(updateGroup(...args)),
+    updateGroupPicture:   (...args) => dispatch(updateGroupPicture(...args)),
     resetGroupUpdateForm: (...args) => dispatch(resetGroupUpdateForm(...args))
   };
 }

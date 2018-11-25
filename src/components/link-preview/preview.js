@@ -39,7 +39,7 @@ export default function LinkPreview({ allowEmbedly, url }) {
 
 LinkPreview.propTypes = {
   allowEmbedly: PropTypes.bool.isRequired,
-  url: PropTypes.string.isRequired,
+  url:          PropTypes.string.isRequired,
 };
 
 function noPreviewForURL(url) {

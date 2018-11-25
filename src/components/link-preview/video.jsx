@@ -32,7 +32,7 @@ class VideoPreview extends React.Component {
   };
 
   state = {
-    info: null,
+    info:   null,
     player: false,
   };
 
@@ -51,7 +51,7 @@ class VideoPreview extends React.Component {
     }
     if (this.props.url !== nextProps.url) {
       this.setState({
-        info: null,
+        info:   null,
         player: false,
       });
       setTimeout(this.loadInfo, 0);
@@ -153,10 +153,10 @@ async function getVideoInfo(url) {
         return { error: data.error ? data.error : 'error loading data' };
       }
       return {
-        byline: `${data.title} by ${data.author_name}`,
+        byline:      `${data.title} by ${data.author_name}`,
         aspectRatio: aspectRatio.set(url, data.height / data.width),
-        previewURL: data.thumbnail_url,
-        playerURL: `https://www.youtube.com/embed/${getVideoId(url)}?rel=0&fs=1&autoplay=1&start=${youtubeStartTime(url)}`,
+        previewURL:  data.thumbnail_url,
+        playerURL:   `https://www.youtube.com/embed/${getVideoId(url)}?rel=0&fs=1&autoplay=1&start=${youtubeStartTime(url)}`,
       };
     }
     case T_VIMEO_VIDEO: {
@@ -169,10 +169,10 @@ async function getVideoInfo(url) {
       }
       const { hash } = urlParse(url);
       return {
-        byline: `${data.title} by ${data.author_name}`,
+        byline:      `${data.title} by ${data.author_name}`,
         aspectRatio: aspectRatio.set(url, data.height / data.width),
-        previewURL: data.thumbnail_url.replace(/[0-9]+x[0-9]+/, '450'),
-        playerURL: `https://player.vimeo.com/video/${getVideoId(url)}?autoplay=1${hash ? hash : ''}`,
+        previewURL:  data.thumbnail_url.replace(/[0-9]+x[0-9]+/, '450'),
+        playerURL:   `https://player.vimeo.com/video/${getVideoId(url)}?autoplay=1${hash ? hash : ''}`,
       };
     }
     case T_COUB_VIDEO: {
@@ -184,10 +184,10 @@ async function getVideoInfo(url) {
         return { error: data.error ? data.error : 'error loading data' };
       }
       return {
-        byline: `${data.title} by ${data.author_name}`,
+        byline:      `${data.title} by ${data.author_name}`,
         aspectRatio: aspectRatio.set(url, data.height / data.width),
-        previewURL: data.thumbnail_url,
-        playerURL: `https://coub.com/embed/${getVideoId(url)}?autostart=true`,
+        previewURL:  data.thumbnail_url,
+        playerURL:   `https://coub.com/embed/${getVideoId(url)}?autostart=true`,
       };
     }
     case T_IMGUR_GIFV: {
@@ -196,10 +196,10 @@ async function getVideoInfo(url) {
       try {
         const img = await loadImage(previewURL);
         return {
-          byline: 'View at Imgur',
+          byline:      'View at Imgur',
           previewURL,
           aspectRatio: aspectRatio.set(url, img.height / img.width),
-          videoURL: `https://i.imgur.com/${id}.mp4`,
+          videoURL:    `https://i.imgur.com/${id}.mp4`,
         };
       } catch (e) {
         return { error: e.message };
@@ -211,10 +211,10 @@ async function getVideoInfo(url) {
       try {
         const img = await loadImage(previewURL);
         return {
-          byline: 'View at Gfycat',
+          byline:      'View at Gfycat',
           previewURL,
           aspectRatio: aspectRatio.set(url, img.height / img.width),
-          playerURL: `https://gfycat.com/ifr/${id}`,
+          playerURL:   `https://gfycat.com/ifr/${id}`,
         };
       } catch (e) {
         return { error: e.message };

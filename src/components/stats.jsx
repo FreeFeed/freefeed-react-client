@@ -79,7 +79,7 @@ class StatsChart extends React.Component {
             radius: 2
           },
           lineWidth: 1,
-          states: {
+          states:    {
             hover: {
               lineWidth: 1
             }

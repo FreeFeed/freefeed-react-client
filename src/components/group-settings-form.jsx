@@ -9,11 +9,11 @@ export default class GroupSettingsForm extends React.Component {
     super(props);
 
     this.state = {
-      screenName: this.props.group.screenName,
-      description: this.props.group.description,
-      isPrivate: this.props.group.isPrivate,
-      isProtected: this.props.group.isProtected,
-      isRestricted:  this.props.group.isRestricted,
+      screenName:         this.props.group.screenName,
+      description:        this.props.group.description,
+      isPrivate:          this.props.group.isPrivate,
+      isProtected:        this.props.group.isProtected,
+      isRestricted:       this.props.group.isRestricted,
       isWarningDisplayed: false
     };
   }
@@ -21,11 +21,11 @@ export default class GroupSettingsForm extends React.Component {
   componentWillReceiveProps = (newProps) => {
     if (newProps.status !== "loading") {
       this.setState({
-        screenName: newProps.group.screenName,
-        description: newProps.group.description,
-        isPrivate: newProps.group.isPrivate,
-        isProtected: newProps.group.isProtected,
-        isRestricted: newProps.group.isRestricted,
+        screenName:         newProps.group.screenName,
+        description:        newProps.group.description,
+        isPrivate:          newProps.group.isPrivate,
+        isProtected:        newProps.group.isProtected,
+        isRestricted:       newProps.group.isRestricted,
         isWarningDisplayed: false
       });
     }

@@ -30,8 +30,8 @@ export default ({ likes, showMoreLikes, post }) => {
 
   if (post.omittedLikes) {
     likeList.push({
-      id: 'more-likes',
-      omittedLikes: post.omittedLikes,
+      id:            'more-likes',
+      omittedLikes:  post.omittedLikes,
       showMoreLikes: () => showMoreLikes(post.id)
     });
   }

@@ -11,7 +11,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    reset: (...args) => dispatch(resetPassword(...args)),
+    reset:      (...args) => dispatch(resetPassword(...args)),
     validation: (...args) => dispatch(resetPasswordValidationFail(...args)),
   };
 }

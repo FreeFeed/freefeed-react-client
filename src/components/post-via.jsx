@@ -5,7 +5,7 @@ import UserName from './user-name';
 
 // props types
 const userType = PropTypes.shape({
-  id: PropTypes.string,
+  id:       PropTypes.string,
   username: PropTypes.string
 });
 
@@ -16,14 +16,14 @@ const commentType = PropTypes.shape({
 export default class PostVia extends React.Component {
   static propTypes = {
     post: PropTypes.shape({
-      createdBy: userType,
-      recipients: PropTypes.arrayOf(userType),
-      comments: PropTypes.arrayOf(commentType),
+      createdBy:      userType,
+      recipients:     PropTypes.arrayOf(userType),
+      comments:       PropTypes.arrayOf(commentType),
       usersLikedPost: PropTypes.arrayOf(userType)
     }).isRequired,
 
     me: PropTypes.shape({
-      id: PropTypes.string,
+      id:            PropTypes.string,
       subscriptions: PropTypes.arrayOf(PropTypes.string)
     }).isRequired
   };

@@ -12,7 +12,7 @@ const user1 = { id: '1' };
 const user2 = { id: '2' };
 
 const post = {
-  id: '1',
+  id:       '1',
   comments: [comment1.id, comment2.id, comment3.id],
   postedTo: [],
 };
@@ -20,7 +20,7 @@ const post = {
 const composeState = ({ subsequentComments, setting, omittedComments = 0, withDelay = false }) => {
   return {
     posts: {
-      [post.id] : post
+      [post.id]: post
     },
     comments: {
       [comment1.id]: {
@@ -40,14 +40,14 @@ const composeState = ({ subsequentComments, setting, omittedComments = 0, withDe
       }
     },
     commentsHighlights: {},
-    commentLikes: {},
-    commentViewState: {
+    commentLikes:       {},
+    commentViewState:   {
       [comment1.id]: {},
       [comment2.id]: {},
       [comment3.id]: {},
     },
     postsViewState: {
-      [post.id]:{ omittedComments }
+      [post.id]: { omittedComments }
     },
     user: {
       frontendPreferences: {

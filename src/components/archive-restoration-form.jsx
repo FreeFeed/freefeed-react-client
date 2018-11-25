@@ -16,8 +16,8 @@ export default class ArchiveRestorationForm extends React.Component {
   };
 
   state = {
-    disable_comments:      false,
-    via_restore:           [],
+    disable_comments: false,
+    via_restore:      [],
   };
 
   setDisableComments = (e) => this.setState({ disable_comments: e.target.checked });

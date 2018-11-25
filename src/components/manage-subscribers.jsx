@@ -94,8 +94,8 @@ function selectState(state, ownProps) {
 function selectActions(dispatch) {
   return {
     unsubscribeFromGroup: (...args) => dispatch(unsubscribeFromGroup(...args)),
-    makeGroupAdmin: (...args) => dispatch(makeGroupAdmin(...args)),
-    unadminGroupAdmin: (...args) => dispatch(unadminGroupAdmin(...args))
+    makeGroupAdmin:       (...args) => dispatch(makeGroupAdmin(...args)),
+    unadminGroupAdmin:    (...args) => dispatch(unadminGroupAdmin(...args))
   };
 }
 

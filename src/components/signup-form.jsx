@@ -17,8 +17,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     signUpChange: (...args) => dispatch(signUpChange(...args)),
-    signUp: (...args) => dispatch(signUp(...args)),
-    signUpEmpty: (...args) => dispatch(signUpEmpty(...args)),
+    signUp:       (...args) => dispatch(signUp(...args)),
+    signUpEmpty:  (...args) => dispatch(signUpEmpty(...args)),
   };
 }
 
@@ -86,27 +86,27 @@ function signUpFunc(form, { signUp, signUpEmpty, invitationId }) {
 
 const LABELS = {
   'en': {
-    username: 'Username (At least 3 characters: latin letters a..z, digits 0..9)',
-    email: 'Email',
-    password: 'Password',
+    username:  'Username (At least 3 characters: latin letters a..z, digits 0..9)',
+    email:     'Email',
+    password:  'Password',
     subscribe: 'Subscribe to recommended users and groups',
-    signup: 'Sign up',
+    signup:    'Sign up',
   },
   'ru': {
-    username: 'Имя пользователя (Не менее трех символов: латинские буквы a..z, цифры 0..9)',
-    email: 'Email',
-    password: 'Пароль',
+    username:  'Имя пользователя (Не менее трех символов: латинские буквы a..z, цифры 0..9)',
+    email:     'Email',
+    password:  'Пароль',
     subscribe: 'Подписаться на рекомендованных пользователей и группы',
-    signup: 'Зарегистрироваться',
+    signup:    'Зарегистрироваться',
   },
 };
 
 class Signup extends React.Component {
   state = {
-    username: '',
-    password: '',
-    email: '',
-    captcha: null,
+    username:  '',
+    password:  '',
+    email:     '',
+    captcha:   null,
     subscribe: true,
   };
 

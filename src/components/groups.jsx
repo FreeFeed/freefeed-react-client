@@ -85,12 +85,12 @@ function selectState(state) {
 
   const myGroups = {
     header: 'Groups you admin',
-    users: _.sortBy(adminGroups, sortingRule)
+    users:  _.sortBy(adminGroups, sortingRule)
   };
 
   const groupsIAmIn = {
     header: 'Groups you are in',
-    users: _.sortBy(regularGroups, sortingRule)
+    users:  _.sortBy(regularGroups, sortingRule)
   };
 
   return { groupRequests, myGroups, groupsIAmIn };

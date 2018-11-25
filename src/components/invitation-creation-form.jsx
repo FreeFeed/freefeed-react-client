@@ -14,13 +14,13 @@ export const INVITATION_LANGUAGE_OPTIONS = {
 
 class InvitationCreationForm extends React.Component {
   state = {
-    message: "",
+    message:     "",
     suggestions: {
-      users: [],
+      users:  [],
       groups: [],
     },
     singleUse: false,
-    lang: INVITATION_LANGUAGE_OPTIONS.RUSSIAN,
+    lang:      INVITATION_LANGUAGE_OPTIONS.RUSSIAN,
   };
 
   componentDidMount() {
@@ -145,7 +145,7 @@ class InvitationCreationForm extends React.Component {
     const { message, lang } = this.state;
     const customMessage = clearMessageFromUsersAndGroups(message, this.state.suggestions);
     const suggestions = {
-      users: this.userFeedsSelector.values,
+      users:  this.userFeedsSelector.values,
       groups: this.groupFeedsSelector.values,
     };
     const descriptions = patchDescriptions(this.props.feedsDescriptions, this.props.user.username, this.state.lang);
@@ -175,7 +175,7 @@ function mapStateToProps(state) {
     userFeeds,
     groupFeeds,
     feedsDescriptions,
-    form: createInvitationForm,
+    form:         createInvitationForm,
   };
 }
 
@@ -250,7 +250,7 @@ function selectUsersAndGroupsFromText(message, { users, groups }) {
   const usernameRegexp = formatAllUsernameRegexp(users, groups);
   const usersAndGroupsMentions = message.match(usernameRegexp) || [];
   return {
-    users: usersAndGroupsMentions.filter((str) => users.some((user) => str.indexOf(user) === 1)),
+    users:  usersAndGroupsMentions.filter((str) => users.some((user) => str.indexOf(user) === 1)),
     groups: usersAndGroupsMentions.filter((str) => groups.some((group) => str.indexOf(group) === 1)),
   };
 }
