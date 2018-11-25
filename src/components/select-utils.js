@@ -200,7 +200,7 @@ export function postActions(dispatch) {
       toggleEditingComment:  (commentId) => dispatch(toggleEditingComment(commentId)),
       saveEditingComment:    (commentId, newValue) => dispatch(saveEditingComment(commentId, newValue)),
       deleteComment:         (commentId) => dispatch(deleteComment(commentId)),
-      highlightComment:      (postId, author, arrows, baseCommentId) => dispatch(highlightComment(postId, author, arrows,  baseCommentId)),
+      highlightComment:      (postId, author, arrows, baseCommentId) => dispatch(highlightComment(postId, author, arrows, baseCommentId)),
       clearHighlightComment: () => dispatch(clearHighlightComment()),
       likeComment:           (commentId) => dispatch(likeComment(commentId)),
       unlikeComment:         (commentId) => dispatch(unlikeComment(commentId)),

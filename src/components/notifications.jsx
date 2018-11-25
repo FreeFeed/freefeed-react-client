@@ -68,7 +68,7 @@ const notificationTemplates = {
       <Linkify>{` in the group @${event.group.username}`}</Linkify>
     </div>
   ),
-  post_moderated: (event) =>  (
+  post_moderated: (event) => (
     <div>
       <Linkify>{`@${event.createdUser.username} has removed your `}</Linkify>
       {event.post_id ? postLink(event) : 'post'}

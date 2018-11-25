@@ -270,7 +270,7 @@ export function feedViewState(state = initFeed, action) {
     let visibleEntries, hiddenEntries;
     if (separateHiddenEntries) {
       visibleEntries = (action.payload.posts || []).filter((post) => !post.isHidden).map((post) => post.id);
-      hiddenEntries  = (action.payload.posts || []).filter((post) =>  post.isHidden).map((post) => post.id);
+      hiddenEntries = (action.payload.posts || []).filter((post) => post.isHidden).map((post) => post.id);
     } else {
       visibleEntries = (action.payload.posts || []).map((post) => post.id);
       hiddenEntries = [];

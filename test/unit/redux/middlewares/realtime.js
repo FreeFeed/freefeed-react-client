@@ -27,7 +27,7 @@ class MockConnection {
   }
 
   onConnect(handler) { this.connectHandler = handler; }
-  onEvent(handler)   { this.eventHandler = handler; }
+  onEvent(handler) { this.eventHandler = handler; }
 
   async reAuthorize() { }
   async subscribeTo(room) { }     // eslint-disable-line no-unused-vars

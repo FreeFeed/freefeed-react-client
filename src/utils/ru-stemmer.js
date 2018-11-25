@@ -23,7 +23,7 @@ export default function (word) {
     return word;
   }
   const start = wParts[1];  // eslint-disable-line prefer-destructuring
-  let  rv = wParts[2];  // eslint-disable-line prefer-destructuring
+  let rv = wParts[2];  // eslint-disable-line prefer-destructuring
   let temp = rv.replace(PERFECTIVEGROUND_2, '');
   if (temp == rv) {
     temp = rv.replace(PERFECTIVEGROUND_1, '$1');
