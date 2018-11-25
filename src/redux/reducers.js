@@ -2390,3 +2390,10 @@ export function createInvitationForm(state = DEFAULT_FORM_STATE, action) {
   }
   return state;
 }
+
+export function serverTimeAhead(state = 0, action) {
+  if (action.type === ActionTypes.SERVER_TIME_AHEAD) {
+    return action.payload;
+  }
+  return state;
+}
