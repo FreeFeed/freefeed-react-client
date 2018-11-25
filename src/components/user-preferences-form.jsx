@@ -50,27 +50,19 @@ export default class UserPreferencesForm extends React.Component {
   };
 
   changeAllowLinksPreview = (event) => {
-    this.setState({
-      allowLinksPreview: event.target.checked
-    });
+    this.setState({ allowLinksPreview: event.target.checked });
   };
 
   changeReadMoreStyle = (event) => {
-    this.setState({
-      readMoreStyle: event.target.value
-    });
+    this.setState({ readMoreStyle: event.target.value });
   };
 
   chandeHideUsers = (event) => {
-    this.setState({
-      sHideUsers: event.target.value
-    });
+    this.setState({ sHideUsers: event.target.value });
   };
 
   hideUnreadNotifications = (event) => {
-    this.setState({
-      hideUnreadNotifications: event.target.checked
-    });
+    this.setState({ hideUnreadNotifications: event.target.checked });
   };
 
   isCommentTypeHidden = (hideType) => _.includes(this.state.hideCommentsOfTypes, hideType);

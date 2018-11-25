@@ -49,9 +49,7 @@ function createSpyMiddleware(spy) {
 }
 
 describe('realtime middleware', () => {
-  const eventHandlers = {
-    'event1': sinon.spy(),
-  };
+  const eventHandlers = { 'event1': sinon.spy(), };
   const connection = new MockConnection();
   const actionSpy = sinon.spy();
 

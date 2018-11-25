@@ -42,9 +42,7 @@ const config = {
       },
       allowLinksPreview: false,
       readMoreStyle:     'modern',
-      homefeed:          {
-        hideUsers: []
-      }
+      homefeed:          { hideUsers: [] }
     }
   }
 };

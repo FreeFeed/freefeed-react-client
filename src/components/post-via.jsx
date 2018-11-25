@@ -9,9 +9,7 @@ const userType = PropTypes.shape({
   username: PropTypes.string
 });
 
-const commentType = PropTypes.shape({
-  user: userType
-});
+const commentType = PropTypes.shape({ user: userType });
 
 export default class PostVia extends React.Component {
   static propTypes = {
@@ -30,9 +28,7 @@ export default class PostVia extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      expanded: false
-    };
+    this.state = { expanded: false };
   }
 
   expand = () => this.setState({ expanded: true });

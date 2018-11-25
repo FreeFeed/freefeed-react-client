@@ -20,9 +20,7 @@ const GroupCreate = (props) => (
 );
 
 function mapStateToProps(state) {
-  return {
-    groupCreateForm: state.groupCreateForm
-  };
+  return { groupCreateForm: state.groupCreateForm };
 }
 
 function mapDispatchToProps(dispatch) {

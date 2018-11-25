@@ -10,9 +10,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    restore: (...args) => dispatch(restorePassword(...args)),
-  };
+  return { restore: (...args) => dispatch(restorePassword(...args)), };
 }
 
 function restoreFunc({ mail, restore }) {

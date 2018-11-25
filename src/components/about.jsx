@@ -79,9 +79,7 @@ const About = ({ authenticated }) => (
 );
 
 function mapStateToProps(state) {
-  return {
-    authenticated: state.authenticated
-  };
+  return { authenticated: state.authenticated };
 }
 
 export default connect(mapStateToProps)(About);

@@ -522,9 +522,7 @@ export function canonicalURI(post) {
 }
 
 function selectState(state, ownProps) {
-  return {
-    destinationsPrivacy: ownProps.isEditing ? (destNames) => destinationsPrivacy(destNames, state) : null,
-  };
+  return { destinationsPrivacy: ownProps.isEditing ? (destNames) => destinationsPrivacy(destNames, state) : null, };
 }
 
 export default connect(selectState)(Post);

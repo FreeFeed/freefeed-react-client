@@ -10,9 +10,7 @@ export function canShowURL(url) {
   return INSTAGRAM_RE.test(url);
 }
 
-const initialState = {
-  isPrivate: false,
-};
+const initialState = { isPrivate: false, };
 
 class InstagramPreview extends React.Component {
   iframe = null;

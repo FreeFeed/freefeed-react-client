@@ -285,9 +285,7 @@ function formatSuggest(suggest, description) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    createInvitation: (...args) => dispatch(createFreefeedInvitation(...args))
-  };
+  return { createInvitation: (...args) => dispatch(createFreefeedInvitation(...args)) };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(InvitationCreationForm);

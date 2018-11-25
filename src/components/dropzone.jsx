@@ -7,9 +7,7 @@ import { getToken } from '../services/auth';
 
 const apiConfig = config.api;
 // DropzoneJS configuration
-const dropzoneComponentConfig = {
-  postUrl: `${apiConfig.host}/v1/attachments`
-};
+const dropzoneComponentConfig = { postUrl: `${apiConfig.host}/v1/attachments` };
 const dropzoneConfig = {
   dictDefaultMessage: 'Drop files here', // The message that gets displayed before any files are dropped.
   previewsContainer:  '.dropzone-previews', // Define the container to display the previews.
@@ -28,9 +26,7 @@ const dropzoneConfig = {
     </div>
   `,
   clickable: '.dropzone-trigger', // Define the element that should be used as click trigger to select files.
-  headers:   {
-    'Cache-Control': null
-  }
+  headers:   { 'Cache-Control': null }
 };
 
 const dropzoneEventHandlers = (props) => ({

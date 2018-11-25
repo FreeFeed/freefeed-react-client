@@ -27,9 +27,7 @@ export default class ImageAttachmentsLightbox extends React.Component {
     onDestroy:    pt.func.isRequired,
   };
 
-  state = {
-    currentIndex: 0,
-  };
+  state = { currentIndex: 0, };
 
   constructor(props) {
     super(props);

@@ -16,9 +16,7 @@ export function staticPage(title) {
 }
 
 export function requireAuthentication() {
-  return {
-    type: ActionTypes.REQUIRE_AUTHENTICATION,
-  };
+  return { type: ActionTypes.REQUIRE_AUTHENTICATION, };
 }
 
 export function whoAmI() {
@@ -238,9 +236,7 @@ export function hidePost(postId) {
   return {
     type:       ActionTypes.HIDE_POST,
     apiRequest: Api.hidePost,
-    payload:    {
-      postId
-    }
+    payload:    { postId }
   };
 }
 
@@ -248,9 +244,7 @@ export function unhidePost(postId) {
   return {
     type:       ActionTypes.UNHIDE_POST,
     apiRequest: Api.unhidePost,
-    payload:    {
-      postId
-    }
+    payload:    { postId }
   };
 }
 
@@ -265,9 +259,7 @@ export function disableComments(postId) {
   return {
     type:       ActionTypes.DISABLE_COMMENTS,
     apiRequest: Api.disableComments,
-    payload:    {
-      postId
-    }
+    payload:    { postId }
   };
 }
 
@@ -275,9 +267,7 @@ export function enableComments(postId) {
   return {
     type:       ActionTypes.ENABLE_COMMENTS,
     apiRequest: Api.enableComments,
-    payload:    {
-      postId
-    }
+    payload:    { postId }
   };
 }
 
@@ -383,9 +373,7 @@ export function restorePassword(mail) {
     type:           ActionTypes.RESTORE_PASSWORD,
     apiRequest:     Api.restorePassword,
     nonAuthRequest: true,
-    payload:        {
-      mail,
-    },
+    payload:        { mail, },
   };
 }
 
@@ -410,9 +398,7 @@ export function resetPasswordValidationFail(error) {
 
 
 export function signInEmpty() {
-  return {
-    type: ActionTypes.SIGN_IN_EMPTY
-  };
+  return { type: ActionTypes.SIGN_IN_EMPTY };
 }
 
 export function signUpChange(signUpData) {
@@ -545,15 +531,11 @@ export function getUserMemories(username, from, offset = 0) {
 }
 
 export function expandSendTo() {
-  return {
-    type: ActionTypes.EXPAND_SEND_TO
-  };
+  return { type: ActionTypes.EXPAND_SEND_TO };
 }
 
 export function toggleHiddenPosts() {
-  return {
-    type: ActionTypes.TOGGLE_HIDDEN_POSTS
-  };
+  return { type: ActionTypes.TOGGLE_HIDDEN_POSTS };
 }
 
 export function subscribers(username) {
@@ -637,27 +619,19 @@ export function rejectUserRequest(userName) {
 }
 
 export function resetPostCreateForm() {
-  return {
-    type: ActionTypes.RESET_POST_CREATE_FORM
-  };
+  return { type: ActionTypes.RESET_POST_CREATE_FORM };
 }
 
 export function resetGroupCreateForm() {
-  return {
-    type: ActionTypes.RESET_GROUP_CREATE_FORM
-  };
+  return { type: ActionTypes.RESET_GROUP_CREATE_FORM };
 }
 
 export function resetGroupUpdateForm() {
-  return {
-    type: ActionTypes.RESET_GROUP_UPDATE_FORM
-  };
+  return { type: ActionTypes.RESET_GROUP_UPDATE_FORM };
 }
 
 export function toggleRealtime() {
-  return {
-    type: ActionTypes.TOGGLE_REALTIME,
-  };
+  return { type: ActionTypes.TOGGLE_REALTIME, };
 }
 
 export function unsubscribeFromGroup(groupName, userName) {
@@ -718,9 +692,7 @@ export function highlightComment(postId, author, arrows, baseCommentId) {
 }
 
 export function clearHighlightComment() {
-  return {
-    type: ActionTypes.CLEAR_HIGHLIGHT_COMMENT,
-  };
+  return { type: ActionTypes.CLEAR_HIGHLIGHT_COMMENT, };
 }
 
 export function blockedByMe() {
@@ -766,21 +738,15 @@ export function getBestOf(offset) {
 }
 
 export function resetSettingsForms() {
-  return {
-    type: ActionTypes.RESET_SETTINGS_FORMS
-  };
+  return { type: ActionTypes.RESET_SETTINGS_FORMS };
 }
 
 export function resetArchiveForms() {
-  return {
-    type: ActionTypes.RESET_ARCHIVE_FORMS
-  };
+  return { type: ActionTypes.RESET_ARCHIVE_FORMS };
 }
 
 export function realtimeConnected() {
-  return {
-    type: ActionTypes.REALTIME_CONNECTED,
-  };
+  return { type: ActionTypes.REALTIME_CONNECTED, };
 }
 
 export function realtimeSubscribe(room) {

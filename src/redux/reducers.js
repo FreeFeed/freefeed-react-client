@@ -233,7 +233,8 @@ const hidePostInFeed = function (state, postId) {
   if (inHidden || !inHidden && !inVisible) {
     return state;
   }
-  return { ...state,
+  return {
+    ...state,
     hiddenEntries: [postId, ...state.hiddenEntries]
   };
 };
@@ -250,7 +251,8 @@ const unhidePostInFeed = function (state, postId) {
   if (!inHidden) {
     return state;
   }
-  return { ...state,
+  return {
+    ...state,
     visibleEntries: (inVisible ? state.visibleEntries : [...state.visibleEntries, postId]),
     hiddenEntries:  _.without(state.hiddenEntries, postId)
   };
@@ -299,13 +301,15 @@ export function feedViewState(state = initFeed, action) {
         return state;
       }
       const { postId } = action.request;
-      return { ...state,
+      return {
+        ...state,
         visibleEntries: _.without(state.visibleEntries, postId),
         hiddenEntries:  _.without(state.hiddenEntries, postId)
       };
     }
     case ActionTypes.REALTIME_POST_DESTROY: {
-      return { ...state,
+      return {
+        ...state,
         visibleEntries: _.without(state.visibleEntries, action.postId),
         hiddenEntries:  _.without(state.hiddenEntries, action.postId)
       };
@@ -315,13 +319,15 @@ export function feedViewState(state = initFeed, action) {
       if (state.visibleEntries.indexOf(postId) !== -1) {
         return state;
       }
-      return { ...state,
+      return {
+        ...state,
         visibleEntries: [postId, ...state.visibleEntries]
       };
     }
     case response(ActionTypes.GET_SINGLE_POST): {
       const { postId } = action.request;
-      return { ...initFeed,
+      return {
+        ...initFeed,
         visibleEntries: [postId]
       };
     }
@@ -373,7 +379,8 @@ export function feedViewState(state = initFeed, action) {
       return unhidePostInFeed(state, action.postId);
     }
     case ActionTypes.TOGGLE_HIDDEN_POSTS: {
-      return { ...state,
+      return {
+        ...state,
         isHiddenRevealed: !state.isHiddenRevealed
       };
     }
@@ -511,23 +518,28 @@ export function postsViewState(state = {}, action) {
     }
     case ActionTypes.UPDATE_COMMENTING_TEXT: {
       const postState = state[action.postId];
-      return { ...state,
-        [action.postId]: { ...postState,
+      return {
+        ...state,
+        [action.postId]: {
+          ...postState,
           newCommentText: action.commentText
         }
       };
     }
     case request(ActionTypes.ADD_COMMENT): {
       const post = state[action.payload.postId];
-      return { ...state,
+      return {
+        ...state,
         [post.id]: {
           ...post,
           isSavingComment: true,
-        } };
+        }
+      };
     }
     case response(ActionTypes.ADD_COMMENT): {
       const post = state[action.request.postId];
-      return { ...state,
+      return {
+        ...state,
         [post.id]: {
           ...post,
           isCommenting:    false,
@@ -539,7 +551,8 @@ export function postsViewState(state = {}, action) {
     }
     case fail(ActionTypes.ADD_COMMENT): {
       const post = state[action.request.postId];
-      return { ...state,
+      return {
+        ...state,
         [post.id]: {
           ...post,
           isSavingComment: false,
@@ -559,7 +572,8 @@ export function postsViewState(state = {}, action) {
           [action.post.posts.id]: initPostViewState(action.post.posts)
         };
       }
-      return { ...state,
+      return {
+        ...state,
         [post.id]: {
           ...post,
           omittedComments: (post.omittedComments ? post.omittedComments + 1 : 0)
@@ -610,7 +624,8 @@ export function postsViewState(state = {}, action) {
       if (!post) {
         return state;
       }
-      return { ...state,
+      return {
+        ...state,
         [post.id]: {
           ...post,
           omittedLikes: isLikeVisible ? post.omittedLikes : Math.max(0, post.omittedLikes - 1),
@@ -620,15 +635,20 @@ export function postsViewState(state = {}, action) {
 
     case request(ActionTypes.HIDE_POST): {
       const post = state[action.payload.postId];
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           isHiding: true
-        } };
+        }
+      };
     }
     case response(ActionTypes.HIDE_POST): {
       const post = state[action.request.postId];
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           isHiding: false
         }
       };
@@ -638,16 +658,20 @@ export function postsViewState(state = {}, action) {
       if (!post) {
         return state;
       }
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           isHiding: false
         }
       };
     }
     case fail(ActionTypes.HIDE_POST): {
       const post = state[action.request.postId];
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           isHiding:  false,
           hideError: 'Something went wrong while hiding the post.'
         }
@@ -656,15 +680,20 @@ export function postsViewState(state = {}, action) {
 
     case request(ActionTypes.UNHIDE_POST): {
       const post = state[action.payload.postId];
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           isHiding: true
-        } };
+        }
+      };
     }
     case response(ActionTypes.UNHIDE_POST): {
       const post = state[action.request.postId];
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           isHiding: false
         }
       };
@@ -674,16 +703,20 @@ export function postsViewState(state = {}, action) {
       if (!post) {
         return state;
       }
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           isHiding: false
         }
       };
     }
     case fail(ActionTypes.UNHIDE_POST): {
       const post = state[action.request.postId];
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           isHiding:  false,
           hideError: 'Something went wrong while un-hiding the post.'
         }
@@ -692,8 +725,10 @@ export function postsViewState(state = {}, action) {
 
     case ActionTypes.TOGGLE_MODERATING_COMMENTS: {
       const post = state[action.postId];
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           isModeratingComments: !post.isModeratingComments
         }
       };
@@ -701,16 +736,20 @@ export function postsViewState(state = {}, action) {
 
     case request(ActionTypes.DISABLE_COMMENTS): {
       const post = state[action.payload.postId];
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           isDisablingComments: true
         }
       };
     }
     case response(ActionTypes.DISABLE_COMMENTS): {
       const post = state[action.request.postId];
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           isDisablingComments: false,
           commentsDisabled:    true
         }
@@ -718,8 +757,10 @@ export function postsViewState(state = {}, action) {
     }
     case fail(ActionTypes.DISABLE_COMMENTS): {
       const post = state[action.request.postId];
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           isDisablingComments:  false,
           disableCommentsError: 'Something went wrong while disabling comments.'
         }
@@ -728,15 +769,20 @@ export function postsViewState(state = {}, action) {
 
     case request(ActionTypes.ENABLE_COMMENTS): {
       const post = state[action.payload.postId];
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           isDisablingComments: true
-        } };
+        }
+      };
     }
     case response(ActionTypes.ENABLE_COMMENTS): {
       const post = state[action.request.postId];
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           isDisablingComments: false,
           commentsDisabled:    false
         }
@@ -744,8 +790,10 @@ export function postsViewState(state = {}, action) {
     }
     case fail(ActionTypes.ENABLE_COMMENTS): {
       const post = state[action.request.postId];
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           isDisablingComments:  false,
           disableCommentsError: 'Something went wrong while enabling comments.'
         }
@@ -780,8 +828,10 @@ export function posts(state = {}, action) {
   switch (action.type) {
     case response(ActionTypes.SHOW_MORE_COMMENTS): {
       const post = state[action.payload.posts.id];
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           omittedComments: 0,
           comments:        action.payload.posts.comments
         }
@@ -789,8 +839,10 @@ export function posts(state = {}, action) {
     }
     case response(ActionTypes.SHOW_MORE_LIKES_ASYNC): {
       const post = state[action.payload.posts.id];
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           omittedLikes: 0,
           likes:        action.payload.posts.likes
         }
@@ -798,8 +850,10 @@ export function posts(state = {}, action) {
     }
     case response(ActionTypes.SAVE_EDITING_POST): {
       const post = state[action.payload.posts.id];
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           body:        action.payload.posts.body,
           updatedAt:   action.payload.posts.updatedAt,
           attachments: action.payload.posts.attachments || [],
@@ -815,7 +869,8 @@ export function posts(state = {}, action) {
       }
 
       const post = state[action.payload.postId];
-      return { ...state,
+      return {
+        ...state,
         [post.id]: {
           ...post,
           attachments: [...(post.attachments || []), action.payload.attachments.id]
@@ -830,7 +885,8 @@ export function posts(state = {}, action) {
       }
 
       const post = state[action.payload.postId];
-      return { ...state,
+      return {
+        ...state,
         [post.id]: {
           ...post,
           attachments: _.without((post.attachments || []), action.payload.attachmentId)
@@ -844,8 +900,10 @@ export function posts(state = {}, action) {
         return state;
       }
       const comments = _.without(post.comments, commentId);
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           comments,
           omittedComments: (post.omittedComments > 0 ? post.omittedComments - 1 : 0)
         }
@@ -858,10 +916,12 @@ export function posts(state = {}, action) {
 
       const post = state[action.postId];
 
-      return { ...state, [action.postId]: {
-        ...post,
-        comments: _.without(post.comments, action.commentId),
-      } };
+      return {
+        ...state, [action.postId]: {
+          ...post,
+          comments: _.without(post.comments, action.commentId),
+        }
+      };
     }
     case response(ActionTypes.ADD_COMMENT): {
       const post = state[action.request.postId];
@@ -869,7 +929,8 @@ export function posts(state = {}, action) {
       if (commentAlreadyAdded) {
         return state;
       }
-      return { ...state,
+      return {
+        ...state,
         [post.id]: {
           ...post,
           comments:        [...(post.comments || []), action.payload.comments.id],
@@ -886,7 +947,8 @@ export function posts(state = {}, action) {
       if (!post || !post.likeError) {
         return state;
       }
-      return { ...state,
+      return {
+        ...state,
         [postId]: {
           ...post,
           likeError: null,
@@ -900,7 +962,8 @@ export function posts(state = {}, action) {
       if (_.includes(post.likes, userId)) {
         return state;
       }
-      return { ...state,
+      return {
+        ...state,
         [postId]: {
           ...post,
           likeError: null,
@@ -914,7 +977,8 @@ export function posts(state = {}, action) {
       if (!_.includes(post.likes, userId)) {
         return state;
       }
-      return { ...state,
+      return {
+        ...state,
         [postId]: {
           ...post,
           likeError: `Cannot like post: ${action.payload.err}`,
@@ -929,7 +993,8 @@ export function posts(state = {}, action) {
       if (!_.includes(post.likes, userId)) {
         return state;
       }
-      return { ...state,
+      return {
+        ...state,
         [postId]: {
           ...post,
           likeError: null,
@@ -943,7 +1008,8 @@ export function posts(state = {}, action) {
       if (_.includes(post.likes, userId)) {
         return state;
       }
-      return { ...state,
+      return {
+        ...state,
         [postId]: {
           ...post,
           likeError: `Cannot unlike post: ${action.payload.err}`,
@@ -987,15 +1053,18 @@ export function posts(state = {}, action) {
       const likes = _.without(post.likes, userId);
       const omittedLikes = isLikeVisible ? post.omittedLikes : Math.max(0, post.omittedLikes - 1);
 
-      return { ...state,
+      return {
+        ...state,
         [post.id]: { ...post, likes, omittedLikes }
       };
     }
 
     case response(ActionTypes.HIDE_POST): {
       const post = state[action.request.postId];
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           isHidden: true
         }
       };
@@ -1005,16 +1074,20 @@ export function posts(state = {}, action) {
       if (!post) {
         return state;
       }
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           isHidden: true
         }
       };
     }
     case response(ActionTypes.UNHIDE_POST): {
       const post = state[action.request.postId];
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           isHidden: false
         }
       };
@@ -1024,24 +1097,30 @@ export function posts(state = {}, action) {
       if (!post) {
         return state;
       }
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           isHidden: false
         }
       };
     }
     case response(ActionTypes.DISABLE_COMMENTS): {
       const post = state[action.request.postId];
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           commentsDisabled: true
         }
       };
     }
     case response(ActionTypes.ENABLE_COMMENTS): {
       const post = state[action.request.postId];
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           commentsDisabled: false
         }
       };
@@ -1060,8 +1139,10 @@ export function posts(state = {}, action) {
       if (!post) {
         return state;
       }
-      return { ...state,
-        [post.id]: { ...post,
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
           body:        action.post.body,
           updatedAt:   action.post.updatedAt,
           attachments: action.post.attachments || [],
@@ -1121,7 +1202,8 @@ export function attachments(state = {}, action) {
       return state;
     }
     case ActionTypes.ADD_ATTACHMENT_RESPONSE: {
-      return { ...state,
+      return {
+        ...state,
         [action.payload.attachments.id]: action.payload.attachments
       };
     }
@@ -1183,31 +1265,36 @@ export function comments(state = {}, action) {
       return { ...state, [action.commentId]: undefined };
     }
     case response(ActionTypes.ADD_COMMENT): {
-      return { ...state,
+      return {
+        ...state,
         [action.payload.comments.id]: { ...action.payload.comments, isExpanded: true }
       };
     }
     case request(ActionTypes.LIKE_COMMENT): {
       const comment = state[action.payload.commentId];
-      return { ...state,
+      return {
+        ...state,
         [action.payload.commentId]: { ...comment, likes: comment.likes + 1, hasOwnLike: true },
       };
     }
     case fail(ActionTypes.LIKE_COMMENT): {
       const comment = state[action.request.commentId];
-      return { ...state,
+      return {
+        ...state,
         [action.payload.commentId]: { ...comment, likes: comment.likes - 1, hasOwnLike: false },
       };
     }
     case request(ActionTypes.UNLIKE_COMMENT): {
       const comment = state[action.payload.commentId];
-      return { ...state,
+      return {
+        ...state,
         [action.payload.commentId]: { ...comment, likes: comment.likes - 1, hasOwnLike: false },
       };
     }
     case fail(ActionTypes.UNLIKE_COMMENT): {
       const comment = state[action.request.commentId];
-      return { ...state,
+      return {
+        ...state,
         [action.payload.commentId]: { ...comment, likes: comment.likes + 1, hasOwnLike: true },
       };
     }
@@ -1264,7 +1351,8 @@ export function commentViewState(state = {}, action) {
       return { ...state, [action.request.commentId]: undefined };
     }
     case response(ActionTypes.ADD_COMMENT): {
-      return { ...state,
+      return {
+        ...state,
         [action.payload.comments.id]: {
           id:        action.payload.comments.id,
           isEditing: false,
@@ -1282,17 +1370,20 @@ export function commentViewState(state = {}, action) {
 export function commentLikes(state = {}, action) {
   switch (action.type) {
     case request(ActionTypes.GET_COMMENT_LIKES): {
-      return { ...state,
+      return {
+        ...state,
         [action.payload.commentId]: { loading: true },
       };
     }
     case fail(ActionTypes.GET_COMMENT_LIKES): {
-      return { ...state,
+      return {
+        ...state,
         [action.payload.commentId]: { loading: false, error: true },
       };
     }
     case response(ActionTypes.GET_COMMENT_LIKES): {
-      return { ...state,
+      return {
+        ...state,
         [action.request.commentId]: {
           loading: false,
           error:   false,
@@ -1301,7 +1392,8 @@ export function commentLikes(state = {}, action) {
       };
     }
     case ActionTypes.REALTIME_COMMENT_UPDATE: {
-      return { ...state,
+      return {
+        ...state,
         [action.comment.id]: {
           loading: false,
           error:   false,
@@ -1357,14 +1449,16 @@ export function users(state = {}, action) {
       const userId = action.payload.users.id;
       const oldUser = state[userId] || {};
       const newUser = userParser(action.payload.users);
-      return { ...state,
+      return {
+        ...state,
         [userId]: { ...oldUser, ...newUser }
       };
     }
     case response(ActionTypes.CREATE_GROUP): {
       const userId = action.payload.groups.id;
       const newUser = userParser(action.payload.groups);
-      return { ...state,
+      return {
+        ...state,
         [userId]: { ...newUser }
       };
     }
@@ -1375,7 +1469,8 @@ export function users(state = {}, action) {
       const userId = action.payload.groups.id;
       const oldUser = state[userId] || {};
       const newUser = userParser(action.payload.groups);
-      return { ...state,
+      return {
+        ...state,
         [userId]: { ...oldUser, ...newUser }
       };
     }
@@ -1466,7 +1561,8 @@ export function user(state = initUser(), action) {
   }
   switch (action.type) {
     case response(ActionTypes.SEND_SUBSCRIPTION_REQUEST): {
-      return { ...state,
+      return {
+        ...state,
         pendingSubscriptionRequests: [...(state.pendingSubscriptionRequests || []),
           action.request.id
         ]
@@ -1491,18 +1587,24 @@ export function user(state = initUser(), action) {
       return { ...state, subscriptions: [...state.subscriptions, action.payload.groups.id] };
     }
     case response(ActionTypes.ARCHIVE_ACTIVITY_REQUEST): {
-      return { ...state,
-        privateMeta: { ...state.privateMeta,
-          archives: { ...state.privateMeta.archives,
+      return {
+        ...state,
+        privateMeta: {
+          ...state.privateMeta,
+          archives: {
+            ...state.privateMeta.archives,
             restore_comments_and_likes: true,
           }
         }
       };
     }
     case response(ActionTypes.ARCHIVE_RESTORATION_REQUEST): {
-      return { ...state,
-        privateMeta: { ...state.privateMeta,
-          archives: { ...state.privateMeta.archives,
+      return {
+        ...state,
+        privateMeta: {
+          ...state.privateMeta,
+          archives: {
+            ...state.privateMeta.archives,
             recovery_status: 1,
           }
         }
@@ -1882,25 +1984,29 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
       };
     }
     case ActionTypes.EXPAND_SEND_TO: {
-      return { ...state,
+      return {
+        ...state,
         expanded: true
       };
     }
     case response(ActionTypes.CREATE_POST): {
-      return { ...state,
+      return {
+        ...state,
         expanded: false
       };
     }
     case response(ActionTypes.CREATE_GROUP): {
       const groupId = action.payload.groups.id;
       const group = userParser(action.payload.groups);
-      return { ...state,
+      return {
+        ...state,
         feeds: [...state.feeds, { id: groupId, user: group }]
       };
     }
     case response(ActionTypes.SUBSCRIBE):
     case response(ActionTypes.UNSUBSCRIBE): {
-      return { ...state,
+      return {
+        ...state,
         feeds: getValidRecipients(action.payload)
       };
     }
@@ -1918,7 +2024,8 @@ export function createPostForm(state = {}, action) {
         return state;
       }
 
-      return { ...state,
+      return {
+        ...state,
         attachments: [...(state.attachments || []), action.payload.attachments.id]
       };
     }
@@ -1929,7 +2036,8 @@ export function createPostForm(state = {}, action) {
         return state;
       }
 
-      return { ...state,
+      return {
+        ...state,
         attachments: _.without((state.attachments || []), action.payload.attachmentId)
       };
     }
@@ -1979,7 +2087,8 @@ export function groups(state = {}, action) {
     case response(ActionTypes.CREATE_GROUP): {
       const groupId = action.payload.groups.id;
       const newGroup = userParser(action.payload.groups);
-      return { ...state,
+      return {
+        ...state,
         [groupId]: { ...newGroup }
       };
     }
@@ -1987,7 +2096,8 @@ export function groups(state = {}, action) {
       const groupId = action.payload.groups.id;
       const oldGroup = state[groupId] || {};
       const newGroup = userParser(action.payload.groups);
-      return { ...state,
+      return {
+        ...state,
         [groupId]: { ...oldGroup, ...newGroup }
       };
     }
@@ -2257,9 +2367,7 @@ export function groupAdmins(state = [], action) {
 export function commentsHighlights(state = {}, action) {
   switch (action.type) {
     case ActionTypes.HIGHLIGHT_COMMENT: {
-      return {
-        ...action
-      };
+      return { ...action };
     }
     case ActionTypes.CLEAR_HIGHLIGHT_COMMENT: {
       return {};

@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import _ from 'lodash';
 
-import { unsubscribeFromGroup, makeGroupAdmin,
-  unadminGroupAdmin } from '../redux/action-creators';
+import {
+  unsubscribeFromGroup, makeGroupAdmin,
+  unadminGroupAdmin
+} from '../redux/action-creators';
 
 import { tileUserListFactory, WITH_REMOVE_AND_MAKE_ADMIN_HANDLES, WITH_REMOVE_ADMIN_RIGHTS } from './tile-user-list';
 const SubsList = tileUserListFactory({ type: WITH_REMOVE_AND_MAKE_ADMIN_HANDLES });

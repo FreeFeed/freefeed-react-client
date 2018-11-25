@@ -34,9 +34,7 @@ const imagesFromURL = memoize((url) => {
 });
 
 class Layout extends React.Component {
-  state = {
-    imageUrls: null
-  };
+  state = { imageUrls: null };
 
   /**
    * Returns this.state.imageUrls if it was modified (i.e. not null) or the

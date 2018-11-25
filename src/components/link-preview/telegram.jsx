@@ -12,9 +12,7 @@ export function canShowURL(url) {
 }
 
 class TelegramPreview extends React.Component {
-  static propTypes = {
-    url: PropTypes.string.isRequired,
-  };
+  static propTypes = { url: PropTypes.string.isRequired, };
 
   componentDidMount() {
     startEventListening();

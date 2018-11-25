@@ -27,9 +27,7 @@ export function canShowURL(url) {
 }
 
 class VideoPreview extends React.Component {
-  static propTypes = {
-    url: PropTypes.string.isRequired,
-  };
+  static propTypes = { url: PropTypes.string.isRequired, };
 
   state = {
     info:   null,
@@ -105,9 +103,7 @@ class VideoPreview extends React.Component {
 }
 
 function select(state) {
-  return {
-    feedIsLoading: state.routeLoadingState,
-  };
+  return { feedIsLoading: state.routeLoadingState, };
 }
 
 export default ScrollSafe(connect(select)(VideoPreview), { foldable: false, trackResize: false });

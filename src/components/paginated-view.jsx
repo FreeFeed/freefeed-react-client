@@ -37,8 +37,6 @@ const mapStateToProps = (state, ownProps) => {
   return { offset, routename, isLastPage };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  routingActions: bindRouteActions(dispatch)
-});
+const mapDispatchToProps = (dispatch) => ({ routingActions: bindRouteActions(dispatch) });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaginatedView);

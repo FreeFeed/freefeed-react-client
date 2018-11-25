@@ -10,13 +10,10 @@ import { contentResized } from './events';
  * Based on GWT algorithm: /user/src/com/google/gwt/user/client/ui/ResizeLayoutPanel.java
  */
 export default class ResizeTracker extends React.Component {
-  static propTypes = {
-    debounce: PropTypes.number.isRequired, // fixed, only applies at creation time
-  };
+  // fixed, only applies at creation time
+  static propTypes = { debounce: PropTypes.number.isRequired };
 
-  static defaultProps = {
-    debounce: 150,
-  };
+  static defaultProps = { debounce: 150, };
 
   root = null;
   expSensor = null;

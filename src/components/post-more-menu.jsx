@@ -7,9 +7,7 @@ export default class PostMoreMenu extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      isOpen: false
-    };
+    this.state = { isOpen: false };
   }
 
   handleClickOnMore = () => {

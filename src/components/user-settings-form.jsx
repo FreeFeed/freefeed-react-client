@@ -48,9 +48,7 @@ export default class UserSettingsForm extends React.Component {
         this.props.isProtected,
         this.props.description,
       );
-      this.props.updateUserPreferences(this.props.user.id, this.props.user.frontendPreferences, {
-        acceptDirectsFrom: this.props.directsFromAll ? 'all' : 'friends'
-      });
+      this.props.updateUserPreferences(this.props.user.id, this.props.user.frontendPreferences, { acceptDirectsFrom: this.props.directsFromAll ? 'all' : 'friends' });
     }
   };
 

@@ -12,9 +12,7 @@ export default class ArchiveActivityForm extends React.Component {
     }),
   };
 
-  state = {
-    checked: false,
-  };
+  state = { checked: false, };
 
   setChecked = (e) => this.setState({ checked: e.target.checked });
 

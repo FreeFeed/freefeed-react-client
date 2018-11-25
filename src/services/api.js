@@ -102,9 +102,7 @@ export function createBookmarkletPost({ feeds, postText, imageUrls, commentText 
       title:   postText,
       images:  imageUrls,
       comment: commentText,
-      meta:    {
-        feeds
-      }
+      meta:    { feeds }
     })
   });
 }
@@ -393,19 +391,15 @@ export function updateUserPicture({ picture }) {
 
   return fetch(`${apiConfig.host}/v1/users/updateProfilePicture`, {
     'method':  'POST',
-    'headers': {
-      'X-Authentication-Token': getToken()
-    },
-    'body': data
+    'headers': { 'X-Authentication-Token': getToken() },
+    'body':    data
   });
 }
 
 const userAction = (action) => ({ username }) => {
   return fetch(`${apiConfig.host}/v1/users/${username}/${action}`, {
     method:    'POST',
-    'headers': {
-      'X-Authentication-Token': getToken(),
-    },
+    'headers': { 'X-Authentication-Token': getToken(), },
   });
 };
 
@@ -472,10 +466,8 @@ export function updateGroupPicture({ groupName, file }) {
 
   return fetch(`${apiConfig.host}/v1/groups/${groupName}/updateProfilePicture`, {
     'method':  'POST',
-    'headers': {
-      'X-Authentication-Token': getToken()
-    },
-    'body': data
+    'headers': { 'X-Authentication-Token': getToken() },
+    'body':    data
   });
 }
 

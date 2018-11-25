@@ -24,9 +24,7 @@ export default class PostComment extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      editText: this.props.editText || ''
-    };
+    this.state = { editText: this.props.editText || '' };
     this.commentTextArea = null;
   }
 
@@ -53,9 +51,7 @@ export default class PostComment extends React.Component {
   }
 
   handleChange = (event) => {
-    this.setState({
-      editText: event.target.value || ''
-    });
+    this.setState({ editText: event.target.value || '' });
   };
 
   reply = () => {

@@ -150,7 +150,8 @@ export const joinPostData = (state) => (postId) => {
 
   const { allowLinksPreview, readMoreStyle } = state.user.frontendPreferences;
 
-  return { ...post,
+  return {
+    ...post,
     createdBy,
     isDirect,
     recipients,
@@ -168,7 +169,8 @@ export const joinPostData = (state) => (postId) => {
 
 export function joinCreatePostData(state) {
   const { createPostForm } = state;
-  return { ...createPostForm,
+  return {
+    ...createPostForm,
     attachments: (createPostForm.attachments || []).map((attachmentId) => state.attachments[attachmentId])
   };
 }

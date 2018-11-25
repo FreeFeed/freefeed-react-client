@@ -52,9 +52,7 @@ function selectState(state) {
 }
 
 function selectActions(dispatch) {
-  return {
-    ...postActions(dispatch),
-  };
+  return { ...postActions(dispatch), };
 }
 
 export default connect(selectState, selectActions)(FeedHandler);
