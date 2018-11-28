@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { toggleRealtime, updateUserPreferences, home } from '../redux/action-creators';
 
+
 const getStatusIcon = (active, status) => {
   if (status === 'loading') {
     return 'refresh';
@@ -29,9 +30,9 @@ class RealtimeSwitch extends React.PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    userId: state.user.id,
+    userId:              state.user.id,
     frontendPreferences: state.user.frontendPreferences,
-    status: state.frontendRealtimePreferencesForm.status,
+    status:              state.frontendRealtimePreferencesForm.status,
   };
 };
 

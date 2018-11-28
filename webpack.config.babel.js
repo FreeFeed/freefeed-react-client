@@ -19,8 +19,8 @@ const config = {
     historyApiFallback: true
   },
   module: {
-    rules: [
-      rules.eslint,
+    rules: skipFalsy([
+      opts.dev && rules.eslint,
       rules.babel,
       rules.commonCss,
       rules.appCss,
@@ -28,7 +28,7 @@ const config = {
       rules.fonts,
       rules.photoswipe,
       rules.otherAssets
-    ]
+    ]),
   },
   plugins: skipFalsy([
     ...baseConfig.plugins,

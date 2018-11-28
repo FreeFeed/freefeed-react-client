@@ -4,6 +4,7 @@ import {
   UPDATE_USER, UPDATE_USER_PREFERENCES, MEMORIES, GET_USER_MEMORIES,
 } from './action-types';
 
+
 export const request = (type) => `${type}_REQUEST`;
 export const response = (type) => `${type}_RESPONSE`;
 export const fail = (type) => `${type}_FAIL`;

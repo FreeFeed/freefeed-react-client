@@ -5,6 +5,7 @@ import ScrollSafe from './scroll-helpers/scroll-safe';
 import FoldableContent from './scroll-helpers/foldable-content';
 import * as heightCache from './scroll-helpers/size-cache';
 
+
 const WIKIPEDIA_RE = /^https?:\/\/(\w+)\.wikipedia\.org\/wiki\/([^/]+)/i;
 
 export function canShowURL(url) {
@@ -13,7 +14,7 @@ export function canShowURL(url) {
 
 const initialState = {
   previewData: null,
-  isError: false,
+  isError:     false,
 };
 
 class WikipediaPreview extends React.Component {
@@ -55,7 +56,7 @@ class WikipediaPreview extends React.Component {
     const { previewData, isError } = this.state;
     const cachedHeight = heightCache.get(this.props.url, 0);
 
-    if (isError || !previewData && cachedHeight === 0) {
+    if (isError || (!previewData && cachedHeight === 0)) {
       return null;
     }
 

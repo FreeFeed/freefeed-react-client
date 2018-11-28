@@ -5,6 +5,7 @@ import { signInChange, signIn, signInEmpty } from '../redux/action-creators';
 import { preventDefault } from '../utils';
 import LoaderContainer from './loader-container';
 
+
 function mapStateToProps(state) {
   return { ...state.signInForm };
 }
@@ -12,8 +13,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     signInChange: (...args) => dispatch(signInChange(...args)),
-    signIn: (...args) => dispatch(signIn(...args)),
-    signInEmpty: (...args) => dispatch(signInEmpty(...args)),
+    signIn:       (...args) => dispatch(signIn(...args)),
+    signInEmpty:  (...args) => dispatch(signInEmpty(...args)),
   };
 }
 

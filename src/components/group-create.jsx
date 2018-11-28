@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { createGroup, resetGroupCreateForm } from '../redux/action-creators';
 import GroupCreateForm from './group-create-form';
 
+
 const GroupCreate = (props) => (
   <div className="box">
     <div className="box-header-timeline">
@@ -20,14 +21,12 @@ const GroupCreate = (props) => (
 );
 
 function mapStateToProps(state) {
-  return {
-    groupCreateForm: state.groupCreateForm
-  };
+  return { groupCreateForm: state.groupCreateForm };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    createGroup: (...args) => dispatch(createGroup(...args)),
+    createGroup:          (...args) => dispatch(createGroup(...args)),
     resetGroupCreateForm: (...args) => dispatch(resetGroupCreateForm(...args))
   };
 }

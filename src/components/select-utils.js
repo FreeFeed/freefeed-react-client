@@ -25,6 +25,7 @@ import {
   deleteComment
 } from '../redux/action-creators';
 
+
 const MAX_LIKES = 4;
 
 export const ommitBubblesThreshold = 600 * 1000; // 10 min
@@ -47,7 +48,7 @@ const commentHighlighter = ({ commentsHighlights, user, postsViewState }, commen
   const highlightIndex = (baseIndex + omittedComments) - arrows;
   const highlightCommentId = commentList[highlightIndex < baseIndex ? highlightIndex : -1];
 
-  return (commentId, commentAuthor) => author && author === commentAuthor.username || highlightCommentId === commentId;
+  return (commentId, commentAuthor) => (author && author === commentAuthor.username) || highlightCommentId === commentId;
 };
 
 const selectCommentLikes = ({ commentLikes, users }, commentId) => {
@@ -150,7 +151,8 @@ export const joinPostData = (state) => (postId) => {
 
   const { allowLinksPreview, readMoreStyle } = state.user.frontendPreferences;
 
-  return { ...post,
+  return {
+    ...post,
     createdBy,
     isDirect,
     recipients,
@@ -168,50 +170,51 @@ export const joinPostData = (state) => (postId) => {
 
 export function joinCreatePostData(state) {
   const { createPostForm } = state;
-  return { ...createPostForm,
+  return {
+    ...createPostForm,
     attachments: (createPostForm.attachments || []).map((attachmentId) => state.attachments[attachmentId])
   };
 }
 
 export function postActions(dispatch) {
   return {
-    showMoreComments: (postId) => dispatch(showMoreComments(postId)),
-    showMoreLikes: (postId) => dispatch(showMoreLikes(postId)),
-    toggleEditingPost: (postId, newValue) => dispatch(toggleEditingPost(postId, newValue)),
-    cancelEditingPost: (postId, newValue) => dispatch(cancelEditingPost(postId, newValue)),
-    saveEditingPost: (postId, newPost) => dispatch(saveEditingPost(postId, newPost)),
-    deletePost: (postId) => dispatch(deletePost(postId)),
-    toggleCommenting: (postId) => dispatch(toggleCommenting(postId)),
-    updateCommentingText: (postId, commentText) => dispatch(updateCommentingText(postId, commentText)),
-    addComment:(postId, commentText) => dispatch(addComment(postId, commentText)),
-    likePost: (postId, userId) => dispatch(likePost(postId, userId)),
-    unlikePost: (postId, userId) => dispatch(unlikePost(postId, userId)),
-    hidePost: (postId) => dispatch(hidePost(postId)),
-    unhidePost: (postId) => dispatch(unhidePost(postId)),
+    showMoreComments:         (postId) => dispatch(showMoreComments(postId)),
+    showMoreLikes:            (postId) => dispatch(showMoreLikes(postId)),
+    toggleEditingPost:        (postId, newValue) => dispatch(toggleEditingPost(postId, newValue)),
+    cancelEditingPost:        (postId, newValue) => dispatch(cancelEditingPost(postId, newValue)),
+    saveEditingPost:          (postId, newPost) => dispatch(saveEditingPost(postId, newPost)),
+    deletePost:               (postId) => dispatch(deletePost(postId)),
+    toggleCommenting:         (postId) => dispatch(toggleCommenting(postId)),
+    updateCommentingText:     (postId, commentText) => dispatch(updateCommentingText(postId, commentText)),
+    addComment:               (postId, commentText) => dispatch(addComment(postId, commentText)),
+    likePost:                 (postId, userId) => dispatch(likePost(postId, userId)),
+    unlikePost:               (postId, userId) => dispatch(unlikePost(postId, userId)),
+    hidePost:                 (postId) => dispatch(hidePost(postId)),
+    unhidePost:               (postId) => dispatch(unhidePost(postId)),
     toggleModeratingComments: (postId) => dispatch(toggleModeratingComments(postId)),
-    disableComments: (postId) => dispatch(disableComments(postId)),
-    enableComments: (postId) => dispatch(enableComments(postId)),
-    addAttachmentResponse: (postId, attachments) => dispatch(addAttachmentResponse(postId, attachments)),
-    removeAttachment: (postId, attachmentId) => dispatch(removeAttachment(postId, attachmentId)),
-    commentEdit: {
-      toggleEditingComment: (commentId) => dispatch(toggleEditingComment(commentId)),
-      saveEditingComment: (commentId, newValue) => dispatch(saveEditingComment(commentId, newValue)),
-      deleteComment: (commentId) => dispatch(deleteComment(commentId)),
-      highlightComment: (postId, author, arrows, baseCommentId) => dispatch(highlightComment(postId, author, arrows,  baseCommentId)),
+    disableComments:          (postId) => dispatch(disableComments(postId)),
+    enableComments:           (postId) => dispatch(enableComments(postId)),
+    addAttachmentResponse:    (postId, attachments) => dispatch(addAttachmentResponse(postId, attachments)),
+    removeAttachment:         (postId, attachmentId) => dispatch(removeAttachment(postId, attachmentId)),
+    commentEdit:              {
+      toggleEditingComment:  (commentId) => dispatch(toggleEditingComment(commentId)),
+      saveEditingComment:    (commentId, newValue) => dispatch(saveEditingComment(commentId, newValue)),
+      deleteComment:         (commentId) => dispatch(deleteComment(commentId)),
+      highlightComment:      (postId, author, arrows, baseCommentId) => dispatch(highlightComment(postId, author, arrows, baseCommentId)),
       clearHighlightComment: () => dispatch(clearHighlightComment()),
-      likeComment: (commentId) => dispatch(likeComment(commentId)),
-      unlikeComment: (commentId) => dispatch(unlikeComment(commentId)),
-      getCommentLikes: (commentId) => dispatch(getCommentLikes(commentId)),
+      likeComment:           (commentId) => dispatch(likeComment(commentId)),
+      unlikeComment:         (commentId) => dispatch(unlikeComment(commentId)),
+      getCommentLikes:       (commentId) => dispatch(getCommentLikes(commentId)),
     },
   };
 }
 
 export function userActions(dispatch) {
   return {
-    ban: (username) => dispatch(ban(username)),
-    unban: (username) => dispatch(unban(username)),
-    subscribe: (username) => dispatch(subscribe(username)),
-    unsubscribe: (username) => dispatch(unsubscribe(username)),
+    ban:                     (username) => dispatch(ban(username)),
+    unban:                   (username) => dispatch(unban(username)),
+    subscribe:               (username) => dispatch(subscribe(username)),
+    unsubscribe:             (username) => dispatch(unsubscribe(username)),
     sendSubscriptionRequest: (username) => dispatch(sendSubscriptionRequest(username))
   };
 }

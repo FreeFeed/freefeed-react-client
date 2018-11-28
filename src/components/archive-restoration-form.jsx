@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import _ from 'lodash';
 
+
 export default class ArchiveRestorationForm extends React.Component {
   static propTypes = {
     action:    PropTypes.func.isRequired,
@@ -16,8 +17,8 @@ export default class ArchiveRestorationForm extends React.Component {
   };
 
   state = {
-    disable_comments:      false,
-    via_restore:           [],
+    disable_comments: false,
+    via_restore:      [],
   };
 
   setDisableComments = (e) => this.setState({ disable_comments: e.target.checked });
@@ -129,8 +130,12 @@ class SourceList extends React.Component {
   render() {
     const { selected, onClick } = this.props;
     const sources = this.props.sources.sort((a, b) => {
-      if (a.url === FRF_URL) { return -1; }
-      if (b.url === FRF_URL) { return 1; }
+      if (a.url === FRF_URL) {
+        return -1;
+      }
+      if (b.url === FRF_URL) {
+        return 1;
+      }
       return b.count - a.count;
     });
     return (

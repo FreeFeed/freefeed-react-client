@@ -6,6 +6,7 @@ import { preventDefault, pluralForm } from '../utils';
 import CreatePost from './create-post';
 import PieceOfText from './piece-of-text';
 
+
 export default class UserProfile extends React.Component {
   constructor(props) {
     super(props);

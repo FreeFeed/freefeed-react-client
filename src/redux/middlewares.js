@@ -11,6 +11,12 @@ import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import { request, response, fail, requiresAuth, isFeedRequest, isFeedResponse } from './action-helpers';
 
+
+const adjustTime = _.throttle(
+  (dispatch, delta) => dispatch(ActionCreators.serverTimeAhead(delta)),
+  30000, // 30 sec
+);
+
 //middleware for api requests
 export const apiMiddleware = (store) => (next) => async (action) => {
   //ignore normal actions
@@ -26,6 +32,13 @@ export const apiMiddleware = (store) => (next) => async (action) => {
     const obj = await apiResponse.json();
 
     if (apiResponse.status >= 200 && apiResponse.status < 300) {
+      if (apiResponse.headers.has("Date")) {
+        const serverTime = new Date(apiResponse.headers.get("Date"));
+        if (!isNaN(serverTime)) {
+          // valid date time
+          adjustTime(store.dispatch, serverTime - Date.now());
+        }
+      }
       return store.dispatch({ payload: obj, type: response(action.type), request: action.payload });
     }
 
@@ -81,8 +94,10 @@ export const authMiddleware = (store) => {
     }
 
 
-    if (action.type === response(ActionTypes.SIGN_IN) ||
-       action.type === response(ActionTypes.SIGN_UP)) {
+    if (
+      action.type === response(ActionTypes.SIGN_IN) ||
+      action.type === response(ActionTypes.SIGN_UP)
+    ) {
       firstUnauthenticated = false;
       setToken(action.payload.authToken);
       next(action);
@@ -98,8 +113,10 @@ export const authMiddleware = (store) => {
       return browserHistory.push(`${backTo}`);
     }
 
-    if (action.type === response(ActionTypes.WHO_AM_I) ||
-       action.type === response(ActionTypes.UPDATE_USER)) {
+    if (
+      action.type === response(ActionTypes.WHO_AM_I) ||
+      action.type === response(ActionTypes.UPDATE_USER)
+    ) {
       persistUser(userParser(action.payload.users));
       return next(action);
     }
@@ -259,12 +276,17 @@ export const redirectionMiddleware = (store) => (next) => (action) => {
     return browserHistory.push('/');
   }
 
-  if (action.type === response(ActionTypes.UNADMIN_GROUP_ADMIN) &&
-      store.getState().user.id === action.request.user.id) {
+  if (
+    action.type === response(ActionTypes.UNADMIN_GROUP_ADMIN) &&
+    store.getState().user.id === action.request.user.id
+  ) {
     browserHistory.push(`/${action.request.groupName}/subscribers`);
   }
 
-  if (action.type === response(ActionTypes.CREATE_POST) && isInvitation(store.getState().routing)) {
+  if (
+    action.type === response(ActionTypes.CREATE_POST) &&
+    isInvitation(store.getState().routing)
+  ) {
     browserHistory.push('/filter/direct');
   }
 
@@ -363,7 +385,7 @@ const isFirstFriendInteraction = (post, { users }, { subscriptions, comments }) 
 const postFetchDelay = 20000; // 20 sec
 const bindHandlers = (store) => ({
   'user:update': (data) => store.dispatch({ ...data, type: ActionTypes.REALTIME_USER_UPDATE }),
-  'post:new': (data) => {
+  'post:new':    (data) => {
     const state = store.getState();
     const isFeedFirstPage = isFirstPage(state);
     const isHomeFeed = state.routing.locationBeforeTransitions.pathname === '/';
@@ -373,27 +395,27 @@ const bindHandlers = (store) => ({
 
     return store.dispatch({ ...data, type: ActionTypes.REALTIME_POST_NEW, post: data.posts, shouldBump });
   },
-  'post:update': (data) => store.dispatch({ ...data, type: ActionTypes.REALTIME_POST_UPDATE, post: data.posts }),
+  'post:update':  (data) => store.dispatch({ ...data, type: ActionTypes.REALTIME_POST_UPDATE, post: data.posts }),
   'post:destroy': (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId }),
-  'post:hide': (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId }),
-  'post:unhide': (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId }),
-  'comment:new': async (data) => {
+  'post:hide':    (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId }),
+  'post:unhide':  (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId }),
+  'comment:new':  async (data) => {
     const { postId } = data.comments;
     const action = { ...data, type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments };
     return dispatchWithPost(store, postId, action, () => true, postFetchDelay);
   },
-  'comment:update': (data) => store.dispatch({ ...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments }),
+  'comment:update':  (data) => store.dispatch({ ...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments }),
   'comment:destroy': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId, postId: data.postId }),
-  'like:new': async (data) => {
+  'like:new':        async (data) => {
     const { postId } = data.meta;
     const iLiked = iLikedPost(store.getState(), postId);
     const action = { type: ActionTypes.REALTIME_LIKE_NEW, postId, users: [data.users], iLiked };
     return dispatchWithPost(store, postId, action, isFirstFriendInteraction, postFetchDelay);
   },
-  'like:remove': (data) => store.dispatch({ type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId }),
-  'comment_like:new': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment:data.comments }),
-  'comment_like:remove': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment:data.comments }),
-  'global:user:update': (data) => store.dispatch({ type: ActionTypes.REALTIME_GLOBAL_USER_UPDATE, user: data.user }),
+  'like:remove':         (data) => store.dispatch({ type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId }),
+  'comment_like:new':    (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments }),
+  'comment_like:remove': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments }),
+  'global:user:update':  (data) => store.dispatch({ type: ActionTypes.REALTIME_GLOBAL_USER_UPDATE, user: data.user }),
 });
 
 export const realtimeMiddleware = (store) => {

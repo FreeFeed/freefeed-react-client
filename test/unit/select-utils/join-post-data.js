@@ -12,16 +12,14 @@ const user1 = { id: '1' };
 const user2 = { id: '2' };
 
 const post = {
-  id: '1',
+  id:       '1',
   comments: [comment1.id, comment2.id, comment3.id],
   postedTo: [],
 };
 
 const composeState = ({ subsequentComments, setting, omittedComments = 0, withDelay = false }) => {
   return {
-    posts: {
-      [post.id] : post
-    },
+    posts:    { [post.id]: post },
     comments: {
       [comment1.id]: {
         ...comment1,
@@ -40,30 +38,19 @@ const composeState = ({ subsequentComments, setting, omittedComments = 0, withDe
       }
     },
     commentsHighlights: {},
-    commentLikes: {},
-    commentViewState: {
+    commentLikes:       {},
+    commentViewState:   {
       [comment1.id]: {},
       [comment2.id]: {},
       [comment3.id]: {},
     },
-    postsViewState: {
-      [post.id]:{ omittedComments }
-    },
-    user: {
-      frontendPreferences: {
-        comments: {
-          omitRepeatedBubbles: setting
-        }
-      }
-    },
-    users: {
+    postsViewState: { [post.id]: { omittedComments } },
+    user:           { frontendPreferences: { comments: { omitRepeatedBubbles: setting } } },
+    users:          {
       [user1.id]: user1,
       [user2.id]: user2,
     },
-    routing: {
-      locationBeforeTransitions: {
-      }
-    }
+    routing: { locationBeforeTransitions: {} }
   };
 };
 

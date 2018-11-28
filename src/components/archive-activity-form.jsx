@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+
 export default class ArchiveActivityForm extends React.Component {
   static propTypes = {
     action:    PropTypes.func.isRequired,
@@ -12,9 +13,7 @@ export default class ArchiveActivityForm extends React.Component {
     }),
   };
 
-  state = {
-    checked: false,
-  };
+  state = { checked: false, };
 
   setChecked = (e) => this.setState({ checked: e.target.checked });
 

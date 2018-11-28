@@ -6,6 +6,7 @@ import { preventDefault } from '../utils';
 import UserName from './user-name';
 import RecentGroups from './recent-groups';
 
+
 const LoggedInBlock = ({ user, signOut }) => (
   <div className="logged-in">
     <div className="avatar">
@@ -137,7 +138,7 @@ const SideBarCoinJar = () => (
       Donate
     </div>
     <div className="box-footer">
-      <p style={{ marginBottom: '10px' }}><Link to="/about/donate"><span style={{ textDecoration:'underline', cursor:'pointer' }}>Donate</span></Link> to FreeFeed! Your regular donations pay for hosting and keep FreeFeed running.</p>
+      <p style={{ marginBottom: '10px' }}><Link to="/about/donate"><span style={{ textDecoration: 'underline', cursor: 'pointer' }}>Donate</span></Link> to FreeFeed! Your regular donations pay for hosting and keep FreeFeed running.</p>
       <span style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
           <input type="hidden" name="cmd" value="_s-xclick" />
@@ -146,7 +147,7 @@ const SideBarCoinJar = () => (
             <tbody>
               <tr>
                 <td style={{ paddingBottom: '5px' }}>
-                  <input type="hidden" name="on0" value="Pick monthly donation amount" style={{ padding:'5px 0' }} />Choose your option:
+                  <input type="hidden" name="on0" value="Pick monthly donation amount" style={{ padding: '5px 0' }} />Choose your option:
                 </td>
               </tr>
               <tr>
@@ -167,7 +168,7 @@ const SideBarCoinJar = () => (
           </table>
 
           <input type="hidden" name="currency_code" value="EUR" />
-          <input type="image" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png" name="submit" alt="PayPal - The safer, easier way to pay online!" style={{ margin:'5px' }} />
+          <input type="image" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png" name="submit" alt="PayPal - The safer, easier way to pay online!" style={{ margin: '5px' }} />
           <img alt="" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" style={{ display: 'none !important' }} />
         </form>
       </span>
@@ -177,7 +178,7 @@ const SideBarCoinJar = () => (
         <input type="image" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png" width="0" height="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
         <img alt="" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" style={{ display: 'none !important' }} />
       </form>
-      <p style={{ marginBottom: '10px' }}>Make a <span onClick={handleOnetimeDonationClick} style={{ textDecoration:'underline', cursor:'pointer' }}>one-time donation&nbsp;→</span></p>
+      <p style={{ marginBottom: '10px' }}>Make a <span onClick={handleOnetimeDonationClick} style={{ textDecoration: 'underline', cursor: 'pointer' }}>one-time donation&nbsp;→</span></p>
     </div>
   </div>
 );
@@ -200,7 +201,7 @@ const SideBarBookmarklet = () => (
       {' '}
       to&nbsp;your toolbar.
     </div>
-    <div className="box-footer">There is also a <a href="https://chrome.google.com/webstore/detail/share-on-freefeed/dngijpbccpnbjlpjomjmlppfgmnnilah"><span style={{ textDecoration:'underline', cursor:'pointer' }}>Chrome Extension</span></a> for sharing on FreeFeed.
+    <div className="box-footer">There is also a <a href="https://chrome.google.com/webstore/detail/share-on-freefeed/dngijpbccpnbjlpjomjmlppfgmnnilah"><span style={{ textDecoration: 'underline', cursor: 'pointer' }}>Chrome Extension</span></a> for sharing on FreeFeed.
     </div>
   </div>
 );
@@ -210,11 +211,12 @@ const SideBarArchive = ({ user }) => {
     return null;
   }
   const { archives } = user.privateMeta;
-  if (!user
-    || !user.privateMeta
-    || !archives
-    || archives.recovery_status === 2
-    && archives.restore_comments_and_likes) {
+  if (
+    !user ||
+    !user.privateMeta ||
+    !archives ||
+    (archives.recovery_status === 2 && archives.restore_comments_and_likes)
+  ) {
     return null;
   }
   return (

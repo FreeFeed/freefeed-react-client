@@ -10,8 +10,8 @@ const apiConfig = config.api;
 const frontendPrefsConfig = config.frontendPreferences;
 
 const getRequestOptions = () => ({
-  headers:{
-    'Accept': 'application/json',
+  headers: {
+    'Accept':                 'application/json',
     'X-Authentication-Token': getToken()
   }
 });
@@ -55,7 +55,7 @@ export function getLikesOnly({ postId, commentsExpanded }) {
   return getPost({
     postId,
     maxComments: commentsExpanded ? 'all' : '',
-    maxLikes: 'all'
+    maxLikes:    'all'
   });
 }
 
@@ -71,15 +71,15 @@ export function getPostIdByOldName({ oldName }) {
 
 export function createPost({ feeds, postText, attachmentIds, more }) {
   return fetch(`${apiConfig.host}/v1/posts`, {
-    'method': 'POST',
+    'method':  'POST',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     },
     'body': JSON.stringify({
       post: {
-        body: postText,
+        body:        postText,
         attachments: attachmentIds
       },
       meta: {
@@ -92,29 +92,27 @@ export function createPost({ feeds, postText, attachmentIds, more }) {
 
 export function createBookmarkletPost({ feeds, postText, imageUrls, commentText }) {
   return fetch(`${apiConfig.host}/v1/bookmarklet`, {
-    'method': 'POST',
+    'method':  'POST',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     },
     'body': JSON.stringify({
-      title: postText,
-      images: imageUrls,
+      title:   postText,
+      images:  imageUrls,
       comment: commentText,
-      meta: {
-        feeds
-      }
+      meta:    { feeds }
     })
   });
 }
 
 export function updatePost({ postId, newPost }) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}`, {
-    'method': 'PUT',
+    'method':  'PUT',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     },
     'body': JSON.stringify({ post: newPost })
@@ -123,9 +121,9 @@ export function updatePost({ postId, newPost }) {
 
 export function deletePost({ postId }) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}`, {
-    'method': 'DELETE',
+    'method':  'DELETE',
     'headers': {
-      'Accept': 'application/json',
+      'Accept':                 'application/json',
       'X-Authentication-Token': getToken()
     }
   });
@@ -133,22 +131,22 @@ export function deletePost({ postId }) {
 
 export function addComment({ postId, commentText }) {
   return fetch(`${apiConfig.host}/v1/comments`, {
-    method: 'POST',
+    method:  'POST',
     headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     },
-    'body': JSON.stringify({ comment: { body:commentText, postId } })
+    'body': JSON.stringify({ comment: { body: commentText, postId } })
   });
 }
 
 export function updateComment({ commentId, newCommentBody }) {
   return fetch(`${apiConfig.host}/v1/comments/${commentId}`, {
-    'method': 'PUT',
+    'method':  'PUT',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     },
     'body': JSON.stringify({ comment: { body: newCommentBody } })
@@ -157,10 +155,10 @@ export function updateComment({ commentId, newCommentBody }) {
 
 export function likeComment({ commentId }) {
   return fetch(`${apiConfig.host}/v2/comments/${commentId}/like`, {
-    method: 'POST',
+    method:  'POST',
     headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     },
   });
@@ -168,10 +166,10 @@ export function likeComment({ commentId }) {
 
 export function unlikeComment({ commentId }) {
   return fetch(`${apiConfig.host}/v2/comments/${commentId}/unlike`, {
-    method: 'POST',
+    method:  'POST',
     headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     },
   });
@@ -183,9 +181,9 @@ export function getCommentLikes({ commentId }) {
 
 export function deleteComment({ commentId }) {
   return fetch(`${apiConfig.host}/v1/comments/${commentId}`, {
-    'method': 'DELETE',
+    'method':  'DELETE',
     'headers': {
-      'Accept': 'application/json',
+      'Accept':                 'application/json',
       'X-Authentication-Token': getToken()
     }
   });
@@ -193,10 +191,10 @@ export function deleteComment({ commentId }) {
 
 export function likePost({ postId }) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}/like`, {
-    'method': 'POST',
+    'method':  'POST',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     },
     'body': '{}'
@@ -205,10 +203,10 @@ export function likePost({ postId }) {
 
 export function unlikePost({ postId }) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}/unlike`, {
-    'method': 'POST',
+    'method':  'POST',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     },
     'body': '{}'
@@ -217,10 +215,10 @@ export function unlikePost({ postId }) {
 
 export function hidePost({ postId }) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}/hide`, {
-    'method': 'POST',
+    'method':  'POST',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     },
     'body': '{}'
@@ -229,10 +227,10 @@ export function hidePost({ postId }) {
 
 export function unhidePost({ postId }) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}/unhide`, {
-    'method': 'POST',
+    'method':  'POST',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     },
     'body': '{}'
@@ -241,10 +239,10 @@ export function unhidePost({ postId }) {
 
 export function disableComments({ postId }) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}/disableComments`, {
-    'method': 'POST',
+    'method':  'POST',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     },
     'body': '{}'
@@ -253,10 +251,10 @@ export function disableComments({ postId }) {
 
 export function enableComments({ postId }) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}/enableComments`, {
-    'method': 'POST',
+    'method':  'POST',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     },
     'body': '{}'
@@ -269,41 +267,41 @@ export function signIn({ username, password }) {
   const encodedBody = encodeBody({ username, password });
 
   return fetch(`${apiConfig.host}/v1/session`, {
-    headers:{
-      'Accept': 'application/json',
-      'Content-Type':'application/x-www-form-urlencoded',
+    headers: {
+      'Accept':       'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
     method: 'POST',
-    body: encodedBody
+    body:   encodedBody
   });
 }
 
 export function restorePassword({ mail }) {
   const encodedBody = encodeBody({ email: mail });
   return fetch(`${apiConfig.host}/v1/passwords`, {
-    headers:{
-      'Accept': 'application/json',
-      'Content-Type':'application/x-www-form-urlencoded',
+    headers: {
+      'Accept':       'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
     method: 'POST',
-    body: encodedBody
+    body:   encodedBody
   });
 }
 
 export function resetPassword({ password, token }) {
   const params = {
-    newPassword: password,
+    newPassword:          password,
     passwordConfirmation: password,
   };
 
   const encodedBody = encodeBody(params);
   return fetch(`${apiConfig.host}/v1/passwords/${token}`, {
-    headers:{
-      'Accept': 'application/json',
-      'Content-Type':'application/x-www-form-urlencoded',
+    headers: {
+      'Accept':       'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
     method: 'PUT',
-    body: encodedBody
+    body:   encodedBody
   });
 }
 
@@ -318,12 +316,12 @@ export function signUp({ username, password, email, captcha, invitationId, subsc
   const encodedBody = encodeBody(body);
 
   return fetch(`${apiConfig.host}/v1/users`, {
-    headers:{
-      'Accept': 'application/json',
-      'Content-Type':'application/x-www-form-urlencoded',
+    headers: {
+      'Accept':       'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
     method: 'POST',
-    body: encodedBody
+    body:   encodedBody
   });
 }
 
@@ -333,10 +331,10 @@ export function markAllDirectsAsRead() {
 
 export function markAllNotificationsAsRead() {
   return fetch(`${apiConfig.host}/v2/users/markAllNotificationsAsRead`, {
-    method: 'POST',
+    method:  'POST',
     headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken(),
     }
   });
@@ -344,10 +342,10 @@ export function markAllNotificationsAsRead() {
 
 export function updateUser({ id, screenName, email, isPrivate, isProtected, description }) {
   return fetch(`${apiConfig.host}/v1/users/${id}`, {
-    'method': 'PUT',
+    'method':  'PUT',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     },
     'body': JSON.stringify({ user: { screenName, email, isPrivate, isProtected, description } })
@@ -363,10 +361,10 @@ export function updateUserPreferences({ userId, frontendPrefs, backendPrefs }) {
     user.preferences = backendPrefs;
   }
   return fetch(`${apiConfig.host}/v1/users/${userId}`, {
-    'method': 'PUT',
+    'method':  'PUT',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     },
     'body': JSON.stringify({ user })
@@ -377,10 +375,10 @@ export function updatePassword({ currentPassword, password, passwordConfirmation
   const encodedBody = encodeBody({ currentPassword, password, passwordConfirmation });
 
   return fetch(`${apiConfig.host}/v1/users/updatePassword`, {
-    'method': 'PUT',
+    'method':  'PUT',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type':'application/x-www-form-urlencoded',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/x-www-form-urlencoded',
       'X-Authentication-Token': getToken()
     },
     'body': encodedBody
@@ -392,20 +390,16 @@ export function updateUserPicture({ picture }) {
   data.append('file', picture);
 
   return fetch(`${apiConfig.host}/v1/users/updateProfilePicture`, {
-    'method': 'POST',
-    'headers': {
-      'X-Authentication-Token': getToken()
-    },
-    'body': data
+    'method':  'POST',
+    'headers': { 'X-Authentication-Token': getToken() },
+    'body':    data
   });
 }
 
 const userAction = (action) => ({ username }) => {
   return fetch(`${apiConfig.host}/v1/users/${username}/${action}`, {
-    method: 'POST',
-    'headers': {
-      'X-Authentication-Token': getToken(),
-    },
+    method:    'POST',
+    'headers': { 'X-Authentication-Token': getToken(), },
   });
 };
 
@@ -444,10 +438,10 @@ export function getUserInfo({ username }) {
 
 export function createGroup(groupSettings) {
   return fetch(`${apiConfig.host}/v1/groups`, {
-    'method': 'POST',
+    'method':  'POST',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     },
     'body': JSON.stringify({ group: groupSettings })
@@ -456,10 +450,10 @@ export function createGroup(groupSettings) {
 
 export function updateGroup({ id, groupSettings }) {
   return fetch(`${apiConfig.host}/v1/users/${id}`, {
-    'method': 'PUT',
+    'method':  'PUT',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     },
     'body': JSON.stringify({ user: groupSettings })
@@ -471,20 +465,18 @@ export function updateGroupPicture({ groupName, file }) {
   data.append('file', file);
 
   return fetch(`${apiConfig.host}/v1/groups/${groupName}/updateProfilePicture`, {
-    'method': 'POST',
-    'headers': {
-      'X-Authentication-Token': getToken()
-    },
-    'body': data
+    'method':  'POST',
+    'headers': { 'X-Authentication-Token': getToken() },
+    'body':    data
   });
 }
 
 export function acceptGroupRequest({ groupName, userName }) {
   return fetch(`${apiConfig.host}/v1/groups/${groupName}/acceptRequest/${userName}`, {
-    'method': 'POST',
+    'method':  'POST',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     }
   });
@@ -492,10 +484,10 @@ export function acceptGroupRequest({ groupName, userName }) {
 
 export function rejectGroupRequest({ groupName, userName }) {
   return fetch(`${apiConfig.host}/v1/groups/${groupName}/rejectRequest/${userName}`, {
-    'method': 'POST',
+    'method':  'POST',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     }
   });
@@ -503,10 +495,10 @@ export function rejectGroupRequest({ groupName, userName }) {
 
 export function acceptUserRequest({ userName }) {
   return fetch(`${apiConfig.host}/v1/users/acceptRequest/${userName}`, {
-    'method': 'POST',
+    'method':  'POST',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     }
   });
@@ -514,10 +506,10 @@ export function acceptUserRequest({ userName }) {
 
 export function rejectUserRequest({ userName }) {
   return fetch(`${apiConfig.host}/v1/users/rejectRequest/${userName}`, {
-    'method': 'POST',
+    'method':  'POST',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     }
   });
@@ -525,10 +517,10 @@ export function rejectUserRequest({ userName }) {
 
 export function unsubscribeFromGroup({ groupName, userName }) {
   return fetch(`${apiConfig.host}/v1/groups/${groupName}/unsubscribeFromGroup/${userName}`, {
-    'method': 'POST',
+    'method':  'POST',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     }
   });
@@ -536,10 +528,10 @@ export function unsubscribeFromGroup({ groupName, userName }) {
 
 export function makeGroupAdmin({ groupName, user }) {
   return fetch(`${apiConfig.host}/v1/groups/${groupName}/subscribers/${user.username}/admin`, {
-    'method': 'POST',
+    'method':  'POST',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     }
   });
@@ -547,10 +539,10 @@ export function makeGroupAdmin({ groupName, user }) {
 
 export function unadminGroupAdmin({ groupName, user }) {
   return fetch(`${apiConfig.host}/v1/groups/${groupName}/subscribers/${user.username}/unadmin`, {
-    'method': 'POST',
+    'method':  'POST',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     }
   });
@@ -558,10 +550,10 @@ export function unadminGroupAdmin({ groupName, user }) {
 
 export function revokeSentRequest({ userName }) {
   return fetch(`${apiConfig.host}/v2/requests/${userName}/revoke`, {
-    'method': 'POST',
+    'method':  'POST',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     }
   });
@@ -589,10 +581,10 @@ export function getBestOf({ offset = 0 }) {
 
 export function archiveRestoreActivity() {
   return fetch(`${apiConfig.host}/v2/archives/activities`, {
-    'method': 'PUT',
+    'method':  'PUT',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     },
     'body': JSON.stringify({ restore: true })
@@ -601,10 +593,10 @@ export function archiveRestoreActivity() {
 
 export function archiveStartRestoration(params) {
   return fetch(`${apiConfig.host}/v2/archives/restoration`, {
-    'method': 'POST',
+    'method':  'POST',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     },
     'body': JSON.stringify(params)
@@ -613,10 +605,10 @@ export function archiveStartRestoration(params) {
 
 export function createFreefeedInvitation(params) {
   return fetch(`${apiConfig.host}/v2/invitations`, {
-    method: 'POST',
+    method:    'POST',
     'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
       'X-Authentication-Token': getToken(),
     },
     body: JSON.stringify(params),

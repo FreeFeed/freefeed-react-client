@@ -4,6 +4,7 @@ import PieceOfText from "./piece-of-text";
 import SignupForm from "./signup-form";
 import { INVITATION_LANGUAGE_OPTIONS } from "./invitation-creation-form";
 
+
 function mapStateToProps(state) {
   const { invitation = {} } = state.currentInvitation;
   const { username } = state.users[invitation.author] || {};

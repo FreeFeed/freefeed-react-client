@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { preventDefault } from "../utils";
 import throbber16 from "../../assets/images/throbber-16.gif";
 
+
 export default class UserNotificationsForm extends React.Component {
   constructor(props) {
     super(props);
@@ -101,7 +102,8 @@ export default class UserNotificationsForm extends React.Component {
   savePreference = () => {
     if (this.props.status !== "loading") {
       this.props.updateUserNotificationPreferences(this.props.userId,
-        { sendNotificationsDigest: this.state.sendNotificationsDigest,
+        {
+          sendNotificationsDigest: this.state.sendNotificationsDigest,
           sendDailyBestOfDigest:   this.state.sendDailyBestOfDigest,
           sendWeeklyBestOfDigest:  this.state.sendWeeklyBestOfDigest
         });

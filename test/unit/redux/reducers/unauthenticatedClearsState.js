@@ -8,7 +8,7 @@ import { unauthenticated } from '../../../../src/redux/action-creators';
 describe('application of "unauthenticated()" action', () => {
   it('should clear "ordinary" reducers', () => {
     const ordinaryReducers = [commentViewState, posts, postsViewState, users];
-    const initial = { '1':{}, '2':{} };
+    const initial = { '1': {}, '2': {} };
 
     ordinaryReducers.forEach((reducer) => {
       const result = reducer(initial, unauthenticated());
@@ -17,7 +17,7 @@ describe('application of "unauthenticated()" action', () => {
   });
 
   it('should clear feedViewState reducer', () => {
-    const initial = { visibleEntries: ['1', '2'], hiddenEntries:['3', '4'], isHiddenRevealed: true };
+    const initial = { visibleEntries: ['1', '2'], hiddenEntries: ['3', '4'], isHiddenRevealed: true };
 
     const feedViewStateReduced = feedViewState(initial, unauthenticated());
 

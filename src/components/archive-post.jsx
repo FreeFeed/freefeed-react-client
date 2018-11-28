@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+
 function ArchivePostHandler({ router, inProgress, success, id }) {
   if (success) {
     router.replace(`/archive/${encodeURIComponent(id)}`);

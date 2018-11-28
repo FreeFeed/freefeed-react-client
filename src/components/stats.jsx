@@ -4,13 +4,12 @@ import ReactHighcharts from 'react-highcharts';
 import moment from 'moment';
 import config from '../config';
 
+
 class StatsChart extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      metrics: []
-    };
+    this.state = { metrics: [] };
   }
 
   async componentDidMount() {
@@ -41,26 +40,12 @@ class StatsChart extends React.Component {
 
   render() {
     const config = {
-      chart: {
-        zoomType: 'x'
-      },
-      exporting: {
-        enabled: true
-      },
-      xAxis: {
-        type: 'datetime'
-      },
-      yAxis: {
-        title: {
-          text: null
-        }
-      },
-      title: {
-        text: this.props.title
-      },
-      legend: {
-        enabled: false
-      },
+      chart:       { zoomType: 'x' },
+      exporting:   { enabled: true },
+      xAxis:       { type: 'datetime' },
+      yAxis:       { title: { text: null } },
+      title:       { text: this.props.title },
+      legend:      { enabled: false },
       plotOptions: {
         area: {
           fillColor: {
@@ -75,15 +60,9 @@ class StatsChart extends React.Component {
               [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
             ]
           },
-          marker: {
-            radius: 2
-          },
+          marker:    { radius: 2 },
           lineWidth: 1,
-          states: {
-            hover: {
-              lineWidth: 1
-            }
-          },
+          states:    { hover: { lineWidth: 1 } },
         }
       },
       series: [{

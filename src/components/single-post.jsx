@@ -4,6 +4,7 @@ import { joinPostData, postActions } from './select-utils';
 
 import Post, { canonicalURI } from './post';
 
+
 class SinglePostHandler extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { post, router } = nextProps;

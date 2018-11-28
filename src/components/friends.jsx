@@ -4,9 +4,12 @@ import _ from 'lodash';
 
 import { pluralForm } from '../utils';
 
-import { acceptUserRequest, rejectUserRequest,
-  revokeSentRequest } from '../redux/action-creators';
+import {
+  acceptUserRequest, rejectUserRequest,
+  revokeSentRequest
+} from '../redux/action-creators';
 import { tileUserListFactory, PLAIN, WITH_REQUEST_HANDLES, WITH_REVOKE_SENT_REQUEST } from './tile-user-list';
+
 
 const TileList = tileUserListFactory({ type: PLAIN, displayQuantity: true });
 const TileListWithAcceptAndReject = tileUserListFactory({ type: WITH_REQUEST_HANDLES, displayQuantity: true });
@@ -61,7 +64,7 @@ function calculateMutual(subscriptions, subscribers) {
 
   return {
     header: 'Friends',
-    users: mutual
+    users:  mutual
   };
 }
 
@@ -79,11 +82,11 @@ function selectState(state) {
 
   const subscriptions = {
     header: 'Subscriptions',
-    users: subscriptionList
+    users:  subscriptionList
   };
   const blockedByMe = {
     header: 'Blocked',
-    users: state.usernameBlockedByMe.payload
+    users:  state.usernameBlockedByMe.payload
   };
   const { sentRequests } = state;
 

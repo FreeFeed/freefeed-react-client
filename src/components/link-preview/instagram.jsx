@@ -4,15 +4,14 @@ import _ from 'lodash';
 import ScrollSafe from './scroll-helpers/scroll-safe';
 import * as aspectRatio from './scroll-helpers/size-cache';
 
+
 const INSTAGRAM_RE = /^https?:\/\/(?:www\.)?instagram\.com\/p\/([a-z0-9_-]+)/i;
 
 export function canShowURL(url) {
   return INSTAGRAM_RE.test(url);
 }
 
-const initialState = {
-  isPrivate: false,
-};
+const initialState = { isPrivate: false, };
 
 class InstagramPreview extends React.Component {
   iframe = null;

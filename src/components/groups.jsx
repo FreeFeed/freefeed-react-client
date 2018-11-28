@@ -7,6 +7,8 @@ import { pluralForm } from '../utils';
 
 import { acceptGroupRequest, rejectGroupRequest } from '../redux/action-creators';
 import { tileUserListFactory, WITH_REQUEST_HANDLES, PLAIN } from './tile-user-list';
+
+
 const TileListWithAcceptAndReject = tileUserListFactory({ type: WITH_REQUEST_HANDLES, displayQuantity: true });
 const TileList = tileUserListFactory({ type: PLAIN, displayQuantity: true });
 
@@ -85,12 +87,12 @@ function selectState(state) {
 
   const myGroups = {
     header: 'Groups you admin',
-    users: _.sortBy(adminGroups, sortingRule)
+    users:  _.sortBy(adminGroups, sortingRule)
   };
 
   const groupsIAmIn = {
     header: 'Groups you are in',
-    users: _.sortBy(regularGroups, sortingRule)
+    users:  _.sortBy(regularGroups, sortingRule)
   };
 
   return { groupRequests, myGroups, groupsIAmIn };

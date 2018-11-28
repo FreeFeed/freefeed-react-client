@@ -3,13 +3,12 @@ import DropdownMenu from 'react-dd-menu';
 
 import { confirmFirst } from '../utils';
 
+
 export default class PostMoreMenu extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      isOpen: false
-    };
+    this.state = { isOpen: false };
   }
 
   handleClickOnMore = () => {
@@ -22,10 +21,11 @@ export default class PostMoreMenu extends React.Component {
 
   render() {
     const menuOptions = {
-      align: 'left',
-      close: this.close,
-      isOpen: this.state.isOpen,
-      toggle: <a className="post-action" onClick={this.handleClickOnMore}>More&nbsp;&#x25be;</a>
+      align:   'left',
+      close:   this.close,
+      isOpen:  this.state.isOpen,
+      animate: false,
+      toggle:  <a className="post-action" onClick={this.handleClickOnMore}>More&nbsp;&#x25be;</a>
     };
 
     const delLabel = this.props.post.isFullyRemovable ? 'Delete' : 'Remove from group';

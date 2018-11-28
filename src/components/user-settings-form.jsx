@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import throbber16 from '../../assets/images/throbber-16.gif';
 import { preventDefault } from '../utils';
 
+
 const
   PUBLIC_FEED = 'PUBLIC',
   PROTECTED_FEED = 'PROTECTED',
@@ -14,8 +15,8 @@ export default class UserSettingsForm extends React.Component {
     super(props);
 
     this.props.userSettingsChange({
-      isPrivate: this.props.user.isPrivate,
-      isProtected: this.props.user.isProtected,
+      isPrivate:      this.props.user.isPrivate,
+      isProtected:    this.props.user.isProtected,
       directsFromAll: this.props.user.preferences.acceptDirectsFrom === 'all',
     });
   }
@@ -48,18 +49,16 @@ export default class UserSettingsForm extends React.Component {
         this.props.isProtected,
         this.props.description,
       );
-      this.props.updateUserPreferences(this.props.user.id, this.props.user.frontendPreferences, {
-        acceptDirectsFrom: this.props.directsFromAll ? 'all' : 'friends'
-      });
+      this.props.updateUserPreferences(this.props.user.id, this.props.user.frontendPreferences, { acceptDirectsFrom: this.props.directsFromAll ? 'all' : 'friends' });
     }
   };
 
   render() {
     const className = classnames({
-      'form-group': true,
+      'form-group':   true,
       'has-feedback': this.props.screenName,
-      'has-error': this.props.screenName && (this.props.screenName.length < 3 || this.props.screenName.length > 25),
-      'has-success': this.props.screenName && (this.props.screenName.length >= 3 && this.props.screenName.length <= 25)
+      'has-error':    this.props.screenName && (this.props.screenName.length < 3 || this.props.screenName.length > 25),
+      'has-success':  this.props.screenName && (this.props.screenName.length >= 3 && this.props.screenName.length <= 25)
     });
 
     let feedPrivacy;

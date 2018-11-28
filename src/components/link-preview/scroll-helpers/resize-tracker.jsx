@@ -10,13 +10,10 @@ import { contentResized } from './events';
  * Based on GWT algorithm: /user/src/com/google/gwt/user/client/ui/ResizeLayoutPanel.java
  */
 export default class ResizeTracker extends React.Component {
-  static propTypes = {
-    debounce: PropTypes.number.isRequired, // fixed, only applies at creation time
-  };
+  // fixed, only applies at creation time
+  static propTypes = { debounce: PropTypes.number.isRequired };
 
-  static defaultProps = {
-    debounce: 150,
-  };
+  static defaultProps = { debounce: 150, };
 
   root = null;
   expSensor = null;
@@ -82,18 +79,18 @@ const trackerStyle = {
 };
 
 const sensorStyle = {
-  position: 'absolute',
-  top: '0',
-  left: '0',
-  width: '100%',
-  height: '100%',
-  overflow: 'scroll',
+  position:      'absolute',
+  top:           '0',
+  left:          '0',
+  width:         '100%',
+  height:        '100%',
+  overflow:      'scroll',
   pointerEvents: 'none',
-  zIndex: -1,
-  opacity: 0,
+  zIndex:        -1,
+  opacity:       0,
 };
 
 const colSliderStyle = {
-  width: '200%',
+  width:  '200%',
   height: '200%',
 };

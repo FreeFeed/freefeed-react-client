@@ -7,6 +7,7 @@ import Portal from 'react-portal';
 import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
 import UserCard from './user-card';
 
+
 const DisplayOption = ({ user, me, preferences }) => {
   const { username, screenName } = user;
 
@@ -38,7 +39,7 @@ class UserName extends React.Component {
     super(props);
 
     this.state = {
-      isHovered: false,
+      isHovered:  false,
       isCardOpen: false
     };
     this.enterUserName = this.enterUserName.bind(this);
@@ -126,7 +127,7 @@ class UserName extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    me: state.user.username,
+    me:                  state.user.username,
     frontendPreferences: state.user.frontendPreferences
   };
 };

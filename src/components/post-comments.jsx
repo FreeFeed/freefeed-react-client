@@ -7,6 +7,7 @@ import { preventDefault } from '../utils';
 import PostComment from './post-comment';
 import MoreCommentsWrapper from './more-comments-wrapper';
 
+
 const minCommentsToFold = 12;
 
 export default class PostComments extends React.Component {

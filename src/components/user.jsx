@@ -11,6 +11,7 @@ import Breadcrumbs from './breadcrumbs';
 import UserProfile from './user-profile';
 import UserFeed from './user-feed';
 
+
 const UserHandler = (props) => {
   return (
     <div className="box">
@@ -74,17 +75,17 @@ function selectState(state, ownProps) {
 
   const statusExtension = {
     authenticated,
-    isLoading: state.routeLoadingState,
-    isUserFound: !!foundUser,
-    isItMe: (foundUser ? foundUser.username === user.username : false),
-    userView: (foundUser && state.userViews[foundUser.id] || {}),
+    isLoading:          state.routeLoadingState,
+    isUserFound:        !!foundUser,
+    isItMe:             (foundUser ? foundUser.username === user.username : false),
+    userView:           ((foundUser && state.userViews[foundUser.id]) || {}),
     isItPostsPage,
     amIGroupAdmin,
-    subscribed: authenticated && foundUser && (user.subscriptions.indexOf(foundUser.id) > -1),
-    subscribedToMe: authenticated && foundUser && (_.findIndex(state.user.subscribers, { id: foundUser.id }) > -1),
-    blocked: authenticated && foundUser && (user.banIds.indexOf(foundUser.id) > -1),
+    subscribed:         authenticated && foundUser && (user.subscriptions.indexOf(foundUser.id) > -1),
+    subscribedToMe:     authenticated && foundUser && (_.findIndex(state.user.subscribers, { id: foundUser.id }) > -1),
+    blocked:            authenticated && foundUser && (user.banIds.indexOf(foundUser.id) > -1),
     hasRequestBeenSent: authenticated && foundUser && ((user.pendingSubscriptionRequests || []).indexOf(foundUser.id) > -1),
-    canAcceptDirects: canAcceptDirects(foundUser, state),
+    canAcceptDirects:   canAcceptDirects(foundUser, state),
   };
 
   statusExtension.canISeeSubsList = statusExtension.isUserFound &&
@@ -100,8 +101,8 @@ function selectState(state, ownProps) {
 
   const breadcrumbs = {
     shouldShowBreadcrumbs: !isItPostsPage,
-    user: viewUser,
-    breadcrumb: currentRouteName.replace('user', '')
+    user:                  viewUser,
+    breadcrumb:            currentRouteName.replace('user', '')
   };
 
   const sendTo = { ...state.sendTo, defaultFeed: (foundUser ? foundUser.username : null) };
@@ -114,11 +115,11 @@ function selectState(state, ownProps) {
 function selectActions(dispatch) {
   return {
     ...postActions(dispatch),
-    createPost: (feeds, postText, attachmentIds, more) => dispatch(createPost(feeds, postText, attachmentIds, more)),
+    createPost:          (feeds, postText, attachmentIds, more) => dispatch(createPost(feeds, postText, attachmentIds, more)),
     resetPostCreateForm: (...args) => dispatch(resetPostCreateForm(...args)),
-    expandSendTo: () => dispatch(expandSendTo()),
-    userActions: userActions(dispatch),
-    getUserInfo: (username) => dispatch(getUserInfo(username)),
+    expandSendTo:        () => dispatch(expandSendTo()),
+    userActions:         userActions(dispatch),
+    getUserInfo:         (username) => dispatch(getUserInfo(username)),
   };
 }
 

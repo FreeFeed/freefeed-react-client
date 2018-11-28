@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import screenshot from '../../assets/images/screenshot.png';
 
+
 const About = ({ authenticated }) => (
   <div className="box">
     <div className="box-header-timeline" />
@@ -79,9 +80,7 @@ const About = ({ authenticated }) => (
 );
 
 function mapStateToProps(state) {
-  return {
-    authenticated: state.authenticated
-  };
+  return { authenticated: state.authenticated };
 }
 
 export default connect(mapStateToProps)(About);

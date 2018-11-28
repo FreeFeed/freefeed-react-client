@@ -24,9 +24,7 @@ export default class PostComment extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      editText: this.props.editText || ''
-    };
+    this.state = { editText: this.props.editText || '' };
     this.commentTextArea = null;
   }
 
@@ -53,9 +51,7 @@ export default class PostComment extends React.Component {
   }
 
   handleChange = (event) => {
-    this.setState({
-      editText: event.target.value || ''
-    });
+    this.setState({ editText: event.target.value || '' });
   };
 
   reply = () => {
@@ -278,12 +274,12 @@ export default class PostComment extends React.Component {
 
   render() {
     const className = classnames({
-      'comment': true,
-      'highlighted': this.props.highlighted,
-      'omit-bubble': this.props.omitBubble,
-      'is-hidden': !!this.props.hideType,
+      'comment':            true,
+      'highlighted':        this.props.highlighted,
+      'omit-bubble':        this.props.omitBubble,
+      'is-hidden':          !!this.props.hideType,
       'highlight-from-url': this.props.highlightedFromUrl,
-      'my-comment': this.props.currentUser && this.props.user && (this.props.currentUser.id === this.props.user.id)
+      'my-comment':         this.props.currentUser && this.props.user && (this.props.currentUser.id === this.props.user.id)
     });
 
 

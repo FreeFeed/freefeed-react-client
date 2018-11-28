@@ -1,60 +1,59 @@
 import * as Api from '../services/api';
 import * as ActionTypes from './action-types';
 
+
 export function unauthenticated(payload) {
   return {
-    type: ActionTypes.UNAUTHENTICATED,
+    type:    ActionTypes.UNAUTHENTICATED,
     payload: { ...payload, authToken: '' },
   };
 }
 
 export function staticPage(title) {
   return {
-    type: ActionTypes.STATIC_PAGE,
+    type:    ActionTypes.STATIC_PAGE,
     payload: { title }
   };
 }
 
 export function requireAuthentication() {
-  return {
-    type: ActionTypes.REQUIRE_AUTHENTICATION,
-  };
+  return { type: ActionTypes.REQUIRE_AUTHENTICATION, };
 }
 
 export function whoAmI() {
   return {
-    type: ActionTypes.WHO_AM_I,
+    type:       ActionTypes.WHO_AM_I,
     apiRequest: Api.getWhoAmI,
   };
 }
 
 export function markAllDirectsAsRead() {
   return {
-    type: ActionTypes.DIRECTS_ALL_READ,
+    type:       ActionTypes.DIRECTS_ALL_READ,
     apiRequest: Api.markAllDirectsAsRead,
   };
 }
 
 export function markAllNotificationsAsRead() {
   return {
-    type: ActionTypes.NOTIFICATIONS_ALL_READ,
+    type:       ActionTypes.NOTIFICATIONS_ALL_READ,
     apiRequest: Api.markAllNotificationsAsRead,
   };
 }
 
 export function home(offset = 0) {
   return {
-    type: ActionTypes.HOME,
+    type:       ActionTypes.HOME,
     apiRequest: Api.getHome,
-    payload: { offset },
+    payload:    { offset },
   };
 }
 
 export function getMemories(_from, offset = 0) {
   return {
-    type: ActionTypes.MEMORIES,
+    type:       ActionTypes.MEMORIES,
     apiRequest: Api.getMemories,
-    payload: {
+    payload:    {
       from: _from,
       offset,
     },
@@ -63,34 +62,34 @@ export function getMemories(_from, offset = 0) {
 
 export function discussions(offset = 0) {
   return {
-    type: ActionTypes.DISCUSSIONS,
+    type:       ActionTypes.DISCUSSIONS,
     apiRequest: Api.getDiscussions,
-    payload: { offset },
+    payload:    { offset },
   };
 }
 
 export function direct(offset = 0) {
   return {
-    type: ActionTypes.DIRECT,
+    type:       ActionTypes.DIRECT,
     apiRequest: Api.getDirect,
-    payload: { offset },
+    payload:    { offset },
   };
 }
 
 export function getUserFeed(username, offset = 0) {
   return {
-    type: ActionTypes.GET_USER_FEED,
-    apiRequest: Api.getUserFeed,
+    type:           ActionTypes.GET_USER_FEED,
+    apiRequest:     Api.getUserFeed,
     nonAuthRequest: true,
-    payload: { username, offset },
+    payload:        { username, offset },
   };
 }
 
 export function getNotifications(offset = 0, filter = '') {
   return {
-    type: ActionTypes.GET_NOTIFICATIONS,
+    type:       ActionTypes.GET_NOTIFICATIONS,
     apiRequest: Api.getNotifications,
-    payload: {
+    payload:    {
       offset,
       filter,
     },
@@ -99,63 +98,63 @@ export function getNotifications(offset = 0, filter = '') {
 
 export function showMoreComments(postId) {
   return {
-    type: ActionTypes.SHOW_MORE_COMMENTS,
-    apiRequest: Api.getPost,
+    type:           ActionTypes.SHOW_MORE_COMMENTS,
+    apiRequest:     Api.getPost,
     nonAuthRequest: true,
-    payload: { postId, maxComments: 'all' },
+    payload:        { postId, maxComments: 'all' },
   };
 }
 
 export function showMoreLikes(postId) {
   return {
-    type: ActionTypes.SHOW_MORE_LIKES,
+    type:    ActionTypes.SHOW_MORE_LIKES,
     payload: { postId },
   };
 }
 
 export function showMoreLikesAsync(postId) {
   return {
-    type: ActionTypes.SHOW_MORE_LIKES_ASYNC,
-    apiRequest: Api.getLikesOnly,
+    type:           ActionTypes.SHOW_MORE_LIKES_ASYNC,
+    apiRequest:     Api.getLikesOnly,
     nonAuthRequest: true,
-    payload: { postId },
+    payload:        { postId },
   };
 }
 
 export function showMoreLikesSync(postId) {
   return {
-    type: ActionTypes.SHOW_MORE_LIKES_SYNC,
+    type:    ActionTypes.SHOW_MORE_LIKES_SYNC,
     payload: { postId },
   };
 }
 
 export function toggleEditingPost(postId, newValue) {
   return {
-    type: ActionTypes.TOGGLE_EDITING_POST,
+    type:    ActionTypes.TOGGLE_EDITING_POST,
     payload: { postId, newValue },
   };
 }
 
 export function cancelEditingPost(postId, newValue) {
   return {
-    type: ActionTypes.CANCEL_EDITING_POST,
+    type:    ActionTypes.CANCEL_EDITING_POST,
     payload: { postId, newValue },
   };
 }
 
 export function saveEditingPost(postId, newPost) {
   return {
-    type: ActionTypes.SAVE_EDITING_POST,
+    type:       ActionTypes.SAVE_EDITING_POST,
     apiRequest: Api.updatePost,
-    payload: { postId, newPost },
+    payload:    { postId, newPost },
   };
 }
 
 export function deletePost(postId) {
   return {
-    type: ActionTypes.DELETE_POST,
+    type:       ActionTypes.DELETE_POST,
     apiRequest: Api.deletePost,
-    payload: { postId },
+    payload:    { postId },
   };
 }
 
@@ -176,9 +175,9 @@ export function updateCommentingText(postId, commentText) {
 
 export function addComment(postId, commentText) {
   return {
-    type: ActionTypes.ADD_COMMENT,
+    type:       ActionTypes.ADD_COMMENT,
     apiRequest: Api.addComment,
-    payload: {
+    payload:    {
       postId,
       commentText,
     }
@@ -187,7 +186,7 @@ export function addComment(postId, commentText) {
 
 export function likePost(postId, userId) {
   return {
-    type: ActionTypes.LIKE_POST_OPTIMISTIC,
+    type:    ActionTypes.LIKE_POST_OPTIMISTIC,
     payload: {
       postId,
       userId
@@ -197,9 +196,9 @@ export function likePost(postId, userId) {
 
 export function likePostRequest(postId, userId) {
   return {
-    type: ActionTypes.LIKE_POST,
+    type:       ActionTypes.LIKE_POST,
     apiRequest: Api.likePost,
-    payload: {
+    payload:    {
       postId,
       userId
     }
@@ -208,7 +207,7 @@ export function likePostRequest(postId, userId) {
 
 export function unlikePost(postId, userId) {
   return {
-    type: ActionTypes.UNLIKE_POST_OPTIMISTIC,
+    type:    ActionTypes.UNLIKE_POST_OPTIMISTIC,
     payload: {
       postId,
       userId
@@ -218,9 +217,9 @@ export function unlikePost(postId, userId) {
 
 export function unlikePostRequest(postId, userId) {
   return {
-    type: ActionTypes.UNLIKE_POST,
+    type:       ActionTypes.UNLIKE_POST,
     apiRequest: Api.unlikePost,
-    payload: {
+    payload:    {
       postId,
       userId
     }
@@ -236,21 +235,17 @@ export function cleanLikeError(postId) {
 
 export function hidePost(postId) {
   return {
-    type: ActionTypes.HIDE_POST,
+    type:       ActionTypes.HIDE_POST,
     apiRequest: Api.hidePost,
-    payload: {
-      postId
-    }
+    payload:    { postId }
   };
 }
 
 export function unhidePost(postId) {
   return {
-    type: ActionTypes.UNHIDE_POST,
+    type:       ActionTypes.UNHIDE_POST,
     apiRequest: Api.unhidePost,
-    payload: {
-      postId
-    }
+    payload:    { postId }
   };
 }
 
@@ -263,21 +258,17 @@ export function toggleModeratingComments(postId) {
 
 export function disableComments(postId) {
   return {
-    type: ActionTypes.DISABLE_COMMENTS,
+    type:       ActionTypes.DISABLE_COMMENTS,
     apiRequest: Api.disableComments,
-    payload: {
-      postId
-    }
+    payload:    { postId }
   };
 }
 
 export function enableComments(postId) {
   return {
-    type: ActionTypes.ENABLE_COMMENTS,
+    type:       ActionTypes.ENABLE_COMMENTS,
     apiRequest: Api.enableComments,
-    payload: {
-      postId
-    }
+    payload:    { postId }
   };
 }
 
@@ -290,70 +281,70 @@ export function toggleEditingComment(commentId) {
 
 export function saveEditingComment(commentId, newCommentBody) {
   return {
-    type: ActionTypes.SAVE_EDITING_COMMENT,
+    type:       ActionTypes.SAVE_EDITING_COMMENT,
     apiRequest: Api.updateComment,
-    payload: { commentId, newCommentBody }
+    payload:    { commentId, newCommentBody }
   };
 }
 
 export function likeComment(commentId) {
   return {
-    type: ActionTypes.LIKE_COMMENT,
+    type:       ActionTypes.LIKE_COMMENT,
     apiRequest: Api.likeComment,
-    payload: { commentId },
+    payload:    { commentId },
   };
 }
 
 export function unlikeComment(commentId) {
   return {
-    type: ActionTypes.UNLIKE_COMMENT,
+    type:       ActionTypes.UNLIKE_COMMENT,
     apiRequest: Api.unlikeComment,
-    payload: { commentId },
+    payload:    { commentId },
   };
 }
 
 export function getCommentLikes(commentId) {
   return {
-    type: ActionTypes.GET_COMMENT_LIKES,
+    type:       ActionTypes.GET_COMMENT_LIKES,
     apiRequest: Api.getCommentLikes,
-    payload: { commentId },
+    payload:    { commentId },
   };
 }
 
 export function deleteComment(commentId) {
   return {
-    type: ActionTypes.DELETE_COMMENT,
+    type:       ActionTypes.DELETE_COMMENT,
     apiRequest: Api.deleteComment,
-    payload: { commentId },
+    payload:    { commentId },
   };
 }
 
 export function createPost(feeds, postText, attachmentIds, more) {
   return {
-    type: ActionTypes.CREATE_POST,
+    type:       ActionTypes.CREATE_POST,
     apiRequest: Api.createPost,
-    payload: { feeds, postText, attachmentIds, more },
+    payload:    { feeds, postText, attachmentIds, more },
   };
 }
 
 export function createBookmarkletPost(feeds, postText, imageUrls, commentText) {
   return {
-    type: ActionTypes.CREATE_POST,
+    type:       ActionTypes.CREATE_POST,
     apiRequest: Api.createBookmarkletPost,
-    payload: { feeds, postText, imageUrls, commentText }
+    payload:    { feeds, postText, imageUrls, commentText }
   };
 }
 
 export function addAttachmentResponse(postId, attachments) {
   return {
-    type: ActionTypes.ADD_ATTACHMENT_RESPONSE,
+    type:    ActionTypes.ADD_ATTACHMENT_RESPONSE,
     payload: { postId, attachments }
   };
 }
 
 export function removeAttachment(postId, attachmentId) {
   return {
-    type: ActionTypes.REMOVE_ATTACHMENT,
+    type:    ActionTypes.REMOVE_ATTACHMENT,
     payload: { postId, attachmentId }
   };
 }
@@ -368,10 +359,10 @@ export function signInChange(username, password) {
 
 export function signIn(username, password) {
   return {
-    type: ActionTypes.SIGN_IN,
-    apiRequest: Api.signIn,
+    type:           ActionTypes.SIGN_IN,
+    apiRequest:     Api.signIn,
     nonAuthRequest: true,
-    payload: {
+    payload:        {
       username,
       password,
     },
@@ -380,21 +371,19 @@ export function signIn(username, password) {
 
 export function restorePassword(mail) {
   return {
-    type: ActionTypes.RESTORE_PASSWORD,
-    apiRequest: Api.restorePassword,
+    type:           ActionTypes.RESTORE_PASSWORD,
+    apiRequest:     Api.restorePassword,
     nonAuthRequest: true,
-    payload: {
-      mail,
-    },
+    payload:        { mail, },
   };
 }
 
 export function resetPassword(password, token) {
   return {
-    type: ActionTypes.RESET_PASSWORD,
-    apiRequest: Api.resetPassword,
+    type:           ActionTypes.RESET_PASSWORD,
+    apiRequest:     Api.resetPassword,
     nonAuthRequest: true,
-    payload: {
+    payload:        {
       password,
       token
     },
@@ -410,9 +399,7 @@ export function resetPasswordValidationFail(error) {
 
 
 export function signInEmpty() {
-  return {
-    type: ActionTypes.SIGN_IN_EMPTY
-  };
+  return { type: ActionTypes.SIGN_IN_EMPTY };
 }
 
 export function signUpChange(signUpData) {
@@ -424,25 +411,25 @@ export function signUpChange(signUpData) {
 
 export function signUp(signUpData) {
   return {
-    type: ActionTypes.SIGN_UP,
-    apiRequest: Api.signUp,
+    type:           ActionTypes.SIGN_UP,
+    apiRequest:     Api.signUp,
     nonAuthRequest: true,
-    payload: { ...signUpData },
+    payload:        { ...signUpData },
   };
 }
 
 export function signUpEmpty(errorMessage) {
   return {
-    type: ActionTypes.SIGN_UP_EMPTY,
+    type:    ActionTypes.SIGN_UP_EMPTY,
     message: errorMessage
   };
 }
 
 export function updateUser(id, screenName, email, isPrivate, isProtected, description) {
   return {
-    type: ActionTypes.UPDATE_USER,
+    type:       ActionTypes.UPDATE_USER,
     apiRequest: Api.updateUser,
-    payload: { id, screenName, email, isPrivate, isProtected, description },
+    payload:    { id, screenName, email, isPrivate, isProtected, description },
   };
 }
 
@@ -455,23 +442,23 @@ export function userSettingsChange(payload) {
 
 export function updateUserPreferences(userId, frontendPrefs = {}, backendPrefs = {}) {
   return {
-    type: ActionTypes.UPDATE_USER_PREFERENCES,
+    type:       ActionTypes.UPDATE_USER_PREFERENCES,
     apiRequest: Api.updateUserPreferences,
-    payload: { userId, frontendPrefs, backendPrefs },
+    payload:    { userId, frontendPrefs, backendPrefs },
   };
 }
 
 export function updateUserNotificationPreferences(userId, backendPrefs) {
   return {
-    type: ActionTypes.UPDATE_USER_NOTIFICATION_PREFERENCES,
+    type:       ActionTypes.UPDATE_USER_NOTIFICATION_PREFERENCES,
     apiRequest: Api.updateUserPreferences,
-    payload: { userId, backendPrefs },
+    payload:    { userId, backendPrefs },
   };
 }
 
 export function updatePassword(payload) {
   return {
-    type: ActionTypes.UPDATE_PASSWORD,
+    type:       ActionTypes.UPDATE_PASSWORD,
     apiRequest: Api.updatePassword,
     payload,
   };
@@ -479,27 +466,27 @@ export function updatePassword(payload) {
 
 export function updateUserPicture(picture) {
   return {
-    type: ActionTypes.UPDATE_USER_PICTURE,
+    type:       ActionTypes.UPDATE_USER_PICTURE,
     apiRequest: Api.updateUserPicture,
-    payload: { picture },
+    payload:    { picture },
   };
 }
 
 export function getSinglePost(postId) {
   return {
-    type: ActionTypes.GET_SINGLE_POST,
-    apiRequest: Api.getPost,
+    type:           ActionTypes.GET_SINGLE_POST,
+    apiRequest:     Api.getPost,
     nonAuthRequest: true,
-    payload: { postId, maxComments: 'all' },
+    payload:        { postId, maxComments: 'all' },
   };
 }
 
 export function getPostIdByOldName(oldName) {
   return {
-    type: ActionTypes.GET_POST_ID_BY_OLD_NAME,
-    apiRequest: Api.getPostIdByOldName,
+    type:           ActionTypes.GET_POST_ID_BY_OLD_NAME,
+    apiRequest:     Api.getPostIdByOldName,
     nonAuthRequest: true,
-    payload: { oldName },
+    payload:        { oldName },
   };
 }
 
@@ -519,191 +506,179 @@ export const sendSubscriptionRequest = userChangeAction(ActionTypes.SEND_SUBSCRI
 
 export function getUserComments(username, offset = 0) {
   return {
-    type: ActionTypes.GET_USER_COMMENTS,
-    apiRequest: Api.getUserComments,
+    type:           ActionTypes.GET_USER_COMMENTS,
+    apiRequest:     Api.getUserComments,
     nonAuthRequest: true,
-    payload: { username, offset },
+    payload:        { username, offset },
   };
 }
 
 export function getUserLikes(username, offset = 0) {
   return {
-    type: ActionTypes.GET_USER_LIKES,
-    apiRequest: Api.getUserLikes,
+    type:           ActionTypes.GET_USER_LIKES,
+    apiRequest:     Api.getUserLikes,
     nonAuthRequest: true,
-    payload: { username, offset },
+    payload:        { username, offset },
   };
 }
 
 export function getUserMemories(username, from, offset = 0) {
   return {
-    type: ActionTypes.GET_USER_MEMORIES,
-    apiRequest: Api.getUserMemories,
+    type:           ActionTypes.GET_USER_MEMORIES,
+    apiRequest:     Api.getUserMemories,
     nonAuthRequest: true,
-    payload: { username, from, offset },
+    payload:        { username, from, offset },
   };
 }
 
 export function expandSendTo() {
-  return {
-    type: ActionTypes.EXPAND_SEND_TO
-  };
+  return { type: ActionTypes.EXPAND_SEND_TO };
 }
 
 export function toggleHiddenPosts() {
-  return {
-    type: ActionTypes.TOGGLE_HIDDEN_POSTS
-  };
+  return { type: ActionTypes.TOGGLE_HIDDEN_POSTS };
 }
 
 export function subscribers(username) {
   return {
-    type: ActionTypes.SUBSCRIBERS,
+    type:       ActionTypes.SUBSCRIBERS,
     apiRequest: Api.getSubscribers,
-    payload: { username },
+    payload:    { username },
   };
 }
 
 export function subscriptions(username) {
   return {
-    type: ActionTypes.SUBSCRIPTIONS,
+    type:       ActionTypes.SUBSCRIPTIONS,
     apiRequest: Api.getSubscriptions,
-    payload: { username },
+    payload:    { username },
   };
 }
 
 export function getUserInfo(username) {
   return {
-    type: ActionTypes.GET_USER_INFO,
+    type:       ActionTypes.GET_USER_INFO,
     apiRequest: Api.getUserInfo,
-    payload: { username },
+    payload:    { username },
   };
 }
 
 export function createGroup(groupSettings) {
   return {
-    type: ActionTypes.CREATE_GROUP,
-    payload: groupSettings,
+    type:       ActionTypes.CREATE_GROUP,
+    payload:    groupSettings,
     apiRequest: Api.createGroup
   };
 }
 
 export function updateGroup(id, groupSettings) {
   return {
-    type: ActionTypes.UPDATE_GROUP,
-    payload: { id, groupSettings },
+    type:       ActionTypes.UPDATE_GROUP,
+    payload:    { id, groupSettings },
     apiRequest: Api.updateGroup
   };
 }
 
 export function updateGroupPicture(groupName, file) {
   return {
-    type: ActionTypes.UPDATE_GROUP_PICTURE,
-    payload: { groupName, file },
+    type:       ActionTypes.UPDATE_GROUP_PICTURE,
+    payload:    { groupName, file },
     apiRequest: Api.updateGroupPicture
   };
 }
 
 export function acceptGroupRequest(groupName, userName) {
   return {
-    type: ActionTypes.ACCEPT_GROUP_REQUEST,
-    payload: { groupName, userName },
+    type:       ActionTypes.ACCEPT_GROUP_REQUEST,
+    payload:    { groupName, userName },
     apiRequest: Api.acceptGroupRequest
   };
 }
 
 export function rejectGroupRequest(groupName, userName) {
   return {
-    type: ActionTypes.REJECT_GROUP_REQUEST,
-    payload: { groupName, userName },
+    type:       ActionTypes.REJECT_GROUP_REQUEST,
+    payload:    { groupName, userName },
     apiRequest: Api.rejectGroupRequest
   };
 }
 
 export function acceptUserRequest(userName) {
   return {
-    type: ActionTypes.ACCEPT_USER_REQUEST,
-    payload: { userName },
+    type:       ActionTypes.ACCEPT_USER_REQUEST,
+    payload:    { userName },
     apiRequest: Api.acceptUserRequest
   };
 }
 
 export function rejectUserRequest(userName) {
   return {
-    type: ActionTypes.REJECT_USER_REQUEST,
-    payload: { userName },
+    type:       ActionTypes.REJECT_USER_REQUEST,
+    payload:    { userName },
     apiRequest: Api.rejectUserRequest
   };
 }
 
 export function resetPostCreateForm() {
-  return {
-    type: ActionTypes.RESET_POST_CREATE_FORM
-  };
+  return { type: ActionTypes.RESET_POST_CREATE_FORM };
 }
 
 export function resetGroupCreateForm() {
-  return {
-    type: ActionTypes.RESET_GROUP_CREATE_FORM
-  };
+  return { type: ActionTypes.RESET_GROUP_CREATE_FORM };
 }
 
 export function resetGroupUpdateForm() {
-  return {
-    type: ActionTypes.RESET_GROUP_UPDATE_FORM
-  };
+  return { type: ActionTypes.RESET_GROUP_UPDATE_FORM };
 }
 
 export function toggleRealtime() {
-  return {
-    type: ActionTypes.TOGGLE_REALTIME,
-  };
+  return { type: ActionTypes.TOGGLE_REALTIME, };
 }
 
 export function unsubscribeFromGroup(groupName, userName) {
   return {
-    type: ActionTypes.UNSUBSCRIBE_FROM_GROUP,
-    payload: { groupName, userName },
+    type:       ActionTypes.UNSUBSCRIBE_FROM_GROUP,
+    payload:    { groupName, userName },
     apiRequest: Api.unsubscribeFromGroup
   };
 }
 
 export function makeGroupAdmin(groupName, user) {
   return {
-    type: ActionTypes.MAKE_GROUP_ADMIN,
-    payload: { groupName, user },
+    type:       ActionTypes.MAKE_GROUP_ADMIN,
+    payload:    { groupName, user },
     apiRequest: Api.makeGroupAdmin
   };
 }
 
 export function unadminGroupAdmin(groupName, user, isItMe) {
   return {
-    type: ActionTypes.UNADMIN_GROUP_ADMIN,
-    payload: { groupName, user, isItMe },
+    type:       ActionTypes.UNADMIN_GROUP_ADMIN,
+    payload:    { groupName, user, isItMe },
     apiRequest: Api.unadminGroupAdmin
   };
 }
 
 export function revokeSentRequest(userName) {
   return {
-    type: ActionTypes.REVOKE_USER_REQUEST,
-    payload: { userName },
+    type:       ActionTypes.REVOKE_USER_REQUEST,
+    payload:    { userName },
     apiRequest: Api.revokeSentRequest
   };
 }
 
 export function archiveRestoreActivity() {
   return {
-    type: ActionTypes.ARCHIVE_ACTIVITY_REQUEST,
+    type:       ActionTypes.ARCHIVE_ACTIVITY_REQUEST,
     apiRequest: Api.archiveRestoreActivity
   };
 }
 
 export function archiveStartRestoration(params) {
   return {
-    type: ActionTypes.ARCHIVE_RESTORATION_REQUEST,
+    type:       ActionTypes.ARCHIVE_RESTORATION_REQUEST,
     apiRequest: Api.archiveStartRestoration,
-    payload: params,
+    payload:    params,
   };
 }
 
@@ -718,88 +693,80 @@ export function highlightComment(postId, author, arrows, baseCommentId) {
 }
 
 export function clearHighlightComment() {
-  return {
-    type: ActionTypes.CLEAR_HIGHLIGHT_COMMENT,
-  };
+  return { type: ActionTypes.CLEAR_HIGHLIGHT_COMMENT, };
 }
 
 export function blockedByMe() {
   return {
-    type: ActionTypes.BLOCKED_BY_ME,
+    type:       ActionTypes.BLOCKED_BY_ME,
     apiRequest: Api.getBlockedByMe
   };
 }
 
 export function getSummary(days = 7) {
   return {
-    type: ActionTypes.GET_SUMMARY,
+    type:       ActionTypes.GET_SUMMARY,
     apiRequest: Api.getSummary,
-    payload: { days }
+    payload:    { days }
   };
 }
 
 export function getUserSummary(username, days = 7) {
   return {
-    type: ActionTypes.GET_USER_SUMMARY,
-    apiRequest: Api.getUserSummary,
+    type:           ActionTypes.GET_USER_SUMMARY,
+    apiRequest:     Api.getUserSummary,
     nonAuthRequest: true,
-    payload: { username, days }
+    payload:        { username, days }
   };
 }
 
 export function getSearch(search, offset) {
   return {
-    type: ActionTypes.GET_SEARCH,
-    apiRequest: Api.getSearch,
+    type:           ActionTypes.GET_SEARCH,
+    apiRequest:     Api.getSearch,
     nonAuthRequest: true,
-    payload: { search, offset },
+    payload:        { search, offset },
   };
 }
 
 export function getBestOf(offset) {
   return {
-    type: ActionTypes.GET_BEST_OF,
-    apiRequest: Api.getBestOf,
+    type:           ActionTypes.GET_BEST_OF,
+    apiRequest:     Api.getBestOf,
     nonAuthRequest: true,
-    payload: { offset },
+    payload:        { offset },
   };
 }
 
 export function resetSettingsForms() {
-  return {
-    type: ActionTypes.RESET_SETTINGS_FORMS
-  };
+  return { type: ActionTypes.RESET_SETTINGS_FORMS };
 }
 
 export function resetArchiveForms() {
-  return {
-    type: ActionTypes.RESET_ARCHIVE_FORMS
-  };
+  return { type: ActionTypes.RESET_ARCHIVE_FORMS };
 }
 
 export function realtimeConnected() {
-  return {
-    type: ActionTypes.REALTIME_CONNECTED,
-  };
+  return { type: ActionTypes.REALTIME_CONNECTED, };
 }
 
 export function realtimeSubscribe(room) {
   return {
-    type: ActionTypes.REALTIME_SUBSCRIBE,
+    type:    ActionTypes.REALTIME_SUBSCRIBE,
     payload: { room },
   };
 }
 
 export function realtimeUnsubscribe(room) {
   return {
-    type: ActionTypes.REALTIME_UNSUBSCRIBE,
+    type:    ActionTypes.REALTIME_UNSUBSCRIBE,
     payload: { room },
   };
 }
 
 export function realtimeIncomingEvent(event, data) {
   return {
-    type: ActionTypes.REALTIME_INCOMING_EVENT,
+    type:    ActionTypes.REALTIME_INCOMING_EVENT,
     payload: { event, data },
   };
 }
@@ -813,9 +780,9 @@ export function sendInvite(groupId) {
 
 export function createFreefeedInvitation(message, lang, singleUse, users, groups) {
   return {
-    type: ActionTypes.CREATE_FREEFEED_INVITATION,
+    type:       ActionTypes.CREATE_FREEFEED_INVITATION,
     apiRequest: Api.createFreefeedInvitation,
-    payload: {
+    payload:    {
       message,
       lang,
       singleUse,
@@ -827,9 +794,16 @@ export function createFreefeedInvitation(message, lang, singleUse, users, groups
 
 export function getInvitation(invitationId) {
   return {
-    type: ActionTypes.GET_INVITATION,
-    apiRequest: Api.getInvitation,
+    type:           ActionTypes.GET_INVITATION,
+    apiRequest:     Api.getInvitation,
     nonAuthRequest: true,
-    payload: { invitationId },
+    payload:        { invitationId },
+  };
+}
+
+export function serverTimeAhead(delta) {
+  return {
+    type:    ActionTypes.SERVER_TIME_AHEAD,
+    payload: delta,
   };
 }

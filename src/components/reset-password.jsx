@@ -5,13 +5,14 @@ import { resetPassword, resetPasswordValidationFail } from '../redux/action-crea
 import { preventDefault } from '../utils';
 import LoaderContainer from './loader-container';
 
+
 function mapStateToProps(state, ownProps) {
   return { ...state.resetPassForm, token: ownProps.location.query.token };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    reset: (...args) => dispatch(resetPassword(...args)),
+    reset:      (...args) => dispatch(resetPassword(...args)),
     validation: (...args) => dispatch(resetPasswordValidationFail(...args)),
   };
 }

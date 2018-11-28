@@ -4,6 +4,7 @@ import { joinPostData, postActions } from './select-utils';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
 
+
 const searchHelper = (
   <div className="search-memo">
     <div className="search-memo-header">Advanced search operators</div>
@@ -52,9 +53,7 @@ function selectState(state) {
 }
 
 function selectActions(dispatch) {
-  return {
-    ...postActions(dispatch),
-  };
+  return { ...postActions(dispatch), };
 }
 
 export default connect(selectState, selectActions)(FeedHandler);
