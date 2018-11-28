@@ -30,7 +30,7 @@ import ScrollCompensator from './scroll-compensator';
  */
 export default function ScrollSafe(arg1, arg2) {
   const defaultOptions = {
-    foldable: true,
+    foldable:    true,
     trackResize: true,
   };
 

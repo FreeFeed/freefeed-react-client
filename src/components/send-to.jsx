@@ -4,6 +4,7 @@ import { xor } from 'lodash';
 import Loadable from 'react-loadable';
 import propTypes from 'prop-types';
 
+
 const MY_FEED_LABEL = 'My feed';
 
 const Select = Loadable({
@@ -26,19 +27,19 @@ const Select = Loadable({
 
 class SendTo extends React.Component {
   static propTypes = {
-    isDirects: propTypes.bool,
-    isEditing: propTypes.bool,
-    excludeMyFeed: propTypes.bool,
+    isDirects:        propTypes.bool,
+    isEditing:        propTypes.bool,
+    excludeMyFeed:    propTypes.bool,
     alwaysShowSelect: propTypes.bool,
     disableAutoFocus: propTypes.bool,
-    showFeedsOption: propTypes.bool,
-    fixedOptions: propTypes.bool,
+    showFeedsOption:  propTypes.bool,
+    fixedOptions:     propTypes.bool,
 
     defaultFeed: propTypes.oneOfType([propTypes.string, propTypes.arrayOf(propTypes.string)]),
-    user: propTypes.shape({ username: propTypes.string }),
-    feeds: propTypes.arrayOf(propTypes.shape({
+    user:        propTypes.shape({ username: propTypes.string }),
+    feeds:       propTypes.arrayOf(propTypes.shape({
       username: propTypes.string,
-      type: propTypes.oneOf(['user', 'group']),
+      type:     propTypes.oneOf(['user', 'group']),
     })),
   };
 
@@ -51,8 +52,10 @@ class SendTo extends React.Component {
 
   componentWillReceiveProps(newProps) {
     const options = this.optionsFromProps(newProps);
-    if (!isSameFeeds(this.props.defaultFeed, newProps.defaultFeed) ||
-      options.length !== 0 && this.state.options.length === 0) {
+    if (
+      !isSameFeeds(this.props.defaultFeed, newProps.defaultFeed) ||
+      (options.length !== 0 && this.state.options.length === 0)
+    ) {
       this.setState(this.stateFromProps(newProps, options));
     } else {
       this.setState({ options });
@@ -87,7 +90,7 @@ class SendTo extends React.Component {
     return {
       values,
       options,
-      showFeedsOption: defaultFeeds.length === 0 || props.alwaysShowSelect || props.isEditing,
+      showFeedsOption:         defaultFeeds.length === 0 || props.alwaysShowSelect || props.isEditing,
       isIncorrectDestinations: false
     };
   }
@@ -180,7 +183,7 @@ class SendTo extends React.Component {
               autoFocus={this.state.showFeedsOption && !this.props.disableAutoFocus && !this.props.isDirects}
               openOnFocus={true}
               promptTextCreator={this.promptTextCreator}
-              fixedOptions={this.props.fixedOptions || this.props.isEditing && !this.props.isDirects}
+              fixedOptions={this.props.fixedOptions || (this.props.isEditing && !this.props.isDirects)}
             />
             {this.state.isIncorrectDestinations ? (
               <div className="selector-warning">
@@ -208,4 +211,4 @@ function selectState({ sendTo: { feeds } }, ownProps) {
   return { feeds };
 }
 
-export default connect(selectState, null, null, { withRef:true })(SendTo);
+export default connect(selectState, null, null, { withRef: true })(SendTo);

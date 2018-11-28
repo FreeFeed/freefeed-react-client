@@ -17,6 +17,7 @@ import UserChangePasswordForm from './user-change-password-form';
 import UserPictureForm from './user-picture-form';
 import UserNotificationsForm from './user-notifications-form';
 
+
 class Settings extends React.Component {
   componentWillUnmount() {
     this.props.resetSettingsForms();
@@ -96,27 +97,27 @@ class Settings extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    user: state.user,
-    userSettingsForm: state.userSettingsForm,
-    frontendPreferencesForm: state.frontendPreferencesForm,
+    user:                            state.user,
+    userSettingsForm:                state.userSettingsForm,
+    frontendPreferencesForm:         state.frontendPreferencesForm,
     frontendRealtimePreferencesForm: state.frontendRealtimePreferencesForm,
-    userNotificationsForm: state.userNotificationsForm,
-    passwordForm: state.passwordForm,
-    userPictureForm: state.userPictureForm,
-    authenticated: state.authenticated
+    userNotificationsForm:           state.userNotificationsForm,
+    passwordForm:                    state.passwordForm,
+    userPictureForm:                 state.userPictureForm,
+    authenticated:                   state.authenticated
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateUser: (...args) => dispatch(updateUser(...args)),
-    userSettingsChange: (...args) => dispatch(userSettingsChange(...args)),
-    updateUserPreferences: (...args) => dispatch(updateUserPreferences(...args)),
+    updateUser:                        (...args) => dispatch(updateUser(...args)),
+    userSettingsChange:                (...args) => dispatch(userSettingsChange(...args)),
+    updateUserPreferences:             (...args) => dispatch(updateUserPreferences(...args)),
     updateUserNotificationPreferences: (...args) => dispatch(updateUserNotificationPreferences(...args)),
-    updatePassword: (...args) => dispatch(updatePassword(...args)),
-    updateUserPicture: (...args) => dispatch(updateUserPicture(...args)),
-    toggleRealtime: () => dispatch(toggleRealtime()),
-    resetSettingsForms: () => dispatch(resetSettingsForms())
+    updatePassword:                    (...args) => dispatch(updatePassword(...args)),
+    updateUserPicture:                 (...args) => dispatch(updateUserPicture(...args)),
+    toggleRealtime:                    () => dispatch(toggleRealtime()),
+    resetSettingsForms:                () => dispatch(resetSettingsForms())
   };
 }
 

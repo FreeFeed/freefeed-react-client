@@ -3,10 +3,14 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import _ from 'lodash';
 
-import { unsubscribeFromGroup, makeGroupAdmin,
-  unadminGroupAdmin } from '../redux/action-creators';
+import {
+  unsubscribeFromGroup, makeGroupAdmin,
+  unadminGroupAdmin
+} from '../redux/action-creators';
 
 import { tileUserListFactory, WITH_REMOVE_AND_MAKE_ADMIN_HANDLES, WITH_REMOVE_ADMIN_RIGHTS } from './tile-user-list';
+
+
 const SubsList = tileUserListFactory({ type: WITH_REMOVE_AND_MAKE_ADMIN_HANDLES });
 const AdminsList = tileUserListFactory({ type: WITH_REMOVE_ADMIN_RIGHTS });
 
@@ -94,8 +98,8 @@ function selectState(state, ownProps) {
 function selectActions(dispatch) {
   return {
     unsubscribeFromGroup: (...args) => dispatch(unsubscribeFromGroup(...args)),
-    makeGroupAdmin: (...args) => dispatch(makeGroupAdmin(...args)),
-    unadminGroupAdmin: (...args) => dispatch(unadminGroupAdmin(...args))
+    makeGroupAdmin:       (...args) => dispatch(makeGroupAdmin(...args)),
+    unadminGroupAdmin:    (...args) => dispatch(unadminGroupAdmin(...args))
   };
 }
 

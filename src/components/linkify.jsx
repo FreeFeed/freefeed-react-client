@@ -8,6 +8,7 @@ import { highlightString } from '../utils/search-highlighter';
 import { FRIENDFEED_POST } from '../utils/link-types';
 import UserName from './user-name';
 
+
 const MAX_URL_LENGTH = 50;
 const searchConfig = config.search;
 

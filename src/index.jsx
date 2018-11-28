@@ -11,6 +11,7 @@ import '../styles/common/common.scss';
 import '../styles/helvetica/app.scss';
 import '../index.jade';
 
+
 require.context('../assets/fonts', true, /fontawesome.*/i);
 
 import configureStore from './redux/configure-store';
@@ -67,8 +68,8 @@ import { bindRouteActions } from './redux/route-actions';
 // modules using history API (specifically, PhotoSwipe).
 browserHistory.replace({
   pathname: location.pathname,
-  search: location.search,
-  hash: location.hash,
+  search:   location.search,
+  hash:     location.hash,
 });
 
 const boundRouteActions = bindRouteActions(store.dispatch);
@@ -107,7 +108,7 @@ const enterStaticPage = (title) => () => {
 history.listen(() => scrollTo(0, 0));
 
 const generateRouteHooks = (callback) => ({
-  onEnter: callback,
+  onEnter:  callback,
   onChange: (_, next) => callback(next),
 });
 

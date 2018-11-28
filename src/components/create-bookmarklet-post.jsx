@@ -40,9 +40,7 @@ export default class CreateBookmarkletPost extends React.Component {
     const isPostTextEmpty = (this.postText.value == '' || /^\s+$/.test(this.postText.value));
     const isFormEmpty = (isPostTextEmpty || this.selectFeeds.values == 0);
 
-    this.setState({
-      isFormEmpty
-    });
+    this.setState({ isFormEmpty });
   };
 
   checkSave = (e) => {
@@ -73,9 +71,7 @@ export default class CreateBookmarkletPost extends React.Component {
     const wasThereNoError = !newProps.createPostViewState.isError;
 
     if (wasCommentJustSaved && wasThereNoError) {
-      this.setState({
-        isPostSaved: true
-      });
+      this.setState({ isPostSaved: true });
     }
   }
 

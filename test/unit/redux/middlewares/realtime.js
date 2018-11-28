@@ -12,6 +12,7 @@ import { realtimeSubscribe, realtimeUnsubscribe, unauthenticated } from '../../.
 import { delay } from '../../../../src/utils';
 import { response, request } from '../../../../src/redux/action-helpers';
 
+
 const expect = unexpected.clone();
 expect.use(unexpectedSinon);
 
@@ -26,7 +27,7 @@ class MockConnection {
   }
 
   onConnect(handler) { this.connectHandler = handler; }
-  onEvent(handler)   { this.eventHandler = handler; }
+  onEvent(handler) { this.eventHandler = handler; }
 
   async reAuthorize() { }
   async subscribeTo(room) { }     // eslint-disable-line no-unused-vars
@@ -49,9 +50,7 @@ function createSpyMiddleware(spy) {
 }
 
 describe('realtime middleware', () => {
-  const eventHandlers = {
-    'event1': sinon.spy(),
-  };
+  const eventHandlers = { 'event1': sinon.spy(), };
   const connection = new MockConnection();
   const actionSpy = sinon.spy();
 

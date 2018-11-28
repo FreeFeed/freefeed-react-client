@@ -5,6 +5,7 @@ import { archiveRestoreActivity, archiveStartRestoration, resetArchiveForms } fr
 import ArchiveActivityForm from './archive-activity-form';
 import ArchiveRestorationForm from './archive-restoration-form';
 
+
 class Archive extends React.Component {
   componentWillUnmount() {
     this.props.resetArchiveForms();
@@ -115,9 +116,9 @@ class Archive extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    user: state.user,
-    archives: state.user.privateMeta.archives,
-    archiveActivityFormState: state.archiveActivityForm,
+    user:                        state.user,
+    archives:                    state.user.privateMeta.archives,
+    archiveActivityFormState:    state.archiveActivityForm,
     archiveRestorationFormState: state.archiveRestorationForm,
   };
 }
@@ -125,8 +126,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     archiveStartRestoration: (params) => dispatch(archiveStartRestoration(params)),
-    archiveRestoreActivity: () => dispatch(archiveRestoreActivity()),
-    resetArchiveForms: () => dispatch(resetArchiveForms()),
+    archiveRestoreActivity:  () => dispatch(archiveRestoreActivity()),
+    resetArchiveForms:       () => dispatch(resetArchiveForms()),
   };
 }
 

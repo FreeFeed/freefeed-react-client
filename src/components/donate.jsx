@@ -33,7 +33,7 @@ const Donate = () => (
             <tbody>
               <tr>
                 <td style={{ paddingBottom: '5px' }}>
-                  <input type="hidden" name="on0" value="Pick monthly donation amount" style={{ padding:'5px 0' }} />You can help us to pay for the hosting by setting up a monthly donation:
+                  <input type="hidden" name="on0" value="Pick monthly donation amount" style={{ padding: '5px 0' }} />You can help us to pay for the hosting by setting up a monthly donation:
                 </td>
               </tr>
               <tr>
@@ -54,12 +54,12 @@ const Donate = () => (
           </table>
 
           <input type="hidden" name="currency_code" value="EUR" />
-          <input type="image" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png" name="submit" alt="PayPal - The safer, easier way to pay online!" style={{ margin:'5px' }} />
+          <input type="image" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png" name="submit" alt="PayPal - The safer, easier way to pay online!" style={{ margin: '5px' }} />
           <img alt="" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" style={{ display: 'none !important' }} />
         </form>
       </span>
 
-      <p style={{ marginTop: '15px' }}>Make a <span onClick={handleClickOnOneTimeDonation} style={{ textDecoration:'underline', cursor:'pointer' }}>one-time donation</span>.</p>
+      <p style={{ marginTop: '15px' }}>Make a <span onClick={handleClickOnOneTimeDonation} style={{ textDecoration: 'underline', cursor: 'pointer' }}>one-time donation</span>.</p>
 
       <p>Thank you!</p>
 
@@ -85,7 +85,7 @@ const Donate = () => (
             <tbody>
               <tr>
                 <td style={{ paddingBottom: '5px' }}>
-                  <input type="hidden" name="on0" value="Pick monthly donation amount" style={{ padding:'5px 0' }} />Вы можете помочь нам, настроив автоматический ежемесячный платёж:
+                  <input type="hidden" name="on0" value="Pick monthly donation amount" style={{ padding: '5px 0' }} />Вы можете помочь нам, настроив автоматический ежемесячный платёж:
                 </td>
               </tr>
               <tr>
@@ -106,13 +106,13 @@ const Donate = () => (
           </table>
 
           <input type="hidden" name="currency_code" value="EUR" />
-          <input type="image" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png" name="submit" alt="PayPal - The safer, easier way to pay online!" style={{ margin:'5px' }} />
+          <input type="image" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png" name="submit" alt="PayPal - The safer, easier way to pay online!" style={{ margin: '5px' }} />
           <img alt="" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" style={{ display: 'none !important' }} />
         </form>
       </span>
 
 
-      <p style={{ marginTop: '15px' }}>Cделать <span onClick={handleClickOnOneTimeDonation} style={{ textDecoration:'underline', cursor:'pointer' }}>единовременный взнос</span>.</p>
+      <p style={{ marginTop: '15px' }}>Cделать <span onClick={handleClickOnOneTimeDonation} style={{ textDecoration: 'underline', cursor: 'pointer' }}>единовременный взнос</span>.</p>
 
       <p>Спасибо!</p>
     </div>

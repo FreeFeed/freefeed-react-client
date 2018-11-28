@@ -9,6 +9,7 @@ import UserFeedStatus from './user-feed-status';
 import UserRelationshipStatus from './user-relationships-status';
 import { userActions, canAcceptDirects } from './select-utils';
 
+
 class UserCard extends React.Component {
   constructor(props) {
     super(props);
@@ -161,23 +162,23 @@ const mapStateToProps = (state, ownProps) => {
     me,
     user,
     notFound,
-    isItMe: (me.username === user.username),
-    amISubscribedToUser: ((me.subscriptions || []).indexOf(user.id) > -1),
+    isItMe:               (me.username === user.username),
+    amISubscribedToUser:  ((me.subscriptions || []).indexOf(user.id) > -1),
     isUserSubscribedToMe: (_.findIndex(me.subscribers, { id: user.id }) > -1),
-    isUserBlockedByMe: ((me.banIds || []).indexOf(user.id) > -1),
-    subscribed: ((me.subscriptions || []).indexOf(user.id) > -1),
-    hasRequestBeenSent: ((me.pendingSubscriptionRequests || []).indexOf(user.id) > -1),
-    blocked: ((me.banIds || []).indexOf(user.id) > -1),
-    hidden: (me.frontendPreferences.homefeed.hideUsers.indexOf(user.username) > -1),
-    amIGroupAdmin: (user.type === 'group' && (user.administrators || []).indexOf(me.id) > -1),
-    canAcceptDirects: canAcceptDirects(user, state),
+    isUserBlockedByMe:    ((me.banIds || []).indexOf(user.id) > -1),
+    subscribed:           ((me.subscriptions || []).indexOf(user.id) > -1),
+    hasRequestBeenSent:   ((me.pendingSubscriptionRequests || []).indexOf(user.id) > -1),
+    blocked:              ((me.banIds || []).indexOf(user.id) > -1),
+    hidden:               (me.frontendPreferences.homefeed.hideUsers.indexOf(user.username) > -1),
+    amIGroupAdmin:        (user.type === 'group' && (user.administrators || []).indexOf(me.id) > -1),
+    canAcceptDirects:     canAcceptDirects(user, state),
   };
 };
 
 function mapDispatchToProps(dispatch) {
   return {
     ...userActions(dispatch),
-    getUserInfo: (username) => dispatch(getUserInfo(username)),
+    getUserInfo:  (username) => dispatch(getUserInfo(username)),
     hideShowUser: (me, username) => {
       const { homefeed: { hideUsers } } = me.frontendPreferences;
       const p = hideUsers.indexOf(username);

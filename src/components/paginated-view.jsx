@@ -6,6 +6,7 @@ import { bindRouteActions } from '../redux/route-actions';
 import { getCurrentRouteName } from '../utils';
 import PaginationLinks from './pagination-links';
 
+
 const PaginatedView = (props) => (
   <div className="box-body">
     {props.showSummaryHeader ? (
@@ -37,8 +38,6 @@ const mapStateToProps = (state, ownProps) => {
   return { offset, routename, isLastPage };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  routingActions: bindRouteActions(dispatch)
-});
+const mapDispatchToProps = (dispatch) => ({ routingActions: bindRouteActions(dispatch) });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaginatedView);

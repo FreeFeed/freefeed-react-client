@@ -10,14 +10,10 @@ import * as heightCache from './scroll-helpers/size-cache';
 
 
 class EmbedlyPreview extends React.Component {
-  static propTypes = {
-    url: PropTypes.string.isRequired,
-  };
+  static propTypes = { url: PropTypes.string.isRequired, };
 
   link = null;
-  state = {
-    updCounter: 0,
-  };
+  state = { updCounter: 0, };
 
   setLink = (el) => this.link = el;
 
@@ -59,9 +55,7 @@ class EmbedlyPreview extends React.Component {
 }
 
 function select(state) {
-  return {
-    feedIsLoading: state.routeLoadingState,
-  };
+  return { feedIsLoading: state.routeLoadingState, };
 }
 
 export default ScrollSafe(connect(select)(EmbedlyPreview));

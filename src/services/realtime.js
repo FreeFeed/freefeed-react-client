@@ -3,11 +3,10 @@ import io from 'socket.io-client';
 import config from '../config';
 import { getToken } from './auth';
 
+
 const apiConfig = config.api;
 
-const dummyPost = {
-  getBoundingClientRect: () => ({ top:0 })
-};
+const dummyPost = { getBoundingClientRect: () => ({ top: 0 }) };
 
 export const scrollCompensator = (dispatchAction) => (...actionParams) => {
   //we hope that markup will remain the same — best tradeoff between this and code all over components

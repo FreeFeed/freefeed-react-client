@@ -7,14 +7,12 @@ import { getToken } from '../services/auth';
 
 const apiConfig = config.api;
 // DropzoneJS configuration
-const dropzoneComponentConfig = {
-  postUrl: `${apiConfig.host}/v1/attachments`
-};
+const dropzoneComponentConfig = { postUrl: `${apiConfig.host}/v1/attachments` };
 const dropzoneConfig = {
   dictDefaultMessage: 'Drop files here', // The message that gets displayed before any files are dropped.
-  previewsContainer: '.dropzone-previews', // Define the container to display the previews.
-  timeout: 0,  // default is 30000 miliseconds which is too low for some cases
-  previewTemplate: `
+  previewsContainer:  '.dropzone-previews', // Define the container to display the previews.
+  timeout:            0,  // default is 30000 miliseconds which is too low for some cases
+  previewTemplate:    `
     <div class="dz-preview dz-file-preview">
       <div class="dz-image"><img data-dz-thumbnail /></div>
       <div class="dz-details" data-dz-remove title="Remove file">
@@ -28,9 +26,7 @@ const dropzoneConfig = {
     </div>
   `,
   clickable: '.dropzone-trigger', // Define the element that should be used as click trigger to select files.
-  headers: {
-    'Cache-Control': null
-  }
+  headers:   { 'Cache-Control': null }
 };
 
 const dropzoneEventHandlers = (props) => ({

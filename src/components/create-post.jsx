@@ -7,13 +7,14 @@ import SendTo from './send-to';
 import Dropzone from './dropzone';
 import PostAttachments from './post-attachments';
 
+
 const isTextEmpty = (text) => text == '' || /^\s+$/.test(text);
 const getDefaultState = (invitation = '') => ({
-  isFormEmpty: true,
-  isMoreOpen: false,
+  isFormEmpty:           true,
+  isMoreOpen:            false,
   attachmentQueueLength: 0,
-  postText: invitation,
-  commentsDisabled: false,
+  postText:              invitation,
+  commentsDisabled:      false,
 });
 
 export default class CreatePost extends React.Component {
@@ -29,9 +30,7 @@ export default class CreatePost extends React.Component {
     const feeds = this.selectFeeds.values;
     const { postText } = this.state;
     const attachmentIds = this.props.createPostForm.attachments.map((attachment) => attachment.id);
-    const more = {
-      commentsDisabled: this.state.commentsDisabled
-    };
+    const more = { commentsDisabled: this.state.commentsDisabled };
 
     // Send to the server
     this.props.createPost(feeds, postText, attachmentIds, more);
@@ -84,9 +83,7 @@ export default class CreatePost extends React.Component {
   checkCreatePostAvailability = () => {
     const isFormEmpty = isTextEmpty(this.state.postText) || this.selectFeeds.values === 0;
 
-    this.setState({
-      isFormEmpty
-    });
+    this.setState({ isFormEmpty });
   };
 
   onPostTextChange = (e) => {

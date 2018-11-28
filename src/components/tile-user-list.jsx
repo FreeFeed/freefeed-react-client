@@ -135,8 +135,8 @@ export const tileUserListFactory = (config) => (props) => {
   const users = usersData.map(renderUsers(config.type));
 
   const listClasses = classnames({
-    'tile-list': true,
-    'large-pics': config.size === 'large',
+    'tile-list':    true,
+    'large-pics':   config.size === 'large',
     'with-actions': config.type !== PLAIN
   });
 

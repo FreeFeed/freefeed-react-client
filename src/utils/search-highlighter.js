@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { stemmer as enStemmer } from 'porter-stemmer';
 import ruStemmer from './ru-stemmer';
 
+
 const enLetters = 'a-z';
 const ruLetters = '\u0400-\u04ff';
 

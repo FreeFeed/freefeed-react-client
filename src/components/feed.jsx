@@ -1,6 +1,7 @@
 import React from 'react';
 import Post from './post';
 
+
 const HiddenEntriesToggle = (props) => {
   const entriesForm = (props.count > 1 ? 'entries' : 'entry');
   let label;

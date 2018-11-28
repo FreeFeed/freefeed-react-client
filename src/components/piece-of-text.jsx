@@ -106,9 +106,7 @@ export default class PieceOfText extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      isExpanded: !!props.isExpanded || props.readMoreStyle === READMORE_STYLE_COMFORT
-    };
+    this.state = { isExpanded: !!props.isExpanded || props.readMoreStyle === READMORE_STYLE_COMFORT };
   }
 
   expandText() {

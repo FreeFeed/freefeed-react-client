@@ -38,7 +38,7 @@ function selectState(state, ownProps) {
     .forEach((u) => {
       // "mutual" markings should be displayed only if browsing my own subscriptions
       u.isMutual = isMyPage && subscribersUsernames.indexOf(u.username) > -1;
-      listSections[(u.type === "user") ? 0  : 1].users.push(u);
+      listSections[(u.type === "user") ? 0 : 1].users.push(u);
     });
 
 

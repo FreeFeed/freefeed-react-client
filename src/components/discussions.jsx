@@ -8,6 +8,7 @@ import CreatePost from './create-post';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
 
+
 const FeedHandler = (props) => {
   const createPostComponent = (
     <CreatePost
@@ -41,7 +42,7 @@ function selectState(state) {
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
   const createPostForm = joinCreatePostData(state);
   const isDirects = state.routing.locationBeforeTransitions.pathname.indexOf('direct') !== -1;
-  const defaultFeed = state.routing.locationBeforeTransitions.query.to || !isDirects && user.username || undefined;
+  const defaultFeed = state.routing.locationBeforeTransitions.query.to || (!isDirects && user.username) || undefined;
   const invitation = formatInvitation(state.routing.locationBeforeTransitions.query.invite);
   const sendTo = { ...state.sendTo, defaultFeed, invitation };
   if (isDirects) {
@@ -54,9 +55,9 @@ function selectState(state) {
 function selectActions(dispatch) {
   return {
     ...postActions(dispatch),
-    createPost: (feeds, postText, attachmentIds, more) => dispatch(createPost(feeds, postText, attachmentIds, more)),
+    createPost:          (feeds, postText, attachmentIds, more) => dispatch(createPost(feeds, postText, attachmentIds, more)),
     resetPostCreateForm: (...args) => dispatch(resetPostCreateForm(...args)),
-    expandSendTo: () => dispatch(expandSendTo())
+    expandSendTo:        () => dispatch(expandSendTo())
   };
 }
 

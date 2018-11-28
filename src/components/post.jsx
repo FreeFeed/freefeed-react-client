@@ -26,6 +26,7 @@ import LinkPreview from './link-preview/preview';
 import SendTo from './send-to';
 import { destinationsPrivacy } from './select-utils';
 
+
 class Post extends React.Component {
   selectFeeds;
 
@@ -33,8 +34,8 @@ class Post extends React.Component {
     super(props);
     this.state = {
       attachmentQueueLength: 0,
-      showTimestamps: false,
-      privacyWarning: null,
+      showTimestamps:        false,
+      privacyWarning:        null,
     };
   }
 
@@ -166,8 +167,8 @@ class Post extends React.Component {
     const postPrivacy = this.getPostPrivacy();
     const destPrivacy = this.props.destinationsPrivacy(destNames);
     if (
-      postPrivacy.isPrivate && !destPrivacy.isPrivate ||
-      postPrivacy.isProtected && !destPrivacy.isProtected
+      (postPrivacy.isPrivate && !destPrivacy.isPrivate) ||
+      (postPrivacy.isProtected && !destPrivacy.isProtected)
     ) {
       const pp = postPrivacy.isPrivate ? 'private' : postPrivacy.isProtected ? 'protected' : 'public';
       const dp = destPrivacy.isPrivate ? 'private' : destPrivacy.isProtected ? 'protected' : 'public';
@@ -207,10 +208,10 @@ class Post extends React.Component {
     }
 
     const postClass = classnames({
-      'post': true,
-      'single-post': props.isSinglePost,
+      'post':          true,
+      'single-post':   props.isSinglePost,
       'timeline-post': !props.isSinglePost,
-      'direct-post': props.isDirect
+      'direct-post':   props.isDirect
     });
 
     const recipientCustomDisplay = function (recipient) {
@@ -522,9 +523,7 @@ export function canonicalURI(post) {
 }
 
 function selectState(state, ownProps) {
-  return {
-    destinationsPrivacy: ownProps.isEditing ? (destNames) => destinationsPrivacy(destNames, state) : null,
-  };
+  return { destinationsPrivacy: ownProps.isEditing ? (destNames) => destinationsPrivacy(destNames, state) : null, };
 }
 
 export default connect(selectState)(Post);

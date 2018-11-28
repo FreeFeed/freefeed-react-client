@@ -5,14 +5,13 @@ import { restorePassword } from '../redux/action-creators';
 import { preventDefault } from '../utils';
 import LoaderContainer from './loader-container';
 
+
 function mapStateToProps(state) {
   return { ...state.restorePassForm };
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    restore: (...args) => dispatch(restorePassword(...args)),
-  };
+  return { restore: (...args) => dispatch(restorePassword(...args)), };
 }
 
 function restoreFunc({ mail, restore }) {

@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { getUserInfo } from '../redux/action-creators';
 import SubsList from './subs-list';
 
+
 class SubscribersHandler extends React.Component {
   constructor(props) {
     super(props);
@@ -72,9 +73,7 @@ function selectState(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    getUserInfo: (username) => dispatch(getUserInfo(username))
-  };
+  return { getUserInfo: (username) => dispatch(getUserInfo(username)) };
 }
 
 export default connect(selectState, mapDispatchToProps)(SubscribersHandler);
