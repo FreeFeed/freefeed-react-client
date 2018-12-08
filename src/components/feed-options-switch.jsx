@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import DropdownMenu from 'react-dd-menu';
+import config from '../config';
+import { preventDefault } from '../utils';
 import * as FeedSortOptions from '../utils/feed-sort-options';
 import { toggleRealtime, updateUserPreferences, home, toggleFeedSort } from '../redux/action-creators';
 
@@ -23,12 +25,18 @@ class FeedOptionsSwitch extends React.PureComponent {
     const { realtimeActive } = props.frontendPreferences;
     const { feedSort, showRealtime } = props;
 
+    const { homeFeedSort: defaultHomeFeedSort } = config.frontendPreferences.defaultValues;
+
+    const toggle = defaultHomeFeedSort === feedSort.sort 
+    ? <span className="glyphicon glyphicon-option-horizontal" onClick={this.toggleDropdown} />
+    : <span><span className="glyphicon glyphicon-time" />&nbsp;&nbsp;Viewing most recent posts &#183;   <a href="#" onClick={preventDefault(this.switchSortToActivity)}>Back to default view</a>&nbsp;&nbsp;&nbsp;&nbsp;<span className="glyphicon glyphicon-option-horizontal" onClick={this.toggleDropdown} /></span>
+
     const menuOptions = {
       align:   'right',
       close:   this.toggleDropdown,
       isOpen:  this.state.showDropdown,
       animate: false,
-      toggle:  <span className="glyphicon glyphicon-option-horizontal" onClick={this.toggleDropdown} />
+      toggle
     };
 
     return (
