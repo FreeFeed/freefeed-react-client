@@ -15,8 +15,6 @@ export default class Expandable extends React.Component {
       userExpanded: false,
       maxHeight:    5000,
     };
-    this.userExpand = this.userExpand.bind(this);
-    this.rewrap = this.rewrap.bind(this);
   }
 
   componentDidMount() {
@@ -44,11 +42,11 @@ export default class Expandable extends React.Component {
     );
   }
 
-  userExpand() {
+  userExpand = () => {
     this.setState({ userExpanded: true });
-  }
+  };
 
-  rewrap() {
+  rewrap = () => {
     const { maxLines, aboveFoldLines } = chooseLineCounts(this.props.config, window.innerWidth);
     const node = ReactDOM.findDOMNode(this);
     const lines = gatherContentLines(node, ".Linkify", ".p-break");
@@ -58,7 +56,7 @@ export default class Expandable extends React.Component {
     const foldedLines = aboveFoldLines || maxLines || DEFAULT_ABOVE_FOLD_LINES;
     const maxHeight = shouldExpand ? "5000" : lines[foldedLines - 1].bottom + readMorePanelHeight;
     this.setState({ expanded: shouldExpand, maxHeight });
-  }
+  };
 }
 
 function gatherContentLines(node, contentSelector, breakSelector) {

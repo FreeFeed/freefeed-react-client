@@ -109,16 +109,16 @@ export default class PieceOfText extends React.Component {
     this.state = { isExpanded: !!props.isExpanded || props.readMoreStyle === READMORE_STYLE_COMFORT };
   }
 
-  expandText() {
+  expandText = () => {
     this.setState({ isExpanded: true });
-  }
+  };
 
   render() {
     return (this.props.text ? (
       <Linkify userHover={this.props.userHover} arrowHover={this.props.arrowHover} highlightTerms={this.props.highlightTerms}>
         {this.state.isExpanded
           ? getExpandedText(this.props.text)
-          : getCollapsedText(this.props.text, this.expandText.bind(this))}
+          : getCollapsedText(this.props.text, this.expandText)}
       </Linkify>
     ) : <span />);
   }
