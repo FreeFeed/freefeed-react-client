@@ -32,7 +32,9 @@ export default class Expandable extends React.Component {
     const style = { maxHeight: expanded ? "" : `${this.state.maxHeight}px` };
     return (
       <div className={cn} style={style}>
-        {this.props.children}
+        <div onClick={this.userExpand}>
+          {this.props.children}
+        </div>
         {!expanded && (
           <div className="expand-panel">
             <div className="expand-button"><i onClick={this.userExpand}><span className="expand-icon"><i className="fa fa-chevron-down" /></span> Read more</i> {this.props.bonusInfo}</div>
@@ -43,6 +45,12 @@ export default class Expandable extends React.Component {
   }
 
   userExpand = () => {
+    // Do not react to clicks if user was selecting text
+    const selection = window.getSelection();
+    if (selection.toString().length > 0) {
+      return;
+    }
+
     this.setState({ userExpanded: true });
   };
 
