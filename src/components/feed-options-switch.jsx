@@ -28,7 +28,7 @@ class FeedOptionsSwitch extends React.PureComponent {
 
     const toggle = defaultHomeFeedSort === feedSort.sort
       ? <span className="glyphicon glyphicon-option-horizontal" onClick={this.toggleDropdown} />
-      : <span><span className="glyphicon glyphicon-time" />&nbsp;&nbsp;Viewing most recent posts &#183;   <a href="#" onClick={preventDefault(this.switchSortToActivity)}>Back to default view</a>&nbsp;&nbsp;&nbsp;&nbsp;<span className="glyphicon glyphicon-option-horizontal" onClick={this.toggleDropdown} /></span>;
+      : <span><span className="glyphicon glyphicon-time" />&nbsp;&nbsp;{!realtimeActive && <span>Paused,&nbsp;</span>}Viewing most recent posts &#183;   <a href="#" onClick={preventDefault(this.switchSortToActivity)}>Back to default view</a>&nbsp;&nbsp;&nbsp;&nbsp;<span className="glyphicon glyphicon-option-horizontal" onClick={this.toggleDropdown} /></span>;
 
     const menuOptions = {
       align:   'right',
