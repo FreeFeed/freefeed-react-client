@@ -17,7 +17,6 @@ class FeedOptionsSwitch extends React.PureComponent {
 
   toggleRealtime = () => {
     this.props.toggleRealtime(this.props.userId, this.props.frontendPreferences);
-    this.toggleDropdown();
   };
 
   render() {
