@@ -1,4 +1,3 @@
-/*global Raven*/
 import { URL as nodeURL } from 'url';
 import { includes } from 'lodash';
 import {
@@ -24,21 +23,15 @@ export class Link extends TLink {
 
   constructor(link) {
     super(link.offset, link.text);
-    try {
-      this.url = new URL(this.href);
-    } catch (e) {
-      if (typeof Raven !== 'undefined') {
-        Raven.captureMessage(`Can not parse URL ${this.href}`, { extra: { url: this.href } });
-      }
-    }
+    this.url = new URL(this.href);
   }
 
   get isLocal() {
-    return this.url && includes(config.siteDomains, this.url.hostname);
+    return includes(config.siteDomains, this.url.hostname);
   }
 
   get localURI() {
-    return this.url ? this.url.pathname + this.url.search + this.url.hash : '';
+    return this.url.pathname + this.url.search + this.url.hash;
   }
 }
 

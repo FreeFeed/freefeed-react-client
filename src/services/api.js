@@ -20,10 +20,9 @@ export function getWhoAmI() {
   return fetch(`${apiConfig.host}/v2/users/whoami`, getRequestOptions());
 }
 
-export function getHome({ offset, sortChronologically }) {
-  const sortParam = sortChronologically ? '&sort=created' : '';
+export function getHome({ offset }) {
   return fetch(
-    `${apiConfig.host}/v2/timelines/home?offset=${offset}${sortParam}`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/home?offset=${offset}`, getRequestOptions());
 }
 
 export function getMemories({ from, offset }) {
@@ -42,10 +41,9 @@ export function getDirect({ offset }) {
     `${apiConfig.host}/v2/timelines/filter/directs?offset=${offset}`, getRequestOptions());
 }
 
-export function getUserFeed({ username, offset, sortChronologically }) {
-  const sortParam = sortChronologically ? '&sort=created' : '';
+export function getUserFeed({ username, offset }) {
   return fetch(
-    `${apiConfig.host}/v2/timelines/${username}?offset=${offset}${sortParam}`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/${username}?offset=${offset}`, getRequestOptions());
 }
 
 export function getNotifications({ offset, filter }) {
