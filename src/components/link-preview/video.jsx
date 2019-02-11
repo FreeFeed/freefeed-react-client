@@ -172,7 +172,7 @@ function getDefaultAspectRatio(url) {
 async function getVideoInfo(url) {
   switch (getVideoType(url)) {
     case T_YOUTUBE_VIDEO: {
-      const data = await cachedFetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`);
+      const data = await cachedFetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}&maxheight`);
       if (data.error) {
         return { error: data.error };
       }
