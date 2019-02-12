@@ -15,7 +15,7 @@ const YOUTUBE_VIDEO_RE = /^https?:\/\/(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\
 const VIMEO_VIDEO_RE = /^https:\/\/vimeo\.com\/([0-9]+)/i;
 const COUB_VIDEO_RE = /^https?:\/\/coub\.com\/view\/([a-z0-9]+)/i;
 const IMGUR_GIFV_RE = /^https?:\/\/i\.imgur\.com\/([a-z0-9]+)\.gifv/i;
-const GFYCAT_RE = /^https?:\/\/(?:[a-z]+\.)?gfycat\.com\/([A-Z][a-zA-Z0-9]+)/;
+const GFYCAT_RE = /^https?:\/\/(?:[a-z]+\.)?gfycat\.com\/(?:[^/]{0,3}\/)?((?:[A-Z][a-z]+){3}|[a-z]{16,})/;
 
 const T_YOUTUBE_VIDEO = 'T_YOUTUBE_VIDEO';
 const T_VIMEO_VIDEO = 'T_VIMEO_VIDEO';
@@ -234,18 +234,16 @@ async function getVideoInfo(url) {
     }
     case T_GFYCAT: {
       const id = getVideoId(url);
-      const previewURL = `https://thumbs.gfycat.com/${id}-mobile.jpg`;
-      try {
-        const img = await loadImage(previewURL);
-        return {
-          byline:      'View at Gfycat',
-          previewURL,
-          aspectRatio: aspectRatio.set(url, img.height / img.width),
-          playerURL:   `https://gfycat.com/ifr/${id}`,
-        };
-      } catch (e) {
-        return { error: e.message };
+      const data = await cachedFetch(`https://api.gfycat.com/v1/gfycats/${encodeURIComponent(id)}`);
+      if (!data.gfyItem) {
+        return { error: data.message || data.errorMessage || 'invalid gfycat API response' };
       }
+      return {
+        byline:      `${data.gfyItem.title} at Gfycat`,
+        previewURL:  data.gfyItem.mobilePosterUrl,
+        aspectRatio: aspectRatio.set(url, data.gfyItem.height / data.gfyItem.width),
+        videoURL:    data.gfyItem.mobileUrl,
+      };
     }
   }
   return { error: 'unknown video type' };
