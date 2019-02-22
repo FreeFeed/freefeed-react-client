@@ -15,6 +15,8 @@ export default class Expandable extends React.Component {
       userExpanded: false,
       maxHeight:    5000,
     };
+    this.userExpand = this.userExpand.bind(this);
+    this.rewrap = this.rewrap.bind(this);
   }
 
   componentDidMount() {
@@ -32,9 +34,7 @@ export default class Expandable extends React.Component {
     const style = { maxHeight: expanded ? "300vh" : `${this.state.maxHeight}px` };
     return (
       <div className={cn} style={style}>
-        <div onClick={this.userExpand}>
-          {this.props.children}
-        </div>
+        {this.props.children}
         {!expanded && (
           <div className="expand-panel">
             <div className="expand-button"><i onClick={this.userExpand}><span className="expand-icon"><i className="fa fa-chevron-down" /></span> Read more</i> {this.props.bonusInfo}</div>
@@ -44,17 +44,11 @@ export default class Expandable extends React.Component {
     );
   }
 
-  userExpand = () => {
-    // Do not react to clicks if user was selecting text
-    const selection = window.getSelection();
-    if (selection.toString().length > 0) {
-      return;
-    }
-
+  userExpand() {
     this.setState({ userExpanded: true });
-  };
+  }
 
-  rewrap = () => {
+  rewrap() {
     const { maxLines, aboveFoldLines } = chooseLineCounts(this.props.config, window.innerWidth);
     const node = ReactDOM.findDOMNode(this);
     const lines = gatherContentLines(node, ".Linkify", ".p-break");
@@ -64,7 +58,7 @@ export default class Expandable extends React.Component {
     const foldedLines = aboveFoldLines || maxLines || DEFAULT_ABOVE_FOLD_LINES;
     const maxHeight = shouldExpand ? "5000" : lines[foldedLines - 1].bottom + readMorePanelHeight;
     this.setState({ expanded: shouldExpand, maxHeight });
-  };
+  }
 }
 
 function gatherContentLines(node, contentSelector, breakSelector) {

@@ -74,7 +74,7 @@ const getCollapsedText = (text, expandText) => {
 
     // The text is short but has some newlines
     return [
-      <span key="text" dir="auto" onClick={expandText}>{normalizedText}</span>,
+      <span key="text" dir="auto">{normalizedText}</span>,
       ' ',
       <a key="read-more" className="read-more" onClick={expandText}>Expand</a>
     ];
@@ -84,7 +84,7 @@ const getCollapsedText = (text, expandText) => {
   const shortenedText = shortenText(normalizedText, shortenedTextLength);
 
   return [
-    <span key="text" dir="auto" onClick={expandText}>{shortenedText}</span>,
+    <span key="text" dir="auto">{shortenedText}</span>,
     ' ',
     <a key="read-more" className="read-more" onClick={expandText}>Read more</a>
   ];
@@ -109,22 +109,16 @@ export default class PieceOfText extends React.Component {
     this.state = { isExpanded: !!props.isExpanded || props.readMoreStyle === READMORE_STYLE_COMFORT };
   }
 
-  expandText = () => {
-    // Do not react to clicks if user was selecting text
-    const selection = window.getSelection();
-    if (selection.toString().length > 0) {
-      return;
-    }
-
+  expandText() {
     this.setState({ isExpanded: true });
-  };
+  }
 
   render() {
     return (this.props.text ? (
       <Linkify userHover={this.props.userHover} arrowHover={this.props.arrowHover} highlightTerms={this.props.highlightTerms}>
         {this.state.isExpanded
           ? getExpandedText(this.props.text)
-          : getCollapsedText(this.props.text, this.expandText)}
+          : getCollapsedText(this.props.text, this.expandText.bind(this))}
       </Linkify>
     ) : <span />);
   }
