@@ -38,7 +38,7 @@
     "react-sticky": "5.0.x",
     "react-textarea-autosize": "~5.2.1",
     "redux": "~4.0.1",
-    "social-text-tokenizer": "~1.0.0",
+    "social-text-tokenizer": "~1.0.1",
     "socket.io-client": "~2.1.1",
     "validator": "~10.9.0"
   },

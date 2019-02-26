@@ -7228,10 +7228,10 @@ sntp@1.x.x:
   dependencies:
     hoek "2.x.x"
 
-social-text-tokenizer@~1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/social-text-tokenizer/-/social-text-tokenizer-1.0.0.tgz#2df7e54a3c962747d628d5cb19ad3f43b710d06c"
-  integrity sha512-8YBXADQCt+y9u/sNKKpzLvGFtXTD1aS0+XVJX8qZrr2gyTP/L40jPDd+dY9Bd612xTSrsOtHpTU9qsw/1EcFIA==
+social-text-tokenizer@~1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/social-text-tokenizer/-/social-text-tokenizer-1.0.1.tgz#10675ee3ea839356648433b4b638f2e9d2ad518f"
+  integrity sha512-1DtPoe+1wIipm8rEGJ0TMnf5AM4RKZZpRMTOoHo/pa4rtTyzVTLLAnHiiTQQ4yXMIOMyaM0UzU3PFRTZ1QNNuQ==
   dependencies:
     punycode "^2.1.1"
     tslib "^1.9.3"
