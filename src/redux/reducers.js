@@ -2509,9 +2509,7 @@ export function serverTimeAhead(state = 0, action) {
 }
 
 const getInitialSortingState = () => {
-  const defaultHomeFeedSort = config.frontendPreferences.defaultValues.homeFeedSort;
-  const persistedUser = getPersistedUser();
-  const homeFeedSort = persistedUser ? persistedUser.frontendPreferences.homeFeedSort : defaultHomeFeedSort;
+  const { homeFeedSort } = getPersistedUser().frontendPreferences;
   return { sort: homeFeedSort, homeFeedSort, currentFeed: request(ActionTypes.HOME) };
 };
 
