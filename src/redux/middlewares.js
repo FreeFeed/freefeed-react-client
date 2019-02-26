@@ -6,54 +6,10 @@ import { getPost } from '../services/api';
 import { setToken, persistUser } from '../services/auth';
 import { Connection, scrollCompensator } from '../services/realtime';
 import { userParser, delay } from '../utils';
-import * as FeedSortOptions from '../utils/feed-sort-options';
 
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
-import { request, response, fail, requiresAuth, isFeedRequest, isFeedResponse, isFeedGeneratingAction, getFeedName } from './action-helpers';
-
-
-export const feedSortMiddleware = (store) => (next) => (action) => {
-  if (isFeedGeneratingAction(action)) {
-    //add sorting params to feed request if needed
-    const state = store.getState();
-    const { sort: currentFeedSort, currentFeed } = state.feedSort;
-    const { homeFeedSort } = state.user.frontendPreferences;
-    if (currentFeed === getFeedName(action)) {
-      action.payload.sortChronologically = currentFeedSort === FeedSortOptions.CHRONOLOGIC;
-    } else {
-      //use home feed setting if we get back to home feed
-      //this change isn't yet in reducer, and we don't get it there before real feed request fires
-      action.payload.sortChronologically = action.type === ActionTypes.HOME && homeFeedSort === FeedSortOptions.CHRONOLOGIC;
-    }
-  }
-  if (action.type === ActionTypes.TOGGLE_FEED_SORT) {
-    //here we persist home sort preference change
-    const { currentFeed } = store.getState().feedSort;
-    if (currentFeed === ActionTypes.HOME) {
-      //we get reducer process sort toggling and do our job updating setting after that
-      next(action);
-      //and request next state only after update is done
-      const { user, feedSort } = store.getState();
-      const { id, frontendPreferences } = user;
-      const { sort: homeFeedSort } = feedSort;
-      return store.dispatch(ActionCreators.updateUserPreferences(id, { ...frontendPreferences, homeFeedSort }));
-    }
-  }
-  if (action.type === response(ActionTypes.WHO_AM_I)) {
-    //here we handle home sort settings changed on another machine
-    const sortBefore = store.getState().user.frontendPreferences.homeFeedSort;
-    next(action);
-    const state = store.getState();
-    const { homeFeedSort } = state.user.frontendPreferences;
-    const isHomeFeed = state.routing.locationBeforeTransitions.pathname === '/';
-    if (homeFeedSort !== sortBefore && isHomeFeed) {
-      return store.dispatch(ActionCreators.home());
-    }
-    return;
-  }
-  return next(action);
-};
+import { request, response, fail, requiresAuth, isFeedRequest, isFeedResponse } from './action-helpers';
 
 
 const adjustTime = _.throttle(
