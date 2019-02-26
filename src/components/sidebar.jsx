@@ -47,6 +47,7 @@ const SideBarFriends = ({ user }) => (
               && !user.frontendPreferences.hideUnreadNotifications) ? `(${user.unreadNotificationsNumber})` : ''}
           </Link>
         </li>
+        <li className="p-invites"><Link to="/invite">Invite</Link></li>
       </ul>
     </div>
     <div className="box-footer">
