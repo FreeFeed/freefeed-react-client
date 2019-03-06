@@ -1,5 +1,3 @@
-/*global Raven*/
-import { URL as nodeURL } from 'url';
 import { includes } from 'lodash';
 import {
   withText,
@@ -14,31 +12,24 @@ import {
 
 import config from '../config';
 
-// Webpack can not fully emulate WHATWG URL API object for now,
-// so we use global.URL in browser and nodeURL in node.
-// see https://github.com/webpack/node-libs-browser/issues/69
-const URL = nodeURL || global.URL;
 
 export class Link extends TLink {
-  url = null;
+  hostname = null;
 
   constructor(link) {
     super(link.offset, link.text);
-    try {
-      this.url = new URL(this.href);
-    } catch (e) {
-      if (typeof Raven !== 'undefined') {
-        Raven.captureMessage(`Can not parse URL ${this.href}`, { extra: { url: this.href } });
-      }
+    const m = this.href.match(/^https?:\/\/([^/]+)/i);
+    if (m) {
+      this.hostname = m[1].toLowerCase();
     }
   }
 
   get isLocal() {
-    return this.url && includes(config.siteDomains, this.url.hostname);
+    return this.hostname && includes(config.siteDomains, this.hostname);
   }
 
   get localURI() {
-    return this.url ? this.url.pathname + this.url.search + this.url.hash : '';
+    return this.hostname ? this.href.replace(/^https?:\/\/[^/]+/i, '') : '';
   }
 }
 
