@@ -305,9 +305,10 @@ export function unlikeComment(commentId) {
 
 export function getCommentLikes(commentId) {
   return {
-    type:       ActionTypes.GET_COMMENT_LIKES,
-    apiRequest: Api.getCommentLikes,
-    payload:    { commentId },
+    type:           ActionTypes.GET_COMMENT_LIKES,
+    apiRequest:     Api.getCommentLikes,
+    nonAuthRequest: true,
+    payload:        { commentId },
   };
 }
 
