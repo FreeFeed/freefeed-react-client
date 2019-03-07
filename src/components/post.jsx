@@ -25,6 +25,7 @@ import TimeDisplay from './time-display';
 import LinkPreview from './link-preview/preview';
 import SendTo from './send-to';
 import { destinationsPrivacy } from './select-utils';
+import { makeJpegIfNeeded } from './create-post';
 
 
 class Post extends React.Component {
@@ -53,7 +54,7 @@ class Post extends React.Component {
             if (!blob.name) {
               blob.name = 'image.png';
             }
-            this.dropzoneObject.addFile(blob);
+            makeJpegIfNeeded(blob).then((blob) => this.dropzoneObject.addFile(blob));
           }
         }
       }
@@ -505,6 +506,7 @@ class Post extends React.Component {
             highlightTerms={props.highlightTerms}
             isSinglePost={props.isSinglePost}
             showTimestamps={this.state.showTimestamps}
+            user={props.user}
           />
         </div>
       </div>
