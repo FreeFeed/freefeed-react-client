@@ -3,6 +3,7 @@ import unexpected from 'unexpected';
 import unexpectedReact from 'unexpected-react';
 
 import React from 'react';
+import { Link } from 'react-router';
 import flatten from 'lodash/flatten';
 
 import PostComments from '../../../src/components/post-comments';
@@ -144,7 +145,7 @@ describe('<PostComments>', () => {
   it('should render commenting section only if post is commented', () => {
     const post = { omittedComments: 1, isCommenting: false, createdBy: { username: '' }, user: {} };
     expect(
-      <PostComments comments={[]} post={post} />,
+      <PostComments comments={[]} post={post} user={{ id: '12345' }} />,
       'when rendered',
       'not to contain',
       <PostComment isEditing={true} />
@@ -152,10 +153,34 @@ describe('<PostComments>', () => {
 
     post.isCommenting = true;
     expect(
-      <PostComments comments={[]} post={post} />,
+      <PostComments comments={[]} post={post} user={{ id: '12345' }} />,
       'when rendered',
       'to contain',
       <PostComment isEditing={true} />
+    );
+  });
+
+  it('should render "Sign In" link if post is commented and user is anonymous', () => {
+    const post = { omittedComments: 1, isCommenting: false, createdBy: { username: '' }, user: {} };
+    expect(
+      <PostComments comments={[]} post={post} user={{}} />,
+      'when rendered',
+      'not to contain',
+      <PostComment isEditing={true} />
+    );
+    expect(
+      <PostComments comments={[]} post={post} user={{}} />,
+      'when rendered',
+      'not to contain',
+      <Link>Sign In</Link>
+    );
+
+    post.isCommenting = true;
+    expect(
+      <PostComments comments={[]} post={post} user={{}} />,
+      'when rendered',
+      'to contain',
+      <Link>Sign In</Link>
     );
   });
 });

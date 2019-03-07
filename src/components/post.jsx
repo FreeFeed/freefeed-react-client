@@ -506,6 +506,7 @@ class Post extends React.Component {
             highlightTerms={props.highlightTerms}
             isSinglePost={props.isSinglePost}
             showTimestamps={this.state.showTimestamps}
+            user={props.user}
           />
         </div>
       </div>
