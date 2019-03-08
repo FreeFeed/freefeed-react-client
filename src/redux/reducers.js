@@ -492,12 +492,12 @@ export function postsViewState(state = {}, action) {
     }
     case fail(ActionTypes.SAVE_EDITING_POST): {
       const id = action.request.postId;
-      const isEditing = false;
+      const isEditing = true;
       const isSaving = false;
 
       const isError = true;
 
-      return { ...state, [id]: { ...state[id], isEditing, isSaving, isError, errorString: POST_SAVE_ERROR } };
+      return { ...state, [id]: { ...state[id], isEditing, isSaving, isError, errorString: action.payload.err || POST_SAVE_ERROR } };
     }
     case fail(ActionTypes.DELETE_POST): {
       const id = action.request.postId;

@@ -430,6 +430,7 @@ class Post extends React.Component {
                     Update
                   </button>
                 </div>
+                {props.isError ? <div className="post-error alert alert-danger">{props.errorString}</div> : false}
               </div>
             ) : (
               <div className="post-text">
@@ -485,12 +486,6 @@ class Post extends React.Component {
             {hideLink}
             {moreLink}
           </div>
-
-          {props.isError ? (
-            <div className="post-error">
-              {props.errorString}
-            </div>
-          ) : false}
 
           <PostLikes
             post={props}
