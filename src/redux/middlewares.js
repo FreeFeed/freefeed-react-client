@@ -140,7 +140,7 @@ export const likesLogicMiddleware = (store) => (next) => (action) => {
       const { postId, userId } = action;
       const post = store.getState().posts[postId];
       // it is necessary for proper update postsViewState
-      action.isLikeVisible = _.includes(post.likes, userId);
+      action.isLikeVisible = post ? post.likes.includes(userId) : false;
       return next(action);
     }
   }
