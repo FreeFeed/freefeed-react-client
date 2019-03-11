@@ -43,6 +43,7 @@ class SinglePostHandler extends React.Component {
           deletePost={props.deletePost}
           addAttachmentResponse={props.addAttachmentResponse}
           removeAttachment={props.removeAttachment}
+          reorderImageAttachments={props.reorderImageAttachments}
           toggleCommenting={props.toggleCommenting}
           updateCommentingText={props.updateCommentingText}
           addComment={props.addComment}

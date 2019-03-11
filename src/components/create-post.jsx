@@ -79,6 +79,7 @@ export default class CreatePost extends React.Component {
   };
 
   removeAttachment = (attachmentId) => this.props.removeAttachment(null, attachmentId);
+  reorderImageAttachments = (attachmentIds) => this.props.reorderImageAttachments(null, attachmentIds);
 
   checkCreatePostAvailability = () => {
     const isFormEmpty = isTextEmpty(this.state.postText) || this.selectFeeds.values === 0;
@@ -208,6 +209,7 @@ export default class CreatePost extends React.Component {
           attachments={this.props.createPostForm.attachments}
           isEditing={true}
           removeAttachment={this.removeAttachment}
+          reorderImageAttachments={this.reorderImageAttachments}
         />
 
         <div className="dropzone-previews" />

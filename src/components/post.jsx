@@ -63,6 +63,7 @@ class Post extends React.Component {
   };
 
   removeAttachment = (attachmentId) => this.props.removeAttachment(this.props.id, attachmentId);
+  reorderImageAttachments = (attachmentIds) => this.props.reorderImageAttachments(this.props.id, attachmentIds);
 
   attLoadingStarted = () => this.setState({ attLoading: true });
   attLoadingCompleted = () => this.setState({ attLoading: false });
@@ -451,6 +452,7 @@ class Post extends React.Component {
             isEditing={props.isEditing}
             isSinglePost={props.isSinglePost}
             removeAttachment={this.removeAttachment}
+            reorderImageAttachments={this.reorderImageAttachments}
           />
 
           {noImageAttachments && linkToEmbed ? (

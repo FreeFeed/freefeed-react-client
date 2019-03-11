@@ -45,6 +45,7 @@ const UserHandler = (props) => {
           createPostForm={props.createPostForm}
           addAttachmentResponse={props.addAttachmentResponse}
           removeAttachment={props.removeAttachment}
+          reorderImageAttachments={props.reorderImageAttachments}
           getUserInfo={props.getUserInfo}
         />
       </div>
