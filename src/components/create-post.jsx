@@ -10,11 +10,11 @@ import PostAttachments from './post-attachments';
 
 const isTextEmpty = (text) => text == '' || /^\s+$/.test(text);
 const getDefaultState = (invitation = '') => ({
-  isFormEmpty:           true,
-  isMoreOpen:            false,
-  attachmentQueueLength: 0,
-  postText:              invitation,
-  commentsDisabled:      false,
+  isFormEmpty:      true,
+  isMoreOpen:       false,
+  postText:         invitation,
+  commentsDisabled: false,
+  attLoading:       false,
 });
 
 export default class CreatePost extends React.Component {
@@ -90,23 +90,20 @@ export default class CreatePost extends React.Component {
     this.setState({ postText: e.target.value }, this.checkCreatePostAvailability);
   };
 
+  attLoadingStarted = () => this.setState({ attLoading: true });
+  attLoadingCompleted = () => this.setState({ attLoading: false });
+
   checkSave = (e) => {
     const isEnter = e.keyCode === 13;
     const isShiftPressed = e.shiftKey;
     if (isEnter && !isShiftPressed) {
       e.preventDefault();
-      if (!this.state.isFormEmpty && this.state.attachmentQueueLength === 0 && !this.props.createPostViewState.isPending) {
-        this.createPost();
-      }
+      this.canSubmitForm() && this.createPost();
     }
   };
 
   toggleMore = () => {
     this.setState({ isMoreOpen: !this.state.isMoreOpen });
-  };
-
-  changeAttachmentQueue = (change) => () => {
-    this.setState({ attachmentQueueLength: this.state.attachmentQueueLength + change });
   };
 
   componentWillUnmount() {
@@ -128,7 +125,7 @@ export default class CreatePost extends React.Component {
 
   canSubmitForm = () => {
     return !this.state.isFormEmpty
-      && this.state.attachmentQueueLength == 0
+      && !this.state.attLoading
       && !this.props.createPostViewState.isPending
       && !this.selectFeeds.isIncorrectDestinations;
   };
@@ -150,8 +147,8 @@ export default class CreatePost extends React.Component {
           <Dropzone
             onInit={this.handleDropzoneInit}
             addAttachmentResponse={this.handleAddAttachmentResponse}
-            addedFile={this.changeAttachmentQueue(1)}
-            removedFile={this.changeAttachmentQueue(-1)}
+            onSending={this.attLoadingStarted}
+            onQueueComplete={this.attLoadingCompleted}
           />
 
           <Textarea
