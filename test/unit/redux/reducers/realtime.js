@@ -1,7 +1,15 @@
 import { describe, it, beforeEach } from 'mocha';
 import expect from 'unexpected';
 
-import { postsViewState, users, user, posts, realtimeSubscriptions, feedViewState } from '../../../../src/redux/reducers';
+import {
+  postsViewState,
+  users,
+  user,
+  posts,
+  realtimeSubscriptions,
+  feedViewState,
+  comments,
+} from '../../../../src/redux/reducers';
 import {
   REALTIME_COMMENT_NEW,
   REALTIME_COMMENT_DESTROY,
@@ -224,6 +232,37 @@ describe('realtime events', () => {
       const newState = posts(state, action);
       expect(newState, 'to be', state);
     });
+
+    describe("REALTIME_COMMENT_DESTROY", () => {
+      const state = { 'post1': { id: 'post1', comments: ['comm1', 'comm2', 'comm3'] } };
+
+      it("should remove comment from post", () => {
+        const newState = posts(state, {
+          type:      REALTIME_COMMENT_DESTROY,
+          postId:    'post1',
+          commentId: 'comm2',
+        });
+        expect(newState, 'to equal', { 'post1': { id: 'post1', comments: ['comm1', 'comm3'] } });
+      });
+
+      it("should not change state if comment is not exists", () => {
+        const newState = posts(state, {
+          type:      REALTIME_COMMENT_DESTROY,
+          postId:    'post1',
+          commentId: 'comm4',
+        });
+        expect(newState, 'to be', state);
+      });
+
+      it("should not change state if post is not exists", () => {
+        const newState = posts(state, {
+          type:      REALTIME_COMMENT_DESTROY,
+          postId:    'post2',
+          commentId: 'comm2',
+        });
+        expect(newState, 'to be', state);
+      });
+    });
   });
 
   describe('feedViewState()', () => {
@@ -346,10 +385,16 @@ describe('realtime events', () => {
       expect(result[testPost.id].omittedComments, 'to equal', testPost.omittedComments + 1);
     });
 
-    it('should decreate number of omitted comments on realtime comment deletion', () => {
+    it('should decrease number of omitted comments on realtime comment deletion', () => {
       const result = postsViewState(postsViewStateBefore, removeRealtimeCommentAction);
 
       expect(result[testPost.id].omittedComments, 'to equal', testPost.omittedComments - 1);
+    });
+
+    it('should not change state on realtime comment deletion if post is not found', () => {
+      const result = postsViewState(postsViewStateBefore, { ...removeRealtimeCommentAction, postId: 42 });
+
+      expect(result, 'to be', postsViewStateBefore);
     });
 
     it('should add post to postsViewState when realtime comment arrives', () => {
@@ -413,6 +458,28 @@ describe('realtime events', () => {
       const state = ['room1'];
       const result = realtimeSubscriptions(state, realtimeUnsubscribe('room2'));
       expect(result, 'to be', state);
+    });
+  });
+
+  describe('comments()', () => {
+    describe("REALTIME_COMMENT_DESTROY", () => {
+      const state = { 'comm1': { id: 'comm1' }, 'comm2': { id: 'comm2' } };
+
+      it("should remove existing comment", () => {
+        const newState = comments(state, {
+          type:      REALTIME_COMMENT_DESTROY,
+          commentId: 'comm2',
+        });
+        expect(newState, 'to equal', { 'comm1': { id: 'comm1' } });
+      });
+
+      it("should not change state if comment is not exists", () => {
+        const newState = comments(state, {
+          type:      REALTIME_COMMENT_DESTROY,
+          commentId: 'comm3',
+        });
+        expect(newState, 'to be', state);
+      });
     });
   });
 });

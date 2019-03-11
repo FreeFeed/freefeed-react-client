@@ -591,7 +591,7 @@ export function postsViewState(state = {}, action) {
       return state;
     }
     case ActionTypes.REALTIME_COMMENT_DESTROY: {
-      if (!action.postId) {
+      if (!action.postId || !state[action.postId]) {
         return state;
       }
       const postsViewState = state[action.postId];
@@ -911,11 +911,14 @@ export function posts(state = {}, action) {
       };
     }
     case ActionTypes.REALTIME_COMMENT_DESTROY: {
-      if (!action.postId) {
+      if (!action.postId || !state[action.postId]) {
         return state;
       }
 
       const post = state[action.postId];
+      if (!post.comments.includes(action.commentId)) {
+        return state;
+      }
 
       return {
         ...state, [action.postId]: {
@@ -1263,7 +1266,10 @@ export function comments(state = {}, action) {
       return mergeByIds(state, [newComment]);
     }
     case ActionTypes.REALTIME_COMMENT_DESTROY: {
-      return { ...state, [action.commentId]: undefined };
+      if (!state[action.commentId]) {
+        return state;
+      }
+      return _.omit(state, action.commentId);
     }
     case response(ActionTypes.ADD_COMMENT): {
       return {
