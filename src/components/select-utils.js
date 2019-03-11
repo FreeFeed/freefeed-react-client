@@ -9,7 +9,7 @@ import {
 
   // Post actions
   showMoreComments, showMoreLikes,
-  addAttachmentResponse, removeAttachment,
+  addAttachmentResponse, removeAttachment, reorderImageAttachments,
   likePost, unlikePost,
   hidePost, unhidePost,
   toggleModeratingComments,
@@ -196,6 +196,7 @@ export function postActions(dispatch) {
     enableComments:           (postId) => dispatch(enableComments(postId)),
     addAttachmentResponse:    (postId, attachments) => dispatch(addAttachmentResponse(postId, attachments)),
     removeAttachment:         (postId, attachmentId) => dispatch(removeAttachment(postId, attachmentId)),
+    reorderImageAttachments:  (postId, attachmentIds) => dispatch(reorderImageAttachments(postId, attachmentIds)),
     commentEdit:              {
       toggleEditingComment:  (commentId) => dispatch(toggleEditingComment(commentId)),
       saveEditingComment:    (commentId, newValue) => dispatch(saveEditingComment(commentId, newValue)),

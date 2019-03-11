@@ -350,6 +350,13 @@ export function removeAttachment(postId, attachmentId) {
   };
 }
 
+export function reorderImageAttachments(postId, attachmentIds) {
+  return {
+    type:    ActionTypes.REORDER_IMAGE_ATTACHMENTS,
+    payload: { postId, attachmentIds }
+  };
+}
+
 export function signInChange(username, password) {
   return {
     type: ActionTypes.SIGN_IN_CHANGE,
