@@ -5,6 +5,10 @@
   position: relative;
   z-index: 1;
 
+  .dots-icon {
+    top: 3px;
+  }
+
   .dropdown {
     position: absolute;
     width: 180px;
