@@ -9,6 +9,19 @@
     top: 3px;
   }
 
+  .narrowscreen-text {
+    @media (min-width: 767px) {
+      display: none;
+    }
+  }
+
+  .widescreen-text {
+    display: none;
+    @media (min-width: 767px) {
+      display: inline;
+    }
+  }
+
   .dropdown {
     position: absolute;
     width: 180px;
