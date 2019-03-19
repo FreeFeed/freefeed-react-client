@@ -101,6 +101,10 @@
   }
 }
 
+.sortable-images .image-attachment-link {
+  cursor: move;
+}
+
 .audio-attachments,
 .general-attachments {
   .attachment {
