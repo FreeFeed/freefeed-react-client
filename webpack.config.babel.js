@@ -1,20 +1,22 @@
-import webpack from 'webpack';
-import PathRewriter from "webpack-path-rewriter";
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import OptiCSS from "optimize-css-assets-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import Uglify from "uglifyjs-webpack-plugin";
 
 import { baseConfig, opts, rules } from "./webpack/base";
 import { skipFalsy } from './webpack/utils';
+import appConfig from "./src/config";
 
 
 const config = {
   ...baseConfig,
   entry: {
     app: skipFalsy([
-      'babel-polyfill',
+      '@babel/polyfill',
       './src'
     ])
   },
   target: 'web',
-  devtool: opts.dev ? 'cheap-module-eval-source-map' : 'source-map',
   devServer: {
     historyApiFallback: true
   },
@@ -22,8 +24,8 @@ const config = {
     rules: skipFalsy([
       opts.dev && rules.eslint,
       rules.babel,
-      rules.commonCss,
-      rules.appCss,
+      rules.css,
+      rules.assetsCss,
       rules.template,
       rules.fonts,
       rules.photoswipe,
@@ -32,11 +34,37 @@ const config = {
   },
   plugins: skipFalsy([
     ...baseConfig.plugins,
-    new PathRewriter(),
-    rules.commonCssExtractor,
-    rules.appCssExtractor,
-    opts.uglify && new webpack.optimize.UglifyJsPlugin({ sourceMap: true })
-  ])
+    new HtmlWebpackPlugin({
+      inject: false,
+      template: './index.jade',
+      file: 'index.html',
+      opts,
+      appConfig,
+    }),
+    new MiniCssExtractPlugin({
+      filename: opts.hash ? '[name]-[contenthash].css' : '[name]-dev.css',
+    }),
+  ]),
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        common: {
+          name: 'common',
+          test: /[\\/]styles[\\/]common[\\/].*[.]scss$/,
+          chunks: 'all',
+          enforce: true
+        },
+      },
+    },
+    minimizer: [
+      new Uglify({
+        cache: true,
+        parallel: true,
+        sourceMap: true,
+      }),
+      new OptiCSS({}),
+    ],
+  },
 };
 
 export default config;

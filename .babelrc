@@ -1,11 +1,13 @@
 {
   "presets": [
-    "env"
+    "@babel/env"
   ],
   "plugins": [
-    "transform-object-rest-spread",
-    "syntax-async-functions",
-    "transform-decorators",
-    "transform-class-properties"
+    "@babel/syntax-object-rest-spread",
+    "@babel/syntax-class-properties",
+    "@babel/syntax-dynamic-import",
+    "@babel/proposal-object-rest-spread",
+    "@babel/proposal-class-properties",
+    "@babel/transform-modules-commonjs"
   ]
 }

@@ -14,10 +14,9 @@ html(lang='en')
     <!--#include virtual="/v2/timelines-metatags/${username}" -->
     <!--#endif -->
     title FreeFeed
-    link(rel='stylesheet', href='[[ assets/vendor-css/font-awesome.min.css ]]')
-    unless opts.hot
-        link(rel='stylesheet', href='[[ common-*.css ]]')
-        link(rel='stylesheet', href='[[ app-*.css ]]')
+    unless htmlWebpackPlugin.options.opts.hot
+        link(rel='stylesheet', href=htmlWebpackPlugin.files.css[0])
+        link(rel='stylesheet', href=htmlWebpackPlugin.files.css[1])
     noscript
       style.
         .jsonly { display: none }
@@ -32,17 +31,17 @@ html(lang='en')
       .privacy-button:hover {color: #FDB832; border-color: #FDB832;}
       a.privacy-link {color: white; font-weight: bold; text-decoration: underline;}
       a.privacy-link:hover {color: #F6C944; font-weight: bold;}
-    link(rel='icon', href='[[ assets/images/favicon.ico ]]', type='image/x-icon')
-    link(rel='apple-touch-icon', sizes='512x512', href='[[ assets/images/ios/icon_512_512.png ]]')
-    link(rel='apple-touch-icon', sizes='256x256', href='[[ assets/images/ios/icon_256_256.png ]]')
-    link(rel='apple-touch-icon', sizes='192x192', href='[[ assets/images/ios/icon_192_192.png ]]')
-    link(rel='apple-touch-icon', sizes='180x180', href='[[ assets/images/ios/icon_180_180.png ]]')
-    link(rel='apple-touch-icon', sizes='152x152', href='[[ assets/images/ios/icon_152_152.png ]]')
-    link(rel='apple-touch-icon', sizes='144x144', href='[[ assets/images/ios/icon_144_144.png ]]')
-    link(rel='apple-touch-icon', sizes='120x120', href='[[ assets/images/ios/icon_120_120.png ]]')
-    link(rel='apple-touch-icon', sizes='114x114', href='[[ assets/images/ios/icon_114_114.png ]]')
-    link(rel='apple-touch-icon', sizes='76x76', href='[[ assets/images/ios/icon_76_76.png ]]')
-    link(rel='apple-touch-icon', sizes='72x72', href='[[ assets/images/ios/icon_72_72.png ]]')
+    link(rel='icon', href=htmlWebpackPlugin.files.publicPath + 'assets/images/favicon.ico', type='image/x-icon')
+    link(rel='apple-touch-icon', sizes='512x512', href=htmlWebpackPlugin.files.publicPath + 'assets/images/ios/icon_512_512.png')
+    link(rel='apple-touch-icon', sizes='256x256', href=htmlWebpackPlugin.files.publicPath + 'assets/images/ios/icon_256_256.png')
+    link(rel='apple-touch-icon', sizes='192x192', href=htmlWebpackPlugin.files.publicPath + 'assets/images/ios/icon_192_192.png')
+    link(rel='apple-touch-icon', sizes='180x180', href=htmlWebpackPlugin.files.publicPath + 'assets/images/ios/icon_180_180.png')
+    link(rel='apple-touch-icon', sizes='152x152', href=htmlWebpackPlugin.files.publicPath + 'assets/images/ios/icon_152_152.png')
+    link(rel='apple-touch-icon', sizes='144x144', href=htmlWebpackPlugin.files.publicPath + 'assets/images/ios/icon_144_144.png')
+    link(rel='apple-touch-icon', sizes='120x120', href=htmlWebpackPlugin.files.publicPath + 'assets/images/ios/icon_120_120.png')
+    link(rel='apple-touch-icon', sizes='114x114', href=htmlWebpackPlugin.files.publicPath + 'assets/images/ios/icon_114_114.png')
+    link(rel='apple-touch-icon', sizes='76x76', href=htmlWebpackPlugin.files.publicPath + 'assets/images/ios/icon_76_76.png')
+    link(rel='apple-touch-icon', sizes='72x72', href=htmlWebpackPlugin.files.publicPath + 'assets/images/ios/icon_72_72.png')
   body
     #app
       .container
@@ -62,7 +61,7 @@ html(lang='en')
                     strong Javascript is disabled!
                     |  Looks like you have JavaScript disabled in your browser. Please enable it to enjoy our service.
 
-    if opts.livereload
+    if htmlWebpackPlugin.options.opts.livereload
       script( src="/webpack-dev-server.js" )
 
     script.
@@ -86,9 +85,9 @@ html(lang='en')
        }
       })(window, document);
 
-    if appConfig.sentry.publicDSN
+    if htmlWebpackPlugin.options.appConfig.sentry.publicDSN
       script(src='https://cdn.ravenjs.com/3.23.1/raven.min.js', crossorigin="anonymous")
-      script Raven.config('#{appConfig.sentry.publicDSN}', { autoBreadcrumbs: true }).install();
+      script Raven.config('#{htmlWebpackPlugin.options.appConfig.sentry.publicDSN}', { autoBreadcrumbs: true }).install();
 
     script.
       (function(w,d){
@@ -140,4 +139,5 @@ html(lang='en')
         }
       })(window, document);
 
-    script(src='[[ app-*.js ]]')
+    script(src=htmlWebpackPlugin.files.chunks.app.entry)
+    script(src=htmlWebpackPlugin.files.chunks.common.entry)
