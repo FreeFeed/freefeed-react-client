@@ -13,11 +13,11 @@
     "lodash": "~4.17.5",
     "lru-cache": "~4.1.1",
     "memoize-one": "~4.0.2",
-    "moment": "~2.22.2",
+    "moment": "~2.24.0",
     "mousetrap": "1.6.x",
     "numeral": "~2.0.6",
     "porter-stemmer": "0.9.x",
-    "prop-types": "~15.6.1",
+    "prop-types": "~15.7.2",
     "react": "~15.6.2",
     "react-async-script": "~0.11.1",
     "react-dd-menu": "~2.0.2",
@@ -40,7 +40,7 @@
     "social-text-tokenizer": "~1.0.1",
     "socket.io-client": "~2.1.1",
     "sortablejs": "~1.6.1",
-    "validator": "~10.9.0"
+    "validator": "~10.11.0"
   },
   "devDependencies": {
     "@babel/core": "~7.4.0",
