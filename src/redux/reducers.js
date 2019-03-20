@@ -493,12 +493,12 @@ export function postsViewState(state = {}, action) {
     }
     case fail(ActionTypes.SAVE_EDITING_POST): {
       const id = action.request.postId;
-      const isEditing = false;
+      const isEditing = true;
       const isSaving = false;
 
       const isError = true;
 
-      return { ...state, [id]: { ...state[id], isEditing, isSaving, isError, errorString: POST_SAVE_ERROR } };
+      return { ...state, [id]: { ...state[id], isEditing, isSaving, isError, errorString: action.payload.err || POST_SAVE_ERROR } };
     }
     case fail(ActionTypes.DELETE_POST): {
       const id = action.request.postId;
@@ -592,7 +592,7 @@ export function postsViewState(state = {}, action) {
       return state;
     }
     case ActionTypes.REALTIME_COMMENT_DESTROY: {
-      if (!action.postId) {
+      if (!action.postId || !state[action.postId]) {
         return state;
       }
       const postsViewState = state[action.postId];
@@ -895,6 +895,23 @@ export function posts(state = {}, action) {
         }
       };
     }
+    case ActionTypes.REORDER_IMAGE_ATTACHMENTS: {
+      // If this is an attachment for create-post (non-existent post),
+      // it should be handled in createPostForm(), not here
+      if (!action.payload.postId || !state[action.payload.postId]) {
+        return state;
+      }
+
+      const post = state[action.payload.postId];
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
+          // Move all action.payload.attachmentIds to the start of list in the given order
+          attachments: _.uniq(action.payload.attachmentIds.concat(post.attachments || [])),
+        }
+      };
+    }
     case response(ActionTypes.DELETE_COMMENT): {
       const { commentId } = action.request;
       const post = _(state).find((_post) => (_post.comments || []).indexOf(commentId) !== -1);
@@ -912,11 +929,14 @@ export function posts(state = {}, action) {
       };
     }
     case ActionTypes.REALTIME_COMMENT_DESTROY: {
-      if (!action.postId) {
+      if (!action.postId || !state[action.postId]) {
         return state;
       }
 
       const post = state[action.postId];
+      if (!post.comments.includes(action.commentId)) {
+        return state;
+      }
 
       return {
         ...state, [action.postId]: {
@@ -1264,7 +1284,10 @@ export function comments(state = {}, action) {
       return mergeByIds(state, [newComment]);
     }
     case ActionTypes.REALTIME_COMMENT_DESTROY: {
-      return { ...state, [action.commentId]: undefined };
+      if (!state[action.commentId]) {
+        return state;
+      }
+      return _.omit(state, action.commentId);
     }
     case response(ActionTypes.ADD_COMMENT): {
       return {
@@ -2041,6 +2064,19 @@ export function createPostForm(state = {}, action) {
       return {
         ...state,
         attachments: _.without((state.attachments || []), action.payload.attachmentId)
+      };
+    }
+    case ActionTypes.REORDER_IMAGE_ATTACHMENTS: {
+      // If this is an attachment for edit-post (existent post),
+      // it should be handled in posts(), not here
+      if (action.payload.postId) {
+        return state;
+      }
+
+      return {
+        ...state,
+        // Move all action.payload.attachmentIds to the start of the list in the given order
+        attachments: _.uniq(action.payload.attachmentIds.concat(state.attachments || [])),
       };
     }
   }

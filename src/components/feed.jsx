@@ -41,6 +41,7 @@ export default (props) => {
         deletePost={props.deletePost}
         addAttachmentResponse={props.addAttachmentResponse}
         removeAttachment={props.removeAttachment}
+        reorderImageAttachments={props.reorderImageAttachments}
         toggleCommenting={props.toggleCommenting}
         updateCommentingText={props.updateCommentingText}
         addComment={props.addComment}

@@ -54,6 +54,7 @@ const dropzoneEventHandlers = (props) => ({
 
   sending(file, xhr/*, form*/) {
     xhr.setRequestHeader('X-Authentication-Token', getToken());
+    props.onSending();
   },
 
   success(file, response) {
@@ -65,9 +66,7 @@ const dropzoneEventHandlers = (props) => ({
     props.addAttachmentResponse(response.attachments);
   },
 
-  addedfile: props.onAddedFile,
-
-  removedfile: props.onRemovedFile
+  queuecomplete: props.onQueueComplete,
 });
 
 

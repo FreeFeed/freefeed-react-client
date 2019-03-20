@@ -25,6 +25,7 @@ import TimeDisplay from './time-display';
 import LinkPreview from './link-preview/preview';
 import SendTo from './send-to';
 import { destinationsPrivacy } from './select-utils';
+import { makeJpegIfNeeded } from './create-post';
 
 
 class Post extends React.Component {
@@ -33,9 +34,10 @@ class Post extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      attachmentQueueLength: 0,
-      showTimestamps:        false,
-      privacyWarning:        null,
+      showTimestamps:    false,
+      privacyWarning:    null,
+      attLoading:        false,
+      emptyDestinations: false,
     };
   }
 
@@ -53,7 +55,7 @@ class Post extends React.Component {
             if (!blob.name) {
               blob.name = 'image.png';
             }
-            this.dropzoneObject.addFile(blob);
+            makeJpegIfNeeded(blob).then((blob) => this.dropzoneObject.addFile(blob));
           }
         }
       }
@@ -61,10 +63,10 @@ class Post extends React.Component {
   };
 
   removeAttachment = (attachmentId) => this.props.removeAttachment(this.props.id, attachmentId);
+  reorderImageAttachments = (attachmentIds) => this.props.reorderImageAttachments(this.props.id, attachmentIds);
 
-  changeAttachmentQueue= (change) => () => {
-    this.setState({ attachmentQueueLength: this.state.attachmentQueueLength + change });
-  };
+  attLoadingStarted = () => this.setState({ attLoading: true });
+  attLoadingCompleted = () => this.setState({ attLoading: false });
 
   handleCommentClick = () => {
     if (this.props.isSinglePost) {
@@ -110,6 +112,7 @@ class Post extends React.Component {
 
   handlePostTextChange = (e) => {
     this.editingPostText = e.target.value;
+    this.forceUpdate();
   };
 
   toggleEditingPost = () => {
@@ -139,10 +142,7 @@ class Post extends React.Component {
 
     if (isEnter && !isShiftPressed) {
       event.preventDefault();
-
-      if (this.state.attachmentQueueLength === 0) {
-        this.saveEditingPost();
-      }
+      this.canSubmitForm() && this.saveEditingPost();
     }
   };
 
@@ -161,6 +161,7 @@ class Post extends React.Component {
   };
 
   onDestsChange = (destNames) => {
+    this.setState({ emptyDestinations: destNames.length === 0 });
     if (this.props.isDirect) {
       return;
     }
@@ -186,8 +187,15 @@ class Post extends React.Component {
     return { isPrivate, isProtected };
   }
 
+  canSubmitForm() {
+    return _.trim(this.editingPostText) !== ''
+      && !this.state.attLoading
+      && !this.state.emptyDestinations;
+  }
+
   render() {
     const { props } = this;
+    const canSubmitForm = this.canSubmitForm();
 
     this.editingPostText = props.editingText;
 
@@ -382,8 +390,8 @@ class Post extends React.Component {
                 <Dropzone
                   onInit={this.handleDropzoneInit}
                   addAttachmentResponse={this.handleAttachmentResponse}
-                  addedFile={this.changeAttachmentQueue(1)}
-                  removedFile={this.changeAttachmentQueue(-1)}
+                  onSending={this.attLoadingStarted}
+                  onQueueComplete={this.attLoadingCompleted}
                 />
 
                 <div>
@@ -418,11 +426,12 @@ class Post extends React.Component {
                   <button
                     className="btn btn-default btn-xs"
                     onClick={this.saveEditingPost}
-                    disabled={this.state.attachmentQueueLength > 0}
+                    disabled={!canSubmitForm}
                   >
                     Update
                   </button>
                 </div>
+                {props.isError ? <div className="post-error alert alert-danger">{props.errorString}</div> : false}
               </div>
             ) : (
               <div className="post-text">
@@ -443,6 +452,7 @@ class Post extends React.Component {
             isEditing={props.isEditing}
             isSinglePost={props.isSinglePost}
             removeAttachment={this.removeAttachment}
+            reorderImageAttachments={this.reorderImageAttachments}
           />
 
           {noImageAttachments && linkToEmbed ? (
@@ -479,12 +489,6 @@ class Post extends React.Component {
             {moreLink}
           </div>
 
-          {props.isError ? (
-            <div className="post-error">
-              {props.errorString}
-            </div>
-          ) : false}
-
           <PostLikes
             post={props}
             likes={props.usersLikedPost}
@@ -505,6 +509,7 @@ class Post extends React.Component {
             highlightTerms={props.highlightTerms}
             isSinglePost={props.isSinglePost}
             showTimestamps={this.state.showTimestamps}
+            user={props.user}
           />
         </div>
       </div>

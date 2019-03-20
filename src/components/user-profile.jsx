@@ -177,6 +177,7 @@ export default class UserProfile extends React.Component {
             createPostForm={props.createPostForm}
             addAttachmentResponse={props.addAttachmentResponse}
             removeAttachment={props.removeAttachment}
+            reorderImageAttachments={props.reorderImageAttachments}
           />
         ) : false}
 

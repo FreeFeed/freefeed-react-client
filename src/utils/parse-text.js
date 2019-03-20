@@ -1,6 +1,3 @@
-/*global Raven*/
-import { URL as nodeURL } from 'url';
-import { includes } from 'lodash';
 import {
   withText,
   combine,
@@ -14,37 +11,47 @@ import {
 
 import config from '../config';
 
-// Webpack can not fully emulate WHATWG URL API object for now,
-// so we use global.URL in browser and nodeURL in node.
-// see https://github.com/webpack/node-libs-browser/issues/69
-const URL = nodeURL || global.URL;
 
 export class Link extends TLink {
-  url = null;
+  localDomains = [];
+  hostname = null;
+  path = '/';
 
-  constructor(link) {
+  constructor(link, localDomains) {
     super(link.offset, link.text);
-    try {
-      this.url = new URL(this.href);
-    } catch (e) {
-      if (typeof Raven !== 'undefined') {
-        Raven.captureMessage(`Can not parse URL ${this.href}`, { extra: { url: this.href } });
-      }
+
+    this.localDomains = localDomains;
+
+    const m = this.href.match(/^https?:\/\/([^/]+)(.*)/i);
+    if (m) {
+      this.hostname = m[1].toLowerCase();
+      this.path = m[2] || '/';
     }
   }
 
   get isLocal() {
-    return this.url && includes(config.siteDomains, this.url.hostname);
+    const p = this.localDomains.indexOf(this.hostname);
+    if (p === -1) {
+      return false;
+    } else if (p === 0) {
+      // First domain in localDomains list is the domain of main site.
+      // These links are always local.
+      return true;
+    }
+
+    // Other domains in localDomains list are alternative frontends or mirrors.
+    // Such links should be treated as remote if theay lead to the domain root.
+    return this.path !== '/';
   }
 
   get localURI() {
-    return this.url ? this.url.pathname + this.url.search + this.url.hash : '';
+    return this.path;
   }
 }
 
 const tokenize = withText(combine(hashTags, emails, mentions, links, arrows));
 
-const enhanceLinks = (token) => (token instanceof TLink) ? new Link(token) : token;
+const enhanceLinks = (token) => (token instanceof TLink) ? new Link(token, config.siteDomains) : token;
 
 export const parseText = (text) => tokenize(text).map(enhanceLinks);
 

@@ -8,6 +8,9 @@ import TimeDisplay from "./time-display";
 export default class CommentLikes extends React.Component {
   actionsPanel;
 
+  likesListEl;
+  setLikesList = (el) => this.likesListEl = el;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -74,6 +77,9 @@ export default class CommentLikes extends React.Component {
     this.popupTimeout = undefined;
   };
   startTouch = (e) => {
+    if (this.likesListEl && this.likesListEl.contains(e.target)) {
+      return;
+    }
     e.preventDefault();
     this.popupTimeout = setTimeout(() => {
       this.setState({ showActionsPanel: true });
@@ -93,7 +99,10 @@ export default class CommentLikes extends React.Component {
       }
     }
   };
-  startMouseDown = () => {
+  startMouseDown = (e) => {
+    if (this.likesListEl && this.likesListEl.contains(e.target)) {
+      return;
+    }
     if (!this.state.showActionsPanel) {
       this.popupTimeout = setTimeout(() => {
         this.setState({ showActionsPanel: true });
@@ -212,13 +221,18 @@ export default class CommentLikes extends React.Component {
   };
   renderLikesList = () => {
     const { loading, likes, error } = this.props.likesList;
-    if (loading) {
-      return <div className="comment-likes-list loading">Loading...</div>;
-    }
-    if (error) {
-      return <div className="comment-likes-list error">Error</div>;
-    }
-    return <div className="comment-likes-list">{likes.map((likeUser, i) => <UserName user={likeUser} key={i} />)}</div>;
+    return (
+      <div
+        className={classnames("comment-likes-list", { loading, error })}
+        ref={this.setLikesList}
+      >
+        {
+          loading ? 'Loading...' :
+            error ? 'Error' :
+              likes.map((likeUser, i) => <UserName user={likeUser} key={i} />)
+        }
+      </div>
+    );
   };
   showLikesList = (e) => {
     e.preventDefault();

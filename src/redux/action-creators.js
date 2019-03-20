@@ -305,9 +305,10 @@ export function unlikeComment(commentId) {
 
 export function getCommentLikes(commentId) {
   return {
-    type:       ActionTypes.GET_COMMENT_LIKES,
-    apiRequest: Api.getCommentLikes,
-    payload:    { commentId },
+    type:           ActionTypes.GET_COMMENT_LIKES,
+    apiRequest:     Api.getCommentLikes,
+    nonAuthRequest: true,
+    payload:        { commentId },
   };
 }
 
@@ -346,6 +347,13 @@ export function removeAttachment(postId, attachmentId) {
   return {
     type:    ActionTypes.REMOVE_ATTACHMENT,
     payload: { postId, attachmentId }
+  };
+}
+
+export function reorderImageAttachments(postId, attachmentIds) {
+  return {
+    type:    ActionTypes.REORDER_IMAGE_ATTACHMENTS,
+    payload: { postId, attachmentIds }
   };
 }
 

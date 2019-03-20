@@ -31,7 +31,7 @@ class PostAttachmentImage extends React.PureComponent {
     };
 
     return (
-      <div className={classnames({ attachment: true, hidden: props.isHidden })}>
+      <div className={classnames({ attachment: true, hidden: props.isHidden })} data-id={props.id}>
         <a href={props.url} title={nameAndSize} onClick={props.handleClick} target="_blank" className="image-attachment-link">
           {props.thumbnailUrl ? (
             <img className="image-attachment-img" {...imageAttributes} />

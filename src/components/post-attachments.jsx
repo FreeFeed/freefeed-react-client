@@ -13,6 +13,7 @@ export default (props) => {
       isEditing={props.isEditing}
       isSinglePost={props.isSinglePost}
       removeAttachment={props.removeAttachment}
+      reorderImageAttachments={props.reorderImageAttachments}
       attachments={imageAttachments}
       postId={props.postId}
     />

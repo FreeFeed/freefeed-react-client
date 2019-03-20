@@ -9,7 +9,7 @@ import 'autotrack';  // used by google-analytics in ../index.jade
 
 import '../styles/common/common.scss';
 import '../styles/helvetica/app.scss';
-import '../index.jade';
+import '../assets/vendor-css/font-awesome.min.css';
 
 
 require.context('../assets/fonts', true, /fontawesome.*/i);
