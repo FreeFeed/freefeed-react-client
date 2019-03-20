@@ -23,12 +23,13 @@ class FeedOptionsSwitch extends React.PureComponent {
     const { props } = this;
     const { realtimeActive } = props.frontendPreferences;
     const { feedSort, showRealtime } = props;
+    const isAuthenticated = !!props.userId;
 
     const { homeFeedSort: defaultHomeFeedSort } = config.frontendPreferences.defaultValues;
 
     const toggle = defaultHomeFeedSort === feedSort.sort
-      ? <span className="glyphicon glyphicon-option-horizontal" onClick={this.toggleDropdown} />
-      : <span><span className="glyphicon glyphicon-time" />&nbsp;{!realtimeActive && <span>Paused,&nbsp;</span>}Most recent posts &#183;   <a href="#" onClick={preventDefault(this.switchSortToActivity)}>To default view</a>&nbsp;&nbsp;<span className="glyphicon glyphicon-option-horizontal" onClick={this.toggleDropdown} /></span>;
+      ? <span>{!realtimeActive && isAuthenticated && <span>Paused&nbsp;</span>}<span className="glyphicon glyphicon-option-horizontal dots-icon" onClick={this.toggleDropdown} /></span>
+      : <span><span className="glyphicon glyphicon-time" />&nbsp;{!realtimeActive && isAuthenticated && <span>Paused,&nbsp;</span>}<span className="widescreen-text">Most recent posts &#183;</span><span className="narrowscreen-text">Recent posts &#183;</span>   <a href="#" onClick={preventDefault(this.switchSortToActivity)}><span className="narrowscreen-text">Default</span><span className="widescreen-text">To default view</span></a>&nbsp;&nbsp;<span className="glyphicon glyphicon-option-horizontal dots-icon" onClick={this.toggleDropdown} /></span>;
 
     const menuOptions = {
       align:   'right',
