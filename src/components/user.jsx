@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { createPost, resetPostCreateForm, expandSendTo, getUserInfo } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
 import config from '../config';
-import { joinPostData, joinCreatePostData, postActions, userActions, canAcceptDirects } from './select-utils';
+import { joinPostData, postActions, userActions, canAcceptDirects } from './select-utils';
 import Breadcrumbs from './breadcrumbs';
 import UserProfile from './user-profile';
 import UserFeed from './user-feed';
@@ -42,10 +42,7 @@ const UserHandler = (props) => {
           createPostViewState={props.createPostViewState}
           createPost={props.createPost}
           resetPostCreateForm={props.resetPostCreateForm}
-          createPostForm={props.createPostForm}
           addAttachmentResponse={props.addAttachmentResponse}
-          removeAttachment={props.removeAttachment}
-          reorderImageAttachments={props.reorderImageAttachments}
           getUserInfo={props.getUserInfo}
         />
       </div>
@@ -59,7 +56,6 @@ function selectState(state, ownProps) {
   const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
   const anonymous = !authenticated;
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
-  const createPostForm = joinCreatePostData(state);
   const [foundUser] = Object.getOwnPropertyNames(state.users)
     .map((key) => state.users[key] || state.subscribers[key])
     .filter((user) => user.username === ownProps.params.userName);
@@ -110,7 +106,7 @@ function selectState(state, ownProps) {
 
   const showSummaryHeader = (currentRouteName === 'userSummary');
 
-  return { user, visibleEntries, timelines, createPostViewState, createPostForm, boxHeader, showSummaryHeader, viewUser, breadcrumbs, sendTo };
+  return { user, visibleEntries, timelines, createPostViewState, boxHeader, showSummaryHeader, viewUser, breadcrumbs, sendTo };
 }
 
 function selectActions(dispatch) {
