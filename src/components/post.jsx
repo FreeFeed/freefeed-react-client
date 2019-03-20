@@ -31,15 +31,13 @@ import { makeJpegIfNeeded } from './create-post';
 class Post extends React.Component {
   selectFeeds;
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      showTimestamps:    false,
-      privacyWarning:    null,
-      attLoading:        false,
-      emptyDestinations: false,
-    };
-  }
+  state = {
+    showTimestamps:    false,
+    privacyWarning:    null,
+    attLoading:        false,
+    emptyDestinations: false,
+    editingText:       '',
+  };
 
   handleDropzoneInit = (d) => {
     this.dropzoneObject = d;
@@ -108,19 +106,19 @@ class Post extends React.Component {
     this.props.enableComments(this.props.id);
   };
 
-  editingPostText;
-
   handlePostTextChange = (e) => {
-    this.editingPostText = e.target.value;
-    this.forceUpdate();
+    this.setState({ editingText: e.target.value });
   };
 
   toggleEditingPost = () => {
-    this.props.toggleEditingPost(this.props.id, this.editingPostText);
+    if (!this.props.isEditing) {
+      this.setState({ editingText: this.props.body });
+    }
+    this.props.toggleEditingPost(this.props.id, this.props.body);
   };
 
   cancelEditingPost = () => {
-    this.props.cancelEditingPost(this.props.id, this.editingPostText);
+    this.props.cancelEditingPost(this.props.id, this.props.body);
   };
 
   saveEditingPost = () => {
@@ -128,7 +126,7 @@ class Post extends React.Component {
 
     if (!props.isSaving) {
       const attachmentIds = props.attachments.map((item) => item.id) || [];
-      const reqBody = { body: this.editingPostText, attachments: attachmentIds };
+      const reqBody = { body: this.state.editingText, attachments: attachmentIds };
       if (this.selectFeeds) {
         reqBody.feeds = this.selectFeeds.values;
       }
@@ -188,16 +186,12 @@ class Post extends React.Component {
   }
 
   canSubmitForm() {
-    return _.trim(this.editingPostText) !== ''
-      && !this.state.attLoading
-      && !this.state.emptyDestinations;
+    const { editingText, attLoading, emptyDestinations } = this.state;
+    return _.trim(editingText) !== '' && !attLoading && !emptyDestinations;
   }
 
   render() {
     const { props } = this;
-    const canSubmitForm = this.canSubmitForm();
-
-    this.editingPostText = props.editingText;
 
     const profilePicture = props.isSinglePost ?
       props.createdBy.profilePictureLargeUrl : props.createdBy.profilePictureMediumUrl;
@@ -397,7 +391,7 @@ class Post extends React.Component {
                 <div>
                   <Textarea
                     className="post-textarea"
-                    defaultValue={props.editingText}
+                    value={this.state.editingText}
                     onKeyDown={this.handleKeyDown}
                     onChange={this.handlePostTextChange}
                     onPaste={this.handlePaste}
@@ -426,7 +420,7 @@ class Post extends React.Component {
                   <button
                     className="btn btn-default btn-xs"
                     onClick={this.saveEditingPost}
-                    disabled={!canSubmitForm}
+                    disabled={!this.canSubmitForm()}
                   >
                     Update
                   </button>
