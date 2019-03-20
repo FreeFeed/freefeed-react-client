@@ -32,11 +32,12 @@ class Post extends React.Component {
   selectFeeds;
 
   state = {
-    showTimestamps:    false,
-    privacyWarning:    null,
-    attLoading:        false,
-    emptyDestinations: false,
-    editingText:       '',
+    showTimestamps:     false,
+    privacyWarning:     null,
+    attLoading:         false,
+    emptyDestinations:  false,
+    editingText:        '',
+    editingAttachments: [],
   };
 
   handleDropzoneInit = (d) => {
@@ -60,8 +61,17 @@ class Post extends React.Component {
     }
   };
 
-  removeAttachment = (attachmentId) => this.props.removeAttachment(this.props.id, attachmentId);
-  reorderImageAttachments = (attachmentIds) => this.props.reorderImageAttachments(this.props.id, attachmentIds);
+  removeAttachment = (attachmentId) => {
+    this.setState({ editingAttachments: this.state.editingAttachments.filter((a) => a.id !== attachmentId) });
+  };
+  reorderImageAttachments = (attachmentIds) => {
+    const oldIds = this.state.editingAttachments.map((a) => a.id);
+    const newIds = _.uniq(attachmentIds.concat(oldIds));
+    const editingAttachments = newIds
+      .map((id) => this.state.editingAttachments.find((a) => a.id === id))
+      .filter(Boolean);
+    this.setState({ editingAttachments });
+  };
 
   attLoadingStarted = () => this.setState({ attLoading: true });
   attLoadingCompleted = () => this.setState({ attLoading: false });
@@ -112,7 +122,10 @@ class Post extends React.Component {
 
   toggleEditingPost = () => {
     if (!this.props.isEditing) {
-      this.setState({ editingText: this.props.body });
+      this.setState({
+        editingText:        this.props.body,
+        editingAttachments: [...this.props.attachments],
+      });
     }
     this.props.toggleEditingPost(this.props.id);
   };
@@ -122,16 +135,20 @@ class Post extends React.Component {
   };
 
   saveEditingPost = () => {
-    const { props } = this;
+    const { props, state } = this;
 
-    if (!props.isSaving) {
-      const attachmentIds = props.attachments.map((item) => item.id) || [];
-      const reqBody = { body: this.state.editingText, attachments: attachmentIds };
-      if (this.selectFeeds) {
-        reqBody.feeds = this.selectFeeds.values;
-      }
-      props.saveEditingPost(props.id, reqBody);
+    if (props.isSaving) {
+      return;
     }
+
+    const reqBody = {
+      body:        state.editingText,
+      attachments: state.editingAttachments.map((a) => a.id),
+    };
+    if (this.selectFeeds) {
+      reqBody.feeds = this.selectFeeds.values;
+    }
+    props.saveEditingPost(props.id, reqBody);
   };
 
   handleKeyDown = (event) => {
@@ -146,6 +163,7 @@ class Post extends React.Component {
 
   handleAttachmentResponse = (att) => {
     this.props.addAttachmentResponse(this.props.id, att);
+    this.setState({ editingAttachments: [...this.state.editingAttachments, att] });
   };
 
   toggleTimestamps = () => {
@@ -188,6 +206,10 @@ class Post extends React.Component {
   canSubmitForm() {
     const { editingText, attLoading, emptyDestinations } = this.state;
     return _.trim(editingText) !== '' && !attLoading && !emptyDestinations;
+  }
+
+  get attachments() {
+    return this.props.isEditing ? this.state.editingAttachments : this.props.attachments;
   }
 
   render() {
@@ -333,7 +355,7 @@ class Post extends React.Component {
     ) : false);
 
     const linkToEmbed = getFirstLinkToEmbed(props.body);
-    const noImageAttachments = !props.attachments.some((attachment) => attachment.mediaType === 'image');
+    const noImageAttachments = !this.attachments.some((attachment) => attachment.mediaType === 'image');
 
     return (props.isRecentlyHidden ? (
       <div className="post recently-hidden-post">
@@ -442,7 +464,7 @@ class Post extends React.Component {
         <div className="post-body">
           <PostAttachments
             postId={props.id}
-            attachments={props.attachments}
+            attachments={this.attachments}
             isEditing={props.isEditing}
             isSinglePost={props.isSinglePost}
             removeAttachment={this.removeAttachment}
