@@ -1,5 +1,6 @@
 import React from 'react';
 import Textarea from 'react-textarea-autosize';
+import _ from 'lodash';
 
 import throbber from '../../assets/images/throbber.gif';
 import { preventDefault } from '../utils';
@@ -15,6 +16,7 @@ const getDefaultState = (invitation = '') => ({
   postText:         invitation,
   commentsDisabled: false,
   attLoading:       false,
+  attachments:      [],
 });
 
 export default class CreatePost extends React.Component {
@@ -28,8 +30,8 @@ export default class CreatePost extends React.Component {
   createPost = () => {
     // Get all the values
     const feeds = this.selectFeeds.values;
-    const { postText } = this.state;
-    const attachmentIds = this.props.createPostForm.attachments.map((attachment) => attachment.id);
+    const { postText, attachments } = this.state;
+    const attachmentIds = attachments.map((attachment) => attachment.id);
     const more = { commentsDisabled: this.state.commentsDisabled };
 
     // Send to the server
@@ -74,12 +76,19 @@ export default class CreatePost extends React.Component {
 
   clearForm = () => {
     this.setState(getDefaultState());
-    const attachmentIds = this.props.createPostForm.attachments.map((attachment) => attachment.id);
-    attachmentIds.forEach(this.removeAttachment);
   };
 
-  removeAttachment = (attachmentId) => this.props.removeAttachment(null, attachmentId);
-  reorderImageAttachments = (attachmentIds) => this.props.reorderImageAttachments(null, attachmentIds);
+  removeAttachment = (attachmentId) => {
+    this.setState({ attachments: this.state.attachments.filter((a) => a.id !== attachmentId) });
+  };
+  reorderImageAttachments = (attachmentIds) => {
+    const oldIds = this.state.attachments.map((a) => a.id);
+    const newIds = _.uniq(attachmentIds.concat(oldIds));
+    const attachments = newIds
+      .map((id) => this.state.attachments.find((a) => a.id === id))
+      .filter(Boolean);
+    this.setState({ attachments });
+  };
 
   checkCreatePostAvailability = () => {
     const isFormEmpty = isTextEmpty(this.state.postText) || this.selectFeeds.values === 0;
@@ -112,7 +121,7 @@ export default class CreatePost extends React.Component {
   }
 
   handleAddAttachmentResponse = (att) => {
-    this.props.addAttachmentResponse(null, att);
+    this.setState({ attachments: [...this.state.attachments, att] });
   };
 
   handleChangeOfMoreCheckbox = (e) => {
@@ -128,6 +137,8 @@ export default class CreatePost extends React.Component {
     return !this.state.isFormEmpty
       && !this.state.attLoading
       && !this.props.createPostViewState.isPending
+      && this.selectFeeds
+      && this.selectFeeds.values.length > 0
       && !this.selectFeeds.isIncorrectDestinations;
   };
 
@@ -206,7 +217,7 @@ export default class CreatePost extends React.Component {
         </div>
 
         <PostAttachments
-          attachments={this.props.createPostForm.attachments}
+          attachments={this.state.attachments}
           isEditing={true}
           removeAttachment={this.removeAttachment}
           reorderImageAttachments={this.reorderImageAttachments}
