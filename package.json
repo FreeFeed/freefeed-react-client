@@ -87,10 +87,10 @@
     "react-hot-loader": "~4.8.0",
     "react-test-renderer": "~15.6.2",
     "sass-loader": "~7.1.0",
-    "sinon": "^4.4.9",
+    "sinon": "~7.3.0",
     "style-loader": "~0.23.1",
     "uglifyjs-webpack-plugin": "~2.1.2",
-    "unexpected": "~10.39.1",
+    "unexpected": "~11.2.0",
     "unexpected-react": "~5.0.1",
     "unexpected-sinon": "^10.8.2",
     "webpack": "~4.29.6",
@@ -100,7 +100,7 @@
   },
   "scripts": {
     "start": "./dev-server",
-    "test": "cross-env NODE_ENV=development mochapack --timeout 15000 --webpack-config webpack.config.tests.babel.js --recursive test/unit",
+    "test": "cross-env NODE_ENV=development mochapack --timeout 20000 --webpack-config webpack.config.tests.babel.js --recursive test/unit",
     "lint": "eslint --ext .js --ext .jsx src test",
     "travis": "run-s -c test lint"
   },
