@@ -9,6 +9,7 @@ import Feed from './feed';
 class Summary extends React.Component {
   render() {
     const { props } = this;
+    const days = props.params.days ? parseInt(props.params.days) : 7;
 
     return (
       <div className="box">
@@ -17,11 +18,11 @@ class Summary extends React.Component {
 
           <div className="sidelinks">
             <span>View best of: </span>
-            {+props.params.days === 1 ? <b>day</b> : <Link to={`/summary/1`}>day</Link>}
+            {days === 1 ? <b>day</b> : <Link to={`/summary/1`}>day</Link>}
             {' - '}
-            {+(props.params.days || 7) === 7 ? <b>week</b> : <Link to={`/summary/7`}>week</Link>}
+            {days === 7 ? <b>week</b> : <Link to={`/summary/7`}>week</Link>}
             {' - '}
-            {+props.params.days === 30 ? <b>month</b> : <Link to={`/summary/30`}>month</Link>}
+            {days === 30 ? <b>month</b> : <Link to={`/summary/30`}>month</Link>}
           </div>
         </div>
 
