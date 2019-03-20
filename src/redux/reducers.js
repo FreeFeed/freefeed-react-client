@@ -854,55 +854,6 @@ export function posts(state = {}, action) {
         }
       };
     }
-    case ActionTypes.ADD_ATTACHMENT_RESPONSE: {
-      // If this is an attachment for create-post (non-existent post),
-      // it should be handled in createPostForm(), not here
-      if (!action.payload.postId) {
-        return state;
-      }
-
-      const post = state[action.payload.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          attachments: [...(post.attachments || []), action.payload.attachments.id]
-        }
-      };
-    }
-    case ActionTypes.REMOVE_ATTACHMENT: {
-      // If this is an attachment for create-post (non-existent post),
-      // it should be handled in createPostForm(), not here
-      if (!action.payload.postId) {
-        return state;
-      }
-
-      const post = state[action.payload.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          attachments: _.without((post.attachments || []), action.payload.attachmentId)
-        }
-      };
-    }
-    case ActionTypes.REORDER_IMAGE_ATTACHMENTS: {
-      // If this is an attachment for create-post (non-existent post),
-      // it should be handled in createPostForm(), not here
-      if (!action.payload.postId || !state[action.payload.postId]) {
-        return state;
-      }
-
-      const post = state[action.payload.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          // Move all action.payload.attachmentIds to the start of list in the given order
-          attachments: _.uniq(action.payload.attachmentIds.concat(post.attachments || [])),
-        }
-      };
-    }
     case response(ActionTypes.DELETE_COMMENT): {
       const { commentId } = action.request;
       const post = _(state).find((_post) => (_post.comments || []).indexOf(commentId) !== -1);
@@ -2024,50 +1975,6 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
       return {
         ...state,
         feeds: getValidRecipients(action.payload)
-      };
-    }
-  }
-
-  return state;
-}
-
-export function createPostForm(state = {}, action) {
-  switch (action.type) {
-    case ActionTypes.ADD_ATTACHMENT_RESPONSE: {
-      // If this is an attachment for edit-post (existent post),
-      // it should be handled in posts(), not here
-      if (action.payload.postId) {
-        return state;
-      }
-
-      return {
-        ...state,
-        attachments: [...(state.attachments || []), action.payload.attachments.id]
-      };
-    }
-    case ActionTypes.REMOVE_ATTACHMENT: {
-      // If this is an attachment for edit-post (existent post),
-      // it should be handled in posts(), not here
-      if (action.payload.postId) {
-        return state;
-      }
-
-      return {
-        ...state,
-        attachments: _.without((state.attachments || []), action.payload.attachmentId)
-      };
-    }
-    case ActionTypes.REORDER_IMAGE_ATTACHMENTS: {
-      // If this is an attachment for edit-post (existent post),
-      // it should be handled in posts(), not here
-      if (action.payload.postId) {
-        return state;
-      }
-
-      return {
-        ...state,
-        // Move all action.payload.attachmentIds to the start of the list in the given order
-        attachments: _.uniq(action.payload.attachmentIds.concat(state.attachments || [])),
       };
     }
   }
