@@ -404,9 +404,8 @@ const mergeByIds = (state, array) => ({ ...state, ...indexById(array) });
 const initPostViewState = (post) => {
   const { id, omittedComments, omittedLikes } = post;
   const isEditing = false;
-  const editingText = post.body;
 
-  return { omittedComments, omittedLikes, id, isEditing, editingText, ...NO_ERROR };
+  return { omittedComments, omittedLikes, id, isEditing, ...NO_ERROR };
 };
 
 export function postsViewState(state = {}, action) {
@@ -442,9 +441,6 @@ export function postsViewState(state = {}, action) {
       const { id } = action.post;
       const postAlreadyAdded = !!state[id];
       if (postAlreadyAdded) {
-        if (state[id].editingText !== action.post.body) {
-          return { ...state, [id]: { ...state[id], editingText: action.post.body } };
-        }
         return state;
       }
       return { ...state, [id]: initPostViewState(action.post) };
@@ -466,17 +462,15 @@ export function postsViewState(state = {}, action) {
     }
     case ActionTypes.TOGGLE_EDITING_POST: {
       const id = action.payload.postId;
-      const editingText = action.payload.newValue;
       const isEditing = !state[id].isEditing;
 
-      return { ...state, [id]: { ...state[id], isEditing, editingText, ...NO_ERROR } };
+      return { ...state, [id]: { ...state[id], isEditing, ...NO_ERROR } };
     }
     case ActionTypes.CANCEL_EDITING_POST: {
       const id = action.payload.postId;
-      const editingText = action.payload.newValue;
       const isEditing = false;
 
-      return { ...state, [id]: { ...state[id], isEditing, editingText, ...NO_ERROR } };
+      return { ...state, [id]: { ...state[id], isEditing, ...NO_ERROR } };
     }
     case request(ActionTypes.SAVE_EDITING_POST): {
       const id = action.payload.postId;
@@ -484,11 +478,10 @@ export function postsViewState(state = {}, action) {
     }
     case response(ActionTypes.SAVE_EDITING_POST): {
       const { id } = action.payload.posts;
-      const editingText = action.payload.posts.body;
       const isEditing = false;
       const isSaving = false;
 
-      return { ...state, [id]: { ...state[id], isEditing, isSaving, editingText, ...NO_ERROR } };
+      return { ...state, [id]: { ...state[id], isEditing, isSaving, ...NO_ERROR } };
     }
     case fail(ActionTypes.SAVE_EDITING_POST): {
       const id = action.request.postId;
@@ -805,9 +798,8 @@ export function postsViewState(state = {}, action) {
       const post = action.payload.posts;
       const { id, omittedComments, omittedLikes } = post;
       const isEditing = false;
-      const editingText = post.body;
 
-      return { ...state, [id]: { omittedComments, omittedLikes, id, isEditing, editingText, ...NO_ERROR } };
+      return { ...state, [id]: { omittedComments, omittedLikes, id, isEditing, ...NO_ERROR } };
     }
     case ActionTypes.UNAUTHENTICATED: {
       return {};

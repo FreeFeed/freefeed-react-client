@@ -114,11 +114,11 @@ class Post extends React.Component {
     if (!this.props.isEditing) {
       this.setState({ editingText: this.props.body });
     }
-    this.props.toggleEditingPost(this.props.id, this.props.body);
+    this.props.toggleEditingPost(this.props.id);
   };
 
   cancelEditingPost = () => {
-    this.props.cancelEditingPost(this.props.id, this.props.body);
+    this.props.cancelEditingPost(this.props.id);
   };
 
   saveEditingPost = () => {

@@ -180,8 +180,8 @@ export function postActions(dispatch) {
   return {
     showMoreComments:         (postId) => dispatch(showMoreComments(postId)),
     showMoreLikes:            (postId) => dispatch(showMoreLikes(postId)),
-    toggleEditingPost:        (postId, newValue) => dispatch(toggleEditingPost(postId, newValue)),
-    cancelEditingPost:        (postId, newValue) => dispatch(cancelEditingPost(postId, newValue)),
+    toggleEditingPost:        (postId) => dispatch(toggleEditingPost(postId)),
+    cancelEditingPost:        (postId) => dispatch(cancelEditingPost(postId)),
     saveEditingPost:          (postId, newPost) => dispatch(saveEditingPost(postId, newPost)),
     deletePost:               (postId) => dispatch(deletePost(postId)),
     toggleCommenting:         (postId) => dispatch(toggleCommenting(postId)),

@@ -128,17 +128,17 @@ export function showMoreLikesSync(postId) {
   };
 }
 
-export function toggleEditingPost(postId, newValue) {
+export function toggleEditingPost(postId) {
   return {
     type:    ActionTypes.TOGGLE_EDITING_POST,
-    payload: { postId, newValue },
+    payload: { postId },
   };
 }
 
-export function cancelEditingPost(postId, newValue) {
+export function cancelEditingPost(postId) {
   return {
     type:    ActionTypes.CANCEL_EDITING_POST,
-    payload: { postId, newValue },
+    payload: { postId },
   };
 }
 
