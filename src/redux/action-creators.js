@@ -128,17 +128,17 @@ export function showMoreLikesSync(postId) {
   };
 }
 
-export function toggleEditingPost(postId, newValue) {
+export function toggleEditingPost(postId) {
   return {
     type:    ActionTypes.TOGGLE_EDITING_POST,
-    payload: { postId, newValue },
+    payload: { postId },
   };
 }
 
-export function cancelEditingPost(postId, newValue) {
+export function cancelEditingPost(postId) {
   return {
     type:    ActionTypes.CANCEL_EDITING_POST,
-    payload: { postId, newValue },
+    payload: { postId },
   };
 }
 
@@ -340,20 +340,6 @@ export function addAttachmentResponse(postId, attachments) {
   return {
     type:    ActionTypes.ADD_ATTACHMENT_RESPONSE,
     payload: { postId, attachments }
-  };
-}
-
-export function removeAttachment(postId, attachmentId) {
-  return {
-    type:    ActionTypes.REMOVE_ATTACHMENT,
-    payload: { postId, attachmentId }
-  };
-}
-
-export function reorderImageAttachments(postId, attachmentIds) {
-  return {
-    type:    ActionTypes.REORDER_IMAGE_ATTACHMENTS,
-    payload: { postId, attachmentIds }
   };
 }
 

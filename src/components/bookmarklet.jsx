@@ -4,9 +4,8 @@ import classnames from 'classnames';
 import _ from 'lodash';
 import memoize from 'memoize-one';
 
-import { createBookmarkletPost, resetPostCreateForm, addAttachmentResponse, removeAttachment } from '../redux/action-creators';
+import { createBookmarkletPost, resetPostCreateForm, addAttachmentResponse } from '../redux/action-creators';
 
-import { joinCreatePostData } from './select-utils';
 import CreateBookmarkletPost from './create-bookmarklet-post';
 import SignIn from './signin';
 
@@ -95,7 +94,6 @@ class Layout extends React.Component {
             postText={`${props.location.query.title} - ${props.location.query.url}`}
             imageUrls={this.imageUrls}
             commentText={props.location.query.comment}
-            createPostForm={props.createPostForm}
             createPost={props.createBookmarkletPost}
             resetPostCreateForm={props.resetPostCreateForm}
             removeImage={this.removeImage}
@@ -114,13 +112,11 @@ class Layout extends React.Component {
 function selectState(state) {
   const { authenticated, createPostViewState, user } = state;
   const sendTo = { ...state.sendTo, defaultFeed: user.username };
-  const createPostForm = joinCreatePostData(state);
 
   return {
     authenticated,
     user,
     sendTo,
-    createPostForm,
     createPostViewState
   };
 }
@@ -130,7 +126,6 @@ function mapDispatchToProps(dispatch) {
     createBookmarkletPost: (...args) => dispatch(createBookmarkletPost(...args)),
     resetPostCreateForm:   (...args) => dispatch(resetPostCreateForm(...args)),
     addAttachmentResponse: (...args) => dispatch(addAttachmentResponse(...args)),
-    removeAttachment:      (...args) => dispatch(removeAttachment(...args))
   };
 }
 
