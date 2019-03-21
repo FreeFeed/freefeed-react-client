@@ -8,7 +8,7 @@ import PaginationLinks from './pagination-links';
 
 
 const PaginatedView = (props) => {
-  const days = props.params.days ? parseInt(props.params.days) : 7;
+  const summaryDays = props.params && props.params.days ? parseInt(props.params.days) : 7;
 
   return (
     <div className="box-body">
@@ -17,11 +17,11 @@ const PaginatedView = (props) => {
           {props.boxHeader.title}
           <div className="user-subheader-sidelinks">
             {'View best of: '}
-            {days === 1 ? <b>day</b> : <Link to={`/${props.viewUser.username}/summary/1`}>day</Link>}
+            {summaryDays === 1 ? <b>day</b> : <Link to={`/${props.viewUser.username}/summary/1`}>day</Link>}
             {' - '}
-            {days === 7 ? <b>week</b> : <Link to={`/${props.viewUser.username}/summary/7`}>week</Link>}
+            {summaryDays === 7 ? <b>week</b> : <Link to={`/${props.viewUser.username}/summary/7`}>week</Link>}
             {' - '}
-            {days === 30 ? <b>month</b> : <Link to={`/${props.viewUser.username}/summary/30`}>month</Link>}
+            {summaryDays === 30 ? <b>month</b> : <Link to={`/${props.viewUser.username}/summary/30`}>month</Link>}
           </div>
         </h4>
       ) : props.offset > 0
