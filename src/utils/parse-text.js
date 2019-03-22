@@ -1,4 +1,3 @@
-import { includes } from 'lodash';
 import {
   withText,
   combine,
@@ -14,28 +13,45 @@ import config from '../config';
 
 
 export class Link extends TLink {
+  localDomains = [];
   hostname = null;
+  path = '/';
 
-  constructor(link) {
+  constructor(link, localDomains) {
     super(link.offset, link.text);
-    const m = this.href.match(/^https?:\/\/([^/]+)/i);
+
+    this.localDomains = localDomains;
+
+    const m = this.href.match(/^https?:\/\/([^/]+)(.*)/i);
     if (m) {
       this.hostname = m[1].toLowerCase();
+      this.path = m[2] || '/';
     }
   }
 
   get isLocal() {
-    return this.hostname && includes(config.siteDomains, this.hostname);
+    const p = this.localDomains.indexOf(this.hostname);
+    if (p === -1) {
+      return false;
+    } else if (p === 0) {
+      // First domain in localDomains list is the domain of main site.
+      // These links are always local.
+      return true;
+    }
+
+    // Other domains in localDomains list are alternative frontends or mirrors.
+    // Such links should be treated as remote if theay lead to the domain root.
+    return this.path !== '/';
   }
 
   get localURI() {
-    return this.hostname ? this.href.replace(/^https?:\/\/[^/]+/i, '') : '';
+    return this.path;
   }
 }
 
 const tokenize = withText(combine(hashTags, emails, mentions, links, arrows));
 
-const enhanceLinks = (token) => (token instanceof TLink) ? new Link(token) : token;
+const enhanceLinks = (token) => (token instanceof TLink) ? new Link(token, config.siteDomains) : token;
 
 export const parseText = (text) => tokenize(text).map(enhanceLinks);
 

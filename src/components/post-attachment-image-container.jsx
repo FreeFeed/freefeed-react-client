@@ -2,6 +2,7 @@ import pt from 'prop-types';
 import React from 'react';
 import classnames from 'classnames';
 import Loadable from 'react-loadable';
+import Sortable from 'react-sortablejs';
 
 import ImageAttachment from './post-attachment-image';
 
@@ -28,11 +29,12 @@ const ImageAttachmentsLightbox = Loadable({
 
 export default class ImageAttachmentsContainer extends React.Component {
   static propTypes = {
-    attachments:      pt.array.isRequired,
-    isSinglePost:     pt.bool,
-    isEditing:        pt.bool,
-    removeAttachment: pt.func,
-    postId:           pt.string,
+    attachments:             pt.array.isRequired,
+    isSinglePost:            pt.bool,
+    isEditing:               pt.bool,
+    removeAttachment:        pt.func,
+    reorderImageAttachments: pt.func,
+    postId:                  pt.string,
   };
 
   state = {
@@ -114,16 +116,20 @@ export default class ImageAttachmentsContainer extends React.Component {
     this.container = el;
   };
 
+  onSortChange = (order) => this.props.reorderImageAttachments(order);
+
   render() {
     const isSingleImage = this.props.attachments.length === 1;
+    const withSortable = this.props.isEditing && this.props.attachments.length > 1;
     const className = classnames({
       'image-attachments': true,
       'is-folded':         this.state.isFolded,
       'needs-folding':     this.state.needsFolding,
-      'single-image':      isSingleImage
+      'single-image':      isSingleImage,
+      'sortable-images':   withSortable,
     });
 
-    const showFolded = (this.state.needsFolding && this.state.isFolded);
+    const showFolded = (this.state.needsFolding && this.state.isFolded && !this.props.isEditing);
     let lastVisibleIndex = 0;
     if (showFolded) {
       let width = 0;
@@ -135,19 +141,23 @@ export default class ImageAttachmentsContainer extends React.Component {
       });
     }
 
+    const allImages = this.props.attachments.map((a, i) => (
+      <ImageAttachment
+        key={a.id}
+        isEditing={this.props.isEditing}
+        handleClick={this.handleClickThumbnail(i)}
+        removeAttachment={this.props.removeAttachment}
+        isHidden={showFolded && i > lastVisibleIndex}
+        {...a}
+      />
+    ));
+
     return (
       <div className={className} ref={this.registerContainer}>
-        {this.props.attachments.map((a, i) => (
-          <ImageAttachment
-            key={a.id}
-            isEditing={this.props.isEditing}
-            handleClick={this.handleClickThumbnail(i)}
-            removeAttachment={this.props.removeAttachment}
-            isHidden={showFolded && i > lastVisibleIndex}
-            {...a}
-          />
-        ))}
-        {isSingleImage ? false : (
+        {withSortable ?
+          <Sortable onChange={this.onSortChange} >{allImages}</Sortable>
+          : allImages}
+        {(isSingleImage || this.props.isEditing) ? false : (
           <div className="show-more">
             <i
               className="fa fa-2x fa-chevron-circle-right"

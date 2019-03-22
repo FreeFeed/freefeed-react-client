@@ -31,14 +31,14 @@ import { makeJpegIfNeeded } from './create-post';
 class Post extends React.Component {
   selectFeeds;
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      attachmentQueueLength: 0,
-      showTimestamps:        false,
-      privacyWarning:        null,
-    };
-  }
+  state = {
+    showTimestamps:     false,
+    privacyWarning:     null,
+    attLoading:         false,
+    emptyDestinations:  false,
+    editingText:        '',
+    editingAttachments: [],
+  };
 
   handleDropzoneInit = (d) => {
     this.dropzoneObject = d;
@@ -61,11 +61,20 @@ class Post extends React.Component {
     }
   };
 
-  removeAttachment = (attachmentId) => this.props.removeAttachment(this.props.id, attachmentId);
-
-  changeAttachmentQueue= (change) => () => {
-    this.setState({ attachmentQueueLength: this.state.attachmentQueueLength + change });
+  removeAttachment = (attachmentId) => {
+    this.setState({ editingAttachments: this.state.editingAttachments.filter((a) => a.id !== attachmentId) });
   };
+  reorderImageAttachments = (attachmentIds) => {
+    const oldIds = this.state.editingAttachments.map((a) => a.id);
+    const newIds = _.uniq(attachmentIds.concat(oldIds));
+    const editingAttachments = newIds
+      .map((id) => this.state.editingAttachments.find((a) => a.id === id))
+      .filter(Boolean);
+    this.setState({ editingAttachments });
+  };
+
+  attLoadingStarted = () => this.setState({ attLoading: true });
+  attLoadingCompleted = () => this.setState({ attLoading: false });
 
   handleCommentClick = () => {
     if (this.props.isSinglePost) {
@@ -107,31 +116,39 @@ class Post extends React.Component {
     this.props.enableComments(this.props.id);
   };
 
-  editingPostText;
-
   handlePostTextChange = (e) => {
-    this.editingPostText = e.target.value;
+    this.setState({ editingText: e.target.value });
   };
 
   toggleEditingPost = () => {
-    this.props.toggleEditingPost(this.props.id, this.editingPostText);
+    if (!this.props.isEditing) {
+      this.setState({
+        editingText:        this.props.body,
+        editingAttachments: [...this.props.attachments],
+      });
+    }
+    this.props.toggleEditingPost(this.props.id);
   };
 
   cancelEditingPost = () => {
-    this.props.cancelEditingPost(this.props.id, this.editingPostText);
+    this.props.cancelEditingPost(this.props.id);
   };
 
   saveEditingPost = () => {
-    const { props } = this;
+    const { props, state } = this;
 
-    if (!props.isSaving) {
-      const attachmentIds = props.attachments.map((item) => item.id) || [];
-      const reqBody = { body: this.editingPostText, attachments: attachmentIds };
-      if (this.selectFeeds) {
-        reqBody.feeds = this.selectFeeds.values;
-      }
-      props.saveEditingPost(props.id, reqBody);
+    if (props.isSaving) {
+      return;
     }
+
+    const reqBody = {
+      body:        state.editingText,
+      attachments: state.editingAttachments.map((a) => a.id),
+    };
+    if (this.selectFeeds) {
+      reqBody.feeds = this.selectFeeds.values;
+    }
+    props.saveEditingPost(props.id, reqBody);
   };
 
   handleKeyDown = (event) => {
@@ -140,15 +157,13 @@ class Post extends React.Component {
 
     if (isEnter && !isShiftPressed) {
       event.preventDefault();
-
-      if (this.state.attachmentQueueLength === 0) {
-        this.saveEditingPost();
-      }
+      this.canSubmitForm() && this.saveEditingPost();
     }
   };
 
   handleAttachmentResponse = (att) => {
     this.props.addAttachmentResponse(this.props.id, att);
+    this.setState({ editingAttachments: [...this.state.editingAttachments, att] });
   };
 
   toggleTimestamps = () => {
@@ -162,6 +177,7 @@ class Post extends React.Component {
   };
 
   onDestsChange = (destNames) => {
+    this.setState({ emptyDestinations: destNames.length === 0 });
     if (this.props.isDirect) {
       return;
     }
@@ -187,10 +203,17 @@ class Post extends React.Component {
     return { isPrivate, isProtected };
   }
 
+  canSubmitForm() {
+    const { editingText, attLoading, emptyDestinations } = this.state;
+    return _.trim(editingText) !== '' && !attLoading && !emptyDestinations;
+  }
+
+  get attachments() {
+    return this.props.isEditing ? this.state.editingAttachments : this.props.attachments;
+  }
+
   render() {
     const { props } = this;
-
-    this.editingPostText = props.editingText;
 
     const profilePicture = props.isSinglePost ?
       props.createdBy.profilePictureLargeUrl : props.createdBy.profilePictureMediumUrl;
@@ -332,7 +355,7 @@ class Post extends React.Component {
     ) : false);
 
     const linkToEmbed = getFirstLinkToEmbed(props.body);
-    const noImageAttachments = !props.attachments.some((attachment) => attachment.mediaType === 'image');
+    const noImageAttachments = !this.attachments.some((attachment) => attachment.mediaType === 'image');
 
     return (props.isRecentlyHidden ? (
       <div className="post recently-hidden-post">
@@ -383,14 +406,14 @@ class Post extends React.Component {
                 <Dropzone
                   onInit={this.handleDropzoneInit}
                   addAttachmentResponse={this.handleAttachmentResponse}
-                  addedFile={this.changeAttachmentQueue(1)}
-                  removedFile={this.changeAttachmentQueue(-1)}
+                  onSending={this.attLoadingStarted}
+                  onQueueComplete={this.attLoadingCompleted}
                 />
 
                 <div>
                   <Textarea
                     className="post-textarea"
-                    defaultValue={props.editingText}
+                    value={this.state.editingText}
                     onKeyDown={this.handleKeyDown}
                     onChange={this.handlePostTextChange}
                     onPaste={this.handlePaste}
@@ -419,11 +442,12 @@ class Post extends React.Component {
                   <button
                     className="btn btn-default btn-xs"
                     onClick={this.saveEditingPost}
-                    disabled={this.state.attachmentQueueLength > 0}
+                    disabled={!this.canSubmitForm()}
                   >
                     Update
                   </button>
                 </div>
+                {props.isError ? <div className="post-error alert alert-danger">{props.errorString}</div> : false}
               </div>
             ) : (
               <div className="post-text">
@@ -440,10 +464,11 @@ class Post extends React.Component {
         <div className="post-body">
           <PostAttachments
             postId={props.id}
-            attachments={props.attachments}
+            attachments={this.attachments}
             isEditing={props.isEditing}
             isSinglePost={props.isSinglePost}
             removeAttachment={this.removeAttachment}
+            reorderImageAttachments={this.reorderImageAttachments}
           />
 
           {noImageAttachments && linkToEmbed ? (
@@ -479,12 +504,6 @@ class Post extends React.Component {
             {hideLink}
             {moreLink}
           </div>
-
-          {props.isError ? (
-            <div className="post-error">
-              {props.errorString}
-            </div>
-          ) : false}
 
           <PostLikes
             post={props}

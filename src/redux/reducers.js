@@ -404,9 +404,8 @@ const mergeByIds = (state, array) => ({ ...state, ...indexById(array) });
 const initPostViewState = (post) => {
   const { id, omittedComments, omittedLikes } = post;
   const isEditing = false;
-  const editingText = post.body;
 
-  return { omittedComments, omittedLikes, id, isEditing, editingText, ...NO_ERROR };
+  return { omittedComments, omittedLikes, id, isEditing, ...NO_ERROR };
 };
 
 export function postsViewState(state = {}, action) {
@@ -442,9 +441,6 @@ export function postsViewState(state = {}, action) {
       const { id } = action.post;
       const postAlreadyAdded = !!state[id];
       if (postAlreadyAdded) {
-        if (state[id].editingText !== action.post.body) {
-          return { ...state, [id]: { ...state[id], editingText: action.post.body } };
-        }
         return state;
       }
       return { ...state, [id]: initPostViewState(action.post) };
@@ -466,17 +462,15 @@ export function postsViewState(state = {}, action) {
     }
     case ActionTypes.TOGGLE_EDITING_POST: {
       const id = action.payload.postId;
-      const editingText = action.payload.newValue;
       const isEditing = !state[id].isEditing;
 
-      return { ...state, [id]: { ...state[id], isEditing, editingText, ...NO_ERROR } };
+      return { ...state, [id]: { ...state[id], isEditing, ...NO_ERROR } };
     }
     case ActionTypes.CANCEL_EDITING_POST: {
       const id = action.payload.postId;
-      const editingText = action.payload.newValue;
       const isEditing = false;
 
-      return { ...state, [id]: { ...state[id], isEditing, editingText, ...NO_ERROR } };
+      return { ...state, [id]: { ...state[id], isEditing, ...NO_ERROR } };
     }
     case request(ActionTypes.SAVE_EDITING_POST): {
       const id = action.payload.postId;
@@ -484,20 +478,19 @@ export function postsViewState(state = {}, action) {
     }
     case response(ActionTypes.SAVE_EDITING_POST): {
       const { id } = action.payload.posts;
-      const editingText = action.payload.posts.body;
       const isEditing = false;
       const isSaving = false;
 
-      return { ...state, [id]: { ...state[id], isEditing, isSaving, editingText, ...NO_ERROR } };
+      return { ...state, [id]: { ...state[id], isEditing, isSaving, ...NO_ERROR } };
     }
     case fail(ActionTypes.SAVE_EDITING_POST): {
       const id = action.request.postId;
-      const isEditing = false;
+      const isEditing = true;
       const isSaving = false;
 
       const isError = true;
 
-      return { ...state, [id]: { ...state[id], isEditing, isSaving, isError, errorString: POST_SAVE_ERROR } };
+      return { ...state, [id]: { ...state[id], isEditing, isSaving, isError, errorString: action.payload.err || POST_SAVE_ERROR } };
     }
     case fail(ActionTypes.DELETE_POST): {
       const id = action.request.postId;
@@ -591,7 +584,7 @@ export function postsViewState(state = {}, action) {
       return state;
     }
     case ActionTypes.REALTIME_COMMENT_DESTROY: {
-      if (!action.postId) {
+      if (!action.postId || !state[action.postId]) {
         return state;
       }
       const postsViewState = state[action.postId];
@@ -805,9 +798,8 @@ export function postsViewState(state = {}, action) {
       const post = action.payload.posts;
       const { id, omittedComments, omittedLikes } = post;
       const isEditing = false;
-      const editingText = post.body;
 
-      return { ...state, [id]: { omittedComments, omittedLikes, id, isEditing, editingText, ...NO_ERROR } };
+      return { ...state, [id]: { omittedComments, omittedLikes, id, isEditing, ...NO_ERROR } };
     }
     case ActionTypes.UNAUTHENTICATED: {
       return {};
@@ -862,38 +854,6 @@ export function posts(state = {}, action) {
         }
       };
     }
-    case ActionTypes.ADD_ATTACHMENT_RESPONSE: {
-      // If this is an attachment for create-post (non-existent post),
-      // it should be handled in createPostForm(), not here
-      if (!action.payload.postId) {
-        return state;
-      }
-
-      const post = state[action.payload.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          attachments: [...(post.attachments || []), action.payload.attachments.id]
-        }
-      };
-    }
-    case ActionTypes.REMOVE_ATTACHMENT: {
-      // If this is an attachment for create-post (non-existent post),
-      // it should be handled in createPostForm(), not here
-      if (!action.payload.postId) {
-        return state;
-      }
-
-      const post = state[action.payload.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          attachments: _.without((post.attachments || []), action.payload.attachmentId)
-        }
-      };
-    }
     case response(ActionTypes.DELETE_COMMENT): {
       const { commentId } = action.request;
       const post = _(state).find((_post) => (_post.comments || []).indexOf(commentId) !== -1);
@@ -911,11 +871,14 @@ export function posts(state = {}, action) {
       };
     }
     case ActionTypes.REALTIME_COMMENT_DESTROY: {
-      if (!action.postId) {
+      if (!action.postId || !state[action.postId]) {
         return state;
       }
 
       const post = state[action.postId];
+      if (!post.comments.includes(action.commentId)) {
+        return state;
+      }
 
       return {
         ...state, [action.postId]: {
@@ -1263,7 +1226,10 @@ export function comments(state = {}, action) {
       return mergeByIds(state, [newComment]);
     }
     case ActionTypes.REALTIME_COMMENT_DESTROY: {
-      return { ...state, [action.commentId]: undefined };
+      if (!state[action.commentId]) {
+        return state;
+      }
+      return _.omit(state, action.commentId);
     }
     case response(ActionTypes.ADD_COMMENT): {
       return {
@@ -2009,37 +1975,6 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
       return {
         ...state,
         feeds: getValidRecipients(action.payload)
-      };
-    }
-  }
-
-  return state;
-}
-
-export function createPostForm(state = {}, action) {
-  switch (action.type) {
-    case ActionTypes.ADD_ATTACHMENT_RESPONSE: {
-      // If this is an attachment for edit-post (existent post),
-      // it should be handled in posts(), not here
-      if (action.payload.postId) {
-        return state;
-      }
-
-      return {
-        ...state,
-        attachments: [...(state.attachments || []), action.payload.attachments.id]
-      };
-    }
-    case ActionTypes.REMOVE_ATTACHMENT: {
-      // If this is an attachment for edit-post (existent post),
-      // it should be handled in posts(), not here
-      if (action.payload.postId) {
-        return state;
-      }
-
-      return {
-        ...state,
-        attachments: _.without((state.attachments || []), action.payload.attachmentId)
       };
     }
   }
