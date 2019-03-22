@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createPost, resetPostCreateForm, expandSendTo } from '../redux/action-creators';
 import formatInvitation from '../utils/format-invitation';
-import { joinPostData, joinCreatePostData, postActions } from './select-utils';
+import { joinPostData, postActions } from './select-utils';
 
 import CreatePost from './create-post';
 import Feed from './feed';
@@ -19,10 +19,7 @@ const FeedHandler = (props) => {
       createPost={props.createPost}
       resetPostCreateForm={props.resetPostCreateForm}
       expandSendTo={props.expandSendTo}
-      createPostForm={props.createPostForm}
       addAttachmentResponse={props.addAttachmentResponse}
-      removeAttachment={props.removeAttachment}
-      reorderImageAttachments={props.reorderImageAttachments}
     />
   );
 
@@ -41,7 +38,6 @@ const FeedHandler = (props) => {
 function selectState(state) {
   const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
-  const createPostForm = joinCreatePostData(state);
   const isDirects = state.routing.locationBeforeTransitions.pathname.indexOf('direct') !== -1;
   const defaultFeed = state.routing.locationBeforeTransitions.query.to || (!isDirects && user.username) || undefined;
   const invitation = formatInvitation(state.routing.locationBeforeTransitions.query.invite);
@@ -50,7 +46,7 @@ function selectState(state) {
     sendTo.expanded = true;
   }
 
-  return { user, authenticated, visibleEntries, createPostViewState, createPostForm, timelines, boxHeader, sendTo, isDirects };
+  return { user, authenticated, visibleEntries, createPostViewState, timelines, boxHeader, sendTo, isDirects };
 }
 
 function selectActions(dispatch) {

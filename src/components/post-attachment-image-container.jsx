@@ -129,7 +129,7 @@ export default class ImageAttachmentsContainer extends React.Component {
       'sortable-images':   withSortable,
     });
 
-    const showFolded = (this.state.needsFolding && this.state.isFolded);
+    const showFolded = (this.state.needsFolding && this.state.isFolded && !this.props.isEditing);
     let lastVisibleIndex = 0;
     if (showFolded) {
       let width = 0;
@@ -157,7 +157,7 @@ export default class ImageAttachmentsContainer extends React.Component {
         {withSortable ?
           <Sortable onChange={this.onSortChange} >{allImages}</Sortable>
           : allImages}
-        {isSingleImage ? false : (
+        {(isSingleImage || this.props.isEditing) ? false : (
           <div className="show-more">
             <i
               className="fa fa-2x fa-chevron-circle-right"
