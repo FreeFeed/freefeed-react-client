@@ -2,6 +2,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import OptiCSS from "optimize-css-assets-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import Uglify from "uglifyjs-webpack-plugin";
+import CopyPlugin from "copy-webpack-plugin";
 
 import { baseConfig, opts, rules } from "./webpack/base";
 import { skipFalsy } from './webpack/utils';
@@ -44,6 +45,10 @@ const config = {
     new MiniCssExtractPlugin({
       filename: opts.hash ? '[name]-[contenthash].css' : '[name]-dev.css',
     }),
+    new CopyPlugin([
+      { from: 'assets/images/favicon.ico', to: 'assets/images/' },
+      { from: 'assets/images/ios/*.png', to: '' },
+    ]),
   ]),
   optimization: {
     splitChunks: {
