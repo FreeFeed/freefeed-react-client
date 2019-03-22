@@ -181,8 +181,10 @@ class SendTo extends React.Component {
               multi={true}
               clearable={false}
               autoFocus={this.state.showFeedsOption && !this.props.disableAutoFocus && !this.props.isDirects}
+              autoBlur={true}
               openOnFocus={true}
               promptTextCreator={this.promptTextCreator}
+              backspaceToRemoveMessage=""
               fixedOptions={this.props.fixedOptions || (this.props.isEditing && !this.props.isDirects)}
             />
             {this.state.isIncorrectDestinations ? (
