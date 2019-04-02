@@ -216,6 +216,12 @@ export default class CreatePost extends React.Component {
           </button>
         </div>
 
+        {this.props.createPostViewState.isError ? (
+          <div className="alert alert-danger">
+            {this.props.createPostViewState.errorString}
+          </div>
+        ) : false}
+
         <PostAttachments
           attachments={this.state.attachments}
           isEditing={true}
@@ -224,12 +230,6 @@ export default class CreatePost extends React.Component {
         />
 
         <div className="dropzone-previews" />
-
-        {this.props.createPostViewState.isError ? (
-          <div className="create-post-error">
-            {this.props.createPostViewState.errorString}
-          </div>
-        ) : false}
       </div>
     );
   }
