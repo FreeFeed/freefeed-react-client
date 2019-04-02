@@ -201,6 +201,10 @@ $post-line-height: 20px;
       &:hover span:last-child {
         text-decoration: underline;
       }
+
+      &[disabled] {
+        text-decoration: line-through;
+      }
     }
 
     .post-edit-more-trigger {

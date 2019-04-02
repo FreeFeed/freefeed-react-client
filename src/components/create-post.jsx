@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import throbber from '../../assets/images/throbber.gif';
 import { preventDefault } from '../utils';
+import config from '../config';
 import SendTo from './send-to';
 import Dropzone from './dropzone';
 import PostAttachments from './post-attachments';
@@ -17,6 +18,7 @@ const getDefaultState = (invitation = '') => ({
   commentsDisabled: false,
   attLoading:       false,
   attachments:      [],
+  dropzoneDisabled: false,
 });
 
 export default class CreatePost extends React.Component {
@@ -79,8 +81,16 @@ export default class CreatePost extends React.Component {
   };
 
   removeAttachment = (attachmentId) => {
-    this.setState({ attachments: this.state.attachments.filter((a) => a.id !== attachmentId) });
+    const attachments = this.state.attachments.filter((a) => a.id !== attachmentId);
+    const dropzoneDisabled = attachments.length >= config.attachments.maxCount;
+
+    if (!dropzoneDisabled && this.state.dropzoneDisabled) {
+      this.dropzoneObject.enable();
+    }
+
+    this.setState({ attachments, dropzoneDisabled });
   };
+
   reorderImageAttachments = (attachmentIds) => {
     const oldIds = this.state.attachments.map((a) => a.id);
     const newIds = _.uniq(attachmentIds.concat(oldIds));
@@ -121,7 +131,19 @@ export default class CreatePost extends React.Component {
   }
 
   handleAddAttachmentResponse = (att) => {
-    this.setState({ attachments: [...this.state.attachments, att] });
+    if (this.state.attachments.length >= config.attachments.maxCount) {
+      return;
+    }
+
+    const attachments = [...this.state.attachments, att];
+    const dropzoneDisabled = attachments.length >= config.attachments.maxCount;
+
+    if (dropzoneDisabled && !this.state.dropzoneDisabled) {
+      this.dropzoneObject.removeAllFiles(true);
+      this.dropzoneObject.disable();
+    }
+
+    this.setState({ attachments, dropzoneDisabled });
   };
 
   handleChangeOfMoreCheckbox = (e) => {
@@ -177,7 +199,7 @@ export default class CreatePost extends React.Component {
         </div>
 
         <div className="post-edit-options">
-          <span className="post-edit-attachments dropzone-trigger">
+          <span className="post-edit-attachments dropzone-trigger" disabled={this.state.dropzoneDisabled}>
             <i className="fa fa-cloud-upload" />
             {' '}
             Add photos or files
@@ -215,6 +237,12 @@ export default class CreatePost extends React.Component {
             Post
           </button>
         </div>
+
+        {this.state.dropzoneDisabled && (
+          <div className="alert alert-warning">
+          The maximum number of attached files ({config.attachments.maxCount}) has been reached
+          </div>
+        )}
 
         {this.props.createPostViewState.isError ? (
           <div className="alert alert-danger">
