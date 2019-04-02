@@ -132,6 +132,12 @@ class SendTo extends React.Component {
   }
 
   selectChanged = (values) => {
+    values = values.map((v) => ({
+      type:  'user',
+      ...v,
+      label: trim(v.label),
+      value: trim(v.value),
+    }));
     const isIncorrectDestinations = !this.isGroupsOrDirectsOnly(values);
     this.setState({ values, isIncorrectDestinations }, () => {
       this.props.onChange && this.props.onChange(values.map((item) => item.value));
