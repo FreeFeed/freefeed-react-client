@@ -24,7 +24,8 @@ const config = {
     'freefeed.net',
     'gamma.freefeed.net'
   ],
-  sentry: {
+  attachments: { maxCount: 20 },
+  sentry:      {
     publicDSN: null,
     sentinel:  null // keep always last
   },
