@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { xor } from 'lodash';
+import { xor, trim } from 'lodash';
 import Loadable from 'react-loadable';
 import propTypes from 'prop-types';
 
@@ -156,6 +156,9 @@ class SendTo extends React.Component {
     this.selector = el;
   };
 
+  // Only valid usernames are allowed
+  isValidNewOption = ({ label }) => /^[a-z0-9]{3,25}$/i.test(trim(label));
+
   render() {
     const [defaultOpt] = this.state.values;
 
@@ -186,6 +189,7 @@ class SendTo extends React.Component {
               promptTextCreator={this.promptTextCreator}
               backspaceToRemoveMessage=""
               fixedOptions={this.props.fixedOptions || (this.props.isEditing && !this.props.isDirects)}
+              isValidNewOption={this.isValidNewOption}
             />
             {this.state.isIncorrectDestinations ? (
               <div className="selector-warning">
