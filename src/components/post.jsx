@@ -171,8 +171,7 @@ class Post extends React.Component {
   };
 
   registerSelectFeeds = (el) => {
-    // SendTo is a redux-connected component so we need to use getWrappedInstance
-    this.selectFeeds = el ? el.getWrappedInstance() : null;
+    this.selectFeeds = el;
     this.setState({ privacyWarning: null });
   };
 

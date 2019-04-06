@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { StickyContainer, Sticky } from 'react-sticky';
 import _ from 'lodash';
+import cn from 'classnames';
 
 import { preventDefault } from '../utils';
 import PostComment from './post-comment';
@@ -176,9 +177,15 @@ export default class PostComments extends React.Component {
     if (showFold) {
       return (
         <StickyContainer>
-          <Sticky stickyClassName="fold-comments-sticky" className="fold-comments">
-            <i className="fa fa-chevron-up" />
-            <a onClick={this.fold}>Fold comments</a>
+          <Sticky>{({ style, isSticky }) => (
+            <div
+              style={style}
+              className={cn("fold-comments", { "fold-comments-sticky": isSticky })}
+            >
+              <i className="fa fa-chevron-up" />
+              <a onClick={this.fold}>Fold comments</a>
+            </div>
+          )}
           </Sticky>
           {middleComments}
         </StickyContainer>
