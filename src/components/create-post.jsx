@@ -128,10 +128,7 @@ export default class CreatePost extends React.Component {
     this.setState({ commentsDisabled: e.target.checked });
   };
 
-  registerSelectFeeds = (el) => {
-    // SendTo is a redux-connected component so we need to use getWrappedInstance
-    this.selectFeeds = el ? el.getWrappedInstance() : null;
-  };
+  registerSelectFeeds = (el) => this.selectFeeds = el;
 
   canSubmitForm = () => {
     return !this.state.isFormEmpty
