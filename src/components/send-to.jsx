@@ -213,4 +213,4 @@ function selectState({ sendTo: { feeds } }, ownProps) {
   return { feeds };
 }
 
-export default connect(selectState, null, null, { withRef: true })(SendTo);
+export default connect(selectState, null, null, { forwardRef: true })(SendTo);
