@@ -35,7 +35,7 @@
     "react-select": "~1.2.1",
     "react-sortablejs": "~1.5.1",
     "react-sticky": "~6.0.3",
-    "react-textarea-autosize": "~5.2.1",
+    "react-textarea-autosize": "~7.1.0",
     "redux": "~4.0.1",
     "social-text-tokenizer": "~1.0.1",
     "socket.io-client": "~2.1.1",
