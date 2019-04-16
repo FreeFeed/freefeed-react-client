@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { xor } from 'lodash';
+import { xor, trim } from 'lodash';
 import Loadable from 'react-loadable';
 import propTypes from 'prop-types';
 
@@ -132,6 +132,12 @@ class SendTo extends React.Component {
   }
 
   selectChanged = (values) => {
+    values = values.map((v) => ({
+      type:  'user',
+      ...v,
+      label: trim(v.label),
+      value: trim(v.value),
+    }));
     const isIncorrectDestinations = !this.isGroupsOrDirectsOnly(values);
     this.setState({ values, isIncorrectDestinations }, () => {
       this.props.onChange && this.props.onChange(values.map((item) => item.value));
@@ -155,6 +161,9 @@ class SendTo extends React.Component {
   registerSelector = (el) => {
     this.selector = el;
   };
+
+  // Only valid usernames are allowed
+  isValidNewOption = ({ label }) => /^[a-z0-9]{3,25}$/i.test(trim(label));
 
   render() {
     const [defaultOpt] = this.state.values;
@@ -181,9 +190,12 @@ class SendTo extends React.Component {
               multi={true}
               clearable={false}
               autoFocus={this.state.showFeedsOption && !this.props.disableAutoFocus && !this.props.isDirects}
+              autoBlur={true}
               openOnFocus={true}
               promptTextCreator={this.promptTextCreator}
+              backspaceToRemoveMessage=""
               fixedOptions={this.props.fixedOptions || (this.props.isEditing && !this.props.isDirects)}
+              isValidNewOption={this.isValidNewOption}
             />
             {this.state.isIncorrectDestinations ? (
               <div className="selector-warning">
@@ -211,4 +223,4 @@ function selectState({ sendTo: { feeds } }, ownProps) {
   return { feeds };
 }
 
-export default connect(selectState, null, null, { withRef: true })(SendTo);
+export default connect(selectState, null, null, { forwardRef: true })(SendTo);

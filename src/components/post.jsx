@@ -12,6 +12,7 @@ import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
 import { datetimeFormat } from '../utils/get-date-from-short-string';
 
+import config from '../config';
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
 import PostLikes from './post-likes';
@@ -38,6 +39,7 @@ class Post extends React.Component {
     emptyDestinations:  false,
     editingText:        '',
     editingAttachments: [],
+    dropzoneDisabled:   false,
   };
 
   handleDropzoneInit = (d) => {
@@ -62,8 +64,16 @@ class Post extends React.Component {
   };
 
   removeAttachment = (attachmentId) => {
-    this.setState({ editingAttachments: this.state.editingAttachments.filter((a) => a.id !== attachmentId) });
+    const editingAttachments = this.state.editingAttachments.filter((a) => a.id !== attachmentId);
+    const dropzoneDisabled = editingAttachments.length >= config.attachments.maxCount;
+
+    if (!dropzoneDisabled && this.state.dropzoneDisabled) {
+      this.dropzoneObject.enable();
+    }
+
+    this.setState({ editingAttachments, dropzoneDisabled });
   };
+
   reorderImageAttachments = (attachmentIds) => {
     const oldIds = this.state.editingAttachments.map((a) => a.id);
     const newIds = _.uniq(attachmentIds.concat(oldIds));
@@ -162,8 +172,20 @@ class Post extends React.Component {
   };
 
   handleAttachmentResponse = (att) => {
+    if (this.state.editingAttachments.length >= config.attachments.maxCount) {
+      return;
+    }
+
+    const editingAttachments = [...this.state.editingAttachments, att];
+    const dropzoneDisabled = editingAttachments.length >= config.attachments.maxCount;
+
+    if (dropzoneDisabled && !this.state.dropzoneDisabled) {
+      this.dropzoneObject.removeAllFiles(true);
+      this.dropzoneObject.disable();
+    }
+
     this.props.addAttachmentResponse(this.props.id, att);
-    this.setState({ editingAttachments: [...this.state.editingAttachments, att] });
+    this.setState({ editingAttachments, dropzoneDisabled });
   };
 
   toggleTimestamps = () => {
@@ -171,8 +193,7 @@ class Post extends React.Component {
   };
 
   registerSelectFeeds = (el) => {
-    // SendTo is a redux-connected component so we need to use getWrappedInstance
-    this.selectFeeds = el ? el.getWrappedInstance() : null;
+    this.selectFeeds = el;
     this.setState({ privacyWarning: null });
   };
 
@@ -425,7 +446,7 @@ class Post extends React.Component {
                 </div>
 
                 <div className="post-edit-options">
-                  <span className="post-edit-attachments dropzone-trigger">
+                  <span className="post-edit-attachments dropzone-trigger" disabled={this.state.dropzoneDisabled}>
                     <i className="fa fa-cloud-upload" />
                     {' '}
                     Add photos or files
@@ -447,6 +468,11 @@ class Post extends React.Component {
                     Update
                   </button>
                 </div>
+                {this.state.dropzoneDisabled && (
+                  <div className="alert alert-warning">
+                    The maximum number of attached files ({config.attachments.maxCount}) has been reached
+                  </div>
+                )}
                 {props.isError ? <div className="post-error alert alert-danger">{props.errorString}</div> : false}
               </div>
             ) : (

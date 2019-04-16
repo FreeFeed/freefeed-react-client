@@ -133,9 +133,9 @@ class InvitationCreationForm extends React.Component {
 
   onInvitationTextChange = ({ target }) => this.setState({ message: target.value });
 
-  saveUsersSelectRef = (_u) => this.userFeedsSelector = _u ? _u.getWrappedInstance() : null;
+  saveUsersSelectRef = (_u) => this.userFeedsSelector = _u;
 
-  saveGroupsSelectRef = (_g) => this.groupFeedsSelector = _g ? _g.getWrappedInstance() : null;
+  saveGroupsSelectRef = (_g) => this.groupFeedsSelector = _g;
 
   changeInvitationLanguage = ({ target }) => this.setState({ lang: target.value }, this.suggestedSubscriptionsChanged);
 
