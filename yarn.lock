@@ -4921,6 +4921,11 @@ lodash.clonedeep@^4.3.2:
   resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
   integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
 
+lodash.escaperegexp@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/lodash.escaperegexp/-/lodash.escaperegexp-4.1.2.tgz#64762c48618082518ac3df4ccf5d5886dae20347"
+  integrity sha1-ZHYsSGGAglGKw99Mz11YhtriA0c=
+
 lodash.get@^4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
@@ -7758,11 +7763,12 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
-social-text-tokenizer@~1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/social-text-tokenizer/-/social-text-tokenizer-1.0.1.tgz#10675ee3ea839356648433b4b638f2e9d2ad518f"
-  integrity sha512-1DtPoe+1wIipm8rEGJ0TMnf5AM4RKZZpRMTOoHo/pa4rtTyzVTLLAnHiiTQQ4yXMIOMyaM0UzU3PFRTZ1QNNuQ==
+social-text-tokenizer@~1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/social-text-tokenizer/-/social-text-tokenizer-1.1.0.tgz#1c99ede06df2af6188a5e520e284bd8863c7db54"
+  integrity sha512-xCTGfbf0C5KiwjzUQEHCe8NI2ypqA8fRZsmRVTdvTZqkPOAHEAsK1tNqpEoP6Fg1S4Hc9vN7mxr6MxVAlWuT2Q==
   dependencies:
+    lodash.escaperegexp "^4.1.2"
     punycode "^2.1.1"
     tslib "^1.9.3"
 

@@ -37,7 +37,7 @@
     "react-sticky": "~6.0.3",
     "react-textarea-autosize": "~7.1.0",
     "redux": "~4.0.1",
-    "social-text-tokenizer": "~1.0.1",
+    "social-text-tokenizer": "~1.1.0",
     "socket.io-client": "~2.1.1",
     "sortablejs": "~1.6.1",
     "validator": "~10.11.0"

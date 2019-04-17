@@ -24,8 +24,9 @@ const config = {
     'freefeed.net',
     'gamma.freefeed.net'
   ],
-  attachments: { maxCount: 20 },
-  sentry:      {
+  attachments:   { maxCount: 20 },
+  textFormatter: { tldList: ['рф', 'com', 'net', 'org', 'edu', 'place'] },
+  sentry:        {
     publicDSN: null,
     sentinel:  null // keep always last
   },
