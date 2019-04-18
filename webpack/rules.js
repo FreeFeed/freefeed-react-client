@@ -22,7 +22,10 @@ class RuleGenerator {
   get babel() {
     return {
       test: /\.jsx?$/,
-      exclude: /(node_modules[\\/])/,
+      exclude: (modulePath) => {
+        return /node_modules/.test(modulePath) &&
+          !/node_modules\/@babel\/polyfill/.test(modulePath);
+      },
       use: [
         {
           loader: 'babel-loader',
