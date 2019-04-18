@@ -1713,12 +1713,21 @@ export function frontendPreferencesForm(state = {}, action) {
       return { ...state, ...action.payload.users.frontendPreferences[frontendPrefsConfig.clientId] };
     }
     case request(ActionTypes.UPDATE_USER_PREFERENCES): {
+      if (typeof action.extra !== 'undefined' && action.extra.suppressStatus) {
+        return state;
+      }
       return { ...state, status: 'loading' };
     }
     case response(ActionTypes.UPDATE_USER_PREFERENCES): {
+      if (typeof action.extra !== 'undefined' && action.extra.suppressStatus) {
+        return state;
+      }
       return { ...state, status: 'success' };
     }
     case fail(ActionTypes.UPDATE_USER_PREFERENCES): {
+      if (typeof action.extra !== 'undefined' && action.extra.suppressStatus) {
+        return state;
+      }
       return { ...state, status: 'error', errorMessage: (action.payload || {}).err };
     }
     case ActionTypes.RESET_SETTINGS_FORMS: {
