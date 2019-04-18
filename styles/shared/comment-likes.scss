@@ -6,13 +6,17 @@
   display: flex;
   justify-content: flex-end;
   padding-right: 2px;
+
   @media (max-width: 768px) {
     .comment-likes.has-my-like + .comment-time, .comment-likes.liked + .comment-time {
       display: none;
     }
-    .comment-likes:not(.has-my-like, .liked) {
-      display: none;
-    }
+  }
+}
+
+@media (max-width: 768px) {
+  .comment-likes-container .comment-likes:not(.has-my-like, .liked) {
+    display: none;
   }
 }
 

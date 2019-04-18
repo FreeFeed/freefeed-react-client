@@ -94,10 +94,7 @@ export default class CreateBookmarkletPost extends React.Component {
     this.postText = el;
   };
 
-  registerSelectFeeds = (el) => {
-    // SendTo is a redux-connected component so we need to use getWrappedInstance
-    this.selectFeeds = el ? el.getWrappedInstance() : null;
-  };
+  registerSelectFeeds = (el) => this.selectFeeds = el;
 
   render() {
     if (this.state.isPostSaved) {

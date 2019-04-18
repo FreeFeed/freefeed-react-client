@@ -96,7 +96,7 @@ class VideoPreview extends React.Component {
           )}
         </div>
         <div className="info">
-          <a href={url} target="_blank" title={info ? info.byline : false}>{info ? info.byline : 'Loading…'}</a>
+          <a href={url} target="_blank" title={info ? info.byline : null}>{info ? info.byline : 'Loading…'}</a>
         </div>
       </div>
     );

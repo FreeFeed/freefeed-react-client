@@ -203,7 +203,7 @@ export function createPostViewState(state = {}, action) {
     case fail(ActionTypes.CREATE_POST): {
       return {
         isError:     true,
-        errorString: CREATE_POST_ERROR,
+        errorString: action.payload.err || CREATE_POST_ERROR,
         isPending:   false
       };
     }

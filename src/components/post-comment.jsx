@@ -268,6 +268,7 @@ export default class PostComment extends React.Component {
         getCommentLikes={this.getCommentLikes}
         reply={this.reply}
         mention={this.mention}
+        isAddingComment={this.props.isAddingComment}
       />
     );
   }
