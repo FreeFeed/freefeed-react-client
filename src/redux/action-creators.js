@@ -801,3 +801,7 @@ export function serverTimeAhead(delta) {
     payload: delta,
   };
 }
+
+export function toggleFeedSort() {
+  return { type: ActionTypes.TOGGLE_FEED_SORT, };
+}

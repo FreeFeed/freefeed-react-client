@@ -7,6 +7,7 @@ import { createPost, resetPostCreateForm, expandSendTo, getUserInfo } from '../r
 import { getCurrentRouteName } from '../utils';
 import config from '../config';
 import { joinPostData, postActions, userActions, canAcceptDirects } from './select-utils';
+import FeedOptionsSwitch from './feed-options-switch';
 import Breadcrumbs from './breadcrumbs';
 import UserProfile from './user-profile';
 import UserFeed from './user-feed';
@@ -28,6 +29,9 @@ const UserHandler = (props) => {
 
       <div className="box-header-timeline">
         {props.boxHeader}
+        <div className="pull-right">
+          <FeedOptionsSwitch />
+        </div>
       </div>
 
       <div className="box-body">

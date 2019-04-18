@@ -8,7 +8,7 @@ import { joinPostData, postActions } from './select-utils';
 import CreatePost from './create-post';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
-import RealtimeSwitch from './realtime-switch';
+import FeedOptionsSwitch from './feed-options-switch';
 import Welcome from './welcome';
 
 
@@ -37,7 +37,7 @@ const FeedHandler = (props) => {
       <div className="box-header-timeline">
         {props.boxHeader}
         <div className="pull-right">
-          {props.areOnFirstHomePage && props.authenticated ? <RealtimeSwitch /> : false}
+          {props.authenticated && <FeedOptionsSwitch showRealtime={props.areOnFirstHomePage} />}
         </div>
       </div>
 
@@ -60,9 +60,7 @@ const FeedHandler = (props) => {
         <PaginatedView firstPageHead={createPostComponent} {...props}>
           <Feed {...props} isInHomeFeed={!props.feedIsLoading} />
         </PaginatedView>
-      ) : (
-        <Welcome />
-      )}
+      ) : (<Welcome />)}
       <div className="box-footer" />
     </div>);
 };
