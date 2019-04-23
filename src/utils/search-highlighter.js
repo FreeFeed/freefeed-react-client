@@ -51,7 +51,7 @@ export function highlightString(text, terms) {
 
     if (match !== '') {
       result.push(text.substring(0, minPos));
-      result.push(<span className={hlClass}>{match}</span>);
+      result.push(<span key={`hl-${result.length}`} className={hlClass}>{match}</span>);
       text = text.substring(minPos + match.length);
     } else {
       result.push(text);
