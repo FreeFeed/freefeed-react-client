@@ -443,11 +443,12 @@ export function userSettingsChange(payload) {
   };
 }
 
-export function updateUserPreferences(userId, frontendPrefs = {}, backendPrefs = {}) {
+export function updateUserPreferences(userId, frontendPrefs = {}, backendPrefs = {}, suppressStatus = false) {
   return {
     type:       ActionTypes.UPDATE_USER_PREFERENCES,
     apiRequest: Api.updateUserPreferences,
     payload:    { userId, frontendPrefs, backendPrefs },
+    extra:      { suppressStatus },
   };
 }
 

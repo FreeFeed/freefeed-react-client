@@ -37,7 +37,7 @@ export const feedSortMiddleware = (store) => (next) => (action) => {
       const { user, feedSort } = store.getState();
       const { id, frontendPreferences } = user;
       const { sort: homeFeedSort } = feedSort;
-      return store.dispatch(ActionCreators.updateUserPreferences(id, { ...frontendPreferences, homeFeedSort }));
+      return store.dispatch(ActionCreators.updateUserPreferences(id, { ...frontendPreferences, homeFeedSort }, {}, true));
     }
   }
   if (action.type === response(ActionTypes.WHO_AM_I)) {
@@ -83,7 +83,8 @@ export const apiMiddleware = (store) => (next) => async (action) => {
           adjustTime(store.dispatch, serverTime - Date.now());
         }
       }
-      return store.dispatch({ payload: obj, type: response(action.type), request: action.payload });
+      const extra = action.extra || {};
+      return store.dispatch({ payload: obj, type: response(action.type), request: action.payload, extra });
     }
 
     if (apiResponse.status === 401) {
