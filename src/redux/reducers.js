@@ -1869,6 +1869,9 @@ export function boxHeader(state = "", action) {
     case request(ActionTypes.GET_BEST_OF): {
       return 'Best Of FreeFeed';
     }
+    case response(ActionTypes.GET_EVERYTHING): {
+      return `Everything On FreeFeed`;
+    }
     case request(ActionTypes.GET_USER_FEED): {
       return '';
     }

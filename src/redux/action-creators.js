@@ -742,6 +742,15 @@ export function getBestOf(offset) {
   };
 }
 
+export function getEverything(offset) {
+  return {
+    type:           ActionTypes.GET_EVERYTHING,
+    apiRequest:     Api.getEverything,
+    nonAuthRequest: true,
+    payload:        { offset },
+  };
+}
+
 export function resetSettingsForms() {
   return { type: ActionTypes.RESET_SETTINGS_FORMS };
 }
