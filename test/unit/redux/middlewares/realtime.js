@@ -7,7 +7,7 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 
 import { createRealtimeMiddleware } from '../../../../src/redux/middlewares';
 import { user, realtimeSubscriptions } from '../../../../src/redux/reducers';
-import { REALTIME_CONNECTED, REALTIME_INCOMING_EVENT, WHO_AM_I, SIGN_UP, HOME, GET_SINGLE_POST } from '../../../../src/redux/action-types';
+import { REALTIME_CONNECTED, REALTIME_INCOMING_EVENT, WHO_AM_I, SIGN_UP, HOME, GET_SINGLE_POST, GET_EVERYTHING } from '../../../../src/redux/action-types';
 import { realtimeSubscribe, realtimeUnsubscribe, unauthenticated } from '../../../../src/redux/action-creators';
 import { delay } from '../../../../src/utils';
 import { response, request } from '../../../../src/redux/action-helpers';
@@ -214,6 +214,12 @@ describe('realtime middleware', () => {
   it(`should subscribe to 'post:' room on post response`, () => {
     store.dispatch({ type: response(GET_SINGLE_POST), payload: { posts: { id: 'post' } } });
     actionSpy.calledWith(realtimeSubscribe('post:post'))
+      || expect.fail('a proper REALTIME_SUBSCRIBE action was not dispatched');
+  });
+
+  it(`should subscribe to 'post:' rooms on timelineless post collection response`, () => {
+    store.dispatch({ type: response(GET_EVERYTHING), payload: { timelines: null, posts: [{ id: 'post1' }, { id: 'post2' }] } });
+    actionSpy.calledWith(realtimeSubscribe('post:post1', 'post:post2'))
       || expect.fail('a proper REALTIME_SUBSCRIBE action was not dispatched');
   });
 });

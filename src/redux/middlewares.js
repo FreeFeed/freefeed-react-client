@@ -530,8 +530,12 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
       unsubscribeByRegexp(/^(post|timeline):/);
     }
 
-    if (isFeedResponse(action) && action.payload.timelines) {
-      store.dispatch(ActionCreators.realtimeSubscribe(`timeline:${action.payload.timelines.id}`));
+    if (isFeedResponse(action)) {
+      if (action.payload.timelines) {
+        store.dispatch(ActionCreators.realtimeSubscribe(`timeline:${action.payload.timelines.id}`));
+      } else if (action.payload.posts) {
+        store.dispatch(ActionCreators.realtimeSubscribe(...action.payload.posts.map((p) => `post:${p.id}`)));
+      }
     }
 
     if (action.type === response(ActionTypes.GET_SINGLE_POST)) {
