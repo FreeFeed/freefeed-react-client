@@ -475,10 +475,10 @@ export const realtimeMiddleware = (store) => {
 
 export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
   const unsubscribeByRegexp = (regex) => {
-    store.getState()
+    const rooms = store.getState()
       .realtimeSubscriptions
-      .filter((r) => regex.test(r))
-      .forEach((r) => store.dispatch(ActionCreators.realtimeUnsubscribe(r)));
+      .filter((r) => regex.test(r));
+    store.dispatch(ActionCreators.realtimeUnsubscribe(...rooms));
   };
 
   conn.onConnect(() => store.dispatch(ActionCreators.realtimeConnected()));
@@ -503,16 +503,16 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
     if (action.type === ActionTypes.REALTIME_CONNECTED) {
       conn.reAuthorize().then(async () => {
         const { realtimeSubscriptions } = store.getState();
-        await Promise.all(realtimeSubscriptions.map((room) => conn.subscribeTo(room)));
+        await conn.subscribeTo(...realtimeSubscriptions);
       });
     }
 
     if (action.type === ActionTypes.REALTIME_SUBSCRIBE) {
-      conn.subscribeTo(action.payload.room);
+      conn.subscribeTo(...action.payload.rooms);
     }
 
     if (action.type === ActionTypes.REALTIME_UNSUBSCRIBE) {
-      conn.unsubscribeFrom(action.payload.room);
+      conn.unsubscribeFrom(...action.payload.rooms);
     }
 
     if (action.type === ActionTypes.UNAUTHENTICATED) {

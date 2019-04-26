@@ -30,8 +30,8 @@ class MockConnection {
   onEvent(handler) { this.eventHandler = handler; }
 
   async reAuthorize() { }
-  async subscribeTo(room) { }     // eslint-disable-line no-unused-vars
-  async unsubscribeFrom(room) { } // eslint-disable-line no-unused-vars
+  async subscribeTo(...rooms) { }     // eslint-disable-line no-unused-vars
+  async unsubscribeFrom(...rooms) { } // eslint-disable-line no-unused-vars
 
   triggerEvent(event, data) { this.eventHandler(event, data); }
   triggerConnect() { this.connectHandler(); }
@@ -189,17 +189,19 @@ describe('realtime middleware', () => {
 
   it(`should unsubscribe from any 'post:' rooms on feed request`, async () => {
     store.dispatch(realtimeSubscribe('post:post1'));
+    store.dispatch(realtimeSubscribe('post:post2'));
     store.dispatch({ type: request(HOME) });
     await delay(); // we are should wait here
-    actionSpy.calledWith(realtimeUnsubscribe('post:post1'))
+    actionSpy.calledWith(realtimeUnsubscribe('post:post1', 'post:post2'))
       || expect.fail('a proper REALTIME_UNSUBSCRIBE action was not dispatched');
   });
 
   it(`should unsubscribe from any 'post:' rooms on post request`, async () => {
     store.dispatch(realtimeSubscribe('post:post1'));
+    store.dispatch(realtimeSubscribe('post:post2'));
     store.dispatch({ type: request(GET_SINGLE_POST) });
     await delay(); // we are should wait here
-    actionSpy.calledWith(realtimeUnsubscribe('post:post1'))
+    actionSpy.calledWith(realtimeUnsubscribe('post:post1', 'post:post2'))
       || expect.fail('a proper REALTIME_UNSUBSCRIBE action was not dispatched');
   });
 

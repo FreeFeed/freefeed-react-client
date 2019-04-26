@@ -763,17 +763,17 @@ export function realtimeConnected() {
   return { type: ActionTypes.REALTIME_CONNECTED, };
 }
 
-export function realtimeSubscribe(room) {
+export function realtimeSubscribe(...rooms) {
   return {
     type:    ActionTypes.REALTIME_SUBSCRIBE,
-    payload: { room },
+    payload: { rooms },
   };
 }
 
-export function realtimeUnsubscribe(room) {
+export function realtimeUnsubscribe(...rooms) {
   return {
     type:    ActionTypes.REALTIME_UNSUBSCRIBE,
-    payload: { room },
+    payload: { rooms },
   };
 }
 

@@ -2370,18 +2370,14 @@ export function userViews(state = {}, action) {
 export function realtimeSubscriptions(state = [], action) {
   switch (action.type) {
     case ActionTypes.REALTIME_SUBSCRIBE: {
-      const { room } = action.payload;
-      if (!state.includes(room)) {
-        return [...state, room];
-      }
-      return state;
+      const { rooms } = action.payload;
+      const newState = _.union(state, rooms);
+      return newState.length !== state.length ? newState : state;
     }
     case ActionTypes.REALTIME_UNSUBSCRIBE: {
-      const { room } = action.payload;
-      if (state.includes(room)) {
-        return _.without(state, room);
-      }
-      return state;
+      const { rooms } = action.payload;
+      const newState = _.difference(state, rooms);
+      return newState.length !== state.length ? newState : state;
     }
   }
   return state;
