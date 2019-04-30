@@ -153,6 +153,7 @@ ReactDOM.render(
         <Route name="search" path="search" component={SearchFeed} {...generateRouteHooks(boundRouteActions('search'))} />
         <Route name="notifications" path="filter/notifications" component={lazyLoad('./components/notifications')} {...generateRouteHooks(boundRouteActions('notifications'))} />
         <Route name="best_of" path="filter/best_of" component={PlainFeed} {...generateRouteHooks(boundRouteActions('best_of'))} />
+        <Route name="everything" path="filter/everything" component={PlainFeed} {...generateRouteHooks(boundRouteActions('everything'))} />
         <Route name="groups" path="/groups" component={Groups} onEnter={enterStaticPage('Groups')} />
         <Route name="friends" path="/friends" component={Friends} onEnter={friendsActions} />
         <Route name="groupCreate" path="/groups/create" component={GroupCreate} onEnter={enterStaticPage('Create a group')} />

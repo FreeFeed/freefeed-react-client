@@ -742,6 +742,15 @@ export function getBestOf(offset) {
   };
 }
 
+export function getEverything(offset) {
+  return {
+    type:           ActionTypes.GET_EVERYTHING,
+    apiRequest:     Api.getEverything,
+    nonAuthRequest: true,
+    payload:        { offset },
+  };
+}
+
 export function resetSettingsForms() {
   return { type: ActionTypes.RESET_SETTINGS_FORMS };
 }
@@ -754,17 +763,17 @@ export function realtimeConnected() {
   return { type: ActionTypes.REALTIME_CONNECTED, };
 }
 
-export function realtimeSubscribe(room) {
+export function realtimeSubscribe(...rooms) {
   return {
     type:    ActionTypes.REALTIME_SUBSCRIBE,
-    payload: { room },
+    payload: { rooms },
   };
 }
 
-export function realtimeUnsubscribe(room) {
+export function realtimeUnsubscribe(...rooms) {
   return {
     type:    ActionTypes.REALTIME_UNSUBSCRIBE,
-    payload: { room },
+    payload: { rooms },
   };
 }
 

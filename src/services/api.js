@@ -597,6 +597,10 @@ export function getBestOf({ offset = 0 }) {
   return fetch(`${apiConfig.host}/v2/bestof?offset=${offset}`, getRequestOptions());
 }
 
+export function getEverything({ offset = 0 }) {
+  return fetch(`${apiConfig.host}/v2/everything?offset=${offset}`, getRequestOptions());
+}
+
 export function archiveRestoreActivity() {
   return fetch(`${apiConfig.host}/v2/archives/activities`, {
     'method':  'PUT',

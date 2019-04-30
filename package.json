@@ -101,7 +101,8 @@
   },
   "scripts": {
     "start": "./dev-server",
-    "test": "cross-env NODE_ENV=development mochapack --timeout 20000 --webpack-config webpack.config.tests.babel.js --recursive test/unit",
+    "test": "cross-env NODE_ENV=development mochapack --webpack-config webpack.config.tests.babel.js --recursive test/unit",
+    "test-just": "cross-env NODE_ENV=development mochapack --webpack-config webpack.config.tests.babel.js",
     "lint": "eslint --ext .js --ext .jsx src test",
     "travis": "run-s -c test lint"
   },
