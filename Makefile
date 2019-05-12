@@ -1,3 +1,4 @@
+base_image = freefeed/base:latest
 out_dir ?= ./_dist
 public_path ?= /
 
@@ -19,4 +20,9 @@ dev: clean
 clean:
 	rm -rf $(out_dir)
 
-.PHONY: prod dev clean nouglify
+init:
+	@docker run -it --rm -v $(shell pwd):/client -w /client $(base_image) npm install
+	@mv src/config.js src/config.js.bak
+	@sed 's/localhost/server/g' src/config.js.bak > src/config.js
+
+.PHONY: prod dev clean nouglify init
