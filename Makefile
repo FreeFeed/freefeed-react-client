@@ -21,7 +21,7 @@ clean:
 	rm -rf $(out_dir)
 
 init:
-	@docker run -it --rm -v $(shell pwd):/client -w /client $(base_image) npm install
+	@docker run -it --rm -v $(shell pwd):/client -w /client $(base_image) yarn install
 	@mv src/config.js src/config.js.bak
 	@sed 's/localhost/server/g' src/config.js.bak > src/config.js
 
