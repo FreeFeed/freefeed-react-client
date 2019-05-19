@@ -155,16 +155,16 @@ ReactDOM.render(
         <Route name="best_of" path="filter/best_of" component={PlainFeed} {...generateRouteHooks(boundRouteActions('best_of'))} />
         <Route name="everything" path="filter/everything" component={PlainFeed} {...generateRouteHooks(boundRouteActions('everything'))} />
         <Route name="groups" path="/groups" component={Groups} onEnter={enterStaticPage('Groups')} />
-        <Route name="friends" path="/friends" component={Friends} onEnter={friendsActions} />
+        <Route name="friends" path="/friends" component={Friends} {...generateRouteHooks(friendsActions())} />
         <Route name="groupCreate" path="/groups/create" component={GroupCreate} onEnter={enterStaticPage('Create a group')} />
         <Route name="archivePost" path="/archivePost" component={ArchivePost} {...generateRouteHooks(boundRouteActions('archivePost'))} />
-        <Route name="createInvitation" path="/invite" component={InvitationCreationForm} onEnter={inviteActions} />
+        <Route name="createInvitation" path="/invite" component={InvitationCreationForm} {...generateRouteHooks(inviteActions())} />
         <Route name="signupByInvitation" path="/invited/:invitationId" component={SignupByInvitation} onEnter={boundRouteActions('signupByInvitation')} />
         <Route name="userFeed" path="/:userName" component={User} {...generateRouteHooks(boundRouteActions('userFeed'))} />
         <Route name="memories" path="/memories/:from" component={PlainFeed} {...generateRouteHooks(boundRouteActions('memories'))} />
         <Route name="userMemories" path="/:userName/memories/:from" component={PlainFeed} {...generateRouteHooks(boundRouteActions('userMemories'))} />
         <Route name="userSummary" path="/:userName/summary(/:days)" component={User} {...generateRouteHooks(boundRouteActions('userSummary'))} />
-        <Route name="subscribers" path="/:userName/subscribers" component={Subscribers} onEnter={subscribersSubscriptionsActions} />
+        <Route name="subscribers" path="/:userName/subscribers" component={Subscribers} {...generateRouteHooks(subscribersSubscriptionsActions())} />
         <Route name="subscriptions" path="/:userName/subscriptions" component={Subscriptions} onEnter={subscribersSubscriptionsActions} />
         <Route name="manage-subscribers" path="/:userName/manage-subscribers" component={ManageSubscribers} onEnter={manageSubscribersActions} />
         <Route name="userComments" path="/:userName/comments" component={User} {...generateRouteHooks(boundRouteActions('userComments'))} />
