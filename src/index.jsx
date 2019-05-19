@@ -164,7 +164,7 @@ ReactDOM.render(
         <Route name="memories" path="/memories/:from" component={PlainFeed} {...generateRouteHooks(boundRouteActions('memories'))} />
         <Route name="userMemories" path="/:userName/memories/:from" component={PlainFeed} {...generateRouteHooks(boundRouteActions('userMemories'))} />
         <Route name="userSummary" path="/:userName/summary(/:days)" component={User} {...generateRouteHooks(boundRouteActions('userSummary'))} />
-        <Route name="subscribers" path="/:userName/subscribers" component={Subscribers} {...generateRouteHooks(subscribersSubscriptionsActions())} />
+        <Route name="subscribers" path="/:userName/subscribers" component={Subscribers} onEnter={subscribersSubscriptionsActions} />
         <Route name="subscriptions" path="/:userName/subscriptions" component={Subscriptions} onEnter={subscribersSubscriptionsActions} />
         <Route name="manage-subscribers" path="/:userName/manage-subscribers" component={ManageSubscribers} onEnter={manageSubscribersActions} />
         <Route name="userComments" path="/:userName/comments" component={User} {...generateRouteHooks(boundRouteActions('userComments'))} />
