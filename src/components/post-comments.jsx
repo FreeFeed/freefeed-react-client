@@ -1,7 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { Link } from 'react-router';
 import { StickyContainer, Sticky } from 'react-sticky';
 import _ from 'lodash';
+import cn from 'classnames';
 
 import { preventDefault } from '../utils';
 import PostComment from './post-comment';
@@ -11,6 +12,8 @@ import MoreCommentsWrapper from './more-comments-wrapper';
 const minCommentsToFold = 12;
 
 export default class PostComments extends React.Component {
+  static defaultProps = { user: {} };
+
   addingCommentForm;
   rootEl;
 
@@ -174,9 +177,15 @@ export default class PostComments extends React.Component {
     if (showFold) {
       return (
         <StickyContainer>
-          <Sticky stickyClassName="fold-comments-sticky" className="fold-comments">
-            <i className="fa fa-chevron-up" />
-            <a onClick={this.fold}>Fold comments</a>
+          <Sticky>{({ style, isSticky }) => (
+            <div
+              style={style}
+              className={cn("fold-comments", { "fold-comments-sticky": isSticky })}
+            >
+              <i className="fa fa-chevron-up" />
+              <a onClick={this.fold}>Fold comments</a>
+            </div>
+          )}
           </Sticky>
           {middleComments}
         </StickyContainer>
@@ -186,27 +195,43 @@ export default class PostComments extends React.Component {
     return middleComments;
   }
 
-  registerRootEl = (el) => {
-    this.rootEl = el ? ReactDOM.findDOMNode(el) : null;
-  };
+  registerRootEl = (el) => this.rootEl = el;
+
+  renderAddComment() {
+    const { post, user } = this.props;
+    const canAddComment = (!post.commentsDisabled || post.isEditable || post.isModeratable);
+    if (!canAddComment) {
+      return false;
+    }
+    if (!user.id) {
+      return post.isCommenting ? (
+        <div className="comment">
+          <span className="comment-icon fa-stack fa-1x">
+            <i className="fa fa-comment-o fa-stack-1x" />
+            <i className="fa fa-square fa-inverse fa-stack-1x" />
+            <i className="fa fa-plus fa-stack-1x" />
+          </span>
+          <span><Link to="/signin">Sign In</Link> to add comment</span>
+        </div>
+      ) : false;
+    }
+    return post.isCommenting ?
+      this.renderAddingComment() :
+      this.renderAddCommentLink();
+  }
 
   render() {
     const { post, comments } = this.props;
     const totalComments = comments.length + post.omittedComments;
     const first = withBackwardNumber(comments[0], totalComments);
     const last = withBackwardNumber(comments.length > 1 && comments[comments.length - 1], 1);
-    const canAddComment = (!!post.user && (!post.commentsDisabled || post.isEditable || post.isModeratable));
 
     return (
       <div className="comments" ref={this.registerRootEl}>
         {first ? this.renderComment(first) : false}
         {this.renderMiddle()}
         {last ? this.renderComment(last) : false}
-        {canAddComment
-          ? (post.isCommenting
-            ? this.renderAddingComment()
-            : this.renderAddCommentLink())
-          : false}
+        {this.renderAddComment()}
       </div>
     );
   }

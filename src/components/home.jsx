@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 
 import { createPost, resetPostCreateForm, expandSendTo, toggleHiddenPosts } from '../redux/action-creators';
 import { pluralForm } from '../utils';
-import { joinPostData, joinCreatePostData, postActions } from './select-utils';
+import { joinPostData, postActions } from './select-utils';
 import CreatePost from './create-post';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
@@ -21,9 +21,7 @@ const FeedHandler = (props) => {
       createPost={props.createPost}
       resetPostCreateForm={props.resetPostCreateForm}
       expandSendTo={props.expandSendTo}
-      createPostForm={props.createPostForm}
       addAttachmentResponse={props.addAttachmentResponse}
-      removeAttachment={props.removeAttachment}
     />
   );
 
@@ -73,14 +71,13 @@ function selectState(state) {
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
   const hiddenEntries = state.feedViewState.hiddenEntries.map(joinPostData(state));
   const { isHiddenRevealed } = state.feedViewState;
-  const createPostForm = joinCreatePostData(state);
   const sendTo = { ...state.sendTo, defaultFeed: user.username };
   const feedIsLoading = state.routeLoadingState;
 
   return {
     user, authenticated,
     visibleEntries, hiddenEntries, isHiddenRevealed,
-    createPostViewState, createPostForm,
+    createPostViewState,
     timelines, boxHeader, sendTo, userRequestsCount, groupRequestsCount,
     feedIsLoading,
     areOnFirstHomePage: !state.routing.locationBeforeTransitions.query.offset,

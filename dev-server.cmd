@@ -16,6 +16,6 @@ set LIVERELOAD=1
   --config webpack.config.babel.js ^
   --port %PORT% ^
   --host 0.0.0.0 ^
-  --output-public-path "http://localhost:%PORT%/" ^
+  --output-public-path "/" ^
   --colors ^
   --hot

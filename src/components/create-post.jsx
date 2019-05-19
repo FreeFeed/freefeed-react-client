@@ -1,8 +1,10 @@
 import React from 'react';
 import Textarea from 'react-textarea-autosize';
+import _ from 'lodash';
 
 import throbber from '../../assets/images/throbber.gif';
 import { preventDefault } from '../utils';
+import config from '../config';
 import SendTo from './send-to';
 import Dropzone from './dropzone';
 import PostAttachments from './post-attachments';
@@ -10,11 +12,13 @@ import PostAttachments from './post-attachments';
 
 const isTextEmpty = (text) => text == '' || /^\s+$/.test(text);
 const getDefaultState = (invitation = '') => ({
-  isFormEmpty:           true,
-  isMoreOpen:            false,
-  attachmentQueueLength: 0,
-  postText:              invitation,
-  commentsDisabled:      false,
+  isFormEmpty:      true,
+  isMoreOpen:       false,
+  postText:         invitation,
+  commentsDisabled: false,
+  attLoading:       false,
+  attachments:      [],
+  dropzoneDisabled: false,
 });
 
 export default class CreatePost extends React.Component {
@@ -28,8 +32,8 @@ export default class CreatePost extends React.Component {
   createPost = () => {
     // Get all the values
     const feeds = this.selectFeeds.values;
-    const { postText } = this.state;
-    const attachmentIds = this.props.createPostForm.attachments.map((attachment) => attachment.id);
+    const { postText, attachments } = this.state;
+    const attachmentIds = attachments.map((attachment) => attachment.id);
     const more = { commentsDisabled: this.state.commentsDisabled };
 
     // Send to the server
@@ -65,7 +69,7 @@ export default class CreatePost extends React.Component {
             if (!blob.name) {
               blob.name = 'image.png';
             }
-            this.dropzoneObject.addFile(blob);
+            makeJpegIfNeeded(blob).then((blob) => this.dropzoneObject.addFile(blob));
           }
         }
       }
@@ -74,11 +78,27 @@ export default class CreatePost extends React.Component {
 
   clearForm = () => {
     this.setState(getDefaultState());
-    const attachmentIds = this.props.createPostForm.attachments.map((attachment) => attachment.id);
-    attachmentIds.forEach(this.removeAttachment);
   };
 
-  removeAttachment = (attachmentId) => this.props.removeAttachment(null, attachmentId);
+  removeAttachment = (attachmentId) => {
+    const attachments = this.state.attachments.filter((a) => a.id !== attachmentId);
+    const dropzoneDisabled = attachments.length >= config.attachments.maxCount;
+
+    if (!dropzoneDisabled && this.state.dropzoneDisabled) {
+      this.dropzoneObject.enable();
+    }
+
+    this.setState({ attachments, dropzoneDisabled });
+  };
+
+  reorderImageAttachments = (attachmentIds) => {
+    const oldIds = this.state.attachments.map((a) => a.id);
+    const newIds = _.uniq(attachmentIds.concat(oldIds));
+    const attachments = newIds
+      .map((id) => this.state.attachments.find((a) => a.id === id))
+      .filter(Boolean);
+    this.setState({ attachments });
+  };
 
   checkCreatePostAvailability = () => {
     const isFormEmpty = isTextEmpty(this.state.postText) || this.selectFeeds.values === 0;
@@ -90,14 +110,15 @@ export default class CreatePost extends React.Component {
     this.setState({ postText: e.target.value }, this.checkCreatePostAvailability);
   };
 
+  attLoadingStarted = () => this.setState({ attLoading: true });
+  attLoadingCompleted = () => this.setState({ attLoading: false });
+
   checkSave = (e) => {
     const isEnter = e.keyCode === 13;
     const isShiftPressed = e.shiftKey;
     if (isEnter && !isShiftPressed) {
       e.preventDefault();
-      if (!this.state.isFormEmpty && this.state.attachmentQueueLength === 0 && !this.props.createPostViewState.isPending) {
-        this.createPost();
-      }
+      this.canSubmitForm() && this.createPost();
     }
   };
 
@@ -105,31 +126,38 @@ export default class CreatePost extends React.Component {
     this.setState({ isMoreOpen: !this.state.isMoreOpen });
   };
 
-  changeAttachmentQueue = (change) => () => {
-    this.setState({ attachmentQueueLength: this.state.attachmentQueueLength + change });
-  };
-
   componentWillUnmount() {
     this.props.resetPostCreateForm();
   }
 
   handleAddAttachmentResponse = (att) => {
-    this.props.addAttachmentResponse(null, att);
+    if (this.state.attachments.length >= config.attachments.maxCount) {
+      return;
+    }
+
+    const attachments = [...this.state.attachments, att];
+    const dropzoneDisabled = attachments.length >= config.attachments.maxCount;
+
+    if (dropzoneDisabled && !this.state.dropzoneDisabled) {
+      this.dropzoneObject.removeAllFiles(true);
+      this.dropzoneObject.disable();
+    }
+
+    this.setState({ attachments, dropzoneDisabled });
   };
 
   handleChangeOfMoreCheckbox = (e) => {
     this.setState({ commentsDisabled: e.target.checked });
   };
 
-  registerSelectFeeds = (el) => {
-    // SendTo is a redux-connected component so we need to use getWrappedInstance
-    this.selectFeeds = el ? el.getWrappedInstance() : null;
-  };
+  registerSelectFeeds = (el) => this.selectFeeds = el;
 
   canSubmitForm = () => {
     return !this.state.isFormEmpty
-      && this.state.attachmentQueueLength == 0
+      && !this.state.attLoading
       && !this.props.createPostViewState.isPending
+      && this.selectFeeds
+      && this.selectFeeds.values.length > 0
       && !this.selectFeeds.isIncorrectDestinations;
   };
 
@@ -150,8 +178,8 @@ export default class CreatePost extends React.Component {
           <Dropzone
             onInit={this.handleDropzoneInit}
             addAttachmentResponse={this.handleAddAttachmentResponse}
-            addedFile={this.changeAttachmentQueue(1)}
-            removedFile={this.changeAttachmentQueue(-1)}
+            onSending={this.attLoadingStarted}
+            onQueueComplete={this.attLoadingCompleted}
           />
 
           <Textarea
@@ -168,7 +196,7 @@ export default class CreatePost extends React.Component {
         </div>
 
         <div className="post-edit-options">
-          <span className="post-edit-attachments dropzone-trigger">
+          <span className="post-edit-attachments dropzone-trigger" disabled={this.state.dropzoneDisabled}>
             <i className="fa fa-cloud-upload" />
             {' '}
             Add photos or files
@@ -207,20 +235,74 @@ export default class CreatePost extends React.Component {
           </button>
         </div>
 
-        <PostAttachments
-          attachments={this.props.createPostForm.attachments}
-          isEditing={true}
-          removeAttachment={this.removeAttachment}
-        />
-
-        <div className="dropzone-previews" />
+        {this.state.dropzoneDisabled && (
+          <div className="alert alert-warning">
+          The maximum number of attached files ({config.attachments.maxCount}) has been reached
+          </div>
+        )}
 
         {this.props.createPostViewState.isError ? (
-          <div className="create-post-error">
+          <div className="alert alert-danger">
             {this.props.createPostViewState.errorString}
           </div>
         ) : false}
+
+        <PostAttachments
+          attachments={this.state.attachments}
+          isEditing={true}
+          removeAttachment={this.removeAttachment}
+          reorderImageAttachments={this.reorderImageAttachments}
+        />
+
+        <div className="dropzone-previews" />
       </div>
     );
   }
+}
+
+/**
+ * Convert 'image/png' blob to 'image/jpeg' blob if:
+ * 1) The PNG size is more than 50 KiB and
+ * 2) JPEG size is less than half the PNG size.
+ *
+ * The returning promise is never failed and returns
+ * either JPEG or the original PNG.
+ *
+ * @param {Blob} blob
+ * @returns {Promise<Blob>}
+ */
+export async function makeJpegIfNeeded(blob) {
+  if (blob.type !== 'image/png' || blob.size < 50 * 1024) {
+    return blob;
+  }
+
+  const src = window.URL.createObjectURL(blob);
+  try {
+    const image = await new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve(image);
+      image.onerror = () => reject(new Error('Cannot load image'));
+      image.src = src;
+    });
+
+    const canvas = document.createElement('canvas');
+    canvas.width = image.width;
+    canvas.height = image.height;
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(image, 0, 0);
+
+    const jpeg = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.9));
+    jpeg.name = blob.name.replace(/\.png$/, '.jpg');
+
+    if (jpeg.size < blob.size / 2) {
+      return jpeg;
+    }
+  } catch (e) {
+    // skip any errors
+  } finally {
+    window.URL.revokeObjectURL(src);
+  }
+  return blob;
 }

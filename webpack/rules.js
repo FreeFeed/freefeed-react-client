@@ -1,18 +1,13 @@
-import PathRewriter from "webpack-path-rewriter";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
-import appConfig from '../src/config';
+import { skipFalsy } from './utils';
 
 
 class RuleGenerator {
   opts;
 
-  commonCssExtractor;
-  appCssExtractor;
-
   constructor(opts, commonCssExtractor, appCssExtractor) {
     this.opts = opts;
-    this.commonCssExtractor = commonCssExtractor;
-    this.appCssExtractor = appCssExtractor;
   }
 
   get eslint() {
@@ -27,26 +22,50 @@ class RuleGenerator {
   get babel() {
     return {
       test: /\.jsx?$/,
-      exclude: /(node_modules[\\/])/,
-      loader: 'babel-loader',
-      options: {
-        babelrc: false,
-        ignore: /(node_modules)/,
-        presets: [
-          "react",
-          ["env", {
-            modules: false,
-            targets: {
-              browsers: [
-                '>1%',
-                'last 3 versions',
-                'last 3 iOS versions',
-              ]
-            }
-          }],
-          "stage-1"
-        ],
-      }
+      exclude: (modulePath) => {
+        return /node_modules/.test(modulePath) &&
+          !/node_modules\/@babel\/polyfill/.test(modulePath);
+      },
+      use: [
+        {
+          loader: 'babel-loader',
+          options: {
+            babelrc: false,
+            presets: skipFalsy([
+              "@babel/react",
+              ["@babel/env", {
+                modules: false,
+                targets: {
+                  browsers: [
+                    '>1%',
+                    'last 3 versions',
+                    'last 3 iOS versions',
+                    'ie >= 10',
+                  ]
+                }
+              }],
+            ]),
+            plugins: skipFalsy([
+              // ["lodash", { "id": ["lodash", "recompose"] }],
+              "@babel/syntax-class-properties",
+              "@babel/syntax-do-expressions",
+              "@babel/syntax-dynamic-import",
+              "@babel/syntax-object-rest-spread",
+              "@babel/proposal-class-properties",
+              "@babel/proposal-do-expressions",
+              "@babel/proposal-object-rest-spread",
+              '@babel/transform-runtime',
+              // ['@babel/plugin-transform-modules-commonjs', {
+              //   "noInterop": true,
+              // }],
+              "react-hot-loader/babel",
+              !this.opts.dev && ['transform-react-remove-prop-types', { mode: 'remove', removeImport: true, additionalLibraries: ["react-style-proptype"] }],
+              !this.opts.dev && ["@babel/transform-react-constant-elements"],
+              !this.opts.dev && ["@babel/transform-react-inline-elements"],
+            ]),
+          },
+        }
+      ],
     };
   }
 
@@ -57,108 +76,58 @@ class RuleGenerator {
       loader: 'babel-loader',
       options: {
         babelrc: false,
-        ignore: /(node_modules)/,
         presets: [
-          "react",
-          ["env", {
+          "@babel/react",
+          ["@babel/env", {
             modules: false,
             targets: {
               node: "8.9",
             }
           }],
-          "stage-1"
+        ],
+        plugins: [
+          '@babel/transform-runtime',
+          "@babel/syntax-class-properties",
+          "@babel/syntax-do-expressions",
+          "@babel/syntax-object-rest-spread",
+          "@babel/proposal-class-properties",
+          "@babel/proposal-object-rest-spread",
+          // 'lodash',
         ],
       }
     };
   }
 
   get template() {
-    const query = JSON.stringify({ pretty: true, opts: this.opts, appConfig });
-
     return {
       test: /[.]jade$/,
-      loader: PathRewriter.rewriteAndEmit({
-        name: '[path][name].html',
-        loader: `jade-html-loader?${query}`,
-      })
+      use: [
+        {
+          loader: 'pug-loader',
+        }
+      ],
     };
   }
 
-  get commonCss() {
-    let loaders = [
-      {
-        loader: 'css-loader',
-        options: {
-          autoprefixer: false,
-          calc: false,
-          mergeIdents: false,
-          mergeRules: false,
-          sourceMap: true,
-          uniqueSelectors: false,
-        }
-      },
-      {
-        loader: 'sass-loader',
-        options: {
-          sourceMap: true,
-        }
-      }
-    ];
-
-    if (this.opts.hot) {
-      loaders.unshift({
-        loader: 'style-loader',
-        options: { sourceMap: true }
-      });
-    } else {
-      loaders = this.commonCssExtractor.extract({
-        fallback: 'style-loader',
-        use: loaders,
-      });
-    }
-
+  get css() {
     return {
-      test: /[\\/]styles[\\/]common[\\/].*[.]scss$/,
-      use: loaders,
+      test: /[\\/]styles[\\/].*[\\/].*[.]scss$/,
+      use: [
+        this.opts.dev ? 'style-loader' : MiniCssExtractPlugin.loader,
+        'css-loader',
+        'sass-loader',
+      ],
     };
   }
 
-  get appCss() {
-    let loaders = [
-      {
-        loader: 'css-loader',
-        options: {
-          autoprefixer: false,
-          calc: false,
-          mergeIdents: false,
-          mergeRules: false,
-          sourceMap: true,
-          uniqueSelectors: false,
-        }
-      },
-      {
-        loader: 'sass-loader',
-        options: {
-          sourceMap: true,
-        }
-      }
-    ];
-
-    if (this.opts.hot) {
-      loaders.unshift({
-        loader: 'style-loader',
-        options: { sourceMap: true }
-      });
-    } else {
-      loaders = this.appCssExtractor.extract({
-        fallback: 'style-loader',
-        use: loaders,
-      });
-    }
-
+  get assetsCss() {
+    // import '../assets/vendor-css/font-awesome.min.css';
     return {
-      test: /[\\/]styles[\\/]helvetica[\\/].*[.]scss$/,
-      use: loaders,
+      test: /[\\/]assets[\\/].*[\\/].*[.]css$/,
+      use: [
+        this.opts.dev ? 'style-loader' : MiniCssExtractPlugin.loader,
+        'css-loader',
+      ],
     };
   }
 
@@ -183,7 +152,10 @@ class RuleGenerator {
 
     return {
       test: /[\\/]assets[\\/]/,
-      exclude: /[\\/]fonts[\\/]fontawesome[^/]*$/i,
+      exclude: [
+        /[\\/]fonts[\\/]fontawesome[^/]*$/i,
+        /[\\/]assets[\\/].*[\\/].*[.]css$/,
+      ],
       loader: `file-loader?name=${fileName}`
     };
   }

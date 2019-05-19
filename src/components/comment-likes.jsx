@@ -1,12 +1,17 @@
 import React from "react";
 import classnames from "classnames";
-import Portal from "react-portal";
+import { Portal } from "react-portal";
 import UserName from "./user-name";
 import TimeDisplay from "./time-display";
 
 
+const longTapTimeout = 300;
+
 export default class CommentLikes extends React.Component {
   actionsPanel;
+
+  likesListEl;
+  setLikesList = (el) => this.likesListEl = el;
 
   constructor(props) {
     super(props);
@@ -20,10 +25,11 @@ export default class CommentLikes extends React.Component {
     return (
       <div
         className="comment-likes-container"
-        onTouchStart={this.startTouch}
-        onTouchEnd={this.endTouch}
-        onMouseDown={this.startMouseDown}
-        onMouseUp={this.endMouseDown}
+
+        onTouchStart={this.onTouchStart}
+        onTouchEnd={this.onTouchEnd}
+        onTouchMove={this.onTouchMove}
+        onTouchCancel={this.onTouchCancel}
       >
         {this.renderHeart()}
         {this.renderBubble()}
@@ -73,34 +79,37 @@ export default class CommentLikes extends React.Component {
     clearTimeout(this.popupTimeout);
     this.popupTimeout = undefined;
   };
-  startTouch = (e) => {
-    e.preventDefault();
+
+  panelJustOpened = false;
+
+  onTouchStart = () => {
+    if (this.state.showActionsPanel || this.popupTimeout || this.props.isAddingComment) {
+      return;
+    }
+
     this.popupTimeout = setTimeout(() => {
+      this.panelJustOpened = true;
       this.setState({ showActionsPanel: true });
       this.clearTouchTimeout();
-    }, 300);
+    }, longTapTimeout);
   };
-  endMouseDown = () => this.clearTouchTimeout();
-  endTouch = (e) => {
-    e.preventDefault();
-    if (this.popupTimeout) {
-      this.clearTouchTimeout();
-      if (isBubble(e.target)) {
-        this.props.mention();
-      }
-      if (isHeart(e.target)) {
-        this.toggleLike(e);
-      }
+
+  onTouchEnd = (e) => {
+    if (this.panelJustOpened) {
+      this.panelJustOpened = false;
+      e.cancelable && e.preventDefault();
     }
   };
-  startMouseDown = () => {
-    if (!this.state.showActionsPanel) {
-      this.popupTimeout = setTimeout(() => {
-        this.setState({ showActionsPanel: true });
-        this.clearTouchTimeout();
-      }, 300);
-    }
+
+  // Cancel panel opening if touch moved
+  onTouchMove = () => this.popupTimeout && this.clearTouchTimeout();
+
+  // Cancel all if touch was cancelled
+  onTouchCancel = () => {
+    this.popupTimeout && this.clearTouchTimeout();
+    this.panelJustOpened = false;
   };
+
   openAnsweringComment = (e) => {
     e.preventDefault();
     this.clearTouchTimeout();
@@ -212,13 +221,18 @@ export default class CommentLikes extends React.Component {
   };
   renderLikesList = () => {
     const { loading, likes, error } = this.props.likesList;
-    if (loading) {
-      return <div className="comment-likes-list loading">Loading...</div>;
-    }
-    if (error) {
-      return <div className="comment-likes-list error">Error</div>;
-    }
-    return <div className="comment-likes-list">{likes.map((likeUser, i) => <UserName user={likeUser} key={i} />)}</div>;
+    return (
+      <div
+        className={classnames("comment-likes-list", { loading, error })}
+        ref={this.setLikesList}
+      >
+        {
+          loading ? 'Loading...' :
+            error ? 'Error' :
+              likes.map((likeUser, i) => <UserName user={likeUser} key={i} />)
+        }
+      </div>
+    );
   };
   showLikesList = (e) => {
     e.preventDefault();
@@ -292,14 +306,3 @@ function renderUserLikesList(userLikes) {
 }
 
 const usersPluralize = (count) => `user${count > 1 ? "s" : ""}`;
-
-function isBubble(vNode) {
-  return vNode.classList.contains("comment-time")
-  || vNode.classList.contains("comment-icon");
-}
-
-function isHeart(vNode) {
-  return vNode.classList.contains("comment-heart")
-  || vNode.classList.contains("fa-heart")
-  || vNode.classList.contains("comment-likes");
-}

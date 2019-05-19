@@ -32,7 +32,12 @@ export default class ResizeTracker extends React.Component {
   setColSensor = (el) => this.colSensor = el;
 
   scrollHandler = () => {
-    if (this.expSensor) { // Expand
+    if (!this.root || !this.expSensor || !this.colSensor) {
+      // Handler may be called after unmount because of debounce.
+      // Just skip this call.
+      return;
+    }
+    { // Expand
       const sensor = this.expSensor;
       const slider = sensor.firstChild;
       const height = sensor.offsetHeight + 100;
@@ -42,7 +47,7 @@ export default class ResizeTracker extends React.Component {
       sensor.scrollLeft = width;
       sensor.scrollTop = height;
     }
-    if (this.colSensor) { // Collapse
+    { // Collapse
       const sensor = this.colSensor;
       sensor.scrollLeft = sensor.scrollWidth + 100;
       sensor.scrollTop = sensor.scrollHeight + 100;

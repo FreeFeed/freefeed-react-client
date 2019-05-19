@@ -1,6 +1,5 @@
 import path from "path";
 
-import ExtractTextPlugin from "extract-text-webpack-plugin";
 import webpack from "webpack";
 
 import { skipFalsy, strToBool } from "./utils";
@@ -14,30 +13,22 @@ const opts = {
   livereload: strToBool(env.LIVERELOAD, false),
   hot: process.argv.indexOf('--hot') !== -1,
   hash: strToBool(env.HASH, false),
-  uglify: strToBool(env.UGLIFY, false),
   port: env.PORT || '8080'
 };
 
-const cssCommonExtractor = new ExtractTextPlugin(
-  opts.hash ? 'common-[contenthash].css' : 'common-dev.css',
-  { allChunks: true }
-);
-const cssAppExtractor = new ExtractTextPlugin(
-  opts.hash ? 'app-[contenthash].css' : 'app-dev.css',
-  { allChunks: true }
-);
-const rules = new RulesGenerator(opts, cssCommonExtractor, cssAppExtractor);
+const rules = new RulesGenerator(opts);
 
 
 const filename = opts.hash ? '[name]-[chunkhash]' : '[name]-dev';
 
 const baseConfig = {
+  mode: opts.dev ? 'development' : 'production',
+  devtool: opts.dev ? 'inline-source-map' : 'source-map',
   output: {
     path: opts.dstDir,
     filename: `${filename}.js`,
     sourceMapFilename: `[file].map`,
     devtoolModuleFilenameTemplate: '/[absolute-resource-path]',
-    pathinfo: opts.dev
   },
   resolve: {
     extensions: ['.js', '.json', '.jsx']

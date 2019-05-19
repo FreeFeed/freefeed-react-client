@@ -101,6 +101,10 @@
   }
 }
 
+.sortable-images .image-attachment-link {
+  cursor: move;
+}
+
 .audio-attachments,
 .general-attachments {
   .attachment {
@@ -123,14 +127,18 @@
   .attachment .remove-attachment {
     display: block;
     position: absolute;
-    right: 1px;
-    top: 1px;
+    right: 2px;
+    top: 2px;
     cursor: pointer;
     color: #000;
     font-size: 20px;
     background-color: silver;
     opacity: 0.7;
-    border-bottom-left-radius: 5px;
+    border-radius: 0.1em;
+    border-bottom-left-radius: 0.25em;
+    width: 1.5em;
+    height: 1.5em;
+    line-height: 1.4em;
 
     &:hover {
       opacity: 1;

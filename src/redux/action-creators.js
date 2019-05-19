@@ -128,17 +128,17 @@ export function showMoreLikesSync(postId) {
   };
 }
 
-export function toggleEditingPost(postId, newValue) {
+export function toggleEditingPost(postId) {
   return {
     type:    ActionTypes.TOGGLE_EDITING_POST,
-    payload: { postId, newValue },
+    payload: { postId },
   };
 }
 
-export function cancelEditingPost(postId, newValue) {
+export function cancelEditingPost(postId) {
   return {
     type:    ActionTypes.CANCEL_EDITING_POST,
-    payload: { postId, newValue },
+    payload: { postId },
   };
 }
 
@@ -305,9 +305,10 @@ export function unlikeComment(commentId) {
 
 export function getCommentLikes(commentId) {
   return {
-    type:       ActionTypes.GET_COMMENT_LIKES,
-    apiRequest: Api.getCommentLikes,
-    payload:    { commentId },
+    type:           ActionTypes.GET_COMMENT_LIKES,
+    apiRequest:     Api.getCommentLikes,
+    nonAuthRequest: true,
+    payload:        { commentId },
   };
 }
 
@@ -339,13 +340,6 @@ export function addAttachmentResponse(postId, attachments) {
   return {
     type:    ActionTypes.ADD_ATTACHMENT_RESPONSE,
     payload: { postId, attachments }
-  };
-}
-
-export function removeAttachment(postId, attachmentId) {
-  return {
-    type:    ActionTypes.REMOVE_ATTACHMENT,
-    payload: { postId, attachmentId }
   };
 }
 
@@ -425,11 +419,20 @@ export function signUpEmpty(errorMessage) {
   };
 }
 
-export function updateUser(id, screenName, email, isPrivate, isProtected, description) {
+export function updateUser(
+  id,
+  screenName,
+  email,
+  isPrivate,
+  isProtected,
+  description,
+  frontendPrefs = undefined,
+  backendPrefs = undefined,
+) {
   return {
     type:       ActionTypes.UPDATE_USER,
     apiRequest: Api.updateUser,
-    payload:    { id, screenName, email, isPrivate, isProtected, description },
+    payload:    { id, screenName, email, isPrivate, isProtected, description, frontendPrefs, backendPrefs },
   };
 }
 
@@ -440,11 +443,12 @@ export function userSettingsChange(payload) {
   };
 }
 
-export function updateUserPreferences(userId, frontendPrefs = {}, backendPrefs = {}) {
+export function updateUserPreferences(userId, frontendPrefs = {}, backendPrefs = {}, suppressStatus = false) {
   return {
     type:       ActionTypes.UPDATE_USER_PREFERENCES,
     apiRequest: Api.updateUserPreferences,
     payload:    { userId, frontendPrefs, backendPrefs },
+    extra:      { suppressStatus },
   };
 }
 
@@ -738,6 +742,15 @@ export function getBestOf(offset) {
   };
 }
 
+export function getEverything(offset) {
+  return {
+    type:           ActionTypes.GET_EVERYTHING,
+    apiRequest:     Api.getEverything,
+    nonAuthRequest: true,
+    payload:        { offset },
+  };
+}
+
 export function resetSettingsForms() {
   return { type: ActionTypes.RESET_SETTINGS_FORMS };
 }
@@ -750,17 +763,17 @@ export function realtimeConnected() {
   return { type: ActionTypes.REALTIME_CONNECTED, };
 }
 
-export function realtimeSubscribe(room) {
+export function realtimeSubscribe(...rooms) {
   return {
     type:    ActionTypes.REALTIME_SUBSCRIBE,
-    payload: { room },
+    payload: { rooms },
   };
 }
 
-export function realtimeUnsubscribe(room) {
+export function realtimeUnsubscribe(...rooms) {
   return {
     type:    ActionTypes.REALTIME_UNSUBSCRIBE,
-    payload: { room },
+    payload: { rooms },
   };
 }
 

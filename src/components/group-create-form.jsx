@@ -16,6 +16,7 @@ export default class GroupCreateForm extends React.Component {
       screenName:   '',
       description:  '',
       isPrivate:    '0',
+      isProtected:  '0',
       isRestricted: '0'
     };
   }
@@ -59,6 +60,7 @@ export default class GroupCreateForm extends React.Component {
             </div>
             <GroupFeedTypePicker
               isPrivate={this.state.isPrivate}
+              isProtected={this.state.isProtected}
               isRestricted={this.state.isRestricted}
               updateGroupPrivacySettings={this.handlePrivacyTypeChange}
             />
