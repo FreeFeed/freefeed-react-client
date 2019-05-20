@@ -48,7 +48,6 @@ class Settings extends React.Component {
             <UserSettingsForm
               user={props.user}
               updateUser={props.updateUser}
-              updateUserPreferences={props.updateUserPreferences}
               userSettingsChange={props.userSettingsChange}
               {...props.userSettingsForm}
             />

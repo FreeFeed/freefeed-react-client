@@ -81,7 +81,7 @@ const mapDispatchToProps = (dispatch) => {
     toggleRealtime: (userId, frontendPreferences) => {
       const { realtimeActive } = frontendPreferences;
       //send a request to change flag
-      dispatch(updateUserPreferences(userId, { ...frontendPreferences, realtimeActive: !realtimeActive }));
+      dispatch(updateUserPreferences(userId, { ...frontendPreferences, realtimeActive: !realtimeActive }, {}, true));
       //set a flag to show
       dispatch(toggleRealtime());
       if (!realtimeActive) {

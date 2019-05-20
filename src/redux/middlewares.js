@@ -37,7 +37,7 @@ export const feedSortMiddleware = (store) => (next) => (action) => {
       const { user, feedSort } = store.getState();
       const { id, frontendPreferences } = user;
       const { sort: homeFeedSort } = feedSort;
-      return store.dispatch(ActionCreators.updateUserPreferences(id, { ...frontendPreferences, homeFeedSort }));
+      return store.dispatch(ActionCreators.updateUserPreferences(id, { ...frontendPreferences, homeFeedSort }, {}, true));
     }
   }
   if (action.type === response(ActionTypes.WHO_AM_I)) {
@@ -83,7 +83,8 @@ export const apiMiddleware = (store) => (next) => async (action) => {
           adjustTime(store.dispatch, serverTime - Date.now());
         }
       }
-      return store.dispatch({ payload: obj, type: response(action.type), request: action.payload });
+      const extra = action.extra || {};
+      return store.dispatch({ payload: obj, type: response(action.type), request: action.payload, extra });
     }
 
     if (apiResponse.status === 401) {
@@ -474,10 +475,10 @@ export const realtimeMiddleware = (store) => {
 
 export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
   const unsubscribeByRegexp = (regex) => {
-    store.getState()
+    const rooms = store.getState()
       .realtimeSubscriptions
-      .filter((r) => regex.test(r))
-      .forEach((r) => store.dispatch(ActionCreators.realtimeUnsubscribe(r)));
+      .filter((r) => regex.test(r));
+    store.dispatch(ActionCreators.realtimeUnsubscribe(...rooms));
   };
 
   conn.onConnect(() => store.dispatch(ActionCreators.realtimeConnected()));
@@ -502,16 +503,16 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
     if (action.type === ActionTypes.REALTIME_CONNECTED) {
       conn.reAuthorize().then(async () => {
         const { realtimeSubscriptions } = store.getState();
-        await Promise.all(realtimeSubscriptions.map((room) => conn.subscribeTo(room)));
+        await conn.subscribeTo(...realtimeSubscriptions);
       });
     }
 
     if (action.type === ActionTypes.REALTIME_SUBSCRIBE) {
-      conn.subscribeTo(action.payload.room);
+      conn.subscribeTo(...action.payload.rooms);
     }
 
     if (action.type === ActionTypes.REALTIME_UNSUBSCRIBE) {
-      conn.unsubscribeFrom(action.payload.room);
+      conn.unsubscribeFrom(...action.payload.rooms);
     }
 
     if (action.type === ActionTypes.UNAUTHENTICATED) {
@@ -529,8 +530,12 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
       unsubscribeByRegexp(/^(post|timeline):/);
     }
 
-    if (isFeedResponse(action) && action.payload.timelines) {
-      store.dispatch(ActionCreators.realtimeSubscribe(`timeline:${action.payload.timelines.id}`));
+    if (isFeedResponse(action)) {
+      if (action.payload.timelines) {
+        store.dispatch(ActionCreators.realtimeSubscribe(`timeline:${action.payload.timelines.id}`));
+      } else if (action.payload.posts) {
+        store.dispatch(ActionCreators.realtimeSubscribe(...action.payload.posts.map((p) => `post:${p.id}`)));
+      }
     }
 
     if (action.type === response(ActionTypes.GET_SINGLE_POST)) {

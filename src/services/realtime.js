@@ -73,17 +73,17 @@ export class Connection {
     }
   }
 
-  async subscribeTo(room) {
-    if (this.socket.connected) {
-      console.log('subscribing to', room);  // eslint-disable-line no-console
-      await this.socket.emitAsync('subscribe', roomToHash(room));
+  async subscribeTo(...rooms) {
+    if (this.socket.connected && rooms.length > 0) {
+      console.log('subscribing to', rooms);  // eslint-disable-line no-console
+      await this.socket.emitAsync('subscribe', roomsToHash(rooms));
     }
   }
 
-  async unsubscribeFrom(room) {
-    if (this.socket.connected) {
-      console.log('unsubscribing from', room);  // eslint-disable-line no-console
-      await this.socket.emitAsync('unsubscribe', roomToHash(room));
+  async unsubscribeFrom(...rooms) {
+    if (this.socket.connected && rooms.length > 0) {
+      console.log('unsubscribing from', rooms);  // eslint-disable-line no-console
+      await this.socket.emitAsync('unsubscribe', roomsToHash(rooms));
     }
   }
 }
@@ -102,7 +102,15 @@ function improveSocket(socket) {
   return socket;
 }
 
-function roomToHash(room) {
-  const [type, id] = room.split(':', 2);
-  return { [type]: [id] };
+function roomsToHash(rooms) {
+  const result = {};
+  for (const room of rooms) {
+    const [type, id] = room.split(':', 2);
+    if (type in result) {
+      result[type].push(id);
+    } else {
+      result[type] = [id];
+    }
+  }
+  return result;
 }

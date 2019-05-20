@@ -1713,12 +1713,21 @@ export function frontendPreferencesForm(state = {}, action) {
       return { ...state, ...action.payload.users.frontendPreferences[frontendPrefsConfig.clientId] };
     }
     case request(ActionTypes.UPDATE_USER_PREFERENCES): {
+      if (typeof action.extra !== 'undefined' && action.extra.suppressStatus) {
+        return state;
+      }
       return { ...state, status: 'loading' };
     }
     case response(ActionTypes.UPDATE_USER_PREFERENCES): {
+      if (typeof action.extra !== 'undefined' && action.extra.suppressStatus) {
+        return state;
+      }
       return { ...state, status: 'success' };
     }
     case fail(ActionTypes.UPDATE_USER_PREFERENCES): {
+      if (typeof action.extra !== 'undefined' && action.extra.suppressStatus) {
+        return state;
+      }
       return { ...state, status: 'error', errorMessage: (action.payload || {}).err };
     }
     case ActionTypes.RESET_SETTINGS_FORMS: {
@@ -1859,6 +1868,9 @@ export function boxHeader(state = "", action) {
     }
     case request(ActionTypes.GET_BEST_OF): {
       return 'Best Of FreeFeed';
+    }
+    case response(ActionTypes.GET_EVERYTHING): {
+      return `Everything On FreeFeed`;
     }
     case request(ActionTypes.GET_USER_FEED): {
       return '';
@@ -2358,18 +2370,14 @@ export function userViews(state = {}, action) {
 export function realtimeSubscriptions(state = [], action) {
   switch (action.type) {
     case ActionTypes.REALTIME_SUBSCRIBE: {
-      const { room } = action.payload;
-      if (!state.includes(room)) {
-        return [...state, room];
-      }
-      return state;
+      const { rooms } = action.payload;
+      const newState = _.union(state, rooms);
+      return newState.length !== state.length ? newState : state;
     }
     case ActionTypes.REALTIME_UNSUBSCRIBE: {
-      const { room } = action.payload;
-      if (state.includes(room)) {
-        return _.without(state, room);
-      }
-      return state;
+      const { rooms } = action.payload;
+      const newState = _.difference(state, rooms);
+      return newState.length !== state.length ? newState : state;
     }
   }
   return state;

@@ -430,16 +430,16 @@ describe('realtime events', () => {
   });
 
   describe('realtimeSubscriptions()', () => {
-    it('should add a new room on REALTIME_SUBSCRIBE', () => {
+    it('should add a new rooms on REALTIME_SUBSCRIBE', () => {
       const state = [];
-      const result = realtimeSubscriptions(state, realtimeSubscribe('room1'));
-      expect(result, 'to equal', ['room1']);
+      const result = realtimeSubscriptions(state, realtimeSubscribe('room1', 'room2'));
+      expect(result, 'to equal', ['room1', 'room2']);
     });
 
-    it('should add a second room on REALTIME_SUBSCRIBE', () => {
+    it('should adppend rooms on REALTIME_SUBSCRIBE', () => {
       const state = ['room1'];
-      const result = realtimeSubscriptions(state, realtimeSubscribe('room2'));
-      expect(result, 'to equal', ['room1', 'room2']);
+      const result = realtimeSubscriptions(state, realtimeSubscribe('room2', 'room3'));
+      expect(result, 'to equal', ['room1', 'room2', 'room3']);
     });
 
     it('should not add a new room if already subscribed', () => {
@@ -456,7 +456,7 @@ describe('realtime events', () => {
 
     it('should not remove a room if not subscribed', () => {
       const state = ['room1'];
-      const result = realtimeSubscriptions(state, realtimeUnsubscribe('room2'));
+      const result = realtimeSubscriptions(state, realtimeUnsubscribe('room2', 'room3'));
       expect(result, 'to be', state);
     });
   });

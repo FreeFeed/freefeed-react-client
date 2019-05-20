@@ -41,6 +41,7 @@ const SideBarFriends = ({ user }) => (
         </li>
         <li className="p-my-discussions"><Link to="/filter/discussions">My discussions</Link></li>
         <li className="p-best-of"><Link to="/summary/1">Best of day</Link></li>
+        <li className="p-everything"><Link to="/filter/everything">Everything</Link></li>
         <li className="p-home">
           <Link to="/filter/notifications" style={(user.unreadNotificationsNumber > 0 && !user.frontendPreferences.hideUnreadNotifications) ? { fontWeight: 'bold' } : {}}>
             Notifications {(user.unreadNotificationsNumber > 0
