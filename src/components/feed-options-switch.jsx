@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import DropdownMenu from 'react-dd-menu';
-import config from '../config';
-import { preventDefault } from '../utils';
 import * as FeedSortOptions from '../utils/feed-sort-options';
 import { toggleRealtime, updateUserPreferences, home, toggleFeedSort } from '../redux/action-creators';
 
@@ -23,13 +21,8 @@ class FeedOptionsSwitch extends React.PureComponent {
     const { props } = this;
     const { realtimeActive } = props.frontendPreferences;
     const { feedSort, showRealtime } = props;
-    const isAuthenticated = !!props.userId;
 
-    const { homeFeedSort: defaultHomeFeedSort } = config.frontendPreferences.defaultValues;
-
-    const toggle = defaultHomeFeedSort === feedSort.sort
-      ? <span>{!realtimeActive && isAuthenticated && <span>Paused&nbsp;</span>}<span className="glyphicon glyphicon-option-horizontal dots-icon" onClick={this.toggleDropdown} /></span>
-      : <span><span className="glyphicon glyphicon-time" />&nbsp;{!realtimeActive && isAuthenticated && <span>Paused,&nbsp;</span>}<span className="widescreen-text">Most recent posts &#183;</span><span className="narrowscreen-text">Recent posts &#183;</span>   <a href="#" onClick={preventDefault(this.switchSortToActivity)}><span className="narrowscreen-text">Default</span><span className="widescreen-text">To default view</span></a>&nbsp;&nbsp;<span className="glyphicon glyphicon-option-horizontal dots-icon" onClick={this.toggleDropdown} /></span>;
+    const toggle = <span className="glyphicon glyphicon-option-horizontal dots-icon" onClick={this.toggleDropdown} />;
 
     const menuOptions = {
       align:   'right',
