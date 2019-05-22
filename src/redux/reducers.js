@@ -2454,14 +2454,15 @@ export function serverTimeAhead(state = 0, action) {
 const getInitialSortingState = () => {
   const defaultHomeFeedSort = config.frontendPreferences.defaultValues.homeFeedSort;
   const persistedUser = getPersistedUser();
-  const homeFeedSort = persistedUser ? persistedUser.frontendPreferences.homeFeedSort : defaultHomeFeedSort;
+  const homeFeedSort = (persistedUser && persistedUser.frontendPreferences.homeFeedSort) || defaultHomeFeedSort;
   return { sort: homeFeedSort, homeFeedSort, currentFeed: request(ActionTypes.HOME) };
 };
 
 export function feedSort(state = getInitialSortingState(), action) {
   if (action.type === response(ActionTypes.WHO_AM_I)) {
+    const defaultHomeFeedSort = config.frontendPreferences.defaultValues.homeFeedSort;
     const { homeFeedSort } = action.payload.users.frontendPreferences[frontendPrefsConfig.clientId];
-    const sort = state.currentFeed === ActionTypes.HOME ? homeFeedSort : state.sort;
+    const sort = state.currentFeed === ActionTypes.HOME ? homeFeedSort || defaultHomeFeedSort : state.sort;
     return { ...state, homeFeedSort, sort };
   }
   if (ActionHelpers.isFeedRequest(action)) {
