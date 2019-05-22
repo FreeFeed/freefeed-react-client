@@ -2461,7 +2461,7 @@ const getInitialSortingState = () => {
 export function feedSort(state = getInitialSortingState(), action) {
   if (action.type === response(ActionTypes.WHO_AM_I)) {
     const defaultHomeFeedSort = config.frontendPreferences.defaultValues.homeFeedSort;
-    const { homeFeedSort } = action.payload.users.frontendPreferences[frontendPrefsConfig.clientId];
+    const { homeFeedSort } = action.payload.users.frontendPreferences && action.payload.users.frontendPreferences[frontendPrefsConfig.clientId];
     const sort = state.currentFeed === ActionTypes.HOME ? homeFeedSort || defaultHomeFeedSort : state.sort;
     return { ...state, homeFeedSort, sort };
   }
