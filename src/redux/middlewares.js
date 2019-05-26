@@ -8,6 +8,15 @@ import { Connection, scrollCompensator } from '../services/realtime';
 import { userParser, delay } from '../utils';
 import * as FeedSortOptions from '../utils/feed-sort-options';
 
+import {
+  colorSchemeStorageKey,
+  loadColorScheme,
+  saveColorScheme,
+  systemColorSchemeSupported,
+  SCHEME_LIGHT,
+  SCHEME_DARK,
+  SCHEME_NO_PREFERENCE,
+} from '../services/appearance';
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import { request, response, fail, requiresAuth, isFeedRequest, isFeedResponse, isFeedGeneratingAction, getFeedName } from './action-helpers';
@@ -167,6 +176,30 @@ export const authMiddleware = (store) => {
     }
 
     return next(action);
+  };
+};
+
+export const appearanceMiddleware = (store) => {
+  if (typeof window !== 'undefined') {
+    window.addEventListener("storage", (e) => e.key === colorSchemeStorageKey && store.dispatch(ActionCreators.setUserColorScheme(loadColorScheme())));
+    setTimeout(() => store.dispatch(ActionCreators.setUserColorScheme(loadColorScheme())), 0);
+
+    if (systemColorSchemeSupported) {
+      for (const scheme of [SCHEME_LIGHT, SCHEME_DARK, SCHEME_NO_PREFERENCE]) {
+        const mq = window.matchMedia(`(prefers-color-scheme: ${scheme})`);
+        const handler = (mq) => mq.matches && store.dispatch(ActionCreators.setSystemColorScheme(scheme));
+        mq.addListener(handler);
+        setTimeout(() => handler(mq), 0);
+      }
+    }
+  }
+
+  return (next) => (action) => {
+    next(action);
+    if (action.type === ActionTypes.SET_USER_COLOR_SCHEME) {
+      saveColorScheme(action.payload);
+      return;
+    }
   };
 };
 
