@@ -824,3 +824,17 @@ export function serverTimeAhead(delta) {
 export function toggleFeedSort() {
   return { type: ActionTypes.TOGGLE_FEED_SORT, };
 }
+
+/**
+ * @param {'dark'|'light'|'no-preference'} scheme
+ */
+export function setSystemColorScheme(scheme) {
+  return { type: ActionTypes.SET_SYSTEM_COLOR_SCHEME, payload: scheme };
+}
+
+/**
+ * @param {'dark'|'light'|'system'} scheme
+ */
+export function setUserColorScheme(scheme) {
+  return { type: ActionTypes.SET_USER_COLOR_SCHEME, payload: scheme };
+}

@@ -7,6 +7,7 @@ import { getToken, getPersistedUser } from '../services/auth';
 import { parseQuery } from '../utils/search-highlighter';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
 import * as FeedSortOptions from '../utils/feed-sort-options';
+import { SCHEME_NO_PREFERENCE, SCHEME_SYSTEM } from '../services/appearance';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
 
@@ -2484,6 +2485,20 @@ export function feedSort(state = getInitialSortingState(), action) {
       sort,
       homeFeedSort: state.currentFeed === ActionTypes.HOME ? sort : state.homeFeedSort,
     };
+  }
+  return state;
+}
+
+export function systemColorScheme(state = SCHEME_NO_PREFERENCE, action) {
+  if (action.type === ActionTypes.SET_SYSTEM_COLOR_SCHEME) {
+    return action.payload;
+  }
+  return state;
+}
+
+export function userColorScheme(state = SCHEME_SYSTEM, action) {
+  if (action.type === ActionTypes.SET_USER_COLOR_SCHEME) {
+    return action.payload;
   }
   return state;
 }
