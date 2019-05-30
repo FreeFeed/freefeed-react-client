@@ -20,9 +20,10 @@ export function getWhoAmI() {
   return fetch(`${apiConfig.host}/v2/users/whoami`, getRequestOptions());
 }
 
-export function getHome({ offset }) {
+export function getHome({ offset, sortChronologically }) {
+  const sortParam = sortChronologically ? '&sort=created' : '';
   return fetch(
-    `${apiConfig.host}/v2/timelines/home?offset=${offset}`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/home?offset=${offset}${sortParam}`, getRequestOptions());
 }
 
 export function getMemories({ from, offset }) {
@@ -41,9 +42,10 @@ export function getDirect({ offset }) {
     `${apiConfig.host}/v2/timelines/filter/directs?offset=${offset}`, getRequestOptions());
 }
 
-export function getUserFeed({ username, offset }) {
+export function getUserFeed({ username, offset, sortChronologically }) {
+  const sortParam = sortChronologically ? '&sort=created' : '';
   return fetch(
-    `${apiConfig.host}/v2/timelines/${username}?offset=${offset}`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/${username}?offset=${offset}${sortParam}`, getRequestOptions());
 }
 
 export function getNotifications({ offset, filter }) {
@@ -340,7 +342,23 @@ export function markAllNotificationsAsRead() {
   });
 }
 
-export function updateUser({ id, screenName, email, isPrivate, isProtected, description }) {
+export function updateUser({
+  id,
+  screenName,
+  email,
+  isPrivate,
+  isProtected,
+  description,
+  frontendPrefs = undefined,
+  backendPrefs = undefined,
+}) {
+  const user = { screenName, email, isPrivate, isProtected, description };
+  if (frontendPrefs) {
+    user.frontendPreferences = { [frontendPrefsConfig.clientId]: frontendPrefs };
+  }
+  if (backendPrefs) {
+    user.preferences = backendPrefs;
+  }
   return fetch(`${apiConfig.host}/v1/users/${id}`, {
     'method':  'PUT',
     'headers': {
@@ -348,7 +366,7 @@ export function updateUser({ id, screenName, email, isPrivate, isProtected, desc
       'Content-Type':           'application/json',
       'X-Authentication-Token': getToken()
     },
-    'body': JSON.stringify({ user: { screenName, email, isPrivate, isProtected, description } })
+    'body': JSON.stringify({ user })
   });
 }
 
@@ -577,6 +595,10 @@ export function getSearch({ search = '', offset = 0 }) {
 
 export function getBestOf({ offset = 0 }) {
   return fetch(`${apiConfig.host}/v2/bestof?offset=${offset}`, getRequestOptions());
+}
+
+export function getEverything({ offset = 0 }) {
+  return fetch(`${apiConfig.host}/v2/everything?offset=${offset}`, getRequestOptions());
 }
 
 export function archiveRestoreActivity() {

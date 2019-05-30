@@ -7,7 +7,7 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 
 import { createRealtimeMiddleware } from '../../../../src/redux/middlewares';
 import { user, realtimeSubscriptions } from '../../../../src/redux/reducers';
-import { REALTIME_CONNECTED, REALTIME_INCOMING_EVENT, WHO_AM_I, SIGN_UP, HOME, GET_SINGLE_POST } from '../../../../src/redux/action-types';
+import { REALTIME_CONNECTED, REALTIME_INCOMING_EVENT, WHO_AM_I, SIGN_UP, HOME, GET_SINGLE_POST, GET_EVERYTHING } from '../../../../src/redux/action-types';
 import { realtimeSubscribe, realtimeUnsubscribe, unauthenticated } from '../../../../src/redux/action-creators';
 import { delay } from '../../../../src/utils';
 import { response, request } from '../../../../src/redux/action-helpers';
@@ -30,8 +30,8 @@ class MockConnection {
   onEvent(handler) { this.eventHandler = handler; }
 
   async reAuthorize() { }
-  async subscribeTo(room) { }     // eslint-disable-line no-unused-vars
-  async unsubscribeFrom(room) { } // eslint-disable-line no-unused-vars
+  async subscribeTo(...rooms) { }     // eslint-disable-line no-unused-vars
+  async unsubscribeFrom(...rooms) { } // eslint-disable-line no-unused-vars
 
   triggerEvent(event, data) { this.eventHandler(event, data); }
   triggerConnect() { this.connectHandler(); }
@@ -144,10 +144,11 @@ describe('realtime middleware', () => {
     connection.triggerConnect();
     await delay(); // we are should wait here
 
-    expect(connection.reAuthorize, 'was called');
-    expect(connection.subscribeTo, 'to have a call satisfying', ['room1']);
-    expect(connection.subscribeTo, 'to have a call satisfying', ['room2']);
-    expect([connection.reAuthorize, connection.subscribeTo, connection.subscribeTo], 'given call order');
+    connection.reAuthorize.called
+      || expect.fail('connection.reAuthorize was not called');
+    connection.reAuthorize.calledBefore(connection.subscribeTo)
+      || expect.fail('.reAuthorize should be called before .subscribeTo');
+    expect(connection.subscribeTo, 'to have a call satisfying', ['room1', 'room2']);
   });
 
   it(`should unsubscribe from 'user:' rooms on log out`, async () => {
@@ -156,48 +157,69 @@ describe('realtime middleware', () => {
     store.dispatch(realtimeSubscribe('user:luna'));
     store.dispatch(unauthenticated());
     await delay(); // we are should wait here
-    expect(connection.reAuthorize, 'was called');
-    expect(actionSpy, 'to have a call satisfying', [realtimeUnsubscribe('user:luna')]);
-    expect([connection.reAuthorize, connection.unsubscribeFrom], 'given call order');
+    connection.reAuthorize.called
+      || expect.fail('connection.reAuthorize was not called');
+    actionSpy.calledWith(realtimeUnsubscribe('user:luna'))
+      || expect.fail('a proper REALTIME_UNSUBSCRIBE action was not dispatched');
+    connection.reAuthorize.calledBefore(connection.unsubscribeFrom)
+      || expect.fail('.reAuthorize should be called before .unsubscribeFrom');
   });
 
   it(`should subscribe to 'user:' room on whoami`, async () => {
     store.dispatch({ type: response(WHO_AM_I), payload: { users: { id: 'luna' } } });
     await delay(); // we are should wait here
-    expect(connection.reAuthorize, 'was called');
-    expect(actionSpy, 'to have a call satisfying', [realtimeSubscribe('user:luna')]);
-    expect([connection.reAuthorize, connection.subscribeTo], 'given call order');
+    connection.reAuthorize.called
+      || expect.fail('connection.reAuthorize was not called');
+    actionSpy.calledWith(realtimeSubscribe('user:luna'))
+      || expect.fail('a proper REALTIME_SUBSCRIBE action was not dispatched');
+    connection.reAuthorize.calledBefore(connection.subscribeTo)
+      || expect.fail('.reAuthorize should be called before .subscribeTo');
   });
 
   it(`should subscribe to 'user:' room on sign up`, async () => {
     store.dispatch({ type: response(SIGN_UP), payload: { users: { id: 'luna' } } });
     await delay(); // we are should wait here
-    expect(connection.reAuthorize, 'was called');
-    expect(actionSpy, 'to have a call satisfying', [realtimeSubscribe('user:luna')]);
-    expect([connection.reAuthorize, connection.subscribeTo], 'given call order');
+    connection.reAuthorize.called
+      || expect.fail('connection.reAuthorize was not called');
+    actionSpy.calledWith(realtimeSubscribe('user:luna'))
+      || expect.fail('a proper REALTIME_SUBSCRIBE action was not dispatched');
+    connection.reAuthorize.calledBefore(connection.subscribeTo)
+      || expect.fail('.reAuthorize should be called before .subscribeTo');
   });
 
   it(`should unsubscribe from any 'post:' rooms on feed request`, async () => {
     store.dispatch(realtimeSubscribe('post:post1'));
+    store.dispatch(realtimeSubscribe('post:post2'));
     store.dispatch({ type: request(HOME) });
     await delay(); // we are should wait here
-    expect(actionSpy, 'to have a call satisfying', [realtimeUnsubscribe('post:post1')]);
+    actionSpy.calledWith(realtimeUnsubscribe('post:post1', 'post:post2'))
+      || expect.fail('a proper REALTIME_UNSUBSCRIBE action was not dispatched');
   });
 
   it(`should unsubscribe from any 'post:' rooms on post request`, async () => {
     store.dispatch(realtimeSubscribe('post:post1'));
+    store.dispatch(realtimeSubscribe('post:post2'));
     store.dispatch({ type: request(GET_SINGLE_POST) });
     await delay(); // we are should wait here
-    expect(actionSpy, 'to have a call satisfying', [realtimeUnsubscribe('post:post1')]);
+    actionSpy.calledWith(realtimeUnsubscribe('post:post1', 'post:post2'))
+      || expect.fail('a proper REALTIME_UNSUBSCRIBE action was not dispatched');
   });
 
   it(`should subscribe to 'timeline:' room on timeline response`, () => {
     store.dispatch({ type: response(HOME), payload: { timelines: { id: 'home' } } });
-    expect(actionSpy, 'to have a call satisfying', [realtimeSubscribe('timeline:home')]);
+    actionSpy.calledWith(realtimeSubscribe('timeline:home'))
+      || expect.fail('a proper REALTIME_SUBSCRIBE action was not dispatched');
   });
 
   it(`should subscribe to 'post:' room on post response`, () => {
     store.dispatch({ type: response(GET_SINGLE_POST), payload: { posts: { id: 'post' } } });
-    expect(actionSpy, 'to have a call satisfying', [realtimeSubscribe('post:post')]);
+    actionSpy.calledWith(realtimeSubscribe('post:post'))
+      || expect.fail('a proper REALTIME_SUBSCRIBE action was not dispatched');
+  });
+
+  it(`should subscribe to 'post:' rooms on timelineless post collection response`, () => {
+    store.dispatch({ type: response(GET_EVERYTHING), payload: { timelines: null, posts: [{ id: 'post1' }, { id: 'post2' }] } });
+    actionSpy.calledWith(realtimeSubscribe('post:post1', 'post:post2'))
+      || expect.fail('a proper REALTIME_SUBSCRIBE action was not dispatched');
   });
 });

@@ -6,6 +6,7 @@ import config from '../config';
 import { getToken, getPersistedUser } from '../services/auth';
 import { parseQuery } from '../utils/search-highlighter';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
+import * as FeedSortOptions from '../utils/feed-sort-options';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
 
@@ -1712,12 +1713,21 @@ export function frontendPreferencesForm(state = {}, action) {
       return { ...state, ...action.payload.users.frontendPreferences[frontendPrefsConfig.clientId] };
     }
     case request(ActionTypes.UPDATE_USER_PREFERENCES): {
+      if (typeof action.extra !== 'undefined' && action.extra.suppressStatus) {
+        return state;
+      }
       return { ...state, status: 'loading' };
     }
     case response(ActionTypes.UPDATE_USER_PREFERENCES): {
+      if (typeof action.extra !== 'undefined' && action.extra.suppressStatus) {
+        return state;
+      }
       return { ...state, status: 'success' };
     }
     case fail(ActionTypes.UPDATE_USER_PREFERENCES): {
+      if (typeof action.extra !== 'undefined' && action.extra.suppressStatus) {
+        return state;
+      }
       return { ...state, status: 'error', errorMessage: (action.payload || {}).err };
     }
     case ActionTypes.RESET_SETTINGS_FORMS: {
@@ -1858,6 +1868,9 @@ export function boxHeader(state = "", action) {
     }
     case request(ActionTypes.GET_BEST_OF): {
       return 'Best Of FreeFeed';
+    }
+    case response(ActionTypes.GET_EVERYTHING): {
+      return `Everything On FreeFeed`;
     }
     case request(ActionTypes.GET_USER_FEED): {
       return '';
@@ -2357,18 +2370,14 @@ export function userViews(state = {}, action) {
 export function realtimeSubscriptions(state = [], action) {
   switch (action.type) {
     case ActionTypes.REALTIME_SUBSCRIBE: {
-      const { room } = action.payload;
-      if (!state.includes(room)) {
-        return [...state, room];
-      }
-      return state;
+      const { rooms } = action.payload;
+      const newState = _.union(state, rooms);
+      return newState.length !== state.length ? newState : state;
     }
     case ActionTypes.REALTIME_UNSUBSCRIBE: {
-      const { room } = action.payload;
-      if (state.includes(room)) {
-        return _.without(state, room);
-      }
-      return state;
+      const { rooms } = action.payload;
+      const newState = _.difference(state, rooms);
+      return newState.length !== state.length ? newState : state;
     }
   }
   return state;
@@ -2438,6 +2447,43 @@ export function createInvitationForm(state = DEFAULT_FORM_STATE, action) {
 export function serverTimeAhead(state = 0, action) {
   if (action.type === ActionTypes.SERVER_TIME_AHEAD) {
     return action.payload;
+  }
+  return state;
+}
+
+const getInitialSortingState = () => {
+  const defaultHomeFeedSort = config.frontendPreferences.defaultValues.homeFeedSort;
+  const persistedUser = getPersistedUser();
+  const homeFeedSort = (persistedUser && persistedUser.frontendPreferences.homeFeedSort) || defaultHomeFeedSort;
+  return { sort: homeFeedSort, homeFeedSort, currentFeed: request(ActionTypes.HOME) };
+};
+
+export function feedSort(state = getInitialSortingState(), action) {
+  if (action.type === response(ActionTypes.WHO_AM_I)) {
+    const defaultHomeFeedSort = config.frontendPreferences.defaultValues.homeFeedSort;
+    const frontendPreferences = action.payload.users.frontendPreferences && action.payload.users.frontendPreferences[frontendPrefsConfig.clientId];
+    const homeFeedSort = (frontendPreferences && frontendPreferences.homeFeedSort) || defaultHomeFeedSort;
+    const sort = state.currentFeed === ActionTypes.HOME ? homeFeedSort : state.sort;
+    return { ...state, homeFeedSort, sort };
+  }
+  if (ActionHelpers.isFeedRequest(action)) {
+    let { sort } = state;
+    if (state.currentFeed !== ActionHelpers.getFeedName(action)) {
+      sort = action.type === request(ActionTypes.HOME) ? state.homeFeedSort : FeedSortOptions.ACTIVITY;
+    }
+    return {
+      ...state,
+      currentFeed: ActionHelpers.getFeedName(action),
+      sort,
+    };
+  }
+  if (action.type === ActionTypes.TOGGLE_FEED_SORT) {
+    const sort = state.sort === FeedSortOptions.ACTIVITY ? FeedSortOptions.CHRONOLOGIC : FeedSortOptions.ACTIVITY;
+    return {
+      ...state,
+      sort,
+      homeFeedSort: state.currentFeed === ActionTypes.HOME ? sort : state.homeFeedSort,
+    };
   }
   return state;
 }

@@ -4,13 +4,15 @@ import {
   hashTags,
   emails,
   mentions,
-  links,
+  linksEx,
   arrows,
   Link as TLink,
 } from 'social-text-tokenizer';
 
 import config from '../config';
 
+
+const { textFormatter: { tldList }, siteDomains } = config;
 
 export class Link extends TLink {
   localDomains = [];
@@ -49,9 +51,9 @@ export class Link extends TLink {
   }
 }
 
-const tokenize = withText(combine(hashTags, emails, mentions, links, arrows));
+const tokenize = withText(combine(hashTags, emails, mentions, linksEx({ tldList }), arrows));
 
-const enhanceLinks = (token) => (token instanceof TLink) ? new Link(token, config.siteDomains) : token;
+const enhanceLinks = (token) => (token instanceof TLink) ? new Link(token, siteDomains) : token;
 
 export const parseText = (text) => tokenize(text).map(enhanceLinks);
 

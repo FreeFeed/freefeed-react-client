@@ -40,17 +40,20 @@ export default class UserSettingsForm extends React.Component {
   };
 
   updateUser = () => {
-    if (!this.props.isSaving) {
-      this.props.updateUser(
-        this.props.user.id,
-        this.props.screenName,
-        this.props.email,
-        this.props.isPrivate,
-        this.props.isProtected,
-        this.props.description,
-      );
-      this.props.updateUserPreferences(this.props.user.id, this.props.user.frontendPreferences, { acceptDirectsFrom: this.props.directsFromAll ? 'all' : 'friends' });
+    if (this.props.isSaving) {
+      return;
     }
+
+    this.props.updateUser(
+      this.props.user.id,
+      this.props.screenName,
+      this.props.email,
+      this.props.isPrivate,
+      this.props.isProtected,
+      this.props.description,
+      undefined, // frontendPreferences will not updates
+      { acceptDirectsFrom: this.props.directsFromAll ? 'all' : 'friends' },
+    );
   };
 
   render() {

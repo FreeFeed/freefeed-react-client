@@ -27,7 +27,8 @@ export default ({ likes, showMoreLikes, post }) => {
     return <div />;
   }
 
-  const likeList = likes;
+  // Make a copy to prevent props modification
+  const likeList = [...likes];
 
   if (post.omittedLikes) {
     likeList.push({
