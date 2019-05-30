@@ -36,8 +36,8 @@ class FeedOptionsSwitch extends React.PureComponent {
       <div className="feed-options-switch">
         <DropdownMenu {...menuOptions}>
           <div className="dropdown">
-            <div className={`drop-option ${feedSort.sort === FeedSortOptions.ACTIVITY && 'active'}`} onClick={this.switchSortToActivity}><span className="check fa fa-arrow-right" />Order by recent comments/likes</div>
-            <div className={`drop-option ${feedSort.sort === FeedSortOptions.CHRONOLOGIC && 'active'}`} onClick={this.switchSortToChronologic}><span className="check fa fa-arrow-right" />Order by post date</div>
+            <div className={`drop-option ${feedSort.sort === FeedSortOptions.ACTIVITY && 'active'}`} onClick={this.switchSortToActivity}><span className="check fa fa-circle" style={{ transform: 'scale(.6)' }} />Order by recent comments/likes</div>
+            <div className={`drop-option ${feedSort.sort === FeedSortOptions.CHRONOLOGIC && 'active'}`} onClick={this.switchSortToChronologic}><span className="check fa fa-circle" style={{ transform: 'scale(.6)' }} />Order by post date</div>
             {showRealtime && <div className="spacer" />}
             {showRealtime && <div className={`drop-option ${realtimeActive && 'active'}`} onClick={this.toggleRealtime}><span className="check fa fa-check" />Show new posts in real-time</div>}
           </div>
