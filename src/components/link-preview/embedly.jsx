@@ -5,6 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import 'element-closest';
 
+import { darkTheme } from '../select-utils';
 import ScrollSafe from './scroll-helpers/scroll-safe';
 import * as heightCache from './scroll-helpers/size-cache';
 
@@ -48,6 +49,7 @@ class EmbedlyPreview extends React.Component {
           data-card-width="400px"
           data-card-recommend="0"
           data-card-align="left"
+          data-card-theme={this.props.darkTheme ? 'dark' : 'light'}
         />
       </div>
     );
@@ -55,7 +57,10 @@ class EmbedlyPreview extends React.Component {
 }
 
 function select(state) {
-  return { feedIsLoading: state.routeLoadingState, };
+  return {
+    feedIsLoading: state.routeLoadingState,
+    darkTheme:     darkTheme(state),
+  };
 }
 
 export default ScrollSafe(connect(select)(EmbedlyPreview));
