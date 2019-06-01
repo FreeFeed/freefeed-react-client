@@ -17,7 +17,7 @@ class ColorSchemeSetterBase extends Component {
   render() {
     return (
       <Helmet>
-        <meta name="theme-color" content={this.props.darkTheme ? "#353535" : "#fff"} />
+        <meta name="theme-color" content={this.props.darkTheme ? "hsl(220, 9%, 10%)" : "white"} />
       </Helmet>
     );
   }
