@@ -24,6 +24,7 @@ import {
   likeComment, unlikeComment, getCommentLikes,
   deleteComment
 } from '../redux/action-creators';
+import { SCHEME_DARK, SCHEME_SYSTEM } from '../services/appearance';
 
 
 const MAX_LIKES = 4;
@@ -262,4 +263,9 @@ export function destinationsPrivacy(destNames, state) {
     }
   }
   return { isPrivate, isProtected };
+}
+
+export function darkTheme({ systemColorScheme, userColorScheme }) {
+  return userColorScheme === SCHEME_DARK
+           || (userColorScheme === SCHEME_SYSTEM && systemColorScheme === SCHEME_DARK);
 }
