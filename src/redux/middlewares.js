@@ -421,7 +421,9 @@ const iLikedPost = ({ user, posts }, postId) => {
 };
 const dispatchWithPost = async (store, postId, action, filter = () => true, maxDelay = 0) => {
   let state = store.getState();
-  const shouldBump = isFirstPage(state) && !isMemories(state);
+  const shouldBump = isFirstPage(state)
+    && !isMemories(state)
+    && state.feedSort.sort === FeedSortOptions.ACTIVITY;
 
   if (isPostLoaded(state, postId)) {
     return store.dispatch({ ...action, shouldBump });
