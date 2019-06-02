@@ -341,10 +341,20 @@ export function feedViewState(state = initFeed, action) {
       if (!action.shouldBump) {
         return state;
       }
-      return {
-        ...state,
-        visibleEntries: [action.post.id, ...state.visibleEntries],
-      };
+
+      let { visibleEntries } = state;
+      const p = state.visibleEntries.indexOf(action.insertBefore);
+      if (p < 0) {
+        visibleEntries = [...visibleEntries, action.post.id];
+      } else {
+        visibleEntries = [
+          ...visibleEntries.slice(0, p),
+          action.post.id,
+          ...visibleEntries.slice(p),
+        ];
+      }
+
+      return { ...state, visibleEntries };
     }
     case ActionTypes.REALTIME_LIKE_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW: {
