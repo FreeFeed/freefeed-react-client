@@ -421,7 +421,9 @@ const iLikedPost = ({ user, posts }, postId) => {
 };
 const dispatchWithPost = async (store, postId, action, filter = () => true, maxDelay = 0) => {
   let state = store.getState();
-  const shouldBump = isFirstPage(state) && !isMemories(state);
+  const shouldBump = isFirstPage(state)
+    && !isMemories(state)
+    && state.feedSort.sort === FeedSortOptions.ACTIVITY;
 
   if (isPostLoaded(state, postId)) {
     return store.dispatch({ ...action, shouldBump });
@@ -471,7 +473,20 @@ const bindHandlers = (store) => ({
     const useRealtimePreference = state.user.frontendPreferences.realtimeActive;
     const shouldBump = isFeedFirstPage && (!isHomeFeed || (useRealtimePreference && isHomeFeed)) && !isMemoriesFeed;
 
-    return store.dispatch({ ...data, type: ActionTypes.REALTIME_POST_NEW, post: data.posts, shouldBump });
+    let insertBefore = null;
+    if (shouldBump) {
+      insertBefore = state.feedViewState.visibleEntries[0] || null;
+      if (state.feedSort.sort === FeedSortOptions.CHRONOLOGIC) {
+        for (const postId of state.feedViewState.visibleEntries) {
+          if (data.posts.createdAt >= state.posts[postId].createdAt) {
+            insertBefore = postId;
+            break;
+          }
+        }
+      }
+    }
+
+    return store.dispatch({ ...data, type: ActionTypes.REALTIME_POST_NEW, post: data.posts, shouldBump, insertBefore });
   },
   'post:update':  (data) => store.dispatch({ ...data, type: ActionTypes.REALTIME_POST_UPDATE, post: data.posts }),
   'post:destroy': (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId }),
