@@ -70,7 +70,7 @@ const SideBarFreeFeed = () => (
       <ul>
         <li><Link to="/search">Search</Link></li>
         <li><Link to="/filter/everything">Everything</Link></li>
-        <li><a href="https://davidmz.me/frfrfr/all-groups/">Public Groups</a></li>
+        <li><a href="https://davidmz.me/frfrfr/all-groups/" target="_blank">Public Groups</a></li>
         <li><Link to="/support">Support</Link> / <a href="https://dev.freefeed.net/w/faq/">FAQ</a></li>
         <li><Link to="/freefeed">News</Link></li>
         <li><Link to="/about/donate">Donate</Link></li>
