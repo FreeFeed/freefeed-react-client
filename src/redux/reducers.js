@@ -2466,7 +2466,7 @@ const getInitialSortingState = () => {
   const defaultHomeFeedSort = config.frontendPreferences.defaultValues.homeFeedSort;
   const persistedUser = getPersistedUser();
   const homeFeedSort = (persistedUser && persistedUser.frontendPreferences.homeFeedSort) || defaultHomeFeedSort;
-  return { sort: homeFeedSort, homeFeedSort, currentFeed: request(ActionTypes.HOME) };
+  return { sort: homeFeedSort, homeFeedSort, currentFeed: ActionTypes.HOME };
 };
 
 export function feedSort(state = getInitialSortingState(), action) {
