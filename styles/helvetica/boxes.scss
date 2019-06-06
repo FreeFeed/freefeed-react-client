@@ -72,8 +72,14 @@
   font-size: 12px;
 }
 
-// Sidebar Search block header
-.box-header-search {
+// Sidebar FreeFeed block header
+.box-header-freefeed {
+  @extend .box-header;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.box-header-memories {
   @extend .box-header;
   font-weight: bold;
   font-size: 15px;

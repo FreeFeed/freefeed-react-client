@@ -61,16 +61,19 @@ const SideBarFriends = ({ user }) => (
 );
 
 
-const SideBarSearch = ({ user }) => (
+const SideBarFreeFeed = () => (
   <div className="box">
-    <div className="box-header-search">
-      Search
+    <div className="box-header-freefeed">
+      FreeFeed
     </div>
     <div className="box-body">
       <ul>
-        <li><Link to="/search">FreeFeed search</Link></li>
-        <li><Link to={{ pathname: "/search", query: { qs: `"@${user.username}"` } }}>Vanity search</Link></li>
-        {/*<li><Link to="/filter/best_of">Best of FreeFeed</Link></li>*/}
+        <li><Link to="/search">Search</Link></li>
+        <li><Link to="/filter/everything">Everything</Link></li>
+        <li><a href="https://davidmz.me/frfrfr/all-groups/" target="_blank">Public Groups</a></li>
+        <li><Link to="/support">Support</Link> / <a href="https://dev.freefeed.net/w/faq/">FAQ</a></li>
+        <li><Link to="/freefeed">News</Link></li>
+        <li><Link to="/about/donate">Donate</Link></li>
       </ul>
     </div>
   </div>
@@ -90,7 +93,7 @@ const SideBarMemories = () => {
   ));
   return (
     <div className="box">
-      <div className="box-header-search">
+      <div className="box-header-memories">
         Memories of {moment(today).format("MMMM D")}
       </div>
       <div className="box-body">
@@ -103,9 +106,6 @@ const SideBarMemories = () => {
 
 const SideBarGroups = ({ recentGroups }) => (
   <div className="box">
-    <div className="box-header-info">
-      <a href="https://davidmz.me/frfrfr/all-groups/">Show All</a>
-    </div>
     <div className="box-header-groups">
       Groups
     </div>
@@ -115,21 +115,6 @@ const SideBarGroups = ({ recentGroups }) => (
     <div className="box-footer">
       <Link to="/groups">Browse/edit groups</Link>
     </div>
-  </div>
-);
-
-const SideBarLinks = () => (
-  <div className="box">
-    <div className="box-header-groups">
-      Info
-    </div>
-    <div className="box-body">
-      <ul>
-        <li><Link to="/freefeed">News</Link></li>
-        <li><Link to="/support">Support</Link></li>
-      </ul>
-    </div>
-    <div className="box-footer" />
   </div>
 );
 
@@ -279,9 +264,8 @@ const SideBar = ({ user, signOut, recentGroups }) => {
       <LoggedInBlock user={user} signOut={signOut} />
       <SideBarFriends user={user} />
       <SideBarArchive user={user} />
-      <SideBarSearch user={user} />
+      <SideBarFreeFeed />
       <SideBarGroups recentGroups={recentGroups} />
-      <SideBarLinks />
       <SideBarBookmarklet />
       <SideBarMemories />
       <SideBarCoinJar />
