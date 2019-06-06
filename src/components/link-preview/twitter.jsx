@@ -1,7 +1,8 @@
 /* global twttr */
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
 
+import { darkTheme } from '../select-utils';
 import ScrollSafe from './scroll-helpers/scroll-safe';
 import * as heightCache from './scroll-helpers/size-cache';
 
@@ -13,29 +14,52 @@ export function canShowURL(url) {
 }
 
 class TwitterPreview extends React.Component {
-  async componentDidMount() {
+  elem = React.createRef();
+
+  async embed() {
     await loadTwitterAPI();
     try {
-      twttr.widgets.createTweetEmbed(getTweetId(this.props.url), ReactDOM.findDOMNode(this).firstChild);
+      await twttr.widgets.createTweet(
+        getTweetId(this.props.url),
+        this.elem.current,
+        {
+          theme: this.props.darkTheme ? 'dark' : 'light',
+          dnt:   true,
+        }
+      );
     } catch (e) {
       // pass
     }
   }
 
+
+  componentDidMount() {
+    this.embed();
+  }
+
+  componentDidUpdate() {
+    setTimeout(() => this.embed(), 0);
+  }
+
   render() {
     return (
       <div
+        key={`${this.props.url}##${this.props.darkTheme ? 'dark' : 'light'}`}
         className="tweet-preview link-preview-content"
         data-url={this.props.url}
         style={{ height: `${heightCache.get(this.props.url, 0)}px` }}
       >
-        <div style={{ overflow: 'hidden' }} />
+        <div ref={this.elem} style={{ overflow: 'hidden' }} />
       </div>
     );
   }
 }
 
-export default ScrollSafe(TwitterPreview);
+function select(state) {
+  return { darkTheme: darkTheme(state) };
+}
+
+export default ScrollSafe(connect(select)(TwitterPreview));
 
 // Helpers
 

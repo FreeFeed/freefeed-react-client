@@ -1,17 +1,18 @@
-$bg-color: rgb(30, 30, 30);
-$bg-color-lighter: scale-color($bg-color, $lightness: 10%);
-$bg-color-lightest: scale-color($bg-color, $lightness: 20%);
+$bg-color: hsl(220, 9%, 10%);
+$bg-color-lighter: hsl(220, 6%, 18%);
+$bg-color-lightest: hsl(220, 3%, 24%);
 
-$text-color: rgb(160, 160, 160);
-$text-color-lighter: scale-color($text-color, $lightness: 30%);
-$text-color-darker: scale-color($text-color, $lightness: -30%);
-$text-color-darkest: scale-color($text-color, $lightness: -50%);
+$text-color: hsl(0, 0%, 70%);
+$text-color-lighter: hsl(0, 0%, 80%);
+$text-color-darker: hsl(0, 0%, 60%);
+
+$separator-color: hsl(0, 0%, 50%);
 
 $accent-color: hsl(40, 100%, 55%);
 $link-color: mix($text-color, $accent-color, 60%);
 $link-color-dim: mix($text-color, $accent-color, 75%);
 
-$bg-highlight-color: mix($bg-color-lightest, $accent-color, 66%);
+$bg-highlight-color: mix($bg-color-lightest, $accent-color, 70%);
 
 body,
 .sidebar .box-body,
@@ -41,12 +42,17 @@ body.dark-theme {
   .arrow-span,
   .sidebar a.bookmarklet-button,
   select[name="os0"],
+  .color-scheme-selector select,
   .search-memo,
   .timeline-post.direct-post,
   .timeline-post.direct-post .expand-panel,
   .feed-options-switch .dropdown,
   .loader-container .loader-overlay {
     background-color: $bg-color-lighter;
+  }
+
+  .arrow-span {
+    background-color: $bg-color-lightest;
   }
 
   .timeline-post.direct-post {
@@ -58,7 +64,7 @@ body.dark-theme {
   .avatar img,
   select[name="os0"],
   .feed-options-switch .dropdown {
-    border-color: $text-color-darkest;
+    border-color: $separator-color;
   }
 
   &,
@@ -87,7 +93,9 @@ body.dark-theme {
 
   .sidebar,
   .post-editor .post-edit-options .post-edit-more-trigger,
-  .comment-likes .comment-count {
+  .comment-likes .comment-count,
+  .post .post-body .post-footer .post-timestamp,
+  .post-footer {
     color: $text-color-darker;
   }
 
@@ -102,7 +110,7 @@ body.dark-theme {
   .box-header-search,
   .search-form .search-input,
   .create-post {
-    border-bottom-color: $text-color-darkest;
+    border-bottom-color: $separator-color;
   }
 
   .feed-comment-dot:after {
@@ -155,19 +163,17 @@ body.dark-theme {
   .comment .comment-textarea,
   .form-control {
     background: $bg-color-lighter;
-    border: 1px solid $text-color-darkest;
+    border: 1px solid $separator-color;
     color: $text-color;
   }
 
   .btn-default {
     color: $text-color;
     background: $bg-color-lightest;
-    border-color: $text-color-darkest;
+    border-color: $separator-color;
 
     &:disabled {
       color: $text-color-darker;
-      background: $bg-color-lightest;
-      border-color: $text-color-darkest;
     }
   }
 
@@ -200,7 +206,7 @@ body.dark-theme {
   }
 
   .feed-options-switch .dropdown .spacer {
-    background-color: $text-color-darkest;
+    background-color: $separator-color;
   }
 
   .feed-options-switch .dropdown {
@@ -216,7 +222,7 @@ body.dark-theme {
       color: inherit;
 
       .userpic {
-        border-color: $text-color-darkest;
+        border-color: $separator-color;
       }
 
       .names {
@@ -255,7 +261,7 @@ body.dark-theme {
 
   .Select-control {
     background-color: $bg-color-lighter;
-    border-color: $text-color-darkest;
+    border-color: $separator-color;
 
     .is-open > & {
       background-color: $bg-color-lighter;
@@ -287,7 +293,7 @@ body.dark-theme {
 
   .Select-menu-outer {
     background-color: $bg-color-lighter;
-    border-color: $text-color-darkest;
+    border-color: $separator-color;
   }
 
   .Select-option {
@@ -303,16 +309,16 @@ body.dark-theme {
 
   .post-likes .icon,
   .comment-likes .icon {
-    opacity: 0.8;
+    opacity: 0.9;
   }
 
   .link-preview .video-preview .static-preview .play-icon {
-    color: $bg-color-lightest;
+    color: $text-color;
   }
 
   .comment-likes .comment-likes-list {
     background-color: $bg-color-lighter;
-    border-color: $text-color-darkest;
+    border-color: $separator-color;
   }
 
   .image-attachments .attachment .remove-attachment {
@@ -323,7 +329,7 @@ body.dark-theme {
   .dd-menu .dd-menu-items ul,
   .dd-menu .dd-menu-items ol {
     background-color: $bg-color-lighter;
-    border-color: $text-color-darkest;
+    border-color: $separator-color;
     color: $text-color;
   }
 
@@ -356,5 +362,9 @@ body.dark-theme {
 
   .timeline-post.direct-post {
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 48 48'><path fill='%23505050' d='M40 8H8c-2.21 0-3.98 1.79-3.98 4L4 36c0 2.21 1.79 4 4 4h32c2.21 0 4-1.79 4-4V12c0-2.21-1.79-4-4-4zm0 8L24 26 8 16v-4l16 10 16-10v4z'/></svg>");
+  }
+
+  .audio-attachments audio {
+    filter: invert(1) contrast(70%) hue-rotate(180deg);
   }
 }
