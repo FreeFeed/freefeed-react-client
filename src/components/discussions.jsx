@@ -7,6 +7,7 @@ import { joinPostData, postActions } from './select-utils';
 import CreatePost from './create-post';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
+import FeedOptionsSwitch from './feed-options-switch';
 
 
 const FeedHandler = (props) => {
@@ -27,6 +28,9 @@ const FeedHandler = (props) => {
     <div className="box">
       <div className="box-header-timeline">
         {props.boxHeader}
+        <div className="pull-right">
+          <FeedOptionsSwitch />
+        </div>
       </div>
       <PaginatedView firstPageHead={createPostComponent} {...props}>
         <Feed {...props} />

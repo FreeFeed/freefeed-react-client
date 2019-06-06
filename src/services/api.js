@@ -16,36 +16,39 @@ const getRequestOptions = () => ({
   }
 });
 
+const feedQueryString = ({ offset, sortChronologically, from }) => ([
+  offset && `offset=${offset}`,
+  sortChronologically && `sort=created`,
+  from && `created-before=${getDateForMemoriesRequest(from).toISOString()}`
+].filter(Boolean).join('&'));
+
 export function getWhoAmI() {
   return fetch(`${apiConfig.host}/v2/users/whoami`, getRequestOptions());
 }
 
-export function getHome({ offset, sortChronologically }) {
-  const sortParam = sortChronologically ? '&sort=created' : '';
+export function getHome(params) {
   return fetch(
-    `${apiConfig.host}/v2/timelines/home?offset=${offset}${sortParam}`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/home?${feedQueryString(params)}`, getRequestOptions());
 }
 
-export function getMemories({ from, offset }) {
-  const ISOFrom = (getDateForMemoriesRequest(from)).toISOString();
+export function getMemories(params) {
   return fetch(
-    `${apiConfig.host}/v2/timelines/home?offset=${offset}&created-before=${ISOFrom}&sort=created`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/home?${feedQueryString(params)}&sort=created`, getRequestOptions());
 }
 
-export function getDiscussions({ offset }) {
+export function getDiscussions(params) {
   return fetch(
-    `${apiConfig.host}/v2/timelines/filter/discussions?with-my-posts=yes&offset=${offset}`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/filter/discussions?with-my-posts=yes&${feedQueryString(params)}`, getRequestOptions());
 }
 
-export function getDirect({ offset }) {
+export function getDirect(params) {
   return fetch(
-    `${apiConfig.host}/v2/timelines/filter/directs?offset=${offset}`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/filter/directs?${feedQueryString(params)}`, getRequestOptions());
 }
 
-export function getUserFeed({ username, offset, sortChronologically }) {
-  const sortParam = sortChronologically ? '&sort=created' : '';
+export function getUserFeed({ username, ...params }) {
   return fetch(
-    `${apiConfig.host}/v2/timelines/${username}?offset=${offset}${sortParam}`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/${username}?${feedQueryString(params)}`, getRequestOptions());
 }
 
 export function getNotifications({ offset, filter }) {
@@ -428,18 +431,17 @@ export const unsubscribe = userAction('unsubscribe');
 export const sendSubscriptionRequest = userAction('sendRequest');
 
 
-export function getUserComments({ username, offset }) {
-  return fetch(`${apiConfig.host}/v2/timelines/${username}/comments?offset=${offset}`, getRequestOptions());
+export function getUserComments({ username, ...params }) {
+  return fetch(`${apiConfig.host}/v2/timelines/${username}/comments?${feedQueryString(params)}`, getRequestOptions());
 }
 
-export function getUserLikes({ username, offset }) {
-  return fetch(`${apiConfig.host}/v2/timelines/${username}/likes?offset=${offset}`, getRequestOptions());
+export function getUserLikes({ username, ...params }) {
+  return fetch(`${apiConfig.host}/v2/timelines/${username}/likes?${feedQueryString(params)}`, getRequestOptions());
 }
 
-export function getUserMemories({ username, from, offset }) {
-  const ISOFrom = (getDateForMemoriesRequest(from)).toISOString();
+export function getUserMemories({ username, ...params }) {
   return fetch(
-    `${apiConfig.host}/v2/timelines/${username}?offset=${offset}&created-before=${ISOFrom}&sort=created`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/${username}?${feedQueryString(params)}&sort=created`, getRequestOptions());
 }
 
 export function getSubscribers({ username }) {
@@ -597,8 +599,8 @@ export function getBestOf({ offset = 0 }) {
   return fetch(`${apiConfig.host}/v2/bestof?offset=${offset}`, getRequestOptions());
 }
 
-export function getEverything({ offset = 0 }) {
-  return fetch(`${apiConfig.host}/v2/everything?offset=${offset}`, getRequestOptions());
+export function getEverything(params) {
+  return fetch(`${apiConfig.host}/v2/everything?${feedQueryString(params)}`, getRequestOptions());
 }
 
 export function archiveRestoreActivity() {
