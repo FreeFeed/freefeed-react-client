@@ -1,10 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 import moment from 'moment';
 
 import { preventDefault } from '../utils';
+import { setUserColorScheme } from '../redux/action-creators';
+import { SCHEME_DARK, SCHEME_SYSTEM, SCHEME_LIGHT, systemColorSchemeSupported } from '../services/appearance';
 import UserName from './user-name';
 import RecentGroups from './recent-groups';
+import { InvisibleSelect } from './invisibe-select';
 
 
 const LoggedInBlock = ({ user, signOut }) => (
@@ -41,7 +45,6 @@ const SideBarFriends = ({ user }) => (
         </li>
         <li className="p-my-discussions"><Link to="/filter/discussions">My discussions</Link></li>
         <li className="p-best-of"><Link to="/summary/1">Best of day</Link></li>
-        <li className="p-everything"><Link to="/filter/everything">Everything</Link></li>
         <li className="p-home">
           <Link to="/filter/notifications" style={(user.unreadNotificationsNumber > 0 && !user.frontendPreferences.hideUnreadNotifications) ? { fontWeight: 'bold' } : {}}>
             Notifications {(user.unreadNotificationsNumber > 0
@@ -235,6 +238,41 @@ const SideBarArchive = ({ user }) => {
   );
 };
 
+const SideBarAppearance = connect(
+  ({ userColorScheme }) => ({ userColorScheme }),
+  (dispatch) => ({ onChange: (e) => dispatch(setUserColorScheme(e.target.value)) }),
+)(
+  ({ userColorScheme, onChange }) => {
+    let value = userColorScheme;
+    if (!systemColorSchemeSupported && value === SCHEME_SYSTEM) {
+      value = SCHEME_LIGHT;
+    }
+    return (
+      <div className="box">
+        <div className="box-header-groups">
+        Appearance
+        </div>
+        <div className="box-body">
+          <ul>
+            <li>
+              <div>
+                Color Scheme:{' '}
+                <InvisibleSelect value={value} onChange={onChange} className="color-scheme-selector">
+                  <option value={SCHEME_LIGHT}>Light</option>
+                  {systemColorSchemeSupported && <option value={SCHEME_SYSTEM}>Auto</option>}
+                  <option value={SCHEME_DARK}>Dark</option>
+                </InvisibleSelect>{' '}
+                <span className="color-scheme-hint">{value === SCHEME_LIGHT ? 'default' : value === SCHEME_SYSTEM ? 'as in your OS' : null}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    )
+    ;
+  }
+);
+
 const SideBar = ({ user, signOut, recentGroups }) => {
   return (
     <div className="col-md-3 sidebar">
@@ -247,6 +285,7 @@ const SideBar = ({ user, signOut, recentGroups }) => {
       <SideBarBookmarklet />
       <SideBarMemories />
       <SideBarCoinJar />
+      <SideBarAppearance />
     </div>
   );
 };

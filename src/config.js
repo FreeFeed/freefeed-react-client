@@ -49,7 +49,8 @@ const config = {
       homeFeedSort:      FeedSortOptions.ACTIVITY,
       homefeed:          { hideUsers: [] },
     }
-  }
+  },
+  appearance: { colorSchemeStorageKey: 'color-scheme' }
 };
 
 export default config;

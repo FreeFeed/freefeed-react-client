@@ -10,6 +10,7 @@ import Footer from './footer';
 import Sidebar from './sidebar';
 import LoaderContainer from './loader-container';
 import SearchForm from './search-form';
+import { ColorSchemeSetter } from './color-theme-setter';
 
 
 const InternalLayout = ({ authenticated, children }) => (
@@ -123,14 +124,12 @@ class Layout extends React.Component {
   render() {
     const { props } = this;
 
-    const layoutClassNames = classnames({
-      'container': true,
-      'dragover':  this.state.isDragOver
-    });
+    const layoutClassNames = classnames('container', { 'dragover': this.state.isDragOver });
 
     return (
       <div className={layoutClassNames}>
         <Helmet title={props.title} />
+        <ColorSchemeSetter />
 
         <header className="row">
           <div className="col-xs-9 col-sm-4 col-md-4">
@@ -185,7 +184,7 @@ function select(state, ownProps) {
     loadingView:   state.routeLoadingState,
     recentGroups:  state.recentGroups,
     routeName:     getCurrentRouteName(ownProps),
-    title:         state.title
+    title:         state.title,
   };
 }
 
