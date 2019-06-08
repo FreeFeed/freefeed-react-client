@@ -1,14 +1,14 @@
 import React from 'react';
 
-import throbber16 from '../../assets/images/throbber-16.gif';
 import { preventDefault } from '../utils';
+import { Throbber } from './throbber';
 
 
 const MoreCommentsWrapper = (props) => (
   <div className="comment more-comments-wrapper">
     <span className="more-comments-throbber">
       {props.isLoading ? (
-        <img width="16" height="16" src={throbber16} />
+        <Throbber />
       ) : false}
     </span>
     <a

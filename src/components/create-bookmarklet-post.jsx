@@ -1,7 +1,7 @@
 import React from 'react';
 
-import throbber16 from '../../assets/images/throbber-16.gif';
 import { preventDefault } from '../utils';
+import { Throbber } from './throbber';
 import SendTo from './send-to';
 
 
@@ -164,7 +164,7 @@ export default class CreateBookmarkletPost extends React.Component {
         <div className="post-edit-actions">
           {this.props.createPostViewState.isPending ? (
             <span className="post-edit-throbber">
-              <img width="16" height="16" src={throbber16} />
+              <Throbber />
             </span>
           ) : false}
 

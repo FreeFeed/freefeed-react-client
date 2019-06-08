@@ -1,7 +1,7 @@
 import React from 'react';
 
-import throbber16 from '../../assets/images/throbber-16.gif';
 import { preventDefault } from '../utils';
+import { Throbber } from './throbber';
 
 
 export default class GroupPictureForm extends React.Component {
@@ -40,7 +40,7 @@ export default class GroupPictureForm extends React.Component {
 
           {this.props.status === 'loading' ? (
             <span className="settings-throbber">
-              <img width="16" height="16" src={throbber16} />
+              <Throbber />
             </span>
           ) : false}
         </div>
