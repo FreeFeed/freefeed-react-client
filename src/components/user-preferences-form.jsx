@@ -1,9 +1,9 @@
 import React from 'react';
 import _ from 'lodash';
 
-import throbber16 from '../../assets/images/throbber-16.gif';
 import { preventDefault } from '../utils';
 import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
+import { Throbber } from './throbber';
 
 
 export default class UserPreferencesForm extends React.Component {
@@ -224,7 +224,7 @@ export default class UserPreferencesForm extends React.Component {
           <button className="btn btn-default" type="submit">Update</button>
           {this.props.status === 'loading' ? (
             <span className="settings-throbber">
-              <img width="16" height="16" src={throbber16} />
+              <Throbber />
             </span>
           ) : false}
         </p>

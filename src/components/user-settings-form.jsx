@@ -1,8 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import throbber16 from '../../assets/images/throbber-16.gif';
 import { preventDefault } from '../utils';
+import { Throbber } from './throbber';
 
 
 const
@@ -150,7 +150,7 @@ export default class UserSettingsForm extends React.Component {
           <button className="btn btn-default" type="submit">Update</button>
           {this.props.isSaving ? (
             <span className="settings-throbber">
-              <img width="16" height="16" src={throbber16} />
+              <Throbber />
             </span>
           ) : false}
         </p>

@@ -6,13 +6,13 @@ import _ from 'lodash';
 import Textarea from 'react-textarea-autosize';
 import moment from 'moment';
 
-import throbber16 from '../../assets/images/throbber-16.gif';
 import { getFirstLinkToEmbed } from '../utils/parse-text';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
 import { datetimeFormat } from '../utils/get-date-from-short-string';
-
 import config from '../config';
+import { Throbber } from './throbber';
+
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
 import PostLikes from './post-likes';
@@ -341,7 +341,7 @@ class Post extends React.Component {
         <a className="post-action" onClick={didILikePost ? this.unlikePost : this.likePost}>{didILikePost ? 'Un-like' : 'Like'}</a>
         {props.isLiking ? (
           <span className="post-like-throbber">
-            <img width="16" height="16" src={throbber16} />
+            <Throbber />
           </span>
         ) : false}
       </span>
@@ -354,7 +354,7 @@ class Post extends React.Component {
         <a className="post-action" onClick={props.isHidden ? this.handleUnhideClick : this.handleHideClick}>{props.isHidden ? 'Un-hide' : 'Hide'}</a>
         {props.isHiding ? (
           <span className="post-hide-throbber">
-            <img width="16" height="16" src={throbber16} />
+            <Throbber />
           </span>
         ) : false}
       </span>
@@ -385,7 +385,7 @@ class Post extends React.Component {
         {' '}
         {props.isHiding ? (
           <span className="post-hide-throbber">
-            <img width="16" height="16" src={throbber16} />
+            <Throbber />
           </span>
         ) : false}
       </div>
@@ -456,7 +456,7 @@ class Post extends React.Component {
                 <div className="post-edit-actions">
                   {props.isSaving ? (
                     <span className="post-edit-throbber">
-                      <img width="16" height="16" src={throbber16} />
+                      <Throbber />
                     </span>
                   ) : false}
                   <a className="post-cancel" onClick={this.cancelEditingPost}>Cancel</a>
