@@ -29,6 +29,9 @@ const baseConfig = {
     filename:                      `${filename}.js`,
     sourceMapFilename:             `[file].map`,
     devtoolModuleFilenameTemplate: '/[absolute-resource-path]',
+    // Set correct globalObject for web workers:
+    // see https://github.com/webpack-contrib/worker-loader/issues/166
+    globalObject:                  'this',
   },
   resolve: { extensions: ['.js', '.json', '.jsx'] },
   plugins: skipFalsy([
