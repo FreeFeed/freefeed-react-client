@@ -53,11 +53,11 @@ class RuleGenerator {
               "@babel/proposal-class-properties",
               "@babel/proposal-do-expressions",
               "@babel/proposal-object-rest-spread",
-              '@babel/transform-runtime',
+              this.opts.dev && '@babel/transform-runtime',
               // ['@babel/plugin-transform-modules-commonjs', {
               //   "noInterop": true,
               // }],
-              "react-hot-loader/babel",
+              this.opts.hot && "react-hot-loader/babel",
               !this.opts.dev && ['transform-react-remove-prop-types', { mode: 'remove', removeImport: true, additionalLibraries: ["react-style-proptype"] }],
               !this.opts.dev && ["@babel/transform-react-constant-elements"],
               !this.opts.dev && ["@babel/transform-react-inline-elements"],
