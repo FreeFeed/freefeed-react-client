@@ -8,6 +8,15 @@ import { Connection, scrollCompensator } from '../services/realtime';
 import { userParser, delay } from '../utils';
 import * as FeedSortOptions from '../utils/feed-sort-options';
 
+import {
+  colorSchemeStorageKey,
+  loadColorScheme,
+  saveColorScheme,
+  systemColorSchemeSupported,
+  SCHEME_LIGHT,
+  SCHEME_DARK,
+  SCHEME_NO_PREFERENCE,
+} from '../services/appearance';
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import { request, response, fail, requiresAuth, isFeedRequest, isFeedResponse, isFeedGeneratingAction, getFeedName } from './action-helpers';
@@ -167,6 +176,30 @@ export const authMiddleware = (store) => {
     }
 
     return next(action);
+  };
+};
+
+export const appearanceMiddleware = (store) => {
+  if (typeof window !== 'undefined') {
+    window.addEventListener("storage", (e) => e.key === colorSchemeStorageKey && store.dispatch(ActionCreators.setUserColorScheme(loadColorScheme())));
+    setTimeout(() => store.dispatch(ActionCreators.setUserColorScheme(loadColorScheme())), 0);
+
+    if (systemColorSchemeSupported) {
+      for (const scheme of [SCHEME_LIGHT, SCHEME_DARK, SCHEME_NO_PREFERENCE]) {
+        const mq = window.matchMedia(`(prefers-color-scheme: ${scheme})`);
+        const handler = (mq) => mq.matches && store.dispatch(ActionCreators.setSystemColorScheme(scheme));
+        mq.addListener(handler);
+        setTimeout(() => handler(mq), 0);
+      }
+    }
+  }
+
+  return (next) => (action) => {
+    next(action);
+    if (action.type === ActionTypes.SET_USER_COLOR_SCHEME) {
+      saveColorScheme(action.payload);
+      return;
+    }
   };
 };
 
@@ -388,7 +421,9 @@ const iLikedPost = ({ user, posts }, postId) => {
 };
 const dispatchWithPost = async (store, postId, action, filter = () => true, maxDelay = 0) => {
   let state = store.getState();
-  const shouldBump = isFirstPage(state) && !isMemories(state);
+  const shouldBump = isFirstPage(state)
+    && !isMemories(state)
+    && state.feedSort.sort === FeedSortOptions.ACTIVITY;
 
   if (isPostLoaded(state, postId)) {
     return store.dispatch({ ...action, shouldBump });
@@ -438,7 +473,20 @@ const bindHandlers = (store) => ({
     const useRealtimePreference = state.user.frontendPreferences.realtimeActive;
     const shouldBump = isFeedFirstPage && (!isHomeFeed || (useRealtimePreference && isHomeFeed)) && !isMemoriesFeed;
 
-    return store.dispatch({ ...data, type: ActionTypes.REALTIME_POST_NEW, post: data.posts, shouldBump });
+    let insertBefore = null;
+    if (shouldBump) {
+      insertBefore = state.feedViewState.visibleEntries[0] || null;
+      if (state.feedSort.sort === FeedSortOptions.CHRONOLOGIC) {
+        for (const postId of state.feedViewState.visibleEntries) {
+          if (data.posts.createdAt >= state.posts[postId].createdAt) {
+            insertBefore = postId;
+            break;
+          }
+        }
+      }
+    }
+
+    return store.dispatch({ ...data, type: ActionTypes.REALTIME_POST_NEW, post: data.posts, shouldBump, insertBefore });
   },
   'post:update':  (data) => store.dispatch({ ...data, type: ActionTypes.REALTIME_POST_UPDATE, post: data.posts }),
   'post:destroy': (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId }),

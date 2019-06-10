@@ -1,10 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 import moment from 'moment';
 
 import { preventDefault } from '../utils';
+import { setUserColorScheme } from '../redux/action-creators';
+import { SCHEME_DARK, SCHEME_SYSTEM, SCHEME_LIGHT, systemColorSchemeSupported } from '../services/appearance';
 import UserName from './user-name';
 import RecentGroups from './recent-groups';
+import { InvisibleSelect } from './invisibe-select';
 
 
 const LoggedInBlock = ({ user, signOut }) => (
@@ -41,7 +45,6 @@ const SideBarFriends = ({ user }) => (
         </li>
         <li className="p-my-discussions"><Link to="/filter/discussions">My discussions</Link></li>
         <li className="p-best-of"><Link to="/summary/1">Best of day</Link></li>
-        <li className="p-everything"><Link to="/filter/everything">Everything</Link></li>
         <li className="p-home">
           <Link to="/filter/notifications" style={(user.unreadNotificationsNumber > 0 && !user.frontendPreferences.hideUnreadNotifications) ? { fontWeight: 'bold' } : {}}>
             Notifications {(user.unreadNotificationsNumber > 0
@@ -58,16 +61,19 @@ const SideBarFriends = ({ user }) => (
 );
 
 
-const SideBarSearch = ({ user }) => (
+const SideBarFreeFeed = () => (
   <div className="box">
-    <div className="box-header-search">
-      Search
+    <div className="box-header-freefeed">
+      FreeFeed
     </div>
     <div className="box-body">
       <ul>
-        <li><Link to="/search">FreeFeed search</Link></li>
-        <li><Link to={{ pathname: "/search", query: { qs: `"@${user.username}"` } }}>Vanity search</Link></li>
-        {/*<li><Link to="/filter/best_of">Best of FreeFeed</Link></li>*/}
+        <li><Link to="/search">Search</Link></li>
+        <li><Link to="/filter/everything">Everything</Link></li>
+        <li><a href="https://davidmz.me/frfrfr/all-groups/" target="_blank">Public Groups</a></li>
+        <li><Link to="/support">Support</Link> / <a href="https://dev.freefeed.net/w/faq/" target="_blank">FAQ</a></li>
+        <li><Link to="/freefeed">News</Link></li>
+        <li><Link to="/about/donate">Donate</Link></li>
       </ul>
     </div>
   </div>
@@ -87,7 +93,7 @@ const SideBarMemories = () => {
   ));
   return (
     <div className="box">
-      <div className="box-header-search">
+      <div className="box-header-memories">
         Memories of {moment(today).format("MMMM D")}
       </div>
       <div className="box-body">
@@ -100,9 +106,6 @@ const SideBarMemories = () => {
 
 const SideBarGroups = ({ recentGroups }) => (
   <div className="box">
-    <div className="box-header-info">
-      <a href="https://davidmz.me/frfrfr/all-groups/">Show All</a>
-    </div>
     <div className="box-header-groups">
       Groups
     </div>
@@ -112,21 +115,6 @@ const SideBarGroups = ({ recentGroups }) => (
     <div className="box-footer">
       <Link to="/groups">Browse/edit groups</Link>
     </div>
-  </div>
-);
-
-const SideBarLinks = () => (
-  <div className="box">
-    <div className="box-header-groups">
-      Info
-    </div>
-    <div className="box-body">
-      <ul>
-        <li><Link to="/freefeed">News</Link></li>
-        <li><Link to="/support">Support</Link></li>
-      </ul>
-    </div>
-    <div className="box-footer" />
   </div>
 );
 
@@ -235,18 +223,53 @@ const SideBarArchive = ({ user }) => {
   );
 };
 
+const SideBarAppearance = connect(
+  ({ userColorScheme }) => ({ userColorScheme }),
+  (dispatch) => ({ onChange: (e) => dispatch(setUserColorScheme(e.target.value)) }),
+)(
+  ({ userColorScheme, onChange }) => {
+    let value = userColorScheme;
+    if (!systemColorSchemeSupported && value === SCHEME_SYSTEM) {
+      value = SCHEME_LIGHT;
+    }
+    return (
+      <div className="box">
+        <div className="box-header-groups">
+        Appearance
+        </div>
+        <div className="box-body">
+          <ul>
+            <li>
+              <div>
+                Color Scheme:{' '}
+                <InvisibleSelect value={value} onChange={onChange} className="color-scheme-selector">
+                  <option value={SCHEME_LIGHT}>Light</option>
+                  {systemColorSchemeSupported && <option value={SCHEME_SYSTEM}>Auto</option>}
+                  <option value={SCHEME_DARK}>Dark</option>
+                </InvisibleSelect>{' '}
+                <span className="color-scheme-hint">{value === SCHEME_LIGHT ? 'default' : value === SCHEME_SYSTEM ? 'as in your OS' : null}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    )
+    ;
+  }
+);
+
 const SideBar = ({ user, signOut, recentGroups }) => {
   return (
     <div className="col-md-3 sidebar">
       <LoggedInBlock user={user} signOut={signOut} />
       <SideBarFriends user={user} />
       <SideBarArchive user={user} />
-      <SideBarSearch user={user} />
+      <SideBarFreeFeed />
       <SideBarGroups recentGroups={recentGroups} />
-      <SideBarLinks />
       <SideBarBookmarklet />
       <SideBarMemories />
       <SideBarCoinJar />
+      <SideBarAppearance />
     </div>
   );
 };

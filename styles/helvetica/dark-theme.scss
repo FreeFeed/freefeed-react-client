@@ -1,0 +1,372 @@
+$bg-color: hsl(220, 9%, 10%);
+$bg-color-lighter: hsl(220, 6%, 18%);
+$bg-color-lightest: hsl(220, 3%, 24%);
+
+$text-color: hsl(0, 0%, 70%);
+$text-color-lighter: hsl(0, 0%, 80%);
+$text-color-darker: hsl(0, 0%, 60%);
+
+$separator-color: hsl(0, 0%, 50%);
+
+$accent-color: hsl(40, 100%, 55%);
+$link-color: mix($text-color, $accent-color, 60%);
+$link-color-dim: mix($text-color, $accent-color, 75%);
+
+$bg-highlight-color: mix($bg-color-lightest, $accent-color, 70%);
+
+body,
+.sidebar .box-body,
+.search-form .search-button,
+.search-form .search-input,
+.content .box-body,
+.content .box-footer,
+.expandable .expand-panel {
+  transition: background 0.2s;
+}
+
+body.dark-theme {
+  &,
+  .sidebar .box-body,
+  .search-form .search-button,
+  .search-form .search-input,
+  .content .box-body,
+  .content .box-footer,
+  .expandable .expand-panel {
+    background-color: $bg-color;
+  }
+
+  .fa-inverse {
+    color: $bg-color !important;
+  }
+
+  .arrow-span,
+  .sidebar a.bookmarklet-button,
+  select[name="os0"],
+  .color-scheme-selector select,
+  .search-memo,
+  .timeline-post.direct-post,
+  .timeline-post.direct-post .expand-panel,
+  .feed-options-switch .dropdown,
+  .loader-container .loader-overlay {
+    background-color: $bg-color-lighter;
+  }
+
+  .arrow-span {
+    background-color: $bg-color-lightest;
+  }
+
+  .timeline-post.direct-post {
+    border-bottom-color: $bg-color-lighter;
+  }
+
+  .post .post-userpic,
+  .image-attachments .image-attachment-link,
+  .avatar img,
+  select[name="os0"],
+  .feed-options-switch .dropdown {
+    border-color: $separator-color;
+  }
+
+  &,
+  .post .post-body .post-text,
+  .post .post-body,
+  .box-header,
+  .box-header-empty,
+  .box-header-timeline,
+  .box-header-friends,
+  .box-header-groups,
+  .box-header-freefeed,
+  .box-header-memories,
+  .site-logo-link,
+  .site-logo-link:active,
+  .site-logo-link:focus,
+  .site-logo-link:hover,
+  .site-logo-link:visited,
+  .sidebar .box-body ul li a,
+  .sidebar .box-footer a,
+  .sidebar a,
+  .sidebar .box-body .year-links-row a,
+  .profile .description,
+  ul.tile-list li .user-name-wrapper > a,
+  ul.tile-list li .avatar > a {
+    color: $text-color;
+  }
+
+  .sidebar,
+  .post-editor .post-edit-options .post-edit-more-trigger,
+  .comment-likes .comment-count,
+  .post .post-body .post-footer .post-timestamp,
+  .post-footer {
+    color: $text-color-darker;
+  }
+
+  .profile,
+  .profile-controls,
+  .post,
+  .box-header,
+  .box-header-empty,
+  .box-header-timeline,
+  .box-header-friends,
+  .box-header-groups,
+  .box-header-freefeed,
+  .box-header-memories,
+  .search-form .search-input,
+  .create-post {
+    border-bottom-color: $separator-color;
+  }
+
+  .feed-comment-dot:after {
+    background-color: $text-color-darker;
+  }
+
+  a,
+  a:hover,
+  a:focus,
+  .post .post-header a,
+  .post .post-body .post-text a {
+    color: $link-color;
+  }
+
+  .post a,
+  .expandable .expand-panel .expand-button,
+  .image-attachments .show-more,
+  a.p-sendto-toggler {
+    color: $link-color-dim;
+  }
+
+  .fold-comments-sticky {
+    $bgColor: scale-color($bg-color, $alpha: -10%);
+    background-color: $bgColor;
+    box-shadow: 0 0px 4px 8px $bgColor;
+  }
+
+  .link-preview .folder-container .content-wrapper.folded::after {
+    background: linear-gradient(
+      scale-color($bg-color, $alpha: -100%) 0%,
+      scale-color($bg-color, $alpha: -80%) 25%,
+      scale-color($bg-color, $alpha: -20%) 75%,
+      $bg-color
+    );
+  }
+
+  .timeline-post.direct-post
+    .link-preview
+    .folder-container
+    .content-wrapper.folded::after {
+    background: linear-gradient(
+      scale-color($bg-color-lighter, $alpha: -100%) 0%,
+      scale-color($bg-color-lighter, $alpha: -80%) 25%,
+      scale-color($bg-color-lighter, $alpha: -20%) 75%,
+      $bg-color-lighter
+    );
+  }
+
+  .post-editor .post-textarea,
+  .comment .comment-textarea,
+  .form-control {
+    background: $bg-color-lighter;
+    border: 1px solid $separator-color;
+    color: $text-color;
+  }
+
+  .btn-default {
+    color: $text-color;
+    background: $bg-color-lightest;
+    border-color: $separator-color;
+
+    &:disabled {
+      color: $text-color-darker;
+    }
+  }
+
+  .btn-default:hover,
+  .btn-default:focus,
+  .btn-default.focus,
+  .btn-default:active,
+  .btn-default.active,
+  .open > .btn-default.dropdown-toggle {
+    color: $text-color-lighter;
+    background: $bg-color-lightest;
+    border-color: $text-color-lighter;
+  }
+
+  .search-highlight,
+  .feed-options-switch .dropdown .drop-option:hover {
+    color: $text-color-lighter;
+    background-color: $bg-highlight-color;
+  }
+
+  .comment.highlighted,
+  .comment.highlight-from-url {
+    color: $text-color-lighter;
+    background-color: $bg-color-lightest;
+  }
+
+  .comment.highlighted::before,
+  .comment.highlight-from-url::before {
+    border-color: $bg-color-lightest;
+  }
+
+  .feed-options-switch .dropdown .spacer {
+    background-color: $separator-color;
+  }
+
+  .feed-options-switch .dropdown {
+    color: $text-color-lighter;
+  }
+
+  .user-card {
+    background-color: $bg-color-lighter;
+    color: $text-color;
+
+    .user-card-info {
+      background-color: inherit;
+      color: inherit;
+
+      .userpic {
+        border-color: $separator-color;
+      }
+
+      .names {
+        .display-name {
+          color: $link-color;
+        }
+
+        .username {
+          color: $text-color;
+        }
+      }
+
+      .description {
+        color: $text-color;
+      }
+      .relationship-status {
+        color: $text-color;
+      }
+      .feed-status {
+        color: $text-color;
+      }
+    }
+
+    .user-card-actions {
+      border-top-color: $bg-color-lightest;
+      background-color: $bg-color-lightest;
+      color: $text-color;
+
+      a {
+        color: $link-color !important;
+      }
+    }
+  }
+
+  // Select-control
+
+  .Select-control {
+    background-color: $bg-color-lighter;
+    border-color: $separator-color;
+
+    .is-open > & {
+      background-color: $bg-color-lighter;
+      border-color: $text-color-darker;
+    }
+  }
+
+  .Select-placeholder,
+  :not(.Select--multi) > .Select-control .Select-value {
+    color: $text-color-darker;
+  }
+
+  .Select--multi .Select-value,
+  .Select-value-label-standalone {
+    color: $text-color;
+    background-color: $bg-color-lightest;
+    border-color: $text-color-darker;
+  }
+
+  .Select--multi .Select-value-icon {
+    border-color: $text-color-darker;
+  }
+
+  .Select--multi .Select-value-icon:hover,
+  .Select--multi .Select-value-icon:focus {
+    background-color: $bg-color-lightest;
+    color: $text-color-lighter;
+  }
+
+  .Select-menu-outer {
+    background-color: $bg-color-lighter;
+    border-color: $separator-color;
+  }
+
+  .Select-option {
+    color: $text-color;
+  }
+
+  .Select-option.is-focused {
+    background-color: $bg-highlight-color;
+    color: $text-color-lighter;
+  }
+
+  // end of Select-control
+
+  .post-likes .icon,
+  .comment-likes .icon {
+    opacity: 0.9;
+  }
+
+  .link-preview .video-preview .static-preview .play-icon {
+    color: $text-color;
+  }
+
+  .comment-likes .comment-likes-list {
+    background-color: $bg-color-lighter;
+    border-color: $separator-color;
+  }
+
+  .image-attachments .attachment .remove-attachment {
+    background-color: $bg-color-lightest;
+    color: $text-color;
+  }
+
+  .dd-menu .dd-menu-items ul,
+  .dd-menu .dd-menu-items ol {
+    background-color: $bg-color-lighter;
+    border-color: $separator-color;
+    color: $text-color;
+  }
+
+  .dd-menu .dd-menu-items ul li:hover:not([role="separator"]):not(.separator),
+  .dd-menu .dd-menu-items ul li > *:focus,
+  .dd-menu .dd-menu-items ol li:hover:not([role="separator"]):not(.separator),
+  .dd-menu .dd-menu-items ol li > *:focus {
+    background-color: $bg-highlight-color;
+    color: $text-color-lighter;
+  }
+
+  .dd-menu .dd-menu-items .dd-menu-item:hover,
+  .dd-menu .dd-menu-items .dd-menu-item.dd-menu-item-danger:hover {
+    color: $text-color-lighter !important;
+    background-color: $bg-highlight-color !important;
+  }
+
+  .actions-overlay {
+    background-color: scale-color($bg-color, $alpha: -40%);
+  }
+
+  .actions-panel {
+    background-color: $bg-color-lightest;
+    color: $text-color-lighter;
+    .mention-actions,
+    .mention-action {
+      background-color: $bg-color-lighter;
+    }
+  }
+
+  .timeline-post.direct-post {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 48 48'><path fill='%23505050' d='M40 8H8c-2.21 0-3.98 1.79-3.98 4L4 36c0 2.21 1.79 4 4 4h32c2.21 0 4-1.79 4-4V12c0-2.21-1.79-4-4-4zm0 8L24 26 8 16v-4l16 10 16-10v4z'/></svg>");
+  }
+
+  .audio-attachments audio {
+    filter: invert(1) contrast(70%) hue-rotate(180deg);
+  }
+}

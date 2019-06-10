@@ -9,6 +9,7 @@ import 'autotrack';  // used by google-analytics in ../index.jade
 
 import '../styles/common/common.scss';
 import '../styles/helvetica/app.scss';
+import '../styles/helvetica/dark-theme.scss';
 import '../assets/vendor-css/font-awesome.min.css';
 
 
