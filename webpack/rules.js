@@ -21,9 +21,10 @@ class RuleGenerator {
 
   get babel() {
     return {
-      test: /\.jsx?$/,
+      test: /\.m?jsx?$/,
       exclude: (modulePath) => {
-        return /node_modules/.test(modulePath)
+        return /node_modules/.test(modulePath) &&
+          !/node_modules\/element-closest/.test(modulePath);
       },
       use: [
         {
