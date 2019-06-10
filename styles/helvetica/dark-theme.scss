@@ -190,6 +190,12 @@ body.dark-theme {
     border-color: $text-color-lighter;
   }
 
+  .alert-info {
+    color: $text-color-lighter;
+    background: $bg-highlight-color;
+    border-color: $bg-highlight-color;
+  }
+
   .search-highlight,
   .feed-options-switch .dropdown .drop-option:hover {
     color: $text-color-lighter;
