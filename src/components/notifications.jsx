@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
-import throbber16 from '../../assets/images/throbber-16.gif';
+import { Throbber } from './throbber';
 import Linkify from "./linkify";
 import TimeDisplay from "./time-display";
 import PaginatedView from "./paginated-view";
@@ -137,7 +137,7 @@ const Notifications = (props) => (
       Notifications
       {props.isLoading && (
         <span className="notifications-throbber">
-          <img width="16" height="16" src={throbber16} />
+          <Throbber />
         </span>
       )}
     </div>

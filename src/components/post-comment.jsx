@@ -5,11 +5,11 @@ import _ from 'lodash';
 import classnames from 'classnames';
 import moment from 'moment';
 
-import throbber16 from '../../assets/images/throbber-16.gif';
 import { preventDefault, confirmFirst } from '../utils';
 import { READMORE_STYLE_COMPACT, COMMENT_DELETED } from '../utils/frontend-preferences-options';
 import { commentReadmoreConfig } from '../utils/readmore-config';
 import { datetimeFormat } from '../utils/get-date-from-short-string';
+import { Throbber } from './throbber';
 
 import CommentLikes from './comment-likes';
 import PieceOfText from './piece-of-text';
@@ -187,7 +187,7 @@ export default class PostComment extends React.Component {
           )}
           {this.props.isSaving ? (
             <span className="comment-throbber">
-              <img width="16" height="16" src={throbber16} />
+              <Throbber />
             </span>
           ) : false}
           {this.props.errorString ? (

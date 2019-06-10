@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import throbber16 from '../../assets/images/throbber-16.gif';
 import { preventDefault } from '../utils';
+import { Throbber } from './throbber';
 
 import GroupFeedTypePicker from './group-feed-type-picker';
 
@@ -68,7 +68,7 @@ export default class GroupCreateForm extends React.Component {
               <button className="btn btn-default" type="submit">Create</button>
               {this.props.status === 'loading' ? (
                 <span className="settings-throbber">
-                  <img width="16" height="16" src={throbber16} />
+                  <Throbber />
                 </span>
               ) : false}
             </p>

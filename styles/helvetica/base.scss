@@ -12,7 +12,7 @@ body.transition-active:before {
   z-index: 1;
   background:
     #fff
-    url('/img/throbber-100.gif')
+    url('/img/throbber.gif')
     no-repeat
     center;
 }
@@ -59,4 +59,8 @@ a, a:hover, a:focus {
 
 .error-string {
   color: #FF5A5F;
+}
+
+.throbber-image {
+  vertical-align: middle;
 }

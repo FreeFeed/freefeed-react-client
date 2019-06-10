@@ -3,10 +3,10 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import throbber100 from '../../assets/images/throbber.gif';
 import { updateGroup, updateGroupPicture, resetGroupUpdateForm } from '../redux/action-creators';
 import GroupSettingsForm from './group-settings-form';
 import GroupPictureForm from './group-picture-form';
+import { Throbber, BIG } from './throbber';
 
 
 const GroupSettings = (props) => (
@@ -16,7 +16,7 @@ const GroupSettings = (props) => (
         Group settings
       </div>
       <div className="box-body">
-        <img width="100" height="100" src={throbber100} />
+        <Throbber size={BIG} />
       </div>
     </div>
   ) : props.groupSettings.status === 'success' ? (

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import throbber16 from '../../assets/images/throbber-16.gif';
 import { preventDefault, pluralForm } from '../utils';
 import CreatePost from './create-post';
 import PieceOfText from './piece-of-text';
+import { Throbber } from './throbber';
 
 
 export default class UserProfile extends React.Component {
@@ -130,7 +130,7 @@ export default class UserProfile extends React.Component {
 
                 {props.userView.isSubscribing ? (
                   <span className="profile-controls-throbber">
-                    <img width="16" height="16" src={throbber16} />
+                    <Throbber />
                   </span>
                 ) : false}
               </div>
