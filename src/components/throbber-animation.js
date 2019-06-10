@@ -10,7 +10,7 @@ export function startAnimation({
 }) {
   const tgtCtx = tgtCanvas.getContext('2d');
 
-  // buffer canvas
+  // Buffer canvas
   let canvas;
   if (typeof document === 'undefined') {
     canvas = new OffscreenCanvas(tgtCanvas.width, tgtCanvas.height);
@@ -25,17 +25,30 @@ export function startAnimation({
   ctx.lineWidth = strokeWidth;
   ctx.lineCap = 'round';
   ctx.scale(scale, scale);
+
+  // Drawing constants
   const snakeLength = 21.5524 - strokeWidth;
   const dotPathRadius = 11.5 - (strokeWidth / 2);
+  const snakeOffsetMul = -snakeLength + (2 * snakeLength / SNAKE_DURATION);
+  const dotOffsetMul = -dotPathRadius * (Math.PI / 2) / (1 - SNAKE_DURATION);
 
   let startTime = 0;
   let frameId = 0;
+
+  frameId = requestAnimationFrame(updateCanvas);
+
+  // Return cancellation function
+  return () => cancelAnimationFrame(frameId);
+
+  // Functions
+
   function updateCanvas(time) {
     if (startTime === 0) {
       startTime = time;
     }
 
-    const t = ((time - startTime) / duration) + (SNAKE_DURATION / 2);
+    const t = ((time - startTime) / duration)
+      + (SNAKE_DURATION / 2); // Start at the middle of 'snake' phase to show full logo
     renderAt(t);
     tgtCtx.clearRect(0, 0, tgtCanvas.width, tgtCanvas.height);
     tgtCtx.drawImage(canvas, 0, 0);
@@ -43,21 +56,18 @@ export function startAnimation({
     frameId = requestAnimationFrame(updateCanvas);
   }
 
-  frameId = requestAnimationFrame(updateCanvas);
-
-  // return canceller function
-  return () => cancelAnimationFrame(frameId);
-
   function renderAt(time) {
     time -= Math.floor(time);
 
     ctx.clearRect(0, 0, 16, 16);
 
+    // Ketchup
     ctx.save();
     ctx.strokeStyle = KETCHUP_COLOR;
     drawHalf(time);
     ctx.restore();
 
+    // Mustard
     ctx.save();
     ctx.translate(16, 16);
     ctx.scale(-1, -1);
@@ -65,6 +75,7 @@ export function startAnimation({
     drawHalf(time);
     ctx.restore();
 
+    // Ketchup again over the mustard in the small area
     ctx.save();
     ctx.strokeStyle = KETCHUP_COLOR;
     drawHalf(time, true);
@@ -87,7 +98,7 @@ export function startAnimation({
       // Drawing snake
       ctx.beginPath();
       ctx.setLineDash([snakeLength, 100]);
-      ctx.lineDashOffset = -snakeLength + (2 * snakeLength * time / SNAKE_DURATION);
+      ctx.lineDashOffset = time * snakeOffsetMul;
       ctx.moveTo(strokeWidth / 2, 11.5);
       ctx.lineTo(8, 11.5);
       ctx.quadraticCurveTo(11.5, 11.5, 11.5, 8);
@@ -99,7 +110,7 @@ export function startAnimation({
       // Drawing dot
       ctx.beginPath();
       ctx.setLineDash([0, 100]);
-      ctx.lineDashOffset = (-dotPathRadius * (Math.PI / 2) * (time - SNAKE_DURATION)) / (1 - SNAKE_DURATION) ;
+      ctx.lineDashOffset = (time - SNAKE_DURATION) * dotOffsetMul;
       ctx.arc(11.5, 11.5, dotPathRadius, Math.PI, Math.PI * 3 / 2);
       ctx.stroke();
     }
