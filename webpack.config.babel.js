@@ -13,7 +13,8 @@ const config = {
   ...baseConfig,
   entry: {
     app: skipFalsy([
-      '@babel/polyfill',
+      'core-js/stable',
+      'regenerator-runtime/runtime',
       './src'
     ])
   },

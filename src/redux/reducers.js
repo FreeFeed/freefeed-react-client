@@ -7,6 +7,7 @@ import { getToken, getPersistedUser } from '../services/auth';
 import { parseQuery } from '../utils/search-highlighter';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
 import * as FeedSortOptions from '../utils/feed-sort-options';
+import { SCHEME_NO_PREFERENCE, SCHEME_SYSTEM } from '../services/appearance';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
 
@@ -340,10 +341,20 @@ export function feedViewState(state = initFeed, action) {
       if (!action.shouldBump) {
         return state;
       }
-      return {
-        ...state,
-        visibleEntries: [action.post.id, ...state.visibleEntries],
-      };
+
+      let { visibleEntries } = state;
+      const p = state.visibleEntries.indexOf(action.insertBefore);
+      if (p < 0) {
+        visibleEntries = [...visibleEntries, action.post.id];
+      } else {
+        visibleEntries = [
+          ...visibleEntries.slice(0, p),
+          action.post.id,
+          ...visibleEntries.slice(p),
+        ];
+      }
+
+      return { ...state, visibleEntries };
     }
     case ActionTypes.REALTIME_LIKE_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW: {
@@ -2455,7 +2466,7 @@ const getInitialSortingState = () => {
   const defaultHomeFeedSort = config.frontendPreferences.defaultValues.homeFeedSort;
   const persistedUser = getPersistedUser();
   const homeFeedSort = (persistedUser && persistedUser.frontendPreferences.homeFeedSort) || defaultHomeFeedSort;
-  return { sort: homeFeedSort, homeFeedSort, currentFeed: request(ActionTypes.HOME) };
+  return { sort: homeFeedSort, homeFeedSort, currentFeed: ActionTypes.HOME };
 };
 
 export function feedSort(state = getInitialSortingState(), action) {
@@ -2484,6 +2495,20 @@ export function feedSort(state = getInitialSortingState(), action) {
       sort,
       homeFeedSort: state.currentFeed === ActionTypes.HOME ? sort : state.homeFeedSort,
     };
+  }
+  return state;
+}
+
+export function systemColorScheme(state = SCHEME_NO_PREFERENCE, action) {
+  if (action.type === ActionTypes.SET_SYSTEM_COLOR_SCHEME) {
+    return action.payload;
+  }
+  return state;
+}
+
+export function userColorScheme(state = SCHEME_SYSTEM, action) {
+  if (action.type === ActionTypes.SET_USER_COLOR_SCHEME) {
+    return action.payload;
   }
   return state;
 }
