@@ -25,3 +25,13 @@ export function loadColorScheme() {
 export const systemColorSchemeSupported = (typeof window !== 'undefined')
   && window.matchMedia
   && window.matchMedia('(prefers-color-scheme: light)').media === '(prefers-color-scheme: light)';
+
+export function getSystemColorScheme() {
+  for (const scheme of [SCHEME_LIGHT, SCHEME_DARK]) {
+    const mq = window.matchMedia(`(prefers-color-scheme: ${scheme})`);
+    if (mq.matches) {
+      return scheme;
+    }
+  }
+  return SCHEME_NO_PREFERENCE;
+}

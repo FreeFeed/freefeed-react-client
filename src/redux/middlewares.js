@@ -181,15 +181,15 @@ export const authMiddleware = (store) => {
 
 export const appearanceMiddleware = (store) => {
   if (typeof window !== 'undefined') {
-    window.addEventListener("storage", (e) => e.key === colorSchemeStorageKey && store.dispatch(ActionCreators.setUserColorScheme(loadColorScheme())));
-    setTimeout(() => store.dispatch(ActionCreators.setUserColorScheme(loadColorScheme())), 0);
+    window.addEventListener("storage", (e) =>
+      e.key === colorSchemeStorageKey
+      && store.dispatch(ActionCreators.setUserColorScheme(loadColorScheme())));
 
     if (systemColorSchemeSupported) {
       for (const scheme of [SCHEME_LIGHT, SCHEME_DARK, SCHEME_NO_PREFERENCE]) {
         const mq = window.matchMedia(`(prefers-color-scheme: ${scheme})`);
         const handler = (mq) => mq.matches && store.dispatch(ActionCreators.setSystemColorScheme(scheme));
         mq.addListener(handler);
-        setTimeout(() => handler(mq), 0);
       }
     }
   }
