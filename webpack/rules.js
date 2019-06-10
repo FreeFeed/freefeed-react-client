@@ -23,8 +23,7 @@ class RuleGenerator {
     return {
       test: /\.jsx?$/,
       exclude: (modulePath) => {
-        return /node_modules/.test(modulePath) &&
-          !/node_modules\/@babel\/polyfill/.test(modulePath);
+        return /node_modules/.test(modulePath)
       },
       use: [
         {
