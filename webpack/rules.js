@@ -23,8 +23,7 @@ class RuleGenerator {
     return {
       test:    /\.m?jsx?$/,
       exclude: (modulePath) => {
-        return /node_modules/.test(modulePath) &&
-          !/node_modules[\\/]element-closest/.test(modulePath);
+        return /node_modules/.test(modulePath);
       },
       use: [
         {
