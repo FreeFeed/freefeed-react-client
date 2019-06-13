@@ -29,7 +29,7 @@ export function startAnimation({
   // Drawing constants
   const snakeLength = 21.5524 - strokeWidth;
   const dotPathRadius = 11.5 - (strokeWidth / 2);
-  const snakeOffsetMul = -snakeLength + (2 * snakeLength / SNAKE_DURATION);
+  const snakeOffsetMul = 2 * snakeLength / SNAKE_DURATION;
   const dotOffsetMul = -dotPathRadius * (Math.PI / 2) / (1 - SNAKE_DURATION);
 
   let startTime = 0;
@@ -98,7 +98,7 @@ export function startAnimation({
       // Drawing snake
       ctx.beginPath();
       ctx.setLineDash([snakeLength, 100]);
-      ctx.lineDashOffset = time * snakeOffsetMul;
+      ctx.lineDashOffset = (time * snakeOffsetMul) - snakeLength;
       ctx.moveTo(strokeWidth / 2, 11.5);
       ctx.lineTo(8, 11.5);
       ctx.quadraticCurveTo(11.5, 11.5, 11.5, 8);
