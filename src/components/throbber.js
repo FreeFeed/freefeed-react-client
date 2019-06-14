@@ -18,7 +18,7 @@ export const Throbber = React.memo(function Throbber({ size = SMALL, delay = DEL
   useEffect(() => {
     const t = setTimeout(() => setWaiting(false), delay);
     return () => clearTimeout(t);
-  });
+  }, []);
 
   if (!waiting && size === SMALL) {
     return (
@@ -72,7 +72,7 @@ const ThrobberOnCanvas = React.memo(function ThrobberOnCanvas({
       return () => worker.terminate();
     }
     return startAnimation({ ...animationParams, canvas: canvasRef.current });
-  });
+  }, []);
 
   return (
     <canvas
