@@ -6,7 +6,7 @@ import config from '../config';
 import { getToken, getPersistedUser } from '../services/auth';
 import { parseQuery } from '../utils/search-highlighter';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
-import * as FeedSortOptions from '../utils/feed-sort-options';
+import * as FeedOptions from '../utils/feed-options';
 import { loadColorScheme, getSystemColorScheme } from '../services/appearance';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
@@ -2480,7 +2480,7 @@ export function feedSort(state = getInitialSortingState(), action) {
   if (ActionHelpers.isFeedRequest(action)) {
     let { sort } = state;
     if (state.currentFeed !== ActionHelpers.getFeedName(action)) {
-      sort = action.type === request(ActionTypes.HOME) ? state.homeFeedSort : FeedSortOptions.ACTIVITY;
+      sort = action.type === request(ActionTypes.HOME) ? state.homeFeedSort : FeedOptions.ACTIVITY;
     }
     return {
       ...state,
@@ -2489,7 +2489,7 @@ export function feedSort(state = getInitialSortingState(), action) {
     };
   }
   if (action.type === ActionTypes.TOGGLE_FEED_SORT) {
-    const sort = state.sort === FeedSortOptions.ACTIVITY ? FeedSortOptions.CHRONOLOGIC : FeedSortOptions.ACTIVITY;
+    const sort = state.sort === FeedOptions.ACTIVITY ? FeedOptions.CHRONOLOGIC : FeedOptions.ACTIVITY;
     return {
       ...state,
       sort,

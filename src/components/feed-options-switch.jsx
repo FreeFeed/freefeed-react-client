@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import DropdownMenu from 'react-dd-menu';
 import { faCheck, faCircle } from '@fortawesome/free-solid-svg-icons';
-import * as FeedSortOptions from '../utils/feed-sort-options';
+import * as FeedOptions from '../utils/feed-options';
 import { toggleRealtime, updateUserPreferences, home, toggleFeedSort } from '../redux/action-creators';
 import { Icon } from './fontawesome-icons';
 import { faEllipsis } from './fontawesome-custom-icons';
@@ -50,13 +50,13 @@ class FeedOptionsSwitch extends React.PureComponent {
   }
 
   switchSortToActivity = () => {
-    if (this.props.feedSort.sort !== FeedSortOptions.ACTIVITY) {
+    if (this.props.feedSort.sort !== FeedOptions.ACTIVITY) {
       this.props.toggleFeedSort(this.props.route);
     }
   };
 
   switchSortToChronologic = () => {
-    if (this.props.feedSort.sort !== FeedSortOptions.CHRONOLOGIC) {
+    if (this.props.feedSort.sort !== FeedOptions.CHRONOLOGIC) {
       this.props.toggleFeedSort(this.props.route);
     }
   };

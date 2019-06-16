@@ -1,5 +1,5 @@
 import * as FrontendPrefsOptions from './utils/frontend-preferences-options';
-import * as FeedSortOptions from './utils/feed-sort-options';
+import * as FeedOptions from './utils/feed-options';
 
 
 const config = {
@@ -46,7 +46,7 @@ const config = {
       },
       allowLinksPreview: false,
       readMoreStyle:     'modern',
-      homeFeedSort:      FeedSortOptions.ACTIVITY,
+      homeFeedSort:      FeedOptions.ACTIVITY,
       homefeed:          { hideUsers: [] },
     }
   },
