@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "autotrack": "1.0.x",
+    "autotrack": "~2.4.1",
     "classnames": "2.2.x",
     "custom-event": "1.0.x",
     "highcharts": "~6.0.7",

@@ -23,7 +23,7 @@ class RuleGenerator {
     return {
       test:    /\.m?jsx?$/,
       exclude: (modulePath) => {
-        return /node_modules/.test(modulePath);
+        return /node_modules\/(?!(autotrack|dom-utils))/.test(modulePath);
       },
       use: [
         {
@@ -33,8 +33,10 @@ class RuleGenerator {
             presets: skipFalsy([
               "@babel/react",
               ["@babel/env", {
-                modules: false,
-                targets: {
+                modules:     false,
+                useBuiltIns: 'entry',
+                corejs:      3,
+                targets:     {
                   browsers: [
                     '>1%',
                     'last 3 versions',
