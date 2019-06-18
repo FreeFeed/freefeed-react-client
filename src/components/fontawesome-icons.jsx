@@ -2,9 +2,17 @@ import React from 'react';
 import cn from 'classnames';
 import {
   faCloudUploadAlt,
-  faComment,
   faHeart,
+  faAt,
+  faAngleUp,
+  faChevronLeft,
+  faCircle,
 } from '@fortawesome/free-solid-svg-icons';
+import {
+  faComment,
+  faHeart as faHeartO,
+} from '@fortawesome/free-regular-svg-icons';
+import { faCommentPlus } from './fontawesome-custom-icons';
 
 // Our icon library
 // Only these icons will be included to the bundle
@@ -12,6 +20,12 @@ const icons = [
   faCloudUploadAlt,
   faComment,
   faHeart,
+  faHeartO,
+  faAt,
+  faAngleUp,
+  faChevronLeft,
+  faCircle,
+  faCommentPlus,
 ];
 
 export function SVGSymbolDeclarations() {

@@ -3,6 +3,7 @@ import React from 'react';
 import { preventDefault } from '../utils';
 import { Throbber } from './throbber';
 import SendTo from './send-to';
+import { Icon } from './fontawesome-icons';
 
 
 class LinkedImage extends React.PureComponent {
@@ -143,10 +144,7 @@ export default class CreateBookmarkletPost extends React.Component {
         )}
 
         <div className="comment">
-          <a className="comment-icon comment-icon-special fa-stack">
-            <i className="fa fa-comment fa-stack-1x" />
-            <i className="fa fa-comment-o fa-stack-1x" />
-          </a>
+          <Icon name="comment" prefix="far" className="comment-icon" />
 
           <div className="comment-body">
             <textarea

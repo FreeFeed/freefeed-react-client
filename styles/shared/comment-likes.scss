@@ -27,6 +27,8 @@
 }
 
 .comment-icon {
+  opacity: 0.9;
+
   &, &:hover {
     text-decoration: none;
   }
@@ -42,11 +44,7 @@
     margin-right: 6px;
     line-height: 1em;
     padding-top: 4px;
-  }
-  .fa-plus, .fa-square {
-    font-size: 60%;
-    top: 7px;
-    left: 4px;
+    color: inherit;
   }
 }
 
@@ -214,7 +212,6 @@
 
     .arrow {
       width: 35px;
-      font-size: 22px;
       padding-top: 12px;
       line-height: 24px;
       text-align: center;
@@ -258,16 +255,17 @@
     background-color: white;
     &:active {
       background-color: #ffb914;
-      .fa-heart {
+      .fa-icon {
         color: #e66;
       }
     }
-    .fa {
+    .fa-icon {
       position: relative;
       top: -1px;
       font-size: 14px;
       width: 35px;
       text-align: center;
+      opacity: 0.75;
     }
   }
 }

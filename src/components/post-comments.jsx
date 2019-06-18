@@ -7,6 +7,7 @@ import cn from 'classnames';
 import { preventDefault } from '../utils';
 import PostComment from './post-comment';
 import MoreCommentsWrapper from './more-comments-wrapper';
+import { Icon } from './fontawesome-icons';
 
 
 const minCommentsToFold = 12;
@@ -77,10 +78,8 @@ export default class PostComments extends React.Component {
     if (props.comments.length > 2 && !props.post.omittedComments) {
       return (
         <div className="comment">
-          <a className="comment-icon fa-stack fa-1x" onClick={preventDefault(toggleCommenting)}>
-            <i className="fa fa-comment-o fa-stack-1x" />
-            <i className="fa fa-square fa-inverse fa-stack-1x" />
-            <i className="fa fa-plus fa-stack-1x" />
+          <a className="comment-icon fa-stack" onClick={preventDefault(toggleCommenting)}>
+            <Icon name="comment-plus" />
           </a>
           <a className="add-comment-link" onClick={preventDefault(toggleCommenting)}>Add comment</a>
           {disabledForOthers
@@ -206,10 +205,8 @@ export default class PostComments extends React.Component {
     if (!user.id) {
       return post.isCommenting ? (
         <div className="comment">
-          <span className="comment-icon fa-stack fa-1x">
-            <i className="fa fa-comment-o fa-stack-1x" />
-            <i className="fa fa-square fa-inverse fa-stack-1x" />
-            <i className="fa fa-plus fa-stack-1x" />
+          <span className="comment-icon fa-stack">
+            <Icon name="comment-plus" />
           </span>
           <span><Link to="/signin">Sign In</Link> to add comment</span>
         </div>
