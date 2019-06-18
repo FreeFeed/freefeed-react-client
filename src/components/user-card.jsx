@@ -3,8 +3,8 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import throbber16 from '../../assets/images/throbber-16.gif';
 import { getUserInfo, updateUserPreferences } from '../redux/action-creators';
+import { Throbber } from './throbber';
 import UserFeedStatus from './user-feed-status';
 import UserRelationshipStatus from './user-relationships-status';
 import { userActions, canAcceptDirects } from './select-utils';
@@ -79,7 +79,7 @@ class UserCard extends React.Component {
           <div className="user-card-info">
             <div className="userpic loading" />
             <div className="names">
-              <img width="16" height="16" src={throbber16} />
+              <Throbber />
             </div>
           </div>
         </div>

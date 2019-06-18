@@ -114,6 +114,8 @@ const Donate = () => (
 
       <p style={{ marginTop: '15px' }}>Cделать <span onClick={handleClickOnOneTimeDonation} style={{ textDecoration: 'underline', cursor: 'pointer' }}>единовременный взнос</span>.</p>
 
+      <p>Сделать взнос через <a href="https://yasobe.ru/na/freefeed" target="_blank">Яндекс.Деньги</a>.</p>
+
       <p>Спасибо!</p>
     </div>
   </div>

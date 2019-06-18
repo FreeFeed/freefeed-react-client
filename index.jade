@@ -24,6 +24,8 @@ html(lang='en')
       body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px }
       h1 { font-size: 36px; font-weight: 500 }
       h1 a { color: #222; text-decoration: none }
+      body.dark-theme h1 a { color: hsl(0, 0%, 70%); }
+      body.initial { transition: none; }
     style.
       .privacy-popup {position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; color: white; background-color: rgba(16,16,16,0.8); padding: 24px; display: flex; flex-flow: row; flex-wrap: wrap; align-items: center; justify-content: center;}
       .privacy-text {line-height: 1.42857; font-size: 16px; margin-bottom: 16px; max-width: 600px;}
@@ -42,7 +44,25 @@ html(lang='en')
     link(rel='apple-touch-icon', sizes='114x114', href=htmlWebpackPlugin.files.publicPath + 'assets/images/ios/icon_114_114.png')
     link(rel='apple-touch-icon', sizes='76x76', href=htmlWebpackPlugin.files.publicPath + 'assets/images/ios/icon_76_76.png')
     link(rel='apple-touch-icon', sizes='72x72', href=htmlWebpackPlugin.files.publicPath + 'assets/images/ios/icon_72_72.png')
-  body
+  body.initial
+    //- Instantly check color scheme
+    script.
+      (function() {
+        try {
+          var storageKey = !{JSON.stringify(htmlWebpackPlugin.options.appConfig.appearance.colorSchemeStorageKey)};
+          var colorScheme = localStorage.getItem(storageKey);
+          if (
+            colorScheme === 'dark'
+            || colorScheme !== 'light'
+              && window.matchMedia
+              && window.matchMedia('(prefers-color-scheme: dark)').matches
+          ) {
+            document.body.classList.add('dark-theme');
+          }
+        } catch (e) { }
+        setTimeout(() => document.body.classList.remove('initial'), 0);
+      })();
+
     #app
       .container
         .row.header-row

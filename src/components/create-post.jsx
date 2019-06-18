@@ -2,12 +2,12 @@ import React from 'react';
 import Textarea from 'react-textarea-autosize';
 import _ from 'lodash';
 
-import throbber from '../../assets/images/throbber.gif';
 import { preventDefault } from '../utils';
 import config from '../config';
 import SendTo from './send-to';
 import Dropzone from './dropzone';
 import PostAttachments from './post-attachments';
+import { Throbber } from './throbber';
 
 
 const isTextEmpty = (text) => text == '' || /^\s+$/.test(text);
@@ -222,7 +222,7 @@ export default class CreatePost extends React.Component {
         <div className="post-edit-actions">
           {this.props.createPostViewState.isPending ? (
             <span className="throbber">
-              <img width="16" height="16" src={throbber} />
+              <Throbber />
             </span>
           ) : false}
 

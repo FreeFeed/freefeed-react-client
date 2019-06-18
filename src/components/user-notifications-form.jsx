@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Link } from 'react-router';
 import { preventDefault } from "../utils";
-import throbber16 from "../../assets/images/throbber-16.gif";
+import { Throbber } from "./throbber";
 
 
 export default class UserNotificationsForm extends React.Component {
@@ -72,7 +72,7 @@ export default class UserNotificationsForm extends React.Component {
           <button className="btn btn-default" type="submit">Update</button>
           {this.props.status === "loading" ? (
             <span className="settings-throbber">
-              <img width="16" height="16" src={throbber16} />
+              <Throbber />
             </span>
           ) : false}
         </p>

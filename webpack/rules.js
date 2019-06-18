@@ -6,29 +6,28 @@ import { skipFalsy } from './utils';
 class RuleGenerator {
   opts;
 
-  constructor(opts, commonCssExtractor, appCssExtractor) {
+  constructor(opts) {
     this.opts = opts;
   }
 
   get eslint() {
     return {
-      test: /\.jsx?$/,
+      test:    /\.jsx?$/,
       exclude: /node_modules/,
-      loader: 'eslint-loader',
+      loader:  'eslint-loader',
       enforce: 'pre'
     };
   }
 
   get babel() {
     return {
-      test: /\.m?jsx?$/,
+      test:    /\.m?jsx?$/,
       exclude: (modulePath) => {
-        return /node_modules/.test(modulePath) &&
-          !/node_modules\/element-closest/.test(modulePath);
+        return /node_modules/.test(modulePath);
       },
       use: [
         {
-          loader: 'babel-loader',
+          loader:  'babel-loader',
           options: {
             babelrc: false,
             presets: skipFalsy([
@@ -71,18 +70,16 @@ class RuleGenerator {
 
   get babelForNode() {
     return {
-      test: /\.jsx?$/,
+      test:    /\.jsx?$/,
       exclude: /(node_modules[\\/])/,
-      loader: 'babel-loader',
+      loader:  'babel-loader',
       options: {
         babelrc: false,
         presets: [
           "@babel/react",
           ["@babel/env", {
             modules: false,
-            targets: {
-              node: "8.9",
-            }
+            targets: { node: "8.9", }
           }],
         ],
         plugins: [
@@ -101,10 +98,8 @@ class RuleGenerator {
   get template() {
     return {
       test: /[.]jade$/,
-      use: [
-        {
-          loader: 'pug-loader',
-        }
+      use:  [
+        { loader: 'pug-loader' }
       ],
     };
   }
@@ -112,7 +107,7 @@ class RuleGenerator {
   get css() {
     return {
       test: /[\\/]styles[\\/].*[\\/].*[.]scss$/,
-      use: [
+      use:  [
         this.opts.dev ? 'style-loader' : MiniCssExtractPlugin.loader,
         'css-loader',
         'sass-loader',
@@ -124,7 +119,7 @@ class RuleGenerator {
     // import '../assets/vendor-css/font-awesome.min.css';
     return {
       test: /[\\/]assets[\\/].*[\\/].*[.]css$/,
-      use: [
+      use:  [
         this.opts.dev ? 'style-loader' : MiniCssExtractPlugin.loader,
         'css-loader',
       ],
@@ -133,7 +128,7 @@ class RuleGenerator {
 
   get fonts() {
     return {
-      test: /[\\/]assets[\\/]fonts[\\/]fontawesome[^/]*$/i,
+      test:   /[\\/]assets[\\/]fonts[\\/]fontawesome[^/]*$/i,
       loader: 'file-loader?name=[path][name].[ext]'
     };
   }
@@ -142,7 +137,7 @@ class RuleGenerator {
     const fileName = this.opts.hash ? '[name]-[hash].[ext]' : '[name]-dev.[ext]';
 
     return {
-      test: /photoswipe.+\.(png|svg|gif)$/,
+      test:   /photoswipe.+\.(png|svg|gif)$/,
       loader: `file-loader?name=assets/images/photoswipe/${fileName}`
     };
   }
@@ -151,7 +146,7 @@ class RuleGenerator {
     const fileName = this.opts.hash ? '[path][name]-[hash].[ext]' : '[path][name]-dev.[ext]';
 
     return {
-      test: /[\\/]assets[\\/]/,
+      test:    /[\\/]assets[\\/]/,
       exclude: [
         /[\\/]fonts[\\/]fontawesome[^/]*$/i,
         /[\\/]assets[\\/].*[\\/].*[.]css$/,
