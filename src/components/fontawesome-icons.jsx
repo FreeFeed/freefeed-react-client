@@ -7,6 +7,8 @@ import {
   faAngleUp,
   faChevronLeft,
   faCircle,
+  faUsers,
+  faHome,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faComment,
@@ -26,6 +28,8 @@ const icons = [
   faChevronLeft,
   faCircle,
   faCommentPlus,
+  faUsers,
+  faHome,
 ];
 
 export function SVGSymbolDeclarations() {
