@@ -8,6 +8,7 @@ import SendTo from './send-to';
 import Dropzone from './dropzone';
 import PostAttachments from './post-attachments';
 import { Throbber } from './throbber';
+import { Icon } from './fontawesome-icons';
 
 
 const isTextEmpty = (text) => text == '' || /^\s+$/.test(text);
@@ -197,7 +198,7 @@ export default class CreatePost extends React.Component {
 
         <div className="post-edit-options">
           <span className="post-edit-attachments dropzone-trigger" disabled={this.state.dropzoneDisabled}>
-            <i className="fa fa-cloud-upload" />
+            <Icon name="cloud-upload-alt" className="upload-icon" />
             {' '}
             Add photos or files
           </span>

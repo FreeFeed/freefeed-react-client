@@ -27,6 +27,7 @@ import LinkPreview from './link-preview/preview';
 import SendTo from './send-to';
 import { destinationsPrivacy } from './select-utils';
 import { makeJpegIfNeeded } from './create-post';
+import { Icon } from './fontawesome-icons';
 
 
 class Post extends React.Component {
@@ -447,7 +448,7 @@ class Post extends React.Component {
 
                 <div className="post-edit-options">
                   <span className="post-edit-attachments dropzone-trigger" disabled={this.state.dropzoneDisabled}>
-                    <i className="fa fa-cloud-upload" />
+                    <Icon name="cloud-upload-alt" className="upload-icon" />
                     {' '}
                     Add photos or files
                   </span>

@@ -205,6 +205,10 @@ $post-line-height: 20px;
       &[disabled] {
         text-decoration: line-through;
       }
+
+      .upload-icon {
+        font-size: 120%;
+      }
     }
 
     .post-edit-more-trigger {
