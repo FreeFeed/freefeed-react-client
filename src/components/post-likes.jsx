@@ -2,6 +2,7 @@ import React from 'react';
 
 import { preventDefault } from '../utils';
 import UserName from './user-name';
+import { Icon } from './fontawesome-icons';
 
 
 const renderLike = (item, i, items) => (
@@ -42,7 +43,7 @@ export default ({ likes, showMoreLikes, post }) => {
 
   return (
     <div className="post-likes">
-      <i className="fa fa-heart icon" />
+      <Icon name="heart" className="icon" />
       <ul className="post-likes-list">{renderedLikes}</ul>
     </div>
   );
