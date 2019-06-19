@@ -107,13 +107,13 @@
   &:after {
     content: '';
     position: absolute;
-    top: 35%;
+    top: 50%;
     left: 50%;
     width: 4px;
     height: 4px;
     background-color: #CCC;
     margin-left: -2px;
-    margin-top: -2px;
+    margin-top: 0;
     border-radius: 50%;
   }
   &:hover:after {

@@ -34,8 +34,10 @@
   }
 
   &.feed-comment-dot {
-    height: 8px;
+    height: 14px;
     width: 14px;
+    display: inline-block;
+    position: relative;
   }
 
   &.fa-stack {
