@@ -337,7 +337,7 @@ class Post extends React.Component {
       <span>
         {' - '}
         {props.likeError ? (
-          <i className="fa fa-exclamation-triangle post-like-fail" title={props.likeError} aria-hidden="true" />
+          <Icon name="exclamation-triangle" className="post-like-fail" title={props.likeError} />
         ) : null}
         <a className="post-action" onClick={didILikePost ? this.unlikePost : this.likePost}>{didILikePost ? 'Un-like' : 'Like'}</a>
         {props.isLiking ? (
@@ -507,18 +507,14 @@ class Post extends React.Component {
           <div className="post-footer">
             <span className="post-timestamps-toggle" onClick={this.toggleTimestamps}>
               {isPrivate ? (
-                <i className="post-lock-icon fa fa-lock" title="This entry is private" />
+                <Icon name="lock" className="post-lock-icon post-private-icon" title="This entry is private" />
               ) : isProtected ? (
-                <i className="post-lock-icon post-protected-icon" title="This entry is only visible to FreeFeed users">
-                  <i className="post-protected-icon-fg fa fa-user" />
-                  <i className="post-protected-icon-shadow fa fa-user fa-inverse" />
-                  <i className="post-protected-icon-bg fa fa-user" />
-                </i>
+                <Icon name="user-friends" className="post-lock-icon post-protected-icon" title="This entry is only visible to FreeFeed users" />
               ) : (
-                <i className="post-lock-icon fa fa-globe" title="This entry is public" />
+                <Icon name="globe-africa" className="post-lock-icon post-public-icon" title="This entry is public" />
               )}
             </span>
-            {props.isDirect ? (<span>»&nbsp;</span>) : false}
+            {props.isDirect && <Icon name="angle-double-right" className="post-direct-icon" title="This is a direct message" />}
             <Link to={canonicalPostURI} className="post-timestamp">
               {this.state.showTimestamps ? (
                 moment(+props.createdAt).format(datetimeFormat)

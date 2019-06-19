@@ -9,6 +9,11 @@ import {
   faCircle,
   faUsers,
   faHome,
+  faLock,
+  faGlobeAfrica,
+  faUserFriends,
+  faAngleDoubleRight,
+  faExclamationTriangle,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faComment,
@@ -30,6 +35,11 @@ const icons = [
   faCommentPlus,
   faUsers,
   faHome,
+  faLock,
+  faGlobeAfrica,
+  faUserFriends,
+  faAngleDoubleRight,
+  faExclamationTriangle,
 ];
 
 export function SVGSymbolDeclarations() {
@@ -49,12 +59,13 @@ export function SVGSymbolDeclarations() {
   );
 }
 
-export function Icon({ name, prefix = "fas", className }) {
+export function Icon({ name, prefix = "fas", className, title }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className={cn(className, `fa-icon fa-icon-${prefix}-${name}`)}
     >
+      {title && <title>{title}</title>}
       <use xlinkHref={`#fa-icon-${prefix}-${name}`} />
     </svg>
   );
