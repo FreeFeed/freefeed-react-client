@@ -2,8 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import DropdownMenu from 'react-dd-menu';
+import { faCheck, faCircle } from '@fortawesome/free-solid-svg-icons';
 import * as FeedSortOptions from '../utils/feed-sort-options';
 import { toggleRealtime, updateUserPreferences, home, toggleFeedSort } from '../redux/action-creators';
+import { Icon } from './fontawesome-icons';
 
 
 class FeedOptionsSwitch extends React.PureComponent {
@@ -36,10 +38,10 @@ class FeedOptionsSwitch extends React.PureComponent {
       <div className="feed-options-switch">
         <DropdownMenu {...menuOptions}>
           <div className="dropdown">
-            <div className={`drop-option ${feedSort.sort === FeedSortOptions.ACTIVITY && 'active'}`} onClick={this.switchSortToActivity}><span className="check fa fa-circle" style={{ transform: 'scale(.6)' }} />Order by recent comments/likes</div>
-            <div className={`drop-option ${feedSort.sort === FeedSortOptions.CHRONOLOGIC && 'active'}`} onClick={this.switchSortToChronologic}><span className="check fa fa-circle" style={{ transform: 'scale(.6)' }} />Order by post date</div>
+            <div className={`drop-option ${feedSort.sort === FeedSortOptions.ACTIVITY && 'active'}`} onClick={this.switchSortToActivity}><Icon icon={faCircle} className="check" style={{ transform: 'scale(.6)' }} />Order by recent comments/likes</div>
+            <div className={`drop-option ${feedSort.sort === FeedSortOptions.CHRONOLOGIC && 'active'}`} onClick={this.switchSortToChronologic}><Icon icon={faCircle} className="check" style={{ transform: 'scale(.6)' }} />Order by post date</div>
             {showRealtime && <div className="spacer" />}
-            {showRealtime && <div className={`drop-option ${realtimeActive && 'active'}`} onClick={this.toggleRealtime}><span className="check fa fa-check" />Show new posts in real-time</div>}
+            {showRealtime && <div className={`drop-option ${realtimeActive && 'active'}`} onClick={this.toggleRealtime}><Icon icon={faCheck} className="check" />Show new posts in real-time</div>}
           </div>
         </DropdownMenu>
       </div>

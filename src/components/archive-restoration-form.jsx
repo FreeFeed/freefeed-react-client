@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import _ from 'lodash';
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+import { Icon } from './fontawesome-icons';
 
 
 export default class ArchiveRestorationForm extends React.Component {
@@ -122,7 +124,7 @@ class SourceList extends React.Component {
     return (
       <span>
         {name}
-        <a href={url} title={url} target="_blank" className="source-link"><i className="fa fa-external-link-square" /></a>
+        <a href={url} title={url} target="_blank" className="source-link"><Icon icon={faExternalLinkAlt} /></a>
       </span>
     );
   }
