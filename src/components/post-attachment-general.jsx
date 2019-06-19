@@ -1,5 +1,8 @@
 import React from 'react';
 import numeral from 'numeral';
+import { faFile } from '@fortawesome/free-regular-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { Icon } from './fontawesome-icons';
 
 
 class GeneralAttachment extends React.PureComponent {
@@ -15,13 +18,12 @@ class GeneralAttachment extends React.PureComponent {
     return (
       <div className="attachment">
         <a href={props.url} title={nameAndSize} target="_blank">
-          <i className="fa fa-file-o" />
+          <Icon icon={faFile} className="attachment-icon" />
           <span>{nameAndSize}</span>
         </a>
 
-        {props.isEditing ? (
-          <i className="remove-attachment fa fa-times" title="Remove file" onClick={this.handleClickOnRemoveAttachment} />
-        ) : false}
+        {props.isEditing &&
+          <Icon icon={faTimes} className="remove-attachment" title="Remove file" onClick={this.handleClickOnRemoveAttachment} />}
       </div>
     );
   }
