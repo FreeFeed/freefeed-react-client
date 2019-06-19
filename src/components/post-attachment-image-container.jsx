@@ -4,7 +4,9 @@ import classnames from 'classnames';
 import Loadable from 'react-loadable';
 import Sortable from 'react-sortablejs';
 
+import { faChevronCircleRight } from '@fortawesome/free-solid-svg-icons';
 import ImageAttachment from './post-attachment-image';
+import { Icon } from './fontawesome-icons';
 
 
 const bordersSize = 4;
@@ -159,8 +161,8 @@ export default class ImageAttachmentsContainer extends React.Component {
           : allImages}
         {(isSingleImage || this.props.isEditing) ? false : (
           <div className="show-more">
-            <i
-              className="fa fa-2x fa-chevron-circle-right"
+            <Icon
+              icon={faChevronCircleRight} className="show-more-icon"
               onClick={this.toggleFolding}
               title={this.state.isFolded ? `Show more (${this.props.attachments.length - lastVisibleIndex - 1})` : "Show less"}
             />

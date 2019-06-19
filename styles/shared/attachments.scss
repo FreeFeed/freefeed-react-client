@@ -163,10 +163,11 @@
     vertical-align: middle;
     margin-bottom: 8px;
 
-    .fa {
+    .show-more-icon {
       cursor: pointer;
       transform: rotate(-180deg);
       transition: transform 0.3s 0.1s;
+      font-size: 1.75em;
     }
   }
 
@@ -176,7 +177,7 @@
     }
   }
 
-  &.is-folded .show-more .fa {
+  &.is-folded .show-more .show-more-icon {
     transform: rotate(0);
   }
 
