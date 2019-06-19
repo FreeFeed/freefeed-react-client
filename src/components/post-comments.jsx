@@ -4,6 +4,7 @@ import { StickyContainer, Sticky } from 'react-sticky';
 import _ from 'lodash';
 import cn from 'classnames';
 
+import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
 import PostComment from './post-comment';
 import MoreCommentsWrapper from './more-comments-wrapper';
@@ -182,7 +183,7 @@ export default class PostComments extends React.Component {
               style={style}
               className={cn("fold-comments", { "fold-comments-sticky": isSticky })}
             >
-              <i className="fa fa-chevron-up" />
+              <Icon icon={faChevronUp} className="chevron" />
               <a onClick={this.fold}>Fold comments</a>
             </div>
           )}
