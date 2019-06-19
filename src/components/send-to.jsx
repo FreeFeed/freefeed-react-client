@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { xor, trim } from 'lodash';
 import Loadable from 'react-loadable';
 import propTypes from 'prop-types';
+import { faUsers, faHome } from '@fortawesome/free-solid-svg-icons';
 import { Icon } from './fontawesome-icons';
 
 
@@ -152,7 +153,7 @@ class SendTo extends React.Component {
 
   labelRenderer = (opt) => {
     const icon = (opt.type === 'group') ?
-      <Icon name={(opt.value !== this.props.user.username) ? 'users' : 'home'} />
+      <Icon icon={(opt.value !== this.props.user.username) ? faUsers : faHome} />
       : false;
     return <span>{icon} {opt.label}</span>;
   };

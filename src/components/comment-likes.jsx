@@ -1,6 +1,8 @@
 import React from "react";
 import classnames from "classnames";
 import { Portal } from "react-portal";
+import { faComment, faHeart as faHeartO } from "@fortawesome/free-regular-svg-icons";
+import { faChevronLeft, faHeart, faAngleUp, faAt } from "@fortawesome/free-solid-svg-icons";
 import UserName from "./user-name";
 import TimeDisplay from "./time-display";
 import { Icon } from "./fontawesome-icons";
@@ -51,7 +53,7 @@ export default class CommentLikes extends React.Component {
         </div>
         <div className="comment-heart" onClick={this.toggleLike}>
           <Icon
-            name="heart" prefix={this.props.forbidLiking ? 'far' : 'fas'}
+            icon={this.props.forbidLiking ? faHeartO : faHeart}
             className={classnames('icon', { "liked": this.state.liked })}
             title={this.props.forbidLiking ? "Your own comment" : this.props.hasOwnLike ? "Un-like" : "Like"}
           />
@@ -67,7 +69,7 @@ export default class CommentLikes extends React.Component {
           {this.props.omitBubble ? (
             <span className={`comment-icon fa feed-comment-dot`} {...icoProps} />
           ) : (
-            <Icon name="comment" prefix="far" className="comment-icon" {...icoProps} />
+            <Icon icon={faComment} className="comment-icon" {...icoProps} />
           )}
         </TimeDisplay>
       ) : (
@@ -75,7 +77,7 @@ export default class CommentLikes extends React.Component {
           {this.props.omitBubble ? (
             <span className={`comment-icon fa feed-comment-dot`} />
           ) : (
-            <Icon name="comment" prefix="far" className="comment-icon" />
+            <Icon icon={faComment} className="comment-icon" />
           )}
         </span>
       )
@@ -152,7 +154,7 @@ export default class CommentLikes extends React.Component {
                     style={likesStyle}
                   >
                     <div className="arrow" onClick={this.arrowClick}>
-                      <Icon name="chevron-left" />
+                      <Icon icon={faChevronLeft} />
                     </div>
                     <div className="likes">
                       {this.state.showActionButtons
@@ -165,7 +167,7 @@ export default class CommentLikes extends React.Component {
                     {this.props.forbidLiking
                       ? (
                         <div className="mention-action non-likable">
-                          <Icon name="heart" prefix="far" />
+                          <Icon icon={faHeartO} />
                           It{"'"}s your own comment
                         </div>
                       )
@@ -174,7 +176,7 @@ export default class CommentLikes extends React.Component {
                           className={`mention-action ${this.props.hasOwnLike ? "un" : ""}like`}
                           onClick={this.props.toggleLike}
                         >
-                          <Icon name="heart" />
+                          <Icon icon={faHeart} />
                           {`${this.props.hasOwnLike ? "Un-like" : "Like"} comment`}
                         </button>
                       )
@@ -183,14 +185,14 @@ export default class CommentLikes extends React.Component {
                       className="mention-action reply"
                       onClick={this.props.reply}
                     >
-                      <Icon name="angle-up" />
+                      <Icon icon={faAngleUp} />
                       Reply to comment
                     </button>
                     <button
                       className="mention-action mention"
                       onClick={this.props.mention}
                     >
-                      <Icon name="at" />
+                      <Icon icon={faAt} />
                       Mention username
                     </button>
                   </div>

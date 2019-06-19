@@ -8,6 +8,7 @@ import { preventDefault } from '../utils';
 import PostComment from './post-comment';
 import MoreCommentsWrapper from './more-comments-wrapper';
 import { Icon } from './fontawesome-icons';
+import { faCommentPlus } from './fontawesome-custom-icons';
 
 
 const minCommentsToFold = 12;
@@ -79,7 +80,7 @@ export default class PostComments extends React.Component {
       return (
         <div className="comment">
           <a className="comment-icon fa-stack" onClick={preventDefault(toggleCommenting)}>
-            <Icon name="comment-plus" />
+            <Icon icon={faCommentPlus} />
           </a>
           <a className="add-comment-link" onClick={preventDefault(toggleCommenting)}>Add comment</a>
           {disabledForOthers
@@ -206,7 +207,7 @@ export default class PostComments extends React.Component {
       return post.isCommenting ? (
         <div className="comment">
           <span className="comment-icon fa-stack">
-            <Icon name="comment-plus" />
+            <Icon icon={faCommentPlus} />
           </span>
           <span><Link to="/signin">Sign In</Link> to add comment</span>
         </div>

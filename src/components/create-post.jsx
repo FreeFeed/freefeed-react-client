@@ -2,6 +2,7 @@ import React from 'react';
 import Textarea from 'react-textarea-autosize';
 import _ from 'lodash';
 
+import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
 import config from '../config';
 import SendTo from './send-to';
@@ -198,7 +199,7 @@ export default class CreatePost extends React.Component {
 
         <div className="post-edit-options">
           <span className="post-edit-attachments dropzone-trigger" disabled={this.state.dropzoneDisabled}>
-            <Icon name="cloud-upload-alt" className="upload-icon" />
+            <Icon icon={faCloudUploadAlt} className="upload-icon" />
             {' '}
             Add photos or files
           </span>

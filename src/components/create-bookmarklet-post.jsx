@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { faComment } from '@fortawesome/free-regular-svg-icons';
 import { preventDefault } from '../utils';
 import { Throbber } from './throbber';
 import SendTo from './send-to';
@@ -144,7 +145,7 @@ export default class CreateBookmarkletPost extends React.Component {
         )}
 
         <div className="comment">
-          <Icon name="comment" prefix="far" className="comment-icon" />
+          <Icon icon={faComment} className="comment-icon" />
 
           <div className="comment-body">
             <textarea

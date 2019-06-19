@@ -6,6 +6,7 @@ import _ from 'lodash';
 import Textarea from 'react-textarea-autosize';
 import moment from 'moment';
 
+import { faExclamationTriangle, faCloudUploadAlt, faLock, faUserFriends, faGlobeAfrica, faAngleDoubleRight } from '@fortawesome/free-solid-svg-icons';
 import { getFirstLinkToEmbed } from '../utils/parse-text';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
@@ -337,7 +338,7 @@ class Post extends React.Component {
       <span>
         {' - '}
         {props.likeError ? (
-          <Icon name="exclamation-triangle" className="post-like-fail" title={props.likeError} />
+          <Icon icon={faExclamationTriangle} className="post-like-fail" title={props.likeError} />
         ) : null}
         <a className="post-action" onClick={didILikePost ? this.unlikePost : this.likePost}>{didILikePost ? 'Un-like' : 'Like'}</a>
         {props.isLiking ? (
@@ -448,7 +449,7 @@ class Post extends React.Component {
 
                 <div className="post-edit-options">
                   <span className="post-edit-attachments dropzone-trigger" disabled={this.state.dropzoneDisabled}>
-                    <Icon name="cloud-upload-alt" className="upload-icon" />
+                    <Icon icon={faCloudUploadAlt} className="upload-icon" />
                     {' '}
                     Add photos or files
                   </span>
@@ -507,14 +508,14 @@ class Post extends React.Component {
           <div className="post-footer">
             <span className="post-timestamps-toggle" onClick={this.toggleTimestamps}>
               {isPrivate ? (
-                <Icon name="lock" className="post-lock-icon post-private-icon" title="This entry is private" />
+                <Icon icon={faLock} className="post-lock-icon post-private-icon" title="This entry is private" />
               ) : isProtected ? (
-                <Icon name="user-friends" className="post-lock-icon post-protected-icon" title="This entry is only visible to FreeFeed users" />
+                <Icon icon={faUserFriends} className="post-lock-icon post-protected-icon" title="This entry is only visible to FreeFeed users" />
               ) : (
-                <Icon name="globe-africa" className="post-lock-icon post-public-icon" title="This entry is public" />
+                <Icon icon={faGlobeAfrica} className="post-lock-icon post-public-icon" title="This entry is public" />
               )}
             </span>
-            {props.isDirect && <Icon name="angle-double-right" className="post-direct-icon" title="This is a direct message" />}
+            {props.isDirect && <Icon icon={faAngleDoubleRight} className="post-direct-icon" title="This is a direct message" />}
             <Link to={canonicalPostURI} className="post-timestamp">
               {this.state.showTimestamps ? (
                 moment(+props.createdAt).format(datetimeFormat)
