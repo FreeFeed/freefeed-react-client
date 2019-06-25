@@ -6,6 +6,7 @@ import { faCheck, faCircle } from '@fortawesome/free-solid-svg-icons';
 import * as FeedSortOptions from '../utils/feed-sort-options';
 import { toggleRealtime, updateUserPreferences, home, toggleFeedSort } from '../redux/action-creators';
 import { Icon } from './fontawesome-icons';
+import { faEllipsis } from './fontawesome-custom-icons';
 
 
 class FeedOptionsSwitch extends React.PureComponent {
@@ -24,7 +25,7 @@ class FeedOptionsSwitch extends React.PureComponent {
     const { realtimeActive } = props.frontendPreferences;
     const { feedSort, showRealtime } = props;
 
-    const toggle = <span className="glyphicon glyphicon-option-horizontal dots-icon" onClick={this.toggleDropdown} />;
+    const toggle = <Icon icon={faEllipsis} className="dots-icon" onClick={this.toggleDropdown} />;
 
     const menuOptions = {
       align:   'right',
