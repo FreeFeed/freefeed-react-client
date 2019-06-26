@@ -26,7 +26,7 @@ export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
   if (isFeedGeneratingAction(action)) {
     //add sorting params to feed request if needed
     const state = store.getState();
-    const { sort: currentFeedSort, currentFeed } = state.feedViewOptions;
+    const { sort: currentFeedSort, currentFeed, homeFeedMode } = state.feedViewOptions;
     const { homeFeedSort } = state.user.frontendPreferences;
     if (currentFeed === getFeedName(action)) {
       action.payload.sortChronologically = currentFeedSort === FeedOptions.CHRONOLOGIC;
@@ -34,6 +34,9 @@ export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
       //use home feed setting if we get back to home feed
       //this change isn't yet in reducer, and we don't get it there before real feed request fires
       action.payload.sortChronologically = action.type === ActionTypes.HOME && homeFeedSort === FeedOptions.CHRONOLOGIC;
+    }
+    if (action.type === ActionTypes.HOME) {
+      action.payload.homeFeedMode = homeFeedMode;
     }
   }
   if (action.type === ActionTypes.TOGGLE_FEED_SORT) {
@@ -48,6 +51,13 @@ export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
       const { sort: homeFeedSort } = feedViewOptions;
       return store.dispatch(ActionCreators.updateUserPreferences(id, { ...frontendPreferences, homeFeedSort }, {}, true));
     }
+  }
+  if (action.type === ActionTypes.SET_HOMEFEED_MODE) {
+    next(action);
+    const { user, feedViewOptions } = store.getState();
+    const { id, frontendPreferences } = user;
+    const { homeFeedMode } = feedViewOptions;
+    return store.dispatch(ActionCreators.updateUserPreferences(id, { ...frontendPreferences, homeFeedMode }, {}, true));
   }
   if (action.type === response(ActionTypes.WHO_AM_I)) {
     //here we handle home sort settings changed on another machine

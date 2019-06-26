@@ -47,6 +47,7 @@ const config = {
       allowLinksPreview: false,
       readMoreStyle:     'modern',
       homeFeedSort:      FeedOptions.ACTIVITY,
+      homeFeedMode:      FeedOptions.HOMEFEED_MODE_CLASSIC,
       homefeed:          { hideUsers: [] },
     }
   },
