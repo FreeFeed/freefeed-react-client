@@ -22,11 +22,11 @@ import * as ActionTypes from './action-types';
 import { request, response, fail, requiresAuth, isFeedRequest, isFeedResponse, isFeedGeneratingAction, getFeedName } from './action-helpers';
 
 
-export const feedSortMiddleware = (store) => (next) => (action) => {
+export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
   if (isFeedGeneratingAction(action)) {
     //add sorting params to feed request if needed
     const state = store.getState();
-    const { sort: currentFeedSort, currentFeed } = state.feedSort;
+    const { sort: currentFeedSort, currentFeed } = state.feedViewOptions;
     const { homeFeedSort } = state.user.frontendPreferences;
     if (currentFeed === getFeedName(action)) {
       action.payload.sortChronologically = currentFeedSort === FeedOptions.CHRONOLOGIC;
@@ -38,14 +38,14 @@ export const feedSortMiddleware = (store) => (next) => (action) => {
   }
   if (action.type === ActionTypes.TOGGLE_FEED_SORT) {
     //here we persist home sort preference change
-    const { currentFeed } = store.getState().feedSort;
+    const { currentFeed } = store.getState().feedViewOptions;
     if (currentFeed === ActionTypes.HOME) {
       //we get reducer process sort toggling and do our job updating setting after that
       next(action);
       //and request next state only after update is done
-      const { user, feedSort } = store.getState();
+      const { user, feedViewOptions } = store.getState();
       const { id, frontendPreferences } = user;
-      const { sort: homeFeedSort } = feedSort;
+      const { sort: homeFeedSort } = feedViewOptions;
       return store.dispatch(ActionCreators.updateUserPreferences(id, { ...frontendPreferences, homeFeedSort }, {}, true));
     }
   }
@@ -423,7 +423,7 @@ const dispatchWithPost = async (store, postId, action, filter = () => true, maxD
   let state = store.getState();
   const shouldBump = isFirstPage(state)
     && !isMemories(state)
-    && state.feedSort.sort === FeedOptions.ACTIVITY;
+    && state.feedViewOptions.sort === FeedOptions.ACTIVITY;
 
   if (isPostLoaded(state, postId)) {
     return store.dispatch({ ...action, shouldBump });
@@ -476,7 +476,7 @@ const bindHandlers = (store) => ({
     let insertBefore = null;
     if (shouldBump) {
       insertBefore = state.feedViewState.visibleEntries[0] || null;
-      if (state.feedSort.sort === FeedOptions.CHRONOLOGIC) {
+      if (state.feedViewOptions.sort === FeedOptions.CHRONOLOGIC) {
         for (const postId of state.feedViewState.visibleEntries) {
           if (data.posts.createdAt >= state.posts[postId].createdAt) {
             insertBefore = postId;

@@ -2462,14 +2462,14 @@ export function serverTimeAhead(state = 0, action) {
   return state;
 }
 
-const getInitialSortingState = () => {
+const getInitialFeedViewOptions = () => {
   const defaultHomeFeedSort = config.frontendPreferences.defaultValues.homeFeedSort;
   const persistedUser = getPersistedUser();
   const homeFeedSort = (persistedUser && persistedUser.frontendPreferences.homeFeedSort) || defaultHomeFeedSort;
   return { sort: homeFeedSort, homeFeedSort, currentFeed: ActionTypes.HOME };
 };
 
-export function feedSort(state = getInitialSortingState(), action) {
+export function feedViewOptions(state = getInitialFeedViewOptions(), action) {
   if (action.type === response(ActionTypes.WHO_AM_I)) {
     const defaultHomeFeedSort = config.frontendPreferences.defaultValues.homeFeedSort;
     const frontendPreferences = action.payload.users.frontendPreferences && action.payload.users.frontendPreferences[frontendPrefsConfig.clientId];
