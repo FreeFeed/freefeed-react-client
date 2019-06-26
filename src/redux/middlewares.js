@@ -591,7 +591,12 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
 
     if (isFeedResponse(action)) {
       if (action.payload.timelines) {
-        store.dispatch(ActionCreators.realtimeSubscribe(`timeline:${action.payload.timelines.id}`));
+        if (action.payload.timelines.name === 'RiverOfNews') {
+          const state = store.getState();
+          store.dispatch(ActionCreators.realtimeSubscribe(`timeline:${action.payload.timelines.id}?homefeed-mode=${state.feedViewOptions.homeFeedMode}`));
+        } else {
+          store.dispatch(ActionCreators.realtimeSubscribe(`timeline:${action.payload.timelines.id}`));
+        }
       } else if (action.payload.posts) {
         store.dispatch(ActionCreators.realtimeSubscribe(...action.payload.posts.map((p) => `post:${p.id}`)));
       }
