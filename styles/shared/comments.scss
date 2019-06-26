@@ -107,13 +107,13 @@
   &:after {
     content: '';
     position: absolute;
-    top: 35%;
+    top: 50%;
     left: 50%;
     width: 4px;
     height: 4px;
     background-color: #CCC;
     margin-left: -2px;
-    margin-top: -2px;
+    margin-top: 0;
     border-radius: 50%;
   }
   &:hover:after {
@@ -124,7 +124,7 @@
 .fold-comments {
   font-style: italic;
   padding: 8px 0 0 19px;
-  i {
+  .chevron {
     display: none;
   }
 }
@@ -133,7 +133,7 @@
   background: rgba(255,255,255,0.9);
   box-shadow: 0 0px 4px 8px rgba(255, 255, 255, 0.9);
   z-index: 1;
-  i {
+  .chevron {
     display: block;
     position: absolute;
     left: 0px;

@@ -1,6 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
 import numeral from 'numeral';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { Icon } from './fontawesome-icons';
 
 
 class PostAttachmentImage extends React.PureComponent {
@@ -40,9 +42,8 @@ class PostAttachmentImage extends React.PureComponent {
           )}
         </a>
 
-        {props.isEditing ? (
-          <a className="remove-attachment fa fa-times" title="Remove image" onClick={this.handleRemoveImage} />
-        ) : false}
+        {props.isEditing &&
+          <Icon icon={faTimes} className="remove-attachment" title="Remove image" onClick={this.handleRemoveImage} />}
       </div>
     );
   }

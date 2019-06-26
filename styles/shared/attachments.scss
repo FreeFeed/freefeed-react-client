@@ -112,7 +112,7 @@
     display: block;
     margin: 0 8px 8px 0;
 
-    i {
+    .attachment-icon {
       color: #666666;
       padding: 0 1px;
       margin-right: 4px;
@@ -139,6 +139,7 @@
     width: 1.5em;
     height: 1.5em;
     line-height: 1.4em;
+    padding: 4px;
 
     &:hover {
       opacity: 1;
@@ -162,10 +163,11 @@
     vertical-align: middle;
     margin-bottom: 8px;
 
-    .fa {
+    .show-more-icon {
       cursor: pointer;
       transform: rotate(-180deg);
       transition: transform 0.3s 0.1s;
+      font-size: 1.75em;
     }
   }
 
@@ -175,7 +177,7 @@
     }
   }
 
-  &.is-folded .show-more .fa {
+  &.is-folded .show-more .show-more-icon {
     transform: rotate(0);
   }
 
@@ -199,10 +201,10 @@
   .attachment:hover .remove-attachment {
     display: block;
     position: absolute;
-    left: -3px;
-    bottom: 0;
+    top: 1px;
+    width: 1em;
+    height: 1em;
     cursor: pointer;
-    padding: 3px 4px 3px 5px;
     background-color: #fff;
     border-radius: 2px;
 

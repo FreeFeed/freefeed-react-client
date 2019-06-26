@@ -1,5 +1,8 @@
 import React from 'react';
 import numeral from 'numeral';
+import { faFileAudio } from '@fortawesome/free-regular-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { Icon } from './fontawesome-icons';
 
 
 class AudioAttachment extends React.PureComponent {
@@ -27,13 +30,12 @@ class AudioAttachment extends React.PureComponent {
         </div>
         <div>
           <a href={props.url} title={artistAndTitle} target="_blank">
-            <i className="fa fa-file-audio-o" />
+            <Icon icon={faFileAudio} className="attachment-icon" />
             <span>{artistAndTitle}</span>
           </a>
 
-          {props.isEditing ? (
-            <i className="remove-attachment fa fa-times" title="Remove audio file" onClick={this.handleClickOnRemoveAttachment} />
-          ) : false}
+          {props.isEditing &&
+            <Icon icon={faTimes} className="remove-attachment" title="Remove audio file" onClick={this.handleClickOnRemoveAttachment} />}
         </div>
       </div>
     );
