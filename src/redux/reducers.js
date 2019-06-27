@@ -2471,8 +2471,9 @@ const getInitialFeedViewOptions = () => {
   return {
     homeFeedSort,
     homeFeedMode,
-    sort:        homeFeedSort,
-    currentFeed: ActionTypes.HOME,
+    sort:            homeFeedSort,
+    currentFeed:     ActionTypes.HOME,
+    currentFeedType: 'RiverOfNews',
   };
 };
 
@@ -2496,6 +2497,10 @@ export function feedViewOptions(state = getInitialFeedViewOptions(), action) {
       currentFeed: ActionHelpers.getFeedName(action),
       sort,
     };
+  }
+  if (ActionHelpers.isFeedResponse(action)) {
+    const currentFeedType = action.payload.timelines ? action.payload.timelines.name : null;
+    return { ...state, currentFeedType };
   }
   if (action.type === ActionTypes.TOGGLE_FEED_SORT) {
     const sort = state.sort === FeedOptions.ACTIVITY ? FeedOptions.CHRONOLOGIC : FeedOptions.ACTIVITY;

@@ -591,9 +591,11 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
 
     if (isFeedResponse(action)) {
       if (action.payload.timelines) {
-        if (action.payload.timelines.name === 'RiverOfNews') {
+        if (getFeedName(action) === ActionTypes.HOME) {
           const state = store.getState();
-          store.dispatch(ActionCreators.realtimeSubscribe(`timeline:${action.payload.timelines.id}?homefeed-mode=${state.feedViewOptions.homeFeedMode}`));
+          store.dispatch(ActionCreators.realtimeSubscribe(
+            `timeline:${action.payload.timelines.id}?homefeed-mode=${state.feedViewOptions.homeFeedMode}`
+          ));
         } else {
           store.dispatch(ActionCreators.realtimeSubscribe(`timeline:${action.payload.timelines.id}`));
         }

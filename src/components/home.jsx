@@ -37,7 +37,7 @@ const FeedHandler = (props) => {
       <div className="box-header-timeline">
         {props.boxHeader}
         <div className="pull-right">
-          {props.authenticated && <FeedOptionsSwitch atHomeFeed onFirstPage={props.isFirstPage} />}
+          {props.authenticated && <FeedOptionsSwitch />}
         </div>
       </div>
 
@@ -73,7 +73,6 @@ function selectState(state) {
   const { isHiddenRevealed } = state.feedViewState;
   const sendTo = { ...state.sendTo, defaultFeed: user.username };
   const feedIsLoading = state.routeLoadingState;
-  const { locationBeforeTransitions: loc } = state.routing;
 
   return {
     user, authenticated,
@@ -81,7 +80,6 @@ function selectState(state) {
     createPostViewState,
     timelines, boxHeader, sendTo, userRequestsCount, groupRequestsCount,
     feedIsLoading,
-    isFirstPage: !loc.query.offset,
   };
 }
 

@@ -6,6 +6,7 @@ import cn from 'classnames';
 import { faCheckSquare, faSquare, faDotCircle, faCircle } from '@fortawesome/free-regular-svg-icons';
 import * as FeedOptions from '../utils/feed-options';
 import { toggleRealtime, updateUserPreferences, home, toggleFeedSort, setHomefeedMode } from '../redux/action-creators';
+import { HOME } from '../redux/action-types';
 import { Icon } from './fontawesome-icons';
 import { faEllipsis } from './fontawesome-custom-icons';
 
@@ -32,7 +33,6 @@ class FeedOptionsSwitch extends React.PureComponent {
   render() {
     const {
       feedViewOptions,
-      atHomeFeed,
       onFirstPage,
       frontendPreferences: {
         realtimeActive,
@@ -60,7 +60,7 @@ class FeedOptionsSwitch extends React.PureComponent {
             <DropOption value={FeedOptions.CHRONOLOGIC} current={feedViewOptions.sort} clickHandler={this.switchSort}>
               Order by post date
             </DropOption>
-            {atHomeFeed && (
+            {feedViewOptions.currentFeed === HOME && (
               <>
                 <div className="spacer" />
                 <DropOption value={FeedOptions.HOMEFEED_MODE_FRIENDS_ONLY} current={homeFeedMode} clickHandler={this.setFeedMode}>
@@ -72,14 +72,14 @@ class FeedOptionsSwitch extends React.PureComponent {
                 <DropOption value={FeedOptions.HOMEFEED_MODE_FRIENDS_ALL_ACTIVITY} current={homeFeedMode} clickHandler={this.setFeedMode}>
                   Show all friends activity
                 </DropOption>
-                {onFirstPage && (
-                  <>
-                    <div className="spacer" />
-                    <DropOption value={true} current={realtimeActive} clickHandler={this.toggleRealtime} checkbox>
+              </>
+            )}
+            {onFirstPage && feedViewOptions.currentFeedType !== null && (
+              <>
+                <div className="spacer" />
+                <DropOption value={true} current={realtimeActive} clickHandler={this.toggleRealtime} checkbox>
                       Show new posts in real-time
-                    </DropOption>
-                  </>
-                )}
+                </DropOption>
               </>
             )}
           </div>
@@ -90,12 +90,14 @@ class FeedOptionsSwitch extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => {
+  const { locationBeforeTransitions: loc } = state.routing;
   return {
     userId:              state.user.id,
     frontendPreferences: state.user.frontendPreferences,
     status:              state.frontendRealtimePreferencesForm.status,
     feedViewOptions:     state.feedViewOptions,
     route:               state.routing.locationBeforeTransitions.pathname,
+    onFirstPage:         !loc.query.offset,
   };
 };
 
