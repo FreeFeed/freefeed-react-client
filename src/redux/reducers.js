@@ -2121,7 +2121,13 @@ export function usernameSubscribers(state = {}, action) {
   );
 }
 
-export function usernameSubscriptions(state = {}, action) {
+const usernameSubscriptionsState = {
+  payload:     [],
+  isPending:   false,
+  errorString: ""
+};
+
+export function usernameSubscriptions(state = usernameSubscriptionsState, action) {
   return handleUsers(
     state,
     action,
