@@ -64,11 +64,23 @@ class Signin extends React.PureComponent {
                   <form onSubmit={this.handleFormSubmit} className="p-signin">
                     <div className="form-group">
                       <label htmlFor="username">Username or e-mail address</label>
-                      <input id="username" className="ember-view ember-text-field form-control" type="text" onChange={this.handleUsernameChange} />
+                      <input
+                        id="username"
+                        name="username"
+                        className="ember-view ember-text-field form-control"
+                        type="text"
+                        onChange={this.handleUsernameChange}
+                      />
                     </div>
                     <div className="form-group">
                       <label htmlFor="password">Password</label>
-                      <input id="password" className="ember-view ember-text-field form-control" type="password" onChange={this.handlePasswordChange} />
+                      <input
+                        id="password"
+                        name="password"
+                        className="ember-view ember-text-field form-control"
+                        type="password"
+                        onChange={this.handlePasswordChange}
+                      />
                     </div>
                     <div className="form-group">
                       <button className="btn btn-default p-singin-action" type="submit">Sign in</button>
