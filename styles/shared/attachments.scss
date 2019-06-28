@@ -42,8 +42,8 @@
   .image-attachment-img {
     max-width: 525px;
     max-height: 175px;
-    @media (max-width: 400px) {
-      max-width: 250px;
+    @media (max-width: 560px) {
+      max-width: 100%;
       height: auto;
    }
   }
