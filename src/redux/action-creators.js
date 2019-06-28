@@ -825,6 +825,10 @@ export function toggleFeedSort() {
   return { type: ActionTypes.TOGGLE_FEED_SORT, };
 }
 
+export function setHomefeedMode(mode) {
+  return { type: ActionTypes.SET_HOMEFEED_MODE, payload: mode };
+}
+
 /**
  * @param {'dark'|'light'|'no-preference'} scheme
  */

@@ -3,7 +3,7 @@ import cn from 'classnames';
 import {
   faHeart,
   faLock,
-  faGlobeAfrica,
+  faGlobeAmericas,
   faUserFriends,
 } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -22,7 +22,7 @@ const preloadedIcons = [
   faHeartO,
   faCommentPlus,
   faLock,
-  faGlobeAfrica,
+  faGlobeAmericas,
   faUserFriends,
 ];
 

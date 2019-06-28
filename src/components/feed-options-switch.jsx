@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import DropdownMenu from 'react-dd-menu';
-import { faCheck, faCircle } from '@fortawesome/free-solid-svg-icons';
-import * as FeedSortOptions from '../utils/feed-sort-options';
-import { toggleRealtime, updateUserPreferences, home, toggleFeedSort } from '../redux/action-creators';
+import cn from 'classnames';
+import { faCheckSquare, faSquare, faDotCircle, faCircle } from '@fortawesome/free-regular-svg-icons';
+import * as FeedOptions from '../utils/feed-options';
+import { toggleRealtime, updateUserPreferences, home, toggleFeedSort, setHomefeedMode } from '../redux/action-creators';
+import { HOME } from '../redux/action-types';
 import { Icon } from './fontawesome-icons';
 import { faEllipsis } from './fontawesome-custom-icons';
 
@@ -20,10 +22,23 @@ class FeedOptionsSwitch extends React.PureComponent {
     this.props.toggleRealtime(this.props.userId, this.props.frontendPreferences);
   };
 
+  switchSort = (sort) => {
+    (this.props.feedViewOptions.sort !== sort) && this.props.toggleFeedSort(this.props.route);
+  };
+
+  setFeedMode = (mode) => {
+    (mode !== this.props.frontendPreferences.homeFeedMode) && this.props.setHomeFeedMode(mode, this.props.route);
+  };
+
   render() {
-    const { props } = this;
-    const { realtimeActive } = props.frontendPreferences;
-    const { feedSort, showRealtime } = props;
+    const {
+      feedViewOptions,
+      onFirstPage,
+      frontendPreferences: {
+        realtimeActive,
+        homeFeedMode,
+      },
+    } = this.props;
 
     const toggle = <Icon icon={faEllipsis} className="dots-icon" onClick={this.toggleDropdown} />;
 
@@ -39,36 +54,50 @@ class FeedOptionsSwitch extends React.PureComponent {
       <div className="feed-options-switch">
         <DropdownMenu {...menuOptions}>
           <div className="dropdown">
-            <div className={`drop-option ${feedSort.sort === FeedSortOptions.ACTIVITY && 'active'}`} onClick={this.switchSortToActivity}><Icon icon={faCircle} className="check" style={{ transform: 'scale(.6)' }} />Order by recent comments/likes</div>
-            <div className={`drop-option ${feedSort.sort === FeedSortOptions.CHRONOLOGIC && 'active'}`} onClick={this.switchSortToChronologic}><Icon icon={faCircle} className="check" style={{ transform: 'scale(.6)' }} />Order by post date</div>
-            {showRealtime && <div className="spacer" />}
-            {showRealtime && <div className={`drop-option ${realtimeActive && 'active'}`} onClick={this.toggleRealtime}><Icon icon={faCheck} className="check" />Show new posts in real-time</div>}
+            <DropOption value={FeedOptions.ACTIVITY} current={feedViewOptions.sort} clickHandler={this.switchSort}>
+              Order by recent comments/likes
+            </DropOption>
+            <DropOption value={FeedOptions.CHRONOLOGIC} current={feedViewOptions.sort} clickHandler={this.switchSort}>
+              Order by post date
+            </DropOption>
+            {feedViewOptions.currentFeed === HOME && (
+              <>
+                <div className="spacer" />
+                <DropOption value={FeedOptions.HOMEFEED_MODE_FRIENDS_ONLY} current={homeFeedMode} clickHandler={this.setFeedMode}>
+                  Show friends posts only
+                </DropOption>
+                <DropOption value={FeedOptions.HOMEFEED_MODE_CLASSIC} current={homeFeedMode} clickHandler={this.setFeedMode}>
+                  Show friends posts, likes and comments
+                </DropOption>
+                <DropOption value={FeedOptions.HOMEFEED_MODE_FRIENDS_ALL_ACTIVITY} current={homeFeedMode} clickHandler={this.setFeedMode}>
+                  Show all friends activity
+                </DropOption>
+              </>
+            )}
+            {onFirstPage && feedViewOptions.currentFeedType !== null && (
+              <>
+                <div className="spacer" />
+                <DropOption value={true} current={realtimeActive} clickHandler={this.toggleRealtime} checkbox>
+                      Show new posts in real-time
+                </DropOption>
+              </>
+            )}
           </div>
         </DropdownMenu>
       </div>
     );
   }
-
-  switchSortToActivity = () => {
-    if (this.props.feedSort.sort !== FeedSortOptions.ACTIVITY) {
-      this.props.toggleFeedSort(this.props.route);
-    }
-  };
-
-  switchSortToChronologic = () => {
-    if (this.props.feedSort.sort !== FeedSortOptions.CHRONOLOGIC) {
-      this.props.toggleFeedSort(this.props.route);
-    }
-  };
 }
 
 const mapStateToProps = (state) => {
+  const { locationBeforeTransitions: loc } = state.routing;
   return {
     userId:              state.user.id,
     frontendPreferences: state.user.frontendPreferences,
     status:              state.frontendRealtimePreferencesForm.status,
-    feedSort:            state.feedSort,
+    feedViewOptions:     state.feedViewOptions,
     route:               state.routing.locationBeforeTransitions.pathname,
+    onFirstPage:         !loc.query.offset,
   };
 };
 
@@ -84,6 +113,10 @@ const mapDispatchToProps = (dispatch) => {
         dispatch(home());
       }
     },
+    setHomeFeedMode(mode, route) {
+      dispatch(setHomefeedMode(mode));
+      browserHistory.push(route || '/');
+    },
     toggleFeedSort: (route) => {
       dispatch(toggleFeedSort());
       browserHistory.push(route || '/');
@@ -92,3 +125,18 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeedOptionsSwitch);
+
+function DropOption({ children, value, current, clickHandler, checkbox = false }) {
+  const onClick = useCallback(() => clickHandler(value), [value]);
+  const className = cn('drop-option', { 'active': value === current });
+
+  const iconOn = checkbox ? faCheckSquare : faDotCircle;
+  const iconOff = checkbox ? faSquare : faCircle;
+
+  return (
+    <div className={className} onClick={onClick}>
+      <Icon className="check" icon={value === current ? iconOn : iconOff} />
+      {children}
+    </div>
+  );
+}

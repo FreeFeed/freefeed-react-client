@@ -6,7 +6,7 @@ import config from '../config';
 import { getToken, getPersistedUser } from '../services/auth';
 import { parseQuery } from '../utils/search-highlighter';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
-import * as FeedSortOptions from '../utils/feed-sort-options';
+import * as FeedOptions from '../utils/feed-options';
 import { loadColorScheme, getSystemColorScheme } from '../services/appearance';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
@@ -2462,25 +2462,35 @@ export function serverTimeAhead(state = 0, action) {
   return state;
 }
 
-const getInitialSortingState = () => {
+const getInitialFeedViewOptions = () => {
   const defaultHomeFeedSort = config.frontendPreferences.defaultValues.homeFeedSort;
+  const defaultHomeFeedMode = config.frontendPreferences.defaultValues.homeFeedMode;
   const persistedUser = getPersistedUser();
   const homeFeedSort = (persistedUser && persistedUser.frontendPreferences.homeFeedSort) || defaultHomeFeedSort;
-  return { sort: homeFeedSort, homeFeedSort, currentFeed: ActionTypes.HOME };
+  const homeFeedMode = (persistedUser && persistedUser.frontendPreferences.homeFeedMode) || defaultHomeFeedMode;
+  return {
+    homeFeedSort,
+    homeFeedMode,
+    sort:            homeFeedSort,
+    currentFeed:     ActionTypes.HOME,
+    currentFeedType: 'RiverOfNews',
+  };
 };
 
-export function feedSort(state = getInitialSortingState(), action) {
+export function feedViewOptions(state = getInitialFeedViewOptions(), action) {
   if (action.type === response(ActionTypes.WHO_AM_I)) {
     const defaultHomeFeedSort = config.frontendPreferences.defaultValues.homeFeedSort;
+    const defaultHomeFeedMode = config.frontendPreferences.defaultValues.homeFeedMode;
     const frontendPreferences = action.payload.users.frontendPreferences && action.payload.users.frontendPreferences[frontendPrefsConfig.clientId];
     const homeFeedSort = (frontendPreferences && frontendPreferences.homeFeedSort) || defaultHomeFeedSort;
+    const homeFeedMode = (frontendPreferences && frontendPreferences.homeFeedMode) || defaultHomeFeedMode;
     const sort = state.currentFeed === ActionTypes.HOME ? homeFeedSort : state.sort;
-    return { ...state, homeFeedSort, sort };
+    return { ...state, homeFeedSort, homeFeedMode, sort };
   }
   if (ActionHelpers.isFeedRequest(action)) {
     let { sort } = state;
     if (state.currentFeed !== ActionHelpers.getFeedName(action)) {
-      sort = action.type === request(ActionTypes.HOME) ? state.homeFeedSort : FeedSortOptions.ACTIVITY;
+      sort = action.type === request(ActionTypes.HOME) ? state.homeFeedSort : FeedOptions.ACTIVITY;
     }
     return {
       ...state,
@@ -2488,12 +2498,22 @@ export function feedSort(state = getInitialSortingState(), action) {
       sort,
     };
   }
+  if (ActionHelpers.isFeedResponse(action)) {
+    const currentFeedType = action.payload.timelines ? action.payload.timelines.name : null;
+    return { ...state, currentFeedType };
+  }
   if (action.type === ActionTypes.TOGGLE_FEED_SORT) {
-    const sort = state.sort === FeedSortOptions.ACTIVITY ? FeedSortOptions.CHRONOLOGIC : FeedSortOptions.ACTIVITY;
+    const sort = state.sort === FeedOptions.ACTIVITY ? FeedOptions.CHRONOLOGIC : FeedOptions.ACTIVITY;
     return {
       ...state,
       sort,
       homeFeedSort: state.currentFeed === ActionTypes.HOME ? sort : state.homeFeedSort,
+    };
+  }
+  if (action.type === ActionTypes.SET_HOMEFEED_MODE) {
+    return {
+      ...state,
+      homeFeedMode: action.payload,
     };
   }
   return state;

@@ -16,9 +16,10 @@ const getRequestOptions = () => ({
   }
 });
 
-const feedQueryString = ({ offset, sortChronologically, from }) => ([
+const feedQueryString = ({ offset, sortChronologically, homeFeedMode, from }) => ([
   offset && `offset=${offset}`,
   sortChronologically && `sort=created`,
+  homeFeedMode && `homefeed-mode=${encodeURIComponent(homeFeedMode)}`,
   from && `created-before=${getDateForMemoriesRequest(from).toISOString()}`
 ].filter(Boolean).join('&'));
 

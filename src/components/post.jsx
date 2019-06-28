@@ -6,7 +6,7 @@ import _ from 'lodash';
 import Textarea from 'react-textarea-autosize';
 import moment from 'moment';
 
-import { faExclamationTriangle, faCloudUploadAlt, faLock, faUserFriends, faGlobeAfrica, faAngleDoubleRight } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faCloudUploadAlt, faLock, faUserFriends, faGlobeAmericas, faAngleDoubleRight } from '@fortawesome/free-solid-svg-icons';
 import { getFirstLinkToEmbed } from '../utils/parse-text';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
@@ -512,7 +512,7 @@ class Post extends React.Component {
               ) : isProtected ? (
                 <Icon icon={faUserFriends} className="post-lock-icon post-protected-icon" title="This entry is only visible to FreeFeed users" />
               ) : (
-                <Icon icon={faGlobeAfrica} className="post-lock-icon post-public-icon" title="This entry is public" />
+                <Icon icon={faGlobeAmericas} className="post-lock-icon post-public-icon" title="This entry is public" />
               )}
             </span>
             {props.isDirect && <Icon icon={faAngleDoubleRight} className="post-direct-icon" title="This is a direct message" />}
