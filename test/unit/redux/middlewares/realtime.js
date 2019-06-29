@@ -7,10 +7,11 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 
 import { createRealtimeMiddleware } from '../../../../src/redux/middlewares';
 import { user, realtimeSubscriptions } from '../../../../src/redux/reducers';
-import { REALTIME_CONNECTED, REALTIME_INCOMING_EVENT, WHO_AM_I, SIGN_UP, HOME, GET_SINGLE_POST, GET_EVERYTHING } from '../../../../src/redux/action-types';
+import { REALTIME_CONNECTED, REALTIME_INCOMING_EVENT, WHO_AM_I, SIGN_UP, HOME, GET_SINGLE_POST, GET_EVERYTHING, GET_USER_FEED } from '../../../../src/redux/action-types';
 import { realtimeSubscribe, realtimeUnsubscribe, unauthenticated } from '../../../../src/redux/action-creators';
 import { delay } from '../../../../src/utils';
 import { response, request } from '../../../../src/redux/action-helpers';
+import { HOMEFEED_MODE_CLASSIC } from '../../../../src/utils/feed-options';
 
 
 const expect = unexpected.clone();
@@ -205,9 +206,15 @@ describe('realtime middleware', () => {
       || expect.fail('a proper REALTIME_UNSUBSCRIBE action was not dispatched');
   });
 
-  it(`should subscribe to 'timeline:' room on timeline response`, () => {
+  it(`should subscribe to user's 'timeline:' room on timeline response`, () => {
+    store.dispatch({ type: response(GET_USER_FEED), payload: { timelines: { id: 'userfeed' } } });
+    actionSpy.calledWith(realtimeSubscribe('timeline:userfeed'))
+      || expect.fail('a proper REALTIME_SUBSCRIBE action was not dispatched');
+  });
+
+  it(`should subscribe to home 'timeline:' room on timeline response`, () => {
     store.dispatch({ type: response(HOME), payload: { timelines: { id: 'home' } } });
-    actionSpy.calledWith(realtimeSubscribe('timeline:home'))
+    actionSpy.calledWith(realtimeSubscribe(`timeline:home?homefeed-mode=${HOMEFEED_MODE_CLASSIC}`))
       || expect.fail('a proper REALTIME_SUBSCRIBE action was not dispatched');
   });
 

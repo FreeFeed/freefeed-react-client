@@ -2470,13 +2470,10 @@ export function serverTimeAhead(state = 0, action) {
 
 const getInitialFeedViewOptions = () => {
   const defaultHomeFeedSort = config.frontendPreferences.defaultValues.homeFeedSort;
-  const defaultHomeFeedMode = config.frontendPreferences.defaultValues.homeFeedMode;
   const persistedUser = getPersistedUser();
   const homeFeedSort = (persistedUser && persistedUser.frontendPreferences.homeFeedSort) || defaultHomeFeedSort;
-  const homeFeedMode = (persistedUser && persistedUser.frontendPreferences.homeFeedMode) || defaultHomeFeedMode;
   return {
     homeFeedSort,
-    homeFeedMode,
     sort:            homeFeedSort,
     currentFeed:     ActionTypes.HOME,
     currentFeedType: 'RiverOfNews',
@@ -2486,12 +2483,10 @@ const getInitialFeedViewOptions = () => {
 export function feedViewOptions(state = getInitialFeedViewOptions(), action) {
   if (action.type === response(ActionTypes.WHO_AM_I)) {
     const defaultHomeFeedSort = config.frontendPreferences.defaultValues.homeFeedSort;
-    const defaultHomeFeedMode = config.frontendPreferences.defaultValues.homeFeedMode;
     const frontendPreferences = action.payload.users.frontendPreferences && action.payload.users.frontendPreferences[frontendPrefsConfig.clientId];
     const homeFeedSort = (frontendPreferences && frontendPreferences.homeFeedSort) || defaultHomeFeedSort;
-    const homeFeedMode = (frontendPreferences && frontendPreferences.homeFeedMode) || defaultHomeFeedMode;
     const sort = state.currentFeed === ActionTypes.HOME ? homeFeedSort : state.sort;
-    return { ...state, homeFeedSort, homeFeedMode, sort };
+    return { ...state, homeFeedSort, sort };
   }
   if (ActionHelpers.isFeedRequest(action)) {
     let { sort } = state;
@@ -2514,12 +2509,6 @@ export function feedViewOptions(state = getInitialFeedViewOptions(), action) {
       ...state,
       sort,
       homeFeedSort: state.currentFeed === ActionTypes.HOME ? sort : state.homeFeedSort,
-    };
-  }
-  if (action.type === ActionTypes.SET_HOMEFEED_MODE) {
-    return {
-      ...state,
-      homeFeedMode: action.payload,
     };
   }
   return state;

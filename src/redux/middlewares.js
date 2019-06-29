@@ -26,8 +26,8 @@ export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
   if (isFeedGeneratingAction(action)) {
     //add sorting params to feed request if needed
     const state = store.getState();
-    const { sort: currentFeedSort, currentFeed, homeFeedMode } = state.feedViewOptions;
-    const { homeFeedSort } = state.user.frontendPreferences;
+    const { sort: currentFeedSort, currentFeed } = state.feedViewOptions;
+    const { homeFeedSort, homeFeedMode } = state.user.frontendPreferences;
     if (currentFeed === getFeedName(action)) {
       action.payload.sortChronologically = currentFeedSort === FeedOptions.CHRONOLOGIC;
     } else {
@@ -51,13 +51,6 @@ export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
       const { sort: homeFeedSort } = feedViewOptions;
       return store.dispatch(ActionCreators.updateUserPreferences(id, { ...frontendPreferences, homeFeedSort }, {}, true));
     }
-  }
-  if (action.type === ActionTypes.SET_HOMEFEED_MODE) {
-    next(action);
-    const { user, feedViewOptions } = store.getState();
-    const { id, frontendPreferences } = user;
-    const { homeFeedMode } = feedViewOptions;
-    return store.dispatch(ActionCreators.updateUserPreferences(id, { ...frontendPreferences, homeFeedMode }, {}, true));
   }
   if (action.type === response(ActionTypes.WHO_AM_I)) {
     //here we handle home sort settings changed on another machine
@@ -591,10 +584,10 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
 
     if (isFeedResponse(action)) {
       if (action.payload.timelines) {
-        if (getFeedName(action) === ActionTypes.HOME) {
+        if (action.type === response(ActionTypes.HOME)) {
           const state = store.getState();
           store.dispatch(ActionCreators.realtimeSubscribe(
-            `timeline:${action.payload.timelines.id}?homefeed-mode=${state.feedViewOptions.homeFeedMode}`
+            `timeline:${action.payload.timelines.id}?homefeed-mode=${state.user.frontendPreferences.homeFeedMode}`
           ));
         } else {
           store.dispatch(ActionCreators.realtimeSubscribe(`timeline:${action.payload.timelines.id}`));
