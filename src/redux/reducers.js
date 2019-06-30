@@ -30,6 +30,12 @@ export function title(state = '', action) {
     case response(ActionTypes.GET_BEST_OF): {
       return `Best Of FreeFeed`;
     }
+    case response(ActionTypes.GET_EVERYTHING): {
+      return `Everything On FreeFeed`;
+    }
+    case response(ActionTypes.GET_NOTIFICATIONS): {
+      return `Notifications - FreeFeed`;
+    }
     case response(ActionTypes.GET_SEARCH): {
       return `Search - FreeFeed`;
     }
