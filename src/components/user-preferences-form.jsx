@@ -227,7 +227,7 @@ export default class UserPreferencesForm extends React.Component {
               checked={this.state.homeFeedMode === HOMEFEED_MODE_FRIENDS_ONLY}
               onChange={this.changeHomefeedMode}
             />
-            Posts written by your friends or posted to the groups you subscribed to
+            Posts written by your friends or posted to groups you are subscribed to
           </label>
         </div>
         <div className="radio">
@@ -239,7 +239,7 @@ export default class UserPreferencesForm extends React.Component {
               checked={this.state.homeFeedMode === HOMEFEED_MODE_CLASSIC}
               onChange={this.changeHomefeedMode}
             />
-            Posts written, liked, and/or commented by your friends, as well as the ones posted to the groups you subscribed to (default setting)
+            Add posts liked/commented on by your friends (default setting)
           </label>
         </div>
         <div className="radio">
@@ -251,7 +251,7 @@ export default class UserPreferencesForm extends React.Component {
               checked={this.state.homeFeedMode === HOMEFEED_MODE_FRIENDS_ALL_ACTIVITY}
               onChange={this.changeHomefeedMode}
             />
-            Posts written, liked, and/or commented by your friends, as well as the ones posted to groups you are not subscribed to
+            Also add posts from your friends to groups you are not subscribed to
           </label>
         </div>
 
