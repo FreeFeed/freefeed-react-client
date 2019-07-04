@@ -251,7 +251,7 @@ export default class UserPreferencesForm extends React.Component {
               checked={this.state.homeFeedMode === HOMEFEED_MODE_FRIENDS_ALL_ACTIVITY}
               onChange={this.changeHomefeedMode}
             />
-            Also add posts from your friends to groups you are not subscribed to
+            Also add your friends&apos; activity in groups you are not subscribed to
           </label>
         </div>
 
