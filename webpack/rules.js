@@ -23,7 +23,7 @@ class RuleGenerator {
     return {
       test:    /\.m?jsx?$/,
       exclude: (modulePath) => {
-        return /node_modules/.test(modulePath);
+        return /node_modules\/(?!(autotrack|dom-utils))/.test(modulePath);
       },
       use: [
         {
@@ -33,8 +33,10 @@ class RuleGenerator {
             presets: skipFalsy([
               "@babel/react",
               ["@babel/env", {
-                modules: false,
-                targets: {
+                modules:     false,
+                useBuiltIns: 'entry',
+                corejs:      3,
+                targets:     {
                   browsers: [
                     '>1%',
                     'last 3 versions',
@@ -53,7 +55,7 @@ class RuleGenerator {
               "@babel/proposal-class-properties",
               "@babel/proposal-do-expressions",
               "@babel/proposal-object-rest-spread",
-              this.opts.dev && '@babel/transform-runtime',
+              // this.opts.dev && '@babel/transform-runtime',
               // ['@babel/plugin-transform-modules-commonjs', {
               //   "noInterop": true,
               // }],

@@ -3,6 +3,7 @@ import _ from 'lodash';
 
 import { preventDefault } from '../utils';
 import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
+import { HOMEFEED_MODE_FRIENDS_ONLY, HOMEFEED_MODE_FRIENDS_ALL_ACTIVITY, HOMEFEED_MODE_CLASSIC } from '../utils/feed-options';
 import { Throbber } from './throbber';
 
 
@@ -83,13 +84,12 @@ export default class UserPreferencesForm extends React.Component {
     }
   };
 
+  changeHomefeedMode = (event) => this.setState({ homeFeedMode: event.target.value });
+
   savePreferences = () => {
     if (this.props.status !== 'loading') {
-      const { sHideUsers, hideCommentsOfTypes } = this.state;
-
+      const { sHideUsers, hideCommentsOfTypes, ...frontPrefs } = this.state;
       const backPrefs = { hideCommentsOfTypes };
-
-      const frontPrefs = _.omit(this.state, ['sHideUsers', 'hideCommentsOfTypes']);
       frontPrefs.homefeed.hideUsers = sHideUsers.toLowerCase().match(/[\w-]+/g) || [];
 
       this.props.updateUserPreferences(this.props.userId, frontPrefs, backPrefs);
@@ -211,6 +211,47 @@ export default class UserPreferencesForm extends React.Component {
           <label>
             <input type="checkbox" name="bubbles" value="1" checked={this.state.allowLinksPreview} onChange={this.changeAllowLinksPreview} />
               Show advanced previews of links in posts (Embedly). Link should start with http(s)://, post should have no attached images. If you don{"'"}t want to have link preview, add ! before a link without spaces.
+          </label>
+        </div>
+
+        <h4>Home feed preferences</h4>
+        <p>
+          Show:
+        </p>
+        <div className="radio">
+          <label>
+            <input
+              type="radio"
+              name="homeFeedMode"
+              value={HOMEFEED_MODE_FRIENDS_ONLY}
+              checked={this.state.homeFeedMode === HOMEFEED_MODE_FRIENDS_ONLY}
+              onChange={this.changeHomefeedMode}
+            />
+            Posts written by your friends or posted to groups you are subscribed to
+          </label>
+        </div>
+        <div className="radio">
+          <label>
+            <input
+              type="radio"
+              name="homeFeedMode"
+              value={HOMEFEED_MODE_CLASSIC}
+              checked={this.state.homeFeedMode === HOMEFEED_MODE_CLASSIC}
+              onChange={this.changeHomefeedMode}
+            />
+            Add posts liked/commented on by your friends (default setting)
+          </label>
+        </div>
+        <div className="radio">
+          <label>
+            <input
+              type="radio"
+              name="homeFeedMode"
+              value={HOMEFEED_MODE_FRIENDS_ALL_ACTIVITY}
+              checked={this.state.homeFeedMode === HOMEFEED_MODE_FRIENDS_ALL_ACTIVITY}
+              onChange={this.changeHomefeedMode}
+            />
+            Also add posts from your friends to groups you are not subscribed to
           </label>
         </div>
 

@@ -37,7 +37,7 @@ const FeedHandler = (props) => {
       <div className="box-header-timeline">
         {props.boxHeader}
         <div className="pull-right">
-          {props.authenticated && <FeedOptionsSwitch showRealtime={props.areOnFirstHomePage} />}
+          {props.authenticated && <FeedOptionsSwitch />}
         </div>
       </div>
 
@@ -80,7 +80,6 @@ function selectState(state) {
     createPostViewState,
     timelines, boxHeader, sendTo, userRequestsCount, groupRequestsCount,
     feedIsLoading,
-    areOnFirstHomePage: !state.routing.locationBeforeTransitions.query.offset,
   };
 }
 

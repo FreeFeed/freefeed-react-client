@@ -1,9 +1,13 @@
 import React from 'react';
-import Highcharts from 'highcharts';
+import Highcharts from 'highcharts/highcharts';
+import HighchartsMore from 'highcharts/highcharts-more';
 import ReactHighcharts from 'react-highcharts';
 import moment from 'moment';
 import config from '../config';
 
+
+const Chart = ReactHighcharts.withHighcharts(Highcharts);
+HighchartsMore(Chart.Highcharts);
 
 class StatsChart extends React.Component {
   constructor(props) {
@@ -75,7 +79,7 @@ class StatsChart extends React.Component {
     config.series[0].data = this.state.metrics;
 
     return (
-      <ReactHighcharts config={config} />
+      <Chart config={config} />
     );
   }
 }

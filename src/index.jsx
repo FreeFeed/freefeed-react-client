@@ -10,10 +10,6 @@ import 'autotrack';  // used by google-analytics in ../index.jade
 import '../styles/common/common.scss';
 import '../styles/helvetica/app.scss';
 import '../styles/helvetica/dark-theme.scss';
-import '../assets/vendor-css/font-awesome.min.css';
-
-
-require.context('../assets/fonts', true, /fontawesome.*/i);
 
 import configureStore from './redux/configure-store';
 import * as ActionCreators from './redux/action-creators';

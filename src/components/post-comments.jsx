@@ -4,9 +4,12 @@ import { StickyContainer, Sticky } from 'react-sticky';
 import _ from 'lodash';
 import cn from 'classnames';
 
+import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
 import PostComment from './post-comment';
 import MoreCommentsWrapper from './more-comments-wrapper';
+import { Icon } from './fontawesome-icons';
+import { faCommentPlus } from './fontawesome-custom-icons';
 
 
 const minCommentsToFold = 12;
@@ -77,10 +80,8 @@ export default class PostComments extends React.Component {
     if (props.comments.length > 2 && !props.post.omittedComments) {
       return (
         <div className="comment">
-          <a className="comment-icon fa-stack fa-1x" onClick={preventDefault(toggleCommenting)}>
-            <i className="fa fa-comment-o fa-stack-1x" />
-            <i className="fa fa-square fa-inverse fa-stack-1x" />
-            <i className="fa fa-plus fa-stack-1x" />
+          <a className="comment-icon fa-stack" onClick={preventDefault(toggleCommenting)}>
+            <Icon icon={faCommentPlus} />
           </a>
           <a className="add-comment-link" onClick={preventDefault(toggleCommenting)}>Add comment</a>
           {disabledForOthers
@@ -182,7 +183,7 @@ export default class PostComments extends React.Component {
               style={style}
               className={cn("fold-comments", { "fold-comments-sticky": isSticky })}
             >
-              <i className="fa fa-chevron-up" />
+              <Icon icon={faChevronUp} className="chevron" />
               <a onClick={this.fold}>Fold comments</a>
             </div>
           )}
@@ -206,10 +207,8 @@ export default class PostComments extends React.Component {
     if (!user.id) {
       return post.isCommenting ? (
         <div className="comment">
-          <span className="comment-icon fa-stack fa-1x">
-            <i className="fa fa-comment-o fa-stack-1x" />
-            <i className="fa fa-square fa-inverse fa-stack-1x" />
-            <i className="fa fa-plus fa-stack-1x" />
+          <span className="comment-icon fa-stack">
+            <Icon icon={faCommentPlus} />
           </span>
           <span><Link to="/signin">Sign In</Link> to add comment</span>
         </div>

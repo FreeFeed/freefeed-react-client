@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import classnames from "classnames";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { Icon } from "./fontawesome-icons";
 
 
 const DEFAULT_MAX_LINES = 8;
@@ -37,7 +39,7 @@ export default class Expandable extends React.Component {
         {this.props.children}
         {!expanded && (
           <div className="expand-panel">
-            <div className="expand-button"><i onClick={this.userExpand}><span className="expand-icon"><i className="fa fa-chevron-down" /></span> Read more</i> {this.props.bonusInfo}</div>
+            <div className="expand-button"><i onClick={this.userExpand}><Icon icon={faChevronDown} className="expand-icon" /> Read more</i> {this.props.bonusInfo}</div>
           </div>
         )}
       </div>

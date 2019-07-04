@@ -4,7 +4,9 @@ import { parse as queryParse } from 'querystring';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import { faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 
+import { Icon } from '../fontawesome-icons';
 import ScrollSafe from './scroll-helpers/scroll-safe';
 import { contentResized } from './scroll-helpers/events';
 import cachedFetch from './cached-fetch';
@@ -92,7 +94,7 @@ class VideoPreview extends React.Component {
           {player ? (
             this.renderPlayer()
           ) : (
-            <i className="fa fa-play-circle play-icon" />
+            <Icon icon={faPlayCircle} className="play-icon" />
           )}
         </div>
         <div className="info">
