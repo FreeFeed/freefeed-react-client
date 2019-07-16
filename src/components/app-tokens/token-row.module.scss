@@ -1,0 +1,20 @@
+.deleted {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.allowsBlock {
+  &:empty {
+    display: none;
+  }
+  &::before {
+    content: "Allows: ";
+  }
+}
+
+.fromBlock {
+  @extend .allowsBlock;
+  &::before {
+    content: "From: ";
+  }
+}
