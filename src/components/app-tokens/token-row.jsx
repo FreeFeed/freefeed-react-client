@@ -58,7 +58,7 @@ function TokenRow({
       <p><strong>{token.title}</strong> (<a onClick={onEdit}>rename</a>)</p>
       <div className="small text-muted">
         <p className={styles.allowsBlock}>{scopesTexts.join(', ')}</p>
-        <p className={styles.fromBlock}>{[...token.restrictions.netmasks, ...token.restrictions.origins].join(', ')}</p>
+        <p className={styles.fromBlock}>{[...token.restrictions.netmasks, ...token.restrictions.origins].join('; ')}</p>
       </div>
       {token.lastUsedAt ? (
         <p>Last used <TimeDisplay timeStamp={token.lastUsedAt} /> from IP address <samp>{token.lastIP}</samp></p>
