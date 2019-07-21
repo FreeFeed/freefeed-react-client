@@ -25,7 +25,7 @@ class InvitationCreationForm extends React.Component {
   };
 
   componentDidMount() {
-    this.suggestedSubscriptionsChanged();
+    this.props.authenticated && this.suggestedSubscriptionsChanged();
   }
 
   render() {
