@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { getPost } from '../services/api';
 import { setToken, persistUser } from '../services/auth';
 import { Connection, scrollCompensator } from '../services/realtime';
-import { userParser, delay } from '../utils';
+import { delay } from '../utils';
 import * as FeedOptions from '../utils/feed-options';
 
 import {
@@ -175,7 +175,7 @@ export const authMiddleware = (store) => {
       action.type === response(ActionTypes.UPDATE_USER) ||
       action.type === response(ActionTypes.UPDATE_USER_PREFERENCES)
     ) {
-      persistUser(userParser(action.payload.users));
+      persistUser(action.payload.users);
       return next(action);
     }
 
