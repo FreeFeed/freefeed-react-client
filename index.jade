@@ -106,7 +106,7 @@ html(lang='en')
       })(window, document);
 
     if htmlWebpackPlugin.options.appConfig.sentry.publicDSN
-      script(src='https://cdn.ravenjs.com/3.23.1/raven.min.js', crossorigin="anonymous")
+      script(src='https://cdn.ravenjs.com/3.27.0/raven.min.js', crossorigin="anonymous")
       script Raven.config('#{htmlWebpackPlugin.options.appConfig.sentry.publicDSN}', { autoBreadcrumbs: true }).install();
 
     script.
