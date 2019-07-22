@@ -79,6 +79,7 @@ export default class CreatePost extends React.Component {
   };
 
   clearForm = () => {
+    this.selectFeeds && this.selectFeeds.reset();
     this.setState(getDefaultState());
   };
 

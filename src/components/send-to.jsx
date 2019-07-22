@@ -45,8 +45,6 @@ class SendTo extends React.Component {
     })),
   };
 
-  selector;
-
   constructor(props) {
     super(props);
     this.state = this.stateFromProps(props, this.optionsFromProps(props));
@@ -160,12 +158,12 @@ class SendTo extends React.Component {
 
   promptTextCreator = (label) => `Send direct message to @${label}`;
 
-  registerSelector = (el) => {
-    this.selector = el;
-  };
-
   // Only valid usernames are allowed
   isValidNewOption = ({ label }) => /^[a-z0-9]{3,25}$/i.test(trim(label));
+
+  reset() {
+    this.setState(this.stateFromProps(this.props, this.optionsFromProps(this.props)));
+  }
 
   render() {
     const [defaultOpt] = this.state.values;
@@ -188,7 +186,6 @@ class SendTo extends React.Component {
               onChange={this.selectChanged}
               optionRenderer={this.labelRenderer}
               valueRenderer={this.labelRenderer}
-              ref={this.registerSelector}
               multi={true}
               clearable={false}
               autoFocus={this.state.showFeedsOption && !this.props.disableAutoFocus && !this.props.isDirects}
