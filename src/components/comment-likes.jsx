@@ -11,6 +11,7 @@ import { Icon } from "./fontawesome-icons";
 const longTapTimeout = 300;
 
 export default class CommentLikes extends React.Component {
+  actionsOverlay;
   actionsPanel;
 
   likesListEl;
@@ -106,6 +107,8 @@ export default class CommentLikes extends React.Component {
     if (this.panelJustOpened) {
       this.panelJustOpened = false;
       e.cancelable && e.preventDefault();
+      // For iOS browsers that does not support the selectstart event
+      window.getSelection().removeAllRanges();
     }
   };
 
@@ -139,11 +142,25 @@ export default class CommentLikes extends React.Component {
     this.actionsPanel = el;
   };
 
+  onSelectStart = (e) => this.panelJustOpened && e.preventDefault();
+  registerActionsOverlay = (el) => {
+    if (el) {
+      el.addEventListener('selectstart', this.onSelectStart);
+    } else if (this.actionsOverlay) {
+      this.actionsOverlay.removeEventListener('selectstart', this.onSelectStart);
+    }
+    this.actionsOverlay = el;
+  };
+
   renderPopup = () => {
     const likesStyle = { height: (!this.state.showActionButtons && this.state.panelHeight) || "auto", };
     return this.state.showActionsPanel && (
       <Portal isOpened={true}>
-        <div className="actions-overlay" onClick={this.toggleActionsPanel}>
+        <div
+          className="actions-overlay"
+          ref={this.registerActionsOverlay}
+          onClick={this.toggleActionsPanel}
+        >
           <div className="container">
             <div className="row">
               <div className="col-md-9">

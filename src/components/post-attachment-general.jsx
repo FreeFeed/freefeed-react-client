@@ -19,7 +19,7 @@ class GeneralAttachment extends React.PureComponent {
       <div className="attachment">
         <a href={props.url} title={nameAndSize} target="_blank">
           <Icon icon={faFile} className="attachment-icon" />
-          <span>{nameAndSize}</span>
+          <span className="attachment-title">{nameAndSize}</span>
         </a>
 
         {props.isEditing &&

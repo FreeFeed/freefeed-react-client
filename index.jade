@@ -2,7 +2,7 @@ doctype html
 html(lang='en')
   head
     meta(charset='utf-8')
-    meta(name='viewport', content='width=device-width,initial-scale=1')
+    meta(name='viewport', content='width=device-width,initial-scale=1,maximum-scale=1')
     //- Support for FB OpenGraph and Twitter
     <!--#if expr="${request_uri} = /^\/([a-zA-Z0-9]+)\/([a-fA-F0-9\-]{36})/" -->
     <!--#set var="post_id" value="$2" -->
@@ -106,7 +106,7 @@ html(lang='en')
       })(window, document);
 
     if htmlWebpackPlugin.options.appConfig.sentry.publicDSN
-      script(src='https://cdn.ravenjs.com/3.23.1/raven.min.js', crossorigin="anonymous")
+      script(src='https://cdn.ravenjs.com/3.27.0/raven.min.js', crossorigin="anonymous")
       script Raven.config('#{htmlWebpackPlugin.options.appConfig.sentry.publicDSN}', { autoBreadcrumbs: true }).install();
 
     script.
