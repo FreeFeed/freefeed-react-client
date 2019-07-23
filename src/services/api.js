@@ -52,6 +52,11 @@ export function getDiscussions(params) {
     `${apiConfig.host}/v2/timelines/filter/discussions?with-my-posts=yes&${feedQueryString(params)}`, getRequestOptions());
 }
 
+export function getSaves(params) {
+  return fetch(
+    `${apiConfig.host}/v2/timelines/filter/saves?${feedQueryString(params)}`, getRequestOptions());
+}
+
 export function getDirect(params) {
   return fetch(
     `${apiConfig.host}/v2/timelines/filter/directs?${feedQueryString(params)}`, getRequestOptions());

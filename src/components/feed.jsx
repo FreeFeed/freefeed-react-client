@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import Post from './post';
 
 
@@ -21,7 +23,7 @@ const HiddenEntriesToggle = (props) => {
   );
 };
 
-export default (props) => {
+function Feed(props) {
   const getEntryComponent = (section) => (post) => {
     const isRecentlyHidden = (props.isInHomeFeed && post.isHidden && (section === 'visible'));
 
@@ -58,6 +60,7 @@ export default (props) => {
 
   const visibleEntries = props.visibleEntries.map(getEntryComponent('visible'));
   const hiddenEntries = (props.hiddenEntries || []).map(getEntryComponent('hidden'));
+  const emptyFeed = visibleEntries.length === 0 && hiddenEntries.length === 0;
 
   return (
     <div className="posts">
@@ -75,6 +78,20 @@ export default (props) => {
           {props.isHiddenRevealed ? hiddenEntries : false}
         </div>
       ) : false}
+
+      {emptyFeed && props.loading && <p>Loading feed...</p>}
+      {emptyFeed && !props.loading && (
+        <>
+          <p>
+            There are no posts in this feed.
+          </p>
+          {props.emptyFeedMessage}
+        </>
+      )}
     </div>
   );
-};
+}
+
+export default connect(
+  (state) => ({ loading: state.routeLoadingState }),
+)(Feed);

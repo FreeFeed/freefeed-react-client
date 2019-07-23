@@ -28,6 +28,9 @@ export function title(state = '', action) {
     case response(ActionTypes.DISCUSSIONS): {
       return 'My discussions - FreeFeed';
     }
+    case response(ActionTypes.SAVES): {
+      return 'Saved posts - FreeFeed';
+    }
     case response(ActionTypes.GET_BEST_OF): {
       return `Best Of FreeFeed`;
     }
@@ -66,6 +69,7 @@ export function title(state = '', action) {
     case fail(ActionTypes.HOME):
     case fail(ActionTypes.DIRECT):
     case fail(ActionTypes.DISCUSSIONS):
+    case fail(ActionTypes.SAVES):
     case fail(ActionTypes.GET_USER_FEED):
     case fail(ActionTypes.GET_SINGLE_POST): {
       return 'Error - FreeFeed';
@@ -1896,6 +1900,9 @@ export function boxHeader(state = "", action) {
     }
     case request(ActionTypes.DISCUSSIONS): {
       return 'My discussions';
+    }
+    case request(ActionTypes.SAVES): {
+      return 'Saved posts';
     }
     case request(ActionTypes.DIRECT): {
       return 'Direct messages';

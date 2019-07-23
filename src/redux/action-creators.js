@@ -69,6 +69,14 @@ export function discussions(offset = 0) {
   };
 }
 
+export function saves(offset = 0) {
+  return {
+    type:       ActionTypes.SAVES,
+    apiRequest: Api.getSaves,
+    payload:    { offset },
+  };
+}
+
 export function direct(offset = 0) {
   return {
     type:       ActionTypes.DIRECT,

@@ -626,6 +626,7 @@ export const dataFixMiddleware = (/*store*/) => (next) => (action) => {
   if (
     action.type === response(ActionTypes.HOME) ||
     action.type === response(ActionTypes.DISCUSSIONS) ||
+    action.type === response(ActionTypes.SAVES) ||
     action.type === response(ActionTypes.GET_USER_FEED) ||
     action.type === response(ActionTypes.GET_USER_COMMENTS) ||
     action.type === response(ActionTypes.GET_USER_LIKES) ||
