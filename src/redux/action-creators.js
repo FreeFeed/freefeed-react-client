@@ -250,6 +250,14 @@ export function unhidePost(postId) {
   };
 }
 
+export function savePost(postId, save) {
+  return {
+    type:       ActionTypes.SAVE_POST,
+    apiRequest: save ? Api.savePost : Api.unsavePost,
+    payload:    { postId, save }
+  };
+}
+
 export function toggleModeratingComments(postId) {
   return {
     type: ActionTypes.TOGGLE_MODERATING_COMMENTS,
