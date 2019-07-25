@@ -143,6 +143,7 @@ ReactDOM.render(
         <Route path="reset" component={ResetPassword} />
         <Route path="settings" component={lazyLoad('./components/settings')} onEnter={enterStaticPage('Settings')} />
         <Route path="settings/archive" component={lazyLoad('./components/archive')} onEnter={enterStaticPage('Restore from FriendFeed.com Archives')} />
+        <Route path="settings/app-tokens(/**)" component={lazyLoad('./components/app-tokens')} />
         <Route name="groupSettings" path="/:userName/settings" component={GroupSettings} {...generateRouteHooks(boundRouteActions('getUserInfo'))} />
         <Route name="discussions" path="filter/discussions" component={Discussions} {...generateRouteHooks(boundRouteActions('discussions'))} />
         <Route name="summary" path="/summary(/:days)" component={Summary} {...generateRouteHooks(boundRouteActions('summary'))} />

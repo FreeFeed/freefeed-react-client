@@ -643,3 +643,57 @@ export function createFreefeedInvitation(params) {
 export function getInvitation({ invitationId }) {
   return fetch(`${apiConfig.host}/v2/invitations/${invitationId}`, getRequestOptions());
 }
+
+export function getAppTokens() {
+  return fetch(`${apiConfig.host}/v2/app-tokens`, getRequestOptions());
+}
+
+export function getAppTokensScopes() {
+  return fetch(`${apiConfig.host}/v2/app-tokens/scopes`, getRequestOptions());
+}
+
+export function createAppToken(params) {
+  return fetch(`${apiConfig.host}/v2/app-tokens`, {
+    method:  'POST',
+    headers: {
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
+      'X-Authentication-Token': getToken(),
+    },
+    body: JSON.stringify(params),
+  });
+}
+
+export function reissueAppToken(tokenId) {
+  return fetch(`${apiConfig.host}/v2/app-tokens/${tokenId}/reissue`, {
+    method:  'POST',
+    headers: {
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
+      'X-Authentication-Token': getToken(),
+    },
+  });
+}
+
+export function deleteAppToken(tokenId) {
+  return fetch(`${apiConfig.host}/v2/app-tokens/${tokenId}`, {
+    method:  'DELETE',
+    headers: {
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
+      'X-Authentication-Token': getToken(),
+    },
+  });
+}
+
+export function updateAppToken({ tokenId, ...params }) {
+  return fetch(`${apiConfig.host}/v2/app-tokens/${tokenId}`, {
+    method:  'PUT',
+    headers: {
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
+      'X-Authentication-Token': getToken(),
+    },
+    body: JSON.stringify(params),
+  });
+}

@@ -31,7 +31,9 @@ body.dark-theme {
   .search-form .search-input,
   .content .box-body,
   .content .box-footer,
-  .expandable .expand-panel {
+  .expandable .expand-panel,
+  .list-group-item,
+  .panel {
     background-color: $bg-color;
   }
 
@@ -43,7 +45,8 @@ body.dark-theme {
   .timeline-post.direct-post,
   .timeline-post.direct-post .expand-panel,
   .feed-options-switch .dropdown,
-  .loader-container .loader-overlay {
+  .loader-container .loader-overlay,
+  .breadcrumb {
     background-color: $bg-color-lighter;
   }
 
@@ -59,7 +62,9 @@ body.dark-theme {
   .image-attachments .image-attachment-link,
   .avatar img,
   select[name="os0"],
-  .feed-options-switch .dropdown {
+  .feed-options-switch .dropdown,
+  .list-group-item,
+  .panel-default {
     border-color: $separator-color;
   }
 
@@ -92,7 +97,9 @@ body.dark-theme {
   .post-editor .post-edit-options .post-edit-more-trigger,
   .comment-likes .comment-count,
   .post .post-body .post-footer .post-timestamp,
-  .post-footer {
+  .post-footer,
+  .text-muted,
+  .breadcrumb > .active {
     color: $text-color-darker;
   }
 
@@ -331,7 +338,8 @@ body.dark-theme {
   }
 
   .dd-menu .dd-menu-items ul,
-  .dd-menu .dd-menu-items ol {
+  .dd-menu .dd-menu-items ol,
+  .panel-default > .panel-heading {
     background-color: $bg-color-lighter;
     border-color: $separator-color;
     color: $text-color;
@@ -370,5 +378,11 @@ body.dark-theme {
 
   .audio-attachments audio {
     filter: invert(1) contrast(70%) hue-rotate(180deg);
+  }
+
+  .alert-success {
+    background-color: mix($bg-color, #dff0d8, 75%);
+    border-color: mix($separator-color, #d6e9c6, 75%);
+    color: mix($text-color, #3c763d, 75%);
   }
 }
