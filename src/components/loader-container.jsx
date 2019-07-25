@@ -1,6 +1,6 @@
 import React from 'react';
 
-import throbber from '../../assets/images/throbber.gif';
+import { Throbber, BIG } from './throbber';
 
 
 export default ({ loading, children, fullPage }) => (
@@ -8,7 +8,7 @@ export default ({ loading, children, fullPage }) => (
     {loading
       ? (
         <div className="loader-overlay">
-          <img src={throbber} />
+          <Throbber size={BIG} />
         </div>
       )
       : false

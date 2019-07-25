@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import classnames from 'classnames';
+import { faMinusSquare, faPlusSquare } from '@fortawesome/free-regular-svg-icons';
 
+import { Icon } from '../../fontawesome-icons';
 import { ELEMENT_RESIZE_EVENT } from './events';
 
 
@@ -58,7 +60,11 @@ export default class FoldableContent extends React.Component {
         </div>
         {foldNeeded ? (
           <div className="preview-expand">
-            <i onClick={this.toggleFold} className={`fa fa-${this.state.expanded ? 'minus' : 'plus'}-square-o`} />
+            <Icon
+              icon={this.state.expanded ? faMinusSquare : faPlusSquare}
+              className="preview-expand-icon"
+              onClick={this.toggleFold}
+            />
             {' '}
             <a onClick={this.toggleFold}>{this.state.expanded ? 'Fold' : 'Expand'} preview</a>
           </div>

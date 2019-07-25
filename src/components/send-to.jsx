@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { xor, trim } from 'lodash';
 import Loadable from 'react-loadable';
 import propTypes from 'prop-types';
+import { faUsers, faHome } from '@fortawesome/free-solid-svg-icons';
+import { Icon } from './fontawesome-icons';
 
 
 const MY_FEED_LABEL = 'My feed';
@@ -42,8 +44,6 @@ class SendTo extends React.Component {
       type:     propTypes.oneOf(['user', 'group']),
     })),
   };
-
-  selector;
 
   constructor(props) {
     super(props);
@@ -151,19 +151,19 @@ class SendTo extends React.Component {
 
   labelRenderer = (opt) => {
     const icon = (opt.type === 'group') ?
-      ((opt.value !== this.props.user.username) ? <i className="fa fa-users" /> : <i className="fa fa-home" />)
+      <Icon icon={(opt.value !== this.props.user.username) ? faUsers : faHome} />
       : false;
     return <span>{icon} {opt.label}</span>;
   };
 
   promptTextCreator = (label) => `Send direct message to @${label}`;
 
-  registerSelector = (el) => {
-    this.selector = el;
-  };
-
   // Only valid usernames are allowed
   isValidNewOption = ({ label }) => /^[a-z0-9]{3,25}$/i.test(trim(label));
+
+  reset() {
+    this.setState(this.stateFromProps(this.props, this.optionsFromProps(this.props)));
+  }
 
   render() {
     const [defaultOpt] = this.state.values;
@@ -186,7 +186,6 @@ class SendTo extends React.Component {
               onChange={this.selectChanged}
               optionRenderer={this.labelRenderer}
               valueRenderer={this.labelRenderer}
-              ref={this.registerSelector}
               multi={true}
               clearable={false}
               autoFocus={this.state.showFeedsOption && !this.props.disableAutoFocus && !this.props.isDirects}

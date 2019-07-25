@@ -2,10 +2,10 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
 import Textarea from "react-textarea-autosize";
-import throbber16 from "../../assets/images/throbber-16.gif";
 import { preventDefault } from "../utils";
 import { createFreefeedInvitation } from "../redux/action-creators";
 import SendTo from "./send-to";
+import { Throbber } from "./throbber";
 
 
 export const INVITATION_LANGUAGE_OPTIONS = {
@@ -25,7 +25,7 @@ class InvitationCreationForm extends React.Component {
   };
 
   componentDidMount() {
-    this.suggestedSubscriptionsChanged();
+    this.props.authenticated && this.suggestedSubscriptionsChanged();
   }
 
   render() {
@@ -113,7 +113,7 @@ class InvitationCreationForm extends React.Component {
               <button className="btn btn-default" type="submit">Create invitation</button>
               {form.isSaving &&
                 <span className="settings-throbber">
-                  <img width="16" height="16" src={throbber16} />
+                  <Throbber />
                 </span>
               }
             </p>

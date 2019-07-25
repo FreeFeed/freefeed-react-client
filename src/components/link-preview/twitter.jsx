@@ -13,12 +13,13 @@ export function canShowURL(url) {
   return TWEET_RE.test(url);
 }
 
-class TwitterPreview extends React.Component {
+class TwitterPreview extends React.PureComponent {
   elem = React.createRef();
 
   async embed() {
     await loadTwitterAPI();
     try {
+      this.elem.current.innerHTML = '';
       await twttr.widgets.createTweet(
         getTweetId(this.props.url),
         this.elem.current,

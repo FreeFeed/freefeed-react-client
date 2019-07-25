@@ -5,9 +5,17 @@ import {
 } from './action-types';
 
 
+// Async actions lifecycle
 export const request = (type) => `${type}_REQUEST`;
 export const response = (type) => `${type}_RESPONSE`;
 export const fail = (type) => `${type}_FAIL`;
+export const reset = (type) => `${type}_RESET`;
+export const asyncTypeOf = (testType, type) =>
+  testType === request(type) ||
+  testType === response(type) ||
+  testType === fail(type) ||
+  testType === reset(type);
+
 
 export const feedGeneratingActions = [HOME, DISCUSSIONS, GET_USER_FEED, GET_USER_COMMENTS, GET_USER_LIKES, DIRECT, GET_SEARCH, GET_BEST_OF, GET_EVERYTHING, GET_SUMMARY, GET_USER_SUMMARY, MEMORIES, GET_USER_MEMORIES];
 const userFeedGeneratingActions = [GET_USER_FEED, GET_USER_COMMENTS, GET_USER_LIKES, GET_USER_SUMMARY, GET_USER_MEMORIES];

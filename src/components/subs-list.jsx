@@ -1,6 +1,6 @@
 import React from 'react';
 
-import throbber16 from '../../assets/images/throbber-16.gif';
+import { Throbber } from './throbber';
 import { tileUserListFactory, WITH_MUTUALS } from './tile-user-list';
 
 
@@ -16,7 +16,7 @@ export default (props) => {
         <h3>
           <span>{title} </span>
           <span className="comment-throbber">
-            <img width="16" height="16" src={throbber16} />
+            <Throbber />
           </span>
         </h3>
       </div>

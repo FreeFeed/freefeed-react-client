@@ -1,7 +1,9 @@
 import React from 'react';
 
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
 import UserName from './user-name';
+import { Icon } from './fontawesome-icons';
 
 
 const renderLike = (item, i, items) => (
@@ -42,7 +44,7 @@ export default ({ likes, showMoreLikes, post }) => {
 
   return (
     <div className="post-likes">
-      <i className="fa fa-heart icon" />
+      <Icon icon={faHeart} className="icon" />
       <ul className="post-likes-list">{renderedLikes}</ul>
     </div>
   );

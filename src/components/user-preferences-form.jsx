@@ -1,9 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
 
-import throbber16 from '../../assets/images/throbber-16.gif';
 import { preventDefault } from '../utils';
 import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
+import { HOMEFEED_MODE_FRIENDS_ONLY, HOMEFEED_MODE_FRIENDS_ALL_ACTIVITY, HOMEFEED_MODE_CLASSIC } from '../utils/feed-options';
+import { Throbber } from './throbber';
 
 
 export default class UserPreferencesForm extends React.Component {
@@ -83,13 +84,12 @@ export default class UserPreferencesForm extends React.Component {
     }
   };
 
+  changeHomefeedMode = (event) => this.setState({ homeFeedMode: event.target.value });
+
   savePreferences = () => {
     if (this.props.status !== 'loading') {
-      const { sHideUsers, hideCommentsOfTypes } = this.state;
-
+      const { sHideUsers, hideCommentsOfTypes, ...frontPrefs } = this.state;
       const backPrefs = { hideCommentsOfTypes };
-
-      const frontPrefs = _.omit(this.state, ['sHideUsers', 'hideCommentsOfTypes']);
       frontPrefs.homefeed.hideUsers = sHideUsers.toLowerCase().match(/[\w-]+/g) || [];
 
       this.props.updateUserPreferences(this.props.userId, frontPrefs, backPrefs);
@@ -214,6 +214,47 @@ export default class UserPreferencesForm extends React.Component {
           </label>
         </div>
 
+        <h4>Home feed preferences</h4>
+        <p>
+          Show:
+        </p>
+        <div className="radio">
+          <label>
+            <input
+              type="radio"
+              name="homeFeedMode"
+              value={HOMEFEED_MODE_FRIENDS_ONLY}
+              checked={this.state.homeFeedMode === HOMEFEED_MODE_FRIENDS_ONLY}
+              onChange={this.changeHomefeedMode}
+            />
+            Posts written by your friends or posted to groups you are subscribed to
+          </label>
+        </div>
+        <div className="radio">
+          <label>
+            <input
+              type="radio"
+              name="homeFeedMode"
+              value={HOMEFEED_MODE_CLASSIC}
+              checked={this.state.homeFeedMode === HOMEFEED_MODE_CLASSIC}
+              onChange={this.changeHomefeedMode}
+            />
+            Add posts liked/commented on by your friends (default setting)
+          </label>
+        </div>
+        <div className="radio">
+          <label>
+            <input
+              type="radio"
+              name="homeFeedMode"
+              value={HOMEFEED_MODE_FRIENDS_ALL_ACTIVITY}
+              checked={this.state.homeFeedMode === HOMEFEED_MODE_FRIENDS_ALL_ACTIVITY}
+              onChange={this.changeHomefeedMode}
+            />
+            Also add your friends&apos; activity in groups you are not subscribed to
+          </label>
+        </div>
+
         <div className="form-group">
           Hide posts from these users/groups in homefeed
           (enter comma separated list of usernames/groupnames):<br />
@@ -224,7 +265,7 @@ export default class UserPreferencesForm extends React.Component {
           <button className="btn btn-default" type="submit">Update</button>
           {this.props.status === 'loading' ? (
             <span className="settings-throbber">
-              <img width="16" height="16" src={throbber16} />
+              <Throbber />
             </span>
           ) : false}
         </p>

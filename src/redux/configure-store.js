@@ -2,7 +2,7 @@ import { compose, createStore, applyMiddleware, combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
 import {
-  feedSortMiddleware,
+  feedViewOptionsMiddleware,
   apiMiddleware,
   authMiddleware,
   likesLogicMiddleware,
@@ -23,7 +23,7 @@ import * as ActionCreators from "./action-creators";
 
 //order matters — we need to stop unauthed async fetching before request, see authMiddleware
 const middleware = [
-  feedSortMiddleware,
+  feedViewOptionsMiddleware,
   authMiddleware,
   apiMiddleware,
   dataFixMiddleware,

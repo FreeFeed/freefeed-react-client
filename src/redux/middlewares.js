@@ -5,8 +5,8 @@ import _ from 'lodash';
 import { getPost } from '../services/api';
 import { setToken, persistUser } from '../services/auth';
 import { Connection, scrollCompensator } from '../services/realtime';
-import { userParser, delay } from '../utils';
-import * as FeedSortOptions from '../utils/feed-sort-options';
+import { delay } from '../utils';
+import * as FeedOptions from '../utils/feed-options';
 
 import {
   colorSchemeStorageKey,
@@ -22,30 +22,33 @@ import * as ActionTypes from './action-types';
 import { request, response, fail, requiresAuth, isFeedRequest, isFeedResponse, isFeedGeneratingAction, getFeedName } from './action-helpers';
 
 
-export const feedSortMiddleware = (store) => (next) => (action) => {
+export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
   if (isFeedGeneratingAction(action)) {
     //add sorting params to feed request if needed
     const state = store.getState();
-    const { sort: currentFeedSort, currentFeed } = state.feedSort;
-    const { homeFeedSort } = state.user.frontendPreferences;
+    const { sort: currentFeedSort, currentFeed } = state.feedViewOptions;
+    const { homeFeedSort, homeFeedMode } = state.user.frontendPreferences;
     if (currentFeed === getFeedName(action)) {
-      action.payload.sortChronologically = currentFeedSort === FeedSortOptions.CHRONOLOGIC;
+      action.payload.sortChronologically = currentFeedSort === FeedOptions.CHRONOLOGIC;
     } else {
       //use home feed setting if we get back to home feed
       //this change isn't yet in reducer, and we don't get it there before real feed request fires
-      action.payload.sortChronologically = action.type === ActionTypes.HOME && homeFeedSort === FeedSortOptions.CHRONOLOGIC;
+      action.payload.sortChronologically = action.type === ActionTypes.HOME && homeFeedSort === FeedOptions.CHRONOLOGIC;
+    }
+    if (action.type === ActionTypes.HOME) {
+      action.payload.homeFeedMode = homeFeedMode;
     }
   }
   if (action.type === ActionTypes.TOGGLE_FEED_SORT) {
     //here we persist home sort preference change
-    const { currentFeed } = store.getState().feedSort;
+    const { currentFeed } = store.getState().feedViewOptions;
     if (currentFeed === ActionTypes.HOME) {
       //we get reducer process sort toggling and do our job updating setting after that
       next(action);
       //and request next state only after update is done
-      const { user, feedSort } = store.getState();
+      const { user, feedViewOptions } = store.getState();
       const { id, frontendPreferences } = user;
-      const { sort: homeFeedSort } = feedSort;
+      const { sort: homeFeedSort } = feedViewOptions;
       return store.dispatch(ActionCreators.updateUserPreferences(id, { ...frontendPreferences, homeFeedSort }, {}, true));
     }
   }
@@ -169,9 +172,10 @@ export const authMiddleware = (store) => {
 
     if (
       action.type === response(ActionTypes.WHO_AM_I) ||
-      action.type === response(ActionTypes.UPDATE_USER)
+      action.type === response(ActionTypes.UPDATE_USER) ||
+      action.type === response(ActionTypes.UPDATE_USER_PREFERENCES)
     ) {
-      persistUser(userParser(action.payload.users));
+      persistUser(action.payload.users);
       return next(action);
     }
 
@@ -181,15 +185,15 @@ export const authMiddleware = (store) => {
 
 export const appearanceMiddleware = (store) => {
   if (typeof window !== 'undefined') {
-    window.addEventListener("storage", (e) => e.key === colorSchemeStorageKey && store.dispatch(ActionCreators.setUserColorScheme(loadColorScheme())));
-    setTimeout(() => store.dispatch(ActionCreators.setUserColorScheme(loadColorScheme())), 0);
+    window.addEventListener("storage", (e) =>
+      e.key === colorSchemeStorageKey
+      && store.dispatch(ActionCreators.setUserColorScheme(loadColorScheme())));
 
     if (systemColorSchemeSupported) {
       for (const scheme of [SCHEME_LIGHT, SCHEME_DARK, SCHEME_NO_PREFERENCE]) {
         const mq = window.matchMedia(`(prefers-color-scheme: ${scheme})`);
         const handler = (mq) => mq.matches && store.dispatch(ActionCreators.setSystemColorScheme(scheme));
         mq.addListener(handler);
-        setTimeout(() => handler(mq), 0);
       }
     }
   }
@@ -423,7 +427,7 @@ const dispatchWithPost = async (store, postId, action, filter = () => true, maxD
   let state = store.getState();
   const shouldBump = isFirstPage(state)
     && !isMemories(state)
-    && state.feedSort.sort === FeedSortOptions.ACTIVITY;
+    && state.feedViewOptions.sort === FeedOptions.ACTIVITY;
 
   if (isPostLoaded(state, postId)) {
     return store.dispatch({ ...action, shouldBump });
@@ -476,7 +480,7 @@ const bindHandlers = (store) => ({
     let insertBefore = null;
     if (shouldBump) {
       insertBefore = state.feedViewState.visibleEntries[0] || null;
-      if (state.feedSort.sort === FeedSortOptions.CHRONOLOGIC) {
+      if (state.feedViewOptions.sort === FeedOptions.CHRONOLOGIC) {
         for (const postId of state.feedViewState.visibleEntries) {
           if (data.posts.createdAt >= state.posts[postId].createdAt) {
             insertBefore = postId;
@@ -580,8 +584,16 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
 
     if (isFeedResponse(action)) {
       if (action.payload.timelines) {
-        store.dispatch(ActionCreators.realtimeSubscribe(`timeline:${action.payload.timelines.id}`));
-      } else if (action.payload.posts) {
+        if (action.type === response(ActionTypes.HOME)) {
+          const state = store.getState();
+          store.dispatch(ActionCreators.realtimeSubscribe(
+            `timeline:${action.payload.timelines.id}?homefeed-mode=${state.user.frontendPreferences.homeFeedMode}`
+          ));
+        } else {
+          store.dispatch(ActionCreators.realtimeSubscribe(`timeline:${action.payload.timelines.id}`));
+        }
+      }
+      if (action.payload.posts) {
         store.dispatch(ActionCreators.realtimeSubscribe(...action.payload.posts.map((p) => `post:${p.id}`)));
       }
     }

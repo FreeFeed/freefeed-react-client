@@ -33,6 +33,12 @@ const userDefaults = {
   frontendPreferences:     frontendPrefsConfig.defaultValues
 };
 
+/**
+ * Fill missing user fields with default values
+ *
+ * @param {object} user user data from API response or cache
+ * @returns {object}
+ */
 export function userParser(user) {
   const newUser = { ...user };
 
@@ -41,9 +47,15 @@ export function userParser(user) {
   newUser.profilePictureLargeUrl = user.profilePictureLargeUrl || userDefaults.profilePictureLargeUrl;
 
   // Frontend preferences (only use this client's subtree)
-  if (user.frontendPreferences) {
-    const prefSubTree = user.frontendPreferences[frontendPrefsConfig.clientId];
-    newUser.frontendPreferences = _.merge({}, userDefaults.frontendPreferences, prefSubTree);
+  {
+    const prefs = user.frontendPreferences || {};
+    if (Object.keys(prefs).some((k) => !_.isObjectLike(prefs[k]))) {
+      // Looks like frontendPreferences is already parsed, keep them untouch.
+      // This is for the backward compatibility with old whoamiCache strategy.
+    } else {
+      const prefSubTree = prefs[frontendPrefsConfig.clientId] || {};
+      newUser.frontendPreferences = { ...userDefaults.frontendPreferences, ...prefSubTree };
+    }
   }
 
   return newUser;

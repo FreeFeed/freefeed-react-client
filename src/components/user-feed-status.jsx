@@ -1,21 +1,17 @@
 import React from 'react';
+import { faLock, faUserFriends, faGlobeAmericas } from '@fortawesome/free-solid-svg-icons';
+import { Icon } from './fontawesome-icons';
 
 
 export default function UserFeedStatus(props) {
   return (
     <span>
       {props.isPrivate === '1' ? (
-        <span><i className="status-icon fa fa-lock" />Private</span>
+        <span><Icon icon={faLock} className="status-icon" /> Private</span>
       ) : props.isProtected === '1' ? (
-        <span>
-          <i className="icon-protected">
-            <i className="icon-protected-fg fa fa-user" />
-            <i className="icon-protected-shadow fa fa-user fa-inverse" />
-            <i className="icon-protected-bg fa fa-user" />
-          </i>Protected
-        </span>
+        <span><Icon icon={faUserFriends} className="status-icon" /> Protected</span>
       ) : (
-        <span><i className="status-icon fa fa-globe" />Public</span>
+        <span><Icon icon={faGlobeAmericas} className="status-icon" /> Public</span>
       )}
       {props.isRestricted === '1' ? ' restricted' : false}
       {props.type === 'user' ? ' feed' : ' group'}

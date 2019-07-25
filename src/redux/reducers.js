@@ -6,8 +6,8 @@ import config from '../config';
 import { getToken, getPersistedUser } from '../services/auth';
 import { parseQuery } from '../utils/search-highlighter';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
-import * as FeedSortOptions from '../utils/feed-sort-options';
-import { SCHEME_NO_PREFERENCE, SCHEME_SYSTEM } from '../services/appearance';
+import * as FeedOptions from '../utils/feed-options';
+import { loadColorScheme, getSystemColorScheme } from '../services/appearance';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
 
@@ -29,6 +29,12 @@ export function title(state = '', action) {
     }
     case response(ActionTypes.GET_BEST_OF): {
       return `Best Of FreeFeed`;
+    }
+    case response(ActionTypes.GET_EVERYTHING): {
+      return `Everything On FreeFeed`;
+    }
+    case response(ActionTypes.GET_NOTIFICATIONS): {
+      return `Notifications - FreeFeed`;
     }
     case response(ActionTypes.GET_SEARCH): {
       return `Search - FreeFeed`;
@@ -2121,7 +2127,13 @@ export function usernameSubscribers(state = {}, action) {
   );
 }
 
-export function usernameSubscriptions(state = {}, action) {
+const usernameSubscriptionsState = {
+  payload:     [],
+  isPending:   false,
+  errorString: ""
+};
+
+export function usernameSubscriptions(state = usernameSubscriptionsState, action) {
   return handleUsers(
     state,
     action,
@@ -2462,14 +2474,19 @@ export function serverTimeAhead(state = 0, action) {
   return state;
 }
 
-const getInitialSortingState = () => {
+const getInitialFeedViewOptions = () => {
   const defaultHomeFeedSort = config.frontendPreferences.defaultValues.homeFeedSort;
   const persistedUser = getPersistedUser();
   const homeFeedSort = (persistedUser && persistedUser.frontendPreferences.homeFeedSort) || defaultHomeFeedSort;
-  return { sort: homeFeedSort, homeFeedSort, currentFeed: ActionTypes.HOME };
+  return {
+    homeFeedSort,
+    sort:            homeFeedSort,
+    currentFeed:     ActionTypes.HOME,
+    currentFeedType: 'RiverOfNews',
+  };
 };
 
-export function feedSort(state = getInitialSortingState(), action) {
+export function feedViewOptions(state = getInitialFeedViewOptions(), action) {
   if (action.type === response(ActionTypes.WHO_AM_I)) {
     const defaultHomeFeedSort = config.frontendPreferences.defaultValues.homeFeedSort;
     const frontendPreferences = action.payload.users.frontendPreferences && action.payload.users.frontendPreferences[frontendPrefsConfig.clientId];
@@ -2480,7 +2497,7 @@ export function feedSort(state = getInitialSortingState(), action) {
   if (ActionHelpers.isFeedRequest(action)) {
     let { sort } = state;
     if (state.currentFeed !== ActionHelpers.getFeedName(action)) {
-      sort = action.type === request(ActionTypes.HOME) ? state.homeFeedSort : FeedSortOptions.ACTIVITY;
+      sort = action.type === request(ActionTypes.HOME) ? state.homeFeedSort : FeedOptions.ACTIVITY;
     }
     return {
       ...state,
@@ -2488,8 +2505,12 @@ export function feedSort(state = getInitialSortingState(), action) {
       sort,
     };
   }
+  if (ActionHelpers.isFeedResponse(action)) {
+    const currentFeedType = action.payload.timelines ? action.payload.timelines.name : null;
+    return { ...state, currentFeedType };
+  }
   if (action.type === ActionTypes.TOGGLE_FEED_SORT) {
-    const sort = state.sort === FeedSortOptions.ACTIVITY ? FeedSortOptions.CHRONOLOGIC : FeedSortOptions.ACTIVITY;
+    const sort = state.sort === FeedOptions.ACTIVITY ? FeedOptions.CHRONOLOGIC : FeedOptions.ACTIVITY;
     return {
       ...state,
       sort,
@@ -2499,16 +2520,18 @@ export function feedSort(state = getInitialSortingState(), action) {
   return state;
 }
 
-export function systemColorScheme(state = SCHEME_NO_PREFERENCE, action) {
+export function systemColorScheme(state = getSystemColorScheme(), action) {
   if (action.type === ActionTypes.SET_SYSTEM_COLOR_SCHEME) {
     return action.payload;
   }
   return state;
 }
 
-export function userColorScheme(state = SCHEME_SYSTEM, action) {
+export function userColorScheme(state = loadColorScheme(), action) {
   if (action.type === ActionTypes.SET_USER_COLOR_SCHEME) {
     return action.payload;
   }
   return state;
 }
+
+export { appTokens } from './reducers/app-tokens';

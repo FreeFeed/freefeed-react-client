@@ -1,4 +1,4 @@
-import { getCookie, setCookie, localStorage } from '../utils/';
+import { getCookie, setCookie, localStorage, userParser } from '../utils/';
 import config from '../config';
 
 
@@ -16,7 +16,8 @@ export function setToken(token) {
 }
 
 export function getPersistedUser() {
-  return JSON.parse(localStorage.getItem(authConfig.userStorageKey)); // whoamiCache
+  const userData = JSON.parse(localStorage.getItem(authConfig.userStorageKey)); // whoamiCache
+  return userData && userParser(userData);
 }
 
 export function persistUser(user) {

@@ -353,10 +353,7 @@
   margin-right: 0.5em;
 }
 
-.Select .fa,
-.Select-value-label-standalone .fa {
+.Select .fa-icon,
+.Select-value-label-standalone .fa-icon {
     opacity: 0.8;
-    &.fa-users {
-      font-size: 12px;
-    }
 }

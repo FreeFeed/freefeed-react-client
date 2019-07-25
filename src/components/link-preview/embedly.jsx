@@ -1,9 +1,7 @@
 /* global embedly */
 import PropTypes from 'prop-types';
-
 import React from 'react';
 import { connect } from 'react-redux';
-import 'element-closest';
 
 import { darkTheme } from '../select-utils';
 import ScrollSafe from './scroll-helpers/scroll-safe';
@@ -66,7 +64,10 @@ function select(state) {
 export default ScrollSafe(connect(select)(EmbedlyPreview));
 
 embedly('on', 'card.resize', (iframe) => {
-  const cont = iframe.closest('.embedly-preview');
+  let cont = iframe.parentNode;
+  while (cont && !cont.classList.contains('embedly-preview')) {
+    cont = cont.parentNode;
+  }
   if (!cont) {
     return;
   }

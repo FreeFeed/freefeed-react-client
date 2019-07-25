@@ -1,13 +1,17 @@
 import React from "react";
 import classnames from "classnames";
 import { Portal } from "react-portal";
+import { faComment, faHeart as faHeartO } from "@fortawesome/free-regular-svg-icons";
+import { faChevronLeft, faHeart, faAngleUp, faAt } from "@fortawesome/free-solid-svg-icons";
 import UserName from "./user-name";
 import TimeDisplay from "./time-display";
+import { Icon } from "./fontawesome-icons";
 
 
 const longTapTimeout = 300;
 
 export default class CommentLikes extends React.Component {
+  actionsOverlay;
   actionsPanel;
 
   likesListEl;
@@ -49,8 +53,9 @@ export default class CommentLikes extends React.Component {
           {this.state.likeListVisible ? this.renderLikesList() : ""}
         </div>
         <div className="comment-heart" onClick={this.toggleLike}>
-          <i
-            className={`fa fa-heart${this.props.forbidLiking ? "-o" : ""} ${this.state.liked ? "liked" : ""} icon`}
+          <Icon
+            icon={this.props.forbidLiking ? faHeartO : faHeart}
+            className={classnames('icon', { "liked": this.state.liked })}
             title={this.props.forbidLiking ? "Your own comment" : this.props.hasOwnLike ? "Un-like" : "Like"}
           />
         </div>
@@ -58,19 +63,23 @@ export default class CommentLikes extends React.Component {
     );
   };
   renderBubble = () => {
+    const icoProps = { id: `comment-${this.props.commentId}`, onClick: this.openAnsweringComment };
     return this.props.createdAt
       ? (
         <TimeDisplay className="comment-time" timeStamp={+this.props.createdAt} timeAgoInTitle={false}>
-          <span
-            className={`comment-icon fa ${this.props.omitBubble ? "feed-comment-dot" : "fa-comment-o"}`}
-            id={`comment-${this.props.commentId}`}
-            onClick={this.openAnsweringComment}
-          />
+          {this.props.omitBubble ? (
+            <span className="comment-icon feed-comment-dot" {...icoProps} />
+          ) : (
+            <Icon icon={faComment} className="comment-icon" {...icoProps} />
+          )}
         </TimeDisplay>
-      )
-      : (
+      ) : (
         <span className="comment-time">
-          <span className={`comment-icon fa ${this.props.omitBubble ? "feed-comment-dot" : "fa-comment-o"}`} />
+          {this.props.omitBubble ? (
+            <span className="comment-icon feed-comment-dot" />
+          ) : (
+            <Icon icon={faComment} className="comment-icon" />
+          )}
         </span>
       )
     ;
@@ -98,6 +107,8 @@ export default class CommentLikes extends React.Component {
     if (this.panelJustOpened) {
       this.panelJustOpened = false;
       e.cancelable && e.preventDefault();
+      // For iOS browsers that does not support the selectstart event
+      window.getSelection().removeAllRanges();
     }
   };
 
@@ -131,11 +142,25 @@ export default class CommentLikes extends React.Component {
     this.actionsPanel = el;
   };
 
+  onSelectStart = (e) => this.panelJustOpened && e.preventDefault();
+  registerActionsOverlay = (el) => {
+    if (el) {
+      el.addEventListener('selectstart', this.onSelectStart);
+    } else if (this.actionsOverlay) {
+      this.actionsOverlay.removeEventListener('selectstart', this.onSelectStart);
+    }
+    this.actionsOverlay = el;
+  };
+
   renderPopup = () => {
     const likesStyle = { height: (!this.state.showActionButtons && this.state.panelHeight) || "auto", };
     return this.state.showActionsPanel && (
       <Portal isOpened={true}>
-        <div className="actions-overlay" onClick={this.toggleActionsPanel}>
+        <div
+          className="actions-overlay"
+          ref={this.registerActionsOverlay}
+          onClick={this.toggleActionsPanel}
+        >
           <div className="container">
             <div className="row">
               <div className="col-md-9">
@@ -145,7 +170,9 @@ export default class CommentLikes extends React.Component {
                     onClick={this.handleClickOnLikesPanel}
                     style={likesStyle}
                   >
-                    <div className="arrow" onClick={this.arrowClick}><i className="fa fa-angle-left" aria-hidden="true" /></div>
+                    <div className="arrow" onClick={this.arrowClick}>
+                      <Icon icon={faChevronLeft} />
+                    </div>
                     <div className="likes">
                       {this.state.showActionButtons
                         ? this.renderLikesLabel(this.props)
@@ -157,7 +184,7 @@ export default class CommentLikes extends React.Component {
                     {this.props.forbidLiking
                       ? (
                         <div className="mention-action non-likable">
-                          <i className="fa fa-heart-o" aria-hidden="true" />
+                          <Icon icon={faHeartO} />
                           It{"'"}s your own comment
                         </div>
                       )
@@ -166,7 +193,7 @@ export default class CommentLikes extends React.Component {
                           className={`mention-action ${this.props.hasOwnLike ? "un" : ""}like`}
                           onClick={this.props.toggleLike}
                         >
-                          <i className="fa fa-heart" aria-hidden="true" />
+                          <Icon icon={faHeart} />
                           {`${this.props.hasOwnLike ? "Un-like" : "Like"} comment`}
                         </button>
                       )
@@ -175,14 +202,14 @@ export default class CommentLikes extends React.Component {
                       className="mention-action reply"
                       onClick={this.props.reply}
                     >
-                      <i className="fa fa-angle-up" aria-hidden="true" />
+                      <Icon icon={faAngleUp} />
                       Reply to comment
                     </button>
                     <button
                       className="mention-action mention"
                       onClick={this.props.mention}
                     >
-                      <i className="fa fa-at" aria-hidden="true" />
+                      <Icon icon={faAt} />
                       Mention username
                     </button>
                   </div>

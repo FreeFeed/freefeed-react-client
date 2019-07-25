@@ -11,6 +11,7 @@ import Sidebar from './sidebar';
 import LoaderContainer from './loader-container';
 import SearchForm from './search-form';
 import { ColorSchemeSetter } from './color-theme-setter';
+import { SVGSymbolDeclarations } from './fontawesome-icons';
 
 
 const InternalLayout = ({ authenticated, children }) => (
@@ -130,6 +131,7 @@ class Layout extends React.Component {
       <div className={layoutClassNames}>
         <Helmet title={props.title} />
         <ColorSchemeSetter />
+        <SVGSymbolDeclarations />
 
         <header className="row">
           <div className="col-xs-9 col-sm-4 col-md-4">

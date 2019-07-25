@@ -10,10 +10,6 @@ import 'autotrack';  // used by google-analytics in ../index.jade
 import '../styles/common/common.scss';
 import '../styles/helvetica/app.scss';
 import '../styles/helvetica/dark-theme.scss';
-import '../assets/vendor-css/font-awesome.min.css';
-
-
-require.context('../assets/fonts', true, /fontawesome.*/i);
 
 import configureStore from './redux/configure-store';
 import * as ActionCreators from './redux/action-creators';
@@ -147,6 +143,7 @@ ReactDOM.render(
         <Route path="reset" component={ResetPassword} />
         <Route path="settings" component={lazyLoad('./components/settings')} onEnter={enterStaticPage('Settings')} />
         <Route path="settings/archive" component={lazyLoad('./components/archive')} onEnter={enterStaticPage('Restore from FriendFeed.com Archives')} />
+        <Route path="settings/app-tokens(/**)" component={lazyLoad('./components/app-tokens')} />
         <Route name="groupSettings" path="/:userName/settings" component={GroupSettings} {...generateRouteHooks(boundRouteActions('getUserInfo'))} />
         <Route name="discussions" path="filter/discussions" component={Discussions} {...generateRouteHooks(boundRouteActions('discussions'))} />
         <Route name="summary" path="/summary(/:days)" component={Summary} {...generateRouteHooks(boundRouteActions('summary'))} />

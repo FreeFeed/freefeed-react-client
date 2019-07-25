@@ -87,38 +87,25 @@ $post-line-height: 20px;
       .post-lock-icon {
         margin-right: 5px;
       }
+      
+      .post-private-icon {
+        font-size: 13px;
+        vertical-align: 0;
+      }
+
+      .post-public-icon {
+        font-size: 13px;
+      }
 
       .post-protected-icon {
-        position: relative;
-        display: inline-block;
-        transform: scale(0.9);
-        width: 14px;
-        height: 11px;
-
-        .post-protected-icon-bg {
-          font-size: 0.75em;
-          top: 1px;
-          position: absolute;
-          z-index: 12;
-          left: 7px;
-        }
-
-        .post-protected-icon-shadow {
-          font-size: 0.9em;
-          position: absolute;
-          left: 1px;
-          z-index: 13;
-        }
-
-        .post-protected-icon-fg {
-          font-size: 0.9em;
-          position: absolute;
-          z-index: 14;
-        }
+        font-size: 15px;
+        vertical-align: -2px;
       }
 
       .post-direct-icon {
         margin-right: 0.33em;
+        font-size: 12px;
+        vertical-align: -1px;
       }
 
       .post-timestamp {
@@ -205,6 +192,10 @@ $post-line-height: 20px;
       &[disabled] {
         text-decoration: line-through;
       }
+
+      .upload-icon {
+        font-size: 120%;
+      }
     }
 
     .post-edit-more-trigger {
@@ -287,9 +278,6 @@ $post-line-height: 20px;
   &.be-fe-folded-text:after {
     background: linear-gradient(to bottom, hsla(0, 0% , 93% , 0), hsla(0, 0% , 93% , .007));
   }
-  &.fa-inverse {
-    color: #eee;
-  }
 
   .expand-panel {
     background-color: #eee;
@@ -364,7 +352,7 @@ $post-line-height: 20px;
 
     .preview-expand {
       margin-top: 8px;
-      & > .fa {
+      & > .preview-expand-icon {
         opacity: 0.5;
         cursor: pointer;
 

@@ -6,13 +6,14 @@ import _ from 'lodash';
 import Textarea from 'react-textarea-autosize';
 import moment from 'moment';
 
-import throbber16 from '../../assets/images/throbber-16.gif';
+import { faExclamationTriangle, faCloudUploadAlt, faLock, faUserFriends, faGlobeAmericas, faAngleDoubleRight } from '@fortawesome/free-solid-svg-icons';
 import { getFirstLinkToEmbed } from '../utils/parse-text';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
 import { datetimeFormat } from '../utils/get-date-from-short-string';
-
 import config from '../config';
+import { Throbber } from './throbber';
+
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
 import PostLikes from './post-likes';
@@ -27,6 +28,7 @@ import LinkPreview from './link-preview/preview';
 import SendTo from './send-to';
 import { destinationsPrivacy } from './select-utils';
 import { makeJpegIfNeeded } from './create-post';
+import { Icon } from './fontawesome-icons';
 
 
 class Post extends React.Component {
@@ -336,12 +338,12 @@ class Post extends React.Component {
       <span>
         {' - '}
         {props.likeError ? (
-          <i className="fa fa-exclamation-triangle post-like-fail" title={props.likeError} aria-hidden="true" />
+          <Icon icon={faExclamationTriangle} className="post-like-fail" title={props.likeError} />
         ) : null}
         <a className="post-action" onClick={didILikePost ? this.unlikePost : this.likePost}>{didILikePost ? 'Un-like' : 'Like'}</a>
         {props.isLiking ? (
           <span className="post-like-throbber">
-            <img width="16" height="16" src={throbber16} />
+            <Throbber />
           </span>
         ) : false}
       </span>
@@ -354,7 +356,7 @@ class Post extends React.Component {
         <a className="post-action" onClick={props.isHidden ? this.handleUnhideClick : this.handleHideClick}>{props.isHidden ? 'Un-hide' : 'Hide'}</a>
         {props.isHiding ? (
           <span className="post-hide-throbber">
-            <img width="16" height="16" src={throbber16} />
+            <Throbber />
           </span>
         ) : false}
       </span>
@@ -385,7 +387,7 @@ class Post extends React.Component {
         {' '}
         {props.isHiding ? (
           <span className="post-hide-throbber">
-            <img width="16" height="16" src={throbber16} />
+            <Throbber />
           </span>
         ) : false}
       </div>
@@ -447,7 +449,7 @@ class Post extends React.Component {
 
                 <div className="post-edit-options">
                   <span className="post-edit-attachments dropzone-trigger" disabled={this.state.dropzoneDisabled}>
-                    <i className="fa fa-cloud-upload" />
+                    <Icon icon={faCloudUploadAlt} className="upload-icon" />
                     {' '}
                     Add photos or files
                   </span>
@@ -456,7 +458,7 @@ class Post extends React.Component {
                 <div className="post-edit-actions">
                   {props.isSaving ? (
                     <span className="post-edit-throbber">
-                      <img width="16" height="16" src={throbber16} />
+                      <Throbber />
                     </span>
                   ) : false}
                   <a className="post-cancel" onClick={this.cancelEditingPost}>Cancel</a>
@@ -506,18 +508,14 @@ class Post extends React.Component {
           <div className="post-footer">
             <span className="post-timestamps-toggle" onClick={this.toggleTimestamps}>
               {isPrivate ? (
-                <i className="post-lock-icon fa fa-lock" title="This entry is private" />
+                <Icon icon={faLock} className="post-lock-icon post-private-icon" title="This entry is private" />
               ) : isProtected ? (
-                <i className="post-lock-icon post-protected-icon" title="This entry is only visible to FreeFeed users">
-                  <i className="post-protected-icon-fg fa fa-user" />
-                  <i className="post-protected-icon-shadow fa fa-user fa-inverse" />
-                  <i className="post-protected-icon-bg fa fa-user" />
-                </i>
+                <Icon icon={faUserFriends} className="post-lock-icon post-protected-icon" title="This entry is only visible to FreeFeed users" />
               ) : (
-                <i className="post-lock-icon fa fa-globe" title="This entry is public" />
+                <Icon icon={faGlobeAmericas} className="post-lock-icon post-public-icon" title="This entry is public" />
               )}
             </span>
-            {props.isDirect ? (<span>»&nbsp;</span>) : false}
+            {props.isDirect && <Icon icon={faAngleDoubleRight} className="post-direct-icon" title="This is a direct message" />}
             <Link to={canonicalPostURI} className="post-timestamp">
               {this.state.showTimestamps ? (
                 moment(+props.createdAt).format(datetimeFormat)
