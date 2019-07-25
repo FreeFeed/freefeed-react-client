@@ -594,7 +594,8 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
         } else {
           store.dispatch(ActionCreators.realtimeSubscribe(`timeline:${action.payload.timelines.id}`));
         }
-      } else if (action.payload.posts) {
+      }
+      if (action.payload.posts) {
         store.dispatch(ActionCreators.realtimeSubscribe(...action.payload.posts.map((p) => `post:${p.id}`)));
       }
     }
