@@ -47,9 +47,10 @@ export function userParser(user) {
   newUser.profilePictureMediumUrl = user.profilePictureMediumUrl || userDefaults.profilePictureMediumUrl;
   newUser.profilePictureLargeUrl = user.profilePictureLargeUrl || userDefaults.profilePictureLargeUrl;
 
-  // Frontend preferences (only use this client's subtree)
-  {
-    const prefs = user.frontendPreferences || {};
+  // Frontend preferences (only use this client's subtree).
+  // Do not fill them if no 'frontendPreferences' in 'user'.
+  if (user.frontendPreferences) {
+    const prefs = user.frontendPreferences;
     if (Object.keys(prefs).some((k) => !_.isObjectLike(prefs[k]))) {
       // Looks like frontendPreferences is already parsed, keep them untouch.
       // This is for the backward compatibility with old whoamiCache strategy.
