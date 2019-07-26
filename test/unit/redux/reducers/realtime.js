@@ -108,7 +108,7 @@ describe('realtime events', () => {
 
   describe('user()', () => {
     const testUser = { id: 1, name: 'Ururu' };
-    const userBefore = { ...testUser };
+    const userBefore = { ...testUser, frontendPreferences: { foo: 'bar' } };
     const anotherTestUser = { id: 2, name: 'Arara' };
 
     it('should update user on REALTIME_GLOBAL_USER_UPDATE if present', () => {
@@ -118,6 +118,15 @@ describe('realtime events', () => {
       });
 
       expect(result.name, 'to equal', 'New name');
+    });
+
+    it('should not touch frontendPreferences on REALTIME_GLOBAL_USER_UPDATE', () => {
+      const result = user(userBefore, {
+        type: REALTIME_GLOBAL_USER_UPDATE,
+        user: { ...testUser, name: 'New name' },
+      });
+
+      expect(result.frontendPreferences, 'to equal', userBefore.frontendPreferences);
     });
 
     it('should not touch state on REALTIME_GLOBAL_USER_UPDATE if user is not present', () => {
