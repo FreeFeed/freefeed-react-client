@@ -69,6 +69,14 @@ export function discussions(offset = 0) {
   };
 }
 
+export function saves(offset = 0) {
+  return {
+    type:       ActionTypes.SAVES,
+    apiRequest: Api.getSaves,
+    payload:    { offset },
+  };
+}
+
 export function direct(offset = 0) {
   return {
     type:       ActionTypes.DIRECT,
@@ -247,6 +255,14 @@ export function unhidePost(postId) {
     type:       ActionTypes.UNHIDE_POST,
     apiRequest: Api.unhidePost,
     payload:    { postId }
+  };
+}
+
+export function savePost(postId, save) {
+  return {
+    type:       ActionTypes.SAVE_POST,
+    apiRequest: save ? Api.savePost : Api.unsavePost,
+    payload:    { postId, save }
   };
 }
 

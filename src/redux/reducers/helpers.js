@@ -1,7 +1,7 @@
 import { reset, request, fail, response, asyncTypeOf } from "../action-helpers";
 
 
-const initialAsyncState = {
+export const initialAsyncState = {
   loading:   false,
   success:   false,
   error:     false,

@@ -16,6 +16,16 @@ const getRequestOptions = () => ({
   }
 });
 
+const postRequestOptions = (method = 'POST', body = {}) => ({
+  method,
+  headers: {
+    'Accept':                 'application/json',
+    'Content-Type':           'application/json',
+    'X-Authentication-Token': getToken()
+  },
+  body: JSON.stringify(body),
+});
+
 const feedQueryString = ({ offset, sortChronologically, homeFeedMode, from }) => ([
   offset && `offset=${offset}`,
   sortChronologically && `sort=created`,
@@ -40,6 +50,11 @@ export function getMemories(params) {
 export function getDiscussions(params) {
   return fetch(
     `${apiConfig.host}/v2/timelines/filter/discussions?with-my-posts=yes&${feedQueryString(params)}`, getRequestOptions());
+}
+
+export function getSaves(params) {
+  return fetch(
+    `${apiConfig.host}/v2/timelines/filter/saves?${feedQueryString(params)}`, getRequestOptions());
 }
 
 export function getDirect(params) {
@@ -696,4 +711,12 @@ export function updateAppToken({ tokenId, ...params }) {
     },
     body: JSON.stringify(params),
   });
+}
+
+export function savePost({ postId }) {
+  return fetch(`${apiConfig.host}/v1/posts/${postId}/save`, postRequestOptions());
+}
+
+export function unsavePost({ postId }) {
+  return fetch(`${apiConfig.host}/v1/posts/${postId}/save`, postRequestOptions('DELETE'));
 }
