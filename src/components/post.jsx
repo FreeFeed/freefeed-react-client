@@ -12,6 +12,7 @@ import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
 import { datetimeFormat } from '../utils/get-date-from-short-string';
 import config from '../config';
+import { savePost } from '../redux/action-creators';
 import { Throbber } from './throbber';
 
 import PostAttachments from './post-attachments';
@@ -106,6 +107,11 @@ class Post extends React.Component {
 
   handleHideClick = () => {
     this.props.hidePost(this.props.id);
+  };
+
+  toggleSave = () => {
+    const { id, isSaved, savePost, savePostStatus } = this.props;
+    savePostStatus.loading || savePost(id, !isSaved);
   };
 
   likePost = () => {
@@ -362,6 +368,16 @@ class Post extends React.Component {
       </span>
     ) : false);
 
+    const { isSaved, savePostStatus } = this.props;
+    const saveLink = amIAuthenticated && (
+      <span>
+        {' - '}
+        <a className="post-action" onClick={this.toggleSave}>{isSaved ? 'Un-save' : 'Save'}</a>
+        {savePostStatus.loading && <Throbber />}
+        {savePostStatus.error && <Icon icon={faExclamationTriangle} className="post-like-fail" title={savePostStatus.errorText} />}
+      </span>
+    );
+
     // "More" menu
     const moreLink = (props.isEditable || props.isModeratable ? (
       <span>
@@ -525,6 +541,7 @@ class Post extends React.Component {
             </Link>
             {commentLink}
             {likeLink}
+            {saveLink}
             {hideLink}
             {moreLink}
           </div>
@@ -568,7 +585,7 @@ export function canonicalURI(post) {
 }
 
 function selectState(state, ownProps) {
-  return { destinationsPrivacy: ownProps.isEditing ? (destNames) => destinationsPrivacy(destNames, state) : null, };
+  return { destinationsPrivacy: ownProps.isEditing ? (destNames) => destinationsPrivacy(destNames, state) : null };
 }
 
-export default connect(selectState)(Post);
+export default connect(selectState, { savePost })(Post);

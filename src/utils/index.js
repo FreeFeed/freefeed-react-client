@@ -3,6 +3,7 @@ import _ from 'lodash';
 import defaultUserpicPath from '../../assets/images/default-userpic.svg';
 
 import config from '../config';
+import { initialAsyncState } from '../redux/reducers/helpers';
 
 
 const frontendPrefsConfig = config.frontendPreferences;
@@ -63,7 +64,11 @@ export function userParser(user) {
 
 export function postParser(post) {
   post.commentsDisabled = (post.commentsDisabled === '1');
-  return { ...post };
+  return {
+    ...post,
+    commentsDisabled: post.commentsDisabled === '1',
+    savePostStatus:   initialAsyncState,
+  };
 }
 
 export function preventDefault(realFunction) {

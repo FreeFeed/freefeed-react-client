@@ -3,6 +3,7 @@ import {
   // Private (content depends on current user)
   home,
   discussions,
+  saves,
   direct,
   getSummary,
   getMemories,
@@ -46,6 +47,7 @@ export const routeActions = {
   memories:           (next) => getMemories(getFrom(next), getOffset(next)),
   userMemories:       (next) => getUserMemories(getUserName(next), getFrom(next), getOffset(next)),
   discussions:        (next) => discussions(getOffset(next)),
+  saves:              (next) => saves(getOffset(next)),
   direct:             (next) => direct(getOffset(next)),
   summary:            (next) => getSummary(next.params.days),
   search:             (next) => getSearch(getSearchQueryParam(next), getOffset(next)),
