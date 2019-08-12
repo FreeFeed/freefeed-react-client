@@ -16,6 +16,16 @@ const getRequestOptions = () => ({
   }
 });
 
+const postRequestOptions = (method = 'POST', body = {}) => ({
+  method,
+  headers: {
+    'Accept':                 'application/json',
+    'Content-Type':           'application/json',
+    'X-Authentication-Token': getToken()
+  },
+  body: JSON.stringify(body),
+});
+
 const feedQueryString = ({ offset, sortChronologically, homeFeedMode, from }) => ([
   offset && `offset=${offset}`,
   sortChronologically && `sort=created`,
@@ -40,6 +50,11 @@ export function getMemories(params) {
 export function getDiscussions(params) {
   return fetch(
     `${apiConfig.host}/v2/timelines/filter/discussions?with-my-posts=yes&${feedQueryString(params)}`, getRequestOptions());
+}
+
+export function getSaves(params) {
+  return fetch(
+    `${apiConfig.host}/v2/timelines/filter/saves?${feedQueryString(params)}`, getRequestOptions());
 }
 
 export function getDirect(params) {
@@ -642,4 +657,66 @@ export function createFreefeedInvitation(params) {
 
 export function getInvitation({ invitationId }) {
   return fetch(`${apiConfig.host}/v2/invitations/${invitationId}`, getRequestOptions());
+}
+
+export function getAppTokens() {
+  return fetch(`${apiConfig.host}/v2/app-tokens`, getRequestOptions());
+}
+
+export function getAppTokensScopes() {
+  return fetch(`${apiConfig.host}/v2/app-tokens/scopes`, getRequestOptions());
+}
+
+export function createAppToken(params) {
+  return fetch(`${apiConfig.host}/v2/app-tokens`, {
+    method:  'POST',
+    headers: {
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
+      'X-Authentication-Token': getToken(),
+    },
+    body: JSON.stringify(params),
+  });
+}
+
+export function reissueAppToken(tokenId) {
+  return fetch(`${apiConfig.host}/v2/app-tokens/${tokenId}/reissue`, {
+    method:  'POST',
+    headers: {
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
+      'X-Authentication-Token': getToken(),
+    },
+  });
+}
+
+export function deleteAppToken(tokenId) {
+  return fetch(`${apiConfig.host}/v2/app-tokens/${tokenId}`, {
+    method:  'DELETE',
+    headers: {
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
+      'X-Authentication-Token': getToken(),
+    },
+  });
+}
+
+export function updateAppToken({ tokenId, ...params }) {
+  return fetch(`${apiConfig.host}/v2/app-tokens/${tokenId}`, {
+    method:  'PUT',
+    headers: {
+      'Accept':                 'application/json',
+      'Content-Type':           'application/json',
+      'X-Authentication-Token': getToken(),
+    },
+    body: JSON.stringify(params),
+  });
+}
+
+export function savePost({ postId }) {
+  return fetch(`${apiConfig.host}/v1/posts/${postId}/save`, postRequestOptions());
+}
+
+export function unsavePost({ postId }) {
+  return fetch(`${apiConfig.host}/v1/posts/${postId}/save`, postRequestOptions('DELETE'));
 }

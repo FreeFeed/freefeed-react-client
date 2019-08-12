@@ -18,15 +18,14 @@ const config = {
       './src'
     ])
   },
-  target: 'web',
-  devServer: {
-    historyApiFallback: true
-  },
-  module: {
+  target:    'web',
+  devServer: { historyApiFallback: true },
+  module:    {
     rules: skipFalsy([
       opts.dev && rules.eslint,
       rules.babel,
       rules.css,
+      rules.cssModule,
       rules.assetsCss,
       rules.template,
       rules.fonts,
@@ -37,15 +36,13 @@ const config = {
   plugins: skipFalsy([
     ...baseConfig.plugins,
     new HtmlWebpackPlugin({
-      inject: false,
+      inject:   false,
       template: './index.jade',
-      file: 'index.html',
+      file:     'index.html',
       opts,
       appConfig,
     }),
-    new MiniCssExtractPlugin({
-      filename: opts.hash ? '[name]-[contenthash].css' : '[name]-dev.css',
-    }),
+    new MiniCssExtractPlugin({ filename: opts.hash ? '[name]-[contenthash].css' : '[name]-dev.css', }),
     new CopyPlugin([
       { from: 'assets/images/favicon.ico', to: 'assets/images/' },
       { from: 'assets/images/ios/*.png', to: '' },
@@ -55,17 +52,17 @@ const config = {
     splitChunks: {
       cacheGroups: {
         common: {
-          name: 'common',
-          test: /[\\/]styles[\\/]common[\\/].*[.]scss$/,
-          chunks: 'all',
+          name:    'common',
+          test:    /[\\/]styles[\\/]common[\\/].*[.]scss$/,
+          chunks:  'all',
           enforce: true
         },
       },
     },
     minimizer: [
       new Uglify({
-        cache: true,
-        parallel: true,
+        cache:     true,
+        parallel:  true,
         sourceMap: true,
       }),
       new OptiCSS({}),

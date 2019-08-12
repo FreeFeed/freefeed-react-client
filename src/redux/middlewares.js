@@ -496,6 +496,8 @@ const bindHandlers = (store) => ({
   'post:destroy': (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId }),
   'post:hide':    (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId }),
   'post:unhide':  (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId }),
+  'post:save':    (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_SAVE, payload: { postId: data.meta.postId, save: true } }),
+  'post:unsave':  (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_SAVE, payload: { postId: data.meta.postId, save: false } }),
   'comment:new':  async (data) => {
     const { postId } = data.comments;
     const action = { ...data, type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments };
@@ -547,9 +549,9 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
           return next(action);
         }
       }
-      if (event in eventHandlers) {
-        eventHandlers[event](data);
-      }
+      next(action);
+      eventHandlers[event] && eventHandlers[event](data);
+      return;
     }
 
     if (action.type === ActionTypes.REALTIME_CONNECTED) {
@@ -592,7 +594,8 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
         } else {
           store.dispatch(ActionCreators.realtimeSubscribe(`timeline:${action.payload.timelines.id}`));
         }
-      } else if (action.payload.posts) {
+      }
+      if (action.payload.posts) {
         store.dispatch(ActionCreators.realtimeSubscribe(...action.payload.posts.map((p) => `post:${p.id}`)));
       }
     }
@@ -624,6 +627,7 @@ export const dataFixMiddleware = (/*store*/) => (next) => (action) => {
   if (
     action.type === response(ActionTypes.HOME) ||
     action.type === response(ActionTypes.DISCUSSIONS) ||
+    action.type === response(ActionTypes.SAVES) ||
     action.type === response(ActionTypes.GET_USER_FEED) ||
     action.type === response(ActionTypes.GET_USER_COMMENTS) ||
     action.type === response(ActionTypes.GET_USER_LIKES) ||

@@ -108,10 +108,22 @@ class RuleGenerator {
 
   get css() {
     return {
-      test: /[\\/]styles[\\/].*[\\/].*[.]scss$/,
-      use:  [
+      test:    /[\\/]styles[\\/].*[\\/].*[.]scss$/,
+      exclude: /[.]module[.]scss$/,
+      use:     [
         this.opts.dev ? 'style-loader' : MiniCssExtractPlugin.loader,
         'css-loader',
+        'sass-loader',
+      ],
+    };
+  }
+
+  get cssModule() {
+    return {
+      test: /[.]module[.]scss$/,
+      use:  [
+        this.opts.dev ? 'style-loader' : MiniCssExtractPlugin.loader,
+        'css-loader?modules=true',
         'sass-loader',
       ],
     };

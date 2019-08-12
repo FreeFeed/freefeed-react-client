@@ -24,6 +24,12 @@ const FeedHandler = (props) => {
     />
   );
 
+  const emptyFeedMessage = props.isSaves && (
+    <p>
+      To save a post, click the Save link under the post body. Saved posts will appear on this page.
+    </p>
+  );
+
   return (
     <div className="box">
       <div className="box-header-timeline">
@@ -32,8 +38,8 @@ const FeedHandler = (props) => {
           <FeedOptionsSwitch />
         </div>
       </div>
-      <PaginatedView firstPageHead={createPostComponent} {...props}>
-        <Feed {...props} />
+      <PaginatedView firstPageHead={props.isSaves || createPostComponent} {...props}>
+        <Feed {...props} emptyFeedMessage={emptyFeedMessage} />
       </PaginatedView>
       <div className="box-footer" />
     </div>);
@@ -43,6 +49,7 @@ function selectState(state) {
   const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
   const isDirects = state.routing.locationBeforeTransitions.pathname.indexOf('direct') !== -1;
+  const isSaves = state.routing.locationBeforeTransitions.pathname.indexOf('saves') !== -1;
   const defaultFeed = state.routing.locationBeforeTransitions.query.to || (!isDirects && user.username) || undefined;
   const invitation = formatInvitation(state.routing.locationBeforeTransitions.query.invite);
   const sendTo = { ...state.sendTo, defaultFeed, invitation };
@@ -50,7 +57,7 @@ function selectState(state) {
     sendTo.expanded = true;
   }
 
-  return { user, authenticated, visibleEntries, createPostViewState, timelines, boxHeader, sendTo, isDirects };
+  return { user, authenticated, visibleEntries, createPostViewState, timelines, boxHeader, sendTo, isDirects, isSaves };
 }
 
 function selectActions(dispatch) {

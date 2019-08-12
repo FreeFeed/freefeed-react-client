@@ -10,6 +10,7 @@ import * as FeedOptions from '../utils/feed-options';
 import { loadColorScheme, getSystemColorScheme } from '../services/appearance';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
+import { patchObjectByKey, asyncStatus } from './reducers/helpers';
 
 
 const frontendPrefsConfig = config.frontendPreferences;
@@ -26,6 +27,9 @@ export function title(state = '', action) {
     }
     case response(ActionTypes.DISCUSSIONS): {
       return 'My discussions - FreeFeed';
+    }
+    case response(ActionTypes.SAVES): {
+      return 'Saved posts - FreeFeed';
     }
     case response(ActionTypes.GET_BEST_OF): {
       return `Best Of FreeFeed`;
@@ -65,6 +69,7 @@ export function title(state = '', action) {
     case fail(ActionTypes.HOME):
     case fail(ActionTypes.DIRECT):
     case fail(ActionTypes.DISCUSSIONS):
+    case fail(ActionTypes.SAVES):
     case fail(ActionTypes.GET_USER_FEED):
     case fail(ActionTypes.GET_SINGLE_POST): {
       return 'Error - FreeFeed';
@@ -832,6 +837,8 @@ function updatePostData(state, action) {
   return { ...state, [postId]: postParser(action.payload.posts) };
 }
 
+const savePostStatus = asyncStatus(ActionTypes.SAVE_POST);
+
 export function posts(state = {}, action) {
   if (ActionHelpers.isFeedResponse(action)) {
     return mergeByIds(state, (action.payload.posts || []).map(postParser));
@@ -1087,6 +1094,29 @@ export function posts(state = {}, action) {
         }
       };
     }
+
+    // SAVE_POST async actions
+    case request(ActionTypes.SAVE_POST): {
+      return patchObjectByKey(state, action.payload.postId,
+        (post) => ({ ...post, savePostStatus: savePostStatus(post.savePostStatus, action) }));
+    }
+    case response(ActionTypes.SAVE_POST): {
+      return patchObjectByKey(state, action.request.postId,
+        (post) => ({
+          ...post,
+          isSaved:        action.request.save,
+          savePostStatus: savePostStatus(post.savePostStatus, action),
+        }));
+    }
+    case fail(ActionTypes.SAVE_POST): {
+      return patchObjectByKey(state, action.request.postId,
+        (post) => ({ ...post, savePostStatus: savePostStatus(post.savePostStatus, action) }));
+    }
+
+    case ActionTypes.REALTIME_POST_SAVE: {
+      return patchObjectByKey(state, action.payload.postId, (post) => ({ ...post, isSaved: action.payload.save }));
+    }
+
     case response(ActionTypes.DISABLE_COMMENTS): {
       const post = state[action.request.postId];
       return {
@@ -1871,6 +1901,9 @@ export function boxHeader(state = "", action) {
     case request(ActionTypes.DISCUSSIONS): {
       return 'My discussions';
     }
+    case request(ActionTypes.SAVES): {
+      return 'Saved posts';
+    }
     case request(ActionTypes.DIRECT): {
       return 'Direct messages';
     }
@@ -2533,3 +2566,5 @@ export function userColorScheme(state = loadColorScheme(), action) {
   }
   return state;
 }
+
+export { appTokens } from './reducers/app-tokens';
