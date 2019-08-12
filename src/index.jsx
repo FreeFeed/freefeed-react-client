@@ -146,6 +146,7 @@ ReactDOM.render(
         <Route path="settings/app-tokens(/**)" component={lazyLoad('./components/app-tokens')} />
         <Route name="groupSettings" path="/:userName/settings" component={GroupSettings} {...generateRouteHooks(boundRouteActions('getUserInfo'))} />
         <Route name="discussions" path="filter/discussions" component={Discussions} {...generateRouteHooks(boundRouteActions('discussions'))} />
+        <Route name="saves" path="filter/saves" component={Discussions} {...generateRouteHooks(boundRouteActions('saves'))} />
         <Route name="summary" path="/summary(/:days)" component={Summary} {...generateRouteHooks(boundRouteActions('summary'))} />
         <Route name="direct" path="filter/direct" component={Discussions} {...generateRouteHooks(boundRouteActions('direct'))} />
         <Route name="search" path="search" component={SearchFeed} {...generateRouteHooks(boundRouteActions('search'))} />
