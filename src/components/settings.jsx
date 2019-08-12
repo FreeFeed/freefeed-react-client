@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import {
   updateUser,
   userSettingsChange,
@@ -16,6 +17,7 @@ import UserPreferencesForm from './user-preferences-form';
 import UserChangePasswordForm from './user-change-password-form';
 import UserPictureForm from './user-picture-form';
 import UserNotificationsForm from './user-notifications-form';
+import { Icon } from './fontawesome-icons';
 
 
 class Settings extends React.Component {
@@ -85,6 +87,13 @@ class Settings extends React.Component {
               updateUserNotificationPreferences={props.updateUserNotificationPreferences}
               {...props.userNotificationsForm}
             />
+
+            <hr />
+
+            <h3><a className="setting-link" href="#app-tokens">Application tokens</a></h3>
+            <p>
+              <Link to="/settings/app-tokens">Manage your application tokens <Icon icon={faAngleRight} /></Link>
+            </p>
 
             <hr />
           </div>

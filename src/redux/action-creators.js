@@ -1,5 +1,6 @@
 import * as Api from '../services/api';
 import * as ActionTypes from './action-types';
+import { reset } from './action-helpers';
 
 
 export function unauthenticated(payload) {
@@ -64,6 +65,14 @@ export function discussions(offset = 0) {
   return {
     type:       ActionTypes.DISCUSSIONS,
     apiRequest: Api.getDiscussions,
+    payload:    { offset },
+  };
+}
+
+export function saves(offset = 0) {
+  return {
+    type:       ActionTypes.SAVES,
+    apiRequest: Api.getSaves,
     payload:    { offset },
   };
 }
@@ -246,6 +255,14 @@ export function unhidePost(postId) {
     type:       ActionTypes.UNHIDE_POST,
     apiRequest: Api.unhidePost,
     payload:    { postId }
+  };
+}
+
+export function savePost(postId, save) {
+  return {
+    type:       ActionTypes.SAVE_POST,
+    apiRequest: save ? Api.savePost : Api.unsavePost,
+    payload:    { postId, save }
   };
 }
 
@@ -837,4 +854,61 @@ export function setSystemColorScheme(scheme) {
  */
 export function setUserColorScheme(scheme) {
   return { type: ActionTypes.SET_USER_COLOR_SCHEME, payload: scheme };
+}
+
+export function getAppTokens() {
+  return {
+    type:       ActionTypes.GET_APP_TOKENS,
+    apiRequest: Api.getAppTokens,
+  };
+}
+
+export function getAppTokensScopes() {
+  return {
+    type:       ActionTypes.GET_APP_TOKENS_SCOPES,
+    apiRequest: Api.getAppTokensScopes,
+  };
+}
+
+export function createAppToken(params) {
+  return {
+    type:       ActionTypes.CREATE_APP_TOKEN,
+    apiRequest: Api.createAppToken,
+    payload:    params,
+  };
+}
+
+export function createAppTokenReset() {
+  return { type: reset(ActionTypes.CREATE_APP_TOKEN) };
+}
+
+export function reissueAppToken(tokenId) {
+  return {
+    type:       ActionTypes.REISSUE_APP_TOKEN,
+    apiRequest: Api.reissueAppToken,
+    payload:    tokenId,
+  };
+}
+
+export function deleteAppToken(tokenId) {
+  return {
+    type:       ActionTypes.DELETE_APP_TOKEN,
+    apiRequest: Api.deleteAppToken,
+    payload:    tokenId,
+  };
+}
+
+export function deleteAppTokenId(tokenId) {
+  return {
+    type:    ActionTypes.DELETE_APP_TOKEN_ID,
+    payload: tokenId,
+  };
+}
+
+export function updateAppToken(tokenId, params) {
+  return {
+    type:       ActionTypes.UPDATE_APP_TOKEN,
+    apiRequest: Api.updateAppToken,
+    payload:    { tokenId, ...params },
+  };
 }
