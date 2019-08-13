@@ -64,7 +64,6 @@ export function userParser(user) {
 }
 
 export function postParser(post) {
-  post.commentsDisabled = (post.commentsDisabled === '1');
   return {
     ...post,
     commentsDisabled: post.commentsDisabled === '1',
