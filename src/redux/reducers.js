@@ -1199,7 +1199,8 @@ export function attachments(state = {}, action) {
     return mergeByIds(state, action.payload.attachments);
   }
   switch (action.type) {
-    case response(ActionTypes.GET_SINGLE_POST): {
+    case response(ActionTypes.GET_SINGLE_POST):
+    case response(ActionTypes.CREATE_POST): {
       return mergeByIds(state, action.payload.attachments);
     }
     case ActionTypes.REALTIME_POST_NEW:
