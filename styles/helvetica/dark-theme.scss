@@ -12,6 +12,9 @@ $accent-color: hsl(40, 100%, 55%);
 $link-color: mix($text-color, $accent-color, 60%);
 $link-color-dim: mix($text-color, $accent-color, 75%);
 
+$label-bg-color: mix($bg-color, $accent-color, 25%);
+$label-text-color: hsl(0, 0%, 20%);
+
 $bg-highlight-color: mix($bg-color-lightest, $accent-color, 70%);
 
 body,
@@ -384,5 +387,10 @@ body.dark-theme {
     background-color: mix($bg-color, #dff0d8, 75%);
     border-color: mix($separator-color, #d6e9c6, 75%);
     color: mix($text-color, #3c763d, 75%);
+  }
+
+  .with-label--new::after {
+    background-color: $label-bg-color;
+    color: $label-text-color;
   }
 }
