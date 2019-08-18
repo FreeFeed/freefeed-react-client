@@ -18,24 +18,16 @@ import Layout from './components/layout';
 import Home from './components/home';
 import Discussions from './components/discussions';
 import Summary from './components/summary';
-import Signin from './components/signin';
-import Signup from './components/signup';
-import RestorePassword from './components/restore-password';
-import ResetPassword from './components/reset-password';
 import SinglePost from './components/single-post';
 import User from './components/user';
 import Subscribers from './components/subscribers';
 import Subscriptions from './components/subscriptions';
-import GroupSettings from './components/group-settings';
-import GroupCreate from './components/group-create';
 import Groups from './components/groups';
 import SearchFeed from './components/search-feed';
 import PlainFeed from './components/plain-feed';
 import Friends from './components/friends';
 import ManageSubscribers from './components/manage-subscribers';
 import Bookmarklet from './components/bookmarklet';
-import ArchivePost from './components/archive-post';
-import InvitationCreationForm from './components/invitation-creation-form';
 import SignupByInvitation from './components/signup-by-invitation';
 
 
@@ -137,14 +129,14 @@ ReactDOM.render(
           <Route path="donate" component={lazyLoad('./components/donate')} onEnter={enterStaticPage('Donate')} />
         </Route>
         <Route path="dev" component={lazyLoad('./components/dev')} onEnter={enterStaticPage('Developers')} />
-        <Route path="signin" component={Signin} onEnter={enterStaticPage('Sign in')} />
-        <Route path="signup" component={Signup} onEnter={enterStaticPage('Sign up')} />
-        <Route path="restore" component={RestorePassword} />
-        <Route path="reset" component={ResetPassword} />
+        <Route path="signin" component={lazyLoad('./components/signin')} onEnter={enterStaticPage('Sign in')} />
+        <Route path="signup" component={lazyLoad('./components/signup')} onEnter={enterStaticPage('Sign up')} />
+        <Route path="restore" component={lazyLoad('./components/restore-password')} />
+        <Route path="reset" component={lazyLoad('./components/reset-password')} />
         <Route path="settings" component={lazyLoad('./components/settings')} onEnter={enterStaticPage('Settings')} />
         <Route path="settings/archive" component={lazyLoad('./components/archive')} onEnter={enterStaticPage('Restore from FriendFeed.com Archives')} />
         <Route path="settings/app-tokens(/**)" component={lazyLoad('./components/app-tokens')} />
-        <Route name="groupSettings" path="/:userName/settings" component={GroupSettings} {...generateRouteHooks(boundRouteActions('getUserInfo'))} />
+        <Route name="groupSettings" path="/:userName/settings" component={lazyLoad('./components/group-settings')} {...generateRouteHooks(boundRouteActions('getUserInfo'))} />
         <Route name="discussions" path="filter/discussions" component={Discussions} {...generateRouteHooks(boundRouteActions('discussions'))} />
         <Route name="saves" path="filter/saves" component={Discussions} {...generateRouteHooks(boundRouteActions('saves'))} />
         <Route name="summary" path="/summary(/:days)" component={Summary} {...generateRouteHooks(boundRouteActions('summary'))} />
@@ -155,9 +147,9 @@ ReactDOM.render(
         <Route name="everything" path="filter/everything" component={PlainFeed} {...generateRouteHooks(boundRouteActions('everything'))} />
         <Route name="groups" path="/groups" component={Groups} onEnter={enterStaticPage('Groups')} />
         <Route name="friends" path="/friends" component={Friends} onEnter={friendsActions} />
-        <Route name="groupCreate" path="/groups/create" component={GroupCreate} onEnter={enterStaticPage('Create a group')} />
-        <Route name="archivePost" path="/archivePost" component={ArchivePost} {...generateRouteHooks(boundRouteActions('archivePost'))} />
-        <Route name="createInvitation" path="/invite" component={InvitationCreationForm} onEnter={inviteActions} />
+        <Route name="groupCreate" path="/groups/create" component={lazyLoad('./components/group-create')} onEnter={enterStaticPage('Create a group')} />
+        <Route name="archivePost" path="/archivePost" component={lazyLoad('./components/archive-post')} {...generateRouteHooks(boundRouteActions('archivePost'))} />
+        <Route name="createInvitation" path="/invite" component={lazyLoad('./components/invitation-creation-form')} onEnter={inviteActions} />
         <Route name="signupByInvitation" path="/invited/:invitationId" component={SignupByInvitation} onEnter={boundRouteActions('signupByInvitation')} />
         <Route name="userFeed" path="/:userName" component={User} {...generateRouteHooks(boundRouteActions('userFeed'))} />
         <Route name="memories" path="/memories/:from" component={PlainFeed} {...generateRouteHooks(boundRouteActions('memories'))} />
