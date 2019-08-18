@@ -55,6 +55,7 @@ class RuleGenerator {
               "@babel/proposal-class-properties",
               "@babel/proposal-do-expressions",
               "@babel/proposal-object-rest-spread",
+              "date-fns",
               // this.opts.dev && '@babel/transform-runtime',
               // ['@babel/plugin-transform-modules-commonjs', {
               //   "noInterop": true,
