@@ -30,6 +30,7 @@ class RuleGenerator {
           loader:  'babel-loader',
           options: {
             babelrc: false,
+            compact: false,
             presets: skipFalsy([
               "@babel/react",
               ["@babel/env", {
