@@ -4,9 +4,9 @@ import { Link } from 'react-router';
 import classnames from 'classnames';
 import _ from 'lodash';
 import Textarea from 'react-textarea-autosize';
-import moment from 'moment';
-
 import { faExclamationTriangle, faCloudUploadAlt, faLock, faUserFriends, faGlobeAmericas, faAngleDoubleRight } from '@fortawesome/free-solid-svg-icons';
+import { format, parse } from 'date-fns';
+
 import { getFirstLinkToEmbed } from '../utils/parse-text';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
@@ -534,7 +534,7 @@ class Post extends React.Component {
             {props.isDirect && <Icon icon={faAngleDoubleRight} className="post-direct-icon" title="This is a direct message" />}
             <Link to={canonicalPostURI} className="post-timestamp">
               {this.state.showTimestamps ? (
-                moment(+props.createdAt).format(datetimeFormat)
+                format(parse(+props.createdAt), datetimeFormat)
               ) : (
                 <TimeDisplay timeStamp={+props.createdAt} />
               )}

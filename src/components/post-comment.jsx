@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import Textarea from 'react-textarea-autosize';
 import _ from 'lodash';
 import classnames from 'classnames';
-import moment from 'moment';
+import { format, parse } from 'date-fns';
 
 import { preventDefault, confirmFirst } from '../utils';
 import { READMORE_STYLE_COMPACT, COMMENT_DELETED } from '../utils/frontend-preferences-options';
@@ -240,7 +240,7 @@ export default class PostComment extends React.Component {
             <span className="comment-timestamp">
               {' - '}
               <Link to={`${this.props.entryUrl}#comment-${this.props.id}`}>
-                {moment(+this.props.createdAt).format(datetimeFormat)}
+                {format(parse(+this.props.createdAt), datetimeFormat)}
               </Link>
             </span>
           ) : false}

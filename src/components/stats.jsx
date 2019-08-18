@@ -2,7 +2,7 @@ import React from 'react';
 import Highcharts from 'highcharts/highcharts';
 import HighchartsMore from 'highcharts/highcharts-more';
 import ReactHighcharts from 'react-highcharts';
-import moment from 'moment';
+import { startOfYesterday, format, subYears, parse } from 'date-fns';
 import config from '../config';
 
 
@@ -17,8 +17,8 @@ class StatsChart extends React.Component {
   }
 
   async componentDidMount() {
-    const to_date = moment().subtract(1, 'd').format(`YYYY-MM-DD`);   // Yesterday
-    const from_date = moment().subtract(1, 'y').format(`YYYY-MM-DD`); // Stats for 1 year
+    const to_date = format(startOfYesterday(), `YYYY-MM-DD`);   // Yesterday
+    const from_date = format(subYears(new Date(), 1), `YYYY-MM-DD`); // Stats for 1 year
 
     const url = `${config.api.host}/v2/stats?data=${this.props.type}&start_date=${from_date}&end_date=${to_date}`;
     const metrics = [];
@@ -28,9 +28,9 @@ class StatsChart extends React.Component {
       const result = await response.json();
 
       for (const metric of result.stats) {
-        const dt = moment(metric.date);
+        const dt = parse(metric.date);
         metrics.push([
-          Date.UTC(dt.get('year'), dt.get('month'), dt.get('date')),
+          Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate()),
           Number(metric[this.props.type])]);
       }
     } catch (e) {

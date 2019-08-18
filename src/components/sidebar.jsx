@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import moment from 'moment';
+import { format, getYear } from 'date-fns';
 
 import { preventDefault } from '../utils';
 import { setUserColorScheme } from '../redux/action-creators';
@@ -82,8 +82,8 @@ const SideBarFreeFeed = () => (
 
 const SideBarMemories = () => {
   const today = new Date();
-  const todayString = moment(today).format('MMDD');
-  const todayYear = today.getFullYear();
+  const todayString = format(today, 'MMDD');
+  const todayYear = getYear(today);
   const yearLinks = [[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]].map((years, index) => (
     <div className="years-row" key={index}>
       {years.map((offset) => {
@@ -95,7 +95,7 @@ const SideBarMemories = () => {
   return (
     <div className="box">
       <div className="box-header-memories">
-        Memories of {moment(today).format("MMMM D")}
+        Memories of {format(today, "MMMM D")}
       </div>
       <div className="box-body">
         <div className="year-links-row">

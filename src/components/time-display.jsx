@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 import { connect } from 'react-redux';
 import pt from 'prop-types';
 import React from 'react';
-import moment from 'moment';
+import { parse, addMilliseconds, differenceInMilliseconds, distanceInWords, format } from 'date-fns';
 
 import { datetimeFormat } from '../utils/get-date-from-short-string';
 
@@ -38,12 +38,12 @@ class TimeDisplay extends React.Component {
   }
 
   render() {
-    const time = moment(this.props.timeStamp);
-    const serverNow = moment().add(this.props.serverTimeAhead);
-    const timeAgo = Math.abs(serverNow.diff(time)) < 1000 ? 'just now' : time.from(serverNow);
-    const timeISO = time.format();
+    const time = parse(this.props.timeStamp);
+    const serverNow = addMilliseconds(new Date(), this.props.serverTimeAhead);
+    const timeAgo = Math.abs(differenceInMilliseconds(serverNow, time)) < 1000 ? 'just now' : `${distanceInWords(time, serverNow)} ago`;
+    const timeISO = format(time);
 
-    const title = this.props.timeAgoInTitle ? timeAgo : time.format(datetimeFormat);
+    const title = this.props.timeAgoInTitle ? timeAgo : format(time, datetimeFormat);
     const contents = this.props.children ? this.props.children : timeAgo;
 
     return (
