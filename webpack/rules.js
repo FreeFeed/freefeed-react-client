@@ -47,7 +47,7 @@ class RuleGenerator {
               }],
             ]),
             plugins: skipFalsy([
-              // ["lodash", { "id": ["lodash", "recompose"] }],
+              ["lodash", { "id": ["lodash"] }],
               "@babel/syntax-class-properties",
               "@babel/syntax-do-expressions",
               "@babel/syntax-dynamic-import",
