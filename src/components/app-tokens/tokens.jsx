@@ -12,7 +12,7 @@ function Tokens({
   tokenIds,
   getAppTokens,
 }) {
-  useEffect(() => void getAppTokens(), []);
+  useEffect(() => void getAppTokens(), [getAppTokens]);
 
   if (status.loading) {
     return <p>Loading...</p>;

@@ -12,7 +12,7 @@ function ScopesList({
   scopes,
   getAppTokensScopes,
 }) {
-  useEffect(() => void (scopesStatus.success || scopesStatus.loading || getAppTokensScopes()), []);
+  useEffect(() => void (scopesStatus.success || scopesStatus.loading || getAppTokensScopes()), [getAppTokensScopes, scopesStatus]);
 
   if (scopesStatus.loading) {
     return <p>Loading...</p>;
