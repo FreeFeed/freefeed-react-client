@@ -7,7 +7,7 @@ const Terms = () => (
     <div className="box-body">
       <h3>FreeFeed Terms of Service (&quot;Terms&quot;)</h3>
 
-      <p>Last updated: October 31, 2016</p>
+      <p>Last updated: August 21, 2019</p>
 
       <p>Please read these Terms of Service (&quot;Terms&quot;, &quot;Terms of Use&quot;) carefully before using
         the <a href="https://freefeed.net">https://freefeed.net</a> website (the &quot;Service&quot;)
@@ -24,6 +24,10 @@ const Terms = () => (
 
       <p>FreeFeed reserves the right to change these Terms at any time. We recommend that you periodically check
         this Site for changes.
+      </p>
+
+      <p>We reserve rights to monitor publicly available information posted on FreeFeed and proactively remove
+        accounts that are used for the sole purpose of spam.
       </p>
 
       <p>Without advance notice and at any time, we may, for violations of these Terms or for any other reason
