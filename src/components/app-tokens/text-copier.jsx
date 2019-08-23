@@ -21,11 +21,11 @@ export function TextCopier({ text }) {
 
     setCopied(true);
     setTimeout(() => setCopied(false), 0);
-  });
+  }, []);
   const doSelect = useCallback(({ target }) => {
     target.selectionStart = 0;
     target.selectionEnd = input.current.value.length;
-  });
+  }, []);
 
   return (
     <div className="input-group">

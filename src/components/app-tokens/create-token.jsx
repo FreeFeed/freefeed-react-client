@@ -18,7 +18,7 @@ function CreateToken({
   createAppTokenReset,
   createAppToken,
 }) {
-  useEffect(() => void createAppTokenReset(), []);
+  useEffect(() => void createAppTokenReset(), [createAppTokenReset]);
 
   const initialData = useMemo(() => {
     const state = initialFormData;
@@ -30,7 +30,7 @@ function CreateToken({
       state.origins = qs.origins || '';
     }
     return state;
-  });
+  }, []);
 
   const [form, setForm] = useState(initialData);
 
@@ -60,7 +60,7 @@ function CreateToken({
     }
 
     createAppToken(submitData);
-  });
+  }, [canSubmit, createAppToken, form]);
 
   if (status.success) {
     return (
