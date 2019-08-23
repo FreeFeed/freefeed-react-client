@@ -3,18 +3,17 @@ import { Link } from 'react-router';
 import Textarea from 'react-textarea-autosize';
 import _ from 'lodash';
 import classnames from 'classnames';
-import { format, parse } from 'date-fns';
 
 import { preventDefault, confirmFirst } from '../utils';
 import { READMORE_STYLE_COMPACT, COMMENT_DELETED } from '../utils/frontend-preferences-options';
 import { commentReadmoreConfig } from '../utils/readmore-config';
-import { datetimeFormat } from '../utils/get-date-from-short-string';
 import { Throbber } from './throbber';
 
 import CommentLikes from './comment-likes';
 import PieceOfText from './piece-of-text';
 import Expandable from './expandable';
 import UserName from './user-name';
+import TimeDisplay from './time-display';
 
 
 export default class PostComment extends React.Component {
@@ -240,7 +239,7 @@ export default class PostComment extends React.Component {
             <span className="comment-timestamp">
               {' - '}
               <Link to={`${this.props.entryUrl}#comment-${this.props.id}`}>
-                {format(parse(+this.props.createdAt), datetimeFormat)}
+                <TimeDisplay timeStamp={+this.props.createdAt} showAbsTime />
               </Link>
             </span>
           ) : false}
