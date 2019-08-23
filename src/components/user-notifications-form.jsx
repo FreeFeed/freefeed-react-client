@@ -25,7 +25,7 @@ export default class UserNotificationsForm extends React.Component {
   render() {
     return (
       <form onSubmit={preventDefault(this.savePreference)}>
-        <h3><a className="setting-link" href="#notifications">Notifications preferences</a></h3>
+        <h3 id="notifications">Notifications preferences</h3>
 
         <p>Email me:</p>
 
