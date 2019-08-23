@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { formatPattern } from 'react-router/es/PatternUtils';
 
 import { createPost, resetPostCreateForm, expandSendTo, getUserInfo } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
@@ -14,6 +15,25 @@ import UserFeed from './user-feed';
 
 
 const UserHandler = (props) => {
+  // Redirect to canonical username in URI (/uSErNAme/likes?offset=30 → /username/likes?offset=30)
+  useEffect(() => {
+    if (
+      props.viewUser.username &&
+      props.routeParams.userName &&
+      props.viewUser.username !== props.routeParams.userName
+    ) {
+      const newPath = formatPattern(
+        props.route.path,
+        { ...props.routeParams, userName: props.viewUser.username },
+      );
+      props.router.replace(newPath + props.location.search);
+    }
+  }, [
+    props.route.path,
+    props.routeParams.userName,
+    props.viewUser.username,
+  ]);
+
   return (
     <div className="box">
       {props.viewUser.id && (
@@ -60,9 +80,14 @@ function selectState(state, ownProps) {
   const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
   const anonymous = !authenticated;
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
-  const [foundUser] = Object.getOwnPropertyNames(state.users)
-    .map((key) => state.users[key] || state.subscribers[key])
-    .filter((user) => user.username === ownProps.params.userName);
+
+  let foundUser = null;
+  const timelinesArray = Object.values(timelines);
+  if (timelinesArray.length > 0) {
+    foundUser = state.users[timelinesArray[0].user];
+  } else {
+    foundUser = Object.values(state.users).find((user) => user.username === ownProps.params.userName.toLowerCase());
+  }
 
   const amIGroupAdmin = (
     authenticated &&
@@ -98,7 +123,7 @@ function selectState(state, ownProps) {
   statusExtension.canIPostHere = statusExtension.isUserFound &&
     ((statusExtension.isItMe && isItPostsPage) || (foundUser.type === 'group' && canIPostToGroup));
 
-  const viewUser = { ...(foundUser), ...statusExtension };
+  const viewUser = { ...foundUser, ...statusExtension };
 
   const breadcrumbs = {
     shouldShowBreadcrumbs: !isItPostsPage,

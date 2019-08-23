@@ -44,7 +44,7 @@ export function title(state = '', action) {
       return `Search - FreeFeed`;
     }
     case response(ActionTypes.GET_USER_FEED): {
-      const [user] = (action.payload.users || []).filter((user) => user.username === action.request.username);
+      const user = action.payload.users.find((user) => user.id === action.payload.timelines.user);
       const author = user.screenName + (user.username !== user.screenName ? ` (${user.username})` : '');
       return `${author} - FreeFeed`;
     }
