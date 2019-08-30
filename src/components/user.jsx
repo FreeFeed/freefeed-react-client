@@ -28,11 +28,7 @@ const UserHandler = (props) => {
       );
       props.router.replace(newPath + props.location.search);
     }
-  }, [
-    props.route.path,
-    props.routeParams.userName,
-    props.viewUser.username,
-  ]);
+  }, [props.location.search, props.route.path, props.routeParams, props.routeParams.userName, props.router, props.viewUser.username]);
 
   return (
     <div className="box">
@@ -82,9 +78,8 @@ function selectState(state, ownProps) {
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
 
   let foundUser = null;
-  const timelinesArray = Object.values(timelines);
-  if (timelinesArray.length > 0) {
-    foundUser = state.users[timelinesArray[0].user];
+  if (state.feedViewState.timeline > 0) {
+    foundUser = state.users[state.feedViewState.timeline.user];
   } else {
     foundUser = Object.values(state.users).find((user) => user.username === ownProps.params.userName.toLowerCase());
   }
