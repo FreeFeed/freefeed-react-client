@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { trim, pick } from 'lodash';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 
+import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 import { createAppToken, createAppTokenReset } from '../../redux/action-creators';
 import { Icon } from '../fontawesome-icons';
 import { TextCopier } from './text-copier';
@@ -92,6 +93,10 @@ function CreateToken({
       <div className="form-group">
         <button type="submit" className="btn btn-default" disabled={!canSubmit}>Generate token</button>
       </div>
+
+      <p>
+        <Icon icon={faQuestionCircle} /> <Link to="/settings/app-tokens/scopes">About the token access rights and scopes</Link>
+      </p>
     </form>
   );
 }
