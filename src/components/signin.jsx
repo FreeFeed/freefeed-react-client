@@ -70,6 +70,7 @@ class Signin extends React.PureComponent {
                         className="ember-view ember-text-field form-control"
                         type="text"
                         onChange={this.handleUsernameChange}
+                        autoFocus="true"
                       />
                     </div>
                     <div className="form-group">
