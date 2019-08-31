@@ -1425,7 +1425,7 @@ export function usersNotFound(state = [], action) {
   switch (action.type) {
     case fail(ActionTypes.GET_USER_INFO): {
       if (action.response.status === 404) {
-        const { username } = action.request;
+        const username = action.request.username.toLowerCase();
         if (state.indexOf(username) < 0) {
           state = [...state, username];
         }

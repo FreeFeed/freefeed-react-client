@@ -42,7 +42,7 @@ export default class Linkify extends React.Component {
       if (token instanceof Mention) {
         return (
           <UserName
-            user={{ username: token.text.substring(1) }}
+            user={{ username: token.text.substring(1).toLowerCase() }}
             userHover={this.props.userHover}
             key={key}
           >
