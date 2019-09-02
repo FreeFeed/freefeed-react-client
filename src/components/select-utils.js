@@ -1,5 +1,10 @@
 /*global Raven*/
-import { intersectionBy, differenceBy } from 'lodash';
+import {
+  differenceBy,
+  intersection,
+  intersectionBy,
+  uniq,
+} from 'lodash';
 
 import {
   // User actions
@@ -104,11 +109,13 @@ export const joinPostData = (state) => (postId) => {
     .map((userId) => state.subscribers[userId])
     .filter((user) => user);
 
-  const isEditable = post.createdBy === user.id;
-  const isModeratable =
-    isEditable || intersectionBy(recipients, state.managedGroups, 'id').length > 0;
-  const isFullyRemovable =
-    isEditable || differenceBy(recipients, state.managedGroups, 'id').length === 0;
+  // All recipient names and the post's author name. Author name is always comes first.
+  const recipientNames = uniq([post.createdBy, ...recipients].map((u) => u.username));
+  const hiddenByNames = intersection(recipientNames, state.hiddenUserNames);
+
+  const isEditable = (post.createdBy === user.id);
+  const isModeratable = isEditable || intersectionBy(recipients, state.managedGroups, 'id').length > 0;
+  const isFullyRemovable = isEditable || differenceBy(recipients, state.managedGroups, 'id').length === 0;
 
   const attachments = (post.attachments || []).map(
     (attachmentId) => state.attachments[attachmentId],
@@ -197,6 +204,8 @@ export const joinPostData = (state) => (postId) => {
     isFullyRemovable,
     allowLinksPreview,
     readMoreStyle,
+    recipientNames,
+    hiddenByNames: hiddenByNames.length > 0 ? hiddenByNames : null,
   };
 };
 
