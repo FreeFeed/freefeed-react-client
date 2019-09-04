@@ -29,7 +29,7 @@
   }
 
   .user-card-info {
-    height: 97px; // 75px + 2px + 20px
+    min-height: 97px; // 75px + 2px + 20px
     padding: 10px;
     background-color: #fff;
     border-top-right-radius: 2px;
@@ -57,6 +57,8 @@
         color: #000088;
         font-weight: bold;
         word-break: break-word;
+        display: inline-block;
+        max-width: 170px;
       }
 
       .username {
