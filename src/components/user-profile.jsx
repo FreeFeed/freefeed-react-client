@@ -142,7 +142,6 @@ export default class UserProfile extends React.Component {
                   {props.type === 'group' && props.subscribed && (
                     <li>
                       <Link to={`/filter/direct?invite=${props.username}`}>Invite</Link>
-                      {((props.type !== 'group' && !props.subscribed) || props.amIGroupAdmin) && ' | '}
                     </li>
                   )}
                   {props.type !== 'group' && !props.subscribed ? (
