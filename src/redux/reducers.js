@@ -229,6 +229,7 @@ export function createPostViewState(state = {}, action) {
 const initFeed = {
   visibleEntries:        [],
   hiddenEntries:         [],
+  timeline:              null,
   separateHiddenEntries: false,
   isHiddenRevealed:      false,
   isLastPage:            true,
@@ -290,10 +291,12 @@ export function feedViewState(state = initFeed, action) {
     }
     const isHiddenRevealed = false;
     const { isLastPage } = action.payload;
+    const timeline = action.payload.timelines ? _.pick(action.payload.timelines, ['id', 'name', 'user']) : null;
     return {
       ...state,
       visibleEntries,
       hiddenEntries,
+      timeline,
       separateHiddenEntries,
       isHiddenRevealed,
       isLastPage,
