@@ -4,7 +4,7 @@ import {
   hashTags,
   emails,
   mentions,
-  linksEx,
+  links,
   arrows,
   Link as TLink,
 } from 'social-text-tokenizer';
@@ -51,7 +51,7 @@ export class Link extends TLink {
   }
 }
 
-const tokenize = withText(combine(hashTags, emails, mentions, linksEx({ tldList }), arrows));
+const tokenize = withText(combine(hashTags(), emails(), mentions(), links({ tldList }), arrows()));
 
 const enhanceLinks = (token) => (token instanceof TLink) ? new Link(token, siteDomains) : token;
 

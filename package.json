@@ -36,7 +36,7 @@
     "react-textarea-autosize": "~7.1.0",
     "redux": "~4.0.1",
     "snarkdown": "~1.2.2",
-    "social-text-tokenizer": "~1.1.0",
+    "social-text-tokenizer": "~2.0.0",
     "socket.io-client": "~2.2.0",
     "sortablejs": "~1.9.0",
     "validator": "~11.0.0"
