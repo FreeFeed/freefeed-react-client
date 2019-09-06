@@ -51,7 +51,7 @@ class RestorePassword extends React.Component {
                   <form onSubmit={this.handleSubmit} className="p-signin">
                     <div className="form-group">
                       <label htmlFor="mail">E-mail</label>
-                      <input id="mail" className="form-control" type="mail" ref={this.registerMail} />
+                      <input name="mail" id="mail" className="form-control" type="mail" ref={this.registerMail} />
                     </div>
                     <div className="form-group">
                       <button className="btn btn-default p-singin-action" type="submit">Reset</button>

@@ -44,7 +44,7 @@ export function title(state = '', action) {
       return `Search - FreeFeed`;
     }
     case response(ActionTypes.GET_USER_FEED): {
-      const [user] = (action.payload.users || []).filter((user) => user.username === action.request.username);
+      const user = action.payload.users.find((user) => user.id === action.payload.timelines.user);
       const author = user.screenName + (user.username !== user.screenName ? ` (${user.username})` : '');
       return `${author} - FreeFeed`;
     }
@@ -229,6 +229,7 @@ export function createPostViewState(state = {}, action) {
 const initFeed = {
   visibleEntries:        [],
   hiddenEntries:         [],
+  timeline:              null,
   separateHiddenEntries: false,
   isHiddenRevealed:      false,
   isLastPage:            true,
@@ -290,10 +291,12 @@ export function feedViewState(state = initFeed, action) {
     }
     const isHiddenRevealed = false;
     const { isLastPage } = action.payload;
+    const timeline = action.payload.timelines ? _.pick(action.payload.timelines, ['id', 'name', 'user']) : null;
     return {
       ...state,
       visibleEntries,
       hiddenEntries,
+      timeline,
       separateHiddenEntries,
       isHiddenRevealed,
       isLastPage,
@@ -1425,7 +1428,7 @@ export function usersNotFound(state = [], action) {
   switch (action.type) {
     case fail(ActionTypes.GET_USER_INFO): {
       if (action.response.status === 404) {
-        const { username } = action.request;
+        const username = action.request.username.toLowerCase();
         if (state.indexOf(username) < 0) {
           state = [...state, username];
         }

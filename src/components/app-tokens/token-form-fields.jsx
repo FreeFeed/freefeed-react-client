@@ -22,10 +22,13 @@ function TokenForm({
   scopes,
   getAppTokensScopes,
 }) {
-  useEffect(() => void (scopesStatus.success || scopesStatus.loading || getAppTokensScopes()), []);
+  useEffect(
+    () => void (scopesStatus.success || scopesStatus.loading || getAppTokensScopes()),
+    [getAppTokensScopes, scopesStatus]
+  );
 
   const [form, setForm] = useState(initialData);
-  useEffect(() => void (onChange && onChange(form)), [form]);
+  useEffect(() => void (onChange && onChange(form)), [form, onChange]);
 
   const handleChange = useCallback(({ target }) => {
     if (['title', 'netmasks', 'origins'].includes(target.name)) {
@@ -38,10 +41,10 @@ function TokenForm({
         setForm((f) => ({ ...f, scopes: without(f.scopes, target.value) }));
       }
     }
-  });
+  }, []);
 
   const [restrictions, showRestrictions] = useState(form.netmasks !== '' || form.origins !== '');
-  const showRestrictionsClick = useCallback(() => showRestrictions(true));
+  const showRestrictionsClick = useCallback(() => showRestrictions(true), []);
 
   if (scopesStatus.loading) {
     return <p>Loading...</p>;

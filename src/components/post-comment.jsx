@@ -287,7 +287,7 @@ export default class PostComment extends React.Component {
     return (
       <div
         className={className}
-        data-author={this.props.isEditing ? '' : this.props.user.username}
+        data-author={(this.props.user && !this.props.isEditing) ? this.props.user.username : ''}
         ref={this.registerCommentContainer}
       >
         {this.renderCommentLikes()}

@@ -7,7 +7,8 @@
     "lodash",
     "promise",
     "react",
-    "you-dont-need-lodash-underscore"
+    "you-dont-need-lodash-underscore",
+    "react-hooks"
   ],
   "env": {
     "browser": true,
@@ -138,6 +139,8 @@
     "react/no-typos": 2,
     "react/no-unescaped-entities": 2,
     "react/no-unknown-property": 2,
-    "react/self-closing-comp": 2
+    "react/self-closing-comp": 2,
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }

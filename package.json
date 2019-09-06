@@ -1,6 +1,6 @@
 {
   "name": "reactive-pepyatka",
-  "version": "1.67.4",
+  "version": "1.68.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
@@ -35,7 +35,8 @@
     "react-sticky": "~6.0.3",
     "react-textarea-autosize": "~7.1.0",
     "redux": "~4.0.1",
-    "social-text-tokenizer": "~1.1.0",
+    "snarkdown": "~1.2.2",
+    "social-text-tokenizer": "~2.0.0",
     "socket.io-client": "~2.2.0",
     "sortablejs": "~1.9.0",
     "validator": "~11.0.0"
@@ -74,6 +75,7 @@
     "eslint-plugin-lodash": "~5.1.0",
     "eslint-plugin-promise": "~4.1.1",
     "eslint-plugin-react": "~7.13.0",
+    "eslint-plugin-react-hooks": "~1.7.0",
     "eslint-plugin-you-dont-need-lodash-underscore": "~6.5.0",
     "file-loader": "~4.0.0",
     "html-webpack-plugin": "~3.2.0",
@@ -93,7 +95,7 @@
     "sass-loader": "~7.1.0",
     "sinon": "~7.3.2",
     "style-loader": "~0.23.1",
-    "uglifyjs-webpack-plugin": "~2.1.2",
+    "terser-webpack-plugin": "~2.0.0",
     "unexpected": "~11.7.0",
     "unexpected-react": "~5.0.1",
     "unexpected-sinon": "~10.11.2",

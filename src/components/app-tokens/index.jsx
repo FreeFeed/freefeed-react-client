@@ -18,7 +18,7 @@ export default function ({ routeParams: { splat } }) {
     return <Layout component={CreateLink} title="Create magic link" />;
   }
   if (splat === 'scopes') {
-    return <Layout component={ScopesList} title="Token access scopes" />;
+    return <Layout component={ScopesList} title="Token access rights" />;
   }
 
   return <p>Page not found: {splat}</p>;

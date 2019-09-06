@@ -90,7 +90,7 @@ class Settings extends React.Component {
 
             <hr />
 
-            <h3><a className="setting-link" href="#app-tokens">Application tokens</a></h3>
+            <h3 id="app-tokens">Application tokens</h3>
             <p>
               <Link to="/settings/app-tokens">Manage your application tokens <Icon icon={faAngleRight} /></Link>
             </p>

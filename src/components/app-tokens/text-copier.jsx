@@ -13,15 +13,19 @@ export function TextCopier({ text }) {
   const doCopy = useCallback(({ target }) => {
     target.blur();
     input.current.focus();
-    input.current.select();
+    input.current.selectionStart = 0;
+    input.current.selectionEnd = input.current.value.length;
     document.execCommand("copy");
     input.current.selectionEnd = input.current.selectionStart;
     input.current.blur();
 
     setCopied(true);
     setTimeout(() => setCopied(false), 0);
-  });
-  const doSelect = useCallback(({ target }) => target.select());
+  }, []);
+  const doSelect = useCallback(({ target }) => {
+    target.selectionStart = 0;
+    target.selectionEnd = input.current.value.length;
+  }, []);
 
   return (
     <div className="input-group">

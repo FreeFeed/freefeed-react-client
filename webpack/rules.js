@@ -23,7 +23,7 @@ class RuleGenerator {
     return {
       test:    /\.m?jsx?$/,
       exclude: (modulePath) => {
-        return /node_modules\/(?!(autotrack|dom-utils))/.test(modulePath);
+        return /node_modules\/(?!(autotrack|dom-utils|social-text-tokenizer))/.test(modulePath);
       },
       use: [
         {

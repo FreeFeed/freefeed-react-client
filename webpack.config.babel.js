@@ -1,7 +1,7 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import OptiCSS from "optimize-css-assets-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import Uglify from "uglifyjs-webpack-plugin";
+import Uglify from "terser-webpack-plugin";
 import CopyPlugin from "copy-webpack-plugin";
 
 import { baseConfig, opts, rules } from "./webpack/base";

@@ -35,16 +35,16 @@ export default class UserChangePasswordForm extends React.Component {
         <h3>Change password</h3>
         <div className="form-group p-settings-currentpassword">
           <label htmlFor="currentPassword">Current password:</label>
-          <input id="currentPassword" className="form-control" ref={this.registerCurrentPassword} type="password" />
+          <input name="currentPassword" id="currentPassword" className="form-control" ref={this.registerCurrentPassword} type="password" />
         </div>
         <div className="form-group p-settings-newpassword">
           <label htmlFor="password">New password:</label>
-          <input id="password" className="form-control" ref={this.registerPassword} type="password" />
+          <input name="password" id="password" className="form-control" ref={this.registerPassword} type="password" />
         </div>
 
         <div className="form-group p-settings-confirmpassword">
           <label htmlFor="passwordConfirmation">Confirm password:</label>
-          <input id="passwordConfirmation" className="form-control" ref={this.registerPasswordConfirmation} type="password" />
+          <input name="passwordConfirmation" id="passwordConfirmation" className="form-control" ref={this.registerPasswordConfirmation} type="password" />
         </div>
         <p>
           <button className="btn btn-default p-settings-updatepassword" type="submit">Update Password</button>
