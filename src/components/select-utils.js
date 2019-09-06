@@ -49,7 +49,7 @@ const commentHighlighter = ({ commentsHighlights, user, postsViewState }, commen
   const highlightIndex = (baseIndex + omittedComments) - arrows;
   const highlightCommentId = commentList[highlightIndex < baseIndex ? highlightIndex : -1];
 
-  return (commentId, commentAuthor) => (author && author === commentAuthor.username) || highlightCommentId === commentId;
+  return (commentId, commentAuthor) => (author && commentAuthor && author === commentAuthor.username) || highlightCommentId === commentId;
 };
 
 const selectCommentLikes = ({ commentLikes, users }, commentId) => {
