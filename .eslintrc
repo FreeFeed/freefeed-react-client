@@ -33,7 +33,7 @@
       }
     },
     "react": {
-      "version": "15.4"
+      "version": "16.8"
     }
   },
   "rules": {
@@ -95,6 +95,7 @@
     "prefer-rest-params": 2,
     "prefer-spread": 2,
     "prefer-template": 2,
+    "require-atomic-updates": 0,
     "require-yield": 0,
     "babel/semi": 2,
     "space-before-blocks": [2, "always"],
