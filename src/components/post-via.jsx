@@ -54,7 +54,7 @@ export default class PostVia extends React.Component {
       return false;
     }
 
-    const inComments = comments.map(_.property('user')).filter(inSubscriptions);
+    const inComments = comments.map(_.property('user')).filter(Boolean).filter(inSubscriptions);
     const inLikes = usersLikedPost.filter(inSubscriptions);
 
     let textPrefix = false;
