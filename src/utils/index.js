@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import filesize from 'filesize';
 
 import defaultUserpicPath from '../../assets/images/default-userpic.svg';
 
@@ -138,4 +139,8 @@ export function getSummaryPeriod(days) {
     case 30: return 'month';
     default: return `${days} days`;
   }
+}
+
+export function formatFileSize(fileSize) {
+  return filesize(fileSize, { standard: "iec", round: 1 });
 }

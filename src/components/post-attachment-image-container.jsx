@@ -2,7 +2,6 @@ import pt from 'prop-types';
 import React from 'react';
 import classnames from 'classnames';
 import Loadable from 'react-loadable';
-import Sortable from 'react-sortablejs';
 
 import { faChevronCircleRight } from '@fortawesome/free-solid-svg-icons';
 import ImageAttachment from './post-attachment-image';
@@ -27,6 +26,17 @@ const ImageAttachmentsLightbox = Loadable({
   loader:  () => import('./post-attachment-image-lightbox'),
   delay:   500,
   timeout: 10000,
+});
+
+const Sortable = Loadable({
+  loading: ({ error }) => {
+    if (error) {
+      return <div>Cannot load Sortable component</div>;
+    }
+    return <div>Loading component...</div>;
+  },
+  loader: () => import('react-sortablejs'),
+  delay:  500,
 });
 
 export default class ImageAttachmentsContainer extends React.Component {

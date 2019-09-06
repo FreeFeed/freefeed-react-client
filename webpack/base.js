@@ -36,7 +36,6 @@ const baseConfig = {
   resolve: { extensions: ['.js', '.json', '.jsx'] },
   plugins: skipFalsy([
     new webpack.LoaderOptionsPlugin({ debug: opts.dev }),
-    new webpack.ContextReplacementPlugin(/moment[\\/]locale$/, /(?:en|ru)[.]js/),
     new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop'),
     new webpack.DefinePlugin({ 'process.env.NODE_ENV': opts.dev ? '"development"' : '"production"' }),
   ]),

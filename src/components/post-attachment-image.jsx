@@ -1,7 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
-import numeral from 'numeral';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+
+import { formatFileSize } from '../utils';
 import { Icon } from './fontawesome-icons';
 
 
@@ -13,7 +14,7 @@ class PostAttachmentImage extends React.PureComponent {
   render() {
     const { props } = this;
 
-    const formattedFileSize = numeral(props.fileSize).format('0.[0] ib');
+    const formattedFileSize = formatFileSize(props.fileSize);
     const formattedImageSize = (props.imageSizes.o ? `, ${props.imageSizes.o.w}×${props.imageSizes.o.h}px` : '');
     const nameAndSize = `${props.fileName} (${formattedFileSize}${formattedImageSize})`;
 

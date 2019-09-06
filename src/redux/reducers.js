@@ -884,7 +884,7 @@ export function posts(state = {}, action) {
     }
     case response(ActionTypes.DELETE_COMMENT): {
       const { commentId } = action.request;
-      const post = _(state).find((_post) => (_post.comments || []).indexOf(commentId) !== -1);
+      const post = Object.values(state).find((_post) => (_post.comments || []).indexOf(commentId) !== -1);
       if (!post) {
         return state;
       }
@@ -2199,7 +2199,7 @@ const removeItemFromGroupRequests = (state, action) => {
       requests: group.requests.filter((user) => user.username !== userName)
     };
 
-    return _(state).without(group).push(newGroup).value();
+    return [..._.without(state, group), newGroup];
   }
 
   return state;

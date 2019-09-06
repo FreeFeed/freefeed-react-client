@@ -1,7 +1,8 @@
 import React from 'react';
-import numeral from 'numeral';
 import { faFileAudio } from '@fortawesome/free-regular-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+
+import { formatFileSize } from '../utils';
 import { Icon } from './fontawesome-icons';
 
 
@@ -12,7 +13,7 @@ class AudioAttachment extends React.PureComponent {
 
   render() {
     const { props } = this;
-    const formattedFileSize = numeral(props.fileSize).format('0.[0] ib');
+    const formattedFileSize = formatFileSize(props.fileSize);
 
     let artistAndTitle = '';
     if (props.title && props.artist) {
