@@ -10,6 +10,7 @@ import config from '../config';
 import { joinPostData, postActions, userActions, canAcceptDirects } from './select-utils';
 import FeedOptionsSwitch from './feed-options-switch';
 import Breadcrumbs from './breadcrumbs';
+import ErrorBoundary from './error-boundary';
 import UserProfile from './user-profile';
 import UserFeed from './user-feed';
 
@@ -32,42 +33,44 @@ const UserHandler = (props) => {
 
   return (
     <div className="box">
-      {props.viewUser.id && (
-        <Helmet>
-          <link
-            rel="alternate"
-            type="application/rss+xml"
-            title={props.viewUser.type === 'user' ? `Posts of ${props.viewUser.username}` : `Posts in group ${props.viewUser.username}`}
-            href={`${config.api.host}/v2/timelines-rss/${props.viewUser.username}`}
-          />
-        </Helmet>
-      )}
+      <ErrorBoundary>
+        {props.viewUser.id && (
+          <Helmet>
+            <link
+              rel="alternate"
+              type="application/rss+xml"
+              title={props.viewUser.type === 'user' ? `Posts of ${props.viewUser.username}` : `Posts in group ${props.viewUser.username}`}
+              href={`${config.api.host}/v2/timelines-rss/${props.viewUser.username}`}
+            />
+          </Helmet>
+        )}
 
-      <div className="box-header-timeline">
-        {props.boxHeader}
-        <div className="pull-right">
-          <FeedOptionsSwitch />
+        <div className="box-header-timeline">
+          {props.boxHeader}
+          <div className="pull-right">
+            <FeedOptionsSwitch />
+          </div>
         </div>
-      </div>
 
-      <div className="box-body">
-        {props.breadcrumbs.shouldShowBreadcrumbs ? <Breadcrumbs {...props.breadcrumbs} /> : false}
+        <div className="box-body">
+          {props.breadcrumbs.shouldShowBreadcrumbs ? <Breadcrumbs {...props.breadcrumbs} /> : false}
 
-        <UserProfile
-          {...props.viewUser}
-          {...props.userActions}
-          user={props.user}
-          sendTo={props.sendTo}
-          expandSendTo={props.expandSendTo}
-          createPostViewState={props.createPostViewState}
-          createPost={props.createPost}
-          resetPostCreateForm={props.resetPostCreateForm}
-          addAttachmentResponse={props.addAttachmentResponse}
-          getUserInfo={props.getUserInfo}
-        />
-      </div>
+          <UserProfile
+            {...props.viewUser}
+            {...props.userActions}
+            user={props.user}
+            sendTo={props.sendTo}
+            expandSendTo={props.expandSendTo}
+            createPostViewState={props.createPostViewState}
+            createPost={props.createPost}
+            resetPostCreateForm={props.resetPostCreateForm}
+            addAttachmentResponse={props.addAttachmentResponse}
+            getUserInfo={props.getUserInfo}
+          />
+        </div>
 
-      <UserFeed {...props} />
+        <UserFeed {...props} />
+      </ErrorBoundary>
     </div>
   );
 };

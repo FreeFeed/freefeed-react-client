@@ -7,6 +7,7 @@ import config from '../config';
 import { signUpChange, signUp, signUpEmpty } from '../redux/action-creators';
 import { preventDefault } from '../utils';
 import LoaderContainer from './loader-container';
+import ErrorBoundary from './error-boundary';
 
 
 const captchaConfig = config.captcha;
@@ -127,62 +128,64 @@ class Signup extends React.Component {
     const { loading, invitationId, lang = 'en' } = this.props;
 
     return (
-      <LoaderContainer loading={loading}>
-        <form onSubmit={preventDefault(() => signUpFunc(this.state, this.props))} className="p-signin">
-          <div className="form-group">
-            <label htmlFor="username">{LABELS[lang].username}</label>
-            <input
-              id="username"
-              className="ember-view ember-text-field form-control"
-              type="text"
-              onChange={this.handleUsernameChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="email">{LABELS[lang].email}</label>
-            <input
-              id="email"
-              className="ember-view ember-text-field form-control"
-              type="text"
-              onChange={this.handleEmailChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="password">{LABELS[lang].password}</label>
-            <input
-              id="password"
-              className="ember-view ember-text-field form-control"
-              type="password"
-              onChange={this.handlePasswordChange}
-            />
-          </div>
-
-          {captchaConfig.siteKey &&
+      <ErrorBoundary>
+        <LoaderContainer loading={loading}>
+          <form onSubmit={preventDefault(() => signUpFunc(this.state, this.props))} className="p-signin">
             <div className="form-group">
-              <Recaptcha
-                sitekey={captchaConfig.siteKey}
-                theme="light" type="image"
-                onChange={this.handleRecaptchaChange}
-                onExpired={this.handleRecaptchaExpiration}
+              <label htmlFor="username">{LABELS[lang].username}</label>
+              <input
+                id="username"
+                className="ember-view ember-text-field form-control"
+                type="text"
+                onChange={this.handleUsernameChange}
               />
             </div>
-          }
 
-          {invitationId &&
-            <div className="form-group checkbox">
-              <label>
-                <input type="checkbox" name="subscribe-groups" value="0" checked={this.state.subscribe} onChange={this.toggleSubscribe} />
-                {LABELS[lang].subscribe}
-              </label>
-            </div>}
+            <div className="form-group">
+              <label htmlFor="email">{LABELS[lang].email}</label>
+              <input
+                id="email"
+                className="ember-view ember-text-field form-control"
+                type="text"
+                onChange={this.handleEmailChange}
+              />
+            </div>
 
-          <div className="form-group">
-            <button className="btn btn-default p-signin-action" type="submit">{LABELS[lang].signup}</button>
-          </div>
-        </form>
-      </LoaderContainer>
+            <div className="form-group">
+              <label htmlFor="password">{LABELS[lang].password}</label>
+              <input
+                id="password"
+                className="ember-view ember-text-field form-control"
+                type="password"
+                onChange={this.handlePasswordChange}
+              />
+            </div>
+
+            {captchaConfig.siteKey &&
+              <div className="form-group">
+                <Recaptcha
+                  sitekey={captchaConfig.siteKey}
+                  theme="light" type="image"
+                  onChange={this.handleRecaptchaChange}
+                  onExpired={this.handleRecaptchaExpiration}
+                />
+              </div>
+            }
+
+            {invitationId &&
+              <div className="form-group checkbox">
+                <label>
+                  <input type="checkbox" name="subscribe-groups" value="0" checked={this.state.subscribe} onChange={this.toggleSubscribe} />
+                  {LABELS[lang].subscribe}
+                </label>
+              </div>}
+
+            <div className="form-group">
+              <button className="btn btn-default p-signin-action" type="submit">{LABELS[lang].signup}</button>
+            </div>
+          </form>
+        </LoaderContainer>
+      </ErrorBoundary>
     );
   }
 }

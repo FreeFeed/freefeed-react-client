@@ -25,6 +25,7 @@ import PostMoreMenu from './post-more-menu';
 import TimeDisplay from './time-display';
 import LinkPreview from './link-preview/preview';
 import SendTo from './send-to';
+import ErrorBoundary from './error-boundary';
 import { destinationsPrivacy } from './select-utils';
 import { makeJpegIfNeeded } from './create-post';
 import { Icon } from './fontawesome-icons';
@@ -407,162 +408,164 @@ class Post extends React.Component {
       </div>
     ) : (
       <div className={postClass} data-author={props.createdBy.username}>
-        <Expandable
-          expanded={props.isEditing || props.isSinglePost || props.readMoreStyle === READMORE_STYLE_COMPACT}
-          config={postReadmoreConfig}
-        >
-          <div className="post-userpic">
-            <Link to={`/${props.createdBy.username}`}>
-              <img className="post-userpic-img" src={profilePicture} width={profilePictureSize} height={profilePictureSize} />
-            </Link>
-          </div>
-          <div className="post-body">
-            {props.isEditing ? (
-              <div>
-                <SendTo
-                  ref={this.registerSelectFeeds}
-                  defaultFeed={props.recipients.map((r) => r.username)}
-                  isDirects={props.isDirect}
-                  isEditing={true}
-                  disableAutoFocus={true}
-                  user={props.createdBy}
-                  onChange={this.onDestsChange}
-                />
-                <div className="post-privacy-warning">{this.state.privacyWarning}</div>
-              </div>
-            ) : (
-              <div className="post-header">
-                <UserName className="post-author" user={props.createdBy} />
-                {recipients.length > 0 ? ' to ' : false}
-                {recipients}
-                {this.props.isInHomeFeed ? <PostVia post={this.props} me={this.props.user} /> : false}
-              </div>
-            )}
-            {props.isEditing ? (
-              <div className="post-editor">
-                <Dropzone
-                  onInit={this.handleDropzoneInit}
-                  addAttachmentResponse={this.handleAttachmentResponse}
-                  onSending={this.attLoadingStarted}
-                  onQueueComplete={this.attLoadingCompleted}
-                />
-
+        <ErrorBoundary>
+          <Expandable
+            expanded={props.isEditing || props.isSinglePost || props.readMoreStyle === READMORE_STYLE_COMPACT}
+            config={postReadmoreConfig}
+          >
+            <div className="post-userpic">
+              <Link to={`/${props.createdBy.username}`}>
+                <img className="post-userpic-img" src={profilePicture} width={profilePictureSize} height={profilePictureSize} />
+              </Link>
+            </div>
+            <div className="post-body">
+              {props.isEditing ? (
                 <div>
-                  <Textarea
-                    className="post-textarea"
-                    value={this.state.editingText}
-                    onKeyDown={this.handleKeyDown}
-                    onChange={this.handlePostTextChange}
-                    onPaste={this.handlePaste}
-                    autoFocus={true}
-                    minRows={2}
-                    maxRows={10}
-                    maxLength="1500"
+                  <SendTo
+                    ref={this.registerSelectFeeds}
+                    defaultFeed={props.recipients.map((r) => r.username)}
+                    isDirects={props.isDirect}
+                    isEditing={true}
+                    disableAutoFocus={true}
+                    user={props.createdBy}
+                    onChange={this.onDestsChange}
+                  />
+                  <div className="post-privacy-warning">{this.state.privacyWarning}</div>
+                </div>
+              ) : (
+                <div className="post-header">
+                  <UserName className="post-author" user={props.createdBy} />
+                  {recipients.length > 0 ? ' to ' : false}
+                  {recipients}
+                  {this.props.isInHomeFeed ? <PostVia post={this.props} me={this.props.user} /> : false}
+                </div>
+              )}
+              {props.isEditing ? (
+                <div className="post-editor">
+                  <Dropzone
+                    onInit={this.handleDropzoneInit}
+                    addAttachmentResponse={this.handleAttachmentResponse}
+                    onSending={this.attLoadingStarted}
+                    onQueueComplete={this.attLoadingCompleted}
+                  />
+
+                  <div>
+                    <Textarea
+                      className="post-textarea"
+                      value={this.state.editingText}
+                      onKeyDown={this.handleKeyDown}
+                      onChange={this.handlePostTextChange}
+                      onPaste={this.handlePaste}
+                      autoFocus={true}
+                      minRows={2}
+                      maxRows={10}
+                      maxLength="1500"
+                    />
+                  </div>
+
+                  <div className="post-edit-options">
+                    <span className="post-edit-attachments dropzone-trigger" disabled={this.state.dropzoneDisabled}>
+                      <Icon icon={faCloudUploadAlt} className="upload-icon" />
+                      {' '}
+                      Add photos or files
+                    </span>
+                  </div>
+
+                  <div className="post-edit-actions">
+                    {props.isSaving ? (
+                      <span className="post-edit-throbber">
+                        <Throbber />
+                      </span>
+                    ) : false}
+                    <a className="post-cancel" onClick={this.cancelEditingPost}>Cancel</a>
+                    <button
+                      className="btn btn-default btn-xs"
+                      onClick={this.saveEditingPost}
+                      disabled={!this.canSubmitForm()}
+                    >
+                      Update
+                    </button>
+                  </div>
+                  {this.state.dropzoneDisabled && (
+                    <div className="alert alert-warning">
+                      The maximum number of attached files ({config.attachments.maxCount}) has been reached
+                    </div>
+                  )}
+                  {props.isError ? <div className="post-error alert alert-danger">{props.errorString}</div> : false}
+                </div>
+              ) : (
+                <div className="post-text">
+                  <PieceOfText
+                    text={props.body}
+                    readMoreStyle={props.readMoreStyle}
+                    highlightTerms={props.highlightTerms}
                   />
                 </div>
-
-                <div className="post-edit-options">
-                  <span className="post-edit-attachments dropzone-trigger" disabled={this.state.dropzoneDisabled}>
-                    <Icon icon={faCloudUploadAlt} className="upload-icon" />
-                    {' '}
-                    Add photos or files
-                  </span>
-                </div>
-
-                <div className="post-edit-actions">
-                  {props.isSaving ? (
-                    <span className="post-edit-throbber">
-                      <Throbber />
-                    </span>
-                  ) : false}
-                  <a className="post-cancel" onClick={this.cancelEditingPost}>Cancel</a>
-                  <button
-                    className="btn btn-default btn-xs"
-                    onClick={this.saveEditingPost}
-                    disabled={!this.canSubmitForm()}
-                  >
-                    Update
-                  </button>
-                </div>
-                {this.state.dropzoneDisabled && (
-                  <div className="alert alert-warning">
-                    The maximum number of attached files ({config.attachments.maxCount}) has been reached
-                  </div>
-                )}
-                {props.isError ? <div className="post-error alert alert-danger">{props.errorString}</div> : false}
-              </div>
-            ) : (
-              <div className="post-text">
-                <PieceOfText
-                  text={props.body}
-                  readMoreStyle={props.readMoreStyle}
-                  highlightTerms={props.highlightTerms}
-                />
-              </div>
-            )}
-          </div>
-        </Expandable>
-
-        <div className="post-body">
-          <PostAttachments
-            postId={props.id}
-            attachments={this.attachments}
-            isEditing={props.isEditing}
-            isSinglePost={props.isSinglePost}
-            removeAttachment={this.removeAttachment}
-            reorderImageAttachments={this.reorderImageAttachments}
-          />
-
-          {noImageAttachments && linkToEmbed ? (
-            <div className="link-preview"><LinkPreview url={linkToEmbed} allowEmbedly={props.allowLinksPreview} /></div>
-          ) : false}
-
-          <div className="dropzone-previews" />
-
-          <div className="post-footer">
-            <span className="post-timestamps-toggle" onClick={this.toggleTimestamps}>
-              {isPrivate ? (
-                <Icon icon={faLock} className="post-lock-icon post-private-icon" title="This entry is private" />
-              ) : isProtected ? (
-                <Icon icon={faUserFriends} className="post-lock-icon post-protected-icon" title="This entry is only visible to FreeFeed users" />
-              ) : (
-                <Icon icon={faGlobeAmericas} className="post-lock-icon post-public-icon" title="This entry is public" />
               )}
-            </span>
-            {props.isDirect && <Icon icon={faAngleDoubleRight} className="post-direct-icon" title="This is a direct message" />}
-            <Link to={canonicalPostURI} className="post-timestamp">
-              <TimeDisplay timeStamp={+props.createdAt} showAbsTime={this.state.showTimestamps} />
-            </Link>
-            {commentLink}
-            {likeLink}
-            {saveLink}
-            {hideLink}
-            {moreLink}
+            </div>
+          </Expandable>
+
+          <div className="post-body">
+            <PostAttachments
+              postId={props.id}
+              attachments={this.attachments}
+              isEditing={props.isEditing}
+              isSinglePost={props.isSinglePost}
+              removeAttachment={this.removeAttachment}
+              reorderImageAttachments={this.reorderImageAttachments}
+            />
+
+            {noImageAttachments && linkToEmbed ? (
+              <div className="link-preview"><LinkPreview url={linkToEmbed} allowEmbedly={props.allowLinksPreview} /></div>
+            ) : false}
+
+            <div className="dropzone-previews" />
+
+            <div className="post-footer">
+              <span className="post-timestamps-toggle" onClick={this.toggleTimestamps}>
+                {isPrivate ? (
+                  <Icon icon={faLock} className="post-lock-icon post-private-icon" title="This entry is private" />
+                ) : isProtected ? (
+                  <Icon icon={faUserFriends} className="post-lock-icon post-protected-icon" title="This entry is only visible to FreeFeed users" />
+                ) : (
+                  <Icon icon={faGlobeAmericas} className="post-lock-icon post-public-icon" title="This entry is public" />
+                )}
+              </span>
+              {props.isDirect && <Icon icon={faAngleDoubleRight} className="post-direct-icon" title="This is a direct message" />}
+              <Link to={canonicalPostURI} className="post-timestamp">
+                <TimeDisplay timeStamp={+props.createdAt} showAbsTime={this.state.showTimestamps} />
+              </Link>
+              {commentLink}
+              {likeLink}
+              {saveLink}
+              {hideLink}
+              {moreLink}
+            </div>
+
+            <PostLikes
+              post={props}
+              likes={props.usersLikedPost}
+              showMoreLikes={props.showMoreLikes}
+            />
+
+            <PostComments
+              post={props}
+              comments={props.comments}
+              creatingNewComment={props.isCommenting}
+              updateCommentingText={props.updateCommentingText}
+              addComment={props.addComment}
+              toggleCommenting={props.toggleCommenting}
+              showMoreComments={props.showMoreComments}
+              commentEdit={props.commentEdit}
+              readMoreStyle={props.readMoreStyle}
+              entryUrl={canonicalPostURI}
+              highlightTerms={props.highlightTerms}
+              isSinglePost={props.isSinglePost}
+              showTimestamps={this.state.showTimestamps}
+              user={props.user}
+            />
           </div>
-
-          <PostLikes
-            post={props}
-            likes={props.usersLikedPost}
-            showMoreLikes={props.showMoreLikes}
-          />
-
-          <PostComments
-            post={props}
-            comments={props.comments}
-            creatingNewComment={props.isCommenting}
-            updateCommentingText={props.updateCommentingText}
-            addComment={props.addComment}
-            toggleCommenting={props.toggleCommenting}
-            showMoreComments={props.showMoreComments}
-            commentEdit={props.commentEdit}
-            readMoreStyle={props.readMoreStyle}
-            entryUrl={canonicalPostURI}
-            highlightTerms={props.highlightTerms}
-            isSinglePost={props.isSinglePost}
-            showTimestamps={this.state.showTimestamps}
-            user={props.user}
-          />
-        </div>
+        </ErrorBoundary>
       </div>
     ));
   }

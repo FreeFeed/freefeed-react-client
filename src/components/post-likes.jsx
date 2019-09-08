@@ -3,6 +3,7 @@ import React from 'react';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
 import UserName from './user-name';
+import ErrorBoundary from './error-boundary';
 import { Icon } from './fontawesome-icons';
 
 
@@ -44,8 +45,10 @@ export default ({ likes, showMoreLikes, post }) => {
 
   return (
     <div className="post-likes">
-      <Icon icon={faHeart} className="icon" />
-      <ul className="post-likes-list">{renderedLikes}</ul>
+      <ErrorBoundary>
+        <Icon icon={faHeart} className="icon" />
+        <ul className="post-likes-list">{renderedLikes}</ul>
+      </ErrorBoundary>
     </div>
   );
 };

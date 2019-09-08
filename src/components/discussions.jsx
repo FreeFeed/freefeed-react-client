@@ -8,6 +8,7 @@ import CreatePost from './create-post';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
 import FeedOptionsSwitch from './feed-options-switch';
+import ErrorBoundary from './error-boundary';
 
 
 const FeedHandler = (props) => {
@@ -32,16 +33,18 @@ const FeedHandler = (props) => {
 
   return (
     <div className="box">
-      <div className="box-header-timeline">
-        {props.boxHeader}
-        <div className="pull-right">
-          <FeedOptionsSwitch />
+      <ErrorBoundary>
+        <div className="box-header-timeline">
+          {props.boxHeader}
+          <div className="pull-right">
+            <FeedOptionsSwitch />
+          </div>
         </div>
-      </div>
-      <PaginatedView firstPageHead={props.isSaves || createPostComponent} {...props}>
-        <Feed {...props} emptyFeedMessage={emptyFeedMessage} />
-      </PaginatedView>
-      <div className="box-footer" />
+        <PaginatedView firstPageHead={props.isSaves || createPostComponent} {...props}>
+          <Feed {...props} emptyFeedMessage={emptyFeedMessage} />
+        </PaginatedView>
+        <div className="box-footer" />
+      </ErrorBoundary>
     </div>);
 };
 

@@ -10,6 +10,7 @@ import Feed from './feed';
 import PaginatedView from './paginated-view';
 import FeedOptionsSwitch from './feed-options-switch';
 import Welcome from './welcome';
+import ErrorBoundary from './error-boundary';
 
 
 const FeedHandler = (props) => {
@@ -34,34 +35,36 @@ const FeedHandler = (props) => {
 
   return (
     <div className="box">
-      <div className="box-header-timeline">
-        {props.boxHeader}
-        <div className="pull-right">
-          {props.authenticated && <FeedOptionsSwitch />}
+      <ErrorBoundary>
+        <div className="box-header-timeline">
+          {props.boxHeader}
+          <div className="pull-right">
+            {props.authenticated && <FeedOptionsSwitch />}
+          </div>
         </div>
-      </div>
 
-      {props.authenticated && totalRequestsCount > 0 ? (
-        <div className="box-message alert alert-info">
-          <span className="message">
-            {totalRequestsCount > 0 ? (
-              <span>
-                <span>You have </span>
-                {userRequestsCount > 0 ? (<Link to="/friends">{userRequestsText}</Link>) : false}
-                {bothRequestsDisplayed ? (<span> and </span>) : false}
-                {groupRequestsCount > 0 ? (<Link to="/groups">{groupRequestsText}</Link>) : false}
-              </span>
-            ) : false}
-          </span>
-        </div>
-      ) : false}
+        {props.authenticated && totalRequestsCount > 0 ? (
+          <div className="box-message alert alert-info">
+            <span className="message">
+              {totalRequestsCount > 0 ? (
+                <span>
+                  <span>You have </span>
+                  {userRequestsCount > 0 ? (<Link to="/friends">{userRequestsText}</Link>) : false}
+                  {bothRequestsDisplayed ? (<span> and </span>) : false}
+                  {groupRequestsCount > 0 ? (<Link to="/groups">{groupRequestsText}</Link>) : false}
+                </span>
+              ) : false}
+            </span>
+          </div>
+        ) : false}
 
-      {props.authenticated ? (
-        <PaginatedView firstPageHead={createPostComponent} {...props}>
-          <Feed {...props} isInHomeFeed={!props.feedIsLoading} />
-        </PaginatedView>
-      ) : (<Welcome />)}
-      <div className="box-footer" />
+        {props.authenticated ? (
+          <PaginatedView firstPageHead={createPostComponent} {...props}>
+            <Feed {...props} isInHomeFeed={!props.feedIsLoading} />
+          </PaginatedView>
+        ) : (<Welcome />)}
+        <div className="box-footer" />
+      </ErrorBoundary>
     </div>);
 };
 

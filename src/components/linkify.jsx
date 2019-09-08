@@ -7,6 +7,7 @@ import { parseText } from '../utils/parse-text';
 import { highlightString } from '../utils/search-highlighter';
 import { FRIENDFEED_POST } from '../utils/link-types';
 import UserName from './user-name';
+import ErrorBoundary from './error-boundary';
 
 
 const MAX_URL_LENGTH = 50;
@@ -106,10 +107,10 @@ export default class Linkify extends React.Component {
     const hl = this.props.highlightTerms;
     const parsed = this.processStrings(this.props.children, this.parseString, ['a', 'button', UserName]);
     if (!hl || hl.length === 0) {
-      return <span className="Linkify" dir="auto">{parsed}</span>;
+      return <span className="Linkify" dir="auto"><ErrorBoundary>{parsed}</ErrorBoundary></span>;
     }
     const highlighted = this.processStrings(parsed, (str) => highlightString(str, hl), ['button']);
-    return <span className="Linkify" dir="auto">{highlighted}</span>;
+    return <span className="Linkify" dir="auto"><ErrorBoundary>{highlighted}</ErrorBoundary></span>;
   }
 }
 
