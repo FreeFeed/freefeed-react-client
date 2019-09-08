@@ -340,7 +340,11 @@ body.dark-theme {
     background-color: $bg-color-lightest;
     color: $text-color;
   }
-
+  
+  .image-attachments .pswp__img {
+    background-color: none;
+  }
+  
   .dd-menu .dd-menu-items ul,
   .dd-menu .dd-menu-items ol,
   .panel-default > .panel-heading {
