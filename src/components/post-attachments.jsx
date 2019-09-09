@@ -2,6 +2,7 @@ import React from 'react';
 import ImageAttachmentsContainer from './post-attachment-image-container';
 import AudioAttachment from './post-attachment-audio';
 import GeneralAttachment from './post-attachment-general';
+import ErrorBoundary from './error-boundary';
 
 
 export default (props) => {
@@ -51,9 +52,11 @@ export default (props) => {
 
   return (attachments.length > 0 ? (
     <div className="attachments">
-      {imageAttachmentsContainer}
-      {audioAttachmentsContainer}
-      {generalAttachmentsContainer}
+      <ErrorBoundary>
+        {imageAttachmentsContainer}
+        {audioAttachmentsContainer}
+        {generalAttachmentsContainer}
+      </ErrorBoundary>
     </div>
   ) : false);
 };

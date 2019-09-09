@@ -6,6 +6,7 @@ import { Portal } from 'react-portal';
 
 import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
 import UserCard from './user-card';
+import ErrorBoundary from './error-boundary';
 
 
 const DisplayOption = ({ user, me, preferences }) => {
@@ -84,33 +85,35 @@ class UserName extends React.Component {
         onMouseEnter={this.enterUserName}
         onMouseLeave={this.leaveUserName}
       >
+        <ErrorBoundary>
 
-        <Link to={`/${this.props.user.username}`} className={this.props.className}>
-          {this.props.children ? (
-            <span dir="ltr">{this.props.children}</span>
-          ) : (
-            <DisplayOption
-              user={this.props.user}
-              me={this.props.me}
-              preferences={this.props.frontendPreferences.displayNames}
-            />
-          )}
-        </Link>
-
-        {this.state.isCardOpen ? (
-          <Portal isOpened={true}>
-            <div
-              onMouseEnter={this.enterUserName}
-              onMouseLeave={this.leaveUserName}
-            >
-              <UserCard
-                username={this.props.user.username}
-                top={bottom}
-                left={left}
+          <Link to={`/${this.props.user.username}`} className={this.props.className}>
+            {this.props.children ? (
+              <span dir="ltr">{this.props.children}</span>
+            ) : (
+              <DisplayOption
+                user={this.props.user}
+                me={this.props.me}
+                preferences={this.props.frontendPreferences.displayNames}
               />
-            </div>
-          </Portal>
-        ) : false}
+            )}
+          </Link>
+
+          {this.state.isCardOpen ? (
+            <Portal isOpened={true}>
+              <div
+                onMouseEnter={this.enterUserName}
+                onMouseLeave={this.leaveUserName}
+              >
+                <UserCard
+                  username={this.props.user.username}
+                  top={bottom}
+                  left={left}
+                />
+              </div>
+            </Portal>
+          ) : false}
+        </ErrorBoundary>
       </span>
     );
   }

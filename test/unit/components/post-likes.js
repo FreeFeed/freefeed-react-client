@@ -21,7 +21,8 @@ describe('<PostLikes>', () => {
       const renderer = new ShallowRenderer();
       renderer.render(<PostLikes {...{ likes, post }} />);
 
-      expect(renderer.getRenderOutput().props.children[1].props.children, 'to have length', i);
+      const errorBoundary = renderer.getRenderOutput().props.children;
+      expect(errorBoundary.props.children[1].props.children, 'to have length', i);
     });
   }
 
@@ -32,7 +33,8 @@ describe('<PostLikes>', () => {
     const renderer = new ShallowRenderer();
     renderer.render(<PostLikes {...{ likes, post }} />);
 
-    const likeList = renderer.getRenderOutput().props.children[1].props.children;
+    const errorBoundary = renderer.getRenderOutput().props.children;
+    const likeList = errorBoundary.props.children[1].props.children;
     const lastLike = likeList[likeList.length - 1];
     const [ommitedLikesNode] = lastLike.props.children;
     const [ommitedLikesNumber] = ommitedLikesNode.props.children;

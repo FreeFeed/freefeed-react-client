@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import ErrorBoundary from './error-boundary';
 import Post from './post';
 
 
@@ -64,30 +65,33 @@ function Feed(props) {
 
   return (
     <div className="posts">
+      <ErrorBoundary>
 
-      {visibleEntries}
+        {visibleEntries}
 
-      {hiddenEntries.length > 0 ? (
-        <div>
-          <HiddenEntriesToggle
-            count={hiddenEntries.length}
-            isOpen={props.isHiddenRevealed}
-            toggle={props.toggleHiddenPosts}
-          />
+        {hiddenEntries.length > 0 ? (
+          <div>
+            <HiddenEntriesToggle
+              count={hiddenEntries.length}
+              isOpen={props.isHiddenRevealed}
+              toggle={props.toggleHiddenPosts}
+            />
 
-          {props.isHiddenRevealed ? hiddenEntries : false}
-        </div>
-      ) : false}
+            {props.isHiddenRevealed ? hiddenEntries : false}
+          </div>
+        ) : false}
 
-      {emptyFeed && props.loading && <p>Loading feed...</p>}
-      {emptyFeed && !props.loading && (
-        <>
-          <p>
-            There are no posts in this feed.
-          </p>
-          {props.emptyFeedMessage}
-        </>
-      )}
+        {emptyFeed && props.loading && <p>Loading feed...</p>}
+        {emptyFeed && !props.loading && (
+          <>
+            <p>
+              There are no posts in this feed.
+            </p>
+            {props.emptyFeedMessage}
+          </>
+        )}
+
+      </ErrorBoundary>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import flatten from 'lodash/flatten';
 
 import PostComments from '../../../src/components/post-comments';
 import PostComment from '../../../src/components/post-comment';
+import ErrorBoundary from '../../../src/components/error-boundary';
 import MoreCommentsWrapper from '../../../src/components/more-comments-wrapper';
 
 
@@ -65,7 +66,7 @@ describe('<PostComments>', () => {
       <PostComments comments={[]} post={post} />,
       'when rendered',
       'to have rendered with all children',
-      <div />
+      <div className="comments"><ErrorBoundary /></div>
     );
 
     expect(
@@ -83,7 +84,8 @@ describe('<PostComments>', () => {
       'queried for',
       <div className="comments" />
     );
-    const comments = flatten(root.props.children).filter((tag) => tag.type === PostComment);
+    const errorBoundary = root.props.children;
+    const comments = flatten(errorBoundary.props.children).filter((tag) => tag.type === PostComment);
     expect(comments, 'to have length', 4);
   });
 

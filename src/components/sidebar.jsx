@@ -8,6 +8,7 @@ import { setUserColorScheme } from '../redux/action-creators';
 import { SCHEME_DARK, SCHEME_SYSTEM, SCHEME_LIGHT, systemColorSchemeSupported } from '../services/appearance';
 import UserName from './user-name';
 import RecentGroups from './recent-groups';
+import ErrorBoundary from './error-boundary';
 import { InvisibleSelect } from './invisibe-select';
 
 
@@ -263,15 +264,17 @@ const SideBarAppearance = connect(
 const SideBar = ({ user, signOut, recentGroups }) => {
   return (
     <div className="col-md-3 sidebar">
-      <LoggedInBlock user={user} signOut={signOut} />
-      <SideBarFriends user={user} />
-      <SideBarArchive user={user} />
-      <SideBarFreeFeed />
-      <SideBarGroups recentGroups={recentGroups} />
-      <SideBarBookmarklet />
-      <SideBarMemories />
-      <SideBarCoinJar />
-      <SideBarAppearance />
+      <ErrorBoundary>
+        <LoggedInBlock user={user} signOut={signOut} />
+        <SideBarFriends user={user} />
+        <SideBarArchive user={user} />
+        <SideBarFreeFeed />
+        <SideBarGroups recentGroups={recentGroups} />
+        <SideBarBookmarklet />
+        <SideBarMemories />
+        <SideBarCoinJar />
+        <SideBarAppearance />
+      </ErrorBoundary>
     </div>
   );
 };

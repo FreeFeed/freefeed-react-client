@@ -7,6 +7,7 @@ import { getUserInfo, updateUserPreferences } from '../redux/action-creators';
 import { Throbber } from './throbber';
 import UserFeedStatus from './user-feed-status';
 import UserRelationshipStatus from './user-relationships-status';
+import ErrorBoundary from './error-boundary';
 import { userActions, canAcceptDirects } from './select-utils';
 
 
@@ -88,67 +89,69 @@ class UserCard extends React.Component {
 
     return (
       <div className="user-card" style={style}>
-        <div className="user-card-info">
-          <Link to={`/${props.user.username}`} className="userpic">
-            <img src={props.user.profilePictureLargeUrl} width="75" height="75" />
-          </Link>
+        <ErrorBoundary>
+          <div className="user-card-info">
+            <Link to={`/${props.user.username}`} className="userpic">
+              <img src={props.user.profilePictureLargeUrl} width="75" height="75" />
+            </Link>
 
-          <div className="names">
-            <Link to={`/${props.user.username}`} className="display-name" dir="auto">{props.user.screenName}</Link><br />
+            <div className="names">
+              <Link to={`/${props.user.username}`} className="display-name" dir="auto">{props.user.screenName}</Link><br />
 
-            {props.user.screenName !== props.user.username ? (
-              <span className="username">@{props.user.username}</span>
-            ) : false}
-          </div>
-
-          {!props.isItMe && (
-            <div className="feed-status">
-              <UserFeedStatus {...props.user} />
+              {props.user.screenName !== props.user.username ? (
+                <span className="username">@{props.user.username}</span>
+              ) : false}
             </div>
-          )}
-          <div className="relationship-status">
-            {props.isItMe ? 'It\'s you!' : <UserRelationshipStatus type={props.user.type} {...props} />}
-          </div>
-        </div>
 
-        {props.blocked ? (
-          <div className="user-card-actions">
-            <span>Blocked user - </span>
-            <a onClick={this.handleUnblockClick}>Un-block</a>
-          </div>
-        ) : !props.isItMe ? (
-          <div className="user-card-actions">
-            {props.canAcceptDirects ? (
-              <span>
-                <Link to={`/filter/direct?to=${props.user.username}`}>Direct message</Link>
-                <span> - </span>
-              </span>
-            ) : false
-            }
-            {props.user.isPrivate === '1' && !props.subscribed ? (
-              props.hasRequestBeenSent ? (
-                <span>Subscription request sent</span>
-              ) : (
-                <a onClick={this.handleRequestSubscriptionClick}>Request a subscription</a>
-              )
-            ) : (
-              props.subscribed ? (
-                <a onClick={this.handleUnsubscribeClick}>Unsubscribe</a>
-              ) : (
-                <a onClick={this.handleSubscribeClick}>Subscribe</a>
-              )
+            {!props.isItMe && (
+              <div className="feed-status">
+                <UserFeedStatus {...props.user} />
+              </div>
             )}
-
-            {props.user.type !== 'group' && !props.subscribed ? (
-              <span> - <a onClick={this.handleBlockClick}>Block</a></span>
-            ) : props.amIGroupAdmin ? (
-              <span> - <Link to={`/${props.user.username}/settings`}>Settings</Link></span>
-            ) : false}
-
-            <span> - <a onClick={this.handleShowOrHideClick}>{props.hidden ? 'Show' : 'Hide'} posts</a></span>
-
+            <div className="relationship-status">
+              {props.isItMe ? 'It\'s you!' : <UserRelationshipStatus type={props.user.type} {...props} />}
+            </div>
           </div>
-        ) : false}
+
+          {props.blocked ? (
+            <div className="user-card-actions">
+              <span>Blocked user - </span>
+              <a onClick={this.handleUnblockClick}>Un-block</a>
+            </div>
+          ) : !props.isItMe ? (
+            <div className="user-card-actions">
+              {props.canAcceptDirects ? (
+                <span>
+                  <Link to={`/filter/direct?to=${props.user.username}`}>Direct message</Link>
+                  <span> - </span>
+                </span>
+              ) : false
+              }
+              {props.user.isPrivate === '1' && !props.subscribed ? (
+                props.hasRequestBeenSent ? (
+                  <span>Subscription request sent</span>
+                ) : (
+                  <a onClick={this.handleRequestSubscriptionClick}>Request a subscription</a>
+                )
+              ) : (
+                props.subscribed ? (
+                  <a onClick={this.handleUnsubscribeClick}>Unsubscribe</a>
+                ) : (
+                  <a onClick={this.handleSubscribeClick}>Subscribe</a>
+                )
+              )}
+
+              {props.user.type !== 'group' && !props.subscribed ? (
+                <span> - <a onClick={this.handleBlockClick}>Block</a></span>
+              ) : props.amIGroupAdmin ? (
+                <span> - <Link to={`/${props.user.username}/settings`}>Settings</Link></span>
+              ) : false}
+
+              <span> - <a onClick={this.handleShowOrHideClick}>{props.hidden ? 'Show' : 'Hide'} posts</a></span>
+
+            </div>
+          ) : false}
+        </ErrorBoundary>
       </div>);
   }
 }

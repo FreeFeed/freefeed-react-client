@@ -1,10 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
+
 import { Throbber } from './throbber';
 import Linkify from "./linkify";
 import TimeDisplay from "./time-display";
 import PaginatedView from "./paginated-view";
+import ErrorBoundary from './error-boundary';
 
 
 const getAuthorName = ({ postAuthor, createdUser, group }) => {
@@ -133,40 +135,42 @@ const isFilterActive = (filterName, filter) => filter && filter.indexOf(filterNa
 
 const Notifications = (props) => (
   <div className="box notifications">
-    <div className="box-header-timeline">
-      Notifications
-      {props.isLoading && (
-        <span className="notifications-throbber">
-          <Throbber />
-        </span>
-      )}
-    </div>
-    <div className="filter">
-      <div>Show: </div>
-      <Link className={!props.location.query.filter ? "active" : ""} to={{ pathname: props.location.pathname, query: {} }}>Everything</Link>
-      <Link className={isFilterActive("mentions", props.location.query.filter) ? "active" : ""} to={{ pathname: props.location.pathname, query: { filter: "mentions" } }}>Mentions</Link>
-      <Link className={isFilterActive("subscriptions", props.location.query.filter) ? "active" : ""} to={{ pathname: props.location.pathname, query: { filter: "subscriptions" } }}>Subscriptions</Link>
-      <Link className={isFilterActive("groups", props.location.query.filter) ? "active" : ""} to={{ pathname: props.location.pathname, query: { filter: "groups" } }}>Groups</Link>
-      <Link className={isFilterActive("directs", props.location.query.filter) ? "active" : ""} to={{ pathname: props.location.pathname, query: { filter: "directs" } }}>Direct messages</Link>
-      <Link className={isFilterActive("bans", props.location.query.filter) ? "active" : ""} to={{ pathname: props.location.pathname, query: { filter: "bans" } }}>Bans</Link>
-    </div>
-    {props.authenticated
-      ? (
-        <PaginatedView routes={props.routes} location={props.location}>
-          <div className="notification-list">
-            {props.loading
-              ? "Loading"
-              : props.events.length > 0 ? props.events.map(Notification) : "No notifications yet"
-            }
+    <ErrorBoundary>
+      <div className="box-header-timeline">
+        Notifications
+        {props.isLoading && (
+          <span className="notifications-throbber">
+            <Throbber />
+          </span>
+        )}
+      </div>
+      <div className="filter">
+        <div>Show: </div>
+        <Link className={!props.location.query.filter ? "active" : ""} to={{ pathname: props.location.pathname, query: {} }}>Everything</Link>
+        <Link className={isFilterActive("mentions", props.location.query.filter) ? "active" : ""} to={{ pathname: props.location.pathname, query: { filter: "mentions" } }}>Mentions</Link>
+        <Link className={isFilterActive("subscriptions", props.location.query.filter) ? "active" : ""} to={{ pathname: props.location.pathname, query: { filter: "subscriptions" } }}>Subscriptions</Link>
+        <Link className={isFilterActive("groups", props.location.query.filter) ? "active" : ""} to={{ pathname: props.location.pathname, query: { filter: "groups" } }}>Groups</Link>
+        <Link className={isFilterActive("directs", props.location.query.filter) ? "active" : ""} to={{ pathname: props.location.pathname, query: { filter: "directs" } }}>Direct messages</Link>
+        <Link className={isFilterActive("bans", props.location.query.filter) ? "active" : ""} to={{ pathname: props.location.pathname, query: { filter: "bans" } }}>Bans</Link>
+      </div>
+      {props.authenticated
+        ? (
+          <PaginatedView routes={props.routes} location={props.location}>
+            <div className="notification-list">
+              {props.loading
+                ? "Loading"
+                : props.events.length > 0 ? props.events.map(Notification) : "No notifications yet"
+              }
+            </div>
+          </PaginatedView>
+        )
+        : (
+          <div className="alert alert-danger" role="alert">
+            You must <Link to="/signin">sign in</Link> or <Link to="/signup">sign up</Link> before visiting this page.
           </div>
-        </PaginatedView>
-      )
-      : (
-        <div className="alert alert-danger" role="alert">
-          You must <Link to="/signin">sign in</Link> or <Link to="/signup">sign up</Link> before visiting this page.
-        </div>
-      )
-    }
+        )
+      }
+    </ErrorBoundary>
   </div>
 );
 

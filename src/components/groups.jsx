@@ -7,6 +7,7 @@ import { pluralForm } from '../utils';
 
 import { acceptGroupRequest, rejectGroupRequest } from '../redux/action-creators';
 import { tileUserListFactory, WITH_REQUEST_HANDLES, PLAIN } from './tile-user-list';
+import ErrorBoundary from './error-boundary';
 
 
 const TileListWithAcceptAndReject = tileUserListFactory({ type: WITH_REQUEST_HANDLES, displayQuantity: true });
@@ -49,29 +50,31 @@ const GroupsHandler = (props) => {
 
   return (
     <div className="box">
-      <div className="box-header-timeline">
-        Groups
-      </div>
-      <div className="box-body">
-        <div className="row">
-          <div className="col-md-8">
-            All the groups you are subscribed to
-          </div>
-          <div className="col-md-4 text-right">
-            <Link to="/groups/create">Create a group</Link>
-          </div>
+      <ErrorBoundary>
+        <div className="box-header-timeline">
+          Groups
         </div>
-
-        {groupRequests ? (
-          <div>
-            {groupRequests}
+        <div className="box-body">
+          <div className="row">
+            <div className="col-md-8">
+              All the groups you are subscribed to
+            </div>
+            <div className="col-md-4 text-right">
+              <Link to="/groups/create">Create a group</Link>
+            </div>
           </div>
-        ) : false}
 
-        <TileList {...props.myGroups} />
-        <TileList {...props.groupsIAmIn} />
-      </div>
-      <div className="box-footer" />
+          {groupRequests ? (
+            <div>
+              {groupRequests}
+            </div>
+          ) : false}
+
+          <TileList {...props.myGroups} />
+          <TileList {...props.groupsIAmIn} />
+        </div>
+        <div className="box-footer" />
+      </ErrorBoundary>
     </div>
   );
 };
