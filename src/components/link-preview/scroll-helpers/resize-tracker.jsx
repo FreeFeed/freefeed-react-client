@@ -13,7 +13,7 @@ export default class ResizeTracker extends React.Component {
   // fixed, only applies at creation time
   static propTypes = { debounce: PropTypes.number.isRequired };
 
-  static defaultProps = { debounce: 150, };
+  static defaultProps = { debounce: 150 };
 
   root = null;
   expSensor = null;
@@ -28,8 +28,8 @@ export default class ResizeTracker extends React.Component {
       this.prevRootHeight = 0;
     }
   };
-  setExpSensor = (el) => this.expSensor = el;
-  setColSensor = (el) => this.colSensor = el;
+  setExpSensor = (el) => (this.expSensor = el);
+  setColSensor = (el) => (this.colSensor = el);
 
   scrollHandler = () => {
     if (!this.root || !this.expSensor || !this.colSensor) {
@@ -37,7 +37,8 @@ export default class ResizeTracker extends React.Component {
       // Just skip this call.
       return;
     }
-    { // Expand
+    {
+      // Expand
       const sensor = this.expSensor;
       const slider = sensor.firstChild;
       const height = sensor.offsetHeight + 100;
@@ -47,7 +48,8 @@ export default class ResizeTracker extends React.Component {
       sensor.scrollLeft = width;
       sensor.scrollTop = height;
     }
-    { // Collapse
+    {
+      // Collapse
       const sensor = this.colSensor;
       sensor.scrollLeft = sensor.scrollWidth + 100;
       sensor.scrollTop = sensor.scrollHeight + 100;
@@ -71,8 +73,12 @@ export default class ResizeTracker extends React.Component {
     return (
       <div style={trackerStyle} ref={this.setRoot}>
         {this.props.children}
-        <div style={sensorStyle} ref={this.setExpSensor} onScroll={this.scrollHandler}><div /></div>
-        <div style={sensorStyle} ref={this.setColSensor} onScroll={this.scrollHandler}><div style={colSliderStyle} /></div>
+        <div style={sensorStyle} ref={this.setExpSensor} onScroll={this.scrollHandler}>
+          <div />
+        </div>
+        <div style={sensorStyle} ref={this.setColSensor} onScroll={this.scrollHandler}>
+          <div style={colSliderStyle} />
+        </div>
       </div>
     );
   }
@@ -84,18 +90,18 @@ const trackerStyle = {
 };
 
 const sensorStyle = {
-  position:      'absolute',
-  top:           '0',
-  left:          '0',
-  width:         '100%',
-  height:        '100%',
-  overflow:      'scroll',
+  position: 'absolute',
+  top: '0',
+  left: '0',
+  width: '100%',
+  height: '100%',
+  overflow: 'scroll',
   pointerEvents: 'none',
-  zIndex:        -1,
-  opacity:       0,
+  zIndex: -1,
+  opacity: 0,
 };
 
 const colSliderStyle = {
-  width:  '200%',
+  width: '200%',
   height: '200%',
 };

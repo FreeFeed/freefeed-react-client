@@ -1,8 +1,6 @@
 import React from 'react';
 
-
-const
-  PUBLIC = 'PUBLIC',
+const PUBLIC = 'PUBLIC',
   PROTECTED = 'PROTECTED',
   PRIVATE = 'PRIVATE';
 
@@ -26,7 +24,9 @@ function getPrivacyMode(flags) {
 
 export default class GroupFeedTypePicker extends React.Component {
   handleChange = (event) => {
-    const { target: { name, value } } = event;
+    const {
+      target: { name, value },
+    } = event;
     if (name === 'privacy') {
       this.props.updateGroupPrivacySettings(getPrivacyFlags(value));
     } else if (name === 'isRestricted') {
@@ -53,9 +53,7 @@ export default class GroupFeedTypePicker extends React.Component {
                   onChange={this.handleChange}
                 />
               </div>
-              <div className="option">
-                Everyone (public group)
-              </div>
+              <div className="option">Everyone (public group)</div>
             </label>
 
             <label className="option-box">
@@ -68,9 +66,7 @@ export default class GroupFeedTypePicker extends React.Component {
                   onChange={this.handleChange}
                 />
               </div>
-              <div className="option">
-                FreeFeed users (protected group)
-              </div>
+              <div className="option">FreeFeed users (protected group)</div>
             </label>
 
             <label className="option-box">
@@ -83,9 +79,7 @@ export default class GroupFeedTypePicker extends React.Component {
                   onChange={this.handleChange}
                 />
               </div>
-              <div className="option">
-                Group members (private group)
-              </div>
+              <div className="option">Group members (private group)</div>
             </label>
           </div>
         </div>
@@ -106,9 +100,7 @@ export default class GroupFeedTypePicker extends React.Component {
                   onChange={this.handleChange}
                 />
               </div>
-              <div className="option">
-                Every group member
-              </div>
+              <div className="option">Every group member</div>
             </label>
 
             <label className="option-box">
@@ -121,9 +113,7 @@ export default class GroupFeedTypePicker extends React.Component {
                   onChange={this.handleChange}
                 />
               </div>
-              <div className="option">
-                Group administrators only
-              </div>
+              <div className="option">Group administrators only</div>
             </label>
           </div>
         </div>

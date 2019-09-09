@@ -8,7 +8,6 @@ import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
 import UserCard from './user-card';
 import ErrorBoundary from './error-boundary';
 
-
 const DisplayOption = ({ user, me, preferences }) => {
   const { username, screenName } = user;
 
@@ -25,7 +24,11 @@ const DisplayOption = ({ user, me, preferences }) => {
       return <span dir="auto">{screenName}</span>;
     }
     case FrontendPrefsOptions.DISPLAYNAMES_BOTH: {
-      return <span dir="auto">{screenName} <span dir="ltr">({username})</span></span>;
+      return (
+        <span dir="auto">
+          {screenName} <span dir="ltr">({username})</span>
+        </span>
+      );
     }
     case FrontendPrefsOptions.DISPLAYNAMES_USERNAME: {
       return <span dir="ltr">{username}</span>;
@@ -40,8 +43,8 @@ class UserName extends React.Component {
     super(props);
 
     this.state = {
-      isHovered:  false,
-      isCardOpen: false
+      isHovered: false,
+      isCardOpen: false,
     };
     this.enterUserName = this.enterUserName.bind(this);
     this.leaveUserName = this.leaveUserName.bind(this);
@@ -86,7 +89,6 @@ class UserName extends React.Component {
         onMouseLeave={this.leaveUserName}
       >
         <ErrorBoundary>
-
           <Link to={`/${this.props.user.username}`} className={this.props.className}>
             {this.props.children ? (
               <span dir="ltr">{this.props.children}</span>
@@ -101,18 +103,13 @@ class UserName extends React.Component {
 
           {this.state.isCardOpen ? (
             <Portal isOpened={true}>
-              <div
-                onMouseEnter={this.enterUserName}
-                onMouseLeave={this.leaveUserName}
-              >
-                <UserCard
-                  username={this.props.user.username}
-                  top={bottom}
-                  left={left}
-                />
+              <div onMouseEnter={this.enterUserName} onMouseLeave={this.leaveUserName}>
+                <UserCard username={this.props.user.username} top={bottom} left={left} />
               </div>
             </Portal>
-          ) : false}
+          ) : (
+            false
+          )}
         </ErrorBoundary>
       </span>
     );
@@ -130,8 +127,8 @@ class UserName extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    me:                  state.user.username,
-    frontendPreferences: state.user.frontendPreferences
+    me: state.user.username,
+    frontendPreferences: state.user.frontendPreferences,
   };
 };
 

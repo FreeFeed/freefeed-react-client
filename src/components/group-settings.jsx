@@ -8,13 +8,10 @@ import GroupSettingsForm from './group-settings-form';
 import GroupPictureForm from './group-picture-form';
 import { Throbber, BIG } from './throbber';
 
-
-const GroupSettings = (props) => (
+const GroupSettings = (props) =>
   props.groupSettings.status === 'loading' ? (
     <div className="box">
-      <div className="box-header-timeline">
-        Group settings
-      </div>
+      <div className="box-header-timeline">Group settings</div>
       <div className="box-body">
         <Throbber size={BIG} />
       </div>
@@ -44,33 +41,33 @@ const GroupSettings = (props) => (
     </div>
   ) : props.groupSettings.status === 'error' ? (
     <div className="box">
-      <div className="box-header-timeline">
-        Group settings
-      </div>
+      <div className="box-header-timeline">Group settings</div>
       <div className="box-body">
         <div className="alert alert-danger">{props.groupSettings.errorMessage}</div>
       </div>
     </div>
   ) : (
     <div />
-  )
-);
+  );
 
 function mapStateToProps(state, ownProps) {
   return {
-    group:             (_.find(state.users, { 'username': ownProps.params.userName }) || {}),
-    groupSettings:     state.groupSettings,
+    group: _.find(state.users, { username: ownProps.params.userName }) || {},
+    groupSettings: state.groupSettings,
     groupSettingsForm: state.groupSettingsForm,
-    groupPictureForm:  state.groupPictureForm
+    groupPictureForm: state.groupPictureForm,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateGroup:          (...args) => dispatch(updateGroup(...args)),
-    updateGroupPicture:   (...args) => dispatch(updateGroupPicture(...args)),
-    resetGroupUpdateForm: (...args) => dispatch(resetGroupUpdateForm(...args))
+    updateGroup: (...args) => dispatch(updateGroup(...args)),
+    updateGroupPicture: (...args) => dispatch(updateGroupPicture(...args)),
+    resetGroupUpdateForm: (...args) => dispatch(resetGroupUpdateForm(...args)),
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GroupSettings);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(GroupSettings);

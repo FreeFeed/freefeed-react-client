@@ -6,7 +6,6 @@ import { Throbber } from './throbber';
 import SendTo from './send-to';
 import { Icon } from './fontawesome-icons';
 
-
 class LinkedImage extends React.PureComponent {
   handleClick = () => {
     const { removeImage, url } = this.props;
@@ -34,13 +33,13 @@ export default class CreateBookmarkletPost extends React.Component {
 
     this.state = {
       isFormEmpty: false,
-      isPostSaved: false
+      isPostSaved: false,
     };
   }
 
   checkCreatePostAvailability = () => {
-    const isPostTextEmpty = (this.postText.value == '' || /^\s+$/.test(this.postText.value));
-    const isFormEmpty = (isPostTextEmpty || this.selectFeeds.values == 0);
+    const isPostTextEmpty = this.postText.value == '' || /^\s+$/.test(this.postText.value);
+    const isFormEmpty = isPostTextEmpty || this.selectFeeds.values == 0;
 
     this.setState({ isFormEmpty });
   };
@@ -69,7 +68,8 @@ export default class CreateBookmarkletPost extends React.Component {
 
   componentWillReceiveProps(newProps) {
     // If it was successful saving, clear the form
-    const wasCommentJustSaved = this.props.createPostViewState.isPending && !newProps.createPostViewState.isPending;
+    const wasCommentJustSaved =
+      this.props.createPostViewState.isPending && !newProps.createPostViewState.isPending;
     const wasThereNoError = !newProps.createPostViewState.isError;
 
     if (wasCommentJustSaved && wasThereNoError) {
@@ -96,30 +96,36 @@ export default class CreateBookmarkletPost extends React.Component {
     this.postText = el;
   };
 
-  registerSelectFeeds = (el) => this.selectFeeds = el;
+  registerSelectFeeds = (el) => (this.selectFeeds = el);
 
   render() {
     if (this.state.isPostSaved) {
       const postUrl = `/${this.props.user.username}/${this.props.createPostViewState.lastPostId}`;
       return (
         <div className="brand-new-post">
-          Done! Check out<br />
-          <a href={postUrl} target="_blank">your brand new post</a>
+          Done! Check out
+          <br />
+          <a href={postUrl} target="_blank">
+            your brand new post
+          </a>
         </div>
       );
     }
 
-    const linkedImages = this.props.imageUrls.map((url, i) =>
+    const linkedImages = this.props.imageUrls.map((url, i) => (
       <LinkedImage key={i} removeImage={this.props.removeImage} url={url} />
-    );
+    ));
 
     return (
       <div className="create-post post-editor expanded">
         {this.props.createPostViewState.isError ? (
           <div className="post-error alert alert-danger" role="alert">
-            Post has not been saved. Server response: {`"${this.props.createPostViewState.errorString}"`}
+            Post has not been saved. Server response:{' '}
+            {`"${this.props.createPostViewState.errorString}"`}
           </div>
-        ) : false}
+        ) : (
+          false
+        )}
 
         <SendTo
           ref={this.registerSelectFeeds}
@@ -141,7 +147,11 @@ export default class CreateBookmarkletPost extends React.Component {
         {this.props.imageUrls.length ? (
           linkedImages
         ) : (
-          <div className="post-linked-image-empty">Click on images<br />to share them</div>
+          <div className="post-linked-image-empty">
+            Click on images
+            <br />
+            to share them
+          </div>
         )}
 
         <div className="comment">
@@ -165,7 +175,9 @@ export default class CreateBookmarkletPost extends React.Component {
             <span className="post-edit-throbber">
               <Throbber />
             </span>
-          ) : false}
+          ) : (
+            false
+          )}
 
           <button
             className="btn btn-default"

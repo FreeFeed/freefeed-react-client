@@ -2,7 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
-import { createPost, resetPostCreateForm, expandSendTo, toggleHiddenPosts } from '../redux/action-creators';
+import {
+  createPost,
+  resetPostCreateForm,
+  expandSendTo,
+  toggleHiddenPosts,
+} from '../redux/action-creators';
 import { pluralForm } from '../utils';
 import { joinPostData, postActions } from './select-utils';
 import CreatePost from './create-post';
@@ -11,7 +16,6 @@ import PaginatedView from './paginated-view';
 import FeedOptionsSwitch from './feed-options-switch';
 import Welcome from './welcome';
 import ErrorBoundary from './error-boundary';
-
 
 const FeedHandler = (props) => {
   const createPostComponent = (
@@ -38,9 +42,7 @@ const FeedHandler = (props) => {
       <ErrorBoundary>
         <div className="box-header-timeline">
           {props.boxHeader}
-          <div className="pull-right">
-            {props.authenticated && <FeedOptionsSwitch />}
-          </div>
+          <div className="pull-right">{props.authenticated && <FeedOptionsSwitch />}</div>
         </div>
 
         {props.authenticated && totalRequestsCount > 0 ? (
@@ -49,27 +51,42 @@ const FeedHandler = (props) => {
               {totalRequestsCount > 0 ? (
                 <span>
                   <span>You have </span>
-                  {userRequestsCount > 0 ? (<Link to="/friends">{userRequestsText}</Link>) : false}
-                  {bothRequestsDisplayed ? (<span> and </span>) : false}
-                  {groupRequestsCount > 0 ? (<Link to="/groups">{groupRequestsText}</Link>) : false}
+                  {userRequestsCount > 0 ? <Link to="/friends">{userRequestsText}</Link> : false}
+                  {bothRequestsDisplayed ? <span> and </span> : false}
+                  {groupRequestsCount > 0 ? <Link to="/groups">{groupRequestsText}</Link> : false}
                 </span>
-              ) : false}
+              ) : (
+                false
+              )}
             </span>
           </div>
-        ) : false}
+        ) : (
+          false
+        )}
 
         {props.authenticated ? (
           <PaginatedView firstPageHead={createPostComponent} {...props}>
             <Feed {...props} isInHomeFeed={!props.feedIsLoading} />
           </PaginatedView>
-        ) : (<Welcome />)}
+        ) : (
+          <Welcome />
+        )}
         <div className="box-footer" />
       </ErrorBoundary>
-    </div>);
+    </div>
+  );
 };
 
 function selectState(state) {
-  const { authenticated, boxHeader, createPostViewState, groupRequestsCount, timelines, user, userRequestsCount } = state;
+  const {
+    authenticated,
+    boxHeader,
+    createPostViewState,
+    groupRequestsCount,
+    timelines,
+    user,
+    userRequestsCount,
+  } = state;
 
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
   const hiddenEntries = state.feedViewState.hiddenEntries.map(joinPostData(state));
@@ -78,10 +95,17 @@ function selectState(state) {
   const feedIsLoading = state.routeLoadingState;
 
   return {
-    user, authenticated,
-    visibleEntries, hiddenEntries, isHiddenRevealed,
+    user,
+    authenticated,
+    visibleEntries,
+    hiddenEntries,
+    isHiddenRevealed,
     createPostViewState,
-    timelines, boxHeader, sendTo, userRequestsCount, groupRequestsCount,
+    timelines,
+    boxHeader,
+    sendTo,
+    userRequestsCount,
+    groupRequestsCount,
     feedIsLoading,
   };
 }
@@ -89,11 +113,15 @@ function selectState(state) {
 function selectActions(dispatch) {
   return {
     ...postActions(dispatch),
-    createPost:          (feeds, postText, attachmentIds, more) => dispatch(createPost(feeds, postText, attachmentIds, more)),
+    createPost: (feeds, postText, attachmentIds, more) =>
+      dispatch(createPost(feeds, postText, attachmentIds, more)),
     resetPostCreateForm: (...args) => dispatch(resetPostCreateForm(...args)),
-    expandSendTo:        () => dispatch(expandSendTo()),
-    toggleHiddenPosts:   () => dispatch(toggleHiddenPosts())
+    expandSendTo: () => dispatch(expandSendTo()),
+    toggleHiddenPosts: () => dispatch(toggleHiddenPosts()),
   };
 }
 
-export default connect(selectState, selectActions)(FeedHandler);
+export default connect(
+  selectState,
+  selectActions,
+)(FeedHandler);

@@ -3,7 +3,6 @@ import io from 'socket.io-client';
 import config from '../config';
 import { getToken } from './auth';
 
-
 const apiConfig = config.api;
 
 const dummyPost = { getBoundingClientRect: () => ({ top: 0 }) };
@@ -12,7 +11,9 @@ export const scrollCompensator = (dispatchAction) => (...actionParams) => {
   //we hope that markup will remain the same — best tradeoff between this and code all over components
   const postCommentNodes = [...document.querySelectorAll('.post, .comment')];
 
-  const [firstVisible] = postCommentNodes.filter((element) => element.getBoundingClientRect().top > 0);
+  const [firstVisible] = postCommentNodes.filter(
+    (element) => element.getBoundingClientRect().top > 0,
+  );
 
   const nearestTopIndex = postCommentNodes.indexOf(firstVisible) - 1;
 
@@ -44,16 +45,12 @@ export const scrollCompensator = (dispatchAction) => (...actionParams) => {
   return res;
 };
 
-const bindSocketLog = (socket) => (eventName) => socket.on(eventName, (data) => console.log(`socket ${eventName}`, data));  // eslint-disable-line no-console
+const bindSocketLog = (socket) => (eventName) =>
+  socket.on(eventName, (data) => console.log(`socket ${eventName}`, data)); // eslint-disable-line no-console
 
 const bindSocketActionsLog = (socket) => (events) => events.forEach(bindSocketLog(socket));
 
-const eventsToLog = [
-  'connect',
-  'error',
-  'disconnect',
-  'reconnect',
-];
+const eventsToLog = ['connect', 'error', 'disconnect', 'reconnect'];
 
 export class Connection {
   socket;
@@ -63,9 +60,13 @@ export class Connection {
     bindSocketActionsLog(this.socket)(eventsToLog);
   }
 
-  onConnect(handler) { this.socket.on('connect', handler); }
+  onConnect(handler) {
+    this.socket.on('connect', handler);
+  }
 
-  onEvent(handler) { this.socket.on('*', handler); }
+  onEvent(handler) {
+    this.socket.on('*', handler);
+  }
 
   async reAuthorize() {
     if (this.socket.connected) {
@@ -75,14 +76,14 @@ export class Connection {
 
   async subscribeTo(...rooms) {
     if (this.socket.connected && rooms.length > 0) {
-      console.log('subscribing to', rooms);  // eslint-disable-line no-console
+      console.log('subscribing to', rooms); // eslint-disable-line no-console
       await this.socket.emitAsync('subscribe', roomsToHash(rooms));
     }
   }
 
   async unsubscribeFrom(...rooms) {
     if (this.socket.connected && rooms.length > 0) {
-      console.log('unsubscribing from', rooms);  // eslint-disable-line no-console
+      console.log('unsubscribing from', rooms); // eslint-disable-line no-console
       await this.socket.emitAsync('unsubscribe', roomsToHash(rooms));
     }
   }
@@ -90,13 +91,14 @@ export class Connection {
 
 function improveSocket(socket) {
   // Asynt emitter
-  socket.emitAsync = (event, ...args) => new Promise((resolve) => socket.emit(event, ...[...args, resolve]));
+  socket.emitAsync = (event, ...args) =>
+    new Promise((resolve) => socket.emit(event, ...[...args, resolve]));
 
   // Catch-all event handler (https://stackoverflow.com/a/33960032)
   const { onevent } = socket;
   socket.onevent = (packet) => {
     onevent.call(socket, packet);
-    packet.data = ["*"].concat(packet.data || []);
+    packet.data = ['*'].concat(packet.data || []);
     onevent.call(socket, packet);
   };
   return socket;

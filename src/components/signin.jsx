@@ -6,7 +6,6 @@ import { preventDefault } from '../utils';
 import LoaderContainer from './loader-container';
 import ErrorBoundary from './error-boundary';
 
-
 function mapStateToProps(state) {
   return { ...state.signInForm };
 }
@@ -14,8 +13,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     signInChange: (...args) => dispatch(signInChange(...args)),
-    signIn:       (...args) => dispatch(signIn(...args)),
-    signInEmpty:  (...args) => dispatch(signInEmpty(...args)),
+    signIn: (...args) => dispatch(signIn(...args)),
+    signInEmpty: (...args) => dispatch(signInEmpty(...args)),
   };
 }
 
@@ -44,9 +43,7 @@ class Signin extends React.PureComponent {
     return (
       <div className="box">
         <ErrorBoundary>
-          <div className="box-header-timeline">
-            Hello
-          </div>
+          <div className="box-header-timeline">Hello</div>
           <div className="box-body">
             <div className="col-md-12">
               <h2 className="p-signin-header">Sign in</h2>
@@ -57,7 +54,9 @@ class Signin extends React.PureComponent {
               )}
               {props.requireAuth && (
                 <div className="alert alert-danger p-signin-error" role="alert">
-                  <span id="error-message">Please sign in or <Link to="/signup">sign up</Link> before visiting this page.</span>
+                  <span id="error-message">
+                    Please sign in or <Link to="/signup">sign up</Link> before visiting this page.
+                  </span>
                 </div>
               )}
               <div className="row">
@@ -86,12 +85,19 @@ class Signin extends React.PureComponent {
                         />
                       </div>
                       <div className="form-group">
-                        <button className="btn btn-default p-singin-action" type="submit">Sign in</button>
+                        <button className="btn btn-default p-singin-action" type="submit">
+                          Sign in
+                        </button>
                       </div>
                     </form>
                   </LoaderContainer>
-                  <p>New to freefeed? <Link to="/signup">Create an account »</Link></p>
-                  <p>Forgot your password? <Link to="/restore">Request password reset instructions »</Link></p>
+                  <p>
+                    New to freefeed? <Link to="/signup">Create an account »</Link>
+                  </p>
+                  <p>
+                    Forgot your password?{' '}
+                    <Link to="/restore">Request password reset instructions »</Link>
+                  </p>
                 </div>
               </div>
             </div>
@@ -103,4 +109,7 @@ class Signin extends React.PureComponent {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Signin);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Signin);

@@ -6,7 +6,6 @@ import _ from 'lodash';
 import { confirmFirst } from '../utils';
 import UserName from './user-name';
 
-
 class UserTile extends React.PureComponent {
   handleAcceptClick = () => {
     const { user } = this.props;
@@ -53,7 +52,9 @@ class UserTile extends React.PureComponent {
 
         {type == WITH_MUTUALS && user.isMutual ? (
           <div className="user-ismutual">mutual</div>
-        ) : false}
+        ) : (
+          false
+        )}
 
         {type == WITH_REQUEST_HANDLES ? (
           <div className="user-actions">
@@ -61,28 +62,43 @@ class UserTile extends React.PureComponent {
             <span> - </span>
             <a onClick={this.handleRejectClick}>Reject</a>
           </div>
-        ) : false}
+        ) : (
+          false
+        )}
 
         {type == WITH_REMOVE_AND_MAKE_ADMIN_HANDLES ? (
           <div className="user-actions">
-            <a onClick={this.handlePromoteClick} title="Promote user to admin">Promote</a>
+            <a onClick={this.handlePromoteClick} title="Promote user to admin">
+              Promote
+            </a>
             <span> - </span>
-            <a onClick={this.handleUnsubscribeClick} title="Unsubscribe user from the group">Unsub</a>
+            <a onClick={this.handleUnsubscribeClick} title="Unsubscribe user from the group">
+              Unsub
+            </a>
           </div>
-        ) : false}
+        ) : (
+          false
+        )}
 
         {type == WITH_REMOVE_ADMIN_RIGHTS ? (
           <div className="user-actions">
-            <a onClick={this.handleDemoteClick} title="Demote user from admin">Demote</a>
+            <a onClick={this.handleDemoteClick} title="Demote user from admin">
+              Demote
+            </a>
           </div>
-        ) : false}
+        ) : (
+          false
+        )}
 
         {type == WITH_REVOKE_SENT_REQUEST ? (
           <div className="user-actions">
-            <a onClick={this.handleRevokeClick} title="Revoke sent request">Revoke</a>
+            <a onClick={this.handleRevokeClick} title="Revoke sent request">
+              Revoke
+            </a>
           </div>
-        ) : false}
-
+        ) : (
+          false
+        )}
       </li>
     );
   }
@@ -122,38 +138,38 @@ export const tileUserListFactory = (config) => (props) => {
   const usersData = props.users.map((user) => {
     return {
       ..._.pick(user, ['id', 'screenName', 'username', 'isMutual']),
-      profilePictureUrl:
-        (user.profilePictureUrl
-          ? user.profilePictureUrl
-          : (config.size === 'large'
-            ? user.profilePictureLargeUrl
-            : user.profilePictureMediumUrl)),
-      ...pickActions(config.type, props)
+      profilePictureUrl: user.profilePictureUrl
+        ? user.profilePictureUrl
+        : config.size === 'large'
+        ? user.profilePictureLargeUrl
+        : user.profilePictureMediumUrl,
+      ...pickActions(config.type, props),
     };
   });
 
   const users = usersData.map(renderUsers(config.type));
 
   const listClasses = classnames({
-    'tile-list':    true,
-    'large-pics':   config.size === 'large',
-    'with-actions': config.type !== PLAIN
+    'tile-list': true,
+    'large-pics': config.size === 'large',
+    'with-actions': config.type !== PLAIN,
   });
 
-  const header = props.header && config.displayQuantity ?
-    `${props.header} (${props.users.length})` :
-    props.header;
+  const header =
+    props.header && config.displayQuantity
+      ? `${props.header} (${props.users.length})`
+      : props.header;
 
   return (
     <div>
       {users.length ? (
         <div>
           <h3>{header}</h3>
-          <ul className={listClasses}>
-            {users}
-          </ul>
+          <ul className={listClasses}>{users}</ul>
         </div>
-      ) : false}
+      ) : (
+        false
+      )}
     </div>
   );
 };

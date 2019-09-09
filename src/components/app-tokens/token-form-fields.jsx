@@ -6,12 +6,11 @@ import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { getAppTokensScopes } from '../../redux/action-creators';
 import { Icon } from '../fontawesome-icons';
 
-
 export const initialFormData = {
-  title:    '',
-  scopes:   [],
+  title: '',
+  scopes: [],
   netmasks: '',
-  origins:  '',
+  origins: '',
 };
 
 function TokenForm({
@@ -22,10 +21,10 @@ function TokenForm({
   scopes,
   getAppTokensScopes,
 }) {
-  useEffect(
-    () => void (scopesStatus.success || scopesStatus.loading || getAppTokensScopes()),
-    [getAppTokensScopes, scopesStatus]
-  );
+  useEffect(() => void (scopesStatus.success || scopesStatus.loading || getAppTokensScopes()), [
+    getAppTokensScopes,
+    scopesStatus,
+  ]);
 
   const [form, setForm] = useState(initialData);
   useEffect(() => void (onChange && onChange(form)), [form, onChange]);
@@ -117,7 +116,10 @@ function TokenForm({
         </>
       ) : (
         <div className="form-group help-block">
-          <a onClick={showRestrictionsClick}><Icon icon={faCaretRight} /> Set additional restrictions</a> (optional)
+          <a onClick={showRestrictionsClick}>
+            <Icon icon={faCaretRight} /> Set additional restrictions
+          </a>{' '}
+          (optional)
         </div>
       )}
     </>
@@ -126,5 +128,5 @@ function TokenForm({
 
 export default connect(
   (state) => pick(state.appTokens, ['scopesStatus', 'scopes']),
-  { getAppTokensScopes }
+  { getAppTokensScopes },
 )(TokenForm);

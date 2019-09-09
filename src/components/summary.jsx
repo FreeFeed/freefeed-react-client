@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { joinPostData, postActions } from './select-utils';
 import Feed from './feed';
 
-
 class Summary extends React.Component {
   render() {
     const { props } = this;
@@ -47,7 +46,10 @@ function mapStateToProps(state) {
 }
 
 function mapActionsToDispatch(dispatch) {
-  return { ...postActions(dispatch), };
+  return { ...postActions(dispatch) };
 }
 
-export default connect(mapStateToProps, mapActionsToDispatch)(Summary);
+export default connect(
+  mapStateToProps,
+  mapActionsToDispatch,
+)(Summary);

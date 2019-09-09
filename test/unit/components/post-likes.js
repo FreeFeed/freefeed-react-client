@@ -7,7 +7,6 @@ import clone from 'lodash/clone';
 
 import PostLikes from '../../../src/components/post-likes';
 
-
 describe('<PostLikes>', () => {
   const _likes = [];
 

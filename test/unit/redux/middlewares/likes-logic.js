@@ -6,7 +6,6 @@ import sinon from 'sinon';
 import { likesLogicMiddleware } from '../../../../src/redux/middlewares';
 import { REALTIME_LIKE_REMOVE } from '../../../../src/redux/action-types';
 
-
 const expect = unexpected.clone();
 expect.use(unexpectedSinon);
 
@@ -14,7 +13,9 @@ describe('likesLogicMiddleware middleware', () => {
   describe('on REALTIME_LIKE_REMOVE', () => {
     const store = {
       posts: {},
-      getState() { return this; },
+      getState() {
+        return this;
+      },
     };
     const next = sinon.spy();
     let action;
@@ -22,7 +23,7 @@ describe('likesLogicMiddleware middleware', () => {
     beforeEach(() => {
       store.posts = {};
       action = {
-        type:   REALTIME_LIKE_REMOVE,
+        type: REALTIME_LIKE_REMOVE,
         postId: '111',
         userId: '222',
       };
@@ -38,7 +39,7 @@ describe('likesLogicMiddleware middleware', () => {
     });
 
     it('should add isLikeVisible: false if user was not like post', () => {
-      store.posts = { '111': { likes: ['333'] } } ;
+      store.posts = { '111': { likes: ['333'] } };
       const nextAction = { ...action, isLikeVisible: false };
 
       likesLogicMiddleware(store)(next)(action);
@@ -46,7 +47,7 @@ describe('likesLogicMiddleware middleware', () => {
     });
 
     it('should add isLikeVisible: true if user was like post', () => {
-      store.posts = { '111': { likes: ['333', '222'] } } ;
+      store.posts = { '111': { likes: ['333', '222'] } };
       const nextAction = { ...action, isLikeVisible: true };
 
       likesLogicMiddleware(store)(next)(action);

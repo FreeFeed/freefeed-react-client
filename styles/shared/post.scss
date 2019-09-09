@@ -5,7 +5,9 @@ $post-line-height: 20px;
 }
 
 .post .expandable .expand-button {
-  @media (min-width: 768px) { margin-left: 63px; }
+  @media (min-width: 768px) {
+    margin-left: 63px;
+  }
 }
 
 .post {
@@ -28,7 +30,9 @@ $post-line-height: 20px;
   .post-userpic {
     float: left;
     border: 1px #ccc solid;
-    @media (max-width: 767px) { margin: 0 10px 3px 0; }
+    @media (max-width: 767px) {
+      margin: 0 10px 3px 0;
+    }
   }
 
   .post-header {
@@ -48,7 +52,9 @@ $post-line-height: 20px;
 
   .post-body {
     margin-left: 63px;
-    @media (max-width: 767px) { margin-left: 0; }
+    @media (max-width: 767px) {
+      margin-left: 0;
+    }
 
     color: #666;
     font-size: 14px;
@@ -57,14 +63,16 @@ $post-line-height: 20px;
     .post-text {
       margin-bottom: 8px;
       word-wrap: break-word;
-      @media (max-width: 767px) { min-height: 31px; }
+      @media (max-width: 767px) {
+        min-height: 31px;
+      }
 
       color: #000;
       font-size: 16px;
       line-height: $post-line-height;
 
       &.modern {
-        max-height: 5*$post-line-height;
+        max-height: 5 * $post-line-height;
         overflow-y: hidden;
         position: relative;
         display: block;
@@ -87,7 +95,7 @@ $post-line-height: 20px;
       .post-lock-icon {
         margin-right: 5px;
       }
-      
+
       .post-private-icon {
         font-size: 13px;
         vertical-align: 0;
@@ -247,10 +255,14 @@ $post-line-height: 20px;
 
   .post-body {
     margin-left: 88px;
-    @media (max-width: 767px) { margin-left: 0; }
+    @media (max-width: 767px) {
+      margin-left: 0;
+    }
 
     .post-text {
-      @media (max-width: 767px) { min-height: 50px; }
+      @media (max-width: 767px) {
+        min-height: 50px;
+      }
 
       font-size: 21px;
       line-height: 26px;
@@ -263,20 +275,20 @@ $post-line-height: 20px;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 48 48'><path fill='%23ffffff' d='M40 8H8c-2.21 0-3.98 1.79-3.98 4L4 36c0 2.21 1.79 4 4 4h32c2.21 0 4-1.79 4-4V12c0-2.21-1.79-4-4-4zm0 8L24 26 8 16v-4l16 10 16-10v4z'/></svg>");
   background-repeat: no-repeat;
   background-position: top right;
-  background-position: top .5em right .5em;
+  background-position: top 0.5em right 0.5em;
   padding-left: 1em;
   padding-right: 1em;
   border-bottom: 1px solid #fff;
   margin: -1px -1em 5px;
   border-radius: 5px;
   &.be-fe-folded-text-para:after {
-    background: linear-gradient(to bottom, hsla(0, 0% , 93% , 0), hsla(0, 0% , 93% , .007));
+    background: linear-gradient(to bottom, hsla(0, 0%, 93%, 0), hsla(0, 0%, 93%, 0.007));
   }
   &.be-fe-folded-text-read-more {
-    background: linear-gradient(to right, hsla(0, 0% , 93% , 0), #eee 3.5em);
+    background: linear-gradient(to right, hsla(0, 0%, 93%, 0), #eee 3.5em);
   }
   &.be-fe-folded-text:after {
-    background: linear-gradient(to bottom, hsla(0, 0% , 93% , 0), hsla(0, 0% , 93% , .007));
+    background: linear-gradient(to bottom, hsla(0, 0%, 93%, 0), hsla(0, 0%, 93%, 0.007));
   }
 
   .expand-panel {
@@ -285,7 +297,8 @@ $post-line-height: 20px;
 }
 
 .single-post.direct-post {
-  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 48 48'><path fill='%23eeeeee' d='M40 8H8c-2.21 0-3.98 1.79-3.98 4L4 36c0 2.21 1.79 4 4 4h32c2.21 0 4-1.79 4-4V12c0-2.21-1.79-4-4-4zm0 8L24 26 8 16v-4l16 10 16-10v4z'/></svg>") no-repeat top right
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 48 48'><path fill='%23eeeeee' d='M40 8H8c-2.21 0-3.98 1.79-3.98 4L4 36c0 2.21 1.79 4 4 4h32c2.21 0 4-1.79 4-4V12c0-2.21-1.79-4-4-4zm0 8L24 26 8 16v-4l16 10 16-10v4z'/></svg>")
+    no-repeat top right;
 }
 
 .post-via-sources {
@@ -304,10 +317,10 @@ $post-line-height: 20px;
 }
 
 .post-privacy-warning {
-  background-color: #FCF8E3;
+  background-color: #fcf8e3;
   padding: 12px 18px;
-  border: 1px solid #FBF1D8;
-  color: #796E58;
+  border: 1px solid #fbf1d8;
+  color: #796e58;
   margin: 10px 0;
 
   &:empty {
@@ -316,7 +329,6 @@ $post-line-height: 20px;
 }
 
 .link-preview {
-
   .link-preview-content {
     margin-bottom: 10px;
   }
@@ -327,16 +339,17 @@ $post-line-height: 20px;
       overflow: hidden;
 
       &.folded::after {
-        content: "";
+        content: '';
         position: absolute;
         bottom: 0;
         left: 0;
         right: 0;
         height: 40px;
-        pointer-events:none;
+        pointer-events: none;
 
         @mixin grad($color) {
-          $gradArgs: rgba($color, 0) 0%, rgba($color, 0.2) 25%, rgba($color, 0.8) 75%, rgba($color, 1) 100%;
+          $gradArgs: rgba($color, 0) 0%, rgba($color, 0.2) 25%, rgba($color, 0.8) 75%,
+            rgba($color, 1) 100%;
           background: -webkit-linear-gradient($gradArgs);
           background: -o-linear-gradient($gradArgs);
           background: linear-gradient($gradArgs);
@@ -392,11 +405,11 @@ $post-line-height: 20px;
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
         font-size: 100px;
         color: #fff;
         opacity: 0.66;
-        text-shadow: 0 0 10px rgba(0,0,0,0.3);
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         transition: opacity 0.3s;
       }
 
@@ -454,24 +467,24 @@ $post-line-height: 20px;
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color: rgba(160,160,160,0.3);
+    background-color: rgba(160, 160, 160, 0.3);
     background-size: 75%;
     background-position: center;
     background-repeat: no-repeat;
     z-index: 1;
-   	background-image: url(https://www.google.com/drive/images/drive/logo-drive.png);
+    background-image: url(https://www.google.com/drive/images/drive/logo-drive.png);
 
     &.document {
       background-size: 50%;
-      background-image: url(https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_document_x64.png)
+      background-image: url(https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_document_x64.png);
     }
     &.spreadsheets {
       background-size: 50%;
-      background-image: url(https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_spreadsheet_x64.png)
+      background-image: url(https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_spreadsheet_x64.png);
     }
     &.presentation {
       background-size: 50%;
-      background-image: url(https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_presentation_x64.png)
+      background-image: url(https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_presentation_x64.png);
     }
   }
 

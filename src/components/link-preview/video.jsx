@@ -12,7 +12,6 @@ import { contentResized } from './scroll-helpers/events';
 import cachedFetch from './cached-fetch';
 import * as aspectRatio from './scroll-helpers/size-cache';
 
-
 const YOUTUBE_VIDEO_RE = /^https?:\/\/(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?(?:v=|.+&v=)))([a-z0-9_-]+)/i;
 const VIMEO_VIDEO_RE = /^https:\/\/vimeo\.com\/([0-9]+)/i;
 const COUB_VIDEO_RE = /^https?:\/\/coub\.com\/view\/([a-z0-9]+)/i;
@@ -30,10 +29,10 @@ export function canShowURL(url) {
 }
 
 class VideoPreview extends React.Component {
-  static propTypes = { url: PropTypes.string.isRequired, };
+  static propTypes = { url: PropTypes.string.isRequired };
 
   state = {
-    info:   null,
+    info: null,
     player: false,
   };
 
@@ -52,7 +51,7 @@ class VideoPreview extends React.Component {
     }
     if (this.props.url !== nextProps.url) {
       this.setState({
-        info:   null,
+        info: null,
         player: false,
       });
       setTimeout(this.loadInfo, 0);
@@ -77,7 +76,7 @@ class VideoPreview extends React.Component {
     const { url } = this.props;
     const { player, info } = this.state;
 
-    if (info && ('error' in info)) {
+    if (info && 'error' in info) {
       return <div className="video-preview link-preview-content load-error">{info.error}</div>;
     }
 
@@ -85,20 +84,18 @@ class VideoPreview extends React.Component {
 
     // video will have the same area as 16x9 450px-width rectangle
     const r = info ? info.aspectRatio : aspectRatio.get(url, getDefaultAspectRatio(url));
-    const width = 450 * Math.sqrt((9 / 16) / r);
+    const width = 450 * Math.sqrt(9 / 16 / r);
     previewStyle.paddingBottom = `${100 * r}%`;
 
     return (
       <div className="video-preview link-preview-content" style={{ maxWidth: width }}>
         <div className="static-preview" style={previewStyle} onClick={this.loadPlayer}>
-          {player ? (
-            this.renderPlayer()
-          ) : (
-            <Icon icon={faPlayCircle} className="play-icon" />
-          )}
+          {player ? this.renderPlayer() : <Icon icon={faPlayCircle} className="play-icon" />}
         </div>
         <div className="info">
-          <a href={url} target="_blank" title={info ? info.byline : null}>{info ? info.byline : 'Loading…'}</a>
+          <a href={url} target="_blank" title={info ? info.byline : null}>
+            {info ? info.byline : 'Loading…'}
+          </a>
         </div>
       </div>
     );
@@ -106,7 +103,7 @@ class VideoPreview extends React.Component {
 }
 
 function select(state) {
-  return { feedIsLoading: state.routeLoadingState, };
+  return { feedIsLoading: state.routeLoadingState };
 }
 
 export default ScrollSafe(connect(select)(VideoPreview), { foldable: false, trackResize: false });
@@ -174,7 +171,9 @@ function getDefaultAspectRatio(url) {
 async function getVideoInfo(url) {
   switch (getVideoType(url)) {
     case T_YOUTUBE_VIDEO: {
-      const data = await cachedFetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}&maxheight`);
+      const data = await cachedFetch(
+        `https://noembed.com/embed?url=${encodeURIComponent(url)}&maxheight`,
+      );
       if (data.error) {
         return { error: data.error };
       }
@@ -182,14 +181,18 @@ async function getVideoInfo(url) {
         return { error: data.error ? data.error : 'error loading data' };
       }
       return {
-        byline:      `${data.title} by ${data.author_name}`,
+        byline: `${data.title} by ${data.author_name}`,
         aspectRatio: aspectRatio.set(url, data.height / data.width),
-        previewURL:  data.thumbnail_url,
-        playerURL:   `https://www.youtube.com/embed/${getVideoId(url)}?rel=0&fs=1&autoplay=1&start=${youtubeStartTime(url)}`,
+        previewURL: data.thumbnail_url,
+        playerURL: `https://www.youtube.com/embed/${getVideoId(
+          url,
+        )}?rel=0&fs=1&autoplay=1&start=${youtubeStartTime(url)}`,
       };
     }
     case T_VIMEO_VIDEO: {
-      const data = await cachedFetch(`https://vimeo.com/api/oembed.json?url=${encodeURIComponent(url)}`);
+      const data = await cachedFetch(
+        `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(url)}`,
+      );
       if (data.error) {
         return { error: data.error };
       }
@@ -198,10 +201,12 @@ async function getVideoInfo(url) {
       }
       const { hash } = urlParse(url);
       return {
-        byline:      `${data.title} by ${data.author_name}`,
+        byline: `${data.title} by ${data.author_name}`,
         aspectRatio: aspectRatio.set(url, data.height / data.width),
-        previewURL:  data.thumbnail_url.replace(/[0-9]+x[0-9]+/, '450'),
-        playerURL:   `https://player.vimeo.com/video/${getVideoId(url)}?autoplay=1${hash ? hash : ''}`,
+        previewURL: data.thumbnail_url.replace(/[0-9]+x[0-9]+/, '450'),
+        playerURL: `https://player.vimeo.com/video/${getVideoId(url)}?autoplay=1${
+          hash ? hash : ''
+        }`,
       };
     }
     case T_COUB_VIDEO: {
@@ -213,10 +218,10 @@ async function getVideoInfo(url) {
         return { error: data.error ? data.error : 'error loading data' };
       }
       return {
-        byline:      `${data.title} by ${data.author_name}`,
+        byline: `${data.title} by ${data.author_name}`,
         aspectRatio: aspectRatio.set(url, data.height / data.width),
-        previewURL:  data.thumbnail_url,
-        playerURL:   `https://coub.com/embed/${getVideoId(url)}?autostart=true`,
+        previewURL: data.thumbnail_url,
+        playerURL: `https://coub.com/embed/${getVideoId(url)}?autostart=true`,
       };
     }
     case T_IMGUR_GIFV: {
@@ -225,10 +230,10 @@ async function getVideoInfo(url) {
       try {
         const img = await loadImage(previewURL);
         return {
-          byline:      'View at Imgur',
+          byline: 'View at Imgur',
           previewURL,
           aspectRatio: aspectRatio.set(url, img.height / img.width),
-          videoURL:    `https://i.imgur.com/${id}.mp4`,
+          videoURL: `https://i.imgur.com/${id}.mp4`,
         };
       } catch (e) {
         return { error: e.message };
@@ -241,10 +246,10 @@ async function getVideoInfo(url) {
         return { error: data.message || data.errorMessage || 'invalid gfycat API response' };
       }
       return {
-        byline:      `${data.gfyItem.title} at Gfycat`,
-        previewURL:  data.gfyItem.mobilePosterUrl,
+        byline: `${data.gfyItem.title} at Gfycat`,
+        previewURL: data.gfyItem.mobilePosterUrl,
         aspectRatio: aspectRatio.set(url, data.gfyItem.height / data.gfyItem.width),
-        videoURL:    data.gfyItem.mobileUrl,
+        videoURL: data.gfyItem.mobileUrl,
       };
     }
   }
@@ -257,7 +262,10 @@ async function getVideoInfo(url) {
  * @return {Number}
  */
 function youtubeStartTime(url) {
-  const { hash, query: { t } } = urlParse(url, true);
+  const {
+    hash,
+    query: { t },
+  } = urlParse(url, true);
   if (t) {
     return ytSeconds(t);
   }

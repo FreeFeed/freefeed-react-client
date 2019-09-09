@@ -3,29 +3,42 @@ import { intersectionBy, differenceBy } from 'lodash';
 
 import {
   // User actions
-  subscribe, unsubscribe,
+  subscribe,
+  unsubscribe,
   sendSubscriptionRequest,
-  ban, unban,
+  ban,
+  unban,
 
   // Post actions
-  showMoreComments, showMoreLikes,
+  showMoreComments,
+  showMoreLikes,
   addAttachmentResponse,
-  likePost, unlikePost,
-  hidePost, unhidePost,
+  likePost,
+  unlikePost,
+  hidePost,
+  unhidePost,
   toggleModeratingComments,
-  disableComments, enableComments,
-  toggleEditingPost, cancelEditingPost, saveEditingPost,
+  disableComments,
+  enableComments,
+  toggleEditingPost,
+  cancelEditingPost,
+  saveEditingPost,
   deletePost,
 
   // Comment actions
-  toggleCommenting, updateCommentingText, addComment,
-  toggleEditingComment, saveEditingComment,
-  highlightComment, clearHighlightComment,
-  likeComment, unlikeComment, getCommentLikes,
-  deleteComment
+  toggleCommenting,
+  updateCommentingText,
+  addComment,
+  toggleEditingComment,
+  saveEditingComment,
+  highlightComment,
+  clearHighlightComment,
+  likeComment,
+  unlikeComment,
+  getCommentLikes,
+  deleteComment,
 } from '../redux/action-creators';
 import { SCHEME_DARK, SCHEME_SYSTEM } from '../services/appearance';
-
 
 const MAX_LIKES = 4;
 
@@ -33,7 +46,11 @@ export const ommitBubblesThreshold = 600 * 1000; // 10 min
 
 const allFalse = () => false;
 
-const commentHighlighter = ({ commentsHighlights, user, postsViewState }, commentsPostId, commentList) => {
+const commentHighlighter = (
+  { commentsHighlights, user, postsViewState },
+  commentsPostId,
+  commentList,
+) => {
   const { postId, author, arrows, baseCommentId } = commentsHighlights;
   const { comments } = user.frontendPreferences;
   const { omittedComments } = postsViewState[commentsPostId];
@@ -46,10 +63,12 @@ const commentHighlighter = ({ commentsHighlights, user, postsViewState }, commen
   }
 
   const baseIndex = commentList.indexOf(baseCommentId);
-  const highlightIndex = (baseIndex + omittedComments) - arrows;
+  const highlightIndex = baseIndex + omittedComments - arrows;
   const highlightCommentId = commentList[highlightIndex < baseIndex ? highlightIndex : -1];
 
-  return (commentId, commentAuthor) => (author && commentAuthor && author === commentAuthor.username) || highlightCommentId === commentId;
+  return (commentId, commentAuthor) =>
+    (author && commentAuthor && author === commentAuthor.username) ||
+    highlightCommentId === commentId;
 };
 
 const selectCommentLikes = ({ commentLikes, users }, commentId) => {
@@ -85,11 +104,15 @@ export const joinPostData = (state) => (postId) => {
     .map((userId) => state.subscribers[userId])
     .filter((user) => user);
 
-  const isEditable = (post.createdBy === user.id);
-  const isModeratable = isEditable || intersectionBy(recipients, state.managedGroups, 'id').length > 0;
-  const isFullyRemovable = isEditable || differenceBy(recipients, state.managedGroups, 'id').length === 0;
+  const isEditable = post.createdBy === user.id;
+  const isModeratable =
+    isEditable || intersectionBy(recipients, state.managedGroups, 'id').length > 0;
+  const isFullyRemovable =
+    isEditable || differenceBy(recipients, state.managedGroups, 'id').length === 0;
 
-  const attachments = (post.attachments || []).map((attachmentId) => state.attachments[attachmentId]);
+  const attachments = (post.attachments || []).map(
+    (attachmentId) => state.attachments[attachmentId],
+  );
   const postViewState = state.postsViewState[post.id];
   const { omitRepeatedBubbles } = state.user.frontendPreferences.comments;
   const hashedCommentId = getCommentId(state.routing.locationBeforeTransitions.hash);
@@ -101,19 +124,32 @@ export const joinPostData = (state) => (postId) => {
     }
     const commentViewState = state.commentViewState[commentId];
     const author = state.users[comment.createdBy] || null;
-    const previousComment = _comments[index - 1] || { createdBy: null, createdAt: "0" };
-    const omitBubble = omitRepeatedBubbles
-      && postViewState.omittedComments === 0
-      && !comment.hideType
-      && !previousComment.hideType
-      && comment.createdBy === previousComment.createdBy
-      && comment.createdAt - previousComment.createdAt < ommitBubblesThreshold;
-    const isEditable = (user.id === comment.createdBy);
+    const previousComment = _comments[index - 1] || { createdBy: null, createdAt: '0' };
+    const omitBubble =
+      omitRepeatedBubbles &&
+      postViewState.omittedComments === 0 &&
+      !comment.hideType &&
+      !previousComment.hideType &&
+      comment.createdBy === previousComment.createdBy &&
+      comment.createdAt - previousComment.createdAt < ommitBubblesThreshold;
+    const isEditable = user.id === comment.createdBy;
     const isDeletable = isModeratable || isModeratable;
     const highlighted = highlightComment(commentId, author);
     const likesList = selectCommentLikes(state, commentId);
     const highlightedFromUrl = commentId === hashedCommentId;
-    return _comments.concat([{ ...comment, ...commentViewState, user: author, isEditable, isDeletable, omitBubble, highlighted, likesList, highlightedFromUrl }]);
+    return _comments.concat([
+      {
+        ...comment,
+        ...commentViewState,
+        user: author,
+        isEditable,
+        isDeletable,
+        omitBubble,
+        highlighted,
+        likesList,
+        highlightedFromUrl,
+      },
+    ]);
   }, []);
 
   if (postViewState.omittedComments !== 0 && comments.length > 2) {
@@ -132,16 +168,17 @@ export const joinPostData = (state) => (postId) => {
 
   if (createdBy === placeholderUser) {
     if (typeof Raven !== 'undefined') {
-      Raven.captureMessage(`We've got post with unknown author with id`, { extra: { uid: placeholderUser.id } });
+      Raven.captureMessage(`We've got post with unknown author with id`, {
+        extra: { uid: placeholderUser.id },
+      });
     }
   }
 
   // Check if the post is a direct message
-  const directRecipients = post.postedTo
-    .filter((subscriptionId) => {
-      const subscriptionType = (state.subscriptions[subscriptionId] || {}).name;
-      return (subscriptionType === 'Directs');
-    });
+  const directRecipients = post.postedTo.filter((subscriptionId) => {
+    const subscriptionType = (state.subscriptions[subscriptionId] || {}).name;
+    return subscriptionType === 'Directs';
+  });
   const isDirect = !!directRecipients.length;
 
   const { allowLinksPreview, readMoreStyle } = state.user.frontendPreferences;
@@ -165,43 +202,47 @@ export const joinPostData = (state) => (postId) => {
 
 export function postActions(dispatch) {
   return {
-    showMoreComments:         (postId) => dispatch(showMoreComments(postId)),
-    showMoreLikes:            (postId) => dispatch(showMoreLikes(postId)),
-    toggleEditingPost:        (postId) => dispatch(toggleEditingPost(postId)),
-    cancelEditingPost:        (postId) => dispatch(cancelEditingPost(postId)),
-    saveEditingPost:          (postId, newPost) => dispatch(saveEditingPost(postId, newPost)),
-    deletePost:               (postId) => dispatch(deletePost(postId)),
-    toggleCommenting:         (postId) => dispatch(toggleCommenting(postId)),
-    updateCommentingText:     (postId, commentText) => dispatch(updateCommentingText(postId, commentText)),
-    addComment:               (postId, commentText) => dispatch(addComment(postId, commentText)),
-    likePost:                 (postId, userId) => dispatch(likePost(postId, userId)),
-    unlikePost:               (postId, userId) => dispatch(unlikePost(postId, userId)),
-    hidePost:                 (postId) => dispatch(hidePost(postId)),
-    unhidePost:               (postId) => dispatch(unhidePost(postId)),
+    showMoreComments: (postId) => dispatch(showMoreComments(postId)),
+    showMoreLikes: (postId) => dispatch(showMoreLikes(postId)),
+    toggleEditingPost: (postId) => dispatch(toggleEditingPost(postId)),
+    cancelEditingPost: (postId) => dispatch(cancelEditingPost(postId)),
+    saveEditingPost: (postId, newPost) => dispatch(saveEditingPost(postId, newPost)),
+    deletePost: (postId) => dispatch(deletePost(postId)),
+    toggleCommenting: (postId) => dispatch(toggleCommenting(postId)),
+    updateCommentingText: (postId, commentText) =>
+      dispatch(updateCommentingText(postId, commentText)),
+    addComment: (postId, commentText) => dispatch(addComment(postId, commentText)),
+    likePost: (postId, userId) => dispatch(likePost(postId, userId)),
+    unlikePost: (postId, userId) => dispatch(unlikePost(postId, userId)),
+    hidePost: (postId) => dispatch(hidePost(postId)),
+    unhidePost: (postId) => dispatch(unhidePost(postId)),
     toggleModeratingComments: (postId) => dispatch(toggleModeratingComments(postId)),
-    disableComments:          (postId) => dispatch(disableComments(postId)),
-    enableComments:           (postId) => dispatch(enableComments(postId)),
-    addAttachmentResponse:    (postId, attachments) => dispatch(addAttachmentResponse(postId, attachments)),
-    commentEdit:              {
-      toggleEditingComment:  (commentId) => dispatch(toggleEditingComment(commentId)),
-      saveEditingComment:    (commentId, newValue) => dispatch(saveEditingComment(commentId, newValue)),
-      deleteComment:         (commentId) => dispatch(deleteComment(commentId)),
-      highlightComment:      (postId, author, arrows, baseCommentId) => dispatch(highlightComment(postId, author, arrows, baseCommentId)),
+    disableComments: (postId) => dispatch(disableComments(postId)),
+    enableComments: (postId) => dispatch(enableComments(postId)),
+    addAttachmentResponse: (postId, attachments) =>
+      dispatch(addAttachmentResponse(postId, attachments)),
+    commentEdit: {
+      toggleEditingComment: (commentId) => dispatch(toggleEditingComment(commentId)),
+      saveEditingComment: (commentId, newValue) =>
+        dispatch(saveEditingComment(commentId, newValue)),
+      deleteComment: (commentId) => dispatch(deleteComment(commentId)),
+      highlightComment: (postId, author, arrows, baseCommentId) =>
+        dispatch(highlightComment(postId, author, arrows, baseCommentId)),
       clearHighlightComment: () => dispatch(clearHighlightComment()),
-      likeComment:           (commentId) => dispatch(likeComment(commentId)),
-      unlikeComment:         (commentId) => dispatch(unlikeComment(commentId)),
-      getCommentLikes:       (commentId) => dispatch(getCommentLikes(commentId)),
+      likeComment: (commentId) => dispatch(likeComment(commentId)),
+      unlikeComment: (commentId) => dispatch(unlikeComment(commentId)),
+      getCommentLikes: (commentId) => dispatch(getCommentLikes(commentId)),
     },
   };
 }
 
 export function userActions(dispatch) {
   return {
-    ban:                     (username) => dispatch(ban(username)),
-    unban:                   (username) => dispatch(unban(username)),
-    subscribe:               (username) => dispatch(subscribe(username)),
-    unsubscribe:             (username) => dispatch(unsubscribe(username)),
-    sendSubscriptionRequest: (username) => dispatch(sendSubscriptionRequest(username))
+    ban: (username) => dispatch(ban(username)),
+    unban: (username) => dispatch(unban(username)),
+    subscribe: (username) => dispatch(subscribe(username)),
+    unsubscribe: (username) => dispatch(unsubscribe(username)),
+    sendSubscriptionRequest: (username) => dispatch(sendSubscriptionRequest(username)),
   };
 }
 
@@ -260,6 +301,8 @@ export function destinationsPrivacy(destNames, state) {
 }
 
 export function darkTheme({ systemColorScheme, userColorScheme }) {
-  return userColorScheme === SCHEME_DARK
-           || (userColorScheme === SCHEME_SYSTEM && systemColorScheme === SCHEME_DARK);
+  return (
+    userColorScheme === SCHEME_DARK ||
+    (userColorScheme === SCHEME_SYSTEM && systemColorScheme === SCHEME_DARK)
+  );
 }

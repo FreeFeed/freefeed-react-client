@@ -23,10 +23,7 @@
     }
   },
   "settings": {
-    "import/extensions": [
-      ".js",
-      ".jsx"
-    ],
+    "import/extensions": [".js", ".jsx"],
     "import/resolver": {
       "node": {
         "extensions": [".js", ".jsx"]
@@ -51,17 +48,18 @@
     "import/default": 2,
     "import/named": 2,
     "import/namespace": 2,
-    "import/newline-after-import": [2, { "count": 2 }],
     "import/no-duplicates": 2,
     "import/no-extraneous-dependencies": 2,
     "import/no-named-as-default": 2,
     "import/no-named-as-default-member": 2,
     "import/no-unresolved": 2,
-    "import/order": [2, { "groups": ["builtin", "external", "internal", "parent", "sibling", "index"] }],
-    "indent": [2, 2, {"SwitchCase": 1}],
+    "import/order": [
+      2,
+      { "groups": ["builtin", "external", "internal", "parent", "sibling", "index"] }
+    ],
+    "indent": "off",
     "jsx-quotes": 2,
-    "key-spacing": [2, { "align": "value" }],
-    "keyword-spacing": [2, {"before": true, "after": true}],
+    "keyword-spacing": [2, { "before": true, "after": true }],
     "linebreak-style": 2,
     "max-statements-per-line": [2, { "max": 1 }],
     "no-debugger": 2,
@@ -69,7 +67,6 @@
     "no-else-return": 2,
     "no-global-assign": 2,
     "no-lonely-if": 2,
-    "no-mixed-operators": 2,
     "no-multiple-empty-lines": 2,
     "no-multi-spaces": [2, { "ignoreEOLComments": true }],
     "no-native-reassign": 2,
@@ -84,7 +81,6 @@
     "no-useless-computed-key": 2,
     "no-var": 2,
     "no-warning-comments": 1,
-    "object-curly-newline": [2, { "multiline": true }],
     "babel/object-curly-spacing": [2, "always"],
     "object-shorthand": 2,
     "padded-blocks": [2, "never"],
@@ -99,11 +95,6 @@
     "require-yield": 0,
     "babel/semi": 2,
     "space-before-blocks": [2, "always"],
-    "space-before-function-paren": [2, {
-      "anonymous": "always",
-      "asyncArrow": "always",
-      "named": "never"
-    }],
     "space-in-parens": [2, "never"],
     "space-infix-ops": 2,
     "space-unary-ops": [2, { "words": true, "nonwords": false }],
@@ -111,7 +102,6 @@
     "unicode-bom": 2,
 
     "react/jsx-closing-bracket-location": 2,
-    "react/jsx-closing-tag-location": 2,
     "react/jsx-curly-spacing": [2, { "children": true }],
     "react/jsx-equals-spacing": 2,
     "react/jsx-first-prop-new-line": [2, "multiline"],

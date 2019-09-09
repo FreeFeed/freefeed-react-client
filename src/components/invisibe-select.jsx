@@ -4,8 +4,11 @@ import memoize from 'memoize-one';
 
 import '../../styles/shared/invisible-select.scss';
 
-
-const optionsProps = memoize((children) => Children.toArray(children).filter((c) => c.type === 'option').map((c) => c.props));
+const optionsProps = memoize((children) =>
+  Children.toArray(children)
+    .filter((c) => c.type === 'option')
+    .map((c) => c.props),
+);
 
 export class InvisibleSelect extends Component {
   render() {

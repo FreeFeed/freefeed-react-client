@@ -27,13 +27,13 @@
 
   .comment-error {
     font-size: 12px;
-    color: #FF5A5F;
+    color: #ff5a5f;
   }
 
   .comment-timestamp a {
     color: #999;
     font-size: 12px;
-  } 
+  }
 
   .more-comments-throbber {
     display: inline-block;
@@ -58,7 +58,8 @@
     }
   }
 
-  &.highlighted, &.highlight-from-url {
+  &.highlighted,
+  &.highlight-from-url {
     &::before {
       $border-width: 3px;
       content: '';
@@ -67,13 +68,13 @@
       left: -$border-width;
       right: -$border-width;
       bottom: -$border-width;
-      border: $border-width+1px solid;
+      border: $border-width + 1px solid;
       border-radius: $border-width;
     }
   }
 
-  &.highlighted{
-    $hl-color: #D9EBFF;
+  &.highlighted {
+    $hl-color: #d9ebff;
     background-color: $hl-color;
 
     &::before {
@@ -82,7 +83,7 @@
   }
 
   &.highlight-from-url {
-    $hl-url-color: #FFFFBB;
+    $hl-url-color: #ffffbb;
     background-color: $hl-url-color;
 
     &::before {
@@ -102,7 +103,6 @@
   }
 }
 
-
 .feed-comment-dot {
   &:after {
     content: '';
@@ -111,7 +111,7 @@
     left: 50%;
     width: 4px;
     height: 4px;
-    background-color: #CCC;
+    background-color: #ccc;
     margin-left: -2px;
     margin-top: 0;
     border-radius: 50%;
@@ -130,7 +130,7 @@
 }
 
 .fold-comments-sticky {
-  background: rgba(255,255,255,0.9);
+  background: rgba(255, 255, 255, 0.9);
   box-shadow: 0 0px 4px 8px rgba(255, 255, 255, 0.9);
   z-index: 1;
   .chevron {
