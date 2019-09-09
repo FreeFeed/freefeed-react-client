@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { formatPattern } from 'react-router/es/PatternUtils';
 
 import { createPost, resetPostCreateForm, expandSendTo, getUserInfo } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
@@ -9,49 +10,67 @@ import config from '../config';
 import { joinPostData, postActions, userActions, canAcceptDirects } from './select-utils';
 import FeedOptionsSwitch from './feed-options-switch';
 import Breadcrumbs from './breadcrumbs';
+import ErrorBoundary from './error-boundary';
 import UserProfile from './user-profile';
 import UserFeed from './user-feed';
 
 
 const UserHandler = (props) => {
+  // Redirect to canonical username in URI (/uSErNAme/likes?offset=30 → /username/likes?offset=30)
+  useEffect(() => {
+    if (
+      props.viewUser.username &&
+      props.routeParams.userName &&
+      props.viewUser.username !== props.routeParams.userName
+    ) {
+      const newPath = formatPattern(
+        props.route.path,
+        { ...props.routeParams, userName: props.viewUser.username },
+      );
+      props.router.replace(newPath + props.location.search);
+    }
+  }, [props.location.search, props.route.path, props.routeParams, props.routeParams.userName, props.router, props.viewUser.username]);
+
   return (
     <div className="box">
-      {props.viewUser.id && (
-        <Helmet>
-          <link
-            rel="alternate"
-            type="application/rss+xml"
-            title={props.viewUser.type === 'user' ? `Posts of ${props.viewUser.username}` : `Posts in group ${props.viewUser.username}`}
-            href={`${config.api.host}/v2/timelines-rss/${props.viewUser.username}`}
-          />
-        </Helmet>
-      )}
+      <ErrorBoundary>
+        {props.viewUser.id && (
+          <Helmet>
+            <link
+              rel="alternate"
+              type="application/rss+xml"
+              title={props.viewUser.type === 'user' ? `Posts of ${props.viewUser.username}` : `Posts in group ${props.viewUser.username}`}
+              href={`${config.api.host}/v2/timelines-rss/${props.viewUser.username}`}
+            />
+          </Helmet>
+        )}
 
-      <div className="box-header-timeline">
-        {props.boxHeader}
-        <div className="pull-right">
-          <FeedOptionsSwitch />
+        <div className="box-header-timeline">
+          {props.boxHeader}
+          <div className="pull-right">
+            <FeedOptionsSwitch />
+          </div>
         </div>
-      </div>
 
-      <div className="box-body">
-        {props.breadcrumbs.shouldShowBreadcrumbs ? <Breadcrumbs {...props.breadcrumbs} /> : false}
+        <div className="box-body">
+          {props.breadcrumbs.shouldShowBreadcrumbs ? <Breadcrumbs {...props.breadcrumbs} /> : false}
 
-        <UserProfile
-          {...props.viewUser}
-          {...props.userActions}
-          user={props.user}
-          sendTo={props.sendTo}
-          expandSendTo={props.expandSendTo}
-          createPostViewState={props.createPostViewState}
-          createPost={props.createPost}
-          resetPostCreateForm={props.resetPostCreateForm}
-          addAttachmentResponse={props.addAttachmentResponse}
-          getUserInfo={props.getUserInfo}
-        />
-      </div>
+          <UserProfile
+            {...props.viewUser}
+            {...props.userActions}
+            user={props.user}
+            sendTo={props.sendTo}
+            expandSendTo={props.expandSendTo}
+            createPostViewState={props.createPostViewState}
+            createPost={props.createPost}
+            resetPostCreateForm={props.resetPostCreateForm}
+            addAttachmentResponse={props.addAttachmentResponse}
+            getUserInfo={props.getUserInfo}
+          />
+        </div>
 
-      <UserFeed {...props} />
+        <UserFeed {...props} />
+      </ErrorBoundary>
     </div>
   );
 };
@@ -60,9 +79,13 @@ function selectState(state, ownProps) {
   const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
   const anonymous = !authenticated;
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
-  const [foundUser] = Object.getOwnPropertyNames(state.users)
-    .map((key) => state.users[key] || state.subscribers[key])
-    .filter((user) => user.username === ownProps.params.userName);
+
+  let foundUser = null;
+  if (state.feedViewState.timeline > 0) {
+    foundUser = state.users[state.feedViewState.timeline.user];
+  } else {
+    foundUser = Object.values(state.users).find((user) => user.username === ownProps.params.userName.toLowerCase());
+  }
 
   const amIGroupAdmin = (
     authenticated &&
@@ -98,7 +121,7 @@ function selectState(state, ownProps) {
   statusExtension.canIPostHere = statusExtension.isUserFound &&
     ((statusExtension.isItMe && isItPostsPage) || (foundUser.type === 'group' && canIPostToGroup));
 
-  const viewUser = { ...(foundUser), ...statusExtension };
+  const viewUser = { ...foundUser, ...statusExtension };
 
   const breadcrumbs = {
     shouldShowBreadcrumbs: !isItPostsPage,

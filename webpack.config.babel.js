@@ -1,8 +1,9 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import OptiCSS from "optimize-css-assets-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import Uglify from "uglifyjs-webpack-plugin";
+import Uglify from "terser-webpack-plugin";
 import CopyPlugin from "copy-webpack-plugin";
+import webpack from 'webpack';
 
 import { baseConfig, opts, rules } from "./webpack/base";
 import { skipFalsy } from './webpack/utils';
@@ -47,6 +48,7 @@ const config = {
       { from: 'assets/images/favicon.ico', to: 'assets/images/' },
       { from: 'assets/images/ios/*.png', to: '' },
     ]),
+    new webpack.DefinePlugin({ WEBPACK_SAYS_USE_CANDY: Boolean(process.env.CANDY) })
   ]),
   optimization: {
     splitChunks: {

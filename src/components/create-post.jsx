@@ -8,6 +8,7 @@ import config from '../config';
 import SendTo from './send-to';
 import Dropzone from './dropzone';
 import PostAttachments from './post-attachments';
+import ErrorBoundary from './error-boundary';
 import { Throbber } from './throbber';
 import { Icon } from './fontawesome-icons';
 
@@ -167,97 +168,99 @@ export default class CreatePost extends React.Component {
   render() {
     return (
       <div className="create-post post-editor">
-        <div>
-          {this.props.sendTo.expanded &&
-            <SendTo
-              ref={this.registerSelectFeeds}
-              defaultFeed={this.props.sendTo.defaultFeed}
-              isDirects={this.props.isDirects}
-              user={this.props.user}
-              onChange={this.checkCreatePostAvailability}
+        <ErrorBoundary>
+          <div>
+            {this.props.sendTo.expanded &&
+              <SendTo
+                ref={this.registerSelectFeeds}
+                defaultFeed={this.props.sendTo.defaultFeed}
+                isDirects={this.props.isDirects}
+                user={this.props.user}
+                onChange={this.checkCreatePostAvailability}
+              />
+            }
+
+            <Dropzone
+              onInit={this.handleDropzoneInit}
+              addAttachmentResponse={this.handleAddAttachmentResponse}
+              onSending={this.attLoadingStarted}
+              onQueueComplete={this.attLoadingCompleted}
             />
-          }
 
-          <Dropzone
-            onInit={this.handleDropzoneInit}
-            addAttachmentResponse={this.handleAddAttachmentResponse}
-            onSending={this.attLoadingStarted}
-            onQueueComplete={this.attLoadingCompleted}
-          />
+            <Textarea
+              className="post-textarea"
+              value={this.state.postText}
+              onChange={this.onPostTextChange}
+              onFocus={this.props.expandSendTo}
+              onKeyDown={this.checkSave}
+              onPaste={this.handlePaste}
+              minRows={3}
+              maxRows={10}
+              maxLength="1500"
+            />
+          </div>
 
-          <Textarea
-            className="post-textarea"
-            value={this.state.postText}
-            onChange={this.onPostTextChange}
-            onFocus={this.props.expandSendTo}
-            onKeyDown={this.checkSave}
-            onPaste={this.handlePaste}
-            minRows={3}
-            maxRows={10}
-            maxLength="1500"
-          />
-        </div>
+          <div className="post-edit-options">
+            <span className="post-edit-attachments dropzone-trigger" disabled={this.state.dropzoneDisabled}>
+              <Icon icon={faCloudUploadAlt} className="upload-icon" />
+              {' '}
+              Add photos or files
+            </span>
 
-        <div className="post-edit-options">
-          <span className="post-edit-attachments dropzone-trigger" disabled={this.state.dropzoneDisabled}>
-            <Icon icon={faCloudUploadAlt} className="upload-icon" />
-            {' '}
-            Add photos or files
-          </span>
+            <a className="post-edit-more-trigger" onClick={this.toggleMore}>More&nbsp;&#x25be;</a>
 
-          <a className="post-edit-more-trigger" onClick={this.toggleMore}>More&nbsp;&#x25be;</a>
+            {this.state.isMoreOpen ? (
+              <div className="post-edit-more">
+                <label>
+                  <input
+                    className="post-edit-more-checkbox"
+                    type="checkbox"
+                    value={this.state.commentsDisabled}
+                    onChange={this.handleChangeOfMoreCheckbox}
+                  />
+                  <span className="post-edit-more-labeltext">Comments disabled</span>
+                </label>
+              </div>
+            ) : false}
+          </div>
 
-          {this.state.isMoreOpen ? (
-            <div className="post-edit-more">
-              <label>
-                <input
-                  className="post-edit-more-checkbox"
-                  type="checkbox"
-                  value={this.state.commentsDisabled}
-                  onChange={this.handleChangeOfMoreCheckbox}
-                />
-                <span className="post-edit-more-labeltext">Comments disabled</span>
-              </label>
+          <div className="post-edit-actions">
+            {this.props.createPostViewState.isPending ? (
+              <span className="throbber">
+                <Throbber />
+              </span>
+            ) : false}
+
+            <button
+              className="btn btn-default btn-xs"
+              onClick={preventDefault(this.createPost)}
+              disabled={!this.canSubmitForm()}
+            >
+              Post
+            </button>
+          </div>
+
+          {this.state.dropzoneDisabled && (
+            <div className="alert alert-warning">
+            The maximum number of attached files ({config.attachments.maxCount}) has been reached
+            </div>
+          )}
+
+          {this.props.createPostViewState.isError ? (
+            <div className="alert alert-danger">
+              {this.props.createPostViewState.errorString}
             </div>
           ) : false}
-        </div>
 
-        <div className="post-edit-actions">
-          {this.props.createPostViewState.isPending ? (
-            <span className="throbber">
-              <Throbber />
-            </span>
-          ) : false}
+          <PostAttachments
+            attachments={this.state.attachments}
+            isEditing={true}
+            removeAttachment={this.removeAttachment}
+            reorderImageAttachments={this.reorderImageAttachments}
+          />
 
-          <button
-            className="btn btn-default btn-xs"
-            onClick={preventDefault(this.createPost)}
-            disabled={!this.canSubmitForm()}
-          >
-            Post
-          </button>
-        </div>
-
-        {this.state.dropzoneDisabled && (
-          <div className="alert alert-warning">
-          The maximum number of attached files ({config.attachments.maxCount}) has been reached
-          </div>
-        )}
-
-        {this.props.createPostViewState.isError ? (
-          <div className="alert alert-danger">
-            {this.props.createPostViewState.errorString}
-          </div>
-        ) : false}
-
-        <PostAttachments
-          attachments={this.state.attachments}
-          isEditing={true}
-          removeAttachment={this.removeAttachment}
-          reorderImageAttachments={this.reorderImageAttachments}
-        />
-
-        <div className="dropzone-previews" />
+          <div className="dropzone-previews" />
+        </ErrorBoundary>
       </div>
     );
   }

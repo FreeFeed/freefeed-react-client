@@ -49,7 +49,7 @@ const commentHighlighter = ({ commentsHighlights, user, postsViewState }, commen
   const highlightIndex = (baseIndex + omittedComments) - arrows;
   const highlightCommentId = commentList[highlightIndex < baseIndex ? highlightIndex : -1];
 
-  return (commentId, commentAuthor) => (author && author === commentAuthor.username) || highlightCommentId === commentId;
+  return (commentId, commentAuthor) => (author && commentAuthor && author === commentAuthor.username) || highlightCommentId === commentId;
 };
 
 const selectCommentLikes = ({ commentLikes, users }, commentId) => {
@@ -100,20 +100,14 @@ export const joinPostData = (state) => (postId) => {
       return _comments;
     }
     const commentViewState = state.commentViewState[commentId];
-    const placeholderUser = { id: comment.createdBy };
-    const author = state.users[comment.createdBy] || placeholderUser;
-    if (author === placeholderUser) {
-      if (typeof Raven !== 'undefined') {
-        Raven.captureMessage(`We've got comment with unknown author with id`, { extra: { uid: placeholderUser.id } });
-      }
-    }
-    const previousPost = _comments[index - 1] || { createdBy: null, createdAt: "0" };
+    const author = state.users[comment.createdBy] || null;
+    const previousComment = _comments[index - 1] || { createdBy: null, createdAt: "0" };
     const omitBubble = omitRepeatedBubbles
       && postViewState.omittedComments === 0
       && !comment.hideType
-      && !previousPost.hideType
-      && comment.createdBy === previousPost.createdBy
-      && comment.createdAt - previousPost.createdAt < ommitBubblesThreshold;
+      && !previousComment.hideType
+      && comment.createdBy === previousComment.createdBy
+      && comment.createdAt - previousComment.createdAt < ommitBubblesThreshold;
     const isEditable = (user.id === comment.createdBy);
     const isDeletable = isModeratable || isModeratable;
     const highlighted = highlightComment(commentId, author);

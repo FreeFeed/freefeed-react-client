@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import moment from 'moment';
+import format from 'date-fns/format';
 
 import { preventDefault } from '../utils';
 import { setUserColorScheme } from '../redux/action-creators';
 import { SCHEME_DARK, SCHEME_SYSTEM, SCHEME_LIGHT, systemColorSchemeSupported } from '../services/appearance';
 import UserName from './user-name';
 import RecentGroups from './recent-groups';
+import ErrorBoundary from './error-boundary';
 import { InvisibleSelect } from './invisibe-select';
 
 
@@ -82,7 +83,7 @@ const SideBarFreeFeed = () => (
 
 const SideBarMemories = () => {
   const today = new Date();
-  const todayString = moment(today).format('MMDD');
+  const todayString = format(today, 'MMdd');
   const todayYear = today.getFullYear();
   const yearLinks = [[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]].map((years, index) => (
     <div className="years-row" key={index}>
@@ -95,7 +96,7 @@ const SideBarMemories = () => {
   return (
     <div className="box">
       <div className="box-header-memories">
-        Memories of {moment(today).format("MMMM D")}
+        Memories of {format(today, "MMMM d")}
       </div>
       <div className="box-body">
         <div className="year-links-row">
@@ -263,15 +264,17 @@ const SideBarAppearance = connect(
 const SideBar = ({ user, signOut, recentGroups }) => {
   return (
     <div className="col-md-3 sidebar">
-      <LoggedInBlock user={user} signOut={signOut} />
-      <SideBarFriends user={user} />
-      <SideBarArchive user={user} />
-      <SideBarFreeFeed />
-      <SideBarGroups recentGroups={recentGroups} />
-      <SideBarBookmarklet />
-      <SideBarMemories />
-      <SideBarCoinJar />
-      <SideBarAppearance />
+      <ErrorBoundary>
+        <LoggedInBlock user={user} signOut={signOut} />
+        <SideBarFriends user={user} />
+        <SideBarArchive user={user} />
+        <SideBarFreeFeed />
+        <SideBarGroups recentGroups={recentGroups} />
+        <SideBarBookmarklet />
+        <SideBarMemories />
+        <SideBarCoinJar />
+        <SideBarAppearance />
+      </ErrorBoundary>
     </div>
   );
 };

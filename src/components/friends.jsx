@@ -9,6 +9,7 @@ import {
   revokeSentRequest
 } from '../redux/action-creators';
 import { tileUserListFactory, PLAIN, WITH_REQUEST_HANDLES, WITH_REVOKE_SENT_REQUEST } from './tile-user-list';
+import ErrorBoundary from './error-boundary';
 
 
 const TileList = tileUserListFactory({ type: PLAIN, displayQuantity: true });
@@ -21,29 +22,31 @@ const FriendsHandler = (props) => {
 
   return (
     <div className="box">
-      <div className="box-header-timeline">
-        Friends
-      </div>
-      <div className="box-body">
-        <TileListWithAcceptAndReject
-          header={feedRequestsHeader}
-          users={props.feedRequests}
-          acceptRequest={props.acceptUserRequest}
-          rejectRequest={props.rejectUserRequest}
-        />
+      <ErrorBoundary>
+        <div className="box-header-timeline">
+          Friends
+        </div>
+        <div className="box-body">
+          <TileListWithAcceptAndReject
+            header={feedRequestsHeader}
+            users={props.feedRequests}
+            acceptRequest={props.acceptUserRequest}
+            rejectRequest={props.rejectUserRequest}
+          />
 
 
-        <TileList {...props.mutual} />
-        <TileList {...props.subscriptions} />
-        <TileList {...props.blockedByMe} />
+          <TileList {...props.mutual} />
+          <TileList {...props.subscriptions} />
+          <TileList {...props.blockedByMe} />
 
-        <TileListWithRevoke
-          header={sentRequestsHeader}
-          users={props.sentRequests}
-          revokeSentRequest={props.revokeSentRequest}
-        />
-      </div>
-      <div className="box-footer" />
+          <TileListWithRevoke
+            header={sentRequestsHeader}
+            users={props.sentRequests}
+            revokeSentRequest={props.revokeSentRequest}
+          />
+        </div>
+        <div className="box-footer" />
+      </ErrorBoundary>
     </div>
   );
 };

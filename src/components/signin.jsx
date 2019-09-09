@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { signInChange, signIn, signInEmpty } from '../redux/action-creators';
 import { preventDefault } from '../utils';
 import LoaderContainer from './loader-container';
+import ErrorBoundary from './error-boundary';
 
 
 function mapStateToProps(state) {
@@ -42,58 +43,61 @@ class Signin extends React.PureComponent {
 
     return (
       <div className="box">
-        <div className="box-header-timeline">
-          Hello
-        </div>
-        <div className="box-body">
-          <div className="col-md-12">
-            <h2 className="p-signin-header">Sign in</h2>
-            {props.error && (
-              <div className="alert alert-danger p-signin-error" role="alert">
-                <span id="error-message">{props.error}</span>
-              </div>
-            )}
-            {props.requireAuth && (
-              <div className="alert alert-danger p-signin-error" role="alert">
-                <span id="error-message">Please sign in or <Link to="/signup">sign up</Link> before visiting this page.</span>
-              </div>
-            )}
-            <div className="row">
-              <div className="col-md-6">
-                <LoaderContainer loading={props.loading}>
-                  <form onSubmit={this.handleFormSubmit} className="p-signin">
-                    <div className="form-group">
-                      <label htmlFor="username">Username or e-mail address</label>
-                      <input
-                        id="username"
-                        name="username"
-                        className="ember-view ember-text-field form-control"
-                        type="text"
-                        onChange={this.handleUsernameChange}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="password">Password</label>
-                      <input
-                        id="password"
-                        name="password"
-                        className="ember-view ember-text-field form-control"
-                        type="password"
-                        onChange={this.handlePasswordChange}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <button className="btn btn-default p-singin-action" type="submit">Sign in</button>
-                    </div>
-                  </form>
-                </LoaderContainer>
-                <p>New to freefeed? <Link to="/signup">Create an account »</Link></p>
-                <p>Forgot your password? <Link to="/restore">Request password reset instructions »</Link></p>
+        <ErrorBoundary>
+          <div className="box-header-timeline">
+            Hello
+          </div>
+          <div className="box-body">
+            <div className="col-md-12">
+              <h2 className="p-signin-header">Sign in</h2>
+              {props.error && (
+                <div className="alert alert-danger p-signin-error" role="alert">
+                  <span id="error-message">{props.error}</span>
+                </div>
+              )}
+              {props.requireAuth && (
+                <div className="alert alert-danger p-signin-error" role="alert">
+                  <span id="error-message">Please sign in or <Link to="/signup">sign up</Link> before visiting this page.</span>
+                </div>
+              )}
+              <div className="row">
+                <div className="col-md-6">
+                  <LoaderContainer loading={props.loading}>
+                    <form onSubmit={this.handleFormSubmit} className="p-signin">
+                      <div className="form-group">
+                        <label htmlFor="username">Username or e-mail address</label>
+                        <input
+                          id="username"
+                          name="username"
+                          className="ember-view ember-text-field form-control"
+                          type="text"
+                          onChange={this.handleUsernameChange}
+                          autoFocus="true"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="password">Password</label>
+                        <input
+                          id="password"
+                          name="password"
+                          className="ember-view ember-text-field form-control"
+                          type="password"
+                          onChange={this.handlePasswordChange}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <button className="btn btn-default p-singin-action" type="submit">Sign in</button>
+                      </div>
+                    </form>
+                  </LoaderContainer>
+                  <p>New to freefeed? <Link to="/signup">Create an account »</Link></p>
+                  <p>Forgot your password? <Link to="/restore">Request password reset instructions »</Link></p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="box-footer" />
+          <div className="box-footer" />
+        </ErrorBoundary>
       </div>
     );
   }

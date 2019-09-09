@@ -8,6 +8,7 @@ import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
 import PostComment from './post-comment';
 import MoreCommentsWrapper from './more-comments-wrapper';
+import ErrorBoundary from './error-boundary';
 import { Icon } from './fontawesome-icons';
 import { faCommentPlus } from './fontawesome-custom-icons';
 
@@ -227,10 +228,12 @@ export default class PostComments extends React.Component {
 
     return (
       <div className="comments" ref={this.registerRootEl}>
-        {first ? this.renderComment(first) : false}
-        {this.renderMiddle()}
-        {last ? this.renderComment(last) : false}
-        {this.renderAddComment()}
+        <ErrorBoundary>
+          {first ? this.renderComment(first) : false}
+          {this.renderMiddle()}
+          {last ? this.renderComment(last) : false}
+          {this.renderAddComment()}
+        </ErrorBoundary>
       </div>
     );
   }

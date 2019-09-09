@@ -3,18 +3,17 @@ import { Link } from 'react-router';
 import Textarea from 'react-textarea-autosize';
 import _ from 'lodash';
 import classnames from 'classnames';
-import moment from 'moment';
 
 import { preventDefault, confirmFirst } from '../utils';
 import { READMORE_STYLE_COMPACT, COMMENT_DELETED } from '../utils/frontend-preferences-options';
 import { commentReadmoreConfig } from '../utils/readmore-config';
-import { datetimeFormat } from '../utils/get-date-from-short-string';
 import { Throbber } from './throbber';
 
 import CommentLikes from './comment-likes';
 import PieceOfText from './piece-of-text';
 import Expandable from './expandable';
 import UserName from './user-name';
+import TimeDisplay from './time-display';
 
 
 export default class PostComment extends React.Component {
@@ -240,7 +239,7 @@ export default class PostComment extends React.Component {
             <span className="comment-timestamp">
               {' - '}
               <Link to={`${this.props.entryUrl}#comment-${this.props.id}`}>
-                {moment(+this.props.createdAt).format(datetimeFormat)}
+                <TimeDisplay timeStamp={+this.props.createdAt} showAbsTime />
               </Link>
             </span>
           ) : false}
@@ -287,7 +286,7 @@ export default class PostComment extends React.Component {
     return (
       <div
         className={className}
-        data-author={this.props.isEditing ? '' : this.props.user.username}
+        data-author={(this.props.user && !this.props.isEditing) ? this.props.user.username : ''}
         ref={this.registerCommentContainer}
       >
         {this.renderCommentLikes()}

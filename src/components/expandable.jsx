@@ -4,6 +4,8 @@ import classnames from "classnames";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { Icon } from "./fontawesome-icons";
 
+import ErrorBoundary from './error-boundary';
+
 
 const DEFAULT_MAX_LINES = 8;
 const DEFAULT_ABOVE_FOLD_LINES = 5;
@@ -36,12 +38,14 @@ export default class Expandable extends React.Component {
     const style = { maxHeight: expanded ? "" : `${this.state.maxHeight}px` };
     return (
       <div className={cn} style={style}>
-        {this.props.children}
-        {!expanded && (
-          <div className="expand-panel">
-            <div className="expand-button"><i onClick={this.userExpand}><Icon icon={faChevronDown} className="expand-icon" /> Read more</i> {this.props.bonusInfo}</div>
-          </div>
-        )}
+        <ErrorBoundary>
+          {this.props.children}
+          {!expanded && (
+            <div className="expand-panel">
+              <div className="expand-button"><i onClick={this.userExpand}><Icon icon={faChevronDown} className="expand-icon" /> Read more</i> {this.props.bonusInfo}</div>
+            </div>
+          )}
+        </ErrorBoundary>
       </div>
     );
   }

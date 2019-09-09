@@ -1,8 +1,5 @@
-import moment from "moment";
+import format from "date-fns/format";
 
-
-export const dateFormat = 'MMM D, YYYY';
-export const datetimeFormat = 'MMM D, YYYY HH:mm';
 
 function getDateParamsFromString(dateString) {
   return {
@@ -20,6 +17,6 @@ export function getDateForMemoriesRequest(dateString) {
 export function formatDateFromShortString(dateString) {
   const { year, month, date } = getDateParamsFromString(dateString);
   const fullDate = new Date(year, Number(month) - 1, date);
-  return moment(fullDate).format(dateFormat);
+  return format(fullDate, 'MMM d, yyyy');
 }
 

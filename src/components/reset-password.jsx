@@ -73,11 +73,11 @@ class ResetPassword extends React.Component {
                   <form onSubmit={this.handleSubmit} className="p-signin">
                     <div className="form-group">
                       <label htmlFor="pass">Password</label>
-                      <input id="pass" className="form-control" type="password" ref={this.registerPass} />
+                      <input name="pass" id="pass" className="form-control" type="password" ref={this.registerPass} />
                     </div>
                     <div className="form-group">
                       <label htmlFor="confirm">Password confirmation</label>
-                      <input id="confirm" className="form-control" type="password" ref={this.registerConfirm} />
+                      <input name="confirm" id="confirm" className="form-control" type="password" ref={this.registerConfirm} />
                     </div>
                     <div className="form-group">
                       <button className="btn btn-default p-singin-action" type="submit">Reset password</button>

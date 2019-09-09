@@ -1,0 +1,18 @@
+.error-boundary {
+  display: block;
+  padding: 10px;
+  color: #000;
+  border: 2px solid #a00;
+  text-align: left;
+  line-height: 16px;
+}
+
+.error-boundary-header {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.error-boundary-details {
+  font-size: 12px;
+  margin-top: 10px;
+}

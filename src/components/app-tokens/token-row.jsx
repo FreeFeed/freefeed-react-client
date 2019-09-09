@@ -22,11 +22,13 @@ function TokenRow({
 }) {
   const onReissue = useCallback(
     (tokenId) => () => confirm('Are you sure you want to reissue this token?\nThe previously issued token will stop working immediately!')
-    && reissueAppToken(tokenId)
+    && reissueAppToken(tokenId),
+    [reissueAppToken]
   );
   const onDelete = useCallback(
     (tokenId) => () => confirm('Are you sure you want to ⚠DELETE⚠ this token?\nToken will stop working immediately!')
-    && deleteAppToken(tokenId)
+    && deleteAppToken(tokenId),
+    [deleteAppToken]
   );
   const onEdit = useCallback(() => {
     const title = prompt('Enter new token title:', token.title);
@@ -34,14 +36,15 @@ function TokenRow({
       return;
     }
     updateAppToken(token.id, { title });
-  });
+  }, [token, updateAppToken]);
 
   const rootEl = useRef();
   useEffect(() => {
-    const handler = ({ target }) => target === rootEl.current && deleteAppTokenId(token.id);
-    rootEl.current && rootEl.current.addEventListener('transitionend', handler);
-    return () => rootEl.current && rootEl.current.removeEventListener('transitionend', handler);
-  }, []);
+    const el = rootEl.current;
+    const handler = ({ target }) => target === el && deleteAppTokenId(token.id);
+    el && el.addEventListener('transitionend', handler);
+    return () => el && el.removeEventListener('transitionend', handler);
+  }, [deleteAppTokenId, token.id]);
 
   const scopesTexts = useMemo(() => token.scopes.map((s) => {
     const scope = scopes.find(({ name }) => name === s);

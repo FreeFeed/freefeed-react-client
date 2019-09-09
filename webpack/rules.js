@@ -23,13 +23,14 @@ class RuleGenerator {
     return {
       test:    /\.m?jsx?$/,
       exclude: (modulePath) => {
-        return /node_modules\/(?!(autotrack|dom-utils))/.test(modulePath);
+        return /node_modules\/(?!(autotrack|dom-utils|social-text-tokenizer))/.test(modulePath);
       },
       use: [
         {
           loader:  'babel-loader',
           options: {
             babelrc: false,
+            compact: false,
             presets: skipFalsy([
               "@babel/react",
               ["@babel/env", {
@@ -47,7 +48,7 @@ class RuleGenerator {
               }],
             ]),
             plugins: skipFalsy([
-              // ["lodash", { "id": ["lodash", "recompose"] }],
+              ["lodash", { "id": ["lodash"] }],
               "@babel/syntax-class-properties",
               "@babel/syntax-do-expressions",
               "@babel/syntax-dynamic-import",

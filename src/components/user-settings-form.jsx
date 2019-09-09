@@ -3,6 +3,7 @@ import classnames from 'classnames';
 
 import { preventDefault } from '../utils';
 import { Throbber } from './throbber';
+import ErrorBoundary from './error-boundary';
 
 
 const
@@ -75,90 +76,92 @@ export default class UserSettingsForm extends React.Component {
 
     return (
       <form onSubmit={preventDefault(this.updateUser)}>
-        <div className={className}>
-          {
-            this.props.screenName ? (
-              <span className="help-block displayName-input-hint">{this.props.screenName.length} of 25</span>
-            ) : false
-          }
-          <label htmlFor="displayName-input">Display name:</label>
-          <input id="displayName-input" className="form-control" name="screenName" type="text" defaultValue={this.props.user.screenName} onChange={this.updateSetting('screenName')} maxLength="100" />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email-input">Email:</label>
-          <input id="email-input" className="form-control" name="email" type="text" defaultValue={this.props.user.email} onChange={this.updateSetting('email')} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="description-textarea">Description:</label>
-          <textarea id="description-textarea" className="form-control" name="description" defaultValue={this.props.user.description} onChange={this.updateSetting('description')} maxLength="1500" />
-        </div>
-        <div className="form-group">
+        <ErrorBoundary>
+          <div className={className}>
+            {
+              this.props.screenName ? (
+                <span className="help-block displayName-input-hint">{this.props.screenName.length} of 25</span>
+              ) : false
+            }
+            <label htmlFor="displayName-input">Display name:</label>
+            <input id="displayName-input" className="form-control" name="screenName" type="text" defaultValue={this.props.user.screenName} onChange={this.updateSetting('screenName')} maxLength="100" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="email-input">Email:</label>
+            <input id="email-input" className="form-control" name="email" type="text" defaultValue={this.props.user.email} onChange={this.updateSetting('email')} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="description-textarea">Description:</label>
+            <textarea id="description-textarea" className="form-control" name="description" defaultValue={this.props.user.description} onChange={this.updateSetting('description')} maxLength="1500" />
+          </div>
+          <div className="form-group">
+            <p>
+            Your feed is:
+            </p>
+            <div className="radio">
+              <label>
+                <input
+                  type="radio"
+                  name="privacy"
+                  value={PUBLIC_FEED}
+                  checked={feedPrivacy === PUBLIC_FEED}
+                  onChange={this.updatePrivacy}
+                />
+                Public &mdash; anyone can see your posts
+              </label>
+            </div>
+            <div className="radio">
+              <label>
+                <input
+                  type="radio"
+                  name="privacy"
+                  value={PROTECTED_FEED}
+                  checked={feedPrivacy === PROTECTED_FEED}
+                  onChange={this.updatePrivacy}
+                />
+                Protected &mdash; anonymous users and search engines cannot see your posts
+              </label>
+            </div>
+            <div className="radio">
+              <label>
+                <input
+                  type="radio"
+                  name="privacy"
+                  value={PRIVATE_FEED}
+                  checked={feedPrivacy === PRIVATE_FEED}
+                  onChange={this.updatePrivacy}
+                />
+                Private &mdash; only people you approve can see your posts
+              </label>
+            </div>
+          </div>
+          <div className="form-group">
+            <div className="checkbox">
+              <label>
+                <input
+                  type="checkbox"
+                  name="directsFromAll"
+                  checked={this.props.directsFromAll || false}
+                  onChange={this.updateSetting('directsFromAll')}
+                />
+                Accept direct messages from all users
+              </label>
+            </div>
+          </div>
           <p>
-          Your feed is:
+            <button className="btn btn-default" type="submit">Update</button>
+            {this.props.isSaving ? (
+              <span className="settings-throbber">
+                <Throbber />
+              </span>
+            ) : false}
           </p>
-          <div className="radio">
-            <label>
-              <input
-                type="radio"
-                name="privacy"
-                value={PUBLIC_FEED}
-                checked={feedPrivacy === PUBLIC_FEED}
-                onChange={this.updatePrivacy}
-              />
-              Public &mdash; anyone can see your posts
-            </label>
-          </div>
-          <div className="radio">
-            <label>
-              <input
-                type="radio"
-                name="privacy"
-                value={PROTECTED_FEED}
-                checked={feedPrivacy === PROTECTED_FEED}
-                onChange={this.updatePrivacy}
-              />
-              Protected &mdash; anonymous users and search engines cannot see your posts
-            </label>
-          </div>
-          <div className="radio">
-            <label>
-              <input
-                type="radio"
-                name="privacy"
-                value={PRIVATE_FEED}
-                checked={feedPrivacy === PRIVATE_FEED}
-                onChange={this.updatePrivacy}
-              />
-              Private &mdash; only people you approve can see your posts
-            </label>
-          </div>
-        </div>
-        <div className="form-group">
-          <div className="checkbox">
-            <label>
-              <input
-                type="checkbox"
-                name="directsFromAll"
-                checked={this.props.directsFromAll || false}
-                onChange={this.updateSetting('directsFromAll')}
-              />
-              Accept direct messages from all users
-            </label>
-          </div>
-        </div>
-        <p>
-          <button className="btn btn-default" type="submit">Update</button>
-          {this.props.isSaving ? (
-            <span className="settings-throbber">
-              <Throbber />
-            </span>
+          {this.props.success ? (
+            <div className="alert alert-info" role="alert">Updated!</div>
+          ) : this.props.error ? (
+            <div className="alert alert-danger" role="alert">{this.props.errorMessage}</div>
           ) : false}
-        </p>
-        {this.props.success ? (
-          <div className="alert alert-info" role="alert">Updated!</div>
-        ) : this.props.error ? (
-          <div className="alert alert-danger" role="alert">{this.props.errorMessage}</div>
-        ) : false}
+        </ErrorBoundary>
       </form>
     );
   }

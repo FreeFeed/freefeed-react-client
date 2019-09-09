@@ -3,7 +3,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { pick } from 'lodash';
 
+import { faLaptop } from '@fortawesome/free-solid-svg-icons';
+import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 import { getAppTokens } from '../../redux/action-creators';
+import { Icon } from '../fontawesome-icons';
 import TokenRow from './token-row';
 
 
@@ -12,7 +15,7 @@ function Tokens({
   tokenIds,
   getAppTokens,
 }) {
-  useEffect(() => void getAppTokens(), []);
+  useEffect(() => void getAppTokens(), [getAppTokens]);
 
   if (status.loading) {
     return <p>Loading...</p>;
@@ -34,12 +37,11 @@ function Tokens({
         {tokenIds.map((id) => <TokenRow key={id} id={id} />)}
       </div>
       <p>
-        For developers:
+        <Icon icon={faQuestionCircle} /> <Link to="/settings/app-tokens/scopes">About the token access rights and scopes</Link>
       </p>
-      <ul>
-        <li><Link to="/settings/app-tokens/create-link">Create magic link</Link></li>
-        <li><Link to="/settings/app-tokens/scopes">Token scopes reference</Link></li>
-      </ul>
+      <p>
+        <Icon icon={faLaptop} /> For developers: <Link to="/settings/app-tokens/create-link">Create magic link</Link>
+      </p>
     </>
   );
 }
