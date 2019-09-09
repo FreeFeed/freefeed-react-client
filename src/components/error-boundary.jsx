@@ -1,28 +1,41 @@
+/*global Raven*/
 import React from 'react';
 
 
-class ErrorBoundary extends React.Component {
+class ErrorBoundary extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = { hasError: false, error: null };
+    this.state = { hasError: false, error: {}, errorInfo: {} };
   }
 
   static getDerivedStateFromError(error) {
     return { hasError: true, error };
   }
 
-  componentDidCatch() {
-    // You can also log the error to an error reporting service
-    // See https://reactjs.org/docs/error-boundaries.html
+  componentDidCatch(error, errorInfo) {
+    if (typeof Raven !== 'undefined') {
+      Raven.captureException(error, { level: 'error', tags: { area: 'react/errorBoundary' }, extra: { errorInfo } });
+    }
+    this.setState({ errorInfo });
   }
 
   render() {
-    if (this.state.hasError) {
-      const errorMessage = this.state.error ? `${this.state.error.name}: ${this.state.error.message}` : 'Unexpected error';
+    const { error, errorInfo, hasError } = this.state;
+
+    if (hasError) {
+      const errorLocation = errorInfo.componentStack ? `${errorInfo.componentStack.split('\n').slice(0, 2).join(' ')}` : '';
+      const errorMessage = `${error.name}: ${error.message} ${errorLocation}`;
+
       return (
         <div className="error-boundary">
           <div className="error-boundary-header">Oops! Something went wrong :(</div>
-          <div className="error-boundary-details">{errorMessage}</div>
+          <div className="error-boundary-details">
+            Please contact <a href="/support">@support</a> with a screenshot of this message.
+          </div>
+          <div className="error-boundary-details">
+            {errorMessage}, {window.navigator.userAgent}
+            {typeof Raven !== 'undefined' ? '' : ', no Raven'}
+          </div>
         </div>);
     }
 

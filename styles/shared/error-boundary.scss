@@ -3,14 +3,16 @@
   padding: 10px;
   color: #000;
   border: 2px solid #a00;
+  text-align: left;
+  line-height: 16px;
 }
 
 .error-boundary-header {
   font-size: 14px;
   font-weight: bold;
-  margin-bottom: 10px;
 }
 
 .error-boundary-details {
   font-size: 12px;
+  margin-top: 10px;
 }

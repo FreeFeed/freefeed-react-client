@@ -4,3 +4,4 @@
 .module-cache
 .history
 /yarn-error.log
+.DS_Store
