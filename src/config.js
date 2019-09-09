@@ -1,14 +1,19 @@
+/* global WEBPACK_SAYS_USE_CANDY */
 import * as FrontendPrefsOptions from './utils/frontend-preferences-options';
 import * as FeedOptions from './utils/feed-options';
 
 
+const shouldUseCandy = typeof WEBPACK_SAYS_USE_CANDY !== 'undefined' && WEBPACK_SAYS_USE_CANDY;
+const HOST = shouldUseCandy ? 'https://candy.freefeed.net' : 'http://localhost:3000';
+const COOKIE_DOMAIN = shouldUseCandy ? 'candy.freefeed.net' : 'localhost';
+
 const config = {
   api: {
-    host:     'http://localhost:3000',
+    host:     HOST,
     sentinel: null // keep always last
   },
   auth: {
-    cookieDomain:   'localhost',
+    cookieDomain:   COOKIE_DOMAIN,
     tokenPrefix:    'freefeed_',
     userStorageKey: 'USER_KEY',
     sentinel:       null // keep always last
