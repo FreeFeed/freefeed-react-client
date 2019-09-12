@@ -4,7 +4,6 @@ import { joinPostData, postActions } from './select-utils';
 
 import Post, { canonicalURI } from './post';
 
-
 class SinglePostHandler extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { post, router } = nextProps;
@@ -57,12 +56,8 @@ class SinglePostHandler extends React.Component {
 
     return (
       <div className="box">
-        <div className="box-header-timeline">
-          {props.boxHeader}
-        </div>
-        <div className="box-body">
-          {postBody}
-        </div>
+        <div className="box-header-timeline">{props.boxHeader}</div>
+        <div className="box-body">{postBody}</div>
         <div className="box-footer" />
       </div>
     );
@@ -83,4 +78,7 @@ function selectActions(dispatch) {
   return { ...postActions(dispatch) };
 }
 
-export default connect(selectState, selectActions)(SinglePostHandler);
+export default connect(
+  selectState,
+  selectActions,
+)(SinglePostHandler);

@@ -42,7 +42,7 @@ body.dark-theme {
 
   .arrow-span,
   .sidebar a.bookmarklet-button,
-  select[name="os0"],
+  select[name='os0'],
   .color-scheme-selector select,
   .search-memo,
   .timeline-post.direct-post,
@@ -64,7 +64,7 @@ body.dark-theme {
   .post .post-userpic,
   .image-attachments .image-attachment-link,
   .avatar img,
-  select[name="os0"],
+  select[name='os0'],
   .feed-options-switch .dropdown,
   .list-group-item,
   .panel-default {
@@ -155,10 +155,7 @@ body.dark-theme {
     );
   }
 
-  .timeline-post.direct-post
-    .link-preview
-    .folder-container
-    .content-wrapper.folded::after {
+  .timeline-post.direct-post .link-preview .folder-container .content-wrapper.folded::after {
     background: linear-gradient(
       scale-color($bg-color-lighter, $alpha: -100%) 0%,
       scale-color($bg-color-lighter, $alpha: -80%) 25%,
@@ -349,9 +346,9 @@ body.dark-theme {
     color: $text-color;
   }
 
-  .dd-menu .dd-menu-items ul li:hover:not([role="separator"]):not(.separator),
+  .dd-menu .dd-menu-items ul li:hover:not([role='separator']):not(.separator),
   .dd-menu .dd-menu-items ul li > *:focus,
-  .dd-menu .dd-menu-items ol li:hover:not([role="separator"]):not(.separator),
+  .dd-menu .dd-menu-items ol li:hover:not([role='separator']):not(.separator),
   .dd-menu .dd-menu-items ol li > *:focus {
     background-color: $bg-highlight-color;
     color: $text-color-lighter;

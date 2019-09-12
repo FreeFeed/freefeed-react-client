@@ -2,7 +2,6 @@ import React from 'react';
 
 import { ELEMENT_RESIZE_EVENT } from './events';
 
-
 export default class ScrollCompensator extends React.Component {
   root = null;
   prevHeight = 0;
@@ -25,7 +24,8 @@ export default class ScrollCompensator extends React.Component {
     const halfScreen = Math.round(document.documentElement.clientHeight / 2);
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    if (scrollTop > halfScreen / 2) { // if user scrolled more than 1/4 screen from site top
+    if (scrollTop > halfScreen / 2) {
+      // if user scrolled more than 1/4 screen from site top
       const top = Math.round(this.root.getBoundingClientRect().top);
       let scroll = 0;
       if (top > halfScreen) {
@@ -34,7 +34,7 @@ export default class ScrollCompensator extends React.Component {
         scroll = newHeight - this.prevHeight;
       } else {
         // content in the center of the screen must not move
-        scroll = Math.round(newHeight * (halfScreen - top) / this.prevHeight);
+        scroll = Math.round((newHeight * (halfScreen - top)) / this.prevHeight);
       }
       scrollBy(0, scroll);
     }
@@ -43,10 +43,6 @@ export default class ScrollCompensator extends React.Component {
   };
 
   render() {
-    return (
-      <div ref={this.setRoot}>
-        {this.props.children}
-      </div>
-    );
+    return <div ref={this.setRoot}>{this.props.children}</div>;
   }
 }

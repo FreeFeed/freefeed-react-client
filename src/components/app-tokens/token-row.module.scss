@@ -8,13 +8,13 @@
     display: none;
   }
   &::before {
-    content: "Allows: ";
+    content: 'Allows: ';
   }
 }
 
 .fromBlock {
   @extend .allowsBlock;
   &::before {
-    content: "From: ";
+    content: 'From: ';
   }
 }

@@ -10,7 +10,6 @@ import subYears from 'date-fns/subYears';
 
 import config from '../config';
 
-
 const Chart = ReactHighcharts.withHighcharts(Highcharts);
 HighchartsMore(Chart.Highcharts);
 
@@ -22,7 +21,7 @@ class StatsChart extends React.Component {
   }
 
   async componentDidMount() {
-    const to_date = format(startOfYesterday(), `yyyy-MM-dd`);   // Yesterday
+    const to_date = format(startOfYesterday(), `yyyy-MM-dd`); // Yesterday
     const from_date = format(subYears(new Date(), 1), `yyyy-MM-dd`); // Stats for 1 year
 
     const url = `${config.api.host}/v2/stats?data=${this.props.type}&start_date=${from_date}&end_date=${to_date}`;
@@ -36,7 +35,8 @@ class StatsChart extends React.Component {
         const dt = parseISO(metric.date);
         metrics.push([
           Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate()),
-          Number(metric[this.props.type])]);
+          Number(metric[this.props.type]),
+        ]);
       }
     } catch (e) {
       metrics.push(e);
@@ -49,12 +49,12 @@ class StatsChart extends React.Component {
 
   render() {
     const config = {
-      chart:       { zoomType: 'x' },
-      exporting:   { enabled: true },
-      xAxis:       { type: 'datetime' },
-      yAxis:       { title: { text: null } },
-      title:       { text: this.props.title },
-      legend:      { enabled: false },
+      chart: { zoomType: 'x' },
+      exporting: { enabled: true },
+      xAxis: { type: 'datetime' },
+      yAxis: { title: { text: null } },
+      title: { text: this.props.title },
+      legend: { enabled: false },
       plotOptions: {
         area: {
           fillColor: {
@@ -62,30 +62,35 @@ class StatsChart extends React.Component {
               x1: 0,
               y1: 0,
               x2: 0,
-              y2: 1
+              y2: 1,
             },
             stops: [
               [0, Highcharts.getOptions().colors[0]],
-              [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-            ]
+              [
+                1,
+                Highcharts.Color(Highcharts.getOptions().colors[0])
+                  .setOpacity(0)
+                  .get('rgba'),
+              ],
+            ],
           },
-          marker:    { radius: 2 },
+          marker: { radius: 2 },
           lineWidth: 1,
-          states:    { hover: { lineWidth: 1 } },
-        }
+          states: { hover: { lineWidth: 1 } },
+        },
       },
-      series: [{
-        type: 'area',
-        name: this.props.title,
-        data: []
-      }]
+      series: [
+        {
+          type: 'area',
+          name: this.props.title,
+          data: [],
+        },
+      ],
     };
 
     config.series[0].data = this.state.metrics;
 
-    return (
-      <Chart config={config} />
-    );
+    return <Chart config={config} />;
   }
 }
 

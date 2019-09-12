@@ -4,22 +4,29 @@ import classnames from 'classnames';
 import _ from 'lodash';
 import memoize from 'memoize-one';
 
-import { createBookmarkletPost, resetPostCreateForm, addAttachmentResponse } from '../redux/action-creators';
+import {
+  createBookmarkletPost,
+  resetPostCreateForm,
+  addAttachmentResponse,
+} from '../redux/action-creators';
 
 import CreateBookmarkletPost from './create-bookmarklet-post';
 import SignIn from './signin';
 
 // Auto-select thumbnails on popular services
 const imagesFromURL = memoize((url) => {
-  const services = [{
-    // Instagram
-    from: /https?:\/\/www\.instagram\.com\/p\/([\w-]+)\//i,
-    to:   ([, id]) => (`https://www.instagram.com/p/${id}/media/?size=l`)
-  }, {
-    // YouTube
-    from: /https?:\/\/(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\S*[^\w\s-])([\w-]{11})(?=[^\w-]|$)[?=&+%\w.-]*/i,
-    to:   ([, id]) => (`https://i.ytimg.com/vi/${id}/hqdefault.jpg`)
-  }];
+  const services = [
+    {
+      // Instagram
+      from: /https?:\/\/www\.instagram\.com\/p\/([\w-]+)\//i,
+      to: ([, id]) => `https://www.instagram.com/p/${id}/media/?size=l`,
+    },
+    {
+      // YouTube
+      from: /https?:\/\/(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\S*[^\w\s-])([\w-]{11})(?=[^\w-]|$)[?=&+%\w.-]*/i,
+      to: ([, id]) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
+    },
+  ];
 
   const imageUrls = [];
   services.forEach((service) => {
@@ -72,17 +79,20 @@ class Layout extends React.Component {
     const { props } = this;
 
     const layoutClassNames = classnames({
-      'container':       true,
-      'bookmarklet':     true,
-      'unauthenticated': !props.authenticated
+      container: true,
+      bookmarklet: true,
+      unauthenticated: !props.authenticated,
     });
 
     return (
       <div className={layoutClassNames}>
         <header>
           <h1>
-            Share on <a href="/" target="_blank">FreeFeed</a>
-            {props.authenticated ? (` as ${props.user.username}`) : false}
+            Share on{' '}
+            <a href="/" target="_blank">
+              FreeFeed
+            </a>
+            {props.authenticated ? ` as ${props.user.username}` : false}
           </h1>
         </header>
 
@@ -117,16 +127,19 @@ function selectState(state) {
     authenticated,
     user,
     sendTo,
-    createPostViewState
+    createPostViewState,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     createBookmarkletPost: (...args) => dispatch(createBookmarkletPost(...args)),
-    resetPostCreateForm:   (...args) => dispatch(resetPostCreateForm(...args)),
+    resetPostCreateForm: (...args) => dispatch(resetPostCreateForm(...args)),
     addAttachmentResponse: (...args) => dispatch(addAttachmentResponse(...args)),
   };
 }
 
-export default connect(selectState, mapDispatchToProps)(Layout);
+export default connect(
+  selectState,
+  mapDispatchToProps,
+)(Layout);

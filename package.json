@@ -79,6 +79,7 @@
     "eslint-plugin-you-dont-need-lodash-underscore": "~6.7.0",
     "file-loader": "~4.2.0",
     "html-webpack-plugin": "~3.2.0",
+    "husky": "^3.0.5",
     "mini-css-extract-plugin": "~0.8.0",
     "mocha": "~6.2.0",
     "mochapack": "~1.1.4",
@@ -86,6 +87,8 @@
     "node-sass": "~4.12.0",
     "npm-run-all": "~4.1.5",
     "optimize-css-assets-webpack-plugin": "~5.0.1",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^1.11.1",
     "pug": "~2.0.4",
     "pug-loader": "~2.4.0",
     "react-hot-loader": "~4.12.12",
@@ -114,10 +117,16 @@
     "dev-server:local": "cross-env DEV=1 LIVERELOAD=1 webpack-dev-server --config webpack.config.babel.js --port 3333 --host 0.0.0.0 --output-public-path / --colors --hot --open",
     "dev-server:candy": "cross-env DEV=1 LIVERELOAD=1 CANDY=1 webpack-dev-server --config webpack.config.babel.js --port 3333 --host 0.0.0.0 --output-public-path / --colors --hot --open",
     "clean": "rimraf ./_dist",
+    "pretty-quick": "pretty-quick --pattern \"./**/*.(js|jsx|css|scss|md)\" --branch stable",
     "build-prod": "cross-env UGLIFY=1 HASH=1 DEV=0 run-s clean _webpack _cp-assets",
     "build-dev": "cross-env UGLIFY=0 HASH=0 DEV=1 run-s clean _webpack _cp-assets",
     "_webpack": "webpack --config webpack.config.babel.js --output-path ./_dist --output-public-path /",
     "_cp-assets": "cpx ./assets/js/**/* ./_dist/assets/js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   },
   "author": "FreeFeed contributors",
   "repository": {

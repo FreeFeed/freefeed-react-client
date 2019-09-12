@@ -1,7 +1,6 @@
 /*global Raven*/
 import React from 'react';
 
-
 class ErrorBoundary extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -14,7 +13,11 @@ class ErrorBoundary extends React.PureComponent {
 
   componentDidCatch(error, errorInfo) {
     if (typeof Raven !== 'undefined') {
-      Raven.captureException(error, { level: 'error', tags: { area: 'react/errorBoundary' }, extra: { errorInfo } });
+      Raven.captureException(error, {
+        level: 'error',
+        tags: { area: 'react/errorBoundary' },
+        extra: { errorInfo },
+      });
     }
     this.setState({ errorInfo });
   }
@@ -23,7 +26,12 @@ class ErrorBoundary extends React.PureComponent {
     const { error, errorInfo, hasError } = this.state;
 
     if (hasError) {
-      const errorLocation = errorInfo.componentStack ? `${errorInfo.componentStack.split('\n').slice(0, 2).join(' ')}` : '';
+      const errorLocation = errorInfo.componentStack
+        ? `${errorInfo.componentStack
+            .split('\n')
+            .slice(0, 2)
+            .join(' ')}`
+        : '';
       const errorMessage = `${error.name}: ${error.message} ${errorLocation}`;
 
       return (
@@ -36,7 +44,8 @@ class ErrorBoundary extends React.PureComponent {
             {errorMessage}, {window.navigator.userAgent}
             {typeof Raven !== 'undefined' ? '' : ', no Raven'}
           </div>
-        </div>);
+        </div>
+      );
     }
 
     return this.props.children;

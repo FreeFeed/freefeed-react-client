@@ -6,7 +6,6 @@ import { darkTheme } from '../select-utils';
 import ScrollSafe from './scroll-helpers/scroll-safe';
 import * as heightCache from './scroll-helpers/size-cache';
 
-
 const TWEET_RE = /^https?:\/\/twitter\.com\/[^/]+\/status\/([0-9]+)/i;
 
 export function canShowURL(url) {
@@ -20,19 +19,14 @@ class TwitterPreview extends React.PureComponent {
     await loadTwitterAPI();
     try {
       this.elem.current.innerHTML = '';
-      await twttr.widgets.createTweet(
-        getTweetId(this.props.url),
-        this.elem.current,
-        {
-          theme: this.props.darkTheme ? 'dark' : 'light',
-          dnt:   true,
-        }
-      );
+      await twttr.widgets.createTweet(getTweetId(this.props.url), this.elem.current, {
+        theme: this.props.darkTheme ? 'dark' : 'light',
+        dnt: true,
+      });
     } catch (e) {
       // pass
     }
   }
-
 
   componentDidMount() {
     this.embed();

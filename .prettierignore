@@ -1,0 +1,5 @@
+/node_modules
+/assets
+/public
+/_dist
+/styles/common/bootstrap

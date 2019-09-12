@@ -5,14 +5,13 @@ import { resetPassword, resetPasswordValidationFail } from '../redux/action-crea
 import { preventDefault } from '../utils';
 import LoaderContainer from './loader-container';
 
-
 function mapStateToProps(state, ownProps) {
   return { ...state.resetPassForm, token: ownProps.location.query.token };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    reset:      (...args) => dispatch(resetPassword(...args)),
+    reset: (...args) => dispatch(resetPassword(...args)),
     validation: (...args) => dispatch(resetPasswordValidationFail(...args)),
   };
 }
@@ -42,7 +41,13 @@ class ResetPassword extends React.Component {
   pass;
 
   handleSubmit = preventDefault(() => {
-    resetFunc(this.pass.value, this.confirm.value, this.props.token, this.props.reset, this.props.validation);
+    resetFunc(
+      this.pass.value,
+      this.confirm.value,
+      this.props.token,
+      this.props.reset,
+      this.props.validation,
+    );
   });
 
   registerConfirm = (el) => {
@@ -56,9 +61,7 @@ class ResetPassword extends React.Component {
   render() {
     return (
       <div className="box">
-        <div className="box-header-timeline">
-          Hello
-        </div>
+        <div className="box-header-timeline">Hello</div>
         <div className="box-body">
           <div className="col-md-12">
             <h2 className="p-signin-header">{this.props.header}</h2>
@@ -66,25 +69,43 @@ class ResetPassword extends React.Component {
               <div className="alert alert-danger p-signin-error" role="alert">
                 <span id="error-message">{this.props.error}</span>
               </div>
-            ) : false}
+            ) : (
+              false
+            )}
             <div className="row">
               <div className="col-md-6">
                 <LoaderContainer loading={this.props.loading}>
                   <form onSubmit={this.handleSubmit} className="p-signin">
                     <div className="form-group">
                       <label htmlFor="pass">Password</label>
-                      <input name="pass" id="pass" className="form-control" type="password" ref={this.registerPass} />
+                      <input
+                        name="pass"
+                        id="pass"
+                        className="form-control"
+                        type="password"
+                        ref={this.registerPass}
+                      />
                     </div>
                     <div className="form-group">
                       <label htmlFor="confirm">Password confirmation</label>
-                      <input name="confirm" id="confirm" className="form-control" type="password" ref={this.registerConfirm} />
+                      <input
+                        name="confirm"
+                        id="confirm"
+                        className="form-control"
+                        type="password"
+                        ref={this.registerConfirm}
+                      />
                     </div>
                     <div className="form-group">
-                      <button className="btn btn-default p-singin-action" type="submit">Reset password</button>
+                      <button className="btn btn-default p-singin-action" type="submit">
+                        Reset password
+                      </button>
                     </div>
                   </form>
                 </LoaderContainer>
-                <p>New to freefeed? <Link to="/signup">Create an account »</Link></p>
+                <p>
+                  New to freefeed? <Link to="/signup">Create an account »</Link>
+                </p>
               </div>
             </div>
           </div>
@@ -95,4 +116,7 @@ class ResetPassword extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResetPassword);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ResetPassword);

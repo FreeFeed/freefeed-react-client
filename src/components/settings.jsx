@@ -19,7 +19,6 @@ import UserPictureForm from './user-picture-form';
 import UserNotificationsForm from './user-notifications-form';
 import { Icon } from './fontawesome-icons';
 
-
 class Settings extends React.Component {
   componentWillUnmount() {
     this.props.resetSettingsForms();
@@ -31,7 +30,10 @@ class Settings extends React.Component {
     if (!props.authenticated) {
       return (
         <div className="content">
-          <div className="alert alert-danger" role="alert">You must <Link to="/signin">sign in</Link> or <Link to="/signup">sign up</Link> before visiting this page.</div>
+          <div className="alert alert-danger" role="alert">
+            You must <Link to="/signin">sign in</Link> or <Link to="/signup">sign up</Link> before
+            visiting this page.
+          </div>
         </div>
       );
     }
@@ -43,9 +45,7 @@ class Settings extends React.Component {
     return (
       <div className="content">
         <div className="box">
-          <div className="box-header-timeline">
-            Settings
-          </div>
+          <div className="box-header-timeline">Settings</div>
           <div className="box-body">
             <UserSettingsForm
               user={props.user}
@@ -66,10 +66,7 @@ class Settings extends React.Component {
 
             <hr />
 
-            <UserChangePasswordForm
-              updatePassword={props.updatePassword}
-              {...props.passwordForm}
-            />
+            <UserChangePasswordForm updatePassword={props.updatePassword} {...props.passwordForm} />
 
             <hr />
 
@@ -92,7 +89,9 @@ class Settings extends React.Component {
 
             <h3 id="app-tokens">Application tokens</h3>
             <p>
-              <Link to="/settings/app-tokens">Manage your application tokens <Icon icon={faAngleRight} /></Link>
+              <Link to="/settings/app-tokens">
+                Manage your application tokens <Icon icon={faAngleRight} />
+              </Link>
             </p>
 
             <hr />
@@ -105,28 +104,32 @@ class Settings extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    user:                            state.user,
-    userSettingsForm:                state.userSettingsForm,
-    frontendPreferencesForm:         state.frontendPreferencesForm,
+    user: state.user,
+    userSettingsForm: state.userSettingsForm,
+    frontendPreferencesForm: state.frontendPreferencesForm,
     frontendRealtimePreferencesForm: state.frontendRealtimePreferencesForm,
-    userNotificationsForm:           state.userNotificationsForm,
-    passwordForm:                    state.passwordForm,
-    userPictureForm:                 state.userPictureForm,
-    authenticated:                   state.authenticated
+    userNotificationsForm: state.userNotificationsForm,
+    passwordForm: state.passwordForm,
+    userPictureForm: state.userPictureForm,
+    authenticated: state.authenticated,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateUser:                        (...args) => dispatch(updateUser(...args)),
-    userSettingsChange:                (...args) => dispatch(userSettingsChange(...args)),
-    updateUserPreferences:             (...args) => dispatch(updateUserPreferences(...args)),
-    updateUserNotificationPreferences: (...args) => dispatch(updateUserNotificationPreferences(...args)),
-    updatePassword:                    (...args) => dispatch(updatePassword(...args)),
-    updateUserPicture:                 (...args) => dispatch(updateUserPicture(...args)),
-    toggleRealtime:                    () => dispatch(toggleRealtime()),
-    resetSettingsForms:                () => dispatch(resetSettingsForms())
+    updateUser: (...args) => dispatch(updateUser(...args)),
+    userSettingsChange: (...args) => dispatch(userSettingsChange(...args)),
+    updateUserPreferences: (...args) => dispatch(updateUserPreferences(...args)),
+    updateUserNotificationPreferences: (...args) =>
+      dispatch(updateUserNotificationPreferences(...args)),
+    updatePassword: (...args) => dispatch(updatePassword(...args)),
+    updateUserPicture: (...args) => dispatch(updateUserPicture(...args)),
+    toggleRealtime: () => dispatch(toggleRealtime()),
+    resetSettingsForms: () => dispatch(resetSettingsForms()),
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Settings);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Settings);

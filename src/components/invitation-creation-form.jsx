@@ -1,27 +1,26 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router";
-import Textarea from "react-textarea-autosize";
-import { preventDefault } from "../utils";
-import { createFreefeedInvitation } from "../redux/action-creators";
-import SendTo from "./send-to";
-import { Throbber } from "./throbber";
-
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
+import Textarea from 'react-textarea-autosize';
+import { preventDefault } from '../utils';
+import { createFreefeedInvitation } from '../redux/action-creators';
+import SendTo from './send-to';
+import { Throbber } from './throbber';
 
 export const INVITATION_LANGUAGE_OPTIONS = {
-  RUSSIAN: "ru",
-  ENGLISH: "en",
+  RUSSIAN: 'ru',
+  ENGLISH: 'en',
 };
 
 class InvitationCreationForm extends React.Component {
   state = {
-    message:     "",
+    message: '',
     suggestions: {
-      users:  [],
+      users: [],
       groups: [],
     },
     singleUse: false,
-    lang:      INVITATION_LANGUAGE_OPTIONS.RUSSIAN,
+    lang: INVITATION_LANGUAGE_OPTIONS.RUSSIAN,
   };
 
   componentDidMount() {
@@ -33,16 +32,17 @@ class InvitationCreationForm extends React.Component {
     if (!authenticated) {
       return (
         <div className="content">
-          <div className="alert alert-danger" role="alert">You must <Link to="/signin">sign in</Link> or <Link to="/signup">sign up</Link> before visiting this page.</div>
+          <div className="alert alert-danger" role="alert">
+            You must <Link to="/signin">sign in</Link> or <Link to="/signup">sign up</Link> before
+            visiting this page.
+          </div>
         </div>
       );
     }
     const { userFeeds, groupFeeds, user, form, baseLocation } = this.props;
     return (
       <div className="box">
-        <div className="box-header-timeline">
-          Invite to FreeFeed
-        </div>
+        <div className="box-header-timeline">Invite to FreeFeed</div>
         <div className="box-body">
           <form onSubmit={preventDefault(this.createInvitation)}>
             <div>Suggested users</div>
@@ -94,7 +94,13 @@ class InvitationCreationForm extends React.Component {
 
             <div className="checkbox">
               <label>
-                <input type="checkbox" name="one-time" value="0" checked={this.state.singleUse} onChange={this.toggleOneTime} />
+                <input
+                  type="checkbox"
+                  name="one-time"
+                  value="0"
+                  checked={this.state.singleUse}
+                  onChange={this.toggleOneTime}
+                />
                 One-time use invite
               </label>
             </div>
@@ -110,49 +116,75 @@ class InvitationCreationForm extends React.Component {
               />
             </div>
             <p>
-              <button className="btn btn-default" type="submit">Create invitation</button>
-              {form.isSaving &&
+              <button className="btn btn-default" type="submit">
+                Create invitation
+              </button>
+              {form.isSaving && (
                 <span className="settings-throbber">
                   <Throbber />
                 </span>
-              }
+              )}
             </p>
             {form.success ? (
               <div className="alert alert-info" role="alert">
                 Created invitation:&nbsp;
-                <a target="_blank" href={`${baseLocation}/invited/${form.invitationId}`}>{`${baseLocation}/invited/${form.invitationId}`}</a>
+                <a
+                  target="_blank"
+                  href={`${baseLocation}/invited/${form.invitationId}`}
+                >{`${baseLocation}/invited/${form.invitationId}`}</a>
               </div>
             ) : form.error ? (
-              <div className="alert alert-danger" role="alert">{form.errorText}</div>
-            ) : false}
+              <div className="alert alert-danger" role="alert">
+                {form.errorText}
+              </div>
+            ) : (
+              false
+            )}
           </form>
         </div>
         <div className="box-footer" />
-      </div >);
+      </div>
+    );
   }
 
   onInvitationTextChange = ({ target }) => this.setState({ message: target.value });
 
-  saveUsersSelectRef = (_u) => this.userFeedsSelector = _u;
+  saveUsersSelectRef = (_u) => (this.userFeedsSelector = _u);
 
-  saveGroupsSelectRef = (_g) => this.groupFeedsSelector = _g;
+  saveGroupsSelectRef = (_g) => (this.groupFeedsSelector = _g);
 
-  changeInvitationLanguage = ({ target }) => this.setState({ lang: target.value }, this.suggestedSubscriptionsChanged);
+  changeInvitationLanguage = ({ target }) =>
+    this.setState({ lang: target.value }, this.suggestedSubscriptionsChanged);
 
   toggleOneTime = ({ target }) => this.setState({ singleUse: target.checked });
 
   suggestedSubscriptionsChanged = () => {
-    const { users: userDescriptions, groups: groupDescriptions } = selectUsersAndGroupsFromText(this.state.message, this.state.suggestions);
+    const { users: userDescriptions, groups: groupDescriptions } = selectUsersAndGroupsFromText(
+      this.state.message,
+      this.state.suggestions,
+    );
     const { message, lang } = this.state;
     const customMessage = clearMessageFromUsersAndGroups(message, this.state.suggestions);
     const suggestions = {
-      users:  this.userFeedsSelector.values,
+      users: this.userFeedsSelector.values,
       groups: this.groupFeedsSelector.values,
     };
-    const descriptions = patchDescriptions(this.props.feedsDescriptions, this.props.user.username, this.state.lang);
-    const suggestionsText = formatSuggestionsText(suggestions, userDescriptions, groupDescriptions, descriptions, lang);
+    const descriptions = patchDescriptions(
+      this.props.feedsDescriptions,
+      this.props.user.username,
+      this.state.lang,
+    );
+    const suggestionsText = formatSuggestionsText(
+      suggestions,
+      userDescriptions,
+      groupDescriptions,
+      descriptions,
+      lang,
+    );
 
-    const newMessage = `${customMessage}${(customMessage && suggestionsText) ? "\n\n" : ""}${suggestionsText || ""}`;
+    const newMessage = `${customMessage}${
+      customMessage && suggestionsText ? '\n\n' : ''
+    }${suggestionsText || ''}`;
     this.setState({ message: newMessage, suggestions });
   };
 
@@ -166,8 +198,12 @@ class InvitationCreationForm extends React.Component {
 
 function mapStateToProps(state) {
   const { authenticated, user, createInvitationForm, usernameSubscriptions } = state;
-  const userFeeds = [user].concat(usernameSubscriptions.payload.filter((u) => u.type === "user")).map((user) => ({ id: user.id, user }));
-  const groupFeeds = usernameSubscriptions.payload.filter((u) => u.type === "group").map((user) => ({ id: user.id, user }));
+  const userFeeds = [user]
+    .concat(usernameSubscriptions.payload.filter((u) => u.type === 'user'))
+    .map((user) => ({ id: user.id, user }));
+  const groupFeeds = usernameSubscriptions.payload
+    .filter((u) => u.type === 'group')
+    .map((user) => ({ id: user.id, user }));
   const feedsDescriptions = getFeedsDescriptions(userFeeds, groupFeeds);
   return {
     baseLocation: window.location.origin,
@@ -176,7 +212,7 @@ function mapStateToProps(state) {
     userFeeds,
     groupFeeds,
     feedsDescriptions,
-    form:         createInvitationForm,
+    form: createInvitationForm,
   };
 }
 
@@ -190,44 +226,54 @@ function getFeedsDescriptions(...feeds) {
 }
 
 const SELF_DESCRIPTION = {
-  [INVITATION_LANGUAGE_OPTIONS.RUSSIAN]: "это я",
+  [INVITATION_LANGUAGE_OPTIONS.RUSSIAN]: 'это я',
   [INVITATION_LANGUAGE_OPTIONS.ENGLISH]: "it's me",
 };
 
 const USER_PREFIXES = {
-  [INVITATION_LANGUAGE_OPTIONS.RUSSIAN]: "Вот интересные пользователи:",
-  [INVITATION_LANGUAGE_OPTIONS.ENGLISH]: "Here are the users that I recommend you to follow:",
+  [INVITATION_LANGUAGE_OPTIONS.RUSSIAN]: 'Вот интересные пользователи:',
+  [INVITATION_LANGUAGE_OPTIONS.ENGLISH]: 'Here are the users that I recommend you to follow:',
 };
 
 const GROUP_PREFIXES = {
-  [INVITATION_LANGUAGE_OPTIONS.RUSSIAN]: "и группы:",
-  [INVITATION_LANGUAGE_OPTIONS.ENGLISH]: "And groups:",
+  [INVITATION_LANGUAGE_OPTIONS.RUSSIAN]: 'и группы:',
+  [INVITATION_LANGUAGE_OPTIONS.ENGLISH]: 'And groups:',
 };
 
 const ONLY_GROUP_PREFIXES = {
-  [INVITATION_LANGUAGE_OPTIONS.RUSSIAN]: "Вот интересные группы:",
-  [INVITATION_LANGUAGE_OPTIONS.ENGLISH]: "Here are the groups that I recommend you to follow:",
+  [INVITATION_LANGUAGE_OPTIONS.RUSSIAN]: 'Вот интересные группы:',
+  [INVITATION_LANGUAGE_OPTIONS.ENGLISH]: 'Here are the groups that I recommend you to follow:',
 };
 
 const prefixes = [USER_PREFIXES, GROUP_PREFIXES, ONLY_GROUP_PREFIXES].reduce((res, o) => {
   return res.concat(Object.keys(o).map((key) => o[key]));
 }, []);
 
-function formatSuggestionsText(suggestions = {}, userDescriptions = [], groupDescriptions = [], descriptions, lang = INVITATION_LANGUAGE_OPTIONS.ENGLISH) {
+function formatSuggestionsText(
+  suggestions = {},
+  userDescriptions = [],
+  groupDescriptions = [],
+  descriptions,
+  lang = INVITATION_LANGUAGE_OPTIONS.ENGLISH,
+) {
   const { users = [], groups = [] } = suggestions;
   if (!users.length && !groups.length) {
-    return "";
+    return '';
   }
 
-  const usersSuggestion = users.map((username) => {
-    const description = findDescription(username, userDescriptions) || descriptions[username];
-    return formatSuggest(username, description);
-  }).join("\n");
+  const usersSuggestion = users
+    .map((username) => {
+      const description = findDescription(username, userDescriptions) || descriptions[username];
+      return formatSuggest(username, description);
+    })
+    .join('\n');
 
-  const groupsSuggestion = groups.map((groupname) => {
-    const description = findDescription(groupname, groupDescriptions) || descriptions[groupname];
-    return formatSuggest(groupname, description);
-  }).join("\n");
+  const groupsSuggestion = groups
+    .map((groupname) => {
+      const description = findDescription(groupname, groupDescriptions) || descriptions[groupname];
+      return formatSuggest(groupname, description);
+    })
+    .join('\n');
 
   if (!users.length) {
     const onlyGroupsPrefix = ONLY_GROUP_PREFIXES[lang];
@@ -243,36 +289,47 @@ function formatSuggestionsText(suggestions = {}, userDescriptions = [], groupDes
 }
 
 function findDescription(username, descriptions) {
-  const [descriptionString] = descriptions.filter((d) => d === username || d.indexOf(`${username} `) === 1);
-  return descriptionString && descriptionString.replace(new RegExp(`@(${username})( — )?`, "g"), "");
+  const [descriptionString] = descriptions.filter(
+    (d) => d === username || d.indexOf(`${username} `) === 1,
+  );
+  return (
+    descriptionString && descriptionString.replace(new RegExp(`@(${username})( — )?`, 'g'), '')
+  );
 }
 
 function selectUsersAndGroupsFromText(message, { users, groups }) {
   const usernameRegexp = formatAllUsernameRegexp(users, groups);
   const usersAndGroupsMentions = message.match(usernameRegexp) || [];
   return {
-    users:  usersAndGroupsMentions.filter((str) => users.some((user) => str.indexOf(user) === 1)),
-    groups: usersAndGroupsMentions.filter((str) => groups.some((group) => str.indexOf(group) === 1)),
+    users: usersAndGroupsMentions.filter((str) => users.some((user) => str.indexOf(user) === 1)),
+    groups: usersAndGroupsMentions.filter((str) =>
+      groups.some((group) => str.indexOf(group) === 1),
+    ),
   };
 }
 
 function patchDescriptions(descriptions = {}, myUsername, lang) {
   return {
     ...descriptions,
-    [myUsername]: `${SELF_DESCRIPTION[lang]}${descriptions[myUsername] ? ";" : ""} ${descriptions[myUsername] || ''}`.trim()
+    [myUsername]: `${SELF_DESCRIPTION[lang]}${descriptions[myUsername] ? ';' : ''} ${descriptions[
+      myUsername
+    ] || ''}`.trim(),
   };
 }
 
 function clearMessageFromUsersAndGroups(message, users, groups) {
   const usernameRegexp = formatAllUsernameRegexp(users, groups);
-  const prefixesRegexp = new RegExp(`(${prefixes.join("|")})`, "g");
-  return message.replace(usernameRegexp, "").replace(prefixesRegexp, "").trim();
+  const prefixesRegexp = new RegExp(`(${prefixes.join('|')})`, 'g');
+  return message
+    .replace(usernameRegexp, '')
+    .replace(prefixesRegexp, '')
+    .trim();
 }
 
 function formatAllUsernameRegexp(...usernameArrays) {
   const allUsernames = usernameArrays.reduce((res, usernames) => res.concat(usernames), []);
-  const allUsernamesString = allUsernames.join("|");
-  return new RegExp(`@(${allUsernamesString}).*\n?`, "g");
+  const allUsernamesString = allUsernames.join('|');
+  return new RegExp(`@(${allUsernamesString}).*\n?`, 'g');
 }
 
 function formatSuggest(suggest, description) {
@@ -280,8 +337,11 @@ function formatSuggest(suggest, description) {
     return `@${suggest}`;
   }
   const trimmedDescription = description.trim();
-  const firstNewlineIndex = trimmedDescription.indexOf("\n");
-  const formattedDescription = firstNewlineIndex === -1 ? trimmedDescription : trimmedDescription.substring(0, firstNewlineIndex);
+  const firstNewlineIndex = trimmedDescription.indexOf('\n');
+  const formattedDescription =
+    firstNewlineIndex === -1
+      ? trimmedDescription
+      : trimmedDescription.substring(0, firstNewlineIndex);
   return `@${suggest} — ${formattedDescription}`;
 }
 
@@ -289,4 +349,7 @@ function mapDispatchToProps(dispatch) {
   return { createInvitation: (...args) => dispatch(createFreefeedInvitation(...args)) };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(InvitationCreationForm);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(InvitationCreationForm);

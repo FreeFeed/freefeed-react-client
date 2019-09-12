@@ -5,4 +5,3 @@ When reporting a bug please fill in the following:
 3. What did you do to trigger the bug
 4. What result did you expect
 5. What did actually happen
-

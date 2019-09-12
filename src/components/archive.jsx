@@ -1,10 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { archiveRestoreActivity, archiveStartRestoration, resetArchiveForms } from '../redux/action-creators';
+import {
+  archiveRestoreActivity,
+  archiveStartRestoration,
+  resetArchiveForms,
+} from '../redux/action-creators';
 import ArchiveActivityForm from './archive-activity-form';
 import ArchiveRestorationForm from './archive-restoration-form';
-
 
 class Archive extends React.Component {
   componentWillUnmount() {
@@ -17,13 +20,12 @@ class Archive extends React.Component {
       return (
         <div className="content">
           <div className="box">
-            <div className="box-header-timeline">
-              Restore from FriendFeed.com Archives
-            </div>
+            <div className="box-header-timeline">Restore from FriendFeed.com Archives</div>
             <div className="box-body">
               <p>
-                We do not have any records about your old FriendFeed account. If you think this is a mistake,
-                please contact us at <a href="mailto:freefeed.net@gmail.com">freefeed.net@gmail.com</a>.
+                We do not have any records about your old FriendFeed account. If you think this is a
+                mistake, please contact us at{' '}
+                <a href="mailto:freefeed.net@gmail.com">freefeed.net@gmail.com</a>.
               </p>
             </div>
           </div>
@@ -33,24 +35,33 @@ class Archive extends React.Component {
     return (
       <div className="content">
         <div className="box">
-          <div className="box-header-timeline">
-            Restore from FriendFeed.com Archives
-          </div>
+          <div className="box-header-timeline">Restore from FriendFeed.com Archives</div>
           <div className="box-body">
             <p>
-              In April 2015, before FriendFeed was shut down, a group of volunteers had created
-              an archive of posts for 5356 users and 1231 groups of FriendFeed.com. These archives
-              are available at <a href="https://clio.freefeed.net/" target="_blank">clio.freefeed.net</a>.
+              In April 2015, before FriendFeed was shut down, a group of volunteers had created an
+              archive of posts for 5356 users and 1231 groups of FriendFeed.com. These archives are
+              available at{' '}
+              <a href="https://clio.freefeed.net/" target="_blank">
+                clio.freefeed.net
+              </a>
+              .
             </p>
             <p>
-              If you have an archive of your posts at <a href="https://clio.freefeed.net/" target="_blank">clio.freefeed.net</a>,
-              you can now restore it to FreeFeed.
+              If you have an archive of your posts at{' '}
+              <a href="https://clio.freefeed.net/" target="_blank">
+                clio.freefeed.net
+              </a>
+              , you can now restore it to FreeFeed.
             </p>
             <p>
-              Please note that all restore requests are processed manually and may take a few days to complete.
+              Please note that all restore requests are processed manually and may take a few days
+              to complete.
             </p>
             <p>
-              <a href="https://dev.freefeed.net/w/archives-faq/" target="_blank">Restore from archives FAQ</a> (in Russian)
+              <a href="https://dev.freefeed.net/w/archives-faq/" target="_blank">
+                Restore from archives FAQ
+              </a>{' '}
+              (in Russian)
             </p>
             <h3>Restore your comments and likes</h3>
             {this.renderActivityForm()}
@@ -65,13 +76,11 @@ class Archive extends React.Component {
   renderActivityForm() {
     const { archives, archiveRestoreActivity, archiveActivityFormState } = this.props;
     if (archives && !archives.restore_comments_and_likes) {
-      return <ArchiveActivityForm action={archiveRestoreActivity} formState={archiveActivityFormState} />;
+      return (
+        <ArchiveActivityForm action={archiveRestoreActivity} formState={archiveActivityFormState} />
+      );
     }
-    return (
-      <p>
-        You allowed to restore your comments and likes of other users’ posts.
-      </p>
-    );
+    return <p>You allowed to restore your comments and likes of other users’ posts.</p>;
   }
 
   renderRestorationForm() {
@@ -81,8 +90,8 @@ class Archive extends React.Component {
       return (
         <p>
           We do not have archive of your FriendFeed account (<code>{archives.old_username}</code>).
-          If you think this is a mistake, please
-          contact us at <a href="mailto:freefeed.net@gmail.com">freefeed.net@gmail.com</a>.
+          If you think this is a mistake, please contact us at{' '}
+          <a href="mailto:freefeed.net@gmail.com">freefeed.net@gmail.com</a>.
         </p>
       );
     }
@@ -101,24 +110,21 @@ class Archive extends React.Component {
     if (archives.recovery_status === 1) {
       return (
         <p>
-          Your archive restoration is in progress. Requests are processed manually and may take a few days to complete.
+          Your archive restoration is in progress. Requests are processed manually and may take a
+          few days to complete.
         </p>
       );
     }
 
-    return (
-      <p>
-        Your archive has been restored. Thank you!
-      </p>
-    );
+    return <p>Your archive has been restored. Thank you!</p>;
   }
 }
 
 function mapStateToProps(state) {
   return {
-    user:                        state.user,
-    archives:                    state.user.privateMeta.archives,
-    archiveActivityFormState:    state.archiveActivityForm,
+    user: state.user,
+    archives: state.user.privateMeta.archives,
+    archiveActivityFormState: state.archiveActivityForm,
     archiveRestorationFormState: state.archiveRestorationForm,
   };
 }
@@ -126,9 +132,12 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     archiveStartRestoration: (params) => dispatch(archiveStartRestoration(params)),
-    archiveRestoreActivity:  () => dispatch(archiveRestoreActivity()),
-    resetArchiveForms:       () => dispatch(resetArchiveForms()),
+    archiveRestoreActivity: () => dispatch(archiveRestoreActivity()),
+    resetArchiveForms: () => dispatch(resetArchiveForms()),
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Archive);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Archive);

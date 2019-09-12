@@ -1,10 +1,9 @@
-import { reset, request, fail, response, asyncTypeOf } from "../action-helpers";
-
+import { reset, request, fail, response, asyncTypeOf } from '../action-helpers';
 
 export const initialAsyncState = {
-  loading:   false,
-  success:   false,
-  error:     false,
+  loading: false,
+  success: false,
+  error: false,
   errorText: '',
 };
 
@@ -30,7 +29,7 @@ export function asyncStatus(actionType) {
 export function fromResponse(asyncType, transformer, defValue = null, nextReducer = null) {
   return (state = defValue, action) => {
     if (asyncTypeOf(action.type, asyncType)) {
-      return (action.type === response(asyncType)) ? transformer(action) : defValue;
+      return action.type === response(asyncType) ? transformer(action) : defValue;
     }
 
     return nextReducer ? nextReducer(state, action) : state;
@@ -38,5 +37,5 @@ export function fromResponse(asyncType, transformer, defValue = null, nextReduce
 }
 
 export function patchObjectByKey(object, key, patcher) {
-  return (key in object) ? { ...object, [key]: patcher(object[key]) } : object;
+  return key in object ? { ...object, [key]: patcher(object[key]) } : object;
 }

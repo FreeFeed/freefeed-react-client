@@ -1,22 +1,21 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Link } from 'react-router';
-import { preventDefault } from "../utils";
-import { Throbber } from "./throbber";
-
+import { preventDefault } from '../utils';
+import { Throbber } from './throbber';
 
 export default class UserNotificationsForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       sendNotificationsDigest: this.props.backendPreferences.sendNotificationsDigest || false,
-      sendDailyBestOfDigest:   this.props.backendPreferences.sendDailyBestOfDigest || false,
-      sendWeeklyBestOfDigest:  this.props.backendPreferences.sendWeeklyBestOfDigest || false,
+      sendDailyBestOfDigest: this.props.backendPreferences.sendDailyBestOfDigest || false,
+      sendWeeklyBestOfDigest: this.props.backendPreferences.sendWeeklyBestOfDigest || false,
     };
   }
 
   componentDidMount() {
-    if (window.location.hash === "#notifications") {
+    if (window.location.hash === '#notifications') {
       const node = ReactDOM.findDOMNode(this);
       setTimeout(() => window.scrollTo(0, node.getBoundingClientRect().bottom), 500);
     }
@@ -69,20 +68,29 @@ export default class UserNotificationsForm extends React.Component {
         </div>
 
         <p>
-          <button className="btn btn-default" type="submit">Update</button>
-          {this.props.status === "loading" ? (
+          <button className="btn btn-default" type="submit">
+            Update
+          </button>
+          {this.props.status === 'loading' ? (
             <span className="settings-throbber">
               <Throbber />
             </span>
-          ) : false}
+          ) : (
+            false
+          )}
         </p>
 
-        {this.props.status === "success" ? (
-          <div className="alert alert-info" role="alert">Updated!</div>
-        ) : this.props.status === "error" ? (
-          <div className="alert alert-danger" role="alert">{this.props.errorMessage}</div>
-        ) : false}
-
+        {this.props.status === 'success' ? (
+          <div className="alert alert-info" role="alert">
+            Updated!
+          </div>
+        ) : this.props.status === 'error' ? (
+          <div className="alert alert-danger" role="alert">
+            {this.props.errorMessage}
+          </div>
+        ) : (
+          false
+        )}
       </form>
     );
   }
@@ -100,13 +108,12 @@ export default class UserNotificationsForm extends React.Component {
   };
 
   savePreference = () => {
-    if (this.props.status !== "loading") {
-      this.props.updateUserNotificationPreferences(this.props.userId,
-        {
-          sendNotificationsDigest: this.state.sendNotificationsDigest,
-          sendDailyBestOfDigest:   this.state.sendDailyBestOfDigest,
-          sendWeeklyBestOfDigest:  this.state.sendWeeklyBestOfDigest
-        });
+    if (this.props.status !== 'loading') {
+      this.props.updateUserNotificationPreferences(this.props.userId, {
+        sendNotificationsDigest: this.state.sendNotificationsDigest,
+        sendDailyBestOfDigest: this.state.sendDailyBestOfDigest,
+        sendWeeklyBestOfDigest: this.state.sendWeeklyBestOfDigest,
+      });
     }
   };
 }

@@ -4,23 +4,22 @@ import _ from 'lodash';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import { Icon } from './fontawesome-icons';
 
-
 export default class ArchiveRestorationForm extends React.Component {
   static propTypes = {
-    action:    PropTypes.func.isRequired,
+    action: PropTypes.func.isRequired,
     formState: PropTypes.shape({
       inProgress: PropTypes.bool.isRequired,
-      success:    PropTypes.bool.isRequired,
-      error:      PropTypes.bool.isRequired,
-      errorText:  PropTypes.string.isRequired,
+      success: PropTypes.bool.isRequired,
+      error: PropTypes.bool.isRequired,
+      errorText: PropTypes.string.isRequired,
     }),
-    sources:     PropTypes.array.isRequired,
+    sources: PropTypes.array.isRequired,
     oldUsername: PropTypes.string.isRequired,
   };
 
   state = {
     disable_comments: false,
-    via_restore:      [],
+    via_restore: [],
   };
 
   setDisableComments = (e) => this.setState({ disable_comments: e.target.checked });
@@ -55,48 +54,53 @@ export default class ArchiveRestorationForm extends React.Component {
     const { via_restore, disable_comments } = this.state;
     const { formState, sources, oldUsername } = this.props;
     const totalCount = sources.reduce((p, s) => p + s.count, 0);
-    const selectedCount = sources.filter((s) => via_restore.includes(s.url)).reduce((p, s) => p + s.count, 0);
+    const selectedCount = sources
+      .filter((s) => via_restore.includes(s.url))
+      .reduce((p, s) => p + s.count, 0);
 
-    const buttonText = (totalCount === selectedCount) ? 'Restore all my posts'
-      : (selectedCount === 0) ? 'Restore my posts'
+    const buttonText =
+      totalCount === selectedCount
+        ? 'Restore all my posts'
+        : selectedCount === 0
+        ? 'Restore my posts'
         : `Restore my ${selectedCount} ${selectedCount === 1 ? 'post' : 'posts'}`;
 
     return (
       <form onSubmit={this.action}>
         <p>
-            You have {totalCount} posts in your <strong>friendfeed.com/{oldUsername}</strong> archive.
-            Posts from which source would you like to restore?
+          You have {totalCount} posts in your <strong>friendfeed.com/{oldUsername}</strong> archive.
+          Posts from which source would you like to restore?
         </p>
         <div className="checkbox">
           <label>
-            <input type="checkbox" checked={via_restore.length === sources.length} onClick={this.selectAllSources} />
-              Restore all {totalCount} posts (or select specific sources below)
+            <input
+              type="checkbox"
+              checked={via_restore.length === sources.length}
+              onClick={this.selectAllSources}
+            />
+            Restore all {totalCount} posts (or select specific sources below)
           </label>
         </div>
-        <SourceList
-          sources={sources}
-          selected={via_restore}
-          onClick={this.setViaSource}
-        />
+        <SourceList sources={sources} selected={via_restore} onClick={this.setViaSource} />
         <div className="checkbox">
           <label>
             <input type="checkbox" checked={disable_comments} onClick={this.setDisableComments} />
-              Disable new comments for your posts restored from archive
-              (you can enable comments for individual posts after the restoring has been completed)
+            Disable new comments for your posts restored from archive (you can enable comments for
+            individual posts after the restoring has been completed)
           </label>
         </div>
         <div className="form-group">
-          <button
-            type="submit"
-            className="btn btn-default"
-            disabled={!this.canSubmit()}
-          >
+          <button type="submit" className="btn btn-default" disabled={!this.canSubmit()}>
             {buttonText}
           </button>
         </div>
         {formState.error ? (
-          <div className="alert alert-danger" role="alert">{formState.errorText}</div>
-        ) : false}
+          <div className="alert alert-danger" role="alert">
+            {formState.errorText}
+          </div>
+        ) : (
+          false
+        )}
         <p>
           <em>Requests are handled manually, so be prepared to wait a bit.</em>
         </p>
@@ -109,9 +113,9 @@ const FRF_URL = 'http://friendfeed.com';
 
 class SourceList extends React.Component {
   static propTypes = {
-    sources:  PropTypes.array.isRequired,
+    sources: PropTypes.array.isRequired,
     selected: PropTypes.array.isRequired,
-    onClick:  PropTypes.func.isRequired,
+    onClick: PropTypes.func.isRequired,
   };
 
   renderSource({ name, url }) {
@@ -124,7 +128,9 @@ class SourceList extends React.Component {
     return (
       <span>
         {name}
-        <a href={url} title={url} target="_blank" className="source-link"><Icon icon={faExternalLinkAlt} /></a>
+        <a href={url} title={url} target="_blank" className="source-link">
+          <Icon icon={faExternalLinkAlt} />
+        </a>
       </span>
     );
   }
@@ -145,7 +151,12 @@ class SourceList extends React.Component {
         {sources.map((s) => (
           <div className="checkbox" key={s.url}>
             <label>
-              <input type="checkbox" value={s.url} checked={selected.includes(s.url)} onClick={onClick} />
+              <input
+                type="checkbox"
+                value={s.url}
+                checked={selected.includes(s.url)}
+                onClick={onClick}
+              />
               {this.renderSource(s)} <span className="text-muted">({s.count})</span>
             </label>
           </div>

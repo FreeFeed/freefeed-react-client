@@ -9,7 +9,6 @@ import { FRIENDFEED_POST } from '../utils/link-types';
 import UserName from './user-name';
 import ErrorBoundary from './error-boundary';
 
-
 const MAX_URL_LENGTH = 50;
 const searchConfig = config.search;
 
@@ -20,8 +19,10 @@ export default class Linkify extends React.Component {
     if (typeof children === 'string') {
       return processor(children);
     } else if (React.isValidElement(children) && !excludeTags.includes(children.type)) {
-      return React.cloneElement(children, {},
-        this.processStrings(children.props.children, processor, excludeTags)
+      return React.cloneElement(
+        children,
+        {},
+        this.processStrings(children.props.children, processor, excludeTags),
       );
     } else if (Array.isArray(children)) {
       return children.map((ch) => this.processStrings(ch, processor, excludeTags));
@@ -58,16 +59,10 @@ export default class Linkify extends React.Component {
 
       if (token instanceof HashTag) {
         if (searchConfig.searchEngine) {
-          return anchorEl(
-            searchConfig.searchEngine + encodeURIComponent(token.text),
-            token.text,
-          );
+          return anchorEl(searchConfig.searchEngine + encodeURIComponent(token.text), token.text);
         }
 
-        return linkEl(
-          { pathname: '/search', query: { qs: token.text } },
-          <bdi>{token.text}</bdi>,
-        );
+        return linkEl({ pathname: '/search', query: { qs: token.text } }, <bdi>{token.text}</bdi>);
       }
 
       if (token instanceof Arrows && this.props.arrowHover) {
@@ -78,7 +73,8 @@ export default class Linkify extends React.Component {
             onMouseEnter={() => this.props.arrowHover.hover(token.text.length)}
             onMouseLeave={this.props.arrowHover.leave}
             key={key}
-          >{token.text}
+          >
+            {token.text}
           </span>
         );
       }
@@ -98,35 +94,50 @@ export default class Linkify extends React.Component {
         return anchorEl(token.href, token.shorten(MAX_URL_LENGTH));
       }
 
-      return (token.text);
+      return token.text;
     });
   };
 
   render() {
     this.parseCounter = 0;
     const hl = this.props.highlightTerms;
-    const parsed = this.processStrings(this.props.children, this.parseString, ['a', 'button', UserName]);
+    const parsed = this.processStrings(this.props.children, this.parseString, [
+      'a',
+      'button',
+      UserName,
+    ]);
     if (!hl || hl.length === 0) {
-      return <span className="Linkify" dir="auto"><ErrorBoundary>{parsed}</ErrorBoundary></span>;
+      return (
+        <span className="Linkify" dir="auto">
+          <ErrorBoundary>{parsed}</ErrorBoundary>
+        </span>
+      );
     }
     const highlighted = this.processStrings(parsed, (str) => highlightString(str, hl), ['button']);
-    return <span className="Linkify" dir="auto"><ErrorBoundary>{highlighted}</ErrorBoundary></span>;
+    return (
+      <span className="Linkify" dir="auto">
+        <ErrorBoundary>{highlighted}</ErrorBoundary>
+      </span>
+    );
   }
 }
 
 function anchorElWithKey(key) {
-  return function (href, content) {
+  return function(href, content) {
     return (
-      <a href={href} target="_blank" dir="ltr" key={key}>{content}</a>
+      <a href={href} target="_blank" dir="ltr" key={key}>
+        {content}
+      </a>
     );
   };
 }
 
 function linkElWithKey(key) {
-  return function (to, content) {
+  return function(to, content) {
     return (
-      <Link to={to} dir="ltr" key={key}>{content}</Link>
+      <Link to={to} dir="ltr" key={key}>
+        {content}
+      </Link>
     );
   };
 }
-

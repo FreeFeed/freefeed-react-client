@@ -12,13 +12,7 @@ import { Icon } from '../fontawesome-icons';
 import { TextCopier } from './text-copier';
 import TokenForm, { initialFormData } from './token-form-fields';
 
-
-function CreateToken({
-  createdToken,
-  createStatus: status,
-  createAppTokenReset,
-  createAppToken,
-}) {
+function CreateToken({ createdToken, createStatus: status, createAppTokenReset, createAppToken }) {
   useEffect(() => void createAppTokenReset(), [createAppTokenReset]);
 
   const initialData = useMemo(() => {
@@ -40,28 +34,31 @@ function CreateToken({
     [form, status.loading],
   );
 
-  const onSubmit = useCallback((e) => {
-    e.preventDefault();
-    if (!canSubmit) {
-      return;
-    }
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (!canSubmit) {
+        return;
+      }
 
-    const submitData = {
-      title:        trim(form.title),
-      scopes:       form.scopes,
-      restrictions: { origins: [], netmasks: [] },
-    };
+      const submitData = {
+        title: trim(form.title),
+        scopes: form.scopes,
+        restrictions: { origins: [], netmasks: [] },
+      };
 
-    if (trim(form.netmasks)) {
-      submitData.restrictions.netmasks = trim(form.netmasks).split(/\s+/);
-    }
+      if (trim(form.netmasks)) {
+        submitData.restrictions.netmasks = trim(form.netmasks).split(/\s+/);
+      }
 
-    if (trim(form.origins)) {
-      submitData.restrictions.origins = trim(form.origins).split(/\s+/);
-    }
+      if (trim(form.origins)) {
+        submitData.restrictions.origins = trim(form.origins).split(/\s+/);
+      }
 
-    createAppToken(submitData);
-  }, [canSubmit, createAppToken, form]);
+      createAppToken(submitData);
+    },
+    [canSubmit, createAppToken, form],
+  );
 
   if (status.success) {
     return (
@@ -81,7 +78,6 @@ function CreateToken({
     );
   }
 
-
   return (
     <form onSubmit={onSubmit}>
       {status.error && (
@@ -91,11 +87,14 @@ function CreateToken({
       <TokenForm initialData={initialData} onChange={setForm} />
 
       <div className="form-group">
-        <button type="submit" className="btn btn-default" disabled={!canSubmit}>Generate token</button>
+        <button type="submit" className="btn btn-default" disabled={!canSubmit}>
+          Generate token
+        </button>
       </div>
 
       <p>
-        <Icon icon={faQuestionCircle} /> <Link to="/settings/app-tokens/scopes">About the token access rights and scopes</Link>
+        <Icon icon={faQuestionCircle} />{' '}
+        <Link to="/settings/app-tokens/scopes">About the token access rights and scopes</Link>
       </p>
     </form>
   );
@@ -106,5 +105,5 @@ export default connect(
   {
     createAppTokenReset,
     createAppToken,
-  }
+  },
 )(CreateToken);

@@ -10,7 +10,6 @@ import UserRelationshipStatus from './user-relationships-status';
 import ErrorBoundary from './error-boundary';
 import { userActions, canAcceptDirects } from './select-utils';
 
-
 class UserCard extends React.Component {
   constructor(props) {
     super(props);
@@ -29,7 +28,9 @@ class UserCard extends React.Component {
 
   handleUnsubscribeClick = () => {
     if (this.props.amIGroupAdmin) {
-      alert('You are the Admin for this group. If you want to unsubscribe please drop administrative privileges first.');
+      alert(
+        'You are the Admin for this group. If you want to unsubscribe please drop administrative privileges first.',
+      );
       return;
     }
 
@@ -66,9 +67,7 @@ class UserCard extends React.Component {
         <div className="user-card" style={style}>
           <div className="user-card-info">
             <div className="userpic loading" />
-            <div className="names">
-              User not found
-            </div>
+            <div className="names">User not found</div>
           </div>
         </div>
       );
@@ -96,11 +95,16 @@ class UserCard extends React.Component {
             </Link>
 
             <div className="names">
-              <Link to={`/${props.user.username}`} className="display-name" dir="auto">{props.user.screenName}</Link><br />
+              <Link to={`/${props.user.username}`} className="display-name" dir="auto">
+                {props.user.screenName}
+              </Link>
+              <br />
 
               {props.user.screenName !== props.user.username ? (
                 <span className="username">@{props.user.username}</span>
-              ) : false}
+              ) : (
+                false
+              )}
             </div>
 
             {!props.isItMe && (
@@ -109,7 +113,11 @@ class UserCard extends React.Component {
               </div>
             )}
             <div className="relationship-status">
-              {props.isItMe ? 'It\'s you!' : <UserRelationshipStatus type={props.user.type} {...props} />}
+              {props.isItMe ? (
+                "It's you!"
+              ) : (
+                <UserRelationshipStatus type={props.user.type} {...props} />
+              )}
             </div>
           </div>
 
@@ -125,74 +133,96 @@ class UserCard extends React.Component {
                   <Link to={`/filter/direct?to=${props.user.username}`}>Direct message</Link>
                   <span> - </span>
                 </span>
-              ) : false
-              }
+              ) : (
+                false
+              )}
               {props.user.isPrivate === '1' && !props.subscribed ? (
                 props.hasRequestBeenSent ? (
                   <span>Subscription request sent</span>
                 ) : (
                   <a onClick={this.handleRequestSubscriptionClick}>Request a subscription</a>
                 )
+              ) : props.subscribed ? (
+                <a onClick={this.handleUnsubscribeClick}>Unsubscribe</a>
               ) : (
-                props.subscribed ? (
-                  <a onClick={this.handleUnsubscribeClick}>Unsubscribe</a>
-                ) : (
-                  <a onClick={this.handleSubscribeClick}>Subscribe</a>
-                )
+                <a onClick={this.handleSubscribeClick}>Subscribe</a>
               )}
 
               {props.user.type !== 'group' && !props.subscribed ? (
-                <span> - <a onClick={this.handleBlockClick}>Block</a></span>
+                <span>
+                  {' '}
+                  - <a onClick={this.handleBlockClick}>Block</a>
+                </span>
               ) : props.amIGroupAdmin ? (
-                <span> - <Link to={`/${props.user.username}/settings`}>Settings</Link></span>
-              ) : false}
+                <span>
+                  {' '}
+                  - <Link to={`/${props.user.username}/settings`}>Settings</Link>
+                </span>
+              ) : (
+                false
+              )}
 
-              <span> - <a onClick={this.handleShowOrHideClick}>{props.hidden ? 'Show' : 'Hide'} posts</a></span>
-
+              <span>
+                {' '}
+                - <a onClick={this.handleShowOrHideClick}>{props.hidden ? 'Show' : 'Hide'} posts</a>
+              </span>
             </div>
-          ) : false}
+          ) : (
+            false
+          )}
         </ErrorBoundary>
-      </div>);
+      </div>
+    );
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   const me = state.user;
-  const user = (_.find(state.users, { username: ownProps.username }) || {});
-  const notFound = (!user.id && state.usersNotFound.indexOf(ownProps.username) >= 0);
+  const user = _.find(state.users, { username: ownProps.username }) || {};
+  const notFound = !user.id && state.usersNotFound.indexOf(ownProps.username) >= 0;
 
   return {
     me,
     user,
     notFound,
-    isItMe:               (me.username === user.username),
-    amISubscribedToUser:  ((me.subscriptions || []).indexOf(user.id) > -1),
-    isUserSubscribedToMe: (_.findIndex(me.subscribers, { id: user.id }) > -1),
-    isUserBlockedByMe:    ((me.banIds || []).indexOf(user.id) > -1),
-    subscribed:           ((me.subscriptions || []).indexOf(user.id) > -1),
-    hasRequestBeenSent:   ((me.pendingSubscriptionRequests || []).indexOf(user.id) > -1),
-    blocked:              ((me.banIds || []).indexOf(user.id) > -1),
-    hidden:               (me.frontendPreferences.homefeed.hideUsers.indexOf(user.username) > -1),
-    amIGroupAdmin:        (user.type === 'group' && (user.administrators || []).indexOf(me.id) > -1),
-    canAcceptDirects:     canAcceptDirects(user, state),
+    isItMe: me.username === user.username,
+    amISubscribedToUser: (me.subscriptions || []).indexOf(user.id) > -1,
+    isUserSubscribedToMe: _.findIndex(me.subscribers, { id: user.id }) > -1,
+    isUserBlockedByMe: (me.banIds || []).indexOf(user.id) > -1,
+    subscribed: (me.subscriptions || []).indexOf(user.id) > -1,
+    hasRequestBeenSent: (me.pendingSubscriptionRequests || []).indexOf(user.id) > -1,
+    blocked: (me.banIds || []).indexOf(user.id) > -1,
+    hidden: me.frontendPreferences.homefeed.hideUsers.indexOf(user.username) > -1,
+    amIGroupAdmin: user.type === 'group' && (user.administrators || []).indexOf(me.id) > -1,
+    canAcceptDirects: canAcceptDirects(user, state),
   };
 };
 
 function mapDispatchToProps(dispatch) {
   return {
     ...userActions(dispatch),
-    getUserInfo:  (username) => dispatch(getUserInfo(username)),
+    getUserInfo: (username) => dispatch(getUserInfo(username)),
     hideShowUser: (me, username) => {
-      const { homefeed: { hideUsers } } = me.frontendPreferences;
+      const {
+        homefeed: { hideUsers },
+      } = me.frontendPreferences;
       const p = hideUsers.indexOf(username);
       if (p < 0) {
         hideUsers.push(username);
       } else {
         hideUsers.splice(p, 1);
       }
-      dispatch(updateUserPreferences(me.id, { ...me.frontendPreferences, homefeed: { ...me.frontendPreferences.homefeed, hideUsers } }));
-    }
+      dispatch(
+        updateUserPreferences(me.id, {
+          ...me.frontendPreferences,
+          homefeed: { ...me.frontendPreferences.homefeed, hideUsers },
+        }),
+      );
+    },
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserCard);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(UserCard);

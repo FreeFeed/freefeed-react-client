@@ -4,7 +4,6 @@ import Helmet from 'react-helmet';
 
 import { darkTheme } from './select-utils';
 
-
 class ColorSchemeSetterBase extends Component {
   componentDidMount() {
     document.body.classList.toggle('dark-theme', this.props.darkTheme);
@@ -17,12 +16,12 @@ class ColorSchemeSetterBase extends Component {
   render() {
     return (
       <Helmet>
-        <meta name="theme-color" content={this.props.darkTheme ? "hsl(220, 9%, 10%)" : "white"} />
+        <meta name="theme-color" content={this.props.darkTheme ? 'hsl(220, 9%, 10%)' : 'white'} />
       </Helmet>
     );
   }
 }
 
-export const ColorSchemeSetter = connect(
-  (state) => ({ darkTheme: darkTheme(state) })
-)(ColorSchemeSetterBase);
+export const ColorSchemeSetter = connect((state) => ({ darkTheme: darkTheme(state) }))(
+  ColorSchemeSetterBase,
+);

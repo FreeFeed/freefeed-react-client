@@ -4,7 +4,6 @@ import { Link as TLink } from 'social-text-tokenizer';
 
 import { Link } from '../../../src/utils/parse-text';
 
-
 const localDomains = ['freefeed.net', 'omega.freefeed.net'];
 
 describe('parse-text', () => {

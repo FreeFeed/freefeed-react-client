@@ -1,5 +1,4 @@
-const
-  RVRE = /^(.*?[аеиоуыэюя])(.*)$/i,
+const RVRE = /^(.*?[аеиоуыэюя])(.*)$/i,
   PERFECTIVEGROUND_1 = /([ая])(в|вши|вшись)$/gi,
   PERFECTIVEGROUND_2 = /(ив|ивши|ившись|ыв|ывши|ывшись)$/i,
   REFLEXIVE = /(с[яь])$/i,
@@ -16,14 +15,14 @@ const
   P = /ь$/i,
   NN = /нн$/i;
 
-export default function (word) {
+export default function(word) {
   word = word.replace(/ё/gi, 'e');
   const wParts = word.match(RVRE);
   if (!wParts) {
     return word;
   }
-  const start = wParts[1];  // eslint-disable-line prefer-destructuring
-  let rv = wParts[2];  // eslint-disable-line prefer-destructuring
+  const start = wParts[1]; // eslint-disable-line prefer-destructuring
+  let rv = wParts[2]; // eslint-disable-line prefer-destructuring
   let temp = rv.replace(PERFECTIVEGROUND_2, '');
   if (temp == rv) {
     temp = rv.replace(PERFECTIVEGROUND_1, '$1');

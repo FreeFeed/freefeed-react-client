@@ -5,9 +5,7 @@ import { preventDefault } from '../utils';
 import { Throbber } from './throbber';
 import ErrorBoundary from './error-boundary';
 
-
-const
-  PUBLIC_FEED = 'PUBLIC',
+const PUBLIC_FEED = 'PUBLIC',
   PROTECTED_FEED = 'PROTECTED',
   PRIVATE_FEED = 'PRIVATE';
 
@@ -16,8 +14,8 @@ export default class UserSettingsForm extends React.Component {
     super(props);
 
     this.props.userSettingsChange({
-      isPrivate:      this.props.user.isPrivate,
-      isProtected:    this.props.user.isProtected,
+      isPrivate: this.props.user.isPrivate,
+      isProtected: this.props.user.isProtected,
       directsFromAll: this.props.user.preferences.acceptDirectsFrom === 'all',
     });
   }
@@ -59,10 +57,14 @@ export default class UserSettingsForm extends React.Component {
 
   render() {
     const className = classnames({
-      'form-group':   true,
+      'form-group': true,
       'has-feedback': this.props.screenName,
-      'has-error':    this.props.screenName && (this.props.screenName.length < 3 || this.props.screenName.length > 25),
-      'has-success':  this.props.screenName && (this.props.screenName.length >= 3 && this.props.screenName.length <= 25)
+      'has-error':
+        this.props.screenName &&
+        (this.props.screenName.length < 3 || this.props.screenName.length > 25),
+      'has-success':
+        this.props.screenName &&
+        (this.props.screenName.length >= 3 && this.props.screenName.length <= 25),
     });
 
     let feedPrivacy;
@@ -78,26 +80,48 @@ export default class UserSettingsForm extends React.Component {
       <form onSubmit={preventDefault(this.updateUser)}>
         <ErrorBoundary>
           <div className={className}>
-            {
-              this.props.screenName ? (
-                <span className="help-block displayName-input-hint">{this.props.screenName.length} of 25</span>
-              ) : false
-            }
+            {this.props.screenName ? (
+              <span className="help-block displayName-input-hint">
+                {this.props.screenName.length} of 25
+              </span>
+            ) : (
+              false
+            )}
             <label htmlFor="displayName-input">Display name:</label>
-            <input id="displayName-input" className="form-control" name="screenName" type="text" defaultValue={this.props.user.screenName} onChange={this.updateSetting('screenName')} maxLength="100" />
+            <input
+              id="displayName-input"
+              className="form-control"
+              name="screenName"
+              type="text"
+              defaultValue={this.props.user.screenName}
+              onChange={this.updateSetting('screenName')}
+              maxLength="100"
+            />
           </div>
           <div className="form-group">
             <label htmlFor="email-input">Email:</label>
-            <input id="email-input" className="form-control" name="email" type="text" defaultValue={this.props.user.email} onChange={this.updateSetting('email')} />
+            <input
+              id="email-input"
+              className="form-control"
+              name="email"
+              type="text"
+              defaultValue={this.props.user.email}
+              onChange={this.updateSetting('email')}
+            />
           </div>
           <div className="form-group">
             <label htmlFor="description-textarea">Description:</label>
-            <textarea id="description-textarea" className="form-control" name="description" defaultValue={this.props.user.description} onChange={this.updateSetting('description')} maxLength="1500" />
+            <textarea
+              id="description-textarea"
+              className="form-control"
+              name="description"
+              defaultValue={this.props.user.description}
+              onChange={this.updateSetting('description')}
+              maxLength="1500"
+            />
           </div>
           <div className="form-group">
-            <p>
-            Your feed is:
-            </p>
+            <p>Your feed is:</p>
             <div className="radio">
               <label>
                 <input
@@ -149,18 +173,28 @@ export default class UserSettingsForm extends React.Component {
             </div>
           </div>
           <p>
-            <button className="btn btn-default" type="submit">Update</button>
+            <button className="btn btn-default" type="submit">
+              Update
+            </button>
             {this.props.isSaving ? (
               <span className="settings-throbber">
                 <Throbber />
               </span>
-            ) : false}
+            ) : (
+              false
+            )}
           </p>
           {this.props.success ? (
-            <div className="alert alert-info" role="alert">Updated!</div>
+            <div className="alert alert-info" role="alert">
+              Updated!
+            </div>
           ) : this.props.error ? (
-            <div className="alert alert-danger" role="alert">{this.props.errorMessage}</div>
-          ) : false}
+            <div className="alert alert-danger" role="alert">
+              {this.props.errorMessage}
+            </div>
+          ) : (
+            false
+          )}
         </ErrorBoundary>
       </form>
     );

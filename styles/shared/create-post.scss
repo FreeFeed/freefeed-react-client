@@ -35,13 +35,33 @@
       @for $i from 0 through $loops {
         .progress-#{$i*$step} {
           @if $i < $half {
-            $nextdeg: 90deg + ( $increment * $i );
-            background-image: linear-gradient(90deg, $progressBackgroundColor 50%, transparent 50%, transparent),
-              linear-gradient($nextdeg, $progressCircleColor 50%, $progressBackgroundColor 50%, $progressBackgroundColor);
+            $nextdeg: 90deg + ($increment * $i);
+            background-image: linear-gradient(
+                90deg,
+                $progressBackgroundColor 50%,
+                transparent 50%,
+                transparent
+              ),
+              linear-gradient(
+                $nextdeg,
+                $progressCircleColor 50%,
+                $progressBackgroundColor 50%,
+                $progressBackgroundColor
+              );
           } @else {
-            $nextdeg: -90deg + ( $increment * ( $i - $half ) );
-            background-image: linear-gradient($nextdeg, $progressCircleColor 50%, transparent 50%, transparent),
-              linear-gradient(270deg, $progressCircleColor 50%, $progressBackgroundColor 50%, $progressBackgroundColor);
+            $nextdeg: -90deg + ($increment * ($i - $half));
+            background-image: linear-gradient(
+                $nextdeg,
+                $progressCircleColor 50%,
+                transparent 50%,
+                transparent
+              ),
+              linear-gradient(
+                270deg,
+                $progressCircleColor 50%,
+                $progressBackgroundColor 50%,
+                $progressBackgroundColor
+              );
           }
         }
       }
@@ -64,7 +84,7 @@
 
   .create-post-error {
     font-size: 12px;
-    color: #FF5A5F;
+    color: #ff5a5f;
   }
 
   .selector-warning {

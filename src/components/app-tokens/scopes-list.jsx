@@ -9,13 +9,11 @@ import { Icon } from '../fontawesome-icons';
 import { descriptions } from './scopes-descriptions';
 import styles from './scopes-list.module.scss';
 
-
-function ScopesList({
-  scopesStatus,
-  scopes,
-  getAppTokensScopes,
-}) {
-  useEffect(() => void (scopesStatus.success || scopesStatus.loading || getAppTokensScopes()), [getAppTokensScopes, scopesStatus]);
+function ScopesList({ scopesStatus, scopes, getAppTokensScopes }) {
+  useEffect(() => void (scopesStatus.success || scopesStatus.loading || getAppTokensScopes()), [
+    getAppTokensScopes,
+    scopesStatus,
+  ]);
 
   if (scopesStatus.loading) {
     return <p>Loading...</p>;
@@ -28,15 +26,18 @@ function ScopesList({
   return (
     <>
       <p>
-        Token access rights are defined by access scopes set.
-        This page describes the access rights that the tokens will receive when selecting specific access scopes.
+        Token access rights are defined by access scopes set. This page describes the access rights
+        that the tokens will receive when selecting specific access scopes.
       </p>
       <p>
-        From a technical point of view, each scope corresponds to a set of API methods that the token can access.
+        From a technical point of view, each scope corresponds to a set of API methods that the
+        token can access.
       </p>
       {scopes.map((scope, i) => (
         <div key={i} className="panel panel-default">
-          <div className="panel-heading"><code className="pull-right">{scope.name}</code> {scope.title}</div>
+          <div className="panel-heading">
+            <code className="pull-right">{scope.name}</code> {scope.title}
+          </div>
           <div className="panel-body">
             {descriptions[scope.name] && (
               <div
@@ -44,7 +45,13 @@ function ScopesList({
                 dangerouslySetInnerHTML={{ __html: snarkdown(descriptions[scope.name]) }}
               />
             )}
-            <APIList>{scope.routes.map((r, i) => <div key={i}><samp>{r}</samp></div>)}</APIList>
+            <APIList>
+              {scope.routes.map((r, i) => (
+                <div key={i}>
+                  <samp>{r}</samp>
+                </div>
+              ))}
+            </APIList>
           </div>
         </div>
       ))}
@@ -54,7 +61,7 @@ function ScopesList({
 
 export default connect(
   (state) => pick(state.appTokens, ['scopesStatus', 'scopes']),
-  { getAppTokensScopes }
+  { getAppTokensScopes },
 )(ScopesList);
 
 function APIList({ children }) {
@@ -62,7 +69,12 @@ function APIList({ children }) {
   const toggle = useCallback(() => setOpened((x) => !x), []);
   return (
     <div className={styles.apiList}>
-      <div><a onClick={toggle}><Icon icon={opened ? faCaretDown : faCaretRight} /> Allowed API methods</a> (for developers)</div>
+      <div>
+        <a onClick={toggle}>
+          <Icon icon={opened ? faCaretDown : faCaretRight} /> Allowed API methods
+        </a>{' '}
+        (for developers)
+      </div>
       {opened && <div className={styles.apiListMethods}>{children}</div>}
     </div>
   );

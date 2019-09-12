@@ -3,9 +3,9 @@
  * https://github.com/FortAwesome/Font-Awesome/blob/master/LICENSE.txt
  */
 export const faCommentPlus = {
-  iconName: "comment-plus",
-  prefix:   "fas",
-  icon:     [
+  iconName: 'comment-plus',
+  prefix: 'fas',
+  icon: [
     512,
     512,
     [],
@@ -20,7 +20,7 @@ export const faCommentPlus = {
     343.8h-72v-72a16 16 0 0 0-16-16.1h-16a16 16 0 0 0-16.1 16v72.1h-72.1a16 
     16 0 0 0-16 16v16a16 16 0 0 0 16 16h72V464a16 16 0 0 0 16.1 16h16a16 16 
     0 0 0 16-16v-72h72.1a16 16 0 0 0 16-16v-16a16 16 0 0 0-16-16.1z`,
-  ]
+  ],
 };
 
 /**
@@ -30,13 +30,15 @@ export const faCommentPlus = {
  */
 const ellipsisPath = (r) => {
   const dist = 12 - r;
-  return `M 0 12 a ${r} ${r} 0 0 0 ${2 * r} 0 a ${r} ${r} 0 0 0 ${-2 * r} 0 `
-    + `m ${dist} 0 a ${r} ${r} 0 0 0 ${2 * r} 0 a ${r} ${r} 0 0 0 ${-2 * r} 0 `
-    + `m ${dist} 0 a ${r} ${r} 0 0 0 ${2 * r} 0 a ${r} ${r} 0 0 0 ${-2 * r} 0z`;
+  return (
+    `M 0 12 a ${r} ${r} 0 0 0 ${2 * r} 0 a ${r} ${r} 0 0 0 ${-2 * r} 0 ` +
+    `m ${dist} 0 a ${r} ${r} 0 0 0 ${2 * r} 0 a ${r} ${r} 0 0 0 ${-2 * r} 0 ` +
+    `m ${dist} 0 a ${r} ${r} 0 0 0 ${2 * r} 0 a ${r} ${r} 0 0 0 ${-2 * r} 0z`
+  );
 };
 
 export const faEllipsis = {
-  iconName: "ellipsis",
-  prefix:   "fas",
-  icon:     [24, 24, [], '', ellipsisPath(3)]
+  iconName: 'ellipsis',
+  prefix: 'fas',
+  icon: [24, 24, [], '', ellipsisPath(3)],
 };
