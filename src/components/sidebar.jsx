@@ -62,7 +62,7 @@ const SideBarFriends = ({ user }) => (
           </Link>
         </li>
         <li className="p-best-of">
-          <Link to="/summary/1">Best of day</Link>
+          <Link to="/summary/1">Best of the day</Link>
         </li>
         <li className="p-home">
           <Link
