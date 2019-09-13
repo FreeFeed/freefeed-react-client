@@ -13,7 +13,7 @@ export default () => (
 
       <p>
         We{' '}
-        <a href="https://dev.freefeed.net" target="_blank">
+        <a href="https://freefeed.net/ffdev/" target="_blank">
           need help
         </a>{' '}
         with both development and testing.
@@ -44,7 +44,7 @@ export default () => (
 
       <p>
         <b>
-          <a href="https://dev.freefeed.net" target="_blank">
+          <a href="https://freefeed.net/ffdev/" target="_blank">
             Join
           </a>
         </b>{' '}
