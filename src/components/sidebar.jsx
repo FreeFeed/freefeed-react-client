@@ -104,7 +104,7 @@ const SideBarFreeFeed = () => (
         </li>
         <li>
           <a href="https://davidmz.me/frfrfr/all-groups/" target="_blank">
-            Public Groups
+            Public groups
           </a>
         </li>
         <li>
