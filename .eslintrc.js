@@ -60,7 +60,7 @@ module.exports = {
     indent: 'off',
     'jsx-quotes': 2,
     'keyword-spacing': [2, { before: true, after: true }],
-    'linebreak-style': 2,
+    'linebreak-style': process.platform === 'win32' ? 'off' : 'error',
     'max-statements-per-line': [2, { max: 1 }],
     'no-debugger': 2,
     'no-duplicate-imports': 2,
