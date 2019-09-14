@@ -2,7 +2,8 @@
 
 ## Starting Development Server with Hot-Reload
 
-Run `npm start` (will use [staging backend](https://candy.freefeed.net)).
+1. Run `npm start` (will use [staging backend](https://candy.freefeed.net)).
+1. Open http://127.0.0.1:3333 in your browser.
 
 Alternatively, install [freefeed-server](https://github.com/FreeFeed/freefeed-server) and run `npm run dev-server:local` if you need to work with local backend.
 
