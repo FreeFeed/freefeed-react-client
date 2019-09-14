@@ -1,7 +1,5 @@
 {
-  "presets": [
-    "@babel/env"
-  ],
+  "presets": ["@babel/env", "@babel/preset-react"],
   "plugins": [
     "@babel/syntax-object-rest-spread",
     "@babel/syntax-class-properties",

@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PostComments> Should render first comment if there are any comments 1`] = `
+<div
+  className="comments"
+>
+  <ErrorBoundary>
+    <MoreCommentsWrapper
+      omittedComments={1}
+      showMoreComments={[Function]}
+    />
+  </ErrorBoundary>
+</div>
+`;
+
+exports[`<PostComments> Should render first comment if there are any comments 2`] = `
+<div
+  className="comments"
+>
+  <ErrorBoundary>
+    <PostComment
+      backwardNumber={2}
+      currentUser={Object {}}
+      highlightArrowComment={[Function]}
+      highlightComment={[Function]}
+      openAnsweringComment={[Function]}
+    />
+    <MoreCommentsWrapper
+      omittedComments={1}
+      showMoreComments={[Function]}
+    />
+  </ErrorBoundary>
+</div>
+`;
+
+exports[`<PostComments> Should render right number of comments 1`] = `
+<div
+  className="comments"
+>
+  <ErrorBoundary />
+</div>
+`;
+
+exports[`<PostComments> Should render right number of comments 2`] = `
+<div
+  className="comments"
+>
+  <ErrorBoundary>
+    <PostComment
+      backwardNumber={1}
+      currentUser={Object {}}
+      highlightArrowComment={[Function]}
+      highlightComment={[Function]}
+      openAnsweringComment={[Function]}
+    />
+  </ErrorBoundary>
+</div>
+`;

@@ -1,0 +1,729 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<UserProfile> Should not see links to subscription lists when canISeeSubsList is false 1`] = `
+<div>
+  <ErrorBoundary>
+    <div
+      className="profile"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-sm-9 col-xs-12"
+        >
+          <div
+            className="avatar"
+          >
+            <img
+              height="75"
+              src="profilePictureLargeUrl"
+              width="75"
+            />
+          </div>
+          <div
+            className="description"
+          >
+            <div
+              className="name"
+              dir="auto"
+            >
+              ScreenName
+            </div>
+            <PieceOfText
+              isExpanded={true}
+              text="description"
+            />
+          </div>
+        </div>
+        <div
+          className="col-sm-3 col-xs-12"
+        >
+          <div
+            className="profile-stats"
+          >
+            <div
+              className="profile-stats-item"
+            >
+              10 subscriptions
+            </div>
+             
+            <div
+              className="profile-stats-item"
+            >
+              20 subscribers
+            </div>
+             
+            <div
+              className="profile-stats-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/username/comments"
+              >
+                30 comments
+              </Link>
+            </div>
+             
+            <div
+              className="profile-stats-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/username/likes"
+              >
+                40 likes
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="profile-controls"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-xs-7 col-sm-7 subscribe-controls"
+        >
+          <a
+            className="subscribe-control-unsubscribe"
+            onClick={[Function]}
+          >
+            Unsubscribe
+          </a>
+        </div>
+        <div
+          className="col-xs-5 col-sm-5 text-right"
+        >
+          <ul
+            className="profile-actions"
+          >
+            <li>
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/filter/direct?to=username"
+              >
+                Direct message
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <CreatePost
+      addAttachmentResponse={[Function]}
+      createPost={[Function]}
+      createPostViewState={[Function]}
+      expandSendTo={[Function]}
+      resetPostCreateForm={[Function]}
+      sendTo={[Function]}
+      user="user"
+    />
+  </ErrorBoundary>
+</div>
+`;
+
+exports[`<UserProfile> Should not show stats when user is blocked 1`] = `
+<div>
+  <ErrorBoundary>
+    <div
+      className="profile"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-sm-9 col-xs-12"
+        >
+          <div
+            className="avatar"
+          >
+            <img
+              height="75"
+              src="profilePictureLargeUrl"
+              width="75"
+            />
+          </div>
+          <div
+            className="description"
+          >
+            <div
+              className="name"
+              dir="auto"
+            >
+              ScreenName
+            </div>
+            <PieceOfText
+              isExpanded={true}
+              text="description"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <CreatePost
+      addAttachmentResponse={[Function]}
+      createPost={[Function]}
+      createPostViewState={[Function]}
+      expandSendTo={[Function]}
+      resetPostCreateForm={[Function]}
+      sendTo={[Function]}
+      user="user"
+    />
+  </ErrorBoundary>
+</div>
+`;
+
+exports[`<UserProfile> Should render 404 when user is not found 1`] = `
+<div>
+  <ErrorBoundary>
+    <h2>
+      404 Not Found
+    </h2>
+    <CreatePost
+      addAttachmentResponse={[Function]}
+      createPost={[Function]}
+      createPostViewState={[Function]}
+      expandSendTo={[Function]}
+      resetPostCreateForm={[Function]}
+      sendTo={[Function]}
+      user="user"
+    />
+  </ErrorBoundary>
+</div>
+`;
+
+exports[`<UserProfile> Should render a warning for a restricted group 1`] = `
+<div>
+  <ErrorBoundary>
+    <div
+      className="profile"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-sm-9 col-xs-12"
+        >
+          <div
+            className="avatar"
+          >
+            <img
+              height="75"
+              src="profilePictureLargeUrl"
+              width="75"
+            />
+          </div>
+          <div
+            className="description"
+          >
+            <div
+              className="name"
+              dir="auto"
+            >
+              ScreenName
+            </div>
+            <PieceOfText
+              isExpanded={true}
+              text="description"
+            />
+          </div>
+        </div>
+        <div
+          className="col-sm-3 col-xs-12"
+        >
+          <div
+            className="profile-stats"
+          >
+             
+            <div
+              className="profile-stats-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/username/subscribers"
+              >
+                20 subscribers
+              </Link>
+            </div>
+             
+             
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="profile-controls"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-xs-7 col-sm-7 subscribe-controls"
+        >
+          <a
+            className="subscribe-control-unsubscribe"
+            onClick={[Function]}
+          >
+            Unsubscribe
+          </a>
+        </div>
+        <div
+          className="col-xs-5 col-sm-5 text-right"
+        >
+          <ul
+            className="profile-actions"
+          >
+            <li>
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/filter/direct?to=username"
+              >
+                Direct message
+              </Link>
+            </li>
+            <li>
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/filter/direct?invite=username"
+              >
+                Invite
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div
+      className="create-post create-post-restricted"
+    >
+      Only administrators can post to this group.
+    </div>
+  </ErrorBoundary>
+</div>
+`;
+
+exports[`<UserProfile> Should render when is a group 1`] = `
+<div>
+  <ErrorBoundary>
+    <div
+      className="profile"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-sm-9 col-xs-12"
+        >
+          <div
+            className="avatar"
+          >
+            <img
+              height="75"
+              src="profilePictureLargeUrl"
+              width="75"
+            />
+          </div>
+          <div
+            className="description"
+          >
+            <div
+              className="name"
+              dir="auto"
+            >
+              ScreenName
+            </div>
+            <PieceOfText
+              isExpanded={true}
+              text="description"
+            />
+          </div>
+        </div>
+        <div
+          className="col-sm-3 col-xs-12"
+        >
+          <div
+            className="profile-stats"
+          >
+             
+            <div
+              className="profile-stats-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/username/subscribers"
+              >
+                20 subscribers
+              </Link>
+            </div>
+             
+             
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="profile-controls"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-xs-7 col-sm-7 subscribe-controls"
+        >
+          <a
+            className="subscribe-control-unsubscribe"
+            onClick={[Function]}
+          >
+            Unsubscribe
+          </a>
+        </div>
+        <div
+          className="col-xs-5 col-sm-5 text-right"
+        >
+          <ul
+            className="profile-actions"
+          >
+            <li>
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/filter/direct?to=username"
+              >
+                Direct message
+              </Link>
+            </li>
+            <li>
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/filter/direct?invite=username"
+              >
+                Invite
+              </Link>
+            </li>
+            <li>
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/username/settings"
+              >
+                Settings
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <CreatePost
+      addAttachmentResponse={[Function]}
+      createPost={[Function]}
+      createPostViewState={[Function]}
+      expandSendTo={[Function]}
+      resetPostCreateForm={[Function]}
+      sendTo={[Function]}
+      user="user"
+    />
+  </ErrorBoundary>
+</div>
+`;
+
+exports[`<UserProfile> Should render when private and not subscribed to 1`] = `
+<div>
+  <ErrorBoundary>
+    <div
+      className="profile"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-sm-9 col-xs-12"
+        >
+          <div
+            className="avatar"
+          >
+            <img
+              height="75"
+              src="profilePictureLargeUrl"
+              width="75"
+            />
+          </div>
+          <div
+            className="description"
+          >
+            <div
+              className="name"
+              dir="auto"
+            >
+              ScreenName
+            </div>
+            <PieceOfText
+              isExpanded={true}
+              text="description"
+            />
+          </div>
+        </div>
+        <div
+          className="col-sm-3 col-xs-12"
+        >
+          <div
+            className="profile-stats"
+          >
+            <div
+              className="profile-stats-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/username/subscriptions"
+              >
+                10 subscriptions
+              </Link>
+            </div>
+             
+            <div
+              className="profile-stats-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/username/subscribers"
+              >
+                20 subscribers
+              </Link>
+            </div>
+             
+            <div
+              className="profile-stats-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/username/comments"
+              >
+                30 comments
+              </Link>
+            </div>
+             
+            <div
+              className="profile-stats-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/username/likes"
+              >
+                40 likes
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="profile-controls"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-xs-7 col-sm-7 subscribe-controls"
+        >
+          <a
+            className="subscribe-control-request-subscription"
+            onClick={[Function]}
+          >
+            Request a subscription
+          </a>
+        </div>
+        <div
+          className="col-xs-5 col-sm-5 text-right"
+        >
+          <ul
+            className="profile-actions"
+          >
+            <li>
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/filter/direct?to=username"
+              >
+                Direct message
+              </Link>
+            </li>
+            <li>
+              <a
+                className="profile-action-block"
+                onClick={[Function]}
+              >
+                Block this user
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <CreatePost
+      addAttachmentResponse={[Function]}
+      createPost={[Function]}
+      createPostViewState={[Function]}
+      expandSendTo={[Function]}
+      resetPostCreateForm={[Function]}
+      sendTo={[Function]}
+      user="user"
+    />
+  </ErrorBoundary>
+</div>
+`;
+
+exports[`<UserProfile> Should render with default data 1`] = `
+<div>
+  <ErrorBoundary>
+    <div
+      className="profile"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-sm-9 col-xs-12"
+        >
+          <div
+            className="avatar"
+          >
+            <img
+              height="75"
+              src="profilePictureLargeUrl"
+              width="75"
+            />
+          </div>
+          <div
+            className="description"
+          >
+            <div
+              className="name"
+              dir="auto"
+            >
+              ScreenName
+            </div>
+            <PieceOfText
+              isExpanded={true}
+              text="description"
+            />
+          </div>
+        </div>
+        <div
+          className="col-sm-3 col-xs-12"
+        >
+          <div
+            className="profile-stats"
+          >
+            <div
+              className="profile-stats-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/username/subscriptions"
+              >
+                10 subscriptions
+              </Link>
+            </div>
+             
+            <div
+              className="profile-stats-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/username/subscribers"
+              >
+                20 subscribers
+              </Link>
+            </div>
+             
+            <div
+              className="profile-stats-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/username/comments"
+              >
+                30 comments
+              </Link>
+            </div>
+             
+            <div
+              className="profile-stats-item"
+            >
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/username/likes"
+              >
+                40 likes
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="profile-controls"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-xs-7 col-sm-7 subscribe-controls"
+        >
+          <a
+            className="subscribe-control-unsubscribe"
+            onClick={[Function]}
+          >
+            Unsubscribe
+          </a>
+        </div>
+        <div
+          className="col-xs-5 col-sm-5 text-right"
+        >
+          <ul
+            className="profile-actions"
+          >
+            <li>
+              <Link
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/filter/direct?to=username"
+              >
+                Direct message
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <CreatePost
+      addAttachmentResponse={[Function]}
+      createPost={[Function]}
+      createPostViewState={[Function]}
+      expandSendTo={[Function]}
+      resetPostCreateForm={[Function]}
+      sendTo={[Function]}
+      user="user"
+    />
+  </ErrorBoundary>
+</div>
+`;

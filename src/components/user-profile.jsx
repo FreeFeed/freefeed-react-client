@@ -138,12 +138,24 @@ export default class UserProfile extends React.Component {
                         <b>{props.screenName}</b> has been sent your subscription request.
                       </span>
                     ) : (
-                      <a onClick={this.handleRequestSubscriptionClick}>Request a subscription</a>
+                      <a
+                        className="subscribe-control-request-subscription"
+                        onClick={this.handleRequestSubscriptionClick}
+                      >
+                        Request a subscription
+                      </a>
                     )
                   ) : props.subscribed ? (
-                    <a onClick={this.handleUnsubscribeClick}>Unsubscribe</a>
+                    <a
+                      className="subscribe-control-unsubscribe"
+                      onClick={this.handleUnsubscribeClick}
+                    >
+                      Unsubscribe
+                    </a>
                   ) : (
-                    <a onClick={this.handleSubscribeClick}>Subscribe</a>
+                    <a className="subscribe-control-subscribe" onClick={this.handleSubscribeClick}>
+                      Subscribe
+                    </a>
                   )}
 
                   {props.userView.isSubscribing ? (
@@ -170,7 +182,9 @@ export default class UserProfile extends React.Component {
                     )}
                     {props.type !== 'group' && !props.subscribed ? (
                       <li>
-                        <a onClick={this.handleBlockUserClick}>Block this user</a>
+                        <a className="profile-action-block" onClick={this.handleBlockUserClick}>
+                          Block this user
+                        </a>
                       </li>
                     ) : props.amIGroupAdmin ? (
                       <li>

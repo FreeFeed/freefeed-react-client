@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PieceOfText> Should correctly process multiline texts (long text without newlines) 1`] = `
+<Linkify>
+  <span
+    dir="auto"
+    key="text"
+  >
+    1000: Не мысля гордый свет 27 забавить, Вниманье дружбы возлюбя, Хотел 71 бы я тебе представить Залог 102 достойнее тебя, Достойнее души прекрасной, 149 Святой исполненной мечты, Поэзии живой 192 и ясной, Высоких дум и простоты; Но 232 так и быть - рукой пристрастной Прими 274 собранье пестрых глав, Полусмешных, полупечальных, 329 Простонародных, идеальных, Небрежный плод моих 380 забав, Бессониц, легких вдохновений, Незрелых 430 и увядших лет, Ума холодных наблюдений 473 И сердца горестных замет. ГЛАВА ПЕРВАЯ 516 И жить торопится и чувствовать спешит. К. 562 Вяземский. I. "Мой дядя самых...
+  </span>
+   
+  <a
+    className="read-more"
+    key="read-more"
+    onClick={[Function]}
+  >
+    Read more
+  </a>
+</Linkify>
+`;
+
+exports[`<PieceOfText> Should correctly process multiline texts (long text without newlines) 2`] = `
+<Linkify>
+  1000: Не мысля гордый свет 27 забавить, Вниманье дружбы возлюбя, Хотел 71 бы я тебе представить Залог 102 достойнее тебя, Достойнее души прекрасной, 149 Святой исполненной мечты, Поэзии живой 192 и ясной, Высоких дум и простоты; Но 232 так и быть - рукой пристрастной Прими 274 собранье пестрых глав, Полусмешных, полупечальных, 329 Простонародных, идеальных, Небрежный плод моих 380 забав, Бессониц, легких вдохновений, Незрелых 430 и увядших лет, Ума холодных наблюдений 473 И сердца горестных замет. ГЛАВА ПЕРВАЯ 516 И жить торопится и чувствовать спешит. К. 562 Вяземский. I. "Мой дядя самых 596 честных правил, Когда не в шутку 633 занемог, Он уважать себя заставил 671 И лучше выдумать не мог. Его 704 пример другим наука; Но, боже 738 мой, какая скука С больным сидеть 776 и день и ночь, Не отходя ни 808 шагу прочь! Какое низкое коварство 847 Полу-живого забавлять, Ему подушки поправлять, 898 Печально подносить лекарство, Вздыхать и думать 950 про себя: Когда же чорт 978 возьмет тебя!" II.
+</Linkify>
+`;
+
+exports[`<PieceOfText> Should correctly process multiline texts (short text with newlines) 1`] = `
+<Linkify>
+  <span
+    dir="auto"
+    key="text"
+  >
+    First paragraph Second paragraph, first line Second paragraph, second line
+  </span>
+   
+  <a
+    className="read-more"
+    key="read-more"
+    onClick={[Function]}
+  >
+    Expand
+  </a>
+</Linkify>
+`;
+
+exports[`<PieceOfText> Should correctly process multiline texts (short text with newlines) 2`] = `
+<Linkify>
+  <span
+    key="item-0"
+  >
+    First paragraph
+  </span>
+  <div
+    className="p-break"
+    key="separator-0"
+  >
+    <br />
+  </div>
+  <span
+    key="item-1"
+  >
+    <span
+      key="item-0"
+    >
+      Second paragraph, first line
+    </span>
+    <br
+      key="separator-0"
+    />
+    <span
+      key="item-1"
+    >
+      Second paragraph, second line
+    </span>
+  </span>
+</Linkify>
+`;
+
+exports[`<PieceOfText> Should correctly process single-line texts 1`] = `
+<Linkify>
+  ururu n ururu3
+</Linkify>
+`;
+
+exports[`<PieceOfText> Should correctly process texts with markup 1`] = `
+<Linkify>
+  ururu &lt;b&gt;n&lt;/b&gt; ururu3
+</Linkify>
+`;
