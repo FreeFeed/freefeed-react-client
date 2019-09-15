@@ -40,7 +40,7 @@ export default class UserProfile extends React.Component {
 
     if (amIGroupAdmin) {
       this.setState({ isUnsubWarningDisplayed: true });
-    } else if (window.confirm(`Are you sure you want to unsubscribe from ${username}?`)) {
+    } else if (window.confirm(`Are you sure you want to unsubscribe from @${username}?`)) {
       unsubscribe({ username, id });
     }
   });
