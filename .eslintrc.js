@@ -1,3 +1,7 @@
+const path = require('path');
+
+require('dotenv-defaults').load();
+
 module.exports = {
   extends: 'eslint:recommended',
   parser: 'babel-eslint',
@@ -60,7 +64,10 @@ module.exports = {
     indent: 'off',
     'jsx-quotes': 2,
     'keyword-spacing': [2, { before: true, after: true }],
-    'linebreak-style': process.platform === 'win32' ? 'off' : 'error',
+    'linebreak-style': [
+      2,
+      process.env.ESLINT_LINEBREAK_STYLE || (process.platform === 'win32' ? 'windows' : 'unix'),
+    ],
     'max-statements-per-line': [2, { max: 1 }],
     'no-debugger': 2,
     'no-duplicate-imports': 2,

@@ -1,24 +1,19 @@
-/* global WEBPACK_SAYS_USE_CANDY */
 import * as FrontendPrefsOptions from './utils/frontend-preferences-options';
 import * as FeedOptions from './utils/feed-options';
 
-const shouldUseCandy = typeof WEBPACK_SAYS_USE_CANDY !== 'undefined' && WEBPACK_SAYS_USE_CANDY;
-const HOST = shouldUseCandy ? 'https://candy.freefeed.net' : 'http://localhost:3000';
-const COOKIE_DOMAIN = shouldUseCandy ? 'candy.freefeed.net' : 'localhost';
-
 const config = {
   api: {
-    host: HOST,
+    host: process.env.FRF_API_ROOT,
     sentinel: null, // keep always last
   },
   auth: {
-    cookieDomain: COOKIE_DOMAIN,
-    tokenPrefix: 'freefeed_',
-    userStorageKey: 'USER_KEY',
+    cookieDomain: process.env.FRF_COOKIE_DOMAIN,
+    tokenPrefix: process.env.FRF_TOKEN_PREFIX,
+    userStorageKey: process.env.FRF_USER_STORAGE_KEY,
     sentinel: null, // keep always last
   },
   captcha: {
-    siteKey: '',
+    siteKey: process.env.FRF_CAPTCHA_SITEKEY,
     sentinel: null, // keep always last
   },
   search: {
@@ -33,7 +28,7 @@ const config = {
   attachments: { maxCount: 20 },
   textFormatter: { tldList: ['рф', 'com', 'net', 'org', 'edu', 'place'] },
   sentry: {
-    publicDSN: null,
+    publicDSN: process.env.FRF_SENTRY_DSN || null,
     sentinel: null, // keep always last
   },
   frontendPreferences: {
