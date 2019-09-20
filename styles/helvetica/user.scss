@@ -64,6 +64,10 @@
 
   .profile-controls-throbber {
     margin: 0 10px;
+
+    &:empty {
+      display: none;
+    }
   }
 }
 

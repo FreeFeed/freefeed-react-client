@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { LOCATION_CHANGE } from 'react-router-redux';
+import { combineReducers } from 'redux';
 
 import { userParser, postParser, getSummaryPeriod } from '../utils';
 import config from '../config';
@@ -2489,46 +2490,25 @@ export function commentsHighlights(state = {}, action) {
   return state;
 }
 
-export function userViews(state = {}, action) {
-  switch (action.type) {
-    case request(ActionTypes.SUBSCRIBE):
-    case request(ActionTypes.SEND_SUBSCRIPTION_REQUEST):
-    case request(ActionTypes.REVOKE_USER_REQUEST):
-    case request(ActionTypes.UNSUBSCRIBE): {
-      const userId = action.payload.id;
-      const userView = state[userId];
-      return { ...state, [userId]: { ...userView, isSubscribing: true } };
-    }
-    case response(ActionTypes.SUBSCRIBE):
-    case response(ActionTypes.SEND_SUBSCRIPTION_REQUEST):
-    case response(ActionTypes.REVOKE_USER_REQUEST):
-    case response(ActionTypes.UNSUBSCRIBE):
-    case fail(ActionTypes.SUBSCRIBE):
-    case fail(ActionTypes.SEND_SUBSCRIPTION_REQUEST):
-    case fail(ActionTypes.REVOKE_USER_REQUEST):
-    case fail(ActionTypes.UNSUBSCRIBE): {
-      const userId = action.request.id;
-      const userView = state[userId];
-      return { ...state, [userId]: { ...userView, isSubscribing: false } };
-    }
+const userActionsStatusesStatusMaps = combineReducers({
+  subscribing: asyncStatesMap([
+    ActionTypes.SUBSCRIBE,
+    ActionTypes.SEND_SUBSCRIPTION_REQUEST,
+    ActionTypes.REVOKE_USER_REQUEST,
+    ActionTypes.UNSUBSCRIBE,
+  ]),
+  blocking: asyncStatesMap([ActionTypes.BAN, ActionTypes.UNBAN]),
+});
 
-    case request(ActionTypes.BAN):
-    case request(ActionTypes.UNBAN): {
-      const userId = action.payload.id;
-      const userView = state[userId];
-      return { ...state, [userId]: { ...userView, isBlocking: true } };
-    }
-    case response(ActionTypes.BAN):
-    case response(ActionTypes.UNBAN):
-    case fail(ActionTypes.BAN):
-    case fail(ActionTypes.UNBAN): {
-      const userId = action.request.id;
-      const userView = state[userId];
-      return { ...state, [userId]: { ...userView, isBlocking: false } };
-    }
+const initialUserProfileStatuses = userActionsStatusesStatusMaps(undefined, { type: '' });
+
+export function userActionsStatuses(state = initialUserProfileStatuses, action) {
+  if (action.type === response(ActionTypes.GET_USER_FEED)) {
+    // Reset user statuses if user feed is loaded
+    const userId = action.payload.timelines.user;
+    return _.fromPairs(Object.keys(state).map((key) => [key, _.omit(state[key], userId)]));
   }
-
-  return state;
+  return userActionsStatusesStatusMaps(state, action);
 }
 
 export function realtimeSubscriptions(state = [], action) {

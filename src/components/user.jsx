@@ -12,6 +12,7 @@ import {
 } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
 import config from '../config';
+import { initialAsyncState } from '../redux/async-helpers';
 import { joinPostData, postActions, userActions, canAcceptDirects } from './select-utils';
 import FeedOptionsSwitch from './feed-options-switch';
 import Breadcrumbs from './breadcrumbs';
@@ -118,7 +119,10 @@ function selectState(state, ownProps) {
     isLoading: state.routeLoadingState,
     isUserFound: !!foundUser,
     isItMe: foundUser ? foundUser.username === user.username : false,
-    userView: (foundUser && state.userViews[foundUser.id]) || {},
+    subscribingStatus:
+      state.userActionsStatuses.subscribing[foundUser && foundUser.id] || initialAsyncState,
+    blockingStatus:
+      state.userActionsStatuses.blocking[foundUser && foundUser.id] || initialAsyncState,
     isItPostsPage,
     amIGroupAdmin,
     subscribed: authenticated && foundUser && user.subscriptions.indexOf(foundUser.id) > -1,
