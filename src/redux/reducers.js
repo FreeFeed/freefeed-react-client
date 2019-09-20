@@ -10,7 +10,8 @@ import * as FeedOptions from '../utils/feed-options';
 import { loadColorScheme, getSystemColorScheme } from '../services/appearance';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
-import { patchObjectByKey, asyncStatus } from './reducers/helpers';
+import { patchObjectByKey } from './reducers/helpers';
+import { asyncStatesMap, getKeyBy } from './async-helpers';
 
 const frontendPrefsConfig = config.frontendPreferences;
 
@@ -866,12 +867,20 @@ function updatePostData(state, action) {
   return { ...state, [postId]: postParser(action.payload.posts) };
 }
 
-const savePostStatus = asyncStatus(ActionTypes.SAVE_POST);
+const savePostStatusesReducer = asyncStatesMap(ActionTypes.SAVE_POST, {
+  getKey: getKeyBy('postId'),
+  keyMustExist: true,
+  applyState: (post, savePostStatus) => ({ ...post, savePostStatus }),
+});
 
 export function posts(state = {}, action) {
   if (ActionHelpers.isFeedResponse(action)) {
     return mergeByIds(state, (action.payload.posts || []).map(postParser));
   }
+
+  // Handle the savePostStatus changes
+  state = savePostStatusesReducer(state, action);
+
   switch (action.type) {
     case response(ActionTypes.SHOW_MORE_COMMENTS): {
       const post = state[action.payload.posts.id];
@@ -1132,24 +1141,10 @@ export function posts(state = {}, action) {
       };
     }
 
-    // SAVE_POST async actions
-    case request(ActionTypes.SAVE_POST): {
-      return patchObjectByKey(state, action.payload.postId, (post) => ({
-        ...post,
-        savePostStatus: savePostStatus(post.savePostStatus, action),
-      }));
-    }
     case response(ActionTypes.SAVE_POST): {
       return patchObjectByKey(state, action.request.postId, (post) => ({
         ...post,
         isSaved: action.request.save,
-        savePostStatus: savePostStatus(post.savePostStatus, action),
-      }));
-    }
-    case fail(ActionTypes.SAVE_POST): {
-      return patchObjectByKey(state, action.request.postId, (post) => ({
-        ...post,
-        savePostStatus: savePostStatus(post.savePostStatus, action),
       }));
     }
 

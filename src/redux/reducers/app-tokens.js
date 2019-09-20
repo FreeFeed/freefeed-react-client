@@ -11,7 +11,8 @@ import {
   DELETE_APP_TOKEN,
   DELETE_APP_TOKEN_ID,
 } from '../action-types';
-import { asyncStatus, patchObjectByKey, fromResponse } from './helpers';
+import { asyncState, fromResponse } from '../async-helpers';
+import { patchObjectByKey } from './helpers';
 
 const fillToken = (token) => ({
   ...token,
@@ -22,9 +23,9 @@ const fillToken = (token) => ({
 });
 
 export const appTokens = combineReducers({
-  tokensStatus: asyncStatus(GET_APP_TOKENS),
-  scopesStatus: asyncStatus(GET_APP_TOKENS_SCOPES),
-  createStatus: asyncStatus(CREATE_APP_TOKEN),
+  tokensStatus: asyncState(GET_APP_TOKENS),
+  scopesStatus: asyncState(GET_APP_TOKENS_SCOPES),
+  createStatus: asyncState(CREATE_APP_TOKEN),
 
   scopes: fromResponse(GET_APP_TOKENS_SCOPES, ({ payload }) => payload.scopes, []),
   createdToken: fromResponse(CREATE_APP_TOKEN, ({ payload }) => payload.tokenString, ''),
