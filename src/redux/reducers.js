@@ -2502,11 +2502,18 @@ const userActionsStatusesStatusMaps = combineReducers({
 
 const initialUserProfileStatuses = userActionsStatusesStatusMaps(undefined, { type: '' });
 
+function clearStatusesById(state, userId) {
+  return _.fromPairs(Object.keys(state).map((key) => [key, _.omit(state[key], userId)]));
+}
+
 export function userActionsStatuses(state = initialUserProfileStatuses, action) {
   if (action.type === response(ActionTypes.GET_USER_FEED)) {
     // Reset user statuses if user feed is loaded
-    const userId = action.payload.timelines.user;
-    return _.fromPairs(Object.keys(state).map((key) => [key, _.omit(state[key], userId)]));
+    return clearStatusesById(state, action.payload.timelines.user);
+  }
+  if (action.type === ActionTypes.USER_CARD_CLOSING) {
+    // Reset user statuses if user card is closing
+    return clearStatusesById(state, action.payload.userId);
   }
   return userActionsStatusesStatusMaps(state, action);
 }
