@@ -8692,10 +8692,10 @@ snarkdown@~1.2.2:
   resolved "https://registry.yarnpkg.com/snarkdown/-/snarkdown-1.2.2.tgz#0cfe2f3012b804de120fc0c9f7791e869c59cc74"
   integrity sha1-DP4vMBK4BN4SD8DJ93kehpxZzHQ=
 
-social-text-tokenizer@~2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/social-text-tokenizer/-/social-text-tokenizer-2.0.0.tgz#3ebaef501b6aa12992173c04ead68ef04ddc2912"
-  integrity sha512-m4zKdvxFFtrFB54BZ9mTGuQz9rasczLEy5h/TE+8tQZkERsgWfQtTvLE+4C34+V60EI6pwKW9otSu2QjRDeMDQ==
+social-text-tokenizer@~2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/social-text-tokenizer/-/social-text-tokenizer-2.0.1.tgz#4b114975f855b0ca33e3b508b70fb70d0a2c4219"
+  integrity sha512-qf7b2eeMajLLVeFRX03vu4SR4vc0rGHTQiH/iTLSXwYtrPlCTiZGylbD6oJQAmygRAiJGhKJlYGzuEQ/swSSFg==
   dependencies:
     lodash.escaperegexp "^4.1.2"
     punycode "^2.1.1"
