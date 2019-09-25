@@ -244,9 +244,9 @@ export default class CommentLikes extends React.Component {
     const likeListVisible = !this.state.likeListVisible;
     this.setState({ likeListVisible });
     if (likeListVisible) {
-      window.addEventListener('click', this.toggleLikeList, true);
+      window.addEventListener('click', this.toggleLikeList);
     } else {
-      window.removeEventListener('click', this.toggleLikeList, true);
+      window.removeEventListener('click', this.toggleLikeList);
     }
     if (likeListVisible) {
       this.getCommentLikes();
