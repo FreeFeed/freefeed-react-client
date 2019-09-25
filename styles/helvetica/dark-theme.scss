@@ -67,7 +67,8 @@ body.dark-theme {
   select[name='os0'],
   .feed-options-switch .dropdown,
   .list-group-item,
-  .panel-default {
+  .panel-default,
+  .hidden-posts-toggle {
     border-color: $separator-color;
   }
 
@@ -395,5 +396,9 @@ body.dark-theme {
   .with-label--new::after {
     background-color: $label-bg-color;
     color: $label-text-color;
+  }
+
+  .recently-hidden-post .recently-hidden-post__close:hover {
+    background-color: $bg-color-lighter;
   }
 }

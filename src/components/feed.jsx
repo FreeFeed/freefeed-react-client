@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import ErrorBoundary from './error-boundary';
 import Post from './post';
 import { joinPostData } from './select-utils';
-import { PostRecentlyHidden } from './post-hide-ui';
+import { PostRecentlyHidden } from './post-hides-ui';
 
 const HiddenEntriesToggle = (props) => {
   const entriesForm = props.count > 1 ? 'entries' : 'entry';
