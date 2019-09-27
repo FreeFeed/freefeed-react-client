@@ -57,7 +57,7 @@ export default class UserProfile extends React.Component {
       <div>
         <ErrorBoundary>
           {!props.isLoading && !props.isUserFound ? (
-            <h2>404 Not Found</h2>
+            <h2>User not found</h2>
           ) : (
             <div className="profile">
               <div className="row">
