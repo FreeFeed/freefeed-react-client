@@ -23,6 +23,7 @@ const UserHandler = (props) => {
   // Redirect to canonical username in URI (/uSErNAme/likes?offset=30 → /username/likes?offset=30)
   useEffect(() => {
     if (
+      !props.viewUser.isLoading &&
       props.viewUser.username &&
       props.routeParams.userName &&
       props.viewUser.username !== props.routeParams.userName
@@ -39,6 +40,7 @@ const UserHandler = (props) => {
     props.routeParams,
     props.routeParams.userName,
     props.router,
+    props.viewUser.isLoading,
     props.viewUser.username,
   ]);
 
