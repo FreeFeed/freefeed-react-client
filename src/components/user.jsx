@@ -95,14 +95,11 @@ function selectState(state, ownProps) {
   const anonymous = !authenticated;
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
 
-  let foundUser = null;
-  if (state.feedViewState.timeline > 0) {
-    foundUser = state.users[state.feedViewState.timeline.user];
-  } else {
-    foundUser = Object.values(state.users).find(
+  const foundUser =
+    (state.feedViewState.timeline && state.users[state.feedViewState.timeline.user]) ||
+    Object.values(state.users).find(
       (user) => user.username === ownProps.params.userName.toLowerCase(),
     );
-  }
 
   const amIGroupAdmin =
     authenticated &&
