@@ -65,6 +65,28 @@ const dropzoneEventHandlers = (props) => ({
     props.addAttachmentResponse(response.attachments);
   },
 
+  error(file, message, xhrs) {
+    if (typeof message === 'object' && 'err' in message) {
+      let { err } = message;
+      console.error('File upload failed', file.name, err);
+      err = err.replace(/[\r\n].*/g, ''); // First line of multiline message
+      if (err.length > 150) {
+        err = `${err.slice(0, 100)}…`;
+      }
+      file.previewElement.querySelector('[data-dz-errormessage]').textContent = err;
+    } else if (xhrs[0].status === 413) {
+      // Entity too large
+      file.previewElement.querySelector(
+        '[data-dz-errormessage]',
+      ).textContent = `The file you're uploading is too big`;
+    } else if (xhrs[0].status === 0) {
+      // Cannot read server response, probably CORS issue
+      file.previewElement.querySelector(
+        '[data-dz-errormessage]',
+      ).textContent = `An unexpected error occurred during upload`;
+    }
+  },
+
   queuecomplete: props.onQueueComplete,
 });
 

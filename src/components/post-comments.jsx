@@ -17,18 +17,13 @@ const minCommentsToFold = 12;
 export default class PostComments extends React.Component {
   static defaultProps = { user: {} };
 
-  addingCommentForm;
-  rootEl;
+  addingCommentForm = React.createRef();
+  rootEl = React.createRef();
 
-  constructor(props) {
-    super(props);
-    this.addingCommentForm = null;
-    this.rootEl = null;
-    this.state = {
-      // true if user manually fold expanded comments
-      folded: false,
-    };
-  }
+  state = {
+    // true if user manually fold expanded comments
+    folded: false,
+  };
 
   openAnsweringComment = (answerText) => {
     const { post, toggleCommenting, updateCommentingText } = this.props;
@@ -42,13 +37,7 @@ export default class PostComments extends React.Component {
       const addSpace = text.length && !text.match(/\s$/);
       updateCommentingText(post.id, `${text}${addSpace ? ' ' : ''}${answerText} `);
     }
-    if (this.addingCommentForm) {
-      this.addingCommentForm.focus();
-    }
-  };
-
-  registerCommentForm = (el) => {
-    this.addingCommentForm = el;
+    this.addingCommentForm.current && this.addingCommentForm.current.focus();
   };
 
   renderAddingComment() {
@@ -57,7 +46,7 @@ export default class PostComments extends React.Component {
       <PostComment
         id={props.post.id}
         key={`${props.post.id}-comment-adding`}
-        inputRef={this.registerCommentForm}
+        ref={this.addingCommentForm}
         isEditing={true}
         editText={props.post.newCommentText}
         updateCommentingText={props.updateCommentingText}
@@ -145,7 +134,7 @@ export default class PostComments extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.folded && !prevState.folded) {
-      const linkEl = this.rootEl.querySelector('.more-comments-wrapper');
+      const linkEl = this.rootEl.current.querySelector('.more-comments-wrapper');
       const top = linkEl.getBoundingClientRect().top - 8;
       if (top < 0) {
         window.scrollBy(0, top);
@@ -204,8 +193,6 @@ export default class PostComments extends React.Component {
     return middleComments;
   }
 
-  registerRootEl = (el) => (this.rootEl = el);
-
   renderAddComment() {
     const { post, user } = this.props;
     const canAddComment = !post.commentsDisabled || post.isEditable || post.isModeratable;
@@ -236,7 +223,7 @@ export default class PostComments extends React.Component {
     const last = withBackwardNumber(comments.length > 1 && comments[comments.length - 1], 1);
 
     return (
-      <div className="comments" ref={this.registerRootEl}>
+      <div className="comments" ref={this.rootEl}>
         <ErrorBoundary>
           {first ? this.renderComment(first) : false}
           {this.renderMiddle()}
