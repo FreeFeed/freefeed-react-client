@@ -523,3 +523,7 @@ export function savePost({ postId }) {
 export function unsavePost({ postId }) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}/save`, postRequestOptions('DELETE'));
 }
+
+export function getServerInfo() {
+  return fetch(`${apiConfig.host}/v2/server-info`, getRequestOptions());
+}

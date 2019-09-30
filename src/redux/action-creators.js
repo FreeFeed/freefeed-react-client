@@ -934,3 +934,11 @@ export function userCardClosing(userId) {
     payload: { userId },
   };
 }
+
+export function getServerInfo() {
+  return {
+    type: ActionTypes.GET_SERVER_INFO,
+    apiRequest: Api.getServerInfo,
+    nonAuthRequest: true,
+  };
+}

@@ -12,7 +12,7 @@ import { loadColorScheme, getSystemColorScheme } from '../services/appearance';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
 import { patchObjectByKey } from './reducers/helpers';
-import { asyncStatesMap, getKeyBy } from './async-helpers';
+import { asyncStatesMap, getKeyBy, fromResponse, asyncState } from './async-helpers';
 
 const frontendPrefsConfig = config.frontendPreferences;
 
@@ -2681,3 +2681,7 @@ export function userColorScheme(state = loadColorScheme(), action) {
 }
 
 export { appTokens } from './reducers/app-tokens';
+
+export const serverInfo = fromResponse(ActionTypes.GET_SERVER_INFO, ({ payload }) => payload, {});
+
+export const serverInfoStatus = asyncState(ActionTypes.GET_SERVER_INFO);
