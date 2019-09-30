@@ -2039,7 +2039,7 @@ export function boxHeader(state = '', action) {
     case request(ActionTypes.GET_SUMMARY):
     case request(ActionTypes.GET_USER_SUMMARY): {
       const period = getSummaryPeriod(action.payload.days);
-      return `Best of ${period}`;
+      return `Best of the ${period}`;
     }
     case request(ActionTypes.GET_SINGLE_POST): {
       return '';
