@@ -35,7 +35,7 @@ class UserCard extends React.Component {
     }
 
     const { username } = this.props.user;
-    if (window.confirm(`Are you sure you want to unsubscribe from ${username}?`)) {
+    if (window.confirm(`Are you sure you want to unsubscribe from @${username}?`)) {
       this.props.unsubscribe({ username });
     }
   };
