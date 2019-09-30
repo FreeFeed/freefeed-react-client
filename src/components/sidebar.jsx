@@ -104,12 +104,15 @@ const SideBarFreeFeed = () => (
         </li>
         <li>
           <a href="https://davidmz.me/frfrfr/all-groups/" target="_blank">
-            Public Groups
+            Public groups
           </a>
         </li>
         <li>
           <Link to="/support">Support</Link> /{' '}
-          <a href="https://dev.freefeed.net/w/faq/" target="_blank">
+          <a
+            href="https://freefeed.net/welcome/7c70927a-4e51-49e7-bfe1-33bc4c1c0618"
+            target="_blank"
+          >
             FAQ
           </a>
         </li>

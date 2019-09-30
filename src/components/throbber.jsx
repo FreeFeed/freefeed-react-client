@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 
-// eslint-disable-next-line import/no-unresolved
-import Worker from 'worker-loader?inline=true!./throbber-worker';
 import { startAnimation } from './throbber-animation';
 
 export const SMALL = 'SMALL';
@@ -64,12 +62,6 @@ const ThrobberOnCanvas = React.memo(function ThrobberOnCanvas({
       strokeWidth: (strokeWidth * 16) / size,
     };
 
-    if (canvasRef.current.transferControlToOffscreen) {
-      const canvas = canvasRef.current.transferControlToOffscreen();
-      const worker = new Worker();
-      worker.postMessage({ ...animationParams, canvas }, [canvas]);
-      return () => worker.terminate();
-    }
     return startAnimation({ ...animationParams, canvas: canvasRef.current });
   }, [dpr, duration, size, strokeWidth]);
 
