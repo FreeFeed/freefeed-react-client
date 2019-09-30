@@ -16,6 +16,10 @@ import {
   asyncState,
   initialAsyncState,
   asyncStatesMap,
+  combineAsyncStates,
+  successAsyncState,
+  loadingAsyncState,
+  errorAsyncState,
 } from '../../../src/redux/async-helpers';
 
 describe('Async helpers', () => {
@@ -66,17 +70,17 @@ describe('Async helpers', () => {
 
     it('should process the REQUEST action', () => {
       const state = reducer(initialAsyncState, { type: request(actionType) });
-      expect(state, 'to equal', { ...initialAsyncState, loading: true });
+      expect(state, 'to equal', loadingAsyncState);
     });
 
     it('should process the RESPONSE action', () => {
       const state = reducer(initialAsyncState, { type: response(actionType) });
-      expect(state, 'to equal', { ...initialAsyncState, success: true });
+      expect(state, 'to equal', successAsyncState);
     });
 
     it('should process the FAIL action without payload', () => {
       const state = reducer(initialAsyncState, { type: fail(actionType) });
-      expect(state, 'to equal', { ...initialAsyncState, error: true });
+      expect(state, 'to equal', errorAsyncState());
     });
 
     it('should process the FAIL action without error in payload', () => {
@@ -84,7 +88,7 @@ describe('Async helpers', () => {
         type: fail(actionType),
         payload: { err: 'AAA!' },
       });
-      expect(state, 'to equal', { ...initialAsyncState, error: true, errorText: 'AAA!' });
+      expect(state, 'to equal', errorAsyncState('AAA!'));
     });
 
     it('should process the RESET action after RESPONSE', () => {
@@ -115,7 +119,7 @@ describe('Async helpers', () => {
             payload: { id: 'id1' },
           },
         );
-        expect(state, 'to equal', { id1: { ...initialAsyncState, loading: true } });
+        expect(state, 'to equal', { id1: loadingAsyncState });
       });
 
       it('should process two actions with different ids', () => {
@@ -129,8 +133,8 @@ describe('Async helpers', () => {
           request: { id: 'id2' },
         });
         expect(state, 'to equal', {
-          id1: { ...initialAsyncState, loading: true },
-          id2: { ...initialAsyncState, success: true },
+          id1: loadingAsyncState,
+          id2: successAsyncState,
         });
       });
     });
@@ -150,7 +154,7 @@ describe('Async helpers', () => {
             payload: { id: 'id1' },
           },
         );
-        expect(state, 'to equal', { id1: { ...initialAsyncState, loading: true } });
+        expect(state, 'to equal', { id1: loadingAsyncState });
       });
 
       it('should not process the REQUEST action of non-existing key', () => {
@@ -181,7 +185,7 @@ describe('Async helpers', () => {
           },
         );
         expect(state, 'to equal', {
-          id1: { foo: 41, async: { ...initialAsyncState, loading: true } },
+          id1: { foo: 41, async: loadingAsyncState },
         });
       });
 
@@ -194,7 +198,7 @@ describe('Async helpers', () => {
           },
         );
         expect(state, 'to equal', {
-          id1: { foo: 42, async: { ...initialAsyncState, loading: true } },
+          id1: { foo: 42, async: loadingAsyncState },
           id2: { foo: 41, async: initialAsyncState },
         });
       });

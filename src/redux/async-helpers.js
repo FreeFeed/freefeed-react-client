@@ -21,11 +21,21 @@ export const asyncPhase = (type) => isAsync(type) && type.replace(/^.*?\/async:/
 // Reducers helpers
 
 export const initialAsyncState = {
+  initial: true,
   loading: false,
   success: false,
   error: false,
   errorText: '',
 };
+
+export const loadingAsyncState = { ...initialAsyncState, initial: false, loading: true };
+export const successAsyncState = { ...initialAsyncState, initial: false, success: true };
+export const errorAsyncState = (errorText = '') => ({
+  ...initialAsyncState,
+  initial: false,
+  error: true,
+  errorText,
+});
 
 /**
  * Reducers that represents an async status based on phases of the actionTypes
@@ -50,15 +60,11 @@ export function asyncState(actionTypes) {
       case RESET_PHASE:
         return initialAsyncState;
       case REQUEST_PHASE:
-        return { ...initialAsyncState, loading: true };
+        return loadingAsyncState;
       case RESPONSE_PHASE:
-        return { ...initialAsyncState, success: true };
+        return successAsyncState;
       case FAIL_PHASE:
-        return {
-          ...initialAsyncState,
-          error: true,
-          errorText: action.payload ? action.payload.err : '',
-        };
+        return errorAsyncState(action.payload && action.payload.err);
       default:
         return state;
     }
