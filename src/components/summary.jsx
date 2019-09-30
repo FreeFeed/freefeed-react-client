@@ -25,13 +25,15 @@ class Summary extends React.Component {
           </div>
         </div>
 
-        {props.isLoading || props.visibleEntries.length ? (
-          <Feed {...props} />
-        ) : (
-          <div className="summary-no-results">
-            <p>No entries here yet. You might want to subscribe for more users and groups.</p>
-          </div>
-        )}
+        <div className="box-body">
+          {props.isLoading || props.visibleEntries.length ? (
+            <Feed {...props} />
+          ) : (
+            <div className="summary-no-results">
+              <p>No entries here yet. You might want to subscribe for more users and groups.</p>
+            </div>
+          )}
+        </div>
       </div>
     );
   }
