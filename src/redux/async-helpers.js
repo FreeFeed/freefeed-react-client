@@ -152,3 +152,31 @@ export function fromResponse(asyncType, transformer, defaultValue = null, nextRe
     return state;
   };
 }
+
+export function combineAsyncStates(...states) {
+  if (states.length === 0) {
+    return initialAsyncState;
+  }
+  if (states.length === 1) {
+    return states[0];
+  }
+
+  // If some states are loading then combined state is loading
+  if (states.some((s) => s.loading)) {
+    return loadingAsyncState;
+  }
+
+  // If some errors was happen then combined state is errored
+  const errors = states.filter((s) => s.error).map((s) => s.errorText);
+  if (errors.length > 0) {
+    return errorAsyncState(errors.join('; '));
+  }
+
+  // If there are no unsuccessful states then state is successful
+  if (!states.some((s) => !s.success)) {
+    return successAsyncState;
+  }
+
+  // It should be possible only if all states are in initial state
+  return initialAsyncState;
+}

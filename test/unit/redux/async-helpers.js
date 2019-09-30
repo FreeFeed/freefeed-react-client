@@ -204,4 +204,35 @@ describe('Async helpers', () => {
       });
     });
   });
+
+  describe('combineAsyncStates helper', () => {
+    it('should return initial state with no arguments', () => {
+      const result = combineAsyncStates();
+      expect(result, 'to be', initialAsyncState);
+    });
+
+    it('should return initial state if all arguments are in initial state', () => {
+      const result = combineAsyncStates(initialAsyncState, initialAsyncState, initialAsyncState);
+      expect(result, 'to be', initialAsyncState);
+    });
+
+    it('should return loading state if some arguments are in loading state', () => {
+      const result = combineAsyncStates(errorAsyncState('1'), loadingAsyncState, successAsyncState);
+      expect(result, 'to equal', loadingAsyncState);
+    });
+
+    it('should else return error state if some arguments are in error state', () => {
+      const result = combineAsyncStates(
+        errorAsyncState('1'),
+        errorAsyncState('2'),
+        successAsyncState,
+      );
+      expect(result, 'to equal', errorAsyncState('1; 2'));
+    });
+
+    it('should return success state if all arguments are in success state', () => {
+      const result = combineAsyncStates(successAsyncState, successAsyncState, successAsyncState);
+      expect(result, 'to equal', successAsyncState);
+    });
+  });
 });
