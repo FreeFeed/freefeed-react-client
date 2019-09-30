@@ -51,7 +51,7 @@ const About = ({ authenticated }) => (
 
       <p>
         FreeFeed{' '}
-        <a href="https://freefeed.net/welcome/7c70927a-4e51-49e7-bfe1-33bc4c1c0618" target="_blank">
+        <a href="https://github.com/FreeFeed/freefeed-server/wiki/FAQ" target="_blank">
           frequently asked questions page
         </a>
         .
