@@ -25,6 +25,7 @@ export function parseQuery(query) {
           `(^|[^${enLetters}${ruLetters}])(${_.escapeRegExp(
             m[1],
           )})(?:$|[^${enLetters}${ruLetters}])`,
+          'i',
         ),
       );
     } else if (enWordRE.test(m[2])) {
@@ -47,6 +48,7 @@ export function parseQuery(query) {
           `(^|[^${enLetters}${ruLetters}])(${_.escapeRegExp(
             m[2],
           )})(?:$|[^${enLetters}${ruLetters}])`,
+          'i',
         ),
       );
     }
