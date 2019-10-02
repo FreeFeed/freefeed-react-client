@@ -927,3 +927,10 @@ export function updateAppToken(tokenId, params) {
     payload: { tokenId, ...params },
   };
 }
+
+export function userCardClosing(userId) {
+  return {
+    type: ActionTypes.USER_CARD_CLOSING,
+    payload: { userId },
+  };
+}

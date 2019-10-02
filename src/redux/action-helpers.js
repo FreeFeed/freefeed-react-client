@@ -20,17 +20,10 @@ import {
   GET_USER_MEMORIES,
   SAVES,
 } from './action-types';
+import { request, response, fail, baseType } from './async-helpers';
 
 // Async actions lifecycle
-export const request = (type) => `${type}_REQUEST`;
-export const response = (type) => `${type}_RESPONSE`;
-export const fail = (type) => `${type}_FAIL`;
-export const reset = (type) => `${type}_RESET`;
-export const asyncTypeOf = (testType, type) =>
-  testType === request(type) ||
-  testType === response(type) ||
-  testType === fail(type) ||
-  testType === reset(type);
+export { request, response, fail, reset } from './async-helpers';
 
 export const feedGeneratingActions = [
   HOME,
@@ -82,16 +75,14 @@ export function requiresAuth(action) {
   return action.apiRequest && !action.nonAuthRequest;
 }
 
-const unRequest = (type) => type.replace(/_REQUEST$/, '');
-
 export function getFeedName(action) {
   if (!isFeedGeneratingAction(action) && !isFeedRequest(action)) {
     return 'unknown';
   }
 
   if (isUserFeedGeneratingAction(action) || isUserFeedRequest(action)) {
-    return `${unRequest(action.type)}_${action.payload.username}`;
+    return `${baseType(action.type)}_${action.payload.username}`;
   }
 
-  return unRequest(action.type);
+  return baseType(action.type);
 }

@@ -3,7 +3,8 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { getUserInfo, updateUserPreferences } from '../redux/action-creators';
+import { getUserInfo, updateUserPreferences, userCardClosing } from '../redux/action-creators';
+import { initialAsyncState } from '../redux/async-helpers';
 import { Throbber } from './throbber';
 import UserFeedStatus from './user-feed-status';
 import UserRelationshipStatus from './user-relationships-status';
@@ -22,8 +23,8 @@ class UserCard extends React.Component {
   }
 
   handleSubscribeClick = () => {
-    const { username } = this.props.user;
-    this.props.subscribe({ username });
+    const { username, id } = this.props.user;
+    this.props.subscribe({ username, id });
   };
 
   handleUnsubscribeClick = () => {
@@ -34,9 +35,9 @@ class UserCard extends React.Component {
       return;
     }
 
-    const { username } = this.props.user;
+    const { username, id } = this.props.user;
     if (window.confirm(`Are you sure you want to unsubscribe from @${username}?`)) {
-      this.props.unsubscribe({ username });
+      this.props.unsubscribe({ username, id });
     }
   };
 
@@ -59,6 +60,11 @@ class UserCard extends React.Component {
     const { id, username } = this.props.user;
     this.props.unban({ username, id });
   };
+
+  componentWillUnmount() {
+    const { id } = this.props.user;
+    id && this.props.userCardClosing(id);
+  }
 
   render() {
     const { props } = this;
@@ -172,6 +178,10 @@ class UserCard extends React.Component {
           ) : (
             false
           )}
+          <div className="user-card-actions user-card-errors">
+            {props.subscribingStatus.error && props.subscribingStatus.errorText}
+            {props.blockingStatus.error && props.blockingStatus.errorText}
+          </div>
         </ErrorBoundary>
       </div>
     );
@@ -197,6 +207,8 @@ const mapStateToProps = (state, ownProps) => {
     hidden: me.frontendPreferences.homefeed.hideUsers.indexOf(user.username) > -1,
     amIGroupAdmin: user.type === 'group' && (user.administrators || []).indexOf(me.id) > -1,
     canAcceptDirects: canAcceptDirects(user, state),
+    subscribingStatus: state.userActionsStatuses.subscribing[user.id] || initialAsyncState,
+    blockingStatus: state.userActionsStatuses.blocking[user.id] || initialAsyncState,
   };
 };
 
@@ -221,6 +233,7 @@ function mapDispatchToProps(dispatch) {
         }),
       );
     },
+    userCardClosing: (userId) => dispatch(userCardClosing(userId)),
   };
 }
 

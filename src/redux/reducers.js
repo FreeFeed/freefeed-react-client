@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { LOCATION_CHANGE } from 'react-router-redux';
+import { combineReducers } from 'redux';
 
 import { userParser, postParser, getSummaryPeriod } from '../utils';
 import config from '../config';
@@ -10,7 +11,8 @@ import * as FeedOptions from '../utils/feed-options';
 import { loadColorScheme, getSystemColorScheme } from '../services/appearance';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
-import { patchObjectByKey, asyncStatus } from './reducers/helpers';
+import { patchObjectByKey } from './reducers/helpers';
+import { asyncStatesMap, getKeyBy } from './async-helpers';
 
 const frontendPrefsConfig = config.frontendPreferences;
 
@@ -866,12 +868,20 @@ function updatePostData(state, action) {
   return { ...state, [postId]: postParser(action.payload.posts) };
 }
 
-const savePostStatus = asyncStatus(ActionTypes.SAVE_POST);
+const savePostStatusesReducer = asyncStatesMap(ActionTypes.SAVE_POST, {
+  getKey: getKeyBy('postId'),
+  keyMustExist: true,
+  applyState: (post, savePostStatus) => ({ ...post, savePostStatus }),
+});
 
 export function posts(state = {}, action) {
   if (ActionHelpers.isFeedResponse(action)) {
     return mergeByIds(state, (action.payload.posts || []).map(postParser));
   }
+
+  // Handle the savePostStatus changes
+  state = savePostStatusesReducer(state, action);
+
   switch (action.type) {
     case response(ActionTypes.SHOW_MORE_COMMENTS): {
       const post = state[action.payload.posts.id];
@@ -1132,24 +1142,10 @@ export function posts(state = {}, action) {
       };
     }
 
-    // SAVE_POST async actions
-    case request(ActionTypes.SAVE_POST): {
-      return patchObjectByKey(state, action.payload.postId, (post) => ({
-        ...post,
-        savePostStatus: savePostStatus(post.savePostStatus, action),
-      }));
-    }
     case response(ActionTypes.SAVE_POST): {
       return patchObjectByKey(state, action.request.postId, (post) => ({
         ...post,
         isSaved: action.request.save,
-        savePostStatus: savePostStatus(post.savePostStatus, action),
-      }));
-    }
-    case fail(ActionTypes.SAVE_POST): {
-      return patchObjectByKey(state, action.request.postId, (post) => ({
-        ...post,
-        savePostStatus: savePostStatus(post.savePostStatus, action),
       }));
     }
 
@@ -2497,46 +2493,32 @@ export function commentsHighlights(state = {}, action) {
   return state;
 }
 
-export function userViews(state = {}, action) {
-  switch (action.type) {
-    case request(ActionTypes.SUBSCRIBE):
-    case request(ActionTypes.SEND_SUBSCRIPTION_REQUEST):
-    case request(ActionTypes.REVOKE_USER_REQUEST):
-    case request(ActionTypes.UNSUBSCRIBE): {
-      const userId = action.payload.id;
-      const userView = state[userId];
-      return { ...state, [userId]: { ...userView, isSubscribing: true } };
-    }
-    case response(ActionTypes.SUBSCRIBE):
-    case response(ActionTypes.SEND_SUBSCRIPTION_REQUEST):
-    case response(ActionTypes.REVOKE_USER_REQUEST):
-    case response(ActionTypes.UNSUBSCRIBE):
-    case fail(ActionTypes.SUBSCRIBE):
-    case fail(ActionTypes.SEND_SUBSCRIPTION_REQUEST):
-    case fail(ActionTypes.REVOKE_USER_REQUEST):
-    case fail(ActionTypes.UNSUBSCRIBE): {
-      const userId = action.request.id;
-      const userView = state[userId];
-      return { ...state, [userId]: { ...userView, isSubscribing: false } };
-    }
+const userActionsStatusesStatusMaps = combineReducers({
+  subscribing: asyncStatesMap([
+    ActionTypes.SUBSCRIBE,
+    ActionTypes.SEND_SUBSCRIPTION_REQUEST,
+    ActionTypes.REVOKE_USER_REQUEST,
+    ActionTypes.UNSUBSCRIBE,
+  ]),
+  blocking: asyncStatesMap([ActionTypes.BAN, ActionTypes.UNBAN]),
+});
 
-    case request(ActionTypes.BAN):
-    case request(ActionTypes.UNBAN): {
-      const userId = action.payload.id;
-      const userView = state[userId];
-      return { ...state, [userId]: { ...userView, isBlocking: true } };
-    }
-    case response(ActionTypes.BAN):
-    case response(ActionTypes.UNBAN):
-    case fail(ActionTypes.BAN):
-    case fail(ActionTypes.UNBAN): {
-      const userId = action.request.id;
-      const userView = state[userId];
-      return { ...state, [userId]: { ...userView, isBlocking: false } };
-    }
+const initialUserProfileStatuses = userActionsStatusesStatusMaps(undefined, { type: '' });
+
+function clearStatusesById(state, userId) {
+  return _.fromPairs(Object.keys(state).map((key) => [key, _.omit(state[key], userId)]));
+}
+
+export function userActionsStatuses(state = initialUserProfileStatuses, action) {
+  if (action.type === response(ActionTypes.GET_USER_FEED)) {
+    // Reset user statuses if user feed is loaded
+    return clearStatusesById(state, action.payload.timelines.user);
   }
-
-  return state;
+  if (action.type === ActionTypes.USER_CARD_CLOSING) {
+    // Reset user statuses if user card is closing
+    return clearStatusesById(state, action.payload.userId);
+  }
+  return userActionsStatusesStatusMaps(state, action);
 }
 
 export function realtimeSubscriptions(state = [], action) {
