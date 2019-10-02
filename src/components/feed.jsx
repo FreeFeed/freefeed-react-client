@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import ErrorBoundary from './error-boundary';
 import Post from './post';
 
-
 const HiddenEntriesToggle = (props) => {
-  const entriesForm = (props.count > 1 ? 'entries' : 'entry');
+  const entriesForm = props.count > 1 ? 'entries' : 'entry';
   let label;
 
   if (props.isOpen) {
@@ -16,16 +16,14 @@ const HiddenEntriesToggle = (props) => {
 
   return (
     <div className="hidden-posts-toggle">
-      <a onClick={props.toggle}>
-        {label}
-      </a>
+      <a onClick={props.toggle}>{label}</a>
     </div>
   );
 };
 
 function Feed(props) {
   const getEntryComponent = (section) => (post) => {
-    const isRecentlyHidden = (props.isInHomeFeed && post.isHidden && (section === 'visible'));
+    const isRecentlyHidden = props.isInHomeFeed && post.isHidden && section === 'visible';
 
     return (
       <Post
@@ -64,34 +62,33 @@ function Feed(props) {
 
   return (
     <div className="posts">
+      <ErrorBoundary>
+        {visibleEntries}
 
-      {visibleEntries}
+        {hiddenEntries.length > 0 ? (
+          <div>
+            <HiddenEntriesToggle
+              count={hiddenEntries.length}
+              isOpen={props.isHiddenRevealed}
+              toggle={props.toggleHiddenPosts}
+            />
 
-      {hiddenEntries.length > 0 ? (
-        <div>
-          <HiddenEntriesToggle
-            count={hiddenEntries.length}
-            isOpen={props.isHiddenRevealed}
-            toggle={props.toggleHiddenPosts}
-          />
+            {props.isHiddenRevealed ? hiddenEntries : false}
+          </div>
+        ) : (
+          false
+        )}
 
-          {props.isHiddenRevealed ? hiddenEntries : false}
-        </div>
-      ) : false}
-
-      {emptyFeed && props.loading && <p>Loading feed...</p>}
-      {emptyFeed && !props.loading && (
-        <>
-          <p>
-            There are no posts in this feed.
-          </p>
-          {props.emptyFeedMessage}
-        </>
-      )}
+        {emptyFeed && props.loading && <p>Loading feed...</p>}
+        {emptyFeed && !props.loading && (
+          <>
+            <p>There are no posts in this feed.</p>
+            {props.emptyFeedMessage}
+          </>
+        )}
+      </ErrorBoundary>
     </div>
   );
 }
 
-export default connect(
-  (state) => ({ loading: state.routeLoadingState }),
-)(Feed);
+export default connect((state) => ({ loading: state.routeLoadingState }))(Feed);

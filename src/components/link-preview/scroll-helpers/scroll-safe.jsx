@@ -30,7 +30,7 @@ import ScrollCompensator from './scroll-compensator';
  */
 export default function ScrollSafe(arg1, arg2) {
   const defaultOptions = {
-    foldable:    true,
+    foldable: true,
     trackResize: true,
   };
 
@@ -42,7 +42,7 @@ export default function ScrollSafe(arg1, arg2) {
   const Child = arg1;
   const { foldable, trackResize } = { ...defaultOptions, ...(arg2 || {}) };
 
-  const foo = function (props) {
+  const foo = function(props) {
     let content = <Child {...props} />;
     if (trackResize) {
       content = <ResizeTracker>{content}</ResizeTracker>;
@@ -56,4 +56,3 @@ export default function ScrollSafe(arg1, arg2) {
 
   return foo;
 }
-

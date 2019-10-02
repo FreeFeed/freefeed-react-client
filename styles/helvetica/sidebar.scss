@@ -40,10 +40,10 @@
       display: none;
     }
     &::before {
-      content: "(";
+      content: '(';
     }
     &::after {
-      content: ")";
+      content: ')';
     }
   }
 }

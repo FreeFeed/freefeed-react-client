@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-
 function ArchivePostHandler({ router, inProgress, success, id }) {
   if (success) {
     router.replace(`/archive/${encodeURIComponent(id)}`);
@@ -11,23 +10,30 @@ function ArchivePostHandler({ router, inProgress, success, id }) {
   let postBody = null;
 
   if (inProgress) {
-    postBody = <p>Loading info for <strong>{router.location.query.url}</strong>...</p>;
+    postBody = (
+      <p>
+        Loading info for <strong>{router.location.query.url}</strong>...
+      </p>
+    );
   } else {
     postBody = (
       <div>
         <p>
-          It seems that post <strong>{router.location.query.url}</strong> has not yet been restored from the archive.
+          It seems that post <strong>{router.location.query.url}</strong> has not yet been restored
+          from the archive.
         </p>
         <p>
-          You can try to find
-          {' '}
+          You can try to find{' '}
           <a
             target="_blank"
             style={{ textDecoration: 'underline' }}
-            href={`https://web.archive.org/web/20150410000000/${encodeURIComponent(router.location.query.url)}`}
+            href={`https://web.archive.org/web/20150410000000/${encodeURIComponent(
+              router.location.query.url,
+            )}`}
           >
             copy of this post on archive.org
-          </a>.
+          </a>
+          .
         </p>
       </div>
     );
@@ -35,12 +41,8 @@ function ArchivePostHandler({ router, inProgress, success, id }) {
 
   return (
     <div className="box">
-      <div className="box-header-timeline">
-        Friendfeed Post
-      </div>
-      <div className="box-body">
-        {postBody}
-      </div>
+      <div className="box-header-timeline">Friendfeed Post</div>
+      <div className="box-body">{postBody}</div>
       <div className="box-footer" />
     </div>
   );

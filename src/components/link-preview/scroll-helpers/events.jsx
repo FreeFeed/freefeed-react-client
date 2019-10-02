@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import CustomEvent from 'custom-event';
 
-
 export const ELEMENT_RESIZE_EVENT = 'elementResize';
 
 export function contentResized(el) {

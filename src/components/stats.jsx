@@ -2,9 +2,13 @@ import React from 'react';
 import Highcharts from 'highcharts/highcharts';
 import HighchartsMore from 'highcharts/highcharts-more';
 import ReactHighcharts from 'react-highcharts';
-import moment from 'moment';
-import config from '../config';
 
+import parseISO from 'date-fns/parseISO';
+import format from 'date-fns/format';
+import startOfYesterday from 'date-fns/startOfYesterday';
+import subYears from 'date-fns/subYears';
+
+import config from '../config';
 
 const Chart = ReactHighcharts.withHighcharts(Highcharts);
 HighchartsMore(Chart.Highcharts);
@@ -17,8 +21,8 @@ class StatsChart extends React.Component {
   }
 
   async componentDidMount() {
-    const to_date = moment().subtract(1, 'd').format(`YYYY-MM-DD`);   // Yesterday
-    const from_date = moment().subtract(1, 'y').format(`YYYY-MM-DD`); // Stats for 1 year
+    const to_date = format(startOfYesterday(), `yyyy-MM-dd`); // Yesterday
+    const from_date = format(subYears(new Date(), 1), `yyyy-MM-dd`); // Stats for 1 year
 
     const url = `${config.api.host}/v2/stats?data=${this.props.type}&start_date=${from_date}&end_date=${to_date}`;
     const metrics = [];
@@ -28,10 +32,11 @@ class StatsChart extends React.Component {
       const result = await response.json();
 
       for (const metric of result.stats) {
-        const dt = moment(metric.date);
+        const dt = parseISO(metric.date);
         metrics.push([
-          Date.UTC(dt.get('year'), dt.get('month'), dt.get('date')),
-          Number(metric[this.props.type])]);
+          Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate()),
+          Number(metric[this.props.type]),
+        ]);
       }
     } catch (e) {
       metrics.push(e);
@@ -44,12 +49,12 @@ class StatsChart extends React.Component {
 
   render() {
     const config = {
-      chart:       { zoomType: 'x' },
-      exporting:   { enabled: true },
-      xAxis:       { type: 'datetime' },
-      yAxis:       { title: { text: null } },
-      title:       { text: this.props.title },
-      legend:      { enabled: false },
+      chart: { zoomType: 'x' },
+      exporting: { enabled: true },
+      xAxis: { type: 'datetime' },
+      yAxis: { title: { text: null } },
+      title: { text: this.props.title },
+      legend: { enabled: false },
       plotOptions: {
         area: {
           fillColor: {
@@ -57,30 +62,35 @@ class StatsChart extends React.Component {
               x1: 0,
               y1: 0,
               x2: 0,
-              y2: 1
+              y2: 1,
             },
             stops: [
               [0, Highcharts.getOptions().colors[0]],
-              [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-            ]
+              [
+                1,
+                Highcharts.Color(Highcharts.getOptions().colors[0])
+                  .setOpacity(0)
+                  .get('rgba'),
+              ],
+            ],
           },
-          marker:    { radius: 2 },
+          marker: { radius: 2 },
           lineWidth: 1,
-          states:    { hover: { lineWidth: 1 } },
-        }
+          states: { hover: { lineWidth: 1 } },
+        },
       },
-      series: [{
-        type: 'area',
-        name: this.props.title,
-        data: []
-      }]
+      series: [
+        {
+          type: 'area',
+          name: this.props.title,
+          data: [],
+        },
+      ],
     };
 
     config.series[0].data = this.state.metrics;
 
-    return (
-      <Chart config={config} />
-    );
+    return <Chart config={config} />;
   }
 }
 

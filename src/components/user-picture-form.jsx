@@ -3,7 +3,6 @@ import React from 'react';
 import { preventDefault } from '../utils';
 import { Throbber } from './throbber';
 
-
 export default class UserPictureForm extends React.Component {
   pictureFile;
 
@@ -32,20 +31,30 @@ export default class UserPictureForm extends React.Component {
         </div>
 
         <div className="form-group">
-          <button className="btn btn-default" type="submit">Update</button>
+          <button className="btn btn-default" type="submit">
+            Update
+          </button>
 
           {this.props.status === 'loading' ? (
             <span className="settings-throbber">
               <Throbber />
             </span>
-          ) : false}
+          ) : (
+            false
+          )}
         </div>
 
         {this.props.status === 'success' ? (
-          <div className="alert alert-info" role="alert">Profile picture has been updated</div>
+          <div className="alert alert-info" role="alert">
+            Profile picture has been updated
+          </div>
         ) : this.props.status === 'error' ? (
-          <div className="alert alert-danger" role="alert">{this.props.errorMessage}</div>
-        ) : false}
+          <div className="alert alert-danger" role="alert">
+            {this.props.errorMessage}
+          </div>
+        ) : (
+          false
+        )}
       </form>
     );
   }

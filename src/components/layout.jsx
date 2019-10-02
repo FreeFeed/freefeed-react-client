@@ -10,15 +10,13 @@ import Footer from './footer';
 import Sidebar from './sidebar';
 import LoaderContainer from './loader-container';
 import SearchForm from './search-form';
+import ErrorBoundary from './error-boundary';
 import { ColorSchemeSetter } from './color-theme-setter';
 import { SVGSymbolDeclarations } from './fontawesome-icons';
 
-
 const InternalLayout = ({ authenticated, children }) => (
   <div className={authenticated ? 'col-md-9' : 'col-md-12'}>
-    <div className="content">
-      {children}
-    </div>
+    <div className="content">{children}</div>
   </div>
 );
 
@@ -28,7 +26,6 @@ const logoHandler = (routeName, cb) => () => {
   }
   return false;
 };
-
 
 class Layout extends React.Component {
   // Here we have some handling of drag-n-drop, because standard dragenter
@@ -125,55 +122,75 @@ class Layout extends React.Component {
   render() {
     const { props } = this;
 
-    const layoutClassNames = classnames('container', { 'dragover': this.state.isDragOver });
+    const layoutClassNames = classnames('container', { dragover: this.state.isDragOver });
 
     return (
       <div className={layoutClassNames}>
-        <Helmet title={props.title} />
-        <ColorSchemeSetter />
-        <SVGSymbolDeclarations />
+        <ErrorBoundary>
+          <Helmet title={props.title} />
+          <ColorSchemeSetter />
+          <SVGSymbolDeclarations />
 
-        <header className="row">
-          <div className="col-xs-9 col-sm-4 col-md-4">
-            <h1 className="site-logo">
-              <IndexLink className="site-logo-link" to="/" onClick={logoHandler(props.routeName, props.home)}>FreeFeed</IndexLink>
-            </h1>
-          </div>
-
-          {props.authenticated ? (
-            <div className="col-xs-12 col-sm-8 hidden-md hidden-lg">
-              <div className="mobile-shortcuts">
-                <Link className="mobile-shortcut-link" to="/filter/discussions">Discussions</Link>
-                <Link className="mobile-shortcut-link" to="/filter/notifications">Notifications{(props.user.unreadNotificationsNumber > 0 && !props.user.frontendPreferences.hideUnreadNotifications) && ` (${props.user.unreadNotificationsNumber})`}</Link>
-                <Link className="mobile-shortcut-link" to="/filter/direct">Directs{props.user.unreadDirectsNumber > 0 && ` (${props.user.unreadDirectsNumber})`}</Link>
-                <Link className="mobile-shortcut-link" to={`/${props.user.username}`}>My feed</Link>
-              </div>
+          <header className="row">
+            <div className="col-xs-9 col-sm-4 col-md-4">
+              <h1 className="site-logo">
+                <IndexLink
+                  className="site-logo-link"
+                  to="/"
+                  onClick={logoHandler(props.routeName, props.home)}
+                >
+                  FreeFeed
+                </IndexLink>
+              </h1>
             </div>
-          ) : (
-            <div className="col-xs-3 col-sm-6 col-md-3 text-right">
-              <div className="signin-link">
-                <Link to="/signin">Sign In</Link>
+
+            {props.authenticated ? (
+              <div className="col-xs-12 col-sm-8 hidden-md hidden-lg">
+                <div className="mobile-shortcuts">
+                  <Link className="mobile-shortcut-link" to="/filter/discussions">
+                    Discussions
+                  </Link>
+                  <Link className="mobile-shortcut-link" to="/filter/notifications">
+                    Notifications
+                    {props.user.unreadNotificationsNumber > 0 &&
+                      !props.user.frontendPreferences.hideUnreadNotifications &&
+                      ` (${props.user.unreadNotificationsNumber})`}
+                  </Link>
+                  <Link className="mobile-shortcut-link" to="/filter/direct">
+                    Directs
+                    {props.user.unreadDirectsNumber > 0 && ` (${props.user.unreadDirectsNumber})`}
+                  </Link>
+                  <Link className="mobile-shortcut-link" to={`/${props.user.username}`}>
+                    My feed
+                  </Link>
+                </div>
               </div>
+            ) : (
+              <div className="col-xs-3 col-sm-6 col-md-3 text-right">
+                <div className="signin-link">
+                  <Link to="/signin">Sign In</Link>
+                </div>
+              </div>
+            )}
+
+            <div className="col-xs-12 col-sm-12 col-md-5">
+              <SearchForm />
             </div>
-          )}
+          </header>
 
-          <div className="col-xs-12 col-sm-12 col-md-5">
-            <SearchForm />
-          </div>
-        </header>
+          <LoaderContainer loading={props.loadingView} fullPage={true}>
+            <div className="row">
+              <InternalLayout {...props} />
+              {props.authenticated ? <Sidebar {...props} /> : false}
+            </div>
+          </LoaderContainer>
 
-        <LoaderContainer loading={props.loadingView} fullPage={true}>
           <div className="row">
-            <InternalLayout {...props} />
-            {props.authenticated ? <Sidebar {...props} /> : false}
+            <div className="col-md-12">
+              <Footer />
+            </div>
           </div>
-        </LoaderContainer>
-
-        <div className="row">
-          <div className="col-md-12">
-            <Footer />
-          </div>
-        </div>
+        </ErrorBoundary>
       </div>
     );
   }
@@ -181,20 +198,23 @@ class Layout extends React.Component {
 
 function select(state, ownProps) {
   return {
-    user:          state.user,
+    user: state.user,
     authenticated: state.authenticated,
-    loadingView:   state.routeLoadingState,
-    recentGroups:  state.recentGroups,
-    routeName:     getCurrentRouteName(ownProps),
-    title:         state.title,
+    loadingView: state.routeLoadingState,
+    recentGroups: state.recentGroups,
+    routeName: getCurrentRouteName(ownProps),
+    title: state.title,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     signOut: () => dispatch(unauthenticated()),
-    home:    () => dispatch(home()),
+    home: () => dispatch(home()),
   };
 }
 
-export default connect(select, mapDispatchToProps)(Layout);
+export default connect(
+  select,
+  mapDispatchToProps,
+)(Layout);

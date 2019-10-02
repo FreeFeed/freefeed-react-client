@@ -1,19 +1,18 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-
 export default class ArchiveActivityForm extends React.Component {
   static propTypes = {
-    action:    PropTypes.func.isRequired,
+    action: PropTypes.func.isRequired,
     formState: PropTypes.shape({
       inProgress: PropTypes.bool.isRequired,
-      success:    PropTypes.bool.isRequired,
-      error:      PropTypes.bool.isRequired,
-      errorText:  PropTypes.string.isRequired,
+      success: PropTypes.bool.isRequired,
+      error: PropTypes.bool.isRequired,
+      errorText: PropTypes.string.isRequired,
     }),
   };
 
-  state = { checked: false, };
+  state = { checked: false };
 
   setChecked = (e) => this.setState({ checked: e.target.checked });
 
@@ -35,22 +34,22 @@ export default class ArchiveActivityForm extends React.Component {
       <form onSubmit={this.action}>
         <div className="checkbox">
           <label>
-            <input type="checkbox" checked={checked} onClick={this.setChecked} />
-              I allow to restore my comments and likes of other users’ posts
+            <input type="checkbox" checked={checked} onClick={this.setChecked} />I allow to restore
+            my comments and likes of other users’ posts
           </label>
         </div>
         <div className="form-group">
-          <button
-            type="submit"
-            className="btn btn-default"
-            disabled={!this.canSubmit()}
-          >
+          <button type="submit" className="btn btn-default" disabled={!this.canSubmit()}>
             Yes, I allow
           </button>
         </div>
         {formState.error ? (
-          <div className="alert alert-danger" role="alert">{formState.errorText}</div>
-        ) : false}
+          <div className="alert alert-danger" role="alert">
+            {formState.errorText}
+          </div>
+        ) : (
+          false
+        )}
       </form>
     );
   }

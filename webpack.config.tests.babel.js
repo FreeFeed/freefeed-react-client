@@ -1,15 +1,11 @@
 import webpackNodeExternals from 'webpack-node-externals';
-import { baseConfig, rules } from "./webpack/base";
-
+import { baseConfig, rules } from './webpack/base';
 
 const config = {
   ...baseConfig,
   target: 'node',
   module: {
-    rules: [
-      rules.babelForNode,
-      rules.otherAssets
-    ]
+    rules: [rules.babelForNode, rules.otherAssets],
   },
   externals: [webpackNodeExternals()],
 };

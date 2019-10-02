@@ -2,12 +2,7 @@ const KETCHUP_COLOR = '#d43e1b';
 const MUSTARD_COLOR = '#f9b616';
 const SNAKE_DURATION = 0.75;
 
-export function startAnimation({
-  strokeWidth,
-  duration,
-  scale,
-  canvas: tgtCanvas,
-}) {
+export function startAnimation({ strokeWidth, duration, scale, canvas: tgtCanvas }) {
   const tgtCtx = tgtCanvas.getContext('2d');
 
   // Buffer canvas
@@ -28,9 +23,9 @@ export function startAnimation({
 
   // Drawing constants
   const snakeLength = 21.5524 - strokeWidth;
-  const dotPathRadius = 11.5 - (strokeWidth / 2);
-  const snakeOffsetMul = 2 * snakeLength / SNAKE_DURATION;
-  const dotOffsetMul = -dotPathRadius * (Math.PI / 2) / (1 - SNAKE_DURATION);
+  const dotPathRadius = 11.5 - strokeWidth / 2;
+  const snakeOffsetMul = (2 * snakeLength) / SNAKE_DURATION;
+  const dotOffsetMul = (-dotPathRadius * (Math.PI / 2)) / (1 - SNAKE_DURATION);
 
   let startTime = 0;
   let frameId = 0;
@@ -47,8 +42,7 @@ export function startAnimation({
       startTime = time;
     }
 
-    const t = ((time - startTime) / duration)
-      + (SNAKE_DURATION / 2); // Start at the middle of 'snake' phase to show full logo
+    const t = (time - startTime) / duration + SNAKE_DURATION / 2; // Start at the middle of 'snake' phase to show full logo
     renderAt(t);
     tgtCtx.clearRect(0, 0, tgtCanvas.width, tgtCanvas.height);
     tgtCtx.drawImage(canvas, 0, 0);
@@ -86,19 +80,14 @@ export function startAnimation({
     if (time < SNAKE_DURATION) {
       if (withMask) {
         const region = new Path2D();
-        region.rect(
-          4.5 - (strokeWidth / 2),
-          11.5 - (strokeWidth / 2),
-          strokeWidth,
-          strokeWidth
-        );
+        region.rect(4.5 - strokeWidth / 2, 11.5 - strokeWidth / 2, strokeWidth, strokeWidth);
         ctx.clip(region, 'evenodd');
       }
 
       // Drawing snake
       ctx.beginPath();
       ctx.setLineDash([snakeLength, 100]);
-      ctx.lineDashOffset = (time * snakeOffsetMul) - snakeLength;
+      ctx.lineDashOffset = time * snakeOffsetMul - snakeLength;
       ctx.moveTo(strokeWidth / 2, 11.5);
       ctx.lineTo(8, 11.5);
       ctx.quadraticCurveTo(11.5, 11.5, 11.5, 8);
@@ -111,7 +100,7 @@ export function startAnimation({
       ctx.beginPath();
       ctx.setLineDash([0, 100]);
       ctx.lineDashOffset = (time - SNAKE_DURATION) * dotOffsetMul;
-      ctx.arc(11.5, 11.5, dotPathRadius, Math.PI, Math.PI * 3 / 2);
+      ctx.arc(11.5, 11.5, dotPathRadius, Math.PI, (Math.PI * 3) / 2);
       ctx.stroke();
     }
   }

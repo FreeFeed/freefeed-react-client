@@ -7,11 +7,13 @@ import { pluralForm } from '../utils';
 
 import { acceptGroupRequest, rejectGroupRequest } from '../redux/action-creators';
 import { tileUserListFactory, WITH_REQUEST_HANDLES, PLAIN } from './tile-user-list';
+import ErrorBoundary from './error-boundary';
 
-
-const TileListWithAcceptAndReject = tileUserListFactory({ type: WITH_REQUEST_HANDLES, displayQuantity: true });
+const TileListWithAcceptAndReject = tileUserListFactory({
+  type: WITH_REQUEST_HANDLES,
+  displayQuantity: true,
+});
 const TileList = tileUserListFactory({ type: PLAIN, displayQuantity: true });
-
 
 class RequestsToGroup extends React.PureComponent {
   handleAccept = (username) => {
@@ -44,34 +46,35 @@ class RequestsToGroup extends React.PureComponent {
 
 const GroupsHandler = (props) => {
   const groupRequests = props.groupRequests.map((groupRequest) => {
-    return <RequestsToGroup key={groupRequest.id} accept={props.acceptGroupRequest} reject={props.rejectGroupRequest} groupRequest={groupRequest} />;
+    return (
+      <RequestsToGroup
+        key={groupRequest.id}
+        accept={props.acceptGroupRequest}
+        reject={props.rejectGroupRequest}
+        groupRequest={groupRequest}
+      />
+    );
   });
 
   return (
     <div className="box">
-      <div className="box-header-timeline">
-        Groups
-      </div>
-      <div className="box-body">
-        <div className="row">
-          <div className="col-md-8">
-            All the groups you are subscribed to
+      <ErrorBoundary>
+        <div className="box-header-timeline">Groups</div>
+        <div className="box-body">
+          <div className="row">
+            <div className="col-md-8">All the groups you are subscribed to</div>
+            <div className="col-md-4 text-right">
+              <Link to="/groups/create">Create a group</Link>
+            </div>
           </div>
-          <div className="col-md-4 text-right">
-            <Link to="/groups/create">Create a group</Link>
-          </div>
+
+          {groupRequests ? <div>{groupRequests}</div> : false}
+
+          <TileList {...props.myGroups} />
+          <TileList {...props.groupsIAmIn} />
         </div>
-
-        {groupRequests ? (
-          <div>
-            {groupRequests}
-          </div>
-        ) : false}
-
-        <TileList {...props.myGroups} />
-        <TileList {...props.groupsIAmIn} />
-      </div>
-      <div className="box-footer" />
+        <div className="box-footer" />
+      </ErrorBoundary>
     </div>
   );
 };
@@ -87,12 +90,12 @@ function selectState(state) {
 
   const myGroups = {
     header: 'Groups you admin',
-    users:  _.sortBy(adminGroups, sortingRule)
+    users: _.sortBy(adminGroups, sortingRule),
   };
 
   const groupsIAmIn = {
     header: 'Groups you are in',
-    users:  _.sortBy(regularGroups, sortingRule)
+    users: _.sortBy(regularGroups, sortingRule),
   };
 
   return { groupRequests, myGroups, groupsIAmIn };
@@ -101,8 +104,11 @@ function selectState(state) {
 function selectActions(dispatch) {
   return {
     acceptGroupRequest: (...args) => dispatch(acceptGroupRequest(...args)),
-    rejectGroupRequest: (...args) => dispatch(rejectGroupRequest(...args))
+    rejectGroupRequest: (...args) => dispatch(rejectGroupRequest(...args)),
   };
 }
 
-export default connect(selectState, selectActions)(GroupsHandler);
+export default connect(
+  selectState,
+  selectActions,
+)(GroupsHandler);

@@ -5,15 +5,14 @@ import _ from 'lodash';
 
 import SubsList from './subs-list';
 
-
 const SubscriptionsHandler = (props) => {
   return (
     <div className="box">
-      <div className="box-header-timeline">
-        {props.boxHeader}
-      </div>
+      <div className="box-header-timeline">{props.boxHeader}</div>
       <div className="box-body">
-        <div><Link to={`/${props.username}`}>{props.username}</Link> › Subscriptions</div>
+        <div>
+          <Link to={`/${props.username}`}>{props.username}</Link> › Subscriptions
+        </div>
         <SubsList {...props} title="Subscriptions" />
       </div>
       <div className="box-footer" />
@@ -27,20 +26,17 @@ function selectState(state, ownProps) {
   const username = ownProps.params.userName;
 
   const isMyPage = state.user.username === username;
-  const subscribersUsernames = state.usernameSubscribers.payload && state.usernameSubscribers.payload.map((user) => user.username);
+  const subscribersUsernames =
+    state.usernameSubscribers.payload &&
+    state.usernameSubscribers.payload.map((user) => user.username);
 
-  const listSections = [
-    { title: 'Users', users: [] },
-    { title: 'Groups', users: [] }
-  ];
+  const listSections = [{ title: 'Users', users: [] }, { title: 'Groups', users: [] }];
 
-  _.sortBy(state.usernameSubscriptions.payload, 'username')
-    .forEach((u) => {
-      // "mutual" markings should be displayed only if browsing my own subscriptions
-      u.isMutual = isMyPage && subscribersUsernames.indexOf(u.username) > -1;
-      listSections[(u.type === "user") ? 0 : 1].users.push(u);
-    });
-
+  _.sortBy(state.usernameSubscriptions.payload, 'username').forEach((u) => {
+    // "mutual" markings should be displayed only if browsing my own subscriptions
+    u.isMutual = isMyPage && subscribersUsernames.indexOf(u.username) > -1;
+    listSections[u.type === 'user' ? 0 : 1].users.push(u);
+  });
 
   return { boxHeader, username, listSections, isPending, errorString };
 }

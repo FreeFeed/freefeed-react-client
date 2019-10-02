@@ -5,33 +5,35 @@ import config from '../config';
 import { getDateForMemoriesRequest } from '../utils/get-date-from-short-string';
 import { getToken } from './auth';
 
-
 const apiConfig = config.api;
 const frontendPrefsConfig = config.frontendPreferences;
 
 const getRequestOptions = () => ({
   headers: {
-    'Accept':                 'application/json',
-    'X-Authentication-Token': getToken()
-  }
+    Accept: 'application/json',
+    'X-Authentication-Token': getToken(),
+  },
 });
 
 const postRequestOptions = (method = 'POST', body = {}) => ({
   method,
   headers: {
-    'Accept':                 'application/json',
-    'Content-Type':           'application/json',
-    'X-Authentication-Token': getToken()
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    'X-Authentication-Token': getToken(),
   },
   body: JSON.stringify(body),
 });
 
-const feedQueryString = ({ offset, sortChronologically, homeFeedMode, from }) => ([
-  offset && `offset=${offset}`,
-  sortChronologically && `sort=created`,
-  homeFeedMode && `homefeed-mode=${encodeURIComponent(homeFeedMode)}`,
-  from && `created-before=${getDateForMemoriesRequest(from).toISOString()}`
-].filter(Boolean).join('&'));
+const feedQueryString = ({ offset, sortChronologically, homeFeedMode, from }) =>
+  [
+    offset && `offset=${offset}`,
+    sortChronologically && `sort=created`,
+    homeFeedMode && `homefeed-mode=${encodeURIComponent(homeFeedMode)}`,
+    from && `created-before=${getDateForMemoriesRequest(from).toISOString()}`,
+  ]
+    .filter(Boolean)
+    .join('&');
 
 export function getWhoAmI() {
   return fetch(`${apiConfig.host}/v2/users/whoami`, getRequestOptions());
@@ -39,161 +41,136 @@ export function getWhoAmI() {
 
 export function getHome(params) {
   return fetch(
-    `${apiConfig.host}/v2/timelines/home?${feedQueryString(params)}`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/home?${feedQueryString(params)}`,
+    getRequestOptions(),
+  );
 }
 
 export function getMemories(params) {
   return fetch(
-    `${apiConfig.host}/v2/timelines/home?${feedQueryString(params)}&sort=created`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/home?${feedQueryString(params)}&sort=created`,
+    getRequestOptions(),
+  );
 }
 
 export function getDiscussions(params) {
   return fetch(
-    `${apiConfig.host}/v2/timelines/filter/discussions?with-my-posts=yes&${feedQueryString(params)}`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/filter/discussions?with-my-posts=yes&${feedQueryString(
+      params,
+    )}`,
+    getRequestOptions(),
+  );
 }
 
 export function getSaves(params) {
   return fetch(
-    `${apiConfig.host}/v2/timelines/filter/saves?${feedQueryString(params)}`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/filter/saves?${feedQueryString(params)}`,
+    getRequestOptions(),
+  );
 }
 
 export function getDirect(params) {
   return fetch(
-    `${apiConfig.host}/v2/timelines/filter/directs?${feedQueryString(params)}`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/filter/directs?${feedQueryString(params)}`,
+    getRequestOptions(),
+  );
 }
 
 export function getUserFeed({ username, ...params }) {
   return fetch(
-    `${apiConfig.host}/v2/timelines/${username}?${feedQueryString(params)}`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/${username}?${feedQueryString(params)}`,
+    getRequestOptions(),
+  );
 }
 
 export function getNotifications({ offset, filter }) {
   return fetch(
-    `${apiConfig.host}/v2/notifications?offset=${offset}&filter=${filter}`, getRequestOptions());
+    `${apiConfig.host}/v2/notifications?offset=${offset}&filter=${filter}`,
+    getRequestOptions(),
+  );
 }
 
 export function getLikesOnly({ postId, commentsExpanded }) {
   return getPost({
     postId,
     maxComments: commentsExpanded ? 'all' : '',
-    maxLikes:    'all'
+    maxLikes: 'all',
   });
 }
 
 export function getPost({ postId, maxComments = '', maxLikes = '' }) {
   return fetch(
-    `${apiConfig.host}/v2/posts/${postId}?maxComments=${maxComments}&maxLikes=${maxLikes}`, getRequestOptions());
+    `${apiConfig.host}/v2/posts/${postId}?maxComments=${maxComments}&maxLikes=${maxLikes}`,
+    getRequestOptions(),
+  );
 }
 
 export function getPostIdByOldName({ oldName }) {
   return fetch(
-    `${apiConfig.host}/v2/archives/post-by-old-name/${encodeURIComponent(oldName)}`, getRequestOptions());
+    `${apiConfig.host}/v2/archives/post-by-old-name/${encodeURIComponent(oldName)}`,
+    getRequestOptions(),
+  );
 }
 
 export function createPost({ feeds, postText, attachmentIds, more }) {
-  return fetch(`${apiConfig.host}/v1/posts`, {
-    'method':  'POST',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    },
-    'body': JSON.stringify({
+  return fetch(
+    `${apiConfig.host}/v1/posts`,
+    postRequestOptions('POST', {
       post: {
-        body:        postText,
-        attachments: attachmentIds
+        body: postText,
+        attachments: attachmentIds,
       },
       meta: {
         feeds,
-        commentsDisabled: !!more.commentsDisabled
-      }
-    })
-  });
+        commentsDisabled: !!more.commentsDisabled,
+      },
+    }),
+  );
 }
 
 export function createBookmarkletPost({ feeds, postText, imageUrls, commentText }) {
-  return fetch(`${apiConfig.host}/v1/bookmarklet`, {
-    'method':  'POST',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    },
-    'body': JSON.stringify({
-      title:   postText,
-      images:  imageUrls,
+  return fetch(
+    `${apiConfig.host}/v1/bookmarklet`,
+    postRequestOptions('POST', {
+      title: postText,
+      images: imageUrls,
       comment: commentText,
-      meta:    { feeds }
-    })
-  });
+      meta: { feeds },
+    }),
+  );
 }
 
 export function updatePost({ postId, newPost }) {
-  return fetch(`${apiConfig.host}/v1/posts/${postId}`, {
-    'method':  'PUT',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    },
-    'body': JSON.stringify({ post: newPost })
-  });
+  return fetch(
+    `${apiConfig.host}/v1/posts/${postId}`,
+    postRequestOptions('PUT', { post: newPost }),
+  );
 }
 
 export function deletePost({ postId }) {
-  return fetch(`${apiConfig.host}/v1/posts/${postId}`, {
-    'method':  'DELETE',
-    'headers': {
-      'Accept':                 'application/json',
-      'X-Authentication-Token': getToken()
-    }
-  });
+  return fetch(`${apiConfig.host}/v1/posts/${postId}`, postRequestOptions('DELETE'));
 }
 
 export function addComment({ postId, commentText }) {
-  return fetch(`${apiConfig.host}/v1/comments`, {
-    method:  'POST',
-    headers: {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    },
-    'body': JSON.stringify({ comment: { body: commentText, postId } })
-  });
+  return fetch(
+    `${apiConfig.host}/v1/comments`,
+    postRequestOptions('POST', { comment: { body: commentText, postId } }),
+  );
 }
 
 export function updateComment({ commentId, newCommentBody }) {
-  return fetch(`${apiConfig.host}/v1/comments/${commentId}`, {
-    'method':  'PUT',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    },
-    'body': JSON.stringify({ comment: { body: newCommentBody } })
-  });
+  return fetch(
+    `${apiConfig.host}/v1/comments/${commentId}`,
+    postRequestOptions('PUT', { comment: { body: newCommentBody } }),
+  );
 }
 
 export function likeComment({ commentId }) {
-  return fetch(`${apiConfig.host}/v2/comments/${commentId}/like`, {
-    method:  'POST',
-    headers: {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    },
-  });
+  return fetch(`${apiConfig.host}/v2/comments/${commentId}/like`, postRequestOptions());
 }
 
 export function unlikeComment({ commentId }) {
-  return fetch(`${apiConfig.host}/v2/comments/${commentId}/unlike`, {
-    method:  'POST',
-    headers: {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    },
-  });
+  return fetch(`${apiConfig.host}/v2/comments/${commentId}/unlike`, postRequestOptions());
 }
 
 export function getCommentLikes({ commentId }) {
@@ -201,99 +178,46 @@ export function getCommentLikes({ commentId }) {
 }
 
 export function deleteComment({ commentId }) {
-  return fetch(`${apiConfig.host}/v1/comments/${commentId}`, {
-    'method':  'DELETE',
-    'headers': {
-      'Accept':                 'application/json',
-      'X-Authentication-Token': getToken()
-    }
-  });
+  return fetch(`${apiConfig.host}/v1/comments/${commentId}`, postRequestOptions('DELETE'));
 }
 
 export function likePost({ postId }) {
-  return fetch(`${apiConfig.host}/v1/posts/${postId}/like`, {
-    'method':  'POST',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    },
-    'body': '{}'
-  });
+  return fetch(`${apiConfig.host}/v1/posts/${postId}/like`, postRequestOptions());
 }
 
 export function unlikePost({ postId }) {
-  return fetch(`${apiConfig.host}/v1/posts/${postId}/unlike`, {
-    'method':  'POST',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    },
-    'body': '{}'
-  });
+  return fetch(`${apiConfig.host}/v1/posts/${postId}/unlike`, postRequestOptions());
 }
 
 export function hidePost({ postId }) {
-  return fetch(`${apiConfig.host}/v1/posts/${postId}/hide`, {
-    'method':  'POST',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    },
-    'body': '{}'
-  });
+  return fetch(`${apiConfig.host}/v1/posts/${postId}/hide`, postRequestOptions());
 }
 
 export function unhidePost({ postId }) {
-  return fetch(`${apiConfig.host}/v1/posts/${postId}/unhide`, {
-    'method':  'POST',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    },
-    'body': '{}'
-  });
+  return fetch(`${apiConfig.host}/v1/posts/${postId}/unhide`, postRequestOptions());
 }
 
 export function disableComments({ postId }) {
-  return fetch(`${apiConfig.host}/v1/posts/${postId}/disableComments`, {
-    'method':  'POST',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    },
-    'body': '{}'
-  });
+  return fetch(`${apiConfig.host}/v1/posts/${postId}/disableComments`, postRequestOptions());
 }
 
 export function enableComments({ postId }) {
-  return fetch(`${apiConfig.host}/v1/posts/${postId}/enableComments`, {
-    'method':  'POST',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    },
-    'body': '{}'
-  });
+  return fetch(`${apiConfig.host}/v1/posts/${postId}/enableComments`, postRequestOptions());
 }
 
-const encodeBody = (body) => _.map(body, (value, key) => `${key}=${encodeURIComponent(value)}`).join('&');
+const encodeBody = (body) =>
+  _.map(body, (value, key) => `${key}=${encodeURIComponent(value)}`).join('&');
 
 export function signIn({ username, password }) {
   const encodedBody = encodeBody({ username, password });
 
   return fetch(`${apiConfig.host}/v1/session`, {
     headers: {
-      'Accept':       'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     method: 'POST',
-    body:   encodedBody
+    body: encodedBody,
   });
 }
 
@@ -301,28 +225,28 @@ export function restorePassword({ mail }) {
   const encodedBody = encodeBody({ email: mail });
   return fetch(`${apiConfig.host}/v1/passwords`, {
     headers: {
-      'Accept':       'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     method: 'POST',
-    body:   encodedBody
+    body: encodedBody,
   });
 }
 
 export function resetPassword({ password, token }) {
   const params = {
-    newPassword:          password,
+    newPassword: password,
     passwordConfirmation: password,
   };
 
   const encodedBody = encodeBody(params);
   return fetch(`${apiConfig.host}/v1/passwords/${token}`, {
     headers: {
-      'Accept':       'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     method: 'PUT',
-    body:   encodedBody
+    body: encodedBody,
   });
 }
 
@@ -338,11 +262,11 @@ export function signUp({ username, password, email, captcha, invitationId, subsc
 
   return fetch(`${apiConfig.host}/v1/users`, {
     headers: {
-      'Accept':       'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     method: 'POST',
-    body:   encodedBody
+    body: encodedBody,
   });
 }
 
@@ -351,14 +275,7 @@ export function markAllDirectsAsRead() {
 }
 
 export function markAllNotificationsAsRead() {
-  return fetch(`${apiConfig.host}/v2/users/markAllNotificationsAsRead`, {
-    method:  'POST',
-    headers: {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken(),
-    }
-  });
+  return fetch(`${apiConfig.host}/v2/users/markAllNotificationsAsRead`, postRequestOptions());
 }
 
 export function updateUser({
@@ -378,15 +295,7 @@ export function updateUser({
   if (backendPrefs) {
     user.preferences = backendPrefs;
   }
-  return fetch(`${apiConfig.host}/v1/users/${id}`, {
-    'method':  'PUT',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    },
-    'body': JSON.stringify({ user })
-  });
+  return fetch(`${apiConfig.host}/v1/users/${id}`, postRequestOptions('PUT', { user }));
 }
 
 export function updateUserPreferences({ userId, frontendPrefs, backendPrefs }) {
@@ -397,28 +306,20 @@ export function updateUserPreferences({ userId, frontendPrefs, backendPrefs }) {
   if (backendPrefs) {
     user.preferences = backendPrefs;
   }
-  return fetch(`${apiConfig.host}/v1/users/${userId}`, {
-    'method':  'PUT',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    },
-    'body': JSON.stringify({ user })
-  });
+  return fetch(`${apiConfig.host}/v1/users/${userId}`, postRequestOptions('PUT', { user }));
 }
 
 export function updatePassword({ currentPassword, password, passwordConfirmation }) {
   const encodedBody = encodeBody({ currentPassword, password, passwordConfirmation });
 
   return fetch(`${apiConfig.host}/v1/users/updatePassword`, {
-    'method':  'PUT',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/x-www-form-urlencoded',
-      'X-Authentication-Token': getToken()
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'X-Authentication-Token': getToken(),
     },
-    'body': encodedBody
+    body: encodedBody,
   });
 }
 
@@ -427,17 +328,14 @@ export function updateUserPicture({ picture }) {
   data.append('file', picture);
 
   return fetch(`${apiConfig.host}/v1/users/updateProfilePicture`, {
-    'method':  'POST',
-    'headers': { 'X-Authentication-Token': getToken() },
-    'body':    data
+    method: 'POST',
+    headers: { 'X-Authentication-Token': getToken() },
+    body: data,
   });
 }
 
 const userAction = (action) => ({ username }) => {
-  return fetch(`${apiConfig.host}/v1/users/${username}/${action}`, {
-    method:    'POST',
-    'headers': { 'X-Authentication-Token': getToken(), },
-  });
+  return fetch(`${apiConfig.host}/v1/users/${username}/${action}`, postRequestOptions());
 };
 
 export const ban = userAction('ban');
@@ -446,18 +344,25 @@ export const subscribe = userAction('subscribe');
 export const unsubscribe = userAction('unsubscribe');
 export const sendSubscriptionRequest = userAction('sendRequest');
 
-
 export function getUserComments({ username, ...params }) {
-  return fetch(`${apiConfig.host}/v2/timelines/${username}/comments?${feedQueryString(params)}`, getRequestOptions());
+  return fetch(
+    `${apiConfig.host}/v2/timelines/${username}/comments?${feedQueryString(params)}`,
+    getRequestOptions(),
+  );
 }
 
 export function getUserLikes({ username, ...params }) {
-  return fetch(`${apiConfig.host}/v2/timelines/${username}/likes?${feedQueryString(params)}`, getRequestOptions());
+  return fetch(
+    `${apiConfig.host}/v2/timelines/${username}/likes?${feedQueryString(params)}`,
+    getRequestOptions(),
+  );
 }
 
 export function getUserMemories({ username, ...params }) {
   return fetch(
-    `${apiConfig.host}/v2/timelines/${username}?${feedQueryString(params)}&sort=created`, getRequestOptions());
+    `${apiConfig.host}/v2/timelines/${username}?${feedQueryString(params)}&sort=created`,
+    getRequestOptions(),
+  );
 }
 
 export function getSubscribers({ username }) {
@@ -473,27 +378,14 @@ export function getUserInfo({ username }) {
 }
 
 export function createGroup(groupSettings) {
-  return fetch(`${apiConfig.host}/v1/groups`, {
-    'method':  'POST',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    },
-    'body': JSON.stringify({ group: groupSettings })
-  });
+  return fetch(`${apiConfig.host}/v1/groups`, postRequestOptions('POST', { group: groupSettings }));
 }
 
 export function updateGroup({ id, groupSettings }) {
-  return fetch(`${apiConfig.host}/v1/users/${id}`, {
-    'method':  'PUT',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    },
-    'body': JSON.stringify({ user: groupSettings })
-  });
+  return fetch(
+    `${apiConfig.host}/v1/users/${id}`,
+    postRequestOptions('PUT', { user: groupSettings }),
+  );
 }
 
 export function updateGroupPicture({ groupName, file }) {
@@ -501,98 +393,57 @@ export function updateGroupPicture({ groupName, file }) {
   data.append('file', file);
 
   return fetch(`${apiConfig.host}/v1/groups/${groupName}/updateProfilePicture`, {
-    'method':  'POST',
-    'headers': { 'X-Authentication-Token': getToken() },
-    'body':    data
+    method: 'POST',
+    headers: { 'X-Authentication-Token': getToken() },
+    body: data,
   });
 }
 
 export function acceptGroupRequest({ groupName, userName }) {
-  return fetch(`${apiConfig.host}/v1/groups/${groupName}/acceptRequest/${userName}`, {
-    'method':  'POST',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    }
-  });
+  return fetch(
+    `${apiConfig.host}/v1/groups/${groupName}/acceptRequest/${userName}`,
+    postRequestOptions(),
+  );
 }
 
 export function rejectGroupRequest({ groupName, userName }) {
-  return fetch(`${apiConfig.host}/v1/groups/${groupName}/rejectRequest/${userName}`, {
-    'method':  'POST',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    }
-  });
+  return fetch(
+    `${apiConfig.host}/v1/groups/${groupName}/rejectRequest/${userName}`,
+    postRequestOptions(),
+  );
 }
 
 export function acceptUserRequest({ userName }) {
-  return fetch(`${apiConfig.host}/v1/users/acceptRequest/${userName}`, {
-    'method':  'POST',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    }
-  });
+  return fetch(`${apiConfig.host}/v1/users/acceptRequest/${userName}`, postRequestOptions());
 }
 
 export function rejectUserRequest({ userName }) {
-  return fetch(`${apiConfig.host}/v1/users/rejectRequest/${userName}`, {
-    'method':  'POST',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    }
-  });
+  return fetch(`${apiConfig.host}/v1/users/rejectRequest/${userName}`, postRequestOptions());
 }
 
 export function unsubscribeFromGroup({ groupName, userName }) {
-  return fetch(`${apiConfig.host}/v1/groups/${groupName}/unsubscribeFromGroup/${userName}`, {
-    'method':  'POST',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    }
-  });
+  return fetch(
+    `${apiConfig.host}/v1/groups/${groupName}/unsubscribeFromGroup/${userName}`,
+    postRequestOptions(),
+  );
 }
 
 export function makeGroupAdmin({ groupName, user }) {
-  return fetch(`${apiConfig.host}/v1/groups/${groupName}/subscribers/${user.username}/admin`, {
-    'method':  'POST',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    }
-  });
+  return fetch(
+    `${apiConfig.host}/v1/groups/${groupName}/subscribers/${user.username}/admin`,
+    postRequestOptions(),
+  );
 }
 
 export function unadminGroupAdmin({ groupName, user }) {
-  return fetch(`${apiConfig.host}/v1/groups/${groupName}/subscribers/${user.username}/unadmin`, {
-    'method':  'POST',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    }
-  });
+  return fetch(
+    `${apiConfig.host}/v1/groups/${groupName}/subscribers/${user.username}/unadmin`,
+    postRequestOptions(),
+  );
 }
 
 export function revokeSentRequest({ userName }) {
-  return fetch(`${apiConfig.host}/v2/requests/${userName}/revoke`, {
-    'method':  'POST',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    }
-  });
+  return fetch(`${apiConfig.host}/v2/requests/${userName}/revoke`, postRequestOptions());
 }
 
 export function getBlockedByMe() {
@@ -608,7 +459,10 @@ export function getUserSummary({ username, days }) {
 }
 
 export function getSearch({ search = '', offset = 0 }) {
-  return fetch(`${apiConfig.host}/v2/search?qs=${encodeURIComponent(search)}&offset=${offset}`, getRequestOptions());
+  return fetch(
+    `${apiConfig.host}/v2/search?qs=${encodeURIComponent(search)}&offset=${offset}`,
+    getRequestOptions(),
+  );
 }
 
 export function getBestOf({ offset = 0 }) {
@@ -620,39 +474,18 @@ export function getEverything(params) {
 }
 
 export function archiveRestoreActivity() {
-  return fetch(`${apiConfig.host}/v2/archives/activities`, {
-    'method':  'PUT',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    },
-    'body': JSON.stringify({ restore: true })
-  });
+  return fetch(
+    `${apiConfig.host}/v2/archives/activities`,
+    postRequestOptions('PUT', { restore: true }),
+  );
 }
 
 export function archiveStartRestoration(params) {
-  return fetch(`${apiConfig.host}/v2/archives/restoration`, {
-    'method':  'POST',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken()
-    },
-    'body': JSON.stringify(params)
-  });
+  return fetch(`${apiConfig.host}/v2/archives/restoration`, postRequestOptions('POST', params));
 }
 
 export function createFreefeedInvitation(params) {
-  return fetch(`${apiConfig.host}/v2/invitations`, {
-    method:    'POST',
-    'headers': {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken(),
-    },
-    body: JSON.stringify(params),
-  });
+  return fetch(`${apiConfig.host}/v2/invitations`, postRequestOptions('POST', params));
 }
 
 export function getInvitation({ invitationId }) {
@@ -668,49 +501,19 @@ export function getAppTokensScopes() {
 }
 
 export function createAppToken(params) {
-  return fetch(`${apiConfig.host}/v2/app-tokens`, {
-    method:  'POST',
-    headers: {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken(),
-    },
-    body: JSON.stringify(params),
-  });
+  return fetch(`${apiConfig.host}/v2/app-tokens`, postRequestOptions('POST', params));
 }
 
 export function reissueAppToken(tokenId) {
-  return fetch(`${apiConfig.host}/v2/app-tokens/${tokenId}/reissue`, {
-    method:  'POST',
-    headers: {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken(),
-    },
-  });
+  return fetch(`${apiConfig.host}/v2/app-tokens/${tokenId}/reissue`, postRequestOptions());
 }
 
 export function deleteAppToken(tokenId) {
-  return fetch(`${apiConfig.host}/v2/app-tokens/${tokenId}`, {
-    method:  'DELETE',
-    headers: {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken(),
-    },
-  });
+  return fetch(`${apiConfig.host}/v2/app-tokens/${tokenId}`, postRequestOptions('DELETE'));
 }
 
 export function updateAppToken({ tokenId, ...params }) {
-  return fetch(`${apiConfig.host}/v2/app-tokens/${tokenId}`, {
-    method:  'PUT',
-    headers: {
-      'Accept':                 'application/json',
-      'Content-Type':           'application/json',
-      'X-Authentication-Token': getToken(),
-    },
-    body: JSON.stringify(params),
-  });
+  return fetch(`${apiConfig.host}/v2/app-tokens/${tokenId}`, postRequestOptions('PUT', params));
 }
 
 export function savePost({ postId }) {

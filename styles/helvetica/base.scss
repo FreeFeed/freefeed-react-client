@@ -1,5 +1,5 @@
 body {
-  background: #FFF;
+  background: #fff;
   overflow-anchor: none;
 }
 
@@ -7,14 +7,10 @@ body.transition-active:before {
   position: fixed;
   width: 100%;
   height: 100%;
-  content: "";
+  content: '';
   opacity: 0.8;
   z-index: 1;
-  background:
-    #fff
-    url('/img/throbber.gif')
-    no-repeat
-    center;
+  background: #fff url('/img/throbber.gif') no-repeat center;
 }
 
 body.transition-active.transition-static:before {
@@ -22,7 +18,7 @@ body.transition-active.transition-static:before {
   opacity: 1;
 }
 
-div.jsonly>p {
+div.jsonly > p {
   padding-left: 2px;
 }
 
@@ -32,7 +28,9 @@ div.jsonly>p {
   }
 }
 
-a, a:hover, a:focus {
+a,
+a:hover,
+a:focus {
   cursor: pointer;
   color: #000088;
 }
@@ -45,8 +43,7 @@ a, a:hover, a:focus {
   max-width: 174px;
 }
 
-
-.header-row{
+.header-row {
   margin-bottom: 10px;
 }
 
@@ -54,11 +51,13 @@ a, a:hover, a:focus {
   font-size: 14px;
   margin-bottom: 20px;
   margin-left: 10px;
-  @media (max-width: 991px){ margin-left: 0; }
+  @media (max-width: 991px) {
+    margin-left: 0;
+  }
 }
 
 .error-string {
-  color: #FF5A5F;
+  color: #ff5a5f;
 }
 
 .throbber-image {

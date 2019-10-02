@@ -7,7 +7,7 @@ import config from '../config';
 import { signUpChange, signUp, signUpEmpty } from '../redux/action-creators';
 import { preventDefault } from '../utils';
 import LoaderContainer from './loader-container';
-
+import ErrorBoundary from './error-boundary';
 
 const captchaConfig = config.captcha;
 
@@ -18,25 +18,43 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     signUpChange: (...args) => dispatch(signUpChange(...args)),
-    signUp:       (...args) => dispatch(signUp(...args)),
-    signUpEmpty:  (...args) => dispatch(signUpEmpty(...args)),
+    signUp: (...args) => dispatch(signUp(...args)),
+    signUpEmpty: (...args) => dispatch(signUpEmpty(...args)),
   };
 }
 
 const USERNAME_STOP_LIST = [
-  'anonymous', 'public', 'about', 'signin', 'logout',
-  'signup', 'filter', 'settings', 'account', 'groups',
-  'friends', 'list', 'search', 'summary', 'share', '404',
-  'iphone', 'attachments', 'files', 'profilepics',
-  'invite', 'invited',
+  'anonymous',
+  'public',
+  'about',
+  'signin',
+  'logout',
+  'signup',
+  'filter',
+  'settings',
+  'account',
+  'groups',
+  'friends',
+  'list',
+  'search',
+  'summary',
+  'share',
+  '404',
+  'iphone',
+  'attachments',
+  'files',
+  'profilepics',
+  'invite',
+  'invited',
 ];
 
 function isValidUsername(username) {
-  const valid = username
-        && username.length >= 3
-        && username.length <= 25
-        && username.match(/^[A-Za-z0-9]+$/)
-        && USERNAME_STOP_LIST.indexOf(username) == -1;
+  const valid =
+    username &&
+    username.length >= 3 &&
+    username.length <= 25 &&
+    username.match(/^[A-Za-z0-9]+$/) &&
+    USERNAME_STOP_LIST.indexOf(username) == -1;
 
   return valid;
 }
@@ -86,28 +104,28 @@ function signUpFunc(form, { signUp, signUpEmpty, invitationId }) {
 }
 
 const LABELS = {
-  'en': {
-    username:  'Username (At least 3 characters: latin letters a..z, digits 0..9)',
-    email:     'Email',
-    password:  'Password',
+  en: {
+    username: 'Username (At least 3 characters: latin letters a..z, digits 0..9)',
+    email: 'Email',
+    password: 'Password',
     subscribe: 'Subscribe to recommended users and groups',
-    signup:    'Sign up',
+    signup: 'Sign up',
   },
-  'ru': {
-    username:  'Имя пользователя (Не менее трех символов: латинские буквы a..z, цифры 0..9)',
-    email:     'Email',
-    password:  'Пароль',
+  ru: {
+    username: 'Имя пользователя (Не менее трех символов: латинские буквы a..z, цифры 0..9)',
+    email: 'Email',
+    password: 'Пароль',
     subscribe: 'Подписаться на рекомендованных пользователей и группы',
-    signup:    'Зарегистрироваться',
+    signup: 'Зарегистрироваться',
   },
 };
 
 class Signup extends React.Component {
   state = {
-    username:  '',
-    password:  '',
-    email:     '',
-    captcha:   null,
+    username: '',
+    password: '',
+    email: '',
+    captcha: null,
     subscribe: true,
   };
 
@@ -127,64 +145,82 @@ class Signup extends React.Component {
     const { loading, invitationId, lang = 'en' } = this.props;
 
     return (
-      <LoaderContainer loading={loading}>
-        <form onSubmit={preventDefault(() => signUpFunc(this.state, this.props))} className="p-signin">
-          <div className="form-group">
-            <label htmlFor="username">{LABELS[lang].username}</label>
-            <input
-              id="username"
-              className="ember-view ember-text-field form-control"
-              type="text"
-              onChange={this.handleUsernameChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="email">{LABELS[lang].email}</label>
-            <input
-              id="email"
-              className="ember-view ember-text-field form-control"
-              type="text"
-              onChange={this.handleEmailChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="password">{LABELS[lang].password}</label>
-            <input
-              id="password"
-              className="ember-view ember-text-field form-control"
-              type="password"
-              onChange={this.handlePasswordChange}
-            />
-          </div>
-
-          {captchaConfig.siteKey &&
+      <ErrorBoundary>
+        <LoaderContainer loading={loading}>
+          <form
+            onSubmit={preventDefault(() => signUpFunc(this.state, this.props))}
+            className="p-signin"
+          >
             <div className="form-group">
-              <Recaptcha
-                sitekey={captchaConfig.siteKey}
-                theme="light" type="image"
-                onChange={this.handleRecaptchaChange}
-                onExpired={this.handleRecaptchaExpiration}
+              <label htmlFor="username">{LABELS[lang].username}</label>
+              <input
+                id="username"
+                className="ember-view ember-text-field form-control"
+                type="text"
+                onChange={this.handleUsernameChange}
               />
             </div>
-          }
 
-          {invitationId &&
-            <div className="form-group checkbox">
-              <label>
-                <input type="checkbox" name="subscribe-groups" value="0" checked={this.state.subscribe} onChange={this.toggleSubscribe} />
-                {LABELS[lang].subscribe}
-              </label>
-            </div>}
+            <div className="form-group">
+              <label htmlFor="email">{LABELS[lang].email}</label>
+              <input
+                id="email"
+                className="ember-view ember-text-field form-control"
+                type="text"
+                onChange={this.handleEmailChange}
+              />
+            </div>
 
-          <div className="form-group">
-            <button className="btn btn-default p-signin-action" type="submit">{LABELS[lang].signup}</button>
-          </div>
-        </form>
-      </LoaderContainer>
+            <div className="form-group">
+              <label htmlFor="password">{LABELS[lang].password}</label>
+              <input
+                id="password"
+                className="ember-view ember-text-field form-control"
+                type="password"
+                onChange={this.handlePasswordChange}
+              />
+            </div>
+
+            {captchaConfig.siteKey && (
+              <div className="form-group">
+                <Recaptcha
+                  sitekey={captchaConfig.siteKey}
+                  theme="light"
+                  type="image"
+                  onChange={this.handleRecaptchaChange}
+                  onExpired={this.handleRecaptchaExpiration}
+                />
+              </div>
+            )}
+
+            {invitationId && (
+              <div className="form-group checkbox">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="subscribe-groups"
+                    value="0"
+                    checked={this.state.subscribe}
+                    onChange={this.toggleSubscribe}
+                  />
+                  {LABELS[lang].subscribe}
+                </label>
+              </div>
+            )}
+
+            <div className="form-group">
+              <button className="btn btn-default p-signin-action" type="submit">
+                {LABELS[lang].signup}
+              </button>
+            </div>
+          </form>
+        </LoaderContainer>
+      </ErrorBoundary>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Signup);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Signup);

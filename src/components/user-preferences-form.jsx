@@ -3,9 +3,12 @@ import _ from 'lodash';
 
 import { preventDefault } from '../utils';
 import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
-import { HOMEFEED_MODE_FRIENDS_ONLY, HOMEFEED_MODE_FRIENDS_ALL_ACTIVITY, HOMEFEED_MODE_CLASSIC } from '../utils/feed-options';
+import {
+  HOMEFEED_MODE_FRIENDS_ONLY,
+  HOMEFEED_MODE_FRIENDS_ALL_ACTIVITY,
+  HOMEFEED_MODE_CLASSIC,
+} from '../utils/feed-options';
 import { Throbber } from './throbber';
-
 
 export default class UserPreferencesForm extends React.Component {
   constructor(props) {
@@ -19,8 +22,8 @@ export default class UserPreferencesForm extends React.Component {
     this.setState({
       displayNames: {
         ...this.state.displayNames,
-        displayOption: parseInt(event.target.value, 10)
-      }
+        displayOption: parseInt(event.target.value, 10),
+      },
     });
   };
 
@@ -28,8 +31,8 @@ export default class UserPreferencesForm extends React.Component {
     this.setState({
       displayNames: {
         ...this.state.displayNames,
-        useYou: event.target.checked
-      }
+        useYou: event.target.checked,
+      },
     });
   };
 
@@ -37,8 +40,8 @@ export default class UserPreferencesForm extends React.Component {
     this.setState({
       comments: {
         ...this.state.comments,
-        omitRepeatedBubbles: event.target.checked
-      }
+        omitRepeatedBubbles: event.target.checked,
+      },
     });
   };
 
@@ -46,8 +49,8 @@ export default class UserPreferencesForm extends React.Component {
     this.setState({
       comments: {
         ...this.state.comments,
-        highlightComments: event.target.checked
-      }
+        highlightComments: event.target.checked,
+      },
     });
   };
 
@@ -109,7 +112,10 @@ export default class UserPreferencesForm extends React.Component {
               type="radio"
               name="displayOption"
               value={FrontendPrefsOptions.DISPLAYNAMES_DISPLAYNAME}
-              checked={this.state.displayNames.displayOption === FrontendPrefsOptions.DISPLAYNAMES_DISPLAYNAME}
+              checked={
+                this.state.displayNames.displayOption ===
+                FrontendPrefsOptions.DISPLAYNAMES_DISPLAYNAME
+              }
               onChange={this.changeDisplayOption}
             />
             Display name only
@@ -121,7 +127,9 @@ export default class UserPreferencesForm extends React.Component {
               type="radio"
               name="displayOption"
               value={FrontendPrefsOptions.DISPLAYNAMES_BOTH}
-              checked={this.state.displayNames.displayOption === FrontendPrefsOptions.DISPLAYNAMES_BOTH}
+              checked={
+                this.state.displayNames.displayOption === FrontendPrefsOptions.DISPLAYNAMES_BOTH
+              }
               onChange={this.changeDisplayOption}
             />
             Display name + username
@@ -133,7 +141,9 @@ export default class UserPreferencesForm extends React.Component {
               type="radio"
               name="displayOption"
               value={FrontendPrefsOptions.DISPLAYNAMES_USERNAME}
-              checked={this.state.displayNames.displayOption === FrontendPrefsOptions.DISPLAYNAMES_USERNAME}
+              checked={
+                this.state.displayNames.displayOption === FrontendPrefsOptions.DISPLAYNAMES_USERNAME
+              }
               onChange={this.changeDisplayOption}
             />
             Username only
@@ -142,7 +152,13 @@ export default class UserPreferencesForm extends React.Component {
 
         <div className="checkbox checkbox-displayNames-useYou">
           <label>
-            <input type="checkbox" name="useYou" value="1" checked={this.state.displayNames.useYou} onChange={this.changeUseYou} />
+            <input
+              type="checkbox"
+              name="useYou"
+              value="1"
+              checked={this.state.displayNames.useYou}
+              onChange={this.changeUseYou}
+            />
             Show your own name as {'"'}You{'"'}
           </label>
         </div>
@@ -170,27 +186,46 @@ export default class UserPreferencesForm extends React.Component {
                 checked={this.state.readMoreStyle === FrontendPrefsOptions.READMORE_STYLE_COMFORT}
                 onChange={this.changeReadMoreStyle}
               />
-              Comfortable: displays line breaks, shows {'"'}Read more{'"'} for longer posts and comments
+              Comfortable: displays line breaks, shows {'"'}Read more{'"'} for longer posts and
+              comments
             </label>
           </div>
         </div>
         <div className="checkbox">
           <label>
-            <input type="checkbox" name="bubbles" value="1" checked={this.state.hideUnreadNotifications} onChange={this.hideUnreadNotifications} />
+            <input
+              type="checkbox"
+              name="bubbles"
+              value="1"
+              checked={this.state.hideUnreadNotifications}
+              onChange={this.hideUnreadNotifications}
+            />
             Hide unread notifications counter
           </label>
         </div>
 
         <div className="checkbox">
           <label>
-            <input type="checkbox" name="bubbles" value="1" checked={this.state.comments.omitRepeatedBubbles} onChange={this.changeOmitBubbles} />
+            <input
+              type="checkbox"
+              name="bubbles"
+              value="1"
+              checked={this.state.comments.omitRepeatedBubbles}
+              onChange={this.changeOmitBubbles}
+            />
             Omit bubbles for subsequent comments from the same author
           </label>
         </div>
 
         <div className="checkbox">
           <label>
-            <input type="checkbox" name="bubbles" value="1" checked={this.state.comments.highlightComments} onChange={this.changeHighlightComments} />
+            <input
+              type="checkbox"
+              name="bubbles"
+              value="1"
+              checked={this.state.comments.highlightComments}
+              onChange={this.changeHighlightComments}
+            />
             Highlight comments when hovering on @username or ^ and ↑
           </label>
         </div>
@@ -209,15 +244,21 @@ export default class UserPreferencesForm extends React.Component {
 
         <div className="checkbox">
           <label>
-            <input type="checkbox" name="bubbles" value="1" checked={this.state.allowLinksPreview} onChange={this.changeAllowLinksPreview} />
-              Show advanced previews of links in posts (Embedly). Link should start with http(s)://, post should have no attached images. If you don{"'"}t want to have link preview, add ! before a link without spaces.
+            <input
+              type="checkbox"
+              name="bubbles"
+              value="1"
+              checked={this.state.allowLinksPreview}
+              onChange={this.changeAllowLinksPreview}
+            />
+            Show advanced previews of links in posts (Embedly). Link should start with http(s)://,
+            post should have no attached images. If you don{"'"}t want to have link preview, add !
+            before a link without spaces.
           </label>
         </div>
 
         <h4>Home feed preferences</h4>
-        <p>
-          Show:
-        </p>
+        <p>Show:</p>
         <div className="radio">
           <label>
             <input
@@ -256,25 +297,40 @@ export default class UserPreferencesForm extends React.Component {
         </div>
 
         <div className="form-group">
-          Hide posts from these users/groups in homefeed
-          (enter comma separated list of usernames/groupnames):<br />
-          <textarea className="form-control" value={this.state.sHideUsers} onChange={this.chandeHideUsers} />
+          Hide posts from these users/groups in homefeed (enter comma separated list of
+          usernames/groupnames):
+          <br />
+          <textarea
+            className="form-control"
+            value={this.state.sHideUsers}
+            onChange={this.chandeHideUsers}
+          />
         </div>
 
         <p>
-          <button className="btn btn-default" type="submit">Update</button>
+          <button className="btn btn-default" type="submit">
+            Update
+          </button>
           {this.props.status === 'loading' ? (
             <span className="settings-throbber">
               <Throbber />
             </span>
-          ) : false}
+          ) : (
+            false
+          )}
         </p>
 
         {this.props.status === 'success' ? (
-          <div className="alert alert-info" role="alert">Updated!</div>
+          <div className="alert alert-info" role="alert">
+            Updated!
+          </div>
         ) : this.props.status === 'error' ? (
-          <div className="alert alert-danger" role="alert">{this.props.errorMessage}</div>
-        ) : false}
+          <div className="alert alert-danger" role="alert">
+            {this.props.errorMessage}
+          </div>
+        ) : (
+          false
+        )}
       </form>
     );
   }

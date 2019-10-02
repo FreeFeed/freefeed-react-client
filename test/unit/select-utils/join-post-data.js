@@ -3,7 +3,6 @@ import expect from 'unexpected';
 
 import { joinPostData, ommitBubblesThreshold } from '../../../src/components/select-utils';
 
-
 const comment1 = { id: 'comment1' };
 const comment2 = { id: 'comment2' };
 const comment3 = { id: 'comment3' };
@@ -12,45 +11,45 @@ const user1 = { id: '1' };
 const user2 = { id: '2' };
 
 const post = {
-  id:       '1',
+  id: '1',
   comments: [comment1.id, comment2.id, comment3.id],
   postedTo: [],
 };
 
 const composeState = ({ subsequentComments, setting, omittedComments = 0, withDelay = false }) => {
   return {
-    posts:    { [post.id]: post },
+    posts: { [post.id]: post },
     comments: {
       [comment1.id]: {
         ...comment1,
         createdBy: user1.id,
-        createdAt: (0).toString(10)
+        createdAt: (0).toString(10),
       },
       [comment2.id]: {
         ...comment2,
         createdBy: subsequentComments ? user1.id : user2.id,
-        createdAt: (1000 + (withDelay ? ommitBubblesThreshold : 0)).toString(10)
+        createdAt: (1000 + (withDelay ? ommitBubblesThreshold : 0)).toString(10),
       },
       [comment3.id]: {
         ...comment3,
         createdBy: user1.id,
-        createdAt: (2000 + (withDelay ? ommitBubblesThreshold : 0)).toString(10)
-      }
+        createdAt: (2000 + (withDelay ? ommitBubblesThreshold : 0)).toString(10),
+      },
     },
     commentsHighlights: {},
-    commentLikes:       {},
-    commentViewState:   {
+    commentLikes: {},
+    commentViewState: {
       [comment1.id]: {},
       [comment2.id]: {},
       [comment3.id]: {},
     },
     postsViewState: { [post.id]: { omittedComments } },
-    user:           { frontendPreferences: { comments: { omitRepeatedBubbles: setting } } },
-    users:          {
+    user: { frontendPreferences: { comments: { omitRepeatedBubbles: setting } } },
+    users: {
       [user1.id]: user1,
       [user2.id]: user2,
     },
-    routing: { locationBeforeTransitions: {} }
+    routing: { locationBeforeTransitions: {} },
   };
 };
 
@@ -76,7 +75,11 @@ describe('joinPostData()', () => {
 
     describe('when middle comment is omitted', () => {
       it('should not set omitBubble even when omitRepeatedBubbles is "on"', () => {
-        const testState = composeState({ subsequentComments: true, setting: true, omittedComments: 1 });
+        const testState = composeState({
+          subsequentComments: true,
+          setting: true,
+          omittedComments: 1,
+        });
         const result = joinPostData(testState)(post.id);
 
         expect(result.comments[0].omitBubble, 'to be false');
@@ -86,7 +89,11 @@ describe('joinPostData()', () => {
 
     describe('when there is a delay between comments', () => {
       it('should not set omitBubble even when omitRepeatedBubbles is "on"', () => {
-        const testState = composeState({ subsequentComments: true, setting: true, withDelay: true });
+        const testState = composeState({
+          subsequentComments: true,
+          setting: true,
+          withDelay: true,
+        });
         const result = joinPostData(testState)(post.id);
 
         expect(result.comments[0].omitBubble, 'to be false');

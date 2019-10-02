@@ -7,14 +7,13 @@ import { darkTheme } from '../select-utils';
 import ScrollSafe from './scroll-helpers/scroll-safe';
 import * as heightCache from './scroll-helpers/size-cache';
 
-
 class EmbedlyPreview extends React.Component {
-  static propTypes = { url: PropTypes.string.isRequired, };
+  static propTypes = { url: PropTypes.string.isRequired };
 
   link = null;
-  state = { updCounter: 0, };
+  state = { updCounter: 0 };
 
-  setLink = (el) => this.link = el;
+  setLink = (el) => (this.link = el);
 
   componentDidMount() {
     embedly('card', this.link);
@@ -57,7 +56,7 @@ class EmbedlyPreview extends React.Component {
 function select(state) {
   return {
     feedIsLoading: state.routeLoadingState,
-    darkTheme:     darkTheme(state),
+    darkTheme: darkTheme(state),
   };
 }
 

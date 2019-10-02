@@ -11,8 +11,10 @@ import {
 
 import config from '../config';
 
-
-const { textFormatter: { tldList }, siteDomains } = config;
+const {
+  textFormatter: { tldList },
+  siteDomains,
+} = config;
 
 export class Link extends TLink {
   localDomains = [];
@@ -53,17 +55,18 @@ export class Link extends TLink {
 
 const tokenize = withText(combine(hashTags(), emails(), mentions(), links({ tldList }), arrows()));
 
-const enhanceLinks = (token) => (token instanceof TLink) ? new Link(token, siteDomains) : token;
+const enhanceLinks = (token) => (token instanceof TLink ? new Link(token, siteDomains) : token);
 
 export const parseText = (text) => tokenize(text).map(enhanceLinks);
 
 export function getFirstLinkToEmbed(text) {
   return parseText(text)
-    .filter((token) => (
-      token instanceof Link
-      && !token.isLocal
-      && /^https?:\/\//i.test(token.text)
-      && text.charAt(token.offset - 1) !== '!'
-    ))
+    .filter(
+      (token) =>
+        token instanceof Link &&
+        !token.isLocal &&
+        /^https?:\/\//i.test(token.text) &&
+        text.charAt(token.offset - 1) !== '!',
+    )
     .map((it) => it.href)[0];
 }

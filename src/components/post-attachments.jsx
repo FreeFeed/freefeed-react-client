@@ -2,7 +2,7 @@ import React from 'react';
 import ImageAttachmentsContainer from './post-attachment-image-container';
 import AudioAttachment from './post-attachment-audio';
 import GeneralAttachment from './post-attachment-general';
-
+import ErrorBoundary from './error-boundary';
 
 export default (props) => {
   const attachments = props.attachments || [];
@@ -17,7 +17,9 @@ export default (props) => {
       attachments={imageAttachments}
       postId={props.postId}
     />
-  ) : false;
+  ) : (
+    false
+  );
 
   const audioAttachments = attachments.filter((attachment) => attachment.mediaType === 'audio');
   const audioAttachmentsNodes = audioAttachments.map((attachment) => (
@@ -29,10 +31,10 @@ export default (props) => {
     />
   ));
   const audioAttachmentsContainer = audioAttachments.length ? (
-    <div className="audio-attachments">
-      {audioAttachmentsNodes}
-    </div>
-  ) : false;
+    <div className="audio-attachments">{audioAttachmentsNodes}</div>
+  ) : (
+    false
+  );
 
   const generalAttachments = attachments.filter((attachment) => attachment.mediaType === 'general');
   const generalAttachmentsNodes = generalAttachments.map((attachment) => (
@@ -44,16 +46,20 @@ export default (props) => {
     />
   ));
   const generalAttachmentsContainer = generalAttachments.length ? (
-    <div className="general-attachments">
-      {generalAttachmentsNodes}
-    </div>
-  ) : false;
+    <div className="general-attachments">{generalAttachmentsNodes}</div>
+  ) : (
+    false
+  );
 
-  return (attachments.length > 0 ? (
+  return attachments.length > 0 ? (
     <div className="attachments">
-      {imageAttachmentsContainer}
-      {audioAttachmentsContainer}
-      {generalAttachmentsContainer}
+      <ErrorBoundary>
+        {imageAttachmentsContainer}
+        {audioAttachmentsContainer}
+        {generalAttachmentsContainer}
+      </ErrorBoundary>
     </div>
-  ) : false);
+  ) : (
+    false
+  );
 };

@@ -4,7 +4,6 @@ import expect from 'unexpected';
 import { signInForm } from '../../../../src/redux/reducers';
 import { signInChange } from '../../../../src/redux/action-creators';
 
-
 describe('signInForm()', () => {
   it('should change username on signInChange', () => {
     const oldName = 'name';

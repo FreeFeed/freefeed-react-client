@@ -1,9 +1,9 @@
 import React from 'react';
-import numeral from 'numeral';
 import { faFile } from '@fortawesome/free-regular-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { Icon } from './fontawesome-icons';
 
+import { formatFileSize } from '../utils';
+import { Icon } from './fontawesome-icons';
 
 class GeneralAttachment extends React.PureComponent {
   handleClickOnRemoveAttachment = () => {
@@ -12,7 +12,7 @@ class GeneralAttachment extends React.PureComponent {
 
   render() {
     const { props } = this;
-    const formattedFileSize = numeral(props.fileSize).format('0.[0] ib');
+    const formattedFileSize = formatFileSize(props.fileSize);
     const nameAndSize = `${props.fileName} (${formattedFileSize})`;
 
     return (
@@ -22,8 +22,14 @@ class GeneralAttachment extends React.PureComponent {
           <span className="attachment-title">{nameAndSize}</span>
         </a>
 
-        {props.isEditing &&
-          <Icon icon={faTimes} className="remove-attachment" title="Remove file" onClick={this.handleClickOnRemoveAttachment} />}
+        {props.isEditing && (
+          <Icon
+            icon={faTimes}
+            className="remove-attachment"
+            title="Remove file"
+            onClick={this.handleClickOnRemoveAttachment}
+          />
+        )}
       </div>
     );
   }

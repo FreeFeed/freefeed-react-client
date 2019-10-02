@@ -4,7 +4,6 @@ import cn from 'classnames';
 
 import { startAnimation } from './throbber-animation';
 
-
 export const SMALL = 'SMALL';
 export const BIG = 'BIG';
 
@@ -41,8 +40,8 @@ export const Throbber = React.memo(function Throbber({ size = SMALL, delay = DEL
 });
 
 Throbber.propTypes = {
-  size:      PropTypes.oneOf([SMALL, BIG]),
-  delay:     PropTypes.number,
+  size: PropTypes.oneOf([SMALL, BIG]),
+  delay: PropTypes.number,
   className: PropTypes.string,
 };
 
@@ -59,7 +58,7 @@ const ThrobberOnCanvas = React.memo(function ThrobberOnCanvas({
   useEffect(() => {
     const animationParams = {
       duration,
-      scale:       size * dpr / 16,
+      scale: (size * dpr) / 16,
       strokeWidth: (strokeWidth * 16) / size,
     };
 
@@ -73,16 +72,16 @@ const ThrobberOnCanvas = React.memo(function ThrobberOnCanvas({
       height={dpr * size}
       className={className}
       style={{
-        width:  `${size}px`,
-        height: `${size}px`
+        width: `${size}px`,
+        height: `${size}px`,
       }}
     />
   );
 });
 
 ThrobberOnCanvas.propTypes = {
-  size:        PropTypes.number.isRequired,
+  size: PropTypes.number.isRequired,
   strokeWidth: PropTypes.number.isRequired,
-  duration:    PropTypes.number.isRequired,
-  className:   PropTypes.string,
+  duration: PropTypes.number.isRequired,
+  className: PropTypes.string,
 };

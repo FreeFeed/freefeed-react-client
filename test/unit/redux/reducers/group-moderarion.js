@@ -5,7 +5,6 @@ import { feedViewState, posts } from '../../../../src/redux/reducers';
 import { response } from '../../../../src/redux/action-helpers';
 import { DELETE_POST, REALTIME_POST_UPDATE } from '../../../../src/redux/action-types';
 
-
 describe('Group moderation', () => {
   describe('feedViewState', () => {
     let state, action;
@@ -13,10 +12,10 @@ describe('Group moderation', () => {
       state = {
         ...feedViewState(undefined, { type: 'init' }),
         visibleEntries: ['post1', 'post2', 'post3'],
-        hiddenEntries:  ['post1', 'post2'],
+        hiddenEntries: ['post1', 'post2'],
       };
       action = {
-        type:    response(DELETE_POST),
+        type: response(DELETE_POST),
         payload: { postStillAvailable: false },
         request: { postId: 'post2' },
       };
@@ -40,22 +39,22 @@ describe('Group moderation', () => {
     beforeEach(() => {
       state = {
         // ...posts(undefined, { type: 'init' }),
-        'post1': {
-          id:          'post1',
-          body:        'body',
-          updatedAt:   'updatedAt',
+        post1: {
+          id: 'post1',
+          body: 'body',
+          updatedAt: 'updatedAt',
           attachments: [],
-          postedTo:    ['feed1', 'feed2'],
+          postedTo: ['feed1', 'feed2'],
         },
       };
       action = {
         type: REALTIME_POST_UPDATE,
         post: {
-          id:          'post1',
-          body:        'new body',
-          updatedAt:   'new updatedAt',
+          id: 'post1',
+          body: 'new body',
+          updatedAt: 'new updatedAt',
           attachments: ['att1'],
-          postedTo:    ['feed1', 'feed2', 'feed3'],
+          postedTo: ['feed1', 'feed2', 'feed3'],
         },
       };
     });

@@ -8,27 +8,22 @@ import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
 import PostComment from './post-comment';
 import MoreCommentsWrapper from './more-comments-wrapper';
+import ErrorBoundary from './error-boundary';
 import { Icon } from './fontawesome-icons';
 import { faCommentPlus } from './fontawesome-custom-icons';
-
 
 const minCommentsToFold = 12;
 
 export default class PostComments extends React.Component {
   static defaultProps = { user: {} };
 
-  addingCommentForm;
-  rootEl;
+  addingCommentForm = React.createRef();
+  rootEl = React.createRef();
 
-  constructor(props) {
-    super(props);
-    this.addingCommentForm = null;
-    this.rootEl = null;
-    this.state = {
-      // true if user manually fold expanded comments
-      folded: false,
-    };
-  }
+  state = {
+    // true if user manually fold expanded comments
+    folded: false,
+  };
 
   openAnsweringComment = (answerText) => {
     const { post, toggleCommenting, updateCommentingText } = this.props;
@@ -36,19 +31,13 @@ export default class PostComments extends React.Component {
     if (!post.isCommenting && !post.isSinglePost) {
       toggleCommenting(post.id);
     }
-    const text = (post.newCommentText || '');
+    const text = post.newCommentText || '';
     const check = new RegExp(`(^|\\s)${_.escapeRegExp(answerText)}\\s*$`);
     if (!text.match(check)) {
       const addSpace = text.length && !text.match(/\s$/);
       updateCommentingText(post.id, `${text}${addSpace ? ' ' : ''}${answerText} `);
     }
-    if (this.addingCommentForm) {
-      this.addingCommentForm.focus();
-    }
-  };
-
-  registerCommentForm = (el) => {
-    this.addingCommentForm = el;
+    this.addingCommentForm.current && this.addingCommentForm.current.focus();
   };
 
   renderAddingComment() {
@@ -57,7 +46,7 @@ export default class PostComments extends React.Component {
       <PostComment
         id={props.post.id}
         key={`${props.post.id}-comment-adding`}
-        inputRef={this.registerCommentForm}
+        ref={this.addingCommentForm}
         isEditing={true}
         editText={props.post.newCommentText}
         updateCommentingText={props.updateCommentingText}
@@ -74,8 +63,11 @@ export default class PostComments extends React.Component {
 
   renderAddCommentLink() {
     const { props } = this;
-    const disabledForOthers = (props.post.commentsDisabled && (props.post.isEditable || props.post.isModeratable));
-    const toggleCommenting = props.post.isSinglePost ? () => {} : () => props.toggleCommenting(props.post.id);
+    const disabledForOthers =
+      props.post.commentsDisabled && (props.post.isEditable || props.post.isModeratable);
+    const toggleCommenting = props.post.isSinglePost
+      ? () => {}
+      : () => props.toggleCommenting(props.post.id);
 
     if (props.comments.length > 2 && !props.post.omittedComments) {
       return (
@@ -83,10 +75,10 @@ export default class PostComments extends React.Component {
           <a className="comment-icon fa-stack" onClick={preventDefault(toggleCommenting)}>
             <Icon icon={faCommentPlus} />
           </a>
-          <a className="add-comment-link" onClick={preventDefault(toggleCommenting)}>Add comment</a>
-          {disabledForOthers
-            ? <i> - disabled for others</i>
-            : false}
+          <a className="add-comment-link" onClick={preventDefault(toggleCommenting)}>
+            Add comment
+          </a>
+          {disabledForOthers ? <i> - disabled for others</i> : false}
         </div>
       );
     }
@@ -142,7 +134,7 @@ export default class PostComments extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.folded && !prevState.folded) {
-      const linkEl = this.rootEl.querySelector('.more-comments-wrapper');
+      const linkEl = this.rootEl.current.querySelector('.more-comments-wrapper');
       const top = linkEl.getBoundingClientRect().top - 8;
       if (top < 0) {
         window.scrollBy(0, top);
@@ -160,7 +152,11 @@ export default class PostComments extends React.Component {
     const showExpand = !isSinglePost && (folded || post.omittedComments > 0);
     const showFold = !isSinglePost && !showExpand && totalComments >= minCommentsToFold;
 
-    const middleComments = folded ? [] : comments.slice(1, comments.length - 1).map((c, i) => this.renderComment(withBackwardNumber(c, totalComments - i - 1)));
+    const middleComments = folded
+      ? []
+      : comments
+          .slice(1, comments.length - 1)
+          .map((c, i) => this.renderComment(withBackwardNumber(c, totalComments - i - 1)));
 
     if (showExpand) {
       return (
@@ -178,15 +174,16 @@ export default class PostComments extends React.Component {
     if (showFold) {
       return (
         <StickyContainer>
-          <Sticky>{({ style, isSticky }) => (
-            <div
-              style={style}
-              className={cn("fold-comments", { "fold-comments-sticky": isSticky })}
-            >
-              <Icon icon={faChevronUp} className="chevron" />
-              <a onClick={this.fold}>Fold comments</a>
-            </div>
-          )}
+          <Sticky>
+            {({ style, isSticky }) => (
+              <div
+                style={style}
+                className={cn('fold-comments', { 'fold-comments-sticky': isSticky })}
+              >
+                <Icon icon={faChevronUp} className="chevron" />
+                <a onClick={this.fold}>Fold comments</a>
+              </div>
+            )}
           </Sticky>
           {middleComments}
         </StickyContainer>
@@ -196,11 +193,9 @@ export default class PostComments extends React.Component {
     return middleComments;
   }
 
-  registerRootEl = (el) => this.rootEl = el;
-
   renderAddComment() {
     const { post, user } = this.props;
-    const canAddComment = (!post.commentsDisabled || post.isEditable || post.isModeratable);
+    const canAddComment = !post.commentsDisabled || post.isEditable || post.isModeratable;
     if (!canAddComment) {
       return false;
     }
@@ -210,13 +205,15 @@ export default class PostComments extends React.Component {
           <span className="comment-icon fa-stack">
             <Icon icon={faCommentPlus} />
           </span>
-          <span><Link to="/signin">Sign In</Link> to add comment</span>
+          <span>
+            <Link to="/signin">Sign In</Link> to add comment
+          </span>
         </div>
-      ) : false;
+      ) : (
+        false
+      );
     }
-    return post.isCommenting ?
-      this.renderAddingComment() :
-      this.renderAddCommentLink();
+    return post.isCommenting ? this.renderAddingComment() : this.renderAddCommentLink();
   }
 
   render() {
@@ -226,11 +223,13 @@ export default class PostComments extends React.Component {
     const last = withBackwardNumber(comments.length > 1 && comments[comments.length - 1], 1);
 
     return (
-      <div className="comments" ref={this.registerRootEl}>
-        {first ? this.renderComment(first) : false}
-        {this.renderMiddle()}
-        {last ? this.renderComment(last) : false}
-        {this.renderAddComment()}
+      <div className="comments" ref={this.rootEl}>
+        <ErrorBoundary>
+          {first ? this.renderComment(first) : false}
+          {this.renderMiddle()}
+          {last ? this.renderComment(last) : false}
+          {this.renderAddComment()}
+        </ErrorBoundary>
       </div>
     );
   }

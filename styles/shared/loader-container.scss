@@ -1,24 +1,24 @@
 .loader-container {
-  position:relative;
+  position: relative;
   .loader-overlay {
     position: absolute;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     z-index: 10;
     opacity: 0.3;
     background-color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    >img {
-        max-height: 80%;
-        max-width: 80%;
+    > img {
+      max-height: 80%;
+      max-width: 80%;
     }
   }
 
-  &.-full .loader-overlay{
+  &.-full .loader-overlay {
     position: fixed;
     height: 100vh;
     width: 100%;
