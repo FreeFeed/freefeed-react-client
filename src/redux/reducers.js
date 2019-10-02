@@ -1536,7 +1536,10 @@ export function directsReceivers(state = {}, action) {
 
 export function users(state = {}, action) {
   if (ActionHelpers.isFeedResponse(action)) {
-    return mergeByIds(state, (action.payload.users || []).map(userParser));
+    const accounts = [];
+    action.payload.users && accounts.push(...action.payload.users);
+    action.payload.subscribers && accounts.push(...action.payload.subscribers);
+    return mergeByIds(state, accounts.map(userParser));
   }
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I):
