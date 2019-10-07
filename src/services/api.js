@@ -527,3 +527,7 @@ export function unsavePost({ postId }) {
 export function getServerInfo() {
   return fetch(`${apiConfig.host}/v2/server-info`, getRequestOptions());
 }
+
+export function getExtAuthProfiles() {
+  return fetch(`${apiConfig.host}/v2/ext-auth/profiles`, getRequestOptions());
+}

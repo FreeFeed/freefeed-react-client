@@ -942,3 +942,10 @@ export function getServerInfo() {
     nonAuthRequest: true,
   };
 }
+
+export function getExtAuthProfiles() {
+  return {
+    type: ActionTypes.GET_AUTH_PROFILES,
+    apiRequest: Api.getExtAuthProfiles,
+  };
+}
