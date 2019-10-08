@@ -44,6 +44,7 @@ const config = {
     new CopyPlugin([
       { from: 'assets/images/favicon.ico', to: 'assets/images/' },
       { from: 'assets/images/ios/*.png', to: '' },
+      { from: 'assets/ext-auth/auth-return.html', to: '' },
     ]),
     new webpack.DefinePlugin({ WEBPACK_SAYS_USE_CANDY: Boolean(process.env.CANDY) }),
   ]),
