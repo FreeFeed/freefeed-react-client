@@ -54,7 +54,12 @@ describe('Async helpers', () => {
     const actionType = 'TEST';
     let reducer;
     before(() => {
-      reducer = asyncState(actionType);
+      reducer = asyncState(actionType, (action, state) => {
+        if (action.type === 'WHAT') {
+          return 42;
+        }
+        return state;
+      });
     });
 
     it('should return initial state', () => {
@@ -96,14 +101,25 @@ describe('Async helpers', () => {
       state = reducer(state, { type: reset(actionType) });
       expect(state, 'to equal', initialAsyncState);
     });
+
+    it('should call nextReducer on proper action', () => {
+      let state = initialAsyncState;
+      state = reducer(state, { type: 'WHAT' });
+      expect(state, 'to equal', 42);
+    });
   });
 
   describe('asyncStatesMap reducer', () => {
-    describe('with default parameters', () => {
+    describe('with default parameters and nextReducer', () => {
       const actionType = 'TEST';
       let reducer;
       before(() => {
-        reducer = asyncStatesMap(actionType);
+        reducer = asyncStatesMap(actionType, {}, (action, state) => {
+          if (action.type === 'WHAT') {
+            return 42;
+          }
+          return state;
+        });
       });
 
       it('should return initial state', () => {
@@ -136,6 +152,12 @@ describe('Async helpers', () => {
           id1: loadingAsyncState,
           id2: successAsyncState,
         });
+      });
+
+      it('should call nextReducer on proper action', () => {
+        let state = {};
+        state = reducer(state, { type: 'WHAT' });
+        expect(state, 'to equal', 42);
       });
     });
 

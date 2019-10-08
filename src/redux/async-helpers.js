@@ -38,22 +38,21 @@ export const errorAsyncState = (errorText = '') => ({
 });
 
 /**
- * Reducers that represents an async status based on phases of the actionTypes
- *
- * The *customAsyncPhase* function allows to treat other actions as async actions
- * with the needed phases. It is useful for example when you want to reset async
- * state on some actions.
+ * Reducers that represents an async status based on phases of the actionTypes.
+ * If action is not one of actionTypes async actions then the nextReducer
+ * is called if present.
  *
  * @param {string|string[]} actionTypes
+ * @param {function|null} nextReducer
  */
-export function asyncState(actionTypes) {
+export function asyncState(actionTypes, nextReducer = null) {
   if (!Array.isArray(actionTypes)) {
     actionTypes = [actionTypes];
   }
 
   return (state = initialAsyncState, action) => {
     if (!actionTypes.includes(baseType(action.type))) {
-      return state;
+      return nextReducer ? nextReducer(action, state) : state;
     }
 
     switch (asyncPhase(action.type)) {
@@ -98,13 +97,17 @@ export function getKeyBy(keyName) {
  * The map keys are produses from actions via the *getKey* function.
  * The *applyState* function allows non-trivial modifications of the existing state.
  * The reducer will not touch the state if *keyMustExist* is true and the key does not exist.
+ * If action is not one of actionTypes async actions then the *nextReducer*
+ * is called if present.
  *
  * @param {string|string[]} actionTypes
  * @param {object} params
+ * @param {function|null} nextReducer
  */
 export function asyncStatesMap(
   actionTypes,
   { getKey = getKeyBy('id'), applyState = (prev, s) => s, keyMustExist = false } = {},
+  nextReducer = null,
 ) {
   if (!Array.isArray(actionTypes)) {
     actionTypes = [actionTypes];
@@ -116,7 +119,7 @@ export function asyncStatesMap(
     const subState = subReducer(42, action);
     if (subState === 42) {
       // State was not modified so it is not an async action of any needed type
-      return state;
+      return nextReducer ? nextReducer(action, state) : state;
     }
 
     const key = getKey(action);
