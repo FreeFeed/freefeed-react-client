@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "~5.11.2",
     "autotrack": "~2.4.1",
     "classnames": "2.2.x",
     "custom-event": "1.0.x",

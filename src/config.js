@@ -15,6 +15,11 @@ const config = {
     cookieDomain: COOKIE_DOMAIN,
     tokenPrefix: 'freefeed_',
     userStorageKey: 'USER_KEY',
+    /**
+     * Array of enabled identity providers (e.g. ['facebook', 'google', 'github'])
+     * or empty array if no providers are supported.
+     */
+    oAuthProviders: ['facebook', 'google'],
     sentinel: null, // keep always last
   },
   captcha: {
