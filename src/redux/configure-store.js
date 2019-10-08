@@ -4,6 +4,7 @@ import { routerReducer } from 'react-router-redux';
 import {
   feedViewOptionsMiddleware,
   apiMiddleware,
+  asyncMiddleware,
   authMiddleware,
   likesLogicMiddleware,
   optimisticLikesMiddleware,
@@ -26,6 +27,7 @@ const middleware = [
   feedViewOptionsMiddleware,
   authMiddleware,
   apiMiddleware,
+  asyncMiddleware,
   dataFixMiddleware,
   likesLogicMiddleware,
   optimisticLikesMiddleware,
