@@ -1,9 +1,11 @@
+import { parse as qsParse } from 'querystring';
 import fetch from 'isomorphic-fetch';
 import _ from 'lodash';
 
 import config from '../config';
 import { getDateForMemoriesRequest } from '../utils/get-date-from-short-string';
 import { getToken } from './auth';
+import { popupAsPromise, centeredPopup } from './popup';
 
 const apiConfig = config.api;
 const frontendPrefsConfig = config.frontendPreferences;
@@ -530,4 +532,38 @@ export function getServerInfo() {
 
 export function getExtAuthProfiles() {
   return fetch(`${apiConfig.host}/v2/ext-auth/profiles`, getRequestOptions());
+}
+
+export function unlinkExternalProfile({ id }) {
+  return fetch(`${apiConfig.host}/v2/ext-auth/profiles/${id}`, postRequestOptions('DELETE'));
+}
+
+export async function performExtAuth({ provider, mode }) {
+  const startResp = await fetch(
+    `${apiConfig.host}/v2/ext-auth/auth-start`,
+    postRequestOptions('POST', {
+      provider,
+      mode,
+      redirectURL: `${location.origin}/auth-return.html`,
+    }),
+  ).then((r) => r.json());
+
+  if (startResp.err) {
+    throw new Error(startResp.err);
+  }
+
+  const { search } = await popupAsPromise(centeredPopup(startResp.redirectTo));
+
+  const query = qsParse(search.substr(1));
+
+  const finishResp = await fetch(
+    `${apiConfig.host}/v2/ext-auth/auth-finish`,
+    postRequestOptions('POST', { provider, query }),
+  ).then((r) => r.json());
+
+  if (finishResp.err) {
+    throw new Error(finishResp.err);
+  }
+
+  return finishResp;
 }

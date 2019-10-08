@@ -949,3 +949,19 @@ export function getExtAuthProfiles() {
     apiRequest: Api.getExtAuthProfiles,
   };
 }
+
+export function connectToExtProvider(provider) {
+  return {
+    type: ActionTypes.CONNECT_TO_EXTERNAL_PROVIDER,
+    asyncOperation: Api.performExtAuth,
+    payload: { provider, mode: 'connect' },
+  };
+}
+
+export function unlinkExternalProfile(profileId) {
+  return {
+    type: ActionTypes.UNLINK_EXTERNAL_PROFILE,
+    apiRequest: Api.unlinkExternalProfile,
+    payload: { id: profileId },
+  };
+}

@@ -2686,10 +2686,4 @@ export const serverInfo = fromResponse(ActionTypes.GET_SERVER_INFO, ({ payload }
 
 export const serverInfoStatus = asyncState(ActionTypes.GET_SERVER_INFO);
 
-export const externalAuthProfiles = fromResponse(
-  ActionTypes.GET_AUTH_PROFILES,
-  ({ payload: { authMethods } }) => authMethods,
-  [],
-);
-
-export const externalAuthProfilesStatus = asyncState(ActionTypes.GET_AUTH_PROFILES);
+export { extAuth } from './reducers/ext-auth.js';
