@@ -57,7 +57,7 @@ const SideBarFriends = ({ user }) => (
           <Link to="/filter/discussions">My discussions</Link>
         </li>
         <li className="p-saved-posts">
-          <Link to="/filter/saves" className="with-label--new">
+          <Link to="/filter/saves">
             Saved posts
           </Link>
         </li>
