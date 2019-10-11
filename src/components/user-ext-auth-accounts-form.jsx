@@ -1,9 +1,7 @@
-import React, { useEffect, useCallback } from 'react';
-import { connect } from 'react-redux';
-import { intersection } from 'lodash';
+import React, { useEffect, useCallback, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { faGoogle, faFacebook } from '@fortawesome/free-brands-svg-icons';
-import { faTimes, faQuestion, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import config from '../config';
 import {
   getServerInfo,
@@ -14,32 +12,22 @@ import {
 import { combineAsyncStates, initialAsyncState } from '../redux/async-helpers';
 import { Icon } from './fontawesome-icons';
 import { Throbber } from './throbber';
+import { useExtAuthProviders, providerTitle } from './ext-auth-helpers';
 
-const userExtAuthFormSelector = (state) => {
-  const allowedProviders = intersection(
-    config.auth.oAuthProviders || [],
-    state.serverInfo.externalAuthProviders || [],
+export const UserExtAuthForm = React.memo(function UserExtAuthForm() {
+  const dispatch = useDispatch();
+
+  const serverInfoStatus = useSelector((state) => state.serverInfoStatus);
+  const existingProfilesStatus = useSelector((state) => state.extAuth.profilesStatus);
+  const existingProfiles = useSelector(({ extAuth: { profiles, providers } }) =>
+    profiles.filter((p) => providers.includes(p.provider)),
   );
-  return {
-    // Load statuses
-    loadStatus: combineAsyncStates(state.serverInfoStatus, state.extAuth.profilesStatus),
-    serverInfoStatus: state.serverInfoStatus,
-    existingProfilesStatus: state.extAuth.profilesStatus,
 
-    // Data
-    oAuthProviders: allowedProviders,
-    existingProfiles: state.extAuth.profiles.filter((p) => allowedProviders.includes(p.provider)),
-  };
-};
+  const loadStatus = useMemo(() => combineAsyncStates(serverInfoStatus, existingProfilesStatus), [
+    serverInfoStatus,
+    existingProfilesStatus,
+  ]);
 
-export const UserExtAuthForm = connect(userExtAuthFormSelector)(function UserOAuthAccountsForm({
-  loadStatus,
-  serverInfoStatus,
-  existingProfilesStatus,
-  oAuthProviders,
-  existingProfiles,
-  dispatch,
-}) {
   useEffect(() => void (serverInfoStatus.initial && dispatch(getServerInfo())), [
     serverInfoStatus,
     dispatch,
@@ -50,7 +38,7 @@ export const UserExtAuthForm = connect(userExtAuthFormSelector)(function UserOAu
     existingProfilesStatus,
   ]);
 
-  if (config.auth.oAuthProviders.length === 0) {
+  if (config.auth.extAuthProviders.length === 0) {
     // External authentication is disabled so do not show anything
     return null;
   }
@@ -80,7 +68,7 @@ export const UserExtAuthForm = connect(userExtAuthFormSelector)(function UserOAu
           {existingProfiles.map((profile) => (
             <ConnectedProfile key={profile.id} profile={profile} />
           ))}
-          <ConnectButtons providers={oAuthProviders} />
+          <ConnectButtons />
         </>
       )}
       <hr />
@@ -88,15 +76,11 @@ export const UserExtAuthForm = connect(userExtAuthFormSelector)(function UserOAu
   );
 });
 
-const connectedProfileSelector = (state, { profile }) => ({
-  disconnectStatus: state.extAuth.disconnectStatuses[profile.id] || initialAsyncState,
-});
-
-const ConnectedProfile = connect(connectedProfileSelector)(function ConnectedProfile({
-  profile,
-  disconnectStatus,
-  dispatch,
-}) {
+const ConnectedProfile = React.memo(function ConnectedProfile({ profile }) {
+  const disconnectStatus = useSelector(
+    (state) => state.extAuth.disconnectStatuses[profile.id] || initialAsyncState,
+  );
+  const dispatch = useDispatch();
   const doUnlink = useCallback(
     (profileId) => () =>
       confirm('Are you sure you want to disconnect this profile?') &&
@@ -106,7 +90,7 @@ const ConnectedProfile = connect(connectedProfileSelector)(function ConnectedPro
 
   return (
     <p>
-      {providerTitle(profile.provider, false)} {profile.title}{' '}
+      {providerTitle(profile.provider, { withText: false })} {profile.title}{' '}
       <button
         className="btn btn-default btn-sm"
         onClick={doUnlink(profile.id)}
@@ -126,16 +110,18 @@ const ConnectedProfile = connect(connectedProfileSelector)(function ConnectedPro
   );
 });
 
-const connectButtonsSelector = (state) => ({ connectStatus: state.extAuth.connectStatus });
+const ConnectButtons = React.memo(function ConnectButtons() {
+  const [providers, providersStatus] = useExtAuthProviders();
+  const connectStatus = useSelector((state) => state.extAuth.connectStatus);
+  const dispatch = useDispatch();
 
-const ConnectButtons = connect(connectButtonsSelector)(function ConnectButtons({
-  providers,
-  connectStatus,
-  dispatch,
-}) {
   const doLink = useCallback((provider) => () => dispatch(connectToExtProvider(provider)), [
     dispatch,
   ]);
+
+  if (providersStatus.loading) {
+    return <p>Loading...</p>;
+  }
 
   if (providers.length === 0) {
     return <p>No supported identity providers.</p>;
@@ -170,26 +156,3 @@ const ConnectButtons = connect(connectButtonsSelector)(function ConnectButtons({
     </>
   );
 });
-
-function providerTitle(provider, withText = true) {
-  switch (provider) {
-    case 'facebook':
-      return (
-        <>
-          <Icon icon={faFacebook} title="Facebook" /> {withText && 'Facebook'}
-        </>
-      );
-    case 'google':
-      return (
-        <>
-          <Icon icon={faGoogle} title="Google" /> {withText && 'Google'}
-        </>
-      );
-    default:
-      return (
-        <>
-          <Icon icon={faQuestion} title={provider} /> {withText && provider}
-        </>
-      );
-  }
-}

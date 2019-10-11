@@ -147,7 +147,7 @@ export const apiMiddleware = (store) => (next) => async (action) => {
       });
     }
 
-    if (apiResponse.status === 401) {
+    if (apiResponse.status === 401 && action.type !== ActionTypes.SIGN_IN) {
       return store.dispatch(ActionCreators.unauthenticated(obj));
     }
 

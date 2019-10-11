@@ -18,7 +18,7 @@ import UserChangePasswordForm from './user-change-password-form';
 import UserPictureForm from './user-picture-form';
 import UserNotificationsForm from './user-notifications-form';
 import { Icon } from './fontawesome-icons';
-import { UserExtAuthForm } from './user-oauth-accounts-form';
+import { UserExtAuthForm } from './user-ext-auth-accounts-form';
 
 class Settings extends React.Component {
   componentWillUnmount() {

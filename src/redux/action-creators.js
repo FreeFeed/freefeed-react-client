@@ -1,6 +1,7 @@
 import * as Api from '../services/api';
 import * as ActionTypes from './action-types';
 import { reset } from './action-helpers';
+import { response } from './async-helpers';
 
 export function unauthenticated(payload) {
   return {
@@ -359,14 +360,6 @@ export function addAttachmentResponse(postId, attachments) {
   };
 }
 
-export function signInChange(username, password) {
-  return {
-    type: ActionTypes.SIGN_IN_CHANGE,
-    username,
-    password,
-  };
-}
-
 export function signIn(username, password) {
   return {
     type: ActionTypes.SIGN_IN,
@@ -376,6 +369,18 @@ export function signIn(username, password) {
       username,
       password,
     },
+  };
+}
+
+/**
+ * Emulate successful sign in response
+ *
+ * @param {string} authToken
+ */
+export function signedIn(authToken) {
+  return {
+    type: response(ActionTypes.SIGN_IN),
+    payload: { authToken },
   };
 }
 
@@ -405,10 +410,6 @@ export function resetPasswordValidationFail(error) {
     type: ActionTypes.RESET_PASSWORD_VALIDATION_FAIL,
     error,
   };
-}
-
-export function signInEmpty() {
-  return { type: ActionTypes.SIGN_IN_EMPTY };
 }
 
 export function signUpChange(signUpData) {
@@ -963,5 +964,13 @@ export function unlinkExternalProfile(profileId) {
     type: ActionTypes.UNLINK_EXTERNAL_PROFILE,
     apiRequest: Api.unlinkExternalProfile,
     payload: { id: profileId },
+  };
+}
+
+export function signInViaExternalProvider(provider) {
+  return {
+    type: ActionTypes.SIGN_IN_VIA_EXTERNAL_PROVIDER,
+    asyncOperation: Api.performExtAuth,
+    payload: { provider, mode: 'sign-in' },
   };
 }

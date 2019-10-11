@@ -11,8 +11,14 @@ import * as FeedOptions from '../utils/feed-options';
 import { loadColorScheme, getSystemColorScheme } from '../services/appearance';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
-import { patchObjectByKey } from './reducers/helpers';
-import { asyncStatesMap, getKeyBy, fromResponse, asyncState } from './async-helpers';
+import { patchObjectByKey, setOnLocationChange } from './reducers/helpers';
+import {
+  asyncStatesMap,
+  getKeyBy,
+  fromResponse,
+  asyncState,
+  initialAsyncState,
+} from './async-helpers';
 
 const frontendPrefsConfig = config.frontendPreferences;
 
@@ -87,58 +93,14 @@ export function title(state = '', action) {
   return state;
 }
 
-export function signInForm(
-  state = { username: '', password: '', error: '', loading: false },
-  action,
-) {
-  switch (action.type) {
-    case ActionTypes.SIGN_IN_CHANGE: {
-      return {
-        ...state,
-        username: action.username || state.username,
-        password: action.password || state.password,
-        loading: false,
-      };
-    }
-    case ActionTypes.UNAUTHENTICATED: {
-      return { ...state, error: (action.payload || {}).err, loading: false, requireAuth: false };
-    }
-    case ActionTypes.SIGN_IN_EMPTY: {
-      return { ...state, error: 'Enter login and password', loading: false };
-    }
-    case request(ActionTypes.SIGN_IN): {
-      return { ...state, loading: true };
-    }
-    case response(ActionTypes.SIGN_IN): {
-      return { ...state, loading: false };
-    }
-    case ActionTypes.REQUIRE_AUTHENTICATION: {
-      return { ...state, requireAuth: true };
-    }
-  }
-  return state;
-}
+export const signInStatus = asyncState(ActionTypes.SIGN_IN, setOnLocationChange(initialAsyncState));
 
-const defaultRestoreHeader = 'Reset FreeFeed Password';
-const successRestoreHeader = 'Please check your email for password reset instructions.';
+export const signUpStatus = asyncState(ActionTypes.SIGN_UP, setOnLocationChange(initialAsyncState));
 
-export function restorePassForm(
-  state = { error: '', loading: false, header: defaultRestoreHeader },
-  action,
-) {
-  switch (action.type) {
-    case request(ActionTypes.RESTORE_PASSWORD): {
-      return { ...state, loading: true, header: defaultRestoreHeader };
-    }
-    case response(ActionTypes.RESTORE_PASSWORD): {
-      return { ...state, loading: false, header: successRestoreHeader };
-    }
-    case fail(ActionTypes.RESTORE_PASSWORD): {
-      return { ...state, error: (action.payload || {}).err, loading: false };
-    }
-  }
-  return state;
-}
+export const restorePasswordStatus = asyncState(
+  ActionTypes.RESTORE_PASSWORD,
+  setOnLocationChange(initialAsyncState),
+);
 
 const defaultResetHeader = 'Reset FreeFeed Password';
 const successResetHeader = 'Please log in with your new password';

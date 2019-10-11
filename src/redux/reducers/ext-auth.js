@@ -1,4 +1,6 @@
+import { intersection } from 'lodash';
 import { combineReducers } from 'redux';
+import { LOCATION_CHANGE } from 'react-router-redux';
 import {
   fromResponse,
   response,
@@ -10,10 +12,19 @@ import {
   GET_AUTH_PROFILES,
   CONNECT_TO_EXTERNAL_PROVIDER,
   UNLINK_EXTERNAL_PROFILE,
+  SIGN_IN_VIA_EXTERNAL_PROVIDER,
+  GET_SERVER_INFO,
 } from '../action-types';
+import config from '../../config';
 import { setOnLocationChange } from './helpers';
 
 export const extAuth = combineReducers({
+  providers: fromResponse(
+    GET_SERVER_INFO,
+    (action) =>
+      intersection(config.auth.extAuthProviders || [], action.payload.externalAuthProviders),
+    [],
+  ),
   profiles: fromResponse(
     GET_AUTH_PROFILES,
     ({ payload: { profiles } }) => profiles,
@@ -38,4 +49,18 @@ export const extAuth = combineReducers({
   profilesStatus: asyncState(GET_AUTH_PROFILES, setOnLocationChange(initialAsyncState)),
   connectStatus: asyncState(CONNECT_TO_EXTERNAL_PROVIDER, setOnLocationChange(initialAsyncState)),
   disconnectStatuses: asyncStatesMap(UNLINK_EXTERNAL_PROFILE, {}, setOnLocationChange({})),
+  signInStatus: asyncState(SIGN_IN_VIA_EXTERNAL_PROVIDER, setOnLocationChange(initialAsyncState)),
+  signInResult: fromResponse(
+    SIGN_IN_VIA_EXTERNAL_PROVIDER,
+    ({ payload }) => payload,
+    {},
+    ((targetState) => (state, action) => {
+      // Drop the state on LOCATION_CHANGE but only if location is not changed to '/signup'!
+      // In this case keep the state for use in signup form.
+      if (action.type === LOCATION_CHANGE && action.payload.pathname !== '/signup') {
+        return targetState;
+      }
+      return state;
+    })({}),
+  ),
 });

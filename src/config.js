@@ -19,7 +19,7 @@ const config = {
      * Array of enabled identity providers (e.g. ['facebook', 'google', 'github'])
      * or empty array if no providers are supported.
      */
-    oAuthProviders: ['facebook', 'google'],
+    extAuthProviders: ['facebook', 'google'],
     sentinel: null, // keep always last
   },
   captcha: {
