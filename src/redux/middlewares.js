@@ -28,6 +28,7 @@ import {
   isFeedResponse,
   isFeedGeneratingAction,
   getFeedName,
+  cancelConcurrentRequest,
 } from './action-helpers';
 
 export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
@@ -97,6 +98,11 @@ export const asyncMiddleware = (store) => (next) => async (action) => {
     return next(action);
   }
 
+  if (cancelConcurrentRequest(action, store.getState())) {
+    // Ignore this action if already started
+    return;
+  }
+
   store.dispatch({ ...action, type: request(action.type), asyncOperation: null });
   try {
     const result = await action.asyncOperation(action.payload);
@@ -121,6 +127,11 @@ export const apiMiddleware = (store) => (next) => async (action) => {
   //ignore normal actions
   if (!action.apiRequest) {
     return next(action);
+  }
+
+  if (cancelConcurrentRequest(action, store.getState())) {
+    // Ignore this action if already started
+    return;
   }
 
   //dispatch request begin action
