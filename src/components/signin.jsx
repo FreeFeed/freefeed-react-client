@@ -4,12 +4,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router';
 import { useForm, useField } from 'react-final-form-hooks';
 import cn from 'classnames';
-import { signIn, signInViaExternalProvider, signedIn } from '../redux/action-creators';
 
+import { signIn, signInViaExternalProvider, signedIn } from '../redux/action-creators';
 import ErrorBoundary from './error-boundary';
 import { FieldsetWrapper } from './fieldset-wrapper';
 import { Throbber } from './throbber';
 import { providerTitle, useExtAuthProviders } from './ext-auth-helpers';
+import { CookiesBanner } from './cookies-banner';
 
 export default React.memo(function SignInPage() {
   const [providers] = useExtAuthProviders();
@@ -20,6 +21,7 @@ export default React.memo(function SignInPage() {
       <div className="box-body">
         <div className="col-md-12">
           <h2 className="p-signin-header">Sign in</h2>
+          <CookiesBanner />
           <ErrorBoundary>
             <SignInForm />
             <ExtAuthButtons />

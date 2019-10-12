@@ -42,6 +42,7 @@
     "social-text-tokenizer": "~2.0.1",
     "socket.io-client": "~2.2.0",
     "sortablejs": "~1.9.0",
+    "use-subscription": "~1.1.1",
     "validator": "~11.1.0"
   },
   "devDependencies": {
