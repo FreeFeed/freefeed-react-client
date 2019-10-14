@@ -1,4 +1,6 @@
+import { encode as qsEncode } from 'querystring';
 import React from 'react';
+import { Link } from 'react-router';
 import { preventDefault } from '../utils';
 
 export default class UserChangePasswordForm extends React.Component {
@@ -82,6 +84,13 @@ export default class UserChangePasswordForm extends React.Component {
         ) : (
           false
         )}
+        <p>
+          Or{' '}
+          <Link to={`/restore?${qsEncode({ email: this.props.email })}`}>
+            Reset your password by email
+          </Link>{' '}
+          if you forget your current password
+        </p>
       </form>
     );
   }

@@ -69,7 +69,11 @@ class Settings extends React.Component {
 
             <hr />
 
-            <UserChangePasswordForm updatePassword={props.updatePassword} {...props.passwordForm} />
+            <UserChangePasswordForm
+              updatePassword={props.updatePassword}
+              email={props.user.email}
+              {...props.passwordForm}
+            />
 
             <hr />
 
