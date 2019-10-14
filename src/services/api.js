@@ -13,7 +13,7 @@ const frontendPrefsConfig = config.frontendPreferences;
 const getRequestOptions = () => ({
   headers: {
     Accept: 'application/json',
-    'X-Authentication-Token': getToken(),
+    ...(getToken() ? { Authorization: `Bearer ${getToken()}` } : {}),
   },
 });
 
@@ -22,7 +22,7 @@ const postRequestOptions = (method = 'POST', body = {}) => ({
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
-    'X-Authentication-Token': getToken(),
+    ...(getToken() ? { Authorization: `Bearer ${getToken()}` } : {}),
   },
   body: JSON.stringify(body),
 });
