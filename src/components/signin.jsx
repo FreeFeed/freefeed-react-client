@@ -1,16 +1,17 @@
 import { encode as qsEncode } from 'querystring';
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router';
 import { useForm, useField } from 'react-final-form-hooks';
 import cn from 'classnames';
 
-import { signIn, signInViaExternalProvider, signedIn } from '../redux/action-creators';
+import { signIn, signedIn } from '../redux/action-creators';
 import ErrorBoundary from './error-boundary';
 import { FieldsetWrapper } from './fieldset-wrapper';
 import { Throbber } from './throbber';
 import { providerTitle, useExtAuthProviders } from './ext-auth-helpers';
 import { CookiesBanner } from './cookies-banner';
+import { ExtAuthButtons } from './ext-auth-buttons';
 
 export default React.memo(function SignInPage() {
   const [providers] = useExtAuthProviders();
@@ -24,7 +25,7 @@ export default React.memo(function SignInPage() {
           <CookiesBanner />
           <ErrorBoundary>
             <SignInForm />
-            <ExtAuthButtons />
+            <ExtAuthSignIn />
           </ErrorBoundary>
           <h3>New to FreeFeed?</h3>
           {providers.length > 0 ? (
@@ -145,19 +146,14 @@ const SignInForm = React.memo(function SignInForm() {
   );
 });
 
-const ExtAuthButtons = React.memo(function ExtAuthButtons() {
+const ExtAuthSignIn = React.memo(function ExtAuthSignIn() {
   const dispatch = useDispatch();
   const [providers] = useExtAuthProviders();
-  const signInStatus = useSelector((state) => state.extAuth.signInStatus);
-  const signInResult = useSelector((state) => state.extAuth.signInResult);
+  const result = useSelector((state) => state.extAuth.signInResult);
 
   useEffect(() => {
-    signInResult.status === 'signed-in' && dispatch(signedIn(signInResult.authToken));
-  }, [dispatch, signInResult]);
-
-  const doSignIn = useCallback((provider) => () => dispatch(signInViaExternalProvider(provider)), [
-    dispatch,
-  ]);
+    result.status === 'signed-in' && dispatch(signedIn(result.authToken));
+  }, [dispatch, result]);
 
   if (providers.length === 0) {
     // No allowed providers so do not show anything
@@ -167,37 +163,14 @@ const ExtAuthButtons = React.memo(function ExtAuthButtons() {
   return (
     <>
       <p>Or sign in using your social network account:</p>
-      <p>
-        {providers.map((p) => (
-          <span key={p}>
-            <button
-              className="btn btn-default"
-              onClick={doSignIn(p)}
-              disabled={signInStatus.loading}
-            >
-              Sign in via {providerTitle(p)}
-            </button>{' '}
-          </span>
-        ))}
-      </p>
-      {signInStatus.loading && (
-        <p className="alert alert-info" role="alert">
-          Signing in...
-        </p>
-      )}
-      {signInStatus.error && (
-        <p className="alert alert-danger" role="alert">
-          {signInStatus.errorText}
-        </p>
-      )}
-      {signInResult.status === 'user-exists' && (
+      <ExtAuthButtons />
+      {result.status === 'user-exists' && (
         <div className="alert alert-warning" role="alert">
           <p>
             There is a FreeFeed account with the e-mail address{' '}
-            <strong>{signInResult.profile.email}</strong>, but your account{' '}
+            <strong>{result.profile.email}</strong>, but your account{' '}
             <strong>
-              {providerTitle(signInResult.profile.provider, { withText: false })}{' '}
-              {signInResult.profile.name}
+              {providerTitle(result.profile.provider, { withText: false })} {result.profile.name}
             </strong>{' '}
             is not connected to it.
           </p>
@@ -207,28 +180,26 @@ const ExtAuthButtons = React.memo(function ExtAuthButtons() {
           </p>
           <p>
             If you have forgotten your password, you can{' '}
-            <Link to={`/restore?${qsEncode({ email: signInResult.profile.email })}`}>
+            <Link to={`/restore?${qsEncode({ email: result.profile.email })}`}>
               reset it and set the new one
             </Link>
             .
           </p>
         </div>
       )}
-      {signInResult.status === 'continue' && (
+      {result.status === 'continue' && (
         <div className="alert alert-warning" role="alert">
           <p>
             The{' '}
             <strong>
-              {providerTitle(signInResult.profile.provider, { withText: false })}{' '}
-              {signInResult.profile.name}
+              {providerTitle(result.profile.provider, { withText: false })} {result.profile.name}
             </strong>{' '}
             account is not connected to any FreeFeed account. Do you want to create a new FreeFeed
             account based on its data? After creation you will be able to sign in using this{' '}
-            {providerTitle(signInResult.profile.provider, { withText: true, withIcon: false })}{' '}
-            account.
+            {providerTitle(result.profile.provider, { withText: true, withIcon: false })} account.
           </p>
           <p>
-            <Link to="/signup" className="btn btn-default">
+            <Link to="/signup" className="btn btn-success">
               Continue to create an account&hellip;
             </Link>
           </p>
