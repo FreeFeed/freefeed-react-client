@@ -412,26 +412,12 @@ export function resetPasswordValidationFail(error) {
   };
 }
 
-export function signUpChange(signUpData) {
-  return {
-    type: ActionTypes.SIGN_UP_CHANGE,
-    ...signUpData,
-  };
-}
-
 export function signUp(signUpData) {
   return {
     type: ActionTypes.SIGN_UP,
     apiRequest: Api.signUp,
     nonAuthRequest: true,
     payload: { ...signUpData },
-  };
-}
-
-export function signUpEmpty(errorMessage) {
-  return {
-    type: ActionTypes.SIGN_UP_EMPTY,
-    message: errorMessage,
   };
 }
 

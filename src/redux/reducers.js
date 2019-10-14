@@ -126,33 +126,6 @@ export function resetPassForm(
   return state;
 }
 
-const INITIAL_SIGN_UP_FORM_STATE = {
-  username: '',
-  password: '',
-  email: '',
-  captcha: null,
-  error: '',
-  loading: false,
-};
-
-export function signUpForm(state = INITIAL_SIGN_UP_FORM_STATE, action) {
-  switch (action.type) {
-    case ActionTypes.SIGN_UP_EMPTY: {
-      return { ...state, error: action.message, loading: false };
-    }
-    case request(ActionTypes.SIGN_UP): {
-      return { ...state, loading: true };
-    }
-    case response(ActionTypes.SIGN_UP): {
-      return { ...state, loading: false };
-    }
-    case fail(ActionTypes.SIGN_UP): {
-      return { ...state, error: action.payload.err, loading: false };
-    }
-  }
-  return state;
-}
-
 export function currentInvitation(state = DEFAULT_FORM_STATE, action) {
   switch (action.type) {
     case request(ActionTypes.GET_INVITATION): {

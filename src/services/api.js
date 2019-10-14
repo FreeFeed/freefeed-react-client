@@ -252,24 +252,8 @@ export function resetPassword({ password, token }) {
   });
 }
 
-export function signUp({ username, password, email, captcha, invitationId, subscribe }) {
-  const body = { username, password, email, captcha };
-  if (invitationId) {
-    body.invitation = invitationId;
-    if (!subscribe) {
-      body.cancel_subscription = !subscribe;
-    }
-  }
-  const encodedBody = encodeBody(body);
-
-  return fetch(`${apiConfig.host}/v1/users`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    method: 'POST',
-    body: encodedBody,
-  });
+export function signUp(postData) {
+  return fetch(`${apiConfig.host}/v1/users`, postRequestOptions('POST', postData));
 }
 
 export function markAllDirectsAsRead() {
