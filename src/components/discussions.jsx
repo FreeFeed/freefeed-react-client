@@ -63,7 +63,6 @@ function selectState(state) {
   return {
     user,
     authenticated,
-    visibleEntries,
     createPostViewState,
     timelines,
     boxHeader,

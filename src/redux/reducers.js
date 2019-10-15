@@ -298,17 +298,8 @@ export function feedViewState(state = initFeed, action) {
         },
       };
     }
-    case response(ActionTypes.UNHIDE_POST): {
-      const { postId } = action.request;
-      if (!state.recentlyHiddenEntries[postId]) {
-        return state;
-      }
-      return {
-        ...state,
-        recentlyHiddenEntries: _.omit(state.recentlyHiddenEntries, postId),
-      };
-    }
-    // Hide/unhide by users
+
+    // Hide by username
     case response(ActionTypes.HIDE_BY_NAME): {
       const { postId, hide } = action.request;
       if (postId) {
@@ -321,14 +312,19 @@ export function feedViewState(state = initFeed, action) {
             },
           };
         }
-        if (!hide && state.recentlyHiddenEntries[postId]) {
-          return {
-            ...state,
-            recentlyHiddenEntries: _.omit(state.recentlyHiddenEntries, postId),
-          };
-        }
       }
       return state;
+    }
+
+    case ActionTypes.REMOVE_RECENTLY_HIDDEN_POST: {
+      const { postId } = action.payload;
+      if (!state.recentlyHiddenEntries[postId]) {
+        return state;
+      }
+      return {
+        ...state,
+        recentlyHiddenEntries: _.omit(state.recentlyHiddenEntries, postId),
+      };
     }
 
     case ActionTypes.TOGGLE_HIDDEN_POSTS: {

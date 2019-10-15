@@ -94,6 +94,15 @@ export const joinPostData = (state) => (postId) => {
   }
   const { user } = state;
 
+  const createdBy = state.users[post.createdBy] || { id: post.createdBy, username: '-unknown-' };
+  if (createdBy.username === '-unknown-') {
+    if (typeof Raven !== 'undefined') {
+      Raven.captureMessage(`We've got post with unknown author with id`, {
+        extra: { uid: post.createdBy },
+      });
+    }
+  }
+
   // Get the list of post's recipients
   const recipients = post.postedTo
     .map((subscriptionId) => {
@@ -105,8 +114,17 @@ export const joinPostData = (state) => (postId) => {
     .map((userId) => state.subscribers[userId])
     .filter((user) => user);
 
-  // All recipient names and the post's author name. Author name is always comes first.
-  const recipientNames = uniq([post.createdBy, ...recipients].map((u) => u.username));
+  // All recipient names and the post's author name.
+  // Sorted alphabetically but author name is always comes first.
+  const recipientNames = uniq([createdBy, ...recipients].map((u) => u.username)).sort((a, b) => {
+    if (a === createdBy.username) {
+      return -1;
+    }
+    if (b === createdBy.username) {
+      return 1;
+    }
+    return a.localeCompare(b);
+  });
   const hiddenByNames = intersection(recipientNames, state.hiddenUserNames);
 
   const isEditable = post.createdBy === user.id;
@@ -129,7 +147,10 @@ export const joinPostData = (state) => (postId) => {
     }
     const commentViewState = state.commentViewState[commentId];
     const author = state.users[comment.createdBy] || null;
-    const previousComment = _comments[index - 1] || { createdBy: null, createdAt: '0' };
+    const previousComment = _comments[index - 1] || {
+      createdBy: null,
+      createdAt: '0',
+    };
     const omitBubble =
       omitRepeatedBubbles &&
       postViewState.omittedComments === 0 &&
@@ -165,18 +186,6 @@ export const joinPostData = (state) => (postId) => {
 
   if (postViewState.omittedLikes !== 0) {
     usersLikedPost = usersLikedPost.slice(0, MAX_LIKES);
-  }
-
-  const placeholderUser = { id: post.createdBy };
-
-  const createdBy = state.users[post.createdBy] || placeholderUser;
-
-  if (createdBy === placeholderUser) {
-    if (typeof Raven !== 'undefined') {
-      Raven.captureMessage(`We've got post with unknown author with id`, {
-        extra: { uid: placeholderUser.id },
-      });
-    }
   }
 
   // Check if the post is a direct message

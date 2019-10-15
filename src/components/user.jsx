@@ -96,7 +96,6 @@ const UserHandler = (props) => {
 function selectState(state, ownProps) {
   const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
   const anonymous = !authenticated;
-  const entries = state.feedViewState.entries.map(joinPostData(state));
 
   const foundUser =
     (state.feedViewState.timeline && state.users[state.feedViewState.timeline.user]) ||
@@ -161,7 +160,6 @@ function selectState(state, ownProps) {
 
   return {
     user,
-    visibleEntries,
     timelines,
     createPostViewState,
     boxHeader,
