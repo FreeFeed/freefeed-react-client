@@ -569,3 +569,25 @@ export async function hideByName({
 
   return await updateUserPreferences({ userId, frontendPrefs });
 }
+
+export async function unHideNames({
+  usernames, // usernames to unhide
+}) {
+  // Need to actualize user's hide list
+  const whoAmIResp = await getWhoAmI();
+  if (whoAmIResp.status !== 200) {
+    return whoAmIResp;
+  }
+
+  const whoAmIData = await whoAmIResp.json();
+  const { id: userId, frontendPreferences: frontendPrefs } = userParser(whoAmIData.users);
+
+  const hiddenNames = _.get(frontendPrefs, 'homefeed.hideUsers', []);
+  if (_.intersection(hiddenNames, usernames).length === 0) {
+    // Nothing to unhide
+    return whoAmIResp;
+  }
+
+  _.set(frontendPrefs, 'homefeed.hideUsers', _.difference(hiddenNames, usernames));
+  return await updateUserPreferences({ userId, frontendPrefs });
+}

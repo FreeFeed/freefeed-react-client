@@ -968,3 +968,18 @@ export function hideByName(username, postId, hide) {
     payload: { username, postId, hide },
   };
 }
+
+export function unhideNames(usernames, postId) {
+  return {
+    type: ActionTypes.UNHIDE_NAMES,
+    apiRequest: Api.unHideNames,
+    payload: { usernames, postId },
+  };
+}
+
+export function removeRecentlyHiddenPost(postId) {
+  return {
+    type: ActionTypes.REMOVE_RECENTLY_HIDDEN_POST,
+    payload: { postId },
+  };
+}
