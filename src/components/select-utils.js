@@ -1,10 +1,5 @@
 /*global Raven*/
-import {
-  differenceBy,
-  intersection,
-  intersectionBy,
-  uniq,
-} from 'lodash';
+import { differenceBy, intersection, intersectionBy, uniq } from 'lodash';
 
 import {
   // User actions
@@ -42,6 +37,7 @@ import {
   unlikeComment,
   getCommentLikes,
   deleteComment,
+  hideByName,
 } from '../redux/action-creators';
 import { SCHEME_DARK, SCHEME_SYSTEM } from '../services/appearance';
 
@@ -113,9 +109,11 @@ export const joinPostData = (state) => (postId) => {
   const recipientNames = uniq([post.createdBy, ...recipients].map((u) => u.username));
   const hiddenByNames = intersection(recipientNames, state.hiddenUserNames);
 
-  const isEditable = (post.createdBy === user.id);
-  const isModeratable = isEditable || intersectionBy(recipients, state.managedGroups, 'id').length > 0;
-  const isFullyRemovable = isEditable || differenceBy(recipients, state.managedGroups, 'id').length === 0;
+  const isEditable = post.createdBy === user.id;
+  const isModeratable =
+    isEditable || intersectionBy(recipients, state.managedGroups, 'id').length > 0;
+  const isFullyRemovable =
+    isEditable || differenceBy(recipients, state.managedGroups, 'id').length === 0;
 
   const attachments = (post.attachments || []).map(
     (attachmentId) => state.attachments[attachmentId],
@@ -252,6 +250,7 @@ export function userActions(dispatch) {
     subscribe: (username) => dispatch(subscribe(username)),
     unsubscribe: (username) => dispatch(unsubscribe(username)),
     sendSubscriptionRequest: (username) => dispatch(sendSubscriptionRequest(username)),
+    hideByName: (username, hide) => dispatch(hideByName(username, null, hide)),
   };
 }
 
