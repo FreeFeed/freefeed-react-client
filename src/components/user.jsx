@@ -96,7 +96,7 @@ const UserHandler = (props) => {
 function selectState(state, ownProps) {
   const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
   const anonymous = !authenticated;
-  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
+  const entries = state.feedViewState.entries.map(joinPostData(state));
 
   const foundUser =
     (state.feedViewState.timeline && state.users[state.feedViewState.timeline.user]) ||

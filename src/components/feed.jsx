@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import ErrorBoundary from './error-boundary';
 import Post from './post';
+import { joinPostData } from './select-utils';
 
 const HiddenEntriesToggle = (props) => {
   const entriesForm = props.count > 1 ? 'entries' : 'entry';
@@ -23,7 +24,8 @@ const HiddenEntriesToggle = (props) => {
 
 function Feed(props) {
   const getEntryComponent = (section) => (post) => {
-    const isRecentlyHidden = props.isInHomeFeed && post.isHidden && section === 'visible';
+    const isRecentlyHidden =
+      props.withHiddenSection && (post.isHidden || post.hiddenByNames) && section === 'visible';
 
     return (
       <Post
@@ -56,9 +58,8 @@ function Feed(props) {
     );
   };
 
-  const visibleEntries = props.visibleEntries.map(getEntryComponent('visible'));
-  const hiddenEntries = (props.hiddenEntries || []).map(getEntryComponent('hidden'));
-  const emptyFeed = visibleEntries.length === 0 && hiddenEntries.length === 0;
+  const visibleEntries = props.visiblePosts.map(getEntryComponent('visible'));
+  const hiddenEntries = (props.hiddenPosts || []).map(getEntryComponent('hidden'));
 
   return (
     <div className="posts">
@@ -79,8 +80,8 @@ function Feed(props) {
           false
         )}
 
-        {emptyFeed && props.loading && <p>Loading feed...</p>}
-        {emptyFeed && !props.loading && (
+        {props.emptyFeed && props.loading && <p>Loading feed...</p>}
+        {props.emptyFeed && !props.loading && (
           <>
             <p>There are no posts in this feed.</p>
             {props.emptyFeedMessage}
@@ -91,4 +92,32 @@ function Feed(props) {
   );
 }
 
-export default connect((state) => ({ loading: state.routeLoadingState }))(Feed);
+const postIsHidden = (post) => !!(post.isHidden || post.hiddenByNames);
+
+export default connect((state) => {
+  const {
+    entries,
+    recentlyHiddenEntries,
+    separateHiddenEntries,
+    isHiddenRevealed,
+  } = state.feedViewState;
+
+  const allPosts = entries.map(joinPostData(state)).filter(Boolean);
+
+  let visiblePosts = allPosts;
+  let hiddenPosts = [];
+
+  if (separateHiddenEntries) {
+    visiblePosts = allPosts.filter((p) => !postIsHidden(p) || recentlyHiddenEntries[p.id]);
+    hiddenPosts = allPosts.filter((p) => postIsHidden(p));
+  }
+
+  return {
+    loading: state.routeLoadingState,
+    emptyFeed: entries.length === 0,
+    separateHiddenEntries,
+    isHiddenRevealed,
+    visiblePosts,
+    hiddenPosts,
+  };
+})(Feed);

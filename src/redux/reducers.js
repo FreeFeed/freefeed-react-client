@@ -175,50 +175,12 @@ export function createPostViewState(state = {}, action) {
 }
 
 const initFeed = {
-  visibleEntries: [],
-  hiddenEntries: [],
+  entries: [],
   timeline: null,
+  recentlyHiddenEntries: {},
   separateHiddenEntries: false,
   isHiddenRevealed: false,
   isLastPage: true,
-};
-
-const hidePostInFeed = function(state, postId) {
-  if (!state.separateHiddenEntries) {
-    return state;
-  }
-  // Add it to hiddenEntries, but don't remove from visibleEntries just yet
-  // (for the sake of "Undo"). Do not touch state if if post is already in
-  // hiddenEntries (since realtime event might come first) or is not at the
-  // page at all.
-  const inHidden = state.hiddenEntries.indexOf(postId) > -1;
-  const inVisible = state.visibleEntries.indexOf(postId) > -1;
-  if (inHidden || (!inHidden && !inVisible)) {
-    return state;
-  }
-  return {
-    ...state,
-    hiddenEntries: [postId, ...state.hiddenEntries],
-  };
-};
-
-const unhidePostInFeed = function(state, postId) {
-  if (!state.separateHiddenEntries) {
-    return state;
-  }
-  // Remove it from hiddenEntries and add to visibleEntries
-  // (but check first if it's already in there, since this might be an "Undo" happening,
-  // and/or realtime event might come first).
-  const inHidden = state.hiddenEntries.indexOf(postId) > -1;
-  const inVisible = state.visibleEntries.indexOf(postId) > -1;
-  if (!inHidden) {
-    return state;
-  }
-  return {
-    ...state,
-    visibleEntries: inVisible ? state.visibleEntries : [...state.visibleEntries, postId],
-    hiddenEntries: _.without(state.hiddenEntries, postId),
-  };
 };
 
 export function feedViewState(state = initFeed, action) {
@@ -229,27 +191,17 @@ export function feedViewState(state = initFeed, action) {
     // Separate hidden entries only in 'RiverOfNews' feed
     const separateHiddenEntries = action.type === response(ActionTypes.HOME);
 
-    let visibleEntries, hiddenEntries;
-    if (separateHiddenEntries) {
-      visibleEntries = (action.payload.posts || [])
-        .filter((post) => !post.isHidden)
-        .map((post) => post.id);
-      hiddenEntries = (action.payload.posts || [])
-        .filter((post) => post.isHidden)
-        .map((post) => post.id);
-    } else {
-      visibleEntries = (action.payload.posts || []).map((post) => post.id);
-      hiddenEntries = [];
-    }
+    const entries = (action.payload.posts || []).map((post) => post.id);
+    const recentlyHiddenEntries = {};
     const isHiddenRevealed = false;
     const { isLastPage } = action.payload;
     const timeline = action.payload.timelines
       ? _.pick(action.payload.timelines, ['id', 'name', 'user'])
       : null;
     return {
-      ...state,
-      visibleEntries,
-      hiddenEntries,
+      ...initFeed,
+      entries,
+      recentlyHiddenEntries,
       timeline,
       separateHiddenEntries,
       isHiddenRevealed,
@@ -274,90 +226,87 @@ export function feedViewState(state = initFeed, action) {
       const { postId } = action.request;
       return {
         ...state,
-        visibleEntries: _.without(state.visibleEntries, postId),
-        hiddenEntries: _.without(state.hiddenEntries, postId),
+        entries: _.without(state.entries, postId),
       };
     }
     case ActionTypes.REALTIME_POST_DESTROY: {
       return {
         ...state,
-        visibleEntries: _.without(state.visibleEntries, action.postId),
-        hiddenEntries: _.without(state.hiddenEntries, action.postId),
+        entries: _.without(state.entries, action.postId),
       };
     }
     case response(ActionTypes.CREATE_POST): {
       const postId = action.payload.posts.id;
-      if (state.visibleEntries.indexOf(postId) !== -1) {
+      if (state.entries.indexOf(postId) !== -1) {
         return state;
       }
       return {
         ...state,
-        visibleEntries: [postId, ...state.visibleEntries],
+        entries: [postId, ...state.entries],
       };
     }
     case response(ActionTypes.GET_SINGLE_POST): {
       const { postId } = action.request;
       return {
         ...initFeed,
-        visibleEntries: [postId],
+        entries: [postId],
       };
     }
     case ActionTypes.REALTIME_POST_NEW: {
-      if (state.visibleEntries.indexOf(action.post.id) !== -1) {
+      if (state.entries.indexOf(action.post.id) !== -1) {
         return state;
       }
       if (!action.shouldBump) {
         return state;
       }
 
-      let { visibleEntries } = state;
-      const p = state.visibleEntries.indexOf(action.insertBefore);
+      let { entries } = state;
+      const p = state.entries.indexOf(action.insertBefore);
       if (p < 0) {
-        visibleEntries = [...visibleEntries, action.post.id];
+        entries = [...entries, action.post.id];
       } else {
-        visibleEntries = [
-          ...visibleEntries.slice(0, p),
-          action.post.id,
-          ...visibleEntries.slice(p),
-        ];
+        entries = [...entries.slice(0, p), action.post.id, ...entries.slice(p)];
       }
 
-      return { ...state, visibleEntries };
+      return { ...state, entries };
     }
     case ActionTypes.REALTIME_LIKE_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW: {
       if (action.post && action.shouldBump) {
         const postId = action.post.posts.id;
-        const addToHiddens = action.post.posts.isHidden && state.separateHiddenEntries;
-        if (addToHiddens && !state.hiddenEntries.includes(postId)) {
-          return {
-            ...state,
-            hiddenEntries: [postId, ...state.hiddenEntries],
-          };
-        }
-        if (!addToHiddens && !state.visibleEntries.includes(postId)) {
-          return {
-            ...state,
-            visibleEntries: [postId, ...state.visibleEntries],
-          };
-        }
+        return {
+          ...state,
+          entries: [postId, ...state.entries],
+        };
       }
       return state;
     }
     case fail(ActionTypes.GET_SINGLE_POST): {
       return initFeed;
     }
+    // Recently hidden entries updates only by local events, not by realtime
     case response(ActionTypes.HIDE_POST): {
-      return hidePostInFeed(state, action.request.postId);
-    }
-    case ActionTypes.REALTIME_POST_HIDE: {
-      return hidePostInFeed(state, action.postId);
+      const { postId } = action.request;
+      if (state.recentlyHiddenEntries[postId]) {
+        return state;
+      }
+      return {
+        ...state,
+        recentlyHiddenEntries: {
+          ...state.recentlyHiddenEntries,
+          [postId]: true,
+        },
+      };
     }
     case response(ActionTypes.UNHIDE_POST): {
-      return unhidePostInFeed(state, action.request.postId);
-    }
-    case ActionTypes.REALTIME_POST_UNHIDE: {
-      return unhidePostInFeed(state, action.postId);
+      const { postId } = action.request;
+      if (!state.recentlyHiddenEntries[postId]) {
+        return state;
+      }
+      return {
+        ...state,
+        recentlyHiddenEntries: _.omit(state.recentlyHiddenEntries, postId),
+      };
     }
     case ActionTypes.TOGGLE_HIDDEN_POSTS: {
       return {

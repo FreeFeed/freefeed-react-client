@@ -40,7 +40,7 @@ const searchHelper = (
 const FeedHandler = (props) => (
   <div className="box">
     <div className="box-header-timeline">{props.boxHeader}</div>
-    {props.visibleEntries.length ? (
+    {props.entries.length ? (
       <PaginatedView {...props}>
         <Feed {...props} />
       </PaginatedView>
@@ -53,9 +53,9 @@ const FeedHandler = (props) => (
 
 function selectState(state) {
   const { authenticated, boxHeader, highlightTerms, timelines, user } = state;
-  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
+  const entries = state.feedViewState.entries.map(joinPostData(state));
 
-  return { user, authenticated, visibleEntries, timelines, boxHeader, highlightTerms };
+  return { user, authenticated, entries, timelines, boxHeader, highlightTerms };
 }
 
 function selectActions(dispatch) {

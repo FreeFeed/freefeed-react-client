@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createPost, resetPostCreateForm, expandSendTo } from '../redux/action-creators';
 import formatInvitation from '../utils/format-invitation';
-import { joinPostData, postActions } from './select-utils';
+import { postActions } from './select-utils';
 
 import CreatePost from './create-post';
 import Feed from './feed';
@@ -50,7 +50,6 @@ const FeedHandler = (props) => {
 
 function selectState(state) {
   const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
-  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
   const isDirects = state.routing.locationBeforeTransitions.pathname.indexOf('direct') !== -1;
   const isSaves = state.routing.locationBeforeTransitions.pathname.indexOf('saves') !== -1;
   const defaultFeed =
