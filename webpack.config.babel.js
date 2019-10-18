@@ -3,7 +3,6 @@ import OptiCSS from 'optimize-css-assets-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import Uglify from 'terser-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
-import webpack from 'webpack';
 import appConfig from 'config';
 
 import { baseConfig, opts, rules } from './webpack/base';
@@ -48,7 +47,6 @@ const config = {
       { from: 'assets/ext-auth/auth-return.html', to: '' },
     ]),
     new ConfigWebpackPlugin(),
-    new webpack.DefinePlugin({ WEBPACK_SAYS_USE_CANDY: Boolean(process.env.CANDY) }),
   ]),
   optimization: {
     splitChunks: {

@@ -1,0 +1,15 @@
+{
+  "api": {
+    "root": "FRF_API_ROOT"
+  },
+  "auth": {
+    "tokenPrefix": "FRF_TOKEN_PREFIX",
+    "userStorageKey": "FRF_USER_STORAGE_KEY"
+  },
+  "captcha": {
+    "siteKey": "FRF_CAPTCHA_SITEKEY"
+  },
+  "sentry": {
+    "publicDSN": "FRF_SENTRY_DSN"
+  }
+}
