@@ -4,10 +4,10 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import Uglify from 'terser-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import webpack from 'webpack';
+import appConfig from 'config';
 
 import { baseConfig, opts, rules } from './webpack/base';
 import { skipFalsy, ConfigWebpackPlugin } from './webpack/utils';
-import appConfig from './src/config';
 
 const config = {
   ...baseConfig,
@@ -36,7 +36,8 @@ const config = {
       template: './index.jade',
       file: 'index.html',
       opts,
-      appConfig,
+      colorSchemeStorageKey: appConfig.get('appearance.colorSchemeStorageKey'),
+      sentryDSN: appConfig.get('sentry.publicDSN'),
     }),
     new MiniCssExtractPlugin({
       filename: opts.hash ? '[name]-[contenthash].css' : '[name]-dev.css',
