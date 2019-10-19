@@ -57,7 +57,7 @@ export default class UserProfile extends React.Component {
       <div>
         <ErrorBoundary>
           {!props.isLoading && !props.isUserFound ? (
-            <h2>404 Not Found</h2>
+            <h2>User not found</h2>
           ) : (
             <div className="profile">
               <div className="row">
@@ -146,12 +146,15 @@ export default class UserProfile extends React.Component {
                     <a onClick={this.handleSubscribeClick}>Subscribe</a>
                   )}
 
-                  {props.userView.isSubscribing ? (
+                  {props.subscribingStatus.loading && (
                     <span className="profile-controls-throbber">
                       <Throbber />
                     </span>
-                  ) : (
-                    false
+                  )}
+                  {props.subscribingStatus.error && (
+                    <div className="alert alert-danger p-settings-alert" role="alert">
+                      {props.subscribingStatus.errorText}
+                    </div>
                   )}
                 </div>
                 <div className="col-xs-5 col-sm-5 text-right">
@@ -171,6 +174,11 @@ export default class UserProfile extends React.Component {
                     {props.type !== 'group' && !props.subscribed ? (
                       <li>
                         <a onClick={this.handleBlockUserClick}>Block this user</a>
+                        {props.blockingStatus.loading && (
+                          <span className="profile-controls-throbber">
+                            <Throbber />
+                          </span>
+                        )}
                       </li>
                     ) : props.amIGroupAdmin ? (
                       <li>
@@ -180,6 +188,11 @@ export default class UserProfile extends React.Component {
                       false
                     )}
                   </ul>
+                  {props.blockingStatus.error && (
+                    <div className="alert alert-danger p-settings-alert" role="alert">
+                      {props.blockingStatus.errorText}
+                    </div>
+                  )}
                 </div>
               </div>
               {this.state.isUnsubWarningDisplayed ? (

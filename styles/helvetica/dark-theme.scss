@@ -265,6 +265,11 @@ body.dark-theme {
       a {
         color: $link-color !important;
       }
+
+      &.user-card-errors {
+        color: $text-color-lighter;
+        background-color: $bg-highlight-color;
+      }
     }
   }
 

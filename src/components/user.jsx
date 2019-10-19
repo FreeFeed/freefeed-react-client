@@ -12,6 +12,7 @@ import {
 } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
 import config from '../config';
+import { initialAsyncState } from '../redux/async-helpers';
 import { joinPostData, postActions, userActions, canAcceptDirects } from './select-utils';
 import FeedOptionsSwitch from './feed-options-switch';
 import Breadcrumbs from './breadcrumbs';
@@ -23,6 +24,7 @@ const UserHandler = (props) => {
   // Redirect to canonical username in URI (/uSErNAme/likes?offset=30 → /username/likes?offset=30)
   useEffect(() => {
     if (
+      !props.viewUser.isLoading &&
       props.viewUser.username &&
       props.routeParams.userName &&
       props.viewUser.username !== props.routeParams.userName
@@ -39,6 +41,7 @@ const UserHandler = (props) => {
     props.routeParams,
     props.routeParams.userName,
     props.router,
+    props.viewUser.isLoading,
     props.viewUser.username,
   ]);
 
@@ -95,14 +98,11 @@ function selectState(state, ownProps) {
   const anonymous = !authenticated;
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
 
-  let foundUser = null;
-  if (state.feedViewState.timeline > 0) {
-    foundUser = state.users[state.feedViewState.timeline.user];
-  } else {
-    foundUser = Object.values(state.users).find(
+  const foundUser =
+    (state.feedViewState.timeline && state.users[state.feedViewState.timeline.user]) ||
+    Object.values(state.users).find(
       (user) => user.username === ownProps.params.userName.toLowerCase(),
     );
-  }
 
   const amIGroupAdmin =
     authenticated &&
@@ -118,7 +118,10 @@ function selectState(state, ownProps) {
     isLoading: state.routeLoadingState,
     isUserFound: !!foundUser,
     isItMe: foundUser ? foundUser.username === user.username : false,
-    userView: (foundUser && state.userViews[foundUser.id]) || {},
+    subscribingStatus:
+      state.userActionsStatuses.subscribing[foundUser && foundUser.id] || initialAsyncState,
+    blockingStatus:
+      state.userActionsStatuses.blocking[foundUser && foundUser.id] || initialAsyncState,
     isItPostsPage,
     amIGroupAdmin,
     subscribed: authenticated && foundUser && user.subscriptions.indexOf(foundUser.id) > -1,

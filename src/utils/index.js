@@ -4,7 +4,7 @@ import filesize from 'filesize';
 import defaultUserpicPath from '../../assets/images/default-userpic.svg';
 
 import config from '../config';
-import { initialAsyncState } from '../redux/reducers/helpers';
+import { initialAsyncState } from '../redux/async-helpers';
 
 const frontendPrefsConfig = config.frontendPreferences;
 

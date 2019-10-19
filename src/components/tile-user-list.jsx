@@ -135,6 +135,10 @@ function pickActions(type, props) {
 }
 
 export const tileUserListFactory = (config) => (props) => {
+  if (!props.users || !props.users.length) {
+    return false;
+  }
+
   const usersData = props.users.map((user) => {
     return {
       ..._.pick(user, ['id', 'screenName', 'username', 'isMutual']),
@@ -162,14 +166,8 @@ export const tileUserListFactory = (config) => (props) => {
 
   return (
     <div>
-      {users.length ? (
-        <div>
-          <h3>{header}</h3>
-          <ul className={listClasses}>{users}</ul>
-        </div>
-      ) : (
-        false
-      )}
+      <h3>{header}</h3>
+      <ul className={listClasses}>{users}</ul>
     </div>
   );
 };
