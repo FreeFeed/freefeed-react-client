@@ -17,6 +17,12 @@ export default class UserProfile extends React.Component {
     this.setState({ isUnsubWarningDisplayed: false });
   };
 
+  componentDidMount() {
+    if (this.props.username && this.props.canAcceptDirects === undefined) {
+      this.props.getUserInfo(this.props.username);
+    }
+  }
+
   componentDidUpdate(prevProps) {
     if (this.props.username !== prevProps.username) {
       if (this.props.username && this.props.canAcceptDirects === undefined) {
