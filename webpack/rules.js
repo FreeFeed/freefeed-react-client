@@ -88,7 +88,7 @@ class RuleGenerator {
             '@babel/env',
             {
               modules: false,
-              targets: { node: '8.9' },
+              targets: { node: '12' },
             },
           ],
         ],
