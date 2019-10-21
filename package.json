@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "~5.11.2",
     "autotrack": "~2.4.1",
     "classnames": "2.2.x",
     "custom-event": "1.0.x",
     "date-fns": "~2.4.1",
     "filesize": "~5.0.1",
+    "final-form": "~4.18.5",
     "highcharts": "~7.2.0",
     "isomorphic-fetch": "2.2.x",
     "lodash": "~4.17.15",
@@ -21,6 +23,7 @@
     "react-dd-menu": "~2.0.2",
     "react-dom": "~16.10.1",
     "react-dropzone-component": "~3.2.0",
+    "react-final-form-hooks": "~2.0.1",
     "react-google-recaptcha": "~1.0.5",
     "react-helmet": "~5.2.0",
     "react-highcharts": "~16.0.2",
@@ -39,6 +42,7 @@
     "social-text-tokenizer": "~2.0.1",
     "socket.io-client": "~2.2.0",
     "sortablejs": "~1.9.0",
+    "use-subscription": "~1.1.1",
     "validator": "~11.1.0"
   },
   "devDependencies": {

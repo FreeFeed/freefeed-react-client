@@ -1,9 +1,11 @@
+import { parse as qsParse } from 'querystring';
 import fetch from 'isomorphic-fetch';
 import _ from 'lodash';
 
 import config from '../config';
 import { getDateForMemoriesRequest } from '../utils/get-date-from-short-string';
 import { getToken } from './auth';
+import { popupAsPromise, centeredPopup } from './popup';
 
 const apiConfig = config.api;
 const frontendPrefsConfig = config.frontendPreferences;
@@ -11,7 +13,7 @@ const frontendPrefsConfig = config.frontendPreferences;
 const getRequestOptions = () => ({
   headers: {
     Accept: 'application/json',
-    'X-Authentication-Token': getToken(),
+    ...(getToken() ? { Authorization: `Bearer ${getToken()}` } : {}),
   },
 });
 
@@ -20,7 +22,7 @@ const postRequestOptions = (method = 'POST', body = {}) => ({
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
-    'X-Authentication-Token': getToken(),
+    ...(getToken() ? { Authorization: `Bearer ${getToken()}` } : {}),
   },
   body: JSON.stringify(body),
 });
@@ -250,24 +252,8 @@ export function resetPassword({ password, token }) {
   });
 }
 
-export function signUp({ username, password, email, captcha, invitationId, subscribe }) {
-  const body = { username, password, email, captcha };
-  if (invitationId) {
-    body.invitation = invitationId;
-    if (!subscribe) {
-      body.cancel_subscription = !subscribe;
-    }
-  }
-  const encodedBody = encodeBody(body);
-
-  return fetch(`${apiConfig.host}/v1/users`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    method: 'POST',
-    body: encodedBody,
-  });
+export function signUp(postData) {
+  return fetch(`${apiConfig.host}/v1/users`, postRequestOptions('POST', postData));
 }
 
 export function markAllDirectsAsRead() {
@@ -522,4 +508,46 @@ export function savePost({ postId }) {
 
 export function unsavePost({ postId }) {
   return fetch(`${apiConfig.host}/v1/posts/${postId}/save`, postRequestOptions('DELETE'));
+}
+
+export function getServerInfo() {
+  return fetch(`${apiConfig.host}/v2/server-info`, getRequestOptions());
+}
+
+export function getExtAuthProfiles() {
+  return fetch(`${apiConfig.host}/v2/ext-auth/profiles`, getRequestOptions());
+}
+
+export function unlinkExternalProfile({ id }) {
+  return fetch(`${apiConfig.host}/v2/ext-auth/profiles/${id}`, postRequestOptions('DELETE'));
+}
+
+export async function performExtAuth({ provider, mode }) {
+  const startResp = await fetch(
+    `${apiConfig.host}/v2/ext-auth/auth-start`,
+    postRequestOptions('POST', {
+      provider,
+      mode,
+      redirectURL: `${location.origin}/auth-return.html`,
+    }),
+  ).then((r) => r.json());
+
+  if (startResp.err) {
+    throw new Error(startResp.err);
+  }
+
+  const { search } = await popupAsPromise(centeredPopup(startResp.redirectTo));
+
+  const query = qsParse(search.substr(1));
+
+  const finishResp = await fetch(
+    `${apiConfig.host}/v2/ext-auth/auth-finish`,
+    postRequestOptions('POST', { provider, query }),
+  ).then((r) => r.json());
+
+  if (finishResp.err) {
+    throw new Error(finishResp.err);
+  }
+
+  return finishResp;
 }

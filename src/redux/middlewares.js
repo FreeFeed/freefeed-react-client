@@ -28,6 +28,7 @@ import {
   isFeedResponse,
   isFeedGeneratingAction,
   getFeedName,
+  cancelConcurrentRequest,
 } from './action-helpers';
 
 export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
@@ -88,11 +89,49 @@ const adjustTime = _.throttle(
   30000, // 30 sec
 );
 
+/**
+ * Middleware for actions around async operations
+ */
+export const asyncMiddleware = (store) => (next) => async (action) => {
+  // Ignore normal actions
+  if (!action.asyncOperation) {
+    return next(action);
+  }
+
+  if (cancelConcurrentRequest(action, store.getState())) {
+    // Ignore this action if already started
+    return;
+  }
+
+  store.dispatch({ ...action, type: request(action.type), asyncOperation: null });
+  try {
+    const result = await action.asyncOperation(action.payload);
+    return store.dispatch({
+      payload: result,
+      type: response(action.type),
+      request: action.payload,
+      extra: action.extra || {},
+    });
+  } catch (error) {
+    return store.dispatch({
+      payload: error instanceof Error ? { err: error.message } : error,
+      type: fail(action.type),
+      request: action.payload,
+      extra: action.extra || {},
+    });
+  }
+};
+
 //middleware for api requests
 export const apiMiddleware = (store) => (next) => async (action) => {
   //ignore normal actions
   if (!action.apiRequest) {
     return next(action);
+  }
+
+  if (cancelConcurrentRequest(action, store.getState())) {
+    // Ignore this action if already started
+    return;
   }
 
   //dispatch request begin action
@@ -119,7 +158,7 @@ export const apiMiddleware = (store) => (next) => async (action) => {
       });
     }
 
-    if (apiResponse.status === 401) {
+    if (apiResponse.status === 401 && action.type !== ActionTypes.SIGN_IN) {
       return store.dispatch(ActionCreators.unauthenticated(obj));
     }
 

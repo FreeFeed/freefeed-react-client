@@ -18,6 +18,7 @@ import UserChangePasswordForm from './user-change-password-form';
 import UserPictureForm from './user-picture-form';
 import UserNotificationsForm from './user-notifications-form';
 import { Icon } from './fontawesome-icons';
+import { UserExtAuthForm } from './user-ext-auth-accounts-form';
 
 class Settings extends React.Component {
   componentWillUnmount() {
@@ -56,6 +57,8 @@ class Settings extends React.Component {
 
             <hr />
 
+            <UserExtAuthForm />
+
             <UserPreferencesForm
               userId={props.user.id}
               frontendPreferences={props.user.frontendPreferences}
@@ -66,7 +69,11 @@ class Settings extends React.Component {
 
             <hr />
 
-            <UserChangePasswordForm updatePassword={props.updatePassword} {...props.passwordForm} />
+            <UserChangePasswordForm
+              updatePassword={props.updatePassword}
+              email={props.user.email}
+              {...props.passwordForm}
+            />
 
             <hr />
 

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      window.opener && window.opener.postMessage({ search: location.search }, location.origin);
+      window.close();
+    </script>
+  </head>
+  <body>
+    <p>Window is closing...</p>
+  </body>
+</html>
