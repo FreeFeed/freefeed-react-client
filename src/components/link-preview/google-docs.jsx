@@ -35,11 +35,11 @@ class GoogleDocsPreview extends React.Component {
     )}&authuser=0&sz=w${imgWidth}`;
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.updatePreview(this.props.url);
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if (newProps.url !== this.props.url) {
       this.setState({ ...initialState });
       this.updatePreview(newProps.url);

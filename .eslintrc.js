@@ -118,7 +118,7 @@ module.exports = {
     'react/jsx-wrap-multilines': 2,
     'react/no-children-prop': 2,
     'react/no-danger': 2,
-    'react/no-deprecated': 1,
+    'react/no-deprecated': 2,
     'react/no-did-mount-set-state': 1,
     'react/no-did-update-set-state': 1,
     'react/no-direct-mutation-state': 2,

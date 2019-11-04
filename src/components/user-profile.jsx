@@ -13,7 +13,7 @@ export default class UserProfile extends React.Component {
     this.state = { isUnsubWarningDisplayed: false };
   }
 
-  componentWillReceiveProps = () => {
+  UNSAFE_componentWillReceiveProps = () => {
     this.setState({ isUnsubWarningDisplayed: false });
   };
 

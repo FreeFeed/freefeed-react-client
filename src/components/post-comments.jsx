@@ -126,7 +126,7 @@ export default class PostComments extends React.Component {
     }
   };
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if (this.state.folded && newProps.post.omittedComments > 0) {
       this.setState({ folded: false });
     }

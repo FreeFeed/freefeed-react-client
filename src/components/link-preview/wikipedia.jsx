@@ -38,7 +38,7 @@ class WikipediaPreview extends React.Component {
     this.updatePreview(this.props.url);
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if (newProps.url !== this.props.url) {
       this.setState({ ...initialState });
       this.updatePreview(newProps.url);

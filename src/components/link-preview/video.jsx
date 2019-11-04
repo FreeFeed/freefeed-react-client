@@ -45,7 +45,7 @@ class VideoPreview extends React.Component {
     this.loadInfo();
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.feedIsLoading && !nextProps.feedIsLoading) {
       this.setState({ player: false });
     }

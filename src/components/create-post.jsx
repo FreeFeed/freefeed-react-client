@@ -42,7 +42,7 @@ export default class CreatePost extends React.Component {
     this.props.createPost(feeds, postText, attachmentIds, more);
   };
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     const wasCommentJustSaved =
       this.props.createPostViewState.isPending && !newProps.createPostViewState.isPending;
     const wasThereNoError = !newProps.createPostViewState.isError;

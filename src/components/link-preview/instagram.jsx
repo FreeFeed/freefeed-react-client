@@ -33,7 +33,7 @@ class InstagramPreview extends React.Component {
     this.iframe.style.height = `${this.iframe.offsetWidth * r}px`;
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.url !== nextProps.url) {
       this.setState({ ...initialState });
     }
