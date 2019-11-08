@@ -6,7 +6,7 @@ import CopyPlugin from 'copy-webpack-plugin';
 import webpack from 'webpack';
 
 import { baseConfig, opts, rules } from './webpack/base';
-import { skipFalsy } from './webpack/utils';
+import { skipFalsy, ConfigWebpackPlugin } from './webpack/utils';
 import appConfig from './src/config';
 
 const config = {
@@ -46,6 +46,7 @@ const config = {
       { from: 'assets/images/ios/*.png', to: '' },
       { from: 'assets/ext-auth/auth-return.html', to: '' },
     ]),
+    new ConfigWebpackPlugin(),
     new webpack.DefinePlugin({ WEBPACK_SAYS_USE_CANDY: Boolean(process.env.CANDY) }),
   ]),
   optimization: {
