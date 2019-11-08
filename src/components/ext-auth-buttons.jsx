@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { signInViaExternalProvider, connectToExtProvider } from '../redux/action-creators';
+import { extAuthPopup } from '../services/popup';
 import { providerTitle, useExtAuthProviders } from './ext-auth-helpers';
 
 export const CONNECT = 'connect';
@@ -13,10 +14,14 @@ export const ExtAuthButtons = React.memo(function ExtAuthButtons({ mode = SIGN_I
   const [providers] = useExtAuthProviders();
   const status = useSelector(statusSelector[mode]);
 
-  const onClick = useCallback((provider) => () => dispatch(actionCreator[mode](provider)), [
-    dispatch,
-    mode,
-  ]);
+  const onClick = useCallback(
+    (provider) => () => {
+      // Popup must be opened synchronously to avoid being blocked by the browser
+      const popup = extAuthPopup();
+      dispatch(actionCreator[mode](provider, popup));
+    },
+    [dispatch, mode],
+  );
 
   if (providers.length === 0) {
     // No allowed providers so do not show anything
