@@ -2,17 +2,17 @@ import React, { useEffect, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { faTimes, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import config from '../config';
 import { getServerInfo, getExtAuthProfiles, unlinkExternalProfile } from '../redux/action-creators';
 import { combineAsyncStates, initialAsyncState } from '../redux/async-helpers';
 import { Icon } from './fontawesome-icons';
 import { Throbber } from './throbber';
-import { providerTitle } from './ext-auth-helpers';
+import { providerTitle, useExtAuthProviders } from './ext-auth-helpers';
 import { ExtAuthButtons, CONNECT } from './ext-auth-buttons';
 
 export const UserExtAuthForm = React.memo(function UserExtAuthForm() {
   const dispatch = useDispatch();
 
+  const [providers] = useExtAuthProviders();
   const serverInfoStatus = useSelector((state) => state.serverInfoStatus);
   const existingProfilesStatus = useSelector((state) => state.extAuth.profilesStatus);
   const existingProfiles = useSelector(({ extAuth: { profiles, providers } }) =>
@@ -34,7 +34,7 @@ export const UserExtAuthForm = React.memo(function UserExtAuthForm() {
     existingProfilesStatus,
   ]);
 
-  if (config.auth.extAuthProviders.length === 0) {
+  if (providers.length === 0) {
     // External authentication is disabled so do not show anything
     return null;
   }
