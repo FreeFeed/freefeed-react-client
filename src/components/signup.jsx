@@ -7,7 +7,7 @@ import { signedIn } from '../redux/action-creators';
 import SignupForm from './signup-form';
 import { CookiesBanner } from './cookies-banner';
 import { useExtAuthProviders, providerTitle } from './ext-auth-helpers';
-import { ExtAuthButtons } from './ext-auth-buttons';
+import { ExtAuthButtons, SIGN_UP } from './ext-auth-buttons';
 
 export default React.memo(function Signup() {
   return (
@@ -49,7 +49,7 @@ const ExtAuthSignup = React.memo(function ExtAuthSignup() {
   return (
     <>
       <p>Or use external service profile to create FreeFeed account:</p>
-      <ExtAuthButtons actionTitle="Sign up" />
+      <ExtAuthButtons mode={SIGN_UP} />
       {result.status === 'signed-in' && (
         <div className="alert alert-success" role="alert">
           <p>
