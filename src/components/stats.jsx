@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React from 'react';
 import Highcharts from 'highcharts/highcharts';
 import HighchartsMore from 'highcharts/highcharts-more';
@@ -7,8 +8,6 @@ import parseISO from 'date-fns/parseISO';
 import format from 'date-fns/format';
 import startOfYesterday from 'date-fns/startOfYesterday';
 import subYears from 'date-fns/subYears';
-
-import config from '../config';
 
 const Chart = ReactHighcharts.withHighcharts(Highcharts);
 HighchartsMore(Chart.Highcharts);
@@ -24,7 +23,7 @@ class StatsChart extends React.Component {
     const to_date = format(startOfYesterday(), `yyyy-MM-dd`); // Yesterday
     const from_date = format(subYears(new Date(), 1), `yyyy-MM-dd`); // Stats for 1 year
 
-    const url = `${config.api.host}/v2/stats?data=${this.props.type}&start_date=${from_date}&end_date=${to_date}`;
+    const url = `${CONFIG.api.root}/v2/stats?data=${this.props.type}&start_date=${from_date}&end_date=${to_date}`;
     const metrics = [];
 
     try {

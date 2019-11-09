@@ -1,3 +1,4 @@
+/* global CONFIG */
 import {
   withText,
   combine,
@@ -9,12 +10,10 @@ import {
   Link as TLink,
 } from 'social-text-tokenizer';
 
-import config from '../config';
-
 const {
   textFormatter: { tldList },
   siteDomains,
-} = config;
+} = CONFIG;
 
 export class Link extends TLink {
   localDomains = [];

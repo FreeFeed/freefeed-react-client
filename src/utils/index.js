@@ -1,12 +1,12 @@
+/* global CONFIG */
 import _ from 'lodash';
 import filesize from 'filesize';
 
 import defaultUserpicPath from '../../assets/images/default-userpic.svg';
 
-import config from '../config';
 import { initialAsyncState } from '../redux/async-helpers';
 
-const frontendPrefsConfig = config.frontendPreferences;
+const frontendPrefsConfig = CONFIG.frontendPreferences;
 
 export function getCookie(name) {
   const begin = document.cookie.indexOf(name);
