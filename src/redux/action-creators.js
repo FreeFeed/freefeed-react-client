@@ -960,3 +960,11 @@ export function signInViaExternalProvider(provider, popup) {
     payload: { provider, popup, mode: 'sign-in' },
   };
 }
+
+export function hideByName(username, postId, hide) {
+  return {
+    type: ActionTypes.HIDE_BY_NAME,
+    apiRequest: Api.hideByName,
+    payload: { username, postId, hide },
+  };
+}

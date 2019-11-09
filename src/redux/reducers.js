@@ -308,6 +308,29 @@ export function feedViewState(state = initFeed, action) {
         recentlyHiddenEntries: _.omit(state.recentlyHiddenEntries, postId),
       };
     }
+    // Hide/unhide by users
+    case response(ActionTypes.HIDE_BY_NAME): {
+      const { postId, hide } = action.request;
+      if (postId) {
+        if (hide && !state.recentlyHiddenEntries[postId]) {
+          return {
+            ...state,
+            recentlyHiddenEntries: {
+              ...state.recentlyHiddenEntries,
+              [postId]: true,
+            },
+          };
+        }
+        if (!hide && state.recentlyHiddenEntries[postId]) {
+          return {
+            ...state,
+            recentlyHiddenEntries: _.omit(state.recentlyHiddenEntries, postId),
+          };
+        }
+      }
+      return state;
+    }
+
     case ActionTypes.TOGGLE_HIDDEN_POSTS: {
       return {
         ...state,
