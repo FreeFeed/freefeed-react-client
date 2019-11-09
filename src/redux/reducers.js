@@ -2622,3 +2622,20 @@ export const serverInfo = fromResponse(ActionTypes.GET_SERVER_INFO, ({ payload }
 export const serverInfoStatus = asyncState(ActionTypes.GET_SERVER_INFO);
 
 export { extAuth } from './reducers/ext-auth.js';
+
+const getInitialHiddenUserNames = () => {
+  const defaultHiddenUsers = config.frontendPreferences.defaultValues.homefeed.hideUsers;
+  const persistedUser = getPersistedUser();
+  return _.get(persistedUser, ['frontendPreferences', 'homefeed', 'hideUsers'], defaultHiddenUsers);
+};
+
+export function hiddenUserNames(state = getInitialHiddenUserNames(), action) {
+  if (ActionHelpers.isUserChangeResponse(action)) {
+    return _.get(
+      action.payload.users,
+      ['frontendPreferences', config.frontendPreferences.clientId, 'homefeed', 'hideUsers'],
+      config.frontendPreferences.defaultValues.homefeed.hideUsers,
+    );
+  }
+  return state;
+}
