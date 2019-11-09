@@ -46,3 +46,11 @@ export function popupAsPromise(popup, { origins = [location.origin] } = {}) {
     })();
   });
 }
+
+export function extAuthPopup() {
+  const popup = centeredPopup(`about:blank`);
+  popup.document.write('Loading...');
+  popup.document.close();
+  popup.document.title = 'Authorization window';
+  return popup;
+}

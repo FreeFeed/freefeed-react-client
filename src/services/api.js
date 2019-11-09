@@ -5,7 +5,7 @@ import _ from 'lodash';
 import config from '../config';
 import { getDateForMemoriesRequest } from '../utils/get-date-from-short-string';
 import { getToken } from './auth';
-import { popupAsPromise, centeredPopup } from './popup';
+import { popupAsPromise } from './popup';
 
 const apiConfig = config.api;
 const frontendPrefsConfig = config.frontendPreferences;
@@ -522,21 +522,29 @@ export function unlinkExternalProfile({ id }) {
   return fetch(`${apiConfig.host}/v2/ext-auth/profiles/${id}`, postRequestOptions('DELETE'));
 }
 
-export async function performExtAuth({ provider, mode }) {
-  const startResp = await fetch(
-    `${apiConfig.host}/v2/ext-auth/auth-start`,
-    postRequestOptions('POST', {
-      provider,
-      mode,
-      redirectURL: `${location.origin}/auth-return.html`,
-    }),
-  ).then((r) => r.json());
+export async function performExtAuth({ provider, popup, mode }) {
+  const [{ search }] = await Promise.all([
+    popupAsPromise(popup),
+    (async () => {
+      const startResp = await fetch(
+        `${apiConfig.host}/v2/ext-auth/auth-start`,
+        postRequestOptions('POST', {
+          provider,
+          mode,
+          redirectURL: `${location.origin}/auth-return.html`,
+        }),
+      ).then((r) => r.json());
 
-  if (startResp.err) {
-    throw new Error(startResp.err);
-  }
+      if (startResp.err) {
+        popup.closed || popup.close();
+        throw new Error(startResp.err);
+      }
 
-  const { search } = await popupAsPromise(centeredPopup(startResp.redirectTo));
+      if (!popup.closed) {
+        popup.location = startResp.redirectTo;
+      }
+    })(),
+  ]);
 
   const query = qsParse(search.substr(1));
 

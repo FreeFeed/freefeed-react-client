@@ -2,21 +2,17 @@ import React, { useEffect, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { faTimes, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import config from '../config';
-import {
-  getServerInfo,
-  getExtAuthProfiles,
-  connectToExtProvider,
-  unlinkExternalProfile,
-} from '../redux/action-creators';
+import { getServerInfo, getExtAuthProfiles, unlinkExternalProfile } from '../redux/action-creators';
 import { combineAsyncStates, initialAsyncState } from '../redux/async-helpers';
 import { Icon } from './fontawesome-icons';
 import { Throbber } from './throbber';
-import { useExtAuthProviders, providerTitle } from './ext-auth-helpers';
+import { providerTitle, useExtAuthProviders } from './ext-auth-helpers';
+import { ExtAuthButtons, CONNECT } from './ext-auth-buttons';
 
 export const UserExtAuthForm = React.memo(function UserExtAuthForm() {
   const dispatch = useDispatch();
 
+  const [providers] = useExtAuthProviders();
   const serverInfoStatus = useSelector((state) => state.serverInfoStatus);
   const existingProfilesStatus = useSelector((state) => state.extAuth.profilesStatus);
   const existingProfiles = useSelector(({ extAuth: { profiles, providers } }) =>
@@ -38,7 +34,7 @@ export const UserExtAuthForm = React.memo(function UserExtAuthForm() {
     existingProfilesStatus,
   ]);
 
-  if (config.auth.extAuthProviders.length === 0) {
+  if (providers.length === 0) {
     // External authentication is disabled so do not show anything
     return null;
   }
@@ -68,7 +64,7 @@ export const UserExtAuthForm = React.memo(function UserExtAuthForm() {
           {existingProfiles.map((profile) => (
             <ConnectedProfile key={profile.id} profile={profile} />
           ))}
-          <ConnectButtons />
+          <ExtAuthButtons mode={CONNECT} />
         </>
       )}
       <hr />
@@ -107,52 +103,5 @@ const ConnectedProfile = React.memo(function ConnectedProfile({ profile }) {
         </>
       )}
     </p>
-  );
-});
-
-const ConnectButtons = React.memo(function ConnectButtons() {
-  const [providers, providersStatus] = useExtAuthProviders();
-  const connectStatus = useSelector((state) => state.extAuth.connectStatus);
-  const dispatch = useDispatch();
-
-  const doLink = useCallback((provider) => () => dispatch(connectToExtProvider(provider)), [
-    dispatch,
-  ]);
-
-  if (providersStatus.loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (providers.length === 0) {
-    return <p>No supported identity providers.</p>;
-  }
-
-  return (
-    <>
-      <p>
-        Connect to{' '}
-        {providers.map((p) => (
-          <span key={p}>
-            <button
-              className="btn btn-default"
-              onClick={doLink(p)}
-              disabled={connectStatus.loading}
-            >
-              {providerTitle(p)}
-            </button>{' '}
-          </span>
-        ))}
-      </p>
-      {connectStatus.loading && (
-        <p className="alert alert-info" role="alert">
-          Connecting...
-        </p>
-      )}
-      {connectStatus.error && (
-        <p className="alert alert-danger" role="alert">
-          {connectStatus.errorText}
-        </p>
-      )}
-    </>
   );
 });

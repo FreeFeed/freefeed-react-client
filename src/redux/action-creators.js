@@ -937,11 +937,11 @@ export function getExtAuthProfiles() {
   };
 }
 
-export function connectToExtProvider(provider) {
+export function connectToExtProvider(provider, popup) {
   return {
     type: ActionTypes.CONNECT_TO_EXTERNAL_PROVIDER,
     asyncOperation: Api.performExtAuth,
-    payload: { provider, mode: 'connect' },
+    payload: { provider, popup, mode: 'connect' },
   };
 }
 
@@ -953,10 +953,10 @@ export function unlinkExternalProfile(profileId) {
   };
 }
 
-export function signInViaExternalProvider(provider) {
+export function signInViaExternalProvider(provider, popup) {
   return {
     type: ActionTypes.SIGN_IN_VIA_EXTERNAL_PROVIDER,
     asyncOperation: Api.performExtAuth,
-    payload: { provider, mode: 'sign-in' },
+    payload: { provider, popup, mode: 'sign-in' },
   };
 }

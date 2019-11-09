@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script>
-      window.opener && window.opener.postMessage({ search: location.search }, location.origin);
-      window.close();
-    </script>
+    <meta charset="utf-8">
+    <title>Authorization window</title>
   </head>
   <body>
-    <p>Window is closing...</p>
+    <p id="message">Window is closing...</p>
+    <script>
+      var message = document.getElementById('message');
+      (function() {
+        if (!window.opener) {
+          message.textContent = 'Can\'t connect to the opener window. Please close this window and try again.';
+          return;
+        }
+
+        window.opener.postMessage({ search: location.search }, location.origin);
+        window.close();
+      })();
+    </script>
   </body>
 </html>
