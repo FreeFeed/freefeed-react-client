@@ -156,3 +156,12 @@ export function getSummaryPeriod(days) {
 export function formatFileSize(fileSize) {
   return filesize(fileSize, { standard: 'iec', round: 1 });
 }
+
+export function htmlSafe(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}

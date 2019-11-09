@@ -12,6 +12,8 @@ module.exports = {
     root: 'https://candy.freefeed.net',
   },
 
+  siteOrigin: 'http://localhost:3333',
+
   auth: {
     tokenPrefix: 'freefeed_',
     userStorageKey: 'USER_KEY',

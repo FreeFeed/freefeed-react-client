@@ -2,6 +2,7 @@
   "api": {
     "root": "FRF_API_ROOT"
   },
+  "siteOrigin": "FRF_SITE_ORIGIN",
   "auth": {
     "tokenPrefix": "FRF_TOKEN_PREFIX",
     "userStorageKey": "FRF_USER_STORAGE_KEY"

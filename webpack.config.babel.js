@@ -12,6 +12,7 @@ const config = {
   ...baseConfig,
   entry: {
     app: skipFalsy(['core-js/stable', 'regenerator-runtime/runtime', './src']),
+    bookmarklet: skipFalsy(['./src/bookmarklet/popup.js']),
   },
   target: 'web',
   devServer: { historyApiFallback: true },

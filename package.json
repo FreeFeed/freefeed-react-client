@@ -69,9 +69,8 @@
     "babel-plugin-transform-react-remove-prop-types": "~0.4.24",
     "config": "~3.2.3",
     "copy-webpack-plugin": "~5.0.4",
-    "core-js": "~3.3.6",
-    "cpx": "~1.5.0",
-    "cross-env": "~6.0.3",
+    "core-js": "~3.2.1",
+    "cross-env": "~6.0.2",
     "css-loader": "~3.2.0",
     "eslint": "~6.6.0",
     "eslint-loader": "~3.0.0",
@@ -123,10 +122,9 @@
     "clean": "rimraf ./_dist",
     "pretty-quick": "pretty-quick --pattern \"./**/*.(js|jsx|css|scss|md)\" --branch stable",
     "prettier": "prettier -c \"src/**/*\"",
-    "build-prod": "cross-env UGLIFY=1 HASH=1 DEV=0 run-s clean _webpack _cp-assets",
-    "build-dev": "cross-env UGLIFY=0 HASH=0 DEV=1 run-s clean _webpack _cp-assets",
-    "_webpack": "webpack --config webpack.config.babel.js --output-path ./_dist --output-public-path /",
-    "_cp-assets": "cpx ./assets/js/**/* ./_dist/assets/js"
+    "build-prod": "cross-env UGLIFY=1 HASH=1 DEV=0 run-s clean _webpack",
+    "build-dev": "cross-env UGLIFY=0 HASH=0 DEV=1 run-s clean _webpack ",
+    "_webpack": "webpack --config webpack.config.babel.js --output-path ./_dist --output-public-path /"
   },
   "husky": {
     "hooks": {

@@ -24,7 +24,13 @@ const baseConfig = {
   devtool: opts.dev ? 'inline-source-map' : 'source-map',
   output: {
     path: opts.dstDir,
-    filename: `${filename}.js`,
+    // filename: `${filename}.js`,
+    filename: (chunkData) => {
+      if (chunkData.chunk.name === 'bookmarklet') {
+        return 'assets/js/bookmarklet-popup.js';
+      }
+      return `${filename}.js`;
+    },
     sourceMapFilename: `[file].map`,
     devtoolModuleFilenameTemplate: '/[absolute-resource-path]',
     // Set correct globalObject for web workers:
