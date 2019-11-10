@@ -119,20 +119,6 @@ $post-line-height: 20px;
       .post-timestamp {
         color: #666;
       }
-
-      .post-like-throbber {
-        margin-left: 5px;
-      }
-
-      .post-hide-throbber {
-        margin-left: 5px;
-      }
-
-      .post-like-fail {
-        margin-right: 0.2em;
-        color: #ff8265;
-        cursor: help;
-      }
     }
   }
 
@@ -140,6 +126,29 @@ $post-line-height: 20px;
     display: inline-block;
     cursor: pointer;
   }
+}
+
+.post-like-throbber {
+  margin-left: 5px;
+}
+
+.post-hide-throbber {
+  margin-left: 5px;
+  &:empty {
+    display: none;
+  }
+}
+
+.post-hide-fail {
+  margin-left: 5px;
+  color: #ff8265;
+  cursor: help;
+}
+
+.post-like-fail {
+  margin-right: 0.2em;
+  color: #ff8265;
+  cursor: help;
 }
 
 // paragraph breaks

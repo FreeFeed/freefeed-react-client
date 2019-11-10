@@ -19,6 +19,7 @@ import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
 import config from '../config';
 import { savePost, hideByName, unhideNames } from '../redux/action-creators';
+import { initialAsyncState } from '../redux/async-helpers';
 import { Throbber } from './throbber';
 
 import PostAttachments from './post-attachments';
@@ -289,10 +290,17 @@ class Post extends React.Component {
           handleHideClick={this.handleHideClick}
           handleFullUnhide={this.handleFullUnhide}
         />
-        {props.isHiding && (
+        {props.hideStatus.loading && (
           <span className="post-hide-throbber">
             <Throbber />
           </span>
+        )}
+        {props.hideStatus.error && (
+          <Icon
+            icon={faExclamationTriangle}
+            className="post-hide-fail"
+            title={props.hideStatus.errorText}
+          />
         )}
       </>
     );
@@ -692,6 +700,7 @@ function selectState(state, ownProps) {
     destinationsPrivacy: ownProps.isEditing
       ? (destNames) => destinationsPrivacy(destNames, state)
       : null,
+    hideStatus: state.postHideStatuses[ownProps.id] || initialAsyncState,
   };
 }
 

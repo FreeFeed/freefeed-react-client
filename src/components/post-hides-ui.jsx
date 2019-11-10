@@ -1,72 +1,79 @@
 import React, { useCallback, useRef, useLayoutEffect } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { intersection } from 'lodash';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { unhidePost, hideByName, removeRecentlyHiddenPost } from '../redux/action-creators';
+import { initialAsyncState } from '../redux/async-helpers';
 import { Icon } from './fontawesome-icons';
+import { Throbber } from './throbber';
 
-// TODO: Throbber!
-
-export const PostRecentlyHidden = connect(({ hiddenUserNames }) => ({ hiddenUserNames }))(
-  function PostRecentlyHidden({
-    id,
-    initialTopOffset,
-    isHidden,
-    recipientNames,
-    hiddenUserNames,
+export function PostRecentlyHidden({ id, initialTopOffset, isHidden, recipientNames }) {
+  const dispatch = useDispatch();
+  const hiddenUserNames = useSelector((state) => state.hiddenUserNames);
+  const hideStatus = useSelector((state) => state.postHideStatuses[id] || initialAsyncState);
+  const doUnhidePost = useCallback(() => dispatch(unhidePost(id)), [dispatch, id]);
+  const doHideByName = useCallback((name, hide) => () => dispatch(hideByName(name, id, hide)), [
     dispatch,
-  }) {
-    const doUnhidePost = useCallback(() => dispatch(unhidePost(id)), [dispatch, id]);
-    const doHideByName = useCallback((name, hide) => () => dispatch(hideByName(name, id, hide)), [
-      dispatch,
-      id,
-    ]);
-    const doRemove = useCallback(() => dispatch(removeRecentlyHiddenPost(id)), [dispatch, id]);
-    const firstLine = useRef();
-    useLayoutEffect(() => {
-      if (initialTopOffset === undefined || !firstLine.current) {
-        return;
-      }
-      const firstLineOffset = firstLine.current.getBoundingClientRect().top;
-      window.scrollBy(0, firstLineOffset - initialTopOffset);
-    }, [initialTopOffset]);
+    id,
+  ]);
+  const doRemove = useCallback(() => dispatch(removeRecentlyHiddenPost(id)), [dispatch, id]);
+  const firstLine = useRef();
+  useLayoutEffect(() => {
+    if (initialTopOffset === undefined || !firstLine.current) {
+      return;
+    }
+    const firstLineOffset = firstLine.current.getBoundingClientRect().top;
+    window.scrollBy(0, firstLineOffset - initialTopOffset);
+  }, [initialTopOffset]);
 
-    const oneHiddenName = intersection(recipientNames, hiddenUserNames).length === 1;
+  const oneHiddenName = intersection(recipientNames, hiddenUserNames).length === 1;
 
-    return (
-      <div className="post recently-hidden-post">
-        <div className="post-body">
-          <a className="recently-hidden-post__close" onClick={doRemove} title="Remove this block">
-            <Icon icon={faTimes} />
-          </a>
-          <p ref={firstLine}>
-            {isHidden ? (
-              <>
-                Post hidden from your Home feed - <a onClick={doUnhidePost}>Un-hide</a>
-              </>
-            ) : (
-              <>
-                Post still not visible because{' '}
-                {oneHiddenName ? 'its source is hidden' : 'of some hidden sources'}:
-              </>
-            )}
-          </p>
+  return (
+    <div className="post recently-hidden-post">
+      <div className="post-body">
+        <a className="recently-hidden-post__close" onClick={doRemove} title="Remove this block">
+          <Icon icon={faTimes} />
+        </a>
+        <p ref={firstLine}>
+          {isHidden ? (
+            <>
+              Post hidden from your Home feed - <a onClick={doUnhidePost}>Un-hide</a>
+            </>
+          ) : (
+            <>
+              Post still not visible because{' '}
+              {oneHiddenName ? 'its source is hidden' : 'of some hidden sources'}:
+            </>
+          )}
 
-          {recipientNames.map((name) => {
-            const hidden = hiddenUserNames.includes(name);
-            return (
-              <p key={name}>
-                <a onClick={doHideByName(name, !hidden)}>
-                  {hidden ? 'Show' : 'Hide all'} posts from @{name}
-                </a>
-              </p>
-            );
-          })}
-        </div>
+          {hideStatus.loading && (
+            <span className="post-hide-throbber">
+              <Throbber />
+            </span>
+          )}
+          {hideStatus.error && (
+            <Icon
+              icon={faExclamationTriangle}
+              className="post-hide-fail"
+              title={hideStatus.errorText}
+            />
+          )}
+        </p>
+
+        {recipientNames.map((name) => {
+          const hidden = hiddenUserNames.includes(name);
+          return (
+            <p key={name}>
+              <a onClick={doHideByName(name, !hidden)}>
+                {hidden ? 'Show' : 'Hide all'} posts from @{name}
+              </a>
+            </p>
+          );
+        })}
       </div>
-    );
-  },
-);
+    </div>
+  );
+}
 
 export function HideLink({
   isHidden,

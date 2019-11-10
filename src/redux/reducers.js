@@ -584,96 +584,6 @@ export function postsViewState(state = {}, action) {
       };
     }
 
-    case request(ActionTypes.HIDE_POST): {
-      const post = state[action.payload.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          isHiding: true,
-        },
-      };
-    }
-    case response(ActionTypes.HIDE_POST): {
-      const post = state[action.request.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          isHiding: false,
-        },
-      };
-    }
-    case ActionTypes.REALTIME_POST_HIDE: {
-      const post = state[action.postId];
-      if (!post) {
-        return state;
-      }
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          isHiding: false,
-        },
-      };
-    }
-    case fail(ActionTypes.HIDE_POST): {
-      const post = state[action.request.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          isHiding: false,
-          hideError: 'Something went wrong while hiding the post.',
-        },
-      };
-    }
-
-    case request(ActionTypes.UNHIDE_POST): {
-      const post = state[action.payload.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          isHiding: true,
-        },
-      };
-    }
-    case response(ActionTypes.UNHIDE_POST): {
-      const post = state[action.request.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          isHiding: false,
-        },
-      };
-    }
-    case ActionTypes.REALTIME_POST_UNHIDE: {
-      const post = state[action.postId];
-      if (!post) {
-        return state;
-      }
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          isHiding: false,
-        },
-      };
-    }
-    case fail(ActionTypes.UNHIDE_POST): {
-      const post = state[action.request.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          isHiding: false,
-          hideError: 'Something went wrong while un-hiding the post.',
-        },
-      };
-    }
-
     case ActionTypes.TOGGLE_MODERATING_COMMENTS: {
       const post = state[action.postId];
       return {
@@ -1135,6 +1045,16 @@ export function posts(state = {}, action) {
 
   return state;
 }
+
+export const postHideStatuses = asyncStatesMap(
+  [
+    ActionTypes.HIDE_POST,
+    ActionTypes.UNHIDE_POST,
+    ActionTypes.HIDE_BY_NAME,
+    ActionTypes.UNHIDE_NAMES,
+  ],
+  { getKey: getKeyBy('postId'), cleanOnSuccess: true },
+);
 
 export function attachments(state = {}, action) {
   if (ActionHelpers.isFeedResponse(action)) {
