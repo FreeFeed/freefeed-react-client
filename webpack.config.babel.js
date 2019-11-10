@@ -6,7 +6,7 @@ import CopyPlugin from 'copy-webpack-plugin';
 import appConfig from 'config';
 
 import { baseConfig, opts, rules } from './webpack/base';
-import { skipFalsy, ConfigWebpackPlugin } from './webpack/utils';
+import { skipFalsy } from './webpack/utils';
 
 const config = {
   ...baseConfig,
@@ -47,7 +47,6 @@ const config = {
       { from: 'assets/images/ios/*.png', to: '' },
       { from: 'assets/ext-auth/auth-return.html', to: '' },
     ]),
-    new ConfigWebpackPlugin(),
   ]),
   optimization: {
     splitChunks: {

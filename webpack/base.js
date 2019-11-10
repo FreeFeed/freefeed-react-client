@@ -2,7 +2,7 @@ import path from 'path';
 
 import webpack from 'webpack';
 
-import { skipFalsy, strToBool } from './utils';
+import { skipFalsy, strToBool, ConfigWebpackPlugin } from './utils';
 import RulesGenerator from './rules';
 
 const { env } = process;
@@ -44,6 +44,7 @@ const baseConfig = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': opts.dev ? '"development"' : '"production"',
     }),
+    new ConfigWebpackPlugin(),
   ]),
 };
 
