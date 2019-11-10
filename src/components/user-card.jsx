@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { getUserInfo, updateUserPreferences, userCardClosing } from '../redux/action-creators';
+import { getUserInfo, userCardClosing } from '../redux/action-creators';
 import { initialAsyncState } from '../redux/async-helpers';
 import { Throbber } from './throbber';
 import UserFeedStatus from './user-feed-status';

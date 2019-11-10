@@ -13,7 +13,7 @@ import {
 } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
 import { initialAsyncState } from '../redux/async-helpers';
-import { joinPostData, postActions, userActions, canAcceptDirects } from './select-utils';
+import { postActions, userActions, canAcceptDirects } from './select-utils';
 import FeedOptionsSwitch from './feed-options-switch';
 import Breadcrumbs from './breadcrumbs';
 import ErrorBoundary from './error-boundary';
