@@ -454,22 +454,7 @@ class Post extends React.Component {
       (attachment) => attachment.mediaType === 'image',
     );
 
-    return props.isRecentlyHidden ? (
-      <div className="post recently-hidden-post">
-        <i>Entry hidden - </i>
-        <a className="post-action" onClick={this.handleHideClick}>
-          undo
-        </a>
-        .{' '}
-        {props.isHiding ? (
-          <span className="post-hide-throbber">
-            <Throbber />
-          </span>
-        ) : (
-          false
-        )}
-      </div>
-    ) : (
+    return (
       <div className={postClass} data-author={props.createdBy.username}>
         <ErrorBoundary>
           <Expandable

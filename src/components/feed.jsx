@@ -111,7 +111,6 @@ function FeedEntry({ post, section, ...props }) {
       user={props.user}
       isInHomeFeed={props.isInHomeFeed}
       isInUserFeed={props.isInUserFeed}
-      isRecentlyHidden={isRecentlyHidden}
       showMoreComments={props.showMoreComments}
       showMoreLikes={props.showMoreLikes}
       toggleEditingPost={props.toggleEditingPost}
