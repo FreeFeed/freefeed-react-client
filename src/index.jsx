@@ -239,6 +239,11 @@ ReactDOM.render(
           component={Groups}
           onEnter={enterStaticPage('Groups')}
         />
+        <Route
+          name="all-groups"
+          path="/all-groups"
+          component={lazyLoad('./components/all-groups')}
+        />
         <Route name="friends" path="/friends" component={Friends} onEnter={friendsActions} />
         <Route
           name="groupCreate"
