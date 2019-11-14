@@ -539,3 +539,7 @@ export async function performExtAuth({ provider, popup, mode }) {
 
   return finishResp;
 }
+
+export function getAllGroups() {
+  return fetch(`${apiConfig.host}/v2/allGroups`, getRequestOptions());
+}

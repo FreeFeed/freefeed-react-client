@@ -960,3 +960,11 @@ export function signInViaExternalProvider(provider, popup) {
     payload: { provider, popup, mode: 'sign-in' },
   };
 }
+
+export function getAllGroups() {
+  return {
+    type: ActionTypes.GET_ALL_GROUPS,
+    apiRequest: Api.getAllGroups,
+    nonAuthRequest: true,
+  };
+}

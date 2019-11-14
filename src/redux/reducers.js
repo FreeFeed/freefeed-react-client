@@ -1541,6 +1541,10 @@ export function users(state = {}, action) {
       }
       return state;
     }
+    case response(ActionTypes.GET_ALL_GROUPS): {
+      const { users = [] } = action.payload;
+      return mergeByIds(state, users.map(userParser));
+    }
   }
   return state;
 }
@@ -2622,3 +2626,16 @@ export const serverInfo = fromResponse(ActionTypes.GET_SERVER_INFO, ({ payload }
 export const serverInfoStatus = asyncState(ActionTypes.GET_SERVER_INFO);
 
 export { extAuth } from './reducers/ext-auth.js';
+
+export const allGroupsStatus = asyncState(
+  ActionTypes.GET_ALL_GROUPS,
+  setOnLocationChange(initialAsyncState),
+);
+
+const allGroupsDefaults = { withProtected: false, groups: [] };
+export const allGroups = fromResponse(
+  ActionTypes.GET_ALL_GROUPS,
+  ({ payload: { withProtected, groups } }) => ({ withProtected, groups }),
+  allGroupsDefaults,
+  setOnLocationChange(allGroupsDefaults),
+);
