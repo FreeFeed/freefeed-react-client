@@ -54,7 +54,7 @@ describe('Async helpers', () => {
     const actionType = 'TEST';
     let reducer;
     before(() => {
-      reducer = asyncState(actionType, (action, state) => {
+      reducer = asyncState(actionType, (state, action) => {
         if (action.type === 'WHAT') {
           return 42;
         }
@@ -114,7 +114,7 @@ describe('Async helpers', () => {
       const actionType = 'TEST';
       let reducer;
       before(() => {
-        reducer = asyncStatesMap(actionType, {}, (action, state) => {
+        reducer = asyncStatesMap(actionType, {}, (state, action) => {
           if (action.type === 'WHAT') {
             return 42;
           }
