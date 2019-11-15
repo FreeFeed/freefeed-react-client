@@ -5,7 +5,7 @@ export function patchObjectByKey(object, key, patcher) {
 }
 
 export function setOnLocationChange(targetState) {
-  return (action, state) => {
+  return (state, action) => {
     if (action.type === LOCATION_CHANGE) {
       return targetState;
     }
