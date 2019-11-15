@@ -19,11 +19,7 @@ import {
   REALTIME_POST_HIDE,
   REALTIME_POST_UNHIDE,
 } from '../../../../src/redux/action-types';
-import {
-  realtimeSubscribe,
-  realtimeUnsubscribe,
-} from '../../../../src/redux/action-creators';
-
+import { realtimeSubscribe, realtimeUnsubscribe } from '../../../../src/redux/action-creators';
 
 describe('realtime events', () => {
   describe('users()', () => {
@@ -33,7 +29,7 @@ describe('realtime events', () => {
 
     it(`shouldn't replace user on REALTIME_POST_NEW if pre-existed`, () => {
       const result = users(usersBefore, {
-        type:  REALTIME_POST_NEW,
+        type: REALTIME_POST_NEW,
         users: [{ id: 1 }],
       });
 
@@ -42,7 +38,7 @@ describe('realtime events', () => {
 
     it(`shouldn't replace user on REALTIME_COMMENT_NEW if pre-existed`, () => {
       const result = users(usersBefore, {
-        type:  REALTIME_COMMENT_NEW,
+        type: REALTIME_COMMENT_NEW,
         users: [{ id: 1 }],
       });
 
@@ -51,17 +47,16 @@ describe('realtime events', () => {
 
     it(`shouldn't replace user on REALTIME_LIKE_NEW if pre-existed`, () => {
       const result = users(usersBefore, {
-        type:  REALTIME_LIKE_NEW,
+        type: REALTIME_LIKE_NEW,
         users: [{ id: 1 }],
       });
 
       expect(result[testUser.id], 'to equal', testUser);
     });
 
-
     it('should add new user on REALTIME_POST_NEW if not present', () => {
       const result = users(usersBefore, {
-        type:  REALTIME_POST_NEW,
+        type: REALTIME_POST_NEW,
         users: [anotherTestUser],
       });
 
@@ -71,7 +66,7 @@ describe('realtime events', () => {
 
     it('should add new user on REALTIME_COMMENT_NEW if not present', () => {
       const result = users(usersBefore, {
-        type:  REALTIME_COMMENT_NEW,
+        type: REALTIME_COMMENT_NEW,
         users: [anotherTestUser],
       });
 
@@ -80,7 +75,7 @@ describe('realtime events', () => {
 
     it('should add new user on REALTIME_LIKE_NEW if not present', () => {
       const result = users(usersBefore, {
-        type:  REALTIME_LIKE_NEW,
+        type: REALTIME_LIKE_NEW,
         users: [anotherTestUser],
       });
 
@@ -146,10 +141,10 @@ describe('realtime events', () => {
 
     it('should put new "like" to the second position if current user liked the post', () => {
       const newLikeAfterMe = {
-        type:   REALTIME_LIKE_NEW,
+        type: REALTIME_LIKE_NEW,
         postId: testLikePost.id,
         iLiked: true,
-        users:  [testLikeUser]
+        users: [testLikeUser],
       };
 
       const result = posts(testLikePosts, newLikeAfterMe);
@@ -160,10 +155,10 @@ describe('realtime events', () => {
 
     it(`should put "like" to the first position if current user didn't like the post`, () => {
       const newLikeWithoutMe = {
-        type:   REALTIME_LIKE_NEW,
+        type: REALTIME_LIKE_NEW,
         postId: testLikePost.id,
         iLiked: false,
-        users:  [testLikeUser]
+        users: [testLikeUser],
       };
 
       const result = posts(testLikePosts, newLikeWithoutMe);
@@ -176,9 +171,9 @@ describe('realtime events', () => {
       const newPost = { id: '1' };
       const newTestComment = { postId: newPost.id, id: '2' };
       const newCommentWithPost = {
-        type:    REALTIME_COMMENT_NEW,
+        type: REALTIME_COMMENT_NEW,
         comment: newTestComment,
-        post:    { posts: newPost }
+        post: { posts: newPost },
       };
 
       const postsBefore = {};
@@ -190,10 +185,10 @@ describe('realtime events', () => {
     it('should add post on REALTIME_LIKE_NEW', () => {
       const newPost = { id: '1' };
       const newLikeWithPost = {
-        type:   REALTIME_LIKE_NEW,
-        users:  [{ id: '1' }],
+        type: REALTIME_LIKE_NEW,
+        users: [{ id: '1' }],
         postId: newPost.id,
-        post:   { posts: newPost }
+        post: { posts: newPost },
       };
 
       const postsBefore = {};
@@ -205,7 +200,7 @@ describe('realtime events', () => {
     it('should hide post on REALTIME_POST_HIDE', () => {
       const state = { '1': { id: '1', isHidden: false } };
       const action = {
-        type:   REALTIME_POST_HIDE,
+        type: REALTIME_POST_HIDE,
         postId: '1',
       };
       const newState = posts(state, action);
@@ -215,7 +210,7 @@ describe('realtime events', () => {
     it('should not hide missing post on REALTIME_POST_HIDE', () => {
       const state = { '1': { id: '1', isHidden: false } };
       const action = {
-        type:   REALTIME_POST_HIDE,
+        type: REALTIME_POST_HIDE,
         postId: '2',
       };
       const newState = posts(state, action);
@@ -225,7 +220,7 @@ describe('realtime events', () => {
     it('should unhide post on REALTIME_POST_UNHIDE', () => {
       const state = { '1': { id: '1', isHidden: true } };
       const action = {
-        type:   REALTIME_POST_UNHIDE,
+        type: REALTIME_POST_UNHIDE,
         postId: '1',
       };
       const newState = posts(state, action);
@@ -235,38 +230,38 @@ describe('realtime events', () => {
     it('should not unhide missing post on REALTIME_POST_UNHIDE', () => {
       const state = { '1': { id: '1', isHidden: true } };
       const action = {
-        type:   REALTIME_POST_UNHIDE,
+        type: REALTIME_POST_UNHIDE,
         postId: '2',
       };
       const newState = posts(state, action);
       expect(newState, 'to be', state);
     });
 
-    describe("REALTIME_COMMENT_DESTROY", () => {
-      const state = { 'post1': { id: 'post1', comments: ['comm1', 'comm2', 'comm3'] } };
+    describe('REALTIME_COMMENT_DESTROY', () => {
+      const state = { post1: { id: 'post1', comments: ['comm1', 'comm2', 'comm3'] } };
 
-      it("should remove comment from post", () => {
+      it('should remove comment from post', () => {
         const newState = posts(state, {
-          type:      REALTIME_COMMENT_DESTROY,
-          postId:    'post1',
+          type: REALTIME_COMMENT_DESTROY,
+          postId: 'post1',
           commentId: 'comm2',
         });
-        expect(newState, 'to equal', { 'post1': { id: 'post1', comments: ['comm1', 'comm3'] } });
+        expect(newState, 'to equal', { post1: { id: 'post1', comments: ['comm1', 'comm3'] } });
       });
 
-      it("should not change state if comment is not exists", () => {
+      it('should not change state if comment is not exists', () => {
         const newState = posts(state, {
-          type:      REALTIME_COMMENT_DESTROY,
-          postId:    'post1',
+          type: REALTIME_COMMENT_DESTROY,
+          postId: 'post1',
           commentId: 'comm4',
         });
         expect(newState, 'to be', state);
       });
 
-      it("should not change state if post is not exists", () => {
+      it('should not change state if post is not exists', () => {
         const newState = posts(state, {
-          type:      REALTIME_COMMENT_DESTROY,
-          postId:    'post2',
+          type: REALTIME_COMMENT_DESTROY,
+          postId: 'post2',
           commentId: 'comm2',
         });
         expect(newState, 'to be', state);
@@ -341,8 +336,8 @@ describe('realtime events', () => {
 
     describe('on REALTIME_COMMENT_NEW on hidden post', () => {
       const action = {
-        type:       REALTIME_COMMENT_NEW,
-        post:       { posts: { id: '1', isHidden: true } },
+        type: REALTIME_COMMENT_NEW,
+        post: { posts: { id: '1', isHidden: true } },
         shouldBump: true,
       };
 
@@ -378,13 +373,13 @@ describe('realtime events', () => {
     const postsViewStateBefore = { [testPost.id]: testPost };
 
     const newRealtimeCommentAction = {
-      type:    REALTIME_COMMENT_NEW,
+      type: REALTIME_COMMENT_NEW,
       comment: { postId: testPost.id, id: 2 },
     };
 
     const removeRealtimeCommentAction = {
-      type:      REALTIME_COMMENT_DESTROY,
-      postId:    testPost.id,
+      type: REALTIME_COMMENT_DESTROY,
+      postId: testPost.id,
       commentId: 2,
     };
 
@@ -401,7 +396,10 @@ describe('realtime events', () => {
     });
 
     it('should not change state on realtime comment deletion if post is not found', () => {
-      const result = postsViewState(postsViewStateBefore, { ...removeRealtimeCommentAction, postId: 42 });
+      const result = postsViewState(postsViewStateBefore, {
+        ...removeRealtimeCommentAction,
+        postId: 42,
+      });
 
       expect(result, 'to be', postsViewStateBefore);
     });
@@ -410,9 +408,9 @@ describe('realtime events', () => {
       const newPost = { id: '1' };
       const newTestComment = { postId: newPost.id, id: '2' };
       const newCommentWithPost = {
-        type:    REALTIME_COMMENT_NEW,
+        type: REALTIME_COMMENT_NEW,
         comment: newTestComment,
-        post:    { posts: newPost }
+        post: { posts: newPost },
       };
 
       const postsViewStateBefore = {};
@@ -425,10 +423,10 @@ describe('realtime events', () => {
       const newPost = { id: '1' };
 
       const newLikeWithPost = {
-        type:   REALTIME_LIKE_NEW,
-        users:  [{ id: '1' }],
+        type: REALTIME_LIKE_NEW,
+        users: [{ id: '1' }],
         postId: newPost.id,
-        post:   { posts: newPost }
+        post: { posts: newPost },
       };
 
       const postsViewStateBefore = {};
@@ -471,20 +469,20 @@ describe('realtime events', () => {
   });
 
   describe('comments()', () => {
-    describe("REALTIME_COMMENT_DESTROY", () => {
-      const state = { 'comm1': { id: 'comm1' }, 'comm2': { id: 'comm2' } };
+    describe('REALTIME_COMMENT_DESTROY', () => {
+      const state = { comm1: { id: 'comm1' }, comm2: { id: 'comm2' } };
 
-      it("should remove existing comment", () => {
+      it('should remove existing comment', () => {
         const newState = comments(state, {
-          type:      REALTIME_COMMENT_DESTROY,
+          type: REALTIME_COMMENT_DESTROY,
           commentId: 'comm2',
         });
-        expect(newState, 'to equal', { 'comm1': { id: 'comm1' } });
+        expect(newState, 'to equal', { comm1: { id: 'comm1' } });
       });
 
-      it("should not change state if comment is not exists", () => {
+      it('should not change state if comment is not exists', () => {
         const newState = comments(state, {
-          type:      REALTIME_COMMENT_DESTROY,
+          type: REALTIME_COMMENT_DESTROY,
           commentId: 'comm3',
         });
         expect(newState, 'to be', state);

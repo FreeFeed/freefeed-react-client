@@ -7,14 +7,16 @@
   }
   .filter {
     margin-left: 10px;
-    @media (max-width: 991px){ margin-left: 0; }
+    @media (max-width: 991px) {
+      margin-left: 0;
+    }
     display: flex;
     flex-wrap: wrap;
-    &>* {
+    & > * {
       margin-right: 10px;
       text-decoration: none;
     }
-    &>.active {
+    & > .active {
       text-decoration: underline;
     }
   }

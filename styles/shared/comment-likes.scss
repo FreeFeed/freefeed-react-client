@@ -9,7 +9,8 @@
   padding-right: 2px;
 
   @media (max-width: 768px) {
-    .comment-likes.has-my-like + .comment-time, .comment-likes.liked + .comment-time {
+    .comment-likes.has-my-like + .comment-time,
+    .comment-likes.liked + .comment-time {
       display: none;
     }
   }
@@ -30,7 +31,8 @@
 .comment-icon {
   opacity: 0.9;
 
-  &, &:hover {
+  &,
+  &:hover {
     text-decoration: none;
   }
 
@@ -63,7 +65,7 @@
   }
   &:not(.liked) {
     opacity: 0;
-    transition: opacity .25s;
+    transition: opacity 0.25s;
   }
 
   .comment-heart {
@@ -72,19 +74,19 @@
     position: relative;
     font-size: 10px;
     .icon.liked {
-      animation: .3s like;
+      animation: 0.3s like;
     }
   }
   @media (min-width: 769px) {
     .comment-heart:hover .icon {
       transform: scale(1.3);
-      transition: transform .25s;
+      transition: transform 0.25s;
     }
   }
 
   .icon {
     color: #ffb914;
-    transition: transform .25s;
+    transition: transform 0.25s;
     cursor: pointer;
   }
 
@@ -107,7 +109,8 @@
     @media (min-width: 769px) {
       margin-right: 6px;
     }
-    &:hover, &:active {
+    &:hover,
+    &:active {
       text-decoration: underline;
     }
     font-size: 12px;
@@ -116,7 +119,8 @@
   }
 
   &.has-my-like {
-    .icon, .comment-count {
+    .icon,
+    .comment-count {
       color: #e66;
     }
   }
@@ -142,7 +146,7 @@
 @media (min-width: 769px) {
   .comment-likes-container:hover .comment-likes:not(.liked) {
     opacity: 1;
-    transition: opacity .25s;
+    transition: opacity 0.25s;
   }
 }
 
@@ -236,7 +240,7 @@
     width: 100%;
     background-color: white;
     padding-top: 12px;
-    transition: transform .2s;
+    transition: transform 0.2s;
     transform: translateY(0);
     position: absolute;
     bottom: 0;

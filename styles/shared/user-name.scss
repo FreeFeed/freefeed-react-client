@@ -129,5 +129,13 @@
       color: #555599 !important;
       font-weight: normal !important;
     }
+
+    &.user-card-errors {
+      &:empty {
+        display: none;
+      }
+
+      background-color: #fcc;
+    }
   }
 }

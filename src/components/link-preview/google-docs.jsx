@@ -3,7 +3,6 @@ import React from 'react';
 import { contentResized } from './scroll-helpers/events';
 import ScrollSafe from './scroll-helpers/scroll-safe';
 
-
 const GOOGLE_DOCS_RE = /^https?:\/\/(?:docs\.google\.com\/(document|spreadsheets|presentation)\/d\/|(drive)\.google\.com\/(?:file\/d\/|open\?id=))([\w-]+)/i;
 
 export function canShowURL(url) {
@@ -14,10 +13,10 @@ const defaultAspectRatio = 2.2;
 const maxAspectRatio = 1.5;
 
 const initialState = {
-  preview:     null,
-  type:        '',
+  preview: null,
+  type: '',
   aspectRatio: defaultAspectRatio,
-  isError:     false,
+  isError: false,
 };
 
 class GoogleDocsPreview extends React.Component {
@@ -31,14 +30,16 @@ class GoogleDocsPreview extends React.Component {
     img.onload = () => this.setState({ preview: img.src, aspectRatio: img.width / img.height });
     img.onerror = () => this.setState({ isError: true });
     const imgWidth = 500 * zoomRate(type);
-    img.src = `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&authuser=0&sz=w${imgWidth}`;
+    img.src = `https://drive.google.com/thumbnail?id=${encodeURIComponent(
+      id,
+    )}&authuser=0&sz=w${imgWidth}`;
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.updatePreview(this.props.url);
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if (newProps.url !== this.props.url) {
       this.setState({ ...initialState });
       this.updatePreview(newProps.url);
@@ -64,9 +65,10 @@ class GoogleDocsPreview extends React.Component {
           href={this.props.url}
           target="_blank"
           style={{
-            backgroundSize:     `${zoomRate(type) * 100}%`,
-            backgroundImage:    preview ? `url(${preview})` : null,
-            paddingBottom:      `${100 / (aspectRatio >= maxAspectRatio ? aspectRatio : defaultAspectRatio)}%`,
+            backgroundSize: `${zoomRate(type) * 100}%`,
+            backgroundImage: preview ? `url(${preview})` : null,
+            paddingBottom: `${100 /
+              (aspectRatio >= maxAspectRatio ? aspectRatio : defaultAspectRatio)}%`,
             backgroundPosition: `center ${55 * aspectRatio * (zoomRate(type) - 1)}%`,
           }}
         />

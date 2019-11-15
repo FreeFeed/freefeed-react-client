@@ -12,15 +12,14 @@ import ErrorBoundary from './error-boundary';
 import { Throbber } from './throbber';
 import { Icon } from './fontawesome-icons';
 
-
 const isTextEmpty = (text) => text == '' || /^\s+$/.test(text);
 const getDefaultState = (invitation = '') => ({
-  isFormEmpty:      true,
-  isMoreOpen:       false,
-  postText:         invitation,
+  isFormEmpty: true,
+  isMoreOpen: false,
+  postText: invitation,
   commentsDisabled: false,
-  attLoading:       false,
-  attachments:      [],
+  attLoading: false,
+  attachments: [],
   dropzoneDisabled: false,
 });
 
@@ -43,10 +42,11 @@ export default class CreatePost extends React.Component {
     this.props.createPost(feeds, postText, attachmentIds, more);
   };
 
-  componentWillReceiveProps(newProps) {
-    const wasCommentJustSaved = this.props.createPostViewState.isPending && !newProps.createPostViewState.isPending;
+  UNSAFE_componentWillReceiveProps(newProps) {
+    const wasCommentJustSaved =
+      this.props.createPostViewState.isPending && !newProps.createPostViewState.isPending;
     const wasThereNoError = !newProps.createPostViewState.isError;
-    const shouldClear = (wasCommentJustSaved && wasThereNoError);
+    const shouldClear = wasCommentJustSaved && wasThereNoError;
     if (shouldClear) {
       this.clearForm();
     }
@@ -154,15 +154,17 @@ export default class CreatePost extends React.Component {
     this.setState({ commentsDisabled: e.target.checked });
   };
 
-  registerSelectFeeds = (el) => this.selectFeeds = el;
+  registerSelectFeeds = (el) => (this.selectFeeds = el);
 
   canSubmitForm = () => {
-    return !this.state.isFormEmpty
-      && !this.state.attLoading
-      && !this.props.createPostViewState.isPending
-      && this.selectFeeds
-      && this.selectFeeds.values.length > 0
-      && !this.selectFeeds.isIncorrectDestinations;
+    return (
+      !this.state.isFormEmpty &&
+      !this.state.attLoading &&
+      !this.props.createPostViewState.isPending &&
+      this.selectFeeds &&
+      this.selectFeeds.values.length > 0 &&
+      !this.selectFeeds.isIncorrectDestinations
+    );
   };
 
   render() {
@@ -170,7 +172,7 @@ export default class CreatePost extends React.Component {
       <div className="create-post post-editor">
         <ErrorBoundary>
           <div>
-            {this.props.sendTo.expanded &&
+            {this.props.sendTo.expanded && (
               <SendTo
                 ref={this.registerSelectFeeds}
                 defaultFeed={this.props.sendTo.defaultFeed}
@@ -178,7 +180,7 @@ export default class CreatePost extends React.Component {
                 user={this.props.user}
                 onChange={this.checkCreatePostAvailability}
               />
-            }
+            )}
 
             <Dropzone
               onInit={this.handleDropzoneInit}
@@ -201,13 +203,16 @@ export default class CreatePost extends React.Component {
           </div>
 
           <div className="post-edit-options">
-            <span className="post-edit-attachments dropzone-trigger" disabled={this.state.dropzoneDisabled}>
-              <Icon icon={faCloudUploadAlt} className="upload-icon" />
-              {' '}
-              Add photos or files
+            <span
+              className="post-edit-attachments dropzone-trigger"
+              disabled={this.state.dropzoneDisabled}
+            >
+              <Icon icon={faCloudUploadAlt} className="upload-icon" /> Add photos or files
             </span>
 
-            <a className="post-edit-more-trigger" onClick={this.toggleMore}>More&nbsp;&#x25be;</a>
+            <a className="post-edit-more-trigger" onClick={this.toggleMore}>
+              More&nbsp;&#x25be;
+            </a>
 
             {this.state.isMoreOpen ? (
               <div className="post-edit-more">
@@ -221,7 +226,9 @@ export default class CreatePost extends React.Component {
                   <span className="post-edit-more-labeltext">Comments disabled</span>
                 </label>
               </div>
-            ) : false}
+            ) : (
+              false
+            )}
           </div>
 
           <div className="post-edit-actions">
@@ -229,7 +236,9 @@ export default class CreatePost extends React.Component {
               <span className="throbber">
                 <Throbber />
               </span>
-            ) : false}
+            ) : (
+              false
+            )}
 
             <button
               className="btn btn-default btn-xs"
@@ -242,15 +251,15 @@ export default class CreatePost extends React.Component {
 
           {this.state.dropzoneDisabled && (
             <div className="alert alert-warning">
-            The maximum number of attached files ({config.attachments.maxCount}) has been reached
+              The maximum number of attached files ({config.attachments.maxCount}) has been reached
             </div>
           )}
 
           {this.props.createPostViewState.isError ? (
-            <div className="alert alert-danger">
-              {this.props.createPostViewState.errorString}
-            </div>
-          ) : false}
+            <div className="alert alert-danger">{this.props.createPostViewState.errorString}</div>
+          ) : (
+            false
+          )}
 
           <PostAttachments
             attachments={this.state.attachments}
@@ -294,12 +303,12 @@ export async function makeJpegIfNeeded(blob) {
     const canvas = document.createElement('canvas');
     canvas.width = image.width;
     canvas.height = image.height;
-    const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "white";
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(image, 0, 0);
 
-    const jpeg = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.9));
+    const jpeg = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.9));
     jpeg.name = blob.name.replace(/\.png$/, '.jpg');
 
     if (jpeg.size < blob.size / 2) {

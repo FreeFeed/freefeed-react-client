@@ -4,7 +4,6 @@ import { READMORE_STYLE_COMFORT } from '../utils/frontend-preferences-options';
 
 import Linkify from './linkify';
 
-
 // Texts longer than thresholdTextLength should be cut to shortenedTextLength
 const thresholdTextLength = 800;
 const shortenedTextLength = 600;
@@ -16,7 +15,11 @@ const thresholdTextLines = 5;
 const suffix = '...';
 
 // Separator element for "paragraphs"
-const paragraphBreak = <div className="p-break"><br /></div>;
+const paragraphBreak = (
+  <div className="p-break">
+    <br />
+  </div>
+);
 
 // Shorten text without cutting words
 const shortenText = (text, maxLength) => {
@@ -74,9 +77,13 @@ const getCollapsedText = (text, expandText) => {
 
     // The text is short but has some newlines
     return [
-      <span key="text" dir="auto">{normalizedText}</span>,
+      <span key="text" dir="auto">
+        {normalizedText}
+      </span>,
       ' ',
-      <a key="read-more" className="read-more" onClick={expandText}>Expand</a>
+      <a key="read-more" className="read-more" onClick={expandText}>
+        Expand
+      </a>,
     ];
   }
 
@@ -84,9 +91,13 @@ const getCollapsedText = (text, expandText) => {
   const shortenedText = shortenText(normalizedText, shortenedTextLength);
 
   return [
-    <span key="text" dir="auto">{shortenedText}</span>,
+    <span key="text" dir="auto">
+      {shortenedText}
+    </span>,
     ' ',
-    <a key="read-more" className="read-more" onClick={expandText}>Read more</a>
+    <a key="read-more" className="read-more" onClick={expandText}>
+      Read more
+    </a>,
   ];
 };
 
@@ -106,7 +117,9 @@ export default class PieceOfText extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { isExpanded: !!props.isExpanded || props.readMoreStyle === READMORE_STYLE_COMFORT };
+    this.state = {
+      isExpanded: !!props.isExpanded || props.readMoreStyle === READMORE_STYLE_COMFORT,
+    };
   }
 
   expandText() {
@@ -114,12 +127,18 @@ export default class PieceOfText extends React.Component {
   }
 
   render() {
-    return (this.props.text ? (
-      <Linkify userHover={this.props.userHover} arrowHover={this.props.arrowHover} highlightTerms={this.props.highlightTerms}>
+    return this.props.text ? (
+      <Linkify
+        userHover={this.props.userHover}
+        arrowHover={this.props.arrowHover}
+        highlightTerms={this.props.highlightTerms}
+      >
         {this.state.isExpanded
           ? getExpandedText(this.props.text)
           : getCollapsedText(this.props.text, this.expandText.bind(this))}
       </Linkify>
-    ) : <span />);
+    ) : (
+      <span />
+    );
   }
 }

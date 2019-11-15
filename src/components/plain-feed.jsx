@@ -7,7 +7,6 @@ import PaginatedView from './paginated-view';
 import FeedOptionsSwitch from './feed-options-switch';
 import ErrorBoundary from './error-boundary';
 
-
 const FeedHandler = (props) => (
   <div className="box">
     <ErrorBoundary>
@@ -28,7 +27,6 @@ const FeedHandler = (props) => (
   </div>
 );
 
-
 function selectState(state) {
   const { authenticated, boxHeader, timelines, user } = state;
   const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
@@ -37,7 +35,10 @@ function selectState(state) {
 }
 
 function selectActions(dispatch) {
-  return { ...postActions(dispatch), };
+  return { ...postActions(dispatch) };
 }
 
-export default connect(selectState, selectActions)(FeedHandler);
+export default connect(
+  selectState,
+  selectActions,
+)(FeedHandler);

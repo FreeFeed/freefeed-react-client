@@ -3,32 +3,33 @@ import React from 'react';
 import { PhotoSwipe } from 'react-photoswipe';
 import Mousetrap from 'mousetrap';
 
-
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
 const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
 
 const lightboxOptions = {
-  shareEl:                 false,
+  shareEl: false,
   clickToCloseNonZoomable: false,
-  bgOpacity:               0.8,
-  galleryPIDs:             true,
+  bgOpacity: 0.8,
+  galleryPIDs: true,
 };
 
 export default class ImageAttachmentsLightbox extends React.Component {
   static propTypes = {
-    items: pt.arrayOf(pt.shape({
-      src: pt.string.isRequired,
-      w:   pt.number.isRequired,
-      h:   pt.number.isRequired,
-      pid: pt.string.isRequired,
-    })).isRequired,
-    postId:       pt.string,
-    index:        pt.number.isRequired,
+    items: pt.arrayOf(
+      pt.shape({
+        src: pt.string.isRequired,
+        w: pt.number.isRequired,
+        h: pt.number.isRequired,
+        pid: pt.string.isRequired,
+      }),
+    ).isRequired,
+    postId: pt.string,
+    index: pt.number.isRequired,
     getThumbnail: pt.func.isRequired,
-    onDestroy:    pt.func.isRequired,
+    onDestroy: pt.func.isRequired,
   };
 
-  state = { currentIndex: 0, };
+  state = { currentIndex: 0 };
 
   constructor(props) {
     super(props);
@@ -65,7 +66,7 @@ export default class ImageAttachmentsLightbox extends React.Component {
       if (thumb) {
         const rect = thumb.getBoundingClientRect();
         if (rect.width > 0) {
-          item.h = rect.height * item.w / rect.width;
+          item.h = (rect.height * item.w) / rect.width;
         }
       }
     }
@@ -96,9 +97,9 @@ export default class ImageAttachmentsLightbox extends React.Component {
         gettingData={this.getItemData}
         options={{
           ...lightboxOptions,
-          galleryUID:       (this.props.postId || 'new-post').substr(0, 8),
+          galleryUID: (this.props.postId || 'new-post').substr(0, 8),
           getThumbBoundsFn: this.getThumbBounds,
-          index:            this.state.currentIndex,
+          index: this.state.currentIndex,
         }}
         isOpen={true}
         onClose={this.whenClosed}

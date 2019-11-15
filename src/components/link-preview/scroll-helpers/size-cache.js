@@ -1,6 +1,5 @@
 import { debounce } from 'lodash';
-import LRU from "lru-cache";
-
+import LRU from 'lru-cache';
 
 const lsKey = 'previewSize';
 const lruSize = 500;

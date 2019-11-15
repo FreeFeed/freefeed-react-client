@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { joinPostData, postActions } from './select-utils';
 import Feed from './feed';
 
-
 class Summary extends React.Component {
   render() {
     const { props } = this;
@@ -26,13 +25,15 @@ class Summary extends React.Component {
           </div>
         </div>
 
-        {props.isLoading || props.visibleEntries.length ? (
-          <Feed {...props} />
-        ) : (
-          <div className="summary-no-results">
-            <p>No entries here yet. You might want to subscribe for more users and groups.</p>
-          </div>
-        )}
+        <div className="box-body">
+          {props.isLoading || props.visibleEntries.length ? (
+            <Feed {...props} />
+          ) : (
+            <div className="summary-no-results">
+              <p>No entries here yet. You might want to subscribe for more users and groups.</p>
+            </div>
+          )}
+        </div>
       </div>
     );
   }
@@ -47,7 +48,10 @@ function mapStateToProps(state) {
 }
 
 function mapActionsToDispatch(dispatch) {
-  return { ...postActions(dispatch), };
+  return { ...postActions(dispatch) };
 }
 
-export default connect(mapStateToProps, mapActionsToDispatch)(Summary);
+export default connect(
+  mapStateToProps,
+  mapActionsToDispatch,
+)(Summary);

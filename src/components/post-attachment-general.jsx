@@ -5,7 +5,6 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { formatFileSize } from '../utils';
 import { Icon } from './fontawesome-icons';
 
-
 class GeneralAttachment extends React.PureComponent {
   handleClickOnRemoveAttachment = () => {
     this.props.removeAttachment(this.props.id);
@@ -23,8 +22,14 @@ class GeneralAttachment extends React.PureComponent {
           <span className="attachment-title">{nameAndSize}</span>
         </a>
 
-        {props.isEditing &&
-          <Icon icon={faTimes} className="remove-attachment" title="Remove file" onClick={this.handleClickOnRemoveAttachment} />}
+        {props.isEditing && (
+          <Icon
+            icon={faTimes}
+            className="remove-attachment"
+            title="Remove file"
+            onClick={this.handleClickOnRemoveAttachment}
+          />
+        )}
       </div>
     );
   }

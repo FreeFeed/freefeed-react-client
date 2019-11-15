@@ -4,8 +4,7 @@ import filesize from 'filesize';
 import defaultUserpicPath from '../../assets/images/default-userpic.svg';
 
 import config from '../config';
-import { initialAsyncState } from '../redux/reducers/helpers';
-
+import { initialAsyncState } from '../redux/async-helpers';
 
 const frontendPrefsConfig = config.frontendPreferences;
 
@@ -22,17 +21,17 @@ export function getCookie(name) {
 }
 
 export function setCookie(name, value = '', expireDays, path) {
-  const expiresDate = Date.now() + (expireDays * 24 * 60 * 60 * 1000);
+  const expiresDate = Date.now() + expireDays * 24 * 60 * 60 * 1000;
   const expiresTime = new Date(expiresDate).toUTCString();
   //http://stackoverflow.com/questions/1134290/cookies-on-localhost-with-explicit-domain
   const cookie = `${name}=${value}; expires=${expiresTime}; path=${path}`;
-  return document.cookie = cookie;
+  return (document.cookie = cookie);
 }
 
 const userDefaults = {
   profilePictureMediumUrl: defaultUserpicPath,
-  profilePictureLargeUrl:  defaultUserpicPath,
-  frontendPreferences:     frontendPrefsConfig.defaultValues
+  profilePictureLargeUrl: defaultUserpicPath,
+  frontendPreferences: frontendPrefsConfig.defaultValues,
 };
 
 /**
@@ -45,8 +44,10 @@ export function userParser(user) {
   const newUser = { ...user };
 
   // Profile pictures
-  newUser.profilePictureMediumUrl = user.profilePictureMediumUrl || userDefaults.profilePictureMediumUrl;
-  newUser.profilePictureLargeUrl = user.profilePictureLargeUrl || userDefaults.profilePictureLargeUrl;
+  newUser.profilePictureMediumUrl =
+    user.profilePictureMediumUrl || userDefaults.profilePictureMediumUrl;
+  newUser.profilePictureLargeUrl =
+    user.profilePictureLargeUrl || userDefaults.profilePictureLargeUrl;
 
   // Frontend preferences (only use this client's subtree).
   // Do not fill them if no 'frontendPreferences' in 'user'.
@@ -68,7 +69,7 @@ export function postParser(post) {
   return {
     ...post,
     commentsDisabled: post.commentsDisabled === '1',
-    savePostStatus:   initialAsyncState,
+    savePostStatus: initialAsyncState,
   };
 }
 
@@ -109,7 +110,6 @@ export function delay(timeout = 0) {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 }
 
-
 // detect if localStorage is supported by attempting to set and delete an item
 // if it throws, then no localStorage for us (and we are most probably a Safari
 // in private browsing mode)
@@ -124,23 +124,35 @@ try {
 
 const localStorageShim = {
   _data: {},
-  setItem(id, val) { return this._data[id] = String(val); },
-  getItem(id) { return Object.prototype.hasOwnProperty.call(this._data, id) ? this._data[id] : null; },
-  removeItem(id) { return delete this._data[id]; },
-  clear() { return this._data = {}; }
+  setItem(id, val) {
+    return (this._data[id] = String(val));
+  },
+  getItem(id) {
+    return Object.prototype.hasOwnProperty.call(this._data, id) ? this._data[id] : null;
+  },
+  removeItem(id) {
+    return delete this._data[id];
+  },
+  clear() {
+    return (this._data = {});
+  },
 };
 
 export const localStorage = localStorageSupported ? window.localStorage : localStorageShim;
 
 export function getSummaryPeriod(days) {
   switch (+days) {
-    case 1: return 'day';
-    case 7: return 'week';
-    case 30: return 'month';
-    default: return `${days} days`;
+    case 1:
+      return 'day';
+    case 7:
+      return 'week';
+    case 30:
+      return 'month';
+    default:
+      return `${days} days`;
   }
 }
 
 export function formatFileSize(fileSize) {
-  return filesize(fileSize, { standard: "iec", round: 1 });
+  return filesize(fileSize, { standard: 'iec', round: 1 });
 }

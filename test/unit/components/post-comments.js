@@ -11,9 +11,7 @@ import PostComment from '../../../src/components/post-comment';
 import ErrorBoundary from '../../../src/components/error-boundary';
 import MoreCommentsWrapper from '../../../src/components/more-comments-wrapper';
 
-
-const expect = unexpected.clone()
-  .use(unexpectedReact);
+const expect = unexpected.clone().use(unexpectedReact);
 
 const generateArray = (n) => [...Array(n).keys()].map(() => ({}));
 const commentArrays = generateArray(5).map((_, index) => generateArray(index));
@@ -45,7 +43,7 @@ describe('<PostComments>', () => {
       'to have rendered with all children',
       <div>
         <MoreCommentsWrapper />
-      </div>
+      </div>,
     );
 
     expect(
@@ -55,7 +53,7 @@ describe('<PostComments>', () => {
       <div>
         <PostComment />
         <MoreCommentsWrapper />
-      </div>
+      </div>,
     );
   });
 
@@ -66,7 +64,9 @@ describe('<PostComments>', () => {
       <PostComments comments={[]} post={post} />,
       'when rendered',
       'to have rendered with all children',
-      <div className="comments"><ErrorBoundary /></div>
+      <div className="comments">
+        <ErrorBoundary />
+      </div>,
     );
 
     expect(
@@ -75,17 +75,19 @@ describe('<PostComments>', () => {
       'to have rendered with all children',
       <div>
         <PostComment />
-      </div>
+      </div>,
     );
 
     const root = await expect(
       <PostComments comments={[{}, {}, {}, {}]} post={post} />,
       'when rendered',
       'queried for',
-      <div className="comments" />
+      <div className="comments" />,
     );
     const errorBoundary = root.props.children;
-    const comments = flatten(errorBoundary.props.children).filter((tag) => tag.type === PostComment);
+    const comments = flatten(errorBoundary.props.children).filter(
+      (tag) => tag.type === PostComment,
+    );
     expect(comments, 'to have length', 4);
   });
 
@@ -96,18 +98,23 @@ describe('<PostComments>', () => {
       <PostComments comments={[{}, {}]} post={post} />,
       'when rendered',
       'to contain',
-      <MoreCommentsWrapper omittedComments={2} />
+      <MoreCommentsWrapper omittedComments={2} />,
     );
   });
 
   it(`should not render omitted number when there're no omitted comments`, () => {
     commentArrays.map((comments) => {
-      const post = { omittedComments: 0, isCommenting: false, createdBy: { username: '' }, user: {} };
+      const post = {
+        omittedComments: 0,
+        isCommenting: false,
+        createdBy: { username: '' },
+        user: {},
+      };
       expect(
         <PostComments comments={comments} post={post} />,
         'when rendered',
         'not to contain',
-        <MoreCommentsWrapper />
+        <MoreCommentsWrapper />,
       );
     });
   });
@@ -115,7 +122,12 @@ describe('<PostComments>', () => {
   it(`should render last comment if there's more than one comment`, () => {
     // not enough comments to show anything after "more"
     commentArrays.slice(0, 2).map((comments) => {
-      const post = { omittedComments: 1, isCommenting: false, createdBy: { username: '' }, user: {} };
+      const post = {
+        omittedComments: 1,
+        isCommenting: false,
+        createdBy: { username: '' },
+        user: {},
+      };
       expect(
         <PostComments comments={comments} post={post} />,
         'when rendered',
@@ -124,13 +136,18 @@ describe('<PostComments>', () => {
           <PostComment />
           <MoreCommentsWrapper />
           <PostComment />
-        </div>
+        </div>,
       );
     });
 
     // enough comments to show something after "more"
     commentArrays.slice(2).map((comments) => {
-      const post = { omittedComments: 1, isCommenting: false, createdBy: { username: '' }, user: {} };
+      const post = {
+        omittedComments: 1,
+        isCommenting: false,
+        createdBy: { username: '' },
+        user: {},
+      };
       expect(
         <PostComments comments={comments} post={post} />,
         'when rendered',
@@ -139,7 +156,7 @@ describe('<PostComments>', () => {
           <PostComment />
           <MoreCommentsWrapper />
           <PostComment />
-        </div>
+        </div>,
       );
     });
   });
@@ -150,7 +167,7 @@ describe('<PostComments>', () => {
       <PostComments comments={[]} post={post} user={{ id: '12345' }} />,
       'when rendered',
       'not to contain',
-      <PostComment isEditing={true} />
+      <PostComment isEditing={true} />,
     );
 
     post.isCommenting = true;
@@ -158,7 +175,7 @@ describe('<PostComments>', () => {
       <PostComments comments={[]} post={post} user={{ id: '12345' }} />,
       'when rendered',
       'to contain',
-      <PostComment isEditing={true} />
+      <PostComment isEditing={true} />,
     );
   });
 
@@ -168,13 +185,13 @@ describe('<PostComments>', () => {
       <PostComments comments={[]} post={post} user={{}} />,
       'when rendered',
       'not to contain',
-      <PostComment isEditing={true} />
+      <PostComment isEditing={true} />,
     );
     expect(
       <PostComments comments={[]} post={post} user={{}} />,
       'when rendered',
       'not to contain',
-      <Link>Sign In</Link>
+      <Link>Sign In</Link>,
     );
 
     post.isCommenting = true;
@@ -182,7 +199,7 @@ describe('<PostComments>', () => {
       <PostComments comments={[]} post={post} user={{}} />,
       'when rendered',
       'to contain',
-      <Link>Sign In</Link>
+      <Link>Sign In</Link>,
     );
   });
 });

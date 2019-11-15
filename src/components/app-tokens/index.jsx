@@ -6,8 +6,7 @@ import CreateLink from './create-link';
 import ScopesList from './scopes-list';
 import Layout from './layout';
 
-
-export default function ({ routeParams: { splat } }) {
+export default function({ routeParams: { splat } }) {
   if (!splat) {
     return <Layout component={Tokens} />;
   }
@@ -23,4 +22,3 @@ export default function ({ routeParams: { splat } }) {
 
   return <p>Page not found: {splat}</p>;
 }
-

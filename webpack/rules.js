@@ -1,7 +1,6 @@
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 import { skipFalsy } from './utils';
-
 
 class RuleGenerator {
   opts;
@@ -12,106 +11,112 @@ class RuleGenerator {
 
   get eslint() {
     return {
-      test:    /\.jsx?$/,
+      test: /\.jsx?$/,
       exclude: /node_modules/,
-      loader:  'eslint-loader',
-      enforce: 'pre'
+      loader: 'eslint-loader',
+      enforce: 'pre',
     };
   }
 
   get babel() {
     return {
-      test:    /\.m?jsx?$/,
+      test: /\.m?jsx?$/,
       exclude: (modulePath) => {
-        return /node_modules\/(?!(autotrack|dom-utils|social-text-tokenizer))/.test(modulePath);
+        return /node_modules\/(?!([^\/]+\/)*(autotrack|debug|dom-utils|filesize|lru-cache|social-text-tokenizer))/.test(modulePath);
       },
       use: [
         {
-          loader:  'babel-loader',
+          loader: 'babel-loader',
           options: {
             babelrc: false,
             compact: false,
             presets: skipFalsy([
-              "@babel/react",
-              ["@babel/env", {
-                modules:     false,
-                useBuiltIns: 'entry',
-                corejs:      3,
-                targets:     {
-                  browsers: [
-                    '>1%',
-                    'last 3 versions',
-                    'last 3 iOS versions',
-                    'ie >= 10',
-                  ]
-                }
-              }],
+              '@babel/react',
+              [
+                '@babel/env',
+                {
+                  modules: false,
+                  useBuiltIns: 'entry',
+                  corejs: 3,
+                  targets: {
+                    browsers: ['>1%', 'last 3 versions', 'safari >= 9', 'ie >= 10'],
+                  },
+                },
+              ],
             ]),
             plugins: skipFalsy([
-              ["lodash", { "id": ["lodash"] }],
-              "@babel/syntax-class-properties",
-              "@babel/syntax-do-expressions",
-              "@babel/syntax-dynamic-import",
-              "@babel/syntax-object-rest-spread",
-              "@babel/proposal-class-properties",
-              "@babel/proposal-do-expressions",
-              "@babel/proposal-object-rest-spread",
+              ['lodash', { id: ['lodash'] }],
+              '@babel/syntax-class-properties',
+              '@babel/syntax-do-expressions',
+              '@babel/syntax-dynamic-import',
+              '@babel/syntax-object-rest-spread',
+              '@babel/proposal-class-properties',
+              '@babel/proposal-do-expressions',
+              '@babel/proposal-object-rest-spread',
               // this.opts.dev && '@babel/transform-runtime',
               // ['@babel/plugin-transform-modules-commonjs', {
               //   "noInterop": true,
               // }],
-              this.opts.hot && "react-hot-loader/babel",
-              !this.opts.dev && ['transform-react-remove-prop-types', { mode: 'remove', removeImport: true, additionalLibraries: ["react-style-proptype"] }],
-              !this.opts.dev && ["@babel/transform-react-constant-elements"],
-              !this.opts.dev && ["@babel/transform-react-inline-elements"],
+              this.opts.hot && 'react-hot-loader/babel',
+              !this.opts.dev && [
+                'transform-react-remove-prop-types',
+                {
+                  mode: 'remove',
+                  removeImport: true,
+                  additionalLibraries: ['react-style-proptype'],
+                },
+              ],
+              !this.opts.dev && ['@babel/transform-react-constant-elements'],
+              !this.opts.dev && ['@babel/transform-react-inline-elements'],
             ]),
           },
-        }
+        },
       ],
     };
   }
 
   get babelForNode() {
     return {
-      test:    /\.jsx?$/,
+      test: /\.jsx?$/,
       exclude: /(node_modules[\\/])/,
-      loader:  'babel-loader',
+      loader: 'babel-loader',
       options: {
         babelrc: false,
         presets: [
-          "@babel/react",
-          ["@babel/env", {
-            modules: false,
-            targets: { node: "8.9", }
-          }],
+          '@babel/react',
+          [
+            '@babel/env',
+            {
+              modules: false,
+              targets: { node: '12' },
+            },
+          ],
         ],
         plugins: [
           '@babel/transform-runtime',
-          "@babel/syntax-class-properties",
-          "@babel/syntax-do-expressions",
-          "@babel/syntax-object-rest-spread",
-          "@babel/proposal-class-properties",
-          "@babel/proposal-object-rest-spread",
+          '@babel/syntax-class-properties',
+          '@babel/syntax-do-expressions',
+          '@babel/syntax-object-rest-spread',
+          '@babel/proposal-class-properties',
+          '@babel/proposal-object-rest-spread',
           // 'lodash',
         ],
-      }
+      },
     };
   }
 
   get template() {
     return {
       test: /[.]jade$/,
-      use:  [
-        { loader: 'pug-loader' }
-      ],
+      use: [{ loader: 'pug-loader' }],
     };
   }
 
   get css() {
     return {
-      test:    /[\\/]styles[\\/].*[\\/].*[.]scss$/,
+      test: /[\\/]styles[\\/].*[\\/].*[.]scss$/,
       exclude: /[.]module[.]scss$/,
-      use:     [
+      use: [
         this.opts.dev ? 'style-loader' : MiniCssExtractPlugin.loader,
         'css-loader',
         'sass-loader',
@@ -122,7 +127,7 @@ class RuleGenerator {
   get cssModule() {
     return {
       test: /[.]module[.]scss$/,
-      use:  [
+      use: [
         this.opts.dev ? 'style-loader' : MiniCssExtractPlugin.loader,
         'css-loader?modules=true',
         'sass-loader',
@@ -134,17 +139,14 @@ class RuleGenerator {
     // import '../assets/vendor-css/font-awesome.min.css';
     return {
       test: /[\\/]assets[\\/].*[\\/].*[.]css$/,
-      use:  [
-        this.opts.dev ? 'style-loader' : MiniCssExtractPlugin.loader,
-        'css-loader',
-      ],
+      use: [this.opts.dev ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader'],
     };
   }
 
   get fonts() {
     return {
-      test:   /[\\/]assets[\\/]fonts[\\/]fontawesome[^/]*$/i,
-      loader: 'file-loader?name=[path][name].[ext]'
+      test: /[\\/]assets[\\/]fonts[\\/]fontawesome[^/]*$/i,
+      loader: 'file-loader?name=[path][name].[ext]',
     };
   }
 
@@ -152,8 +154,8 @@ class RuleGenerator {
     const fileName = this.opts.hash ? '[name]-[hash].[ext]' : '[name]-dev.[ext]';
 
     return {
-      test:   /photoswipe.+\.(png|svg|gif)$/,
-      loader: `file-loader?name=assets/images/photoswipe/${fileName}`
+      test: /photoswipe.+\.(png|svg|gif)$/,
+      loader: `file-loader?name=assets/images/photoswipe/${fileName}`,
     };
   }
 
@@ -161,12 +163,9 @@ class RuleGenerator {
     const fileName = this.opts.hash ? '[path][name]-[hash].[ext]' : '[path][name]-dev.[ext]';
 
     return {
-      test:    /[\\/]assets[\\/]/,
-      exclude: [
-        /[\\/]fonts[\\/]fontawesome[^/]*$/i,
-        /[\\/]assets[\\/].*[\\/].*[.]css$/,
-      ],
-      loader: `file-loader?name=${fileName}`
+      test: /[\\/]assets[\\/]/,
+      exclude: [/[\\/]fonts[\\/]fontawesome[^/]*$/i, /[\\/]assets[\\/].*[\\/].*[.]css$/],
+      loader: `file-loader?name=${fileName}`,
     };
   }
 }

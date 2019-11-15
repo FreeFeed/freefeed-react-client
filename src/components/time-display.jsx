@@ -10,7 +10,6 @@ import addMilliseconds from 'date-fns/addMilliseconds';
 import differenceInMilliseconds from 'date-fns/differenceInMilliseconds';
 import formatDistance from 'date-fns/formatDistance';
 
-
 const datetimeFormat = 'MMM d, yyyy HH:mm';
 
 class Ticker extends EventEmitter {
@@ -31,9 +30,9 @@ class TimeDisplay extends React.Component {
       pt.number.isRequired, // JS timestamp in ms
       pt.string.isRequired, // ISO date string
     ]),
-    className:       pt.string,
-    timeAgoInTitle:  pt.bool,
-    showAbsTime:     pt.bool,
+    className: pt.string,
+    timeAgoInTitle: pt.bool,
+    showAbsTime: pt.bool,
     serverTimeAhead: pt.number.isRequired,
   };
 
@@ -48,18 +47,26 @@ class TimeDisplay extends React.Component {
   }
 
   render() {
-    const time = typeof this.props.timeStamp === 'number' ? toDate(this.props.timeStamp) : parseISO(this.props.timeStamp);
+    const time =
+      typeof this.props.timeStamp === 'number'
+        ? toDate(this.props.timeStamp)
+        : parseISO(this.props.timeStamp);
     const serverNow = addMilliseconds(new Date(), this.props.serverTimeAhead);
-    const timeAgo = Math.abs(differenceInMilliseconds(serverNow, time)) < 1000 ? 'just now' : `${formatDistance(time, serverNow)} ago`;
+    const timeAgo =
+      Math.abs(differenceInMilliseconds(serverNow, time)) < 1000
+        ? 'just now'
+        : `${formatDistance(time, serverNow)} ago`;
     const timeAbs = format(time, datetimeFormat);
     const timeISO = time.toISOString();
 
-    const title = (this.props.timeAgoInTitle || this.props.showAbsTime) ? timeAgo : timeAbs;
+    const title = this.props.timeAgoInTitle || this.props.showAbsTime ? timeAgo : timeAbs;
     const contents = this.props.children || (this.props.showAbsTime && timeAbs) || timeAgo;
     // const contents = this.props.children ? this.props.children : this.props.showAbsTime ? format(time, datetimeFormat) : timeAgo;
 
     return (
-      <time className={this.props.className} dateTime={timeISO} title={title}>{contents}</time>
+      <time className={this.props.className} dateTime={timeISO} title={title}>
+        {contents}
+      </time>
     );
   }
 }

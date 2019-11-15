@@ -1,7 +1,6 @@
 import { localStorage } from '../utils/';
 import config from '../config';
 
-
 export const { colorSchemeStorageKey } = config.appearance;
 
 export const SCHEME_LIGHT = 'light';
@@ -19,12 +18,13 @@ export function saveColorScheme(scheme) {
 
 export function loadColorScheme() {
   const scheme = localStorage.getItem(colorSchemeStorageKey);
-  return (scheme === SCHEME_LIGHT || scheme === SCHEME_DARK) ? scheme : SCHEME_SYSTEM;
+  return scheme === SCHEME_LIGHT || scheme === SCHEME_DARK ? scheme : SCHEME_SYSTEM;
 }
 
-export const systemColorSchemeSupported = (typeof window !== 'undefined')
-  && window.matchMedia
-  && window.matchMedia('(prefers-color-scheme: light)').media === '(prefers-color-scheme: light)';
+export const systemColorSchemeSupported =
+  typeof window !== 'undefined' &&
+  window.matchMedia &&
+  window.matchMedia('(prefers-color-scheme: light)').media === '(prefers-color-scheme: light)';
 
 export function getSystemColorScheme() {
   for (const scheme of [SCHEME_LIGHT, SCHEME_DARK]) {

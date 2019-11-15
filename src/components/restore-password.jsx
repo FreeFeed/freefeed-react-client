@@ -1,72 +1,95 @@
-import React from 'react';
-import { Link } from 'react-router';
-import { connect } from 'react-redux';
+import { parse as qsParse } from 'querystring';
+import React, { useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import isEmail from 'validator/lib/isEmail';
+import cn from 'classnames';
+import { useForm, useField } from 'react-final-form-hooks';
 import { restorePassword } from '../redux/action-creators';
-import { preventDefault } from '../utils';
-import LoaderContainer from './loader-container';
+import { FieldsetWrapper } from './fieldset-wrapper';
+import { Throbber } from './throbber';
 
+export default React.memo(function RestorePasswordPage() {
+  return (
+    <div className="box">
+      <div className="box-header-timeline">Welcome to FreeFeed!</div>
+      <div className="box-body">
+        <div className="col-md-12">
+          <h2 className="p-signin-header">Reset FreeFeed password</h2>
+          <p>
+            Please enter your email address and we will send you email with password reset link.
+          </p>
+          <RestorePasswordForm />
+        </div>
+      </div>
+      <div className="box-footer" />
+    </div>
+  );
+});
 
-function mapStateToProps(state) {
-  return { ...state.restorePassForm };
-}
+const RestorePasswordForm = React.memo(function RestorePasswordForm() {
+  const status = useSelector((state) => state.restorePasswordStatus);
+  const dispatch = useDispatch();
 
-function mapDispatchToProps(dispatch) {
-  return { restore: (...args) => dispatch(restorePassword(...args)), };
-}
-
-function restoreFunc({ mail, restore }) {
-  if (mail) {
-    restore(mail);
-  }
-}
-
-class RestorePassword extends React.Component {
-  mail;
-
-  handleSubmit = preventDefault(() => {
-    restoreFunc({ restore: this.props.restore, mail: this.mail.value });
+  const form = useForm({
+    onSubmit(values) {
+      dispatch(restorePassword(values.email));
+    },
+    validate(values) {
+      return { email: isEmail(values.email.trim()) ? undefined : 'Required' };
+    },
+    initialValues: {
+      email: useMemo(() => {
+        if (location.search) {
+          const { email } = qsParse(location.search.substr(1));
+          return email || '';
+        }
+        return '';
+      }, []),
+    },
   });
 
-  registerMail = (el) => {
-    this.mail = el;
-  };
+  const email = useField('email', form.form);
 
-  render() {
-    return (
-      <div className="box">
-        <div className="box-header-timeline">
-          Hello
+  return (
+    <form onSubmit={form.handleSubmit}>
+      <FieldsetWrapper disabled={status.loading}>
+        <div className={cn('form-group', email.meta.touched && email.meta.invalid && 'has-error')}>
+          <label htmlFor="email-input" className="control-label">
+            E-mail address
+          </label>
+          <input
+            {...email.input}
+            id="email-input"
+            name="email"
+            className="form-control narrow-input"
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            autoFocus
+          />
         </div>
-        <div className="box-body">
-          <div className="col-md-12">
-            <h2 className="p-signin-header">{this.props.header}</h2>
-            {this.props.error ? (
-              <div className="alert alert-danger p-signin-error" role="alert">
-                <span id="error-message">{this.props.error}</span>
-              </div>
-            ) : false}
-            <div className="row">
-              <div className="col-md-6">
-                <LoaderContainer loading={this.props.loading}>
-                  <form onSubmit={this.handleSubmit} className="p-signin">
-                    <div className="form-group">
-                      <label htmlFor="mail">E-mail</label>
-                      <input name="mail" id="mail" className="form-control" type="mail" ref={this.registerMail} />
-                    </div>
-                    <div className="form-group">
-                      <button className="btn btn-default p-singin-action" type="submit">Reset</button>
-                    </div>
-                  </form>
-                </LoaderContainer>
-                <p>New to freefeed? <Link to="/signup">Create an account »</Link></p>
-              </div>
-            </div>
-          </div>
+        <div className="form-group">
+          <button
+            className="btn btn-default p-singin-action"
+            type="submit"
+            disabled={status.loading || form.hasValidationErrors}
+          >
+            Reset password
+          </button>{' '}
+          {status.loading && <Throbber />}
         </div>
-        <div className="box-footer" />
-      </div>
-    );
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(RestorePassword);
+      </FieldsetWrapper>
+      {status.error && (
+        <p className="alert alert-danger" role="alert">
+          {status.errorText}
+        </p>
+      )}
+      {status.success && (
+        <p className="alert alert-success" role="alert">
+          Please check your email for password reset instructions. Do not forget to check the Spam
+          folder!
+        </p>
+      )}
+    </form>
+  );
+});

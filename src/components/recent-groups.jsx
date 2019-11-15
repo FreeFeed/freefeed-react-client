@@ -3,10 +3,11 @@ import React from 'react';
 import UserName from './user-name';
 import TimeDisplay from './time-display';
 
-
 const renderRecentGroup = (recentGroup) => (
   <li className="p-my-groups-link" key={recentGroup.id}>
-    <UserName user={recentGroup} applyHyphenations={true}>{recentGroup.screenName}</UserName>
+    <UserName user={recentGroup} applyHyphenations={true}>
+      {recentGroup.screenName}
+    </UserName>
     <TimeDisplay className="updated-ago" timeStamp={+recentGroup.updatedAt} />
   </li>
 );
@@ -14,9 +15,5 @@ const renderRecentGroup = (recentGroup) => (
 export default (props) => {
   const recentGroups = props.recentGroups.map(renderRecentGroup);
 
-  return (
-    <ul className="p-my-groups">
-      {recentGroups}
-    </ul>
-  );
+  return <ul className="p-my-groups">{recentGroups}</ul>;
 };

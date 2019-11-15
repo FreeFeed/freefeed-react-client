@@ -3,15 +3,24 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import DropdownMenu from 'react-dd-menu';
 import cn from 'classnames';
-import { faCheckSquare, faSquare, faDotCircle, faCircle } from '@fortawesome/free-regular-svg-icons';
+import {
+  faCheckSquare,
+  faSquare,
+  faDotCircle,
+  faCircle,
+} from '@fortawesome/free-regular-svg-icons';
 import * as FeedOptions from '../utils/feed-options';
-import { toggleRealtime, updateUserPreferences, home, toggleFeedSort } from '../redux/action-creators';
+import {
+  toggleRealtime,
+  updateUserPreferences,
+  home,
+  toggleFeedSort,
+} from '../redux/action-creators';
 import { Icon } from './fontawesome-icons';
 import { faEllipsis } from './fontawesome-custom-icons';
 
-
 class FeedOptionsSwitch extends React.PureComponent {
-  state = { showDropdown: false, };
+  state = { showDropdown: false };
 
   toggleDropdown = () => {
     this.setState({ showDropdown: !this.state.showDropdown });
@@ -22,7 +31,7 @@ class FeedOptionsSwitch extends React.PureComponent {
   };
 
   switchSort = (sort) => {
-    (this.props.feedViewOptions.sort !== sort) && this.props.toggleFeedSort(this.props.route);
+    this.props.feedViewOptions.sort !== sort && this.props.toggleFeedSort(this.props.route);
   };
 
   render() {
@@ -35,28 +44,41 @@ class FeedOptionsSwitch extends React.PureComponent {
     const toggle = <Icon icon={faEllipsis} className="dots-icon" onClick={this.toggleDropdown} />;
 
     const menuOptions = {
-      align:   'right',
-      close:   this.toggleDropdown,
-      isOpen:  this.state.showDropdown,
+      align: 'right',
+      close: this.toggleDropdown,
+      isOpen: this.state.showDropdown,
       animate: false,
-      toggle
+      toggle,
     };
 
     return (
       <div className="feed-options-switch">
         <DropdownMenu {...menuOptions}>
           <div className="dropdown">
-            <DropOption value={FeedOptions.ACTIVITY} current={feedViewOptions.sort} clickHandler={this.switchSort}>
+            <DropOption
+              value={FeedOptions.ACTIVITY}
+              current={feedViewOptions.sort}
+              clickHandler={this.switchSort}
+            >
               Order by recent comments/likes
             </DropOption>
-            <DropOption value={FeedOptions.CHRONOLOGIC} current={feedViewOptions.sort} clickHandler={this.switchSort}>
+            <DropOption
+              value={FeedOptions.CHRONOLOGIC}
+              current={feedViewOptions.sort}
+              clickHandler={this.switchSort}
+            >
               Order by post date
             </DropOption>
             {onFirstPage && feedViewOptions.currentFeedType !== null && (
               <>
                 <div className="spacer" />
-                <DropOption value={true} current={realtimeActive} clickHandler={this.toggleRealtime} checkbox>
-                      Show new posts in real-time
+                <DropOption
+                  value={true}
+                  current={realtimeActive}
+                  clickHandler={this.toggleRealtime}
+                  checkbox
+                >
+                  Show new posts in real-time
                 </DropOption>
               </>
             )}
@@ -70,12 +92,12 @@ class FeedOptionsSwitch extends React.PureComponent {
 const mapStateToProps = (state) => {
   const { locationBeforeTransitions: loc } = state.routing;
   return {
-    userId:              state.user.id,
+    userId: state.user.id,
     frontendPreferences: state.user.frontendPreferences,
-    status:              state.frontendRealtimePreferencesForm.status,
-    feedViewOptions:     state.feedViewOptions,
-    route:               loc.pathname,
-    onFirstPage:         !loc.query.offset,
+    status: state.frontendRealtimePreferencesForm.status,
+    feedViewOptions: state.feedViewOptions,
+    route: loc.pathname,
+    onFirstPage: !loc.query.offset,
   };
 };
 
@@ -84,7 +106,14 @@ const mapDispatchToProps = (dispatch) => {
     toggleRealtime: (userId, frontendPreferences) => {
       const { realtimeActive } = frontendPreferences;
       //send a request to change flag
-      dispatch(updateUserPreferences(userId, { ...frontendPreferences, realtimeActive: !realtimeActive }, {}, true));
+      dispatch(
+        updateUserPreferences(
+          userId,
+          { ...frontendPreferences, realtimeActive: !realtimeActive },
+          {},
+          true,
+        ),
+      );
       //set a flag to show
       dispatch(toggleRealtime());
       if (!realtimeActive) {
@@ -98,11 +127,14 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FeedOptionsSwitch);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(FeedOptionsSwitch);
 
 function DropOption({ children, value, current, clickHandler, checkbox = false }) {
   const onClick = useCallback(() => clickHandler(value), [clickHandler, value]);
-  const className = cn('drop-option', { 'active': value === current });
+  const className = cn('drop-option', { active: value === current });
 
   const iconOn = checkbox ? faCheckSquare : faDotCircle;
   const iconOff = checkbox ? faSquare : faCircle;

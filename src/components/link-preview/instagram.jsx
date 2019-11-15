@@ -4,27 +4,27 @@ import _ from 'lodash';
 import ScrollSafe from './scroll-helpers/scroll-safe';
 import * as aspectRatio from './scroll-helpers/size-cache';
 
-
 const INSTAGRAM_RE = /^https?:\/\/(?:www\.)?instagram\.com\/p\/([a-z0-9_-]+)/i;
 
 export function canShowURL(url) {
   return INSTAGRAM_RE.test(url);
 }
 
-const initialState = { isPrivate: false, };
+const initialState = { isPrivate: false };
 
 class InstagramPreview extends React.Component {
   iframe = null;
-  setIframe = (el) => this.iframe = el;
+  setIframe = (el) => (this.iframe = el);
 
   state = { ...initialState };
 
-  onIFrameLoad = () => setTimeout(() => {
-    if (this.iframe && !this.iframe.dataset['loaded']) {
-      this.setState({ isPrivate: true });
-      aspectRatio.set(this.props.url, 0);
-    }
-  }, 1000);
+  onIFrameLoad = () =>
+    setTimeout(() => {
+      if (this.iframe && !this.iframe.dataset['loaded']) {
+        this.setState({ isPrivate: true });
+        aspectRatio.set(this.props.url, 0);
+      }
+    }, 1000);
 
   componentDidMount() {
     startEventListening();
@@ -33,7 +33,7 @@ class InstagramPreview extends React.Component {
     this.iframe.style.height = `${this.iframe.offsetWidth * r}px`;
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.url !== nextProps.url) {
       this.setState({ ...initialState });
     }
@@ -62,7 +62,7 @@ class InstagramPreview extends React.Component {
 
 export default ScrollSafe(InstagramPreview);
 
-const startEventListening = _.once(() => window.addEventListener("message", onMessage));
+const startEventListening = _.once(() => window.addEventListener('message', onMessage));
 
 function onMessage(e) {
   if (e.origin !== 'https://www.instagram.com') {

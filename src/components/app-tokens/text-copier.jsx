@@ -6,7 +6,6 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { Icon } from '../fontawesome-icons';
 import styles from './text-copier.module.scss';
 
-
 export function TextCopier({ text }) {
   const input = useRef();
   const [copied, setCopied] = useState(false);
@@ -15,7 +14,7 @@ export function TextCopier({ text }) {
     input.current.focus();
     input.current.selectionStart = 0;
     input.current.selectionEnd = input.current.value.length;
-    document.execCommand("copy");
+    document.execCommand('copy');
     input.current.selectionEnd = input.current.selectionStart;
     input.current.blur();
 
@@ -39,7 +38,7 @@ export function TextCopier({ text }) {
       />
       <span className="input-group-btn">
         <button
-          className={cn("btn btn-default", styles.button)}
+          className={cn('btn btn-default', styles.button)}
           type="button"
           title="Copy to clipboard"
           onClick={doCopy}

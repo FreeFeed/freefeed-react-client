@@ -4,6 +4,7 @@ import { routerReducer } from 'react-router-redux';
 import {
   feedViewOptionsMiddleware,
   apiMiddleware,
+  asyncMiddleware,
   authMiddleware,
   likesLogicMiddleware,
   optimisticLikesMiddleware,
@@ -15,17 +16,18 @@ import {
   markNotificationsAsReadMiddleware,
   realtimeMiddleware,
   dataFixMiddleware,
-  appearanceMiddleware
+  appearanceMiddleware,
 } from './middlewares';
 
 import * as reducers from './reducers';
-import * as ActionCreators from "./action-creators";
+import * as ActionCreators from './action-creators';
 
 //order matters — we need to stop unauthed async fetching before request, see authMiddleware
 const middleware = [
   feedViewOptionsMiddleware,
   authMiddleware,
   apiMiddleware,
+  asyncMiddleware,
   dataFixMiddleware,
   likesLogicMiddleware,
   optimisticLikesMiddleware,

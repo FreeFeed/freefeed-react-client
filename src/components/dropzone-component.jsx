@@ -4,15 +4,14 @@ import DropzoneComponent from 'react-dropzone-component';
 import config from '../config';
 import { getToken } from '../services/auth';
 
-
 const apiConfig = config.api;
 // DropzoneJS configuration
 const dropzoneComponentConfig = { postUrl: `${apiConfig.host}/v1/attachments` };
 const dropzoneConfig = {
   dictDefaultMessage: 'Drop files here', // The message that gets displayed before any files are dropped.
-  previewsContainer:  '.dropzone-previews', // Define the container to display the previews.
-  timeout:            0,  // default is 30000 miliseconds which is too low for some cases
-  previewTemplate:    `
+  previewsContainer: '.dropzone-previews', // Define the container to display the previews.
+  timeout: 0, // default is 30000 miliseconds which is too low for some cases
+  previewTemplate: `
     <div class="dz-preview dz-file-preview">
       <div class="dz-image"><img data-dz-thumbnail /></div>
       <div class="dz-details" data-dz-remove title="Remove file">
@@ -26,7 +25,7 @@ const dropzoneConfig = {
     </div>
   `,
   clickable: '.dropzone-trigger', // Define the element that should be used as click trigger to select files.
-  headers:   { 'Cache-Control': null }
+  headers: { 'Cache-Control': null },
 };
 
 const dropzoneEventHandlers = (props) => ({
@@ -52,7 +51,7 @@ const dropzoneEventHandlers = (props) => ({
     window.dispatchEvent(dropEvent);
   },
 
-  sending(file, xhr/*, form*/) {
+  sending(file, xhr /*, form*/) {
     xhr.setRequestHeader('X-Authentication-Token', getToken());
     props.onSending();
   },
@@ -66,9 +65,30 @@ const dropzoneEventHandlers = (props) => ({
     props.addAttachmentResponse(response.attachments);
   },
 
+  error(file, message, xhrs) {
+    if (typeof message === 'object' && 'err' in message) {
+      let { err } = message;
+      console.error('File upload failed', file.name, err);
+      err = err.replace(/[\r\n].*/g, ''); // First line of multiline message
+      if (err.length > 150) {
+        err = `${err.slice(0, 100)}…`;
+      }
+      file.previewElement.querySelector('[data-dz-errormessage]').textContent = err;
+    } else if (xhrs[0].status === 413) {
+      // Entity too large
+      file.previewElement.querySelector(
+        '[data-dz-errormessage]',
+      ).textContent = `The file you're uploading is too big`;
+    } else if (xhrs[0].status === 0) {
+      // Cannot read server response, probably CORS issue
+      file.previewElement.querySelector(
+        '[data-dz-errormessage]',
+      ).textContent = `An unexpected error occurred during upload`;
+    }
+  },
+
   queuecomplete: props.onQueueComplete,
 });
-
 
 export default (props) => (
   <DropzoneComponent

@@ -5,7 +5,6 @@ import ScrollSafe from './scroll-helpers/scroll-safe';
 import FoldableContent from './scroll-helpers/foldable-content';
 import * as heightCache from './scroll-helpers/size-cache';
 
-
 const WIKIPEDIA_RE = /^https?:\/\/(\w+)\.wikipedia\.org\/wiki\/([^/]+)/i;
 
 export function canShowURL(url) {
@@ -14,18 +13,20 @@ export function canShowURL(url) {
 
 const initialState = {
   previewData: null,
-  isError:     false,
+  isError: false,
 };
 
 class WikipediaPreview extends React.Component {
   state = { ...initialState };
 
   element = null;
-  setElement = (el) => this.element = el;
+  setElement = (el) => (this.element = el);
 
   async updatePreview(url) {
     const [, lang, term] = WIKIPEDIA_RE.exec(url);
-    const data = await cachedFetch(`https://${lang}.wikipedia.org/api/rest_v1/page/summary/${term}`);
+    const data = await cachedFetch(
+      `https://${lang}.wikipedia.org/api/rest_v1/page/summary/${term}`,
+    );
     if (data.error) {
       this.setState({ previewData: null, isError: true });
     } else {
@@ -37,7 +38,7 @@ class WikipediaPreview extends React.Component {
     this.updatePreview(this.props.url);
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if (newProps.url !== this.props.url) {
       this.setState({ ...initialState });
       this.updatePreview(newProps.url);
@@ -50,7 +51,6 @@ class WikipediaPreview extends React.Component {
     }
   }
 
-
   render() {
     const { url } = this.props;
     const { previewData, isError } = this.state;
@@ -60,8 +60,10 @@ class WikipediaPreview extends React.Component {
       return null;
     }
 
-    const maxImgWidth = 200, maxImgHeight = 180;
-    let imgWidth = 0, imgHeight = 0;
+    const maxImgWidth = 200,
+      maxImgHeight = 180;
+    let imgWidth = 0,
+      imgHeight = 0;
     if (previewData && previewData.thumbnail) {
       const { width, height } = previewData.thumbnail;
       const r = Math.min(1, maxImgWidth / width, maxImgHeight / height);
@@ -73,10 +75,7 @@ class WikipediaPreview extends React.Component {
       <div className="link-preview-content">
         <FoldableContent maxUnfoldedHeight={250} foldedHeight={200}>
           {previewData ? (
-            <div
-              ref={this.setElement}
-              className="wikipedia-preview"
-            >
+            <div ref={this.setElement} className="wikipedia-preview">
               <a href={url} target="_blank">
                 <div>
                   {previewData.thumbnail ? (
@@ -88,7 +87,9 @@ class WikipediaPreview extends React.Component {
                       height={imgHeight}
                     />
                   ) : null}
-                  <p><strong>{previewData.title}</strong></p>
+                  <p>
+                    <strong>{previewData.title}</strong>
+                  </p>
                   <p>{previewData.extract}</p>
                 </div>
               </a>

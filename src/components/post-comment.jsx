@@ -15,7 +15,6 @@ import Expandable from './expandable';
 import UserName from './user-name';
 import TimeDisplay from './time-display';
 
-
 export default class PostComment extends React.Component {
   commentContainer;
   commentTextArea;
@@ -30,7 +29,8 @@ export default class PostComment extends React.Component {
   scrollToComment = () => {
     if (this.commentContainer) {
       const rect = this.commentContainer.getBoundingClientRect();
-      const middleScreenPosition = window.pageYOffset + ((rect.top + rect.bottom) / 2) - (window.innerHeight / 2);
+      const middleScreenPosition =
+        window.pageYOffset + (rect.top + rect.bottom) / 2 - window.innerHeight / 2;
       if (rect.top < 0 || rect.bottom > window.innerHeight) {
         window.scrollTo(0, middleScreenPosition);
       }
@@ -114,7 +114,7 @@ export default class PostComment extends React.Component {
     this.props.getCommentLikes(this.props.id);
   };
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if ((this.props.editText || '') !== (newProps.editText || '')) {
       this.setState({ editText: newProps.editText });
     }
@@ -146,11 +146,13 @@ export default class PostComment extends React.Component {
       return (
         <div className="comment-body">
           <span className="comment-text">{this.props.body}</span>
-          {(isDeletable && this.props.isModeratingComments) ? (
+          {isDeletable && this.props.isModeratingComments ? (
             <span>
               {' - '}(<a onClick={this.handleDeleteComment}>delete</a>)
             </span>
-          ) : false}
+          ) : (
+            false
+          )}
         </div>
       );
     }
@@ -175,23 +177,37 @@ export default class PostComment extends React.Component {
           </div>
           {this.props.isSinglePost ? (
             <span>
-              <button className="btn btn-default btn-xs comment-post" onClick={this.saveComment}>Comment</button>
-              {!this.props.isAddingComment && <a className="comment-cancel" onClick={this.handleEditOrCancel}>Cancel</a>}
+              <button className="btn btn-default btn-xs comment-post" onClick={this.saveComment}>
+                Comment
+              </button>
+              {!this.props.isAddingComment && (
+                <a className="comment-cancel" onClick={this.handleEditOrCancel}>
+                  Cancel
+                </a>
+              )}
             </span>
           ) : (
             <span>
-              <button className="btn btn-default btn-xs comment-post" onClick={this.saveComment}>Post</button>
-              <a className="comment-cancel" onClick={this.handleEditOrCancel}>Cancel</a>
+              <button className="btn btn-default btn-xs comment-post" onClick={this.saveComment}>
+                Post
+              </button>
+              <a className="comment-cancel" onClick={this.handleEditOrCancel}>
+                Cancel
+              </a>
             </span>
           )}
           {this.props.isSaving ? (
             <span className="comment-throbber">
               <Throbber />
             </span>
-          ) : false}
+          ) : (
+            false
+          )}
           {this.props.errorString ? (
             <span className="comment-error">{this.props.errorString}</span>
-          ) : false}
+          ) : (
+            false
+          )}
         </div>
       );
     }
@@ -202,22 +218,30 @@ export default class PostComment extends React.Component {
         <UserName user={this.props.user} />
         {this.props.isEditable ? (
           <span>
-            {' '}(<a onClick={this.handleEditOrCancel}>edit</a>
-                  &nbsp;|&nbsp;
+            {' '}
+            (<a onClick={this.handleEditOrCancel}>edit</a>
+            &nbsp;|&nbsp;
             <a onClick={this.handleDeleteComment}>delete</a>)
           </span>
-        ) : (this.props.isDeletable && this.props.isModeratingComments) ? (
+        ) : this.props.isDeletable && this.props.isModeratingComments ? (
           <span>
-            {' '}(<a onClick={this.handleDeleteComment}>delete</a>)
+            {' '}
+            (<a onClick={this.handleDeleteComment}>delete</a>)
           </span>
-        ) : false}
+        ) : (
+          false
+        )}
       </span>
     );
 
     return (
       <div className="comment-body">
         <Expandable
-          expanded={this.props.readMoreStyle === READMORE_STYLE_COMPACT || this.props.isSinglePost || this.props.isExpanded}
+          expanded={
+            this.props.readMoreStyle === READMORE_STYLE_COMPACT ||
+            this.props.isSinglePost ||
+            this.props.isExpanded
+          }
           bonusInfo={authorAndButtons}
           config={commentReadmoreConfig}
         >
@@ -227,11 +251,11 @@ export default class PostComment extends React.Component {
             highlightTerms={this.props.highlightTerms}
             userHover={{
               hover: this.handleHoverOnUsername,
-              leave: this.props.clearHighlightComment
+              leave: this.props.clearHighlightComment,
             }}
             arrowHover={{
               hover: this.handleHoverOverArrow,
-              leave: this.props.clearHighlightComment
+              leave: this.props.clearHighlightComment,
             }}
           />
           {authorAndButtons}
@@ -242,7 +266,9 @@ export default class PostComment extends React.Component {
                 <TimeDisplay timeStamp={+this.props.createdAt} showAbsTime />
               </Link>
             </span>
-          ) : false}
+          ) : (
+            false
+          )}
         </Expandable>
       </div>
     );
@@ -274,19 +300,21 @@ export default class PostComment extends React.Component {
 
   render() {
     const className = classnames({
-      'comment':            true,
-      'highlighted':        this.props.highlighted,
-      'omit-bubble':        this.props.omitBubble,
-      'is-hidden':          !!this.props.hideType,
+      comment: true,
+      highlighted: this.props.highlighted,
+      'omit-bubble': this.props.omitBubble,
+      'is-hidden': !!this.props.hideType,
       'highlight-from-url': this.props.highlightedFromUrl,
-      'my-comment':         this.props.currentUser && this.props.user && (this.props.currentUser.id === this.props.user.id)
+      'my-comment':
+        this.props.currentUser &&
+        this.props.user &&
+        this.props.currentUser.id === this.props.user.id,
     });
-
 
     return (
       <div
         className={className}
-        data-author={(this.props.user && !this.props.isEditing) ? this.props.user.username : ''}
+        data-author={this.props.user && !this.props.isEditing ? this.props.user.username : ''}
         ref={this.registerCommentContainer}
       >
         {this.renderCommentLikes()}

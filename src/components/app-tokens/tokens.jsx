@@ -9,12 +9,7 @@ import { getAppTokens } from '../../redux/action-creators';
 import { Icon } from '../fontawesome-icons';
 import TokenRow from './token-row';
 
-
-function Tokens({
-  tokensStatus: status,
-  tokenIds,
-  getAppTokens,
-}) {
+function Tokens({ tokensStatus: status, tokenIds, getAppTokens }) {
   useEffect(() => void getAppTokens(), [getAppTokens]);
 
   if (status.loading) {
@@ -32,15 +27,19 @@ function Tokens({
           Generate new token
         </Link>
       </p>
-      {!tokenIds.length && (<p>You have no application tokens yet.</p>)}
+      {!tokenIds.length && <p>You have no application tokens yet.</p>}
       <div className="list-group">
-        {tokenIds.map((id) => <TokenRow key={id} id={id} />)}
+        {tokenIds.map((id) => (
+          <TokenRow key={id} id={id} />
+        ))}
       </div>
       <p>
-        <Icon icon={faQuestionCircle} /> <Link to="/settings/app-tokens/scopes">About the token access rights and scopes</Link>
+        <Icon icon={faQuestionCircle} />{' '}
+        <Link to="/settings/app-tokens/scopes">About the token access rights and scopes</Link>
       </p>
       <p>
-        <Icon icon={faLaptop} /> For developers: <Link to="/settings/app-tokens/create-link">Create magic link</Link>
+        <Icon icon={faLaptop} /> For developers:{' '}
+        <Link to="/settings/app-tokens/create-link">Create magic link</Link>
       </p>
     </>
   );
@@ -48,5 +47,5 @@ function Tokens({
 
 export default connect(
   (state) => pick(state.appTokens, ['tokensStatus', 'tokenIds']),
-  { getAppTokens }
+  { getAppTokens },
 )(Tokens);

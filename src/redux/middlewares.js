@@ -19,8 +19,17 @@ import {
 } from '../services/appearance';
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
-import { request, response, fail, requiresAuth, isFeedRequest, isFeedResponse, isFeedGeneratingAction, getFeedName } from './action-helpers';
-
+import {
+  request,
+  response,
+  fail,
+  requiresAuth,
+  isFeedRequest,
+  isFeedResponse,
+  isFeedGeneratingAction,
+  getFeedName,
+  cancelConcurrentRequest,
+} from './action-helpers';
 
 export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
   if (isFeedGeneratingAction(action)) {
@@ -33,7 +42,8 @@ export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
     } else {
       //use home feed setting if we get back to home feed
       //this change isn't yet in reducer, and we don't get it there before real feed request fires
-      action.payload.sortChronologically = action.type === ActionTypes.HOME && homeFeedSort === FeedOptions.CHRONOLOGIC;
+      action.payload.sortChronologically =
+        action.type === ActionTypes.HOME && homeFeedSort === FeedOptions.CHRONOLOGIC;
     }
     if (action.type === ActionTypes.HOME) {
       action.payload.homeFeedMode = homeFeedMode;
@@ -49,7 +59,14 @@ export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
       const { user, feedViewOptions } = store.getState();
       const { id, frontendPreferences } = user;
       const { sort: homeFeedSort } = feedViewOptions;
-      return store.dispatch(ActionCreators.updateUserPreferences(id, { ...frontendPreferences, homeFeedSort }, {}, true));
+      return store.dispatch(
+        ActionCreators.updateUserPreferences(
+          id,
+          { ...frontendPreferences, homeFeedSort },
+          {},
+          true,
+        ),
+      );
     }
   }
   if (action.type === response(ActionTypes.WHO_AM_I)) {
@@ -67,17 +84,54 @@ export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
   return next(action);
 };
 
-
 const adjustTime = _.throttle(
   (dispatch, delta) => dispatch(ActionCreators.serverTimeAhead(delta)),
   30000, // 30 sec
 );
+
+/**
+ * Middleware for actions around async operations
+ */
+export const asyncMiddleware = (store) => (next) => async (action) => {
+  // Ignore normal actions
+  if (!action.asyncOperation) {
+    return next(action);
+  }
+
+  if (cancelConcurrentRequest(action, store.getState())) {
+    // Ignore this action if already started
+    return;
+  }
+
+  store.dispatch({ ...action, type: request(action.type), asyncOperation: null });
+  try {
+    const result = await action.asyncOperation(action.payload);
+    return store.dispatch({
+      payload: result,
+      type: response(action.type),
+      request: action.payload,
+      extra: action.extra || {},
+    });
+  } catch (error) {
+    return store.dispatch({
+      payload: error instanceof Error ? { err: error.message } : error,
+      type: fail(action.type),
+      request: action.payload,
+      extra: action.extra || {},
+    });
+  }
+};
 
 //middleware for api requests
 export const apiMiddleware = (store) => (next) => async (action) => {
   //ignore normal actions
   if (!action.apiRequest) {
     return next(action);
+  }
+
+  if (cancelConcurrentRequest(action, store.getState())) {
+    // Ignore this action if already started
+    return;
   }
 
   //dispatch request begin action
@@ -88,31 +142,51 @@ export const apiMiddleware = (store) => (next) => async (action) => {
     const obj = await apiResponse.json();
 
     if (apiResponse.status >= 200 && apiResponse.status < 300) {
-      if (apiResponse.headers.has("Date")) {
-        const serverTime = new Date(apiResponse.headers.get("Date"));
+      if (apiResponse.headers.has('Date')) {
+        const serverTime = new Date(apiResponse.headers.get('Date'));
         if (!isNaN(serverTime)) {
           // valid date time
           adjustTime(store.dispatch, serverTime - Date.now());
         }
       }
       const extra = action.extra || {};
-      return store.dispatch({ payload: obj, type: response(action.type), request: action.payload, extra });
+      return store.dispatch({
+        payload: obj,
+        type: response(action.type),
+        request: action.payload,
+        extra,
+      });
     }
 
-    if (apiResponse.status === 401) {
+    if (apiResponse.status === 401 && action.type !== ActionTypes.SIGN_IN) {
       return store.dispatch(ActionCreators.unauthenticated(obj));
     }
 
-    return store.dispatch({ payload: obj, type: fail(action.type), request: action.payload, response: apiResponse });
+    return store.dispatch({
+      payload: obj,
+      type: fail(action.type),
+      request: action.payload,
+      response: apiResponse,
+    });
   } catch (e) {
     if (typeof Raven !== 'undefined') {
-      Raven.captureException(e, { level: 'error', tags: { area: 'redux/apiMiddleware' }, extra: { action } });
+      Raven.captureException(e, {
+        level: 'error',
+        tags: { area: 'redux/apiMiddleware' },
+        extra: { action },
+      });
     }
-    return store.dispatch({ payload: { err: 'Network error' }, type: fail(action.type), request: action.payload, response: null });
+    return store.dispatch({
+      payload: { err: 'Network error' },
+      type: fail(action.type),
+      request: action.payload,
+      response: null,
+    });
   }
 };
 
-const paths = ['friends',
+const paths = [
+  'friends',
   '/settings',
   '/filter/notifications',
   '/filter/direct',
@@ -150,7 +224,6 @@ export const authMiddleware = (store) => {
       return;
     }
 
-
     if (
       action.type === response(ActionTypes.SIGN_IN) ||
       action.type === response(ActionTypes.SIGN_UP)
@@ -161,7 +234,7 @@ export const authMiddleware = (store) => {
       store.dispatch(ActionCreators.whoAmI());
 
       // Do not redirect to Home page if signed in at Bookmarklet
-      const { pathname } = (store.getState().routing.locationBeforeTransitions || {});
+      const { pathname } = store.getState().routing.locationBeforeTransitions || {};
       if (pathname === '/bookmarklet') {
         return;
       }
@@ -185,14 +258,18 @@ export const authMiddleware = (store) => {
 
 export const appearanceMiddleware = (store) => {
   if (typeof window !== 'undefined') {
-    window.addEventListener("storage", (e) =>
-      e.key === colorSchemeStorageKey
-      && store.dispatch(ActionCreators.setUserColorScheme(loadColorScheme())));
+    window.addEventListener(
+      'storage',
+      (e) =>
+        e.key === colorSchemeStorageKey &&
+        store.dispatch(ActionCreators.setUserColorScheme(loadColorScheme())),
+    );
 
     if (systemColorSchemeSupported) {
       for (const scheme of [SCHEME_LIGHT, SCHEME_DARK, SCHEME_NO_PREFERENCE]) {
         const mq = window.matchMedia(`(prefers-color-scheme: ${scheme})`);
-        const handler = (mq) => mq.matches && store.dispatch(ActionCreators.setSystemColorScheme(scheme));
+        const handler = (mq) =>
+          mq.matches && store.dispatch(ActionCreators.setSystemColorScheme(scheme));
         mq.addListener(handler);
       }
     }
@@ -212,9 +289,11 @@ export const likesLogicMiddleware = (store) => (next) => (action) => {
     case ActionTypes.SHOW_MORE_LIKES: {
       const { postId } = action.payload;
       const post = store.getState().posts[postId];
-      const isSync = (post.omittedLikes === 0);
+      const isSync = post.omittedLikes === 0;
 
-      const nextAction = isSync ? ActionCreators.showMoreLikesSync(postId) : ActionCreators.showMoreLikesAsync(postId);
+      const nextAction = isSync
+        ? ActionCreators.showMoreLikesSync(postId)
+        : ActionCreators.showMoreLikesAsync(postId);
 
       return store.dispatch(nextAction);
     }
@@ -293,7 +372,9 @@ export const optimisticLikesMiddleware = (store) => (next) => (action) => {
         delete cleanLikeErrorTimers[postId];
       }, cleanLikeErrorTimeout);
 
-      const ignore = _.startsWith(action.type, ActionTypes.LIKE_POST) ? ignoreMyLikes : ignoreMyUnlikes;
+      const ignore = _.startsWith(action.type, ActionTypes.LIKE_POST)
+        ? ignoreMyLikes
+        : ignoreMyUnlikes;
       if (ignore[postId]) {
         ignore[postId]--;
       }
@@ -351,9 +432,9 @@ function isInvitation({ locationBeforeTransitions }) {
 export const redirectionMiddleware = (store) => (next) => (action) => {
   //go to home if single post has been removed
   if (
-    action.type === response(ActionTypes.DELETE_POST)
-    && !action.payload.postStillAvailable
-    && store.getState().singlePostId
+    action.type === response(ActionTypes.DELETE_POST) &&
+    !action.payload.postStillAvailable &&
+    store.getState().singlePostId
   ) {
     return browserHistory.push('/');
   }
@@ -365,10 +446,7 @@ export const redirectionMiddleware = (store) => (next) => (action) => {
     browserHistory.push(`/${action.request.groupName}/subscribers`);
   }
 
-  if (
-    action.type === response(ActionTypes.CREATE_POST) &&
-    isInvitation(store.getState().routing)
-  ) {
+  if (action.type === response(ActionTypes.CREATE_POST) && isInvitation(store.getState().routing)) {
     browserHistory.push('/filter/direct');
   }
 
@@ -412,7 +490,8 @@ export const markNotificationsAsReadMiddleware = (store) => (next) => (action) =
 };
 
 const isFirstPage = (state) => !state.routing.locationBeforeTransitions.query.offset;
-const isMemories = (state) => state.routing.locationBeforeTransitions.pathname.indexOf('memories') !== -1;
+const isMemories = (state) =>
+  state.routing.locationBeforeTransitions.pathname.indexOf('memories') !== -1;
 
 const isPostLoaded = ({ posts }, postId) => posts[postId];
 const iLikedPost = ({ user, posts }, postId) => {
@@ -425,9 +504,8 @@ const iLikedPost = ({ user, posts }, postId) => {
 };
 const dispatchWithPost = async (store, postId, action, filter = () => true, maxDelay = 0) => {
   let state = store.getState();
-  const shouldBump = isFirstPage(state)
-    && !isMemories(state)
-    && state.feedViewOptions.sort === FeedOptions.ACTIVITY;
+  const shouldBump =
+    isFirstPage(state) && !isMemories(state) && state.feedViewOptions.sort === FeedOptions.ACTIVITY;
 
   if (isPostLoaded(state, postId)) {
     return store.dispatch({ ...action, shouldBump });
@@ -437,7 +515,10 @@ const dispatchWithPost = async (store, postId, action, filter = () => true, maxD
     await delay(Math.random() * maxDelay);
     state = store.getState();
     // if subscription was changed during delay
-    if (action.realtimeChannels && _.intersection(action.realtimeChannels, state.realtimeSubscriptions).length === 0) {
+    if (
+      action.realtimeChannels &&
+      _.intersection(action.realtimeChannels, state.realtimeSubscriptions).length === 0
+    ) {
       return;
     }
     // if post was loaded during delay
@@ -455,9 +536,12 @@ const dispatchWithPost = async (store, postId, action, filter = () => true, maxD
 
 const isFirstFriendInteraction = (post, { users }, { subscriptions, comments }) => {
   const [newLike] = users;
-  const myFriends = Object.keys(subscriptions).map((key) => subscriptions[key]).map((sub) => sub.user);
+  const myFriends = Object.keys(subscriptions)
+    .map((key) => subscriptions[key])
+    .map((sub) => sub.user);
   const likesWithoutCurrent = post.posts.likes.filter((like) => like !== newLike);
-  const friendsInvolved = (list) => list.filter((element) => myFriends.indexOf(element) !== -1).length;
+  const friendsInvolved = (list) =>
+    list.filter((element) => myFriends.indexOf(element) !== -1).length;
   const friendsLikedBefore = friendsInvolved(likesWithoutCurrent);
   const newPostCommentAuthors = (post.comments || []).map((comment) => comment.createdBy);
   const commentsAuthors = (post.posts.comments || []).map((cId) => (comments[cId] || {}).createdBy);
@@ -469,13 +553,14 @@ const isFirstFriendInteraction = (post, { users }, { subscriptions, comments }) 
 const postFetchDelay = 20000; // 20 sec
 const bindHandlers = (store) => ({
   'user:update': (data) => store.dispatch({ ...data, type: ActionTypes.REALTIME_USER_UPDATE }),
-  'post:new':    (data) => {
+  'post:new': (data) => {
     const state = store.getState();
     const isFeedFirstPage = isFirstPage(state);
     const isHomeFeed = state.routing.locationBeforeTransitions.pathname === '/';
     const isMemoriesFeed = isMemories(state);
     const useRealtimePreference = state.user.frontendPreferences.realtimeActive;
-    const shouldBump = isFeedFirstPage && (!isHomeFeed || (useRealtimePreference && isHomeFeed)) && !isMemoriesFeed;
+    const shouldBump =
+      isFeedFirstPage && (!isHomeFeed || (useRealtimePreference && isHomeFeed)) && !isMemoriesFeed;
 
     let insertBefore = null;
     if (shouldBump) {
@@ -490,31 +575,63 @@ const bindHandlers = (store) => ({
       }
     }
 
-    return store.dispatch({ ...data, type: ActionTypes.REALTIME_POST_NEW, post: data.posts, shouldBump, insertBefore });
+    return store.dispatch({
+      ...data,
+      type: ActionTypes.REALTIME_POST_NEW,
+      post: data.posts,
+      shouldBump,
+      insertBefore,
+    });
   },
-  'post:update':  (data) => store.dispatch({ ...data, type: ActionTypes.REALTIME_POST_UPDATE, post: data.posts }),
-  'post:destroy': (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId }),
-  'post:hide':    (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId }),
-  'post:unhide':  (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId }),
-  'post:save':    (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_SAVE, payload: { postId: data.meta.postId, save: true } }),
-  'post:unsave':  (data) => store.dispatch({ type: ActionTypes.REALTIME_POST_SAVE, payload: { postId: data.meta.postId, save: false } }),
-  'comment:new':  async (data) => {
+  'post:update': (data) =>
+    store.dispatch({ ...data, type: ActionTypes.REALTIME_POST_UPDATE, post: data.posts }),
+  'post:destroy': (data) =>
+    store.dispatch({ type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId }),
+  'post:hide': (data) =>
+    store.dispatch({ type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId }),
+  'post:unhide': (data) =>
+    store.dispatch({ type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId }),
+  'post:save': (data) =>
+    store.dispatch({
+      type: ActionTypes.REALTIME_POST_SAVE,
+      payload: { postId: data.meta.postId, save: true },
+    }),
+  'post:unsave': (data) =>
+    store.dispatch({
+      type: ActionTypes.REALTIME_POST_SAVE,
+      payload: { postId: data.meta.postId, save: false },
+    }),
+  'comment:new': async (data) => {
     const { postId } = data.comments;
     const action = { ...data, type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments };
     return dispatchWithPost(store, postId, action, () => true, postFetchDelay);
   },
-  'comment:update':  (data) => store.dispatch({ ...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments }),
-  'comment:destroy': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_DESTROY, commentId: data.commentId, postId: data.postId }),
-  'like:new':        async (data) => {
+  'comment:update': (data) =>
+    store.dispatch({ ...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments }),
+  'comment:destroy': (data) =>
+    store.dispatch({
+      type: ActionTypes.REALTIME_COMMENT_DESTROY,
+      commentId: data.commentId,
+      postId: data.postId,
+    }),
+  'like:new': async (data) => {
     const { postId } = data.meta;
     const iLiked = iLikedPost(store.getState(), postId);
     const action = { type: ActionTypes.REALTIME_LIKE_NEW, postId, users: [data.users], iLiked };
     return dispatchWithPost(store, postId, action, isFirstFriendInteraction, postFetchDelay);
   },
-  'like:remove':         (data) => store.dispatch({ type: ActionTypes.REALTIME_LIKE_REMOVE, postId: data.meta.postId, userId: data.meta.userId }),
-  'comment_like:new':    (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments }),
-  'comment_like:remove': (data) => store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments }),
-  'global:user:update':  (data) => store.dispatch({ type: ActionTypes.REALTIME_GLOBAL_USER_UPDATE, user: data.user }),
+  'like:remove': (data) =>
+    store.dispatch({
+      type: ActionTypes.REALTIME_LIKE_REMOVE,
+      postId: data.meta.postId,
+      userId: data.meta.userId,
+    }),
+  'comment_like:new': (data) =>
+    store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments }),
+  'comment_like:remove': (data) =>
+    store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments }),
+  'global:user:update': (data) =>
+    store.dispatch({ type: ActionTypes.REALTIME_GLOBAL_USER_UPDATE, user: data.user }),
 });
 
 export const realtimeMiddleware = (store) => {
@@ -529,9 +646,7 @@ export const realtimeMiddleware = (store) => {
 
 export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
   const unsubscribeByRegexp = (regex) => {
-    const rooms = store.getState()
-      .realtimeSubscriptions
-      .filter((r) => regex.test(r));
+    const rooms = store.getState().realtimeSubscriptions.filter((r) => regex.test(r));
     store.dispatch(ActionCreators.realtimeUnsubscribe(...rooms));
   };
 
@@ -541,7 +656,9 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
 
   return (next) => (action) => {
     if (action.type === ActionTypes.REALTIME_INCOMING_EVENT) {
-      const { payload: { event, data } } = action;
+      const {
+        payload: { event, data },
+      } = action;
       if (data.realtimeChannels) {
         const { realtimeSubscriptions } = store.getState();
         if (_.intersection(data.realtimeChannels, realtimeSubscriptions).length === 0) {
@@ -573,7 +690,10 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
       conn.reAuthorize().then(() => unsubscribeByRegexp(/^user:/));
     }
 
-    if (action.type === response(ActionTypes.WHO_AM_I) || action.type === response(ActionTypes.SIGN_UP)) {
+    if (
+      action.type === response(ActionTypes.WHO_AM_I) ||
+      action.type === response(ActionTypes.SIGN_UP)
+    ) {
       conn.reAuthorize().then(() => {
         const state = store.getState();
         store.dispatch(ActionCreators.realtimeSubscribe(`user:${state.user.id}`));
@@ -588,15 +708,21 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
       if (action.payload.timelines) {
         if (action.type === response(ActionTypes.HOME)) {
           const state = store.getState();
-          store.dispatch(ActionCreators.realtimeSubscribe(
-            `timeline:${action.payload.timelines.id}?homefeed-mode=${state.user.frontendPreferences.homeFeedMode}`
-          ));
+          store.dispatch(
+            ActionCreators.realtimeSubscribe(
+              `timeline:${action.payload.timelines.id}?homefeed-mode=${state.user.frontendPreferences.homeFeedMode}`,
+            ),
+          );
         } else {
-          store.dispatch(ActionCreators.realtimeSubscribe(`timeline:${action.payload.timelines.id}`));
+          store.dispatch(
+            ActionCreators.realtimeSubscribe(`timeline:${action.payload.timelines.id}`),
+          );
         }
       }
       if (action.payload.posts) {
-        store.dispatch(ActionCreators.realtimeSubscribe(...action.payload.posts.map((p) => `post:${p.id}`)));
+        store.dispatch(
+          ActionCreators.realtimeSubscribe(...action.payload.posts.map((p) => `post:${p.id}`)),
+        );
       }
     }
 
@@ -651,4 +777,3 @@ function fixPostsData(post) {
   post.comments = post.comments || [];
   post.likes = post.likes || [];
 }
-

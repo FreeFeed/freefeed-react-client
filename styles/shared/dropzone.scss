@@ -78,7 +78,11 @@
       background: white;
 
       .dz-details {
-        @include prefix((transition: opacity 0.2s linear));
+        @include prefix(
+          (
+            transition: opacity 0.2s linear,
+          )
+        );
       }
     }
 
@@ -133,21 +137,30 @@
         }
       }
 
-      .dz-filename, .dz-size {
+      .dz-filename,
+      .dz-size {
         span {
           background-color: rgba(255, 255, 255, 0.1);
           padding: 0 4px;
           border-radius: 2px;
         }
       }
-
     }
 
     &:hover {
       .dz-image {
         img {
-          @include prefix((transform: scale(1.05, 1.05))); // Getting rid of that white bleed-in
-          @include prefix((filter: blur(8px)), webkit); // Getting rid of that white bleed-in
+          @include prefix(
+            (
+              transform: scale(1.05, 1.05),
+            )
+          ); // Getting rid of that white bleed-in
+          @include prefix(
+            (
+              filter: blur(8px),
+            ),
+            webkit
+          ); // Getting rid of that white bleed-in
         }
       }
     }
@@ -168,18 +181,27 @@
 
     &.dz-success {
       .dz-success-mark {
-        @include prefix((animation: passing-through 3s cubic-bezier(0.770, 0.000, 0.175, 1.000)));
+        @include prefix(
+          (
+            animation: passing-through 3s cubic-bezier(0.77, 0, 0.175, 1),
+          )
+        );
       }
     }
 
     &.dz-error {
       .dz-error-mark {
         opacity: 1;
-        @include prefix((animation: slide-in 3s cubic-bezier(0.770, 0.000, 0.175, 1.000)));
+        @include prefix(
+          (
+            animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1),
+          )
+        );
       }
     }
 
-    .dz-success-mark, .dz-error-mark {
+    .dz-success-mark,
+    .dz-error-mark {
       $image-height: 54px;
       $image-width: 54px;
 
@@ -204,17 +226,29 @@
 
     &.dz-processing .dz-progress {
       opacity: 1;
-      @include prefix((transition: all 0.2s linear));
+      @include prefix(
+        (
+          transition: all 0.2s linear,
+        )
+      );
     }
 
     &.dz-complete .dz-progress {
       opacity: 0;
-      @include prefix((transition: opacity 0.4s ease-in));
+      @include prefix(
+        (
+          transition: opacity 0.4s ease-in,
+        )
+      );
     }
 
     &:not(.dz-processing) {
       .dz-progress {
-        @include prefix((animation: pulse 6s ease infinite));
+        @include prefix(
+          (
+            animation: pulse 6s ease infinite,
+          )
+        );
       }
     }
 
@@ -248,7 +282,11 @@
         left: 0;
         bottom: 0;
         width: 0;
-        @include prefix((transition: width 300ms ease-in-out));
+        @include prefix(
+          (
+            transition: width 300ms ease-in-out,
+          )
+        );
       }
     }
 
@@ -272,7 +310,11 @@
       display: block;
       display: none;
       opacity: 0;
-      @include prefix((transition: opacity 0.3s ease));
+      @include prefix(
+        (
+          transition: opacity 0.3s ease,
+        )
+      );
       border-radius: 2px;
       font-size: 13px;
       top: $image-size + 10px;

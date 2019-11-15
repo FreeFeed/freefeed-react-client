@@ -64,6 +64,10 @@
 
   .profile-controls-throbber {
     margin: 0 10px;
+
+    &:empty {
+      display: none;
+    }
   }
 }
 
@@ -72,7 +76,7 @@
     display: inline-block;
     white-space: nowrap;
     &::before {
-      content: "\2022";
+      content: '\2022';
       color: #999;
       margin: 0 0.3em;
     }
@@ -81,4 +85,3 @@
     }
   }
 }
-

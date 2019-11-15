@@ -4,30 +4,29 @@ import { preventDefault } from '../utils';
 import { Throbber } from './throbber';
 import GroupFeedTypePicker from './group-feed-type-picker';
 
-
 export default class GroupSettingsForm extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      screenName:         this.props.group.screenName,
-      description:        this.props.group.description,
-      isPrivate:          this.props.group.isPrivate,
-      isProtected:        this.props.group.isProtected,
-      isRestricted:       this.props.group.isRestricted,
-      isWarningDisplayed: false
+      screenName: this.props.group.screenName,
+      description: this.props.group.description,
+      isPrivate: this.props.group.isPrivate,
+      isProtected: this.props.group.isProtected,
+      isRestricted: this.props.group.isRestricted,
+      isWarningDisplayed: false,
     };
   }
 
-  componentWillReceiveProps = (newProps) => {
-    if (newProps.status !== "loading") {
+  UNSAFE_componentWillReceiveProps = (newProps) => {
+    if (newProps.status !== 'loading') {
       this.setState({
-        screenName:         newProps.group.screenName,
-        description:        newProps.group.description,
-        isPrivate:          newProps.group.isPrivate,
-        isProtected:        newProps.group.isProtected,
-        isRestricted:       newProps.group.isRestricted,
-        isWarningDisplayed: false
+        screenName: newProps.group.screenName,
+        description: newProps.group.description,
+        isPrivate: newProps.group.isPrivate,
+        isProtected: newProps.group.isProtected,
+        isRestricted: newProps.group.isRestricted,
+        isWarningDisplayed: false,
       });
     }
   };
@@ -41,10 +40,7 @@ export default class GroupSettingsForm extends React.Component {
   handlePrivacyTypeChange = (privacySettings) => {
     const newState = {
       ...privacySettings,
-      isWarningDisplayed: (
-        this.props.group.isPrivate === '1' &&
-        privacySettings.isPrivate === '0'
-      )
+      isWarningDisplayed: this.props.group.isPrivate === '1' && privacySettings.isPrivate === '0',
     };
     this.setState(newState);
   };
@@ -65,11 +61,25 @@ export default class GroupSettingsForm extends React.Component {
       <form onSubmit={preventDefault(this.saveSettings)}>
         <div className="form-group">
           <label htmlFor="screenName">Display name:</label>
-          <input id="screenName" className="form-control" name="screenName" type="text" value={this.state.screenName} onChange={this.handleChange('screenName')} />
+          <input
+            id="screenName"
+            className="form-control"
+            name="screenName"
+            type="text"
+            value={this.state.screenName}
+            onChange={this.handleChange('screenName')}
+          />
         </div>
         <div className="form-group">
           <label htmlFor="description">Description:</label>
-          <textarea id="description" className="form-control" name="description" value={this.state.description} onChange={this.handleChange('description')} maxLength="1500" />
+          <textarea
+            id="description"
+            className="form-control"
+            name="description"
+            value={this.state.description}
+            onChange={this.handleChange('description')}
+            maxLength="1500"
+          />
         </div>
         <GroupFeedTypePicker
           isPrivate={this.state.isPrivate}
@@ -78,25 +88,39 @@ export default class GroupSettingsForm extends React.Component {
           updateGroupPrivacySettings={this.handlePrivacyTypeChange}
         />
         <p>
-          <button className="btn btn-default" type="submit">Update</button>
+          <button className="btn btn-default" type="submit">
+            Update
+          </button>
           {this.props.status === 'loading' ? (
             <span className="settings-throbber">
               <Throbber />
             </span>
-          ) : false}
+          ) : (
+            false
+          )}
         </p>
         {this.state.isWarningDisplayed ? (
           <div className="alert alert-warning" role="alert">
-            You are about to change the group type from private to {this.state.isProtected === '1' ? 'protected' : 'public'}.
-            It means {this.state.isProtected === '1' ? 'any FreeFeed user' : 'anyone'} will be able to read its posts and comments,
-            which are only available to group members now.
+            You are about to change the group type from private to{' '}
+            {this.state.isProtected === '1' ? 'protected' : 'public'}. It means{' '}
+            {this.state.isProtected === '1' ? 'any FreeFeed user' : 'anyone'} will be able to read
+            its posts and comments, which are only available to group members now.
           </div>
-        ) : false}
+        ) : (
+          false
+        )}
         {this.props.status === 'success' ? (
-          <div className="alert alert-info" role="alert">Updated!</div>
+          <div className="alert alert-info" role="alert">
+            Updated!
+          </div>
         ) : this.props.status === 'error' ? (
-          <div className="alert alert-danger" role="alert">{this.props.errorMessage}</div>
-        ) : false}
-      </form>);
+          <div className="alert alert-danger" role="alert">
+            {this.props.errorMessage}
+          </div>
+        ) : (
+          false
+        )}
+      </form>
+    );
   }
 }

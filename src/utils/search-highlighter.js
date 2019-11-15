@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { stemmer as enStemmer } from 'porter-stemmer';
 import ruStemmer from './ru-stemmer';
 
-
 const enLetters = 'a-z';
 const ruLetters = '\u0400-\u04ff';
 
@@ -21,13 +20,37 @@ export function parseQuery(query) {
       continue;
     }
     if (m[1] !== undefined) {
-      terms.push(new RegExp(`(^|[^${enLetters}${ruLetters}])(${_.escapeRegExp(m[1])})(?:$|[^${enLetters}${ruLetters}])`));
+      terms.push(
+        new RegExp(
+          `(^|[^${enLetters}${ruLetters}])(${_.escapeRegExp(
+            m[1],
+          )})(?:$|[^${enLetters}${ruLetters}])`,
+          'i',
+        ),
+      );
     } else if (enWordRE.test(m[2])) {
-      terms.push(new RegExp(`(^|[^${enLetters}])(${_.escapeRegExp(stem(m[2], enStemmer))}[${enLetters}]*)`, 'i'));
+      terms.push(
+        new RegExp(
+          `(^|[^${enLetters}])(${_.escapeRegExp(stem(m[2], enStemmer))}[${enLetters}]*)`,
+          'i',
+        ),
+      );
     } else if (ruWordRE.test(m[2])) {
-      terms.push(new RegExp(`(^|[^${ruLetters}])(${_.escapeRegExp(stem(m[2], ruStemmer))}[${ruLetters}]*)`, 'i'));
+      terms.push(
+        new RegExp(
+          `(^|[^${ruLetters}])(${_.escapeRegExp(stem(m[2], ruStemmer))}[${ruLetters}]*)`,
+          'i',
+        ),
+      );
     } else {
-      terms.push(new RegExp(`(^|[^${enLetters}${ruLetters}])(${_.escapeRegExp(m[2])})(?:$|[^${enLetters}${ruLetters}])`));
+      terms.push(
+        new RegExp(
+          `(^|[^${enLetters}${ruLetters}])(${_.escapeRegExp(
+            m[2],
+          )})(?:$|[^${enLetters}${ruLetters}])`,
+          'i',
+        ),
+      );
     }
   }
   return terms;
@@ -40,18 +63,23 @@ export function highlightString(text, terms) {
 
   const result = [];
   while (text !== '') {
-    let match = '', minPos = 0;
+    let match = '',
+      minPos = 0;
     terms.forEach((re) => {
       const m = re.exec(text);
       if (m && (match === '' || m.index < minPos)) {
         minPos = m.index + (m[1] || '').length;
-        match = m[2];  // eslint-disable-line prefer-destructuring
+        match = m[2]; // eslint-disable-line prefer-destructuring
       }
     });
 
     if (match !== '') {
       result.push(text.substring(0, minPos));
-      result.push(<span key={`hl-${result.length}`} className={hlClass}>{match}</span>);
+      result.push(
+        <span key={`hl-${result.length}`} className={hlClass}>
+          {match}
+        </span>,
+      );
       text = text.substring(minPos + match.length);
     } else {
       result.push(text);
@@ -65,7 +93,7 @@ function stem(word, stemmer) {
   const stemmed = stemmer(word);
   // Find common prefix of word and stemmed
   let commonLen = 0;
-  for (let i = 0; i < Math.min(word.length, stemmed.length);i++) {
+  for (let i = 0; i < Math.min(word.length, stemmed.length); i++) {
     if (word.charAt(i) !== stemmed.charAt(i)) {
       break;
     }

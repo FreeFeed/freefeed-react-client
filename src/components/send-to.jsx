@@ -6,13 +6,12 @@ import propTypes from 'prop-types';
 import { faUsers, faHome } from '@fortawesome/free-solid-svg-icons';
 import { Icon } from './fontawesome-icons';
 
-
 const MY_FEED_LABEL = 'My feed';
 
 const Select = Loadable({
   loading: ({ error }) => {
     if (error) {
-      console.error(`Cannot load 'react-select'`, error);  // eslint-disable-line no-console
+      console.error(`Cannot load 'react-select'`, error); // eslint-disable-line no-console
       return <div>Cannot load selector</div>;
     }
     return <div>Loading selector...</div>;
@@ -24,25 +23,27 @@ const Select = Loadable({
       return <Selectable {...props} />;
     }
     return <Creatable {...props} />;
-  }
+  },
 });
 
 class SendTo extends React.Component {
   static propTypes = {
-    isDirects:        propTypes.bool,
-    isEditing:        propTypes.bool,
-    excludeMyFeed:    propTypes.bool,
+    isDirects: propTypes.bool,
+    isEditing: propTypes.bool,
+    excludeMyFeed: propTypes.bool,
     alwaysShowSelect: propTypes.bool,
     disableAutoFocus: propTypes.bool,
-    showFeedsOption:  propTypes.bool,
-    fixedOptions:     propTypes.bool,
+    showFeedsOption: propTypes.bool,
+    fixedOptions: propTypes.bool,
 
     defaultFeed: propTypes.oneOfType([propTypes.string, propTypes.arrayOf(propTypes.string)]),
-    user:        propTypes.shape({ username: propTypes.string }),
-    feeds:       propTypes.arrayOf(propTypes.shape({
-      username: propTypes.string,
-      type:     propTypes.oneOf(['user', 'group']),
-    })),
+    user: propTypes.shape({ username: propTypes.string }),
+    feeds: propTypes.arrayOf(
+      propTypes.shape({
+        username: propTypes.string,
+        type: propTypes.oneOf(['user', 'group']),
+      }),
+    ),
   };
 
   constructor(props) {
@@ -50,7 +51,7 @@ class SendTo extends React.Component {
     this.state = this.stateFromProps(props, this.optionsFromProps(props));
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     const options = this.optionsFromProps(newProps);
     if (
       !isSameFeeds(this.props.defaultFeed, newProps.defaultFeed) ||
@@ -90,8 +91,8 @@ class SendTo extends React.Component {
     return {
       values,
       options,
-      showFeedsOption:         defaultFeeds.length === 0 || props.alwaysShowSelect || props.isEditing,
-      isIncorrectDestinations: false
+      showFeedsOption: defaultFeeds.length === 0 || props.alwaysShowSelect || props.isEditing,
+      isIncorrectDestinations: false,
     };
   }
 
@@ -106,7 +107,9 @@ class SendTo extends React.Component {
       type,
     }));
 
-    options.sort((a, b) => (a.type !== b.type) ? a.type.localeCompare(b.type) : a.value.localeCompare(b.value));
+    options.sort((a, b) =>
+      a.type !== b.type ? a.type.localeCompare(b.type) : a.value.localeCompare(b.value),
+    );
 
     if (!excludeMyFeed) {
       // use type "group" for "my feed" option to hide the warning about direct message visibility
@@ -133,7 +136,7 @@ class SendTo extends React.Component {
 
   selectChanged = (values) => {
     values = values.map((v) => ({
-      type:  'user',
+      type: 'user',
       ...v,
       label: trim(v.label),
       value: trim(v.value),
@@ -150,10 +153,17 @@ class SendTo extends React.Component {
   };
 
   labelRenderer = (opt) => {
-    const icon = (opt.type === 'group') ?
-      <Icon icon={(opt.value !== this.props.user.username) ? faUsers : faHome} />
-      : false;
-    return <span>{icon} {opt.label}</span>;
+    const icon =
+      opt.type === 'group' ? (
+        <Icon icon={opt.value !== this.props.user.username ? faUsers : faHome} />
+      ) : (
+        false
+      );
+    return (
+      <span>
+        {icon} {opt.label}
+      </span>
+    );
   };
 
   promptTextCreator = (label) => `Send direct message to @${label}`;
@@ -174,13 +184,15 @@ class SendTo extends React.Component {
           <div>
             To:&nbsp;
             <span className="Select-value-label-standalone">{this.labelRenderer(defaultOpt)}</span>
-            <a className="p-sendto-toggler" onClick={this.toggleSendTo}>Add/Edit</a>
+            <a className="p-sendto-toggler" onClick={this.toggleSendTo}>
+              Add/Edit
+            </a>
           </div>
         ) : (
           <div>
             <Select
               name="select-feeds"
-              placeholder={this.props.isDirects ? "Select recipients..." : "Select feeds..."}
+              placeholder={this.props.isDirects ? 'Select recipients...' : 'Select feeds...'}
               value={this.state.values}
               options={this.state.options}
               onChange={this.selectChanged}
@@ -188,19 +200,26 @@ class SendTo extends React.Component {
               valueRenderer={this.labelRenderer}
               multi={true}
               clearable={false}
-              autoFocus={this.state.showFeedsOption && !this.props.disableAutoFocus && !this.props.isDirects}
+              autoFocus={
+                this.state.showFeedsOption && !this.props.disableAutoFocus && !this.props.isDirects
+              }
               autoBlur={true}
               openOnFocus={true}
               promptTextCreator={this.promptTextCreator}
               backspaceToRemoveMessage=""
-              fixedOptions={this.props.fixedOptions || (this.props.isEditing && !this.props.isDirects)}
+              fixedOptions={
+                this.props.fixedOptions || (this.props.isEditing && !this.props.isDirects)
+              }
               isValidNewOption={this.isValidNewOption}
             />
             {this.state.isIncorrectDestinations ? (
               <div className="selector-warning">
-                Unable to create a direct message: direct messages could be sent to user(s) only. Please create a regular post for publish it in your feed or groups.
+                Unable to create a direct message: direct messages could be sent to user(s) only.
+                Please create a regular post for publish it in your feed or groups.
               </div>
-            ) : false}
+            ) : (
+              false
+            )}
           </div>
         )}
       </div>
@@ -222,4 +241,9 @@ function selectState({ sendTo: { feeds } }, ownProps) {
   return { feeds };
 }
 
-export default connect(selectState, null, null, { forwardRef: true })(SendTo);
+export default connect(
+  selectState,
+  null,
+  null,
+  { forwardRef: true },
+)(SendTo);
