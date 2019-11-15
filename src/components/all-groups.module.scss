@@ -1,0 +1,47 @@
+.sortableHeader {
+  cursor: pointer;
+
+  &:hover {
+    background-color: #ffc;
+  }
+}
+
+.inactive {
+  .caret {
+    opacity: 0.33;
+  }
+}
+
+.userpic {
+  box-sizing: content-box;
+  border: 1px solid #ccc;
+  float: left;
+  margin-right: 0.66em;
+}
+
+.groupRow {
+  td {
+    padding: 0.66em 0;
+    padding-left: 1em;
+    border-bottom: 1px solid #ccc;
+    text-align: right;
+    &:first-child {
+      padding-left: 0;
+      text-align: left;
+    }
+  }
+}
+
+.headersRow {
+  th {
+    vertical-align: top;
+    padding: 0.5em 0;
+    padding-left: 1em;
+    border-bottom: 2px solid #ccc;
+    text-align: right;
+    &:first-child {
+      padding-left: 0;
+      text-align: left;
+    }
+  }
+}
