@@ -1,6 +1,7 @@
 import * as Api from '../services/api';
 import * as ActionTypes from './action-types';
 import { reset } from './action-helpers';
+import { response } from './async-helpers';
 
 export function unauthenticated(payload) {
   return {
@@ -359,14 +360,6 @@ export function addAttachmentResponse(postId, attachments) {
   };
 }
 
-export function signInChange(username, password) {
-  return {
-    type: ActionTypes.SIGN_IN_CHANGE,
-    username,
-    password,
-  };
-}
-
 export function signIn(username, password) {
   return {
     type: ActionTypes.SIGN_IN,
@@ -376,6 +369,18 @@ export function signIn(username, password) {
       username,
       password,
     },
+  };
+}
+
+/**
+ * Emulate successful sign in response
+ *
+ * @param {string} authToken
+ */
+export function signedIn(authToken) {
+  return {
+    type: response(ActionTypes.SIGN_IN),
+    payload: { authToken },
   };
 }
 
@@ -407,30 +412,12 @@ export function resetPasswordValidationFail(error) {
   };
 }
 
-export function signInEmpty() {
-  return { type: ActionTypes.SIGN_IN_EMPTY };
-}
-
-export function signUpChange(signUpData) {
-  return {
-    type: ActionTypes.SIGN_UP_CHANGE,
-    ...signUpData,
-  };
-}
-
 export function signUp(signUpData) {
   return {
     type: ActionTypes.SIGN_UP,
     apiRequest: Api.signUp,
     nonAuthRequest: true,
     payload: { ...signUpData },
-  };
-}
-
-export function signUpEmpty(errorMessage) {
-  return {
-    type: ActionTypes.SIGN_UP_EMPTY,
-    message: errorMessage,
   };
 }
 
@@ -932,5 +919,44 @@ export function userCardClosing(userId) {
   return {
     type: ActionTypes.USER_CARD_CLOSING,
     payload: { userId },
+  };
+}
+
+export function getServerInfo() {
+  return {
+    type: ActionTypes.GET_SERVER_INFO,
+    apiRequest: Api.getServerInfo,
+    nonAuthRequest: true,
+  };
+}
+
+export function getExtAuthProfiles() {
+  return {
+    type: ActionTypes.GET_AUTH_PROFILES,
+    apiRequest: Api.getExtAuthProfiles,
+  };
+}
+
+export function connectToExtProvider(provider, popup) {
+  return {
+    type: ActionTypes.CONNECT_TO_EXTERNAL_PROVIDER,
+    asyncOperation: Api.performExtAuth,
+    payload: { provider, popup, mode: 'connect' },
+  };
+}
+
+export function unlinkExternalProfile(profileId) {
+  return {
+    type: ActionTypes.UNLINK_EXTERNAL_PROFILE,
+    apiRequest: Api.unlinkExternalProfile,
+    payload: { id: profileId },
+  };
+}
+
+export function signInViaExternalProvider(provider, popup) {
+  return {
+    type: ActionTypes.SIGN_IN_VIA_EXTERNAL_PROVIDER,
+    asyncOperation: Api.performExtAuth,
+    payload: { provider, popup, mode: 'sign-in' },
   };
 }

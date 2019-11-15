@@ -22,7 +22,7 @@ class RuleGenerator {
     return {
       test: /\.m?jsx?$/,
       exclude: (modulePath) => {
-        return /node_modules\/(?!(autotrack|dom-utils|social-text-tokenizer))/.test(modulePath);
+        return /node_modules\/(?!([^\/]+\/)*(autotrack|debug|dom-utils|filesize|lru-cache|social-text-tokenizer))/.test(modulePath);
       },
       use: [
         {
@@ -39,7 +39,7 @@ class RuleGenerator {
                   useBuiltIns: 'entry',
                   corejs: 3,
                   targets: {
-                    browsers: ['>1%', 'last 3 versions', 'last 3 iOS versions', 'ie >= 10'],
+                    browsers: ['>1%', 'last 3 versions', 'safari >= 9', 'ie >= 10'],
                   },
                 },
               ],
@@ -88,7 +88,7 @@ class RuleGenerator {
             '@babel/env',
             {
               modules: false,
-              targets: { node: '8.9' },
+              targets: { node: '12' },
             },
           ],
         ],

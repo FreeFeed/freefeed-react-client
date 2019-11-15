@@ -70,6 +70,7 @@
       bottom: -$border-width;
       border: $border-width + 1px solid;
       border-radius: $border-width;
+      z-index: -1;
     }
   }
 

@@ -23,7 +23,7 @@ class EmbedlyPreview extends React.Component {
     embedly('card', this.link);
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.feedIsLoading && !nextProps.feedIsLoading) {
       this.setState({ updCounter: this.state.updCounter + 1 });
     }

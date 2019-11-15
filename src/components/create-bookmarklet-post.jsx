@@ -66,7 +66,7 @@ export default class CreateBookmarkletPost extends React.Component {
     this.props.createPost(feeds, postText, imageUrls, commentText);
   };
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     // If it was successful saving, clear the form
     const wasCommentJustSaved =
       this.props.createPostViewState.isPending && !newProps.createPostViewState.isPending;

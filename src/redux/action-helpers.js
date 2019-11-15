@@ -19,6 +19,7 @@ import {
   MEMORIES,
   GET_USER_MEMORIES,
   SAVES,
+  GET_SERVER_INFO,
 } from './action-types';
 import { request, response, fail, baseType } from './async-helpers';
 
@@ -85,4 +86,15 @@ export function getFeedName(action) {
   }
 
   return baseType(action.type);
+}
+
+/**
+ * Some async actions should not re-run simultaneously. This function returns
+ * true if the request is already started and should not be started again.
+ */
+export function cancelConcurrentRequest(action, state) {
+  if (action.type === GET_SERVER_INFO) {
+    return state.serverInfo.loading;
+  }
+  return false;
 }

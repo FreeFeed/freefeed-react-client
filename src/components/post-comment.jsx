@@ -114,7 +114,7 @@ export default class PostComment extends React.Component {
     this.props.getCommentLikes(this.props.id);
   };
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if ((this.props.editText || '') !== (newProps.editText || '')) {
       this.setState({ editText: newProps.editText });
     }

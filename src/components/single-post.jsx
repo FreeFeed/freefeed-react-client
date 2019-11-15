@@ -5,7 +5,7 @@ import { joinPostData, postActions } from './select-utils';
 import Post, { canonicalURI } from './post';
 
 class SinglePostHandler extends React.Component {
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { post, router } = nextProps;
     if (!post) {
       return;

@@ -21,44 +21,49 @@ export const asyncPhase = (type) => isAsync(type) && type.replace(/^.*?\/async:/
 // Reducers helpers
 
 export const initialAsyncState = {
+  initial: true,
   loading: false,
   success: false,
   error: false,
   errorText: '',
 };
 
+export const loadingAsyncState = { ...initialAsyncState, initial: false, loading: true };
+export const successAsyncState = { ...initialAsyncState, initial: false, success: true };
+export const errorAsyncState = (errorText = '') => ({
+  ...initialAsyncState,
+  initial: false,
+  error: true,
+  errorText,
+});
+
 /**
- * Reducers that represents an async status based on phases of the actionTypes
- *
- * The *customAsyncPhase* function allows to treat other actions as async actions
- * with the needed phases. It is useful for example when you want to reset async
- * state on some actions.
+ * Reducers that represents an async status based on phases of the actionTypes.
+ * If action is not one of actionTypes async actions then the nextReducer
+ * is called if present.
  *
  * @param {string|string[]} actionTypes
+ * @param {function|null} nextReducer
  */
-export function asyncState(actionTypes) {
+export function asyncState(actionTypes, nextReducer = null) {
   if (!Array.isArray(actionTypes)) {
     actionTypes = [actionTypes];
   }
 
   return (state = initialAsyncState, action) => {
     if (!actionTypes.includes(baseType(action.type))) {
-      return state;
+      return nextReducer ? nextReducer(action, state) : state;
     }
 
     switch (asyncPhase(action.type)) {
       case RESET_PHASE:
         return initialAsyncState;
       case REQUEST_PHASE:
-        return { ...initialAsyncState, loading: true };
+        return loadingAsyncState;
       case RESPONSE_PHASE:
-        return { ...initialAsyncState, success: true };
+        return successAsyncState;
       case FAIL_PHASE:
-        return {
-          ...initialAsyncState,
-          error: true,
-          errorText: action.payload ? action.payload.err : '',
-        };
+        return errorAsyncState(action.payload && action.payload.err);
       default:
         return state;
     }
@@ -92,13 +97,17 @@ export function getKeyBy(keyName) {
  * The map keys are produses from actions via the *getKey* function.
  * The *applyState* function allows non-trivial modifications of the existing state.
  * The reducer will not touch the state if *keyMustExist* is true and the key does not exist.
+ * If action is not one of actionTypes async actions then the *nextReducer*
+ * is called if present.
  *
  * @param {string|string[]} actionTypes
  * @param {object} params
+ * @param {function|null} nextReducer
  */
 export function asyncStatesMap(
   actionTypes,
   { getKey = getKeyBy('id'), applyState = (prev, s) => s, keyMustExist = false } = {},
+  nextReducer = null,
 ) {
   if (!Array.isArray(actionTypes)) {
     actionTypes = [actionTypes];
@@ -110,7 +119,7 @@ export function asyncStatesMap(
     const subState = subReducer(42, action);
     if (subState === 42) {
       // State was not modified so it is not an async action of any needed type
-      return state;
+      return nextReducer ? nextReducer(action, state) : state;
     }
 
     const key = getKey(action);
@@ -145,4 +154,32 @@ export function fromResponse(asyncType, transformer, defaultValue = null, nextRe
     }
     return state;
   };
+}
+
+export function combineAsyncStates(...states) {
+  if (states.length === 0) {
+    return initialAsyncState;
+  }
+  if (states.length === 1) {
+    return states[0];
+  }
+
+  // If some states are loading then combined state is loading
+  if (states.some((s) => s.loading)) {
+    return loadingAsyncState;
+  }
+
+  // If some errors was happen then combined state is errored
+  const errors = states.filter((s) => s.error).map((s) => s.errorText);
+  if (errors.length > 0) {
+    return errorAsyncState(errors.join('; '));
+  }
+
+  // If there are no unsuccessful states then state is successful
+  if (!states.some((s) => !s.success)) {
+    return successAsyncState;
+  }
+
+  // It should be possible only if all states are in initial state
+  return initialAsyncState;
 }

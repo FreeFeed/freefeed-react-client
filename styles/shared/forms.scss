@@ -82,3 +82,20 @@ label.option-box {
 .checkbox-disabled label {
   color: #aaa;
 }
+
+.narrow-input {
+  max-width: 20em;
+}
+
+.signup-userpic {
+  max-width: 80px;
+  max-height: 80px;
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  transition: opacity 0.25s;
+}
+
+.signup-userpic.disabled {
+  opacity: 0.5;
+}

@@ -51,7 +51,7 @@ class SendTo extends React.Component {
     this.state = this.stateFromProps(props, this.optionsFromProps(props));
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     const options = this.optionsFromProps(newProps);
     if (
       !isSameFeeds(this.props.defaultFeed, newProps.defaultFeed) ||
