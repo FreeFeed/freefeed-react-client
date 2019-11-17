@@ -2629,7 +2629,7 @@ export { extAuth } from './reducers/ext-auth.js';
 
 export const allGroupsStatus = asyncState(
   ActionTypes.GET_ALL_GROUPS,
-  setOnLocationChange(initialAsyncState),
+  setOnLocationChange(initialAsyncState, ['/all-groups']),
 );
 
 const allGroupsDefaults = { withProtected: false, groups: [] };
@@ -2637,5 +2637,5 @@ export const allGroups = fromResponse(
   ActionTypes.GET_ALL_GROUPS,
   ({ payload: { withProtected, groups } }) => ({ withProtected, groups }),
   allGroupsDefaults,
-  setOnLocationChange(allGroupsDefaults),
+  setOnLocationChange(allGroupsDefaults, ['/all-groups']),
 );
