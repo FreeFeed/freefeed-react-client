@@ -49,7 +49,7 @@ html(lang='en')
     script.
       (function() {
         try {
-          var storageKey = !{JSON.stringify(htmlWebpackPlugin.options.appConfig.appearance.colorSchemeStorageKey)};
+          var storageKey = !{JSON.stringify(htmlWebpackPlugin.options.colorSchemeStorageKey)};
           var colorScheme = localStorage.getItem(storageKey);
           if (
             colorScheme === 'dark'
@@ -105,9 +105,9 @@ html(lang='en')
        }
       })(window, document);
 
-    if htmlWebpackPlugin.options.appConfig.sentry.publicDSN
+    if htmlWebpackPlugin.options.sentryDSN
       script(src='https://cdn.ravenjs.com/3.27.0/raven.min.js', crossorigin="anonymous")
-      script Raven.config('#{htmlWebpackPlugin.options.appConfig.sentry.publicDSN}', { autoBreadcrumbs: true }).install();
+      script Raven.config('#{htmlWebpackPlugin.options.sentryDSN}', { autoBreadcrumbs: true }).install();
 
     script.
       (function(w,d){

@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -16,7 +17,6 @@ import {
 import { getFirstLinkToEmbed } from '../utils/parse-text';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
-import config from '../config';
 import { savePost } from '../redux/action-creators';
 import { Throbber } from './throbber';
 
@@ -36,6 +36,8 @@ import ErrorBoundary from './error-boundary';
 import { destinationsPrivacy } from './select-utils';
 import { makeJpegIfNeeded } from './create-post';
 import { Icon } from './fontawesome-icons';
+
+const attachmentsMaxCount = CONFIG.attachments.maxCount;
 
 class Post extends React.Component {
   selectFeeds;
@@ -73,7 +75,7 @@ class Post extends React.Component {
 
   removeAttachment = (attachmentId) => {
     const editingAttachments = this.state.editingAttachments.filter((a) => a.id !== attachmentId);
-    const dropzoneDisabled = editingAttachments.length >= config.attachments.maxCount;
+    const dropzoneDisabled = editingAttachments.length >= attachmentsMaxCount;
 
     if (!dropzoneDisabled && this.state.dropzoneDisabled) {
       this.dropzoneObject.enable();
@@ -185,12 +187,12 @@ class Post extends React.Component {
   };
 
   handleAttachmentResponse = (att) => {
-    if (this.state.editingAttachments.length >= config.attachments.maxCount) {
+    if (this.state.editingAttachments.length >= attachmentsMaxCount) {
       return;
     }
 
     const editingAttachments = [...this.state.editingAttachments, att];
-    const dropzoneDisabled = editingAttachments.length >= config.attachments.maxCount;
+    const dropzoneDisabled = editingAttachments.length >= attachmentsMaxCount;
 
     if (dropzoneDisabled && !this.state.dropzoneDisabled) {
       this.dropzoneObject.removeAllFiles(true);
@@ -560,8 +562,7 @@ class Post extends React.Component {
                   </div>
                   {this.state.dropzoneDisabled && (
                     <div className="alert alert-warning">
-                      The maximum number of attached files ({config.attachments.maxCount}) has been
-                      reached
+                      The maximum number of attached files ({attachmentsMaxCount}) has been reached
                     </div>
                   )}
                   {props.isError ? (

@@ -1,7 +1,7 @@
+/* global CONFIG */
 import { localStorage } from '../utils/';
-import config from '../config';
 
-export const { colorSchemeStorageKey } = config.appearance;
+export const { colorSchemeStorageKey } = CONFIG.appearance;
 
 export const SCHEME_LIGHT = 'light';
 export const SCHEME_DARK = 'dark';

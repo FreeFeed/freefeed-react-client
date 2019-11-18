@@ -1,51 +1,56 @@
-/* global WEBPACK_SAYS_USE_CANDY */
-import * as FrontendPrefsOptions from './utils/frontend-preferences-options';
-import * as FeedOptions from './utils/feed-options';
+import { DISPLAYNAMES_BOTH } from '../src/utils/frontend-preferences-options';
+import { ACTIVITY, HOMEFEED_MODE_CLASSIC } from '../src/utils/feed-options';
 
-const shouldUseCandy = typeof WEBPACK_SAYS_USE_CANDY !== 'undefined' && WEBPACK_SAYS_USE_CANDY;
-const HOST = shouldUseCandy ? 'https://candy.freefeed.net' : 'http://localhost:3000';
-const COOKIE_DOMAIN = shouldUseCandy ? 'candy.freefeed.net' : 'localhost';
-
-const config = {
+/**
+ * We use this old-fashioned style of export because the 'config'
+ * module is not understand the ES6 default export properly.
+ *
+ * See https://github.com/lorenwest/node-config/issues/521
+ */
+module.exports = {
   api: {
-    host: HOST,
-    sentinel: null, // keep always last
+    root: 'https://candy.freefeed.net',
   },
+
+  siteOrigin: 'http://localhost:3333',
+
   auth: {
-    cookieDomain: COOKIE_DOMAIN,
     tokenPrefix: 'freefeed_',
     userStorageKey: 'USER_KEY',
     /**
-     * Array of enabled identity providers (e.g. ['facebook', 'google', 'github'])
+     * Array of enabled identity providers (e.g. ['facebook', 'google'])
      * or empty array if no providers are supported.
      */
     extAuthProviders: ['facebook', 'google'],
-    sentinel: null, // keep always last
   },
+
   captcha: {
     siteKey: '',
-    sentinel: null, // keep always last
   },
+
   search: {
     searchEngine: null,
-    sentinel: null, // keep always last
   },
+
   siteDomains: [
     // for transform links in the posts, comments, etc.
     'freefeed.net',
     'gamma.freefeed.net',
   ],
+
   attachments: { maxCount: 20 },
+
   textFormatter: { tldList: ['рф', 'com', 'net', 'org', 'edu', 'place'] },
+
   sentry: {
     publicDSN: null,
-    sentinel: null, // keep always last
   },
+
   frontendPreferences: {
     clientId: 'net.freefeed',
     defaultValues: {
       displayNames: {
-        displayOption: FrontendPrefsOptions.DISPLAYNAMES_BOTH,
+        displayOption: DISPLAYNAMES_BOTH,
         useYou: true,
       },
       realtimeActive: false,
@@ -56,12 +61,19 @@ const config = {
       },
       allowLinksPreview: false,
       readMoreStyle: 'modern',
-      homeFeedSort: FeedOptions.ACTIVITY,
-      homeFeedMode: FeedOptions.HOMEFEED_MODE_CLASSIC,
+      homeFeedSort: ACTIVITY,
+      homeFeedMode: HOMEFEED_MODE_CLASSIC,
       homefeed: { hideUsers: [] },
     },
   },
-  appearance: { colorSchemeStorageKey: 'color-scheme' },
-};
 
-export default config;
+  appearance: { colorSchemeStorageKey: 'color-scheme' },
+
+  eslint: {
+    // By default the eslint-linebreak-style directive requires "windows" linebreaks
+    // on Windows platform and "unix" linebreaks otherwise.
+    // You can override this behavior by setting this parameter explicitly
+    // to "windows" or "unix".
+    linebreakStyle: null,
+  },
+};

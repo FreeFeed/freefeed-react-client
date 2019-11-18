@@ -1,16 +1,18 @@
+/* global CONFIG */
 import React from 'react';
 import Textarea from 'react-textarea-autosize';
 import _ from 'lodash';
 
 import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
-import config from '../config';
 import SendTo from './send-to';
 import Dropzone from './dropzone';
 import PostAttachments from './post-attachments';
 import ErrorBoundary from './error-boundary';
 import { Throbber } from './throbber';
 import { Icon } from './fontawesome-icons';
+
+const attachmentsMaxCount = CONFIG.attachments.maxCount;
 
 const isTextEmpty = (text) => text == '' || /^\s+$/.test(text);
 const getDefaultState = (invitation = '') => ({
@@ -86,7 +88,7 @@ export default class CreatePost extends React.Component {
 
   removeAttachment = (attachmentId) => {
     const attachments = this.state.attachments.filter((a) => a.id !== attachmentId);
-    const dropzoneDisabled = attachments.length >= config.attachments.maxCount;
+    const dropzoneDisabled = attachments.length >= attachmentsMaxCount;
 
     if (!dropzoneDisabled && this.state.dropzoneDisabled) {
       this.dropzoneObject.enable();
@@ -135,12 +137,12 @@ export default class CreatePost extends React.Component {
   }
 
   handleAddAttachmentResponse = (att) => {
-    if (this.state.attachments.length >= config.attachments.maxCount) {
+    if (this.state.attachments.length >= attachmentsMaxCount) {
       return;
     }
 
     const attachments = [...this.state.attachments, att];
-    const dropzoneDisabled = attachments.length >= config.attachments.maxCount;
+    const dropzoneDisabled = attachments.length >= attachmentsMaxCount;
 
     if (dropzoneDisabled && !this.state.dropzoneDisabled) {
       this.dropzoneObject.removeAllFiles(true);
@@ -251,7 +253,7 @@ export default class CreatePost extends React.Component {
 
           {this.state.dropzoneDisabled && (
             <div className="alert alert-warning">
-              The maximum number of attached files ({config.attachments.maxCount}) has been reached
+              The maximum number of attached files ({attachmentsMaxCount}) has been reached
             </div>
           )}
 

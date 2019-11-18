@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React, { useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
@@ -5,13 +6,12 @@ import Recaptcha from 'react-google-recaptcha';
 import isEmail from 'validator/lib/isEmail';
 import { useField, useForm } from 'react-final-form-hooks';
 
-import config from '../config';
 import { signUp } from '../redux/action-creators';
 import { FieldsetWrapper } from './fieldset-wrapper';
 import { providerTitle } from './ext-auth-helpers';
 import { Throbber } from './throbber';
 
-const captchaConfig = config.captcha;
+const captchaKey = CONFIG.captcha.siteKey;
 
 const initialValues = (extProfile) => ({
   username: extProfile.username || '',
@@ -96,11 +96,11 @@ export default React.memo(function SignupForm({ invitationId = null, lang = 'en'
         onSubmit: onSubmit({
           dispatch,
           invitationId,
-          withCaptcha: !!captchaConfig.siteKey,
+          withCaptcha: !!captchaKey,
           externalProfileKey: extProfile && extProfile.key,
           profilePictureURL: extProfile && extProfile.pictureURL,
         }),
-        validate: validate({ withExtProfile: !!extProfile, withCaptcha: !!captchaConfig.siteKey }),
+        validate: validate({ withExtProfile: !!extProfile, withCaptcha: !!captchaKey }),
         initialValues: initialValues(extProfile || {}),
       }),
       [dispatch, extProfile, invitationId],
@@ -255,14 +255,9 @@ export default React.memo(function SignupForm({ invitationId = null, lang = 'en'
           </div>
         )}
 
-        {captchaConfig.siteKey && (
+        {captchaKey && (
           <div className={groupErrClass(captcha)}>
-            <Recaptcha
-              sitekey={captchaConfig.siteKey}
-              theme="light"
-              type="image"
-              onChange={setCaptcha}
-            />
+            <Recaptcha sitekey={captchaKey} theme="light" type="image" onChange={setCaptcha} />
           </div>
         )}
 

@@ -67,10 +67,10 @@
     "babel-loader": "~8.0.5",
     "babel-plugin-lodash": "~3.3.4",
     "babel-plugin-transform-react-remove-prop-types": "~0.4.24",
+    "config": "~3.2.3",
     "copy-webpack-plugin": "~5.0.4",
-    "core-js": "~3.3.6",
-    "cpx": "~1.5.0",
-    "cross-env": "~6.0.3",
+    "core-js": "~3.2.1",
+    "cross-env": "~6.0.2",
     "css-loader": "~3.2.0",
     "eslint": "~6.6.0",
     "eslint-loader": "~3.0.0",
@@ -113,20 +113,18 @@
     "worker-loader": "~2.0.0"
   },
   "scripts": {
-    "start": "run-s dev-server:candy",
+    "start": "run-s dev-server",
     "test": "run-s \"test-just --recursive test/unit\"",
     "test-just": "cross-env NODE_ENV=development mochapack --webpack-config webpack.config.tests.babel.js",
     "lint": "eslint --ext .js --ext .jsx src test",
     "travis": "run-p --aggregate-output -c test lint prettier",
-    "dev-server:local": "cross-env DEV=1 LIVERELOAD=1 webpack-dev-server --config webpack.config.babel.js --port 3333 --host 0.0.0.0 --output-public-path / --colors --hot",
-    "dev-server:candy": "cross-env DEV=1 LIVERELOAD=1 CANDY=1 webpack-dev-server --config webpack.config.babel.js --port 3333 --host 0.0.0.0 --output-public-path / --colors --hot",
+    "dev-server": "cross-env DEV=1 LIVERELOAD=1 webpack-dev-server --config webpack.config.babel.js --port 3333 --host 127.0.0.1 --output-public-path / --colors --hot",
     "clean": "rimraf ./_dist",
     "pretty-quick": "pretty-quick --pattern \"./**/*.(js|jsx|css|scss|md)\" --branch stable",
     "prettier": "prettier -c \"src/**/*\"",
-    "build-prod": "cross-env UGLIFY=1 HASH=1 DEV=0 run-s clean _webpack _cp-assets",
-    "build-dev": "cross-env UGLIFY=0 HASH=0 DEV=1 run-s clean _webpack _cp-assets",
-    "_webpack": "webpack --config webpack.config.babel.js --output-path ./_dist --output-public-path /",
-    "_cp-assets": "cpx ./assets/js/**/* ./_dist/assets/js"
+    "build-prod": "cross-env UGLIFY=1 HASH=1 DEV=0 run-s clean _webpack",
+    "build-dev": "cross-env UGLIFY=0 HASH=0 DEV=1 run-s clean _webpack ",
+    "_webpack": "webpack --config webpack.config.babel.js --output-path ./_dist --output-public-path /"
   },
   "husky": {
     "hooks": {
