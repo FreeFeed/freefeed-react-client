@@ -2635,7 +2635,10 @@ export const allGroupsStatus = asyncState(
 const allGroupsDefaults = { withProtected: false, groups: [] };
 export const allGroups = fromResponse(
   ActionTypes.GET_ALL_GROUPS,
-  ({ payload: { withProtected, groups } }) => ({ withProtected, groups }),
+  ({ payload: { withProtected, groups, users } }) => ({
+    withProtected,
+    groups: groups.map((g) => ({ ...g, createdAt: users.find((u) => u.id === g.id).createdAt })),
+  }),
   allGroupsDefaults,
   setOnLocationChange(allGroupsDefaults, ['/all-groups']),
 );

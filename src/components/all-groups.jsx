@@ -54,13 +54,7 @@ const sortFields = {
 
 function GroupsList({ pageSize }) {
   const location = useSelector((state) => state.routing.locationBeforeTransitions);
-  const { groups, withProtected } = useSelector((state) => {
-    const { groups, withProtected } = state.allGroups;
-    for (const g of groups) {
-      g.createdAt = state.users[g.id].createdAt;
-    }
-    return { groups, withProtected };
-  });
+  const { groups, withProtected } = useSelector((state) => state.allGroups);
 
   const page = getPageNumber(location);
   const sort = getSortMode(location);
