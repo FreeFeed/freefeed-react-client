@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import format from 'date-fns/format';
 
-import { preventDefault } from '../utils';
+import { preventDefault, htmlSafe } from '../utils';
 import { setUserColorScheme } from '../redux/action-creators';
 import {
   SCHEME_DARK,
@@ -11,6 +11,7 @@ import {
   SCHEME_LIGHT,
   systemColorSchemeSupported,
 } from '../services/appearance';
+import { bookmarkletHref } from '../bookmarklet/loader';
 import UserName from './user-name';
 import RecentGroups from './recent-groups';
 import ErrorBoundary from './error-boundary';
@@ -270,8 +271,6 @@ const SideBarCoinJar = () => (
   </div>
 );
 
-const doNothing = preventDefault(() => false);
-
 const SideBarBookmarklet = () => (
   <div className="box">
     <div className="box-header-groups">Bookmarklet</div>
@@ -281,9 +280,14 @@ const SideBarBookmarklet = () => (
     </div>
     <div className="box-footer">
       Click and drag{' '}
-      <a className="bookmarklet-button" href="BOOKMARKLET_PLACEHOLDER" onClick={doNothing}>
-        Share on FreeFeed
-      </a>{' '}
+      <span
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: `<a class="bookmarklet-button" href="${htmlSafe(
+            bookmarkletHref(),
+          )}" onclick="return false">Share on FreeFeed</a>`,
+        }}
+      />{' '}
       to&nbsp;your toolbar.
     </div>
     <div className="box-footer">

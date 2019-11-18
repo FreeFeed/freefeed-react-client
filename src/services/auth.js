@@ -1,8 +1,8 @@
+/* global CONFIG */
 import { getCookie, setCookie, localStorage, userParser } from '../utils/';
-import config from '../config';
 
-const authConfig = config.auth;
-const NAME = `${authConfig.tokenPrefix}authToken`;
+const { userStorageKey, tokenPrefix } = CONFIG.auth;
+const NAME = `${tokenPrefix}authToken`;
 const EXP_DAYS = 365;
 const PATH = '/';
 
@@ -15,12 +15,12 @@ export function setToken(token) {
 }
 
 export function getPersistedUser() {
-  const userData = JSON.parse(localStorage.getItem(authConfig.userStorageKey)); // whoamiCache
+  const userData = JSON.parse(localStorage.getItem(userStorageKey)); // whoamiCache
   return userData && userParser(userData);
 }
 
 export function persistUser(user) {
   return user
-    ? localStorage.setItem(authConfig.userStorageKey, JSON.stringify(user))
-    : localStorage.removeItem(authConfig.userStorageKey);
+    ? localStorage.setItem(userStorageKey, JSON.stringify(user))
+    : localStorage.removeItem(userStorageKey);
 }

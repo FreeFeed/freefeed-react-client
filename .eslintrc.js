@@ -1,3 +1,6 @@
+require('@babel/register');
+const config = require('config');
+
 module.exports = {
   extends: 'eslint:recommended',
   parser: 'babel-eslint',
@@ -60,7 +63,14 @@ module.exports = {
     indent: 'off',
     'jsx-quotes': 2,
     'keyword-spacing': [2, { before: true, after: true }],
-    'linebreak-style': process.platform === 'win32' ? 'off' : 'error',
+    // By default the eslint-linebreak-style directive requires "windows" linebreaks
+    // on Windows platform and "unix" linebreaks otherwise.
+    // You can override this behavior by setting the eslint.linebreakStyle config
+    // parameter explicitly to "windows" or "unix".
+    'linebreak-style': [
+      2,
+      config.get('eslint.linebreakStyle') || (process.platform === 'win32' ? 'windows' : 'unix'),
+    ],
     'max-statements-per-line': [2, { max: 1 }],
     'no-debugger': 2,
     'no-duplicate-imports': 2,

@@ -2,7 +2,7 @@ import path from 'path';
 
 import webpack from 'webpack';
 
-import { skipFalsy, strToBool } from './utils';
+import { skipFalsy, strToBool, ConfigWebpackPlugin } from './utils';
 import RulesGenerator from './rules';
 
 const { env } = process;
@@ -24,7 +24,13 @@ const baseConfig = {
   devtool: opts.dev ? 'inline-source-map' : 'source-map',
   output: {
     path: opts.dstDir,
-    filename: `${filename}.js`,
+    // filename: `${filename}.js`,
+    filename: (chunkData) => {
+      if (chunkData.chunk.name === 'bookmarklet') {
+        return 'assets/js/bookmarklet-popup.js';
+      }
+      return `${filename}.js`;
+    },
     sourceMapFilename: `[file].map`,
     devtoolModuleFilenameTemplate: '/[absolute-resource-path]',
     // Set correct globalObject for web workers:
@@ -38,6 +44,7 @@ const baseConfig = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': opts.dev ? '"development"' : '"production"',
     }),
+    new ConfigWebpackPlugin(),
   ]),
 };
 

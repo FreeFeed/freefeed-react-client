@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React, { useEffect } from 'react';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
@@ -11,7 +12,6 @@ import {
   getUserInfo,
 } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
-import config from '../config';
 import { initialAsyncState } from '../redux/async-helpers';
 import { joinPostData, postActions, userActions, canAcceptDirects } from './select-utils';
 import FeedOptionsSwitch from './feed-options-switch';
@@ -58,7 +58,7 @@ const UserHandler = (props) => {
                   ? `Posts of ${props.viewUser.username}`
                   : `Posts in group ${props.viewUser.username}`
               }
-              href={`${config.api.host}/v2/timelines-rss/${props.viewUser.username}`}
+              href={`${CONFIG.api.root}/v2/timelines-rss/${props.viewUser.username}`}
             />
           </Helmet>
         )}

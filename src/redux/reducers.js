@@ -1,9 +1,9 @@
+/* global CONFIG */
 import _ from 'lodash';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { combineReducers } from 'redux';
 
 import { userParser, postParser, getSummaryPeriod } from '../utils';
-import config from '../config';
 import { getToken, getPersistedUser } from '../services/auth';
 import { parseQuery } from '../utils/search-highlighter';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
@@ -20,7 +20,7 @@ import {
   initialAsyncState,
 } from './async-helpers';
 
-const frontendPrefsConfig = config.frontendPreferences;
+const frontendPrefsConfig = CONFIG.frontendPreferences;
 
 const { request, response, fail } = ActionHelpers;
 
@@ -2551,7 +2551,7 @@ export function serverTimeAhead(state = 0, action) {
 }
 
 const getInitialFeedViewOptions = () => {
-  const defaultHomeFeedSort = config.frontendPreferences.defaultValues.homeFeedSort;
+  const defaultHomeFeedSort = frontendPrefsConfig.defaultValues.homeFeedSort;
   const persistedUser = getPersistedUser();
   const homeFeedSort =
     (persistedUser && persistedUser.frontendPreferences.homeFeedSort) || defaultHomeFeedSort;
@@ -2565,7 +2565,7 @@ const getInitialFeedViewOptions = () => {
 
 export function feedViewOptions(state = getInitialFeedViewOptions(), action) {
   if (action.type === response(ActionTypes.WHO_AM_I)) {
-    const defaultHomeFeedSort = config.frontendPreferences.defaultValues.homeFeedSort;
+    const defaultHomeFeedSort = frontendPrefsConfig.defaultValues.homeFeedSort;
     const frontendPreferences =
       action.payload.users.frontendPreferences &&
       action.payload.users.frontendPreferences[frontendPrefsConfig.clientId];

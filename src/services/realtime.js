@@ -1,9 +1,7 @@
+/* global CONFIG */
 import io from 'socket.io-client';
 
-import config from '../config';
 import { getToken } from './auth';
-
-const apiConfig = config.api;
 
 const dummyPost = { getBoundingClientRect: () => ({ top: 0 }) };
 
@@ -56,7 +54,7 @@ export class Connection {
   socket;
 
   constructor() {
-    this.socket = improveSocket(io(`${apiConfig.host}/`));
+    this.socket = improveSocket(io(`${CONFIG.api.root}/`));
     bindSocketActionsLog(this.socket)(eventsToLog);
   }
 

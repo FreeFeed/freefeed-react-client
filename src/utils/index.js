@@ -1,12 +1,12 @@
+/* global CONFIG */
 import _ from 'lodash';
 import filesize from 'filesize';
 
 import defaultUserpicPath from '../../assets/images/default-userpic.svg';
 
-import config from '../config';
 import { initialAsyncState } from '../redux/async-helpers';
 
-const frontendPrefsConfig = config.frontendPreferences;
+const frontendPrefsConfig = CONFIG.frontendPreferences;
 
 export function getCookie(name) {
   const begin = document.cookie.indexOf(name);
@@ -155,4 +155,13 @@ export function getSummaryPeriod(days) {
 
 export function formatFileSize(fileSize) {
   return filesize(fileSize, { standard: 'iec', round: 1 });
+}
+
+export function htmlSafe(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
