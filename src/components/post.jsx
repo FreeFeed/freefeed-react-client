@@ -17,7 +17,6 @@ import {
 import { getFirstLinkToEmbed } from '../utils/parse-text';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
-import config from '../config';
 import { savePost, hideByName, unhideNames } from '../redux/action-creators';
 import { initialAsyncState } from '../redux/async-helpers';
 import { Throbber } from './throbber';
