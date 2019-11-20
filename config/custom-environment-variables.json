@@ -12,5 +12,8 @@
   },
   "sentry": {
     "publicDSN": "FRF_SENTRY_DSN"
+  },
+  "registrationsLimit": {
+    "emailFormIframeSrc": "FRF_REG_LIMIT_FORM_IFRAME_SRC"
   }
 }
