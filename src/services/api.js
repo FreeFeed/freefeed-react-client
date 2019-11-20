@@ -541,5 +541,5 @@ export async function performExtAuth({ provider, popup, mode }) {
 }
 
 export function getAllGroups() {
-  return fetch(`${apiConfig.host}/v2/allGroups`, getRequestOptions());
+  return fetch(`${apiRoot}/v2/allGroups`, getRequestOptions());
 }

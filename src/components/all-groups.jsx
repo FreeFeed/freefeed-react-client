@@ -30,7 +30,7 @@ export default function AllGroups() {
         <div className="box-body">
           {status.loading && <p>Loading...</p>}
           {status.error && (
-            <p className="alert alert-danger">Can not load scopes: {status.errorText}</p>
+            <p className="alert alert-danger">Can not load groups list: {status.errorText}</p>
           )}
           {status.success && <GroupsList pageSize={50} />}
         </div>
