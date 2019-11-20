@@ -1,0 +1,35 @@
+on:
+  push:
+    branches:
+      - stable
+      - unstable
+      - release
+
+name: Build and push docker image
+
+env:
+  NODE_CONFIG_ENV: ${{ github.base_ref }}
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: Build the Docker container image
+      run: make latest
+
+    - name: Login to Github packages
+      id: login-ecr
+      run: |
+        docker login docker.pkg.github.com -u publisher -p "${GITHUB_PACKAGE_REGISTRY_TOKEN}"
+
+    - name: Push the image to GPR
+      run: |
+        make push
+        make push-latest
+      env:
+        GITHUB_PACKAGE_REGISTRY_TOKEN: ${{ secrets.GITHUB_PACKAGE_REGISTRY_TOKEN }}

@@ -1,0 +1,13 @@
+{
+    "api": {
+        "root": "https://george.freefeed.net"
+    },
+    "siteOrigin": "https://george.freefeed.net",
+    "auth": {
+        "tokenPrefix": "micropeppa_",
+        "userStorageKey": "whoamiCache"
+    },
+    "sentry": {
+        "publicDSN": "https://c0d1b60991264cc4b56a1398db012900@sentry.io/79081"
+    }
+}
