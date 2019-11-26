@@ -104,7 +104,4 @@ function selectActions(dispatch) {
   };
 }
 
-export default connect(
-  selectState,
-  selectActions,
-)(ManageSubscribersHandler);
+export default connect(selectState, selectActions)(ManageSubscribersHandler);

@@ -59,10 +59,9 @@ function ScopesList({ scopesStatus, scopes, getAppTokensScopes }) {
   );
 }
 
-export default connect(
-  (state) => pick(state.appTokens, ['scopesStatus', 'scopes']),
-  { getAppTokensScopes },
-)(ScopesList);
+export default connect((state) => pick(state.appTokens, ['scopesStatus', 'scopes']), {
+  getAppTokensScopes,
+})(ScopesList);
 
 function APIList({ children }) {
   const [opened, setOpened] = useState(false);

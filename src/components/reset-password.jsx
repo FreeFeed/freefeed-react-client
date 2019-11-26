@@ -116,7 +116,4 @@ class ResetPassword extends React.Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ResetPassword);
+export default connect(mapStateToProps, mapDispatchToProps)(ResetPassword);

@@ -125,7 +125,10 @@ const SideBarMemories = () => {
   const today = new Date();
   const todayString = format(today, 'MMdd');
   const todayYear = today.getFullYear();
-  const yearLinks = [[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]].map((years, index) => (
+  const yearLinks = [
+    [1, 2, 3, 4, 5, 6],
+    [7, 8, 9, 10, 11, 12],
+  ].map((years, index) => (
     <div className="years-row" key={index}>
       {years.map((offset) => {
         const linkYear = todayYear - offset;

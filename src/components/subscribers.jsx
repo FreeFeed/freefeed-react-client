@@ -85,7 +85,4 @@ function mapDispatchToProps(dispatch) {
   return { getUserInfo: (username) => dispatch(getUserInfo(username)) };
 }
 
-export default connect(
-  selectState,
-  mapDispatchToProps,
-)(SubscribersHandler);
+export default connect(selectState, mapDispatchToProps)(SubscribersHandler);

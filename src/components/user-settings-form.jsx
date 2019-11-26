@@ -64,7 +64,8 @@ export default class UserSettingsForm extends React.Component {
         (this.props.screenName.length < 3 || this.props.screenName.length > 25),
       'has-success':
         this.props.screenName &&
-        (this.props.screenName.length >= 3 && this.props.screenName.length <= 25),
+        this.props.screenName.length >= 3 &&
+        this.props.screenName.length <= 25,
     });
 
     let feedPrivacy;
