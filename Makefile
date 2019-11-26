@@ -8,7 +8,8 @@ webpack = ./node_modules/.bin/webpack \
 
 VERSION = $(shell git describe --tags)
 NODE_CONFIG_ENV ?= stable
-IMAGE = docker.pkg.github.com/freefeed/freefeed-react-client/$(NODE_CONFIG_ENV)
+#IMAGE = docker.pkg.github.com/freefeed/freefeed-react-client/$(NODE_CONFIG_ENV)
+IMAGE = freefeed/freefeed-react-client-$(NODE_CONFIG_ENV)
 
 prod: clean
 	UGLIFY=1 HASH=1 DEV=0 $(webpack)
