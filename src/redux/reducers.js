@@ -1429,6 +1429,10 @@ export function users(state = {}, action) {
       }
       return state;
     }
+    case response(ActionTypes.GET_ALL_GROUPS): {
+      const { users = [] } = action.payload;
+      return mergeByIds(state, users.map(userParser));
+    }
   }
   return state;
 }
@@ -2527,3 +2531,19 @@ export function hiddenUserNames(state = getInitialHiddenUserNames(), action) {
   }
   return state;
 }
+
+export const allGroupsStatus = asyncState(
+  ActionTypes.GET_ALL_GROUPS,
+  setOnLocationChange(initialAsyncState, ['/all-groups']),
+);
+
+const allGroupsDefaults = { withProtected: false, groups: [] };
+export const allGroups = fromResponse(
+  ActionTypes.GET_ALL_GROUPS,
+  ({ payload: { withProtected, groups, users } }) => ({
+    withProtected,
+    groups: groups.map((g) => ({ ...g, createdAt: users.find((u) => u.id === g.id).createdAt })),
+  }),
+  allGroupsDefaults,
+  setOnLocationChange(allGroupsDefaults, ['/all-groups']),
+);

@@ -102,9 +102,7 @@ const SideBarFreeFeed = () => (
           <Link to="/filter/everything">Everything</Link>
         </li>
         <li>
-          <a href="https://davidmz.me/frfrfr/all-groups/" target="_blank">
-            Public groups
-          </a>
+          <Link to="/all-groups">Public groups</Link>
         </li>
         <li>
           <Link to="/support">Support</Link> /{' '}

@@ -983,3 +983,11 @@ export function removeRecentlyHiddenPost(postId) {
     payload: { postId },
   };
 }
+
+export function getAllGroups() {
+  return {
+    type: ActionTypes.GET_ALL_GROUPS,
+    apiRequest: Api.getAllGroups,
+    nonAuthRequest: true,
+  };
+}

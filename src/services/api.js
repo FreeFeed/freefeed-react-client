@@ -591,3 +591,7 @@ export async function unHideNames({
   _.set(frontendPrefs, 'homefeed.hideUsers', _.difference(hiddenNames, usernames));
   return await updateUserPreferences({ userId, frontendPrefs });
 }
+
+export function getAllGroups() {
+  return fetch(`${apiRoot}/v2/allGroups`, getRequestOptions());
+}

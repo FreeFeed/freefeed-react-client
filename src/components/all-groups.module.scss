@@ -1,0 +1,71 @@
+@import '../../styles/helvetica/dark-vars.scss';
+
+.sortableHeader {
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: #ffc;
+    :global(.dark-theme) & {
+      background-color: $bg-color-lighter;
+    }
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    :global(.dark-theme) & {
+      color: $text-color;
+    }
+  }
+}
+
+.inactive {
+  .caret {
+    opacity: 0.33;
+  }
+}
+
+.userpic {
+  box-sizing: content-box;
+  float: left;
+}
+
+.groupRow {
+  td {
+    padding: 0.66em 0;
+    padding-left: 1em;
+    border-bottom: 1px solid #ccc;
+    text-align: right;
+    &:first-child {
+      padding-left: 0;
+      text-align: left;
+    }
+
+    :global(.dark-theme) & {
+      border-color: $bg-color-lighter;
+    }
+  }
+}
+
+.headersRow {
+  th {
+    vertical-align: top;
+    padding: 0.5em 0;
+    padding-left: 1em;
+    border-bottom: 2px solid #ccc;
+    text-align: right;
+    &:first-child {
+      padding-left: 0;
+      text-align: left;
+    }
+
+    :global(.dark-theme) & {
+      border-bottom-color: $bg-color-lighter;
+    }
+  }
+}
+
+.groupInfo {
+  margin-left: 60px;
+}
