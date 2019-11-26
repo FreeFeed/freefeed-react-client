@@ -30,7 +30,10 @@ function selectState(state, ownProps) {
     state.usernameSubscribers.payload &&
     state.usernameSubscribers.payload.map((user) => user.username);
 
-  const listSections = [{ title: 'Users', users: [] }, { title: 'Groups', users: [] }];
+  const listSections = [
+    { title: 'Users', users: [] },
+    { title: 'Groups', users: [] },
+  ];
 
   _.sortBy(state.usernameSubscriptions.payload, 'username').forEach((u) => {
     // "mutual" markings should be displayed only if browsing my own subscriptions

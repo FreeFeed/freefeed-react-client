@@ -223,7 +223,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(UserCard);
+export default connect(mapStateToProps, mapDispatchToProps)(UserCard);

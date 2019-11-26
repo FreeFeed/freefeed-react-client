@@ -115,7 +115,4 @@ function selectActions(dispatch) {
   };
 }
 
-export default connect(
-  selectState,
-  selectActions,
-)(FriendsHandler);
+export default connect(selectState, selectActions)(FriendsHandler);

@@ -126,7 +126,6 @@ function TokenForm({
   );
 }
 
-export default connect(
-  (state) => pick(state.appTokens, ['scopesStatus', 'scopes']),
-  { getAppTokensScopes },
-)(TokenForm);
+export default connect((state) => pick(state.appTokens, ['scopesStatus', 'scopes']), {
+  getAppTokensScopes,
+})(TokenForm);

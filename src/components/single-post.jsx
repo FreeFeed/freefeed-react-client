@@ -78,7 +78,4 @@ function selectActions(dispatch) {
   return { ...postActions(dispatch) };
 }
 
-export default connect(
-  selectState,
-  selectActions,
-)(SinglePostHandler);
+export default connect(selectState, selectActions)(SinglePostHandler);

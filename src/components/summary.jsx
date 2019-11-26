@@ -51,7 +51,4 @@ function mapActionsToDispatch(dispatch) {
   return { ...postActions(dispatch) };
 }
 
-export default connect(
-  mapStateToProps,
-  mapActionsToDispatch,
-)(Summary);
+export default connect(mapStateToProps, mapActionsToDispatch)(Summary);

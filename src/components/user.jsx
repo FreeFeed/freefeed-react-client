@@ -182,7 +182,4 @@ function selectActions(dispatch) {
   };
 }
 
-export default connect(
-  selectState,
-  selectActions,
-)(UserHandler);
+export default connect(selectState, selectActions)(UserHandler);

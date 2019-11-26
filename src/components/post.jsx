@@ -703,7 +703,4 @@ function selectState(state, ownProps) {
   };
 }
 
-export default connect(
-  selectState,
-  { savePost, hideByName, unhideNames },
-)(Post);
+export default connect(selectState, { savePost, hideByName, unhideNames })(Post);

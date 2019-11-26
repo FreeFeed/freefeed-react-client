@@ -127,10 +127,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(FeedOptionsSwitch);
+export default connect(mapStateToProps, mapDispatchToProps)(FeedOptionsSwitch);
 
 function DropOption({ children, value, current, clickHandler, checkbox = false }) {
   const onClick = useCallback(() => clickHandler(value), [clickHandler, value]);
