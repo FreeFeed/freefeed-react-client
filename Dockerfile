@@ -19,4 +19,5 @@ RUN rm -rf node_modules && \
 
 FROM scratch
 
-COPY --from=builder /client/_dist /client
+COPY --from=builder /client/_dist /var/www/freefeed-react-client
+VOLUME /var/www/freefeed-react-client
