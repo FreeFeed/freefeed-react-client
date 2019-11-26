@@ -38,7 +38,7 @@ export default class PostMoreMenu extends React.Component {
       animate: false,
       toggle: (
         <a className="post-action" onClick={this.handleClickOnMore}>
-          More&nbsp;&#x25be;
+          More&#x200a;&#x25be;
         </a>
       ),
     };

@@ -564,9 +564,9 @@ const bindHandlers = (store) => ({
 
     let insertBefore = null;
     if (shouldBump) {
-      insertBefore = state.feedViewState.visibleEntries[0] || null;
+      insertBefore = state.feedViewState.entries[0] || null;
       if (state.feedViewOptions.sort === FeedOptions.CHRONOLOGIC) {
-        for (const postId of state.feedViewState.visibleEntries) {
+        for (const postId of state.feedViewState.entries) {
           if (data.posts.createdAt >= state.posts[postId].createdAt) {
             insertBefore = postId;
             break;

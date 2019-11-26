@@ -11,8 +11,7 @@ describe('Group moderation', () => {
     beforeEach(() => {
       state = {
         ...feedViewState(undefined, { type: 'init' }),
-        visibleEntries: ['post1', 'post2', 'post3'],
-        hiddenEntries: ['post1', 'post2'],
+        entries: ['post1', 'post2', 'post3'],
       };
       action = {
         type: response(DELETE_POST),
@@ -23,8 +22,7 @@ describe('Group moderation', () => {
 
     it('should remove post from feedViewState if it is fully deleted', () => {
       const newState = feedViewState(state, action);
-      expect(newState.visibleEntries, 'to equal', ['post1', 'post3']);
-      expect(newState.hiddenEntries, 'to equal', ['post1']);
+      expect(newState.entries, 'to equal', ['post1', 'post3']);
     });
 
     it('should not remove post from feedViewState if it is not fully deleted', () => {

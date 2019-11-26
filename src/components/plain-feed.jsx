@@ -29,9 +29,9 @@ const FeedHandler = (props) => (
 
 function selectState(state) {
   const { authenticated, boxHeader, timelines, user } = state;
-  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
+  const entries = state.feedViewState.entries.map(joinPostData(state));
 
-  return { user, authenticated, visibleEntries, timelines, boxHeader };
+  return { user, authenticated, entries, timelines, boxHeader };
 }
 
 function selectActions(dispatch) {

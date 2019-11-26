@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { getUserInfo, updateUserPreferences, userCardClosing } from '../redux/action-creators';
+import { getUserInfo, userCardClosing } from '../redux/action-creators';
 import { initialAsyncState } from '../redux/async-helpers';
 import { Throbber } from './throbber';
 import UserFeedStatus from './user-feed-status';
@@ -47,8 +47,11 @@ class UserCard extends React.Component {
   };
 
   handleShowOrHideClick = () => {
-    const { username } = this.props.user;
-    this.props.hideShowUser(this.props.me, username);
+    const {
+      hidden,
+      user: { username },
+    } = this.props;
+    this.props.hideByName(username, !hidden);
   };
 
   handleBlockClick = () => {
@@ -216,23 +219,6 @@ function mapDispatchToProps(dispatch) {
   return {
     ...userActions(dispatch),
     getUserInfo: (username) => dispatch(getUserInfo(username)),
-    hideShowUser: (me, username) => {
-      const {
-        homefeed: { hideUsers },
-      } = me.frontendPreferences;
-      const p = hideUsers.indexOf(username);
-      if (p < 0) {
-        hideUsers.push(username);
-      } else {
-        hideUsers.splice(p, 1);
-      }
-      dispatch(
-        updateUserPreferences(me.id, {
-          ...me.frontendPreferences,
-          homefeed: { ...me.frontendPreferences.homefeed, hideUsers },
-        }),
-      );
-    },
     userCardClosing: (userId) => dispatch(userCardClosing(userId)),
   };
 }

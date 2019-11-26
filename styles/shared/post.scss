@@ -119,20 +119,6 @@ $post-line-height: 20px;
       .post-timestamp {
         color: #666;
       }
-
-      .post-like-throbber {
-        margin-left: 5px;
-      }
-
-      .post-hide-throbber {
-        margin-left: 5px;
-      }
-
-      .post-like-fail {
-        margin-right: 0.2em;
-        color: #ff8265;
-        cursor: help;
-      }
     }
   }
 
@@ -140,6 +126,29 @@ $post-line-height: 20px;
     display: inline-block;
     cursor: pointer;
   }
+}
+
+.post-like-throbber {
+  margin-left: 5px;
+}
+
+.post-hide-throbber {
+  margin-left: 5px;
+  &:empty {
+    display: none;
+  }
+}
+
+.post-hide-fail {
+  margin-left: 5px;
+  color: #ff8265;
+  cursor: help;
+}
+
+.post-like-fail {
+  margin-right: 0.2em;
+  color: #ff8265;
+  cursor: help;
 }
 
 // paragraph breaks
@@ -240,7 +249,28 @@ $post-line-height: 20px;
 }
 
 .recently-hidden-post {
-  padding-left: 63px;
+  .recently-hidden-post__close {
+    float: right;
+    float: right;
+    padding: 0.33em;
+    margin: -0.33em;
+    border-radius: 50%;
+    line-height: 1em;
+    color: inherit;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+
+    &:hover {
+      background: #eee;
+      opacity: 1;
+    }
+  }
+}
+
+.post-unhide-block {
+  margin: 10px 0;
+  padding-left: 18px;
+  border-left: 1px solid currentColor;
 }
 
 .single-post {
