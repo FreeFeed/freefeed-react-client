@@ -36,4 +36,4 @@ push:
 push-latest:
 	@docker push $(IMAGE):latest
 
-.PHONY: prod dev clean image docker-run
+.PHONY: prod dev clean image latest push push-latest
