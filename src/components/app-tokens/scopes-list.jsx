@@ -20,7 +20,7 @@ function ScopesList({ scopesStatus, scopes, getAppTokensScopes }) {
   }
 
   if (scopesStatus.error) {
-    return <div className="alert alert-danger">Can not load scopes: {scopesStatus.error}</div>;
+    return <div className="alert alert-danger">Can not load scopes: {scopesStatus.errorText}</div>;
   }
 
   return (

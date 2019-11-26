@@ -52,7 +52,7 @@ export function asyncState(actionTypes, nextReducer = null) {
 
   return (state = initialAsyncState, action) => {
     if (!actionTypes.includes(baseType(action.type))) {
-      return nextReducer ? nextReducer(action, state) : state;
+      return nextReducer ? nextReducer(state, action) : state;
     }
 
     switch (asyncPhase(action.type)) {
@@ -125,7 +125,7 @@ export function asyncStatesMap(
     const subState = subReducer(42, action);
     if (subState === 42) {
       // State was not modified so it is not an async action of any needed type
-      return nextReducer ? nextReducer(action, state) : state;
+      return nextReducer ? nextReducer(state, action) : state;
     }
 
     const key = getKey(action);
