@@ -2,12 +2,13 @@ require('@babel/register');
 const config = require('config');
 
 module.exports = {
-  extends: 'eslint:recommended',
+  extends: ['eslint:recommended', 'prettier', 'prettier/react'],
   parser: 'babel-eslint',
   plugins: [
     'babel',
     'import',
     'lodash',
+    'prettier',
     'promise',
     'react',
     'you-dont-need-lodash-underscore',
@@ -19,7 +20,7 @@ module.exports = {
     es6: true,
   },
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 2019,
     sourceType: 'module',
     ecmaFeatures: {
       jsx: true,
@@ -33,7 +34,7 @@ module.exports = {
       },
     },
     react: {
-      version: '16.11',
+      version: 'detect',
     },
   },
   rules: {
@@ -110,6 +111,8 @@ module.exports = {
     'space-unary-ops': [2, { words: true, nonwords: false }],
     'template-curly-spacing': 2,
     'unicode-bom': 2,
+
+    'prettier/prettier': 'error',
 
     'react/jsx-closing-bracket-location': 2,
     'react/jsx-curly-spacing': [2, { children: true }],
