@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import format from 'date-fns/format';
 
-import { preventDefault } from '../utils';
+import { preventDefault, htmlSafe } from '../utils';
 import { setUserColorScheme } from '../redux/action-creators';
 import {
   SCHEME_DARK,
@@ -11,6 +11,7 @@ import {
   SCHEME_LIGHT,
   systemColorSchemeSupported,
 } from '../services/appearance';
+import { bookmarkletHref } from '../bookmarklet/loader';
 import UserName from './user-name';
 import RecentGroups from './recent-groups';
 import ErrorBoundary from './error-boundary';
@@ -101,9 +102,7 @@ const SideBarFreeFeed = () => (
           <Link to="/filter/everything">Everything</Link>
         </li>
         <li>
-          <a href="https://davidmz.me/frfrfr/all-groups/" target="_blank">
-            Public groups
-          </a>
+          <Link to="/all-groups">Public groups</Link>
         </li>
         <li>
           <Link to="/support">Support</Link> /{' '}
@@ -126,7 +125,10 @@ const SideBarMemories = () => {
   const today = new Date();
   const todayString = format(today, 'MMdd');
   const todayYear = today.getFullYear();
-  const yearLinks = [[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]].map((years, index) => (
+  const yearLinks = [
+    [1, 2, 3, 4, 5, 6],
+    [7, 8, 9, 10, 11, 12],
+  ].map((years, index) => (
     <div className="years-row" key={index}>
       {years.map((offset) => {
         const linkYear = todayYear - offset;
@@ -270,8 +272,6 @@ const SideBarCoinJar = () => (
   </div>
 );
 
-const doNothing = preventDefault(() => false);
-
 const SideBarBookmarklet = () => (
   <div className="box">
     <div className="box-header-groups">Bookmarklet</div>
@@ -281,9 +281,14 @@ const SideBarBookmarklet = () => (
     </div>
     <div className="box-footer">
       Click and drag{' '}
-      <a className="bookmarklet-button" href="BOOKMARKLET_PLACEHOLDER" onClick={doNothing}>
-        Share on FreeFeed
-      </a>{' '}
+      <span
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: `<a class="bookmarklet-button" href="${htmlSafe(
+            bookmarkletHref(),
+          )}" onclick="return false">Share on FreeFeed</a>`,
+        }}
+      />{' '}
       to&nbsp;your toolbar.
     </div>
     <div className="box-footer">

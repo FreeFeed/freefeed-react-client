@@ -31,7 +31,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(GroupCreate);
+export default connect(mapStateToProps, mapDispatchToProps)(GroupCreate);

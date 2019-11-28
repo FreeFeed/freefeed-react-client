@@ -1,3 +1,4 @@
+/* global CONFIG */
 import { encode as qsEncode } from 'querystring';
 import React, { useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,17 +9,55 @@ import SignupForm from './signup-form';
 import { CookiesBanner } from './cookies-banner';
 import { useExtAuthProviders, providerTitle } from './ext-auth-helpers';
 import { ExtAuthButtons, SIGN_UP } from './ext-auth-buttons';
+import { useServerInfo } from './hooks/server-info';
 
 export default React.memo(function Signup() {
+  const [serverInfo, serverInfoStatus] = useServerInfo();
+  const registrationOpen = !serverInfoStatus.success || serverInfo.registrationOpen;
+  const withForm = !!CONFIG.registrationsLimit.emailFormIframeSrc;
+
   return (
     <div className="box">
       <div className="box-header-timeline">Hello</div>
       <div className="box-body">
         <div className="col-md-12">
           <h2 className="p-signin-header">Sign up</h2>
-          <CookiesBanner />
-          <SignupForm />
-          <ExtAuthSignup />
+          {registrationOpen ? (
+            <>
+              <CookiesBanner />
+              <SignupForm />
+              <ExtAuthSignup />
+            </>
+          ) : (
+            <>
+              <div className="alert alert-warning" role="alert">
+                <p>
+                  Unfortunately we are not accepting new user registrations at this time, but we
+                  plan to be open for registration shortly.
+                </p>
+                {withForm && (
+                  <p>
+                    Please provide your email address to be notified when FreeFeed is open for
+                    registration.
+                  </p>
+                )}
+              </div>
+              {withForm && (
+                <p>
+                  <iframe
+                    src={CONFIG.registrationsLimit.emailFormIframeSrc}
+                    width="100%"
+                    height="550"
+                    frameBorder="0"
+                    marginHeight="0"
+                    marginWidth="0"
+                  >
+                    Loading…
+                  </iframe>
+                </p>
+              )}
+            </>
+          )}
         </div>
       </div>
       <div className="box-footer" />

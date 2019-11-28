@@ -3,16 +3,16 @@ import OptiCSS from 'optimize-css-assets-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import Uglify from 'terser-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
-import webpack from 'webpack';
+import appConfig from 'config';
 
 import { baseConfig, opts, rules } from './webpack/base';
 import { skipFalsy } from './webpack/utils';
-import appConfig from './src/config';
 
 const config = {
   ...baseConfig,
   entry: {
     app: skipFalsy(['core-js/stable', 'regenerator-runtime/runtime', './src']),
+    bookmarklet: skipFalsy(['./src/bookmarklet/popup.js']),
   },
   target: 'web',
   devServer: { historyApiFallback: true },
@@ -36,7 +36,8 @@ const config = {
       template: './index.jade',
       file: 'index.html',
       opts,
-      appConfig,
+      colorSchemeStorageKey: appConfig.get('appearance.colorSchemeStorageKey'),
+      sentryDSN: appConfig.get('sentry.publicDSN'),
     }),
     new MiniCssExtractPlugin({
       filename: opts.hash ? '[name]-[contenthash].css' : '[name]-dev.css',
@@ -46,7 +47,6 @@ const config = {
       { from: 'assets/images/ios/*.png', to: '' },
       { from: 'assets/ext-auth/auth-return.html', to: '' },
     ]),
-    new webpack.DefinePlugin({ WEBPACK_SAYS_USE_CANDY: Boolean(process.env.CANDY) }),
   ]),
   optimization: {
     splitChunks: {

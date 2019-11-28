@@ -1,8 +1,8 @@
+/* global CONFIG */
 import React from 'react';
 import { Link } from 'react-router';
 import { Mention, Email, HashTag, Arrows, Link as TLink } from 'social-text-tokenizer';
 
-import config from '../config';
 import { parseText } from '../utils/parse-text';
 import { highlightString } from '../utils/search-highlighter';
 import { FRIENDFEED_POST } from '../utils/link-types';
@@ -10,7 +10,7 @@ import UserName from './user-name';
 import ErrorBoundary from './error-boundary';
 
 const MAX_URL_LENGTH = 50;
-const searchConfig = config.search;
+const { searchEngine } = CONFIG.search;
 
 export default class Linkify extends React.Component {
   parseCounter = 0;
@@ -58,8 +58,8 @@ export default class Linkify extends React.Component {
       }
 
       if (token instanceof HashTag) {
-        if (searchConfig.searchEngine) {
-          return anchorEl(searchConfig.searchEngine + encodeURIComponent(token.text), token.text);
+        if (searchEngine) {
+          return anchorEl(searchEngine + encodeURIComponent(token.text), token.text);
         }
 
         return linkEl({ pathname: '/search', query: { qs: token.text } }, <bdi>{token.text}</bdi>);

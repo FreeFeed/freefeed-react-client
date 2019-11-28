@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 
 import ErrorBoundary from './error-boundary';
 import Post from './post';
+import { joinPostData } from './select-utils';
+import { PostRecentlyHidden } from './post-hides-ui';
 
 const HiddenEntriesToggle = (props) => {
   const entriesForm = props.count > 1 ? 'entries' : 'entry';
@@ -22,50 +24,19 @@ const HiddenEntriesToggle = (props) => {
 };
 
 function Feed(props) {
-  const getEntryComponent = (section) => (post) => {
-    const isRecentlyHidden = props.isInHomeFeed && post.isHidden && section === 'visible';
+  const getEntryComponent = (section) => (post) => (
+    <FeedEntry key={post.id} {...{ post, section, ...props }} />
+  );
 
-    return (
-      <Post
-        {...post}
-        key={post.id}
-        user={props.user}
-        isInHomeFeed={props.isInHomeFeed}
-        isInUserFeed={props.isInUserFeed}
-        isRecentlyHidden={isRecentlyHidden}
-        showMoreComments={props.showMoreComments}
-        showMoreLikes={props.showMoreLikes}
-        toggleEditingPost={props.toggleEditingPost}
-        cancelEditingPost={props.cancelEditingPost}
-        saveEditingPost={props.saveEditingPost}
-        deletePost={props.deletePost}
-        addAttachmentResponse={props.addAttachmentResponse}
-        toggleCommenting={props.toggleCommenting}
-        updateCommentingText={props.updateCommentingText}
-        addComment={props.addComment}
-        likePost={props.likePost}
-        unlikePost={props.unlikePost}
-        hidePost={props.hidePost}
-        unhidePost={props.unhidePost}
-        toggleModeratingComments={props.toggleModeratingComments}
-        disableComments={props.disableComments}
-        enableComments={props.enableComments}
-        commentEdit={props.commentEdit}
-        highlightTerms={props.highlightTerms}
-      />
-    );
-  };
-
-  const visibleEntries = props.visibleEntries.map(getEntryComponent('visible'));
-  const hiddenEntries = (props.hiddenEntries || []).map(getEntryComponent('hidden'));
-  const emptyFeed = visibleEntries.length === 0 && hiddenEntries.length === 0;
+  const visibleEntries = props.visiblePosts.map(getEntryComponent('visible'));
+  const hiddenEntries = (props.hiddenPosts || []).map(getEntryComponent('hidden'));
 
   return (
     <div className="posts">
       <ErrorBoundary>
         {visibleEntries}
 
-        {hiddenEntries.length > 0 ? (
+        {hiddenEntries.length > 0 && (
           <div>
             <HiddenEntriesToggle
               count={hiddenEntries.length}
@@ -75,12 +46,10 @@ function Feed(props) {
 
             {props.isHiddenRevealed ? hiddenEntries : false}
           </div>
-        ) : (
-          false
         )}
 
-        {emptyFeed && props.loading && <p>Loading feed...</p>}
-        {emptyFeed && !props.loading && (
+        {props.emptyFeed && props.loading && <p>Loading feed...</p>}
+        {props.emptyFeed && !props.loading && (
           <>
             <p>There are no posts in this feed.</p>
             {props.emptyFeedMessage}
@@ -91,4 +60,77 @@ function Feed(props) {
   );
 }
 
-export default connect((state) => ({ loading: state.routeLoadingState }))(Feed);
+const postIsHidden = (post) => !!(post.isHidden || post.hiddenByNames);
+
+export default connect((state) => {
+  const {
+    entries,
+    recentlyHiddenEntries,
+    separateHiddenEntries,
+    isHiddenRevealed,
+  } = state.feedViewState;
+
+  const allPosts = entries.map(joinPostData(state)).filter(Boolean);
+
+  let visiblePosts = allPosts;
+  let hiddenPosts = [];
+
+  if (separateHiddenEntries) {
+    visiblePosts = allPosts.filter((p) => !postIsHidden(p) || recentlyHiddenEntries[p.id]);
+    hiddenPosts = allPosts.filter((p) => postIsHidden(p));
+  }
+
+  return {
+    loading: state.routeLoadingState,
+    emptyFeed: entries.length === 0,
+    separateHiddenEntries,
+    isHiddenRevealed,
+    visiblePosts,
+    hiddenPosts,
+  };
+})(Feed);
+
+function FeedEntry({ post, section, ...props }) {
+  // Capture Hide link offset before post unmount
+  const [hideLinkTopOffset, setHideLinkTopOffset] = useState(undefined);
+  const onPostUnmount = useCallback((offset) => setHideLinkTopOffset(offset), []);
+
+  const isRecentlyHidden =
+    props.separateHiddenEntries && (post.isHidden || post.hiddenByNames) && section === 'visible';
+
+  return isRecentlyHidden ? (
+    <PostRecentlyHidden
+      id={post.id}
+      initialTopOffset={hideLinkTopOffset}
+      isHidden={post.isHidden}
+      recipientNames={post.recipientNames}
+    />
+  ) : (
+    <Post
+      {...post}
+      user={props.user}
+      isInHomeFeed={props.isInHomeFeed}
+      isInUserFeed={props.isInUserFeed}
+      showMoreComments={props.showMoreComments}
+      showMoreLikes={props.showMoreLikes}
+      toggleEditingPost={props.toggleEditingPost}
+      cancelEditingPost={props.cancelEditingPost}
+      saveEditingPost={props.saveEditingPost}
+      deletePost={props.deletePost}
+      addAttachmentResponse={props.addAttachmentResponse}
+      toggleCommenting={props.toggleCommenting}
+      updateCommentingText={props.updateCommentingText}
+      addComment={props.addComment}
+      likePost={props.likePost}
+      unlikePost={props.unlikePost}
+      hidePost={props.hidePost}
+      unhidePost={props.unhidePost}
+      toggleModeratingComments={props.toggleModeratingComments}
+      disableComments={props.disableComments}
+      enableComments={props.enableComments}
+      commentEdit={props.commentEdit}
+      highlightTerms={props.highlightTerms}
+      setFinalHideLinkOffset={onPostUnmount}
+    />
+  );
+}

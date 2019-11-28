@@ -20,7 +20,7 @@ function ScopesList({ scopesStatus, scopes, getAppTokensScopes }) {
   }
 
   if (scopesStatus.error) {
-    return <div className="alert alert-danger">Can not load scopes: {scopesStatus.error}</div>;
+    return <div className="alert alert-danger">Can not load scopes: {scopesStatus.errorText}</div>;
   }
 
   return (
@@ -59,10 +59,9 @@ function ScopesList({ scopesStatus, scopes, getAppTokensScopes }) {
   );
 }
 
-export default connect(
-  (state) => pick(state.appTokens, ['scopesStatus', 'scopes']),
-  { getAppTokensScopes },
-)(ScopesList);
+export default connect((state) => pick(state.appTokens, ['scopesStatus', 'scopes']), {
+  getAppTokensScopes,
+})(ScopesList);
 
 function APIList({ children }) {
   const [opened, setOpened] = useState(false);

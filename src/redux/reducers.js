@@ -1,9 +1,9 @@
+/* global CONFIG */
 import _ from 'lodash';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { combineReducers } from 'redux';
 
 import { userParser, postParser, getSummaryPeriod } from '../utils';
-import config from '../config';
 import { getToken, getPersistedUser } from '../services/auth';
 import { parseQuery } from '../utils/search-highlighter';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
@@ -20,7 +20,7 @@ import {
   initialAsyncState,
 } from './async-helpers';
 
-const frontendPrefsConfig = config.frontendPreferences;
+const frontendPrefsConfig = CONFIG.frontendPreferences;
 
 const { request, response, fail } = ActionHelpers;
 
@@ -175,50 +175,12 @@ export function createPostViewState(state = {}, action) {
 }
 
 const initFeed = {
-  visibleEntries: [],
-  hiddenEntries: [],
+  entries: [],
   timeline: null,
+  recentlyHiddenEntries: {},
   separateHiddenEntries: false,
   isHiddenRevealed: false,
   isLastPage: true,
-};
-
-const hidePostInFeed = function(state, postId) {
-  if (!state.separateHiddenEntries) {
-    return state;
-  }
-  // Add it to hiddenEntries, but don't remove from visibleEntries just yet
-  // (for the sake of "Undo"). Do not touch state if if post is already in
-  // hiddenEntries (since realtime event might come first) or is not at the
-  // page at all.
-  const inHidden = state.hiddenEntries.indexOf(postId) > -1;
-  const inVisible = state.visibleEntries.indexOf(postId) > -1;
-  if (inHidden || (!inHidden && !inVisible)) {
-    return state;
-  }
-  return {
-    ...state,
-    hiddenEntries: [postId, ...state.hiddenEntries],
-  };
-};
-
-const unhidePostInFeed = function(state, postId) {
-  if (!state.separateHiddenEntries) {
-    return state;
-  }
-  // Remove it from hiddenEntries and add to visibleEntries
-  // (but check first if it's already in there, since this might be an "Undo" happening,
-  // and/or realtime event might come first).
-  const inHidden = state.hiddenEntries.indexOf(postId) > -1;
-  const inVisible = state.visibleEntries.indexOf(postId) > -1;
-  if (!inHidden) {
-    return state;
-  }
-  return {
-    ...state,
-    visibleEntries: inVisible ? state.visibleEntries : [...state.visibleEntries, postId],
-    hiddenEntries: _.without(state.hiddenEntries, postId),
-  };
 };
 
 export function feedViewState(state = initFeed, action) {
@@ -229,27 +191,17 @@ export function feedViewState(state = initFeed, action) {
     // Separate hidden entries only in 'RiverOfNews' feed
     const separateHiddenEntries = action.type === response(ActionTypes.HOME);
 
-    let visibleEntries, hiddenEntries;
-    if (separateHiddenEntries) {
-      visibleEntries = (action.payload.posts || [])
-        .filter((post) => !post.isHidden)
-        .map((post) => post.id);
-      hiddenEntries = (action.payload.posts || [])
-        .filter((post) => post.isHidden)
-        .map((post) => post.id);
-    } else {
-      visibleEntries = (action.payload.posts || []).map((post) => post.id);
-      hiddenEntries = [];
-    }
+    const entries = (action.payload.posts || []).map((post) => post.id);
+    const recentlyHiddenEntries = {};
     const isHiddenRevealed = false;
     const { isLastPage } = action.payload;
     const timeline = action.payload.timelines
       ? _.pick(action.payload.timelines, ['id', 'name', 'user'])
       : null;
     return {
-      ...state,
-      visibleEntries,
-      hiddenEntries,
+      ...initFeed,
+      entries,
+      recentlyHiddenEntries,
       timeline,
       separateHiddenEntries,
       isHiddenRevealed,
@@ -274,91 +226,107 @@ export function feedViewState(state = initFeed, action) {
       const { postId } = action.request;
       return {
         ...state,
-        visibleEntries: _.without(state.visibleEntries, postId),
-        hiddenEntries: _.without(state.hiddenEntries, postId),
+        entries: _.without(state.entries, postId),
       };
     }
     case ActionTypes.REALTIME_POST_DESTROY: {
       return {
         ...state,
-        visibleEntries: _.without(state.visibleEntries, action.postId),
-        hiddenEntries: _.without(state.hiddenEntries, action.postId),
+        entries: _.without(state.entries, action.postId),
       };
     }
     case response(ActionTypes.CREATE_POST): {
       const postId = action.payload.posts.id;
-      if (state.visibleEntries.indexOf(postId) !== -1) {
+      if (state.entries.indexOf(postId) !== -1) {
         return state;
       }
       return {
         ...state,
-        visibleEntries: [postId, ...state.visibleEntries],
+        entries: [postId, ...state.entries],
       };
     }
     case response(ActionTypes.GET_SINGLE_POST): {
       const { postId } = action.request;
       return {
         ...initFeed,
-        visibleEntries: [postId],
+        entries: [postId],
       };
     }
     case ActionTypes.REALTIME_POST_NEW: {
-      if (state.visibleEntries.indexOf(action.post.id) !== -1) {
+      if (state.entries.indexOf(action.post.id) !== -1) {
         return state;
       }
       if (!action.shouldBump) {
         return state;
       }
 
-      let { visibleEntries } = state;
-      const p = state.visibleEntries.indexOf(action.insertBefore);
+      let { entries } = state;
+      const p = state.entries.indexOf(action.insertBefore);
       if (p < 0) {
-        visibleEntries = [...visibleEntries, action.post.id];
+        entries = [...entries, action.post.id];
       } else {
-        visibleEntries = [
-          ...visibleEntries.slice(0, p),
-          action.post.id,
-          ...visibleEntries.slice(p),
-        ];
+        entries = [...entries.slice(0, p), action.post.id, ...entries.slice(p)];
       }
 
-      return { ...state, visibleEntries };
+      return { ...state, entries };
     }
     case ActionTypes.REALTIME_LIKE_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW: {
       if (action.post && action.shouldBump) {
         const postId = action.post.posts.id;
-        const addToHiddens = action.post.posts.isHidden && state.separateHiddenEntries;
-        if (addToHiddens && !state.hiddenEntries.includes(postId)) {
-          return {
-            ...state,
-            hiddenEntries: [postId, ...state.hiddenEntries],
-          };
-        }
-        if (!addToHiddens && !state.visibleEntries.includes(postId)) {
-          return {
-            ...state,
-            visibleEntries: [postId, ...state.visibleEntries],
-          };
-        }
+        return {
+          ...state,
+          entries: [postId, ...state.entries],
+        };
       }
       return state;
     }
     case fail(ActionTypes.GET_SINGLE_POST): {
       return initFeed;
     }
+    // Recently hidden entries updates only by local events, not by realtime
     case response(ActionTypes.HIDE_POST): {
-      return hidePostInFeed(state, action.request.postId);
+      const { postId } = action.request;
+      if (state.recentlyHiddenEntries[postId]) {
+        return state;
+      }
+      return {
+        ...state,
+        recentlyHiddenEntries: {
+          ...state.recentlyHiddenEntries,
+          [postId]: true,
+        },
+      };
     }
-    case ActionTypes.REALTIME_POST_HIDE: {
-      return hidePostInFeed(state, action.postId);
+
+    // Hide by username
+    case response(ActionTypes.HIDE_BY_NAME): {
+      const { postId, hide } = action.request;
+      if (postId) {
+        if (hide && !state.recentlyHiddenEntries[postId]) {
+          return {
+            ...state,
+            recentlyHiddenEntries: {
+              ...state.recentlyHiddenEntries,
+              [postId]: true,
+            },
+          };
+        }
+      }
+      return state;
     }
-    case response(ActionTypes.UNHIDE_POST): {
-      return unhidePostInFeed(state, action.request.postId);
+
+    case ActionTypes.REMOVE_RECENTLY_HIDDEN_POST: {
+      const { postId } = action.payload;
+      if (!state.recentlyHiddenEntries[postId]) {
+        return state;
+      }
+      return {
+        ...state,
+        recentlyHiddenEntries: _.omit(state.recentlyHiddenEntries, postId),
+      };
     }
-    case ActionTypes.REALTIME_POST_UNHIDE: {
-      return unhidePostInFeed(state, action.postId);
-    }
+
     case ActionTypes.TOGGLE_HIDDEN_POSTS: {
       return {
         ...state,
@@ -612,96 +580,6 @@ export function postsViewState(state = {}, action) {
         [post.id]: {
           ...post,
           omittedLikes: isLikeVisible ? post.omittedLikes : Math.max(0, post.omittedLikes - 1),
-        },
-      };
-    }
-
-    case request(ActionTypes.HIDE_POST): {
-      const post = state[action.payload.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          isHiding: true,
-        },
-      };
-    }
-    case response(ActionTypes.HIDE_POST): {
-      const post = state[action.request.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          isHiding: false,
-        },
-      };
-    }
-    case ActionTypes.REALTIME_POST_HIDE: {
-      const post = state[action.postId];
-      if (!post) {
-        return state;
-      }
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          isHiding: false,
-        },
-      };
-    }
-    case fail(ActionTypes.HIDE_POST): {
-      const post = state[action.request.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          isHiding: false,
-          hideError: 'Something went wrong while hiding the post.',
-        },
-      };
-    }
-
-    case request(ActionTypes.UNHIDE_POST): {
-      const post = state[action.payload.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          isHiding: true,
-        },
-      };
-    }
-    case response(ActionTypes.UNHIDE_POST): {
-      const post = state[action.request.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          isHiding: false,
-        },
-      };
-    }
-    case ActionTypes.REALTIME_POST_UNHIDE: {
-      const post = state[action.postId];
-      if (!post) {
-        return state;
-      }
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          isHiding: false,
-        },
-      };
-    }
-    case fail(ActionTypes.UNHIDE_POST): {
-      const post = state[action.request.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          isHiding: false,
-          hideError: 'Something went wrong while un-hiding the post.',
         },
       };
     }
@@ -1168,6 +1046,16 @@ export function posts(state = {}, action) {
   return state;
 }
 
+export const postHideStatuses = asyncStatesMap(
+  [
+    ActionTypes.HIDE_POST,
+    ActionTypes.UNHIDE_POST,
+    ActionTypes.HIDE_BY_NAME,
+    ActionTypes.UNHIDE_NAMES,
+  ],
+  { getKey: getKeyBy('postId'), cleanOnSuccess: true },
+);
+
 export function attachments(state = {}, action) {
   if (ActionHelpers.isFeedResponse(action)) {
     return mergeByIds(state, action.payload.attachments);
@@ -1540,6 +1428,10 @@ export function users(state = {}, action) {
         return { ...state, [userId]: { ...state[userId], ...newUser } };
       }
       return state;
+    }
+    case response(ActionTypes.GET_ALL_GROUPS): {
+      const { users = [] } = action.payload;
+      return mergeByIds(state, users.map(userParser));
     }
   }
   return state;
@@ -2551,7 +2443,7 @@ export function serverTimeAhead(state = 0, action) {
 }
 
 const getInitialFeedViewOptions = () => {
-  const defaultHomeFeedSort = config.frontendPreferences.defaultValues.homeFeedSort;
+  const defaultHomeFeedSort = frontendPrefsConfig.defaultValues.homeFeedSort;
   const persistedUser = getPersistedUser();
   const homeFeedSort =
     (persistedUser && persistedUser.frontendPreferences.homeFeedSort) || defaultHomeFeedSort;
@@ -2565,7 +2457,7 @@ const getInitialFeedViewOptions = () => {
 
 export function feedViewOptions(state = getInitialFeedViewOptions(), action) {
   if (action.type === response(ActionTypes.WHO_AM_I)) {
-    const defaultHomeFeedSort = config.frontendPreferences.defaultValues.homeFeedSort;
+    const defaultHomeFeedSort = frontendPrefsConfig.defaultValues.homeFeedSort;
     const frontendPreferences =
       action.payload.users.frontendPreferences &&
       action.payload.users.frontendPreferences[frontendPrefsConfig.clientId];
@@ -2622,3 +2514,36 @@ export const serverInfo = fromResponse(ActionTypes.GET_SERVER_INFO, ({ payload }
 export const serverInfoStatus = asyncState(ActionTypes.GET_SERVER_INFO);
 
 export { extAuth } from './reducers/ext-auth.js';
+
+const getInitialHiddenUserNames = () => {
+  const defaultHiddenUsers = CONFIG.frontendPreferences.defaultValues.homefeed.hideUsers;
+  const persistedUser = getPersistedUser();
+  return _.get(persistedUser, ['frontendPreferences', 'homefeed', 'hideUsers'], defaultHiddenUsers);
+};
+
+export function hiddenUserNames(state = getInitialHiddenUserNames(), action) {
+  if (ActionHelpers.isUserChangeResponse(action)) {
+    return _.get(
+      action.payload.users,
+      ['frontendPreferences', CONFIG.frontendPreferences.clientId, 'homefeed', 'hideUsers'],
+      CONFIG.frontendPreferences.defaultValues.homefeed.hideUsers,
+    );
+  }
+  return state;
+}
+
+export const allGroupsStatus = asyncState(
+  ActionTypes.GET_ALL_GROUPS,
+  setOnLocationChange(initialAsyncState, ['/all-groups']),
+);
+
+const allGroupsDefaults = { withProtected: false, groups: [] };
+export const allGroups = fromResponse(
+  ActionTypes.GET_ALL_GROUPS,
+  ({ payload: { withProtected, groups, users } }) => ({
+    withProtected,
+    groups: groups.map((g) => ({ ...g, createdAt: users.find((u) => u.id === g.id).createdAt })),
+  }),
+  allGroupsDefaults,
+  setOnLocationChange(allGroupsDefaults, ['/all-groups']),
+);

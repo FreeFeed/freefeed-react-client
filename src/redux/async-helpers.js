@@ -52,7 +52,7 @@ export function asyncState(actionTypes, nextReducer = null) {
 
   return (state = initialAsyncState, action) => {
     if (!actionTypes.includes(baseType(action.type))) {
-      return nextReducer ? nextReducer(action, state) : state;
+      return nextReducer ? nextReducer(state, action) : state;
     }
 
     switch (asyncPhase(action.type)) {
@@ -94,9 +94,10 @@ export function getKeyBy(keyName) {
 /**
  * Reducer that represents a map of asyncState's.
  *
- * The map keys are produses from actions via the *getKey* function.
+ * The map keys are produced from actions via the *getKey* function. If the result
+ * of getKey is falsy, the state is not modified.
+ * The state also will not modified if *keyMustExist* is true and the key is not exist.
  * The *applyState* function allows non-trivial modifications of the existing state.
- * The reducer will not touch the state if *keyMustExist* is true and the key does not exist.
  * If action is not one of actionTypes async actions then the *nextReducer*
  * is called if present.
  *
@@ -106,7 +107,12 @@ export function getKeyBy(keyName) {
  */
 export function asyncStatesMap(
   actionTypes,
-  { getKey = getKeyBy('id'), applyState = (prev, s) => s, keyMustExist = false } = {},
+  {
+    getKey = getKeyBy('id'),
+    applyState = (prev, s) => s,
+    keyMustExist = false,
+    cleanOnSuccess = false,
+  } = {},
   nextReducer = null,
 ) {
   if (!Array.isArray(actionTypes)) {
@@ -119,11 +125,20 @@ export function asyncStatesMap(
     const subState = subReducer(42, action);
     if (subState === 42) {
       // State was not modified so it is not an async action of any needed type
-      return nextReducer ? nextReducer(action, state) : state;
+      return nextReducer ? nextReducer(state, action) : state;
     }
 
     const key = getKey(action);
-    if (keyMustExist && !state[key]) {
+    if (!key || (keyMustExist && !state[key])) {
+      return state;
+    }
+
+    if (cleanOnSuccess && subState.success) {
+      if (key in state) {
+        const newState = { ...state };
+        Reflect.deleteProperty(newState, key);
+        return newState;
+      }
       return state;
     }
 

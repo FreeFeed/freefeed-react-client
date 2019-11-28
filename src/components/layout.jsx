@@ -214,7 +214,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  select,
-  mapDispatchToProps,
-)(Layout);
+export default connect(select, mapDispatchToProps)(Layout);

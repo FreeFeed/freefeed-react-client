@@ -9,7 +9,7 @@ import {
   toggleHiddenPosts,
 } from '../redux/action-creators';
 import { pluralForm } from '../utils';
-import { joinPostData, postActions } from './select-utils';
+import { postActions } from './select-utils';
 import CreatePost from './create-post';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
@@ -88,18 +88,12 @@ function selectState(state) {
     userRequestsCount,
   } = state;
 
-  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
-  const hiddenEntries = state.feedViewState.hiddenEntries.map(joinPostData(state));
-  const { isHiddenRevealed } = state.feedViewState;
   const sendTo = { ...state.sendTo, defaultFeed: user.username };
   const feedIsLoading = state.routeLoadingState;
 
   return {
     user,
     authenticated,
-    visibleEntries,
-    hiddenEntries,
-    isHiddenRevealed,
     createPostViewState,
     timelines,
     boxHeader,
@@ -121,7 +115,4 @@ function selectActions(dispatch) {
   };
 }
 
-export default connect(
-  selectState,
-  selectActions,
-)(FeedHandler);
+export default connect(selectState, selectActions)(FeedHandler);

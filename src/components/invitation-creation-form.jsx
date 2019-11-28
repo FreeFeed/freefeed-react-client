@@ -349,7 +349,4 @@ function mapDispatchToProps(dispatch) {
   return { createInvitation: (...args) => dispatch(createFreefeedInvitation(...args)) };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(InvitationCreationForm);
+export default connect(mapStateToProps, mapDispatchToProps)(InvitationCreationForm);

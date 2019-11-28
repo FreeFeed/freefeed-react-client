@@ -139,7 +139,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  selectState,
-  mapDispatchToProps,
-)(Layout);
+export default connect(selectState, mapDispatchToProps)(Layout);

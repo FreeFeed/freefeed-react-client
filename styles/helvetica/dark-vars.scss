@@ -1,0 +1,18 @@
+$bg-color: hsl(220, 9%, 10%);
+$bg-color-lighter: hsl(220, 6%, 18%);
+$bg-color-lightest: hsl(220, 3%, 24%);
+
+$text-color: hsl(0, 0%, 70%);
+$text-color-lighter: hsl(0, 0%, 80%);
+$text-color-darker: hsl(0, 0%, 60%);
+
+$separator-color: hsl(0, 0%, 50%);
+
+$accent-color: hsl(40, 100%, 55%);
+$link-color: mix($text-color, $accent-color, 60%);
+$link-color-dim: mix($text-color, $accent-color, 75%);
+
+$label-bg-color: mix($bg-color, $accent-color, 25%);
+$label-text-color: hsl(0, 0%, 20%);
+
+$bg-highlight-color: mix($bg-color-lightest, $accent-color, 70%);

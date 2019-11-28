@@ -60,6 +60,22 @@
       .dz-details {
         opacity: 1;
       }
+
+      .dz-image {
+        img {
+          @include prefix(
+            (
+              transform: scale(1.05, 1.05),
+            )
+          ); // Getting rid of that white bleed-in
+          @include prefix(
+            (
+              filter: blur(8px),
+            ),
+            webkit
+          ); // Getting rid of that white bleed-in
+        }
+      }
     }
 
     &.dz-file-preview {
@@ -84,10 +100,6 @@
           )
         );
       }
-    }
-
-    &:hover .dz-details {
-      opacity: 1;
     }
 
     .dz-details {
@@ -147,24 +159,6 @@
       }
     }
 
-    &:hover {
-      .dz-image {
-        img {
-          @include prefix(
-            (
-              transform: scale(1.05, 1.05),
-            )
-          ); // Getting rid of that white bleed-in
-          @include prefix(
-            (
-              filter: blur(8px),
-            ),
-            webkit
-          ); // Getting rid of that white bleed-in
-        }
-      }
-    }
-
     .dz-image {
       border-radius: $image-border-radius;
       overflow: hidden;
@@ -197,6 +191,13 @@
             animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1),
           )
         );
+      }
+      .dz-error-message {
+        display: block;
+      }
+      &:hover .dz-error-message {
+        opacity: 1;
+        pointer-events: auto;
       }
     }
 
@@ -287,16 +288,6 @@
             transition: width 300ms ease-in-out,
           )
         );
-      }
-    }
-
-    &.dz-error {
-      .dz-error-message {
-        display: block;
-      }
-      &:hover .dz-error-message {
-        opacity: 1;
-        pointer-events: auto;
       }
     }
 

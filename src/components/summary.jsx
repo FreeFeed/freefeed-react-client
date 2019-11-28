@@ -42,16 +42,13 @@ class Summary extends React.Component {
 function mapStateToProps(state) {
   const isLoading = state.routeLoadingState;
   const { authenticated, boxHeader, user } = state;
-  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
+  const entries = state.feedViewState.entries.map(joinPostData(state));
 
-  return { isLoading, user, authenticated, visibleEntries, boxHeader };
+  return { isLoading, user, authenticated, entries, boxHeader };
 }
 
 function mapActionsToDispatch(dispatch) {
   return { ...postActions(dispatch) };
 }
 
-export default connect(
-  mapStateToProps,
-  mapActionsToDispatch,
-)(Summary);
+export default connect(mapStateToProps, mapActionsToDispatch)(Summary);

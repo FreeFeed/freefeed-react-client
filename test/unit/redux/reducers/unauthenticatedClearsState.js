@@ -22,16 +22,11 @@ describe('application of "unauthenticated()" action', () => {
   });
 
   it('should clear feedViewState reducer', () => {
-    const initial = {
-      visibleEntries: ['1', '2'],
-      hiddenEntries: ['3', '4'],
-      isHiddenRevealed: true,
-    };
+    const initial = { entries: ['1', '2'], isHiddenRevealed: true };
 
     const feedViewStateReduced = feedViewState(initial, unauthenticated());
 
-    expect(feedViewStateReduced.visibleEntries, 'to be empty');
-    expect(feedViewStateReduced.hiddenEntries, 'to be empty');
+    expect(feedViewStateReduced.entries, 'to be empty');
     expect(feedViewStateReduced.isHiddenRevealed, 'to be false');
   });
 });

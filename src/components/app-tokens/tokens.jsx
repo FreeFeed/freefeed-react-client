@@ -45,7 +45,6 @@ function Tokens({ tokensStatus: status, tokenIds, getAppTokens }) {
   );
 }
 
-export default connect(
-  (state) => pick(state.appTokens, ['tokensStatus', 'tokenIds']),
-  { getAppTokens },
-)(Tokens);
+export default connect((state) => pick(state.appTokens, ['tokensStatus', 'tokenIds']), {
+  getAppTokens,
+})(Tokens);

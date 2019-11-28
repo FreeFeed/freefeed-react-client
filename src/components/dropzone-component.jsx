@@ -1,12 +1,11 @@
+/* global CONFIG */
 import React from 'react';
 import DropzoneComponent from 'react-dropzone-component';
 
-import config from '../config';
 import { getToken } from '../services/auth';
 
-const apiConfig = config.api;
 // DropzoneJS configuration
-const dropzoneComponentConfig = { postUrl: `${apiConfig.host}/v1/attachments` };
+const dropzoneComponentConfig = { postUrl: `${CONFIG.api.root}/v1/attachments` };
 const dropzoneConfig = {
   dictDefaultMessage: 'Drop files here', // The message that gets displayed before any files are dropped.
   previewsContainer: '.dropzone-previews', // Define the container to display the previews.
