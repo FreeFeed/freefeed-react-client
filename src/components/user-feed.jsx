@@ -19,18 +19,22 @@ class UserFeed extends React.Component {
 
     const {
       viewUser,
-      visibleEntries,
       authenticated,
       location: { query },
     } = this.props;
     const isBlocked = viewUser.blocked;
     const isPrivate = viewUser.isPrivate === '1' && !viewUser.subscribed && !viewUser.isItMe;
-    const amIBlocked =
+    const possiblyBlocked =
       viewUser.isPrivate === '0' &&
       viewUser.statistics.posts !== '0' &&
-      visibleEntries &&
-      visibleEntries.length === 0 &&
       (!('offset' in query) || query.offset === '0');
+
+    const emptyFeedMessage = possiblyBlocked && (
+      <p>
+        Perhaps <b>{viewUser.screenName}</b> has not written any posts yet
+        {authenticated ? ' or they have blocked you' : ''}.
+      </p>
+    );
 
     if (isBlocked) {
       return (
@@ -64,20 +68,9 @@ class UserFeed extends React.Component {
       );
     }
 
-    if (amIBlocked) {
-      return (
-        <div className="box-body">
-          <p>
-            Nothing to show here. Perhaps <b>{viewUser.screenName}</b> has not written any posts yet
-            {authenticated ? ' or they have blocked you' : ''}.
-          </p>
-        </div>
-      );
-    }
-
     return (
       <PaginatedView {...this.props}>
-        <Feed {...this.props} isInUserFeed={true} />
+        <Feed {...this.props} emptyFeedMessage={emptyFeedMessage} />
       </PaginatedView>
     );
   }
