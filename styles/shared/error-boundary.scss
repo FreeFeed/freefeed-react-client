@@ -1,3 +1,5 @@
+@import '../helvetica/dark-vars.scss';
+
 .error-boundary {
   display: block;
   padding: 10px;
@@ -5,6 +7,10 @@
   border: 2px solid #a00;
   text-align: left;
   line-height: 16px;
+
+  body.dark-theme & {
+    color: $text-color;
+  }
 }
 
 .error-boundary-header {
