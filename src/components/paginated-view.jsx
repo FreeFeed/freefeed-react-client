@@ -70,7 +70,4 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => ({ routingActions: bindRouteActions(dispatch) });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(PaginatedView);
+export default connect(mapStateToProps, mapDispatchToProps)(PaginatedView);

@@ -112,12 +112,9 @@ function mapStateToProps(state, { id }) {
   return { token: tokens[id], scopes };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    reissueAppToken,
-    deleteAppToken,
-    deleteAppTokenId,
-    updateAppToken,
-  },
-)(TokenRow);
+export default connect(mapStateToProps, {
+  reissueAppToken,
+  deleteAppToken,
+  deleteAppTokenId,
+  updateAppToken,
+})(TokenRow);

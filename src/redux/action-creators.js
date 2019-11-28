@@ -960,3 +960,34 @@ export function signInViaExternalProvider(provider, popup) {
     payload: { provider, popup, mode: 'sign-in' },
   };
 }
+
+export function hideByName(username, postId, hide) {
+  return {
+    type: ActionTypes.HIDE_BY_NAME,
+    apiRequest: Api.hideByName,
+    payload: { username, postId, hide },
+  };
+}
+
+export function unhideNames(usernames, postId) {
+  return {
+    type: ActionTypes.UNHIDE_NAMES,
+    apiRequest: Api.unHideNames,
+    payload: { usernames, postId },
+  };
+}
+
+export function removeRecentlyHiddenPost(postId) {
+  return {
+    type: ActionTypes.REMOVE_RECENTLY_HIDDEN_POST,
+    payload: { postId },
+  };
+}
+
+export function getAllGroups() {
+  return {
+    type: ActionTypes.GET_ALL_GROUPS,
+    apiRequest: Api.getAllGroups,
+    nonAuthRequest: true,
+  };
+}

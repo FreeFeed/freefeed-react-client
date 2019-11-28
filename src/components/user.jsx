@@ -13,7 +13,7 @@ import {
 } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
 import { initialAsyncState } from '../redux/async-helpers';
-import { joinPostData, postActions, userActions, canAcceptDirects } from './select-utils';
+import { postActions, userActions, canAcceptDirects } from './select-utils';
 import FeedOptionsSwitch from './feed-options-switch';
 import Breadcrumbs from './breadcrumbs';
 import ErrorBoundary from './error-boundary';
@@ -96,7 +96,6 @@ const UserHandler = (props) => {
 function selectState(state, ownProps) {
   const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
   const anonymous = !authenticated;
-  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
 
   const foundUser =
     (state.feedViewState.timeline && state.users[state.feedViewState.timeline.user]) ||
@@ -161,7 +160,6 @@ function selectState(state, ownProps) {
 
   return {
     user,
-    visibleEntries,
     timelines,
     createPostViewState,
     boxHeader,
@@ -184,7 +182,4 @@ function selectActions(dispatch) {
   };
 }
 
-export default connect(
-  selectState,
-  selectActions,
-)(UserHandler);
+export default connect(selectState, selectActions)(UserHandler);

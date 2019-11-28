@@ -1,5 +1,5 @@
 /*global Raven*/
-import { intersectionBy, differenceBy } from 'lodash';
+import { differenceBy, intersection, intersectionBy, uniq } from 'lodash';
 
 import {
   // User actions
@@ -37,6 +37,7 @@ import {
   unlikeComment,
   getCommentLikes,
   deleteComment,
+  hideByName,
 } from '../redux/action-creators';
 import { SCHEME_DARK, SCHEME_SYSTEM } from '../services/appearance';
 
@@ -93,6 +94,15 @@ export const joinPostData = (state) => (postId) => {
   }
   const { user } = state;
 
+  const createdBy = state.users[post.createdBy] || { id: post.createdBy, username: '-unknown-' };
+  if (createdBy.username === '-unknown-') {
+    if (typeof Raven !== 'undefined') {
+      Raven.captureMessage(`We've got post with unknown author with id`, {
+        extra: { uid: post.createdBy },
+      });
+    }
+  }
+
   // Get the list of post's recipients
   const recipients = post.postedTo
     .map((subscriptionId) => {
@@ -103,6 +113,19 @@ export const joinPostData = (state) => (postId) => {
     })
     .map((userId) => state.subscribers[userId])
     .filter((user) => user);
+
+  // All recipient names and the post's author name.
+  // Sorted alphabetically but author name is always comes first.
+  const recipientNames = uniq([createdBy, ...recipients].map((u) => u.username)).sort((a, b) => {
+    if (a === createdBy.username) {
+      return -1;
+    }
+    if (b === createdBy.username) {
+      return 1;
+    }
+    return a.localeCompare(b);
+  });
+  const hiddenByNames = intersection(recipientNames, state.hiddenUserNames);
 
   const isEditable = post.createdBy === user.id;
   const isModeratable =
@@ -124,7 +147,10 @@ export const joinPostData = (state) => (postId) => {
     }
     const commentViewState = state.commentViewState[commentId];
     const author = state.users[comment.createdBy] || null;
-    const previousComment = _comments[index - 1] || { createdBy: null, createdAt: '0' };
+    const previousComment = _comments[index - 1] || {
+      createdBy: null,
+      createdAt: '0',
+    };
     const omitBubble =
       omitRepeatedBubbles &&
       postViewState.omittedComments === 0 &&
@@ -162,18 +188,6 @@ export const joinPostData = (state) => (postId) => {
     usersLikedPost = usersLikedPost.slice(0, MAX_LIKES);
   }
 
-  const placeholderUser = { id: post.createdBy };
-
-  const createdBy = state.users[post.createdBy] || placeholderUser;
-
-  if (createdBy === placeholderUser) {
-    if (typeof Raven !== 'undefined') {
-      Raven.captureMessage(`We've got post with unknown author with id`, {
-        extra: { uid: placeholderUser.id },
-      });
-    }
-  }
-
   // Check if the post is a direct message
   const directRecipients = post.postedTo.filter((subscriptionId) => {
     const subscriptionType = (state.subscriptions[subscriptionId] || {}).name;
@@ -197,6 +211,8 @@ export const joinPostData = (state) => (postId) => {
     isFullyRemovable,
     allowLinksPreview,
     readMoreStyle,
+    recipientNames,
+    hiddenByNames: hiddenByNames.length > 0 ? hiddenByNames : null,
   };
 };
 
@@ -243,6 +259,7 @@ export function userActions(dispatch) {
     subscribe: (username) => dispatch(subscribe(username)),
     unsubscribe: (username) => dispatch(unsubscribe(username)),
     sendSubscriptionRequest: (username) => dispatch(sendSubscriptionRequest(username)),
+    hideByName: (username, hide) => dispatch(hideByName(username, null, hide)),
   };
 }
 

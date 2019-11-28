@@ -26,13 +26,10 @@ class Summary extends React.Component {
         </div>
 
         <div className="box-body">
-          {props.isLoading || props.visibleEntries.length ? (
-            <Feed {...props} />
-          ) : (
-            <div className="summary-no-results">
-              <p>No entries here yet. You might want to subscribe for more users and groups.</p>
-            </div>
-          )}
+          <Feed
+            {...props}
+            emptyFeedMessage={<p>You might want to subscribe for more users and groups.</p>}
+          />
         </div>
       </div>
     );
@@ -42,16 +39,13 @@ class Summary extends React.Component {
 function mapStateToProps(state) {
   const isLoading = state.routeLoadingState;
   const { authenticated, boxHeader, user } = state;
-  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
+  const entries = state.feedViewState.entries.map(joinPostData(state));
 
-  return { isLoading, user, authenticated, visibleEntries, boxHeader };
+  return { isLoading, user, authenticated, entries, boxHeader };
 }
 
 function mapActionsToDispatch(dispatch) {
   return { ...postActions(dispatch) };
 }
 
-export default connect(
-  mapStateToProps,
-  mapActionsToDispatch,
-)(Summary);
+export default connect(mapStateToProps, mapActionsToDispatch)(Summary);

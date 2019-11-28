@@ -6,16 +6,14 @@
 }
 
 .select2-container--default {
+  @extend .select2-container--open;
+
   &.select2-container--disabled {
     .select2-selection--multiple {
       border: 0 !important;
       background-color: #fff;
     }
   }
-}
-
-.select2-container--default {
-  @extend .select2-container--open;
 
   .select2-selection--multiple {
     border: none;

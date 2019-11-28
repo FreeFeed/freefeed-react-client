@@ -19,7 +19,6 @@ const FeedHandler = (props) => (
         )}
       </div>
       <PaginatedView {...props}>
-        {props.visibleEntries.length === 0 && 'No posts here'}
         <Feed {...props} />
       </PaginatedView>
       <div className="box-footer" />
@@ -29,16 +28,13 @@ const FeedHandler = (props) => (
 
 function selectState(state) {
   const { authenticated, boxHeader, timelines, user } = state;
-  const visibleEntries = state.feedViewState.visibleEntries.map(joinPostData(state));
+  const entries = state.feedViewState.entries.map(joinPostData(state));
 
-  return { user, authenticated, visibleEntries, timelines, boxHeader };
+  return { user, authenticated, entries, timelines, boxHeader };
 }
 
 function selectActions(dispatch) {
   return { ...postActions(dispatch) };
 }
 
-export default connect(
-  selectState,
-  selectActions,
-)(FeedHandler);
+export default connect(selectState, selectActions)(FeedHandler);

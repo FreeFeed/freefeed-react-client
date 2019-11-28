@@ -4,6 +4,7 @@ import fetch from 'isomorphic-fetch';
 import _ from 'lodash';
 
 import { getDateForMemoriesRequest } from '../utils/get-date-from-short-string';
+import { userParser } from '../utils';
 import { getToken } from './auth';
 import { popupAsPromise } from './popup';
 
@@ -538,4 +539,59 @@ export async function performExtAuth({ provider, popup, mode }) {
   }
 
   return finishResp;
+}
+
+export async function hideByName({
+  username, // username to hide/unhide
+  hide, // 'true' to hide or 'false' to unhide
+}) {
+  // Need to actualize user's hide list
+  const whoAmIResp = await getWhoAmI();
+  if (whoAmIResp.status !== 200) {
+    return whoAmIResp;
+  }
+
+  const whoAmIData = await whoAmIResp.json();
+  const { id: userId, frontendPreferences: frontendPrefs } = userParser(whoAmIData.users);
+
+  const hiddenNames = _.get(frontendPrefs, 'homefeed.hideUsers', []);
+
+  if (hide === hiddenNames.includes(username)) {
+    // User is already hidden/unhidden
+    return whoAmIResp;
+  }
+
+  _.set(
+    frontendPrefs,
+    'homefeed.hideUsers',
+    hide ? [...hiddenNames, username] : _.without(hiddenNames, username),
+  );
+
+  return await updateUserPreferences({ userId, frontendPrefs });
+}
+
+export async function unHideNames({
+  usernames, // usernames to unhide
+}) {
+  // Need to actualize user's hide list
+  const whoAmIResp = await getWhoAmI();
+  if (whoAmIResp.status !== 200) {
+    return whoAmIResp;
+  }
+
+  const whoAmIData = await whoAmIResp.json();
+  const { id: userId, frontendPreferences: frontendPrefs } = userParser(whoAmIData.users);
+
+  const hiddenNames = _.get(frontendPrefs, 'homefeed.hideUsers', []);
+  if (_.intersection(hiddenNames, usernames).length === 0) {
+    // Nothing to unhide
+    return whoAmIResp;
+  }
+
+  _.set(frontendPrefs, 'homefeed.hideUsers', _.difference(hiddenNames, usernames));
+  return await updateUserPreferences({ userId, frontendPrefs });
+}
+
+export function getAllGroups() {
+  return fetch(`${apiRoot}/v2/allGroups`, getRequestOptions());
 }

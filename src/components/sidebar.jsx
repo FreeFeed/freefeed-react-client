@@ -102,9 +102,7 @@ const SideBarFreeFeed = () => (
           <Link to="/filter/everything">Everything</Link>
         </li>
         <li>
-          <a href="https://davidmz.me/frfrfr/all-groups/" target="_blank">
-            Public groups
-          </a>
+          <Link to="/all-groups">Public groups</Link>
         </li>
         <li>
           <Link to="/support">Support</Link> /{' '}
@@ -127,7 +125,10 @@ const SideBarMemories = () => {
   const today = new Date();
   const todayString = format(today, 'MMdd');
   const todayYear = today.getFullYear();
-  const yearLinks = [[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]].map((years, index) => (
+  const yearLinks = [
+    [1, 2, 3, 4, 5, 6],
+    [7, 8, 9, 10, 11, 12],
+  ].map((years, index) => (
     <div className="years-row" key={index}>
       {years.map((offset) => {
         const linkYear = todayYear - offset;

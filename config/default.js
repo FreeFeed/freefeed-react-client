@@ -69,6 +69,10 @@ module.exports = {
 
   appearance: { colorSchemeStorageKey: 'color-scheme' },
 
+  registrationsLimit: {
+    emailFormIframeSrc: null,
+  },
+
   eslint: {
     // By default the eslint-linebreak-style directive requires "windows" linebreaks
     // on Windows platform and "unix" linebreaks otherwise.

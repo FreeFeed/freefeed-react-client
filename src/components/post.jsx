@@ -17,7 +17,8 @@ import {
 import { getFirstLinkToEmbed } from '../utils/parse-text';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
-import { savePost } from '../redux/action-creators';
+import { savePost, hideByName, unhideNames } from '../redux/action-creators';
+import { initialAsyncState } from '../redux/async-helpers';
 import { Throbber } from './throbber';
 
 import PostAttachments from './post-attachments';
@@ -36,11 +37,13 @@ import ErrorBoundary from './error-boundary';
 import { destinationsPrivacy } from './select-utils';
 import { makeJpegIfNeeded } from './create-post';
 import { Icon } from './fontawesome-icons';
+import { UnhideOptions, HideLink } from './post-hides-ui';
 
 const attachmentsMaxCount = CONFIG.attachments.maxCount;
 
 class Post extends React.Component {
   selectFeeds;
+  hideLink = React.createRef();
 
   state = {
     showTimestamps: false,
@@ -50,6 +53,7 @@ class Post extends React.Component {
     editingText: '',
     editingAttachments: [],
     dropzoneDisabled: false,
+    unHideOpened: false,
   };
 
   handleDropzoneInit = (d) => {
@@ -108,13 +112,24 @@ class Post extends React.Component {
     this.props.deletePost(this.props.id);
   };
 
-  handleUnhideClick = () => {
-    this.props.unhidePost(this.props.id);
+  handleHideClick = () => {
+    if (this.props.isHidden) {
+      this.props.unhidePost(this.props.id);
+    } else {
+      this.props.hidePost(this.props.id);
+    }
+  };
+  handleFullUnhide = () => {
+    const { props } = this;
+    props.isHidden && props.unhidePost(props.id);
+    // Unhide all post recipients
+    props.unhideNames(props.recipientNames, props.id);
   };
 
-  handleHideClick = () => {
-    this.props.hidePost(this.props.id);
-  };
+  handleHideByName = (username) => () => this.props.hideByName(username, this.props.id, true);
+  handleUnhideByName = (username) => () => this.props.hideByName(username, this.props.id, false);
+
+  toggleUnHide = () => this.setState({ unHideOpened: !this.state.unHideOpened });
 
   toggleSave = () => {
     const { id, isSaved, savePost, savePostStatus } = this.props;
@@ -257,6 +272,39 @@ class Post extends React.Component {
     return this.props.isEditing ? this.state.editingAttachments : this.props.attachments;
   }
 
+  componentWillUnmount() {
+    this.hideLink.current &&
+      this.props.setFinalHideLinkOffset(this.hideLink.current.getBoundingClientRect().top);
+  }
+
+  renderHideLink() {
+    const { props } = this;
+    return (
+      <>
+        <HideLink
+          isHidden={props.isHidden}
+          hiddenByNames={props.hiddenByNames}
+          unHideOpened={this.state.unHideOpened}
+          toggleUnHide={this.toggleUnHide}
+          handleHideClick={this.handleHideClick}
+          handleFullUnhide={this.handleFullUnhide}
+        />
+        {props.hideStatus.loading && (
+          <span className="post-hide-throbber">
+            <Throbber />
+          </span>
+        )}
+        {props.hideStatus.error && (
+          <Icon
+            icon={faExclamationTriangle}
+            className="post-hide-fail"
+            title={props.hideStatus.errorText}
+          />
+        )}
+      </>
+    );
+  }
+
   render() {
     const { props } = this;
 
@@ -264,18 +312,6 @@ class Post extends React.Component {
       ? props.createdBy.profilePictureLargeUrl
       : props.createdBy.profilePictureMediumUrl;
     const profilePictureSize = props.isSinglePost ? 75 : 50;
-
-    // Hidden user or group
-    if (props.isInHomeFeed) {
-      const hiddenUsers = props.user.frontendPreferences.homefeed.hideUsers;
-      if (!_.isEmpty(hiddenUsers)) {
-        const rcpNames = props.recipients.map((u) => u.username);
-        rcpNames.push(props.createdBy.username);
-        if (!_.isEmpty(_.intersection(rcpNames, hiddenUsers))) {
-          return false;
-        }
-      }
-    }
 
     const postClass = classnames({
       post: true,
@@ -384,28 +420,6 @@ class Post extends React.Component {
         false
       );
 
-    // "Hide" / "Un-hide"
-    const hideLink = props.isInHomeFeed ? (
-      <span>
-        {' - '}
-        <a
-          className="post-action"
-          onClick={props.isHidden ? this.handleUnhideClick : this.handleHideClick}
-        >
-          {props.isHidden ? 'Un-hide' : 'Hide'}
-        </a>
-        {props.isHiding ? (
-          <span className="post-hide-throbber">
-            <Throbber />
-          </span>
-        ) : (
-          false
-        )}
-      </span>
-    ) : (
-      false
-    );
-
     const { isSaved, savePostStatus } = this.props;
     const saveLink = amIAuthenticated && (
       <span>
@@ -447,22 +461,7 @@ class Post extends React.Component {
       (attachment) => attachment.mediaType === 'image',
     );
 
-    return props.isRecentlyHidden ? (
-      <div className="post recently-hidden-post">
-        <i>Entry hidden - </i>
-        <a className="post-action" onClick={this.handleUnhideClick}>
-          undo
-        </a>
-        .{' '}
-        {props.isHiding ? (
-          <span className="post-hide-throbber">
-            <Throbber />
-          </span>
-        ) : (
-          false
-        )}
-      </div>
-    ) : (
+    return (
       <div className={postClass} data-author={props.createdBy.username}>
         <ErrorBoundary>
           <Expandable
@@ -638,9 +637,23 @@ class Post extends React.Component {
               {commentLink}
               {likeLink}
               {saveLink}
-              {hideLink}
+              {props.isInHomeFeed && (
+                <>
+                  {' '}
+                  - <span ref={this.hideLink}>{this.renderHideLink()}</span>
+                </>
+              )}
               {moreLink}
             </div>
+
+            {this.state.unHideOpened && (
+              <UnhideOptions
+                isHidden={props.isHidden}
+                hiddenByNames={props.hiddenByNames}
+                handleUnhideByName={this.handleUnhideByName}
+                handleFullUnhide={this.handleFullUnhide}
+              />
+            )}
 
             <PostLikes
               post={props}
@@ -686,10 +699,8 @@ function selectState(state, ownProps) {
     destinationsPrivacy: ownProps.isEditing
       ? (destNames) => destinationsPrivacy(destNames, state)
       : null,
+    hideStatus: state.postHideStatuses[ownProps.id] || initialAsyncState,
   };
 }
 
-export default connect(
-  selectState,
-  { savePost },
-)(Post);
+export default connect(selectState, { savePost, hideByName, unhideNames })(Post);

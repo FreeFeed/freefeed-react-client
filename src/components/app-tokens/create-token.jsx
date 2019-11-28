@@ -100,10 +100,7 @@ function CreateToken({ createdToken, createStatus: status, createAppTokenReset, 
   );
 }
 
-export default connect(
-  (state) => pick(state.appTokens, ['createStatus', 'createdToken']),
-  {
-    createAppTokenReset,
-    createAppToken,
-  },
-)(CreateToken);
+export default connect((state) => pick(state.appTokens, ['createStatus', 'createdToken']), {
+  createAppTokenReset,
+  createAppToken,
+})(CreateToken);
