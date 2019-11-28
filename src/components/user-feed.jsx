@@ -28,6 +28,7 @@ class UserFeed extends React.Component {
     const amIBlocked =
       viewUser.isPrivate === '0' &&
       viewUser.statistics.posts !== '0' &&
+      visibleEntries &&
       visibleEntries.length === 0 &&
       (!('offset' in query) || query.offset === '0');
 
