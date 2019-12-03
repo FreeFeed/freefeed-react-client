@@ -22,14 +22,10 @@ jobs:
     - name: Build the Docker container image
       run: make latest
 
-    - name: Login to Github packages
-      id: login-ecr
-      run: |
-        docker login docker.pkg.github.com -u publisher -p "${GITHUB_PACKAGE_REGISTRY_TOKEN}"
+    - name: Login to Docker hub
+      run: echo '${{ secrets.DOCKER_HUB_TOKEN }}' | docker login --username ivan.dyachkov --password-stdin
 
-    - name: Push the image to GPR
+    - name: Push the image
       run: |
         make push
         make push-latest
-      env:
-        GITHUB_PACKAGE_REGISTRY_TOKEN: ${{ secrets.GITHUB_PACKAGE_REGISTRY_TOKEN }}
