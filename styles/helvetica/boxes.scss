@@ -142,7 +142,7 @@
         color: #000;
         font-size: 13px;
         &:after {
-          content: '•';
+          content: '\2022'; // Bullet symbol
           display: inline-block;
           width: 7px;
           text-align: center;
