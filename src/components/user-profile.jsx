@@ -56,6 +56,11 @@ export default class UserProfile extends React.Component {
     ban({ username, id });
   });
 
+  handleTogglePinnedGroup = preventDefault(() => {
+    const { togglePinnedGroup, id } = this.props;
+    togglePinnedGroup({ id });
+  });
+
   render() {
     const { props } = this;
 
@@ -175,6 +180,13 @@ export default class UserProfile extends React.Component {
                     {props.type === 'group' && props.subscribed && (
                       <li>
                         <Link to={`/filter/direct?invite=${props.username}`}>Invite</Link>
+                      </li>
+                    )}
+                    {props.type === 'group' && (
+                      <li>
+                        <a onClick={this.handleTogglePinnedGroup}>
+                          {props.pinned ? 'Unpin' : 'Pin'}
+                        </a>
                       </li>
                     )}
                     {props.type !== 'group' && !props.subscribed ? (
