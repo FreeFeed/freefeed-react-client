@@ -13,10 +13,28 @@ import SearchForm from './search-form';
 import ErrorBoundary from './error-boundary';
 import { ColorSchemeSetter } from './color-theme-setter';
 import { SVGSymbolDeclarations } from './fontawesome-icons';
+import { Throbber } from './throbber';
+import { DelayedSuspense } from './lazy-component';
+
+const loadingPageMessage = (
+  <div className="content">
+    <div className="content">
+      <div className="box">
+        <div className="box-body">
+          <p>
+            Loading page... <Throbber />
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
 const InternalLayout = ({ authenticated, children }) => (
   <div className={authenticated ? 'col-md-9' : 'col-md-12'}>
-    <div className="content">{children}</div>
+    <div className="content">
+      <DelayedSuspense fallback={loadingPageMessage}>{children}</DelayedSuspense>
+    </div>
   </div>
 );
 

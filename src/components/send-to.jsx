@@ -1,30 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { xor, trim } from 'lodash';
-import Loadable from 'react-loadable';
 import propTypes from 'prop-types';
 import { faUsers, faHome } from '@fortawesome/free-solid-svg-icons';
 import { Icon } from './fontawesome-icons';
+import { lazyComponent } from './lazy-component';
 
 const MY_FEED_LABEL = 'My feed';
 
-const Select = Loadable({
-  loading: ({ error }) => {
-    if (error) {
-      console.error(`Cannot load 'react-select'`, error); // eslint-disable-line no-console
-      return <div>Cannot load selector</div>;
-    }
-    return <div>Loading selector...</div>;
+const Select = lazyComponent(
+  async ({ fixedOptions }) => {
+    const m = await import('react-select');
+    return fixedOptions ? m : { default: m.Creatable };
   },
-  loader: () => import('react-select'),
-  render(loaded, props) {
-    const { default: Selectable, Creatable } = loaded;
-    if (props.fixedOptions) {
-      return <Selectable {...props} />;
-    }
-    return <Creatable {...props} />;
+  {
+    fallback: <div>Loading selector...</div>,
+    errorMessage: "Couldn't load the selector",
   },
-});
+);
 
 class SendTo extends React.Component {
   static propTypes = {
