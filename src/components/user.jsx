@@ -123,6 +123,7 @@ function selectState(state, ownProps) {
       state.userActionsStatuses.subscribing[foundUser && foundUser.id] || initialAsyncState,
     blockingStatus:
       state.userActionsStatuses.blocking[foundUser && foundUser.id] || initialAsyncState,
+    pinnedStatus: state.userActionsStatuses.pinned[foundUser && foundUser.id] || initialAsyncState,
     isItPostsPage,
     amIGroupAdmin,
     subscribed: authenticated && foundUser && user.subscriptions.indexOf(foundUser.id) > -1,

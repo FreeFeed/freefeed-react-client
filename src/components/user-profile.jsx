@@ -184,7 +184,15 @@ export default class UserProfile extends React.Component {
                     )}
                     {props.type === 'group' && (
                       <li>
-                        <a onClick={this.handleTogglePinnedGroup}>
+                        {props.pinnedStatus.loading && (
+                          <span className="profile-controls-throbber">
+                            <Throbber />
+                          </span>
+                        )}
+                        <a
+                          onClick={this.handleTogglePinnedGroup}
+                          title={props.pinned ? 'Unpin from sidebar' : 'Pin to sidebar'}
+                        >
                           {props.pinned ? 'Unpin' : 'Pin'}
                         </a>
                       </li>
@@ -209,6 +217,11 @@ export default class UserProfile extends React.Component {
                   {props.blockingStatus.error && (
                     <div className="alert alert-danger p-settings-alert" role="alert">
                       {props.blockingStatus.errorText}
+                    </div>
+                  )}
+                  {props.pinnedStatus.error && (
+                    <div className="alert alert-danger p-settings-alert" role="alert">
+                      {props.pinnedStatus.errorText}
                     </div>
                   )}
                 </div>

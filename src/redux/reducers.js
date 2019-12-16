@@ -2005,14 +2005,10 @@ const getRecentGroups = ({ subscribers, frontendPreferences }) => {
 
 export function recentGroups(state = [], action) {
   switch (action.type) {
-    case response(ActionTypes.UPDATE_USER_PREFERENCES): {
-      const persistedUser = getPersistedUser();
-      if (persistedUser) {
-        const { subscribers } = action.payload;
-        const { frontendPreferences } = persistedUser;
-        return getRecentGroups({ subscribers, frontendPreferences });
-      }
-      return state;
+    case response(ActionTypes.TOGGLE_PINNED_GROUP): {
+      const { subscribers, users } = action.payload;
+      const frontendPreferences = users.frontendPreferences[frontendPrefsConfig.clientId];
+      return getRecentGroups({ subscribers, frontendPreferences });
     }
     case response(ActionTypes.WHO_AM_I): {
       const { subscribers } = action.payload;
@@ -2356,6 +2352,7 @@ const userActionsStatusesStatusMaps = combineReducers({
     ActionTypes.UNSUBSCRIBE,
   ]),
   blocking: asyncStatesMap([ActionTypes.BAN, ActionTypes.UNBAN]),
+  pinned: asyncStatesMap([ActionTypes.TOGGLE_PINNED_GROUP]),
 });
 
 const initialUserProfileStatuses = userActionsStatusesStatusMaps(undefined, { type: '' });
