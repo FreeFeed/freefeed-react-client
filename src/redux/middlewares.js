@@ -84,27 +84,6 @@ export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
   return next(action);
 };
 
-export const pinnedGroupsMiddleware = (store) => (next) => (action) => {
-  if (action.type === ActionTypes.TOGGLE_PINNED_GROUP) {
-    const { user } = store.getState();
-    const { id, frontendPreferences } = user;
-    const pinnedGroups = frontendPreferences.pinnedGroups || [];
-    const groupId = action.payload.id;
-    const p = pinnedGroups.indexOf(groupId);
-    if (p === -1) {
-      pinnedGroups.push(groupId);
-    } else {
-      pinnedGroups.splice(p, 1);
-    }
-    store.dispatch(
-      ActionCreators.updateUserPreferences(id, { ...frontendPreferences, pinnedGroups }, {}, true),
-    );
-    return next(action);
-  }
-
-  return next(action);
-};
-
 const adjustTime = _.throttle(
   (dispatch, delta) => dispatch(ActionCreators.serverTimeAhead(delta)),
   30000, // 30 sec
