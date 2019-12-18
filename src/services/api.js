@@ -595,3 +595,23 @@ export async function unHideNames({
 export function getAllGroups() {
   return fetch(`${apiRoot}/v2/allGroups`, getRequestOptions());
 }
+
+export async function togglePinnedGroup({ id: groupId }) {
+  const whoAmIResp = await getWhoAmI();
+  if (whoAmIResp.status !== 200) {
+    return whoAmIResp;
+  }
+
+  const whoAmIData = await whoAmIResp.json();
+  const { id: userId, frontendPreferences: frontendPrefs } = userParser(whoAmIData.users);
+
+  const pinnedGroups = frontendPrefs.pinnedGroups || [];
+  const p = pinnedGroups.indexOf(groupId);
+  if (p === -1) {
+    pinnedGroups.push(groupId);
+  } else {
+    pinnedGroups.splice(p, 1);
+  }
+
+  return await updateUserPreferences({ userId, frontendPrefs: { ...frontendPrefs, pinnedGroups } });
+}

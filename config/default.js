@@ -64,6 +64,7 @@ module.exports = {
       homeFeedSort: ACTIVITY,
       homeFeedMode: HOMEFEED_MODE_CLASSIC,
       homefeed: { hideUsers: [] },
+      pinnedGroups: [],
     },
   },
 
