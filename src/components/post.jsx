@@ -34,6 +34,7 @@ import TimeDisplay from './time-display';
 import LinkPreview from './link-preview/preview';
 import SendTo from './send-to';
 import ErrorBoundary from './error-boundary';
+import LossPreventor from './loss-preventor';
 import { destinationsPrivacy } from './select-utils';
 import { makeJpegIfNeeded } from './create-post';
 import { Icon } from './fontawesome-icons';
@@ -518,17 +519,19 @@ class Post extends React.Component {
                   />
 
                   <div>
-                    <Textarea
-                      className="post-textarea"
-                      value={this.state.editingText}
-                      onKeyDown={this.handleKeyDown}
-                      onChange={this.handlePostTextChange}
-                      onPaste={this.handlePaste}
-                      autoFocus={true}
-                      minRows={2}
-                      maxRows={10}
-                      maxLength="1500"
-                    />
+                    <LossPreventor>
+                      <Textarea
+                        className="post-textarea"
+                        value={this.state.editingText}
+                        onKeyDown={this.handleKeyDown}
+                        onChange={this.handlePostTextChange}
+                        onPaste={this.handlePaste}
+                        autoFocus={true}
+                        minRows={2}
+                        maxRows={10}
+                        maxLength="1500"
+                      />
+                    </LossPreventor>
                   </div>
 
                   <div className="post-edit-options">

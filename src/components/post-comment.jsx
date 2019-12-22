@@ -14,6 +14,7 @@ import PieceOfText from './piece-of-text';
 import Expandable from './expandable';
 import UserName from './user-name';
 import TimeDisplay from './time-display';
+import LossPreventor from './loss-preventor';
 
 export default class PostComment extends React.Component {
   commentContainer;
@@ -161,19 +162,21 @@ export default class PostComment extends React.Component {
       return (
         <div className="comment-body">
           <div>
-            <Textarea
-              autoFocus={!this.props.isSinglePost}
-              inputRef={this.registerCommentTextArea}
-              className="comment-textarea"
-              value={this.state.editText || ''}
-              onFocus={this.setCaretToTextEnd}
-              onChange={this.handleChange}
-              onKeyDown={this.checkSave}
-              onBlur={this.updateCommentingText}
-              minRows={2}
-              maxRows={10}
-              maxLength="1500"
-            />
+            <LossPreventor>
+              <Textarea
+                autoFocus={!this.props.isSinglePost}
+                inputRef={this.registerCommentTextArea}
+                className="comment-textarea"
+                value={this.state.editText || ''}
+                onFocus={this.setCaretToTextEnd}
+                onChange={this.handleChange}
+                onKeyDown={this.checkSave}
+                onBlur={this.updateCommentingText}
+                minRows={2}
+                maxRows={10}
+                maxLength="1500"
+              />
+            </LossPreventor>
           </div>
           {this.props.isSinglePost ? (
             <span>

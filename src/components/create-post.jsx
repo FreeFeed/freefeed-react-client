@@ -9,6 +9,7 @@ import SendTo from './send-to';
 import Dropzone from './dropzone';
 import PostAttachments from './post-attachments';
 import ErrorBoundary from './error-boundary';
+import LossPreventor from './loss-preventor';
 import { Throbber } from './throbber';
 import { Icon } from './fontawesome-icons';
 
@@ -191,17 +192,19 @@ export default class CreatePost extends React.Component {
               onQueueComplete={this.attLoadingCompleted}
             />
 
-            <Textarea
-              className="post-textarea"
-              value={this.state.postText}
-              onChange={this.onPostTextChange}
-              onFocus={this.props.expandSendTo}
-              onKeyDown={this.checkSave}
-              onPaste={this.handlePaste}
-              minRows={3}
-              maxRows={10}
-              maxLength="1500"
-            />
+            <LossPreventor>
+              <Textarea
+                className="post-textarea"
+                value={this.state.postText}
+                onChange={this.onPostTextChange}
+                onFocus={this.props.expandSendTo}
+                onKeyDown={this.checkSave}
+                onPaste={this.handlePaste}
+                minRows={3}
+                maxRows={10}
+                maxLength="1500"
+              />
+            </LossPreventor>
           </div>
 
           <div className="post-edit-options">
