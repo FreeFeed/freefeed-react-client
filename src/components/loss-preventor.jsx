@@ -1,10 +1,10 @@
-import { Children, useEffect, useState } from 'react';
+import { Children, useEffect, useMemo } from 'react';
 
 const getChildrenValue = (children) =>
   Children.map(children, (child) => child.props.value || '').join(';');
 
 function LossPreventor(props) {
-  const [initialValue] = useState(getChildrenValue(props.children));
+  const initialValue = useMemo(() => getChildrenValue(props.children), []);
 
   useEffect(() => {
     const reloadWatcher = (e) => {
