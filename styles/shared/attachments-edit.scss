@@ -1,6 +1,6 @@
 // Editing entries
 
-.image-attachments {
+.image-attachments, .video-attachments {
   .attachment .remove-attachment {
     display: block;
     position: absolute;
@@ -96,5 +96,22 @@
 
   .attachment.added {
     background-color: #bfb;
+  }
+}
+
+@media (max-width: 560px) {
+  .video-attachments {
+    .show-more {
+      width: 100%;
+      text-align: center;
+
+      .show-more-icon {
+        transform: rotate(270deg);
+      }
+    }
+
+    &.is-folded .show-more .show-more-icon {
+      transform: rotate(90deg);
+    }
   }
 }
