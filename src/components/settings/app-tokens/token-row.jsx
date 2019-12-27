@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useMemo } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 import { trim } from 'lodash';
 import { faRedo, faExclamationTriangle, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -9,50 +9,47 @@ import {
   deleteAppToken,
   deleteAppTokenId,
   updateAppToken,
-} from '../../redux/action-creators';
-import { Icon } from '../fontawesome-icons';
-import TimeDisplay from '../time-display';
+} from '../../../redux/action-creators';
+import { Icon } from '../../fontawesome-icons';
+import TimeDisplay from '../../time-display';
 import { TextCopier } from './text-copier';
 
 import styles from './token-row.module.scss';
 
-function TokenRow({
-  token,
-  scopes,
-  reissueAppToken,
-  deleteAppToken,
-  deleteAppTokenId,
-  updateAppToken,
-}) {
+export default function TokenRow({ id }) {
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.appTokens.tokens[id]);
+  const scopes = useSelector((state) => state.appTokens.scopes);
+
   const onReissue = useCallback(
     (tokenId) => () =>
       confirm(
         'Are you sure you want to reissue this token?\nThe previously issued token will stop working immediately!',
-      ) && reissueAppToken(tokenId),
-    [reissueAppToken],
+      ) && dispatch(reissueAppToken(tokenId)),
+    [dispatch],
   );
   const onDelete = useCallback(
     (tokenId) => () =>
       confirm(
         'Are you sure you want to ⚠DELETE⚠ this token?\nToken will stop working immediately!',
-      ) && deleteAppToken(tokenId),
-    [deleteAppToken],
+      ) && dispatch(deleteAppToken(tokenId)),
+    [dispatch],
   );
   const onEdit = useCallback(() => {
     const title = prompt('Enter new token title:', token.title);
     if (title === null || trim(title) === '') {
       return;
     }
-    updateAppToken(token.id, { title });
-  }, [token, updateAppToken]);
+    dispatch(updateAppToken(token.id, { title }));
+  }, [dispatch, token.id, token.title]);
 
   const rootEl = useRef();
   useEffect(() => {
     const el = rootEl.current;
-    const handler = ({ target }) => target === el && deleteAppTokenId(token.id);
+    const handler = ({ target }) => target === el && dispatch(deleteAppTokenId(token.id));
     el && el.addEventListener('transitionend', handler);
     return () => el && el.removeEventListener('transitionend', handler);
-  }, [deleteAppTokenId, token.id]);
+  }, [dispatch, token.id]);
 
   const scopesTexts = useMemo(
     () =>
@@ -106,15 +103,3 @@ function TokenRow({
     </div>
   );
 }
-
-function mapStateToProps(state, { id }) {
-  const { tokens, scopes } = state.appTokens;
-  return { token: tokens[id], scopes };
-}
-
-export default connect(mapStateToProps, {
-  reissueAppToken,
-  deleteAppToken,
-  deleteAppTokenId,
-  updateAppToken,
-})(TokenRow);

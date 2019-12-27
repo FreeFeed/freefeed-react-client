@@ -468,6 +468,17 @@ export function updateUserPreferences(
   };
 }
 
+export function updateActualUserPreferences({
+  updateFrontendPrefs = () => null,
+  updateBackendPrefs = () => null,
+}) {
+  return {
+    type: ActionTypes.UPDATE_ACTUAL_USER_PREFERENCES,
+    apiRequest: Api.updateActualPreferences,
+    payload: { updateFrontendPrefs, updateBackendPrefs },
+  };
+}
+
 export function updateUserNotificationPreferences(userId, backendPrefs) {
   return {
     type: ActionTypes.UPDATE_USER_NOTIFICATION_PREFERENCES,

@@ -28,6 +28,7 @@ import Friends from './components/friends';
 import ManageSubscribers from './components/manage-subscribers';
 import Bookmarklet from './components/bookmarklet';
 import SignupByInvitation from './components/signup-by-invitation';
+import { settingsRoute } from './components/settings/routes';
 
 const store = configureStore();
 
@@ -158,17 +159,12 @@ ReactDOM.render(
         />
         <Route path="restore" component={lazyLoad('./components/restore-password')} />
         <Route path="reset" component={lazyLoad('./components/reset-password')} />
-        <Route
-          path="settings"
-          component={lazyLoad('./components/settings')}
-          onEnter={enterStaticPage('Settings')}
-        />
+        {settingsRoute('settings')}
         <Route
           path="settings/archive"
           component={lazyLoad('./components/archive')}
           onEnter={enterStaticPage('Restore from FriendFeed.com Archives')}
         />
-        <Route path="settings/app-tokens(/**)" component={lazyLoad('./components/app-tokens')} />
         <Route
           name="groupSettings"
           path="/:userName/settings"

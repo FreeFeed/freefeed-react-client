@@ -2532,6 +2532,7 @@ export function userColorScheme(state = loadColorScheme(), action) {
   return state;
 }
 
+export { settingsForms } from './reducers/settings-forms';
 export { appTokens } from './reducers/app-tokens';
 
 export const serverInfo = fromResponse(ActionTypes.GET_SERVER_INFO, ({ payload }) => payload, {});
