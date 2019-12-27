@@ -447,13 +447,6 @@ export function updateUser(
   };
 }
 
-export function userSettingsChange(payload) {
-  return {
-    type: ActionTypes.USER_SETTINGS_CHANGE,
-    payload,
-  };
-}
-
 export function updateUserPreferences(
   userId,
   frontendPrefs = {},
