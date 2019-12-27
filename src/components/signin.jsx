@@ -84,7 +84,7 @@ const SignInForm = React.memo(function SignInForm() {
           )}
         >
           <label htmlFor="username-input" className="control-label">
-            Username or e-mail address
+            Username or email address
           </label>
           <input
             {...username.input}
@@ -167,7 +167,7 @@ const ExtAuthSignIn = React.memo(function ExtAuthSignIn() {
       {result.status === 'user-exists' && (
         <div className="alert alert-warning" role="alert">
           <p>
-            There is a FreeFeed account with the e-mail address{' '}
+            There is a FreeFeed account with the email address{' '}
             <strong>{result.profile.email}</strong>, but your account{' '}
             <strong>
               {providerTitle(result.profile.provider, { withText: false })} {result.profile.name}
@@ -175,7 +175,7 @@ const ExtAuthSignIn = React.memo(function ExtAuthSignIn() {
             is not connected to it.
           </p>
           <p>
-            If this is you, you should login using the form above with your username/e-mail and
+            If this is you, you should login using the form above with your username/email and
             password or in any other way allowed for your account.
           </p>
           <p>
