@@ -588,6 +588,7 @@ class Post extends React.Component {
               attachments={this.attachments}
               isEditing={props.isEditing}
               isSinglePost={props.isSinglePost}
+              showMedia={this.props.showMedia}
               removeAttachment={this.removeAttachment}
               reorderImageAttachments={this.reorderImageAttachments}
             />
@@ -669,6 +670,7 @@ class Post extends React.Component {
               addComment={props.addComment}
               toggleCommenting={props.toggleCommenting}
               showMoreComments={props.showMoreComments}
+              showMedia={props.showMedia}
               commentEdit={props.commentEdit}
               readMoreStyle={props.readMoreStyle}
               entryUrl={canonicalPostURI}

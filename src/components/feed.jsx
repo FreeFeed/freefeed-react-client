@@ -5,6 +5,7 @@ import ErrorBoundary from './error-boundary';
 import Post from './post';
 import { joinPostData } from './select-utils';
 import { PostRecentlyHidden } from './post-hides-ui';
+import { isMediaAttachment } from './media-viewer';
 
 const HiddenEntriesToggle = (props) => {
   const entriesForm = props.count > 1 ? 'entries' : 'entry';
@@ -24,8 +25,34 @@ const HiddenEntriesToggle = (props) => {
 };
 
 function Feed(props) {
+  const showMedia = (params) => {
+    props.showMedia({
+      ...params,
+      navigate: params.withoutNavigation
+        ? null
+        : (postId, where) => {
+            for (
+              let i = 0, l = props.visiblePosts.length, step = 1, match = false;
+              i >= 0 && i < l;
+              i += step
+            ) {
+              const item = props.visiblePosts[i];
+              if (match) {
+                if (isMediaAttachment(item.attachments)) {
+                  return item;
+                }
+              } else if (item.id === postId) {
+                match = true;
+                step = where < 0 ? -1 : 1;
+              }
+            }
+            return null;
+          },
+    });
+  };
+
   const getEntryComponent = (section) => (post) => (
-    <FeedEntry key={post.id} {...{ post, section, ...props }} />
+    <FeedEntry key={post.id} {...{ post, section, ...props, showMedia }} />
   );
 
   const visibleEntries = props.visiblePosts.map(getEntryComponent('visible'));
@@ -118,6 +145,7 @@ function FeedEntry({ post, section, ...props }) {
       saveEditingPost={props.saveEditingPost}
       deletePost={props.deletePost}
       addAttachmentResponse={props.addAttachmentResponse}
+      showMedia={props.showMedia}
       toggleCommenting={props.toggleCommenting}
       updateCommentingText={props.updateCommentingText}
       addComment={props.addComment}

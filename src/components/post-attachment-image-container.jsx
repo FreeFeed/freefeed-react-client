@@ -11,26 +11,6 @@ const bordersSize = 4;
 const spaceSize = 8;
 const arrowSize = 24;
 
-const ImageAttachmentsLightbox = Loadable({
-  loading: ({ error, pastDelay }) => {
-    if (error) {
-      console.error(`Cannot load 'post-attachment-image-lightbox'`, error); // eslint-disable-line no-console
-      return <div style={{ color: 'red' }}>Cannot load lightbox. Please try again.</div>;
-    }
-    if (pastDelay) {
-      return (
-        <div className="lightbox-loading">
-          <span>Loading lightbox...</span>
-        </div>
-      );
-    }
-    return null;
-  },
-  loader: () => import('./post-attachment-image-lightbox'),
-  delay: 500,
-  timeout: 10000,
-});
-
 const Sortable = Loadable({
   loading: ({ error }) => {
     if (error) {
@@ -56,7 +36,6 @@ export default class ImageAttachmentsContainer extends React.Component {
     containerWidth: 0,
     isFolded: true,
     needsFolding: false,
-    lightboxIndex: -1, // lightbox is hidden if lightboxIndex < 0
   };
 
   container = null;
@@ -91,11 +70,15 @@ export default class ImageAttachmentsContainer extends React.Component {
         return;
       }
       e.preventDefault();
-      this.setState({ lightboxIndex: index });
+      this.props.showMedia({
+        postId: this.props.postId,
+        attachments: this.props.attachments,
+        index,
+        thumbnail: this.getThumbnail,
+        withoutNavigation: this.props.isEditing,
+      });
     };
   }
-
-  onLightboxDestroy = () => this.setState({ lightboxIndex: -1 });
 
   getLightboxItems() {
     return this.props.attachments.map((a) => ({
@@ -187,17 +170,6 @@ export default class ImageAttachmentsContainer extends React.Component {
               }
             />
           </div>
-        )}
-        {this.state.lightboxIndex >= 0 ? (
-          <ImageAttachmentsLightbox
-            items={this.getLightboxItems()}
-            index={this.state.lightboxIndex}
-            postId={this.props.postId}
-            getThumbnail={this.getThumbnail}
-            onDestroy={this.onLightboxDestroy}
-          />
-        ) : (
-          false
         )}
       </div>
     );

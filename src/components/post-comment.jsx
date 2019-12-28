@@ -263,6 +263,7 @@ export default class PostComment extends React.Component {
               hover: this.handleHoverOverArrow,
               leave: this.props.clearHighlightComment,
             }}
+            showMedia={this.props.showMedia}
           />
           {authorAndButtons}
           {this.props.showTimestamp ? (

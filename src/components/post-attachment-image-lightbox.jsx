@@ -5,6 +5,8 @@ import Mousetrap from 'mousetrap';
 
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
 const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
+const prevPostKeys = ['w', 'ц', 'up', 'u', 'г', '8'];
+const nextPostKeys = ['s', 'ы', 'down', 'j', 'о', '2'];
 
 const lightboxOptions = {
   shareEl: false,
@@ -34,6 +36,14 @@ export default class ImageAttachmentsLightbox extends React.Component {
   constructor(props) {
     super(props);
     this.state.currentIndex = props.index;
+  }
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (nextProps.postId !== this.props.postId) {
+      if (this.photoSwipe) {
+        this.photoSwipe.goTo(0);
+      }
+    }
   }
 
   photoSwipe = null;
@@ -68,6 +78,18 @@ export default class ImageAttachmentsLightbox extends React.Component {
         if (rect.width > 0) {
           item.h = (rect.height * item.w) / rect.width;
         }
+      } else {
+        // lets try to find out image size when image loads
+        const image = new Image();
+        item.w = 1;
+        item.h = 1;
+        image.onload = () => {
+          item.w = image.width; // set image width
+          item.h = image.height;
+          this.photoSwipe.invalidateCurrItems();
+          this.photoSwipe.updateSize(true);
+        };
+        image.src = item.src;
       }
     }
     if (!item.msrc && thumb) {
@@ -75,14 +97,25 @@ export default class ImageAttachmentsLightbox extends React.Component {
     }
   };
 
+  navigatePost = (where, e) => {
+    if (e) {
+      e.preventDefault();
+    }
+    this.props.onNavigate(where);
+  };
+
   whenOpened = () => {
     Mousetrap.bind(prevHotKeys, () => this.photoSwipe.prev());
     Mousetrap.bind(nextHotKeys, () => this.photoSwipe.next());
+    Mousetrap.bind(prevPostKeys, (e) => this.navigatePost(-1, e));
+    Mousetrap.bind(nextPostKeys, (e) => this.navigatePost(1, e));
   };
 
   whenClosed = () => {
     Mousetrap.unbind(prevHotKeys);
     Mousetrap.unbind(nextHotKeys);
+    Mousetrap.unbind(prevPostKeys);
+    Mousetrap.unbind(nextPostKeys);
   };
 
   registerPhotoSwipe = (el) => {

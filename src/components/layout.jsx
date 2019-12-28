@@ -13,6 +13,7 @@ import SearchForm from './search-form';
 import ErrorBoundary from './error-boundary';
 import { ColorSchemeSetter } from './color-theme-setter';
 import { SVGSymbolDeclarations } from './fontawesome-icons';
+import MediaViewer from './media-viewer';
 
 const InternalLayout = ({ authenticated, children }) => (
   <div className={authenticated ? 'col-md-9' : 'col-md-12'}>
@@ -184,6 +185,8 @@ class Layout extends React.Component {
               {props.authenticated ? <Sidebar {...props} /> : false}
             </div>
           </LoaderContainer>
+
+          <MediaViewer />
 
           <div className="row">
             <div className="col-md-12">

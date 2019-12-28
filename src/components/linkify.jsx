@@ -2,10 +2,14 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { Mention, Email, HashTag, Arrows, Link as TLink } from 'social-text-tokenizer';
+import { faImage } from '@fortawesome/free-regular-svg-icons';
 
 import { parseText } from '../utils/parse-text';
 import { highlightString } from '../utils/search-highlighter';
 import { FRIENDFEED_POST } from '../utils/link-types';
+import { isMediaUrl } from './media-viewer';
+
+import { Icon } from './fontawesome-icons';
 import UserName from './user-name';
 import ErrorBoundary from './error-boundary';
 
@@ -34,6 +38,8 @@ export default class Linkify extends React.Component {
     if (text === '') {
       return [];
     }
+
+    const mediaEl = showMediaWithKey(this.props.showMedia);
 
     return parseText(text).map((token, i) => {
       const key = i;
@@ -91,6 +97,10 @@ export default class Linkify extends React.Component {
           );
         }
 
+        if (isMediaUrl(token.href)) {
+          return mediaEl(token.href, token.shorten(MAX_URL_LENGTH));
+        }
+
         return anchorEl(token.href, token.shorten(MAX_URL_LENGTH));
       }
 
@@ -120,6 +130,30 @@ export default class Linkify extends React.Component {
       </span>
     );
   }
+}
+
+function showMediaWithKey(showMedia) {
+  const attachments = [];
+  const handleOpenMedia = (index) => (e) => {
+    e.preventDefault();
+    showMedia({ attachments, index });
+  };
+
+  return function(media, content) {
+    attachments.push({ url: media, id: 'comment' });
+    return (
+      <a
+        href="#"
+        dir="ltr"
+        onClick={handleOpenMedia(attachments.length - 1)}
+        key={`media${attachments.length}`}
+        className="media-link"
+      >
+        <Icon icon={faImage} className="media-icon" key={`media_icon${attachments.length}`} />
+        {content}
+      </a>
+    );
+  };
 }
 
 function anchorElWithKey(key) {

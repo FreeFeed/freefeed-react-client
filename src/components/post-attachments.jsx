@@ -12,6 +12,7 @@ export default (props) => {
     <ImageAttachmentsContainer
       isEditing={props.isEditing}
       isSinglePost={props.isSinglePost}
+      showMedia={props.showMedia}
       removeAttachment={props.removeAttachment}
       reorderImageAttachments={props.reorderImageAttachments}
       attachments={imageAttachments}
