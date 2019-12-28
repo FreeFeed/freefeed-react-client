@@ -11,15 +11,6 @@ const bordersSize = 4;
 const spaceSize = 8;
 const arrowSize = 24;
 
-const ImageAttachmentsLightbox = lazyComponent(() => import('./post-attachment-image-lightbox'), {
-  fallback: (
-    <div className="lightbox-loading">
-      <span>Loading lightbox...</span>
-    </div>
-  ),
-  errorMessage: "Couldn't load lightbox component",
-});
-
 const Sortable = lazyComponent(() => import('react-sortablejs'), {
   fallback: <div>Loading component...</div>,
   errorMessage: "Couldn't load Sortable component",

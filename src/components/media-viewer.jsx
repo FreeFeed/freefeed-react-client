@@ -1,26 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
-import Loadable from 'react-loadable';
 import { showMedia } from '../redux/action-creators';
+import { lazyComponent } from './lazy-component';
 
-const ImageAttachmentsLightbox = Loadable({
-  loading: ({ error, pastDelay }) => {
-    if (error) {
-      console.error(`Cannot load 'post-attachment-image-lightbox'`, error); // eslint-disable-line no-console
-      return <div style={{ color: 'red' }}>Cannot load lightbox. Please try again.</div>;
-    }
-    if (pastDelay) {
-      return (
-        <div className="lightbox-loading">
-          <span>Loading lightbox...</span>
-        </div>
-      );
-    }
-    return null;
-  },
-  loader: () => import('./post-attachment-image-lightbox'),
-  delay: 500,
-  timeout: 10000,
+const ImageAttachmentsLightbox = lazyComponent(() => import('./post-attachment-image-lightbox'), {
+  fallback: (
+    <div className="lightbox-loading">
+      <span>Loading lightbox...</span>
+    </div>
+  ),
+  errorMessage: "Couldn't load lightbox component",
 });
 
 export const isMediaUrl = (url) => {
