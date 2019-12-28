@@ -1983,14 +1983,38 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
 
 const GROUPS_SIDEBAR_LIST_LENGTH = 4;
 
+const getRecentGroups = ({ subscribers, frontendPreferences }) => {
+  const clientPreferences = frontendPreferences || {};
+  const pinnedGroups = clientPreferences.pinnedGroups || [];
+  const groups = (subscribers || []).filter((i) => i.type == 'group');
+  const recentGroups = groups
+    .filter((i) => pinnedGroups.indexOf(i.id) > -1)
+    .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
+    .map((i) => ({ ...i, isPinned: true }));
+  if (recentGroups.length < GROUPS_SIDEBAR_LIST_LENGTH) {
+    // pinned groups are always shown, and unpinned groups are shown if limit allows
+    return recentGroups.concat(
+      groups
+        .filter((i) => pinnedGroups.indexOf(i.id) === -1)
+        .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
+        .slice(0, GROUPS_SIDEBAR_LIST_LENGTH - recentGroups.length),
+    );
+  }
+  return recentGroups;
+};
+
 export function recentGroups(state = [], action) {
   switch (action.type) {
+    case response(ActionTypes.TOGGLE_PINNED_GROUP): {
+      const { subscribers, users } = action.payload;
+      const frontendPreferences = users.frontendPreferences[frontendPrefsConfig.clientId];
+      return getRecentGroups({ subscribers, frontendPreferences });
+    }
     case response(ActionTypes.WHO_AM_I): {
-      const subscribers = action.payload.subscribers || [];
-      return subscribers
-        .filter((i) => i.type == 'group')
-        .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
-        .slice(0, GROUPS_SIDEBAR_LIST_LENGTH);
+      const { subscribers } = action.payload;
+      const frontendPreferences =
+        action.payload.users.frontendPreferences[frontendPrefsConfig.clientId];
+      return getRecentGroups({ subscribers, frontendPreferences });
     }
     case response(ActionTypes.CREATE_GROUP): {
       const newGroup = action.payload.groups;
@@ -2328,6 +2352,7 @@ const userActionsStatusesStatusMaps = combineReducers({
     ActionTypes.UNSUBSCRIBE,
   ]),
   blocking: asyncStatesMap([ActionTypes.BAN, ActionTypes.UNBAN]),
+  pinned: asyncStatesMap([ActionTypes.TOGGLE_PINNED_GROUP]),
 });
 
 const initialUserProfileStatuses = userActionsStatusesStatusMaps(undefined, { type: '' });

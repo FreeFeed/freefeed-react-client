@@ -1,25 +1,28 @@
 import pt from 'prop-types';
 import React from 'react';
 import classnames from 'classnames';
-import Loadable from 'react-loadable';
 
 import { faChevronCircleRight } from '@fortawesome/free-solid-svg-icons';
 import ImageAttachment from './post-attachment-image';
 import { Icon } from './fontawesome-icons';
+import { lazyComponent } from './lazy-component';
 
 const bordersSize = 4;
 const spaceSize = 8;
 const arrowSize = 24;
 
-const Sortable = Loadable({
-  loading: ({ error }) => {
-    if (error) {
-      return <div>Cannot load Sortable component</div>;
-    }
-    return <div>Loading component...</div>;
-  },
-  loader: () => import('react-sortablejs'),
-  delay: 500,
+const ImageAttachmentsLightbox = lazyComponent(() => import('./post-attachment-image-lightbox'), {
+  fallback: (
+    <div className="lightbox-loading">
+      <span>Loading lightbox...</span>
+    </div>
+  ),
+  errorMessage: "Couldn't load lightbox component",
+});
+
+const Sortable = lazyComponent(() => import('react-sortablejs'), {
+  fallback: <div>Loading component...</div>,
+  errorMessage: "Couldn't load Sortable component",
 });
 
 export default class ImageAttachmentsContainer extends React.Component {

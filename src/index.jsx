@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
-import Loadable from 'react-loadable';
 
 import 'autotrack'; // used by google-analytics in ../index.jade
 
@@ -100,18 +99,9 @@ const generateRouteHooks = (callback) => ({
   onChange: (_, next) => callback(next),
 });
 
-const lazyLoad = (path) =>
-  Loadable({
-    loading: ({ error }) => {
-      if (error) {
-        return <div>Cannot load page</div>;
-      }
-      return <div>Loading page...</div>;
-    },
-    // For some reason, the import() argument must have an explicit string type.
-    // See https://github.com/webpack/webpack/issues/4921#issuecomment-357147299
-    loader: () => import(`${path}`),
-  });
+// For some reason, the import() argument must have an explicit string type.
+// See https://github.com/webpack/webpack/issues/4921#issuecomment-357147299
+const lazyLoad = (path) => React.lazy(() => import(`${path}`));
 
 ReactDOM.render(
   <Provider store={store}>

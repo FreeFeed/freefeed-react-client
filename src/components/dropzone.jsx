@@ -1,6 +1,5 @@
-import Loadable from 'react-loadable';
+import { lazyComponent } from './lazy-component';
 
-export default Loadable({
-  loading: ({ error }) => error && <div>Cannot load Dropzone component</div>,
-  loader: () => import('./dropzone-component'),
+export default lazyComponent(() => import(/* webpackPrefetch: true */ './dropzone-component'), {
+  errorMessage: 'Cannot load Dropzone component',
 });

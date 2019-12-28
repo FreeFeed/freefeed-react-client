@@ -633,6 +633,14 @@ export function rejectGroupRequest(groupName, userName) {
   };
 }
 
+export function togglePinnedGroup(id) {
+  return {
+    type: ActionTypes.TOGGLE_PINNED_GROUP,
+    apiRequest: Api.togglePinnedGroup,
+    payload: { id },
+  };
+}
+
 export function acceptUserRequest(userName) {
   return {
     type: ActionTypes.ACCEPT_USER_REQUEST,

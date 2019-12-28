@@ -22,6 +22,7 @@ import {
   GET_SERVER_INFO,
   HIDE_BY_NAME,
   UNHIDE_NAMES,
+  TOGGLE_PINNED_GROUP,
 } from './action-types';
 import { request, response, fail, baseType } from './async-helpers';
 
@@ -72,6 +73,7 @@ export const userChangeActions = [
   UPDATE_USER_PREFERENCES,
   HIDE_BY_NAME,
   UNHIDE_NAMES,
+  TOGGLE_PINNED_GROUP,
 ];
 export const userChangeResponses = userChangeActions.map(response);
 export const isUserChangeResponse = (action) => userChangeResponses.includes(action.type);

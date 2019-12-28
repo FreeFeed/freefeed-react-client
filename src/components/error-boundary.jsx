@@ -36,13 +36,18 @@ class ErrorBoundary extends React.PureComponent {
 
       return (
         <div className="error-boundary">
-          <div className="error-boundary-header">Oops! Something went wrong :(</div>
+          <div className="error-boundary-header">
+            Oops! {this.props.message || 'Something went wrong :('}
+          </div>
           <div className="error-boundary-details">
             Please contact <a href="/support">@support</a> with a screenshot of this message.
           </div>
           <div className="error-boundary-details">
-            {errorMessage}, {window.navigator.userAgent}
-            {typeof Raven !== 'undefined' ? '' : ', no Raven'}
+            <p>{errorMessage}</p>
+            <p>
+              {window.navigator.userAgent}
+              {typeof Raven !== 'undefined' ? '' : ', no Raven'}
+            </p>
           </div>
         </div>
       );
