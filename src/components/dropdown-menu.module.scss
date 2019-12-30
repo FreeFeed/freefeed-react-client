@@ -1,0 +1,76 @@
+@import '../../styles/helvetica/dark-vars.scss';
+
+.list {
+  position: absolute;
+  top: 0.5em;
+  left: 0;
+  min-width: 10em;
+
+  z-index: 7;
+
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: #000;
+  background-color: #fefefe;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.29);
+
+  :global(.dark-theme) & {
+    color: $text-color;
+    background: $bg-color-lighter;
+  }
+}
+
+.item {
+  text-align: left;
+}
+
+.item:hover {
+  background-color: #eee;
+
+  :global(.dark-theme) & {
+    color: $text-color-lighter;
+    background: $bg-color-lightest;
+  }
+}
+
+.link {
+  display: block;
+  text-decoration: none !important;
+  color: inherit;
+  padding: 0.5em 0.66em;
+
+  &:hover {
+    color: inherit !important;
+  }
+
+  :global(.dark-theme) & {
+    color: inherit;
+  }
+
+  &.danger {
+    color: #900;
+
+    :global(.dark-theme) & {
+      color: inherit;
+    }
+
+    &:hover {
+      background-color: #fcc;
+
+      :global(.dark-theme) & {
+        background: $bg-highlight-color;
+      }
+    }
+  }
+}
+
+.spacer {
+  height: 1px;
+  margin: 0.33em 0.66em;
+  background-color: #ccc;
+
+  :global(.dark-theme) & {
+    background-color: $separator-color;
+  }
+}
