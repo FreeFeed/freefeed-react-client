@@ -2,14 +2,12 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { Mention, Email, HashTag, Arrows, Link as TLink } from 'social-text-tokenizer';
-import { faImage } from '@fortawesome/free-regular-svg-icons';
 
 import { parseText } from '../utils/parse-text';
 import { highlightString } from '../utils/search-highlighter';
 import { FRIENDFEED_POST } from '../utils/link-types';
 import { isMediaUrl } from './media-viewer';
 
-import { Icon } from './fontawesome-icons';
 import UserName from './user-name';
 import ErrorBoundary from './error-boundary';
 
@@ -135,6 +133,9 @@ export default class Linkify extends React.Component {
 function showMediaWithKey(showMedia) {
   const attachments = [];
   const handleOpenMedia = (index) => (e) => {
+    if (e.button !== 0 || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) {
+      return;
+    }
     e.preventDefault();
     showMedia({ attachments, index });
   };
@@ -148,8 +149,8 @@ function showMediaWithKey(showMedia) {
         onClick={handleOpenMedia(attachments.length - 1)}
         key={`media${attachments.length}`}
         className="media-link"
+        title="Click to view in Lightbox"
       >
-        <Icon icon={faImage} className="media-icon" key={`media_icon${attachments.length}`} />
         {content}
       </a>
     );
