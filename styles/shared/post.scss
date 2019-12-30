@@ -92,8 +92,10 @@ $post-line-height: 20px;
     }
 
     .post-footer {
+      display: flex;
+
       .post-lock-icon {
-        margin-right: 5px;
+        cursor: pointer;
       }
 
       .post-private-icon {
@@ -121,10 +123,37 @@ $post-line-height: 20px;
       }
     }
   }
+}
 
-  .post-timestamps-toggle {
+.post-footer-icon {
+  width: 19px;
+  flex: 0 0 auto;
+}
+
+.post-footer-content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.post-footer-block {
+  white-space: nowrap;
+  margin-left: -1em;
+  margin-right: 1em;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+.post-footer-item {
+  &:empty {
+    display: none;
+  }
+  &::before {
+    content: ' - ';
     display: inline-block;
-    cursor: pointer;
+    width: 1em;
+    text-align: center;
   }
 }
 
@@ -154,30 +183,6 @@ $post-line-height: 20px;
 // paragraph breaks
 .p-break {
   height: 0.35em;
-}
-
-// "More" menu in post footer
-// (it's just an override, default styles are in react-dd-menu/src/scss/react-dd-menu.scss)
-.dd-menu .dd-menu-items .dd-menu-item {
-  &:hover {
-    background-color: #eee !important;
-  }
-  &.dd-menu-item-danger:hover {
-    color: #300 !important;
-    background-color: #fcc !important;
-  }
-
-  .dd-menu-item-link {
-    padding: 6px 12px !important;
-  }
-  &:first-child .dd-menu-item-link {
-    padding-top: 8px !important;
-    padding-bottom: 5px !important;
-  }
-  &:last-child .dd-menu-item-link {
-    padding-top: 5px !important;
-    padding-bottom: 8px !important;
-  }
 }
 
 // Used in both create-post and edit-post
