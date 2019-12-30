@@ -1551,37 +1551,6 @@ export function user(state = initUser(), action) {
   return state;
 }
 
-const DEFAULT_PASSWORD_FORM_STATE = {
-  isSaving: false,
-  success: false,
-  error: false,
-  errorText: '',
-};
-
-export function passwordForm(state = DEFAULT_PASSWORD_FORM_STATE, action) {
-  switch (action.type) {
-    case request(ActionTypes.UPDATE_PASSWORD): {
-      return { ...state, isSaving: true, error: false, success: false };
-    }
-    case response(ActionTypes.UPDATE_PASSWORD): {
-      return { ...state, isSaving: false, success: true, error: false };
-    }
-    case fail(ActionTypes.UPDATE_PASSWORD): {
-      return {
-        ...state,
-        isSaving: false,
-        success: false,
-        error: true,
-        errorText: action.payload.err,
-      };
-    }
-    case ActionTypes.RESET_SETTINGS_FORMS: {
-      return { ...state, isSaving: false, success: false, error: false, errorText: '' };
-    }
-  }
-  return state;
-}
-
 const DEFAULT_FORM_STATE = {
   inProgress: false,
   success: false,
@@ -1651,84 +1620,6 @@ export function subscriptions(state = {}, action) {
     case ActionTypes.REALTIME_COMMENT_NEW: {
       const subscriptions = !action.post ? action.subscriptions : action.post.subscriptions;
       return mergeByIds(state, subscriptions);
-    }
-  }
-  return state;
-}
-
-export function userSettingsForm(state = { saved: false }, action) {
-  switch (action.type) {
-    case ActionTypes.USER_SETTINGS_CHANGE: {
-      return { ...state, ...action.payload, success: false, error: false };
-    }
-    case request(ActionTypes.UPDATE_USER): {
-      return { ...state, isSaving: true, error: false };
-    }
-    case response(ActionTypes.UPDATE_USER): {
-      return { ...state, isSaving: false, success: true, error: false };
-    }
-    case fail(ActionTypes.UPDATE_USER): {
-      return {
-        ...state,
-        isSaving: false,
-        success: false,
-        error: true,
-        errorMessage: (action.payload || {}).err,
-      };
-    }
-    case ActionTypes.RESET_SETTINGS_FORMS: {
-      return { ...state, success: false, error: false, errorMessage: '', isSaving: false };
-    }
-  }
-  return state;
-}
-
-export function frontendPreferencesForm(state = {}, action) {
-  switch (action.type) {
-    case response(ActionTypes.WHO_AM_I): {
-      return {
-        ...state,
-        ...action.payload.users.frontendPreferences[frontendPrefsConfig.clientId],
-      };
-    }
-    case request(ActionTypes.UPDATE_USER_PREFERENCES): {
-      if (typeof action.extra !== 'undefined' && action.extra.suppressStatus) {
-        return state;
-      }
-      return { ...state, status: 'loading' };
-    }
-    case response(ActionTypes.UPDATE_USER_PREFERENCES): {
-      if (typeof action.extra !== 'undefined' && action.extra.suppressStatus) {
-        return state;
-      }
-      return { ...state, status: 'success' };
-    }
-    case fail(ActionTypes.UPDATE_USER_PREFERENCES): {
-      if (typeof action.extra !== 'undefined' && action.extra.suppressStatus) {
-        return state;
-      }
-      return { ...state, status: 'error', errorMessage: (action.payload || {}).err };
-    }
-    case ActionTypes.RESET_SETTINGS_FORMS: {
-      return { ...state, status: '', errorMessage: '' };
-    }
-  }
-  return state;
-}
-
-export function userPictureForm(state = {}, action) {
-  switch (action.type) {
-    case request(ActionTypes.UPDATE_USER_PICTURE): {
-      return { ...state, status: 'loading' };
-    }
-    case response(ActionTypes.UPDATE_USER_PICTURE): {
-      return { ...state, status: 'success' };
-    }
-    case fail(ActionTypes.UPDATE_USER_PICTURE): {
-      return { ...state, status: 'error', errorMessage: (action.payload || {}).err };
-    }
-    case ActionTypes.RESET_SETTINGS_FORMS: {
-      return { ...state, status: '', errorMessage: '' };
     }
   }
   return state;
@@ -2294,26 +2185,6 @@ export function frontendRealtimePreferencesForm(state = initialRealtimeSettings,
   return state;
 }
 
-const initialNotificationsForm = {};
-
-export function userNotificationsForm(state = initialNotificationsForm, action) {
-  switch (action.type) {
-    case request(ActionTypes.UPDATE_USER_NOTIFICATION_PREFERENCES): {
-      return { ...state, status: 'loading' };
-    }
-    case response(ActionTypes.UPDATE_USER_NOTIFICATION_PREFERENCES): {
-      return { ...state, status: 'success' };
-    }
-    case fail(ActionTypes.UPDATE_USER_NOTIFICATION_PREFERENCES): {
-      return { ...state, status: 'error', errorMessage: (action.payload || {}).err };
-    }
-    case ActionTypes.RESET_SETTINGS_FORMS: {
-      return { ...state, status: '', errorMessage: '' };
-    }
-  }
-  return state;
-}
-
 export function groupAdmins(state = [], action) {
   switch (action.type) {
     case response(ActionTypes.GET_USER_INFO): {
@@ -2532,6 +2403,7 @@ export function userColorScheme(state = loadColorScheme(), action) {
   return state;
 }
 
+export { settingsForms } from './reducers/settings-forms';
 export { appTokens } from './reducers/app-tokens';
 
 export const serverInfo = fromResponse(ActionTypes.GET_SERVER_INFO, ({ payload }) => payload, {});
