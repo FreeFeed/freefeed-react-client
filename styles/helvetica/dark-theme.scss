@@ -328,26 +328,10 @@ body.dark-theme {
     color: $text-color;
   }
 
-  .dd-menu .dd-menu-items ul,
-  .dd-menu .dd-menu-items ol,
   .panel-default > .panel-heading {
     background-color: $bg-color-lighter;
     border-color: $separator-color;
     color: $text-color;
-  }
-
-  .dd-menu .dd-menu-items ul li:hover:not([role='separator']):not(.separator),
-  .dd-menu .dd-menu-items ul li > *:focus,
-  .dd-menu .dd-menu-items ol li:hover:not([role='separator']):not(.separator),
-  .dd-menu .dd-menu-items ol li > *:focus {
-    background-color: $bg-highlight-color;
-    color: $text-color-lighter;
-  }
-
-  .dd-menu .dd-menu-items .dd-menu-item:hover,
-  .dd-menu .dd-menu-items .dd-menu-item.dd-menu-item-danger:hover {
-    color: $text-color-lighter !important;
-    background-color: $bg-highlight-color !important;
   }
 
   .actions-overlay {

@@ -20,7 +20,6 @@
     "porter-stemmer": "0.9.x",
     "prop-types": "~15.7.2",
     "react": "~16.12.0",
-    "react-dd-menu": "~2.0.2",
     "react-dom": "~16.12.0",
     "react-dropzone-component": "~3.2.0",
     "react-final-form-hooks": "~2.0.2",
