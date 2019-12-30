@@ -1,7 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router';
 import classnames from 'classnames';
 import { Portal } from 'react-portal';
-import { faComment, faHeart as faHeartO } from '@fortawesome/free-regular-svg-icons';
+import { faComment, faHeart as faHeartO, faClock } from '@fortawesome/free-regular-svg-icons';
 import { faChevronLeft, faHeart, faAngleUp, faAt } from '@fortawesome/free-solid-svg-icons';
 import UserName from './user-name';
 import TimeDisplay from './time-display';
@@ -162,6 +163,27 @@ export default class CommentLikes extends React.Component {
     this.actionsOverlay = el;
   };
 
+  copyURL = ({ target }) => {
+    target.blur();
+
+    // Calculating an absolute URL
+    const link = document.createElement('a');
+    link.href = `${this.props.entryUrl}#comment-${this.props.commentId}`;
+
+    const textNode = document.body.appendChild(document.createTextNode(link.href));
+
+    const range = new Range();
+    const selection = document.getSelection();
+
+    range.selectNode(textNode);
+    selection.removeAllRanges();
+    selection.addRange(range);
+    document.execCommand('copy');
+    selection.removeAllRanges();
+
+    textNode.parentNode.removeChild(textNode);
+  };
+
   renderPopup = () => {
     const likesStyle = {
       height: (!this.state.showActionButtons && this.state.panelHeight) || 'auto',
@@ -220,6 +242,19 @@ export default class CommentLikes extends React.Component {
                         <Icon icon={faAt} />
                         Mention username
                       </button>
+                      <div className="mention-action">
+                        <Icon icon={faClock} />
+                        <Link to={`${this.props.entryUrl}#comment-${this.props.commentId}`}>
+                          <TimeDisplay timeStamp={+this.props.createdAt} showAbsTime />
+                        </Link>{' '}
+                        <button
+                          className="btn btn-default btn-sm"
+                          type="button"
+                          onClick={this.copyURL}
+                        >
+                          Copy link
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
