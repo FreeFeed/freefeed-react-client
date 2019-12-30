@@ -92,8 +92,10 @@ $post-line-height: 20px;
     }
 
     .post-footer {
+      display: flex;
+
       .post-lock-icon {
-        margin-right: 5px;
+        cursor: pointer;
       }
 
       .post-private-icon {
@@ -121,10 +123,37 @@ $post-line-height: 20px;
       }
     }
   }
+}
 
-  .post-timestamps-toggle {
+.post-footer-icon {
+  width: 19px;
+  flex: 0 0 auto;
+}
+
+.post-footer-content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.post-footer-block {
+  white-space: nowrap;
+  margin-left: -1em;
+  margin-right: 1em;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+.post-footer-item {
+  &:empty {
+    display: none;
+  }
+  &::before {
+    content: ' - ';
     display: inline-block;
-    cursor: pointer;
+    width: 1em;
+    text-align: center;
   }
 }
 
