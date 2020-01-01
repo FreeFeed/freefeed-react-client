@@ -6,12 +6,44 @@ const NAME = `${tokenPrefix}authToken`;
 const EXP_DAYS = 365;
 const PATH = '/';
 
+// based on https://github.com/Modernizr/Modernizr/blob/master/feature-detects/storage/localstorage.js
+let lsWorks = null;
+function localStorageWorks() {
+  if (lsWorks !== null) {
+    return lsWorks;
+  }
+  const test = 'test';
+  try {
+    localStorage.setItem(test, test);
+    localStorage.removeItem(test);
+    lsWorks = true;
+    return true;
+  } catch {
+    lsWorks = false;
+    return false;
+  }
+}
+
 export function getToken() {
-  return getCookie(NAME);
+  let token;
+
+  if (localStorageWorks()) {
+    token = localStorage.getItem(NAME);
+  }
+
+  if (!token) {
+    token = getCookie(NAME);
+  }
+
+  return token;
 }
 
 export function setToken(token) {
-  return setCookie(NAME, token, EXP_DAYS, PATH);
+  if (localStorageWorks()) {
+    localStorage.setItem(NAME, token);
+  } else {
+    setCookie(NAME, token, EXP_DAYS, PATH);
+  }
 }
 
 export function getPersistedUser() {

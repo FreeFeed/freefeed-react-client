@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { IndexLink, Link } from 'react-router';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
@@ -15,26 +15,28 @@ import { ColorSchemeSetter } from './color-theme-setter';
 import { SVGSymbolDeclarations } from './fontawesome-icons';
 import MediaViewer from './media-viewer';
 import { Throbber } from './throbber';
-import { DelayedSuspense } from './lazy-component';
+import { Delayed } from './lazy-component';
 
 const loadingPageMessage = (
-  <div className="content">
+  <Delayed>
     <div className="content">
-      <div className="box">
-        <div className="box-body">
-          <p>
-            Loading page... <Throbber />
-          </p>
+      <div className="content">
+        <div className="box">
+          <div className="box-body">
+            <p>
+              Loading page... <Throbber />
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </Delayed>
 );
 
 const InternalLayout = ({ authenticated, children }) => (
   <div className={authenticated ? 'col-md-9' : 'col-md-12'}>
     <div className="content">
-      <DelayedSuspense fallback={loadingPageMessage}>{children}</DelayedSuspense>
+      <Suspense fallback={loadingPageMessage}>{children}</Suspense>
     </div>
   </div>
 );

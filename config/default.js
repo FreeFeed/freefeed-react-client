@@ -57,7 +57,6 @@ module.exports = {
       comments: {
         omitRepeatedBubbles: true,
         highlightComments: true,
-        hiddenTypes: [],
       },
       allowLinksPreview: false,
       readMoreStyle: 'modern',
@@ -65,6 +64,7 @@ module.exports = {
       homeFeedMode: HOMEFEED_MODE_CLASSIC,
       homefeed: { hideUsers: [] },
       pinnedGroups: [],
+      hideUnreadNotifications: false,
     },
   },
 

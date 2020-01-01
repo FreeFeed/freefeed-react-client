@@ -2,14 +2,18 @@ import React, { useEffect, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { faTimes, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import { getServerInfo, getExtAuthProfiles, unlinkExternalProfile } from '../redux/action-creators';
-import { combineAsyncStates, initialAsyncState } from '../redux/async-helpers';
-import { Icon } from './fontawesome-icons';
-import { Throbber } from './throbber';
-import { providerTitle, useExtAuthProviders } from './ext-auth-helpers';
-import { ExtAuthButtons, CONNECT } from './ext-auth-buttons';
+import {
+  getServerInfo,
+  getExtAuthProfiles,
+  unlinkExternalProfile,
+} from '../../../redux/action-creators';
+import { combineAsyncStates, initialAsyncState } from '../../../redux/async-helpers';
+import { Icon } from '../../fontawesome-icons';
+import { Throbber } from '../../throbber';
+import { providerTitle, useExtAuthProviders } from '../../ext-auth-helpers';
+import { ExtAuthButtons, CONNECT } from '../../ext-auth-buttons';
 
-export const UserExtAuthForm = React.memo(function UserExtAuthForm() {
+export default function ExtAuthForm() {
   const dispatch = useDispatch();
 
   const [providers] = useExtAuthProviders();
@@ -41,10 +45,9 @@ export const UserExtAuthForm = React.memo(function UserExtAuthForm() {
 
   return (
     <>
-      <h3>Connected social network profiles</h3>
       <p>
         You can use these profiles to sign in to FreeFeed. This will not let FreeFeed do anything on
-        your behalf on external sites.
+        your behalf on external sites and will not tell them about your FreeFeed account.
       </p>
       {(loadStatus.loading || loadStatus.initial) && (
         <p>
@@ -67,10 +70,9 @@ export const UserExtAuthForm = React.memo(function UserExtAuthForm() {
           <ExtAuthButtons mode={CONNECT} />
         </>
       )}
-      <hr />
     </>
   );
-});
+}
 
 const ConnectedProfile = React.memo(function ConnectedProfile({ profile }) {
   const disconnectStatus = useSelector(

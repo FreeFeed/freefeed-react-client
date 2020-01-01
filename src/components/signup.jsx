@@ -114,7 +114,7 @@ const ExtAuthSignup = React.memo(function ExtAuthSignup() {
             <strong>{result.profile.email}</strong>.
           </p>
           <p>
-            If this is you, you should <Link to="/signin">sign in</Link> with your username/e-mail
+            If this is you, you should <Link to="/signin">sign in</Link> with your username/email
             and password or in any other way allowed for your account.
           </p>
           <p>

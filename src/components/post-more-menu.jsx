@@ -1,98 +1,62 @@
 import React from 'react';
-import DropdownMenu from 'react-dd-menu';
 
+import { Portal } from 'react-portal';
 import { confirmFirst } from '../utils';
+import styles from './dropdown-menu.module.scss';
+import { useDropDown } from './hooks/drop-down';
 
-export default class PostMoreMenu extends React.Component {
-  state = { isOpen: false, menuAlign: 'left' };
-  rootEl = React.createRef();
+export default function PostMoreMenu({ post, ...props }) {
+  const { pivotRef, menuRef, opened, toggle } = useDropDown();
 
-  handleClickOnMore = () => {
-    this.setState({ isOpen: !this.state.isOpen, menuAlign: 'left' });
-  };
+  return (
+    <>
+      <a className="post-action" ref={pivotRef} onClick={toggle}>
+        More&#x200a;&#x25be;
+      </a>
+      {opened && (
+        <Portal>
+          <ul className={styles.list} ref={menuRef}>
+            {post.isEditable && (
+              <li className={styles.item}>
+                <a className={styles.link} onClick={props.toggleEditingPost}>
+                  Edit
+                </a>
+              </li>
+            )}
 
-  close = () => {
-    this.setState({ isOpen: false, menuAlign: 'left' });
-  };
+            {props.isModeratable && (
+              <li className={styles.item}>
+                <a className={styles.link} onClick={props.toggleModeratingComments}>
+                  {post.isModeratingComments ? 'Stop moderating comments' : 'Moderate comments'}
+                </a>
+              </li>
+            )}
 
-  // A little hack to keep the menu inside window
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.isOpen || !this.state.isOpen || !this.rootEl.current) {
-      return;
-    }
-    const menuBounds = this.rootEl.current.querySelector('.dd-menu-items').getBoundingClientRect();
-    if (menuBounds.right > document.documentElement.clientWidth) {
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ menuAlign: 'right' });
-    } else if (menuBounds.left < 0) {
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ menuAlign: 'left' });
-    }
-  }
+            {post.commentsDisabled ? (
+              <li className={styles.item}>
+                <a className={styles.link} onClick={props.enableComments}>
+                  Enable comments
+                </a>
+              </li>
+            ) : (
+              <li className={styles.item}>
+                <a className={styles.link} onClick={props.disableComments}>
+                  Disable comments
+                </a>
+              </li>
+            )}
 
-  render() {
-    const menuOptions = {
-      align: this.state.menuAlign,
-      close: this.close,
-      isOpen: this.state.isOpen,
-      animate: false,
-      toggle: (
-        <a className="post-action" onClick={this.handleClickOnMore}>
-          More&#x200a;&#x25be;
-        </a>
-      ),
-    };
-
-    const delLabel = this.props.post.isFullyRemovable ? 'Delete' : 'Remove from group';
-
-    return (
-      <span ref={this.rootEl}>
-        <DropdownMenu {...menuOptions}>
-          {this.props.post.isEditable ? (
-            <li className="dd-menu-item">
-              <a className="dd-menu-item-link" onClick={this.props.toggleEditingPost}>
-                Edit
+            <li className={styles.item}>
+              <a
+                className={`${styles.link} ${styles.danger}`}
+                onClick={confirmFirst(props.deletePost)}
+              >
+                {post.isFullyRemovable ? 'Delete' : 'Remove from group'}
               </a>
             </li>
-          ) : (
-            false
-          )}
-
-          {this.props.post.isModeratingComments ? (
-            <li className="dd-menu-item">
-              <a className="dd-menu-item-link" onClick={this.props.toggleModeratingComments}>
-                Stop moderating comments
-              </a>
-            </li>
-          ) : (
-            <li className="dd-menu-item">
-              <a className="dd-menu-item-link" onClick={this.props.toggleModeratingComments}>
-                Moderate comments
-              </a>
-            </li>
-          )}
-
-          {this.props.post.commentsDisabled ? (
-            <li className="dd-menu-item">
-              <a className="dd-menu-item-link" onClick={this.props.enableComments}>
-                Enable comments
-              </a>
-            </li>
-          ) : (
-            <li className="dd-menu-item">
-              <a className="dd-menu-item-link" onClick={this.props.disableComments}>
-                Disable comments
-              </a>
-            </li>
-          )}
-
-          <li className="dd-menu-item dd-menu-item-danger">
-            <a className="dd-menu-item-link" onClick={confirmFirst(this.props.deletePost)}>
-              {delLabel}
-            </a>
-          </li>
-        </DropdownMenu>
-      </span>
-    );
-  }
+          </ul>
+        </Portal>
+      )}
+    </>
+  );
 }

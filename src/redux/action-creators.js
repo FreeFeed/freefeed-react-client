@@ -454,13 +454,6 @@ export function updateUser(
   };
 }
 
-export function userSettingsChange(payload) {
-  return {
-    type: ActionTypes.USER_SETTINGS_CHANGE,
-    payload,
-  };
-}
-
 export function updateUserPreferences(
   userId,
   frontendPrefs = {},
@@ -472,6 +465,17 @@ export function updateUserPreferences(
     apiRequest: Api.updateUserPreferences,
     payload: { userId, frontendPrefs, backendPrefs },
     extra: { suppressStatus },
+  };
+}
+
+export function updateActualUserPreferences({
+  updateFrontendPrefs = () => null,
+  updateBackendPrefs = () => null,
+}) {
+  return {
+    type: ActionTypes.UPDATE_ACTUAL_USER_PREFERENCES,
+    apiRequest: Api.updateActualPreferences,
+    payload: { updateFrontendPrefs, updateBackendPrefs },
   };
 }
 

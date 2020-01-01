@@ -184,7 +184,7 @@ export default React.memo(function SignupForm({ invitationId = null, lang = 'en'
           <p className="help-block">{enRu('From 3 to 25 characters', 'От 3 до 25 символов')}</p>
         </div>
         <div className={groupErrClass(email)}>
-          <label htmlFor="email-input">E-mail</label>
+          <label htmlFor="email-input">Email</label>
           <input
             id="email-input"
             className="form-control narrow-input"

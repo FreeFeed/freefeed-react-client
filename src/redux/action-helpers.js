@@ -23,6 +23,8 @@ import {
   HIDE_BY_NAME,
   UNHIDE_NAMES,
   TOGGLE_PINNED_GROUP,
+  UPDATE_ACTUAL_USER_PREFERENCES,
+  UPDATE_USER_NOTIFICATION_PREFERENCES,
 } from './action-types';
 import { request, response, fail, baseType } from './async-helpers';
 
@@ -71,6 +73,8 @@ export const userChangeActions = [
   UNSUBSCRIBE,
   UPDATE_USER,
   UPDATE_USER_PREFERENCES,
+  UPDATE_ACTUAL_USER_PREFERENCES,
+  UPDATE_USER_NOTIFICATION_PREFERENCES,
   HIDE_BY_NAME,
   UNHIDE_NAMES,
   TOGGLE_PINNED_GROUP,

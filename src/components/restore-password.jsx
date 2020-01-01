@@ -16,7 +16,8 @@ export default React.memo(function RestorePasswordPage() {
         <div className="col-md-12">
           <h2 className="p-signin-header">Reset FreeFeed password</h2>
           <p>
-            Please enter your email address and we will send you email with password reset link.
+            Please enter your email address and we will send you an email with a password reset
+            link.
           </p>
           <RestorePasswordForm />
         </div>
@@ -55,7 +56,7 @@ const RestorePasswordForm = React.memo(function RestorePasswordForm() {
       <FieldsetWrapper disabled={status.loading}>
         <div className={cn('form-group', email.meta.touched && email.meta.invalid && 'has-error')}>
           <label htmlFor="email-input" className="control-label">
-            E-mail address
+            Email address
           </label>
           <input
             {...email.input}
