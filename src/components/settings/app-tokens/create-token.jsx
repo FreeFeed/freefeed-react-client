@@ -1,3 +1,4 @@
+import { parse as urlParse } from 'url';
 import { parse as queryParse } from 'querystring';
 
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
@@ -20,17 +21,26 @@ export default withLayout('Generate new token', function CreateToken() {
 
   useEffect(() => void dispatch(createAppTokenReset()), [dispatch]);
 
-  const initialData = useMemo(() => {
-    const state = initialFormData;
+  const { returnURL, ...initialData } = useMemo(() => {
+    const state = { returnURL: '', ...initialFormData };
     if (location.search) {
       const qs = queryParse(location.search.substr(1));
       state.title = qs.title || '';
       state.scopes = (qs.scopes || '').split(/\s+/);
       state.netmasks = qs.netmasks || '';
       state.origins = qs.origins || '';
+      state.returnURL = qs.return_url || '';
     }
     return state;
   }, []);
+
+  const [returnDomain, returnHref] = useMemo(() => {
+    const url = urlParse(returnURL);
+    if (url.protocol === 'https:' || url.protocol === 'http:') {
+      return [url.hostname, url.href];
+    }
+    return [null, null];
+  }, [returnURL]);
 
   const [form, setForm] = useState(initialData);
 
@@ -71,14 +81,26 @@ export default withLayout('Generate new token', function CreateToken() {
         <div className="alert alert-success">
           <p className="lead">Success!</p>
           <p>Here is your token. Make sure to copy it now. You won’t be able to see it again!</p>
-          <TextCopier text={createdToken} />
+          <div className="form-group">
+            <TextCopier text={createdToken} />
+          </div>
+          {returnHref && (
+            <div className="form-group">
+              <a href={returnHref}>
+                <Icon icon={faAngleLeft} /> Back to application site
+              </a>{' '}
+              ({returnDomain})
+            </div>
+          )}
         </div>
 
-        <p>
-          <Link to="/settings/app-tokens">
-            <Icon icon={faAngleLeft} /> Return to tokens list
-          </Link>
-        </p>
+        {!returnHref && (
+          <p>
+            <Link to="/settings/app-tokens" className="btn btn-default">
+              <Icon icon={faAngleLeft} /> Return to tokens list
+            </Link>
+          </p>
+        )}
       </>
     );
   }
@@ -101,6 +123,15 @@ export default withLayout('Generate new token', function CreateToken() {
         <Icon icon={faQuestionCircle} />{' '}
         <Link to="/settings/app-tokens/scopes">About token access rights and scopes</Link>
       </p>
+
+      {returnHref && (
+        <p>
+          <a href={returnHref}>
+            <Icon icon={faAngleLeft} /> Back to application site
+          </a>{' '}
+          ({returnDomain})
+        </p>
+      )}
     </form>
   );
 });
