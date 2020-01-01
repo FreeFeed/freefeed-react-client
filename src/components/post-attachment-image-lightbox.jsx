@@ -19,7 +19,8 @@ export default class ImageAttachmentsLightbox extends React.Component {
   static propTypes = {
     items: pt.arrayOf(
       pt.shape({
-        src: pt.string.isRequired,
+        src: pt.string,
+        html: pt.string,
         w: pt.number.isRequired,
         h: pt.number.isRequired,
         pid: pt.string.isRequired,

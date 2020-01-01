@@ -2,12 +2,16 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { Mention, Email, HashTag, Arrows, Link as TLink } from 'social-text-tokenizer';
+import { faImage } from '@fortawesome/free-regular-svg-icons';
+import { faFilm as faVideo } from '@fortawesome/free-solid-svg-icons';
+import classnames from 'classnames';
 
 import { parseText } from '../utils/parse-text';
 import { highlightString } from '../utils/search-highlighter';
 import { FRIENDFEED_POST } from '../utils/link-types';
-import { isMediaUrl } from './media-viewer';
+import { getMediaType } from './media-viewer';
 
+import { Icon } from './fontawesome-icons';
 import UserName from './user-name';
 import ErrorBoundary from './error-boundary';
 
@@ -95,8 +99,9 @@ export default class Linkify extends React.Component {
           );
         }
 
-        if (isMediaUrl(token.href)) {
-          return mediaEl(token.href, token.shorten(MAX_URL_LENGTH));
+        const mediaType = getMediaType(token.href);
+        if (mediaType) {
+          return mediaEl(token.href, token.shorten(MAX_URL_LENGTH), mediaType);
         }
 
         return anchorEl(token.href, token.shorten(MAX_URL_LENGTH));
@@ -140,17 +145,23 @@ function showMediaWithKey(showMedia) {
     showMedia({ attachments, index });
   };
 
-  return function(media, content) {
-    attachments.push({ url: media, id: 'comment' });
+  return function(media, content, mediaType) {
+    attachments.push({ url: media, id: 'comment', mediaType });
+    const mediaIcon = { video: faVideo, image: faImage }[mediaType];
+
     return (
       <a
-        href="#"
+        href={media}
+        target="_blank"
         dir="ltr"
         onClick={handleOpenMedia(attachments.length - 1)}
         key={`media${attachments.length}`}
-        className="media-link"
+        className={classnames('media-link', mediaType)}
         title="Click to view in Lightbox"
       >
+        {mediaIcon && (
+          <Icon icon={mediaIcon} className="media-icon" key={`icon${attachments.length}`} />
+        )}
         {content}
       </a>
     );

@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
+import { renderToString } from 'react-dom/server';
 import { showMedia } from '../redux/action-creators';
 import { lazyComponent } from './lazy-component';
+import { canShowURL, getVideoInfo } from './link-preview/video';
 
 const ImageAttachmentsLightbox = lazyComponent(() => import('./post-attachment-image-lightbox'), {
   fallback: (
@@ -12,17 +14,74 @@ const ImageAttachmentsLightbox = lazyComponent(() => import('./post-attachment-i
   errorMessage: "Couldn't load lightbox component",
 });
 
-export const isMediaUrl = (url) => {
-  return url.match(/\.(jpg|png|jpeg|webp)$/i);
+export const getMediaType = (url) => {
+  if (url.match(/\.(jpg|png|jpeg|webp)$/i)) {
+    return 'image';
+  }
+
+  if (canShowURL(url)) {
+    return 'video';
+  }
 };
 
 export const isMediaAttachment = (attachments) => {
   return attachments.reduce((acc, item) => acc || item.mediaType === 'image', false);
 };
 
+const getVideoItem = async (url, withoutAutoplay) => {
+  const info = await getVideoInfo(url, withoutAutoplay);
+
+  if (info) {
+    let player = null;
+    const w = 800;
+    const h = info.aspectRatio ? Math.round(w * info.aspectRatio) : 450;
+    const wrapperPadding = info.aspectRatio ? `${info.aspectRatio * 100}%` : null;
+
+    if (info.playerURL) {
+      player = (
+        <iframe
+          className="pswp__video"
+          src={info.playerURL}
+          frameBorder="0"
+          allowFullScreen="true"
+          width={w}
+          height={h}
+          allow="autoplay"
+        />
+      );
+    } else if (info.videoURL) {
+      player = (
+        <video
+          src={info.videoURL}
+          poster={info.previewURL}
+          autoPlay={!withoutAutoplay}
+          loop="true"
+        />
+      );
+    }
+
+    if (player) {
+      const html = (
+        <div className="wrapper">
+          <div className="video-wrapper" style={{ paddingBottom: wrapperPadding }}>
+            {player}
+          </div>
+        </div>
+      );
+
+      return {
+        html: renderToString(html),
+        w,
+        h,
+        pid: 'video',
+      };
+    }
+  }
+};
+
 function MediaViewer(props) {
   const { mediaViewer, showMedia } = props;
-  const { attachments, postId, navigate, thumbnail } = mediaViewer;
+  const { attachments, postId, navigate, thumbnail, index } = mediaViewer;
   const [lightboxItems, setLightboxItems] = useState(null);
 
   const onDestroy = useCallback(() => {
@@ -38,7 +97,7 @@ function MediaViewer(props) {
           ...mediaViewer,
           postId: nextPost.id,
           attachments: nextPost.attachments,
-          index: 0,
+          index: null,
           thumbnail: null,
         });
       }
@@ -50,18 +109,28 @@ function MediaViewer(props) {
 
   useEffect(() => {
     if (attachments) {
-      setLightboxItems(
-        attachments.map((a) => ({
-          src: a.url,
-          w: (a.imageSizes && a.imageSizes.o && a.imageSizes.o.w) || 0,
-          h: (a.imageSizes && a.imageSizes.o && a.imageSizes.o.h) || 0,
-          pid: a.id.substr(0, 8),
-        })),
-      );
+      Promise.all(
+        attachments.map(async (a, i) => {
+          if (a.mediaType === 'video') {
+            const videoItem = await getVideoItem(a.url, i !== index);
+            if (videoItem) {
+              return videoItem;
+            }
+          }
+          return {
+            src: a.url,
+            w: (a.imageSizes && a.imageSizes.o && a.imageSizes.o.w) || 0,
+            h: (a.imageSizes && a.imageSizes.o && a.imageSizes.o.h) || 0,
+            pid: a.id.substr(0, 8),
+          };
+        }),
+      ).then((items) => {
+        setLightboxItems(items);
+      });
     } else {
       setLightboxItems(null);
     }
-  }, [attachments]);
+  }, [attachments, index]);
 
   if (!lightboxItems) {
     return null;
