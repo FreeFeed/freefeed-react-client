@@ -1,6 +1,6 @@
 import { stringify } from 'querystring';
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router';
 import { trim } from 'lodash';
 
@@ -12,6 +12,9 @@ import { withLayout } from './layout';
 
 export default withLayout('Create a magic link', function CreateLink() {
   const [form, setForm] = useState(initialFormData);
+  const [returnURL, setReturnURL] = useState('');
+
+  const onReturnURLChange = useCallback((e) => setReturnURL(e.target.value), []);
 
   const linkParams = {};
   if (trim(form.title) !== '') {
@@ -25,6 +28,9 @@ export default withLayout('Create a magic link', function CreateLink() {
   }
   if (trim(form.origins)) {
     linkParams.origins = trim(form.origins);
+  }
+  if (/^https?:\/\//i.test(trim(returnURL))) {
+    linkParams.return_url = trim(returnURL);
   }
 
   const query = stringify(linkParams);
@@ -45,6 +51,20 @@ export default withLayout('Create a magic link', function CreateLink() {
       </p>
 
       <TokenForm onChange={setForm} />
+
+      <div className="form-group">
+        <p>After creating a token, show this return link to user:</p>
+        <input
+          type="text"
+          name="title"
+          className="form-control"
+          id="return-url"
+          maxLength="500"
+          value={returnURL}
+          onChange={onReturnURLChange}
+          placeholder="https://…"
+        />
+      </div>
 
       <div className="alert alert-info">
         <p>Share this link with your application users:</p>

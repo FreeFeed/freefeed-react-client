@@ -67,6 +67,12 @@ export default function TokenForm({ initialData = initialFormData, onChange }) {
       </div>
       <div className="form-group">
         <label htmlFor="title-input">Allow token to</label>
+        <div className="checkbox">
+          <label>
+            <input type="checkbox" name="scope" value="" checked disabled /> Read my public profile{' '}
+            <em>(always available)</em>
+          </label>
+        </div>
         {scopes.map((scope) => (
           <div key={scope.name} className="checkbox">
             <label>
