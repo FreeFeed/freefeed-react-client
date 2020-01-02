@@ -28,6 +28,10 @@ export function setCookie(name, value = '', expireDays, path) {
   return (document.cookie = cookie);
 }
 
+export function deleteCookie(name, path) {
+  return setCookie(name, '', -1, path);
+}
+
 const userDefaults = {
   profilePictureMediumUrl: defaultUserpicPath,
   profilePictureLargeUrl: defaultUserpicPath,

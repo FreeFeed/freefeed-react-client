@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { getCookie, setCookie, localStorage, userParser } from '../utils/';
+import { getCookie, setCookie, localStorage, userParser, deleteCookie } from '../utils/';
 
 const { userStorageKey, tokenPrefix } = CONFIG.auth;
 const NAME = `${tokenPrefix}authToken`;
@@ -39,6 +39,12 @@ export function getToken() {
 }
 
 export function setToken(token) {
+  if (!token) {
+    localStorageWorks() && localStorage.removeItem(NAME);
+    deleteCookie(NAME);
+    return;
+  }
+
   if (localStorageWorks()) {
     localStorage.setItem(NAME, token);
   } else {
