@@ -4,7 +4,7 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import { combineReducers } from 'redux';
 
 import { userParser, postParser, getSummaryPeriod } from '../utils';
-import { getToken, getPersistedUser } from '../services/auth';
+import { getToken } from '../services/auth';
 import { parseQuery } from '../utils/search-highlighter';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
 import * as FeedOptions from '../utils/feed-options';
@@ -1482,10 +1482,7 @@ export function authenticated(state = !!getToken(), action) {
   return state;
 }
 
-const initUser = () => ({
-  frontendPreferences: frontendPrefsConfig.defaultValues,
-  ...getPersistedUser(),
-});
+const initUser = () => ({ frontendPreferences: frontendPrefsConfig.defaultValues });
 
 export function user(state = initUser(), action) {
   if (ActionHelpers.isUserChangeResponse(action)) {
@@ -2347,10 +2344,7 @@ export function serverTimeAhead(state = 0, action) {
 }
 
 const getInitialFeedViewOptions = () => {
-  const defaultHomeFeedSort = frontendPrefsConfig.defaultValues.homeFeedSort;
-  const persistedUser = getPersistedUser();
-  const homeFeedSort =
-    (persistedUser && persistedUser.frontendPreferences.homeFeedSort) || defaultHomeFeedSort;
+  const { homeFeedSort } = frontendPrefsConfig.defaultValues;
   return {
     homeFeedSort,
     sort: homeFeedSort,
@@ -2420,13 +2414,7 @@ export const serverInfoStatus = asyncState(ActionTypes.GET_SERVER_INFO);
 
 export { extAuth } from './reducers/ext-auth.js';
 
-const getInitialHiddenUserNames = () => {
-  const defaultHiddenUsers = CONFIG.frontendPreferences.defaultValues.homefeed.hideUsers;
-  const persistedUser = getPersistedUser();
-  return _.get(persistedUser, ['frontendPreferences', 'homefeed', 'hideUsers'], defaultHiddenUsers);
-};
-
-export function hiddenUserNames(state = getInitialHiddenUserNames(), action) {
+export function hiddenUserNames(state = [], action) {
   if (ActionHelpers.isUserChangeResponse(action)) {
     return _.get(
       action.payload.users,

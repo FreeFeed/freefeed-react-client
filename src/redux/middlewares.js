@@ -3,7 +3,7 @@ import { browserHistory } from 'react-router';
 import _ from 'lodash';
 
 import { getPost } from '../services/api';
-import { setToken, persistUser } from '../services/auth';
+import { setToken } from '../services/auth';
 import { Connection, scrollCompensator } from '../services/realtime';
 import { delay } from '../utils';
 import * as FeedOptions from '../utils/feed-options';
@@ -212,7 +212,6 @@ export const authMiddleware = (store) => {
 
     if (action.type === ActionTypes.UNAUTHENTICATED) {
       setToken();
-      persistUser();
       next(action);
       if (firstUnauthenticated) {
         firstUnauthenticated = false;
@@ -242,15 +241,6 @@ export const authMiddleware = (store) => {
 
       const backTo = store.getState().routing.locationBeforeTransitions.query.back || '/';
       return browserHistory.push(`${backTo}`);
-    }
-
-    if (
-      action.type === response(ActionTypes.WHO_AM_I) ||
-      action.type === response(ActionTypes.UPDATE_USER) ||
-      action.type === response(ActionTypes.UPDATE_USER_PREFERENCES)
-    ) {
-      persistUser(action.payload.users);
-      return next(action);
     }
 
     return next(action);

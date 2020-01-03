@@ -1,5 +1,4 @@
 /* global CONFIG */
-import _ from 'lodash';
 import filesize from 'filesize';
 
 import defaultUserpicPath from '../../assets/images/default-userpic.svg';
@@ -56,14 +55,8 @@ export function userParser(user) {
   // Frontend preferences (only use this client's subtree).
   // Do not fill them if no 'frontendPreferences' in 'user'.
   if (user.frontendPreferences) {
-    const prefs = user.frontendPreferences;
-    if (Object.keys(prefs).some((k) => !_.isObjectLike(prefs[k]))) {
-      // Looks like frontendPreferences is already parsed, keep them untouch.
-      // This is for the backward compatibility with old whoamiCache strategy.
-    } else {
-      const prefSubTree = prefs[frontendPrefsConfig.clientId] || {};
-      newUser.frontendPreferences = { ...userDefaults.frontendPreferences, ...prefSubTree };
-    }
+    const prefSubTree = user.frontendPreferences[frontendPrefsConfig.clientId] || {};
+    newUser.frontendPreferences = { ...userDefaults.frontendPreferences, ...prefSubTree };
   }
 
   return newUser;
