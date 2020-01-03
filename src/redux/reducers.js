@@ -18,11 +18,19 @@ import {
   fromResponse,
   asyncState,
   initialAsyncState,
+  successAsyncState,
 } from './async-helpers';
 
 const frontendPrefsConfig = CONFIG.frontendPreferences;
 
 const { request, response, fail } = ActionHelpers;
+
+export const initialized = asyncState(ActionTypes.INITIAL_WHO_AM_I, (state, action) => {
+  if (action.type === ActionTypes.UNAUTHENTICATED) {
+    return successAsyncState;
+  }
+  return state;
+});
 
 export function title(state = '', action) {
   switch (action.type) {
