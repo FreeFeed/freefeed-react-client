@@ -21,9 +21,24 @@ const getAuthorName = ({ postAuthor, createdUser, group }) => {
 const generatePostUrl = ({ post_id, ...event }) => `/${getAuthorName(event)}/${post_id}`;
 const generateCommentUrl = ({ post_id, comment_id, ...event }) =>
   `/${getAuthorName(event)}/${post_id}#comment-${comment_id}`;
-const postLink = (event) => <Link to={generatePostUrl(event)}>post</Link>;
-const directPostLink = (event) => <Link to={generatePostUrl(event)}>direct message</Link>;
-const commentLink = (event, text = 'comment') => <Link to={generateCommentUrl(event)}>{text}</Link>;
+const postLink = (event) =>
+  event.post_id ? <Link to={generatePostUrl(event)}>post</Link> : 'deleted post';
+const directPostLink = (event) =>
+  event.post_id ? (
+    <Link to={generatePostUrl(event)}>direct message</Link>
+  ) : (
+    'deleted direct message'
+  );
+const commentLink = (event, text = 'comment') =>
+  event.comment_id ? (
+    <Link to={generateCommentUrl(event)}>{text}</Link>
+  ) : text === 'comment' ? (
+    'deleted comment'
+  ) : text === 'New comment' ? (
+    'Deleted comment'
+  ) : (
+    text
+  );
 
 const notificationTemplates = {
   subscription_request_revoked: (event) => (
@@ -103,8 +118,7 @@ const notificationTemplates = {
   ),
   direct_comment: (event) => (
     <div>
-      {`New `}
-      {commentLink(event)}
+      {commentLink(event, 'New comment')}
       {` was posted to a `}
       {directPostLink(event)}
       <Linkify>{` from @${event.createdUser.username}`}</Linkify>
