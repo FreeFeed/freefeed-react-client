@@ -594,20 +594,21 @@ class Post extends React.Component {
               </div>
               <div className="post-footer-content">
                 <span className="post-footer-block">
-                  {props.isDirect && (
-                    <Icon
-                      icon={faAngleDoubleRight}
-                      className="post-direct-icon"
-                      title="This is a direct message"
-                    />
-                  )}
-                  <Link to={canonicalPostURI} className="post-timestamp">
-                    <TimeDisplay
-                      timeStamp={+props.createdAt}
-                      showAbsTime={this.state.showTimestamps}
-                    />
-                  </Link>
-
+                  <span className="post-footer-item">
+                    {props.isDirect && (
+                      <Icon
+                        icon={faAngleDoubleRight}
+                        className="post-direct-icon"
+                        title="This is a direct message"
+                      />
+                    )}
+                    <Link to={canonicalPostURI} className="post-timestamp">
+                      <TimeDisplay
+                        timeStamp={+props.createdAt}
+                        showAbsTime={this.state.showTimestamps}
+                      />
+                    </Link>
+                  </span>
                   {props.commentsDisabled && (
                     <span className="post-footer-item">
                       <i>

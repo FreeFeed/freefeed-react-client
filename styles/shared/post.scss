@@ -136,19 +136,18 @@ $post-line-height: 20px;
 
 .post-footer-block {
   display: inline-block;
-  white-space: nowrap;
   margin-left: -1em;
   margin-right: 1em;
   max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  &:first-child {
-    margin-left: 0;
-  }
 }
 
 .post-footer-item {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+
   &:empty {
     display: none;
   }
