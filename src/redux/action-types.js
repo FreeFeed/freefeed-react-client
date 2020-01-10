@@ -1,6 +1,7 @@
 export const UNAUTHENTICATED = 'UNAUTHENTICATED';
 export const STATIC_PAGE = 'STATIC_PAGE';
 export const REQUIRE_AUTHENTICATION = 'REQUIRE_AUTHENTICATION';
+export const INITIAL_WHO_AM_I = 'INITIAL_WHO_AM_I';
 export const WHO_AM_I = 'WHO_AM_I';
 export const HOME = 'HOME';
 export const MEMORIES = 'MEMORIES';

@@ -34,18 +34,8 @@ const store = configureStore();
 
 //request main info for user
 if (store.getState().authenticated) {
-  let delay = 0;
-
-  // Defer the whoami request to let the feed load first, if we have a cached copy of whoami already
-  if (store.getState().user.screenName) {
-    delay = 200;
-  }
-
-  setTimeout(() => {
-    store.dispatch(ActionCreators.whoAmI());
-  }, delay);
+  store.dispatch(ActionCreators.initialWhoAmI());
 } else {
-  // just commented for develop sign up form
   store.dispatch(ActionCreators.unauthenticated());
 }
 

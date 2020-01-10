@@ -28,6 +28,13 @@ export function whoAmI() {
   };
 }
 
+export function initialWhoAmI() {
+  return {
+    type: ActionTypes.INITIAL_WHO_AM_I,
+    apiRequest: Api.getWhoAmI,
+  };
+}
+
 export function markAllDirectsAsRead() {
   return {
     type: ActionTypes.DIRECTS_ALL_READ,
