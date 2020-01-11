@@ -726,6 +726,13 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
   };
 };
 
+export const initialWhoamiMiddleware = (store) => (next) => (action) => {
+  next(action);
+  if (action.type === response(ActionTypes.INITIAL_WHO_AM_I)) {
+    store.dispatch({ ...action, type: response(ActionTypes.WHO_AM_I) });
+  }
+};
+
 // Fixing data structures coming from server
 export const dataFixMiddleware = (/*store*/) => (next) => (action) => {
   if (action.type === response(ActionTypes.GET_SINGLE_POST)) {
