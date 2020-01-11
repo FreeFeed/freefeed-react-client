@@ -1,70 +1,80 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Link } from 'react-router';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';
 
-import { updateGroup, updateGroupPicture, resetGroupUpdateForm } from '../redux/action-creators';
+import Helmet from 'react-helmet';
+import { updateGroupPicture } from '../redux/action-creators';
+import { initialAsyncState } from '../redux/async-helpers';
+import { PictureEditForm } from './settings/forms/profile-picture';
 import GroupSettingsForm from './group-settings-form';
-import GroupPictureForm from './group-picture-form';
-import { Throbber, BIG } from './throbber';
+import settingsStyles from './settings/settings.module.scss';
 
-const GroupSettings = (props) =>
-  props.groupSettings.status === 'loading' ? (
-    <div className="box">
-      <div className="box-header-timeline">Group settings</div>
-      <div className="box-body">
-        <Throbber size={BIG} />
-      </div>
-    </div>
-  ) : props.groupSettings.status === 'success' ? (
-    <div className="box">
-      <div className="box-header-timeline">
-        <Link to={`/${props.group.username}`}>{props.group.username}</Link>: group settings
-      </div>
-      <div className="box-body">
-        <GroupSettingsForm
-          group={props.group}
-          updateGroup={props.updateGroup}
-          resetGroupUpdateForm={props.resetGroupUpdateForm}
-          {...props.groupSettingsForm}
-        />
-
-        <hr />
-
-        <GroupPictureForm
-          group={props.group}
-          updateGroupPicture={props.updateGroupPicture}
-          resetGroupUpdateForm={props.resetGroupUpdateForm}
-          {...props.groupPictureForm}
-        />
-      </div>
-    </div>
-  ) : props.groupSettings.status === 'error' ? (
-    <div className="box">
-      <div className="box-header-timeline">Group settings</div>
-      <div className="box-body">
-        <div className="alert alert-danger">{props.groupSettings.errorMessage}</div>
-      </div>
-    </div>
-  ) : (
-    <div />
+export default function GroupSettings({ params: { userName: username } }) {
+  const dispatch = useDispatch();
+  const userId = useSelector((state) => state.user.id);
+  const group = useSelector((state) => _.find(state.users, { username }));
+  const loadStatus = useSelector(
+    (state) => state.getUserInfoStatuses[username] || initialAsyncState,
   );
+  const pictureStatus = useSelector(
+    (state) => state.updateGroupPictureStatuses[username] || initialAsyncState,
+  );
+  const pictureUpdate = useCallback((file) => dispatch(updateGroupPicture(username, file)), [
+    dispatch,
+    username,
+  ]);
+  const amIAdmin = useMemo(() => group && group.administrators.includes(userId), [group, userId]);
 
-function mapStateToProps(state, ownProps) {
-  return {
-    group: _.find(state.users, { username: ownProps.params.userName }) || {},
-    groupSettings: state.groupSettings,
-    groupSettingsForm: state.groupSettingsForm,
-    groupPictureForm: state.groupPictureForm,
-  };
+  if (!group && loadStatus.loading) {
+    return (
+      <Layout username={username}>
+        <p>Loading...</p>
+      </Layout>
+    );
+  }
+  if (loadStatus.error) {
+    return (
+      <Layout username={username}>
+        <p className="alert alert-danger">Loading error: {loadStatus.errorText}</p>
+      </Layout>
+    );
+  }
+  if (!amIAdmin) {
+    return (
+      <Layout username={username}>
+        <p className="alert alert-danger">You aren&#x2019;t an administrator of this group</p>
+      </Layout>
+    );
+  }
+
+  return (
+    <Layout username={username}>
+      <section className={settingsStyles.formSection}>
+        <h3>
+          Group: <Link to={`/${username}`}>{username}</Link>
+        </h3>
+      </section>
+
+      <section className={settingsStyles.formSection}>
+        <PictureEditForm
+          pictureURL={group.profilePictureLargeUrl}
+          pictureStatus={pictureStatus}
+          onUpdate={pictureUpdate}
+        />
+      </section>
+
+      <GroupSettingsForm username={username} />
+    </Layout>
+  );
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    updateGroup: (...args) => dispatch(updateGroup(...args)),
-    updateGroupPicture: (...args) => dispatch(updateGroupPicture(...args)),
-    resetGroupUpdateForm: (...args) => dispatch(resetGroupUpdateForm(...args)),
-  };
+function Layout({ username, children }) {
+  return (
+    <div className="box">
+      <Helmet title={`'${username}' group settings - FreeFeed`} />
+      <div className="box-header-timeline">Group settings</div>
+      <div className="box-body">{children}</div>
+    </div>
+  );
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(GroupSettings);

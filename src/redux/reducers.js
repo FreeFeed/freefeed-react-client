@@ -1630,20 +1630,24 @@ export function subscriptions(state = {}, action) {
   return state;
 }
 
-export function groupSettings(state = {}, action) {
-  switch (action.type) {
-    case request(ActionTypes.GET_USER_INFO): {
-      return { ...state, status: 'loading' };
-    }
-    case response(ActionTypes.GET_USER_INFO): {
-      return { ...state, status: 'success' };
-    }
-    case fail(ActionTypes.GET_USER_INFO): {
-      return { ...state, status: 'error', errorMessage: (action.payload || {}).err };
-    }
-  }
-  return state;
-}
+export const getUserInfoStatuses = asyncStatesMap(ActionTypes.GET_USER_INFO, {
+  getKey: getKeyBy('username'),
+  cleanOnSuccess: true,
+});
+
+export const updateGroupPictureStatuses = asyncStatesMap(
+  ActionTypes.UPDATE_GROUP_PICTURE,
+  {
+    getKey: getKeyBy('groupName'),
+  },
+  setOnLocationChange({}),
+);
+
+export const updateGroupStatuses = asyncStatesMap(
+  ActionTypes.UPDATE_GROUP,
+  {},
+  setOnLocationChange({}),
+);
 
 export function groupCreateForm(state = {}, action) {
   switch (action.type) {
@@ -1658,42 +1662,6 @@ export function groupCreateForm(state = {}, action) {
       return { ...state, status: 'error', errorMessage: (action.payload || {}).err };
     }
     case ActionTypes.RESET_GROUP_CREATE_FORM: {
-      return {};
-    }
-  }
-  return state;
-}
-
-export function groupSettingsForm(state = {}, action) {
-  switch (action.type) {
-    case request(ActionTypes.UPDATE_GROUP): {
-      return { ...state, status: 'loading' };
-    }
-    case response(ActionTypes.UPDATE_GROUP): {
-      return { ...state, status: 'success' };
-    }
-    case fail(ActionTypes.UPDATE_GROUP): {
-      return { ...state, status: 'error', errorMessage: (action.payload || {}).err };
-    }
-    case ActionTypes.RESET_GROUP_UPDATE_FORM: {
-      return {};
-    }
-  }
-  return state;
-}
-
-export function groupPictureForm(state = {}, action) {
-  switch (action.type) {
-    case request(ActionTypes.UPDATE_GROUP_PICTURE): {
-      return { ...state, status: 'loading' };
-    }
-    case response(ActionTypes.UPDATE_GROUP_PICTURE): {
-      return { ...state, status: 'success' };
-    }
-    case fail(ActionTypes.UPDATE_GROUP_PICTURE): {
-      return { ...state, status: 'error', errorMessage: (action.payload || {}).err };
-    }
-    case ActionTypes.RESET_GROUP_UPDATE_FORM: {
       return {};
     }
   }
