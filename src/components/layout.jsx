@@ -198,18 +198,7 @@ class Layout extends React.Component {
             </div>
           </header>
 
-          <LoaderContainer
-            loading={props.loadingView || props.initialized.loading}
-            fullPage={true}
-            error={
-              props.initialized.error && (
-                <>
-                  <p>Critical error: ${props.initialized.error}</p>
-                  <p>Try to reload page.</p>
-                </>
-              )
-            }
-          >
+          <LoaderContainer loading={props.loadingView} fullPage>
             <div className="row">
               <InternalLayout {...props} />
               {props.authenticated ? <Sidebar {...props} /> : false}
@@ -230,7 +219,6 @@ class Layout extends React.Component {
 function select(state, ownProps) {
   return {
     user: state.user,
-    initialized: state.initialized,
     authenticated: state.authenticated,
     loadingView: state.routeLoadingState,
     recentGroups: state.recentGroups,
