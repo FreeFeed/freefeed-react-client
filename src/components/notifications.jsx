@@ -73,7 +73,10 @@ const notificationTemplates = {
   banned_user: (event) => <Linkify>{`You blocked @${event.affectedUser.username}`}</Linkify>,
   unbanned_user: (event) => <Linkify>{`You unblocked @${event.affectedUser.username}`}</Linkify>,
   subscription_requested: (event) => (
-    <Linkify>{`@${event.createdUser.username} sent you a subscription request`}</Linkify>
+    <div>
+      <Linkify>{`@${event.createdUser.username}`}</Linkify> sent you a{' '}
+      <Link to="/friends">subscription request</Link>
+    </div>
   ),
   user_subscribed: (event) => (
     <Linkify>{`@${event.createdUser.username} subscribed to your feed`}</Linkify>
