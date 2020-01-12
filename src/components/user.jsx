@@ -139,6 +139,7 @@ function selectState(state, ownProps) {
       authenticated &&
       foundUser &&
       (user.frontendPreferences.pinnedGroups || []).indexOf(foundUser.id) > -1,
+    managedGroups: state.managedGroups,
   };
 
   statusExtension.canISeeSubsList =

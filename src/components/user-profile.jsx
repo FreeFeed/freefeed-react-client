@@ -64,6 +64,11 @@ export default class UserProfile extends React.Component {
   render() {
     const { props } = this;
 
+    const groupRequestsCount =
+      props.type === 'group' && props.authenticated
+        ? (props.managedGroups.find((g) => g.id === props.id) || { requests: [] }).requests.length
+        : 0;
+
     return (
       <div>
         <ErrorBoundary>
@@ -243,6 +248,16 @@ export default class UserProfile extends React.Component {
             </div>
           ) : (
             false
+          )}
+
+          {groupRequestsCount > 0 && (
+            <p className="alert alert-info">
+              <span className="message">
+                You have{' '}
+                <Link to="/groups">{pluralForm(groupRequestsCount, 'subscription request')}</Link>{' '}
+                to this group
+              </span>
+            </p>
           )}
 
           {props.canIPostHere ? (
