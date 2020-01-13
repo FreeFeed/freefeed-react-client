@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, useField } from 'react-final-form-hooks';
-import { without } from 'lodash';
+import { without, uniq } from 'lodash';
 import {
   DISPLAYNAMES_DISPLAYNAME,
   DISPLAYNAMES_BOTH,
@@ -272,7 +272,7 @@ function onSubmit(dispatch) {
         updateBackendPrefs({ hideCommentsOfTypes }) {
           return {
             hideCommentsOfTypes: values.hideBannedComments
-              ? [...hideCommentsOfTypes, COMMENT_HIDDEN_BANNED]
+              ? uniq([...hideCommentsOfTypes, COMMENT_HIDDEN_BANNED])
               : without(hideCommentsOfTypes, COMMENT_HIDDEN_BANNED),
           };
         },
