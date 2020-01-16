@@ -9,11 +9,12 @@ import { READMORE_STYLE_COMPACT, COMMENT_DELETED } from '../utils/frontend-prefe
 import { commentReadmoreConfig } from '../utils/readmore-config';
 import { Throbber } from './throbber';
 
-import CommentLikes from './comment-likes';
+// import CommentLikes from './comment-likes';
 import PieceOfText from './piece-of-text';
 import Expandable from './expandable';
 import UserName from './user-name';
 import TimeDisplay from './time-display';
+import CommentIcon, { JustCommentIcon } from './comment-icon';
 
 export default class PostComment extends React.Component {
   commentContainer;
@@ -274,26 +275,24 @@ export default class PostComment extends React.Component {
     );
   }
 
-  renderCommentLikes() {
-    if (this.props.hideType) {
+  renderCommentIcon() {
+    const { props } = this;
+    if (props.hideType) {
       return false;
     }
+
+    if (props.isEditing) {
+      return <JustCommentIcon />;
+    }
+
     return (
-      <CommentLikes
-        commentId={this.props.id}
-        entryUrl={this.props.entryUrl}
-        omitBubble={this.props.omitBubble}
-        createdAt={this.props.createdAt}
-        likes={this.props.likes}
-        forbidLiking={this.props.isEditable}
-        omitLikes={this.props.isEditing}
-        hasOwnLike={this.props.hasOwnLike}
-        toggleLike={this.toggleLike}
-        likesList={this.props.likesList}
-        getCommentLikes={this.getCommentLikes}
+      <CommentIcon
+        id={props.id}
+        postId={props.postId}
+        omitBubble={props.omitBubble}
         reply={this.reply}
         mention={this.mention}
-        isAddingComment={this.props.isAddingComment}
+        entryUrl={this.props.entryUrl}
       />
     );
   }
@@ -317,7 +316,7 @@ export default class PostComment extends React.Component {
         data-author={this.props.user && !this.props.isEditing ? this.props.user.username : ''}
         ref={this.registerCommentContainer}
       >
-        {this.renderCommentLikes()}
+        {this.renderCommentIcon()}
         {this.renderBody()}
       </div>
     );

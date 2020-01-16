@@ -1284,41 +1284,29 @@ export function commentViewState(state = {}, action) {
   return state;
 }
 
-export function commentLikes(state = {}, action) {
+const loadLikesListStatusesReducer = asyncStatesMap(ActionTypes.GET_COMMENT_LIKES, {
+  getKey: getKeyBy('commentId'),
+  applyState: (comment, status) => ({ ...comment, status }),
+});
+
+const commentLikesInitial = {};
+
+export function commentLikes(state = commentLikesInitial, action) {
+  state = loadLikesListStatusesReducer(state, action);
+
   switch (action.type) {
-    case request(ActionTypes.GET_COMMENT_LIKES): {
-      return {
-        ...state,
-        [action.payload.commentId]: { loading: true },
-      };
-    }
-    case fail(ActionTypes.GET_COMMENT_LIKES): {
-      return {
-        ...state,
-        [action.payload.commentId]: { loading: false, error: true },
-      };
-    }
     case response(ActionTypes.GET_COMMENT_LIKES): {
-      return {
-        ...state,
-        [action.request.commentId]: {
-          loading: false,
-          error: false,
-          likes: action.payload.likes,
-        },
-      };
+      return patchObjectByKey(state, action.request.commentId, (comment) => ({
+        ...comment,
+        likes: action.payload.likes,
+      }));
     }
-    case ActionTypes.REALTIME_COMMENT_UPDATE: {
-      return {
-        ...state,
-        [action.comment.id]: {
-          loading: false,
-          error: false,
-          likes: [],
-        },
-      };
+    case LOCATION_CHANGE: {
+      // Clean state on page navigation
+      return commentLikesInitial;
     }
   }
+
   return state;
 }
 
