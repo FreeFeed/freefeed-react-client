@@ -119,6 +119,10 @@ body.dark-theme {
     color: $link-color;
   }
 
+  .post .read-more {
+    color: $link-color !important;
+  }
+
   .post a,
   .expandable .expand-panel .expand-button,
   .image-attachments .show-more,
