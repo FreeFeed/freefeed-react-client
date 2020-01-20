@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 
 import 'autotrack'; // used by google-analytics in ../index.jade
@@ -94,8 +94,45 @@ const generateRouteHooks = (callback) => ({
 // See https://github.com/webpack/webpack/issues/4921#issuecomment-357147299
 const lazyLoad = (path) => React.lazy(() => import(`${path}`));
 
-ReactDOM.render(
-  <Provider store={store}>
+function InitialLayout({ children }) {
+  return (
+    <div className="container">
+      <div className="row header-row">
+        <div className="col-md-4">
+          <div className="header">
+            <h1 className="title">
+              <a href="/">FreeFeed</a>
+            </h1>
+            <div className="jsonly">{children}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const initialized = useSelector((state) => state.initialized);
+  if (initialized.initial || initialized.loading) {
+    return (
+      <InitialLayout>
+        <p>Loading...</p>
+      </InitialLayout>
+    );
+  }
+
+  if (initialized.error) {
+    return (
+      <InitialLayout>
+        <div className="alert alert-danger" role="alert">
+          <p>Critical error: ${initialized.errorText}</p>
+          <p>Try to reload page.</p>
+        </div>
+      </InitialLayout>
+    );
+  }
+
+  return (
     <Router history={history}>
       <Route name="bookmarklet" path="/bookmarklet" component={Bookmarklet} />
 
@@ -307,6 +344,12 @@ ReactDOM.render(
         />
       </Route>
     </Router>
+  );
+}
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
   </Provider>,
   document.getElementById('app'),
 );
