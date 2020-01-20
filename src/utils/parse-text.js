@@ -52,7 +52,24 @@ export class Link extends TLink {
   }
 }
 
-const tokenize = withText(combine(hashTags(), emails(), mentions(), links({ tldList }), arrows()));
+const tldRe = [...tldList]
+  // Putting the longest TLDs first to capture them before their substrings.
+  // Example pairs: DEV / DE, PLACE / PL
+  .sort((a, b) => {
+    if (a.length > b.length) {
+      return -1;
+    } else if (a.length < b.length) {
+      return 1;
+    } else if (a < b) {
+      return -1;
+    } else if (a > b) {
+      return 1;
+    }
+    return 0;
+  })
+  .join('|');
+
+const tokenize = withText(combine(hashTags(), emails(), mentions(), links({ tldRe }), arrows()));
 
 const enhanceLinks = (token) => (token instanceof TLink ? new Link(token, siteDomains) : token);
 
