@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, useField } from 'react-final-form-hooks';
-import { without } from 'lodash';
+import { without, uniq } from 'lodash';
 import {
   DISPLAYNAMES_DISPLAYNAME,
   DISPLAYNAMES_BOTH,
@@ -41,7 +41,7 @@ export default function AppearanceForm() {
   const displayNames = useField('displayNames', form.form);
   const homeFeedMode = useField('homeFeedMode', form.form);
   const hiddenUsers = useField('hiddenUsers', form.form);
-  const readmoreStyle = useField('readmoreStyle', form.form);
+  const readMoreStyle = useField('readMoreStyle', form.form);
   const omitBubbles = useField('omitBubbles', form.form);
   const highlightComments = useField('highlightComments', form.form);
   const hideBannedComments = useField('hideBannedComments', form.form);
@@ -134,14 +134,14 @@ export default function AppearanceForm() {
         <div className="form-group">
           <div className="radio">
             <label>
-              <RadioInput field={readmoreStyle} value={READMORE_STYLE_COMPACT} />
+              <RadioInput field={readMoreStyle} value={READMORE_STYLE_COMPACT} />
               Compact: hides line breaks (until &quot;Expand&quot; is clicked)
             </label>
           </div>
 
           <div className="radio">
             <label>
-              <RadioInput field={readmoreStyle} value={READMORE_STYLE_COMFORT} />
+              <RadioInput field={readMoreStyle} value={READMORE_STYLE_COMFORT} />
               Comfortable: displays line breaks, shows &quot;Read more&quot; for longer posts and
               comments
             </label>
@@ -236,7 +236,7 @@ function initialValues({ frontendPreferences: frontend, preferences: backend }) 
     displayNames: frontend.displayNames.displayOption.toString(),
     homeFeedMode: frontend.homeFeedMode,
     hiddenUsers: frontend.homefeed.hideUsers.join(', '),
-    readmoreStyle: frontend.readMoreStyle,
+    readMoreStyle: frontend.readMoreStyle,
     omitBubbles: frontend.comments.omitRepeatedBubbles,
     highlightComments: frontend.comments.highlightComments,
     hideBannedComments: backend.hideCommentsOfTypes.includes(COMMENT_HIDDEN_BANNED),
@@ -249,18 +249,21 @@ function onSubmit(dispatch) {
   return (values) => {
     dispatch(
       updateActualUserPreferences({
-        updateFrontendPrefs() {
+        updateFrontendPrefs(prefs) {
           return {
             displayNames: {
+              ...prefs.displayNames,
               useYou: values.useYou,
               displayOption: parseInt(values.displayNames, 10),
             },
             homeFeedMode: values.homeFeedMode,
             homefeed: {
+              ...prefs.homefeed,
               hideUsers: values.hiddenUsers.toLowerCase().match(/[\w-]+/g) || [],
             },
             readMoreStyle: values.readMoreStyle,
             comments: {
+              ...prefs.comments,
               omitRepeatedBubbles: values.omitBubbles,
               highlightComments: values.highlightComments,
             },
@@ -272,7 +275,7 @@ function onSubmit(dispatch) {
         updateBackendPrefs({ hideCommentsOfTypes }) {
           return {
             hideCommentsOfTypes: values.hideBannedComments
-              ? [...hideCommentsOfTypes, COMMENT_HIDDEN_BANNED]
+              ? uniq([...hideCommentsOfTypes, COMMENT_HIDDEN_BANNED])
               : without(hideCommentsOfTypes, COMMENT_HIDDEN_BANNED),
           };
         },
