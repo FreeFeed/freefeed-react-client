@@ -115,7 +115,7 @@ function onSubmit(id, dispatch) {
   };
 }
 
-function privacyFlagsToString({ isPrivate, isProtected }) {
+export function privacyFlagsToString({ isPrivate, isProtected }) {
   if (isPrivate === '1') {
     return PRIVATE;
   }
@@ -125,7 +125,7 @@ function privacyFlagsToString({ isPrivate, isProtected }) {
   return PUBLIC;
 }
 
-function privacyStringToFlags(privacy) {
+export function privacyStringToFlags(privacy) {
   return {
     isPrivate: privacy === PRIVATE ? '1' : '0',
     isProtected: privacy === PROTECTED ? '1' : '0',
