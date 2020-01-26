@@ -5,8 +5,8 @@ import Mousetrap from 'mousetrap';
 
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
 const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
-const prevPostKeys = ['w', 'ц', 'up', 'u', 'г', '8'];
-const nextPostKeys = ['s', 'ы', 'down', 'j', 'о', '2'];
+// const prevPostKeys = ['w', 'ц', 'up', 'u', 'г', '8'];
+// const nextPostKeys = ['s', 'ы', 'down', 'j', 'о', '2'];
 
 const lightboxOptions = {
   shareEl: false,
@@ -98,6 +98,39 @@ export default class ImageAttachmentsLightbox extends React.Component {
     }
   };
 
+  afterChange = (_) => {
+    const index = _.getCurrentIndex();
+    const prevIndex = this.prevIndex || 0;
+
+    if (index !== prevIndex) {
+      const { items } = _;
+
+      if (items[prevIndex].html) {
+        if (!items[prevIndex].htmlCopy) {
+          items[prevIndex].htmlCopy = items[prevIndex].html;
+        }
+        items[prevIndex].html = '<div></div>';
+        _.setContent(_.itemHolders[prevIndex], prevIndex);
+      }
+
+      if (items[index].html) {
+        if (items[index].htmlCopy) {
+          items[index].html = items[index].htmlCopy;
+          _.setContent(_.itemHolders[index], index);
+          if (items[index].reloading) {
+            items[index].reloading = false;
+          } else {
+            items[index].reloading = true;
+            _.invalidateCurrItems();
+            _.updateSize(true);
+          }
+        }
+      }
+    }
+
+    this.prevIndex = index;
+  };
+
   navigatePost = (where, e) => {
     if (e) {
       e.preventDefault();
@@ -108,15 +141,15 @@ export default class ImageAttachmentsLightbox extends React.Component {
   whenOpened = () => {
     Mousetrap.bind(prevHotKeys, () => this.photoSwipe.prev());
     Mousetrap.bind(nextHotKeys, () => this.photoSwipe.next());
-    Mousetrap.bind(prevPostKeys, (e) => this.navigatePost(-1, e));
-    Mousetrap.bind(nextPostKeys, (e) => this.navigatePost(1, e));
+    // Mousetrap.bind(prevPostKeys, (e) => this.navigatePost(-1, e));
+    // Mousetrap.bind(nextPostKeys, (e) => this.navigatePost(1, e));
   };
 
   whenClosed = () => {
     Mousetrap.unbind(prevHotKeys);
     Mousetrap.unbind(nextHotKeys);
-    Mousetrap.unbind(prevPostKeys);
-    Mousetrap.unbind(nextPostKeys);
+    // Mousetrap.unbind(prevPostKeys);
+    // Mousetrap.unbind(nextPostKeys);
   };
 
   registerPhotoSwipe = (el) => {
@@ -139,6 +172,7 @@ export default class ImageAttachmentsLightbox extends React.Component {
         onClose={this.whenClosed}
         initialZoomInEnd={this.whenOpened}
         destroy={this.props.onDestroy}
+        afterChange={this.afterChange}
       />
     );
   }

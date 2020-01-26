@@ -43,7 +43,7 @@ const getVideoItem = async (url, withoutAutoplay) => {
           className="pswp__video"
           src={info.playerURL}
           frameBorder="0"
-          allowFullScreen="true"
+          allowFullScreen={true}
           width={w}
           height={h}
           allow="autoplay"
@@ -55,7 +55,7 @@ const getVideoItem = async (url, withoutAutoplay) => {
           src={info.videoURL}
           poster={info.previewURL}
           autoPlay={!withoutAutoplay}
-          loop="true"
+          loop={true}
         />
       );
     }
@@ -74,6 +74,11 @@ const getVideoItem = async (url, withoutAutoplay) => {
         w,
         h,
         pid: 'video',
+        title: renderToString(
+          <a href={url} target="_blank">
+            {info.byline || url}
+          </a>,
+        ),
       };
     }
   }

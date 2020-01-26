@@ -541,6 +541,7 @@ class Post extends React.Component {
                     text={props.body}
                     readMoreStyle={props.readMoreStyle}
                     highlightTerms={props.highlightTerms}
+                    showMedia={this.props.showMedia}
                   />
                 </div>
               )}
