@@ -4,7 +4,6 @@ ARG NODE_CONFIG_ENV
 
 RUN apt-get update && \
     apt-get install -y \
-    graphicsmagick \
     g++ \
     git \
     make
