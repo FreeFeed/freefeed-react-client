@@ -17,12 +17,14 @@ const VIMEO_VIDEO_RE = /^https:\/\/vimeo\.com\/([0-9]+)/i;
 const COUB_VIDEO_RE = /^https?:\/\/coub\.com\/view\/([a-z0-9]+)/i;
 const IMGUR_VIDEO_RE = /^https?:\/\/i\.imgur\.com\/([a-z0-9]+)\.(gifv|mp4)/i;
 const GFYCAT_RE = /^https?:\/\/(?:[a-z]+\.)?gfycat\.com\/(?:[^/]{0,3}\/)?((?:[A-Z][a-z]+){3}|[a-z]{16,})/;
+const INSTAGRAM_POST_RE = /https?:\/\/(www\.)?(instagram.com|instagr.am)\/p\/(.+?)(\/|$)/;
 
 const T_YOUTUBE_VIDEO = 'T_YOUTUBE_VIDEO';
 const T_VIMEO_VIDEO = 'T_VIMEO_VIDEO';
 const T_COUB_VIDEO = 'T_COUB_VIDEO';
 const T_IMGUR_VIDEO = 'T_IMGUR_VIDEO';
 const T_GFYCAT = 'T_GFYCAT';
+const T_INSTAGRAM_POST = 'T_INSTAGRAM_POST';
 
 export function canShowURL(url) {
   return getVideoType(url) !== null;
@@ -110,7 +112,7 @@ export default ScrollSafe(connect(select)(VideoPreview), { foldable: false, trac
 
 // Helpers
 
-function getVideoType(url) {
+export function getVideoType(url) {
   if (YOUTUBE_VIDEO_RE.test(url)) {
     return T_YOUTUBE_VIDEO;
   }
@@ -126,6 +128,10 @@ function getVideoType(url) {
   if (GFYCAT_RE.test(url)) {
     return T_GFYCAT;
   }
+  if (INSTAGRAM_POST_RE.test(url)) {
+    return T_INSTAGRAM_POST;
+  }
+
   return null;
 }
 
@@ -145,6 +151,9 @@ function getVideoId(url) {
   }
   if ((m = GFYCAT_RE.exec(url))) {
     return m[1];
+  }
+  if ((m = INSTAGRAM_POST_RE.exec(url))) {
+    return m[3];
   }
   return null;
 }
@@ -252,6 +261,24 @@ export async function getVideoInfo(url, withoutAutoplay) {
         previewURL: data.gfyItem.mobilePosterUrl,
         aspectRatio: aspectRatio.set(url, data.gfyItem.height / data.gfyItem.width),
         videoURL: data.gfyItem.mobileUrl,
+      };
+    }
+    case T_INSTAGRAM_POST: {
+      const id = getVideoId(url);
+      const data = await cachedFetch(
+        `https://api.instagram.com/oembed/?url=http://instagr.am/p/${id}/`,
+      );
+      if (!data.html) {
+        return { error: data.message || data.errorMessage || 'invalid instagram API response' };
+      }
+
+      return {
+        byline: data.title,
+        previewURL: data.thumbnail_url,
+        playerURL: `https://www.instagram.com/p/${id}/embed/`,
+        w: 540,
+        h: 540,
+        aspectRatio: 1,
       };
     }
   }
