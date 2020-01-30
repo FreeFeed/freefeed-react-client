@@ -2221,6 +2221,13 @@ export function realtimeSubscriptions(state = [], action) {
   return state;
 }
 
+export function mediaViewer(state = [], action) {
+  if (action.type === ActionTypes.SHOW_MEDIA) {
+    return action.payload;
+  }
+  return state;
+}
+
 export function notifications(state = [], action) {
   switch (action.type) {
     case request(ActionTypes.GET_NOTIFICATIONS): {

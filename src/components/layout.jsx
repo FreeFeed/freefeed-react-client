@@ -13,6 +13,7 @@ import SearchForm from './search-form';
 import ErrorBoundary from './error-boundary';
 import { ColorSchemeSetter } from './color-theme-setter';
 import { SVGSymbolDeclarations } from './fontawesome-icons';
+import MediaViewer from './media-viewer';
 import { Throbber } from './throbber';
 import { Delayed } from './lazy-component';
 
@@ -204,6 +205,8 @@ class Layout extends React.Component {
               {props.authenticated ? <Sidebar {...props} /> : false}
             </div>
           </LoaderContainer>
+
+          <MediaViewer />
 
           <div className="row">
             <div className="col-md-12">

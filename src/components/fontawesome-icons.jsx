@@ -1,7 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import { faHeart, faLock, faGlobeAmericas, faUserFriends } from '@fortawesome/free-solid-svg-icons';
-import { faComment, faHeart as faHeartO } from '@fortawesome/free-regular-svg-icons';
+import { faComment, faHeart as faHeartO, faImage } from '@fortawesome/free-regular-svg-icons';
 import { faCommentPlus } from './fontawesome-custom-icons';
 
 // These icons will be embedded to the page just once
@@ -16,6 +16,7 @@ const preloadedIcons = [
   faLock,
   faGlobeAmericas,
   faUserFriends,
+  faImage,
 ];
 
 export const SVGSymbolDeclarations = React.memo(function SVGSymbolDeclarations() {

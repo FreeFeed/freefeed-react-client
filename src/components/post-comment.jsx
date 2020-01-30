@@ -216,7 +216,13 @@ export default class PostComment extends React.Component {
     const authorAndButtons = (
       <span>
         {' -'}&nbsp;
-        <UserName user={this.props.user} />
+        <UserName
+          user={this.props.user}
+          userHover={{
+            hover: this.handleHoverOnUsername,
+            leave: this.props.clearHighlightComment,
+          }}
+        />
         {this.props.isEditable ? (
           <span>
             {' '}
@@ -258,6 +264,7 @@ export default class PostComment extends React.Component {
               hover: this.handleHoverOverArrow,
               leave: this.props.clearHighlightComment,
             }}
+            showMedia={this.props.showMedia}
           />
           {authorAndButtons}
           {this.props.showTimestamp ? (

@@ -2,10 +2,16 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { Mention, Email, HashTag, Arrows, Link as TLink } from 'social-text-tokenizer';
+import { faImage } from '@fortawesome/free-regular-svg-icons';
+import { faFilm as faVideo } from '@fortawesome/free-solid-svg-icons';
+import classnames from 'classnames';
 
 import { parseText } from '../utils/parse-text';
 import { highlightString } from '../utils/search-highlighter';
 import { FRIENDFEED_POST } from '../utils/link-types';
+import { getMediaType } from './media-viewer';
+
+import { Icon } from './fontawesome-icons';
 import UserName from './user-name';
 import ErrorBoundary from './error-boundary';
 
@@ -34,6 +40,8 @@ export default class Linkify extends React.Component {
     if (text === '') {
       return [];
     }
+
+    const mediaEl = showMediaWithKey(this.props.showMedia);
 
     return parseText(text).map((token, i) => {
       const key = i;
@@ -91,6 +99,11 @@ export default class Linkify extends React.Component {
           );
         }
 
+        const mediaType = getMediaType(token.href);
+        if (mediaType) {
+          return mediaEl(token.href, token.shorten(MAX_URL_LENGTH), mediaType);
+        }
+
         return anchorEl(token.href, token.shorten(MAX_URL_LENGTH));
       }
 
@@ -120,6 +133,39 @@ export default class Linkify extends React.Component {
       </span>
     );
   }
+}
+
+function showMediaWithKey(showMedia) {
+  const attachments = [];
+  const handleOpenMedia = (index) => (e) => {
+    if (e.button !== 0 || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) {
+      return;
+    }
+    e.preventDefault();
+    showMedia({ attachments, index });
+  };
+
+  return function(media, content, mediaType) {
+    attachments.push({ url: media, id: 'comment', mediaType });
+    const mediaIcon = { video: faVideo, image: faImage }[mediaType];
+
+    return (
+      <a
+        href={media}
+        target="_blank"
+        dir="ltr"
+        onClick={handleOpenMedia(attachments.length - 1)}
+        key={`media${attachments.length}`}
+        className={classnames('media-link', mediaType)}
+        title="Click to view in Lightbox"
+      >
+        {mediaIcon && (
+          <Icon icon={mediaIcon} className="media-icon" key={`icon${attachments.length}`} />
+        )}
+        {content}
+      </a>
+    );
+  };
 }
 
 function anchorElWithKey(key) {
