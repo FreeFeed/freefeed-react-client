@@ -55,6 +55,7 @@ const getVideoItem = async (url, withoutAutoplay) => {
           src={info.videoURL}
           poster={info.previewURL}
           autoPlay={!withoutAutoplay}
+          controls={true}
           loop={true}
         />
       );
