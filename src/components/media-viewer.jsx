@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { renderToString } from 'react-dom/server';
 import { showMedia } from '../redux/action-creators';
 import { lazyComponent } from './lazy-component';
-import { canShowURL, getVideoInfo } from './link-preview/video';
+import { getVideoType, getVideoInfo } from './link-preview/video';
 
 const ImageAttachmentsLightbox = lazyComponent(() => import('./post-attachment-image-lightbox'), {
   fallback: (
@@ -18,10 +18,7 @@ export const getMediaType = (url) => {
   if (url.match(/\.(jpg|png|jpeg|webp)$/i)) {
     return 'image';
   }
-
-  if (canShowURL(url)) {
-    return 'video';
-  }
+  return getVideoType(url);
 };
 
 export const isMediaAttachment = (attachments) => {
@@ -32,46 +29,53 @@ const getVideoItem = async (url, withoutAutoplay) => {
   const info = await getVideoInfo(url, withoutAutoplay);
 
   if (info) {
-    let player = null;
+    let playerHTML = null;
     const w = 800;
     const h = info.aspectRatio ? Math.round(w * info.aspectRatio) : 450;
     const wrapperPadding = info.aspectRatio ? `${info.aspectRatio * 100}%` : null;
 
-    if (info.playerURL) {
-      player = (
-        <iframe
-          className="pswp__video"
-          src={info.playerURL}
-          frameBorder="0"
-          allowFullScreen={true}
-          width={w}
-          height={h}
-          allow="autoplay"
-        />
-      );
-    } else if (info.videoURL) {
-      player = (
-        <video
-          src={info.videoURL}
-          poster={info.previewURL}
-          autoPlay={!withoutAutoplay}
-          controls={true}
-          loop={true}
-        />
-      );
+    if (info.html) {
+      playerHTML = `<div class="wrapper"><div class="video-wrapper" style="padding-bottom: ${wrapperPadding}">${info.html}</div></div>`;
+    } else {
+      let player = null;
+      if (info.playerURL) {
+        player = (
+          <iframe
+            className="pswp__video"
+            src={info.playerURL}
+            frameBorder="0"
+            allowFullScreen={true}
+            width={w}
+            height={h}
+            allow="autoplay"
+          />
+        );
+      } else if (info.videoURL) {
+        player = (
+          <video
+            src={info.videoURL}
+            poster={info.previewURL}
+            autoPlay={!withoutAutoplay}
+            controls={true}
+            loop={true}
+          />
+        );
+      }
+
+      if (player) {
+        playerHTML = renderToString(
+          <div className="wrapper">
+            <div className="video-wrapper" style={{ paddingBottom: wrapperPadding }}>
+              {player}
+            </div>
+          </div>,
+        );
+      }
     }
 
-    if (player) {
-      const html = (
-        <div className="wrapper">
-          <div className="video-wrapper" style={{ paddingBottom: wrapperPadding }}>
-            {player}
-          </div>
-        </div>
-      );
-
+    if (playerHTML) {
       return {
-        html: renderToString(html),
+        html: playerHTML,
         w,
         h,
         pid: 'video',
@@ -117,7 +121,7 @@ function MediaViewer(props) {
     if (attachments) {
       Promise.all(
         attachments.map(async (a, i) => {
-          if (a.mediaType === 'video') {
+          if (a.mediaType !== 'image') {
             const videoItem = await getVideoItem(a.url, i !== index);
             if (videoItem) {
               return videoItem;

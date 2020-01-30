@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { Mention, Email, HashTag, Arrows, Link as TLink } from 'social-text-tokenizer';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
 import { faFilm as faVideo } from '@fortawesome/free-solid-svg-icons';
+import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 import classnames from 'classnames';
 
 import { parseText } from '../utils/parse-text';
@@ -147,7 +148,7 @@ function showMediaWithKey(showMedia) {
 
   return function(media, content, mediaType) {
     attachments.push({ url: media, id: 'comment', mediaType });
-    const mediaIcon = { video: faVideo, image: faImage }[mediaType];
+    const mediaIcon = { T_INSTAGRAM_POST: faInstagram, image: faImage }[mediaType] || faVideo;
 
     return (
       <a
