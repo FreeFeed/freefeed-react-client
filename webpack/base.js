@@ -24,6 +24,7 @@ const baseConfig = {
   devtool: opts.dev ? 'inline-source-map' : 'source-map',
   output: {
     path: opts.dstDir,
+    chunkFilename: `${filename}.js`, // used by non-entry chunks
     // filename: `${filename}.js`,
     filename: (chunkData) => {
       if (chunkData.chunk.name === 'bookmarklet') {
