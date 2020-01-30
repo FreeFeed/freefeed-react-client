@@ -162,6 +162,7 @@ function showMediaWithKey(showMedia) {
         {mediaIcon && (
           <Icon icon={mediaIcon} className="media-icon" key={`icon${attachments.length}`} />
         )}
+        &#xFEFF;
         {content}
       </a>
     );

@@ -110,21 +110,26 @@ export default class ImageAttachmentsLightbox extends React.Component {
           items[prevIndex].htmlCopy = items[prevIndex].html;
         }
         items[prevIndex].html = '<div></div>';
-        _.setContent(_.itemHolders[prevIndex], prevIndex);
+        if (!this.reloading) {
+          this.reloading = 'reload';
+        }
       }
 
       if (items[index].html) {
         if (items[index].htmlCopy) {
           items[index].html = items[index].htmlCopy;
-          _.setContent(_.itemHolders[index], index);
-          if (items[index].reloading) {
-            items[index].reloading = false;
-          } else {
-            items[index].reloading = true;
-            _.invalidateCurrItems();
-            _.updateSize(true);
+          if (!this.reloading) {
+            this.reloading = 'reload';
           }
         }
+      }
+
+      if (this.reloading === 'reload') {
+        this.reloading = 'reloading';
+        _.invalidateCurrItems();
+        _.updateSize(true);
+      } else {
+        this.reloading = false;
       }
     }
 
