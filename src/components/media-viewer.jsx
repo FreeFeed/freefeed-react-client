@@ -19,14 +19,11 @@ const ImageAttachmentsLightbox = lazyComponent(() => import('./post-attachment-i
 });
 
 export const getMediaType = (url) => {
-  if (url.match(/\.(jpg|png|jpeg|webp)$/i)) {
+  if (url.match(/\.(jpg|png|jpeg|webp)(\?|$|#)/i)) {
     return 'image';
-  }
-
-  if (isInstagram(url)) {
+  } else if (isInstagram(url)) {
     return 'instagram';
   }
-
   return getVideoType(url);
 };
 
