@@ -209,11 +209,17 @@
 .actions-panel {
   margin-left: -15px;
   margin-right: -15px;
-  background-color: #dddddd;
+  background-color: #fff;
 
   animation: 0.2s 0.2s slide;
   transform: translateY(100%);
   animation-fill-mode: forwards;
+
+  padding-bottom: 0.5em;
+  // Support for the iDevices
+  @supports (padding: unquote('max(0px)')) {
+    padding-bottom: unquote('max(0.5em, env(safe-area-inset-bottom))');
+  }
 
   @media (min-width: 768px) {
     margin-left: 63px;
@@ -221,6 +227,7 @@
 
   .likes-panel {
     display: flex;
+    background-color: #ddd;
 
     &.padded {
       padding-bottom: 192px;
