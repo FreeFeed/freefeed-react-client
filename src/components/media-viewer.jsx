@@ -4,6 +4,10 @@ import { renderToString } from 'react-dom/server';
 import { showMedia } from '../redux/action-creators';
 import { lazyComponent } from './lazy-component';
 import { getVideoType, getVideoInfo } from './link-preview/video';
+import {
+  canShowURL as isInstagram,
+  getEmbedInfo as getInstagramEmbedInfo,
+} from './link-preview/instagram';
 
 const ImageAttachmentsLightbox = lazyComponent(() => import('./post-attachment-image-lightbox'), {
   fallback: (
@@ -18,6 +22,11 @@ export const getMediaType = (url) => {
   if (url.match(/\.(jpg|png|jpeg|webp)$/i)) {
     return 'image';
   }
+
+  if (isInstagram(url)) {
+    return 'instagram';
+  }
+
   return getVideoType(url);
 };
 
@@ -25,8 +34,13 @@ export const isMediaAttachment = (attachments) => {
   return attachments.reduce((acc, item) => acc || item.mediaType === 'image', false);
 };
 
-const getVideoItem = async (url, withoutAutoplay) => {
-  const info = await getVideoInfo(url, withoutAutoplay);
+const getEmbeddableItem = async (url, withoutAutoplay) => {
+  let info = null;
+  if (isInstagram(url)) {
+    info = await getInstagramEmbedInfo(url);
+  } else {
+    info = await getVideoInfo(url, withoutAutoplay);
+  }
 
   if (info) {
     let playerHTML = null;
@@ -122,9 +136,9 @@ function MediaViewer(props) {
       Promise.all(
         attachments.map(async (a, i) => {
           if (a.mediaType !== 'image') {
-            const videoItem = await getVideoItem(a.url, i !== index);
-            if (videoItem) {
-              return videoItem;
+            const embeddableItem = await getEmbeddableItem(a.url, i !== index);
+            if (embeddableItem) {
+              return embeddableItem;
             }
           }
           return {
