@@ -100,9 +100,11 @@ export default class Linkify extends React.Component {
           );
         }
 
-        const mediaType = getMediaType(token.href);
-        if (mediaType) {
-          return mediaEl(token.href, token.shorten(MAX_URL_LENGTH), mediaType);
+        if (this.props.showMedia) {
+          const mediaType = getMediaType(token.href);
+          if (mediaType) {
+            return mediaEl(token.href, token.shorten(MAX_URL_LENGTH), mediaType);
+          }
         }
 
         return anchorEl(token.href, token.shorten(MAX_URL_LENGTH));

@@ -45,7 +45,6 @@ const UserHandler = (props) => {
     props.viewUser.isLoading,
     props.viewUser.username,
   ]);
-
   return (
     <div className="box">
       <ErrorBoundary>
@@ -86,6 +85,7 @@ const UserHandler = (props) => {
             addAttachmentResponse={props.addAttachmentResponse}
             getUserInfo={props.getUserInfo}
             togglePinnedGroup={props.togglePinnedGroup}
+            showMedia={props.showMedia}
           />
         </div>
 
