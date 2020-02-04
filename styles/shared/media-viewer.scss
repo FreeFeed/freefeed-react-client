@@ -40,6 +40,12 @@ video {
   height: auto !important;
 }
 .media-link {
+  .icon-bond {
+    white-space: nowrap;
+    &:after {
+      content: '\FEFF';
+    }
+  }
   .media-icon {
     margin: 0 4px 0 2px;
     display: inline-block;

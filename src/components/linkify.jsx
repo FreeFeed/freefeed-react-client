@@ -169,9 +169,10 @@ function showMediaWithKey(showMedia) {
         title="Click to view in Lightbox"
       >
         {mediaIcon && (
-          <Icon icon={mediaIcon} className="media-icon" key={`icon${attachments.length}`} />
+          <span className="icon-bond">
+            <Icon icon={mediaIcon} className="media-icon" key={`icon${attachments.length}`} />
+          </span>
         )}
-        &#xFEFF;
         {content}
       </a>
     );
