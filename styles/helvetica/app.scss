@@ -18,7 +18,6 @@
 @import '../shared/create-post';
 @import '../shared/pagination';
 @import '../shared/settings';
-@import '../shared/feed-options-switch';
 @import '../shared/search-form';
 @import '../shared/search-feed';
 @import '../shared/groups';
@@ -29,8 +28,8 @@
 @import '../shared/signup-by-invitation';
 @import '../shared/bookmarklet';
 @import '../shared/error-boundary';
+@import '../shared/media-viewer';
 @import 'player';
 @import 'react-select';
 @import 'legal';
-@import '~react-dd-menu/src/scss/react-dd-menu.scss';
 @import '~react-photoswipe/lib/photoswipe.css';

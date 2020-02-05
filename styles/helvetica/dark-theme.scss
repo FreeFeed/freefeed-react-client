@@ -52,7 +52,8 @@ body.dark-theme {
   .feed-options-switch .dropdown,
   .list-group-item,
   .panel-default,
-  .hidden-posts-toggle {
+  .hidden-posts-toggle,
+  hr {
     border-color: $separator-color;
   }
 
@@ -116,6 +117,10 @@ body.dark-theme {
   .post .post-header a,
   .post .post-body .post-text a {
     color: $link-color;
+  }
+
+  .post .read-more {
+    color: $link-color !important;
   }
 
   .post a,
@@ -318,7 +323,7 @@ body.dark-theme {
     color: $text-color;
   }
 
-  .comment-likes .comment-likes-list {
+  .comment-likes-list {
     background-color: $bg-color-lighter;
     border-color: $separator-color;
   }
@@ -328,26 +333,10 @@ body.dark-theme {
     color: $text-color;
   }
 
-  .dd-menu .dd-menu-items ul,
-  .dd-menu .dd-menu-items ol,
   .panel-default > .panel-heading {
     background-color: $bg-color-lighter;
     border-color: $separator-color;
     color: $text-color;
-  }
-
-  .dd-menu .dd-menu-items ul li:hover:not([role='separator']):not(.separator),
-  .dd-menu .dd-menu-items ul li > *:focus,
-  .dd-menu .dd-menu-items ol li:hover:not([role='separator']):not(.separator),
-  .dd-menu .dd-menu-items ol li > *:focus {
-    background-color: $bg-highlight-color;
-    color: $text-color-lighter;
-  }
-
-  .dd-menu .dd-menu-items .dd-menu-item:hover,
-  .dd-menu .dd-menu-items .dd-menu-item.dd-menu-item-danger:hover {
-    color: $text-color-lighter !important;
-    background-color: $bg-highlight-color !important;
   }
 
   .actions-overlay {
@@ -398,5 +387,27 @@ body.dark-theme {
     color: $text-color-lighter;
     background-color: $bg-highlight-color;
     border-color: $bg-highlight-color;
+  }
+
+  .nav > li > a:hover,
+  .nav > li > a:focus {
+    background-color: $bg-color-lighter;
+  }
+
+  .nav-tabs > li > a:hover {
+    border-color: $bg-color-lighter $bg-color-lighter $separator-color;
+  }
+
+  .nav-tabs {
+    border-bottom-color: $separator-color;
+  }
+
+  .nav-tabs > li.active > a,
+  .nav-tabs > li.active > a:hover,
+  .nav-tabs > li.active > a:focus {
+    color: $text-color;
+    background-color: $bg-color;
+    border-color: $separator-color;
+    border-bottom-color: transparent;
   }
 }

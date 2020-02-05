@@ -56,8 +56,18 @@ export default class UserProfile extends React.Component {
     ban({ username, id });
   });
 
+  handleTogglePinnedGroup = preventDefault(() => {
+    const { togglePinnedGroup, id } = this.props;
+    togglePinnedGroup({ id });
+  });
+
   render() {
     const { props } = this;
+
+    const groupRequestsCount =
+      props.type === 'group' && props.authenticated
+        ? (props.managedGroups.find((g) => g.id === props.id) || { requests: [] }).requests.length
+        : 0;
 
     return (
       <div>
@@ -75,7 +85,11 @@ export default class UserProfile extends React.Component {
                     <div className="name" dir="auto">
                       {props.screenName}
                     </div>
-                    <PieceOfText text={props.description} isExpanded={true} />
+                    <PieceOfText
+                      text={props.description}
+                      isExpanded={true}
+                      showMedia={props.showMedia}
+                    />
                   </div>
                 </div>
                 {props.statistics && !props.blocked ? (
@@ -177,6 +191,21 @@ export default class UserProfile extends React.Component {
                         <Link to={`/filter/direct?invite=${props.username}`}>Invite</Link>
                       </li>
                     )}
+                    {props.type === 'group' && props.subscribed && (
+                      <li>
+                        {props.pinnedStatus.loading && (
+                          <span className="profile-controls-throbber">
+                            <Throbber />
+                          </span>
+                        )}
+                        <a
+                          onClick={this.handleTogglePinnedGroup}
+                          title={props.pinned ? 'Unpin from sidebar' : 'Pin to sidebar'}
+                        >
+                          {props.pinned ? 'Unpin' : 'Pin'}
+                        </a>
+                      </li>
+                    )}
                     {props.type !== 'group' && !props.subscribed ? (
                       <li>
                         <a onClick={this.handleBlockUserClick}>Block this user</a>
@@ -199,6 +228,11 @@ export default class UserProfile extends React.Component {
                       {props.blockingStatus.errorText}
                     </div>
                   )}
+                  {props.pinnedStatus.error && (
+                    <div className="alert alert-danger p-settings-alert" role="alert">
+                      {props.pinnedStatus.errorText}
+                    </div>
+                  )}
                 </div>
               </div>
               {this.state.isUnsubWarningDisplayed ? (
@@ -218,6 +252,16 @@ export default class UserProfile extends React.Component {
             </div>
           ) : (
             false
+          )}
+
+          {groupRequestsCount > 0 && (
+            <p className="alert alert-info">
+              <span className="message">
+                You have{' '}
+                <Link to="/groups">{pluralForm(groupRequestsCount, 'subscription request')}</Link>{' '}
+                to this group
+              </span>
+            </p>
           )}
 
           {props.canIPostHere ? (

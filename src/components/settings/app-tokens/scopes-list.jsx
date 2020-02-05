@@ -1,21 +1,25 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { connect } from 'react-redux';
-import { pick } from 'lodash';
+import { useSelector, useDispatch } from 'react-redux';
 import snarkdown from 'snarkdown';
 
 import { faCaretRight, faCaretDown } from '@fortawesome/free-solid-svg-icons';
-import { getAppTokensScopes } from '../../redux/action-creators';
-import { Icon } from '../fontawesome-icons';
+import { getAppTokensScopes } from '../../../redux/action-creators';
+import { Icon } from '../../fontawesome-icons';
 import { descriptions } from './scopes-descriptions';
 import styles from './scopes-list.module.scss';
+import { withLayout } from './layout';
 
-function ScopesList({ scopesStatus, scopes, getAppTokensScopes }) {
-  useEffect(() => void (scopesStatus.success || scopesStatus.loading || getAppTokensScopes()), [
-    getAppTokensScopes,
-    scopesStatus,
-  ]);
+export default withLayout('Token access rights', function ScopesList() {
+  const dispatch = useDispatch();
+  const scopesStatus = useSelector((state) => state.appTokens.scopesStatus);
+  const scopes = useSelector((state) => state.appTokens.scopes);
 
-  if (scopesStatus.loading) {
+  useEffect(
+    () => void (scopesStatus.success || scopesStatus.loading || dispatch(getAppTokensScopes())),
+    [dispatch, scopesStatus],
+  );
+
+  if (scopesStatus.loading || scopesStatus.initial) {
     return <p>Loading...</p>;
   }
 
@@ -57,11 +61,7 @@ function ScopesList({ scopesStatus, scopes, getAppTokensScopes }) {
       ))}
     </>
   );
-}
-
-export default connect((state) => pick(state.appTokens, ['scopesStatus', 'scopes']), {
-  getAppTokensScopes,
-})(ScopesList);
+});
 
 function APIList({ children }) {
   const [opened, setOpened] = useState(false);

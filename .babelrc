@@ -2,7 +2,6 @@
   "plugins": [
     "@babel/syntax-object-rest-spread",
     "@babel/syntax-class-properties",
-    "@babel/syntax-dynamic-import",
     "@babel/transform-modules-commonjs"
   ]
 }

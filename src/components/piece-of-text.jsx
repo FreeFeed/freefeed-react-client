@@ -132,6 +132,7 @@ export default class PieceOfText extends React.Component {
         userHover={this.props.userHover}
         arrowHover={this.props.arrowHover}
         highlightTerms={this.props.highlightTerms}
+        showMedia={this.props.showMedia}
       >
         {this.state.isExpanded
           ? getExpandedText(this.props.text)

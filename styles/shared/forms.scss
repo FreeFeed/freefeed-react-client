@@ -83,6 +83,12 @@ label.option-box {
 
 .narrow-input {
   max-width: 20em;
+  resize: vertical;
+}
+
+.wider-input {
+  max-width: 40em;
+  resize: vertical;
 }
 
 .signup-userpic {

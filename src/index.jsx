@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
-import Loadable from 'react-loadable';
 
 import 'autotrack'; // used by google-analytics in ../index.jade
 
@@ -29,23 +28,14 @@ import Friends from './components/friends';
 import ManageSubscribers from './components/manage-subscribers';
 import Bookmarklet from './components/bookmarklet';
 import SignupByInvitation from './components/signup-by-invitation';
+import { settingsRoute } from './components/settings/routes';
 
 const store = configureStore();
 
 //request main info for user
 if (store.getState().authenticated) {
-  let delay = 0;
-
-  // Defer the whoami request to let the feed load first, if we have a cached copy of whoami already
-  if (store.getState().user.screenName) {
-    delay = 200;
-  }
-
-  setTimeout(() => {
-    store.dispatch(ActionCreators.whoAmI());
-  }, delay);
+  store.dispatch(ActionCreators.initialWhoAmI());
 } else {
-  // just commented for develop sign up form
   store.dispatch(ActionCreators.unauthenticated());
 }
 
@@ -100,21 +90,49 @@ const generateRouteHooks = (callback) => ({
   onChange: (_, next) => callback(next),
 });
 
-const lazyLoad = (path) =>
-  Loadable({
-    loading: ({ error }) => {
-      if (error) {
-        return <div>Cannot load page</div>;
-      }
-      return <div>Loading page...</div>;
-    },
-    // For some reason, the import() argument must have an explicit string type.
-    // See https://github.com/webpack/webpack/issues/4921#issuecomment-357147299
-    loader: () => import(`${path}`),
-  });
+// For some reason, the import() argument must have an explicit string type.
+// See https://github.com/webpack/webpack/issues/4921#issuecomment-357147299
+const lazyLoad = (path) => React.lazy(() => import(`${path}`));
 
-ReactDOM.render(
-  <Provider store={store}>
+function InitialLayout({ children }) {
+  return (
+    <div className="container">
+      <div className="row header-row">
+        <div className="col-md-4">
+          <div className="header">
+            <h1 className="title">
+              <a href="/">FreeFeed</a>
+            </h1>
+            <div className="jsonly">{children}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const initialized = useSelector((state) => state.initialized);
+  if (initialized.initial || initialized.loading) {
+    return (
+      <InitialLayout>
+        <p>Loading...</p>
+      </InitialLayout>
+    );
+  }
+
+  if (initialized.error) {
+    return (
+      <InitialLayout>
+        <div className="alert alert-danger" role="alert">
+          <p>Critical error: ${initialized.errorText}</p>
+          <p>Try to reload page.</p>
+        </div>
+      </InitialLayout>
+    );
+  }
+
+  return (
     <Router history={history}>
       <Route name="bookmarklet" path="/bookmarklet" component={Bookmarklet} />
 
@@ -168,17 +186,12 @@ ReactDOM.render(
         />
         <Route path="restore" component={lazyLoad('./components/restore-password')} />
         <Route path="reset" component={lazyLoad('./components/reset-password')} />
-        <Route
-          path="settings"
-          component={lazyLoad('./components/settings')}
-          onEnter={enterStaticPage('Settings')}
-        />
+        {settingsRoute('settings')}
         <Route
           path="settings/archive"
           component={lazyLoad('./components/archive')}
           onEnter={enterStaticPage('Restore from FriendFeed.com Archives')}
         />
-        <Route path="settings/app-tokens(/**)" component={lazyLoad('./components/app-tokens')} />
         <Route
           name="groupSettings"
           path="/:userName/settings"
@@ -331,6 +344,12 @@ ReactDOM.render(
         />
       </Route>
     </Router>
+  );
+}
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
   </Provider>,
   document.getElementById('app'),
 );

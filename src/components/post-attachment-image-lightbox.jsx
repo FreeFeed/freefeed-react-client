@@ -5,6 +5,8 @@ import Mousetrap from 'mousetrap';
 
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
 const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
+// const prevPostKeys = ['w', 'ц', 'up', 'u', 'г', '8'];
+// const nextPostKeys = ['s', 'ы', 'down', 'j', 'о', '2'];
 
 const lightboxOptions = {
   shareEl: false,
@@ -17,7 +19,8 @@ export default class ImageAttachmentsLightbox extends React.Component {
   static propTypes = {
     items: pt.arrayOf(
       pt.shape({
-        src: pt.string.isRequired,
+        src: pt.string,
+        html: pt.string,
         w: pt.number.isRequired,
         h: pt.number.isRequired,
         pid: pt.string.isRequired,
@@ -34,6 +37,14 @@ export default class ImageAttachmentsLightbox extends React.Component {
   constructor(props) {
     super(props);
     this.state.currentIndex = props.index;
+  }
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (nextProps.postId !== this.props.postId) {
+      if (this.photoSwipe) {
+        this.photoSwipe.goTo(0);
+      }
+    }
   }
 
   photoSwipe = null;
@@ -68,6 +79,18 @@ export default class ImageAttachmentsLightbox extends React.Component {
         if (rect.width > 0) {
           item.h = (rect.height * item.w) / rect.width;
         }
+      } else {
+        // lets try to find out image size when image loads
+        const image = new Image();
+        item.w = 1;
+        item.h = 1;
+        image.onload = () => {
+          item.w = image.width; // set image width
+          item.h = image.height;
+          this.photoSwipe.invalidateCurrItems();
+          this.photoSwipe.updateSize(true);
+        };
+        image.src = item.src;
       }
     }
     if (!item.msrc && thumb) {
@@ -75,14 +98,63 @@ export default class ImageAttachmentsLightbox extends React.Component {
     }
   };
 
+  afterChange = (_) => {
+    const index = _.getCurrentIndex();
+    const prevIndex = this.prevIndex || 0;
+
+    if (index !== prevIndex) {
+      const { items } = _;
+
+      if (items[prevIndex].html) {
+        if (!items[prevIndex].htmlCopy) {
+          items[prevIndex].htmlCopy = items[prevIndex].html;
+        }
+        items[prevIndex].html = '<div></div>';
+        if (!this.reloading) {
+          this.reloading = 'reload';
+        }
+      }
+
+      if (items[index].html) {
+        if (items[index].htmlCopy) {
+          items[index].html = items[index].htmlCopy;
+          if (!this.reloading) {
+            this.reloading = 'reload';
+          }
+        }
+      }
+
+      if (this.reloading === 'reload') {
+        this.reloading = 'reloading';
+        _.invalidateCurrItems();
+        _.updateSize(true);
+      } else {
+        this.reloading = false;
+      }
+    }
+
+    this.prevIndex = index;
+  };
+
+  navigatePost = (where, e) => {
+    if (e) {
+      e.preventDefault();
+    }
+    this.props.onNavigate(where);
+  };
+
   whenOpened = () => {
     Mousetrap.bind(prevHotKeys, () => this.photoSwipe.prev());
     Mousetrap.bind(nextHotKeys, () => this.photoSwipe.next());
+    // Mousetrap.bind(prevPostKeys, (e) => this.navigatePost(-1, e));
+    // Mousetrap.bind(nextPostKeys, (e) => this.navigatePost(1, e));
   };
 
   whenClosed = () => {
     Mousetrap.unbind(prevHotKeys);
     Mousetrap.unbind(nextHotKeys);
+    // Mousetrap.unbind(prevPostKeys);
+    // Mousetrap.unbind(nextPostKeys);
   };
 
   registerPhotoSwipe = (el) => {
@@ -105,6 +177,7 @@ export default class ImageAttachmentsLightbox extends React.Component {
         onClose={this.whenClosed}
         initialZoomInEnd={this.whenOpened}
         destroy={this.props.onDestroy}
+        afterChange={this.afterChange}
       />
     );
   }

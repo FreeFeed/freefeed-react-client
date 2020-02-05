@@ -48,7 +48,6 @@ class RuleGenerator {
               ['lodash', { id: ['lodash'] }],
               '@babel/syntax-class-properties',
               '@babel/syntax-do-expressions',
-              '@babel/syntax-dynamic-import',
               '@babel/syntax-object-rest-spread',
               '@babel/proposal-class-properties',
               '@babel/proposal-do-expressions',
