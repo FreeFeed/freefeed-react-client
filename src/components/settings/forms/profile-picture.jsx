@@ -22,7 +22,7 @@ export function PictureEditForm({ pictureURL, pictureStatus, onUpdate }) {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/jpeg, image/png, image/gif';
-    input.addEventListener('input', () => {
+    input.addEventListener('change', () => {
       onUpdate(input.files[0]);
       input.value = ''; // reset input state
     });
