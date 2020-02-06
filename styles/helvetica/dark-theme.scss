@@ -344,11 +344,14 @@ body.dark-theme {
   }
 
   .actions-panel {
-    background-color: $bg-color-lightest;
+    background-color: $bg-color-lighter;
     color: $text-color-lighter;
     .mention-actions,
     .mention-action {
       background-color: $bg-color-lighter;
+    }
+    .likes-panel {
+      background-color: $bg-color-lightest;
     }
   }
 
