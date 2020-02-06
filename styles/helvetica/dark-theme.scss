@@ -413,4 +413,12 @@ body.dark-theme {
     border-color: $separator-color;
     border-bottom-color: transparent;
   }
+
+  @supports (-webkit-overflow-scrolling: touch) {
+    // Do not override 'select' color on mobile iOS devices
+    // See https://stackoverflow.com/a/47818418
+    select {
+      color: initial !important;
+    }
+  }
 }
