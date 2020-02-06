@@ -344,11 +344,14 @@ body.dark-theme {
   }
 
   .actions-panel {
-    background-color: $bg-color-lightest;
+    background-color: $bg-color-lighter;
     color: $text-color-lighter;
     .mention-actions,
     .mention-action {
       background-color: $bg-color-lighter;
+    }
+    .likes-panel {
+      background-color: $bg-color-lightest;
     }
   }
 
@@ -409,5 +412,13 @@ body.dark-theme {
     background-color: $bg-color;
     border-color: $separator-color;
     border-bottom-color: transparent;
+  }
+
+  @supports (-webkit-overflow-scrolling: touch) {
+    // Do not override 'select' color on mobile iOS devices
+    // See https://stackoverflow.com/a/47818418
+    select {
+      color: initial !important;
+    }
   }
 }
