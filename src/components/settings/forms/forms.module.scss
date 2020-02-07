@@ -1,0 +1,25 @@
+@import '../../../../styles/helvetica/dark-vars.scss';
+
+.profilePicture {
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  padding: 2px;
+  box-sizing: content-box;
+  cursor: pointer;
+
+  :global(body.dark-theme) & {
+    border-color: $separator-color;
+  }
+}
+
+textarea.profileDescription {
+  height: 8em;
+  min-height: 3em;
+  max-height: 16em;
+}
+
+textarea.hiddenUsers {
+  height: 6em;
+  min-height: 3em;
+  max-height: 16em;
+}

@@ -358,50 +358,19 @@ class Post extends React.Component {
     const { isPrivate, isProtected } = this.getPostPrivacy();
 
     const amIAuthenticated = !!props.user.id;
-    // "Comments disabled" / "Comment"
-    let commentLink;
-    if (amIAuthenticated) {
-      if (props.commentsDisabled) {
-        if (props.isEditable || props.isModeratable) {
-          commentLink = (
-            <span>
-              {' - '}
-              <i>Comments disabled (not for you)</i>
-              {' - '}
-              <a className="post-action" onClick={this.handleCommentClick}>
-                Comment
-              </a>
-            </span>
-          );
-        } else {
-          commentLink = (
-            <span>
-              {' - '}
-              <i>Comments disabled</i>
-            </span>
-          );
-        }
-      } else {
-        commentLink = (
-          <span>
-            {' - '}
-            <a className="post-action" onClick={this.handleCommentClick}>
-              Comment
-            </a>
-          </span>
-        );
-      }
-    } else {
-      // don't show comment link to anonymous users
-      commentLink = false;
-    }
+
+    const commentLink = amIAuthenticated &&
+      (!props.commentsDisabled || props.isEditable || props.isModeratable) && (
+        <a className="post-action" onClick={this.handleCommentClick}>
+          Comment
+        </a>
+      );
 
     // "Like" / "Un-like"
     const didILikePost = _.find(props.usersLikedPost, { id: props.user.id });
     const likeLink =
       amIAuthenticated && !props.isEditable ? (
-        <span>
-          {' - '}
+        <>
           {props.likeError ? (
             <Icon icon={faExclamationTriangle} className="post-like-fail" title={props.likeError} />
           ) : null}
@@ -415,15 +384,14 @@ class Post extends React.Component {
           ) : (
             false
           )}
-        </span>
+        </>
       ) : (
         false
       );
 
     const { isSaved, savePostStatus } = this.props;
     const saveLink = amIAuthenticated && (
-      <span>
-        {' - '}
+      <>
         <a className="post-action" onClick={this.toggleSave}>
           {isSaved ? 'Un-save' : 'Save'}
         </a>
@@ -435,23 +403,20 @@ class Post extends React.Component {
             title={savePostStatus.errorText}
           />
         )}
-      </span>
+      </>
     );
 
     // "More" menu
     const moreLink =
       props.isEditable || props.isModeratable ? (
-        <span>
-          {' - '}
-          <PostMoreMenu
-            post={props}
-            toggleEditingPost={this.toggleEditingPost}
-            toggleModeratingComments={this.toggleModeratingComments}
-            disableComments={this.disableComments}
-            enableComments={this.enableComments}
-            deletePost={this.handleDeletePost}
-          />
-        </span>
+        <PostMoreMenu
+          post={props}
+          toggleEditingPost={this.toggleEditingPost}
+          toggleModeratingComments={this.toggleModeratingComments}
+          disableComments={this.disableComments}
+          enableComments={this.enableComments}
+          deletePost={this.handleDeletePost}
+        />
       ) : (
         false
       );
@@ -576,6 +541,7 @@ class Post extends React.Component {
                     text={props.body}
                     readMoreStyle={props.readMoreStyle}
                     highlightTerms={props.highlightTerms}
+                    showMedia={this.props.showMedia}
                   />
                 </div>
               )}
@@ -588,6 +554,7 @@ class Post extends React.Component {
               attachments={this.attachments}
               isEditing={props.isEditing}
               isSinglePost={props.isSinglePost}
+              showMedia={this.props.showMedia}
               removeAttachment={this.removeAttachment}
               reorderImageAttachments={this.reorderImageAttachments}
             />
@@ -603,47 +570,69 @@ class Post extends React.Component {
             <div className="dropzone-previews" />
 
             <div className="post-footer">
-              <span className="post-timestamps-toggle" onClick={this.toggleTimestamps}>
+              <div className="post-footer-icon">
                 {isPrivate ? (
                   <Icon
                     icon={faLock}
                     className="post-lock-icon post-private-icon"
                     title="This entry is private"
+                    onClick={this.toggleTimestamps}
                   />
                 ) : isProtected ? (
                   <Icon
                     icon={faUserFriends}
                     className="post-lock-icon post-protected-icon"
                     title="This entry is only visible to FreeFeed users"
+                    onClick={this.toggleTimestamps}
                   />
                 ) : (
                   <Icon
                     icon={faGlobeAmericas}
                     className="post-lock-icon post-public-icon"
                     title="This entry is public"
+                    onClick={this.toggleTimestamps}
                   />
                 )}
-              </span>
-              {props.isDirect && (
-                <Icon
-                  icon={faAngleDoubleRight}
-                  className="post-direct-icon"
-                  title="This is a direct message"
-                />
-              )}
-              <Link to={canonicalPostURI} className="post-timestamp">
-                <TimeDisplay timeStamp={+props.createdAt} showAbsTime={this.state.showTimestamps} />
-              </Link>
-              {commentLink}
-              {likeLink}
-              {saveLink}
-              {props.isInHomeFeed && (
-                <>
-                  {' '}
-                  - <span ref={this.hideLink}>{this.renderHideLink()}</span>
-                </>
-              )}
-              {moreLink}
+              </div>
+              <div className="post-footer-content">
+                <span className="post-footer-block">
+                  <span className="post-footer-item">
+                    {props.isDirect && (
+                      <Icon
+                        icon={faAngleDoubleRight}
+                        className="post-direct-icon"
+                        title="This is a direct message"
+                      />
+                    )}
+                    <Link to={canonicalPostURI} className="post-timestamp">
+                      <TimeDisplay
+                        timeStamp={+props.createdAt}
+                        showAbsTime={this.state.showTimestamps}
+                      />
+                    </Link>
+                  </span>
+                  {props.commentsDisabled && (
+                    <span className="post-footer-item">
+                      <i>
+                        {props.isEditable || props.isModeratable
+                          ? 'Comments disabled (not for you)'
+                          : 'Comments disabled'}
+                      </i>
+                    </span>
+                  )}
+                </span>
+                <span className="post-footer-block">
+                  <span className="post-footer-item">{commentLink}</span>
+                  <span className="post-footer-item">{likeLink}</span>
+                  <span className="post-footer-item">{saveLink}</span>
+                  {props.isInHomeFeed && (
+                    <span className="post-footer-item" ref={this.hideLink}>
+                      {this.renderHideLink()}
+                    </span>
+                  )}
+                  <span className="post-footer-item">{moreLink}</span>
+                </span>
+              </div>
             </div>
 
             {this.state.unHideOpened && (
@@ -669,6 +658,7 @@ class Post extends React.Component {
               addComment={props.addComment}
               toggleCommenting={props.toggleCommenting}
               showMoreComments={props.showMoreComments}
+              showMedia={props.showMedia}
               commentEdit={props.commentEdit}
               readMoreStyle={props.readMoreStyle}
               entryUrl={canonicalPostURI}

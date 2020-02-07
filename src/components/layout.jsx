@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { IndexLink, Link } from 'react-router';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
@@ -13,10 +13,31 @@ import SearchForm from './search-form';
 import ErrorBoundary from './error-boundary';
 import { ColorSchemeSetter } from './color-theme-setter';
 import { SVGSymbolDeclarations } from './fontawesome-icons';
+import MediaViewer from './media-viewer';
+import { Throbber } from './throbber';
+import { Delayed } from './lazy-component';
+
+const loadingPageMessage = (
+  <Delayed>
+    <div className="content">
+      <div className="content">
+        <div className="box">
+          <div className="box-body">
+            <p>
+              Loading page... <Throbber />
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Delayed>
+);
 
 const InternalLayout = ({ authenticated, children }) => (
   <div className={authenticated ? 'col-md-9' : 'col-md-12'}>
-    <div className="content">{children}</div>
+    <div className="content">
+      <Suspense fallback={loadingPageMessage}>{children}</Suspense>
+    </div>
   </div>
 );
 
@@ -178,12 +199,14 @@ class Layout extends React.Component {
             </div>
           </header>
 
-          <LoaderContainer loading={props.loadingView} fullPage={true}>
+          <LoaderContainer loading={props.loadingView} fullPage>
             <div className="row">
               <InternalLayout {...props} />
               {props.authenticated ? <Sidebar {...props} /> : false}
             </div>
           </LoaderContainer>
+
+          <MediaViewer />
 
           <div className="row">
             <div className="col-md-12">

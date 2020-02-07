@@ -3,7 +3,7 @@ import { browserHistory } from 'react-router';
 import _ from 'lodash';
 
 import { getPost } from '../services/api';
-import { setToken, persistUser } from '../services/auth';
+import { setToken } from '../services/auth';
 import { Connection, scrollCompensator } from '../services/realtime';
 import { delay } from '../utils';
 import * as FeedOptions from '../utils/feed-options';
@@ -29,6 +29,7 @@ import {
   isFeedGeneratingAction,
   getFeedName,
   cancelConcurrentRequest,
+  isUserChangeResponse,
 } from './action-helpers';
 
 export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
@@ -69,7 +70,7 @@ export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
       );
     }
   }
-  if (action.type === response(ActionTypes.WHO_AM_I)) {
+  if (isUserChangeResponse(action.type)) {
     //here we handle home sort settings changed on another machine
     const sortBefore = store.getState().user.frontendPreferences.homeFeedSort;
     next(action);
@@ -211,7 +212,6 @@ export const authMiddleware = (store) => {
 
     if (action.type === ActionTypes.UNAUTHENTICATED) {
       setToken();
-      persistUser();
       next(action);
       if (firstUnauthenticated) {
         firstUnauthenticated = false;
@@ -241,15 +241,6 @@ export const authMiddleware = (store) => {
 
       const backTo = store.getState().routing.locationBeforeTransitions.query.back || '/';
       return browserHistory.push(`${backTo}`);
-    }
-
-    if (
-      action.type === response(ActionTypes.WHO_AM_I) ||
-      action.type === response(ActionTypes.UPDATE_USER) ||
-      action.type === response(ActionTypes.UPDATE_USER_PREFERENCES)
-    ) {
-      persistUser(action.payload.users);
-      return next(action);
     }
 
     return next(action);
@@ -691,6 +682,7 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
     }
 
     if (
+      action.type === response(ActionTypes.INITIAL_WHO_AM_I) ||
       action.type === response(ActionTypes.WHO_AM_I) ||
       action.type === response(ActionTypes.SIGN_UP)
     ) {
@@ -732,6 +724,13 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
 
     return next(action);
   };
+};
+
+export const initialWhoamiMiddleware = (store) => (next) => (action) => {
+  next(action);
+  if (action.type === response(ActionTypes.INITIAL_WHO_AM_I)) {
+    store.dispatch({ ...action, type: response(ActionTypes.WHO_AM_I) });
+  }
 };
 
 // Fixing data structures coming from server

@@ -1,126 +1,182 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { useField, useForm } from 'react-final-form-hooks';
+import { useSelector, useDispatch } from 'react-redux';
+import { find } from 'lodash';
 
-import { preventDefault } from '../utils';
+import { updateGroup } from '../redux/action-creators';
+import { initialAsyncState } from '../redux/async-helpers';
+import { PreventPageLeaving } from './prevent-page-leaving';
 import { Throbber } from './throbber';
-import GroupFeedTypePicker from './group-feed-type-picker';
+import { privacyFlagsToString, privacyStringToFlags } from './settings/forms/privacy';
+import { shouldBe, errorMessage, groupErrClass, RadioInput } from './settings/forms/utils';
+import styles from './settings/forms/forms.module.scss';
+import settingsStyles from './settings/settings.module.scss';
 
-export default class GroupSettingsForm extends React.Component {
-  constructor(props) {
-    super(props);
+const PUBLIC = 'public',
+  PROTECTED = 'protected',
+  PRIVATE = 'private';
 
-    this.state = {
-      screenName: this.props.group.screenName,
-      description: this.props.group.description,
-      isPrivate: this.props.group.isPrivate,
-      isProtected: this.props.group.isProtected,
-      isRestricted: this.props.group.isRestricted,
-      isWarningDisplayed: false,
-    };
-  }
+export default function GroupSettingsForm({ username }) {
+  const dispatch = useDispatch();
+  const group = useSelector((state) => find(state.users, { username }));
+  const formStatus = useSelector(
+    (state) => state.updateGroupStatuses[group.id] || initialAsyncState,
+  );
 
-  UNSAFE_componentWillReceiveProps = (newProps) => {
-    if (newProps.status !== 'loading') {
-      this.setState({
-        screenName: newProps.group.screenName,
-        description: newProps.group.description,
-        isPrivate: newProps.group.isPrivate,
-        isProtected: newProps.group.isProtected,
-        isRestricted: newProps.group.isRestricted,
-        isWarningDisplayed: false,
-      });
-    }
-  };
+  const form = useForm(
+    useMemo(
+      () => ({
+        validate,
+        initialValues: initialValues(group),
+        onSubmit: onSubmit(group.id, dispatch),
+      }),
+      [dispatch, group],
+    ),
+  );
 
-  handleChange = (property) => (event) => {
-    const newState = {};
-    newState[property] = event.target.value;
-    this.setState(newState);
-  };
+  const screenName = useField('screenName', form.form);
+  const description = useField('description', form.form);
+  const privacy = useField('privacy', form.form);
+  const restrictness = useField('restrictness', form.form);
 
-  handlePrivacyTypeChange = (privacySettings) => {
-    const newState = {
-      ...privacySettings,
-      isWarningDisplayed: this.props.group.isPrivate === '1' && privacySettings.isPrivate === '0',
-    };
-    this.setState(newState);
-  };
+  const showPrivacyWarning = useMemo(
+    () => privacy.input.value !== PRIVATE && group.isPrivate === '1',
+    [group.isPrivate, privacy.input.value],
+  );
 
-  saveSettings = () => {
-    this.setState({ isWarningDisplayed: false });
-    if (this.props.status !== 'loading') {
-      this.props.updateGroup(this.props.group.id, this.state);
-    }
-  };
+  return (
+    <form onSubmit={form.handleSubmit}>
+      <PreventPageLeaving prevent={form.dirty} />
 
-  componentWillUnmount() {
-    this.props.resetGroupUpdateForm();
-  }
-
-  render() {
-    return (
-      <form onSubmit={preventDefault(this.saveSettings)}>
-        <div className="form-group">
-          <label htmlFor="screenName">Display name:</label>
+      <section className={settingsStyles.formSection}>
+        <div className={groupErrClass(screenName)}>
+          <label htmlFor="screenname-input">Display name</label>
           <input
-            id="screenName"
-            className="form-control"
-            name="screenName"
+            id="screenname-input"
+            className="form-control wider-input"
             type="text"
-            value={this.state.screenName}
-            onChange={this.handleChange('screenName')}
+            autoComplete="name"
+            {...screenName.input}
           />
+          {errorMessage(screenName)}
         </div>
-        <div className="form-group">
-          <label htmlFor="description">Description:</label>
+
+        <div className={groupErrClass(description)}>
+          <label htmlFor="description-input">Description</label>
           <textarea
-            id="description"
-            className="form-control"
-            name="description"
-            value={this.state.description}
-            onChange={this.handleChange('description')}
-            maxLength="1500"
+            id="description-input"
+            className={`form-control wider-input ${styles.profileDescription}`}
+            {...description.input}
           />
         </div>
-        <GroupFeedTypePicker
-          isPrivate={this.state.isPrivate}
-          isProtected={this.state.isProtected}
-          isRestricted={this.state.isRestricted}
-          updateGroupPrivacySettings={this.handlePrivacyTypeChange}
-        />
-        <p>
-          <button className="btn btn-default" type="submit">
-            Update
-          </button>
-          {this.props.status === 'loading' ? (
-            <span className="settings-throbber">
-              <Throbber />
-            </span>
-          ) : (
-            false
+      </section>
+
+      <section className={settingsStyles.formSection}>
+        <div className="form-group">
+          <p>
+            <strong>Who can view posts?</strong>
+          </p>
+          <div className="radio">
+            <label>
+              <RadioInput field={privacy} value={PUBLIC} />
+              Everyone (public group)
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <RadioInput field={privacy} value={PROTECTED} />
+              FreeFeed users only (protected group)
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <RadioInput field={privacy} value={PRIVATE} />
+              Group members only (private group)
+            </label>
+          </div>
+          {showPrivacyWarning && (
+            <div className="alert alert-warning" role="alert">
+              You are about to change the group type from private to{' '}
+              {privacy.input.value === PROTECTED ? 'protected' : 'public'}. It means{' '}
+              {privacy.input.value === PROTECTED ? 'any FreeFeed user' : 'anyone'} will be able to
+              read its posts and comments, which are only available to group members now.
+            </div>
           )}
+        </div>
+
+        <div className="form-group">
+          <p>
+            <strong>Who can write posts?</strong>
+          </p>
+          <div className="radio">
+            <label>
+              <RadioInput field={restrictness} value="0" />
+              Every group member
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <RadioInput field={restrictness} value="1" />
+              Group administrators only
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <div className="form-group">
+        <button
+          className="btn btn-primary"
+          type="submit"
+          disabled={formStatus.loading || !form.dirty || form.hasValidationErrors}
+        >
+          {formStatus.loading ? 'Updating group…' : 'Update group'}
+        </button>{' '}
+        {formStatus.loading && <Throbber />}
+      </div>
+      {formStatus.error && (
+        <p className="alert alert-danger" role="alert">
+          {formStatus.errorText}
         </p>
-        {this.state.isWarningDisplayed ? (
-          <div className="alert alert-warning" role="alert">
-            You are about to change the group type from private to{' '}
-            {this.state.isProtected === '1' ? 'protected' : 'public'}. It means{' '}
-            {this.state.isProtected === '1' ? 'any FreeFeed user' : 'anyone'} will be able to read
-            its posts and comments, which are only available to group members now.
-          </div>
-        ) : (
-          false
-        )}
-        {this.props.status === 'success' ? (
-          <div className="alert alert-info" role="alert">
-            Updated!
-          </div>
-        ) : this.props.status === 'error' ? (
-          <div className="alert alert-danger" role="alert">
-            {this.props.errorMessage}
-          </div>
-        ) : (
-          false
-        )}
-      </form>
+      )}
+      {formStatus.success && (
+        <p className="alert alert-success" role="alert">
+          Group updated
+        </p>
+      )}
+    </form>
+  );
+}
+
+function initialValues(group) {
+  return {
+    screenName: group.screenName || '',
+    description: group.description || '',
+    privacy: privacyFlagsToString(group),
+    restrictness: group.isRestricted,
+  };
+}
+
+function validate(values) {
+  const errors = {};
+  errors.screenName = shouldBe(
+    /^.{3,25}$/i.test(values.screenName.trim()),
+    <>
+      {values.screenName.trim()} is not a valid displayname.
+      <br /> The length should be from 3 to 25 characters.
+    </>,
+  );
+  return errors;
+}
+
+function onSubmit(id, dispatch) {
+  return (values) => {
+    dispatch(
+      updateGroup(id, {
+        screenName: values.screenName.trim(),
+        description: values.description.trim(),
+        ...privacyStringToFlags(values.privacy),
+        isRestricted: values.restrictness,
+      }),
     );
-  }
+  };
 }

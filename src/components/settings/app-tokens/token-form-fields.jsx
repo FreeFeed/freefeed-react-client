@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { connect } from 'react-redux';
-import { uniq, without, pick } from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
+import { uniq, without } from 'lodash';
 
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
-import { getAppTokensScopes } from '../../redux/action-creators';
-import { Icon } from '../fontawesome-icons';
+import { getAppTokensScopes } from '../../../redux/action-creators';
+import { Icon } from '../../fontawesome-icons';
 
 export const initialFormData = {
   title: '',
@@ -13,18 +13,15 @@ export const initialFormData = {
   origins: '',
 };
 
-function TokenForm({
-  initialData = initialFormData,
-  onChange,
-  // from store
-  scopesStatus,
-  scopes,
-  getAppTokensScopes,
-}) {
-  useEffect(() => void (scopesStatus.success || scopesStatus.loading || getAppTokensScopes()), [
-    getAppTokensScopes,
-    scopesStatus,
-  ]);
+export default function TokenForm({ initialData = initialFormData, onChange }) {
+  const dispatch = useDispatch();
+  const scopesStatus = useSelector((state) => state.appTokens.scopesStatus);
+  const scopes = useSelector((state) => state.appTokens.scopes);
+
+  useEffect(
+    () => void (scopesStatus.success || scopesStatus.loading || dispatch(getAppTokensScopes())),
+    [dispatch, scopesStatus],
+  );
 
   const [form, setForm] = useState(initialData);
   useEffect(() => void (onChange && onChange(form)), [form, onChange]);
@@ -70,6 +67,12 @@ function TokenForm({
       </div>
       <div className="form-group">
         <label htmlFor="title-input">Allow token to</label>
+        <div className="checkbox">
+          <label>
+            <input type="checkbox" name="scope" value="" checked disabled /> Read my public profile{' '}
+            <em>(always available)</em>
+          </label>
+        </div>
         {scopes.map((scope) => (
           <div key={scope.name} className="checkbox">
             <label>
@@ -125,7 +128,3 @@ function TokenForm({
     </>
   );
 }
-
-export default connect((state) => pick(state.appTokens, ['scopesStatus', 'scopes']), {
-  getAppTokensScopes,
-})(TokenForm);

@@ -1,7 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import { faHeart, faLock, faGlobeAmericas, faUserFriends } from '@fortawesome/free-solid-svg-icons';
-import { faComment, faHeart as faHeartO } from '@fortawesome/free-regular-svg-icons';
+import { faComment, faHeart as faHeartO, faImage } from '@fortawesome/free-regular-svg-icons';
 import { faCommentPlus } from './fontawesome-custom-icons';
 
 // These icons will be embedded to the page just once
@@ -16,6 +16,7 @@ const preloadedIcons = [
   faLock,
   faGlobeAmericas,
   faUserFriends,
+  faImage,
 ];
 
 export const SVGSymbolDeclarations = React.memo(function SVGSymbolDeclarations() {
@@ -37,33 +38,41 @@ export const SVGSymbolDeclarations = React.memo(function SVGSymbolDeclarations()
   );
 });
 
-export const Icon = React.memo(function Icon({ icon, className, title, ...props }) {
-  const id = `fa-icon-${icon.prefix}-${icon.iconName}`;
+export const Icon = React.memo(
+  React.forwardRef(function Icon({ icon, className, title, ...props }, ref) {
+    const id = `fa-icon-${icon.prefix}-${icon.iconName}`;
 
-  if (preloadedIcons.includes(icon)) {
+    if (preloadedIcons.includes(icon)) {
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className={cn(className, `fa-icon ${id}`)}
+          ref={ref}
+          {...props}
+        >
+          {title && <title>{title}</title>}
+          <use xlinkHref={`#${id}`} />
+        </svg>
+      );
+    }
+
+    const {
+      icon: [width, height, , , path],
+    } = icon;
     return (
-      <svg xmlns="http://www.w3.org/2000/svg" className={cn(className, `fa-icon ${id}`)} {...props}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className={cn(className, `fa-icon ${id}`)}
+        ref={ref}
+        aria-hidden="true"
+        focusable="false"
+        role="img"
+        viewBox={`0 0 ${width} ${height}`}
+        {...props}
+      >
         {title && <title>{title}</title>}
-        <use xlinkHref={`#${id}`} />
+        <path fill="currentColor" d={path} />
       </svg>
     );
-  }
-
-  const {
-    icon: [width, height, , , path],
-  } = icon;
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className={cn(className, `fa-icon ${id}`)}
-      aria-hidden="true"
-      focusable="false"
-      role="img"
-      viewBox={`0 0 ${width} ${height}`}
-      {...props}
-    >
-      {title && <title>{title}</title>}
-      <path fill="currentColor" d={path} />
-    </svg>
-  );
-});
+  }),
+);

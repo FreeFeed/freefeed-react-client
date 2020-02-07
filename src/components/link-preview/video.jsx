@@ -15,13 +15,13 @@ import * as aspectRatio from './scroll-helpers/size-cache';
 const YOUTUBE_VIDEO_RE = /^https?:\/\/(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?(?:v=|.+&v=)))([a-z0-9_-]+)/i;
 const VIMEO_VIDEO_RE = /^https:\/\/vimeo\.com\/([0-9]+)/i;
 const COUB_VIDEO_RE = /^https?:\/\/coub\.com\/view\/([a-z0-9]+)/i;
-const IMGUR_GIFV_RE = /^https?:\/\/i\.imgur\.com\/([a-z0-9]+)\.gifv/i;
+const IMGUR_VIDEO_RE = /^https?:\/\/i\.imgur\.com\/([a-z0-9]+)\.(gifv|mp4)/i;
 const GFYCAT_RE = /^https?:\/\/(?:[a-z]+\.)?gfycat\.com\/(?:[^/]{0,3}\/)?((?:[A-Z][a-z]+){3}|[a-z]{16,})/;
 
 const T_YOUTUBE_VIDEO = 'T_YOUTUBE_VIDEO';
 const T_VIMEO_VIDEO = 'T_VIMEO_VIDEO';
 const T_COUB_VIDEO = 'T_COUB_VIDEO';
-const T_IMGUR_GIFV = 'T_IMGUR_GIFV';
+const T_IMGUR_VIDEO = 'T_IMGUR_VIDEO';
 const T_GFYCAT = 'T_GFYCAT';
 
 export function canShowURL(url) {
@@ -110,7 +110,7 @@ export default ScrollSafe(connect(select)(VideoPreview), { foldable: false, trac
 
 // Helpers
 
-function getVideoType(url) {
+export function getVideoType(url) {
   if (YOUTUBE_VIDEO_RE.test(url)) {
     return T_YOUTUBE_VIDEO;
   }
@@ -120,8 +120,8 @@ function getVideoType(url) {
   if (COUB_VIDEO_RE.test(url)) {
     return T_COUB_VIDEO;
   }
-  if (IMGUR_GIFV_RE.test(url)) {
-    return T_IMGUR_GIFV;
+  if (IMGUR_VIDEO_RE.test(url)) {
+    return T_IMGUR_VIDEO;
   }
   if (GFYCAT_RE.test(url)) {
     return T_GFYCAT;
@@ -140,7 +140,7 @@ function getVideoId(url) {
   if ((m = COUB_VIDEO_RE.exec(url))) {
     return m[1];
   }
-  if ((m = IMGUR_GIFV_RE.exec(url))) {
+  if ((m = IMGUR_VIDEO_RE.exec(url))) {
     return m[1];
   }
   if ((m = GFYCAT_RE.exec(url))) {
@@ -159,7 +159,7 @@ function getDefaultAspectRatio(url) {
   if (COUB_VIDEO_RE.test(url)) {
     return 1;
   }
-  if (IMGUR_GIFV_RE.test(url)) {
+  if (IMGUR_VIDEO_RE.test(url)) {
     return 9 / 16;
   }
   if (GFYCAT_RE.test(url)) {
@@ -168,7 +168,7 @@ function getDefaultAspectRatio(url) {
   return null;
 }
 
-async function getVideoInfo(url) {
+export async function getVideoInfo(url, withoutAutoplay) {
   switch (getVideoType(url)) {
     case T_YOUTUBE_VIDEO: {
       const data = await cachedFetch(
@@ -184,9 +184,9 @@ async function getVideoInfo(url) {
         byline: `${data.title} by ${data.author_name}`,
         aspectRatio: aspectRatio.set(url, data.height / data.width),
         previewURL: data.thumbnail_url,
-        playerURL: `https://www.youtube.com/embed/${getVideoId(
-          url,
-        )}?rel=0&fs=1&autoplay=1&start=${youtubeStartTime(url)}`,
+        playerURL: `https://www.youtube.com/embed/${getVideoId(url)}?rel=0&fs=1${
+          withoutAutoplay ? '' : '&autoplay=1'
+        }&start=${youtubeStartTime(url)}`,
       };
     }
     case T_VIMEO_VIDEO: {
@@ -204,9 +204,9 @@ async function getVideoInfo(url) {
         byline: `${data.title} by ${data.author_name}`,
         aspectRatio: aspectRatio.set(url, data.height / data.width),
         previewURL: data.thumbnail_url.replace(/[0-9]+x[0-9]+/, '450'),
-        playerURL: `https://player.vimeo.com/video/${getVideoId(url)}?autoplay=1${
-          hash ? hash : ''
-        }`,
+        playerURL: `https://player.vimeo.com/video/${getVideoId(url)}${
+          withoutAutoplay ? '' : '?autoplay=1'
+        }${hash ? hash : ''}`,
       };
     }
     case T_COUB_VIDEO: {
@@ -221,10 +221,12 @@ async function getVideoInfo(url) {
         byline: `${data.title} by ${data.author_name}`,
         aspectRatio: aspectRatio.set(url, data.height / data.width),
         previewURL: data.thumbnail_url,
-        playerURL: `https://coub.com/embed/${getVideoId(url)}?autostart=true`,
+        playerURL: `https://coub.com/embed/${getVideoId(url)}${
+          withoutAutoplay ? '' : '?autostart=true'
+        }`,
       };
     }
-    case T_IMGUR_GIFV: {
+    case T_IMGUR_VIDEO: {
       const id = getVideoId(url);
       const previewURL = `https://i.imgur.com/${id}h.jpg`;
       try {

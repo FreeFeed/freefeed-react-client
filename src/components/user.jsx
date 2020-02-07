@@ -10,6 +10,7 @@ import {
   resetPostCreateForm,
   expandSendTo,
   getUserInfo,
+  togglePinnedGroup,
 } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
 import { initialAsyncState } from '../redux/async-helpers';
@@ -44,7 +45,6 @@ const UserHandler = (props) => {
     props.viewUser.isLoading,
     props.viewUser.username,
   ]);
-
   return (
     <div className="box">
       <ErrorBoundary>
@@ -84,6 +84,8 @@ const UserHandler = (props) => {
             resetPostCreateForm={props.resetPostCreateForm}
             addAttachmentResponse={props.addAttachmentResponse}
             getUserInfo={props.getUserInfo}
+            togglePinnedGroup={props.togglePinnedGroup}
+            showMedia={props.showMedia}
           />
         </div>
 
@@ -121,6 +123,7 @@ function selectState(state, ownProps) {
       state.userActionsStatuses.subscribing[foundUser && foundUser.id] || initialAsyncState,
     blockingStatus:
       state.userActionsStatuses.blocking[foundUser && foundUser.id] || initialAsyncState,
+    pinnedStatus: state.userActionsStatuses.pinned[foundUser && foundUser.id] || initialAsyncState,
     isItPostsPage,
     amIGroupAdmin,
     subscribed: authenticated && foundUser && user.subscriptions.indexOf(foundUser.id) > -1,
@@ -132,6 +135,11 @@ function selectState(state, ownProps) {
       foundUser &&
       (user.pendingSubscriptionRequests || []).indexOf(foundUser.id) > -1,
     canAcceptDirects: canAcceptDirects(foundUser, state),
+    pinned:
+      authenticated &&
+      foundUser &&
+      (user.frontendPreferences.pinnedGroups || []).indexOf(foundUser.id) > -1,
+    managedGroups: state.managedGroups,
   };
 
   statusExtension.canISeeSubsList =
@@ -179,6 +187,7 @@ function selectActions(dispatch) {
     expandSendTo: () => dispatch(expandSendTo()),
     userActions: userActions(dispatch),
     getUserInfo: (username) => dispatch(getUserInfo(username)),
+    togglePinnedGroup: ({ id }) => dispatch(togglePinnedGroup(id)),
   };
 }
 

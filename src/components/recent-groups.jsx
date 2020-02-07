@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 
 import UserName from './user-name';
 import TimeDisplay from './time-display';
@@ -8,7 +9,10 @@ const renderRecentGroup = (recentGroup) => (
     <UserName user={recentGroup} applyHyphenations={true}>
       {recentGroup.screenName}
     </UserName>
-    <TimeDisplay className="updated-ago" timeStamp={+recentGroup.updatedAt} />
+    <TimeDisplay
+      className={classnames('updated-ago', recentGroup.isPinned && 'pinned')}
+      timeStamp={+recentGroup.updatedAt}
+    />
   </li>
 );
 

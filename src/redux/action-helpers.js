@@ -22,6 +22,10 @@ import {
   GET_SERVER_INFO,
   HIDE_BY_NAME,
   UNHIDE_NAMES,
+  TOGGLE_PINNED_GROUP,
+  UPDATE_ACTUAL_USER_PREFERENCES,
+  UPDATE_USER_NOTIFICATION_PREFERENCES,
+  INITIAL_WHO_AM_I,
 } from './action-types';
 import { request, response, fail, baseType } from './async-helpers';
 
@@ -66,12 +70,16 @@ const isUserFeedRequest = (action) => userFeedGeneratingActions.map(request).inc
 export const userChangeActions = [
   SIGN_UP,
   WHO_AM_I,
+  INITIAL_WHO_AM_I,
   SUBSCRIBE,
   UNSUBSCRIBE,
   UPDATE_USER,
   UPDATE_USER_PREFERENCES,
+  UPDATE_ACTUAL_USER_PREFERENCES,
+  UPDATE_USER_NOTIFICATION_PREFERENCES,
   HIDE_BY_NAME,
   UNHIDE_NAMES,
+  TOGGLE_PINNED_GROUP,
 ];
 export const userChangeResponses = userChangeActions.map(response);
 export const isUserChangeResponse = (action) => userChangeResponses.includes(action.type);

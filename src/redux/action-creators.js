@@ -28,6 +28,13 @@ export function whoAmI() {
   };
 }
 
+export function initialWhoAmI() {
+  return {
+    type: ActionTypes.INITIAL_WHO_AM_I,
+    apiRequest: Api.getWhoAmI,
+  };
+}
+
 export function markAllDirectsAsRead() {
   return {
     type: ActionTypes.DIRECTS_ALL_READ,
@@ -360,6 +367,13 @@ export function addAttachmentResponse(postId, attachments) {
   };
 }
 
+export function showMedia(payload) {
+  return {
+    type: ActionTypes.SHOW_MEDIA,
+    payload,
+  };
+}
+
 export function signIn(username, password) {
   return {
     type: ActionTypes.SIGN_IN,
@@ -447,13 +461,6 @@ export function updateUser(
   };
 }
 
-export function userSettingsChange(payload) {
-  return {
-    type: ActionTypes.USER_SETTINGS_CHANGE,
-    payload,
-  };
-}
-
 export function updateUserPreferences(
   userId,
   frontendPrefs = {},
@@ -465,6 +472,17 @@ export function updateUserPreferences(
     apiRequest: Api.updateUserPreferences,
     payload: { userId, frontendPrefs, backendPrefs },
     extra: { suppressStatus },
+  };
+}
+
+export function updateActualUserPreferences({
+  updateFrontendPrefs = () => null,
+  updateBackendPrefs = () => null,
+}) {
+  return {
+    type: ActionTypes.UPDATE_ACTUAL_USER_PREFERENCES,
+    apiRequest: Api.updateActualPreferences,
+    payload: { updateFrontendPrefs, updateBackendPrefs },
   };
 }
 
@@ -623,6 +641,14 @@ export function rejectGroupRequest(groupName, userName) {
     type: ActionTypes.REJECT_GROUP_REQUEST,
     payload: { groupName, userName },
     apiRequest: Api.rejectGroupRequest,
+  };
+}
+
+export function togglePinnedGroup(id) {
+  return {
+    type: ActionTypes.TOGGLE_PINNED_GROUP,
+    apiRequest: Api.togglePinnedGroup,
+    payload: { id },
   };
 }
 

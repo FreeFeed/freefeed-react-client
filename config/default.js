@@ -1,5 +1,6 @@
 import { DISPLAYNAMES_BOTH } from '../src/utils/frontend-preferences-options';
 import { ACTIVITY, HOMEFEED_MODE_CLASSIC } from '../src/utils/feed-options';
+import { TLDs } from './inc/tlds';
 
 /**
  * We use this old-fashioned style of export because the 'config'
@@ -40,7 +41,7 @@ module.exports = {
 
   attachments: { maxCount: 20 },
 
-  textFormatter: { tldList: ['рф', 'com', 'net', 'org', 'edu', 'place'] },
+  textFormatter: { tldList: TLDs },
 
   sentry: {
     publicDSN: null,
@@ -57,13 +58,14 @@ module.exports = {
       comments: {
         omitRepeatedBubbles: true,
         highlightComments: true,
-        hiddenTypes: [],
       },
       allowLinksPreview: false,
       readMoreStyle: 'modern',
       homeFeedSort: ACTIVITY,
       homeFeedMode: HOMEFEED_MODE_CLASSIC,
       homefeed: { hideUsers: [] },
+      pinnedGroups: [],
+      hideUnreadNotifications: false,
     },
   },
 

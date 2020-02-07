@@ -1,18 +1,22 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
-import { pick } from 'lodash';
 
 import { faLaptop } from '@fortawesome/free-solid-svg-icons';
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
-import { getAppTokens } from '../../redux/action-creators';
-import { Icon } from '../fontawesome-icons';
+import { getAppTokens } from '../../../redux/action-creators';
+import { Icon } from '../../fontawesome-icons';
+import { withLayout } from './layout';
 import TokenRow from './token-row';
 
-function Tokens({ tokensStatus: status, tokenIds, getAppTokens }) {
-  useEffect(() => void getAppTokens(), [getAppTokens]);
+export default withLayout('Application tokens', function Tokens() {
+  const dispatch = useDispatch();
+  const status = useSelector((state) => state.appTokens.tokensStatus);
+  const tokenIds = useSelector((state) => state.appTokens.tokenIds);
 
-  if (status.loading) {
+  useEffect(() => void dispatch(getAppTokens()), [dispatch]);
+
+  if (status.loading || status.initial) {
     return <p>Loading...</p>;
   }
 
@@ -35,16 +39,12 @@ function Tokens({ tokensStatus: status, tokenIds, getAppTokens }) {
       </div>
       <p>
         <Icon icon={faQuestionCircle} />{' '}
-        <Link to="/settings/app-tokens/scopes">About the token access rights and scopes</Link>
+        <Link to="/settings/app-tokens/scopes">About token access rights and scopes</Link>
       </p>
       <p>
         <Icon icon={faLaptop} /> For developers:{' '}
-        <Link to="/settings/app-tokens/create-link">Create magic link</Link>
+        <Link to="/settings/app-tokens/create-link">Create a magic link</Link>
       </p>
     </>
   );
-}
-
-export default connect((state) => pick(state.appTokens, ['tokensStatus', 'tokenIds']), {
-  getAppTokens,
-})(Tokens);
+});

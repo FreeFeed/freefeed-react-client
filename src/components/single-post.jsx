@@ -41,6 +41,7 @@ class SinglePostHandler extends React.Component {
           saveEditingPost={props.saveEditingPost}
           deletePost={props.deletePost}
           addAttachmentResponse={props.addAttachmentResponse}
+          showMedia={props.showMedia}
           toggleCommenting={props.toggleCommenting}
           updateCommentingText={props.updateCommentingText}
           addComment={props.addComment}

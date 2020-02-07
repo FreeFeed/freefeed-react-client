@@ -4,7 +4,7 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import { combineReducers } from 'redux';
 
 import { userParser, postParser, getSummaryPeriod } from '../utils';
-import { getToken, getPersistedUser } from '../services/auth';
+import { getToken } from '../services/auth';
 import { parseQuery } from '../utils/search-highlighter';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
 import * as FeedOptions from '../utils/feed-options';
@@ -18,11 +18,19 @@ import {
   fromResponse,
   asyncState,
   initialAsyncState,
+  successAsyncState,
 } from './async-helpers';
 
 const frontendPrefsConfig = CONFIG.frontendPreferences;
 
 const { request, response, fail } = ActionHelpers;
+
+export const initialized = asyncState(ActionTypes.INITIAL_WHO_AM_I, (state, action) => {
+  if (action.type === ActionTypes.UNAUTHENTICATED) {
+    return successAsyncState;
+  }
+  return state;
+});
 
 export function title(state = '', action) {
   switch (action.type) {
@@ -1276,41 +1284,29 @@ export function commentViewState(state = {}, action) {
   return state;
 }
 
-export function commentLikes(state = {}, action) {
+const loadLikesListStatusesReducer = asyncStatesMap(ActionTypes.GET_COMMENT_LIKES, {
+  getKey: getKeyBy('commentId'),
+  applyState: (comment, status) => ({ ...comment, status }),
+});
+
+const commentLikesInitial = {};
+
+export function commentLikes(state = commentLikesInitial, action) {
+  state = loadLikesListStatusesReducer(state, action);
+
   switch (action.type) {
-    case request(ActionTypes.GET_COMMENT_LIKES): {
-      return {
-        ...state,
-        [action.payload.commentId]: { loading: true },
-      };
-    }
-    case fail(ActionTypes.GET_COMMENT_LIKES): {
-      return {
-        ...state,
-        [action.payload.commentId]: { loading: false, error: true },
-      };
-    }
     case response(ActionTypes.GET_COMMENT_LIKES): {
-      return {
-        ...state,
-        [action.request.commentId]: {
-          loading: false,
-          error: false,
-          likes: action.payload.likes,
-        },
-      };
+      return patchObjectByKey(state, action.request.commentId, (comment) => ({
+        ...comment,
+        likes: action.payload.likes,
+      }));
     }
-    case ActionTypes.REALTIME_COMMENT_UPDATE: {
-      return {
-        ...state,
-        [action.comment.id]: {
-          loading: false,
-          error: false,
-          likes: [],
-        },
-      };
+    case LOCATION_CHANGE: {
+      // Clean state on page navigation
+      return commentLikesInitial;
     }
   }
+
   return state;
 }
 
@@ -1474,10 +1470,7 @@ export function authenticated(state = !!getToken(), action) {
   return state;
 }
 
-const initUser = () => ({
-  frontendPreferences: frontendPrefsConfig.defaultValues,
-  ...getPersistedUser(),
-});
+const initUser = () => ({ frontendPreferences: frontendPrefsConfig.defaultValues });
 
 export function user(state = initUser(), action) {
   if (ActionHelpers.isUserChangeResponse(action)) {
@@ -1546,37 +1539,6 @@ export function user(state = initUser(), action) {
     }
     case ActionTypes.UNAUTHENTICATED: {
       return initUser();
-    }
-  }
-  return state;
-}
-
-const DEFAULT_PASSWORD_FORM_STATE = {
-  isSaving: false,
-  success: false,
-  error: false,
-  errorText: '',
-};
-
-export function passwordForm(state = DEFAULT_PASSWORD_FORM_STATE, action) {
-  switch (action.type) {
-    case request(ActionTypes.UPDATE_PASSWORD): {
-      return { ...state, isSaving: true, error: false, success: false };
-    }
-    case response(ActionTypes.UPDATE_PASSWORD): {
-      return { ...state, isSaving: false, success: true, error: false };
-    }
-    case fail(ActionTypes.UPDATE_PASSWORD): {
-      return {
-        ...state,
-        isSaving: false,
-        success: false,
-        error: true,
-        errorText: action.payload.err,
-      };
-    }
-    case ActionTypes.RESET_SETTINGS_FORMS: {
-      return { ...state, isSaving: false, success: false, error: false, errorText: '' };
     }
   }
   return state;
@@ -1656,98 +1618,24 @@ export function subscriptions(state = {}, action) {
   return state;
 }
 
-export function userSettingsForm(state = { saved: false }, action) {
-  switch (action.type) {
-    case ActionTypes.USER_SETTINGS_CHANGE: {
-      return { ...state, ...action.payload, success: false, error: false };
-    }
-    case request(ActionTypes.UPDATE_USER): {
-      return { ...state, isSaving: true, error: false };
-    }
-    case response(ActionTypes.UPDATE_USER): {
-      return { ...state, isSaving: false, success: true, error: false };
-    }
-    case fail(ActionTypes.UPDATE_USER): {
-      return {
-        ...state,
-        isSaving: false,
-        success: false,
-        error: true,
-        errorMessage: (action.payload || {}).err,
-      };
-    }
-    case ActionTypes.RESET_SETTINGS_FORMS: {
-      return { ...state, success: false, error: false, errorMessage: '', isSaving: false };
-    }
-  }
-  return state;
-}
+export const getUserInfoStatuses = asyncStatesMap(ActionTypes.GET_USER_INFO, {
+  getKey: getKeyBy('username'),
+  cleanOnSuccess: true,
+});
 
-export function frontendPreferencesForm(state = {}, action) {
-  switch (action.type) {
-    case response(ActionTypes.WHO_AM_I): {
-      return {
-        ...state,
-        ...action.payload.users.frontendPreferences[frontendPrefsConfig.clientId],
-      };
-    }
-    case request(ActionTypes.UPDATE_USER_PREFERENCES): {
-      if (typeof action.extra !== 'undefined' && action.extra.suppressStatus) {
-        return state;
-      }
-      return { ...state, status: 'loading' };
-    }
-    case response(ActionTypes.UPDATE_USER_PREFERENCES): {
-      if (typeof action.extra !== 'undefined' && action.extra.suppressStatus) {
-        return state;
-      }
-      return { ...state, status: 'success' };
-    }
-    case fail(ActionTypes.UPDATE_USER_PREFERENCES): {
-      if (typeof action.extra !== 'undefined' && action.extra.suppressStatus) {
-        return state;
-      }
-      return { ...state, status: 'error', errorMessage: (action.payload || {}).err };
-    }
-    case ActionTypes.RESET_SETTINGS_FORMS: {
-      return { ...state, status: '', errorMessage: '' };
-    }
-  }
-  return state;
-}
+export const updateGroupPictureStatuses = asyncStatesMap(
+  ActionTypes.UPDATE_GROUP_PICTURE,
+  {
+    getKey: getKeyBy('groupName'),
+  },
+  setOnLocationChange({}),
+);
 
-export function userPictureForm(state = {}, action) {
-  switch (action.type) {
-    case request(ActionTypes.UPDATE_USER_PICTURE): {
-      return { ...state, status: 'loading' };
-    }
-    case response(ActionTypes.UPDATE_USER_PICTURE): {
-      return { ...state, status: 'success' };
-    }
-    case fail(ActionTypes.UPDATE_USER_PICTURE): {
-      return { ...state, status: 'error', errorMessage: (action.payload || {}).err };
-    }
-    case ActionTypes.RESET_SETTINGS_FORMS: {
-      return { ...state, status: '', errorMessage: '' };
-    }
-  }
-  return state;
-}
-
-export function groupSettings(state = {}, action) {
-  switch (action.type) {
-    case request(ActionTypes.GET_USER_INFO): {
-      return { ...state, status: 'loading' };
-    }
-    case response(ActionTypes.GET_USER_INFO): {
-      return { ...state, status: 'success' };
-    }
-    case fail(ActionTypes.GET_USER_INFO): {
-      return { ...state, status: 'error', errorMessage: (action.payload || {}).err };
-    }
-  }
-  return state;
-}
+export const updateGroupStatuses = asyncStatesMap(
+  ActionTypes.UPDATE_GROUP,
+  {},
+  setOnLocationChange({}),
+);
 
 export function groupCreateForm(state = {}, action) {
   switch (action.type) {
@@ -1762,42 +1650,6 @@ export function groupCreateForm(state = {}, action) {
       return { ...state, status: 'error', errorMessage: (action.payload || {}).err };
     }
     case ActionTypes.RESET_GROUP_CREATE_FORM: {
-      return {};
-    }
-  }
-  return state;
-}
-
-export function groupSettingsForm(state = {}, action) {
-  switch (action.type) {
-    case request(ActionTypes.UPDATE_GROUP): {
-      return { ...state, status: 'loading' };
-    }
-    case response(ActionTypes.UPDATE_GROUP): {
-      return { ...state, status: 'success' };
-    }
-    case fail(ActionTypes.UPDATE_GROUP): {
-      return { ...state, status: 'error', errorMessage: (action.payload || {}).err };
-    }
-    case ActionTypes.RESET_GROUP_UPDATE_FORM: {
-      return {};
-    }
-  }
-  return state;
-}
-
-export function groupPictureForm(state = {}, action) {
-  switch (action.type) {
-    case request(ActionTypes.UPDATE_GROUP_PICTURE): {
-      return { ...state, status: 'loading' };
-    }
-    case response(ActionTypes.UPDATE_GROUP_PICTURE): {
-      return { ...state, status: 'success' };
-    }
-    case fail(ActionTypes.UPDATE_GROUP_PICTURE): {
-      return { ...state, status: 'error', errorMessage: (action.payload || {}).err };
-    }
-    case ActionTypes.RESET_GROUP_UPDATE_FORM: {
       return {};
     }
   }
@@ -1983,14 +1835,38 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
 
 const GROUPS_SIDEBAR_LIST_LENGTH = 4;
 
+const getRecentGroups = ({ subscribers, frontendPreferences }) => {
+  const clientPreferences = frontendPreferences || {};
+  const pinnedGroups = clientPreferences.pinnedGroups || [];
+  const groups = (subscribers || []).filter((i) => i.type == 'group');
+  const recentGroups = groups
+    .filter((i) => pinnedGroups.indexOf(i.id) > -1)
+    .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
+    .map((i) => ({ ...i, isPinned: true }));
+  if (recentGroups.length < GROUPS_SIDEBAR_LIST_LENGTH) {
+    // pinned groups are always shown, and unpinned groups are shown if limit allows
+    return recentGroups.concat(
+      groups
+        .filter((i) => pinnedGroups.indexOf(i.id) === -1)
+        .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
+        .slice(0, GROUPS_SIDEBAR_LIST_LENGTH - recentGroups.length),
+    );
+  }
+  return recentGroups;
+};
+
 export function recentGroups(state = [], action) {
   switch (action.type) {
+    case response(ActionTypes.TOGGLE_PINNED_GROUP): {
+      const { subscribers, users } = action.payload;
+      const frontendPreferences = users.frontendPreferences[frontendPrefsConfig.clientId];
+      return getRecentGroups({ subscribers, frontendPreferences });
+    }
     case response(ActionTypes.WHO_AM_I): {
-      const subscribers = action.payload.subscribers || [];
-      return subscribers
-        .filter((i) => i.type == 'group')
-        .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
-        .slice(0, GROUPS_SIDEBAR_LIST_LENGTH);
+      const { subscribers } = action.payload;
+      const frontendPreferences =
+        action.payload.users.frontendPreferences[frontendPrefsConfig.clientId];
+      return getRecentGroups({ subscribers, frontendPreferences });
     }
     case response(ActionTypes.CREATE_GROUP): {
       const newGroup = action.payload.groups;
@@ -2270,26 +2146,6 @@ export function frontendRealtimePreferencesForm(state = initialRealtimeSettings,
   return state;
 }
 
-const initialNotificationsForm = {};
-
-export function userNotificationsForm(state = initialNotificationsForm, action) {
-  switch (action.type) {
-    case request(ActionTypes.UPDATE_USER_NOTIFICATION_PREFERENCES): {
-      return { ...state, status: 'loading' };
-    }
-    case response(ActionTypes.UPDATE_USER_NOTIFICATION_PREFERENCES): {
-      return { ...state, status: 'success' };
-    }
-    case fail(ActionTypes.UPDATE_USER_NOTIFICATION_PREFERENCES): {
-      return { ...state, status: 'error', errorMessage: (action.payload || {}).err };
-    }
-    case ActionTypes.RESET_SETTINGS_FORMS: {
-      return { ...state, status: '', errorMessage: '' };
-    }
-  }
-  return state;
-}
-
 export function groupAdmins(state = [], action) {
   switch (action.type) {
     case response(ActionTypes.GET_USER_INFO): {
@@ -2328,6 +2184,7 @@ const userActionsStatusesStatusMaps = combineReducers({
     ActionTypes.UNSUBSCRIBE,
   ]),
   blocking: asyncStatesMap([ActionTypes.BAN, ActionTypes.UNBAN]),
+  pinned: asyncStatesMap([ActionTypes.TOGGLE_PINNED_GROUP]),
 });
 
 const initialUserProfileStatuses = userActionsStatusesStatusMaps(undefined, { type: '' });
@@ -2360,6 +2217,13 @@ export function realtimeSubscriptions(state = [], action) {
       const newState = _.difference(state, rooms);
       return newState.length !== state.length ? newState : state;
     }
+  }
+  return state;
+}
+
+export function mediaViewer(state = [], action) {
+  if (action.type === ActionTypes.SHOW_MEDIA) {
+    return action.payload;
   }
   return state;
 }
@@ -2443,10 +2307,7 @@ export function serverTimeAhead(state = 0, action) {
 }
 
 const getInitialFeedViewOptions = () => {
-  const defaultHomeFeedSort = frontendPrefsConfig.defaultValues.homeFeedSort;
-  const persistedUser = getPersistedUser();
-  const homeFeedSort =
-    (persistedUser && persistedUser.frontendPreferences.homeFeedSort) || defaultHomeFeedSort;
+  const { homeFeedSort } = frontendPrefsConfig.defaultValues;
   return {
     homeFeedSort,
     sort: homeFeedSort,
@@ -2507,6 +2368,7 @@ export function userColorScheme(state = loadColorScheme(), action) {
   return state;
 }
 
+export { settingsForms } from './reducers/settings-forms';
 export { appTokens } from './reducers/app-tokens';
 
 export const serverInfo = fromResponse(ActionTypes.GET_SERVER_INFO, ({ payload }) => payload, {});
@@ -2515,13 +2377,7 @@ export const serverInfoStatus = asyncState(ActionTypes.GET_SERVER_INFO);
 
 export { extAuth } from './reducers/ext-auth.js';
 
-const getInitialHiddenUserNames = () => {
-  const defaultHiddenUsers = CONFIG.frontendPreferences.defaultValues.homefeed.hideUsers;
-  const persistedUser = getPersistedUser();
-  return _.get(persistedUser, ['frontendPreferences', 'homefeed', 'hideUsers'], defaultHiddenUsers);
-};
-
-export function hiddenUserNames(state = getInitialHiddenUserNames(), action) {
+export function hiddenUserNames(state = [], action) {
   if (ActionHelpers.isUserChangeResponse(action)) {
     return _.get(
       action.payload.users,

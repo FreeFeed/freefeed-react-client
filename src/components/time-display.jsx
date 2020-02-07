@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
-import { connect } from 'react-redux';
+import React, { useEffect, memo } from 'react';
+import { useSelector } from 'react-redux';
 import pt from 'prop-types';
-import React from 'react';
 
 import parseISO from 'date-fns/parseISO';
 import toDate from 'date-fns/toDate';
@@ -9,6 +9,8 @@ import format from 'date-fns/format';
 import addMilliseconds from 'date-fns/addMilliseconds';
 import differenceInMilliseconds from 'date-fns/differenceInMilliseconds';
 import formatDistance from 'date-fns/formatDistance';
+import { useBool } from './hooks/bool';
+import { withListener } from './hooks/sub-unsub';
 
 const datetimeFormat = 'MMM d, yyyy HH:mm';
 const dateOnlyFormat = 'MMM d, yyyy';
@@ -25,51 +27,47 @@ class Ticker extends EventEmitter {
 
 const ticker = new Ticker(30000); // 30 sec
 
-class TimeDisplay extends React.Component {
-  static propTypes = {
-    timeStamp: pt.oneOfType([
-      pt.number.isRequired, // JS timestamp in ms
-      pt.string.isRequired, // ISO date string
-    ]),
-    className: pt.string,
-    timeAgoInTitle: pt.bool,
-    showAbsTime: pt.bool,
-    showDateOnly: pt.bool,
-    serverTimeAhead: pt.number.isRequired,
-  };
+const TimeDisplay = memo(function TimeDisplay({
+  timeStamp,
+  className,
+  timeAgoInTitle = false,
+  showAbsTime = false,
+  showDateOnly = false,
+  children,
+}) {
+  const serverTimeAhead = useSelector((state) => state.serverTimeAhead);
+  const [, refresh] = useBool();
 
-  refresh = () => this.forceUpdate();
+  useEffect(() => withListener(ticker, 'tick', refresh));
 
-  componentDidMount() {
-    ticker.addListener('tick', this.refresh);
-  }
+  const time = typeof timeStamp === 'number' ? toDate(timeStamp) : parseISO(timeStamp);
+  const serverNow = addMilliseconds(new Date(), serverTimeAhead);
+  const timeAgo =
+    Math.abs(differenceInMilliseconds(serverNow, time)) < 1000
+      ? 'just now'
+      : `${formatDistance(time, serverNow)} ago`;
+  const timeAbs = format(time, showDateOnly ? dateOnlyFormat : datetimeFormat);
+  const timeISO = time.toISOString();
 
-  componentWillUnmount() {
-    ticker.removeListener('tick', this.refresh);
-  }
+  const title = timeAgoInTitle || showAbsTime ? timeAgo : timeAbs;
+  const contents = children || (showAbsTime && timeAbs) || timeAgo;
 
-  render() {
-    const time =
-      typeof this.props.timeStamp === 'number'
-        ? toDate(this.props.timeStamp)
-        : parseISO(this.props.timeStamp);
-    const serverNow = addMilliseconds(new Date(), this.props.serverTimeAhead);
-    const timeAgo =
-      Math.abs(differenceInMilliseconds(serverNow, time)) < 1000
-        ? 'just now'
-        : `${formatDistance(time, serverNow)} ago`;
-    const timeAbs = format(time, this.props.showDateOnly ? dateOnlyFormat : datetimeFormat);
-    const timeISO = time.toISOString();
+  return (
+    <time className={className} dateTime={timeISO} title={title}>
+      {contents}
+    </time>
+  );
+});
 
-    const title = this.props.timeAgoInTitle || this.props.showAbsTime ? timeAgo : timeAbs;
-    const contents = this.props.children || (this.props.showAbsTime && timeAbs) || timeAgo;
+TimeDisplay.propTypes = {
+  timeStamp: pt.oneOfType([
+    pt.number.isRequired, // JS timestamp in ms
+    pt.string.isRequired, // ISO date string
+  ]),
+  className: pt.string,
+  timeAgoInTitle: pt.bool,
+  showAbsTime: pt.bool,
+  showDateOnly: pt.bool,
+};
 
-    return (
-      <time className={this.props.className} dateTime={timeISO} title={title}>
-        {contents}
-      </time>
-    );
-  }
-}
-
-export default connect(({ serverTimeAhead }) => ({ serverTimeAhead }))(TimeDisplay);
+export default TimeDisplay;

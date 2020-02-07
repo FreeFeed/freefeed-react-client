@@ -1,0 +1,18 @@
+.icon {
+  margin-right: 6px;
+  font-size: 18px;
+  opacity: 0.66;
+  vertical-align: sub;
+}
+
+.active {
+  font-weight: bold;
+}
+
+.switchIcon {
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+}

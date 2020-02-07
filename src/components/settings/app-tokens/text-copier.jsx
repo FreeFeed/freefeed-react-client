@@ -3,7 +3,7 @@ import cn from 'classnames';
 import { faCopy } from '@fortawesome/free-regular-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
-import { Icon } from '../fontawesome-icons';
+import { Icon } from '../../fontawesome-icons';
 import styles from './text-copier.module.scss';
 
 export function TextCopier({ text }) {

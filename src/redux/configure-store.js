@@ -17,6 +17,7 @@ import {
   realtimeMiddleware,
   dataFixMiddleware,
   appearanceMiddleware,
+  initialWhoamiMiddleware,
 } from './middlewares';
 
 import * as reducers from './reducers';
@@ -39,6 +40,7 @@ const middleware = [
   markNotificationsAsReadMiddleware,
   realtimeMiddleware,
   appearanceMiddleware,
+  initialWhoamiMiddleware,
 ];
 
 const enhancers = [applyMiddleware(...middleware)];

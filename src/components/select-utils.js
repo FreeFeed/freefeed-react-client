@@ -13,6 +13,7 @@ import {
   showMoreComments,
   showMoreLikes,
   addAttachmentResponse,
+  showMedia,
   likePost,
   unlikePost,
   hidePost,
@@ -237,6 +238,7 @@ export function postActions(dispatch) {
     enableComments: (postId) => dispatch(enableComments(postId)),
     addAttachmentResponse: (postId, attachments) =>
       dispatch(addAttachmentResponse(postId, attachments)),
+    showMedia: (params) => dispatch(showMedia(params)),
     commentEdit: {
       toggleEditingComment: (commentId) => dispatch(toggleEditingComment(commentId)),
       saveEditingComment: (commentId, newValue) =>
