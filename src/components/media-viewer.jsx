@@ -19,7 +19,7 @@ const ImageAttachmentsLightbox = lazyComponent(() => import('./post-attachment-i
 });
 
 export const getMediaType = (url) => {
-  if (url.match(/\.(jpg|png|jpeg|webp)(\?|$|#)/i)) {
+  if (url.match(/\.(jpg|png|jpeg|webp|gif)(\?|$|#)/i)) {
     return 'image';
   } else if (isInstagram(url)) {
     return 'instagram';
@@ -40,6 +40,15 @@ const getEmbeddableItem = async (url, withoutAutoplay) => {
   }
 
   if (info) {
+    if (info.mediaURL) {
+      return {
+        src: info.mediaURL,
+        w: info.width || 0,
+        h: info.height || 0,
+        pid: 'media',
+      };
+    }
+
     let playerHTML = null;
     const w = 800;
     const h = info.aspectRatio ? Math.round(w * info.aspectRatio) : 450;
