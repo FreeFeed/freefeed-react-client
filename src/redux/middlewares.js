@@ -726,10 +726,11 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
 };
 
 export const initialWhoamiMiddleware = (store) => (next) => (action) => {
-  next(action);
   if (action.type === response(ActionTypes.INITIAL_WHO_AM_I)) {
+    // Fire the WHO_AM_I response first to properly fill state by current user data
     store.dispatch({ ...action, type: response(ActionTypes.WHO_AM_I) });
   }
+  next(action);
 };
 
 // Fixing data structures coming from server
