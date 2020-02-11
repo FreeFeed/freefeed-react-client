@@ -682,7 +682,6 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
     }
 
     if (
-      action.type === response(ActionTypes.INITIAL_WHO_AM_I) ||
       action.type === response(ActionTypes.WHO_AM_I) ||
       action.type === response(ActionTypes.SIGN_UP)
     ) {
