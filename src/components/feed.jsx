@@ -76,12 +76,18 @@ function Feed(props) {
         )}
 
         {props.emptyFeed && props.loading && <p>Loading feed...</p>}
-        {props.emptyFeed && !props.loading && (
-          <>
-            <p>There are no posts in this feed.</p>
-            {props.emptyFeedMessage}
-          </>
-        )}
+        {props.emptyFeed &&
+          !props.loading &&
+          (props.feedError !== null ? (
+            <p className="alert alert-danger" role="alert">
+              Error loading feed: {props.feedError}
+            </p>
+          ) : (
+            <>
+              <p>There are no posts in this feed.</p>
+              {props.emptyFeedMessage}
+            </>
+          ))}
       </ErrorBoundary>
     </div>
   );
@@ -95,6 +101,7 @@ export default connect((state) => {
     recentlyHiddenEntries,
     separateHiddenEntries,
     isHiddenRevealed,
+    feedError,
   } = state.feedViewState;
 
   const allPosts = entries.map(joinPostData(state)).filter(Boolean);
@@ -114,6 +121,7 @@ export default connect((state) => {
     isHiddenRevealed,
     visiblePosts,
     hiddenPosts,
+    feedError,
   };
 })(Feed);
 
