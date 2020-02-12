@@ -141,6 +141,9 @@ export default class PostComment extends React.Component {
 
   handleHoverOnUsername = (username) => {
     this.setState({ isAuthorHovered: true });
+    if (this.enterTimeout) {
+      clearTimeout(this.enterTimeout);
+    }
     this.enterTimeout = setTimeout(() => {
       if (this.state.isAuthorHovered) {
         this.props.highlightComment(username);
