@@ -189,6 +189,7 @@ const initFeed = {
   separateHiddenEntries: false,
   isHiddenRevealed: false,
   isLastPage: true,
+  feedError: null,
 };
 
 export function feedViewState(state = initFeed, action) {
@@ -217,7 +218,7 @@ export function feedViewState(state = initFeed, action) {
     };
   }
   if (ActionHelpers.isFeedFail(action)) {
-    return initFeed;
+    return { ...initFeed, feedError: action.payload.err };
   }
 
   switch (action.type) {
