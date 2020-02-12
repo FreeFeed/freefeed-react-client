@@ -17,12 +17,14 @@ const VIMEO_VIDEO_RE = /^https:\/\/vimeo\.com\/([0-9]+)/i;
 const COUB_VIDEO_RE = /^https?:\/\/coub\.com\/view\/([a-z0-9]+)/i;
 const IMGUR_VIDEO_RE = /^https?:\/\/i\.imgur\.com\/([a-z0-9]+)\.(gifv|mp4)/i;
 const GFYCAT_RE = /^https?:\/\/(?:[a-z]+\.)?gfycat\.com\/(?:[^/]{0,3}\/)?((?:[A-Z][a-z]+){3}|[a-z]{16,})/;
+const GIPHY_RE = /^https?:\/\/giphy.com\/gifs\/.+?-([a-zA-Z0-9]+)($|\/|\?)/;
 
 const T_YOUTUBE_VIDEO = 'T_YOUTUBE_VIDEO';
 const T_VIMEO_VIDEO = 'T_VIMEO_VIDEO';
 const T_COUB_VIDEO = 'T_COUB_VIDEO';
 const T_IMGUR_VIDEO = 'T_IMGUR_VIDEO';
 const T_GFYCAT = 'T_GFYCAT';
+const T_GIPHY = 'T_GIPHY';
 
 export function canShowURL(url) {
   return getVideoType(url) !== null;
@@ -34,11 +36,18 @@ class VideoPreview extends React.Component {
   state = {
     info: null,
     player: false,
+    withPlayer: true,
   };
 
   loadPlayer = () => this.setState({ player: !this.state.player });
 
-  loadInfo = async () => this.setState({ info: await getVideoInfo(this.props.url) });
+  loadInfo = async () => {
+    const info = await getVideoInfo(this.props.url);
+    this.setState({
+      info,
+      withPlayer: info.videoURL || info.playerURL,
+    });
+  };
 
   constructor(props) {
     super(props);
@@ -74,7 +83,7 @@ class VideoPreview extends React.Component {
 
   render() {
     const { url } = this.props;
-    const { player, info } = this.state;
+    const { player, info, withPlayer } = this.state;
 
     if (info && 'error' in info) {
       return <div className="video-preview link-preview-content load-error">{info.error}</div>;
@@ -90,7 +99,8 @@ class VideoPreview extends React.Component {
     return (
       <div className="video-preview link-preview-content" style={{ maxWidth: width }}>
         <div className="static-preview" style={previewStyle} onClick={this.loadPlayer}>
-          {player ? this.renderPlayer() : <Icon icon={faPlayCircle} className="play-icon" />}
+          {withPlayer &&
+            (player ? this.renderPlayer() : <Icon icon={faPlayCircle} className="play-icon" />)}
         </div>
         <div className="info">
           <a href={url} target="_blank" title={info ? info.byline : null}>
@@ -126,6 +136,9 @@ export function getVideoType(url) {
   if (GFYCAT_RE.test(url)) {
     return T_GFYCAT;
   }
+  if (GIPHY_RE.test(url)) {
+    return T_GIPHY;
+  }
   return null;
 }
 
@@ -144,6 +157,9 @@ function getVideoId(url) {
     return m[1];
   }
   if ((m = GFYCAT_RE.exec(url))) {
+    return m[1];
+  }
+  if ((m = GIPHY_RE.exec(url))) {
     return m[1];
   }
   return null;
@@ -252,6 +268,23 @@ export async function getVideoInfo(url, withoutAutoplay) {
         previewURL: data.gfyItem.mobilePosterUrl,
         aspectRatio: aspectRatio.set(url, data.gfyItem.height / data.gfyItem.width),
         videoURL: data.gfyItem.mobileUrl,
+      };
+    }
+    case T_GIPHY: {
+      const data = await cachedFetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`);
+      if (data.error) {
+        return { error: data.error };
+      }
+      if (!('title' in data)) {
+        return { error: data.error ? data.error : 'error loading data' };
+      }
+      return {
+        byline: `${data.title} by ${data.author_name}`,
+        aspectRatio: aspectRatio.set(url, data.height / data.width),
+        previewURL: data.media_url,
+        mediaURL: data.media_url,
+        width: data.width,
+        height: data.height,
       };
     }
   }

@@ -7,7 +7,6 @@ import parseISO from 'date-fns/parseISO';
 import toDate from 'date-fns/toDate';
 import format from 'date-fns/format';
 import addMilliseconds from 'date-fns/addMilliseconds';
-import differenceInMilliseconds from 'date-fns/differenceInMilliseconds';
 import formatDistance from 'date-fns/formatDistance';
 import { useBool } from './hooks/bool';
 import { withListener } from './hooks/sub-unsub';
@@ -42,10 +41,10 @@ const TimeDisplay = memo(function TimeDisplay({
 
   const time = typeof timeStamp === 'number' ? toDate(timeStamp) : parseISO(timeStamp);
   const serverNow = addMilliseconds(new Date(), serverTimeAhead);
-  const timeAgo =
-    Math.abs(differenceInMilliseconds(serverNow, time)) < 1000
-      ? 'just now'
-      : `${formatDistance(time, serverNow)} ago`;
+  let timeAgo = `${formatDistance(time, serverNow)} ago`;
+  if (timeAgo === 'less than a minute ago') {
+    timeAgo = 'just now';
+  }
   const timeAbs = format(time, showDateOnly ? dateOnlyFormat : datetimeFormat);
   const timeISO = time.toISOString();
 
