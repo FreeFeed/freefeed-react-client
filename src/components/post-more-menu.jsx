@@ -24,7 +24,7 @@ export default function PostMoreMenu({ post, ...props }) {
               </li>
             )}
 
-            {props.isModeratable && (
+            {post.isModeratable && (
               <li className={styles.item}>
                 <a className={styles.link} onClick={props.toggleModeratingComments}>
                   {post.isModeratingComments ? 'Stop moderating comments' : 'Moderate comments'}
