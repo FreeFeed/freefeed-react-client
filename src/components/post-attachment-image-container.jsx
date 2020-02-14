@@ -16,6 +16,8 @@ const Sortable = lazyComponent(() => import('react-sortablejs'), {
   errorMessage: "Couldn't load Sortable component",
 });
 
+const sortableOptions = { filter: '.remove-attachment' };
+
 export default class ImageAttachmentsContainer extends React.Component {
   static propTypes = {
     attachments: pt.array.isRequired,
@@ -148,7 +150,13 @@ export default class ImageAttachmentsContainer extends React.Component {
 
     return (
       <div className={className} ref={this.registerContainer}>
-        {withSortable ? <Sortable onChange={this.onSortChange}>{allImages}</Sortable> : allImages}
+        {withSortable ? (
+          <Sortable onChange={this.onSortChange} options={sortableOptions}>
+            {allImages}
+          </Sortable>
+        ) : (
+          allImages
+        )}
         {isSingleImage || this.props.isEditing ? (
           false
         ) : (
