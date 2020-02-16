@@ -162,21 +162,22 @@ export default class PostComments extends React.Component {
           .map((c, i) => this.renderComment(withBackwardNumber(c, totalComments - i - 1)));
 
     if (showExpand) {
-      return (
+      return [
         <MoreCommentsWrapper
+          key={`${post.id}:more-comments`}
           omittedComments={foldedCount}
           showMoreComments={this.showMoreComments}
           entryUrl={entryUrl}
           omittedCommentLikes={post.omittedCommentLikes}
           omittedOwnCommentLikes={post.omittedOwnCommentLikes}
           isLoading={post.isLoadingComments}
-        />
-      );
+        />,
+      ];
     }
 
     if (showFold) {
-      return (
-        <StickyContainer>
+      return [
+        <StickyContainer key={`${post.id}:sticky-container`}>
           <Sticky>
             {({ style, isSticky }) => (
               <div
@@ -189,8 +190,8 @@ export default class PostComments extends React.Component {
             )}
           </Sticky>
           {middleComments}
-        </StickyContainer>
-      );
+        </StickyContainer>,
+      ];
     }
 
     return middleComments;
@@ -228,9 +229,11 @@ export default class PostComments extends React.Component {
     return (
       <div className="comments" ref={this.rootEl}>
         <ErrorBoundary>
-          {first ? this.renderComment(first) : false}
-          {this.renderMiddle()}
-          {last ? this.renderComment(last) : false}
+          {[
+            first && this.renderComment(first),
+            ...this.renderMiddle(),
+            last && this.renderComment(last),
+          ]}
           {this.renderAddComment()}
         </ErrorBoundary>
       </div>
