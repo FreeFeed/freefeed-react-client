@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { StickyContainer, Sticky } from 'react-sticky';
 import _ from 'lodash';
-import cn from 'classnames';
 
 import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
@@ -11,6 +9,7 @@ import MoreCommentsWrapper from './more-comments-wrapper';
 import ErrorBoundary from './error-boundary';
 import { Icon } from './fontawesome-icons';
 import { faCommentPlus } from './fontawesome-custom-icons';
+import { Sticky } from './sticky';
 
 const minCommentsToFold = 12;
 
@@ -177,20 +176,16 @@ export default class PostComments extends React.Component {
 
     if (showFold) {
       return [
-        <StickyContainer key={`${post.id}:sticky-container`}>
-          <Sticky>
-            {({ style, isSticky }) => (
-              <div
-                style={style}
-                className={cn('fold-comments', { 'fold-comments-sticky': isSticky })}
-              >
-                <Icon icon={faChevronUp} className="chevron" />
-                <a onClick={this.fold}>Fold comments</a>
-              </div>
-            )}
-          </Sticky>
-          {middleComments}
-        </StickyContainer>,
+        <Sticky
+          key={`${post.id}:fold-link`}
+          className="fold-comments"
+          stickyClassName="fold-comments-sticky"
+          stickUntil={middleComments.length}
+        >
+          <Icon icon={faChevronUp} className="chevron" />
+          <a onClick={this.fold}>Fold comments</a>
+        </Sticky>,
+        ...middleComments,
       ];
     }
 

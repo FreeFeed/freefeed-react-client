@@ -35,7 +35,6 @@
     "react-router-redux": "4.0.x",
     "react-select": "~1.2.1",
     "react-sortablejs": "~1.5.1",
-    "react-sticky": "~6.0.3",
     "react-textarea-autosize": "~7.1.2",
     "redux": "~4.0.5",
     "snarkdown": "~1.2.2",
