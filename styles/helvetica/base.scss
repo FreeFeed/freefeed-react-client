@@ -35,6 +35,12 @@ a:focus {
   color: #000088;
 }
 
+a[aria-disabled='true'] {
+  cursor: default;
+  opacity: 0.8;
+  text-decoration: none !important;
+}
+
 .settings-error {
   margin-left: 180px;
   max-width: 174px;
