@@ -111,19 +111,19 @@ const getEmbeddableItem = async (url, withoutAutoplay) => {
 
 function MediaViewer(props) {
   const { mediaViewer, showMedia } = props;
-  const { attachments, postId, navigate, thumbnail, index } = mediaViewer;
+  const { attachments, postId, thumbnail, index } = mediaViewer;
   const [lightboxItems, setLightboxItems] = useState(null);
 
-  const onDestroy = useCallback(() => {
-    // setLightboxItems(null);
-    showMedia({});
-  }, []);
+  const onDestroy = useCallback(() => showMedia({}), [showMedia]);
 
   const onNavigate = useCallback(
     (where) => {
-      const nextPost = typeof navigate === 'function' ? navigate(postId, where) : null;
+      const nextPost =
+        typeof mediaViewer.navigate === 'function'
+          ? mediaViewer.navigate(mediaViewer.postId, where)
+          : null;
       if (nextPost) {
-        props.showMedia({
+        showMedia({
           ...mediaViewer,
           postId: nextPost.id,
           attachments: nextPost.attachments,
@@ -132,10 +132,10 @@ function MediaViewer(props) {
         });
       }
     },
-    [postId],
+    [mediaViewer, showMedia],
   );
 
-  const getThumbnail = useCallback((index) => (thumbnail ? thumbnail(index) : null), [attachments]);
+  const getThumbnail = useCallback((index) => (thumbnail ? thumbnail(index) : null), [thumbnail]);
 
   useEffect(() => {
     if (attachments) {
