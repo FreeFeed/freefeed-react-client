@@ -174,10 +174,10 @@ export function deletePost(postId) {
   };
 }
 
-export function toggleCommenting(postId) {
+export function toggleCommenting(postId, newCommentText = '') {
   return {
     type: ActionTypes.TOGGLE_COMMENTING,
-    postId,
+    payload: { postId, newCommentText },
   };
 }
 

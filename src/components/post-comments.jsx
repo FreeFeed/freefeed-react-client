@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router';
-import _ from 'lodash';
 
 import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
@@ -25,18 +24,13 @@ export default class PostComments extends React.Component {
   };
 
   openAnsweringComment = (answerText) => {
-    const { post, toggleCommenting, updateCommentingText } = this.props;
+    const { post, toggleCommenting } = this.props;
 
     if (!post.isCommenting && !post.isSinglePost) {
-      toggleCommenting(post.id);
+      toggleCommenting(post.id, `${answerText} `);
+    } else {
+      this.addingCommentForm.current && this.addingCommentForm.current.insertText(answerText);
     }
-    const text = post.newCommentText || '';
-    const check = new RegExp(`(^|\\s)${_.escapeRegExp(answerText)}\\s*$`);
-    if (!text.match(check)) {
-      const addSpace = text.length && !text.match(/\s$/);
-      updateCommentingText(post.id, `${text}${addSpace ? ' ' : ''}${answerText} `);
-    }
-    this.addingCommentForm.current && this.addingCommentForm.current.focus();
   };
 
   renderAddingComment() {
@@ -52,7 +46,6 @@ export default class PostComments extends React.Component {
         updateCommentingText={props.updateCommentingText}
         saveEditingComment={props.addComment}
         toggleEditingComment={props.toggleCommenting}
-        errorString={props.commentError}
         isSaving={props.post.isSavingComment}
         isSinglePost={props.post.isSinglePost}
         currentUser={props.post.user}

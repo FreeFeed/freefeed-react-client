@@ -3,10 +3,12 @@ import { Link } from 'react-router';
 import Textarea from 'react-textarea-autosize';
 import _ from 'lodash';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
 
 import { preventDefault, confirmFirst } from '../utils';
 import { READMORE_STYLE_COMPACT, COMMENT_DELETED } from '../utils/frontend-preferences-options';
 import { commentReadmoreConfig } from '../utils/readmore-config';
+import { defaultCommentState } from '../redux/reducers/comment-edit';
 import { Throbber } from './throbber';
 
 // import CommentLikes from './comment-likes';
@@ -15,17 +17,18 @@ import Expandable from './expandable';
 import UserName from './user-name';
 import TimeDisplay from './time-display';
 import CommentIcon, { JustCommentIcon } from './comment-icon';
+import { CommentEditForm } from './comment-edit-form';
 
-export default class PostComment extends React.Component {
+class PostComment extends React.Component {
   commentContainer;
-  commentTextArea;
+  commentForm;
   commentsAreHighlighted;
 
   constructor(props) {
     super(props);
 
-    this.state = { editText: this.props.editText || '' };
-    this.commentTextArea = null;
+    this.state = { editText: this.props.editText || '', isAuthorHovered: false };
+    this.commentForm = null;
     this.commentsAreHighlighted = false;
   }
 
@@ -105,16 +108,10 @@ export default class PostComment extends React.Component {
     }
   };
 
-  saveComment = () => {
-    if (!this.props.isSaving) {
-      this.props.saveEditingComment(this.props.id, this.state.editText || this.props.editText);
-    }
-  };
+  saveComment = (text) => this.props.saveEditingComment(this.props.id, text);
 
-  focus() {
-    if (this.commentTextArea) {
-      this.commentTextArea.focus();
-    }
+  insertText(insertion) {
+    this.commentForm && this.commentForm.insertText(insertion);
   }
 
   toggleLike = () => {
@@ -137,8 +134,8 @@ export default class PostComment extends React.Component {
     this.commentContainer = el;
   };
 
-  registerCommentTextArea = (el) => {
-    this.commentTextArea = el;
+  registerCommentForm = (el) => {
+    this.commentForm = el;
   };
 
   handleEditOrCancel = preventDefault(() => this.props.toggleEditingComment(this.props.id));
@@ -179,11 +176,25 @@ export default class PostComment extends React.Component {
 
     if (this.props.isEditing) {
       return (
+        <CommentEditForm
+          ref={this.registerCommentForm}
+          initialText={this.props.isAddingComment ? this.props.editText : this.props.body}
+          isPersistent={this.props.isSinglePost && this.props.isAddingComment}
+          onSubmit={this.saveComment}
+          onCancel={this.handleEditOrCancel}
+          submitStatus={this.props.saveStatus}
+        />
+      );
+    }
+
+    // eslint-disable-next-line no-constant-condition
+    if (false && this.props.isEditing) {
+      return (
         <div className="comment-body">
           <div>
             <Textarea
               autoFocus={!this.props.isSinglePost}
-              inputRef={this.registerCommentTextArea}
+              inputRef={this.registerCommentForm}
               className="comment-textarea"
               value={this.state.editText || ''}
               onFocus={this.setCaretToTextEnd}
@@ -348,3 +359,10 @@ export default class PostComment extends React.Component {
     );
   }
 }
+
+function selectState(state, ownProps) {
+  const editState = state.commentEditState[ownProps.id] || defaultCommentState;
+  return { ...editState, isEditing: ownProps.isEditing || editState.isEditing };
+}
+
+export default connect(selectState, null, null, { forwardRef: true })(PostComment);

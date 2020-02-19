@@ -41,6 +41,7 @@ import {
   hideByName,
 } from '../redux/action-creators';
 import { SCHEME_DARK, SCHEME_SYSTEM } from '../services/appearance';
+import { defaultCommentState } from '../redux/reducers/comment-edit';
 
 const MAX_LIKES = 4;
 
@@ -146,7 +147,7 @@ export const joinPostData = (state) => (postId) => {
     if (!comment) {
       return _comments;
     }
-    const commentViewState = state.commentViewState[commentId];
+    const commentEditState = state.commentEditState[commentId] || defaultCommentState;
     const author = state.users[comment.createdBy] || null;
     const previousComment = _comments[index - 1] || {
       createdBy: null,
@@ -167,7 +168,7 @@ export const joinPostData = (state) => (postId) => {
     return _comments.concat([
       {
         ...comment,
-        ...commentViewState,
+        ...commentEditState,
         user: author,
         isEditable,
         isDeletable,
@@ -225,7 +226,8 @@ export function postActions(dispatch) {
     cancelEditingPost: (postId) => dispatch(cancelEditingPost(postId)),
     saveEditingPost: (postId, newPost) => dispatch(saveEditingPost(postId, newPost)),
     deletePost: (postId) => dispatch(deletePost(postId)),
-    toggleCommenting: (postId) => dispatch(toggleCommenting(postId)),
+    toggleCommenting: (postId, newCommentText) =>
+      dispatch(toggleCommenting(postId, newCommentText)),
     updateCommentingText: (postId, commentText) =>
       dispatch(updateCommentingText(postId, commentText)),
     addComment: (postId, commentText) => dispatch(addComment(postId, commentText)),
