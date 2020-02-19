@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router';
-import Textarea from 'react-textarea-autosize';
 import _ from 'lodash';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
@@ -9,9 +8,7 @@ import { preventDefault, confirmFirst } from '../utils';
 import { READMORE_STYLE_COMPACT, COMMENT_DELETED } from '../utils/frontend-preferences-options';
 import { commentReadmoreConfig } from '../utils/readmore-config';
 import { defaultCommentState } from '../redux/reducers/comment-edit';
-import { Throbber } from './throbber';
 
-// import CommentLikes from './comment-likes';
 import PieceOfText from './piece-of-text';
 import Expandable from './expandable';
 import UserName from './user-name';
@@ -27,7 +24,7 @@ class PostComment extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { editText: this.props.editText || '', isAuthorHovered: false };
+    this.state = { isAuthorHovered: false };
     this.commentForm = null;
     this.commentsAreHighlighted = false;
   }
@@ -65,47 +62,12 @@ class PostComment extends React.Component {
     }
   }
 
-  handleChange = (event) => {
-    this.setState({ editText: event.target.value || '' });
-  };
-
   reply = () => {
     this.props.openAnsweringComment(_.repeat('^', this.props.backwardNumber));
   };
 
   mention = () => {
     this.props.openAnsweringComment(`@${this.props.user.username}`);
-  };
-
-  setCaretToTextEnd = (event) => {
-    const input = event.target;
-
-    setTimeout(() => {
-      if (typeof input.selectionStart === 'number') {
-        input.selectionStart = input.selectionEnd = input.value.length;
-      } else if (input.createTextRange !== undefined) {
-        input.focus();
-        const range = input.createTextRange();
-        range.collapse(false);
-        range.select();
-      }
-    }, 0);
-  };
-
-  updateCommentingText = () => {
-    if (this.props.updateCommentingText) {
-      this.props.updateCommentingText(this.props.id, this.state.editText);
-    }
-  };
-
-  checkSave = (event) => {
-    const isEnter = event.keyCode === 13;
-    const isShiftPressed = event.shiftKey;
-    if (isEnter && !isShiftPressed) {
-      event.preventDefault();
-      event.target.blur();
-      setTimeout(this.saveComment, 0);
-    }
   };
 
   saveComment = (text) => this.props.saveEditingComment(this.props.id, text);
@@ -123,12 +85,6 @@ class PostComment extends React.Component {
   getCommentLikes = () => {
     this.props.getCommentLikes(this.props.id);
   };
-
-  UNSAFE_componentWillReceiveProps(newProps) {
-    if ((this.props.editText || '') !== (newProps.editText || '')) {
-      this.setState({ editText: newProps.editText });
-    }
-  }
 
   registerCommentContainer = (el) => {
     this.commentContainer = el;
@@ -184,62 +140,6 @@ class PostComment extends React.Component {
           onCancel={this.handleEditOrCancel}
           submitStatus={this.props.saveStatus}
         />
-      );
-    }
-
-    // eslint-disable-next-line no-constant-condition
-    if (false && this.props.isEditing) {
-      return (
-        <div className="comment-body">
-          <div>
-            <Textarea
-              autoFocus={!this.props.isSinglePost}
-              inputRef={this.registerCommentForm}
-              className="comment-textarea"
-              value={this.state.editText || ''}
-              onFocus={this.setCaretToTextEnd}
-              onChange={this.handleChange}
-              onKeyDown={this.checkSave}
-              onBlur={this.updateCommentingText}
-              minRows={2}
-              maxRows={10}
-              maxLength="1500"
-            />
-          </div>
-          {this.props.isSinglePost ? (
-            <span>
-              <button className="btn btn-default btn-xs comment-post" onClick={this.saveComment}>
-                Comment
-              </button>
-              {!this.props.isAddingComment && (
-                <a className="comment-cancel" onClick={this.handleEditOrCancel}>
-                  Cancel
-                </a>
-              )}
-            </span>
-          ) : (
-            <span>
-              <button className="btn btn-default btn-xs comment-post" onClick={this.saveComment}>
-                Post
-              </button>
-              <a className="comment-cancel" onClick={this.handleEditOrCancel}>
-                Cancel
-              </a>
-            </span>
-          )}
-          {this.props.isSaving ? (
-            <span className="comment-throbber">
-              <Throbber />
-            </span>
-          ) : (
-            false
-          )}
-          {this.props.errorString ? (
-            <span className="comment-error">{this.props.errorString}</span>
-          ) : (
-            false
-          )}
-        </div>
       );
     }
 
