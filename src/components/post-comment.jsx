@@ -24,7 +24,6 @@ class PostComment extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { isAuthorHovered: false };
     this.commentForm = null;
     this.commentsAreHighlighted = false;
   }
