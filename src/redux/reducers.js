@@ -1844,16 +1844,13 @@ const getRecentGroups = ({ subscribers, frontendPreferences }) => {
     .filter((i) => pinnedGroups.indexOf(i.id) > -1)
     .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
     .map((i) => ({ ...i, isPinned: true }));
-  if (recentGroups.length < GROUPS_SIDEBAR_LIST_LENGTH) {
-    // pinned groups are always shown, and unpinned groups are shown if limit allows
-    return recentGroups.concat(
-      groups
-        .filter((i) => pinnedGroups.indexOf(i.id) === -1)
-        .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
-        .slice(0, GROUPS_SIDEBAR_LIST_LENGTH - recentGroups.length),
-    );
-  }
-  return recentGroups;
+
+  return recentGroups.concat(
+    groups
+      .filter((i) => pinnedGroups.indexOf(i.id) === -1)
+      .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
+      .slice(0, GROUPS_SIDEBAR_LIST_LENGTH),
+  );
 };
 
 export function recentGroups(state = [], action) {
