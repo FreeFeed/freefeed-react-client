@@ -19,12 +19,14 @@ import CommentIcon, { JustCommentIcon } from './comment-icon';
 export default class PostComment extends React.Component {
   commentContainer;
   commentTextArea;
+  commentsAreHighlighted;
 
   constructor(props) {
     super(props);
 
-    this.state = { editText: this.props.editText || '', isAuthorHovered: false };
+    this.state = { editText: this.props.editText || '' };
     this.commentTextArea = null;
+    this.commentsAreHighlighted = false;
   }
 
   scrollToComment = () => {
@@ -53,6 +55,10 @@ export default class PostComment extends React.Component {
   componentWillUnmount() {
     if (this.enterTimeout) {
       clearTimeout(this.enterTimeout);
+    }
+    if (this.commentsAreHighlighted) {
+      this.props.clearHighlightComment();
+      this.commentsAreHighlighted = false;
     }
   }
 
@@ -140,28 +146,18 @@ export default class PostComment extends React.Component {
   handleDeleteComment = confirmFirst(() => this.props.deleteComment(this.props.id));
 
   handleHoverOnUsername = (username) => {
-    this.setState({ isAuthorHovered: true });
-    if (this.enterTimeout) {
-      clearTimeout(this.enterTimeout);
-    }
-    this.enterTimeout = setTimeout(() => {
-      if (this.state.isAuthorHovered) {
-        this.props.highlightComment(username);
-      }
-    }, 1000);
+    this.props.highlightComment(username);
+    this.commentsAreHighlighted = true;
   };
 
-  handleLeaveUsername = () => {
-    this.setState({ isAuthorHovered: false });
-    if (this.enterTimeout) {
-      clearTimeout(this.enterTimeout);
-      this.enterTimeout = null;
-    }
+  handleStopHighlighting = () => {
     this.props.clearHighlightComment();
+    this.commentsAreHighlighted = false;
   };
 
   handleHoverOverArrow = (arrows) => {
     this.props.highlightArrowComment(this.props.id, arrows);
+    this.commentsAreHighlighted = true;
   };
 
   renderBody() {
@@ -243,7 +239,7 @@ export default class PostComment extends React.Component {
           user={this.props.user}
           userHover={{
             hover: this.handleHoverOnUsername,
-            leave: this.handleLeaveUsername,
+            leave: this.handleStopHighlighting,
           }}
         />
         {this.props.isEditable ? (
@@ -281,11 +277,11 @@ export default class PostComment extends React.Component {
             highlightTerms={this.props.highlightTerms}
             userHover={{
               hover: this.handleHoverOnUsername,
-              leave: this.props.clearHighlightComment,
+              leave: this.handleStopHighlighting,
             }}
             arrowHover={{
               hover: this.handleHoverOverArrow,
-              leave: this.props.clearHighlightComment,
+              leave: this.handleStopHighlighting,
             }}
             showMedia={this.props.showMedia}
           />
