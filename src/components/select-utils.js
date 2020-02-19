@@ -28,7 +28,6 @@ import {
 
   // Comment actions
   toggleCommenting,
-  updateCommentingText,
   addComment,
   toggleEditingComment,
   saveEditingComment,
@@ -228,8 +227,6 @@ export function postActions(dispatch) {
     deletePost: (postId) => dispatch(deletePost(postId)),
     toggleCommenting: (postId, newCommentText) =>
       dispatch(toggleCommenting(postId, newCommentText)),
-    updateCommentingText: (postId, commentText) =>
-      dispatch(updateCommentingText(postId, commentText)),
     addComment: (postId, commentText) => dispatch(addComment(postId, commentText)),
     likePost: (postId, userId) => dispatch(likePost(postId, userId)),
     unlikePost: (postId, userId) => dispatch(unlikePost(postId, userId)),

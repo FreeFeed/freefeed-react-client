@@ -43,7 +43,6 @@ export default class PostComments extends React.Component {
         ref={this.addingCommentForm}
         isEditing={true}
         editText={props.post.newCommentText}
-        updateCommentingText={props.updateCommentingText}
         saveEditingComment={props.addComment}
         toggleEditingComment={props.toggleCommenting}
         isSaving={props.post.isSavingComment}

@@ -181,14 +181,6 @@ export function toggleCommenting(postId, newCommentText = '') {
   };
 }
 
-export function updateCommentingText(postId, commentText) {
-  return {
-    type: ActionTypes.UPDATE_COMMENTING_TEXT,
-    postId,
-    commentText,
-  };
-}
-
 export function addComment(postId, commentText) {
   return {
     type: ActionTypes.ADD_COMMENT,

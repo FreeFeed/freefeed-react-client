@@ -475,16 +475,6 @@ export function postsViewState(state = {}, action) {
         },
       };
     }
-    case ActionTypes.UPDATE_COMMENTING_TEXT: {
-      const postState = state[action.postId];
-      return {
-        ...state,
-        [action.postId]: {
-          ...postState,
-          newCommentText: action.commentText,
-        },
-      };
-    }
     case request(ActionTypes.ADD_COMMENT): {
       const post = state[action.payload.postId];
       return {
