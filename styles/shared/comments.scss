@@ -124,7 +124,8 @@
 
 .fold-comments {
   font-style: italic;
-  padding: 8px 0 0 19px;
+  padding: 8px 0 0 59px;
+  margin-left: -40px;
   .chevron {
     display: none;
   }
@@ -137,7 +138,7 @@
   .chevron {
     display: block;
     position: absolute;
-    left: 0px;
+    left: 40px;
     top: 9px;
     opacity: 0.3;
   }

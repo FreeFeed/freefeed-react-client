@@ -155,7 +155,6 @@ function FeedEntry({ post, section, ...props }) {
       addAttachmentResponse={props.addAttachmentResponse}
       showMedia={props.showMedia}
       toggleCommenting={props.toggleCommenting}
-      updateCommentingText={props.updateCommentingText}
       addComment={props.addComment}
       likePost={props.likePost}
       unlikePost={props.unlikePost}

@@ -27,11 +27,11 @@ class SinglePostHandler extends React.Component {
     }
 
     if (post) {
-      post.isCommenting = true;
       postBody = (
         <Post
           {...post}
           key={post.id}
+          isCommenting={true}
           isSinglePost={true}
           user={props.user}
           showMoreComments={props.showMoreComments}
@@ -43,7 +43,6 @@ class SinglePostHandler extends React.Component {
           addAttachmentResponse={props.addAttachmentResponse}
           showMedia={props.showMedia}
           toggleCommenting={props.toggleCommenting}
-          updateCommentingText={props.updateCommentingText}
           addComment={props.addComment}
           likePost={props.likePost}
           unlikePost={props.unlikePost}

@@ -1,8 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { StickyContainer, Sticky } from 'react-sticky';
-import _ from 'lodash';
-import cn from 'classnames';
 
 import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
@@ -11,6 +8,7 @@ import MoreCommentsWrapper from './more-comments-wrapper';
 import ErrorBoundary from './error-boundary';
 import { Icon } from './fontawesome-icons';
 import { faCommentPlus } from './fontawesome-custom-icons';
+import { Sticky } from './sticky';
 
 const minCommentsToFold = 12;
 
@@ -26,18 +24,13 @@ export default class PostComments extends React.Component {
   };
 
   openAnsweringComment = (answerText) => {
-    const { post, toggleCommenting, updateCommentingText } = this.props;
+    const { post, toggleCommenting } = this.props;
 
     if (!post.isCommenting && !post.isSinglePost) {
-      toggleCommenting(post.id);
+      toggleCommenting(post.id, `${answerText} `);
+    } else {
+      this.addingCommentForm.current && this.addingCommentForm.current.insertText(answerText);
     }
-    const text = post.newCommentText || '';
-    const check = new RegExp(`(^|\\s)${_.escapeRegExp(answerText)}\\s*$`);
-    if (!text.match(check)) {
-      const addSpace = text.length && !text.match(/\s$/);
-      updateCommentingText(post.id, `${text}${addSpace ? ' ' : ''}${answerText} `);
-    }
-    this.addingCommentForm.current && this.addingCommentForm.current.focus();
   };
 
   renderAddingComment() {
@@ -50,10 +43,8 @@ export default class PostComments extends React.Component {
         ref={this.addingCommentForm}
         isEditing={true}
         editText={props.post.newCommentText}
-        updateCommentingText={props.updateCommentingText}
         saveEditingComment={props.addComment}
         toggleEditingComment={props.toggleCommenting}
-        errorString={props.commentError}
         isSaving={props.post.isSavingComment}
         isSinglePost={props.post.isSinglePost}
         currentUser={props.post.user}
@@ -162,35 +153,32 @@ export default class PostComments extends React.Component {
           .map((c, i) => this.renderComment(withBackwardNumber(c, totalComments - i - 1)));
 
     if (showExpand) {
-      return (
+      return [
         <MoreCommentsWrapper
+          key={`${post.id}:more-comments`}
           omittedComments={foldedCount}
           showMoreComments={this.showMoreComments}
           entryUrl={entryUrl}
           omittedCommentLikes={post.omittedCommentLikes}
           omittedOwnCommentLikes={post.omittedOwnCommentLikes}
           isLoading={post.isLoadingComments}
-        />
-      );
+        />,
+      ];
     }
 
     if (showFold) {
-      return (
-        <StickyContainer>
-          <Sticky>
-            {({ style, isSticky }) => (
-              <div
-                style={style}
-                className={cn('fold-comments', { 'fold-comments-sticky': isSticky })}
-              >
-                <Icon icon={faChevronUp} className="chevron" />
-                <a onClick={this.fold}>Fold comments</a>
-              </div>
-            )}
-          </Sticky>
-          {middleComments}
-        </StickyContainer>
-      );
+      return [
+        <Sticky
+          key={`${post.id}:fold-link`}
+          className="fold-comments"
+          stickyClassName="fold-comments-sticky"
+          stickUntil={middleComments.length}
+        >
+          <Icon icon={faChevronUp} className="chevron" />
+          <a onClick={this.fold}>Fold comments</a>
+        </Sticky>,
+        ...middleComments,
+      ];
     }
 
     return middleComments;
@@ -228,9 +216,11 @@ export default class PostComments extends React.Component {
     return (
       <div className="comments" ref={this.rootEl}>
         <ErrorBoundary>
-          {first ? this.renderComment(first) : false}
-          {this.renderMiddle()}
-          {last ? this.renderComment(last) : false}
+          {[
+            first && this.renderComment(first),
+            ...this.renderMiddle(),
+            last && this.renderComment(last),
+          ]}
           {this.renderAddComment()}
         </ErrorBoundary>
       </div>
