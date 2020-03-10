@@ -1,9 +1,9 @@
 import React, { useMemo, useCallback, useState, useRef, useEffect, forwardRef } from 'react';
 import Textarea from 'react-textarea-autosize';
-import { KEY_RETURN } from 'keycode-js';
 
 import { initialAsyncState } from '../redux/async-helpers';
 import { insertText } from '../utils/insert-text';
+import { submitByEnter } from '../utils/submit-by-enter';
 import { Throbber } from './throbber';
 import { useForwardedRef } from './hooks/forward-ref';
 import { PreventPageLeaving } from './prevent-page-leaving';
@@ -31,14 +31,8 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
   const doSubmit = useCallback(() => canSubmit && onSubmit(text), [canSubmit, onSubmit, text]);
 
   const onKeyDown = useCallback(
-    (e) => {
-      if (e.keyCode === KEY_RETURN && !e.shiftKey) {
-        e.preventDefault();
-        // Need this line to update text that doSubmit can access
-        setText(text);
-        doSubmit();
-      }
-    },
+    // Need to setText to update text that doSubmit can access
+    submitByEnter(() => (setText(text), doSubmit())),
     [doSubmit, text],
   );
 

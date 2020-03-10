@@ -2,6 +2,7 @@ import React from 'react';
 
 import { faComment } from '@fortawesome/free-regular-svg-icons';
 import { preventDefault } from '../utils';
+import { submitByEnter } from '../utils/submit-by-enter';
 import { Throbber } from './throbber';
 import SendTo from './send-to';
 import { Icon } from './fontawesome-icons';
@@ -44,16 +45,9 @@ export default class CreateBookmarkletPost extends React.Component {
     this.setState({ isFormEmpty });
   };
 
-  checkSave = (e) => {
-    const isEnter = e.keyCode === 13;
-    const isShiftPressed = e.shiftKey;
-    if (isEnter && !isShiftPressed) {
-      e.preventDefault();
-      if (!this.state.isFormEmpty && !this.props.createPostViewState.isPending) {
-        this.submitForm();
-      }
-    }
-  };
+  checkSave = submitByEnter(
+    () => !this.state.isFormEmpty && !this.props.createPostViewState.isPending && this.submitForm(),
+  );
 
   submitForm = () => {
     // Get all the values
