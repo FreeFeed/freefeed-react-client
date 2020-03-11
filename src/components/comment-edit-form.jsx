@@ -1,5 +1,6 @@
 import React, { useMemo, useCallback, useState, useRef, useEffect, forwardRef } from 'react';
 import Textarea from 'react-textarea-autosize';
+import cn from 'classnames';
 
 import { initialAsyncState } from '../redux/async-helpers';
 import { insertText } from '../utils/insert-text';
@@ -88,19 +89,33 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
           minRows={2}
           maxRows={10}
           maxLength={1500}
-          disabled={submitStatus.loading}
+          readOnly={submitStatus.loading}
         />
       </div>
       <div>
         <button
-          className="btn btn-default btn-xs comment-post"
-          disabled={!canSubmit || submitStatus.loading}
+          className={cn('btn btn-default btn-xs comment-post', {
+            disabled: !canSubmit || submitStatus.loading,
+          })}
+          aria-disabled={!canSubmit || submitStatus.loading}
+          aria-label={
+            !canSubmit
+              ? 'Submit disabled (textarea is empty)'
+              : submitStatus.loading
+              ? 'Submitting comment'
+              : null
+          }
           onClick={doSubmit}
         >
           Comment
         </button>
         {!isPersistent && (
-          <ButtonLink className="comment-cancel" onClick={onCancel} disabled={submitStatus.loading}>
+          <ButtonLink
+            className="comment-cancel"
+            onClick={onCancel}
+            aria-disabled={submitStatus.loading}
+            aria-label={submitStatus.loading ? 'Cancel disabled (submitting)' : null}
+          >
             Cancel
           </ButtonLink>
         )}
