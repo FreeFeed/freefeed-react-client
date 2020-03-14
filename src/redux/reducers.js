@@ -189,6 +189,7 @@ const initFeed = {
   separateHiddenEntries: false,
   isHiddenRevealed: false,
   isLastPage: true,
+  feedError: null,
 };
 
 export function feedViewState(state = initFeed, action) {
@@ -217,7 +218,7 @@ export function feedViewState(state = initFeed, action) {
     };
   }
   if (ActionHelpers.isFeedFail(action)) {
-    return initFeed;
+    return { ...initFeed, feedError: action.payload.err };
   }
 
   switch (action.type) {
@@ -348,11 +349,9 @@ export function feedViewState(state = initFeed, action) {
 const NO_ERROR = {
   isError: false,
   errorString: '',
-  commentError: '',
 };
 
 const POST_SAVE_ERROR = 'Something went wrong while editing the post...';
-const NEW_COMMENT_ERROR = 'Failed to add comment';
 
 const indexById = (list) => _.keyBy(list || [], 'id');
 const mergeByIds = (state, array) => ({ ...state, ...indexById(array) });
@@ -466,22 +465,13 @@ export function postsViewState(state = {}, action) {
       return { ...state, [id]: { ...state[id], isError, errorString } };
     }
     case ActionTypes.TOGGLE_COMMENTING: {
+      const { postId, newCommentText = '' } = action.payload;
       return {
         ...state,
-        [action.postId]: {
-          ...state[action.postId],
-          isCommenting: !state[action.postId].isCommenting,
-          newCommentText: state[action.postId].newCommentText || '',
-        },
-      };
-    }
-    case ActionTypes.UPDATE_COMMENTING_TEXT: {
-      const postState = state[action.postId];
-      return {
-        ...state,
-        [action.postId]: {
-          ...postState,
-          newCommentText: action.commentText,
+        [postId]: {
+          ...state[postId],
+          isCommenting: !state[postId].isCommenting,
+          newCommentText,
         },
       };
     }
@@ -515,7 +505,6 @@ export function postsViewState(state = {}, action) {
         [post.id]: {
           ...post,
           isSavingComment: false,
-          commentError: NEW_COMMENT_ERROR,
         },
       };
     }
@@ -1195,94 +1184,7 @@ export function comments(state = {}, action) {
   return state;
 }
 
-const COMMENT_SAVE_ERROR = 'Something went wrong while saving comment';
-
-function updateCommentViewState(state, action) {
-  const comments = action.payload.comments || [];
-  const commentsViewState = comments.map((comment) => ({
-    id: comment.id,
-    isEditing: false,
-    editText: comment.body,
-  }));
-  const viewStateMap = indexById(commentsViewState);
-  return { ...viewStateMap, ...state };
-}
-
-export function commentViewState(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action)) {
-    return updateCommentViewState(state, action);
-  }
-  switch (action.type) {
-    case response(ActionTypes.SHOW_MORE_COMMENTS): {
-      return updateCommentViewState(state, action);
-    }
-    case response(ActionTypes.GET_SINGLE_POST): {
-      return updateCommentViewState(state, action);
-    }
-    case ActionTypes.REALTIME_COMMENT_NEW: {
-      return updateCommentViewState(state, { payload: { comments: [action.comment] } });
-    }
-    case ActionTypes.TOGGLE_EDITING_COMMENT: {
-      return {
-        ...state,
-        [action.commentId]: {
-          ...state[action.commentId],
-          isEditing: !state[action.commentId].isEditing,
-        },
-      };
-    }
-    case request(ActionTypes.SAVE_EDITING_COMMENT): {
-      return {
-        ...state,
-        [action.payload.commentId]: {
-          ...state[action.payload.commentId],
-          editText: action.payload.newCommentBody,
-          isSaving: true,
-        },
-      };
-    }
-    case response(ActionTypes.SAVE_EDITING_COMMENT): {
-      return {
-        ...state,
-        [action.payload.comments.id]: {
-          ...state[action.payload.comments.id],
-          isEditing: false,
-          isSaving: false,
-          editText: action.payload.comments.body,
-          ...NO_ERROR,
-        },
-      };
-    }
-    case fail(ActionTypes.SAVE_EDITING_COMMENT): {
-      return {
-        ...state,
-        [action.payload.comments.id]: {
-          ...state[action.payload.comments.id],
-          isEditing: true,
-          isSaving: false,
-          errorString: COMMENT_SAVE_ERROR,
-        },
-      };
-    }
-    case response(ActionTypes.DELETE_COMMENT): {
-      return { ...state, [action.request.commentId]: undefined };
-    }
-    case response(ActionTypes.ADD_COMMENT): {
-      return {
-        ...state,
-        [action.payload.comments.id]: {
-          id: action.payload.comments.id,
-          isEditing: false,
-          editText: action.payload.comments.body,
-        },
-      };
-    }
-    case ActionTypes.UNAUTHENTICATED: {
-      return {};
-    }
-  }
-  return state;
-}
+export { commentEditState } from './reducers/comment-edit.js';
 
 const loadLikesListStatusesReducer = asyncStatesMap(ActionTypes.GET_COMMENT_LIKES, {
   getKey: getKeyBy('commentId'),
@@ -1843,16 +1745,13 @@ const getRecentGroups = ({ subscribers, frontendPreferences }) => {
     .filter((i) => pinnedGroups.indexOf(i.id) > -1)
     .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
     .map((i) => ({ ...i, isPinned: true }));
-  if (recentGroups.length < GROUPS_SIDEBAR_LIST_LENGTH) {
-    // pinned groups are always shown, and unpinned groups are shown if limit allows
-    return recentGroups.concat(
-      groups
-        .filter((i) => pinnedGroups.indexOf(i.id) === -1)
-        .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
-        .slice(0, GROUPS_SIDEBAR_LIST_LENGTH - recentGroups.length),
-    );
-  }
-  return recentGroups;
+
+  return recentGroups.concat(
+    groups
+      .filter((i) => pinnedGroups.indexOf(i.id) === -1)
+      .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
+      .slice(0, GROUPS_SIDEBAR_LIST_LENGTH),
+  );
 };
 
 export function recentGroups(state = [], action) {
