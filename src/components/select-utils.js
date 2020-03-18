@@ -137,9 +137,11 @@ export const joinPostData = (state) => (postId) => {
   const isFullyRemovable =
     isEditable || differenceBy(recipients, state.managedGroups, 'id').length === 0;
 
-  const isNSFW = [post.body, ...recipients.map((r) => r.description)].some((text) =>
-    tokenizeHashtags(text).some((t) => t.text.toLowerCase() === '#nsfw'),
-  );
+  const isNSFW =
+    !state.isNSFWVisible &&
+    [post.body, ...recipients.map((r) => r.description)].some((text) =>
+      tokenizeHashtags(text).some((t) => t.text.toLowerCase() === '#nsfw'),
+    );
 
   const attachments = (post.attachments || []).map(
     (attachmentId) => state.attachments[attachmentId],

@@ -17,7 +17,7 @@ import {
   HOMEFEED_MODE_FRIENDS_ALL_ACTIVITY,
 } from '../../../utils/feed-options';
 import { Throbber } from '../../throbber';
-import { updateActualUserPreferences } from '../../../redux/action-creators';
+import { updateActualUserPreferences, setNSFWVisibility } from '../../../redux/action-creators';
 import settingsStyles from '../settings.module.scss';
 import { PreventPageLeaving } from '../../prevent-page-leaving';
 import { Icon } from '../../fontawesome-icons';
@@ -27,6 +27,7 @@ import styles from './forms.module.scss';
 export default function AppearanceForm() {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user);
+  const isNSFWVisible = useSelector((state) => state.isNSFWVisible);
   const formStatus = useSelector((state) => state.settingsForms.displayPrefsStatus);
 
   useEffect(() => {
@@ -41,10 +42,10 @@ export default function AppearanceForm() {
   const form = useForm(
     useMemo(
       () => ({
-        initialValues: initialValues(userData),
+        initialValues: initialValues({ ...userData, isNSFWVisible }),
         onSubmit: onSubmit(dispatch),
       }),
-      [dispatch, userData],
+      [dispatch, isNSFWVisible, userData],
     ),
   );
 
@@ -268,7 +269,7 @@ export default function AppearanceForm() {
   );
 }
 
-function initialValues({ frontendPreferences: frontend, preferences: backend }) {
+function initialValues({ frontendPreferences: frontend, preferences: backend, isNSFWVisible }) {
   return {
     useYou: frontend.displayNames.useYou,
     displayNames: frontend.displayNames.displayOption.toString(),
@@ -280,12 +281,13 @@ function initialValues({ frontendPreferences: frontend, preferences: backend }) 
     hideBannedComments: backend.hideCommentsOfTypes.includes(COMMENT_HIDDEN_BANNED),
     hideUnreadNotifications: frontend.hideUnreadNotifications,
     allowLinksPreview: frontend.allowLinksPreview,
-    hideNSFWContent: true,
+    hideNSFWContent: !isNSFWVisible,
   };
 }
 
 function onSubmit(dispatch) {
   return (values) => {
+    dispatch(setNSFWVisibility(!values.hideNSFWContent));
     dispatch(
       updateActualUserPreferences({
         updateFrontendPrefs(prefs) {

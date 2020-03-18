@@ -1,7 +1,7 @@
 /* global CONFIG */
 import { localStorage } from '../utils/';
 
-export const { colorSchemeStorageKey } = CONFIG.appearance;
+export const { colorSchemeStorageKey, nsfwVisibilityStorageKey } = CONFIG.appearance;
 
 export const SCHEME_LIGHT = 'light';
 export const SCHEME_DARK = 'dark';
@@ -34,4 +34,17 @@ export function getSystemColorScheme() {
     }
   }
   return SCHEME_NO_PREFERENCE;
+}
+
+export function loadNSFWVisibility() {
+  return !!localStorage.getItem(nsfwVisibilityStorageKey);
+}
+
+export function saveNSFWVisibility(visible) {
+  if (visible) {
+    localStorage.setItem(nsfwVisibilityStorageKey, '1');
+  } else {
+    // Default value
+    localStorage.removeItem(nsfwVisibilityStorageKey);
+  }
 }

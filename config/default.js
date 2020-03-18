@@ -69,7 +69,10 @@ module.exports = {
     },
   },
 
-  appearance: { colorSchemeStorageKey: 'color-scheme' },
+  appearance: {
+    colorSchemeStorageKey: 'color-scheme',
+    nsfwVisibilityStorageKey: 'show-nsfw',
+  },
 
   registrationsLimit: {
     emailFormIframeSrc: null,
