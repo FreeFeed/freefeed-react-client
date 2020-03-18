@@ -8,7 +8,7 @@ import { getToken } from '../services/auth';
 import { parseQuery } from '../utils/search-highlighter';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
 import * as FeedOptions from '../utils/feed-options';
-import { loadColorScheme, getSystemColorScheme } from '../services/appearance';
+import { loadColorScheme, getSystemColorScheme, loadNSFWVisibility } from '../services/appearance';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
 import { patchObjectByKey, setOnLocationChange } from './reducers/helpers';
@@ -2262,6 +2262,13 @@ export function systemColorScheme(state = getSystemColorScheme(), action) {
 
 export function userColorScheme(state = loadColorScheme(), action) {
   if (action.type === ActionTypes.SET_USER_COLOR_SCHEME) {
+    return action.payload;
+  }
+  return state;
+}
+
+export function isNSFWVisible(state = loadNSFWVisibility(), action) {
+  if (action.type === ActionTypes.SET_NSFW_VISIBILITY) {
     return action.payload;
   }
   return state;

@@ -16,6 +16,7 @@ import {
   SCHEME_LIGHT,
   SCHEME_DARK,
   SCHEME_NO_PREFERENCE,
+  saveNSFWVisibility,
 } from '../services/appearance';
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
@@ -270,6 +271,10 @@ export const appearanceMiddleware = (store) => {
     next(action);
     if (action.type === ActionTypes.SET_USER_COLOR_SCHEME) {
       saveColorScheme(action.payload);
+      return;
+    }
+    if (action.type === ActionTypes.SET_NSFW_VISIBILITY) {
+      saveNSFWVisibility(action.payload);
       return;
     }
   };
