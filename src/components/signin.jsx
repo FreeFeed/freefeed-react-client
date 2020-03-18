@@ -1,3 +1,4 @@
+/* global CONFIG */
 import { encode as qsEncode } from 'querystring';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -18,7 +19,7 @@ export default React.memo(function SignInPage() {
 
   return (
     <div className="box">
-      <div className="box-header-timeline">Welcome to FreeFeed!</div>
+      <div className="box-header-timeline">Welcome to {CONFIG.siteTitle}!</div>
       <div className="box-body">
         <div className="col-md-12">
           <h2 className="p-signin-header">Sign in</h2>
@@ -27,7 +28,7 @@ export default React.memo(function SignInPage() {
             <SignInForm />
             <ExtAuthSignIn />
           </ErrorBoundary>
-          <h3>New to FreeFeed?</h3>
+          <h3>New to {CONFIG.siteTitle}?</h3>
           {providers.length > 0 ? (
             <>
               <p>
@@ -167,7 +168,7 @@ const ExtAuthSignIn = React.memo(function ExtAuthSignIn() {
       {result.status === 'user-exists' && (
         <div className="alert alert-warning" role="alert">
           <p>
-            There is a FreeFeed account with the email address{' '}
+            There is a {CONFIG.siteTitle} account with the email address{' '}
             <strong>{result.profile.email}</strong>, but your account{' '}
             <strong>
               {providerTitle(result.profile.provider, { withText: false })} {result.profile.name}
@@ -194,9 +195,10 @@ const ExtAuthSignIn = React.memo(function ExtAuthSignIn() {
             <strong>
               {providerTitle(result.profile.provider, { withText: false })} {result.profile.name}
             </strong>{' '}
-            account is not connected to any FreeFeed account. Do you want to create a new FreeFeed
-            account based on its data? After creation you will be able to sign in using this{' '}
-            {providerTitle(result.profile.provider, { withText: true, withIcon: false })} account.
+            account is not connected to any {CONFIG.siteTitle} account. Do you want to create a new
+            {CONFIG.siteTitle} account based on its data? After creation you will be able to sign in
+            using this {providerTitle(result.profile.provider, { withText: true, withIcon: false })}{' '}
+            account.
           </p>
           <p>
             <Link to="/signup" className="btn btn-success">

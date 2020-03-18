@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -137,7 +138,7 @@ const notificationTemplates = {
     <Linkify>{`@${event.createdUser.username} unsubscribed from @${event.group.username}`}</Linkify>
   ),
   invitation_used: (event) => (
-    <Linkify>{`@${event.createdUser.username} has joined FreeFeed using your invitation`}</Linkify>
+    <Linkify>{`@${event.createdUser.username} has joined ${CONFIG.siteTitle} using your invitation`}</Linkify>
   ),
 
   banned_by_user: () => `Notification shouldn't be shown`,

@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
@@ -104,7 +105,7 @@ class ResetPassword extends React.Component {
                   </form>
                 </LoaderContainer>
                 <p>
-                  New to freefeed? <Link to="/signup">Create an account »</Link>
+                  New to {CONFIG.siteTitle}? <Link to="/signup">Create an account »</Link>
                 </p>
               </div>
             </div>

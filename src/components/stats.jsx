@@ -97,7 +97,7 @@ const Stats = () => (
   <div className="box">
     <div className="box-header-timeline" />
     <div className="box-body">
-      <h3>FreeFeed Stats</h3>
+      <h3>{CONFIG.siteTitle} Stats</h3>
       <StatsChart type={`active_users`} title="Daily Active Users" />
       <StatsChart type={`registrations`} title="Daily Registrations" />
       <StatsChart type={`posts_creates`} title="Daily Posts" />

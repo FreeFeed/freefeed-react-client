@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { sortBy, range } from 'lodash';
@@ -24,7 +25,7 @@ export default function AllGroups() {
 
   return (
     <div className="content">
-      <Helmet title={`All Groups - FreeFeed`} />
+      <Helmet title={`All Groups - ${CONFIG.siteTitle}`} />
       <div className="box">
         <div className="box-header-timeline">All Groups</div>
         <div className="box-body">
@@ -72,11 +73,13 @@ function GroupsList({ pageSize }) {
     <>
       {withProtected ? (
         <p>
-          There are {groups.length} public and protected groups in FreeFeed. Protected groups can be
-          seen only by the authenticated users.
+          There are {groups.length} public and protected groups in {CONFIG.siteTitle}. Protected
+          groups can be seen only by the authenticated users.
         </p>
       ) : (
-        <p>There are {groups.length} public groups in FreeFeed.</p>
+        <p>
+          There are {groups.length} public groups in {CONFIG.siteTitle}.
+        </p>
       )}
       <p>Click on the column headers to change the table sorting.</p>
       <table>

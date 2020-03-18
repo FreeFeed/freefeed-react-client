@@ -13,6 +13,8 @@ module.exports = {
     root: 'https://candy.freefeed.net',
   },
 
+  siteTitle: 'FreeFeed',
+
   siteOrigin: 'http://localhost:3333',
 
   auth: {

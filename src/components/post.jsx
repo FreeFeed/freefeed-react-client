@@ -575,7 +575,7 @@ class Post extends React.Component {
                   <Icon
                     icon={faUserFriends}
                     className="post-lock-icon post-protected-icon"
-                    title="This entry is only visible to FreeFeed users"
+                    title={`This entry is only visible to ${CONFIG.siteTitle} users`}
                     onClick={this.toggleTimestamps}
                   />
                 ) : (
