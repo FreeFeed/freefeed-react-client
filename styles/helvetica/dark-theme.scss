@@ -323,6 +323,11 @@ body.dark-theme {
     color: $text-color;
   }
 
+  .nsfw-bar {
+    color: $text-color-darker;
+    background-color: $bg-color-lighter;
+  }
+
   .comment-likes-list {
     background-color: $bg-color-lighter;
     border-color: $separator-color;
