@@ -38,17 +38,17 @@ export const scrollCompensator = (dispatchAction) => (...actionParams) => {
         scrollBy(0, heightOffset);
       }
     });
-  }
+  } else {
+    const topAfter = nearestTop.getBoundingClientRect().top;
+    const heightAfter = document.body.offsetHeight;
 
-  const topAfter = nearestTop.getBoundingClientRect().top;
-  const heightAfter = document.body.offsetHeight;
-
-  if (topAfter !== topBefore) {
-    const heightOffset = heightAfter - heightBefore;
-    scrollDebug('Action changed height. Compensating', {
-      offset: heightOffset,
-    });
-    scrollBy(0, heightOffset);
+    if (topAfter !== topBefore) {
+      const heightOffset = heightAfter - heightBefore;
+      scrollDebug('Action changed height. Compensating', {
+        offset: heightOffset,
+      });
+      scrollBy(0, heightOffset);
+    }
   }
 
   return res;
