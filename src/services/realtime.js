@@ -56,13 +56,15 @@ export const scrollCompensator = (dispatchAction) => (...actionParams) => {
   return res;
 };
 
+const socketDebug = createDebug('freefeed:react:realtime:socket');
 const bindSocketLog = (socket) => (eventName) =>
-  socket.on(eventName, (data) => console.log(`socket ${eventName}`, data)); // eslint-disable-line no-console
+  socket.on(eventName, (data) => socketDebug(`got event: ${eventName}`, data));
 
 const bindSocketActionsLog = (socket) => (events) => events.forEach(bindSocketLog(socket));
 
 const eventsToLog = ['connect', 'error', 'disconnect', 'reconnect'];
 
+const subscriptionDebug = createDebug('freefeed:react:realtime:subscriptions');
 export class Connection {
   socket;
 
@@ -87,14 +89,14 @@ export class Connection {
 
   async subscribeTo(...rooms) {
     if (this.socket.connected && rooms.length > 0) {
-      console.log('subscribing to', rooms); // eslint-disable-line no-console
+      subscriptionDebug('subscribing to', rooms);
       await this.socket.emitAsync('subscribe', roomsToHash(rooms));
     }
   }
 
   async unsubscribeFrom(...rooms) {
     if (this.socket.connected && rooms.length > 0) {
-      console.log('unsubscribing from', rooms); // eslint-disable-line no-console
+      subscriptionDebug('unsubscribing from', rooms);
       await this.socket.emitAsync('unsubscribe', roomsToHash(rooms));
     }
   }
