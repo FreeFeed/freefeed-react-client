@@ -1,12 +1,14 @@
 /* global CONFIG */
+import createDebug from 'debug';
 import io from 'socket.io-client';
 
 import { getToken } from './auth';
 
 const dummyPost = { getBoundingClientRect: () => ({ top: 0 }) };
 
+const scrollDebug = createDebug('freefeed:react:realtime:scrollCompensator');
 export const scrollCompensator = (dispatchAction) => (...actionParams) => {
-  //we hope that markup will remain the same — best tradeoff between this and code all over components
+  // we hope that markup will remain the same — best tradeoff between this and code all over components
   const postCommentNodes = [...document.querySelectorAll('.post, .comment')];
 
   const [firstVisible] = postCommentNodes.filter(
@@ -20,7 +22,7 @@ export const scrollCompensator = (dispatchAction) => (...actionParams) => {
   const topBefore = nearestTop.getBoundingClientRect().top;
   const heightBefore = document.body.offsetHeight;
 
-  //here we're dispatching, so render is called internally and after call we have new page
+  // here we're dispatching, so render is called internally and after call we have new page
   const res = dispatchAction(...actionParams);
 
   if (res.then) {
@@ -29,7 +31,11 @@ export const scrollCompensator = (dispatchAction) => (...actionParams) => {
       const heightAfter = document.body.offsetHeight;
 
       if (topAfter !== topBefore) {
-        scrollBy(0, heightAfter - heightBefore);
+        const heightOffset = heightAfter - heightBefore;
+        scrollDebug('Asynchronous action changed height. Compensating', {
+          offset: heightOffset,
+        });
+        scrollBy(0, heightOffset);
       }
     });
   }
@@ -38,8 +44,13 @@ export const scrollCompensator = (dispatchAction) => (...actionParams) => {
   const heightAfter = document.body.offsetHeight;
 
   if (topAfter !== topBefore) {
-    scrollBy(0, heightAfter - heightBefore);
+    const heightOffset = heightAfter - heightBefore;
+    scrollDebug('Action changed height. Compensating', {
+      offset: heightOffset,
+    });
+    scrollBy(0, heightOffset);
   }
+
   return res;
 };
 
