@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 
 import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
+import { safeScrollBy } from '../services/unscroll';
 import PostComment from './post-comment';
 import MoreCommentsWrapper from './more-comments-wrapper';
 import ErrorBoundary from './error-boundary';
@@ -131,7 +132,7 @@ export default class PostComments extends React.Component {
       const linkEl = this.rootEl.current.querySelector('.more-comments-wrapper');
       const top = linkEl.getBoundingClientRect().top - 8;
       if (top < 0) {
-        window.scrollBy(0, top);
+        safeScrollBy(0, top);
       }
     }
   }
