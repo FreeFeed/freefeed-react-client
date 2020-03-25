@@ -40,6 +40,7 @@ if (store.getState().authenticated) {
 }
 
 import { bindRouteActions } from './redux/route-actions';
+import { initUnscroll, safeScrollTo } from './services/unscroll';
 
 // Set initial history state.
 // Without this, there can be problems with third-party
@@ -83,7 +84,7 @@ const enterStaticPage = (title) => () => {
   store.dispatch(ActionCreators.staticPage(title));
 };
 
-history.listen(() => scrollTo(0, 0));
+history.listen(() => safeScrollTo(0, 0));
 
 const generateRouteHooks = (callback) => ({
   onEnter: callback,
@@ -110,6 +111,8 @@ function InitialLayout({ children }) {
     </div>
   );
 }
+
+initUnscroll();
 
 function App() {
   const initialized = useSelector((state) => state.initialized);
