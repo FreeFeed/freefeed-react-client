@@ -25,12 +25,13 @@ export function initUnscroll() {
   window.addEventListener('touchstart', userInteraction.trigger);
   window.addEventListener('touchend', userInteraction.trigger);
 
-  new MutationObserver(unscroll).observe(document.getElementById('app'), {
-    subtree: true,
-    childList: true,
-    characterData: true,
-    attributes: true,
-  });
+  window.MutationObserver &&
+    new window.MutationObserver(unscroll).observe(document.getElementById('app'), {
+      subtree: true,
+      childList: true,
+      characterData: true,
+      attributes: true,
+    });
 }
 
 const pinnedSelectors = [
