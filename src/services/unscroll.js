@@ -35,6 +35,8 @@ export function initUnscroll() {
 }
 
 const pinnedSelectors = [
+  'header', // main page header
+  '.create-post',
   '.post-header',
   '.post-text',
   '.post-footer',
