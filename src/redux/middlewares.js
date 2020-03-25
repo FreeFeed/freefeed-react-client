@@ -18,6 +18,8 @@ import {
   SCHEME_NO_PREFERENCE,
   saveNSFWVisibility,
 } from '../services/appearance';
+import { scrollingOrInteraction, unscroll } from '../services/unscroll';
+import { FINISH } from '../utils/event-sequences';
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import {
@@ -644,8 +646,20 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
 
   conn.onEvent((event, data) => store.dispatch(ActionCreators.realtimeIncomingEvent(event, data)));
 
+  const queue = [];
+  scrollingOrInteraction.on(FINISH, () => {
+    while (queue.length > 0) {
+      store.dispatch(queue.shift());
+    }
+  });
+
   return (next) => (action) => {
     if (action.type === ActionTypes.REALTIME_INCOMING_EVENT) {
+      if (scrollingOrInteraction.active) {
+        queue.push(action);
+        return;
+      }
+
       const {
         payload: { event, data },
       } = action;
@@ -775,3 +789,9 @@ function fixPostsData(post) {
   post.comments = post.comments || [];
   post.likes = post.likes || [];
 }
+
+export const unscrollMiddleware = () => (next) => (action) => {
+  const result = next(action);
+  unscroll();
+  return result;
+};

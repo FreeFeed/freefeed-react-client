@@ -18,6 +18,7 @@ import {
   dataFixMiddleware,
   appearanceMiddleware,
   initialWhoamiMiddleware,
+  unscrollMiddleware,
 } from './middlewares';
 
 import * as reducers from './reducers';
@@ -25,6 +26,7 @@ import * as ActionCreators from './action-creators';
 
 //order matters — we need to stop unauthed async fetching before request, see authMiddleware
 const middleware = [
+  unscrollMiddleware,
   feedViewOptionsMiddleware,
   authMiddleware,
   apiMiddleware,
