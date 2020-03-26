@@ -543,12 +543,6 @@ class Post extends React.Component {
           </Expandable>
 
           <div className="post-body">
-            {!noImageAttachments && props.isNSFW && (
-              <div className="nsfw-bar">
-                Turn the <Link to="/settings/appearance#nsfw">NSFW filter</Link> off to enable
-                previews for sensitive content
-              </div>
-            )}
             <PostAttachments
               postId={props.id}
               attachments={this.attachments}
@@ -558,6 +552,12 @@ class Post extends React.Component {
               removeAttachment={this.removeAttachment}
               reorderImageAttachments={this.reorderImageAttachments}
             />
+            {!noImageAttachments && props.isNSFW && (
+              <div className="nsfw-bar">
+                Turn the <Link to="/settings/appearance#nsfw">NSFW filter</Link> off to enable
+                previews for sensitive content
+              </div>
+            )}
 
             {noImageAttachments &&
               linkToEmbed &&
