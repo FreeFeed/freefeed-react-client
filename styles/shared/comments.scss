@@ -1,3 +1,5 @@
+@import '../helvetica/dark-vars.scss';
+
 .comments {
   font-size: 14px;
   line-height: 18px;
@@ -122,24 +124,58 @@
   }
 }
 
-.fold-comments {
+.comments-folder {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   font-style: italic;
   padding: 8px 0 0 59px;
   margin-left: -40px;
+
   .chevron {
     display: none;
-  }
-}
-
-.fold-comments-sticky {
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0px 4px 8px rgba(255, 255, 255, 0.9);
-  z-index: 1;
-  .chevron {
-    display: block;
     position: absolute;
     left: 40px;
     top: 9px;
     opacity: 0.3;
   }
+
+  background: scale-color(#fff, $alpha: -10%);
+
+  .direct-post & {
+    background: scale-color(#eee, $alpha: -10%);
+  }
+
+  body.dark-theme & {
+    background-color: scale-color($bg-color, $alpha: -10%);
+  }
+
+  body.dark-theme .direct-post & {
+    background-color: scale-color($bg-color-lighter, $alpha: -10%);
+  }
+}
+
+.comments-folder__stuck {
+  .chevron {
+    display: block;
+  }
+
+  box-shadow: 0 0px 4px 8px scale-color(#fff, $alpha: -10%);
+
+  .direct-post & {
+    box-shadow: 0 0px 4px 8px scale-color(#eee, $alpha: -10%);
+  }
+
+  body.dark-theme & {
+    box-shadow: 0 0px 4px 8px scale-color($bg-color, $alpha: -10%);
+  }
+
+  body.dark-theme .direct-post & {
+    box-shadow: 0 0px 4px 8px scale-color($bg-color-lighter, $alpha: -10%);
+  }
+}
+
+.comments-folder--after {
+  // To prevent collapse of margins
+  height: 0.1px;
 }
