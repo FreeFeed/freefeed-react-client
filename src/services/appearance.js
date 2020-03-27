@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { localStorage } from '../utils/';
+import storage from 'local-storage-fallback';
 
 export const { colorSchemeStorageKey, nsfwVisibilityStorageKey } = CONFIG.appearance;
 
@@ -10,14 +10,14 @@ export const SCHEME_SYSTEM = 'system';
 
 export function saveColorScheme(scheme) {
   if (scheme === SCHEME_LIGHT || scheme === SCHEME_DARK) {
-    localStorage.setItem(colorSchemeStorageKey, scheme);
+    storage.setItem(colorSchemeStorageKey, scheme);
   } else {
-    localStorage.removeItem(colorSchemeStorageKey);
+    storage.removeItem(colorSchemeStorageKey);
   }
 }
 
 export function loadColorScheme() {
-  const scheme = localStorage.getItem(colorSchemeStorageKey);
+  const scheme = storage.getItem(colorSchemeStorageKey);
   return scheme === SCHEME_LIGHT || scheme === SCHEME_DARK ? scheme : SCHEME_SYSTEM;
 }
 
@@ -37,14 +37,14 @@ export function getSystemColorScheme() {
 }
 
 export function loadNSFWVisibility() {
-  return !!localStorage.getItem(nsfwVisibilityStorageKey);
+  return !!storage.getItem(nsfwVisibilityStorageKey);
 }
 
 export function saveNSFWVisibility(visible) {
   if (visible) {
-    localStorage.setItem(nsfwVisibilityStorageKey, '1');
+    storage.setItem(nsfwVisibilityStorageKey, '1');
   } else {
     // Default value
-    localStorage.removeItem(nsfwVisibilityStorageKey);
+    storage.removeItem(nsfwVisibilityStorageKey);
   }
 }
