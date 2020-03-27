@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
@@ -102,7 +103,7 @@ function InitialLayout({ children }) {
         <div className="col-md-4">
           <div className="header">
             <h1 className="title">
-              <a href="/">FreeFeed</a>
+              <a href="/">{CONFIG.siteTitle}</a>
             </h1>
             <div className="jsonly">{children}</div>
           </div>

@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React from 'react';
 import { connect } from 'react-redux';
 import PieceOfText from './piece-of-text';
@@ -20,7 +21,7 @@ const FREEFEED_INVITATION = {
     <span>
       FreeFeed is a small non-profit social network. It does not sell your data, nor does it show
       ads to you. It is an <a href="https://github.com/FreeFeed">open-source project</a> which can
-      be used by anyone. Freefeed is developed by a group of volunteers and paid for by donations
+      be used by anyone. FreeFeed is developed by a group of volunteers and paid for by donations
       from users.
     </span>
   ),
@@ -38,7 +39,7 @@ const FREEFEED_INVITATION = {
 const USER_INVITED = {
   [INVITATION_LANGUAGE_OPTIONS.ENGLISH]: (username, authenticated) =>
     !authenticated
-      ? `@${username} invited you to join Freefeed:`
+      ? `@${username} invited you to join ${CONFIG.siteTitle}:`
       : `Invitation created by @${username}:`,
   [INVITATION_LANGUAGE_OPTIONS.RUSSIAN]: (username, authenticated) =>
     !authenticated
@@ -49,7 +50,7 @@ const USER_INVITED = {
 const INVITE_EXPIRED = {
   [INVITATION_LANGUAGE_OPTIONS.ENGLISH]: (
     <span>
-      This invitation has already expired. Check out <a href="../">FreeFeed</a>
+      This invitation has already expired. Check out <a href="../">{CONFIG.siteTitle}</a>
     </span>
   ),
   [INVITATION_LANGUAGE_OPTIONS.RUSSIAN]: (
@@ -64,7 +65,7 @@ class SignupByInvitation extends React.PureComponent {
     const { error } = this.props;
     return (
       <div className="box signup-by-invite">
-        <div className="box-header-timeline">Welcome to FreeFeed!</div>
+        <div className="box-header-timeline">Welcome to {CONFIG.siteTitle}!</div>
         <div className="box-body">
           <div className="col-md-12">
             <h2 className="p-signin-header" />
