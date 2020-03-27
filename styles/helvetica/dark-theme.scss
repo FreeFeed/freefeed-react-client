@@ -195,15 +195,9 @@ body.dark-theme {
     background-color: $bg-highlight-color;
   }
 
-  .comment.highlighted,
-  .comment.highlight-from-url {
-    color: $text-color-lighter;
-    background-color: $bg-color-lightest;
-  }
-
   .comment.highlighted::before,
   .comment.highlight-from-url::before {
-    border-color: $bg-color-lightest;
+    background-color: $bg-color-lightest;
   }
 
   .feed-options-switch .dropdown .spacer {
