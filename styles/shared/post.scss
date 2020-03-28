@@ -578,4 +578,27 @@ $post-line-height: 20px;
     max-width: 100%;
     border: none;
   }
+
+  .tiktok-video-preview {
+    position: relative;
+    width: 300px;
+    max-width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .tiktok-video-preview::before {
+    content: '';
+    display: block;
+    width: 100%;
+    // Assuming that aspect ratio is constant
+    padding-bottom: 200%;
+  }
+
+  .tiktok-video-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
