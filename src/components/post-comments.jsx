@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
 import { safeScrollBy } from '../services/unscroll';
 import PostComment from './post-comment';
@@ -9,7 +8,7 @@ import MoreCommentsWrapper from './more-comments-wrapper';
 import ErrorBoundary from './error-boundary';
 import { Icon } from './fontawesome-icons';
 import { faCommentPlus } from './fontawesome-custom-icons';
-import { Sticky } from './sticky';
+import { PostCommentsFolder } from './post-comments-folder';
 
 const minCommentsToFold = 12;
 
@@ -169,15 +168,7 @@ export default class PostComments extends React.Component {
 
     if (showFold) {
       return [
-        <Sticky
-          key={`${post.id}:fold-link`}
-          className="fold-comments"
-          stickyClassName="fold-comments-sticky"
-          stickUntil={middleComments.length}
-        >
-          <Icon icon={faChevronUp} className="chevron" />
-          <a onClick={this.fold}>Fold comments</a>
-        </Sticky>,
+        <PostCommentsFolder key={`${post.id}:fold-link`} doFold={this.fold} />,
         ...middleComments,
       ];
     }

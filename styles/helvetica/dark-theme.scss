@@ -130,12 +130,6 @@ body.dark-theme {
     color: $link-color-dim;
   }
 
-  .fold-comments-sticky {
-    $bgColor: scale-color($bg-color, $alpha: -10%);
-    background-color: $bgColor;
-    box-shadow: 0 0px 4px 8px $bgColor;
-  }
-
   .link-preview .folder-container .content-wrapper.folded::after {
     background: linear-gradient(
       scale-color($bg-color, $alpha: -100%) 0%,
