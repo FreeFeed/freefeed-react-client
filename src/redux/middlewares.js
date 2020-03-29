@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import { getPost } from '../services/api';
 import { setToken } from '../services/auth';
-import { Connection, scrollCompensator } from '../services/realtime';
+import { Connection } from '../services/realtime';
 import { delay } from '../utils';
 import * as FeedOptions from '../utils/feed-options';
 
@@ -16,7 +16,10 @@ import {
   SCHEME_LIGHT,
   SCHEME_DARK,
   SCHEME_NO_PREFERENCE,
+  saveNSFWVisibility,
 } from '../services/appearance';
+import { scrollingOrInteraction, unscroll } from '../services/unscroll';
+import { FINISH } from '../utils/event-sequences';
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import {
@@ -270,6 +273,10 @@ export const appearanceMiddleware = (store) => {
     next(action);
     if (action.type === ActionTypes.SET_USER_COLOR_SCHEME) {
       saveColorScheme(action.payload);
+      return;
+    }
+    if (action.type === ActionTypes.SET_NSFW_VISIBILITY) {
+      saveNSFWVisibility(action.payload);
       return;
     }
   };
@@ -626,13 +633,7 @@ const bindHandlers = (store) => ({
 });
 
 export const realtimeMiddleware = (store) => {
-  const handlers = bindHandlers(store);
-
-  for (const key of Object.keys(handlers)) {
-    handlers[key] = scrollCompensator(handlers[key]);
-  }
-
-  return createRealtimeMiddleware(store, new Connection(), handlers);
+  return createRealtimeMiddleware(store, new Connection(), bindHandlers(store));
 };
 
 export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
@@ -645,8 +646,20 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
 
   conn.onEvent((event, data) => store.dispatch(ActionCreators.realtimeIncomingEvent(event, data)));
 
+  const queue = [];
+  scrollingOrInteraction.on(FINISH, () => {
+    while (queue.length > 0) {
+      store.dispatch(queue.shift());
+    }
+  });
+
   return (next) => (action) => {
     if (action.type === ActionTypes.REALTIME_INCOMING_EVENT) {
+      if (scrollingOrInteraction.active) {
+        queue.push(action);
+        return;
+      }
+
       const {
         payload: { event, data },
       } = action;
@@ -776,3 +789,9 @@ function fixPostsData(post) {
   post.comments = post.comments || [];
   post.likes = post.likes || [];
 }
+
+export const unscrollMiddleware = () => (next) => (action) => {
+  const result = next(action);
+  unscroll();
+  return result;
+};

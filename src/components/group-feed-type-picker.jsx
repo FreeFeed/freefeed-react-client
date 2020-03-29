@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React from 'react';
 
 const PUBLIC = 'PUBLIC',
@@ -66,7 +67,7 @@ export default class GroupFeedTypePicker extends React.Component {
                   onChange={this.handleChange}
                 />
               </div>
-              <div className="option">FreeFeed users (protected group)</div>
+              <div className="option">{CONFIG.siteTitle} users (protected group)</div>
             </label>
 
             <label className="option-box">

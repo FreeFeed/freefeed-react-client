@@ -1,6 +1,7 @@
 /*global Raven*/
 import { differenceBy, intersection, intersectionBy, uniq } from 'lodash';
 
+import { hashTags } from 'social-text-tokenizer';
 import {
   // User actions
   subscribe,
@@ -47,6 +48,8 @@ const MAX_LIKES = 4;
 export const ommitBubblesThreshold = 600 * 1000; // 10 min
 
 const allFalse = () => false;
+
+const tokenizeHashtags = hashTags();
 
 const commentHighlighter = (
   { commentsHighlights, user, postsViewState },
@@ -134,6 +137,12 @@ export const joinPostData = (state) => (postId) => {
   const isFullyRemovable =
     isEditable || differenceBy(recipients, state.managedGroups, 'id').length === 0;
 
+  const isNSFW =
+    !state.isNSFWVisible &&
+    [post.body, ...recipients.map((r) => r.description)].some((text) =>
+      tokenizeHashtags(text).some((t) => t.text.toLowerCase() === '#nsfw'),
+    );
+
   const attachments = (post.attachments || []).map(
     (attachmentId) => state.attachments[attachmentId],
   );
@@ -214,6 +223,7 @@ export const joinPostData = (state) => (postId) => {
     readMoreStyle,
     recipientNames,
     hiddenByNames: hiddenByNames.length > 0 ? hiddenByNames : null,
+    isNSFW,
   };
 };
 

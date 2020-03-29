@@ -8,7 +8,7 @@ import { getToken } from '../services/auth';
 import { parseQuery } from '../utils/search-highlighter';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
 import * as FeedOptions from '../utils/feed-options';
-import { loadColorScheme, getSystemColorScheme } from '../services/appearance';
+import { loadColorScheme, getSystemColorScheme, loadNSFWVisibility } from '../services/appearance';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
 import { patchObjectByKey, setOnLocationChange } from './reducers/helpers';
@@ -35,45 +35,45 @@ export const initialized = asyncState(ActionTypes.INITIAL_WHO_AM_I, (state, acti
 export function title(state = '', action) {
   switch (action.type) {
     case response(ActionTypes.HOME): {
-      return 'FreeFeed';
+      return CONFIG.siteTitle;
     }
     case response(ActionTypes.DIRECT): {
-      return 'Direct messages - FreeFeed';
+      return `Direct messages - ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.DISCUSSIONS): {
-      return 'My discussions - FreeFeed';
+      return `My discussions - ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.SAVES): {
-      return 'Saved posts - FreeFeed';
+      return `Saved posts - ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.GET_BEST_OF): {
-      return `Best Of FreeFeed`;
+      return `Best Of ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.GET_EVERYTHING): {
-      return `Everything On FreeFeed`;
+      return `Everything On ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.GET_NOTIFICATIONS): {
-      return `Notifications - FreeFeed`;
+      return `Notifications - ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.GET_SEARCH): {
-      return `Search - FreeFeed`;
+      return `Search - ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.GET_USER_FEED): {
       const user = action.payload.users.find((user) => user.id === action.payload.timelines.user);
       const author =
         user.screenName + (user.username !== user.screenName ? ` (${user.username})` : '');
-      return `${author} - FreeFeed`;
+      return `${author} - ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.GET_SINGLE_POST): {
       const text = action.payload.posts.body.substr(0, 60);
       const [user] = action.payload.users || [];
       const author =
         user.screenName + (user.username !== user.screenName ? ` (${user.username})` : '');
-      return `${text} - ${author} - FreeFeed`;
+      return `${text} - ${author} - ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.GET_SUMMARY): {
       const period = getSummaryPeriod(action.request.days);
-      return `Best of ${period} - FreeFeed`;
+      return `Best of ${period} - ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.GET_USER_SUMMARY): {
       const period = getSummaryPeriod(action.request.days);
@@ -83,7 +83,7 @@ export function title(state = '', action) {
       const author = user
         ? user.screenName + (user.username !== user.screenName ? ` (${user.username})` : '')
         : action.request.username;
-      return `Best of ${period} - ${author} - FreeFeed`;
+      return `Best of ${period} - ${author} - ${CONFIG.siteTitle}`;
     }
     case fail(ActionTypes.HOME):
     case fail(ActionTypes.DIRECT):
@@ -91,11 +91,11 @@ export function title(state = '', action) {
     case fail(ActionTypes.SAVES):
     case fail(ActionTypes.GET_USER_FEED):
     case fail(ActionTypes.GET_SINGLE_POST): {
-      return 'Error - FreeFeed';
+      return `Error - ${CONFIG.siteTitle}`;
     }
 
     case ActionTypes.STATIC_PAGE: {
-      return `${action.payload.title} - FreeFeed`;
+      return `${action.payload.title} - ${CONFIG.siteTitle}`;
     }
   }
   return state;
@@ -110,7 +110,7 @@ export const restorePasswordStatus = asyncState(
   setOnLocationChange(initialAsyncState),
 );
 
-const defaultResetHeader = 'Reset FreeFeed Password';
+const defaultResetHeader = `Reset ${CONFIG.siteTitle} Password`;
 const successResetHeader = 'Please log in with your new password';
 
 export function resetPassForm(
@@ -1608,10 +1608,10 @@ export function boxHeader(state = '', action) {
       )} and earlier`;
     }
     case request(ActionTypes.GET_BEST_OF): {
-      return 'Best Of FreeFeed';
+      return `Best Of ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.GET_EVERYTHING): {
-      return `Everything On FreeFeed`;
+      return `Everything On ${CONFIG.siteTitle}`;
     }
     case request(ActionTypes.GET_USER_FEED): {
       return '';
@@ -2262,6 +2262,13 @@ export function systemColorScheme(state = getSystemColorScheme(), action) {
 
 export function userColorScheme(state = loadColorScheme(), action) {
   if (action.type === ActionTypes.SET_USER_COLOR_SCHEME) {
+    return action.payload;
+  }
+  return state;
+}
+
+export function isNSFWVisible(state = loadNSFWVisibility(), action) {
+  if (action.type === ActionTypes.SET_NSFW_VISIBILITY) {
     return action.payload;
   }
   return state;

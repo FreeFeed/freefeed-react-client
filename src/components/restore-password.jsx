@@ -1,3 +1,4 @@
+/* global CONFIG */
 import { parse as qsParse } from 'querystring';
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,10 +12,10 @@ import { Throbber } from './throbber';
 export default React.memo(function RestorePasswordPage() {
   return (
     <div className="box">
-      <div className="box-header-timeline">Welcome to FreeFeed!</div>
+      <div className="box-header-timeline">Welcome to {CONFIG.siteTitle}!</div>
       <div className="box-body">
         <div className="col-md-12">
-          <h2 className="p-signin-header">Reset FreeFeed password</h2>
+          <h2 className="p-signin-header">Reset {CONFIG.siteTitle} password</h2>
           <p>
             Please enter your email address and we will send you an email with a password reset
             link.

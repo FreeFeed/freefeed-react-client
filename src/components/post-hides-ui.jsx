@@ -4,6 +4,7 @@ import { intersection } from 'lodash';
 import { faTimes, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { unhidePost, hideByName, removeRecentlyHiddenPost } from '../redux/action-creators';
 import { initialAsyncState } from '../redux/async-helpers';
+import { safeScrollBy } from '../services/unscroll';
 import { Icon } from './fontawesome-icons';
 import { Throbber } from './throbber';
 
@@ -23,7 +24,7 @@ export function PostRecentlyHidden({ id, initialTopOffset, isHidden, recipientNa
       return;
     }
     const firstLineOffset = firstLine.current.getBoundingClientRect().top;
-    window.scrollBy(0, firstLineOffset - initialTopOffset);
+    safeScrollBy(0, firstLineOffset - initialTopOffset);
   }, [initialTopOffset]);
 
   const oneHiddenName = intersection(recipientNames, hiddenUserNames).length === 1;

@@ -108,7 +108,8 @@ export default class CreatePost extends React.Component {
   };
 
   checkCreatePostAvailability = () => {
-    const isFormEmpty = isTextEmpty(this.state.postText) || this.selectFeeds.values === 0;
+    const isFormEmpty =
+      isTextEmpty(this.state.postText) || !this.selectFeeds || this.selectFeeds.values === 0;
 
     this.setState({ isFormEmpty });
   };

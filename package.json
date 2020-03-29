@@ -1,6 +1,6 @@
 {
   "name": "reactive-pepyatka",
-  "version": "1.75.0",
+  "version": "1.76.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
@@ -11,10 +11,12 @@
     "classnames": "2.2.x",
     "custom-event": "1.0.x",
     "date-fns": "~2.9.0",
+    "debug": "~4.1.1",
     "filesize": "~6.0.1",
     "final-form": "~4.18.7",
     "highcharts": "~7.2.1",
     "isomorphic-fetch": "2.2.x",
+    "local-storage-fallback": "~4.1.1",
     "lodash": "~4.17.15",
     "lru-cache": "~5.1.1",
     "memoize-one": "~5.1.1",

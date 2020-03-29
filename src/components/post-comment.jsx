@@ -9,6 +9,7 @@ import { READMORE_STYLE_COMPACT, COMMENT_DELETED } from '../utils/frontend-prefe
 import { commentReadmoreConfig } from '../utils/readmore-config';
 import { defaultCommentState } from '../redux/reducers/comment-edit';
 
+import { safeScrollTo } from '../services/unscroll';
 import PieceOfText from './piece-of-text';
 import Expandable from './expandable';
 import UserName from './user-name';
@@ -34,7 +35,7 @@ class PostComment extends React.Component {
       const middleScreenPosition =
         window.pageYOffset + (rect.top + rect.bottom) / 2 - window.innerHeight / 2;
       if (rect.top < 0 || rect.bottom > window.innerHeight) {
-        window.scrollTo(0, middleScreenPosition);
+        safeScrollTo(0, middleScreenPosition);
       }
     }
   };

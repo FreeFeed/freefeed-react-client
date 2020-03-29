@@ -876,6 +876,10 @@ export function setUserColorScheme(scheme) {
   return { type: ActionTypes.SET_USER_COLOR_SCHEME, payload: scheme };
 }
 
+export function setNSFWVisibility(visible) {
+  return { type: ActionTypes.SET_NSFW_VISIBILITY, payload: visible };
+}
+
 export function getAppTokens() {
   return {
     type: ActionTypes.GET_APP_TOKENS,

@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
@@ -40,6 +41,7 @@ if (store.getState().authenticated) {
 }
 
 import { bindRouteActions } from './redux/route-actions';
+import { initUnscroll, safeScrollTo } from './services/unscroll';
 
 // Set initial history state.
 // Without this, there can be problems with third-party
@@ -83,7 +85,7 @@ const enterStaticPage = (title) => () => {
   store.dispatch(ActionCreators.staticPage(title));
 };
 
-history.listen(() => scrollTo(0, 0));
+history.listen(() => safeScrollTo(0, 0));
 
 const generateRouteHooks = (callback) => ({
   onEnter: callback,
@@ -101,7 +103,7 @@ function InitialLayout({ children }) {
         <div className="col-md-4">
           <div className="header">
             <h1 className="title">
-              <a href="/">FreeFeed</a>
+              <a href="/">{CONFIG.siteTitle}</a>
             </h1>
             <div className="jsonly">{children}</div>
           </div>
@@ -110,6 +112,8 @@ function InitialLayout({ children }) {
     </div>
   );
 }
+
+initUnscroll();
 
 function App() {
   const initialized = useSelector((state) => state.initialized);

@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React, { useMemo } from 'react';
 import { useField, useForm } from 'react-final-form-hooks';
 import { useSelector, useDispatch } from 'react-redux';
@@ -85,7 +86,7 @@ export default function GroupSettingsForm({ username }) {
           <div className="radio">
             <label>
               <RadioInput field={privacy} value={PROTECTED} />
-              FreeFeed users only (protected group)
+              {CONFIG.siteTitle} users only (protected group)
             </label>
           </div>
           <div className="radio">
@@ -98,8 +99,9 @@ export default function GroupSettingsForm({ username }) {
             <div className="alert alert-warning" role="alert">
               You are about to change the group type from private to{' '}
               {privacy.input.value === PROTECTED ? 'protected' : 'public'}. It means{' '}
-              {privacy.input.value === PROTECTED ? 'any FreeFeed user' : 'anyone'} will be able to
-              read its posts and comments, which are only available to group members now.
+              {privacy.input.value === PROTECTED ? `any ${CONFIG.siteTitle} user` : 'anyone'} will
+              be able to will be able to read its posts and comments, which are only available to
+              group members now.
             </div>
           )}
         </div>

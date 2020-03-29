@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -42,7 +43,7 @@ class InvitationCreationForm extends React.Component {
     const { userFeeds, groupFeeds, user, form, baseLocation } = this.props;
     return (
       <div className="box">
-        <div className="box-header-timeline">Invite to FreeFeed</div>
+        <div className="box-header-timeline">Invite to {CONFIG.siteTitle}</div>
         <div className="box-body">
           <form onSubmit={preventDefault(this.createInvitation)}>
             <div>Suggested users</div>

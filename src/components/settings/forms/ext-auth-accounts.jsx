@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React, { useEffect, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -46,8 +47,9 @@ export default function ExtAuthForm() {
   return (
     <>
       <p>
-        You can use these profiles to sign in to FreeFeed. This will not let FreeFeed do anything on
-        your behalf on external sites and will not tell them about your FreeFeed account.
+        You can use these profiles to sign in to {CONFIG.siteTitle}. This will not let{' '}
+        {CONFIG.siteTitle} do anything on your behalf on external sites and will not tell them about
+        your {CONFIG.siteTitle} account.
       </p>
       {(loadStatus.loading || loadStatus.initial) && (
         <p>

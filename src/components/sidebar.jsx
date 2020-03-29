@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
@@ -92,7 +93,7 @@ const SideBarFriends = ({ user }) => (
 
 const SideBarFreeFeed = () => (
   <div className="box">
-    <div className="box-header-freefeed">FreeFeed</div>
+    <div className="box-header-freefeed">{CONFIG.siteTitle}</div>
     <div className="box-body">
       <ul>
         <li>
@@ -174,7 +175,8 @@ const SideBarCoinJar = () => (
         <Link to="/about/donate">
           <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>Donate</span>
         </Link>{' '}
-        to FreeFeed! Your regular donations pay for hosting and keep FreeFeed running.
+        to {CONFIG.siteTitle}! Your regular donations pay for hosting and keep {CONFIG.siteTitle}{' '}
+        running.
       </p>
       <p style={{ marginBottom: '10px' }}>
         Make a{' '}
@@ -276,8 +278,8 @@ const SideBarBookmarklet = () => (
   <div className="box">
     <div className="box-header-groups">Bookmarklet</div>
     <div className="box-footer">
-      Once added to your toolbar, this button will let you share web pages on FreeFeed. You can even
-      attach thumbnails of images from the page you share!
+      Once added to your toolbar, this button will let you share web pages on {CONFIG.siteTitle}.
+      You can even attach thumbnails of images from the page you share!
     </div>
     <div className="box-footer">
       Click and drag{' '}
@@ -286,7 +288,7 @@ const SideBarBookmarklet = () => (
         dangerouslySetInnerHTML={{
           __html: `<a class="bookmarklet-button" href="${htmlSafe(
             bookmarkletHref(),
-          )}" onclick="return false">Share on FreeFeed</a>`,
+          )}" onclick="return false">Share on ${CONFIG.siteTitle}</a>`,
         }}
       />{' '}
       to&nbsp;your toolbar.
@@ -296,7 +298,7 @@ const SideBarBookmarklet = () => (
       <a href="https://chrome.google.com/webstore/detail/share-on-freefeed/dngijpbccpnbjlpjomjmlppfgmnnilah">
         <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>Chrome Extension</span>
       </a>{' '}
-      for sharing on FreeFeed.
+      for sharing on {CONFIG.siteTitle}.
     </div>
   </div>
 );

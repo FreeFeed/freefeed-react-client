@@ -311,6 +311,7 @@ class Post extends React.Component {
       'single-post': props.isSinglePost,
       'timeline-post': !props.isSinglePost,
       'direct-post': props.isDirect,
+      'nsfw-post': props.isNSFW,
     });
 
     const recipientCustomDisplay = function(recipient) {
@@ -551,14 +552,25 @@ class Post extends React.Component {
               removeAttachment={this.removeAttachment}
               reorderImageAttachments={this.reorderImageAttachments}
             />
-
-            {noImageAttachments && linkToEmbed ? (
-              <div className="link-preview">
-                <LinkPreview url={linkToEmbed} allowEmbedly={props.allowLinksPreview} />
+            {!noImageAttachments && props.isNSFW && (
+              <div className="nsfw-bar">
+                Turn the <Link to="/settings/appearance#nsfw">NSFW filter</Link> off to enable
+                previews for sensitive content
               </div>
-            ) : (
-              false
             )}
+
+            {noImageAttachments &&
+              linkToEmbed &&
+              (props.isNSFW ? (
+                <div className="nsfw-bar">
+                  Turn the <Link to="/settings/appearance#nsfw">NSFW filter</Link> off to enable
+                  previews for sensitive content
+                </div>
+              ) : (
+                <div className="link-preview">
+                  <LinkPreview url={linkToEmbed} allowEmbedly={props.allowLinksPreview} />
+                </div>
+              ))}
 
             <div className="dropzone-previews" />
 
@@ -575,7 +587,7 @@ class Post extends React.Component {
                   <Icon
                     icon={faUserFriends}
                     className="post-lock-icon post-protected-icon"
-                    title="This entry is only visible to FreeFeed users"
+                    title={`This entry is only visible to ${CONFIG.siteTitle} users`}
                     onClick={this.toggleTimestamps}
                   />
                 ) : (

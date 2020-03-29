@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
@@ -90,7 +91,7 @@ class Layout extends React.Component {
           <h1>
             Share on{' '}
             <a href="/" target="_blank">
-              FreeFeed
+              {CONFIG.siteTitle}
             </a>
             {props.authenticated ? ` as ${props.user.username}` : false}
           </h1>
