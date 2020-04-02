@@ -27,10 +27,7 @@ class ErrorBoundary extends React.PureComponent {
 
     if (hasError) {
       const errorLocation = errorInfo.componentStack
-        ? `${errorInfo.componentStack
-            .split('\n')
-            .slice(0, 2)
-            .join(' ')}`
+        ? `${errorInfo.componentStack.split('\n').slice(0, 2).join(' ')}`
         : '';
       const errorMessage = `${error.name}: ${error.message} ${errorLocation}`;
 

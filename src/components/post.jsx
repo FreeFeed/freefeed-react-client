@@ -314,7 +314,7 @@ class Post extends React.Component {
       'nsfw-post': props.isNSFW,
     });
 
-    const recipientCustomDisplay = function(recipient) {
+    const recipientCustomDisplay = function (recipient) {
       if (recipient.id !== props.createdBy.id) {
         return false;
       }
