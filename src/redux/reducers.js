@@ -229,16 +229,19 @@ export function feedViewState(state = initFeed, action) {
       return { ...state, isLastPage: action.payload.isLastPage };
     }
     case response(ActionTypes.DELETE_POST): {
-      if (action.payload.postStillAvailable) {
+      const { postId } = action.request;
+      if (action.payload.postStillAvailable || !state.entries.includes(postId)) {
         return state;
       }
-      const { postId } = action.request;
       return {
         ...state,
         entries: _.without(state.entries, postId),
       };
     }
     case ActionTypes.REALTIME_POST_DESTROY: {
+      if (!state.entries.includes(action.postId)) {
+        return state;
+      }
       return {
         ...state,
         entries: _.without(state.entries, action.postId),
@@ -246,7 +249,7 @@ export function feedViewState(state = initFeed, action) {
     }
     case response(ActionTypes.CREATE_POST): {
       const postId = action.payload.posts.id;
-      if (state.entries.indexOf(postId) !== -1) {
+      if (state.entries.includes(postId)) {
         return state;
       }
       return {
@@ -262,15 +265,12 @@ export function feedViewState(state = initFeed, action) {
       };
     }
     case ActionTypes.REALTIME_POST_NEW: {
-      if (state.entries.indexOf(action.post.id) !== -1) {
-        return state;
-      }
-      if (!action.shouldBump) {
+      if (state.entries.includes(action.post.id) || !action.shouldBump) {
         return state;
       }
 
       let { entries } = state;
-      const p = state.entries.indexOf(action.insertBefore);
+      const p = entries.indexOf(action.insertBefore);
       if (p < 0) {
         entries = [...entries, action.post.id];
       } else {
@@ -281,7 +281,7 @@ export function feedViewState(state = initFeed, action) {
     }
     case ActionTypes.REALTIME_LIKE_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW: {
-      if (action.post && action.shouldBump) {
+      if (action.post && action.shouldBump && !state.entries.includes(action.post.posts.id)) {
         const postId = action.post.posts.id;
         return {
           ...state,
