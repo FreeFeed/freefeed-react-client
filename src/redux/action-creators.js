@@ -10,13 +10,6 @@ export function unauthenticated(payload) {
   };
 }
 
-export function staticPage(title) {
-  return {
-    type: ActionTypes.STATIC_PAGE,
-    payload: { title },
-  };
-}
-
 export function requireAuthentication() {
   return { type: ActionTypes.REQUIRE_AUTHENTICATION };
 }

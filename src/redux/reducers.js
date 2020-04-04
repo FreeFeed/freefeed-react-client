@@ -32,6 +32,20 @@ export const initialized = asyncState(ActionTypes.INITIAL_WHO_AM_I, (state, acti
   return state;
 });
 
+const staticPageTitles = new Map([
+  ['/about', 'About'],
+  ['/about/terms', 'Terms'],
+  ['/about/privacy', 'Privacy'],
+  ['/about/stats', 'Stats'],
+  ['/about/donate', 'Donate'],
+  ['/dev', 'Developers'],
+  ['/signin', 'Sign in'],
+  ['/signup', 'Sign up'],
+  ['/settings/archive', 'Restore from FriendFeed.com Archives'],
+  ['/groups', 'Groups'],
+  ['/groups/create', 'Create a group'],
+]);
+
 export function title(state = '', action) {
   switch (action.type) {
     case response(ActionTypes.HOME): {
@@ -94,8 +108,12 @@ export function title(state = '', action) {
       return `Error - ${CONFIG.siteTitle}`;
     }
 
-    case ActionTypes.STATIC_PAGE: {
-      return `${action.payload.title} - ${CONFIG.siteTitle}`;
+    case LOCATION_CHANGE: {
+      const { pathname } = action.payload;
+
+      if (staticPageTitles.has(pathname)) {
+        return `${staticPageTitles.get(pathname)} - ${CONFIG.siteTitle}`;
+      }
     }
   }
   return state;
