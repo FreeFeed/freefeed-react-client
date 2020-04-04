@@ -19,7 +19,7 @@ import {
   saveNSFWVisibility,
 } from '../services/appearance';
 import { scrollingOrInteraction, unscroll } from '../services/unscroll';
-import { FINISH } from '../utils/event-sequences';
+import { inactivityOf } from '../utils/event-sequences';
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import {
@@ -644,22 +644,13 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
 
   conn.onConnect(() => store.dispatch(ActionCreators.realtimeConnected()));
 
-  conn.onEvent((event, data) => store.dispatch(ActionCreators.realtimeIncomingEvent(event, data)));
-
-  const queue = [];
-  scrollingOrInteraction.on(FINISH, () => {
-    while (queue.length > 0) {
-      store.dispatch(queue.shift());
-    }
+  conn.onEvent(async (event, data) => {
+    await inactivityOf(scrollingOrInteraction);
+    store.dispatch(ActionCreators.realtimeIncomingEvent(event, data));
   });
 
   return (next) => (action) => {
     if (action.type === ActionTypes.REALTIME_INCOMING_EVENT) {
-      if (scrollingOrInteraction.active) {
-        queue.push(action);
-        return;
-      }
-
       const {
         payload: { event, data },
       } = action;
