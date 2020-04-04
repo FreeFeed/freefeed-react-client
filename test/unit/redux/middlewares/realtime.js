@@ -25,6 +25,7 @@ import {
 import { delay } from '../../../../src/utils';
 import { response, request } from '../../../../src/redux/action-helpers';
 import { HOMEFEED_MODE_CLASSIC } from '../../../../src/utils/feed-options';
+import { inactivityOf, EventsSequence } from '../../../../src/utils/event-sequences';
 
 const expect = unexpected.clone();
 expect.use(unexpectedSinon);
@@ -58,6 +59,10 @@ class MockConnection {
   }
 }
 
+function nextTick() {
+  return new Promise((resolve) => process.nextTick(resolve));
+}
+
 const CLEAR_STATE = 'test/CLEAR_STATE';
 const cleanState = () => ({ type: CLEAR_STATE });
 
@@ -86,7 +91,9 @@ describe('realtime middleware', () => {
     return reducer(state, action);
   };
 
-  const realtimeMiddleware = (store) => createRealtimeMiddleware(store, connection, eventHandlers);
+  const userActivity = new EventsSequence(50);
+  const realtimeMiddleware = (store) =>
+    createRealtimeMiddleware(store, connection, eventHandlers, userActivity);
 
   const store = createStore(
     cleanableReducer,
@@ -105,12 +112,35 @@ describe('realtime middleware', () => {
     expect(actionSpy, 'to have a call satisfying', [{ type: REALTIME_CONNECTED }]);
   });
 
-  it('should dispatch REALTIME_INCOMING_EVENT on incoming event', () => {
+  it('should dispatch REALTIME_INCOMING_EVENT on incoming event', async () => {
     const [event, data] = ['event', 'some data'];
     connection.triggerEvent(event, data);
+    // The REALTIME_INCOMING_EVENT always dispatches asynchronously
+    expect(actionSpy, 'was not called');
+    await nextTick();
     expect(actionSpy, 'to have a call satisfying', [
       { type: REALTIME_INCOMING_EVENT, payload: { event, data } },
     ]);
+  });
+
+  describe('delay during the user activity', () => {
+    it('should not dispatch REALTIME_INCOMING_EVENT immediately if scrolling is performed', async () => {
+      userActivity.trigger();
+      const [event, data] = ['event', 'some data'];
+      connection.triggerEvent(event, data);
+      await nextTick();
+      expect(actionSpy, 'was not called');
+    });
+
+    it('should dispatch REALTIME_INCOMING_EVENT after scrolling is stopped', async () => {
+      userActivity.trigger();
+      const [event, data] = ['event', 'some data'];
+      connection.triggerEvent(event, data);
+      await inactivityOf(userActivity);
+      expect(actionSpy, 'to have a call satisfying', [
+        { type: REALTIME_INCOMING_EVENT, payload: { event, data } },
+      ]);
+    });
   });
 
   it('should subscribe to room', () => {
@@ -136,23 +166,26 @@ describe('realtime middleware', () => {
     expect(connection.unsubscribeFrom, 'to have a call satisfying', ['room1']);
   });
 
-  it('should trigger handler on event without realtimeChannels', () => {
+  it('should trigger handler on event without realtimeChannels', async () => {
     const [event, data] = ['event1', {}];
     connection.triggerEvent(event, data);
+    await nextTick();
     expect(eventHandlers[event], 'to have a call satisfying', [data]);
   });
 
-  it('should trigger handler on event with realtimeChannels when subscribed', () => {
+  it('should trigger handler on event with realtimeChannels when subscribed', async () => {
     store.dispatch(realtimeSubscribe('room1'));
     const [event, data] = ['event1', { realtimeChannels: ['room1'] }];
     connection.triggerEvent(event, data);
+    await nextTick();
     expect(eventHandlers[event], 'to have a call satisfying', [data]);
   });
 
-  it('should not trigger handler on event with realtimeChannels when not subscribed', () => {
+  it('should not trigger handler on event with realtimeChannels when not subscribed', async () => {
     store.dispatch(realtimeSubscribe('room2'));
     const [event, data] = ['event1', { realtimeChannels: ['room1'] }];
     connection.triggerEvent(event, data);
+    await nextTick();
     expect(eventHandlers[event], 'was not called');
   });
 

@@ -633,10 +633,15 @@ const bindHandlers = (store) => ({
 });
 
 export const realtimeMiddleware = (store) => {
-  return createRealtimeMiddleware(store, new Connection(), bindHandlers(store));
+  return createRealtimeMiddleware(
+    store,
+    new Connection(),
+    bindHandlers(store),
+    scrollingOrInteraction,
+  );
 };
 
-export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
+export const createRealtimeMiddleware = (store, conn, eventHandlers, userActivity) => {
   const unsubscribeByRegexp = (regex) => {
     const rooms = store.getState().realtimeSubscriptions.filter((r) => regex.test(r));
     store.dispatch(ActionCreators.realtimeUnsubscribe(...rooms));
@@ -645,7 +650,7 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
   conn.onConnect(() => store.dispatch(ActionCreators.realtimeConnected()));
 
   conn.onEvent(async (event, data) => {
-    await inactivityOf(scrollingOrInteraction);
+    await inactivityOf(userActivity);
     store.dispatch(ActionCreators.realtimeIncomingEvent(event, data));
   });
 
