@@ -3,8 +3,6 @@ import { EventsSequence, CombinedEventsSequences, FINISH, START } from '../utils
 
 const unscrollDebug = createDebug('freefeed:react:unscroll');
 
-// TODO: reset scroll position on navigation events
-
 export const scrolling = new EventsSequence(200);
 const userInteraction = new EventsSequence(500);
 export const scrollingOrInteraction = new CombinedEventsSequences(scrolling, userInteraction);
