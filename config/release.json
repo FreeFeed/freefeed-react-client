@@ -1,0 +1,16 @@
+{
+    "api": {
+        "root": "https://freefeed.net"
+    },
+    "siteOrigin": "https://freefeed.net",
+    "auth": {
+        "tokenPrefix": "freefeedBETA_",
+        "userStorageKey": "whoamiCache"
+    },
+    "captcha": {
+        "siteKey": "6LdChhITAAAAAGzgvUPPCbg0cxJzcxFc5vlBs9u5"
+    },
+    "sentry": {
+        "publicDSN": "https://abdac1f2db2d45efaa9142062fe14bd8@sentry.io/75960"
+    }
+}

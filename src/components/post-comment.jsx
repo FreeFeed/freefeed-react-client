@@ -1,30 +1,32 @@
 import React from 'react';
 import { Link } from 'react-router';
-import Textarea from 'react-textarea-autosize';
 import _ from 'lodash';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
 
 import { preventDefault, confirmFirst } from '../utils';
 import { READMORE_STYLE_COMPACT, COMMENT_DELETED } from '../utils/frontend-preferences-options';
 import { commentReadmoreConfig } from '../utils/readmore-config';
-import { Throbber } from './throbber';
+import { defaultCommentState } from '../redux/reducers/comment-edit';
 
-// import CommentLikes from './comment-likes';
+import { safeScrollTo } from '../services/unscroll';
 import PieceOfText from './piece-of-text';
 import Expandable from './expandable';
 import UserName from './user-name';
 import TimeDisplay from './time-display';
 import CommentIcon, { JustCommentIcon } from './comment-icon';
+import { CommentEditForm } from './comment-edit-form';
 
-export default class PostComment extends React.Component {
+class PostComment extends React.Component {
   commentContainer;
-  commentTextArea;
+  commentForm;
+  commentsAreHighlighted;
 
   constructor(props) {
     super(props);
 
-    this.state = { editText: this.props.editText || '' };
-    this.commentTextArea = null;
+    this.commentForm = null;
+    this.commentsAreHighlighted = false;
   }
 
   scrollToComment = () => {
@@ -33,7 +35,7 @@ export default class PostComment extends React.Component {
       const middleScreenPosition =
         window.pageYOffset + (rect.top + rect.bottom) / 2 - window.innerHeight / 2;
       if (rect.top < 0 || rect.bottom > window.innerHeight) {
-        window.scrollTo(0, middleScreenPosition);
+        safeScrollTo(0, middleScreenPosition);
       }
     }
   };
@@ -50,9 +52,15 @@ export default class PostComment extends React.Component {
     }
   }
 
-  handleChange = (event) => {
-    this.setState({ editText: event.target.value || '' });
-  };
+  componentWillUnmount() {
+    if (this.enterTimeout) {
+      clearTimeout(this.enterTimeout);
+    }
+    if (this.commentsAreHighlighted) {
+      this.props.clearHighlightComment();
+      this.commentsAreHighlighted = false;
+    }
+  }
 
   reply = () => {
     this.props.openAnsweringComment(_.repeat('^', this.props.backwardNumber));
@@ -62,47 +70,10 @@ export default class PostComment extends React.Component {
     this.props.openAnsweringComment(`@${this.props.user.username}`);
   };
 
-  setCaretToTextEnd = (event) => {
-    const input = event.target;
+  saveComment = (text) => this.props.saveEditingComment(this.props.id, text);
 
-    setTimeout(() => {
-      if (typeof input.selectionStart === 'number') {
-        input.selectionStart = input.selectionEnd = input.value.length;
-      } else if (input.createTextRange !== undefined) {
-        input.focus();
-        const range = input.createTextRange();
-        range.collapse(false);
-        range.select();
-      }
-    }, 0);
-  };
-
-  updateCommentingText = () => {
-    if (this.props.updateCommentingText) {
-      this.props.updateCommentingText(this.props.id, this.state.editText);
-    }
-  };
-
-  checkSave = (event) => {
-    const isEnter = event.keyCode === 13;
-    const isShiftPressed = event.shiftKey;
-    if (isEnter && !isShiftPressed) {
-      event.preventDefault();
-      event.target.blur();
-      setTimeout(this.saveComment, 0);
-    }
-  };
-
-  saveComment = () => {
-    if (!this.props.isSaving) {
-      this.props.saveEditingComment(this.props.id, this.state.editText || this.props.editText);
-    }
-  };
-
-  focus() {
-    if (this.commentTextArea) {
-      this.commentTextArea.focus();
-    }
+  insertText(insertion) {
+    this.commentForm && this.commentForm.insertText(insertion);
   }
 
   toggleLike = () => {
@@ -115,18 +86,12 @@ export default class PostComment extends React.Component {
     this.props.getCommentLikes(this.props.id);
   };
 
-  UNSAFE_componentWillReceiveProps(newProps) {
-    if ((this.props.editText || '') !== (newProps.editText || '')) {
-      this.setState({ editText: newProps.editText });
-    }
-  }
-
   registerCommentContainer = (el) => {
     this.commentContainer = el;
   };
 
-  registerCommentTextArea = (el) => {
-    this.commentTextArea = el;
+  registerCommentForm = (el) => {
+    this.commentForm = el;
   };
 
   handleEditOrCancel = preventDefault(() => this.props.toggleEditingComment(this.props.id));
@@ -135,10 +100,17 @@ export default class PostComment extends React.Component {
 
   handleHoverOnUsername = (username) => {
     this.props.highlightComment(username);
+    this.commentsAreHighlighted = true;
+  };
+
+  handleStopHighlighting = () => {
+    this.props.clearHighlightComment();
+    this.commentsAreHighlighted = false;
   };
 
   handleHoverOverArrow = (arrows) => {
     this.props.highlightArrowComment(this.props.id, arrows);
+    this.commentsAreHighlighted = true;
   };
 
   renderBody() {
@@ -160,56 +132,14 @@ export default class PostComment extends React.Component {
 
     if (this.props.isEditing) {
       return (
-        <div className="comment-body">
-          <div>
-            <Textarea
-              autoFocus={!this.props.isSinglePost}
-              inputRef={this.registerCommentTextArea}
-              className="comment-textarea"
-              value={this.state.editText || ''}
-              onFocus={this.setCaretToTextEnd}
-              onChange={this.handleChange}
-              onKeyDown={this.checkSave}
-              onBlur={this.updateCommentingText}
-              minRows={2}
-              maxRows={10}
-              maxLength="1500"
-            />
-          </div>
-          {this.props.isSinglePost ? (
-            <span>
-              <button className="btn btn-default btn-xs comment-post" onClick={this.saveComment}>
-                Comment
-              </button>
-              {!this.props.isAddingComment && (
-                <a className="comment-cancel" onClick={this.handleEditOrCancel}>
-                  Cancel
-                </a>
-              )}
-            </span>
-          ) : (
-            <span>
-              <button className="btn btn-default btn-xs comment-post" onClick={this.saveComment}>
-                Post
-              </button>
-              <a className="comment-cancel" onClick={this.handleEditOrCancel}>
-                Cancel
-              </a>
-            </span>
-          )}
-          {this.props.isSaving ? (
-            <span className="comment-throbber">
-              <Throbber />
-            </span>
-          ) : (
-            false
-          )}
-          {this.props.errorString ? (
-            <span className="comment-error">{this.props.errorString}</span>
-          ) : (
-            false
-          )}
-        </div>
+        <CommentEditForm
+          ref={this.registerCommentForm}
+          initialText={this.props.isAddingComment ? this.props.editText : this.props.body}
+          isPersistent={this.props.isSinglePost && this.props.isAddingComment}
+          onSubmit={this.saveComment}
+          onCancel={this.handleEditOrCancel}
+          submitStatus={this.props.saveStatus}
+        />
       );
     }
 
@@ -220,7 +150,7 @@ export default class PostComment extends React.Component {
           user={this.props.user}
           userHover={{
             hover: this.handleHoverOnUsername,
-            leave: this.props.clearHighlightComment,
+            leave: this.handleStopHighlighting,
           }}
         />
         {this.props.isEditable ? (
@@ -258,11 +188,11 @@ export default class PostComment extends React.Component {
             highlightTerms={this.props.highlightTerms}
             userHover={{
               hover: this.handleHoverOnUsername,
-              leave: this.props.clearHighlightComment,
+              leave: this.handleStopHighlighting,
             }}
             arrowHover={{
               hover: this.handleHoverOverArrow,
-              leave: this.props.clearHighlightComment,
+              leave: this.handleStopHighlighting,
             }}
             showMedia={this.props.showMedia}
           />
@@ -329,3 +259,10 @@ export default class PostComment extends React.Component {
     );
   }
 }
+
+function selectState(state, ownProps) {
+  const editState = state.commentEditState[ownProps.id] || defaultCommentState;
+  return { ...editState, isEditing: ownProps.isEditing || editState.isEditing };
+}
+
+export default connect(selectState, null, null, { forwardRef: true })(PostComment);

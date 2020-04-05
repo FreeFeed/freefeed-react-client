@@ -1,6 +1,7 @@
 /*global Raven*/
 import { differenceBy, intersection, intersectionBy, uniq } from 'lodash';
 
+import { hashTags } from 'social-text-tokenizer';
 import {
   // User actions
   subscribe,
@@ -28,7 +29,6 @@ import {
 
   // Comment actions
   toggleCommenting,
-  updateCommentingText,
   addComment,
   toggleEditingComment,
   saveEditingComment,
@@ -41,12 +41,15 @@ import {
   hideByName,
 } from '../redux/action-creators';
 import { SCHEME_DARK, SCHEME_SYSTEM } from '../services/appearance';
+import { defaultCommentState } from '../redux/reducers/comment-edit';
 
 const MAX_LIKES = 4;
 
 export const ommitBubblesThreshold = 600 * 1000; // 10 min
 
 const allFalse = () => false;
+
+const tokenizeHashtags = hashTags();
 
 const commentHighlighter = (
   { commentsHighlights, user, postsViewState },
@@ -134,6 +137,12 @@ export const joinPostData = (state) => (postId) => {
   const isFullyRemovable =
     isEditable || differenceBy(recipients, state.managedGroups, 'id').length === 0;
 
+  const isNSFW =
+    !state.isNSFWVisible &&
+    [post.body, ...recipients.map((r) => r.description)].some((text) =>
+      tokenizeHashtags(text).some((t) => t.text.toLowerCase() === '#nsfw'),
+    );
+
   const attachments = (post.attachments || []).map(
     (attachmentId) => state.attachments[attachmentId],
   );
@@ -146,7 +155,7 @@ export const joinPostData = (state) => (postId) => {
     if (!comment) {
       return _comments;
     }
-    const commentViewState = state.commentViewState[commentId];
+    const commentEditState = state.commentEditState[commentId] || defaultCommentState;
     const author = state.users[comment.createdBy] || null;
     const previousComment = _comments[index - 1] || {
       createdBy: null,
@@ -167,7 +176,7 @@ export const joinPostData = (state) => (postId) => {
     return _comments.concat([
       {
         ...comment,
-        ...commentViewState,
+        ...commentEditState,
         user: author,
         isEditable,
         isDeletable,
@@ -214,6 +223,7 @@ export const joinPostData = (state) => (postId) => {
     readMoreStyle,
     recipientNames,
     hiddenByNames: hiddenByNames.length > 0 ? hiddenByNames : null,
+    isNSFW,
   };
 };
 
@@ -225,9 +235,8 @@ export function postActions(dispatch) {
     cancelEditingPost: (postId) => dispatch(cancelEditingPost(postId)),
     saveEditingPost: (postId, newPost) => dispatch(saveEditingPost(postId, newPost)),
     deletePost: (postId) => dispatch(deletePost(postId)),
-    toggleCommenting: (postId) => dispatch(toggleCommenting(postId)),
-    updateCommentingText: (postId, commentText) =>
-      dispatch(updateCommentingText(postId, commentText)),
+    toggleCommenting: (postId, newCommentText) =>
+      dispatch(toggleCommenting(postId, newCommentText)),
     addComment: (postId, commentText) => dispatch(addComment(postId, commentText)),
     likePost: (postId, userId) => dispatch(likePost(postId, userId)),
     unlikePost: (postId, userId) => dispatch(unlikePost(postId, userId)),

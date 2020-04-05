@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 import { getPost } from '../services/api';
 import { setToken } from '../services/auth';
-import { Connection, scrollCompensator } from '../services/realtime';
+import { Connection } from '../services/realtime';
 import { delay } from '../utils';
 import * as FeedOptions from '../utils/feed-options';
 
@@ -16,7 +16,10 @@ import {
   SCHEME_LIGHT,
   SCHEME_DARK,
   SCHEME_NO_PREFERENCE,
+  saveNSFWVisibility,
 } from '../services/appearance';
+import { scrollingOrInteraction, unscroll } from '../services/unscroll';
+import { inactivityOf } from '../utils/event-sequences';
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import {
@@ -270,6 +273,10 @@ export const appearanceMiddleware = (store) => {
     next(action);
     if (action.type === ActionTypes.SET_USER_COLOR_SCHEME) {
       saveColorScheme(action.payload);
+      return;
+    }
+    if (action.type === ActionTypes.SET_NSFW_VISIBILITY) {
+      saveNSFWVisibility(action.payload);
       return;
     }
   };
@@ -626,13 +633,7 @@ const bindHandlers = (store) => ({
 });
 
 export const realtimeMiddleware = (store) => {
-  const handlers = bindHandlers(store);
-
-  for (const key of Object.keys(handlers)) {
-    handlers[key] = scrollCompensator(handlers[key]);
-  }
-
-  return createRealtimeMiddleware(store, new Connection(), handlers);
+  return createRealtimeMiddleware(store, new Connection(), bindHandlers(store));
 };
 
 export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
@@ -643,7 +644,10 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
 
   conn.onConnect(() => store.dispatch(ActionCreators.realtimeConnected()));
 
-  conn.onEvent((event, data) => store.dispatch(ActionCreators.realtimeIncomingEvent(event, data)));
+  conn.onEvent(async (event, data) => {
+    await inactivityOf(scrollingOrInteraction);
+    store.dispatch(ActionCreators.realtimeIncomingEvent(event, data));
+  });
 
   return (next) => (action) => {
     if (action.type === ActionTypes.REALTIME_INCOMING_EVENT) {
@@ -682,7 +686,6 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
     }
 
     if (
-      action.type === response(ActionTypes.INITIAL_WHO_AM_I) ||
       action.type === response(ActionTypes.WHO_AM_I) ||
       action.type === response(ActionTypes.SIGN_UP)
     ) {
@@ -727,10 +730,11 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers) => {
 };
 
 export const initialWhoamiMiddleware = (store) => (next) => (action) => {
-  next(action);
   if (action.type === response(ActionTypes.INITIAL_WHO_AM_I)) {
+    // Fire the WHO_AM_I response first to properly fill state by current user data
     store.dispatch({ ...action, type: response(ActionTypes.WHO_AM_I) });
   }
+  next(action);
 };
 
 // Fixing data structures coming from server
@@ -776,3 +780,9 @@ function fixPostsData(post) {
   post.comments = post.comments || [];
   post.likes = post.likes || [];
 }
+
+export const unscrollMiddleware = () => (next) => (action) => {
+  const result = next(action);
+  unscroll();
+  return result;
+};

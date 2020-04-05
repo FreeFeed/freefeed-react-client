@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React, { useCallback, useMemo, Suspense } from 'react';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
@@ -46,10 +47,7 @@ export default function Layout({ children, router }) {
     if (pathname.indexOf(settingsRoot) !== 0) {
       return '';
     }
-    return pathname
-      .substring(settingsRoot.length)
-      .replace(/^\//, '')
-      .split('/')[0];
+    return pathname.substring(settingsRoot.length).replace(/^\//, '').split('/')[0];
   }, [router.location]);
 
   const selectTab = useCallback(
@@ -62,7 +60,10 @@ export default function Layout({ children, router }) {
 
   return (
     <div className="content">
-      <Helmet titleTemplate="%s - Settings - FreeFeed" defaultTitle="Settinge - FreeFeed" />
+      <Helmet
+        titleTemplate={`%s - Settings - ${CONFIG.siteTitle}`}
+        defaultTitle={`Settinge - ${CONFIG.siteTitle}`}
+      />
       <div className="box">
         <div className="box-header-timeline">Settings</div>
         <div className="box-body">

@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, useField } from 'react-final-form-hooks';
 import { without, uniq } from 'lodash';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import {
   DISPLAYNAMES_DISPLAYNAME,
   DISPLAYNAMES_BOTH,
@@ -16,24 +17,35 @@ import {
   HOMEFEED_MODE_FRIENDS_ALL_ACTIVITY,
 } from '../../../utils/feed-options';
 import { Throbber } from '../../throbber';
-import { updateActualUserPreferences } from '../../../redux/action-creators';
+import { updateActualUserPreferences, setNSFWVisibility } from '../../../redux/action-creators';
 import settingsStyles from '../settings.module.scss';
 import { PreventPageLeaving } from '../../prevent-page-leaving';
+import { Icon } from '../../fontawesome-icons';
 import { RadioInput, CheckboxInput } from './utils';
 import styles from './forms.module.scss';
 
 export default function AppearanceForm() {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user);
+  const isNSFWVisible = useSelector((state) => state.isNSFWVisible);
   const formStatus = useSelector((state) => state.settingsForms.displayPrefsStatus);
+
+  useEffect(() => {
+    const { hash } = window.location;
+    if (!hash) {
+      return;
+    }
+    const element = document.getElementById(hash.substring(1));
+    element && element.scrollIntoView();
+  }, []);
 
   const form = useForm(
     useMemo(
       () => ({
-        initialValues: initialValues(userData),
+        initialValues: initialValues({ ...userData, isNSFWVisible }),
         onSubmit: onSubmit(dispatch),
       }),
-      [dispatch, userData],
+      [dispatch, isNSFWVisible, userData],
     ),
   );
 
@@ -47,13 +59,14 @@ export default function AppearanceForm() {
   const hideBannedComments = useField('hideBannedComments', form.form);
   const hideUnreadNotifications = useField('hideUnreadNotifications', form.form);
   const allowLinksPreview = useField('allowLinksPreview', form.form);
+  const hideNSFWContent = useField('hideNSFWContent', form.form);
 
   return (
     <form onSubmit={form.handleSubmit}>
       <PreventPageLeaving prevent={form.dirty} />
 
       <section className={settingsStyles.formSection}>
-        <h4>Names</h4>
+        <h4 id="names">Names</h4>
 
         <div className="form-group">
           <div className="checkbox">
@@ -91,7 +104,7 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4>Your Home feed content</h4>
+        <h4 id="home">Your Home feed content</h4>
 
         <div className="form-group">
           <div className="radio">
@@ -129,7 +142,33 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4>Display density</h4>
+        <h4 id="nsfw">NSFW content</h4>
+
+        <div className="form-group">
+          <div className="checkbox">
+            <label>
+              <CheckboxInput field={hideNSFWContent} />
+              Hide NSFW content
+            </label>
+            <p className="help-block">
+              <Icon icon={faExclamationTriangle} /> This setting is saved locally in your web
+              browser. It can be different for each browser and each device that you use.
+            </p>
+            <p className="help-block">
+              Hide images in posts marked with #nsfw tag (or posted to a group that has #nsfw in
+              group description).
+            </p>
+            <p className="help-block">
+              NSFW is an abbreviation of Not Safe For Work: images that the user may not wish to be
+              seen looking at in a public, formal, or controlled environment, for example, nudity,
+              or intense sexuality.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className={settingsStyles.formSection}>
+        <h4 id="dencity">Display density</h4>
 
         <div className="form-group">
           <div className="radio">
@@ -150,7 +189,7 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4>Comments</h4>
+        <h4 id="comments">Comments</h4>
 
         <div className="form-group">
           <div className="checkbox">
@@ -177,7 +216,7 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4>Unread notifications</h4>
+        <h4 id="notifications">Unread notifications</h4>
 
         <div className="form-group">
           <div className="checkbox">
@@ -190,7 +229,7 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4>Link previews</h4>
+        <h4 id="previews">Link previews</h4>
 
         <div className="form-group">
           <div className="checkbox">
@@ -230,7 +269,7 @@ export default function AppearanceForm() {
   );
 }
 
-function initialValues({ frontendPreferences: frontend, preferences: backend }) {
+function initialValues({ frontendPreferences: frontend, preferences: backend, isNSFWVisible }) {
   return {
     useYou: frontend.displayNames.useYou,
     displayNames: frontend.displayNames.displayOption.toString(),
@@ -242,11 +281,13 @@ function initialValues({ frontendPreferences: frontend, preferences: backend }) 
     hideBannedComments: backend.hideCommentsOfTypes.includes(COMMENT_HIDDEN_BANNED),
     hideUnreadNotifications: frontend.hideUnreadNotifications,
     allowLinksPreview: frontend.allowLinksPreview,
+    hideNSFWContent: !isNSFWVisible,
   };
 }
 
 function onSubmit(dispatch) {
   return (values) => {
+    dispatch(setNSFWVisibility(!values.hideNSFWContent));
     dispatch(
       updateActualUserPreferences({
         updateFrontendPrefs(prefs) {

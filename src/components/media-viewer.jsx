@@ -19,7 +19,7 @@ const ImageAttachmentsLightbox = lazyComponent(() => import('./post-attachment-i
 });
 
 export const getMediaType = (url) => {
-  if (url.match(/\.(jpg|png|jpeg|webp)(\?|$|#)/i)) {
+  if (url.match(/\.(jpg|png|jpeg|webp|gif)(\?|$|#)/i)) {
     return 'image';
   } else if (isInstagram(url)) {
     return 'instagram';
@@ -40,6 +40,15 @@ const getEmbeddableItem = async (url, withoutAutoplay) => {
   }
 
   if (info) {
+    if (info.mediaURL) {
+      return {
+        src: info.mediaURL,
+        w: info.width || 0,
+        h: info.height || 0,
+        pid: 'media',
+      };
+    }
+
     let playerHTML = null;
     const w = 800;
     const h = info.aspectRatio ? Math.round(w * info.aspectRatio) : 450;
@@ -102,19 +111,19 @@ const getEmbeddableItem = async (url, withoutAutoplay) => {
 
 function MediaViewer(props) {
   const { mediaViewer, showMedia } = props;
-  const { attachments, postId, navigate, thumbnail, index } = mediaViewer;
+  const { attachments, postId, thumbnail, index } = mediaViewer;
   const [lightboxItems, setLightboxItems] = useState(null);
 
-  const onDestroy = useCallback(() => {
-    // setLightboxItems(null);
-    showMedia({});
-  }, []);
+  const onDestroy = useCallback(() => showMedia({}), [showMedia]);
 
   const onNavigate = useCallback(
     (where) => {
-      const nextPost = typeof navigate === 'function' ? navigate(postId, where) : null;
+      const nextPost =
+        typeof mediaViewer.navigate === 'function'
+          ? mediaViewer.navigate(mediaViewer.postId, where)
+          : null;
       if (nextPost) {
-        props.showMedia({
+        showMedia({
           ...mediaViewer,
           postId: nextPost.id,
           attachments: nextPost.attachments,
@@ -123,10 +132,10 @@ function MediaViewer(props) {
         });
       }
     },
-    [postId],
+    [mediaViewer, showMedia],
   );
 
-  const getThumbnail = useCallback((index) => (thumbnail ? thumbnail(index) : null), [attachments]);
+  const getThumbnail = useCallback((index) => (thumbnail ? thumbnail(index) : null), [thumbnail]);
 
   useEffect(() => {
     if (attachments) {

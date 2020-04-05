@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -62,7 +63,8 @@ class UserFeed extends React.Component {
       return (
         <div className="box-body">
           <p>
-            <b>{viewUser.screenName}</b> has a protected feed. It is only visible to FreeFeed users.
+            <b>{viewUser.screenName}</b> has a protected feed. It is only visible to{' '}
+            {CONFIG.siteTitle} users.
           </p>
         </div>
       );

@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React, { Suspense } from 'react';
 import { IndexLink, Link } from 'react-router';
 import { connect } from 'react-redux';
@@ -160,7 +161,7 @@ class Layout extends React.Component {
                   to="/"
                   onClick={logoHandler(props.routeName, props.home)}
                 >
-                  FreeFeed
+                  {CONFIG.siteTitle}
                 </IndexLink>
               </h1>
             </div>

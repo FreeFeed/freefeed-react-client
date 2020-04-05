@@ -38,7 +38,7 @@ const composeState = ({ subsequentComments, setting, omittedComments = 0, withDe
     },
     commentsHighlights: {},
     commentLikes: {},
-    commentViewState: {
+    commentEditState: {
       [comment1.id]: {},
       [comment2.id]: {},
       [comment3.id]: {},

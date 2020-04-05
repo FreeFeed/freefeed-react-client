@@ -25,7 +25,6 @@ import {
   TOGGLE_PINNED_GROUP,
   UPDATE_ACTUAL_USER_PREFERENCES,
   UPDATE_USER_NOTIFICATION_PREFERENCES,
-  INITIAL_WHO_AM_I,
 } from './action-types';
 import { request, response, fail, baseType } from './async-helpers';
 
@@ -70,7 +69,6 @@ const isUserFeedRequest = (action) => userFeedGeneratingActions.map(request).inc
 export const userChangeActions = [
   SIGN_UP,
   WHO_AM_I,
-  INITIAL_WHO_AM_I,
   SUBSCRIBE,
   UNSUBSCRIBE,
   UPDATE_USER,

@@ -60,7 +60,7 @@ html(lang='en')
             document.body.classList.add('dark-theme');
           }
         } catch (e) { }
-        setTimeout(() => document.body.classList.remove('initial'), 0);
+        setTimeout(function () { document.body.classList.remove('initial') }, 0);
       })();
 
     #app

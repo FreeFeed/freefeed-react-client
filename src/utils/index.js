@@ -107,36 +107,6 @@ export function delay(timeout = 0) {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 }
 
-// detect if localStorage is supported by attempting to set and delete an item
-// if it throws, then no localStorage for us (and we are most probably a Safari
-// in private browsing mode)
-let localStorageSupported = true;
-try {
-  const lskey = `ff${new Date().getTime()}`;
-  window.localStorage.setItem(lskey, 'test');
-  window.localStorage.removeItem(lskey);
-} catch (err) {
-  localStorageSupported = false;
-}
-
-const localStorageShim = {
-  _data: {},
-  setItem(id, val) {
-    return (this._data[id] = String(val));
-  },
-  getItem(id) {
-    return Object.prototype.hasOwnProperty.call(this._data, id) ? this._data[id] : null;
-  },
-  removeItem(id) {
-    return delete this._data[id];
-  },
-  clear() {
-    return (this._data = {});
-  },
-};
-
-export const localStorage = localStorageSupported ? window.localStorage : localStorageShim;
-
 export function getSummaryPeriod(days) {
   switch (+days) {
     case 1:

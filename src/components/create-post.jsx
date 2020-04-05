@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
+import { submitByEnter } from '../utils/submit-by-enter';
 import SendTo from './send-to';
 import Dropzone from './dropzone';
 import PostAttachments from './post-attachments';
@@ -107,7 +108,8 @@ export default class CreatePost extends React.Component {
   };
 
   checkCreatePostAvailability = () => {
-    const isFormEmpty = isTextEmpty(this.state.postText) || this.selectFeeds.values === 0;
+    const isFormEmpty =
+      isTextEmpty(this.state.postText) || !this.selectFeeds || this.selectFeeds.values === 0;
 
     this.setState({ isFormEmpty });
   };
@@ -119,14 +121,7 @@ export default class CreatePost extends React.Component {
   attLoadingStarted = () => this.setState({ attLoading: true });
   attLoadingCompleted = () => this.setState({ attLoading: false });
 
-  checkSave = (e) => {
-    const isEnter = e.keyCode === 13;
-    const isShiftPressed = e.shiftKey;
-    if (isEnter && !isShiftPressed) {
-      e.preventDefault();
-      this.canSubmitForm() && this.createPost();
-    }
-  };
+  checkSave = submitByEnter(() => this.canSubmitForm() && this.createPost());
 
   toggleMore = () => {
     this.setState({ isMoreOpen: !this.state.isMoreOpen });

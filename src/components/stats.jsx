@@ -65,12 +65,7 @@ class StatsChart extends React.Component {
             },
             stops: [
               [0, Highcharts.getOptions().colors[0]],
-              [
-                1,
-                Highcharts.Color(Highcharts.getOptions().colors[0])
-                  .setOpacity(0)
-                  .get('rgba'),
-              ],
+              [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')],
             ],
           },
           marker: { radius: 2 },
@@ -97,7 +92,7 @@ const Stats = () => (
   <div className="box">
     <div className="box-header-timeline" />
     <div className="box-body">
-      <h3>FreeFeed Stats</h3>
+      <h3>{CONFIG.siteTitle} Stats</h3>
       <StatsChart type={`active_users`} title="Daily Active Users" />
       <StatsChart type={`registrations`} title="Daily Registrations" />
       <StatsChart type={`posts_creates`} title="Daily Posts" />

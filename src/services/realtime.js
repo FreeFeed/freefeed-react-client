@@ -1,55 +1,18 @@
 /* global CONFIG */
+import createDebug from 'debug';
 import io from 'socket.io-client';
 
 import { getToken } from './auth';
 
-const dummyPost = { getBoundingClientRect: () => ({ top: 0 }) };
-
-export const scrollCompensator = (dispatchAction) => (...actionParams) => {
-  //we hope that markup will remain the same — best tradeoff between this and code all over components
-  const postCommentNodes = [...document.querySelectorAll('.post, .comment')];
-
-  const [firstVisible] = postCommentNodes.filter(
-    (element) => element.getBoundingClientRect().top > 0,
-  );
-
-  const nearestTopIndex = postCommentNodes.indexOf(firstVisible) - 1;
-
-  const nearestTop = postCommentNodes[nearestTopIndex] || dummyPost;
-
-  const topBefore = nearestTop.getBoundingClientRect().top;
-  const heightBefore = document.body.offsetHeight;
-
-  //here we're dispatching, so render is called internally and after call we have new page
-  const res = dispatchAction(...actionParams);
-
-  if (res.then) {
-    res.then(() => {
-      const topAfter = nearestTop.getBoundingClientRect().top;
-      const heightAfter = document.body.offsetHeight;
-
-      if (topAfter !== topBefore) {
-        scrollBy(0, heightAfter - heightBefore);
-      }
-    });
-  }
-
-  const topAfter = nearestTop.getBoundingClientRect().top;
-  const heightAfter = document.body.offsetHeight;
-
-  if (topAfter !== topBefore) {
-    scrollBy(0, heightAfter - heightBefore);
-  }
-  return res;
-};
-
+const socketDebug = createDebug('freefeed:react:realtime:socket');
 const bindSocketLog = (socket) => (eventName) =>
-  socket.on(eventName, (data) => console.log(`socket ${eventName}`, data)); // eslint-disable-line no-console
+  socket.on(eventName, (data) => socketDebug(`got event: ${eventName}`, data));
 
 const bindSocketActionsLog = (socket) => (events) => events.forEach(bindSocketLog(socket));
 
 const eventsToLog = ['connect', 'error', 'disconnect', 'reconnect'];
 
+const subscriptionDebug = createDebug('freefeed:react:realtime:subscriptions');
 export class Connection {
   socket;
 
@@ -74,14 +37,14 @@ export class Connection {
 
   async subscribeTo(...rooms) {
     if (this.socket.connected && rooms.length > 0) {
-      console.log('subscribing to', rooms); // eslint-disable-line no-console
+      subscriptionDebug('subscribing to', rooms);
       await this.socket.emitAsync('subscribe', roomsToHash(rooms));
     }
   }
 
   async unsubscribeFrom(...rooms) {
     if (this.socket.connected && rooms.length > 0) {
-      console.log('unsubscribing from', rooms); // eslint-disable-line no-console
+      subscriptionDebug('unsubscribing from', rooms);
       await this.socket.emitAsync('unsubscribe', roomsToHash(rooms));
     }
   }

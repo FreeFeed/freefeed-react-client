@@ -174,18 +174,10 @@ export function deletePost(postId) {
   };
 }
 
-export function toggleCommenting(postId) {
+export function toggleCommenting(postId, newCommentText = '') {
   return {
     type: ActionTypes.TOGGLE_COMMENTING,
-    postId,
-  };
-}
-
-export function updateCommentingText(postId, commentText) {
-  return {
-    type: ActionTypes.UPDATE_COMMENTING_TEXT,
-    postId,
-    commentText,
+    payload: { postId, newCommentText },
   };
 }
 
@@ -882,6 +874,10 @@ export function setSystemColorScheme(scheme) {
  */
 export function setUserColorScheme(scheme) {
   return { type: ActionTypes.SET_USER_COLOR_SCHEME, payload: scheme };
+}
+
+export function setNSFWVisibility(visible) {
+  return { type: ActionTypes.SET_NSFW_VISIBILITY, payload: visible };
 }
 
 export function getAppTokens() {

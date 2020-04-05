@@ -37,8 +37,8 @@ export default React.memo(function Signup() {
                 </p>
                 {withForm && (
                   <p>
-                    Please provide your email address to be notified when FreeFeed is open for
-                    registration.
+                    Please provide your email address to be notified when {CONFIG.siteTitle} is open
+                    for registration.
                   </p>
                 )}
               </div>
@@ -87,13 +87,13 @@ const ExtAuthSignup = React.memo(function ExtAuthSignup() {
 
   return (
     <>
-      <p>Or use external service profile to create FreeFeed account:</p>
+      <p>Or use external service profile to create {CONFIG.siteTitle} account:</p>
       <ExtAuthButtons mode={SIGN_UP} />
       {result.status === 'signed-in' && (
         <div className="alert alert-success" role="alert">
           <p>
             This {providerTitle(result.profile.provider)} account is already connected to{' '}
-            <strong>@{result.user.username}</strong> FreeFeed account. Is it you?
+            <strong>@{result.user.username}</strong> {CONFIG.siteTitle} account. Is it you?
           </p>
           <p>
             <button className="btn btn-success" onClick={doSignIn}>
@@ -110,7 +110,7 @@ const ExtAuthSignup = React.memo(function ExtAuthSignup() {
       {result.status === 'user-exists' && (
         <div className="alert alert-warning" role="alert">
           <p>
-            There is already a FreeFeed account with the address{' '}
+            There is already a {CONFIG.siteTitle} account with the address{' '}
             <strong>{result.profile.email}</strong>.
           </p>
           <p>

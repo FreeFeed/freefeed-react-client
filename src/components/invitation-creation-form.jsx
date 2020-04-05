@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -42,7 +43,7 @@ class InvitationCreationForm extends React.Component {
     const { userFeeds, groupFeeds, user, form, baseLocation } = this.props;
     return (
       <div className="box">
-        <div className="box-header-timeline">Invite to FreeFeed</div>
+        <div className="box-header-timeline">Invite to {CONFIG.siteTitle}</div>
         <div className="box-body">
           <form onSubmit={preventDefault(this.createInvitation)}>
             <div>Suggested users</div>
@@ -182,9 +183,9 @@ class InvitationCreationForm extends React.Component {
       lang,
     );
 
-    const newMessage = `${customMessage}${
-      customMessage && suggestionsText ? '\n\n' : ''
-    }${suggestionsText || ''}`;
+    const newMessage = `${customMessage}${customMessage && suggestionsText ? '\n\n' : ''}${
+      suggestionsText || ''
+    }`;
     this.setState({ message: newMessage, suggestions });
   };
 
@@ -311,19 +312,16 @@ function selectUsersAndGroupsFromText(message, { users, groups }) {
 function patchDescriptions(descriptions = {}, myUsername, lang) {
   return {
     ...descriptions,
-    [myUsername]: `${SELF_DESCRIPTION[lang]}${descriptions[myUsername] ? ';' : ''} ${descriptions[
-      myUsername
-    ] || ''}`.trim(),
+    [myUsername]: `${SELF_DESCRIPTION[lang]}${descriptions[myUsername] ? ';' : ''} ${
+      descriptions[myUsername] || ''
+    }`.trim(),
   };
 }
 
 function clearMessageFromUsersAndGroups(message, users, groups) {
   const usernameRegexp = formatAllUsernameRegexp(users, groups);
   const prefixesRegexp = new RegExp(`(${prefixes.join('|')})`, 'g');
-  return message
-    .replace(usernameRegexp, '')
-    .replace(prefixesRegexp, '')
-    .trim();
+  return message.replace(usernameRegexp, '').replace(prefixesRegexp, '').trim();
 }
 
 function formatAllUsernameRegexp(...usernameArrays) {

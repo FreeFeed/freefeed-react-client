@@ -58,12 +58,12 @@ class UserName extends React.Component {
         const { bottom, left } = ReactDOM.findDOMNode(this).getBoundingClientRect();
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         this.setState({ bottom: bottom + scrollTop, left, isCardOpen: true });
+
+        if (this.props.userHover) {
+          this.props.userHover.hover(this.props.user.username);
+        }
       }
     }, 500);
-
-    if (this.props.userHover) {
-      this.props.userHover.hover(this.props.user.username);
-    }
   }
 
   leaveUserName() {
@@ -72,12 +72,11 @@ class UserName extends React.Component {
     this.leaveTimeout = setTimeout(() => {
       if (!this.state.isHovered) {
         this.setState({ isCardOpen: false });
+        if (this.props.userHover) {
+          this.props.userHover.leave();
+        }
       }
     }, 500);
-
-    if (this.props.userHover) {
-      this.props.userHover.leave();
-    }
   }
 
   render() {

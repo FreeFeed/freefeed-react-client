@@ -8,7 +8,7 @@ import { getToken } from '../services/auth';
 import { parseQuery } from '../utils/search-highlighter';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
 import * as FeedOptions from '../utils/feed-options';
-import { loadColorScheme, getSystemColorScheme } from '../services/appearance';
+import { loadColorScheme, getSystemColorScheme, loadNSFWVisibility } from '../services/appearance';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
 import { patchObjectByKey, setOnLocationChange } from './reducers/helpers';
@@ -35,45 +35,45 @@ export const initialized = asyncState(ActionTypes.INITIAL_WHO_AM_I, (state, acti
 export function title(state = '', action) {
   switch (action.type) {
     case response(ActionTypes.HOME): {
-      return 'FreeFeed';
+      return CONFIG.siteTitle;
     }
     case response(ActionTypes.DIRECT): {
-      return 'Direct messages - FreeFeed';
+      return `Direct messages - ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.DISCUSSIONS): {
-      return 'My discussions - FreeFeed';
+      return `My discussions - ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.SAVES): {
-      return 'Saved posts - FreeFeed';
+      return `Saved posts - ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.GET_BEST_OF): {
-      return `Best Of FreeFeed`;
+      return `Best Of ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.GET_EVERYTHING): {
-      return `Everything On FreeFeed`;
+      return `Everything On ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.GET_NOTIFICATIONS): {
-      return `Notifications - FreeFeed`;
+      return `Notifications - ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.GET_SEARCH): {
-      return `Search - FreeFeed`;
+      return `Search - ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.GET_USER_FEED): {
       const user = action.payload.users.find((user) => user.id === action.payload.timelines.user);
       const author =
         user.screenName + (user.username !== user.screenName ? ` (${user.username})` : '');
-      return `${author} - FreeFeed`;
+      return `${author} - ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.GET_SINGLE_POST): {
       const text = action.payload.posts.body.substr(0, 60);
       const [user] = action.payload.users || [];
       const author =
         user.screenName + (user.username !== user.screenName ? ` (${user.username})` : '');
-      return `${text} - ${author} - FreeFeed`;
+      return `${text} - ${author} - ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.GET_SUMMARY): {
       const period = getSummaryPeriod(action.request.days);
-      return `Best of ${period} - FreeFeed`;
+      return `Best of ${period} - ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.GET_USER_SUMMARY): {
       const period = getSummaryPeriod(action.request.days);
@@ -83,7 +83,7 @@ export function title(state = '', action) {
       const author = user
         ? user.screenName + (user.username !== user.screenName ? ` (${user.username})` : '')
         : action.request.username;
-      return `Best of ${period} - ${author} - FreeFeed`;
+      return `Best of ${period} - ${author} - ${CONFIG.siteTitle}`;
     }
     case fail(ActionTypes.HOME):
     case fail(ActionTypes.DIRECT):
@@ -91,11 +91,11 @@ export function title(state = '', action) {
     case fail(ActionTypes.SAVES):
     case fail(ActionTypes.GET_USER_FEED):
     case fail(ActionTypes.GET_SINGLE_POST): {
-      return 'Error - FreeFeed';
+      return `Error - ${CONFIG.siteTitle}`;
     }
 
     case ActionTypes.STATIC_PAGE: {
-      return `${action.payload.title} - FreeFeed`;
+      return `${action.payload.title} - ${CONFIG.siteTitle}`;
     }
   }
   return state;
@@ -110,7 +110,7 @@ export const restorePasswordStatus = asyncState(
   setOnLocationChange(initialAsyncState),
 );
 
-const defaultResetHeader = 'Reset FreeFeed Password';
+const defaultResetHeader = `Reset ${CONFIG.siteTitle} Password`;
 const successResetHeader = 'Please log in with your new password';
 
 export function resetPassForm(
@@ -189,6 +189,7 @@ const initFeed = {
   separateHiddenEntries: false,
   isHiddenRevealed: false,
   isLastPage: true,
+  feedError: null,
 };
 
 export function feedViewState(state = initFeed, action) {
@@ -217,7 +218,7 @@ export function feedViewState(state = initFeed, action) {
     };
   }
   if (ActionHelpers.isFeedFail(action)) {
-    return initFeed;
+    return { ...initFeed, feedError: action.payload.err };
   }
 
   switch (action.type) {
@@ -228,16 +229,19 @@ export function feedViewState(state = initFeed, action) {
       return { ...state, isLastPage: action.payload.isLastPage };
     }
     case response(ActionTypes.DELETE_POST): {
-      if (action.payload.postStillAvailable) {
+      const { postId } = action.request;
+      if (action.payload.postStillAvailable || !state.entries.includes(postId)) {
         return state;
       }
-      const { postId } = action.request;
       return {
         ...state,
         entries: _.without(state.entries, postId),
       };
     }
     case ActionTypes.REALTIME_POST_DESTROY: {
+      if (!state.entries.includes(action.postId)) {
+        return state;
+      }
       return {
         ...state,
         entries: _.without(state.entries, action.postId),
@@ -245,7 +249,7 @@ export function feedViewState(state = initFeed, action) {
     }
     case response(ActionTypes.CREATE_POST): {
       const postId = action.payload.posts.id;
-      if (state.entries.indexOf(postId) !== -1) {
+      if (state.entries.includes(postId)) {
         return state;
       }
       return {
@@ -261,15 +265,12 @@ export function feedViewState(state = initFeed, action) {
       };
     }
     case ActionTypes.REALTIME_POST_NEW: {
-      if (state.entries.indexOf(action.post.id) !== -1) {
-        return state;
-      }
-      if (!action.shouldBump) {
+      if (state.entries.includes(action.post.id) || !action.shouldBump) {
         return state;
       }
 
       let { entries } = state;
-      const p = state.entries.indexOf(action.insertBefore);
+      const p = entries.indexOf(action.insertBefore);
       if (p < 0) {
         entries = [...entries, action.post.id];
       } else {
@@ -280,7 +281,7 @@ export function feedViewState(state = initFeed, action) {
     }
     case ActionTypes.REALTIME_LIKE_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW: {
-      if (action.post && action.shouldBump) {
+      if (action.post && action.shouldBump && !state.entries.includes(action.post.posts.id)) {
         const postId = action.post.posts.id;
         return {
           ...state,
@@ -348,11 +349,9 @@ export function feedViewState(state = initFeed, action) {
 const NO_ERROR = {
   isError: false,
   errorString: '',
-  commentError: '',
 };
 
 const POST_SAVE_ERROR = 'Something went wrong while editing the post...';
-const NEW_COMMENT_ERROR = 'Failed to add comment';
 
 const indexById = (list) => _.keyBy(list || [], 'id');
 const mergeByIds = (state, array) => ({ ...state, ...indexById(array) });
@@ -466,22 +465,13 @@ export function postsViewState(state = {}, action) {
       return { ...state, [id]: { ...state[id], isError, errorString } };
     }
     case ActionTypes.TOGGLE_COMMENTING: {
+      const { postId, newCommentText = '' } = action.payload;
       return {
         ...state,
-        [action.postId]: {
-          ...state[action.postId],
-          isCommenting: !state[action.postId].isCommenting,
-          newCommentText: state[action.postId].newCommentText || '',
-        },
-      };
-    }
-    case ActionTypes.UPDATE_COMMENTING_TEXT: {
-      const postState = state[action.postId];
-      return {
-        ...state,
-        [action.postId]: {
-          ...postState,
-          newCommentText: action.commentText,
+        [postId]: {
+          ...state[postId],
+          isCommenting: !state[postId].isCommenting,
+          newCommentText,
         },
       };
     }
@@ -515,7 +505,6 @@ export function postsViewState(state = {}, action) {
         [post.id]: {
           ...post,
           isSavingComment: false,
-          commentError: NEW_COMMENT_ERROR,
         },
       };
     }
@@ -1195,94 +1184,7 @@ export function comments(state = {}, action) {
   return state;
 }
 
-const COMMENT_SAVE_ERROR = 'Something went wrong while saving comment';
-
-function updateCommentViewState(state, action) {
-  const comments = action.payload.comments || [];
-  const commentsViewState = comments.map((comment) => ({
-    id: comment.id,
-    isEditing: false,
-    editText: comment.body,
-  }));
-  const viewStateMap = indexById(commentsViewState);
-  return { ...viewStateMap, ...state };
-}
-
-export function commentViewState(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action)) {
-    return updateCommentViewState(state, action);
-  }
-  switch (action.type) {
-    case response(ActionTypes.SHOW_MORE_COMMENTS): {
-      return updateCommentViewState(state, action);
-    }
-    case response(ActionTypes.GET_SINGLE_POST): {
-      return updateCommentViewState(state, action);
-    }
-    case ActionTypes.REALTIME_COMMENT_NEW: {
-      return updateCommentViewState(state, { payload: { comments: [action.comment] } });
-    }
-    case ActionTypes.TOGGLE_EDITING_COMMENT: {
-      return {
-        ...state,
-        [action.commentId]: {
-          ...state[action.commentId],
-          isEditing: !state[action.commentId].isEditing,
-        },
-      };
-    }
-    case request(ActionTypes.SAVE_EDITING_COMMENT): {
-      return {
-        ...state,
-        [action.payload.commentId]: {
-          ...state[action.payload.commentId],
-          editText: action.payload.newCommentBody,
-          isSaving: true,
-        },
-      };
-    }
-    case response(ActionTypes.SAVE_EDITING_COMMENT): {
-      return {
-        ...state,
-        [action.payload.comments.id]: {
-          ...state[action.payload.comments.id],
-          isEditing: false,
-          isSaving: false,
-          editText: action.payload.comments.body,
-          ...NO_ERROR,
-        },
-      };
-    }
-    case fail(ActionTypes.SAVE_EDITING_COMMENT): {
-      return {
-        ...state,
-        [action.payload.comments.id]: {
-          ...state[action.payload.comments.id],
-          isEditing: true,
-          isSaving: false,
-          errorString: COMMENT_SAVE_ERROR,
-        },
-      };
-    }
-    case response(ActionTypes.DELETE_COMMENT): {
-      return { ...state, [action.request.commentId]: undefined };
-    }
-    case response(ActionTypes.ADD_COMMENT): {
-      return {
-        ...state,
-        [action.payload.comments.id]: {
-          id: action.payload.comments.id,
-          isEditing: false,
-          editText: action.payload.comments.body,
-        },
-      };
-    }
-    case ActionTypes.UNAUTHENTICATED: {
-      return {};
-    }
-  }
-  return state;
-}
+export { commentEditState } from './reducers/comment-edit.js';
 
 const loadLikesListStatusesReducer = asyncStatesMap(ActionTypes.GET_COMMENT_LIKES, {
   getKey: getKeyBy('commentId'),
@@ -1706,10 +1608,10 @@ export function boxHeader(state = '', action) {
       )} and earlier`;
     }
     case request(ActionTypes.GET_BEST_OF): {
-      return 'Best Of FreeFeed';
+      return `Best Of ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.GET_EVERYTHING): {
-      return `Everything On FreeFeed`;
+      return `Everything On ${CONFIG.siteTitle}`;
     }
     case request(ActionTypes.GET_USER_FEED): {
       return '';
@@ -1760,13 +1662,13 @@ function getValidRecipients(state) {
     }
   }).filter(Boolean);
 
-  const canPostToGroup = function(subUser) {
+  const canPostToGroup = function (subUser) {
     return (
       subUser.isRestricted === '0' || (subUser.administrators || []).indexOf(state.users.id) > -1
     );
   };
 
-  const canSendDirect = function(subUser) {
+  const canSendDirect = function (subUser) {
     return _.findIndex(state.users.subscribers || [], { id: subUser.id }) > -1;
   };
 
@@ -1843,16 +1745,13 @@ const getRecentGroups = ({ subscribers, frontendPreferences }) => {
     .filter((i) => pinnedGroups.indexOf(i.id) > -1)
     .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
     .map((i) => ({ ...i, isPinned: true }));
-  if (recentGroups.length < GROUPS_SIDEBAR_LIST_LENGTH) {
-    // pinned groups are always shown, and unpinned groups are shown if limit allows
-    return recentGroups.concat(
-      groups
-        .filter((i) => pinnedGroups.indexOf(i.id) === -1)
-        .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
-        .slice(0, GROUPS_SIDEBAR_LIST_LENGTH - recentGroups.length),
-    );
-  }
-  return recentGroups;
+
+  return recentGroups.concat(
+    groups
+      .filter((i) => pinnedGroups.indexOf(i.id) === -1)
+      .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
+      .slice(0, GROUPS_SIDEBAR_LIST_LENGTH),
+  );
 };
 
 export function recentGroups(state = [], action) {
@@ -2363,6 +2262,13 @@ export function systemColorScheme(state = getSystemColorScheme(), action) {
 
 export function userColorScheme(state = loadColorScheme(), action) {
   if (action.type === ActionTypes.SET_USER_COLOR_SCHEME) {
+    return action.payload;
+  }
+  return state;
+}
+
+export function isNSFWVisible(state = loadNSFWVisibility(), action) {
+  if (action.type === ActionTypes.SET_NSFW_VISIBILITY) {
     return action.payload;
   }
   return state;

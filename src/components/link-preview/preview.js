@@ -8,6 +8,7 @@ import GoogleDocsPreview, { canShowURL as googleDocsCanShowURL } from './google-
 import YandexMusicPreview, { canShowURL as yandexMusicCanShowURL } from './yandex-music';
 import WikipediaPreview, { canShowURL as wikipediaCanShowURL } from './wikipedia';
 import TelegramPreview, { canShowURL as telegramCanShowURL } from './telegram';
+import TikTokPreview, { canShowURL as tikTokCanShowURL } from './tiktok';
 import EmbedlyPreview from './embedly';
 
 export default function LinkPreview({ allowEmbedly, url }) {
@@ -28,6 +29,8 @@ export default function LinkPreview({ allowEmbedly, url }) {
     return <WikipediaPreview url={url} />;
   } else if (telegramCanShowURL(url)) {
     return <TelegramPreview url={url} />;
+  } else if (tikTokCanShowURL(url)) {
+    return <TikTokPreview url={url} />;
   }
 
   if (allowEmbedly) {

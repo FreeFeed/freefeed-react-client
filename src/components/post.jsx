@@ -19,6 +19,7 @@ import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
 import { savePost, hideByName, unhideNames } from '../redux/action-creators';
 import { initialAsyncState } from '../redux/async-helpers';
+import { submitByEnter } from '../utils/submit-by-enter';
 import { Throbber } from './throbber';
 
 import PostAttachments from './post-attachments';
@@ -191,15 +192,7 @@ class Post extends React.Component {
     props.saveEditingPost(props.id, reqBody);
   };
 
-  handleKeyDown = (event) => {
-    const isEnter = event.keyCode === 13;
-    const isShiftPressed = event.shiftKey;
-
-    if (isEnter && !isShiftPressed) {
-      event.preventDefault();
-      this.canSubmitForm() && this.saveEditingPost();
-    }
-  };
+  handleKeyDown = submitByEnter(() => this.canSubmitForm() && this.saveEditingPost());
 
   handleAttachmentResponse = (att) => {
     if (this.state.editingAttachments.length >= attachmentsMaxCount) {
@@ -318,9 +311,10 @@ class Post extends React.Component {
       'single-post': props.isSinglePost,
       'timeline-post': !props.isSinglePost,
       'direct-post': props.isDirect,
+      'nsfw-post': props.isNSFW,
     });
 
-    const recipientCustomDisplay = function(recipient) {
+    const recipientCustomDisplay = function (recipient) {
       if (recipient.id !== props.createdBy.id) {
         return false;
       }
@@ -558,14 +552,25 @@ class Post extends React.Component {
               removeAttachment={this.removeAttachment}
               reorderImageAttachments={this.reorderImageAttachments}
             />
-
-            {noImageAttachments && linkToEmbed ? (
-              <div className="link-preview">
-                <LinkPreview url={linkToEmbed} allowEmbedly={props.allowLinksPreview} />
+            {!noImageAttachments && props.isNSFW && (
+              <div className="nsfw-bar">
+                Turn the <Link to="/settings/appearance#nsfw">NSFW filter</Link> off to enable
+                previews for sensitive content
               </div>
-            ) : (
-              false
             )}
+
+            {noImageAttachments &&
+              linkToEmbed &&
+              (props.isNSFW ? (
+                <div className="nsfw-bar">
+                  Turn the <Link to="/settings/appearance#nsfw">NSFW filter</Link> off to enable
+                  previews for sensitive content
+                </div>
+              ) : (
+                <div className="link-preview">
+                  <LinkPreview url={linkToEmbed} allowEmbedly={props.allowLinksPreview} />
+                </div>
+              ))}
 
             <div className="dropzone-previews" />
 
@@ -582,7 +587,7 @@ class Post extends React.Component {
                   <Icon
                     icon={faUserFriends}
                     className="post-lock-icon post-protected-icon"
-                    title="This entry is only visible to FreeFeed users"
+                    title={`This entry is only visible to ${CONFIG.siteTitle} users`}
                     onClick={this.toggleTimestamps}
                   />
                 ) : (
@@ -654,7 +659,6 @@ class Post extends React.Component {
               post={props}
               comments={props.comments}
               creatingNewComment={props.isCommenting}
-              updateCommentingText={props.updateCommentingText}
               addComment={props.addComment}
               toggleCommenting={props.toggleCommenting}
               showMoreComments={props.showMoreComments}
