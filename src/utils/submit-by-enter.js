@@ -11,7 +11,7 @@ import { KEY_RETURN } from 'keycode-js';
  * @param {Function} submitFn submit action function
  */
 export function submitByEnter(submitFn) {
-  return function(event) {
+  return function (event) {
     if (event.keyCode !== KEY_RETURN || event.shiftKey) {
       return;
     }

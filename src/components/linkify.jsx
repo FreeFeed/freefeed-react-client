@@ -148,7 +148,7 @@ function showMediaWithKey(showMedia) {
     showMedia({ attachments, index });
   };
 
-  return function(media, content, mediaType) {
+  return function (media, content, mediaType) {
     attachments.push({ url: media, id: 'comment', mediaType });
     const mediaIcon =
       {
@@ -180,7 +180,7 @@ function showMediaWithKey(showMedia) {
 }
 
 function anchorElWithKey(key) {
-  return function(href, content) {
+  return function (href, content) {
     return (
       <a href={href} target="_blank" dir="ltr" key={key}>
         {content}
@@ -190,7 +190,7 @@ function anchorElWithKey(key) {
 }
 
 function linkElWithKey(key) {
-  return function(to, content) {
+  return function (to, content) {
     return (
       <Link to={to} dir="ltr" key={key}>
         {content}

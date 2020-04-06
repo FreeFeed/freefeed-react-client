@@ -49,6 +49,17 @@ export class CombinedEventsSequences extends EventEmitter {
     return this.sources.some((s) => s.active);
   }
 
-  _srcFinish = () => this.active || this.emit(FINISH);
-  _srcStart = () => !this.active || this.emit(START);
+  _srcFinish = () => !this.active && this.emit(FINISH);
+  _srcStart = () => !this.active && this.emit(START);
+}
+
+/**
+ * Returns promise that resolves when the EventSequence became inactive
+ *
+ * @return {Promise<void>}
+ */
+export function inactivityOf(eventsSequence) {
+  return eventsSequence.active
+    ? new Promise((resolve) => eventsSequence.once(FINISH, resolve))
+    : Promise.resolve();
 }

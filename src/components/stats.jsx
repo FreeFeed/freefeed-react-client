@@ -65,12 +65,7 @@ class StatsChart extends React.Component {
             },
             stops: [
               [0, Highcharts.getOptions().colors[0]],
-              [
-                1,
-                Highcharts.Color(Highcharts.getOptions().colors[0])
-                  .setOpacity(0)
-                  .get('rgba'),
-              ],
+              [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')],
             ],
           },
           marker: { radius: 2 },
