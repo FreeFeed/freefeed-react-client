@@ -263,6 +263,7 @@ export default class CreatePost extends React.Component {
             isEditing={true}
             removeAttachment={this.removeAttachment}
             reorderImageAttachments={this.reorderImageAttachments}
+            showMedia={this.props.showMedia}
           />
 
           <div className="dropzone-previews" />
