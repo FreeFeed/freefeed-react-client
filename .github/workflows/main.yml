@@ -3,6 +3,9 @@ on:
     branches:
       - stable
       - release
+  push:
+    tags:
+      - '**'
 
 name: Build and push docker image
 
@@ -11,7 +14,7 @@ env:
 
 jobs:
   build:
-    name: Build
+    name: Build and push docker image
     runs-on: ubuntu-latest
 
     steps:
