@@ -22,7 +22,9 @@ class RuleGenerator {
     return {
       test: /\.m?jsx?$/,
       exclude: (modulePath) => {
-        return /node_modules\/(?!([^\/]+\/)*(autotrack|debug|dom-utils|filesize|lru-cache|social-text-tokenizer))/.test(modulePath);
+        return /node_modules\/(?!([^/]+\/)*(autotrack|debug|dom-utils|filesize|lru-cache|social-text-tokenizer))/.test(
+          modulePath,
+        );
       },
       use: [
         {
@@ -155,6 +157,13 @@ class RuleGenerator {
     return {
       test: /photoswipe.+\.(png|svg|gif)$/,
       loader: `file-loader?name=assets/images/photoswipe/${fileName}`,
+    };
+  }
+
+  get markdown() {
+    return {
+      test: /\.md$/,
+      use: [...this.babel.use, { loader: 'react-markdown-loader' }],
     };
   }
 
