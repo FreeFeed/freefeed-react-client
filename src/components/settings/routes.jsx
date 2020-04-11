@@ -1,14 +1,15 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import { IndexRoute, Route } from 'react-router';
 
+import { lazyRetry } from '../../utils/retry-promise';
 import { tokensRoute } from './app-tokens/routes';
 
-const Layout = lazy(() => import('./layout'));
-const ProfilePage = lazy(() => import('./profile'));
-const SignInPage = lazy(() => import('./sign-in'));
-const AppearancePage = lazy(() => import('./appearance'));
-const PrivacyPage = lazy(() => import('./privacy'));
-const NotificationsPage = lazy(() => import('./notififications'));
+const Layout = lazyRetry(() => import('./layout'));
+const ProfilePage = lazyRetry(() => import('./profile'));
+const SignInPage = lazyRetry(() => import('./sign-in'));
+const AppearancePage = lazyRetry(() => import('./appearance'));
+const PrivacyPage = lazyRetry(() => import('./privacy'));
+const NotificationsPage = lazyRetry(() => import('./notififications'));
 
 export function settingsRoute(rootPath) {
   return (
