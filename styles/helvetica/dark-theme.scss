@@ -40,6 +40,11 @@ body.dark-theme {
     background-color: $bg-color-lightest;
   }
 
+  code {
+    color: $text-color-lighter;
+    background-color: $bg-color-lightest;
+  }
+
   .timeline-post.direct-post {
     border-bottom-color: $bg-color-lighter;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 48 48'><path fill='%23505050' d='M40 8H8c-2.21 0-3.98 1.79-3.98 4L4 36c0 2.21 1.79 4 4 4h32c2.21 0 4-1.79 4-4V12c0-2.21-1.79-4-4-4zm0 8L24 26 8 16v-4l16 10 16-10v4z'/></svg>");

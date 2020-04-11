@@ -42,6 +42,7 @@ if (store.getState().authenticated) {
 
 import { bindRouteActions } from './redux/route-actions';
 import { initUnscroll, safeScrollTo } from './services/unscroll';
+import { lazyRetry } from './utils/retry-promise';
 
 // Set initial history state.
 // Without this, there can be problems with third-party
@@ -94,7 +95,7 @@ const generateRouteHooks = (callback) => ({
 
 // For some reason, the import() argument must have an explicit string type.
 // See https://github.com/webpack/webpack/issues/4921#issuecomment-357147299
-const lazyLoad = (path) => React.lazy(() => import(`${path}`));
+const lazyLoad = (path) => lazyRetry(() => import(`${path}`));
 
 function InitialLayout({ children }) {
   return (

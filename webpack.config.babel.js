@@ -26,6 +26,7 @@ const config = {
       rules.template,
       rules.fonts,
       rules.photoswipe,
+      rules.markdown,
       rules.otherAssets,
     ]),
   },

@@ -1,10 +1,11 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import { Route, IndexRoute } from 'react-router';
+import { lazyRetry } from '../../../utils/retry-promise';
 
-const tokensPage = lazy(() => import('./tokens'));
-const createTokenPage = lazy(() => import('./create-token'));
-const createLinkPage = lazy(() => import('./create-link'));
-const scopesPage = lazy(() => import('./scopes-list'));
+const tokensPage = lazyRetry(() => import('./tokens'));
+const createTokenPage = lazyRetry(() => import('./create-token'));
+const createLinkPage = lazyRetry(() => import('./create-link'));
+const scopesPage = lazyRetry(() => import('./scopes-list'));
 
 export function tokensRoute(rootPath) {
   return (

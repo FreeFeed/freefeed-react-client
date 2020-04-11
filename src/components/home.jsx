@@ -27,6 +27,7 @@ const FeedHandler = (props) => {
       resetPostCreateForm={props.resetPostCreateForm}
       expandSendTo={props.expandSendTo}
       addAttachmentResponse={props.addAttachmentResponse}
+      showMedia={props.showMedia}
     />
   );
 
