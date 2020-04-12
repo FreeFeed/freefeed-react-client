@@ -130,8 +130,8 @@ function App() {
     return (
       <InitialLayout>
         <div className="alert alert-danger" role="alert">
-          <p>Critical error: ${initialized.errorText}</p>
-          <p>Try to reload page.</p>
+          <p>Cannot load page: {initialized.errorText}</p>
+          <p>Try to reload this page later.</p>
         </div>
       </InitialLayout>
     );
