@@ -1,7 +1,5 @@
 on:
   push:
-    branches:
-      - stable
     tags:
       - '**'
 
@@ -21,7 +19,7 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        repository: freefeed/freefeed-react-client-${{ github.ref }}
+        repository: freefeed/freefeed-react-client-release
         tag_with_ref: true
         tags: latest
-        build_args: NODE_CONFIG_ENV=${{ github.ref }}
+        build_args: NODE_CONFIG_ENV=release
