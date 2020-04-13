@@ -44,7 +44,7 @@ const config = {
       filename: opts.hash ? '[name]-[contenthash].css' : '[name]-dev.css',
     }),
     new CopyPlugin([
-      { from: 'assets/images/favicon.ico', to: 'assets/images/' },
+      { from: 'assets/images/favicon.*', to: 'assets/images/' },
       { from: 'assets/images/ios/*.png', to: '' },
       { from: 'assets/ext-auth/auth-return.html', to: '' },
     ]),
