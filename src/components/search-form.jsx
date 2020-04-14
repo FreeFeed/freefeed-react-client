@@ -1,71 +1,52 @@
-import React from 'react';
-import { browserHistory } from 'react-router';
+import React, { useCallback, useState } from 'react';
+import { withRouter } from 'react-router';
+import { KEY_RETURN, KEY_ESCAPE } from 'keycode-js';
+import { useSelector } from 'react-redux';
 
-const isEscape = (keyCode) => keyCode && keyCode === 27;
-const isEnter = (keyCode) => keyCode && keyCode === 13;
-
-const fireSearch = (searchText) =>
-  browserHistory.push(`/search?qs=${encodeURIComponent(searchText)}`);
-
-const subscribeOnHistory = (input) => {
-  browserHistory.listen((newRoute) => {
-    if (newRoute.pathname === '/search') {
-      input.value = newRoute.query.qs || '';
-    } else {
-      input.value = '';
-    }
+export default function SearchForm() {
+  const query = useSelector((state) => {
+    const { pathname, query } = state.routing.locationBeforeTransitions;
+    return (pathname === '/search' && query.qs) || '';
   });
-};
-
-export default class SearchForm extends React.Component {
-  constructor() {
-    super();
-    this.handleSearch = this.handleSearch.bind(this);
-    this.handleSearchButton = this.handleSearchButton.bind(this);
-    this.rememberInput = this.rememberInput.bind(this);
-  }
-
-  handleSearch({ keyCode, target }) {
-    if (isEscape(keyCode)) {
-      this.searchInput.blur();
-      return (this.searchInput.value = '');
-    }
-
-    if (isEnter(keyCode) && target.value !== '') {
-      return fireSearch(target.value);
-    }
-  }
-
-  handleSearchButton() {
-    const searchText = this.searchInput.value;
-
-    if (searchText !== '') {
-      this.searchInput.blur();
-      this.searchInput.value = '';
-      return fireSearch(searchText);
-    }
-
-    this.searchInput.focus();
-  }
-
-  rememberInput(ref) {
-    this.searchInput = ref;
-    subscribeOnHistory(this.searchInput);
-  }
-
-  render() {
-    return (
-      <div className="search-form">
-        <input
-          placeholder="Search request"
-          onKeyDown={this.handleSearch}
-          className="search-input"
-          ref={this.rememberInput}
-        />
-        <button type="button" className="search-button" onClick={this.handleSearchButton}>
-          Search
-        </button>
-      </div>
-    );
-  }
+  return <SearchInput query={query} key={query} />;
 }
+
+const SearchInput = withRouter(function SearchInput({ router, query: initialQuery }) {
+  const [query, setQuery] = useState(initialQuery);
+
+  const performSearch = useCallback(
+    () => query.trim() !== '' && router.push(`/search?qs=${encodeURIComponent(query.trim())}`),
+    [query, router],
+  );
+
+  const onChange = useCallback(({ target }) => setQuery(target.value), []);
+
+  const onKeyDown = useCallback(
+    ({ target, keyCode }) => {
+      if (keyCode === KEY_ESCAPE) {
+        target.blur();
+        setQuery(initialQuery);
+      }
+      if (keyCode === KEY_RETURN) {
+        target.blur();
+        performSearch();
+      }
+    },
+    [performSearch, initialQuery],
+  );
+
+  return (
+    <div className="search-form">
+      <input
+        value={query}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        placeholder="Search request"
+        className="search-input"
+      />
+      <button type="button" className="search-button" onClick={performSearch}>
+        Search
+      </button>
+    </div>
+  );
+});
