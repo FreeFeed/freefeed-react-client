@@ -42,6 +42,7 @@
   .image-attachment-img {
     max-width: 525px;
     max-height: 175px;
+    background-color: #fff;
     @media (max-width: 560px) {
       max-width: 100%;
       height: auto;
@@ -120,10 +121,10 @@
       content: '\f137';
     }
   }
+}
 
-  .pswp__img {
-    background-color: #fff;
-  }
+.pswp__img {
+  background-color: #fff;
 }
 
 .sortable-images .image-attachment-link {
