@@ -40,7 +40,7 @@
     "react-textarea-autosize": "~7.1.2",
     "redux": "~4.0.5",
     "snarkdown": "~1.2.2",
-    "social-text-tokenizer": "~2.1.0",
+    "social-text-tokenizer": "~2.1.1",
     "socket.io-client": "~2.3.0",
     "sortablejs": "~1.10.2",
     "use-subscription": "~1.4.1",
