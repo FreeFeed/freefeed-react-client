@@ -124,6 +124,12 @@ body.dark-theme {
     color: $link-color;
   }
 
+  .pager li > a:hover,
+  .pager li > a:focus {
+    color: $link-color;
+    background-color: $bg-color-lightest;
+  }
+
   .post .read-more {
     color: $link-color !important;
   }

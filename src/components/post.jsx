@@ -438,6 +438,7 @@ class Post extends React.Component {
                   src={profilePicture}
                   width={profilePictureSize}
                   height={profilePictureSize}
+                  loading="lazy"
                 />
               </Link>
             </div>

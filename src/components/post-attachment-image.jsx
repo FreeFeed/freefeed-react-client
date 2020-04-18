@@ -34,6 +34,7 @@ class PostAttachmentImage extends React.PureComponent {
       src: (props.imageSizes.t && props.imageSizes.t.url) || props.thumbnailUrl,
       srcSet,
       alt: nameAndSize,
+      loading: 'lazy',
       width: props.imageSizes.t
         ? props.imageSizes.t.w
         : props.imageSizes.o
