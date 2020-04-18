@@ -5,7 +5,7 @@ import { useField, useForm } from 'react-final-form-hooks';
 import { updateUser } from '../../../redux/action-creators';
 import { Throbber } from '../../throbber';
 import { PreventPageLeaving } from '../../prevent-page-leaving';
-import { RadioInput } from './utils';
+import { RadioInput } from '../../form-utils';
 
 const PUBLIC = 'public',
   PROTECTED = 'protected',
