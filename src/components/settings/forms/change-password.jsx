@@ -8,7 +8,7 @@ import { mapValues } from 'lodash';
 import { updatePassword } from '../../../redux/action-creators';
 import { Throbber } from '../../throbber';
 import { PreventPageLeaving } from '../../prevent-page-leaving';
-import { shouldBe, groupErrClass, errorMessage } from './utils';
+import { shouldBe, groupErrClass, errorMessage } from '../../form-utils';
 
 export default function ChangePasswordForm() {
   const dispatch = useDispatch();
