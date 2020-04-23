@@ -97,7 +97,9 @@ const SideBarFreeFeed = () => (
     <div className="box-body">
       <ul>
         <li>
-          <Link to="/search">Search</Link>
+          <Link to="/search" className="with-label--new">
+            Search
+          </Link>
         </li>
         <li>
           <Link to="/filter/everything">Everything</Link>
