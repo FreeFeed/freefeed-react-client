@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 export default () => (
   <footer className="footer">
-    &copy; FreeFeed 1.78.4 (Apr, 18, 2020)
+    &copy; FreeFeed 1.78.5 (Apr, 23, 2020)
     <br />
     <Link to="/about">About</Link>
     {' | '}
