@@ -1,5 +1,7 @@
 import React from 'react';
 
+// Helpers for use with react-final-form-hooks
+
 export function RadioInput({ field, value, ...additionalProps }) {
   const props = { ...field.input, checked: field.input.value === value, value, ...additionalProps };
   return <input type="radio" {...props} />;

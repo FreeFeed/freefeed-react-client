@@ -6,7 +6,7 @@ import isEmail from 'validator/lib/isEmail';
 import { Throbber } from '../../throbber';
 import { updateUser } from '../../../redux/action-creators';
 import { PreventPageLeaving } from '../../prevent-page-leaving';
-import { shouldBe, errorMessage, groupErrClass } from './utils';
+import { shouldBe, errorMessage, groupErrClass } from '../../form-utils';
 import styles from './forms.module.scss';
 
 export default function ProfileForm() {

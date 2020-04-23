@@ -9,7 +9,7 @@ import { initialAsyncState } from '../redux/async-helpers';
 import { PreventPageLeaving } from './prevent-page-leaving';
 import { Throbber } from './throbber';
 import { privacyFlagsToString, privacyStringToFlags } from './settings/forms/privacy';
-import { shouldBe, errorMessage, groupErrClass, RadioInput } from './settings/forms/utils';
+import { shouldBe, errorMessage, groupErrClass, RadioInput } from './form-utils';
 import styles from './settings/forms/forms.module.scss';
 import settingsStyles from './settings/settings.module.scss';
 

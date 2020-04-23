@@ -21,7 +21,7 @@ import { updateActualUserPreferences, setNSFWVisibility } from '../../../redux/a
 import settingsStyles from '../settings.module.scss';
 import { PreventPageLeaving } from '../../prevent-page-leaving';
 import { Icon } from '../../fontawesome-icons';
-import { RadioInput, CheckboxInput } from './utils';
+import { RadioInput, CheckboxInput } from '../../form-utils';
 import styles from './forms.module.scss';
 
 export default function AppearanceForm() {

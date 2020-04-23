@@ -6,7 +6,7 @@ import { pick } from 'lodash';
 import { Throbber } from '../../throbber';
 import { updateUserNotificationPreferences } from '../../../redux/action-creators';
 import { PreventPageLeaving } from '../../prevent-page-leaving';
-import { CheckboxInput } from './utils';
+import { CheckboxInput } from '../../form-utils';
 
 export default function NotificationsForm() {
   const dispatch = useDispatch();
