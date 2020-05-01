@@ -149,7 +149,7 @@ class Layout extends React.Component {
     return (
       <div className={layoutClassNames}>
         <ErrorBoundary>
-          <Helmet title={props.title} />
+          <Helmet title={props.title} defer={false} />
           <ColorSchemeSetter />
           <SVGSymbolDeclarations />
 

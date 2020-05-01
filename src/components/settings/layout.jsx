@@ -94,7 +94,7 @@ export default function Layout({ children, router }) {
 export function SettingsPage({ title, header = title, children }) {
   return (
     <>
-      <Helmet title={title} />
+      <Helmet title={title} defer={false} />
       <h3 className={styles.pageHeader}>{header}</h3>
       {children}
     </>
