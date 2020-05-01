@@ -2,7 +2,7 @@
 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FFreeFeed%2Ffreefeed-react-client.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FFreeFeed%2Ffreefeed-react-client?ref=badge_shield)
 
-We use [yarn](https://yarnpkg.com/) as dependency manager (instead of npm) so you need to install it and run `yarn` after downloading this code.
+We use [yarn](https://yarnpkg.com/) as dependency manager (instead of npm) so you need to install it and run `yarn` after downloading this code. If you're using Windows, you should install developer tools by using `npm install --global --production windows-build-tools` from an elevated PowerShell or CMD.exe (run as Administrator).
 
 ## Starting Development Server with Hot-Reload
 
