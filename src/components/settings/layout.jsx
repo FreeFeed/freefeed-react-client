@@ -1,7 +1,7 @@
 /* global CONFIG */
 import React, { useCallback, useMemo, Suspense } from 'react';
 import { Link } from 'react-router';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import cn from 'classnames';
 
 import {

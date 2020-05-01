@@ -2,7 +2,7 @@
 import React, { Suspense } from 'react';
 import { IndexLink, Link } from 'react-router';
 import { connect } from 'react-redux';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import classnames from 'classnames';
 
 import { unauthenticated, home } from '../redux/action-creators';
