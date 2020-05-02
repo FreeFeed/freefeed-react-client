@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { LiberaPayWidget } from "./LiberaPayWidget";
 
 const handleClickOnOneTimeDonation = () => {
   document.forms['singlePayPalPayment'].submit();
@@ -37,17 +38,24 @@ const Donate = () => (
       </form>
 
       <p>
-        <Link to="/about">FreeFeed</Link> is an open-source small scale social network without ads
+        <Link to="/about">FreeFeed</Link> is a small scale open-source social network without ads
         or censorship. It was created by FreeFeed MTU, a non-profit volunteers’ organization which
         continues to develop it now.
       </p>
 
       <p>All the hosting expenses are covered by donations only.</p>
 
+      <p>You can help us pay for the hosting by setting up a monthly donation.</p>
+
+      <h4>Easy way <small>(accept all cards, 20% commission fee)</small></h4>
+      <LiberaPayWidget project="freefeed" />
+
+
       <span style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
           <input type="hidden" name="cmd" value="_s-xclick" />
           <input type="hidden" name="hosted_button_id" value="97PAKQ6S97XMW" />
+          <h4>Paypal way <small>(7% commission fee)</small></h4>           
           <table>
             <tbody>
               <tr>
@@ -58,7 +66,6 @@ const Donate = () => (
                     value="Pick monthly donation amount"
                     style={{ padding: '5px 0' }}
                   />
-                  You can help us to pay for the hosting by setting up a monthly donation:
                 </td>
               </tr>
               <tr>
@@ -97,15 +104,27 @@ const Donate = () => (
       </span>
 
       <p style={{ marginTop: '15px' }}>
-        Make a{' '}
+        Alternatively, you can make a{' '}
         <span
           onClick={handleClickOnOneTimeDonation}
           style={{ textDecoration: 'underline', cursor: 'pointer' }}
         >
-          one-time donation
+          one-time Paypal donation
         </span>
         .
       </p>
+      <h4>Responsible way</h4>
+      <p>You can set up recurring monthly donation through your internet bank account (commission fees depend on your bank).<br />
+      Payment details:<br />
+      Organization name: <code>FREEFEED.NET MTÜ</code><br />
+      IBAN: <code>EE982200221062037450</code><br />
+      SWIFT Code: <code>HABAEE2X</code><br />
+      Legal address: <code>Harjumaa, Tallinn linn, Mingi tn 5-25/26, 13424</code></p>
+
+      <h4>The Russian way</h4>
+      <p>You can make a one-time payment with your card or Yandex.Money wallet (commission fee 0.5-2%):<br />
+      Pay with <a href="https://yasobe.ru/na/freefeed" target="_blank">Yandex.Money</a></p>
+      
 
       <p>Thank you!</p>
 
@@ -127,10 +146,18 @@ const Donate = () => (
         покрывались бы взносами пользователей.
       </p>
 
+      <p>
+                  Вы можете помочь нам, настроив автоматический ежемесячный платёж
+      </p>
+
+      <h4>Простой способ <small>(принимает все карты, комиссии около 20%)</small></h4>
+      <LiberaPayWidget project="freefeed" />
+
       <span style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
           <input type="hidden" name="cmd" value="_s-xclick" />
           <input type="hidden" name="hosted_button_id" value="97PAKQ6S97XMW" />
+          <h4>Paypal <small>(комиссия около 7%)</small></h4>           
           <table>
             <tbody>
               <tr>
@@ -141,7 +168,6 @@ const Donate = () => (
                     value="Pick monthly donation amount"
                     style={{ padding: '5px 0' }}
                   />
-                  Вы можете помочь нам, настроив автоматический ежемесячный платёж:
                 </td>
               </tr>
               <tr>
@@ -180,7 +206,7 @@ const Donate = () => (
       </span>
 
       <p style={{ marginTop: '15px' }}>
-        Cделать{' '}
+        Или вы можете сделать{' '}
         <span
           onClick={handleClickOnOneTimeDonation}
           style={{ textDecoration: 'underline', cursor: 'pointer' }}
@@ -190,13 +216,17 @@ const Donate = () => (
         .
       </p>
 
-      <p>
-        Сделать взнос через{' '}
-        <a href="https://yasobe.ru/na/freefeed" target="_blank">
-          Яндекс.Деньги
-        </a>
-        .
-      </p>
+      <h4>Прямой платеж</h4>
+      <p>Вы можете настроить регулярные ежемесячные платежи в вашем интернет-банке (комиссии зависят от вашего банка).<br />
+      Реквизиты:<br />
+      Получатель платежа: <code>FREEFEED.NET MTÜ</code><br />
+      IBAN: <code>EE982200221062037450</code><br />
+      Код SWIFT: <code>HABAEE2X</code><br />
+      Адрес получателя: <code>Harjumaa, Tallinn linn, Mingi tn 5-25/26, 13424</code></p>
+
+      <h4>Яндекс.Деньги</h4>
+      <p>Вы можете сделать единоразовый платеж с помощью платежной карточки или кошелька Яндекс.Денег (комиссия 0.5-2%):<br />
+      Сделать взнос через{' '}<a href="https://yasobe.ru/na/freefeed" target="_blank">Яндекс.Деньги</a></p>
 
       <p>Спасибо!</p>
     </div>

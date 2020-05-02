@@ -17,6 +17,8 @@ import UserName from './user-name';
 import RecentGroups from './recent-groups';
 import ErrorBoundary from './error-boundary';
 import { InvisibleSelect } from './invisibe-select';
+import { LiberaPayWidget } from "./LiberaPayWidget";
+
 
 const LoggedInBlock = ({ user, signOut }) => (
   <div className="logged-in">
@@ -180,19 +182,13 @@ const SideBarCoinJar = () => (
         to {CONFIG.siteTitle}! Your regular donations pay for hosting and keep {CONFIG.siteTitle}{' '}
         running.
       </p>
-      <p style={{ marginBottom: '10px' }}>
-        Make a{' '}
-        <span
-          onClick={handleOnetimeDonationClick}
-          style={{ textDecoration: 'underline', cursor: 'pointer' }}
-        >
-          one-time PayPal donation&nbsp;→
-        </span>
-      </p>
+      <p><b>Easy way</b> (accept all cards, 20% comission fee):<br />
+      <LiberaPayWidget project="freefeed" /></p>
       <span style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
           <input type="hidden" name="cmd" value="_s-xclick" />
           <input type="hidden" name="hosted_button_id" value="DRR5XU73QLD7Y" />
+          <b>Paypal way</b> (7% comission fee):
           <table>
             <tbody>
               <tr>
@@ -265,12 +261,13 @@ const SideBarCoinJar = () => (
         />
       </form>
       <p style={{ marginBottom: '10px' }}>
-        Donate via{' '}
-        <a href="https://yasobe.ru/na/freefeed" target="_blank">
+        See all possible{' '}
+        <a href="/about/donate" target="_blank">
           <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>
-            Yandex.Money&nbsp;→
+            donation&nbsp;options→
           </span>
-        </a>
+        </a> 
+        <br />(IBAN, Yandex.Money, One-time Paypal payment).
       </p>
     </div>
   </div>
