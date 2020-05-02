@@ -1,23 +1,23 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from 'react';
 
 export function LiberaPayWidget({ project, updateInterval = 1200000 }) {
   const [{ receiving, goal }, setData] = useState({
-    giving: "-.--",
-    goal: "--.--"
+    giving: '-.--',
+    goal: '--.--',
   });
 
   const update = useCallback(() => {
     loadLiberaPayData(project)
-      .then(result => {
+      .then((result) => {
         if (!result.receiving) {
-          throw new Error("Invalid response format");
+          throw new Error('Invalid response format');
         }
         setData({
           receiving: formatSum(result.receiving),
-          goal: formatSum(result.goal)
+          goal: formatSum(result.goal),
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.warn(`Cannot load LiberaPay data: ${err.message}`);
         // do nothing
       });
@@ -56,9 +56,7 @@ export function LiberaPayWidget({ project, updateInterval = 1200000 }) {
         <span style={css(`vertical-align: middle;`)}>LiberaPay</span>
       </span>
       <span style={css(`display: block; padding: 5px 15px 2px;`)}>
-        <span style={css(`color: #f6c915; position: absolute; left: -2px;`)}>
-          &#10132;
-        </span>
+        <span style={css(`color: #f6c915; position: absolute; left: -2px;`)}>&#10132;</span>
         We receive <br />
         <span style={css(`font-size: 125%`)}>{receiving}</span>
         <br /> per week,
@@ -70,10 +68,10 @@ export function LiberaPayWidget({ project, updateInterval = 1200000 }) {
 }
 
 function loadLiberaPayData(project) {
-  return fetch(`https://liberapay.com/${project}/public.json`, {cache: "reload"}).then(r =>
-    r.json()
+  return fetch(`https://liberapay.com/${project}/public.json`, { cache: 'reload' }).then((r) =>
+    r.json(),
   );
-}    
+}
 
 // Quick & dirty CSS parser
 function css(cssText) {
@@ -88,12 +86,12 @@ function css(cssText) {
 }
 
 function kebabToCamel(text) {
-  return text.replace(/-(\w)/g, x => x[1].toUpperCase());
+  return text.replace(/-(\w)/g, (x) => x[1].toUpperCase());
 }
 
 function formatSum({ amount, currency }) {
   return new Intl.NumberFormat(undefined, {
-    style: "currency",
-    currency
+    style: 'currency',
+    currency,
   }).format(amount);
 }

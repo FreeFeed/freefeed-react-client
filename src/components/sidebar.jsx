@@ -17,8 +17,7 @@ import UserName from './user-name';
 import RecentGroups from './recent-groups';
 import ErrorBoundary from './error-boundary';
 import { InvisibleSelect } from './invisibe-select';
-import { LiberaPayWidget } from "./LiberaPayWidget";
-
+import { LiberaPayWidget } from './LiberaPayWidget';
 
 const LoggedInBlock = ({ user, signOut }) => (
   <div className="logged-in">
@@ -167,10 +166,6 @@ const SideBarGroups = ({ recentGroups }) => (
   </div>
 );
 
-const handleOnetimeDonationClick = () => {
-  document.forms['singlePayPalPayment'].submit();
-};
-
 const SideBarCoinJar = () => (
   <div className="box">
     <div className="box-header-groups">Donate</div>
@@ -182,8 +177,11 @@ const SideBarCoinJar = () => (
         to {CONFIG.siteTitle}! Your regular donations pay for hosting and keep {CONFIG.siteTitle}{' '}
         running.
       </p>
-      <p><b>Easy way</b> (accept all cards, 20% comission fee):<br />
-      <LiberaPayWidget project="freefeed" /></p>
+      <p>
+        <b>Easy way</b> (accept all cards, 20% comission fee):
+        <br />
+        <LiberaPayWidget project="freefeed" />
+      </p>
       <span style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
           <input type="hidden" name="cmd" value="_s-xclick" />
@@ -218,7 +216,6 @@ const SideBarCoinJar = () => (
               </tr>
             </tbody>
           </table>
-
           <input type="hidden" name="currency_code" value="EUR" />
           <input
             type="image"
@@ -266,8 +263,9 @@ const SideBarCoinJar = () => (
           <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>
             donation&nbsp;options→
           </span>
-        </a> 
-        <br />(IBAN, Yandex.Money, One-time Paypal payment).
+        </a>
+        <br />
+        (IBAN, Yandex.Money, One-time Paypal payment).
       </p>
     </div>
   </div>
