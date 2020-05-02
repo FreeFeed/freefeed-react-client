@@ -178,7 +178,7 @@ const SideBarCoinJar = () => (
         running.
       </p>
       <p>
-        <b>Easy way</b> (accept all cards, 20% comission fee):
+        <b>Easy way</b>:
         <br />
         <LiberaPayWidget project="freefeed" />
       </p>
@@ -186,7 +186,7 @@ const SideBarCoinJar = () => (
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
           <input type="hidden" name="cmd" value="_s-xclick" />
           <input type="hidden" name="hosted_button_id" value="DRR5XU73QLD7Y" />
-          <b>Paypal way</b> (7% comission fee):
+          <b>Paypal way</b>:
           <table>
             <tbody>
               <tr>
@@ -264,8 +264,6 @@ const SideBarCoinJar = () => (
             donation&nbsp;options→
           </span>
         </a>
-        <br />
-        (IBAN, Yandex.Money, One-time Paypal payment).
       </p>
     </div>
   </div>
