@@ -17,6 +17,7 @@ import UserName from './user-name';
 import RecentGroups from './recent-groups';
 import ErrorBoundary from './error-boundary';
 import { InvisibleSelect } from './invisibe-select';
+import { LiberaPayWidget } from './LiberaPayWidget';
 
 const LoggedInBlock = ({ user, signOut }) => (
   <div className="logged-in">
@@ -165,10 +166,6 @@ const SideBarGroups = ({ recentGroups }) => (
   </div>
 );
 
-const handleOnetimeDonationClick = () => {
-  document.forms['singlePayPalPayment'].submit();
-};
-
 const SideBarCoinJar = () => (
   <div className="box">
     <div className="box-header-groups">Donate</div>
@@ -180,19 +177,16 @@ const SideBarCoinJar = () => (
         to {CONFIG.siteTitle}! Your regular donations pay for hosting and keep {CONFIG.siteTitle}{' '}
         running.
       </p>
-      <p style={{ marginBottom: '10px' }}>
-        Make a{' '}
-        <span
-          onClick={handleOnetimeDonationClick}
-          style={{ textDecoration: 'underline', cursor: 'pointer' }}
-        >
-          one-time PayPal donation&nbsp;→
-        </span>
+      <p>
+        <b>Easy way</b>:
+        <br />
+        <LiberaPayWidget project="freefeed" />
       </p>
       <span style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
         <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
           <input type="hidden" name="cmd" value="_s-xclick" />
           <input type="hidden" name="hosted_button_id" value="DRR5XU73QLD7Y" />
+          <b>Paypal way</b>:
           <table>
             <tbody>
               <tr>
@@ -222,7 +216,6 @@ const SideBarCoinJar = () => (
               </tr>
             </tbody>
           </table>
-
           <input type="hidden" name="currency_code" value="EUR" />
           <input
             type="image"
@@ -265,10 +258,10 @@ const SideBarCoinJar = () => (
         />
       </form>
       <p style={{ marginBottom: '10px' }}>
-        Donate via{' '}
-        <a href="https://yasobe.ru/na/freefeed" target="_blank">
+        See all possible{' '}
+        <a href="/about/donate" target="_blank">
           <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>
-            Yandex.Money&nbsp;→
+            donation&nbsp;options→
           </span>
         </a>
       </p>

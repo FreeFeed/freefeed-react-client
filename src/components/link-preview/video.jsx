@@ -1,14 +1,11 @@
 import { parse as urlParse } from 'url';
 import { parse as queryParse } from 'querystring';
 
-import PropTypes from 'prop-types';
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useEffect, useMemo, useCallback, memo } from 'react';
 import { faPlayCircle } from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from 'react-redux';
 
 import { Icon } from '../fontawesome-icons';
-import ScrollSafe from './scroll-helpers/scroll-safe';
-import { contentResized } from './scroll-helpers/events';
 import cachedFetch from './cached-fetch';
 import * as aspectRatio from './scroll-helpers/size-cache';
 
@@ -30,65 +27,22 @@ export function canShowURL(url) {
   return getVideoType(url) !== null;
 }
 
-class VideoPreview extends React.Component {
-  static propTypes = { url: PropTypes.string.isRequired };
+export default memo(function VideoPreview({ url }) {
+  const [info, setInfo] = useState(null);
+  const [playerVisible, setPlayerVisible] = useState(false);
 
-  state = {
-    info: null,
-    player: false,
-    withPlayer: true,
-  };
+  const feedIsLoading = useSelector((state) => state.routeLoadingState);
 
-  loadPlayer = () => this.setState({ player: !this.state.player });
-
-  loadInfo = async () => {
-    const info = await getVideoInfo(this.props.url);
-    this.setState({
-      info,
-      withPlayer: info.videoURL || info.playerURL,
-    });
-  };
-
-  constructor(props) {
-    super(props);
-    this.loadInfo();
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (this.props.feedIsLoading && !nextProps.feedIsLoading) {
-      this.setState({ player: false });
-    }
-    if (this.props.url !== nextProps.url) {
-      this.setState({
-        info: null,
-        player: false,
-      });
-      setTimeout(this.loadInfo, 0);
-    }
-  }
-
-  componentDidUpdate() {
-    contentResized(this);
-  }
-
-  renderPlayer() {
-    const { info } = this.state;
-    if (info.playerURL) {
-      return <iframe src={info.playerURL} frameBorder="0" allowFullScreen={true} />;
-    } else if (info.videoURL) {
-      return <video src={info.videoURL} poster={info.previewURL} autoPlay={true} loop={true} />;
-    }
-    return false;
-  }
-
-  render() {
-    const { url } = this.props;
-    const { player, info, withPlayer } = this.state;
-
-    if (info && 'error' in info) {
-      return <div className="video-preview link-preview-content load-error">{info.error}</div>;
-    }
-
+  const [
+    // CSS style of video preview
+    previewStyle,
+    // Video width
+    width,
+    // Can we show player? (metadata is loaded and we can play video)
+    canShowPlayer,
+    // Player code
+    player,
+  ] = useMemo(() => {
     const previewStyle = info ? { backgroundImage: `url(${info.previewURL})` } : {};
 
     // video will have the same area as 16x9 450px-width rectangle
@@ -96,27 +50,48 @@ class VideoPreview extends React.Component {
     const width = 450 * Math.sqrt(9 / 16 / r);
     previewStyle.paddingBottom = `${100 * r}%`;
 
-    return (
-      <div className="video-preview link-preview-content" style={{ maxWidth: width }}>
-        <div className="static-preview" style={previewStyle} onClick={this.loadPlayer}>
-          {withPlayer &&
-            (player ? this.renderPlayer() : <Icon icon={faPlayCircle} className="play-icon" />)}
-        </div>
-        <div className="info">
-          <a href={url} target="_blank" title={info ? info.byline : null}>
-            {info ? info.byline : 'Loading…'}
-          </a>
-        </div>
-      </div>
-    );
+    const canShowPlayer = info && (info.videoURL || info.playerURL);
+
+    let player = null;
+    if (canShowPlayer) {
+      if (info.playerURL) {
+        player = <iframe src={info.playerURL} frameBorder="0" allowFullScreen={true} />;
+      } else {
+        player = <video src={info.videoURL} poster={info.previewURL} autoPlay={true} loop={true} />;
+      }
+    }
+
+    return [previewStyle, width, canShowPlayer, player];
+  }, [info, url]);
+
+  const showPlayer = useCallback(() => canShowPlayer && setPlayerVisible(true), [canShowPlayer]);
+
+  // Load video info
+  useEffect(() => void getVideoInfo(url).then(setInfo), [url]);
+
+  // Turn player off is feed is loading
+  useEffect(() => setPlayerVisible(playerVisible && !feedIsLoading), [
+    playerVisible,
+    feedIsLoading,
+  ]);
+
+  if (info && 'error' in info) {
+    return <div className="video-preview link-preview-content load-error">{info.error}</div>;
   }
-}
 
-function select(state) {
-  return { feedIsLoading: state.routeLoadingState };
-}
-
-export default ScrollSafe(connect(select)(VideoPreview), { foldable: false, trackResize: false });
+  return (
+    <div className="video-preview link-preview-content" style={{ maxWidth: width }}>
+      <div className="static-preview" style={previewStyle} onClick={showPlayer}>
+        {player && (playerVisible ? player : <Icon icon={faPlayCircle} className="play-icon" />)}
+      </div>
+      <div className="info">
+        <a href={url} target="_blank" title={info?.byline}>
+          {info ? info.byline : 'Loading…'}
+        </a>
+      </div>
+    </div>
+  );
+});
 
 // Helpers
 
