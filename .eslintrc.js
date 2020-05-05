@@ -1,5 +1,6 @@
+/* global CONFIG */
 require('@babel/register');
-const config = require('config');
+require('./config/lib/loader-node');
 
 module.exports = {
   extends: ['eslint:recommended', 'prettier', 'prettier/react'],
@@ -59,7 +60,7 @@ module.exports = {
     // parameter explicitly to "windows" or "unix".
     'linebreak-style': [
       2,
-      config.get('eslint.linebreakStyle') || (process.platform === 'win32' ? 'windows' : 'unix'),
+      CONFIG.eslint.linebreakStyle || (process.platform === 'win32' ? 'windows' : 'unix'),
     ],
     'max-statements-per-line': [2, { max: 1 }],
     'no-debugger': 2,
