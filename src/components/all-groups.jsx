@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { sortBy, range } from 'lodash';
 import { Link } from 'react-router';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 
 import { faCaretDown, faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import { getAllGroups } from '../redux/action-creators';
@@ -25,7 +25,7 @@ export default function AllGroups() {
 
   return (
     <div className="content">
-      <Helmet title={`All Groups - ${CONFIG.siteTitle}`} />
+      <Helmet title={`All Groups - ${CONFIG.siteTitle}`} defer={false} />
       <div className="box">
         <div className="box-header-timeline">All Groups</div>
         <div className="box-body">

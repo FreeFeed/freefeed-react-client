@@ -1,6 +1,6 @@
 /* global CONFIG */
 import React, { useEffect } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { formatPattern } from 'react-router/es/PatternUtils';

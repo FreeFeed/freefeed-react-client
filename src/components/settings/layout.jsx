@@ -1,7 +1,7 @@
 /* global CONFIG */
 import React, { useCallback, useMemo, Suspense } from 'react';
 import { Link } from 'react-router';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import cn from 'classnames';
 
 import {
@@ -94,7 +94,7 @@ export default function Layout({ children, router }) {
 export function SettingsPage({ title, header = title, children }) {
   return (
     <>
-      <Helmet title={title} />
+      <Helmet title={title} defer={false} />
       <h3 className={styles.pageHeader}>{header}</h3>
       {children}
     </>

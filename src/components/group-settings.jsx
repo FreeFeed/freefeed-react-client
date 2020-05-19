@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';
 
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import { updateGroupPicture } from '../redux/action-creators';
 import { initialAsyncState } from '../redux/async-helpers';
 import { PictureEditForm } from './settings/forms/profile-picture';
@@ -73,7 +73,7 @@ export default function GroupSettings({ params: { userName: username } }) {
 function Layout({ username, children }) {
   return (
     <div className="box">
-      <Helmet title={`'${username}' group settings - ${CONFIG.siteTitle}`} />
+      <Helmet title={`'${username}' group settings - ${CONFIG.siteTitle}`} defer={false} />
       <div className="box-header-timeline">Group settings</div>
       <div className="box-body">{children}</div>
     </div>
