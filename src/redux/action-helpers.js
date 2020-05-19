@@ -109,5 +109,8 @@ export function cancelConcurrentRequest(action, state) {
   if (action.type === GET_SERVER_INFO) {
     return state.serverInfo.loading;
   }
+  if (action.type === GET_USER_INFO) {
+    return state.getUserInfoStatuses[action.payload.username]?.loading;
+  }
   return false;
 }
