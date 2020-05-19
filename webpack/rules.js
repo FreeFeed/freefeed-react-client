@@ -136,6 +136,13 @@ class RuleGenerator {
     };
   }
 
+  get cssModuleForTests() {
+    return {
+      test: /[.]module[.]scss$/,
+      use: 'null-loader',
+    };
+  }
+
   get assetsCss() {
     // import '../assets/vendor-css/font-awesome.min.css';
     return {
