@@ -39,6 +39,7 @@ import { destinationsPrivacy } from './select-utils';
 import { makeJpegIfNeeded } from './create-post';
 import { Icon } from './fontawesome-icons';
 import { UnhideOptions, HideLink } from './post-hides-ui';
+import { UserPicture } from './user-picture';
 
 const attachmentsMaxCount = CONFIG.attachments.maxCount;
 
@@ -301,11 +302,6 @@ class Post extends React.Component {
   render() {
     const { props } = this;
 
-    const profilePicture = props.isSinglePost
-      ? props.createdBy.profilePictureLargeUrl
-      : props.createdBy.profilePictureMediumUrl;
-    const profilePictureSize = props.isSinglePost ? 75 : 50;
-
     const postClass = classnames({
       post: true,
       'single-post': props.isSinglePost,
@@ -432,15 +428,12 @@ class Post extends React.Component {
             config={postReadmoreConfig}
           >
             <div className="post-userpic">
-              <Link to={`/${props.createdBy.username}`}>
-                <img
-                  className="post-userpic-img"
-                  src={profilePicture}
-                  width={profilePictureSize}
-                  height={profilePictureSize}
-                  loading="lazy"
-                />
-              </Link>
+              <UserPicture
+                className="post-userpic-img"
+                large={props.isSinglePost}
+                user={props.createdBy}
+                loading="lazy"
+              />
             </div>
             <div className="post-body">
               {props.isEditing ? (

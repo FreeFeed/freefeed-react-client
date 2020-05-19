@@ -6,6 +6,7 @@ import { faExclamationTriangle, faCheck } from '@fortawesome/free-solid-svg-icon
 import { updateUserPicture } from '../../../redux/action-creators';
 import { Throbber } from '../../throbber';
 import { Icon } from '../../fontawesome-icons';
+import { UserPicture } from '../../user-picture';
 import styles from './forms.module.scss';
 
 export default function ProfilePictureForm() {
@@ -34,15 +35,16 @@ export function PictureEditForm({ pictureURL, pictureStatus, onUpdate }) {
     pictureStatus,
   ]);
 
+  const pseudoUser = useMemo(() => ({ profilePictureUrl: pictureURL }), [pictureURL]);
+
   return (
     <div className="media">
       <div className="media-left">
-        <img
-          src={pictureURL}
-          width="75"
-          height="75"
-          className={`media-object ${styles.profilePicture}`}
+        <UserPicture
+          large
+          user={pseudoUser}
           onClick={choosePictureFile}
+          className={styles.profilePicture}
         />
       </div>
       <div className="media-body">
