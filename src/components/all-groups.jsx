@@ -13,6 +13,7 @@ import UserName from './user-name';
 import TimeDisplay from './time-display';
 
 import styles from './all-groups.module.scss';
+import { UserPicture } from './user-picture';
 
 export default function AllGroups() {
   const dispatch = useDispatch();
@@ -138,9 +139,7 @@ const GroupRow = React.memo(function GroupRow({ g }) {
   return (
     <tr className={styles.groupRow}>
       <td>
-        <Link to={`/${u.username}`} className="avatar">
-          <img src={u.profilePictureMediumUrl} width="50" height="50" className={styles.userpic} />
-        </Link>
+        <UserPicture user={u} className={styles.userpic} />
         <div className={styles.groupInfo}>
           <UserName user={u}>{u.username}</UserName>
           {u.username !== u.screenName && <div className="small">{u.screenName}</div>}

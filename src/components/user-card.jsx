@@ -10,6 +10,7 @@ import UserFeedStatus from './user-feed-status';
 import UserRelationshipStatus from './user-relationships-status';
 import ErrorBoundary from './error-boundary';
 import { userActions, canAcceptDirects } from './select-utils';
+import { UserPicture } from './user-picture';
 
 class UserCard extends React.Component {
   constructor(props) {
@@ -101,9 +102,7 @@ class UserCard extends React.Component {
       <div className="user-card" style={style}>
         <ErrorBoundary>
           <div className="user-card-info">
-            <Link to={`/${props.user.username}`} className="userpic">
-              <img src={props.user.profilePictureLargeUrl} width="75" height="75" />
-            </Link>
+            <UserPicture large user={props.user} className="userpic" />
 
             <div className="names">
               <Link to={`/${props.user.username}`} className="display-name" dir="auto">

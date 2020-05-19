@@ -1,15 +1,7 @@
 @import '../../../../styles/helvetica/dark-vars.scss';
 
 .profilePicture {
-  border: 1px solid #ccc;
-  border-radius: 2px;
-  padding: 2px;
-  box-sizing: content-box;
   cursor: pointer;
-
-  :global(body.dark-theme) & {
-    border-color: $separator-color;
-  }
 }
 
 textarea.profileDescription {

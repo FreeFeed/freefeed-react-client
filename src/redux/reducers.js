@@ -1520,10 +1520,13 @@ export function subscriptions(state = {}, action) {
   return state;
 }
 
-export const getUserInfoStatuses = asyncStatesMap(ActionTypes.GET_USER_INFO, {
-  getKey: getKeyBy('username'),
-  cleanOnSuccess: true,
-});
+export const getUserInfoStatuses = asyncStatesMap(
+  ActionTypes.GET_USER_INFO,
+  {
+    getKey: getKeyBy('username'),
+  },
+  setOnLocationChange({}),
+);
 
 export const updateGroupPictureStatuses = asyncStatesMap(
   ActionTypes.UPDATE_GROUP_PICTURE,
@@ -2076,14 +2079,21 @@ export function commentsHighlights(state = {}, action) {
 }
 
 const userActionsStatusesStatusMaps = combineReducers({
-  subscribing: asyncStatesMap([
-    ActionTypes.SUBSCRIBE,
-    ActionTypes.SEND_SUBSCRIPTION_REQUEST,
-    ActionTypes.REVOKE_USER_REQUEST,
-    ActionTypes.UNSUBSCRIBE,
-  ]),
+  subscribing: asyncStatesMap(
+    [
+      ActionTypes.SUBSCRIBE,
+      ActionTypes.SEND_SUBSCRIPTION_REQUEST,
+      ActionTypes.REVOKE_USER_REQUEST,
+      ActionTypes.UNSUBSCRIBE,
+    ],
+    { getKey: getKeyBy('username') },
+  ),
   blocking: asyncStatesMap([ActionTypes.BAN, ActionTypes.UNBAN]),
   pinned: asyncStatesMap([ActionTypes.TOGGLE_PINNED_GROUP]),
+  hiding: asyncStatesMap([ActionTypes.HIDE_BY_NAME], { getKey: getKeyBy('username') }),
+  unsubscribingFromMe: asyncStatesMap([ActionTypes.UNSUBSCRIBE_FROM_ME], {
+    getKey: getKeyBy('username'),
+  }),
 });
 
 const initialUserProfileStatuses = userActionsStatusesStatusMaps(undefined, { type: '' });
@@ -2100,6 +2110,10 @@ export function userActionsStatuses(state = initialUserProfileStatuses, action) 
   if (action.type === ActionTypes.USER_CARD_CLOSING) {
     // Reset user statuses if user card is closing
     return clearStatusesById(state, action.payload.userId);
+  }
+  if (action.type === LOCATION_CHANGE) {
+    // Reset all statuses if location changes
+    return initialUserProfileStatuses;
   }
   return userActionsStatusesStatusMaps(state, action);
 }
