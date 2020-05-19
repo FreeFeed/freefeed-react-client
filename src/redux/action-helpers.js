@@ -25,6 +25,8 @@ import {
   TOGGLE_PINNED_GROUP,
   UPDATE_ACTUAL_USER_PREFERENCES,
   UPDATE_USER_NOTIFICATION_PREFERENCES,
+  GET_USER_INFO,
+  UNSUBSCRIBE_FROM_ME,
 } from './action-types';
 import { request, response, fail, baseType } from './async-helpers';
 
@@ -78,6 +80,7 @@ export const userChangeActions = [
   HIDE_BY_NAME,
   UNHIDE_NAMES,
   TOGGLE_PINNED_GROUP,
+  UNSUBSCRIBE_FROM_ME,
 ];
 export const userChangeResponses = userChangeActions.map(response);
 export const isUserChangeResponse = (action) => userChangeResponses.includes(action.type);
