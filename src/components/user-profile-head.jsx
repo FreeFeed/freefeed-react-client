@@ -194,7 +194,7 @@ export const UserProfileHead = withRouter(
         <div className={styles.info}>
           <div className={styles.screenName}>{user.screenName}</div>
           <div className={styles.username}>
-            <span className={styles.infoIcon} style="text-align: right">
+            <span className={styles.infoIcon} style={{ textAlign: 'right' }}>
               @
             </span>
             {user.username}
