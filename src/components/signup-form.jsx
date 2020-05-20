@@ -1,5 +1,5 @@
 /* global CONFIG */
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 import Recaptcha from 'react-google-recaptcha';
@@ -117,6 +117,11 @@ export default React.memo(function SignupForm({ invitationId = null, lang = 'en'
   const importProfilePicture = useField('importProfilePicture', form.form);
 
   const setCaptcha = useCallback((v) => captcha.input.onChange(v), [captcha.input]);
+  const reCaptcha = useRef();
+  // Reset reCaptcha on form errors so user can try again
+  useEffect(() => void (signUpStatus.error && reCaptcha.current && reCaptcha.current.reset()), [
+    signUpStatus.error,
+  ]);
 
   const enRu = (enString, ruString) => (lang === 'ru' ? ruString : enString);
   const groupErrClass = (field, baseClass = 'form-group') =>
@@ -257,7 +262,13 @@ export default React.memo(function SignupForm({ invitationId = null, lang = 'en'
 
         {captchaKey && (
           <div className={groupErrClass(captcha)}>
-            <Recaptcha sitekey={captchaKey} theme="light" type="image" onChange={setCaptcha} />
+            <Recaptcha
+              ref={reCaptcha}
+              sitekey={captchaKey}
+              theme="light"
+              type="image"
+              onChange={setCaptcha}
+            />
           </div>
         )}
 

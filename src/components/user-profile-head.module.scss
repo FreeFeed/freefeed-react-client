@@ -1,0 +1,221 @@
+@import '../../styles/helvetica/dark-vars.scss';
+
+$actions-padding: 0.75em;
+
+.profile {
+  --text-color: #333;
+  --separator-color: #ccc;
+  --text-dim-color: #777;
+
+  display: grid;
+  grid-template-columns: min-content 1fr min-content;
+  grid-template-rows: min-content 1fr;
+  grid-template-areas:
+    'avatar info stats'
+    'avatar description stats'
+    'actions actions actions'
+    'errors errors errors';
+  grid-gap: 0 1em;
+  padding: 0.5em 0 $actions-padding 0;
+  border-bottom: 1px solid var(--separator-color);
+  margin-bottom: 1em;
+
+  @media (max-width: 600px) {
+    grid-template-areas:
+      'avatar info info'
+      'avatar stats stats'
+      'description description description'
+      'actions actions actions'
+      'errors errors errors';
+  }
+
+  @media (max-width: 360px) {
+    grid-template-areas:
+      'avatar . .'
+      'info info info'
+      'stats stats stats'
+      'description description description'
+      'actions actions actions'
+      'errors errors errors';
+  }
+
+  :global(.dark-theme) & {
+    --text-color: #{$text-color};
+    --separator-color: #{$separator-color};
+    --text-dim-color: #{$text-color-darker};
+  }
+}
+
+.avatar {
+  grid-area: avatar;
+}
+
+.info {
+  grid-area: info;
+  color: var(--text-dim-color);
+}
+
+.username {
+  margin-bottom: 0.2em;
+}
+
+.screenName {
+  color: var(--text-color);
+  font-size: 1.7em;
+}
+
+.infoIcon {
+  display: inline-block;
+  width: 1em;
+  margin-right: 0.1em;
+
+  & :global(.fa-icon) {
+    font-size: 13px;
+  }
+
+  & :global(.fa-icon-fas-user-friends) {
+    font-size: 14px;
+  }
+
+  & :global(.fa-icon-fas-globe-americas) {
+    vertical-align: -1px;
+  }
+
+  & :global(.fa-icon-fas-lock) {
+    vertical-align: 0;
+  }
+}
+
+.infoStatusSpan {
+  margin-right: 0.66em;
+}
+
+.description {
+  grid-area: description;
+  margin-top: 0.66em;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.stats {
+  grid-area: stats;
+}
+
+.statsItems {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  & > li {
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .stats {
+    margin-top: 0.2em;
+  }
+
+  .statsItems {
+    display: inline;
+    & > li {
+      display: inline;
+      white-space: normal;
+
+      & + *::before {
+        content: ', ';
+      }
+    }
+  }
+}
+
+.actions {
+  grid-area: actions;
+
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 1em;
+  padding-top: $actions-padding;
+  border-top: 1px solid var(--separator-color);
+
+  &:empty {
+    display: none;
+  }
+
+  @media (max-width: 360px) {
+    flex-wrap: wrap;
+  }
+}
+
+.actionsList {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+
+  @media (max-width: 360px) {
+    width: 100%;
+
+    & + & {
+      margin-top: 0.5em;
+    }
+  }
+
+  & > li {
+    margin-left: -1em;
+    margin-right: 1em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &::before,
+    &::after {
+      color: var(--text-dim-color);
+      display: inline-block;
+      width: 1em;
+      text-align: center;
+    }
+
+    &::before {
+      content: '-';
+    }
+  }
+}
+
+.actionsListRight {
+  justify-content: flex-end;
+
+  & > li {
+    margin-left: 1em;
+    margin-right: -1em;
+
+    &::before {
+      content: none;
+    }
+    &::after {
+      content: '-';
+    }
+  }
+}
+
+.actionLinkThrobber {
+  margin-right: 0.33em;
+}
+
+.errorsList {
+  grid-area: errors;
+  margin-top: 1em;
+
+  &:empty {
+    display: none;
+  }
+}

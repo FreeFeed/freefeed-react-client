@@ -322,6 +322,7 @@ export const unban = userAction('unban');
 export const subscribe = userAction('subscribe');
 export const unsubscribe = userAction('unsubscribe');
 export const sendSubscriptionRequest = userAction('sendRequest');
+export const unsubscribeFromMe = userAction('unsubscribeFromMe');
 
 export function getUserComments({ username, ...params }) {
   return fetch(

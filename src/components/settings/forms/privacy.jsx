@@ -68,7 +68,7 @@ export default (function PrivacyForm() {
         <div className="radio">
           <label>
             <RadioInput field={acceptDirectsFrom} value={FRIENDS} />
-            Your mutual subscribers only
+            Only users you subscribe to
           </label>
         </div>
       </div>

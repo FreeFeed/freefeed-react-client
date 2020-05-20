@@ -18,13 +18,12 @@ import RecentGroups from './recent-groups';
 import ErrorBoundary from './error-boundary';
 import { InvisibleSelect } from './invisibe-select';
 import { LiberaPayWidget } from './LiberaPayWidget';
+import { UserPicture } from './user-picture';
 
 const LoggedInBlock = ({ user, signOut }) => (
   <div className="logged-in">
     <div className="avatar">
-      <Link to={`/${user.username}`}>
-        <img src={user.profilePictureMediumUrl} width="50" height="50" />
-      </Link>
+      <UserPicture user={user} />
     </div>
 
     <div className="user">

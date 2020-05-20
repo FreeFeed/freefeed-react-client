@@ -532,6 +532,10 @@ export const ban = userChangeAction(ActionTypes.BAN, Api.ban);
 export const unban = userChangeAction(ActionTypes.UNBAN, Api.unban);
 export const subscribe = userChangeAction(ActionTypes.SUBSCRIBE, Api.subscribe);
 export const unsubscribe = userChangeAction(ActionTypes.UNSUBSCRIBE, Api.unsubscribe);
+export const unsubscribeFromMe = userChangeAction(
+  ActionTypes.UNSUBSCRIBE_FROM_ME,
+  Api.unsubscribeFromMe,
+);
 export const sendSubscriptionRequest = userChangeAction(
   ActionTypes.SEND_SUBSCRIPTION_REQUEST,
   Api.sendSubscriptionRequest,
@@ -592,6 +596,7 @@ export function getUserInfo(username) {
   return {
     type: ActionTypes.GET_USER_INFO,
     apiRequest: Api.getUserInfo,
+    nonAuthRequest: true,
     payload: { username },
   };
 }

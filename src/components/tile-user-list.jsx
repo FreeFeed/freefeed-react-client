@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router';
 import classnames from 'classnames';
 import _ from 'lodash';
 
 import { confirmFirst } from '../utils';
 import UserName from './user-name';
+import { UserPicture } from './user-picture';
 
 class UserTile extends React.PureComponent {
   handleAcceptClick = () => {
@@ -43,9 +43,7 @@ class UserTile extends React.PureComponent {
     return (
       <li key={user.id}>
         <div className="avatar">
-          <Link to={`/${user.username}`}>
-            <img src={user.profilePictureUrl} />
-          </Link>
+          <UserPicture user={user} large={this.props.largePicture} />
         </div>
 
         <UserName user={user} applyHyphenations={true} />
@@ -141,12 +139,16 @@ export const tileUserListFactory = (config) => (props) => {
 
   const usersData = props.users.map((user) => {
     return {
-      ..._.pick(user, ['id', 'screenName', 'username', 'isMutual']),
-      profilePictureUrl: user.profilePictureUrl
-        ? user.profilePictureUrl
-        : config.size === 'large'
-        ? user.profilePictureLargeUrl
-        : user.profilePictureMediumUrl,
+      ..._.pick(user, [
+        'id',
+        'screenName',
+        'username',
+        'isMutual',
+        'profilePictureUrl',
+        'profilePictureLargeUrl',
+        'profilePictureMediumUrl',
+      ]),
+      largePicture: config.size === 'large',
       ...pickActions(config.type, props),
     };
   });

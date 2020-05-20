@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 
 import { darkTheme } from './select-utils';
 
@@ -15,7 +15,7 @@ class ColorSchemeSetterBase extends Component {
 
   render() {
     return (
-      <Helmet>
+      <Helmet defer={false}>
         <meta name="theme-color" content={this.props.darkTheme ? 'hsl(220, 9%, 10%)' : 'white'} />
       </Helmet>
     );

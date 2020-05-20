@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { sortBy, range } from 'lodash';
 import { Link } from 'react-router';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 
 import { faCaretDown, faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import { getAllGroups } from '../redux/action-creators';
@@ -13,6 +13,7 @@ import UserName from './user-name';
 import TimeDisplay from './time-display';
 
 import styles from './all-groups.module.scss';
+import { UserPicture } from './user-picture';
 
 export default function AllGroups() {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ export default function AllGroups() {
 
   return (
     <div className="content">
-      <Helmet title={`All Groups - ${CONFIG.siteTitle}`} />
+      <Helmet title={`All Groups - ${CONFIG.siteTitle}`} defer={false} />
       <div className="box">
         <div className="box-header-timeline">All Groups</div>
         <div className="box-body">
@@ -138,9 +139,7 @@ const GroupRow = React.memo(function GroupRow({ g }) {
   return (
     <tr className={styles.groupRow}>
       <td>
-        <Link to={`/${u.username}`} className="avatar">
-          <img src={u.profilePictureMediumUrl} width="50" height="50" className={styles.userpic} />
-        </Link>
+        <UserPicture user={u} className={styles.userpic} />
         <div className={styles.groupInfo}>
           <UserName user={u}>{u.username}</UserName>
           {u.username !== u.screenName && <div className="small">{u.screenName}</div>}

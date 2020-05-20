@@ -5,7 +5,7 @@ const config = {
   ...baseConfig,
   target: 'node',
   module: {
-    rules: [rules.babelForNode, rules.otherAssets],
+    rules: [rules.babelForNode, rules.otherAssets, rules.cssModuleForTests],
   },
   externals: [webpackNodeExternals()],
 };
