@@ -97,17 +97,21 @@ export const UserProfileHead = withRouter(
     const doShowMedia = useCallback((arg) => dispatch(showMedia(arg)), [dispatch]);
 
     const toggleSubscribed = {
-      onClick: useCallback(
-        () =>
-          dispatch(
-            (inSubscriptions
-              ? unsubscribe
-              : user.isPrivate === '1'
-              ? sendSubscriptionRequest
-              : subscribe)(user),
-          ),
-        [inSubscriptions, dispatch, user],
-      ),
+      onClick: useCallback(() => {
+        if (
+          inSubscriptions &&
+          !confirm(`Are you sure you want to unsubscribe from @${user.username}?`)
+        ) {
+          return;
+        }
+        dispatch(
+          (inSubscriptions
+            ? unsubscribe
+            : user.isPrivate === '1'
+            ? sendSubscriptionRequest
+            : subscribe)(user),
+        );
+      }, [inSubscriptions, dispatch, user]),
       status: useSelector(
         (state) => state.userActionsStatuses.subscribing[user?.username] || initialAsyncState,
       ),
