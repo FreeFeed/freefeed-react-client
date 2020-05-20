@@ -631,3 +631,7 @@ export async function togglePinnedGroup({ id: groupId }) {
 
   return await updateUserPreferences({ userId, frontendPrefs: { ...frontendPrefs, pinnedGroups } });
 }
+
+export function listHomeFeeds() {
+  return fetch(`${apiRoot}/v2/timelines/home/list`, getRequestOptions());
+}

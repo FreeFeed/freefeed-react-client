@@ -13,6 +13,7 @@ $actions-padding: 0.75em;
   grid-template-areas:
     'avatar info stats'
     'avatar description stats'
+    'lists lists lists'
     'actions actions actions'
     'errors errors errors';
   grid-gap: 0 1em;
@@ -25,6 +26,7 @@ $actions-padding: 0.75em;
       'avatar info info'
       'avatar stats stats'
       'description description description'
+      'lists lists lists'
       'actions actions actions'
       'errors errors errors';
   }
@@ -35,6 +37,7 @@ $actions-padding: 0.75em;
       'info info info'
       'stats stats stats'
       'description description description'
+      'lists lists lists'
       'actions actions actions'
       'errors errors errors';
   }
@@ -213,6 +216,15 @@ $actions-padding: 0.75em;
 
 .errorsList {
   grid-area: errors;
+  margin-top: 1em;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.lists {
+  grid-area: lists;
   margin-top: 1em;
 
   &:empty {

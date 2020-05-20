@@ -27,6 +27,7 @@ import {
   UPDATE_USER_NOTIFICATION_PREFERENCES,
   GET_USER_INFO,
   UNSUBSCRIBE_FROM_ME,
+  LIST_HOME_FEEDS,
 } from './action-types';
 import { request, response, fail, baseType } from './async-helpers';
 
@@ -111,6 +112,9 @@ export function cancelConcurrentRequest(action, state) {
   }
   if (action.type === GET_USER_INFO) {
     return state.getUserInfoStatuses[action.payload.username]?.loading;
+  }
+  if (action.type === LIST_HOME_FEEDS) {
+    return state.homeFeedsStatus.loading;
   }
   return false;
 }

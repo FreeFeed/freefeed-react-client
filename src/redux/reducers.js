@@ -2323,3 +2323,10 @@ export const allGroups = fromResponse(
   allGroupsDefaults,
   setOnLocationChange(allGroupsDefaults, ['/all-groups']),
 );
+
+export {
+  homeFeeds,
+  homeFeedsStatus,
+  usersInHomeFeeds,
+  usersInHomeFeedsStates,
+} from './reducers/home-feeds';

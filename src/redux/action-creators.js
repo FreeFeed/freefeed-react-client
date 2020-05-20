@@ -1018,3 +1018,10 @@ export function getAllGroups() {
     nonAuthRequest: true,
   };
 }
+
+export function listHomeFeeds() {
+  return {
+    type: ActionTypes.LIST_HOME_FEEDS,
+    apiRequest: Api.listHomeFeeds,
+  };
+}
