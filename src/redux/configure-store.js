@@ -19,6 +19,7 @@ import {
   appearanceMiddleware,
   initialWhoamiMiddleware,
   unscrollMiddleware,
+  onResponseMiddleware,
 } from './middlewares';
 
 import * as reducers from './reducers';
@@ -43,6 +44,7 @@ const middleware = [
   realtimeMiddleware,
   appearanceMiddleware,
   initialWhoamiMiddleware,
+  onResponseMiddleware,
 ];
 
 const enhancers = [applyMiddleware(...middleware)];

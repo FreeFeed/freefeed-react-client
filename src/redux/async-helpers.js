@@ -205,3 +205,7 @@ export function combineAsyncStates(...states) {
   // It should be possible only if all states are in initial state
   return initialAsyncState;
 }
+
+export function withResponseHandler(action, onResponse) {
+  return { ...action, extra: { ...action.extra, onResponse } };
+}

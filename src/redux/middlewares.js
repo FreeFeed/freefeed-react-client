@@ -34,6 +34,7 @@ import {
   cancelConcurrentRequest,
   isUserChangeResponse,
 } from './action-helpers';
+import { asyncPhase, RESPONSE_PHASE } from './async-helpers';
 
 export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
   if (isFeedGeneratingAction(action)) {
@@ -124,6 +125,17 @@ export const asyncMiddleware = (store) => (next) => async (action) => {
       extra: action.extra || {},
     });
   }
+};
+
+/**
+ * Allows to perform some action after the async request succeeds
+ */
+export const onResponseMiddleware = () => (next) => (action) => {
+  const res = next(action);
+  if (asyncPhase(action.type) === RESPONSE_PHASE && action.extra?.onResponse) {
+    action.extra.onResponse(action);
+  }
+  return res;
 };
 
 //middleware for api requests
