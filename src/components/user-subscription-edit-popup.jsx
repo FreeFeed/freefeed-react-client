@@ -18,11 +18,11 @@ import menuStyles from './dropdown-menu.module.scss';
 import styles from './user-subscription-edit-popup.module.scss';
 import { Icon } from './fontawesome-icons';
 
-function onSubmit(username, dispatch, subscrType) {
+function onSubmit(user, dispatch, subscrType) {
   return (values) => {
     const newListTitle = values.createNewList && values.newListTitle.trim();
     const { feeds } = values;
-    const doSubscribe = () => dispatch(subscribeWithHomeFeeds(subscrType, username, feeds));
+    const doSubscribe = () => dispatch(subscribeWithHomeFeeds(subscrType, user, feeds));
     if (newListTitle) {
       dispatch(
         withResponseHandler(
@@ -37,27 +37,32 @@ function onSubmit(username, dispatch, subscrType) {
 }
 
 export const UserSubscriptionEditPopup = forwardRef(function UserSubscriptionEditPopup(
-  { username, homeFeeds, inHomeFeeds = [], closeForm, subscribe = false, sendRequest = false },
+  { username, homeFeeds, inHomeFeeds = [], closeForm, subscribe = false },
   ref,
 ) {
   const dispatch = useDispatch();
   const status = useSelector(
     (state) => state.updateUsersSubscriptionStates[username] || initialAsyncState,
   );
+  const user = useSelector((state) =>
+    Object.values(state.users).find((u) => u.username === username),
+  );
+
+  const sendRequest = subscribe && user.isPrivate === '1';
 
   const form = useForm(
     useMemo(
       () => ({
         initialValues: { feeds: inHomeFeeds, createNewList: false, newListTitle: '' },
         onSubmit: onSubmit(
-          username,
+          user,
           dispatch,
           sendRequest ? SEND_SUBSCRIPTION_REQUEST : subscribe ? SUBSCRIBE : UPDATE_SUBSCRIPTION,
         ),
       }),
       // Use only the initial inHomeFeeds value
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      [username, dispatch, subscribe, sendRequest],
+      [user, dispatch, subscribe, sendRequest],
     ),
   );
 

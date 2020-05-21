@@ -1042,11 +1042,11 @@ export function createHomeFeed(title) {
   };
 }
 
-export function subscribeWithHomeFeeds(type, username, homeFeeds) {
+export function subscribeWithHomeFeeds(type, user, homeFeeds) {
   return {
     type,
     apiRequest: Api.subscribeWithHomeFeeds,
-    payload: { type, username, homeFeeds },
+    payload: { type, id: user.id, username: user.username, homeFeeds },
   };
 }
 

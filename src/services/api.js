@@ -646,11 +646,16 @@ export function createHomeFeed({ title }) {
   return fetch(`${apiRoot}/v2/timelines/home`, postRequestOptions('POST', { title }));
 }
 
-export async function subscribeWithHomeFeeds({ type = UPDATE_SUBSCRIPTION, username, homeFeeds }) {
+export async function subscribeWithHomeFeeds({
+  type = UPDATE_SUBSCRIPTION,
+  id,
+  username,
+  homeFeeds,
+}) {
   if (type === SEND_SUBSCRIPTION_REQUEST) {
-    return sendSubscriptionRequest({ username, homeFeeds });
+    return sendSubscriptionRequest({ id, username, homeFeeds });
   } else if (type === SUBSCRIBE) {
-    return subscribe({ username, homeFeeds });
+    return subscribe({ id, username, homeFeeds });
   }
 
   return fetch(

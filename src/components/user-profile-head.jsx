@@ -483,7 +483,6 @@ export const UserProfileHead = withRouter(
               inHomeFeeds={inHomeFeeds}
               closeForm={subscrFormToggle}
               subscribe={!inSubscriptions}
-              sendRequest={!inSubscriptions && user.isPrivate === '1'}
             />
           </Portal>
         )}
