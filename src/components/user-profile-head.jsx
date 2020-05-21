@@ -382,12 +382,12 @@ export const UserProfileHead = withRouter(
                 </ul>
                 {/*
                  * Right block is for secondary or negative actions:
-                 * Ban (for users), Hide in Home, Unsubscribe from me, Pin/unpin group
+                 * Ban (for users), Hide in Home, Remove from subscribers, Pin/unpin group
                  */}
                 <ul className={cn(styles.actionsList, styles.actionsListRight)}>
                   {inSubscribers && currentUser.isPrivate === '1' && (
                     <li>
-                      <ActionLink {...unsubFromMe}>Unsubscribe from me</ActionLink>
+                      <ActionLink {...unsubFromMe}>Remove from subscribers</ActionLink>
                     </li>
                   )}
                   {user.type === 'group' && inSubscriptions && (
@@ -396,11 +396,8 @@ export const UserProfileHead = withRouter(
                         <Link to={`/filter/direct?invite=${user.username}`}>Invite</Link>
                       </li>
                       <li>
-                        <ActionLink
-                          {...togglePinned}
-                          title={isPinned ? 'Unpin from sidebar' : 'Pin to sidebar'}
-                        >
-                          {isPinned ? 'Unpin' : 'Pin'}
+                        <ActionLink {...togglePinned}>
+                          {isPinned ? 'Unpin from sidebar' : 'Pin to sidebar'}
                         </ActionLink>
                       </li>
                     </>
