@@ -19,6 +19,7 @@ import {
   appearanceMiddleware,
   initialWhoamiMiddleware,
   unscrollMiddleware,
+  subscriptionMiddleware,
   onResponseMiddleware,
 } from './middlewares';
 
@@ -44,6 +45,7 @@ const middleware = [
   realtimeMiddleware,
   appearanceMiddleware,
   initialWhoamiMiddleware,
+  subscriptionMiddleware,
   onResponseMiddleware,
 ];
 

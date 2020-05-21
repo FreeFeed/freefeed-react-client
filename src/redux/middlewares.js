@@ -434,6 +434,18 @@ export const groupPictureLogicMiddleware = (store) => (next) => (action) => {
   return next(action);
 };
 
+export const subscriptionMiddleware = (store) => (next) => (action) => {
+  if (
+    action.type === response(ActionTypes.SUBSCRIBE) ||
+    action.type === response(ActionTypes.UNSUBSCRIBE)
+  ) {
+    // Update user data after subscribing/unsubscribing (to update home feeds)
+    store.dispatch(ActionCreators.getUserInfo(action.request.username));
+  }
+
+  return next(action);
+};
+
 function isInvitation({ locationBeforeTransitions }) {
   const { pathname, query } = locationBeforeTransitions;
   return pathname === '/filter/direct' && !!query.invite;

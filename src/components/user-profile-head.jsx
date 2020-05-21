@@ -2,6 +2,7 @@
 import React, { useEffect, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, withRouter } from 'react-router';
+import { Portal } from 'react-portal';
 import cn from 'classnames';
 import {
   faGlobeAmericas,
@@ -25,21 +26,20 @@ import {
   togglePinnedGroup,
   hideByName,
   unsubscribe,
-  subscribe,
   ban,
   unban,
-  sendSubscriptionRequest,
   unsubscribeFromMe,
   listHomeFeeds,
 } from '../redux/action-creators';
 import { withKey } from './with-key';
 import { UserPicture } from './user-picture';
-
-import styles from './user-profile-head.module.scss';
 import { Throbber } from './throbber';
 import { Icon } from './fontawesome-icons';
 import PieceOfText from './piece-of-text';
 import { ButtonLink } from './button-link';
+import { useDropDown, BOTTOM_RIGHT, CLOSE_ON_CLICK_OUTSIDE } from './hooks/drop-down';
+import styles from './user-profile-head.module.scss';
+import { UserSubscriptionEditPopup } from './user-subscription-edit-popup';
 
 export const UserProfileHead = withRouter(
   withKey(({ router }) => router.params.userName)(function UserProfileHead({ router }) {
@@ -110,22 +110,13 @@ export const UserProfileHead = withRouter(
     // Actions & statuses
     const doShowMedia = useCallback((arg) => dispatch(showMedia(arg)), [dispatch]);
 
-    const toggleSubscribed = {
+    const doUnsubscribe = {
       onClick: useCallback(() => {
-        if (
-          inSubscriptions &&
-          !confirm(`Are you sure you want to unsubscribe from @${user.username}?`)
-        ) {
+        if (!confirm(`Are you sure you want to unsubscribe from @${user.username}?`)) {
           return;
         }
-        dispatch(
-          (inSubscriptions
-            ? unsubscribe
-            : user.isPrivate === '1'
-            ? sendSubscriptionRequest
-            : subscribe)(user),
-        );
-      }, [inSubscriptions, dispatch, user]),
+        dispatch(unsubscribe(user));
+      }, [dispatch, user]),
       status: useSelector(
         (state) => state.userActionsStatuses.subscribing[user?.username] || initialAsyncState,
       ),
@@ -164,9 +155,19 @@ export const UserProfileHead = withRouter(
       ),
     };
 
-    const actionErrors = [toggleSubscribed, togglePinned, toggleHidden, toggleBanned, unsubFromMe]
+    const actionErrors = [doUnsubscribe, togglePinned, toggleHidden, toggleBanned, unsubFromMe]
       .map((a) => a.status.errorText)
       .filter(Boolean);
+
+    const {
+      pivotRef: subscrFormPivotRef,
+      menuRef: subscrFormRef,
+      opened: subscrFormOpened,
+      toggle: subscrFormToggle,
+    } = useDropDown({
+      position: BOTTOM_RIGHT,
+      closeOn: CLOSE_ON_CLICK_OUTSIDE,
+    });
 
     if (!user && (isLoggedOut || routeLoadingState || dataStatus.loading || dataStatus.initial)) {
       return (
@@ -311,14 +312,18 @@ export const UserProfileHead = withRouter(
                       <>
                         {activeHomeFeeds.length === 1 ? 'In list:' : 'In lists:'}{' '}
                         {activeHomeFeeds.map((h, i) => (
-                          <>
+                          <span key={h.id}>
                             {i > 0 && ', '}
-                            <HomeFeedLink key={h.id} feed={h} />
-                          </>
-                        ))}{' '}
-                        (<ButtonLink>edit</ButtonLink>)
+                            <HomeFeedLink feed={h} />
+                          </span>
+                        ))}
                       </>
-                    )}
+                    )}{' '}
+                    (
+                    <ButtonLink ref={subscrFormPivotRef} onClick={subscrFormToggle}>
+                      edit
+                    </ButtonLink>
+                    )
                   </>
                 )}
               </div>
@@ -340,15 +345,15 @@ export const UserProfileHead = withRouter(
                   canFollow={canFollowStatLinks}
                 />
                 {/* Looks like posts statistics is totally incorrect, so dont show it
-            {user.type === 'user' && (
-              <StatLink
-                value={user.statistics.posts}
-                title="post"
-                linkTo={`/${user.username}`}
-                canFollow={canFollowStatLinks}
-              />
-            )}
-            */}
+                {user.type === 'user' && (
+                  <StatLink
+                    value={user.statistics.posts}
+                    title="post"
+                    linkTo={`/${user.username}`}
+                    canFollow={canFollowStatLinks}
+                  />
+                )}
+                */}
                 {user.type === 'user' && (
                   <StatLink
                     value={user.statistics.comments}
@@ -384,12 +389,14 @@ export const UserProfileHead = withRouter(
                   <ul className={styles.actionsList}>
                     {inSubscriptions && !isCurrentUserAdmin && (
                       <li>
-                        <ActionLink {...toggleSubscribed}>Unsubscribe</ActionLink>
+                        <ActionLink {...doUnsubscribe}>Unsubscribe</ActionLink>
                       </li>
                     )}
                     {!inSubscriptions && user.isPrivate === '0' && (
                       <li>
-                        <ActionLink {...toggleSubscribed}>Subscribe</ActionLink>
+                        <ButtonLink ref={subscrFormPivotRef} onClick={subscrFormToggle}>
+                          Subscribe
+                        </ButtonLink>
                       </li>
                     )}
                     {!inSubscriptions && user.isPrivate === '1' && (
@@ -399,7 +406,9 @@ export const UserProfileHead = withRouter(
                             <Icon icon={faClock} /> Request sent
                           </>
                         ) : (
-                          <ActionLink {...toggleSubscribed}>Request a subscription</ActionLink>
+                          <ButtonLink ref={subscrFormPivotRef} onClick={subscrFormToggle}>
+                            Request a subscription
+                          </ButtonLink>
                         )}
                       </li>
                     )}
@@ -463,6 +472,19 @@ export const UserProfileHead = withRouter(
               ))}
             </div>
           </>
+        )}
+        {subscrFormOpened && (
+          <Portal>
+            <UserSubscriptionEditPopup
+              ref={subscrFormRef}
+              username={username}
+              homeFeeds={allHomeFeeds}
+              inHomeFeeds={inHomeFeeds}
+              closeForm={subscrFormToggle}
+              subscribe={!inSubscriptions}
+              sendRequest={!inSubscriptions && user.isPrivate === '1'}
+            />
+          </Portal>
         )}
       </div>
     );

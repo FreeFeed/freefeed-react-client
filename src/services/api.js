@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import { getDateForMemoriesRequest } from '../utils/get-date-from-short-string';
 import { userParser } from '../utils';
+import { UPDATE_SUBSCRIPTION, SUBSCRIBE, SEND_SUBSCRIPTION_REQUEST } from '../redux/action-types';
 import { getToken } from './auth';
 import { popupAsPromise } from './popup';
 
@@ -313,8 +314,8 @@ export function updateUserPicture({ picture }) {
   });
 }
 
-const userAction = (action) => ({ username }) => {
-  return fetch(`${apiRoot}/v1/users/${username}/${action}`, postRequestOptions());
+const userAction = (action) => ({ username, ...rest }) => {
+  return fetch(`${apiRoot}/v1/users/${username}/${action}`, postRequestOptions('POST', rest));
 };
 
 export const ban = userAction('ban');
@@ -634,4 +635,21 @@ export async function togglePinnedGroup({ id: groupId }) {
 
 export function listHomeFeeds() {
   return fetch(`${apiRoot}/v2/timelines/home/list`, getRequestOptions());
+}
+
+export function createHomeFeed({ title }) {
+  return fetch(`${apiRoot}/v2/timelines/home`, postRequestOptions('POST', { title }));
+}
+
+export async function subscribeWithHomeFeeds({ type = UPDATE_SUBSCRIPTION, username, homeFeeds }) {
+  if (type === SEND_SUBSCRIPTION_REQUEST) {
+    return sendSubscriptionRequest({ username, homeFeeds });
+  } else if (type === SUBSCRIBE) {
+    return subscribe({ username, homeFeeds });
+  }
+
+  return fetch(
+    `${apiRoot}/v1/users/${username}/subscribe`,
+    postRequestOptions('PUT', { homeFeeds }),
+  );
 }

@@ -7,6 +7,9 @@ import {
   REALTIME_USER_UPDATE,
   LIST_HOME_FEEDS,
   GET_USER_INFO,
+  UPDATE_SUBSCRIPTION,
+  SEND_SUBSCRIPTION_REQUEST,
+  SUBSCRIBE,
 } from '../action-types';
 import { setOnLocationChange } from './helpers';
 
@@ -40,7 +43,8 @@ export const homeFeedsStatus = asyncState(LIST_HOME_FEEDS);
 
 export function usersInHomeFeeds(state = {}, action) {
   switch (action.type) {
-    case response(GET_USER_INFO): {
+    case response(GET_USER_INFO):
+    case response(UPDATE_SUBSCRIPTION): {
       return {
         ...state,
         [action.payload.users.id]: action.payload.inHomeFeeds,
@@ -60,5 +64,11 @@ export const usersInHomeFeedsStates = asyncStatesMap(
   {
     getKey: getKeyBy('username'),
   },
+  setOnLocationChange({}),
+);
+
+export const updateUsersSubscriptionStates = asyncStatesMap(
+  [SUBSCRIBE, SEND_SUBSCRIPTION_REQUEST, UPDATE_SUBSCRIPTION],
+  { getKey: getKeyBy('username') },
   setOnLocationChange({}),
 );

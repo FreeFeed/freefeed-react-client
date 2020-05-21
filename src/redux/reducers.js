@@ -2329,4 +2329,5 @@ export {
   homeFeedsStatus,
   usersInHomeFeeds,
   usersInHomeFeedsStates,
+  updateUsersSubscriptionStates,
 } from './reducers/home-feeds';

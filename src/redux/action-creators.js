@@ -1025,3 +1025,23 @@ export function listHomeFeeds() {
     apiRequest: Api.listHomeFeeds,
   };
 }
+
+export function createHomeFeed(title) {
+  return {
+    type: ActionTypes.CREATE_HOME_FEED,
+    apiRequest: Api.createHomeFeed,
+    payload: { title },
+  };
+}
+
+export function subscribeWithHomeFeeds(type, username, homeFeeds) {
+  return {
+    type,
+    apiRequest: Api.subscribeWithHomeFeeds,
+    payload: { type, username, homeFeeds },
+  };
+}
+
+export function updateSubscriptionReset(username) {
+  return { type: reset(ActionTypes.UPDATE_SUBSCRIPTION), payload: { username } };
+}
