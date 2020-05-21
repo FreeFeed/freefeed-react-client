@@ -13,7 +13,7 @@ import {
 } from '../action-types';
 import { setOnLocationChange } from './helpers';
 
-const defaultHomeFeeds = [{ id: 'unknown', title: 'Home Feed', isInherent: true }];
+const defaultHomeFeeds = [{ id: 'unknown', title: 'Home', isInherent: true }];
 
 function parseHomeFeedsList(list) {
   return list.map((t) => pick(t, ['id', 'title', 'isInherent']));

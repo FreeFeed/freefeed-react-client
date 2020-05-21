@@ -40,6 +40,7 @@ import { ButtonLink } from './button-link';
 import { useDropDown, BOTTOM_RIGHT, CLOSE_ON_CLICK_OUTSIDE } from './hooks/drop-down';
 import styles from './user-profile-head.module.scss';
 import { UserSubscriptionEditPopup } from './user-subscription-edit-popup';
+import { HomeFeedLink } from './home-feed-link';
 
 export const UserProfileHead = withRouter(
   withKey(({ router }) => router.params.userName)(function UserProfileHead({ router }) {
@@ -511,11 +512,4 @@ function ActionLink({ onClick, status = null, children }) {
       </ButtonLink>
     </>
   );
-}
-
-function HomeFeedLink({ feed }) {
-  const link = feed.isInherent
-    ? '/'
-    : `/list/${feed.id.substring(0, 4)}/${encodeURIComponent(feed.title)}`;
-  return <Link to={link}>{feed.title}</Link>;
 }
