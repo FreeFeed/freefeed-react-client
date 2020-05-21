@@ -57,6 +57,14 @@ export function home(offset = 0) {
   };
 }
 
+export function homeAux(offset = 0, feedId = null) {
+  return {
+    type: ActionTypes.HOME_AUX,
+    apiRequest: Api.getHome,
+    payload: { offset, feedId },
+  };
+}
+
 export function getMemories(_from, offset = 0) {
   return {
     type: ActionTypes.MEMORIES,

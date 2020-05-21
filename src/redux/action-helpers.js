@@ -1,5 +1,6 @@
 import {
   HOME,
+  HOME_AUX,
   DISCUSSIONS,
   DIRECT,
   GET_USER_FEED,
@@ -36,6 +37,7 @@ export { request, response, fail, reset } from './async-helpers';
 
 export const feedGeneratingActions = [
   HOME,
+  HOME_AUX,
   DISCUSSIONS,
   SAVES,
   GET_USER_FEED,
@@ -97,6 +99,10 @@ export function getFeedName(action) {
 
   if (isUserFeedGeneratingAction(action) || isUserFeedRequest(action)) {
     return `${baseType(action.type)}_${action.payload.username}`;
+  }
+
+  if (action.type === request(HOME_AUX) || action.type === HOME_AUX) {
+    return `${baseType(action.type)}_${action.payload.feedId}`;
   }
 
   return baseType(action.type);

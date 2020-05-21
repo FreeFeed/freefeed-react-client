@@ -43,6 +43,7 @@ if (store.getState().authenticated) {
 import { bindRouteActions } from './redux/route-actions';
 import { initUnscroll, safeScrollTo } from './services/unscroll';
 import { lazyRetry } from './utils/retry-promise';
+import { HomeAux } from './components/home-aux';
 
 // Set initial history state.
 // Without this, there can be problems with third-party
@@ -147,6 +148,7 @@ function App() {
           component={Home}
           {...generateRouteHooks(boundRouteActions('home'))}
         />
+        <Route path="/list/:listId(/:listTitle)" name="homeAux" component={HomeAux} />
         <Route path="about">
           <IndexRoute
             name="about"

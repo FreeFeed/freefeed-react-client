@@ -44,7 +44,12 @@ export function getWhoAmI() {
 }
 
 export function getHome(params) {
-  return fetch(`${apiRoot}/v2/timelines/home?${feedQueryString(params)}`, getRequestOptions());
+  return fetch(
+    `${apiRoot}/v2/timelines/home${params.feedId ? `/${params.feedId}` : ''}?${feedQueryString(
+      params,
+    )}`,
+    getRequestOptions(),
+  );
 }
 
 export function getMemories(params) {

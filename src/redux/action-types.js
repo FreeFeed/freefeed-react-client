@@ -4,6 +4,7 @@ export const REQUIRE_AUTHENTICATION = 'REQUIRE_AUTHENTICATION';
 export const INITIAL_WHO_AM_I = 'INITIAL_WHO_AM_I';
 export const WHO_AM_I = 'WHO_AM_I';
 export const HOME = 'HOME';
+export const HOME_AUX = 'HOME_AUX';
 export const MEMORIES = 'MEMORIES';
 export const DISCUSSIONS = 'DISCUSSIONS';
 export const SAVES = 'SAVES';
