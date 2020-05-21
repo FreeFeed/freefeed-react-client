@@ -1,7 +1,13 @@
 import { pick } from 'lodash';
 
 import { LOCATION_CHANGE } from 'react-router-redux';
-import { response, asyncState, asyncStatesMap, getKeyBy } from '../async-helpers';
+import {
+  response,
+  asyncState,
+  asyncStatesMap,
+  getKeyBy,
+  initialAsyncState,
+} from '../async-helpers';
 import {
   UNAUTHENTICATED,
   REALTIME_USER_UPDATE,
@@ -11,7 +17,7 @@ import {
   SEND_SUBSCRIPTION_REQUEST,
   SUBSCRIBE,
 } from '../action-types';
-import { setOnLocationChange } from './helpers';
+import { setOnLocationChange, setOnLogOut } from './helpers';
 
 const defaultHomeFeeds = [{ id: 'unknown', title: 'Home', isInherent: true }];
 
@@ -39,7 +45,7 @@ export function homeFeeds(state = defaultHomeFeeds, action) {
   return state;
 }
 
-export const homeFeedsStatus = asyncState(LIST_HOME_FEEDS);
+export const homeFeedsStatus = asyncState(LIST_HOME_FEEDS, setOnLogOut(initialAsyncState));
 
 export function usersInHomeFeeds(state = {}, action) {
   switch (action.type) {
