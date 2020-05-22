@@ -1,5 +1,5 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { memo } from 'react';
+import { connect, useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
 import {
@@ -31,13 +31,6 @@ const FeedHandler = (props) => {
     />
   );
 
-  const { userRequestsCount, groupRequestsCount } = props;
-  const totalRequestsCount = userRequestsCount + groupRequestsCount;
-
-  const userRequestsText = pluralForm(userRequestsCount, 'subscription request');
-  const groupRequestsText = pluralForm(groupRequestsCount, 'group subscription request');
-  const bothRequestsDisplayed = userRequestsCount > 0 && groupRequestsCount > 0;
-
   return (
     <div className="box">
       <ErrorBoundary>
@@ -46,24 +39,7 @@ const FeedHandler = (props) => {
           <div className="pull-right">{props.authenticated && <FeedOptionsSwitch />}</div>
         </div>
 
-        {props.authenticated && totalRequestsCount > 0 ? (
-          <div className="box-message alert alert-info">
-            <span className="message">
-              {totalRequestsCount > 0 ? (
-                <span>
-                  <span>You have </span>
-                  {userRequestsCount > 0 ? <Link to="/friends">{userRequestsText}</Link> : false}
-                  {bothRequestsDisplayed ? <span> and </span> : false}
-                  {groupRequestsCount > 0 ? <Link to="/groups">{groupRequestsText}</Link> : false}
-                </span>
-              ) : (
-                false
-              )}
-            </span>
-          </div>
-        ) : (
-          false
-        )}
+        <SubscrRequests />
 
         {props.authenticated ? (
           <PaginatedView firstPageHead={createPostComponent} {...props}>
@@ -79,15 +55,7 @@ const FeedHandler = (props) => {
 };
 
 function selectState(state) {
-  const {
-    authenticated,
-    boxHeader,
-    createPostViewState,
-    groupRequestsCount,
-    timelines,
-    user,
-    userRequestsCount,
-  } = state;
+  const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
 
   const sendTo = { ...state.sendTo, defaultFeed: user.username };
   const feedIsLoading = state.routeLoadingState;
@@ -99,8 +67,6 @@ function selectState(state) {
     timelines,
     boxHeader,
     sendTo,
-    userRequestsCount,
-    groupRequestsCount,
     feedIsLoading,
   };
 }
@@ -117,3 +83,41 @@ function selectActions(dispatch) {
 }
 
 export default connect(selectState, selectActions)(FeedHandler);
+
+export const SubscrRequests = memo(function SubscrRequests() {
+  const userRequestsCount = useSelector((state) => state.userRequestsCount);
+  const groupRequestsCount = useSelector((state) => state.groupRequestsCount);
+
+  const uLink = userRequestsCount && (
+    <Link key="uLink" to="/friends">
+      {pluralForm(userRequestsCount, 'subscription request')}
+    </Link>
+  );
+
+  const gLink = groupRequestsCount && (
+    <Link key="gLink" to="/groups">
+      {pluralForm(groupRequestsCount, 'group subscription request')}
+    </Link>
+  );
+
+  const links = [uLink, gLink].filter(Boolean);
+  if (links.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="box-message alert alert-info">
+      <span className="message">
+        <span>
+          <span>You have </span>
+          {links.map((link, i) => (
+            <>
+              {i > 0 && ' and '}
+              {link}
+            </>
+          ))}
+        </span>
+      </span>
+    </div>
+  );
+});

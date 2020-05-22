@@ -12,6 +12,7 @@ import { HomeFeedLink, homeFeedURI } from './home-feed-link';
 import PaginatedView from './paginated-view';
 import Feed from './feed';
 import { postActions } from './select-utils';
+import { SubscrRequests } from './home';
 
 export function HomeAux({ router }) {
   const dispatch = useDispatch();
@@ -111,6 +112,9 @@ export function HomeAux({ router }) {
             <FeedOptionsSwitch />
           </div>
         </div>
+
+        <SubscrRequests />
+
         <PaginatedView>
           <FeedWithProps
             emptyFeedMessage={
