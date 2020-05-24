@@ -419,8 +419,8 @@ export function unadminGroupAdmin({ groupName, user }) {
   );
 }
 
-export function revokeSentRequest({ userName }) {
-  return fetch(`${apiRoot}/v2/requests/${userName}/revoke`, postRequestOptions());
+export function revokeSentRequest({ username }) {
+  return fetch(`${apiRoot}/v2/requests/${username}/revoke`, postRequestOptions());
 }
 
 export function getBlockedByMe() {

@@ -34,7 +34,7 @@ class UserTile extends React.PureComponent {
 
   handleRevokeClick = () => {
     const { user } = this.props;
-    user.revokeSentRequest(user.username);
+    user.revokeSentRequest(user);
   };
 
   render() {

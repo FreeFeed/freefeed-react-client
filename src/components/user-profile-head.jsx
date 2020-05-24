@@ -30,6 +30,7 @@ import {
   unban,
   unsubscribeFromMe,
   listHomeFeeds,
+  revokeSentRequest,
 } from '../redux/action-creators';
 import { withKey } from './with-key';
 import { UserPicture } from './user-picture';
@@ -90,6 +91,7 @@ export const UserProfileHead = withRouter(
         isHidden: currentUser?.frontendPreferences.homefeed.hideUsers.includes(user?.username),
         isPinned: currentUser?.frontendPreferences.pinnedGroups.includes(user?.id),
       }),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [user, currentUser],
     );
 
@@ -122,8 +124,19 @@ export const UserProfileHead = withRouter(
         (state) => state.userActionsStatuses.subscribing[user?.username] || initialAsyncState,
       ),
     };
+    const doRevokeRequest = {
+      onClick: useCallback(() => {
+        if (!confirm(`Are you sure you want to revoke this request?`)) {
+          return;
+        }
+        dispatch(revokeSentRequest(user));
+      }, [dispatch, user]),
+      status: useSelector(
+        (state) => state.userActionsStatuses.subscribing[user?.username] || initialAsyncState,
+      ),
+    };
     const togglePinned = {
-      onClick: useCallback(() => dispatch(togglePinnedGroup(user?.id)), [dispatch, user]),
+      onClick: useCallback(() => dispatch(togglePinnedGroup(user?.id)), [dispatch, user?.id]),
       status: useSelector(
         (state) => state.userActionsStatuses.pinned[user?.id] || initialAsyncState,
       ),
@@ -132,7 +145,7 @@ export const UserProfileHead = withRouter(
       onClick: useCallback(() => dispatch(hideByName(user?.username, null, !isHidden)), [
         dispatch,
         isHidden,
-        user,
+        user?.username,
       ]),
       status: useSelector(
         (state) => state.userActionsStatuses.hiding[user?.username] || initialAsyncState,
@@ -156,7 +169,14 @@ export const UserProfileHead = withRouter(
       ),
     };
 
-    const actionErrors = [doUnsubscribe, togglePinned, toggleHidden, toggleBanned, unsubFromMe]
+    const actionErrors = [
+      doUnsubscribe,
+      doRevokeRequest,
+      togglePinned,
+      toggleHidden,
+      toggleBanned,
+      unsubFromMe,
+    ]
       .map((a) => a.status.errorText)
       .filter(Boolean);
 
@@ -404,7 +424,8 @@ export const UserProfileHead = withRouter(
                       <li>
                         {requestSent ? (
                           <>
-                            <Icon icon={faClock} /> Request sent
+                            <Icon icon={faClock} /> Request sent (
+                            <ActionLink {...doRevokeRequest}>revoke</ActionLink>)
                           </>
                         ) : (
                           <ButtonLink ref={subscrFormPivotRef} onClick={subscrFormToggle}>

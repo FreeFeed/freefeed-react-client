@@ -1389,6 +1389,15 @@ export function user(state = initUser(), action) {
         ],
       };
     }
+    case response(ActionTypes.REVOKE_USER_REQUEST): {
+      return {
+        ...state,
+        pendingSubscriptionRequests: _.without(
+          state.pendingSubscriptionRequests || [],
+          action.request.id,
+        ),
+      };
+    }
     case response(ActionTypes.DIRECTS_ALL_READ): {
       return { ...state, unreadDirectsNumber: 0 };
     }

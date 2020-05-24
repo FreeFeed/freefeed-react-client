@@ -713,10 +713,10 @@ export function unadminGroupAdmin(groupName, user, isItMe) {
   };
 }
 
-export function revokeSentRequest(userName) {
+export function revokeSentRequest(user) {
   return {
     type: ActionTypes.REVOKE_USER_REQUEST,
-    payload: { userName },
+    payload: user,
     apiRequest: Api.revokeSentRequest,
   };
 }
