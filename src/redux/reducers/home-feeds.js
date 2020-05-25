@@ -16,6 +16,7 @@ import {
   UPDATE_SUBSCRIPTION,
   SEND_SUBSCRIPTION_REQUEST,
   SUBSCRIBE,
+  REORDER_HOME_FEEDS,
 } from '../action-types';
 import { setOnLocationChange, setOnLogOut } from './helpers';
 
@@ -28,7 +29,8 @@ function parseHomeFeedsList(list) {
 // All home feeds of the current user
 export function homeFeeds(state = defaultHomeFeeds, action) {
   switch (action.type) {
-    case response(LIST_HOME_FEEDS): {
+    case response(LIST_HOME_FEEDS):
+    case response(REORDER_HOME_FEEDS): {
       return parseHomeFeedsList(action.payload.timelines);
     }
     case UNAUTHENTICATED: {

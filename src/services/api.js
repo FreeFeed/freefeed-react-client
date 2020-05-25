@@ -663,3 +663,7 @@ export async function subscribeWithHomeFeeds({
     postRequestOptions('PUT', { homeFeeds }),
   );
 }
+
+export function reorderHomeFeeds({ feedIds }) {
+  return fetch(`${apiRoot}/v2/timelines/home`, postRequestOptions('PATCH', { reorder: feedIds }));
+}

@@ -38,12 +38,15 @@ export function HomeAux({ router }) {
     dispatch,
   ]);
 
-  useEffect(() => void (feed && dispatch(homeAux(+router.location.query.offset || 0, feed.id))), [
-    router.location.query.offset,
-    feed,
-    dispatch,
-    sort, // We should reload feed if sort changes
-  ]);
+  useEffect(
+    () => void (feed?.id && dispatch(homeAux(+router.location.query.offset || 0, feed?.id))),
+    [
+      router.location.query.offset,
+      feed?.id,
+      dispatch,
+      sort, // We should reload feed if sort changes
+    ],
+  );
 
   // Render
   if (!authenticated) {

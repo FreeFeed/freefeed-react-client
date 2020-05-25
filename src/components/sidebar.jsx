@@ -1,11 +1,11 @@
 /* global CONFIG */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router';
-import { connect, useSelector, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import format from 'date-fns/format';
 
 import { preventDefault, htmlSafe } from '../utils';
-import { setUserColorScheme, listHomeFeeds } from '../redux/action-creators';
+import { setUserColorScheme } from '../redux/action-creators';
 import {
   SCHEME_DARK,
   SCHEME_SYSTEM,
@@ -19,7 +19,7 @@ import ErrorBoundary from './error-boundary';
 import { InvisibleSelect } from './invisibe-select';
 import { LiberaPayWidget } from './LiberaPayWidget';
 import { UserPicture } from './user-picture';
-import { HomeFeedLink } from './home-feed-link';
+import { SidebarHomeFeeds } from './sidebar-homefeeds';
 
 const LoggedInBlock = ({ user, signOut }) => (
   <div className="logged-in">
@@ -41,24 +41,15 @@ const LoggedInBlock = ({ user, signOut }) => (
 );
 
 const SideBarFriends = ({ user }) => {
-  const dispatch = useDispatch();
-  const allHomeFeeds = useSelector((state) => state.homeFeeds);
-  const allHomeFeedsStatus = useSelector((state) => state.homeFeedsStatus);
-  useEffect(() => void (allHomeFeedsStatus.initial && dispatch(listHomeFeeds())), [
-    allHomeFeedsStatus.initial,
-    dispatch,
-  ]);
-
   return (
     <div className="box">
       <div className="box-header-friends">Friends</div>
       <div className="box-body">
         <ul>
-          {allHomeFeeds.map((feed) => (
-            <li className={`p-home${feed.isInherent ? '' : ' p-home--aux'}`} key={feed.id}>
-              <HomeFeedLink feed={feed} />
-            </li>
-          ))}
+          <li className="p-home">
+            <Link to="/">Home</Link>
+          </li>
+          <SidebarHomeFeeds />
           <li className="p-direct-messages">
             <Link
               to="/filter/direct"

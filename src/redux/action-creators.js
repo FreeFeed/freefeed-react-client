@@ -1053,3 +1053,11 @@ export function subscribeWithHomeFeeds(type, user, homeFeeds) {
 export function updateSubscriptionReset(username) {
   return { type: reset(ActionTypes.UPDATE_SUBSCRIPTION), payload: { username } };
 }
+
+export function reorderHomeFeeds(feedIds) {
+  return {
+    type: ActionTypes.REORDER_HOME_FEEDS,
+    apiRequest: Api.reorderHomeFeeds,
+    payload: { feedIds },
+  };
+}
