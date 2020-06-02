@@ -340,7 +340,9 @@ function ReviewRequestLink({ from, group = null }) {
 
   return (
     <>
-      (<Link to="/friends?show=requests">Review</Link>)
+      <Link to="/friends?show=requests" className="btn btn-default btn-sm">
+        Review
+      </Link>
     </>
   );
 }
