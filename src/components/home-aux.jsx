@@ -1,5 +1,5 @@
 /* global CONFIG */
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch, connect } from 'react-redux';
 import { Link } from 'react-router';
 
@@ -13,6 +13,14 @@ import PaginatedView from './paginated-view';
 import Feed from './feed';
 import { postActions } from './select-utils';
 import { SubscrRequests } from './home';
+import { lazyComponent } from './lazy-component';
+import { useBool } from './hooks/bool';
+import { ButtonLink } from './button-link';
+
+const ListEditor = lazyComponent(
+  () => import('./friends-page/list-editor').then((m) => ({ default: m.ListEditor })),
+  { fallback: <p>Loading list editor...</p>, errorMessage: "Couldn't load list editor" },
+);
 
 export function HomeAux({ router }) {
   const dispatch = useDispatch();
@@ -25,6 +33,21 @@ export function HomeAux({ router }) {
     allHomeFeeds,
     router.params.listId,
   ]);
+
+  const [isEditing, , showEditor, hideEditor] = useBool(false);
+  const [edited, toggleEdited] = useBool(false);
+  const closeEditor = useCallback(
+    (listId) => {
+      hideEditor();
+      if (!listId) {
+        // Cancel pressed
+        return;
+      }
+      router.replace({ ...router.location, query: {} });
+      toggleEdited();
+    },
+    [hideEditor, router, toggleEdited],
+  );
 
   useEffect(() => {
     if (feed && feed.title !== router.params.listTitle) {
@@ -45,6 +68,7 @@ export function HomeAux({ router }) {
       feed?.id,
       dispatch,
       sort, // We should reload feed if sort changes
+      edited, // We should reload feed if it was edited
     ],
   );
 
@@ -110,11 +134,15 @@ export function HomeAux({ router }) {
       <Helmet title={`${feed.title} - ${CONFIG.siteTitle}`} defer={false} />
       <ErrorBoundary>
         <div className="box-header-timeline">
-          {feed.title}
+          {feed.title}{' '}
+          <small>
+            (<ButtonLink onClick={showEditor}>Edit list</ButtonLink>)
+          </small>
           <div className="pull-right">
             <FeedOptionsSwitch />
           </div>
         </div>
+        {isEditing && <ListEditor listId={feed.id} close={closeEditor} />}
 
         <SubscrRequests />
 
@@ -122,7 +150,8 @@ export function HomeAux({ router }) {
           <FeedWithProps
             emptyFeedMessage={
               <p>
-                You might want to <Link to="/friends">add some users or groups</Link> in this list.
+                You might want to{' '}
+                <ButtonLink onClick={showEditor}>add some users or groups</ButtonLink> in this list.
               </p>
             }
           />

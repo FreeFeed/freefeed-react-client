@@ -98,6 +98,19 @@ export function getKeyBy(keyNameOrNames) {
   };
 }
 
+export function keyFromRequestPayload(handler) {
+  return (action) => {
+    switch (asyncPhase(action.type)) {
+      case RESET_PHASE:
+      case REQUEST_PHASE:
+        return handler(action.payload);
+      case RESPONSE_PHASE:
+      case FAIL_PHASE:
+        return handler(action.request);
+    }
+  };
+}
+
 /**
  * Reducer that represents a map of asyncState's.
  *
@@ -206,6 +219,33 @@ export function combineAsyncStates(...states) {
   return initialAsyncState;
 }
 
-export function withResponseHandler(action, onResponse) {
-  return { ...action, extra: { ...action.extra, onResponse } };
+/**
+ * Perform several actions sequentially using onResponseMiddleware. It allows to
+ * use response of previous actions in the following ones.
+ *
+ * Usage:
+ *
+ * doSequence(dispatch)((dispatch) => dispatch(asyncAction1()), (dispatch,
+ *  asyncAction1Response) =>
+ *  dispatch(asyncAction2(asyncAction1Response.payload.something)),
+ *  // ...
+ * );
+ *
+ */
+export function doSequence(dispatch) {
+  const disp = (first, ...nextHandlers) => (action) => {
+    if (!first) {
+      dispatch(action);
+    } else {
+      dispatch({
+        ...action,
+        extra: {
+          ...action.extra,
+          onResponse: (respAction) => first(disp(...nextHandlers), respAction),
+        },
+      });
+    }
+  };
+
+  return (first, ...nextHandlers) => first(disp(...nextHandlers), {});
 }

@@ -7,6 +7,7 @@ import styles from './user-picture.module.scss';
 export function UserPicture({
   user = null,
   large = false,
+  inline = false,
   loading = undefined,
   withLink = true,
   className = '',
@@ -31,6 +32,7 @@ export function UserPicture({
   const clazzName = cn(
     styles.picture,
     large && styles.pictureLarge,
+    inline && styles.pictureInline,
     !user && styles.pictureEmpty,
     className,
   );

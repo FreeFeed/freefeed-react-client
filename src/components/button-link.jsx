@@ -1,14 +1,30 @@
-import React, { useCallback, memo, forwardRef } from 'react';
+import React, { useCallback, memo, forwardRef, useMemo } from 'react';
 
 // Inspired by https://www.w3.org/TR/wai-aria-practices/examples/button/button.html
 export const ButtonLink = memo(
   forwardRef(function ButtonLink({ onClick: click, disabled = false, ...props }, ref) {
-    const onClick = useCallback((event) => disabled || click(event), [click, disabled]);
+    const kbdHandlers = useKeyboardEvents(
+      useCallback((event) => disabled || click(event), [click, disabled]),
+    );
 
-    const onFocus = useCallback((event) => disabled && event.target.blur(), [disabled]);
+    return (
+      <a
+        role="button"
+        aria-disabled={disabled}
+        tabIndex={0}
+        ref={ref}
+        {...kbdHandlers}
+        {...props}
+      />
+    );
+  }),
+);
 
-    const onKeyDown = useCallback(
-      (event) => {
+export function useKeyboardEvents(onClick) {
+  return useMemo(
+    () => ({
+      onClick,
+      onKeyDown: (event) => {
         if (event.keyCode === 32) {
           event.preventDefault();
         } else if (event.keyCode === 13) {
@@ -16,31 +32,13 @@ export const ButtonLink = memo(
           onClick(event);
         }
       },
-      [onClick],
-    );
-
-    const onKeyUp = useCallback(
-      (event) => {
+      onKeyUp: (event) => {
         if (event.keyCode === 32) {
           event.preventDefault();
           onClick(event);
         }
       },
-      [onClick],
-    );
-
-    return (
-      <a
-        role="button"
-        aria-disabled={disabled}
-        tabIndex={disabled ? -1 : 0}
-        onClick={onClick}
-        onKeyDown={onKeyDown}
-        onKeyUp={onKeyUp}
-        onFocus={onFocus}
-        ref={ref}
-        {...props}
-      />
-    );
-  }),
-);
+    }),
+    [onClick],
+  );
+}

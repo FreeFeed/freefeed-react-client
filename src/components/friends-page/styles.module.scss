@@ -1,0 +1,100 @@
+.topNav {
+  margin-top: 2em;
+}
+
+.listSelector {
+  display: inline-block;
+  width: auto;
+}
+
+.usersGrid {
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+  padding: 0;
+}
+
+.userCell {
+  width: 110px;
+  text-align: center;
+  word-wrap: break-word;
+  font-size: 12px;
+  line-height: 16px;
+  margin-bottom: 20px;
+  padding: 0 6px;
+}
+
+.listWithoutGroups {
+  margin-top: 2em;
+}
+
+.listSelectorContainer {
+  margin-top: 1em;
+}
+
+.addListOption {
+  font-style: italic;
+}
+
+.incomingRequestsMarker {
+  color: #fd3c3c;
+  position: relative;
+  display: inline-block;
+
+  &::after {
+    position: absolute;
+    top: -1em;
+    right: -0.5em;
+    content: '';
+    border-radius: 50%;
+    width: 6px;
+    height: 6px;
+    background-color: currentColor;
+  }
+}
+
+.tabCounter {
+  &:empty {
+    display: none;
+  }
+
+  &::before {
+    content: '(';
+  }
+  &::after {
+    content: ')';
+  }
+}
+
+.usersList {
+  list-style-type: none;
+  padding: 0;
+  max-width: 400px;
+}
+
+.usersListItem {
+  padding: 0;
+  display: grid;
+  gap: 0.5em;
+  grid-auto-flow: column;
+  grid-template-columns: 1fr 0fr;
+  margin-bottom: 1em;
+}
+
+.btnGroup {
+  display: inline-grid;
+  grid-auto-flow: column;
+  gap: 0.33em;
+}
+
+.userHorCell {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 0fr 1fr;
+  gap: 0.5em;
+  white-space: nowrap;
+}
+
+.requestsSection {
+  margin-bottom: 2em;
+}

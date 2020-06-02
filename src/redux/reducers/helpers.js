@@ -22,3 +22,7 @@ export function setOnLogOut(targetState) {
     return state;
   };
 }
+
+export function reducersChain(...reducers) {
+  return (state, action) => reducers.reduce((state, r) => r(state, action), state);
+}

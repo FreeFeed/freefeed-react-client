@@ -74,7 +74,7 @@ export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
       );
     }
   }
-  if (isUserChangeResponse(action.type)) {
+  if (isUserChangeResponse(action)) {
     //here we handle home sort settings changed on another machine
     const sortBefore = store.getState().user.frontendPreferences.homeFeedSort;
     next(action);

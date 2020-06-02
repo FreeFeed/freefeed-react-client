@@ -9,7 +9,7 @@ import {
   subscribeWithHomeFeeds,
   createHomeFeed,
 } from '../redux/action-creators';
-import { initialAsyncState, withResponseHandler } from '../redux/async-helpers';
+import { initialAsyncState, doSequence } from '../redux/async-helpers';
 import { SUBSCRIBE, UPDATE_SUBSCRIPTION, SEND_SUBSCRIPTION_REQUEST } from '../redux/action-types';
 import { CheckboxInput, CheckboxInputMulti } from './form-utils';
 import { Throbber } from './throbber';
@@ -20,18 +20,18 @@ import { Icon } from './fontawesome-icons';
 
 function onSubmit(user, dispatch, subscrType) {
   return (values) => {
-    const newListTitle = values.createNewList && values.newListTitle.trim();
-    const { feeds } = values;
-    const doSubscribe = () => dispatch(subscribeWithHomeFeeds(subscrType, user, feeds));
-    if (newListTitle) {
-      dispatch(
-        withResponseHandler(
-          createHomeFeed(newListTitle),
-          ({ payload }) => (feeds.push(payload.timeline.id), doSubscribe()),
-        ),
+    const title = values.createNewList && values.newListTitle.trim();
+    if (title) {
+      doSequence(dispatch)(
+        (dispatch) => dispatch(createHomeFeed({ title })),
+        (dispatch, { payload }) => {
+          dispatch(
+            subscribeWithHomeFeeds(subscrType, user, [...values.feeds, payload.timeline.id]),
+          );
+        },
       );
     } else {
-      doSubscribe();
+      dispatch(subscribeWithHomeFeeds(subscrType, user, values.feeds));
     }
   };
 }

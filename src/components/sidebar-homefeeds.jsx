@@ -5,14 +5,12 @@ import { HomeFeedLink } from './home-feed-link';
 
 export const SidebarHomeFeeds = memo(function SidebarHomeFeeds() {
   const dispatch = useDispatch();
-  const allHomeFeeds = useSelector((state) => state.homeFeeds);
-  const allHomeFeedsStatus = useSelector((state) => state.homeFeedsStatus);
-  useEffect(() => void (allHomeFeedsStatus.initial && dispatch(listHomeFeeds())), [
-    allHomeFeedsStatus.initial,
+  const homeFeedsCount = useSelector((state) => state.homeFeeds.length);
+  const homeFeedsStatus = useSelector((state) => state.homeFeedsStatus);
+  useEffect(() => void (homeFeedsStatus.initial && dispatch(listHomeFeeds())), [
+    homeFeedsStatus.initial,
     dispatch,
   ]);
-
-  const auxHomeFeeds = useMemo(() => allHomeFeeds.filter((f) => !f.isInherent), [allHomeFeeds]);
 
   // Load 'react-sortablejs' asynchronously. It is OK if loading faied, in this
   // case user will still see all feeds in sidebar but won't be able to sort
@@ -43,27 +41,28 @@ export const SidebarHomeFeeds = memo(function SidebarHomeFeeds() {
     [dispatch],
   );
 
-  if (auxHomeFeeds.length === 0) {
-    return null;
-  }
-
-  if (auxHomeFeeds.length === 1) {
-    return (
-      <li className="p-home p-home--aux">
-        <HomeFeedLink feed={auxHomeFeeds[0]} />
-      </li>
-    );
+  if (homeFeedsCount <= 2) {
+    return <AuxFeedsLinks />;
   }
 
   return (
     <li className="p-home">
       <Sortable tag="ul" options={sortableOptions} ref={srt}>
-        {auxHomeFeeds.map((feed) => (
-          <li className="p-home p-home--aux" key={feed.id} data-id={feed.id}>
-            <HomeFeedLink feed={feed} />
-          </li>
-        ))}
+        <AuxFeedsLinks />
       </Sortable>
     </li>
   );
 });
+
+// We use this separate component because Sortable handles its DOM content by itself
+function AuxFeedsLinks() {
+  const homeFeeds = useSelector((state) => state.homeFeeds);
+
+  return homeFeeds
+    .filter((f) => !f.isInherent)
+    .map((feed) => (
+      <li className="p-home p-home--aux" key={feed.id} data-id={feed.id}>
+        <HomeFeedLink feed={feed} />
+      </li>
+    ));
+}

@@ -29,6 +29,7 @@ import {
   GET_USER_INFO,
   UNSUBSCRIBE_FROM_ME,
   LIST_HOME_FEEDS,
+  BLOCKED_BY_ME,
 } from './action-types';
 import { request, response, fail, baseType } from './async-helpers';
 
@@ -121,6 +122,9 @@ export function cancelConcurrentRequest(action, state) {
   }
   if (action.type === LIST_HOME_FEEDS) {
     return state.homeFeedsStatus.loading;
+  }
+  if (action.type === BLOCKED_BY_ME) {
+    return state.blockedByMeStatus.loading;
   }
   return false;
 }

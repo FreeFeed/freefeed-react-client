@@ -25,7 +25,6 @@ import Subscriptions from './components/subscriptions';
 import Groups from './components/groups';
 import SearchFeed from './components/search-feed';
 import PlainFeed from './components/plain-feed';
-import Friends from './components/friends';
 import ManageSubscribers from './components/manage-subscribers';
 import Bookmarklet from './components/bookmarklet';
 import SignupByInvitation from './components/signup-by-invitation';
@@ -64,13 +63,6 @@ const manageSubscribersActions = (next) => {
   store.dispatch(ActionCreators.subscribers(userName));
 };
 
-const friendsActions = () => {
-  const { username } = store.getState().user;
-  store.dispatch(ActionCreators.subscribers(username));
-  store.dispatch(ActionCreators.subscriptions(username));
-  store.dispatch(ActionCreators.blockedByMe(username));
-};
-
 const inviteActions = () => {
   const { username } = store.getState().user;
   store.dispatch(ActionCreators.subscriptions(username));
@@ -96,7 +88,8 @@ const generateRouteHooks = (callback) => ({
 
 // For some reason, the import() argument must have an explicit string type.
 // See https://github.com/webpack/webpack/issues/4921#issuecomment-357147299
-const lazyLoad = (path) => lazyRetry(() => import(`${path}`));
+const lazyLoad = (path, importName = 'default') =>
+  lazyRetry(() => import(`${path}`).then((m) => ({ default: m[importName] })));
 
 function InitialLayout({ children }) {
   return (
@@ -264,7 +257,11 @@ function App() {
           path="/all-groups"
           component={lazyLoad('./components/all-groups')}
         />
-        <Route name="friends" path="/friends" component={Friends} onEnter={friendsActions} />
+        <Route
+          name="friends"
+          path="/friends"
+          component={lazyLoad('./components/friends-page', 'Friends')}
+        />
         <Route
           name="groupCreate"
           path="/groups/create"

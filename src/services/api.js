@@ -43,11 +43,9 @@ export function getWhoAmI() {
   return fetch(`${apiRoot}/v2/users/whoami`, getRequestOptions());
 }
 
-export function getHome(params) {
+export function getHome({ feedId, ...params }) {
   return fetch(
-    `${apiRoot}/v2/timelines/home${params.feedId ? `/${params.feedId}` : ''}?${feedQueryString(
-      params,
-    )}`,
+    `${apiRoot}/v2/timelines/home${feedId ? `/${feedId}/posts` : ''}?${feedQueryString(params)}`,
     getRequestOptions(),
   );
 }
@@ -390,12 +388,12 @@ export function rejectGroupRequest({ groupName, userName }) {
   return fetch(`${apiRoot}/v1/groups/${groupName}/rejectRequest/${userName}`, postRequestOptions());
 }
 
-export function acceptUserRequest({ userName }) {
-  return fetch(`${apiRoot}/v1/users/acceptRequest/${userName}`, postRequestOptions());
+export function acceptUserRequest({ username }) {
+  return fetch(`${apiRoot}/v1/users/acceptRequest/${username}`, postRequestOptions());
 }
 
-export function rejectUserRequest({ userName }) {
-  return fetch(`${apiRoot}/v1/users/rejectRequest/${userName}`, postRequestOptions());
+export function rejectUserRequest({ username }) {
+  return fetch(`${apiRoot}/v1/users/rejectRequest/${username}`, postRequestOptions());
 }
 
 export function unsubscribeFromGroup({ groupName, userName }) {
@@ -642,8 +640,19 @@ export function listHomeFeeds() {
   return fetch(`${apiRoot}/v2/timelines/home/list`, getRequestOptions());
 }
 
-export function createHomeFeed({ title }) {
-  return fetch(`${apiRoot}/v2/timelines/home`, postRequestOptions('POST', { title }));
+export function createHomeFeed({ title, subscribedTo = [] }) {
+  return fetch(`${apiRoot}/v2/timelines/home`, postRequestOptions('POST', { title, subscribedTo }));
+}
+
+export function updateHomeFeed({ feedId, title, subscribedTo }) {
+  return fetch(
+    `${apiRoot}/v2/timelines/home/${feedId}`,
+    postRequestOptions('PATCH', { title, subscribedTo }),
+  );
+}
+
+export function deleteHomeFeed({ feedId }) {
+  return fetch(`${apiRoot}/v2/timelines/home/${feedId}`, postRequestOptions('DELETE'));
 }
 
 export async function subscribeWithHomeFeeds({
@@ -662,6 +671,10 @@ export async function subscribeWithHomeFeeds({
     `${apiRoot}/v1/users/${username}/subscribe`,
     postRequestOptions('PUT', { homeFeeds }),
   );
+}
+
+export function getAllSubscriptions() {
+  return fetch(`${apiRoot}/v2/timelines/home/subscriptions`, getRequestOptions());
 }
 
 export function reorderHomeFeeds({ feedIds }) {
