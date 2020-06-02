@@ -1,6 +1,6 @@
 /* global CONFIG */
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useMemo } from 'react';
+import { connect, useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
 import { Throbber } from './throbber';
@@ -8,6 +8,7 @@ import Linkify from './linkify';
 import TimeDisplay from './time-display';
 import PaginatedView from './paginated-view';
 import ErrorBoundary from './error-boundary';
+import UserName from './user-name';
 
 const getAuthorName = ({ postAuthor, createdUser, group }) => {
   if (group && group.username) {
@@ -75,8 +76,8 @@ const notificationTemplates = {
   unbanned_user: (event) => <Linkify>{`You unblocked @${event.affectedUser.username}`}</Linkify>,
   subscription_requested: (event) => (
     <div>
-      <Linkify>{`@${event.createdUser.username}`}</Linkify> sent you a{' '}
-      <Link to="/friends">subscription request</Link>
+      <UserName user={event.createdUser}>@{event.createdUser.username}</UserName> sent you a
+      subscription request <ReviewRequestLink from={event.createdUser} />
     </div>
   ),
   user_subscribed: (event) => (
@@ -93,7 +94,11 @@ const notificationTemplates = {
   ),
   group_created: (event) => <Linkify>{`You created a group @${event.group.username}`}</Linkify>,
   group_subscription_requested: (event) => (
-    <Linkify>{`@${event.createdUser.username} sent a subscription request to join @${event.group.username} that you admin `}</Linkify>
+    <div>
+      <UserName user={event.createdUser}>@{event.createdUser.username}</UserName> sent a request to
+      join <UserName user={event.group}>@{event.group.username}</UserName> that you admin{' '}
+      <ReviewRequestLink from={event.createdUser} group={event.group} />
+    </div>
   ),
   group_admin_promoted: (event) => (
     <Linkify>{`@${event.createdUser.username} promoted @${event.affectedUser.username} to admin in the group @${event.group.username}`}</Linkify>
@@ -102,10 +107,10 @@ const notificationTemplates = {
     <Linkify>{`@${event.createdUser.username} revoked admin privileges from @${event.affectedUser.username} in group @${event.group.username}`}</Linkify>
   ),
   managed_group_subscription_approved: (event) => (
-    <Linkify>{`@${event.affectedUser.username} subscription request to join @${event.group.username} was approved by @${event.createdUser.username}`}</Linkify>
+    <Linkify>{`@${event.affectedUser.username} request to join @${event.group.username} was approved by @${event.createdUser.username}`}</Linkify>
   ),
   managed_group_subscription_rejected: (event) => (
-    <Linkify>{`@${event.affectedUser.username} subscription request to join @${event.group.username} was rejected`}</Linkify>
+    <Linkify>{`@${event.affectedUser.username} request to join @${event.group.username} was rejected`}</Linkify>
   ),
   group_subscription_approved: (event) => (
     <Linkify>{`Your request to join group @${event.group.username} was approved`}</Linkify>
@@ -316,3 +321,26 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(Notifications);
+
+function ReviewRequestLink({ from, group = null }) {
+  const managedGroups = useSelector((state) => state.managedGroups);
+  const requests = useSelector((state) => state.userRequests);
+
+  const hasRequest = useMemo(() => {
+    if (group) {
+      const g = managedGroups.find((g) => g.id === group.id);
+      return g && g.requests.some((u) => u.id === from.id);
+    }
+    return requests.some((u) => u.id === from.id);
+  }, [requests, managedGroups, group, from]);
+
+  if (!hasRequest) {
+    return null;
+  }
+
+  return (
+    <>
+      (<Link to="/friends?show=requests">Review</Link>)
+    </>
+  );
+}
