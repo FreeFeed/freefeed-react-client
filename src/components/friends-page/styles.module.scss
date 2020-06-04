@@ -16,12 +16,32 @@
 
 .userCell {
   width: 110px;
+  min-height: 90px;
   text-align: center;
   word-wrap: break-word;
   font-size: 12px;
   line-height: 16px;
-  margin-bottom: 20px;
-  padding: 0 6px;
+  margin: 0 6px 20px 6px;
+}
+
+.userCellPlaceholder {
+  @extend .userCell;
+
+  $border: rgba(0, 0, 0, 0.5);
+  $bg: #f6fafd;
+
+  // Draw square as a userpic placeholder
+  background-image: linear-gradient(
+      to left,
+      $border 0,
+      transparent 1px,
+      transparent 49px,
+      $border 50px
+    ),
+    linear-gradient($border 0, $bg 1px, $bg 49px, $border 50px);
+  background-repeat: no-repeat;
+  background-position: 50% 0%;
+  background-size: 50px 50px;
 }
 
 .listWithoutGroups {

@@ -5,6 +5,7 @@ import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import UserName from '../user-name';
 import { UserPicture } from '../user-picture';
 import { Icon } from '../fontawesome-icons';
+import { useInViewport } from '../hooks/in-viewport';
 import styles from './styles.module.scss';
 
 export function UsersGrid({ users }) {
@@ -14,13 +15,24 @@ export function UsersGrid({ users }) {
   return (
     <ul className={styles.usersGrid}>
       {users.map((user) => (
-        <li key={user.id} className={styles.userCell}>
+        <UsersGridCell key={user.id} user={user} />
+      ))}
+    </ul>
+  );
+}
+
+export function UsersGridCell({ user }) {
+  const [ref, inViewport] = useInViewport();
+  return (
+    <li ref={ref} className={cn(styles.userCell, !inViewport && styles.userCellPlaceholder)}>
+      {inViewport && (
+        <>
           <UserPicture user={user} loading="lazy" />
           <br />
           <UserName user={user} />
-        </li>
-      ))}
-    </ul>
+        </>
+      )}
+    </li>
   );
 }
 
