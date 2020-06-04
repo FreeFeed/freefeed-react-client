@@ -42,13 +42,6 @@ const InternalLayout = ({ authenticated, children }) => (
   </div>
 );
 
-const logoHandler = (routeName, cb) => () => {
-  if (routeName === 'home') {
-    return cb();
-  }
-  return false;
-};
-
 class Layout extends React.Component {
   // Here we have some handling of drag-n-drop, because standard dragenter
   // and dragleave events suck. Current implementation is using ideas from
@@ -156,11 +149,7 @@ class Layout extends React.Component {
           <header className="row">
             <div className="col-xs-9 col-sm-4 col-md-4">
               <h1 className="site-logo">
-                <IndexLink
-                  className="site-logo-link"
-                  to="/"
-                  onClick={logoHandler(props.routeName, props.home)}
-                >
+                <IndexLink className="site-logo-link" to="/">
                   {CONFIG.siteTitle}
                 </IndexLink>
               </h1>
