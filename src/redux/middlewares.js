@@ -34,6 +34,7 @@ import {
   cancelConcurrentRequest,
   isUserChangeResponse,
 } from './action-helpers';
+import { asyncPhase, RESPONSE_PHASE } from './async-helpers';
 
 export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
   if (isFeedGeneratingAction(action)) {
@@ -73,7 +74,7 @@ export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
       );
     }
   }
-  if (isUserChangeResponse(action.type)) {
+  if (isUserChangeResponse(action)) {
     //here we handle home sort settings changed on another machine
     const sortBefore = store.getState().user.frontendPreferences.homeFeedSort;
     next(action);
@@ -124,6 +125,17 @@ export const asyncMiddleware = (store) => (next) => async (action) => {
       extra: action.extra || {},
     });
   }
+};
+
+/**
+ * Allows to perform some action after the async request succeeds
+ */
+export const onResponseMiddleware = () => (next) => (action) => {
+  const res = next(action);
+  if (asyncPhase(action.type) === RESPONSE_PHASE && action.extra?.onResponse) {
+    action.extra.onResponse(action);
+  }
+  return res;
 };
 
 //middleware for api requests
@@ -417,6 +429,18 @@ export const groupPictureLogicMiddleware = (store) => (next) => (action) => {
   if (action.type === response(ActionTypes.UPDATE_GROUP_PICTURE)) {
     // Update data after group picture is updated
     store.dispatch(ActionCreators.getUserInfo(action.request.groupName));
+  }
+
+  return next(action);
+};
+
+export const subscriptionMiddleware = (store) => (next) => (action) => {
+  if (
+    action.type === response(ActionTypes.SUBSCRIBE) ||
+    action.type === response(ActionTypes.UNSUBSCRIBE)
+  ) {
+    // Update user data after subscribing/unsubscribing (to update home feeds)
+    store.dispatch(ActionCreators.getUserInfo(action.request.username));
   }
 
   return next(action);

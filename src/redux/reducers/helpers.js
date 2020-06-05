@@ -1,4 +1,5 @@
 import { LOCATION_CHANGE } from 'react-router-redux';
+import { UNAUTHENTICATED } from '../action-types';
 
 export function patchObjectByKey(object, key, patcher) {
   return key in object ? { ...object, [key]: patcher(object[key]) } : object;
@@ -11,4 +12,17 @@ export function setOnLocationChange(targetState, excludePathnames = []) {
     }
     return state;
   };
+}
+
+export function setOnLogOut(targetState) {
+  return (state, action) => {
+    if (action.type === UNAUTHENTICATED) {
+      return targetState;
+    }
+    return state;
+  };
+}
+
+export function reducersChain(...reducers) {
+  return (state, action) => reducers.reduce((state, r) => r(state, action), state);
 }

@@ -1,5 +1,6 @@
 import {
   HOME,
+  HOME_AUX,
   DISCUSSIONS,
   DIRECT,
   GET_USER_FEED,
@@ -27,6 +28,8 @@ import {
   UPDATE_USER_NOTIFICATION_PREFERENCES,
   GET_USER_INFO,
   UNSUBSCRIBE_FROM_ME,
+  LIST_HOME_FEEDS,
+  BLOCKED_BY_ME,
 } from './action-types';
 import { request, response, fail, baseType } from './async-helpers';
 
@@ -35,6 +38,7 @@ export { request, response, fail, reset } from './async-helpers';
 
 export const feedGeneratingActions = [
   HOME,
+  HOME_AUX,
   DISCUSSIONS,
   SAVES,
   GET_USER_FEED,
@@ -98,6 +102,10 @@ export function getFeedName(action) {
     return `${baseType(action.type)}_${action.payload.username}`;
   }
 
+  if (action.type === request(HOME_AUX) || action.type === HOME_AUX) {
+    return `${baseType(action.type)}_${action.payload.feedId}`;
+  }
+
   return baseType(action.type);
 }
 
@@ -111,6 +119,12 @@ export function cancelConcurrentRequest(action, state) {
   }
   if (action.type === GET_USER_INFO) {
     return state.getUserInfoStatuses[action.payload.username]?.loading;
+  }
+  if (action.type === LIST_HOME_FEEDS) {
+    return state.homeFeedsStatus.loading;
+  }
+  if (action.type === BLOCKED_BY_ME) {
+    return state.blockedByMeStatus.loading;
   }
   return false;
 }

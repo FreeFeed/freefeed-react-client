@@ -1,0 +1,59 @@
+@import '../../styles/helvetica/dark-vars.scss';
+
+.popup {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.6);
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+
+  :global(.dark-theme) & {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+.content {
+  background-color: white;
+  overflow: auto;
+  border-radius: 4px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  max-height: calc(100% - 2em);
+  max-width: calc(100% - 2em);
+  position: relative;
+
+  :global(.dark-theme) & {
+    background-color: $bg-color-lighter;
+  }
+}
+
+.closeBtn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  border-radius: 4px;
+  border: none;
+  font-size: 24px;
+  color: #999;
+  background-color: transparent;
+
+  :global(.dark-theme) & {
+    color: $text-color-darker;
+  }
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: #666;
+    background-color: #eee;
+
+    :global(.dark-theme) & {
+      color: $text-color-lighter;
+      background-color: $bg-color-lighter;
+    }
+  }
+}

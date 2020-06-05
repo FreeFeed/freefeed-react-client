@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import { getDateForMemoriesRequest } from '../utils/get-date-from-short-string';
 import { userParser } from '../utils';
+import { UPDATE_SUBSCRIPTION, SUBSCRIBE, SEND_SUBSCRIPTION_REQUEST } from '../redux/action-types';
 import { getToken } from './auth';
 import { popupAsPromise } from './popup';
 
@@ -42,8 +43,11 @@ export function getWhoAmI() {
   return fetch(`${apiRoot}/v2/users/whoami`, getRequestOptions());
 }
 
-export function getHome(params) {
-  return fetch(`${apiRoot}/v2/timelines/home?${feedQueryString(params)}`, getRequestOptions());
+export function getHome({ feedId, ...params }) {
+  return fetch(
+    `${apiRoot}/v2/timelines/home${feedId ? `/${feedId}/posts` : ''}?${feedQueryString(params)}`,
+    getRequestOptions(),
+  );
 }
 
 export function getMemories(params) {
@@ -313,8 +317,8 @@ export function updateUserPicture({ picture }) {
   });
 }
 
-const userAction = (action) => ({ username }) => {
-  return fetch(`${apiRoot}/v1/users/${username}/${action}`, postRequestOptions());
+const userAction = (action) => ({ username, ...rest }) => {
+  return fetch(`${apiRoot}/v1/users/${username}/${action}`, postRequestOptions('POST', rest));
 };
 
 export const ban = userAction('ban');
@@ -384,12 +388,12 @@ export function rejectGroupRequest({ groupName, userName }) {
   return fetch(`${apiRoot}/v1/groups/${groupName}/rejectRequest/${userName}`, postRequestOptions());
 }
 
-export function acceptUserRequest({ userName }) {
-  return fetch(`${apiRoot}/v1/users/acceptRequest/${userName}`, postRequestOptions());
+export function acceptUserRequest({ username }) {
+  return fetch(`${apiRoot}/v1/users/acceptRequest/${username}`, postRequestOptions());
 }
 
-export function rejectUserRequest({ userName }) {
-  return fetch(`${apiRoot}/v1/users/rejectRequest/${userName}`, postRequestOptions());
+export function rejectUserRequest({ username }) {
+  return fetch(`${apiRoot}/v1/users/rejectRequest/${username}`, postRequestOptions());
 }
 
 export function unsubscribeFromGroup({ groupName, userName }) {
@@ -413,8 +417,8 @@ export function unadminGroupAdmin({ groupName, user }) {
   );
 }
 
-export function revokeSentRequest({ userName }) {
-  return fetch(`${apiRoot}/v2/requests/${userName}/revoke`, postRequestOptions());
+export function revokeSentRequest({ username }) {
+  return fetch(`${apiRoot}/v2/requests/${username}/revoke`, postRequestOptions());
 }
 
 export function getBlockedByMe() {
@@ -630,4 +634,49 @@ export async function togglePinnedGroup({ id: groupId }) {
   }
 
   return await updateUserPreferences({ userId, frontendPrefs: { ...frontendPrefs, pinnedGroups } });
+}
+
+export function listHomeFeeds() {
+  return fetch(`${apiRoot}/v2/timelines/home/list`, getRequestOptions());
+}
+
+export function createHomeFeed({ title, subscribedTo = [] }) {
+  return fetch(`${apiRoot}/v2/timelines/home`, postRequestOptions('POST', { title, subscribedTo }));
+}
+
+export function updateHomeFeed({ feedId, title, subscribedTo }) {
+  return fetch(
+    `${apiRoot}/v2/timelines/home/${feedId}`,
+    postRequestOptions('PATCH', { title, subscribedTo }),
+  );
+}
+
+export function deleteHomeFeed({ feedId }) {
+  return fetch(`${apiRoot}/v2/timelines/home/${feedId}`, postRequestOptions('DELETE'));
+}
+
+export async function subscribeWithHomeFeeds({
+  type = UPDATE_SUBSCRIPTION,
+  id,
+  username,
+  homeFeeds,
+}) {
+  if (type === SEND_SUBSCRIPTION_REQUEST) {
+    return sendSubscriptionRequest({ id, username, homeFeeds });
+  } else if (type === SUBSCRIBE) {
+    return subscribe({ id, username, homeFeeds });
+  }
+
+  return fetch(
+    `${apiRoot}/v1/users/${username}/subscribe`,
+    postRequestOptions('PUT', { homeFeeds }),
+  );
+}
+
+export function getAllSubscriptions() {
+  return fetch(`${apiRoot}/v2/timelines/home/subscriptions`, getRequestOptions());
+}
+
+export function reorderHomeFeeds({ feedIds }) {
+  return fetch(`${apiRoot}/v2/timelines/home`, postRequestOptions('PATCH', { reorder: feedIds }));
 }

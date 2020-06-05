@@ -44,6 +44,13 @@
       }
     }
   }
+
+  small {
+    font-size: 14px;
+    font-weight: normal;
+    color: #999;
+    vertical-align: middle;
+  }
 }
 
 .box-message {
@@ -188,4 +195,8 @@
   padding: 0 3px;
   vertical-align: 1px;
   margin-left: 0.5em;
+}
+
+.p-home--aux {
+  margin-left: 1em;
 }

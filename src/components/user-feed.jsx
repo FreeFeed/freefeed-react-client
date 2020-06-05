@@ -6,12 +6,6 @@ import PaginatedView from './paginated-view';
 import Feed from './feed';
 
 class UserFeed extends React.Component {
-  unblock = () =>
-    this.props.userActions.unban({
-      username: this.props.viewUser.username,
-      id: this.props.viewUser.id,
-    });
-
   render() {
     if (this.props.feedIsLoading) {
       // Nothing to show while feed is loading
@@ -43,9 +37,6 @@ class UserFeed extends React.Component {
           <p>
             You have blocked <b>{viewUser.screenName}</b>, so all of their posts and comments are
             invisible to you.
-          </p>
-          <p>
-            <a onClick={this.unblock}>Un-block</a>
           </p>
         </div>
       );

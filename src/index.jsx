@@ -25,7 +25,6 @@ import Subscriptions from './components/subscriptions';
 import Groups from './components/groups';
 import SearchFeed from './components/search-feed';
 import PlainFeed from './components/plain-feed';
-import Friends from './components/friends';
 import ManageSubscribers from './components/manage-subscribers';
 import Bookmarklet from './components/bookmarklet';
 import SignupByInvitation from './components/signup-by-invitation';
@@ -43,6 +42,7 @@ if (store.getState().authenticated) {
 import { bindRouteActions } from './redux/route-actions';
 import { initUnscroll, safeScrollTo } from './services/unscroll';
 import { lazyRetry } from './utils/retry-promise';
+import { HomeAux } from './components/home-aux';
 
 // Set initial history state.
 // Without this, there can be problems with third-party
@@ -61,13 +61,6 @@ const manageSubscribersActions = (next) => {
   const { userName } = next.params;
   store.dispatch(ActionCreators.getUserInfo(userName));
   store.dispatch(ActionCreators.subscribers(userName));
-};
-
-const friendsActions = () => {
-  const { username } = store.getState().user;
-  store.dispatch(ActionCreators.subscribers(username));
-  store.dispatch(ActionCreators.subscriptions(username));
-  store.dispatch(ActionCreators.blockedByMe(username));
 };
 
 const inviteActions = () => {
@@ -95,7 +88,8 @@ const generateRouteHooks = (callback) => ({
 
 // For some reason, the import() argument must have an explicit string type.
 // See https://github.com/webpack/webpack/issues/4921#issuecomment-357147299
-const lazyLoad = (path) => lazyRetry(() => import(`${path}`));
+const lazyLoad = (path, importName = 'default') =>
+  lazyRetry(() => import(`${path}`).then((m) => ({ default: m[importName] })));
 
 function InitialLayout({ children }) {
   return (
@@ -147,6 +141,7 @@ function App() {
           component={Home}
           {...generateRouteHooks(boundRouteActions('home'))}
         />
+        <Route path="/list/:listId(/:listTitle)" name="homeAux" component={HomeAux} />
         <Route path="about">
           <IndexRoute
             name="about"
@@ -262,7 +257,11 @@ function App() {
           path="/all-groups"
           component={lazyLoad('./components/all-groups')}
         />
-        <Route name="friends" path="/friends" component={Friends} onEnter={friendsActions} />
+        <Route
+          name="friends"
+          path="/friends"
+          component={lazyLoad('./components/friends-page', 'Friends')}
+        />
         <Route
           name="groupCreate"
           path="/groups/create"
