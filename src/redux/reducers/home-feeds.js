@@ -53,7 +53,12 @@ export function homeFeeds(state = defaultHomeFeeds, action) {
       return state;
     }
     case response(CREATE_HOME_FEED): {
-      return [...state, parseHomeFeed(action.payload.timeline)];
+      const newFeed = parseHomeFeed(action.payload.timeline);
+      if (state.every((h) => h.id !== newFeed.id)) {
+        // This feed isn't here yet
+        return [...state, newFeed];
+      }
+      return state;
     }
     case response(UPDATE_HOME_FEED): {
       const u = parseHomeFeed(action.payload.timeline);
