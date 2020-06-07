@@ -53,7 +53,11 @@ export const UserSubscriptionEditPopup = forwardRef(function UserSubscriptionEdi
   const form = useForm(
     useMemo(
       () => ({
-        initialValues: { feeds: inHomeFeeds, createNewList: false, newListTitle: '' },
+        initialValues: {
+          feeds: subscribe ? [homeFeeds[0].id] : inHomeFeeds,
+          createNewList: false,
+          newListTitle: '',
+        },
         onSubmit: onSubmit(
           user,
           dispatch,
