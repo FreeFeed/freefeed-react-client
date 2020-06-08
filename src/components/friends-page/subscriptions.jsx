@@ -55,17 +55,8 @@ export function Subscriptions({ listId = '', onListChange }) {
     [],
   );
 
-  const onListSelect = useCallback(
-    ({ target }) => {
-      if (target.value === '+') {
-        target.value = feed?.id || '';
-        openEditor();
-      } else {
-        onListChange(target.value);
-      }
-    },
-    [onListChange, feed?.id, openEditor],
-  );
+  const onListSelect = useCallback(({ target }) => onListChange(target.value), [onListChange]);
+  const addList = useCallback(() => openEditor(), [openEditor]);
 
   const editCurrentList = useCallback(() => openEditor(feed?.id), [openEditor, feed?.id]);
   const closeEditor = useCallback(
@@ -75,25 +66,24 @@ export function Subscriptions({ listId = '', onListChange }) {
 
   return (
     <>
-      <div className={cn('clearfix', styles.listSelectorContainer)}>
-        View:{' '}
-        <select
-          value={feed?.id || ''}
-          onChange={onListSelect}
-          className={cn('form-control', styles.listSelector)}
-        >
-          <option value="">All subscriptions</option>
-          {homeFeeds.map((feed) => (
-            <option key={feed.id} value={feed.id}>
-              {feed.isInherent ? '' : '\u00A0\u00A0'}
-              {feed.title}
-            </option>
-          ))}
-          <option value="+" className={styles.addListOption}>
-            Add friend list
-          </option>
-        </select>{' '}
-        {feed && <ButtonLink onClick={editCurrentList}>Edit this list</ButtonLink>}
+      <div className={styles.listSelectorContainer}>
+        <div>
+          Manage:{' '}
+          <select
+            value={feed?.id || ''}
+            onChange={onListSelect}
+            className={cn('form-control', styles.listSelector)}
+          >
+            <option value="">All subscriptions</option>
+            {homeFeeds.map((feed) => (
+              <option key={feed.id} value={feed.id}>
+                {feed.title}
+              </option>
+            ))}
+          </select>{' '}
+          {feed && <ButtonLink onClick={editCurrentList}>Edit this list</ButtonLink>}
+        </div>
+        <ButtonLink onClick={addList}>Add friend list</ButtonLink>
       </div>
       {editorOpened && <ListEditor close={closeEditor} listId={editedListId.current} />}
       <h2>
