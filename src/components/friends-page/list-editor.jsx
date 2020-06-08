@@ -199,16 +199,18 @@ export const ListEditor = memo(function ListEditor({
             (<ButtonLink onClick={clearFilter}>clear</ButtonLink>)
           </p>
         </header>
-        <main className={styles.content}>
-          {allSubscriptionsStatus.success ? (
-            <UsersList users={users} onSelect={onSelect} highlight={nameFilter.trim()} />
-          ) : allSubscriptionsStatus.error ? (
-            <p className="alert alert-danger" role="alert">
-              Error loading subscriptions: {allSubscriptionsStatus.errorText}
-            </p>
-          ) : (
-            <p>Loading...</p>
-          )}
+        <main>
+          <div className={styles.content}>
+            {allSubscriptionsStatus.success ? (
+              <UsersList users={users} onSelect={onSelect} highlight={nameFilter.trim()} />
+            ) : allSubscriptionsStatus.error ? (
+              <p className="alert alert-danger" role="alert">
+                Error loading subscriptions: {allSubscriptionsStatus.errorText}
+              </p>
+            ) : (
+              <p>Loading...</p>
+            )}
+          </div>
         </main>
         <footer className={styles.footer}>
           <button

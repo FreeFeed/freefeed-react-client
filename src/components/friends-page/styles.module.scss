@@ -50,10 +50,10 @@
 
 .listSelectorContainer {
   margin-top: 1em;
-}
-
-.addListOption {
-  font-style: italic;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .incomingRequestsMarker {
