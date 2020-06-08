@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { KEY_ESCAPE } from 'keycode-js';
 import {
   updateSubscriptionReset,
   subscribeWithHomeFeeds,
@@ -17,6 +18,7 @@ import { Throbber } from './throbber';
 import menuStyles from './dropdown-menu.module.scss';
 import styles from './user-subscription-edit-popup.module.scss';
 import { Icon } from './fontawesome-icons';
+import { withEventListener } from './hooks/sub-unsub';
 
 function onSubmit(user, dispatch, subscrType) {
   return (values) => {
@@ -109,13 +111,24 @@ export const UserSubscriptionEditPopup = forwardRef(function UserSubscriptionEdi
     [subscribe, sendRequest, status.loading],
   );
 
+  // Close panel by Escape key
+  useEffect(
+    () =>
+      withEventListener(
+        document,
+        'keydown',
+        ({ keyCode }) => keyCode === KEY_ESCAPE && closeForm(),
+      ),
+    [closeForm],
+  );
+
   return (
     <div ref={ref} className={cn(menuStyles.list, styles.popup)}>
       <form onSubmit={form.handleSubmit} onReset={closeForm}>
-        {homeFeeds.map((h) => (
+        {homeFeeds.map((h, i) => (
           <div className="checkbox" key={h.id}>
             <label>
-              <CheckboxInputMulti field={feeds} value={h.id} /> {h.title}
+              <CheckboxInputMulti field={feeds} value={h.id} autoFocus={i === 0} /> {h.title}
             </label>
           </div>
         ))}
