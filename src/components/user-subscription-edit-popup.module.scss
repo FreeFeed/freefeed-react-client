@@ -3,3 +3,16 @@
   max-width: 450px;
   min-width: 250px;
 }
+
+.newListInput {
+  border: none;
+  border-bottom: 1px solid currentColor;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+
+  &::placeholder,
+  &::-webkit-input-placeholder {
+    font-style: italic;
+  }
+}

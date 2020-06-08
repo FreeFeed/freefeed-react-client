@@ -124,7 +124,7 @@ export const UserSubscriptionEditPopup = forwardRef(function UserSubscriptionEdi
             <CheckboxInput field={createNewList} />
             <input
               type="text"
-              className="form-control input-sm"
+              className={styles.newListInput}
               {...newListTitle.input}
               placeholder="Create a new list"
               onFocus={onNewListFocus}
