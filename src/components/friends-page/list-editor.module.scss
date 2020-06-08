@@ -24,11 +24,10 @@
 
 .content {
   flex: 1;
-  max-height: 60vh;
+  height: 60vh;
   overflow: auto;
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
-  min-height: 300px;
 
   :global(.dark-theme) & {
     border-top-color: $separator-color;
