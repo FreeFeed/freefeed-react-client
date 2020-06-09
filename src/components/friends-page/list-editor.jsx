@@ -169,6 +169,7 @@ export const ListEditor = memo(function ListEditor({
               <dd>
                 <input
                   type="text"
+                  autoFocus={!list}
                   className="form-control input-lg"
                   placeholder={`Name your ${list ? '' : 'new '}list (required)`}
                   value={listTitle}
@@ -191,7 +192,7 @@ export const ListEditor = memo(function ListEditor({
             <input
               type="search"
               name="nameFilter"
-              autoFocus
+              autoFocus={!!list}
               value={nameFilter}
               onChange={onFilterChange}
               className={cn('form-control input-sm', styles.filterInput)}
