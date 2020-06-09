@@ -122,6 +122,10 @@ export const UserSubscriptionEditPopup = forwardRef(function UserSubscriptionEdi
     [closeForm],
   );
 
+  // Return focus to an element that had it before opening the panel
+  const prevSelected = useMemo(() => document.activeElement, []);
+  useEffect(() => () => prevSelected?.focus(), [prevSelected?.focus]);
+
   return (
     <div ref={ref} className={cn(menuStyles.list, styles.popup)}>
       <form onSubmit={form.handleSubmit} onReset={closeForm}>
