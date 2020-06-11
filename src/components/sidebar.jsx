@@ -403,9 +403,9 @@ const SideBar = ({ user, signOut, recentGroups }) => {
       <ErrorBoundary>
         <LoggedInBlock user={user} signOut={signOut} />
         <SideBarFriends user={user} />
+        <SideBarGroups recentGroups={recentGroups} />
         <SideBarArchive user={user} />
         <SideBarFreeFeed />
-        <SideBarGroups recentGroups={recentGroups} />
         <SideBarBookmarklet />
         <SideBarMemories />
         <SideBarCoinJar />
