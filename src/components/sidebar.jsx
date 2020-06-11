@@ -49,6 +49,15 @@ const SideBarFriends = ({ user }) => {
     dispatch,
   ]);
 
+  const hasNotifications =
+    user.unreadNotificationsNumber > 0 && !user.frontendPreferences.hideUnreadNotifications;
+  const hasUnreadDirects = user.unreadDirectsNumber > 0;
+
+  const directsStyle = hasUnreadDirects ? { fontWeight: 'bold' } : {};
+  const notificationsStyle = hasNotifications ? { fontWeight: 'bold' } : {};
+  const directsCountBadge = hasUnreadDirects ? `(${user.unreadDirectsNumber})` : '';
+  const notificationsCountBadge = hasNotifications ? `(${user.unreadNotificationsNumber})` : '';
+
   return (
     <>
       <div className="box">
@@ -60,12 +69,8 @@ const SideBarFriends = ({ user }) => {
             </li>
 
             <li className="p-direct-messages">
-              <Link
-                to="/filter/direct"
-                style={user.unreadDirectsNumber > 0 ? { fontWeight: 'bold' } : {}}
-              >
-                Direct messages{' '}
-                {user.unreadDirectsNumber > 0 ? `(${user.unreadDirectsNumber})` : ''}
+              <Link to="/filter/direct" style={directsStyle}>
+                Direct messages {directsCountBadge}
               </Link>
             </li>
             <li className="p-my-discussions">
@@ -78,20 +83,8 @@ const SideBarFriends = ({ user }) => {
               <Link to="/summary/1">Best of the day</Link>
             </li>
             <li className="p-home">
-              <Link
-                to="/filter/notifications"
-                style={
-                  user.unreadNotificationsNumber > 0 &&
-                  !user.frontendPreferences.hideUnreadNotifications
-                    ? { fontWeight: 'bold' }
-                    : {}
-                }
-              >
-                Notifications{' '}
-                {user.unreadNotificationsNumber > 0 &&
-                !user.frontendPreferences.hideUnreadNotifications
-                  ? `(${user.unreadNotificationsNumber})`
-                  : ''}
+              <Link to="/filter/notifications" style={notificationsStyle}>
+                Notifications {notificationsCountBadge}
               </Link>
             </li>
           </ul>
