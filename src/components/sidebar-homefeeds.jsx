@@ -1,16 +1,10 @@
 import React, { memo, useEffect, useMemo, useState, useRef, forwardRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { listHomeFeeds, reorderHomeFeeds } from '../redux/action-creators';
+import { reorderHomeFeeds } from '../redux/action-creators';
 import { HomeFeedLink } from './home-feed-link';
 
-export const SidebarHomeFeeds = memo(function SidebarHomeFeeds() {
+export const SidebarHomeFeeds = memo(function SidebarHomeFeeds({ homeFeedsCount }) {
   const dispatch = useDispatch();
-  const homeFeedsCount = useSelector((state) => state.homeFeeds.length);
-  const homeFeedsStatus = useSelector((state) => state.homeFeedsStatus);
-  useEffect(() => void (homeFeedsStatus.initial && dispatch(listHomeFeeds())), [
-    homeFeedsStatus.initial,
-    dispatch,
-  ]);
 
   // Load 'react-sortablejs' asynchronously. It is OK if loading faied, in this
   // case user will still see all feeds in sidebar but won't be able to sort
@@ -42,15 +36,17 @@ export const SidebarHomeFeeds = memo(function SidebarHomeFeeds() {
   );
 
   if (homeFeedsCount <= 2) {
-    return <AuxFeedsLinks />;
+    return (
+      <ul>
+        <AuxFeedsLinks />
+      </ul>
+    );
   }
 
   return (
-    <li className="p-home">
-      <Sortable tag="ul" options={sortableOptions} ref={srt}>
-        <AuxFeedsLinks />
-      </Sortable>
-    </li>
+    <Sortable tag="ul" options={sortableOptions} ref={srt}>
+      <AuxFeedsLinks />
+    </Sortable>
   );
 });
 
@@ -61,7 +57,7 @@ function AuxFeedsLinks() {
   return homeFeeds
     .filter((f) => !f.isInherent)
     .map((feed) => (
-      <li className="p-home p-home--aux" key={feed.id} data-id={feed.id}>
+      <li className="p-home" key={feed.id} data-id={feed.id}>
         <HomeFeedLink feed={feed} />
       </li>
     ));
