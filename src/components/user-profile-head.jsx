@@ -349,50 +349,6 @@ export const UserProfileHead = withRouter(
                 )}
               </div>
             )}
-            <div className={styles.stats}>
-              <ul className={styles.statsItems}>
-                {user.type === 'user' && (
-                  <StatLink
-                    value={user.statistics.subscriptions}
-                    title="subscription"
-                    linkTo={`/${user.username}/subscriptions`}
-                    canFollow={canFollowStatLinks}
-                  />
-                )}
-                <StatLink
-                  value={user.statistics.subscribers}
-                  title="subscriber"
-                  linkTo={`/${user.username}/subscribers`}
-                  canFollow={canFollowStatLinks}
-                />
-                {/* Looks like posts statistics is totally incorrect, so dont show it
-                {user.type === 'user' && (
-                  <StatLink
-                    value={user.statistics.posts}
-                    title="post"
-                    linkTo={`/${user.username}`}
-                    canFollow={canFollowStatLinks}
-                  />
-                )}
-                */}
-                {user.type === 'user' && (
-                  <StatLink
-                    value={user.statistics.comments}
-                    title="comment"
-                    linkTo={`/${user.username}/comments`}
-                    canFollow={canFollowStatLinks}
-                  />
-                )}
-                {user.type === 'user' && (
-                  <StatLink
-                    value={user.statistics.likes}
-                    title="like"
-                    linkTo={`/${user.username}/likes`}
-                    canFollow={canFollowStatLinks}
-                  />
-                )}
-              </ul>
-            </div>
             <div className={styles.actions}>
               {isBanned ? (
                 // User is banned so the only action is to unban
@@ -495,6 +451,50 @@ export const UserProfileHead = withRouter(
             </div>
           </>
         )}
+        <div className={styles.stats}>
+          <ul className={styles.statsItems}>
+            {user.type === 'user' && (
+              <StatLink
+                value={user.statistics.subscriptions}
+                title="subscription"
+                linkTo={`/${user.username}/subscriptions`}
+                canFollow={canFollowStatLinks}
+              />
+            )}
+            <StatLink
+              value={user.statistics.subscribers}
+              title="subscriber"
+              linkTo={`/${user.username}/subscribers`}
+              canFollow={canFollowStatLinks}
+            />
+            {/* Looks like posts statistics is totally incorrect, so dont show it
+                {user.type === 'user' && (
+                  <StatLink
+                    value={user.statistics.posts}
+                    title="post"
+                    linkTo={`/${user.username}`}
+                    canFollow={canFollowStatLinks}
+                  />
+                )}
+                */}
+            {user.type === 'user' && (
+              <StatLink
+                value={user.statistics.comments}
+                title="comment"
+                linkTo={`/${user.username}/comments`}
+                canFollow={canFollowStatLinks}
+              />
+            )}
+            {user.type === 'user' && (
+              <StatLink
+                value={user.statistics.likes}
+                title="like"
+                linkTo={`/${user.username}/likes`}
+                canFollow={canFollowStatLinks}
+              />
+            )}
+          </ul>
+        </div>
         {subscrFormOpened && (
           <Portal>
             <UserSubscriptionEditPopup
