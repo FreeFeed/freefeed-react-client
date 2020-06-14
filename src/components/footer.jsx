@@ -17,10 +17,6 @@ export default () => (
     {' | '}
     <Link to="/about/stats">Stats</Link>
     {' | '}
-    <a href="https://status.freefeed.net/" target="_blank">
-      Status
-    </a>
-    {' | '}
     <a href="https://github.com/FreeFeed" target="_blank">
       GitHub
     </a>
