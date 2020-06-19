@@ -7,7 +7,10 @@ import parseISO from 'date-fns/parseISO';
 import toDate from 'date-fns/toDate';
 import format from 'date-fns/format';
 import addMilliseconds from 'date-fns/addMilliseconds';
-import formatDistance from 'date-fns/formatDistance';
+import differenceInMinutes from 'date-fns/differenceInMinutes';
+import differenceInDays from 'date-fns/differenceInDays';
+import startOfDay from 'date-fns/startOfDay';
+
 import { useBool } from './hooks/bool';
 import { withListener } from './hooks/sub-unsub';
 
@@ -70,3 +73,43 @@ TimeDisplay.propTypes = {
 };
 
 export default TimeDisplay;
+
+/**
+ * Date difference formatter
+ */
+export function formatDistance(date, now = new Date(), { amPm = false, inline = false } = {}) {
+  const minutes = differenceInMinutes(now, date);
+  if (minutes < 1) {
+    return inline ? 'just now' : 'Just now';
+  }
+  if (minutes < 60) {
+    return `${Math.floor(minutes)} ${inline ? 'min' : 'minutes'} ago`;
+  }
+  if (minutes < 2 * 60) {
+    return `1 hour ago`;
+  }
+  if (minutes < 6 * 60) {
+    return `${Math.floor(minutes / 60)} hours ago`;
+  }
+
+  const dateNoon = startOfDay(date);
+  const days = differenceInDays(now, dateNoon);
+
+  if (days <= 1) {
+    const prefix = do {
+      if (days === 1) {
+        inline ? 'yest. ' : 'Yesterday at ';
+      } else {
+        inline ? '' : 'Today at ';
+      }
+    };
+    return prefix + format(date, amPm ? 'h:mm aaaa' : 'H:mm');
+  }
+  if (days < 4) {
+    return `${days} days ago`;
+  }
+  if (now.getFullYear() === date.getFullYear()) {
+    return format(date, 'LLL d');
+  }
+  return format(date, 'LLL d, y');
+}
