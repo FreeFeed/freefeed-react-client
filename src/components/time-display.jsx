@@ -15,6 +15,7 @@ import { useBool } from './hooks/bool';
 import { withListener } from './hooks/sub-unsub';
 
 const datetimeFormat = 'MMM d, yyyy HH:mm';
+const datetimeFormatAmPm = 'MMM d, yyyy hh:mm a';
 const dateOnlyFormat = 'MMM d, yyyy';
 
 class Ticker extends EventEmitter {
@@ -32,31 +33,34 @@ const ticker = new Ticker(30000); // 30 sec
 const TimeDisplay = memo(function TimeDisplay({
   timeStamp,
   className,
-  timeAgoInTitle = false,
-  showAbsTime = false,
-  showDateOnly = false,
+  absolute,
+  amPm,
+  inline = false,
+  dateOnly = false,
   children,
 }) {
   const serverTimeAhead = useSelector((state) => state.serverTimeAhead);
+  const prefsAmPm = useSelector((state) => state.user.frontendPreferences.timeDisplay.amPm);
+  const prefsAbsolute = useSelector((state) => state.user.frontendPreferences.timeDisplay.absolute);
   const [, refresh] = useBool();
 
   useEffect(() => withListener(ticker, 'tick', refresh));
 
+  const showAmPm = typeof amPm === 'boolean' ? amPm : prefsAmPm;
+  const showAbsolute = typeof absolute === 'boolean' ? absolute : prefsAbsolute;
+
   const time = typeof timeStamp === 'number' ? toDate(timeStamp) : parseISO(timeStamp);
   const serverNow = addMilliseconds(new Date(), serverTimeAhead);
-  let timeAgo = `${formatDistance(time, serverNow)} ago`;
-  if (timeAgo === 'less than a minute ago') {
-    timeAgo = 'just now';
-  }
-  const timeAbs = format(time, showDateOnly ? dateOnlyFormat : datetimeFormat);
+  const timeRel = formatDistance(time, serverNow, { inline, amPm: showAmPm });
+  const timeAbs = format(
+    time,
+    dateOnly ? dateOnlyFormat : showAmPm ? datetimeFormatAmPm : datetimeFormat,
+  );
   const timeISO = time.toISOString();
 
-  const title = timeAgoInTitle || showAbsTime ? timeAgo : timeAbs;
-  const contents = children || (showAbsTime && timeAbs) || timeAgo;
-
   return (
-    <time className={className} dateTime={timeISO} title={title}>
-      {contents}
+    <time className={className} dateTime={timeISO} title={showAbsolute ? timeRel : timeAbs}>
+      {children || (showAbsolute ? timeAbs : timeRel)}
     </time>
   );
 });
@@ -67,9 +71,10 @@ TimeDisplay.propTypes = {
     pt.string.isRequired, // ISO date string
   ]),
   className: pt.string,
-  timeAgoInTitle: pt.bool,
-  showAbsTime: pt.bool,
-  showDateOnly: pt.bool,
+  absolute: pt.bool,
+  amPm: pt.bool,
+  inline: pt.bool,
+  dateOnly: pt.bool,
 };
 
 export default TimeDisplay;

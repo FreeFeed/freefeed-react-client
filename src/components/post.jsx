@@ -606,7 +606,7 @@ class Post extends React.Component {
                     <Link to={canonicalPostURI} className="post-timestamp">
                       <TimeDisplay
                         timeStamp={+props.createdAt}
-                        showAbsTime={this.state.showTimestamps}
+                        absolute={this.state.showTimestamps}
                       />
                     </Link>
                   </span>

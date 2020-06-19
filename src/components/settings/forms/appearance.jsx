@@ -270,7 +270,8 @@ export default function AppearanceForm() {
           <div className="radio">
             <label>
               <RadioInput field={timeAbsolute} value={'1'} />
-              Always show absolute time (<TimeDisplay timeStamp={Date.now()} showAbsTime />)
+              Always show absolute time (
+              <TimeDisplay timeStamp={Date.now()} absolute amPm={timeAmPm.input.value === '1'} />)
             </label>
           </div>
         </div>

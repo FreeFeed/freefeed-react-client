@@ -154,7 +154,7 @@ const GroupRow = React.memo(function GroupRow({ g }) {
       <td>{g.postsByMonth === 0 ? '< 1' : Math.ceil(g.postsByMonth)}</td>
       <td>{Math.round(g.authorsVariety * 100)}%</td>
       <td>
-        <TimeDisplay timeStamp={+u.createdAt} showAbsTime showDateOnly />
+        <TimeDisplay timeStamp={+u.createdAt} absolute dateOnly />
       </td>
     </tr>
   );

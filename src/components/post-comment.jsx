@@ -201,7 +201,7 @@ class PostComment extends React.Component {
             <span className="comment-timestamp">
               {' - '}
               <Link to={`${this.props.entryUrl}#comment-${this.props.id}`}>
-                <TimeDisplay timeStamp={+this.props.createdAt} showAbsTime />
+                <TimeDisplay timeStamp={+this.props.createdAt} absolute />
               </Link>
             </span>
           ) : (
