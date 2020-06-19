@@ -51,6 +51,7 @@ module.exports = {
 
   frontendPreferences: {
     clientId: 'net.freefeed',
+    // Use only plain JSON types here. Do not use null values (for type checking).
     defaultValues: {
       displayNames: {
         displayOption: DISPLAYNAMES_BOTH,

@@ -4,6 +4,7 @@ import filesize from 'filesize';
 import defaultUserpicPath from '../../assets/images/default-userpic.svg';
 
 import { initialAsyncState } from '../redux/async-helpers';
+import { deepMergeJSON } from './deep-merge';
 
 const frontendPrefsConfig = CONFIG.frontendPreferences;
 
@@ -55,8 +56,12 @@ export function userParser(user) {
   // Frontend preferences (only use this client's subtree).
   // Do not fill them if no 'frontendPreferences' in 'user'.
   if (user.frontendPreferences) {
-    const prefSubTree = user.frontendPreferences[frontendPrefsConfig.clientId] || {};
-    newUser.frontendPreferences = { ...userDefaults.frontendPreferences, ...prefSubTree };
+    // We use deepMergeJSON here to be sure that the resulting object has the
+    // same structure as userDefaults.frontendPreferences.
+    newUser.frontendPreferences = deepMergeJSON(
+      userDefaults.frontendPreferences,
+      user.frontendPreferences[frontendPrefsConfig.clientId],
+    );
   }
 
   return newUser;
