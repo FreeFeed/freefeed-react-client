@@ -48,7 +48,7 @@ class Post extends React.Component {
   hideLink = React.createRef();
 
   state = {
-    showTimestamps: false,
+    forceAbsTimestamps: false,
     privacyWarning: null,
     attLoading: false,
     emptyDestinations: false,
@@ -213,7 +213,7 @@ class Post extends React.Component {
   };
 
   toggleTimestamps = () => {
-    this.setState({ showTimestamps: !this.state.showTimestamps });
+    this.setState({ forceAbsTimestamps: !this.state.forceAbsTimestamps });
   };
 
   registerSelectFeeds = (el) => {
@@ -606,7 +606,7 @@ class Post extends React.Component {
                     <Link to={canonicalPostURI} className="post-timestamp">
                       <TimeDisplay
                         timeStamp={+props.createdAt}
-                        absolute={this.state.showTimestamps}
+                        absolute={this.state.forceAbsTimestamps || null}
                       />
                     </Link>
                   </span>
@@ -662,7 +662,7 @@ class Post extends React.Component {
               entryUrl={canonicalPostURI}
               highlightTerms={props.highlightTerms}
               isSinglePost={props.isSinglePost}
-              showTimestamps={this.state.showTimestamps}
+              forceAbsTimestamps={this.state.forceAbsTimestamps}
               user={props.user}
             />
           </div>

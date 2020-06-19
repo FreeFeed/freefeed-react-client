@@ -1,3 +1,4 @@
+/* global CONFIG */
 import React from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash';
@@ -197,11 +198,15 @@ class PostComment extends React.Component {
             showMedia={this.props.showMedia}
           />
           {authorAndButtons}
-          {this.props.showTimestamp ? (
+          {this.props.showTimestamps || this.props.forceAbsTimestamps ? (
             <span className="comment-timestamp">
               {' - '}
               <Link to={`${this.props.entryUrl}#comment-${this.props.id}`}>
-                <TimeDisplay timeStamp={+this.props.createdAt} absolute />
+                <TimeDisplay
+                  timeStamp={+this.props.createdAt}
+                  inline
+                  absolute={this.props.forceAbsTimestamps || null}
+                />
               </Link>
             </span>
           ) : (
@@ -262,7 +267,10 @@ class PostComment extends React.Component {
 
 function selectState(state, ownProps) {
   const editState = state.commentEditState[ownProps.id] || defaultCommentState;
-  return { ...editState, isEditing: ownProps.isEditing || editState.isEditing };
+  const showTimestamps =
+    state.user.frontendPreferences?.comments?.showTimestamps ||
+    CONFIG.frontendPreferences.defaultValues.comments.showTimestamps;
+  return { ...editState, showTimestamps, isEditing: ownProps.isEditing || editState.isEditing };
 }
 
 export default connect(selectState, null, null, { forwardRef: true })(PostComment);
