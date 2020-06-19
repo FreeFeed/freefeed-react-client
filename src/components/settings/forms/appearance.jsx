@@ -22,6 +22,7 @@ import settingsStyles from '../settings.module.scss';
 import { PreventPageLeaving } from '../../prevent-page-leaving';
 import { Icon } from '../../fontawesome-icons';
 import { RadioInput, CheckboxInput } from '../../form-utils';
+import TimeDisplay from '../../time-display';
 import styles from './forms.module.scss';
 
 export default function AppearanceForm() {
@@ -60,6 +61,9 @@ export default function AppearanceForm() {
   const hideUnreadNotifications = useField('hideUnreadNotifications', form.form);
   const allowLinksPreview = useField('allowLinksPreview', form.form);
   const hideNSFWContent = useField('hideNSFWContent', form.form);
+  const commentsTimestamps = useField('commentsTimestamps', form.form);
+  const timeAmPm = useField('timeAmPm', form.form);
+  const timeAbsolute = useField('timeAbsolute', form.form);
 
   return (
     <form onSubmit={form.handleSubmit}>
@@ -212,6 +216,13 @@ export default function AppearanceForm() {
               Hide comments from blocked users (don&#x2019;t show placeholder)
             </label>
           </div>
+
+          <div className="checkbox">
+            <label>
+              <CheckboxInput field={commentsTimestamps} />
+              Show timestamps for comments
+            </label>
+          </div>
         </div>
       </section>
 
@@ -240,6 +251,42 @@ export default function AppearanceForm() {
                 Link should start with http(s)://, post should have no attached files. If you
                 don&#x2019;t want to have link preview, add ! before a link without spaces.
               </p>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <section className={settingsStyles.formSection}>
+        <h4 id="time">Date and time</h4>
+        <p>Display accuracy:</p>
+        <div className="form-group">
+          <div className="radio">
+            <label>
+              <RadioInput field={timeAbsolute} value={'0'} />
+              Show relative time for the recent events (5 min ago, 3 hours ago, &hellip;)
+            </label>
+          </div>
+
+          <div className="radio">
+            <label>
+              <RadioInput field={timeAbsolute} value={'1'} />
+              Always show absolute time (<TimeDisplay timeStamp={Date.now()} showAbsTime />)
+            </label>
+          </div>
+        </div>
+        <p>Time format:</p>
+        <div className="form-group">
+          <div className="radio">
+            <label>
+              <RadioInput field={timeAmPm} value={'0'} />
+              24-hour time (16:20)
+            </label>
+          </div>
+
+          <div className="radio">
+            <label>
+              <RadioInput field={timeAmPm} value={'1'} />
+              12-hour time (4:20 p.m.)
             </label>
           </div>
         </div>
@@ -282,6 +329,9 @@ function initialValues({ frontendPreferences: frontend, preferences: backend, is
     hideUnreadNotifications: frontend.hideUnreadNotifications,
     allowLinksPreview: frontend.allowLinksPreview,
     hideNSFWContent: !isNSFWVisible,
+    commentsTimestamps: frontend.comments.showTimestamps,
+    timeAmPm: frontend.timeDisplay.amPm ? '1' : '0',
+    timeAbsolute: frontend.timeDisplay.absolute ? '1' : '0',
   };
 }
 
@@ -307,9 +357,15 @@ function onSubmit(dispatch) {
               ...prefs.comments,
               omitRepeatedBubbles: values.omitBubbles,
               highlightComments: values.highlightComments,
+              showTimestamps: values.commentsTimestamps,
             },
             hideUnreadNotifications: values.hideUnreadNotifications,
             allowLinksPreview: values.allowLinksPreview,
+            timeDisplay: {
+              ...prefs.timeDisplay,
+              amPm: values.timeAmPm === '1',
+              absolute: values.timeAbsolute === '1',
+            },
           };
         },
 
