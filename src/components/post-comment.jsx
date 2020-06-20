@@ -169,6 +169,18 @@ class PostComment extends React.Component {
         ) : (
           false
         )}
+        {(this.props.showTimestamps || this.props.forceAbsTimestamps) && (
+          <span className="comment-timestamp">
+            {' - '}
+            <Link to={`${this.props.entryUrl}#comment-${this.props.id}`}>
+              <TimeDisplay
+                timeStamp={+this.props.createdAt}
+                inline
+                absolute={this.props.forceAbsTimestamps || null}
+              />
+            </Link>
+          </span>
+        )}
       </span>
     );
 
@@ -198,20 +210,6 @@ class PostComment extends React.Component {
             showMedia={this.props.showMedia}
           />
           {authorAndButtons}
-          {this.props.showTimestamps || this.props.forceAbsTimestamps ? (
-            <span className="comment-timestamp">
-              {' - '}
-              <Link to={`${this.props.entryUrl}#comment-${this.props.id}`}>
-                <TimeDisplay
-                  timeStamp={+this.props.createdAt}
-                  inline
-                  absolute={this.props.forceAbsTimestamps || null}
-                />
-              </Link>
-            </span>
-          ) : (
-            false
-          )}
         </Expandable>
       </div>
     );
