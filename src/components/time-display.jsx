@@ -27,7 +27,7 @@ class Ticker extends EventEmitter {
     this.once('newListener', () => setInterval(this.tick, interval));
     // Redraw all timers when document becomes visible
     typeof document !== 'undefined' &&
-    document.addEventListener('visibilitychange', () => !document.hidden && this.tick());
+      document.addEventListener('visibilitychange', () => !document.hidden && this.tick());
   }
 }
 
@@ -93,10 +93,13 @@ export function formatDistance(date, now = new Date(), { amPm = false, inline = 
   if (minutes < 60) {
     return `${Math.floor(minutes)} ${inline ? 'min' : 'minutes'} ago`;
   }
-  if (minutes < 2 * 60) {
+  if (minutes < 1.5 * 60) {
     return `1 hour ago`;
   }
-  if (minutes < 6 * 60) {
+  if (minutes < 2 * 60) {
+    return `1.5 hours ago`;
+  }
+  if (minutes < 4 * 60) {
     return `${Math.floor(minutes / 60)} hours ago`;
   }
 
@@ -108,7 +111,7 @@ export function formatDistance(date, now = new Date(), { amPm = false, inline = 
       if (days === 1) {
         inline ? 'yest. ' : 'Yesterday at ';
       } else {
-        inline ? '' : 'Today at ';
+        inline ? 'today ' : 'Today at ';
       }
     };
     return prefix + format(date, amPm ? 'h:mm aaaa' : 'H:mm');

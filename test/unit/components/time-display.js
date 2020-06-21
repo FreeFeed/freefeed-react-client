@@ -38,22 +38,22 @@ describe('<TimeDisplay>', () => {
         description: 'after 1 hour',
       },
       {
+        now: '2020-01-01T13:35',
+        date: '2020-01-01T12:00',
+        result: '1.5 hours ago',
+        description: 'after 1.5 hours',
+      },
+      {
         now: '2020-01-01T15:34',
         date: '2020-01-01T12:00',
         result: '3 hours ago',
         description: 'after 3 hours',
       },
       {
-        now: '2020-01-01T17:59:59',
-        date: '2020-01-01T12:00',
-        result: '5 hours ago',
-        description: 'after 5 hours',
-      },
-      {
-        now: '2020-01-01T18:00:00',
+        now: '2020-01-01T16:00:00',
         date: '2020-01-01T12:00',
         result: 'Today at 12:00',
-        description: 'after 6+ hours at same day',
+        description: 'after 4+ hours at same day',
       },
       {
         now: '2020-01-01T23:59:59',
@@ -136,7 +136,7 @@ describe('<TimeDisplay>', () => {
       {
         now: '2020-01-01T18:00',
         date: '2020-01-01T01:00',
-        result: '1:00',
+        result: 'today 1:00',
         description: 'in 01:00 at same day (inline)',
         inline: true,
       },
