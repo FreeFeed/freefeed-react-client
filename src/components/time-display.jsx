@@ -25,6 +25,9 @@ class Ticker extends EventEmitter {
     super();
     this.setMaxListeners(0);
     this.once('newListener', () => setInterval(this.tick, interval));
+    // Redraw all timers when document becomes visible
+    typeof document !== 'undefined' &&
+    document.addEventListener('visibilitychange', () => !document.hidden && this.tick());
   }
 }
 
