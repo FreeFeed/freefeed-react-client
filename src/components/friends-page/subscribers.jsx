@@ -56,7 +56,7 @@ export function Subscribers() {
         ))
       ) : (
         <div className={styles.listWithoutGroups}>
-          <UsersGrid users={subscribers} />
+          <UsersGrid users={users} />
         </div>
       )}
     </>
