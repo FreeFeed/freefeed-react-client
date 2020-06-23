@@ -1800,6 +1800,23 @@ export function recentGroups(state = [], action) {
       }
       return state;
     }
+    case ActionTypes.REALTIME_USER_UPDATE: {
+      if (action.updatedGroups) {
+        let groups = action.updatedGroups.map((g) => ({
+          ...g,
+          // Do we already have this group pinned?
+          isPinned: state.find((s) => s.id === g.id)?.isPinned || false,
+        }));
+        groups = _.uniqBy([...groups, ...state], 'id').sort((g1, g2) => {
+          if (g1.isPinned !== g2.isPinned) {
+            return g1.isPinned ? -1 : 1;
+          }
+          return parseInt(g2.updatedAt) - parseInt(g1.updatedAt);
+        });
+        return groups.slice(0, state.length);
+      }
+      return state;
+    }
   }
 
   return state;
