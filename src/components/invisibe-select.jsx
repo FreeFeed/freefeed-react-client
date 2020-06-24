@@ -1,33 +1,39 @@
-import React, { Component, Children } from 'react';
+import React, { Children, useMemo } from 'react';
 import classNames from 'classnames';
-import memoize from 'memoize-one';
 
 import '../../styles/shared/invisible-select.scss';
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import { Icon } from './fontawesome-icons';
 
-const optionsProps = memoize((children) =>
-  Children.toArray(children)
-    .filter((c) => c.type === 'option')
-    .map((c) => c.props),
-);
+export function InvisibleSelect({ children, value, className, withCaret = false, ...rest }) {
+  const selectedLabel = useMemo(() => {
+    const optProps = Children.toArray(children)
+      .filter((c) => c.type === 'option')
+      .map((c) => c.props);
 
-export class InvisibleSelect extends Component {
-  render() {
-    const optProps = optionsProps(this.props.children);
-    let selectedLabel = optProps[0].children;
     for (const o of optProps) {
-      if (this.props.value === o.value) {
-        selectedLabel = o.children;
-        break;
+      if (value === o.value) {
+        return o.children;
       }
     }
+    return optProps[0].children;
+  }, [children, value]);
 
-    return (
-      <div className={classNames('invisibleSelect', this.props.className)}>
-        <div className="invisibleSelect__label">{selectedLabel}</div>
-        <select {...this.props} className="invisibleSelect__select">
-          {this.props.children}
-        </select>
+  return (
+    <div
+      className={classNames(
+        'invisibleSelect',
+        className,
+        withCaret && 'invisibleSelect--withCaret',
+      )}
+    >
+      <div className="invisibleSelect__label">
+        {selectedLabel}
+        {withCaret && <Icon icon={faCaretDown} className="invisibleSelect__caret" />}
       </div>
-    );
-  }
+      <select {...rest} className="invisibleSelect__select">
+        {children}
+      </select>
+    </div>
+  );
 }

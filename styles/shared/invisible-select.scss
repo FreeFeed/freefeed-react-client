@@ -21,4 +21,20 @@
   &__label {
     border-bottom: 1px dashed;
   }
+
+  &__caret {
+    opacity: 0.33;
+    font-size: 75%;
+    vertical-align: middle;
+  }
+
+  &:hover &__caret {
+    opacity: 0.5;
+  }
+}
+
+.invisibleSelect--withCaret {
+  .invisibleSelect__label {
+    border-bottom: none;
+  }
 }

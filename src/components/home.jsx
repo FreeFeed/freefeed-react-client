@@ -1,6 +1,6 @@
 import React, { memo, useCallback } from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router';
+import { Link, withRouter } from 'react-router';
 
 import {
   createPost,
@@ -20,6 +20,9 @@ import ErrorBoundary from './error-boundary';
 import { ButtonLink } from './button-link';
 import { useBool } from './hooks/bool';
 import { lazyComponent } from './lazy-component';
+import { InvisibleSelect } from './invisibe-select';
+import { homeFeedURI } from './home-feed-link';
+import { useMediaQuery } from './hooks/media-query';
 
 const ListEditor = lazyComponent(
   () => import('./friends-page/list-editor').then((m) => ({ default: m.ListEditor })),
@@ -52,7 +55,7 @@ const FeedHandler = (props) => {
     <div className="box">
       <ErrorBoundary>
         <div className="box-header-timeline">
-          {props.boxHeader}{' '}
+          <TopHomeSelector id={feedId} />{' '}
           {feedId && (
             <small>
               (<ButtonLink onClick={showEditor}>Edit list</ButtonLink>)
@@ -142,5 +145,33 @@ export const SubscrRequests = memo(function SubscrRequests() {
         </span>
       </span>
     </div>
+  );
+});
+
+export const TopHomeSelector = withRouter(function TopHomeSelector({ router, id }) {
+  const homeFeeds = useSelector((state) => state.homeFeeds);
+  const narrowScreen = useMediaQuery('(max-width: 991px)');
+
+  const onChange = useCallback(
+    (e) => router.push(homeFeedURI(homeFeeds.find((h) => h.id === e.target.value))),
+    [homeFeeds, router],
+  );
+
+  if (homeFeeds.length === 1) {
+    return homeFeeds[0].title;
+  }
+
+  if (!narrowScreen) {
+    return homeFeeds.find((h) => h.id === id)?.title || 'Home';
+  }
+
+  return (
+    <InvisibleSelect value={id} onChange={onChange} withCaret>
+      {homeFeeds.map((h) => (
+        <option key={h.id} value={h.id}>
+          {h.title}
+        </option>
+      ))}
+    </InvisibleSelect>
   );
 });
