@@ -12,7 +12,7 @@ import { HomeFeedLink, homeFeedURI } from './home-feed-link';
 import PaginatedView from './paginated-view';
 import Feed from './feed';
 import { postActions } from './select-utils';
-import { SubscrRequests } from './home';
+import { SubscrRequests, TopHomeSelector } from './home';
 import { lazyComponent } from './lazy-component';
 import { useBool } from './hooks/bool';
 import { ButtonLink } from './button-link';
@@ -134,7 +134,7 @@ export function HomeAux({ router }) {
       <Helmet title={`${feed.title} - ${CONFIG.siteTitle}`} defer={false} />
       <ErrorBoundary>
         <div className="box-header-timeline">
-          {feed.title}{' '}
+          <TopHomeSelector id={feed.id} />{' '}
           <small>
             (<ButtonLink onClick={showEditor}>Edit list</ButtonLink>)
           </small>
