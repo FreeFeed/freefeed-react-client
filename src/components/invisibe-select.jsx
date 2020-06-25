@@ -31,7 +31,7 @@ export function InvisibleSelect({ children, value, className, withCaret = false,
         {selectedLabel}
         {withCaret && <Icon icon={faCaretDown} className="invisibleSelect__caret" />}
       </div>
-      <select {...rest} className="invisibleSelect__select">
+      <select value={value} className="invisibleSelect__select" {...rest}>
         {children}
       </select>
     </div>
