@@ -51,6 +51,7 @@ module.exports = {
 
   frontendPreferences: {
     clientId: 'net.freefeed',
+    // Use only plain JSON types here. Do not use null values (for type checking).
     defaultValues: {
       displayNames: {
         displayOption: DISPLAYNAMES_BOTH,
@@ -60,6 +61,7 @@ module.exports = {
       comments: {
         omitRepeatedBubbles: true,
         highlightComments: true,
+        showTimestamps: false,
       },
       allowLinksPreview: false,
       readMoreStyle: 'modern',
@@ -68,6 +70,10 @@ module.exports = {
       homefeed: { hideUsers: [] },
       pinnedGroups: [],
       hideUnreadNotifications: false,
+      timeDisplay: {
+        absolute: false,
+        amPm: false,
+      },
     },
   },
 

@@ -100,6 +100,7 @@ class RuleGenerator {
           '@babel/syntax-object-rest-spread',
           '@babel/proposal-class-properties',
           '@babel/proposal-object-rest-spread',
+          '@babel/proposal-do-expressions',
           // 'lodash',
         ],
       },

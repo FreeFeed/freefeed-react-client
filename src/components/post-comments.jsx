@@ -105,7 +105,7 @@ export default class PostComments extends React.Component {
         readMoreStyle={props.readMoreStyle}
         highlightTerms={props.highlightTerms}
         currentUser={props.post.user}
-        showTimestamp={props.showTimestamps}
+        forceAbsTimestamps={props.forceAbsTimestamps}
       />
     );
   }

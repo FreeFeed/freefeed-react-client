@@ -76,7 +76,7 @@ export default forwardRef(function ActionsPanel(
               <div className="mention-action">
                 <Icon icon={faClock} />
                 <Link to={`${entryUrl}#comment-${id}`}>
-                  <TimeDisplay timeStamp={+createdAt} showAbsTime />
+                  <TimeDisplay timeStamp={+createdAt} absolute />
                 </Link>{' '}
                 <button
                   className="btn btn-default btn-sm"
