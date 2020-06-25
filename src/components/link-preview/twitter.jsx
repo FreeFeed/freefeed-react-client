@@ -1,8 +1,9 @@
-/* global twttr */
-import React from 'react';
-import { connect } from 'react-redux';
+import { encode as qsEncode } from 'querystring';
+import React, { useMemo, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import { darkTheme } from '../select-utils';
+import { withEventListener } from '../hooks/sub-unsub';
 import ScrollSafe from './scroll-helpers/scroll-safe';
 import * as heightCache from './scroll-helpers/size-cache';
 
@@ -12,74 +13,48 @@ export function canShowURL(url) {
   return TWEET_RE.test(url);
 }
 
-class TwitterPreview extends React.PureComponent {
-  elem = React.createRef();
+export default ScrollSafe(function TwitterPreview({ url }) {
+  const isDarkTheme = useSelector((state) => darkTheme(state));
+  const tweetId = useMemo(() => TWEET_RE.exec(url)?.[1], [url]);
+  const embedURL = useMemo(
+    () =>
+      `https://platform.twitter.com/embed/index.html?${qsEncode({
+        dnt: 'true',
+        embedId: 'twitter-widget-0',
+        id: tweetId,
+        theme: isDarkTheme ? 'dark' : 'light',
+      })}`,
+    [tweetId, isDarkTheme],
+  );
+  const [height, setHeight] = useState(() => heightCache.get(url, 0));
 
-  async embed() {
-    await loadTwitterAPI();
-    try {
-      this.elem.current.innerHTML = '';
-      await twttr.widgets.createTweet(getTweetId(this.props.url), this.elem.current, {
-        theme: this.props.darkTheme ? 'dark' : 'light',
-        dnt: true,
-      });
-    } catch (e) {
-      // pass
-    }
-  }
+  useEffect(
+    () =>
+      withEventListener(window, 'message', ({ origin, data }) => {
+        if (
+          origin === 'https://platform.twitter.com' &&
+          data['twttr.embed']?.method === 'twttr.private.resize'
+        ) {
+          const twitParams = data['twttr.embed'].params.find((p) => p.data.tweet_id === tweetId);
+          if (twitParams) {
+            setHeight(twitParams.height);
+            heightCache.set(url, twitParams.height);
+          }
+        }
+      }),
+    [tweetId, url],
+  );
 
-  componentDidMount() {
-    this.embed();
-  }
-
-  componentDidUpdate() {
-    setTimeout(() => this.embed(), 0);
-  }
-
-  render() {
-    return (
-      <div
-        key={`${this.props.url}##${this.props.darkTheme ? 'dark' : 'light'}`}
-        className="tweet-preview link-preview-content"
-        data-url={this.props.url}
-        style={{ height: `${heightCache.get(this.props.url, 0)}px` }}
-      >
-        <div ref={this.elem} style={{ overflow: 'hidden' }} />
-      </div>
-    );
-  }
-}
-
-function select(state) {
-  return { darkTheme: darkTheme(state) };
-}
-
-export default ScrollSafe(connect(select)(TwitterPreview));
-
-// Helpers
-
-function getTweetId(url) {
-  const m = TWEET_RE.exec(url);
-  return m ? m[1] : null;
-}
-
-const API_SRC = 'https://platform.twitter.com/widgets.js';
-let _apiLoaded;
-function loadTwitterAPI() {
-  if (!_apiLoaded) {
-    _apiLoaded = new Promise((resolve) => {
-      const s = document.createElement('script');
-      s.setAttribute('src', API_SRC);
-      s.addEventListener('load', () => resolve());
-      document.head.appendChild(s);
-    }).then(() => {
-      twttr.events.bind('rendered', (e) => {
-        const height = e.target.parentNode.offsetHeight;
-        const cont = e.target.parentNode.parentNode;
-        cont.style.height = `${height}px`;
-        heightCache.set(cont.dataset.url, height);
-      });
-    });
-  }
-  return _apiLoaded;
-}
+  return (
+    <div className="tweet-preview link-preview-content" style={{ height: `${height}px` }}>
+      <iframe
+        key={embedURL}
+        src={embedURL}
+        frameBorder="0"
+        scrolling="no"
+        className="twitter-iframe"
+        style={{ height: `${height}px` }}
+      />
+    </div>
+  );
+});
