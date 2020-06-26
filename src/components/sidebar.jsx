@@ -93,7 +93,9 @@ const SideBarFriends = ({ user }) => {
         {do {
           if (homeFeedsCount === 1) {
             <div className="box-footer">
-              <Link to={`/friends`}>Browse/edit friends and lists</Link>
+              <Link to={`/friends`} className="with-label--new">
+                Browse/edit friends and lists
+              </Link>
             </div>;
           }
         }}
@@ -109,7 +111,9 @@ const SideBarFriends = ({ user }) => {
             </div>
 
             <div className="box-footer">
-              <Link to={`/friends`}>Browse/edit friends and lists</Link>
+              <Link to={`/friends`} className="with-label--new">
+                Browse/edit friends and lists
+              </Link>
             </div>
           </div>;
         }
@@ -124,9 +128,7 @@ const SideBarFreeFeed = () => (
     <div className="box-body">
       <ul>
         <li>
-          <Link to="/search" className="with-label--new">
-            Search
-          </Link>
+          <Link to="/search">Search</Link>
         </li>
         <li className="p-invites">
           <Link to="/invite">Invite</Link>
