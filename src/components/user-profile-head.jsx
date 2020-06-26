@@ -2,6 +2,7 @@
 import React, { useEffect, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, withRouter } from 'react-router';
+import { Portal } from 'react-portal';
 import cn from 'classnames';
 import {
   faGlobeAmericas,
@@ -25,20 +26,22 @@ import {
   togglePinnedGroup,
   hideByName,
   unsubscribe,
-  subscribe,
   ban,
   unban,
-  sendSubscriptionRequest,
   unsubscribeFromMe,
+  listHomeFeeds,
+  revokeSentRequest,
 } from '../redux/action-creators';
 import { withKey } from './with-key';
 import { UserPicture } from './user-picture';
-
-import styles from './user-profile-head.module.scss';
 import { Throbber } from './throbber';
 import { Icon } from './fontawesome-icons';
 import PieceOfText from './piece-of-text';
 import { ButtonLink } from './button-link';
+import { useDropDown, BOTTOM_RIGHT, CLOSE_ON_CLICK_OUTSIDE } from './hooks/drop-down';
+import styles from './user-profile-head.module.scss';
+import { UserSubscriptionEditPopup } from './user-subscription-edit-popup';
+import { HomeFeedLink } from './home-feed-link';
 
 export const UserProfileHead = withRouter(
   withKey(({ router }) => router.params.userName)(function UserProfileHead({ router }) {
@@ -55,6 +58,15 @@ export const UserProfileHead = withRouter(
     );
     const acceptsDirects = useSelector((state) => state.directsReceivers[username]);
     const isNotFound = useSelector((state) => state.usersNotFound.includes(username));
+
+    const allHomeFeeds = useSelector((state) => state.homeFeeds);
+    const allHomeFeedsStatus = useSelector((state) => state.homeFeedsStatus);
+    const inHomeFeeds = useSelector((state) => state.usersInHomeFeeds[user?.id] || []);
+    const activeHomeFeeds = allHomeFeeds.filter((h) => inHomeFeeds.includes(h.id));
+
+    const inHomeFeedsStatus = useSelector(
+      (state) => state.usersInHomeFeedsStates[user?.username] || initialAsyncState,
+    );
 
     // Handle the situation when the current user is logged out on this page
     const isLoggedOut = !user && dataStatus.success;
@@ -79,6 +91,7 @@ export const UserProfileHead = withRouter(
         isHidden: currentUser?.frontendPreferences.homefeed.hideUsers.includes(user?.username),
         isPinned: currentUser?.frontendPreferences.pinnedGroups.includes(user?.id),
       }),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [user, currentUser],
     );
 
@@ -89,6 +102,10 @@ export const UserProfileHead = withRouter(
       dispatch,
       username,
     ]);
+    useEffect(() => void (allHomeFeedsStatus.initial && dispatch(listHomeFeeds())), [
+      allHomeFeedsStatus.initial,
+      dispatch,
+    ]);
 
     const canFollowStatLinks =
       user && !isBanned && (isCurrentUser || user.isPrivate === '0' || inSubscriptions);
@@ -96,28 +113,30 @@ export const UserProfileHead = withRouter(
     // Actions & statuses
     const doShowMedia = useCallback((arg) => dispatch(showMedia(arg)), [dispatch]);
 
-    const toggleSubscribed = {
+    const doUnsubscribe = {
       onClick: useCallback(() => {
-        if (
-          inSubscriptions &&
-          !confirm(`Are you sure you want to unsubscribe from @${user.username}?`)
-        ) {
+        if (!confirm(`Are you sure you want to unsubscribe from @${user.username}?`)) {
           return;
         }
-        dispatch(
-          (inSubscriptions
-            ? unsubscribe
-            : user.isPrivate === '1'
-            ? sendSubscriptionRequest
-            : subscribe)(user),
-        );
-      }, [inSubscriptions, dispatch, user]),
+        dispatch(unsubscribe(user));
+      }, [dispatch, user]),
+      status: useSelector(
+        (state) => state.userActionsStatuses.subscribing[user?.username] || initialAsyncState,
+      ),
+    };
+    const doRevokeRequest = {
+      onClick: useCallback(() => {
+        if (!confirm(`Are you sure you want to revoke this request?`)) {
+          return;
+        }
+        dispatch(revokeSentRequest(user));
+      }, [dispatch, user]),
       status: useSelector(
         (state) => state.userActionsStatuses.subscribing[user?.username] || initialAsyncState,
       ),
     };
     const togglePinned = {
-      onClick: useCallback(() => dispatch(togglePinnedGroup(user?.id)), [dispatch, user]),
+      onClick: useCallback(() => dispatch(togglePinnedGroup(user?.id)), [dispatch, user?.id]),
       status: useSelector(
         (state) => state.userActionsStatuses.pinned[user?.id] || initialAsyncState,
       ),
@@ -126,7 +145,7 @@ export const UserProfileHead = withRouter(
       onClick: useCallback(() => dispatch(hideByName(user?.username, null, !isHidden)), [
         dispatch,
         isHidden,
-        user,
+        user?.username,
       ]),
       status: useSelector(
         (state) => state.userActionsStatuses.hiding[user?.username] || initialAsyncState,
@@ -150,9 +169,26 @@ export const UserProfileHead = withRouter(
       ),
     };
 
-    const actionErrors = [toggleSubscribed, togglePinned, toggleHidden, toggleBanned, unsubFromMe]
+    const actionErrors = [
+      doUnsubscribe,
+      doRevokeRequest,
+      togglePinned,
+      toggleHidden,
+      toggleBanned,
+      unsubFromMe,
+    ]
       .map((a) => a.status.errorText)
       .filter(Boolean);
+
+    const {
+      pivotRef: subscrFormPivotRef,
+      menuRef: subscrFormRef,
+      opened: subscrFormOpened,
+      toggle: subscrFormToggle,
+    } = useDropDown({
+      position: BOTTOM_RIGHT,
+      closeOn: CLOSE_ON_CLICK_OUTSIDE,
+    });
 
     if (!user && (isLoggedOut || routeLoadingState || dataStatus.loading || dataStatus.initial)) {
       return (
@@ -283,6 +319,138 @@ export const UserProfileHead = withRouter(
         <div className={styles.description}>
           <PieceOfText text={user.description} isExpanded={true} showMedia={doShowMedia} />
         </div>
+        {currentUser && !isCurrentUser && (
+          <>
+            {inSubscriptions && (
+              <div className={styles.lists}>
+                {!inHomeFeedsStatus.success ? (
+                  'Loading lists...'
+                ) : (
+                  <>
+                    {activeHomeFeeds.length === 0 ? (
+                      'In no lists'
+                    ) : (
+                      <>
+                        {activeHomeFeeds.length === 1 ? 'In list:' : 'In lists:'}{' '}
+                        {activeHomeFeeds.map((h, i) => (
+                          <span key={h.id}>
+                            {i > 0 && ', '}
+                            <HomeFeedLink feed={h} />
+                          </span>
+                        ))}
+                      </>
+                    )}{' '}
+                    (
+                    <ButtonLink ref={subscrFormPivotRef} onClick={subscrFormToggle}>
+                      edit
+                    </ButtonLink>
+                    )
+                  </>
+                )}
+              </div>
+            )}
+            <div className={styles.actions}>
+              {isBanned ? (
+                // User is banned so the only action is to unban
+                <ul className={styles.actionsList}>
+                  <li>
+                    <ActionLink {...toggleBanned}>Unblock</ActionLink>
+                  </li>
+                </ul>
+              ) : (
+                <>
+                  {/*
+                   * Left block is for main/positive actions:
+                   * Subscribe/Unsubscribe, Send request, Direct message (for users)
+                   */}
+                  <ul className={styles.actionsList}>
+                    {inSubscriptions && !isCurrentUserAdmin && (
+                      <li>
+                        <ActionLink {...doUnsubscribe}>Unsubscribe</ActionLink>
+                      </li>
+                    )}
+                    {!inSubscriptions && user.isPrivate === '0' && (
+                      <li>
+                        <ButtonLink ref={subscrFormPivotRef} onClick={subscrFormToggle}>
+                          Subscribe
+                        </ButtonLink>
+                      </li>
+                    )}
+                    {!inSubscriptions && user.isPrivate === '1' && (
+                      <li>
+                        {requestSent ? (
+                          <>
+                            <Icon icon={faClock} /> Request sent (
+                            <ActionLink {...doRevokeRequest}>revoke</ActionLink>)
+                          </>
+                        ) : (
+                          <ButtonLink ref={subscrFormPivotRef} onClick={subscrFormToggle}>
+                            Request a subscription
+                          </ButtonLink>
+                        )}
+                      </li>
+                    )}
+                    {user.type === 'user' && acceptsDirects && (
+                      <li>
+                        <Link to={`/filter/direct?to=${user.username}`}>Direct message</Link>
+                      </li>
+                    )}
+                    {isCurrentUserAdmin && (
+                      <>
+                        <li>
+                          <Link to={`/${user.username}/settings`}>Group settings</Link>
+                        </li>
+                        <li>
+                          <Link to={`/${user.username}/manage-subscribers`}>Manage members</Link>
+                        </li>
+                      </>
+                    )}
+                  </ul>
+                  {/*
+                   * Right block is for secondary or negative actions:
+                   * Ban (for users), Hide in Home, Unsubscribe from me, Pin/unpin group
+                   */}
+                  <ul className={cn(styles.actionsList, styles.actionsListRight)}>
+                    {inSubscribers && currentUser.isPrivate === '1' && (
+                      <li>
+                        <ActionLink {...unsubFromMe}>Remove from subscribers</ActionLink>
+                      </li>
+                    )}
+                    {user.type === 'group' && inSubscriptions && (
+                      <>
+                        <li>
+                          <Link to={`/filter/direct?invite=${user.username}`}>Invite</Link>
+                        </li>
+                        <li>
+                          <ActionLink {...togglePinned}>
+                            {isPinned ? 'Unpin from sidebar' : 'Pin to sidebar'}
+                          </ActionLink>
+                        </li>
+                      </>
+                    )}
+                    <li>
+                      <ActionLink {...toggleHidden}>
+                        {isHidden ? 'Unhide' : 'Hide'} in Home
+                      </ActionLink>
+                    </li>
+                    {user.type === 'user' && !inSubscriptions && (
+                      <li>
+                        <ActionLink {...toggleBanned}>Block user</ActionLink>
+                      </li>
+                    )}
+                  </ul>
+                </>
+              )}
+            </div>
+            <div className={styles.errorsList}>
+              {actionErrors.map((error, i) => (
+                <p className="alert alert-danger" role="alert" key={i}>
+                  {error}
+                </p>
+              ))}
+            </div>
+          </>
+        )}
         <div className={styles.stats}>
           <ul className={styles.statsItems}>
             {user.type === 'user' && (
@@ -300,15 +468,15 @@ export const UserProfileHead = withRouter(
               canFollow={canFollowStatLinks}
             />
             {/* Looks like posts statistics is totally incorrect, so dont show it
-            {user.type === 'user' && (
-              <StatLink
-                value={user.statistics.posts}
-                title="post"
-                linkTo={`/${user.username}`}
-                canFollow={canFollowStatLinks}
-              />
-            )}
-            */}
+                {user.type === 'user' && (
+                  <StatLink
+                    value={user.statistics.posts}
+                    title="post"
+                    linkTo={`/${user.username}`}
+                    canFollow={canFollowStatLinks}
+                  />
+                )}
+                */}
             {user.type === 'user' && (
               <StatLink
                 value={user.statistics.comments}
@@ -327,103 +495,18 @@ export const UserProfileHead = withRouter(
             )}
           </ul>
         </div>
-        {currentUser && !isCurrentUser && (
-          <div className={styles.actions}>
-            {isBanned ? (
-              // User is banned so the only action is to unban
-              <ul className={styles.actionsList}>
-                <li>
-                  <ActionLink {...toggleBanned}>Unblock</ActionLink>
-                </li>
-              </ul>
-            ) : (
-              <>
-                {/*
-                 * Left block is for main/positive actions:
-                 * Subscribe/Unsubscribe, Send request, Direct message (for users)
-                 */}
-                <ul className={styles.actionsList}>
-                  {inSubscriptions && !isCurrentUserAdmin && (
-                    <li>
-                      <ActionLink {...toggleSubscribed}>Unsubscribe</ActionLink>
-                    </li>
-                  )}
-                  {!inSubscriptions && user.isPrivate === '0' && (
-                    <li>
-                      <ActionLink {...toggleSubscribed}>Subscribe</ActionLink>
-                    </li>
-                  )}
-                  {!inSubscriptions && user.isPrivate === '1' && (
-                    <li>
-                      {requestSent ? (
-                        <>
-                          <Icon icon={faClock} /> Request sent
-                        </>
-                      ) : (
-                        <ActionLink {...toggleSubscribed}>Request a subscription</ActionLink>
-                      )}
-                    </li>
-                  )}
-                  {user.type === 'user' && acceptsDirects && (
-                    <li>
-                      <Link to={`/filter/direct?to=${user.username}`}>Direct message</Link>
-                    </li>
-                  )}
-                  {isCurrentUserAdmin && (
-                    <>
-                      <li>
-                        <Link to={`/${user.username}/settings`}>Group settings</Link>
-                      </li>
-                      <li>
-                        <Link to={`/${user.username}/manage-subscribers`}>Manage members</Link>
-                      </li>
-                    </>
-                  )}
-                </ul>
-                {/*
-                 * Right block is for secondary or negative actions:
-                 * Ban (for users), Hide in Home, Remove from subscribers, Pin/unpin group
-                 */}
-                <ul className={cn(styles.actionsList, styles.actionsListRight)}>
-                  {inSubscribers && currentUser.isPrivate === '1' && (
-                    <li>
-                      <ActionLink {...unsubFromMe}>Remove from subscribers</ActionLink>
-                    </li>
-                  )}
-                  {user.type === 'group' && inSubscriptions && (
-                    <>
-                      <li>
-                        <Link to={`/filter/direct?invite=${user.username}`}>Invite</Link>
-                      </li>
-                      <li>
-                        <ActionLink {...togglePinned}>
-                          {isPinned ? 'Unpin from sidebar' : 'Pin to sidebar'}
-                        </ActionLink>
-                      </li>
-                    </>
-                  )}
-                  <li>
-                    <ActionLink {...toggleHidden}>
-                      {isHidden ? 'Unhide' : 'Hide'} in Home
-                    </ActionLink>
-                  </li>
-                  {user.type === 'user' && !inSubscriptions && (
-                    <li>
-                      <ActionLink {...toggleBanned}>Block user</ActionLink>
-                    </li>
-                  )}
-                </ul>
-              </>
-            )}
-          </div>
+        {subscrFormOpened && (
+          <Portal>
+            <UserSubscriptionEditPopup
+              ref={subscrFormRef}
+              username={username}
+              homeFeeds={allHomeFeeds}
+              inHomeFeeds={inHomeFeeds}
+              closeForm={subscrFormToggle}
+              subscribe={!inSubscriptions}
+            />
+          </Portal>
         )}
-        <div className={styles.errorsList}>
-          {actionErrors.map((error, i) => (
-            <p className="alert alert-danger" role="alert" key={i}>
-              {error}
-            </p>
-          ))}
-        </div>
       </div>
     );
   }),

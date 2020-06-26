@@ -11,7 +11,7 @@ import * as FeedOptions from '../utils/feed-options';
 import { loadColorScheme, getSystemColorScheme, loadNSFWVisibility } from '../services/appearance';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
-import { patchObjectByKey, setOnLocationChange } from './reducers/helpers';
+import { patchObjectByKey, setOnLocationChange, setOnLogOut } from './reducers/helpers';
 import {
   asyncStatesMap,
   getKeyBy,
@@ -19,6 +19,7 @@ import {
   asyncState,
   initialAsyncState,
   successAsyncState,
+  keyFromRequestPayload,
 } from './async-helpers';
 
 const frontendPrefsConfig = CONFIG.frontendPreferences;
@@ -1292,7 +1293,8 @@ export function users(state = {}, action) {
     case response(ActionTypes.GET_NOTIFICATIONS):
     case response(ActionTypes.SHOW_MORE_COMMENTS):
     case response(ActionTypes.SHOW_MORE_LIKES_ASYNC):
-    case response(ActionTypes.GET_SINGLE_POST): {
+    case response(ActionTypes.GET_SINGLE_POST):
+    case response(ActionTypes.GET_ALL_SUBSCRIPTIONS): {
       return mergeByIds(state, (action.payload.users || []).map(userParser));
     }
     case response(ActionTypes.GET_INVITATION): {
@@ -1330,6 +1332,9 @@ export function users(state = {}, action) {
     case response(ActionTypes.GET_ALL_GROUPS): {
       const { users = [] } = action.payload;
       return mergeByIds(state, users.map(userParser));
+    }
+    case response(ActionTypes.BLOCKED_BY_ME): {
+      return mergeByIds(state, action.payload.map(userParser));
     }
   }
   return state;
@@ -1387,6 +1392,15 @@ export function user(state = initUser(), action) {
           ...(state.pendingSubscriptionRequests || []),
           action.request.id,
         ],
+      };
+    }
+    case response(ActionTypes.REVOKE_USER_REQUEST): {
+      return {
+        ...state,
+        pendingSubscriptionRequests: _.without(
+          state.pendingSubscriptionRequests || [],
+          action.request.id,
+        ),
       };
     }
     case response(ActionTypes.DIRECTS_ALL_READ): {
@@ -1786,6 +1800,23 @@ export function recentGroups(state = [], action) {
       }
       return state;
     }
+    case ActionTypes.REALTIME_USER_UPDATE: {
+      if (action.updatedGroups) {
+        let groups = action.updatedGroups.map((g) => ({
+          ...g,
+          // Do we already have this group pinned?
+          isPinned: state.find((s) => s.id === g.id)?.isPinned || false,
+        }));
+        groups = _.uniqBy([...groups, ...state], 'id').sort((g1, g2) => {
+          if (g1.isPinned !== g2.isPinned) {
+            return g1.isPinned ? -1 : 1;
+          }
+          return parseInt(g2.updatedAt) - parseInt(g1.updatedAt);
+        });
+        return groups.slice(0, state.length);
+      }
+      return state;
+    }
   }
 
   return state;
@@ -1829,6 +1860,13 @@ export function groups(state = {}, action) {
   return state;
 }
 
+const initialUserState = {
+  initial: true, // will be removed by handleUsers
+  payload: [],
+  isPending: false,
+  errorString: '',
+};
+
 const handleUsers = (state, action, type, errorString) => {
   if (action.type == request(type)) {
     return {
@@ -1857,7 +1895,7 @@ const handleUsers = (state, action, type, errorString) => {
   return state;
 };
 
-export function usernameSubscribers(state = {}, action) {
+export function usernameSubscribers(state = initialUserState, action) {
   if (action.type == response(ActionTypes.UNSUBSCRIBE_FROM_GROUP)) {
     const { userName } = action.request;
     return {
@@ -1897,6 +1935,11 @@ export function usernameBlockedByMe(state = {}, action) {
     'error occured while fetching blocked users',
   );
 }
+
+export const blockedByMeStatus = asyncState(
+  ActionTypes.BLOCKED_BY_ME,
+  setOnLogOut(initialAsyncState),
+);
 
 const removeItemFromGroupRequests = (state, action) => {
   const { userName, groupName } = action.request;
@@ -1962,8 +2005,8 @@ export function userRequests(state = [], action) {
     }
     case response(ActionTypes.ACCEPT_USER_REQUEST):
     case response(ActionTypes.REJECT_USER_REQUEST): {
-      const { userName } = action.request;
-      return state.filter((user) => user.username !== userName);
+      const { username } = action.request;
+      return state.filter((user) => user.username !== username);
     }
   }
 
@@ -1976,8 +2019,8 @@ export function sentRequests(state = [], action) {
       return pendingSubscriptionRequests(action.payload);
     }
     case response(ActionTypes.REVOKE_USER_REQUEST): {
-      const { userName } = action.request;
-      return state.filter((user) => user.username !== userName);
+      const { username } = action.request;
+      return state.filter((user) => user.username !== username);
     }
   }
 
@@ -2088,12 +2131,22 @@ const userActionsStatusesStatusMaps = combineReducers({
     ],
     { getKey: getKeyBy('username') },
   ),
-  blocking: asyncStatesMap([ActionTypes.BAN, ActionTypes.UNBAN]),
-  pinned: asyncStatesMap([ActionTypes.TOGGLE_PINNED_GROUP]),
+  blocking: asyncStatesMap([ActionTypes.BAN, ActionTypes.UNBAN], { getKey: getKeyBy('username') }),
+  pinned: asyncStatesMap([ActionTypes.TOGGLE_PINNED_GROUP]), // by user id!
   hiding: asyncStatesMap([ActionTypes.HIDE_BY_NAME], { getKey: getKeyBy('username') }),
   unsubscribingFromMe: asyncStatesMap([ActionTypes.UNSUBSCRIBE_FROM_ME], {
     getKey: getKeyBy('username'),
   }),
+  reviewingRequest: asyncStatesMap(
+    [ActionTypes.ACCEPT_USER_REQUEST, ActionTypes.REJECT_USER_REQUEST],
+    { getKey: getKeyBy('username') },
+  ),
+  reviewingGroupRequest: asyncStatesMap(
+    [ActionTypes.ACCEPT_GROUP_REQUEST, ActionTypes.REJECT_GROUP_REQUEST],
+    {
+      getKey: keyFromRequestPayload(({ userName, groupName }) => `${userName}:${groupName}`),
+    },
+  ),
 });
 
 const initialUserProfileStatuses = userActionsStatusesStatusMaps(undefined, { type: '' });
@@ -2323,3 +2376,14 @@ export const allGroups = fromResponse(
   allGroupsDefaults,
   setOnLocationChange(allGroupsDefaults, ['/all-groups']),
 );
+
+export {
+  homeFeeds,
+  homeFeedsStatus,
+  usersInHomeFeeds,
+  usersInHomeFeedsStates,
+  updateUsersSubscriptionStates,
+  allSubscriptions,
+  allSubscriptionsStatus,
+  crudHomeFeedStatus,
+} from './reducers/home-feeds';

@@ -57,6 +57,14 @@ export function home(offset = 0) {
   };
 }
 
+export function homeAux(offset = 0, feedId = null) {
+  return {
+    type: ActionTypes.HOME_AUX,
+    apiRequest: Api.getHome,
+    payload: { offset, feedId },
+  };
+}
+
 export function getMemories(_from, offset = 0) {
   return {
     type: ActionTypes.MEMORIES,
@@ -649,18 +657,18 @@ export function togglePinnedGroup(id) {
   };
 }
 
-export function acceptUserRequest(userName) {
+export function acceptUserRequest(username) {
   return {
     type: ActionTypes.ACCEPT_USER_REQUEST,
-    payload: { userName },
+    payload: { username },
     apiRequest: Api.acceptUserRequest,
   };
 }
 
-export function rejectUserRequest(userName) {
+export function rejectUserRequest(username) {
   return {
     type: ActionTypes.REJECT_USER_REQUEST,
-    payload: { userName },
+    payload: { username },
     apiRequest: Api.rejectUserRequest,
   };
 }
@@ -705,10 +713,10 @@ export function unadminGroupAdmin(groupName, user, isItMe) {
   };
 }
 
-export function revokeSentRequest(userName) {
+export function revokeSentRequest(user) {
   return {
     type: ActionTypes.REVOKE_USER_REQUEST,
-    payload: { userName },
+    payload: user,
     apiRequest: Api.revokeSentRequest,
   };
 }
@@ -1016,5 +1024,67 @@ export function getAllGroups() {
     type: ActionTypes.GET_ALL_GROUPS,
     apiRequest: Api.getAllGroups,
     nonAuthRequest: true,
+  };
+}
+
+export function listHomeFeeds() {
+  return {
+    type: ActionTypes.LIST_HOME_FEEDS,
+    apiRequest: Api.listHomeFeeds,
+  };
+}
+
+export function createHomeFeed({ title, subscribedTo }) {
+  return {
+    type: ActionTypes.CREATE_HOME_FEED,
+    apiRequest: Api.createHomeFeed,
+    payload: { title, subscribedTo },
+  };
+}
+
+export function updateHomeFeed(feedId, { title, subscribedTo }) {
+  return {
+    type: ActionTypes.UPDATE_HOME_FEED,
+    apiRequest: Api.updateHomeFeed,
+    payload: { feedId, title, subscribedTo },
+  };
+}
+
+export function deleteHomeFeed(feedId) {
+  return {
+    type: ActionTypes.DELETE_HOME_FEED,
+    apiRequest: Api.deleteHomeFeed,
+    payload: { feedId },
+  };
+}
+
+export function subscribeWithHomeFeeds(type, user, homeFeeds) {
+  return {
+    type,
+    apiRequest: Api.subscribeWithHomeFeeds,
+    payload: { type, id: user.id, username: user.username, homeFeeds },
+  };
+}
+
+export function updateSubscriptionReset(username) {
+  return { type: reset(ActionTypes.UPDATE_SUBSCRIPTION), payload: { username } };
+}
+
+export function getAllSubscriptions() {
+  return {
+    type: ActionTypes.GET_ALL_SUBSCRIPTIONS,
+    apiRequest: Api.getAllSubscriptions,
+  };
+}
+
+export function updateHomeFeedReset() {
+  return { type: reset(ActionTypes.UPDATE_HOME_FEED), payload: {} };
+}
+
+export function reorderHomeFeeds(feedIds) {
+  return {
+    type: ActionTypes.REORDER_HOME_FEEDS,
+    apiRequest: Api.reorderHomeFeeds,
+    payload: { feedIds },
   };
 }

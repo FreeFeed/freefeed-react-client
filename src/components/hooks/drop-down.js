@@ -3,21 +3,37 @@ import { useCallback, useState, useEffect, useRef, useLayoutEffect } from 'react
 export const BOTTOM_LEFT = 'BOTTOM_LEFT';
 export const BOTTOM_RIGHT = 'BOTTOM_RIGHT';
 
-export function useDropDown({ screenEdgeGap = 8, position = BOTTOM_RIGHT } = {}) {
+export const CLOSE_ON_ANY_CLICK = 'CLOSE_ON_ANY_CLICK';
+export const CLOSE_ON_CLICK_OUTSIDE = 'CLOSE_ON_CLICK_OUTSIDE';
+export const CLOSE_ON_CLICK_DISABLED = 'CLOSE_ON_CLICK_DISABLED';
+
+export function useDropDown({
+  screenEdgeGap = 8,
+  position = BOTTOM_RIGHT,
+  closeOn = CLOSE_ON_ANY_CLICK,
+} = {}) {
   const pivotRef = useRef(null);
   const menuRef = useRef(null);
 
   const [opened, setOpened] = useState(false);
-  const toggle = useCallback((v = undefined) => setOpened((x) => (v !== undefined ? v : !x)), []);
+  const toggle = useCallback(() => setOpened((x) => !x), []);
 
   // Close menu on any click on page
   useEffect(() => {
     if (opened) {
-      const h = () => setTimeout(() => setOpened(false), 0);
+      const h = ({ target }) => {
+        if (closeOn === CLOSE_ON_ANY_CLICK) {
+          setTimeout(() => setOpened(false), 0);
+        } else if (closeOn === CLOSE_ON_CLICK_OUTSIDE) {
+          if (!menuRef.current.contains(target)) {
+            setTimeout(() => setOpened(false), 0);
+          }
+        }
+      };
       document.body.addEventListener('click', h);
       return () => document.body.removeEventListener('click', h);
     }
-  }, [opened]);
+  }, [opened, closeOn]);
 
   const updPosition = useCallback(
     () =>
@@ -30,7 +46,7 @@ export function useDropDown({ screenEdgeGap = 8, position = BOTTOM_RIGHT } = {})
 
   useLayoutEffect(updPosition);
 
-  return { pivotRef, menuRef, opened, toggle };
+  return { pivotRef, menuRef, opened, setOpened, toggle };
 }
 
 function updatePosition(leader, follower, { screenEdgeGap, position }) {

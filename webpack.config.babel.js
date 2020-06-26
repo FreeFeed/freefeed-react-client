@@ -43,11 +43,13 @@ const config = {
     new MiniCssExtractPlugin({
       filename: opts.hash ? '[name]-[contenthash].css' : '[name]-dev.css',
     }),
-    new CopyPlugin([
-      { from: 'assets/images/favicon.*', to: '' },
-      { from: 'assets/images/ios/*.png', to: '' },
-      { from: 'assets/ext-auth/auth-return.html', to: '' },
-    ]),
+    new CopyPlugin({
+      patterns: [
+        { from: 'assets/images/favicon.*', to: '' },
+        { from: 'assets/images/ios/*.png', to: '' },
+        { from: 'assets/ext-auth/auth-return.html', to: '' },
+      ],
+    }),
   ]),
   optimization: {
     splitChunks: {

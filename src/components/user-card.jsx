@@ -209,8 +209,8 @@ const mapStateToProps = (state, ownProps) => {
     hidden: me.frontendPreferences.homefeed.hideUsers.indexOf(user.username) > -1,
     amIGroupAdmin: user.type === 'group' && (user.administrators || []).indexOf(me.id) > -1,
     canAcceptDirects: canAcceptDirects(user, state),
-    subscribingStatus: state.userActionsStatuses.subscribing[user.id] || initialAsyncState,
-    blockingStatus: state.userActionsStatuses.blocking[user.id] || initialAsyncState,
+    subscribingStatus: state.userActionsStatuses.subscribing[user.username] || initialAsyncState,
+    blockingStatus: state.userActionsStatuses.blocking[user.username] || initialAsyncState,
   };
 };
 

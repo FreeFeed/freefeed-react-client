@@ -1,0 +1,134 @@
+@import '../../../styles/helvetica/dark-vars.scss';
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  width: 900px;
+  max-width: 100%;
+  padding: 1em;
+
+  @media (max-width: 600px) {
+    margin-top: 2em;
+  }
+}
+
+.header {
+  flex: 0 0;
+}
+
+.header h3 {
+  margin-top: 3px;
+}
+
+.footer {
+  flex: 0 0;
+  padding-top: 1em;
+}
+
+.content {
+  flex: 1;
+  height: 50vh;
+  overflow: auto;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+
+  :global(.dark-theme) & {
+    border-top-color: $separator-color;
+    border-bottom-color: $separator-color;
+  }
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  list-style-type: none;
+  padding: 0;
+}
+
+.cell {
+  margin: 4px;
+  border-radius: 4px;
+  width: 200px;
+  word-break: break-all;
+  font-size: 12px;
+  display: grid;
+  grid-auto-flow: column;
+  gap: 4px;
+  grid-template-columns: 0fr 1fr;
+  padding: 4px;
+  font-weight: normal;
+  cursor: pointer;
+  position: relative;
+
+  &:hover {
+    background: #eee;
+
+    :global(.dark-theme) & {
+      background: $bg-color-lightest;
+    }
+  }
+}
+
+.cellSelected,
+.cellSelected:hover {
+  background: hsl(200, 70%, 90%);
+
+  :global(.dark-theme) & {
+    color: $text-color-lighter;
+    background: $bg-highlight-color;
+  }
+}
+
+.username {
+  color: #999;
+
+  :global(.dark-theme) & {
+    color: $text-color-darker;
+  }
+}
+
+.mark {
+  padding: 0;
+  color: inherit;
+  background-color: #ff0;
+
+  :global(.dark-theme) & {
+    color: $text-color-darker;
+    background-color: $accent-color;
+  }
+}
+
+.currentLink {
+  font-weight: bold;
+}
+
+.topForm {
+  display: grid;
+  grid-template-columns: 0fr 1fr;
+  white-space: nowrap;
+  gap: 0.5em;
+  max-width: 500px;
+  margin-bottom: 1em;
+
+  dt {
+    font: inherit;
+    align-self: center;
+  }
+}
+
+.homelessMark {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+}
+
+.submitWarning {
+  margin-top: 0.5em;
+}
+
+.filterInput {
+  display: inline-block;
+  width: 180px;
+}

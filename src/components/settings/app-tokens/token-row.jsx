@@ -82,7 +82,7 @@ export default function TokenRow({ id }) {
       </div>
       {token.lastUsedAt ? (
         <p>
-          Last used <TimeDisplay timeStamp={token.lastUsedAt} /> from IP address{' '}
+          Last used <TimeDisplay timeStamp={token.lastUsedAt} inline /> from IP address{' '}
           <samp>{token.lastIP}</samp>
         </p>
       ) : (

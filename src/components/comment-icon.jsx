@@ -80,7 +80,7 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
         </div>
       </div>
       {/* Bubble icon */}
-      <TimeDisplay className="comment-time" timeStamp={+createdAt} timeAgoInTitle={false}>
+      <TimeDisplay className="comment-time" timeStamp={+createdAt} absolute>
         {omitBubble ? (
           <span className="comment-icon feed-comment-dot" {...bubbleProps} />
         ) : (

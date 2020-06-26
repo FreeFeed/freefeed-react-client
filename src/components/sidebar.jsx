@@ -1,11 +1,11 @@
 /* global CONFIG */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import format from 'date-fns/format';
 
 import { preventDefault, htmlSafe } from '../utils';
-import { setUserColorScheme } from '../redux/action-creators';
+import { listHomeFeeds, setUserColorScheme } from '../redux/action-creators';
 import {
   SCHEME_DARK,
   SCHEME_SYSTEM,
@@ -19,6 +19,7 @@ import ErrorBoundary from './error-boundary';
 import { InvisibleSelect } from './invisibe-select';
 import { LiberaPayWidget } from './LiberaPayWidget';
 import { UserPicture } from './user-picture';
+import { SidebarHomeFeeds } from './sidebar-homefeeds';
 
 const LoggedInBlock = ({ user, signOut }) => (
   <div className="logged-in">
@@ -39,57 +40,83 @@ const LoggedInBlock = ({ user, signOut }) => (
   </div>
 );
 
-const SideBarFriends = ({ user }) => (
-  <div className="box">
-    <div className="box-header-friends">Friends</div>
-    <div className="box-body">
-      <ul>
-        <li className="p-home">
-          <Link to="/">Home</Link>
-        </li>
-        <li className="p-direct-messages">
-          <Link
-            to="/filter/direct"
-            style={user.unreadDirectsNumber > 0 ? { fontWeight: 'bold' } : {}}
-          >
-            Direct messages {user.unreadDirectsNumber > 0 ? `(${user.unreadDirectsNumber})` : ''}
-          </Link>
-        </li>
-        <li className="p-my-discussions">
-          <Link to="/filter/discussions">My discussions</Link>
-        </li>
-        <li className="p-saved-posts">
-          <Link to="/filter/saves">Saved posts</Link>
-        </li>
-        <li className="p-best-of">
-          <Link to="/summary/1">Best of the day</Link>
-        </li>
-        <li className="p-home">
-          <Link
-            to="/filter/notifications"
-            style={
-              user.unreadNotificationsNumber > 0 &&
-              !user.frontendPreferences.hideUnreadNotifications
-                ? { fontWeight: 'bold' }
-                : {}
-            }
-          >
-            Notifications{' '}
-            {user.unreadNotificationsNumber > 0 && !user.frontendPreferences.hideUnreadNotifications
-              ? `(${user.unreadNotificationsNumber})`
-              : ''}
-          </Link>
-        </li>
-        <li className="p-invites">
-          <Link to="/invite">Invite</Link>
-        </li>
-      </ul>
-    </div>
-    <div className="box-footer">
-      <Link to={`/friends`}>Browse/edit friends</Link>
-    </div>
-  </div>
-);
+const SideBarFriends = ({ user }) => {
+  const dispatch = useDispatch();
+  const homeFeedsCount = useSelector((state) => state.homeFeeds.length);
+  const homeFeedsStatus = useSelector((state) => state.homeFeedsStatus);
+  useEffect(() => void (homeFeedsStatus.initial && dispatch(listHomeFeeds())), [
+    homeFeedsStatus.initial,
+    dispatch,
+  ]);
+
+  const hasNotifications =
+    user.unreadNotificationsNumber > 0 && !user.frontendPreferences.hideUnreadNotifications;
+  const hasUnreadDirects = user.unreadDirectsNumber > 0;
+
+  const directsStyle = hasUnreadDirects ? { fontWeight: 'bold' } : {};
+  const notificationsStyle = hasNotifications ? { fontWeight: 'bold' } : {};
+  const directsCountBadge = hasUnreadDirects ? `(${user.unreadDirectsNumber})` : '';
+  const notificationsCountBadge = hasNotifications ? `(${user.unreadNotificationsNumber})` : '';
+
+  return (
+    <>
+      <div className="box">
+        <div className="box-header-friends">My</div>
+        <div className="box-body">
+          <ul>
+            <li className="p-home">
+              <Link to="/">Home</Link>
+            </li>
+
+            <li className="p-direct-messages">
+              <Link to="/filter/direct" style={directsStyle}>
+                Direct messages {directsCountBadge}
+              </Link>
+            </li>
+            <li className="p-my-discussions">
+              <Link to="/filter/discussions">My discussions</Link>
+            </li>
+            <li className="p-saved-posts">
+              <Link to="/filter/saves">Saved posts</Link>
+            </li>
+            <li className="p-best-of">
+              <Link to="/summary/1">Best of the day</Link>
+            </li>
+            <li className="p-home">
+              <Link to="/filter/notifications" style={notificationsStyle}>
+                Notifications {notificationsCountBadge}
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        {do {
+          if (homeFeedsCount === 1) {
+            <div className="box-footer">
+              <Link to={`/friends`}>Browse/edit friends and lists</Link>
+            </div>;
+          }
+        }}
+      </div>
+
+      {do {
+        if (homeFeedsCount > 1) {
+          <div className="box">
+            <div className="box-header-friends">Friend lists</div>
+
+            <div className="box-body">
+              <SidebarHomeFeeds homeFeedsCount={homeFeedsCount} />
+            </div>
+
+            <div className="box-footer">
+              <Link to={`/friends`}>Browse/edit friends and lists</Link>
+            </div>
+          </div>;
+        }
+      }}
+    </>
+  );
+};
 
 const SideBarFreeFeed = () => (
   <div className="box">
@@ -100,6 +127,9 @@ const SideBarFreeFeed = () => (
           <Link to="/search" className="with-label--new">
             Search
           </Link>
+        </li>
+        <li className="p-invites">
+          <Link to="/invite">Invite</Link>
         </li>
         <li>
           <Link to="/filter/everything">Everything</Link>
@@ -366,9 +396,9 @@ const SideBar = ({ user, signOut, recentGroups }) => {
       <ErrorBoundary>
         <LoggedInBlock user={user} signOut={signOut} />
         <SideBarFriends user={user} />
+        <SideBarGroups recentGroups={recentGroups} />
         <SideBarArchive user={user} />
         <SideBarFreeFeed />
-        <SideBarGroups recentGroups={recentGroups} />
         <SideBarBookmarklet />
         <SideBarMemories />
         <SideBarCoinJar />
