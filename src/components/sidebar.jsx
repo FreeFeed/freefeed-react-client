@@ -74,7 +74,7 @@ const SideBarFriends = ({ user }) => {
               </Link>
             </li>
             <li className="p-my-discussions">
-              <Link to="/filter/discussions">My discussions</Link>
+              <Link to="/filter/discussions">Discussions</Link>
             </li>
             <li className="p-saved-posts">
               <Link to="/filter/saves">Saved posts</Link>
