@@ -1,14 +1,8 @@
 import { DISPLAYNAMES_BOTH } from '../src/utils/frontend-preferences-options';
 import { ACTIVITY, HOMEFEED_MODE_CLASSIC } from '../src/utils/feed-options';
-import { TLDs } from './inc/tlds';
+import { TLDs } from './lib/tlds';
 
-/**
- * We use this old-fashioned style of export because the 'config'
- * module is not understand the ES6 default export properly.
- *
- * See https://github.com/lorenwest/node-config/issues/521
- */
-module.exports = {
+export default {
   api: {
     root: 'https://candy.freefeed.net',
   },

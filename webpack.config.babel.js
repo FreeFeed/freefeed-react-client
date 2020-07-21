@@ -3,7 +3,6 @@ import OptiCSS from 'optimize-css-assets-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import Uglify from 'terser-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
-import appConfig from 'config';
 
 import { baseConfig, opts, rules } from './webpack/base';
 import { skipFalsy } from './webpack/utils';
@@ -13,6 +12,7 @@ const config = {
   entry: {
     app: skipFalsy(['core-js/stable', 'regenerator-runtime/runtime', './src']),
     bookmarklet: skipFalsy(['./src/bookmarklet/popup.js']),
+    config: skipFalsy(['./config/lib/loader-browser.js']),
   },
   target: 'web',
   devServer: { historyApiFallback: true },
@@ -36,9 +36,8 @@ const config = {
       inject: false,
       template: './index.jade',
       file: 'index.html',
+      appConfig: global.CONFIG,
       opts,
-      colorSchemeStorageKey: appConfig.get('appearance.colorSchemeStorageKey'),
-      sentryDSN: appConfig.get('sentry.publicDSN'),
     }),
     new MiniCssExtractPlugin({
       filename: opts.hash ? '[name]-[contenthash].css' : '[name]-dev.css',
