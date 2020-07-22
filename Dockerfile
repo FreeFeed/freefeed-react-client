@@ -1,7 +1,5 @@
 FROM node:12 as builder
 
-ARG NODE_CONFIG_ENV
-
 RUN apt-get update && \
     apt-get install -y \
     g++ \
