@@ -11,12 +11,13 @@ const bordersSize = 4;
 const spaceSize = 8;
 const arrowSize = 24;
 
-const Sortable = lazyComponent(() => import('react-sortablejs'), {
-  fallback: <div>Loading component...</div>,
-  errorMessage: "Couldn't load Sortable component",
-});
-
-const sortableOptions = { filter: '.remove-attachment' };
+const Sortable = lazyComponent(
+  () => import('react-sortablejs').then((m) => ({ default: m.ReactSortable })),
+  {
+    fallback: <div>Loading component...</div>,
+    errorMessage: "Couldn't load Sortable component",
+  },
+);
 
 export default class ImageAttachmentsContainer extends React.Component {
   static propTypes = {
@@ -112,7 +113,7 @@ export default class ImageAttachmentsContainer extends React.Component {
     this.container = el;
   };
 
-  onSortChange = (order) => this.props.reorderImageAttachments(order);
+  setSortedList = (list) => this.props.reorderImageAttachments(list.map((it) => it.id));
 
   render() {
     const isSingleImage = this.props.attachments.length === 1;
@@ -151,7 +152,11 @@ export default class ImageAttachmentsContainer extends React.Component {
     return (
       <div className={className} ref={this.registerContainer}>
         {withSortable ? (
-          <Sortable onChange={this.onSortChange} options={sortableOptions}>
+          <Sortable
+            list={this.props.attachments}
+            setList={this.setSortedList}
+            filter=".remove-attachment"
+          >
             {allImages}
           </Sortable>
         ) : (
