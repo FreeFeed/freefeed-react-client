@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useState, useRef, forwardRef } from 'react';
+import React, { memo, useEffect, useState, forwardRef, useCallback, useMemo, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { reorderHomeFeeds } from '../redux/action-creators';
 import { HomeFeedLink } from './home-feed-link';
@@ -16,49 +16,61 @@ export const SidebarHomeFeeds = memo(function SidebarHomeFeeds({ homeFeedsCount 
   useEffect(
     () =>
       void import(/* webpackPrefetch: true */ 'react-sortablejs').then(
-        (m) => setSortable(() => m.default),
+        (m) => setSortable(() => m.ReactSortable),
         (err) => console.warn(`Cannot load 'react-sortablejs'`, err),
       ),
     [],
   );
+  const allHomeFeeds = useSelector((state) => state.homeFeeds);
 
-  const srt = useRef(null);
-  const sortableOptions = useMemo(
-    () => ({
-      onEnd: ({ oldIndex, newIndex }) => {
-        if (oldIndex === newIndex) {
-          return;
-        }
+  // ReactSortable is a controlled component so we need a local state for it
+  const [feedsList, setFeedsList] = useState(() =>
+    allHomeFeeds.filter((f) => !f.isInherent).map((f) => ({ id: f.id })),
+  );
+  const feedsToRender = useMemo(
+    () => feedsList.map((it) => allHomeFeeds.find((f) => f.id === it.id)),
+    [feedsList, allHomeFeeds],
+  );
+
+  // We use versions to track external feeds order updates (from other tabs or clients via realtime)
+  const homeFeedsOrderVersion = useSelector((state) => state.homeFeedsOrderVersion);
+  const version = useRef(homeFeedsOrderVersion);
+  useEffect(() => {
+    if (version.current !== homeFeedsOrderVersion) {
+      version.current = homeFeedsOrderVersion;
+      setFeedsList(allHomeFeeds.filter((f) => !f.isInherent).map((f) => ({ id: f.id })));
+    }
+  }, [homeFeedsOrderVersion, allHomeFeeds]);
+
+  const srt = useRef();
+  const onEnd = useCallback(
+    (e) => {
+      if (e.oldIndex !== e.newIndex) {
         dispatch(reorderHomeFeeds(srt.current.sortable.toArray()));
-      },
-    }),
+      }
+    },
     [dispatch],
   );
 
   if (homeFeedsCount <= 2) {
     return (
       <ul>
-        <AuxFeedsLinks />
+        <AuxFeedsLinks feeds={feedsToRender} />
       </ul>
     );
   }
 
   return (
-    <Sortable tag="ul" options={sortableOptions} ref={srt}>
-      <AuxFeedsLinks />
+    <Sortable tag="ul" ref={srt} onEnd={onEnd} list={feedsList} setList={setFeedsList}>
+      <AuxFeedsLinks feeds={feedsToRender} />
     </Sortable>
   );
 });
 
-// We use this separate component because Sortable handles its DOM content by itself
-function AuxFeedsLinks() {
-  const homeFeeds = useSelector((state) => state.homeFeeds);
-
-  return homeFeeds
-    .filter((f) => !f.isInherent)
-    .map((feed) => (
-      <li className="p-home" key={feed.id} data-id={feed.id}>
-        <HomeFeedLink feed={feed} />
-      </li>
-    ));
+function AuxFeedsLinks({ feeds }) {
+  return feeds.map((feed) => (
+    <li className="p-home" key={feed.id} data-id={feed.id}>
+      <HomeFeedLink feed={feed} />
+    </li>
+  ));
 }

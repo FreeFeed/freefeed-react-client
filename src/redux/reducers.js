@@ -2386,4 +2386,5 @@ export {
   allSubscriptions,
   allSubscriptionsStatus,
   crudHomeFeedStatus,
+  homeFeedsOrderVersion,
 } from './reducers/home-feeds';
