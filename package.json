@@ -39,7 +39,7 @@
     "react-router-redux": "~4.0.8",
     "react-select": "~1.2.1",
     "react-sortablejs": "~2.0.11",
-    "react-textarea-autosize": "~7.1.2",
+    "react-textarea-autosize": "~8.2.0",
     "redux": "~4.0.5",
     "snarkdown": "~1.2.2",
     "social-text-tokenizer": "~2.1.1",
