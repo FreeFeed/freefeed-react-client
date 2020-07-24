@@ -1,6 +1,6 @@
 /* global CONFIG */
-import React, { useCallback, useMemo, Suspense } from 'react';
-import { Link } from 'react-router';
+import React, { useCallback, useMemo, Suspense, useEffect } from 'react';
+import { Link, browserHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
 import cn from 'classnames';
 
@@ -12,6 +12,7 @@ import {
   faEnvelope,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from 'react-redux';
 import { useMediaQuery } from '../hooks/media-query';
 import { Icon } from '../fontawesome-icons';
 import { Delayed } from '../lazy-component';
@@ -40,6 +41,13 @@ const loadingPage = (
 );
 
 export default function Layout({ children, router }) {
+  // Do not allow anonymous access
+  const authenticated = useSelector((state) => state.authenticated);
+  useEffect(
+    () => void (!authenticated && browserHistory.push(`/signin?back=${location.pathname}`)),
+    [authenticated],
+  );
+
   const narrowScreen = useMediaQuery('(max-width: 620px)');
 
   const activeTab = useMemo(() => {

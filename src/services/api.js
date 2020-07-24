@@ -681,6 +681,10 @@ export function reorderHomeFeeds({ feedIds }) {
   return fetch(`${apiRoot}/v2/timelines/home`, postRequestOptions('PATCH', { reorder: feedIds }));
 }
 
+export function suspendMe({ password }) {
+  return fetch(`${apiRoot}/v1/users/suspend-me`, postRequestOptions('POST', { password }));
+}
+
 export function resumeMe({ resumeToken }) {
   return fetch(`${apiRoot}/v1/users/resume-me`, postRequestOptions('POST', { resumeToken }));
 }

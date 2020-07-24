@@ -202,7 +202,7 @@ export const apiMiddleware = (store) => (next) => async (action) => {
 };
 
 const paths = [
-  'friends',
+  '/friends',
   '/settings',
   '/filter/notifications',
   '/filter/direct',
@@ -213,7 +213,7 @@ const paths = [
 ];
 
 function shouldGoToSignIn(pathname) {
-  return pathname && paths.some((path) => pathname.indexOf(path) === 0);
+  return pathname && paths.some((path) => pathname.startsWith(path));
 }
 
 export const authMiddleware = (store) => {

@@ -1089,6 +1089,14 @@ export function reorderHomeFeeds(feedIds) {
   };
 }
 
+export function suspendMe(password) {
+  return {
+    type: ActionTypes.DEACTIVATE_USER,
+    apiRequest: Api.suspendMe,
+    payload: { password },
+  };
+}
+
 export function resumeMe(resumeToken) {
   return {
     type: ActionTypes.ACTIVATE_USER,
