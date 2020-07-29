@@ -680,3 +680,7 @@ export function getAllSubscriptions() {
 export function reorderHomeFeeds({ feedIds }) {
   return fetch(`${apiRoot}/v2/timelines/home`, postRequestOptions('PATCH', { reorder: feedIds }));
 }
+
+export function resumeMe({ resumeToken }) {
+  return fetch(`${apiRoot}/v1/users/resume-me`, postRequestOptions('POST', { resumeToken }));
+}

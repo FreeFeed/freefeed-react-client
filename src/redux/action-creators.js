@@ -1088,3 +1088,12 @@ export function reorderHomeFeeds(feedIds) {
     payload: { feedIds },
   };
 }
+
+export function resumeMe(resumeToken) {
+  return {
+    type: ActionTypes.ACTIVATE_USER,
+    apiRequest: Api.resumeMe,
+    nonAuthRequest: true,
+    payload: { resumeToken },
+  };
+}

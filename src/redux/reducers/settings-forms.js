@@ -6,6 +6,7 @@ import {
   UPDATE_PASSWORD,
   UPDATE_ACTUAL_USER_PREFERENCES,
   UPDATE_USER_NOTIFICATION_PREFERENCES,
+  ACTIVATE_USER,
 } from '../action-types';
 import { initialAsyncState, asyncState } from '../async-helpers';
 import { setOnLocationChange } from './helpers';
@@ -23,4 +24,5 @@ export const settingsForms = combineReducers({
     setOnLocationChange(initialAsyncState),
   ),
   privacyStatus: asyncState(UPDATE_USER, setOnLocationChange(initialAsyncState)),
+  activateStatus: asyncState(ACTIVATE_USER, setOnLocationChange(initialAsyncState)),
 });
