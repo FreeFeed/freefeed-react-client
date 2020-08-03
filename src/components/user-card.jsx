@@ -110,10 +110,8 @@ class UserCard extends React.Component {
               </Link>
               <br />
 
-              {props.user.screenName !== props.user.username ? (
+              {props.user.screenName !== props.user.username && (
                 <span className="username">@{props.user.username}</span>
-              ) : (
-                false
               )}
             </div>
 
@@ -138,44 +136,50 @@ class UserCard extends React.Component {
             </div>
           ) : !props.isItMe ? (
             <div className="user-card-actions">
-              {props.canAcceptDirects ? (
-                <span>
+              {props.canAcceptDirects && (
+                <span className="user-card-action">
                   <Link to={`/filter/direct?to=${props.user.username}`}>Direct message</Link>
-                  <span> - </span>
                 </span>
-              ) : (
-                false
               )}
-              {props.user.isPrivate === '1' && !props.subscribed ? (
-                props.hasRequestBeenSent ? (
-                  <span>Subscription request sent</span>
-                ) : (
-                  <a onClick={this.handleRequestSubscriptionClick}>Request a subscription</a>
-                )
-              ) : props.subscribed ? (
-                <a onClick={this.handleUnsubscribeClick}>Unsubscribe</a>
-              ) : (
-                <a onClick={this.handleSubscribeClick}>Subscribe</a>
-              )}
+              {do {
+                if (props.subscribed) {
+                  <span className="user-card-action">
+                    <a onClick={this.handleUnsubscribeClick}>Unsubscribe</a>
+                  </span>;
+                } else if (!props.user.isGone) {
+                  if (props.user.isPrivate === '1') {
+                    if (props.hasRequestBeenSent) {
+                      <span className="user-card-action">Subscription request sent</span>;
+                    } else {
+                      <span className="user-card-action">
+                        <a onClick={this.handleRequestSubscriptionClick}>Request a subscription</a>
+                      </span>;
+                    }
+                  } else {
+                    <span className="user-card-action">
+                      <a onClick={this.handleSubscribeClick}>Subscribe</a>
+                    </span>;
+                  }
+                }
+              }}
 
               {props.user.type !== 'group' && !props.subscribed ? (
-                <span>
-                  {' '}
-                  - <a onClick={this.handleBlockClick}>Block</a>
+                <span className="user-card-action">
+                  <a onClick={this.handleBlockClick}>Block</a>
                 </span>
               ) : props.amIGroupAdmin ? (
-                <span>
-                  {' '}
-                  - <Link to={`/${props.user.username}/settings`}>Settings</Link>
+                <span className="user-card-action">
+                  <Link to={`/${props.user.username}/settings`}>Settings</Link>
                 </span>
               ) : (
                 false
               )}
 
-              <span>
-                {' '}
-                - <a onClick={this.handleShowOrHideClick}>{props.hidden ? 'Show' : 'Hide'} posts</a>
-              </span>
+              {!props.user.isGone && (
+                <span className="user-card-action">
+                  <a onClick={this.handleShowOrHideClick}>{props.hidden ? 'Show' : 'Hide'} posts</a>
+                </span>
+              )}
             </div>
           ) : (
             false

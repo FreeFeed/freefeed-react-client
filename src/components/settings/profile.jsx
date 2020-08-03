@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 import ProfileForm from './forms/profile';
 import ProfilePictureForm from './forms/profile-picture';
@@ -14,6 +15,12 @@ export default function ProfilePage() {
 
       <section className={styles.formSection}>
         <ProfileForm />
+      </section>
+
+      <section className={styles.formSection}>
+        <p className="text-muted">
+          You can delete your account <Link to="/settings/deactivate">here</Link>.
+        </p>
       </section>
     </SettingsPage>
   );
