@@ -80,7 +80,7 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
       <PreventPageLeaving prevent={canSubmit || submitStatus.loading} />
       <div>
         <Textarea
-          inputRef={input}
+          ref={input}
           className="comment-textarea"
           value={text}
           onFocus={onFocus}
