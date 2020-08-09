@@ -462,7 +462,7 @@ export const UserProfileHead = withRouter(
           </>
         )}
         <div className={styles.stats}>
-          {!user.isGone && (
+          {!user.isGone && user.statistics && (
             <ul className={styles.statsItems}>
               {user.type === 'user' && (
                 <StatLink
