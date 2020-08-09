@@ -34,7 +34,7 @@ import {
   cancelConcurrentRequest,
   isUserChangeResponse,
 } from './action-helpers';
-import { asyncPhase, RESPONSE_PHASE } from './async-helpers';
+import { asyncPhase, RESPONSE_PHASE, progress } from './async-helpers';
 
 export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
   if (isFeedGeneratingAction(action)) {
@@ -110,7 +110,15 @@ export const asyncMiddleware = (store) => (next) => async (action) => {
 
   store.dispatch({ ...action, type: request(action.type), asyncOperation: null });
   try {
-    const result = await action.asyncOperation(action.payload);
+    const result = await action.asyncOperation(action.payload, {
+      onProgress: (p) =>
+        store.dispatch({
+          payload: p,
+          type: progress(action.type),
+          request: action.payload,
+          extra: action.extra || {},
+        }),
+    });
     return store.dispatch({
       payload: result,
       type: response(action.type),

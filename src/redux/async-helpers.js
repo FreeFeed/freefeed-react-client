@@ -9,11 +9,13 @@ export const REQUEST_PHASE = 'request';
 export const RESPONSE_PHASE = 'response';
 export const FAIL_PHASE = 'fail';
 export const RESET_PHASE = 'reset';
+export const PROGRESS_PHASE = 'progress';
 
 export const request = (type) => `${type}/async:${REQUEST_PHASE}`;
 export const response = (type) => `${type}/async:${RESPONSE_PHASE}`;
 export const fail = (type) => `${type}/async:${FAIL_PHASE}`;
 export const reset = (type) => `${type}/async:${RESET_PHASE}`;
+export const progress = (type) => `${type}/async:${PROGRESS_PHASE}`;
 
 export const isAsync = (type) => /\/async:\w+$/.test(type);
 export const asyncPhase = (type) => isAsync(type) && type.replace(/^.*?\/async:/, '');
@@ -23,6 +25,7 @@ export const asyncPhase = (type) => isAsync(type) && type.replace(/^.*?\/async:/
 export const initialAsyncState = {
   initial: true,
   loading: false,
+  progress: 0,
   success: false,
   error: false,
   errorText: '',
@@ -36,6 +39,7 @@ export const errorAsyncState = (errorText = '') => ({
   error: true,
   errorText,
 });
+export const progressAsyncState = (progress) => ({ ...loadingAsyncState, progress });
 
 /**
  * Reducers that represents an async status based on phases of the actionTypes.
@@ -64,6 +68,8 @@ export function asyncState(actionTypes, nextReducer = null) {
         return successAsyncState;
       case FAIL_PHASE:
         return errorAsyncState(action.payload && action.payload.err);
+      case PROGRESS_PHASE:
+        return progressAsyncState(action.payload);
       default:
         return state;
     }
@@ -91,6 +97,7 @@ export function getKeyBy(keyNameOrNames) {
       case RESET_PHASE:
       case REQUEST_PHASE:
         return action.payload[keyName];
+      case PROGRESS_PHASE:
       case RESPONSE_PHASE:
       case FAIL_PHASE:
         return action.request[keyName];
@@ -104,6 +111,7 @@ export function keyFromRequestPayload(handler) {
       case RESET_PHASE:
       case REQUEST_PHASE:
         return handler(action.payload);
+      case PROGRESS_PHASE:
       case RESPONSE_PHASE:
       case FAIL_PHASE:
         return handler(action.request);
