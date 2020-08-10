@@ -62,7 +62,7 @@ export default function PrivacyPage() {
       <section className={styles.formSection}>
         <form onSubmit={submit}>
           <div className="form-group">
-            <label htmlFor="password-input">Enter @{usernameS} password to to proceed:</label>
+            <label htmlFor="password-input">Enter @{usernameS} password to proceed:</label>
             <input
               id="password-input"
               className="form-control narrow-input"
