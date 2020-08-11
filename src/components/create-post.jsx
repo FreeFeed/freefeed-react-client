@@ -13,6 +13,7 @@ import PostAttachments from './post-attachments';
 import ErrorBoundary from './error-boundary';
 import { Throbber } from './throbber';
 import { Icon } from './fontawesome-icons';
+import { ButtonLink } from './button-link';
 
 const attachmentsMaxCount = CONFIG.attachments.maxCount;
 
@@ -208,9 +209,9 @@ export default class CreatePost extends React.Component {
               <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
             </span>
 
-            <a className="post-edit-more-trigger" onClick={this.toggleMore}>
+            <ButtonLink className="post-edit-more-trigger" onClick={this.toggleMore}>
               More&nbsp;&#x25be;
-            </a>
+            </ButtonLink>
 
             {this.state.isMoreOpen ? (
               <div className="post-edit-more">
