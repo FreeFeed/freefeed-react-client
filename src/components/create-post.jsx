@@ -3,7 +3,7 @@ import React from 'react';
 import Textarea from 'react-textarea-autosize';
 import _ from 'lodash';
 
-import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
 import { submitByEnter } from '../utils/submit-by-enter';
 import { makeJpegIfNeeded } from '../utils/jpeg-if-needed';
@@ -205,7 +205,7 @@ export default class CreatePost extends React.Component {
               className="post-edit-attachments dropzone-trigger"
               disabled={this.state.dropzoneDisabled}
             >
-              <Icon icon={faCloudUploadAlt} className="upload-icon" /> Add photos or files
+              <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
             </span>
 
             <a className="post-edit-more-trigger" onClick={this.toggleMore}>

@@ -7,11 +7,11 @@ import _ from 'lodash';
 import Textarea from 'react-textarea-autosize';
 import {
   faExclamationTriangle,
-  faCloudUploadAlt,
   faLock,
   faUserFriends,
   faGlobeAmericas,
   faAngleDoubleRight,
+  faPaperclip,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { getFirstLinkToEmbed } from '../utils/parse-text';
@@ -489,7 +489,7 @@ class Post extends React.Component {
                       className="post-edit-attachments dropzone-trigger"
                       disabled={this.state.dropzoneDisabled}
                     >
-                      <Icon icon={faCloudUploadAlt} className="upload-icon" /> Add photos or files
+                      <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
                     </span>
                   </div>
 
