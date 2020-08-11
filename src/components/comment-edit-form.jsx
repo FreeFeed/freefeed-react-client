@@ -9,6 +9,7 @@ import { Throbber } from './throbber';
 import { useForwardedRef } from './hooks/forward-ref';
 import { PreventPageLeaving } from './prevent-page-leaving';
 import { ButtonLink } from './button-link';
+import { useUploader } from './hooks/uploads';
 
 export const CommentEditForm = forwardRef(function CommentEditForm(
   {
@@ -31,6 +32,7 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
 
   const doSubmit = useCallback(() => canSubmit && onSubmit(text), [canSubmit, onSubmit, text]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onKeyDown = useCallback(
     // Need to setText to update text that doSubmit can access
     submitByEnter(() => (setText(text), doSubmit())),
@@ -57,22 +59,29 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
     }
   }, [isPersistent, submitStatus.initial]);
 
+  const insText = (insertion) => {
+    const [text, selStart, selEnd] = insertText(
+      insertion,
+      input.current.value,
+      input.current.selectionStart,
+      input.current.selectionEnd,
+    );
+    // Pre-fill the input value to keep the cursor/selection
+    // position after React update cycle
+    input.current.value = text;
+    input.current.setSelectionRange(selStart, selEnd);
+    input.current.focus();
+    setText(input.current.value);
+  };
+
   // Expose the insertText method for the parent components
-  useForwardedRef(fwdRef, {
-    insertText(insertion) {
-      const [text, selStart, selEnd] = insertText(
-        insertion,
-        input.current.value,
-        input.current.selectionStart,
-        input.current.selectionEnd,
-      );
-      // Pre-fill the input value to keep the cursor/selection
-      // position after React update cycle
-      input.current.value = text;
-      input.current.setSelectionRange(selStart, selEnd);
-      input.current.focus();
-      setText(input.current.value);
-    },
+  useForwardedRef(fwdRef, { insertText: insText });
+
+  // Uploading files
+  const { draggingOver, loading: filesLoading, uploadProgressUI } = useUploader({
+    dropTargetRef: input,
+    pasteTargetRef: input,
+    onSuccess: useCallback((att) => insText(att.url), []),
   });
 
   return (
@@ -81,7 +90,7 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
       <div>
         <Textarea
           ref={input}
-          className="comment-textarea"
+          className={cn('comment-textarea', draggingOver && 'comment-textarea__dragged')}
           value={text}
           onFocus={onFocus}
           onChange={onChange}
@@ -95,9 +104,9 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
       <div>
         <button
           className={cn('btn btn-default btn-xs comment-post', {
-            disabled: !canSubmit || submitStatus.loading,
+            disabled: !canSubmit || submitStatus.loading || filesLoading,
           })}
-          aria-disabled={!canSubmit || submitStatus.loading}
+          aria-disabled={!canSubmit || submitStatus.loading || filesLoading}
           aria-label={
             !canSubmit
               ? 'Submit disabled (textarea is empty)'
@@ -122,6 +131,7 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
         {submitStatus.loading && <Throbber className="comment-throbber" />}
         {submitStatus.error && <span className="comment-error">{submitStatus.errorText}</span>}
       </div>
+      {uploadProgressUI}
     </div>
   );
 });

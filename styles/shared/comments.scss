@@ -18,6 +18,11 @@
 
   .comment-textarea {
     @include editarea;
+    background: white;
+  }
+
+  .comment-textarea__dragged {
+    background: #eee;
   }
 
   .comment-cancel {
