@@ -45,13 +45,15 @@ html(lang='en')
     link(rel='apple-touch-icon', sizes='114x114', href=htmlWebpackPlugin.files.publicPath + 'assets/images/ios/icon_114_114.png')
     link(rel='apple-touch-icon', sizes='76x76', href=htmlWebpackPlugin.files.publicPath + 'assets/images/ios/icon_76_76.png')
     link(rel='apple-touch-icon', sizes='72x72', href=htmlWebpackPlugin.files.publicPath + 'assets/images/ios/icon_72_72.png')
+    script.
+      window.CONFIG = !{JSON.stringify(htmlWebpackPlugin.options.appConfig)};
+    script(src=htmlWebpackPlugin.files.chunks.config.entry)
   body.initial
     //- Instantly check color scheme
     script.
       (function() {
         try {
-          var storageKey = !{JSON.stringify(htmlWebpackPlugin.options.colorSchemeStorageKey)};
-          var colorScheme = localStorage.getItem(storageKey);
+          var colorScheme = localStorage.getItem(window.CONFIG.appearance.colorSchemeStorageKey);
           if (
             colorScheme === 'dark'
             || colorScheme !== 'light'
@@ -106,9 +108,11 @@ html(lang='en')
        }
       })(window, document);
 
-    if htmlWebpackPlugin.options.sentryDSN
-      script(src='https://cdn.ravenjs.com/3.27.0/raven.min.js', crossorigin="anonymous")
-      script Raven.config('#{htmlWebpackPlugin.options.sentryDSN}', { autoBreadcrumbs: true }).install();
+    script(src='https://cdn.ravenjs.com/3.27.0/raven.min.js', crossorigin="anonymous")
+    script.
+      if (window.CONFIG.sentry.publicDSN) {
+        Raven.config(window.CONFIG.sentry.publicDSN, { autoBreadcrumbs: true }).install();
+      }
 
     script.
       (function(w,d){

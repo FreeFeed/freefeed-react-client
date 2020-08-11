@@ -1,11 +1,20 @@
 import React from 'react';
-import { faLock, faUserFriends, faGlobeAmericas } from '@fortawesome/free-solid-svg-icons';
+import {
+  faLock,
+  faUserFriends,
+  faGlobeAmericas,
+  faUserSlash,
+} from '@fortawesome/free-solid-svg-icons';
 import { Icon } from './fontawesome-icons';
 
 export default function UserFeedStatus(props) {
   return (
     <span>
-      {props.isPrivate === '1' ? (
+      {props.isGone ? (
+        <span>
+          <Icon icon={faUserSlash} className="status-icon" /> Deleted
+        </span>
+      ) : props.isPrivate === '1' ? (
         <span>
           <Icon icon={faLock} className="status-icon" /> Private
         </span>
@@ -19,7 +28,7 @@ export default function UserFeedStatus(props) {
         </span>
       )}
       {props.isRestricted === '1' ? ' restricted' : false}
-      {props.type === 'user' ? ' feed' : ' group'}
+      {props.type === 'user' ? (props.isGone ? ' user' : ' feed') : ' group'}
     </span>
   );
 }

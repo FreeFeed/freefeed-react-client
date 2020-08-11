@@ -11,6 +11,7 @@ import {
   faBan,
   faCheckCircle,
   faCheckSquare,
+  faUserSlash,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faSmile,
@@ -238,7 +239,14 @@ export const UserProfileHead = withRouter(
           <div>
             {/* Privacy */}
             <span className={styles.infoStatusSpan}>
-              {user.isPrivate === '1' ? (
+              {user.isGone ? (
+                <>
+                  <span className={styles.infoIcon}>
+                    <Icon icon={faUserSlash} />
+                  </span>
+                  Deleted {user.type}
+                </>
+              ) : user.isPrivate === '1' ? (
                 <>
                   <span className={styles.infoIcon}>
                     <Icon icon={faLock} />
@@ -369,14 +377,14 @@ export const UserProfileHead = withRouter(
                         <ActionLink {...doUnsubscribe}>Unsubscribe</ActionLink>
                       </li>
                     )}
-                    {!inSubscriptions && user.isPrivate === '0' && (
+                    {!user.isGone && !inSubscriptions && user.isPrivate === '0' && (
                       <li>
                         <ButtonLink ref={subscrFormPivotRef} onClick={subscrFormToggle}>
                           Subscribe
                         </ButtonLink>
                       </li>
                     )}
-                    {!inSubscriptions && user.isPrivate === '1' && (
+                    {!user.isGone && !inSubscriptions && user.isPrivate === '1' && (
                       <li>
                         {requestSent ? (
                           <>
@@ -416,7 +424,7 @@ export const UserProfileHead = withRouter(
                         <ActionLink {...unsubFromMe}>Remove from subscribers</ActionLink>
                       </li>
                     )}
-                    {user.type === 'group' && inSubscriptions && (
+                    {!user.isGone && user.type === 'group' && inSubscriptions && (
                       <>
                         <li>
                           <Link to={`/filter/direct?invite=${user.username}`}>Invite</Link>
@@ -428,11 +436,13 @@ export const UserProfileHead = withRouter(
                         </li>
                       </>
                     )}
-                    <li>
-                      <ActionLink {...toggleHidden}>
-                        {isHidden ? 'Unhide' : 'Hide'} in Home
-                      </ActionLink>
-                    </li>
+                    {!user.isGone && (
+                      <li>
+                        <ActionLink {...toggleHidden}>
+                          {isHidden ? 'Unhide' : 'Hide'} in Home
+                        </ActionLink>
+                      </li>
+                    )}
                     {user.type === 'user' && !inSubscriptions && (
                       <li>
                         <ActionLink {...toggleBanned}>Block user</ActionLink>
@@ -452,22 +462,23 @@ export const UserProfileHead = withRouter(
           </>
         )}
         <div className={styles.stats}>
-          <ul className={styles.statsItems}>
-            {user.type === 'user' && (
+          {!user.isGone && user.statistics && (
+            <ul className={styles.statsItems}>
+              {user.type === 'user' && (
+                <StatLink
+                  value={user.statistics.subscriptions}
+                  title="subscription"
+                  linkTo={`/${user.username}/subscriptions`}
+                  canFollow={canFollowStatLinks}
+                />
+              )}
               <StatLink
-                value={user.statistics.subscriptions}
-                title="subscription"
-                linkTo={`/${user.username}/subscriptions`}
+                value={user.statistics.subscribers}
+                title="subscriber"
+                linkTo={`/${user.username}/subscribers`}
                 canFollow={canFollowStatLinks}
               />
-            )}
-            <StatLink
-              value={user.statistics.subscribers}
-              title="subscriber"
-              linkTo={`/${user.username}/subscribers`}
-              canFollow={canFollowStatLinks}
-            />
-            {/* Looks like posts statistics is totally incorrect, so dont show it
+              {/* Looks like posts statistics is totally incorrect, so dont show it
                 {user.type === 'user' && (
                   <StatLink
                     value={user.statistics.posts}
@@ -477,23 +488,24 @@ export const UserProfileHead = withRouter(
                   />
                 )}
                 */}
-            {user.type === 'user' && (
-              <StatLink
-                value={user.statistics.comments}
-                title="comment"
-                linkTo={`/${user.username}/comments`}
-                canFollow={canFollowStatLinks}
-              />
-            )}
-            {user.type === 'user' && (
-              <StatLink
-                value={user.statistics.likes}
-                title="like"
-                linkTo={`/${user.username}/likes`}
-                canFollow={canFollowStatLinks}
-              />
-            )}
-          </ul>
+              {user.type === 'user' && (
+                <StatLink
+                  value={user.statistics.comments}
+                  title="comment"
+                  linkTo={`/${user.username}/comments`}
+                  canFollow={canFollowStatLinks}
+                />
+              )}
+              {user.type === 'user' && (
+                <StatLink
+                  value={user.statistics.likes}
+                  title="like"
+                  linkTo={`/${user.username}/likes`}
+                  canFollow={canFollowStatLinks}
+                />
+              )}
+            </ul>
+          )}
         </div>
         {subscrFormOpened && (
           <Portal>

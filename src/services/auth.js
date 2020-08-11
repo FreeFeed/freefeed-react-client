@@ -1,18 +1,23 @@
 /* global CONFIG */
 import storage from 'local-storage-fallback';
-// import { getCookie, setCookie, deleteCookie } from '../utils/';
 
 const { tokenPrefix } = CONFIG.auth;
 const NAME = `${tokenPrefix}authToken`;
 
+let token = undefined;
+
 export function getToken() {
-  return storage.getItem(NAME);
+  if (token === undefined) {
+    token = storage.getItem(NAME);
+  }
+  return token;
 }
 
-export function setToken(token) {
-  if (!token) {
+export function setToken(newToken = null) {
+  if (!newToken) {
     storage.removeItem(NAME);
   } else {
-    storage.setItem(NAME, token);
+    storage.setItem(NAME, newToken);
   }
+  token = newToken;
 }

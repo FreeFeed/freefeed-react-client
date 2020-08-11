@@ -1,12 +1,12 @@
 /* global CONFIG */
 import { encode as qsEncode } from 'querystring';
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router';
 import { useForm, useField } from 'react-final-form-hooks';
 import cn from 'classnames';
 
-import { signIn, signedIn } from '../redux/action-creators';
+import { signIn, signedIn, resumeMe } from '../redux/action-creators';
 import ErrorBoundary from './error-boundary';
 import { FieldsetWrapper } from './fieldset-wrapper';
 import { Throbber } from './throbber';
@@ -26,6 +26,7 @@ export default React.memo(function SignInPage() {
           <CookiesBanner />
           <ErrorBoundary>
             <SignInForm />
+            <ResumeForm />
             <ExtAuthSignIn />
           </ErrorBoundary>
           <h3>New to {CONFIG.siteTitle}?</h3>
@@ -57,6 +58,7 @@ export default React.memo(function SignInPage() {
 
 const SignInForm = React.memo(function SignInForm() {
   const signInStatus = useSelector(({ signInStatus }) => signInStatus);
+  const resumeToken = useSelector(({ resumeToken }) => resumeToken);
   const dispatch = useDispatch();
 
   const form = useForm({
@@ -128,7 +130,7 @@ const SignInForm = React.memo(function SignInForm() {
           </p>
         </div>
         <div className="form-group">
-          {signInStatus.error && (
+          {signInStatus.error && !resumeToken && (
             <p className="alert alert-danger" role="alert">
               {signInStatus.errorText}
             </p>
@@ -210,3 +212,42 @@ const ExtAuthSignIn = React.memo(function ExtAuthSignIn() {
     </>
   );
 });
+
+function ResumeForm() {
+  const dispatch = useDispatch();
+  const resumeToken = useSelector(({ resumeToken }) => resumeToken);
+  const formStatus = useSelector((state) => state.settingsForms.activateStatus);
+
+  const submit = useCallback(() => dispatch(resumeMe(resumeToken)), [dispatch, resumeToken]);
+
+  if (!resumeToken) {
+    return null;
+  }
+
+  if (formStatus.success) {
+    return (
+      <p className="alert alert-success">
+        Congratulations, you have successfully restored your account. You can sign in now.
+      </p>
+    );
+  }
+
+  return (
+    <div className="alert alert-info">
+      <p>Your account is not active, but you can restore the account and all its content.</p>
+      <p>
+        <button
+          className={cn('btn btn-primary', formStatus.loading && 'disabled')}
+          onClick={submit}
+        >
+          {formStatus.loading ? 'Restoring account…' : 'Restore my account'}
+        </button>
+      </p>
+      {formStatus.error && (
+        <p className="text-danger">
+          Error: {formStatus.errorText}. Try to fill sign in form again.
+        </p>
+      )}
+    </div>
+  );
+}

@@ -10,6 +10,7 @@ const SignInPage = lazyRetry(() => import('./sign-in'));
 const AppearancePage = lazyRetry(() => import('./appearance'));
 const PrivacyPage = lazyRetry(() => import('./privacy'));
 const NotificationsPage = lazyRetry(() => import('./notififications'));
+const DeactivatePage = lazyRetry(() => import('./deactivate'));
 
 export function settingsRoute(rootPath) {
   return (
@@ -19,6 +20,7 @@ export function settingsRoute(rootPath) {
       <Route path="privacy" component={PrivacyPage} />
       <Route path="appearance" component={AppearancePage} />
       <Route path="notifications" component={NotificationsPage} />
+      <Route path="deactivate" component={DeactivatePage} />
       {tokensRoute('app-tokens')}
     </Route>
   );

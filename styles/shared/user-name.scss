@@ -124,6 +124,15 @@
     font-size: 13px !important;
     line-height: 17px;
 
+    .user-card-action {
+      &::before {
+        content: ' - ';
+      }
+      &:first-child::before {
+        content: none;
+      }
+    }
+
     a {
       color: #555599 !important;
       font-weight: normal !important;

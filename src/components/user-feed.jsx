@@ -31,6 +31,17 @@ class UserFeed extends React.Component {
       </p>
     );
 
+    if (viewUser.isGone) {
+      return (
+        <div className="box-body">
+          <p className="alert alert-warning">
+            <b>{viewUser.screenName}</b> account has been deleted. This page still exists as a stub
+            for the username, but this {viewUser.type} is not in FreeFeed anymore.
+          </p>
+        </div>
+      );
+    }
+
     if (isBlocked) {
       return (
         <div className="box-body">

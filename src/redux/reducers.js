@@ -2386,4 +2386,17 @@ export {
   allSubscriptions,
   allSubscriptionsStatus,
   crudHomeFeedStatus,
+  homeFeedsOrderVersion,
 } from './reducers/home-feeds';
+
+export function resumeToken(state = null, action) {
+  switch (action.type) {
+    case fail(ActionTypes.SIGN_IN):
+      return action.payload.resumeToken || null;
+    case LOCATION_CHANGE:
+    case request(ActionTypes.SIGN_IN):
+      return null;
+  }
+
+  return state;
+}

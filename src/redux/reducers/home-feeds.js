@@ -153,3 +153,23 @@ export const crudHomeFeedStatus = asyncState(
   [CREATE_HOME_FEED, UPDATE_HOME_FEED, DELETE_HOME_FEED],
   reducersChain(setIfNotFriendsPage(initialAsyncState), setOnLogOut(initialAsyncState)),
 );
+
+export function homeFeedsOrderVersion(state = 0, action) {
+  switch (action.type) {
+    case UNAUTHENTICATED: {
+      return 0;
+    }
+    case REALTIME_USER_UPDATE: {
+      if (action.homeFeeds) {
+        return state + 1;
+      }
+      return state;
+    }
+    case response(CREATE_HOME_FEED):
+    case response(DELETE_HOME_FEED): {
+      return state + 1;
+    }
+  }
+
+  return state;
+}
