@@ -20,6 +20,7 @@ import { postReadmoreConfig } from '../utils/readmore-config';
 import { savePost, hideByName, unhideNames } from '../redux/action-creators';
 import { initialAsyncState } from '../redux/async-helpers';
 import { submitByEnter } from '../utils/submit-by-enter';
+import { makeJpegIfNeeded } from '../utils/jpeg-if-needed';
 import { Throbber } from './throbber';
 
 import PostAttachments from './post-attachments';
@@ -36,7 +37,6 @@ import LinkPreview from './link-preview/preview';
 import SendTo from './send-to';
 import ErrorBoundary from './error-boundary';
 import { destinationsPrivacy } from './select-utils';
-import { makeJpegIfNeeded } from './create-post';
 import { Icon } from './fontawesome-icons';
 import { UnhideOptions, HideLink } from './post-hides-ui';
 import { UserPicture } from './user-picture';
