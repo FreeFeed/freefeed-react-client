@@ -2,6 +2,7 @@ import React, { useMemo, useCallback, useState, useRef, useEffect, forwardRef } 
 import Textarea from 'react-textarea-autosize';
 import cn from 'classnames';
 
+import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { initialAsyncState } from '../redux/async-helpers';
 import { insertText } from '../utils/insert-text';
 import { submitByEnter } from '../utils/submit-by-enter';
@@ -9,7 +10,8 @@ import { Throbber } from './throbber';
 import { useForwardedRef } from './hooks/forward-ref';
 import { PreventPageLeaving } from './prevent-page-leaving';
 import { ButtonLink } from './button-link';
-import { useUploader } from './hooks/uploads';
+import { useUploader, useFileChooser } from './hooks/uploads';
+import { Icon } from './fontawesome-icons';
 
 export const CommentEditForm = forwardRef(function CommentEditForm(
   {
@@ -78,11 +80,12 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
   useForwardedRef(fwdRef, { insertText: insText });
 
   // Uploading files
-  const { draggingOver, loading: filesLoading, uploadProgressUI } = useUploader({
+  const { draggingOver, loading: filesLoading, uploadProgressUI, uploadFile } = useUploader({
     dropTargetRef: input,
     pasteTargetRef: input,
     onSuccess: useCallback((att) => insText(att.url), []),
   });
+  const chooseFiles = useFileChooser({ onChoose: uploadFile, multiple: true });
 
   return (
     <div className="comment-body">
@@ -128,6 +131,14 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
             Cancel
           </ButtonLink>
         )}
+        <ButtonLink
+          className="comment-file-button iconic-button"
+          title="Add photo or file"
+          onClick={chooseFiles}
+        >
+          <Icon icon={faPaperclip} />
+        </ButtonLink>
+
         {submitStatus.loading && <Throbber className="comment-throbber" />}
         {submitStatus.error && <span className="comment-error">{submitStatus.errorText}</span>}
       </div>
