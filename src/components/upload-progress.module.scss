@@ -1,0 +1,60 @@
+@import '../../styles/helvetica/dark-vars.scss';
+
+.container {
+  margin-top: 0.5em;
+
+  --progress-bg: #eee;
+  --progress-color: #090;
+  --error-color: #900;
+
+  :global(.dark-theme) & {
+    --progress-bg: #{$bg-color-lighter};
+    --progress-color: #{$link-color};
+    --error-color: #{$link-color-dim};
+  }
+}
+
+.row {
+  border-bottom: 2px solid var(--progress-bg);
+  position: relative;
+  margin-bottom: 0.33em;
+}
+
+.rowError {
+  border-bottom-color: transparent;
+}
+
+.progress {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--progress-color);
+  transition: width 0.3s;
+}
+
+.error {
+  color: var(--error-color);
+}
+
+.name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-right: 20px;
+}
+
+.closeIcon {
+  position: absolute;
+  top: -4px;
+  right: 0;
+  padding: 4px;
+  display: flex;
+  border-radius: 50%;
+  color: inherit !important;
+
+  &:hover {
+    background-color: var(--progress-bg);
+  }
+}

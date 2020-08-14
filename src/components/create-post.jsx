@@ -3,15 +3,17 @@ import React from 'react';
 import Textarea from 'react-textarea-autosize';
 import _ from 'lodash';
 
-import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
 import { submitByEnter } from '../utils/submit-by-enter';
+import { makeJpegIfNeeded } from '../utils/jpeg-if-needed';
 import SendTo from './send-to';
 import Dropzone from './dropzone';
 import PostAttachments from './post-attachments';
 import ErrorBoundary from './error-boundary';
 import { Throbber } from './throbber';
 import { Icon } from './fontawesome-icons';
+import { ButtonLink } from './button-link';
 
 const attachmentsMaxCount = CONFIG.attachments.maxCount;
 
@@ -204,12 +206,12 @@ export default class CreatePost extends React.Component {
               className="post-edit-attachments dropzone-trigger"
               disabled={this.state.dropzoneDisabled}
             >
-              <Icon icon={faCloudUploadAlt} className="upload-icon" /> Add photos or files
+              <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
             </span>
 
-            <a className="post-edit-more-trigger" onClick={this.toggleMore}>
+            <ButtonLink className="post-edit-more-trigger" onClick={this.toggleMore}>
               More&nbsp;&#x25be;
-            </a>
+            </ButtonLink>
 
             {this.state.isMoreOpen ? (
               <div className="post-edit-more">
@@ -271,51 +273,4 @@ export default class CreatePost extends React.Component {
       </div>
     );
   }
-}
-
-/**
- * Convert 'image/png' blob to 'image/jpeg' blob if:
- * 1) The PNG size is more than 50 KiB and
- * 2) JPEG size is less than half the PNG size.
- *
- * The returning promise is never failed and returns
- * either JPEG or the original PNG.
- *
- * @param {Blob} blob
- * @returns {Promise<Blob>}
- */
-export async function makeJpegIfNeeded(blob) {
-  if (blob.type !== 'image/png' || blob.size < 50 * 1024) {
-    return blob;
-  }
-
-  const src = window.URL.createObjectURL(blob);
-  try {
-    const image = await new Promise((resolve, reject) => {
-      const image = new Image();
-      image.onload = () => resolve(image);
-      image.onerror = () => reject(new Error('Cannot load image'));
-      image.src = src;
-    });
-
-    const canvas = document.createElement('canvas');
-    canvas.width = image.width;
-    canvas.height = image.height;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(image, 0, 0);
-
-    const jpeg = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.9));
-    jpeg.name = blob.name.replace(/\.png$/, '.jpg');
-
-    if (jpeg.size < blob.size / 2) {
-      return jpeg;
-    }
-  } catch (e) {
-    // skip any errors
-  } finally {
-    window.URL.revokeObjectURL(src);
-  }
-  return blob;
 }

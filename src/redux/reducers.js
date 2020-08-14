@@ -2400,3 +2400,5 @@ export function resumeToken(state = null, action) {
 
   return state;
 }
+
+export { attachmentUploads, attachmentUploadStatuses } from './reducers/attachment-uploads';

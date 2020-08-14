@@ -7,10 +7,12 @@ import {
   response,
   fail,
   reset,
+  progress,
   REQUEST_PHASE,
   RESET_PHASE,
   FAIL_PHASE,
   RESPONSE_PHASE,
+  PROGRESS_PHASE,
   isAsync,
   baseType,
   asyncState,
@@ -20,6 +22,7 @@ import {
   successAsyncState,
   loadingAsyncState,
   errorAsyncState,
+  progressAsyncState,
 } from '../../../src/redux/async-helpers';
 
 describe('Async helpers', () => {
@@ -29,6 +32,7 @@ describe('Async helpers', () => {
       { maker: response, phase: RESPONSE_PHASE },
       { maker: fail, phase: FAIL_PHASE },
       { maker: reset, phase: RESET_PHASE },
+      { maker: progress, phase: PROGRESS_PHASE },
     ];
 
     for (const { maker, phase } of table) {
@@ -76,6 +80,11 @@ describe('Async helpers', () => {
     it('should process the REQUEST action', () => {
       const state = reducer(initialAsyncState, { type: request(actionType) });
       expect(state, 'to equal', loadingAsyncState);
+    });
+
+    it('should process the PROGRESS action', () => {
+      const state = reducer(initialAsyncState, { type: progress(actionType), payload: 0.75 });
+      expect(state, 'to equal', progressAsyncState(0.75));
     });
 
     it('should process the RESPONSE action', () => {

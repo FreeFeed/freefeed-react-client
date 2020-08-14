@@ -7,11 +7,11 @@ import _ from 'lodash';
 import Textarea from 'react-textarea-autosize';
 import {
   faExclamationTriangle,
-  faCloudUploadAlt,
   faLock,
   faUserFriends,
   faGlobeAmericas,
   faAngleDoubleRight,
+  faPaperclip,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { getFirstLinkToEmbed } from '../utils/parse-text';
@@ -20,6 +20,7 @@ import { postReadmoreConfig } from '../utils/readmore-config';
 import { savePost, hideByName, unhideNames } from '../redux/action-creators';
 import { initialAsyncState } from '../redux/async-helpers';
 import { submitByEnter } from '../utils/submit-by-enter';
+import { makeJpegIfNeeded } from '../utils/jpeg-if-needed';
 import { Throbber } from './throbber';
 
 import PostAttachments from './post-attachments';
@@ -36,7 +37,6 @@ import LinkPreview from './link-preview/preview';
 import SendTo from './send-to';
 import ErrorBoundary from './error-boundary';
 import { destinationsPrivacy } from './select-utils';
-import { makeJpegIfNeeded } from './create-post';
 import { Icon } from './fontawesome-icons';
 import { UnhideOptions, HideLink } from './post-hides-ui';
 import { UserPicture } from './user-picture';
@@ -489,7 +489,7 @@ class Post extends React.Component {
                       className="post-edit-attachments dropzone-trigger"
                       disabled={this.state.dropzoneDisabled}
                     >
-                      <Icon icon={faCloudUploadAlt} className="upload-icon" /> Add photos or files
+                      <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
                     </span>
                   </div>
 

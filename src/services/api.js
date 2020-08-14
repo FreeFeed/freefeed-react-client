@@ -688,3 +688,30 @@ export function suspendMe({ password }) {
 export function resumeMe({ resumeToken }) {
   return fetch(`${apiRoot}/v1/users/resume-me`, postRequestOptions('POST', { resumeToken }));
 }
+
+export function createAttachment({ file }, { onProgress = () => null } = {}) {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  return new Promise((resolve, reject) => {
+    // Use XHR here to control the upload progress
+    const req = new XMLHttpRequest();
+
+    req.onload = () => {
+      if (req.status === 200) {
+        resolve(req.response);
+      } else {
+        reject(req.response || { err: `HTTP error ${req.status}` });
+      }
+    };
+    req.onerror = () => reject({ err: 'Network error' });
+    req.upload.onprogress = (e) => onProgress(e.loaded / e.total);
+
+    req.open('POST', `${apiRoot}/v1/attachments`);
+    req.responseType = 'json';
+    req.setRequestHeader('Accept', 'application/json');
+    getToken() && req.setRequestHeader('Authorization', `Bearer ${getToken()}`);
+
+    req.send(formData);
+  });
+}

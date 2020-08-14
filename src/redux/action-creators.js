@@ -1105,3 +1105,18 @@ export function resumeMe(resumeToken) {
     payload: { resumeToken },
   };
 }
+
+export function createAttachment(uploadId, file) {
+  return {
+    type: ActionTypes.CREATE_ATTACHMENT,
+    asyncOperation: Api.createAttachment,
+    payload: { uploadId, file, name: file.name },
+  };
+}
+
+export function resetAttachmentUpload(uploadId) {
+  return {
+    type: reset(ActionTypes.CREATE_ATTACHMENT),
+    payload: { uploadId },
+  };
+}
