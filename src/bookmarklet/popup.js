@@ -1,4 +1,4 @@
-/* global CONFIG */
+const [siteOrigin] = /^\w+:\/\/[^/]+/.exec(document.currentScript.src);
 
 let popupEl = null;
 let iframeEl = null;
@@ -41,7 +41,7 @@ window.bookmarklet_popupInit = () => {
   // When the select2 inside iframe became multiline it change bookmarklet height, but we can't
   // handle this via CSS rules, so use JS to increase iframe size accordingly
   const onMessage = ({ origin, data: iframeHeight }) => {
-    if (origin !== CONFIG.siteOrigin || !iframeHeight) {
+    if (origin !== siteOrigin || !iframeHeight) {
       return;
     }
     // set iframeHeight to default value if the height less than default
@@ -110,7 +110,7 @@ function reCreateUI() {
   const comment = encodeURIComponent(getSelectionText());
   popupEl.insertAdjacentHTML(
     'beforeend',
-    `<iframe src="${CONFIG.siteOrigin}/bookmarklet?url=${url}&title=${title}&comment=${comment}" scrolling="auto" style="` +
+    `<iframe src="${siteOrigin}/bookmarklet?url=${url}&title=${title}&comment=${comment}" scrolling="auto" style="` +
       'position: absolute;' +
       'right: 0; top: 0; width: 450px; height: 440px;' +
       'border: 0; overlow: hidden;' +
