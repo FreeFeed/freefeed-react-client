@@ -37,12 +37,6 @@ a:focus {
   color: #000088;
 }
 
-:focus,
-a:focus,
-.btn:focus {
-  outline-offset: 2px;
-}
-
 a[aria-disabled='true'] {
   cursor: default;
   opacity: 0.8;
