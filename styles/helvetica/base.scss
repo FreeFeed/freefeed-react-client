@@ -1,3 +1,5 @@
+@import 'dark-vars.scss';
+
 body {
   background: #fff;
   overflow-anchor: none;
@@ -33,6 +35,12 @@ a:hover,
 a:focus {
   cursor: pointer;
   color: #000088;
+}
+
+:focus,
+a:focus,
+.btn:focus {
+  outline-offset: 2px;
 }
 
 a[aria-disabled='true'] {
@@ -71,4 +79,27 @@ a[aria-disabled='true'] {
   width: 1em;
   height: 1em;
   vertical-align: -0.125em;
+}
+
+.iconic-button {
+  outline: none !important;
+  display: inline-flex;
+  border-radius: 50%;
+  position: relative;
+  top: -0.3em;
+  width: 1.6em;
+  height: 1.6em;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s;
+
+  &:hover,
+  &:active,
+  &:focus {
+    background: #ddd;
+
+    .dark-theme & {
+      background: $bg-color-lightest;
+    }
+  }
 }

@@ -1,6 +1,12 @@
 import React from 'react';
 import cn from 'classnames';
-import { faHeart, faLock, faGlobeAmericas, faUserFriends } from '@fortawesome/free-solid-svg-icons';
+import {
+  faHeart,
+  faLock,
+  faGlobeAmericas,
+  faUserFriends,
+  faPaperclip,
+} from '@fortawesome/free-solid-svg-icons';
 import { faComment, faHeart as faHeartO, faImage } from '@fortawesome/free-regular-svg-icons';
 import { faCommentPlus } from './fontawesome-custom-icons';
 
@@ -17,6 +23,7 @@ const preloadedIcons = [
   faGlobeAmericas,
   faUserFriends,
   faImage,
+  faPaperclip,
 ];
 
 export const SVGSymbolDeclarations = React.memo(function SVGSymbolDeclarations() {

@@ -18,6 +18,12 @@
 
   .comment-textarea {
     @include editarea;
+    background: white;
+    min-width: 100%;
+  }
+
+  .comment-textarea__dragged {
+    background: #eee;
   }
 
   .comment-cancel {
@@ -31,6 +37,13 @@
   .comment-error {
     font-size: 12px;
     color: #ff5a5f;
+  }
+
+  .comment-file-button {
+    float: right;
+    color: inherit;
+    font-size: 15px;
+    opacity: 0.66;
   }
 
   .comment-timestamp a {
