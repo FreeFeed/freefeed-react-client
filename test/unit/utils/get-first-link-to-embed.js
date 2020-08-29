@@ -1,9 +1,8 @@
+/* global CONFIG */
 import { describe, it } from 'mocha';
 import expect from 'unexpected';
 
-const {
-  siteDomains,
-} = CONFIG;
+const { siteDomains } = CONFIG;
 
 import { getFirstLinkToEmbed } from '../../../src/utils/parse-text';
 
