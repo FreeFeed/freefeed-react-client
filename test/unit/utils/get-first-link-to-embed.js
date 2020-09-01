@@ -1,11 +1,14 @@
+/* global CONFIG */
 import { describe, it } from 'mocha';
 import expect from 'unexpected';
+
+const { siteDomains } = CONFIG;
 
 import { getFirstLinkToEmbed } from '../../../src/utils/parse-text';
 
 const testLink = 'http://facebook.com/';
 const secondTestLink = 'http://twitter.com/';
-const freefeedTestLink = 'http://freefeed.net/kadmil';
+const freefeedTestLink = `http://${siteDomains[0]}/kadmil`;
 const protocolLessTestLink = 'mail.ru';
 
 describe('getFirstLinkToEmbed()', () => {
