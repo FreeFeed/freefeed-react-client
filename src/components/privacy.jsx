@@ -34,11 +34,11 @@ const Privacy = () => (
         1.4 FreeFeed.net incorporates privacy controls which affect how we will process your
         personal data. By using the privacy controls, registered FreeFeed.net users can specify what
         information is visible to guest and to other registered FreeFeed.net users. You can access
-        the privacy controls via: <Link to="/settings">https://freefeed.net/settings</Link>
+        the privacy controls via: <Link to="/settings">https://freefeed.net/settings</Link>.
       </p>
       <p className="legal-paragraph">
         1.5 In this policy, {'"'}we{'"'}, {'"'}us{'"'} and {'"'}our{'"'} refer to FreeFeed.net run
-        by FreeFeed MTÜ. For more information about us, see Section 18
+        by FreeFeed MTÜ. For more information about us, see Section 18.
       </p>
 
       <h3>2. How we use your personal data</h3>
@@ -319,7 +319,7 @@ const Privacy = () => (
       </p>
       <p className="legal-paragraph">
         8.12 You may exercise any of your rights in relation to your personal data email notice to
-        us <a href="mailto:freefeed.net@gmail.com">freefeed.net@gmail.com</a>
+        us <a href="mailto:freefeed.net@gmail.com">freefeed.net@gmail.com</a>.
       </p>
 
       <h3>9. Third party websites</h3>
@@ -408,6 +408,7 @@ const Privacy = () => (
         <a href="https://policies.google.com/privacy" target="_blank">
           https://policies.google.com/privacy
         </a>
+        .
       </p>
 
       <h3>15. Our details</h3>
