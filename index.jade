@@ -13,7 +13,7 @@ html(lang='en')
     <!--#set var="username" value="$1" -->
     <!--#include virtual="/v2/timelines-metatags/${username}" -->
     <!--#endif -->
-    title FreeFeed
+    title Circle
     unless htmlWebpackPlugin.options.opts.hot
         link(rel='stylesheet', href=htmlWebpackPlugin.files.css[0])
         link(rel='stylesheet', href=htmlWebpackPlugin.files.css[1])
@@ -72,7 +72,7 @@ html(lang='en')
           .col-md-4
             .header
               h1.title
-                a(href='/') FreeFeed
+                a(href='/') Circle
               .jsonly
                 p Loading...
         .row
