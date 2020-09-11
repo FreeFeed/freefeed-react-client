@@ -177,7 +177,7 @@ const SideBarMemories = () => {
   ));
   return (
     <div className="box">
-      <div className="box-header-memories">Memories of {format(today, 'MMMM d')}</div>
+      <div className="box-header-memories">Memories of {format(today, 'MMMM\u00A0d')}</div>
       <div className="box-body">
         <div className="year-links-row">{yearLinks}</div>
       </div>
