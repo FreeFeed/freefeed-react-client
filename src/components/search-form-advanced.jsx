@@ -164,14 +164,19 @@ export const SearchFormAdvanced = withRouter(function SearchFormAdvanced({ route
         </p>
       )}
       <p>
-        Use double-quotes to search phrase with the specific word order:{' '}
+        Use double-quotes to search words in the exact form and specific word order:{' '}
         <em>&quot;freefeed version&quot;</em>
+        <br />
+        Use the asterisk symbol (<code>*</code>) to search word by prefix: <em>free*</em>. The
+        minimum prefix length is two characters.
         <br />
         Use the pipe symbol (<code>|</code>) between words to search any of them:{' '}
         <em>freefeed | version</em>
         <br />
         Use the minus sign (<code>-</code>) to exclude some word from search results:{' '}
         <em>freefeed -version</em>
+        <br />
+        Use the plus sign (<code>+</code>) to specify word order: <em>freefeed + version</em>
         <br />
       </p>
       <p>

@@ -1,6 +1,6 @@
 {
   "name": "reactive-pepyatka",
-  "version": "1.85.1",
+  "version": "1.86.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
@@ -42,7 +42,7 @@
     "react-textarea-autosize": "~8.2.0",
     "redux": "~4.0.5",
     "snarkdown": "~1.2.2",
-    "social-text-tokenizer": "~2.1.1",
+    "social-text-tokenizer": "~2.1.2",
     "socket.io-client": "~2.3.0",
     "use-subscription": "~1.4.1",
     "validator": "~13.1.1"
