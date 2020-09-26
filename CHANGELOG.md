@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - SoundCloud links previews
 
+### Fixed
+
+- Links to the images hosted on Dropbox are now correctly displayed in a lightbox
+
 ## [1.86.0] - 2020-09-15
 
 ### Changed

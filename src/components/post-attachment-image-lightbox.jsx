@@ -80,6 +80,9 @@ export default class ImageAttachmentsLightbox extends React.Component {
           item.h = (rect.height * item.w) / rect.width;
         }
       } else if (item.src) {
+        item.src = item.src
+          // Convert dropbox page URL to image URL
+          .replace('https://www.dropbox.com/s/', 'https://dl.dropboxusercontent.com/s/');
         // lets try to find out image size when image loads
         const image = new Image();
         item.w = 1;
