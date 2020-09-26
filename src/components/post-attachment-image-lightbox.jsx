@@ -79,7 +79,7 @@ export default class ImageAttachmentsLightbox extends React.Component {
         if (rect.width > 0) {
           item.h = (rect.height * item.w) / rect.width;
         }
-      } else {
+      } else if (item.src) {
         // lets try to find out image size when image loads
         const image = new Image();
         item.w = 1;
