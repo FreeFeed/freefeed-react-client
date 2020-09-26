@@ -1,7 +1,7 @@
 /* global CONFIG */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { Router, Route, IndexRoute, browserHistory, Redirect } from 'react-router';
 import { Provider, useSelector } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 
@@ -340,6 +340,7 @@ function App() {
           component={User}
           {...generateRouteHooks(boundRouteActions('userLikes'))}
         />
+        <Redirect from="/.well-known/change-password" to="/settings/sign-in" />
         <Route
           name="post"
           path="/:userName/:postId"
