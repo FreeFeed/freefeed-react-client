@@ -90,7 +90,14 @@ export default class Linkify extends React.Component {
 
       if (token instanceof TLink) {
         if (token.isLocal) {
-          return linkEl(token.localURI, token.shorten(MAX_URL_LENGTH));
+          let m, text;
+          // Special shortening of post links
+          if ((m = /^[^/]+\/[\w-]+\/[0-9a-f]{8}-/.exec(token.pretty))) {
+            text = `${m[0]}\u2026`;
+          } else {
+            text = token.shorten(MAX_URL_LENGTH);
+          }
+          return linkEl(token.localURI, text);
         }
 
         if (token.href.match(FRIENDFEED_POST)) {
