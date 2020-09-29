@@ -3,6 +3,7 @@ import OptiCSS from 'optimize-css-assets-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import Uglify from 'terser-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
+import ESLintPlugin from 'eslint-webpack-plugin';
 
 import { baseConfig, opts, rules } from './webpack/base';
 import { skipFalsy } from './webpack/utils';
@@ -32,6 +33,10 @@ const config = {
   },
   plugins: skipFalsy([
     ...baseConfig.plugins,
+    new ESLintPlugin({
+      extensions: ['js', 'jsx'],
+      files: ['src', 'test'],
+    }),
     new HtmlWebpackPlugin({
       inject: false,
       template: './index.jade',

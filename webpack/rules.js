@@ -9,15 +9,6 @@ class RuleGenerator {
     this.opts = opts;
   }
 
-  get eslint() {
-    return {
-      test: /\.jsx?$/,
-      exclude: /node_modules/,
-      loader: 'eslint-loader',
-      enforce: 'pre',
-    };
-  }
-
   get babel() {
     return {
       test: /\.m?jsx?$/,
