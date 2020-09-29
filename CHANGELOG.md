@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Links to the images hosted on Dropbox are now correctly displayed in a lightbox
+- Improve mentions parsing
+
+### Changed
+
+- Cut the post links in texts after the first UUID octet block
 
 ## [1.86.0] - 2020-09-15
 
