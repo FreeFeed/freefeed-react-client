@@ -197,7 +197,7 @@ describe('realtime events', () => {
     });
 
     it('should hide post on REALTIME_POST_HIDE', () => {
-      const state = { '1': { id: '1', isHidden: false } };
+      const state = { 1: { id: '1', isHidden: false } };
       const action = {
         type: REALTIME_POST_HIDE,
         postId: '1',
@@ -207,7 +207,7 @@ describe('realtime events', () => {
     });
 
     it('should not hide missing post on REALTIME_POST_HIDE', () => {
-      const state = { '1': { id: '1', isHidden: false } };
+      const state = { 1: { id: '1', isHidden: false } };
       const action = {
         type: REALTIME_POST_HIDE,
         postId: '2',
@@ -217,7 +217,7 @@ describe('realtime events', () => {
     });
 
     it('should unhide post on REALTIME_POST_UNHIDE', () => {
-      const state = { '1': { id: '1', isHidden: true } };
+      const state = { 1: { id: '1', isHidden: true } };
       const action = {
         type: REALTIME_POST_UNHIDE,
         postId: '1',
@@ -227,7 +227,7 @@ describe('realtime events', () => {
     });
 
     it('should not unhide missing post on REALTIME_POST_UNHIDE', () => {
-      const state = { '1': { id: '1', isHidden: true } };
+      const state = { 1: { id: '1', isHidden: true } };
       const action = {
         type: REALTIME_POST_UNHIDE,
         postId: '2',
