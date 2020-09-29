@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - SoundCloud links previews
+- Support of [well-known URL for changing passwords](https://w3c.github.io/webappsec-change-password-url/)
 
 ### Fixed
 
