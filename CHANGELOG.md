@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.87.0] - 2020-10-13
+
+### Added
+
+- SoundCloud links previews
+- Support of [well-known URL for changing passwords](https://w3c.github.io/webappsec-change-password-url/)
+- Spotify links previews
+
+### Fixed
+
+- Links to the images hosted on Dropbox are now correctly displayed in a lightbox
+- Improve mentions parsing
+
+### Changed
+
+- Cut the post links in texts after the first UUID octet block
+
 ## [1.86.0] - 2020-09-15
 
 ### Changed

@@ -94,6 +94,10 @@ const getEmbeddableItem = async (url, withoutAutoplay) => {
     }
 
     if (playerHTML) {
+      let text = info.byline;
+      if (text.length > 300) {
+        text = `${text.slice(0, 200)}\u2026`;
+      }
       return {
         html: playerHTML,
         w,
@@ -101,7 +105,7 @@ const getEmbeddableItem = async (url, withoutAutoplay) => {
         pid: 'video',
         title: renderToString(
           <a href={url} target="_blank">
-            {info.byline || url}
+            {text || url}
           </a>,
         ),
       };

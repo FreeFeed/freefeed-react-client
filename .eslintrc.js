@@ -4,7 +4,7 @@ require('./config/lib/loader-node');
 
 module.exports = {
   extends: ['eslint:recommended', 'prettier', 'prettier/react'],
-  parser: 'babel-eslint',
+  parser: '@babel/eslint-parser',
   plugins: [
     'babel',
     'import',
@@ -21,6 +21,11 @@ module.exports = {
     es6: true,
   },
   parserOptions: {
+    babelOptions: {
+      configFile: './.babelrc',
+      plugins: ['@babel/syntax-do-expressions'],
+      presets: ['@babel/preset-react'],
+    },
     ecmaVersion: 2019,
     sourceType: 'module',
     ecmaFeatures: {

@@ -9,6 +9,8 @@ import YandexMusicPreview, { canShowURL as yandexMusicCanShowURL } from './yande
 import WikipediaPreview, { canShowURL as wikipediaCanShowURL } from './wikipedia';
 import TelegramPreview, { canShowURL as telegramCanShowURL } from './telegram';
 import TikTokPreview, { canShowURL as tikTokCanShowURL } from './tiktok';
+import SoundCloudPreview, { canShowURL as soundCloudCanShowURL } from './soundcloud';
+import SpotifyPreview, { canShowURL as spotifyCanShowURL } from './spotify';
 import EmbedlyPreview from './embedly';
 
 export default function LinkPreview({ allowEmbedly, url }) {
@@ -31,6 +33,10 @@ export default function LinkPreview({ allowEmbedly, url }) {
     return <TelegramPreview url={url} />;
   } else if (tikTokCanShowURL(url)) {
     return <TikTokPreview url={url} />;
+  } else if (soundCloudCanShowURL(url)) {
+    return <SoundCloudPreview url={url} />;
+  } else if (spotifyCanShowURL(url)) {
+    return <SpotifyPreview url={url} />;
   }
 
   if (allowEmbedly) {
