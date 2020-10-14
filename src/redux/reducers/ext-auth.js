@@ -1,5 +1,3 @@
-/* global CONFIG */
-import { intersection } from 'lodash';
 import { combineReducers } from 'redux';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import {
@@ -19,12 +17,7 @@ import {
 import { setOnLocationChange } from './helpers';
 
 export const extAuth = combineReducers({
-  providers: fromResponse(
-    GET_SERVER_INFO,
-    (action) =>
-      intersection(CONFIG.auth.extAuthProviders || [], action.payload.externalAuthProviders),
-    [],
-  ),
+  providers: fromResponse(GET_SERVER_INFO, (action) => action.payload.externalAuthProviders, []),
   profiles: fromResponse(
     GET_AUTH_PROFILES,
     ({ payload: { profiles } }) => profiles,
