@@ -36,6 +36,7 @@ const config = {
     new ESLintPlugin({
       extensions: ['js', 'jsx'],
       files: ['src', 'test'],
+      lintDirtyModulesOnly: true,
     }),
     new HtmlWebpackPlugin({
       inject: false,
