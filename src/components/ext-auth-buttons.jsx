@@ -31,7 +31,7 @@ export const ExtAuthButtons = React.memo(function ExtAuthButtons({ mode = SIGN_I
     (provider) => () => {
       // Popup must be opened synchronously to avoid being blocked by the browser
       const popup = extAuthPopup();
-      dispatch(actionCreator[mode](provider, popup));
+      dispatch(actionCreator[mode](provider.id, popup));
     },
     [dispatch, mode],
   );
@@ -46,11 +46,11 @@ export const ExtAuthButtons = React.memo(function ExtAuthButtons({ mode = SIGN_I
       <p>
         {commonLabel[mode]}
         {providers.map((p) => (
-          <span key={p}>
+          <span key={p.id}>
             <button
               className={cn('btn btn-default', {
                 // [FBC] This class tells FBC that this button is a Facebook login button
-                'fb-login-button': p === 'facebook',
+                'fb-login-button': p.brand === 'facebook',
               })}
               onClick={onClick(p)}
               disabled={status.loading}

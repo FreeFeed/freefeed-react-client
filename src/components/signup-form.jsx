@@ -8,7 +8,7 @@ import { useField, useForm } from 'react-final-form-hooks';
 
 import { signUp } from '../redux/action-creators';
 import { FieldsetWrapper } from './fieldset-wrapper';
-import { providerTitle } from './ext-auth-helpers';
+import { providerTitle, useExtAuthProviders } from './ext-auth-helpers';
 import { Throbber } from './throbber';
 
 const captchaKey = CONFIG.captcha.siteKey;
@@ -89,6 +89,12 @@ export default React.memo(function SignupForm({ invitationId = null, lang = 'en'
       key: res.externalProfileKey,
     };
   });
+  const [providers] = useExtAuthProviders();
+
+  const extProfileProvider = useMemo(() => providers.find((p) => p.id === extProfile?.provider), [
+    extProfile,
+    providers,
+  ]);
 
   const form = useForm(
     useMemo(
@@ -248,12 +254,12 @@ export default React.memo(function SignupForm({ invitationId = null, lang = 'en'
               />{' '}
               {enRu(
                 <>
-                  Allow to sign in via {providerTitle(extProfile.provider, { withText: false })}{' '}
+                  Allow to sign in via {providerTitle(extProfileProvider, { withText: false })}{' '}
                   {extProfile.name} account
                 </>,
                 <>
                   Разрешить вход через аккаунт{' '}
-                  {providerTitle(extProfile.provider, { withText: false })} {extProfile.name}
+                  {providerTitle(extProfileProvider, { withText: false })} {extProfile.name}
                 </>,
               )}
             </label>

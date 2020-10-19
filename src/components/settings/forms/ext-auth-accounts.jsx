@@ -21,7 +21,9 @@ export default function ExtAuthForm() {
   const serverInfoStatus = useSelector((state) => state.serverInfoStatus);
   const existingProfilesStatus = useSelector((state) => state.extAuth.profilesStatus);
   const existingProfiles = useSelector(({ extAuth: { profiles, providers } }) =>
-    profiles.filter((p) => providers.includes(p.provider)),
+    profiles
+      .filter((p) => providers.some((xp) => xp.id === p.provider))
+      .map((p) => ({ ...p, provider: providers.find((xp) => xp.id === p.provider) })),
   );
 
   const loadStatus = useMemo(() => combineAsyncStates(serverInfoStatus, existingProfilesStatus), [
@@ -90,7 +92,7 @@ const ConnectedProfile = React.memo(function ConnectedProfile({ profile }) {
 
   return (
     <p>
-      {providerTitle(profile.provider, { withText: false })} {profile.title}{' '}
+      {profile.title} ({providerTitle(profile.provider)}){' '}
       <button
         className="btn btn-default btn-sm"
         onClick={doUnlink(profile.id)}
