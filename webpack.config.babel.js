@@ -50,8 +50,7 @@ const config = {
     }),
     new CopyPlugin({
       patterns: [
-        { from: 'assets/images/favicon.*', to: '' },
-        { from: 'assets/images/ios/*.png', to: '' },
+        { from: 'assets/images/favicons/*.*', to: '' },
         { from: 'assets/ext-auth/auth-return.html', to: '' },
       ],
     }),
