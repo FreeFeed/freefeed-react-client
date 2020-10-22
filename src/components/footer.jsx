@@ -1,9 +1,10 @@
+/* global CONFIG */
 import React from 'react';
 import { Link } from 'react-router';
 
 export default () => (
   <footer className="footer">
-    &copy; FreeFeed 1.87.1 (Oct 14, 2020)
+    &copy; {CONFIG.siteTitle}
     <br />
     <Link to="/about">About</Link>
     {' | '}
@@ -15,14 +16,6 @@ export default () => (
     {' | '}
     <Link to="/about/privacy">Privacy</Link>
     {' | '}
-    <Link to="/about/stats">Stats</Link>
-    {' | '}
-    <a href="https://status.freefeed.net/" target="_blank">
-      Status
-    </a>
-    {' | '}
-    <a href="https://github.com/FreeFeed" target="_blank">
-      GitHub
-    </a>
+    Powered by <a href="https://freefeed.net/">FreeFeed</a>
   </footer>
 );
