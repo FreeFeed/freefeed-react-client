@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
+- Google Analytics ID doesn't hardcoded in index.jade anymore.
+
 - Client now supports arbitrary list of external identity providers that are
   available on the server.
 
