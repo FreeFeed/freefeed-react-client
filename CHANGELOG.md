@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Client now supports arbitrary list of external identity providers that are
   available on the server.
 
+### Fixed
+- Embedly previews now properly handles the light/dark theme switching.
 
 ## [1.87.1] - 2020-10-14
 
