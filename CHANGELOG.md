@@ -6,12 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Embedly previews handle light/dark theme switching properly
+
 ### Changed
 - Google Analytics ID isn't hardcoded in index.jade anymore.
 
 - Client now supports arbitrary list of external identity providers that are
   available on the server.
-
 
 ## [1.87.1] - 2020-10-14
 
