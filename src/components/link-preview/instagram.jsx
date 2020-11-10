@@ -1,7 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
 
-import cachedFetch from './cached-fetch';
 import ScrollSafe from './scroll-helpers/scroll-safe';
 import * as aspectRatio from './scroll-helpers/size-cache';
 
@@ -97,22 +96,15 @@ function onMessage(e) {
   }
 }
 
-export async function getEmbedInfo(url) {
+export function getEmbedInfo(url) {
   const [, id] = INSTAGRAM_RE.exec(url);
 
-  const data = await cachedFetch(
-    `https://api.instagram.com/oembed/?url=http://instagr.am/p/${id}/`,
-  );
-  if (!data.html) {
-    return { error: data.message || data.errorMessage || 'invalid instagram API response' };
-  }
-
   return {
-    byline: data.title,
-    previewURL: data.thumbnail_url,
+    byline: '',
+    previewURL: `https://instagram.com/p/${id}/media/`,
     playerURL: `https://www.instagram.com/p/${id}/embed/`,
     w: 540,
     h: 540,
-    aspectRatio: 1,
+    aspectRatio: 1.2,
   };
 }
