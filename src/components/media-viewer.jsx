@@ -34,7 +34,7 @@ export const isMediaAttachment = (attachments) => {
 const getEmbeddableItem = async (url, withoutAutoplay) => {
   let info = null;
   if (isInstagram(url)) {
-    info = await getInstagramEmbedInfo(url);
+    info = getInstagramEmbedInfo(url);
   } else {
     info = await getVideoInfo(url, withoutAutoplay);
   }

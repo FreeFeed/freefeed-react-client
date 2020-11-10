@@ -1,6 +1,5 @@
 /* global CONFIG */
 import { parse as qsParse } from 'querystring';
-import fetch from 'isomorphic-fetch';
 import _ from 'lodash';
 
 import { getDateForMemoriesRequest } from '../utils/get-date-from-short-string';

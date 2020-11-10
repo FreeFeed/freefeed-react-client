@@ -1,6 +1,6 @@
 /* global CONFIG */
 import { encode as qsEncode } from 'querystring';
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router';
 import { useForm, useField } from 'react-final-form-hooks';
@@ -154,6 +154,11 @@ const ExtAuthSignIn = React.memo(function ExtAuthSignIn() {
   const [providers] = useExtAuthProviders();
   const result = useSelector((state) => state.extAuth.signInResult);
 
+  const resultProfileProvider = useMemo(
+    () => providers.find((p) => p.id === result?.profile?.provider),
+    [providers, result],
+  );
+
   useEffect(() => {
     result.status === 'signed-in' && dispatch(signedIn(result.authToken));
   }, [dispatch, result]);
@@ -173,7 +178,7 @@ const ExtAuthSignIn = React.memo(function ExtAuthSignIn() {
             There is a {CONFIG.siteTitle} account with the email address{' '}
             <strong>{result.profile.email}</strong>, but your account{' '}
             <strong>
-              {providerTitle(result.profile.provider, { withText: false })} {result.profile.name}
+              {providerTitle(resultProfileProvider, { withText: false })} {result.profile.name}
             </strong>{' '}
             is not connected to it.
           </p>
@@ -195,11 +200,11 @@ const ExtAuthSignIn = React.memo(function ExtAuthSignIn() {
           <p>
             The{' '}
             <strong>
-              {providerTitle(result.profile.provider, { withText: false })} {result.profile.name}
+              {providerTitle(resultProfileProvider, { withText: false })} {result.profile.name}
             </strong>{' '}
-            account is not connected to any {CONFIG.siteTitle} account. Do you want to create a new
+            account is not connected to any {CONFIG.siteTitle} account. Do you want to create a new{' '}
             {CONFIG.siteTitle} account based on its data? After creation you will be able to sign in
-            using this {providerTitle(result.profile.provider, { withText: true, withIcon: false })}{' '}
+            using this {providerTitle(resultProfileProvider, { withText: true, withIcon: false })}{' '}
             account.
           </p>
           <p>

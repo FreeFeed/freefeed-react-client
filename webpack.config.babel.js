@@ -11,7 +11,7 @@ import { skipFalsy } from './webpack/utils';
 const config = {
   ...baseConfig,
   entry: {
-    app: skipFalsy(['core-js/stable', 'regenerator-runtime/runtime', './src']),
+    app: skipFalsy(['core-js/stable', 'regenerator-runtime/runtime', 'whatwg-fetch', './src']),
     bookmarklet: skipFalsy(['./src/bookmarklet/popup.js']),
     config: skipFalsy(['./config/lib/loader-browser.js']),
   },
@@ -36,6 +36,7 @@ const config = {
     new ESLintPlugin({
       extensions: ['js', 'jsx'],
       files: ['src', 'test'],
+      lintDirtyModulesOnly: true,
     }),
     new HtmlWebpackPlugin({
       inject: false,
