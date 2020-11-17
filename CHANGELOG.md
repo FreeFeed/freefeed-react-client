@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.88.1] - Not released
+### Fixed
+- Show explicit error if config.json failed to load, and it wasn't 404
+
 ## [1.88.0] - 2020-11-10
 ### Fixed
 - Embedly previews handle light/dark theme switching properly
