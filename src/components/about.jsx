@@ -106,7 +106,17 @@ const About = ({ authenticated }) => (
         false
       )}
       
-       <p>Thanks to <a href="https://www.questionpro.com/" target="_blank">QuestionPro's</a> wide range of <a href="https://www.questionpro.com/survey-templates/" target="_blank">free survey templates</a> designed by industry experts.</p>
+       <p>
+         Thanks to 
+         <a href="https://www.questionpro.com/" target="_blank">
+           QuestionPro&apos;s
+         </a> 
+         wide range of 
+         <a href="https://www.questionpro.com/survey-templates/" target="_blank">
+           free survey templates
+         </a> 
+         designed by industry experts.
+      </p>
 
     </div>
   </div>
