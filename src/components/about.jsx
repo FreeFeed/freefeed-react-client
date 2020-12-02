@@ -60,8 +60,11 @@ const About = ({ authenticated }) => (
       <h3>Help us build better FreeFeed</h3>
 
       <p>
-        FreeFeed is an open-source project. We are <Link to="https://freefeed.net/ffdev/21fde9c3-2f4a-4778-8fe8-57be90c7b737">looking for volunteers</Link> to
-        help us with the development of FreeFeed.net.
+        FreeFeed is an open-source project. We are{' '}
+        <a href="https://freefeed.net/ffdev/21fde9c3-2f4a-4778-8fe8-57be90c7b737">
+          looking for volunteers
+        </a>{' '}
+        to help us with the development of FreeFeed.net.
       </p>
 
       <h3>Important pages</h3>
