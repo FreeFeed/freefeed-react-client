@@ -406,7 +406,7 @@ export function postsViewState(state = {}, action) {
       const isEditing = false;
 
       const isError = true;
-      const errorString = `${action.response.status} ${action.response.statusText}`;
+      const errorString = `${action.response.status}: ${action.payload.err}`;
 
       return { ...state, [id]: { id, isEditing, isError, errorString } };
     }
