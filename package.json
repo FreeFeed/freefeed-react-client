@@ -84,6 +84,8 @@
     "eslint-webpack-plugin": "~2.1.0",
     "file-loader": "~6.1.0",
     "html-webpack-plugin": "~3.2.0",
+    "husky": "~5.0.0",
+    "lint-staged": "~10.5.2",
     "mini-css-extract-plugin": "~0.11.2",
     "mocha": "~7.2.0",
     "mochapack": "~2.0.3",
@@ -131,12 +133,17 @@
     "stylelint": "stylelint --config stylelint.config.js \"styles/**/*.scss\"",
     "build-prod": "cross-env UGLIFY=1 HASH=1 DEV=0 run-s clean _webpack",
     "build-dev": "cross-env UGLIFY=0 HASH=0 DEV=1 run-s clean _webpack",
-    "_webpack": "webpack --config webpack.config.babel.js --output-path ./_dist --output-public-path /"
+    "_webpack": "webpack --config webpack.config.babel.js --output-path ./_dist --output-public-path /",
+    "postinstall": "husky install"
   },
   "author": "FreeFeed contributors",
   "repository": {
     "type": "git",
     "url": "https://github.com/FreeFeed/freefeed-react-client.git"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "lint-staged": {
+    "*.{js,jsx}": "eslint --fix",
+    "*.css": "stylelint --fix"
+  }
 }
