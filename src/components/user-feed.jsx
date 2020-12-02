@@ -1,5 +1,6 @@
 /* global CONFIG */
 import React from 'react';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
 import PaginatedView from './paginated-view';
@@ -59,6 +60,12 @@ class UserFeed extends React.Component {
           <p>
             <b>{viewUser.screenName}</b> has a private feed.
           </p>
+          {!authenticated && (
+            <p>
+              <Link to="/signup">Sign up</Link> (or <Link to="/signin">sign in</Link>) and request a
+              subscription to see posts from <b>{viewUser.screenName}</b>.
+            </p>
+          )}
         </div>
       );
     } else if (viewUser.isProtected === '1' && !authenticated) {
@@ -67,6 +74,10 @@ class UserFeed extends React.Component {
           <p>
             <b>{viewUser.screenName}</b> has a protected feed. It is only visible to{' '}
             {CONFIG.siteTitle} users.
+          </p>
+          <p>
+            <Link to="/signup">Sign up</Link> or <Link to="/signin">sign in</Link> to see posts from{' '}
+            <b>{viewUser.screenName}</b>.
           </p>
         </div>
       );
