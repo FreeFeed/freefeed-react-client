@@ -30,6 +30,8 @@ class SinglePostHandler extends React.Component {
       return <PrivatePost isAuthorized={!!props.user.id} feedName={props.routeParams?.userName} />;
     } else if (props.errorString?.includes('Please sign in to view this post')) {
       return <ProtectedPost />;
+    } else if (props.errorString?.startsWith('404:')) {
+      return <NotFoundPost />;
     } else if (props.errorString) {
       postBody = <h2>{props.errorString}</h2>;
     }
@@ -131,6 +133,20 @@ function ProtectedPost() {
           <Link to="/signup">Sign up</Link> for {CONFIG.siteTitle} (or{' '}
           <Link to="/signin">sign in</Link>) to see this post.
         </p>
+      </div>
+      <div className="box-footer" />
+    </div>
+  );
+}
+
+function NotFoundPost() {
+  return (
+    <div className="box">
+      <Helmet title={`Post not found - ${CONFIG.siteTitle}`} defer={false} />
+      <div className="box-header-timeline">Post not found</div>
+      <div className="box-body">
+        <h3>This post does not exists</h3>
+        <p>It may have been removed or never existed on {CONFIG.siteTitle}.</p>
       </div>
       <div className="box-footer" />
     </div>
