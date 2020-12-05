@@ -106,8 +106,7 @@ function PrivatePost({ isAuthorized, feedName }) {
           <>
             <p>
               You may be able to access it if you <Link to="/signin">sign in</Link> to your{' '}
-              {CONFIG.siteTitle}
-              account.
+              {CONFIG.siteTitle} account.
             </p>
             <p>
               <Link to="/signup">Sign up</Link> for {CONFIG.siteTitle} (or{' '}
@@ -145,7 +144,7 @@ function NotFoundPost() {
       <Helmet title={`Post not found - ${CONFIG.siteTitle}`} defer={false} />
       <div className="box-header-timeline">Post not found</div>
       <div className="box-body">
-        <h3>This post does not exists</h3>
+        <h3>This post does not exist</h3>
         <p>It may have been removed or never existed on {CONFIG.siteTitle}.</p>
       </div>
       <div className="box-footer" />
