@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
 import { pluralForm } from '../utils';
@@ -7,6 +8,7 @@ import ErrorBoundary from './error-boundary';
 import { UserProfileHead } from './user-profile-head';
 
 export default function UserProfile(props) {
+  const authenticated = useSelector((state) => state.authenticated);
   const groupRequestsCount =
     props.type === 'group' && props.authenticated
       ? (props.managedGroups.find((g) => g.id === props.id) || { requests: [] }).requests.length
@@ -26,7 +28,7 @@ export default function UserProfile(props) {
           </p>
         )}
 
-        {props.canIPostHere ? (
+        {props.canIPostHere && (
           <CreatePost
             createPostViewState={props.createPostViewState}
             sendTo={props.sendTo}
@@ -37,16 +39,12 @@ export default function UserProfile(props) {
             addAttachmentResponse={props.addAttachmentResponse}
             showMedia={props.showMedia}
           />
-        ) : (
-          false
         )}
 
-        {!props.canIPostHere && props.isRestricted === '1' ? (
+        {authenticated && !props.canIPostHere && props.isRestricted === '1' && (
           <div className="create-post create-post-restricted">
             Only administrators can post to this group.
           </div>
-        ) : (
-          false
         )}
       </ErrorBoundary>
     </div>
