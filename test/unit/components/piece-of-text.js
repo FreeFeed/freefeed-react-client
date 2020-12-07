@@ -94,4 +94,15 @@ describe('<PieceOfText>', () => {
       <Linkify>{text}</Linkify>,
     );
   });
+
+  it('should correctly process texts with spoilers', () => {
+    const text = '123 <spoiler>456</spoiler> 789 <спойлер>https://example.com</спойлер> 123';
+
+    expect(
+      <PieceOfText text={text} />,
+      'when rendered',
+      'to have rendered with all children',
+      <Linkify>{text}</Linkify>,
+    );
+  });
 });

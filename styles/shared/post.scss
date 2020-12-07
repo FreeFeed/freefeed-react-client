@@ -181,6 +181,30 @@ $post-line-height: 20px;
   cursor: help;
 }
 
+// spoiler
+.spoiler-hidden {
+  background-color: #999;
+  color: #999;
+  cursor: pointer;
+}
+
+.spoiler-hidden .search-highlight {
+  background-color: #999;
+  padding: 0;
+}
+
+.spoiler-hidden .user-name-wrapper {
+  pointer-events: none;
+}
+
+.spoiler-hidden a {
+  color: #999 !important;
+  pointer-events: none;
+}
+
+.spoiler-visible {
+}
+
 // paragraph breaks
 .p-break {
   height: 0.35em;
