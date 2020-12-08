@@ -5,6 +5,7 @@ import unexpectedReact from 'unexpected-react';
 import React from 'react';
 
 import PieceOfText from '../../../src/components/piece-of-text';
+import Spoiler from '../../../src/components/spoiler';
 import Linkify from '../../../src/components/linkify';
 
 const expect = unexpected.clone().use(unexpectedReact);
@@ -92,6 +93,24 @@ describe('<PieceOfText>', () => {
       'when rendered',
       'to have rendered with all children',
       <Linkify>{text}</Linkify>,
+    );
+  });
+
+  it('should correctly process texts with spoilers', () => {
+    const text =
+      '123 <spoiler> <spoiler>456</spoiler> 789 <спойлер>https://example.com</спойлер> 123';
+
+    expect(
+      <PieceOfText text={text} />,
+      'when rendered',
+      'to have rendered with all children',
+      <Linkify>
+        123 &lt;spoiler&gt; &lt;spoiler&gt;
+        <Spoiler>456</Spoiler>
+        &lt;/spoiler&gt; 789 &lt;спойлер&gt;
+        <Spoiler>https://example.com</Spoiler>
+        &lt;/спойлер&gt; 123
+      </Linkify>,
     );
   });
 });
