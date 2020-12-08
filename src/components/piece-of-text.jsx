@@ -141,13 +141,9 @@ const splitIntoSpoilerBlocks = (input) => {
       const spoilerText = content.slice(9, -10);
       const tagAfter = content.slice(-10);
 
-      newNodes.push(
-        <React.Fragment key={`spoiler-${from}`}>
-          <span key="spoiler-before">{tagBefore}</span>
-          <Spoiler key="spoiler">{spoilerText}</Spoiler>
-          <span key="spoiler-after">{tagAfter}</span>
-        </React.Fragment>,
-      );
+      newNodes.push(tagBefore);
+      newNodes.push(<Spoiler key={`spoiler-${from}`}>{spoilerText}</Spoiler>);
+      newNodes.push(tagAfter);
     }
 
     if (i < input.length) {
