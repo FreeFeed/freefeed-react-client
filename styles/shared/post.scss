@@ -188,16 +188,8 @@ $post-line-height: 20px;
   cursor: pointer;
 }
 
-.spoiler-hidden .search-highlight {
-  background-color: #999;
-  padding: 0;
-}
-
-.spoiler-hidden .user-name-wrapper {
-  pointer-events: none;
-}
-
-.spoiler-hidden a {
+.spoiler-hidden * {
+  background-color: #999 !important;
   color: #999 !important;
   pointer-events: none;
 }
