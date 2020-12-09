@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.88.1] - Not released
+### Added
+- A 'Not Found' page for URI's that does not match any of the site routes.
+- A &lt;spoiler> tag for the sensitive or spoiler texts.
+
 ### Fixed
 - Show explicit error if config.json failed to load, and it wasn't 404
 

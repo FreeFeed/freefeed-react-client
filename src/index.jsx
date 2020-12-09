@@ -43,6 +43,7 @@ import { bindRouteActions } from './redux/route-actions';
 import { initUnscroll, safeScrollTo } from './services/unscroll';
 import { lazyRetry } from './utils/retry-promise';
 import { HomeAux } from './components/home-aux';
+import { NotFound } from './components/not-found';
 
 // Set initial history state.
 // Without this, there can be problems with third-party
@@ -344,7 +345,7 @@ function App() {
         <Route
           name="post"
           path="/:userName/:postId"
-          component={SinglePost}
+          component={checkPath(SinglePost, isPostPath)}
           {...generateRouteHooks(boundRouteActions('post'))}
         />
       </Route>
@@ -358,3 +359,16 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('app'),
 );
+
+function checkPath(Component, checker) {
+  return (props) => {
+    return checker(props) ? <Component {...props} /> : <NotFound {...props} />;
+  };
+}
+
+function isPostPath({ params: { postId, userName } }) {
+  return (
+    /^[a-z\d-]{3,25}$/i.test(userName) &&
+    /^[a-f\d]{8}-[a-f\d]{4}-4[a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i.test(postId)
+  );
+}
