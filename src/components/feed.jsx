@@ -24,8 +24,10 @@ const HiddenEntriesToggle = (props) => {
   );
 };
 
-function Feed(props) {
-  const showMedia = (params) => {
+class Feed extends React.PureComponent {
+  showMedia = (params) => {
+    const { props } = this;
+
     props.showMedia({
       ...params,
       navigate: params.withoutNavigation
@@ -51,46 +53,59 @@ function Feed(props) {
     });
   };
 
-  const getEntryComponent = (section) => (post) => (
-    <FeedEntry key={post.id} {...{ post, section, ...props, showMedia }} />
-  );
+  render() {
+    const getEntryComponent = (section) => (post) => (
+      <FeedEntry key={post.id} {...{ post, section, ...this.props, showMedia: this.showMedia }} />
+    );
 
-  const visibleEntries = props.visiblePosts.map(getEntryComponent('visible'));
-  const hiddenEntries = (props.hiddenPosts || []).map(getEntryComponent('hidden'));
+    const {
+      emptyFeed,
+      emptyFeedMessage,
+      hiddenPosts,
+      isHiddenRevealed,
+      loading,
+      toggleHiddenPosts,
+      visiblePosts,
+      feedError,
+    } = this.props;
 
-  return (
-    <div className="posts">
-      <ErrorBoundary>
-        {visibleEntries}
+    const visibleEntries = visiblePosts.map(getEntryComponent('visible'));
+    const hiddenEntries = (hiddenPosts || []).map(getEntryComponent('hidden'));
 
-        {hiddenEntries.length > 0 && (
-          <div>
-            <HiddenEntriesToggle
-              count={hiddenEntries.length}
-              isOpen={props.isHiddenRevealed}
-              toggle={props.toggleHiddenPosts}
-            />
+    return (
+      <div className="posts">
+        <ErrorBoundary>
+          {visibleEntries}
 
-            {props.isHiddenRevealed ? hiddenEntries : false}
-          </div>
-        )}
+          {hiddenEntries.length > 0 && (
+            <div>
+              <HiddenEntriesToggle
+                count={hiddenEntries.length}
+                isOpen={isHiddenRevealed}
+                toggle={toggleHiddenPosts}
+              />
 
-        {props.emptyFeed && props.loading && <p>Loading feed...</p>}
-        {props.emptyFeed &&
-          !props.loading &&
-          (props.feedError !== null ? (
-            <p className="alert alert-danger" role="alert">
-              Error loading feed: {props.feedError}
-            </p>
-          ) : (
-            <>
-              <p>There are no posts in this feed.</p>
-              {props.emptyFeedMessage}
-            </>
-          ))}
-      </ErrorBoundary>
-    </div>
-  );
+              {isHiddenRevealed ? hiddenEntries : false}
+            </div>
+          )}
+
+          {emptyFeed && loading && <p>Loading feed...</p>}
+          {emptyFeed &&
+            !loading &&
+            (feedError !== null ? (
+              <p className="alert alert-danger" role="alert">
+                Error loading feed: {feedError}
+              </p>
+            ) : (
+              <>
+                <p>There are no posts in this feed.</p>
+                {emptyFeedMessage}
+              </>
+            ))}
+        </ErrorBoundary>
+      </div>
+    );
+  }
 }
 
 const postIsHidden = (post) => !!(post.isHidden || post.hiddenByNames);
