@@ -3,12 +3,12 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
-export default function Frooter() {
+export default function Footer() {
   const authenticated = useSelector((state) => state.authenticated);
   return (
     <footer className="footer">
       <p>
-        &copy; FreeFeed 1.88.1 (Not released)
+        &copy; FreeFeed 1.89.9 (Not Released)
         <br />
         <Link to="/about">About</Link>
         {' | '}
