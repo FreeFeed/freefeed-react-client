@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A 'Not Found' page for URI's that does not match any of the site routes.
 - A &lt;spoiler> tag for the sensitive or spoiler texts.
 
+### Changed
+- Applied some rendering optimisations
+
 ## [1.88.1] - 2020-11-17
 ### Fixed
 - Show explicit error if config.json failed to load, and it wasn't 404
