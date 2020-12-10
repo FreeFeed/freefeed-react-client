@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Embedly previews handle light/dark theme switching properly
 - Home feed edition popups now closes when the Esc key is pressed or the shadow
   overlay is clicked
+- Incorrect sorting of recent groups when getting real-time updates
 
 ### Changed
 - Google Analytics ID isn't hardcoded in index.jade anymore.
