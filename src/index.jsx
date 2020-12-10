@@ -290,7 +290,7 @@ function App() {
         <Route
           name="userFeed"
           path="/:userName"
-          component={User}
+          component={checkPath(User, isAccountPath)}
           {...generateRouteHooks(boundRouteActions('userFeed'))}
         />
         <Route
@@ -371,4 +371,8 @@ function isPostPath({ params: { postId, userName } }) {
     /^[a-z\d-]{3,25}$/i.test(userName) &&
     /^[a-f\d]{8}-[a-f\d]{4}-4[a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i.test(postId)
   );
+}
+
+function isAccountPath({ params: { userName } }) {
+  return /^[a-z\d-]{3,25}$/i.test(userName);
 }
