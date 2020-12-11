@@ -1,4 +1,4 @@
-/*global Raven*/
+/* global Raven, CONFIG */
 import { browserHistory } from 'react-router';
 import _ from 'lodash';
 
@@ -34,7 +34,7 @@ import {
   cancelConcurrentRequest,
   isUserChangeResponse,
 } from './action-helpers';
-import { asyncPhase, RESPONSE_PHASE, progress } from './async-helpers';
+import { asyncPhase, RESPONSE_PHASE, progress, doSequence } from './async-helpers';
 
 export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
   if (isFeedGeneratingAction(action)) {
@@ -226,6 +226,19 @@ function shouldGoToSignIn(pathname) {
 
 export const authMiddleware = (store) => {
   let firstUnauthenticated = true;
+
+  setInterval(
+    () =>
+      store.getState().authenticated &&
+      doSequence(store.dispatch)(
+        (dispatch) => dispatch(ActionCreators.reissueAuthSession()),
+        (dispatch, { payload }) => {
+          setToken(payload.authToken);
+          dispatch(ActionCreators.authTokenUpdated());
+        },
+      ),
+    CONFIG.authSessions.reissueIntervalSec * 1000,
+  );
 
   return (next) => (action) => {
     //stop action propagation if it should be authed and user is not authed
@@ -733,6 +746,10 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers, userActivit
 
     if (action.type === ActionTypes.UNAUTHENTICATED) {
       conn.reAuthorize().then(() => unsubscribeByRegexp(/^user:/));
+    }
+
+    if (action.type === ActionTypes.AUTH_TOKEN_UPDATED) {
+      conn.reAuthorize();
     }
 
     if (

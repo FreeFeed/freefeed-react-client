@@ -718,3 +718,7 @@ export function createAttachment({ file }, { onProgress = () => null } = {}) {
 export function signOut() {
   return fetch(`${apiRoot}/v1/session`, postRequestOptions('DELETE'));
 }
+
+export function reissueAuthSession() {
+  return fetch(`${apiRoot}/v1/session/reissue`, postRequestOptions('POST'));
+}

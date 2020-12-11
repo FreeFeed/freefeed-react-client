@@ -1127,3 +1127,16 @@ export function signOut() {
     apiRequest: Api.signOut,
   };
 }
+
+export function reissueAuthSession() {
+  return {
+    type: ActionTypes.REISSUE_AUTH_SESSION,
+    apiRequest: Api.reissueAuthSession,
+  };
+}
+
+export function authTokenUpdated() {
+  return {
+    type: ActionTypes.AUTH_TOKEN_UPDATED,
+  };
+}
