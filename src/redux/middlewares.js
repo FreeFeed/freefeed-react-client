@@ -266,6 +266,19 @@ export const authMiddleware = (store) => {
       return browserHistory.push(`${backTo}`);
     }
 
+    if (
+      action.type === response(ActionTypes.SIGN_OUT) ||
+      action.type === fail(ActionTypes.SIGN_OUT)
+    ) {
+      if (action.type === fail(ActionTypes.SIGN_OUT)) {
+        // Unauthorize even if error
+        console.warn(`Error signing out: ${action.payload.err}`);
+      }
+      const res = next(action);
+      store.dispatch(ActionCreators.unauthenticated());
+      return res;
+    }
+
     return next(action);
   };
 };

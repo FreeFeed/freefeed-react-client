@@ -1120,3 +1120,10 @@ export function resetAttachmentUpload(uploadId) {
     payload: { uploadId },
   };
 }
+
+export function signOut() {
+  return {
+    type: ActionTypes.SIGN_OUT,
+    apiRequest: Api.signOut,
+  };
+}

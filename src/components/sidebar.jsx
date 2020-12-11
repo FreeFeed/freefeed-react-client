@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import format from 'date-fns/format';
 
-import { preventDefault, htmlSafe } from '../utils';
+import { htmlSafe } from '../utils';
 import { listHomeFeeds, setUserColorScheme } from '../redux/action-creators';
 import {
   SCHEME_DARK,
@@ -20,25 +20,33 @@ import { InvisibleSelect } from './invisibe-select';
 import { LiberaPayWidget } from './LiberaPayWidget';
 import { UserPicture } from './user-picture';
 import { SidebarHomeFeeds } from './sidebar-homefeeds';
+import { ButtonLink } from './button-link';
+import { Throbber } from './throbber';
 
-const LoggedInBlock = ({ user, signOut }) => (
-  <div className="logged-in">
-    <div className="avatar">
-      <UserPicture user={user} />
-    </div>
+function LoggedInBlock({ user, signOut }) {
+  const signOutStatus = useSelector((state) => state.signOutStatus);
+  return (
+    <div className="logged-in">
+      <div className="avatar">
+        <UserPicture user={user} />
+      </div>
 
-    <div className="user">
-      <div className="author">
-        <UserName user={user}>{user.screenName}</UserName>
-      </div>
-      <div>
-        <Link to="/settings">settings</Link>
-        &nbsp;-&nbsp;
-        <a onClick={preventDefault(signOut)}>sign out</a>
+      <div className="user">
+        <div className="author">
+          <UserName user={user}>{user.screenName}</UserName>
+        </div>
+        <div>
+          <Link to="/settings">settings</Link>
+          &nbsp;-&nbsp;
+          <ButtonLink onClick={signOut} disabled={signOutStatus.loading}>
+            sign out
+          </ButtonLink>{' '}
+          {signOutStatus.loading && <Throbber />}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+}
 
 const SideBarFriends = ({ user }) => {
   const dispatch = useDispatch();

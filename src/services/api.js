@@ -714,3 +714,7 @@ export function createAttachment({ file }, { onProgress = () => null } = {}) {
     req.send(formData);
   });
 }
+
+export function signOut() {
+  return fetch(`${apiRoot}/v1/session`, postRequestOptions('DELETE'));
+}
