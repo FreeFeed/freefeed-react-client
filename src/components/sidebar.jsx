@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import format from 'date-fns/format';
+import { isString } from 'lodash';
 
 import { preventDefault, htmlSafe } from '../utils';
 import { listHomeFeeds, setUserColorScheme } from '../redux/action-creators';
@@ -392,12 +393,110 @@ const SideBarAppearance = connect(
   );
 });
 
+const SideBarVote2020 = ({ user }) => {
+  if (!('privateMeta' in user) || !('vote2020' in user.privateMeta)) {
+    return null;
+  }
+  const voteToken = user.privateMeta.vote2020;
+  if (voteToken === true) {
+    return (
+      <div className="box">
+        <div className="box-header-groups">
+          Supervisory board{' '}
+          <Link
+            to={{ pathname: '/freefeed/da348e20-4075-4431-b4c8-6bd4a6e97e9a', query: {} }}
+            style={{ textDecoration: 'underline' }}
+          >
+            election
+          </Link>
+        </div>
+        <div className="box-footer">
+          <p>
+            Voting will begin at
+            <br /> 15.12.2020 12:00 MSK
+          </p>
+          <p>
+            Voting will end at
+            <br /> 16.12.2020 12:00 MSK
+          </p>
+        </div>
+      </div>
+    );
+  }
+  if (voteToken === 'finished') {
+    return (
+      <div className="box">
+        <div className="box-header-groups">
+          Supervisory board{' '}
+          <Link
+            to={{ pathname: '/freefeed/da348e20-4075-4431-b4c8-6bd4a6e97e9a', query: {} }}
+            style={{ textDecoration: 'underline' }}
+          >
+            election
+          </Link>
+        </div>
+        <div className="box-footer">
+          <p>
+            Voting ended. Results will be published in{' '}
+            <Link
+              to={{ pathname: '/freefeed/', query: {} }}
+              style={{ textDecoration: 'underline' }}
+            >
+              @freefeed
+            </Link>{' '}
+            account.
+          </p>
+        </div>
+      </div>
+    );
+  }
+  if (isString(voteToken)) {
+    return (
+      <div className="box">
+        <div className="box-header-groups">
+          Supervisory board{' '}
+          <Link
+            to={{ pathname: '/freefeed/da348e20-4075-4431-b4c8-6bd4a6e97e9a', query: {} }}
+            style={{ textDecoration: 'underline' }}
+          >
+            election
+          </Link>
+        </div>
+        <div className="box-body">
+          <ul>
+            <li>
+              Please{' '}
+              <a
+                href="https://ffelection20.questionpro.com/"
+                target="_blank"
+                style={{ textDecoration: 'underline' }}
+              >
+                vote here
+              </a>
+            </li>
+            <li>
+              Your vote unique key: <strong>{voteToken}</strong>
+            </li>
+          </ul>
+        </div>
+        <div className="box-footer">
+          <p>
+            Voting will end at
+            <br /> 16.12.2020 12:00 MSK
+          </p>
+        </div>
+      </div>
+    );
+  }
+};
+
 const SideBar = ({ user, signOut, recentGroups }) => {
   return (
     <div className="col-md-3 sidebar">
       <ErrorBoundary>
         <LoggedInBlock user={user} signOut={signOut} />
         <SideBarFriends user={user} />
+        <SideBarVote2020 user={user} />
         <SideBarGroups recentGroups={recentGroups} />
         <SideBarArchive user={user} />
         <SideBarFreeFeed />
