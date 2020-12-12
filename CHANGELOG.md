@@ -41,6 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A 'Not Found' page for URI's that does not match any of the site routes.
 - A &lt;spoiler> tag for the sensitive or spoiler texts.
 - Support for FreeFeed's Supervisory Board 2020 election
+- New authorization sessions support. User is now able to view and manage
+  (close) their authorization sessions on the special settings page.
 
 ### Changed
 - Applied some rendering optimisations
