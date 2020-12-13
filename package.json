@@ -125,7 +125,7 @@
     "test-just": "cross-env NODE_ENV=development mochapack --webpack-config webpack.config.tests.babel.js",
     "lint": "eslint --ext .js --ext .jsx src test",
     "checks": "run-p --aggregate-output -c test lint stylelint",
-    "dev-server": "cross-env DEV=1 LIVERELOAD=1 webpack-dev-server --config webpack.config.babel.js --port 3333 --host 127.0.0.1 --output-public-path / --colors --hot",
+    "dev-server": "cross-env DEV=1 LIVERELOAD=1 webpack-dev-server --config webpack.config.babel.js --port 3333 --host 0.0.0.0 --output-public-path / --colors --hot",
     "clean": "rimraf ./_dist",
     "prettier": "prettier -c \"src/**/*\"",
     "stylelint": "stylelint --config stylelint.config.js \"styles/**/*.scss\"",
