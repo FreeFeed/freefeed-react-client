@@ -406,7 +406,7 @@ export function postsViewState(state = {}, action) {
       const isEditing = false;
 
       const isError = true;
-      const errorString = `${action.response.status} ${action.response.statusText}`;
+      const errorString = `${action.response.status}: ${action.payload.err}`;
 
       return { ...state, [id]: { id, isEditing, isError, errorString } };
     }
@@ -1754,22 +1754,22 @@ export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
 
 const GROUPS_SIDEBAR_LIST_LENGTH = 4;
 
-const getRecentGroups = ({ subscribers, frontendPreferences }) => {
+function sortRecentGroups(g1, g2) {
+  if (g1.isPinned !== g2.isPinned) {
+    return g1.isPinned ? -1 : 1;
+  }
+  return parseInt(g2.updatedAt) - parseInt(g1.updatedAt);
+}
+
+function getRecentGroups({ subscribers, frontendPreferences }) {
   const clientPreferences = frontendPreferences || {};
   const pinnedGroups = clientPreferences.pinnedGroups || [];
   const groups = (subscribers || []).filter((i) => i.type == 'group');
-  const recentGroups = groups
-    .filter((i) => pinnedGroups.indexOf(i.id) > -1)
-    .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
-    .map((i) => ({ ...i, isPinned: true }));
-
-  return recentGroups.concat(
-    groups
-      .filter((i) => pinnedGroups.indexOf(i.id) === -1)
-      .sort((i, j) => parseInt(j.updatedAt) - parseInt(i.updatedAt))
-      .slice(0, GROUPS_SIDEBAR_LIST_LENGTH),
-  );
-};
+  return groups
+    .map((g) => ({ ...g, isPinned: pinnedGroups.includes(g.id) }))
+    .sort(sortRecentGroups)
+    .slice(0, GROUPS_SIDEBAR_LIST_LENGTH + pinnedGroups.length);
+}
 
 export function recentGroups(state = [], action) {
   switch (action.type) {
@@ -1802,18 +1802,14 @@ export function recentGroups(state = [], action) {
     }
     case ActionTypes.REALTIME_USER_UPDATE: {
       if (action.updatedGroups) {
-        let groups = action.updatedGroups.map((g) => ({
+        const updatedGroups = action.updatedGroups.map((g) => ({
           ...g,
           // Do we already have this group pinned?
           isPinned: state.find((s) => s.id === g.id)?.isPinned || false,
         }));
-        groups = _.uniqBy([...groups, ...state], 'id').sort((g1, g2) => {
-          if (g1.isPinned !== g2.isPinned) {
-            return g1.isPinned ? -1 : 1;
-          }
-          return parseInt(g2.updatedAt) - parseInt(g1.updatedAt);
-        });
-        return groups.slice(0, state.length);
+        return _.uniqBy([...updatedGroups, ...state], 'id')
+          .sort(sortRecentGroups)
+          .slice(0, state.length);
       }
       return state;
     }

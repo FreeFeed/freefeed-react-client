@@ -181,6 +181,19 @@ $post-line-height: 20px;
   cursor: help;
 }
 
+// spoiler
+.spoiler-hidden {
+  background-color: #999;
+  color: transparent;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+}
+
+.spoiler-hidden * {
+  visibility: hidden !important;
+}
+
 // paragraph breaks
 .p-break {
   height: 0.35em;

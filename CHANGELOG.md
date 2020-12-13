@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.89.0] - Not released
+### Added
+- A 'Not Found' page for URI's that does not match any of the site routes.
+- A &lt;spoiler> tag for the sensitive or spoiler texts.
+- Support for FreeFeed's Supervisory Board 2020 election
+
+### Changed
+- Applied some rendering optimisations
+
 ## [1.88.1] - 2020-11-17
 ### Fixed
 - Show explicit error if config.json failed to load, and it wasn't 404
@@ -14,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Embedly previews handle light/dark theme switching properly
 - Home feed edition popups now closes when the Esc key is pressed or the shadow
   overlay is clicked
+- Incorrect sorting of recent groups when getting real-time updates
 
 ### Changed
 - Google Analytics ID isn't hardcoded in index.jade anymore.

@@ -1,6 +1,5 @@
 {
   "plugins": [
-    "@babel/syntax-object-rest-spread",
     "@babel/syntax-class-properties",
     "@babel/transform-modules-commonjs"
   ]

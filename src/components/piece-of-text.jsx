@@ -2,7 +2,10 @@ import React from 'react';
 
 import { READMORE_STYLE_COMFORT } from '../utils/frontend-preferences-options';
 
+import Spoiler from './spoiler';
 import Linkify from './linkify';
+
+const spoilerRegex = /<(spoiler|спойлер)>(?:(?!(<(spoiler|спойлер)>|<\/(spoiler|спойлер)>)).)*<\/(spoiler|спойлер)>/gi;
 
 // Texts longer than thresholdTextLength should be cut to shortenedTextLength
 const thresholdTextLength = 800;
@@ -113,6 +116,52 @@ const getExpandedText = (text) => {
   return injectSeparator(paragraphs, paragraphBreak);
 };
 
+const splitIntoSpoilerBlocks = (input) => {
+  if (typeof input === 'string') {
+    const spoilersInText = input.matchAll(spoilerRegex);
+
+    if (!spoilersInText) {
+      return input;
+    }
+
+    let i = 0;
+    const newNodes = [];
+
+    for (const spoilerMatch of spoilersInText) {
+      const [content] = spoilerMatch;
+      const from = spoilerMatch.index;
+      const to = from + content.length;
+
+      if (from > i) {
+        newNodes.push(input.slice(i, from));
+      }
+      i = to;
+
+      const tagBefore = content.slice(0, 9);
+      const spoilerText = content.slice(9, -10);
+      const tagAfter = content.slice(-10);
+
+      newNodes.push(tagBefore);
+      newNodes.push(<Spoiler key={`spoiler-${from}`}>{spoilerText}</Spoiler>);
+      newNodes.push(tagAfter);
+    }
+
+    if (i < input.length) {
+      newNodes.push(input.slice(i));
+    }
+
+    return newNodes;
+  }
+
+  if (Array.isArray(input)) {
+    return input.map(splitIntoSpoilerBlocks);
+  }
+
+  if (React.isValidElement(input)) {
+    return React.cloneElement(input, {}, splitIntoSpoilerBlocks(input.props.children));
+  }
+};
+
 export default class PieceOfText extends React.Component {
   constructor(props) {
     super(props);
@@ -127,19 +176,25 @@ export default class PieceOfText extends React.Component {
   }
 
   render() {
-    return this.props.text ? (
+    if (!this.props.text) {
+      return <span />;
+    }
+
+    const text = splitIntoSpoilerBlocks(
+      this.state.isExpanded
+        ? getExpandedText(this.props.text)
+        : getCollapsedText(this.props.text, this.expandText.bind(this)),
+    );
+
+    return (
       <Linkify
         userHover={this.props.userHover}
         arrowHover={this.props.arrowHover}
         highlightTerms={this.props.highlightTerms}
         showMedia={this.props.showMedia}
       >
-        {this.state.isExpanded
-          ? getExpandedText(this.props.text)
-          : getCollapsedText(this.props.text, this.expandText.bind(this))}
+        {text}
       </Linkify>
-    ) : (
-      <span />
     );
   }
 }
