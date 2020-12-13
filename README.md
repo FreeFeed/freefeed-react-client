@@ -6,9 +6,16 @@ We use [yarn](https://yarnpkg.com/) as dependency manager (instead of npm) so yo
 
 ## Starting Development Server with Hot-Reload
 
-Run `yarn start` (will use [staging backend](https://candy.freefeed.net)).
+Run `yarn start`. By default it will use our staging backend [candy.freefeed.net](https://candy.freefeed.net)).
 
-Alternatively, install [freefeed-server](https://github.com/FreeFeed/freefeed-server) and set the `FRF_API_ROOT` environment variable if you need to work with local backend.
+Alternatively, you can install [freefeed-server](https://github.com/FreeFeed/freefeed-server) and create `config/local.json` file with URL of local backend:
+```
+{
+  "api": {
+    "root": "http://localhost:3000"
+  }
+}
+```
 
 You can also use custom local configuration file or additional environment variables to override default settings. FreeFeed uses the [config](https://github.com/lorenwest/node-config) npm module to manage the configuration. Please read it documentation to learn how add custom settings.
 
