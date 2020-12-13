@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.89.0] - Not released
+## [1.89.0] - 2020-12-13
 ### Added
 - A 'Not Found' page for URI's that does not match any of the site routes.
 - A &lt;spoiler> tag for the sensitive or spoiler texts.
