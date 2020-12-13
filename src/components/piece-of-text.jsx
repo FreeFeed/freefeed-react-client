@@ -5,7 +5,7 @@ import { READMORE_STYLE_COMFORT } from '../utils/frontend-preferences-options';
 import Spoiler from './spoiler';
 import Linkify from './linkify';
 
-const spoilerRegex = /<(spoiler|спойлер)>(?:(?!(<(spoiler|спойлер)>|<\/(spoiler|спойлер)>)).)*<\/(spoiler|спойлер)>/gi;
+const spoilerRegex = /(<(?:spoiler|спойлер)>)((?:(?!(?:<(?:spoiler|спойлер)>|<\/(?:spoiler|спойлер)>)).)*)(<\/(?:spoiler|спойлер)>)/gi;
 
 // Texts longer than thresholdTextLength should be cut to shortenedTextLength
 const thresholdTextLength = 800;
@@ -128,7 +128,7 @@ const splitIntoSpoilerBlocks = (input) => {
     const newNodes = [];
 
     for (const spoilerMatch of spoilersInText) {
-      const [content] = spoilerMatch;
+      const [content, tagBefore, spoilerText, tagAfter] = spoilerMatch;
       const from = spoilerMatch.index;
       const to = from + content.length;
 
@@ -137,13 +137,11 @@ const splitIntoSpoilerBlocks = (input) => {
       }
       i = to;
 
-      const tagBefore = content.slice(0, 9);
-      const spoilerText = content.slice(9, -10);
-      const tagAfter = content.slice(-10);
-
-      newNodes.push(tagBefore);
-      newNodes.push(<Spoiler key={`spoiler-${from}`}>{spoilerText}</Spoiler>);
-      newNodes.push(tagAfter);
+      newNodes.push(
+        <Spoiler key={`spoiler-${from}`} tagBefore={tagBefore} tagAfter={tagAfter}>
+          {spoilerText}
+        </Spoiler>,
+      );
     }
 
     if (i < input.length) {

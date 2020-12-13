@@ -1,24 +1,31 @@
 import React from 'react';
-import classnames from 'classnames';
+import cn from 'classnames';
+
+import styles from './spoiler.module.scss';
 
 export default class Spoiler extends React.PureComponent {
   state = {
     visible: false,
   };
 
-  onShow = () => {
-    this.setState({ visible: true });
-  };
+  show = () => this.setState({ visible: true });
+  toggle = () => this.setState({ visible: !this.state.visible });
 
   render() {
     const { visible } = this.state;
-    const { children } = this.props;
-
-    const cn = classnames(visible ? 'spoiler-visible' : 'spoiler-hidden');
+    const { children, tagBefore, tagAfter } = this.props;
 
     return (
-      <span className={cn} onClick={visible ? undefined : this.onShow}>
-        {children}
+      <span className={styles.container}>
+        <span className={cn(styles.tag, visible && styles.tagVisible)} onClick={this.toggle}>
+          {tagBefore}
+        </span>
+        <span className={cn(styles.content, !visible && styles.contentHidden)} onClick={this.show}>
+          {children}
+        </span>
+        <span className={cn(styles.tag, visible && styles.tagVisible)} onClick={this.toggle}>
+          {tagAfter}
+        </span>
       </span>
     );
   }

@@ -1,0 +1,42 @@
+@import '../../styles/helvetica/dark-vars.scss';
+
+.container {
+  --patch-color: #999;
+  --tag-color: #999;
+  --inverse-tag-color: #fff;
+
+  :global(.dark-theme) & {
+    --inverse-tag-color: #{$bg-color};
+  }
+}
+
+.tag {
+  background-color: transparent;
+  color: var(--tag-color);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.tagVisible {
+  border-radius: 2px;
+  background-color: var(--patch-color);
+  color: var(--inverse-tag-color);
+}
+
+.content {
+  background-color: transparent;
+  border-radius: 2px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.contentHidden {
+  background-color: var(--patch-color);
+  color: transparent;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+
+  & * {
+    visibility: hidden !important;
+  }
+}

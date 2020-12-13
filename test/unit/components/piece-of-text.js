@@ -105,11 +105,15 @@ describe('<PieceOfText>', () => {
       'when rendered',
       'to have rendered with all children',
       <Linkify>
-        123 &lt;spoiler&gt; &lt;spoiler&gt;
-        <Spoiler>456</Spoiler>
-        &lt;/spoiler&gt; 789 &lt;спойлер&gt;
-        <Spoiler>https://example.com</Spoiler>
-        &lt;/спойлер&gt; 123
+        123 &lt;spoiler&gt;{' '}
+        <Spoiler tagBefore="<spoiler>" tagAfter="</spoiler>">
+          456
+        </Spoiler>
+        {' 789 '}
+        <Spoiler tagBefore="<спойлер>" tagAfter="</спойлер>">
+          https://example.com
+        </Spoiler>
+        {' 123'}
       </Linkify>,
     );
   });
