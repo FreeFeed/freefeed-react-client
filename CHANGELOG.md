@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - A 'Not Found' page for URI's that does not match any of the site routes.
 - A &lt;spoiler> tag for the sensitive or spoiler texts.
+- Support for FreeFeed's Supervisory Board 2020 election
 
 ### Changed
 - Applied some rendering optimisations
