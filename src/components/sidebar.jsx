@@ -1,5 +1,5 @@
 /* global CONFIG */
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import format from 'date-fns/format';

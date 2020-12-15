@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -12,7 +12,7 @@ import ErrorBoundary from './error-boundary';
 import { userActions, canAcceptDirects } from './select-utils';
 import { UserPicture } from './user-picture';
 
-class UserCard extends React.Component {
+class UserCard extends Component {
   constructor(props) {
     super(props);
 

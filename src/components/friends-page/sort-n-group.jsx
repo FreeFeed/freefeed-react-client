@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useBool } from '../hooks/bool';
 import { ButtonLink } from '../button-link';
 

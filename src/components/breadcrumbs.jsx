@@ -1,4 +1,3 @@
-import React from 'react';
 import UserName from './user-name';
 
 export default (props) => (

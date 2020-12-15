@@ -1,4 +1,4 @@
-import React from 'react';
+import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import _ from 'lodash';
@@ -14,7 +14,7 @@ import {
 const SubsList = tileUserListFactory({ type: WITH_REMOVE_AND_MAKE_ADMIN_HANDLES });
 const AdminsList = tileUserListFactory({ type: WITH_REMOVE_ADMIN_RIGHTS });
 
-class ManageSubscribersHandler extends React.PureComponent {
+class ManageSubscribersHandler extends PureComponent {
   handleRemove = (username) => {
     this.props.unsubscribeFromGroup(this.props.groupName, username);
   };

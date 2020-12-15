@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Throbber, BIG } from './throbber';
 
 export default ({ loading, children, fullPage }) => (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import cachedFetch from './cached-fetch';
 
 const SOUNDCLOUD_SONG_RE = /^https:\/\/soundcloud\.com\/([^/]+)\/([^/]+)$/;

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Portal } from 'react-portal';
 import { confirmFirst } from '../utils';
 import styles from './dropdown-menu.module.scss';

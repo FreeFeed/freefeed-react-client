@@ -1,5 +1,5 @@
 /* global CONFIG */
-import React from 'react';
+import { Component } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { resetPassword, resetPasswordValidationFail } from '../redux/action-creators';
@@ -37,7 +37,7 @@ function resetFunc(pass, confirm, token, reset, validation) {
   return reset(pass, token);
 }
 
-class ResetPassword extends React.Component {
+class ResetPassword extends Component {
   confirm;
   pass;
 

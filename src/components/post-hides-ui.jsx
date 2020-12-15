@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useLayoutEffect } from 'react';
+import { useCallback, useRef, useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { intersection } from 'lodash';
 import { faTimes, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';

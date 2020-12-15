@@ -1,11 +1,11 @@
-import React from 'react';
+import { PureComponent } from 'react';
 import { faFile } from '@fortawesome/free-regular-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import { formatFileSize } from '../utils';
 import { Icon } from './fontawesome-icons';
 
-class GeneralAttachment extends React.PureComponent {
+class GeneralAttachment extends PureComponent {
   handleClickOnRemoveAttachment = () => {
     this.props.removeAttachment(this.props.id);
   };

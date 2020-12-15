@@ -1,11 +1,11 @@
-import React from 'react';
+import { PureComponent } from 'react';
 import { faFileAudio } from '@fortawesome/free-regular-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import { formatFileSize } from '../utils';
 import { Icon } from './fontawesome-icons';
 
-class AudioAttachment extends React.PureComponent {
+class AudioAttachment extends PureComponent {
   handleClickOnRemoveAttachment = () => {
     this.props.removeAttachment(this.props.id);
   };

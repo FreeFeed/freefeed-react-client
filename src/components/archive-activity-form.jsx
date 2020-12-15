@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import { Component } from 'react';
 
-export default class ArchiveActivityForm extends React.Component {
+export default class ArchiveActivityForm extends Component {
   static propTypes = {
     action: PropTypes.func.isRequired,
     formState: PropTypes.shape({

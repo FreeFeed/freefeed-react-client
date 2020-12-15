@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { renderToString } from 'react-dom/server';
 import { showMedia } from '../redux/action-creators';

@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo, forwardRef } from 'react';
 import cn from 'classnames';
 import {
   faHeart,
@@ -26,7 +26,7 @@ const preloadedIcons = [
   faPaperclip,
 ];
 
-export const SVGSymbolDeclarations = React.memo(function SVGSymbolDeclarations() {
+export const SVGSymbolDeclarations = memo(function SVGSymbolDeclarations() {
   return (
     <svg style={{ display: 'none' }} xmlns="http://www.w3.org/2000/svg">
       {preloadedIcons.map(({ iconName, prefix, icon: [width, height, , , path] }) => (
@@ -45,8 +45,8 @@ export const SVGSymbolDeclarations = React.memo(function SVGSymbolDeclarations()
   );
 });
 
-export const Icon = React.memo(
-  React.forwardRef(function Icon({ icon, className, title, ...props }, ref) {
+export const Icon = memo(
+  forwardRef(function Icon({ icon, className, title, ...props }, ref) {
     const id = `fa-icon-${icon.prefix}-${icon.iconName}`;
 
     if (preloadedIcons.includes(icon)) {
