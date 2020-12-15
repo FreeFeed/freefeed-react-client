@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import format from 'date-fns/format';
-import { isString } from 'lodash';
 
 import { preventDefault, htmlSafe } from '../utils';
 import { listHomeFeeds, setUserColorScheme } from '../redux/action-creators';
@@ -393,101 +392,97 @@ const SideBarAppearance = connect(
   );
 });
 
-const SideBarVote2020 = ({ user }) => {
-  if (!('privateMeta' in user) || !('vote2020' in user.privateMeta)) {
+const Vote2020 = ({ voteToken }) => {
+  if (!voteToken) {
     return null;
   }
-  const voteToken = user.privateMeta.vote2020;
-  if (voteToken === true) {
-    return (
-      <div className="box">
-        <div className="box-header-groups">
-          Supervisory board{' '}
-          <Link
-            to={{ pathname: '/freefeed/da348e20-4075-4431-b4c8-6bd4a6e97e9a', query: {} }}
-            style={{ textDecoration: 'underline' }}
-          >
-            election
-          </Link>
-        </div>
-        <div className="box-footer">
-          <p>
-            Voting will begin at
-            <br /> 15.12.2020 12:00 MSK
-          </p>
-          <p>
-            Voting will end at
-            <br /> 16.12.2020 12:00 MSK
-          </p>
-        </div>
-      </div>
-    );
-  }
-  if (voteToken === 'finished') {
-    return (
-      <div className="box">
-        <div className="box-header-groups">
-          Supervisory board{' '}
-          <Link
-            to={{ pathname: '/freefeed/da348e20-4075-4431-b4c8-6bd4a6e97e9a', query: {} }}
-            style={{ textDecoration: 'underline' }}
-          >
-            election
-          </Link>
-        </div>
-        <div className="box-footer">
-          <p>
-            Voting ended. Results will be published in{' '}
+
+  return (
+    <div className="box alert alert-info" style={{ paddingTop: '10px' }}>
+      <div className="box-header">Vote 2020</div>
+      <div
+        style={{
+          color: '#000',
+          fontSize: '13px',
+          paddingBottom: 0,
+          borderBottom: '2px solid #000',
+          marginBottom: '10px',
+        }}
+      >
+        <p>
+          Elections to the <b>Supervisory Board</b> in December 2020
+        </p>
+        <ul style={{ paddingLeft: '15px' }}>
+          <li>
             <Link
-              to={{ pathname: '/freefeed/', query: {} }}
+              to={{ pathname: '/freefeed/da348e20-4075-4431-b4c8-6bd4a6e97e9a', query: {} }}
               style={{ textDecoration: 'underline' }}
             >
+              Details in English
+            </Link>
+          </li>
+          <li>
+            <Link
+              to={{ pathname: '/freefeed/6a64ded1-143f-4d11-9f7b-f9c8ac8b7f95', query: {} }}
+              style={{ textDecoration: 'underline' }}
+            >
+              Подробности на русском
+            </Link>
+          </li>
+        </ul>
+      </div>
+
+      {voteToken === true ? (
+        <div style={{ color: '#000', fontSize: '13px', paddingBottom: 0 }}>
+          <p>
+            Voting will begin at
+            <br />
+            <b>15 Dec 2020, 12:00 MSK</b>
+          </p>
+          <p style={{ marginBottom: 0 }}>
+            Voting will end at
+            <br />
+            <b>16 Dec 2020, 12:00 MSK</b>
+          </p>
+        </div>
+      ) : voteToken === 'finished' ? (
+        <div style={{ color: '#000', fontSize: '13px', paddingBottom: 0 }}>
+          <p>Voting has ended.</p>
+          <p style={{ marginBottom: 0 }}>
+            The results will be published in{' '}
+            <Link to={{ pathname: '/freefeed', query: {} }} style={{ textDecoration: 'underline' }}>
               @freefeed
             </Link>{' '}
             account.
           </p>
         </div>
-      </div>
-    );
-  }
-  if (isString(voteToken)) {
-    return (
-      <div className="box">
-        <div className="box-header-groups">
-          Supervisory board{' '}
-          <Link
-            to={{ pathname: '/freefeed/da348e20-4075-4431-b4c8-6bd4a6e97e9a', query: {} }}
-            style={{ textDecoration: 'underline' }}
-          >
-            election
-          </Link>
-        </div>
-        <div className="box-body">
-          <ul>
-            <li>
-              Please{' '}
+      ) : (
+        <div style={{ color: '#000', fontSize: '13px', paddingBottom: 0 }}>
+          <p>Voting has begun.</p>
+          <p>
+            Please vote{' '}
+            <b>
               <a
                 href="https://ffelection20.questionpro.com/"
                 target="_blank"
                 style={{ textDecoration: 'underline' }}
               >
-                vote here
+                using this link
               </a>
-            </li>
-            <li>
-              Your vote unique key: <strong>{voteToken}</strong>
-            </li>
-          </ul>
-        </div>
-        <div className="box-footer">
-          <p>
-            Voting will end at
-            <br /> 16.12.2020 12:00 MSK
+            </b>{' '}
+            with your unique vote key:
+          </p>
+          <p style={{ overflowWrap: 'break-word', wordWrap: 'break-word' }}>
+            <b>{voteToken}</b>
+          </p>
+          <p style={{ marginBottom: 0 }}>
+            Voting will end at <br />
+            <b>16 Dec 2020, 12:00 MSK</b>
           </p>
         </div>
-      </div>
-    );
-  }
+      )}
+    </div>
+  );
 };
 
 const SideBar = ({ user, signOut, recentGroups }) => {
@@ -496,7 +491,7 @@ const SideBar = ({ user, signOut, recentGroups }) => {
       <ErrorBoundary>
         <LoggedInBlock user={user} signOut={signOut} />
         <SideBarFriends user={user} />
-        <SideBarVote2020 user={user} />
+        <Vote2020 voteToken={user.privateMeta?.vote2020} />
         <SideBarGroups recentGroups={recentGroups} />
         <SideBarArchive user={user} />
         <SideBarFreeFeed />
