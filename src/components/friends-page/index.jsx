@@ -1,5 +1,5 @@
 /* global CONFIG */
-import React, { useEffect, useMemo, useCallback } from 'react';
+import { useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';

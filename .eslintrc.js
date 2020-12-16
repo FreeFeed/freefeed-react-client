@@ -24,7 +24,7 @@ module.exports = {
     babelOptions: {
       configFile: './.babelrc',
       plugins: ['@babel/syntax-do-expressions'],
-      presets: ['@babel/preset-react'],
+      presets: [['@babel/react', { runtime: 'automatic' }]],
     },
     ecmaVersion: 2019,
     sourceType: 'module',
@@ -100,7 +100,6 @@ module.exports = {
     'react/jsx-no-duplicate-props': 2,
     'react/jsx-no-undef': 2,
     'react/jsx-pascal-case': 1,
-    'react/jsx-uses-react': 2,
     'react/jsx-uses-vars': 2,
     'react/no-children-prop': 2,
     'react/no-danger': 2,
@@ -119,5 +118,8 @@ module.exports = {
     'react/self-closing-comp': 2,
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+
+    'react/jsx-uses-react': 'off',
+    'react/react-in-jsx-scope': 'off',
   },
 };

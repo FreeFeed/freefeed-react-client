@@ -1,4 +1,3 @@
-import React from 'react';
 import ImageAttachmentsContainer from './post-attachment-image-container';
 import AudioAttachment from './post-attachment-audio';
 import GeneralAttachment from './post-attachment-general';

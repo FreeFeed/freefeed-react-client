@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { without } from 'lodash';
 
 // Helpers for use with react-final-form-hooks

@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import _ from 'lodash';
@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { getUserInfo } from '../redux/action-creators';
 import SubsList from './subs-list';
 
-class SubscribersHandler extends React.Component {
+class SubscribersHandler extends Component {
   constructor(props) {
     super(props);
     if (!props.thisUser) {

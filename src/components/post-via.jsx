@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import { Component } from 'react';
 import _ from 'lodash';
 import UserName from './user-name';
 
@@ -11,7 +11,7 @@ const userType = PropTypes.shape({
 
 const commentType = PropTypes.shape({ user: userType });
 
-export default class PostVia extends React.Component {
+export default class PostVia extends Component {
   static propTypes = {
     post: PropTypes.shape({
       createdBy: userType,

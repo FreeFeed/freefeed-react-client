@@ -1,5 +1,5 @@
 /* global CONFIG */
-import React, { useCallback, useMemo, Suspense, useEffect } from 'react';
+import { useCallback, useMemo, Suspense, useEffect } from 'react';
 import { Link, browserHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
 import cn from 'classnames';

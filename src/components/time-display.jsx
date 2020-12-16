@@ -1,5 +1,5 @@
 import EventEmitter from 'events';
-import React, { useEffect, memo } from 'react';
+import { useEffect, memo } from 'react';
 import { useSelector } from 'react-redux';
 import pt from 'prop-types';
 

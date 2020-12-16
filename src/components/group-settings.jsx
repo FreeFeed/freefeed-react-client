@@ -1,5 +1,5 @@
 /* global CONFIG */
-import React, { useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Link } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';

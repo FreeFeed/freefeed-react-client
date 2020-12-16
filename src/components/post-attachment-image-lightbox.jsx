@@ -1,5 +1,5 @@
 import pt from 'prop-types';
-import React from 'react';
+import { Component } from 'react';
 import { PhotoSwipe } from 'react-photoswipe';
 import Mousetrap from 'mousetrap';
 
@@ -15,7 +15,7 @@ const lightboxOptions = {
   galleryPIDs: true,
 };
 
-export default class ImageAttachmentsLightbox extends React.Component {
+export default class ImageAttachmentsLightbox extends Component {
   static propTypes = {
     items: pt.arrayOf(
       pt.shape({

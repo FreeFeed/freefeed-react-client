@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { preventDefault } from '../utils';
 import { Throbber } from './throbber';
 import ErrorBoundary from './error-boundary';

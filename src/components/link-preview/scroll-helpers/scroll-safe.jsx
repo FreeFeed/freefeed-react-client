@@ -1,5 +1,3 @@
-import React from 'react';
-
 import ResizeTracker from './resize-tracker';
 import FoldableContent from './foldable-content';
 import ScrollCompensator from './scroll-compensator';

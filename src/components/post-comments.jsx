@@ -1,4 +1,4 @@
-import React from 'react';
+import { createRef, Component } from 'react';
 import { Link } from 'react-router';
 
 import { preventDefault } from '../utils';
@@ -12,11 +12,11 @@ import { PostCommentsFolder } from './post-comments-folder';
 
 const minCommentsToFold = 12;
 
-export default class PostComments extends React.Component {
+export default class PostComments extends Component {
   static defaultProps = { user: {} };
 
-  addingCommentForm = React.createRef();
-  rootEl = React.createRef();
+  addingCommentForm = createRef();
+  rootEl = createRef();
 
   state = {
     // true if user manually fold expanded comments

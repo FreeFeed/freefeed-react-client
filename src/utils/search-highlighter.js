@@ -1,4 +1,3 @@
-import React from 'react';
 import _ from 'lodash';
 import { stemmer as enStemmer } from 'porter-stemmer';
 import ruStemmer from './ru-stemmer';

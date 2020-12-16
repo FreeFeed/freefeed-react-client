@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 
 import VideoPreview, { canShowURL as videoCanShowURL } from './video';
 import TwitterPreview, { canShowURL as twitterCanShowURL } from './twitter';

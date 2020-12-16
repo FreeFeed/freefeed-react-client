@@ -1,5 +1,5 @@
 /* global CONFIG */
-import React, { useEffect, useMemo, useCallback } from 'react';
+import { useEffect, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, withRouter } from 'react-router';
 import { Portal } from 'react-portal';

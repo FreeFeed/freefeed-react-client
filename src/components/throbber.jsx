@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { memo, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 
@@ -10,7 +10,7 @@ export const BIG = 'BIG';
 // Do not show throbber first DELAY ms
 const DELAY = 300;
 
-export const Throbber = React.memo(function Throbber({ size = SMALL, delay = DELAY, className }) {
+export const Throbber = memo(function Throbber({ size = SMALL, delay = DELAY, className }) {
   const [waiting, setWaiting] = useState(true);
   useEffect(() => {
     const t = setTimeout(() => setWaiting(false), delay);
@@ -45,7 +45,7 @@ Throbber.propTypes = {
   className: PropTypes.string,
 };
 
-const ThrobberOnCanvas = React.memo(function ThrobberOnCanvas({
+const ThrobberOnCanvas = memo(function ThrobberOnCanvas({
   size,
   duration,
   strokeWidth,
