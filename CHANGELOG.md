@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.89.2] - Not released
+### Fixed
+- Prevent conflict between spoilers and 'read more'
+
+### Added
+- Link to results in Vote2020 block
+
 ## [1.89.1] - 2020-12-15
 ### Changed
 - Use different style for "vote2020" block (thanks to @clbn)
