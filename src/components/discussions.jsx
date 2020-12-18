@@ -1,3 +1,4 @@
+import React from 'react';
 import { connect } from 'react-redux';
 import { createPost, resetPostCreateForm, expandSendTo } from '../redux/action-creators';
 import formatInvitation from '../utils/format-invitation';

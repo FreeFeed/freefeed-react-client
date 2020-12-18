@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
 import UserName from './user-name';

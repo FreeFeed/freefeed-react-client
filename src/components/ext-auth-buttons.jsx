@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 
@@ -19,7 +19,7 @@ export const SIGN_UP = 'sign-up';
  * indicate this situation to user.
  */
 
-export const ExtAuthButtons = memo(function ExtAuthButtons({ mode = SIGN_IN }) {
+export const ExtAuthButtons = React.memo(function ExtAuthButtons({ mode = SIGN_IN }) {
   const dispatch = useDispatch();
   const [providers] = useExtAuthProviders();
   const status = useSelector(statusSelector[mode]);

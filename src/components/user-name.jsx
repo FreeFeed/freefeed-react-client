@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
@@ -38,7 +38,7 @@ const DisplayOption = ({ user, me, preferences }) => {
   return <span>{user.screenName}</span>;
 };
 
-class UserName extends Component {
+class UserName extends React.Component {
   constructor(props) {
     super(props);
 

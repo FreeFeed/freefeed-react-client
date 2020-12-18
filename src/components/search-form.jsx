@@ -1,4 +1,4 @@
-import { useCallback, useState, useMemo, useEffect } from 'react';
+import React, { useCallback, useState, useMemo, useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { KEY_RETURN, KEY_ESCAPE } from 'keycode-js';
 import { useSearchQuery } from './hooks/search-query';

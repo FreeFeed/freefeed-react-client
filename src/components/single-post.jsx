@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { Component, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -8,7 +8,7 @@ import UserName from './user-name';
 
 import Post, { canonicalURI } from './post';
 
-class SinglePostHandler extends Component {
+class SinglePostHandler extends React.Component {
   UNSAFE_componentWillReceiveProps(nextProps) {
     const { post, router } = nextProps;
     if (!post) {

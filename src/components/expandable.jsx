@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
@@ -10,7 +10,7 @@ const DEFAULT_MAX_LINES = 8;
 const DEFAULT_ABOVE_FOLD_LINES = 5;
 const DEFAULT_KEY = 'default';
 
-export default class Expandable extends Component {
+export default class Expandable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

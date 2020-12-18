@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React from 'react';
 import _ from 'lodash';
 
 import ScrollSafe from './scroll-helpers/scroll-safe';
@@ -12,7 +12,7 @@ export function canShowURL(url) {
 
 const initialState = { isPrivate: false };
 
-class InstagramPreview extends Component {
+class InstagramPreview extends React.Component {
   iframe = null;
   setIframe = (el) => (this.iframe = el);
 

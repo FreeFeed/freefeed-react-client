@@ -1,4 +1,4 @@
-import { PureComponent } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import _ from 'lodash';
@@ -15,7 +15,7 @@ const TileListWithAcceptAndReject = tileUserListFactory({
 });
 const TileList = tileUserListFactory({ type: PLAIN, displayQuantity: true });
 
-class RequestsToGroup extends PureComponent {
+class RequestsToGroup extends React.PureComponent {
   handleAccept = (username) => {
     this.props.accept(this.props.groupRequest.username, username);
   };

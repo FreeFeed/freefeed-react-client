@@ -1,4 +1,4 @@
-import { lazy } from 'react';
+import React from 'react';
 import createDebug from 'debug';
 
 const debug = createDebug('freefeed:react:retryPromise');
@@ -33,5 +33,5 @@ export function retry(fn, maxAttempts = 5, interval = 1000) {
  * @param {()=>Promise} fn
  */
 export function lazyRetry(fn) {
-  return lazy(retry(fn));
+  return React.lazy(retry(fn));
 }

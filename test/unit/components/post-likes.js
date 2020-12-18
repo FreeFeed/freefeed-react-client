@@ -1,6 +1,7 @@
 import { describe, it } from 'mocha';
 import expect from 'unexpected';
 
+import React from 'react';
 import ShallowRenderer from 'react-test-renderer/shallow';
 import clone from 'lodash/clone';
 

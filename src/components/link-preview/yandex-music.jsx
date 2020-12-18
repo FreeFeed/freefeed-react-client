@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React from 'react';
 
 const YM_TRACK_RE = /^https?:\/\/music\.yandex\.ru\/album\/(\d+)\/track\/(\d+)/;
 const YM_ALBUM_RE = /^https?:\/\/music\.yandex\.ru\/album\/(\d+)$/;
@@ -7,7 +7,7 @@ export function canShowURL(url) {
   return YM_TRACK_RE.test(url) || YM_ALBUM_RE.test(url);
 }
 
-export default class YandexMusicPreview extends Component {
+export default class YandexMusicPreview extends React.Component {
   render() {
     const { url } = this.props;
     let m = YM_TRACK_RE.exec(url);

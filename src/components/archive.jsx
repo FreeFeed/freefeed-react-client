@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -9,7 +9,7 @@ import {
 import ArchiveActivityForm from './archive-activity-form';
 import ArchiveRestorationForm from './archive-restoration-form';
 
-class Archive extends Component {
+class Archive extends React.Component {
   componentWillUnmount() {
     this.props.resetArchiveForms();
   }

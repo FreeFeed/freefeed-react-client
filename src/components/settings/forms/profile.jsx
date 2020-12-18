@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useField, useForm } from 'react-final-form-hooks';
 import { useSelector, useDispatch } from 'react-redux';
 import isEmail from 'validator/lib/isEmail';

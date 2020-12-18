@@ -1,3 +1,4 @@
+import React from 'react';
 import { connect } from 'react-redux';
 
 import { createGroup, resetGroupCreateForm } from '../redux/action-creators';

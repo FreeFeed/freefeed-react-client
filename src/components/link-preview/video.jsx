@@ -1,7 +1,7 @@
 import { parse as urlParse } from 'url';
 import { parse as queryParse } from 'querystring';
 
-import { useState, useEffect, useMemo, useCallback, memo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, memo } from 'react';
 import { faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from 'react-redux';
 

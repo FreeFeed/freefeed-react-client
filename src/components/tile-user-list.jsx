@@ -1,4 +1,4 @@
-import { PureComponent } from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import _ from 'lodash';
 
@@ -6,7 +6,7 @@ import { confirmFirst } from '../utils';
 import UserName from './user-name';
 import { UserPicture } from './user-picture';
 
-class UserTile extends PureComponent {
+class UserTile extends React.PureComponent {
   handleAcceptClick = () => {
     const { user } = this.props;
     user.acceptRequest(user.username);

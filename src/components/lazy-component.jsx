@@ -1,4 +1,4 @@
-import { Suspense, useState, useEffect, useMemo } from 'react';
+import React, { Suspense, useState, useEffect, useMemo } from 'react';
 import { lazyRetry } from '../utils/retry-promise';
 import ErrorBoundary from './error-boundary';
 

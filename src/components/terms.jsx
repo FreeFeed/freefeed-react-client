@@ -1,3 +1,5 @@
+import React from 'react';
+
 const Terms = () => (
   <div className="box">
     <div className="box-header-timeline" />

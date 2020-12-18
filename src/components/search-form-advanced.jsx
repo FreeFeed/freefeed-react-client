@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { useCallback, useMemo, useEffect } from 'react';
+import React, { useCallback, useMemo, useEffect } from 'react';
 import { useField, useForm } from 'react-final-form-hooks';
 import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router';

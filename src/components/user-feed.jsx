@@ -1,12 +1,12 @@
 /* global CONFIG */
-import { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
 import PaginatedView from './paginated-view';
 import Feed from './feed';
 
-class UserFeed extends Component {
+class UserFeed extends React.Component {
   render() {
     if (this.props.feedIsLoading) {
       // Nothing to show while feed is loading

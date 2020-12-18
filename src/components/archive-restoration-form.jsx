@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import { Component } from 'react';
+import React from 'react';
 import _ from 'lodash';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import { Icon } from './fontawesome-icons';
 
-export default class ArchiveRestorationForm extends Component {
+export default class ArchiveRestorationForm extends React.Component {
   static propTypes = {
     action: PropTypes.func.isRequired,
     formState: PropTypes.shape({
@@ -111,7 +111,7 @@ export default class ArchiveRestorationForm extends Component {
 
 const FRF_URL = 'http://friendfeed.com';
 
-class SourceList extends Component {
+class SourceList extends React.Component {
   static propTypes = {
     sources: PropTypes.array.isRequired,
     selected: PropTypes.array.isRequired,

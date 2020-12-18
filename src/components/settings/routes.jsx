@@ -1,3 +1,4 @@
+import React from 'react';
 import { IndexRoute, Route } from 'react-router';
 
 import { lazyRetry } from '../../utils/retry-promise';

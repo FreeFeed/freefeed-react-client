@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { SettingsPage } from './layout';
 import PrivacyForm from './forms/privacy';
 

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAttachment } from '../../redux/action-creators';
 import { makeJpegIfNeeded } from '../../utils/jpeg-if-needed';

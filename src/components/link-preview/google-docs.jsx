@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React from 'react';
 
 import { contentResized } from './scroll-helpers/events';
 import ScrollSafe from './scroll-helpers/scroll-safe';
@@ -19,7 +19,7 @@ const initialState = {
   isError: false,
 };
 
-class GoogleDocsPreview extends Component {
+class GoogleDocsPreview extends React.Component {
   state = { ...initialState };
 
   updatePreview(url) {

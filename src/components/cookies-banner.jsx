@@ -1,3 +1,4 @@
+import React from 'react';
 import { useSubscription } from 'use-subscription';
 
 import { cookiesEnabled } from '../services/feat-detection';

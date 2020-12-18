@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Component } from 'react';
+import React from 'react';
 import { once } from 'lodash';
 
 import ScrollSafe from './scroll-helpers/scroll-safe';
@@ -11,7 +11,7 @@ export function canShowURL(url) {
   return TG_POST_RE.test(url);
 }
 
-class TelegramPreview extends Component {
+class TelegramPreview extends React.Component {
   static propTypes = { url: PropTypes.string.isRequired };
 
   componentDidMount() {

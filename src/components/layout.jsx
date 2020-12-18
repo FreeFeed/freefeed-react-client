@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { Component, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { IndexLink, Link } from 'react-router';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -42,7 +42,7 @@ const InternalLayout = ({ authenticated, children }) => (
   </div>
 );
 
-class Layout extends Component {
+class Layout extends React.Component {
   // Here we have some handling of drag-n-drop, because standard dragenter
   // and dragleave events suck. Current implementation is using ideas from
   // Ben Smithett, see http://bensmithett.github.io/dragster/ for details

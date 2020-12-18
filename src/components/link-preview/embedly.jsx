@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
 import { darkTheme } from '../select-utils';

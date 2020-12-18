@@ -1,4 +1,4 @@
-import { cloneElement, isValidElement, Component } from 'react';
+import React from 'react';
 
 import { READMORE_STYLE_COMFORT } from '../utils/frontend-preferences-options';
 
@@ -54,7 +54,7 @@ const injectSeparator = (array, separator) => {
 
   array.forEach((item, i) => {
     result.push(<span key={`item-${i}`}>{item}</span>);
-    result.push(cloneElement(separator, { key: `separator-${i}` }, separator.props.children));
+    result.push(React.cloneElement(separator, { key: `separator-${i}` }, separator.props.children));
   });
 
   result.pop();
@@ -157,12 +157,12 @@ const splitIntoSpoilerBlocks = (input) => {
     return input.map(splitIntoSpoilerBlocks);
   }
 
-  if (isValidElement(input)) {
-    return cloneElement(input, {}, splitIntoSpoilerBlocks(input.props.children));
+  if (React.isValidElement(input)) {
+    return React.cloneElement(input, {}, splitIntoSpoilerBlocks(input.props.children));
   }
 };
 
-export default class PieceOfText extends Component {
+export default class PieceOfText extends React.Component {
   constructor(props) {
     super(props);
 

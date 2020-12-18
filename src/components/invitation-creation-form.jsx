@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Textarea from 'react-textarea-autosize';
@@ -13,7 +13,7 @@ export const INVITATION_LANGUAGE_OPTIONS = {
   ENGLISH: 'en',
 };
 
-class InvitationCreationForm extends Component {
+class InvitationCreationForm extends React.Component {
   state = {
     message: '',
     suggestions: {

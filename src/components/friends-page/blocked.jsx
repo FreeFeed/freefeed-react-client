@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import cn from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import { Helmet } from 'react-helmet';

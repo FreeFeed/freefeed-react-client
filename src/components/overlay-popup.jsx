@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Portal } from 'react-portal';
 import FocusTrap from 'focus-trap-react';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';

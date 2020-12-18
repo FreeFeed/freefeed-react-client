@@ -1,7 +1,7 @@
 /*global Raven*/
-import { PureComponent } from 'react';
+import React from 'react';
 
-class ErrorBoundary extends PureComponent {
+class ErrorBoundary extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = { hasError: false, error: {}, errorInfo: {} };

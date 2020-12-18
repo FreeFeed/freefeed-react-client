@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { xor, trim } from 'lodash';
 import propTypes from 'prop-types';
@@ -19,7 +19,7 @@ const Select = lazyComponent(
   },
 );
 
-class SendTo extends Component {
+class SendTo extends React.Component {
   static propTypes = {
     isDirects: propTypes.bool,
     isEditing: propTypes.bool,

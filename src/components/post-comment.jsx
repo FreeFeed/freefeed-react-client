@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router';
 import _ from 'lodash';
 import classnames from 'classnames';
@@ -18,7 +18,7 @@ import TimeDisplay from './time-display';
 import CommentIcon, { JustCommentIcon } from './comment-icon';
 import { CommentEditForm } from './comment-edit-form';
 
-class PostComment extends Component {
+class PostComment extends React.Component {
   commentContainer;
   commentForm;
   commentsAreHighlighted;

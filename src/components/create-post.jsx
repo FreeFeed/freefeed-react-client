@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { Component } from 'react';
+import React from 'react';
 import Textarea from 'react-textarea-autosize';
 import _ from 'lodash';
 
@@ -28,7 +28,7 @@ const getDefaultState = (invitation = '') => ({
   dropzoneDisabled: false,
 });
 
-export default class CreatePost extends Component {
+export default class CreatePost extends React.Component {
   selectFeeds;
 
   constructor(props) {

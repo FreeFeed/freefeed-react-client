@@ -1,3 +1,5 @@
+import React from 'react';
+
 const PLAYLIST_RE = /https:\/\/open.spotify.com(?:\/user\/\d+)?\/playlist\/([^?]*)(\?.*)?$/;
 const TRACK_RE = /https:\/\/open.spotify.com\/track\/([^?]*)(\?.*)?$/;
 const ALBUM_RE = /https:\/\/open.spotify.com\/album\/([^?]*)(\?.*)?$/;

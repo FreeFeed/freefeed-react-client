@@ -1,5 +1,5 @@
 import { encode as qsEncode } from 'querystring';
-import { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { darkTheme } from '../select-utils';

@@ -1,6 +1,6 @@
 /* global CONFIG */
 import { encode as qsEncode } from 'querystring';
-import { memo, useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router';
 
@@ -11,7 +11,7 @@ import { useExtAuthProviders, providerTitle } from './ext-auth-helpers';
 import { ExtAuthButtons, SIGN_UP } from './ext-auth-buttons';
 import { useServerInfo } from './hooks/server-info';
 
-export default memo(function Signup() {
+export default React.memo(function Signup() {
   const [serverInfo, serverInfoStatus] = useServerInfo();
   const registrationOpen = !serverInfoStatus.success || serverInfo.registrationOpen;
   const withForm = !!CONFIG.registrationsLimit.emailFormIframeSrc;
@@ -65,7 +65,7 @@ export default memo(function Signup() {
   );
 });
 
-const ExtAuthSignup = memo(function ExtAuthSignup() {
+const ExtAuthSignup = React.memo(function ExtAuthSignup() {
   const dispatch = useDispatch();
   const [providers] = useExtAuthProviders();
   const result = useSelector((state) => state.extAuth.signInResult);
