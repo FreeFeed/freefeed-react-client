@@ -1,5 +1,5 @@
 /* global CONFIG */
-import React, { useEffect, useMemo } from 'react';
+import { memo, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { sortBy, range } from 'lodash';
 import { Link } from 'react-router';
@@ -134,7 +134,7 @@ function SortHeader({ children, mode, currentMode }) {
   );
 }
 
-const GroupRow = React.memo(function GroupRow({ g }) {
+const GroupRow = memo(function GroupRow({ g }) {
   const u = useSelector((state) => state.users[g.id]);
   return (
     <tr className={styles.groupRow}>

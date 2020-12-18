@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import { Component } from 'react';
 import _ from 'lodash';
 
 import { contentResized } from './events';
@@ -9,7 +9,7 @@ import { contentResized } from './events';
  *
  * Based on GWT algorithm: /user/src/com/google/gwt/user/client/ui/ResizeLayoutPanel.java
  */
-export default class ResizeTracker extends React.Component {
+export default class ResizeTracker extends Component {
   // fixed, only applies at creation time
   static propTypes = { debounce: PropTypes.number.isRequired };
 

@@ -1,5 +1,4 @@
 /* global CONFIG */
-import React from 'react';
 import DropzoneComponent from 'react-dropzone-component';
 
 import { getToken } from '../services/auth';

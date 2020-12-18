@@ -1,5 +1,3 @@
-import React from 'react';
-
 import ExtAuthForm from './forms/ext-auth-accounts';
 import ChangePasswordForm from './forms/change-password';
 import styles from './settings.module.scss';

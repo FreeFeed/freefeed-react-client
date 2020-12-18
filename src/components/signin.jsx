@@ -1,6 +1,6 @@
 /* global CONFIG */
 import { encode as qsEncode } from 'querystring';
-import React, { useEffect, useCallback, useMemo } from 'react';
+import { memo, useEffect, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router';
 import { useForm, useField } from 'react-final-form-hooks';
@@ -14,7 +14,7 @@ import { providerTitle, useExtAuthProviders } from './ext-auth-helpers';
 import { CookiesBanner } from './cookies-banner';
 import { ExtAuthButtons } from './ext-auth-buttons';
 
-export default React.memo(function SignInPage() {
+export default memo(function SignInPage() {
   const [providers] = useExtAuthProviders();
 
   return (
@@ -56,7 +56,7 @@ export default React.memo(function SignInPage() {
   );
 });
 
-const SignInForm = React.memo(function SignInForm() {
+const SignInForm = memo(function SignInForm() {
   const signInStatus = useSelector(({ signInStatus }) => signInStatus);
   const resumeToken = useSelector(({ resumeToken }) => resumeToken);
   const dispatch = useDispatch();
@@ -149,7 +149,7 @@ const SignInForm = React.memo(function SignInForm() {
   );
 });
 
-const ExtAuthSignIn = React.memo(function ExtAuthSignIn() {
+const ExtAuthSignIn = memo(function ExtAuthSignIn() {
   const dispatch = useDispatch();
   const [providers] = useExtAuthProviders();
   const result = useSelector((state) => state.extAuth.signInResult);

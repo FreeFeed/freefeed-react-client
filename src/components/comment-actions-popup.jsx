@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useEffect, forwardRef } from 'react';
+import { useCallback, useRef, useEffect, forwardRef } from 'react';
 import { Link } from 'react-router';
 import { faAt, faAngleUp, faHeart, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartO, faClock } from '@fortawesome/free-regular-svg-icons';

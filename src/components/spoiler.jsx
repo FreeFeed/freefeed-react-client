@@ -1,7 +1,7 @@
-import React from 'react';
+import { PureComponent } from 'react';
 import classnames from 'classnames';
 
-export default class Spoiler extends React.PureComponent {
+export default class Spoiler extends PureComponent {
   state = {
     visible: false,
   };

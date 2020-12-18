@@ -1,4 +1,4 @@
-import React from 'react';
+import { PureComponent, Component } from 'react';
 
 import { faComment } from '@fortawesome/free-regular-svg-icons';
 import { preventDefault } from '../utils';
@@ -7,7 +7,7 @@ import { Throbber } from './throbber';
 import SendTo from './send-to';
 import { Icon } from './fontawesome-icons';
 
-class LinkedImage extends React.PureComponent {
+class LinkedImage extends PureComponent {
   handleClick = () => {
     const { removeImage, url } = this.props;
 
@@ -24,7 +24,7 @@ class LinkedImage extends React.PureComponent {
   }
 }
 
-export default class CreateBookmarkletPost extends React.Component {
+export default class CreateBookmarkletPost extends Component {
   commentText;
   postText;
   selectFeeds;

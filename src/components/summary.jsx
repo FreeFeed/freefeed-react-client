@@ -1,11 +1,11 @@
-import React from 'react';
+import { Component } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
 import { joinPostData, postActions } from './select-utils';
 import Feed from './feed';
 
-class Summary extends React.Component {
+class Summary extends Component {
   render() {
     const { props } = this;
     const days = props.params.days ? parseInt(props.params.days) : 7;

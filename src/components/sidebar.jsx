@@ -1,5 +1,5 @@
 /* global CONFIG */
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import format from 'date-fns/format';
@@ -418,15 +418,15 @@ const Vote2020 = ({ voteToken }) => {
               to={{ pathname: '/freefeed/da348e20-4075-4431-b4c8-6bd4a6e97e9a', query: {} }}
               style={{ textDecoration: 'underline' }}
             >
-              Details in English
+              Details
             </Link>
           </li>
           <li>
             <Link
-              to={{ pathname: '/freefeed/6a64ded1-143f-4d11-9f7b-f9c8ac8b7f95', query: {} }}
+              to={{ pathname: '/freefeed/ea73737e-40d7-4937-83cc-ef01eb04f7c2', query: {} }}
               style={{ textDecoration: 'underline' }}
             >
-              Подробности на русском
+              Results
             </Link>
           </li>
         </ul>
@@ -446,16 +446,7 @@ const Vote2020 = ({ voteToken }) => {
           </p>
         </div>
       ) : voteToken === 'finished' ? (
-        <div style={{ color: '#000', fontSize: '13px', paddingBottom: 0 }}>
-          <p>Voting has ended.</p>
-          <p style={{ marginBottom: 0 }}>
-            The results will be published in{' '}
-            <Link to={{ pathname: '/freefeed', query: {} }} style={{ textDecoration: 'underline' }}>
-              @freefeed
-            </Link>{' '}
-            account.
-          </p>
-        </div>
+        <div style={{ color: '#000', fontSize: '13px', paddingBottom: 0 }} />
       ) : (
         <div style={{ color: '#000', fontSize: '13px', paddingBottom: 0 }}>
           <p>Voting has begun.</p>

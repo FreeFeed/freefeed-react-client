@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Throbber } from './throbber';
 import { tileUserListFactory, WITH_MUTUALS } from './tile-user-list';
 

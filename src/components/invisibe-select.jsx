@@ -1,4 +1,4 @@
-import React, { Children, useMemo } from 'react';
+import { Children, useMemo } from 'react';
 import classNames from 'classnames';
 
 import '../../styles/shared/invisible-select.scss';

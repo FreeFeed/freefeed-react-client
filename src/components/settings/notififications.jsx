@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { SettingsPage } from './layout';
 import NotificationsForm from './forms/notifications';
 

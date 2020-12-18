@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { PureComponent, useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 
 import ErrorBoundary from './error-boundary';
@@ -24,7 +24,7 @@ const HiddenEntriesToggle = (props) => {
   );
 };
 
-class Feed extends React.PureComponent {
+class Feed extends PureComponent {
   showMedia = (params) => {
     const { props } = this;
 

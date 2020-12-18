@@ -2,8 +2,6 @@ import { describe, it } from 'mocha';
 import unexpected from 'unexpected';
 import unexpectedReact from 'unexpected-react';
 
-import React from 'react';
-
 import PieceOfText from '../../../src/components/piece-of-text';
 import Spoiler from '../../../src/components/spoiler';
 import Linkify from '../../../src/components/linkify';

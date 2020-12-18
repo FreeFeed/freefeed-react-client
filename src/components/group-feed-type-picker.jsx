@@ -1,5 +1,5 @@
 /* global CONFIG */
-import React from 'react';
+import { Component } from 'react';
 
 const PUBLIC = 'PUBLIC',
   PROTECTED = 'PROTECTED',
@@ -23,7 +23,7 @@ function getPrivacyMode(flags) {
   return PUBLIC;
 }
 
-export default class GroupFeedTypePicker extends React.Component {
+export default class GroupFeedTypePicker extends Component {
   handleChange = (event) => {
     const {
       target: { name, value },

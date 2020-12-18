@@ -1,4 +1,4 @@
-import React, { useCallback, memo, forwardRef, useMemo } from 'react';
+import { useCallback, memo, forwardRef, useMemo } from 'react';
 
 // Inspired by https://www.w3.org/TR/wai-aria-practices/examples/button/button.html
 export const ButtonLink = memo(

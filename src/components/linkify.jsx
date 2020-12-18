@@ -1,5 +1,5 @@
 /* global CONFIG */
-import React from 'react';
+import { isValidElement, cloneElement, Component } from 'react';
 import { Link } from 'react-router';
 import { Mention, Email, HashTag, Arrows, Link as TLink } from 'social-text-tokenizer';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
@@ -19,14 +19,14 @@ import ErrorBoundary from './error-boundary';
 const MAX_URL_LENGTH = 50;
 const { searchEngine } = CONFIG.search;
 
-export default class Linkify extends React.Component {
+export default class Linkify extends Component {
   parseCounter = 0;
 
   processStrings(children, processor, excludeTags) {
     if (typeof children === 'string') {
       return processor(children);
-    } else if (React.isValidElement(children) && !excludeTags.includes(children.type)) {
-      return React.cloneElement(
+    } else if (isValidElement(children) && !excludeTags.includes(children.type)) {
+      return cloneElement(
         children,
         {},
         this.processStrings(children.props.children, processor, excludeTags),
