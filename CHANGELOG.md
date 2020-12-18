@@ -8,9 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.89.2] - Not released
 ### Fixed
 - Prevent conflict between spoilers and 'read more'
+- Compensate the unwanted scrolling on iOS Chrome after lightbox closing.
 
 ### Added
 - Link to results in Vote2020 block
+- Developers can use the _config.json_ file in the project root during the dev.
+  server run. This file will not be included in compiled code but it is useful
+  for development because config changes now doesn't require full client
+  rebuild.
+
+### Changed
+- Developer server (started by `yarn start`) now listening all network
+  interfaces instead of just 127.0.0.1. It helps to debug client on different
+  devices in same network.
 
 ## [1.89.1] - 2020-12-15
 ### Changed

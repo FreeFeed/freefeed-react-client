@@ -2,6 +2,7 @@ import pt from 'prop-types';
 import { Component } from 'react';
 import { PhotoSwipe } from 'react-photoswipe';
 import Mousetrap from 'mousetrap';
+import { pinnedElements, unscrollTo } from '../services/unscroll';
 
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
 const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
@@ -14,6 +15,8 @@ const lightboxOptions = {
   bgOpacity: 0.8,
   galleryPIDs: true,
 };
+
+const isiOSChrome = window?.navigator?.userAgent?.match('CriOS') || false;
 
 export default class ImageAttachmentsLightbox extends Component {
   static propTypes = {
@@ -48,6 +51,7 @@ export default class ImageAttachmentsLightbox extends Component {
   }
 
   photoSwipe = null;
+  pinnedEls = [];
 
   getThumbBounds = (index) => {
     const thumb = this.props.getThumbnail(index);
@@ -164,6 +168,23 @@ export default class ImageAttachmentsLightbox extends Component {
     this.photoSwipe = el ? el.photoSwipe : null;
   };
 
+  onClose = () => {
+    if (isiOSChrome) {
+      pinnedElements.capture();
+      this.pinnedEls = [...pinnedElements];
+    }
+    this.whenClosed();
+  };
+
+  onDestroy = () => {
+    this.props.onDestroy();
+    if (isiOSChrome) {
+      const h = () => unscrollTo(this.pinnedEls);
+      window.addEventListener('scroll', h, { once: true });
+      setTimeout(() => window.removeEventListener('scroll', h), 500);
+    }
+  };
+
   render() {
     return (
       <PhotoSwipe
@@ -177,9 +198,9 @@ export default class ImageAttachmentsLightbox extends Component {
           index: this.state.currentIndex,
         }}
         isOpen={true}
-        onClose={this.whenClosed}
         initialZoomInEnd={this.whenOpened}
-        destroy={this.props.onDestroy}
+        destroy={this.onDestroy}
+        close={this.onClose}
         afterChange={this.afterChange}
       />
     );
