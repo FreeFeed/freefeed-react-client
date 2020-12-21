@@ -2399,4 +2399,9 @@ export function resumeToken(state = null, action) {
 
 export { attachmentUploads, attachmentUploadStatuses } from './reducers/attachment-uploads';
 
-export const signOutStatus = asyncState(ActionTypes.SIGN_OUT);
+export {
+  signOutStatus,
+  authSessions,
+  authSessionsStatus,
+  closeAuthSessionsStatus,
+} from './reducers/auth-sessios';

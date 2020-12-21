@@ -1140,3 +1140,18 @@ export function authTokenUpdated() {
     type: ActionTypes.AUTH_TOKEN_UPDATED,
   };
 }
+
+export function listAuthSessions() {
+  return {
+    type: ActionTypes.LIST_AUTH_SESSIONS,
+    apiRequest: Api.listAuthSessions,
+  };
+}
+
+export function closeAuthSessions(ids) {
+  return {
+    type: ActionTypes.CLOSE_AUTH_SESSIONS,
+    apiRequest: Api.closeAuthSessions,
+    payload: ids,
+  };
+}

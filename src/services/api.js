@@ -722,3 +722,11 @@ export function signOut() {
 export function reissueAuthSession() {
   return fetch(`${apiRoot}/v1/session/reissue`, postRequestOptions('POST'));
 }
+
+export function listAuthSessions() {
+  return fetch(`${apiRoot}/v1/session/list`, getRequestOptions());
+}
+
+export function closeAuthSessions(ids) {
+  return fetch(`${apiRoot}/v1/session/list`, postRequestOptions('PATCH', { close: ids }));
+}
