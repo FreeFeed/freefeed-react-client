@@ -392,97 +392,12 @@ const SideBarAppearance = connect(
   );
 });
 
-const Vote2020 = ({ voteToken }) => {
-  if (!voteToken) {
-    return null;
-  }
-
-  return (
-    <div className="box alert alert-info" style={{ paddingTop: '10px' }}>
-      <div className="box-header">Vote 2020</div>
-      <div
-        style={{
-          color: '#000',
-          fontSize: '13px',
-          paddingBottom: 0,
-          borderBottom: '2px solid #000',
-          marginBottom: '10px',
-        }}
-      >
-        <p>
-          Elections to the <b>Supervisory Board</b> in December 2020
-        </p>
-        <ul style={{ paddingLeft: '15px' }}>
-          <li>
-            <Link
-              to={{ pathname: '/freefeed/da348e20-4075-4431-b4c8-6bd4a6e97e9a', query: {} }}
-              style={{ textDecoration: 'underline' }}
-            >
-              Details
-            </Link>
-          </li>
-          <li>
-            <Link
-              to={{ pathname: '/freefeed/ea73737e-40d7-4937-83cc-ef01eb04f7c2', query: {} }}
-              style={{ textDecoration: 'underline' }}
-            >
-              Results
-            </Link>
-          </li>
-        </ul>
-      </div>
-
-      {voteToken === true ? (
-        <div style={{ color: '#000', fontSize: '13px', paddingBottom: 0 }}>
-          <p>
-            Voting will begin at
-            <br />
-            <b>15 Dec 2020, 12:00 MSK</b>
-          </p>
-          <p style={{ marginBottom: 0 }}>
-            Voting will end at
-            <br />
-            <b>16 Dec 2020, 12:00 MSK</b>
-          </p>
-        </div>
-      ) : voteToken === 'finished' ? (
-        <div style={{ color: '#000', fontSize: '13px', paddingBottom: 0 }} />
-      ) : (
-        <div style={{ color: '#000', fontSize: '13px', paddingBottom: 0 }}>
-          <p>Voting has begun.</p>
-          <p>
-            Please vote{' '}
-            <b>
-              <a
-                href="https://ffelection20.questionpro.com/"
-                target="_blank"
-                style={{ textDecoration: 'underline' }}
-              >
-                using this link
-              </a>
-            </b>{' '}
-            with your unique vote key:
-          </p>
-          <p style={{ overflowWrap: 'break-word', wordWrap: 'break-word' }}>
-            <b>{voteToken}</b>
-          </p>
-          <p style={{ marginBottom: 0 }}>
-            Voting will end at <br />
-            <b>16 Dec 2020, 12:00 MSK</b>
-          </p>
-        </div>
-      )}
-    </div>
-  );
-};
-
 const SideBar = ({ user, signOut, recentGroups }) => {
   return (
     <div className="col-md-3 sidebar">
       <ErrorBoundary>
         <LoggedInBlock user={user} signOut={signOut} />
         <SideBarFriends user={user} />
-        <Vote2020 voteToken={user.privateMeta?.vote2020} />
         <SideBarGroups recentGroups={recentGroups} />
         <SideBarArchive user={user} />
         <SideBarFreeFeed />
