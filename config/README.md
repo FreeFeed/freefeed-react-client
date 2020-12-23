@@ -27,3 +27,7 @@ be placed in web root near the _index.html_.
 This file, if exists, is merged with the other configuration in runtime (when
 site is opened in the browser). It allow site administrator to change some
 configuration parameters without recompiling all the code.
+
+You can also use this file with the development server. Just place a
+_config.json_ to the project root (near the _package.json_). Bear in mind that
+this file will not be included in compiled code!
