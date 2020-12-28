@@ -20,6 +20,7 @@ import {
 } from '../services/appearance';
 import { scrollingOrInteraction, unscroll } from '../services/unscroll';
 import { inactivityOf } from '../utils/event-sequences';
+import { authDebug } from '../utils/debug';
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import {
@@ -227,18 +228,19 @@ function shouldGoToSignIn(pathname) {
 export const authMiddleware = (store) => {
   let firstUnauthenticated = true;
 
-  setInterval(
-    () =>
-      store.getState().authenticated &&
-      doSequence(store.dispatch)(
-        (dispatch) => dispatch(ActionCreators.reissueAuthSession()),
-        (dispatch, { payload }) => {
-          setToken(payload.authToken);
-          dispatch(ActionCreators.authTokenUpdated());
-        },
-      ),
-    CONFIG.authSessions.reissueIntervalSec * 1000,
-  );
+  setInterval(() => {
+    if (!store.getState().authenticated) {
+      return;
+    }
+    authDebug('start token reissue');
+    doSequence(store.dispatch)(
+      (dispatch) => dispatch(ActionCreators.reissueAuthSession()),
+      (dispatch, { payload }) => {
+        setToken(payload.authToken);
+        dispatch(ActionCreators.authTokenUpdated());
+      },
+    );
+  }, CONFIG.authSessions.reissueIntervalSec * 1000);
 
   return (next) => (action) => {
     //stop action propagation if it should be authed and user is not authed
@@ -290,6 +292,13 @@ export const authMiddleware = (store) => {
       const res = next(action);
       store.dispatch(ActionCreators.unauthenticated());
       return res;
+    }
+
+    if (action.type === response(ActionTypes.REISSUE_AUTH_SESSION)) {
+      authDebug('token successfully reissued');
+    }
+    if (action.type === fail(ActionTypes.REISSUE_AUTH_SESSION)) {
+      authDebug(`cannot reissue token: ${action.payload.err}`);
     }
 
     return next(action);

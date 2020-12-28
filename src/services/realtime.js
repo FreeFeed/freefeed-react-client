@@ -2,6 +2,7 @@
 import io from 'socket.io-client';
 
 import {
+  authDebug,
   realtimeSocketDebug as socketDebug,
   realtimeSubscriptionDebug as subscriptionDebug,
 } from '../utils/debug';
@@ -32,7 +33,13 @@ export class Connection {
 
   async reAuthorize() {
     if (this.socket.connected) {
-      await this.socket.emitAsync('auth', { authToken: getToken() });
+      const authToken = getToken();
+      if (authToken) {
+        authDebug('authorizing realtime connection');
+      } else {
+        authDebug('unauthorizing realtime connection');
+      }
+      await this.socket.emitAsync('auth', { authToken });
     }
   }
 

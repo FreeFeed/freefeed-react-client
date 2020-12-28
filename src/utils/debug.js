@@ -8,3 +8,5 @@ export const realtimeSubscriptionDebug = createDebug(`${prefix}:realtime:subscri
 export const unscrollDebug = createDebug(`${prefix}:unscroll`);
 
 export const retryPromiseDebug = createDebug(`${prefix}:retryPromise`);
+
+export const authDebug = createDebug(`${prefix}:auth`);
