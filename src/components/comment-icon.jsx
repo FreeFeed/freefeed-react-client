@@ -54,7 +54,9 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
     [mention, reply],
   );
 
-  const countClick = useCallback(() => likesListToggle(), [likesListToggle]);
+  const countClick = useCallback((e) => (e.stopPropagation(), likesListToggle()), [
+    likesListToggle,
+  ]);
 
   const heartClass = cn('comment-likes', {
     'has-my-like': hasOwnLike,
@@ -138,7 +140,11 @@ const LikesList = forwardRef(function LikesList({ id }, ref) {
   const { status, likers } = useCommentLikers(id);
   return (
     <div className="comment-likes-list" ref={ref}>
-      {status.loading && <Throbber />}
+      {status.loading && (
+        <>
+          Loading… <Throbber />
+        </>
+      )}
       {status.error && `Error: ${status.errorText}`}
       {status.success && likers.map((u) => <UserName user={u} key={u.id} />)}
     </div>

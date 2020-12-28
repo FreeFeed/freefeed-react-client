@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.90.0] - Not Released
 ### Fixed
 - Compensate the unwanted scrolling on iOS Chrome after lightbox closing.
+- Prevent early close of the comment-likes list (It started to close after opening in React 17)
 
 ### Added
 - Developers can use the _config.json_ file in the project root during the dev.
