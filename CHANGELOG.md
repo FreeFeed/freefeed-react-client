@@ -20,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   interfaces instead of just 127.0.0.1. It helps to debug client on different
   devices in same network.
 
+## [1.89.3] - 2020-12-18
+### Fixed
+- Resolved regression (removed prematurely enabled react-17)
+
 ## [1.89.2] - 2020-12-18
 ### Fixed
 - Prevent conflict between spoilers and 'read more'
