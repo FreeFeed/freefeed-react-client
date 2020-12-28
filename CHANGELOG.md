@@ -5,13 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.89.2] - Not released
+## [1.90.0] - Not Released
 ### Fixed
-- Prevent conflict between spoilers and 'read more'
 - Compensate the unwanted scrolling on iOS Chrome after lightbox closing.
 
 ### Added
-- Link to results in Vote2020 block
 - Developers can use the _config.json_ file in the project root during the dev.
   server run. This file will not be included in compiled code but it is useful
   for development because config changes now doesn't require full client
@@ -21,6 +19,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Developer server (started by `yarn start`) now listening all network
   interfaces instead of just 127.0.0.1. It helps to debug client on different
   devices in same network.
+
+## [1.89.2] - 2020-12-18
+### Fixed
+- Prevent conflict between spoilers and 'read more'
+
+### Added
+- Link to results in Vote2020 block
 
 ## [1.89.1] - 2020-12-15
 ### Changed
