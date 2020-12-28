@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Developer server (started by `yarn start`) now listening all network
   interfaces instead of just 127.0.0.1. It helps to debug client on different
   devices in same network.
+- Tweaked contrast of spoiler-tags (they're WCAG compatible now)
 
 ## [1.89.3] - 2020-12-18
 ### Fixed
