@@ -1,10 +1,12 @@
 /* global CONFIG */
-import createDebug from 'debug';
 import io from 'socket.io-client';
 
+import {
+  realtimeSocketDebug as socketDebug,
+  realtimeSubscriptionDebug as subscriptionDebug,
+} from '../utils/debug';
 import { getToken } from './auth';
 
-const socketDebug = createDebug('freefeed:react:realtime:socket');
 const bindSocketLog = (socket) => (eventName) =>
   socket.on(eventName, (data) => socketDebug(`got event: ${eventName}`, data));
 
@@ -12,7 +14,6 @@ const bindSocketActionsLog = (socket) => (events) => events.forEach(bindSocketLo
 
 const eventsToLog = ['connect', 'error', 'disconnect', 'reconnect'];
 
-const subscriptionDebug = createDebug('freefeed:react:realtime:subscriptions');
 export class Connection {
   socket;
 

@@ -1,7 +1,6 @@
 import { lazy } from 'react';
-import createDebug from 'debug';
 
-const debug = createDebug('freefeed:react:retryPromise');
+import { retryPromiseDebug as debug } from './debug';
 
 /**
  * Returns function that retries the given function until it succeeds or throws
