@@ -478,16 +478,14 @@ export const UserProfileHead = withRouter(
                 linkTo={`/${user.username}/subscribers`}
                 canFollow={canFollowStatLinks}
               />
-              {/* Looks like posts statistics is totally incorrect, so dont show it
-                {user.type === 'user' && (
-                  <StatLink
-                    value={user.statistics.posts}
-                    title="post"
-                    linkTo={`/${user.username}`}
-                    canFollow={canFollowStatLinks}
-                  />
-                )}
-                */}
+              {isCurrentUser && (
+                <StatLink
+                  value={user.statistics.posts}
+                  title="post"
+                  linkTo="/search?qs=from%3Ame"
+                  canFollow={canFollowStatLinks}
+                />
+              )}
               {user.type === 'user' && (
                 <StatLink
                   value={user.statistics.comments}
