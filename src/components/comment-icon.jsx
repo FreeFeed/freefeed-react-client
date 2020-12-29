@@ -30,7 +30,7 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
     menuRef: likesListRef,
     opened: likesListOpened,
     toggle: likesListToggle,
-  } = useDropDown();
+  } = useDropDown({ closeOn: CLOSE_ON_CLICK_OUTSIDE });
 
   const {
     ref: panelRef,
