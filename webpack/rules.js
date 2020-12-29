@@ -24,7 +24,12 @@ class RuleGenerator {
             babelrc: false,
             compact: false,
             presets: skipFalsy([
-              '@babel/react',
+              [
+                '@babel/react',
+                {
+                  runtime: 'automatic',
+                },
+              ],
               [
                 '@babel/env',
                 {
@@ -73,7 +78,12 @@ class RuleGenerator {
       options: {
         babelrc: false,
         presets: [
-          '@babel/react',
+          [
+            '@babel/react',
+            {
+              runtime: 'automatic',
+            },
+          ],
           [
             '@babel/env',
             {

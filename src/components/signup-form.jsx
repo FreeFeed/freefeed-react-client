@@ -1,5 +1,5 @@
 /* global CONFIG */
-import React, { useMemo, useCallback, useRef, useEffect } from 'react';
+import { memo, useMemo, useCallback, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 import Recaptcha from 'react-google-recaptcha';
@@ -75,7 +75,7 @@ const onSubmit = ({
   dispatch(signUp(reqData));
 };
 
-export default React.memo(function SignupForm({ invitationId = null, lang = 'en' }) {
+export default memo(function SignupForm({ invitationId = null, lang = 'en' }) {
   const dispatch = useDispatch();
   const signUpStatus = useSelector((state) => state.signUpStatus);
   const extProfile = useSelector((state) => {

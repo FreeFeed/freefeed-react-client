@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import { Link } from 'react-router';
 
 import { preventDefault } from '../utils';
@@ -6,7 +6,7 @@ import { Throbber } from './throbber';
 
 import GroupFeedTypePicker from './group-feed-type-picker';
 
-export default class GroupCreateForm extends React.Component {
+export default class GroupCreateForm extends Component {
   constructor(props) {
     super(props);
 

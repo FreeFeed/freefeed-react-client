@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState, useRef, useEffect, forwardRef } from 'react';
+import { useMemo, useCallback, useState, useRef, useEffect, forwardRef } from 'react';
 import Textarea from 'react-textarea-autosize';
 import cn from 'classnames';
 

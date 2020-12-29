@@ -1,5 +1,5 @@
 import pt from 'prop-types';
-import React from 'react';
+import { Component } from 'react';
 import classnames from 'classnames';
 
 import { faChevronCircleRight } from '@fortawesome/free-solid-svg-icons';
@@ -19,7 +19,7 @@ const Sortable = lazyComponent(
   },
 );
 
-export default class ImageAttachmentsContainer extends React.Component {
+export default class ImageAttachmentsContainer extends Component {
   static propTypes = {
     attachments: pt.array.isRequired,
     isSinglePost: pt.bool,

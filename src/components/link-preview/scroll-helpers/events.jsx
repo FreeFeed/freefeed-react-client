@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import ReactDOM from 'react-dom';
 import CustomEvent from 'custom-event';
 
@@ -8,7 +8,7 @@ export function contentResized(el) {
   try {
     if (el instanceof HTMLElement) {
       // pass
-    } else if (el instanceof React.Component) {
+    } else if (el instanceof Component) {
       el = ReactDOM.findDOMNode(el);
     } else {
       return;

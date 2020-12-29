@@ -1,5 +1,5 @@
 /* global CONFIG */
-import React from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import _ from 'lodash';
@@ -40,7 +40,7 @@ const imagesFromURL = memoize((url) => {
   return imageUrls;
 });
 
-class Layout extends React.Component {
+class Layout extends Component {
   state = { imageUrls: null };
 
   /**

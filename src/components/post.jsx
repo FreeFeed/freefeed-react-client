@@ -1,5 +1,5 @@
 /* global CONFIG */
-import React from 'react';
+import { createRef, Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import classnames from 'classnames';
@@ -43,9 +43,9 @@ import { UserPicture } from './user-picture';
 
 const attachmentsMaxCount = CONFIG.attachments.maxCount;
 
-class Post extends React.Component {
+class Post extends Component {
   selectFeeds;
-  hideLink = React.createRef();
+  hideLink = createRef();
 
   state = {
     forceAbsTimestamps: false,

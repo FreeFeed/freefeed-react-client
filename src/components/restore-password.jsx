@@ -1,6 +1,6 @@
 /* global CONFIG */
 import { parse as qsParse } from 'querystring';
-import React, { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import isEmail from 'validator/lib/isEmail';
 import cn from 'classnames';
@@ -9,7 +9,7 @@ import { restorePassword } from '../redux/action-creators';
 import { FieldsetWrapper } from './fieldset-wrapper';
 import { Throbber } from './throbber';
 
-export default React.memo(function RestorePasswordPage() {
+export default memo(function RestorePasswordPage() {
   return (
     <div className="box">
       <div className="box-header-timeline">Welcome to {CONFIG.siteTitle}!</div>
@@ -28,7 +28,7 @@ export default React.memo(function RestorePasswordPage() {
   );
 });
 
-const RestorePasswordForm = React.memo(function RestorePasswordForm() {
+const RestorePasswordForm = memo(function RestorePasswordForm() {
   const status = useSelector((state) => state.restorePasswordStatus);
   const dispatch = useDispatch();
 

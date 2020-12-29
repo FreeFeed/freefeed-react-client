@@ -1,6 +1,6 @@
 import { stringify } from 'querystring';
 
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { Link } from 'react-router';
 import { trim } from 'lodash';
 

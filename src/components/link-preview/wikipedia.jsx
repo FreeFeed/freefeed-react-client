@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useMemo, useRef } from 'react';
+import { memo, useState, useEffect, useMemo, useRef } from 'react';
 
 import cachedFetch from './cached-fetch';
 import FoldableContent from './scroll-helpers/foldable-content';

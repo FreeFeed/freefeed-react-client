@@ -1,5 +1,5 @@
 /* global CONFIG */
-import React, { useEffect, useCallback, useMemo } from 'react';
+import { memo, useEffect, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { faTimes, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
@@ -78,7 +78,7 @@ export default function ExtAuthForm() {
   );
 }
 
-const ConnectedProfile = React.memo(function ConnectedProfile({ profile }) {
+const ConnectedProfile = memo(function ConnectedProfile({ profile }) {
   const disconnectStatus = useSelector(
     (state) => state.extAuth.disconnectStatuses[profile.id] || initialAsyncState,
   );

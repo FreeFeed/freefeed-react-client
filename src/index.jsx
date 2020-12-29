@@ -1,5 +1,4 @@
 /* global CONFIG */
-import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory, Redirect } from 'react-router';
 import { Provider, useSelector } from 'react-redux';

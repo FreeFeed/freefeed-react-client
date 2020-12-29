@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import { Component } from 'react';
 import classnames from 'classnames';
 import { faMinusSquare, faPlusSquare } from '@fortawesome/free-regular-svg-icons';
 
 import { Icon } from '../../fontawesome-icons';
 import { ELEMENT_RESIZE_EVENT } from './events';
 
-export default class FoldableContent extends React.Component {
+export default class FoldableContent extends Component {
   static propTypes = {
     maxUnfoldedHeight: PropTypes.number.isRequired,
     foldedHeight: PropTypes.number.isRequired,

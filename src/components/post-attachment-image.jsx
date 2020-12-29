@@ -1,11 +1,11 @@
-import React from 'react';
+import { PureComponent } from 'react';
 import classnames from 'classnames';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import { formatFileSize } from '../utils';
 import { Icon } from './fontawesome-icons';
 
-class PostAttachmentImage extends React.PureComponent {
+class PostAttachmentImage extends PureComponent {
   handleRemoveImage = () => {
     this.props.removeAttachment(this.props.id);
   };

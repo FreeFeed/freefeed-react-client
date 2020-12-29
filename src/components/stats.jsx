@@ -1,5 +1,5 @@
 /* global CONFIG */
-import React from 'react';
+import { Component } from 'react';
 import Highcharts from 'highcharts/highcharts';
 import HighchartsMore from 'highcharts/highcharts-more';
 import ReactHighcharts from 'react-highcharts';
@@ -12,7 +12,7 @@ import subYears from 'date-fns/subYears';
 const Chart = ReactHighcharts.withHighcharts(Highcharts);
 HighchartsMore(Chart.Highcharts);
 
-class StatsChart extends React.Component {
+class StatsChart extends Component {
   constructor(props) {
     super(props);
 

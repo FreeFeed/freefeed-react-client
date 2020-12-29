@@ -1,5 +1,5 @@
 /* global CONFIG */
-import React from 'react';
+import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PieceOfText from './piece-of-text';
 import SignupForm from './signup-form';
@@ -60,7 +60,7 @@ const INVITE_EXPIRED = {
   ),
 };
 
-class SignupByInvitation extends React.PureComponent {
+class SignupByInvitation extends PureComponent {
   render() {
     const { error } = this.props;
     return (
