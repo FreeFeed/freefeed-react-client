@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New authorization sessions support. User is now able to view and manage
   (close) their authorization sessions on the special settings page.
 
+## [1.90.1] - 2020-12-30
+### Fixed
+- Restored accidentally deleted "Browse" word from sidebar
+
 ## [1.90.0] - 2020-12-29
 ### Fixed
 - Compensate the unwanted scrolling on iOS Chrome after lightbox closing.
