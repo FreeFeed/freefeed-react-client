@@ -2398,3 +2398,10 @@ export function resumeToken(state = null, action) {
 }
 
 export { attachmentUploads, attachmentUploadStatuses } from './reducers/attachment-uploads';
+
+export {
+  signOutStatus,
+  authSessions,
+  authSessionsStatus,
+  closeAuthSessionsStatus,
+} from './reducers/auth-sessios';

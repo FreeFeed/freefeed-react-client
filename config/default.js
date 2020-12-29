@@ -79,6 +79,10 @@ export default {
     google: null,
   },
 
+  authSessions: {
+    reissueIntervalSec: 1800,
+  },
+
   eslint: {
     // By default the eslint-linebreak-style directive requires "windows" linebreaks
     // on Windows platform and "unix" linebreaks otherwise.

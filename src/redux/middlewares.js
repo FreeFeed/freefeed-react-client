@@ -1,4 +1,4 @@
-/*global Raven*/
+/* global Raven, CONFIG */
 import { browserHistory } from 'react-router';
 import _ from 'lodash';
 
@@ -20,6 +20,7 @@ import {
 } from '../services/appearance';
 import { scrollingOrInteraction, unscroll } from '../services/unscroll';
 import { inactivityOf } from '../utils/event-sequences';
+import { authDebug } from '../utils/debug';
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import {
@@ -34,7 +35,7 @@ import {
   cancelConcurrentRequest,
   isUserChangeResponse,
 } from './action-helpers';
-import { asyncPhase, RESPONSE_PHASE, progress } from './async-helpers';
+import { asyncPhase, RESPONSE_PHASE, progress, doSequence } from './async-helpers';
 
 export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
   if (isFeedGeneratingAction(action)) {
@@ -227,6 +228,20 @@ function shouldGoToSignIn(pathname) {
 export const authMiddleware = (store) => {
   let firstUnauthenticated = true;
 
+  setInterval(() => {
+    if (!store.getState().authenticated) {
+      return;
+    }
+    authDebug('start token reissue');
+    doSequence(store.dispatch)(
+      (dispatch) => dispatch(ActionCreators.reissueAuthSession()),
+      (dispatch, { payload }) => {
+        setToken(payload.authToken);
+        dispatch(ActionCreators.authTokenUpdated());
+      },
+    );
+  }, CONFIG.authSessions.reissueIntervalSec * 1000);
+
   return (next) => (action) => {
     //stop action propagation if it should be authed and user is not authed
     if (requiresAuth(action) && !store.getState().authenticated) {
@@ -264,6 +279,26 @@ export const authMiddleware = (store) => {
 
       const backTo = store.getState().routing.locationBeforeTransitions.query.back || '/';
       return browserHistory.push(`${backTo}`);
+    }
+
+    if (
+      action.type === response(ActionTypes.SIGN_OUT) ||
+      action.type === fail(ActionTypes.SIGN_OUT)
+    ) {
+      if (action.type === fail(ActionTypes.SIGN_OUT)) {
+        // Unauthorize even if error
+        console.warn(`Error signing out: ${action.payload.err}`);
+      }
+      const res = next(action);
+      store.dispatch(ActionCreators.unauthenticated());
+      return res;
+    }
+
+    if (action.type === response(ActionTypes.REISSUE_AUTH_SESSION)) {
+      authDebug('token successfully reissued');
+    }
+    if (action.type === fail(ActionTypes.REISSUE_AUTH_SESSION)) {
+      authDebug(`cannot reissue token: ${action.payload.err}`);
     }
 
     return next(action);
@@ -720,6 +755,10 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers, userActivit
 
     if (action.type === ActionTypes.UNAUTHENTICATED) {
       conn.reAuthorize().then(() => unsubscribeByRegexp(/^user:/));
+    }
+
+    if (action.type === ActionTypes.AUTH_TOKEN_UPDATED) {
+      conn.reAuthorize();
     }
 
     if (

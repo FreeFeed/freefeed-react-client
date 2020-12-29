@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import classnames from 'classnames';
 
-import { unauthenticated, home } from '../redux/action-creators';
+import { signOut, home } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
 import Footer from './footer';
 import Sidebar from './sidebar';
@@ -222,7 +222,7 @@ function select(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    signOut: () => dispatch(unauthenticated()),
+    signOut: () => dispatch(signOut()),
     home: () => dispatch(home()),
   };
 }

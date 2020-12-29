@@ -1,7 +1,5 @@
-import createDebug from 'debug';
 import { EventsSequence, CombinedEventsSequences, FINISH, START } from '../utils/event-sequences';
-
-const unscrollDebug = createDebug('freefeed:react:unscroll');
+import { unscrollDebug } from '../utils/debug';
 
 export const scrolling = new EventsSequence(200);
 const userInteraction = new EventsSequence(500);

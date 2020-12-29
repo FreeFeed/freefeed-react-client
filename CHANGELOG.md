@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.91.0] - Not released
+### Added
+- New authorization sessions support. User is now able to view and manage
+  (close) their authorization sessions on the special settings page.
+
 ## [1.90.0] - 2020-12-29
 ### Fixed
 - Compensate the unwanted scrolling on iOS Chrome after lightbox closing.

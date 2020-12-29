@@ -1120,3 +1120,38 @@ export function resetAttachmentUpload(uploadId) {
     payload: { uploadId },
   };
 }
+
+export function signOut() {
+  return {
+    type: ActionTypes.SIGN_OUT,
+    apiRequest: Api.signOut,
+  };
+}
+
+export function reissueAuthSession() {
+  return {
+    type: ActionTypes.REISSUE_AUTH_SESSION,
+    apiRequest: Api.reissueAuthSession,
+  };
+}
+
+export function authTokenUpdated() {
+  return {
+    type: ActionTypes.AUTH_TOKEN_UPDATED,
+  };
+}
+
+export function listAuthSessions() {
+  return {
+    type: ActionTypes.LIST_AUTH_SESSIONS,
+    apiRequest: Api.listAuthSessions,
+  };
+}
+
+export function closeAuthSessions(ids) {
+  return {
+    type: ActionTypes.CLOSE_AUTH_SESSIONS,
+    apiRequest: Api.closeAuthSessions,
+    payload: ids,
+  };
+}

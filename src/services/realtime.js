@@ -1,10 +1,13 @@
 /* global CONFIG */
-import createDebug from 'debug';
 import io from 'socket.io-client';
 
+import {
+  authDebug,
+  realtimeSocketDebug as socketDebug,
+  realtimeSubscriptionDebug as subscriptionDebug,
+} from '../utils/debug';
 import { getToken } from './auth';
 
-const socketDebug = createDebug('freefeed:react:realtime:socket');
 const bindSocketLog = (socket) => (eventName) =>
   socket.on(eventName, (data) => socketDebug(`got event: ${eventName}`, data));
 
@@ -12,7 +15,6 @@ const bindSocketActionsLog = (socket) => (events) => events.forEach(bindSocketLo
 
 const eventsToLog = ['connect', 'error', 'disconnect', 'reconnect'];
 
-const subscriptionDebug = createDebug('freefeed:react:realtime:subscriptions');
 export class Connection {
   socket;
 
@@ -31,7 +33,13 @@ export class Connection {
 
   async reAuthorize() {
     if (this.socket.connected) {
-      await this.socket.emitAsync('auth', { authToken: getToken() });
+      const authToken = getToken();
+      if (authToken) {
+        authDebug('authorizing realtime connection');
+      } else {
+        authDebug('unauthorizing realtime connection');
+      }
+      await this.socket.emitAsync('auth', { authToken });
     }
   }
 
