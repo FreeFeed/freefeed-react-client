@@ -11,9 +11,13 @@ import { initialAsyncState } from '../redux/async-helpers';
 import TimeDisplay from './time-display';
 import UserName from './user-name';
 import { Icon } from './fontawesome-icons';
-import { useDropDown } from './hooks/drop-down';
+import { CLOSE_ON_CLICK_OUTSIDE, useDropDown } from './hooks/drop-down';
 import { Throbber } from './throbber';
 import ActionsPanel, { useActionsPanel } from './comment-actions-popup';
+import { useWaiting } from './hooks/waiting';
+
+// Do not show clikes list for this interval if data is not available yet
+const CLIKES_LIST_DELAY = 250;
 
 // Assume that the comment always exists (i. e. it is not the icon near the "New comment" form)
 export default memo(function CommentIcon({ id, omitBubble = false, reply, mention, postId }) {
@@ -30,13 +34,13 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
     menuRef: likesListRef,
     opened: likesListOpened,
     toggle: likesListToggle,
-  } = useDropDown();
+  } = useDropDown({ closeOn: CLOSE_ON_CLICK_OUTSIDE });
 
   const {
     ref: panelRef,
     opened: actionsPanelOpened,
     hide: hideActionsPanel,
-    handlers: touchHendlers,
+    handlers: touchHandlers,
   } = useActionsPanel();
 
   const heartClick = useCallback(
@@ -54,8 +58,6 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
     [mention, reply],
   );
 
-  const countClick = useCallback(() => likesListToggle(), [likesListToggle]);
-
   const heartClass = cn('comment-likes', {
     'has-my-like': hasOwnLike,
     'non-likable': !canLike,
@@ -65,10 +67,10 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
   const bubbleProps = { id: `comment-${id}`, onClick: bubbleClick };
 
   return (
-    <div className="comment-likes-container" {...touchHendlers}>
+    <div className="comment-likes-container" {...touchHandlers}>
       {/* Heart & likes count */}
       <div className={heartClass}>
-        <div className="comment-count" onClick={countClick} ref={countRef}>
+        <div className="comment-count" onClick={likesListToggle} ref={countRef}>
           {likes || ''}
         </div>
         <div className="comment-heart" onClick={heartClick}>
@@ -135,9 +137,10 @@ export function useCommentLikers(id) {
 }
 
 const LikesList = forwardRef(function LikesList({ id }, ref) {
+  const waiting = useWaiting(CLIKES_LIST_DELAY);
   const { status, likers } = useCommentLikers(id);
   return (
-    <div className="comment-likes-list" ref={ref}>
+    <div className="comment-likes-list" ref={ref} hidden={waiting && status.loading}>
       {status.loading && <Throbber />}
       {status.error && `Error: ${status.errorText}`}
       {status.success && likers.map((u) => <UserName user={u} key={u.id} />)}

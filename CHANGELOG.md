@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.90.0] - Not Released
+### Fixed
+- Compensate the unwanted scrolling on iOS Chrome after lightbox closing.
+- Prevent early close of the comment-likes list (It started to close after opening in React 17)
+
+### Added
+- Developers can use the _config.json_ file in the project root during the dev.
+  server run. This file will not be included in compiled code but it is useful
+  for development because config changes now doesn't require full client
+  rebuild.
+
+### Changed
+- Developer server (started by `yarn start`) now listening all network
+  interfaces instead of just 127.0.0.1. It helps to debug client on different
+  devices in same network.
+- Tweaked contrast of spoiler-tags (they're WCAG compatible now)
+- Don't close clikes-panel on click inside of it (still close it on click outside)
+- Wait up to 250ms after click to show fully rendered clikes panel. Show throbber if data is not ready after that 
+
 ## [1.89.3] - 2020-12-18
 ### Fixed
 - Resolved regression (removed prematurely enabled react-17)

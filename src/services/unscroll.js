@@ -47,11 +47,16 @@ const pinnedSelectors = [
 const inputElements = ['INPUT', 'TEXTAREA', 'SELECT'];
 
 const maxPinDepth = 4;
-let pinnedElements = [];
 
-scrolling.on(START, () => (pinnedElements = []));
-scrolling.on(FINISH, () => {
-  pinnedElements = [];
+/* Pinned elements collection */
+export const pinnedElements = [];
+pinnedElements.clear = function () {
+  this.length = 0;
+};
+
+pinnedElements.capture = function () {
+  this.clear();
+
   const { activeElement } = document;
   if (
     activeElement !== document.body &&
@@ -59,7 +64,7 @@ scrolling.on(FINISH, () => {
     isInViewport(activeElement)
   ) {
     const { top } = activeElement.getBoundingClientRect();
-    pinnedElements.push({ node: activeElement, top });
+    this.push({ node: activeElement, top });
     unscrollDebug('Pinned input:', activeElement);
     return;
   }
@@ -69,18 +74,22 @@ scrolling.on(FINISH, () => {
     const node = nodes[i];
     const { top, bottom } = node.getBoundingClientRect();
     if (bottom > 0) {
-      pinnedElements.push({ node, top });
+      this.push({ node, top });
       unscrollDebug('Pinned element:', node);
       let p = node.parentElement;
-      while (p && pinnedElements.length < maxPinDepth) {
+      while (p && this.length < maxPinDepth) {
         const { top } = p.getBoundingClientRect();
-        pinnedElements.push({ node: p, top });
+        this.push({ node: p, top });
         p = p.parentElement;
       }
       break;
     }
   }
-});
+};
+/* /Pinned elements collection */
+
+scrolling.on(START, () => pinnedElements.clear());
+scrolling.on(FINISH, () => pinnedElements.capture());
 
 export function safeScrollTo(x, y) {
   scrolling.trigger();
@@ -93,10 +102,13 @@ export function safeScrollBy(x, y) {
 }
 
 export function unscroll() {
-  if (scrolling.active) {
-    return;
+  if (!scrolling.active) {
+    unscrollTo(pinnedElements);
   }
-  const pinned = pinnedElements.find((p) => p.node.isConnected);
+}
+
+export function unscrollTo(elements) {
+  const pinned = elements.find((p) => p.node.isConnected);
   if (!pinned) {
     return;
   }
