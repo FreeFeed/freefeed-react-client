@@ -36,7 +36,7 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
     ref: panelRef,
     opened: actionsPanelOpened,
     hide: hideActionsPanel,
-    handlers: touchHendlers,
+    handlers: touchHandlers,
   } = useActionsPanel();
 
   const heartClick = useCallback(
@@ -54,10 +54,6 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
     [mention, reply],
   );
 
-  const countClick = useCallback((e) => (e.stopPropagation(), likesListToggle()), [
-    likesListToggle,
-  ]);
-
   const heartClass = cn('comment-likes', {
     'has-my-like': hasOwnLike,
     'non-likable': !canLike,
@@ -67,10 +63,10 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
   const bubbleProps = { id: `comment-${id}`, onClick: bubbleClick };
 
   return (
-    <div className="comment-likes-container" {...touchHendlers}>
+    <div className="comment-likes-container" {...touchHandlers}>
       {/* Heart & likes count */}
       <div className={heartClass}>
-        <div className="comment-count" onClick={countClick} ref={countRef}>
+        <div className="comment-count" onClick={likesListToggle} ref={countRef}>
           {likes || ''}
         </div>
         <div className="comment-heart" onClick={heartClick}>
