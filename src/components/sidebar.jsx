@@ -93,7 +93,7 @@ const SideBarFriends = ({ user }) => {
         {do {
           if (homeFeedsCount === 1) {
             <div className="box-footer">
-              <Link to={`/friends`}>/edit friends and lists</Link>
+              <Link to={`/friends`}>Browse/edit friends and lists</Link>
             </div>;
           }
         }}
