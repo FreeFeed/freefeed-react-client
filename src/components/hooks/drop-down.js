@@ -30,8 +30,11 @@ export function useDropDown({
           }
         }
       };
-      document.body.addEventListener('click', h);
-      return () => document.body.removeEventListener('click', h);
+      // Using captured event here to prevent conflict with pivot onClick
+      // handler as recommended in
+      // https://reactjs.org/blog/2020/08/10/react-v17-rc.html#fixing-potential-issues
+      document.body.addEventListener('click', h, { capture: true });
+      return () => document.body.removeEventListener('click', h, { capture: true });
     }
   }, [opened, closeOn]);
 
