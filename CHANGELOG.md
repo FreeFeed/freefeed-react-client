@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   interfaces instead of just 127.0.0.1. It helps to debug client on different
   devices in same network.
 - Tweaked contrast of spoiler-tags (they're WCAG compatible now)
+- Don't close clikes-panel on click inside of it (still close it on click outside)
+- Wait up to 250ms after click to show fully rendered clikes panel. Show throbber if data is not ready after that 
 
 ## [1.89.3] - 2020-12-18
 ### Fixed
