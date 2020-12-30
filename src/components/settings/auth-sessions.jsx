@@ -153,7 +153,7 @@ function SessionRow({ session, onClick, checked }) {
       </div>
       <div>
         <div>
-          {uaString}
+          <span title={session.lastUserAgent}>{uaString}</span>
           {session.isCurrent && <em className="text-primary"> — your current session</em>}
         </div>
         <div className="text-muted">
