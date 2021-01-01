@@ -481,6 +481,7 @@ class Post extends Component {
                       minRows={2}
                       maxRows={10}
                       maxLength="1500"
+                      dir={'auto'}
                     />
                   </div>
 

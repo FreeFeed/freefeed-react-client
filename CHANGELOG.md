@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Text is properly selectable (select, copy, paste) even if it has spoiler-tags in it
 - Protection against accidental spoiler text selection work in Chrome (select doesn't reveal text. use click to reveal)
+- Improve auto-direction support in text inputs (useful for right-to-left languages)
 
 ### Changed
 - Removed hover effect from spoiler tags
