@@ -1,2 +1,5 @@
 $icon-font-path: '../../assets/fonts/bootstrap/';
+$IRANSans-font-path: '../../assets/fonts/IRANSans/';
+@import 'fontiran.scss';
+$font-family-sans-serif: IRANSans, "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 @import 'bootstrap/bootstrap.3.3.4.scss';
