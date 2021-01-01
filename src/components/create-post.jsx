@@ -198,6 +198,7 @@ export default class CreatePost extends Component {
               minRows={3}
               maxRows={10}
               maxLength="1500"
+              dir={'auto'}
             />
           </div>
 

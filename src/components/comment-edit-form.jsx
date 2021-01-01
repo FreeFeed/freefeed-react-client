@@ -102,6 +102,7 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
           maxRows={10}
           maxLength={1500}
           readOnly={submitStatus.loading}
+          dir={'auto'}
         />
       </div>
       <div>
