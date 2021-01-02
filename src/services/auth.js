@@ -14,13 +14,20 @@ export function getToken() {
   return token;
 }
 
-export function setToken(newToken = null) {
-  if (!newToken) {
-    authDebug('cleaning token up');
-    storage.removeItem(NAME);
-  } else {
-    authDebug('saving token to the storage');
-    storage.setItem(NAME, newToken);
+export function setToken(newToken = null, save = true) {
+  if (save) {
+    if (!newToken) {
+      authDebug('cleaning token up');
+      storage.removeItem(NAME);
+    } else {
+      authDebug('saving token to the storage');
+      storage.setItem(NAME, newToken);
+    }
   }
+  authDebug('updating token in memory');
   token = newToken;
+}
+
+export function onStorageChange(callback) {
+  window?.addEventListener('storage', (e) => e.key === NAME && callback(e.newValue));
 }
