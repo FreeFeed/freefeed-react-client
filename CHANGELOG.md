@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - New authorization sessions support. User is now able to view and manage
   (close) their authorization sessions on the special settings page.
+- User's stats block (on her feed-page) has "All posts" link now
 
 ## [1.90.1] - 2020-12-30
 ### Fixed
