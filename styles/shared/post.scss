@@ -1,4 +1,4 @@
-$post-line-height: 30px;
+$post-line-height: normal;
 
 .post .expandable.folded {
   margin-bottom: 8px;
@@ -14,7 +14,7 @@ $post-line-height: 30px;
   padding-top: 14px;
   padding-bottom: 14px;
   border-bottom: 1px solid #eee;
-  line-height: 19px;
+  line-height: $post-line-height;
   position: relative;
 
   a {
@@ -36,7 +36,7 @@ $post-line-height: 30px;
 
   .post-header {
     font-size: 15px;
-    line-height: 20px;
+    line-height: $post-line-height;
     margin-bottom: 2px;
 
     a {
@@ -57,7 +57,7 @@ $post-line-height: 30px;
 
     color: #666;
     font-size: 14px;
-    line-height: 19px;
+    line-height: $post-line-height;
 
     .post-text {
       margin-bottom: 8px;
@@ -71,7 +71,7 @@ $post-line-height: 30px;
       line-height: $post-line-height;
 
       &.modern {
-        max-height: 5 * $post-line-height;
+        max-height: calc(5 * $post-line-height);
         overflow-y: hidden;
         position: relative;
         display: block;
@@ -278,7 +278,7 @@ $post-line-height: 30px;
     padding: 0.33em;
     margin: -0.33em;
     border-radius: 50%;
-    line-height: 1em;
+    line-height: $post-line-height;
     color: inherit;
     opacity: 0.5;
     transition: opacity 0.3s;
@@ -303,7 +303,7 @@ $post-line-height: 30px;
 
   .post-header {
     font-size: 21px;
-    line-height: 26px;
+    line-height: $post-line-height;
   }
 
   .post-body {
@@ -318,7 +318,7 @@ $post-line-height: 30px;
       }
 
       font-size: 21px;
-      line-height: 26px;
+      line-height: $post-line-height;
     }
   }
 }
@@ -357,7 +357,7 @@ $post-line-height: 30px;
 .post-via-sources {
   font-size: 12px;
   margin-left: 0.4em;
-  line-height: 16px;
+  line-height: $post-line-height;
 }
 
 .post-via-more {
