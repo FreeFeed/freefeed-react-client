@@ -478,11 +478,11 @@ export const UserProfileHead = withRouter(
                 linkTo={`/${user.username}/subscribers`}
                 canFollow={canFollowStatLinks}
               />
-              {isCurrentUser && (
+              {user.type === 'user' && (
                 <StatLink
                   value={user.statistics.posts}
                   title="post"
-                  linkTo="/search?qs=from%3Ame"
+                  linkTo={`/search?qs=${encodeURIComponent(`from:${user.username}`)}`}
                   canFollow={canFollowStatLinks}
                 />
               )}
