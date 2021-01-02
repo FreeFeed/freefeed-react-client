@@ -1,9 +1,11 @@
 /* global CONFIG */
 import { Component } from 'react';
 import Textarea from 'react-textarea-autosize';
+import { Picker, emojiIndex } from 'emoji-mart';
+
 import _ from 'lodash';
 
-import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
+import { faPaperclip, faSmileWink } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
 import { submitByEnter } from '../utils/submit-by-enter';
 import { makeJpegIfNeeded } from '../utils/jpeg-if-needed';
@@ -26,6 +28,7 @@ const getDefaultState = (invitation = '') => ({
   attLoading: false,
   attachments: [],
   dropzoneDisabled: false,
+  emojiPicker: false,
 });
 
 export default class CreatePost extends Component {
@@ -60,9 +63,31 @@ export default class CreatePost extends Component {
     }
   }
 
-  //
-  // Handling attachments
+  handleTogglePicker = () => {
+    this.setState({ emojiPicker: !this.state.emojiPicker });
+  };
 
+  handleAddEmoji = (emoji) => {
+    const oldMessage = this.state.postText;
+    const newMessage = this.colonToUnicode(`${oldMessage}${emoji.colons}`);
+    this.setState({ postText: newMessage, emojiPicker: false });
+  };
+
+  colonToUnicode = (message) => {
+    return message.replace(/:[A-Za-z0-9_+-]+:/g, (x) => {
+      x = x.replace(/:/g, '');
+      const emoji = emojiIndex.emojis[x];
+      if (typeof emoji !== 'undefined') {
+        const unicode = emoji.native;
+        if (typeof unicode !== 'undefined') {
+          return unicode;
+        }
+      }
+      x = `:${x}:`;
+      return x;
+    });
+  };
+  // Handling attachments
   handleDropzoneInit = (d) => {
     this.dropzoneObject = d;
   };
@@ -128,7 +153,9 @@ export default class CreatePost extends Component {
   toggleMore = () => {
     this.setState({ isMoreOpen: !this.state.isMoreOpen });
   };
-
+  colorScheme = () => {
+    return localStorage.getItem(window.CONFIG.appearance.colorSchemeStorageKey);
+  };
   componentWillUnmount() {
     this.props.resetPostCreateForm();
   }
@@ -167,6 +194,7 @@ export default class CreatePost extends Component {
   };
 
   render() {
+    const { emojiPicker } = this.state;
     return (
       <div className="create-post post-editor">
         <ErrorBoundary>
@@ -187,7 +215,6 @@ export default class CreatePost extends Component {
               onSending={this.attLoadingStarted}
               onQueueComplete={this.attLoadingCompleted}
             />
-
             <Textarea
               className="post-textarea"
               value={this.state.postText}
@@ -200,6 +227,25 @@ export default class CreatePost extends Component {
               maxLength="1500"
               dir={'auto'}
             />
+            {emojiPicker && (
+              <Picker
+                set={'apple'}
+                onSelect={this.handleAddEmoji}
+                className={'emojipicker'}
+                title={'Pick your emoji'}
+                emoji={'point_up'}
+                theme={this.colorScheme() ? this.colorScheme() : 'auto'}
+                enableFrequentEmojiSort={true}
+                native={true}
+              />
+            )}
+            <ButtonLink
+              className="comment-emoji-button iconic-button"
+              title="Add emoji"
+              onClick={this.handleTogglePicker}
+            >
+              <Icon icon={faSmileWink} />
+            </ButtonLink>
           </div>
 
           <div className="post-edit-options">
