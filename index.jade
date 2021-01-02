@@ -14,7 +14,7 @@ html(lang='en')
     <!--#include virtual="/v2/timelines-metatags/${username}" -->
     <!--#endif -->
     title FreeFeed
-    unless htmlWebpackPlugin.options.opts.hot
+    unless opts.hot
         link(rel='stylesheet', href=htmlWebpackPlugin.files.css[0])
         link(rel='stylesheet', href=htmlWebpackPlugin.files.css[1])
     noscript
@@ -45,9 +45,12 @@ html(lang='en')
     link(rel='apple-touch-icon', sizes='114x114', href=htmlWebpackPlugin.files.publicPath + 'assets/images/ios/icon_114_114.png')
     link(rel='apple-touch-icon', sizes='76x76', href=htmlWebpackPlugin.files.publicPath + 'assets/images/ios/icon_76_76.png')
     link(rel='apple-touch-icon', sizes='72x72', href=htmlWebpackPlugin.files.publicPath + 'assets/images/ios/icon_72_72.png')
+
     script.
-      window.CONFIG = !{JSON.stringify(htmlWebpackPlugin.options.appConfig)};
-    script(src=htmlWebpackPlugin.files.chunks.config.entry)
+      window.CONFIG = !{JSON.stringify(appConfig)};
+
+    script(src=htmlWebpackPlugin.files.js[0])
+
   body.initial
     //- Instantly check color scheme
     script.
@@ -84,7 +87,7 @@ html(lang='en')
                     strong Javascript is disabled!
                     |  Looks like you have JavaScript disabled in your browser. Please enable it to enjoy our service.
 
-    if htmlWebpackPlugin.options.opts.livereload
+    if opts.livereload
       script( src="/webpack-dev-server.js" )
 
     script.
@@ -157,5 +160,5 @@ html(lang='en')
         }
       })(window, document);
 
-    script(src=htmlWebpackPlugin.files.chunks.app.entry)
-    script(src=htmlWebpackPlugin.files.chunks.common.entry)
+    script(src=htmlWebpackPlugin.files.js[1])
+    script(src=htmlWebpackPlugin.files.js[2])

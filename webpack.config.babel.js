@@ -42,8 +42,12 @@ const config = {
       inject: false,
       template: './index.jade',
       file: 'index.html',
-      appConfig: global.CONFIG,
-      opts,
+      chunks: ['config', 'common', 'app'],
+      chunksSortMode: 'manual',
+      templateParameters: {
+        appConfig: global.CONFIG,
+        opts,
+      },
     }),
     new MiniCssExtractPlugin({
       filename: opts.hash ? '[name]-[contenthash].css' : '[name]-dev.css',
