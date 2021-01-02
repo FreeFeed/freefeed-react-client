@@ -19,9 +19,9 @@ export default function SignInPage() {
       </section>
 
       <section className={styles.formSection}>
-        <h4>Authorization sessions</h4>
+        <h4>Login sessions</h4>
         <p>
-          <Link to="/settings/sign-in/sessions">View your authorization sessions</Link>
+          <Link to="/settings/sign-in/sessions">View your login sessions</Link>
         </p>
       </section>
     </SettingsPage>
