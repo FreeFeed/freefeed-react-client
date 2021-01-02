@@ -21,7 +21,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:>=7.9.0, @babel/core@npm:~7.12.9":
+"@babel/core@npm:>=7.9.0, @babel/core@npm:~7.12.10":
   version: 7.12.10
   resolution: "@babel/core@npm:7.12.10"
   dependencies:
@@ -1041,7 +1041,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-runtime@npm:~7.12.1":
+"@babel/plugin-transform-runtime@npm:~7.12.10":
   version: 7.12.10
   resolution: "@babel/plugin-transform-runtime@npm:7.12.10"
   dependencies:
@@ -1239,7 +1239,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/register@npm:~7.12.1":
+"@babel/register@npm:~7.12.10":
   version: 7.12.10
   resolution: "@babel/register@npm:7.12.10"
   dependencies:
@@ -1337,7 +1337,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/free-brands-svg-icons@npm:~5.15.0":
+"@fortawesome/free-brands-svg-icons@npm:~5.15.1":
   version: 5.15.1
   resolution: "@fortawesome/free-brands-svg-icons@npm:5.15.1"
   dependencies:
@@ -1346,7 +1346,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/free-regular-svg-icons@npm:~5.15.0":
+"@fortawesome/free-regular-svg-icons@npm:~5.15.1":
   version: 5.15.1
   resolution: "@fortawesome/free-regular-svg-icons@npm:5.15.1"
   dependencies:
@@ -1355,7 +1355,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/free-solid-svg-icons@npm:~5.15.0":
+"@fortawesome/free-solid-svg-icons@npm:~5.15.1":
   version: 5.15.1
   resolution: "@fortawesome/free-solid-svg-icons@npm:5.15.1"
   dependencies:
@@ -3751,7 +3751,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-env@npm:~7.0.2":
+"cross-env@npm:~7.0.3":
   version: 7.0.3
   resolution: "cross-env@npm:7.0.3"
   dependencies:
@@ -4098,7 +4098,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:^3.1.1, debug@npm:^3.2.5":
+"debug@npm:^3.1.1, debug@npm:^3.2.6":
   version: 3.2.7
   resolution: "debug@npm:3.2.7"
   dependencies:
@@ -4107,7 +4107,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:^4.0.0, debug@npm:^4.0.1, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.2.0, debug@npm:~4.3.1":
+"debug@npm:^4.0.0, debug@npm:^4.0.1, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.2.0":
   version: 4.3.1
   resolution: "debug@npm:4.3.1"
   dependencies:
@@ -4125,6 +4125,18 @@ __metadata:
   dependencies:
     ms: 2.0.0
   checksum: 1295acd5e0531761255661d325cd0a80ac8c5f6de8942a53bb23c2197ccb97526972de662ed0e5d9393be83f3428a298a6e7185ecb02f0da6282019cd2ffb4a8
+  languageName: node
+  linkType: hard
+
+"debug@npm:~4.3.2":
+  version: 4.3.2
+  resolution: "debug@npm:4.3.2"
+  dependencies:
+    ms: 2.1.2
+  peerDependenciesMeta:
+    supports-color:
+      optional: true
+  checksum: 5543570879e2274f6725d4285a034d6e0822d35faefc6f55965933fb440e8c21eb3a0bef934e66f4b6b491f898ee2de37cab980e9d4fd61372136c19d3ce4527
   languageName: node
   linkType: hard
 
@@ -4921,7 +4933,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react@npm:~7.21.4":
+"eslint-plugin-react@npm:~7.21.5":
   version: 7.21.5
   resolution: "eslint-plugin-react@npm:7.21.5"
   dependencies:
@@ -5027,9 +5039,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:~7.16.0":
-  version: 7.16.0
-  resolution: "eslint@npm:7.16.0"
+"eslint@npm:~7.17.0":
+  version: 7.17.0
+  resolution: "eslint@npm:7.17.0"
   dependencies:
     "@babel/code-frame": ^7.0.0
     "@eslint/eslintrc": ^0.2.2
@@ -5070,7 +5082,7 @@ __metadata:
     v8-compile-cache: ^2.0.3
   bin:
     eslint: bin/eslint.js
-  checksum: facdebbce95f7812b026cae955f22863e0850584c8b4ab6daefa555f48b38a8b3d62c1857c0eeebe52218c49345853f516209b300c6747ea89d6f88ef495a56d
+  checksum: 12b09a972eb0b81fabf9c1b38b3e9ada0cc051a22ee5022e31852e7babde6fe02a0135be3027451ee02c9ff4a6f738b55205d2953f98eb16a43350ad73070b27
   languageName: node
   linkType: hard
 
@@ -5410,16 +5422,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"faye-websocket@npm:^0.10.0":
-  version: 0.10.0
-  resolution: "faye-websocket@npm:0.10.0"
-  dependencies:
-    websocket-driver: ">=0.5.1"
-  checksum: 2a5823ddfb39ec7ef952dd1adab4c28fd162f5ee175f40f8d7467560554299199c1f0aa505e0fe14a85452c76d0c4dbee32f8327c71bf2f61a32f62538843111
-  languageName: node
-  linkType: hard
-
-"faye-websocket@npm:~0.11.1":
+"faye-websocket@npm:^0.11.3":
   version: 0.11.3
   resolution: "faye-websocket@npm:0.11.3"
   dependencies:
@@ -5476,7 +5479,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"file-loader@npm:~6.1.0":
+"file-loader@npm:~6.1.1":
   version: 6.1.1
   resolution: "file-loader@npm:6.1.1"
   dependencies:
@@ -5657,7 +5660,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"focus-trap-react@npm:~8.1.0":
+"focus-trap-react@npm:~8.1.1":
   version: 8.1.1
   resolution: "focus-trap-react@npm:8.1.1"
   dependencies:
@@ -6390,7 +6393,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"highcharts@npm:~8.2.0":
+"highcharts@npm:~8.2.2":
   version: 8.2.2
   resolution: "highcharts@npm:8.2.2"
   checksum: 4df6651bcdfdd21e624a068d4cbe2bb52e70cf5f3c427bf04c48bc7bd5aad046dce5977bbec7963ffddf64ac55421146d459366e8a58e3539ae96b63a6ae0074
@@ -6649,7 +6652,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"husky@npm:~5.0.0":
+"husky@npm:~5.0.6":
   version: 5.0.6
   resolution: "husky@npm:5.0.6"
   bin:
@@ -7574,7 +7577,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"json3@npm:^3.3.2":
+"json3@npm:^3.3.3":
   version: 3.3.3
   resolution: "json3@npm:3.3.3"
   checksum: f79831247f3ecdd4e99996534a171ccd20f34502b799dd53b671af8a7d7ac1228a7d806c100948cc16f3437da5ea0b821e2c44f8372a2a4095a0abebf0fb41ef
@@ -7757,7 +7760,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:~10.5.2":
+"lint-staged@npm:~10.5.3":
   version: 10.5.3
   resolution: "lint-staged@npm:10.5.3"
   dependencies:
@@ -8426,7 +8429,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"mini-css-extract-plugin@npm:~0.11.2":
+"mini-css-extract-plugin@npm:~0.11.3":
   version: 0.11.3
   resolution: "mini-css-extract-plugin@npm:0.11.3"
   dependencies:
@@ -8610,7 +8613,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"mochapack@npm:~2.0.3":
+"mochapack@npm:~2.0.6":
   version: 2.0.6
   resolution: "mochapack@npm:2.0.6"
   dependencies:
@@ -8640,7 +8643,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"mousetrap@npm:1.6.x":
+"mousetrap@npm:^1.6.5":
   version: 1.6.5
   resolution: "mousetrap@npm:1.6.5"
   checksum: 563074169163708e2de0c2e9a2bd76f32ba909efbe2baf395db08015d09b19445b859982fad36cd50dcd8a2475f07af89babe2b3da029e7b5cd48e26ff973cd5
@@ -8900,7 +8903,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"node-noop@npm:1.0.x":
+"node-noop@npm:^1.0.0":
   version: 1.0.0
   resolution: "node-noop@npm:1.0.0"
   checksum: 33331046468af72c22553cee2b754851897fa26c36393017ad3dcfbcd28b705e573a71ae7abe18a8f357fa6fd9a3b3ab3aefb52f373b368ec4a5be40b530e269
@@ -9112,7 +9115,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"null-loader@npm:~4.0.0":
+"null-loader@npm:~4.0.1":
   version: 4.0.1
   resolution: "null-loader@npm:4.0.1"
   dependencies:
@@ -9870,7 +9873,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"porter-stemmer@npm:0.9.x":
+"porter-stemmer@npm:^0.9.1":
   version: 0.9.1
   resolution: "porter-stemmer@npm:0.9.1"
   checksum: 59e470883f984ddc0f205469f3b8c26bf2ac616565ecedac9327bb411d681795b9c0c1022b06742acfad0708a033dd7bcb25bfa120504b6be02b1f6a231ce98f
@@ -11128,16 +11131,16 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-textarea-autosize@npm:~8.2.0":
-  version: 8.2.0
-  resolution: "react-textarea-autosize@npm:8.2.0"
+"react-textarea-autosize@npm:~8.3.0":
+  version: 8.3.0
+  resolution: "react-textarea-autosize@npm:8.3.0"
   dependencies:
     "@babel/runtime": ^7.10.2
     use-composed-ref: ^1.0.0
     use-latest: ^1.0.0
   peerDependencies:
-    react: ^16.8.0
-  checksum: 27d83f57c59254366cb13255d3a7771813bf771f2f5b14c273497dbf80d26dc6c4f646feeff8b789c18a0c313ad04d9ba26a63fb5a9e4cfeaffc0569cc224643
+    react: ^16.8.0 || ^17.0.0
+  checksum: c60b553a8ab343e5dc40a32fdda59a558a55f3c46ab392728f7dfde17c68e2293189557ba0669cee57b21f1956f83eb77a36f85c2970c8920feaf01712e1bd69
   languageName: node
   linkType: hard
 
@@ -11155,7 +11158,7 @@ fsevents@^1.2.7:
   version: 0.0.0-use.local
   resolution: "reactive-pepyatka@workspace:."
   dependencies:
-    "@babel/core": ~7.12.9
+    "@babel/core": ~7.12.10
     "@babel/eslint-parser": ~7.12.1
     "@babel/plugin-proposal-class-properties": ~7.12.1
     "@babel/plugin-proposal-do-expressions": ~7.12.1
@@ -11163,14 +11166,14 @@ fsevents@^1.2.7:
     "@babel/plugin-transform-modules-commonjs": ~7.12.1
     "@babel/plugin-transform-react-constant-elements": ~7.12.1
     "@babel/plugin-transform-react-inline-elements": ~7.12.1
-    "@babel/plugin-transform-runtime": ~7.12.1
+    "@babel/plugin-transform-runtime": ~7.12.10
     "@babel/preset-env": ~7.12.11
     "@babel/preset-react": ~7.12.10
-    "@babel/register": ~7.12.1
+    "@babel/register": ~7.12.10
     "@babel/runtime": ~7.12.5
-    "@fortawesome/free-brands-svg-icons": ~5.15.0
-    "@fortawesome/free-regular-svg-icons": ~5.15.0
-    "@fortawesome/free-solid-svg-icons": ~5.15.0
+    "@fortawesome/free-brands-svg-icons": ~5.15.1
+    "@fortawesome/free-regular-svg-icons": ~5.15.1
+    "@fortawesome/free-solid-svg-icons": ~5.15.1
     autotrack: ~2.4.1
     babel-eslint: ~10.1.0
     babel-loader: ~8.2.2
@@ -11179,45 +11182,45 @@ fsevents@^1.2.7:
     classnames: ~2.2.6
     copy-webpack-plugin: ~6.1.1
     core-js: ~3.8.1
-    cross-env: ~7.0.2
+    cross-env: ~7.0.3
     css-loader: ~3.6.0
     custom-event: ~1.0.1
     date-fns: ~2.16.1
-    debug: ~4.3.1
-    eslint: ~7.16.0
+    debug: ~4.3.2
+    eslint: ~7.17.0
     eslint-config-prettier: ~7.1.0
     eslint-plugin-babel: ~5.3.1
     eslint-plugin-import: ~2.22.1
     eslint-plugin-lodash: ~7.1.0
     eslint-plugin-prettier: ~3.3.0
     eslint-plugin-promise: ~4.2.1
-    eslint-plugin-react: ~7.21.4
+    eslint-plugin-react: ~7.21.5
     eslint-plugin-react-hooks: ~4.2.0
     eslint-plugin-you-dont-need-lodash-underscore: ~6.10.0
     eslint-webpack-plugin: ~2.4.1
-    file-loader: ~6.1.0
+    file-loader: ~6.1.1
     filesize: ~6.1.0
     final-form: ~4.20.1
-    focus-trap-react: ~8.1.0
-    highcharts: ~8.2.0
+    focus-trap-react: ~8.1.1
+    highcharts: ~8.2.2
     html-webpack-plugin: ~3.2.0
-    husky: ~5.0.0
+    husky: ~5.0.6
     keycode-js: ~3.1.0
-    lint-staged: ~10.5.2
+    lint-staged: ~10.5.3
     local-storage-fallback: ~4.1.1
     lodash: ~4.17.20
     lru-cache: ~6.0.0
     memoize-one: ~5.1.1
-    mini-css-extract-plugin: ~0.11.2
+    mini-css-extract-plugin: ~0.11.3
     mocha: ~7.2.0
-    mochapack: ~2.0.3
-    mousetrap: 1.6.x
-    node-noop: 1.0.x
+    mochapack: ~2.0.6
+    mousetrap: ^1.6.5
+    node-noop: ^1.0.0
     node-sass: ~4.14.1
     npm-run-all: ~4.1.5
-    null-loader: ~4.0.0
+    null-loader: ~4.0.1
     optimize-css-assets-webpack-plugin: ~5.0.4
-    porter-stemmer: 0.9.x
+    porter-stemmer: ^0.9.1
     prettier: ~2.2.1
     prop-types: ~15.7.2
     pug: ~3.0.0
@@ -11239,34 +11242,34 @@ fsevents@^1.2.7:
     react-select: ~1.2.1
     react-sortablejs: ~2.0.11
     react-test-renderer: ~17.0.1
-    react-textarea-autosize: ~8.2.0
+    react-textarea-autosize: ~8.3.0
     redux: ~4.0.5
     regenerator-runtime: ~0.13.7
-    resolve-url-loader: ~3.1.1
+    resolve-url-loader: ~3.1.2
     rimraf: ~3.0.2
-    sass-loader: ~10.0.2
+    sass-loader: ~10.0.5
     sinon: ~9.1.0
     snarkdown: ~1.2.2
     social-text-tokenizer: ~2.1.3
-    socket.io-client: ~2.3.0
+    socket.io-client: ~2.3.1
     style-loader: ~1.2.1
     stylelint: ~13.8.0
     stylelint-config-prettier: ~8.0.2
     stylelint-config-recommended-scss: ~4.2.0
     stylelint-prettier: ~1.1.2
     stylelint-scss: ~3.18.0
-    terser-webpack-plugin: ~4.2.2
+    terser-webpack-plugin: ~4.2.3
     ua-parser-js: ~0.7.23
-    unexpected: ~11.15.0
+    unexpected: ~11.15.1
     unexpected-react: ~6.0.1
     unexpected-sinon: ~10.11.2
     use-subscription: ~1.4.1
     validator: ~13.5.2
     webpack: ~4.44.2
     webpack-cli: ~3.3.12
-    webpack-dev-server: ~3.11.0
+    webpack-dev-server: ~3.11.1
     webpack-node-externals: ~2.5.2
-    whatwg-fetch: ~3.4.1
+    whatwg-fetch: ~3.5.0
     worker-loader: ~2.0.0
   languageName: unknown
   linkType: soft
@@ -11735,7 +11738,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"resolve-url-loader@npm:~3.1.1":
+"resolve-url-loader@npm:~3.1.2":
   version: 3.1.2
   resolution: "resolve-url-loader@npm:3.1.2"
   dependencies:
@@ -11972,7 +11975,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"sass-loader@npm:~10.0.2":
+"sass-loader@npm:~10.0.5":
   version: 10.0.5
   resolution: "sass-loader@npm:10.0.5"
   dependencies:
@@ -12081,7 +12084,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"selfsigned@npm:^1.10.7":
+"selfsigned@npm:^1.10.8":
   version: 1.10.8
   resolution: "selfsigned@npm:1.10.8"
   dependencies:
@@ -12432,7 +12435,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"socket.io-client@npm:~2.3.0":
+"socket.io-client@npm:~2.3.1":
   version: 2.3.1
   resolution: "socket.io-client@npm:2.3.1"
   dependencies:
@@ -12462,28 +12465,28 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"sockjs-client@npm:1.4.0":
-  version: 1.4.0
-  resolution: "sockjs-client@npm:1.4.0"
+"sockjs-client@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "sockjs-client@npm:1.5.0"
   dependencies:
-    debug: ^3.2.5
+    debug: ^3.2.6
     eventsource: ^1.0.7
-    faye-websocket: ~0.11.1
-    inherits: ^2.0.3
-    json3: ^3.3.2
-    url-parse: ^1.4.3
-  checksum: efe7e7bcf2758f5ab3947f750b9909ea442022911dfad5883f5133085b587d0ac96f579a0463be8ea0613d1d4c5ee68af33b0896b58b4b7734571d9290b6c1c0
+    faye-websocket: ^0.11.3
+    inherits: ^2.0.4
+    json3: ^3.3.3
+    url-parse: ^1.4.7
+  checksum: e5c976415fff9bcef89b280fb5310125cf838f26f94b4e9d1a65eb1ca2f12521383ac76bbab9350f8b110ed04556d3e9d8bdbf64a7b964883e4e2de950f35317
   languageName: node
   linkType: hard
 
-"sockjs@npm:0.3.20":
-  version: 0.3.20
-  resolution: "sockjs@npm:0.3.20"
+"sockjs@npm:^0.3.21":
+  version: 0.3.21
+  resolution: "sockjs@npm:0.3.21"
   dependencies:
-    faye-websocket: ^0.10.0
+    faye-websocket: ^0.11.3
     uuid: ^3.4.0
-    websocket-driver: 0.6.5
-  checksum: 9a8596f800e66bdb718165e1e51bb20d04ebf2f9f837cb459a83060b78230ae787bb6bbbc75ded3c20409b935a6cf0e03fc762cf26b558cc1f7b557b6acc9fbc
+    websocket-driver: ^0.7.4
+  checksum: d56cc08807fd071cf50302270c23df912dc55c973dc427d38b038119cdf6d80cb1eaa30a9c1980979d7b98c5b149df93d54624123fcd927a43687db8c16f9a76
   languageName: node
   linkType: hard
 
@@ -13323,7 +13326,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"terser-webpack-plugin@npm:~4.2.2":
+"terser-webpack-plugin@npm:~4.2.3":
   version: 4.2.3
   resolution: "terser-webpack-plugin@npm:4.2.3"
   dependencies:
@@ -13815,7 +13818,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"unexpected@npm:~11.15.0":
+"unexpected@npm:~11.15.1":
   version: 11.15.1
   resolution: "unexpected@npm:11.15.1"
   dependencies:
@@ -14006,7 +14009,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"url-parse@npm:^1.4.3":
+"url-parse@npm:^1.4.3, url-parse@npm:^1.4.7":
   version: 1.4.7
   resolution: "url-parse@npm:1.4.7"
   dependencies:
@@ -14342,9 +14345,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"webpack-dev-server@npm:~3.11.0":
-  version: 3.11.0
-  resolution: "webpack-dev-server@npm:3.11.0"
+"webpack-dev-server@npm:~3.11.1":
+  version: 3.11.1
+  resolution: "webpack-dev-server@npm:3.11.1"
   dependencies:
     ansi-html: 0.0.7
     bonjour: ^3.5.0
@@ -14366,11 +14369,11 @@ fsevents@^1.2.7:
     p-retry: ^3.0.1
     portfinder: ^1.0.26
     schema-utils: ^1.0.0
-    selfsigned: ^1.10.7
+    selfsigned: ^1.10.8
     semver: ^6.3.0
     serve-index: ^1.9.1
-    sockjs: 0.3.20
-    sockjs-client: 1.4.0
+    sockjs: ^0.3.21
+    sockjs-client: ^1.5.0
     spdy: ^4.0.2
     strip-ansi: ^3.0.1
     supports-color: ^6.1.0
@@ -14386,7 +14389,7 @@ fsevents@^1.2.7:
       optional: true
   bin:
     webpack-dev-server: bin/webpack-dev-server.js
-  checksum: 1d3445745634cee36df9a01edcb8ed56eadd647a0d72751e8646c038c4d76f40194b841f97ed819971988f85c5b531c571cc776288011ffafd201c9f3ccd444d
+  checksum: ddd2212abe1065e13a6d350267e09312a41a59f08ed4ef6e34952907f8323cc35ade868b951c8acd9909406d890d65b6463a910883f89470b7d64606432a0f08
   languageName: node
   linkType: hard
 
@@ -14455,16 +14458,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"websocket-driver@npm:0.6.5":
-  version: 0.6.5
-  resolution: "websocket-driver@npm:0.6.5"
-  dependencies:
-    websocket-extensions: ">=0.1.1"
-  checksum: 1169a0ecccf514a98abc54a1b9c9aa56ef662e9169336cc4bc684c4f95a52b93f499d52d2b2f1eb7ccae79dcc41d6cfe8bf9b4cf05f4c69756d7c75fa53d312f
-  languageName: node
-  linkType: hard
-
-"websocket-driver@npm:>=0.5.1":
+"websocket-driver@npm:>=0.5.1, websocket-driver@npm:^0.7.4":
   version: 0.7.4
   resolution: "websocket-driver@npm:0.7.4"
   dependencies:
@@ -14482,17 +14476,10 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"whatwg-fetch@npm:>=0.10.0":
+"whatwg-fetch@npm:>=0.10.0, whatwg-fetch@npm:~3.5.0":
   version: 3.5.0
   resolution: "whatwg-fetch@npm:3.5.0"
   checksum: dd41999927e87c4cd0af572fe9976dcb1529c00b89c2074b0d1c02baa03670ff7b7cc45ca5b475c02a4a5b274cc1def56a9be7870df7af5c0f9b7d4fb4588ae6
-  languageName: node
-  linkType: hard
-
-"whatwg-fetch@npm:~3.4.1":
-  version: 3.4.1
-  resolution: "whatwg-fetch@npm:3.4.1"
-  checksum: 82a9a6431c3e92b4b089c27a1201219b0baaa4fb98dcd504cacbc740be61ae53bf8771f400b7fd80662efb30a47287accb0ddad2a5a6ecfe7283594fed457165
   languageName: node
   linkType: hard
 
