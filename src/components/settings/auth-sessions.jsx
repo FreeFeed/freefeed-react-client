@@ -103,12 +103,12 @@ export default withLayout(function AuthSessionsPage() {
           <p>You have no active sessions.</p>
         )}
       </section>
-      {blockedSessions.length && (
+      {blockedSessions.length > 0 && (
         <section className={settingsStyles.formSection}>
           <h3>Blocked sessions</h3>
           <p>
-            These sessions was blocked due to an unusual activity. They are not active now and will
-            be automatically removed in a few days.
+            These sessions have been blocked due to unusual activity. The sessions are now inactive
+            and will be automatically removed after a few days.
           </p>
 
           <ul className={styles.list}>
@@ -153,7 +153,7 @@ function SessionRow({ session, onClick, checked }) {
       </div>
       <div>
         <div>
-          {uaString}
+          <span title={session.lastUserAgent}>{uaString}</span>
           {session.isCurrent && <em className="text-primary"> — your current session</em>}
         </div>
         <div className="text-muted">
