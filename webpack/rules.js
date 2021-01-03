@@ -157,7 +157,10 @@ class RuleGenerator {
       },
       {
         test: /vazir-font[\\/]dist.*/,
-        loader: 'file-loader?name=[path][name].[ext]',
+        loader: 'file-loader',
+        options: {
+          name: 'assets/fonts/[name].[ext]',
+        },
       },
     ];
   }
