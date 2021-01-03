@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Text is properly selectable (select, copy, paste) even if it has spoiler-tags in it
 - Protection against accidental spoiler text selection work in Chrome (select doesn't reveal text. use click to reveal)
 - Improve auto-direction support in text inputs (useful for right-to-left languages)
+- Load external css-files after inline styles. Otherwise, rules priority was broken
 
 ### Added
 - Use open-source Vazir font to display Persian letters

@@ -14,9 +14,6 @@ html(lang='en')
     <!--#include virtual="/v2/timelines-metatags/${username}" -->
     <!--#endif -->
     title FreeFeed
-    unless opts.hot
-        link(rel='stylesheet', href=htmlWebpackPlugin.files.css[0])
-        link(rel='stylesheet', href=htmlWebpackPlugin.files.css[1])
     noscript
       style.
         .jsonly { display: none }
@@ -33,6 +30,11 @@ html(lang='en')
       .privacy-button:hover {color: #FDB832; border-color: #FDB832;}
       a.privacy-link {color: white; font-weight: bold; text-decoration: underline;}
       a.privacy-link:hover {color: #F6C944; font-weight: bold;}
+
+    unless opts.hot
+      link(rel='stylesheet', href=htmlWebpackPlugin.files.css[0])
+      link(rel='stylesheet', href=htmlWebpackPlugin.files.css[1])
+
     link(rel='icon', href=htmlWebpackPlugin.files.publicPath + 'assets/images/favicon.ico', type='image/x-icon')
     link(rel='icon', href=htmlWebpackPlugin.files.publicPath + 'assets/images/favicon.svg', type='image/svg+xml')
     link(rel='apple-touch-icon', sizes='512x512', href=htmlWebpackPlugin.files.publicPath + 'assets/images/ios/icon_512_512.png')
