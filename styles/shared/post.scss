@@ -201,7 +201,10 @@ $post-line-height: 20px;
     background-color: #aaaaaa;
   }
 
-  &::selection,
+  &::selection {
+    color: transparent;
+  }
+
   &::-moz-selection {
     color: transparent;
   }
