@@ -191,11 +191,25 @@ $post-line-height: 20px;
 
   .dark-theme & {
     background-color: #666666;
+
+    &:hover {
+      background-color: #555555;
+    }
+  }
+
+  &:hover {
+    background-color: #aaaaaa;
+  }
+
+  &::selection,
+  &::-moz-selection {
+    color: transparent;
   }
 }
 
 .spoiler-hidden * {
-  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 // paragraph breaks
