@@ -17,7 +17,11 @@ export default class Spoiler extends PureComponent {
     const cn = classnames(visible ? 'spoiler-visible' : 'spoiler-hidden');
 
     return (
-      <span className={cn} onClick={visible ? undefined : this.onShow}>
+      <span
+        className={cn}
+        onClick={visible ? undefined : this.onShow}
+        title={visible ? undefined : `This is a spoiler. Click to reveal its contents.`}
+      >
         {children}
       </span>
     );
