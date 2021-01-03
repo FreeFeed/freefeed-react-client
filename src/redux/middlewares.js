@@ -1,6 +1,7 @@
-/* global Raven, CONFIG */
+/* global CONFIG */
 import { browserHistory } from 'react-router';
 import _ from 'lodash';
+import * as Sentry from '@sentry/react';
 
 import { getPost } from '../services/api';
 import { onStorageChange, setToken } from '../services/auth';
@@ -195,13 +196,12 @@ export const apiMiddleware = (store) => (next) => async (action) => {
       response: apiResponse,
     });
   } catch (e) {
-    if (typeof Raven !== 'undefined') {
-      Raven.captureException(e, {
-        level: 'error',
-        tags: { area: 'redux/apiMiddleware' },
-        extra: { action },
-      });
-    }
+    Sentry.captureException(e, {
+      level: 'error',
+      tags: { area: 'redux/apiMiddleware' },
+      extra: { action },
+    });
+
     return store.dispatch({
       payload: { err: 'Network error' },
       type: fail(action.type),

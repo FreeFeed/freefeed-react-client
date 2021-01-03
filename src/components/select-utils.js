@@ -1,7 +1,7 @@
-/*global Raven*/
 import { differenceBy, intersection, intersectionBy, uniq } from 'lodash';
-
 import { hashTags } from 'social-text-tokenizer';
+import * as Sentry from '@sentry/react';
+
 import {
   // User actions
   subscribe,
@@ -104,11 +104,9 @@ export const joinPostData = (state) => (postId) => {
 
   const createdBy = state.users[post.createdBy] || { id: post.createdBy, username: '-unknown-' };
   if (createdBy.username === '-unknown-') {
-    if (typeof Raven !== 'undefined') {
-      Raven.captureMessage(`We've got post with unknown author with id`, {
-        extra: { uid: post.createdBy },
-      });
-    }
+    Sentry.captureMessage(`We've got post with unknown author with id`, {
+      extra: { uid: post.createdBy },
+    });
   }
 
   // Get the list of post's recipients

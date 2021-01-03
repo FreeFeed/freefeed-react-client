@@ -1400,6 +1400,87 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry/browser@npm:5.29.2":
+  version: 5.29.2
+  resolution: "@sentry/browser@npm:5.29.2"
+  dependencies:
+    "@sentry/core": 5.29.2
+    "@sentry/types": 5.29.2
+    "@sentry/utils": 5.29.2
+    tslib: ^1.9.3
+  checksum: 29ec3547272afc159fa932920a2f08413f6473c61a4d08a1a845e867f93e230b86615cf6b8634248de55d675d2777a8ecb8e21de9e48dd4b079c011dab423182
+  languageName: node
+  linkType: hard
+
+"@sentry/core@npm:5.29.2":
+  version: 5.29.2
+  resolution: "@sentry/core@npm:5.29.2"
+  dependencies:
+    "@sentry/hub": 5.29.2
+    "@sentry/minimal": 5.29.2
+    "@sentry/types": 5.29.2
+    "@sentry/utils": 5.29.2
+    tslib: ^1.9.3
+  checksum: dece2e4f56db55935043a35484185c5cf53bfbb05115545391352299b3bbe858a1201fe7a8ff51034eb3bcbc7bf0c86b08e2e4a1960bcd0b5a37d4cdb1041a93
+  languageName: node
+  linkType: hard
+
+"@sentry/hub@npm:5.29.2":
+  version: 5.29.2
+  resolution: "@sentry/hub@npm:5.29.2"
+  dependencies:
+    "@sentry/types": 5.29.2
+    "@sentry/utils": 5.29.2
+    tslib: ^1.9.3
+  checksum: 57ce093d8cd5996ac5b18fd12b96cf0700aa79e1d549e00d96f49de3c87eb106e1776d13963fa579a5a2b171e21cff552ebb700d36679e4809656f14c691bf54
+  languageName: node
+  linkType: hard
+
+"@sentry/minimal@npm:5.29.2":
+  version: 5.29.2
+  resolution: "@sentry/minimal@npm:5.29.2"
+  dependencies:
+    "@sentry/hub": 5.29.2
+    "@sentry/types": 5.29.2
+    tslib: ^1.9.3
+  checksum: e03545c3cc65b315f19cd85bb456e978620e8f8c62acd0a3ba6961a98f5a1a95985ab8acbabbd468d5b421c43fe80963125b30b2504199d234696214e05350c3
+  languageName: node
+  linkType: hard
+
+"@sentry/react@npm:~5.29.2":
+  version: 5.29.2
+  resolution: "@sentry/react@npm:5.29.2"
+  dependencies:
+    "@sentry/browser": 5.29.2
+    "@sentry/minimal": 5.29.2
+    "@sentry/types": 5.29.2
+    "@sentry/utils": 5.29.2
+    hoist-non-react-statics: ^3.3.2
+    tslib: ^1.9.3
+  peerDependencies:
+    react: 15.x || 16.x || 17.x
+    react-dom: 15.x || 16.x || 17.x
+  checksum: a57bae30a0fde8a633509ce2866b22e29879c713c284b73baebaa71f9f369bfc96d1bc6172cc56259ac23c914199846726325d71dd23792f2dbef2058abbb0ca
+  languageName: node
+  linkType: hard
+
+"@sentry/types@npm:5.29.2":
+  version: 5.29.2
+  resolution: "@sentry/types@npm:5.29.2"
+  checksum: 2809e15309f64f830b1dbbf66c8d4b73cf520a81172b07ea117a77bb95fdcb5c0b68d4faaee1e5cdcd3300eae3653e83579575d98f9faee6a3155c3ce0d09fb4
+  languageName: node
+  linkType: hard
+
+"@sentry/utils@npm:5.29.2":
+  version: 5.29.2
+  resolution: "@sentry/utils@npm:5.29.2"
+  dependencies:
+    "@sentry/types": 5.29.2
+    tslib: ^1.9.3
+  checksum: ab5e8c451597379f6e4def6220db8f0075c7b4a2e7ddcf23367b830799ea80326fe449f4707ab116933ec8e64127b9d173d4ee2ddc9d101d49548c01f90500f0
+  languageName: node
+  linkType: hard
+
 "@sinonjs/commons@npm:^1, @sinonjs/commons@npm:^1.6.0, @sinonjs/commons@npm:^1.7.0, @sinonjs/commons@npm:^1.7.2":
   version: 1.8.1
   resolution: "@sinonjs/commons@npm:1.8.1"
@@ -11109,6 +11190,7 @@ fsevents@^1.2.7:
     "@fortawesome/free-brands-svg-icons": ~5.15.1
     "@fortawesome/free-regular-svg-icons": ~5.15.1
     "@fortawesome/free-solid-svg-icons": ~5.15.1
+    "@sentry/react": ~5.29.2
     autotrack: ~2.4.1
     babel-eslint: ~10.1.0
     babel-loader: ~8.2.2

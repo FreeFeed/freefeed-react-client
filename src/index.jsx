@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory, Redirect } from 'react-router';
 import { Provider, useSelector } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
+import * as Sentry from '@sentry/react';
 
 import 'autotrack'; // used by google-analytics in ../index.jade
 
@@ -28,6 +29,10 @@ import ManageSubscribers from './components/manage-subscribers';
 import Bookmarklet from './components/bookmarklet';
 import SignupByInvitation from './components/signup-by-invitation';
 import { settingsRoute } from './components/settings/routes';
+
+Sentry.init({
+  dsn: CONFIG.sentry.publicDSN,
+});
 
 const store = configureStore();
 
