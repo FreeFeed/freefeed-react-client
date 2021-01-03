@@ -1,5 +1,8 @@
 $icon-font-path: '../../assets/fonts/bootstrap/';
-$IRANSans-font-path: '../../assets/fonts/IRANSans/';
-@import 'fontiran.scss';
-$font-family-sans-serif: IRANSans, "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$Vazir-font-path: '../../assets/fonts/Vazir/';
+@import 'vazir';
+$font-family-sans-serif: Vazir, "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$font-family-serif: Vazir, Georgia, "Times New Roman", Times, serif !default;
+//** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
+$font-family-monospace: Vazir, Menlo, Monaco, Consolas, "Courier New", monospace !default;
 @import 'bootstrap/bootstrap.3.3.4.scss';
