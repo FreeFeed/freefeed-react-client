@@ -150,10 +150,16 @@ class RuleGenerator {
   }
 
   get fonts() {
-    return {
-      test: /[\\/]assets[\\/]fonts[\\/]fontawesome[^/]*$/i,
-      loader: 'file-loader?name=[path][name].[ext]',
-    };
+    return [
+      {
+        test: /[\\/]assets[\\/]fonts[\\/]fontawesome[^/]*$/i,
+        loader: 'file-loader?name=[path][name].[ext]',
+      },
+      {
+        test: /vazir-font[\\/]dist.*/,
+        loader: 'file-loader?name=[path][name].[ext]',
+      },
+    ];
   }
 
   get photoswipe() {

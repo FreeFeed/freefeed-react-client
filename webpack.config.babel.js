@@ -25,7 +25,7 @@ const config = {
       rules.cssModule,
       rules.assetsCss,
       rules.template,
-      rules.fonts,
+      ...rules.fonts,
       rules.photoswipe,
       rules.markdown,
       rules.otherAssets,

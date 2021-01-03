@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Protection against accidental spoiler text selection work in Chrome (select doesn't reveal text. use click to reveal)
 - Improve auto-direction support in text inputs (useful for right-to-left languages)
 
+### Added
+- Use open-source Vazir font to display Persian letters
+
 ### Changed
 - Removed hover effect from spoiler tags
 

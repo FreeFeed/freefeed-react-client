@@ -11200,6 +11200,7 @@ fsevents@^1.2.7:
     unexpected-sinon: ~10.11.2
     use-subscription: ~1.4.1
     validator: ~13.5.2
+    vazir-font: ~27.1.0
     webpack: ~4.44.2
     webpack-cli: ~3.3.12
     webpack-dev-server: ~3.11.1
@@ -14071,6 +14072,13 @@ fsevents@^1.2.7:
   version: 1.1.2
   resolution: "vary@npm:1.1.2"
   checksum: 591f059f727ac1ba0d97cb7767f8583a03fcbb07db7be2b7dce838ede520ec0e958a41cb19077054769077fdc49a9b9a2dc391c83426bfee89c054b8cc7404bf
+  languageName: node
+  linkType: hard
+
+"vazir-font@npm:~27.1.0":
+  version: 27.1.0
+  resolution: "vazir-font@npm:27.1.0"
+  checksum: 7dff12c3c201fd41c0cd5d7abd243ec83d42e7c1cbf47bb8b71470114538563894eedfac4c34712c131efb34a783ed7faa62de1ed6bbf4df6223eeff0151224a
   languageName: node
   linkType: hard
 

@@ -46,6 +46,7 @@
     "ua-parser-js": "~0.7.23",
     "use-subscription": "~1.4.1",
     "validator": "~13.5.2",
+    "vazir-font": "~27.1.0",
     "whatwg-fetch": "~3.5.0"
   },
   "devDependencies": {
