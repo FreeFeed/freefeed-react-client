@@ -10,6 +10,13 @@ import {
   Link as TLink,
 } from 'social-text-tokenizer';
 
+import {
+  tokenizerStartSpoiler,
+  tokenizerEndSpoiler,
+  StartSpoiler,
+  EndSpoiler,
+} from './spoiler-tokens';
+
 const {
   textFormatter: { tldList },
   siteDomains,
@@ -69,20 +76,79 @@ const tldRe = [...tldList]
   })
   .join('|');
 
-const tokenize = withText(combine(hashTags(), emails(), mentions(), links({ tldRe }), arrows()));
+// Make sure that the list of tokens contains only
+// valid pairs of StartSpoiler/EndSpoiler tokens
+const validateSpoilerTags = (tokenizer) => {
+  return function (text) {
+    const validated = [];
+    let startSpoilerIndex = -1;
+    const tokens = tokenizer(text);
+
+    tokens.forEach((token, i) => {
+      if (token instanceof StartSpoiler) {
+        if (startSpoilerIndex !== -1) {
+          // previous StartSpoiler is invalid
+          validated[startSpoilerIndex] = null;
+        }
+        startSpoilerIndex = i;
+        validated.push(token);
+      } else if (token instanceof EndSpoiler) {
+        if (startSpoilerIndex !== -1) {
+          startSpoilerIndex = -1;
+          validated.push(token);
+        }
+      } else {
+        validated.push(token);
+      }
+    });
+
+    if (startSpoilerIndex !== -1) {
+      // un-closed StartSpoiler
+      validated[startSpoilerIndex] = null;
+    }
+
+    return validated.filter(Boolean);
+  };
+};
+
+const tokenize = withText(
+  validateSpoilerTags(
+    combine(
+      hashTags(),
+      emails(),
+      mentions(),
+      links({ tldRe }),
+      arrows(),
+      tokenizerStartSpoiler,
+      tokenizerEndSpoiler,
+    ),
+  ),
+);
 
 const enhanceLinks = (token) => (token instanceof TLink ? new Link(token, siteDomains) : token);
 
 export const parseText = (text) => tokenize(text).map(enhanceLinks);
 
 export function getFirstLinkToEmbed(text) {
-  return parseText(text)
-    .filter(
-      (token) =>
-        token instanceof Link &&
-        !token.isLocal &&
-        /^https?:\/\//i.test(token.text) &&
-        text.charAt(token.offset - 1) !== '!',
-    )
-    .map((it) => it.href)[0];
+  let isInSpoiler = false;
+
+  const firstLink = parseText(text).find((token) => {
+    if (token instanceof StartSpoiler) {
+      isInSpoiler = true;
+    }
+
+    if (token instanceof EndSpoiler) {
+      isInSpoiler = false;
+    }
+
+    if (!(token instanceof Link) || isInSpoiler) {
+      return false;
+    }
+
+    return (
+      !token.isLocal && /^https?:\/\//i.test(token.text) && text.charAt(token.offset - 1) !== '!'
+    );
+  });
+
+  return firstLink ? firstLink.href : undefined;
 }
