@@ -8,15 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.91.0] - Not released
 ### Fixed
 - Text is properly selectable (select, copy, paste) even if it has spoiler-tags in it
-- Protection against accidental spoiler text selection work in Chrome (select doesn't reveal text. use click to reveal)
+- Selecting text does not reveal spoiler contents on Windows
 - Improve auto-direction support in text inputs (useful for right-to-left languages)
 - Load external css-files after inline styles. Otherwise, rules priority was broken
 
 ### Added
 - Use open-source Vazir font to display Persian letters
-
-### Changed
-- Removed hover effect from spoiler tags
 
 ### Added
 - New authorization sessions support. User is now able to view and manage
