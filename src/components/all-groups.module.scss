@@ -30,6 +30,14 @@
   float: left;
 }
 
+.table {
+  width: 100%;
+}
+
+.mainColumn {
+  min-width: 193px;
+}
+
 .groupRow {
   td {
     padding: 0.66em 0;
@@ -67,4 +75,8 @@
 
 .groupInfo {
   margin-left: 60px;
+}
+
+.empty {
+  margin: 10px 0;
 }
