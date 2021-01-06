@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { Component } from 'react';
+import { Component, createRef } from 'react';
 import Textarea from 'react-textarea-autosize';
 import _ from 'lodash';
 
@@ -34,6 +34,7 @@ export default class CreatePost extends Component {
   constructor(props) {
     super(props);
     this.state = getDefaultState(props.sendTo.invitation);
+    this.textareaRef = createRef();
   }
 
   createPost = () => {
@@ -47,16 +48,17 @@ export default class CreatePost extends Component {
     this.props.createPost(feeds, postText, attachmentIds, more);
   };
 
-  UNSAFE_componentWillReceiveProps(newProps) {
-    const wasCommentJustSaved =
-      this.props.createPostViewState.isPending && !newProps.createPostViewState.isPending;
-    const wasThereNoError = !newProps.createPostViewState.isError;
-    const shouldClear = wasCommentJustSaved && wasThereNoError;
+  componentDidUpdate(prevProps) {
+    const wasPostJustSaved =
+      prevProps.createPostViewState.isPending && !this.props.createPostViewState.isPending;
+    const wasThereNoError = !this.props.createPostViewState.isError;
+    const shouldClear = wasPostJustSaved && wasThereNoError;
     if (shouldClear) {
       this.clearForm();
     }
-    if (this.props.sendTo.invitation !== newProps.sendTo.invitation) {
-      this.setState({ postText: newProps.sendTo.invitation });
+    if (prevProps.sendTo.invitation !== this.props.sendTo.invitation) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ postText: this.props.sendTo.invitation });
     }
   }
 
@@ -87,6 +89,7 @@ export default class CreatePost extends Component {
   clearForm = () => {
     this.selectFeeds && this.selectFeeds.reset();
     this.setState(getDefaultState());
+    this.removeFocusFromTextarea();
   };
 
   removeAttachment = (attachmentId) => {
@@ -124,6 +127,10 @@ export default class CreatePost extends Component {
   attLoadingCompleted = () => this.setState({ attLoading: false });
 
   checkSave = submitByEnter(() => this.canSubmitForm() && this.createPost());
+
+  removeFocusFromTextarea = () => {
+    this.textareaRef.current?.blur();
+  };
 
   toggleMore = () => {
     this.setState({ isMoreOpen: !this.state.isMoreOpen });
@@ -189,6 +196,7 @@ export default class CreatePost extends Component {
             />
 
             <Textarea
+              ref={this.textareaRef}
               className="post-textarea"
               value={this.state.postText}
               onChange={this.onPostTextChange}
