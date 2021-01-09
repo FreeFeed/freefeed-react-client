@@ -46,7 +46,7 @@ describe('parse-text', () => {
 
   describe('Get first link to embed', () => {
     it('should return undefined for no links', () => {
-      expect(getFirstLinkToEmbed('abc def'), 'to be', undefined);
+      expect(getFirstLinkToEmbed('abc def'), 'to be undefined');
     });
 
     it('should return first link out of many', () => {
