@@ -2367,7 +2367,15 @@ export const allGroups = fromResponse(
   ActionTypes.GET_ALL_GROUPS,
   ({ payload: { withProtected, groups, users } }) => ({
     withProtected,
-    groups: groups.map((g) => ({ ...g, createdAt: users.find((u) => u.id === g.id).createdAt })),
+    groups: groups.map((g) => {
+      const user = users.find((u) => u.id === g.id);
+      return {
+        ...g,
+        createdAt: user.createdAt,
+        username: user.username,
+        screenName: user.screenName,
+      };
+    }),
   }),
   allGroupsDefaults,
   setOnLocationChange(allGroupsDefaults, ['/all-groups']),
