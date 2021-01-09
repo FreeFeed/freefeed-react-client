@@ -9,12 +9,12 @@ import { Icon } from '../fontawesome-icons';
 import cachedFetch from './cached-fetch';
 import * as aspectRatio from './scroll-helpers/size-cache';
 
-const YOUTUBE_VIDEO_RE = /^https?:\/\/(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?(?:v=|.+&v=)))([a-z0-9_-]+)/i;
-const VIMEO_VIDEO_RE = /^https:\/\/vimeo\.com\/([0-9]+)/i;
-const COUB_VIDEO_RE = /^https?:\/\/coub\.com\/view\/([a-z0-9]+)/i;
-const IMGUR_VIDEO_RE = /^https?:\/\/i\.imgur\.com\/([a-z0-9]+)\.(gifv|mp4)/i;
+const YOUTUBE_VIDEO_RE = /^https?:\/\/(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?(?:v=|.+&v=)))([\w-]+)/i;
+const VIMEO_VIDEO_RE = /^https:\/\/vimeo\.com\/(\d+)/i;
+const COUB_VIDEO_RE = /^https?:\/\/coub\.com\/view\/([a-z\d]+)/i;
+const IMGUR_VIDEO_RE = /^https?:\/\/i\.imgur\.com\/([a-z\d]+)\.(gifv|mp4)/i;
 const GFYCAT_RE = /^https?:\/\/(?:[a-z]+\.)?gfycat\.com\/(?:[^/]{0,3}\/)?((?:[A-Z][a-z]+){3}|[a-z]{16,})/;
-const GIPHY_RE = /^https?:\/\/giphy.com\/gifs\/.+?-([a-zA-Z0-9]+)($|\/|\?)/;
+const GIPHY_RE = /^https?:\/\/giphy.com\/gifs\/.+?-([a-zA-Z\d]+)($|\/|\?)/;
 
 const T_YOUTUBE_VIDEO = 'T_YOUTUBE_VIDEO';
 const T_VIMEO_VIDEO = 'T_VIMEO_VIDEO';
@@ -194,7 +194,7 @@ export async function getVideoInfo(url, withoutAutoplay) {
       return {
         byline: `${data.title} by ${data.author_name}`,
         aspectRatio: aspectRatio.set(url, data.height / data.width),
-        previewURL: data.thumbnail_url.replace(/[0-9]+x[0-9]+/, '450'),
+        previewURL: data.thumbnail_url.replace(/\d+x\d+/, '450'),
         playerURL: `https://player.vimeo.com/video/${getVideoId(url)}${
           withoutAutoplay ? '' : '?autoplay=1'
         }${hash ? hash : ''}`,
@@ -280,7 +280,7 @@ function youtubeStartTime(url) {
     return ytSeconds(t);
   }
   if (hash && /t=/.test(hash)) {
-    const { t } = queryParse(hash.substring(1));
+    const { t } = queryParse(hash.slice(1));
     if (t) {
       return ytSeconds(t);
     }
@@ -293,11 +293,11 @@ function youtubeStartTime(url) {
  * @return {Number}
  */
 function ytSeconds(x) {
-  if (/^[0-9]+$/.test(x)) {
+  if (/^\d+$/.test(x)) {
     return parseInt(x);
   }
 
-  const m = /^(?:(?:([0-9]+)h)?([0-9]+)m)?(?:([0-9]+)s)$/.exec(x);
+  const m = /^(?:(?:(\d+)h)?(\d+)m)?(\d+)s$/.exec(x);
   if (m) {
     let t = parseInt(m[3]);
     if (m[2]) {

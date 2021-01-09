@@ -7,7 +7,7 @@ import { withEventListener } from '../hooks/sub-unsub';
 import ScrollSafe from './scroll-helpers/scroll-safe';
 import * as heightCache from './scroll-helpers/size-cache';
 
-const TWEET_RE = /^https?:\/\/twitter\.com\/[^/]+\/status\/([0-9]+)/i;
+const TWEET_RE = /^https?:\/\/twitter\.com\/[^/]+\/status\/(\d+)/i;
 
 export function canShowURL(url) {
   return TWEET_RE.test(url);

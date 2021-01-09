@@ -124,8 +124,7 @@ function onSubmit(id, dispatch) {
         values.email.trim(),
         undefined,
         undefined,
-        values.description.trim(),
-        undefined, // frontendPreferences should not updates
+        values.description.trim(), // frontendPreferences should not updates
       ),
     );
   };

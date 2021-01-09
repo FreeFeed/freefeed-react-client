@@ -30,8 +30,8 @@ export function insertText(insertion, text, selStart, selEnd) {
   }
 
   // Ignore any text between selStart and selEnd
-  const before = text.substring(0, selStart);
-  const after = text.substring(selEnd);
+  const before = text.slice(0, Math.max(0, selStart));
+  const after = text.slice(Math.max(0, selEnd));
 
   if (before.match(/\S$/)) {
     insertion = ` ${insertion}`;

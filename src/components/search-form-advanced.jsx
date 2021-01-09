@@ -192,7 +192,7 @@ export const SearchFormAdvanced = withRouter(function SearchFormAdvanced({ route
 
 function usernames(text = '') {
   text = text.toLowerCase();
-  const re = /[a-z0-9-]+/g;
+  const re = /[a-z\d-]+/g;
   let m;
   const result = [];
   while ((m = re.exec(text))) {

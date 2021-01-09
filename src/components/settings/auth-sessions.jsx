@@ -74,7 +74,7 @@ export default withLayout(function AuthSessionsPage() {
       <section className={settingsStyles.formSection}>
         <h3>Active sessions</h3>
 
-        {activeSessions.length ? (
+        {activeSessions.length > 0 ? (
           <>
             <ul className={styles.list}>
               {activeSessions.map((s) => (

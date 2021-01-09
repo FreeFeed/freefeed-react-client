@@ -29,8 +29,8 @@ const validate = ({ withExtProfile = true, withCaptcha = true } = {}) => (values
   const shouldBe = (test, message = '') => (test ? undefined : message);
 
   const errors = {};
-  errors.username = shouldBe(/^[a-z0-9]{3,25}$/i.test(values.username.trim()));
-  if (USERNAME_STOP_LIST.includes(values.username.trim())) {
+  errors.username = shouldBe(/^[a-z\d]{3,25}$/i.test(values.username.trim()));
+  if (USERNAME_STOP_LIST.has(values.username.trim())) {
     errors.username = 'Reserved username. Please select another one.';
   }
   errors.screenname = shouldBe(/^.{3,25}$/i.test(values.screenname.trim()));
@@ -298,7 +298,7 @@ export default memo(function SignupForm({ invitationId = null, lang = 'en' }) {
   );
 });
 
-const USERNAME_STOP_LIST = [
+const USERNAME_STOP_LIST = new Set([
   'anonymous',
   'public',
   'about',
@@ -321,4 +321,4 @@ const USERNAME_STOP_LIST = [
   'profilepics',
   'invite',
   'invited',
-];
+]);

@@ -17,7 +17,7 @@ import UserName from './user-name';
 import RecentGroups from './recent-groups';
 import ErrorBoundary from './error-boundary';
 import { InvisibleSelect } from './invisibe-select';
-import { LiberaPayWidget } from './LiberaPayWidget';
+import { LiberaPayWidget } from './libera-pay-widget';
 import { UserPicture } from './user-picture';
 import { SidebarHomeFeeds } from './sidebar-homefeeds';
 import { ButtonLink } from './button-link';

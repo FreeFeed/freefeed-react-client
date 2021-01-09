@@ -37,7 +37,7 @@ export async function makeJpegIfNeeded(blob) {
     if (jpeg.size < blob.size / 2) {
       return jpeg;
     }
-  } catch (e) {
+  } catch {
     // skip any errors
   } finally {
     window.URL.revokeObjectURL(src);

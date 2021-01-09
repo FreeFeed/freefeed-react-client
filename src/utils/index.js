@@ -13,7 +13,7 @@ export function getCookie(name) {
   if (begin === -1) {
     return '';
   }
-  const fromBegin = document.cookie.substr(begin);
+  const fromBegin = document.cookie.slice(begin);
   const tokenWithName = fromBegin.split(';');
   const tokenWithNameSplit = tokenWithName[0].split('=');
   const [, token] = tokenWithNameSplit;

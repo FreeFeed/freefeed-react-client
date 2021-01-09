@@ -109,10 +109,10 @@ function selectState(state, ownProps) {
     authenticated &&
     foundUser &&
     foundUser.type === 'group' &&
-    (foundUser.administrators || []).indexOf(state.user.id) > -1;
+    (foundUser.administrators || []).includes(state.user.id);
 
   const currentRouteName = getCurrentRouteName(ownProps);
-  const isItPostsPage = ['userComments', 'userLikes'].indexOf(currentRouteName) === -1;
+  const isItPostsPage = !['userComments', 'userLikes'].includes(currentRouteName);
 
   const statusExtension = {
     authenticated,
@@ -126,19 +126,17 @@ function selectState(state, ownProps) {
     pinnedStatus: state.userActionsStatuses.pinned[foundUser && foundUser.id] || initialAsyncState,
     isItPostsPage,
     amIGroupAdmin,
-    subscribed: authenticated && foundUser && user.subscriptions.indexOf(foundUser.id) > -1,
+    subscribed: authenticated && foundUser && user.subscriptions.includes(foundUser.id),
     subscribedToMe:
       authenticated && foundUser && _.findIndex(state.user.subscribers, { id: foundUser.id }) > -1,
-    blocked: authenticated && foundUser && user.banIds.indexOf(foundUser.id) > -1,
+    blocked: authenticated && foundUser && user.banIds.includes(foundUser.id),
     hasRequestBeenSent:
-      authenticated &&
-      foundUser &&
-      (user.pendingSubscriptionRequests || []).indexOf(foundUser.id) > -1,
+      authenticated && foundUser && (user.pendingSubscriptionRequests || []).includes(foundUser.id),
     canAcceptDirects: canAcceptDirects(foundUser, state),
     pinned:
       authenticated &&
       foundUser &&
-      (user.frontendPreferences.pinnedGroups || []).indexOf(foundUser.id) > -1,
+      (user.frontendPreferences.pinnedGroups || []).includes(foundUser.id),
     managedGroups: state.managedGroups,
   };
 

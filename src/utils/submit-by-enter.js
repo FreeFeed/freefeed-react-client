@@ -17,7 +17,7 @@ export function submitByEnter(submitFn) {
     }
 
     const { target } = event;
-    if (target.selectionStart === target.value.length && / $/.test(target.value)) {
+    if (target.selectionStart === target.value.length && target.value.endsWith(' ')) {
       // Trim the extra spaces before new line
       target.value = target.value.replace(/ +$/, '');
       return;

@@ -18,8 +18,8 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
     initialText = '',
     // Persistent form is always on page so we don't need to show Cancel button
     isPersistent = false,
-    onSubmit = () => undefined,
-    onCancel = () => undefined,
+    onSubmit = () => {},
+    onCancel = () => {},
     submitStatus = initialAsyncState,
   },
   fwdRef,
@@ -87,6 +87,8 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
   });
   const chooseFiles = useFileChooser({ onChoose: uploadFile, multiple: true });
 
+  const disabled = !canSubmit || submitStatus.loading || filesLoading;
+
   return (
     <div className="comment-body">
       <PreventPageLeaving prevent={canSubmit || submitStatus.loading} />
@@ -108,9 +110,9 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
       <div>
         <button
           className={cn('btn btn-default btn-xs comment-post', {
-            disabled: !canSubmit || submitStatus.loading || filesLoading,
+            disabled,
           })}
-          aria-disabled={!canSubmit || submitStatus.loading || filesLoading}
+          aria-disabled={disabled}
           aria-label={
             !canSubmit
               ? 'Submit disabled (textarea is empty)'
@@ -122,6 +124,7 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
         >
           Comment
         </button>
+
         {!isPersistent && (
           <ButtonLink
             className="comment-cancel"
@@ -132,6 +135,7 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
             Cancel
           </ButtonLink>
         )}
+
         <ButtonLink
           className="comment-file-button iconic-button"
           title="Add photo or file"

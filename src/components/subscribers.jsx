@@ -65,7 +65,7 @@ function selectState(state, ownProps) {
   _.sortBy(state.usernameSubscribers.payload, 'username').forEach((u) => {
     const isAdmin = adminIds.some((id) => id === u.id);
     // "mutual" markings should be displayed only if browsing my own subscribers
-    u.isMutual = isMyPage && subscriptionsUsernames.indexOf(u.username) > -1;
+    u.isMutual = isMyPage && subscriptionsUsernames.includes(u.username);
     listSections[isAdmin ? 1 : 0].users.push(u);
   });
 

@@ -64,8 +64,8 @@ function GroupsList({ pageSize }) {
   const filteredGroups = nameFilter
     ? groups.filter((g) => {
         return (
-          g.username.toLowerCase().indexOf(nameFilterLowercase) > -1 ||
-          g.screenName.toLowerCase().indexOf(nameFilterLowercase) > -1
+          g.username.toLowerCase().includes(nameFilterLowercase) ||
+          g.screenName.toLowerCase().includes(nameFilterLowercase)
         );
       })
     : groups;

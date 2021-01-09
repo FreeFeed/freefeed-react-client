@@ -309,14 +309,14 @@ function hl(text, h) {
       text && result.push(text);
       break;
     } else if (p > 0) {
-      result.push(text.substring(0, p));
+      result.push(text.slice(0, Math.max(0, p)));
     }
     result.push(
       <mark className={styles.mark} key={`${text}__${result.length}`}>
         {h}
       </mark>,
     );
-    text = text.substring(p + h.length);
+    text = text.slice(Math.max(0, p + h.length));
   }
   return result;
 }

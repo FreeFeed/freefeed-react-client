@@ -5,7 +5,5 @@ export function HomeFeedLink({ feed }) {
 }
 
 export function homeFeedURI(feed) {
-  return feed.isInherent
-    ? '/'
-    : `/list/${feed.id.substring(0, 4)}/${encodeURIComponent(feed.title)}`;
+  return feed.isInherent ? '/' : `/list/${feed.id.slice(0, 4)}/${encodeURIComponent(feed.title)}`;
 }

@@ -138,7 +138,7 @@ export default class CreateBookmarkletPost extends Component {
           maxLength="1500"
         />
 
-        {this.props.imageUrls.length ? (
+        {this.props.imageUrls.length > 0 ? (
           linkedImages
         ) : (
           <div className="post-linked-image-empty">

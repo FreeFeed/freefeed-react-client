@@ -225,7 +225,7 @@ const Notification = ({ event_type, ...props }) => {
   );
 };
 
-const isFilterActive = (filterName, filter) => filter && filter.indexOf(filterName) !== -1;
+const isFilterActive = (filterName, filter) => filter && filter.includes(filterName);
 
 const Notifications = (props) => (
   <div className="box notifications">

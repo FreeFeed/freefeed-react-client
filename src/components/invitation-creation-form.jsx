@@ -258,7 +258,7 @@ function formatSuggestionsText(
   lang = INVITATION_LANGUAGE_OPTIONS.ENGLISH,
 ) {
   const { users = [], groups = [] } = suggestions;
-  if (!users.length && !groups.length) {
+  if (users.length === 0 && groups.length === 0) {
     return '';
   }
 
@@ -276,7 +276,7 @@ function formatSuggestionsText(
     })
     .join('\n');
 
-  if (!users.length) {
+  if (users.length === 0) {
     const onlyGroupsPrefix = ONLY_GROUP_PREFIXES[lang];
     return `${onlyGroupsPrefix}\n${groupsSuggestion}`;
   }
@@ -284,13 +284,13 @@ function formatSuggestionsText(
   const usersPrefix = USER_PREFIXES[lang];
   const groupsPrefix = GROUP_PREFIXES[lang];
 
-  return groups.length
+  return groups.length > 0
     ? `${usersPrefix}\n${usersSuggestion}\n\n${groupsPrefix}\n${groupsSuggestion}`
     : `${usersPrefix}\n${usersSuggestion}`;
 }
 
 function findDescription(username, descriptions) {
-  const [descriptionString] = descriptions.filter(
+  const descriptionString = descriptions.find(
     (d) => d === username || d.indexOf(`${username} `) === 1,
   );
   return (
@@ -339,7 +339,7 @@ function formatSuggest(suggest, description) {
   const formattedDescription =
     firstNewlineIndex === -1
       ? trimmedDescription
-      : trimmedDescription.substring(0, firstNewlineIndex);
+      : trimmedDescription.slice(0, Math.max(0, firstNewlineIndex));
   return `@${suggest} — ${formattedDescription}`;
 }
 

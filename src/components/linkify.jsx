@@ -53,7 +53,7 @@ export default class Linkify extends Component {
       if (token instanceof Mention) {
         return (
           <UserName
-            user={{ username: token.text.substring(1).toLowerCase() }}
+            user={{ username: token.text.slice(1).toLowerCase() }}
             userHover={this.props.userHover}
             key={key}
           >
@@ -92,7 +92,7 @@ export default class Linkify extends Component {
         if (token.isLocal) {
           let m, text;
           // Special shortening of post links
-          if ((m = /^[^/]+\/[\w-]+\/[0-9a-f]{8}-/.exec(token.pretty))) {
+          if ((m = /^[^/]+\/[\w-]+\/[\da-f]{8}-/.exec(token.pretty))) {
             text = `${m[0]}\u2026`;
           } else {
             text = token.shorten(MAX_URL_LENGTH);

@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 
-import styles from './LiberaPayWidget.module.scss';
+import styles from './libera-pay-widget.module.scss';
 
 export function LiberaPayWidget({ project, updateInterval = 1200000 }) {
   const [{ receiving, goal }, setData] = useState({

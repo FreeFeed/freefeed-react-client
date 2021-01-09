@@ -205,7 +205,7 @@ export const joinPostData = (state) => (postId) => {
     const subscriptionType = (state.subscriptions[subscriptionId] || {}).name;
     return subscriptionType === 'Directs';
   });
-  const isDirect = !!directRecipients.length;
+  const isDirect = directRecipients.length > 0;
 
   const { allowLinksPreview, readMoreStyle } = state.user.frontendPreferences;
 
@@ -287,7 +287,7 @@ export function userActions(dispatch) {
  */
 export function canAcceptDirects(user, state) {
   if (!user || !user.username) {
-    return undefined;
+    return;
   }
 
   const { user: me, usersNotFound, directsReceivers } = state;

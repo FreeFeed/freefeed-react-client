@@ -193,7 +193,7 @@ export default class ImageAttachmentsLightbox extends Component {
         gettingData={this.getItemData}
         options={{
           ...lightboxOptions,
-          galleryUID: (this.props.postId || 'new-post').substr(0, 8),
+          galleryUID: (this.props.postId || 'new-post').slice(0, 8),
           getThumbBoundsFn: this.getThumbBounds,
           index: this.state.currentIndex,
         }}

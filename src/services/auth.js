@@ -5,7 +5,7 @@ import { authDebug } from '../utils/debug';
 const { tokenPrefix } = CONFIG.auth;
 const NAME = `${tokenPrefix}authToken`;
 
-let token = undefined;
+let token;
 
 export function getToken() {
   if (token === undefined) {

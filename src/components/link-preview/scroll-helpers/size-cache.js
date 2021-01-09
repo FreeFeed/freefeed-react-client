@@ -11,14 +11,14 @@ try {
   const stored = localStorage.getItem(lsKey);
   const data = JSON.parse(stored);
   lru.load(data);
-} catch (e) {
+} catch {
   // do nothing
 }
 
 const save = debounce(() => {
   try {
     localStorage.setItem(lsKey, JSON.stringify(lru.dump()));
-  } catch (e) {
+  } catch {
     // do nothing
   }
 }, lruSaveTimeout);

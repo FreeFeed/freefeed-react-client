@@ -40,7 +40,7 @@ const shortenText = (text, maxLength) => {
   // Handle the case with a very long first word (i.e., no spaces before maxTextLength)
   const cutIndex = lastSpacePosition > -1 ? lastSpacePosition : maxTextLength;
 
-  const newText = text.substr(0, cutIndex);
+  const newText = text.slice(0, Math.max(0, cutIndex));
   return newText + suffix;
 };
 

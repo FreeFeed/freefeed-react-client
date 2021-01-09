@@ -567,8 +567,7 @@ export const markNotificationsAsReadMiddleware = (store) => (next) => (action) =
 };
 
 const isFirstPage = (state) => !state.routing.locationBeforeTransitions.query.offset;
-const isMemories = (state) =>
-  state.routing.locationBeforeTransitions.pathname.indexOf('memories') !== -1;
+const isMemories = (state) => state.routing.locationBeforeTransitions.pathname.includes('memories');
 
 const isPostLoaded = ({ posts }, postId) => posts[postId];
 const iLikedPost = ({ user, posts }, postId) => {
@@ -577,7 +576,7 @@ const iLikedPost = ({ user, posts }, postId) => {
     return false;
   }
   const likes = post.likes || [];
-  return likes.indexOf(user.id) !== -1;
+  return likes.includes(user.id);
 };
 const dispatchWithPost = async (store, postId, action, filter = () => true, maxDelay = 0) => {
   let state = store.getState();
@@ -613,12 +612,13 @@ const dispatchWithPost = async (store, postId, action, filter = () => true, maxD
 
 const isFirstFriendInteraction = (post, { users }, { subscriptions, comments }) => {
   const [newLike] = users;
-  const myFriends = Object.keys(subscriptions)
-    .map((key) => subscriptions[key])
-    .map((sub) => sub.user);
+  const myFriends = new Set(
+    Object.keys(subscriptions)
+      .map((key) => subscriptions[key])
+      .map((sub) => sub.user),
+  );
   const likesWithoutCurrent = post.posts.likes.filter((like) => like !== newLike);
-  const friendsInvolved = (list) =>
-    list.filter((element) => myFriends.indexOf(element) !== -1).length;
+  const friendsInvolved = (list) => list.filter((element) => myFriends.has(element)).length;
   const friendsLikedBefore = friendsInvolved(likesWithoutCurrent);
   const newPostCommentAuthors = (post.comments || []).map((comment) => comment.createdBy);
   const commentsAuthors = (post.posts.comments || []).map((cId) => (comments[cId] || {}).createdBy);

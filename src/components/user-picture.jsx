@@ -7,7 +7,7 @@ export function UserPicture({
   user = null,
   large = false,
   inline = false,
-  loading = undefined,
+  loading,
   withLink = true,
   className = '',
   fallback = '...',

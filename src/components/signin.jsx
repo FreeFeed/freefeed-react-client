@@ -120,7 +120,7 @@ const SignInForm = memo(function SignInForm() {
           <p className="help-block">
             <Link
               to={
-                username.input.value.indexOf('@') < 0
+                !username.input.value.includes('@')
                   ? '/restore'
                   : `/restore?${qsEncode({ email: username.input.value })}`
               }

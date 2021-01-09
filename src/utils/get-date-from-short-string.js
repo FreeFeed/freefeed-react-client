@@ -2,9 +2,9 @@ import format from 'date-fns/format';
 
 function getDateParamsFromString(dateString) {
   return {
-    year: dateString.substring(0, 4),
-    month: dateString.substring(4, 6),
-    date: dateString.substring(6, 8),
+    year: dateString.slice(0, 4),
+    month: dateString.slice(4, 6),
+    date: dateString.slice(6, 8),
   };
 }
 

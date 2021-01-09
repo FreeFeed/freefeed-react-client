@@ -55,7 +55,7 @@ export default function Layout({ children, router }) {
     if (pathname.indexOf(settingsRoot) !== 0) {
       return '';
     }
-    return pathname.substring(settingsRoot.length).replace(/^\//, '').split('/')[0];
+    return pathname.slice(settingsRoot.length).replace(/^\//, '').split('/')[0];
   }, [router.location]);
 
   const selectTab = useCallback(

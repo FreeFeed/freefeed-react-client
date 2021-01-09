@@ -42,7 +42,7 @@ const RestorePasswordForm = memo(function RestorePasswordForm() {
     initialValues: {
       email: useMemo(() => {
         if (location.search) {
-          const { email } = qsParse(location.search.substr(1));
+          const { email } = qsParse(location.search.slice(1));
           return email || '';
         }
         return '';

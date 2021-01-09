@@ -36,8 +36,11 @@ export default function AppearanceForm() {
     if (!hash) {
       return;
     }
-    const element = document.getElementById(hash.substring(1));
-    element && element.scrollIntoView();
+    const anchor = hash.slice(1);
+    const element = document.querySelector(`#${anchor}`);
+    if (element) {
+      element.scrollIntoView();
+    }
   }, []);
 
   const form = useForm(

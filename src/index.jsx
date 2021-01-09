@@ -361,7 +361,7 @@ ReactDOM.render(
   <Provider store={store}>
     <App />
   </Provider>,
-  document.getElementById('app'),
+  document.querySelector('#app'),
 );
 
 function checkPath(Component, checker) {

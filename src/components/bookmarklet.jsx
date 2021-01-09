@@ -24,7 +24,7 @@ const imagesFromURL = memoize((url) => {
     },
     {
       // YouTube
-      from: /https?:\/\/(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\S*[^\w\s-])([\w-]{11})(?=[^\w-]|$)[?=&+%\w.-]*/i,
+      from: /https?:\/\/(?:[\da-z-]+\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\S*[^\w\s-])([\w-]{11})(?=[^\w-]|$)[?=&+%\w.-]*/i,
       to: ([, id]) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
     },
   ];

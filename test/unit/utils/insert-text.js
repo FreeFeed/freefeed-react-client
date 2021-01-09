@@ -43,11 +43,8 @@ describe('insertText', () => {
       // Creating line with '|'-characters from the result
       const result =
         rSelStart === rSelEnd
-          ? `${rText.substring(0, rSelStart)}|${rText.substring(rSelStart)}`
-          : `${rText.substring(0, rSelStart)}|${rText.substring(
-              rSelStart,
-              rSelEnd,
-            )}|${rText.substring(rSelEnd)}`;
+          ? `${rText.slice(0, rSelStart)}|${rText.slice(rSelStart)}`
+          : `${rText.slice(0, rSelStart)}|${rText.slice(rSelStart, rSelEnd)}|${rText.slice(rSelEnd)}`; // prettier-ignore
 
       expect(result, 'to be', output);
     });

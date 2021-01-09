@@ -197,21 +197,21 @@ class UserCard extends Component {
 const mapStateToProps = (state, ownProps) => {
   const me = state.user;
   const user = _.find(state.users, { username: ownProps.username }) || {};
-  const notFound = !user.id && state.usersNotFound.indexOf(ownProps.username) >= 0;
+  const notFound = !user.id && state.usersNotFound.includes(ownProps.username);
 
   return {
     me,
     user,
     notFound,
     isItMe: me.username === user.username,
-    amISubscribedToUser: (me.subscriptions || []).indexOf(user.id) > -1,
+    amISubscribedToUser: (me.subscriptions || []).includes(user.id),
     isUserSubscribedToMe: _.findIndex(me.subscribers, { id: user.id }) > -1,
-    isUserBlockedByMe: (me.banIds || []).indexOf(user.id) > -1,
-    subscribed: (me.subscriptions || []).indexOf(user.id) > -1,
-    hasRequestBeenSent: (me.pendingSubscriptionRequests || []).indexOf(user.id) > -1,
-    blocked: (me.banIds || []).indexOf(user.id) > -1,
-    hidden: me.frontendPreferences.homefeed.hideUsers.indexOf(user.username) > -1,
-    amIGroupAdmin: user.type === 'group' && (user.administrators || []).indexOf(me.id) > -1,
+    isUserBlockedByMe: (me.banIds || []).includes(user.id),
+    subscribed: (me.subscriptions || []).includes(user.id),
+    hasRequestBeenSent: (me.pendingSubscriptionRequests || []).includes(user.id),
+    blocked: (me.banIds || []).includes(user.id),
+    hidden: me.frontendPreferences.homefeed.hideUsers.includes(user.username),
+    amIGroupAdmin: user.type === 'group' && (user.administrators || []).includes(me.id),
     canAcceptDirects: canAcceptDirects(user, state),
     subscribingStatus: state.userActionsStatuses.subscribing[user.username] || initialAsyncState,
     blockingStatus: state.userActionsStatuses.blocking[user.username] || initialAsyncState,

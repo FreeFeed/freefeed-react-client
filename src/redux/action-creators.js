@@ -442,8 +442,8 @@ export function updateUser(
   isPrivate,
   isProtected,
   description,
-  frontendPrefs = undefined,
-  backendPrefs = undefined,
+  frontendPrefs,
+  backendPrefs,
 ) {
   return {
     type: ActionTypes.UPDATE_USER,

@@ -22,7 +22,7 @@ export function initUnscroll() {
   window.addEventListener('touchend', userInteraction.trigger);
 
   window.MutationObserver &&
-    new window.MutationObserver(unscroll).observe(document.getElementById('app'), {
+    new window.MutationObserver(unscroll).observe(document.querySelector('#app'), {
       subtree: true,
       childList: true,
       characterData: true,
@@ -42,7 +42,7 @@ const pinnedSelectors = [
   '.comment',
 ].join(',');
 
-const inputElements = ['INPUT', 'TEXTAREA', 'SELECT'];
+const inputElements = new Set(['INPUT', 'TEXTAREA', 'SELECT']);
 
 const maxPinDepth = 4;
 
@@ -58,7 +58,7 @@ pinnedElements.capture = function () {
   const { activeElement } = document;
   if (
     activeElement !== document.body &&
-    inputElements.includes(activeElement.tagName) &&
+    inputElements.has(activeElement.tagName) &&
     isInViewport(activeElement)
   ) {
     const { top } = activeElement.getBoundingClientRect();
@@ -68,8 +68,7 @@ pinnedElements.capture = function () {
   }
 
   const nodes = document.querySelectorAll(pinnedSelectors);
-  for (let i = 0; i < nodes.length; i++) {
-    const node = nodes[i];
+  for (const node of nodes) {
     const { top, bottom } = node.getBoundingClientRect();
     if (bottom > 0) {
       this.push({ node, top });

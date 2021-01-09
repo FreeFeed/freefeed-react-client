@@ -267,8 +267,8 @@ export function updateUser({
   isPrivate,
   isProtected,
   description,
-  frontendPrefs = undefined,
-  backendPrefs = undefined,
+  frontendPrefs,
+  backendPrefs,
 }) {
   const user = { screenName, email, isPrivate, isProtected, description };
   if (frontendPrefs) {
@@ -531,7 +531,7 @@ export async function performExtAuth({ provider, popup, mode }) {
     })(),
   ]);
 
-  const query = qsParse(search.substr(1));
+  const query = qsParse(search.slice(1));
 
   const finishResp = await fetch(
     `${apiRoot}/v2/ext-auth/auth-finish`,

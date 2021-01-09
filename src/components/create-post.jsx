@@ -71,9 +71,9 @@ export default class CreatePost extends Component {
     if (e.clipboardData) {
       const { items } = e.clipboardData;
       if (items) {
-        for (let i = 0; i < items.length; i++) {
-          if (items[i].type.indexOf('image/') > -1) {
-            const blob = items[i].getAsFile();
+        for (const item of items) {
+          if (item.type.includes('image/')) {
+            const blob = item.getAsFile();
             if (!blob.name) {
               blob.name = 'image.png';
             }
