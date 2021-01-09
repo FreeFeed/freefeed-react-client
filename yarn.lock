@@ -3785,10 +3785,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:~3.8.1":
-  version: 3.8.1
-  resolution: "core-js@npm:3.8.1"
-  checksum: e9364ce130241b65f73e0be84721f3cd704b5db77709476e2d6c1e4b56e58e3af9b46e6b51bd019865083d2d55b38a8e0888e862f75e65332c37820cb0d3c58e
+"core-js@npm:~3.8.2":
+  version: 3.8.2
+  resolution: "core-js@npm:3.8.2"
+  checksum: 8fa2c580b77b9d54d3f6ee147be4d9ae01ea6d77f35f16b05962161e9bec02d846449cce4c68b9d190145edc8ded71142f6fd99e35b53fc642b20a3bf47bbd07
   languageName: node
   linkType: hard
 
@@ -5022,18 +5022,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-prettier@npm:~3.3.0":
-  version: 3.3.0
-  resolution: "eslint-plugin-prettier@npm:3.3.0"
+"eslint-plugin-prettier@npm:~3.3.1":
+  version: 3.3.1
+  resolution: "eslint-plugin-prettier@npm:3.3.1"
   dependencies:
     prettier-linter-helpers: ^1.0.0
   peerDependencies:
     eslint: ">=5.0.0"
     prettier: ">=1.13.0"
   peerDependenciesMeta:
-    eslint-plugin-prettier:
+    eslint-config-prettier:
       optional: true
-  checksum: d79ea6ed414f861d0b84818b9a3f7ac40f67998918d3a0c27e9d82f097768aeae8211f382cc5f9b059f4bdb417d098c8250ea8a552e6e18c904a961eb2b21681
+  checksum: cf35b0f0e9ef30782fe82913db92f6874181723d77f0c4613f9d69c87069f73d0dc420ef850ebc844613c00a8e87eb9762a36b7d028334c5c7b091763118347b
   languageName: node
   linkType: hard
 
@@ -5053,9 +5053,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react@npm:~7.21.5":
-  version: 7.21.5
-  resolution: "eslint-plugin-react@npm:7.21.5"
+"eslint-plugin-react@npm:~7.22.0":
+  version: 7.22.0
+  resolution: "eslint-plugin-react@npm:7.22.0"
   dependencies:
     array-includes: ^3.1.1
     array.prototype.flatmap: ^1.2.3
@@ -5070,7 +5070,7 @@ __metadata:
     string.prototype.matchall: ^4.0.2
   peerDependencies:
     eslint: ^3 || ^4 || ^5 || ^6 || ^7
-  checksum: a7123f6feb287ad7e15d36b1c9fda8f78a0f0d39b9ee2d6479a5f0ad0effb8f60f639ef7449cecabb711095060e487f0950b69478b22768547b909c0de4f3afd
+  checksum: 34927cb4880984e3a3e413ef57ebedbc4c4bf8e26f3cf561986e240c621d0873765fc5eef2be22171625deab2f77d0ec7013b422987ae5296fbdee0c682c6cc5
   languageName: node
   linkType: hard
 
@@ -6629,22 +6629,22 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"html-webpack-plugin@npm:~4.5.0":
-  version: 4.5.0
-  resolution: "html-webpack-plugin@npm:4.5.0"
+"html-webpack-plugin@npm:~4.5.1":
+  version: 4.5.1
+  resolution: "html-webpack-plugin@npm:4.5.1"
   dependencies:
     "@types/html-minifier-terser": ^5.0.0
     "@types/tapable": ^1.0.5
     "@types/webpack": ^4.41.8
     html-minifier-terser: ^5.0.1
     loader-utils: ^1.2.3
-    lodash: ^4.17.15
+    lodash: ^4.17.20
     pretty-error: ^2.1.1
     tapable: ^1.1.3
     util.promisify: 1.0.0
   peerDependencies:
     webpack: ^4.0.0 || ^5.0.0
-  checksum: df4dd38bd886aaac4cdcfa40f80fd35eb310810c8cad5bf1f7b8ca91550ad7d9f277c80dd4015fd2b0ef235d0384e9708b92a9c39f33d1b09090ca6fd8fdb53b
+  checksum: 58979a6adb605bb0d0eb489d587eb3b980724dcbe5fb2fdccce7033a13dd46e75d12062bc0ca8943d3598d012717c84df9f250549b728bd07fae244f9d1ecefd
   languageName: node
   linkType: hard
 
@@ -11198,7 +11198,7 @@ fsevents@^1.2.7:
     babel-plugin-transform-react-remove-prop-types: ~0.4.24
     classnames: ~2.2.6
     copy-webpack-plugin: ~6.1.1
-    core-js: ~3.8.1
+    core-js: ~3.8.2
     cross-env: ~7.0.3
     css-loader: ~3.6.0
     custom-event: ~1.0.1
@@ -11209,9 +11209,9 @@ fsevents@^1.2.7:
     eslint-plugin-babel: ~5.3.1
     eslint-plugin-import: ~2.22.1
     eslint-plugin-lodash: ~7.1.0
-    eslint-plugin-prettier: ~3.3.0
+    eslint-plugin-prettier: ~3.3.1
     eslint-plugin-promise: ~4.2.1
-    eslint-plugin-react: ~7.21.5
+    eslint-plugin-react: ~7.22.0
     eslint-plugin-react-hooks: ~4.2.0
     eslint-plugin-you-dont-need-lodash-underscore: ~6.10.0
     eslint-webpack-plugin: ~2.4.1
@@ -11220,7 +11220,7 @@ fsevents@^1.2.7:
     final-form: ~4.20.1
     focus-trap-react: ~8.1.1
     highcharts: ~8.2.2
-    html-webpack-plugin: ~4.5.0
+    html-webpack-plugin: ~4.5.1
     husky: ~5.0.6
     keycode-js: ~3.1.0
     lint-staged: ~10.5.3
