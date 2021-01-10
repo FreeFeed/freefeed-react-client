@@ -128,7 +128,14 @@ class RuleGenerator {
       test: /[.]module[.]scss$/,
       use: [
         this.opts.dev ? 'style-loader' : MiniCssExtractPlugin.loader,
-        'css-loader?modules=true',
+        {
+          loader: 'css-loader',
+          options: {
+            modules: {
+              localIdentName: '[name]-[local]-[hash:base64:5]',
+            },
+          },
+        },
         'sass-loader',
       ],
     };
