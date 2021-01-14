@@ -205,6 +205,7 @@ body.dark-theme {
   }
 
   .comment.highlighted::before,
+  .comment.highlighted .expand-panel,
   .comment.highlight-from-url::before {
     background-color: $bg-color-lightest;
   }
