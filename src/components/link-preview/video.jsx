@@ -162,20 +162,12 @@ function getDefaultAspectRatio(url) {
 export async function getVideoInfo(url, withoutAutoplay) {
   switch (getVideoType(url)) {
     case T_YOUTUBE_VIDEO: {
-      const data = await cachedFetch(
-        `https://noembed.com/embed?url=${encodeURIComponent(url)}&maxheight`,
-      );
-      if (data.error) {
-        return { error: data.error };
-      }
-      if (!('title' in data)) {
-        return { error: data.error ? data.error : 'error loading data' };
-      }
+      const videoID = getVideoId(url);
       return {
-        byline: `${data.title} by ${data.author_name}`,
-        aspectRatio: aspectRatio.set(url, data.height / data.width),
-        previewURL: data.thumbnail_url,
-        playerURL: `https://www.youtube.com/embed/${getVideoId(url)}?rel=0&fs=1${
+        byline: `Open on YouTube`,
+        aspectRatio: aspectRatio.set(url, 9 / 16),
+        previewURL: `https://img.youtube.com/vi/${videoID}/hqdefault.jpg`,
+        playerURL: `https://www.youtube.com/embed/${videoID}?rel=0&fs=1${
           withoutAutoplay ? '' : '&autoplay=1'
         }&start=${youtubeStartTime(url)}`,
       };

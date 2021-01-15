@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Prevent display of link previews from inside spoilers
 - Focus is removed from post textarea after posting
 - Fix highlight color of expand-panel
+- Fix YouTube previews
 
 ### Added
 - Use open-source Vazir font to display Persian letters
