@@ -1330,37 +1330,37 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/fontawesome-common-types@npm:^0.2.32":
-  version: 0.2.32
-  resolution: "@fortawesome/fontawesome-common-types@npm:0.2.32"
-  checksum: a3654c397d9fb62edb7a6070220d18f55ec1fbc16aec14ea0c4c425e626589fcde6534eb61346e145ef07922221514646923695d536d17d754b50dfe3ca66dc6
+"@fortawesome/fontawesome-common-types@npm:^0.2.34":
+  version: 0.2.34
+  resolution: "@fortawesome/fontawesome-common-types@npm:0.2.34"
+  checksum: cbfa1ad00fc80bc162a74c793bd96773001908c94316f0ac817b43e819334e42b21d35db47f78ff542f5e4397d394d7f68c0cbf7a7bf0719b0554cc6dea11cd8
   languageName: node
   linkType: hard
 
-"@fortawesome/free-brands-svg-icons@npm:~5.15.1":
-  version: 5.15.1
-  resolution: "@fortawesome/free-brands-svg-icons@npm:5.15.1"
+"@fortawesome/free-brands-svg-icons@npm:~5.15.2":
+  version: 5.15.2
+  resolution: "@fortawesome/free-brands-svg-icons@npm:5.15.2"
   dependencies:
-    "@fortawesome/fontawesome-common-types": ^0.2.32
-  checksum: d6d0544d2428a2cdca8308a4a0d4c8f7eb10b3b9f1aa04c26e58f310d909201e316253d6bdb8d31cca21e8633060f5b342fc68a7e8d11cf6d6289e23cc0a94d2
+    "@fortawesome/fontawesome-common-types": ^0.2.34
+  checksum: ccc4b05113caf94eb7a67cb80ad0af025b6d7526638254b885fd023cd59612e8c070b4f253c4038d1e13ca4dbb6304f811dddc10a49d88c986baba21fa0008ef
   languageName: node
   linkType: hard
 
-"@fortawesome/free-regular-svg-icons@npm:~5.15.1":
-  version: 5.15.1
-  resolution: "@fortawesome/free-regular-svg-icons@npm:5.15.1"
+"@fortawesome/free-regular-svg-icons@npm:~5.15.2":
+  version: 5.15.2
+  resolution: "@fortawesome/free-regular-svg-icons@npm:5.15.2"
   dependencies:
-    "@fortawesome/fontawesome-common-types": ^0.2.32
-  checksum: 5f1c0838a36f331a040bbb2dd7b27d94ab08550c8be0ece3a855e7d83665f1179a0c794aba494ace520153589a542e97bd465b7a8e120126b85f813bf8c63e26
+    "@fortawesome/fontawesome-common-types": ^0.2.34
+  checksum: a24ae419a3406cfa71787bb677b44a687fe6a32f753e066fd451a56814cd05647a025d8d86130490675ab0ff4538c470a6f6d3b2b73a7b50c658120fc82a4525
   languageName: node
   linkType: hard
 
-"@fortawesome/free-solid-svg-icons@npm:~5.15.1":
-  version: 5.15.1
-  resolution: "@fortawesome/free-solid-svg-icons@npm:5.15.1"
+"@fortawesome/free-solid-svg-icons@npm:~5.15.2":
+  version: 5.15.2
+  resolution: "@fortawesome/free-solid-svg-icons@npm:5.15.2"
   dependencies:
-    "@fortawesome/fontawesome-common-types": ^0.2.32
-  checksum: ca31ed2dbfcb9fb08c785f41768313ff6dd4570f1eca5cde8c3b2de6656fb58492c3b5474e2d9453d6e90214f6e4621d73bf50cf73c0bfc6b4257caaeea16860
+    "@fortawesome/fontawesome-common-types": ^0.2.34
+  checksum: 7fe1cc0287170a1c39d4157e2830064bfcd986d3e1c350b2230f8145375118837229c0e54fbe3516bb3a5810a44520ad6087e4a08e4b36789de93e6b7a98c5e8
   languageName: node
   linkType: hard
 
@@ -1400,84 +1400,84 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/browser@npm:5.29.2":
-  version: 5.29.2
-  resolution: "@sentry/browser@npm:5.29.2"
+"@sentry/browser@npm:5.30.0":
+  version: 5.30.0
+  resolution: "@sentry/browser@npm:5.30.0"
   dependencies:
-    "@sentry/core": 5.29.2
-    "@sentry/types": 5.29.2
-    "@sentry/utils": 5.29.2
+    "@sentry/core": 5.30.0
+    "@sentry/types": 5.30.0
+    "@sentry/utils": 5.30.0
     tslib: ^1.9.3
-  checksum: 29ec3547272afc159fa932920a2f08413f6473c61a4d08a1a845e867f93e230b86615cf6b8634248de55d675d2777a8ecb8e21de9e48dd4b079c011dab423182
+  checksum: 13076a27f27d926a20c1187575126f61f15844587677fc65686fe9cb3bf1e6c0ad8458b9923db3a87e36aab00c82a0b26cd61915b941ae5e180d314f9da669aa
   languageName: node
   linkType: hard
 
-"@sentry/core@npm:5.29.2":
-  version: 5.29.2
-  resolution: "@sentry/core@npm:5.29.2"
+"@sentry/core@npm:5.30.0":
+  version: 5.30.0
+  resolution: "@sentry/core@npm:5.30.0"
   dependencies:
-    "@sentry/hub": 5.29.2
-    "@sentry/minimal": 5.29.2
-    "@sentry/types": 5.29.2
-    "@sentry/utils": 5.29.2
+    "@sentry/hub": 5.30.0
+    "@sentry/minimal": 5.30.0
+    "@sentry/types": 5.30.0
+    "@sentry/utils": 5.30.0
     tslib: ^1.9.3
-  checksum: dece2e4f56db55935043a35484185c5cf53bfbb05115545391352299b3bbe858a1201fe7a8ff51034eb3bcbc7bf0c86b08e2e4a1960bcd0b5a37d4cdb1041a93
+  checksum: 359863ce060b2664ff2ad3593292457a20bccd37b8885abbd9213c359d11905c771aa42734e09f87665d566f09ba047d19cf1c3a82233ef00dcf703e177aa261
   languageName: node
   linkType: hard
 
-"@sentry/hub@npm:5.29.2":
-  version: 5.29.2
-  resolution: "@sentry/hub@npm:5.29.2"
+"@sentry/hub@npm:5.30.0":
+  version: 5.30.0
+  resolution: "@sentry/hub@npm:5.30.0"
   dependencies:
-    "@sentry/types": 5.29.2
-    "@sentry/utils": 5.29.2
+    "@sentry/types": 5.30.0
+    "@sentry/utils": 5.30.0
     tslib: ^1.9.3
-  checksum: 57ce093d8cd5996ac5b18fd12b96cf0700aa79e1d549e00d96f49de3c87eb106e1776d13963fa579a5a2b171e21cff552ebb700d36679e4809656f14c691bf54
+  checksum: 9d70208834e473f843937895d90ba81f170fefd6eafbb1016dc02b80854652eab6b0b1747d57855ff799ae214fadef4cc567826ef4e253cd4391a5434ac08d73
   languageName: node
   linkType: hard
 
-"@sentry/minimal@npm:5.29.2":
-  version: 5.29.2
-  resolution: "@sentry/minimal@npm:5.29.2"
+"@sentry/minimal@npm:5.30.0":
+  version: 5.30.0
+  resolution: "@sentry/minimal@npm:5.30.0"
   dependencies:
-    "@sentry/hub": 5.29.2
-    "@sentry/types": 5.29.2
+    "@sentry/hub": 5.30.0
+    "@sentry/types": 5.30.0
     tslib: ^1.9.3
-  checksum: e03545c3cc65b315f19cd85bb456e978620e8f8c62acd0a3ba6961a98f5a1a95985ab8acbabbd468d5b421c43fe80963125b30b2504199d234696214e05350c3
+  checksum: 0ad27f2f72da62f88564a08af35ae3b438dde23f13ae1d97514e693cd7c9ab8ce5adff855645b7d8406fd0f95f4518fae1f6c674258de97d198e33f85653965c
   languageName: node
   linkType: hard
 
-"@sentry/react@npm:~5.29.2":
-  version: 5.29.2
-  resolution: "@sentry/react@npm:5.29.2"
+"@sentry/react@npm:~5.30.0":
+  version: 5.30.0
+  resolution: "@sentry/react@npm:5.30.0"
   dependencies:
-    "@sentry/browser": 5.29.2
-    "@sentry/minimal": 5.29.2
-    "@sentry/types": 5.29.2
-    "@sentry/utils": 5.29.2
+    "@sentry/browser": 5.30.0
+    "@sentry/minimal": 5.30.0
+    "@sentry/types": 5.30.0
+    "@sentry/utils": 5.30.0
     hoist-non-react-statics: ^3.3.2
     tslib: ^1.9.3
   peerDependencies:
     react: 15.x || 16.x || 17.x
     react-dom: 15.x || 16.x || 17.x
-  checksum: a57bae30a0fde8a633509ce2866b22e29879c713c284b73baebaa71f9f369bfc96d1bc6172cc56259ac23c914199846726325d71dd23792f2dbef2058abbb0ca
+  checksum: 5de69e1735bdac539577d6d81413f9c1b7391fdc6f1bda35098fdcf6c96776325532fc34b33ae0ef2d1242e5c619f30bfc6fa0a16bd49caf7a14e2b4a6b4ce66
   languageName: node
   linkType: hard
 
-"@sentry/types@npm:5.29.2":
-  version: 5.29.2
-  resolution: "@sentry/types@npm:5.29.2"
-  checksum: 2809e15309f64f830b1dbbf66c8d4b73cf520a81172b07ea117a77bb95fdcb5c0b68d4faaee1e5cdcd3300eae3653e83579575d98f9faee6a3155c3ce0d09fb4
+"@sentry/types@npm:5.30.0":
+  version: 5.30.0
+  resolution: "@sentry/types@npm:5.30.0"
+  checksum: 36955c4db69a7b5ff558d4c404b37f2135a55a579da5c84dbf11817ecf594dead5e565efaf970395ea79f9978a735b946c082f7e2684a514eb56e158855625ec
   languageName: node
   linkType: hard
 
-"@sentry/utils@npm:5.29.2":
-  version: 5.29.2
-  resolution: "@sentry/utils@npm:5.29.2"
+"@sentry/utils@npm:5.30.0":
+  version: 5.30.0
+  resolution: "@sentry/utils@npm:5.30.0"
   dependencies:
-    "@sentry/types": 5.29.2
+    "@sentry/types": 5.30.0
     tslib: ^1.9.3
-  checksum: ab5e8c451597379f6e4def6220db8f0075c7b4a2e7ddcf23367b830799ea80326fe449f4707ab116933ec8e64127b9d173d4ee2ddc9d101d49548c01f90500f0
+  checksum: 5126166e06947283dd57f8b79a247c5227cacff1f7c9d838c8a4846db621722c97c327c161ed2c4e2949c4e9e66054c464ba0e73aa3a22feda31d7208fdb4acd
   languageName: node
   linkType: hard
 
@@ -11264,10 +11264,10 @@ fsevents@~2.1.2:
     "@babel/preset-react": ~7.12.10
     "@babel/register": ~7.12.10
     "@babel/runtime": ~7.12.5
-    "@fortawesome/free-brands-svg-icons": ~5.15.1
-    "@fortawesome/free-regular-svg-icons": ~5.15.1
-    "@fortawesome/free-solid-svg-icons": ~5.15.1
-    "@sentry/react": ~5.29.2
+    "@fortawesome/free-brands-svg-icons": ~5.15.2
+    "@fortawesome/free-regular-svg-icons": ~5.15.2
+    "@fortawesome/free-solid-svg-icons": ~5.15.2
+    "@sentry/react": ~5.30.0
     autotrack: ~2.4.1
     babel-eslint: ~10.1.0
     babel-loader: ~8.2.2
@@ -11360,10 +11360,10 @@ fsevents@~2.1.2:
     unexpected-sinon: ~11.0.1
     use-subscription: ~1.4.1
     validator: ~13.5.2
-    vazir-font: ~27.1.0
+    vazir-font: ~27.2.0
     webpack: ~4.44.2
     webpack-cli: ~3.3.12
-    webpack-dev-server: ~3.11.1
+    webpack-dev-server: ~3.11.2
     webpack-node-externals: ~2.5.2
     whatwg-fetch: ~3.5.0
     worker-loader: ~2.0.0
@@ -14234,10 +14234,10 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"vazir-font@npm:~27.1.0":
-  version: 27.1.0
-  resolution: "vazir-font@npm:27.1.0"
-  checksum: 7dff12c3c201fd41c0cd5d7abd243ec83d42e7c1cbf47bb8b71470114538563894eedfac4c34712c131efb34a783ed7faa62de1ed6bbf4df6223eeff0151224a
+"vazir-font@npm:~27.2.0":
+  version: 27.2.0
+  resolution: "vazir-font@npm:27.2.0"
+  checksum: 59fec5036292b327008f9544d82621c8bea39ecbafbfd6e396a46497695af2f3ae8dcdd43932558814265a2257795f1ffa62d67ae65d482d49d63509ad812b69
   languageName: node
   linkType: hard
 
@@ -14401,9 +14401,9 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"webpack-dev-server@npm:~3.11.1":
-  version: 3.11.1
-  resolution: "webpack-dev-server@npm:3.11.1"
+"webpack-dev-server@npm:~3.11.2":
+  version: 3.11.2
+  resolution: "webpack-dev-server@npm:3.11.2"
   dependencies:
     ansi-html: 0.0.7
     bonjour: ^3.5.0
@@ -14445,7 +14445,7 @@ fsevents@~2.1.2:
       optional: true
   bin:
     webpack-dev-server: bin/webpack-dev-server.js
-  checksum: ddd2212abe1065e13a6d350267e09312a41a59f08ed4ef6e34952907f8323cc35ade868b951c8acd9909406d890d65b6463a910883f89470b7d64606432a0f08
+  checksum: 6bf6803810e70f77c50b08b040aa2e8d8e844572e18ad57c624f0cda36cc316fb700a3f765401097c4088d922b41381a44760bd3ed1f196e84a97ba938513130
   languageName: node
   linkType: hard
 
