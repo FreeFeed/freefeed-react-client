@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improve auto-direction support in text inputs (useful for right-to-left languages)
 - Load external css-files after inline styles. Otherwise, rules priority was broken
 - Prevent display of link previews from inside spoilers
+- Focus is removed from post textarea after posting
+- Fix highlight color of expand-panel
 
 ### Added
 - Use open-source Vazir font to display Persian letters
@@ -19,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (close) their authorization sessions on the special settings page.
 - User's stats block (on her feed-page) has "All posts" link now
 - "All Groups" page can be filtered now
+- "Spoiler" texts can be hidden by clicking on them
 
 ## [1.90.1] - 2020-12-30
 ### Fixed
