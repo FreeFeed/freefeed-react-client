@@ -29,7 +29,7 @@ export function deepMergeJSON(base, patch) {
   return patch;
 }
 
-const knownTypes = ['string', 'number', 'object', 'array', 'boolean', 'null'];
+const knownTypes = new Set(['string', 'number', 'object', 'array', 'boolean', 'null']);
 
 function jsonType(value) {
   const jsType = typeof value;
@@ -41,5 +41,5 @@ function jsonType(value) {
     }
     return 'object';
   }
-  return knownTypes.includes(jsType) ? jsType : 'unknown';
+  return knownTypes.has(jsType) ? jsType : 'unknown';
 }

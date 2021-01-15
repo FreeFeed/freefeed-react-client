@@ -31,7 +31,7 @@ export default withLayout('Application tokens', function Tokens() {
           Generate new token
         </Link>
       </p>
-      {!tokenIds.length && <p>You have no application tokens yet.</p>}
+      {tokenIds.length === 0 && <p>You have no application tokens yet.</p>}
       <div className="list-group">
         {tokenIds.map((id) => (
           <TokenRow key={id} id={id} />

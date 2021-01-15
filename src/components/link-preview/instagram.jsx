@@ -4,7 +4,7 @@ import _ from 'lodash';
 import ScrollSafe from './scroll-helpers/scroll-safe';
 import * as aspectRatio from './scroll-helpers/size-cache';
 
-const INSTAGRAM_RE = /^https?:\/\/(?:www\.)?instagram\.com\/(?:p|tv)\/([a-z0-9_-]+)/i;
+const INSTAGRAM_RE = /^https?:\/\/(?:www\.)?instagram\.com\/(?:p|tv)\/([\w-]+)/i;
 
 export function canShowURL(url) {
   return INSTAGRAM_RE.test(url);
@@ -72,7 +72,7 @@ function onMessage(e) {
   let data = null;
   try {
     data = JSON.parse(e.data);
-  } catch (e) {
+  } catch {
     return;
   }
 

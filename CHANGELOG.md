@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.91.0] - Not released
+### Fixed
+- Text is properly selectable (select, copy, paste) even if it has spoiler-tags in it
+- Selecting text does not reveal spoiler contents on Windows
+- Improve auto-direction support in text inputs (useful for right-to-left languages)
+- Load external css-files after inline styles. Otherwise, rules priority was broken
+- Prevent display of link previews from inside spoilers
+- Focus is removed from post textarea after posting
+- Fix highlight color of expand-panel
+- Fix YouTube previews
+
+### Added
+- Use open-source Vazir font to display Persian letters
+- New authorization sessions support. User is now able to view and manage
+  (close) their authorization sessions on the special settings page.
+- User's stats block (on her feed-page) has "All posts" link now
+- "All Groups" page can be filtered now
+- "Spoiler" texts can be hidden by clicking on them
+
 ## [1.90.1] - 2020-12-30
 ### Fixed
 - Restored accidentally deleted "Browse" word from sidebar

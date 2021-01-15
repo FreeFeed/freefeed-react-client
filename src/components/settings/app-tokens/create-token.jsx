@@ -24,7 +24,7 @@ export default withLayout('Generate new token', function CreateToken() {
   const { returnURL, ...initialData } = useMemo(() => {
     const state = { returnURL: '', ...initialFormData };
     if (location.search) {
-      const qs = queryParse(location.search.substr(1));
+      const qs = queryParse(location.search.slice(1));
       state.title = qs.title || '';
       state.scopes = (qs.scopes || '').split(/\s+/);
       state.netmasks = qs.netmasks || '';

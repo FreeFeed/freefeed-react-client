@@ -19,7 +19,7 @@ const renderLike = (item, i, items) => (
 );
 
 export default ({ likes, showMoreLikes, post }) => {
-  if (!likes.length) {
+  if (likes.length === 0) {
     return <div />;
   }
 

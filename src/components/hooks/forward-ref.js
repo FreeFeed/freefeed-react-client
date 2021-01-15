@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 
 // Allows to reuse the forwarded ref in component
-export function useForwardedRef(forwardedRef, initialValue = undefined) {
+export function useForwardedRef(forwardedRef, initialValue) {
   const reusedRef = useRef(initialValue);
 
   useEffect(() => {

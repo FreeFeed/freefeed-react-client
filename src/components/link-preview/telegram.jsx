@@ -5,7 +5,7 @@ import { once } from 'lodash';
 import ScrollSafe from './scroll-helpers/scroll-safe';
 import * as heightCache from './scroll-helpers/size-cache';
 
-const TG_POST_RE = /^https:\/\/t\.me\/[a-zA-Z][a-zA-Z0-9_]+\/([0-9]+)/;
+const TG_POST_RE = /^https:\/\/t\.me\/[a-zA-Z]\w+\/(\d+)/;
 
 export function canShowURL(url) {
   return TG_POST_RE.test(url);
@@ -48,7 +48,7 @@ function onMessage(e) {
   let data = null;
   try {
     data = JSON.parse(e.data);
-  } catch (e) {
+  } catch {
     return;
   }
 

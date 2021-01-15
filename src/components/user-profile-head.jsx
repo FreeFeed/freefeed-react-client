@@ -466,43 +466,39 @@ export const UserProfileHead = withRouter(
             <ul className={styles.statsItems}>
               {user.type === 'user' && (
                 <StatLink
-                  value={user.statistics.subscriptions}
+                  value={parseInt(user.statistics.subscriptions)}
                   title="subscription"
                   linkTo={`/${user.username}/subscriptions`}
                   canFollow={canFollowStatLinks}
                 />
               )}
               <StatLink
-                value={user.statistics.subscribers}
+                value={parseInt(user.statistics.subscribers)}
                 title="subscriber"
                 linkTo={`/${user.username}/subscribers`}
                 canFollow={canFollowStatLinks}
               />
-              {/* Looks like posts statistics is totally incorrect, so dont show it
-                {user.type === 'user' && (
+
+              {user.type === 'user' && (
+                <div style={{ marginTop: '0.5em' }}>
                   <StatLink
-                    value={user.statistics.posts}
-                    title="post"
-                    linkTo={`/${user.username}`}
+                    title="All posts"
+                    linkTo={`/search?qs=${encodeURIComponent(`from:${user.username}`)}`}
                     canFollow={canFollowStatLinks}
                   />
-                )}
-                */}
-              {user.type === 'user' && (
-                <StatLink
-                  value={user.statistics.comments}
-                  title="comment"
-                  linkTo={`/${user.username}/comments`}
-                  canFollow={canFollowStatLinks}
-                />
-              )}
-              {user.type === 'user' && (
-                <StatLink
-                  value={user.statistics.likes}
-                  title="like"
-                  linkTo={`/${user.username}/likes`}
-                  canFollow={canFollowStatLinks}
-                />
+                  <StatLink
+                    value={parseInt(user.statistics.comments)}
+                    title="comment"
+                    linkTo={`/${user.username}/comments`}
+                    canFollow={canFollowStatLinks}
+                  />
+                  <StatLink
+                    value={parseInt(user.statistics.likes)}
+                    title="like"
+                    linkTo={`/${user.username}/likes`}
+                    canFollow={canFollowStatLinks}
+                  />
+                </div>
               )}
             </ul>
           )}
@@ -525,13 +521,22 @@ export const UserProfileHead = withRouter(
 );
 
 function StatLink({ value, title, linkTo, canFollow }) {
-  if (value < 0) {
-    return null;
+  let content;
+
+  if (typeof value === 'undefined') {
+    content = title;
+  } else if (typeof value === 'number') {
+    if (value < 0) {
+      return null;
+    }
+
+    content = pluralForm(value, title);
   }
-  let content = pluralForm(value, title);
+
   if (canFollow) {
     content = <Link to={linkTo}>{content}</Link>;
   }
+
   return <li>{content}</li>;
 }
 

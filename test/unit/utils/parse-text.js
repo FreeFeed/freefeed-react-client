@@ -2,7 +2,7 @@ import { describe, it } from 'mocha';
 import expect from 'unexpected';
 import { Link as TLink } from 'social-text-tokenizer';
 
-import { Link } from '../../../src/utils/parse-text';
+import { Link, getFirstLinkToEmbed } from '../../../src/utils/parse-text';
 
 const localDomains = ['freefeed.net', 'omega.freefeed.net'];
 
@@ -41,6 +41,36 @@ describe('parse-text', () => {
       const link = new Link(new TLink(0, 'https://omega.freefeed.net/hello'), localDomains);
       expect(link.isLocal, 'to be true');
       expect(link.localURI, 'to be', '/hello');
+    });
+  });
+
+  describe('Get first link to embed', () => {
+    it('should return undefined for no links', () => {
+      expect(getFirstLinkToEmbed('abc def'), 'to be undefined');
+    });
+
+    it('should return first link out of many', () => {
+      expect(
+        getFirstLinkToEmbed('abc https://link1.com https://link2.com def'),
+        'to be',
+        'https://link1.com/',
+      );
+    });
+
+    it('should return first non-excluded link', () => {
+      expect(
+        getFirstLinkToEmbed('abc !https://link1.com https://link2.com def'),
+        'to be',
+        'https://link2.com/',
+      );
+    });
+
+    it('should not return links inside spoilders', () => {
+      expect(
+        getFirstLinkToEmbed('abc <spoiler>https://link1.com</spoiler> https://link2.com def'),
+        'to be',
+        'https://link2.com/',
+      );
     });
   });
 });

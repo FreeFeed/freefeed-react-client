@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { memo, useEffect, useMemo } from 'react';
+import { memo, useEffect, useMemo, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { sortBy, range } from 'lodash';
 import { Link } from 'react-router';
@@ -55,19 +55,31 @@ const sortFields = {
 };
 
 function GroupsList({ pageSize }) {
+  const [nameFilter, setNameFilter] = useState('');
+
   const location = useSelector((state) => state.routing.locationBeforeTransitions);
   const { groups, withProtected } = useSelector((state) => state.allGroups);
 
+  const nameFilterLowercase = nameFilter.toLowerCase();
+  const filteredGroups = nameFilter
+    ? groups.filter((g) => {
+        return (
+          g.username.toLowerCase().includes(nameFilterLowercase) ||
+          g.screenName.toLowerCase().includes(nameFilterLowercase)
+        );
+      })
+    : groups;
+
   const page = getPageNumber(location);
   const sort = getSortMode(location);
-  const totalPages = Math.ceil(groups.length / pageSize);
+  const totalPages = Math.ceil(filteredGroups.length / pageSize);
 
   const groupsOnPage = useMemo(
     () =>
-      sortBy(groups, sortFields[sort])
+      sortBy(filteredGroups, sortFields[sort])
         .reverse()
         .slice(page * pageSize, (page + 1) * pageSize),
-    [groups, page, pageSize, sort],
+    [filteredGroups, page, pageSize, sort],
   );
 
   return (
@@ -75,18 +87,29 @@ function GroupsList({ pageSize }) {
       {withProtected ? (
         <p>
           There are {groups.length} public and protected groups in {CONFIG.siteTitle}. Protected
-          groups can be seen only by the authenticated users.
+          groups can only be seen by authenticated users.
         </p>
       ) : (
         <p>
           There are {groups.length} public groups in {CONFIG.siteTitle}.
         </p>
       )}
-      <p>Click on the column headers to change the table sorting.</p>
-      <table>
+      <p>
+        <label htmlFor="groups-name-filter">Filter by username or display name</label>
+        <input
+          id="groups-name-filter"
+          type="search"
+          placeholder="Type to filter"
+          onChange={useCallback((e) => setNameFilter(e.target.value), [])}
+          className="form-control narrow-input"
+        />
+      </p>
+      <p>Click on the column headers to change table sorting order.</p>
+
+      <table className={styles.table}>
         <thead>
           <tr className={styles.headersRow}>
-            <th>Group</th>
+            <th className={styles.mainColumn}>Group</th>
             <SortHeader mode={SORT_BY_SUBSCRIBERS} currentMode={sort}>
               Subscribers
             </SortHeader>
@@ -107,6 +130,11 @@ function GroupsList({ pageSize }) {
           ))}
         </tbody>
       </table>
+      {groupsOnPage.length === 0 ? (
+        <div className={styles.empty}>No groups match current filter</div>
+      ) : (
+        false
+      )}
       {totalPages > 1 && (
         <ul className="pagination">
           {range(1, totalPages).map((n) => (

@@ -12,9 +12,9 @@ const HiddenEntriesToggle = (props) => {
   let label;
 
   if (props.isOpen) {
-    label = `\u25bc Don't show ${props.count} hidden ${entriesForm}`;
+    label = `\u25BC Don't show ${props.count} hidden ${entriesForm}`;
   } else {
-    label = `\u25ba Show ${props.count} hidden ${entriesForm}`;
+    label = `\u25BA Show ${props.count} hidden ${entriesForm}`;
   }
 
   return (
@@ -142,7 +142,7 @@ export default connect((state) => {
 
 function FeedEntry({ post, section, ...props }) {
   // Capture Hide link offset before post unmount
-  const [hideLinkTopOffset, setHideLinkTopOffset] = useState(undefined);
+  const [hideLinkTopOffset, setHideLinkTopOffset] = useState();
   const onPostUnmount = useCallback((offset) => setHideLinkTopOffset(offset), []);
 
   const isRecentlyHidden =

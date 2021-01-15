@@ -50,8 +50,8 @@ const FeedHandler = (props) => {
 
 function selectState(state) {
   const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
-  const isDirects = state.routing.locationBeforeTransitions.pathname.indexOf('direct') !== -1;
-  const isSaves = state.routing.locationBeforeTransitions.pathname.indexOf('saves') !== -1;
+  const isDirects = state.routing.locationBeforeTransitions.pathname.includes('direct');
+  const isSaves = state.routing.locationBeforeTransitions.pathname.includes('saves');
   const defaultFeed =
     state.routing.locationBeforeTransitions.query.to || (!isDirects && user.username) || undefined;
   const invitation = formatInvitation(state.routing.locationBeforeTransitions.query.invite);

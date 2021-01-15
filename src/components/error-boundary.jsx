@@ -1,5 +1,5 @@
-/*global Raven*/
 import { PureComponent } from 'react';
+import * as Sentry from '@sentry/react';
 
 class ErrorBoundary extends PureComponent {
   constructor(props) {
@@ -12,14 +12,11 @@ class ErrorBoundary extends PureComponent {
   }
 
   componentDidCatch(error, errorInfo) {
-    if (typeof Raven !== 'undefined') {
-      Raven.captureException(error, {
-        level: 'error',
-        tags: { area: 'react/errorBoundary' },
-        extra: { errorInfo },
-      });
-    }
-    this.setState({ errorInfo });
+    Sentry.captureException(error, {
+      level: 'error',
+      tags: { area: 'react/errorBoundary' },
+      extra: { errorInfo },
+    });
   }
 
   render() {
@@ -41,10 +38,7 @@ class ErrorBoundary extends PureComponent {
           </div>
           <div className="error-boundary-details">
             <p>{errorMessage}</p>
-            <p>
-              {window.navigator.userAgent}
-              {typeof Raven !== 'undefined' ? '' : ', no Raven'}
-            </p>
+            <p>{window.navigator.userAgent}</p>
           </div>
         </div>
       );

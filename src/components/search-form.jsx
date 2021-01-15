@@ -61,6 +61,7 @@ export default withRouter(function SearchForm({ router }) {
         onKeyDown={onKeyDown}
         placeholder="Search request"
         className="search-input"
+        dir={'auto'}
       />
       <button type="button" className="search-button" onClick={performSearch}>
         Search

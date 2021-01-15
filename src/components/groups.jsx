@@ -82,11 +82,11 @@ const GroupsHandler = (props) => {
 function selectState(state) {
   const groupRequests = state.managedGroups.filter((group) => group.requests.length) || [];
 
-  const managedIds = _.map(state.managedGroups, (g) => g.id);
+  const managedIds = new Set(_.map(state.managedGroups, (g) => g.id));
   const sortingRule = (g) => -(g.updatedAt || g.createdAt);
 
-  const adminGroups = _.filter(state.groups, (group) => managedIds.indexOf(group.id) !== -1);
-  const regularGroups = _.filter(state.groups, (group) => managedIds.indexOf(group.id) === -1);
+  const adminGroups = _.filter(state.groups, (group) => managedIds.has(group.id));
+  const regularGroups = _.filter(state.groups, (group) => !managedIds.has(group.id));
 
   const myGroups = {
     header: 'Groups you admin',

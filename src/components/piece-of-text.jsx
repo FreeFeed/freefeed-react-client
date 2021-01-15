@@ -2,10 +2,11 @@ import { cloneElement, isValidElement, Component } from 'react';
 
 import { READMORE_STYLE_COMFORT } from '../utils/frontend-preferences-options';
 
+import { StartSpoiler, EndSpoiler } from '../utils/spoiler-tokens';
+import { parseText } from '../utils/parse-text';
+
 import Spoiler from './spoiler';
 import Linkify from './linkify';
-
-const spoilerRegex = /<(spoiler|спойлер)>(?:(?!(<(spoiler|спойлер)>|<\/(spoiler|спойлер)>)).)*<\/(spoiler|спойлер)>/gi;
 
 // Texts longer than thresholdTextLength should be cut to shortenedTextLength
 const thresholdTextLength = 800;
@@ -39,7 +40,7 @@ const shortenText = (text, maxLength) => {
   // Handle the case with a very long first word (i.e., no spaces before maxTextLength)
   const cutIndex = lastSpacePosition > -1 ? lastSpacePosition : maxTextLength;
 
-  const newText = text.substr(0, cutIndex);
+  const newText = text.slice(0, Math.max(0, cutIndex));
   return newText + suffix;
 };
 
@@ -118,37 +119,27 @@ const getExpandedText = (text) => {
 
 const splitIntoSpoilerBlocks = (input) => {
   if (typeof input === 'string') {
-    const spoilersInText = input.matchAll(spoilerRegex);
+    const tokens = parseText(input);
 
-    if (!spoilersInText) {
-      return input;
-    }
-
-    let i = 0;
     const newNodes = [];
+    let isInSpoiler = false;
+    let spoilerText = '';
 
-    for (const spoilerMatch of spoilersInText) {
-      const [content] = spoilerMatch;
-      const from = spoilerMatch.index;
-      const to = from + content.length;
-
-      if (from > i) {
-        newNodes.push(input.slice(i, from));
+    tokens.forEach((token) => {
+      if (token instanceof StartSpoiler) {
+        newNodes.push(token.text);
+        isInSpoiler = true;
+      } else if (token instanceof EndSpoiler) {
+        const spoilerNode = <Spoiler key={`spoiler-${token.offset}`}>{spoilerText}</Spoiler>;
+        newNodes.push(spoilerNode, token.text);
+        isInSpoiler = false;
+        spoilerText = '';
+      } else if (isInSpoiler) {
+        spoilerText += token.text;
+      } else {
+        newNodes.push(token.text);
       }
-      i = to;
-
-      const tagBefore = content.slice(0, 9);
-      const spoilerText = content.slice(9, -10);
-      const tagAfter = content.slice(-10);
-
-      newNodes.push(tagBefore);
-      newNodes.push(<Spoiler key={`spoiler-${from}`}>{spoilerText}</Spoiler>);
-      newNodes.push(tagAfter);
-    }
-
-    if (i < input.length) {
-      newNodes.push(input.slice(i));
-    }
+    });
 
     return newNodes;
   }

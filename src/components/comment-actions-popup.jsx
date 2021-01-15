@@ -145,7 +145,7 @@ function LoadedLikesList({ id, nLikes, hasOwnLike }) {
     const items = [
       hasOwnLike && <span key="you">You</span>,
       ...head.map((u) => <UserName user={u} key={u.id} />),
-      tail.length && (
+      tail.length > 0 && (
         <a key={`others${tail.length}`} onClick={unFold} className="likes-list-toggle">
           {tail.length} more {usersPluralize(tail.length)}
         </a>
@@ -154,12 +154,23 @@ function LoadedLikesList({ id, nLikes, hasOwnLike }) {
 
     return (
       <div ref={wrapper}>
-        {items.map((it, i) => (
-          <span key={it.key}>
-            {i === 0 ? '' : i === items.length - 1 ? ' and ' : ', '}
-            {it}
-          </span>
-        ))}{' '}
+        {items.map((it, i) => {
+          let separator;
+          if (i === 0) {
+            separator = '';
+          } else if (i === items.length - 1) {
+            separator = ' and ';
+          } else {
+            separator = ', ';
+          }
+
+          return (
+            <span key={it.key}>
+              {separator}
+              {it}
+            </span>
+          );
+        })}{' '}
         liked this comment
       </div>
     );

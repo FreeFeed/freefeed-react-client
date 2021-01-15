@@ -1,9 +1,10 @@
-/*global Raven*/
+/* global CONFIG */
 import { browserHistory } from 'react-router';
 import _ from 'lodash';
+import * as Sentry from '@sentry/react';
 
 import { getPost } from '../services/api';
-import { setToken } from '../services/auth';
+import { onStorageChange, setToken } from '../services/auth';
 import { Connection } from '../services/realtime';
 import { delay } from '../utils';
 import * as FeedOptions from '../utils/feed-options';
@@ -20,6 +21,8 @@ import {
 } from '../services/appearance';
 import { scrollingOrInteraction, unscroll } from '../services/unscroll';
 import { inactivityOf } from '../utils/event-sequences';
+import { authDebug } from '../utils/debug';
+import { takeLeadership } from '../utils/leadership';
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import {
@@ -193,13 +196,12 @@ export const apiMiddleware = (store) => (next) => async (action) => {
       response: apiResponse,
     });
   } catch (e) {
-    if (typeof Raven !== 'undefined') {
-      Raven.captureException(e, {
-        level: 'error',
-        tags: { area: 'redux/apiMiddleware' },
-        extra: { action },
-      });
-    }
+    Sentry.captureException(e, {
+      level: 'error',
+      tags: { area: 'redux/apiMiddleware' },
+      extra: { action },
+    });
+
     return store.dispatch({
       payload: { err: 'Network error' },
       type: fail(action.type),
@@ -226,6 +228,29 @@ function shouldGoToSignIn(pathname) {
 
 export const authMiddleware = (store) => {
   let firstUnauthenticated = true;
+
+  takeLeadership({
+    pingInterval: 60 * 1000,
+    baseElectInterval: 300 * 1000,
+    storageKey: `${CONFIG.auth.tokenPrefix}leadership`,
+  }).then(
+    () => {
+      // We are leader now, so we should periodically reissue token
+      setInterval(() => {
+        if (store.getState().authenticated) {
+          authDebug('start token reissue');
+          store.dispatch(ActionCreators.reissueAuthSession());
+        }
+      }, CONFIG.authSessions.reissueIntervalSec * 1000);
+    },
+    (err) => console.warn(err),
+  );
+
+  onStorageChange((newToken) => {
+    authDebug('token changed in local storage');
+    setToken(newToken, false);
+    store.dispatch(ActionCreators.authTokenUpdated());
+  });
 
   return (next) => (action) => {
     //stop action propagation if it should be authed and user is not authed
@@ -264,6 +289,28 @@ export const authMiddleware = (store) => {
 
       const backTo = store.getState().routing.locationBeforeTransitions.query.back || '/';
       return browserHistory.push(`${backTo}`);
+    }
+
+    if (
+      action.type === response(ActionTypes.SIGN_OUT) ||
+      action.type === fail(ActionTypes.SIGN_OUT)
+    ) {
+      if (action.type === fail(ActionTypes.SIGN_OUT)) {
+        // Unauthorize even if error
+        console.warn(`Error signing out: ${action.payload.err}`);
+      }
+      const res = next(action);
+      store.dispatch(ActionCreators.unauthenticated());
+      return res;
+    }
+
+    if (action.type === response(ActionTypes.REISSUE_AUTH_SESSION)) {
+      authDebug('token successfully reissued');
+      setToken(action.payload.authToken);
+      store.dispatch(ActionCreators.authTokenUpdated());
+    }
+    if (action.type === fail(ActionTypes.REISSUE_AUTH_SESSION)) {
+      authDebug(`cannot reissue token: ${action.payload.err}`);
     }
 
     return next(action);
@@ -520,8 +567,7 @@ export const markNotificationsAsReadMiddleware = (store) => (next) => (action) =
 };
 
 const isFirstPage = (state) => !state.routing.locationBeforeTransitions.query.offset;
-const isMemories = (state) =>
-  state.routing.locationBeforeTransitions.pathname.indexOf('memories') !== -1;
+const isMemories = (state) => state.routing.locationBeforeTransitions.pathname.includes('memories');
 
 const isPostLoaded = ({ posts }, postId) => posts[postId];
 const iLikedPost = ({ user, posts }, postId) => {
@@ -530,7 +576,7 @@ const iLikedPost = ({ user, posts }, postId) => {
     return false;
   }
   const likes = post.likes || [];
-  return likes.indexOf(user.id) !== -1;
+  return likes.includes(user.id);
 };
 const dispatchWithPost = async (store, postId, action, filter = () => true, maxDelay = 0) => {
   let state = store.getState();
@@ -566,12 +612,13 @@ const dispatchWithPost = async (store, postId, action, filter = () => true, maxD
 
 const isFirstFriendInteraction = (post, { users }, { subscriptions, comments }) => {
   const [newLike] = users;
-  const myFriends = Object.keys(subscriptions)
-    .map((key) => subscriptions[key])
-    .map((sub) => sub.user);
+  const myFriends = new Set(
+    Object.keys(subscriptions)
+      .map((key) => subscriptions[key])
+      .map((sub) => sub.user),
+  );
   const likesWithoutCurrent = post.posts.likes.filter((like) => like !== newLike);
-  const friendsInvolved = (list) =>
-    list.filter((element) => myFriends.indexOf(element) !== -1).length;
+  const friendsInvolved = (list) => list.filter((element) => myFriends.has(element)).length;
   const friendsLikedBefore = friendsInvolved(likesWithoutCurrent);
   const newPostCommentAuthors = (post.comments || []).map((comment) => comment.createdBy);
   const commentsAuthors = (post.posts.comments || []).map((cId) => (comments[cId] || {}).createdBy);
@@ -720,6 +767,10 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers, userActivit
 
     if (action.type === ActionTypes.UNAUTHENTICATED) {
       conn.reAuthorize().then(() => unsubscribeByRegexp(/^user:/));
+    }
+
+    if (action.type === ActionTypes.AUTH_TOKEN_UPDATED) {
+      conn.reAuthorize();
     }
 
     if (

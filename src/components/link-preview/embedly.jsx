@@ -40,7 +40,7 @@ function initEmbedly() {
   embedlyInitialized = true;
 
   const id = 'embedly-platform';
-  if (document.getElementById(id)) {
+  if (document.querySelector(`#${id}`)) {
     return;
   }
   window.embedly =
@@ -49,7 +49,7 @@ function initEmbedly() {
   script.id = id;
   script.async = true;
   script.src = `//cdn.embedly.com/widgets/platform.js`;
-  const [lastScript] = document.getElementsByTagName('script');
+  const [lastScript] = document.querySelectorAll('script');
   lastScript.parentNode.insertBefore(script, lastScript);
 
   // Listen for resize events

@@ -14,7 +14,7 @@ export function contentResized(el) {
       return;
     }
     el.dispatchEvent(new CustomEvent(ELEMENT_RESIZE_EVENT, { bubbles: true }));
-  } catch (e) {
+  } catch {
     // pass
   }
 }

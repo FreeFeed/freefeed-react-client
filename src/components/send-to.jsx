@@ -48,7 +48,7 @@ class SendTo extends Component {
     const options = this.optionsFromProps(newProps);
     if (
       !isSameFeeds(this.props.defaultFeed, newProps.defaultFeed) ||
-      (options.length !== 0 && this.state.options.length === 0)
+      (options.length > 0 && this.state.options.length === 0)
     ) {
       this.setState(this.stateFromProps(newProps, options));
     } else {
@@ -162,7 +162,7 @@ class SendTo extends Component {
   promptTextCreator = (label) => `Send direct message to @${label}`;
 
   // Only valid usernames are allowed
-  isValidNewOption = ({ label }) => /^[a-z0-9]{3,25}$/i.test(trim(label));
+  isValidNewOption = ({ label }) => /^[a-z\d]{3,25}$/i.test(trim(label));
 
   reset() {
     this.setState(this.stateFromProps(this.props, this.optionsFromProps(this.props)));

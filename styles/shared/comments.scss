@@ -88,7 +88,8 @@
     border-radius: $border-width;
   }
 
-  &.highlighted::before {
+  &.highlighted::before,
+  &.highlighted .expand-panel {
     background-color: #d9ebff;
   }
 

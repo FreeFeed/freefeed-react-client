@@ -14,6 +14,7 @@ module.exports = {
     'react',
     'you-dont-need-lodash-underscore',
     'react-hooks',
+    'unicorn',
   ],
   env: {
     browser: true,
@@ -121,5 +122,19 @@ module.exports = {
 
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
+
+    'unicorn/better-regex': ['error', { sortCharacterClasses: false }],
+    'unicorn/escape-case': 'error',
+    'unicorn/explicit-length-check': 'error',
+    'unicorn/filename-case': 'error',
+    'unicorn/no-for-loop': 'error',
+    'unicorn/no-useless-undefined': 'error',
+    'unicorn/prefer-array-find': 'error',
+    'unicorn/prefer-includes': 'error',
+    'unicorn/prefer-optional-catch-binding': 'error',
+    'unicorn/prefer-query-selector': 'error',
+    'unicorn/prefer-set-has': 'error',
+    'unicorn/prefer-string-slice': 'error',
+    'unicorn/prefer-string-starts-ends-with': 'error',
   },
 };

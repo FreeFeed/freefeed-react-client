@@ -58,12 +58,15 @@ export default class ArchiveRestorationForm extends Component {
       .filter((s) => via_restore.includes(s.url))
       .reduce((p, s) => p + s.count, 0);
 
-    const buttonText =
-      totalCount === selectedCount
-        ? 'Restore all my posts'
-        : selectedCount === 0
-        ? 'Restore my posts'
-        : `Restore my ${selectedCount} ${selectedCount === 1 ? 'post' : 'posts'}`;
+    let buttonText;
+
+    if (totalCount === selectedCount) {
+      buttonText = 'Restore all my posts';
+    } else if (selectedCount === 0) {
+      buttonText = 'Restore my posts';
+    } else {
+      buttonText = `Restore my ${selectedCount} ${selectedCount === 1 ? 'post' : 'posts'}`;
+    }
 
     return (
       <form onSubmit={this.action}>

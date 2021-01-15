@@ -44,7 +44,7 @@ export default (props) => {
         <TileList key={s.title} users={s.users} />,
       ])}
 
-      {!sections.length ? <div>Nobody{"'"}s here!</div> : ''}
+      {sections.length === 0 ? <div>Nobody{"'"}s here!</div> : ''}
     </div>
   );
 };

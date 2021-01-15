@@ -73,13 +73,13 @@ export function useUploader({ dropTargetRef, pasteTargetRef, onSuccess }) {
 
       const { items } = e.clipboardData;
       let withImages = false;
-      for (let i = 0; i < items.length; i++) {
-        if (items[i].type.indexOf('image/') !== 0) {
+      for (const item of items) {
+        if (item.type.indexOf('image/') !== 0) {
           continue;
         }
         withImages = true;
 
-        const blob = items[i].getAsFile();
+        const blob = item.getAsFile();
         if (!blob.name) {
           blob.name = 'image.png';
         }

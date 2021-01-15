@@ -1,7 +1,7 @@
-/*global Raven*/
 import { differenceBy, intersection, intersectionBy, uniq } from 'lodash';
-
 import { hashTags } from 'social-text-tokenizer';
+import * as Sentry from '@sentry/react';
+
 import {
   // User actions
   subscribe,
@@ -104,11 +104,9 @@ export const joinPostData = (state) => (postId) => {
 
   const createdBy = state.users[post.createdBy] || { id: post.createdBy, username: '-unknown-' };
   if (createdBy.username === '-unknown-') {
-    if (typeof Raven !== 'undefined') {
-      Raven.captureMessage(`We've got post with unknown author with id`, {
-        extra: { uid: post.createdBy },
-      });
-    }
+    Sentry.captureMessage(`We've got post with unknown author with id`, {
+      extra: { uid: post.createdBy },
+    });
   }
 
   // Get the list of post's recipients
@@ -207,7 +205,7 @@ export const joinPostData = (state) => (postId) => {
     const subscriptionType = (state.subscriptions[subscriptionId] || {}).name;
     return subscriptionType === 'Directs';
   });
-  const isDirect = !!directRecipients.length;
+  const isDirect = directRecipients.length > 0;
 
   const { allowLinksPreview, readMoreStyle } = state.user.frontendPreferences;
 
@@ -289,7 +287,7 @@ export function userActions(dispatch) {
  */
 export function canAcceptDirects(user, state) {
   if (!user || !user.username) {
-    return undefined;
+    return;
   }
 
   const { user: me, usersNotFound, directsReceivers } = state;

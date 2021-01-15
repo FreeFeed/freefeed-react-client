@@ -51,5 +51,5 @@ LinkPreview.propTypes = {
 };
 
 function noPreviewForURL(url) {
-  return /^https:\/\/([a-z0-9-]+\.)?freefeed\.net(\/|$)/i.test(url);
+  return /^https:\/\/([a-z\d-]+\.)?freefeed\.net(\/|$)/i.test(url);
 }

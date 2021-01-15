@@ -79,10 +79,10 @@ function gatherContentLines(node, contentSelector, breakSelector) {
   const breaks = [...content.querySelectorAll(breakSelector || '.text')];
   const rects = [...content.getClientRects()];
   const breakRects = breaks.map((br) => br.getBoundingClientRect());
-  const breakTops = breakRects.map((br) => br.top);
+  const breakTops = new Set(breakRects.map((br) => br.top));
 
   const lines = rects.filter((rect) => {
-    const isRectABreak = breakTops.indexOf(rect.top) !== -1;
+    const isRectABreak = breakTops.has(rect.top);
     return !isRectABreak;
   });
 
@@ -117,7 +117,7 @@ function chooseLineCounts(config = {}, windowWidth) {
     .filter((key) => key !== DEFAULT_KEY)
     .map(Number)
     .sort((a, b) => a - b);
-  const breakpointToUse = breakpoints.filter((b) => b >= windowWidth)[0] || DEFAULT_KEY;
+  const breakpointToUse = breakpoints.find((b) => b >= windowWidth) || DEFAULT_KEY;
   return (
     config[breakpointToUse] || {
       maxLines: DEFAULT_MAX_LINES,

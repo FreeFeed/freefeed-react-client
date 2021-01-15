@@ -155,7 +155,7 @@ function MediaViewer(props) {
             src: a.url,
             w: (a.imageSizes && a.imageSizes.o && a.imageSizes.o.w) || 0,
             h: (a.imageSizes && a.imageSizes.o && a.imageSizes.o.h) || 0,
-            pid: a.id.substr(0, 8),
+            pid: a.id.slice(0, 8),
           };
         }),
       ).then((items) => {

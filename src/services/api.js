@@ -267,8 +267,8 @@ export function updateUser({
   isPrivate,
   isProtected,
   description,
-  frontendPrefs = undefined,
-  backendPrefs = undefined,
+  frontendPrefs,
+  backendPrefs,
 }) {
   const user = { screenName, email, isPrivate, isProtected, description };
   if (frontendPrefs) {
@@ -531,7 +531,7 @@ export async function performExtAuth({ provider, popup, mode }) {
     })(),
   ]);
 
-  const query = qsParse(search.substr(1));
+  const query = qsParse(search.slice(1));
 
   const finishResp = await fetch(
     `${apiRoot}/v2/ext-auth/auth-finish`,
@@ -713,4 +713,20 @@ export function createAttachment({ file }, { onProgress = () => null } = {}) {
 
     req.send(formData);
   });
+}
+
+export function signOut() {
+  return fetch(`${apiRoot}/v1/session`, postRequestOptions('DELETE'));
+}
+
+export function reissueAuthSession() {
+  return fetch(`${apiRoot}/v1/session/reissue`, postRequestOptions('POST'));
+}
+
+export function listAuthSessions() {
+  return fetch(`${apiRoot}/v1/session/list`, getRequestOptions());
+}
+
+export function closeAuthSessions(ids) {
+  return fetch(`${apiRoot}/v1/session/list`, postRequestOptions('PATCH', { close: ids }));
 }

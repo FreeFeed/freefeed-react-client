@@ -66,7 +66,7 @@ export function title(state = '', action) {
       return `${author} - ${CONFIG.siteTitle}`;
     }
     case response(ActionTypes.GET_SINGLE_POST): {
-      const text = action.payload.posts.body.substr(0, 60);
+      const text = action.payload.posts.body.slice(0, 60);
       const [user] = action.payload.users || [];
       const author =
         user.screenName + (user.username !== user.screenName ? ` (${user.username})` : '');
@@ -78,7 +78,7 @@ export function title(state = '', action) {
     }
     case response(ActionTypes.GET_USER_SUMMARY): {
       const period = getSummaryPeriod(action.request.days);
-      const [user] = (action.payload.users || []).filter(
+      const user = (action.payload.users || []).find(
         (user) => user.username === action.request.username,
       );
       const author = user
@@ -114,10 +114,9 @@ export const restorePasswordStatus = asyncState(
 const defaultResetHeader = `Reset ${CONFIG.siteTitle} Password`;
 const successResetHeader = 'Please log in with your new password';
 
-export function resetPassForm(
-  state = { error: '', loading: false, header: defaultResetHeader },
-  action,
-) {
+const defaultPassFormState = { error: '', loading: false, header: defaultResetHeader };
+
+export function resetPassForm(state = defaultPassFormState, action) {
   switch (action.type) {
     case request(ActionTypes.RESET_PASSWORD): {
       return { ...state, loading: true, header: defaultResetHeader };
@@ -731,9 +730,7 @@ export function posts(state = {}, action) {
     }
     case response(ActionTypes.DELETE_COMMENT): {
       const { commentId } = action.request;
-      const post = Object.values(state).find(
-        (_post) => (_post.comments || []).indexOf(commentId) !== -1,
-      );
+      const post = Object.values(state).find((_post) => (_post.comments || []).includes(commentId));
       if (!post) {
         return state;
       }
@@ -768,7 +765,7 @@ export function posts(state = {}, action) {
     case response(ActionTypes.ADD_COMMENT): {
       const post = state[action.request.postId];
       const commentAlreadyAdded =
-        post.comments && post.comments.indexOf(action.payload.comments.id) !== -1;
+        post.comments && post.comments.includes(action.payload.comments.id);
       if (commentAlreadyAdded) {
         return state;
       }
@@ -1024,7 +1021,7 @@ export function posts(state = {}, action) {
           [action.post.posts.id]: postParser(action.post.posts),
         };
       }
-      const commentAlreadyAdded = post.comments && post.comments.indexOf(action.comment.id) !== -1;
+      const commentAlreadyAdded = post.comments && post.comments.includes(action.comment.id);
       if (commentAlreadyAdded) {
         return state;
       }
@@ -1218,7 +1215,7 @@ export function usersNotFound(state = [], action) {
     case fail(ActionTypes.GET_USER_INFO): {
       if (action.response.status === 404) {
         const username = action.request.username.toLowerCase();
-        if (state.indexOf(username) < 0) {
+        if (!state.includes(username)) {
           state = [...state, username];
         }
         return state;
@@ -1304,7 +1301,7 @@ export function users(state = {}, action) {
     case ActionTypes.REALTIME_POST_NEW:
     case ActionTypes.REALTIME_LIKE_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW: {
-      if (!action.users || !action.users.length) {
+      if (!action.users || action.users.length === 0) {
         return state;
       }
       const usersToAdd = !action.post
@@ -1680,9 +1677,7 @@ function getValidRecipients(state) {
   }).filter(Boolean);
 
   const canPostToGroup = function (subUser) {
-    return (
-      subUser.isRestricted === '0' || (subUser.administrators || []).indexOf(state.users.id) > -1
-    );
+    return subUser.isRestricted === '0' || (subUser.administrators || []).includes(state.users.id);
   };
 
   const canSendDirect = function (subUser) {
@@ -1942,7 +1937,7 @@ const removeItemFromGroupRequests = (state, action) => {
 
   const group = state.find((group) => group.username === groupName);
 
-  if (group && group.requests.length !== 0) {
+  if (group && group.requests.length > 0) {
     const newGroup = {
       ...group,
       requests: group.requests.filter((user) => user.username !== userName),
@@ -2367,7 +2362,15 @@ export const allGroups = fromResponse(
   ActionTypes.GET_ALL_GROUPS,
   ({ payload: { withProtected, groups, users } }) => ({
     withProtected,
-    groups: groups.map((g) => ({ ...g, createdAt: users.find((u) => u.id === g.id).createdAt })),
+    groups: groups.map((g) => {
+      const user = users.find((u) => u.id === g.id);
+      return {
+        ...g,
+        createdAt: user.createdAt,
+        username: user.username,
+        screenName: user.screenName,
+      };
+    }),
   }),
   allGroupsDefaults,
   setOnLocationChange(allGroupsDefaults, ['/all-groups']),
@@ -2398,3 +2401,10 @@ export function resumeToken(state = null, action) {
 }
 
 export { attachmentUploads, attachmentUploadStatuses } from './reducers/attachment-uploads';
+
+export {
+  signOutStatus,
+  authSessions,
+  authSessionsStatus,
+  closeAuthSessionsStatus,
+} from './reducers/auth-sessios';

@@ -133,7 +133,7 @@ function pickActions(type, props) {
 }
 
 export const tileUserListFactory = (config) => (props) => {
-  if (!props.users || !props.users.length) {
+  if (!props.users || props.users.length === 0) {
     return false;
   }
 

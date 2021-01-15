@@ -25,7 +25,7 @@ const config = {
       rules.cssModule,
       rules.assetsCss,
       rules.template,
-      rules.fonts,
+      ...rules.fonts,
       rules.photoswipe,
       rules.markdown,
       rules.otherAssets,
@@ -42,8 +42,12 @@ const config = {
       inject: false,
       template: './index.jade',
       file: 'index.html',
-      appConfig: global.CONFIG,
-      opts,
+      chunks: ['config', 'common', 'app'],
+      chunksSortMode: 'manual',
+      templateParameters: {
+        appConfig: global.CONFIG,
+        opts,
+      },
     }),
     new MiniCssExtractPlugin({
       filename: opts.hash ? '[name]-[contenthash].css' : '[name]-dev.css',

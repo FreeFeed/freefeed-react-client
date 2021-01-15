@@ -3,7 +3,7 @@ import { stemmer as enStemmer } from 'porter-stemmer';
 import ruStemmer from './ru-stemmer';
 
 const enLetters = 'a-z';
-const ruLetters = '\u0400-\u04ff';
+const ruLetters = '\u0400-\u04FF';
 
 const partRE = /"(.+?)"|(\S+)/g;
 const enWordRE = new RegExp(`^[${enLetters}]+$`, 'i');
@@ -15,7 +15,7 @@ export function parseQuery(query) {
   const terms = [];
   let m;
   while ((m = partRE.exec(query)) !== null) {
-    if (m[2] && (m[2].indexOf(':') !== -1 || m[2].length === 1)) {
+    if (m[2] && (m[2].includes(':') || m[2].length === 1)) {
       continue;
     }
     if (m[1] !== undefined) {
@@ -73,13 +73,13 @@ export function highlightString(text, terms) {
     });
 
     if (match !== '') {
-      result.push(text.substring(0, minPos));
+      result.push(text.slice(0, Math.max(0, minPos)));
       result.push(
         <span key={`hl-${result.length}`} className={hlClass}>
           {match}
         </span>,
       );
-      text = text.substring(minPos + match.length);
+      text = text.slice(Math.max(0, minPos + match.length));
     } else {
       result.push(text);
       break;

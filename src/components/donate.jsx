@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { LiberaPayWidget } from './LiberaPayWidget';
+import { LiberaPayWidget } from './libera-pay-widget';
 
 const handleClickOnOneTimeDonation = () => {
   document.forms['singlePayPalPayment'].submit();
