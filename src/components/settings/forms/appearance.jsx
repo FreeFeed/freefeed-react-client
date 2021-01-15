@@ -16,6 +16,7 @@ import {
   HOMEFEED_MODE_CLASSIC,
   HOMEFEED_MODE_FRIENDS_ALL_ACTIVITY,
 } from '../../../utils/feed-options';
+import { safeScrollTo } from '../../../services/unscroll';
 import { Throbber } from '../../throbber';
 import { updateActualUserPreferences, setNSFWVisibility } from '../../../redux/action-creators';
 import settingsStyles from '../settings.module.scss';
@@ -39,7 +40,8 @@ export default function AppearanceForm() {
     const anchor = hash.slice(1);
     const element = document.querySelector(`#${anchor}`);
     if (element) {
-      element.scrollIntoView();
+      const { top } = element.getBoundingClientRect();
+      safeScrollTo(0, top);
     }
   }, []);
 
