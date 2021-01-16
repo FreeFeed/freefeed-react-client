@@ -152,6 +152,11 @@ class Layout extends Component {
                 <IndexLink className="site-logo-link" to="/">
                   {CONFIG.siteTitle}
                 </IndexLink>
+                {CONFIG.betaChannel.enabled && CONFIG.betaChannel.isBeta && (
+                  <Link to="/settings/appearance#beta" className="site-logo-subheading">
+                    {CONFIG.betaChannel.subHeading}
+                  </Link>
+                )}
               </h1>
             </div>
 

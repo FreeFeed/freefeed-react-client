@@ -24,6 +24,17 @@
   }
 }
 
+.site-logo-subheading {
+  font-size: 60%;
+  color: #f55;
+  margin-left: 1em;
+
+  &:hover,
+  &:focus {
+    color: #f55;
+  }
+}
+
 .mobile-shortcuts {
   @media (min-width: 768px) {
     margin-top: 34px;
