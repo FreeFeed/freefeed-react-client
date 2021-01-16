@@ -5,7 +5,7 @@ import * as Sentry from '@sentry/react';
 import { getPost } from '../services/api';
 import { setToken } from '../services/auth';
 import { Connection } from '../services/realtime';
-import { delay } from '../utils';
+import { delay, deleteCookie, setCookie } from '../utils';
 import * as FeedOptions from '../utils/feed-options';
 
 import {
@@ -877,4 +877,19 @@ export const unscrollMiddleware = () => (next) => (action) => {
   const result = next(action);
   unscroll();
   return result;
+};
+
+export const betaChannelMiddleware = (store) => (next) => (action) => {
+  if (
+    action.type === ActionTypes.SET_BETA_CHANNEL &&
+    action.payload !== store.getState().betaChannel
+  ) {
+    if (action.payload) {
+      setCookie(CONFIG.betaChannel.cookieName, CONFIG.betaChannel.cookieValue, 365, '/');
+    } else {
+      deleteCookie(CONFIG.betaChannel.cookieName, '/');
+    }
+    setTimeout(() => location.reload(true), 200);
+  }
+  return next(action);
 };

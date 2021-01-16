@@ -1972,3 +1972,13 @@ export {
   authSessionsStatus,
   closeAuthSessionsStatus,
 } from './reducers/auth-sessios';
+
+export function betaChannel(
+  state = CONFIG.betaChannel.enabled && CONFIG.betaChannel.isBeta,
+  action,
+) {
+  if (action.type === ActionTypes.SET_BETA_CHANNEL) {
+    return action.payload;
+  }
+  return state;
+}

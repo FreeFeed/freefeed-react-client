@@ -21,6 +21,7 @@ import {
   unscrollMiddleware,
   subscriptionMiddleware,
   onResponseMiddleware,
+  betaChannelMiddleware,
   commentsCompleteMiddleware,
 } from './middlewares';
 
@@ -48,6 +49,7 @@ const middleware = [
   initialWhoamiMiddleware,
   subscriptionMiddleware,
   onResponseMiddleware,
+  betaChannelMiddleware,
   commentsCompleteMiddleware,
 ];
 
