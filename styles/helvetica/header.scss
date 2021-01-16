@@ -24,14 +24,36 @@
   }
 }
 
-.site-logo-subheading {
-  font-size: 60%;
-  color: #f55;
-  margin-left: 1em;
-
+@mixin beta-color {
+  color: #f55 !important;
   &:hover,
   &:focus {
-    color: #f55;
+    color: #f55 !important;
+  }
+}
+
+.site-logo-subheading {
+  @include beta-color;
+  font-size: 60%;
+  margin-left: 1em;
+}
+
+.bug-report-link {
+  @include beta-color;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.75);
+  padding: 0.5em;
+  padding-bottom: 0.33em;
+  padding-right: 0.66em;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  border-top-right-radius: 0.66em;
+  font-size: 130%;
+
+  .dark-theme & {
+    background: rgba(255, 255, 255, 0.35);
   }
 }
 
