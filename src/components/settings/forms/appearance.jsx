@@ -1,3 +1,4 @@
+/* global CONFIG */
 import { useMemo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, useField } from 'react-final-form-hooks';
@@ -18,7 +19,11 @@ import {
 } from '../../../utils/feed-options';
 import { safeScrollTo } from '../../../services/unscroll';
 import { Throbber } from '../../throbber';
-import { updateActualUserPreferences, setNSFWVisibility } from '../../../redux/action-creators';
+import {
+  updateActualUserPreferences,
+  setNSFWVisibility,
+  setBetaChannel,
+} from '../../../redux/action-creators';
 import settingsStyles from '../settings.module.scss';
 import { PreventPageLeaving } from '../../prevent-page-leaving';
 import { Icon } from '../../fontawesome-icons';
@@ -30,6 +35,7 @@ export default function AppearanceForm() {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user);
   const isNSFWVisible = useSelector((state) => state.isNSFWVisible);
+  const isBetaChannel = useSelector((state) => state.betaChannel);
   const formStatus = useSelector((state) => state.settingsForms.displayPrefsStatus);
 
   useEffect(() => {
@@ -48,10 +54,10 @@ export default function AppearanceForm() {
   const form = useForm(
     useMemo(
       () => ({
-        initialValues: initialValues({ ...userData, isNSFWVisible }),
+        initialValues: initialValues({ ...userData, isNSFWVisible, isBetaChannel }),
         onSubmit: onSubmit(dispatch),
       }),
-      [dispatch, isNSFWVisible, userData],
+      [dispatch, isNSFWVisible, userData, isBetaChannel],
     ),
   );
 
@@ -69,6 +75,7 @@ export default function AppearanceForm() {
   const commentsTimestamps = useField('commentsTimestamps', form.form);
   const timeAmPm = useField('timeAmPm', form.form);
   const timeAbsolute = useField('timeAbsolute', form.form);
+  const enableBeta = useField('enableBeta', form.form);
 
   return (
     <form onSubmit={form.handleSubmit}>
@@ -298,6 +305,30 @@ export default function AppearanceForm() {
         </div>
       </section>
 
+      {CONFIG.betaChannel.enabled && (
+        <section className={settingsStyles.formSection}>
+          <h4 id="beta">Beta version</h4>
+
+          <div className="checkbox">
+            <label>
+              <CheckboxInput field={enableBeta} />
+              Use the beta version of FreeFeed frontend
+            </label>
+            <p className="help-block">
+              The beta version has the latest new features, but it may be unstable. Please use it
+              only if you are ready to report bugs.
+            </p>
+            <p className="help-block">
+              The page will be reloaded after you change this setting and submit form.
+            </p>
+            <p className="help-block">
+              <Icon icon={faExclamationTriangle} /> This setting is saved locally in your web
+              browser. It can be different for each browser and each device that you use.
+            </p>
+          </div>
+        </section>
+      )}
+
       <div className="form-group">
         <button
           className="btn btn-primary"
@@ -322,7 +353,12 @@ export default function AppearanceForm() {
   );
 }
 
-function initialValues({ frontendPreferences: frontend, preferences: backend, isNSFWVisible }) {
+function initialValues({
+  frontendPreferences: frontend,
+  preferences: backend,
+  isNSFWVisible,
+  isBetaChannel,
+}) {
   return {
     useYou: frontend.displayNames.useYou,
     displayNames: frontend.displayNames.displayOption.toString(),
@@ -338,6 +374,7 @@ function initialValues({ frontendPreferences: frontend, preferences: backend, is
     commentsTimestamps: frontend.comments.showTimestamps,
     timeAmPm: frontend.timeDisplay.amPm ? '1' : '0',
     timeAbsolute: frontend.timeDisplay.absolute ? '1' : '0',
+    enableBeta: isBetaChannel,
   };
 }
 
@@ -384,5 +421,6 @@ function onSubmit(dispatch) {
         },
       }),
     );
+    dispatch(setBetaChannel(values.enableBeta));
   };
 }
