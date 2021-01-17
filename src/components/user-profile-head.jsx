@@ -480,11 +480,12 @@ export const UserProfileHead = withRouter(
               />
 
               {user.type === 'user' && (
-                <div style={{ marginTop: '0.5em' }}>
+                <>
                   <StatLink
                     title="All posts"
                     linkTo={`/search?qs=${encodeURIComponent(`from:${user.username}`)}`}
                     canFollow={canFollowStatLinks}
+                    className={styles.allPosts}
                   />
                   <StatLink
                     value={parseInt(user.statistics.comments)}
@@ -498,7 +499,7 @@ export const UserProfileHead = withRouter(
                     linkTo={`/${user.username}/likes`}
                     canFollow={canFollowStatLinks}
                   />
-                </div>
+                </>
               )}
             </ul>
           )}
@@ -520,7 +521,7 @@ export const UserProfileHead = withRouter(
   }),
 );
 
-function StatLink({ value, title, linkTo, canFollow }) {
+function StatLink({ value, title, linkTo, canFollow, className }) {
   let content;
 
   if (typeof value === 'undefined') {
@@ -537,7 +538,7 @@ function StatLink({ value, title, linkTo, canFollow }) {
     content = <Link to={linkTo}>{content}</Link>;
   }
 
-  return <li>{content}</li>;
+  return <li className={className}>{content}</li>;
 }
 
 function ActionLink({ onClick, status = null, children }) {
