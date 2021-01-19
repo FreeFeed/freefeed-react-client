@@ -111,10 +111,13 @@ $actions-padding: 0.75em;
   margin: 0;
   padding: 0;
 
-  & > li {
+  .statlink {
     margin: 0;
     padding: 0;
-    white-space: nowrap;
+
+    & a {
+      white-space: nowrap;
+    }
   }
 
   .allPosts {
@@ -129,9 +132,9 @@ $actions-padding: 0.75em;
 
   .statsItems {
     display: inline;
-    & > li {
+
+    .statlink {
       display: inline;
-      white-space: normal;
 
       & + *::before {
         content: ', ';
