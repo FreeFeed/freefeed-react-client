@@ -538,7 +538,7 @@ function StatLink({ value, title, linkTo, canFollow, className }) {
     content = <Link to={linkTo}>{content}</Link>;
   }
 
-  return <li className={className}>{content}</li>;
+  return <li className={cn(styles.statlink, className)}>{content}</li>;
 }
 
 function ActionLink({ onClick, status = null, children }) {
