@@ -1,0 +1,39 @@
+@import '../../styles/helvetica/dark-vars.scss';
+
+$tr-time: 0.5s;
+
+.indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #fff;
+  color: #999;
+  font-size: 32px;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+  z-index: 100;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0) rotate(-90deg);
+  visibility: hidden;
+  opacity: 0;
+  transition: top $tr-time, opacity $tr-time, transform $tr-time, visibility 0s $tr-time;
+
+  :global(.dark-theme) & {
+    background-color: $bg-color-lightest;
+    color: $text-color-darker;
+  }
+}
+
+.visible {
+  top: 40px;
+  transition: top $tr-time, opacity $tr-time, transform $tr-time, visibility 0s;
+  visibility: visible;
+  opacity: 1;
+  transform: translate(-50%, 0) rotate(0deg);
+}

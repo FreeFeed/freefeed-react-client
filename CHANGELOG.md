@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - User's stats block (on her feed-page) has "All posts" link now
 - "All Groups" page can be filtered now
 - "Spoiler" texts can be hidden by clicking on them
+- Pull-to-refresh functionality for the feed pages and the single post pages
 
 ## [1.90.1] - 2020-12-30
 ### Fixed

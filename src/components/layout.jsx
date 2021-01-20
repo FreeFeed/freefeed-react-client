@@ -17,6 +17,7 @@ import { SVGSymbolDeclarations } from './fontawesome-icons';
 import MediaViewer from './media-viewer';
 import { Throbber } from './throbber';
 import { Delayed } from './lazy-component';
+import { PullToRefresh } from './pull-to-refresh';
 
 const loadingPageMessage = (
   <Delayed>
@@ -145,6 +146,7 @@ class Layout extends Component {
           <Helmet title={props.title} defer={false} />
           <ColorSchemeSetter />
           <SVGSymbolDeclarations />
+          <PullToRefresh />
 
           <header className="row">
             <div className="col-xs-9 col-sm-4 col-md-4">

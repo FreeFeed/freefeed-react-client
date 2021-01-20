@@ -2,7 +2,10 @@
 
 body {
   background: #fff;
+  // Disable browser's default scroll anchoring behavior
   overflow-anchor: none;
+  // Disable browser's default pull-to-reload behavior
+  overscroll-behavior-y: contain;
 }
 
 body.transition-active:before {

@@ -20,6 +20,7 @@ import {
   initialAsyncState,
   successAsyncState,
   keyFromRequestPayload,
+  baseType,
 } from './async-helpers';
 
 const frontendPrefsConfig = CONFIG.frontendPreferences;
@@ -1592,6 +1593,16 @@ export function routeLoadingState(state = false, action) {
     case ActionTypes.UNAUTHENTICATED: {
       return false;
     }
+  }
+  return state;
+}
+
+export function pageRefreshAction(state = null, action) {
+  if (ActionHelpers.isFeedRequest(action) || action.type == request(ActionTypes.GET_SINGLE_POST)) {
+    return { ...action, type: baseType(action.type) };
+  }
+  if (action.type === LOCATION_CHANGE) {
+    return null;
   }
   return state;
 }
