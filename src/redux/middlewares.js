@@ -29,7 +29,6 @@ import {
   request,
   response,
   fail,
-  requiresAuth,
   isFeedRequest,
   isFeedResponse,
   isFeedGeneratingAction,
@@ -38,6 +37,7 @@ import {
   isUserChangeResponse,
 } from './action-helpers';
 import { asyncPhase, RESPONSE_PHASE, progress } from './async-helpers';
+import { apiMapping, requiresAuth } from './api-mapping';
 
 export const feedViewOptionsMiddleware = (store) => (next) => (action) => {
   if (isFeedGeneratingAction(action)) {
@@ -151,21 +151,22 @@ export const onResponseMiddleware = () => (next) => (action) => {
 
 //middleware for api requests
 export const apiMiddleware = (store) => (next) => async (action) => {
-  //ignore normal actions
-  if (!action.apiRequest) {
+  const apiMethod = apiMapping[action.type];
+
+  // Ignore normal actions
+  if (!apiMethod) {
     return next(action);
   }
 
+  // Ignore this action if already started
   if (cancelConcurrentRequest(action, store.getState())) {
-    // Ignore this action if already started
     return;
   }
 
-  //dispatch request begin action
-  //clean apiRequest to not get caught by this middleware
-  store.dispatch({ ...action, type: request(action.type), apiRequest: null });
+  // Dispatch request begin action
+  store.dispatch({ ...action, type: request(action.type) });
   try {
-    const apiResponse = await action.apiRequest(action.payload);
+    const apiResponse = await apiMethod(action.payload);
     const obj = await apiResponse.json();
 
     if (apiResponse.status >= 200 && apiResponse.status < 300) {
@@ -254,7 +255,7 @@ export const authMiddleware = (store) => {
 
   return (next) => (action) => {
     //stop action propagation if it should be authed and user is not authed
-    if (requiresAuth(action) && !store.getState().authenticated) {
+    if (requiresAuth(action.type) && !store.getState().authenticated) {
       return;
     }
 

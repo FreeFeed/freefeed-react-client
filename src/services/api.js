@@ -113,7 +113,27 @@ export function getPostIdByOldName({ oldName }) {
   );
 }
 
-export function createPost({ feeds, postText, attachmentIds, more }) {
+export function createPost({
+  feeds,
+  postText,
+  // Regular post creation
+  attachmentIds,
+  more,
+  // Bookmarklet creation
+  imageUrls,
+  commentText,
+}) {
+  if (imageUrls || commentText) {
+    return fetch(
+      `${apiRoot}/v1/bookmarklet`,
+      postRequestOptions('POST', {
+        title: postText,
+        images: imageUrls,
+        comment: commentText,
+        meta: { feeds },
+      }),
+    );
+  }
   return fetch(
     `${apiRoot}/v1/posts`,
     postRequestOptions('POST', {
@@ -125,18 +145,6 @@ export function createPost({ feeds, postText, attachmentIds, more }) {
         feeds,
         commentsDisabled: !!more.commentsDisabled,
       },
-    }),
-  );
-}
-
-export function createBookmarkletPost({ feeds, postText, imageUrls, commentText }) {
-  return fetch(
-    `${apiRoot}/v1/bookmarklet`,
-    postRequestOptions('POST', {
-      title: postText,
-      images: imageUrls,
-      comment: commentText,
-      meta: { feeds },
     }),
   );
 }
@@ -322,10 +330,12 @@ const userAction = (action) => ({ username, ...rest }) => {
 
 export const ban = userAction('ban');
 export const unban = userAction('unban');
-export const subscribe = userAction('subscribe');
 export const unsubscribe = userAction('unsubscribe');
-export const sendSubscriptionRequest = userAction('sendRequest');
 export const unsubscribeFromMe = userAction('unsubscribeFromMe');
+
+// Use exported subscribeWithHomeFeeds instead
+const subscribe = userAction('subscribe');
+const sendSubscriptionRequest = userAction('sendRequest');
 
 export function getUserComments({ username, ...params }) {
   return fetch(

@@ -89,10 +89,6 @@ export const userChangeActions = [
 export const userChangeResponses = userChangeActions.map(response);
 export const isUserChangeResponse = (action) => userChangeResponses.includes(action.type);
 
-export function requiresAuth(action) {
-  return action.apiRequest && !action.nonAuthRequest;
-}
-
 export function getFeedName(action) {
   if (!isFeedGeneratingAction(action) && !isFeedRequest(action)) {
     return 'unknown';

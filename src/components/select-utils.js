@@ -4,9 +4,7 @@ import * as Sentry from '@sentry/react';
 
 import {
   // User actions
-  subscribe,
   unsubscribe,
-  sendSubscriptionRequest,
   ban,
   unban,
 
@@ -39,7 +37,9 @@ import {
   getCommentLikes,
   deleteComment,
   hideByName,
+  subscribeWithHomeFeeds,
 } from '../redux/action-creators';
+import { SEND_SUBSCRIPTION_REQUEST, SUBSCRIBE } from '../redux/action-types';
 import { SCHEME_DARK, SCHEME_SYSTEM } from '../services/appearance';
 import { defaultCommentState } from '../redux/reducers/comment-edit';
 
@@ -269,9 +269,10 @@ export function userActions(dispatch) {
   return {
     ban: (username) => dispatch(ban(username)),
     unban: (username) => dispatch(unban(username)),
-    subscribe: (username) => dispatch(subscribe(username)),
+    subscribe: (user) => dispatch(subscribeWithHomeFeeds(SUBSCRIBE, user)),
     unsubscribe: (username) => dispatch(unsubscribe(username)),
-    sendSubscriptionRequest: (username) => dispatch(sendSubscriptionRequest(username)),
+    sendSubscriptionRequest: (user) =>
+      dispatch(subscribeWithHomeFeeds(SEND_SUBSCRIPTION_REQUEST, user)),
     hideByName: (username, hide) => dispatch(hideByName(username, null, hide)),
   };
 }
