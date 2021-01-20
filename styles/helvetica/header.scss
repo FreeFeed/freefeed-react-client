@@ -34,22 +34,23 @@
 
 .site-logo-subheading {
   @include beta-color;
-  font-size: 60%;
-  margin-left: 1em;
+  font-size: 45%;
+  text-transform: lowercase;
+  margin-left: 0.2em;
 }
 
 .bug-report-link {
   @include beta-color;
   position: fixed;
-  left: 0;
+  right: 0;
   bottom: 0;
   z-index: 100;
   background: rgba(255, 255, 255, 0.75);
   padding: 0.5em;
   padding-bottom: 0.33em;
-  padding-right: 0.66em;
+  padding-left: 0.66em;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  border-top-right-radius: 0.66em;
+  border-top-left-radius: 0.66em;
   font-size: 130%;
 
   .dark-theme & {
