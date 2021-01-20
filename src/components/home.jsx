@@ -38,6 +38,16 @@ const FeedHandler = (props) => {
     dispatch,
   ]);
 
+  if (!props.authenticated) {
+    return (
+      <div className="box">
+        <ErrorBoundary>
+          <Welcome />
+        </ErrorBoundary>
+      </div>
+    );
+  }
+
   const createPostComponent = (
     <CreatePost
       createPostViewState={props.createPostViewState}
@@ -61,19 +71,18 @@ const FeedHandler = (props) => {
               (<ButtonLink onClick={showEditor}>Edit list</ButtonLink>)
             </small>
           )}
-          <div className="pull-right">{props.authenticated && <FeedOptionsSwitch />}</div>
+          <div className="pull-right">
+            <FeedOptionsSwitch />
+          </div>
         </div>
         {isEditing && <ListEditor listId={feedId} close={closeEditor} />}
 
         <SubscrRequests />
 
-        {props.authenticated ? (
-          <PaginatedView firstPageHead={createPostComponent} {...props}>
-            <Feed {...props} isInHomeFeed={!props.feedIsLoading} />
-          </PaginatedView>
-        ) : (
-          <Welcome />
-        )}
+        <PaginatedView firstPageHead={createPostComponent} {...props}>
+          <Feed {...props} isInHomeFeed={!props.feedIsLoading} />
+        </PaginatedView>
+
         <div className="box-footer" />
       </ErrorBoundary>
     </div>
