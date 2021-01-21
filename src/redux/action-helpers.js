@@ -30,6 +30,12 @@ import {
   UNSUBSCRIBE_FROM_ME,
   LIST_HOME_FEEDS,
   BLOCKED_BY_ME,
+  GET_SINGLE_POST,
+  GET_NOTIFICATIONS,
+  LIST_AUTH_SESSIONS,
+  GET_APP_TOKENS,
+  GET_ALL_GROUPS,
+  GET_APP_TOKENS_SCOPES,
 } from './action-types';
 import { request, response, fail, baseType } from './async-helpers';
 
@@ -88,6 +94,17 @@ export const userChangeActions = [
 ];
 export const userChangeResponses = userChangeActions.map(response);
 export const isUserChangeResponse = (action) => userChangeResponses.includes(action.type);
+
+export const refreshableActions = [
+  ...feedGeneratingActions,
+  GET_SINGLE_POST,
+  GET_NOTIFICATIONS,
+  LIST_AUTH_SESSIONS,
+  GET_APP_TOKENS,
+  GET_APP_TOKENS_SCOPES,
+  GET_ALL_GROUPS,
+];
+export const refreshableRequests = refreshableActions.map(request);
 
 export function getFeedName(action) {
   if (!isFeedGeneratingAction(action) && !isFeedRequest(action)) {

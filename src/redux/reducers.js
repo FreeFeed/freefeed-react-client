@@ -1598,7 +1598,7 @@ export function routeLoadingState(state = false, action) {
 }
 
 export function pageRefreshAction(state = null, action) {
-  if (ActionHelpers.isFeedRequest(action) || action.type == request(ActionTypes.GET_SINGLE_POST)) {
+  if (ActionHelpers.refreshableRequests.includes(action.type)) {
     return { ...action, type: baseType(action.type) };
   }
   if (action.type === LOCATION_CHANGE) {
