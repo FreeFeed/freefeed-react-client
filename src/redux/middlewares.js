@@ -827,7 +827,7 @@ export const initialWhoamiMiddleware = (store) => (next) => (action) => {
 };
 
 // Fixing data structures coming from server
-export const dataFixMiddleware = (/*store*/) => (next) => (action) => {
+export const dataFixMiddleware = (store) => (next) => (action) => {
   if (action.type === response(ActionTypes.GET_SINGLE_POST)) {
     [action.payload, action.payload.posts].forEach(fixPostsData);
   }
@@ -857,6 +857,12 @@ export const dataFixMiddleware = (/*store*/) => (next) => (action) => {
 
   if (action.payload && action.payload.posts && _.isArray(action.payload.posts)) {
     action.payload.posts.forEach(fixPostsData);
+  }
+
+  if (action.type === response(ActionTypes.SEND_SUBSCRIPTION_REQUEST)) {
+    // Server doesn't return any data in response to subscription request, so we
+    // fill 'response' from the existiing state for use in reducers.
+    action.payload = store.getState().users[action.request.id] || action.request;
   }
 
   return next(action);

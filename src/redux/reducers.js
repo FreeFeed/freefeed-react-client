@@ -2024,6 +2024,9 @@ export function sentRequests(state = [], action) {
       const { username } = action.request;
       return state.filter((user) => user.username !== username);
     }
+    case response(ActionTypes.SEND_SUBSCRIPTION_REQUEST): {
+      return [...state, action.payload];
+    }
   }
 
   return state;
@@ -2065,6 +2068,9 @@ export function sentRequestsCount(state = 0, action) {
     }
     case response(ActionTypes.REVOKE_USER_REQUEST): {
       return Math.max(0, state - 1);
+    }
+    case response(ActionTypes.SEND_SUBSCRIPTION_REQUEST): {
+      return state + 1;
     }
   }
 

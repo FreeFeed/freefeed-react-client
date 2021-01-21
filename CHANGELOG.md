@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix highlight color of expand-panel
 - Fix YouTube previews
 - A tall Embedly previews now folded to a reasonable height
+- Created subscription requests are now visible at 'Requests' page without full
+  page reload.
 
 ### Added
 - Use open-source Vazir font to display Persian letters
