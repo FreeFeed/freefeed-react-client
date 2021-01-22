@@ -189,8 +189,7 @@ $actions-padding: 0.75em;
     margin-left: -1em;
     margin-right: 1em;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    flex: 0 0 auto;
 
     &::before,
     &::after {
