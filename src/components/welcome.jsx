@@ -2,44 +2,35 @@ import { Link } from 'react-router';
 
 export default () => (
   <div className="box-body">
-    <h3>What is FreeFeed</h3>
+    <h3>Welcome to FreeFeed!</h3>
 
     <p>
-      FreeFeed is a small non-profit social network. It does not sell your data, nor does it show
-      ads to you. It is an <a href="https://github.com/FreeFeed">open-source project</a> which can
-      be used by anyone. FreeFeed is developed by a group of volunteers and paid for by donations
-      from its users.
+      FreeFeed is a small and free social network. We do not harvest users&apos; personal data, nor
+      serve ads. It is an <a href="https://github.com/FreeFeed">open-source project</a> developed by
+      volunteers and funded by donations from its users.
     </p>
 
-    <p>
-      <b>No Ads</b>
-    </p>
+    <h4>No ads</h4>
 
     <p>
-      FreeFeed is a non-profit project. We do not show ads, we do not collect our users’ data, and
-      we do not sell anything to anyone.
+      FreeFeed is backed and maintained by a non-profit organization. We do not show ads, we do not
+      collect our users&apos; data, and we do not sell anything to anyone.
     </p>
 
-    <p>
-      <b>Managed by users</b>
-    </p>
+    <h4>No algorithms</h4>
 
     <p>
       Your feed contains posts that your friends have written, liked, and/or commented on, as well
-      as posts from the groups you’ve subscribed to. We do not utilize complicated mechanisms of
-      showing you some kind of selected data.
+      as posts from groups you are subscribed to. There are no algorithms to curate your feed or
+      promote popular users.
     </p>
 
-    <p>
-      <b>Security and privacy</b>
-    </p>
+    <h4>Private and personal</h4>
 
     <p>
-      FreeFeed is a service as well as a community. Its relatively small scale enables us to know
-      each other and mix and mingle among friends. It is a service designed for people. We do not
-      have the iron rule of ‘real-life names’: you can choose whatever username you like. You can
-      also choose the screen name to be associated with your posts and comments. Your username can
-      be visible to all, or to you only, or to you and your subscribers, or to FreeFeed users only.
+      FreeFeed is a service as well as a community. Its small scale lets us know each other better
+      and become close friends. There is no &quot;real names&quot; policy. Your posts can be public,
+      protected from search engines, or restricted to your subscribers.
     </p>
 
     <p>
@@ -51,8 +42,7 @@ export default () => (
       now or{' '}
       <Link to="/signin" className="inline-header">
         sign in
-      </Link>{' '}
-      if you already have an account.
+      </Link>
     </p>
 
     <h3>Что такое FreeFeed</h3>
