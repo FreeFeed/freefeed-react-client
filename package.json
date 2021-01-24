@@ -124,6 +124,9 @@
     "webpack-node-externals": "~2.5.2",
     "worker-loader": "~2.0.0"
   },
+  "resolutions": {
+    "debug": "~4.3.0"
+  },
   "scripts": {
     "start": "run-s dev-server",
     "test": "run-s \"test-just --recursive test/unit\"",
