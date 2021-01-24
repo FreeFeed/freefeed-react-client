@@ -100,7 +100,7 @@ export default (function PrivacyForm() {
 function initialValues(userData) {
   return {
     privacy: privacyFlagsToString(userData),
-    acceptDirectsFrom: userData.preferences.acceptDirectsFrom,
+    acceptDirectsFrom: userData.preferences?.acceptDirectsFrom,
   };
 }
 
