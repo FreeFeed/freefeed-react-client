@@ -535,7 +535,13 @@ function StatLink({ value, title, linkTo, canFollow, className }) {
   }
 
   if (canFollow) {
-    content = <Link to={linkTo}>{content}</Link>;
+    content = (
+      <Link to={linkTo} className={styles.statlinkText}>
+        {content}
+      </Link>
+    );
+  } else {
+    content = <span className={styles.statlinkText}>{content}</span>;
   }
 
   return <li className={cn(styles.statlink, className)}>{content}</li>;

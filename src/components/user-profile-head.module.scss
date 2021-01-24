@@ -114,10 +114,10 @@ $actions-padding: 0.75em;
   .statlink {
     margin: 0;
     padding: 0;
+  }
 
-    & a {
-      white-space: nowrap;
-    }
+  .statlinkText {
+    white-space: nowrap;
   }
 
   .allPosts {
