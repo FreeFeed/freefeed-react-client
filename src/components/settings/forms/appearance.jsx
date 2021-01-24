@@ -329,7 +329,7 @@ function initialValues({ frontendPreferences: frontend, preferences: backend, is
     readMoreStyle: frontend.readMoreStyle,
     omitBubbles: frontend.comments.omitRepeatedBubbles,
     highlightComments: frontend.comments.highlightComments,
-    hideBannedComments: backend.hideCommentsOfTypes.includes(COMMENT_HIDDEN_BANNED),
+    hideBannedComments: backend?.hideCommentsOfTypes.includes(COMMENT_HIDDEN_BANNED),
     hideUnreadNotifications: frontend.hideUnreadNotifications,
     allowLinksPreview: frontend.allowLinksPreview,
     hideNSFWContent: !isNSFWVisible,
