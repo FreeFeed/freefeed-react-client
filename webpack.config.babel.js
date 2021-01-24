@@ -6,6 +6,8 @@ import Uglify from 'terser-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import CompressionPlugin from 'compression-webpack-plugin';
+import { gzip } from '@gfx/zopfli';
 
 import { baseConfig, opts, rules } from './webpack/base';
 import { skipFalsy } from './webpack/utils';
@@ -67,6 +69,15 @@ const config = {
         analyzerMode: 'disabled', // will create 'stats.json' file
         generateStatsFile: true,
         openAnalyzer: false,
+      }),
+    !opts.dev &&
+      new CompressionPlugin({
+        compressionOptions: {
+          numiterations: 5,
+        },
+        algorithm(input, compressionOptions, callback) {
+          return gzip(input, compressionOptions, callback);
+        },
       }),
   ]),
   optimization: {
