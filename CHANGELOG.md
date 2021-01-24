@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.92.1] - 2021-01-24
+### Fixed
+- Avoid breaking lines in stats of private users
+- Fix errors when signing out from some of sub-pages of settings
+
 ## [1.92.0] - 2021-01-24
 ### Fixed
 - A tall Embedly previews now folded to a reasonable height
