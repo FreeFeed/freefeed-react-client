@@ -1,3 +1,4 @@
+import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import OptiCSS from 'optimize-css-assets-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
@@ -59,15 +60,19 @@ const config = {
         { from: 'assets/ext-auth/auth-return.html', to: '' },
       ],
     }),
+    !opts.dev && new webpack.HashedModuleIdsPlugin(),
   ]),
   optimization: {
+    runtimeChunk: {
+      name: 'manifest',
+    },
     splitChunks: {
       cacheGroups: {
-        common: {
-          name: 'common',
-          test: /[\\/]styles[\\/]common[\\/].*[.]scss$/,
-          chunks: 'all',
-          enforce: true,
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendor',
+          chunks: 'initial',
+          priority: 9,
         },
       },
     },
