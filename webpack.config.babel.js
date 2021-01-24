@@ -74,12 +74,16 @@ const config = {
       name: 'manifest',
     },
     splitChunks: {
+      maxSize: 0,
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
           name: 'vendor',
           chunks: 'initial',
           priority: 9,
+        },
+        default: {
+          minChunks: 1,
         },
       },
     },
