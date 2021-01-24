@@ -5,6 +5,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import Uglify from 'terser-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 import { baseConfig, opts, rules } from './webpack/base';
 import { skipFalsy } from './webpack/utils';
@@ -61,6 +62,12 @@ const config = {
       ],
     }),
     !opts.dev && new webpack.HashedModuleIdsPlugin(),
+    !opts.dev &&
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'disabled', // will create 'stats.json' file
+        generateStatsFile: true,
+        openAnalyzer: false,
+      }),
   ]),
   optimization: {
     runtimeChunk: {

@@ -118,6 +118,7 @@
     "unexpected-react": "~6.0.1",
     "unexpected-sinon": "~11.0.1",
     "webpack": "~4.44.2",
+    "webpack-bundle-analyzer": "~4.4.0",
     "webpack-cli": "~3.3.12",
     "webpack-dev-server": "~3.11.2",
     "webpack-node-externals": "~2.5.2",
@@ -136,6 +137,7 @@
     "build-prod": "cross-env NODE_ENV=production DEV=0 run-s clean _webpack",
     "build-dev": "cross-env NODE_ENV=development DEV=1 run-s clean _webpack",
     "_webpack": "webpack --config webpack.config.babel.js --output-path ./_dist --output-public-path /",
+    "analyze-webpack": "webpack-bundle-analyzer _dist/stats.json",
     "postinstall": "husky install"
   },
   "author": "FreeFeed contributors",
