@@ -111,10 +111,17 @@ $actions-padding: 0.75em;
   margin: 0;
   padding: 0;
 
-  & > li {
+  .statlink {
     margin: 0;
     padding: 0;
-    white-space: nowrap;
+
+    & a {
+      white-space: nowrap;
+    }
+  }
+
+  .allPosts {
+    margin-top: 0.5em;
   }
 }
 
@@ -125,13 +132,18 @@ $actions-padding: 0.75em;
 
   .statsItems {
     display: inline;
-    & > li {
+
+    .statlink {
       display: inline;
-      white-space: normal;
 
       & + *::before {
         content: ', ';
       }
+    }
+
+    .allPosts {
+      margin-top: 0;
+      text-transform: lowercase;
     }
   }
 }
@@ -177,8 +189,7 @@ $actions-padding: 0.75em;
     margin-left: -1em;
     margin-right: 1em;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    flex: 0 0 auto;
 
     &::before,
     &::after {

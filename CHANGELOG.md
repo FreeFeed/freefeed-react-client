@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.92.0] - Not released
+### Fixed
+- A tall Embedly previews now folded to a reasonable height
+- Created subscription requests are now visible at 'Requests' page without full
+  page reload.
+- Fix profile head layout in narrow screens
+- Prevent statlinks from wrapping on narrow screens
+- Avoid showing "edit list" control for anonymous users
+- Remove ellipsis on narrow screens on group header
+
+### Changed
+- Improved english text on welcome screen
+
 ## [1.91.0] - 2021-01-15
 ### Fixed
 - Text is properly selectable (select, copy, paste) even if it has spoiler-tags in it
@@ -15,7 +28,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Focus is removed from post textarea after posting
 - Fix highlight color of expand-panel
 - Fix YouTube previews
-
 ### Added
 - Use open-source Vazir font to display Persian letters
 - New authorization sessions support. User is now able to view and manage
