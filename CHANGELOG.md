@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.93.0] - Not released
 
+## [1.92.1] - 2021-01-24
+### Fixed
+- Avoid breaking lines in stats of private users
+- Fix errors when signing out from some of sub-pages of settings
 
 ## [1.92.0] - 2021-01-24
 ### Fixed
