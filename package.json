@@ -133,8 +133,8 @@
     "clean": "rimraf ./_dist",
     "prettier": "prettier -c \"src/**/*\"",
     "stylelint": "stylelint --config stylelint.config.js \"styles/**/*.scss\"",
-    "build-prod": "cross-env UGLIFY=1 HASH=1 DEV=0 run-s clean _webpack",
-    "build-dev": "cross-env UGLIFY=0 HASH=0 DEV=1 run-s clean _webpack",
+    "build-prod": "cross-env NODE_ENV=production DEV=0 run-s clean _webpack",
+    "build-dev": "cross-env NODE_ENV=development DEV=1 run-s clean _webpack",
     "_webpack": "webpack --config webpack.config.babel.js --output-path ./_dist --output-public-path /",
     "postinstall": "husky install"
   },

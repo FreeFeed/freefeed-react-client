@@ -50,7 +50,7 @@ const config = {
       },
     }),
     new MiniCssExtractPlugin({
-      filename: opts.hash ? '[name]-[contenthash].css' : '[name]-dev.css',
+      filename: opts.dev ? '[name]-dev.css' : '[name]-[contenthash].css',
     }),
     new CopyPlugin({
       patterns: [
