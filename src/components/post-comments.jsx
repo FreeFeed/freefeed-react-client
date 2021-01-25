@@ -210,7 +210,7 @@ export default class PostComments extends Component {
     const last = withBackwardNumber(comments.length > 1 && comments[comments.length - 1], 1);
 
     return (
-      <div className="comments" ref={this.rootEl} rel="list">
+      <div className="comments" ref={this.rootEl} role="list">
         <ErrorBoundary>
           {[
             first && this.renderComment(first),
