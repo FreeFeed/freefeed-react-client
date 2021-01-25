@@ -111,7 +111,7 @@ export default class CreateBookmarkletPost extends Component {
     ));
 
     return (
-      <div className="create-post post-editor expanded">
+      <div className="create-post post-editor expanded" role="form">
         {this.props.createPostViewState.isError ? (
           <div className="post-error alert alert-danger" role="alert">
             Post has not been saved. Server response:{' '}

@@ -108,7 +108,7 @@ export const Friends = withLayout(function Friends({ router }) {
         defer={false}
       />
 
-      <ul className={cn('nav nav-tabs', styles.topNav)}>
+      <ul className={cn('nav nav-tabs', styles.topNav)} role="tablist">
         <Tab id="" activeId={activeTab}>
           Subscriptions <small className={styles.tabCounter}>{subscriptionsCount || ''}</small>
         </Tab>
@@ -129,15 +129,17 @@ export const Friends = withLayout(function Friends({ router }) {
         </Tab>
       </ul>
 
-      {activeTab === 'subscribers' ? (
-        <Subscribers />
-      ) : activeTab === 'blocked' ? (
-        <Blocked />
-      ) : activeTab === 'requests' ? (
-        <Requests />
-      ) : (
-        <Subscriptions listId={currentList} onListChange={onListChange} />
-      )}
+      <div role="tabpanel">
+        {activeTab === 'subscribers' ? (
+          <Subscribers />
+        ) : activeTab === 'blocked' ? (
+          <Blocked />
+        ) : activeTab === 'requests' ? (
+          <Requests />
+        ) : (
+          <Subscriptions listId={currentList} onListChange={onListChange} />
+        )}
+      </div>
     </>
   );
 });
@@ -146,7 +148,9 @@ function withLayout(Component) {
   const wrapper = (props) => (
     <div className="box">
       <ErrorBoundary>
-        <div className="box-header-timeline">Friends</div>
+        <div className="box-header-timeline" role="heading">
+          Friends
+        </div>
         <div className="box-body">
           <Component {...props} />
         </div>
@@ -172,7 +176,7 @@ function toAsyncStatus({ initial, isPending, errorString }) {
 function Tab({ id, activeId, children }) {
   const location = useSelector((state) => state.routing.locationBeforeTransitions);
   return (
-    <li role="presentation" className={cn({ active: id === activeId })}>
+    <li role="tab presentation" className={cn({ active: id === activeId })}>
       <Link to={{ ...location, query: id ? { show: id } : {} }}>{children}</Link>
     </li>
   );

@@ -9,7 +9,7 @@ import ErrorBoundary from './error-boundary';
 const FeedHandler = (props) => (
   <div className="box">
     <ErrorBoundary>
-      <div className="box-header-timeline">
+      <div className="box-header-timeline" role="heading">
         {props.boxHeader}
         {props.route.name === 'everything' && (
           <div className="pull-right">

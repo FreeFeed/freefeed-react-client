@@ -175,7 +175,7 @@ export default class CreatePost extends Component {
 
   render() {
     return (
-      <div className="create-post post-editor">
+      <div className="create-post post-editor" role="form">
         <ErrorBoundary>
           <div>
             {this.props.sendTo.expanded && (
@@ -214,6 +214,7 @@ export default class CreatePost extends Component {
             <span
               className="post-edit-attachments dropzone-trigger"
               disabled={this.state.dropzoneDisabled}
+              role="button"
             >
               <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
             </span>

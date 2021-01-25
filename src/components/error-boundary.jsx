@@ -29,7 +29,7 @@ class ErrorBoundary extends PureComponent {
       const errorMessage = `${error.name}: ${error.message} ${errorLocation}`;
 
       return (
-        <div className="error-boundary">
+        <div className="error-boundary" role="alert">
           <div className="error-boundary-header">
             Oops! {this.props.message || 'Something went wrong :('}
           </div>

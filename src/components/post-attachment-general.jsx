@@ -16,7 +16,7 @@ class GeneralAttachment extends PureComponent {
     const nameAndSize = `${props.fileName} (${formattedFileSize})`;
 
     return (
-      <div className="attachment">
+      <div className="attachment" role="figure">
         <a href={props.url} title={nameAndSize} target="_blank">
           <Icon icon={faFile} className="attachment-icon" />
           <span className="attachment-title">{nameAndSize}</span>

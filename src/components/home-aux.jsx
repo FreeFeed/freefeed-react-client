@@ -76,7 +76,9 @@ export function HomeAux({ router }) {
   if (!authenticated) {
     return (
       <div className="box">
-        <div className="box-header-timeline">Sign in required</div>
+        <div className="box-header-timeline" role="heading">
+          Sign in required
+        </div>
         <div className="box-body">
           <p>
             Please{' '}
@@ -89,7 +91,9 @@ export function HomeAux({ router }) {
   } else if (allHomeFeedsStatus.error) {
     return (
       <div className="box">
-        <div className="box-header-timeline">Cannot load page</div>
+        <div className="box-header-timeline" role="heading">
+          Cannot load page
+        </div>
         <div className="box-body">
           <p className="alert alert-danger">
             Cannot load home feeds list: {allHomeFeedsStatus.errorText}
@@ -100,7 +104,9 @@ export function HomeAux({ router }) {
   } else if (!allHomeFeedsStatus.success) {
     return (
       <div className="box">
-        <div className="box-header-timeline">{router.params.listTitle}</div>
+        <div className="box-header-timeline" role="heading">
+          {router.params.listTitle}
+        </div>
         <div className="box-body">
           <p>
             Loading... <Throbber />
@@ -111,7 +117,9 @@ export function HomeAux({ router }) {
   } else if (!feed) {
     return (
       <div className="box">
-        <div className="box-header-timeline">List not found</div>
+        <div className="box-header-timeline" role="heading">
+          List not found
+        </div>
         <div className="box-body">
           <p>
             Cannot find list here. You may have followed the wrong link or the list was deleted.
@@ -133,7 +141,7 @@ export function HomeAux({ router }) {
     <div className="box">
       <Helmet title={`${feed.title} - ${CONFIG.siteTitle}`} defer={false} />
       <ErrorBoundary>
-        <div className="box-header-timeline">
+        <div className="box-header-timeline" role="heading">
           <TopHomeSelector id={feed.id} />{' '}
           <small>
             (<ButtonLink onClick={showEditor}>Edit list</ButtonLink>)

@@ -12,7 +12,9 @@ import { Throbber } from './throbber';
 export default memo(function RestorePasswordPage() {
   return (
     <div className="box">
-      <div className="box-header-timeline">Welcome to {CONFIG.siteTitle}!</div>
+      <div className="box-header-timeline" role="heading">
+        Welcome to {CONFIG.siteTitle}!
+      </div>
       <div className="box-body">
         <div className="col-md-12">
           <h2 className="p-signin-header">Reset {CONFIG.siteTitle} password</h2>

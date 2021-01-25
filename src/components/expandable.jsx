@@ -42,7 +42,7 @@ export default class Expandable extends Component {
           {!expanded && (
             <div className="expand-panel">
               <div className="expand-button">
-                <i onClick={this.userExpand}>
+                <i onClick={this.userExpand} role="button">
                   <Icon icon={faChevronDown} className="expand-icon" /> Read more
                 </i>{' '}
                 {this.props.bonusInfo}

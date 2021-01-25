@@ -6,7 +6,7 @@ export default function Footer() {
   const authenticated = useSelector((state) => state.authenticated);
   return (
     <footer className="footer">
-      <p>
+      <p role="navigation">
         &copy; FreeFeed 1.93.0 (Not released)
         <br />
         <Link to="/about">About</Link>
