@@ -26,7 +26,7 @@ import { Throbber } from './throbber';
 function LoggedInBlock({ user, signOut }) {
   const signOutStatus = useSelector((state) => state.signOutStatus);
   return (
-    <div className="logged-in">
+    <div className="logged-in" role="region">
       <div className="avatar">
         <UserPicture user={user} />
       </div>
@@ -68,8 +68,10 @@ const SideBarFriends = ({ user }) => {
 
   return (
     <>
-      <div className="box">
-        <div className="box-header-friends">My</div>
+      <div className="box" role="navigation">
+        <div className="box-header-friends" role="heading">
+          My
+        </div>
         <div className="box-body">
           <ul>
             <li className="p-home">
@@ -109,8 +111,10 @@ const SideBarFriends = ({ user }) => {
 
       {do {
         if (homeFeedsCount > 1) {
-          <div className="box">
-            <div className="box-header-friends">Friend lists</div>
+          <div className="box" role="navigation">
+            <div className="box-header-friends" role="heading">
+              Friend lists
+            </div>
 
             <div className="box-body">
               <SidebarHomeFeeds homeFeedsCount={homeFeedsCount} />
@@ -127,8 +131,10 @@ const SideBarFriends = ({ user }) => {
 };
 
 const SideBarFreeFeed = () => (
-  <div className="box">
-    <div className="box-header-freefeed">{CONFIG.siteTitle}</div>
+  <div className="box" role="navigation">
+    <div className="box-header-freefeed" role="heading">
+      {CONFIG.siteTitle}
+    </div>
     <div className="box-body">
       <ul>
         <li>
@@ -180,8 +186,10 @@ const SideBarMemories = () => {
     </div>
   ));
   return (
-    <div className="box">
-      <div className="box-header-memories">Memories of {format(today, 'MMMM\u00A0d')}</div>
+    <div className="box" role="navigation">
+      <div className="box-header-memories" role="heading">
+        Memories of {format(today, 'MMMM\u00A0d')}
+      </div>
       <div className="box-body">
         <div className="year-links-row">{yearLinks}</div>
       </div>
@@ -190,8 +198,10 @@ const SideBarMemories = () => {
 };
 
 const SideBarGroups = ({ recentGroups }) => (
-  <div className="box">
-    <div className="box-header-groups">Groups</div>
+  <div className="box" role="navigation">
+    <div className="box-header-groups" role="heading">
+      Groups
+    </div>
     <div className="box-body">
       <RecentGroups recentGroups={recentGroups} />
     </div>
@@ -202,8 +212,10 @@ const SideBarGroups = ({ recentGroups }) => (
 );
 
 const SideBarCoinJar = () => (
-  <div className="box">
-    <div className="box-header-groups">Donate</div>
+  <div className="box" role="region">
+    <div className="box-header-groups" role="heading">
+      Donate
+    </div>
     <div className="box-footer">
       <p style={{ marginBottom: '10px' }}>
         <Link to="/about/donate">
@@ -305,8 +317,10 @@ const SideBarCoinJar = () => (
 );
 
 const SideBarBookmarklet = () => (
-  <div className="box">
-    <div className="box-header-groups">Bookmarklet</div>
+  <div className="box" role="region">
+    <div className="box-header-groups" role="heading">
+      Bookmarklet
+    </div>
     <div className="box-footer">
       Once added to your toolbar, this button will let you share web pages on {CONFIG.siteTitle}.
       You can even attach thumbnails of images from the page you share!
@@ -347,8 +361,10 @@ const SideBarArchive = ({ user }) => {
     return null;
   }
   return (
-    <div className="box">
-      <div className="box-header-groups">FriendFeed.com Archives</div>
+    <div className="box" role="navigation">
+      <div className="box-header-groups" role="heading">
+        FriendFeed.com Archives
+      </div>
       <div className="box-body">
         <ul>
           <li>
@@ -369,8 +385,10 @@ const SideBarAppearance = connect(
     value = SCHEME_LIGHT;
   }
   return (
-    <div className="box">
-      <div className="box-header-groups">Appearance</div>
+    <div className="box" role="region">
+      <div className="box-header-groups" role="heading">
+        Appearance
+      </div>
       <div className="box-body">
         <ul>
           <li>
