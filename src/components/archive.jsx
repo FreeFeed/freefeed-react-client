@@ -20,7 +20,9 @@ class Archive extends Component {
       return (
         <div className="content">
           <div className="box">
-            <div className="box-header-timeline">Restore from FriendFeed.com Archives</div>
+            <div className="box-header-timeline" role="heading">
+              Restore from FriendFeed.com Archives
+            </div>
             <div className="box-body">
               <p>
                 We do not have any records about your old FriendFeed account. If you think this is a
@@ -35,7 +37,9 @@ class Archive extends Component {
     return (
       <div className="content">
         <div className="box">
-          <div className="box-header-timeline">Restore from FriendFeed.com Archives</div>
+          <div className="box-header-timeline" role="heading">
+            Restore from FriendFeed.com Archives
+          </div>
           <div className="box-body">
             <p>
               In April 2015, before FriendFeed was shut down, a group of volunteers had created an

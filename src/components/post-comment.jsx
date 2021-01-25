@@ -157,14 +157,24 @@ class PostComment extends Component {
         {this.props.isEditable ? (
           <span>
             {' '}
-            (<a onClick={this.handleEditOrCancel}>edit</a>
+            (
+            <a onClick={this.handleEditOrCancel} role="button">
+              edit
+            </a>
             &nbsp;|&nbsp;
-            <a onClick={this.handleDeleteComment}>delete</a>)
+            <a onClick={this.handleDeleteComment} role="button">
+              delete
+            </a>
+            )
           </span>
         ) : this.props.isDeletable && this.props.isModeratingComments ? (
           <span>
             {' '}
-            (<a onClick={this.handleDeleteComment}>delete</a>)
+            (
+            <a onClick={this.handleDeleteComment} role="button">
+              delete
+            </a>
+            )
           </span>
         ) : (
           false
@@ -255,6 +265,7 @@ class PostComment extends Component {
         className={className}
         data-author={this.props.user && !this.props.isEditing ? this.props.user.username : ''}
         ref={this.registerCommentContainer}
+        role="comment listitem"
       >
         {this.renderCommentIcon()}
         {this.renderBody()}

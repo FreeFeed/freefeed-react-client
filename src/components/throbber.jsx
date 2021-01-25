@@ -72,6 +72,10 @@ const ThrobberOnCanvas = memo(function ThrobberOnCanvas({
         width: `${size}px`,
         height: `${size}px`,
       }}
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+      aria-label="Please wait..."
     />
   );
 });

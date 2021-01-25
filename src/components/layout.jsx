@@ -35,7 +35,7 @@ const loadingPageMessage = (
 );
 
 const InternalLayout = ({ authenticated, children }) => (
-  <div className={authenticated ? 'col-md-9' : 'col-md-12'}>
+  <div className={authenticated ? 'col-md-9' : 'col-md-12'} role="main">
     <div className="content">
       <Suspense fallback={loadingPageMessage}>{children}</Suspense>
     </div>
@@ -156,8 +156,8 @@ class Layout extends Component {
             </div>
 
             {props.authenticated ? (
-              <div className="col-xs-12 col-sm-8 hidden-md hidden-lg">
-                <div className="mobile-shortcuts">
+              <div className="col-xs-12 col-sm-8 hidden-md hidden-lg" role="complementary">
+                <div className="mobile-shortcuts" role="navigation">
                   <Link className="mobile-shortcut-link" to="/filter/discussions">
                     Discussions
                   </Link>
@@ -177,7 +177,7 @@ class Layout extends Component {
                 </div>
               </div>
             ) : (
-              <div className="col-xs-3 col-sm-6 col-md-3 text-right">
+              <div className="col-xs-3 col-sm-6 col-md-3 text-right" role="complementary">
                 <div className="signin-link">
                   <Link to="/signin">Sign In</Link>
                 </div>

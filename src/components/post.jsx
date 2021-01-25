@@ -351,7 +351,7 @@ class Post extends Component {
 
     const commentLink = amIAuthenticated &&
       (!props.commentsDisabled || props.isEditable || props.isModeratable) && (
-        <a className="post-action" onClick={this.handleCommentClick}>
+        <a className="post-action" onClick={this.handleCommentClick} role="button">
           Comment
         </a>
       );
@@ -364,7 +364,11 @@ class Post extends Component {
           {props.likeError ? (
             <Icon icon={faExclamationTriangle} className="post-like-fail" title={props.likeError} />
           ) : null}
-          <a className="post-action" onClick={didILikePost ? this.unlikePost : this.likePost}>
+          <a
+            className="post-action"
+            onClick={didILikePost ? this.unlikePost : this.likePost}
+            role="button"
+          >
             {didILikePost ? 'Un-like' : 'Like'}
           </a>
           {props.isLiking ? (
@@ -382,7 +386,7 @@ class Post extends Component {
     const { isSaved, savePostStatus } = this.props;
     const saveLink = amIAuthenticated && (
       <>
-        <a className="post-action" onClick={this.toggleSave}>
+        <a className="post-action" onClick={this.toggleSave} role="button">
           {isSaved ? 'Un-save' : 'Save'}
         </a>
         {savePostStatus.loading && <Throbber />}
@@ -416,8 +420,10 @@ class Post extends Component {
       (attachment) => attachment.mediaType === 'image',
     );
 
+    const role = `article${props.isSinglePost ? '' : ' listitem'}`;
+
     return (
-      <div className={postClass} data-author={props.createdBy.username}>
+      <div className={postClass} data-author={props.createdBy.username} role={role}>
         <ErrorBoundary>
           <Expandable
             expanded={
@@ -489,6 +495,7 @@ class Post extends Component {
                     <span
                       className="post-edit-attachments dropzone-trigger"
                       disabled={this.state.dropzoneDisabled}
+                      role="button"
                     >
                       <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
                     </span>
@@ -577,6 +584,7 @@ class Post extends Component {
                     className="post-lock-icon post-private-icon"
                     title="This entry is private"
                     onClick={this.toggleTimestamps}
+                    role="button"
                   />
                 ) : isProtected ? (
                   <Icon
@@ -584,6 +592,7 @@ class Post extends Component {
                     className="post-lock-icon post-protected-icon"
                     title={`This entry is only visible to ${CONFIG.siteTitle} users`}
                     onClick={this.toggleTimestamps}
+                    role="button"
                   />
                 ) : (
                   <Icon
@@ -591,6 +600,7 @@ class Post extends Component {
                     className="post-lock-icon post-public-icon"
                     title="This entry is public"
                     onClick={this.toggleTimestamps}
+                    role="button"
                   />
                 )}
               </div>

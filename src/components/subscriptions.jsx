@@ -7,7 +7,9 @@ import SubsList from './subs-list';
 const SubscriptionsHandler = (props) => {
   return (
     <div className="box">
-      <div className="box-header-timeline">{props.boxHeader}</div>
+      <div className="box-header-timeline" role="heading">
+        {props.boxHeader}
+      </div>
       <div className="box-body">
         <div>
           <Link to={`/${props.username}`}>{props.username}</Link> › Subscriptions

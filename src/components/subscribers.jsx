@@ -18,7 +18,9 @@ class SubscribersHandler extends Component {
     const { props } = this;
     return (
       <div className="box">
-        <div className="box-header-timeline">{props.boxHeader}</div>
+        <div className="box-header-timeline" role="heading">
+          {props.boxHeader}
+        </div>
         <div className="box-body">
           <div className="row">
             <div className="col-md-6">

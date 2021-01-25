@@ -75,7 +75,7 @@ export function highlightString(text, terms) {
     if (match !== '') {
       result.push(text.slice(0, Math.max(0, minPos)));
       result.push(
-        <span key={`hl-${result.length}`} className={hlClass}>
+        <span key={`hl-${result.length}`} className={hlClass} role="mark">
           {match}
         </span>,
       );

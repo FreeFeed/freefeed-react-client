@@ -230,7 +230,7 @@ const isFilterActive = (filterName, filter) => filter && filter.includes(filterN
 const Notifications = (props) => (
   <div className="box notifications">
     <ErrorBoundary>
-      <div className="box-header-timeline">
+      <div className="box-header-timeline" role="heading">
         Notifications
         {props.isLoading && (
           <span className="notifications-throbber">

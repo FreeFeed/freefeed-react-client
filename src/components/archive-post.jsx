@@ -40,7 +40,9 @@ function ArchivePostHandler({ router, inProgress, success, id }) {
 
   return (
     <div className="box">
-      <div className="box-header-timeline">Friendfeed Post</div>
+      <div className="box-header-timeline" role="heading">
+        Friendfeed Post
+      </div>
       <div className="box-body">{postBody}</div>
       <div className="box-footer" />
     </div>

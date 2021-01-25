@@ -33,7 +33,7 @@ const FeedHandler = (props) => {
   return (
     <div className="box">
       <ErrorBoundary>
-        <div className="box-header-timeline">
+        <div className="box-header-timeline" role="heading">
           {props.boxHeader}
           <div className="pull-right">
             <FeedOptionsSwitch />
