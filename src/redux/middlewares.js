@@ -4,7 +4,7 @@ import _ from 'lodash';
 import * as Sentry from '@sentry/react';
 
 import { getPost } from '../services/api';
-import { onStorageChange, setToken } from '../services/auth';
+import { getToken, onStorageChange, scheduleTokenReissue, setToken } from '../services/auth';
 import { Connection } from '../services/realtime';
 import { delay } from '../utils';
 import * as FeedOptions from '../utils/feed-options';
@@ -22,7 +22,6 @@ import {
 import { scrollingOrInteraction, unscroll } from '../services/unscroll';
 import { inactivityOf } from '../utils/event-sequences';
 import { authDebug } from '../utils/debug';
-import { takeLeadership } from '../utils/leadership';
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import {
@@ -229,27 +228,25 @@ function shouldGoToSignIn(pathname) {
 export const authMiddleware = (store) => {
   let firstUnauthenticated = true;
 
-  takeLeadership({
-    pingInterval: 60 * 1000,
-    baseElectInterval: 300 * 1000,
-    storageKey: `${CONFIG.auth.tokenPrefix}leadership`,
-  }).then(
-    () => {
-      // We are leader now, so we should periodically reissue token
-      setInterval(() => {
-        if (store.getState().authenticated) {
-          authDebug('start token reissue');
-          store.dispatch(ActionCreators.reissueAuthSession());
-        }
-      }, CONFIG.authSessions.reissueIntervalSec * 1000);
-    },
-    (err) => console.warn(err),
-  );
+  scheduleTokenReissue(store);
+
+  // Periodically check for token change in local storage
+  setInterval(() => {
+    const cachedToken = getToken();
+    const actualToken = getToken(true);
+    if (actualToken !== cachedToken) {
+      authDebug('token changed in local storage (by periodic check)');
+      setToken(actualToken, false);
+      store.dispatch(ActionCreators.authTokenUpdated());
+      scheduleTokenReissue(store);
+    }
+  }, CONFIG.authSessions.localStorageCheckIntervalSec * 1000);
 
   onStorageChange((newToken) => {
     authDebug('token changed in local storage');
     setToken(newToken, false);
     store.dispatch(ActionCreators.authTokenUpdated());
+    scheduleTokenReissue(store);
   });
 
   return (next) => (action) => {
