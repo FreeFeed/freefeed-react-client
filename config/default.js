@@ -80,7 +80,9 @@ export default {
   },
 
   authSessions: {
-    reissueIntervalSec: 1800,
+    reissueIntervalSec: 3600,
+    localStorageCheckIntervalSec: 60,
+    lockIntervalSec: 60,
   },
 
   eslint: {

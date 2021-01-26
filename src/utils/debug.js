@@ -10,4 +10,3 @@ export const unscrollDebug = createDebug(`${prefix}:unscroll`);
 export const retryPromiseDebug = createDebug(`${prefix}:retryPromise`);
 
 export const authDebug = createDebug(`${prefix}:auth`);
-export const leaderDebug = createDebug(`${prefix}:leader`);
