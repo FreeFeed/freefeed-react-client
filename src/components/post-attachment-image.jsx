@@ -48,7 +48,11 @@ class PostAttachmentImage extends PureComponent {
     };
 
     return (
-      <div className={classnames({ attachment: true, hidden: props.isHidden })} data-id={props.id}>
+      <div
+        className={classnames({ attachment: true, hidden: props.isHidden })}
+        data-id={props.id}
+        role="figure"
+      >
         <a
           href={props.url}
           title={nameAndSize}

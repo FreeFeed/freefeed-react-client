@@ -62,7 +62,9 @@ class ResetPassword extends Component {
   render() {
     return (
       <div className="box">
-        <div className="box-header-timeline">Hello</div>
+        <div className="box-header-timeline" role="heading">
+          Hello
+        </div>
         <div className="box-body">
           <div className="col-md-12">
             <h2 className="p-signin-header">{this.props.header}</h2>

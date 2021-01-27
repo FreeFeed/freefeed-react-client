@@ -65,7 +65,9 @@ class SignupByInvitation extends PureComponent {
     const { error } = this.props;
     return (
       <div className="box signup-by-invite">
-        <div className="box-header-timeline">Welcome to {CONFIG.siteTitle}!</div>
+        <div className="box-header-timeline" role="heading">
+          Welcome to {CONFIG.siteTitle}!
+        </div>
         <div className="box-body">
           <div className="col-md-12">
             <h2 className="p-signin-header" />

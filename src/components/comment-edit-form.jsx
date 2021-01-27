@@ -90,7 +90,7 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
   const disabled = !canSubmit || submitStatus.loading || filesLoading;
 
   return (
-    <div className="comment-body">
+    <div className="comment-body" role="form">
       <PreventPageLeaving prevent={canSubmit || submitStatus.loading} />
       <div>
         <Textarea

@@ -28,7 +28,9 @@ export default function AllGroups() {
     <div className="content">
       <Helmet title={`All Groups - ${CONFIG.siteTitle}`} defer={false} />
       <div className="box">
-        <div className="box-header-timeline">All Groups</div>
+        <div className="box-header-timeline" role="heading">
+          All Groups
+        </div>
         <div className="box-body">
           {status.loading && <p>Loading...</p>}
           {status.error && (

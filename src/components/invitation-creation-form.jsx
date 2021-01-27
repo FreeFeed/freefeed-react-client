@@ -43,7 +43,9 @@ class InvitationCreationForm extends Component {
     const { userFeeds, groupFeeds, user, form, baseLocation } = this.props;
     return (
       <div className="box">
-        <div className="box-header-timeline">Invite to {CONFIG.siteTitle}</div>
+        <div className="box-header-timeline" role="heading">
+          Invite to {CONFIG.siteTitle}
+        </div>
         <div className="box-body">
           <form onSubmit={preventDefault(this.createInvitation)}>
             <div>Suggested users</div>

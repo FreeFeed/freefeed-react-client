@@ -74,7 +74,9 @@ function Layout({ username, children }) {
   return (
     <div className="box">
       <Helmet title={`'${username}' group settings - ${CONFIG.siteTitle}`} defer={false} />
-      <div className="box-header-timeline">Group settings</div>
+      <div className="box-header-timeline" role="heading">
+        Group settings
+      </div>
       <div className="box-body">{children}</div>
     </div>
   );

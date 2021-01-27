@@ -70,10 +70,10 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
     <div className="comment-likes-container" {...touchHandlers}>
       {/* Heart & likes count */}
       <div className={heartClass}>
-        <div className="comment-count" onClick={likesListToggle} ref={countRef}>
+        <div className="comment-count" onClick={likesListToggle} ref={countRef} role="button">
           {likes || ''}
         </div>
-        <div className="comment-heart" onClick={heartClick}>
+        <div className="comment-heart" onClick={heartClick} role="button">
           <Icon
             icon={canLike ? faHeart : faHeartO}
             className={cn('icon', { liked: hasOwnLike })}

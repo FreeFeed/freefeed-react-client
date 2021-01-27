@@ -109,7 +109,7 @@ export function HideLink({
   }
 
   return (
-    <a className="post-action" onClick={handler}>
+    <a className="post-action" onClick={handler} role="button">
       {text}
     </a>
   );

@@ -12,7 +12,7 @@ class Summary extends Component {
 
     return (
       <div className="box">
-        <div className="box-header-timeline">
+        <div className="box-header-timeline" role="heading">
           {props.boxHeader}
 
           <div className="sidelinks">

@@ -73,7 +73,9 @@ export default function Layout({ children, router }) {
         defaultTitle={`Settinge - ${CONFIG.siteTitle}`}
       />
       <div className="box">
-        <div className="box-header-timeline">Settings</div>
+        <div className="box-header-timeline" role="heading">
+          Settings
+        </div>
         <div className="box-body">
           {narrowScreen ? (
             <select value={activeTab} className={styles.tabSelect} onChange={selectTab}>
@@ -84,7 +86,7 @@ export default function Layout({ children, router }) {
               ))}
             </select>
           ) : (
-            <ul className={`nav nav-tabs ${styles.navigation}`}>
+            <ul className={`nav nav-tabs ${styles.navigation}`} role="tablist">
               {tabs.map((t) => (
                 <Tab key={t.id} id={t.id} activeId={activeTab} icon={t.icon}>
                   {t.title}
@@ -101,17 +103,17 @@ export default function Layout({ children, router }) {
 
 export function SettingsPage({ title, header = title, children }) {
   return (
-    <>
+    <div role="tabpanel">
       <Helmet title={title} defer={false} />
       <h3 className={styles.pageHeader}>{header}</h3>
       {children}
-    </>
+    </div>
   );
 }
 
 function Tab({ id, activeId, icon, children }) {
   return (
-    <li role="presentation" className={cn(styles.navTab, { active: id === activeId })}>
+    <li role="tab presentation" className={cn(styles.navTab, { active: id === activeId })}>
       <Link to={settingsSection(id)}>
         <Icon icon={icon} className={styles.tabIcon} />{' '}
         <span className={styles.tabText}>{children}</span>

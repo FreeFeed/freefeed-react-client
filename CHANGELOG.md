@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.93.0] - Not released
+### Added
+- Added some ARIA-roles markup
+
+### Changed
+- Changed the authorization tokens reissue algorithm. Now any tab can reissue
+  tokens. Tabs uses locking for conflict protection and listens for the token
+  changes from the other tabs.
+
 ## [1.92.1] - 2021-01-24
 ### Fixed
 - Avoid breaking lines in stats of private users

@@ -7,7 +7,9 @@ import ErrorBoundary from './error-boundary';
 const GroupCreate = (props) => (
   <div className="box">
     <ErrorBoundary>
-      <div className="box-header-timeline">Create a group</div>
+      <div className="box-header-timeline" role="heading">
+        Create a group
+      </div>
       <div className="box-body">
         <GroupCreateForm
           createGroup={props.createGroup}

@@ -73,7 +73,7 @@ class Feed extends PureComponent {
     const hiddenEntries = (hiddenPosts || []).map(getEntryComponent('hidden'));
 
     return (
-      <div className="posts">
+      <div className="posts" role="feed list">
         <ErrorBoundary>
           {visibleEntries}
 

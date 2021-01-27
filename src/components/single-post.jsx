@@ -66,7 +66,9 @@ class SinglePostHandler extends Component {
 
     return (
       <div className="box">
-        <div className="box-header-timeline">{props.boxHeader}</div>
+        <div className="box-header-timeline" role="heading">
+          {props.boxHeader}
+        </div>
         <div className="box-body">{postBody}</div>
         <div className="box-footer" />
       </div>
@@ -95,7 +97,9 @@ function PrivatePost({ isAuthorized, feedName }) {
   return (
     <div className="box">
       <Helmet title={`Access denied - ${CONFIG.siteTitle}`} defer={false} />
-      <div className="box-header-timeline">Access denied</div>
+      <div className="box-header-timeline" role="heading">
+        Access denied
+      </div>
       <div className="box-body">
         <h3>The post you requested is private</h3>
         {isAuthorized ? (
@@ -125,7 +129,9 @@ function ProtectedPost() {
   return (
     <div className="box">
       <Helmet title={`Access denied - ${CONFIG.siteTitle}`} defer={false} />
-      <div className="box-header-timeline">Access denied</div>
+      <div className="box-header-timeline" role="heading">
+        Access denied
+      </div>
       <div className="box-body">
         <h3>This post is visible to {CONFIG.siteTitle} users only</h3>
         <p>
@@ -142,7 +148,9 @@ function NotFoundPost() {
   return (
     <div className="box">
       <Helmet title={`Post not found - ${CONFIG.siteTitle}`} defer={false} />
-      <div className="box-header-timeline">Post not found</div>
+      <div className="box-header-timeline" role="heading">
+        Post not found
+      </div>
       <div className="box-body">
         <h3>This post does not exist</h3>
         <p>It may have been removed or never existed on {CONFIG.siteTitle}.</p>

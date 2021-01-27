@@ -31,7 +31,9 @@ function FeedHandler(props) {
 
   return (
     <div className="box">
-      <div className="box-header-timeline">{props.boxHeader}</div>
+      <div className="box-header-timeline" role="heading">
+        {props.boxHeader}
+      </div>
       <div className="box-body" style={{ marginTop: '1em' }}>
         {queryString && (
           <>

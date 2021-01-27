@@ -24,7 +24,7 @@ class AudioAttachment extends PureComponent {
     }
 
     return (
-      <div className="attachment">
+      <div className="attachment" role="figure">
         <div>
           <audio src={props.url} title={artistAndTitle} preload="none" controls />
         </div>
