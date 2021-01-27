@@ -51,14 +51,10 @@ const allFalse = () => false;
 
 const tokenizeHashtags = hashTags();
 
-const commentHighlighter = (
-  { commentsHighlights, user, postsViewState },
-  commentsPostId,
-  commentList,
-) => {
+const commentHighlighter = ({ commentsHighlights, user, posts }, commentsPostId, commentList) => {
   const { postId, author, arrows, baseCommentId } = commentsHighlights;
   const { comments } = user.frontendPreferences;
-  const { omittedComments } = postsViewState[commentsPostId];
+  const { omittedComments } = posts[commentsPostId];
   if (!comments.highlightComments) {
     return allFalse;
   }
@@ -165,7 +161,7 @@ export const joinPostData = (state) => (postId) => {
     };
     const omitBubble =
       omitRepeatedBubbles &&
-      postViewState.omittedComments === 0 &&
+      post.omittedComments === 0 &&
       !comment.hideType &&
       !previousComment.hideType &&
       comment.createdBy === previousComment.createdBy &&
@@ -190,7 +186,7 @@ export const joinPostData = (state) => (postId) => {
     ]);
   }, []);
 
-  if (postViewState.omittedComments !== 0 && comments.length > 2) {
+  if (post.omittedComments !== 0 && comments.length > 2) {
     comments = [comments[0], comments[comments.length - 1]];
   }
 

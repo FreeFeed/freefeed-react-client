@@ -357,10 +357,10 @@ const indexById = (list) => _.keyBy(list || [], 'id');
 const mergeByIds = (state, array) => ({ ...state, ...indexById(array) });
 
 const initPostViewState = (post) => {
-  const { id, omittedComments, omittedLikes } = post;
+  const { id, omittedLikes } = post;
   const isEditing = false;
 
-  return { omittedComments, omittedLikes, id, isEditing, ...NO_ERROR };
+  return { omittedLikes, id, isEditing, ...NO_ERROR };
 };
 
 export function postsViewState(state = {}, action) {
@@ -383,9 +383,8 @@ export function postsViewState(state = {}, action) {
     case response(ActionTypes.SHOW_MORE_COMMENTS): {
       const { id } = action.payload.posts;
       const isLoadingComments = false;
-      const omittedComments = 0;
 
-      return { ...state, [id]: { ...state[id], isLoadingComments, omittedComments, ...NO_ERROR } };
+      return { ...state, [id]: { ...state[id], isLoadingComments, ...NO_ERROR } };
     }
     case response(ActionTypes.GET_SINGLE_POST): {
       const { id } = action.payload.posts;
@@ -494,7 +493,6 @@ export function postsViewState(state = {}, action) {
           isCommenting: false,
           isSavingComment: false,
           newCommentText: '',
-          omittedComments: post.omittedComments ? post.omittedComments + 1 : 0,
         },
       };
     }
@@ -520,13 +518,7 @@ export function postsViewState(state = {}, action) {
           [action.post.posts.id]: initPostViewState(action.post.posts),
         };
       }
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          omittedComments: post.omittedComments ? post.omittedComments + 1 : 0,
-        },
-      };
+      return state;
     }
     case ActionTypes.REALTIME_LIKE_NEW: {
       if (action.post && !state[action.post.id]) {
@@ -537,34 +529,6 @@ export function postsViewState(state = {}, action) {
       }
       return state;
     }
-    case ActionTypes.REALTIME_COMMENT_DESTROY: {
-      if (!action.postId || !state[action.postId]) {
-        return state;
-      }
-      const postsViewState = state[action.postId];
-      return {
-        ...state,
-        [action.postId]: {
-          ...postsViewState,
-          omittedComments: postsViewState.omittedComments ? postsViewState.omittedComments - 1 : 0,
-        },
-      };
-    }
-    // This doesn't work currently, since there's no information in the server
-    // response, and just with request.commentId it's currently impossible to
-    // find the post in postsViewState's state.
-    // TODO: Fix this.
-    /*
-    case response(ActionTypes.DELETE_COMMENT): {
-      const commentId = action.request.commentId
-      const post = _(state).find(post => (post.comments||[]).indexOf(commentId) !== -1)
-      return {...state,
-        [post.id]: {...post,
-          omittedComments: (post.omittedComments ? post.omittedComments - 1 : 0)
-        }
-      }
-    }
-    */
 
     case ActionTypes.REALTIME_LIKE_REMOVE: {
       const { postId, isLikeVisible } = action;
@@ -660,10 +624,10 @@ export function postsViewState(state = {}, action) {
 
     case response(ActionTypes.CREATE_POST): {
       const post = action.payload.posts;
-      const { id, omittedComments, omittedLikes } = post;
+      const { id, omittedLikes } = post;
       const isEditing = false;
 
-      return { ...state, [id]: { omittedComments, omittedLikes, id, isEditing, ...NO_ERROR } };
+      return { ...state, [id]: { omittedLikes, id, isEditing, ...NO_ERROR } };
     }
     case ActionTypes.UNAUTHENTICATED: {
       return {};
@@ -695,6 +659,9 @@ export function posts(state = {}, action) {
   switch (action.type) {
     case response(ActionTypes.SHOW_MORE_COMMENTS): {
       const post = state[action.payload.posts.id];
+      if (!post) {
+        return state;
+      }
       return {
         ...state,
         [post.id]: {
@@ -734,49 +701,40 @@ export function posts(state = {}, action) {
       if (!post) {
         return state;
       }
-      const comments = _.without(post.comments, commentId);
       return {
         ...state,
         [post.id]: {
           ...post,
-          comments,
-          omittedComments: post.omittedComments > 0 ? post.omittedComments - 1 : 0,
+          comments: _.without(post.comments, commentId),
         },
       };
     }
     case ActionTypes.REALTIME_COMMENT_DESTROY: {
-      if (!action.postId || !state[action.postId]) {
+      const { postId, commentId } = action;
+      const post = state[postId];
+      if (!post || (!post.comments.includes(commentId) && post.omittedComments === 0)) {
         return state;
       }
 
-      const post = state[action.postId];
-      if (!post.comments.includes(action.commentId)) {
-        return state;
-      }
-
-      return {
-        ...state,
-        [action.postId]: {
-          ...post,
-          comments: _.without(post.comments, action.commentId),
-        },
-      };
+      return patchObjectByKey(state, postId, (post) => {
+        const p = { ...post };
+        if (p.comments.includes(commentId)) {
+          p.comments = _.without(p.comments, commentId);
+        } else {
+          p.omittedComments = p.omittedComments - 1;
+        }
+        return p;
+      });
     }
     case response(ActionTypes.ADD_COMMENT): {
       const post = state[action.request.postId];
-      const commentAlreadyAdded =
-        post.comments && post.comments.includes(action.payload.comments.id);
-      if (commentAlreadyAdded) {
+      if (!post || post.comments?.includes(action.payload.comments.id)) {
         return state;
       }
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          comments: [...(post.comments || []), action.payload.comments.id],
-          omittedComments: post.omittedComments > 0 ? post.omittedComments + 1 : 0,
-        },
-      };
+      return patchObjectByKey(state, action.request.postId, (post) => ({
+        ...post,
+        comments: [...(post.comments || []), action.payload.comments.id],
+      }));
     }
 
     // Likes
@@ -1021,8 +979,7 @@ export function posts(state = {}, action) {
           [action.post.posts.id]: postParser(action.post.posts),
         };
       }
-      const commentAlreadyAdded = post.comments && post.comments.includes(action.comment.id);
-      if (commentAlreadyAdded) {
+      if (post.comments?.includes(action.comment.id)) {
         return state;
       }
       return {

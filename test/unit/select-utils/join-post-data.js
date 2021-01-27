@@ -18,7 +18,7 @@ const post = {
 
 const composeState = ({ subsequentComments, setting, omittedComments = 0, withDelay = false }) => {
   return {
-    posts: { [post.id]: post },
+    posts: { [post.id]: { ...post, omittedComments } },
     comments: {
       [comment1.id]: {
         ...comment1,
@@ -43,7 +43,7 @@ const composeState = ({ subsequentComments, setting, omittedComments = 0, withDe
       [comment2.id]: {},
       [comment3.id]: {},
     },
-    postsViewState: { [post.id]: { omittedComments } },
+    postsViewState: { [post.id]: {} },
     user: { frontendPreferences: { comments: { omitRepeatedBubbles: setting } } },
     users: {
       [user1.id]: user1,
