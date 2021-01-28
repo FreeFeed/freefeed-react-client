@@ -16,7 +16,7 @@ import { bookmarkletHref } from '../bookmarklet/loader';
 import UserName from './user-name';
 import RecentGroups from './recent-groups';
 import ErrorBoundary from './error-boundary';
-import { InvisibleSelect } from './invisibe-select';
+import { InvisibleSelect } from './invisible-select';
 import { LiberaPayWidget } from './libera-pay-widget';
 import { UserPicture } from './user-picture';
 import { SidebarHomeFeeds } from './sidebar-homefeeds';
