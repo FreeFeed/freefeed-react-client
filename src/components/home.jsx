@@ -20,7 +20,7 @@ import ErrorBoundary from './error-boundary';
 import { ButtonLink } from './button-link';
 import { useBool } from './hooks/bool';
 import { lazyComponent } from './lazy-component';
-import { InvisibleSelect } from './invisibe-select';
+import { InvisibleSelect } from './invisible-select';
 import { homeFeedURI } from './home-feed-link';
 import { useMediaQuery } from './hooks/media-query';
 
