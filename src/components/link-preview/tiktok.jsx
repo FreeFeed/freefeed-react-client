@@ -15,8 +15,8 @@ export default function TikTokVideoPreview({ url }) {
 
   useEffect(() => {
     cachedFetch(`https://www.tiktok.com/oembed?url=${encodeURIComponent(url)}`).then((data) => {
-      if (data.title) {
-        setByline(`${data.title} by ${data.author_name}`);
+      if ('title' in data) {
+        setByline(`${data.title || 'Untitled'} by ${data.author_name}`);
         setId(/data-video-id="(\d+)"/.exec(data.html)?.[1]);
       } else {
         setIsError(true);
