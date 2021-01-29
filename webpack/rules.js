@@ -173,7 +173,7 @@ class RuleGenerator {
   }
 
   get photoswipe() {
-    const fileName = this.opts.hash ? '[name]-[hash].[ext]' : '[name]-dev.[ext]';
+    const fileName = this.opts.dev ? '[name]-dev.[ext]' : '[name]-[hash].[ext]';
 
     return {
       test: /photoswipe.+\.(png|svg|gif)$/,
@@ -189,7 +189,7 @@ class RuleGenerator {
   }
 
   get otherAssets() {
-    const fileName = this.opts.hash ? '[path][name]-[hash].[ext]' : '[path][name]-dev.[ext]';
+    const fileName = this.opts.dev ? '[path][name]-dev.[ext]' : '[path][name]-[hash].[ext]';
 
     return {
       test: /[\\/]assets[\\/]/,

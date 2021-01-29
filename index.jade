@@ -52,6 +52,7 @@ html(lang='en')
       window.CONFIG = !{JSON.stringify(appConfig)};
 
     script(src=htmlWebpackPlugin.files.js[0])
+    script(src=htmlWebpackPlugin.files.js[1])
 
   body.initial
     //- Instantly check color scheme
@@ -156,5 +157,5 @@ html(lang='en')
         }
       })(window, document);
 
-    script(src=htmlWebpackPlugin.files.js[1])
     script(src=htmlWebpackPlugin.files.js[2])
+    script(src=htmlWebpackPlugin.files.js[3])
