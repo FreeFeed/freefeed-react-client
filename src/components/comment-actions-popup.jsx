@@ -8,10 +8,10 @@ import { useSelector, shallowEqual } from 'react-redux';
 import UserName from './user-name';
 import { Icon } from './fontawesome-icons';
 import TimeDisplay from './time-display';
-import { useCommentLikers } from './comment-icon';
 import { useEntryUrl } from './hooks/entry-url';
 import { useBool } from './hooks/bool';
 import { withEventListener, withTimeout, withInterval } from './hooks/sub-unsub';
+import { useCommentLikers } from './comment-likers';
 
 const longTapTimeout = 300;
 

@@ -1,4 +1,4 @@
-import { useCallback, forwardRef, memo, useEffect } from 'react';
+import { useCallback, forwardRef, memo } from 'react';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { pick } from 'lodash';
 import cn from 'classnames';
@@ -6,8 +6,7 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartO, faComment } from '@fortawesome/free-regular-svg-icons';
 
 import { Portal } from 'react-portal';
-import { unlikeComment, likeComment, getCommentLikes } from '../redux/action-creators';
-import { initialAsyncState } from '../redux/async-helpers';
+import { unlikeComment, likeComment } from '../redux/action-creators';
 import TimeDisplay from './time-display';
 import UserName from './user-name';
 import { Icon } from './fontawesome-icons';
@@ -15,6 +14,7 @@ import { CLOSE_ON_CLICK_OUTSIDE, useDropDown } from './hooks/drop-down';
 import { Throbber } from './throbber';
 import ActionsPanel, { useActionsPanel } from './comment-actions-popup';
 import { useWaiting } from './hooks/waiting';
+import { useCommentLikers } from './comment-likers';
 
 // Do not show clikes list for this interval if data is not available yet
 const CLIKES_LIST_DELAY = 250;
@@ -121,19 +121,6 @@ export function JustCommentIcon() {
       </span>
     </div>
   );
-}
-
-export function useCommentLikers(id) {
-  const dispatch = useDispatch();
-  useEffect(() => void dispatch(getCommentLikes(id)), [dispatch, id]);
-  return useSelector((state) => {
-    const { status = initialAsyncState, likes = [] } = state.commentLikes[id] || {};
-    return {
-      status,
-      likers: likes.map((like) => state.users[like.userId]),
-      ownId: state.user.id,
-    };
-  });
 }
 
 const LikesList = forwardRef(function LikesList({ id }, ref) {
