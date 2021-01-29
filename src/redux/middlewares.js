@@ -1,10 +1,9 @@
-/* global CONFIG */
 import { browserHistory } from 'react-router';
 import _ from 'lodash';
 import * as Sentry from '@sentry/react';
 
 import { getPost } from '../services/api';
-import { getToken, onStorageChange, scheduleTokenReissue, setToken } from '../services/auth';
+import { setToken } from '../services/auth';
 import { Connection } from '../services/realtime';
 import { delay } from '../utils';
 import * as FeedOptions from '../utils/feed-options';
@@ -227,27 +226,6 @@ function shouldGoToSignIn(pathname) {
 
 export const authMiddleware = (store) => {
   let firstUnauthenticated = true;
-
-  scheduleTokenReissue(store);
-
-  // Periodically check for token change in local storage
-  setInterval(() => {
-    const cachedToken = getToken();
-    const actualToken = getToken(true);
-    if (actualToken !== cachedToken) {
-      authDebug('token changed in local storage (by periodic check)');
-      setToken(actualToken, false);
-      store.dispatch(ActionCreators.authTokenUpdated());
-      scheduleTokenReissue(store);
-    }
-  }, CONFIG.authSessions.localStorageCheckIntervalSec * 1000);
-
-  onStorageChange((newToken) => {
-    authDebug('token changed in local storage');
-    setToken(newToken, false);
-    store.dispatch(ActionCreators.authTokenUpdated());
-    scheduleTokenReissue(store);
-  });
 
   return (next) => (action) => {
     //stop action propagation if it should be authed and user is not authed
