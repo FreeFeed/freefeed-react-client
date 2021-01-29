@@ -8902,15 +8902,6 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"nanoid@npm:~3.1.20":
-  version: 3.1.20
-  resolution: "nanoid@npm:3.1.20"
-  bin:
-    nanoid: bin/nanoid.cjs
-  checksum: 4788d36edcfec7bb32ddf33ed8f1f46df2867f70e9b1993bb131f7677e04ead2b621e5d614d2736308be18db1d54208d8ab207b4586bd5b052f71fb9d4c0ebea
-  languageName: node
-  linkType: hard
-
 "nanomatch@npm:^1.2.9":
   version: 1.2.13
   resolution: "nanomatch@npm:1.2.13"
@@ -11349,7 +11340,6 @@ fsevents@~2.1.2:
     mocha: ~8.2.1
     mochapack: ~2.0.6
     mousetrap: ^1.6.5
-    nanoid: ~3.1.20
     node-noop: ^1.0.0
     node-sass: ~5.0.0
     npm-run-all: ~4.1.5

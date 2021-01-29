@@ -79,12 +79,6 @@ export default {
     google: null,
   },
 
-  authSessions: {
-    reissueIntervalSec: 3600,
-    localStorageCheckIntervalSec: 60,
-    lockIntervalSec: 60,
-  },
-
   eslint: {
     // By default the eslint-linebreak-style directive requires "windows" linebreaks
     // on Windows platform and "unix" linebreaks otherwise.
