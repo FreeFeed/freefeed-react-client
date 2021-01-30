@@ -7,6 +7,7 @@ import { faHeart as faHeartO, faComment } from '@fortawesome/free-regular-svg-ic
 
 import { Portal } from 'react-portal';
 import { unlikeComment, likeComment } from '../redux/action-creators';
+import { pluralForm } from '../utils';
 import TimeDisplay from './time-display';
 import UserName from './user-name';
 import { Icon } from './fontawesome-icons';
@@ -70,9 +71,19 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
     <div className="comment-likes-container" {...touchHandlers}>
       {/* Heart & likes count */}
       <div className={heartClass}>
-        <div className="comment-count" onClick={likesListToggle} ref={countRef} role="button">
-          {likes || ''}
-        </div>
+        {likes ? (
+          <div
+            className="comment-count"
+            onClick={likesListToggle}
+            ref={countRef}
+            role="button"
+            aria-label={pluralForm(likes, 'comment like')}
+          >
+            {likes}
+          </div>
+        ) : (
+          false
+        )}
         <div className="comment-heart" onClick={heartClick} role="button">
           <Icon
             icon={canLike ? faHeart : faHeartO}

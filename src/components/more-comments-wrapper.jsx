@@ -10,6 +10,7 @@ const MoreCommentsWrapper = (props) => (
         className="more-comments-link"
         href={props.entryUrl}
         onClick={preventDefault(() => props.showMoreComments())}
+        role="button"
       >
         {getText(props)}
       </a>

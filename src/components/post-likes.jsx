@@ -1,5 +1,5 @@
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
-import { preventDefault } from '../utils';
+import { preventDefault, pluralForm } from '../utils';
 import UserName from './user-name';
 import ErrorBoundary from './error-boundary';
 import { Icon } from './fontawesome-icons';
@@ -37,7 +37,7 @@ export default ({ likes, showMoreLikes, post }) => {
   const renderedLikes = likeList.map(renderLike);
 
   return (
-    <div className="post-likes">
+    <div className="post-likes" aria-label={pluralForm(likes.length, 'like')}>
       <ErrorBoundary>
         <Icon icon={faHeart} className="icon" />
         <ul className="post-likes-list">{renderedLikes}</ul>

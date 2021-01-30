@@ -54,7 +54,7 @@ export default withRouter(function SearchForm({ router }) {
   );
 
   return (
-    <div className="search-form" role="search form">
+    <div className="search-form" role="search form" aria-label="Search form">
       <input
         value={query}
         onChange={onChange}

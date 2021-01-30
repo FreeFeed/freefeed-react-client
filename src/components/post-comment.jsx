@@ -145,7 +145,7 @@ class PostComment extends Component {
     }
 
     const authorAndButtons = (
-      <span>
+      <span aria-label={`Comment by ${this.props.user.username}`}>
         {' -'}&nbsp;
         <UserName
           user={this.props.user}

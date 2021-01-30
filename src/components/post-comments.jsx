@@ -1,7 +1,7 @@
 import { createRef, Component } from 'react';
 import { Link } from 'react-router';
 
-import { preventDefault } from '../utils';
+import { preventDefault, pluralForm } from '../utils';
 import { safeScrollBy } from '../services/unscroll';
 import PostComment from './post-comment';
 import MoreCommentsWrapper from './more-comments-wrapper';
@@ -210,7 +210,12 @@ export default class PostComments extends Component {
     const last = withBackwardNumber(comments.length > 1 && comments[comments.length - 1], 1);
 
     return (
-      <div className="comments" ref={this.rootEl} role="list">
+      <div
+        className="comments"
+        ref={this.rootEl}
+        role="list"
+        aria-label={pluralForm(totalComments, 'comment')}
+      >
         <ErrorBoundary>
           {[
             first && this.renderComment(first),
