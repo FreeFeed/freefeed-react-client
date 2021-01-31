@@ -165,6 +165,12 @@
       font-size: 11px;
     }
 
+    .p-my-groups-link {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     .pinned {
       .updated-ago:after {
         content: ' (pinned)';

@@ -8,9 +8,7 @@ const renderRecentGroup = (recentGroup) => (
     className={classnames('p-my-groups-link', recentGroup.isPinned && 'pinned')}
     key={recentGroup.id}
   >
-    <UserName user={recentGroup} applyHyphenations={true}>
-      {recentGroup.screenName}
-    </UserName>
+    <UserName user={recentGroup} applyHyphenations={true} />
     <TimeDisplay className="updated-ago" timeStamp={+recentGroup.updatedAt} />
   </li>
 );
