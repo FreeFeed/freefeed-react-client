@@ -64,8 +64,8 @@ const FeedHandler = (props) => {
   return (
     <div className="box">
       <ErrorBoundary>
-        <div className="box-header-timeline" role="heading">
-          <TopHomeSelector id={feedId} />{' '}
+        <div className="box-header-timeline" role="heading" aria-labelledby="feed-name">
+          <TopHomeSelector id={feedId} feedLabelId="feed-name" />{' '}
           {feedId && (
             <small>
               (<ButtonLink onClick={showEditor}>Edit list</ButtonLink>)
@@ -157,7 +157,7 @@ export const SubscrRequests = memo(function SubscrRequests() {
   );
 });
 
-export const TopHomeSelector = withRouter(function TopHomeSelector({ router, id }) {
+export const TopHomeSelector = withRouter(function TopHomeSelector({ router, id, feedLabelId }) {
   const homeFeeds = useSelector((state) => state.homeFeeds);
   const narrowScreen = useMediaQuery('(max-width: 991px)');
 
@@ -167,15 +167,15 @@ export const TopHomeSelector = withRouter(function TopHomeSelector({ router, id 
   );
 
   if (homeFeeds.length === 1) {
-    return homeFeeds[0].title;
+    return <span id={feedLabelId}>{homeFeeds[0].title}</span>;
   }
 
   if (!narrowScreen) {
-    return homeFeeds.find((h) => h.id === id)?.title || 'Home';
+    return <span id={feedLabelId}>{homeFeeds.find((h) => h.id === id)?.title || 'Home'}</span>;
   }
 
   return (
-    <InvisibleSelect value={id} onChange={onChange} withCaret>
+    <InvisibleSelect value={id} onChange={onChange} withCaret labelValueId={feedLabelId}>
       {homeFeeds.map((h) => (
         <option key={h.id} value={h.id}>
           {h.title}

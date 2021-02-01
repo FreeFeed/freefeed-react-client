@@ -175,7 +175,7 @@ export default class CreatePost extends Component {
 
   render() {
     return (
-      <div className="create-post post-editor" role="form">
+      <div className="create-post post-editor" role="form" aria-label="Write a post">
         <ErrorBoundary>
           <div>
             {this.props.sendTo.expanded && (

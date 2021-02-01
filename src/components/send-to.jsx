@@ -172,7 +172,7 @@ class SendTo extends Component {
     const [defaultOpt] = this.state.values;
 
     return (
-      <div className="send-to">
+      <div className="send-to" aria-label="Choose post destination">
         {!this.state.showFeedsOption && defaultOpt ? (
           <div>
             To:&nbsp;
