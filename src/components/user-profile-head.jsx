@@ -193,7 +193,7 @@ export const UserProfileHead = withRouter(
 
     if (!user && (isLoggedOut || routeLoadingState || dataStatus.loading || dataStatus.initial)) {
       return (
-        <div className={styles.profile}>
+        <div className={styles.profile} role="region">
           <div className={styles.avatar}>
             <UserPicture large />
           </div>
@@ -206,7 +206,7 @@ export const UserProfileHead = withRouter(
 
     if (dataStatus.error) {
       return (
-        <div className={styles.profile}>
+        <div className={styles.profile} role="region">
           <div className={styles.avatar}>
             <UserPicture large fallback="+_+" />
           </div>
@@ -224,7 +224,7 @@ export const UserProfileHead = withRouter(
     }
 
     return (
-      <div className={styles.profile}>
+      <div className={styles.profile} role="region">
         <div className={styles.avatar}>
           <UserPicture user={user} large />
         </div>
