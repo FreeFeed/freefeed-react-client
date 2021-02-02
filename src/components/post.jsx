@@ -522,7 +522,7 @@ class Post extends Component {
                       autoFocus={true}
                       minRows={2}
                       maxRows={10}
-                      maxLength="1500"
+                      maxLength={CONFIG.maxLength.post}
                       dir={'auto'}
                     />
                   </div>

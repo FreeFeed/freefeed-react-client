@@ -67,6 +67,7 @@ export default function GroupSettingsForm({ username }) {
           <textarea
             id="description-input"
             className={`form-control wider-input ${styles.profileDescription}`}
+            maxLength={CONFIG.maxLength.description}
             {...description.input}
           />
         </div>

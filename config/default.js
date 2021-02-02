@@ -86,4 +86,10 @@ export default {
     // to "windows" or "unix".
     linebreakStyle: null,
   },
+
+  maxLength: {
+    post: 3000,
+    comment: 3000,
+    description: 1500,
+  },
 };
