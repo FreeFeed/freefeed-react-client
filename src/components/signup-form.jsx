@@ -36,7 +36,8 @@ const validate = ({ withExtProfile = true, withCaptcha = true } = {}) => (values
   errors.screenname = shouldBe(/^.{3,25}$/i.test(values.screenname.trim()));
   errors.email = shouldBe(isEmail(values.email.trim()));
   errors.password = shouldBe(
-    (withExtProfile && values.connectExtProfile) || values.password.trim().length > 4,
+    (withExtProfile && values.connectExtProfile) ||
+      values.password.trim().length >= CONFIG.minPasswordLength,
   );
   errors.captcha = shouldBe(!withCaptcha || values.captcha !== null);
 
@@ -216,7 +217,12 @@ export default memo(function SignupForm({ invitationId = null, lang = 'en' }) {
               autoComplete="new-password"
               {...password.input}
             />
-            <p className="help-block">{enRu('At least 4 characters', 'Минимум 4 символа')}</p>
+            <p className="help-block">
+              {enRu(
+                `At least ${CONFIG.minPasswordLength} characters`,
+                `Минимум ${CONFIG.minPasswordLength} символов`,
+              )}
+            </p>
           </div>
         )}
 
