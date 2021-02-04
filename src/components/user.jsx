@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -45,6 +45,15 @@ const UserHandler = (props) => {
     props.viewUser.isLoading,
     props.viewUser.username,
   ]);
+
+  const nameForTitle = useMemo(
+    () =>
+      props.viewUser.username === props.viewUser.screenName
+        ? props.viewUser.username
+        : `${props.viewUser.screenName} (${props.viewUser.username})`,
+    [props.viewUser.screenName, props.viewUser.username],
+  );
+
   return (
     <div className="box">
       <ErrorBoundary>
@@ -60,6 +69,9 @@ const UserHandler = (props) => {
               }
               href={`${CONFIG.api.root}/v2/timelines-rss/${props.viewUser.username}`}
             />
+            <title>
+              {nameForTitle} - {CONFIG.siteTitle}
+            </title>
           </Helmet>
         )}
 
