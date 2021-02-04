@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { faExclamationTriangle, faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -19,21 +19,23 @@ export default function ProfilePictureForm() {
 }
 
 export function PictureEditForm({ pictureURL, pictureStatus, onUpdate }) {
-  const fileInput = useMemo(() => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/jpeg, image/png, image/gif';
-    input.addEventListener('change', () => {
-      onUpdate(input.files[0]);
-      input.value = ''; // reset input state
-    });
-    return input;
-  }, [onUpdate]);
+  const fileInputRef = useRef(null);
 
-  const choosePictureFile = useCallback(() => pictureStatus.loading || fileInput.click(), [
-    fileInput,
-    pictureStatus,
-  ]);
+  const choosePictureFile = useCallback(
+    () => pictureStatus.loading || fileInputRef.current.click(),
+    [fileInputRef, pictureStatus],
+  );
+
+  const onFileChange = useCallback(
+    (event) => {
+      onUpdate(event.target.files[0]);
+      // We must empty input state to allow uploading the same file twice (which doesn't work in Chrome).
+      // This could happen if a user uploads a userpic, then modifies the file and tries to upload
+      // it again
+      event.target.value = '';
+    },
+    [onUpdate],
+  );
 
   const pseudoUser = useMemo(() => ({ profilePictureUrl: pictureURL }), [pictureURL]);
 
@@ -49,6 +51,15 @@ export function PictureEditForm({ pictureURL, pictureStatus, onUpdate }) {
       </div>
       <div className="media-body">
         <p>
+          <input
+            id="userpic-input"
+            type="file"
+            disabled={pictureStatus.loading}
+            onChange={onFileChange}
+            accept="image/jpeg, image/png, image/gif"
+            style={{ display: 'none' }}
+            ref={fileInputRef}
+          />
           <button
             className="btn btn-default"
             type="button"
