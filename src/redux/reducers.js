@@ -1746,20 +1746,39 @@ function sortRecentGroups(g1, g2) {
   if (g1.isPinned !== g2.isPinned) {
     return g1.isPinned ? -1 : 1;
   }
-  return parseInt(g2.updatedAt) - parseInt(g1.updatedAt);
+  return g2.updatedAt - g1.updatedAt;
 }
+
+const recentGroupInfo = (pinnedIds = []) => (g) => ({
+  id: g.id,
+  updatedAt: parseInt(g.updatedAt),
+  isPinned: pinnedIds.includes(g.id),
+});
 
 function getRecentGroups({ subscribers, frontendPreferences }) {
   const clientPreferences = frontendPreferences || {};
   const pinnedGroups = clientPreferences.pinnedGroups || [];
   const groups = (subscribers || []).filter((i) => i.type == 'group');
   return groups
-    .map((g) => ({ ...g, isPinned: pinnedGroups.includes(g.id) }))
+    .map(recentGroupInfo(pinnedGroups))
     .sort(sortRecentGroups)
     .slice(0, GROUPS_SIDEBAR_LIST_LENGTH + pinnedGroups.length);
 }
 
+/**
+ * List of the recent groups
+ * @param {{id: string, isPinned: boolean, updatedAt: number}[]} state
+ * @param {{type: string}} action
+ */
 export function recentGroups(state = [], action) {
+  const updateGroups = (...groups) => {
+    const pinnedIds = state.filter((g) => g.isPinned).map((g) => g.id);
+    const updGroups = groups.map(recentGroupInfo(pinnedIds));
+    return _.uniqBy([...updGroups, ...state], 'id')
+      .sort(sortRecentGroups)
+      .slice(0, GROUPS_SIDEBAR_LIST_LENGTH + pinnedIds.length);
+  };
+
   switch (action.type) {
     case response(ActionTypes.TOGGLE_PINNED_GROUP): {
       const { subscribers, users } = action.payload;
@@ -1772,32 +1791,21 @@ export function recentGroups(state = [], action) {
         action.payload.users.frontendPreferences[frontendPrefsConfig.clientId];
       return getRecentGroups({ subscribers, frontendPreferences });
     }
-    case response(ActionTypes.CREATE_GROUP): {
-      const newGroup = action.payload.groups;
-      state.unshift(newGroup);
-      return [...state];
-    }
+    case response(ActionTypes.CREATE_GROUP):
     case response(ActionTypes.UPDATE_GROUP): {
-      const groupId = action.payload.groups.id || null;
-      const groupIndex = _.findIndex(state, { id: groupId });
-      if (groupIndex > -1) {
-        const oldGroup = state[groupIndex];
-        const newGroup = action.payload.groups || {};
-        state[groupIndex] = { ...oldGroup, ...newGroup };
-        return [...state];
-      }
-      return state;
+      return updateGroups(action.payload.groups);
     }
     case ActionTypes.REALTIME_USER_UPDATE: {
       if (action.updatedGroups) {
-        const updatedGroups = action.updatedGroups.map((g) => ({
-          ...g,
-          // Do we already have this group pinned?
-          isPinned: state.find((s) => s.id === g.id)?.isPinned || false,
-        }));
-        return _.uniqBy([...updatedGroups, ...state], 'id')
-          .sort(sortRecentGroups)
-          .slice(0, state.length);
+        return updateGroups(...action.updatedGroups);
+      }
+      return state;
+    }
+    case ActionTypes.REALTIME_GLOBAL_USER_UPDATE: {
+      if (state.some((g) => g.id === action.user.id)) {
+        // We don't know here are we subscribed to this group. So updating only
+        // if this group is already in the list.
+        return updateGroups(action.user);
       }
       return state;
     }
