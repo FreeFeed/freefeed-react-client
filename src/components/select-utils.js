@@ -317,8 +317,7 @@ export function canAcceptDirects(user, state) {
  * @param {object} state
  */
 export function destinationsPrivacy(destNames, state) {
-  const { user: me, groups } = state;
-  const dests = [me, ...Object.values(groups)];
+  const dests = [state.user, ...Object.values(state.users).filter((u) => u.type === 'group')];
   let isPrivate = true;
   let isProtected = true;
   for (const d of dests) {

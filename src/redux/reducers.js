@@ -353,8 +353,27 @@ const NO_ERROR = {
 
 const POST_SAVE_ERROR = 'Something went wrong while editing the post...';
 
-const indexById = (list) => _.keyBy(list || [], 'id');
-const mergeByIds = (state, array) => ({ ...state, ...indexById(array) });
+/**
+ * @param {object} state
+ * @param {{id: string}[]} list
+ * @param {{insert: boolean, update: boolean}} [options]
+ */
+function mergeByIds(state, list, { insert = true, update = false } = {}) {
+  const needUpdate = list?.some((it) => (state[it.id] ? update : insert));
+  if (!needUpdate) {
+    return state;
+  }
+
+  const newState = { ...state };
+  for (const it of list) {
+    if (!newState[it.id] && insert) {
+      newState[it.id] = it;
+    } else if (newState[it.id] && update) {
+      newState[it.id] = { ...newState[it.id], ...it };
+    }
+  }
+  return newState;
+}
 
 const initPostViewState = (post) => {
   const { id, omittedComments, omittedLikes } = post;
@@ -1250,88 +1269,62 @@ export function directsReceivers(state = {}, action) {
 }
 
 export function users(state = {}, action) {
+  const mergeAccounts = (accounts, options = {}) =>
+    mergeByIds(state, (accounts || []).map(userParser), options);
+
   if (ActionHelpers.isFeedResponse(action)) {
-    const accounts = [];
-    action.payload.users && accounts.push(...action.payload.users);
-    action.payload.subscribers && accounts.push(...action.payload.subscribers);
-    return mergeByIds(state, accounts.map(userParser));
+    return mergeAccounts([...action.payload.users, ...action.payload.subscribers]);
   }
   switch (action.type) {
-    case response(ActionTypes.WHO_AM_I):
+    case response(ActionTypes.WHO_AM_I): {
+      return mergeAccounts([action.payload.users, ...action.payload.subscribers]);
+    }
     case response(ActionTypes.GET_USER_INFO): {
-      const userId = action.payload.users.id;
-      const oldUser = state[userId] || {};
-      const newUser = userParser(action.payload.users);
-      return {
-        ...state,
-        [userId]: { ...oldUser, ...newUser },
-      };
+      return mergeAccounts([action.payload.users, ...action.payload.admins], { update: true });
     }
     case response(ActionTypes.CREATE_GROUP): {
-      const userId = action.payload.groups.id;
-      const newUser = userParser(action.payload.groups);
-      return {
-        ...state,
-        [userId]: { ...newUser },
-      };
-    }
-    case response(ActionTypes.GET_COMMENT_LIKES): {
-      return mergeByIds(state, (action.payload.users || []).map(userParser));
+      return mergeAccounts([action.payload.groups]);
     }
     case response(ActionTypes.UPDATE_GROUP): {
-      const userId = action.payload.groups.id;
-      const oldUser = state[userId] || {};
-      const newUser = userParser(action.payload.groups);
-      return {
-        ...state,
-        [userId]: { ...oldUser, ...newUser },
-      };
+      return mergeAccounts([action.payload.groups], { update: true });
+    }
+    case response(ActionTypes.GET_COMMENT_LIKES): {
+      return mergeAccounts(action.payload.users);
     }
     case response(ActionTypes.GET_NOTIFICATIONS):
     case response(ActionTypes.SHOW_MORE_COMMENTS):
     case response(ActionTypes.SHOW_MORE_LIKES_ASYNC):
     case response(ActionTypes.GET_SINGLE_POST):
     case response(ActionTypes.GET_ALL_SUBSCRIPTIONS): {
-      return mergeByIds(state, (action.payload.users || []).map(userParser));
+      return mergeAccounts([
+        ...action.payload.users,
+        ...(action.payload.subscribers || []),
+        ...(action.payload.groups || []),
+      ]);
     }
     case response(ActionTypes.GET_INVITATION): {
-      const { users = [], groups = [] } = action.payload;
-      return mergeByIds(state, users.concat(groups).map(userParser));
+      return mergeAccounts([...(action.payload.users || []), ...(action.payload.groups || [])]);
     }
     case ActionTypes.REALTIME_POST_NEW:
     case ActionTypes.REALTIME_LIKE_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW: {
-      if (!action.users || action.users.length === 0) {
-        return state;
-      }
-      const usersToAdd = !action.post
-        ? action.users
-        : [...(action.users || []), ...(action.post.users || [])];
-
-      const notAdded = (state) => (user) => !state[user.id];
-
-      return mergeByIds(state, usersToAdd.filter(notAdded(state)).map(userParser));
-    }
-    case ActionTypes.HIGHLIGHT_COMMENT: {
-      return state;
+      return mergeAccounts([
+        ...action.users,
+        ...(action.subscribers || []),
+        ...(action.post?.users || []),
+      ]);
     }
     case ActionTypes.UNAUTHENTICATED: {
       return {};
     }
     case ActionTypes.REALTIME_GLOBAL_USER_UPDATE: {
-      const userId = action.user.id;
-      if (state[userId]) {
-        const newUser = userParser(action.user);
-        return { ...state, [userId]: { ...state[userId], ...newUser } };
-      }
-      return state;
+      return mergeAccounts([action.user], { insert: false, update: true });
     }
     case response(ActionTypes.GET_ALL_GROUPS): {
-      const { users = [] } = action.payload;
-      return mergeByIds(state, users.map(userParser));
+      return mergeAccounts(action.payload.users);
     }
     case response(ActionTypes.BLOCKED_BY_ME): {
-      return mergeByIds(state, action.payload.map(userParser));
+      return mergeAccounts(action.payload);
     }
   }
   return state;
@@ -1807,44 +1800,6 @@ export function recentGroups(state = [], action) {
           .slice(0, state.length);
       }
       return state;
-    }
-  }
-
-  return state;
-}
-
-export function groups(state = {}, action) {
-  switch (action.type) {
-    case response(ActionTypes.WHO_AM_I): {
-      const groups = (action.payload.subscribers || []).filter((u) => u.type == 'group');
-      return mergeByIds(state, groups.map(userParser));
-    }
-    case response(ActionTypes.CREATE_GROUP): {
-      const groupId = action.payload.groups.id;
-      const newGroup = userParser(action.payload.groups);
-      return {
-        ...state,
-        [groupId]: { ...newGroup },
-      };
-    }
-    case response(ActionTypes.UPDATE_GROUP): {
-      const groupId = action.payload.groups.id;
-      const oldGroup = state[groupId] || {};
-      const newGroup = userParser(action.payload.groups);
-      return {
-        ...state,
-        [groupId]: { ...oldGroup, ...newGroup },
-      };
-    }
-    case response(ActionTypes.GET_NOTIFICATIONS): {
-      return mergeByIds(state, action.payload.groups);
-    }
-    case response(ActionTypes.GET_INVITATION): {
-      const { groups = [] } = action.payload;
-      return mergeByIds(state, groups.map(userParser));
-    }
-    case ActionTypes.UNAUTHENTICATED: {
-      return {};
     }
   }
 
