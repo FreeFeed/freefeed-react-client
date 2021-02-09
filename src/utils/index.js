@@ -72,6 +72,8 @@ export function postParser(post) {
     ...post,
     commentsDisabled: post.commentsDisabled === '1',
     savePostStatus: initialAsyncState,
+    // After what comment the omittedComments span is started?
+    omittedCommentsOffset: post.omittedComments > 0 ? 1 : 0,
   };
 }
 

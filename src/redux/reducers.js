@@ -662,12 +662,14 @@ export function posts(state = {}, action) {
       if (!post) {
         return state;
       }
+      const newPost = postParser(action.payload.posts);
       return {
         ...state,
         [post.id]: {
           ...post,
-          omittedComments: 0,
-          comments: action.payload.posts.comments,
+          omittedComments: newPost.omittedComments,
+          omittedCommentsOffset: newPost.omittedCommentsOffset,
+          comments: newPost.comments,
         },
       };
     }
@@ -697,15 +699,24 @@ export function posts(state = {}, action) {
     }
     case response(ActionTypes.DELETE_COMMENT): {
       const { commentId } = action.request;
-      const post = Object.values(state).find((_post) => (_post.comments || []).includes(commentId));
+      const post = Object.values(state).find((p) => p.comments?.includes(commentId));
       if (!post) {
         return state;
       }
+
+      let { omittedCommentsOffset } = post;
+      const idx = post.comments.indexOf(commentId);
+      if (idx >= 0 && idx < post.omittedCommentsOffset) {
+        // If the deletion is before the omittedComments span
+        omittedCommentsOffset--;
+      }
+
       return {
         ...state,
         [post.id]: {
           ...post,
-          comments: _.without(post.comments, commentId),
+          comments: post.comments.filter((c) => c !== commentId),
+          omittedCommentsOffset,
         },
       };
     }
@@ -718,10 +729,18 @@ export function posts(state = {}, action) {
 
       return patchObjectByKey(state, postId, (post) => {
         const p = { ...post };
-        if (p.comments.includes(commentId)) {
-          p.comments = _.without(p.comments, commentId);
+        const idx = p.comments.indexOf(commentId);
+        if (idx >= 0) {
+          if (idx < p.omittedCommentsOffset) {
+            p.omittedCommentsOffset--;
+          }
+          p.comments = p.comments.filter((c) => c !== commentId);
         } else {
           p.omittedComments = p.omittedComments - 1;
+          if (p.omittedComments <= 0) {
+            p.omittedComments = 0;
+            p.omittedCommentsOffset = 0;
+          }
         }
         return p;
       });

@@ -7,28 +7,63 @@ import {
   REALTIME_COMMENT_NEW,
   SHOW_MORE_COMMENTS,
 } from '../../../../src/redux/action-types';
-import { response } from '../../../../src/redux/async-helpers';
+import { initialAsyncState, response } from '../../../../src/redux/async-helpers';
 import { posts } from '../../../../src/redux/reducers';
 import { postParser } from '../../../../src/utils';
 
 describe('comments-related data', () => {
+  describe('postParser()', () => {
+    const emptyPostState = {
+      comments: [],
+      omittedComments: 0,
+      commentsDisabled: false,
+      savePostStatus: initialAsyncState,
+      omittedCommentsOffset: 0,
+    };
+
+    it(`should parse post without comments`, () => {
+      expect(postParser({ id: 'post', comments: [], omittedComments: 0 }), 'to equal', {
+        ...emptyPostState,
+        id: 'post',
+      });
+    });
+
+    it(`should parse post with unfolded comments`, () => {
+      expect(postParser({ id: 'post', comments: ['c1', 'c2'], omittedComments: 0 }), 'to equal', {
+        ...emptyPostState,
+        id: 'post',
+        comments: ['c1', 'c2'],
+      });
+    });
+
+    it(`should parse post with folded comments`, () => {
+      expect(postParser({ id: 'post', comments: ['c1', 'c2'], omittedComments: 3 }), 'to equal', {
+        ...emptyPostState,
+        id: 'post',
+        comments: ['c1', 'c2'],
+        omittedComments: 3,
+        omittedCommentsOffset: 1,
+      });
+    });
+  });
+
   describe('posts()', () => {
     const state = {
-      post0: {
+      post0: postParser({
         id: 'post0',
         comments: [],
         omittedComments: 0,
-      },
-      post1: {
+      }),
+      post1: postParser({
         id: 'post1',
         comments: ['comm11', 'comm12'],
         omittedComments: 0,
-      },
-      post2: {
+      }),
+      post2: postParser({
         id: 'post2',
         comments: ['comm21', 'comm22'],
         omittedComments: 2,
-      },
+      }),
     };
 
     describe('ADD_COMMENT', () => {
@@ -167,17 +202,19 @@ describe('comments-related data', () => {
           post2: {
             ...state['post2'],
             comments: ['comm22'],
+            omittedCommentsOffset: 0,
           },
         });
       });
 
-      it('should delete second comment from post2', () => {
+      it('should delete last comment from post2', () => {
         const newState = posts(state, action('comm22'));
         expect(newState, 'to equal', {
           ...state,
           post2: {
             ...state['post2'],
             comments: ['comm21'],
+            omittedCommentsOffset: 1,
           },
         });
       });
@@ -213,17 +250,19 @@ describe('comments-related data', () => {
           post2: {
             ...state['post2'],
             comments: ['comm22'],
+            omittedCommentsOffset: 0,
           },
         });
       });
 
-      it('should delete second comment from post2', () => {
+      it('should delete last comment from post2', () => {
         const newState = posts(state, action('comm22', 'post2'));
         expect(newState, 'to equal', {
           ...state,
           post2: {
             ...state['post2'],
             comments: ['comm21'],
+            omittedCommentsOffset: 1,
           },
         });
       });
@@ -253,7 +292,7 @@ describe('comments-related data', () => {
     describe('SHOW_MORE_COMMENTS', () => {
       const action = (postId, comments) => ({
         type: response(SHOW_MORE_COMMENTS),
-        payload: { posts: { id: postId, comments } },
+        payload: { posts: { id: postId, comments, omittedComments: 0 } },
       });
 
       it('should expand comments of post2', () => {
@@ -263,6 +302,7 @@ describe('comments-related data', () => {
           post2: {
             ...state['post2'],
             omittedComments: 0,
+            omittedCommentsOffset: 0,
             comments: ['comm21', 'comm22', 'comm23'],
           },
         });
@@ -275,6 +315,7 @@ describe('comments-related data', () => {
           post1: {
             ...state['post1'],
             omittedComments: 0,
+            omittedCommentsOffset: 0,
             comments: ['comm11', 'comm12', 'comm13'],
           },
         });

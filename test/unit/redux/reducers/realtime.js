@@ -19,6 +19,7 @@ import {
   REALTIME_POST_UNHIDE,
 } from '../../../../src/redux/action-types';
 import { realtimeSubscribe, realtimeUnsubscribe } from '../../../../src/redux/action-creators';
+import { postParser } from '../../../../src/utils';
 
 describe('realtime events', () => {
   describe('users()', () => {
@@ -167,7 +168,7 @@ describe('realtime events', () => {
     });
 
     it('should add post on REALTIME_COMMENT_NEW', () => {
-      const newPost = { id: '1' };
+      const newPost = { id: '1', comments: [], omittedComments: 0 };
       const newTestComment = { postId: newPost.id, id: '2' };
       const newCommentWithPost = {
         type: REALTIME_COMMENT_NEW,
@@ -182,7 +183,7 @@ describe('realtime events', () => {
     });
 
     it('should add post on REALTIME_LIKE_NEW', () => {
-      const newPost = { id: '1' };
+      const newPost = { id: '1', comments: [], omittedComments: 0 };
       const newLikeWithPost = {
         type: REALTIME_LIKE_NEW,
         users: [{ id: '1' }],
@@ -238,7 +239,11 @@ describe('realtime events', () => {
 
     describe('REALTIME_COMMENT_DESTROY', () => {
       const state = {
-        post1: { id: 'post1', comments: ['comm1', 'comm2', 'comm3'], omittedComments: 3 },
+        post1: postParser({
+          id: 'post1',
+          comments: ['comm1', 'comm2', 'comm3'],
+          omittedComments: 3,
+        }),
       };
 
       it('should remove comment from post', () => {
@@ -247,7 +252,7 @@ describe('realtime events', () => {
           postId: 'post1',
           commentId: 'comm2',
         });
-        expect(newState, 'to equal', {
+        expect(newState, 'to satisfy', {
           post1: { id: 'post1', comments: ['comm1', 'comm3'], omittedComments: 3 },
         });
       });
@@ -258,7 +263,7 @@ describe('realtime events', () => {
           postId: 'post1',
           commentId: 'comm4',
         });
-        expect(newState, 'to equal', {
+        expect(newState, 'to satisfy', {
           post1: { id: 'post1', comments: ['comm1', 'comm2', 'comm3'], omittedComments: 2 },
         });
       });
