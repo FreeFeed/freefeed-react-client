@@ -71,6 +71,8 @@ export default {
     nsfwVisibilityStorageKey: 'show-nsfw',
   },
 
+  commentsAfterFold: 2,
+
   registrationsLimit: {
     emailFormIframeSrc: null,
   },

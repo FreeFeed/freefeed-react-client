@@ -18,7 +18,9 @@ const post = {
 
 const composeState = ({ subsequentComments, setting, omittedComments = 0, withDelay = false }) => {
   return {
-    posts: { [post.id]: { ...post, omittedComments } },
+    posts: {
+      [post.id]: { ...post, omittedComments, omittedCommentsOffset: omittedComments ? 1 : 0 },
+    },
     comments: {
       [comment1.id]: {
         ...comment1,

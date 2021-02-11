@@ -1,7 +1,6 @@
 /* global CONFIG */
 import { Component } from 'react';
 import { Link } from 'react-router';
-import _ from 'lodash';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
@@ -63,13 +62,8 @@ class PostComment extends Component {
     }
   }
 
-  reply = () => {
-    this.props.openAnsweringComment(_.repeat('^', this.props.backwardNumber));
-  };
-
-  mention = () => {
-    this.props.openAnsweringComment(`@${this.props.user.username}`);
-  };
+  reply = () => this.props.replyWithArrows(this.props.id);
+  mention = () => this.props.mentionCommentAuthor(this.props.id);
 
   saveComment = (text) => this.props.saveEditingComment(this.props.id, text);
 

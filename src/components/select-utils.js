@@ -148,47 +148,41 @@ export const joinPostData = (state) => (postId) => {
   const { omitRepeatedBubbles } = state.user.frontendPreferences.comments;
   const hashedCommentId = getCommentId(state.routing.locationBeforeTransitions.hash);
   const highlightComment = commentHighlighter(state, postId, post.comments);
-  let comments = (post.comments || []).reduce((_comments, commentId, index) => {
-    const comment = state.comments[commentId];
-    if (!comment) {
-      return _comments;
-    }
-    const commentEditState = state.commentEditState[commentId] || defaultCommentState;
-    const author = state.users[comment.createdBy] || null;
-    const previousComment = _comments[index - 1] || {
-      createdBy: null,
-      createdAt: '0',
-    };
-    const omitBubble =
-      omitRepeatedBubbles &&
-      post.omittedComments === 0 &&
-      !comment.hideType &&
-      !previousComment.hideType &&
-      comment.createdBy === previousComment.createdBy &&
-      comment.createdAt - previousComment.createdAt < ommitBubblesThreshold;
-    const isEditable = user.id === comment.createdBy;
-    const isDeletable = isModeratable || isModeratable;
-    const highlighted = highlightComment(commentId, author);
-    const likesList = selectCommentLikes(state, commentId);
-    const highlightedFromUrl = commentId === hashedCommentId;
-    return _comments.concat([
-      {
-        ...comment,
-        ...commentEditState,
-        user: author,
-        isEditable,
-        isDeletable,
-        omitBubble,
-        highlighted,
-        likesList,
-        highlightedFromUrl,
-      },
-    ]);
-  }, []);
 
-  if (post.omittedComments !== 0 && comments.length > 2) {
-    comments = [comments[0], comments[comments.length - 1]];
-  }
+  let prevComment = null;
+  const comments = post.comments
+    .map((commentId, idx) => {
+      const comment = state.comments[commentId];
+      if (!comment) {
+        return null;
+      }
+
+      if (post.omittedComments > 0 && post.omittedCommentsOffset === idx) {
+        prevComment = null;
+      }
+
+      const author = state.users[comment.createdBy] || null;
+      const omitBubble =
+        omitRepeatedBubbles &&
+        !!comment.createdBy &&
+        !!prevComment?.createdBy &&
+        comment.createdBy === prevComment.createdBy &&
+        comment.createdAt - prevComment.createdAt < ommitBubblesThreshold;
+
+      prevComment = comment;
+      return {
+        ...comment,
+        ...(state.commentEditState[commentId] || defaultCommentState),
+        user: author,
+        omitBubble,
+        isEditable: user.id === comment.createdBy,
+        isDeletable: isModeratable || isModeratable,
+        highlighted: highlightComment(commentId, author),
+        likesList: selectCommentLikes(state, commentId),
+        highlightedFromUrl: commentId === hashedCommentId,
+      };
+    })
+    .filter(Boolean);
 
   let usersLikedPost = (post.likes || []).map((userId) => state.users[userId]);
 

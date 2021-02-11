@@ -84,6 +84,19 @@ export function preventDefault(realFunction) {
   };
 }
 
+export function handleLeftClick(handler) {
+  return (event) => {
+    if (
+      event.type === 'click' &&
+      (event.button !== 0 || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey)
+    ) {
+      return;
+    }
+    event.preventDefault();
+    handler(event);
+  };
+}
+
 export function confirmFirst(realFunction) {
   return () => {
     if (confirm('Are you sure?')) {

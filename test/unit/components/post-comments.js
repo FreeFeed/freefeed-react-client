@@ -8,40 +8,29 @@ import flatten from 'lodash/flatten';
 import PostComments from '../../../src/components/post-comments';
 import PostComment from '../../../src/components/post-comment';
 import ErrorBoundary from '../../../src/components/error-boundary';
-import MoreCommentsWrapper from '../../../src/components/more-comments-wrapper';
+import ExpandComments from '../../../src/components/post-comments/expand-comments';
 
 const expect = unexpected.clone().use(unexpectedReact);
 
 const generateArray = (n) => [...Array(n).keys()].map(() => ({}));
 const commentArrays = generateArray(5).map((_, index) => generateArray(index));
 
-// const renderComments = (comments, omittedComments = 0, isCommenting = false, currentUser = {}) => {
-//   const post = { omittedComments, isCommenting, createdBy: { username:'' }, user: currentUser };
-//
-//   const renderer = createShallowRenderer();
-//   renderer.render(<PostComments {...{ comments, post }} />);
-//   return renderer.getRenderOutput().props.children;
-// };
-//
-// const renderedCommentsAndOmitted = commentArrays.map((comments) => renderComments(comments, 1));
-// const renderedCommentsWithoutOmitted = commentArrays.map((comments) => renderComments(comments, 0));
-//
-// const firstCommentRendered = (renderedComments) => renderedComments[0];
-// const middleCommentsRendered = (renderedComments) => renderedComments[1];
-// const omittedCommentsRendered = (renderedComments) => renderedComments[1];
-// const lastCommentRendered = (renderedComments) => renderedComments[2];
-// const isCommenting = (renderedComments) => renderedComments[3];
-
 describe('<PostComments>', () => {
   it(`should render first comment if there're any comments`, () => {
-    const post = { omittedComments: 1, isCommenting: false, createdBy: { username: '' }, user: {} };
+    const post = {
+      omittedComments: 1,
+      omittedCommentsOffset: 1,
+      isCommenting: false,
+      createdBy: { username: '' },
+      user: {},
+    };
 
     expect(
       <PostComments comments={[]} post={post} />,
       'when rendered',
       'to have rendered with all children',
       <div>
-        <MoreCommentsWrapper />
+        <ExpandComments />
       </div>,
     );
 
@@ -51,13 +40,19 @@ describe('<PostComments>', () => {
       'to have rendered with all children',
       <div>
         <PostComment />
-        <MoreCommentsWrapper />
+        <ExpandComments />
       </div>,
     );
   });
 
   it('should render right number of comments', async () => {
-    const post = { omittedComments: 0, isCommenting: false, createdBy: { username: '' }, user: {} };
+    const post = {
+      omittedComments: 0,
+      omittedCommentsOffset: 0,
+      isCommenting: false,
+      createdBy: { username: '' },
+      user: {},
+    };
 
     expect(
       <PostComments comments={[]} post={post} />,
@@ -85,19 +80,25 @@ describe('<PostComments>', () => {
     );
     const errorBoundary = root.props.children;
     const comments = flatten(errorBoundary.props.children).filter(
-      (tag) => tag.type === PostComment,
+      (tag) => tag?.type === PostComment,
     );
     expect(comments, 'to have length', 4);
   });
 
   it('should render omitted number properly', () => {
-    const post = { omittedComments: 2, isCommenting: false, createdBy: { username: '' }, user: {} };
+    const post = {
+      omittedComments: 2,
+      omittedCommentsOffset: 1,
+      isCommenting: false,
+      createdBy: { username: '' },
+      user: {},
+    };
 
     expect(
       <PostComments comments={[{}, {}]} post={post} />,
       'when rendered',
       'to contain',
-      <MoreCommentsWrapper omittedComments={2} />,
+      <ExpandComments omittedComments={2} />,
     );
   });
 
@@ -105,6 +106,7 @@ describe('<PostComments>', () => {
     commentArrays.map((comments) => {
       const post = {
         omittedComments: 0,
+        omittedCommentsOffset: 0,
         isCommenting: false,
         createdBy: { username: '' },
         user: {},
@@ -113,7 +115,7 @@ describe('<PostComments>', () => {
         <PostComments comments={comments} post={post} />,
         'when rendered',
         'not to contain',
-        <MoreCommentsWrapper />,
+        <ExpandComments />,
       );
     });
   });
@@ -123,6 +125,7 @@ describe('<PostComments>', () => {
     commentArrays.slice(0, 2).map((comments) => {
       const post = {
         omittedComments: 1,
+        omittedCommentsOffset: 1,
         isCommenting: false,
         createdBy: { username: '' },
         user: {},
@@ -133,7 +136,7 @@ describe('<PostComments>', () => {
         'not to contain',
         <div>
           <PostComment />
-          <MoreCommentsWrapper />
+          <ExpandComments />
           <PostComment />
         </div>,
       );
@@ -143,6 +146,7 @@ describe('<PostComments>', () => {
     commentArrays.slice(2).map((comments) => {
       const post = {
         omittedComments: 1,
+        omittedCommentsOffset: 1,
         isCommenting: false,
         createdBy: { username: '' },
         user: {},
@@ -153,7 +157,7 @@ describe('<PostComments>', () => {
         'to contain',
         <div>
           <PostComment />
-          <MoreCommentsWrapper />
+          <ExpandComments />
           <PostComment />
         </div>,
       );
@@ -161,7 +165,13 @@ describe('<PostComments>', () => {
   });
 
   it('should render commenting section only if post is commented', () => {
-    const post = { omittedComments: 1, isCommenting: false, createdBy: { username: '' }, user: {} };
+    const post = {
+      omittedComments: 1,
+      omittedCommentsOffset: 1,
+      isCommenting: false,
+      createdBy: { username: '' },
+      user: {},
+    };
     expect(
       <PostComments comments={[]} post={post} user={{ id: '12345' }} />,
       'when rendered',
@@ -179,7 +189,13 @@ describe('<PostComments>', () => {
   });
 
   it('should render "Sign In" link if post is commented and user is anonymous', () => {
-    const post = { omittedComments: 1, isCommenting: false, createdBy: { username: '' }, user: {} };
+    const post = {
+      omittedComments: 1,
+      omittedCommentsOffset: 1,
+      isCommenting: false,
+      createdBy: { username: '' },
+      user: {},
+    };
     expect(
       <PostComments comments={[]} post={post} user={{}} />,
       'when rendered',
