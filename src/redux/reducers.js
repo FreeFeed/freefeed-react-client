@@ -688,12 +688,9 @@ export function comments(state = {}, action) {
     return updateCommentData(state, action);
   }
   switch (action.type) {
-    case response(ActionTypes.SHOW_MORE_COMMENTS): {
-      return updateCommentData(state, action);
-    }
-    case response(ActionTypes.GET_SINGLE_POST): {
-      return updateCommentData(state, action);
-    }
+    case response(ActionTypes.SHOW_MORE_COMMENTS):
+    case response(ActionTypes.COMPLETE_POST_COMMENTS):
+    case response(ActionTypes.GET_SINGLE_POST):
     case response(ActionTypes.SHOW_MORE_LIKES_ASYNC): {
       return updateCommentData(state, action);
     }

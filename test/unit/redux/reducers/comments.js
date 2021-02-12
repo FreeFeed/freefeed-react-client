@@ -2,6 +2,7 @@ import { describe, it } from 'mocha';
 import expect from 'unexpected';
 import {
   ADD_COMMENT,
+  COMPLETE_POST_COMMENTS,
   DELETE_COMMENT,
   REALTIME_COMMENT_DESTROY,
   REALTIME_COMMENT_NEW,
@@ -323,6 +324,126 @@ describe('comments-related data', () => {
 
       it('shouldnt touch state if post is unknown', () => {
         const newState = posts(state, action('post5', ['comm11', 'comm12', 'comm13']));
+        expect(newState, 'to be', state);
+      });
+    });
+
+    describe('COMPLETE_POST_COMMENTS', () => {
+      const action = (postId, comments, omittedComments) => ({
+        type: response(COMPLETE_POST_COMMENTS),
+        payload: { posts: { id: postId, comments, omittedComments } },
+      });
+
+      it(`should complete a missing first comment`, () => {
+        const state = {
+          post: {
+            id: 'post',
+            comments: ['c4'],
+            omittedComments: 2,
+            omittedCommentsOffset: 0,
+          },
+        };
+        const newState = posts(state, action('post', ['c1', 'c4'], 2));
+        expect(newState, 'to equal', {
+          post: {
+            ...state['post'],
+            omittedComments: 2,
+            omittedCommentsOffset: 1,
+            comments: ['c1', 'c4'],
+          },
+        });
+      });
+
+      it(`should complete a missing first and last comments`, () => {
+        const state = {
+          post: {
+            id: 'post',
+            comments: [],
+            omittedComments: 2,
+            omittedCommentsOffset: 0,
+          },
+        };
+        const newState = posts(state, action('post', ['c1', 'c4'], 2));
+        expect(newState, 'to equal', {
+          post: {
+            ...state['post'],
+            omittedComments: 2,
+            omittedCommentsOffset: 1,
+            comments: ['c1', 'c4'],
+          },
+        });
+      });
+
+      it(`should complete a missing first comment but keep extra tail comments`, () => {
+        const state = {
+          post: {
+            id: 'post',
+            comments: ['c4', 'c5'],
+            omittedComments: 3,
+            omittedCommentsOffset: 0,
+          },
+        };
+        const newState = posts(state, action('post', ['c1', 'c5'], 3));
+        expect(newState, 'to equal', {
+          post: {
+            ...state['post'],
+            omittedComments: 2,
+            omittedCommentsOffset: 1,
+            comments: ['c1', 'c4', 'c5'],
+          },
+        });
+      });
+
+      it(`should rewrite first or tail comments if they are mismatched`, () => {
+        const state = {
+          post: {
+            id: 'post',
+            comments: ['c1', 'c4', 'c5'],
+            omittedComments: 2,
+            omittedCommentsOffset: 1,
+          },
+        };
+        const newState = posts(state, action('post', ['c11', 'c51'], 3));
+        expect(newState, 'to equal', {
+          post: {
+            ...state['post'],
+            omittedComments: 3,
+            omittedCommentsOffset: 1,
+            comments: ['c11', 'c51'],
+          },
+        });
+      });
+
+      it(`should rewrite comments if the received comments is expanded`, () => {
+        const state = {
+          post: {
+            id: 'post',
+            comments: ['c3'],
+            omittedComments: 2,
+            omittedCommentsOffset: 0,
+          },
+        };
+        const newState = posts(state, action('post', ['c1', 'c2', 'c3'], 0));
+        expect(newState, 'to equal', {
+          post: {
+            ...state['post'],
+            omittedComments: 0,
+            omittedCommentsOffset: 0,
+            comments: ['c1', 'c2', 'c3'],
+          },
+        });
+      });
+
+      it(`should not touch state if it is already expanded`, () => {
+        const state = {
+          post: {
+            id: 'post',
+            comments: ['c1', 'c2', 'c3'],
+            omittedComments: 0,
+            omittedCommentsOffset: 0,
+          },
+        };
+        const newState = posts(state, action('post', ['c1', 'c3'], 1));
         expect(newState, 'to be', state);
       });
     });

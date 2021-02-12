@@ -4,6 +4,7 @@ import { isFeedResponse } from '../action-helpers';
 import {
   ADD_COMMENT,
   CLEAN_LIKE_ERROR,
+  COMPLETE_POST_COMMENTS,
   CREATE_POST,
   DELETE_COMMENT,
   DISABLE_COMMENTS,
@@ -72,6 +73,47 @@ export function posts(state = {}, action) {
           ...post,
           omittedLikes: 0,
           likes: action.payload.posts.likes,
+        },
+      };
+    }
+    case response(COMPLETE_POST_COMMENTS): {
+      const post = state[action.payload.posts.id];
+      if (!post || post.omittedComments === 0) {
+        return state;
+      }
+
+      const newPost = postParser(action.payload.posts);
+
+      if (newPost.omittedComments === 0) {
+        // We got expanded comments, rewrite them all
+        return {
+          ...state,
+          [post.id]: {
+            ...post,
+            omittedComments: newPost.omittedComments,
+            omittedCommentsOffset: newPost.omittedCommentsOffset,
+            comments: newPost.comments,
+          },
+        };
+      }
+
+      const { comments } = newPost;
+      const newCommentsCount = comments.length + newPost.omittedComments;
+      const oldTailComments = post.comments.slice(post.omittedCommentsOffset);
+      if (oldTailComments.length > 0) {
+        const newTailComments = comments.slice(1);
+        const tailComments =
+          longestWithCommonTail(oldTailComments, newTailComments) || newTailComments;
+        comments.splice(1, comments.length - 1, ...tailComments);
+      }
+
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
+          omittedComments: newCommentsCount - comments.length,
+          omittedCommentsOffset: 1,
+          comments,
         },
       };
     }
@@ -410,4 +452,20 @@ export function posts(state = {}, action) {
 function updatePostData(state, action) {
   const postId = action.payload.posts.id;
   return { ...state, [postId]: postParser(action.payload.posts) };
+}
+
+/**
+ * @param {Array} arr1
+ * @param {Array} arr2
+ * @return {Array|null}
+ */
+function longestWithCommonTail(arr1, arr2) {
+  let i = 0;
+  while (i < arr1.length && i < arr2.length) {
+    if (arr1[arr1.length - 1 - i] !== arr2[arr2.length - 1 - i]) {
+      return null;
+    }
+    i++;
+  }
+  return arr1.length > arr2.length ? arr1 : arr2;
 }

@@ -129,6 +129,15 @@ export function showMoreComments(postId) {
   };
 }
 
+export function completePostComments(postId) {
+  return {
+    type: ActionTypes.COMPLETE_POST_COMMENTS,
+    apiRequest: Api.getPost,
+    nonAuthRequest: true,
+    payload: { postId },
+  };
+}
+
 export function showMoreLikes(postId) {
   return {
     type: ActionTypes.SHOW_MORE_LIKES,

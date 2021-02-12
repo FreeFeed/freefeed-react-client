@@ -10,15 +10,16 @@ import { Icon } from '../fontawesome-icons';
 import { faCommentPlus } from '../fontawesome-custom-icons';
 import { CollapseComments } from './collapse-comments';
 import ExpandComments from './expand-comments';
+import { LoadingComments } from './loading-comments';
 
-export const minCommentsToFold = 12;
-export const serverMinFoldedComments = 3; // Server-side constant
+const foldConf = CONFIG.commentsFolding;
 
 export default class PostComments extends Component {
   static defaultProps = {
     user: {},
-    commentsAfterFold: CONFIG.commentsAfterFold,
-    minFoldedComments: serverMinFoldedComments,
+    commentsAfterFold: foldConf.afterFold,
+    minFoldedComments: foldConf.minFolded,
+    minToCollapse: foldConf.minToCollapse,
   };
 
   addingCommentForm = createRef();
@@ -193,24 +194,6 @@ export default class PostComments extends Component {
     return post.isCommenting ? this.renderAddingComment() : this.renderAddCommentLink();
   }
 
-  commentsLayout(commentEls) {
-    const { post, comments } = this.props;
-    const totalComments = comments.length + post.omittedComments;
-    return (
-      <div
-        className="comments"
-        ref={this.rootEl}
-        role="list"
-        aria-label={pluralForm(totalComments, 'comment')}
-      >
-        <ErrorBoundary>
-          {commentEls}
-          {this.renderAddComment()}
-        </ErrorBoundary>
-      </div>
-    );
-  }
-
   render() {
     const {
       post,
@@ -220,6 +203,7 @@ export default class PostComments extends Component {
       isLoadingComments,
       commentsAfterFold,
       minFoldedComments,
+      minToCollapse,
     } = this.props;
 
     /**
@@ -242,7 +226,7 @@ export default class PostComments extends Component {
         !this.state.folded || // Comments are expanded by user or…
         comments.length < 1 + minFoldedComments + commentsAfterFold // There are too few comments to fold
       ) {
-        if (!isSinglePost && comments.length >= minCommentsToFold) {
+        if (!isSinglePost && comments.length >= minToCollapse) {
           foldControl = (
             <CollapseComments
               key="fold-link"
@@ -265,7 +249,7 @@ export default class PostComments extends Component {
         const foldedCount = firstAfterFoldIdx - 1;
         if (foldedCount < minFoldedComments) {
           // Too few comments under the fold, show them all
-          if (!isSinglePost && comments.length >= minCommentsToFold) {
+          if (!isSinglePost && comments.length >= minToCollapse) {
             foldControl = (
               <CollapseComments
                 key="fold-link"
@@ -325,10 +309,27 @@ export default class PostComments extends Component {
       );
       if (post.omittedCommentsOffset > 0) {
         firstComment = this.renderComment(comments[0]);
+      } else {
+        firstComment = <LoadingComments key="loading-first-comment" />;
       }
       tailComments = comments.slice(firstAfterFoldIdx).map(this.renderComment);
+      if (tailComments.length === 0) {
+        tailComments = [<LoadingComments key="loading-tail-comments" />];
+      }
     }
 
-    return this.commentsLayout([firstComment, foldControl, ...tailComments]);
+    return (
+      <div
+        className="comments"
+        ref={this.rootEl}
+        role="list"
+        aria-label={pluralForm(comments.length + post.omittedComments, 'comment')}
+      >
+        <ErrorBoundary>
+          {[firstComment, foldControl, ...tailComments]}
+          {this.renderAddComment()}
+        </ErrorBoundary>
+      </div>
+    );
   }
 }

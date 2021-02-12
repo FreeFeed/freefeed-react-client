@@ -9,6 +9,7 @@ import PostComments from '../../../src/components/post-comments';
 import PostComment from '../../../src/components/post-comment';
 import ErrorBoundary from '../../../src/components/error-boundary';
 import ExpandComments from '../../../src/components/post-comments/expand-comments';
+import { LoadingComments } from '../../../src/components/post-comments/loading-comments';
 
 const expect = unexpected.clone().use(unexpectedReact);
 
@@ -26,21 +27,13 @@ describe('<PostComments>', () => {
     };
 
     expect(
-      <PostComments comments={[]} post={post} />,
-      'when rendered',
-      'to have rendered with all children',
-      <div>
-        <ExpandComments />
-      </div>,
-    );
-
-    expect(
       <PostComments comments={[{}]} post={post} />,
       'when rendered',
       'to have rendered with all children',
       <div>
         <PostComment />
         <ExpandComments />
+        <LoadingComments />
       </div>,
     );
   });

@@ -1,3 +1,4 @@
+/* global CONFIG */
 import { describe, it } from 'mocha';
 import { createRenderer } from 'react-test-renderer/shallow';
 import unexpected from 'unexpected';
@@ -6,9 +7,10 @@ import unexpectedSinon from 'unexpected-sinon';
 import sinon from 'sinon';
 import ErrorBoundary from '../../../src/components/error-boundary';
 import PostComment from '../../../src/components/post-comment';
-import PostComments, { minCommentsToFold } from '../../../src/components/post-comments';
+import PostComments from '../../../src/components/post-comments';
 import { CollapseComments } from '../../../src/components/post-comments/collapse-comments';
 import ExpandComments from '../../../src/components/post-comments/expand-comments';
+import { LoadingComments } from '../../../src/components/post-comments/loading-comments';
 
 const expect = unexpected.clone().use(unexpectedReact).use(unexpectedSinon);
 
@@ -229,6 +231,7 @@ describe('<PostComments>', () => {
         'when rendered',
         'to have rendered with all children',
         <div className="comments" role="list">
+          <LoadingComments />
           <ExpandComments omittedComments={p.omittedComments} />
           <PostComment />
         </div>,
@@ -249,6 +252,7 @@ describe('<PostComments>', () => {
         <div className="comments" role="list">
           <PostComment />
           <ExpandComments omittedComments={post.omittedComments} />
+          <LoadingComments />
         </div>,
       );
     });
@@ -309,8 +313,8 @@ describe('<PostComments>', () => {
         );
       });
 
-      it(`should allow to collapse comments back if there are ${minCommentsToFold} or more comments`, () => {
-        const nComments = minCommentsToFold;
+      it(`should allow to collapse comments back if there are ${CONFIG.commentsFolding.minToCollapse} or more comments`, () => {
+        const nComments = CONFIG.commentsFolding.minToCollapse;
         const comments = genComments(nComments);
         const renderer = createRenderer();
         renderer.render(
@@ -530,6 +534,7 @@ describe('<PostComments>', () => {
           'when rendered',
           'to have rendered with all children',
           <div className="comments" role="list">
+            <LoadingComments />
             <ExpandComments omittedComments={3} />
             {genCommentElements(4, [0])}
           </div>,

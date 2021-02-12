@@ -71,7 +71,14 @@ export default {
     nsfwVisibilityStorageKey: 'show-nsfw',
   },
 
-  commentsAfterFold: 2,
+  commentsFolding: {
+    // Show a maximum of two comments after the fold
+    afterFold: 2,
+    // Show 'collapse' button when there are 12 or more comments
+    minToCollapse: 12,
+    // A minimum number of omitted comments (server-side constant)
+    minFolded: 3,
+  },
 
   registrationsLimit: {
     emailFormIframeSrc: null,
