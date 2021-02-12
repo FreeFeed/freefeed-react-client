@@ -179,13 +179,13 @@ describe('comments-related data', () => {
     });
 
     describe('DELETE_COMMENT', () => {
-      const action = (commentId) => ({
+      const action = (commentId, postId) => ({
         type: response(DELETE_COMMENT),
-        request: { commentId },
+        request: { commentId, postId },
       });
 
       it('should delete comment from post1', () => {
-        const newState = posts(state, action('comm11'));
+        const newState = posts(state, action('comm11', 'post1'));
         expect(newState, 'to equal', {
           ...state,
           post1: {
@@ -196,7 +196,7 @@ describe('comments-related data', () => {
       });
 
       it('should delete first comment from post2', () => {
-        const newState = posts(state, action('comm21'));
+        const newState = posts(state, action('comm21', 'post2'));
         expect(newState, 'to equal', {
           ...state,
           post2: {
@@ -208,7 +208,7 @@ describe('comments-related data', () => {
       });
 
       it('should delete last comment from post2', () => {
-        const newState = posts(state, action('comm22'));
+        const newState = posts(state, action('comm22', 'post2'));
         expect(newState, 'to equal', {
           ...state,
           post2: {
@@ -220,7 +220,7 @@ describe('comments-related data', () => {
       });
 
       it('shouldnt touch state if comment is unknown', () => {
-        const newState = posts(state, action('comm3'));
+        const newState = posts(state, action('comm3', 'post2'));
         expect(newState, 'to be', state);
       });
     });

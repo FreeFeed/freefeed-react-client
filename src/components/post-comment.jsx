@@ -91,7 +91,9 @@ class PostComment extends Component {
 
   handleEditOrCancel = preventDefault(() => this.props.toggleEditingComment(this.props.id));
 
-  handleDeleteComment = confirmFirst(() => this.props.deleteComment(this.props.id));
+  handleDeleteComment = confirmFirst(() =>
+    this.props.deleteComment(this.props.id, this.props.postId),
+  );
 
   handleHoverOnUsername = (username) => {
     this.props.highlightComment(username);

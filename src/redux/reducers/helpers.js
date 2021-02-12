@@ -26,3 +26,25 @@ export function setOnLogOut(targetState) {
 export function reducersChain(...reducers) {
   return (state, action) => reducers.reduce((state, r) => r(state, action), state);
 }
+
+/**
+ * @param {object} state
+ * @param {{id: string}[]} list
+ * @param {{insert: boolean, update: boolean}} [options]
+ */
+export function mergeByIds(state, list, { insert = true, update = false } = {}) {
+  const needUpdate = list?.some((it) => (state[it.id] ? update : insert));
+  if (!needUpdate) {
+    return state;
+  }
+
+  const newState = { ...state };
+  for (const it of list) {
+    if (!newState[it.id] && insert) {
+      newState[it.id] = it;
+    } else if (newState[it.id] && update) {
+      newState[it.id] = { ...newState[it.id], ...it };
+    }
+  }
+  return newState;
+}

@@ -336,11 +336,11 @@ export function getCommentLikes(commentId) {
   };
 }
 
-export function deleteComment(commentId) {
+export function deleteComment(commentId, postId) {
   return {
     type: ActionTypes.DELETE_COMMENT,
     apiRequest: Api.deleteComment,
-    payload: { commentId },
+    payload: { commentId, postId },
   };
 }
 
