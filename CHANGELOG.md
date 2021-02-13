@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Optimized build results: split code in smaller js-bundles, pre-compress js/css files
+- The logic for expanding/collapsing comments has been rewritten. Now up to two
+  comments can be seen after the fold. If after deleting a comment there are no
+  comments left before or after the fold, new data is fetched from the server.
+  If any of the comments are being edited, they won't fold until the editing is
+  finished.
 
 ## [1.93.1] - 2021-01-29
 ### Fixed
