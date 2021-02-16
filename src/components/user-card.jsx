@@ -72,11 +72,10 @@ class UserCard extends Component {
 
   render() {
     const { props } = this;
-    const style = { top: `${this.props.top + 10}px`, left: `${this.props.left}px` };
 
     if (props.notFound) {
       return (
-        <div className="user-card" style={style}>
+        <div className="user-card" ref={props.forwardedRef}>
           <div className="user-card-info">
             <div className="userpic loading" />
             <div className="names">User not found</div>
@@ -87,7 +86,7 @@ class UserCard extends Component {
 
     if (!props.user.id) {
       return (
-        <div className="user-card" style={style}>
+        <div className="user-card" ref={props.forwardedRef}>
           <div className="user-card-info">
             <div className="userpic loading" />
             <div className="names">
@@ -99,7 +98,7 @@ class UserCard extends Component {
     }
 
     return (
-      <div className="user-card" style={style}>
+      <div className="user-card" ref={props.forwardedRef}>
         <ErrorBoundary>
           <div className="user-card-info">
             <UserPicture large user={props.user} className="userpic" />

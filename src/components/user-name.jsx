@@ -1,134 +1,101 @@
-import { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { Link } from 'react-router';
-import { connect } from 'react-redux';
+import { useCallback, useEffect, useRef } from 'react';
 import { Portal } from 'react-portal';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router';
 
-import * as FrontendPrefsOptions from '../utils/frontend-preferences-options';
-import UserCard from './user-card';
 import ErrorBoundary from './error-boundary';
+import { useDropDown, CLOSE_ON_CLICK_OUTSIDE } from './hooks/drop-down';
+import { UserDisplayName } from './user-displayname';
+import UserCard from './user-card';
 
-const DisplayOption = ({ user, me, preferences }) => {
-  const { username, screenName } = user;
+export default function UserName({ user: { username, screenName }, children, className }) {
+  const myUsername = useSelector((state) => state.user.username);
+  const prefs = useSelector((state) => state.user.frontendPreferences.displayNames);
 
-  if (username === me && preferences.useYou) {
-    return <span dir="ltr">You</span>;
-  }
+  const { opened, toggle, setOpened, pivotRef, menuRef } = useDropDown({
+    closeOn: CLOSE_ON_CLICK_OUTSIDE,
+  });
 
-  if (screenName === username) {
-    return <span dir="ltr">{screenName}</span>;
-  }
+  const isTouched = useRef(false);
+  const touchTimeout = useRef(0);
+  const onTouchEnd = useCallback(() => {
+    isTouched.current = true;
+    clearTimeout(touchTimeout.current);
+    // We need a minimum of 300ms for mobile Safari
+    touchTimeout.current = setTimeout(() => (isTouched.current = false), 500);
+  }, []);
 
-  switch (preferences.displayOption) {
-    case FrontendPrefsOptions.DISPLAYNAMES_DISPLAYNAME: {
-      return <span dir="auto">{screenName}</span>;
+  const onClick = useCallback((e) => isTouched.current && (toggle(), e.preventDefault()), [toggle]);
+
+  const { onEnter, onLeave } = useHover(500, setOpened);
+
+  useEffect(() => {
+    if (!opened) {
+      return;
     }
-    case FrontendPrefsOptions.DISPLAYNAMES_BOTH: {
-      return (
-        <span dir="auto">
-          {screenName} <span dir="ltr">({username})</span>
-        </span>
-      );
-    }
-    case FrontendPrefsOptions.DISPLAYNAMES_USERNAME: {
-      return <span dir="ltr">{username}</span>;
-    }
-  }
 
-  return <span>{user.screenName}</span>;
-};
+    const menuEl = menuRef.current;
+    menuEl.addEventListener('mouseenter', onEnter);
+    menuEl.addEventListener('mouseleave', onLeave);
 
-class UserName extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isHovered: false,
-      isCardOpen: false,
+    return () => {
+      menuEl.removeEventListener('mouseenter', onEnter);
+      menuEl.removeEventListener('mouseleave', onLeave);
     };
-    this.enterUserName = this.enterUserName.bind(this);
-    this.leaveUserName = this.leaveUserName.bind(this);
-  }
+  }, [opened, onEnter, onLeave, menuRef]);
 
-  enterUserName() {
-    this.setState({ isHovered: true });
-
-    this.enterTimeout = setTimeout(() => {
-      if (this.state.isHovered) {
-        const { bottom, left } = ReactDOM.findDOMNode(this).getBoundingClientRect();
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        this.setState({ bottom: bottom + scrollTop, left, isCardOpen: true });
-
-        if (this.props.userHover) {
-          this.props.userHover.hover(this.props.user.username);
-        }
-      }
-    }, 500);
-  }
-
-  leaveUserName() {
-    this.setState({ isHovered: false });
-
-    this.leaveTimeout = setTimeout(() => {
-      if (!this.state.isHovered) {
-        this.setState({ isCardOpen: false });
-        if (this.props.userHover) {
-          this.props.userHover.leave();
-        }
-      }
-    }, 500);
-  }
-
-  render() {
-    const { bottom, left } = this.state;
-    return (
+  return (
+    <ErrorBoundary>
       <span
         className="user-name-wrapper"
-        onMouseEnter={this.enterUserName}
-        onMouseLeave={this.leaveUserName}
+        ref={pivotRef}
+        onMouseEnter={onEnter}
+        onMouseLeave={onLeave}
       >
-        <ErrorBoundary>
-          <Link to={`/${this.props.user.username}`} className={this.props.className}>
-            {this.props.children ? (
-              <span dir="ltr">{this.props.children}</span>
-            ) : (
-              <DisplayOption
-                user={this.props.user}
-                me={this.props.me}
-                preferences={this.props.frontendPreferences.displayNames}
-              />
-            )}
-          </Link>
-
-          {this.state.isCardOpen ? (
-            <Portal isOpened={true}>
-              <div onMouseEnter={this.enterUserName} onMouseLeave={this.leaveUserName}>
-                <UserCard username={this.props.user.username} top={bottom} left={left} />
-              </div>
-            </Portal>
+        <Link to={`/${username}`} className={className} onClick={onClick} onTouchEnd={onTouchEnd}>
+          {children ? (
+            <span dir="ltr">{children}</span>
           ) : (
-            false
+            <UserDisplayName
+              username={username}
+              screenName={screenName}
+              myUsername={myUsername}
+              prefs={prefs}
+            />
           )}
-        </ErrorBoundary>
+        </Link>
       </span>
-    );
-  }
-
-  componentWillUnmount() {
-    if (this.enterTimeout) {
-      clearTimeout(this.enterTimeout);
-    }
-    if (this.leaveTimeout) {
-      clearTimeout(this.leaveTimeout);
-    }
-  }
+      {opened && (
+        <Portal>
+          <UserCard username={username} forwardedRef={menuRef} />
+        </Portal>
+      )}
+    </ErrorBoundary>
+  );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    me: state.user.username,
-    frontendPreferences: state.user.frontendPreferences,
-  };
-};
+function useHover(timeout, setHovered) {
+  const enterTimeout = useRef(0);
+  const leaveTimeout = useRef(0);
 
-export default connect(mapStateToProps)(UserName);
+  const clearTimeouts = useCallback(
+    () => (clearTimeout(enterTimeout.current), clearTimeout(leaveTimeout.current)),
+    [],
+  );
+
+  const onEnter = useCallback(() => {
+    clearTimeouts();
+    enterTimeout.current = setTimeout(() => setHovered(true), 500);
+  }, [clearTimeouts, setHovered]);
+  const onLeave = useCallback(() => {
+    clearTimeouts();
+    leaveTimeout.current = setTimeout(() => setHovered(false), 500);
+  }, [clearTimeouts, setHovered]);
+
+  useEffect(
+    () => () => (clearTimeout(enterTimeout.current), clearTimeout(leaveTimeout.current)),
+    [],
+  );
+
+  return { onEnter, onLeave };
+}

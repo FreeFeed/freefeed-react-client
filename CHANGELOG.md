@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Optimized build results: split code in smaller js-bundles, pre-compress js/css files
+- On touch devices, where hover is not available, the user info popup now
+  appears after clicking the user link. To navigate to the user's page, you need
+  to click on the link inside the popup.
 
 ## [1.93.1] - 2021-01-29
 ### Fixed
