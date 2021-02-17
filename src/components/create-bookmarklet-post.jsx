@@ -1,3 +1,4 @@
+/* global CONFIG */
 import { PureComponent, Component } from 'react';
 
 import { faComment } from '@fortawesome/free-regular-svg-icons';
@@ -135,7 +136,7 @@ export default class CreateBookmarkletPost extends Component {
           onKeyDown={this.checkSave}
           onChange={this.checkCreatePostAvailability}
           rows={3}
-          maxLength="1500"
+          maxLength={CONFIG.maxLength.post}
         />
 
         {this.props.imageUrls.length > 0 ? (
@@ -159,7 +160,7 @@ export default class CreateBookmarkletPost extends Component {
               onKeyDown={this.checkSave}
               onChange={this.checkCreatePostAvailability}
               rows={4}
-              maxLength="1500"
+              maxLength={CONFIG.maxLength.comment}
             />
           </div>
         </div>

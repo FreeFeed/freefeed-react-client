@@ -1,3 +1,4 @@
+/* global CONFIG */
 import { useMemo, useCallback, useState, useRef, useEffect, forwardRef } from 'react';
 import Textarea from 'react-textarea-autosize';
 import cn from 'classnames';
@@ -102,7 +103,7 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
           onKeyDown={onKeyDown}
           minRows={2}
           maxRows={10}
-          maxLength={1500}
+          maxLength={CONFIG.maxLength.comment}
           readOnly={submitStatus.loading}
           dir={'auto'}
         />

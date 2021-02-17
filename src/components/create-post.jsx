@@ -205,7 +205,7 @@ export default class CreatePost extends Component {
               onPaste={this.handlePaste}
               minRows={3}
               maxRows={10}
-              maxLength="1500"
+              maxLength={CONFIG.maxLength.post}
               dir={'auto'}
             />
           </div>

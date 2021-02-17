@@ -1,3 +1,4 @@
+/* global CONFIG */
 import { Component } from 'react';
 import { Link } from 'react-router';
 
@@ -75,7 +76,7 @@ export default class GroupCreateForm extends Component {
                 name="description"
                 value={this.state.description}
                 onChange={this.handleChange('description')}
-                maxLength="1500"
+                maxLength={CONFIG.maxLength.description}
               />
             </div>
             <GroupFeedTypePicker
