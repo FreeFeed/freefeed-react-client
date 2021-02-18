@@ -3655,7 +3655,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clipboard@npm:^1.5.5, clipboard@npm:^1.7.1":
+"clipboard@npm:^1.5.5":
   version: 1.7.1
   resolution: "clipboard@npm:1.7.1"
   dependencies:
@@ -3663,6 +3663,17 @@ __metadata:
     select: ^1.1.2
     tiny-emitter: ^2.0.0
   checksum: c53c4c2cf4b1f41b1aa2d851d59af1d03d93b1a7bc65ceaacada16a459c0d9a45c1b00f28459a929d524560c6d98b7587556f44371ebd245e2d212d1a74269a0
+  languageName: node
+  linkType: hard
+
+"clipboard@npm:^2.0.0":
+  version: 2.0.6
+  resolution: "clipboard@npm:2.0.6"
+  dependencies:
+    good-listener: ^1.2.2
+    select: ^1.1.2
+    tiny-emitter: ^2.0.0
+  checksum: 25e2e6b595f764ebb541dfda5c77051200567b5dd2de42ac6ab9681febe1256a977be450ab1d6f0d41554799106cc92e79e167797c8e8b8e88edcb0aec5b5dcb
   languageName: node
   linkType: hard
 
@@ -4492,10 +4503,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:~2.16.1":
-  version: 2.16.1
-  resolution: "date-fns@npm:2.16.1"
-  checksum: fbe5d9aa1dc4c92c7cf9c0b31e58f532ac9fe059f85fc622641b1ac9c673150329620ea6bf941a8ba10e8e677aa0b6ccdc04ce001f81e70fd49acd1760edcba0
+"date-fns@npm:~2.17.0":
+  version: 2.17.0
+  resolution: "date-fns@npm:2.17.0"
+  checksum: 51ee9e264aac54d2a16471691d560838bad681f729573f520b03ec0c21f28904c73bf98ec2d33603e71bdabf8506140449c2b50d0db6fdd042faed9fe5467b92
   languageName: node
   linkType: hard
 
@@ -6981,9 +6992,9 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"html-webpack-plugin@npm:~4.5.1":
-  version: 4.5.1
-  resolution: "html-webpack-plugin@npm:4.5.1"
+"html-webpack-plugin@npm:~4.5.2":
+  version: 4.5.2
+  resolution: "html-webpack-plugin@npm:4.5.2"
   dependencies:
     "@types/html-minifier-terser": ^5.0.0
     "@types/tapable": ^1.0.5
@@ -6996,7 +7007,7 @@ fsevents@~2.1.2:
     util.promisify: 1.0.0
   peerDependencies:
     webpack: ^4.0.0 || ^5.0.0
-  checksum: 58979a6adb605bb0d0eb489d587eb3b980724dcbe5fb2fdccce7033a13dd46e75d12062bc0ca8943d3598d012717c84df9f250549b728bd07fae244f9d1ecefd
+  checksum: 5896c2ac5c230e148e7de8079bb83cf45c3553d57ff644b921846e2e4241ad9c4ac5baed2737c801e0f1929e95333c3c135a7d471079ea32cdeee056f44eedde
   languageName: node
   linkType: hard
 
@@ -7114,12 +7125,12 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"husky@npm:~5.0.6":
-  version: 5.0.6
-  resolution: "husky@npm:5.0.6"
+"husky@npm:~5.0.9":
+  version: 5.0.9
+  resolution: "husky@npm:5.0.9"
   bin:
     husky: lib/bin.js
-  checksum: f9c7516578a0bc25102c71f9fab580ac34c767eaf20a8382b94641cd094ea7e314a4571d9366b09f1e004620871cf49d627f270e6d40ad556f1ecb62512e08b2
+  checksum: 135129469a7225bf34a8542e1575a3fbe32656f813234093f0ff43084c34e4384eb4c496923422d59aea7fb8187d26a2c8c7a43cd33647a5d02eb59c2161877a
   languageName: node
   linkType: hard
 
@@ -8215,9 +8226,9 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:~10.5.3":
-  version: 10.5.3
-  resolution: "lint-staged@npm:10.5.3"
+"lint-staged@npm:~10.5.4":
+  version: 10.5.4
+  resolution: "lint-staged@npm:10.5.4"
   dependencies:
     chalk: ^4.1.0
     cli-truncate: ^2.1.0
@@ -8236,7 +8247,7 @@ fsevents@~2.1.2:
     stringify-object: ^3.3.0
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: cd34098f62feac51a8eb6a6abff6a15be292bfcac55d04c3e9f21c3ea8e472b94fac27507e4d087f0c6e159881216cd22bdf02d2b8d21cd8d0ffdf8ed00875b4
+  checksum: dbcafe3679668379fc03f3aef481c3f710794ec03dd5c3915f26a0de110977fbcb44b55ab6dfcff9e8e5789c568ea5629e92f55944fc43f6f6fa1890ee5b07ba
   languageName: node
   linkType: hard
 
@@ -8335,12 +8346,12 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"local-storage-fallback@npm:~4.1.1":
-  version: 4.1.1
-  resolution: "local-storage-fallback@npm:4.1.1"
+"local-storage-fallback@npm:~4.1.2":
+  version: 4.1.2
+  resolution: "local-storage-fallback@npm:4.1.2"
   dependencies:
     cookie: ^0.3.1
-  checksum: ab216c4c3e86fb83effe0ac2e9b0c91fe84c91bad3273a2b9587b3e5636fdbb1a20ac9c4e2ee9f8b39b1804ed257ecc4b41d9426f2e5491fb0bcdee5c45a6ba2
+  checksum: 5d2f231cc9de0bd97d7ddbe776e3525408ab50d60237bc830072f0057d0d44472873f2cada29f384054fc339f163f9d4ffa2057d9229cb2c41b5bbef2cf06a04
   languageName: node
   linkType: hard
 
@@ -8507,12 +8518,12 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"magicpen-prism@npm:^2.4.0":
-  version: 2.4.0
-  resolution: "magicpen-prism@npm:2.4.0"
+"magicpen-prism@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "magicpen-prism@npm:4.1.1"
   dependencies:
-    prismjs: 1.11.0
-  checksum: 6ee0acc8bba07de8dcf8b98a7c9735cc57728df258db6b23d80bd1ed0ab1ec92fb6ad34fb2e1fb0e1ce561f8f0fb8e856edd9bd2aa8bc4ca31fe8b376c94e579
+    prismjs: ^1.21.0
+  checksum: d95f607113344b1d69c426d74bd49380630e4a7ef503c8e1190a14ee5ceb3d4e57fbe14e6de6e170f94bea1388889269325cb0f12347a00c585feeae1f9757ef
   languageName: node
   linkType: hard
 
@@ -10818,15 +10829,15 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"prismjs@npm:1.11.0":
-  version: 1.11.0
-  resolution: "prismjs@npm:1.11.0"
+"prismjs@npm:^1.21.0":
+  version: 1.23.0
+  resolution: "prismjs@npm:1.23.0"
   dependencies:
-    clipboard: ^1.7.1
+    clipboard: ^2.0.0
   dependenciesMeta:
     clipboard:
       optional: true
-  checksum: fe39ba845c369ed804b5efc5239f39293148fc8e9a132fc614a7ca3822022ee59a0641a7ab6e76fb7041c51136ec17bf408b4b11ada7cd2dc93cc8f4bc2f43fb
+  checksum: 9d55785f1ea68e2a2e6b0a5ea1241811ed986182af76053ecf50245521414597d70b17dc5804a7ad961dfd459e6883a89ad3f86bb064ac3484e3ef24b7891f4f
   languageName: node
   linkType: hard
 
@@ -11529,16 +11540,16 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"react-textarea-autosize@npm:~8.3.0":
-  version: 8.3.0
-  resolution: "react-textarea-autosize@npm:8.3.0"
+"react-textarea-autosize@npm:~8.3.1":
+  version: 8.3.1
+  resolution: "react-textarea-autosize@npm:8.3.1"
   dependencies:
     "@babel/runtime": ^7.10.2
     use-composed-ref: ^1.0.0
     use-latest: ^1.0.0
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
-  checksum: c60b553a8ab343e5dc40a32fdda59a558a55f3c46ab392728f7dfde17c68e2293189557ba0669cee57b21f1956f83eb77a36f85c2970c8920feaf01712e1bd69
+  checksum: e71758d11bdc35eccf927c9d6bde0e714167eaeb4a20862ddebfbd73b99bf14b919f6a22ba1c3b520d9b99ed6136cc34bd1c2200592bd1e132d5d495b386a226
   languageName: node
   linkType: hard
 
@@ -11586,7 +11597,7 @@ fsevents@~2.1.2:
     cross-env: ~7.0.3
     css-loader: ~3.6.0
     custom-event: ~1.0.1
-    date-fns: ~2.16.1
+    date-fns: ~2.17.0
     debug: ~4.3.2
     eslint: ~7.20.0
     eslint-config-prettier: ~7.2.0
@@ -11605,11 +11616,11 @@ fsevents@~2.1.2:
     final-form: ~4.20.1
     focus-trap-react: ~8.1.1
     highcharts: ~8.2.2
-    html-webpack-plugin: ~4.5.1
-    husky: ~5.0.6
+    html-webpack-plugin: ~4.5.2
+    husky: ~5.0.9
     keycode-js: ~3.1.0
-    lint-staged: ~10.5.3
-    local-storage-fallback: ~4.1.1
+    lint-staged: ~10.5.4
+    local-storage-fallback: ~4.1.2
     lodash: ~4.17.20
     lru-cache: ~6.0.0
     memoize-one: ~5.1.1
@@ -11644,7 +11655,7 @@ fsevents@~2.1.2:
     react-select: ~1.2.1
     react-sortablejs: ~2.0.11
     react-test-renderer: ~17.0.1
-    react-textarea-autosize: ~8.3.0
+    react-textarea-autosize: ~8.3.1
     redux: ~4.0.5
     regenerator-runtime: ~0.13.7
     resolve-url-loader: ~3.1.2
@@ -11661,19 +11672,19 @@ fsevents@~2.1.2:
     stylelint-prettier: ~1.1.2
     stylelint-scss: ~3.18.0
     terser-webpack-plugin: ~4.2.3
-    ua-parser-js: ~0.7.23
+    ua-parser-js: ~0.7.24
     unexpected: ~12.0.0
-    unexpected-react: ~6.0.1
+    unexpected-react: ~6.0.2
     unexpected-sinon: ~11.0.1
     use-subscription: ~1.5.1
     validator: ~13.5.2
-    vazir-font: ~27.2.0
+    vazir-font: ~27.2.2
     webpack: ~4.44.2
     webpack-bundle-analyzer: ~4.4.0
     webpack-cli: ~3.3.12
     webpack-dev-server: ~3.11.2
     webpack-node-externals: ~2.5.2
-    whatwg-fetch: ~3.5.0
+    whatwg-fetch: ~3.6.1
     worker-loader: ~2.0.0
   languageName: unknown
   linkType: soft
@@ -14123,10 +14134,17 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"ua-parser-js@npm:^0.7.18, ua-parser-js@npm:~0.7.23":
+"ua-parser-js@npm:^0.7.18":
   version: 0.7.23
   resolution: "ua-parser-js@npm:0.7.23"
   checksum: ce6ce4f53f2905519eb427b12ab441c2f72dd162073a925b4e052b6ebbc0f2325554ac44175d58a125e1919888e1226364603e7ea2d797e8210238a20f81802d
+  languageName: node
+  linkType: hard
+
+"ua-parser-js@npm:~0.7.24":
+  version: 0.7.24
+  resolution: "ua-parser-js@npm:0.7.24"
+  checksum: a15aa0e79de2c46941d80f677d79a8f621a45df581692475f2712023de3dca5f0d13adb0f86df0cad182a842e9a788211b65b23d160bb9925623efa6af7bac11
   languageName: node
   linkType: hard
 
@@ -14200,12 +14218,12 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"unexpected-react@npm:~6.0.1":
-  version: 6.0.1
-  resolution: "unexpected-react@npm:6.0.1"
+"unexpected-react@npm:~6.0.2":
+  version: 6.0.2
+  resolution: "unexpected-react@npm:6.0.2"
   dependencies:
     js-writer: ^1.3.0
-    magicpen-prism: ^2.4.0
+    magicpen-prism: ^4.1.1
     unexpected-htmllike: ^2.2.0
     unexpected-htmllike-jsx-adapter: ^1.0.3
     unexpected-htmllike-raw-adapter: ^1.0.1
@@ -14214,7 +14232,7 @@ fsevents@~2.1.2:
   peerDependencies:
     react: ^16.9.0
     react-test-renderer: ^16.9.0
-  checksum: 80b0957eed98e42db1da9ed5d6b0962fd727df5fcf14c1e8e99a36ee4f598421200fa9550e8c513706f64e87ee1d3eaca01d8e0ce1b9349b3da75827f6aeaddd
+  checksum: 8e409ed82c6ba0d9df75d2ded99f411439ec33fb07abdb3c35628095a24d1b305d3d4bb91e2165ed618d211285b493f6842a540899d3099650102a6bfdc91e8d
   languageName: node
   linkType: hard
 
@@ -14588,10 +14606,10 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"vazir-font@npm:~27.2.0":
-  version: 27.2.0
-  resolution: "vazir-font@npm:27.2.0"
-  checksum: 59fec5036292b327008f9544d82621c8bea39ecbafbfd6e396a46497695af2f3ae8dcdd43932558814265a2257795f1ffa62d67ae65d482d49d63509ad812b69
+"vazir-font@npm:~27.2.2":
+  version: 27.2.2
+  resolution: "vazir-font@npm:27.2.2"
+  checksum: 4c4b3dc9dc579675280d0cfed126612f69f07697213dc994309f5a2cad52e066cae04c1e761929b44f254bf0a3bbb3c2c7139abf9f35582e941c68f1233a0f68
   languageName: node
   linkType: hard
 
@@ -14905,10 +14923,17 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"whatwg-fetch@npm:>=0.10.0, whatwg-fetch@npm:~3.5.0":
+"whatwg-fetch@npm:>=0.10.0":
   version: 3.5.0
   resolution: "whatwg-fetch@npm:3.5.0"
   checksum: dd41999927e87c4cd0af572fe9976dcb1529c00b89c2074b0d1c02baa03670ff7b7cc45ca5b475c02a4a5b274cc1def56a9be7870df7af5c0f9b7d4fb4588ae6
+  languageName: node
+  linkType: hard
+
+"whatwg-fetch@npm:~3.6.1":
+  version: 3.6.1
+  resolution: "whatwg-fetch@npm:3.6.1"
+  checksum: a018f35071f8059cfb0e0edea1a6729ff7669c80275e8cc6773f239d1f7a44ef6018cd073c89d013e36eba9554cc374fa28b3179a08454598012f40f99adeb8a
   languageName: node
   linkType: hard
 
