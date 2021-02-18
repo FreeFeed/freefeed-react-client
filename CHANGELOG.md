@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Optimized build results: split code in smaller js-bundles, pre-compress js/css files
+- Raised maximum length of posts and comments to 3000 chars
+- Raised minimum password length to 9 chars
 
 ## [1.93.1] - 2021-01-29
 ### Fixed
