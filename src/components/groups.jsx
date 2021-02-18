@@ -87,8 +87,9 @@ function selectState(state) {
   const managedIds = new Set(_.map(state.managedGroups, (g) => g.id));
   const sortingRule = (g) => -(g.updatedAt || g.createdAt);
 
-  const adminGroups = _.filter(state.groups, (group) => managedIds.has(group.id));
-  const regularGroups = _.filter(state.groups, (group) => !managedIds.has(group.id));
+  const allGroups = Object.values(state.users).filter((u) => u.type === 'group');
+  const adminGroups = allGroups.filter((g) => managedIds.has(g.id));
+  const regularGroups = allGroups.filter((g) => !managedIds.has(g.id));
 
   const myGroups = {
     header: 'Groups you admin',

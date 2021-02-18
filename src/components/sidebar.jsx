@@ -197,19 +197,21 @@ const SideBarMemories = () => {
   );
 };
 
-const SideBarGroups = ({ recentGroups }) => (
-  <div className="box" role="navigation">
-    <div className="box-header-groups" role="heading">
-      Groups
+const SideBarGroups = () => {
+  return (
+    <div className="box" role="navigation">
+      <div className="box-header-groups" role="heading">
+        Groups
+      </div>
+      <div className="box-body">
+        <RecentGroups />
+      </div>
+      <div className="box-footer">
+        <Link to="/groups">Browse/edit groups</Link>
+      </div>
     </div>
-    <div className="box-body">
-      <RecentGroups recentGroups={recentGroups} />
-    </div>
-    <div className="box-footer">
-      <Link to="/groups">Browse/edit groups</Link>
-    </div>
-  </div>
-);
+  );
+};
 
 const SideBarCoinJar = () => (
   <div className="box" role="region">
@@ -414,13 +416,13 @@ const SideBarAppearance = connect(
   );
 });
 
-const SideBar = ({ user, signOut, recentGroups }) => {
+const SideBar = ({ user, signOut }) => {
   return (
     <div className="col-md-3 sidebar" role="complementary">
       <ErrorBoundary>
         <LoggedInBlock user={user} signOut={signOut} />
         <SideBarFriends user={user} />
-        <SideBarGroups recentGroups={recentGroups} />
+        <SideBarGroups />
         <SideBarArchive user={user} />
         <SideBarFreeFeed />
         <SideBarBookmarklet />

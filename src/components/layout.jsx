@@ -214,7 +214,6 @@ function select(state, ownProps) {
     user: state.user,
     authenticated: state.authenticated,
     loadingView: state.routeLoadingState,
-    recentGroups: state.recentGroups,
     routeName: getCurrentRouteName(ownProps),
     title: state.title,
   };

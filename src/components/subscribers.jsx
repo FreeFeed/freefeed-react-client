@@ -48,9 +48,7 @@ function selectState(state, ownProps) {
   const username = ownProps.params.userName;
   const amIGroupAdmin = state.managedGroups.find((group) => group.username == username) != null;
 
-  const thisUser = [..._.values(state.users), ..._.values(state.groups)].find(
-    (u) => u.username == username,
-  );
+  const thisUser = Object.values(state.users).find((u) => u.username == username);
   const thisIsGroup = thisUser && thisUser.type === 'group';
   const adminIds = thisIsGroup ? thisUser.administrators : [];
 
