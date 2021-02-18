@@ -35,7 +35,7 @@ class RuleGenerator {
                 {
                   modules: false,
                   useBuiltIns: 'entry',
-                  corejs: 3,
+                  corejs: '3.9',
                   targets: {
                     browsers: ['>1%', 'last 3 versions', 'safari >= 9', 'ie >= 10'],
                   },
