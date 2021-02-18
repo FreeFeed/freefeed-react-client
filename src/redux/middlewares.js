@@ -1,3 +1,4 @@
+/* global CONFIG */
 import { browserHistory } from 'react-router';
 import _ from 'lodash';
 import * as Sentry from '@sentry/react';
