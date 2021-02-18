@@ -273,13 +273,6 @@ const SideBarCoinJar = () => (
             alt="PayPal - The safer, easier way to pay online!"
             style={{ margin: '5px' }}
           />
-          <img
-            alt=""
-            src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif"
-            width="1"
-            height="1"
-            style={{ display: 'none !important' }}
-          />
         </form>
       </span>
       <form
@@ -297,13 +290,6 @@ const SideBarCoinJar = () => (
           height="0"
           name="submit"
           alt="PayPal - The safer, easier way to pay online!"
-        />
-        <img
-          alt=""
-          src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif"
-          width="1"
-          height="1"
-          style={{ display: 'none !important' }}
         />
       </form>
       <p style={{ marginBottom: '10px' }}>
