@@ -59,6 +59,9 @@ module.exports = {
       2,
       { groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'] },
     ],
+    'import/no-cycle': 2,
+    'import/no-self-import': 2,
+
     indent: 'off',
     // By default the eslint-linebreak-style directive requires "windows" linebreaks
     // on Windows platform and "unix" linebreaks otherwise.

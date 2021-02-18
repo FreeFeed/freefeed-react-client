@@ -416,7 +416,7 @@ const SideBarAppearance = connect(
 
 const SideBar = ({ user, signOut, recentGroups }) => {
   return (
-    <div className="col-md-3 sidebar" role="navigation complementary">
+    <div className="col-md-3 sidebar" role="complementary">
       <ErrorBoundary>
         <LoggedInBlock user={user} signOut={signOut} />
         <SideBarFriends user={user} />

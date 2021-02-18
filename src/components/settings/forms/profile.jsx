@@ -1,3 +1,4 @@
+/* global CONFIG */
 import { useMemo } from 'react';
 import { useField, useForm } from 'react-final-form-hooks';
 import { useSelector, useDispatch } from 'react-redux';
@@ -63,6 +64,7 @@ export default function ProfileForm() {
         <textarea
           id="description-input"
           className={`form-control wider-input ${styles.profileDescription}`}
+          maxLength={CONFIG.maxLength.description}
           {...description.input}
         />
       </div>

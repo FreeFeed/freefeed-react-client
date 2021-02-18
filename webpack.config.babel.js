@@ -1,9 +1,13 @@
+import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import OptiCSS from 'optimize-css-assets-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import Uglify from 'terser-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import CompressionPlugin from 'compression-webpack-plugin';
+import { gzip } from '@gfx/zopfli';
 
 import { baseConfig, opts, rules } from './webpack/base';
 import { skipFalsy } from './webpack/utils';
@@ -50,7 +54,7 @@ const config = {
       },
     }),
     new MiniCssExtractPlugin({
-      filename: opts.hash ? '[name]-[contenthash].css' : '[name]-dev.css',
+      filename: opts.dev ? '[name]-dev.css' : '[name]-[contenthash].css',
     }),
     new CopyPlugin({
       patterns: [
@@ -59,15 +63,38 @@ const config = {
         { from: 'assets/ext-auth/auth-return.html', to: '' },
       ],
     }),
+    !opts.dev && new webpack.HashedModuleIdsPlugin(),
+    !opts.dev &&
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'disabled', // will create 'stats.json' file
+        generateStatsFile: true,
+        openAnalyzer: false,
+      }),
+    !opts.dev &&
+      new CompressionPlugin({
+        compressionOptions: {
+          numiterations: 5,
+        },
+        algorithm(input, compressionOptions, callback) {
+          return gzip(input, compressionOptions, callback);
+        },
+      }),
   ]),
   optimization: {
+    runtimeChunk: {
+      name: 'manifest',
+    },
     splitChunks: {
+      maxSize: 0,
       cacheGroups: {
-        common: {
-          name: 'common',
-          test: /[\\/]styles[\\/]common[\\/].*[.]scss$/,
-          chunks: 'all',
-          enforce: true,
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendor',
+          chunks: 'initial',
+          priority: 9,
+        },
+        default: {
+          minChunks: 1,
         },
       },
     },

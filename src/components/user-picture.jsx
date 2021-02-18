@@ -21,7 +21,7 @@ export function UserPicture({
       }
       width={large ? 75 : 50}
       height={large ? 75 : 50}
-      alt={user.username}
+      alt={`Profile picture of ${user.username}`}
       loading={loading}
     />
   ) : (

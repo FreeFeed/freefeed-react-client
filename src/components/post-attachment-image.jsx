@@ -18,6 +18,7 @@ class PostAttachmentImage extends PureComponent {
       ? `, ${props.imageSizes.o.w}×${props.imageSizes.o.h}px`
       : '';
     const nameAndSize = `${props.fileName} (${formattedFileSize}${formattedImageSize})`;
+    const alt = `Image attachment ${props.fileName}`;
 
     let srcSet;
     if (props.imageSizes.t2 && props.imageSizes.t2.url) {
@@ -33,7 +34,7 @@ class PostAttachmentImage extends PureComponent {
     const imageAttributes = {
       src: (props.imageSizes.t && props.imageSizes.t.url) || props.thumbnailUrl,
       srcSet,
-      alt: nameAndSize,
+      alt,
       loading: 'lazy',
       width: props.imageSizes.t
         ? props.imageSizes.t.w

@@ -12,13 +12,12 @@ const opts = {
   dev: strToBool(env.DEV, true),
   livereload: strToBool(env.LIVERELOAD, false),
   hot: process.argv.indexOf('--hot') !== -1,
-  hash: strToBool(env.HASH, false),
   port: env.PORT || '8080',
 };
 
 const rules = new RulesGenerator(opts);
 
-const filename = opts.hash ? '[name]-[chunkhash]' : '[name]-dev';
+const filename = opts.dev ? '[name]-dev' : '[name]-[chunkhash]';
 
 const baseConfig = {
   mode: opts.dev ? 'development' : 'production',

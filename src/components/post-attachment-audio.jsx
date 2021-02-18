@@ -24,7 +24,7 @@ class AudioAttachment extends PureComponent {
     }
 
     return (
-      <div className="attachment" role="figure">
+      <div className="attachment" role="figure" aria-label={`Audio attachment ${artistAndTitle}`}>
         <div>
           <audio src={props.url} title={artistAndTitle} preload="none" controls />
         </div>

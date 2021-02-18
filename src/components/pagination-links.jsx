@@ -11,7 +11,7 @@ export default (props) => {
   delete allQuery.offset;
 
   return (
-    <ul className="pager p-pagination-controls">
+    <ul className="pager p-pagination-controls" role="navigation">
       {props.offset > 0 ? (
         <li>
           <Link

@@ -61,7 +61,7 @@ export default function FeedOptionsSwitch() {
   }, [dispatch, frontendPreferences, userId]);
 
   return (
-    <div className={styles.switchIcon}>
+    <div className={styles.switchIcon} role="button" aria-label="Feed ordering options">
       <Icon icon={faEllipsis} className="dots-icon" onClick={toggle} ref={pivotRef} />
       {opened && (
         <Portal>

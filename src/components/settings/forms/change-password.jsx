@@ -1,3 +1,4 @@
+/* global CONFIG */
 import { encode as qsEncode } from 'querystring';
 import { useMemo } from 'react';
 import { Link } from 'react-router';
@@ -101,7 +102,10 @@ function validate(values) {
   const { currentPassword, password, passwordConfirmation } = mapValues(values, (s) => s.trim());
   return {
     currentPassword: shouldBe(currentPassword !== ''),
-    password: shouldBe(password.length > 4, password && 'Password is too short'),
+    password: shouldBe(
+      password.length >= CONFIG.minPasswordLength,
+      password && 'Password is too short',
+    ),
     passwordConfirmation: shouldBe(passwordConfirmation === password, 'Passwords are not equal'),
   };
 }

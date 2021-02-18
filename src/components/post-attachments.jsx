@@ -55,7 +55,7 @@ export default (props) => {
     );
 
   return attachments.length > 0 ? (
-    <div className="attachments">
+    <div className="attachments" role="region" aria-label={`${attachments.length} attachments`}>
       <ErrorBoundary>
         {imageAttachmentsContainer}
         {audioAttachmentsContainer}

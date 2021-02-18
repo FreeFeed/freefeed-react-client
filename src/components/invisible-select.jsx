@@ -5,7 +5,14 @@ import '../../styles/shared/invisible-select.scss';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { Icon } from './fontawesome-icons';
 
-export function InvisibleSelect({ children, value, className, withCaret = false, ...rest }) {
+export function InvisibleSelect({
+  children,
+  value,
+  className,
+  labelValueId,
+  withCaret = false,
+  ...rest
+}) {
   const selectedLabel = useMemo(() => {
     const optProps = Children.toArray(children)
       .filter((c) => c.type === 'option')
@@ -28,7 +35,9 @@ export function InvisibleSelect({ children, value, className, withCaret = false,
       )}
     >
       <div className="invisibleSelect__label">
-        {selectedLabel}
+        <span className="invisibleSelect__labelValue" id={labelValueId}>
+          {selectedLabel}
+        </span>
         {withCaret && <Icon icon={faCaretDown} className="invisibleSelect__caret" />}
       </div>
       <select value={value} className="invisibleSelect__select" {...rest}>

@@ -1,6 +1,6 @@
 {
   "name": "reactive-pepyatka",
-  "version": "1.93.1",
+  "version": "1.94.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
@@ -64,10 +64,12 @@
     "@babel/preset-react": "~7.12.10",
     "@babel/register": "~7.12.10",
     "@babel/runtime": "~7.12.5",
+    "@gfx/zopfli": "~1.0.15",
     "babel-eslint": "~10.1.0",
     "babel-loader": "~8.2.2",
     "babel-plugin-lodash": "~3.3.4",
     "babel-plugin-transform-react-remove-prop-types": "~0.4.24",
+    "compression-webpack-plugin": "~6.1.1",
     "copy-webpack-plugin": "~6.1.1",
     "core-js": "~3.8.3",
     "cross-env": "~7.0.3",
@@ -118,10 +120,14 @@
     "unexpected-react": "~6.0.1",
     "unexpected-sinon": "~11.0.1",
     "webpack": "~4.44.2",
+    "webpack-bundle-analyzer": "~4.4.0",
     "webpack-cli": "~3.3.12",
     "webpack-dev-server": "~3.11.2",
     "webpack-node-externals": "~2.5.2",
     "worker-loader": "~2.0.0"
+  },
+  "resolutions": {
+    "debug": "~4.3.0"
   },
   "scripts": {
     "start": "run-s dev-server",
@@ -133,9 +139,10 @@
     "clean": "rimraf ./_dist",
     "prettier": "prettier -c \"src/**/*\"",
     "stylelint": "stylelint --config stylelint.config.js \"styles/**/*.scss\"",
-    "build-prod": "cross-env UGLIFY=1 HASH=1 DEV=0 run-s clean _webpack",
-    "build-dev": "cross-env UGLIFY=0 HASH=0 DEV=1 run-s clean _webpack",
+    "build-prod": "cross-env NODE_ENV=production DEV=0 run-s clean _webpack",
+    "build-dev": "cross-env NODE_ENV=development DEV=1 run-s clean _webpack",
     "_webpack": "webpack --config webpack.config.babel.js --output-path ./_dist --output-public-path /",
+    "analyze-webpack": "webpack-bundle-analyzer _dist/stats.json",
     "postinstall": "husky install"
   },
   "author": "FreeFeed contributors",

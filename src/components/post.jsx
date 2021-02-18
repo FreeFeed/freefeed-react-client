@@ -14,6 +14,7 @@ import {
   faPaperclip,
 } from '@fortawesome/free-solid-svg-icons';
 
+import { pluralForm } from '../utils';
 import { getFirstLinkToEmbed } from '../utils/parse-text';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
@@ -422,8 +423,43 @@ class Post extends Component {
 
     const role = `article${props.isSinglePost ? '' : ' listitem'}`;
 
+    const postTypeLabel = props.isDirect
+      ? 'Direct message'
+      : isPrivate
+      ? 'Private post'
+      : isProtected
+      ? 'Protected post'
+      : 'Public post';
+
+    const recipientsWithoutAuthor = props.recipientNames.filter(
+      (r) => r !== props.createdBy.username,
+    );
+    const recipientsLabel =
+      recipientsWithoutAuthor.length > 0 ? `to ${recipientsWithoutAuthor.join(', ')}` : false;
+
+    const commentsAndLikesLabel = `with ${pluralForm(
+      props.omittedComments + props.comments.length,
+      'comment',
+    )} and ${pluralForm(props.likes.length, 'like')}`;
+
+    const postLabel = [
+      props.isNSFW ? 'Not safe for work' : false,
+      postTypeLabel,
+      `by ${props.createdBy.username}`,
+      recipientsLabel,
+      commentsAndLikesLabel,
+      `written on ${new Date(+props.createdAt).toLocaleDateString()}`,
+    ]
+      .filter(Boolean)
+      .join(' ');
+
     return (
-      <div className={postClass} data-author={props.createdBy.username} role={role}>
+      <div
+        className={postClass}
+        data-author={props.createdBy.username}
+        role={role}
+        aria-label={postLabel}
+      >
         <ErrorBoundary>
           <Expandable
             expanded={
@@ -441,7 +477,7 @@ class Post extends Component {
                 loading="lazy"
               />
             </div>
-            <div className="post-body">
+            <div className="post-body" role="region" aria-label="Post body">
               {props.isEditing ? (
                 <div>
                   <SendTo
@@ -486,7 +522,7 @@ class Post extends Component {
                       autoFocus={true}
                       minRows={2}
                       maxRows={10}
-                      maxLength="1500"
+                      maxLength={CONFIG.maxLength.post}
                       dir={'auto'}
                     />
                   </div>
@@ -569,14 +605,14 @@ class Post extends Component {
                   previews for sensitive content
                 </div>
               ) : (
-                <div className="link-preview">
+                <div className="link-preview" role="region" aria-label="Link preview">
                   <LinkPreview url={linkToEmbed} allowEmbedly={props.allowLinksPreview} />
                 </div>
               ))}
 
             <div className="dropzone-previews" />
 
-            <div className="post-footer">
+            <div className="post-footer" role="region" aria-label="Post footer">
               <div className="post-footer-icon">
                 {isPrivate ? (
                   <Icon
@@ -631,7 +667,7 @@ class Post extends Component {
                     </span>
                   )}
                 </span>
-                <span className="post-footer-block">
+                <span className="post-footer-block" role="region">
                   <span className="post-footer-item">{commentLink}</span>
                   <span className="post-footer-item">{likeLink}</span>
                   <span className="post-footer-item">{saveLink}</span>

@@ -175,7 +175,7 @@ export default class CreatePost extends Component {
 
   render() {
     return (
-      <div className="create-post post-editor" role="form">
+      <div className="create-post post-editor" role="form" aria-label="Write a post">
         <ErrorBoundary>
           <div>
             {this.props.sendTo.expanded && (
@@ -205,7 +205,7 @@ export default class CreatePost extends Component {
               onPaste={this.handlePaste}
               minRows={3}
               maxRows={10}
-              maxLength="1500"
+              maxLength={CONFIG.maxLength.post}
               dir={'auto'}
             />
           </div>
