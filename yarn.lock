@@ -5,7 +5,7 @@ __metadata:
   version: 4
   cacheKey: 7
 
-"@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.10.4, @babel/code-frame@npm:^7.12.11":
+"@babel/code-frame@npm:7.12.11, @babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.10.4, @babel/code-frame@npm:^7.12.11":
   version: 7.12.11
   resolution: "@babel/code-frame@npm:7.12.11"
   dependencies:
@@ -1821,7 +1821,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eslint@npm:^7.2.4":
+"@types/eslint@npm:^7.2.6":
   version: 7.2.6
   resolution: "@types/eslint@npm:7.2.6"
   dependencies:
@@ -5312,10 +5312,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-promise@npm:~4.2.1":
-  version: 4.2.1
-  resolution: "eslint-plugin-promise@npm:4.2.1"
-  checksum: 8c233a0b5f5646e08709e999aa75973481ee46c45255ec4b4d1577915f68d79ae52f6f84e361af5b761971294bdb38ec86021515fa4cff178f57c989226dd671
+"eslint-plugin-promise@npm:~4.3.1":
+  version: 4.3.1
+  resolution: "eslint-plugin-promise@npm:4.3.1"
+  checksum: 01aa61c2bea6cfd2e612cda9aaaf079c7652503dd613248a251c99b58414245ee999a8f5ca0a15f62c6b1605aca4dcbace272d67f22d79aac3f698547eb75d9a
   languageName: node
   linkType: hard
 
@@ -5349,14 +5349,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-unicorn@npm:~27.0.0":
-  version: 27.0.0
-  resolution: "eslint-plugin-unicorn@npm:27.0.0"
+"eslint-plugin-unicorn@npm:~28.0.2":
+  version: 28.0.2
+  resolution: "eslint-plugin-unicorn@npm:28.0.2"
   dependencies:
     ci-info: ^2.0.0
     clean-regexp: ^1.0.0
     eslint-template-visitor: ^2.2.2
     eslint-utils: ^2.1.0
+    eslint-visitor-keys: ^2.0.0
     import-modules: ^2.1.0
     lodash: ^4.17.20
     pluralize: ^8.0.0
@@ -5367,16 +5368,16 @@ __metadata:
     semver: ^7.3.4
   peerDependencies:
     eslint: ">=7.17.0"
-  checksum: 0e3abf563d48d1a6f9697f40f0200316022eadfd8cb4331413d6070617f87a7118d2e687f06ef382049473f702b2941807fef4c3fe7c20fa36c6d8185bdfd1af
+  checksum: 15d9802fe9036661fd4300705f096f7d30b2bb777e591ad966945eeba335a9e29b186d6096741d293cdf4a7d137dd0f30c0ff9eaa98dd82d41c7235660adbcf2
   languageName: node
   linkType: hard
 
-"eslint-plugin-you-dont-need-lodash-underscore@npm:~6.10.0":
-  version: 6.10.0
-  resolution: "eslint-plugin-you-dont-need-lodash-underscore@npm:6.10.0"
+"eslint-plugin-you-dont-need-lodash-underscore@npm:~6.11.0":
+  version: 6.11.0
+  resolution: "eslint-plugin-you-dont-need-lodash-underscore@npm:6.11.0"
   dependencies:
     kebab-case: ^1.0.0
-  checksum: 53f16b8f6a2cb45f509e2804b7230f063606c5ff07402d9fec26096480e77e6ac409716005d8e16c62772f231967bf59a061b20e3dc7567beaa86d38481402aa
+  checksum: 46933512faf4cc40696c23dc31a9e6defcd133eec133919bc7bcf30229eaf5f1466081a92c1d8a569628f9646de3bd7c469fe5020295be7a91c5b19e2326457b
   languageName: node
   linkType: hard
 
@@ -5454,11 +5455,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-webpack-plugin@npm:~2.4.3":
-  version: 2.4.3
-  resolution: "eslint-webpack-plugin@npm:2.4.3"
+"eslint-webpack-plugin@npm:~2.5.2":
+  version: 2.5.2
+  resolution: "eslint-webpack-plugin@npm:2.5.2"
   dependencies:
-    "@types/eslint": ^7.2.4
+    "@types/eslint": ^7.2.6
     arrify: ^2.0.1
     jest-worker: ^26.6.2
     micromatch: ^4.0.2
@@ -5466,15 +5467,15 @@ __metadata:
   peerDependencies:
     eslint: ^7.0.0
     webpack: ^4.0.0 || ^5.0.0
-  checksum: 88eaf6991e8eed9ed9d3fa34b40f09ded55dd5a930a63544b66a85ed18bc3a581466eb5d7fb026655e13d4cf363c637169da9b4ff34485aeeef896f28b4cbb8e
+  checksum: c768b5bab405b1f4e65c40cf2a2fb1ce55667a34a617da1fedcbb86f56881c827d6449109d85c0d0fb928ee59094618adde6eebdbf684da1bd00a3aa1f0560b2
   languageName: node
   linkType: hard
 
-"eslint@npm:~7.18.0":
-  version: 7.18.0
-  resolution: "eslint@npm:7.18.0"
+"eslint@npm:~7.20.0":
+  version: 7.20.0
+  resolution: "eslint@npm:7.20.0"
   dependencies:
-    "@babel/code-frame": ^7.0.0
+    "@babel/code-frame": 7.12.11
     "@eslint/eslintrc": ^0.3.0
     ajv: ^6.10.0
     chalk: ^4.0.0
@@ -5486,7 +5487,7 @@ __metadata:
     eslint-utils: ^2.1.0
     eslint-visitor-keys: ^2.0.0
     espree: ^7.3.1
-    esquery: ^1.2.0
+    esquery: ^1.4.0
     esutils: ^2.0.2
     file-entry-cache: ^6.0.0
     functional-red-black-tree: ^1.0.1
@@ -5513,7 +5514,7 @@ __metadata:
     v8-compile-cache: ^2.0.3
   bin:
     eslint: bin/eslint.js
-  checksum: 5c6f6ca0eb6c3738a0d14d3441a23f045ef9e7f73aaba4848aea0877c5fd50ec42937ccdaf53fb9107694f5700a9989bca55334b7b17e5d3be2f6e69a42241fa
+  checksum: 1d56cabc7e21f43b8bb6a1934f2488b27d86b018ce2246bc9b89e52931e26b306c5883f5e4ff5c6e0228e0e8673553a460e98eacc4890f9e5984002df0292123
   languageName: node
   linkType: hard
 
@@ -5538,12 +5539,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esquery@npm:^1.2.0, esquery@npm:^1.3.1":
+"esquery@npm:^1.3.1":
   version: 1.3.1
   resolution: "esquery@npm:1.3.1"
   dependencies:
     estraverse: ^5.1.0
   checksum: 0aac7572bc8cf4aad87f4424b3e5e80917c214d15a1da02718c4bb0e6030552b0dea700777747507d5e310cfba43ea719e6397a45050fb50b9b68c0f7de6b26a
+  languageName: node
+  linkType: hard
+
+"esquery@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "esquery@npm:1.4.0"
+  dependencies:
+    estraverse: ^5.1.0
+  checksum: 3293ecc1507a8cec8d2da8a4707275c2ccf5413e7a3c771fe41c16cee603cacd193bb7383a6e219d1f7d2449156ef575ffd66c839073d4a8058f72856a15f622
   languageName: node
   linkType: hard
 
@@ -11578,18 +11588,18 @@ fsevents@~2.1.2:
     custom-event: ~1.0.1
     date-fns: ~2.16.1
     debug: ~4.3.2
-    eslint: ~7.18.0
+    eslint: ~7.20.0
     eslint-config-prettier: ~7.2.0
     eslint-plugin-babel: ~5.3.1
     eslint-plugin-import: ~2.22.1
     eslint-plugin-lodash: ~7.1.0
     eslint-plugin-prettier: ~3.3.1
-    eslint-plugin-promise: ~4.2.1
+    eslint-plugin-promise: ~4.3.1
     eslint-plugin-react: ~7.22.0
     eslint-plugin-react-hooks: ~4.2.0
-    eslint-plugin-unicorn: ~27.0.0
-    eslint-plugin-you-dont-need-lodash-underscore: ~6.10.0
-    eslint-webpack-plugin: ~2.4.3
+    eslint-plugin-unicorn: ~28.0.2
+    eslint-plugin-you-dont-need-lodash-underscore: ~6.11.0
+    eslint-webpack-plugin: ~2.5.2
     file-loader: ~6.1.1
     filesize: ~6.1.0
     final-form: ~4.20.1
