@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, createRef } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -15,6 +15,8 @@ import { UserPicture } from './user-picture';
 class UserCard extends Component {
   constructor(props) {
     super(props);
+
+    this.arrowRef = createRef();
 
     // Load this user's info if it's not in the store already
     // or we have not its 'acceptsDirects' field
@@ -65,6 +67,16 @@ class UserCard extends Component {
     this.props.unban({ username, id });
   };
 
+  componentDidMount() {
+    const updPosition = () =>
+      updateArrowPosition(
+        this.props.pivotRef.current,
+        this.props.forwardedRef.current,
+        this.arrowRef.current,
+      ) && requestAnimationFrame(updPosition);
+    updPosition();
+  }
+
   componentWillUnmount() {
     const { id } = this.props.user;
     id && this.props.userCardClosing(id);
@@ -76,6 +88,7 @@ class UserCard extends Component {
     if (props.notFound) {
       return (
         <div className="user-card" ref={props.forwardedRef}>
+          <div className="user-card__arrow" ref={this.arrowRef} />
           <div className="user-card-info">
             <div className="userpic loading" />
             <div className="names">User not found</div>
@@ -87,6 +100,7 @@ class UserCard extends Component {
     if (!props.user.id) {
       return (
         <div className="user-card" ref={props.forwardedRef}>
+          <div className="user-card__arrow" ref={this.arrowRef} />
           <div className="user-card-info">
             <div className="userpic loading" />
             <div className="names">
@@ -100,6 +114,7 @@ class UserCard extends Component {
     return (
       <div className="user-card" ref={props.forwardedRef}>
         <ErrorBoundary>
+          <div className="user-card__arrow" ref={this.arrowRef} />
           <div className="user-card-info">
             <UserPicture large user={props.user} className="userpic" />
 
@@ -226,3 +241,25 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserCard);
+
+function updateArrowPosition(leader, follower, arrow) {
+  if (!leader || !follower || !arrow) {
+    return false;
+  }
+
+  const minArrowGap = 14;
+  const leaderBounds = leader.getBoundingClientRect();
+  const followerBounds = follower.getBoundingClientRect();
+
+  let arrowX = minArrowGap;
+  if (leaderBounds.left + minArrowGap > followerBounds.left) {
+    arrowX = leaderBounds.left - followerBounds.left + minArrowGap;
+    if (arrowX > followerBounds.width - minArrowGap) {
+      arrowX = followerBounds.width - minArrowGap;
+    }
+  }
+
+  arrow.style.left = `${arrowX}px`;
+
+  return true;
+}

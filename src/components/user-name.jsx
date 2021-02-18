@@ -67,7 +67,7 @@ export default function UserName({ user: { username, screenName }, children, cla
       </span>
       {opened && (
         <Portal>
-          <UserCard username={username} forwardedRef={menuRef} />
+          <UserCard username={username} forwardedRef={menuRef} pivotRef={pivotRef} />
         </Portal>
       )}
     </ErrorBoundary>
