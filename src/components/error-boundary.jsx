@@ -1,3 +1,4 @@
+/* global CONFIG */
 import { PureComponent } from 'react';
 import * as Sentry from '@sentry/react';
 
@@ -20,14 +21,9 @@ class ErrorBoundary extends PureComponent {
   }
 
   render() {
-    const { error, errorInfo, hasError } = this.state;
+    const { error, hasError } = this.state;
 
     if (hasError) {
-      const errorLocation = errorInfo.componentStack
-        ? `${errorInfo.componentStack.split('\n').slice(0, 2).join(' ')}`
-        : '';
-      const errorMessage = `${error.name}: ${error.message} ${errorLocation}`;
-
       return (
         <div className="error-boundary" role="alert">
           <div className="error-boundary-header">
@@ -37,8 +33,18 @@ class ErrorBoundary extends PureComponent {
             Please contact <a href="/support">@support</a> with a screenshot of this message.
           </div>
           <div className="error-boundary-details">
-            <p>{errorMessage}</p>
+            <p>
+              {error.name}: <strong>{error.message}</strong>
+              <br />
+              {error.stack?.split('\n').slice(1, 5).join(' ')}
+            </p>
             <p>{window.navigator.userAgent}</p>
+            <p>
+              URL: {document.location.href}
+              {CONFIG.betaChannel.enabled &&
+                CONFIG.betaChannel.isBeta &&
+                ` (⚠ ${CONFIG.betaChannel.subHeading} instance)`}
+            </p>
           </div>
         </div>
       );
