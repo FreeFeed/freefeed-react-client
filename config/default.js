@@ -92,4 +92,6 @@ export default {
     comment: 3000,
     description: 1500,
   },
+
+  minPasswordLength: 9,
 };
