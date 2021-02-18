@@ -129,6 +129,15 @@ export function showMoreComments(postId) {
   };
 }
 
+export function completePostComments(postId) {
+  return {
+    type: ActionTypes.COMPLETE_POST_COMMENTS,
+    apiRequest: Api.getPost,
+    nonAuthRequest: true,
+    payload: { postId },
+  };
+}
+
 export function showMoreLikes(postId) {
   return {
     type: ActionTypes.SHOW_MORE_LIKES,
@@ -336,11 +345,11 @@ export function getCommentLikes(commentId) {
   };
 }
 
-export function deleteComment(commentId) {
+export function deleteComment(commentId, postId) {
   return {
     type: ActionTypes.DELETE_COMMENT,
     apiRequest: Api.deleteComment,
-    payload: { commentId },
+    payload: { commentId, postId },
   };
 }
 

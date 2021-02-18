@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { combineReducers } from 'redux';
 
-import { userParser, postParser, getSummaryPeriod } from '../utils';
+import { userParser, getSummaryPeriod } from '../utils';
 import { getToken } from '../services/auth';
 import { parseQuery } from '../utils/search-highlighter';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
@@ -376,10 +376,10 @@ function mergeByIds(state, list, { insert = true, update = false } = {}) {
 }
 
 const initPostViewState = (post) => {
-  const { id, omittedComments, omittedLikes } = post;
+  const { id, omittedLikes } = post;
   const isEditing = false;
 
-  return { omittedComments, omittedLikes, id, isEditing, ...NO_ERROR };
+  return { omittedLikes, id, isEditing, ...NO_ERROR };
 };
 
 export function postsViewState(state = {}, action) {
@@ -402,9 +402,8 @@ export function postsViewState(state = {}, action) {
     case response(ActionTypes.SHOW_MORE_COMMENTS): {
       const { id } = action.payload.posts;
       const isLoadingComments = false;
-      const omittedComments = 0;
 
-      return { ...state, [id]: { ...state[id], isLoadingComments, omittedComments, ...NO_ERROR } };
+      return { ...state, [id]: { ...state[id], isLoadingComments, ...NO_ERROR } };
     }
     case response(ActionTypes.GET_SINGLE_POST): {
       const { id } = action.payload.posts;
@@ -513,7 +512,6 @@ export function postsViewState(state = {}, action) {
           isCommenting: false,
           isSavingComment: false,
           newCommentText: '',
-          omittedComments: post.omittedComments ? post.omittedComments + 1 : 0,
         },
       };
     }
@@ -539,13 +537,7 @@ export function postsViewState(state = {}, action) {
           [action.post.posts.id]: initPostViewState(action.post.posts),
         };
       }
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          omittedComments: post.omittedComments ? post.omittedComments + 1 : 0,
-        },
-      };
+      return state;
     }
     case ActionTypes.REALTIME_LIKE_NEW: {
       if (action.post && !state[action.post.id]) {
@@ -556,34 +548,6 @@ export function postsViewState(state = {}, action) {
       }
       return state;
     }
-    case ActionTypes.REALTIME_COMMENT_DESTROY: {
-      if (!action.postId || !state[action.postId]) {
-        return state;
-      }
-      const postsViewState = state[action.postId];
-      return {
-        ...state,
-        [action.postId]: {
-          ...postsViewState,
-          omittedComments: postsViewState.omittedComments ? postsViewState.omittedComments - 1 : 0,
-        },
-      };
-    }
-    // This doesn't work currently, since there's no information in the server
-    // response, and just with request.commentId it's currently impossible to
-    // find the post in postsViewState's state.
-    // TODO: Fix this.
-    /*
-    case response(ActionTypes.DELETE_COMMENT): {
-      const commentId = action.request.commentId
-      const post = _(state).find(post => (post.comments||[]).indexOf(commentId) !== -1)
-      return {...state,
-        [post.id]: {...post,
-          omittedComments: (post.omittedComments ? post.omittedComments - 1 : 0)
-        }
-      }
-    }
-    */
 
     case ActionTypes.REALTIME_LIKE_REMOVE: {
       const { postId, isLikeVisible } = action;
@@ -679,10 +643,10 @@ export function postsViewState(state = {}, action) {
 
     case response(ActionTypes.CREATE_POST): {
       const post = action.payload.posts;
-      const { id, omittedComments, omittedLikes } = post;
+      const { id, omittedLikes } = post;
       const isEditing = false;
 
-      return { ...state, [id]: { omittedComments, omittedLikes, id, isEditing, ...NO_ERROR } };
+      return { ...state, [id]: { omittedLikes, id, isEditing, ...NO_ERROR } };
     }
     case ActionTypes.UNAUTHENTICATED: {
       return {};
@@ -692,373 +656,7 @@ export function postsViewState(state = {}, action) {
   return state;
 }
 
-function updatePostData(state, action) {
-  const postId = action.payload.posts.id;
-  return { ...state, [postId]: postParser(action.payload.posts) };
-}
-
-const savePostStatusesReducer = asyncStatesMap(ActionTypes.SAVE_POST, {
-  getKey: getKeyBy('postId'),
-  keyMustExist: true,
-  applyState: (post, savePostStatus) => ({ ...post, savePostStatus }),
-});
-
-export function posts(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action)) {
-    return mergeByIds(state, (action.payload.posts || []).map(postParser));
-  }
-
-  // Handle the savePostStatus changes
-  state = savePostStatusesReducer(state, action);
-
-  switch (action.type) {
-    case response(ActionTypes.SHOW_MORE_COMMENTS): {
-      const post = state[action.payload.posts.id];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          omittedComments: 0,
-          comments: action.payload.posts.comments,
-        },
-      };
-    }
-    case response(ActionTypes.SHOW_MORE_LIKES_ASYNC): {
-      const post = state[action.payload.posts.id];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          omittedLikes: 0,
-          likes: action.payload.posts.likes,
-        },
-      };
-    }
-    case response(ActionTypes.SAVE_EDITING_POST): {
-      const post = state[action.payload.posts.id];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          body: action.payload.posts.body,
-          updatedAt: action.payload.posts.updatedAt,
-          attachments: action.payload.posts.attachments || [],
-          postedTo: action.payload.posts.postedTo,
-        },
-      };
-    }
-    case response(ActionTypes.DELETE_COMMENT): {
-      const { commentId } = action.request;
-      const post = Object.values(state).find((_post) => (_post.comments || []).includes(commentId));
-      if (!post) {
-        return state;
-      }
-      const comments = _.without(post.comments, commentId);
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          comments,
-          omittedComments: post.omittedComments > 0 ? post.omittedComments - 1 : 0,
-        },
-      };
-    }
-    case ActionTypes.REALTIME_COMMENT_DESTROY: {
-      if (!action.postId || !state[action.postId]) {
-        return state;
-      }
-
-      const post = state[action.postId];
-      if (!post.comments.includes(action.commentId)) {
-        return state;
-      }
-
-      return {
-        ...state,
-        [action.postId]: {
-          ...post,
-          comments: _.without(post.comments, action.commentId),
-        },
-      };
-    }
-    case response(ActionTypes.ADD_COMMENT): {
-      const post = state[action.request.postId];
-      const commentAlreadyAdded =
-        post.comments && post.comments.includes(action.payload.comments.id);
-      if (commentAlreadyAdded) {
-        return state;
-      }
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          comments: [...(post.comments || []), action.payload.comments.id],
-          omittedComments: post.omittedComments > 0 ? post.omittedComments + 1 : 0,
-        },
-      };
-    }
-
-    // Likes
-
-    case ActionTypes.CLEAN_LIKE_ERROR: {
-      const { postId } = action;
-      const post = state[postId];
-      if (!post || !post.likeError) {
-        return state;
-      }
-      return {
-        ...state,
-        [postId]: {
-          ...post,
-          likeError: null,
-        },
-      };
-    }
-
-    case ActionTypes.LIKE_POST_OPTIMISTIC: {
-      const { postId, userId } = action.payload;
-      const post = state[postId];
-      if (_.includes(post.likes, userId)) {
-        return state;
-      }
-      return {
-        ...state,
-        [postId]: {
-          ...post,
-          likeError: null,
-          likes: [userId, ...post.likes],
-        },
-      };
-    }
-    case fail(ActionTypes.LIKE_POST): {
-      const { postId, userId } = action.request;
-      const post = state[postId];
-      if (!_.includes(post.likes, userId)) {
-        return state;
-      }
-      return {
-        ...state,
-        [postId]: {
-          ...post,
-          likeError: `Cannot like post: ${action.payload.err}`,
-          likes: _.without(post.likes, userId),
-        },
-      };
-    }
-
-    case ActionTypes.UNLIKE_POST_OPTIMISTIC: {
-      const { postId, userId } = action.payload;
-      const post = state[postId];
-      if (!_.includes(post.likes, userId)) {
-        return state;
-      }
-      return {
-        ...state,
-        [postId]: {
-          ...post,
-          likeError: null,
-          likes: _.without(post.likes, userId),
-        },
-      };
-    }
-    case fail(ActionTypes.UNLIKE_POST): {
-      const { postId, userId } = action.request;
-      const post = state[postId];
-      if (_.includes(post.likes, userId)) {
-        return state;
-      }
-      return {
-        ...state,
-        [postId]: {
-          ...post,
-          likeError: `Cannot unlike post: ${action.payload.err}`,
-          likes: [userId, ...post.likes],
-        },
-      };
-    }
-
-    case ActionTypes.REALTIME_LIKE_NEW: {
-      const {
-        postId,
-        users: [{ id: userId }],
-      } = action;
-      const post = state[postId];
-      if (!post && !action.post) {
-        return state;
-      }
-
-      const postToAct = post || postParser(action.post.posts);
-
-      if (postToAct.likes && _.includes(postToAct.likes, userId)) {
-        return {
-          ...state,
-          [postToAct.id]: postToAct,
-        };
-      }
-
-      const likes = action.iLiked
-        ? [postToAct.likes[0], userId, ...postToAct.likes.slice(1)]
-        : [userId, ...(postToAct.likes || [])];
-
-      return {
-        ...state,
-        [postToAct.id]: { ...postToAct, likes },
-      };
-    }
-
-    case ActionTypes.REALTIME_LIKE_REMOVE: {
-      const { postId, userId, isLikeVisible } = action;
-      const post = state[postId];
-      if (!post) {
-        return state;
-      }
-
-      const likes = _.without(post.likes, userId);
-      const omittedLikes = isLikeVisible ? post.omittedLikes : Math.max(0, post.omittedLikes - 1);
-
-      return {
-        ...state,
-        [post.id]: { ...post, likes, omittedLikes },
-      };
-    }
-
-    case response(ActionTypes.HIDE_POST): {
-      const post = state[action.request.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          isHidden: true,
-        },
-      };
-    }
-    case ActionTypes.REALTIME_POST_HIDE: {
-      const post = state[action.postId];
-      if (!post) {
-        return state;
-      }
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          isHidden: true,
-        },
-      };
-    }
-    case response(ActionTypes.UNHIDE_POST): {
-      const post = state[action.request.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          isHidden: false,
-        },
-      };
-    }
-    case ActionTypes.REALTIME_POST_UNHIDE: {
-      const post = state[action.postId];
-      if (!post) {
-        return state;
-      }
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          isHidden: false,
-        },
-      };
-    }
-
-    case response(ActionTypes.SAVE_POST): {
-      return patchObjectByKey(state, action.request.postId, (post) => ({
-        ...post,
-        isSaved: action.request.save,
-      }));
-    }
-
-    case ActionTypes.REALTIME_POST_SAVE: {
-      return patchObjectByKey(state, action.payload.postId, (post) => ({
-        ...post,
-        isSaved: action.payload.save,
-      }));
-    }
-
-    case response(ActionTypes.DISABLE_COMMENTS): {
-      const post = state[action.request.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          commentsDisabled: true,
-        },
-      };
-    }
-    case response(ActionTypes.ENABLE_COMMENTS): {
-      const post = state[action.request.postId];
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          commentsDisabled: false,
-        },
-      };
-    }
-    case response(ActionTypes.CREATE_POST): {
-      return updatePostData(state, action);
-    }
-    case response(ActionTypes.GET_SINGLE_POST): {
-      return updatePostData(state, action);
-    }
-    case ActionTypes.REALTIME_POST_NEW: {
-      return { ...state, [action.post.id]: postParser(action.post) };
-    }
-    case ActionTypes.REALTIME_POST_UPDATE: {
-      const post = state[action.post.id];
-      if (!post) {
-        return state;
-      }
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          body: action.post.body,
-          updatedAt: action.post.updatedAt,
-          attachments: action.post.attachments || [],
-          postedTo: action.post.postedTo,
-        },
-      };
-    }
-    case ActionTypes.REALTIME_COMMENT_NEW: {
-      const post = state[action.comment.postId];
-      if (!post) {
-        if (!action.post) {
-          return state;
-        }
-
-        return {
-          ...state,
-          [action.post.posts.id]: postParser(action.post.posts),
-        };
-      }
-      const commentAlreadyAdded = post.comments && post.comments.includes(action.comment.id);
-      if (commentAlreadyAdded) {
-        return state;
-      }
-      return {
-        ...state,
-        [post.id]: {
-          ...post,
-          comments: [...(post.comments || []), action.comment.id],
-        },
-      };
-    }
-    case ActionTypes.UNAUTHENTICATED: {
-      return {};
-    }
-  }
-
-  return state;
-}
+export { posts } from './reducers/posts';
 
 export const postHideStatuses = asyncStatesMap(
   [
@@ -1109,12 +707,9 @@ export function comments(state = {}, action) {
     return updateCommentData(state, action);
   }
   switch (action.type) {
-    case response(ActionTypes.SHOW_MORE_COMMENTS): {
-      return updateCommentData(state, action);
-    }
-    case response(ActionTypes.GET_SINGLE_POST): {
-      return updateCommentData(state, action);
-    }
+    case response(ActionTypes.SHOW_MORE_COMMENTS):
+    case response(ActionTypes.COMPLETE_POST_COMMENTS):
+    case response(ActionTypes.GET_SINGLE_POST):
     case response(ActionTypes.SHOW_MORE_LIKES_ASYNC): {
       return updateCommentData(state, action);
     }

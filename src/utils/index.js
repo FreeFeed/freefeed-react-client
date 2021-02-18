@@ -72,6 +72,8 @@ export function postParser(post) {
     ...post,
     commentsDisabled: post.commentsDisabled === '1',
     savePostStatus: initialAsyncState,
+    // After what comment the omittedComments span is started?
+    omittedCommentsOffset: post.omittedComments > 0 ? 1 : 0,
   };
 }
 
@@ -79,6 +81,19 @@ export function preventDefault(realFunction) {
   return (event) => {
     event.preventDefault();
     return realFunction && realFunction();
+  };
+}
+
+export function handleLeftClick(handler) {
+  return (event) => {
+    if (
+      event.type === 'click' &&
+      (event.button !== 0 || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey)
+    ) {
+      return;
+    }
+    event.preventDefault();
+    handler(event);
   };
 }
 

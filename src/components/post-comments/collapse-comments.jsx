@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
 import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
-import { Icon } from './fontawesome-icons';
+import { Icon } from '../fontawesome-icons';
+import { ButtonLink } from '../button-link';
 
 const observersSupported =
   typeof IntersectionObserver !== 'undefined' && typeof MutationObserver !== 'undefined';
 
-export function PostCommentsFolder({ doFold }) {
+export function CollapseComments({ onCollapse, commentsAfterFold }) {
   const thisEl = useRef(null);
   const [stuck, setStuck] = useState(false);
   const [marginBottom, setMarginBottom] = useState(0);
@@ -25,10 +26,12 @@ export function PostCommentsFolder({ doFold }) {
     // Measure the distance from the bottom of third commentsContainer's child
     // from the end and the bottom of commentsContainer itself
     const mObserver = new MutationObserver(() => {
-      const thirdChild =
-        commentsContainer.lastElementChild.previousElementSibling.previousElementSibling;
+      let btmChild = commentsContainer.lastElementChild;
+      for (let i = 0; i < commentsAfterFold + 1; i++) {
+        btmChild = btmChild.previousElementSibling;
+      }
       const { bottom: cBottom } = commentsContainer.getBoundingClientRect();
-      const { bottom: tBottom } = thirdChild.getBoundingClientRect();
+      const { bottom: tBottom } = btmChild.getBoundingClientRect();
       setMarginBottom(cBottom - tBottom);
     });
     mObserver.observe(commentsContainer, {
@@ -39,7 +42,7 @@ export function PostCommentsFolder({ doFold }) {
     });
 
     return () => [iObserver, mObserver].forEach((o) => o.disconnect());
-  }, []);
+  }, [commentsAfterFold]);
 
   return (
     <>
@@ -49,7 +52,7 @@ export function PostCommentsFolder({ doFold }) {
         ref={thisEl}
       >
         <Icon icon={faChevronUp} className="chevron" />
-        <a onClick={doFold}>Fold comments</a>
+        <ButtonLink onClick={onCollapse}>Fold comments</ButtonLink>
       </div>
       {/* Compensate the margin-bottom of comments-folder */}
       <div className="comments-folder--after" style={{ marginTop: `${-marginBottom}px` }} />

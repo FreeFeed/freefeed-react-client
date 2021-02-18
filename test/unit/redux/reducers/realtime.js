@@ -19,6 +19,7 @@ import {
   REALTIME_POST_UNHIDE,
 } from '../../../../src/redux/action-types';
 import { realtimeSubscribe, realtimeUnsubscribe } from '../../../../src/redux/action-creators';
+import { postParser } from '../../../../src/utils';
 
 describe('realtime events', () => {
   describe('users()', () => {
@@ -167,7 +168,7 @@ describe('realtime events', () => {
     });
 
     it('should add post on REALTIME_COMMENT_NEW', () => {
-      const newPost = { id: '1' };
+      const newPost = { id: '1', comments: [], omittedComments: 0 };
       const newTestComment = { postId: newPost.id, id: '2' };
       const newCommentWithPost = {
         type: REALTIME_COMMENT_NEW,
@@ -182,7 +183,7 @@ describe('realtime events', () => {
     });
 
     it('should add post on REALTIME_LIKE_NEW', () => {
-      const newPost = { id: '1' };
+      const newPost = { id: '1', comments: [], omittedComments: 0 };
       const newLikeWithPost = {
         type: REALTIME_LIKE_NEW,
         users: [{ id: '1' }],
@@ -237,7 +238,13 @@ describe('realtime events', () => {
     });
 
     describe('REALTIME_COMMENT_DESTROY', () => {
-      const state = { post1: { id: 'post1', comments: ['comm1', 'comm2', 'comm3'] } };
+      const state = {
+        post1: postParser({
+          id: 'post1',
+          comments: ['comm1', 'comm2', 'comm3'],
+          omittedComments: 3,
+        }),
+      };
 
       it('should remove comment from post', () => {
         const newState = posts(state, {
@@ -245,16 +252,20 @@ describe('realtime events', () => {
           postId: 'post1',
           commentId: 'comm2',
         });
-        expect(newState, 'to equal', { post1: { id: 'post1', comments: ['comm1', 'comm3'] } });
+        expect(newState, 'to satisfy', {
+          post1: { id: 'post1', comments: ['comm1', 'comm3'], omittedComments: 3 },
+        });
       });
 
-      it('should not change state if comment is not exists', () => {
+      it('should change omittedComments if comment is not exists', () => {
         const newState = posts(state, {
           type: REALTIME_COMMENT_DESTROY,
           postId: 'post1',
           commentId: 'comm4',
         });
-        expect(newState, 'to be', state);
+        expect(newState, 'to satisfy', {
+          post1: { id: 'post1', comments: ['comm1', 'comm2', 'comm3'], omittedComments: 2 },
+        });
       });
 
       it('should not change state if post is not exists', () => {
@@ -269,31 +280,14 @@ describe('realtime events', () => {
   });
 
   describe('postsViewState()', () => {
-    const testPost = { id: 1, omittedComments: 1 };
+    const testPost = { id: 1 };
     const postsViewStateBefore = { [testPost.id]: testPost };
-
-    const newRealtimeCommentAction = {
-      type: REALTIME_COMMENT_NEW,
-      comment: { postId: testPost.id, id: 2 },
-    };
 
     const removeRealtimeCommentAction = {
       type: REALTIME_COMMENT_DESTROY,
       postId: testPost.id,
       commentId: 2,
     };
-
-    it('should raise number of omitted comments on realtime comment', () => {
-      const result = postsViewState(postsViewStateBefore, newRealtimeCommentAction);
-
-      expect(result[testPost.id].omittedComments, 'to equal', testPost.omittedComments + 1);
-    });
-
-    it('should decrease number of omitted comments on realtime comment deletion', () => {
-      const result = postsViewState(postsViewStateBefore, removeRealtimeCommentAction);
-
-      expect(result[testPost.id].omittedComments, 'to equal', testPost.omittedComments - 1);
-    });
 
     it('should not change state on realtime comment deletion if post is not found', () => {
       const result = postsViewState(postsViewStateBefore, {

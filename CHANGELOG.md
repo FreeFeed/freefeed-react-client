@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Group screennames in the right menu and in the page titles now updates in the
   real time
 
+### Changed
+- The logic for expanding/collapsing comments has been rewritten. Now up to two
+  comments can be seen after the fold. If after deleting a comment there are no
+  comments left before or after the fold, new data is fetched from the server.
+  If any of the comments are being edited, they won't fold until the editing is
+  finished.
+
 ## [1.94.0] - 2021-02-18
 ### Fixed
 - Tiktok previews work for videos with empty title

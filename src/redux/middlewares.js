@@ -800,6 +800,29 @@ export const initialWhoamiMiddleware = (store) => (next) => (action) => {
   next(action);
 };
 
+/**
+ * Completes incomplete post comments states
+ *
+ * Requests comments from the server if there are no comments before or after
+ * the omittedComments span.
+ */
+export const commentsCompleteMiddleware = (store) => (next) => (action) => {
+  const result = next(action);
+  if (
+    action.type === response(ActionTypes.DELETE_COMMENT) ||
+    action.type === ActionTypes.REALTIME_COMMENT_DESTROY
+  ) {
+    const postId = action.postId || action.request.postId;
+    const post = store.getState().posts[postId];
+    if (post && post.omittedComments > 0) {
+      if (post.omittedCommentsOffset === 0 || post.comments.length <= post.omittedCommentsOffset) {
+        store.dispatch(ActionCreators.completePostComments(postId));
+      }
+    }
+  }
+  return result;
+};
+
 // Fixing data structures coming from server
 export const dataFixMiddleware = (store) => (next) => (action) => {
   if (action.type === response(ActionTypes.GET_SINGLE_POST)) {
