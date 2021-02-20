@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Group screennames in the right menu and in the page titles now updates in the
   real time
 
+### Removed
+- Remove previews for the Reddit links. Reddit embeds can contain a video with
+  sound that plays automatically in the feed.
+
 ### Changed
 - The logic for expanding/collapsing comments has been rewritten. Now up to two
   comments can be seen after the fold. If after deleting a comment there are no
