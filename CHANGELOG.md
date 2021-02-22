@@ -84,6 +84,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - User's stats block (on her feed-page) has "All posts" link now
 - "All Groups" page can be filtered now
 - "Spoiler" texts can be hidden by clicking on them
+- The "Beta version" functionality. The instance can be declared as beta
+  version. In this case the "Beta" subheader and the floating "Report a bug"
+  button is shown.
 
 ## [1.90.1] - 2020-12-30
 ### Fixed
