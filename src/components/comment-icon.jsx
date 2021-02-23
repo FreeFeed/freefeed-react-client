@@ -84,7 +84,7 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
         ) : (
           false
         )}
-        <div 
+        <div
           className="comment-heart"
           onClick={heartClick}
           role="button"
