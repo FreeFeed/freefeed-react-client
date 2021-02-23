@@ -5,7 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.94.0] - Not released
+## [1.95.0] - Not released
+### Fixed
+- Group screennames in the right menu and in the page titles now updates in the
+  real time
+
+### Removed
+- Remove previews for the Reddit links. Reddit embeds can contain a video with
+  sound that plays automatically in the feed.
+
+### Changed
+- The logic for expanding/collapsing comments has been rewritten. Now up to two
+  comments can be seen after the fold. If after deleting a comment there are no
+  comments left before or after the fold, new data is fetched from the server.
+  If any of the comments are being edited, they won't fold until the editing is
+  finished.
+
+## [1.94.0] - 2021-02-18
 ### Fixed
 - Tiktok previews work for videos with empty title
 
@@ -14,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - On touch devices, where hover is not available, the user info popup now
   appears after clicking the user link. To navigate to the user's page, you need
   to click on the link inside the popup.
+- Raised maximum length of posts and comments to 3000 chars
+- Raised minimum password length to 9 chars
 
 ## [1.93.1] - 2021-01-29
 ### Fixed
@@ -69,6 +87,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - User's stats block (on her feed-page) has "All posts" link now
 - "All Groups" page can be filtered now
 - "Spoiler" texts can be hidden by clicking on them
+- The "Beta version" functionality. The instance can be declared as beta
+  version. In this case the "Beta" subheader and the floating "Report a bug"
+  button is shown.
 
 ## [1.90.1] - 2020-12-30
 ### Fixed

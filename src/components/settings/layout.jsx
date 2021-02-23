@@ -66,6 +66,11 @@ export default function Layout({ children, router }) {
     [router],
   );
 
+  if (!authenticated) {
+    // Do not allow anonymous access
+    return null;
+  }
+
   return (
     <div className="content">
       <Helmet

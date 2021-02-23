@@ -98,7 +98,8 @@
     background-color: #ffffbb;
   }
 
-  &.is-hidden {
+  &.is-hidden,
+  &.is-loading {
     $hidden-color: #bbb;
     .comment-text {
       font-style: italic;

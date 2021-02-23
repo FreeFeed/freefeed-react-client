@@ -51,14 +51,10 @@ const allFalse = () => false;
 
 const tokenizeHashtags = hashTags();
 
-const commentHighlighter = (
-  { commentsHighlights, user, postsViewState },
-  commentsPostId,
-  commentList,
-) => {
+const commentHighlighter = ({ commentsHighlights, user, posts }, commentsPostId, commentList) => {
   const { postId, author, arrows, baseCommentId } = commentsHighlights;
   const { comments } = user.frontendPreferences;
-  const { omittedComments } = postsViewState[commentsPostId];
+  const { omittedComments } = posts[commentsPostId];
   if (!comments.highlightComments) {
     return allFalse;
   }
@@ -152,47 +148,41 @@ export const joinPostData = (state) => (postId) => {
   const { omitRepeatedBubbles } = state.user.frontendPreferences.comments;
   const hashedCommentId = getCommentId(state.routing.locationBeforeTransitions.hash);
   const highlightComment = commentHighlighter(state, postId, post.comments);
-  let comments = (post.comments || []).reduce((_comments, commentId, index) => {
-    const comment = state.comments[commentId];
-    if (!comment) {
-      return _comments;
-    }
-    const commentEditState = state.commentEditState[commentId] || defaultCommentState;
-    const author = state.users[comment.createdBy] || null;
-    const previousComment = _comments[index - 1] || {
-      createdBy: null,
-      createdAt: '0',
-    };
-    const omitBubble =
-      omitRepeatedBubbles &&
-      postViewState.omittedComments === 0 &&
-      !comment.hideType &&
-      !previousComment.hideType &&
-      comment.createdBy === previousComment.createdBy &&
-      comment.createdAt - previousComment.createdAt < ommitBubblesThreshold;
-    const isEditable = user.id === comment.createdBy;
-    const isDeletable = isModeratable || isModeratable;
-    const highlighted = highlightComment(commentId, author);
-    const likesList = selectCommentLikes(state, commentId);
-    const highlightedFromUrl = commentId === hashedCommentId;
-    return _comments.concat([
-      {
-        ...comment,
-        ...commentEditState,
-        user: author,
-        isEditable,
-        isDeletable,
-        omitBubble,
-        highlighted,
-        likesList,
-        highlightedFromUrl,
-      },
-    ]);
-  }, []);
 
-  if (postViewState.omittedComments !== 0 && comments.length > 2) {
-    comments = [comments[0], comments[comments.length - 1]];
-  }
+  let prevComment = null;
+  const comments = post.comments
+    .map((commentId, idx) => {
+      const comment = state.comments[commentId];
+      if (!comment) {
+        return null;
+      }
+
+      if (post.omittedComments > 0 && post.omittedCommentsOffset === idx) {
+        prevComment = null;
+      }
+
+      const author = state.users[comment.createdBy] || null;
+      const omitBubble =
+        omitRepeatedBubbles &&
+        !!comment.createdBy &&
+        !!prevComment?.createdBy &&
+        comment.createdBy === prevComment.createdBy &&
+        comment.createdAt - prevComment.createdAt < ommitBubblesThreshold;
+
+      prevComment = comment;
+      return {
+        ...comment,
+        ...(state.commentEditState[commentId] || defaultCommentState),
+        user: author,
+        omitBubble,
+        isEditable: user.id === comment.createdBy,
+        isDeletable: isModeratable || isModeratable,
+        highlighted: highlightComment(commentId, author),
+        likesList: selectCommentLikes(state, commentId),
+        highlightedFromUrl: commentId === hashedCommentId,
+      };
+    })
+    .filter(Boolean);
 
   let usersLikedPost = (post.likes || []).map((userId) => state.users[userId]);
 
@@ -254,7 +244,7 @@ export function postActions(dispatch) {
       toggleEditingComment: (commentId) => dispatch(toggleEditingComment(commentId)),
       saveEditingComment: (commentId, newValue) =>
         dispatch(saveEditingComment(commentId, newValue)),
-      deleteComment: (commentId) => dispatch(deleteComment(commentId)),
+      deleteComment: (commentId, postId) => dispatch(deleteComment(commentId, postId)),
       highlightComment: (postId, author, arrows, baseCommentId) =>
         dispatch(highlightComment(postId, author, arrows, baseCommentId)),
       clearHighlightComment: () => dispatch(clearHighlightComment()),
@@ -317,8 +307,7 @@ export function canAcceptDirects(user, state) {
  * @param {object} state
  */
 export function destinationsPrivacy(destNames, state) {
-  const { user: me, groups } = state;
-  const dests = [me, ...Object.values(groups)];
+  const dests = [state.user, ...Object.values(state.users).filter((u) => u.type === 'group')];
   let isPrivate = true;
   let isProtected = true;
   for (const d of dests) {
