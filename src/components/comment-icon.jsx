@@ -84,7 +84,7 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
         ) : (
           false
         )}
-        <div className="comment-heart" onClick={heartClick} role="button">
+        <div className="comment-heart" onClick={heartClick} role="button" aria-label="Like this comment">
           <Icon
             icon={canLike ? faHeart : faHeartO}
             className={cn('icon', { liked: hasOwnLike })}
