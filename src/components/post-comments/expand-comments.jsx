@@ -24,11 +24,7 @@ export default function ExpandComments({
   return (
     <div className="comment more-comments-wrapper">
       <ErrorBoundary>
-        {isLoading && (
-          <span className="more-comments-throbber">
-            <Throbber />{' '}
-          </span>
-        )}
+        <span className="more-comments-throbber">{isLoading && <Throbber />}</span>
         <ButtonLink className="more-comments-link" href={entryUrl} onClick={onClick}>
           {text}
         </ButtonLink>
