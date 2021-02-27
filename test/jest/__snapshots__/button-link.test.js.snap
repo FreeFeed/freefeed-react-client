@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ButtonLink Doesn't work if disabled 1`] = `
+<DocumentFragment>
+  <a
+    aria-disabled="true"
+    role="button"
+    tabindex="0"
+  >
+    Click me!
+  </a>
+</DocumentFragment>
+`;
+
+exports[`ButtonLink Works correctly 1`] = `
+<DocumentFragment>
+  <a
+    aria-disabled="false"
+    class="some-class"
+    id="some-id"
+    role="button"
+    tabindex="0"
+  >
+    Click me!
+  </a>
+</DocumentFragment>
+`;

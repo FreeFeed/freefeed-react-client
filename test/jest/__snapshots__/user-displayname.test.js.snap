@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserDisplayName It's-a me! 1`] = `
+<DocumentFragment>
+  <span
+    dir="ltr"
+  >
+    You
+  </span>
+</DocumentFragment>
+`;
+
+exports[`UserDisplayName Shows both username and screenname 1`] = `
+<DocumentFragment>
+  <span
+    dir="auto"
+  >
+    The Plumber 
+    <span
+      dir="ltr"
+    >
+      (mario)
+    </span>
+  </span>
+</DocumentFragment>
+`;
+
+exports[`UserDisplayName Shows only screenname 1`] = `
+<DocumentFragment>
+  <span
+    dir="auto"
+  >
+    The Plumber
+  </span>
+</DocumentFragment>
+`;
+
+exports[`UserDisplayName Shows only username 1`] = `
+<DocumentFragment>
+  <span
+    dir="ltr"
+  >
+    mario
+  </span>
+</DocumentFragment>
+`;
