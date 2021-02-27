@@ -32,6 +32,15 @@ export default function AllGroups() {
           All Groups
         </div>
         <div className="box-body">
+          <div className="row" style={{ marginBottom: 20 }}>
+            <div className="col-md-6">
+              <Link to="/groups">List of your groups</Link>
+            </div>
+            <div className="col-md-6 text-right">
+              <Link to="/groups/create">Create a group</Link>
+            </div>
+          </div>
+
           {status.loading && <p>Loading...</p>}
           {status.error && (
             <p className="alert alert-danger">Can not load groups list: {status.errorText}</p>

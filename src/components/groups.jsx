@@ -60,12 +60,14 @@ const GroupsHandler = (props) => {
     <div className="box">
       <ErrorBoundary>
         <div className="box-header-timeline" role="heading">
-          Groups
+          Your groups
         </div>
         <div className="box-body">
           <div className="row">
-            <div className="col-md-8">All the groups you are subscribed to</div>
-            <div className="col-md-4 text-right">
+            <div className="col-md-6">
+              <Link to="/all-groups">List of all groups</Link>
+            </div>
+            <div className="col-md-6 text-right">
               <Link to="/groups/create">Create a group</Link>
             </div>
           </div>
