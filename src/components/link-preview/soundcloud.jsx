@@ -57,7 +57,7 @@ export default function SoundCloudPreview({ url }) {
         style={{ width: '100%', maxWidth: '450px', height: '166px' }}
       />
       <div className="info">
-        <a href={url} target="_blank" title={byline}>
+        <a href={url} rel="noreferrer" target="_blank" title={byline}>
           {byline} at SoundCloud
         </a>
       </div>

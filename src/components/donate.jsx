@@ -137,7 +137,7 @@ const Donate = () => (
         0.5-2%):
         <br />
         Pay with{' '}
-        <a href="https://yasobe.ru/na/freefeed" target="_blank">
+        <a href="https://yasobe.ru/na/freefeed" target="_blank" rel="noreferrer">
           Yandex.Money
         </a>
       </p>
@@ -256,7 +256,7 @@ const Donate = () => (
         (комиссия 0.5-2%):
         <br />
         Сделать взнос через{' '}
-        <a href="https://yasobe.ru/na/freefeed" target="_blank">
+        <a href="https://yasobe.ru/na/freefeed" target="_blank" rel="noreferrer">
           Яндекс.Деньги
         </a>
       </p>

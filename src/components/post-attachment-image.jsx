@@ -59,6 +59,7 @@ class PostAttachmentImage extends PureComponent {
           title={nameAndSize}
           onClick={props.handleClick}
           target="_blank"
+          rel="noreferrer"
           className="image-attachment-link"
         >
           {props.thumbnailUrl ? (
