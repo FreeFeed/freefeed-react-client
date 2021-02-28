@@ -122,4 +122,6 @@ export default {
     header: 'Last-Modified',
     intervalSec: 300,
   },
+
+  donationStatusAccount: null,
 };

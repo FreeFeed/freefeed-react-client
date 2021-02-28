@@ -17,11 +17,11 @@ import UserName from './user-name';
 import RecentGroups from './recent-groups';
 import ErrorBoundary from './error-boundary';
 import { InvisibleSelect } from './invisible-select';
-import { LiberaPayWidget } from './libera-pay-widget';
 import { UserPicture } from './user-picture';
 import { SidebarHomeFeeds } from './sidebar-homefeeds';
 import { ButtonLink } from './button-link';
 import { Throbber } from './throbber';
+import { DonationWidget } from './donation-widget';
 
 function LoggedInBlock({ user, signOut }) {
   const signOutStatus = useSelector((state) => state.signOutStatus);
@@ -215,97 +215,6 @@ const SideBarGroups = () => {
   );
 };
 
-const SideBarCoinJar = () => (
-  <div className="box" role="region">
-    <div className="box-header-groups" role="heading">
-      Donate
-    </div>
-    <div className="box-footer">
-      <p style={{ marginBottom: '10px' }}>
-        <Link to="/about/donate">
-          <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>Donate</span>
-        </Link>{' '}
-        to {CONFIG.siteTitle}! Your regular donations pay for hosting and keep {CONFIG.siteTitle}{' '}
-        running.
-      </p>
-      <p>
-        <b>Easy way</b>:
-        <br />
-        <LiberaPayWidget project="freefeed" />
-      </p>
-      <span style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
-        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-          <input type="hidden" name="cmd" value="_s-xclick" />
-          <input type="hidden" name="hosted_button_id" value="DRR5XU73QLD7Y" />
-          <b>Paypal way</b>:
-          <table>
-            <tbody>
-              <tr>
-                <td style={{ paddingBottom: '5px' }}>
-                  <input
-                    type="hidden"
-                    name="on0"
-                    value="Pick monthly donation amount"
-                    style={{ padding: '5px 0' }}
-                  />
-                  Choose your option:
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <select name="os0" defaultValue="Advanced">
-                    <option value="Basic">€5.00 EUR / month</option>
-                    <option value="Advanced">€10.00 EUR / month</option>
-                    <option value="Sizable">€15.00 EUR / month</option>
-                    <option value="Luxurious">€20.00 EUR / month</option>
-                    <option value="King size">€30.00 EUR / month</option>
-                    <option value="Master of the Universe">€50.00 EUR / month</option>
-                    <option value="Chuck Norris">€75.00 EUR / month</option>
-                    <option value="Duke Nukem">€100.00 EUR / month</option>
-                  </select>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <input type="hidden" name="currency_code" value="EUR" />
-          <input
-            type="image"
-            src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png"
-            name="submit"
-            alt="PayPal - The safer, easier way to pay online!"
-            style={{ margin: '5px' }}
-          />
-        </form>
-      </span>
-      <form
-        action="https://www.paypal.com/cgi-bin/webscr"
-        method="post"
-        target="_top"
-        id="singlePayPalPayment"
-      >
-        <input type="hidden" name="cmd" value="_s-xclick" />
-        <input type="hidden" name="hosted_button_id" value="HMVYD6GEWNWH8" />
-        <input
-          type="image"
-          src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png"
-          width="0"
-          height="0"
-          name="submit"
-          alt="PayPal - The safer, easier way to pay online!"
-        />
-      </form>
-      <p style={{ marginBottom: '10px' }}>
-        See all possible{' '}
-        <a href="/about/donate" target="_blank">
-          <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>
-            donation&nbsp;options→
-          </span>
-        </a>
-      </p>
-    </div>
-  </div>
-);
-
 const SideBarBookmarklet = () => (
   <div className="box" role="region">
     <div className="box-header-groups" role="heading">
@@ -415,7 +324,7 @@ const SideBar = ({ user, signOut }) => {
         <SideBarFreeFeed />
         <SideBarBookmarklet />
         <SideBarMemories />
-        <SideBarCoinJar />
+        <DonationWidget />
         <SideBarAppearance />
       </ErrorBoundary>
     </div>

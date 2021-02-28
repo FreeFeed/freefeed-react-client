@@ -1,0 +1,61 @@
+.body {
+  font-size: 12px !important;
+}
+
+$color-undef: #ddd;
+$color-good: #80f283;
+$color-ok: #ecff90;
+$color-low: #fdfa77;
+$color-very-low: #fcb169;
+$color-critical: #fa6b4b;
+
+@mixin linkColor($baseColor) {
+  background-color: $baseColor;
+  border-color: mix($baseColor, #000, 90);
+}
+
+.statusLink {
+  color: inherit !important;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 0.2em 0.6em;
+  border-radius: 0.2em;
+  border: 1px solid;
+  @include linkColor($color-undef);
+
+  &[data-status='Very good'],
+  &[data-status='Good'] {
+    @include linkColor($color-good);
+  }
+  &[data-status='OK'] {
+    @include linkColor($color-ok);
+  }
+  &[data-status='Low'] {
+    @include linkColor($color-low);
+  }
+  &[data-status='Very low'] {
+    @include linkColor($color-very-low);
+  }
+  &[data-status='Critical'] {
+    @include linkColor($color-critical);
+  }
+}
+
+.statusLinkInSidebar {
+  &[data-status='OK'],
+  &[data-status='Low'],
+  &[data-status='Very low'],
+  &[data-status='Critical'] {
+    display: block;
+    margin-top: 0.5em;
+    text-align: center;
+    padding: 0.5em 0;
+    max-width: 300px;
+  }
+}
+
+.donateLink {
+  color: inherit !important;
+  font-weight: bold;
+  text-decoration: underline !important;
+}
