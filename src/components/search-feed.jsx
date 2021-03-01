@@ -38,7 +38,7 @@ function FeedHandler(props) {
         {queryString && (
           <>
             <p>
-              {pageIsLoading ? 'Searching' : 'Seach results'} for: <strong>{queryString}</strong>
+              {pageIsLoading ? 'Searching' : 'Search results'} for: <strong>{queryString}</strong>
             </p>
             {props.entries.length === 0 && !pageIsLoading && (
               <p>No results found. Try a different query.</p>
