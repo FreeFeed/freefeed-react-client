@@ -90,7 +90,7 @@ class Layout extends Component {
         <header>
           <h1>
             Share on{' '}
-            <a href="/" target="_blank" rel="noreferrer">
+            <a href="/" target="_blank">
               {CONFIG.siteTitle}
             </a>
             {props.authenticated ? ` as ${props.user.username}` : false}

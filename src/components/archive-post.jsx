@@ -25,7 +25,6 @@ function ArchivePostHandler({ router, inProgress, success, id }) {
           You can try to find{' '}
           <a
             target="_blank"
-            rel="noreferrer"
             style={{ textDecoration: 'underline' }}
             href={`https://web.archive.org/web/20150410000000/${encodeURIComponent(
               router.location.query.url,

@@ -100,7 +100,7 @@ export default class CreateBookmarkletPost extends Component {
         <div className="brand-new-post">
           Done! Check out
           <br />
-          <a href={postUrl} target="_blank" rel="noreferrer">
+          <a href={postUrl} target="_blank">
             your brand new post
           </a>
         </div>

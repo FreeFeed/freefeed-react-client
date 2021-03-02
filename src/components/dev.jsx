@@ -23,14 +23,14 @@ function Dev() {
 
         <p>
           FreeFeed is open-source:{' '}
-          <a href="https://github.com/FreeFeed/" target="_blank" rel="noreferrer">
+          <a href="https://github.com/FreeFeed/" target="_blank">
             https://github.com/FreeFeed/
           </a>
         </p>
 
         <p>
           The{' '}
-          <a href="https://github.com/FreeFeed/freefeed-server" target="_blank" rel="noreferrer">
+          <a href="https://github.com/FreeFeed/freefeed-server" target="_blank">
             backend
           </a>{' '}
           is built with Node.js and PostgreSQL.
@@ -38,11 +38,7 @@ function Dev() {
 
         <p>
           The{' '}
-          <a
-            href="https://github.com/FreeFeed/freefeed-react-client"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href="https://github.com/FreeFeed/freefeed-react-client" target="_blank">
             frontend
           </a>{' '}
           is built with React.

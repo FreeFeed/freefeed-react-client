@@ -15,8 +15,6 @@ export default ScrollSafe(
       initEmbedly();
       box.current.innerHTML = `<a
       href="${url.replace(/"/g, '&quot;')}",
-      target="_blank"
-      rel="noreferrer"
       data-card-controls="0"
       data-card-width="400px"
       data-card-recommend="0"

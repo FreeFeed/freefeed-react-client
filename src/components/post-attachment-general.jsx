@@ -17,7 +17,7 @@ class GeneralAttachment extends PureComponent {
 
     return (
       <div className="attachment" role="figure" aria-label={`Attachment ${nameAndSize}`}>
-        <a href={props.url} title={nameAndSize} target="_blank" rel="noreferrer">
+        <a href={props.url} title={nameAndSize} target="_blank">
           <Icon icon={faFile} className="attachment-icon" />
           <span className="attachment-title">{nameAndSize}</span>
         </a>

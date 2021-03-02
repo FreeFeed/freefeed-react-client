@@ -64,7 +64,6 @@ class GoogleDocsPreview extends Component {
           className="google-docs-inner"
           href={this.props.url}
           target="_blank"
-          rel="noreferrer"
           style={{
             backgroundSize: `${zoomRate(type) * 100}%`,
             backgroundImage: preview ? `url(${preview})` : null,

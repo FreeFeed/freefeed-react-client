@@ -6,11 +6,8 @@ export default () => (
 
     <p>
       FreeFeed is a small and free social network. We do not harvest users&apos; personal data, nor
-      serve ads. It is an{' '}
-      <a href="https://github.com/FreeFeed" rel="noreferrer">
-        open-source project
-      </a>{' '}
-      developed by volunteers and funded by donations from its users.
+      serve ads. It is an <a href="https://github.com/FreeFeed">open-source project</a> developed by
+      volunteers and funded by donations from its users.
     </p>
 
     <h4>No ads</h4>
@@ -53,10 +50,8 @@ export default () => (
     <p>
       FreeFeed — маленькая бесплатная социальная сеть, которая не продаёт ваши данные и не
       показывает рекламу. Это{' '}
-      <a href="https://github.com/FreeFeed" rel="noreferrer">
-        проект с открытым исходным кодом
-      </a>
-      . Его развитием занимаются пользователи-волонтеры за счет пожертвований других пользователей.
+      <a href="https://github.com/FreeFeed">проект с открытым исходным кодом</a>. Его развитием
+      занимаются пользователи-волонтеры за счет пожертвований других пользователей.
     </p>
 
     <h4>Без рекламы</h4>

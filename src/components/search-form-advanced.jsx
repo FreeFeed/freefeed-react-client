@@ -181,11 +181,7 @@ export const SearchFormAdvanced = withRouter(function SearchFormAdvanced({ route
       </p>
       <p>
         Learn the{' '}
-        <a
-          href="https://github.com/FreeFeed/freefeed-server/wiki/FreeFeed-Search"
-          rel="noreferrer"
-          target="_blank"
-        >
+        <a href="https://github.com/FreeFeed/freefeed-server/wiki/FreeFeed-Search" target="_blank">
           full query syntax
         </a>{' '}
         for more advanced search requests.

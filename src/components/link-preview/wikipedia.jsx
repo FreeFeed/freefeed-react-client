@@ -63,7 +63,7 @@ export default memo(function WikipediaPreview({ url }) {
       <FoldableContent maxUnfoldedHeight={250} foldedHeight={200}>
         {previewData ? (
           <div ref={previewEl} className="wikipedia-preview">
-            <a href={url} rel="noreferrer" target="_blank">
+            <a href={url} target="_blank">
               <div>
                 {previewData.thumbnail ? (
                   <img
