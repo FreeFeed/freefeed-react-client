@@ -86,7 +86,7 @@ export default withLayout('Generate new token', function CreateToken() {
           </div>
           {returnHref && (
             <div className="form-group">
-              <a href={returnHref}>
+              <a href={returnHref} rel="noreferrer">
                 <Icon icon={faAngleLeft} /> Back to application site
               </a>{' '}
               ({returnDomain})

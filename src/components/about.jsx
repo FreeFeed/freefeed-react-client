@@ -33,7 +33,7 @@ const About = ({ authenticated }) => (
 
       <p>
         FreeFeed is being built as a replacement for{' '}
-        <a href="https://en.wikipedia.org/wiki/FriendFeed" target="_blank">
+        <a href="https://en.wikipedia.org/wiki/FriendFeed" target="_blank" rel="noreferrer">
           FriendFeed
         </a>
         , the real-time aggregator and social network where {'"'}likes{'"'} for user generated
@@ -50,7 +50,11 @@ const About = ({ authenticated }) => (
 
       <p>
         FreeFeed{' '}
-        <a href="https://github.com/FreeFeed/freefeed-server/wiki/FAQ" target="_blank">
+        <a
+          href="https://github.com/FreeFeed/freefeed-server/wiki/FAQ"
+          target="_blank"
+          rel="noreferrer"
+        >
           frequently asked questions page
         </a>
         .
@@ -60,7 +64,7 @@ const About = ({ authenticated }) => (
 
       <p>
         FreeFeed is an open-source project. We are{' '}
-        <a href="https://freefeed.net/ffdev/21fde9c3-2f4a-4778-8fe8-57be90c7b737">
+        <a href="https://freefeed.net/ffdev/21fde9c3-2f4a-4778-8fe8-57be90c7b737" rel="noreferrer">
           looking for volunteers
         </a>{' '}
         to help us with the development of FreeFeed.net.
@@ -86,7 +90,7 @@ const About = ({ authenticated }) => (
 
       <p>
         After launching a{' '}
-        <a href="https://www.indiegogo.com/projects/freefeed-v-1" target="_blank">
+        <a href="https://www.indiegogo.com/projects/freefeed-v-1" target="_blank" rel="noreferrer">
           successful crowdfunding campaign
         </a>{' '}
         in December 2015, the platform is now being actively developed. It is being used by{' '}
@@ -111,11 +115,11 @@ const About = ({ authenticated }) => (
       <hr />
       <p>
         Thanks to{' '}
-        <a href="https://www.questionpro.com/" target="_blank">
+        <a href="https://www.questionpro.com/" target="_blank" rel="noreferrer">
           QuestionPro&apos;s
         </a>{' '}
         wide range of{' '}
-        <a href="https://www.questionpro.com/survey-templates/" target="_blank">
+        <a href="https://www.questionpro.com/survey-templates/" target="_blank" rel="noreferrer">
           free survey templates
         </a>{' '}
         designed by industry experts.

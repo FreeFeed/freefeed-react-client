@@ -170,6 +170,7 @@ function showMediaWithKey(showMedia) {
         href={media}
         target="_blank"
         dir="ltr"
+        rel="noreferrer"
         onClick={handleOpenMedia(attachments.length - 1)}
         key={`media${attachments.length}`}
         className={classnames('media-link', mediaType)}
@@ -189,7 +190,7 @@ function showMediaWithKey(showMedia) {
 function anchorElWithKey(key) {
   return function (href, content) {
     return (
-      <a href={href} target="_blank" dir="ltr" key={key}>
+      <a href={href} target="_blank" dir="ltr" rel="noreferrer" key={key}>
         {content}
       </a>
     );
