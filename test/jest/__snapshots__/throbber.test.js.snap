@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Throbber Renders in big size 1`] = `
+<DocumentFragment>
+  <canvas
+    aria-busy="true"
+    aria-label="Please wait..."
+    aria-live="polite"
+    class="my-enormous-throbber throbber-image"
+    height="96"
+    role="status"
+    style="width: 96px; height: 96px;"
+    width="96"
+  />
+</DocumentFragment>
+`;
+
+exports[`Throbber Renders in small size 1`] = `
+<DocumentFragment>
+  <canvas
+    aria-busy="true"
+    aria-label="Please wait..."
+    aria-live="polite"
+    class="my-humble-throbber throbber-image"
+    height="16"
+    role="status"
+    style="width: 16px; height: 16px;"
+    width="16"
+  />
+</DocumentFragment>
+`;
