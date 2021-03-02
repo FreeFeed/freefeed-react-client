@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Group screennames in the right menu and in the page titles now updates in the
   real time
 
+### Added
+- Links between All Groups and Your Groups pages
+- Jest-based snapshot tests
+
 ### Removed
 - Remove previews for the Reddit links. Reddit embeds can contain a video with
   sound that plays automatically in the feed.
