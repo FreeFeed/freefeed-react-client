@@ -124,7 +124,7 @@ export const UserSubscriptionEditPopup = forwardRef(function UserSubscriptionEdi
 
   // Return focus to an element that had it before opening the panel
   const prevSelected = useMemo(() => document.activeElement, []);
-  useEffect(() => () => prevSelected?.focus(), [prevSelected?.focus]);
+  useEffect(() => () => prevSelected?.focus(), [prevSelected]);
 
   return (
     <div ref={ref} className={cn(menuStyles.list, styles.popup)}>
