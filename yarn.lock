@@ -1989,7 +1989,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/jest-dom@npm:^5.11.9":
+"@testing-library/jest-dom@npm:~5.11.9":
   version: 5.11.9
   resolution: "@testing-library/jest-dom@npm:5.11.9"
   dependencies:
@@ -2005,7 +2005,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/react@npm:^11.2.5":
+"@testing-library/react@npm:~11.2.5":
   version: 11.2.5
   resolution: "@testing-library/react@npm:11.2.5"
   dependencies:
@@ -7872,7 +7872,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"identity-obj-proxy@npm:^3.0.0":
+"identity-obj-proxy@npm:~3.0.0":
   version: 3.0.0
   resolution: "identity-obj-proxy@npm:3.0.0"
   dependencies:
@@ -8742,7 +8742,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"jest-canvas-mock@npm:^2.3.1":
+"jest-canvas-mock@npm:~2.3.1":
   version: 2.3.1
   resolution: "jest-canvas-mock@npm:2.3.1"
   dependencies:
@@ -9186,7 +9186,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"jest@npm:^26.6.3":
+"jest@npm:~26.6.3":
   version: 26.6.3
   resolution: "jest@npm:26.6.3"
   dependencies:
@@ -10455,7 +10455,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"mousetrap@npm:^1.6.5":
+"mousetrap@npm:~1.6.5":
   version: 1.6.5
   resolution: "mousetrap@npm:1.6.5"
   checksum: 563074169163708e2de0c2e9a2bd76f32ba909efbe2baf395db08015d09b19445b859982fad36cd50dcd8a2475f07af89babe2b3da029e7b5cd48e26ff973cd5
@@ -10693,7 +10693,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"node-noop@npm:^1.0.0":
+"node-noop@npm:~1.0.0":
   version: 1.0.0
   resolution: "node-noop@npm:1.0.0"
   checksum: 33331046468af72c22553cee2b754851897fa26c36393017ad3dcfbcd28b705e573a71ae7abe18a8f357fa6fd9a3b3ab3aefb52f373b368ec4a5be40b530e269
@@ -11700,7 +11700,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"porter-stemmer@npm:^0.9.1":
+"porter-stemmer@npm:~0.9.1":
   version: 0.9.1
   resolution: "porter-stemmer@npm:0.9.1"
   checksum: 59e470883f984ddc0f205469f3b8c26bf2ac616565ecedac9327bb411d681795b9c0c1022b06742acfad0708a033dd7bcb25bfa120504b6be02b1f6a231ce98f
@@ -13032,8 +13032,8 @@ fsevents@~2.1.2:
     "@fortawesome/free-solid-svg-icons": ~5.15.2
     "@gfx/zopfli": ~1.0.15
     "@sentry/react": ~5.30.0
-    "@testing-library/jest-dom": ^5.11.9
-    "@testing-library/react": ^11.2.5
+    "@testing-library/jest-dom": ~5.11.9
+    "@testing-library/react": ~11.2.5
     autotrack: ~2.4.1
     babel-eslint: ~10.1.0
     babel-loader: ~8.2.2
@@ -13067,9 +13067,9 @@ fsevents@~2.1.2:
     highcharts: ~8.2.2
     html-webpack-plugin: ~4.5.2
     husky: ~5.0.9
-    identity-obj-proxy: ^3.0.0
-    jest: ^26.6.3
-    jest-canvas-mock: ^2.3.1
+    identity-obj-proxy: ~3.0.0
+    jest: ~26.6.3
+    jest-canvas-mock: ~2.3.1
     keycode-js: ~3.1.0
     lint-staged: ~10.5.4
     local-storage-fallback: ~4.1.2
@@ -13079,13 +13079,13 @@ fsevents@~2.1.2:
     mini-css-extract-plugin: ~0.11.3
     mocha: ~8.2.1
     mochapack: ~2.0.6
-    mousetrap: ^1.6.5
-    node-noop: ^1.0.0
+    mousetrap: ~1.6.5
+    node-noop: ~1.0.0
     node-sass: ~5.0.0
     npm-run-all: ~4.1.5
     null-loader: ~4.0.1
     optimize-css-assets-webpack-plugin: ~5.0.4
-    porter-stemmer: ^0.9.1
+    porter-stemmer: ~0.9.1
     prettier: ~2.2.1
     prop-types: ~15.7.2
     pug: ~3.0.0
