@@ -29,6 +29,7 @@ import { PreventPageLeaving } from '../../prevent-page-leaving';
 import { Icon } from '../../fontawesome-icons';
 import { RadioInput, CheckboxInput } from '../../form-utils';
 import TimeDisplay from '../../time-display';
+import { doSequence } from '../../../redux/async-helpers';
 import styles from './forms.module.scss';
 
 export default function AppearanceForm() {
@@ -379,48 +380,53 @@ function initialValues({
 }
 
 function onSubmit(dispatch) {
-  return (values) => {
-    dispatch(setNSFWVisibility(!values.hideNSFWContent));
-    dispatch(
-      updateActualUserPreferences({
-        updateFrontendPrefs(prefs) {
-          return {
-            displayNames: {
-              ...prefs.displayNames,
-              useYou: values.useYou,
-              displayOption: parseInt(values.displayNames, 10),
-            },
-            homeFeedMode: values.homeFeedMode,
-            homefeed: {
-              ...prefs.homefeed,
-              hideUsers: values.hiddenUsers.toLowerCase().match(/[\w-]+/g) || [],
-            },
-            readMoreStyle: values.readMoreStyle,
-            comments: {
-              ...prefs.comments,
-              omitRepeatedBubbles: values.omitBubbles,
-              highlightComments: values.highlightComments,
-              showTimestamps: values.commentsTimestamps,
-            },
-            hideUnreadNotifications: values.hideUnreadNotifications,
-            allowLinksPreview: values.allowLinksPreview,
-            timeDisplay: {
-              ...prefs.timeDisplay,
-              amPm: values.timeAmPm === '1',
-              absolute: values.timeAbsolute === '1',
-            },
-          };
-        },
-
-        updateBackendPrefs({ hideCommentsOfTypes }) {
-          return {
-            hideCommentsOfTypes: values.hideBannedComments
-              ? uniq([...hideCommentsOfTypes, COMMENT_HIDDEN_BANNED])
-              : without(hideCommentsOfTypes, COMMENT_HIDDEN_BANNED),
-          };
-        },
-      }),
+  return (values) =>
+    doSequence(dispatch)(
+      (dispatch) => dispatch(updateActualUserPreferences(prefUpdaters(values))),
+      (dispatch) => {
+        dispatch(setNSFWVisibility(!values.hideNSFWContent));
+        dispatch(setBetaChannel(values.enableBeta));
+      },
     );
-    dispatch(setBetaChannel(values.enableBeta));
+}
+
+function prefUpdaters(values) {
+  return {
+    updateFrontendPrefs(prefs) {
+      return {
+        displayNames: {
+          ...prefs.displayNames,
+          useYou: values.useYou,
+          displayOption: parseInt(values.displayNames, 10),
+        },
+        homeFeedMode: values.homeFeedMode,
+        homefeed: {
+          ...prefs.homefeed,
+          hideUsers: values.hiddenUsers.toLowerCase().match(/[\w-]+/g) || [],
+        },
+        readMoreStyle: values.readMoreStyle,
+        comments: {
+          ...prefs.comments,
+          omitRepeatedBubbles: values.omitBubbles,
+          highlightComments: values.highlightComments,
+          showTimestamps: values.commentsTimestamps,
+        },
+        hideUnreadNotifications: values.hideUnreadNotifications,
+        allowLinksPreview: values.allowLinksPreview,
+        timeDisplay: {
+          ...prefs.timeDisplay,
+          amPm: values.timeAmPm === '1',
+          absolute: values.timeAbsolute === '1',
+        },
+      };
+    },
+
+    updateBackendPrefs({ hideCommentsOfTypes }) {
+      return {
+        hideCommentsOfTypes: values.hideBannedComments
+          ? uniq([...hideCommentsOfTypes, COMMENT_HIDDEN_BANNED])
+          : without(hideCommentsOfTypes, COMMENT_HIDDEN_BANNED),
+      };
+    },
   };
 }
