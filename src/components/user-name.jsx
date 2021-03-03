@@ -8,7 +8,12 @@ import { useDropDown, CLOSE_ON_CLICK_OUTSIDE } from './hooks/drop-down';
 import { UserDisplayName } from './user-displayname';
 import UserCard from './user-card';
 
-export default function UserName({ user: { username, screenName }, children, className }) {
+export default function UserName({
+  user: { username, screenName },
+  userHover, // { hover, leave },
+  children,
+  className,
+}) {
   const myUsername = useSelector((state) => state.user.username);
   const prefs = useSelector((state) => state.user.frontendPreferences.displayNames);
 
@@ -25,9 +30,27 @@ export default function UserName({ user: { username, screenName }, children, cla
     touchTimeout.current = setTimeout(() => (isTouched.current = false), 500);
   }, []);
 
-  const onClick = useCallback((e) => isTouched.current && (toggle(), e.preventDefault()), [toggle]);
+  const onClick = useCallback(
+    (e) => {
+      if (isTouched.current) {
+        e.preventDefault();
+        // Use setTimeout here because click handlers should be able to close
+        // the existing popup before the new popup is opened.
+        setTimeout(() => toggle(), 0);
+      }
+    },
+    [toggle],
+  );
 
   const { onEnter, onLeave } = useHover(500, setOpened);
+
+  useEffect(() => {
+    if (opened) {
+      userHover?.hover(username);
+    } else {
+      userHover?.leave(username);
+    }
+  }, [opened, userHover, username]);
 
   useEffect(() => {
     if (!opened) {
