@@ -1670,7 +1670,9 @@ export function commentsHighlights(state = {}, action) {
       return { ...action };
     }
     case ActionTypes.CLEAR_HIGHLIGHT_COMMENT: {
-      return {};
+      if (action.force || action.author === state.author) {
+        return {};
+      }
     }
   }
   return state;

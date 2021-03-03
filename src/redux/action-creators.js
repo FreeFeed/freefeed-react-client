@@ -755,8 +755,8 @@ export function highlightComment(postId, author, arrows, baseCommentId) {
   };
 }
 
-export function clearHighlightComment() {
-  return { type: ActionTypes.CLEAR_HIGHLIGHT_COMMENT };
+export function clearHighlightComment(author, force = false) {
+  return { type: ActionTypes.CLEAR_HIGHLIGHT_COMMENT, author, force };
 }
 
 export function blockedByMe() {

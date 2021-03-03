@@ -57,7 +57,7 @@ class PostComment extends Component {
       clearTimeout(this.enterTimeout);
     }
     if (this.commentsAreHighlighted) {
-      this.props.clearHighlightComment();
+      this.props.clearHighlightComment(undefined, true);
       this.commentsAreHighlighted = false;
     }
   }
@@ -95,19 +95,26 @@ class PostComment extends Component {
     this.props.deleteComment(this.props.id, this.props.postId),
   );
 
-  handleHoverOnUsername = (username) => {
-    this.props.highlightComment(username);
-    this.commentsAreHighlighted = true;
+  userHoverHandlers = {
+    hover: (username) => {
+      this.props.highlightComment(username);
+      this.commentsAreHighlighted = true;
+    },
+    leave: (username) => {
+      this.props.clearHighlightComment(username);
+      this.commentsAreHighlighted = false;
+    },
   };
 
-  handleStopHighlighting = () => {
-    this.props.clearHighlightComment();
-    this.commentsAreHighlighted = false;
-  };
-
-  handleHoverOverArrow = (arrows) => {
-    this.props.highlightArrowComment(this.props.id, arrows);
-    this.commentsAreHighlighted = true;
+  arrowHoverHandlers = {
+    hover: (arrows) => {
+      this.props.highlightArrowComment(this.props.id, arrows);
+      this.commentsAreHighlighted = true;
+    },
+    leave: () => {
+      this.props.clearHighlightComment(undefined, true);
+      this.commentsAreHighlighted = false;
+    },
   };
 
   renderBody() {
@@ -143,13 +150,7 @@ class PostComment extends Component {
     const authorAndButtons = (
       <span aria-label={`Comment by ${this.props.user.username}`}>
         {' -'}&nbsp;
-        <UserName
-          user={this.props.user}
-          userHover={{
-            hover: this.handleHoverOnUsername,
-            leave: this.handleStopHighlighting,
-          }}
-        />
+        <UserName user={this.props.user} userHover={this.userHoverHandlers} />
         {this.props.isEditable ? (
           <span>
             {' '}
@@ -205,14 +206,8 @@ class PostComment extends Component {
             text={this.props.body}
             readMoreStyle={this.props.readMoreStyle}
             highlightTerms={this.props.highlightTerms}
-            userHover={{
-              hover: this.handleHoverOnUsername,
-              leave: this.handleStopHighlighting,
-            }}
-            arrowHover={{
-              hover: this.handleHoverOverArrow,
-              leave: this.handleStopHighlighting,
-            }}
+            userHover={this.userHoverHandlers}
+            arrowHover={this.arrowHoverHandlers}
             showMedia={this.props.showMedia}
           />
           {authorAndButtons}
