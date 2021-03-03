@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PieceOfText Renders a short piece of text 1`] = `
+<DocumentFragment>
+  <span
+    class="Linkify"
+    dir="auto"
+    role="region"
+  >
+    <span
+      dir="auto"
+    >
+      First paragraph Second paragraph, first line Second paragraph, second line
+    </span>
+     
+    <a
+      class="read-more"
+    >
+      Expand
+    </a>
+  </span>
+</DocumentFragment>
+`;
+
+exports[`PieceOfText Renders a short piece of text 2`] = `
+<DocumentFragment>
+  <span
+    class="Linkify"
+    dir="auto"
+    role="region"
+  >
+    <span>
+      First paragraph
+    </span>
+    <div
+      class="p-break"
+    >
+      <br />
+    </div>
+    <span>
+      <span>
+        Second paragraph, first line
+      </span>
+      <br />
+      <span>
+        Second paragraph, second line
+      </span>
+    </span>
+  </span>
+</DocumentFragment>
+`;
+
+exports[`PieceOfText Renders a very long piece of text 1`] = `
+<DocumentFragment>
+  <span
+    class="Linkify"
+    dir="auto"
+    role="region"
+  >
+    <span
+      dir="auto"
+    >
+      1000: Не мысля гордый свет 27 забавить, Вниманье дружбы возлюбя, Хотел 71 бы я тебе представить Залог 102 достойнее тебя, Достойнее души прекрасной, 149 Святой исполненной мечты, Поэзии живой 192 и ясной, Высоких дум и простоты; Но 232 так и быть - рукой пристрастной Прими 274 собранье пестрых глав, Полусмешных, полупечальных, 329 Простонародных, идеальных, Небрежный плод моих 380 забав, Бессониц, легких вдохновений, Незрелых 430 и увядших лет, Ума холодных наблюдений 473 И сердца горестных замет. ГЛАВА ПЕРВАЯ 516 И жить торопится и чувствовать спешит. К. 562 Вяземский. I. "Мой дядя самых...
+    </span>
+     
+    <a
+      class="read-more"
+    >
+      Read more
+    </a>
+  </span>
+</DocumentFragment>
+`;
+
+exports[`PieceOfText Renders a very long piece of text 2`] = `
+<DocumentFragment>
+  <span
+    class="Linkify"
+    dir="auto"
+    role="region"
+  >
+    1000: Не мысля гордый свет 27 забавить, Вниманье дружбы возлюбя, Хотел 71 бы я тебе представить Залог 102 достойнее тебя, Достойнее души прекрасной, 149 Святой исполненной мечты, Поэзии живой 192 и ясной, Высоких дум и простоты; Но 232 так и быть - рукой пристрастной Прими 274 собранье пестрых глав, Полусмешных, полупечальных, 329 Простонародных, идеальных, Небрежный плод моих 380 забав, Бессониц, легких вдохновений, Незрелых 430 и увядших лет, Ума холодных наблюдений 473 И сердца горестных замет. ГЛАВА ПЕРВАЯ 516 И жить торопится и чувствовать спешит. К. 562 Вяземский. I. "Мой дядя самых 596 честных правил, Когда не в шутку 633 занемог, Он уважать себя заставил 671 И лучше выдумать не мог. Его 704 пример другим наука; Но, боже 738 мой, какая скука С больным сидеть 776 и день и ночь, Не отходя ни 808 шагу прочь! Какое низкое коварство 847 Полу-живого забавлять, Ему подушки поправлять, 898 Печально подносить лекарство, Вздыхать и думать 950 про себя: Когда же чорт 978 возьмет тебя!" II.
+  </span>
+</DocumentFragment>
+`;
+
+exports[`PieceOfText Renders an empty span if empty 1`] = `
+<DocumentFragment>
+  <span />
+</DocumentFragment>
+`;
+
+exports[`PieceOfText Renders text with spoilers 1`] = `
+<DocumentFragment>
+  <span
+    class="Linkify"
+    dir="auto"
+    role="region"
+  >
+    123 &lt;spoiler&gt; &lt;spoiler&gt;
+    <span
+      class="spoiler-hidden"
+      title="This is a spoiler. Click to reveal its contents."
+    >
+      456
+    </span>
+    &lt;/spoiler&gt; 789 &lt;спойлер&gt;
+    <span
+      class="spoiler-hidden"
+      title="This is a spoiler. Click to reveal its contents."
+    >
+      <a
+        dir="ltr"
+        href="https://example.com/"
+        target="_blank"
+      >
+        example.com
+      </a>
+    </span>
+    &lt;/спойлер&gt; 123
+  </span>
+</DocumentFragment>
+`;

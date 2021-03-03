@@ -131,14 +131,14 @@ export default class Linkify extends Component {
     ]);
     if (!hl || hl.length === 0) {
       return (
-        <span className="Linkify" dir="auto">
+        <span className="Linkify" dir="auto" role="region">
           <ErrorBoundary>{parsed}</ErrorBoundary>
         </span>
       );
     }
     const highlighted = this.processStrings(parsed, (str) => highlightString(str, hl), ['button']);
     return (
-      <span className="Linkify" dir="auto">
+      <span className="Linkify" dir="auto" role="region">
         <ErrorBoundary>{highlighted}</ErrorBoundary>
       </span>
     );

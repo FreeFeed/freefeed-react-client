@@ -23,6 +23,9 @@ class RuleGenerator {
           options: {
             babelrc: false,
             compact: false,
+            targets: {
+              browsers: ['>1%', 'last 3 versions', 'safari >= 9', 'ie >= 10'],
+            },
             presets: skipFalsy([
               [
                 '@babel/react',
@@ -36,9 +39,6 @@ class RuleGenerator {
                   modules: false,
                   useBuiltIns: 'entry',
                   corejs: '3.9',
-                  targets: {
-                    browsers: ['>1%', 'last 3 versions', 'safari >= 9', 'ie >= 10'],
-                  },
                 },
               ],
             ]),
@@ -77,6 +77,7 @@ class RuleGenerator {
       loader: 'babel-loader',
       options: {
         babelrc: false,
+        targets: { node: '12' },
         presets: [
           [
             '@babel/react',
@@ -88,7 +89,6 @@ class RuleGenerator {
             '@babel/env',
             {
               modules: false,
-              targets: { node: '12' },
             },
           ],
         ],
