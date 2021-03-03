@@ -1,3 +1,4 @@
+/* global CONFIG */
 import { browserHistory } from 'react-router';
 import _ from 'lodash';
 import * as Sentry from '@sentry/react';
@@ -5,7 +6,7 @@ import * as Sentry from '@sentry/react';
 import { getPost } from '../services/api';
 import { setToken } from '../services/auth';
 import { Connection } from '../services/realtime';
-import { delay } from '../utils';
+import { delay, deleteCookie, setCookie } from '../utils';
 import * as FeedOptions from '../utils/feed-options';
 
 import {
@@ -800,6 +801,29 @@ export const initialWhoamiMiddleware = (store) => (next) => (action) => {
   next(action);
 };
 
+/**
+ * Completes incomplete post comments states
+ *
+ * Requests comments from the server if there are no comments before or after
+ * the omittedComments span.
+ */
+export const commentsCompleteMiddleware = (store) => (next) => (action) => {
+  const result = next(action);
+  if (
+    action.type === response(ActionTypes.DELETE_COMMENT) ||
+    action.type === ActionTypes.REALTIME_COMMENT_DESTROY
+  ) {
+    const postId = action.postId || action.request.postId;
+    const post = store.getState().posts[postId];
+    if (post && post.omittedComments > 0) {
+      if (post.omittedCommentsOffset === 0 || post.comments.length <= post.omittedCommentsOffset) {
+        store.dispatch(ActionCreators.completePostComments(postId));
+      }
+    }
+  }
+  return result;
+};
+
 // Fixing data structures coming from server
 export const dataFixMiddleware = (store) => (next) => (action) => {
   if (action.type === response(ActionTypes.GET_SINGLE_POST)) {
@@ -854,4 +878,19 @@ export const unscrollMiddleware = () => (next) => (action) => {
   const result = next(action);
   unscroll();
   return result;
+};
+
+export const betaChannelMiddleware = (store) => (next) => (action) => {
+  if (
+    action.type === ActionTypes.SET_BETA_CHANNEL &&
+    action.payload !== store.getState().betaChannel
+  ) {
+    if (action.payload) {
+      setCookie(CONFIG.betaChannel.cookieName, CONFIG.betaChannel.cookieValue, 365, '/');
+    } else {
+      deleteCookie(CONFIG.betaChannel.cookieName, '/');
+    }
+    setTimeout(() => location.reload(true), 200);
+  }
+  return next(action);
 };

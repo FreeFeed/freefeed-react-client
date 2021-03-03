@@ -84,13 +84,24 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
         ) : (
           false
         )}
-        <div className="comment-heart" onClick={heartClick} role="button">
-          <Icon
-            icon={canLike ? faHeart : faHeartO}
-            className={cn('icon', { liked: hasOwnLike })}
-            title={!canLike ? 'Your own comment' : hasOwnLike ? 'Un-like' : 'Like'}
-          />
-        </div>
+        {canLike ? (
+          <div
+            className="comment-heart"
+            onClick={heartClick}
+            role="button"
+            aria-label={hasOwnLike ? 'Like this comment' : 'Un-like this comment'}
+          >
+            <Icon
+              icon={faHeart}
+              className={cn('icon', hasOwnLike ? 'liked' : false)}
+              title={hasOwnLike ? 'Un-like' : 'Like'}
+            />
+          </div>
+        ) : (
+          <div className="comment-heart">
+            <Icon icon={faHeartO} className="icon" title="Your own comment" />
+          </div>
+        )}
       </div>
       {/* Bubble icon */}
       <TimeDisplay className="comment-time" timeStamp={+createdAt} absolute>

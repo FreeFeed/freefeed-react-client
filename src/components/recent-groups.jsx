@@ -1,22 +1,35 @@
 import classnames from 'classnames';
 
+import { shallowEqual, useSelector } from 'react-redux';
 import UserName from './user-name';
 import TimeDisplay from './time-display';
 
-const renderRecentGroup = (recentGroup) => (
-  <li
-    className={classnames('p-my-groups-link', recentGroup.isPinned && 'pinned')}
-    key={recentGroup.id}
-  >
-    <UserName user={recentGroup} applyHyphenations={true}>
-      {recentGroup.screenName}
+const renderRecentGroup = (group, isPinned) => (
+  <li className={classnames('p-my-groups-link', isPinned && 'pinned')} key={group.id}>
+    <UserName user={group} applyHyphenations={true}>
+      {group.screenName}
     </UserName>
-    <TimeDisplay className="updated-ago" timeStamp={+recentGroup.updatedAt} />
+    <TimeDisplay className="updated-ago" timeStamp={+group.updatedAt} />
   </li>
 );
 
-export default (props) => {
-  const recentGroups = props.recentGroups.map(renderRecentGroup);
+export default () => {
+  const recentGroups = useSelector(
+    (state) => state.recentGroups.map((g) => state.users[g.id]),
+    shallowEqual,
+  );
+  const pinnedGroupIds = useSelector(
+    (state) =>
+      state.recentGroups
+        .filter((g) => g.isPinned)
+        .map((g) => g.id)
+        .sort(),
+    shallowEqual,
+  );
 
-  return <ul className="p-my-groups">{recentGroups}</ul>;
+  return (
+    <ul className="p-my-groups">
+      {recentGroups.map((g) => renderRecentGroup(g, pinnedGroupIds.includes(g.id)))}
+    </ul>
+  );
 };

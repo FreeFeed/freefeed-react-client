@@ -60,12 +60,14 @@ const GroupsHandler = (props) => {
     <div className="box">
       <ErrorBoundary>
         <div className="box-header-timeline" role="heading">
-          Groups
+          Your groups
         </div>
         <div className="box-body">
           <div className="row">
-            <div className="col-md-8">All the groups you are subscribed to</div>
-            <div className="col-md-4 text-right">
+            <div className="col-md-6">
+              <Link to="/all-groups">List of all groups</Link>
+            </div>
+            <div className="col-md-6 text-right">
               <Link to="/groups/create">Create a group</Link>
             </div>
           </div>
@@ -87,8 +89,9 @@ function selectState(state) {
   const managedIds = new Set(_.map(state.managedGroups, (g) => g.id));
   const sortingRule = (g) => -(g.updatedAt || g.createdAt);
 
-  const adminGroups = _.filter(state.groups, (group) => managedIds.has(group.id));
-  const regularGroups = _.filter(state.groups, (group) => !managedIds.has(group.id));
+  const allGroups = Object.values(state.users).filter((u) => u.type === 'group');
+  const adminGroups = allGroups.filter((g) => managedIds.has(g.id));
+  const regularGroups = allGroups.filter((g) => !managedIds.has(g.id));
 
   const myGroups = {
     header: 'Groups you admin',

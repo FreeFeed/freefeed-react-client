@@ -21,6 +21,8 @@ import {
   unscrollMiddleware,
   subscriptionMiddleware,
   onResponseMiddleware,
+  betaChannelMiddleware,
+  commentsCompleteMiddleware,
 } from './middlewares';
 
 import * as reducers from './reducers';
@@ -47,6 +49,8 @@ const middleware = [
   initialWhoamiMiddleware,
   subscriptionMiddleware,
   onResponseMiddleware,
+  betaChannelMiddleware,
+  commentsCompleteMiddleware,
 ];
 
 const enhancers = [applyMiddleware(...middleware)];

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import classnames from 'classnames';
 
+import { faBug } from '@fortawesome/free-solid-svg-icons';
 import { signOut, home } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
 import Footer from './footer';
@@ -13,7 +14,7 @@ import LoaderContainer from './loader-container';
 import SearchForm from './search-form';
 import ErrorBoundary from './error-boundary';
 import { ColorSchemeSetter } from './color-theme-setter';
-import { SVGSymbolDeclarations } from './fontawesome-icons';
+import { Icon, SVGSymbolDeclarations } from './fontawesome-icons';
 import MediaViewer from './media-viewer';
 import { Throbber } from './throbber';
 import { Delayed } from './lazy-component';
@@ -152,6 +153,11 @@ class Layout extends Component {
                 <IndexLink className="site-logo-link" to="/">
                   {CONFIG.siteTitle}
                 </IndexLink>
+                {CONFIG.betaChannel.enabled && CONFIG.betaChannel.isBeta && (
+                  <Link to="/settings/appearance#beta" className="site-logo-subheading">
+                    {CONFIG.betaChannel.subHeading}
+                  </Link>
+                )}
               </h1>
             </div>
 
@@ -203,6 +209,12 @@ class Layout extends Component {
               <Footer />
             </div>
           </div>
+
+          {CONFIG.betaChannel.enabled && CONFIG.betaChannel.isBeta && (
+            <a href="/support" target="_blank" className="bug-report-link" title="Report a bug">
+              <Icon icon={faBug} />
+            </a>
+          )}
         </ErrorBoundary>
       </div>
     );
@@ -214,7 +226,6 @@ function select(state, ownProps) {
     user: state.user,
     authenticated: state.authenticated,
     loadingView: state.routeLoadingState,
-    recentGroups: state.recentGroups,
     routeName: getCurrentRouteName(ownProps),
     title: state.title,
   };

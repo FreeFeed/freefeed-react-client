@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - stable
+      - beta
     tags:
       - '**'
 
@@ -23,4 +24,3 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         repository: freefeed/freefeed-react-client
         tag_with_ref: true
-        tags: latest

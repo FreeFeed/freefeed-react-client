@@ -71,12 +71,31 @@ export default {
     nsfwVisibilityStorageKey: 'show-nsfw',
   },
 
+  commentsFolding: {
+    // Show a maximum of two comments after the fold
+    afterFold: 2,
+    // Show 'collapse' button when there are 12 or more comments
+    minToCollapse: 12,
+    // A minimum number of omitted comments (server-side constant)
+    minFolded: 3,
+  },
+
   registrationsLimit: {
     emailFormIframeSrc: null,
   },
 
   analytics: {
     google: null,
+  },
+
+  betaChannel: {
+    // Set to true to enable 'Use the beta version' switcher in settings
+    enabled: false,
+    // Is the current instance is a beta instance?
+    isBeta: false,
+    subHeading: 'Beta',
+    cookieName: 'beta_channel',
+    cookieValue: '1',
   },
 
   eslint: {
