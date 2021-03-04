@@ -247,7 +247,7 @@ export function postActions(dispatch) {
       deleteComment: (commentId, postId) => dispatch(deleteComment(commentId, postId)),
       highlightComment: (postId, author, arrows, baseCommentId) =>
         dispatch(highlightComment(postId, author, arrows, baseCommentId)),
-      clearHighlightComment: () => dispatch(clearHighlightComment()),
+      clearHighlightComment: (author) => dispatch(clearHighlightComment(author)),
       likeComment: (commentId) => dispatch(likeComment(commentId)),
       unlikeComment: (commentId) => dispatch(unlikeComment(commentId)),
       getCommentLikes: (commentId) => dispatch(getCommentLikes(commentId)),
