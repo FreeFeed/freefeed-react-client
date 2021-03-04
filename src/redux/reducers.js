@@ -11,7 +11,7 @@ import * as FeedOptions from '../utils/feed-options';
 import { loadColorScheme, getSystemColorScheme, loadNSFWVisibility } from '../services/appearance';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
-import { patchObjectByKey, setOnLocationChange, setOnLogOut } from './reducers/helpers';
+import { mergeByIds, patchObjectByKey, setOnLocationChange, setOnLogOut } from './reducers/helpers';
 import {
   asyncStatesMap,
   getKeyBy,
@@ -353,28 +353,6 @@ const NO_ERROR = {
 
 const POST_SAVE_ERROR = 'Something went wrong while editing the post...';
 
-/**
- * @param {object} state
- * @param {{id: string}[]} list
- * @param {{insert: boolean, update: boolean}} [options]
- */
-function mergeByIds(state, list, { insert = true, update = false } = {}) {
-  const needUpdate = list?.some((it) => (state[it.id] ? update : insert));
-  if (!needUpdate) {
-    return state;
-  }
-
-  const newState = { ...state };
-  for (const it of list) {
-    if (!newState[it.id] && insert) {
-      newState[it.id] = it;
-    } else if (newState[it.id] && update) {
-      newState[it.id] = { ...newState[it.id], ...it };
-    }
-  }
-  return newState;
-}
-
 const initPostViewState = (post) => {
   const { id, omittedLikes } = post;
   const isEditing = false;
@@ -699,7 +677,7 @@ export function attachments(state = {}, action) {
 }
 
 function updateCommentData(state, action) {
-  return mergeByIds(state, action.payload.comments);
+  return mergeByIds(state, action.payload.comments, { insert: true, update: true });
 }
 
 export function comments(state = {}, action) {
@@ -750,7 +728,7 @@ export function comments(state = {}, action) {
         ...action.comment,
         isExpanded: (state[action.comment.id] || {}).isExpanded,
       };
-      return mergeByIds(state, [newComment]);
+      return mergeByIds(state, [newComment], { insert: false, update: true });
     }
     case ActionTypes.REALTIME_COMMENT_DESTROY: {
       if (!state[action.commentId]) {
