@@ -27,6 +27,8 @@ export default class PostComments extends Component {
 
   state = {
     folded: true,
+    highlightedAuthor: null,
+    highlightedCommentId: null,
   };
 
   mentionCommentAuthor = (commentId) => {
@@ -106,12 +108,42 @@ export default class PostComments extends Component {
     return false;
   }
 
-  handleHighlightCommentByAuthor = (authorUserName) => {
-    this.props.commentEdit.highlightComment(this.props.post.id, authorUserName);
+  authorHighlightHandlers = {
+    hover: (username) => this.setState({ highlightedAuthor: username }),
+    leave: () => this.setState({ highlightedAuthor: null }),
   };
 
-  handleHighlightCommentByArrows = (comment_id, arrows) => {
-    this.props.commentEdit.highlightComment(this.props.post.id, undefined, arrows, comment_id);
+  arrowsHighlightHandlers = {
+    hover: (baseCommentId, nArrows) => {
+      const {
+        comments,
+        post: { omittedComments, omittedCommentsOffset },
+      } = this.props;
+      let absBaseIndex = comments.findIndex((c) => c.id === baseCommentId);
+      if (absBaseIndex === -1) {
+        // Comment not found
+        return;
+      }
+      if (absBaseIndex >= omittedCommentsOffset) {
+        absBaseIndex += omittedComments;
+      }
+      const absHlIndex = absBaseIndex - nArrows;
+
+      if (absHlIndex < 0) {
+        // Too many arrows
+        return;
+      }
+
+      if (absHlIndex < omittedCommentsOffset) {
+        this.setState({ highlightedCommentId: comments[absHlIndex].id });
+      } else {
+        const hlIndex = absHlIndex - omittedComments;
+        if (hlIndex >= omittedCommentsOffset) {
+          this.setState({ highlightedCommentId: comments[hlIndex].id });
+        }
+      }
+    },
+    leave: () => this.setState({ highlightedCommentId: null }),
   };
 
   renderComment = (comment, index = 0) => {
@@ -129,13 +161,17 @@ export default class PostComments extends Component {
           replyWithArrows={this.replyWithArrows}
           isModeratingComments={props.post.isModeratingComments}
           {...props.commentEdit}
-          highlightComment={this.handleHighlightCommentByAuthor}
-          highlightArrowComment={this.handleHighlightCommentByArrows}
+          authorHighlightHandlers={this.authorHighlightHandlers}
+          arrowsHighlightHandlers={this.arrowsHighlightHandlers}
           showMedia={this.props.showMedia}
           readMoreStyle={props.readMoreStyle}
           highlightTerms={props.highlightTerms}
           currentUser={props.post.user}
           forceAbsTimestamps={props.forceAbsTimestamps}
+          highlighted={
+            comment.user?.username === this.state.highlightedAuthor ||
+            comment.id === this.state.highlightedCommentId
+          }
         />
       )
     );
