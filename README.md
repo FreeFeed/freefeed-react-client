@@ -6,7 +6,7 @@ We use [yarn](https://yarnpkg.com/) as dependency manager (instead of npm) so yo
 
 ## Starting Development Server with Hot-Reload
 
-Run `yarn start`. By default it will use our staging backend [candy.freefeed.net](https://candy.freefeed.net)).
+Run `yarn start`. By default it will use our staging backend [candy.freefeed.net](https://candy.freefeed.net).
 
 Alternatively, you can install [freefeed-server](https://github.com/FreeFeed/freefeed-server) and create `config/local.json` file with URL of local backend:
 ```
