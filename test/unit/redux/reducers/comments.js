@@ -6,6 +6,7 @@ import {
   DELETE_COMMENT,
   REALTIME_COMMENT_DESTROY,
   REALTIME_COMMENT_NEW,
+  REALTIME_COMMENT_UPDATE,
   SHOW_MORE_COMMENTS,
 } from '../../../../src/redux/action-types';
 import { initialAsyncState, response } from '../../../../src/redux/async-helpers';
@@ -54,16 +55,19 @@ describe('comments-related data', () => {
         id: 'post0',
         comments: [],
         omittedComments: 0,
+        omittedCommentLikes: 0,
       }),
       post1: postParser({
         id: 'post1',
         comments: ['comm11', 'comm12'],
         omittedComments: 0,
+        omittedCommentLikes: 0,
       }),
       post2: postParser({
         id: 'post2',
         comments: ['comm21', 'comm22'],
         omittedComments: 2,
+        omittedCommentLikes: 2,
       }),
     };
 
@@ -176,6 +180,47 @@ describe('comments-related data', () => {
       it('shouldnt touch state if the post already includes a comment', () => {
         const newState = posts(state, action('post1', 'comm12'));
         expect(newState, 'to be', state);
+      });
+    });
+
+    describe('REALTIME_COMMENT_UPDATE', () => {
+      const action = (event, postId, commentId, likes = 0, postObj = null) => ({
+        type: REALTIME_COMMENT_UPDATE,
+        comment: { id: commentId, likes, postId },
+        event,
+        ...(postObj && { post: { posts: postObj } }),
+      });
+
+      it('should not change state if the comment not found and the post has no collapsed comments', () => {
+        const newState = posts(state, action('comment_like:new', 'post0', 'comm3'));
+        expect(newState, 'to be', state);
+      });
+
+      it('should not change state if comment is found in the post comments', () => {
+        const newState = posts(state, action('comment_like:new', 'post1', 'comm11'));
+        expect(newState, 'to be', state);
+      });
+
+      it(`should increase omittedCommentLikes on 'comment_like:new' if the comment not found and the post has collapsed comments`, () => {
+        const newState = posts(state, action('comment_like:new', 'post2', 'post23'));
+        expect(newState, 'to equal', {
+          ...state,
+          post2: {
+            ...state['post2'],
+            omittedCommentLikes: state['post2'].omittedCommentLikes + 1,
+          },
+        });
+      });
+
+      it(`should decrease omittedCommentLikes on 'comment_like:remove' if the comment not found and the post has collapsed comments`, () => {
+        const newState = posts(state, action('comment_like:remove', 'post2', 'post23'));
+        expect(newState, 'to equal', {
+          ...state,
+          post2: {
+            ...state['post2'],
+            omittedCommentLikes: state['post2'].omittedCommentLikes - 1,
+          },
+        });
       });
     });
 

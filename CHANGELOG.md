@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.96.0] - Not released
 ### Changed
 - Moved comments highlight logic from redux to PostComments' state
+### Fixed
+- The numbers of likes of omitted comments now updates in the real time.
 
 ## [1.95.3] - 2021-03-05
 ### Fixed

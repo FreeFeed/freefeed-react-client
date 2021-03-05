@@ -15,6 +15,7 @@ import {
   LIKE_POST_OPTIMISTIC,
   REALTIME_COMMENT_DESTROY,
   REALTIME_COMMENT_NEW,
+  REALTIME_COMMENT_UPDATE,
   REALTIME_LIKE_NEW,
   REALTIME_LIKE_REMOVE,
   REALTIME_POST_HIDE,
@@ -440,6 +441,31 @@ export function posts(state = {}, action) {
           comments: [...(post.comments || []), action.comment.id],
         },
       };
+    }
+    case REALTIME_COMMENT_UPDATE: {
+      const post = state[action.comment.postId];
+      if (post && !post.comments.includes(action.comment.id) && post.omittedComments > 0) {
+        // Clikes count changed in omitted comments
+        if (action.event === 'comment_like:new') {
+          return {
+            ...state,
+            [post.id]: {
+              ...post,
+              omittedCommentLikes: post.omittedCommentLikes + 1,
+            },
+          };
+        }
+        if (action.event === 'comment_like:remove' && post.omittedCommentLikes > 0) {
+          return {
+            ...state,
+            [post.id]: {
+              ...post,
+              omittedCommentLikes: post.omittedCommentLikes - 1,
+            },
+          };
+        }
+      }
+      return state;
     }
     case UNAUTHENTICATED: {
       return {};
