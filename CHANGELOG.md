@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved comments highlight logic from redux to PostComments' state
 ### Fixed
 - The numbers of likes of omitted comments now updates in the real time.
+- The posts and comments data now fully rewrites on feed update. It has been
+  broken in recent releases and click on FreeFeed logo wasn't collapse expanded
+  comments and likes
 
 ## [1.95.3] - 2021-03-05
 ### Fixed

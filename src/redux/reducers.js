@@ -657,7 +657,7 @@ export const postHideStatuses = asyncStatesMap(
 
 export function attachments(state = {}, action) {
   if (ActionHelpers.isFeedResponse(action)) {
-    return mergeByIds(state, action.payload.attachments);
+    return mergeByIds(state, action.payload.attachments, { insert: true, update: true });
   }
   switch (action.type) {
     case response(ActionTypes.GET_SINGLE_POST):
@@ -855,7 +855,10 @@ export function users(state = {}, action) {
     mergeByIds(state, (accounts || []).map(userParser), options);
 
   if (ActionHelpers.isFeedResponse(action)) {
-    return mergeAccounts([...action.payload.users, ...action.payload.subscribers]);
+    return mergeAccounts([...action.payload.users, ...action.payload.subscribers], {
+      insert: true,
+      update: true,
+    });
   }
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I): {
@@ -914,7 +917,10 @@ export function users(state = {}, action) {
 
 export function subscribers(state = {}, action) {
   if (ActionHelpers.isFeedResponse(action)) {
-    return mergeByIds(state, (action.payload.subscribers || []).map(userParser));
+    return mergeByIds(state, (action.payload.subscribers || []).map(userParser), {
+      insert: true,
+      update: true,
+    });
   }
   switch (action.type) {
     case ActionTypes.REALTIME_POST_NEW:
@@ -1078,7 +1084,7 @@ export const archiveRestorationForm = formState(
 
 export function timelines(state = {}, action) {
   if (ActionHelpers.isFeedResponse(action) && action.payload.timelines) {
-    return mergeByIds(state, [action.payload.timelines]);
+    return mergeByIds(state, [action.payload.timelines], { insert: true, update: true });
   }
 
   return state;
@@ -1086,7 +1092,7 @@ export function timelines(state = {}, action) {
 
 export function subscriptions(state = {}, action) {
   if (ActionHelpers.isFeedResponse(action)) {
-    return mergeByIds(state, action.payload.subscriptions);
+    return mergeByIds(state, action.payload.subscriptions, { insert: true, update: true });
   }
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I):

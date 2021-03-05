@@ -43,7 +43,10 @@ const savePostStatusesReducer = asyncStatesMap(SAVE_POST, {
 
 export function posts(state = {}, action) {
   if (isFeedResponse(action)) {
-    return mergeByIds(state, (action.payload.posts || []).map(postParser));
+    return mergeByIds(state, (action.payload.posts || []).map(postParser), {
+      insert: true,
+      update: true,
+    });
   }
 
   // Handle the savePostStatus changes
