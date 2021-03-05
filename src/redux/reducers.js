@@ -355,14 +355,23 @@ const POST_SAVE_ERROR = 'Something went wrong while editing the post...';
 
 const initPostViewState = (post) => {
   const { id, omittedLikes } = post;
-  const isEditing = false;
 
-  return { omittedLikes, id, isEditing, ...NO_ERROR };
+  return {
+    id,
+    omittedLikes,
+    isEditing: false,
+    isCommenting: false,
+    commentText: '',
+    ...NO_ERROR,
+  };
 };
 
 export function postsViewState(state = {}, action) {
   if (ActionHelpers.isFeedResponse(action)) {
-    return mergeByIds(state, (action.payload.posts || []).map(initPostViewState));
+    return mergeByIds(state, (action.payload.posts || []).map(initPostViewState), {
+      insert: true,
+      update: true,
+    });
   }
   switch (action.type) {
     case response(ActionTypes.SHOW_MORE_LIKES_ASYNC): {
