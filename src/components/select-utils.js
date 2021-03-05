@@ -32,8 +32,6 @@ import {
   addComment,
   toggleEditingComment,
   saveEditingComment,
-  highlightComment,
-  clearHighlightComment,
   likeComment,
   unlikeComment,
   getCommentLikes,
@@ -47,30 +45,7 @@ const MAX_LIKES = 4;
 
 export const ommitBubblesThreshold = 600 * 1000; // 10 min
 
-const allFalse = () => false;
-
 const tokenizeHashtags = hashTags();
-
-const commentHighlighter = ({ commentsHighlights, user, posts }, commentsPostId, commentList) => {
-  const { postId, author, arrows, baseCommentId } = commentsHighlights;
-  const { comments } = user.frontendPreferences;
-  const { omittedComments } = posts[commentsPostId];
-  if (!comments.highlightComments) {
-    return allFalse;
-  }
-
-  if (commentsPostId !== postId) {
-    return allFalse;
-  }
-
-  const baseIndex = commentList.indexOf(baseCommentId);
-  const highlightIndex = baseIndex + omittedComments - arrows;
-  const highlightCommentId = commentList[highlightIndex < baseIndex ? highlightIndex : -1];
-
-  return (commentId, commentAuthor) =>
-    (author && commentAuthor && author === commentAuthor.username) ||
-    highlightCommentId === commentId;
-};
 
 const emptyLikes = Object.freeze({
   likes: Object.freeze([]),
@@ -147,7 +122,6 @@ export const joinPostData = (state) => (postId) => {
   const postViewState = state.postsViewState[post.id];
   const { omitRepeatedBubbles } = state.user.frontendPreferences.comments;
   const hashedCommentId = getCommentId(state.routing.locationBeforeTransitions.hash);
-  const highlightComment = commentHighlighter(state, postId, post.comments);
 
   let prevComment = null;
   const comments = post.comments
@@ -177,7 +151,6 @@ export const joinPostData = (state) => (postId) => {
         omitBubble,
         isEditable: user.id === comment.createdBy,
         isDeletable: isModeratable || isModeratable,
-        highlighted: highlightComment(commentId, author),
         likesList: selectCommentLikes(state, commentId),
         highlightedFromUrl: commentId === hashedCommentId,
       };
@@ -245,9 +218,6 @@ export function postActions(dispatch) {
       saveEditingComment: (commentId, newValue) =>
         dispatch(saveEditingComment(commentId, newValue)),
       deleteComment: (commentId, postId) => dispatch(deleteComment(commentId, postId)),
-      highlightComment: (postId, author, arrows, baseCommentId) =>
-        dispatch(highlightComment(postId, author, arrows, baseCommentId)),
-      clearHighlightComment: (author) => dispatch(clearHighlightComment(author)),
       likeComment: (commentId) => dispatch(likeComment(commentId)),
       unlikeComment: (commentId) => dispatch(unlikeComment(commentId)),
       getCommentLikes: (commentId) => dispatch(getCommentLikes(commentId)),

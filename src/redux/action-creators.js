@@ -745,20 +745,6 @@ export function archiveStartRestoration(params) {
   };
 }
 
-export function highlightComment(postId, author, arrows, baseCommentId) {
-  return {
-    type: ActionTypes.HIGHLIGHT_COMMENT,
-    postId,
-    author,
-    arrows,
-    baseCommentId,
-  };
-}
-
-export function clearHighlightComment(author, force = false) {
-  return { type: ActionTypes.CLEAR_HIGHLIGHT_COMMENT, author, force };
-}
-
 export function blockedByMe() {
   return {
     type: ActionTypes.BLOCKED_BY_ME,

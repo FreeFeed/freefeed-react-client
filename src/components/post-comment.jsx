@@ -20,13 +20,11 @@ import { CommentEditForm } from './comment-edit-form';
 class PostComment extends Component {
   commentContainer;
   commentForm;
-  commentsAreHighlighted;
 
   constructor(props) {
     super(props);
 
     this.commentForm = null;
-    this.commentsAreHighlighted = false;
   }
 
   scrollToComment = () => {
@@ -53,13 +51,7 @@ class PostComment extends Component {
   }
 
   componentWillUnmount() {
-    if (this.enterTimeout) {
-      clearTimeout(this.enterTimeout);
-    }
-    if (this.commentsAreHighlighted) {
-      this.props.clearHighlightComment(undefined, true);
-      this.commentsAreHighlighted = false;
-    }
+    this.enterTimeout && clearTimeout(this.enterTimeout);
   }
 
   reply = () => this.props.replyWithArrows(this.props.id);
@@ -95,26 +87,9 @@ class PostComment extends Component {
     this.props.deleteComment(this.props.id, this.props.postId),
   );
 
-  userHoverHandlers = {
-    hover: (username) => {
-      this.props.highlightComment(username);
-      this.commentsAreHighlighted = true;
-    },
-    leave: (username) => {
-      this.props.clearHighlightComment(username);
-      this.commentsAreHighlighted = false;
-    },
-  };
-
   arrowHoverHandlers = {
-    hover: (arrows) => {
-      this.props.highlightArrowComment(this.props.id, arrows);
-      this.commentsAreHighlighted = true;
-    },
-    leave: () => {
-      this.props.clearHighlightComment(undefined, true);
-      this.commentsAreHighlighted = false;
-    },
+    hover: (arrows) => this.props.arrowsHighlightHandlers.hover(this.props.id, arrows),
+    leave: () => this.props.arrowsHighlightHandlers.leave(),
   };
 
   renderBody() {
@@ -150,7 +125,7 @@ class PostComment extends Component {
     const authorAndButtons = (
       <span aria-label={`Comment by ${this.props.user.username}`}>
         {' -'}&nbsp;
-        <UserName user={this.props.user} userHover={this.userHoverHandlers} />
+        <UserName user={this.props.user} userHover={this.props.authorHighlightHandlers} />
         {this.props.isEditable ? (
           <span>
             {' '}
@@ -206,7 +181,7 @@ class PostComment extends Component {
             text={this.props.body}
             readMoreStyle={this.props.readMoreStyle}
             highlightTerms={this.props.highlightTerms}
-            userHover={this.userHoverHandlers}
+            userHover={this.props.authorHighlightHandlers}
             arrowHover={this.arrowHoverHandlers}
             showMedia={this.props.showMedia}
           />
@@ -241,7 +216,7 @@ class PostComment extends Component {
   render() {
     const className = classnames({
       comment: true,
-      highlighted: this.props.highlighted,
+      highlighted: this.props.highlightComments && this.props.highlighted,
       'omit-bubble': this.props.omitBubble,
       'is-hidden': !!this.props.hideType,
       'highlight-from-url': this.props.highlightedFromUrl,
@@ -270,7 +245,13 @@ function selectState(state, ownProps) {
   const showTimestamps =
     state.user.frontendPreferences?.comments?.showTimestamps ||
     CONFIG.frontendPreferences.defaultValues.comments.showTimestamps;
-  return { ...editState, showTimestamps, isEditing: ownProps.isEditing || editState.isEditing };
+  const { highlightComments } = state.user.frontendPreferences.comments;
+  return {
+    ...editState,
+    showTimestamps,
+    highlightComments,
+    isEditing: ownProps.isEditing || editState.isEditing,
+  };
 }
 
 export default connect(selectState, null, null, { forwardRef: true })(PostComment);
