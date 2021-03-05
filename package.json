@@ -7,7 +7,7 @@
     "@fortawesome/free-brands-svg-icons": "~5.15.2",
     "@fortawesome/free-regular-svg-icons": "~5.15.2",
     "@fortawesome/free-solid-svg-icons": "~5.15.2",
-    "@sentry/react": "~5.30.0",
+    "@sentry/react": "~6.2.1",
     "autotrack": "~2.4.1",
     "classnames": "~2.2.6",
     "custom-event": "~1.0.1",

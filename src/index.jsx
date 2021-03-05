@@ -32,6 +32,7 @@ import { settingsRoute } from './components/settings/routes';
 
 Sentry.init({
   dsn: CONFIG.sentry.publicDSN,
+  autoSessionTracking: false,
 });
 
 const store = configureStore();
