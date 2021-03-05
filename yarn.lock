@@ -4998,10 +4998,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:~2.18.0":
-  version: 2.18.0
-  resolution: "date-fns@npm:2.18.0"
-  checksum: 58320ad5122bb2ae2f5aa23e2c432529d3390222bbec49339f8c360c2c07e5db8c26b40fe2cb2c947b4507732b9e1f9c195ec39572e14014291788ca07a5de6f
+"date-fns@npm:~2.16.1":
+  version: 2.16.1
+  resolution: "date-fns@npm:2.16.1"
+  checksum: fbe5d9aa1dc4c92c7cf9c0b31e58f532ac9fe059f85fc622641b1ac9c673150329620ea6bf941a8ba10e8e677aa0b6ccdc04ce001f81e70fd49acd1760edcba0
   languageName: node
   linkType: hard
 
@@ -12982,7 +12982,7 @@ fsevents@^1.2.7:
     cross-env: ~7.0.3
     css-loader: ~3.6.0
     custom-event: ~1.0.1
-    date-fns: ~2.18.0
+    date-fns: ~2.16.1
     debug: ~4.3.2
     eslint: ~7.21.0
     eslint-config-prettier: ~7.2.0
