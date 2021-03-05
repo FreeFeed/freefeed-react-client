@@ -2,7 +2,7 @@
 import { Link } from 'react-router';
 import cn from 'classnames';
 
-import styles from './donation-widget.module.scss';
+import styles from './donate.module.scss';
 import { useDonationStatus } from './hooks/donation-status';
 
 export function DonationWidget({ accountName = CONFIG.donationStatusAccount }) {
