@@ -12,6 +12,11 @@ $color-critical: #fa6b4b;
 @mixin linkColor($baseColor) {
   background-color: $baseColor;
   border-color: mix($baseColor, #000, 90);
+
+  :global(.dark-theme) & {
+    background-color: change-color($baseColor, $alpha: 0.4);
+    border-color: change-color(mix($baseColor, #000, 90), $alpha: 0.4);
+  }
 }
 
 .statusLink {
