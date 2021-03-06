@@ -28,5 +28,5 @@ jobs:
     - name: Deploy
       uses: satak/webrequest-action@v1.2.3
       with:
-        url: "https://webhook.freefeed.net/react-client/$GITHUB_BASE_REF?version=$GITHUB_REF"
+        url: "https://webhook.freefeed.net/${{ secrets.WEBHOOK_SECRET }}/react-client/${{ github.base_ref }}?version=${{ github.ref }}"
         method: GET
