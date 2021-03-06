@@ -660,7 +660,12 @@ const bindHandlers = (store) => ({
     return dispatchWithPost(store, postId, action, () => true, postFetchDelay);
   },
   'comment:update': (data) =>
-    store.dispatch({ ...data, type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments }),
+    store.dispatch({
+      ...data,
+      type: ActionTypes.REALTIME_COMMENT_UPDATE,
+      comment: data.comments,
+      event: 'comment:update',
+    }),
   'comment:destroy': (data) =>
     store.dispatch({
       type: ActionTypes.REALTIME_COMMENT_DESTROY,
@@ -680,9 +685,17 @@ const bindHandlers = (store) => ({
       userId: data.meta.userId,
     }),
   'comment_like:new': (data) =>
-    store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments }),
+    store.dispatch({
+      type: ActionTypes.REALTIME_COMMENT_UPDATE,
+      comment: data.comments,
+      event: 'comment_like:new',
+    }),
   'comment_like:remove': (data) =>
-    store.dispatch({ type: ActionTypes.REALTIME_COMMENT_UPDATE, comment: data.comments }),
+    store.dispatch({
+      type: ActionTypes.REALTIME_COMMENT_UPDATE,
+      comment: data.comments,
+      event: 'comment_like:remove',
+    }),
   'global:user:update': (data) =>
     store.dispatch({ type: ActionTypes.REALTIME_GLOBAL_USER_UPDATE, user: data.user }),
 });
