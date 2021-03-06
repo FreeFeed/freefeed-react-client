@@ -38,7 +38,6 @@ const composeState = ({ subsequentComments, setting, omittedComments = 0, withDe
         createdAt: (2000 + (withDelay ? ommitBubblesThreshold : 0)).toString(10),
       },
     },
-    commentsHighlights: {},
     commentLikes: {},
     commentEditState: {
       [comment1.id]: {},
