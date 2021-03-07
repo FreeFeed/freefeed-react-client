@@ -661,6 +661,7 @@ export function attachments(state = {}, action) {
   }
   switch (action.type) {
     case response(ActionTypes.GET_SINGLE_POST):
+    case response(ActionTypes.COMPLETE_POST_COMMENTS):
     case response(ActionTypes.CREATE_POST): {
       return mergeByIds(state, action.payload.attachments);
     }
@@ -880,6 +881,7 @@ export function users(state = {}, action) {
     case response(ActionTypes.SHOW_MORE_COMMENTS):
     case response(ActionTypes.SHOW_MORE_LIKES_ASYNC):
     case response(ActionTypes.GET_SINGLE_POST):
+    case response(ActionTypes.COMPLETE_POST_COMMENTS):
     case response(ActionTypes.GET_ALL_SUBSCRIPTIONS): {
       return mergeAccounts([
         ...action.payload.users,
@@ -933,6 +935,7 @@ export function subscribers(state = {}, action) {
     }
     case response(ActionTypes.WHO_AM_I):
     case response(ActionTypes.GET_SINGLE_POST):
+    case response(ActionTypes.COMPLETE_POST_COMMENTS):
     case response(ActionTypes.CREATE_POST): {
       return mergeByIds(state, (action.payload.subscribers || []).map(userParser));
     }
@@ -1097,6 +1100,7 @@ export function subscriptions(state = {}, action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I):
     case response(ActionTypes.GET_SINGLE_POST):
+    case response(ActionTypes.COMPLETE_POST_COMMENTS):
     case response(ActionTypes.CREATE_POST): {
       return mergeByIds(state, action.payload.subscriptions);
     }
