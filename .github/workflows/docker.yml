@@ -25,8 +25,37 @@ jobs:
         repository: freefeed/freefeed-react-client
         tag_with_ref: true
 
-    - name: Deploy
+  deploy:
+    name: Trigger deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy stable
+      if: github.ref == 'refs/heads/stable'
       uses: satak/webrequest-action@v1.2.3
       with:
-        url: "https://webhook.freefeed.net/${{ secrets.WEBHOOK_SECRET }}/react-client/${{ github.base_ref }}?version=${{ github.ref }}"
+        url: "https://webhook.freefeed.net/${{ secrets.WEBHOOK_SECRET }}/react-client/stable?version=stable"
         method: GET
+
+    - name: Get release version
+      if: startsWith(github.ref, 'refs/tags/')
+      shell: bash
+      run: echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
+      id: version
+      env:
+        GITHUB_REF: ${{ github.ref }}
+
+    - name: Deploy release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: satak/webrequest-action@v1.2.3
+      with:
+        url: "https://webhook.freefeed.net/${{ secrets.WEBHOOK_SECRET }}/react-client/release?version=${{ steps.version.outputs.tag }}"
+        method: GET
+
+    - name: Deploy beta
+      if: github.ref == 'refs/heads/beta'
+      uses: satak/webrequest-action@v1.2.3
+      with:
+        url: "https://webhook.freefeed.net/${{ secrets.WEBHOOK_SECRET }}/react-client/beta?version=beta"
+        method: GET
+
