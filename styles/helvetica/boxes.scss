@@ -125,6 +125,10 @@
     a {
       color: #0000cc;
       text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
     @include clearfix;
 
