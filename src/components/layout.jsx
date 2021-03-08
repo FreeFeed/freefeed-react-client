@@ -140,6 +140,14 @@ class Layout extends Component {
 
     const layoutClassNames = classnames('container', { dragover: this.state.isDragOver });
 
+    let signInLink = '/signin';
+    const { location } = props.router;
+    if (location.pathname === '/signin') {
+      signInLink += location.search;
+    } else if (location.pathname !== '/') {
+      signInLink += `?back=${encodeURIComponent(location.pathname + location.search)}`;
+    }
+
     return (
       <div className={layoutClassNames}>
         <ErrorBoundary>
@@ -185,7 +193,7 @@ class Layout extends Component {
             ) : (
               <div className="col-xs-3 col-sm-6 col-md-3 text-right" role="complementary">
                 <div className="signin-link">
-                  <Link to="/signin">Sign In</Link>
+                  <Link to={signInLink}>Sign In</Link>
                 </div>
               </div>
             )}

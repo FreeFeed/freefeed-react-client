@@ -12,8 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The INITIAL_WHO_AM_I request now fires right after the SIGN_IN. The SIGN_IN
   response doesn't contain all the required user information, so we need to make
   additional request.
+
 ### Added
 - Error timestamp in error boundary message
+- The 'Sign In' link in the header now has '?back=...' parameter that will
+  redirect user back to the viewed page after sign in.
 
 ## [1.95.4] - 2021-03-07
 ### Fixed
