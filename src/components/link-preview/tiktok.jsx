@@ -40,7 +40,7 @@ export default function TikTokVideoPreview({ url }) {
 
   return (
     <div className="link-preview-content">
-      <div className="tiktok-video-preview">
+      <div className="tiktok-video-preview" aria-label="TikTok preview">
         <iframe
           src={`https://www.tiktok.com/embed/${id}?referrer=https://tiktok.com/`}
           frameBorder="0"
