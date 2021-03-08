@@ -4,7 +4,7 @@ import _ from 'lodash';
 import * as Sentry from '@sentry/react';
 
 import { getPost } from '../services/api';
-import { setToken } from '../services/auth';
+import { getToken, setToken } from '../services/auth';
 import { Connection } from '../services/realtime';
 import { delay, deleteCookie, setCookie } from '../utils';
 import * as FeedOptions from '../utils/feed-options';
@@ -227,6 +227,10 @@ function shouldGoToSignIn(pathname) {
 
 export const authMiddleware = (store) => {
   let firstUnauthenticated = true;
+
+  setTimeout(() => {
+    store.dispatch(getToken() ? ActionCreators.initialWhoAmI() : ActionCreators.unauthenticated());
+  }, 0);
 
   return (next) => (action) => {
     //stop action propagation if it should be authed and user is not authed
@@ -807,6 +811,9 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers, userActivit
 };
 
 export const initialWhoamiMiddleware = (store) => (next) => (action) => {
+  if (action.type === response(ActionTypes.SIGN_IN)) {
+    store.dispatch(ActionCreators.initialWhoAmI());
+  }
   if (action.type === response(ActionTypes.INITIAL_WHO_AM_I)) {
     // Fire the WHO_AM_I response first to properly fill state by current user data
     store.dispatch({ ...action, type: response(ActionTypes.WHO_AM_I) });

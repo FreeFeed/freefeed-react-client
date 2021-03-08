@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - The COMPLETE_POST_COMMENTS responses was not fully processed, leading to
   `Cannot read property 'username' of null` errors when updating comments.
+- The INITIAL_WHO_AM_I request now fires right after the SIGN_IN. The SIGN_IN
+  response doesn't contain all the required user information, so we need to make
+  additional request.
 ### Added
 - Error timestamp in error boundary message
 

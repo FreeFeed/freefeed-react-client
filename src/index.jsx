@@ -37,13 +37,6 @@ Sentry.init({
 
 const store = configureStore();
 
-//request main info for user
-if (store.getState().authenticated) {
-  store.dispatch(ActionCreators.initialWhoAmI());
-} else {
-  store.dispatch(ActionCreators.unauthenticated());
-}
-
 import { bindRouteActions } from './redux/route-actions';
 import { initUnscroll, safeScrollTo } from './services/unscroll';
 import { lazyRetry } from './utils/retry-promise';

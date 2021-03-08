@@ -4,7 +4,6 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import { combineReducers } from 'redux';
 
 import { userParser, getSummaryPeriod } from '../utils';
-import { getToken } from '../services/auth';
 import { parseQuery } from '../utils/search-highlighter';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
 import * as FeedOptions from '../utils/feed-options';
@@ -943,9 +942,9 @@ export function subscribers(state = {}, action) {
   return state;
 }
 
-export function authenticated(state = !!getToken(), action) {
+export function authenticated(state = false, action) {
   switch (action.type) {
-    case response(ActionTypes.SIGN_IN): {
+    case response(ActionTypes.INITIAL_WHO_AM_I): {
       return true;
     }
     case response(ActionTypes.SIGN_UP): {
