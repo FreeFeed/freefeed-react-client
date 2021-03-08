@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Error timestamp in error boundary message
 - The 'Sign In' link in the header now has '?back=...' parameter that will
   redirect user back to the viewed page after sign in.
+- Forced page reloading after sign out. This guarantees a complete
+  reinitialization of the state, which, unfortunately, is difficult to achieve
+  by other methods.
 
 ## [1.95.4] - 2021-03-07
 ### Fixed

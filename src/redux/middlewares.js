@@ -226,10 +226,12 @@ function shouldGoToSignIn(pathname) {
 }
 
 export const authMiddleware = (store) => {
-  let firstUnauthenticated = true;
-
   setTimeout(() => {
-    store.dispatch(getToken() ? ActionCreators.initialWhoAmI() : ActionCreators.unauthenticated());
+    store.dispatch(
+      getToken()
+        ? ActionCreators.initialWhoAmI()
+        : ActionCreators.unauthenticated({ initial: true }),
+    );
   }, 0);
 
   return (next) => (action) => {
@@ -241,13 +243,14 @@ export const authMiddleware = (store) => {
     if (action.type === ActionTypes.UNAUTHENTICATED) {
       setToken();
       next(action);
-      if (firstUnauthenticated) {
-        firstUnauthenticated = false;
+      if (action.payload.initial) {
         const { pathname } = window.location;
         if (shouldGoToSignIn(pathname)) {
           store.dispatch(ActionCreators.requireAuthentication());
           return browserHistory.push(`/signin?back=${pathname}`);
         }
+      } else {
+        location.reload();
       }
       return;
     }
@@ -256,7 +259,6 @@ export const authMiddleware = (store) => {
       action.type === response(ActionTypes.SIGN_IN) ||
       action.type === response(ActionTypes.SIGN_UP)
     ) {
-      firstUnauthenticated = false;
       setToken(action.payload.authToken);
       next(action);
       store.dispatch(ActionCreators.whoAmI());
