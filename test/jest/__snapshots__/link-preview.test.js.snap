@@ -1,0 +1,560 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LinkPreview Does show an Embedly preview for some random website if embedly is allowed 1`] = `
+<DocumentFragment>
+  <div>
+    <div
+      class="folder-container"
+    >
+      <div
+        class="content-wrapper"
+        style="height: 1px;"
+      >
+        <div>
+          <div
+            style="position: relative; overflow: hidden;"
+          >
+            <div
+              class="embedly-preview link-preview-content"
+              data-url="https://example.com"
+              style="height: 0px;"
+            >
+              <a
+                data-card-align="left"
+                data-card-controls="0"
+                data-card-recommend="0"
+                data-card-theme="light"
+                data-card-width="400px"
+                href="https://example.com"
+              />
+            </div>
+            <div
+              style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: scroll; pointer-events: none; z-index: -1; opacity: 0;"
+            >
+              <div />
+            </div>
+            <div
+              style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: scroll; pointer-events: none; z-index: -1; opacity: 0;"
+            >
+              <div
+                style="width: 200%; height: 200%;"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`LinkPreview Doesn't show a preview for freefeed.net 1`] = `<DocumentFragment />`;
+
+exports[`LinkPreview Doesn't show a preview for reddit.com 1`] = `<DocumentFragment />`;
+
+exports[`LinkPreview Doesn't show a preview for some random website 1`] = `<DocumentFragment />`;
+
+exports[`LinkPreview Doesn't show a video preview if network request has failed 1`] = `
+<DocumentFragment>
+  <div
+    class="video-preview link-preview-content load-error"
+    style=""
+  >
+    HTTP error: 404 Not Found
+  </div>
+</DocumentFragment>
+`;
+
+exports[`LinkPreview Shows a Google Docs preview 1`] = `
+<DocumentFragment>
+  <div>
+    <div
+      class="google-docs-preview link-preview-content"
+    >
+      <div
+        class="google-docs-label document"
+      />
+      <a
+        class="google-docs-inner"
+        href="https://docs.google.com/document/d/1GbH0-Tc0Rs-T18JRA3Y--uOo_-lzzzTiCbYCHvs6K_4/edit?usp=sharing"
+        style="background-size: 120%; padding-bottom: 45.45454545454545%;"
+        target="_blank"
+      />
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`LinkPreview Shows a Soundcloud preview 1`] = `
+<DocumentFragment>
+  <div
+    class="soundcloud-preview link-preview-content"
+  >
+    <iframe
+      class="soundcloud-iframe"
+      frameborder="0"
+      scrolling="no"
+      src="https://w.soundcloud.com/player/?auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&buying=false&url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F966875497"
+      style="width: 100%; max-width: 450px; height: 166px;"
+    />
+    <div
+      class="info"
+    >
+      <a
+        href="https://soundcloud.com/smokedpepper/in-dub-we-trust"
+        target="_blank"
+        title="In Dub We Trust by SmokedPepper"
+      >
+        In Dub We Trust by SmokedPepper at SoundCloud
+      </a>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`LinkPreview Shows a Spotify preview 1`] = `
+<DocumentFragment>
+  <div
+    class="spotify-preview link-preview-content"
+  >
+    <iframe
+      allow="encrypted-media"
+      class="spotify-iframe"
+      frameborder="0"
+      scrolling="no"
+      src="https://open.spotify.com/embed/playlist/2FNRtMSaxdxVb6ZPFhXgrJ"
+      style="width: 100%; max-width: 450px; height: 380px;"
+    />
+  </div>
+</DocumentFragment>
+`;
+
+exports[`LinkPreview Shows a Telegram preview 1`] = `
+<DocumentFragment>
+  <div>
+    <div
+      class="folder-container"
+    >
+      <div
+        class="content-wrapper"
+        style="height: 1px;"
+      >
+        <div>
+          <div
+            style="position: relative; overflow: hidden;"
+          >
+            <div
+              class="telegram-preview link-preview-content"
+            >
+              <iframe
+                class="telegram-iframe"
+                data-url="https://t.me/meowdobot/0000"
+                frameborder="0"
+                scrolling="no"
+                src="https://t.me/meowdobot/0000?embed=1"
+                style="height: 0px;"
+              />
+            </div>
+            <div
+              style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: scroll; pointer-events: none; z-index: -1; opacity: 0;"
+            >
+              <div />
+            </div>
+            <div
+              style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: scroll; pointer-events: none; z-index: -1; opacity: 0;"
+            >
+              <div
+                style="width: 200%; height: 200%;"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`LinkPreview Shows a Tiktok preview 1`] = `
+<DocumentFragment>
+  <div
+    class="link-preview-content"
+  >
+    <div
+      class="tiktok-video-preview"
+    >
+      Loading preview data…
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`LinkPreview Shows a Twitter preview 1`] = `
+<DocumentFragment>
+  <div>
+    <div
+      class="folder-container"
+    >
+      <div
+        class="content-wrapper"
+        style="height: 1px;"
+      >
+        <div>
+          <div
+            style="position: relative; overflow: hidden;"
+          >
+            <div
+              class="tweet-preview link-preview-content"
+              style="height: 0px;"
+            >
+              <iframe
+                class="twitter-iframe"
+                frameborder="0"
+                scrolling="no"
+                src="https://platform.twitter.com/embed/index.html?dnt=true&embedId=twitter-widget-0&id=1368867769211514881&theme=light"
+                style="height: 0px;"
+              />
+            </div>
+            <div
+              style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: scroll; pointer-events: none; z-index: -1; opacity: 0;"
+            >
+              <div />
+            </div>
+            <div
+              style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: scroll; pointer-events: none; z-index: -1; opacity: 0;"
+            >
+              <div
+                style="width: 200%; height: 200%;"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`LinkPreview Shows a Wikipedia preview 1`] = `
+<DocumentFragment>
+  <div
+    class="link-preview-content"
+  >
+    <div
+      class="folder-container"
+    >
+      <div
+        class="content-wrapper"
+        style="height: 1px;"
+      >
+        <div>
+          <div
+            class="wikipedia-preview"
+          >
+            <a
+              href="https://ru.wikipedia.org/wiki/%D0%AF%D0%B3%D0%BE%D0%B4%D0%B8%D1%86%D1%8B"
+              target="_blank"
+            >
+              <div>
+                <img
+                  alt="Ягодицы"
+                  class="wikipedia-preview-image"
+                  height="150"
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Antonio_canova%2C_amore_e_psiche_louvre_06.JPG/320px-Antonio_canova%2C_amore_e_psiche_louvre_06.JPG"
+                  width="200"
+                />
+                <p>
+                  <strong>
+                    Ягодицы
+                  </strong>
+                </p>
+                <p>
+                  Я́годи́цы — мягкие ткани задней и латеральных поверхностей таза, представленные ягодичными мышцами, подкожной клетчаткой и кожей. Каждая ягодица ограничена сверху областью пояснично-крестцового ромба (Михаэлиса) и крылом подвздошной кости, снизу — подъягодичной складкой и промежностью, а сбоку — областью большого вертела бедра.
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`LinkPreview Shows a Yandex Music preview 1`] = `
+<DocumentFragment>
+  <iframe
+    class="yandex-music-preview link-preview-content"
+    frameborder="0"
+    height="280"
+    src="https://music.yandex.ru/iframe/#album/12970824/"
+    style="width: 100%; height: 280px;"
+    width="100%"
+  />
+</DocumentFragment>
+`;
+
+exports[`LinkPreview Shows a video preview for Coub 1`] = `
+<DocumentFragment>
+  <div
+    class="video-preview link-preview-content"
+    style="max-width: 450px;"
+  >
+    <div
+      aria-label="Video preview"
+      class="static-preview"
+      style="padding-bottom: 56.25%; background-image: url(https://coub-anubis-a.akamaized.net/coub_storage/coub/simple/cw_image/ce289137929/a46bb680bae77df60147a/1441008976_00029.jpg);"
+    >
+      <svg
+        aria-hidden="true"
+        class="play-icon fa-icon fa-icon-fas-play-circle"
+        focusable="false"
+        role="img"
+        viewBox="0 0 512 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm115.7 272l-176 101c-15.8 8.8-35.7-2.5-35.7-21V152c0-18.4 19.8-29.8 35.7-21l176 107c16.4 9.2 16.4 32.9 0 42z"
+          fill="currentColor"
+        />
+      </svg>
+    </div>
+    <div
+      class="info"
+    >
+      <a
+        href="https://coub.com/view/7xk9n"
+        target="_blank"
+        title="Russian Duck Army by Cat in chief"
+      >
+        Russian Duck Army by Cat in chief
+      </a>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`LinkPreview Shows a video preview for Gfycat 1`] = `
+<DocumentFragment>
+  <div
+    class="video-preview link-preview-content"
+    style="max-width: 357.6237364075618px;"
+  >
+    <div
+      aria-label="Video preview"
+      class="static-preview"
+      style="padding-bottom: 89.0625%; background-image: url(https://thumbs.gfycat.com/DismalIndolentGalago-mobile.jpg);"
+    >
+      <svg
+        aria-hidden="true"
+        class="play-icon fa-icon fa-icon-fas-play-circle"
+        focusable="false"
+        role="img"
+        viewBox="0 0 512 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm115.7 272l-176 101c-15.8 8.8-35.7-2.5-35.7-21V152c0-18.4 19.8-29.8 35.7-21l176 107c16.4 9.2 16.4 32.9 0 42z"
+          fill="currentColor"
+        />
+      </svg>
+    </div>
+    <div
+      class="info"
+    >
+      <a
+        href="https://gfycat.com/dismalindolentgalago-dog"
+        target="_blank"
+        title="Cat has found the squishiest face to knead at Gfycat"
+      >
+        Cat has found the squishiest face to knead at Gfycat
+      </a>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`LinkPreview Shows a video preview for Giphy 1`] = `
+<DocumentFragment>
+  <div
+    class="video-preview link-preview-content"
+    style="max-width: 399.41527640440853px;"
+  >
+    <div
+      aria-label="Video preview"
+      class="static-preview"
+      style="padding-bottom: 71.39999999999999%; background-image: url(https://media3.giphy.com/media/ncAcktdglyCuVrKeZG/giphy.gif);"
+    />
+    <div
+      class="info"
+    >
+      <a
+        href="https://giphy.com/gifs/fallontonight-jimmy-fallon-tonight-show-ncAcktdglyCuVrKeZG"
+        target="_blank"
+        title="Jimmy Fallon Christmas GIF by The Tonight Show Starring Jimmy Fallon - Find & Share on GIPHY by The Tonight Show Starring Jimmy Fallon"
+      >
+        Jimmy Fallon Christmas GIF by The Tonight Show Starring Jimmy Fallon - Find & Share on GIPHY by The Tonight Show Starring Jimmy Fallon
+      </a>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`LinkPreview Shows a video preview for Vimeo 1`] = `
+<DocumentFragment>
+  <div
+    class="video-preview link-preview-content"
+    style="max-width: 449.6483000635052px;"
+  >
+    <div
+      aria-label="Video preview"
+      class="static-preview"
+      style="padding-bottom: 56.33802816901409%; background-image: url(https://i.vimeocdn.com/video/988324592_450.jpg);"
+    >
+      <svg
+        aria-hidden="true"
+        class="play-icon fa-icon fa-icon-fas-play-circle"
+        focusable="false"
+        role="img"
+        viewBox="0 0 512 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm115.7 272l-176 101c-15.8 8.8-35.7-2.5-35.7-21V152c0-18.4 19.8-29.8 35.7-21l176 107c16.4 9.2 16.4 32.9 0 42z"
+          fill="currentColor"
+        />
+      </svg>
+    </div>
+    <div
+      class="info"
+    >
+      <a
+        href="https://vimeo.com/475544342"
+        target="_blank"
+        title="Allir úr! by Novaisland"
+      >
+        Allir úr! by Novaisland
+      </a>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`LinkPreview Shows a video preview for Youtube 1`] = `
+<DocumentFragment>
+  <div
+    class="video-preview link-preview-content"
+    style="max-width: 450px;"
+  >
+    <div
+      aria-label="Video preview"
+      class="static-preview"
+      style="padding-bottom: 56.25%; background-image: url(https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg);"
+    >
+      <svg
+        aria-hidden="true"
+        class="play-icon fa-icon fa-icon-fas-play-circle"
+        focusable="false"
+        role="img"
+        viewBox="0 0 512 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm115.7 272l-176 101c-15.8 8.8-35.7-2.5-35.7-21V152c0-18.4 19.8-29.8 35.7-21l176 107c16.4 9.2 16.4 32.9 0 42z"
+          fill="currentColor"
+        />
+      </svg>
+    </div>
+    <div
+      class="info"
+    >
+      <a
+        href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=123"
+        target="_blank"
+        title="Open on YouTube"
+      >
+        Open on YouTube
+      </a>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`LinkPreview Shows a video preview for Youtube 2`] = `
+<DocumentFragment>
+  <div
+    class="video-preview link-preview-content"
+    style="max-width: 450px;"
+  >
+    <div
+      aria-label="Video preview"
+      class="static-preview"
+      style="padding-bottom: 56.25%; background-image: url(https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg);"
+    >
+      <iframe
+        allowfullscreen=""
+        aria-label="Video player"
+        frameborder="0"
+        src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&fs=1&autoplay=1&start=123"
+      />
+    </div>
+    <div
+      class="info"
+    >
+      <a
+        href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=123"
+        target="_blank"
+        title="Open on YouTube"
+      >
+        Open on YouTube
+      </a>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`LinkPreview Shows an Instagram preview 1`] = `
+<DocumentFragment>
+  <div>
+    <div
+      class="folder-container"
+    >
+      <div
+        class="content-wrapper"
+        style="height: 1px;"
+      >
+        <div>
+          <div
+            style="position: relative; overflow: hidden;"
+          >
+            <div
+              class="instagram-preview link-preview-content"
+            >
+              <iframe
+                class="instagram-iframe"
+                data-url="https://www.instagram.com/p/CMH88yIDA-J/"
+                frameborder="0"
+                scrolling="no"
+                src="https://www.instagram.com/p/CMH88yIDA-J/embed/captioned/"
+                style="height: 0px;"
+              />
+            </div>
+            <div
+              style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: scroll; pointer-events: none; z-index: -1; opacity: 0;"
+            >
+              <div />
+            </div>
+            <div
+              style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: scroll; pointer-events: none; z-index: -1; opacity: 0;"
+            >
+              <div
+                style="width: 200%; height: 200%;"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
