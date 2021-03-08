@@ -5,11 +5,11 @@ import * as Sentry from '@sentry/react';
 class ErrorBoundary extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = { hasError: false, error: {}, errorInfo: {} };
+    this.state = { hasError: false, error: {}, errorInfo: {}, errorTime: null };
   }
 
   static getDerivedStateFromError(error) {
-    return { hasError: true, error };
+    return { hasError: true, error, errorTime: new Date() };
   }
 
   componentDidCatch(error, errorInfo) {
@@ -21,7 +21,7 @@ class ErrorBoundary extends PureComponent {
   }
 
   render() {
-    const { error, hasError } = this.state;
+    const { error, hasError, errorTime } = this.state;
 
     if (hasError) {
       return (
@@ -45,6 +45,7 @@ class ErrorBoundary extends PureComponent {
                 CONFIG.betaChannel.isBeta &&
                 ` (⚠ ${CONFIG.betaChannel.subHeading} instance)`}
             </p>
+            <p>Time: {errorTime.toISOString()}</p>
           </div>
         </div>
       );
