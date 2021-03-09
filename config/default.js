@@ -113,4 +113,13 @@ export default {
   },
 
   minPasswordLength: 9,
+
+  appVersionCheck: {
+    // Use real URL/URI here to enable update check
+    url: '',
+    // It depends on your server configuration, which header is better to use
+    // for update checking. It may be 'Date', 'ETag', or some other header.
+    header: 'Last-Modified',
+    intervalSec: 300,
+  },
 };

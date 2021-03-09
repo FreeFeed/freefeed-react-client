@@ -920,3 +920,19 @@ export const betaChannelMiddleware = (store) => (next) => (action) => {
   }
   return next(action);
 };
+
+export const appVersionMiddleware = (store) => {
+  const { url, header, intervalSec } = CONFIG.appVersionCheck;
+  function checkVersion() {
+    fetch(url, { method: 'HEAD' }).then(
+      (res) => res.ok && store.dispatch(ActionCreators.setAppVersion(res.headers.get(header))),
+      (err) => console.warn(`Cannot fetch '${url}': ${err}`),
+    );
+
+    setTimeout(checkVersion, intervalSec * 1000);
+  }
+
+  url && checkVersion();
+
+  return (next) => (action) => next(action);
+};
