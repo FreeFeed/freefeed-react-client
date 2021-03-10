@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Error timestamp in error boundary message
 
+### Changed
+- User links in the sidebar (link to the current user and to the recent groups)
+  doesn't show informational popup anymore.
+
 ## [1.95.4] - 2021-03-07
 ### Fixed
 - The numbers of likes of omitted comments now updates in the real time.

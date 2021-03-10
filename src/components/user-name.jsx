@@ -13,6 +13,7 @@ export default function UserName({
   userHover, // { hover, leave },
   children,
   className,
+  noUserCard = false,
 }) {
   const myUsername = useSelector((state) => state.user.username);
   const prefs = useSelector((state) => state.user.frontendPreferences.displayNames);
@@ -32,17 +33,20 @@ export default function UserName({
 
   const onClick = useCallback(
     (e) => {
-      if (isTouched.current) {
+      if (isTouched.current && !noUserCard) {
         e.preventDefault();
         // Use setTimeout here because click handlers should be able to close
         // the existing popup before the new popup is opened.
         setTimeout(() => toggle(), 0);
       }
     },
-    [toggle],
+    [toggle, noUserCard],
   );
 
-  const { onEnter, onLeave } = useHover(500, setOpened);
+  const { onEnter, onLeave } = useHover(
+    500,
+    useCallback((v) => noUserCard || setOpened(v), [noUserCard, setOpened]),
+  );
 
   useEffect(() => {
     if (opened) {
