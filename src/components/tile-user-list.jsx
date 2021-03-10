@@ -46,7 +46,7 @@ class UserTile extends PureComponent {
           <UserPicture user={user} large={this.props.largePicture} />
         </div>
 
-        <UserName user={user} applyHyphenations={true} />
+        <UserName user={user} />
 
         {type == WITH_MUTUALS && user.isMutual ? (
           <div className="user-ismutual">mutual</div>
