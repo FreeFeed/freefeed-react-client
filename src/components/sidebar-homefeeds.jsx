@@ -28,7 +28,7 @@ export const SidebarHomeFeeds = memo(function SidebarHomeFeeds({ homeFeedsCount 
     allHomeFeeds.filter((f) => !f.isInherent).map((f) => ({ id: f.id })),
   );
   const feedsToRender = useMemo(
-    () => feedsList.map((it) => allHomeFeeds.find((f) => f.id === it.id)),
+    () => feedsList.map((it) => allHomeFeeds.find((f) => f.id === it.id)).filter(Boolean),
     [feedsList, allHomeFeeds],
   );
 
