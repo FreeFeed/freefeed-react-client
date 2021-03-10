@@ -14,7 +14,7 @@ export default ScrollSafe(
     useEffect(() => {
       initEmbedly();
       box.current.innerHTML = `<a
-      href="${url.replace(/"/g, '&quot;')}",
+      href="${url.replace(/"/g, '&quot;')}"
       data-card-controls="0"
       data-card-width="400px"
       data-card-recommend="0"

@@ -55,9 +55,24 @@ export default memo(function VideoPreview({ url }) {
     let player = null;
     if (canShowPlayer) {
       if (info.playerURL) {
-        player = <iframe src={info.playerURL} frameBorder="0" allowFullScreen={true} />;
+        player = (
+          <iframe
+            src={info.playerURL}
+            frameBorder="0"
+            allowFullScreen={true}
+            aria-label="Video player"
+          />
+        );
       } else {
-        player = <video src={info.videoURL} poster={info.previewURL} autoPlay={true} loop={true} />;
+        player = (
+          <video
+            src={info.videoURL}
+            poster={info.previewURL}
+            autoPlay={true}
+            loop={true}
+            aria-label="Video player"
+          />
+        );
       }
     }
 
@@ -81,7 +96,12 @@ export default memo(function VideoPreview({ url }) {
 
   return (
     <div className="video-preview link-preview-content" style={{ maxWidth: width }}>
-      <div className="static-preview" style={previewStyle} onClick={showPlayer}>
+      <div
+        className="static-preview"
+        style={previewStyle}
+        onClick={showPlayer}
+        aria-label="Video preview"
+      >
         {player && (playerVisible ? player : <Icon icon={faPlayCircle} className="play-icon" />)}
       </div>
       <div className="info">
@@ -154,6 +174,9 @@ function getDefaultAspectRatio(url) {
     return 9 / 16;
   }
   if (GFYCAT_RE.test(url)) {
+    return 9 / 16;
+  }
+  if (GIPHY_RE.test(url)) {
     return 9 / 16;
   }
   return null;
