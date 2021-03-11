@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Not released
 
+## [1.96.1] - 2021-03-11
+### Fixed
+- Properly update state of groups in realtime
+
 ## [1.96.0] - 2021-03-11
 ### Added
 - Error timestamp in error boundary message
