@@ -7,6 +7,7 @@ import ErrorBoundary from './error-boundary';
 import { useDropDown, CLOSE_ON_CLICK_OUTSIDE } from './hooks/drop-down';
 import { UserDisplayName } from './user-displayname';
 import UserCard from './user-card';
+import { useMediaQueryRef } from './hooks/media-query';
 
 export default function UserName({
   user: { username, screenName },
@@ -31,16 +32,25 @@ export default function UserName({
     touchTimeout.current = setTimeout(() => (isTouched.current = false), 500);
   }, []);
 
+  // Some browsers may not support the 'hover' query
+  const hoverSupported = useMediaQueryRef('(hover: hover), (hover: none)');
+  const mouseDevice = useMediaQueryRef('(hover: hover)');
+
   const onClick = useCallback(
     (e) => {
-      if (isTouched.current && !noUserCard) {
+      if (noUserCard) {
+        return;
+      }
+      // Using double check here: media query 'hover' support and the isTouched status
+      const touch = hoverSupported.current && !mouseDevice.current;
+      if (touch || isTouched.current) {
         e.preventDefault();
         // Use setTimeout here because click handlers should be able to close
         // the existing popup before the new popup is opened.
         setTimeout(() => toggle(), 0);
       }
     },
-    [toggle, noUserCard],
+    [toggle, noUserCard, mouseDevice, hoverSupported],
   );
 
   const { onEnter, onLeave } = useHover(
