@@ -1,5 +1,1 @@
-To close phabricator bugs from pull request add "Closes Txx" in the pull-request description here.
-Your pull request description will be added to merge commit as commit text, so please describe in human
-terms what this pull request adds or fixes.
-
-^^ Please remove the above template text and this line.
+Please give a short description of what would change if this PR is merged. Attach screenshots (or, better, gifs) of any changes that are visible to users, if possible.
