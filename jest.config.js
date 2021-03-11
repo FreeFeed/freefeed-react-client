@@ -29,7 +29,7 @@ module.exports = {
   coveragePathIgnorePatterns: ['/node_modules/'],
 
   // Indicates which provider should be used to instrument code for coverage
-  coverageProvider: 'v8',
+  // coverageProvider: 'v8',
 
   // A list of reporter names that Jest uses when writing coverage reports
   // coverageReporters: [
@@ -82,8 +82,8 @@ module.exports = {
   moduleNameMapper: {
     '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
       '<rootDir>/test/test-file-stub.js',
-    '\\.(css|scss)$': '<rootDir>/test/style-mock.js',
     '\\.module.scss$': 'identity-obj-proxy',
+    '\\.(css|scss)$': '<rootDir>/test/style-mock.js',
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
