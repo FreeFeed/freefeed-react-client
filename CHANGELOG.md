@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.96.0] - Not released
+### Added
+- Error timestamp in error boundary message
+
+### Fixed
+- The COMPLETE_POST_COMMENTS responses was not fully processed, leading to
+  `Cannot read property 'username' of null` errors when updating comments.
+- Deleting the friend list may have caused an error in the sidebar.
+
+### Changed
+- Underline sidebar links on hover
+- User links in the sidebar (link to the current user and to the recent groups)
+  doesn't show informational popup anymore.
+
 ## [1.95.4] - 2021-03-07
 ### Fixed
 - The numbers of likes of omitted comments now updates in the real time.
