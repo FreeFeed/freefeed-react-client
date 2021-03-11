@@ -907,6 +907,9 @@ export function users(state = {}, action) {
     case ActionTypes.REALTIME_GLOBAL_USER_UPDATE: {
       return mergeAccounts([action.user], { insert: false, update: true });
     }
+    case ActionTypes.REALTIME_USER_UPDATE: {
+      return mergeAccounts(action.updatedGroups || [], { insert: true, update: true });
+    }
     case response(ActionTypes.GET_ALL_GROUPS): {
       return mergeAccounts(action.payload.users);
     }
