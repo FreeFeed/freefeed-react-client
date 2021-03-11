@@ -33,7 +33,9 @@ function LoggedInBlock({ user, signOut }) {
 
       <div className="user">
         <div className="author">
-          <UserName user={user}>{user.screenName}</UserName>
+          <UserName user={user} noUserCard>
+            {user.screenName}
+          </UserName>
         </div>
         <div>
           <Link to="/settings">settings</Link>

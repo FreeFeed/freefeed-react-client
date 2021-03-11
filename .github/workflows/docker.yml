@@ -26,6 +26,7 @@ jobs:
         tag_with_ref: true
 
   deploy:
+    needs: build
     name: Trigger deploy
     runs-on: ubuntu-latest
 
