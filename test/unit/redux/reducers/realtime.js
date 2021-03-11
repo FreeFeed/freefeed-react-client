@@ -17,6 +17,7 @@ import {
   REALTIME_GLOBAL_USER_UPDATE,
   REALTIME_POST_HIDE,
   REALTIME_POST_UNHIDE,
+  REALTIME_USER_UPDATE,
 } from '../../../../src/redux/action-types';
 import { realtimeSubscribe, realtimeUnsubscribe } from '../../../../src/redux/action-creators';
 import { postParser } from '../../../../src/utils';
@@ -98,6 +99,15 @@ describe('realtime events', () => {
       });
 
       expect(result, 'to be', usersBefore);
+    });
+
+    it('should update group from the updatedGroups of REALTIME_USER_UPDATE ', () => {
+      const result = users(usersBefore, {
+        type: REALTIME_USER_UPDATE,
+        updatedGroups: [{ ...testUser, name: 'New name' }],
+      });
+
+      expect(result[testUser.id].name, 'to equal', 'New name');
     });
   });
 
