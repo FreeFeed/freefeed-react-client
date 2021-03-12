@@ -404,7 +404,7 @@ const Privacy = () => (
         information about website use by means of cookies. The information gathered relating to our
         website is used to create reports about the use of our website. Google{"'"}s privacy policy
         is available at:{' '}
-        <a href="https://policies.google.com/privacy" target="_blank">
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">
           https://policies.google.com/privacy
         </a>
       </p>

@@ -104,7 +104,7 @@ const getEmbeddableItem = async (url, withoutAutoplay) => {
         h,
         pid: 'video',
         title: renderToString(
-          <a href={url} target="_blank">
+          <a href={url} target="_blank" rel="noopener">
             {text || url}
           </a>,
         ),

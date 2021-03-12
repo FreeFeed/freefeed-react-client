@@ -112,6 +112,7 @@ exports[`PieceOfText Renders text with spoilers 1`] = `
       <a
         dir="ltr"
         href="https://example.com/"
+        rel="noopener"
         target="_blank"
       >
         example.com

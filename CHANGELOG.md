@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Not released
+### Added
+- The `rel="noopener"` attribute is added to all possibly external links. It
+  improves both security and performance. See
+  https://web.dev/external-anchors-use-rel-noopener/.
+- The `<meta name="referrer" content="strict-origin-when-cross-origin">` tag
+  added to the index document.
+
+### Changed
+- The client configuration structure is simplified. There are only two config
+  files now: the _config/default.js_ (the default config parameters) and the
+  optional _[web-root]/config.json_ which is loaded in runtime by browser. The
+  _config/local.json_ file is not used anymore.
 
 ## [1.96.1] - 2021-03-11
 ### Fixed

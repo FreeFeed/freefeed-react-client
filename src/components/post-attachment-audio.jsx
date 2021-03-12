@@ -29,7 +29,7 @@ class AudioAttachment extends PureComponent {
           <audio src={props.url} title={artistAndTitle} preload="none" controls />
         </div>
         <div>
-          <a href={props.url} title={artistAndTitle} target="_blank">
+          <a href={props.url} title={artistAndTitle} target="_blank" rel="noopener">
             <Icon icon={faFileAudio} className="attachment-icon" />
             <span>{artistAndTitle}</span>
           </a>

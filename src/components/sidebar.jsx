@@ -153,7 +153,11 @@ const SideBarFreeFeed = () => (
         </li>
         <li>
           <Link to="/support">Support</Link> /{' '}
-          <a href="https://github.com/FreeFeed/freefeed-server/wiki/FAQ" target="_blank">
+          <a
+            href="https://github.com/FreeFeed/freefeed-server/wiki/FAQ"
+            target="_blank"
+            rel="noopener"
+          >
             FAQ
           </a>
         </li>
@@ -329,7 +333,10 @@ const SideBarBookmarklet = () => (
     </div>
     <div className="box-footer">
       There is also a{' '}
-      <a href="https://chrome.google.com/webstore/detail/share-on-freefeed/dngijpbccpnbjlpjomjmlppfgmnnilah">
+      <a
+        href="https://chrome.google.com/webstore/detail/share-on-freefeed/dngijpbccpnbjlpjomjmlppfgmnnilah"
+        rel="noopener"
+      >
         <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>Chrome Extension</span>
       </a>{' '}
       for sharing on {CONFIG.siteTitle}.

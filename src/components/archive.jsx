@@ -45,14 +45,14 @@ class Archive extends Component {
               In April 2015, before FriendFeed was shut down, a group of volunteers had created an
               archive of posts for 5356 users and 1231 groups of FriendFeed.com. These archives are
               available at{' '}
-              <a href="https://clio.freefeed.net/" target="_blank">
+              <a href="https://clio.freefeed.net/" target="_blank" rel="noopener">
                 clio.freefeed.net
               </a>
               .
             </p>
             <p>
               If you have an archive of your posts at{' '}
-              <a href="https://clio.freefeed.net/" target="_blank">
+              <a href="https://clio.freefeed.net/" target="_blank" rel="noopener">
                 clio.freefeed.net
               </a>
               , you can now restore it to FreeFeed.
@@ -62,7 +62,7 @@ class Archive extends Component {
               to complete.
             </p>
             <p>
-              <a href="https://dev.freefeed.net/w/archives-faq/" target="_blank">
+              <a href="https://dev.freefeed.net/w/archives-faq/" target="_blank" rel="noopener">
                 Restore from archives FAQ
               </a>{' '}
               (in Russian)

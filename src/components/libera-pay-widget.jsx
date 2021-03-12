@@ -35,7 +35,7 @@ export function LiberaPayWidget({ project, updateInterval = 1200000 }) {
     <a
       href={`https://liberapay.com/${project}/donate`}
       target="_blank"
-      rel="noopener noreferrer"
+      rel="noopener noopener"
       className={styles.widget}
     >
       <span className={styles.header}>

@@ -54,7 +54,7 @@ export default function TikTokVideoPreview({ url }) {
       </div>
       {byline && (
         <div className="info">
-          <a href={url} target="_blank" title={byline}>
+          <a href={url} rel="noopener" target="_blank" title={byline}>
             {byline}
           </a>
         </div>
