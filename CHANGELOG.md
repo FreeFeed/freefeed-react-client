@@ -19,6 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   optional _[web-root]/config.json_ which is loaded in runtime by browser. The
   _config/local.json_ file is not used anymore.
 
+### Changed
+- The client configuration structure is simplified. There are only two config
+  files now: the _config/default.js_ (the default config parameters) and the
+  optional _[web-root]/config.json_ which is loaded in runtime by browser. The
+  _config/local.json_ file is not used anymore.
+
 ## [1.96.1] - 2021-03-11
 ### Fixed
 - Properly update state of groups in realtime

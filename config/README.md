@@ -6,28 +6,29 @@ The _default.js_ returns the default configuration as default export. The
 configuration is the plain JSON-serializable object.
 
 This file is always exists and normally should not be edited. It can be
-overridden in compile- or runtime by the files described below.
-
-## config/local.json
-
-The _local.json_ file is not exists by default but can be created by developer.
-It is the local "patch" that overriddes the specific values of default
-configuration.
-
-The _local.json_ is not visible for the version control. The default + local
-configuration is embedded into the generated application code. It is useful if
-you run the development server and want to redefine some default values.
+overridden in runtime by the file described below.
 
 ## [web-root]/config.json
 
-The _config.json_ acts like a _local.json_ but it is not embedded into the
-application code and it is not placed in the 'config' folder. Instead it should
-be placed in web root near the _index.html_.
+The _config.json_ file is not exists by default but can be created by site
+administrator or developer. It is the local "patch" that overriddes the specific
+values of default configuration. It should be placed in web root near the
+_index.html_.
 
-This file, if exists, is merged with the other configuration in runtime (when
+This file, if exists, is merged with the default configuration in runtime (when
 site is opened in the browser). It allow site administrator to change some
-configuration parameters without recompiling all the code.
+configuration parameters without recompiling all the code. 
+
+For example, if you
+just want to change the API server address, use the following minimal
+config.json:
+
+```json
+{ "api": { "root": "https://example.net" } }
+```
+All other configuration parameters will be taken from the default configuration.
 
 You can also use this file with the development server. Just place a
-_config.json_ to the project root (near the _package.json_). Bear in mind that
-this file will not be included in compiled code!
+_config.json_ to the project root near the _package.json_ (it will not be
+visible for the version control). Bear in mind that this file will not be
+included in compiled code!

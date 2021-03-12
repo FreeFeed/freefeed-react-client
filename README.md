@@ -8,7 +8,7 @@ We use [yarn](https://yarnpkg.com/) as dependency manager (instead of npm) so yo
 
 Run `yarn start`. By default it will use our staging backend [candy.freefeed.net](https://candy.freefeed.net).
 
-Alternatively, you can install [freefeed-server](https://github.com/FreeFeed/freefeed-server) and create `config/local.json` file with URL of local backend:
+Alternatively, you can install [freefeed-server](https://github.com/FreeFeed/freefeed-server) and create `config.json` file in the project root with URL of local backend:
 ```
 {
   "api": {
