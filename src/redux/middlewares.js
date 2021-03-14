@@ -239,10 +239,13 @@ export const authMiddleware = (store) => {
       next(action);
       if (firstUnauthenticated) {
         firstUnauthenticated = false;
-        const { pathname } = window.location;
-        if (shouldGoToSignIn(pathname)) {
+        if (shouldGoToSignIn(location.pathname)) {
           store.dispatch(ActionCreators.requireAuthentication());
-          return browserHistory.push(`/signin?back=${pathname}`);
+          return browserHistory.push(
+            `/signin?back=${encodeURIComponent(
+              location.pathname + location.search + location.hash,
+            )}`,
+          );
         }
       }
       return;
