@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.96.1] - 2021-03-11
 ### Fixed
 - Properly update state of groups in realtime
+- If the anonymous user visits the page that require authorization, the browser
+  redirects to the `/signin?back=…` page. Previously, the back parameter
+  included only the pathname of the page, not the query and hash. It is fixed,
+  and now it includes pathname + query + hash. It is especially important for
+  the magic links to the token creation page.
 
 ## [1.96.0] - 2021-03-11
 ### Added
