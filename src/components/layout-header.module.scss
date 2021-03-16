@@ -1,0 +1,196 @@
+@import '../../styles/helvetica/dark-vars.scss';
+
+$with-sidebar: '(min-width: 992px)';
+$without-sidebar: '(max-width: 991px)';
+
+@function fluid(
+  $min-width-val,
+  $min-width,
+  $max-width-val,
+  $max-width,
+  $val-unit: 'px',
+  $width-unit: 'px',
+  $full-width: '100vw'
+) {
+  @return clamp(
+    #{$min-width-val + $val-unit},
+    #{$min-width-val + $val-unit} + #{$max-width-val - $min-width-val} * #{'('} #{$full-width} - #{$min-width +
+      $width-unit}#{')'} / ($max-width - $min-width),
+    #{$max-width-val + $val-unit}
+  );
+}
+
+@mixin with-gap {
+  & > * {
+    margin-left: 8px;
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  @include with-gap;
+
+  @media #{$with-sidebar} {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 688px;
+  }
+  @media #{$without-sidebar} {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
+}
+
+.logo {
+  flex: 1;
+  margin: 0;
+  white-space: nowrap;
+
+  font-size: 32px; // fluid's fallback size
+  font-size: fluid(24, 320, 32, 420);
+  font-weight: bold;
+}
+
+.logoLink {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.searchForm {
+  @include with-gap;
+  display: flex;
+  flex: 0 1 100%;
+  position: relative;
+
+  .fullMode & {
+    max-width: 380px;
+  }
+  .compactMode & {
+    max-width: 280px;
+  }
+  .collapsibleMode & {
+    max-width: 100%;
+  }
+}
+
+.searchInput,
+.searchButton {
+  font: inherit;
+  padding: 0 1em;
+  background-color: #eee;
+  border: none;
+  border-radius: 4px;
+
+  :global(.dark-theme) & {
+    background-color: $bg-color-lightest;
+  }
+}
+
+.searchInput {
+  flex: 1;
+  width: 0;
+
+  .fullMode & {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .compactMode & {
+    padding-left: 35px;
+    padding-right: 8px;
+  }
+  .collapsibleMode & {
+    padding-left: 35px;
+    padding-right: 35px;
+  }
+}
+
+.searchButton {
+  font-weight: bold;
+  margin-left: 8px;
+  font-size: 16px;
+
+  &:active {
+    background-color: #ddd;
+    :global(.dark-theme) & {
+      background-color: $bg-color-lightest;
+    }
+  }
+}
+
+.buttons {
+  display: flex;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.activeElements {
+  @include with-gap;
+  display: flex;
+  flex: 2;
+  justify-content: flex-end;
+  height: 40px;
+
+  .collapsibleMode & {
+    flex: 0;
+  }
+}
+
+.searchExpandedCont {
+  display: flex;
+  flex: 1;
+  height: 40px;
+}
+
+.compactButton {
+  width: 40px;
+  height: 40px;
+  font-size: 19px;
+  border: none;
+  background: none;
+  color: inherit !important;
+  text-decoration: none !important;
+
+  display: inline-flex;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.searchIcon {
+  position: absolute;
+  font-size: 19px;
+  opacity: 0.33;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.closeSearchButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.signInLink {
+  position: absolute;
+  right: 0;
+  transform: translateX(calc(100% + 30px));
+}
+
+.signInButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
