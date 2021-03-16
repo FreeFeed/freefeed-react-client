@@ -4,14 +4,16 @@ import { faBars, faSearch, faSignInAlt, faTimes } from '@fortawesome/free-solid-
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import cn from 'classnames';
 import { KEY_ESCAPE } from 'keycode-js';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { openSidebar } from '../redux/action-creators';
 import { Icon } from './fontawesome-icons';
 import { useMediaQuery } from './hooks/media-query';
 import styles from './layout-header.module.scss';
 import { SignInLink } from './sign-in-link';
 
 export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
+  const dispatch = useDispatch();
   const onSearchPage = router.routes[router.routes.length - 1].name === 'search';
   const isLayoutWithSidebar = useMediaQuery('(min-width: 992px)');
   const isWideScreen = useMediaQuery('(min-width: 700px)');
@@ -60,6 +62,8 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
     isNarrowScreen,
     onSearchPage,
   ]);
+
+  const doOpenSidebar = useCallback(() => dispatch(openSidebar(true)), [dispatch]);
 
   const searchForm = (
     <form className={styles.searchForm} action="/search" onSubmit={onSubmit}>
@@ -138,6 +142,7 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
                     aria-label="Open sidebar"
                     title="Open sidebar"
                     className={cn(styles.compactButton, styles.openSidebarButton)}
+                    onClick={doOpenSidebar}
                   >
                     <Icon icon={faBars} />
                   </button>
