@@ -12,17 +12,19 @@ import styles from './layout-header.module.scss';
 import { SignInLink } from './sign-in-link';
 
 export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
+  const onSearchPage = router.routes[router.routes.length - 1].name === 'search';
   const isLayoutWithSidebar = useMediaQuery('(min-width: 992px)');
   const isWideScreen = useMediaQuery('(min-width: 700px)');
   const isNarrowScreen = useMediaQuery('(max-width: 549px)');
 
   const authenticated = useSelector((state) => state.authenticated);
 
+  const [searchExpanded, setSearchExpanded] = useState(false);
+
   const fullSearchForm = isWideScreen;
   const compactSearchForm = !fullSearchForm;
-  const collapsibleSearchForm = isNarrowScreen;
+  const collapsibleSearchForm = isNarrowScreen && (!onSearchPage || searchExpanded);
 
-  const [searchExpanded, setSearchExpanded] = useState(false);
   useEffect(() => !collapsibleSearchForm && setSearchExpanded(false), [collapsibleSearchForm]);
 
   const openSearchForm = useCallback(() => setSearchExpanded(true), []);
@@ -54,6 +56,11 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
     [initialQuery, closeSearchForm],
   );
 
+  const onFocus = useCallback(() => isNarrowScreen && onSearchPage && setSearchExpanded(true), [
+    isNarrowScreen,
+    onSearchPage,
+  ]);
+
   const searchForm = (
     <form className={styles.searchForm} action="/search" onSubmit={onSubmit}>
       <input
@@ -65,6 +72,7 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
         autoFocus={collapsibleSearchForm}
         defaultValue={initialQuery}
         onKeyDown={onKeyDown}
+        onFocus={onFocus}
       />
       {compactSearchForm && <Icon icon={faSearch} className={styles.searchIcon} />}
       {fullSearchForm && (
