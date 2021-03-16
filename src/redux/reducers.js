@@ -1980,3 +1980,10 @@ export function appUpdated(state = { version: null, updated: false }, action) {
   }
   return state;
 }
+
+export function sidebarOpened(state = false, action) {
+  if (action.type === ActionTypes.OPEN_SIDEBAR) {
+    return action.payload;
+  }
+  return state;
+}
