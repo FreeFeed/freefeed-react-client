@@ -41,6 +41,7 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
       e.preventDefault();
       const query = input.current?.value.trim() || '';
       if (query !== '') {
+        input.current?.blur();
         router.push(`/search?qs=${encodeURIComponent(query)}`);
       }
     },
