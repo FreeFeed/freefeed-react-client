@@ -98,6 +98,28 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
     </form>
   );
 
+  const sidebarButton =
+    !isLayoutWithSidebar &&
+    (authenticated ? (
+      <button
+        type="button"
+        aria-label="Open sidebar"
+        title="Open sidebar"
+        className={cn(styles.compactButton, styles.openSidebarButton)}
+        onClick={doOpenSidebar}
+      >
+        <Icon icon={faBars} />
+      </button>
+    ) : (
+      <SignInLink
+        className={cn(styles.signInButton, styles.compactButton)}
+        aria-label="Sign In"
+        title="Sign In"
+      >
+        <Icon icon={faSignInAlt} />
+      </SignInLink>
+    ));
+
   return (
     <header
       className={cn(
@@ -108,7 +130,10 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
       )}
     >
       {searchExpanded ? (
-        <div className={styles.searchExpandedCont}>{searchForm}</div>
+        <div className={styles.searchExpandedCont}>
+          {searchForm}
+          {sidebarButton}
+        </div>
       ) : (
         <>
           <h1 className={styles.logo}>
@@ -135,26 +160,7 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
                   <Icon icon={faSearch} />
                 </button>
               )}
-              {!isLayoutWithSidebar &&
-                (authenticated ? (
-                  <button
-                    type="button"
-                    aria-label="Open sidebar"
-                    title="Open sidebar"
-                    className={cn(styles.compactButton, styles.openSidebarButton)}
-                    onClick={doOpenSidebar}
-                  >
-                    <Icon icon={faBars} />
-                  </button>
-                ) : (
-                  <SignInLink
-                    className={cn(styles.signInButton, styles.compactButton)}
-                    aria-label="Sign In"
-                    title="Sign In"
-                  >
-                    <Icon icon={faSignInAlt} />
-                  </SignInLink>
-                ))}
+              {sidebarButton}
             </span>
           </div>
         </>
