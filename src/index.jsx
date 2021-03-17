@@ -353,6 +353,7 @@ function App() {
           component={checkPath(SinglePost, isPostPath)}
           {...generateRouteHooks(boundRouteActions('post'))}
         />
+        <Route name="404" path="*" component={NotFound} />
       </Route>
     </Router>
   );
