@@ -301,13 +301,13 @@ function App() {
         <Route
           name="memories"
           path="/memories/:from"
-          component={PlainFeed}
+          component={checkPath(PlainFeed, isMemoriesPath)}
           {...generateRouteHooks(boundRouteActions('memories'))}
         />
         <Route
           name="userMemories"
           path="/:userName/memories/:from"
-          component={PlainFeed}
+          component={checkPath(PlainFeed, isMemoriesPath)}
           {...generateRouteHooks(boundRouteActions('userMemories'))}
         />
         <Route
@@ -381,4 +381,10 @@ function isPostPath({ params: { postId, userName } }) {
 
 function isAccountPath({ params: { userName } }) {
   return /^[a-z\d-]{3,25}$/i.test(userName);
+}
+
+function isMemoriesPath({ params: { userName, from } }) {
+  const kindaValidDate = /^(19|20|21)\d{6}$/i.test(from);
+  const validUsername = typeof userName === 'undefined' || isAccountPath({ params: { userName } });
+  return kindaValidDate && validUsername;
 }
