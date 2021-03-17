@@ -247,7 +247,11 @@ export const authMiddleware = (store) => {
         const { pathname } = window.location;
         if (shouldGoToSignIn(pathname)) {
           store.dispatch(ActionCreators.requireAuthentication());
-          return browserHistory.push(`/signin?back=${pathname}`);
+          return browserHistory.push(
+            `/signin?back=${encodeURIComponent(
+              location.pathname + location.search + location.hash,
+            )}`,
+          );
         }
       } else {
         location.reload();

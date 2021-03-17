@@ -44,7 +44,13 @@ export default function Layout({ children, router }) {
   // Do not allow anonymous access
   const authenticated = useSelector((state) => state.authenticated);
   useEffect(
-    () => void (!authenticated && browserHistory.push(`/signin?back=${location.pathname}`)),
+    () =>
+      void (
+        !authenticated &&
+        browserHistory.push(
+          `/signin?back=${encodeURIComponent(location.pathname + location.search + location.hash)}`,
+        )
+      ),
     [authenticated],
   );
 

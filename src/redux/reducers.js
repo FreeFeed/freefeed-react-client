@@ -409,7 +409,7 @@ export function postsViewState(state = {}, action) {
       const isEditing = false;
 
       const isError = true;
-      const errorString = `${action.response.status}: ${action.payload.err}`;
+      const errorString = `${action.response?.status || '000'}: ${action.payload.err}`;
 
       return { ...state, [id]: { id, isEditing, isError, errorString } };
     }
@@ -814,7 +814,7 @@ export function commentLikes(state = commentLikesInitial, action) {
 export function usersNotFound(state = [], action) {
   switch (action.type) {
     case fail(ActionTypes.GET_USER_INFO): {
-      if (action.response.status === 404) {
+      if (action.response?.status === 404) {
         const username = action.request.username.toLowerCase();
         if (!state.includes(username)) {
           state = [...state, username];
@@ -905,6 +905,9 @@ export function users(state = {}, action) {
     }
     case ActionTypes.REALTIME_GLOBAL_USER_UPDATE: {
       return mergeAccounts([action.user], { insert: false, update: true });
+    }
+    case ActionTypes.REALTIME_USER_UPDATE: {
+      return mergeAccounts(action.updatedGroups || [], { insert: true, update: true });
     }
     case response(ActionTypes.GET_ALL_GROUPS): {
       return mergeAccounts(action.payload.users);
