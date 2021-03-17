@@ -410,7 +410,7 @@ export function postsViewState(state = {}, action) {
       const isEditing = false;
 
       const isError = true;
-      const errorString = `${action.response.status}: ${action.payload.err}`;
+      const errorString = `${action.response?.status || '000'}: ${action.payload.err}`;
 
       return { ...state, [id]: { id, isEditing, isError, errorString } };
     }
@@ -815,7 +815,7 @@ export function commentLikes(state = commentLikesInitial, action) {
 export function usersNotFound(state = [], action) {
   switch (action.type) {
     case fail(ActionTypes.GET_USER_INFO): {
-      if (action.response.status === 404) {
+      if (action.response?.status === 404) {
         const username = action.request.username.toLowerCase();
         if (!state.includes(username)) {
           state = [...state, username];
