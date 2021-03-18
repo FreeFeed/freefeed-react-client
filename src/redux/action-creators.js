@@ -32,6 +32,9 @@ export function initialWhoAmI() {
   return {
     type: ActionTypes.INITIAL_WHO_AM_I,
     apiRequest: Api.getWhoAmI,
+    // This action fires before the full authentication is complete, so
+    // technically it should be non-authenticated request
+    nonAuthRequest: true,
   };
 }
 
