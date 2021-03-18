@@ -5,29 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Not released
+## [1.97.0] - Not released
 ### Fixed
-- The COMPLETE_POST_COMMENTS responses was not fully processed, leading to
-  `Cannot read property 'username' of null` errors when updating comments.
-- Tapping a user link was sometimes recognized as a mouse click on iOS devices.
-
-## [1.96.1] - 2021-03-11
-### Fixed
-- Properly update state of groups in realtime
 - If the anonymous user visits the page that require authorization, the browser
   redirects to the `/signin?back=…` page. Previously, the back parameter
   included only the pathname of the page, not the query and hash. It is fixed,
   and now it includes pathname + query + hash. It is especially important for
   the magic links to the token creation page.
+- The COMPLETE_POST_COMMENTS responses was not fully processed, leading to
+  `Cannot read property 'username' of null` errors when updating comments.
+- Tapping a user link was sometimes recognized as a mouse click on iOS devices.
 
-## [1.96.0] - 2021-03-11
 ### Added
-- Error timestamp in error boundary message
 - The 'Sign In' link in the header now has '?back=...' parameter that will
   redirect user back to the viewed page after sign in.
 - Forced page reloading after sign out. This guarantees a complete
   reinitialization of the state, which, unfortunately, is difficult to achieve
   by other methods.
+
+## [1.96.1] - 2021-03-11
+### Fixed
+- Properly update state of groups in realtime
+
+## [1.96.0] - 2021-03-11
+### Added
+- Error timestamp in error boundary message
 
 ### Fixed
 - The COMPLETE_POST_COMMENTS responses was not fully processed, leading to
