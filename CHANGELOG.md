@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Tapping a user link was sometimes recognized as a mouse click on iOS devices.
 
+### Added
+- The '_dist/version.txt' file now generated during the production build. This
+  file contains build version and date and can be used to auto-check the client
+  updates.
+
 ## [1.96.1] - 2021-03-11
 ### Fixed
 - Properly update state of groups in realtime
