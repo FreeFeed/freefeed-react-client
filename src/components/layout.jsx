@@ -18,6 +18,7 @@ import { Icon, SVGSymbolDeclarations } from './fontawesome-icons';
 import MediaViewer from './media-viewer';
 import { Throbber } from './throbber';
 import { Delayed } from './lazy-component';
+import { AppUpdated } from './app-updated';
 
 const loadingPageMessage = (
   <Delayed>
@@ -149,8 +150,9 @@ class Layout extends Component {
     }
 
     return (
-      <div className={layoutClassNames}>
-        <ErrorBoundary>
+      <ErrorBoundary>
+        <AppUpdated />
+        <div className={layoutClassNames}>
           <Helmet title={props.title} defer={false} />
           <ColorSchemeSetter />
           <SVGSymbolDeclarations />
@@ -223,8 +225,8 @@ class Layout extends Component {
               <Icon icon={faBug} />
             </a>
           )}
-        </ErrorBoundary>
-      </div>
+        </div>
+      </ErrorBoundary>
     );
   }
 }

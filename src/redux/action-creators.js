@@ -1160,3 +1160,10 @@ export function setBetaChannel(enabled) {
     payload: enabled,
   };
 }
+
+export function setAppVersion(version) {
+  return {
+    type: ActionTypes.APP_VERSION,
+    payload: version,
+  };
+}
