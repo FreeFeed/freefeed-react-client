@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The COMPLETE_POST_COMMENTS responses was not fully processed, leading to
   `Cannot read property 'username' of null` errors when updating comments.
 - Tapping a user link was sometimes recognized as a mouse click on iOS devices.
+- Make reducers compatible with offline state (they didn't know how to handle connectivity errors previously)
 
 ### Added
 - The 'Sign In' link in the header now has '?back=...' parameter that will
@@ -22,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Forced page reloading after sign out. This guarantees a complete
   reinitialization of the state, which, unfortunately, is difficult to achieve
   by other methods.
+- Handle incorrect memory-urls as explicit "error 404"
 
 ## [1.96.1] - 2021-03-11
 ### Fixed
