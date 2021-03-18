@@ -129,6 +129,7 @@
     "webpack-cli": "~3.3.12",
     "webpack-dev-server": "~3.11.2",
     "webpack-node-externals": "~2.5.2",
+    "webpack-version-file": "~0.1.6",
     "worker-loader": "~2.0.0"
   },
   "resolutions": {

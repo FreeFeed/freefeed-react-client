@@ -3847,7 +3847,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^2.0.0, chalk@npm:^2.4.1, chalk@npm:^2.4.2":
+"chalk@npm:^2.0.0, chalk@npm:^2.1.0, chalk@npm:^2.4.1, chalk@npm:^2.4.2":
   version: 2.4.2
   resolution: "chalk@npm:2.4.2"
   dependencies:
@@ -5481,6 +5481,13 @@ __metadata:
   version: 1.1.1
   resolution: "ee-first@npm:1.1.1"
   checksum: ba74f91398e3ee3b6d665b2f0d13ad6530e89a7e64ec886a6eec0602fb8a5a274652960e21bd5d4b42fdeb9017d873ff872f50342d38779e955285977edb337c
+  languageName: node
+  linkType: hard
+
+"ejs@npm:^2.5.2":
+  version: 2.7.4
+  resolution: "ejs@npm:2.7.4"
+  checksum: f066d9a932fb921bdb6e87133d747d5e3408a1c1303f9a15e5a7a3973afdf444a672c98c2f6d97b9a1a76363bd8ae6d05286f26c6b6b7b9674dfc5802fc8546d
   languageName: node
   linkType: hard
 
@@ -13080,6 +13087,7 @@ fsevents@^1.2.7:
     webpack-cli: ~3.3.12
     webpack-dev-server: ~3.11.2
     webpack-node-externals: ~2.5.2
+    webpack-version-file: ~0.1.6
     whatwg-fetch: ~3.6.2
     worker-loader: ~2.0.0
   languageName: unknown
@@ -16530,6 +16538,16 @@ fsevents@^1.2.7:
     source-list-map: ^2.0.0
     source-map: ~0.6.1
   checksum: 2a753b36adf0ddd4dadf6ff375824108a918d180c4ea5383b377526f543e6db0c1ecd40b4154bae8e94c4b209b7814d764879691a468fe230ef9eb32b27fdde4
+  languageName: node
+  linkType: hard
+
+"webpack-version-file@npm:~0.1.6":
+  version: 0.1.6
+  resolution: "webpack-version-file@npm:0.1.6"
+  dependencies:
+    chalk: ^2.1.0
+    ejs: ^2.5.2
+  checksum: fa78beba9757a326461fa0ea0883a0f29a091c49282ec54d92126fd5343e359776477f074948528569644fc90067c79fe282be1c4a9f86eb0097983e66cccc43
   languageName: node
   linkType: hard
 

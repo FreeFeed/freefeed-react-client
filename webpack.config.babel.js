@@ -1,3 +1,4 @@
+import child_process from 'child_process';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import OptiCSS from 'optimize-css-assets-webpack-plugin';
@@ -7,6 +8,7 @@ import CopyPlugin from 'copy-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import CompressionPlugin from 'compression-webpack-plugin';
+import VersionFile from 'webpack-version-file';
 import { gzip } from '@gfx/zopfli';
 
 import { baseConfig, opts, rules } from './webpack/base';
@@ -77,6 +79,15 @@ const config = {
         },
         algorithm(input, compressionOptions, callback) {
           return gzip(input, compressionOptions, callback);
+        },
+      }),
+    !opts.dev &&
+      new VersionFile({
+        output: `${opts.dstDir}/version.txt`,
+        templateString: `<%= name %>@<%= version %> <%= commitHash%>\nBuild date: <%= date %>`,
+        data: {
+          date: new Date().toISOString(),
+          commitHash: child_process.execSync('git rev-parse --short HEAD').toString().trim(),
         },
       }),
   ]),
