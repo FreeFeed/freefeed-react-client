@@ -4,7 +4,6 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import { combineReducers } from 'redux';
 
 import { userParser, getSummaryPeriod } from '../utils';
-import { getToken } from '../services/auth';
 import { parseQuery } from '../utils/search-highlighter';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
 import * as FeedOptions from '../utils/feed-options';
@@ -410,7 +409,7 @@ export function postsViewState(state = {}, action) {
       const isEditing = false;
 
       const isError = true;
-      const errorString = `${action.response.status}: ${action.payload.err}`;
+      const errorString = `${action.response?.status || '000'}: ${action.payload.err}`;
 
       return { ...state, [id]: { id, isEditing, isError, errorString } };
     }
@@ -815,7 +814,7 @@ export function commentLikes(state = commentLikesInitial, action) {
 export function usersNotFound(state = [], action) {
   switch (action.type) {
     case fail(ActionTypes.GET_USER_INFO): {
-      if (action.response.status === 404) {
+      if (action.response?.status === 404) {
         const username = action.request.username.toLowerCase();
         if (!state.includes(username)) {
           state = [...state, username];
@@ -946,9 +945,9 @@ export function subscribers(state = {}, action) {
   return state;
 }
 
-export function authenticated(state = !!getToken(), action) {
+export function authenticated(state = false, action) {
   switch (action.type) {
-    case response(ActionTypes.SIGN_IN): {
+    case response(ActionTypes.INITIAL_WHO_AM_I): {
       return true;
     }
     case response(ActionTypes.SIGN_UP): {
