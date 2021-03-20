@@ -70,6 +70,7 @@ $without-sidebar: '(max-width: 991px)';
   display: flex;
   flex: 0 1 100%;
   position: relative;
+  height: 32px;
 
   .fullMode & {
     max-width: 380px;
@@ -86,18 +87,19 @@ $without-sidebar: '(max-width: 991px)';
 .searchButton {
   font: inherit;
   padding: 0 1em;
-  background-color: #eee;
-  border: none;
-  border-radius: 4px;
+  background-color: #fff;
 
   :global(.dark-theme) & {
-    background-color: $bg-color-lightest;
+    background-color: $bg-color;
   }
 }
 
 .searchInput {
   flex: 1;
   width: 0;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #999; // TODO dark theme
 
   .fullMode & {
     padding-left: 8px;
@@ -114,9 +116,9 @@ $without-sidebar: '(max-width: 991px)';
 }
 
 .searchButton {
-  font-weight: bold;
   margin-left: 8px;
-  font-size: 16px;
+  border: 1px solid;
+  border-radius: 4px;
 
   &:active {
     background-color: #ddd;
@@ -140,6 +142,7 @@ $without-sidebar: '(max-width: 991px)';
   flex: 2;
   justify-content: flex-end;
   height: 40px;
+  align-items: center;
 
   .collapsibleMode & {
     flex: 0;
@@ -150,6 +153,7 @@ $without-sidebar: '(max-width: 991px)';
   display: flex;
   flex: 1;
   height: 40px;
+  align-items: center;
 }
 
 .compactButton {
@@ -180,7 +184,7 @@ $without-sidebar: '(max-width: 991px)';
 
 .closeSearchButton {
   position: absolute;
-  top: 0;
+  top: -4px;
   right: 0;
 }
 
