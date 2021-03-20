@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ("Last-Modified" by default). When the header value is changed, the information bar is
   shown to the user: “There’s a new update for FreeFeed available!
   _Refresh_the_page_ when you are ready.”
+- Confirmation dialog when the private user wants to unsubscribe someone from
+  himself.
 
 ## [1.97.0] - 2021-03-18
 ### Fixed
