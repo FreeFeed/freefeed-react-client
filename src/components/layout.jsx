@@ -16,6 +16,7 @@ import { Icon, SVGSymbolDeclarations } from './fontawesome-icons';
 import MediaViewer from './media-viewer';
 import { Throbber } from './throbber';
 import { Delayed } from './lazy-component';
+import { AppUpdated } from './app-updated';
 import { LayoutHeader } from './layout-header';
 
 const loadingPageMessage = (
