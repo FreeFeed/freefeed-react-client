@@ -230,6 +230,7 @@ describe('UserProfileHead', () => {
     };
     useSelectorMock.mockImplementation((selector) => selector(fakeState));
     const kickMock = jest.spyOn(actionCreators, 'unsubscribeFromMe');
+    const confirmMock = jest.spyOn(global, 'confirm').mockReturnValueOnce(true);
 
     renderUserProfileHead();
     expect(screen.getByText('Subscribed to you')).toBeDefined();
@@ -240,6 +241,10 @@ describe('UserProfileHead', () => {
     // https://github.com/final-form/react-final-form-hooks/issues/67
 
     fireEvent.click(screen.getByText('Remove from subscribers'));
+    expect(confirmMock).toHaveBeenCalledTimes(1);
+    expect(confirmMock).toHaveBeenCalledWith(
+      'Are you sure you want to unsubscribe @freefeed from you?',
+    );
     expect(kickMock).toHaveBeenCalledTimes(1);
     expect(kickMock).toHaveBeenCalledWith(fakeState.users[UID]);
     expect(useDispatchMock).toHaveBeenCalledTimes(1);
