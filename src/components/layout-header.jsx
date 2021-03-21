@@ -41,11 +41,12 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
       e.preventDefault();
       const query = input.current?.value.trim() || '';
       if (query !== '') {
-        input.current?.blur();
         router.push(`/search?qs=${encodeURIComponent(query)}`);
+        input.current.blur();
+        closeSearchForm();
       }
     },
-    [router],
+    [router, closeSearchForm],
   );
 
   const onKeyDown = useCallback(
