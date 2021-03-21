@@ -10,6 +10,7 @@ import PostComment from '../../../src/components/post-comment';
 import ErrorBoundary from '../../../src/components/error-boundary';
 import ExpandComments from '../../../src/components/post-comments/expand-comments';
 import { LoadingComments } from '../../../src/components/post-comments/loading-comments';
+import { SignInLink } from '../../../src/components/sign-in-link';
 
 const expect = unexpected.clone().use(unexpectedReact);
 
@@ -199,7 +200,7 @@ describe('<PostComments>', () => {
       <PostComments comments={[]} post={post} user={{}} />,
       'when rendered',
       'not to contain',
-      <Link>Sign In</Link>,
+      <SignInLink>Sign In</SignInLink>,
     );
 
     post.isCommenting = true;
@@ -207,7 +208,7 @@ describe('<PostComments>', () => {
       <PostComments comments={[]} post={post} user={{}} />,
       'when rendered',
       'to contain',
-      <Link>Sign In</Link>,
+      <SignInLink>Sign In</SignInLink>,
     );
   });
 });

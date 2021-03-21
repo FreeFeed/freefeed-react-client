@@ -1,7 +1,6 @@
 /* global CONFIG */
 import { useMemo, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch, connect } from 'react-redux';
-import { Link } from 'react-router';
 
 import { Helmet } from 'react-helmet';
 import { listHomeFeeds, homeAux } from '../redux/action-creators';
@@ -16,6 +15,7 @@ import { SubscrRequests, TopHomeSelector } from './home';
 import { lazyComponent } from './lazy-component';
 import { useBool } from './hooks/bool';
 import { ButtonLink } from './button-link';
+import { SignInLink } from './sign-in-link';
 
 const ListEditor = lazyComponent(
   () => import('./friends-page/list-editor').then((m) => ({ default: m.ListEditor })),
@@ -81,9 +81,7 @@ export function HomeAux({ router }) {
         </div>
         <div className="box-body">
           <p>
-            Please{' '}
-            <Link to={`/signin?back=${encodeURIComponent(router.location.pathname)}`}>sign in</Link>{' '}
-            to view this page.
+            Please <SignInLink>sign in</SignInLink> to view this page.
           </p>
         </div>
       </div>

@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
 import screenshot from '../../assets/images/screenshot.png';
+import { SignInLink } from './sign-in-link';
 
 const About = ({ authenticated }) => (
   <div className="box">
@@ -19,7 +20,7 @@ const About = ({ authenticated }) => (
           <b>
             <Link to="/signup">Sign up</Link>
           </b>{' '}
-          now or <Link to="/signin">sign in</Link> if you already have an account.
+          now or <SignInLink back="/">sign in</SignInLink> if you already have an account.
         </p>
       ) : (
         false
