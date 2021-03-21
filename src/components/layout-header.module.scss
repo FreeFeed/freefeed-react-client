@@ -55,9 +55,8 @@ $without-sidebar: '(max-width: 991px)';
   margin: 0;
   white-space: nowrap;
 
-  font-size: 32px; // fluid's fallback size
-  font-size: fluid(24, 320, 32, 420);
-  font-weight: bold;
+  font-size: 36px; // fluid's fallback size
+  font-size: fluid(28, 320, 36, 600);
 }
 
 .logoLink {
