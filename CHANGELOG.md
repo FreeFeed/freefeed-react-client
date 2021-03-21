@@ -19,6 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Confirmation dialog when the private user wants to unsubscribe someone from
   himself.
 
+### Fixed
+- When the user visits the post by non-canonical URL, the client replaces URL to
+  canonical one, keeping the query string and hash if present. Previously the
+  query string and hash were not preserved.
+
 ## [1.97.0] - 2021-03-18
 ### Fixed
 - If the anonymous user visits the page that require authorization, the browser

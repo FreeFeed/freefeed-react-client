@@ -14,9 +14,10 @@ class SinglePostHandler extends Component {
     if (!post) {
       return;
     }
+    const { pathname, search, hash } = router.location;
     const canonicalPostURI = canonicalURI(post);
-    if (router.location.pathname !== canonicalPostURI) {
-      router.replace(canonicalPostURI);
+    if (pathname !== canonicalPostURI) {
+      router.replace(canonicalPostURI + search + hash);
     }
   }
 
