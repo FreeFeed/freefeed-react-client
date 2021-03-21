@@ -5,7 +5,7 @@ import cn from 'classnames';
 import styles from './donate.module.scss';
 import { useDonationStatus } from './hooks/donation-status';
 
-export function DonationWidget({ accountName = CONFIG.donationStatusAccount }) {
+export function DonationWidget({ accountName = CONFIG.donations.statusAccount }) {
   const statusText = useDonationStatus(accountName);
 
   if (!statusText) {

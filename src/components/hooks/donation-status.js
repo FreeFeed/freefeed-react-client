@@ -4,16 +4,21 @@ import { getUserInfo } from '../../redux/action-creators';
 
 // The order is important here because we looking for substring in screenName.
 // So the 'Very low' should precede the 'Low' and so on.
-const fundingStatuses = ['Very good', 'Good', 'OK', 'Very low', 'Low', 'Critical'];
+export const fundingStatuses = ['Very good', 'Good', 'OK', 'Very low', 'Low', 'Critical'];
 
 export function useDonationStatus(accountName) {
   const dispatch = useDispatch();
   const loadingStatus = useSelector((state) => state.donationLoadingStatus);
-  const status = useSelector((state) => state.donationStatus);
+  const status = useSelector((state) => state.donationAccount.screenName);
 
   // Load the status initially
   useEffect(
-    () => void (loadingStatus.initial && accountName && dispatch(getUserInfo(accountName))),
+    () =>
+      void (
+        loadingStatus.initial &&
+        accountName &&
+        dispatch(getUserInfo(accountName, { donationAccount: true }))
+      ),
     [accountName, loadingStatus.initial, dispatch],
   );
 
@@ -22,7 +27,7 @@ export function useDonationStatus(accountName) {
       return (
         fundingStatuses.find((s) => status.toLowerCase().includes(s.toLowerCase())) || 'Unknown'
       );
-    } else if (loadingStatus.failure) {
+    } else if (loadingStatus.error) {
       return 'Load error';
     }
     return 'Loading\u2026';

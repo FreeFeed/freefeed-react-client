@@ -1,4 +1,4 @@
-/* global CONFIG */
+import { pick } from 'lodash';
 import { GET_USER_INFO, REALTIME_GLOBAL_USER_UPDATE } from '../action-types';
 import {
   asyncPhase,
@@ -11,16 +11,10 @@ import {
   initialAsyncState,
   loadingAsyncState,
   response,
-  getKeyBy,
 } from '../async-helpers';
 
-const getUsername = getKeyBy('username');
-
 export function donationLoadingStatus(state = initialAsyncState, action) {
-  if (
-    baseType(action.type) === GET_USER_INFO &&
-    getUsername(action) === CONFIG.donationStatusAccount
-  ) {
+  if (baseType(action.type) === GET_USER_INFO && action.extra?.donationAccount) {
     switch (asyncPhase(action.type)) {
       case REQUEST_PHASE:
         return loadingAsyncState;
@@ -34,19 +28,13 @@ export function donationLoadingStatus(state = initialAsyncState, action) {
   return state;
 }
 
-export function donationStatus(state = '', action) {
-  if (
-    action.type === response(GET_USER_INFO) &&
-    action.request.username === CONFIG.donationStatusAccount
-  ) {
-    return action.payload.users.screenName;
+export function donationAccount(state = { username: '', screenName: '' }, action) {
+  if (action.type === response(GET_USER_INFO) && action.extra?.donationAccount) {
+    return pick(action.payload.users, ['username', 'screenName']);
   }
 
-  if (
-    action.type === REALTIME_GLOBAL_USER_UPDATE &&
-    action.user.username === CONFIG.donationStatusAccount
-  ) {
-    return action.user.screenName;
+  if (action.type === REALTIME_GLOBAL_USER_UPDATE && action.user.username === state.username) {
+    return pick(action.user, ['username', 'screenName']);
   }
 
   return state;

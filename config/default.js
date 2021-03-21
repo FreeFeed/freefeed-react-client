@@ -123,5 +123,13 @@ export default {
     intervalSec: 300,
   },
 
-  donationStatusAccount: null,
+  donations: {
+    // Username of the account which screenname reflects the current donation
+    // status. The available statuses are 'Very good', 'Good', 'OK', 'Very low',
+    // 'Low', 'Critical'. The donation widget performs case-independent search
+    // for these substrings in the screenname.
+    statusAccount: null,
+    // User name of the account in which reports are published
+    reportsAccount: null,
+  },
 };
