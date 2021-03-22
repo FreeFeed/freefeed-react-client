@@ -2,7 +2,6 @@ import { describe, it } from 'mocha';
 import unexpected from 'unexpected';
 import unexpectedReact from 'unexpected-react';
 
-import { Link } from 'react-router';
 import flatten from 'lodash/flatten';
 
 import PostComments from '../../../src/components/post-comments';
