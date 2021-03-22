@@ -24,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   sets the donate status. The available statuses are 'Very good', 'Good', 'OK',
   'Very low', 'Low', 'Critical'. The widget performs case-independent search for
   these substrings in the screenname.
+- Donation parameters (PayPal button ids, LiberaPay and YooMoney widgets) are
+  now configurable by config.
 
 ### Fixed
 - When the user visits the post by non-canonical URL, the client replaces URL to
