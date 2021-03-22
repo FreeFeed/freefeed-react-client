@@ -131,5 +131,15 @@ export default {
     statusAccount: null,
     // User name of the account in which reports are published
     reportsAccount: null,
+    paymenMethods: {
+      // PayPal hosted_button_id parameter
+      payPalRegularButtonId: null,
+      // PayPal hosted_button_id parameter
+      payPalOneTimeButtonId: null,
+      // LiberaPay project name
+      liberaPayProject: null,
+      // yasobe.ru project name
+      yasobeRuProject: null,
+    },
   },
 };

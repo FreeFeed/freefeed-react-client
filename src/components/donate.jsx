@@ -1,17 +1,17 @@
 /* global CONFIG */
 import { Link } from 'react-router';
+import { faPaypal } from '@fortawesome/free-brands-svg-icons';
 import { LiberaPayWidget } from './libera-pay-widget';
 
 import styles from './donate.module.scss';
 import { useDonationStatus } from './hooks/donation-status';
 import { useBool } from './hooks/bool';
 import { ButtonLink } from './button-link';
+import { Icon } from './fontawesome-icons';
 
-const handleClickOnOneTimeDonation = () => {
-  document.forms['singlePayPalPayment'].submit();
-};
+const cfg = CONFIG.donations;
 
-export default function Donate({ donationAccountName = CONFIG.donations.statusAccount }) {
+export default function Donate({ donationAccountName = cfg.statusAccount }) {
   const statusText = useDonationStatus(donationAccountName);
   const [rusDetailsOpened, rusDetailsToggle] = useBool(false);
   const [engDetailsOpened, engDetailsToggle] = useBool(false);
@@ -25,31 +25,6 @@ export default function Donate({ donationAccountName = CONFIG.donations.statusAc
         <p>
           <a href="#russian">🇷🇺 Прочесть по-русски</a>
         </p>
-
-        <form
-          action="https://www.paypal.com/cgi-bin/webscr"
-          method="post"
-          target="_top"
-          id="singlePayPalPayment"
-        >
-          <input type="hidden" name="cmd" value="_s-xclick" />
-          <input type="hidden" name="hosted_button_id" value="HMVYD6GEWNWH8" />
-          <input
-            type="image"
-            src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png"
-            width="0"
-            height="0"
-            name="submit"
-            alt="PayPal - The safer, easier way to pay online!"
-          />
-          <img
-            alt=""
-            src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif"
-            width="1"
-            height="1"
-            style={{ display: 'none !important' }}
-          />
-        </form>
 
         <p>
           <Link to="/about">FreeFeed</Link> is a small-scale social network and a blogging platform.
@@ -117,83 +92,76 @@ export default function Donate({ donationAccountName = CONFIG.donations.statusAc
           </>
         )}
 
-        {CONFIG.donations.reportsAccount && (
+        {cfg.reportsAccount && (
           <p>
-            <Link to={`/${CONFIG.donations.reportsAccount}`}>Funding and expenses reports</Link>
+            <Link to={`/${cfg.reportsAccount}`}>Funding and expenses reports</Link>
           </p>
         )}
 
         <p>You can help us pay for the hosting by setting up a monthly donation.</p>
 
-        <h4>
-          Easy way <small>(accept all cards, 20% commission fee)</small>
-        </h4>
-        <LiberaPayWidget project="freefeed" />
+        {cfg.paymenMethods.liberaPayProject && (
+          <>
+            <h4>
+              Easy way <small>(accept all cards, 20% commission fee)</small>
+            </h4>
+            <LiberaPayWidget project={cfg.paymenMethods.liberaPayProject} />
+          </>
+        )}
 
-        <span style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
-          <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-            <input type="hidden" name="cmd" value="_s-xclick" />
-            <input type="hidden" name="hosted_button_id" value="97PAKQ6S97XMW" />
+        {cfg.paymenMethods.payPalRegularButtonId && (
+          <>
             <h4>
               Paypal way <small>(7% commission fee)</small>
             </h4>
-            <table>
-              <tbody>
-                <tr>
-                  <td style={{ paddingBottom: '5px' }}>
-                    <input
-                      type="hidden"
-                      name="on0"
-                      value="Pick monthly donation amount"
-                      style={{ padding: '5px 0' }}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <select name="os0" defaultValue="Advanced">
-                      <option value="Entry Level Supporter">€5.00 EUR / month</option>
-                      <option value="Basic Level Supporter">€10.00 EUR / month</option>
-                      <option value="Standard Level Supporter">€15.00 EUR / month</option>
-                      <option value="Pro Supporter">€20.00 EUR / month</option>
-                      <option value="Master Supporter">€30.00 EUR / month</option>
-                      <option value="Honorable Supporter">€50.00 EUR / month</option>
-                      <option value="Master Donator">€75.00 EUR / month</option>
-                      <option value="Chuck Norris">€100.00 EUR / month</option>
-                    </select>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <p>
+              <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+                <input type="hidden" name="cmd" value="_s-xclick" />
+                <input
+                  type="hidden"
+                  name="hosted_button_id"
+                  value={cfg.paymenMethods.payPalRegularButtonId}
+                />
+                <input type="hidden" name="currency_code" value="EUR" />
+                <select name="os0" style={{ marginBottom: '0.5em' }}>
+                  <option value="Entry Level Supporter">€5.00 EUR / month</option>
+                  <option value="Basic Level Supporter">€10.00 EUR / month</option>
+                  <option value="Standard Level Supporter">€15.00 EUR / month</option>
+                  <option value="Pro Supporter">€20.00 EUR / month</option>
+                  <option value="Master Supporter">€30.00 EUR / month</option>
+                  <option value="Honorable Supporter">€50.00 EUR / month</option>
+                  <option value="Master Donator">€75.00 EUR / month</option>
+                  <option value="Chuck Norris">€100.00 EUR / month</option>
+                </select>
+                <br />
+                <button type="submit">
+                  <Icon icon={faPaypal} /> Pay with PayPal
+                </button>
+              </form>
+            </p>
+          </>
+        )}
 
-            <input type="hidden" name="currency_code" value="EUR" />
-            <input
-              type="image"
-              src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png"
-              name="submit"
-              alt="PayPal - The safer, easier way to pay online!"
-              style={{ margin: '5px' }}
-            />
-            <img
-              alt=""
-              src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif"
-              width="1"
-              height="1"
-              style={{ display: 'none !important' }}
-            />
-          </form>
-        </span>
+        {cfg.paymenMethods.payPalOneTimeButtonId && (
+          <>
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+              <input type="hidden" name="cmd" value="_s-xclick" />
+              <input
+                type="hidden"
+                name="hosted_button_id"
+                value={cfg.paymenMethods.payPalOneTimeButtonId}
+              />
+              <p>
+                Alternatively, you can make a one-time PayPal donation:
+                <br />
+                <button type="submit">
+                  <Icon icon={faPaypal} /> Pay with PayPal
+                </button>
+              </p>
+            </form>
+          </>
+        )}
 
-        <p style={{ marginTop: '15px' }}>
-          Alternatively, you can make a{' '}
-          <span
-            onClick={handleClickOnOneTimeDonation}
-            style={{ textDecoration: 'underline', cursor: 'pointer' }}
-          >
-            one-time Paypal donation
-          </span>
-          .
-        </p>
         <h4>Responsible way</h4>
         <p>
           You can set up recurring monthly donation through your internet bank account (commission
@@ -210,16 +178,22 @@ export default function Donate({ donationAccountName = CONFIG.donations.statusAc
           Legal address: <code>Harjumaa, Tallinn linn, Mingi tn 5-25/26, 13424</code>
         </p>
 
-        <h4>The Russian way</h4>
-        <p>
-          You can make a one-time payment with your card or Yandex.Money wallet (commission fee
-          0.5-2%):
-          <br />
-          Pay with{' '}
-          <a href="https://yasobe.ru/na/freefeed" target="_blank">
-            Yandex.Money
-          </a>
-        </p>
+        {cfg.paymenMethods.yasobeRuProject && (
+          <>
+            <h4>The Russian way</h4>
+            <p>
+              You can make a one-time payment with your card or YooMoney wallet (commission fee
+              0.5-2%):
+              <form
+                method="get"
+                action={`https://yasobe.ru/na/${cfg.paymenMethods.yasobeRuProject}`}
+                target="_blank"
+              >
+                <button type="submit">Pay with YooMoney</button>
+              </form>
+            </p>
+          </>
+        )}
 
         <p>Thank you!</p>
 
@@ -288,85 +262,75 @@ export default function Donate({ donationAccountName = CONFIG.donations.statusAc
           </>
         )}
 
-        {CONFIG.donations.reportsAccount && (
+        {cfg.reportsAccount && (
           <p>
-            <Link to={`/${CONFIG.donations.reportsAccount}`}>
-              Отчеты о расходах и собираемых средствах
-            </Link>
+            <Link to={`/${cfg.reportsAccount}`}>Отчеты о расходах и собираемых средствах</Link>
           </p>
         )}
 
         <p>Вы можете помочь нам, настроив автоматический ежемесячный платёж</p>
 
-        <h4>
-          Простой способ <small>(принимает все карты, комиссии около 20%)</small>
-        </h4>
-        <LiberaPayWidget project="freefeed" />
+        {cfg.paymenMethods.liberaPayProject && (
+          <>
+            <h4>
+              Простой способ <small>(принимает все карты, комиссии около 20%)</small>
+            </h4>
+            <LiberaPayWidget project={cfg.paymenMethods.liberaPayProject} />
+          </>
+        )}
 
-        <span style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
-          <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-            <input type="hidden" name="cmd" value="_s-xclick" />
-            <input type="hidden" name="hosted_button_id" value="97PAKQ6S97XMW" />
+        {cfg.paymenMethods.payPalRegularButtonId && (
+          <>
             <h4>
               Paypal <small>(комиссия около 7%)</small>
             </h4>
-            <table>
-              <tbody>
-                <tr>
-                  <td style={{ paddingBottom: '5px' }}>
-                    <input
-                      type="hidden"
-                      name="on0"
-                      value="Pick monthly donation amount"
-                      style={{ padding: '5px 0' }}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <select name="os0" defaultValue="Advanced">
-                      <option value="Entry Level Supporter">€5.00 EUR / месяц</option>
-                      <option value="Basic Level Supporter">€10.00 EUR / месяц</option>
-                      <option value="Standard Level Supporter">€15.00 EUR / месяц</option>
-                      <option value="Pro Supporter">€20.00 EUR / месяц</option>
-                      <option value="Master Supporter">€30.00 EUR / месяц</option>
-                      <option value="Honorable Supporter">€50.00 EUR / месяц</option>
-                      <option value="Master Donator">€75.00 EUR / месяц</option>
-                      <option value="Chuck Norris">€100.00 EUR / месяц</option>
-                    </select>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <p>
+              <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+                <input type="hidden" name="cmd" value="_s-xclick" />
+                <input
+                  type="hidden"
+                  name="hosted_button_id"
+                  value={cfg.paymenMethods.payPalRegularButtonId}
+                />
+                <input type="hidden" name="currency_code" value="EUR" />
+                <select name="os0" style={{ marginBottom: '0.5em' }}>
+                  <option value="Entry Level Supporter">€5.00 EUR / month</option>
+                  <option value="Basic Level Supporter">€10.00 EUR / month</option>
+                  <option value="Standard Level Supporter">€15.00 EUR / month</option>
+                  <option value="Pro Supporter">€20.00 EUR / month</option>
+                  <option value="Master Supporter">€30.00 EUR / month</option>
+                  <option value="Honorable Supporter">€50.00 EUR / month</option>
+                  <option value="Master Donator">€75.00 EUR / month</option>
+                  <option value="Chuck Norris">€100.00 EUR / month</option>
+                </select>
+                <br />
+                <button type="submit">
+                  <Icon icon={faPaypal} /> Заплатить через PayPal
+                </button>
+              </form>
+            </p>
+          </>
+        )}
 
-            <input type="hidden" name="currency_code" value="EUR" />
-            <input
-              type="image"
-              src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png"
-              name="submit"
-              alt="PayPal - The safer, easier way to pay online!"
-              style={{ margin: '5px' }}
-            />
-            <img
-              alt=""
-              src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif"
-              width="1"
-              height="1"
-              style={{ display: 'none !important' }}
-            />
-          </form>
-        </span>
-
-        <p style={{ marginTop: '15px' }}>
-          Или вы можете сделать{' '}
-          <span
-            onClick={handleClickOnOneTimeDonation}
-            style={{ textDecoration: 'underline', cursor: 'pointer' }}
-          >
-            единовременный взнос
-          </span>
-          .
-        </p>
+        {cfg.paymenMethods.payPalOneTimeButtonId && (
+          <>
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+              <input type="hidden" name="cmd" value="_s-xclick" />
+              <input
+                type="hidden"
+                name="hosted_button_id"
+                value={cfg.paymenMethods.payPalOneTimeButtonId}
+              />
+              <p>
+                Или вы можете сделать единовременный взнос:
+                <br />
+                <button type="submit">
+                  <Icon icon={faPaypal} /> Заплатить через PayPal
+                </button>
+              </p>
+            </form>
+          </>
+        )}
 
         <h4>Прямой платеж</h4>
         <p>
@@ -384,16 +348,22 @@ export default function Donate({ donationAccountName = CONFIG.donations.statusAc
           Адрес получателя: <code>Harjumaa, Tallinn linn, Mingi tn 5-25/26, 13424</code>
         </p>
 
-        <h4>Яндекс.Деньги</h4>
-        <p>
-          Вы можете сделать единоразовый платеж с помощью платежной карточки или кошелька
-          Яндекс.Денег (комиссия 0.5-2%):
-          <br />
-          Сделать взнос через{' '}
-          <a href="https://yasobe.ru/na/freefeed" target="_blank">
-            Яндекс.Деньги
-          </a>
-        </p>
+        {cfg.paymenMethods.yasobeRuProject && (
+          <>
+            <h4>ЮMoney</h4>
+            <p>
+              Вы можете сделать единоразовый платеж с помощью платежной карточки или кошелька ЮMoney
+              (комиссия 0.5-2%):
+              <form
+                method="get"
+                action={`https://yasobe.ru/na/${cfg.paymenMethods.yasobeRuProject}`}
+                target="_blank"
+              >
+                <button type="submit">Сделать взнос через ЮMoney</button>
+              </form>
+            </p>
+          </>
+        )}
 
         <p>Спасибо!</p>
       </div>
