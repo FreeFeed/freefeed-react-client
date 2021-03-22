@@ -100,16 +100,16 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
 
         <p>You can help us pay for the hosting by setting up a monthly donation.</p>
 
-        {cfg.paymenMethods.liberaPayProject && (
+        {cfg.paymentMethods.liberaPayProject && (
           <>
             <h4>
               Easy way <small>(accept all cards, 20% commission fee)</small>
             </h4>
-            <LiberaPayWidget project={cfg.paymenMethods.liberaPayProject} />
+            <LiberaPayWidget project={cfg.paymentMethods.liberaPayProject} />
           </>
         )}
 
-        {cfg.paymenMethods.payPalRegularButtonId && (
+        {cfg.paymentMethods.payPalRegularButtonId && (
           <>
             <h4>
               Paypal way <small>(7% commission fee)</small>
@@ -120,7 +120,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
                 <input
                   type="hidden"
                   name="hosted_button_id"
-                  value={cfg.paymenMethods.payPalRegularButtonId}
+                  value={cfg.paymentMethods.payPalRegularButtonId}
                 />
                 <input type="hidden" name="currency_code" value="EUR" />
                 <select name="os0" style={{ marginBottom: '0.5em' }}>
@@ -142,14 +142,14 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
           </>
         )}
 
-        {cfg.paymenMethods.payPalOneTimeButtonId && (
+        {cfg.paymentMethods.payPalOneTimeButtonId && (
           <>
             <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
               <input type="hidden" name="cmd" value="_s-xclick" />
               <input
                 type="hidden"
                 name="hosted_button_id"
-                value={cfg.paymenMethods.payPalOneTimeButtonId}
+                value={cfg.paymentMethods.payPalOneTimeButtonId}
               />
               <p>
                 Alternatively, you can make a one-time PayPal donation:
@@ -178,7 +178,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
           Legal address: <code>Harjumaa, Tallinn linn, Mingi tn 5-25/26, 13424</code>
         </p>
 
-        {cfg.paymenMethods.yasobeRuProject && (
+        {cfg.paymentMethods.yasobeRuProject && (
           <>
             <h4>The Russian way</h4>
             <p>
@@ -186,7 +186,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
               0.5-2%):
               <form
                 method="get"
-                action={`https://yasobe.ru/na/${cfg.paymenMethods.yasobeRuProject}`}
+                action={`https://yasobe.ru/na/${cfg.paymentMethods.yasobeRuProject}`}
                 target="_blank"
               >
                 <button type="submit">Pay with YooMoney</button>
@@ -270,16 +270,16 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
 
         <p>Вы можете помочь нам, настроив автоматический ежемесячный платёж</p>
 
-        {cfg.paymenMethods.liberaPayProject && (
+        {cfg.paymentMethods.liberaPayProject && (
           <>
             <h4>
               Простой способ <small>(принимает все карты, комиссии около 20%)</small>
             </h4>
-            <LiberaPayWidget project={cfg.paymenMethods.liberaPayProject} />
+            <LiberaPayWidget project={cfg.paymentMethods.liberaPayProject} />
           </>
         )}
 
-        {cfg.paymenMethods.payPalRegularButtonId && (
+        {cfg.paymentMethods.payPalRegularButtonId && (
           <>
             <h4>
               Paypal <small>(комиссия около 7%)</small>
@@ -290,7 +290,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
                 <input
                   type="hidden"
                   name="hosted_button_id"
-                  value={cfg.paymenMethods.payPalRegularButtonId}
+                  value={cfg.paymentMethods.payPalRegularButtonId}
                 />
                 <input type="hidden" name="currency_code" value="EUR" />
                 <select name="os0" style={{ marginBottom: '0.5em' }}>
@@ -312,14 +312,14 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
           </>
         )}
 
-        {cfg.paymenMethods.payPalOneTimeButtonId && (
+        {cfg.paymentMethods.payPalOneTimeButtonId && (
           <>
             <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
               <input type="hidden" name="cmd" value="_s-xclick" />
               <input
                 type="hidden"
                 name="hosted_button_id"
-                value={cfg.paymenMethods.payPalOneTimeButtonId}
+                value={cfg.paymentMethods.payPalOneTimeButtonId}
               />
               <p>
                 Или вы можете сделать единовременный взнос:
@@ -348,7 +348,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
           Адрес получателя: <code>Harjumaa, Tallinn linn, Mingi tn 5-25/26, 13424</code>
         </p>
 
-        {cfg.paymenMethods.yasobeRuProject && (
+        {cfg.paymentMethods.yasobeRuProject && (
           <>
             <h4>ЮMoney</h4>
             <p>
@@ -356,7 +356,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
               (комиссия 0.5-2%):
               <form
                 method="get"
-                action={`https://yasobe.ru/na/${cfg.paymenMethods.yasobeRuProject}`}
+                action={`https://yasobe.ru/na/${cfg.paymentMethods.yasobeRuProject}`}
                 target="_blank"
               >
                 <button type="submit">Сделать взнос через ЮMoney</button>
