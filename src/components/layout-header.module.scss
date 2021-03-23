@@ -1,24 +1,8 @@
 @import '../../styles/helvetica/dark-vars.scss';
+@import '../../styles/helvetica/functions.scss';
 
 $with-sidebar: '(min-width: 992px)';
 $without-sidebar: '(max-width: 991px)';
-
-@function fluid(
-  $min-width-val,
-  $min-width,
-  $max-width-val,
-  $max-width,
-  $val-unit: 'px',
-  $width-unit: 'px',
-  $full-width: '100vw'
-) {
-  @return clamp(
-    #{$min-width-val + $val-unit},
-    #{$min-width-val + $val-unit} + #{$max-width-val - $min-width-val} * #{'('} #{$full-width} - #{$min-width +
-      $width-unit}#{')'} / ($max-width - $min-width),
-    #{$max-width-val + $val-unit}
-  );
-}
 
 @mixin with-gap {
   & > * {
