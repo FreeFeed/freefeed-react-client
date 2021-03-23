@@ -6,7 +6,8 @@ import { useSelector } from 'react-redux';
 export function useSearchQuery() {
   const query = useSelector((state) => {
     const { pathname, query } = state.routing.locationBeforeTransitions;
-    return ((pathname === '/search' && query.qs) || '').trim();
+    const q = query.q || query.qs || '';
+    return ((pathname === '/search' && q) || '').trim();
   });
 
   return query;

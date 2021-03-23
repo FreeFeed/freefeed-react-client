@@ -33,7 +33,7 @@ export default withRouter(function SearchForm({ router }) {
   useEffect(() => setQuery(initialQuery), [initialQuery]);
 
   const performSearch = useCallback(
-    () => query.trim() !== '' && router.push(`/search?qs=${encodeURIComponent(query.trim())}`),
+    () => query.trim() !== '' && router.push(`/search?q=${encodeURIComponent(query.trim())}`),
     [query, router],
   );
 
