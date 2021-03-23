@@ -3,8 +3,9 @@ import { Component, Suspense } from 'react';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import classnames from 'classnames';
-
 import { faBug } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router';
+
 import { signOut, home } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
 import Footer from './footer';
@@ -149,6 +150,29 @@ class Layout extends Component {
           <SVGSymbolDeclarations />
 
           <LayoutHeader />
+
+          {props.authenticated && (
+            <div className="row">
+              <div className="mobile-shortcuts hidden-md hidden-lg" role="navigation">
+                <Link className="mobile-shortcut-link" to="/filter/discussions">
+                  Discussions
+                </Link>
+                <Link className="mobile-shortcut-link" to="/filter/notifications">
+                  Notifications
+                  {props.user.unreadNotificationsNumber > 0 &&
+                    !props.user.frontendPreferences.hideUnreadNotifications &&
+                    ` (${props.user.unreadNotificationsNumber})`}
+                </Link>
+                <Link className="mobile-shortcut-link" to="/filter/direct">
+                  Directs
+                  {props.user.unreadDirectsNumber > 0 && ` (${props.user.unreadDirectsNumber})`}
+                </Link>
+                <Link className="mobile-shortcut-link" to={`/${props.user.username}`}>
+                  My feed
+                </Link>
+              </div>
+            </div>
+          )}
 
           <LoaderContainer loading={props.loadingView} fullPage>
             <div className="row">
