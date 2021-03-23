@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.98.0] - Not released
+### Added
+- Generate '_dist/version.txt' file during production build. This file contains
+  build version and date and can be used to auto-check the client updates.
+- The client now can detect the updates of its code on the server and advice the
+  user to reload the page. This feature is turned off by default. When enabled,
+  the client makes a HEAD request every 5 minutes (configurable) to the specific
+  address ("/version.txt" is recommended) and looks for the specific response header
+  ("Last-Modified" by default). When the header value is changed, the information bar is
+  shown to the user: “There’s a new update for FreeFeed available!
+  _Refresh_the_page_ when you are ready.”
+- Confirmation dialog when the private user wants to unsubscribe someone from
+  himself.
+
+### Fixed
+- When the user visits the post by non-canonical URL, the client replaces URL to
+  canonical one, keeping the query string and hash if present. Previously the
+  query string and hash were not preserved.
+
 ## [1.97.0] - 2021-03-18
 ### Fixed
 - If the anonymous user visits the page that require authorization, the browser

@@ -1969,3 +1969,21 @@ export function betaChannel(
   }
   return state;
 }
+
+export function appUpdated(state = { version: null, updated: false }, action) {
+  if (action.type === ActionTypes.APP_VERSION) {
+    const version = action.payload;
+    const updated = state.version !== null && state.version !== version;
+    if (state.version === null || updated) {
+      return { version, updated };
+    }
+  }
+  return state;
+}
+
+export function sidebarOpened(state = false, action) {
+  if (action.type === ActionTypes.OPEN_SIDEBAR) {
+    return action.payload;
+  }
+  return state;
+}

@@ -10,6 +10,7 @@ import { CookiesBanner } from './cookies-banner';
 import { useExtAuthProviders, providerTitle } from './ext-auth-helpers';
 import { ExtAuthButtons, SIGN_UP } from './ext-auth-buttons';
 import { useServerInfo } from './hooks/server-info';
+import { SignInLink } from './sign-in-link';
 
 export default memo(function Signup() {
   const [serverInfo, serverInfoStatus] = useServerInfo();
@@ -116,8 +117,8 @@ const ExtAuthSignup = memo(function ExtAuthSignup() {
             <strong>{result.profile.email}</strong>.
           </p>
           <p>
-            If this is you, you should <Link to="/signin">sign in</Link> with your username/email
-            and password or in any other way allowed for your account.
+            If this is you, you should <SignInLink back="/">sign in</SignInLink> with your
+            username/email and password or in any other way allowed for your account.
           </p>
           <p>
             If you have forgotten your password, you can{' '}

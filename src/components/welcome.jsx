@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import { SignInLink } from './sign-in-link';
 
 export default () => (
   <div className="box-body">
@@ -39,10 +40,7 @@ export default () => (
           Sign up
         </Link>
       </b>{' '}
-      now or{' '}
-      <Link to="/signin" className="inline-header">
-        sign in
-      </Link>
+      now or <SignInLink className="inline-header">sign in</SignInLink>
     </p>
 
     <h3>Добро пожаловать во Фрифид!</h3>
@@ -84,9 +82,7 @@ export default () => (
         </Link>
       </b>{' '}
       или
-      <Link to="/signin" className="inline-header">
-        войти
-      </Link>
+      <SignInLink className="inline-header">войти</SignInLink>
     </p>
   </div>
 );

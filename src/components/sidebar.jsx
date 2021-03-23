@@ -1,11 +1,13 @@
 /* global CONFIG */
-import { useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { Link } from 'react-router';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import format from 'date-fns/format';
+import cn from 'classnames';
 
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { htmlSafe } from '../utils';
-import { listHomeFeeds, setUserColorScheme } from '../redux/action-creators';
+import { listHomeFeeds, openSidebar, setUserColorScheme } from '../redux/action-creators';
 import {
   SCHEME_DARK,
   SCHEME_SYSTEM,
@@ -22,6 +24,9 @@ import { UserPicture } from './user-picture';
 import { SidebarHomeFeeds } from './sidebar-homefeeds';
 import { ButtonLink } from './button-link';
 import { Throbber } from './throbber';
+import { useMediaQuery } from './hooks/media-query';
+import { useResizing } from './hooks/resizing';
+import { Icon } from './fontawesome-icons';
 
 function LoggedInBlock({ user, signOut }) {
   const signOutStatus = useSelector((state) => state.signOutStatus);
@@ -404,22 +409,67 @@ const SideBarAppearance = connect(
   );
 });
 
-const SideBar = ({ user, signOut }) => {
+export default function SideBar({ user, signOut }) {
+  const dispatch = useDispatch();
+  const sidebarOpened = useSelector((state) => state.sidebarOpened);
+
+  // Sidebar is 'closed' (actually it is always visible) on the wide screens
+  const wideScreen = useMediaQuery('(min-width: 992px)');
+  useEffect(() => void (wideScreen && dispatch(openSidebar(false))), [wideScreen, dispatch]);
+
+  // Turn off body scrolling while the sidebar is opened
+  useEffect(() => void document.body.classList.toggle('body--no-scroll', sidebarOpened), [
+    sidebarOpened,
+  ]);
+
+  // Reset content's scrollTop when the sidebar opening
+  const content = useRef(null);
+  useEffect(() => void (sidebarOpened && (content.current.scrollTop = 0)), [sidebarOpened]);
+
+  const clickToCLose = useCallback(
+    (e) => {
+      if (
+        // Click on shadow
+        e.target === e.currentTarget ||
+        // Click on links
+        e.target.tagName === 'A'
+      ) {
+        dispatch(openSidebar(false));
+      }
+    },
+    [dispatch],
+  );
+
+  const resizing = useResizing();
+  const closeSidebar = useCallback(() => dispatch(openSidebar(false)), [dispatch]);
+
   return (
-    <div className="col-md-3 sidebar" role="complementary">
-      <ErrorBoundary>
-        <LoggedInBlock user={user} signOut={signOut} />
-        <SideBarFriends user={user} />
-        <SideBarGroups />
-        <SideBarArchive user={user} />
-        <SideBarFreeFeed />
-        <SideBarBookmarklet />
-        <SideBarMemories />
-        <SideBarCoinJar />
-        <SideBarAppearance />
-      </ErrorBoundary>
+    <div
+      className={cn(
+        'col-md-3 sidebar',
+        resizing && 'sidebar--no-transitions',
+        sidebarOpened && 'sidebar--opened',
+      )}
+      role="complementary"
+      onClick={clickToCLose}
+    >
+      <div className="sidebar__content" ref={content}>
+        <ErrorBoundary>
+          <button className="sidebar__close-button" onClick={closeSidebar}>
+            <Icon icon={faTimes} />
+          </button>
+
+          <LoggedInBlock user={user} signOut={signOut} />
+          <SideBarFriends user={user} />
+          <SideBarGroups />
+          <SideBarArchive user={user} />
+          <SideBarFreeFeed />
+          <SideBarBookmarklet />
+          <SideBarMemories />
+          <SideBarCoinJar />
+          <SideBarAppearance />
+        </ErrorBoundary>
+      </div>
     </div>
   );
-};
-
-export default SideBar;
+}

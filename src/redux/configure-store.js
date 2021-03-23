@@ -23,6 +23,7 @@ import {
   onResponseMiddleware,
   betaChannelMiddleware,
   commentsCompleteMiddleware,
+  appVersionMiddleware,
 } from './middlewares';
 
 import * as reducers from './reducers';
@@ -51,6 +52,7 @@ const middleware = [
   onResponseMiddleware,
   betaChannelMiddleware,
   commentsCompleteMiddleware,
+  appVersionMiddleware,
 ];
 
 const enhancers = [applyMiddleware(...middleware)];

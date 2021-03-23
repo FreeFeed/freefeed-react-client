@@ -1160,3 +1160,17 @@ export function setBetaChannel(enabled) {
     payload: enabled,
   };
 }
+
+export function setAppVersion(version) {
+  return {
+    type: ActionTypes.APP_VERSION,
+    payload: version,
+  };
+}
+
+export function openSidebar(open = true) {
+  return {
+    type: ActionTypes.OPEN_SIDEBAR,
+    payload: open,
+  };
+}

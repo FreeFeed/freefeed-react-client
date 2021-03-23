@@ -9,6 +9,7 @@ import TimeDisplay from './time-display';
 import PaginatedView from './paginated-view';
 import ErrorBoundary from './error-boundary';
 import UserName from './user-name';
+import { SignInLink } from './sign-in-link';
 
 const getAuthorName = ({ postAuthor, createdUser, group }) => {
   if (group && group.username) {
@@ -289,7 +290,7 @@ const Notifications = (props) => (
         </PaginatedView>
       ) : (
         <div className="alert alert-danger" role="alert">
-          You must <Link to="/signin">sign in</Link> or <Link to="/signup">sign up</Link> before
+          You must <SignInLink>sign in</SignInLink> or <Link to="/signup">sign up</Link> before
           visiting this page.
         </div>
       )}
