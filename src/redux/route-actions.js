@@ -27,7 +27,8 @@ import {
 //query params are strings, so + hack to convert to number
 const getOffset = (nextRoute) => +nextRoute.location.query.offset || 0;
 
-const getSearchQueryParam = (nextRoute) => nextRoute.location.query.qs;
+const getSearchQueryParam = (nextRoute) =>
+  nextRoute.location.query.q || nextRoute.location.query.qs || '';
 
 const getPostName = (url) => {
   const m = FRIENDFEED_POST.exec(url);
