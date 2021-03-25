@@ -23,6 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - When the user visits the post by non-canonical URL, the client replaces URL to
   canonical one, keeping the query string and hash if present. Previously the
   query string and hash were not preserved.
+- The scroll compensation isn't applied now when the window scrollY position is 0.
+  So when some content appears on the top of the page, it will not caused scroll
+  compensation and will not be hidden under the top window edge.
 
 ## [1.97.0] - 2021-03-18
 ### Fixed
