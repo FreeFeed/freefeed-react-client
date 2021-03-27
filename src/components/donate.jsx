@@ -123,6 +123,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
                   value={cfg.paymentMethods.payPalRegularButtonId}
                 />
                 <input type="hidden" name="currency_code" value="EUR" />
+                <input type="hidden" name="on0" value="Pick monthly donation amount" />
                 <select name="os0" style={{ marginBottom: '0.5em' }}>
                   <option value="Entry Level Supporter">€5.00 EUR / month</option>
                   <option value="Basic Level Supporter">€10.00 EUR / month</option>
