@@ -361,6 +361,7 @@ const initPostViewState = (post) => {
     isEditing: false,
     isCommenting: false,
     commentText: '',
+    justCreated: false,
     ...NO_ERROR,
   };
 };
@@ -629,10 +630,7 @@ export function postsViewState(state = {}, action) {
 
     case response(ActionTypes.CREATE_POST): {
       const post = action.payload.posts;
-      const { id, omittedLikes } = post;
-      const isEditing = false;
-
-      return { ...state, [id]: { omittedLikes, id, isEditing, ...NO_ERROR } };
+      return { ...state, [post.id]: { ...initPostViewState(post), justCreated: true } };
     }
     case ActionTypes.UNAUTHENTICATED: {
       return {};

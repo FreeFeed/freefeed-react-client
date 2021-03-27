@@ -20,16 +20,21 @@ export default class PostComments extends Component {
     commentsAfterFold: foldConf.afterFold,
     minFoldedComments: foldConf.minFolded,
     minToCollapse: foldConf.minToCollapse,
+    preopened: false,
   };
 
   addingCommentForm = createRef();
   rootEl = createRef();
 
-  state = {
-    folded: true,
-    highlightedAuthor: null,
-    highlightedCommentId: null,
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      folded: !props.preopened,
+      highlightedAuthor: null,
+      highlightedCommentId: null,
+    };
+  }
 
   mentionCommentAuthor = (commentId) => {
     const name = this.props.comments.find((c) => c.id === commentId)?.user?.username;
