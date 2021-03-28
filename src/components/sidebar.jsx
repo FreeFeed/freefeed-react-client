@@ -432,7 +432,7 @@ export default function SideBar({ user, signOut }) {
         // Click on shadow
         e.target === e.currentTarget ||
         // Click on links
-        e.target.tagName === 'A'
+        e.target.closest('a') !== null
       ) {
         dispatch(openSidebar(false));
       }
