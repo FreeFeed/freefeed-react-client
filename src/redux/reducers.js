@@ -826,6 +826,23 @@ export function usersNotFound(state = [], action) {
   return state;
 }
 
+export function userPastNames(state = {}, action) {
+  switch (action.type) {
+    case response(ActionTypes.GET_USER_INFO): {
+      const names = action.payload.pastUsernames?.map((r) => r.username) || [];
+      if (names.some((name) => !state[name])) {
+        const newState = { ...state };
+        const userId = action.payload.users.id;
+        for (const name of names) {
+          newState[name] = userId;
+        }
+        return newState;
+      }
+    }
+  }
+  return state;
+}
+
 /**
  * state is a map [username => status]
  * status is boolean (user can or canot receive directs from us)
