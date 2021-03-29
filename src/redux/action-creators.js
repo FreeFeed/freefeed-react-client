@@ -612,12 +612,13 @@ export function subscriptions(username) {
   };
 }
 
-export function getUserInfo(username) {
+export function getUserInfo(username, extra = {}) {
   return {
     type: ActionTypes.GET_USER_INFO,
     apiRequest: Api.getUserInfo,
     nonAuthRequest: true,
     payload: { username },
+    extra,
   };
 }
 
