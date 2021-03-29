@@ -711,6 +711,7 @@ class Post extends Component {
               isSinglePost={props.isSinglePost}
               forceAbsTimestamps={this.state.forceAbsTimestamps}
               user={props.user}
+              preopened={props.justCreated}
             />
           </div>
         </ErrorBoundary>

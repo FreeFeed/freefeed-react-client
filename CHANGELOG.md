@@ -30,6 +30,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Removed old invalid links to Clio and "Archives F.A.Q."
+- Post created by the user with 'Create post' from is showing with expanded
+  comments. The user can add multiple comments to the newly created post and
+  they will not be suddenly collapsed.
 
 ## [1.97.0] - 2021-03-18
 ### Fixed
