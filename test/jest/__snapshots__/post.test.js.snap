@@ -1,0 +1,163 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Post Renders a post and doesn't blow up 1`] = `
+<DocumentFragment>
+  <div
+    aria-label="Public post by author with 0 comments and 0 likes written on 3/14/2021"
+    class="post single-post"
+    data-author="author"
+    role="article"
+  >
+    <div
+      class="expandable expanded"
+    >
+      <div
+        class="post-userpic"
+      >
+        <a
+          class="picture pictureLarge post-userpic-img"
+        >
+          <img
+            alt="Profile picture of author"
+            height="75"
+            loading="lazy"
+            width="75"
+          />
+        </a>
+      </div>
+      <div
+        aria-label="Post body"
+        class="post-body"
+        role="region"
+      >
+        <div
+          class="post-header"
+        >
+          <span
+            class="user-name-wrapper"
+          >
+            <a
+              class="post-author"
+            >
+              <span
+                dir="ltr"
+              >
+                You
+              </span>
+            </a>
+          </span>
+        </div>
+        <div
+          class="post-text"
+        >
+          <span
+            class="Linkify"
+            dir="auto"
+            role="region"
+          >
+            <span>
+              Line 1
+            </span>
+            <br />
+            <span>
+              Line 2
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="post-body"
+    >
+      <div />
+      <div
+        class="dropzone-previews"
+      />
+      <div
+        aria-label="Post footer"
+        class="post-footer"
+        role="region"
+      >
+        <div
+          class="post-footer-icon"
+        >
+          <svg
+            class="post-lock-icon post-public-icon fa-icon fa-icon-fas-globe-americas"
+            role="button"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title>
+              This entry is public
+            </title>
+            <use
+              xlink:href="#fa-icon-fas-globe-americas"
+            />
+          </svg>
+        </div>
+        <div
+          class="post-footer-content"
+        >
+          <span
+            class="post-footer-block"
+          >
+            <span
+              class="post-footer-item"
+            >
+              <a
+                class="post-timestamp"
+              >
+                <time
+                  datetime="2021-03-14T03:23:59.035Z"
+                  title="Mar 14, 2021 03:23"
+                >
+                  Mar 14, 2021
+                </time>
+              </a>
+            </span>
+          </span>
+          <span
+            class="post-footer-block"
+            role="region"
+          >
+            <span
+              class="post-footer-item"
+            >
+              <a
+                class="post-action"
+                role="button"
+              >
+                Comment
+              </a>
+            </span>
+            <span
+              class="post-footer-item"
+            >
+              <a
+                class="post-action"
+                role="button"
+              >
+                Like
+              </a>
+            </span>
+            <span
+              class="post-footer-item"
+            >
+              <a
+                class="post-action"
+                role="button"
+              >
+                Save
+              </a>
+            </span>
+            <span
+              class="post-footer-item"
+            />
+          </span>
+        </div>
+      </div>
+      <div />
+      <div />
+    </div>
+  </div>
+</DocumentFragment>
+`;

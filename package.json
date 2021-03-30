@@ -138,7 +138,7 @@
   "scripts": {
     "start": "run-s dev-server",
     "test": "run-s \"test-just --recursive test/unit\" \"test-jest\"",
-    "test-jest": "jest",
+    "test-jest": "cross-env TZ=utc jest",
     "test-just": "cross-env NODE_ENV=development mochapack --webpack-config webpack.config.tests.babel.js",
     "lint": "eslint --ext .js --ext .jsx src test",
     "checks": "run-p --aggregate-output -c test lint stylelint",
