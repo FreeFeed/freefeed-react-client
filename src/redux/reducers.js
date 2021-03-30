@@ -1995,5 +1995,3 @@ export function appUpdated(state = { version: null, updated: false }, action) {
   }
   return state;
 }
-
-export { donationAccount, donationLoadingStatus } from './reducers/donation-status';
