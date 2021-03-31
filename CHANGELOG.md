@@ -27,6 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   So when some content appears on the top of the page, it will not caused scroll
   compensation and will not be hidden under the top window edge.
 - The info popups now shows properly for users that changed their usernames.
+- The 'beta' cookie is now re-installed every time the application started. This
+  is to trick Safari that deletes cookies after 7 days.
 
 ### Changed
 - Removed old invalid links to Clio and "Archives F.A.Q."
