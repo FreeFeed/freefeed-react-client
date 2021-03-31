@@ -68,7 +68,7 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
 
   const searchForm = (
     <form className={styles.searchForm} action="/search" onSubmit={onSubmit}>
-      <span className={styles.searchInputContainer} {...focusHandlers}>
+      <span className={styles.searchInputContainer} {...focusHandlers} tabIndex={0}>
         <input
           className={styles.searchInput}
           type="text"
@@ -79,6 +79,7 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
           value={query}
           onChange={onQueryChange}
           onKeyDown={onKeyDown}
+          tabIndex={-1}
         />
         {compactSearchForm && <Icon icon={faSearch} className={styles.searchIcon} />}
         <button
