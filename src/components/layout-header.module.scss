@@ -77,24 +77,39 @@ $without-sidebar: '(max-width: 991px)';
   }
 }
 
-.searchInput {
+.searchInputContainer {
+  display: flex;
   flex: 1;
-  width: 0;
+  position: relative;
+
+  &:focus-within {
+    outline: auto;
+  }
+
+  & *:focus {
+    outline: none;
+  }
+}
+
+.searchInput {
+  width: 100%;
   background-color: transparent;
   border: none;
   border-bottom: 1px solid #999; // TODO dark theme
 
+  padding-right: 8px;
+  &:focus {
+    padding-right: 24px;
+  }
+
   .fullMode & {
     padding-left: 8px;
-    padding-right: 8px;
   }
   .compactMode & {
-    padding-left: 35px;
-    padding-right: 8px;
+    padding-left: 30px;
   }
   .collapsibleMode & {
-    padding-left: 35px;
-    padding-right: 35px;
+    padding-left: 30px;
   }
 }
 
@@ -160,15 +175,30 @@ $without-sidebar: '(max-width: 991px)';
   font-size: 19px;
   opacity: 0.33;
   top: 50%;
-  left: 0;
+  left: 6px;
   transform: translateY(-50%);
   pointer-events: none;
 }
 
-.closeSearchButton {
+.clearSearchButton {
   position: absolute;
-  top: -4px;
+  top: 0;
   right: 0;
+  font-size: 15px;
+  width: 24px;
+  height: 32px;
+
+  opacity: 0.4;
+  transition: opacity 0.3s;
+  &:hover {
+    opacity: 0.8;
+  }
+
+  visibility: hidden;
+
+  .searchInputContainer:focus-within & {
+    visibility: visible;
+  }
 }
 
 .signInLink {
