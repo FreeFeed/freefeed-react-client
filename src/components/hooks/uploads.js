@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAttachment } from '../../redux/action-creators';
 import { makeJpegIfNeeded } from '../../utils/jpeg-if-needed';
+import { webpToJpeg } from '../../utils/webp-to-jpeg';
 import { UploadProgress } from '../upload-progress';
 import { useEventListener } from './sub-unsub';
 
@@ -16,11 +17,12 @@ export function useUploader({ dropTargetRef, pasteTargetRef, onSuccess }) {
 
   // Upload new file
   const uploadFile = useCallback(
-    (file) => {
-      const newId = `upl${nextUploadId++}`;
-      setUploadIds((ids) => [...ids, newId]);
-      dispatch(createAttachment(newId, file));
-    },
+    (file) =>
+      webpToJpeg(file).then((file) => {
+        const newId = `upl${nextUploadId++}`;
+        setUploadIds((ids) => [...ids, newId]);
+        dispatch(createAttachment(newId, file));
+      }),
     [dispatch],
   );
 

@@ -2,6 +2,7 @@
 import DropzoneComponent from 'react-dropzone-component';
 
 import { getToken } from '../services/auth';
+import { webpToJpeg } from '../utils/webp-to-jpeg';
 
 // DropzoneJS configuration
 const dropzoneComponentConfig = { postUrl: `${CONFIG.api.root}/v1/attachments` };
@@ -26,6 +27,7 @@ const dropzoneConfig = {
   `,
   clickable: '.dropzone-trigger', // Define the element that should be used as click trigger to select files.
   headers: { 'Cache-Control': null },
+  transformFile: (file, done) => webpToJpeg(file).then(done),
 };
 
 const dropzoneEventHandlers = (props) => ({

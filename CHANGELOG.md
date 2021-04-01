@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   _Refresh_the_page_ when you are ready.”
 - Confirmation dialog when the private user wants to unsubscribe someone from
   himself.
+- WebP files are automatically converted to JPEG before upload.
 
 ### Fixed
 - When the user visits the post by non-canonical URL, the client replaces URL to
