@@ -175,12 +175,12 @@ export const apiMiddleware = (store) => (next) => async (action) => {
           adjustTime(store.dispatch, serverTime - Date.now());
         }
       }
-      const extra = action.extra || {};
+
       return store.dispatch({
         payload: obj,
         type: response(action.type),
         request: action.payload,
-        extra,
+        extra: action.extra || {},
       });
     }
 
@@ -193,6 +193,7 @@ export const apiMiddleware = (store) => (next) => async (action) => {
       type: fail(action.type),
       request: action.payload,
       response: apiResponse,
+      extra: action.extra || {},
     });
   } catch (e) {
     Sentry.captureException(e, {
@@ -206,6 +207,7 @@ export const apiMiddleware = (store) => (next) => async (action) => {
       type: fail(action.type),
       request: action.payload,
       response: null,
+      extra: action.extra || {},
     });
   }
 };
