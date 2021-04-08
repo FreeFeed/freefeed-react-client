@@ -1,3 +1,5 @@
+@import 'dark-vars.scss';
+
 .sidebar {
   a {
     color: #000;
@@ -46,4 +48,94 @@
       content: ')';
     }
   }
+}
+
+// Mobile sidebar
+@media (max-width: 991px) {
+  .sidebar {
+    --appear-time: 0.2s;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s var(--appear-time), opacity var(--appear-time);
+
+    &--opened {
+      visibility: visible;
+      opacity: 1;
+      transition: visibility 0s, opacity var(--appear-time);
+    }
+
+    &--no-transitions,
+    &--no-transitions .sidebar__content {
+      transition: none;
+    }
+  }
+
+  .sidebar__content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 280px;
+    height: 100%;
+    background-color: #fff;
+    padding: 20px 15px;
+    overflow: hidden;
+    overflow-y: auto;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+
+    // To prevent accidental click during the transition
+    pointer-events: none;
+
+    transform: translateX(100%);
+    transition: transform var(--appear-time), pointer-events 0s;
+
+    .dark-theme & {
+      background-color: $bg-color;
+    }
+
+    .sidebar--opened & {
+      transform: translateX(0);
+      pointer-events: auto;
+
+      .dark-theme &,
+      .dark-theme & .box-body {
+        background-color: $bg-color-lighter;
+      }
+    }
+  }
+
+  .logged-in {
+    margin-right: 40px;
+  }
+}
+
+.sidebar__close-button {
+  position: absolute;
+  top: 20px;
+  right: 15px;
+
+  width: 40px;
+  height: 40px;
+  font-size: 19px;
+  border: none;
+  background: none;
+
+  @media (min-width: 992px) {
+    display: none;
+  }
+  @media (max-width: 991px) {
+    display: block;
+  }
+}
+
+.body--no-scroll {
+  overflow: hidden;
 }

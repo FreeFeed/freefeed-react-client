@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import PaginatedView from './paginated-view';
 import Feed from './feed';
+import { SignInLink } from './sign-in-link';
 
 class UserFeed extends Component {
   render() {
@@ -62,7 +63,7 @@ class UserFeed extends Component {
           </p>
           {!authenticated && (
             <p>
-              <Link to="/signup">Sign up</Link> (or <Link to="/signin">sign in</Link>) and request a
+              <Link to="/signup">Sign up</Link> (or <SignInLink>sign in</SignInLink>) and request a
               subscription to see posts from <b>{viewUser.screenName}</b>.
             </p>
           )}
@@ -76,7 +77,7 @@ class UserFeed extends Component {
             {CONFIG.siteTitle} users.
           </p>
           <p>
-            <Link to="/signup">Sign up</Link> or <Link to="/signin">sign in</Link> to see posts from{' '}
+            <Link to="/signup">Sign up</Link> or <SignInLink>sign in</SignInLink> to see posts from{' '}
             <b>{viewUser.screenName}</b>.
           </p>
         </div>

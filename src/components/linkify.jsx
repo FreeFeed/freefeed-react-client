@@ -71,7 +71,7 @@ export default class Linkify extends Component {
           return anchorEl(searchEngine + encodeURIComponent(token.text), token.text);
         }
 
-        return linkEl({ pathname: '/search', query: { qs: token.text } }, <bdi>{token.text}</bdi>);
+        return linkEl({ pathname: '/search', query: { q: token.text } }, <bdi>{token.text}</bdi>);
       }
 
       if (token instanceof Arrows && this.props.arrowHover) {

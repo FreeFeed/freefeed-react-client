@@ -15,6 +15,7 @@ import {
 } from '../../redux/async-helpers';
 import { getAllSubscriptions, subscribers, blockedByMe } from '../../redux/action-creators';
 import { Throbber } from '../throbber';
+import { SignInLink } from '../sign-in-link';
 import styles from './styles.module.scss';
 import { Subscribers } from './subscribers';
 import { Blocked } from './blocked';
@@ -81,8 +82,7 @@ export const Friends = withLayout(function Friends({ router }) {
   if (!authenticated) {
     return (
       <p>
-        Please <Link to={`/signin?back=${encodeURIComponent('/friends')}`}>sign in</Link> to view
-        this page.
+        Please <SignInLink>sign in</SignInLink> to view this page.
       </p>
     );
   } else if (dataStatus.error) {

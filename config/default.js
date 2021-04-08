@@ -113,4 +113,33 @@ export default {
   },
 
   minPasswordLength: 9,
+
+  appVersionCheck: {
+    // Use real URL/URI here to enable update check
+    url: '',
+    // It depends on your server configuration, which header is better to use
+    // for update checking. It may be 'Date', 'ETag', or some other header.
+    header: 'Last-Modified',
+    intervalSec: 300,
+  },
+
+  donations: {
+    // Username of the account which screenname reflects the current donation
+    // status. The available statuses are 'Very good', 'Good', 'OK', 'Very low',
+    // 'Low', 'Critical'. The donation widget performs case-independent search
+    // for these substrings in the screenname.
+    statusAccount: null,
+    // User name of the account in which reports are published
+    reportsAccount: null,
+    paymentMethods: {
+      // PayPal hosted_button_id parameter
+      payPalRegularButtonId: null,
+      // PayPal hosted_button_id parameter
+      payPalOneTimeButtonId: null,
+      // LiberaPay project name
+      liberaPayProject: null,
+      // yasobe.ru project name
+      yasobeRuProject: null,
+    },
+  },
 };

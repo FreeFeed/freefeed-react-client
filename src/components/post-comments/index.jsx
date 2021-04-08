@@ -1,6 +1,5 @@
 /* global CONFIG */
 import { createRef, Component } from 'react';
-import { Link } from 'react-router';
 
 import { preventDefault, pluralForm } from '../../utils';
 import { safeScrollBy } from '../../services/unscroll';
@@ -8,6 +7,7 @@ import PostComment from '../post-comment';
 import ErrorBoundary from '../error-boundary';
 import { Icon } from '../fontawesome-icons';
 import { faCommentPlus } from '../fontawesome-custom-icons';
+import { SignInLink } from '../sign-in-link';
 import { CollapseComments } from './collapse-comments';
 import ExpandComments from './expand-comments';
 import { LoadingComments } from './loading-comments';
@@ -20,16 +20,21 @@ export default class PostComments extends Component {
     commentsAfterFold: foldConf.afterFold,
     minFoldedComments: foldConf.minFolded,
     minToCollapse: foldConf.minToCollapse,
+    preopened: false,
   };
 
   addingCommentForm = createRef();
   rootEl = createRef();
 
-  state = {
-    folded: true,
-    highlightedAuthor: null,
-    highlightedCommentId: null,
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      folded: !props.preopened,
+      highlightedAuthor: null,
+      highlightedCommentId: null,
+    };
+  }
 
   mentionCommentAuthor = (commentId) => {
     const name = this.props.comments.find((c) => c.id === commentId)?.user?.username;
@@ -220,7 +225,7 @@ export default class PostComments extends Component {
             <Icon icon={faCommentPlus} />
           </span>
           <span>
-            <Link to="/signin">Sign In</Link> to add comment
+            <SignInLink>Sign In</SignInLink> to add comment
           </span>
         </div>
       ) : (

@@ -210,7 +210,11 @@ class UserCard extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const me = state.user;
-  const user = _.find(state.users, { username: ownProps.username }) || {};
+  let user = _.find(state.users, { username: ownProps.username }) || {};
+  if (!user.id) {
+    const id = state.userPastNames[ownProps.username];
+    user = (id && state.users[id]) || {};
+  }
   const notFound = !user.id && state.usersNotFound.includes(ownProps.username);
 
   return {

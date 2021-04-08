@@ -1,23 +1,24 @@
 /* global CONFIG */
 import { Component, Suspense } from 'react';
-import { IndexLink, Link } from 'react-router';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import classnames from 'classnames';
-
 import { faBug } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router';
+
 import { signOut, home } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
 import Footer from './footer';
 import Sidebar from './sidebar';
 import LoaderContainer from './loader-container';
-import SearchForm from './search-form';
 import ErrorBoundary from './error-boundary';
 import { ColorSchemeSetter } from './color-theme-setter';
 import { Icon, SVGSymbolDeclarations } from './fontawesome-icons';
 import MediaViewer from './media-viewer';
 import { Throbber } from './throbber';
 import { Delayed } from './lazy-component';
+import { AppUpdated } from './app-updated';
+import { LayoutHeader } from './layout-header';
 
 const loadingPageMessage = (
   <Delayed>
@@ -140,68 +141,38 @@ class Layout extends Component {
 
     const layoutClassNames = classnames('container', { dragover: this.state.isDragOver });
 
-    let signInLink = '/signin';
-    const { location } = props.router;
-    if (location.pathname === '/signin') {
-      signInLink += location.search;
-    } else if (location.pathname !== '/') {
-      signInLink += `?back=${encodeURIComponent(location.pathname + location.search)}`;
-    }
-
     return (
-      <div className={layoutClassNames}>
-        <ErrorBoundary>
+      <ErrorBoundary>
+        <AppUpdated />
+        <div className={layoutClassNames}>
           <Helmet title={props.title} defer={false} />
           <ColorSchemeSetter />
           <SVGSymbolDeclarations />
 
-          <header className="row">
-            <div className="col-xs-9 col-sm-4 col-md-4">
-              <h1 className="site-logo">
-                <IndexLink className="site-logo-link" to="/">
-                  {CONFIG.siteTitle}
-                </IndexLink>
-                {CONFIG.betaChannel.enabled && CONFIG.betaChannel.isBeta && (
-                  <Link to="/settings/appearance#beta" className="site-logo-subheading">
-                    {CONFIG.betaChannel.subHeading}
-                  </Link>
-                )}
-              </h1>
-            </div>
+          <LayoutHeader />
 
-            {props.authenticated ? (
-              <div className="col-xs-12 col-sm-8 hidden-md hidden-lg" role="complementary">
-                <div className="mobile-shortcuts" role="navigation">
-                  <Link className="mobile-shortcut-link" to="/filter/discussions">
-                    Discussions
-                  </Link>
-                  <Link className="mobile-shortcut-link" to="/filter/notifications">
-                    Notifications
-                    {props.user.unreadNotificationsNumber > 0 &&
-                      !props.user.frontendPreferences.hideUnreadNotifications &&
-                      ` (${props.user.unreadNotificationsNumber})`}
-                  </Link>
-                  <Link className="mobile-shortcut-link" to="/filter/direct">
-                    Directs
-                    {props.user.unreadDirectsNumber > 0 && ` (${props.user.unreadDirectsNumber})`}
-                  </Link>
-                  <Link className="mobile-shortcut-link" to={`/${props.user.username}`}>
-                    My feed
-                  </Link>
-                </div>
+          {props.authenticated && (
+            <div className="row">
+              <div className="mobile-shortcuts hidden-md hidden-lg" role="navigation">
+                <Link className="mobile-shortcut-link" to="/filter/discussions">
+                  Discussions
+                </Link>
+                <Link className="mobile-shortcut-link" to="/filter/notifications">
+                  Notifications
+                  {props.user.unreadNotificationsNumber > 0 &&
+                    !props.user.frontendPreferences.hideUnreadNotifications &&
+                    ` (${props.user.unreadNotificationsNumber})`}
+                </Link>
+                <Link className="mobile-shortcut-link" to="/filter/direct">
+                  Directs
+                  {props.user.unreadDirectsNumber > 0 && ` (${props.user.unreadDirectsNumber})`}
+                </Link>
+                <Link className="mobile-shortcut-link" to={`/${props.user.username}`}>
+                  My feed
+                </Link>
               </div>
-            ) : (
-              <div className="col-xs-3 col-sm-6 col-md-3 text-right" role="complementary">
-                <div className="signin-link">
-                  <Link to={signInLink}>Sign In</Link>
-                </div>
-              </div>
-            )}
-
-            <div className="col-xs-12 col-sm-12 col-md-5">
-              <SearchForm />
             </div>
-          </header>
+          )}
 
           <LoaderContainer loading={props.loadingView} fullPage>
             <div className="row">
@@ -223,8 +194,8 @@ class Layout extends Component {
               <Icon icon={faBug} />
             </a>
           )}
-        </ErrorBoundary>
-      </div>
+        </div>
+      </ErrorBoundary>
     );
   }
 }

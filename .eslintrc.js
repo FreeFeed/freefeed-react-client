@@ -3,13 +3,12 @@ require('@babel/register');
 require('./config/lib/loader-node');
 
 module.exports = {
-  extends: ['eslint:recommended', 'prettier', 'prettier/react'],
+  extends: ['eslint:recommended', 'plugin:prettier/recommended'],
   parser: '@babel/eslint-parser',
   plugins: [
     'babel',
     'import',
     'lodash',
-    'prettier',
     'promise',
     'react',
     'you-dont-need-lodash-underscore',
@@ -45,6 +44,7 @@ module.exports = {
     },
   },
   rules: {
+    complexity: ['warn', { max: 20 }],
     curly: 2,
     'func-name-matching': 2,
     'import/default': 2,

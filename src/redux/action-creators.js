@@ -612,12 +612,13 @@ export function subscriptions(username) {
   };
 }
 
-export function getUserInfo(username) {
+export function getUserInfo(username, extra = {}) {
   return {
     type: ActionTypes.GET_USER_INFO,
     apiRequest: Api.getUserInfo,
     nonAuthRequest: true,
     payload: { username },
+    extra,
   };
 }
 
@@ -1158,5 +1159,19 @@ export function setBetaChannel(enabled) {
   return {
     type: ActionTypes.SET_BETA_CHANNEL,
     payload: enabled,
+  };
+}
+
+export function setAppVersion(version) {
+  return {
+    type: ActionTypes.APP_VERSION,
+    payload: version,
+  };
+}
+
+export function openSidebar(open = true) {
+  return {
+    type: ActionTypes.OPEN_SIDEBAR,
+    payload: open,
   };
 }

@@ -163,7 +163,12 @@ export const UserProfileHead = withRouter(
       ),
     };
     const unsubFromMe = {
-      onClick: useCallback(() => dispatch(unsubscribeFromMe(user)), [dispatch, user]),
+      onClick: useCallback(
+        () =>
+          confirm(`Are you sure you want to unsubscribe @${user.username} from you?`) &&
+          dispatch(unsubscribeFromMe(user)),
+        [dispatch, user],
+      ),
       status: useSelector(
         (state) =>
           state.userActionsStatuses.unsubscribingFromMe[user?.username] || initialAsyncState,
@@ -483,7 +488,7 @@ export const UserProfileHead = withRouter(
                 <>
                   <StatLink
                     title="All posts"
-                    linkTo={`/search?qs=${encodeURIComponent(`from:${user.username}`)}`}
+                    linkTo={`/search?q=${encodeURIComponent(`from:${user.username}`)}`}
                     canFollow={canFollowStatLinks}
                     className={styles.allPosts}
                   />

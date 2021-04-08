@@ -175,12 +175,12 @@ export const apiMiddleware = (store) => (next) => async (action) => {
           adjustTime(store.dispatch, serverTime - Date.now());
         }
       }
-      const extra = action.extra || {};
+
       return store.dispatch({
         payload: obj,
         type: response(action.type),
         request: action.payload,
-        extra,
+        extra: action.extra || {},
       });
     }
 
@@ -193,6 +193,7 @@ export const apiMiddleware = (store) => (next) => async (action) => {
       type: fail(action.type),
       request: action.payload,
       response: apiResponse,
+      extra: action.extra || {},
     });
   } catch (e) {
     Sentry.captureException(e, {
@@ -206,6 +207,7 @@ export const apiMiddleware = (store) => (next) => async (action) => {
       type: fail(action.type),
       request: action.payload,
       response: null,
+      extra: action.extra || {},
     });
   }
 };
@@ -906,17 +908,40 @@ export const unscrollMiddleware = () => (next) => (action) => {
   return result;
 };
 
-export const betaChannelMiddleware = (store) => (next) => (action) => {
-  if (
-    action.type === ActionTypes.SET_BETA_CHANNEL &&
-    action.payload !== store.getState().betaChannel
-  ) {
-    if (action.payload) {
-      setCookie(CONFIG.betaChannel.cookieName, CONFIG.betaChannel.cookieValue, 365, '/');
-    } else {
-      deleteCookie(CONFIG.betaChannel.cookieName, '/');
-    }
-    setTimeout(() => location.reload(true), 200);
+export const betaChannelMiddleware = (store) => {
+  // Reinstalling cookie for Safari
+  if (CONFIG.betaChannel.enabled && CONFIG.betaChannel.isBeta) {
+    setCookie(CONFIG.betaChannel.cookieName, CONFIG.betaChannel.cookieValue, 365, '/');
   }
-  return next(action);
+
+  return (next) => (action) => {
+    if (
+      action.type === ActionTypes.SET_BETA_CHANNEL &&
+      action.payload !== store.getState().betaChannel
+    ) {
+      if (action.payload) {
+        setCookie(CONFIG.betaChannel.cookieName, CONFIG.betaChannel.cookieValue, 365, '/');
+      } else {
+        deleteCookie(CONFIG.betaChannel.cookieName, '/');
+      }
+      setTimeout(() => location.reload(true), 200);
+    }
+    return next(action);
+  };
+};
+
+export const appVersionMiddleware = (store) => {
+  const { url, header, intervalSec } = CONFIG.appVersionCheck;
+  function checkVersion() {
+    fetch(url, { method: 'HEAD' }).then(
+      (res) => res.ok && store.dispatch(ActionCreators.setAppVersion(res.headers.get(header))),
+      (err) => console.warn(`Cannot fetch '${url}': ${err}`),
+    );
+
+    setTimeout(checkVersion, intervalSec * 1000);
+  }
+
+  url && checkVersion();
+
+  return (next) => (action) => next(action);
 };

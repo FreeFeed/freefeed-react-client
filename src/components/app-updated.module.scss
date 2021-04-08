@@ -1,0 +1,30 @@
+.bar {
+  background-color: #337ab7;
+  color: white;
+}
+
+.refresh {
+  color: inherit !important;
+  font-weight: bold;
+  text-decoration: underline;
+
+  &:hover {
+    color: inherit !important;
+  }
+}
+
+.indicator {
+  margin: auto;
+  padding: 0.5em 15px;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
+
+  @media (min-width: 769px) and (max-width: 992px) {
+    max-width: 750px;
+  }
+  @media (min-width: 993px) {
+    max-width: 948px;
+  }
+}

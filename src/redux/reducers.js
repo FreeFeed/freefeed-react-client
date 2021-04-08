@@ -361,6 +361,7 @@ const initPostViewState = (post) => {
     isEditing: false,
     isCommenting: false,
     commentText: '',
+    justCreated: false,
     ...NO_ERROR,
   };
 };
@@ -629,10 +630,7 @@ export function postsViewState(state = {}, action) {
 
     case response(ActionTypes.CREATE_POST): {
       const post = action.payload.posts;
-      const { id, omittedLikes } = post;
-      const isEditing = false;
-
-      return { ...state, [id]: { omittedLikes, id, isEditing, ...NO_ERROR } };
+      return { ...state, [post.id]: { ...initPostViewState(post), justCreated: true } };
     }
     case ActionTypes.UNAUTHENTICATED: {
       return {};
@@ -820,6 +818,23 @@ export function usersNotFound(state = [], action) {
           state = [...state, username];
         }
         return state;
+      }
+    }
+  }
+  return state;
+}
+
+export function userPastNames(state = {}, action) {
+  switch (action.type) {
+    case response(ActionTypes.GET_USER_INFO): {
+      const names = action.payload.pastUsernames?.map((r) => r.username) || [];
+      if (names.some((name) => !state[name])) {
+        const newState = { ...state };
+        const userId = action.payload.users.id;
+        for (const name of names) {
+          newState[name] = userId;
+        }
+        return newState;
       }
     }
   }
@@ -1965,6 +1980,26 @@ export function betaChannel(
   action,
 ) {
   if (action.type === ActionTypes.SET_BETA_CHANNEL) {
+    return action.payload;
+  }
+  return state;
+}
+
+export function appUpdated(state = { version: null, updated: false }, action) {
+  if (action.type === ActionTypes.APP_VERSION) {
+    const version = action.payload;
+    const updated = state.version !== null && state.version !== version;
+    if (state.version === null || updated) {
+      return { version, updated };
+    }
+  }
+  return state;
+}
+
+export { donationAccount, donationLoadingStatus } from './reducers/donation-status';
+
+export function sidebarOpened(state = false, action) {
+  if (action.type === ActionTypes.OPEN_SIDEBAR) {
     return action.payload;
   }
   return state;
