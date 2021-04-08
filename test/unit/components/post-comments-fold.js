@@ -149,6 +149,30 @@ describe('<PostComments>', () => {
         </div>,
       );
     });
+
+    it(`should not fold comments if its count is above the limit but the post is just created`, () => {
+      const nComments =
+        1 + // first comment
+        minFoldedComments + // folded comments
+        commentsAfterFold + // comments after fold
+        +2;
+      const comments = genComments(nComments);
+
+      expect(
+        <PostComments
+          comments={comments}
+          post={post}
+          commentsAfterFold={commentsAfterFold}
+          minFoldedComments={minFoldedComments}
+          preopened
+        />,
+        'when rendered',
+        'to have rendered with all children',
+        <div className="comments" role="list">
+          {genCommentElements(nComments)}
+        </div>,
+      );
+    });
   });
 
   describe('Post with omitted comments', () => {

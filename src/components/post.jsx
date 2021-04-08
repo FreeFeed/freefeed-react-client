@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import classnames from 'classnames';
 import _ from 'lodash';
 import Textarea from 'react-textarea-autosize';
+import dateFormat from 'date-fns/format';
 import {
   faExclamationTriangle,
   faLock,
@@ -448,7 +449,7 @@ class Post extends Component {
       `by ${props.createdBy.username}`,
       recipientsLabel,
       commentsAndLikesLabel,
-      `written on ${new Date(+props.createdAt).toLocaleDateString()}`,
+      `written on ${dateFormat(new Date(+props.createdAt), 'PPP')}`,
     ]
       .filter(Boolean)
       .join(' ');
@@ -711,6 +712,7 @@ class Post extends Component {
               isSinglePost={props.isSinglePost}
               forceAbsTimestamps={this.state.forceAbsTimestamps}
               user={props.user}
+              preopened={props.justCreated}
             />
           </div>
         </ErrorBoundary>

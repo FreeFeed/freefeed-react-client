@@ -99,7 +99,7 @@ export function safeScrollBy(x, y) {
 }
 
 export function unscroll() {
-  if (!scrolling.active) {
+  if (window.scrollY > 0 && !scrolling.active) {
     unscrollTo(pinnedElements);
   }
 }

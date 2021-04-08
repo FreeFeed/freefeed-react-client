@@ -22,7 +22,7 @@ export const SearchFormAdvanced = withRouter(function SearchFormAdvanced({ route
         initialValues: parseQuery(queryString),
         onSubmit: (values) => {
           const q = generateQuery(values);
-          q && router.push(`/search?qs=${encodeURIComponent(q)}`);
+          q && router.push(`/search?q=${encodeURIComponent(q)}`);
         },
       }),
       [router, queryString],
@@ -73,7 +73,7 @@ export const SearchFormAdvanced = withRouter(function SearchFormAdvanced({ route
     <div>
       <form onSubmit={form.handleSubmit}>
         <div className={`${styles.queryInputGroup} input-group`}>
-          <input type="search" name="qs" className="form-control" {...query.input} />
+          <input type="search" name="q" className="form-control" {...query.input} />
           <span className="input-group-btn">
             <button className="btn btn-primary" type="submit" disabled={form.hasValidationErrors}>
               Search

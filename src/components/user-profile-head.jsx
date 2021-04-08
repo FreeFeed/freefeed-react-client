@@ -488,7 +488,7 @@ export const UserProfileHead = withRouter(
                 <>
                   <StatLink
                     title="All posts"
-                    linkTo={`/search?qs=${encodeURIComponent(`from:${user.username}`)}`}
+                    linkTo={`/search?q=${encodeURIComponent(`from:${user.username}`)}`}
                     canFollow={canFollowStatLinks}
                     className={styles.allPosts}
                   />

@@ -44,6 +44,7 @@ module.exports = {
     },
   },
   rules: {
+    complexity: ['warn', { max: 20 }],
     curly: 2,
     'func-name-matching': 2,
     'import/default': 2,

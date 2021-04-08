@@ -42,30 +42,8 @@ class Archive extends Component {
           </div>
           <div className="box-body">
             <p>
-              In April 2015, before FriendFeed was shut down, a group of volunteers had created an
-              archive of posts for 5356 users and 1231 groups of FriendFeed.com. These archives are
-              available at{' '}
-              <a href="https://clio.freefeed.net/" target="_blank">
-                clio.freefeed.net
-              </a>
-              .
-            </p>
-            <p>
-              If you have an archive of your posts at{' '}
-              <a href="https://clio.freefeed.net/" target="_blank">
-                clio.freefeed.net
-              </a>
-              , you can now restore it to FreeFeed.
-            </p>
-            <p>
               Please note that all restore requests are processed manually and may take a few days
               to complete.
-            </p>
-            <p>
-              <a href="https://dev.freefeed.net/w/archives-faq/" target="_blank">
-                Restore from archives FAQ
-              </a>{' '}
-              (in Russian)
             </p>
             <h3>Restore your comments and likes</h3>
             {this.renderActivityForm()}

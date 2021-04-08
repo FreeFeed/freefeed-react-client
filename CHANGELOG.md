@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.98.0] - Not released
+## [1.98.0] - 2021-04-08
 ### Added
 - Generate '_dist/version.txt' file during production build. This file contains
   build version and date and can be used to auto-check the client updates.
@@ -18,11 +18,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   _Refresh_the_page_ when you are ready.”
 - Confirmation dialog when the private user wants to unsubscribe someone from
   himself.
+- Donation 'traffic light' in the sidebar. This widget depends of
+  `donations.statusAccount` config field (null by default means no widget). This
+  field should contain the _username_ of the group (or user) whose _screenname_
+  sets the donate status. The available statuses are 'Very good', 'Good', 'OK',
+  'Very low', 'Low', 'Critical'. The widget performs case-independent search for
+  these substrings in the screenname.
+- Donation parameters (PayPal button ids, LiberaPay and YooMoney widgets) are
+  now configurable by config.
+- New mobile-friendly Sidebar and search-input
 
 ### Fixed
 - When the user visits the post by non-canonical URL, the client replaces URL to
   canonical one, keeping the query string and hash if present. Previously the
   query string and hash were not preserved.
+- The scroll compensation isn't applied now when the window scrollY position is 0.
+  So when some content appears on the top of the page, it will not caused scroll
+  compensation and will not be hidden under the top window edge.
+- The info popups now shows properly for users that changed their usernames.
+- The 'beta' cookie is now re-installed every time the application started. This
+  is to trick Safari that deletes cookies after 7 days.
+
+### Changed
+- Removed old invalid links to Clio and "Archives F.A.Q."
+- Post created by the user with 'Create post' from is showing with expanded
+  comments. The user can add multiple comments to the newly created post and
+  they will not be suddenly collapsed.
 
 ## [1.97.0] - 2021-03-18
 ### Fixed
