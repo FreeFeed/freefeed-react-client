@@ -3,7 +3,7 @@
 exports[`Post Renders a post and doesn't blow up 1`] = `
 <DocumentFragment>
   <div
-    aria-label="Public post by author with 0 comments and 0 likes written on 3/14/2021"
+    aria-label="Public post by author with 0 comments and 0 likes written on March 14th, 2021"
     class="post single-post"
     data-author="author"
     role="article"
