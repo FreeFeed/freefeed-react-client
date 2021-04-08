@@ -434,7 +434,7 @@ export function getUserSummary({ username, days }) {
 
 export function getSearch({ search = '', offset = 0 }) {
   return fetch(
-    `${apiRoot}/v2/search?q=${encodeURIComponent(search)}&offset=${offset}`,
+    `${apiRoot}/v2/search?qs=${encodeURIComponent(search)}&offset=${offset}`,
     getRequestOptions(),
   );
 }
