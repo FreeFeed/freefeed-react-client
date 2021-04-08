@@ -7,6 +7,7 @@ import { joinPostData, postActions } from './select-utils';
 import UserName from './user-name';
 
 import Post, { canonicalURI } from './post';
+import { SignInLink } from './sign-in-link';
 
 class SinglePostHandler extends Component {
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -110,12 +111,12 @@ function PrivatePost({ isAuthorized, feedName }) {
         ) : (
           <>
             <p>
-              You may be able to access it if you <Link to="/signin">sign in</Link> to your{' '}
+              You may be able to access it if you <SignInLink>sign in</SignInLink> to your{' '}
               {CONFIG.siteTitle} account.
             </p>
             <p>
               <Link to="/signup">Sign up</Link> for {CONFIG.siteTitle} (or{' '}
-              <Link to="/signin">sign in</Link>) and request a subscription to see posts from @
+              <SignInLink>sign in</SignInLink>) and request a subscription to see posts from @
               <UserName user={userObj}>{feedName}</UserName>
             </p>
           </>
@@ -137,7 +138,7 @@ function ProtectedPost() {
         <h3>This post is visible to {CONFIG.siteTitle} users only</h3>
         <p>
           <Link to="/signup">Sign up</Link> for {CONFIG.siteTitle} (or{' '}
-          <Link to="/signin">sign in</Link>) to see this post.
+          <SignInLink>sign in</SignInLink>) to see this post.
         </p>
       </div>
       <div className="box-footer" />

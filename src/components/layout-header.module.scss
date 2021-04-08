@@ -1,0 +1,214 @@
+@import '../../styles/helvetica/dark-vars.scss';
+@import '../../styles/helvetica/functions.scss';
+
+$with-sidebar: '(min-width: 992px)';
+$without-sidebar: '(max-width: 991px)';
+
+@mixin with-gap {
+  & > * {
+    margin-left: 8px;
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  @include with-gap;
+
+  @media #{$with-sidebar} {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 688px;
+  }
+  @media #{$without-sidebar} {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
+}
+
+.logo {
+  flex: 1;
+  margin: 0;
+  white-space: nowrap;
+
+  font-size: 36px; // fluid's fallback size
+  font-size: fluid(28, 320, 36, 600);
+}
+
+.logoLink {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.searchForm {
+  @include with-gap;
+  display: flex;
+  flex: 0 1 100%;
+  position: relative;
+  height: 32px;
+
+  .fullMode & {
+    max-width: 380px;
+  }
+  .compactMode & {
+    max-width: 280px;
+  }
+  .collapsibleMode & {
+    max-width: 100%;
+  }
+}
+
+.searchInput,
+.searchButton {
+  font: inherit;
+  padding: 0 1em;
+  background-color: #fff;
+
+  :global(.dark-theme) & {
+    background-color: $bg-color;
+  }
+}
+
+.searchInputContainer {
+  display: flex;
+  flex: 1;
+  position: relative;
+
+  &:focus-within {
+    outline: auto;
+  }
+
+  & *:focus {
+    outline: none;
+  }
+}
+
+.searchInput {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #999; // TODO dark theme
+
+  padding-right: 8px;
+  &:focus {
+    padding-right: 24px;
+  }
+
+  .fullMode & {
+    padding-left: 8px;
+  }
+  .compactMode & {
+    padding-left: 30px;
+  }
+  .collapsibleMode & {
+    padding-left: 30px;
+  }
+}
+
+.searchButton {
+  margin-left: 8px;
+  border: 1px solid;
+  border-radius: 4px;
+
+  &:active {
+    background-color: #ddd;
+    :global(.dark-theme) & {
+      background-color: $bg-color-lightest;
+    }
+  }
+}
+
+.buttons {
+  display: flex;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.activeElements {
+  @include with-gap;
+  display: flex;
+  flex: 2;
+  justify-content: flex-end;
+  height: 40px;
+  align-items: center;
+
+  .collapsibleMode & {
+    flex: 0;
+  }
+}
+
+.searchExpandedCont {
+  display: flex;
+  flex: 1;
+  height: 40px;
+  align-items: center;
+}
+
+.compactButton {
+  width: 40px;
+  height: 40px;
+  font-size: 19px;
+  border: none;
+  background: none;
+  color: inherit !important;
+  text-decoration: none !important;
+
+  display: inline-flex;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.searchIcon {
+  position: absolute;
+  font-size: 19px;
+  opacity: 0.33;
+  top: 50%;
+  left: 6px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.clearSearchButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 15px;
+  width: 24px;
+  height: 32px;
+
+  opacity: 0.4;
+  transition: opacity 0.3s;
+  &:hover {
+    opacity: 0.8;
+  }
+
+  visibility: hidden;
+
+  .searchInputContainer:focus-within & {
+    visibility: visible;
+  }
+}
+
+.signInLink {
+  position: absolute;
+  right: 0;
+  transform: translateX(calc(100% + 30px));
+}
+
+.signInButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

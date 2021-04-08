@@ -1168,3 +1168,10 @@ export function setAppVersion(version) {
     payload: version,
   };
 }
+
+export function openSidebar(open = true) {
+  return {
+    type: ActionTypes.OPEN_SIDEBAR,
+    payload: open,
+  };
+}

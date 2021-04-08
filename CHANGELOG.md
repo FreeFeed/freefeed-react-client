@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   these substrings in the screenname.
 - Donation parameters (PayPal button ids, LiberaPay and YooMoney widgets) are
   now configurable by config.
+- New mobile-friendly Sidebar and search-input
 
 ### Fixed
 - When the user visits the post by non-canonical URL, the client replaces URL to
