@@ -1,13 +1,13 @@
 /* global CONFIG */
 import { Link } from 'react-router';
 import { faPaypal } from '@fortawesome/free-brands-svg-icons';
-import { LiberaPayWidget } from './libera-pay-widget';
 
 import styles from './donate.module.scss';
 import { useDonationStatus } from './hooks/donation-status';
 import { useBool } from './hooks/bool';
 import { ButtonLink } from './button-link';
 import { Icon } from './fontawesome-icons';
+import { faLiberaPay, faYooMoney } from './fontawesome-custom-icons';
 
 const cfg = CONFIG.donations;
 
@@ -33,7 +33,16 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
           has no sponsors and doesn&apos;t run ads.
         </p>
 
-        <p>All the hosting expenses are covered by donations only.</p>
+        {cfg.reportsAccount && (
+          <p>
+            <Link to={`/${cfg.reportsAccount}`}>See funding and expenses reports</Link>
+          </p>
+        )}
+
+        <p>
+          All hosting expenses are covered by donations only. You can help us pay for hosting by
+          setting up a monthly donation.
+        </p>
 
         {statusText && (
           <>
@@ -43,7 +52,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
                 {statusText}
               </span>{' '}
               <ButtonLink onClick={engDetailsToggle}>
-                What it means?{engDetailsOpened && ' (collapse)'}
+                What does it mean?{engDetailsOpened && ' (collapse)'}
               </ButtonLink>
             </p>
             <section className={styles.statusDetails} hidden={!engDetailsOpened}>
@@ -59,30 +68,30 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
                 expenses.
               </p>
               <p>
-                <strong>Very good</strong> means that we&amp;ve met our reserve fund goal. We had
+                <strong>Very good</strong> means that we&apos;ve met our reserve fund goal. We had
                 enough donations last month to cover monthly hosting fees, and at least 800 EUR
                 extra to pay for the development of new features.
               </p>
               <p>
-                <strong>Good</strong> means that we&amp;ve met our reserve fund goal. We had enough
+                <strong>Good</strong> means that we&apos;ve met our reserve fund goal. We had enough
                 donations last month to cover monthly hosting fees, and at least 400 EUR extra to
                 pay for the development of new features.
               </p>
               <p>
-                <strong>OK</strong> means that we&amp;ve met our reserve fund goal. We had enough
+                <strong>OK</strong> means that we&apos;ve met our reserve fund goal. We had enough
                 donations last month to cover monthly hosting fees, and we had about 200 EUR extra.
                 This is not enough to pay for the development of new features this month, but we can
                 save up and do it later.
               </p>
               <p>
-                <strong>Low</strong> means that we&amp;ve met our reserve fund goal, we had enough
+                <strong>Low</strong> means that we&apos;ve met our reserve fund goal, we had enough
                 donations last month to cover monthly hosting fees, but we cannot afford to
                 paypaying for anything else.
               </p>
               <p>
-                <strong>Very low</strong> means that we&amp;ve met our reserve fund goal, but we did
-                not have enough donations last month to cover monthly hosting fees. This means we
-                are using our reserves, or will have to start using them soon.
+                <strong>Very low</strong> means that we&apos;ve met our reserve fund goal, but we
+                did not have enough donations last month to cover monthly hosting fees. This means
+                we are using our reserves, or will have to start using them soon.
               </p>
               <p>
                 <strong>Critical</strong> means that we only have enough money left in our reserves
@@ -92,30 +101,27 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
           </>
         )}
 
-        {cfg.reportsAccount && (
-          <p>
-            <Link to={`/${cfg.reportsAccount}`}>Funding and expenses reports</Link>
-          </p>
-        )}
-
-        <p>You can help us pay for the hosting by setting up a monthly donation.</p>
-
         {cfg.paymentMethods.liberaPayProject && (
           <>
-            <h4>
-              Easy way <small>(accept all cards, 20% commission fee)</small>
-            </h4>
-            <LiberaPayWidget project={cfg.paymentMethods.liberaPayProject} />
+            <h4>The easy way (all cards, 20% commission fee)</h4>
+
+            <form
+              method="get"
+              action={`https://liberapay.com/${cfg.paymentMethods.liberaPayProject}/donate`}
+              target="_blank"
+            >
+              <button type="submit">
+                <Icon icon={faLiberaPay} /> Pay with LiberaPay
+              </button>
+            </form>
           </>
         )}
 
         {cfg.paymentMethods.payPalRegularButtonId && (
           <>
-            <h4>
-              Paypal way <small>(7% commission fee)</small>
-            </h4>
-            <p>
-              <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+            <h4>The Paypal way (7% commission fee)</h4>
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+              <p>
                 <input type="hidden" name="cmd" value="_s-xclick" />
                 <input
                   type="hidden"
@@ -138,8 +144,8 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
                 <button type="submit">
                   <Icon icon={faPaypal} /> Pay with PayPal
                 </button>
-              </form>
-            </p>
+              </p>
+            </form>
           </>
         )}
 
@@ -163,10 +169,9 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
           </>
         )}
 
-        <h4>Responsible way</h4>
+        <h4>The responsible way (commission fees depend on your bank)</h4>
         <p>
-          You can set up recurring monthly donation through your internet bank account (commission
-          fees depend on your bank).
+          You can set up recurring monthly donation through your internet bank account.
           <br />
           Payment details:
           <br />
@@ -181,18 +186,20 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
 
         {cfg.paymentMethods.yasobeRuProject && (
           <>
-            <h4>The Russian way</h4>
-            <p>
-              You can make a one-time payment with your card or YooMoney wallet (commission fee
-              0.5-2%):
-              <form
-                method="get"
-                action={`https://yasobe.ru/na/${cfg.paymentMethods.yasobeRuProject}`}
-                target="_blank"
-              >
-                <button type="submit">Pay with YooMoney</button>
-              </form>
-            </p>
+            <h4>The Russian way (2% commission fee)</h4>
+            <form
+              method="get"
+              action={`https://yasobe.ru/na/${cfg.paymentMethods.yasobeRuProject}`}
+              target="_blank"
+            >
+              <p>
+                You can make a one-time payment with your card or YooMoney wallet:
+                <br />
+                <button type="submit">
+                  <Icon icon={faYooMoney} /> Pay with YooMoney
+                </button>
+              </p>
+            </form>
           </>
         )}
 
@@ -206,6 +213,14 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
           FreeFeed MTU на средства, которые добровольно жертвуют пользователи — это единственный
           источник денег, у нас нет спонсоров и рекламы.
         </p>
+
+        {cfg.reportsAccount && (
+          <p>
+            <Link to={`/${cfg.reportsAccount}`}>Отчеты о расходах и собираемых средствах</Link>
+          </p>
+        )}
+
+        <p>Вы можете помочь нам, настроив автоматический ежемесячный платёж</p>
 
         {statusText && (
           <>
@@ -263,30 +278,27 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
           </>
         )}
 
-        {cfg.reportsAccount && (
-          <p>
-            <Link to={`/${cfg.reportsAccount}`}>Отчеты о расходах и собираемых средствах</Link>
-          </p>
-        )}
-
-        <p>Вы можете помочь нам, настроив автоматический ежемесячный платёж</p>
-
         {cfg.paymentMethods.liberaPayProject && (
           <>
-            <h4>
-              Простой способ <small>(принимает все карты, комиссии около 20%)</small>
-            </h4>
-            <LiberaPayWidget project={cfg.paymentMethods.liberaPayProject} />
+            <h4>Простой способ (принимает все карты, комиссии ~20%)</h4>
+
+            <form
+              method="get"
+              action={`https://liberapay.com/${cfg.paymentMethods.liberaPayProject}/donate`}
+              target="_blank"
+            >
+              <button type="submit">
+                <Icon icon={faLiberaPay} /> Pay with LiberaPay
+              </button>
+            </form>
           </>
         )}
 
         {cfg.paymentMethods.payPalRegularButtonId && (
           <>
-            <h4>
-              Paypal <small>(комиссия около 7%)</small>
-            </h4>
-            <p>
-              <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+            <h4>Paypal (комиссия ~7%)</h4>
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+              <p>
                 <input type="hidden" name="cmd" value="_s-xclick" />
                 <input
                   type="hidden"
@@ -308,8 +320,8 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
                 <button type="submit">
                   <Icon icon={faPaypal} /> Заплатить через PayPal
                 </button>
-              </form>
-            </p>
+              </p>
+            </form>
           </>
         )}
 
@@ -333,10 +345,9 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
           </>
         )}
 
-        <h4>Прямой платеж</h4>
+        <h4>Прямой платеж (комиссии зависят от вашего банка)</h4>
         <p>
-          Вы можете настроить регулярные ежемесячные платежи в вашем интернет-банке (комиссии
-          зависят от вашего банка).
+          Вы можете настроить регулярные ежемесячные платежи в вашем интернет-банке.
           <br />
           Реквизиты:
           <br />
@@ -351,18 +362,21 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
 
         {cfg.paymentMethods.yasobeRuProject && (
           <>
-            <h4>ЮMoney</h4>
-            <p>
-              Вы можете сделать единоразовый платеж с помощью платежной карточки или кошелька ЮMoney
-              (комиссия 0.5-2%):
-              <form
-                method="get"
-                action={`https://yasobe.ru/na/${cfg.paymentMethods.yasobeRuProject}`}
-                target="_blank"
-              >
-                <button type="submit">Сделать взнос через ЮMoney</button>
-              </form>
-            </p>
+            <h4>ЮMoney (комиссия ~2%)</h4>
+            <form
+              method="get"
+              action={`https://yasobe.ru/na/${cfg.paymentMethods.yasobeRuProject}`}
+              target="_blank"
+            >
+              <p>
+                Вы можете сделать единоразовый платеж с помощью платежной карточки или кошелька
+                ЮMoney:
+                <br />
+                <button type="submit">
+                  <Icon icon={faYooMoney} /> Сделать взнос через ЮMoney
+                </button>
+              </p>
+            </form>
           </>
         )}
 
