@@ -18,6 +18,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   _Refresh_the_page_ when you are ready.”
 - Confirmation dialog when the private user wants to unsubscribe someone from
   himself.
+- Donation 'traffic light' in the sidebar. This widget depends of
+  `donations.statusAccount` config field (null by default means no widget). This
+  field should contain the _username_ of the group (or user) whose _screenname_
+  sets the donate status. The available statuses are 'Very good', 'Good', 'OK',
+  'Very low', 'Low', 'Critical'. The widget performs case-independent search for
+  these substrings in the screenname.
+- Donation parameters (PayPal button ids, LiberaPay and YooMoney widgets) are
+  now configurable by config.
 
 ### Fixed
 - When the user visits the post by non-canonical URL, the client replaces URL to
