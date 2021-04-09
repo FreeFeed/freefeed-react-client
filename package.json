@@ -158,9 +158,5 @@
     "type": "git",
     "url": "https://github.com/FreeFeed/freefeed-react-client.git"
   },
-  "license": "MIT",
-  "lint-staged": {
-    "*.{js,jsx}": "eslint --fix",
-    "*.css": "stylelint --fix"
-  }
+  "license": "MIT"
 }
