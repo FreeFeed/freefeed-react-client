@@ -180,7 +180,7 @@ function useInitialQuery(router) {
     const route = router.routes[router.routes.length - 1];
     switch (route.name) {
       case 'search':
-        return (router.location.query.qs || '').trim();
+        return (router.location.query.q || router.location.query.qs || '').trim();
       case 'saves':
         return `in-my:saves `;
       case 'discussions':
