@@ -85,8 +85,8 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
               </p>
               <p>
                 <strong>Low</strong> means that we&apos;ve met our reserve fund goal, we had enough
-                donations last month to cover monthly hosting fees, but we cannot afford to
-                paypaying for anything else.
+                donations last month to cover monthly hosting fees, but we cannot afford to paying
+                for anything else.
               </p>
               <p>
                 <strong>Very low</strong> means that we&apos;ve met our reserve fund goal, but we
