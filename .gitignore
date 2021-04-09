@@ -1,3 +1,4 @@
+/.no_husky
 /.yarn/*
 !/.yarn/releases
 !/.yarn/plugins

@@ -1,4 +1,8 @@
 #!/bin/sh
+if [ -f "$(dirname "$0")/../.no_husky" ]; then
+  exit 0;
+fi
+
 . "$(dirname "$0")/_/husky.sh"
 . "$(dirname "$0")/common.sh"
 
