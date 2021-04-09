@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.99.0] - Not released
 
+## [1.98.2] - 2021-04-09
+### Fixed
+- Accept the 'q' GET-parameter as search query in the header form
+
 ## [1.98.1] - 2021-04-09
 ### Fixed
 - Typo on Donate page
