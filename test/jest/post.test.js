@@ -1,5 +1,6 @@
 /* global describe, it, expect, jest */
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { createStore } from 'redux';
 import * as reactRedux from 'react-redux';
@@ -11,6 +12,13 @@ jest.mock('../../src/components/post-comments', () => ({ comments }) => {
 jest.mock('../../src/components/post-attachments', () => ({ attachments }) => {
   return <div>{attachments.length > 0 ? `Mocked ${attachments.length} attachments` : ''}</div>;
 });
+
+// https://github.com/facebook/jest/issues/8769#issuecomment-812824244
+jest.mock('../../src/components/lazy-component', () => ({
+  lazyComponent: (loader, { fallback, errorMessage }) => () => {
+    return <div>{fallback || errorMessage}</div>;
+  },
+}));
 
 import Post from '../../src/components/post';
 
@@ -33,9 +41,10 @@ const VIEWER = {
 const defaultState = {
   user: VIEWER,
   postHideStatuses: {},
+  sendTo: { feeds: [{ id: 'feed-id', user: AUTHOR }] },
 };
 
-const renderPost = (props = {}) => {
+const renderPost = (props = {}, options = {}) => {
   const { Provider } = reactRedux;
   const dummyReducer = (state) => state;
   const store = createStore(dummyReducer, defaultState);
@@ -66,12 +75,22 @@ const renderPost = (props = {}) => {
     savePostStatus: {},
     hideStatus: {},
     setFinalHideLinkOffset: () => {},
+    toggleEditingPost: () => {},
+    saveEditingPost: () => {},
   };
-  return render(
+
+  const rendered = render(
     <Provider store={store}>
       <Post {...defaultProps} {...props} />
     </Provider>,
+    options,
   );
+
+  return {
+    ...rendered,
+    rerender: (props = {}, options = {}) =>
+      renderPost(props, { container: rendered.container, ...options }),
+  };
 };
 
 describe('Post', () => {
@@ -163,7 +182,7 @@ describe('Post', () => {
     expect(screen.getByLabelText(/Public post/)).toBeInTheDocument();
     expect(screen.getByTitle(/This entry is public/, { role: 'button' })).toBeInTheDocument();
     expect(screen.getByText('Mar 14, 2021')).toBeInTheDocument();
-    fireEvent.click(screen.getByTitle(/This entry is public/, { role: 'button' }));
+    userEvent.click(screen.getByTitle(/This entry is public/, { role: 'button' }));
     expect(screen.getByText('Mar 14, 2021 03:23')).toBeInTheDocument();
   });
 
@@ -224,7 +243,7 @@ describe('Post', () => {
     const toggleCommenting = jest.fn();
     renderPost({ toggleCommenting, isSinglePost: false });
     expect(screen.getByText('Comment', { role: 'button' })).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Comment', { role: 'button' }));
+    userEvent.click(screen.getByText('Comment', { role: 'button' }));
     expect(toggleCommenting).toHaveBeenCalledWith('post-id');
   });
 
@@ -247,7 +266,7 @@ describe('Post', () => {
     const likePost = jest.fn();
     renderPost({ likePost, isEditable: false, user: someOtherUser });
     expect(screen.getByText('Like', { role: 'button' })).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Like', { role: 'button' }));
+    userEvent.click(screen.getByText('Like', { role: 'button' }));
     expect(likePost).toHaveBeenCalledWith('post-id', 'other-id');
   });
 
@@ -263,7 +282,7 @@ describe('Post', () => {
       user: someOtherUser,
     });
     expect(screen.getByText('Un-like', { role: 'button' })).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Un-like', { role: 'button' }));
+    userEvent.click(screen.getByText('Un-like', { role: 'button' }));
     expect(unlikePost).toHaveBeenCalledWith('post-id', 'other-id');
   });
 
@@ -290,22 +309,22 @@ describe('Post', () => {
       deletePost,
     });
     expect(screen.getByText(/More/, { role: 'button' })).toBeInTheDocument();
-    fireEvent.click(screen.getByText(/More/, { role: 'button' }));
+    userEvent.click(screen.getByText(/More/, { role: 'button' }));
 
     expect(screen.getByText('Edit', { role: 'button' })).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Edit', { role: 'button' }));
+    userEvent.click(screen.getByText('Edit', { role: 'button' }));
     expect(toggleEditingPost).toHaveBeenCalledWith('post-id');
 
     expect(screen.getByText('Moderate comments', { role: 'button' })).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Moderate comments', { role: 'button' }));
+    userEvent.click(screen.getByText('Moderate comments', { role: 'button' }));
     expect(toggleModeratingComments).toHaveBeenCalledWith('post-id');
 
     expect(screen.getByText('Disable comments', { role: 'button' })).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Disable comments', { role: 'button' }));
+    userEvent.click(screen.getByText('Disable comments', { role: 'button' }));
     expect(disableComments).toHaveBeenCalledWith('post-id');
 
     expect(screen.getByText('Delete', { role: 'button' })).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Delete', { role: 'button' }));
+    userEvent.click(screen.getByText('Delete', { role: 'button' }));
     expect(confirmMock).toHaveBeenCalledWith('Are you sure?');
     expect(deletePost).toHaveBeenCalledWith('post-id');
   });
@@ -322,7 +341,7 @@ describe('Post', () => {
       hidePost,
     });
     expect(screen.getByText('Hide', { role: 'button' })).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Hide', { role: 'button' }));
+    userEvent.click(screen.getByText('Hide', { role: 'button' }));
     expect(hidePost).toHaveBeenCalledWith('post-id');
   });
 
@@ -339,7 +358,34 @@ describe('Post', () => {
       unhidePost,
     });
     expect(screen.getByText('Un-hide', { role: 'button' })).toBeInTheDocument();
-    fireEvent.click(screen.getByText('Un-hide', { role: 'button' }));
+    userEvent.click(screen.getByText('Un-hide', { role: 'button' }));
     expect(unhidePost).toHaveBeenCalledWith('post-id');
+  });
+
+  it('Renders a textarea with post text when editing the post', () => {
+    const cancelEditingPost = jest.fn();
+    const { rerender } = renderPost({ isEditable: true, cancelEditingPost });
+
+    userEvent.click(screen.getByText(/More/, { role: 'button' }));
+    userEvent.click(screen.getByText('Edit', { role: 'button' }));
+    rerender({ isEditing: true, isEditable: true, cancelEditingPost });
+
+    expect(screen.getByLabelText('Post body')).toMatchSnapshot();
+
+    userEvent.click(screen.getByText('Cancel'));
+    expect(cancelEditingPost).toHaveBeenCalledWith('post-id');
+  });
+
+  it('Lets me edit text of my post by typing', () => {
+    const saveEditingPost = jest.fn();
+    renderPost({ isEditing: true, isEditable: true, saveEditingPost });
+
+    userEvent.type(screen.getByRole('textbox'), 'Hello,{shift}{enter}{/shift}World!{enter}');
+    expect(screen.getByRole('textbox')).toHaveValue('Hello,\nWorld!');
+    expect(saveEditingPost).toHaveBeenCalledWith('post-id', {
+      attachments: [],
+      body: 'Hello,\nWorld!',
+      feeds: ['author'],
+    });
   });
 });
