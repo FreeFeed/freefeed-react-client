@@ -14,6 +14,7 @@ import TimeDisplay from './time-display';
 
 import styles from './all-groups.module.scss';
 import { UserPicture } from './user-picture';
+import { HorScrollable } from './hor-scrollable';
 
 export default function AllGroups() {
   const dispatch = useDispatch();
@@ -117,30 +118,32 @@ function GroupsList({ pageSize }) {
       </p>
       <p>Click on the column headers to change table sorting order.</p>
 
-      <table className={styles.table}>
-        <thead>
-          <tr className={styles.headersRow}>
-            <th className={styles.mainColumn}>Group</th>
-            <SortHeader mode={SORT_BY_SUBSCRIBERS} currentMode={sort}>
-              Subscribers
-            </SortHeader>
-            <SortHeader mode={SORT_BY_POSTS} currentMode={sort}>
-              Posts per month
-            </SortHeader>
-            <SortHeader mode={SORT_BY_VARIETY} currentMode={sort}>
-              Authors variety
-            </SortHeader>
-            <SortHeader mode={SORT_BY_DATE} currentMode={sort}>
-              Creation date
-            </SortHeader>
-          </tr>
-        </thead>
-        <tbody>
-          {groupsOnPage.map((g) => (
-            <GroupRow key={g.id} g={g} />
-          ))}
-        </tbody>
-      </table>
+      <HorScrollable>
+        <table className={styles.table}>
+          <thead>
+            <tr className={styles.headersRow}>
+              <th className={styles.mainColumn}>Group</th>
+              <SortHeader mode={SORT_BY_SUBSCRIBERS} currentMode={sort}>
+                Subscribers
+              </SortHeader>
+              <SortHeader mode={SORT_BY_POSTS} currentMode={sort}>
+                Posts per month
+              </SortHeader>
+              <SortHeader mode={SORT_BY_VARIETY} currentMode={sort}>
+                Authors variety
+              </SortHeader>
+              <SortHeader mode={SORT_BY_DATE} currentMode={sort}>
+                Creation date
+              </SortHeader>
+            </tr>
+          </thead>
+          <tbody>
+            {groupsOnPage.map((g) => (
+              <GroupRow key={g.id} g={g} />
+            ))}
+          </tbody>
+        </table>
+      </HorScrollable>
       {groupsOnPage.length === 0 ? (
         <div className={styles.empty}>No groups match current filter</div>
       ) : (
