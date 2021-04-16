@@ -1,7 +1,11 @@
 import { memo, useEffect, useState, forwardRef, useCallback, useMemo, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { faGripVertical } from '@fortawesome/free-solid-svg-icons';
+
 import { reorderHomeFeeds } from '../redux/action-creators';
 import { HomeFeedLink } from './home-feed-link';
+import { Icon } from './fontawesome-icons';
+import styles from './sidebar-homefeeds.module.scss';
 
 export const SidebarHomeFeeds = memo(function SidebarHomeFeeds({ homeFeedsCount }) {
   const dispatch = useDispatch();
@@ -61,16 +65,27 @@ export const SidebarHomeFeeds = memo(function SidebarHomeFeeds({ homeFeedsCount 
   }
 
   return (
-    <Sortable tag="ul" ref={srt} onEnd={onEnd} list={feedsList} setList={setFeedsList}>
-      <AuxFeedsLinks feeds={feedsToRender} />
+    <Sortable
+      tag="ul"
+      ref={srt}
+      onEnd={onEnd}
+      list={feedsList}
+      setList={setFeedsList}
+      handle={`.${styles.handle}`}
+      chosenClass={styles.chosen}
+    >
+      <AuxFeedsLinks feeds={feedsToRender} sortable />
     </Sortable>
   );
 });
 
-function AuxFeedsLinks({ feeds }) {
+function AuxFeedsLinks({ feeds, sortable = false }) {
   return feeds.map((feed) => (
-    <li className="p-home" key={feed.id} data-id={feed.id}>
-      <HomeFeedLink feed={feed} />
+    <li className={styles.row} key={feed.id} data-id={feed.id}>
+      <div className={styles.title}>
+        <HomeFeedLink feed={feed} />
+      </div>
+      {sortable && <Icon icon={faGripVertical} className={styles.handle} />}
     </li>
   ));
 }
