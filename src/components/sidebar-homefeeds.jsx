@@ -1,7 +1,10 @@
 import { memo, useEffect, useState, forwardRef, useCallback, useMemo, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { faGripVertical } from '@fortawesome/free-solid-svg-icons';
+import cn from 'classnames';
 
+import { noop } from 'lodash';
+import { KEY_DOWN, KEY_UP } from 'keycode-js';
 import { reorderHomeFeeds } from '../redux/action-creators';
 import { HomeFeedLink } from './home-feed-link';
 import { Icon } from './fontawesome-icons';
@@ -56,6 +59,30 @@ export const SidebarHomeFeeds = memo(function SidebarHomeFeeds({ homeFeedsCount 
     [dispatch],
   );
 
+  const onMove = useCallback(
+    (id, direction) => {
+      const index = feedsList.findIndex((f) => f.id === id);
+      if (
+        index === -1 ||
+        (index === 0 && direction === 'up') ||
+        (index === feedsList.length - 1 && direction === 'down')
+      ) {
+        return;
+      }
+      const list = feedsList.map((r) => r.id);
+      const t = list[index];
+      if (direction === 'up') {
+        list[index] = list[index - 1];
+        list[index - 1] = t;
+      } else if (direction === 'down') {
+        list[index] = list[index + 1];
+        list[index + 1] = t;
+      }
+      dispatch(reorderHomeFeeds(list));
+    },
+    [feedsList, dispatch],
+  );
+
   if (homeFeedsCount <= 2) {
     return (
       <ul>
@@ -74,18 +101,42 @@ export const SidebarHomeFeeds = memo(function SidebarHomeFeeds({ homeFeedsCount 
       handle={`.${styles.handle}`}
       chosenClass={styles.chosen}
     >
-      <AuxFeedsLinks feeds={feedsToRender} sortable />
+      <AuxFeedsLinks feeds={feedsToRender} sortable onMove={onMove} />
     </Sortable>
   );
 });
 
-function AuxFeedsLinks({ feeds, sortable = false }) {
+function AuxFeedsLinks({ feeds, sortable = false, onMove = noop }) {
+  const onKeyDown = useCallback(
+    (e) => {
+      if (e.keyCode === KEY_DOWN) {
+        onMove(e.target.dataset.id, 'down');
+        e.preventDefault();
+      } else if (e.keyCode === KEY_UP) {
+        onMove(e.target.dataset.id, 'up');
+        e.preventDefault();
+      }
+    },
+    [onMove],
+  );
+
   return feeds.map((feed) => (
     <li className={styles.row} key={feed.id} data-id={feed.id}>
       <div className={styles.title}>
         <HomeFeedLink feed={feed} />
       </div>
-      {sortable && <Icon icon={faGripVertical} className={styles.handle} />}
+      {sortable && (
+        <div
+          className={cn(styles.handle, 'draggable')}
+          title="Move list up or down"
+          aria-label="Move list up or down"
+          tabIndex={0}
+          data-id={feed.id}
+          onKeyDown={onKeyDown}
+        >
+          <Icon icon={faGripVertical} />
+        </div>
+      )}
     </li>
   ));
 }
