@@ -22,25 +22,26 @@
 }
 
 .handle {
+  --opacity: 0.4;
+  :global(.dark-theme) & {
+    --opacity: 0.6;
+  }
+
   flex: 0 0 auto;
   cursor: move;
   transition: opacity 0.3s;
-  opacity: 0.4;
+  opacity: var(--opacity);
 
-  :global(.dark-theme) & {
-    opacity: 0.6;
-  }
-
-  &:hover {
-    opacity: 1;
-  }
-
-  visibility: visible;
   @media (hover: hover) {
-    visibility: hidden;
+    opacity: 0;
+
+    .row:hover & {
+      opacity: var(--opacity);
+    }
   }
 
-  .row:hover & {
-    visibility: visible;
+  &:hover,
+  &:focus {
+    opacity: 1;
   }
 }
