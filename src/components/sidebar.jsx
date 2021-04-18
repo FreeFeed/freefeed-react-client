@@ -432,6 +432,7 @@ function useSwipe(onSwipe, { maxDuration = 2000, minXShift = 30 } = {}) {
     win,
     'scroll',
     useCallback(() => (scroll.current = true), []),
+    true, // useCapture
   );
 
   useEventListener(
