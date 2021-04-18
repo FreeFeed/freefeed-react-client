@@ -1,4 +1,9 @@
 #!/bin/sh
-. "$(dirname $0)/_/husky.sh"
+if [ -f "$(dirname "$0")/../.no_husky" ]; then
+  exit 0;
+fi
 
-yarn lint-staged
+. "$(dirname "$0")/_/husky.sh"
+. "$(dirname "$0")/common.sh"
+
+yarn lint-staged --quiet

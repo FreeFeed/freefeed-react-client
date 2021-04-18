@@ -1,0 +1,48 @@
+@import '../../styles/helvetica/dark-vars.scss';
+
+.container {
+  position: relative;
+
+  --shadow-color: #fff;
+  :global(.dark-theme) & {
+    --shadow-color: #{$bg-color};
+  }
+}
+
+.content {
+  width: 100%;
+  overflow-y: visible;
+  overflow-x: auto;
+}
+
+.container::before,
+.container::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  width: 60px;
+  height: 100%;
+  background-image: none;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.container::before {
+  background-image: linear-gradient(to left, transparent, var(--shadow-color));
+  left: 0;
+}
+
+.container::after {
+  background-image: linear-gradient(to right, transparent, var(--shadow-color));
+  right: 0;
+}
+
+.shadeStart::before {
+  opacity: 1;
+}
+
+.shadeEnd::after {
+  opacity: 1;
+}
