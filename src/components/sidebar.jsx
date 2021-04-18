@@ -27,6 +27,7 @@ import { DonationWidget } from './donation-widget';
 import { useMediaQuery } from './hooks/media-query';
 import { useResizing } from './hooks/resizing';
 import { Icon } from './fontawesome-icons';
+import { useEventListener } from './hooks/sub-unsub';
 
 function LoggedInBlock({ user, signOut }) {
   const signOutStatus = useSelector((state) => state.signOutStatus);
@@ -350,7 +351,17 @@ export default function SideBar({ user, signOut }) {
   );
 
   const resizing = useResizing();
-  const closeSidebar = useCallback(() => dispatch(openSidebar(false)), [dispatch]);
+  const doCloseSidebar = useCallback(() => dispatch(openSidebar(false)), [dispatch]);
+
+  useSwipe(
+    useCallback(
+      (direction) => {
+        direction === LEFT && !sidebarOpened && dispatch(openSidebar(true));
+        direction === RIGHT && sidebarOpened && dispatch(openSidebar(false));
+      },
+      [sidebarOpened, dispatch],
+    ),
+  );
 
   return (
     <div
@@ -364,7 +375,7 @@ export default function SideBar({ user, signOut }) {
     >
       <div className="sidebar__content" ref={content}>
         <ErrorBoundary>
-          <button className="sidebar__close-button" onClick={closeSidebar}>
+          <button className="sidebar__close-button" onClick={doCloseSidebar}>
             <Icon icon={faTimes} />
           </button>
 
@@ -380,5 +391,67 @@ export default function SideBar({ user, signOut }) {
         </ErrorBoundary>
       </div>
     </div>
+  );
+}
+
+const LEFT = 'LEFT';
+const RIGHT = 'RIGHT';
+
+function touchInfo(event) {
+  return {
+    x: event.changedTouches[0].pageX,
+    y: event.changedTouches[0].pageY,
+    time: new Date().getTime(),
+  };
+}
+
+function useSwipe(onSwipe, { maxDuration = 2000, minXShift = 30 } = {}) {
+  const win = useRef(window);
+  const start = useRef({ x: 0, y: 0, time: 0 });
+  const scroll = useRef(false);
+
+  useEventListener(
+    win,
+    'touchstart',
+    useCallback((e) => {
+      // Do not show sidebar if the touch stars on draggable/swipeable items
+      if (
+        e.target.closest('.pswp') ||
+        e.target.closest('.sortable-images') ||
+        e.target.closest('.draggable')
+      ) {
+        return;
+      }
+
+      scroll.current = false;
+      start.current = touchInfo(e);
+    }, []),
+  );
+
+  useEventListener(
+    win,
+    'scroll',
+    useCallback(() => (scroll.current = true), []),
+  );
+
+  useEventListener(
+    win,
+    'touchend',
+    useCallback(
+      (e) => {
+        const t1 = start.current;
+        const t2 = touchInfo(e);
+        if (
+          scroll.current ||
+          t2.time - t1.time > maxDuration ||
+          Math.abs(t2.x - t1.x) < minXShift
+        ) {
+          return;
+        }
+
+        onSwipe(t2.x > t1.x ? RIGHT : LEFT);
+      },
+      [maxDuration, minXShift, onSwipe],
+    ),
   );
 }
