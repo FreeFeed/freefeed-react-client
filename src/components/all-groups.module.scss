@@ -32,10 +32,24 @@
 
 .table {
   width: 100%;
+  table-layout: fixed;
 }
 
 .mainColumn {
-  min-width: 193px;
+  width: 180px;
+}
+
+.subscribersColumn {
+  width: 110px;
+}
+.postsColumn {
+  width: 140px;
+}
+.varietyColumn {
+  width: 130px;
+}
+.dateColumn {
+  width: 120px;
 }
 
 .groupRow {

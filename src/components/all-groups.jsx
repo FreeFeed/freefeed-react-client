@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { sortBy, range } from 'lodash';
 import { Link } from 'react-router';
 import { Helmet } from 'react-helmet';
+import cn from 'classnames';
 
 import { faCaretDown, faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import { getAllGroups } from '../redux/action-creators';
@@ -165,7 +166,13 @@ function GroupsList({ pageSize }) {
 function SortHeader({ children, mode, currentMode }) {
   const location = useSelector((state) => state.routing.locationBeforeTransitions);
   return (
-    <th className={styles.sortableHeader + (mode === currentMode ? '' : ` ${styles.inactive}`)}>
+    <th
+      className={cn(
+        styles.sortableHeader,
+        mode === currentMode && styles.inactive,
+        styles[`${mode}Column`],
+      )}
+    >
       <Link to={linkToSort(mode, location)}>
         <div>
           {children}
