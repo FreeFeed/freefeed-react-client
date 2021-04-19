@@ -420,6 +420,7 @@ function useSwipe(onSwipe, { maxDuration = 2000, minXShift = 30 } = {}) {
         e.target.closest('.sortable-images') ||
         e.target.closest('.draggable')
       ) {
+        start.current.time = 0;
         return;
       }
 
