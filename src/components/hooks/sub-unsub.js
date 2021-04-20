@@ -3,9 +3,9 @@
 
 import { useEffect } from 'react';
 
-export function withEventListener(element, event, handler, options = false) {
-  element.addEventListener(event, handler, options);
-  return () => element.removeEventListener(event, handler, options);
+export function withEventListener(element, event, handler) {
+  element.addEventListener(event, handler);
+  return () => element.removeEventListener(event, handler);
 }
 
 export function withListener(emitter, event, handler) {
@@ -23,9 +23,9 @@ export function withInterval(handler, timeout) {
   return () => window.clearInterval(timer);
 }
 
-export function useEventListener(ref, eventName, handler, options = false) {
+export function useEventListener(ref, eventName, handler) {
   useEffect(() => {
     const el = ref.current;
-    return el ? withEventListener(el, eventName, handler, options) : undefined;
-  }, [ref, eventName, handler, options]);
+    return el ? withEventListener(el, eventName, handler) : undefined;
+  }, [ref, eventName, handler]);
 }
