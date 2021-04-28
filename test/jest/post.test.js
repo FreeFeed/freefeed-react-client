@@ -329,6 +329,21 @@ describe('Post', () => {
     expect(deletePost).toHaveBeenCalledWith('post-id');
   });
 
+  it('Lets me enable comments under my post if they are disabled', () => {
+    const enableComments = jest.fn();
+    renderPost({
+      isEditable: true,
+      commentsDisabled: true,
+      enableComments,
+    });
+    expect(screen.getByText(/More/, { role: 'button' })).toBeInTheDocument();
+    userEvent.click(screen.getByText(/More/, { role: 'button' }));
+
+    expect(screen.getByText('Enable comments', { role: 'button' })).toBeInTheDocument();
+    userEvent.click(screen.getByText('Enable comments', { role: 'button' }));
+    expect(enableComments).toHaveBeenCalledWith('post-id');
+  });
+
   it('Renders a hide button which hides the post', () => {
     const someOtherUser = {
       id: 'other-id',
