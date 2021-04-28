@@ -151,6 +151,11 @@ export default class PostComments extends Component {
     leave: () => this.setState({ highlightedCommentId: null }),
   };
 
+  canAddComment() {
+    const { post } = this.props;
+    return !post.commentsDisabled || post.isEditable || post.isModeratable;
+  }
+
   renderComment = (comment, index = 0) => {
     const { props } = this;
     return (
@@ -177,6 +182,7 @@ export default class PostComments extends Component {
             comment.user?.username === this.state.highlightedAuthor ||
             comment.id === this.state.highlightedCommentId
           }
+          canAddComment={this.canAddComment()}
         />
       )
     );
@@ -214,8 +220,7 @@ export default class PostComments extends Component {
 
   renderAddComment() {
     const { post, user } = this.props;
-    const canAddComment = !post.commentsDisabled || post.isEditable || post.isModeratable;
-    if (!canAddComment) {
+    if (!this.canAddComment()) {
       return false;
     }
     if (!user.id) {
