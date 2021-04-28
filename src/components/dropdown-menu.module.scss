@@ -51,6 +51,10 @@
 .content {
   padding: 0.5em 0.66em;
   color: #666;
+
+  :global(.dark-theme) & {
+    color: $text-color;
+  }
 }
 
 .link {
@@ -59,18 +63,18 @@
   color: inherit;
   padding: 0.5em 0.66em;
 
+  :global(.dark-theme) & {
+    color: inherit !important;
+  }
+
   &:hover {
     color: inherit !important;
     background-color: #eee;
 
     :global(.dark-theme) & {
-      color: $text-color-lighter;
+      color: $text-color-lighter !important;
       background: $bg-color-lightest;
     }
-  }
-
-  :global(.dark-theme) & {
-    color: inherit;
   }
 
   &.danger {

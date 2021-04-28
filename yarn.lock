@@ -13489,6 +13489,7 @@ fsevents@^1.2.7:
     stylelint-config-recommended-scss: ~4.2.0
     stylelint-prettier: ~1.2.0
     stylelint-scss: ~3.19.0
+    tabbable: ^5.2.0
     terser-webpack-plugin: ~4.2.3
     ua-parser-js: ~0.7.28
     unexpected: ~12.0.3

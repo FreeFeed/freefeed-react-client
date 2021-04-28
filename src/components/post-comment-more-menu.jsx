@@ -2,6 +2,7 @@ import { forwardRef } from 'react';
 import { Link } from 'react-router';
 import cn from 'classnames';
 
+import { noop } from 'lodash';
 import { ButtonLink } from './button-link';
 import styles from './dropdown-menu.module.scss';
 import TimeDisplay from './time-display';
@@ -82,7 +83,7 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
         </div>
       ),
       <div key="permalink" className={cn(styles.item, styles.content)}>
-        <Link to={permalink} style={{ marginRight: '1ex' }} onClick={doAndClose()}>
+        <Link to={permalink} style={{ marginRight: '1ex' }} onClick={doAndClose(noop)}>
           Permalink
         </Link>{' '}
         <button
