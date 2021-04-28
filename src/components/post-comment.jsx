@@ -8,6 +8,7 @@ import { preventDefault, confirmFirst } from '../utils';
 import {
   READMORE_STYLE_COMPACT,
   COMMENT_HIDDEN_BANNED,
+  COMMENT_VISIBLE,
 } from '../utils/frontend-preferences-options';
 import { commentReadmoreConfig } from '../utils/readmore-config';
 import { defaultCommentState } from '../redux/reducers/comment-edit';
@@ -20,6 +21,7 @@ import TimeDisplay from './time-display';
 import CommentIcon, { JustCommentIcon } from './comment-icon';
 import { CommentEditForm } from './comment-edit-form';
 import { ButtonLink } from './button-link';
+import { PostCommentMore } from './post-comment-more';
 
 class PostComment extends Component {
   commentContainer;
@@ -96,7 +98,25 @@ class PostComment extends Component {
     leave: () => this.props.arrowsHighlightHandlers.leave(),
   };
 
+  like = () => this.props.likeComment(this.props.id);
+  unlike = () => this.props.unlikeComment(this.props.id);
+
+  possibleActions() {
+    if (!this.props.currentUser.id) {
+      // Not authorized
+      return {};
+    }
+    return {
+      canLike:
+        this.props.currentUser.id !== this.props.user?.id &&
+        this.props.hideType === COMMENT_VISIBLE,
+      canReply: this.props.hideType === COMMENT_VISIBLE && this.props.canAddComment,
+      canDelete: this.props.isEditable || this.props.isDeletable,
+    };
+  }
+
   commentTail() {
+    const { canLike, canReply, canDelete } = this.possibleActions();
     return (
       <span
         aria-label={this.props.user ? `Comment by ${this.props.user.username}` : `Hidden comment`}
@@ -115,7 +135,7 @@ class PostComment extends Component {
               </ButtonLink>
             </span>
           )}
-          {(this.props.isEditable || this.props.isDeletable) && this.props.isModeratingComments && (
+          {canDelete && this.props.isModeratingComments && (
             <span className="comment-tail__action">
               <ButtonLink
                 className="comment-tail__action-link comment-tail__action-link--delete"
@@ -126,7 +146,19 @@ class PostComment extends Component {
             </span>
           )}
           <span className="comment-tail__action">
-            <ButtonLink className="comment-tail__action-link">more&hellip;</ButtonLink>
+            <PostCommentMore
+              className="comment-tail__action-link"
+              authorUsername={this.props.user?.username}
+              doEdit={this.props.isEditable && this.handleEditOrCancel}
+              doDelete={canDelete && this.handleDeleteComment}
+              doReply={canReply && this.reply}
+              doMention={canReply && this.mention}
+              doLike={canLike && !this.props.hasOwnLike && this.like}
+              doUnlike={canLike && this.props.hasOwnLike && this.unlike}
+              createdAt={this.props.createdAt}
+              updatedAt={this.props.updatedAt}
+              permalink={`${this.props.entryUrl}#comment-${this.props.id}`}
+            />
           </span>
         </span>
         {(this.props.showTimestamps || this.props.forceAbsTimestamps) && (

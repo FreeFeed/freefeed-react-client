@@ -11,6 +11,7 @@ export function useDropDown({
   screenEdgeGap = 8,
   position = BOTTOM_RIGHT,
   closeOn = CLOSE_ON_ANY_CLICK,
+  fixed = false,
 } = {}) {
   const pivotRef = useRef(null);
   const menuRef = useRef(null);
@@ -41,10 +42,10 @@ export function useDropDown({
   const updPosition = useCallback(
     () =>
       void (
-        updatePosition(pivotRef.current, menuRef.current, { screenEdgeGap, position }) &&
+        updatePosition(pivotRef.current, menuRef.current, { screenEdgeGap, position, fixed }) &&
         requestAnimationFrame(updPosition)
       ),
-    [position, screenEdgeGap],
+    [position, screenEdgeGap, fixed],
   );
 
   useLayoutEffect(updPosition);
@@ -52,10 +53,16 @@ export function useDropDown({
   return { pivotRef, menuRef, opened, setOpened, toggle };
 }
 
-function updatePosition(leader, follower, { screenEdgeGap, position }) {
+function updatePosition(leader, follower, { screenEdgeGap, position, fixed = false }) {
   if (!leader || !follower) {
     return false;
   }
+
+  if (fixed) {
+    follower.style.transform = `translate(0, 0)`;
+    return;
+  }
+
   const leaderBounds = leader.getBoundingClientRect();
   const followerBounds = follower.getBoundingClientRect();
 
