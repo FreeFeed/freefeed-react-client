@@ -32,6 +32,9 @@
   top: auto;
   bottom: 0;
 
+  // Support for the iDevices
+  padding-bottom: unquote('env(safe-area-inset-bottom)');
+
   @media (min-width: 451px) {
     left: 50%;
     transform: translateX(-50%);
@@ -67,7 +70,8 @@
     color: inherit !important;
   }
 
-  &:hover {
+  &:hover,
+  &:focus {
     color: inherit !important;
     background-color: #eee;
 

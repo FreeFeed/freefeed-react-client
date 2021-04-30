@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import cn from 'classnames';
 
 import { noop } from 'lodash';
+import { pluralForm } from '../utils';
 import { ButtonLink } from './button-link';
 import styles from './dropdown-menu.module.scss';
 import TimeDisplay from './time-display';
@@ -16,10 +17,12 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
     doMention,
     doLike,
     doUnlike,
+    doShowLikes,
     createdAt,
     updatedAt,
     permalink,
     doAndClose,
+    likesCount,
     fixed = false,
   },
   menuRef,
@@ -37,6 +40,13 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
         <div key="unlike" className={styles.item}>
           <ButtonLink onClick={doUnlike} className={styles.link}>
             Unlike comment
+          </ButtonLink>
+        </div>
+      ),
+      likesCount > 0 && (
+        <div key="likes" className={styles.item}>
+          <ButtonLink className={styles.link} onClick={doShowLikes}>
+            Show {pluralForm(likesCount, 'like')}&hellip;
           </ButtonLink>
         </div>
       ),

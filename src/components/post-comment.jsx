@@ -148,6 +148,7 @@ class PostComment extends Component {
           <span className="comment-tail__action">
             <PostCommentMore
               className="comment-tail__action-link"
+              id={this.props.id}
               authorUsername={this.props.user?.username}
               doEdit={this.props.isEditable && this.handleEditOrCancel}
               doDelete={canDelete && this.handleDeleteComment}
@@ -158,6 +159,7 @@ class PostComment extends Component {
               createdAt={this.props.createdAt}
               updatedAt={this.props.updatedAt}
               permalink={`${this.props.entryUrl}#comment-${this.props.id}`}
+              likesCount={this.props.likes}
             />
           </span>
         </span>
