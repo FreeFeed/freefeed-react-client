@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  width: 900px;
+  max-width: 100%;
+  padding: 1em;
+}
+
+.header {
+  flex: none;
+}
+
+.header h3 {
+  margin: 0.25em 0 0.75em;
+}
+
+.body {
+  max-height: 50vh;
+  overflow: auto;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  max-width: 750px;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  column-gap: 10px;
+  width: 240px;
+}
