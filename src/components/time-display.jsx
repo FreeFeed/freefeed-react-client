@@ -10,6 +10,7 @@ import addMilliseconds from 'date-fns/addMilliseconds';
 import differenceInMinutes from 'date-fns/differenceInMinutes';
 import differenceInDays from 'date-fns/differenceInDays';
 import startOfDay from 'date-fns/startOfDay';
+import addMinutes from 'date-fns/addMinutes';
 
 import { useBool } from './hooks/bool';
 import { withListener } from './hooks/sub-unsub';
@@ -53,10 +54,25 @@ const TimeDisplay = memo(function TimeDisplay({
   const showAbsolute = typeof absolute === 'boolean' ? absolute : prefsAbsolute;
 
   const time = typeof timeStamp === 'number' ? toDate(timeStamp) : parseISO(timeStamp);
+  /**
+   * TEST ENVIRONMENT ONLY HACK
+   *
+   * Due to a node.js bug (https://github.com/nodejs/node/issues/4230), the
+   * TZ=UTC environment variable doesn't work on Windows. So we need to manually
+   * convert the time to the UTC-like offset for the sake of the tests
+   * stability.
+   *
+   * In the browser environment, the 'correctedTime' is the same object as the
+   * original 'time'.
+   */
+  let correctedTime = time;
+  if (process.platform === 'win32' && process.env?.TZ === 'UTC') {
+    correctedTime = addMinutes(time, time.getTimezoneOffset());
+  }
   const serverNow = addMilliseconds(new Date(), serverTimeAhead);
-  const timeRel = formatDistance(time, serverNow, { inline, amPm: showAmPm });
+  const timeRel = formatDistance(correctedTime, serverNow, { inline, amPm: showAmPm });
   const timeAbs = format(
-    time,
+    correctedTime,
     dateOnly ? dateOnlyFormat : showAmPm ? datetimeFormatAmPm : datetimeFormat,
   );
   const timeISO = time.toISOString();
