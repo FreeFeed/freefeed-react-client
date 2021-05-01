@@ -66,7 +66,7 @@ const TimeDisplay = memo(function TimeDisplay({
    * original 'time'.
    */
   let correctedTime = time;
-  if (process.platform === 'win32' && process.env?.TZ === 'UTC') {
+  if (process.platform === 'win32' && (process.env?.TZ || '').toUpperCase() === 'UTC') {
     correctedTime = addMinutes(time, time.getTimezoneOffset());
   }
   const serverNow = addMilliseconds(new Date(), serverTimeAhead);
