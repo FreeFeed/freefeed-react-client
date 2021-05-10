@@ -77,7 +77,7 @@ const SideBarFriends = ({ user }) => {
     <>
       <div className="box" role="navigation">
         <div className="box-header-friends" role="heading">
-          My
+          <Link to={`/${user.username}`}>My</Link>
         </div>
         <div className="box-body">
           <ul>
@@ -120,7 +120,7 @@ const SideBarFriends = ({ user }) => {
         if (homeFeedsCount > 1) {
           <div className="box" role="navigation">
             <div className="box-header-friends" role="heading">
-              Friend lists
+              <Link to="/friends">Friend lists</Link>
             </div>
 
             <div className="box-body">
@@ -140,7 +140,7 @@ const SideBarFriends = ({ user }) => {
 const SideBarFreeFeed = () => (
   <div className="box" role="navigation">
     <div className="box-header-freefeed" role="heading">
-      {CONFIG.siteTitle}
+      <Link to="/freefeed">{CONFIG.siteTitle}</Link>
     </div>
     <div className="box-body">
       <ul>
@@ -208,7 +208,7 @@ const SideBarGroups = () => {
   return (
     <div className="box" role="navigation">
       <div className="box-header-groups" role="heading">
-        Groups
+        <Link to="/all-groups">Groups</Link>
       </div>
       <div className="box-body">
         <RecentGroups />
