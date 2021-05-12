@@ -4,6 +4,7 @@ import { Router, Route, IndexRoute, browserHistory, Redirect } from 'react-route
 import { Provider, useSelector } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 import * as Sentry from '@sentry/react';
+import 'focus-visible';
 
 import 'autotrack'; // used by google-analytics in ../index.jade
 
