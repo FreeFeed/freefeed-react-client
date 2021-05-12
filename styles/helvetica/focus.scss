@@ -4,13 +4,6 @@ a:focus {
   outline-color: -webkit-focus-ring-color;
 }
 
-a:focus:not(:focus-visible) {
+.js-focus-visible :focus:not(.focus-visible) {
   outline: none;
-}
-
-a:focus-visible {
-  outline: auto;
-  outline-offset: 2px;
-  outline-color: Highlight;
-  outline-color: -webkit-focus-ring-color;
 }
