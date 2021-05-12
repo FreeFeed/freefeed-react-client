@@ -70,14 +70,16 @@
     color: inherit !important;
   }
 
-  &:hover,
-  &:focus {
-    color: inherit !important;
-    background-color: #eee;
+  @media not all and (hover: none) {
+    &:hover,
+    &:focus {
+      color: inherit !important;
+      background-color: #eee;
 
-    :global(.dark-theme) & {
-      color: $text-color-lighter !important;
-      background: $bg-color-lightest;
+      :global(.dark-theme) & {
+        color: $text-color-lighter !important;
+        background: $bg-color-lightest;
+      }
     }
   }
 
