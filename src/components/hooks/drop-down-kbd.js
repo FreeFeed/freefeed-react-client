@@ -1,6 +1,6 @@
 import { KEY_DOWN, KEY_ESCAPE, KEY_TAB, KEY_UP } from 'keycode-js';
 import { useCallback, useEffect, useRef } from 'react';
-import { tabbable } from 'tabbable';
+import { isFocusable, tabbable } from 'tabbable';
 
 import { useDropDown } from './drop-down';
 
@@ -79,6 +79,19 @@ export function useDropDownKbd({
 
     window.addEventListener('focusin', focusHandler);
     disposers.push(() => window.removeEventListener('focusin', focusHandler));
+
+    const hoverFocusHandler = (e) => {
+      let p = e.target;
+      while (p && p !== menuEl) {
+        if (isFocusable(p)) {
+          p.focus();
+          break;
+        }
+        p = p.parentNode;
+      }
+    };
+    menuEl.addEventListener('mouseover', hoverFocusHandler);
+    disposers.push(() => menuEl.removeEventListener('mouseover', hoverFocusHandler));
 
     return () => disposers.forEach((d) => d());
   }, [
