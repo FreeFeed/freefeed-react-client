@@ -41,17 +41,23 @@ export default class PostComments extends Component {
     name && this._openAnsweringComment(`@${name}`);
   };
 
-  replyWithArrows = (commentId) => {
+  backwardIdx = (commentId) => {
     const { post, comments } = this.props;
     const idx = comments.findIndex((c) => c.id === commentId);
     if (idx < 0) {
-      return;
+      return 0;
     }
     let backwardIdx = comments.length - idx;
     if (idx < post.omittedCommentsOffset) {
       backwardIdx += post.omittedComments;
     }
-    this._openAnsweringComment('^'.repeat(backwardIdx));
+    return backwardIdx;
+  };
+
+  replyWithArrows = (commentId) => {
+    const bIdx = this.backwardIdx(commentId);
+    const arrows = bIdx <= 3 ? '^'.repeat(bIdx) : `^${bIdx}`;
+    this._openAnsweringComment(arrows);
   };
 
   _openAnsweringComment(answerText) {
@@ -169,6 +175,7 @@ export default class PostComments extends Component {
           isSinglePost={this.props.isSinglePost}
           mentionCommentAuthor={this.mentionCommentAuthor}
           replyWithArrows={this.replyWithArrows}
+          backwardIdx={this.backwardIdx}
           isModeratingComments={props.post.isModeratingComments}
           {...props.commentEdit}
           authorHighlightHandlers={this.authorHighlightHandlers}

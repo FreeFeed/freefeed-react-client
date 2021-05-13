@@ -8,6 +8,7 @@ import {
   links,
   arrows,
   Link as TLink,
+  Arrows as TArrows,
 } from 'social-text-tokenizer';
 
 import {
@@ -56,6 +57,19 @@ export class Link extends TLink {
 
   get localURI() {
     return this.path;
+  }
+}
+
+export class Arrows extends TArrows {
+  constructor(token) {
+    super(token.offset, token.text);
+  }
+
+  get level() {
+    if (/\d/.test(this.text)) {
+      return Number(this.text.replace(/\D/g, ''));
+    }
+    return this.text.length;
   }
 }
 
@@ -118,16 +132,23 @@ const tokenize = withText(
       emails(),
       mentions(),
       links({ tldRe }),
-      arrows(),
+      arrows(/\u2191+|\^([1-9]\d*|\^*)/g),
       tokenizerStartSpoiler,
       tokenizerEndSpoiler,
     ),
   ),
 );
 
-const enhanceLinks = (token) => (token instanceof TLink ? new Link(token, siteDomains) : token);
+const enhanceToken = (token) => {
+  if (token instanceof TLink) {
+    return new Link(token, siteDomains);
+  } else if (token instanceof TArrows) {
+    return new Arrows(token);
+  }
+  return token;
+};
 
-export const parseText = (text) => tokenize(text).map(enhanceLinks);
+export const parseText = (text) => tokenize(text).map(enhanceToken);
 
 export function getFirstLinkToEmbed(text) {
   let isInSpoiler = false;

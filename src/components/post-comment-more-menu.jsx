@@ -18,6 +18,7 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
     doLike,
     doUnlike,
     doShowLikes,
+    getBackwardIdx,
     createdAt,
     updatedAt,
     permalink,
@@ -27,6 +28,8 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
   },
   menuRef,
 ) {
+  const bIdx = getBackwardIdx();
+  const arrows = bIdx <= 3 ? '^'.repeat(bIdx) : `^${bIdx}`;
   const menuGroups = [
     [
       doLike && (
@@ -78,7 +81,7 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
       doReply && (
         <div key="reply" className={styles.item}>
           <ButtonLink onClick={doReply} className={styles.link}>
-            Reply with ^^^
+            Reply with {arrows}
           </ButtonLink>
         </div>
       ),
