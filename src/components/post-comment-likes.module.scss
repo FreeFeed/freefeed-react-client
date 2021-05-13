@@ -26,13 +26,16 @@
   padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
   max-width: 750px;
 }
 
 .item {
   display: flex;
   align-items: flex-start;
-  column-gap: 10px;
   width: 240px;
+  & > *:first-child {
+    margin-right: 10px;
+  }
+  margin-right: 15px;
+  margin-bottom: 15px;
 }
