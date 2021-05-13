@@ -1,6 +1,6 @@
 @import '../../styles/helvetica/dark-vars.scss';
 
-@mixin list {
+.list {
   position: absolute;
   top: 0.5em;
   left: 0;
@@ -21,13 +21,12 @@
   }
 }
 
-.list {
-  @include list;
+.focusList {
+  // Just a mark for the focus-enabled list. We cannot remove this declaration
+  // because it need to be generated as module class name.
 }
 
 .fixedList {
-  @include list;
-
   position: fixed;
   top: auto;
   bottom: 0;
@@ -70,8 +69,8 @@
     color: inherit !important;
   }
 
-  @media not all and (hover: none) {
-    &:hover,
+  @media (hover: hover) {
+    .list:not(.focusList) &:hover,
     &:focus {
       color: inherit !important;
       background-color: #eee;

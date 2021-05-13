@@ -97,7 +97,7 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
       ),
       <div key="permalink" className={cn(styles.item, styles.content)}>
         <Link to={permalink} style={{ marginRight: '1ex' }} onClick={doAndClose(noop)}>
-          Permalink
+          Link to comment
         </Link>{' '}
         <button
           className="btn btn-default btn-sm"
@@ -113,7 +113,7 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
   ];
 
   return (
-    <div ref={menuRef} className={fixed ? styles.fixedList : styles.list}>
+    <div ref={menuRef} className={cn(styles.list, styles.focusList, fixed && styles.fixedList)}>
       {menuGroups.map((group, i) => {
         const items = group.filter(Boolean);
         if (items.length === 0) {
