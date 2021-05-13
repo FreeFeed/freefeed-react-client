@@ -62,6 +62,7 @@ class PostComment extends Component {
 
   reply = () => this.props.replyWithArrows(this.props.id);
   mention = () => this.props.mentionCommentAuthor(this.props.id);
+  backwardIdx = () => this.props.backwardIdx(this.props.id);
 
   saveComment = (text) => this.props.saveEditingComment(this.props.id, text);
 
@@ -156,6 +157,7 @@ class PostComment extends Component {
               doMention={canReply && this.mention}
               doLike={canLike && !this.props.hasOwnLike && this.like}
               doUnlike={canLike && this.props.hasOwnLike && this.unlike}
+              getBackwardIdx={this.backwardIdx}
               createdAt={this.props.createdAt}
               updatedAt={this.props.updatedAt}
               permalink={`${this.props.entryUrl}#comment-${this.props.id}`}
