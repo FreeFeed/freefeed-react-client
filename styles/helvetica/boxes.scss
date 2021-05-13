@@ -105,6 +105,12 @@
     }
     background-color: #fff;
     @include clearfix;
+
+    /**
+     * Prevents the mobile Chrome unwanted font boosting
+     * See https://stackoverflow.com/a/12965146
+     */
+    max-height: 999999px;
   }
   .box-footer {
     padding: 5px 0 5px 11px;
