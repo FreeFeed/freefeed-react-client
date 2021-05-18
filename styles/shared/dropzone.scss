@@ -196,6 +196,9 @@
           )
         );
       }
+      .dz-error-message {
+        display: block;
+      }
     }
 
     .dz-success-mark,
@@ -290,7 +293,7 @@
 
     .dz-error-message {
       $color: rgb(190, 38, 38);
-      display: block;
+      display: none;
       font-size: 12px;
       width: $image-size;
       background: $color;
