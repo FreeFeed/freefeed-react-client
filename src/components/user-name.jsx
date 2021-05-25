@@ -118,10 +118,10 @@ function useHover(timeout, setHovered) {
   const enterTimeout = useRef(0);
   const leaveTimeout = useRef(0);
 
-  const clearTimeouts = useCallback(
-    () => (clearTimeout(enterTimeout.current), clearTimeout(leaveTimeout.current)),
-    [],
-  );
+  const clearTimeouts = useCallback(() => {
+    clearTimeout(enterTimeout.current);
+    clearTimeout(leaveTimeout.current);
+  }, []);
 
   const onEnter = useCallback(() => {
     clearTimeouts();
@@ -132,10 +132,13 @@ function useHover(timeout, setHovered) {
     leaveTimeout.current = setTimeout(() => setHovered(false), 500);
   }, [clearTimeouts, setHovered]);
 
-  useEffect(
-    () => () => (clearTimeout(enterTimeout.current), clearTimeout(leaveTimeout.current)),
-    [],
-  );
+  useEffect(() => {
+    // do nothing. just return cleanup-function
+    return () => {
+      clearTimeout(enterTimeout.current);
+      clearTimeout(leaveTimeout.current);
+    };
+  }, []);
 
   return { onEnter, onLeave };
 }

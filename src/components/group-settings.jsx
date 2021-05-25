@@ -21,10 +21,10 @@ export default function GroupSettings({ params: { userName: username } }) {
   const pictureStatus = useSelector(
     (state) => state.updateGroupPictureStatuses[username] || initialAsyncState,
   );
-  const pictureUpdate = useCallback((file) => dispatch(updateGroupPicture(username, file)), [
-    dispatch,
-    username,
-  ]);
+  const pictureUpdate = useCallback(
+    (file) => dispatch(updateGroupPicture(username, file)),
+    [dispatch, username],
+  );
   const amIAdmin = useMemo(() => group && group.administrators.includes(userId), [group, userId]);
 
   if (!group && loadStatus.loading) {

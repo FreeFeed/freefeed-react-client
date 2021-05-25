@@ -54,10 +54,10 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
 
   const clearSearchForm = useCallback(() => (setQuery(''), input.current.focus()), []);
 
-  const onFocus = useCallback(() => isNarrowScreen && onSearchPage && setSearchExpanded(true), [
-    isNarrowScreen,
-    onSearchPage,
-  ]);
+  const onFocus = useCallback(
+    () => isNarrowScreen && onSearchPage && setSearchExpanded(true),
+    [isNarrowScreen, onSearchPage],
+  );
 
   const doOpenSidebar = useCallback(() => dispatch(openSidebar(true)), [dispatch]);
 

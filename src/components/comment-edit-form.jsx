@@ -28,10 +28,10 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
   const input = useRef(null);
   const [text, setText] = useState(initialText);
   const onChange = useCallback((e) => setText(e.target.value), []);
-  const canSubmit = useMemo(() => !submitStatus.loading && text.trim() !== '', [
-    submitStatus.loading,
-    text,
-  ]);
+  const canSubmit = useMemo(
+    () => !submitStatus.loading && text.trim() !== '',
+    [submitStatus.loading, text],
+  );
 
   const doSubmit = useCallback(() => canSubmit && onSubmit(text), [canSubmit, onSubmit, text]);
 
@@ -81,7 +81,12 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
   useForwardedRef(fwdRef, { insertText: insText });
 
   // Uploading files
-  const { draggingOver, loading: filesLoading, uploadProgressUI, uploadFile } = useUploader({
+  const {
+    draggingOver,
+    loading: filesLoading,
+    uploadProgressUI,
+    uploadFile,
+  } = useUploader({
     dropTargetRef: input,
     pasteTargetRef: input,
     onSuccess: useCallback((att) => insText(att.url), []),

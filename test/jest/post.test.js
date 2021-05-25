@@ -15,9 +15,11 @@ jest.mock('../../src/components/post-attachments', () => ({ attachments }) => {
 
 // https://github.com/facebook/jest/issues/8769#issuecomment-812824244
 jest.mock('../../src/components/lazy-component', () => ({
-  lazyComponent: (loader, { fallback, errorMessage }) => () => {
-    return <div>{fallback || errorMessage}</div>;
-  },
+  lazyComponent:
+    (loader, { fallback, errorMessage }) =>
+    () => {
+      return <div>{fallback || errorMessage}</div>;
+    },
 }));
 
 import Post from '../../src/components/post';

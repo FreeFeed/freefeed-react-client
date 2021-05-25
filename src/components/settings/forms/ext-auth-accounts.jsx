@@ -26,20 +26,20 @@ export default function ExtAuthForm() {
       .map((p) => ({ ...p, provider: providers.find((xp) => xp.id === p.provider) })),
   );
 
-  const loadStatus = useMemo(() => combineAsyncStates(serverInfoStatus, existingProfilesStatus), [
-    serverInfoStatus,
-    existingProfilesStatus,
-  ]);
+  const loadStatus = useMemo(
+    () => combineAsyncStates(serverInfoStatus, existingProfilesStatus),
+    [serverInfoStatus, existingProfilesStatus],
+  );
 
-  useEffect(() => void (serverInfoStatus.initial && dispatch(getServerInfo())), [
-    serverInfoStatus,
-    dispatch,
-  ]);
+  useEffect(
+    () => void (serverInfoStatus.initial && dispatch(getServerInfo())),
+    [serverInfoStatus, dispatch],
+  );
 
-  useEffect(() => void (existingProfilesStatus.initial && dispatch(getExtAuthProfiles())), [
-    dispatch,
-    existingProfilesStatus,
-  ]);
+  useEffect(
+    () => void (existingProfilesStatus.initial && dispatch(getExtAuthProfiles())),
+    [dispatch, existingProfilesStatus],
+  );
 
   if (providers.length === 0) {
     // External authentication is disabled so do not show anything

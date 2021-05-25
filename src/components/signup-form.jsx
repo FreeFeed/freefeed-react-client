@@ -24,57 +24,55 @@ const initialValues = (extProfile) => ({
   importProfilePicture: true,
 });
 
-const validate = ({ withExtProfile = true, withCaptcha = true } = {}) => (values) => {
-  // Use '' to mark field as erroneous but not set a error message
-  const shouldBe = (test, message = '') => (test ? undefined : message);
+const validate =
+  ({ withExtProfile = true, withCaptcha = true } = {}) =>
+  (values) => {
+    // Use '' to mark field as erroneous but not set a error message
+    const shouldBe = (test, message = '') => (test ? undefined : message);
 
-  const errors = {};
-  errors.username = shouldBe(/^[a-z\d]{3,25}$/i.test(values.username.trim()));
-  if (USERNAME_STOP_LIST.has(values.username.trim())) {
-    errors.username = 'Reserved username. Please select another one.';
-  }
-  errors.screenname = shouldBe(/^.{3,25}$/i.test(values.screenname.trim()));
-  errors.email = shouldBe(isEmail(values.email.trim()));
-  errors.password = shouldBe(
-    (withExtProfile && values.connectExtProfile) ||
-      values.password.trim().length >= CONFIG.minPasswordLength,
-  );
-  errors.captcha = shouldBe(!withCaptcha || values.captcha !== null);
+    const errors = {};
+    errors.username = shouldBe(/^[a-z\d]{3,25}$/i.test(values.username.trim()));
+    if (USERNAME_STOP_LIST.has(values.username.trim())) {
+      errors.username = 'Reserved username. Please select another one.';
+    }
+    errors.screenname = shouldBe(/^.{3,25}$/i.test(values.screenname.trim()));
+    errors.email = shouldBe(isEmail(values.email.trim()));
+    errors.password = shouldBe(
+      (withExtProfile && values.connectExtProfile) ||
+        values.password.trim().length >= CONFIG.minPasswordLength,
+    );
+    errors.captcha = shouldBe(!withCaptcha || values.captcha !== null);
 
-  return errors;
-};
-
-const onSubmit = ({
-  dispatch,
-  externalProfileKey,
-  withCaptcha,
-  invitationId,
-  profilePictureURL,
-}) => (values) => {
-  const reqData = {
-    username: values.username.trim(),
-    screenName: values.screenname.trim(),
-    email: values.email.trim(),
+    return errors;
   };
 
-  if (externalProfileKey && values.connectExtProfile) {
-    reqData.externalProfileKey = externalProfileKey;
-  } else {
-    reqData.password = values.password.trim();
-  }
-  if (withCaptcha) {
-    reqData.captcha = values.captcha;
-  }
-  if (invitationId) {
-    reqData.invitation = invitationId;
-    reqData.cancel_subscription = !values.subscribe;
-  }
-  if (profilePictureURL && values.importProfilePicture) {
-    reqData.profilePictureURL = profilePictureURL;
-  }
+const onSubmit =
+  ({ dispatch, externalProfileKey, withCaptcha, invitationId, profilePictureURL }) =>
+  (values) => {
+    const reqData = {
+      username: values.username.trim(),
+      screenName: values.screenname.trim(),
+      email: values.email.trim(),
+    };
 
-  dispatch(signUp(reqData));
-};
+    if (externalProfileKey && values.connectExtProfile) {
+      reqData.externalProfileKey = externalProfileKey;
+    } else {
+      reqData.password = values.password.trim();
+    }
+    if (withCaptcha) {
+      reqData.captcha = values.captcha;
+    }
+    if (invitationId) {
+      reqData.invitation = invitationId;
+      reqData.cancel_subscription = !values.subscribe;
+    }
+    if (profilePictureURL && values.importProfilePicture) {
+      reqData.profilePictureURL = profilePictureURL;
+    }
+
+    dispatch(signUp(reqData));
+  };
 
 export default memo(function SignupForm({ invitationId = null, lang = 'en' }) {
   const dispatch = useDispatch();
@@ -92,10 +90,10 @@ export default memo(function SignupForm({ invitationId = null, lang = 'en' }) {
   });
   const [providers] = useExtAuthProviders();
 
-  const extProfileProvider = useMemo(() => providers.find((p) => p.id === extProfile?.provider), [
-    extProfile,
-    providers,
-  ]);
+  const extProfileProvider = useMemo(
+    () => providers.find((p) => p.id === extProfile?.provider),
+    [extProfile, providers],
+  );
 
   const form = useForm(
     useMemo(
@@ -126,18 +124,19 @@ export default memo(function SignupForm({ invitationId = null, lang = 'en' }) {
   const setCaptcha = useCallback((v) => captcha.input.onChange(v), [captcha.input]);
   const reCaptcha = useRef();
   // Reset reCaptcha on form errors so user can try again
-  useEffect(() => void (signUpStatus.error && reCaptcha.current && reCaptcha.current.reset()), [
-    signUpStatus.error,
-  ]);
+  useEffect(
+    () => void (signUpStatus.error && reCaptcha.current && reCaptcha.current.reset()),
+    [signUpStatus.error],
+  );
 
   const enRu = (enString, ruString) => (lang === 'ru' ? ruString : enString);
   const groupErrClass = (field, baseClass = 'form-group') =>
     cn(baseClass, field.meta.touched && field.meta.error !== undefined && 'has-error');
 
-  const showPassword = useMemo(() => !extProfile || !connectExtProfile.input.value, [
-    connectExtProfile.input.value,
-    extProfile,
-  ]);
+  const showPassword = useMemo(
+    () => !extProfile || !connectExtProfile.input.value,
+    [connectExtProfile.input.value, extProfile],
+  );
 
   return (
     <form onSubmit={form.handleSubmit}>

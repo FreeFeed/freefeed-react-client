@@ -21,10 +21,10 @@ export default function AllGroups({ router }) {
   const dispatch = useDispatch();
   const status = useSelector((state) => state.allGroupsStatus);
 
-  useEffect(() => void (status.success || status.loading || dispatch(getAllGroups())), [
-    dispatch,
-    status,
-  ]);
+  useEffect(
+    () => void (status.success || status.loading || dispatch(getAllGroups())),
+    [dispatch, status],
+  );
 
   return (
     <div className="content">

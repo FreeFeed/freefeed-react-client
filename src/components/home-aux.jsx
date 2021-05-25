@@ -29,10 +29,10 @@ export function HomeAux({ router }) {
   const allHomeFeedsStatus = useSelector((state) => state.homeFeedsStatus);
   const sort = useSelector((state) => state.feedViewOptions.sort);
 
-  const feed = useMemo(() => allHomeFeeds.find((f) => f.id.indexOf(router.params.listId) === 0), [
-    allHomeFeeds,
-    router.params.listId,
-  ]);
+  const feed = useMemo(
+    () => allHomeFeeds.find((f) => f.id.indexOf(router.params.listId) === 0),
+    [allHomeFeeds, router.params.listId],
+  );
 
   const [isEditing, , showEditor, hideEditor] = useBool(false);
   const [edited, toggleEdited] = useBool(false);
@@ -55,11 +55,10 @@ export function HomeAux({ router }) {
     }
   }, [feed, router, router.params.listTitle]);
 
-  useEffect(() => void (authenticated && allHomeFeedsStatus.initial && dispatch(listHomeFeeds())), [
-    authenticated,
-    allHomeFeedsStatus.initial,
-    dispatch,
-  ]);
+  useEffect(
+    () => void (authenticated && allHomeFeedsStatus.initial && dispatch(listHomeFeeds())),
+    [authenticated, allHomeFeedsStatus.initial, dispatch],
+  );
 
   useEffect(
     () => void (feed?.id && dispatch(homeAux(+router.location.query.offset || 0, feed?.id))),
