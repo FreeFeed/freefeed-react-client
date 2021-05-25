@@ -116,6 +116,13 @@ class PostComment extends Component {
     };
   }
 
+  // We use this strange data structure because there can be more than one
+  // PostCommentMore element created in the comment (see Expandable/bonusInfo).
+  _moreMenuOpeners = [];
+  openMoreMenu = () => this._moreMenuOpeners[0]?.();
+  setMoreMenuOpener = (o) =>
+    void (o ? this._moreMenuOpeners.unshift(o) : this._moreMenuOpeners.shift());
+
   commentTail() {
     const { canLike, canReply, canDelete } = this.possibleActions();
     return (
@@ -162,6 +169,7 @@ class PostComment extends Component {
               updatedAt={this.props.updatedAt}
               permalink={`${this.props.entryUrl}#comment-${this.props.id}`}
               likesCount={this.props.likes}
+              setMenuOpener={this.setMoreMenuOpener}
             />
           </span>
         </span>
@@ -255,6 +263,7 @@ class PostComment extends Component {
         reply={this.reply}
         mention={this.mention}
         entryUrl={this.props.entryUrl}
+        openMoreMenu={this.openMoreMenu}
       />
     );
   }
