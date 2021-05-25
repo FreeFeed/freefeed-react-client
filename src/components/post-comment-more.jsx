@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { Portal } from 'react-portal';
 
 import { ButtonLink } from './button-link';
@@ -9,10 +9,15 @@ import { useMediaQuery } from './hooks/media-query';
 import { PostCommentLikes } from './post-comment-likes';
 import { PostCommentMoreMenu } from './post-comment-more-menu';
 
-export const PostCommentMore = memo(function PostCommentMore({ className, id, ...menuProps }) {
+export const PostCommentMore = memo(function PostCommentMore({
+  className,
+  id,
+  setMenuOpener,
+  ...menuProps
+}) {
   const fixedMenu = useMediaQuery('(max-width: 450px)');
 
-  const { opened, toggle, pivotRef, menuRef, close } = useDropDownKbd({
+  const { opened, toggle, pivotRef, menuRef, close, setOpened } = useDropDownKbd({
     closeOn: CLOSE_ON_CLICK_OUTSIDE,
     fixed: fixedMenu,
   });
@@ -29,6 +34,11 @@ export const PostCommentMore = memo(function PostCommentMore({ className, id, ..
       menuPropsWithClose[key] = menuProps[key];
     }
   });
+
+  useEffect(() => {
+    setMenuOpener(() => setOpened(true));
+    return () => setMenuOpener(null);
+  }, [setMenuOpener, setOpened]);
 
   return (
     <>
