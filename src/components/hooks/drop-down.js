@@ -59,7 +59,7 @@ function updatePosition(leader, follower, { screenEdgeGap, position, fixed = fal
   }
 
   if (fixed) {
-    follower.style.transform = `translate(0, 0)`;
+    follower.style.transform = ``;
     return;
   }
 
