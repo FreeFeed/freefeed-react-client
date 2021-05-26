@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, useLayoutEffect, useState } from 'react';
 import { Link } from 'react-router';
 import cn from 'classnames';
 
@@ -112,8 +112,19 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
     ],
   ];
 
+  const [initial, setInitial] = useState(true);
+  useLayoutEffect(() => setInitial(false), []);
+
   return (
-    <div ref={menuRef} className={cn(styles.list, styles.focusList, fixed && styles.fixedList)}>
+    <div
+      ref={menuRef}
+      className={cn(
+        styles.list,
+        styles.focusList,
+        initial && styles.initial,
+        fixed && styles.fixedList,
+      )}
+    >
       {menuGroups.map((group, i) => {
         const items = group.filter(Boolean);
         if (items.length === 0) {
