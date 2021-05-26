@@ -1,5 +1,6 @@
 import { memo, useEffect } from 'react';
 import { Portal } from 'react-portal';
+import { intentToScroll } from '../services/unscroll';
 
 import { ButtonLink } from './button-link';
 import { useBool } from './hooks/bool';
@@ -39,6 +40,21 @@ export const PostCommentMore = memo(function PostCommentMore({
     setMenuOpener(() => setOpened(true));
     return () => setMenuOpener(null);
   }, [setMenuOpener, setOpened]);
+
+  useEffect(() => {
+    if (fixedMenu && opened) {
+      // Fix scroll position
+      const menuTop = document.documentElement.clientHeight - menuRef.current.scrollHeight;
+      const linkBottom = pivotRef.current.getBoundingClientRect().bottom;
+      if (linkBottom > menuTop) {
+        intentToScroll();
+        window.scrollBy({
+          top: linkBottom - menuTop + 4,
+          behavior: 'smooth',
+        });
+      }
+    }
+  }, [fixedMenu, opened, menuRef, pivotRef]);
 
   return (
     <>
