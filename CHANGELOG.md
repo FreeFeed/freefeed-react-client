@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Display usernames of gone users in post comments in grey color
 - Headers of sidebar blocks are links now
+- "More" menu for comments with all comment-related actions and information
 
 ### Fixed
 - Changes in search field on the "All Groups" page now resets the page number to
