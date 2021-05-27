@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.99.0] - Not released
 ### Added
+- Display usernames of gone users in post comments in grey color
+- Headers of sidebar blocks are links now
+- "More" menu for comments with all comment-related actions and information
 - "Grips" in sidebar for drag and sort home feeds. Previously, the drag zone
   matched the feed link itself, and that was inconvenient, especially on mobile
   screens.
@@ -15,6 +18,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the first page. Also the page and the query string are now synchronized with
   the URL's query parameters.
 - Fixed the mobile Chrome unwanted font boosting.
+
+### Fixed
+- Changes in search field on the "All Groups" page now resets the page number to
+  the first page. Also the page and the query string are now synchronized with
+  the URL's query parameters.
+- A group table on 'All Groups" page is scrollable on narrow screens now
+- Fix accessibility-labels of comment-likes (actions were opposite to the real ones)
+
+### Changed
+- Removed thin red line in upload preview
 
 ## [1.98.2] - 2021-04-09
 ### Fixed

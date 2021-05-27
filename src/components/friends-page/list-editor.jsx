@@ -34,16 +34,16 @@ export const ListEditor = memo(function ListEditor({
   const submitStatus = useSelector((state) => state.crudHomeFeedStatus);
 
   // Fetch subscriptions and homefeeds if there are not fetched yet
-  useEffect(() => void (allSubscriptionsStatus.initial && dispatch(getAllSubscriptions())), [
-    allSubscriptionsStatus.initial,
-    dispatch,
-  ]);
+  useEffect(
+    () => void (allSubscriptionsStatus.initial && dispatch(getAllSubscriptions())),
+    [allSubscriptionsStatus.initial, dispatch],
+  );
 
   // Edited list (or null for the new one)
-  const list = useMemo(() => allHomeFeeds.find((feed) => feed.id === listId), [
-    allHomeFeeds,
-    listId,
-  ]);
+  const list = useMemo(
+    () => allHomeFeeds.find((feed) => feed.id === listId),
+    [allHomeFeeds, listId],
+  );
 
   // Map of user's selection states: { [userId]: boolean }
   const [selected, setSelected] = useState({});
@@ -102,10 +102,10 @@ export const ListEditor = memo(function ListEditor({
   const returnListId = useRef(list?.id);
 
   // Handle submit
-  const canSubmit = useMemo(() => allSubscriptionsStatus.success && listTitle.trim() !== '', [
-    allSubscriptionsStatus.success,
-    listTitle,
-  ]);
+  const canSubmit = useMemo(
+    () => allSubscriptionsStatus.success && listTitle.trim() !== '',
+    [allSubscriptionsStatus.success, listTitle],
+  );
 
   const doSubmit = useCallback(() => {
     if (!canSubmit) {

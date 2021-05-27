@@ -13,15 +13,15 @@ import UserName from './user-name';
 import { Icon } from './fontawesome-icons';
 import { CLOSE_ON_CLICK_OUTSIDE, useDropDown } from './hooks/drop-down';
 import { Throbber } from './throbber';
-import ActionsPanel, { useActionsPanel } from './comment-actions-popup';
 import { useWaiting } from './hooks/waiting';
 import { useCommentLikers } from './comment-likers';
+import { useLongTapHandlers } from './hooks/long-tap';
 
 // Do not show clikes list for this interval if data is not available yet
 const CLIKES_LIST_DELAY = 250;
 
 // Assume that the comment always exists (i. e. it is not the icon near the "New comment" form)
-export default memo(function CommentIcon({ id, omitBubble = false, reply, mention, postId }) {
+export default memo(function CommentIcon({ id, omitBubble = false, reply, mention, openMoreMenu }) {
   const dispatch = useDispatch();
 
   const { likes, hasOwnLike, createdAt, createdBy } = useSelector(
@@ -37,12 +37,7 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
     toggle: likesListToggle,
   } = useDropDown({ closeOn: CLOSE_ON_CLICK_OUTSIDE });
 
-  const {
-    ref: panelRef,
-    opened: actionsPanelOpened,
-    hide: hideActionsPanel,
-    handlers: touchHandlers,
-  } = useActionsPanel();
+  const touchHandlers = useLongTapHandlers(openMoreMenu);
 
   const heartClick = useCallback(
     () => void (canLike && dispatch((hasOwnLike ? unlikeComment : likeComment)(id))),
@@ -89,7 +84,7 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
             className="comment-heart"
             onClick={heartClick}
             role="button"
-            aria-label={hasOwnLike ? 'Like this comment' : 'Un-like this comment'}
+            aria-label={hasOwnLike ? 'Un-like this comment' : 'Like this comment'}
           >
             <Icon
               icon={faHeart}
@@ -115,20 +110,6 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
       {likesListOpened && (
         <Portal>
           <LikesList id={id} ref={likesListRef} />
-        </Portal>
-      )}
-      {/* Actions panel */}
-      {actionsPanelOpened && (
-        <Portal>
-          <ActionsPanel
-            ref={panelRef}
-            id={id}
-            postId={postId}
-            hide={hideActionsPanel}
-            reply={reply}
-            mention={mention}
-            toggleLike={heartClick}
-          />
         </Portal>
       )}
     </div>

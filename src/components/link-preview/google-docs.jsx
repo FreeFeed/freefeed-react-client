@@ -3,7 +3,8 @@ import { Component } from 'react';
 import { contentResized } from './scroll-helpers/events';
 import ScrollSafe from './scroll-helpers/scroll-safe';
 
-const GOOGLE_DOCS_RE = /^https?:\/\/(?:docs\.google\.com\/(document|spreadsheets|presentation)\/d\/|(drive)\.google\.com\/(?:file\/d\/|open\?id=))([\w-]+)/i;
+const GOOGLE_DOCS_RE =
+  /^https?:\/\/(?:docs\.google\.com\/(document|spreadsheets|presentation)\/d\/|(drive)\.google\.com\/(?:file\/d\/|open\?id=))([\w-]+)/i;
 
 export function canShowURL(url) {
   return GOOGLE_DOCS_RE.test(url);

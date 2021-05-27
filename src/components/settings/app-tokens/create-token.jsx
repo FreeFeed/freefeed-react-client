@@ -44,10 +44,10 @@ export default withLayout('Generate new token', function CreateToken() {
 
   const [form, setForm] = useState(initialData);
 
-  const canSubmit = useMemo(() => !status.loading && trim(form.title) !== '', [
-    form,
-    status.loading,
-  ]);
+  const canSubmit = useMemo(
+    () => !status.loading && trim(form.title) !== '',
+    [form, status.loading],
+  );
 
   const onSubmit = useCallback(
     (e) => {

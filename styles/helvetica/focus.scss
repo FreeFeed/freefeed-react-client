@@ -1,0 +1,9 @@
+a:focus {
+  outline: auto;
+  outline-color: Highlight;
+  outline-color: -webkit-focus-ring-color;
+}
+
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+}

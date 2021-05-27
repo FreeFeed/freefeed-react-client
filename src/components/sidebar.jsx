@@ -59,10 +59,10 @@ const SideBarFriends = ({ user }) => {
   const dispatch = useDispatch();
   const homeFeedsCount = useSelector((state) => state.homeFeeds.length);
   const homeFeedsStatus = useSelector((state) => state.homeFeedsStatus);
-  useEffect(() => void (homeFeedsStatus.initial && dispatch(listHomeFeeds())), [
-    homeFeedsStatus.initial,
-    dispatch,
-  ]);
+  useEffect(
+    () => void (homeFeedsStatus.initial && dispatch(listHomeFeeds())),
+    [homeFeedsStatus.initial, dispatch],
+  );
 
   const hasNotifications =
     user.unreadNotificationsNumber > 0 && !user.frontendPreferences.hideUnreadNotifications;
@@ -327,9 +327,10 @@ export default function SideBar({ user, signOut }) {
   useEffect(() => void (wideScreen && dispatch(openSidebar(false))), [wideScreen, dispatch]);
 
   // Turn off body scrolling while the sidebar is opened
-  useEffect(() => void document.body.classList.toggle('body--no-scroll', sidebarOpened), [
-    sidebarOpened,
-  ]);
+  useEffect(
+    () => void document.body.classList.toggle('body--no-scroll', sidebarOpened),
+    [sidebarOpened],
+  );
 
   // Reset content's scrollTop when the sidebar opening
   const content = useRef(null);

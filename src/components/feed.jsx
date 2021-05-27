@@ -54,9 +54,8 @@ class Feed extends PureComponent {
   };
 
   render() {
-    const getEntryComponent = (section) => (post) => (
-      <FeedEntry key={post.id} {...{ post, section, ...this.props, showMedia: this.showMedia }} />
-    );
+    const getEntryComponent = (section) => (post) =>
+      <FeedEntry key={post.id} {...{ post, section, ...this.props, showMedia: this.showMedia }} />;
 
     const {
       emptyFeed,
@@ -111,13 +110,8 @@ class Feed extends PureComponent {
 const postIsHidden = (post) => !!(post.isHidden || post.hiddenByNames);
 
 export default connect((state) => {
-  const {
-    entries,
-    recentlyHiddenEntries,
-    separateHiddenEntries,
-    isHiddenRevealed,
-    feedError,
-  } = state.feedViewState;
+  const { entries, recentlyHiddenEntries, separateHiddenEntries, isHiddenRevealed, feedError } =
+    state.feedViewState;
 
   const allPosts = entries.map(joinPostData(state)).filter(Boolean);
 

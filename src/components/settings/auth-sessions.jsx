@@ -43,16 +43,15 @@ export default withLayout(function AuthSessionsPage() {
     [checked],
   );
 
-  const canSubmit = useMemo(() => !closeStatus.loading && checked.length > 0, [
-    checked.length,
-    closeStatus.loading,
-  ]);
+  const canSubmit = useMemo(
+    () => !closeStatus.loading && checked.length > 0,
+    [checked.length, closeStatus.loading],
+  );
 
-  const closeSelected = useCallback(() => canSubmit && dispatch(closeAuthSessions(checked)), [
-    canSubmit,
-    checked,
-    dispatch,
-  ]);
+  const closeSelected = useCallback(
+    () => canSubmit && dispatch(closeAuthSessions(checked)),
+    [canSubmit, checked, dispatch],
+  );
 
   useEffect(() => void dispatch(listAuthSessions()), [dispatch]);
   useEffect(() => void (closeStatus.success && setChecked([])), [closeStatus.success]);

@@ -161,3 +161,78 @@ exports[`Post Renders a post and doesn't blow up 1`] = `
   </div>
 </DocumentFragment>
 `;
+
+exports[`Post Renders a textarea with post text when editing the post 1`] = `
+<div
+  aria-label="Post body"
+  class="post-body"
+  role="region"
+>
+  <div>
+    <div
+      aria-label="Choose post destination"
+      class="send-to"
+    >
+      <div>
+        <div>
+          <div>
+            Loading selector...
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="post-privacy-warning"
+    />
+  </div>
+  <div
+    class="post-editor"
+  >
+    <div>
+      Cannot load Dropzone component
+    </div>
+    <div>
+      <textarea
+        class="post-textarea"
+        dir="auto"
+        maxlength="3000"
+      >
+        Line 1
+Line 2
+      </textarea>
+    </div>
+    <div
+      class="post-edit-options"
+    >
+      <span
+        class="post-edit-attachments dropzone-trigger"
+        role="button"
+      >
+        <svg
+          class="upload-icon fa-icon fa-icon-fas-paperclip"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <use
+            xlink:href="#fa-icon-fas-paperclip"
+          />
+        </svg>
+         Add photos or files
+      </span>
+    </div>
+    <div
+      class="post-edit-actions"
+    >
+      <a
+        class="post-cancel"
+      >
+        Cancel
+      </a>
+      <button
+        class="btn btn-default btn-xs"
+      >
+        Update
+      </button>
+    </div>
+  </div>
+</div>
+`;

@@ -2,6 +2,10 @@
   position: relative;
   overflow-wrap: break-word;
   word-wrap: break-word;
+
+  .user-is-gone {
+    color: #666;
+  }
 }
 
 .user-card {
