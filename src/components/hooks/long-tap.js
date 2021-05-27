@@ -9,18 +9,22 @@ export function useLongTapHandlers(onLongTap, { timeout = longTapTimeout } = {})
 
   const onTouchStart = useCallback(() => {
     inTouch.current = true;
-    timer.current = window.setTimeout(onLongTap, timeout);
+    timer.current = window.setTimeout(() => {
+      onLongTap();
+      inTouch.current = false;
+    }, timeout);
   }, [onLongTap, timeout]);
 
   const onTouchEnd = useCallback((e) => {
-    // If just opened
     if (inTouch.current) {
+      window.clearTimeout(timer.current);
+      inTouch.current = false;
+    } else {
+      // After the long tap
       e.cancelable && e.preventDefault();
       // For iOS browsers that don't support the 'selectstart' event
       window.getSelection().removeAllRanges();
     }
-    window.clearTimeout(timer.current);
-    inTouch.current = false;
   }, []);
 
   // Prevent text selection during the touch
