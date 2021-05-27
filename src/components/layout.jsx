@@ -190,7 +190,7 @@ class Layout extends Component {
           </div>
 
           {CONFIG.betaChannel.enabled && CONFIG.betaChannel.isBeta && (
-            <a href="/support" target="_blank" className="bug-report-link" title="Report a bug">
+            <a href="/beta" target="_blank" className="bug-report-link" title="Report a bug">
               <Icon icon={faBug} />
             </a>
           )}
