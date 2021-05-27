@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Display usernames of gone users in post comments in grey color
 - Headers of sidebar blocks are links now
+- "Grips" in sidebar for drag and sort home feeds. Previously, the drag zone
+  matched the feed link itself, and that was inconvenient, especially on mobile
+  screens.
 
 ### Fixed
 - Changes in search field on the "All Groups" page now resets the page number to
