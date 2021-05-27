@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react';
+import { memo, useCallback, useEffect } from 'react';
 import { Portal } from 'react-portal';
 import { intentToScroll } from '../services/unscroll';
 
@@ -56,6 +56,8 @@ export const PostCommentMore = memo(function PostCommentMore({
     }
   }, [fixedMenu, opened, menuRef, pivotRef]);
 
+  const doCloseLikes = useCallback(() => (closeLikes(), setOpened(true)), [closeLikes, setOpened]);
+
   return (
     <>
       <ButtonLink
@@ -72,7 +74,7 @@ export const PostCommentMore = memo(function PostCommentMore({
           <PostCommentMoreMenu {...menuPropsWithClose} ref={menuRef} fixed={fixedMenu} />
         </Portal>
       )}
-      {likesOpened && <PostCommentLikes id={id} close={closeLikes} />}
+      {likesOpened && <PostCommentLikes id={id} close={doCloseLikes} />}
     </>
   );
 });
