@@ -36,10 +36,10 @@ export function useUploader({ dropTargetRef, pasteTargetRef, onSuccess }) {
   }, [uploadIds, statuses, uploads, onSuccess]);
 
   // Some uploads are in progress
-  const loading = useMemo(() => uploadIds.some((id) => statuses[id]?.loading), [
-    uploadIds,
-    statuses,
-  ]);
+  const loading = useMemo(
+    () => uploadIds.some((id) => statuses[id]?.loading),
+    [uploadIds, statuses],
+  );
 
   // Uploads that should be shown in the progress UI
   const unfinishedIds = useMemo(

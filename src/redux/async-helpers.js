@@ -241,19 +241,21 @@ export function combineAsyncStates(...states) {
  *
  */
 export function doSequence(dispatch) {
-  const disp = (first, ...nextHandlers) => (action) => {
-    if (!first) {
-      dispatch(action);
-    } else {
-      dispatch({
-        ...action,
-        extra: {
-          ...action.extra,
-          onResponse: (respAction) => first(disp(...nextHandlers), respAction),
-        },
-      });
-    }
-  };
+  const disp =
+    (first, ...nextHandlers) =>
+    (action) => {
+      if (!first) {
+        dispatch(action);
+      } else {
+        dispatch({
+          ...action,
+          extra: {
+            ...action.extra,
+            onResponse: (respAction) => first(disp(...nextHandlers), respAction),
+          },
+        });
+      }
+    };
 
   return (first, ...nextHandlers) => first(disp(...nextHandlers), {});
 }

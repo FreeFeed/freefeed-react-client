@@ -316,9 +316,11 @@ export function updateUserPicture({ picture }) {
   });
 }
 
-const userAction = (action) => ({ username, ...rest }) => {
-  return fetch(`${apiRoot}/v1/users/${username}/${action}`, postRequestOptions('POST', rest));
-};
+const userAction =
+  (action) =>
+  ({ username, ...rest }) => {
+    return fetch(`${apiRoot}/v1/users/${username}/${action}`, postRequestOptions('POST', rest));
+  };
 
 export const ban = userAction('ban');
 export const unban = userAction('unban');

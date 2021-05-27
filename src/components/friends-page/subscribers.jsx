@@ -9,9 +9,10 @@ import styles from './styles.module.scss';
 export function Subscribers() {
   const subscribers = useSelector((state) => state.usernameSubscribers.payload);
   const allSubscriptions = useSelector((state) => state.allSubscriptions);
-  const subscriptionsSet = useMemo(() => new Set(allSubscriptions.map((u) => u.id)), [
-    allSubscriptions,
-  ]);
+  const subscriptionsSet = useMemo(
+    () => new Set(allSubscriptions.map((u) => u.id)),
+    [allSubscriptions],
+  );
 
   const { sortByDate, group, control: sortNGroup } = useSortNGroup();
 

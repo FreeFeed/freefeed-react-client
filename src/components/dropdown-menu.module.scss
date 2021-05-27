@@ -21,16 +21,52 @@
   }
 }
 
+.focusList {
+  // Just a mark for the focus-enabled list. We cannot remove this declaration
+  // because it need to be generated as module class name.
+}
+
+.fixedList {
+  position: fixed;
+  top: auto;
+  bottom: 0;
+
+  // Support for the iDevices
+  padding-bottom: unquote('env(safe-area-inset-bottom)');
+
+  @media (min-width: 451px) {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  @media (max-width: 450px) {
+    left: 0;
+    width: 100%;
+    box-shadow: 0px 20px 40px 20px rgba(0, 0, 0, 0.7);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: transform 0.2s, opacity 0.2s;
+    transform: translateY(0px);
+    opacity: 1;
+
+    &.initial {
+      transform: translateY(40px);
+      opacity: 0.5;
+    }
+  }
+}
+
 .item {
   text-align: left;
 }
 
-.item:hover {
-  background-color: #eee;
+.content {
+  padding: 0.5em 0.66em;
+  color: #666;
 
   :global(.dark-theme) & {
-    color: $text-color-lighter;
-    background: $bg-color-lightest;
+    color: $text-color;
   }
 }
 
@@ -40,12 +76,21 @@
   color: inherit;
   padding: 0.5em 0.66em;
 
-  &:hover {
+  :global(.dark-theme) & {
     color: inherit !important;
   }
 
-  :global(.dark-theme) & {
-    color: inherit;
+  @media (hover: hover) {
+    .list:not(.focusList) &:hover,
+    &:focus {
+      color: inherit !important;
+      background-color: #eee;
+
+      :global(.dark-theme) & {
+        color: $text-color-lighter !important;
+        background: $bg-color-lightest;
+      }
+    }
   }
 
   &.danger {
@@ -72,5 +117,30 @@
 
   :global(.dark-theme) & {
     background-color: $separator-color;
+  }
+}
+
+.group {
+  &:empty {
+    display: none;
+  }
+
+  margin: 0.33em 0;
+
+  &::before {
+    content: '';
+
+    display: block;
+    height: 1px;
+    margin: 0 0.66em 0.33em;
+    background-color: #ccc;
+
+    :global(.dark-theme) & {
+      background-color: $separator-color;
+    }
+  }
+
+  &:first-child::before {
+    content: none;
   }
 }

@@ -165,8 +165,7 @@ describe('LinkPreview', () => {
 
   it('Shows a Google Docs preview', () => {
     const { asFragment } = renderLinkPreview({
-      url:
-        'https://docs.google.com/document/d/1GbH0-Tc0Rs-T18JRA3Y--uOo_-lzzzTiCbYCHvs6K_4/edit?usp=sharing',
+      url: 'https://docs.google.com/document/d/1GbH0-Tc0Rs-T18JRA3Y--uOo_-lzzzTiCbYCHvs6K_4/edit?usp=sharing',
     });
 
     expect(asFragment()).toMatchSnapshot();
@@ -227,8 +226,7 @@ describe('LinkPreview', () => {
   it('Shows a Soundcloud preview', async () => {
     cachedFetch.mockResolvedValue({
       title: 'In Dub We Trust by SmokedPepper',
-      html:
-        '<iframe width="100%" height="400" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F966875497&show_artwork=true"></iframe>',
+      html: '<iframe width="100%" height="400" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?visual=true&url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F966875497&show_artwork=true"></iframe>',
     });
 
     const { asFragment } = renderLinkPreview({

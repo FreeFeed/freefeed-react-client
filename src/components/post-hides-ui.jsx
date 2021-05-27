@@ -13,10 +13,10 @@ export function PostRecentlyHidden({ id, initialTopOffset, isHidden, recipientNa
   const hiddenUserNames = useSelector((state) => state.hiddenUserNames);
   const hideStatus = useSelector((state) => state.postHideStatuses[id] || initialAsyncState);
   const doUnhidePost = useCallback(() => dispatch(unhidePost(id)), [dispatch, id]);
-  const doHideByName = useCallback((name, hide) => () => dispatch(hideByName(name, id, hide)), [
-    dispatch,
-    id,
-  ]);
+  const doHideByName = useCallback(
+    (name, hide) => () => dispatch(hideByName(name, id, hide)),
+    [dispatch, id],
+  );
   const doRemove = useCallback(() => dispatch(removeRecentlyHiddenPost(id)), [dispatch, id]);
   const firstLine = useRef();
   useLayoutEffect(() => {

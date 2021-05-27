@@ -1358,11 +1358,13 @@ function sortRecentGroups(g1, g2) {
   return g2.updatedAt - g1.updatedAt;
 }
 
-const recentGroupInfo = (pinnedIds = []) => (g) => ({
-  id: g.id,
-  updatedAt: parseInt(g.updatedAt),
-  isPinned: pinnedIds.includes(g.id),
-});
+const recentGroupInfo =
+  (pinnedIds = []) =>
+  (g) => ({
+    id: g.id,
+    updatedAt: parseInt(g.updatedAt),
+    isPinned: pinnedIds.includes(g.id),
+  });
 
 function getRecentGroups({ subscribers, frontendPreferences }) {
   const clientPreferences = frontendPreferences || {};

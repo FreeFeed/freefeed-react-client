@@ -89,9 +89,10 @@ function RequestsToGroups() {
   const dispatch = useDispatch();
   const managedGroups = useSelector((state) => state.managedGroups);
   const statusesMap = useSelector((state) => state.userActionsStatuses.reviewingGroupRequest);
-  const groups = useMemo(() => managedGroups.filter((group) => group.requests.length > 0), [
-    managedGroups,
-  ]);
+  const groups = useMemo(
+    () => managedGroups.filter((group) => group.requests.length > 0),
+    [managedGroups],
+  );
 
   const processRequest = useCallback(
     ({ target }) => {
