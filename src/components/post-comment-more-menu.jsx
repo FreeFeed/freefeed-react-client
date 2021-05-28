@@ -37,7 +37,7 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
   const arrows = bIdx <= 3 ? '^'.repeat(bIdx) : `^^^\u2026`;
   const likersText = status.success
     ? likers.length > 0 && likersMenuText(likers, myUsername)
-    : likesCount > 0 && `${pluralForm(likesCount, 'like')}\u2026`;
+    : likesCount > 0 && `Show ${pluralForm(likesCount, 'like')}\u2026`;
   const menuGroups = [
     [
       doLike && (
@@ -57,7 +57,7 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
       likersText && (
         <div key="likes" className={styles.item}>
           <ButtonLink className={styles.link} onClick={doShowLikes}>
-            Show {likersText}
+            {likersText}
           </ButtonLink>
         </div>
       ),
@@ -171,14 +171,14 @@ function copyURL({ target }) {
 
 function likersMenuText(likers, myUsername) {
   if (likers.length === 0) {
-    return `no likes`;
+    return `No likes`;
   } else if (likers.length === 1) {
-    return `like from ${usernames(likers, myUsername)[0]}`;
+    return `Liked by  ${usernames(likers, myUsername)[0]}`;
   } else if (likers.length <= 4) {
-    return `likes from ${andJoin(usernames(likers, myUsername))}`;
+    return `Liked by  ${andJoin(usernames(likers, myUsername))}`;
   }
   const cutAfter = 2;
-  return `likes from ${andJoin([
+  return `Liked by ${andJoin([
     ...usernames(likers.slice(0, cutAfter), myUsername),
     `${likers.length - cutAfter} more\u2026`,
   ])}`;

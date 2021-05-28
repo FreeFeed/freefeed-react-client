@@ -67,7 +67,7 @@ export const PostCommentMore = memo(function PostCommentMore({
         aria-haspopup
         aria-expanded={opened}
       >
-        actions
+        more
       </ButtonLink>
       {opened && (
         <Portal>
