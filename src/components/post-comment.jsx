@@ -107,10 +107,10 @@ class PostComment extends Component {
       // Not authorized
       return {};
     }
+    const ownComment = this.props.currentUser.id === this.props.user?.id;
     return {
-      canLike:
-        this.props.currentUser.id !== this.props.user?.id &&
-        this.props.hideType === COMMENT_VISIBLE,
+      ownComment,
+      canLike: !ownComment && this.props.hideType === COMMENT_VISIBLE,
       canReply: this.props.hideType === COMMENT_VISIBLE && this.props.canAddComment,
       canDelete: this.props.isEditable || this.props.isDeletable,
     };
@@ -124,7 +124,7 @@ class PostComment extends Component {
     void (o ? this._moreMenuOpeners.unshift(o) : this._moreMenuOpeners.shift());
 
   commentTail() {
-    const { canLike, canReply, canDelete } = this.possibleActions();
+    const { canLike, canReply, canDelete, ownComment } = this.possibleActions();
     return (
       <span
         aria-label={this.props.user ? `Comment by ${this.props.user.username}` : `Hidden comment`}
@@ -159,7 +159,7 @@ class PostComment extends Component {
               id={this.props.id}
               authorUsername={this.props.user?.username}
               doEdit={this.props.isEditable && this.handleEditOrCancel}
-              doDelete={canDelete && this.handleDeleteComment}
+              doDelete={canDelete && ownComment && this.handleDeleteComment}
               doReply={canReply && this.reply}
               doMention={canReply && this.mention}
               doLike={canLike && !this.props.hasOwnLike && this.like}
