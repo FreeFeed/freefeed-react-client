@@ -3,13 +3,16 @@ import { Link } from 'react-router';
 import cn from 'classnames';
 
 import { noop } from 'lodash';
+import { useSelector } from 'react-redux';
 import { pluralForm } from '../utils';
 import { ButtonLink } from './button-link';
 import styles from './dropdown-menu.module.scss';
 import TimeDisplay from './time-display';
+import { useCommentLikers } from './comment-likers';
 
 export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
   {
+    id,
     authorUsername,
     doEdit,
     doDelete,
@@ -28,8 +31,13 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
   },
   menuRef,
 ) {
+  const { status, likers } = useCommentLikers(id);
+  const myUsername = useSelector((state) => state.user.username);
   const bIdx = getBackwardIdx();
   const arrows = bIdx <= 3 ? '^'.repeat(bIdx) : `^^^\u2026`;
+  const likersText = status.success
+    ? likers.length > 0 && likersMenuText(likers, myUsername)
+    : likesCount > 0 && `${pluralForm(likesCount, 'like')}\u2026`;
   const menuGroups = [
     [
       doLike && (
@@ -46,10 +54,10 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
           </ButtonLink>
         </div>
       ),
-      likesCount > 0 && (
+      likersText && (
         <div key="likes" className={styles.item}>
           <ButtonLink className={styles.link} onClick={doShowLikes}>
-            Show {pluralForm(likesCount, 'like')}&hellip;
+            Show {likersText}
           </ButtonLink>
         </div>
       ),
@@ -159,4 +167,32 @@ function copyURL({ target }) {
   selection.removeAllRanges();
 
   textNode.parentNode.removeChild(textNode);
+}
+
+function likersMenuText(likers, myUsername) {
+  if (likers.length === 0) {
+    return `no likes`;
+  } else if (likers.length === 1) {
+    return `like from ${usernames(likers, myUsername)[0]}`;
+  } else if (likers.length <= 4) {
+    return `likes from ${andJoin(usernames(likers, myUsername))}`;
+  }
+  const cutAfter = 2;
+  return `likes from ${andJoin([
+    ...usernames(likers.slice(0, cutAfter), myUsername),
+    `${likers.length - cutAfter} more\u2026`,
+  ])}`;
+}
+
+function andJoin(items) {
+  if (items.length <= 1) {
+    return items.join('');
+  }
+  const head = [...items];
+  const tail = head.pop();
+  return `${head.join(', ')} and ${tail}`;
+}
+
+function usernames(users, myUsername) {
+  return users.map((u) => (u.username === myUsername ? 'you' : `@${u.username}`));
 }
