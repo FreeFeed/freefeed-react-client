@@ -56,7 +56,7 @@ export default class PostComments extends Component {
 
   replyWithArrows = (commentId) => {
     const bIdx = this.backwardIdx(commentId);
-    const arrows = bIdx <= 3 ? '^'.repeat(bIdx) : `^${bIdx}`;
+    const arrows = '^'.repeat(bIdx);
     this._openAnsweringComment(arrows);
   };
 
