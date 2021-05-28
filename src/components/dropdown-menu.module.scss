@@ -76,18 +76,21 @@
   color: inherit;
   padding: 0.5em 0.66em;
 
-  :global(.dark-theme) & {
+  .list:not(.focusList) &:hover,
+  &:focus {
     color: inherit !important;
+
+    :global(.dark-theme) & {
+      color: $text-color-lighter !important;
+    }
   }
 
   @media (hover: hover) {
     .list:not(.focusList) &:hover,
     &:focus {
-      color: inherit !important;
       background-color: #eee;
 
       :global(.dark-theme) & {
-        color: $text-color-lighter !important;
         background: $bg-color-lightest;
       }
     }
