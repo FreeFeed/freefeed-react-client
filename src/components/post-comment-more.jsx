@@ -71,7 +71,7 @@ export const PostCommentMore = memo(function PostCommentMore({
       </ButtonLink>
       {opened && (
         <Portal>
-          <PostCommentMoreMenu {...menuPropsWithClose} ref={menuRef} fixed={fixedMenu} />
+          <PostCommentMoreMenu {...menuPropsWithClose} id={id} ref={menuRef} fixed={fixedMenu} />
         </Portal>
       )}
       {likesOpened && <PostCommentLikes id={id} close={doCloseLikes} />}
