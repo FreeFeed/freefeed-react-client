@@ -29,7 +29,7 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
   menuRef,
 ) {
   const bIdx = getBackwardIdx();
-  const arrows = bIdx <= 3 ? '^'.repeat(bIdx) : `^${bIdx}`;
+  const arrows = bIdx <= 3 ? '^'.repeat(bIdx) : `^^^\u2026`;
   const menuGroups = [
     [
       doLike && (
