@@ -120,15 +120,13 @@
     --danger-color: #d66;
   }
 
-  &__item {
-    white-space: nowrap;
-    &::before {
-      color: var(--gray-color);
-      content: ' - ';
-    }
+  &__item::before {
+    color: var(--gray-color);
+    content: ' - ';
   }
 
   &__actions {
+    white-space: nowrap;
     color: var(--gray-color);
   }
 
