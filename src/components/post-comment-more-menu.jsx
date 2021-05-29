@@ -124,27 +124,30 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
   useLayoutEffect(() => setInitial(false), []);
 
   return (
-    <div
-      ref={menuRef}
-      className={cn(
-        styles.list,
-        styles.focusList,
-        initial && styles.initial,
-        fixed && styles.fixedList,
-      )}
-    >
-      {menuGroups.map((group, i) => {
-        const items = group.filter(Boolean);
-        if (items.length === 0) {
-          return null;
-        }
-        return (
-          <div className={styles.group} key={`group-${i}`}>
-            {items}
-          </div>
-        );
-      })}
-    </div>
+    <>
+      {fixed && <div className={cn(styles.shadow, initial && styles.initial)} />}
+      <div
+        ref={menuRef}
+        className={cn(
+          styles.list,
+          styles.focusList,
+          initial && styles.initial,
+          fixed && styles.fixedList,
+        )}
+      >
+        {menuGroups.map((group, i) => {
+          const items = group.filter(Boolean);
+          if (items.length === 0) {
+            return null;
+          }
+          return (
+            <div className={styles.group} key={`group-${i}`}>
+              {items}
+            </div>
+          );
+        })}
+      </div>
+    </>
   );
 });
 
