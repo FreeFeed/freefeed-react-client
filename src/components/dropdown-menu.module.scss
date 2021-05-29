@@ -1,12 +1,14 @@
 @import '../../styles/helvetica/dark-vars.scss';
 
+$zIndex: 10;
+
 .list {
   position: absolute;
   top: 0.5em;
   left: 0;
   min-width: 10em;
 
-  z-index: 7;
+  z-index: $zIndex;
 
   list-style: none;
   padding: 0;
@@ -149,6 +151,7 @@
 }
 
 .shadow {
+  z-index: $zIndex;
   position: fixed;
   top: 0;
   left: 0;
