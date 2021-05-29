@@ -14,6 +14,7 @@ export const PostCommentMore = memo(function PostCommentMore({
   className,
   id,
   setMenuOpener,
+  onMenuOpened,
   ...menuProps
 }) {
   const fixedMenu = useMediaQuery('(max-width: 450px)');
@@ -40,6 +41,8 @@ export const PostCommentMore = memo(function PostCommentMore({
     setMenuOpener(() => setOpened(true));
     return () => setMenuOpener(null);
   }, [setMenuOpener, setOpened]);
+
+  useEffect(() => void onMenuOpened(opened), [onMenuOpened, opened]);
 
   useEffect(() => {
     if (fixedMenu && opened) {
