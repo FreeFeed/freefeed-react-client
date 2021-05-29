@@ -27,11 +27,7 @@ class PostComment extends Component {
   commentContainer;
   commentForm;
 
-  constructor(props) {
-    super(props);
-
-    this.commentForm = null;
-  }
+  state = { moreMenuOpened: false };
 
   scrollToComment = () => {
     if (this.commentContainer) {
@@ -123,6 +119,8 @@ class PostComment extends Component {
   setMoreMenuOpener = (o) =>
     void (o ? this._moreMenuOpeners.unshift(o) : this._moreMenuOpeners.shift());
 
+  onMoreMenuOpened = (moreMenuOpened) => this.setState({ moreMenuOpened });
+
   commentTail() {
     const { canLike, canReply, canDelete, ownComment } = this.possibleActions();
     return (
@@ -170,6 +168,7 @@ class PostComment extends Component {
               permalink={`${this.props.entryUrl}#comment-${this.props.id}`}
               likesCount={this.props.likes}
               setMenuOpener={this.setMoreMenuOpener}
+              onMenuOpened={this.onMoreMenuOpened}
             />
           </span>
         </span>
@@ -271,7 +270,8 @@ class PostComment extends Component {
   render() {
     const className = classnames({
       comment: true,
-      highlighted: this.props.highlightComments && this.props.highlighted,
+      highlighted:
+        (this.props.highlightComments && this.props.highlighted) || this.state.moreMenuOpened,
       'omit-bubble': this.props.omitBubble,
       'is-hidden': !!this.props.hideType,
       'highlight-from-url': this.props.highlightedFromUrl,
