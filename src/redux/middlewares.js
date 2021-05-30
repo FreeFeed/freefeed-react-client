@@ -18,6 +18,7 @@ import {
   SCHEME_DARK,
   SCHEME_NO_PREFERENCE,
   saveNSFWVisibility,
+  saveUIScale,
 } from '../services/appearance';
 import { scrollingOrInteraction, unscroll } from '../services/unscroll';
 import { inactivityOf } from '../utils/event-sequences';
@@ -332,6 +333,10 @@ export const appearanceMiddleware = (store) => {
     }
     if (action.type === ActionTypes.SET_NSFW_VISIBILITY) {
       saveNSFWVisibility(action.payload);
+      return;
+    }
+    if (action.type === ActionTypes.SET_UI_SCALE) {
+      saveUIScale(action.payload);
       return;
     }
   };

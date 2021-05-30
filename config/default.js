@@ -69,6 +69,7 @@ export default {
   appearance: {
     colorSchemeStorageKey: 'color-scheme',
     nsfwVisibilityStorageKey: 'show-nsfw',
+    uiScaleStorageKey: 'ui-scale',
   },
 
   commentsFolding: {
