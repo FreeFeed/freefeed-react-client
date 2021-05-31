@@ -1,13 +1,13 @@
 .picture {
-  width: 50px;
-  height: 50px;
+  width: var(--userpic-size, 50px);
+  height: var(--userpic-size, 50px);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   position: relative;
   border-radius: 2px;
   overflow: hidden;
-  font-size: 18px;
+  font-size: calc(var(--userpic-size, 50px) / 3);
   color: rgba(0, 0, 0, 0.3);
   flex: none;
 
