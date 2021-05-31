@@ -7,15 +7,24 @@ export function useLongTapHandlers(onLongTap, { timeout = longTapTimeout } = {})
   const inTouch = useRef(false);
   const timer = useRef(0);
 
-  const onTouchStart = useCallback(() => {
-    inTouch.current = true;
-    timer.current = window.setTimeout(() => {
-      onLongTap();
-      inTouch.current = false;
-    }, timeout);
-  }, [onLongTap, timeout]);
+  const onTouchStart = useCallback(
+    (e) => {
+      if (!isValidEvent(e)) {
+        return;
+      }
+      inTouch.current = true;
+      timer.current = window.setTimeout(() => {
+        onLongTap();
+        inTouch.current = false;
+      }, timeout);
+    },
+    [onLongTap, timeout],
+  );
 
   const onTouchEnd = useCallback((e) => {
+    if (!isValidEvent(e)) {
+      return;
+    }
     if (inTouch.current) {
       window.clearTimeout(timer.current);
       inTouch.current = false;
@@ -46,4 +55,9 @@ export function useLongTapHandlers(onLongTap, { timeout = longTapTimeout } = {})
     onClick: onTouchEnd,
     onTouchCancel: onTouchEnd,
   };
+}
+
+// To prevent events delivered by React from portals
+function isValidEvent(event) {
+  return event.currentTarget.contains(event.target);
 }
