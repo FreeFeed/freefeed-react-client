@@ -1,10 +1,14 @@
+@import '../../styles/helvetica/functions.scss';
+
 .container {
   display: flex;
   flex-direction: column;
   max-height: 100%;
-  width: 900px;
+  width: 800px;
   max-width: 100%;
   padding: 1em;
+
+  --userpic-size: #{fluid(32, 360, 50, 500)};
 }
 
 .header {
@@ -26,7 +30,6 @@
   padding: 0;
   display: flex;
   flex-wrap: wrap;
-  max-width: 750px;
 }
 
 .item {
