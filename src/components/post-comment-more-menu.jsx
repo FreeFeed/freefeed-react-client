@@ -95,12 +95,12 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
       ),
     ],
     [
-      <div key="created-at" className={cn(styles.item, styles.content)}>
-        Created at <TimeDisplay timeStamp={+createdAt} inline absolute />
+      <div key="created-on" className={cn(styles.item, styles.content)}>
+        Created on <TimeDisplay timeStamp={+createdAt} inline absolute />
       </div>,
       updatedAt - createdAt > 120000 && (
-        <div key="updated-at" className={cn(styles.item, styles.content)}>
-          Updated at <TimeDisplay timeStamp={+updatedAt} inline absolute />
+        <div key="updated-on" className={cn(styles.item, styles.content)}>
+          Updated on <TimeDisplay timeStamp={+updatedAt} inline absolute />
         </div>
       ),
       <div key="permalink" className={cn(styles.item, styles.content)}>
