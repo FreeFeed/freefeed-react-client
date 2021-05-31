@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { useCallback, useMemo, Suspense, useEffect } from 'react';
+import { useMemo, Suspense, useEffect } from 'react';
 import { Link, browserHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
 import cn from 'classnames';
@@ -13,10 +13,10 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from 'react-redux';
-import { useMediaQuery } from '../hooks/media-query';
 import { Icon } from '../fontawesome-icons';
 import { Delayed } from '../lazy-component';
 import { Throbber } from '../throbber';
+import { HorScrollable } from '../hor-scrollable';
 import styles from './settings.module.scss';
 
 const settingsRoot = '/settings';
@@ -54,8 +54,6 @@ export default function Layout({ children, router }) {
     [authenticated],
   );
 
-  const narrowScreen = useMediaQuery('(max-width: 620px)');
-
   const activeTab = useMemo(() => {
     const { pathname } = router.location;
     if (pathname.indexOf(settingsRoot) !== 0) {
@@ -63,14 +61,6 @@ export default function Layout({ children, router }) {
     }
     return pathname.slice(settingsRoot.length).replace(/^\//, '').split('/')[0];
   }, [router.location]);
-
-  const selectTab = useCallback(
-    ({ target }) => {
-      router.push(settingsSection(target.value));
-      target.blur();
-    },
-    [router],
-  );
 
   if (!authenticated) {
     // Do not allow anonymous access
@@ -88,15 +78,7 @@ export default function Layout({ children, router }) {
           Settings
         </div>
         <div className="box-body">
-          {narrowScreen ? (
-            <select value={activeTab} className={styles.tabSelect} onChange={selectTab}>
-              {tabs.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.title}
-                </option>
-              ))}
-            </select>
-          ) : (
+          <HorScrollable>
             <ul className={`nav nav-tabs ${styles.navigation}`} role="tablist">
               {tabs.map((t) => (
                 <Tab key={t.id} id={t.id} activeId={activeTab} icon={t.icon}>
@@ -104,7 +86,7 @@ export default function Layout({ children, router }) {
                 </Tab>
               ))}
             </ul>
-          )}
+          </HorScrollable>
           <Suspense fallback={loadingPage}>{children}</Suspense>
         </div>
       </div>
@@ -123,8 +105,13 @@ export function SettingsPage({ title, header = title, children }) {
 }
 
 function Tab({ id, activeId, icon, children }) {
+  const active = id === activeId;
   return (
-    <li role="tab presentation" className={cn(styles.navTab, { active: id === activeId })}>
+    <li
+      role="tab presentation"
+      className={cn(styles.navTab, { active })}
+      data-hscroll-into-view={active || null}
+    >
       <Link to={settingsSection(id)}>
         <Icon icon={icon} className={styles.tabIcon} />{' '}
         <span className={styles.tabText}>{children}</span>

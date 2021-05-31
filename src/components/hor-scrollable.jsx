@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useResizable } from './hooks/resizable';
 import { useEventListener } from './hooks/sub-unsub';
@@ -28,6 +28,13 @@ export function HorScrollable({ children, className }) {
     const shadeEnd = innerWidth > outerWidth && innerWidth - scrollOffset > outerWidth;
     return [shadeStart, shadeEnd];
   }, [innerWidth, outerWidth, scrollOffset]);
+
+  useEffect(() => {
+    const activeEl = content.current.querySelector('[data-hscroll-into-view]');
+    if (activeEl) {
+      content.current.scrollLeft = activeEl.offsetLeft;
+    }
+  }, []);
 
   return (
     <div
