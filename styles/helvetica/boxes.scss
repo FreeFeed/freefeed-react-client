@@ -149,18 +149,23 @@
     }
 
     .year-links-row {
+      overflow: hidden;
+      display: flex;
+      flex-wrap: wrap;
+      font-size: rem(13px);
+
       a {
+        $dot-width: 1em;
+
         color: #000;
-        font-size: rem(13px);
-        &:after {
+        white-space: nowrap;
+        margin-left: -$dot-width;
+        margin-right: $dot-width;
+        &:before {
           content: '•';
           display: inline-block;
-          width: rem(7px);
+          width: $dot-width;
           text-align: center;
-        }
-        &:last-child:after {
-          content: '';
-          width: 0;
         }
       }
     }

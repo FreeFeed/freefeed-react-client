@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import format from 'date-fns/format';
 import cn from 'classnames';
+import { range } from 'lodash';
 
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { htmlSafe } from '../utils';
@@ -177,21 +178,15 @@ const SideBarMemories = () => {
   const today = new Date();
   const todayString = format(today, 'MMdd');
   const todayYear = today.getFullYear();
-  const yearLinks = [
-    [1, 2, 3, 4, 5, 6],
-    [7, 8, 9, 10, 11, 12],
-  ].map((years, index) => (
-    <div className="years-row" key={index}>
-      {years.map((offset) => {
-        const linkYear = todayYear - offset;
-        return (
-          <Link key={`link-${offset}`} to={`/memories/${linkYear}${todayString}`}>
-            {linkYear}
-          </Link>
-        );
-      })}
-    </div>
-  ));
+
+  const yearLinks = range(1, 13).map((offset) => {
+    const linkYear = todayYear - offset;
+    return (
+      <Link key={`link-${offset}`} to={`/memories/${linkYear}${todayString}`}>
+        {linkYear}
+      </Link>
+    );
+  });
   return (
     <div className="box" role="navigation">
       <div className="box-header-memories" role="heading">
