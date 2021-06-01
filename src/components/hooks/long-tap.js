@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useRef } from 'react';
-import { withEventListener } from './sub-unsub';
+import { useCallback, useRef } from 'react';
 
 const longTapTimeout = 300;
 
 export function useLongTapHandlers(onLongTap, { timeout = longTapTimeout } = {}) {
   const inTouch = useRef(false);
+  const longTapHappened = useRef(false);
   const timer = useRef(0);
 
   const onTouchStart = useCallback(
@@ -13,39 +13,30 @@ export function useLongTapHandlers(onLongTap, { timeout = longTapTimeout } = {})
         return;
       }
       inTouch.current = true;
+      longTapHappened.current = false;
+      // Prevent text selection during the long tap
+      document.body.classList.add('body--no-select');
       timer.current = window.setTimeout(() => {
+        longTapHappened.current = true;
         onLongTap();
-        inTouch.current = false;
       }, timeout);
     },
     [onLongTap, timeout],
   );
 
   const onTouchEnd = useCallback((e) => {
-    if (!isValidEvent(e)) {
+    if (e.type === 'touchend' && !isValidEvent(e)) {
       return;
     }
     if (inTouch.current) {
+      longTapHappened.current && e.cancelable && e.preventDefault();
+
       window.clearTimeout(timer.current);
+      document.body.classList.remove('body--no-select');
       inTouch.current = false;
-    } else {
-      // After the long tap
-      e.cancelable && e.preventDefault();
-      // For iOS browsers that don't support the 'selectstart' event
-      window.getSelection().removeAllRanges();
+      longTapHappened.current = false;
     }
   }, []);
-
-  // Prevent text selection during the touch
-  useEffect(
-    () =>
-      withEventListener(
-        document.body,
-        'selectstart',
-        (e) => inTouch.current && e.cancelable && e.preventDefault(),
-      ) || undefined,
-    [],
-  );
 
   return {
     // event handlers for the panel initiator
