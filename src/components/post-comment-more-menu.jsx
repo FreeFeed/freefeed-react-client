@@ -4,11 +4,21 @@ import cn from 'classnames';
 
 import { noop } from 'lodash';
 import { useSelector } from 'react-redux';
+import {
+  faAngleUp,
+  faAt,
+  faEdit,
+  faHeartBroken,
+  faLink,
+  faUserFriends,
+} from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faClock, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { pluralForm } from '../utils';
 import { ButtonLink } from './button-link';
 import styles from './dropdown-menu.module.scss';
 import TimeDisplay from './time-display';
 import { useCommentLikers } from './comment-likers';
+import { Icon } from './fontawesome-icons';
 
 export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
   {
@@ -43,21 +53,21 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
       doLike && (
         <div key="like" className={styles.item}>
           <ButtonLink onClick={doLike} className={styles.link}>
-            Like comment
+            <Iconic icon={faHeart}>Like comment</Iconic>
           </ButtonLink>
         </div>
       ),
       doUnlike && (
         <div key="unlike" className={styles.item}>
           <ButtonLink onClick={doUnlike} className={styles.link}>
-            Unlike comment
+            <Iconic icon={faHeartBroken}>Unlike comment</Iconic>
           </ButtonLink>
         </div>
       ),
       likersText && (
         <div key="likes" className={styles.item}>
           <ButtonLink className={styles.link} onClick={doShowLikes}>
-            {likersText}
+            <Iconic icon={faUserFriends}>{likersText}</Iconic>
           </ButtonLink>
         </div>
       ),
@@ -66,14 +76,14 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
       doEdit && (
         <div key="edit" className={styles.item}>
           <ButtonLink onClick={doEdit} className={styles.link}>
-            Edit this comment
+            <Iconic icon={faEdit}>Edit this comment</Iconic>
           </ButtonLink>
         </div>
       ),
       doDelete && (
         <div key="delete" className={styles.item}>
           <ButtonLink onClick={doDelete} className={styles.link}>
-            Delete this comment
+            <Iconic icon={faTrashAlt}>Delete this comment</Iconic>
           </ButtonLink>
         </div>
       ),
@@ -82,40 +92,46 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
       doMention && (
         <div key="mention" className={styles.item}>
           <ButtonLink onClick={doMention} className={styles.link}>
-            Reply to @{authorUsername}
+            <Iconic icon={faAt}>Reply to @{authorUsername}</Iconic>
           </ButtonLink>
         </div>
       ),
       doReply && (
         <div key="reply" className={styles.item}>
           <ButtonLink onClick={doReply} className={styles.link}>
-            Reply with {arrows}
+            <Iconic icon={faAngleUp}>Reply with {arrows}</Iconic>
           </ButtonLink>
         </div>
       ),
     ],
     [
       <div key="created-on" className={cn(styles.item, styles.content)}>
-        Created on <TimeDisplay timeStamp={+createdAt} inline absolute />
+        <Iconic icon={faClock}>
+          Created on <TimeDisplay timeStamp={+createdAt} inline absolute />
+        </Iconic>
       </div>,
       updatedAt - createdAt > 120000 && (
         <div key="updated-on" className={cn(styles.item, styles.content)}>
-          Updated on <TimeDisplay timeStamp={+updatedAt} inline absolute />
+          <Iconic icon={faClock}>
+            Updated on <TimeDisplay timeStamp={+updatedAt} inline absolute />
+          </Iconic>
         </div>
       ),
       <div key="permalink" className={cn(styles.item, styles.content)}>
-        <Link to={permalink} style={{ marginRight: '1ex' }} onClick={doAndClose(noop)}>
-          Link to comment
-        </Link>{' '}
-        <button
-          className="btn btn-default btn-sm"
-          type="button"
-          onClick={doAndClose(copyURL)}
-          value={permalink}
-          aria-label="Copy link"
-        >
-          Copy
-        </button>
+        <Iconic icon={faLink} centered>
+          <Link to={permalink} style={{ marginRight: '1ex' }} onClick={doAndClose(noop)}>
+            Link to comment
+          </Link>{' '}
+          <button
+            className="btn btn-default btn-sm"
+            type="button"
+            onClick={doAndClose(copyURL)}
+            value={permalink}
+            aria-label="Copy link"
+          >
+            Copy
+          </button>
+        </Iconic>
       </div>,
     ],
   ];
@@ -134,6 +150,7 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
           initial && styles.initial,
           fixed && styles.fixedList,
         )}
+        style={{ minWidth: '18em' }}
       >
         {menuGroups.map((group, i) => {
           const items = group.filter(Boolean);
@@ -198,4 +215,15 @@ function andJoin(items) {
 
 function usernames(users, myUsername) {
   return users.map((u) => (u.username === myUsername ? 'you' : `@${u.username}`));
+}
+
+function Iconic({ icon, centered = false, children }) {
+  return (
+    <span className={cn(styles.iconic, centered && styles.iconicCentered)}>
+      <span className={styles.iconicIcon}>
+        <Icon icon={icon} />
+      </span>
+      <span className={styles.iconicContent}>{children}</span>
+    </span>
+  );
 }
