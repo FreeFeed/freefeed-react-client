@@ -172,3 +172,20 @@ $zIndex: 10;
     }
   }
 }
+
+.iconic {
+  display: flex;
+}
+
+.iconicCentered {
+  display: flex;
+  align-items: center;
+}
+
+.iconicIcon {
+  flex: 0 0 1.5em;
+  display: flex;
+  height: 1.42857em;
+  align-items: center;
+  opacity: 0.6;
+}
