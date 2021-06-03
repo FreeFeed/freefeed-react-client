@@ -153,7 +153,7 @@ class PostComment extends Component {
           )}
           <span className="comment-tail__action">
             <PostCommentMore
-              className="comment-tail__action-link"
+              className="comment-tail__action-link comment-tail__action-link--more"
               id={this.props.id}
               authorUsername={this.props.user?.username}
               doEdit={this.props.isEditable && this.handleEditOrCancel}

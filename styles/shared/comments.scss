@@ -152,6 +152,13 @@
   &__action-link--delete {
     color: var(--danger-color) !important;
   }
+
+  &__action-link--more::after {
+    content: '\25be';
+    @media only screen and (min-resolution: 150dpi) {
+      margin-left: 0.2em;
+    }
+  }
 }
 
 .feed-comment-dot {
