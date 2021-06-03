@@ -75,15 +75,18 @@ $zIndex: 10;
 .link {
   display: block;
   text-decoration: none !important;
-  color: inherit;
   padding: 0.5em 0.66em;
+
+  color: inherit;
+  :global(.dark-theme) & {
+    color: inherit;
+  }
 
   .list:not(.focusList) &:hover,
   &:focus {
     color: inherit !important;
-
     :global(.dark-theme) & {
-      color: $text-color-lighter !important;
+      color: inherit !important;
     }
   }
 
