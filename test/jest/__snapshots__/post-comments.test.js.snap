@@ -100,7 +100,7 @@ exports[`PostComments Renders post comments and doesn't blow up 1`] = `
                   role="button"
                   tabindex="0"
                 >
-                  more
+                  more▾
                 </a>
               </span>
             </span>
@@ -215,7 +215,7 @@ exports[`PostComments Renders post comments and doesn't blow up 1`] = `
                   role="button"
                   tabindex="0"
                 >
-                  more
+                  more▾
                 </a>
               </span>
             </span>
@@ -316,7 +316,7 @@ exports[`PostComments Renders post comments and doesn't blow up 1`] = `
                   role="button"
                   tabindex="0"
                 >
-                  more
+                  more▾
                 </a>
               </span>
             </span>
