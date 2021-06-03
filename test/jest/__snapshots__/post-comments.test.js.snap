@@ -96,11 +96,11 @@ exports[`PostComments Renders post comments and doesn't blow up 1`] = `
                   aria-disabled="false"
                   aria-expanded="false"
                   aria-haspopup="true"
-                  class="comment-tail__action-link"
+                  class="comment-tail__action-link comment-tail__action-link--more"
                   role="button"
                   tabindex="0"
                 >
-                  more▾
+                  more
                 </a>
               </span>
             </span>
@@ -211,11 +211,11 @@ exports[`PostComments Renders post comments and doesn't blow up 1`] = `
                   aria-disabled="false"
                   aria-expanded="false"
                   aria-haspopup="true"
-                  class="comment-tail__action-link"
+                  class="comment-tail__action-link comment-tail__action-link--more"
                   role="button"
                   tabindex="0"
                 >
-                  more▾
+                  more
                 </a>
               </span>
             </span>
@@ -312,11 +312,11 @@ exports[`PostComments Renders post comments and doesn't blow up 1`] = `
                   aria-disabled="false"
                   aria-expanded="false"
                   aria-haspopup="true"
-                  class="comment-tail__action-link"
+                  class="comment-tail__action-link comment-tail__action-link--more"
                   role="button"
                   tabindex="0"
                 >
-                  more▾
+                  more
                 </a>
               </span>
             </span>
