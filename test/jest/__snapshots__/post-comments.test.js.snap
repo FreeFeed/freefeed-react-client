@@ -1,0 +1,351 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PostComments Renders post comments and doesn't blow up 1`] = `
+<DocumentFragment>
+  <div
+    aria-label="3 comments"
+    class="comments"
+    role="list"
+  >
+    <div
+      class="comment my-comment"
+      data-author="author"
+      role="comment listitem"
+    >
+      <div
+        class="comment-likes-container"
+      >
+        <div
+          class="comment-likes"
+        >
+          <div
+            aria-label="Like this comment"
+            class="comment-heart"
+            role="button"
+          >
+            <svg
+              class="icon fa-icon fa-icon-fas-heart"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                Like
+              </title>
+              <use
+                xlink:href="#fa-icon-fas-heart"
+              />
+            </svg>
+          </div>
+        </div>
+        <time
+          class="comment-time"
+          datetime="2021-04-06T16:45:00.000Z"
+          title="Apr 6, 2021"
+        >
+          <svg
+            class="comment-icon fa-icon fa-icon-far-comment"
+            id="comment-comment1"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <use
+              xlink:href="#fa-icon-far-comment"
+            />
+          </svg>
+        </time>
+      </div>
+      <div
+        class="comment-body"
+      >
+        <div
+          class="expandable expanded"
+        >
+          <span
+            class="Linkify"
+            dir="auto"
+            role="region"
+          >
+            Comment 1 body
+          </span>
+          <span
+            aria-label="Comment by author"
+            class="comment-tail"
+          >
+            <span
+              class="comment-tail__item"
+            >
+              <span
+                class="user-name-wrapper"
+              >
+                <a
+                  class=""
+                >
+                  <span
+                    dir="ltr"
+                  >
+                    You
+                  </span>
+                </a>
+              </span>
+            </span>
+            <span
+              class="comment-tail__item comment-tail__actions"
+            >
+              <span
+                class="comment-tail__action"
+              >
+                <a
+                  aria-disabled="false"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class="comment-tail__action-link comment-tail__action-link--more"
+                  role="button"
+                  tabindex="0"
+                >
+                  more
+                </a>
+              </span>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="comment omit-bubble"
+      data-author="other"
+      role="comment listitem"
+    >
+      <div
+        class="comment-likes-container"
+      >
+        <div
+          class="comment-likes"
+        >
+          <div
+            aria-label="Like this comment"
+            class="comment-heart"
+            role="button"
+          >
+            <svg
+              class="icon fa-icon fa-icon-fas-heart"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                Like
+              </title>
+              <use
+                xlink:href="#fa-icon-fas-heart"
+              />
+            </svg>
+          </div>
+        </div>
+        <time
+          class="comment-time"
+          datetime="2021-04-06T16:46:40.000Z"
+          title="Apr 6, 2021"
+        >
+          <span
+            class="comment-icon feed-comment-dot"
+            id="comment-comment2"
+          />
+        </time>
+      </div>
+      <div
+        class="comment-body"
+      >
+        <div
+          class="expandable expanded"
+        >
+          <span
+            class="Linkify"
+            dir="auto"
+            role="region"
+          >
+            <span>
+              <span
+                class="user-name-wrapper"
+              >
+                <a
+                  class=""
+                >
+                  <span
+                    dir="ltr"
+                  >
+                    @author
+                  </span>
+                </a>
+              </span>
+               comment 2
+            </span>
+            <br />
+            <span>
+              Multilinebody
+            </span>
+          </span>
+          <span
+            aria-label="Comment by other"
+            class="comment-tail"
+          >
+            <span
+              class="comment-tail__item"
+            >
+              <span
+                class="user-name-wrapper"
+              >
+                <a
+                  class=""
+                >
+                  <span
+                    dir="ltr"
+                  >
+                    other
+                  </span>
+                </a>
+              </span>
+            </span>
+            <span
+              class="comment-tail__item comment-tail__actions"
+            >
+              <span
+                class="comment-tail__action"
+              >
+                <a
+                  aria-disabled="false"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class="comment-tail__action-link comment-tail__action-link--more"
+                  role="button"
+                  tabindex="0"
+                >
+                  more
+                </a>
+              </span>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="comment omit-bubble my-comment"
+      data-author="author"
+      role="comment listitem"
+    >
+      <div
+        class="comment-likes-container"
+      >
+        <div
+          class="comment-likes"
+        >
+          <div
+            aria-label="Like this comment"
+            class="comment-heart"
+            role="button"
+          >
+            <svg
+              class="icon fa-icon fa-icon-fas-heart"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                Like
+              </title>
+              <use
+                xlink:href="#fa-icon-fas-heart"
+              />
+            </svg>
+          </div>
+        </div>
+        <time
+          class="comment-time"
+          datetime="2021-04-06T16:48:20.000Z"
+          title="Apr 6, 2021"
+        >
+          <span
+            class="comment-icon feed-comment-dot"
+            id="comment-comment3"
+          />
+        </time>
+      </div>
+      <div
+        class="comment-body"
+      >
+        <div
+          class="expandable expanded"
+        >
+          <span
+            class="Linkify"
+            dir="auto"
+            role="region"
+          >
+            <span
+              class="arrow-span"
+            >
+              ^
+            </span>
+             response to comment 2
+          </span>
+          <span
+            aria-label="Comment by author"
+            class="comment-tail"
+          >
+            <span
+              class="comment-tail__item"
+            >
+              <span
+                class="user-name-wrapper"
+              >
+                <a
+                  class=""
+                >
+                  <span
+                    dir="ltr"
+                  >
+                    You
+                  </span>
+                </a>
+              </span>
+            </span>
+            <span
+              class="comment-tail__item comment-tail__actions"
+            >
+              <span
+                class="comment-tail__action"
+              >
+                <a
+                  aria-disabled="false"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class="comment-tail__action-link comment-tail__action-link--more"
+                  role="button"
+                  tabindex="0"
+                >
+                  more
+                </a>
+              </span>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="comment"
+    >
+      <span
+        class="comment-icon fa-stack"
+      >
+        <svg
+          class="fa-icon fa-icon-fas-comment-plus"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <use
+            xlink:href="#fa-icon-fas-comment-plus"
+          />
+        </svg>
+      </span>
+      <span>
+        <a>
+          Sign In
+        </a>
+         to add comment
+      </span>
+    </div>
+  </div>
+</DocumentFragment>
+`;

@@ -97,16 +97,14 @@ export const UserProfileHead = withRouter(
     );
 
     // Load user data
-    useEffect(() => void ((isLoggedOut || dataStatus.initial) && dispatch(getUserInfo(username))), [
-      isLoggedOut,
-      dataStatus.initial,
-      dispatch,
-      username,
-    ]);
-    useEffect(() => void (allHomeFeedsStatus.initial && dispatch(listHomeFeeds())), [
-      allHomeFeedsStatus.initial,
-      dispatch,
-    ]);
+    useEffect(
+      () => void ((isLoggedOut || dataStatus.initial) && dispatch(getUserInfo(username))),
+      [isLoggedOut, dataStatus.initial, dispatch, username],
+    );
+    useEffect(
+      () => void (allHomeFeedsStatus.initial && dispatch(listHomeFeeds())),
+      [allHomeFeedsStatus.initial, dispatch],
+    );
 
     const canFollowStatLinks =
       user && !isBanned && (isCurrentUser || user.isPrivate === '0' || inSubscriptions);
@@ -143,21 +141,19 @@ export const UserProfileHead = withRouter(
       ),
     };
     const toggleHidden = {
-      onClick: useCallback(() => dispatch(hideByName(user?.username, null, !isHidden)), [
-        dispatch,
-        isHidden,
-        user?.username,
-      ]),
+      onClick: useCallback(
+        () => dispatch(hideByName(user?.username, null, !isHidden)),
+        [dispatch, isHidden, user?.username],
+      ),
       status: useSelector(
         (state) => state.userActionsStatuses.hiding[user?.username] || initialAsyncState,
       ),
     };
     const toggleBanned = {
-      onClick: useCallback(() => dispatch((isBanned ? unban : ban)(user)), [
-        isBanned,
-        dispatch,
-        user,
-      ]),
+      onClick: useCallback(
+        () => dispatch((isBanned ? unban : ban)(user)),
+        [isBanned, dispatch, user],
+      ),
       status: useSelector(
         (state) => state.userActionsStatuses.blocking[user?.username] || initialAsyncState,
       ),

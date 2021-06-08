@@ -1,13 +1,13 @@
 /* global CONFIG */
 import { isValidElement, cloneElement, Component } from 'react';
 import { Link } from 'react-router';
-import { Mention, Email, HashTag, Arrows, Link as TLink } from 'social-text-tokenizer';
+import { Mention, Email, HashTag } from 'social-text-tokenizer';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
 import { faFilm as faVideo } from '@fortawesome/free-solid-svg-icons';
 import { faInstagram, faYoutube, faVimeo } from '@fortawesome/free-brands-svg-icons';
 import classnames from 'classnames';
 
-import { parseText } from '../utils/parse-text';
+import { Arrows, Link as TLink, parseText } from '../utils/parse-text';
 import { highlightString } from '../utils/search-highlighter';
 import { FRIENDFEED_POST } from '../utils/link-types';
 import { getMediaType } from './media-viewer';
@@ -79,7 +79,7 @@ export default class Linkify extends Component {
           <span
             className="arrow-span"
             // eslint-disable-next-line react/jsx-no-bind
-            onMouseEnter={() => this.props.arrowHover.hover(token.text.length)}
+            onMouseEnter={() => this.props.arrowHover.hover(token.level)}
             onMouseLeave={this.props.arrowHover.leave}
             key={key}
           >

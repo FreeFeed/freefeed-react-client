@@ -24,10 +24,10 @@ function FeedHandler(props) {
   const pageIsLoading = useSelector((state) => state.routeLoadingState);
   const [advFormVisible, setAdvFormVisible] = useBool(!queryString);
 
-  useEffect(() => void (pageIsLoading && setAdvFormVisible(false)), [
-    pageIsLoading,
-    setAdvFormVisible,
-  ]);
+  useEffect(
+    () => void (pageIsLoading && setAdvFormVisible(false)),
+    [pageIsLoading, setAdvFormVisible],
+  );
 
   return (
     <div className="box">

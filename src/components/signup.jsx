@@ -77,10 +77,10 @@ const ExtAuthSignup = memo(function ExtAuthSignup() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const comeWithResult = useMemo(() => !!result.status, []);
 
-  const doSignIn = useCallback(() => dispatch(signedIn(result.authToken)), [
-    dispatch,
-    result.authToken,
-  ]);
+  const doSignIn = useCallback(
+    () => dispatch(signedIn(result.authToken)),
+    [dispatch, result.authToken],
+  );
 
   // Do not show anything if we open this page with auth result
   // or there are no allowed providers

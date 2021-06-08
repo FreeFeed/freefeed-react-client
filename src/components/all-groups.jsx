@@ -1,9 +1,10 @@
 /* global CONFIG */
 import { memo, useEffect, useMemo, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { sortBy, range } from 'lodash';
+import { sortBy, range, omit, debounce } from 'lodash';
 import { Link } from 'react-router';
 import { Helmet } from 'react-helmet';
+import cn from 'classnames';
 
 import { faCaretDown, faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import { getAllGroups } from '../redux/action-creators';
@@ -14,15 +15,16 @@ import TimeDisplay from './time-display';
 
 import styles from './all-groups.module.scss';
 import { UserPicture } from './user-picture';
+import { HorScrollable } from './hor-scrollable';
 
-export default function AllGroups() {
+export default function AllGroups({ router }) {
   const dispatch = useDispatch();
   const status = useSelector((state) => state.allGroupsStatus);
 
-  useEffect(() => void (status.success || status.loading || dispatch(getAllGroups())), [
-    dispatch,
-    status,
-  ]);
+  useEffect(
+    () => void (status.success || status.loading || dispatch(getAllGroups())),
+    [dispatch, status],
+  );
 
   return (
     <div className="content">
@@ -45,7 +47,7 @@ export default function AllGroups() {
           {status.error && (
             <p className="alert alert-danger">Can not load groups list: {status.errorText}</p>
           )}
-          {status.success && <GroupsList pageSize={50} />}
+          {status.success && <GroupsList pageSize={50} routerReplace={router.replace} />}
         </div>
       </div>
     </div>
@@ -65,11 +67,11 @@ const sortFields = {
   [SORT_BY_DATE]: 'createdAt',
 };
 
-function GroupsList({ pageSize }) {
-  const [nameFilter, setNameFilter] = useState('');
-
+function GroupsList({ pageSize, routerReplace }) {
   const location = useSelector((state) => state.routing.locationBeforeTransitions);
   const { groups, withProtected } = useSelector((state) => state.allGroups);
+
+  const [nameFilter, setNameFilter] = useState(location.query.q || '');
 
   const nameFilterLowercase = nameFilter.toLowerCase();
   const filteredGroups = nameFilter
@@ -93,6 +95,20 @@ function GroupsList({ pageSize }) {
     [filteredGroups, page, pageSize, sort],
   );
 
+  const clearSearchForm = useCallback(() => setNameFilter(''), []);
+
+  const debuncedReplace = useMemo(() => debounce(routerReplace, 200), [routerReplace]);
+
+  useEffect(() => {
+    if (nameFilter !== (location.query.q || '')) {
+      const query = omit(location.query, 'page', 'q');
+      if (nameFilter !== '') {
+        query.q = nameFilter;
+      }
+      debuncedReplace({ ...location, query });
+    }
+  }, [debuncedReplace, nameFilter, location]);
+
   return (
     <>
       {withProtected ? (
@@ -107,40 +123,50 @@ function GroupsList({ pageSize }) {
       )}
       <p>
         <label htmlFor="groups-name-filter">Filter by username or display name</label>
+      </p>
+      <p className="form-inline">
         <input
           id="groups-name-filter"
           type="search"
           placeholder="Type to filter"
+          value={nameFilter}
           onChange={useCallback((e) => setNameFilter(e.target.value), [])}
           className="form-control narrow-input"
         />
+        {nameFilter && (
+          <button className="btn btn-link" onClick={clearSearchForm}>
+            clear
+          </button>
+        )}
       </p>
       <p>Click on the column headers to change table sorting order.</p>
 
-      <table className={styles.table}>
-        <thead>
-          <tr className={styles.headersRow}>
-            <th className={styles.mainColumn}>Group</th>
-            <SortHeader mode={SORT_BY_SUBSCRIBERS} currentMode={sort}>
-              Subscribers
-            </SortHeader>
-            <SortHeader mode={SORT_BY_POSTS} currentMode={sort}>
-              Posts per month
-            </SortHeader>
-            <SortHeader mode={SORT_BY_VARIETY} currentMode={sort}>
-              Authors variety
-            </SortHeader>
-            <SortHeader mode={SORT_BY_DATE} currentMode={sort}>
-              Creation date
-            </SortHeader>
-          </tr>
-        </thead>
-        <tbody>
-          {groupsOnPage.map((g) => (
-            <GroupRow key={g.id} g={g} />
-          ))}
-        </tbody>
-      </table>
+      <HorScrollable>
+        <table className={styles.table}>
+          <thead>
+            <tr className={styles.headersRow}>
+              <th className={styles.mainColumn}>Group</th>
+              <SortHeader mode={SORT_BY_SUBSCRIBERS} currentMode={sort}>
+                Subscribers
+              </SortHeader>
+              <SortHeader mode={SORT_BY_POSTS} currentMode={sort}>
+                Posts per month
+              </SortHeader>
+              <SortHeader mode={SORT_BY_VARIETY} currentMode={sort}>
+                Authors variety
+              </SortHeader>
+              <SortHeader mode={SORT_BY_DATE} currentMode={sort}>
+                Creation date
+              </SortHeader>
+            </tr>
+          </thead>
+          <tbody>
+            {groupsOnPage.map((g) => (
+              <GroupRow key={g.id} g={g} />
+            ))}
+          </tbody>
+        </table>
+      </HorScrollable>
       {groupsOnPage.length === 0 ? (
         <div className={styles.empty}>No groups match current filter</div>
       ) : (
@@ -162,7 +188,13 @@ function GroupsList({ pageSize }) {
 function SortHeader({ children, mode, currentMode }) {
   const location = useSelector((state) => state.routing.locationBeforeTransitions);
   return (
-    <th className={styles.sortableHeader + (mode === currentMode ? '' : ` ${styles.inactive}`)}>
+    <th
+      className={cn(
+        styles.sortableHeader,
+        mode === currentMode && styles.inactive,
+        styles[`${mode}Column`],
+      )}
+    >
       <Link to={linkToSort(mode, location)}>
         <div>
           {children}

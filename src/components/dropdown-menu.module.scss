@@ -1,12 +1,14 @@
 @import '../../styles/helvetica/dark-vars.scss';
 
+$zIndex: 10;
+
 .list {
   position: absolute;
   top: 0.5em;
   left: 0;
   min-width: 10em;
 
-  z-index: 7;
+  z-index: $zIndex;
 
   list-style: none;
   padding: 0;
@@ -21,31 +23,82 @@
   }
 }
 
+.focusList {
+  // Just a mark for the focus-enabled list. We cannot remove this declaration
+  // because it need to be generated as module class name.
+}
+
+.fixedList {
+  position: fixed;
+  top: auto;
+  bottom: 0;
+
+  // Support for the iDevices
+  padding-bottom: unquote('env(safe-area-inset-bottom)');
+
+  @media (min-width: 451px) {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  @media (max-width: 450px) {
+    left: 0;
+    width: 100%;
+    box-shadow: 0px 20px 40px 20px rgba(0, 0, 0, 0.7);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: transform 0.2s, opacity 0.2s;
+    transform: translateY(0px);
+    opacity: 1;
+
+    &.initial {
+      transform: translateY(40px);
+      opacity: 0.5;
+    }
+  }
+}
+
 .item {
   text-align: left;
 }
 
-.item:hover {
-  background-color: #eee;
+.content {
+  padding: 0.5em 0.66em;
+  color: #666;
 
   :global(.dark-theme) & {
-    color: $text-color-lighter;
-    background: $bg-color-lightest;
+    color: $text-color;
   }
 }
 
 .link {
   display: block;
   text-decoration: none !important;
-  color: inherit;
   padding: 0.5em 0.66em;
 
-  &:hover {
-    color: inherit !important;
-  }
-
+  color: inherit;
   :global(.dark-theme) & {
     color: inherit;
+  }
+
+  .list:not(.focusList) &:hover,
+  &:focus {
+    color: inherit !important;
+    :global(.dark-theme) & {
+      color: inherit !important;
+    }
+  }
+
+  @media (hover: hover) {
+    .list:not(.focusList) &:hover,
+    &:focus {
+      background-color: #eee;
+
+      :global(.dark-theme) & {
+        background: $bg-color-lightest;
+      }
+    }
   }
 
   &.danger {
@@ -72,5 +125,73 @@
 
   :global(.dark-theme) & {
     background-color: $separator-color;
+  }
+}
+
+.group {
+  &:empty {
+    display: none;
+  }
+
+  margin: 0.33em 0;
+
+  &::before {
+    content: '';
+
+    display: block;
+    height: 1px;
+    margin: 0 0.66em 0.33em;
+    background-color: #ccc;
+
+    :global(.dark-theme) & {
+      background-color: $separator-color;
+    }
+  }
+
+  &:first-child::before {
+    content: none;
+  }
+}
+
+.shadow {
+  z-index: $zIndex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+
+  :global(.dark-theme) & {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: opacity 0.2s;
+    opacity: 1;
+
+    &.initial {
+      opacity: 0;
+    }
+  }
+}
+
+.iconic {
+  display: flex;
+}
+
+.iconicCentered {
+  display: flex;
+  align-items: center;
+}
+
+.iconicIcon {
+  flex: 0 0 1.5em;
+  display: flex;
+  height: 1.42857em;
+  align-items: center;
+  color: #999;
+  :global(.dark-theme) & {
+    color: $text-color-darker;
   }
 }

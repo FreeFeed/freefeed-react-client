@@ -9,11 +9,13 @@ import { Icon } from '../fontawesome-icons';
 import cachedFetch from './cached-fetch';
 import * as aspectRatio from './scroll-helpers/size-cache';
 
-const YOUTUBE_VIDEO_RE = /^https?:\/\/(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?(?:v=|.+&v=)))([\w-]+)/i;
+const YOUTUBE_VIDEO_RE =
+  /^https?:\/\/(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?(?:v=|.+&v=)))([\w-]+)/i;
 const VIMEO_VIDEO_RE = /^https:\/\/vimeo\.com\/(\d+)/i;
 const COUB_VIDEO_RE = /^https?:\/\/coub\.com\/view\/([a-z\d]+)/i;
 const IMGUR_VIDEO_RE = /^https?:\/\/i\.imgur\.com\/([a-z\d]+)\.(gifv|mp4)/i;
-const GFYCAT_RE = /^https?:\/\/(?:[a-z]+\.)?gfycat\.com\/(?:[^/]{0,3}\/)?((?:[A-Z][a-z]+){3}|[a-z]{16,})/;
+const GFYCAT_RE =
+  /^https?:\/\/(?:[a-z]+\.)?gfycat\.com\/(?:[^/]{0,3}\/)?((?:[A-Z][a-z]+){3}|[a-z]{16,})/;
 const GIPHY_RE = /^https?:\/\/giphy.com\/gifs\/.+?-([a-zA-Z\d]+)($|\/|\?)/;
 
 const T_YOUTUBE_VIDEO = 'T_YOUTUBE_VIDEO';
@@ -85,10 +87,10 @@ export default memo(function VideoPreview({ url }) {
   useEffect(() => void getVideoInfo(url).then(setInfo), [url]);
 
   // Turn player off is feed is loading
-  useEffect(() => setPlayerVisible(playerVisible && !feedIsLoading), [
-    playerVisible,
-    feedIsLoading,
-  ]);
+  useEffect(
+    () => setPlayerVisible(playerVisible && !feedIsLoading),
+    [playerVisible, feedIsLoading],
+  );
 
   if (info && 'error' in info) {
     return <div className="video-preview link-preview-content load-error">{info.error}</div>;

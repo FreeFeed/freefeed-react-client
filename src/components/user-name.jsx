@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { Portal } from 'react-portal';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router';
+import classNames from 'classnames';
 
 import ErrorBoundary from './error-boundary';
 import { useDropDown, CLOSE_ON_CLICK_OUTSIDE } from './hooks/drop-down';
@@ -10,7 +11,7 @@ import UserCard from './user-card';
 import { useMediaQueryRef } from './hooks/media-query';
 
 export default function UserName({
-  user: { username, screenName },
+  user: { username, screenName, isGone },
   userHover, // { hover, leave },
   children,
   className,
@@ -81,6 +82,8 @@ export default function UserName({
     };
   }, [opened, onEnter, onLeave, menuRef]);
 
+  const linkCn = classNames(className, isGone ? 'user-is-gone' : false);
+
   return (
     <ErrorBoundary>
       <span
@@ -89,7 +92,7 @@ export default function UserName({
         onMouseEnter={onEnter}
         onMouseLeave={onLeave}
       >
-        <Link to={`/${username}`} className={className} onClick={onClick} onTouchEnd={onTouchEnd}>
+        <Link to={`/${username}`} className={linkCn} onClick={onClick} onTouchEnd={onTouchEnd}>
           {children ? (
             <span dir="ltr">{children}</span>
           ) : (
@@ -115,10 +118,10 @@ function useHover(timeout, setHovered) {
   const enterTimeout = useRef(0);
   const leaveTimeout = useRef(0);
 
-  const clearTimeouts = useCallback(
-    () => (clearTimeout(enterTimeout.current), clearTimeout(leaveTimeout.current)),
-    [],
-  );
+  const clearTimeouts = useCallback(() => {
+    clearTimeout(enterTimeout.current);
+    clearTimeout(leaveTimeout.current);
+  }, []);
 
   const onEnter = useCallback(() => {
     clearTimeouts();
@@ -129,10 +132,13 @@ function useHover(timeout, setHovered) {
     leaveTimeout.current = setTimeout(() => setHovered(false), 500);
   }, [clearTimeouts, setHovered]);
 
-  useEffect(
-    () => () => (clearTimeout(enterTimeout.current), clearTimeout(leaveTimeout.current)),
-    [],
-  );
+  useEffect(() => {
+    // do nothing. just return cleanup-function
+    return () => {
+      clearTimeout(enterTimeout.current);
+      clearTimeout(leaveTimeout.current);
+    };
+  }, []);
 
   return { onEnter, onLeave };
 }

@@ -41,17 +41,23 @@ export default class PostComments extends Component {
     name && this._openAnsweringComment(`@${name}`);
   };
 
-  replyWithArrows = (commentId) => {
+  backwardIdx = (commentId) => {
     const { post, comments } = this.props;
     const idx = comments.findIndex((c) => c.id === commentId);
     if (idx < 0) {
-      return;
+      return 0;
     }
     let backwardIdx = comments.length - idx;
     if (idx < post.omittedCommentsOffset) {
       backwardIdx += post.omittedComments;
     }
-    this._openAnsweringComment('^'.repeat(backwardIdx));
+    return backwardIdx;
+  };
+
+  replyWithArrows = (commentId) => {
+    const bIdx = this.backwardIdx(commentId);
+    const arrows = '^'.repeat(bIdx);
+    this._openAnsweringComment(arrows);
   };
 
   _openAnsweringComment(answerText) {
@@ -151,6 +157,11 @@ export default class PostComments extends Component {
     leave: () => this.setState({ highlightedCommentId: null }),
   };
 
+  canAddComment() {
+    const { post } = this.props;
+    return !post.commentsDisabled || post.isEditable || post.isModeratable;
+  }
+
   renderComment = (comment, index = 0) => {
     const { props } = this;
     return (
@@ -164,6 +175,7 @@ export default class PostComments extends Component {
           isSinglePost={this.props.isSinglePost}
           mentionCommentAuthor={this.mentionCommentAuthor}
           replyWithArrows={this.replyWithArrows}
+          backwardIdx={this.backwardIdx}
           isModeratingComments={props.post.isModeratingComments}
           {...props.commentEdit}
           authorHighlightHandlers={this.authorHighlightHandlers}
@@ -177,6 +189,7 @@ export default class PostComments extends Component {
             comment.user?.username === this.state.highlightedAuthor ||
             comment.id === this.state.highlightedCommentId
           }
+          canAddComment={this.canAddComment()}
         />
       )
     );
@@ -214,8 +227,7 @@ export default class PostComments extends Component {
 
   renderAddComment() {
     const { post, user } = this.props;
-    const canAddComment = !post.commentsDisabled || post.isEditable || post.isModeratable;
-    if (!canAddComment) {
+    if (!this.canAddComment()) {
       return false;
     }
     if (!user.id) {

@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.99.0] - Not released
+### Added
+- Display usernames of gone users in post comments in grey color
+- Headers of sidebar blocks are links now
+- "More" menu for comments with all comment-related actions and information
+
+### Fixed
+- Changes in search field on the "All Groups" page now resets the page number to
+  the first page. Also the page and the query string are now synchronized with
+  the URL's query parameters.
+- A group table on 'All Groups" page is scrollable on narrow screens now
+- Fix accessibility-labels of comment-likes (actions were opposite to the real ones)
+
+### Changed
+- Removed thin red line in upload preview
+- Point beta-reports to "beta" group instead of "support"
+
 ## [1.98.2] - 2021-04-09
 ### Fixed
 - Accept the 'q' GET-parameter as search query in the header form

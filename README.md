@@ -28,6 +28,11 @@ You can also use custom local configuration file or additional environment varia
 
 1. `yarn build-prod` will build a production version in the `_dist` folder
 
+## Pre-commit hooks
+
+We use pre-commit hook which fixes code-style. In case you want to disable it (because your IDE does this already, for
+example) you can create an empty `.no_husky` file in the root directory of project.
+
 ## License
 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FFreeFeed%2Ffreefeed-react-client.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FFreeFeed%2Ffreefeed-react-client?ref=badge_large)

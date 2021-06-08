@@ -33,10 +33,10 @@ const FeedHandler = (props) => {
   const dispatch = useDispatch();
   const feedId = useSelector((state) => state.feedViewState.timeline?.id);
   const [isEditing, , showEditor, hideEditor] = useBool(false);
-  const closeEditor = useCallback((listId) => (hideEditor(), listId && dispatch(home())), [
-    hideEditor,
-    dispatch,
-  ]);
+  const closeEditor = useCallback(
+    (listId) => (hideEditor(), listId && dispatch(home())),
+    [hideEditor, dispatch],
+  );
 
   if (!props.authenticated) {
     return (
