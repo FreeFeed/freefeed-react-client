@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Removed thin red line in upload preview
+- Point beta-reports to "beta" group instead of "support"
 
 ## [1.98.2] - 2021-04-09
 ### Fixed
