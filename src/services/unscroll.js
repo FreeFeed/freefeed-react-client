@@ -88,6 +88,10 @@ pinnedElements.capture = function () {
 scrolling.on(START, () => pinnedElements.clear());
 scrolling.on(FINISH, () => pinnedElements.capture());
 
+export function intentToScroll() {
+  scrolling.trigger();
+}
+
 export function safeScrollTo(x, y) {
   scrolling.trigger();
   window.scrollTo(x, y);

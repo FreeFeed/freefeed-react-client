@@ -67,20 +67,42 @@ exports[`PostComments Renders post comments and doesn't blow up 1`] = `
           </span>
           <span
             aria-label="Comment by author"
+            class="comment-tail"
           >
-             - 
             <span
-              class="user-name-wrapper"
+              class="comment-tail__item"
             >
-              <a
-                class=""
+              <span
+                class="user-name-wrapper"
               >
-                <span
-                  dir="ltr"
+                <a
+                  class=""
                 >
-                  You
-                </span>
-              </a>
+                  <span
+                    dir="ltr"
+                  >
+                    You
+                  </span>
+                </a>
+              </span>
+            </span>
+            <span
+              class="comment-tail__item comment-tail__actions"
+            >
+              <span
+                class="comment-tail__action"
+              >
+                <a
+                  aria-disabled="false"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class="comment-tail__action-link comment-tail__action-link--more"
+                  role="button"
+                  tabindex="0"
+                >
+                  more
+                </a>
+              </span>
             </span>
           </span>
         </div>
@@ -160,20 +182,42 @@ exports[`PostComments Renders post comments and doesn't blow up 1`] = `
           </span>
           <span
             aria-label="Comment by other"
+            class="comment-tail"
           >
-             - 
             <span
-              class="user-name-wrapper"
+              class="comment-tail__item"
             >
-              <a
-                class=""
+              <span
+                class="user-name-wrapper"
               >
-                <span
-                  dir="ltr"
+                <a
+                  class=""
                 >
-                  other
-                </span>
-              </a>
+                  <span
+                    dir="ltr"
+                  >
+                    other
+                  </span>
+                </a>
+              </span>
+            </span>
+            <span
+              class="comment-tail__item comment-tail__actions"
+            >
+              <span
+                class="comment-tail__action"
+              >
+                <a
+                  aria-disabled="false"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class="comment-tail__action-link comment-tail__action-link--more"
+                  role="button"
+                  tabindex="0"
+                >
+                  more
+                </a>
+              </span>
             </span>
           </span>
         </div>
@@ -239,20 +283,42 @@ exports[`PostComments Renders post comments and doesn't blow up 1`] = `
           </span>
           <span
             aria-label="Comment by author"
+            class="comment-tail"
           >
-             - 
             <span
-              class="user-name-wrapper"
+              class="comment-tail__item"
             >
-              <a
-                class=""
+              <span
+                class="user-name-wrapper"
               >
-                <span
-                  dir="ltr"
+                <a
+                  class=""
                 >
-                  You
-                </span>
-              </a>
+                  <span
+                    dir="ltr"
+                  >
+                    You
+                  </span>
+                </a>
+              </span>
+            </span>
+            <span
+              class="comment-tail__item comment-tail__actions"
+            >
+              <span
+                class="comment-tail__action"
+              >
+                <a
+                  aria-disabled="false"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class="comment-tail__action-link comment-tail__action-link--more"
+                  role="button"
+                  tabindex="0"
+                >
+                  more
+                </a>
+              </span>
             </span>
           </span>
         </div>

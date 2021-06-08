@@ -37,6 +37,12 @@ export function OverlayPopup({
     [close, easyClose],
   );
 
+  // Turn off body scrolling while the popup is opened
+  useEffect(() => {
+    document.body.classList.add('body--no-scroll');
+    return () => document.body.classList.remove('body--no-scroll');
+  }, []);
+
   return (
     <Portal>
       <FocusTrap>

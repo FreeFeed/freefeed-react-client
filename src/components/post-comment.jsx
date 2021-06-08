@@ -5,7 +5,11 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 
 import { preventDefault, confirmFirst } from '../utils';
-import { READMORE_STYLE_COMPACT, COMMENT_DELETED } from '../utils/frontend-preferences-options';
+import {
+  READMORE_STYLE_COMPACT,
+  COMMENT_HIDDEN_BANNED,
+  COMMENT_VISIBLE,
+} from '../utils/frontend-preferences-options';
 import { commentReadmoreConfig } from '../utils/readmore-config';
 import { defaultCommentState } from '../redux/reducers/comment-edit';
 
@@ -16,16 +20,14 @@ import UserName from './user-name';
 import TimeDisplay from './time-display';
 import CommentIcon, { JustCommentIcon } from './comment-icon';
 import { CommentEditForm } from './comment-edit-form';
+import { ButtonLink } from './button-link';
+import { PostCommentMore } from './post-comment-more';
 
 class PostComment extends Component {
   commentContainer;
   commentForm;
 
-  constructor(props) {
-    super(props);
-
-    this.commentForm = null;
-  }
+  state = { moreMenuOpened: false };
 
   scrollToComment = () => {
     if (this.commentContainer) {
@@ -56,6 +58,7 @@ class PostComment extends Component {
 
   reply = () => this.props.replyWithArrows(this.props.id);
   mention = () => this.props.mentionCommentAuthor(this.props.id);
+  backwardIdx = () => this.props.backwardIdx(this.props.id);
 
   saveComment = (text) => this.props.saveEditingComment(this.props.id, text);
 
@@ -92,19 +95,113 @@ class PostComment extends Component {
     leave: () => this.props.arrowsHighlightHandlers.leave(),
   };
 
+  like = () => this.props.likeComment(this.props.id);
+  unlike = () => this.props.unlikeComment(this.props.id);
+
+  possibleActions() {
+    if (!this.props.currentUser.id) {
+      // Not authorized
+      return {};
+    }
+    const ownComment = this.props.currentUser.id === this.props.user?.id;
+    return {
+      ownComment,
+      canLike: !ownComment && this.props.hideType === COMMENT_VISIBLE,
+      canReply: this.props.hideType === COMMENT_VISIBLE && this.props.canAddComment,
+      canDelete: this.props.isEditable || this.props.isDeletable,
+    };
+  }
+
+  // We use this strange data structure because there can be more than one
+  // PostCommentMore element created in the comment (see Expandable/bonusInfo).
+  _moreMenuOpeners = [];
+  openMoreMenu = () => this._moreMenuOpeners[0]?.();
+  setMoreMenuOpener = (o) =>
+    void (o ? this._moreMenuOpeners.unshift(o) : this._moreMenuOpeners.shift());
+
+  onMoreMenuOpened = (moreMenuOpened) => this.setState({ moreMenuOpened });
+
+  commentTail() {
+    const { canLike, canReply, canDelete, ownComment } = this.possibleActions();
+    return (
+      <span
+        aria-label={this.props.user ? `Comment by ${this.props.user.username}` : `Hidden comment`}
+        className="comment-tail"
+      >
+        {this.props.user && (
+          <span className="comment-tail__item">
+            <UserName user={this.props.user} userHover={this.props.authorHighlightHandlers} />
+          </span>
+        )}
+        <span className="comment-tail__item comment-tail__actions">
+          {this.props.isEditable && (
+            <span className="comment-tail__action">
+              <ButtonLink className="comment-tail__action-link" onClick={this.handleEditOrCancel}>
+                edit
+              </ButtonLink>
+            </span>
+          )}
+          {canDelete && this.props.isModeratingComments && (
+            <span className="comment-tail__action">
+              <ButtonLink
+                className="comment-tail__action-link comment-tail__action-link--delete"
+                onClick={this.handleDeleteComment}
+              >
+                delete
+              </ButtonLink>
+            </span>
+          )}
+          <span className="comment-tail__action">
+            <PostCommentMore
+              className="comment-tail__action-link comment-tail__action-link--more"
+              id={this.props.id}
+              authorUsername={this.props.user?.username}
+              doEdit={this.props.isEditable && this.handleEditOrCancel}
+              doDelete={canDelete && ownComment && this.handleDeleteComment}
+              doReply={canReply && this.reply}
+              doMention={canReply && this.mention}
+              doLike={canLike && !this.props.hasOwnLike && this.like}
+              doUnlike={canLike && this.props.hasOwnLike && this.unlike}
+              getBackwardIdx={this.backwardIdx}
+              createdAt={this.props.createdAt}
+              updatedAt={this.props.updatedAt}
+              permalink={`${this.props.entryUrl}#comment-${this.props.id}`}
+              likesCount={this.props.likes}
+              setMenuOpener={this.setMoreMenuOpener}
+              onMenuOpened={this.onMoreMenuOpened}
+            />
+          </span>
+        </span>
+        {(this.props.showTimestamps || this.props.forceAbsTimestamps) && (
+          <span className="comment-tail__item">
+            <Link
+              to={`${this.props.entryUrl}#comment-${this.props.id}`}
+              className="comment-tail__timestamp"
+            >
+              <TimeDisplay
+                timeStamp={+this.props.createdAt}
+                inline
+                absolute={this.props.forceAbsTimestamps}
+              />
+            </Link>
+          </span>
+        )}
+      </span>
+    );
+  }
+
   renderBody() {
+    const commentTail = this.commentTail();
+
     if (this.props.hideType) {
-      const isDeletable = this.props.isDeletable && this.props.hideType !== COMMENT_DELETED;
+      let { body } = this.props;
+      if (this.props.hideType === COMMENT_HIDDEN_BANNED) {
+        body = 'Comment from blocked user';
+      }
       return (
         <div className="comment-body">
-          <span className="comment-text">{this.props.body}</span>
-          {isDeletable && this.props.isModeratingComments ? (
-            <span>
-              {' - '}(<a onClick={this.handleDeleteComment}>delete</a>)
-            </span>
-          ) : (
-            false
-          )}
+          <span className="comment-text">{body}</span>
+          {commentTail}
         </div>
       );
     }
@@ -122,50 +219,6 @@ class PostComment extends Component {
       );
     }
 
-    const authorAndButtons = (
-      <span aria-label={`Comment by ${this.props.user.username}`}>
-        {' -'}&nbsp;
-        <UserName user={this.props.user} userHover={this.props.authorHighlightHandlers} />
-        {this.props.isEditable ? (
-          <span>
-            {' '}
-            (
-            <a onClick={this.handleEditOrCancel} role="button">
-              edit
-            </a>
-            &nbsp;|&nbsp;
-            <a onClick={this.handleDeleteComment} role="button">
-              delete
-            </a>
-            )
-          </span>
-        ) : this.props.isDeletable && this.props.isModeratingComments ? (
-          <span>
-            {' '}
-            (
-            <a onClick={this.handleDeleteComment} role="button">
-              delete
-            </a>
-            )
-          </span>
-        ) : (
-          false
-        )}
-        {(this.props.showTimestamps || this.props.forceAbsTimestamps) && (
-          <span className="comment-timestamp">
-            {' - '}
-            <Link to={`${this.props.entryUrl}#comment-${this.props.id}`}>
-              <TimeDisplay
-                timeStamp={+this.props.createdAt}
-                inline
-                absolute={this.props.forceAbsTimestamps || null}
-              />
-            </Link>
-          </span>
-        )}
-      </span>
-    );
-
     return (
       <div className="comment-body">
         <Expandable
@@ -174,7 +227,7 @@ class PostComment extends Component {
             this.props.isSinglePost ||
             this.props.isExpanded
           }
-          bonusInfo={authorAndButtons}
+          bonusInfo={commentTail}
           config={commentReadmoreConfig}
         >
           <PieceOfText
@@ -185,7 +238,7 @@ class PostComment extends Component {
             arrowHover={this.arrowHoverHandlers}
             showMedia={this.props.showMedia}
           />
-          {authorAndButtons}
+          {commentTail}
         </Expandable>
       </div>
     );
@@ -209,6 +262,7 @@ class PostComment extends Component {
         reply={this.reply}
         mention={this.mention}
         entryUrl={this.props.entryUrl}
+        openMoreMenu={this.openMoreMenu}
       />
     );
   }
@@ -216,7 +270,8 @@ class PostComment extends Component {
   render() {
     const className = classnames({
       comment: true,
-      highlighted: this.props.highlightComments && this.props.highlighted,
+      highlighted:
+        (this.props.highlightComments && this.props.highlighted) || this.state.moreMenuOpened,
       'omit-bubble': this.props.omitBubble,
       'is-hidden': !!this.props.hideType,
       'highlight-from-url': this.props.highlightedFromUrl,

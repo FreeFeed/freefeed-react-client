@@ -6962,6 +6962,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"focus-visible@npm:~5.2.0":
+  version: 5.2.0
+  resolution: "focus-visible@npm:5.2.0"
+  checksum: 4e60302bd84accb92d11c22f8a5f6e38d2f5a0cc1bd45e708b9f00173cc700d1f0782c78f932023479074739fd588e0dd94c0e2575b2212843955e2d4398e752
+  languageName: node
+  linkType: hard
+
 "follow-redirects@npm:^1.0.0":
   version: 1.14.1
   resolution: "follow-redirects@npm:1.14.1"
@@ -13381,6 +13388,7 @@ fsevents@^1.2.7:
     filesize: ~6.3.0
     final-form: ~4.20.2
     focus-trap-react: ~8.5.0
+    focus-visible: ~5.2.0
     highcharts: ~8.2.2
     html-webpack-plugin: ~4.5.2
     husky: ~6.0.0
@@ -13440,6 +13448,7 @@ fsevents@^1.2.7:
     stylelint-config-recommended-scss: ~4.2.0
     stylelint-prettier: ~1.2.0
     stylelint-scss: ~3.19.0
+    tabbable: ~5.2.0
     terser-webpack-plugin: ~4.2.3
     ua-parser-js: ~0.7.28
     unexpected: ~12.0.3
@@ -15611,7 +15620,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tabbable@npm:^5.2.0":
+"tabbable@npm:^5.2.0, tabbable@npm:~5.2.0":
   version: 5.2.0
   resolution: "tabbable@npm:5.2.0"
   checksum: d8662aeb2d05c16521bc595f088c2c9217aa19b7cad223f0133eacd1c542a16cacefd0af9c0cec535308dce7d546168a3fd6245bbb733987ac1499434491464d
