@@ -5,19 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.99.0] - Not released
+## EXPERIMENTAL
+### Added
+- "Grips" in sidebar for drag and sort home feeds. Previously, the drag zone
+  matched the feed link itself, and that was inconvenient, especially on mobile
+  screens.
+
+### Fixed
+- Fixed the mobile Chrome unwanted font boosting.
+
+## [1.99.0] - 2021-06-08
 ### Added
 - Display usernames of gone users in post comments in grey color
 - Headers of sidebar blocks are links now
 - "More" menu for comments with all comment-related actions and information
-- "Grips" in sidebar for drag and sort home feeds. Previously, the drag zone
-  matched the feed link itself, and that was inconvenient, especially on mobile
-  screens.
-### Fixed
-- Changes in search field on the "All Groups" page now resets the page number to
-  the first page. Also the page and the query string are now synchronized with
-  the URL's query parameters.
-- Fixed the mobile Chrome unwanted font boosting.
 
 ### Fixed
 - Changes in search field on the "All Groups" page now resets the page number to
@@ -28,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Removed thin red line in upload preview
+- Point beta-reports to "beta" group instead of "support"
 
 ## [1.98.2] - 2021-04-09
 ### Fixed
