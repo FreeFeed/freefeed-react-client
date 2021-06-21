@@ -160,6 +160,7 @@ function MediaViewer(props) {
         }),
       ).then((items) => {
         setLightboxItems(items);
+        return true;
       });
     } else {
       setLightboxItems(null);

@@ -752,9 +752,9 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers, userActivit
     }
 
     if (action.type === ActionTypes.REALTIME_CONNECTED) {
-      conn.reAuthorize().then(async () => {
+      conn.reAuthorize().then(() => {
         const { realtimeSubscriptions } = store.getState();
-        await conn.subscribeTo(...realtimeSubscriptions);
+        return conn.subscribeTo(...realtimeSubscriptions);
       });
     }
 
@@ -781,6 +781,7 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers, userActivit
       conn.reAuthorize().then(() => {
         const state = store.getState();
         store.dispatch(ActionCreators.realtimeSubscribe(`user:${state.user.id}`));
+        return true;
       });
     }
 

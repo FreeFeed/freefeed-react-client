@@ -31,6 +31,8 @@ export default function SoundCloudPreview({ url }) {
           const [, id] = SOUNDCLOUD_USER_RE.exec(data.html);
           setPlayerUrl(`https://api.soundcloud.com/users/${id}`);
         }
+
+        return true;
       },
     );
   }, [url]);

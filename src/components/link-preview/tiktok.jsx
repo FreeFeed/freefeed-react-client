@@ -21,6 +21,8 @@ export default function TikTokVideoPreview({ url }) {
       } else {
         setIsError(true);
       }
+
+      return true;
     });
   }, [url]);
 
