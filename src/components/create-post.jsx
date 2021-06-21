@@ -2,6 +2,7 @@
 import { Component, createRef } from 'react';
 import Textarea from 'react-textarea-autosize';
 import _ from 'lodash';
+import * as Sentry from '@sentry/react';
 
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
@@ -79,7 +80,14 @@ export default class CreatePost extends Component {
             if (!blob.name) {
               blob.name = 'image.png';
             }
-            makeJpegIfNeeded(blob).then((blob) => this.dropzoneObject.addFile(blob));
+            makeJpegIfNeeded(blob)
+              .then((blob) => this.dropzoneObject.addFile(blob))
+              .catch((error) => {
+                Sentry.captureException(error, {
+                  level: 'error',
+                  tags: { area: 'upload' },
+                });
+              });
           }
         }
       }

@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import * as Sentry from '@sentry/react';
+
 import cachedFetch from './cached-fetch';
 
 const SOUNDCLOUD_SONG_RE = /^https:\/\/soundcloud\.com\/([^/]+)\/([^/]+)$/;
@@ -17,8 +19,8 @@ export default function SoundCloudPreview({ url }) {
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    cachedFetch(`https://soundcloud.com/oembed?url=${encodeURIComponent(url)}&format=json`).then(
-      (data) => {
+    cachedFetch(`https://soundcloud.com/oembed?url=${encodeURIComponent(url)}&format=json`)
+      .then((data) => {
         if (!data.title || !data.html) {
           setIsError(true);
         }
@@ -33,8 +35,15 @@ export default function SoundCloudPreview({ url }) {
         }
 
         return true;
-      },
-    );
+      })
+      .catch((error) => {
+        setIsError(true);
+
+        Sentry.captureException(error, {
+          level: 'warning',
+          tags: { area: 'link-preview' },
+        });
+      });
   }, [url]);
 
   if (!playerUrl && !isError) {

@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import _ from 'lodash';
 import Textarea from 'react-textarea-autosize';
 import dateFormat from 'date-fns/format';
+import * as Sentry from '@sentry/react';
 import {
   faExclamationTriangle,
   faLock,
@@ -74,7 +75,14 @@ class Post extends Component {
             if (!blob.name) {
               blob.name = 'image.png';
             }
-            makeJpegIfNeeded(blob).then((blob) => this.dropzoneObject.addFile(blob));
+            makeJpegIfNeeded(blob)
+              .then((blob) => this.dropzoneObject.addFile(blob))
+              .catch((error) => {
+                Sentry.captureException(error, {
+                  level: 'error',
+                  tags: { area: 'upload' },
+                });
+              });
           }
         }
       }

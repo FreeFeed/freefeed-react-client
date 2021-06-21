@@ -752,10 +752,18 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers, userActivit
     }
 
     if (action.type === ActionTypes.REALTIME_CONNECTED) {
-      conn.reAuthorize().then(() => {
-        const { realtimeSubscriptions } = store.getState();
-        return conn.subscribeTo(...realtimeSubscriptions);
-      });
+      conn
+        .reAuthorize()
+        .then(() => {
+          const { realtimeSubscriptions } = store.getState();
+          return conn.subscribeTo(...realtimeSubscriptions);
+        })
+        .catch((error) => {
+          Sentry.captureException(error, {
+            level: 'error',
+            tags: { area: 'realtime' },
+          });
+        });
     }
 
     if (action.type === ActionTypes.REALTIME_SUBSCRIBE) {
@@ -767,7 +775,15 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers, userActivit
     }
 
     if (action.type === ActionTypes.UNAUTHENTICATED) {
-      conn.reAuthorize().then(() => unsubscribeByRegexp(/^user:/));
+      conn
+        .reAuthorize()
+        .then(() => unsubscribeByRegexp(/^user:/))
+        .catch((error) => {
+          Sentry.captureException(error, {
+            level: 'error',
+            tags: { area: 'realtime' },
+          });
+        });
     }
 
     if (action.type === ActionTypes.AUTH_TOKEN_UPDATED) {
@@ -778,11 +794,19 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers, userActivit
       action.type === response(ActionTypes.WHO_AM_I) ||
       action.type === response(ActionTypes.SIGN_UP)
     ) {
-      conn.reAuthorize().then(() => {
-        const state = store.getState();
-        store.dispatch(ActionCreators.realtimeSubscribe(`user:${state.user.id}`));
-        return true;
-      });
+      conn
+        .reAuthorize()
+        .then(() => {
+          const state = store.getState();
+          store.dispatch(ActionCreators.realtimeSubscribe(`user:${state.user.id}`));
+          return true;
+        })
+        .catch((error) => {
+          Sentry.captureException(error, {
+            level: 'error',
+            tags: { area: 'realtime' },
+          });
+        });
     }
 
     if (isFeedRequest(action) || action.type === request(ActionTypes.GET_SINGLE_POST)) {
@@ -934,10 +958,11 @@ export const betaChannelMiddleware = (store) => {
 export const appVersionMiddleware = (store) => {
   const { url, header, intervalSec } = CONFIG.appVersionCheck;
   function checkVersion() {
-    fetch(url, { method: 'HEAD' }).then(
-      (res) => res.ok && store.dispatch(ActionCreators.setAppVersion(res.headers.get(header))),
-      (err) => console.warn(`Cannot fetch '${url}': ${err}`),
-    );
+    fetch(url, { method: 'HEAD' })
+      .then(
+        (res) => res.ok && store.dispatch(ActionCreators.setAppVersion(res.headers.get(header))),
+      )
+      .catch((err) => console.warn(`Cannot fetch '${url}': ${err}`));
 
     setTimeout(checkVersion, intervalSec * 1000);
   }

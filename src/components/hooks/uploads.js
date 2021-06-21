@@ -1,5 +1,7 @@
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import * as Sentry from '@sentry/react';
+
 import { createAttachment } from '../../redux/action-creators';
 import { makeJpegIfNeeded } from '../../utils/jpeg-if-needed';
 import { UploadProgress } from '../upload-progress';
@@ -83,7 +85,14 @@ export function useUploader({ dropTargetRef, pasteTargetRef, onSuccess }) {
         if (!blob.name) {
           blob.name = 'image.png';
         }
-        makeJpegIfNeeded(blob).then(uploadFile);
+        makeJpegIfNeeded(blob)
+          .then(uploadFile)
+          .catch((error) => {
+            Sentry.captureException(error, {
+              level: 'error',
+              tags: { area: 'upload' },
+            });
+          });
       }
       withImages && e.preventDefault();
     },

@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import * as Sentry from '@sentry/react';
+
 import cachedFetch from './cached-fetch';
 
 const TIKTOK_VIDEO_RE = /^https?:\/\/(?:www\.)?tiktok\.com\/@.+?\/video\/(\d+)/i;
@@ -14,16 +16,25 @@ export default function TikTokVideoPreview({ url }) {
   const [byline, setByline] = useState(null);
 
   useEffect(() => {
-    cachedFetch(`https://www.tiktok.com/oembed?url=${encodeURIComponent(url)}`).then((data) => {
-      if ('title' in data) {
-        setByline(`${data.title || 'Untitled'} by ${data.author_name}`);
-        setId(/data-video-id="(\d+)"/.exec(data.html)?.[1]);
-      } else {
-        setIsError(true);
-      }
+    cachedFetch(`https://www.tiktok.com/oembed?url=${encodeURIComponent(url)}`)
+      .then((data) => {
+        if ('title' in data) {
+          setByline(`${data.title || 'Untitled'} by ${data.author_name}`);
+          setId(/data-video-id="(\d+)"/.exec(data.html)?.[1]);
+        } else {
+          setIsError(true);
+        }
 
-      return true;
-    });
+        return true;
+      })
+      .catch((error) => {
+        setIsError(true);
+
+        Sentry.captureException(error, {
+          level: 'warning',
+          tags: { area: 'link-preview' },
+        });
+      });
   }, [url]);
 
   if (isError) {
