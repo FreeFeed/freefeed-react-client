@@ -120,23 +120,10 @@
     --danger-color: #d66;
   }
 
-  &__item::before {
-    color: var(--gray-color);
-    content: ' - ';
-  }
+  color: var(--gray-color);
 
   &__actions {
     white-space: nowrap;
-    color: var(--gray-color);
-  }
-
-  &__action {
-    &::before {
-      content: ' | ';
-    }
-    &:first-child::before {
-      content: none;
-    }
   }
 
   &__timestamp {
