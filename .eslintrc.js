@@ -3,7 +3,7 @@ require('@babel/register');
 require('./config/lib/loader-node');
 
 module.exports = {
-  extends: ['eslint:recommended', 'plugin:prettier/recommended'],
+  extends: ['eslint:recommended', 'plugin:promise/recommended', 'plugin:prettier/recommended'],
   parser: '@babel/eslint-parser',
   plugins: [
     'babel',

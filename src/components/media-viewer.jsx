@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { renderToString } from 'react-dom/server';
+import * as Sentry from '@sentry/react';
+
 import { showMedia } from '../redux/action-creators';
 import { lazyComponent } from './lazy-component';
 import { getVideoType, getVideoInfo } from './link-preview/video';
@@ -158,9 +160,20 @@ function MediaViewer(props) {
             pid: a.id.slice(0, 8),
           };
         }),
-      ).then((items) => {
-        setLightboxItems(items);
-      });
+      )
+        .then((items) => {
+          setLightboxItems(items);
+          return true;
+        })
+        .catch((error) => {
+          setLightboxItems(null);
+
+          // Replace this with user-visible error?
+          Sentry.captureException(error, {
+            level: 'error',
+            tags: { area: 'lightbox' },
+          });
+        });
     } else {
       setLightboxItems(null);
     }

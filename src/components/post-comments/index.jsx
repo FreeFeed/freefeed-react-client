@@ -253,7 +253,6 @@ export default class PostComments extends Component {
       comments,
       entryUrl,
       isSinglePost,
-      isLoadingComments,
       commentsAfterFold,
       minFoldedComments,
       minToCollapse,
@@ -357,7 +356,7 @@ export default class PostComments extends Component {
           entryUrl={entryUrl}
           omittedComments={post.omittedComments + firstAfterFoldIdx - post.omittedCommentsOffset}
           omittedCommentLikes={foldedCommentLikes}
-          isLoading={isLoadingComments}
+          isLoading={post.isLoadingComments}
         />
       );
       if (post.omittedCommentsOffset > 0) {
