@@ -22,6 +22,7 @@ import CommentIcon, { JustCommentIcon } from './comment-icon';
 import { CommentEditForm } from './comment-edit-form';
 import { ButtonLink } from './button-link';
 import { PostCommentMore } from './post-comment-more';
+import { Separated } from './separated';
 
 class PostComment extends Component {
   commentContainer;
@@ -128,64 +129,72 @@ class PostComment extends Component {
         aria-label={this.props.user ? `Comment by ${this.props.user.username}` : `Hidden comment`}
         className="comment-tail"
       >
-        {this.props.user && (
-          <span className="comment-tail__item">
-            <UserName user={this.props.user} userHover={this.props.authorHighlightHandlers} />
-          </span>
-        )}
-        <span className="comment-tail__item comment-tail__actions">
-          {this.props.isEditable && (
-            <span className="comment-tail__action">
-              <ButtonLink className="comment-tail__action-link" onClick={this.handleEditOrCancel}>
-                edit
-              </ButtonLink>
+        {' - '}
+        <Separated separator=" - ">
+          {this.props.user && (
+            <span className="comment-tail__item">
+              <UserName user={this.props.user} userHover={this.props.authorHighlightHandlers} />
             </span>
           )}
-          {canDelete && this.props.isModeratingComments && (
-            <span className="comment-tail__action">
-              <ButtonLink
-                className="comment-tail__action-link comment-tail__action-link--delete"
-                onClick={this.handleDeleteComment}
+          <span className="comment-tail__item comment-tail__actions">
+            <Separated separator=" | ">
+              {this.props.isEditable && (
+                <span className="comment-tail__action">
+                  <ButtonLink
+                    className="comment-tail__action-link"
+                    onClick={this.handleEditOrCancel}
+                  >
+                    edit
+                  </ButtonLink>
+                </span>
+              )}
+              {canDelete && this.props.isModeratingComments && (
+                <span className="comment-tail__action">
+                  <ButtonLink
+                    className="comment-tail__action-link comment-tail__action-link--delete"
+                    onClick={this.handleDeleteComment}
+                  >
+                    delete
+                  </ButtonLink>
+                </span>
+              )}
+              <span className="comment-tail__action">
+                <PostCommentMore
+                  className="comment-tail__action-link comment-tail__action-link--more"
+                  id={this.props.id}
+                  authorUsername={this.props.user?.username}
+                  doEdit={this.props.isEditable && this.handleEditOrCancel}
+                  doDelete={canDelete && ownComment && this.handleDeleteComment}
+                  doReply={canReply && this.reply}
+                  doMention={canReply && this.mention}
+                  doLike={canLike && !this.props.hasOwnLike && this.like}
+                  doUnlike={canLike && this.props.hasOwnLike && this.unlike}
+                  getBackwardIdx={this.backwardIdx}
+                  createdAt={this.props.createdAt}
+                  updatedAt={this.props.updatedAt}
+                  permalink={`${this.props.entryUrl}#comment-${this.props.id}`}
+                  likesCount={this.props.likes}
+                  setMenuOpener={this.setMoreMenuOpener}
+                  onMenuOpened={this.onMoreMenuOpened}
+                />
+              </span>
+            </Separated>
+          </span>
+          {(this.props.showTimestamps || this.props.forceAbsTimestamps) && (
+            <span className="comment-tail__item">
+              <Link
+                to={`${this.props.entryUrl}#comment-${this.props.id}`}
+                className="comment-tail__timestamp"
               >
-                delete
-              </ButtonLink>
+                <TimeDisplay
+                  timeStamp={+this.props.createdAt}
+                  inline
+                  absolute={this.props.forceAbsTimestamps}
+                />
+              </Link>
             </span>
           )}
-          <span className="comment-tail__action">
-            <PostCommentMore
-              className="comment-tail__action-link comment-tail__action-link--more"
-              id={this.props.id}
-              authorUsername={this.props.user?.username}
-              doEdit={this.props.isEditable && this.handleEditOrCancel}
-              doDelete={canDelete && ownComment && this.handleDeleteComment}
-              doReply={canReply && this.reply}
-              doMention={canReply && this.mention}
-              doLike={canLike && !this.props.hasOwnLike && this.like}
-              doUnlike={canLike && this.props.hasOwnLike && this.unlike}
-              getBackwardIdx={this.backwardIdx}
-              createdAt={this.props.createdAt}
-              updatedAt={this.props.updatedAt}
-              permalink={`${this.props.entryUrl}#comment-${this.props.id}`}
-              likesCount={this.props.likes}
-              setMenuOpener={this.setMoreMenuOpener}
-              onMenuOpened={this.onMoreMenuOpened}
-            />
-          </span>
-        </span>
-        {(this.props.showTimestamps || this.props.forceAbsTimestamps) && (
-          <span className="comment-tail__item">
-            <Link
-              to={`${this.props.entryUrl}#comment-${this.props.id}`}
-              className="comment-tail__timestamp"
-            >
-              <TimeDisplay
-                timeStamp={+this.props.createdAt}
-                inline
-                absolute={this.props.forceAbsTimestamps}
-              />
-            </Link>
-          </span>
-        )}
+        </Separated>
       </span>
     );
   }
