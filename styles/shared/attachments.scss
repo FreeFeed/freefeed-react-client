@@ -131,6 +131,7 @@
 }
 
 .audio-attachments,
+.video-attachments,
 .general-attachments {
   .attachment {
     position: relative;
@@ -146,5 +147,13 @@
     .attachment-title {
       overflow-wrap: break-word;
     }
+  }
+}
+
+.video-attachments {
+  video {
+    max-width: 100%;
+    max-height: 400px;
+    background-color: #eee;
   }
 }
