@@ -190,6 +190,10 @@ class PostComment extends Component {
     );
   }
 
+  showMedia = (params) => {
+    this.props.showMedia({ ...params, postId: this.props.id });
+  };
+
   renderBody() {
     const commentTail = this.commentTail();
 
@@ -236,7 +240,7 @@ class PostComment extends Component {
             highlightTerms={this.props.highlightTerms}
             userHover={this.props.authorHighlightHandlers}
             arrowHover={this.arrowHoverHandlers}
-            showMedia={this.props.showMedia}
+            showMedia={this.showMedia}
           />
           {commentTail}
         </Expandable>

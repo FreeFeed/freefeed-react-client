@@ -8,6 +8,7 @@ import ErrorBoundary from '../error-boundary';
 import { Icon } from '../fontawesome-icons';
 import { faCommentPlus } from '../fontawesome-custom-icons';
 import { SignInLink } from '../sign-in-link';
+import { getMediaItems } from '../media-viewer';
 import { CollapseComments } from './collapse-comments';
 import ExpandComments from './expand-comments';
 import { LoadingComments } from './loading-comments';
@@ -162,6 +163,30 @@ export default class PostComments extends Component {
     return !post.commentsDisabled || post.isEditable || post.isModeratable;
   }
 
+  showMedia = (params) => {
+    const { props } = this;
+
+    props.showMedia({
+      ...params,
+      navigate: params.withoutNavigation
+        ? null
+        : (postId, where) => {
+            const { comments } = props;
+            const commentIndex = comments.findIndex((comment) => comment.id === postId);
+            if (commentIndex !== -1) {
+              for (let i = commentIndex + where; i >= 0 && i < comments.length; i += where) {
+                const comment = comments[i];
+                const mediaItems = getMediaItems(comment.body);
+                if (mediaItems.length > 0) {
+                  return { attachments: mediaItems, id: comment.id };
+                }
+              }
+            }
+            return null;
+          },
+    });
+  };
+
   renderComment = (comment, index = 0) => {
     const { props } = this;
     return (
@@ -180,7 +205,7 @@ export default class PostComments extends Component {
           {...props.commentEdit}
           authorHighlightHandlers={this.authorHighlightHandlers}
           arrowsHighlightHandlers={this.arrowsHighlightHandlers}
-          showMedia={this.props.showMedia}
+          showMedia={this.showMedia}
           readMoreStyle={props.readMoreStyle}
           highlightTerms={props.highlightTerms}
           currentUser={props.post.user}
