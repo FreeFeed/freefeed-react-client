@@ -1,7 +1,7 @@
 /* global describe, it, expect */
 import { render } from '@testing-library/react';
 
-import PostAttachments from '../../src/components/post-attachments';
+import PostAttachments from '../../src/components/post/post-attachments';
 
 const renderPostAttachments = (props = {}) => {
   return render(<PostAttachments {...props} />);
