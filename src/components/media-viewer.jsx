@@ -4,6 +4,7 @@ import { renderToString } from 'react-dom/server';
 import * as Sentry from '@sentry/react';
 
 import { showMedia } from '../redux/action-creators';
+import { Link as TLink, parseText } from '../utils/parse-text';
 import { lazyComponent } from './lazy-component';
 import { getVideoType, getVideoInfo } from './link-preview/video';
 import {
@@ -31,6 +32,16 @@ export const getMediaType = (url) => {
 
 export const isMediaAttachment = (attachments) => {
   return attachments.reduce((acc, item) => acc || item.mediaType === 'image', false);
+};
+
+export const getMediaItems = (text) => {
+  return parseText(text)
+    .filter((token) => token instanceof TLink)
+    .map((token) => {
+      const mediaType = getMediaType(token.href);
+      return mediaType ? { url: token.href, id: 'comment', mediaType } : null;
+    })
+    .filter((result) => !!result);
 };
 
 const getEmbeddableItem = async (url, withoutAutoplay) => {
@@ -129,6 +140,15 @@ function MediaViewer(props) {
           ? mediaViewer.navigate(mediaViewer.postId, where)
           : null;
       if (nextPost) {
+        // this experimental stuff here tries to navigate to media
+        /*
+        const el = document.querySelector(
+          `div.attachment[data-id="${nextPost.attachments[0]?.id}"]`,
+        );
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+         */
         showMedia({
           ...mediaViewer,
           postId: nextPost.id,

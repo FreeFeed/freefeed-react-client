@@ -6,8 +6,8 @@ import { pinnedElements, unscrollTo } from '../services/unscroll';
 
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
 const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
-// const prevPostKeys = ['w', 'ц', 'up', 'u', 'г', '8'];
-// const nextPostKeys = ['s', 'ы', 'down', 'j', 'о', '2'];
+const prevPostKeys = ['w', 'ц', 'up', 'u', 'г', '8'];
+const nextPostKeys = ['s', 'ы', 'down', 'j', 'о', '2'];
 
 const lightboxOptions = {
   shareEl: false,
@@ -153,15 +153,15 @@ export default class ImageAttachmentsLightbox extends Component {
   whenOpened = () => {
     Mousetrap.bind(prevHotKeys, () => this.photoSwipe.prev());
     Mousetrap.bind(nextHotKeys, () => this.photoSwipe.next());
-    // Mousetrap.bind(prevPostKeys, (e) => this.navigatePost(-1, e));
-    // Mousetrap.bind(nextPostKeys, (e) => this.navigatePost(1, e));
+    Mousetrap.bind(prevPostKeys, (e) => this.navigatePost(-1, e));
+    Mousetrap.bind(nextPostKeys, (e) => this.navigatePost(1, e));
   };
 
   whenClosed = () => {
     Mousetrap.unbind(prevHotKeys);
     Mousetrap.unbind(nextHotKeys);
-    // Mousetrap.unbind(prevPostKeys);
-    // Mousetrap.unbind(nextPostKeys);
+    Mousetrap.unbind(prevPostKeys);
+    Mousetrap.unbind(nextPostKeys);
   };
 
   registerPhotoSwipe = (el) => {
