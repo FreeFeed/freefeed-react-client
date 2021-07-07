@@ -12,7 +12,7 @@ body.transition-active:before {
   content: '';
   opacity: 0.8;
   z-index: 1;
-  background: #fff url('/img/throbber.gif') no-repeat center;
+  background: #fff;
 }
 
 body.transition-active.transition-static:before {
