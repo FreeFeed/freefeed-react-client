@@ -12555,7 +12555,7 @@ fsevents@^1.2.7:
     webpack: ~5.42.1
     webpack-bundle-analyzer: ~4.4.2
     webpack-cli: ~4.7.2
-    webpack-dev-server: ^3.11.2
+    webpack-dev-server: ~3.11.2
     webpack-node-externals: ~3.0.0
     webpack-version-file: ~0.1.6
     whatwg-fetch: ~3.6.2
@@ -15644,7 +15644,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"webpack-dev-server@npm:^3.11.2":
+"webpack-dev-server@npm:~3.11.2":
   version: 3.11.2
   resolution: "webpack-dev-server@npm:3.11.2"
   dependencies:
