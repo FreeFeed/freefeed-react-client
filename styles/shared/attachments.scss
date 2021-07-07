@@ -152,6 +152,17 @@
 }
 
 .video-attachments {
+  .video-attachment-click-to-play {
+    display: flex;
+    width: 3em;
+    height: 3em;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2px;
+    background-color: #eee;
+    font-size: 2em;
+  }
+
   video {
     max-width: 100%;
     max-height: 400px;
