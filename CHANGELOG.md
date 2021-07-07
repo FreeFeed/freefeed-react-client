@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - "Grips" in sidebar for drag and sort home feeds. Previously, the drag zone
   matched the feed link itself, and that was inconvenient, especially on mobile
   screens.
+- Native player for video-attachments
 
 ### Fixed
 - Fixed the mobile Chrome unwanted font boosting.
