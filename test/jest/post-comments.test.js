@@ -103,7 +103,7 @@ describe('PostComments', () => {
 
   it('Renders omitted comments and expands them', () => {
     const showMoreComments = jest.fn();
-    renderPostComments({
+    const { rerender } = renderPostComments({
       post: {
         ...POST,
         omittedComments: 12,
@@ -115,6 +115,19 @@ describe('PostComments', () => {
     expect(screen.getByLabelText(/15 comments/)).toBeInTheDocument();
     userEvent.click(screen.getByText('12 more comments with 34 likes', { role: 'button' }));
     expect(showMoreComments).toHaveBeenCalledWith('post-id');
+
+    expect(screen.queryByLabelText('Loading comments...')).not.toBeInTheDocument();
+    rerender({
+      post: {
+        ...POST,
+        omittedComments: 12,
+        omittedCommentLikes: 34,
+        omittedCommentsOffset: 1,
+        isLoadingComments: true,
+      },
+      showMoreComments,
+    });
+    expect(screen.queryByLabelText('Loading comments...')).toBeInTheDocument();
   });
 
   it('Renders add comment link which toggles comment form', () => {

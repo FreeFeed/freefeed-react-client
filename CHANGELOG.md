@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fixed the mobile Chrome unwanted font boosting.
 
+## [1.99.1] - 2021-07-03
+### Fixed
+- Show missing throbber in "more comments" loader
+
+### Added
+- Added explicit error-handlers to naked promises
+
 ## [1.99.0] - 2021-06-08
 ### Added
 - Display usernames of gone users in post comments in grey color
