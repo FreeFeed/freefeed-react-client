@@ -50,6 +50,7 @@ const config = {
       file: 'index.html',
       chunks: ['config', 'common', 'app'],
       chunksSortMode: 'manual',
+      publicPath: '/',
       templateParameters: {
         appConfig: global.CONFIG,
         opts,
