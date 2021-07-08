@@ -140,15 +140,13 @@ function MediaViewer(props) {
           ? mediaViewer.navigate(mediaViewer.postId, where)
           : null;
       if (nextPost) {
-        // this experimental stuff here tries to navigate to media
-        /*
+        // this experimental stuff here tries to navigate feed page to media when user traverses from image to image
         const el = document.querySelector(
           `div.attachment[data-id="${nextPost.attachments[0]?.id}"]`,
         );
         if (el) {
           el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
-         */
         showMedia({
           ...mediaViewer,
           postId: nextPost.id,

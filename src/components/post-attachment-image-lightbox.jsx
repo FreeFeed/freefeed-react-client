@@ -52,6 +52,7 @@ export default class ImageAttachmentsLightbox extends Component {
 
   photoSwipe = null;
   pinnedEls = [];
+  scrollRestoration = null;
 
   getThumbBounds = (index) => {
     const thumb = this.props.getThumbnail(index);
@@ -155,6 +156,12 @@ export default class ImageAttachmentsLightbox extends Component {
     Mousetrap.bind(nextHotKeys, () => this.photoSwipe.next());
     Mousetrap.bind(prevPostKeys, (e) => this.navigatePost(-1, e));
     Mousetrap.bind(nextPostKeys, (e) => this.navigatePost(1, e));
+    if ('scrollRestoration' in history) {
+      if (this.scrollRestoration === null) {
+        this.scrollRestoration = history.scrollRestoration;
+        history.scrollRestoration = 'manual';
+      }
+    }
   };
 
   whenClosed = () => {
@@ -182,6 +189,10 @@ export default class ImageAttachmentsLightbox extends Component {
       const h = () => unscrollTo(this.pinnedEls);
       window.addEventListener('scroll', h, { once: true });
       setTimeout(() => window.removeEventListener('scroll', h), 500);
+    }
+    if (this.scrollRestoration !== null) {
+      history.scrollRestoration = this.scrollRestoration;
+      this.scrollRestoration = null;
     }
   };
 
