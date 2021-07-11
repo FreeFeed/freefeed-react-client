@@ -116,8 +116,8 @@ function OrphanGroupsWarning() {
         </p>
         <p>
           If you delete your account, this group will become restricted and no one will be able to
-          create posts in it. If you don&#x2019;t want that, assign additional administrators to
-          this group before you delete the account.
+          create posts in it. Please add additional administrators to these groups before you delete
+          your account to prevent that.
         </p>
       </section>
     );
@@ -139,8 +139,8 @@ function OrphanGroupsWarning() {
       </ol>
       <p>
         If you delete your account, these groups will become restricted and no one will be able to
-        create posts in them. If you don&#x2019;t want that, assign additional administrators to
-        those groups before you delete the account.
+        create posts in them. Please add additional administrators to these groups before you delete
+        your account to prevent that.
       </p>
     </section>
   );
