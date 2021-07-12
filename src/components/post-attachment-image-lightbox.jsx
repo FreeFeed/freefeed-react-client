@@ -6,8 +6,8 @@ import { pinnedElements, unscrollTo } from '../services/unscroll';
 
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
 const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
-// const prevPostKeys = ['w', 'ц', 'up', 'u', 'г', '8'];
-// const nextPostKeys = ['s', 'ы', 'down', 'j', 'о', '2'];
+const prevPostKeys = ['w', 'ц', 'up', 'u', 'г', '8'];
+const nextPostKeys = ['s', 'ы', 'down', 'j', 'о', '2'];
 
 const lightboxOptions = {
   shareEl: false,
@@ -52,6 +52,7 @@ export default class ImageAttachmentsLightbox extends Component {
 
   photoSwipe = null;
   pinnedEls = [];
+  scrollRestoration = null;
 
   getThumbBounds = (index) => {
     const thumb = this.props.getThumbnail(index);
@@ -153,15 +154,21 @@ export default class ImageAttachmentsLightbox extends Component {
   whenOpened = () => {
     Mousetrap.bind(prevHotKeys, () => this.photoSwipe.prev());
     Mousetrap.bind(nextHotKeys, () => this.photoSwipe.next());
-    // Mousetrap.bind(prevPostKeys, (e) => this.navigatePost(-1, e));
-    // Mousetrap.bind(nextPostKeys, (e) => this.navigatePost(1, e));
+    Mousetrap.bind(prevPostKeys, (e) => this.navigatePost(-1, e));
+    Mousetrap.bind(nextPostKeys, (e) => this.navigatePost(1, e));
+    if ('scrollRestoration' in history) {
+      if (this.scrollRestoration === null) {
+        this.scrollRestoration = history.scrollRestoration;
+        history.scrollRestoration = 'manual';
+      }
+    }
   };
 
   whenClosed = () => {
     Mousetrap.unbind(prevHotKeys);
     Mousetrap.unbind(nextHotKeys);
-    // Mousetrap.unbind(prevPostKeys);
-    // Mousetrap.unbind(nextPostKeys);
+    Mousetrap.unbind(prevPostKeys);
+    Mousetrap.unbind(nextPostKeys);
   };
 
   registerPhotoSwipe = (el) => {
@@ -182,6 +189,10 @@ export default class ImageAttachmentsLightbox extends Component {
       const h = () => unscrollTo(this.pinnedEls);
       window.addEventListener('scroll', h, { once: true });
       setTimeout(() => window.removeEventListener('scroll', h), 500);
+    }
+    if (this.scrollRestoration !== null) {
+      history.scrollRestoration = this.scrollRestoration;
+      this.scrollRestoration = null;
     }
   };
 

@@ -22,27 +22,25 @@ const { searchEngine } = CONFIG.search;
 export default class Linkify extends Component {
   parseCounter = 0;
 
-  processStrings(children, processor, excludeTags) {
+  processStrings(children, processor, excludeTags, mediaEl) {
     if (typeof children === 'string') {
-      return processor(children);
+      return processor(children, mediaEl);
     } else if (isValidElement(children) && !excludeTags.includes(children.type)) {
       return cloneElement(
         children,
         {},
-        this.processStrings(children.props.children, processor, excludeTags),
+        this.processStrings(children.props.children, processor, excludeTags, mediaEl),
       );
     } else if (Array.isArray(children)) {
-      return children.map((ch) => this.processStrings(ch, processor, excludeTags));
+      return children.map((ch) => this.processStrings(ch, processor, excludeTags, mediaEl));
     }
     return children;
   }
 
-  parseString = (text) => {
+  parseString = (text, mediaEl) => {
     if (text === '') {
       return [];
     }
-
-    const mediaEl = showMediaWithKey(this.props.showMedia);
 
     return parseText(text).map((token, i) => {
       const key = i;
@@ -124,11 +122,13 @@ export default class Linkify extends Component {
   render() {
     this.parseCounter = 0;
     const hl = this.props.highlightTerms;
-    const parsed = this.processStrings(this.props.children, this.parseString, [
-      'a',
-      'button',
-      UserName,
-    ]);
+    const mediaEl = showMediaWithKey(this.props.showMedia);
+    const parsed = this.processStrings(
+      this.props.children,
+      this.parseString,
+      ['a', 'button', UserName],
+      mediaEl,
+    );
     if (!hl || hl.length === 0) {
       return (
         <span className="Linkify" dir="auto" role="region">
@@ -136,7 +136,12 @@ export default class Linkify extends Component {
         </span>
       );
     }
-    const highlighted = this.processStrings(parsed, (str) => highlightString(str, hl), ['button']);
+    const highlighted = this.processStrings(
+      parsed,
+      (str) => highlightString(str, hl),
+      ['button'],
+      mediaEl,
+    );
     return (
       <span className="Linkify" dir="auto" role="region">
         <ErrorBoundary>{highlighted}</ErrorBoundary>

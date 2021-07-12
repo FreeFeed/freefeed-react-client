@@ -30,26 +30,28 @@ class Feed extends PureComponent {
 
     props.showMedia({
       ...params,
-      navigate: params.withoutNavigation
-        ? null
-        : (postId, where) => {
-            for (
-              let i = 0, l = props.visiblePosts.length, step = 1, match = false;
-              i >= 0 && i < l;
-              i += step
-            ) {
-              const item = props.visiblePosts[i];
-              if (match) {
-                if (isMediaAttachment(item.attachments)) {
-                  return item;
+      navigate:
+        params.navigate ||
+        (params.withoutNavigation
+          ? null
+          : (postId, where) => {
+              for (
+                let i = 0, l = props.visiblePosts.length, step = 1, match = false;
+                i >= 0 && i < l;
+                i += step
+              ) {
+                const item = props.visiblePosts[i];
+                if (match) {
+                  if (isMediaAttachment(item.attachments)) {
+                    return item;
+                  }
+                } else if (item.id === postId) {
+                  match = true;
+                  step = where < 0 ? -1 : 1;
                 }
-              } else if (item.id === postId) {
-                match = true;
-                step = where < 0 ? -1 : 1;
               }
-            }
-            return null;
-          },
+              return null;
+            }),
     });
   };
 
