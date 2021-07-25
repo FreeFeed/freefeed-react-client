@@ -1902,11 +1902,7 @@ export function isNSFWVisible(state = loadNSFWVisibility(), action) {
 
 export { settingsForms } from './reducers/settings-forms';
 export { appTokens } from './reducers/app-tokens';
-
-export const serverInfo = fromResponse(ActionTypes.GET_SERVER_INFO, ({ payload }) => payload, {});
-
-export const serverInfoStatus = asyncState(ActionTypes.GET_SERVER_INFO);
-
+export { serverInfo, serverInfoStatus } from './reducers/server-info';
 export { extAuth } from './reducers/ext-auth.js';
 
 export function hiddenUserNames(state = [], action) {

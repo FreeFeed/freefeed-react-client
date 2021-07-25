@@ -1,4 +1,4 @@
-import { differenceBy, intersection, intersectionBy, uniq } from 'lodash';
+import { intersection, intersectionBy, uniq } from 'lodash';
 import { hashTags } from 'social-text-tokenizer';
 import * as Sentry from '@sentry/react';
 
@@ -105,10 +105,14 @@ export const joinPostData = (state) => (postId) => {
   const hiddenByNames = intersection(recipientNames, state.hiddenUserNames);
 
   const isEditable = post.createdBy === user.id;
-  const isModeratable =
-    isEditable || intersectionBy(recipients, state.managedGroups, 'id').length > 0;
-  const isFullyRemovable =
-    isEditable || differenceBy(recipients, state.managedGroups, 'id').length === 0;
+  const canBeRemovedFrom = (
+    isEditable ? recipients : intersectionBy(recipients, state.managedGroups, 'id')
+  )
+    .map((u) => u.username)
+    .sort((a, b) => a.localeCompare(b));
+  const isModeratable = canBeRemovedFrom.length > 0;
+  // Can the current user fully delete this post?
+  const isDeletable = isEditable || canBeRemovedFrom.length === recipients.length;
 
   const isNSFW =
     !state.isNSFWVisible &&
@@ -183,7 +187,8 @@ export const joinPostData = (state) => (postId) => {
     ...postViewState,
     isEditable,
     isModeratable,
-    isFullyRemovable,
+    isDeletable,
+    canBeRemovedFrom,
     allowLinksPreview,
     readMoreStyle,
     recipientNames,
@@ -199,7 +204,7 @@ export function postActions(dispatch) {
     toggleEditingPost: (postId) => dispatch(toggleEditingPost(postId)),
     cancelEditingPost: (postId) => dispatch(cancelEditingPost(postId)),
     saveEditingPost: (postId, newPost) => dispatch(saveEditingPost(postId, newPost)),
-    deletePost: (postId) => dispatch(deletePost(postId)),
+    deletePost: (postId, fromFeeds = []) => dispatch(deletePost(postId, fromFeeds)),
     toggleCommenting: (postId, newCommentText) =>
       dispatch(toggleCommenting(postId, newCommentText)),
     addComment: (postId, commentText) => dispatch(addComment(postId, commentText)),

@@ -23,6 +23,7 @@ jest.mock('../../src/components/lazy-component', () => ({
 }));
 
 import Post from '../../src/components/post';
+import { successAsyncState } from '../../src/redux/async-helpers';
 
 const AUTHOR = {
   id: 'author-id',
@@ -44,6 +45,8 @@ const defaultState = {
   user: VIEWER,
   postHideStatuses: {},
   sendTo: { feeds: [{ id: 'feed-id', user: AUTHOR }] },
+  serverInfoStatus: successAsyncState,
+  serverInfo: { features: { perGroupsPostDelete: true } },
 };
 
 const renderPost = (props = {}, options = {}) => {
@@ -304,7 +307,7 @@ describe('Post', () => {
     renderPost({
       isEditable: true,
       isModeratable: true,
-      isFullyRemovable: true,
+      isDeletable: true,
       toggleEditingPost,
       toggleModeratingComments,
       disableComments,
@@ -328,7 +331,33 @@ describe('Post', () => {
     expect(screen.getByText('Delete', { role: 'button' })).toBeInTheDocument();
     userEvent.click(screen.getByText('Delete', { role: 'button' }));
     expect(confirmMock).toHaveBeenCalledWith('Are you sure?');
-    expect(deletePost).toHaveBeenCalledWith('post-id');
+    expect(deletePost).toHaveBeenCalledWith('post-id', []);
+  });
+
+  it('Renders a more button if this is a post that I can moderati (e.g. post in my groups) which toggles a "more action" menu', () => {
+    const confirmMock = jest.spyOn(global, 'confirm').mockReturnValueOnce(true);
+
+    const toggleEditingPost = jest.fn();
+    const toggleModeratingComments = jest.fn();
+    const disableComments = jest.fn();
+    const deletePost = jest.fn();
+    renderPost({
+      isEditable: false,
+      isModeratable: true,
+      isDeletable: false,
+      canBeRemovedFrom: ['celestials'],
+      toggleEditingPost,
+      toggleModeratingComments,
+      disableComments,
+      deletePost,
+    });
+    expect(screen.getByText(/More/, { role: 'button' })).toBeInTheDocument();
+    userEvent.click(screen.getByText(/More/, { role: 'button' }));
+
+    expect(screen.getByText('Remove from @celestials', { role: 'button' })).toBeInTheDocument();
+    userEvent.click(screen.getByText(/Remove/, { role: 'button' }));
+    expect(confirmMock).toHaveBeenCalledWith('Are you sure?');
+    expect(deletePost).toHaveBeenCalledWith('post-id', ['celestials']);
   });
 
   it('Lets me enable comments under my post if they are disabled', () => {
