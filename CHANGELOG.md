@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.100.0] - Not released
 ### Added
 - Warning about the orphan groups on the "Delete account" page.
+- Lightbox-navigation between attachments of single comment
 
 ### Changed
 - The Highcharts library replaced by the Recharts due to license incompatibility.
