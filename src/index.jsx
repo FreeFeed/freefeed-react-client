@@ -109,6 +109,8 @@ function InitialLayout({ children }) {
 }
 
 initUnscroll();
+// Fetch server info on application start
+setTimeout(() => store.dispatch(ActionCreators.getServerInfo()), 0);
 
 function App() {
   const initialized = useSelector((state) => state.initialized);
