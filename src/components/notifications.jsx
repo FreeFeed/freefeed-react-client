@@ -175,7 +175,7 @@ const notificationTemplates = {
     <div>
       <Linkify>{`@${event.createdUser.username} has removed the `}</Linkify>
       {event.post_id ? postLink(event) : 'post'}
-      <Linkify>{`from @${event.affectedUser.username} `}</Linkify>
+      <Linkify>{` from @${event.affectedUser.username} `}</Linkify>
       {event.group_id ? <Linkify>{` from the group @${event.group.username}`}</Linkify> : null}
     </div>
   ),

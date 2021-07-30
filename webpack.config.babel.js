@@ -1,9 +1,9 @@
 import child_process from 'child_process';
-import webpack from 'webpack';
+// import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import OptiCSS from 'optimize-css-assets-webpack-plugin';
+import CSSMinimizer from 'css-minimizer-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import Uglify from 'terser-webpack-plugin';
+import Terser from 'terser-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
@@ -50,6 +50,7 @@ const config = {
       file: 'index.html',
       chunks: ['config', 'common', 'app'],
       chunksSortMode: 'manual',
+      publicPath: '/',
       templateParameters: {
         appConfig: global.CONFIG,
         opts,
@@ -65,7 +66,6 @@ const config = {
         { from: 'assets/ext-auth/auth-return.html', to: '' },
       ],
     }),
-    !opts.dev && new webpack.HashedModuleIdsPlugin(),
     !opts.dev &&
       new BundleAnalyzerPlugin({
         analyzerMode: 'disabled', // will create 'stats.json' file
@@ -92,11 +92,12 @@ const config = {
       }),
   ]),
   optimization: {
+    moduleIds: 'deterministic',
     runtimeChunk: {
       name: 'manifest',
     },
     splitChunks: {
-      maxSize: 0,
+      // maxSize: 0,
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
@@ -109,14 +110,7 @@ const config = {
         },
       },
     },
-    minimizer: [
-      new Uglify({
-        cache: true,
-        parallel: true,
-        sourceMap: true,
-      }),
-      new OptiCSS({}),
-    ],
+    minimizer: [new Terser(), new CSSMinimizer()],
   },
 };
 

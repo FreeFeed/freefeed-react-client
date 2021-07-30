@@ -34,7 +34,7 @@ import UserName from './user-name';
 import Expandable from './expandable';
 import PieceOfText from './piece-of-text';
 import Dropzone from './dropzone';
-import PostMoreMenu from './post-more-menu';
+import PostMoreLink from './post-more-link';
 import TimeDisplay from './time-display';
 import LinkPreview from './link-preview/preview';
 import SendTo from './send-to';
@@ -120,9 +120,10 @@ class Post extends Component {
     this.props.toggleCommenting(this.props.id);
   };
 
-  handleDeletePost = () => {
-    this.props.deletePost(this.props.id);
-  };
+  handleDeletePost =
+    (...fromFeeds) =>
+    () =>
+      this.props.deletePost(this.props.id, fromFeeds);
 
   handleHideClick = () => {
     if (this.props.isHidden) {
@@ -413,7 +414,7 @@ class Post extends Component {
     // "More" menu
     const moreLink =
       props.isEditable || props.isModeratable ? (
-        <PostMoreMenu
+        <PostMoreLink
           post={props}
           toggleEditingPost={this.toggleEditingPost}
           toggleModeratingComments={this.toggleModeratingComments}

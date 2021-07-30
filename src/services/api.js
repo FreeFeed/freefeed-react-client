@@ -145,8 +145,12 @@ export function updatePost({ postId, newPost }) {
   return fetch(`${apiRoot}/v1/posts/${postId}`, postRequestOptions('PUT', { post: newPost }));
 }
 
-export function deletePost({ postId }) {
-  return fetch(`${apiRoot}/v1/posts/${postId}`, postRequestOptions('DELETE'));
+export function deletePost({ postId, fromFeeds = [] }) {
+  const sp = new URLSearchParams();
+  for (const feed of fromFeeds) {
+    sp.append('fromFeed', feed);
+  }
+  return fetch(`${apiRoot}/v1/posts/${postId}?${sp.toString()}`, postRequestOptions('DELETE'));
 }
 
 export function addComment({ postId, commentText }) {
