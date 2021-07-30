@@ -15,6 +15,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fixed the mobile Chrome unwanted font boosting.
 
+## [1.100.0] - 2021-07-30
+### Added
+- Warning about the orphan groups on the "Delete account" page.
+- Lightbox-navigation between attachments of single comment
+
+### Changed
+- The Highcharts library replaced by the Recharts due to license incompatibility.
+
+### Fixed
+- Group admins now can remove a post from one group at a time
+  ([#1398](https://github.com/FreeFeed/freefeed-react-client/issues/1398))
+
 ## [1.99.1] - 2021-07-03
 ### Fixed
 - Show missing throbber in "more comments" loader

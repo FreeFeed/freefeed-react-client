@@ -1,93 +1,71 @@
 /* global CONFIG */
-import { Component } from 'react';
-import Highcharts from 'highcharts/highcharts';
-import HighchartsMore from 'highcharts/highcharts-more';
-import ReactHighcharts from 'react-highcharts';
+import { useEffect, useState } from 'react';
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from 'recharts';
 
-import parseISO from 'date-fns/parseISO';
 import format from 'date-fns/format';
 import startOfYesterday from 'date-fns/startOfYesterday';
 import subYears from 'date-fns/subYears';
 
-const Chart = ReactHighcharts.withHighcharts(Highcharts);
-HighchartsMore(Chart.Highcharts);
+function StatsChart({ type, title }) {
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    async function fetchData() {
+      const to_date = format(startOfYesterday(), `yyyy-MM-dd`); // Yesterday
+      const from_date = format(subYears(new Date(), 1), `yyyy-MM-dd`); // Stats for 1 year
 
-class StatsChart extends Component {
-  constructor(props) {
-    super(props);
+      const url = `${CONFIG.api.root}/v2/stats?data=${type}&start_date=${from_date}&end_date=${to_date}`;
 
-    this.state = { metrics: [] };
-  }
-
-  async componentDidMount() {
-    const to_date = format(startOfYesterday(), `yyyy-MM-dd`); // Yesterday
-    const from_date = format(subYears(new Date(), 1), `yyyy-MM-dd`); // Stats for 1 year
-
-    const url = `${CONFIG.api.root}/v2/stats?data=${this.props.type}&start_date=${from_date}&end_date=${to_date}`;
-    const metrics = [];
-
-    try {
-      const response = await fetch(url);
-      const result = await response.json();
-
-      for (const metric of result.stats) {
-        const dt = parseISO(metric.date);
-        metrics.push([
-          Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate()),
-          Number(metric[this.props.type]),
-        ]);
+      try {
+        const response = await fetch(url);
+        const result = await response.json();
+        setData(result.stats.map((x) => ({ ...x, [type]: parseInt(x[type]) })));
+      } catch {
+        // metrics.push(e);
       }
-    } catch (e) {
-      metrics.push(e);
     }
+    fetchData();
+  }, [type]);
 
-    // This is an async function i.e. setState is not a problem here.
-    // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState({ metrics });
-  }
-
-  render() {
-    const config = {
-      chart: { zoomType: 'x' },
-      exporting: { enabled: true },
-      xAxis: { type: 'datetime' },
-      yAxis: { title: { text: null } },
-      title: { text: this.props.title },
-      legend: { enabled: false },
-      plotOptions: {
-        area: {
-          fillColor: {
-            linearGradient: {
-              x1: 0,
-              y1: 0,
-              x2: 0,
-              y2: 1,
-            },
-            stops: [
-              [0, Highcharts.getOptions().colors[0]],
-              [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')],
-            ],
-          },
-          marker: { radius: 2 },
-          lineWidth: 1,
-          states: { hover: { lineWidth: 1 } },
-        },
-      },
-      series: [
-        {
-          type: 'area',
-          name: this.props.title,
-          data: [],
-        },
-      ],
-    };
-
-    config.series[0].data = this.state.metrics;
-
-    return <Chart config={config} />;
-  }
+  return (
+    <>
+      <h4>{title}</h4>
+      {data === null && <p>Loading...</p>}
+      {typeof data === 'string' && <p className="alert alert-danger">{data}</p>}
+      {Array.isArray(data) && (
+        <ResponsiveContainer aspect={2}>
+          <AreaChart data={data}>
+            <defs>
+              <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#006699" stopOpacity={0.5} />
+                <stop offset="95%" stopColor="#006699" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <Area
+              type="monotone"
+              dataKey={type}
+              stroke="#006699"
+              fill="url(#grad)"
+              dot={false}
+              isAnimationActive={false}
+            />
+            <XAxis dataKey="date" tickFormatter={tickFormatter} minTickGap={20} />
+            <YAxis />
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+            <Tooltip />
+          </AreaChart>
+        </ResponsiveContainer>
+      )}
+    </>
+  );
 }
-
 const Stats = () => (
   <div className="box">
     <div className="box-header-timeline" />
@@ -104,3 +82,8 @@ const Stats = () => (
 );
 
 export default Stats;
+
+function tickFormatter(dateString) {
+  const date = new Date(dateString);
+  return isFinite(date) ? format(date, 'MMM d') : '';
+}

@@ -14,6 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faHeart, faClock, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { pluralForm } from '../utils';
+import { andJoin } from '../utils/and-join';
 import { ButtonLink } from './button-link';
 import styles from './dropdown-menu.module.scss';
 import TimeDisplay from './time-display';
@@ -202,15 +203,6 @@ function likersMenuText(likers, myUsername) {
     ...usernames(likers.slice(0, cutAfter), myUsername),
     `${likers.length - cutAfter} more\u2026`,
   ])}`;
-}
-
-function andJoin(items) {
-  if (items.length <= 1) {
-    return items.join('');
-  }
-  const head = [...items];
-  const tail = head.pop();
-  return `${head.join(', ')} and ${tail}`;
 }
 
 function usernames(users, myUsername) {

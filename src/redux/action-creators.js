@@ -186,11 +186,11 @@ export function saveEditingPost(postId, newPost) {
   };
 }
 
-export function deletePost(postId) {
+export function deletePost(postId, fromFeeds = []) {
   return {
     type: ActionTypes.DELETE_POST,
     apiRequest: Api.deletePost,
-    payload: { postId },
+    payload: { postId, fromFeeds },
   };
 }
 

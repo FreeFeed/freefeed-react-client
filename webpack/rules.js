@@ -106,15 +106,15 @@ class RuleGenerator {
 
   get template() {
     return {
-      test: /[.]jade$/,
+      test: /\.jade$/,
       use: [{ loader: 'pug-loader' }],
     };
   }
 
   get css() {
     return {
-      test: /[\\/]styles[\\/].*[\\/].*[.]scss$/,
-      exclude: /[.]module[.]scss$/,
+      test: /[\\/]styles[\\/].*[\\/].*\.scss$/,
+      exclude: /\.module\.scss$/,
       use: [
         this.opts.dev ? 'style-loader' : MiniCssExtractPlugin.loader,
         'css-loader',
@@ -125,7 +125,7 @@ class RuleGenerator {
 
   get cssModule() {
     return {
-      test: /[.]module[.]scss$/,
+      test: /\.module\.scss$/,
       use: [
         this.opts.dev ? 'style-loader' : MiniCssExtractPlugin.loader,
         {
@@ -143,7 +143,7 @@ class RuleGenerator {
 
   get cssModuleForTests() {
     return {
-      test: /[.]module[.]scss$/,
+      test: /\.module\.scss$/,
       use: 'null-loader',
     };
   }
@@ -151,7 +151,7 @@ class RuleGenerator {
   get assetsCss() {
     // import '../assets/vendor-css/font-awesome.min.css';
     return {
-      test: /[\\/]assets[\\/].*[\\/].*[.]css$/,
+      test: /[\\/]assets[\\/].*[\\/].*\.css$/,
       use: [this.opts.dev ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader'],
     };
   }
@@ -159,8 +159,11 @@ class RuleGenerator {
   get fonts() {
     return [
       {
-        test: /[\\/]assets[\\/]fonts[\\/]fontawesome[^/]*$/i,
-        loader: 'file-loader?name=[path][name].[ext]',
+        test: /[\\/]as{2}e(?:ts[\\/]fon){2}tawesome[^/]*$/i,
+        loader: 'file-loader',
+        options: {
+          name: '[path][name].[ext]',
+        },
       },
       {
         test: /vazir-font[\\/]dist.*/,
@@ -177,7 +180,10 @@ class RuleGenerator {
 
     return {
       test: /photoswipe.+\.(png|svg|gif)$/,
-      loader: `file-loader?name=assets/images/photoswipe/${fileName}`,
+      loader: `file-loader`,
+      options: {
+        name: `assets/images/photoswipe/${fileName}`,
+      },
     };
   }
 
@@ -193,8 +199,11 @@ class RuleGenerator {
 
     return {
       test: /[\\/]assets[\\/]/,
-      exclude: [/[\\/]fonts[\\/]fontawesome[^/]*$/i, /[\\/]assets[\\/].*[\\/].*[.]css$/],
-      loader: `file-loader?name=${fileName}`,
+      exclude: [/[\\/]fonts[\\/]fontawesome[^/]*$/i, /[\\/]assets[\\/].*[\\/].*\.css$/],
+      loader: `file-loader`,
+      options: {
+        name: fileName,
+      },
     };
   }
 }

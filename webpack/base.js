@@ -11,7 +11,7 @@ const opts = {
   dstDir: env.DST_DIR || path.join(__dirname, '..', '_dist'),
   dev: strToBool(env.DEV, true),
   livereload: strToBool(env.LIVERELOAD, false),
-  hot: process.argv.indexOf('--hot') !== -1,
+  hot: process.argv.includes('--hot'),
   port: env.PORT || '8080',
 };
 
@@ -42,6 +42,8 @@ const baseConfig = {
     new webpack.LoaderOptionsPlugin({ debug: opts.dev }),
     new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop'),
     new webpack.DefinePlugin({
+      'process.platform': '"web"',
+      'process.env.TZ': '"UTC"',
       'process.env.NODE_ENV': opts.dev ? '"development"' : '"production"',
     }),
   ]),
