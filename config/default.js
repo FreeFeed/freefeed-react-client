@@ -64,6 +64,19 @@ export default {
         amPm: false,
       },
     },
+    defaultOverrides: {
+      /**
+       *  Here you can override the default values depending on the 'createdAt'
+       *  time of user. The object key is a Lodash 'path' in the defaultValues
+       *  object.
+       *
+       * The 'createdBefore' is the only supported opeator for now.
+       *
+       * The example below means that for all accounts created before
+       *  2021-08-01, the 'submitByEnter' has a true default value.
+       */
+      // submitByEnter: { createdBefore: '2021-08-01', value: true },
+    },
   },
 
   appearance: {
