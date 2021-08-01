@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   size.
 - Notification messages for the 'backlink_in_post' and 'backlink_in_comment'
   events.
+- Some frontend preferences defaults can now be overridden depending on the
+  account's createdAt date. It is useful for the new defaults that breaks the
+  old behaviour and shouldn't affect the existing users.
 
 ### Changed
 - Post can now have an empty body if it contains one or more attachments.

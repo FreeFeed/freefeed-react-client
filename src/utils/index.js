@@ -1,5 +1,6 @@
 /* global CONFIG */
 import filesize from 'filesize';
+import _ from 'lodash';
 
 import defaultUserpicPath from '../../assets/images/default-userpic.svg';
 
@@ -56,10 +57,25 @@ export function userParser(user) {
   // Frontend preferences (only use this client's subtree).
   // Do not fill them if no 'frontendPreferences' in 'user'.
   if (user.frontendPreferences) {
+    let defaults = userDefaults.frontendPreferences;
+    const overrides = frontendPrefsConfig.defaultOverrides;
+
+    if (user.createdAt) {
+      const createdAt = new Date(parseInt(user.createdAt, 10));
+      for (const key of Object.keys(overrides)) {
+        const { createdBefore, value } = overrides[key];
+        if (createdBefore && createdAt < new Date(createdBefore)) {
+          // Lodash magic to return the minimal necessary clone of 'defaults'.
+          // See https://github.com/lodash/lodash/issues/1696#issuecomment-328335502
+          defaults = _.setWith(_.clone(defaults), key, value, _.clone);
+        }
+      }
+    }
+
     // We use deepMergeJSON here to be sure that the resulting object has the
     // same structure as userDefaults.frontendPreferences.
     newUser.frontendPreferences = deepMergeJSON(
-      userDefaults.frontendPreferences,
+      defaults,
       user.frontendPreferences[frontendPrefsConfig.clientId],
     );
   }
