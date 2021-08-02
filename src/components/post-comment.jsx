@@ -224,6 +224,7 @@ class PostComment extends Component {
           onSubmit={this.saveComment}
           onCancel={this.handleEditOrCancel}
           submitStatus={this.props.saveStatus}
+          submitByEnter={this.props.currentUser.frontendPreferences.submitByEnter}
         />
       );
     }

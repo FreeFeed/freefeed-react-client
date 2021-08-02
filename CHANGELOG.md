@@ -7,9 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.101.0] - Not released
 ### Added
+- New setting in frontend preferences: 'submitByEnter' (*false* by default). If
+  it *true*, the post/comment forms are submitted by Enter key. If it *false*,
+  the Enter key inserts a line break and the Ctrl+Enter submits form.
 - Some frontend preferences defaults can now be overridden depending on the
   account's createdAt date. It is useful for the new defaults that breaks the
   old behaviour and shouldn't affect the existing users.
+
+### Changed
+- When 'submitByEnter' is *true*, user can insert line break in any place of
+  text when the caret is right after space symbol (not only at the end).
 
 ## [1.100.0] - 2021-07-30
 ### Added

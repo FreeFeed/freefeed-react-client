@@ -76,6 +76,7 @@ export default function AppearanceForm() {
   const timeAmPm = useField('timeAmPm', form.form);
   const timeAbsolute = useField('timeAbsolute', form.form);
   const enableBeta = useField('enableBeta', form.form);
+  const useCtrlEnter = useField('useCtrlEnter', form.form);
 
   return (
     <form onSubmit={form.handleSubmit}>
@@ -184,7 +185,26 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4 id="dencity">Display density</h4>
+        <h4 id="submit-key">Text submitting</h4>
+
+        <div className="form-group">
+          <div className="checkbox">
+            <label>
+              <CheckboxInput field={useCtrlEnter} />
+              Use <code>Ctrl+Enter</code> to submit posts/comments, use <code>Enter</code> to insert
+              a line feed
+            </label>
+            <p className="help-block">
+              If this flag is not set, the post/comment form will be submitted by pressing{' '}
+              <code>Enter</code>. To insert a line feed in this case, use <code>Shift+Enter</code>{' '}
+              or press <code>Enter</code> right after space symbol.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className={settingsStyles.formSection}>
+        <h4 id="density">Display density</h4>
 
         <div className="form-group">
           <div className="radio">
@@ -361,6 +381,7 @@ function initialValues({
     timeAmPm: frontend.timeDisplay.amPm ? '1' : '0',
     timeAbsolute: frontend.timeDisplay.absolute ? '1' : '0',
     enableBeta: isBetaChannel,
+    useCtrlEnter: !frontend.submitByEnter,
   };
 }
 
@@ -402,6 +423,7 @@ function prefUpdaters(values) {
           amPm: values.timeAmPm === '1',
           absolute: values.timeAbsolute === '1',
         },
+        submitByEnter: !values.useCtrlEnter,
       };
     },
 
