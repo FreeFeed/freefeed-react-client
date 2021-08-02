@@ -2,11 +2,15 @@ import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
 import { useForm, useField } from 'react-final-form-hooks';
-import { pick } from 'lodash';
 import { Throbber } from '../../throbber';
-import { updateUserNotificationPreferences } from '../../../redux/action-creators';
+import {
+  updateActualUserPreferences,
+  updateUserNotificationPreferences,
+} from '../../../redux/action-creators';
+import { doSequence } from '../../../redux/async-helpers';
 import { PreventPageLeaving } from '../../prevent-page-leaving';
 import { CheckboxInput } from '../../form-utils';
+import settingsStyles from '../settings.module.scss';
 
 export default function NotificationsForm() {
   const dispatch = useDispatch();
@@ -23,6 +27,7 @@ export default function NotificationsForm() {
     ),
   );
 
+  const hideUnreadNotifications = useField('hideUnreadNotifications', form.form);
   const sendNotificationsDigest = useField('sendNotificationsDigest', form.form);
   const sendDailyBestOfDigest = useField('sendDailyBestOfDigest', form.form);
   const sendWeeklyBestOfDigest = useField('sendWeeklyBestOfDigest', form.form);
@@ -31,30 +36,45 @@ export default function NotificationsForm() {
     <form onSubmit={form.handleSubmit}>
       <PreventPageLeaving prevent={form.dirty} />
 
-      <p>Email me:</p>
+      <section className={settingsStyles.formSection}>
+        <h4 id="notifications">Unread notifications</h4>
 
-      <div className="form-group">
-        <div className="checkbox">
-          <label>
-            <CheckboxInput field={sendNotificationsDigest} />
-            Daily unread notifications
-          </label>
+        <div className="form-group">
+          <div className="checkbox">
+            <label>
+              <CheckboxInput field={hideUnreadNotifications} />
+              Hide unread notification counter in the sidebar
+            </label>
+          </div>
         </div>
+      </section>
 
-        <div className="checkbox">
-          <label>
-            <CheckboxInput field={sendDailyBestOfDigest} />
-            Daily <Link to="/summary/1">Best of Day</Link> digest
-          </label>
-        </div>
+      <section className={settingsStyles.formSection}>
+        <h4 id="email-me">Email me:</h4>
 
-        <div className="checkbox">
-          <label>
-            <CheckboxInput field={sendWeeklyBestOfDigest} />
-            Weekly <Link to="/summary/7">Best of Week</Link> digest
-          </label>
+        <div className="form-group">
+          <div className="checkbox">
+            <label>
+              <CheckboxInput field={sendNotificationsDigest} />
+              Daily unread notifications
+            </label>
+          </div>
+
+          <div className="checkbox">
+            <label>
+              <CheckboxInput field={sendDailyBestOfDigest} />
+              Daily <Link to="/summary/1">Best of Day</Link> digest
+            </label>
+          </div>
+
+          <div className="checkbox">
+            <label>
+              <CheckboxInput field={sendWeeklyBestOfDigest} />
+              Weekly <Link to="/summary/7">Best of Week</Link> digest
+            </label>
+          </div>
         </div>
-      </div>
+      </section>
 
       <div className="form-group">
         <button
@@ -82,14 +102,39 @@ export default function NotificationsForm() {
   );
 }
 
-function initialValues({ preferences }) {
-  return pick(preferences, [
-    'sendNotificationsDigest',
-    'sendDailyBestOfDigest',
-    'sendWeeklyBestOfDigest',
-  ]);
+function initialValues({ frontendPreferences, preferences }) {
+  return {
+    hideUnreadNotifications: frontendPreferences.hideUnreadNotifications,
+    sendNotificationsDigest: preferences.sendNotificationsDigest,
+    sendDailyBestOfDigest: preferences.sendDailyBestOfDigest,
+    sendWeeklyBestOfDigest: preferences.sendWeeklyBestOfDigest,
+  };
 }
 
 function onSubmit(userData, dispatch) {
-  return (values) => dispatch(updateUserNotificationPreferences(userData.id, values));
+  return ({
+    hideUnreadNotifications,
+    sendNotificationsDigest,
+    sendDailyBestOfDigest,
+    sendWeeklyBestOfDigest,
+  }) =>
+    doSequence(dispatch)(
+      (dispatch) =>
+        dispatch(
+          updateActualUserPreferences({
+            updateFrontendPrefs: () => ({
+              hideUnreadNotifications,
+            }),
+          }),
+        ),
+      (dispatch) => {
+        dispatch(
+          updateUserNotificationPreferences(userData.id, {
+            sendNotificationsDigest,
+            sendDailyBestOfDigest,
+            sendWeeklyBestOfDigest,
+          }),
+        );
+      },
+    );
 }

@@ -70,7 +70,6 @@ export default function AppearanceForm() {
   const omitBubbles = useField('omitBubbles', form.form);
   const highlightComments = useField('highlightComments', form.form);
   const hideBannedComments = useField('hideBannedComments', form.form);
-  const hideUnreadNotifications = useField('hideUnreadNotifications', form.form);
   const allowLinksPreview = useField('allowLinksPreview', form.form);
   const hideNSFWContent = useField('hideNSFWContent', form.form);
   const commentsTimestamps = useField('commentsTimestamps', form.form);
@@ -240,19 +239,6 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4 id="notifications">Unread notifications</h4>
-
-        <div className="form-group">
-          <div className="checkbox">
-            <label>
-              <CheckboxInput field={hideUnreadNotifications} />
-              Hide unread notification counter
-            </label>
-          </div>
-        </div>
-      </section>
-
-      <section className={settingsStyles.formSection}>
         <h4 id="previews">Link previews</h4>
 
         <div className="form-group">
@@ -369,7 +355,6 @@ function initialValues({
     omitBubbles: frontend.comments.omitRepeatedBubbles,
     highlightComments: frontend.comments.highlightComments,
     hideBannedComments: backend?.hideCommentsOfTypes.includes(COMMENT_HIDDEN_BANNED),
-    hideUnreadNotifications: frontend.hideUnreadNotifications,
     allowLinksPreview: frontend.allowLinksPreview,
     hideNSFWContent: !isNSFWVisible,
     commentsTimestamps: frontend.comments.showTimestamps,
@@ -411,7 +396,6 @@ function prefUpdaters(values) {
           highlightComments: values.highlightComments,
           showTimestamps: values.commentsTimestamps,
         },
-        hideUnreadNotifications: values.hideUnreadNotifications,
         allowLinksPreview: values.allowLinksPreview,
         timeDisplay: {
           ...prefs.timeDisplay,
