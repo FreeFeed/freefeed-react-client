@@ -6,6 +6,7 @@ import { updateUser } from '../../../redux/action-creators';
 import { Throbber } from '../../throbber';
 import { PreventPageLeaving } from '../../prevent-page-leaving';
 import { RadioInput } from '../../form-utils';
+import settingsStyles from '../settings.module.scss';
 
 const PUBLIC = 'public',
   PROTECTED = 'protected',
@@ -35,43 +36,49 @@ export default (function PrivacyForm() {
     <form onSubmit={form.handleSubmit}>
       <PreventPageLeaving prevent={form.dirty} />
 
-      <div className="form-group">
-        <p>Your feed is:</p>
-        <div className="radio">
-          <label>
-            <RadioInput field={privacy} value={PUBLIC} />
-            Public &mdash; anyone can see your posts
-          </label>
-        </div>
-        <div className="radio">
-          <label>
-            <RadioInput field={privacy} value={PROTECTED} />
-            Protected &mdash; anonymous users and search engines cannot see your posts
-          </label>
-        </div>
-        <div className="radio">
-          <label>
-            <RadioInput field={privacy} value={PRIVATE} />
-            Private &mdash; only people you approve can see your posts
-          </label>
-        </div>
-      </div>
+      <section className={settingsStyles.formSection}>
+        <h4 id="feed-visibility">Your feed visibility</h4>
 
-      <div className="form-group">
-        <p>Accept direct messages from:</p>
-        <div className="radio">
-          <label>
-            <RadioInput field={acceptDirectsFrom} value={ALL} />
-            All users
-          </label>
+        <div className="form-group">
+          <div className="radio">
+            <label>
+              <RadioInput field={privacy} value={PUBLIC} />
+              Public &mdash; anyone can see your posts
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <RadioInput field={privacy} value={PROTECTED} />
+              Protected &mdash; anonymous users and search engines cannot see your posts
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <RadioInput field={privacy} value={PRIVATE} />
+              Private &mdash; only people you approve can see your posts
+            </label>
+          </div>
         </div>
-        <div className="radio">
-          <label>
-            <RadioInput field={acceptDirectsFrom} value={FRIENDS} />
-            Only users you subscribe to
-          </label>
+      </section>
+
+      <section className={settingsStyles.formSection}>
+        <h4 id="accept-directs">Accept direct messages from:</h4>
+
+        <div className="form-group">
+          <div className="radio">
+            <label>
+              <RadioInput field={acceptDirectsFrom} value={ALL} />
+              All users
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <RadioInput field={acceptDirectsFrom} value={FRIENDS} />
+              Only users you subscribe to
+            </label>
+          </div>
         </div>
-      </div>
+      </section>
 
       <div className="form-group">
         <button
