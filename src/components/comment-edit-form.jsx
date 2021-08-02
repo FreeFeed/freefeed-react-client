@@ -6,7 +6,7 @@ import cn from 'classnames';
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { initialAsyncState } from '../redux/async-helpers';
 import { insertText } from '../utils/insert-text';
-import { submitByEnter } from '../utils/submit-by-enter';
+import { submitByKey } from '../utils/submit-by-enter';
 import { Throbber } from './throbber';
 import { useForwardedRef } from './hooks/forward-ref';
 import { PreventPageLeaving } from './prevent-page-leaving';
@@ -22,6 +22,7 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
     onSubmit = () => {},
     onCancel = () => {},
     submitStatus = initialAsyncState,
+    submitByEnter = false,
   },
   fwdRef,
 ) {
@@ -38,8 +39,8 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const onKeyDown = useCallback(
     // Need to setText to update text that doSubmit can access
-    submitByEnter(() => (setText(text), doSubmit())),
-    [doSubmit, text],
+    submitByKey(submitByEnter, () => (setText(text), doSubmit())),
+    [doSubmit, text, submitByEnter],
   );
 
   // On first focus move cursor to the end of text

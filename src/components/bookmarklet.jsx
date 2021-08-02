@@ -108,6 +108,7 @@ class Layout extends Component {
             createPost={props.createBookmarkletPost}
             resetPostCreateForm={props.resetPostCreateForm}
             removeImage={this.removeImage}
+            submitByEnter={this.props.user.frontendPreferences.submitByEnter}
           />
         ) : (
           <div>

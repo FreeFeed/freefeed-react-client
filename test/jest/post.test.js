@@ -267,6 +267,7 @@ describe('Post', () => {
   it('Renders a like button which likes the post', () => {
     const someOtherUser = {
       id: 'other-id',
+      frontendPreferences: { submitByEnter: false },
     };
     const likePost = jest.fn();
     renderPost({ likePost, isEditable: false, user: someOtherUser });
@@ -278,6 +279,7 @@ describe('Post', () => {
   it('Renders an un-like button which un-likes the post if this post is already liked', () => {
     const someOtherUser = {
       id: 'other-id',
+      frontendPreferences: { submitByEnter: false },
     };
     const unlikePost = jest.fn();
     renderPost({
@@ -378,6 +380,7 @@ describe('Post', () => {
   it('Renders a hide button which hides the post', () => {
     const someOtherUser = {
       id: 'other-id',
+      frontendPreferences: { submitByEnter: false },
     };
     const hidePost = jest.fn();
     renderPost({
@@ -394,6 +397,7 @@ describe('Post', () => {
   it('Renders a un-hide button which unhides the post', () => {
     const someOtherUser = {
       id: 'other-id',
+      frontendPreferences: { submitByEnter: false },
     };
     const unhidePost = jest.fn();
     renderPost({
@@ -422,11 +426,34 @@ describe('Post', () => {
     expect(cancelEditingPost).toHaveBeenCalledWith('post-id');
   });
 
-  it('Lets me edit text of my post by typing', () => {
+  it('Lets me edit text of my post by typing when "submitByEnter" is true', () => {
     const saveEditingPost = jest.fn();
-    renderPost({ isEditing: true, isEditable: true, saveEditingPost });
+    renderPost({
+      isEditing: true,
+      isEditable: true,
+      saveEditingPost,
+      user: { frontendPreferences: { submitByEnter: true } },
+    });
 
     userEvent.type(screen.getByRole('textbox'), 'Hello,{shift}{enter}{/shift}World!{enter}');
+    expect(screen.getByRole('textbox')).toHaveValue('Hello,\nWorld!');
+    expect(saveEditingPost).toHaveBeenCalledWith('post-id', {
+      attachments: [],
+      body: 'Hello,\nWorld!',
+      feeds: ['author'],
+    });
+  });
+
+  it('Lets me edit text of my post by typing when "submitByEnter" is false', () => {
+    const saveEditingPost = jest.fn();
+    renderPost({
+      isEditing: true,
+      isEditable: true,
+      saveEditingPost,
+      user: { frontendPreferences: { submitByEnter: false } },
+    });
+
+    userEvent.type(screen.getByRole('textbox'), 'Hello,{enter}World!{ctrl}{enter}{/ctrl}');
     expect(screen.getByRole('textbox')).toHaveValue('Hello,\nWorld!');
     expect(saveEditingPost).toHaveBeenCalledWith('post-id', {
       attachments: [],

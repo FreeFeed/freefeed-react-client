@@ -3,7 +3,7 @@ import { PureComponent, Component } from 'react';
 
 import { faComment } from '@fortawesome/free-regular-svg-icons';
 import { preventDefault } from '../utils';
-import { submitByEnter } from '../utils/submit-by-enter';
+import { submitByKey } from '../utils/submit-by-enter';
 import { Throbber } from './throbber';
 import SendTo from './send-to';
 import { Icon } from './fontawesome-icons';
@@ -46,7 +46,8 @@ export default class CreateBookmarkletPost extends Component {
     this.setState({ isFormEmpty });
   };
 
-  checkSave = submitByEnter(
+  checkSave = submitByKey(
+    this.props.submitByEnter,
     () => !this.state.isFormEmpty && !this.props.createPostViewState.isPending && this.submitForm(),
   );
 

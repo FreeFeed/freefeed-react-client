@@ -59,6 +59,7 @@ export default {
       homefeed: { hideUsers: [] },
       pinnedGroups: [],
       hideUnreadNotifications: false,
+      submitByEnter: false,
       timeDisplay: {
         absolute: false,
         amPm: false,

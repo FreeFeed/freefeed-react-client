@@ -6,7 +6,7 @@ import * as Sentry from '@sentry/react';
 
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
-import { submitByEnter } from '../utils/submit-by-enter';
+import { submitByKey } from '../utils/submit-by-enter';
 import { makeJpegIfNeeded } from '../utils/jpeg-if-needed';
 import SendTo from './send-to';
 import Dropzone from './dropzone';
@@ -133,7 +133,10 @@ export default class CreatePost extends Component {
   attLoadingStarted = () => this.setState({ attLoading: true });
   attLoadingCompleted = () => this.setState({ attLoading: false });
 
-  checkSave = submitByEnter(() => this.canSubmitForm() && this.createPost());
+  checkSave = submitByKey(
+    this.props.user.frontendPreferences.submitByEnter,
+    () => this.canSubmitForm() && this.createPost(),
+  );
 
   removeFocusFromTextarea = () => {
     this.textareaRef.current?.blur();
