@@ -11,13 +11,17 @@ import {
   getAllSubscriptions,
 } from '../../redux/action-creators';
 import { doSequence } from '../../redux/async-helpers';
+import { andJoin } from '../../utils/and-join';
 import { UserPicture } from '../user-picture';
 import { ButtonLink, useKeyboardEvents } from '../button-link';
-import { useBool } from '../hooks/bool';
 import { Throbber } from '../throbber';
 import { Icon } from '../fontawesome-icons';
 import { OverlayPopup } from '../overlay-popup';
 import styles from './list-editor.module.scss';
+
+const SHOW_ALL_USERS = 'all';
+const SHOW_ONLY_SELECTED_USERS = 'selected';
+const SHOW_ONLY_NOT_SELECTED_USERS = 'notSelected';
 
 export const ListEditor = memo(function ListEditor({
   listId = null,
@@ -63,11 +67,15 @@ export const ListEditor = memo(function ListEditor({
 
   const totalCount = allSubscriptions.length;
   const selectedCount = useMemo(() => Object.values(selected).filter(Boolean).length, [selected]);
+  const notSelectedCount = totalCount - selectedCount;
 
   const onSelect = useCallback((id, sel) => setSelected({ ...selected, [id]: sel }), [selected]);
 
   // Filter users by selection
-  const [showSelected, , showSelectionOnly, showAll] = useBool(false);
+  const [showMode, setShowMode] = useState(SHOW_ALL_USERS);
+  const showAll = useCallback(() => setShowMode(SHOW_ALL_USERS), []);
+  const showSelected = useCallback(() => setShowMode(SHOW_ONLY_SELECTED_USERS), []);
+  const showNotSelected = useCallback(() => setShowMode(SHOW_ONLY_NOT_SELECTED_USERS), []);
 
   // Filter users by name
   const [nameFilter, setNameFilter] = useState('');
@@ -86,19 +94,42 @@ export const ListEditor = memo(function ListEditor({
   }, [allSubscriptionsStatus.success, list?.title]);
 
   // Prepare users data
-  const users = useMemo(() => {
-    const filter = nameFilter.trim();
-    return allSubscriptions
-      .map(({ id, homeFeeds }) => ({
-        ...allUsers[id],
-        selected: !!selected[id],
-        homeless: homeFeeds.length === 0 || (homeFeeds.length === 1 && homeFeeds[0] === list?.id),
-      }))
-      .filter((u) => !showSelected || u.selected)
-      .filter((u) => !filter || u.username.includes(filter) || u.screenName.includes(filter));
-  }, [allSubscriptions, allUsers, selected, showSelected, nameFilter, list?.id]);
+  const preparedUsers = useMemo(() => {
+    return allSubscriptions.map(({ id, homeFeeds }) => ({
+      ...allUsers[id],
+      selected: !!selected[id],
+      homeless: homeFeeds.length === 0,
+    }));
+  }, [allSubscriptions, allUsers, selected]);
 
-  const hasHomeless = useMemo(() => users.some((u) => u.homeless && !u.selected), [users]);
+  const usersToShow = useMemo(() => {
+    const filter = nameFilter.trim().toLocaleLowerCase();
+    return preparedUsers
+      .filter((u) => {
+        if (showMode === SHOW_ALL_USERS) {
+          return true;
+        }
+        if (showMode === SHOW_ONLY_SELECTED_USERS && u.selected) {
+          return true;
+        }
+        if (showMode === SHOW_ONLY_NOT_SELECTED_USERS && !u.selected) {
+          return true;
+        }
+        return false;
+      })
+      .filter(
+        (u) =>
+          !filter ||
+          u.username.toLocaleLowerCase().includes(filter) ||
+          u.screenName.toLocaleLowerCase().includes(filter),
+      )
+      .sort((a, z) => a.username.localeCompare(z.username));
+  }, [nameFilter, preparedUsers, showMode]);
+
+  const homeless = useMemo(
+    () => preparedUsers.filter((u) => u.homeless && !u.selected),
+    [preparedUsers],
+  );
   const returnListId = useRef(list?.id);
 
   // Handle submit
@@ -159,7 +190,7 @@ export const ListEditor = memo(function ListEditor({
 
   return (
     <OverlayPopup close={doCancel}>
-      <section className={styles.wrapper}>
+      <section className={styles.wrapper} data-testid="list-editor">
         <header className={styles.header}>
           {list && list.isInherent ? (
             <h3>{list.title}</h3>
@@ -180,12 +211,19 @@ export const ListEditor = memo(function ListEditor({
           )}
           <p>
             Show:{' '}
-            <ButtonLinkX onClick={showAll} selected={!showSelected}>
+            <ButtonLinkX onClick={showAll} selected={showMode === SHOW_ALL_USERS}>
               All ({totalCount})
             </ButtonLinkX>
             {' - '}
-            <ButtonLinkX onClick={showSelectionOnly} selected={showSelected}>
-              Selected ({selectedCount})
+            <ButtonLinkX onClick={showSelected} selected={showMode === SHOW_ONLY_SELECTED_USERS}>
+              In the list ({selectedCount})
+            </ButtonLinkX>
+            {' - '}
+            <ButtonLinkX
+              onClick={showNotSelected}
+              selected={showMode === SHOW_ONLY_NOT_SELECTED_USERS}
+            >
+              Not in the list ({notSelectedCount})
             </ButtonLinkX>
             {' - '}
             Filter by name:{' '}
@@ -203,7 +241,7 @@ export const ListEditor = memo(function ListEditor({
         <main>
           <div className={styles.content}>
             {allSubscriptionsStatus.success ? (
-              <UsersList users={users} onSelect={onSelect} highlight={nameFilter.trim()} />
+              <UsersList users={usersToShow} onSelect={onSelect} highlight={nameFilter.trim()} />
             ) : allSubscriptionsStatus.error ? (
               <p className="alert alert-danger" role="alert">
                 Error loading subscriptions: {allSubscriptionsStatus.errorText}
@@ -245,10 +283,11 @@ export const ListEditor = memo(function ListEditor({
               {submitStatus.errorText}
             </p>
           )}
-          {hasHomeless && (
+          {homeless.length > 0 && (
             <div className={cn(styles.submitWarning, 'text-muted')}>
-              <Icon icon={faExclamationTriangle} /> There are subscriptions that is not in any of
-              your friend lists. It is allowed but probably it isn&#x2019;t what you want.
+              <Icon icon={faExclamationTriangle} />{' '}
+              {andJoin(homeless.slice(0, 5).map((u) => `@${u.username}`))}{' '}
+              {homeless.length === 1 ? 'is' : 'are'} not in any of your friend lists.
             </div>
           )}
         </footer>
@@ -258,6 +297,9 @@ export const ListEditor = memo(function ListEditor({
 });
 
 const UsersList = memo(function UsersList({ users, onSelect, highlight }) {
+  if (users.length === 0) {
+    return <p>No users here</p>;
+  }
   return (
     <ul className={styles.list}>
       {users.map((user) => (
@@ -284,7 +326,7 @@ const UserCell = memo(function UserCell({ user, onSelect, highlight }) {
       <div>
         <div className={styles.screenName}>{hl(user.screenName, highlight)}</div>
         <div className={styles.username}>@{hl(user.username, highlight)}</div>
-        {user.homeless && !user.selected && (
+        {user.homeless && (
           <Icon
             icon={faExclamationTriangle}
             className={styles.homelessMark}
@@ -296,28 +338,24 @@ const UserCell = memo(function UserCell({ user, onSelect, highlight }) {
   );
 });
 
-function hl(text, h) {
-  if (h === '' || !text.includes(h)) {
+function hl(text, search) {
+  const lowercaseText = text.toLocaleLowerCase();
+  const lowercaseSearch = search.toLocaleLowerCase();
+  if (lowercaseSearch === '' || !lowercaseText.includes(lowercaseSearch)) {
     return text;
   }
   const result = [];
 
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
-    const p = text.indexOf(h);
-    if (p === -1) {
-      text && result.push(text);
-      break;
-    } else if (p > 0) {
-      result.push(text.slice(0, Math.max(0, p)));
-    }
-    result.push(
-      <mark className={styles.mark} key={`${text}__${result.length}`}>
-        {h}
-      </mark>,
-    );
-    text = text.slice(Math.max(0, p + h.length));
-  }
+  const highlightFrom = lowercaseText.indexOf(lowercaseSearch);
+  const highlightTo = highlightFrom + search.length;
+  result.push(text.slice(0, highlightFrom));
+  result.push(
+    <mark className={styles.mark} key={`${text}__${result.length}`}>
+      {text.slice(highlightFrom, highlightTo)}
+    </mark>,
+  );
+  result.push(text.slice(highlightTo));
+
   return result;
 }
 
