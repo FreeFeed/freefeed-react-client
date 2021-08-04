@@ -284,7 +284,6 @@ exports[`ListEditor Renders a list and doesn't blow up 1`] = `
       </svg>
        
       @homeless
-       
       is
        not in any of your friend lists.
     </div>

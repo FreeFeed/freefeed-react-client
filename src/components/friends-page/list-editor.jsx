@@ -286,7 +286,11 @@ export const ListEditor = memo(function ListEditor({
           {homeless.length > 0 && (
             <div className={cn(styles.submitWarning, 'text-muted')}>
               <Icon icon={faExclamationTriangle} />{' '}
-              {andJoin(homeless.slice(0, 5).map((u) => `@${u.username}`))}{' '}
+              {homeless.length < 5
+                ? andJoin(homeless.map((u) => `@${u.username}`))
+                : `${homeless.slice(0, 3).map((u) => `@${u.username}`)} and ${
+                    homeless.length - 3
+                  } more users `}
               {homeless.length === 1 ? 'is' : 'are'} not in any of your friend lists.
             </div>
           )}
