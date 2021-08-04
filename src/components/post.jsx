@@ -270,7 +270,11 @@ class Post extends Component {
 
   canSubmitForm() {
     const { editingText, attLoading, emptyDestinations } = this.state;
-    return _.trim(editingText) !== '' && !attLoading && !emptyDestinations;
+    return (
+      (editingText.trim() !== '' || this.state.editingAttachments.length > 0) &&
+      !attLoading &&
+      !emptyDestinations
+    );
   }
 
   get attachments() {
