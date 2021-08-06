@@ -20,7 +20,7 @@ export function submitByKey(byEnter, submitFn) {
  */
 function submitByEnter(submitFn) {
   return function (event) {
-    if (event.keyCode !== KEY_RETURN || event.shiftKey) {
+    if (event.keyCode !== KEY_RETURN || event.shiftKey || event.altKey) {
       return;
     }
 
