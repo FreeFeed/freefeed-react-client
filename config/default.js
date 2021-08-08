@@ -59,7 +59,7 @@ export default {
       homefeed: { hideUsers: [] },
       pinnedGroups: [],
       hideUnreadNotifications: false,
-      submitByEnter: false,
+      submitByEnter: true,
       timeDisplay: {
         absolute: false,
         amPm: false,
@@ -71,12 +71,13 @@ export default {
        *  time of user. The object key is a Lodash 'path' in the defaultValues
        *  object.
        *
-       * The 'createdBefore' is the only supported opeator for now.
+       * The 'createdBefore' and 'createdSince' are the only supported opeators
+       * for now.
        *
-       * The example below means that for all accounts created before
-       *  2021-08-01, the 'submitByEnter' has a true default value.
+       * The example below means that for all accounts created since
+       *  2021-08-01, the 'submitByEnter' has a 'false' default value.
        */
-      // submitByEnter: { createdBefore: '2021-08-01', value: true },
+      // submitByEnter: { createdSince: '2021-08-01', value: false },
     },
   },
 

@@ -63,8 +63,11 @@ export function userParserFull(
     if (user.createdAt) {
       const createdAt = new Date(parseInt(user.createdAt, 10));
       for (const key of Object.keys(defaultOverrides)) {
-        const { createdBefore, value } = defaultOverrides[key];
-        if (createdBefore && createdAt < new Date(createdBefore)) {
+        const { createdBefore, createdSince, value } = defaultOverrides[key];
+        if (
+          (createdBefore && createdAt < new Date(createdBefore)) ||
+          (createdSince && createdAt >= new Date(createdSince))
+        ) {
           // Lodash magic to return the minimal necessary clone of 'defaults'.
           // See https://github.com/lodash/lodash/issues/1696#issuecomment-328335502
           defaults = _.setWith(_.clone(defaults), key, value, _.clone);
