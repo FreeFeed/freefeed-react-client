@@ -50,6 +50,7 @@ describe('userParserFull', () => {
         bar: 'baz',
       },
       defaultOverrides: {
+        foo: { createdSince: '2021-10-01', value: 'rab' },
         bar: { createdBefore: '2021-08-01', value: 'zab' },
       },
       clientId,
@@ -79,7 +80,7 @@ describe('userParserFull', () => {
 
     it('should parse user info without defaults override', () => {
       const user = {
-        // Created after override rule date
+        // Created after 'createdBefore' but before 'createdSince' date
         createdAt: new Date('2021-09-01').getTime().toString(10),
         frontendPreferences: {},
       };
@@ -93,9 +94,9 @@ describe('userParserFull', () => {
       });
     });
 
-    it('should parse user info with defaults override', () => {
+    it('should parse user info with defaults override (createdBefore)', () => {
       const user = {
-        // Created before override rule date
+        // Created before 'createdBefore' date
         createdAt: new Date('2021-07-01').getTime().toString(10),
         frontendPreferences: {},
       };
