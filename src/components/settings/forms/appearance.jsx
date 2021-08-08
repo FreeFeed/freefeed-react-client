@@ -186,19 +186,27 @@ export default function AppearanceForm() {
 
       <section className={settingsStyles.formSection}>
         <h4 id="submit-key">Text submitting</h4>
-
+        <p>How to submit post and comment forms:</p>
         <div className="form-group">
-          <div className="checkbox">
+          <div className="radio">
             <label>
-              <CheckboxInput field={useCtrlEnter} />
-              Use <code>Ctrl+Enter</code> to submit posts/comments, use <code>Enter</code> to insert
-              a line feed
+              <RadioInput field={useCtrlEnter} value={true} />
+              <code>Ctrl+Enter</code> to submit
+              <p className="help-block">
+                To insert a new line just press <code>Enter</code>
+              </p>
             </label>
-            <p className="help-block">
-              If this flag is not set, the post/comment form will be submitted by pressing{' '}
-              <code>Enter</code>. To insert a line feed in this case, use <code>Shift+Enter</code>{' '}
-              or press <code>Enter</code> right after space symbol.
-            </p>
+          </div>
+
+          <div className="radio">
+            <label>
+              <RadioInput field={useCtrlEnter} value={false} />
+              <code>Enter</code> to submit
+              <p className="help-block">
+                To insert a new line use <code>Shift+Enter</code>, <code>Alt+Enter</code> or press{' '}
+                <code>Enter</code> right after space symbol
+              </p>
+            </label>
           </div>
         </div>
       </section>
