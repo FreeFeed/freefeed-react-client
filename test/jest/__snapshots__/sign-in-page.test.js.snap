@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SignInPage Renders sign-in settings page 1`] = `
+<DocumentFragment>
+  <div
+    role="tabpanel"
+  >
+    <h3
+      class="pageHeader"
+    >
+      Password & sign in
+    </h3>
+    <section
+      class="formSection"
+    >
+      <h4>
+        Connected social network profiles
+      </h4>
+    </section>
+    <section
+      class="formSection"
+    >
+      <h4>
+        Change password
+      </h4>
+      <form>
+        <div
+          class="form-group"
+        >
+          <label
+            for="currentPassword-input"
+          >
+            Current password
+          </label>
+          <input
+            autocomplete="current-password"
+            class="form-control narrow-input"
+            id="currentPassword-input"
+            name="currentPassword"
+            type="password"
+            value=""
+          />
+        </div>
+        <div
+          class="form-group"
+        >
+          <label
+            for="password-input"
+          >
+            New password
+          </label>
+          <input
+            autocomplete="new-password"
+            class="form-control narrow-input"
+            id="password-input"
+            name="password"
+            type="password"
+            value=""
+          />
+        </div>
+        <div
+          class="form-group"
+        >
+          <label
+            for="passwordConfirmation-input"
+          >
+            Confirm password
+          </label>
+          <input
+            autocomplete="new-password"
+            class="form-control narrow-input"
+            id="passwordConfirmation-input"
+            name="passwordConfirmation"
+            type="password"
+            value=""
+          />
+        </div>
+        <div
+          class="form-group"
+        >
+          <button
+            class="btn btn-primary"
+            disabled=""
+            type="submit"
+          >
+            Update password
+          </button>
+           
+        </div>
+        <p>
+          Or 
+          <a>
+            reset your password by email
+          </a>
+           if you forgot your current password
+        </p>
+      </form>
+    </section>
+    <section
+      class="formSection"
+    >
+      <h4>
+        Login sessions
+      </h4>
+      <p>
+        <a>
+          View your login sessions
+        </a>
+      </p>
+    </section>
+  </div>
+</DocumentFragment>
+`;

@@ -1,0 +1,185 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserRelationshipStatus Shows that I am a group admin 1`] = `
+<DocumentFragment>
+  <span>
+    <span>
+      <svg
+        aria-hidden="true"
+        class="status-icon fa-icon fa-icon-fas-check-square"
+        focusable="false"
+        role="img"
+        viewBox="0 0 448 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zm-204.686-98.059l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.248-16.379-6.249-22.628 0L184 302.745l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z"
+          fill="currentColor"
+        />
+      </svg>
+       You are an admin
+    </span>
+  </span>
+</DocumentFragment>
+`;
+
+exports[`UserRelationshipStatus Shows that I am a group member 1`] = `
+<DocumentFragment>
+  <span>
+    <span>
+      <svg
+        aria-hidden="true"
+        class="status-icon fa-icon fa-icon-fas-check-square"
+        focusable="false"
+        role="img"
+        viewBox="0 0 448 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M400 480H48c-26.51 0-48-21.49-48-48V80c0-26.51 21.49-48 48-48h352c26.51 0 48 21.49 48 48v352c0 26.51-21.49 48-48 48zm-204.686-98.059l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.248-16.379-6.249-22.628 0L184 302.745l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z"
+          fill="currentColor"
+        />
+      </svg>
+       You are a member
+    </span>
+  </span>
+</DocumentFragment>
+`;
+
+exports[`UserRelationshipStatus Shows that I am subscribed to them 1`] = `
+<DocumentFragment>
+  <span>
+    <span>
+      <svg
+        aria-hidden="true"
+        class="status-icon fa-icon fa-icon-fas-check-circle"
+        focusable="false"
+        role="img"
+        viewBox="0 0 512 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"
+          fill="currentColor"
+        />
+      </svg>
+       You are subscribed
+    </span>
+  </span>
+</DocumentFragment>
+`;
+
+exports[`UserRelationshipStatus Shows that I have blocked them 1`] = `
+<DocumentFragment>
+  <span>
+    <span>
+      <svg
+        aria-hidden="true"
+        class="status-icon fa-icon fa-icon-fas-ban"
+        focusable="false"
+        role="img"
+        viewBox="0 0 512 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M256 8C119.034 8 8 119.033 8 256s111.034 248 248 248 248-111.034 248-248S392.967 8 256 8zm130.108 117.892c65.448 65.448 70 165.481 20.677 235.637L150.47 105.216c70.204-49.356 170.226-44.735 235.638 20.676zM125.892 386.108c-65.448-65.448-70-165.481-20.677-235.637L361.53 406.784c-70.203 49.356-170.226 44.736-235.638-20.676z"
+          fill="currentColor"
+        />
+      </svg>
+       You've blocked the user
+    </span>
+  </span>
+</DocumentFragment>
+`;
+
+exports[`UserRelationshipStatus Shows that I have sent them a subscription request 1`] = `
+<DocumentFragment>
+  <span>
+    <span>
+      <svg
+        aria-hidden="true"
+        class="status-icon fa-icon fa-icon-far-clock"
+        focusable="false"
+        role="img"
+        viewBox="0 0 512 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"
+          fill="currentColor"
+        />
+      </svg>
+       You've sent sub request
+    </span>
+  </span>
+</DocumentFragment>
+`;
+
+exports[`UserRelationshipStatus Shows that they are subscribed to me 1`] = `
+<DocumentFragment>
+  <span>
+    <span>
+      <svg
+        aria-hidden="true"
+        class="status-icon fa-icon fa-icon-far-check-circle"
+        focusable="false"
+        role="img"
+        viewBox="0 0 512 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 48c110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200-110.532 0-200-89.451-200-200 0-110.532 89.451-200 200-200m140.204 130.267l-22.536-22.718c-4.667-4.705-12.265-4.736-16.97-.068L215.346 303.697l-59.792-60.277c-4.667-4.705-12.265-4.736-16.97-.069l-22.719 22.536c-4.705 4.667-4.736 12.265-.068 16.971l90.781 91.516c4.667 4.705 12.265 4.736 16.97.068l172.589-171.204c4.704-4.668 4.734-12.266.067-16.971z"
+          fill="currentColor"
+        />
+      </svg>
+       User subscribed to you
+    </span>
+  </span>
+</DocumentFragment>
+`;
+
+exports[`UserRelationshipStatus Shows that they have blocked me 1`] = `
+<DocumentFragment>
+  <span>
+    <span>
+      <svg
+        aria-hidden="true"
+        class="status-icon fa-icon fa-icon-fas-question-circle"
+        focusable="false"
+        role="img"
+        viewBox="0 0 512 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+          fill="currentColor"
+        />
+      </svg>
+       User may have blocked you
+    </span>
+  </span>
+</DocumentFragment>
+`;
+
+exports[`UserRelationshipStatus Shows that we are mutually subscribed 1`] = `
+<DocumentFragment>
+  <span>
+    <span>
+      <svg
+        aria-hidden="true"
+        class="status-icon fa-icon fa-icon-fas-check-circle"
+        focusable="false"
+        role="img"
+        viewBox="0 0 512 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"
+          fill="currentColor"
+        />
+      </svg>
+       Mutually subscribed
+    </span>
+  </span>
+</DocumentFragment>
+`;
