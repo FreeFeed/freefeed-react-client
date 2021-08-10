@@ -151,9 +151,10 @@
     "clean": "rimraf ./_dist",
     "prettier": "prettier -c \"src/**/*\"",
     "stylelint": "stylelint --config stylelint.config.js \"styles/**/*.scss\"",
-    "build-prod": "cross-env NODE_ENV=production DEV=0 run-s clean _webpack",
+    "build-prod": "cross-env NODE_ENV=production DEV=0 run-s clean _webpack _webpack:bookmarklet",
     "build-dev": "cross-env NODE_ENV=development DEV=1 run-s clean _webpack",
     "_webpack": "webpack --config webpack.config.babel.js --output-path ./_dist",
+    "_webpack:bookmarklet": "webpack --config webpack.bookmarklet.config.babel.js --output-path ./_dist",
     "analyze-webpack": "webpack-bundle-analyzer _dist/stats.json",
     "postinstall": "husky install"
   },

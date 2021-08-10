@@ -18,7 +18,6 @@ const config = {
   ...baseConfig,
   entry: {
     app: skipFalsy(['core-js/stable', 'regenerator-runtime/runtime', 'whatwg-fetch', './src']),
-    bookmarklet: skipFalsy(['./src/bookmarklet/popup.js']),
     config: skipFalsy(['./config/lib/loader-browser.js']),
   },
   target: 'web',
