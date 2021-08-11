@@ -25,12 +25,7 @@ const baseConfig = {
   output: {
     path: opts.dstDir,
     chunkFilename: `${filename}.js`, // used by non-entry chunks
-    filename: (chunkData) => {
-      if (chunkData.chunk.name === 'bookmarklet') {
-        return 'assets/js/bookmarklet-popup.js';
-      }
-      return `${filename}.js`;
-    },
+    filename: `${filename}.js`,
     sourceMapFilename: `[file].map`,
     devtoolModuleFilenameTemplate: '/[absolute-resource-path]',
     // Set correct globalObject for web workers:

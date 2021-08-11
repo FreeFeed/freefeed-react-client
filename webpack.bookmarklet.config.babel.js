@@ -7,11 +7,16 @@ import { gzip } from '@gfx/zopfli';
 
 import { baseConfig, opts, rules } from './webpack/base';
 import { skipFalsy } from './webpack/utils';
+import { BOOKMARKLET_POPUP_PATH } from './src/bookmarklet/loader';
 
 const config = {
   ...baseConfig,
   entry: {
     bookmarklet: skipFalsy(['./src/bookmarklet/popup.js']),
+  },
+  output: {
+    ...baseConfig.output,
+    filename: BOOKMARKLET_POPUP_PATH,
   },
   target: 'web',
   devServer: { historyApiFallback: true },
