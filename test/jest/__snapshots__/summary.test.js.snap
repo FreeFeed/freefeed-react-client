@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Summary Renders summary view with an empty feed 1`] = `
+<DocumentFragment>
+  <div
+    class="box"
+  >
+    <div
+      class="box-header-timeline"
+      role="heading"
+    >
+      Best of the day
+      <div
+        class="sidelinks"
+      >
+        <span>
+          View best of: 
+        </span>
+        <a>
+          day
+        </a>
+         - 
+        <b>
+          week
+        </b>
+         - 
+        <a>
+          month
+        </a>
+      </div>
+    </div>
+    <div
+      class="box-body"
+    >
+      <div
+        class="posts"
+        role="feed list"
+      >
+        <p
+          class="alert alert-danger"
+          role="alert"
+        >
+          Error loading feed: 
+        </p>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

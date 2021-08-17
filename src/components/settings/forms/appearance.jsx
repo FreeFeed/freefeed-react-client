@@ -70,13 +70,13 @@ export default function AppearanceForm() {
   const omitBubbles = useField('omitBubbles', form.form);
   const highlightComments = useField('highlightComments', form.form);
   const hideBannedComments = useField('hideBannedComments', form.form);
-  const hideUnreadNotifications = useField('hideUnreadNotifications', form.form);
   const allowLinksPreview = useField('allowLinksPreview', form.form);
   const hideNSFWContent = useField('hideNSFWContent', form.form);
   const commentsTimestamps = useField('commentsTimestamps', form.form);
   const timeAmPm = useField('timeAmPm', form.form);
   const timeAbsolute = useField('timeAbsolute', form.form);
   const enableBeta = useField('enableBeta', form.form);
+  const useCtrlEnter = useField('useCtrlEnter', form.form);
 
   return (
     <form onSubmit={form.handleSubmit}>
@@ -185,7 +185,34 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4 id="dencity">Display density</h4>
+        <h4 id="submit-key">Text submitting</h4>
+        <p>How to submit post and comment forms:</p>
+        <div className="form-group">
+          <div className="radio">
+            <label>
+              <RadioInput field={useCtrlEnter} value={true} />
+              <code>Ctrl+Enter</code> to submit
+              <p className="help-block">
+                To insert a new line just press <code>Enter</code>
+              </p>
+            </label>
+          </div>
+
+          <div className="radio">
+            <label>
+              <RadioInput field={useCtrlEnter} value={false} />
+              <code>Enter</code> to submit
+              <p className="help-block">
+                To insert a new line use <code>Shift+Enter</code>, <code>Alt+Enter</code> or press{' '}
+                <code>Enter</code> right after space symbol
+              </p>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <section className={settingsStyles.formSection}>
+        <h4 id="density">Display density</h4>
 
         <div className="form-group">
           <div className="radio">
@@ -234,19 +261,6 @@ export default function AppearanceForm() {
             <label>
               <CheckboxInput field={commentsTimestamps} />
               Show timestamps for comments
-            </label>
-          </div>
-        </div>
-      </section>
-
-      <section className={settingsStyles.formSection}>
-        <h4 id="notifications">Unread notifications</h4>
-
-        <div className="form-group">
-          <div className="checkbox">
-            <label>
-              <CheckboxInput field={hideUnreadNotifications} />
-              Hide unread notification counter
             </label>
           </div>
         </div>
@@ -369,13 +383,13 @@ function initialValues({
     omitBubbles: frontend.comments.omitRepeatedBubbles,
     highlightComments: frontend.comments.highlightComments,
     hideBannedComments: backend?.hideCommentsOfTypes.includes(COMMENT_HIDDEN_BANNED),
-    hideUnreadNotifications: frontend.hideUnreadNotifications,
     allowLinksPreview: frontend.allowLinksPreview,
     hideNSFWContent: !isNSFWVisible,
     commentsTimestamps: frontend.comments.showTimestamps,
     timeAmPm: frontend.timeDisplay.amPm ? '1' : '0',
     timeAbsolute: frontend.timeDisplay.absolute ? '1' : '0',
     enableBeta: isBetaChannel,
+    useCtrlEnter: !frontend.submitByEnter,
   };
 }
 
@@ -411,13 +425,13 @@ function prefUpdaters(values) {
           highlightComments: values.highlightComments,
           showTimestamps: values.commentsTimestamps,
         },
-        hideUnreadNotifications: values.hideUnreadNotifications,
         allowLinksPreview: values.allowLinksPreview,
         timeDisplay: {
           ...prefs.timeDisplay,
           amPm: values.timeAmPm === '1',
           absolute: values.timeAbsolute === '1',
         },
+        submitByEnter: !values.useCtrlEnter,
       };
     },
 

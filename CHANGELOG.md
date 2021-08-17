@@ -5,15 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## EXPERIMENTAL
+## [1.101.0] - Not released
 ### Added
-- "Grips" in sidebar for drag and sort home feeds. Previously, the drag zone
-  matched the feed link itself, and that was inconvenient, especially on mobile
-  screens.
-- Native player for video-attachments
+- New setting in frontend preferences: 'submitByEnter' (*false* by default).
+  There are two submit modes now:
+  -  If 'submitByEnter' is *false* (default mode), the Enter key inserts a
+     regular line break and the Ctrl+Enter submits form.
+  -  If 'submitByEnter' is *true* (legacy mode), the post/comment forms are submitted by Enter
+     key. User can insert line break using Shift+Enter or Alt+Enter, or by
+     pressing Enter right after space symbol.
+- Some frontend preferences defaults can now be overridden depending on the
+  account's createdAt date. It is useful for the new defaults that breaks the
+  old behaviour and shouldn't affect the existing users.
 
-### Fixed
-- Fixed the mobile Chrome unwanted font boosting.
+### Changed
+- When 'submitByEnter' is *true*, user can insert line break in any place of
+  text when the caret is right after space symbol (not only at the end).
 
 ## [1.100.0] - 2021-07-30
 ### Added

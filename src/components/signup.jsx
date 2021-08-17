@@ -11,11 +11,15 @@ import { useExtAuthProviders, providerTitle } from './ext-auth-helpers';
 import { ExtAuthButtons, SIGN_UP } from './ext-auth-buttons';
 import { useServerInfo } from './hooks/server-info';
 import { SignInLink } from './sign-in-link';
+import UserName from './user-name';
 
 export default memo(function Signup() {
   const [serverInfo, serverInfoStatus] = useServerInfo();
   const registrationOpen = !serverInfoStatus.success || serverInfo.registrationOpen;
   const withForm = !!CONFIG.registrationsLimit.emailFormIframeSrc;
+
+  const user = useSelector((state) => state.user || null);
+  const isLoggedIn = user?.id && user?.type === 'user';
 
   return (
     <div className="box">
@@ -23,6 +27,11 @@ export default memo(function Signup() {
         Hello
       </div>
       <div className="box-body">
+        {isLoggedIn ? (
+          <p>
+            You are already signed up as <UserName user={user}>{user.screenName}</UserName>.
+          </p>
+        ) : null}
         <div className="col-md-12">
           <h2 className="p-signin-header">Sign up</h2>
           {registrationOpen ? (
