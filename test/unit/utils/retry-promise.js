@@ -1,7 +1,7 @@
 import { describe, it, before, after } from 'mocha';
 import unexpected from 'unexpected';
 import unexpectedSinon from 'unexpected-sinon';
-import sinon from 'sinon';
+import { spy, stub, useFakeTimers } from 'sinon';
 
 import { retry as retryIt } from '../../../src/utils/retry-promise';
 
@@ -13,11 +13,11 @@ const retry = (fn) => retryIt(fn, 5, 1000);
 
 describe('retry', () => {
   let clock;
-  before(() => (clock = sinon.useFakeTimers()));
+  before(() => (clock = useFakeTimers()));
   after(() => clock.restore());
 
   it('should return first result if function succeeds', async () => {
-    const fn = sinon.stub().returns(Promise.resolve(42));
+    const fn = stub().returns(Promise.resolve(42));
     const retryFn = retry(fn);
     const result = await retryFn();
     expect(result, 'to be', 42);
@@ -26,7 +26,7 @@ describe('retry', () => {
 
   it('should return result if function succeeds at second call', async () => {
     let i = 0;
-    const fn = sinon.spy(async () => {
+    const fn = spy(async () => {
       if (i === 0) {
         i++;
         throw new Error('some error');
@@ -42,7 +42,7 @@ describe('retry', () => {
   });
 
   it('should throw error after all unsuccessful calls', async () => {
-    const fn = sinon.stub().returns(Promise.reject(new Error('some error')));
+    const fn = stub().returns(Promise.reject(new Error('some error')));
     const retryFn = retry(fn);
 
     const start = Date.now();

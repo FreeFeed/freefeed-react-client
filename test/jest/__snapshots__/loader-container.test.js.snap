@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AppUpdated Renders a full page loader 1`] = `
+<DocumentFragment>
+  <div
+    class="loader-container -full"
+  >
+    <div
+      class="loader-overlay"
+    />
+    children
+  </div>
+</DocumentFragment>
+`;

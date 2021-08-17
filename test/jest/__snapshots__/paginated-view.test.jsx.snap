@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PaginatedView Renders paginated view with links to newer and older entries 1`] = `
+<DocumentFragment>
+  <div
+    class="box-body"
+  >
+    <ul
+      class="pager p-pagination-controls"
+      role="navigation"
+    >
+      <li>
+        <a
+          class="p-pagination-newer"
+        >
+          « Newer items
+        </a>
+      </li>
+      <li>
+        <a
+          class="p-pagination-older"
+        >
+          Older items »
+        </a>
+      </li>
+    </ul>
+    <div>
+      Paginated feed
+    </div>
+    <ul
+      class="pager p-pagination-controls"
+      role="navigation"
+    >
+      <li>
+        <a
+          class="p-pagination-newer"
+        >
+          « Newer items
+        </a>
+      </li>
+      <li>
+        <a
+          class="p-pagination-older"
+        >
+          Older items »
+        </a>
+      </li>
+    </ul>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`PaginatedView Renders user summary links 1`] = `
+<h4
+  class="user-subheader"
+>
+  Box title
+  <div
+    class="user-subheader-sidelinks"
+  >
+    View best of: 
+    <a>
+      day
+    </a>
+     - 
+    <b>
+      week
+    </b>
+     - 
+    <a>
+      month
+    </a>
+  </div>
+</h4>
+`;

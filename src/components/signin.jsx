@@ -13,9 +13,13 @@ import { Throbber } from './throbber';
 import { providerTitle, useExtAuthProviders } from './ext-auth-helpers';
 import { CookiesBanner } from './cookies-banner';
 import { ExtAuthButtons } from './ext-auth-buttons';
+import UserName from './user-name';
 
 export default memo(function SignInPage() {
   const [providers] = useExtAuthProviders();
+
+  const user = useSelector((state) => state.user || null);
+  const isLoggedIn = user?.id && user?.type === 'user';
 
   return (
     <div className="box">
@@ -23,6 +27,11 @@ export default memo(function SignInPage() {
         Welcome to {CONFIG.siteTitle}!
       </div>
       <div className="box-body">
+        {isLoggedIn ? (
+          <p>
+            You are already signed in as <UserName user={user}>{user.screenName}</UserName>.
+          </p>
+        ) : null}
         <div className="col-md-12">
           <h2 className="p-signin-header">Sign in</h2>
           <CookiesBanner />
