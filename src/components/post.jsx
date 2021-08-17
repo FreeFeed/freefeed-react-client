@@ -22,7 +22,7 @@ import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
 import { savePost, hideByName, unhideNames } from '../redux/action-creators';
 import { initialAsyncState } from '../redux/async-helpers';
-import { submitByEnter } from '../utils/submit-by-enter';
+import { submitByKey } from '../utils/submit-by-enter';
 import { makeJpegIfNeeded } from '../utils/jpeg-if-needed';
 import { Throbber } from './throbber';
 
@@ -204,7 +204,10 @@ class Post extends Component {
     props.saveEditingPost(props.id, reqBody);
   };
 
-  handleKeyDown = submitByEnter(() => this.canSubmitForm() && this.saveEditingPost());
+  handleKeyDown = submitByKey(
+    this.props.user.frontendPreferences.submitByEnter,
+    () => this.canSubmitForm() && this.saveEditingPost(),
+  );
 
   handleAttachmentResponse = (att) => {
     if (this.state.editingAttachments.length >= attachmentsMaxCount) {

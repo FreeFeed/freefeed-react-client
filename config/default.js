@@ -59,10 +59,25 @@ export default {
       homefeed: { hideUsers: [] },
       pinnedGroups: [],
       hideUnreadNotifications: false,
+      submitByEnter: true,
       timeDisplay: {
         absolute: false,
         amPm: false,
       },
+    },
+    defaultOverrides: {
+      /**
+       *  Here you can override the default values depending on the 'createdAt'
+       *  time of user. The object key is a Lodash 'path' in the defaultValues
+       *  object.
+       *
+       * The 'createdBefore' and 'createdSince' are the only supported opeators
+       * for now.
+       *
+       * The example below means that for all accounts created since
+       *  2021-08-01, the 'submitByEnter' has a 'false' default value.
+       */
+      // submitByEnter: { createdSince: '2021-08-01', value: false },
     },
   },
 
