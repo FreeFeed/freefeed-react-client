@@ -190,7 +190,7 @@ export default function AppearanceForm() {
         <div className="form-group">
           <div className="radio">
             <label>
-              <RadioInput field={useCtrlEnter} value={true} />
+              <RadioInput field={useCtrlEnter} value="1" />
               <code>Ctrl+Enter</code> to submit
               <p className="help-block">
                 To insert a new line just press <code>Enter</code>
@@ -200,7 +200,7 @@ export default function AppearanceForm() {
 
           <div className="radio">
             <label>
-              <RadioInput field={useCtrlEnter} value={false} />
+              <RadioInput field={useCtrlEnter} value="0" />
               <code>Enter</code> to submit
               <p className="help-block">
                 To insert a new line use <code>Shift+Enter</code>, <code>Alt+Enter</code> or press{' '}
@@ -389,7 +389,7 @@ function initialValues({
     timeAmPm: frontend.timeDisplay.amPm ? '1' : '0',
     timeAbsolute: frontend.timeDisplay.absolute ? '1' : '0',
     enableBeta: isBetaChannel,
-    useCtrlEnter: !frontend.submitByEnter,
+    useCtrlEnter: frontend.submitByEnter ? '0' : '1',
   };
 }
 
@@ -431,7 +431,7 @@ function prefUpdaters(values) {
           amPm: values.timeAmPm === '1',
           absolute: values.timeAbsolute === '1',
         },
-        submitByEnter: !values.useCtrlEnter,
+        submitByEnter: values.useCtrlEnter !== '1',
       };
     },
 
