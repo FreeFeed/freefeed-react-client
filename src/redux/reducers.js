@@ -7,7 +7,12 @@ import { userParser, getSummaryPeriod } from '../utils';
 import { parseQuery } from '../utils/search-highlighter';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
 import * as FeedOptions from '../utils/feed-options';
-import { loadColorScheme, getSystemColorScheme, loadNSFWVisibility } from '../services/appearance';
+import {
+  loadColorScheme,
+  getSystemColorScheme,
+  loadNSFWVisibility,
+  loadUIScale,
+} from '../services/appearance';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
 import { mergeByIds, patchObjectByKey, setOnLocationChange, setOnLogOut } from './reducers/helpers';
@@ -1895,6 +1900,13 @@ export function userColorScheme(state = loadColorScheme(), action) {
 
 export function isNSFWVisible(state = loadNSFWVisibility(), action) {
   if (action.type === ActionTypes.SET_NSFW_VISIBILITY) {
+    return action.payload;
+  }
+  return state;
+}
+
+export function uiScale(state = loadUIScale(), action) {
+  if (action.type === ActionTypes.SET_UI_SCALE) {
     return action.payload;
   }
   return state;

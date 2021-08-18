@@ -19,6 +19,7 @@ import { Throbber } from './throbber';
 import { Delayed } from './lazy-component';
 import { AppUpdated } from './app-updated';
 import { LayoutHeader } from './layout-header';
+import { UIScaleSetter } from './ui-scale-setter';
 
 const loadingPageMessage = (
   <Delayed>
@@ -147,6 +148,7 @@ class Layout extends Component {
         <div className={layoutClassNames}>
           <Helmet title={props.title} defer={false} />
           <ColorSchemeSetter />
+          <UIScaleSetter />
           <SVGSymbolDeclarations />
 
           <LayoutHeader />
