@@ -1,7 +1,7 @@
-$post-line-height: 20px;
+$post-line-height: rem(20px);
 
 .post .expandable.folded {
-  margin-bottom: 8px;
+  margin-bottom: rem(8px);
 }
 
 .post .expandable .expand-button {
@@ -11,10 +11,10 @@ $post-line-height: 20px;
 }
 
 .post {
-  padding-top: 14px;
-  padding-bottom: 14px;
+  padding-top: rem(14px);
+  padding-bottom: rem(14px);
   border-bottom: 1px solid #eee;
-  line-height: 19px;
+  line-height: rem(19px);
   position: relative;
 
   a {
@@ -30,14 +30,14 @@ $post-line-height: 20px;
   .post-userpic {
     float: left;
     @media (max-width: 767px) {
-      margin: 0 10px 3px 0;
+      margin: 0 rem(10px) 3px 0;
     }
   }
 
   .post-header {
-    font-size: 15px;
-    line-height: 20px;
-    margin-bottom: 2px;
+    font-size: rem(15px);
+    line-height: rem(20px);
+    margin-bottom: rem(2px);
 
     a {
       font-weight: bold;
@@ -56,18 +56,18 @@ $post-line-height: 20px;
     }
 
     color: #666;
-    font-size: 14px;
-    line-height: 19px;
+    font-size: rem(14px);
+    line-height: rem(19px);
 
     .post-text {
-      margin-bottom: 8px;
+      margin-bottom: rem(8px);
       word-wrap: break-word;
       @media (max-width: 767px) {
-        min-height: 31px;
+        min-height: rem(31px);
       }
 
       color: #000;
-      font-size: 16px;
+      font-size: rem(16px);
       line-height: $post-line-height;
 
       &.modern {
@@ -98,23 +98,23 @@ $post-line-height: 20px;
       }
 
       .post-private-icon {
-        font-size: 13px;
+        font-size: rem(13px);
         vertical-align: 0;
       }
 
       .post-public-icon {
-        font-size: 13px;
+        font-size: rem(13px);
       }
 
       .post-protected-icon {
-        font-size: 15px;
-        vertical-align: -2px;
+        font-size: rem(15px);
+        vertical-align: rem(-2px);
       }
 
       .post-direct-icon {
         margin-right: 0.33em;
-        font-size: 12px;
-        vertical-align: -1px;
+        font-size: rem(12px);
+        vertical-align: rem(-1px);
       }
 
       .post-timestamp {
@@ -125,7 +125,7 @@ $post-line-height: 20px;
 }
 
 .post-footer-icon {
-  width: 19px;
+  width: rem(19px);
   flex: 0 0 auto;
 }
 
@@ -215,7 +215,7 @@ $post-line-height: 20px;
 // be clicked to close
 .spoiler-visible,
 .spoiler-hidden {
-  padding: 0 2px;
+  padding: 0 rem(2px);
 }
 
 .spoiler-hidden * {
@@ -245,7 +245,7 @@ $post-line-height: 20px;
 
   .post-edit-options {
     float: left;
-    margin-bottom: 11px;
+    margin-bottom: rem(11px);
 
     .post-edit-attachments {
       cursor: pointer;
@@ -259,21 +259,21 @@ $post-line-height: 20px;
       }
 
       .upload-icon {
-        font-size: 15px;
+        font-size: rem(15px);
         opacity: 0.5;
       }
     }
 
     .post-edit-more-trigger {
       color: #333;
-      margin-left: 15px;
+      margin-left: rem(15px);
     }
 
     .post-edit-more {
-      margin-top: 10px;
+      margin-top: rem(10px);
 
       .post-edit-more-checkbox {
-        margin: 0 5px 0 1px;
+        margin: 0 rem(5px) 0 rem(1px);
         vertical-align: middle;
       }
       .post-edit-more-labeltext {
@@ -285,15 +285,15 @@ $post-line-height: 20px;
 
   .post-edit-actions {
     text-align: right;
-    margin-bottom: 8px;
+    margin-bottom: rem(8px);
   }
 
   .post-cancel {
-    margin-right: 10px;
+    margin-right: rem(10px);
   }
 
   .post-edit-throbber {
-    margin-right: 10px;
+    margin-right: rem(10px);
   }
 }
 
@@ -316,8 +316,8 @@ $post-line-height: 20px;
 }
 
 .post-unhide-block {
-  margin: 10px 0;
-  padding-left: 18px;
+  margin: rem(10px) 0;
+  padding-left: rem(18px);
   border-left: 1px solid currentColor;
 }
 
@@ -327,8 +327,8 @@ $post-line-height: 20px;
   border-bottom: 0 none;
 
   .post-header {
-    font-size: 21px;
-    line-height: 26px;
+    font-size: rem(21px);
+    line-height: rem(26px);
   }
 
   .post-body {
@@ -342,8 +342,8 @@ $post-line-height: 20px;
         min-height: 50px;
       }
 
-      font-size: 21px;
-      line-height: 26px;
+      font-size: rem(21px);
+      line-height: rem(26px);
     }
   }
 }
@@ -380,9 +380,9 @@ $post-line-height: 20px;
 }
 
 .post-via-sources {
-  font-size: 12px;
+  font-size: rem(12px);
   margin-left: 0.4em;
-  line-height: 16px;
+  line-height: rem(16px);
 }
 
 .post-via-more {
@@ -396,10 +396,10 @@ $post-line-height: 20px;
 
 .post-privacy-warning {
   background-color: #fcf8e3;
-  padding: 12px 18px;
+  padding: rem(12px) rem(18px);
   border: 1px solid #fbf1d8;
   color: #796e58;
-  margin: 10px 0;
+  margin: rem(10px) 0;
 
   &:empty {
     display: none;
@@ -411,12 +411,12 @@ $post-line-height: 20px;
   width: 30em;
   max-width: 100%;
   border-radius: 4px;
-  margin-bottom: 10px;
+  margin-bottom: rem(10px);
 }
 
 .link-preview {
   .link-preview-content {
-    margin-bottom: 10px;
+    margin-bottom: rem(10px);
   }
 
   .folder-container {
@@ -430,7 +430,7 @@ $post-line-height: 20px;
         bottom: 0;
         left: 0;
         right: 0;
-        height: 40px;
+        height: rem(40px);
         pointer-events: none;
 
         @mixin grad($color) {
@@ -450,7 +450,7 @@ $post-line-height: 20px;
     }
 
     .preview-expand {
-      margin-top: 8px;
+      margin-top: rem(8px);
       & > .preview-expand-icon {
         opacity: 0.5;
         cursor: pointer;
