@@ -73,3 +73,12 @@
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{ie-hex-str($start-color)}', endColorstr='#{ie-hex-str($end-color)}', GradientType=0); // IE9 and down
 }
+
+// Converts px to rem units
+@function remValue($size) {
+  @return $size / 16px;
+}
+
+@function rem($size) {
+  @return remValue($size) * 1rem;
+}
