@@ -17,10 +17,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Some frontend preferences defaults can now be overridden depending on the
   account's createdAt date. It is useful for the new defaults that breaks the
   old behaviour and shouldn't affect the existing users.
+- User can adjust the site font size in settings' Appearance tab. This setting
+  is saved locally in web browser and can be different for each browser and each
+  device. The available font size range is 80% - 150% relative to the default
+  size.
 
 ### Changed
 - When 'submitByEnter' is *true*, user can insert line break in any place of
   text when the caret is right after space symbol (not only at the end).
+
+### Fixed
+- Fix the mobile Chrome unwanted font boosting
 
 ## [1.100.0] - 2021-07-30
 ### Added
