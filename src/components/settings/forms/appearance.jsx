@@ -239,7 +239,6 @@ export default function AppearanceForm() {
         <h4 id="scale">Text scale</h4>
 
         <div className="form-group">
-          <p>Sample text:</p>
           <p>
             Adjust the scale of text (<strong>{uiScaleField.input.value}%</strong>):
           </p>
@@ -253,6 +252,7 @@ export default function AppearanceForm() {
               {...uiScaleField.input}
             />
           </p>
+          <p>Sample text:</p>
           <p
             className={styles.scaleSample}
             style={{ fontSize: `${(14 * uiScaleField.input.value) / 100}px` }}
