@@ -19,6 +19,8 @@ import {
   SCHEME_NO_PREFERENCE,
   saveNSFWVisibility,
   saveUIScale,
+  loadUIScale,
+  uiScaleStorageKey,
 } from '../services/appearance';
 import { scrollingOrInteraction, unscroll } from '../services/unscroll';
 import { inactivityOf } from '../utils/event-sequences';
@@ -308,12 +310,14 @@ export const authMiddleware = (store) => {
 
 export const appearanceMiddleware = (store) => {
   if (typeof window !== 'undefined') {
-    window.addEventListener(
-      'storage',
-      (e) =>
-        e.key === colorSchemeStorageKey &&
-        store.dispatch(ActionCreators.setUserColorScheme(loadColorScheme())),
-    );
+    window.addEventListener('storage', (e) => {
+      if (e.key === colorSchemeStorageKey) {
+        store.dispatch(ActionCreators.setUserColorScheme(loadColorScheme()));
+      }
+      if (e.key === uiScaleStorageKey) {
+        store.dispatch(ActionCreators.setUIScale(loadUIScale()));
+      }
+    });
 
     if (systemColorSchemeSupported) {
       for (const scheme of [SCHEME_LIGHT, SCHEME_DARK, SCHEME_NO_PREFERENCE]) {
