@@ -205,3 +205,12 @@ ul,
 ol {
   margin-bottom: rem(10px);
 }
+
+/**
+ * Prevent the mobile Chrome unwanted font boosting
+ * See https://stackoverflow.com/a/12965146
+ */
+.content .box-body,
+.sidebar .box {
+  max-height: 999999px;
+}
