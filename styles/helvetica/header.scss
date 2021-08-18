@@ -67,7 +67,7 @@
   flex-wrap: wrap;
   max-width: 360px;
 
-  font-size: fluid(remValue(12px), 320, remValue(14px), 390, $val-unit: 'rem');
+  font-size: rem(14px);
   padding-left: 1em;
 }
 
