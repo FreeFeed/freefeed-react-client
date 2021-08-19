@@ -61,20 +61,18 @@
 }
 
 .mobile-shortcuts {
-  margin: 0 15px rem(20px) 15px;
+  margin: 0 15px rem(20px) calc(15px - 1em);
 
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
-  max-width: 360px;
-
-  font-size: rem(14px);
-  padding-left: 1em;
+  max-width: rem(360px);
 }
 
 .mobile-shortcut-link {
+  margin-left: 1em;
+  margin-bottom: 0.5em;
   white-space: nowrap;
-  margin-left: -1em;
-  margin-right: 2em;
 }
 
 .signin-link {
