@@ -395,37 +395,19 @@ class Post extends Component {
         false
       );
 
-    const { isSaved, savePostStatus } = this.props;
-    const saveLink = amIAuthenticated && (
-      <>
-        <a className="post-action" onClick={this.toggleSave} role="button">
-          {isSaved ? 'Un-save' : 'Save'}
-        </a>
-        {savePostStatus.loading && <Throbber />}
-        {savePostStatus.error && (
-          <Icon
-            icon={faExclamationTriangle}
-            className="post-like-fail"
-            title={savePostStatus.errorText}
-          />
-        )}
-      </>
-    );
-
     // "More" menu
-    const moreLink =
-      props.isEditable || props.isModeratable ? (
-        <PostMoreLink
-          post={props}
-          toggleEditingPost={this.toggleEditingPost}
-          toggleModeratingComments={this.toggleModeratingComments}
-          disableComments={this.disableComments}
-          enableComments={this.enableComments}
-          deletePost={this.handleDeletePost}
-        />
-      ) : (
-        false
-      );
+    const moreLink = (
+      <PostMoreLink
+        user={props.user}
+        post={props}
+        toggleEditingPost={this.toggleEditingPost}
+        toggleModeratingComments={this.toggleModeratingComments}
+        disableComments={this.disableComments}
+        enableComments={this.enableComments}
+        deletePost={this.handleDeletePost}
+        toggleSave={this.toggleSave}
+      />
+    );
 
     const linkToEmbed = getFirstLinkToEmbed(props.body);
     const noImageAttachments = !this.attachments.some(
@@ -681,7 +663,6 @@ class Post extends Component {
                 <span className="post-footer-block" role="region">
                   <span className="post-footer-item">{commentLink}</span>
                   <span className="post-footer-item">{likeLink}</span>
-                  <span className="post-footer-item">{saveLink}</span>
                   {props.isInHomeFeed && (
                     <span className="post-footer-item" ref={this.hideLink}>
                       {this.renderHideLink()}
