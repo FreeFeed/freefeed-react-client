@@ -146,12 +146,13 @@ exports[`Post Renders a post and doesn't blow up 1`] = `
                 class="post-action"
                 role="button"
               >
-                Save
+                <span
+                  class="root"
+                >
+                  More
+                </span>
               </a>
             </span>
-            <span
-              class="post-footer-item"
-            />
           </span>
         </div>
       </div>

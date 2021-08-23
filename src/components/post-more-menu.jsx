@@ -1,10 +1,21 @@
 import { forwardRef, useMemo } from 'react';
+import { Link } from 'react-router';
+import cn from 'classnames';
+import { faExclamationTriangle, faLink } from '@fortawesome/free-solid-svg-icons';
+import { faClock } from '@fortawesome/free-regular-svg-icons';
+import { noop } from 'lodash';
+
 import { andJoin } from '../utils/and-join';
+import { copyURL } from '../utils/copy-url';
+import { Throbber } from './throbber';
+import { Icon } from './fontawesome-icons';
+import TimeDisplay from './time-display';
 
 import styles from './dropdown-menu.module.scss';
 
-export const PostMoreMenu = forwardRef(function PostMoreMenu(
-  {
+export const PostMoreMenu = forwardRef(function PostMoreMenu(props, ref) {
+  const {
+    user,
     post: {
       isEditable = false,
       canBeRemovedFrom = [],
@@ -12,6 +23,10 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
       isDeletable = false,
       isModeratingComments = false,
       commentsDisabled = false,
+      createdAt,
+      updatedAt,
+      isSaved = false,
+      savePostStatus = {},
     },
     toggleEditingPost,
     toggleModeratingComments,
@@ -19,9 +34,13 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
     disableComments,
     deletePost,
     perGroupDeleteEnabled = false,
-  },
-  ref,
-) {
+    doAndClose,
+    permalink,
+    toggleSave,
+  } = props;
+
+  const amIAuthenticated = !!user.id;
+
   const deleteLines = useMemo(() => {
     const result = [];
     // Not owned post
@@ -46,41 +65,114 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
     return result;
   }, [isEditable, isDeletable, canBeRemovedFrom, perGroupDeleteEnabled, deletePost]);
 
-  return (
-    <ul className={styles.list} ref={ref}>
-      {isEditable && (
-        <li className={styles.item}>
+  const menuGroups = [
+    [
+      amIAuthenticated && (
+        <div className={styles.item} key="save-post">
+          <a className={styles.link} onClick={toggleSave} role="button">
+            {isSaved ? 'Un-save' : 'Save'} post
+            {savePostStatus.loading && <Throbber />}
+            {savePostStatus.error && (
+              <Icon
+                icon={faExclamationTriangle}
+                className="post-like-fail"
+                title={savePostStatus.errorText}
+              />
+            )}
+          </a>
+        </div>
+      ),
+    ],
+    [
+      isEditable && (
+        <div className={styles.item} key="edit-post">
           <a className={styles.link} onClick={toggleEditingPost} role="button">
             Edit
           </a>
-        </li>
-      )}
-
-      {isModeratable && (
-        <li className={styles.item}>
+        </div>
+      ),
+      isModeratable && (
+        <div className={styles.item} key="moderate-comments">
           <a className={styles.link} onClick={toggleModeratingComments} role="button">
             {isModeratingComments ? 'Stop moderating comments' : 'Moderate comments'}
           </a>
-        </li>
-      )}
-
-      <li className={styles.item}>
-        <a
-          className={styles.link}
-          onClick={commentsDisabled ? enableComments : disableComments}
-          role="button"
-        >
-          {commentsDisabled ? 'Enable comments' : 'Disable comments'}
-        </a>
-      </li>
-
-      {deleteLines.map(({ text, onClick }) => (
-        <li className={styles.item} key={`remove-from:${text}`}>
-          <a className={`${styles.link} ${styles.danger}`} onClick={onClick} role="button">
-            {text}
+        </div>
+      ),
+      (isEditable || isModeratable) && (
+        <div className={styles.item} key="toggle-comments">
+          <a
+            className={styles.link}
+            onClick={commentsDisabled ? enableComments : disableComments}
+            role="button"
+          >
+            {commentsDisabled ? 'Enable comments' : 'Disable comments'}
           </a>
-        </li>
-      ))}
-    </ul>
+        </div>
+      ),
+    ],
+    deleteLines.map(({ text, onClick }) => (
+      <div className={styles.item} key={`remove-from:${text}`}>
+        <a className={`${styles.link} ${styles.danger}`} onClick={onClick} role="button">
+          {text}
+        </a>
+      </div>
+    )),
+    [
+      <div key="created-on" className={cn(styles.item, styles.content)}>
+        <Iconic icon={faClock}>
+          Created on <TimeDisplay timeStamp={+createdAt} inline absolute />
+        </Iconic>
+      </div>,
+      updatedAt - createdAt > 120000 && (
+        <div key="updated-on" className={cn(styles.item, styles.content)}>
+          <Iconic icon={faClock}>
+            Updated on <TimeDisplay timeStamp={+updatedAt} inline absolute />
+          </Iconic>
+        </div>
+      ),
+      <div key="permalink" className={cn(styles.item, styles.content)}>
+        <Iconic icon={faLink} centered>
+          <Link to={permalink} style={{ marginRight: '1ex' }} onClick={doAndClose(noop)}>
+            Link to post
+          </Link>{' '}
+          <button
+            className="btn btn-default btn-sm"
+            type="button"
+            onClick={doAndClose(copyURL)}
+            value={permalink}
+            aria-label="Copy link"
+          >
+            Copy
+          </button>
+        </Iconic>
+      </div>,
+    ],
+  ];
+
+  return (
+    <div className={styles.list} ref={ref} style={{ minWidth: '18em' }}>
+      {menuGroups.map((group, i) => {
+        const items = group.filter(Boolean);
+        if (items.length === 0) {
+          return null;
+        }
+        return (
+          <div className={styles.group} key={`group-${i}`}>
+            {items}
+          </div>
+        );
+      })}
+    </div>
   );
 });
+
+function Iconic({ icon, centered = false, children }) {
+  return (
+    <span className={cn(styles.iconic, centered && styles.iconicCentered)}>
+      <span className={styles.iconicIcon}>
+        <Icon icon={icon} />
+      </span>
+      <span className={styles.iconicContent}>{children}</span>
+    </span>
+  );
+}
