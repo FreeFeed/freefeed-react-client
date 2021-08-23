@@ -5,8 +5,9 @@ import { confirmFirst } from '../utils';
 import { useDropDown } from './hooks/drop-down';
 import { useServerInfo } from './hooks/server-info';
 import { PostMoreMenu } from './post-more-menu';
+import { MoreWithTriangle } from './more-with-triangle';
 
-export default function PostMoreLink({ post, ...props }) {
+export default function PostMoreLink({ post, user, ...props }) {
   const { pivotRef, menuRef, opened, toggle } = useDropDown();
   const [serverInfo, serverInfoStatus] = useServerInfo();
 
@@ -20,7 +21,7 @@ export default function PostMoreLink({ post, ...props }) {
   return (
     <>
       <a className="post-action" ref={pivotRef} onClick={toggle} role="button">
-        More&#x200a;&#x25be;
+        <MoreWithTriangle />
       </a>
       {opened && (
         <Portal>
