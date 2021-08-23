@@ -18,6 +18,7 @@ import {
 
 import { pluralForm } from '../utils';
 import { getFirstLinkToEmbed } from '../utils/parse-text';
+import { canonicalURI } from '../utils/canonical-uri';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
 import { savePost, hideByName, unhideNames } from '../redux/action-creators';
@@ -728,16 +729,6 @@ class Post extends Component {
       </div>
     );
   }
-}
-
-// Canonical post URI (pathname)
-export function canonicalURI(post) {
-  // If posted _only_ into groups, use first recipient's username
-  let urlName = post.createdBy.username;
-  if (post.recipients.length > 0 && !post.recipients.some((r) => r.type === 'user')) {
-    urlName = post.recipients[0].username;
-  }
-  return `/${encodeURIComponent(urlName)}/${encodeURIComponent(post.id)}`;
 }
 
 function selectState(state, ownProps) {
