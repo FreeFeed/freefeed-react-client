@@ -123,8 +123,10 @@ exports[`Post Renders a post and doesn't blow up 1`] = `
               class="post-footer-item"
             >
               <a
+                aria-disabled="false"
                 class="post-action"
                 role="button"
+                tabindex="0"
               >
                 Comment
               </a>
@@ -133,8 +135,10 @@ exports[`Post Renders a post and doesn't blow up 1`] = `
               class="post-footer-item"
             >
               <a
+                aria-disabled="false"
                 class="post-action"
                 role="button"
+                tabindex="0"
               >
                 Like
               </a>
@@ -143,8 +147,12 @@ exports[`Post Renders a post and doesn't blow up 1`] = `
               class="post-footer-item"
             >
               <a
+                aria-disabled="false"
+                aria-expanded="false"
+                aria-haspopup="true"
                 class="post-action"
                 role="button"
+                tabindex="0"
               >
                 <span
                   class="root"

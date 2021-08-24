@@ -26,6 +26,7 @@ import { initialAsyncState } from '../redux/async-helpers';
 import { submitByEnter } from '../utils/submit-by-enter';
 import { makeJpegIfNeeded } from '../utils/jpeg-if-needed';
 import { Throbber } from './throbber';
+import { ButtonLink } from './button-link';
 
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
@@ -363,9 +364,9 @@ class Post extends Component {
 
     const commentLink = amIAuthenticated &&
       (!props.commentsDisabled || props.isEditable || props.isModeratable) && (
-        <a className="post-action" onClick={this.handleCommentClick} role="button">
+        <ButtonLink className="post-action" onClick={this.handleCommentClick}>
           Comment
-        </a>
+        </ButtonLink>
       );
 
     // "Like" / "Un-like"
@@ -376,13 +377,12 @@ class Post extends Component {
           {props.likeError ? (
             <Icon icon={faExclamationTriangle} className="post-like-fail" title={props.likeError} />
           ) : null}
-          <a
+          <ButtonLink
             className="post-action"
             onClick={didILikePost ? this.unlikePost : this.likePost}
-            role="button"
           >
             {didILikePost ? 'Un-like' : 'Like'}
-          </a>
+          </ButtonLink>
           {props.isLiking ? (
             <span className="post-like-throbber">
               <Throbber />

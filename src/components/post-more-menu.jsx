@@ -1,20 +1,21 @@
 import { forwardRef, useMemo } from 'react';
 import { Link } from 'react-router';
 import cn from 'classnames';
-import { faExclamationTriangle, faLink } from '@fortawesome/free-solid-svg-icons';
-import { faClock } from '@fortawesome/free-regular-svg-icons';
+import { faExclamationTriangle, faLink, faEdit, faSave } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faCommentDots, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { noop } from 'lodash';
 
 import { andJoin } from '../utils/and-join';
 import { copyURL } from '../utils/copy-url';
+import { ButtonLink } from './button-link';
 import { Throbber } from './throbber';
 import { Icon } from './fontawesome-icons';
 import TimeDisplay from './time-display';
 
 import styles from './dropdown-menu.module.scss';
 
-export const PostMoreMenu = forwardRef(function PostMoreMenu(props, ref) {
-  const {
+export const PostMoreMenu = forwardRef(function PostMoreMenu(
+  {
     user,
     post: {
       isEditable = false,
@@ -37,8 +38,9 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(props, ref) {
     doAndClose,
     permalink,
     toggleSave,
-  } = props;
-
+  },
+  ref,
+) {
   const amIAuthenticated = !!user.id;
 
   const deleteLines = useMemo(() => {
@@ -69,52 +71,57 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(props, ref) {
     [
       amIAuthenticated && (
         <div className={styles.item} key="save-post">
-          <a className={styles.link} onClick={toggleSave} role="button">
-            {isSaved ? 'Un-save' : 'Save'} post
-            {savePostStatus.loading && <Throbber />}
-            {savePostStatus.error && (
-              <Icon
-                icon={faExclamationTriangle}
-                className="post-like-fail"
-                title={savePostStatus.errorText}
-              />
-            )}
-          </a>
+          <ButtonLink className={styles.link} onClick={doAndClose(toggleSave)}>
+            <Iconic icon={faSave}>
+              {isSaved ? 'Un-save' : 'Save'} post
+              {savePostStatus.loading && <Throbber />}
+              {savePostStatus.error && (
+                <Icon
+                  icon={faExclamationTriangle}
+                  className="post-like-fail"
+                  title={savePostStatus.errorText}
+                />
+              )}
+            </Iconic>
+          </ButtonLink>
         </div>
       ),
     ],
     [
       isEditable && (
         <div className={styles.item} key="edit-post">
-          <a className={styles.link} onClick={toggleEditingPost} role="button">
-            Edit
-          </a>
+          <ButtonLink className={styles.link} onClick={doAndClose(toggleEditingPost)}>
+            <Iconic icon={faEdit}>Edit</Iconic>
+          </ButtonLink>
         </div>
       ),
       isModeratable && (
         <div className={styles.item} key="moderate-comments">
-          <a className={styles.link} onClick={toggleModeratingComments} role="button">
-            {isModeratingComments ? 'Stop moderating comments' : 'Moderate comments'}
-          </a>
+          <ButtonLink className={styles.link} onClick={doAndClose(toggleModeratingComments)}>
+            <Iconic icon={faCommentDots}>
+              {isModeratingComments ? 'Stop moderating comments' : 'Moderate comments'}
+            </Iconic>
+          </ButtonLink>
         </div>
       ),
       (isEditable || isModeratable) && (
         <div className={styles.item} key="toggle-comments">
-          <a
+          <ButtonLink
             className={styles.link}
-            onClick={commentsDisabled ? enableComments : disableComments}
-            role="button"
+            onClick={commentsDisabled ? doAndClose(enableComments) : doAndClose(disableComments)}
           >
-            {commentsDisabled ? 'Enable comments' : 'Disable comments'}
-          </a>
+            <Iconic icon={faCommentDots}>
+              {commentsDisabled ? 'Enable comments' : 'Disable comments'}
+            </Iconic>
+          </ButtonLink>
         </div>
       ),
     ],
     deleteLines.map(({ text, onClick }) => (
       <div className={styles.item} key={`remove-from:${text}`}>
-        <a className={`${styles.link} ${styles.danger}`} onClick={onClick} role="button">
-          {text}
-        </a>
+        <ButtonLink className={cn(styles.link, styles.danger)} onClick={doAndClose(onClick)}>
+          <Iconic icon={faTrashAlt}>{text}</Iconic>
+        </ButtonLink>
       </div>
     )),
     [
