@@ -247,7 +247,7 @@ export default function AppearanceForm() {
               className={styles.scaleRangeInput}
               type="range"
               min="80"
-              max="150"
+              max="200"
               step="5"
               {...uiScaleField.input}
             />
