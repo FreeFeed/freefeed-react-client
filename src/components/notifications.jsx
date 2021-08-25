@@ -42,6 +42,14 @@ const commentLink = (event, text = 'comment') =>
   ) : (
     text
   );
+const backlinkLink = (event) =>
+  event.target_comment_id ? (
+    <Link to={`/post/${event.target_post_id}#comment-${event.target_comment_id}`}>comment</Link>
+  ) : event.target_post_id ? (
+    <Link to={`/post/${event.target_post_id}`}>post</Link>
+  ) : (
+    'deleted entry'
+  );
 
 const notificationTemplates = {
   subscription_request_revoked: (event) => (
@@ -71,6 +79,22 @@ const notificationTemplates = {
       {` to you in the `}
       {postLink(event)}
       <Linkify>{` ${event.group.username ? `[in @${event.group.username}]` : ''}`}</Linkify>
+    </div>
+  ),
+  backlink_in_comment: (event) => (
+    <div>
+      <Linkify>{`@${event.createdUser.username}`}</Linkify> mentioned your {backlinkLink(event)} in
+      a {commentLink(event, 'comment')}
+      {` to the `}
+      {postLink(event)}
+      <Linkify>{`${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify>
+    </div>
+  ),
+  backlink_in_post: (event) => (
+    <div>
+      <Linkify>{`@${event.createdUser.username}`}</Linkify> mentioned your {backlinkLink(event)} in
+      the {postLink(event)}
+      <Linkify>{`${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify>
     </div>
   ),
   banned_user: (event) => <Linkify>{`You blocked @${event.affectedUser.username}`}</Linkify>,
