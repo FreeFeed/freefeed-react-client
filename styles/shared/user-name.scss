@@ -13,7 +13,7 @@
   z-index: 10000;
   top: 10px;
   left: 0;
-  width: 280px;
+  width: rem(280px);
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.5);
@@ -32,18 +32,18 @@
   }
 
   .user-card-info {
-    min-height: 97px; // 75px + 2px + 20px
-    padding: 10px;
+    min-height: rem(97px); // 75px + 2px + 20px
+    padding: rem(10px);
     background-color: #fff;
     border-top-right-radius: 2px;
     border-top-left-radius: 2px;
 
-    font-size: 13px !important;
-    line-height: 17px;
+    font-size: rem(13px) !important;
+    line-height: rem(17px);
 
     .userpic {
       float: left;
-      margin: 0 10px 0 0;
+      margin: 0 rem(10px) rem(10px) 0;
 
       &.loading {
         width: 77px;
@@ -53,33 +53,33 @@
     }
 
     .names {
-      min-height: 40px;
+      min-height: rem(40px);
 
       .display-name {
         color: #000088;
         font-weight: bold;
         word-break: break-word;
         display: inline-block;
-        max-width: 170px;
+        max-width: rem(170px);
       }
 
       .username {
         color: #555;
-        font-size: 12px;
+        font-size: rem(13px);
       }
     }
 
     .description {
-      font-size: 13px;
+      font-size: rem(13px);
       color: #666;
       font-style: italic;
     }
     .relationship-status {
-      font-size: 13px;
+      font-size: rem(13px);
       color: #666;
     }
     .status-icon {
-      min-width: 13px;
+      min-width: rem(13px);
     }
     .feed-status {
       color: #666;
@@ -88,28 +88,28 @@
         position: relative;
         display: inline-block;
         transform: scale(0.9);
-        min-width: 14px;
-        height: 10px;
+        min-width: rem(14px);
+        height: rem(10px);
 
         .icon-protected-bg {
           font-size: 0.75em;
           top: 1px;
           position: absolute;
           z-index: 12;
-          left: 5px;
+          left: rem(5px);
         }
 
         .icon-protected-shadow {
           font-size: 0.9em;
           position: absolute;
-          left: -1px;
+          left: rem(-1px);
           z-index: 13;
         }
 
         .icon-protected-fg {
           font-size: 0.9em;
           position: absolute;
-          left: -2px;
+          left: rem(-2px);
           z-index: 14;
         }
       }
@@ -118,14 +118,14 @@
 
   .user-card-actions {
     border-top: 1px #e4e4e4 solid;
-    padding: 5px 10px 6px 10px;
+    padding: rem(5px) rem(10px) rem(6px) rem(10px);
     background-color: #f4f4f4;
     border-bottom-right-radius: 2px;
     border-bottom-left-radius: 2px;
 
     color: #666;
-    font-size: 13px !important;
-    line-height: 17px;
+    font-size: rem(13px) !important;
+    line-height: rem(17px);
 
     .user-card-action {
       &::before {
