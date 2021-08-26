@@ -4,8 +4,11 @@
   position: relative;
 
   --shadow-color: #fff;
+  // We need this instead of just 'transparent' because of Safari
+  --shadow-transparent-color: rgba(255, 255, 255, 0);
   :global(.dark-theme) & {
     --shadow-color: #{$bg-color};
+    --shadow-transparent-color: #{rgba($bg-color, 0)};
   }
 }
 
@@ -30,12 +33,12 @@
 }
 
 .container::before {
-  background-image: linear-gradient(to left, transparent, var(--shadow-color));
+  background-image: linear-gradient(to left, var(--shadow-transparent-color), var(--shadow-color));
   left: 0;
 }
 
 .container::after {
-  background-image: linear-gradient(to right, transparent, var(--shadow-color));
+  background-image: linear-gradient(to right, var(--shadow-transparent-color), var(--shadow-color));
   right: 0;
 }
 
