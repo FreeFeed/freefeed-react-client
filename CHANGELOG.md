@@ -17,9 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   There are two submit modes now:
   -  If 'submitByEnter' is *false* (default mode), the Enter key inserts a
      regular line break and the Ctrl+Enter submits form.
-  -  If 'submitByEnter' is *true* (legacy mode), the post/comment forms are submitted by Enter
-     key. User can insert line break using Shift+Enter or Alt+Enter, or by
-     pressing Enter right after space symbol.
+  -  If 'submitByEnter' is *true* (legacy mode), the post/comment forms are
+     submitted by Enter key. User can insert line break using Shift+Enter or
+     Alt+Enter, or by pressing Enter right after two space symbols.
 - Some frontend preferences defaults can now be overridden depending on the
   account's createdAt date. It is useful for the new defaults that breaks the
   old behaviour and shouldn't affect the existing users.

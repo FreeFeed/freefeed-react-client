@@ -25,9 +25,12 @@ function submitByEnter(submitFn) {
     }
 
     const { target } = event;
-    if (target.selectionStart > 0 && target.value[target.selectionStart - 1] === ' ') {
+    if (
+      target.selectionStart > 1 &&
+      target.value.slice(Math.max(0, target.selectionStart - 2)) === '  ' // two spaces
+    ) {
       // Trim the extra spaces before new line
-      while (target.selectionStart > 0 && /\s/.test(target.value[target.selectionStart - 1])) {
+      while (target.selectionStart > 0 && / /.test(target.value[target.selectionStart - 1])) {
         target.selectionStart--;
       }
       return;

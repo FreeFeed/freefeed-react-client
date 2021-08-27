@@ -207,7 +207,7 @@ export default function AppearanceForm() {
               <code>Enter</code> to submit
               <p className="help-block">
                 To insert a new line use <code>Shift+Enter</code>, <code>Alt+Enter</code> or press{' '}
-                <code>Enter</code> right after space symbol
+                <code>Enter</code> right after two space symbols
               </p>
             </label>
           </div>
