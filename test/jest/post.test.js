@@ -316,20 +316,23 @@ describe('Post', () => {
       deletePost,
     });
     expect(screen.getByText(/More/, { role: 'button' })).toBeInTheDocument();
-    userEvent.click(screen.getByText(/More/, { role: 'button' }));
 
+    userEvent.click(screen.getByText(/More/, { role: 'button' }));
     expect(screen.getByText('Edit', { role: 'button' })).toBeInTheDocument();
     userEvent.click(screen.getByText('Edit', { role: 'button' }));
     expect(toggleEditingPost).toHaveBeenCalledWith('post-id');
 
+    userEvent.click(screen.getByText(/More/, { role: 'button' }));
     expect(screen.getByText('Moderate comments', { role: 'button' })).toBeInTheDocument();
     userEvent.click(screen.getByText('Moderate comments', { role: 'button' }));
     expect(toggleModeratingComments).toHaveBeenCalledWith('post-id');
 
+    userEvent.click(screen.getByText(/More/, { role: 'button' }));
     expect(screen.getByText('Disable comments', { role: 'button' })).toBeInTheDocument();
     userEvent.click(screen.getByText('Disable comments', { role: 'button' }));
     expect(disableComments).toHaveBeenCalledWith('post-id');
 
+    userEvent.click(screen.getByText(/More/, { role: 'button' }));
     expect(screen.getByText('Delete', { role: 'button' })).toBeInTheDocument();
     userEvent.click(screen.getByText('Delete', { role: 'button' }));
     expect(confirmMock).toHaveBeenCalledWith('Are you sure?');

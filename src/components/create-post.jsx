@@ -15,6 +15,7 @@ import ErrorBoundary from './error-boundary';
 import { Throbber } from './throbber';
 import { Icon } from './fontawesome-icons';
 import { ButtonLink } from './button-link';
+import { MoreWithTriangle } from './more-with-triangle';
 
 const attachmentsMaxCount = CONFIG.attachments.maxCount;
 
@@ -231,7 +232,7 @@ export default class CreatePost extends Component {
             </span>
 
             <ButtonLink className="post-edit-more-trigger" onClick={this.toggleMore}>
-              More&nbsp;&#x25be;
+              <MoreWithTriangle />
             </ButtonLink>
 
             {this.state.isMoreOpen ? (

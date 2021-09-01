@@ -142,6 +142,8 @@ class Layout extends Component {
 
     const layoutClassNames = classnames('container', { dragover: this.state.isDragOver });
 
+    const shortFooter = !props.isAuthenticated && props.routeName === 'home';
+
     return (
       <ErrorBoundary>
         <AppUpdated />
@@ -187,7 +189,7 @@ class Layout extends Component {
 
           <div className="row">
             <div className="col-md-12">
-              <Footer />
+              <Footer short={shortFooter} />
             </div>
           </div>
 

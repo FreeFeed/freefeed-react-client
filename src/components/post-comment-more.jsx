@@ -9,6 +9,7 @@ import { useDropDownKbd } from './hooks/drop-down-kbd';
 import { useMediaQuery } from './hooks/media-query';
 import { PostCommentLikes } from './post-comment-likes';
 import { PostCommentMoreMenu } from './post-comment-more-menu';
+import { MoreWithTriangle } from './more-with-triangle';
 
 export const PostCommentMore = memo(function PostCommentMore({
   className,
@@ -70,7 +71,7 @@ export const PostCommentMore = memo(function PostCommentMore({
         aria-haspopup
         aria-expanded={opened}
       >
-        more
+        <MoreWithTriangle>more</MoreWithTriangle>
       </ButtonLink>
       {opened && (
         <Portal>

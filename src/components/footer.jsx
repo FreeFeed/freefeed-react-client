@@ -2,7 +2,7 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
-export default function Footer() {
+export default function Footer({ short }) {
   const authenticated = useSelector((state) => state.authenticated);
   return (
     <footer className="footer">
@@ -29,7 +29,7 @@ export default function Footer() {
           GitHub
         </a>
       </p>
-      {!authenticated && (
+      {!authenticated && !short ? (
         <>
           <hr />
           <p>
@@ -38,6 +38,8 @@ export default function Footer() {
             our community.
           </p>
         </>
+      ) : (
+        false
       )}
     </footer>
   );
