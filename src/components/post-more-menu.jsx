@@ -1,8 +1,18 @@
 import { forwardRef, useMemo } from 'react';
 import { Link } from 'react-router';
 import cn from 'classnames';
-import { faExclamationTriangle, faLink, faEdit, faSave } from '@fortawesome/free-solid-svg-icons';
-import { faClock, faCommentDots, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
+import {
+  faExclamationTriangle,
+  faLink,
+  faEdit,
+  faBookmark as faBookmarkSolid,
+} from '@fortawesome/free-solid-svg-icons';
+import {
+  faClock,
+  faCommentDots,
+  faTrashAlt,
+  faBookmark,
+} from '@fortawesome/free-regular-svg-icons';
 import { noop } from 'lodash';
 
 import { andJoin } from '../utils/and-join';
@@ -69,25 +79,6 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
 
   const menuGroups = [
     [
-      amIAuthenticated && (
-        <div className={styles.item} key="save-post">
-          <ButtonLink className={styles.link} onClick={doAndClose(toggleSave)}>
-            <Iconic icon={faSave}>
-              {isSaved ? 'Un-save' : 'Save'} post
-              {savePostStatus.loading && <Throbber />}
-              {savePostStatus.error && (
-                <Icon
-                  icon={faExclamationTriangle}
-                  className="post-like-fail"
-                  title={savePostStatus.errorText}
-                />
-              )}
-            </Iconic>
-          </ButtonLink>
-        </div>
-      ),
-    ],
-    [
       isEditable && (
         <div className={styles.item} key="edit-post">
           <ButtonLink className={styles.link} onClick={doAndClose(toggleEditingPost)}>
@@ -124,6 +115,25 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
         </ButtonLink>
       </div>
     )),
+    [
+      amIAuthenticated && (
+        <div className={styles.item} key="save-post">
+          <ButtonLink className={styles.link} onClick={doAndClose(toggleSave)}>
+            <Iconic icon={isSaved ? faBookmarkSolid : faBookmark}>
+              {isSaved ? 'Un-save' : 'Save'} post
+              {savePostStatus.loading && <Throbber />}
+              {savePostStatus.error && (
+                <Icon
+                  icon={faExclamationTriangle}
+                  className="post-like-fail"
+                  title={savePostStatus.errorText}
+                />
+              )}
+            </Iconic>
+          </ButtonLink>
+        </div>
+      ),
+    ],
     [
       <div key="created-on" className={cn(styles.item, styles.content)}>
         <Iconic icon={faClock}>
