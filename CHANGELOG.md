@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Post can now have an empty body if it contains one or more attachments.
 
+### Added
+- Notification messages for the 'backlink_in_post' and 'backlink_in_comment'
+  events.
+
 ## [1.100.0] - 2021-07-30
 ### Added
 - Warning about the orphan groups on the "Delete account" page.

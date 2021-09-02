@@ -1,7 +1,7 @@
 import { describe, it, beforeEach } from 'mocha';
 import unexpected from 'unexpected';
 import unexpectedSinon from 'unexpected-sinon';
-import sinon from 'sinon';
+import { spy, stub } from 'sinon';
 import { noop } from 'lodash';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 
@@ -35,9 +35,9 @@ class MockConnection {
   eventHandler = noop;
 
   constructor() {
-    this.reAuthorize = sinon.stub().returns(Promise.resolve());
-    this.subscribeTo = sinon.stub().returns(Promise.resolve());
-    this.unsubscribeFrom = sinon.stub().returns(Promise.resolve());
+    this.reAuthorize = stub().returns(Promise.resolve());
+    this.subscribeTo = stub().returns(Promise.resolve());
+    this.unsubscribeFrom = stub().returns(Promise.resolve());
   }
 
   onConnect(handler) {
@@ -66,19 +66,19 @@ function nextTick() {
 const CLEAR_STATE = 'test/CLEAR_STATE';
 const cleanState = () => ({ type: CLEAR_STATE });
 
-function createSpyMiddleware(spy) {
+function createSpyMiddleware(theSpy) {
   return () => (next) => (action) => {
     if (action.type !== CLEAR_STATE) {
-      spy(action);
+      theSpy(action);
     }
     next(action);
   };
 }
 
 describe('realtime middleware', () => {
-  const eventHandlers = { event1: sinon.spy() };
+  const eventHandlers = { event1: spy() };
   const connection = new MockConnection();
-  const actionSpy = sinon.spy();
+  const actionSpy = spy();
 
   const reducer = combineReducers({
     user,

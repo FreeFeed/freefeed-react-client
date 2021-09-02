@@ -1,7 +1,7 @@
 import { describe, it, beforeEach } from 'mocha';
 import unexpected from 'unexpected';
 import unexpectedSinon from 'unexpected-sinon';
-import sinon from 'sinon';
+import { spy } from 'sinon';
 
 import { likesLogicMiddleware } from '../../../../src/redux/middlewares';
 import { REALTIME_LIKE_REMOVE } from '../../../../src/redux/action-types';
@@ -17,7 +17,7 @@ describe('likesLogicMiddleware middleware', () => {
         return this;
       },
     };
-    const next = sinon.spy();
+    const next = spy();
     let action;
 
     beforeEach(() => {
