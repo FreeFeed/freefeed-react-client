@@ -59,7 +59,6 @@ export default {
       homefeed: { hideUsers: [] },
       pinnedGroups: [],
       hideUnreadNotifications: false,
-      submitByEnter: true,
       timeDisplay: {
         absolute: false,
         amPm: false,
@@ -85,6 +84,7 @@ export default {
     colorSchemeStorageKey: 'color-scheme',
     nsfwVisibilityStorageKey: 'show-nsfw',
     uiScaleStorageKey: 'ui-scale',
+    submitModeStorageKey: 'submit-mode',
   },
 
   commentsFolding: {
