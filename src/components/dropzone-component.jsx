@@ -2,6 +2,7 @@
 import DropzoneComponent from 'react-dropzone-component';
 
 import { getToken } from '../services/auth';
+import { useServerInfo } from './hooks/server-info';
 
 // DropzoneJS configuration
 const dropzoneComponentConfig = { postUrl: `${CONFIG.api.root}/v1/attachments` };
@@ -26,6 +27,7 @@ const dropzoneConfig = {
   `,
   clickable: '.dropzone-trigger', // Define the element that should be used as click trigger to select files.
   headers: { 'Cache-Control': null },
+  maxFilesize: 1, // in MiB (1000 * 1000 bytes). Dropzone's default is 256
 };
 
 const dropzoneEventHandlers = (props) => ({
@@ -90,10 +92,19 @@ const dropzoneEventHandlers = (props) => ({
   queuecomplete: props.onQueueComplete,
 });
 
-export default (props) => (
-  <DropzoneComponent
-    config={dropzoneComponentConfig}
-    djsConfig={dropzoneConfig}
-    eventHandlers={dropzoneEventHandlers(props)}
-  />
-);
+export default (props) => {
+  const [serverInfo, serverInfoStatus] = useServerInfo();
+
+  if (serverInfoStatus.success && serverInfo.attachments?.fileSizeLimit) {
+    const fileSizeLimitInMibs = (serverInfo.attachments.fileSizeLimit / (1000 * 1000)).toFixed(2);
+    dropzoneConfig.maxFilesize = fileSizeLimitInMibs;
+  }
+
+  return (
+    <DropzoneComponent
+      config={dropzoneComponentConfig}
+      djsConfig={dropzoneConfig}
+      eventHandlers={dropzoneEventHandlers(props)}
+    />
+  );
+};
