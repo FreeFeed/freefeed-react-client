@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { submittingByEnter } from '../services/appearance';
 import { useBool } from './hooks/bool';
 
-export function SubmitModeHint({ input }) {
+export function SubmitModeHint({ input, className }) {
   const submitMode = useSelector((state) => state.submitMode);
   const byEnter = submittingByEnter(submitMode);
   const [isFocused, , on, off] = useBool(false);
@@ -23,7 +23,7 @@ export function SubmitModeHint({ input }) {
   }, [input, on, off]);
 
   return (
-    <span className={cn('submit-mode-hint', isFocused && 'submit-mode-hint--visible')}>
+    <span className={cn(className, 'submit-mode-hint', isFocused && 'submit-mode-hint--visible')}>
       (Submit by {byEnter ? 'Enter' : 'Ctrl+Enter'})
     </span>
   );
