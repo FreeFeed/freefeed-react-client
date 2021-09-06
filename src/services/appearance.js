@@ -82,3 +82,7 @@ export function saveSubmitMode(mode) {
     storage.removeItem(submitModeStorageKey);
   }
 }
+
+export function submittingByEnter(submitMode) {
+  return submitMode === 'enter' || (submitMode === 'auto' && !isMobile);
+}
