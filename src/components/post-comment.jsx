@@ -224,7 +224,7 @@ class PostComment extends Component {
           onSubmit={this.saveComment}
           onCancel={this.handleEditOrCancel}
           submitStatus={this.props.saveStatus}
-          submitByEnter={this.props.currentUser.frontendPreferences.submitByEnter}
+          submitMode={this.props.submitMode}
         />
       );
     }
@@ -316,6 +316,7 @@ function selectState(state, ownProps) {
     showTimestamps,
     highlightComments,
     isEditing: ownProps.isEditing || editState.isEditing,
+    submitMode: state.submitMode,
   };
 }
 

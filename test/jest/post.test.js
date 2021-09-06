@@ -47,12 +47,16 @@ const defaultState = {
   sendTo: { feeds: [{ id: 'feed-id', user: AUTHOR }] },
   serverInfoStatus: successAsyncState,
   serverInfo: { features: { perGroupsPostDelete: true } },
+  submitMode: 'enter',
 };
 
 const renderPost = (props = {}, options = {}) => {
   const { Provider } = reactRedux;
   const dummyReducer = (state) => state;
-  const store = createStore(dummyReducer, defaultState);
+  const store = createStore(dummyReducer, {
+    ...defaultState,
+    submitMode: options.submitMode || 'enter',
+  });
 
   const defaultProps = {
     id: 'post-id',
@@ -265,10 +269,7 @@ describe('Post', () => {
   });
 
   it('Renders a like button which likes the post', () => {
-    const someOtherUser = {
-      id: 'other-id',
-      frontendPreferences: { submitByEnter: false },
-    };
+    const someOtherUser = { id: 'other-id' };
     const likePost = jest.fn();
     renderPost({ likePost, isEditable: false, user: someOtherUser });
     expect(screen.getByText('Like', { role: 'button' })).toBeInTheDocument();
@@ -277,10 +278,7 @@ describe('Post', () => {
   });
 
   it('Renders an un-like button which un-likes the post if this post is already liked', () => {
-    const someOtherUser = {
-      id: 'other-id',
-      frontendPreferences: { submitByEnter: false },
-    };
+    const someOtherUser = { id: 'other-id' };
     const unlikePost = jest.fn();
     renderPost({
       unlikePost,
@@ -378,10 +376,7 @@ describe('Post', () => {
   });
 
   it('Renders a hide button which hides the post', () => {
-    const someOtherUser = {
-      id: 'other-id',
-      frontendPreferences: { submitByEnter: false },
-    };
+    const someOtherUser = { id: 'other-id' };
     const hidePost = jest.fn();
     renderPost({
       user: someOtherUser,
@@ -395,10 +390,7 @@ describe('Post', () => {
   });
 
   it('Renders a un-hide button which unhides the post', () => {
-    const someOtherUser = {
-      id: 'other-id',
-      frontendPreferences: { submitByEnter: false },
-    };
+    const someOtherUser = { id: 'other-id' };
     const unhidePost = jest.fn();
     renderPost({
       user: someOtherUser,
@@ -426,13 +418,12 @@ describe('Post', () => {
     expect(cancelEditingPost).toHaveBeenCalledWith('post-id');
   });
 
-  it('Lets me edit text of my post by typing when "submitByEnter" is true', () => {
+  it('Lets me edit text of my post by typing with Shift+Enter when "submitMode" is "enter"', () => {
     const saveEditingPost = jest.fn();
     renderPost({
       isEditing: true,
       isEditable: true,
       saveEditingPost,
-      user: { frontendPreferences: { submitByEnter: true } },
     });
 
     userEvent.type(screen.getByRole('textbox'), 'Hello,{shift}{enter}{/shift}World!{enter}');
@@ -444,16 +435,55 @@ describe('Post', () => {
     });
   });
 
-  it('Lets me edit text of my post by typing when "submitByEnter" is false', () => {
+  it('Lets me edit text of my post by typing with Alt+Enter when "submitMode" is "enter"', () => {
     const saveEditingPost = jest.fn();
     renderPost({
       isEditing: true,
       isEditable: true,
       saveEditingPost,
-      user: { frontendPreferences: { submitByEnter: false } },
     });
 
+    userEvent.type(screen.getByRole('textbox'), 'Hello,{alt}{enter}{/alt}World!{enter}');
+    expect(screen.getByRole('textbox')).toHaveValue('Hello,\nWorld!');
+    expect(saveEditingPost).toHaveBeenCalledWith('post-id', {
+      attachments: [],
+      body: 'Hello,\nWorld!',
+      feeds: ['author'],
+    });
+  });
+
+  it('Lets me submit text of my post by Ctrl+Enter typing when "submitMode" is "ctrl+enter"', () => {
+    const saveEditingPost = jest.fn();
+    renderPost(
+      {
+        isEditing: true,
+        isEditable: true,
+        saveEditingPost,
+      },
+      { submitMode: 'ctrl+enter' },
+    );
+
     userEvent.type(screen.getByRole('textbox'), 'Hello,{enter}World!{ctrl}{enter}{/ctrl}');
+    expect(screen.getByRole('textbox')).toHaveValue('Hello,\nWorld!');
+    expect(saveEditingPost).toHaveBeenCalledWith('post-id', {
+      attachments: [],
+      body: 'Hello,\nWorld!',
+      feeds: ['author'],
+    });
+  });
+
+  it('Lets me submit text of my post by Meta+Enter typing when "submitMode" is "ctrl+enter"', () => {
+    const saveEditingPost = jest.fn();
+    renderPost(
+      {
+        isEditing: true,
+        isEditable: true,
+        saveEditingPost,
+      },
+      { submitMode: 'ctrl+enter' },
+    );
+
+    userEvent.type(screen.getByRole('textbox'), 'Hello,{enter}World!{meta}{enter}{/meta}');
     expect(screen.getByRole('textbox')).toHaveValue('Hello,\nWorld!');
     expect(saveEditingPost).toHaveBeenCalledWith('post-id', {
       attachments: [],
