@@ -211,36 +211,47 @@ Line 2
       </textarea>
     </div>
     <div
-      class="post-edit-options"
-    >
-      <span
-        class="post-edit-attachments dropzone-trigger"
-        role="button"
-      >
-        <svg
-          class="upload-icon fa-icon fa-icon-fas-paperclip"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <use
-            xlink:href="#fa-icon-fas-paperclip"
-          />
-        </svg>
-         Add photos or files
-      </span>
-    </div>
-    <div
       class="post-edit-actions"
     >
-      <a
-        class="post-cancel"
+      <div
+        class="post-edit-options"
       >
-        Cancel
-      </a>
-      <button
-        class="btn btn-default btn-xs"
+        <span
+          class="post-edit-attachments dropzone-trigger"
+          role="button"
+        >
+          <svg
+            class="upload-icon fa-icon fa-icon-fas-paperclip"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <use
+              xlink:href="#fa-icon-fas-paperclip"
+            />
+          </svg>
+           Add photos or files
+        </span>
+      </div>
+      <span
+        class="post-edit-hint submit-mode-hint submit-mode-hint--visible"
       >
-        Update
-      </button>
+        (Submit by 
+        Enter
+        )
+      </span>
+      <div
+        class="post-edit-buttons"
+      >
+        <a
+          class="post-cancel"
+        >
+          Cancel
+        </a>
+        <button
+          class="btn btn-default btn-xs"
+        >
+          Update
+        </button>
+      </div>
     </div>
   </div>
 </div>

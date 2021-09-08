@@ -108,7 +108,7 @@ class Layout extends Component {
             createPost={props.createBookmarkletPost}
             resetPostCreateForm={props.resetPostCreateForm}
             removeImage={this.removeImage}
-            submitByEnter={this.props.user.frontendPreferences.submitByEnter}
+            submitMode={props.submitMode}
           />
         ) : (
           <div>
@@ -122,7 +122,7 @@ class Layout extends Component {
 }
 
 function selectState(state) {
-  const { authenticated, createPostViewState, user } = state;
+  const { authenticated, createPostViewState, user, submitMode } = state;
   const sendTo = { ...state.sendTo, defaultFeed: user.username };
 
   return {
@@ -130,6 +130,7 @@ function selectState(state) {
     user,
     sendTo,
     createPostViewState,
+    submitMode,
   };
 }
 
