@@ -161,6 +161,7 @@ export default class CreatePost extends Component {
     }
 
     this.setState({ attachments, dropzoneDisabled });
+    this.props.expandSendTo();
   };
 
   handleChangeOfMoreCheckbox = (e) => {
@@ -222,6 +223,7 @@ export default class CreatePost extends Component {
               className="post-edit-attachments dropzone-trigger"
               disabled={this.state.dropzoneDisabled}
               role="button"
+              onClick={this.props.expandSendTo}
             >
               <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
             </span>
