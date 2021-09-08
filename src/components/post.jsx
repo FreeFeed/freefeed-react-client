@@ -522,37 +522,38 @@ class Post extends Component {
                     />
                   </div>
 
-                  <div className="post-edit-options">
-                    <span
-                      className="post-edit-attachments dropzone-trigger"
-                      disabled={this.state.dropzoneDisabled}
-                      role="button"
-                    >
-                      <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
-                    </span>
-                  </div>
-
                   <div className="post-edit-actions">
-                    <SubmitModeHint input={this.textareaRef} />
-
-                    {props.isSaving ? (
-                      <span className="post-edit-throbber">
-                        <Throbber />
+                    <div className="post-edit-options">
+                      <span
+                        className="post-edit-attachments dropzone-trigger"
+                        disabled={this.state.dropzoneDisabled}
+                        role="button"
+                      >
+                        <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
                       </span>
-                    ) : (
-                      false
-                    )}
-                    <a className="post-cancel" onClick={this.cancelEditingPost}>
-                      Cancel
-                    </a>
-                    <button
-                      className="btn btn-default btn-xs"
-                      onClick={this.saveEditingPost}
-                      disabled={!this.canSubmitForm()}
-                    >
-                      Update
-                    </button>
+                    </div>
+
+                    <SubmitModeHint input={this.textareaRef} className="post-edit-hint" />
+
+                    <div className="post-edit-buttons">
+                      {props.isSaving && (
+                        <span className="post-edit-throbber">
+                          <Throbber />
+                        </span>
+                      )}
+                      <a className="post-cancel" onClick={this.cancelEditingPost}>
+                        Cancel
+                      </a>
+                      <button
+                        className="btn btn-default btn-xs"
+                        onClick={this.saveEditingPost}
+                        disabled={!this.canSubmitForm()}
+                      >
+                        Update
+                      </button>
+                    </div>
                   </div>
+
                   {this.state.dropzoneDisabled && (
                     <div className="alert alert-warning">
                       The maximum number of attached files ({attachmentsMaxCount}) has been reached

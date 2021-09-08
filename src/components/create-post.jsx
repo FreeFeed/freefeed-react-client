@@ -219,54 +219,53 @@ export default class CreatePost extends Component {
             />
           </div>
 
-          <div className="post-edit-options">
-            <span
-              className="post-edit-attachments dropzone-trigger"
-              disabled={this.state.dropzoneDisabled}
-              role="button"
-            >
-              <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
-            </span>
-
-            <ButtonLink className="post-edit-more-trigger" onClick={this.toggleMore}>
-              <MoreWithTriangle />
-            </ButtonLink>
-
-            {this.state.isMoreOpen ? (
-              <div className="post-edit-more">
-                <label>
-                  <input
-                    className="post-edit-more-checkbox"
-                    type="checkbox"
-                    value={this.state.commentsDisabled}
-                    onChange={this.handleChangeOfMoreCheckbox}
-                  />
-                  <span className="post-edit-more-labeltext">Comments disabled</span>
-                </label>
-              </div>
-            ) : (
-              false
-            )}
-          </div>
-
           <div className="post-edit-actions">
-            {this.props.createPostViewState.isPending ? (
-              <span className="throbber">
-                <Throbber />
+            <div className="post-edit-options">
+              <span
+                className="post-edit-attachments dropzone-trigger"
+                disabled={this.state.dropzoneDisabled}
+                role="button"
+              >
+                <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
               </span>
-            ) : (
-              false
-            )}
 
-            <SubmitModeHint input={this.textareaRef} />
+              <ButtonLink className="post-edit-more-trigger" onClick={this.toggleMore}>
+                More&nbsp;&#x25be;
+              </ButtonLink>
 
-            <button
-              className="btn btn-default btn-xs"
-              onClick={preventDefault(this.createPost)}
-              disabled={!this.canSubmitForm()}
-            >
-              Post
-            </button>
+              {this.state.isMoreOpen ? (
+                <div className="post-edit-more">
+                  <label>
+                    <input
+                      className="post-edit-more-checkbox"
+                      type="checkbox"
+                      value={this.state.commentsDisabled}
+                      onChange={this.handleChangeOfMoreCheckbox}
+                    />
+                    <span className="post-edit-more-labeltext">Comments disabled</span>
+                  </label>
+                </div>
+              ) : (
+                false
+              )}
+            </div>
+
+            <SubmitModeHint input={this.textareaRef} className="post-edit-hint" />
+
+            <div className="post-edit-buttons">
+              {this.props.createPostViewState.isPending && (
+                <span className="throbber">
+                  <Throbber />
+                </span>
+              )}
+              <button
+                className="btn btn-default btn-xs"
+                onClick={preventDefault(this.createPost)}
+                disabled={!this.canSubmitForm()}
+              >
+                Post
+              </button>
+            </div>
           </div>
 
           {this.state.dropzoneDisabled && (
