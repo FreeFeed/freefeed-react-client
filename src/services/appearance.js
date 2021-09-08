@@ -1,8 +1,12 @@
 /* global CONFIG */
 import storage from 'local-storage-fallback';
 
-export const { colorSchemeStorageKey, nsfwVisibilityStorageKey, uiScaleStorageKey } =
-  CONFIG.appearance;
+export const {
+  colorSchemeStorageKey,
+  nsfwVisibilityStorageKey,
+  uiScaleStorageKey,
+  submitModeStorageKey,
+} = CONFIG.appearance;
 
 export const SCHEME_LIGHT = 'light';
 export const SCHEME_DARK = 'dark';
@@ -62,5 +66,19 @@ export function saveUIScale(scale) {
   } else {
     // Default value
     storage.removeItem(uiScaleStorageKey);
+  }
+}
+
+export function loadSubmitMode() {
+  const mode = storage.getItem(submitModeStorageKey);
+  return ['enter', 'ctrl+enter', 'auto'].includes(mode) ? mode : 'auto';
+}
+
+export function saveSubmitMode(mode) {
+  if (['enter', 'ctrl+enter'].includes(mode)) {
+    storage.setItem(submitModeStorageKey, mode);
+  } else {
+    // Default value
+    storage.removeItem(submitModeStorageKey);
   }
 }
