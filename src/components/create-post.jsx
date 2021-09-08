@@ -1,13 +1,12 @@
 /* global CONFIG */
 import { Component, createRef } from 'react';
-import Textarea from 'react-textarea-autosize';
 import _ from 'lodash';
 import * as Sentry from '@sentry/react';
 
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
-import { submitByKey } from '../utils/submit-by-enter';
 import { makeJpegIfNeeded } from '../utils/jpeg-if-needed';
+import { SubmitModeHint } from './submit-mode-hint';
 import SendTo from './send-to';
 import Dropzone from './dropzone';
 import PostAttachments from './post-attachments';
@@ -16,6 +15,7 @@ import { Throbber } from './throbber';
 import { Icon } from './fontawesome-icons';
 import { ButtonLink } from './button-link';
 import { MoreWithTriangle } from './more-with-triangle';
+import { SubmittableTextarea } from './submittable-textarea';
 
 const attachmentsMaxCount = CONFIG.attachments.maxCount;
 
@@ -135,10 +135,7 @@ export default class CreatePost extends Component {
   attLoadingStarted = () => this.setState({ attLoading: true });
   attLoadingCompleted = () => this.setState({ attLoading: false });
 
-  checkSave = submitByKey(
-    this.props.user.frontendPreferences.submitByEnter,
-    () => this.canSubmitForm() && this.createPost(),
-  );
+  checkSave = () => this.canSubmitForm() && this.createPost();
 
   removeFocusFromTextarea = () => {
     this.textareaRef.current?.blur();
@@ -207,13 +204,13 @@ export default class CreatePost extends Component {
               onQueueComplete={this.attLoadingCompleted}
             />
 
-            <Textarea
+            <SubmittableTextarea
               ref={this.textareaRef}
               className="post-textarea"
               value={this.state.postText}
               onChange={this.onPostTextChange}
               onFocus={this.props.expandSendTo}
-              onKeyDown={this.checkSave}
+              onSubmit={this.checkSave}
               onPaste={this.handlePaste}
               minRows={3}
               maxRows={10}
@@ -260,6 +257,8 @@ export default class CreatePost extends Component {
             ) : (
               false
             )}
+
+            <SubmitModeHint input={this.textareaRef} />
 
             <button
               className="btn btn-default btn-xs"

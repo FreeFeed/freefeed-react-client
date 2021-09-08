@@ -1,18 +1,18 @@
 /* global CONFIG */
 import { useMemo, useCallback, useState, useRef, useEffect, forwardRef } from 'react';
-import Textarea from 'react-textarea-autosize';
 import cn from 'classnames';
 
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { initialAsyncState } from '../redux/async-helpers';
 import { insertText } from '../utils/insert-text';
-import { submitByKey } from '../utils/submit-by-enter';
 import { Throbber } from './throbber';
 import { useForwardedRef } from './hooks/forward-ref';
 import { PreventPageLeaving } from './prevent-page-leaving';
 import { ButtonLink } from './button-link';
 import { useUploader, useFileChooser } from './hooks/uploads';
 import { Icon } from './fontawesome-icons';
+import { SubmitModeHint } from './submit-mode-hint';
+import { SubmittableTextarea } from './submittable-textarea';
 
 export const CommentEditForm = forwardRef(function CommentEditForm(
   {
@@ -22,7 +22,6 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
     onSubmit = () => {},
     onCancel = () => {},
     submitStatus = initialAsyncState,
-    submitByEnter = false,
   },
   fwdRef,
 ) {
@@ -37,10 +36,10 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
   const doSubmit = useCallback(() => canSubmit && onSubmit(text), [canSubmit, onSubmit, text]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const onKeyDown = useCallback(
+  const handleSubmit = useCallback(
     // Need to setText to update text that doSubmit can access
-    submitByKey(submitByEnter, () => (setText(text), doSubmit())),
-    [doSubmit, text, submitByEnter],
+    () => (setText(text), doSubmit()),
+    [doSubmit, text],
   );
 
   // On first focus move cursor to the end of text
@@ -100,13 +99,13 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
     <div className="comment-body" role="form">
       <PreventPageLeaving prevent={canSubmit || submitStatus.loading} />
       <div>
-        <Textarea
+        <SubmittableTextarea
           ref={input}
           className={cn('comment-textarea', draggingOver && 'comment-textarea__dragged')}
           value={text}
           onFocus={onFocus}
           onChange={onChange}
-          onKeyDown={onKeyDown}
+          onSubmit={handleSubmit}
           minRows={2}
           maxRows={10}
           maxLength={CONFIG.maxLength.comment}
@@ -142,6 +141,8 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
             Cancel
           </ButtonLink>
         )}
+
+        <SubmitModeHint input={input} />
 
         <ButtonLink
           className="comment-file-button iconic-button"

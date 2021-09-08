@@ -231,6 +231,13 @@ Line 2
     <div
       class="post-edit-actions"
     >
+      <span
+        class="submit-mode-hint submit-mode-hint--visible"
+      >
+        (Submit by 
+        Enter
+        )
+      </span>
       <a
         class="post-cancel"
       >
