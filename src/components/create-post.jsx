@@ -230,7 +230,7 @@ export default class CreatePost extends Component {
               </span>
 
               <ButtonLink className="post-edit-more-trigger" onClick={this.toggleMore}>
-                More&nbsp;&#x25be;
+                <MoreWithTriangle />
               </ButtonLink>
 
               {this.state.isMoreOpen ? (
