@@ -27,38 +27,22 @@ export const SubmittableTextarea = forwardRef(function SubmittableTextarea(
 
       if (submittingByEnter(submitMode)) {
         /**
-         * The Enter press acts as submit unless the Shift key is pressed or the
-         * text cursor is right after the space(s). The space(s)+Enter pattern
-         * allows mobile users (that cannot use Shift) to insert soft returns to
-         * text.
+         * The Enter press acts as submit unless the Shift or Alt key is
+         * pressed.
          */
 
         if (event.shiftKey) {
           return;
         }
 
-        const { target } = event;
-
         if (event.altKey) {
           // Insert new line
+          const { target } = event;
           const { value, selectionStart, selectionEnd } = target;
           target.value = `${value.slice(0, selectionStart)}\n${value.slice(selectionEnd)}`;
           target.selectionStart = selectionStart + 1;
           target.selectionEnd = selectionStart + 1;
           event.preventDefault();
-          return;
-        }
-
-        if (
-          // One space at the end of the text
-          (target.selectionStart === target.value.length && target.value.endsWith('\x20')) ||
-          // Or two spaces in any other position
-          target.value.slice(0, target.selectionStart).endsWith('\x20\x20')
-        ) {
-          // Trim the extra spaces before new line
-          while (target.selectionStart > 0 && / /.test(target.value[target.selectionStart - 1])) {
-            target.selectionStart--;
-          }
           return;
         }
       } else if (!(event.ctrlKey || event.metaKey)) {
