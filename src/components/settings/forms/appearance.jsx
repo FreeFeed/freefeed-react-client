@@ -202,7 +202,7 @@ export default function AppearanceForm() {
           <div className="radio">
             <label>
               <RadioInput field={submitModeF} value="auto" />
-              Select automatically between the two options below
+              Automatically select one of the modes below
               <p className="help-block">
                 The site will try to automatically determine whether you use desktop or mobile
                 browser. The <code>Enter</code> key will act as submit on desktop and will insert a
@@ -215,9 +215,10 @@ export default function AppearanceForm() {
           <div className="radio">
             <label>
               <RadioInput field={submitModeF} value="ctrl+enter" />
-              <code>Ctrl+Enter</code> or <code>Cmd+Enter</code> to submit
+              Mobile mode
               <p className="help-block">
-                To insert a new line just press <code>Enter</code>
+                Use form button to submit (<code>Ctrl+Enter</code> or <code>Cmd+Enter</code> also
+                works). To insert a new line just press <code>Enter</code>.
               </p>
             </label>
           </div>
@@ -225,11 +226,10 @@ export default function AppearanceForm() {
           <div className="radio">
             <label>
               <RadioInput field={submitModeF} value="enter" />
-              <code>Enter</code> to submit
+              Desktop mode
               <p className="help-block">
-                To insert a new line use <code>Shift+Enter</code>, <code>Alt+Enter</code> or press{' '}
-                <code>Enter</code> right after two space symbols in the middle of the text or after
-                one space symbol at the end of the text.
+                Press <code>Enter</code> to submit. To insert a new line, use{' '}
+                <code>Shift+Enter</code> or <code>Alt+Enter</code>
               </p>
             </label>
           </div>
