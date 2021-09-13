@@ -255,6 +255,7 @@ $post-line-height: rem(20px);
       grid-template-areas:
         'options actions'
         'hint hint';
+      grid-template-columns: 1fr 0fr;
     }
   }
 
@@ -275,6 +276,7 @@ $post-line-height: rem(20px);
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    align-self: start;
   }
 
   .post-edit-options {
