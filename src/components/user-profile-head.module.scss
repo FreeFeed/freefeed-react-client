@@ -73,15 +73,15 @@ $actions-padding: 0.75em;
   margin-right: 0.1em;
 
   & :global(.fa-icon) {
-    font-size: 13px;
+    font-size: rem(13px);
   }
 
   & :global(.fa-icon-fas-user-friends) {
-    font-size: 14px;
+    font-size: rem(14px);
   }
 
   & :global(.fa-icon-fas-globe-americas) {
-    vertical-align: -1px;
+    vertical-align: rem(-1px);
   }
 
   & :global(.fa-icon-fas-lock) {

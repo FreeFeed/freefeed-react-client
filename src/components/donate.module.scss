@@ -1,5 +1,7 @@
+@import '../../styles/shared/mixins';
+
 .body {
-  font-size: 12px !important;
+  font-size: rem(12px) !important;
 }
 
 $color-undef: #ddd;
@@ -21,7 +23,7 @@ $color-critical: #fa6b4b;
 
 .statusLink {
   color: inherit !important;
-  font-size: 14px;
+  font-size: rem(14px);
   font-weight: bold;
   white-space: nowrap;
   padding: 0.2em 0.6em;

@@ -12,16 +12,16 @@
     left: 0;
     right: 0;
     background-color: white;
-    line-height: 20px;
+    line-height: rem(20px);
     .expand-button {
-      font-size: 16px;
+      font-size: rem(16px);
       color: #555599;
       i {
         cursor: pointer;
       }
       .expand-icon {
         opacity: 0.6;
-        vertical-align: -2px;
+        vertical-align: rem(-2px);
       }
     }
   }
