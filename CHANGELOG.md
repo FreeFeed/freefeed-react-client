@@ -16,9 +16,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Post can now have an empty body if it contains one or more attachments.
+- The sidebar memories years now starts from 2005.
 
 ### Fixed
 - Fix the mobile Chrome unwanted font boosting
+- Fix invalis data of the some archive posts
 
 ## [1.100.0] - 2021-07-30
 ### Added

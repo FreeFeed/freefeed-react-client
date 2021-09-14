@@ -934,6 +934,8 @@ function fixPostsData(post) {
   // post may not have 'comments' field
   post.comments = post.comments || [];
   post.likes = post.likes || [];
+  // some archived posts have no 'createdAt' field
+  post.createdAt = post.createdAt || '0';
 }
 
 export const unscrollMiddleware = () => (next) => (action) => {
