@@ -4,7 +4,6 @@ import { Link } from 'react-router';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import format from 'date-fns/format';
 import cn from 'classnames';
-import { range } from 'lodash';
 
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { htmlSafe } from '../utils';
@@ -177,16 +176,17 @@ const SideBarFreeFeed = () => (
 const SideBarMemories = () => {
   const today = new Date();
   const todayString = format(today, 'MMdd');
-  const todayYear = today.getFullYear();
+  const lastYear = today.getFullYear() - 1;
 
-  const yearLinks = range(1, 13).map((offset) => {
-    const linkYear = todayYear - offset;
-    return (
-      <Link key={`link-${offset}`} to={`/memories/${linkYear}${todayString}`}>
-        {linkYear}
-      </Link>
+  const yearLinks = [];
+  for (let year = lastYear; year >= 2005; year--) {
+    yearLinks.push(
+      <Link key={year} to={`/memories/${year}${todayString}`}>
+        {year}
+      </Link>,
     );
-  });
+  }
+
   return (
     <div className="box" role="navigation">
       <div className="box-header-memories" role="heading">
