@@ -1,4 +1,4 @@
-import { forwardRef, useMemo } from 'react';
+import { forwardRef, useLayoutEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router';
 import cn from 'classnames';
 import {
@@ -48,6 +48,7 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
     doAndClose,
     permalink,
     toggleSave,
+    fixed = false,
   },
   ref,
 ) {
@@ -166,20 +167,35 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
     ],
   ];
 
+  const [initial, setInitial] = useState(true);
+  useLayoutEffect(() => setInitial(false), []);
+
   return (
-    <div className={styles.list} ref={ref} style={{ minWidth: '18em' }}>
-      {menuGroups.map((group, i) => {
-        const items = group.filter(Boolean);
-        if (items.length === 0) {
-          return null;
-        }
-        return (
-          <div className={styles.group} key={`group-${i}`}>
-            {items}
-          </div>
-        );
-      })}
-    </div>
+    <>
+      {fixed && <div className={cn(styles.shadow, initial && styles.initial)} />}
+      <div
+        className={cn(
+          styles.list,
+          styles.focusList,
+          initial && styles.initial,
+          fixed && styles.fixedList,
+        )}
+        ref={ref}
+        style={{ minWidth: '18em' }}
+      >
+        {menuGroups.map((group, i) => {
+          const items = group.filter(Boolean);
+          if (items.length === 0) {
+            return null;
+          }
+          return (
+            <div className={styles.group} key={`group-${i}`}>
+              {items}
+            </div>
+          );
+        })}
+      </div>
+    </>
   );
 });
 
