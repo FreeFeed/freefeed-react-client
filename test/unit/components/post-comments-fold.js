@@ -4,7 +4,7 @@ import { createRenderer } from 'react-test-renderer/shallow';
 import unexpected from 'unexpected';
 import unexpectedReact from 'unexpected-react';
 import unexpectedSinon from 'unexpected-sinon';
-import sinon from 'sinon';
+import { spy } from 'sinon';
 import ErrorBoundary from '../../../src/components/error-boundary';
 import PostComment from '../../../src/components/post-comment';
 import PostComments from '../../../src/components/post-comments';
@@ -389,7 +389,7 @@ describe('<PostComments>', () => {
           commentsAfterFold; // comments after fold
         const comments = genComments(nComments);
 
-        const expandSpy = sinon.spy();
+        const expandSpy = spy();
 
         const renderer = createRenderer();
         renderer.render(

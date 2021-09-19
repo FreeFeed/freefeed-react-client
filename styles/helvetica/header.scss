@@ -3,13 +3,13 @@
 
 .site-logo {
   @media (max-width: 767px) {
-    font-size: 30px;
+    font-size: rem(30px);
   }
   @media (min-width: 768px) {
-    margin-bottom: 20px;
+    margin-bottom: rem(20px);
   }
   @media (min-width: 992px) {
-    margin-left: 10px;
+    margin-left: rem(10px);
   }
 }
 
@@ -61,32 +61,33 @@
 }
 
 .mobile-shortcuts {
-  margin: 0 15px 20px 15px;
+  margin: 0 15px rem(20px) calc(15px - 1em);
 
   display: flex;
   justify-content: space-between;
-  max-width: 360px;
-
-  font-size: fluid(12, 320, 14, 390);
+  flex-wrap: wrap;
+  max-width: rem(450px);
 }
 
 .mobile-shortcut-link {
+  margin-left: 1em;
+  margin-bottom: 0.5em;
   white-space: nowrap;
 }
 
 .signin-link {
   @media (max-width: 767px) {
-    margin-top: 30px;
+    margin-top: rem(30px);
   }
   @media (min-width: 768px) {
-    margin-top: 34px;
+    margin-top: rem(34px);
   }
 }
 
 // This is effectively inline version of <h3>, because we cannot use the latter inside of <p>
 .inline-header {
-  font-size: 24px;
-  margin: 0 3px;
+  font-size: rem(24px);
+  margin: 0 rem(3px);
   white-space: nowrap;
 
   &.line-start {
@@ -94,6 +95,6 @@
   }
 
   @media (max-width: 767px) {
-    font-size: 20px;
+    font-size: rem(20px);
   }
 }

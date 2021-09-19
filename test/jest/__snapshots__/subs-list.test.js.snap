@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SubsList Renders a list of subscribers 1`] = `
+<DocumentFragment>
+  <div>
+    <h3>
+      <span>
+        Subscribers
+      </span>
+    </h3>
+    <h4
+      class="tile-list-subheader"
+    >
+      Section
+    </h4>
+    <div>
+      <h3 />
+      <ul
+        class="tile-list with-actions"
+      >
+        <li>
+          <div
+            class="avatar"
+          >
+            <a
+              class="picture"
+            >
+              <img
+                alt="Profile picture of user1"
+                height="50"
+                src="pic1.jpg"
+                width="50"
+              />
+            </a>
+          </div>
+          <span
+            class="user-name-wrapper"
+          >
+            <a
+              class=""
+            >
+              <span
+                dir="auto"
+              >
+                User 1
+              </span>
+            </a>
+          </span>
+          <div
+            class="user-ismutual"
+          >
+            mutual
+          </div>
+        </li>
+        <li>
+          <div
+            class="avatar"
+          >
+            <a
+              class="picture"
+            >
+              <img
+                alt="Profile picture of user2"
+                height="50"
+                src="pic2.jpg"
+                width="50"
+              />
+            </a>
+          </div>
+          <span
+            class="user-name-wrapper"
+          >
+            <a
+              class=""
+            >
+              <span
+                dir="auto"
+              >
+                User 2
+              </span>
+            </a>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</DocumentFragment>
+`;

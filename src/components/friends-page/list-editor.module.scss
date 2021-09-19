@@ -1,3 +1,4 @@
+@import '../../../styles/shared/mixins';
 @import '../../../styles/helvetica/dark-vars.scss';
 
 .wrapper {
@@ -18,7 +19,7 @@
 }
 
 .header h3 {
-  margin-top: 3px;
+  margin-top: rem(3px);
 }
 
 .footer {
@@ -48,16 +49,16 @@
 }
 
 .cell {
-  margin: 4px;
-  border-radius: 4px;
+  margin: rem(4px);
+  border-radius: rem(4px);
   width: 200px;
-  word-break: break-all;
-  font-size: 12px;
+  word-break: break-word;
+  font-size: rem(12px);
   display: grid;
   grid-auto-flow: column;
-  gap: 4px;
+  gap: rem(4px);
   grid-template-columns: 0fr 1fr;
-  padding: 4px;
+  padding: rem(4px);
   font-weight: normal;
   cursor: pointer;
   position: relative;

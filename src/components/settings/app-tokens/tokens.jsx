@@ -27,6 +27,11 @@ export default withLayout('Application tokens', function Tokens() {
   return (
     <>
       <p>
+        Application tokens let you grant partial access to your account and its data to third-party
+        applications. You can revoke this access at any time. Do not share your account password
+        with other people and don&apos;t enter it on other websites.
+      </p>
+      <p>
         <Link className="btn btn-default" to="/settings/app-tokens/create">
           Generate new token
         </Link>

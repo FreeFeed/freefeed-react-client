@@ -1,12 +1,12 @@
 .comment-likes-container {
   position: absolute;
-  top: 1px;
-  left: -15px;
-  width: 34px;
-  height: 18px;
+  top: rem(1px);
+  left: rem(-15px);
+  width: rem(34px);
+  height: rem(18px);
   display: flex;
   justify-content: flex-end;
-  padding-right: 2px;
+  padding-right: rem(2px);
 
   @media (max-width: 768px) {
     .comment-likes.has-my-like + .comment-time,
@@ -23,7 +23,7 @@
 }
 
 .comment-time {
-  margin-right: 2px;
+  margin-right: rem(2px);
   flex-shrink: 0;
   flex-basis: auto;
 }
@@ -37,18 +37,18 @@
   }
 
   &.feed-comment-dot {
-    height: 14px;
-    width: 14px;
+    height: rem(14px);
+    width: rem(14px);
     display: inline-block;
     position: relative;
   }
 
   &.fa-stack {
-    width: 14px;
-    margin-top: 1px;
-    margin-right: 6px;
+    width: rem(14px);
+    margin-top: rem(1px);
+    margin-right: rem(6px);
     line-height: 1em;
-    padding-top: 4px;
+    padding-top: rem(4px);
     color: inherit;
   }
 }
@@ -58,10 +58,10 @@
   align-items: flex-end;
   flex-shrink: 0;
   flex-basis: auto;
-  margin-right: 2px;
-  margin-top: 1px;
+  margin-right: rem(2px);
+  margin-top: rem(1px);
   @media (min-width: 769px) {
-    margin-right: 6px;
+    margin-right: rem(6px);
   }
   &:not(.liked) {
     opacity: 0;
@@ -72,7 +72,7 @@
     flex-shrink: 0;
     flex-basis: auto;
     position: relative;
-    font-size: 10px;
+    font-size: rem(10px);
     .icon.liked {
       animation: 0.3s like;
     }
@@ -102,19 +102,19 @@
   }
 
   .comment-count {
-    min-width: 15px;
+    min-width: rem(15px);
     text-align: right;
     cursor: pointer;
-    margin-right: 2px;
+    margin-right: rem(2px);
     @media (min-width: 769px) {
-      margin-right: 6px;
+      margin-right: rem(6px);
     }
     &:hover,
     &:active {
       text-decoration: underline;
     }
-    font-size: 12px;
-    width: 7px;
+    font-size: rem(12px);
+    width: rem(7px);
     color: #898989;
   }
 
@@ -134,14 +134,14 @@
   z-index: 2;
   color: #898989;
   border: 1px solid #898989;
-  padding: 6px;
+  padding: rem(6px) rem(17px) rem(6px) rem(6px);
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
   white-space: nowrap;
   text-align: left;
-  max-height: 200px;
+  max-height: rem(200px);
   overflow-y: auto;
-  font-size: 12px;
-  line-height: 18px;
+  font-size: rem(12px);
+  line-height: rem(18px);
 
   a {
     color: #559;
@@ -207,8 +207,8 @@
 }
 
 .actions-panel {
-  margin-left: -15px;
-  margin-right: -15px;
+  margin-left: rem(-15px);
+  margin-right: rem(-15px);
   background-color: #fff;
 
   animation: 0.2s 0.2s slide;
@@ -222,7 +222,7 @@
   }
 
   @media (min-width: 768px) {
-    margin-left: 63px;
+    margin-left: rem(63px);
   }
 
   .likes-panel {
@@ -230,24 +230,24 @@
     background-color: #ddd;
 
     &.padded {
-      padding-bottom: 192px;
+      padding-bottom: rem(192px);
     }
 
     .arrow {
-      width: 35px;
-      padding-top: 12px;
-      line-height: 24px;
+      width: rem(35px);
+      padding-top: rem(12px);
+      line-height: rem(24px);
       text-align: center;
     }
 
     .likes {
       flex: 1;
-      line-height: 24px;
-      padding-top: 12px;
-      padding-bottom: 12px;
-      font-size: 16px;
+      line-height: rem(24px);
+      padding-top: rem(12px);
+      padding-bottom: rem(12px);
+      font-size: rem(16px);
       margin: 0;
-      padding-right: 15px;
+      padding-right: rem(15px);
       overflow-y: auto;
     }
 
@@ -259,7 +259,7 @@
   .mention-actions {
     width: 100%;
     background-color: white;
-    padding-top: 12px;
+    padding-top: rem(12px);
     transition: transform 0.2s;
     transform: translateY(0);
     position: absolute;
@@ -267,9 +267,9 @@
   }
 
   .mention-action {
-    height: 42px;
-    font-size: 16px;
-    line-height: 42px;
+    height: rem(42px);
+    font-size: rem(16px);
+    line-height: rem(42px);
     width: 100%;
     padding: 0;
     text-align: left;
@@ -284,9 +284,9 @@
     }
     .fa-icon {
       position: relative;
-      top: -1px;
-      font-size: 14px;
-      width: 35px;
+      top: rem(-1px);
+      font-size: rem(14px);
+      width: rem(35px);
       text-align: center;
       opacity: 0.75;
     }

@@ -192,6 +192,11 @@ body.dark-theme {
     border-color: $text-color-lighter;
   }
 
+  .btn-primary,
+  .btn-primary:hover {
+    color: #fff;
+  }
+
   .alert-info {
     color: $text-color-lighter;
     background: $bg-highlight-color;

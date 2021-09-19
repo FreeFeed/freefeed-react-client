@@ -1,7 +1,8 @@
 /* global CONFIG */
 import storage from 'local-storage-fallback';
 
-export const { colorSchemeStorageKey, nsfwVisibilityStorageKey } = CONFIG.appearance;
+export const { colorSchemeStorageKey, nsfwVisibilityStorageKey, uiScaleStorageKey } =
+  CONFIG.appearance;
 
 export const SCHEME_LIGHT = 'light';
 export const SCHEME_DARK = 'dark';
@@ -46,5 +47,20 @@ export function saveNSFWVisibility(visible) {
   } else {
     // Default value
     storage.removeItem(nsfwVisibilityStorageKey);
+  }
+}
+
+export function loadUIScale() {
+  // UI scale in percents
+  const scale = parseInt(storage.getItem(uiScaleStorageKey), 10);
+  return isFinite(scale) ? scale : 100;
+}
+
+export function saveUIScale(scale) {
+  if (scale !== 100) {
+    storage.setItem(uiScaleStorageKey, scale);
+  } else {
+    // Default value
+    storage.removeItem(uiScaleStorageKey);
   }
 }

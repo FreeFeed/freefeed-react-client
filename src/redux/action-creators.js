@@ -892,6 +892,10 @@ export function setNSFWVisibility(visible) {
   return { type: ActionTypes.SET_NSFW_VISIBILITY, payload: visible };
 }
 
+export function setUIScale(scale) {
+  return { type: ActionTypes.SET_UI_SCALE, payload: scale };
+}
+
 export function getAppTokens() {
   return {
     type: ActionTypes.GET_APP_TOKENS,

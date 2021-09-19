@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AppUpdated Renders if there is an update 1`] = `
+<DocumentFragment>
+  <div
+    class="bar"
+  >
+    <div
+      class="indicator"
+    >
+      There’s a new update for FreeFeed available! 
+      <a
+        aria-disabled="false"
+        class="refresh"
+        role="button"
+        tabindex="0"
+      >
+        Refresh the page
+      </a>
+       when you are ready.
+    </div>
+  </div>
+</DocumentFragment>
+`;

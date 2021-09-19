@@ -18,7 +18,6 @@ import { ButtonLink } from './button-link';
 
 const attachmentsMaxCount = CONFIG.attachments.maxCount;
 
-const isTextEmpty = (text) => text == '' || /^\s+$/.test(text);
 const getDefaultState = (invitation = '') => ({
   isFormEmpty: true,
   isMoreOpen: false,
@@ -122,7 +121,7 @@ export default class CreatePost extends Component {
 
   checkCreatePostAvailability = () => {
     const isFormEmpty =
-      isTextEmpty(this.state.postText) || !this.selectFeeds || this.selectFeeds.values === 0;
+      this.state.postText.trim() === '' || !this.selectFeeds || this.selectFeeds.values === 0;
 
     this.setState({ isFormEmpty });
   };
@@ -162,6 +161,7 @@ export default class CreatePost extends Component {
     }
 
     this.setState({ attachments, dropzoneDisabled });
+    this.props.expandSendTo();
   };
 
   handleChangeOfMoreCheckbox = (e) => {
@@ -172,7 +172,7 @@ export default class CreatePost extends Component {
 
   canSubmitForm = () => {
     return (
-      !this.state.isFormEmpty &&
+      (!this.state.isFormEmpty || this.state.attachments.length > 0) &&
       !this.state.attLoading &&
       !this.props.createPostViewState.isPending &&
       this.selectFeeds &&
@@ -223,6 +223,7 @@ export default class CreatePost extends Component {
               className="post-edit-attachments dropzone-trigger"
               disabled={this.state.dropzoneDisabled}
               role="button"
+              onClick={this.props.expandSendTo}
             >
               <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
             </span>

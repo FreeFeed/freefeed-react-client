@@ -23,6 +23,7 @@ import {
   updateActualUserPreferences,
   setNSFWVisibility,
   setBetaChannel,
+  setUIScale,
 } from '../../../redux/action-creators';
 import settingsStyles from '../settings.module.scss';
 import { PreventPageLeaving } from '../../prevent-page-leaving';
@@ -37,6 +38,7 @@ export default function AppearanceForm() {
   const userData = useSelector((state) => state.user);
   const isNSFWVisible = useSelector((state) => state.isNSFWVisible);
   const isBetaChannel = useSelector((state) => state.betaChannel);
+  const uiScale = useSelector((state) => state.uiScale);
   const formStatus = useSelector((state) => state.settingsForms.displayPrefsStatus);
 
   useEffect(() => {
@@ -55,10 +57,10 @@ export default function AppearanceForm() {
   const form = useForm(
     useMemo(
       () => ({
-        initialValues: initialValues({ ...userData, isNSFWVisible, isBetaChannel }),
+        initialValues: initialValues({ ...userData, isNSFWVisible, isBetaChannel, uiScale }),
         onSubmit: onSubmit(dispatch),
       }),
-      [dispatch, isNSFWVisible, userData, isBetaChannel],
+      [dispatch, isNSFWVisible, userData, isBetaChannel, uiScale],
     ),
   );
 
@@ -70,13 +72,13 @@ export default function AppearanceForm() {
   const omitBubbles = useField('omitBubbles', form.form);
   const highlightComments = useField('highlightComments', form.form);
   const hideBannedComments = useField('hideBannedComments', form.form);
-  const hideUnreadNotifications = useField('hideUnreadNotifications', form.form);
   const allowLinksPreview = useField('allowLinksPreview', form.form);
   const hideNSFWContent = useField('hideNSFWContent', form.form);
   const commentsTimestamps = useField('commentsTimestamps', form.form);
   const timeAmPm = useField('timeAmPm', form.form);
   const timeAbsolute = useField('timeAbsolute', form.form);
   const enableBeta = useField('enableBeta', form.form);
+  const uiScaleField = useField('uiScale', form.form);
 
   return (
     <form onSubmit={form.handleSubmit}>
@@ -206,6 +208,39 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
+        <h4 id="scale">Text scale</h4>
+
+        <div className="form-group">
+          <p>
+            Adjust the scale of text (<strong>{uiScaleField.input.value}%</strong>):
+          </p>
+          <p>
+            <input
+              className={styles.scaleRangeInput}
+              type="range"
+              min="80"
+              max="200"
+              step="5"
+              {...uiScaleField.input}
+            />
+          </p>
+          <p>Sample text:</p>
+          <p
+            className={styles.scaleSample}
+            style={{ fontSize: `${(14 * uiScaleField.input.value) / 100}px` }}
+          >
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </p>
+          <p className="help-block">
+            <Icon icon={faExclamationTriangle} /> This setting is saved locally in your web browser.
+            It can be different for each browser and each device that you use.
+          </p>
+        </div>
+      </section>
+
+      <section className={settingsStyles.formSection}>
         <h4 id="comments">Comments</h4>
 
         <div className="form-group">
@@ -234,19 +269,6 @@ export default function AppearanceForm() {
             <label>
               <CheckboxInput field={commentsTimestamps} />
               Show timestamps for comments
-            </label>
-          </div>
-        </div>
-      </section>
-
-      <section className={settingsStyles.formSection}>
-        <h4 id="notifications">Unread notifications</h4>
-
-        <div className="form-group">
-          <div className="checkbox">
-            <label>
-              <CheckboxInput field={hideUnreadNotifications} />
-              Hide unread notification counter
             </label>
           </div>
         </div>
@@ -359,6 +381,7 @@ function initialValues({
   preferences: backend,
   isNSFWVisible,
   isBetaChannel,
+  uiScale,
 }) {
   return {
     useYou: frontend.displayNames.useYou,
@@ -369,13 +392,13 @@ function initialValues({
     omitBubbles: frontend.comments.omitRepeatedBubbles,
     highlightComments: frontend.comments.highlightComments,
     hideBannedComments: backend?.hideCommentsOfTypes.includes(COMMENT_HIDDEN_BANNED),
-    hideUnreadNotifications: frontend.hideUnreadNotifications,
     allowLinksPreview: frontend.allowLinksPreview,
     hideNSFWContent: !isNSFWVisible,
     commentsTimestamps: frontend.comments.showTimestamps,
     timeAmPm: frontend.timeDisplay.amPm ? '1' : '0',
     timeAbsolute: frontend.timeDisplay.absolute ? '1' : '0',
     enableBeta: isBetaChannel,
+    uiScale,
   };
 }
 
@@ -386,6 +409,7 @@ function onSubmit(dispatch) {
       (dispatch) => {
         dispatch(setNSFWVisibility(!values.hideNSFWContent));
         dispatch(setBetaChannel(values.enableBeta));
+        dispatch(setUIScale(values.uiScale));
       },
     );
 }
@@ -411,7 +435,6 @@ function prefUpdaters(values) {
           highlightComments: values.highlightComments,
           showTimestamps: values.commentsTimestamps,
         },
-        hideUnreadNotifications: values.hideUnreadNotifications,
         allowLinksPreview: values.allowLinksPreview,
         timeDisplay: {
           ...prefs.timeDisplay,

@@ -19,6 +19,7 @@ import { Throbber } from './throbber';
 import { Delayed } from './lazy-component';
 import { AppUpdated } from './app-updated';
 import { LayoutHeader } from './layout-header';
+import { UIScaleSetter } from './ui-scale-setter';
 
 const loadingPageMessage = (
   <Delayed>
@@ -141,12 +142,15 @@ class Layout extends Component {
 
     const layoutClassNames = classnames('container', { dragover: this.state.isDragOver });
 
+    const shortFooter = !props.isAuthenticated && props.routeName === 'home';
+
     return (
       <ErrorBoundary>
         <AppUpdated />
         <div className={layoutClassNames}>
           <Helmet title={props.title} defer={false} />
           <ColorSchemeSetter />
+          <UIScaleSetter />
           <SVGSymbolDeclarations />
 
           <LayoutHeader />
@@ -185,7 +189,7 @@ class Layout extends Component {
 
           <div className="row">
             <div className="col-md-12">
-              <Footer />
+              <Footer short={shortFooter} />
             </div>
           </div>
 

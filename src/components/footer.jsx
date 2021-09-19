@@ -2,12 +2,12 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
-export default function Footer() {
+export default function Footer({ short }) {
   const authenticated = useSelector((state) => state.authenticated);
   return (
     <footer className="footer">
       <p role="navigation">
-        &copy; FreeFeed 1.100.0 (July 30, 2021)
+        &copy; FreeFeed 1.101.0 (Not released)
         <br />
         <Link to="/about">About</Link>
         {' | '}
@@ -29,7 +29,7 @@ export default function Footer() {
           GitHub
         </a>
       </p>
-      {!authenticated && (
+      {!authenticated && !short ? (
         <>
           <hr />
           <p>
@@ -38,6 +38,8 @@ export default function Footer() {
             our community.
           </p>
         </>
+      ) : (
+        false
       )}
     </footer>
   );

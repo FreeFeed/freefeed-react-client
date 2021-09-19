@@ -176,22 +176,17 @@ const SideBarFreeFeed = () => (
 const SideBarMemories = () => {
   const today = new Date();
   const todayString = format(today, 'MMdd');
-  const todayYear = today.getFullYear();
-  const yearLinks = [
-    [1, 2, 3, 4, 5, 6],
-    [7, 8, 9, 10, 11, 12],
-  ].map((years, index) => (
-    <div className="years-row" key={index}>
-      {years.map((offset) => {
-        const linkYear = todayYear - offset;
-        return (
-          <Link key={`link-${offset}`} to={`/memories/${linkYear}${todayString}`}>
-            {linkYear}
-          </Link>
-        );
-      })}
-    </div>
-  ));
+  const lastYear = today.getFullYear() - 1;
+
+  const yearLinks = [];
+  for (let year = lastYear; year >= 2005; year--) {
+    yearLinks.push(
+      <Link key={year} to={`/memories/${year}${todayString}`}>
+        {year}
+      </Link>,
+    );
+  }
+
   return (
     <div className="box" role="navigation">
       <div className="box-header-memories" role="heading">

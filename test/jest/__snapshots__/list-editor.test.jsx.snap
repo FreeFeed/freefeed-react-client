@@ -1,0 +1,422 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ListEditor Renders a list and doesn't blow up 1`] = `
+<section
+  class="wrapper"
+  data-testid="list-editor"
+>
+  <header
+    class="header"
+  >
+    <dl
+      class="topForm"
+    >
+      <dt>
+        List title
+      </dt>
+      <dd>
+        <input
+          class="form-control input-lg"
+          placeholder="Name your list (required)"
+          type="text"
+          value="My amazing list"
+        />
+      </dd>
+    </dl>
+    <p>
+      Show:
+       
+      <span
+        class="currentLink"
+      >
+        All (
+        5
+        )
+      </span>
+       - 
+      <a
+        aria-disabled="false"
+        role="button"
+        tabindex="0"
+      >
+        In the list (
+        3
+        )
+      </a>
+       - 
+      <a
+        aria-disabled="false"
+        role="button"
+        tabindex="0"
+      >
+        Not in the list (
+        2
+        )
+      </a>
+       - 
+      Filter by name:
+       
+      <input
+        class="form-control input-sm filterInput"
+        name="nameFilter"
+        type="search"
+        value=""
+      />
+       
+      (
+      <a
+        aria-disabled="false"
+        role="button"
+        tabindex="0"
+      >
+        clear
+      </a>
+      )
+    </p>
+  </header>
+  <main>
+    <div
+      class="content"
+    >
+      <ul
+        class="list"
+      >
+        <li
+          aria-checked="true"
+          class="cell cellSelected"
+          role="checkbox"
+          tabindex="0"
+        >
+          <div
+            class="picture"
+          >
+            <img
+              alt="Profile picture of group"
+              height="50"
+              width="50"
+            />
+          </div>
+          <div>
+            <div
+              class="screenName"
+            >
+              A group
+            </div>
+            <div
+              class="username"
+            >
+              @
+              group
+            </div>
+          </div>
+        </li>
+        <li
+          aria-checked="false"
+          class="cell"
+          role="checkbox"
+          tabindex="0"
+        >
+          <div
+            class="picture"
+          >
+            <img
+              alt="Profile picture of homeless"
+              height="50"
+              width="50"
+            />
+          </div>
+          <div>
+            <div
+              class="screenName"
+            >
+              Homeless
+            </div>
+            <div
+              class="username"
+            >
+              @
+              homeless
+            </div>
+            <svg
+              aria-hidden="true"
+              class="homelessMark fa-icon fa-icon-fas-exclamation-triangle"
+              focusable="false"
+              role="img"
+              viewBox="0 0 576 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This user is in no lists
+              </title>
+              <path
+                d="M569.517 440.013C587.975 472.007 564.806 512 527.94 512H48.054c-36.937 0-59.999-40.055-41.577-71.987L246.423 23.985c18.467-32.009 64.72-31.951 83.154 0l239.94 416.028zM288 354c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+        </li>
+        <li
+          aria-checked="true"
+          class="cell cellSelected"
+          role="checkbox"
+          tabindex="0"
+        >
+          <div
+            class="picture"
+          >
+            <img
+              alt="Profile picture of in-list-1"
+              height="50"
+              width="50"
+            />
+          </div>
+          <div>
+            <div
+              class="screenName"
+            >
+              In list
+            </div>
+            <div
+              class="username"
+            >
+              @
+              in-list-1
+            </div>
+          </div>
+        </li>
+        <li
+          aria-checked="true"
+          class="cell cellSelected"
+          role="checkbox"
+          tabindex="0"
+        >
+          <div
+            class="picture"
+          >
+            <img
+              alt="Profile picture of in-list-2"
+              height="50"
+              width="50"
+            />
+          </div>
+          <div>
+            <div
+              class="screenName"
+            >
+              In multiple lists
+            </div>
+            <div
+              class="username"
+            >
+              @
+              in-list-2
+            </div>
+          </div>
+        </li>
+        <li
+          aria-checked="false"
+          class="cell"
+          role="checkbox"
+          tabindex="0"
+        >
+          <div
+            class="picture"
+          >
+            <img
+              alt="Profile picture of not-in-list"
+              height="50"
+              width="50"
+            />
+          </div>
+          <div>
+            <div
+              class="screenName"
+            >
+              In Some Other List
+            </div>
+            <div
+              class="username"
+            >
+              @
+              not-in-list
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </main>
+  <footer
+    class="footer"
+  >
+    <button
+      class="btn btn-primary "
+      type="submit"
+    >
+      Save changes
+    </button>
+    <button
+      class="btn btn-link"
+      type="reset"
+    >
+      Cancel
+    </button>
+    <button
+      class="btn btn-danger pull-right"
+      type="button"
+    >
+      Delete list
+    </button>
+    <div
+      class="submitWarning text-muted"
+    >
+      <svg
+        aria-hidden="true"
+        class="fa-icon fa-icon-fas-exclamation-triangle"
+        focusable="false"
+        role="img"
+        viewBox="0 0 576 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M569.517 440.013C587.975 472.007 564.806 512 527.94 512H48.054c-36.937 0-59.999-40.055-41.577-71.987L246.423 23.985c18.467-32.009 64.72-31.951 83.154 0l239.94 416.028zM288 354c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"
+          fill="currentColor"
+        />
+      </svg>
+       
+      @homeless
+      is
+       not in any of your friend lists.
+    </div>
+  </footer>
+</section>
+`;
+
+exports[`ListEditor Searches for users 1`] = `
+<ul
+  class="list"
+>
+  <li
+    aria-checked="true"
+    class="cell cellSelected"
+    role="checkbox"
+    tabindex="0"
+  >
+    <div
+      class="picture"
+    >
+      <img
+        alt="Profile picture of in-list-1"
+        height="50"
+        width="50"
+      />
+    </div>
+    <div>
+      <div
+        class="screenName"
+      >
+        In 
+        <mark
+          class="mark"
+        >
+          list
+        </mark>
+        
+      </div>
+      <div
+        class="username"
+      >
+        @
+        in-
+        <mark
+          class="mark"
+        >
+          list
+        </mark>
+        -1
+      </div>
+    </div>
+  </li>
+  <li
+    aria-checked="true"
+    class="cell cellSelected"
+    role="checkbox"
+    tabindex="0"
+  >
+    <div
+      class="picture"
+    >
+      <img
+        alt="Profile picture of in-list-2"
+        height="50"
+        width="50"
+      />
+    </div>
+    <div>
+      <div
+        class="screenName"
+      >
+        In multiple 
+        <mark
+          class="mark"
+        >
+          list
+        </mark>
+        s
+      </div>
+      <div
+        class="username"
+      >
+        @
+        in-
+        <mark
+          class="mark"
+        >
+          list
+        </mark>
+        -2
+      </div>
+    </div>
+  </li>
+  <li
+    aria-checked="false"
+    class="cell"
+    role="checkbox"
+    tabindex="0"
+  >
+    <div
+      class="picture"
+    >
+      <img
+        alt="Profile picture of not-in-list"
+        height="50"
+        width="50"
+      />
+    </div>
+    <div>
+      <div
+        class="screenName"
+      >
+        In Some Other 
+        <mark
+          class="mark"
+        >
+          List
+        </mark>
+        
+      </div>
+      <div
+        class="username"
+      >
+        @
+        not-in-
+        <mark
+          class="mark"
+        >
+          list
+        </mark>
+        
+      </div>
+    </div>
+  </li>
+</ul>
+`;
