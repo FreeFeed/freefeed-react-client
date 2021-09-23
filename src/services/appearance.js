@@ -1,5 +1,6 @@
 /* global CONFIG */
 import storage from 'local-storage-fallback';
+import { isMobile } from './is-mobile';
 
 export const {
   colorSchemeStorageKey,
