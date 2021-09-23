@@ -1,0 +1,46 @@
+@import '../../styles/helvetica/dark-vars.scss';
+
+.row {
+  &::before {
+    content: none !important;
+  }
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.chosen {
+  background-color: #eee;
+  .dark-theme & {
+    background-color: $bg-color-lightest;
+  }
+}
+
+.title {
+  white-space: normal;
+  flex: 1;
+}
+
+.handle {
+  flex: 0 0 auto;
+  cursor: move;
+  transition: opacity 0.3s;
+  opacity: 0.4;
+
+  :global(.dark-theme) & {
+    opacity: 0.6;
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+
+  visibility: visible;
+  @media (hover: hover) {
+    visibility: hidden;
+  }
+
+  .row:hover & {
+    visibility: visible;
+  }
+}
