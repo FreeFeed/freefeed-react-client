@@ -7,19 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.101.0] - 2021-09-19 
 ### Added
+- There are two text submit modes now: the Mobile and the Desktop mode. The site
+  will try to automatically determine whether it runs on desktop or mobile
+  browser. User can manually select the submit mode, this setting will be saved
+  in browser storage.
+  - In Mobile mode, the Ctrl+Enter and Cmd+Enter acts as submit and Enter press
+    caused line break.
+  - In Desktop mode, the Enter press acts as submit, to insert a new line user
+    should press Shift+Enter or Alt+Enter.
 - User can adjust the site font size in settings' Appearance tab. This setting
   is saved locally in web browser and can be different for each browser and each
   device. The available font size range is 80% - 150% relative to the default
   size.
 - Notification messages for the 'backlink_in_post' and 'backlink_in_comment'
   events.
-- New setting in frontend preferences: 'submitByEnter' (*false* by default).
-  There are two submit modes now:
-  -  If 'submitByEnter' is *false* (default mode), the Enter key inserts a
-     regular line break and the Ctrl+Enter submits form.
-  -  If 'submitByEnter' is *true* (legacy mode), the post/comment forms are
-     submitted by Enter key. User can insert line break using Shift+Enter or
-     Alt+Enter, or by pressing Enter right after two space symbols.
 - Some frontend preferences defaults can now be overridden depending on the
   account's createdAt date. It is useful for the new defaults that breaks the
   old behaviour and shouldn't affect the existing users.
@@ -27,6 +28,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Post can now have an empty body if it contains one or more attachments.
 - The sidebar memories years now starts from 2005.
+
+### Removed
+- The Space+Enter functionality is removed. It is no longer necessary since we
+  have Mobile submit mode now.
 
 ### Fixed
 - Fix the mobile Chrome unwanted font boosting
