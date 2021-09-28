@@ -3,10 +3,10 @@ import { PureComponent, Component } from 'react';
 
 import { faComment } from '@fortawesome/free-regular-svg-icons';
 import { preventDefault } from '../utils';
-import { submitByEnter } from '../utils/submit-by-enter';
 import { Throbber } from './throbber';
 import SendTo from './send-to';
 import { Icon } from './fontawesome-icons';
+import { SubmittableTextarea } from './submittable-textarea';
 
 class LinkedImage extends PureComponent {
   handleClick = () => {
@@ -46,9 +46,8 @@ export default class CreateBookmarkletPost extends Component {
     this.setState({ isFormEmpty });
   };
 
-  checkSave = submitByEnter(
-    () => !this.state.isFormEmpty && !this.props.createPostViewState.isPending && this.submitForm(),
-  );
+  checkSave = () =>
+    !this.state.isFormEmpty && !this.props.createPostViewState.isPending && this.submitForm();
 
   submitForm = () => {
     // Get all the values
@@ -129,11 +128,12 @@ export default class CreateBookmarkletPost extends Component {
           onChange={this.checkCreatePostAvailability}
         />
 
-        <textarea
+        <SubmittableTextarea
+          component={'textarea'}
           className="post-textarea"
           ref={this.registerPostText}
           defaultValue={this.props.postText}
-          onKeyDown={this.checkSave}
+          onSubmit={this.checkSave}
           onChange={this.checkCreatePostAvailability}
           rows={3}
           maxLength={CONFIG.maxLength.post}
@@ -153,11 +153,12 @@ export default class CreateBookmarkletPost extends Component {
           <Icon icon={faComment} className="comment-icon" />
 
           <div className="comment-body">
-            <textarea
+            <SubmittableTextarea
+              component={'textarea'}
               className="comment-textarea"
               ref={this.registerCommentText}
               defaultValue={this.props.commentText}
-              onKeyDown={this.checkSave}
+              onSubmit={this.checkSave}
               onChange={this.checkCreatePostAvailability}
               rows={4}
               maxLength={CONFIG.maxLength.comment}

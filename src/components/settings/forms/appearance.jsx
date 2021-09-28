@@ -24,6 +24,7 @@ import {
   setNSFWVisibility,
   setBetaChannel,
   setUIScale,
+  setSubmitMode,
 } from '../../../redux/action-creators';
 import settingsStyles from '../settings.module.scss';
 import { PreventPageLeaving } from '../../prevent-page-leaving';
@@ -39,6 +40,7 @@ export default function AppearanceForm() {
   const isNSFWVisible = useSelector((state) => state.isNSFWVisible);
   const isBetaChannel = useSelector((state) => state.betaChannel);
   const uiScale = useSelector((state) => state.uiScale);
+  const submitMode = useSelector((state) => state.submitMode);
   const formStatus = useSelector((state) => state.settingsForms.displayPrefsStatus);
 
   useEffect(() => {
@@ -57,10 +59,16 @@ export default function AppearanceForm() {
   const form = useForm(
     useMemo(
       () => ({
-        initialValues: initialValues({ ...userData, isNSFWVisible, isBetaChannel, uiScale }),
+        initialValues: initialValues({
+          ...userData,
+          isNSFWVisible,
+          isBetaChannel,
+          uiScale,
+          submitMode,
+        }),
         onSubmit: onSubmit(dispatch),
       }),
-      [dispatch, isNSFWVisible, userData, isBetaChannel, uiScale],
+      [dispatch, isNSFWVisible, userData, isBetaChannel, uiScale, submitMode],
     ),
   );
 
@@ -79,6 +87,7 @@ export default function AppearanceForm() {
   const timeAbsolute = useField('timeAbsolute', form.form);
   const enableBeta = useField('enableBeta', form.form);
   const uiScaleField = useField('uiScale', form.form);
+  const submitModeF = useField('submitMode', form.form);
 
   return (
     <form onSubmit={form.handleSubmit}>
@@ -187,7 +196,52 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4 id="dencity">Display density</h4>
+        <h4 id="submit-key">Text submitting</h4>
+        <p>How to submit post and comment forms:</p>
+        <div className="form-group">
+          <div className="radio">
+            <label>
+              <RadioInput field={submitModeF} value="auto" />
+              Automatically select one of the modes below
+              <p className="help-block">
+                The site will try to automatically determine whether you use desktop or mobile
+                browser. The <code>Enter</code> key will act as submit on desktop and will insert a
+                new line on mobile. Auto-detection can be inaccurate, so feel free to set this
+                parameter manually.
+              </p>
+            </label>
+          </div>
+
+          <div className="radio">
+            <label>
+              <RadioInput field={submitModeF} value="ctrl+enter" />
+              Mobile mode
+              <p className="help-block">
+                Use form button to submit (<code>Ctrl+Enter</code> or <code>Cmd+Enter</code> also
+                works). To insert a new line just press <code>Enter</code>.
+              </p>
+            </label>
+          </div>
+
+          <div className="radio">
+            <label>
+              <RadioInput field={submitModeF} value="enter" />
+              Desktop mode
+              <p className="help-block">
+                Press <code>Enter</code> to submit. To insert a new line, use{' '}
+                <code>Shift+Enter</code> or <code>Alt+Enter</code>
+              </p>
+            </label>
+          </div>
+          <p className="help-block">
+            <Icon icon={faExclamationTriangle} /> This setting is saved locally in your web browser.
+            It can be different for each browser and each device that you use.
+          </p>
+        </div>
+      </section>
+
+      <section className={settingsStyles.formSection}>
+        <h4 id="density">Display density</h4>
 
         <div className="form-group">
           <div className="radio">
@@ -381,7 +435,7 @@ function initialValues({
   preferences: backend,
   isNSFWVisible,
   isBetaChannel,
-  uiScale,
+  submitMode,
 }) {
   return {
     useYou: frontend.displayNames.useYou,
@@ -398,7 +452,8 @@ function initialValues({
     timeAmPm: frontend.timeDisplay.amPm ? '1' : '0',
     timeAbsolute: frontend.timeDisplay.absolute ? '1' : '0',
     enableBeta: isBetaChannel,
-    uiScale,
+    useCtrlEnter: frontend.submitByEnter ? '0' : '1',
+    submitMode,
   };
 }
 
@@ -410,6 +465,7 @@ function onSubmit(dispatch) {
         dispatch(setNSFWVisibility(!values.hideNSFWContent));
         dispatch(setBetaChannel(values.enableBeta));
         dispatch(setUIScale(values.uiScale));
+        dispatch(setSubmitMode(values.submitMode));
       },
     );
 }

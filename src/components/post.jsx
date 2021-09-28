@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import classnames from 'classnames';
 import _ from 'lodash';
-import Textarea from 'react-textarea-autosize';
 import dateFormat from 'date-fns/format';
 import * as Sentry from '@sentry/react';
 import {
@@ -22,7 +21,6 @@ import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
 import { savePost, hideByName, unhideNames } from '../redux/action-creators';
 import { initialAsyncState } from '../redux/async-helpers';
-import { submitByEnter } from '../utils/submit-by-enter';
 import { makeJpegIfNeeded } from '../utils/jpeg-if-needed';
 import { Throbber } from './throbber';
 
@@ -43,12 +41,15 @@ import { destinationsPrivacy } from './select-utils';
 import { Icon } from './fontawesome-icons';
 import { UnhideOptions, HideLink } from './post-hides-ui';
 import { UserPicture } from './user-picture';
+import { SubmitModeHint } from './submit-mode-hint';
+import { SubmittableTextarea } from './submittable-textarea';
 
 const attachmentsMaxCount = CONFIG.attachments.maxCount;
 
 class Post extends Component {
   selectFeeds;
   hideLink = createRef();
+  textareaRef = createRef();
 
   state = {
     forceAbsTimestamps: false,
@@ -204,7 +205,7 @@ class Post extends Component {
     props.saveEditingPost(props.id, reqBody);
   };
 
-  handleKeyDown = submitByEnter(() => this.canSubmitForm() && this.saveEditingPost());
+  handleSubmit = () => this.canSubmitForm() && this.saveEditingPost();
 
   handleAttachmentResponse = (att) => {
     if (this.state.editingAttachments.length >= attachmentsMaxCount) {
@@ -527,10 +528,11 @@ class Post extends Component {
                   />
 
                   <div>
-                    <Textarea
+                    <SubmittableTextarea
                       className="post-textarea"
+                      ref={this.textareaRef}
                       value={this.state.editingText}
-                      onKeyDown={this.handleKeyDown}
+                      onSubmit={this.handleSubmit}
                       onChange={this.handlePostTextChange}
                       onPaste={this.handlePaste}
                       autoFocus={true}
@@ -541,35 +543,38 @@ class Post extends Component {
                     />
                   </div>
 
-                  <div className="post-edit-options">
-                    <span
-                      className="post-edit-attachments dropzone-trigger"
-                      disabled={this.state.dropzoneDisabled}
-                      role="button"
-                    >
-                      <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
-                    </span>
+                  <div className="post-edit-actions">
+                    <div className="post-edit-options">
+                      <span
+                        className="post-edit-attachments dropzone-trigger"
+                        disabled={this.state.dropzoneDisabled}
+                        role="button"
+                      >
+                        <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
+                      </span>
+                    </div>
+
+                    <SubmitModeHint input={this.textareaRef} className="post-edit-hint" />
+
+                    <div className="post-edit-buttons">
+                      {props.isSaving && (
+                        <span className="post-edit-throbber">
+                          <Throbber />
+                        </span>
+                      )}
+                      <a className="post-cancel" onClick={this.cancelEditingPost}>
+                        Cancel
+                      </a>
+                      <button
+                        className="btn btn-default btn-xs"
+                        onClick={this.saveEditingPost}
+                        disabled={!this.canSubmitForm()}
+                      >
+                        Update
+                      </button>
+                    </div>
                   </div>
 
-                  <div className="post-edit-actions">
-                    {props.isSaving ? (
-                      <span className="post-edit-throbber">
-                        <Throbber />
-                      </span>
-                    ) : (
-                      false
-                    )}
-                    <a className="post-cancel" onClick={this.cancelEditingPost}>
-                      Cancel
-                    </a>
-                    <button
-                      className="btn btn-default btn-xs"
-                      onClick={this.saveEditingPost}
-                      disabled={!this.canSubmitForm()}
-                    >
-                      Update
-                    </button>
-                  </div>
                   {this.state.dropzoneDisabled && (
                     <div className="alert alert-warning">
                       The maximum number of attached files ({attachmentsMaxCount}) has been reached
@@ -750,6 +755,7 @@ function selectState(state, ownProps) {
       ? (destNames) => destinationsPrivacy(destNames, state)
       : null,
     hideStatus: state.postHideStatuses[ownProps.id] || initialAsyncState,
+    submitMode: state.submitMode,
   };
 }
 

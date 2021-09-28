@@ -1,12 +1,11 @@
 /* global CONFIG */
 import filesize from 'filesize';
+import _ from 'lodash';
 
 import defaultUserpicPath from '../../assets/images/default-userpic.svg';
 
 import { initialAsyncState } from '../redux/async-helpers';
 import { deepMergeJSON } from './deep-merge';
-
-const frontendPrefsConfig = CONFIG.frontendPreferences;
 
 export function getCookie(name) {
   const begin = document.cookie.indexOf(name);
@@ -32,12 +31,6 @@ export function deleteCookie(name, path) {
   return setCookie(name, '', -1, path);
 }
 
-const userDefaults = {
-  profilePictureMediumUrl: defaultUserpicPath,
-  profilePictureLargeUrl: defaultUserpicPath,
-  frontendPreferences: frontendPrefsConfig.defaultValues,
-};
-
 /**
  * Fill missing user fields with default values
  *
@@ -45,23 +38,46 @@ const userDefaults = {
  * @returns {object}
  */
 export function userParser(user) {
+  return userParserFull(user);
+}
+
+/**
+ * Configurable userParser
+ */
+export function userParserFull(
+  user,
+  { defaultValues, defaultOverrides, clientId } = CONFIG.frontendPreferences,
+  defaultUserpic = defaultUserpicPath,
+) {
   const newUser = { ...user };
 
   // Profile pictures
-  newUser.profilePictureMediumUrl =
-    user.profilePictureMediumUrl || userDefaults.profilePictureMediumUrl;
-  newUser.profilePictureLargeUrl =
-    user.profilePictureLargeUrl || userDefaults.profilePictureLargeUrl;
+  newUser.profilePictureMediumUrl = user.profilePictureMediumUrl || defaultUserpic;
+  newUser.profilePictureLargeUrl = user.profilePictureLargeUrl || defaultUserpic;
 
   // Frontend preferences (only use this client's subtree).
   // Do not fill them if no 'frontendPreferences' in 'user'.
   if (user.frontendPreferences) {
+    let defaults = defaultValues;
+
+    if (user.createdAt) {
+      const createdAt = new Date(parseInt(user.createdAt, 10));
+      for (const key of Object.keys(defaultOverrides)) {
+        const { createdBefore, createdSince, value } = defaultOverrides[key];
+        if (
+          (createdBefore && createdAt < new Date(createdBefore)) ||
+          (createdSince && createdAt >= new Date(createdSince))
+        ) {
+          // Lodash magic to return the minimal necessary clone of 'defaults'.
+          // See https://github.com/lodash/lodash/issues/1696#issuecomment-328335502
+          defaults = _.setWith(_.clone(defaults), key, value, _.clone);
+        }
+      }
+    }
+
     // We use deepMergeJSON here to be sure that the resulting object has the
     // same structure as userDefaults.frontendPreferences.
-    newUser.frontendPreferences = deepMergeJSON(
-      userDefaults.frontendPreferences,
-      user.frontendPreferences[frontendPrefsConfig.clientId],
-    );
+    newUser.frontendPreferences = deepMergeJSON(defaults, user.frontendPreferences[clientId]);
   }
 
   return newUser;
