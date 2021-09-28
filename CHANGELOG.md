@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Some frontend preferences defaults can now be overridden depending on the
   account's createdAt date. It is useful for the new defaults that breaks the
   old behaviour and shouldn't affect the existing users.
+- Add "more" menu to posts
 
 ### Removed
 - The Space+Enter functionality is removed. It is no longer necessary since we

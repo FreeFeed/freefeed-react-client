@@ -3,10 +3,12 @@ import { Component, useMemo } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
+
+import { canonicalURI } from '../utils/canonical-uri';
 import { joinPostData, postActions } from './select-utils';
 import UserName from './user-name';
 
-import Post, { canonicalURI } from './post';
+import Post from './post';
 import { SignInLink } from './sign-in-link';
 
 class SinglePostHandler extends Component {
