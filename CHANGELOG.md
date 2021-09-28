@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   account's createdAt date. It is useful for the new defaults that breaks the
   old behaviour and shouldn't affect the existing users.
 - Add "more" menu to posts
+- Native player for video-files
 
 ### Removed
 - The Space+Enter functionality is removed. It is no longer necessary since we
