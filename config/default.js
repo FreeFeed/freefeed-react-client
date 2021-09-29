@@ -2,6 +2,8 @@ import { DISPLAYNAMES_BOTH } from '../src/utils/frontend-preferences-options';
 import { ACTIVITY, HOMEFEED_MODE_CLASSIC } from '../src/utils/feed-options';
 import { TLDs } from './lib/tlds';
 
+const DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24;
+
 export default {
   api: {
     root: 'https://candy.freefeed.net',
@@ -63,6 +65,7 @@ export default {
         absolute: false,
         amPm: false,
       },
+      timeDifferenceForSpacer: DAY_IN_MILLISECONDS * 6,
     },
   },
 
