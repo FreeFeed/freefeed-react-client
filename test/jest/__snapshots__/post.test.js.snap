@@ -234,9 +234,9 @@ Line 2
       <span
         class="post-edit-hint submit-mode-hint submit-mode-hint--visible"
       >
-        (
-        Enter
-         to submit)
+        (Enter 
+        to submit
+        )
       </span>
       <div
         class="post-edit-buttons"

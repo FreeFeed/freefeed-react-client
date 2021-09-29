@@ -196,18 +196,18 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4 id="submit-key">Text submitting</h4>
-        <p>How to submit post and comment forms:</p>
+        <h4 id="submit-key">Submitting posts and comments</h4>
+        <p>How to submit post or comment forms:</p>
         <div className="form-group">
           <div className="radio">
             <label>
               <RadioInput field={submitModeF} value="auto" />
-              Automatically select one of the modes below
+              Select one of the modes below automatically
               <p className="help-block">
-                The site will try to automatically determine whether you use desktop or mobile
-                browser. The <code>Enter</code> key will act as submit on desktop and will insert a
-                new line on mobile. Auto-detection can be inaccurate, so feel free to set this
-                parameter manually.
+                {CONFIG.siteTitle} detects whether you use a desktop or mobile browser. The{' '}
+                <code>Enter</code> key will act as submit on desktop and will insert a new line on
+                mobile. Auto-detection can be inaccurate, so feel free to select this option
+                manually.
               </p>
             </label>
           </div>
@@ -215,10 +215,10 @@ export default function AppearanceForm() {
           <div className="radio">
             <label>
               <RadioInput field={submitModeF} value="ctrl+enter" />
-              Mobile mode
+              Mobile mode: <code>Enter</code> key adds a new line
               <p className="help-block">
-                Use form button to submit (<code>Ctrl+Enter</code> or <code>Cmd+Enter</code> also
-                works). To insert a new line just press <code>Enter</code>.
+                Use the form button to submit. If you prefer to use this mode on desktop, you can
+                also use <code>Ctrl+Enter</code> or <code>Cmd+Enter</code> to submit a form.
               </p>
             </label>
           </div>
@@ -226,10 +226,9 @@ export default function AppearanceForm() {
           <div className="radio">
             <label>
               <RadioInput field={submitModeF} value="enter" />
-              Desktop mode
+              Desktop mode: <code>Enter</code> key submits a form
               <p className="help-block">
-                Press <code>Enter</code> to submit. To insert a new line, use{' '}
-                <code>Shift+Enter</code> or <code>Alt+Enter</code>
+                Use <code>Shift+Enter</code> or <code>Alt+Enter</code> to add a new line.
               </p>
             </label>
           </div>

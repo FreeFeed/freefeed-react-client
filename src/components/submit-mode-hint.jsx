@@ -24,7 +24,7 @@ export function SubmitModeHint({ input, className }) {
 
   return (
     <span className={cn(className, 'submit-mode-hint', isFocused && 'submit-mode-hint--visible')}>
-      ({byEnter ? 'Enter' : 'Ctrl+Enter'} to submit)
+      (Enter {byEnter ? 'to submit' : 'for new line'})
     </span>
   );
 }
