@@ -1,27 +1,17 @@
-import { Component } from 'react';
-import { connect } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
 
-import { darkTheme } from './select-utils';
+import { darkTheme as selectDarkTheme } from './select-utils';
 
-class ColorSchemeSetterBase extends Component {
-  componentDidMount() {
-    document.body.classList.toggle('dark-theme', this.props.darkTheme);
-  }
+export function ColorSchemeSetter() {
+  const darkTheme = useSelector(selectDarkTheme);
 
-  componentDidUpdate() {
-    document.body.classList.toggle('dark-theme', this.props.darkTheme);
-  }
+  useEffect(() => document.documentElement.classList.toggle('dark-theme', darkTheme), [darkTheme]);
 
-  render() {
-    return (
-      <Helmet defer={false}>
-        <meta name="theme-color" content={this.props.darkTheme ? 'hsl(220, 9%, 10%)' : 'white'} />
-      </Helmet>
-    );
-  }
+  return (
+    <Helmet defer={false}>
+      <meta name="theme-color" content={darkTheme ? 'hsl(220, 9%, 10%)' : 'white'} />
+    </Helmet>
+  );
 }
-
-export const ColorSchemeSetter = connect((state) => ({ darkTheme: darkTheme(state) }))(
-  ColorSchemeSetterBase,
-);

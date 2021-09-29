@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.102.0] - Not released
+### Added
+- The 'color-scheme' CSS property now applies on dark/light site mode. This
+  property allows to set color scheme for browser UI elements such as scrollbars
+  and form inputs.
 
 ## [1.101.0] - 2021-09-19 
 ### Added

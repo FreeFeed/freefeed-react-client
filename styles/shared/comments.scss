@@ -201,11 +201,11 @@
     background: scale-color(#eee, $alpha: -10%);
   }
 
-  body.dark-theme & {
+  .dark-theme & {
     background-color: scale-color($bg-color, $alpha: -10%);
   }
 
-  body.dark-theme .direct-post & {
+  .dark-theme .direct-post & {
     background-color: scale-color($bg-color-lighter, $alpha: -10%);
   }
 }
@@ -221,11 +221,11 @@
     box-shadow: 0 0px 4px 8px scale-color(#eee, $alpha: -10%);
   }
 
-  body.dark-theme & {
+  .dark-theme & {
     box-shadow: 0 0px 4px 8px scale-color($bg-color, $alpha: -10%);
   }
 
-  body.dark-theme .direct-post & {
+  .dark-theme .direct-post & {
     box-shadow: 0 0px 4px 8px scale-color($bg-color-lighter, $alpha: -10%);
   }
 }

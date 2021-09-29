@@ -18,11 +18,13 @@ html(lang='en')
       style.
         .jsonly { display: none }
     style.
+      html { color-scheme: light; }
+      html.dark-theme { color-scheme: dark; }
       body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px }
       h1 { font-size: 36px; font-weight: 500 }
       h1 a { color: #222; text-decoration: none }
-      body.dark-theme h1 a { color: hsl(0, 0%, 70%); }
       body.initial { transition: none; }
+      .dark-theme h1 a { color: hsl(0, 0%, 70%); }
     style.
       .privacy-popup {position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; color: white; background-color: rgba(16,16,16,0.8); padding: 24px; display: flex; flex-flow: row; flex-wrap: wrap; align-items: center; justify-content: center;}
       .privacy-text {line-height: 1.42857; font-size: 16px; margin-bottom: 16px; max-width: 600px;}
@@ -66,7 +68,7 @@ html(lang='en')
               && window.matchMedia
               && window.matchMedia('(prefers-color-scheme: dark)').matches
           ) {
-            document.body.classList.add('dark-theme');
+            document.documentElement.classList.add('dark-theme');
           }
         } catch (e) { }
         setTimeout(function () { document.body.classList.remove('initial') }, 0);
