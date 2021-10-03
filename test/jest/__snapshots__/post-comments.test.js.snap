@@ -382,6 +382,11 @@ exports[`PostComments Renders post comments and doesn't blow up 1`] = `
           >
             Comment
           </button>
+          <span
+            class="submit-mode-hint"
+          >
+            (Enter for new line)
+          </span>
           <a
             aria-disabled="false"
             class="comment-file-button iconic-button"
