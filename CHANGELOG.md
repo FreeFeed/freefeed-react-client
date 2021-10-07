@@ -28,6 +28,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The Space+Enter functionality is removed. It is no longer necessary since we
   have Mobile submit mode now.
 
+### Fixed
+- In the old days, users could create groups with groupnames up to 27 characters
+  long. Now the client router supports these names.
+
 ## [1.101.0] - 2021-09-19 
 ### Added
 - User can adjust the site font size in settings' Appearance tab. This setting
