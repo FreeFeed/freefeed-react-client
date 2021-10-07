@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The 'color-scheme' CSS property now applies on dark/light site mode. This
   property allows to set color scheme for browser UI elements such as scrollbars
   and form inputs.
+- "Grips" in sidebar for drag and sort home feeds. Previously, the drag zone
+  matched the feed link itself, and that was inconvenient, especially on mobile
+  screens.
 
 ## [1.101.2] - 2021-10-07
 ### Fixed
