@@ -369,14 +369,18 @@ function checkPath(Component, checker) {
 }
 
 function isPostPath({ params: { postId, userName } }) {
+  // The FreeFeed's usernames can have up to 25 characters length now, but some
+  // old grops can have up to 27 characters in username
   return (
-    /^[a-z\d-]{3,25}$/i.test(userName) &&
+    /^[a-z\d-]{3,30}$/i.test(userName) &&
     /^[a-f\d]{8}-[a-f\d]{4}-4[a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i.test(postId)
   );
 }
 
 function isAccountPath({ params: { userName } }) {
-  return /^[a-z\d-]{3,25}$/i.test(userName);
+  // The FreeFeed's usernames can have up to 25 characters length now, but some
+  // old grops can have up to 27 characters in username
+  return /^[a-z\d-]{3,30}$/i.test(userName);
 }
 
 function isMemoriesPath({ params: { userName, from } }) {

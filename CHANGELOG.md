@@ -11,6 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   property allows to set color scheme for browser UI elements such as scrollbars
   and form inputs.
 
+## [1.101.2] - 2021-10-07
+### Fixed
+- Re-release. 1.101.1 did not include proper version information. 
+
+## [1.101.1] - 2021-10-07
+### Fixed
+- In the old days, users could create groups with groupnames up to 27 characters
+  long. Now the client router supports these names.
+
 ## [1.101.0] - 2021-09-19 
 ### Added
 - User can adjust the site font size in settings' Appearance tab. This setting
