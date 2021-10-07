@@ -14,6 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faHeart, faClock, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { pluralForm } from '../utils';
+import { copyURL } from '../utils/copy-url';
 import { andJoin } from '../utils/and-join';
 import { ButtonLink } from './button-link';
 import styles from './dropdown-menu.module.scss';
@@ -168,27 +169,6 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
     </>
   );
 });
-
-function copyURL({ target }) {
-  target.blur();
-
-  // Creating absolute URL
-  const link = document.createElement('a');
-  link.href = target.value;
-
-  const textNode = document.body.appendChild(document.createTextNode(link.href));
-
-  const range = new Range();
-  const selection = document.getSelection();
-
-  range.selectNode(textNode);
-  selection.removeAllRanges();
-  selection.addRange(range);
-  document.execCommand('copy');
-  selection.removeAllRanges();
-
-  textNode.parentNode.removeChild(textNode);
-}
 
 function likersMenuText(likers, myUsername) {
   if (likers.length === 0) {

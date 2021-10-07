@@ -18,6 +18,7 @@ import {
 
 import { pluralForm } from '../utils';
 import { getFirstLinkToEmbed } from '../utils/parse-text';
+import { canonicalURI } from '../utils/canonical-uri';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
 import { savePost, hideByName, unhideNames } from '../redux/action-creators';
@@ -25,6 +26,7 @@ import { initialAsyncState } from '../redux/async-helpers';
 import { submitByEnter } from '../utils/submit-by-enter';
 import { makeJpegIfNeeded } from '../utils/jpeg-if-needed';
 import { Throbber } from './throbber';
+import { ButtonLink } from './button-link';
 
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
@@ -366,9 +368,9 @@ class Post extends Component {
 
     const commentLink = amIAuthenticated &&
       (!props.commentsDisabled || props.isEditable || props.isModeratable) && (
-        <a className="post-action" onClick={this.handleCommentClick} role="button">
+        <ButtonLink className="post-action" onClick={this.handleCommentClick}>
           Comment
-        </a>
+        </ButtonLink>
       );
 
     // "Like" / "Un-like"
@@ -379,13 +381,12 @@ class Post extends Component {
           {props.likeError ? (
             <Icon icon={faExclamationTriangle} className="post-like-fail" title={props.likeError} />
           ) : null}
-          <a
+          <ButtonLink
             className="post-action"
             onClick={didILikePost ? this.unlikePost : this.likePost}
-            role="button"
           >
             {didILikePost ? 'Un-like' : 'Like'}
-          </a>
+          </ButtonLink>
           {props.isLiking ? (
             <span className="post-like-throbber">
               <Throbber />
@@ -398,37 +399,19 @@ class Post extends Component {
         false
       );
 
-    const { isSaved, savePostStatus } = this.props;
-    const saveLink = amIAuthenticated && (
-      <>
-        <a className="post-action" onClick={this.toggleSave} role="button">
-          {isSaved ? 'Un-save' : 'Save'}
-        </a>
-        {savePostStatus.loading && <Throbber />}
-        {savePostStatus.error && (
-          <Icon
-            icon={faExclamationTriangle}
-            className="post-like-fail"
-            title={savePostStatus.errorText}
-          />
-        )}
-      </>
-    );
-
     // "More" menu
-    const moreLink =
-      props.isEditable || props.isModeratable ? (
-        <PostMoreLink
-          post={props}
-          toggleEditingPost={this.toggleEditingPost}
-          toggleModeratingComments={this.toggleModeratingComments}
-          disableComments={this.disableComments}
-          enableComments={this.enableComments}
-          deletePost={this.handleDeletePost}
-        />
-      ) : (
-        false
-      );
+    const moreLink = (
+      <PostMoreLink
+        user={props.user}
+        post={props}
+        toggleEditingPost={this.toggleEditingPost}
+        toggleModeratingComments={this.toggleModeratingComments}
+        disableComments={this.disableComments}
+        enableComments={this.enableComments}
+        deletePost={this.handleDeletePost}
+        toggleSave={this.toggleSave}
+      />
+    );
 
     const linkToEmbed = getFirstLinkToEmbed(props.body);
     const noImageAttachments = !this.attachments.some(
@@ -684,7 +667,6 @@ class Post extends Component {
                 <span className="post-footer-block" role="region">
                   <span className="post-footer-item">{commentLink}</span>
                   <span className="post-footer-item">{likeLink}</span>
-                  <span className="post-footer-item">{saveLink}</span>
                   {props.isInHomeFeed && (
                     <span className="post-footer-item" ref={this.hideLink}>
                       {this.renderHideLink()}
@@ -732,16 +714,6 @@ class Post extends Component {
       </div>
     );
   }
-}
-
-// Canonical post URI (pathname)
-export function canonicalURI(post) {
-  // If posted _only_ into groups, use first recipient's username
-  let urlName = post.createdBy.username;
-  if (post.recipients.length > 0 && !post.recipients.some((r) => r.type === 'user')) {
-    urlName = post.recipients[0].username;
-  }
-  return `/${encodeURIComponent(urlName)}/${encodeURIComponent(post.id)}`;
 }
 
 function selectState(state, ownProps) {
