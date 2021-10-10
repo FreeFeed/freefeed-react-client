@@ -80,7 +80,7 @@
         align-items: center;
         justify-content: center;
 
-        body.dark-theme & {
+        .dark-theme & {
           background-color: #666;
         }
       }

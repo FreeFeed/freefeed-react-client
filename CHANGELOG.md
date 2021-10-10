@@ -6,10 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Experimental
+
+## [1.102.0] - 2021-10-10
 ### Added
+- The 'color-scheme' CSS property now applies on dark/light site mode. This
+  property allows to set color scheme for browser UI elements such as scrollbars
+  and form inputs.
 - "Grips" in sidebar for drag and sort home feeds. Previously, the drag zone
   matched the feed link itself, and that was inconvenient, especially on mobile
   screens.
+- "More" menu to posts
 - There are two text submit modes now: the Mobile and the Desktop mode. The site
   will try to automatically determine whether it runs on desktop or mobile
   browser. User can manually select the submit mode, this setting will be saved
@@ -21,8 +27,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Some frontend preferences defaults can now be overridden depending on the
   account's createdAt date. It is useful for the new defaults that breaks the
   old behaviour and shouldn't affect the existing users.
-- Add "more" menu to posts
-- Native player for video-files
 
 ### Removed
 - The Space+Enter functionality is removed. It is no longer necessary since we

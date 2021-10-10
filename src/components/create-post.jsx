@@ -14,8 +14,8 @@ import ErrorBoundary from './error-boundary';
 import { Throbber } from './throbber';
 import { Icon } from './fontawesome-icons';
 import { ButtonLink } from './button-link';
-import { SubmittableTextarea } from './submittable-textarea';
 import { MoreWithTriangle } from './more-with-triangle';
+import { SubmittableTextarea } from './submittable-textarea';
 
 const attachmentsMaxCount = CONFIG.attachments.maxCount;
 

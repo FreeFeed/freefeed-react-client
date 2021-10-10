@@ -8,7 +8,7 @@
   text-align: left;
   line-height: 16px;
 
-  body.dark-theme & {
+  .dark-theme & {
     color: $text-color;
   }
 }
