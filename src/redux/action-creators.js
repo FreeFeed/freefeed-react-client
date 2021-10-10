@@ -1179,3 +1179,10 @@ export function openSidebar(open = true) {
     payload: open,
   };
 }
+
+export function setSubmitMode(mode) {
+  return {
+    type: ActionTypes.SET_SUBMIT_MODE,
+    payload: mode,
+  };
+}

@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import classnames from 'classnames';
 import _ from 'lodash';
-import Textarea from 'react-textarea-autosize';
 import dateFormat from 'date-fns/format';
 import * as Sentry from '@sentry/react';
 import {
@@ -18,13 +17,14 @@ import {
 
 import { pluralForm } from '../utils';
 import { getFirstLinkToEmbed } from '../utils/parse-text';
+import { canonicalURI } from '../utils/canonical-uri';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
 import { savePost, hideByName, unhideNames } from '../redux/action-creators';
 import { initialAsyncState } from '../redux/async-helpers';
-import { submitByEnter } from '../utils/submit-by-enter';
 import { makeJpegIfNeeded } from '../utils/jpeg-if-needed';
 import { Throbber } from './throbber';
+import { ButtonLink } from './button-link';
 
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
@@ -43,12 +43,15 @@ import { destinationsPrivacy } from './select-utils';
 import { Icon } from './fontawesome-icons';
 import { UnhideOptions, HideLink } from './post-hides-ui';
 import { UserPicture } from './user-picture';
+import { SubmitModeHint } from './submit-mode-hint';
+import { SubmittableTextarea } from './submittable-textarea';
 
 const attachmentsMaxCount = CONFIG.attachments.maxCount;
 
 class Post extends Component {
   selectFeeds;
   hideLink = createRef();
+  textareaRef = createRef();
 
   state = {
     forceAbsTimestamps: false,
@@ -204,7 +207,7 @@ class Post extends Component {
     props.saveEditingPost(props.id, reqBody);
   };
 
-  handleKeyDown = submitByEnter(() => this.canSubmitForm() && this.saveEditingPost());
+  handleSubmit = () => this.canSubmitForm() && this.saveEditingPost();
 
   handleAttachmentResponse = (att) => {
     if (this.state.editingAttachments.length >= attachmentsMaxCount) {
@@ -366,9 +369,9 @@ class Post extends Component {
 
     const commentLink = amIAuthenticated &&
       (!props.commentsDisabled || props.isEditable || props.isModeratable) && (
-        <a className="post-action" onClick={this.handleCommentClick} role="button">
+        <ButtonLink className="post-action" onClick={this.handleCommentClick}>
           Comment
-        </a>
+        </ButtonLink>
       );
 
     // "Like" / "Un-like"
@@ -379,13 +382,12 @@ class Post extends Component {
           {props.likeError ? (
             <Icon icon={faExclamationTriangle} className="post-like-fail" title={props.likeError} />
           ) : null}
-          <a
+          <ButtonLink
             className="post-action"
             onClick={didILikePost ? this.unlikePost : this.likePost}
-            role="button"
           >
             {didILikePost ? 'Un-like' : 'Like'}
-          </a>
+          </ButtonLink>
           {props.isLiking ? (
             <span className="post-like-throbber">
               <Throbber />
@@ -398,37 +400,19 @@ class Post extends Component {
         false
       );
 
-    const { isSaved, savePostStatus } = this.props;
-    const saveLink = amIAuthenticated && (
-      <>
-        <a className="post-action" onClick={this.toggleSave} role="button">
-          {isSaved ? 'Un-save' : 'Save'}
-        </a>
-        {savePostStatus.loading && <Throbber />}
-        {savePostStatus.error && (
-          <Icon
-            icon={faExclamationTriangle}
-            className="post-like-fail"
-            title={savePostStatus.errorText}
-          />
-        )}
-      </>
-    );
-
     // "More" menu
-    const moreLink =
-      props.isEditable || props.isModeratable ? (
-        <PostMoreLink
-          post={props}
-          toggleEditingPost={this.toggleEditingPost}
-          toggleModeratingComments={this.toggleModeratingComments}
-          disableComments={this.disableComments}
-          enableComments={this.enableComments}
-          deletePost={this.handleDeletePost}
-        />
-      ) : (
-        false
-      );
+    const moreLink = (
+      <PostMoreLink
+        user={props.user}
+        post={props}
+        toggleEditingPost={this.toggleEditingPost}
+        toggleModeratingComments={this.toggleModeratingComments}
+        disableComments={this.disableComments}
+        enableComments={this.enableComments}
+        deletePost={this.handleDeletePost}
+        toggleSave={this.toggleSave}
+      />
+    );
 
     const linkToEmbed = getFirstLinkToEmbed(props.body);
     const noImageAttachments = !this.attachments.some(
@@ -527,10 +511,11 @@ class Post extends Component {
                   />
 
                   <div>
-                    <Textarea
+                    <SubmittableTextarea
                       className="post-textarea"
+                      ref={this.textareaRef}
                       value={this.state.editingText}
-                      onKeyDown={this.handleKeyDown}
+                      onSubmit={this.handleSubmit}
                       onChange={this.handlePostTextChange}
                       onPaste={this.handlePaste}
                       autoFocus={true}
@@ -541,35 +526,38 @@ class Post extends Component {
                     />
                   </div>
 
-                  <div className="post-edit-options">
-                    <span
-                      className="post-edit-attachments dropzone-trigger"
-                      disabled={this.state.dropzoneDisabled}
-                      role="button"
-                    >
-                      <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
-                    </span>
+                  <div className="post-edit-actions">
+                    <div className="post-edit-options">
+                      <span
+                        className="post-edit-attachments dropzone-trigger"
+                        disabled={this.state.dropzoneDisabled}
+                        role="button"
+                      >
+                        <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
+                      </span>
+                    </div>
+
+                    <SubmitModeHint input={this.textareaRef} className="post-edit-hint" />
+
+                    <div className="post-edit-buttons">
+                      {props.isSaving && (
+                        <span className="post-edit-throbber">
+                          <Throbber />
+                        </span>
+                      )}
+                      <a className="post-cancel" onClick={this.cancelEditingPost}>
+                        Cancel
+                      </a>
+                      <button
+                        className="btn btn-default btn-xs"
+                        onClick={this.saveEditingPost}
+                        disabled={!this.canSubmitForm()}
+                      >
+                        Update
+                      </button>
+                    </div>
                   </div>
 
-                  <div className="post-edit-actions">
-                    {props.isSaving ? (
-                      <span className="post-edit-throbber">
-                        <Throbber />
-                      </span>
-                    ) : (
-                      false
-                    )}
-                    <a className="post-cancel" onClick={this.cancelEditingPost}>
-                      Cancel
-                    </a>
-                    <button
-                      className="btn btn-default btn-xs"
-                      onClick={this.saveEditingPost}
-                      disabled={!this.canSubmitForm()}
-                    >
-                      Update
-                    </button>
-                  </div>
                   {this.state.dropzoneDisabled && (
                     <div className="alert alert-warning">
                       The maximum number of attached files ({attachmentsMaxCount}) has been reached
@@ -684,7 +672,6 @@ class Post extends Component {
                 <span className="post-footer-block" role="region">
                   <span className="post-footer-item">{commentLink}</span>
                   <span className="post-footer-item">{likeLink}</span>
-                  <span className="post-footer-item">{saveLink}</span>
                   {props.isInHomeFeed && (
                     <span className="post-footer-item" ref={this.hideLink}>
                       {this.renderHideLink()}
@@ -734,22 +721,13 @@ class Post extends Component {
   }
 }
 
-// Canonical post URI (pathname)
-export function canonicalURI(post) {
-  // If posted _only_ into groups, use first recipient's username
-  let urlName = post.createdBy.username;
-  if (post.recipients.length > 0 && !post.recipients.some((r) => r.type === 'user')) {
-    urlName = post.recipients[0].username;
-  }
-  return `/${encodeURIComponent(urlName)}/${encodeURIComponent(post.id)}`;
-}
-
 function selectState(state, ownProps) {
   return {
     destinationsPrivacy: ownProps.isEditing
       ? (destNames) => destinationsPrivacy(destNames, state)
       : null,
     hideStatus: state.postHideStatuses[ownProps.id] || initialAsyncState,
+    submitMode: state.submitMode,
   };
 }
 

@@ -10,8 +10,8 @@ body,
   transition: background 0.2s;
 }
 
-body.dark-theme {
-  &,
+.dark-theme {
+  body,
   .sidebar .box-body,
   .search-form .search-button,
   .search-form .search-input,
@@ -61,7 +61,7 @@ body.dark-theme {
     border-color: $separator-color;
   }
 
-  &,
+  body,
   .post .post-body .post-text,
   .post .post-body,
   .box-header,

@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.102.0] - Not released
+### Added
+- The 'color-scheme' CSS property now applies on dark/light site mode. This
+  property allows to set color scheme for browser UI elements such as scrollbars
+  and form inputs.
+- "Grips" in sidebar for drag and sort home feeds. Previously, the drag zone
+  matched the feed link itself, and that was inconvenient, especially on mobile
+  screens.
+- "More" menu to posts
+- There are two text submit modes now: the Mobile and the Desktop mode. The site
+  will try to automatically determine whether it runs on desktop or mobile
+  browser. User can manually select the submit mode, this setting will be saved
+  in browser storage.
+  - In Mobile mode, the Ctrl+Enter and Cmd+Enter acts as submit and Enter press
+    caused line break.
+  - In Desktop mode, the Enter press acts as submit, to insert a new line user
+    should press Shift+Enter or Alt+Enter.
+- Some frontend preferences defaults can now be overridden depending on the
+  account's createdAt date. It is useful for the new defaults that breaks the
+  old behaviour and shouldn't affect the existing users.
+
+### Removed
+- The Space+Enter functionality is removed. It is no longer necessary since we
+  have Mobile submit mode now.
+
 ## [1.101.2] - 2021-10-07
 ### Fixed
 - Re-release. 1.101.1 did not include proper version information. 

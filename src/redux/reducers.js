@@ -12,6 +12,7 @@ import {
   getSystemColorScheme,
   loadNSFWVisibility,
   loadUIScale,
+  loadSubmitMode,
 } from '../services/appearance';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
@@ -2010,6 +2011,13 @@ export { donationAccount, donationLoadingStatus } from './reducers/donation-stat
 
 export function sidebarOpened(state = false, action) {
   if (action.type === ActionTypes.OPEN_SIDEBAR) {
+    return action.payload;
+  }
+  return state;
+}
+
+export function submitMode(state = loadSubmitMode(), action) {
+  if (action.type === ActionTypes.SET_SUBMIT_MODE) {
     return action.payload;
   }
   return state;

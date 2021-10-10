@@ -1,0 +1,19 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+
+  &::after {
+    $size: 0.45em;
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: $size (0.6 * $size) 0 (0.6 * $size);
+    border-color: currentColor transparent transparent transparent;
+    opacity: 0.66;
+
+    margin-left: 0.5 * $size;
+    margin-top: 0.4 * $size;
+  }
+}

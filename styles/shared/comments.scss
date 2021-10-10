@@ -139,26 +139,6 @@
   &__action-link--delete {
     color: var(--danger-color) !important;
   }
-
-  &__action-link--more {
-    display: inline-flex;
-    align-items: center;
-
-    &::after {
-      $size: 0.45em;
-      content: '';
-      display: inline-block;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: $size (0.6 * $size) 0 (0.6 * $size);
-      border-color: currentColor transparent transparent transparent;
-      opacity: 0.66;
-
-      margin-left: 0.5 * $size;
-      margin-top: 2px;
-    }
-  }
 }
 
 .feed-comment-dot {
@@ -201,11 +181,11 @@
     background: scale-color(#eee, $alpha: -10%);
   }
 
-  body.dark-theme & {
+  .dark-theme & {
     background-color: scale-color($bg-color, $alpha: -10%);
   }
 
-  body.dark-theme .direct-post & {
+  .dark-theme .direct-post & {
     background-color: scale-color($bg-color-lighter, $alpha: -10%);
   }
 }
@@ -221,11 +201,11 @@
     box-shadow: 0 0px 4px 8px scale-color(#eee, $alpha: -10%);
   }
 
-  body.dark-theme & {
+  .dark-theme & {
     box-shadow: 0 0px 4px 8px scale-color($bg-color, $alpha: -10%);
   }
 
-  body.dark-theme .direct-post & {
+  .dark-theme .direct-post & {
     box-shadow: 0 0px 4px 8px scale-color($bg-color-lighter, $alpha: -10%);
   }
 }

@@ -15,7 +15,7 @@
   padding: 0.5em;
   border-radius: 0.25em;
 
-  :global(body.dark-theme) & {
+  :global(.dark-theme) & {
     color: inherit;
   }
 
@@ -24,7 +24,7 @@
     text-decoration: none;
     background-color: #f4f4f4;
 
-    :global(body.dark-theme) & {
+    :global(.dark-theme) & {
       color: inherit;
       background-color: $bg-color-lighter;
     }
@@ -55,7 +55,7 @@
   color: #555555;
   margin-right: 0.2em;
 
-  :global(body.dark-theme) & {
+  :global(.dark-theme) & {
     color: $text-color-darker;
   }
 }
@@ -81,7 +81,7 @@
   border: 1px solid #ccc;
   margin-top: 2em;
 
-  :global(body.dark-theme) & {
+  :global(.dark-theme) & {
     background: $bg-color-lighter;
     border: 1px solid $separator-color;
     color: $text-color;

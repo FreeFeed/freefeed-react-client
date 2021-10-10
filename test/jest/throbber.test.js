@@ -9,20 +9,19 @@ describe('Throbber', () => {
   });
 
   afterEach(() => {
-    jest.runOnlyPendingTimers();
     jest.useRealTimers();
   });
 
   it('Renders in small size', () => {
     const { asFragment } = render(<Throbber size={SMALL} className="my-humble-throbber" />);
-    act(() => jest.runAllTimers());
+    act(() => jest.advanceTimersByTime(500));
 
     expect(asFragment()).toMatchSnapshot();
   });
 
   it('Renders in big size', () => {
     const { asFragment } = render(<Throbber size={BIG} className="my-enormous-throbber" />);
-    act(() => jest.runAllTimers());
+    act(() => jest.advanceTimersByTime(500));
 
     expect(asFragment()).toMatchSnapshot();
   });

@@ -21,6 +21,7 @@ import {
   saveUIScale,
   loadUIScale,
   uiScaleStorageKey,
+  saveSubmitMode,
 } from '../services/appearance';
 import { scrollingOrInteraction, unscroll } from '../services/unscroll';
 import { inactivityOf } from '../utils/event-sequences';
@@ -341,6 +342,10 @@ export const appearanceMiddleware = (store) => {
     }
     if (action.type === ActionTypes.SET_UI_SCALE) {
       saveUIScale(action.payload);
+      return;
+    }
+    if (action.type === ActionTypes.SET_SUBMIT_MODE) {
+      saveSubmitMode(action.payload);
       return;
     }
   };
