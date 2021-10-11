@@ -66,7 +66,7 @@ exports[`PostComments Renders post comments and doesn't blow up 1`] = `
             aria-label="Comment by author"
             class="comment-tail"
           >
-             - 
+             -
             <span
               class="comment-tail__item"
             >
@@ -84,7 +84,7 @@ exports[`PostComments Renders post comments and doesn't blow up 1`] = `
                 </a>
               </span>
             </span>
-             - 
+             -
             <span
               class="comment-tail__item comment-tail__actions"
             >
@@ -177,7 +177,7 @@ exports[`PostComments Renders post comments and doesn't blow up 1`] = `
             aria-label="Comment by other"
             class="comment-tail"
           >
-             - 
+             -
             <span
               class="comment-tail__item"
             >
@@ -195,7 +195,7 @@ exports[`PostComments Renders post comments and doesn't blow up 1`] = `
                 </a>
               </span>
             </span>
-             - 
+             -
             <span
               class="comment-tail__item comment-tail__actions"
             >
@@ -289,7 +289,7 @@ exports[`PostComments Renders post comments and doesn't blow up 1`] = `
             aria-label="Comment by author"
             class="comment-tail"
           >
-             - 
+             -
             <span
               class="comment-tail__item"
             >
@@ -307,7 +307,7 @@ exports[`PostComments Renders post comments and doesn't blow up 1`] = `
                 </a>
               </span>
             </span>
-             - 
+             -
             <span
               class="comment-tail__item comment-tail__actions"
             >
@@ -382,11 +382,6 @@ exports[`PostComments Renders post comments and doesn't blow up 1`] = `
           >
             Comment
           </button>
-          <span
-            class="submit-mode-hint"
-          >
-            (Enter for new line)
-          </span>
           <a
             aria-disabled="false"
             class="comment-file-button iconic-button"
