@@ -78,9 +78,9 @@ export default class PostComments extends Component {
 
     if (post.comments?.length > 0) {
       const lastComment = post.comments[post.comments.length - 1];
-      spacer = this.renderCommentSpacer(now, lastComment.createdAt);
+      spacer = this.renderCommentSpacer(now, lastComment.createdAt, true);
     } else {
-      spacer = this.renderCommentSpacer(now, post.createdAt);
+      spacer = this.renderCommentSpacer(now, post.createdAt, true);
     }
 
     return (
@@ -162,7 +162,7 @@ export default class PostComments extends Component {
     return !post.commentsDisabled || post.isEditable || post.isModeratable;
   }
 
-  renderCommentSpacer = (from, to) => {
+  renderCommentSpacer = (from, to, isAboveCommentForm = false) => {
     if (!from || !to) {
       return null;
     }
@@ -179,7 +179,7 @@ export default class PostComments extends Component {
       return null;
     }
 
-    return <CommentSpacer from={from} to={to} />;
+    return <CommentSpacer from={from} to={to} isAboveCommentForm={isAboveCommentForm} />;
   };
 
   renderComment = (comment, index = 0, array = []) => {
