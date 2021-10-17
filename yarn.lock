@@ -4083,7 +4083,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cli-truncate@npm:^2.1.0":
+"cli-truncate@npm:2.1.0, cli-truncate@npm:^2.1.0":
   version: 2.1.0
   resolution: "cli-truncate@npm:2.1.0"
   dependencies:
@@ -4299,6 +4299,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:^8.2.0":
+  version: 8.2.0
+  resolution: "commander@npm:8.2.0"
+  checksum: e868805bc266777f7a9c8a740e15b9e02b8148d8251f577ea9b9ef373ac0bdeb77b9b60cfc033592c9e1affea89993be08c13c623f0c619f9bf152c0e4d12cb0
+  languageName: node
+  linkType: hard
+
 "commondir@npm:^1.0.1":
   version: 1.0.1
   resolution: "commondir@npm:1.0.1"
@@ -4509,7 +4516,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cosmiconfig@npm:^7.0.0":
+"cosmiconfig@npm:^7.0.0, cosmiconfig@npm:^7.0.1":
   version: 7.0.1
   resolution: "cosmiconfig@npm:7.0.1"
   dependencies:
@@ -6052,7 +6059,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"execa@npm:^5.0.0":
+"execa@npm:^5.0.0, execa@npm:^5.1.1":
   version: 5.1.1
   resolution: "execa@npm:5.1.1"
   dependencies:
@@ -9194,31 +9201,31 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:~11.1.4":
-  version: 11.1.4
-  resolution: "lint-staged@npm:11.1.4"
+"lint-staged@npm:~11.2.3":
+  version: 11.2.3
+  resolution: "lint-staged@npm:11.2.3"
   dependencies:
-    chalk: ^4.1.1
-    cli-truncate: ^2.1.0
-    commander: ^7.2.0
-    cosmiconfig: ^7.0.0
-    debug: ^4.3.1
+    cli-truncate: 2.1.0
+    colorette: ^1.4.0
+    commander: ^8.2.0
+    cosmiconfig: ^7.0.1
+    debug: ^4.3.2
     enquirer: ^2.3.6
-    execa: ^5.0.0
-    listr2: ^3.8.2
-    log-symbols: ^4.1.0
+    execa: ^5.1.1
+    listr2: ^3.12.2
     micromatch: ^4.0.4
     normalize-path: ^3.0.0
     please-upgrade-node: ^3.2.0
     string-argv: 0.3.1
-    stringify-object: ^3.3.0
+    stringify-object: 3.3.0
+    supports-color: 8.1.1
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: aa2a54678f639f90a08d059f510274371d2fceb4866da35dbd2d84205027ddca30114702c78507ee34c12d850d640a20434b508df1e0e8827a1276eb5d0939b0
+  checksum: cf3a1612a8cb3790030fb1eaf98071b97be0c71e9ee87f2f65741321974178e9b15b480dac695bb126d2cd8751dd7d72071b13d7ea0e1a97a735d88bd3cc8bb7
   languageName: node
   linkType: hard
 
-"listr2@npm:^3.8.2":
+"listr2@npm:^3.12.2":
   version: 3.12.2
   resolution: "listr2@npm:3.12.2"
   dependencies:
@@ -12489,7 +12496,7 @@ fsevents@^1.2.7:
     jest: ~27.2.5
     jest-canvas-mock: ~2.3.1
     keycode-js: ~3.1.0
-    lint-staged: ~11.1.4
+    lint-staged: ~11.2.3
     local-storage-fallback: ~4.1.2
     lodash: ~4.17.21
     lru-cache: ~6.0.0
@@ -14170,7 +14177,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"stringify-object@npm:^3.3.0":
+"stringify-object@npm:3.3.0":
   version: 3.3.0
   resolution: "stringify-object@npm:3.3.0"
   dependencies:
