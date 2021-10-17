@@ -435,6 +435,7 @@ function initialValues({
   isNSFWVisible,
   isBetaChannel,
   submitMode,
+  uiScale,
 }) {
   return {
     useYou: frontend.displayNames.useYou,
@@ -452,6 +453,7 @@ function initialValues({
     timeAbsolute: frontend.timeDisplay.absolute ? '1' : '0',
     enableBeta: isBetaChannel,
     useCtrlEnter: frontend.submitByEnter ? '0' : '1',
+    uiScale,
     submitMode,
   };
 }
