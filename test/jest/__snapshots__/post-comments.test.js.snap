@@ -346,7 +346,7 @@ exports[`PostComments Renders post comments and doesn't blow up 1`] = `
       <div
         class="body"
       >
-        about 4 years passed
+        over 4 years passed
       </div>
     </div>
     <div
