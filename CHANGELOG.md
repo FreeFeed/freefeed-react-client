@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.102.2] - 2021-10-17
+### Fixed
+- Re-release. 1.102.1 did not include proper version information. 
+
 ## [1.102.1] - 2021-10-17
 ### Fixed
 - Merge bug that prevents the "Text scale" controll on Appearence page from
