@@ -1,6 +1,8 @@
 import { PureComponent, useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 
+import { GET_EVERYTHING, GET_SUMMARY, HOME, HOME_AUX } from '../redux/action-types';
+import { toggleHiddenPosts } from '../redux/action-creators';
 import ErrorBoundary from './error-boundary';
 import Post from './post';
 import { joinPostData } from './select-utils';
@@ -109,30 +111,39 @@ class Feed extends PureComponent {
 
 const postIsHidden = (post) => !!(post.isHidden || post.hiddenByNames);
 
-export default connect((state) => {
-  const { entries, recentlyHiddenEntries, separateHiddenEntries, isHiddenRevealed, feedError } =
-    state.feedViewState;
+export default connect(
+  (state) => {
+    const { entries, recentlyHiddenEntries, isHiddenRevealed, feedError, feedRequestType } =
+      state.feedViewState;
 
-  const allPosts = entries.map(joinPostData(state)).filter(Boolean);
+    const allPosts = entries.map(joinPostData(state)).filter(Boolean);
 
-  let visiblePosts = allPosts;
-  let hiddenPosts = [];
+    let visiblePosts = allPosts;
+    let hiddenPosts = [];
 
-  if (separateHiddenEntries) {
-    visiblePosts = allPosts.filter((p) => !postIsHidden(p) || recentlyHiddenEntries[p.id]);
-    hiddenPosts = allPosts.filter((p) => postIsHidden(p));
-  }
+    const hideInFeeds = state.user.frontendPreferences.hidesInNonHomeFeeds
+      ? [HOME, HOME_AUX, GET_EVERYTHING, GET_SUMMARY]
+      : [HOME];
 
-  return {
-    loading: state.routeLoadingState,
-    emptyFeed: entries.length === 0,
-    separateHiddenEntries,
-    isHiddenRevealed,
-    visiblePosts,
-    hiddenPosts,
-    feedError,
-  };
-})(Feed);
+    const separateHiddenEntries = hideInFeeds.includes(feedRequestType);
+
+    if (separateHiddenEntries) {
+      visiblePosts = allPosts.filter((p) => !postIsHidden(p) || recentlyHiddenEntries[p.id]);
+      hiddenPosts = allPosts.filter((p) => postIsHidden(p));
+    }
+
+    return {
+      loading: state.routeLoadingState,
+      emptyFeed: entries.length === 0,
+      separateHiddenEntries,
+      isHiddenRevealed,
+      visiblePosts,
+      hiddenPosts,
+      feedError,
+    };
+  },
+  { toggleHiddenPosts },
+)(Feed);
 
 function FeedEntry({ post, section, ...props }) {
   // Capture Hide link offset before post unmount
@@ -175,6 +186,7 @@ function FeedEntry({ post, section, ...props }) {
       commentEdit={props.commentEdit}
       highlightTerms={props.highlightTerms}
       setFinalHideLinkOffset={onPostUnmount}
+      hideEnabled={props.separateHiddenEntries}
     />
   );
 }

@@ -672,7 +672,7 @@ class Post extends Component {
                 <span className="post-footer-block" role="region">
                   <span className="post-footer-item">{commentLink}</span>
                   <span className="post-footer-item">{likeLink}</span>
-                  {props.isInHomeFeed && (
+                  {props.hideEnabled && (
                     <span className="post-footer-item" ref={this.hideLink}>
                       {this.renderHideLink()}
                     </span>
