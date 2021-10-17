@@ -12186,10 +12186,10 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-is@npm:16.10.2":
-  version: 16.10.2
-  resolution: "react-is@npm:16.10.2"
-  checksum: 61716c78d1eab9e946c7da68a7eeefbece1de6e8b7811b5247891ff00a9ddaf72ff77e21cd465cb26986cbc31ac12d88f3fb8df94cf6d074f857039d180d9b83
+"react-is@npm:^16.10.2, react-is@npm:^16.13.0, react-is@npm:^16.13.1, react-is@npm:^16.7.0, react-is@npm:^16.8.1":
+  version: 16.13.1
+  resolution: "react-is@npm:16.13.1"
+  checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
   languageName: node
   linkType: hard
 
@@ -12197,13 +12197,6 @@ fsevents@^1.2.7:
   version: 17.0.2
   resolution: "react-is@npm:17.0.2"
   checksum: 9d6d111d8990dc98bc5402c1266a808b0459b5d54830bbea24c12d908b536df7883f268a7868cfaedde3dd9d4e0d574db456f84d2e6df9c4526f99bb4b5344d8
-  languageName: node
-  linkType: hard
-
-"react-is@npm:^16.13.0, react-is@npm:^16.13.1, react-is@npm:^16.7.0, react-is@npm:^16.8.1":
-  version: 16.13.1
-  resolution: "react-is@npm:16.13.1"
-  checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
   languageName: node
   linkType: hard
 
@@ -12538,7 +12531,7 @@ fsevents@^1.2.7:
     react-sortablejs: ~2.0.11
     react-test-renderer: ~17.0.2
     react-textarea-autosize: ~8.3.3
-    recharts: ~2.1.4
+    recharts: ~2.1.5
     redux: ~4.1.1
     regenerator-runtime: ~0.13.9
     resolve-url-loader: ~4.0.0
@@ -12674,9 +12667,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"recharts@npm:~2.1.4":
-  version: 2.1.4
-  resolution: "recharts@npm:2.1.4"
+"recharts@npm:~2.1.5":
+  version: 2.1.5
+  resolution: "recharts@npm:2.1.5"
   dependencies:
     "@types/d3-interpolate": ^2.0.0
     "@types/d3-scale": ^3.0.0
@@ -12687,7 +12680,7 @@ fsevents@^1.2.7:
     d3-shape: ^2.0.0
     eventemitter3: ^4.0.1
     lodash: ^4.17.19
-    react-is: 16.10.2
+    react-is: ^16.10.2
     react-resize-detector: ^6.6.3
     react-smooth: ^2.0.0
     recharts-scale: ^0.4.4
@@ -12695,7 +12688,7 @@ fsevents@^1.2.7:
   peerDependencies:
     react: ^16.0.0 || ^17.0.0
     react-dom: ^16.0.0 || ^17.0.0
-  checksum: ba529a20bae0d7dc73f09f045f1da14be9fe316b2a7b29fa90f942f1ecbe12f819e77d9e17799080f4a4f7ed2d46dd3e93048ec0f1bee933e97f789ca0bd199d
+  checksum: e7921c022af3ad0738e3491f9da0a40a1c0e29f8ebf7a015fe072b49e973799d2effcb3d00dd2112881c0930664862d642e6ed528ab62f04dea7a5de298ad529
   languageName: node
   linkType: hard
 
