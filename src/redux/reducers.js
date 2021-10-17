@@ -25,6 +25,7 @@ import {
   initialAsyncState,
   successAsyncState,
   keyFromRequestPayload,
+  baseType,
 } from './async-helpers';
 
 const frontendPrefsConfig = CONFIG.frontendPreferences;
@@ -191,10 +192,10 @@ const initFeed = {
   entries: [],
   timeline: null,
   recentlyHiddenEntries: {},
-  separateHiddenEntries: false,
   isHiddenRevealed: false,
   isLastPage: true,
   feedError: null,
+  feedRequestType: null,
 };
 
 export function feedViewState(state = initFeed, action) {
@@ -202,9 +203,6 @@ export function feedViewState(state = initFeed, action) {
     return state;
   }
   if (ActionHelpers.isFeedResponse(action)) {
-    // Separate hidden entries only in 'RiverOfNews' feed
-    const separateHiddenEntries = action.type === response(ActionTypes.HOME);
-
     const entries = (action.payload.posts || []).map((post) => post.id);
     const recentlyHiddenEntries = {};
     const isHiddenRevealed = false;
@@ -212,14 +210,16 @@ export function feedViewState(state = initFeed, action) {
     const timeline = action.payload.timelines
       ? _.pick(action.payload.timelines, ['id', 'name', 'user'])
       : null;
+    const feedRequestType = baseType(action.type);
+
     return {
       ...initFeed,
       entries,
       recentlyHiddenEntries,
       timeline,
-      separateHiddenEntries,
       isHiddenRevealed,
       isLastPage,
+      feedRequestType,
     };
   }
   if (ActionHelpers.isFeedFail(action)) {

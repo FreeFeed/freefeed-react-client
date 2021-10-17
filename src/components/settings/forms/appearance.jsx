@@ -88,6 +88,7 @@ export default function AppearanceForm() {
   const enableBeta = useField('enableBeta', form.form);
   const uiScaleField = useField('uiScale', form.form);
   const submitModeF = useField('submitMode', form.form);
+  const hidesInNonHomeFeeds = useField('hidesInNonHomeFeeds', form.form);
 
   return (
     <form onSubmit={form.handleSubmit}>
@@ -100,7 +101,7 @@ export default function AppearanceForm() {
           <div className="checkbox">
             <label>
               <CheckboxInput field={useYou} />
-              Show your own name as &quot;You&quot;
+              Show your own name as &ldquo;You&rdquo;
             </label>
           </div>
         </div>
@@ -154,6 +155,24 @@ export default function AppearanceForm() {
               <RadioInput field={homeFeedMode} value={HOMEFEED_MODE_FRIENDS_ALL_ACTIVITY} />
               Also your friends&#x2019; activity in groups you are not subscribed to
             </label>
+          </div>
+
+          <p>Apply posts and users hides:</p>
+          <div className="form-group">
+            <div className="radio">
+              <label>
+                <RadioInput field={hidesInNonHomeFeeds} value="0" />
+                At the &ldquo;Home&rdquo; page only
+              </label>
+            </div>
+
+            <div className="radio">
+              <label>
+                <RadioInput field={hidesInNonHomeFeeds} value="1" />
+                At the &ldquo;Home&rdquo;, &ldquo;Everything&rdquo;, &ldquo;Best of&hellip;&rdquo;
+                and your friend lists pages
+              </label>
+            </div>
           </div>
 
           <div className="form-group">
@@ -455,6 +474,7 @@ function initialValues({
     useCtrlEnter: frontend.submitByEnter ? '0' : '1',
     uiScale,
     submitMode,
+    hidesInNonHomeFeeds: frontend.hidesInNonHomeFeeds ? '1' : '0',
   };
 }
 
@@ -485,6 +505,7 @@ function prefUpdaters(values) {
           ...prefs.homefeed,
           hideUsers: values.hiddenUsers.toLowerCase().match(/[\w-]+/g) || [],
         },
+        hidesInNonHomeFeeds: values.hidesInNonHomeFeeds === '1',
         readMoreStyle: values.readMoreStyle,
         comments: {
           ...prefs.comments,
