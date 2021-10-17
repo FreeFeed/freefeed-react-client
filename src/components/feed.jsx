@@ -1,7 +1,7 @@
 import { PureComponent, useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 
-import { GET_EVERYTHING, GET_SUMMARY, HOME, HOME_AUX } from '../redux/action-types';
+import { DISCUSSIONS, GET_EVERYTHING, GET_SUMMARY, HOME, HOME_AUX } from '../redux/action-types';
 import { toggleHiddenPosts } from '../redux/action-creators';
 import ErrorBoundary from './error-boundary';
 import Post from './post';
@@ -122,7 +122,7 @@ export default connect(
     let hiddenPosts = [];
 
     const hideInFeeds = state.user.frontendPreferences.hidesInNonHomeFeeds
-      ? [HOME, HOME_AUX, GET_EVERYTHING, GET_SUMMARY]
+      ? [HOME, HOME_AUX, GET_EVERYTHING, GET_SUMMARY, DISCUSSIONS]
       : [HOME];
 
     const separateHiddenEntries = hideInFeeds.includes(feedRequestType);
