@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.102.1] - 2021-10-17
+### Fixed
+- Merge bug that prevents the "Text scale" controll on Appearence page from
+  working.
+- 'webpack-cli' was updated to fix the dev server.
+
 ## [1.102.0] - 2021-10-10
 ### Added
 - The 'color-scheme' CSS property now applies on dark/light site mode. This
