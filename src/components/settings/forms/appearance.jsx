@@ -169,8 +169,8 @@ export default function AppearanceForm() {
             <div className="radio">
               <label>
                 <RadioInput field={hidesInNonHomeFeeds} value="1" />
-                At the &ldquo;Home&rdquo;, &ldquo;Everything&rdquo;, &ldquo;Best of&hellip;&rdquo;
-                and your friend lists pages
+                At the &ldquo;Home&rdquo;, &ldquo;Discussions&rdquo;, &ldquo;Everything&rdquo;,
+                &ldquo;Best of&hellip;&rdquo; and your friend lists pages
               </label>
             </div>
           </div>
