@@ -11,7 +11,7 @@ import * as aspectRatio from './scroll-helpers/size-cache';
 
 const YOUTUBE_VIDEO_RE =
   /^https?:\/\/(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?(?:v=|.+&v=)))([\w-]+)/i;
-const VIMEO_VIDEO_RE = /^https:\/\/vimeo\.com\/(\d+)/i;
+const VIMEO_VIDEO_RE = /^https?:\/\/vimeo\.com\/(\d+)(?:\/([a-z\d]+))?/i;
 const COUB_VIDEO_RE = /^https?:\/\/coub\.com\/view\/([a-z\d]+)/i;
 const IMGUR_VIDEO_RE = /^https?:\/\/i\.imgur\.com\/([a-z\d]+)\.(gifv|mp4)/i;
 const GFYCAT_RE =
@@ -184,6 +184,24 @@ function getDefaultAspectRatio(url) {
   return null;
 }
 
+function playerURLFromVimeo(url, withoutAutoplay) {
+  const { hash } = new URL(url);
+
+  const vars = VIMEO_VIDEO_RE.exec(url);
+  const playerUrl = new URL(`https://player.vimeo.com/video/${vars[1]}`);
+  playerUrl.hash = hash;
+
+  if (vars.length > 2) {
+    playerUrl.searchParams.append('h', vars[2]);
+  }
+
+  if (withoutAutoplay) {
+    playerUrl.searchParams.append('autoplay', '1');
+  }
+
+  return playerUrl.toString();
+}
+
 export async function getVideoInfo(url, withoutAutoplay) {
   switch (getVideoType(url)) {
     case T_YOUTUBE_VIDEO: {
@@ -207,14 +225,13 @@ export async function getVideoInfo(url, withoutAutoplay) {
       if (!('title' in data)) {
         return { error: data.error ? data.error : 'error loading data' };
       }
-      const { hash } = urlParse(url);
+
+      const playerURL = playerURLFromVimeo(url, withoutAutoplay);
       return {
         byline: `${data.title} by ${data.author_name}`,
         aspectRatio: aspectRatio.set(url, data.height / data.width),
         previewURL: data.thumbnail_url.replace(/\d+x\d+/, '450'),
-        playerURL: `https://player.vimeo.com/video/${getVideoId(url)}${
-          withoutAutoplay ? '' : '?autoplay=1'
-        }${hash ? hash : ''}`,
+        playerURL,
       };
     }
     case T_COUB_VIDEO: {
