@@ -195,7 +195,7 @@ function playerURLFromVimeo(url, withoutAutoplay) {
     playerUrl.searchParams.append('h', vars[2]);
   }
 
-  if (withoutAutoplay) {
+  if (!withoutAutoplay) {
     playerUrl.searchParams.append('autoplay', '1');
   }
 
