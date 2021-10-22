@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.103.0] - Not released
 
+## [1.102.3] - 2021-10-22
+### Fixed
+- Generate proper embed-player for private Vimeo videos
+- Detect legacy "http" Vimeo urls
+
 ## [1.102.2] - 2021-10-17
 ### Fixed
 - Re-release. 1.102.1 did not include proper version information. 
