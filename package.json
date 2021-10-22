@@ -1,6 +1,6 @@
 {
   "name": "reactive-pepyatka",
-  "version": "1.102.2",
+  "version": "1.102.3",
   "description": "",
   "main": "index.js",
   "dependencies": {
