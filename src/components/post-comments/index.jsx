@@ -42,16 +42,13 @@ export default class PostComments extends Component {
   };
 
   backwardIdx = (commentId) => {
-    const { post, comments } = this.props;
-    const idx = comments.findIndex((c) => c.id === commentId);
-    if (idx < 0) {
+    const { comments } = this.props;
+    const thisComment = comments.find((c) => c.id === commentId);
+    if (!thisComment) {
       return 0;
     }
-    let backwardIdx = comments.length - idx;
-    if (idx < post.omittedCommentsOffset) {
-      backwardIdx += post.omittedComments;
-    }
-    return backwardIdx;
+    const lastComment = comments[comments.length - 1];
+    return lastComment.seqNumber - thisComment.seqNumber + 1;
   };
 
   replyWithArrows = (commentId) => {
