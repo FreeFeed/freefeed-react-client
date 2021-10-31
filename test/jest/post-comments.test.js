@@ -28,6 +28,7 @@ const COMMENT1 = {
   omitBubble: true,
   user: AUTHOR,
   createdAt: '1617727500000',
+  seqNumber: 1,
 };
 
 const COMMENT2 = {
@@ -36,6 +37,7 @@ const COMMENT2 = {
   omitBubble: true,
   user: { id: 'other-user', username: 'other' },
   createdAt: '1617727600000',
+  seqNumber: 2,
 };
 
 const COMMENT3 = {
@@ -44,6 +46,7 @@ const COMMENT3 = {
   omitBubble: true,
   user: AUTHOR,
   createdAt: '1617727700000',
+  seqNumber: 3,
 };
 
 const POST = {

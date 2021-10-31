@@ -123,33 +123,20 @@ export default class PostComments extends Component {
 
   arrowsHighlightHandlers = {
     hover: (baseCommentId, nArrows) => {
-      const {
-        comments,
-        post: { omittedComments, omittedCommentsOffset },
-      } = this.props;
-      let absBaseIndex = comments.findIndex((c) => c.id === baseCommentId);
-      if (absBaseIndex === -1) {
+      const { comments } = this.props;
+      const baseComment = comments.find((c) => c.id === baseCommentId);
+      if (!baseComment) {
         // Comment not found
         return;
       }
-      if (absBaseIndex >= omittedCommentsOffset) {
-        absBaseIndex += omittedComments;
-      }
-      const absHlIndex = absBaseIndex - nArrows;
+      const refCommentNum = baseComment.seqNumber - nArrows;
+      const refComment = comments.find((c) => c.seqNumber === refCommentNum);
 
-      if (absHlIndex < 0) {
-        // Too many arrows
+      if (!refComment) {
         return;
       }
 
-      if (absHlIndex < omittedCommentsOffset) {
-        this.setState({ highlightedCommentId: comments[absHlIndex].id });
-      } else {
-        const hlIndex = absHlIndex - omittedComments;
-        if (hlIndex >= omittedCommentsOffset) {
-          this.setState({ highlightedCommentId: comments[hlIndex].id });
-        }
-      }
+      this.setState({ highlightedCommentId: refComment.id });
     },
     leave: () => this.setState({ highlightedCommentId: null }),
   };
