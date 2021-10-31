@@ -12561,7 +12561,7 @@ fsevents@^1.2.7:
     semver: ~7.3.5
     sinon: ~11.1.2
     snarkdown: ~1.2.2
-    social-text-tokenizer: ~2.1.5
+    social-text-tokenizer: ~2.2.0
     socket.io-client: ~2.3.1
     style-loader: ~3.2.1
     stylelint: ~13.13.1
@@ -13721,14 +13721,14 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"social-text-tokenizer@npm:~2.1.5":
-  version: 2.1.5
-  resolution: "social-text-tokenizer@npm:2.1.5"
+"social-text-tokenizer@npm:~2.2.0":
+  version: 2.2.0
+  resolution: "social-text-tokenizer@npm:2.2.0"
   dependencies:
     lodash.escaperegexp: ^4.1.2
     punycode: ^2.1.1
     tslib: ^2.3.1
-  checksum: 5ce7c99eae252cf9e0a7f26616a55caf1005862e7c49fbe799cb5e1a338bbedca98ee770da0f00382118d04457719ba6ad46d9fdfb332244917aa50058dde3de
+  checksum: 10f5e8836743512121aff72b124dfa4f3fde580762b7f82fdf0675bfa88dbafae16934207ebae530725de59aa8a1d28ee64f39568ebb15c35897d61dba538414
   languageName: node
   linkType: hard
 

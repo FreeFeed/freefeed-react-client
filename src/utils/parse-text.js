@@ -5,6 +5,7 @@ import {
   hashTags,
   emails,
   mentions,
+  foreignMentions,
   links,
   arrows,
   Link as TLink,
@@ -19,7 +20,7 @@ import {
 } from './spoiler-tokens';
 
 const {
-  textFormatter: { tldList },
+  textFormatter: { tldList, foreignMentionServices },
   siteDomains,
 } = CONFIG;
 
@@ -131,6 +132,7 @@ const tokenize = withText(
       hashTags(),
       emails(),
       mentions(),
+      foreignMentions(),
       links({ tldRe }),
       arrows(/\u2191+|\^([1-9]\d*|\^*)/g),
       tokenizerStartSpoiler,
@@ -172,4 +174,11 @@ export function getFirstLinkToEmbed(text) {
   });
 
   return firstLink ? firstLink.href : undefined;
+}
+
+export const shortCodeToService = {};
+for (const srv of foreignMentionServices) {
+  for (const code of srv.shortCodes) {
+    shortCodeToService[code] = srv;
+  }
 }
