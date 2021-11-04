@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Native player for video-files
 - Hides in non-Home feeds
+- Support for cross-platform usernames, i.e. user@mokum, user@lj and so on. The
+  services shortcodes and formats should be defined in the config.json (see
+  textFormatter.foreignMentionServices in config/default.js).
 
 ## [1.102.4] - 2021-10-22
 ### Fixed
