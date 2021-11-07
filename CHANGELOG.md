@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.103.0] - Not released
+### Fixed
+- Blur (un-focus) the ButtonLink conponent after the mouse click. This prevents
+  an unwanted onClick from being triggered if the user presses the spacebar (to
+  scroll) after a mouse click.
+
 ## [1.102.4] - 2021-10-22
 ### Fixed
 - Fix inverted autoplay setting for Vimeo (introduced in 1.102.3)
