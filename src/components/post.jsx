@@ -400,6 +400,23 @@ class Post extends Component {
         false
       );
 
+    const { isSaved, savePostStatus } = this.props;
+    const saveLink = amIAuthenticated && (
+      <>
+        <a className="post-action" onClick={this.toggleSave} role="button">
+          {isSaved ? 'Un-save' : 'Save'}
+        </a>
+        {savePostStatus.loading && <Throbber />}
+        {savePostStatus.error && (
+          <Icon
+            icon={faExclamationTriangle}
+            className="post-like-fail"
+            title={savePostStatus.errorText}
+          />
+        )}
+      </>
+    );
+
     // "More" menu
     const moreLink = (
       <PostMoreLink
@@ -672,6 +689,7 @@ class Post extends Component {
                 <span className="post-footer-block" role="region">
                   <span className="post-footer-item">{commentLink}</span>
                   <span className="post-footer-item">{likeLink}</span>
+                  <span className="post-footer-item">{saveLink}</span>
                   {props.hideEnabled && (
                     <span className="post-footer-item" ref={this.hideLink}>
                       {this.renderHideLink()}
