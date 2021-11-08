@@ -147,6 +147,16 @@ exports[`Post Renders a post and doesn't blow up 1`] = `
               class="post-footer-item"
             >
               <a
+                class="post-action"
+                role="button"
+              >
+                Save
+              </a>
+            </span>
+            <span
+              class="post-footer-item"
+            >
+              <a
                 aria-disabled="false"
                 aria-expanded="false"
                 aria-haspopup="true"
