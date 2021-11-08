@@ -138,6 +138,11 @@ $post-line-height: rem(20px);
   margin-left: -1em;
   margin-right: 1em;
   max-width: 100%;
+
+  @media (max-width: 500px) {
+    display: block;
+    margin: 0;
+  }
 }
 
 .post-footer-item {
@@ -155,6 +160,12 @@ $post-line-height: rem(20px);
     display: inline-block;
     width: 1em;
     text-align: center;
+  }
+
+  @media (max-width: 500px) {
+    &:first-child::before {
+      display: none;
+    }
   }
 }
 
