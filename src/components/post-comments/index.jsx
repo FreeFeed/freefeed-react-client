@@ -42,21 +42,18 @@ export default class PostComments extends Component {
   };
 
   backwardIdx = (commentId) => {
-    const { post, comments } = this.props;
-    const idx = comments.findIndex((c) => c.id === commentId);
-    if (idx < 0) {
+    const { comments } = this.props;
+    const thisComment = comments.find((c) => c.id === commentId);
+    if (!thisComment) {
       return 0;
     }
-    let backwardIdx = comments.length - idx;
-    if (idx < post.omittedCommentsOffset) {
-      backwardIdx += post.omittedComments;
-    }
-    return backwardIdx;
+    const lastComment = comments[comments.length - 1];
+    return lastComment.seqNumber - thisComment.seqNumber + 1;
   };
 
   replyWithArrows = (commentId) => {
     const bIdx = this.backwardIdx(commentId);
-    const arrows = '^'.repeat(bIdx);
+    const arrows = bIdx <= 4 ? '^'.repeat(bIdx) : `^${bIdx}`;
     this._openAnsweringComment(arrows);
   };
 
@@ -126,33 +123,20 @@ export default class PostComments extends Component {
 
   arrowsHighlightHandlers = {
     hover: (baseCommentId, nArrows) => {
-      const {
-        comments,
-        post: { omittedComments, omittedCommentsOffset },
-      } = this.props;
-      let absBaseIndex = comments.findIndex((c) => c.id === baseCommentId);
-      if (absBaseIndex === -1) {
+      const { comments } = this.props;
+      const baseComment = comments.find((c) => c.id === baseCommentId);
+      if (!baseComment) {
         // Comment not found
         return;
       }
-      if (absBaseIndex >= omittedCommentsOffset) {
-        absBaseIndex += omittedComments;
-      }
-      const absHlIndex = absBaseIndex - nArrows;
+      const refCommentNum = baseComment.seqNumber - nArrows;
+      const refComment = comments.find((c) => c.seqNumber === refCommentNum);
 
-      if (absHlIndex < 0) {
-        // Too many arrows
+      if (!refComment) {
         return;
       }
 
-      if (absHlIndex < omittedCommentsOffset) {
-        this.setState({ highlightedCommentId: comments[absHlIndex].id });
-      } else {
-        const hlIndex = absHlIndex - omittedComments;
-        if (hlIndex >= omittedCommentsOffset) {
-          this.setState({ highlightedCommentId: comments[hlIndex].id });
-        }
-      }
+      this.setState({ highlightedCommentId: refComment.id });
     },
     leave: () => this.setState({ highlightedCommentId: null }),
   };

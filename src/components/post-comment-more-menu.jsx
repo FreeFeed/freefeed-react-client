@@ -46,7 +46,7 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
   const { status, likers } = useCommentLikers(id);
   const myUsername = useSelector((state) => state.user.username);
   const bIdx = getBackwardIdx();
-  const arrows = bIdx <= 3 ? '^'.repeat(bIdx) : `^^^\u2026`;
+  const arrows = bIdx <= 4 ? '^'.repeat(bIdx) : `^${bIdx}`;
   const likersText = status.success
     ? likers.length > 0 && likersMenuText(likers, myUsername)
     : likesCount > 0 && `Show ${pluralForm(likesCount, 'like')}\u2026`;
