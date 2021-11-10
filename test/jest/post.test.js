@@ -384,6 +384,7 @@ describe('Post', () => {
     renderPost({
       user: someOtherUser,
       isInHomeFeed: true,
+      hideEnabled: true,
       isHidden: false,
       hidePost,
     });
@@ -398,6 +399,7 @@ describe('Post', () => {
     renderPost({
       user: someOtherUser,
       isInHomeFeed: true,
+      hideEnabled: true,
       isHidden: true,
       hiddenByNames: false,
       unhidePost,

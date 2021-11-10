@@ -68,6 +68,7 @@ export default {
       homeFeedSort: ACTIVITY,
       homeFeedMode: HOMEFEED_MODE_CLASSIC,
       homefeed: { hideUsers: [] },
+      hidesInNonHomeFeeds: false,
       pinnedGroups: [],
       hideUnreadNotifications: false,
       timeDisplay: {

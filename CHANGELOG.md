@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.103.0] - Not released
 ### Added
+- New appearance flag allows to use post/users hides not only in main Home feed,
+  but also in Discussions, Everything, Best of… and user's friend lists pages.
+  This flag is off by default.
 - Support for cross-platform usernames, i.e. user@mokum, user@lj and so on. The
   services shortcodes and formats should be defined in the config.json (see
   textFormatter.foreignMentionServices in config/default.js).
