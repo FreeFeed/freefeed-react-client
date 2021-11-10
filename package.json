@@ -48,7 +48,7 @@
     "tabbable": "~5.2.1",
     "ua-parser-js": "~0.7.28",
     "use-subscription": "~1.5.1",
-    "validator": "~13.6.0",
+    "validator": "~13.7.0",
     "vazir-font": "~30.1.0",
     "whatwg-fetch": "~3.6.2"
   },
