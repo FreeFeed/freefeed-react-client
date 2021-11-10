@@ -513,6 +513,23 @@ exports[`LinkPreview Shows a video preview for Youtube 2`] = `
 </DocumentFragment>
 `;
 
+exports[`LinkPreview Shows an Apple Music preview 1`] = `
+<DocumentFragment>
+  <div
+    class="apple-music-preview link-preview-content"
+  >
+    <iframe
+      allow="autoplay *; encrypted-media *; fullscreen *"
+      frameborder="0"
+      height="150"
+      sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"
+      src="https://embed.music.apple.com/ru/album/dont-ask-me-why/1441018520?i=1441018529&l=en"
+      style="width: 100%; max-width: 660px; overflow: hidden; background: transparent;"
+    />
+  </div>
+</DocumentFragment>
+`;
+
 exports[`LinkPreview Shows an Instagram preview 1`] = `
 <DocumentFragment>
   <div>
