@@ -244,4 +244,12 @@ describe('LinkPreview', () => {
 
     expect(asFragment()).toMatchSnapshot();
   });
+
+  it('Shows an Apple Music preview', () => {
+    const { asFragment } = renderLinkPreview({
+      url: 'https://music.apple.com/ru/album/dont-ask-me-why/1441018520?i=1441018529&l=en',
+    });
+
+    expect(asFragment()).toMatchSnapshot();
+  });
 });

@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for cross-platform usernames, i.e. user@mokum, user@lj and so on. The
   services shortcodes and formats should be defined in the config.json (see
   textFormatter.foreignMentionServices in config/default.js).
+- Native previews for Apple Music
 
 ### Changed
 - The comment ^-references are now based of comments sequentional numbers. It
