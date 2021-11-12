@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Native player for video-files
 - Hides in non-Home feeds
 
+## [1.103.1] - 2021-11-12
+### Fixed
+- Accept Apple-music urls without ?l= parameter
+
 ## [1.103.0] - 2021-11-12
 ### Added
 - New syntax for the distant comment ^-references. The near references uses a
