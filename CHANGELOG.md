@@ -9,9 +9,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Native player for video-files
 - Hides in non-Home feeds
+
+## [1.103.0] - 2021-11-12
+### Added
+- New syntax for the distant comment ^-references. The near references uses a
+  familiar syntax ^, ^^…, but starting from five caps these references now
+  inserted as ^5, ^6 and so on.
+- New appearance flag allows to use post/users hides not only in main Home feed,
+  but also in Discussions, Everything, Best of… and user's friend lists pages.
+  This flag is off by default.
 - Support for cross-platform usernames, i.e. user@mokum, user@lj and so on. The
   services shortcodes and formats should be defined in the config.json (see
   textFormatter.foreignMentionServices in config/default.js).
+- Native previews for Apple Music
+
+### Changed
+- The comment ^-references are now based of comments sequentional numbers. It
+  makes them stable and independent of user's appearance settings. Event if user
+  chooses to hide comments from blocked users, the ^-references will point to
+  the right places.
+
+### Fixed
+- In the dark theme, the Embedly iframes had a white background. For some
+  unclear reason we should 'color-scheme' CSS property for the iframe to make it
+  background transparent again.
+- Blur (un-focus) the ButtonLink conponent after the mouse click. This prevents
+  an unwanted onClick from being triggered if the user presses the spacebar (to
+  scroll) after a mouse click.
 
 ## [1.102.4] - 2021-10-22
 ### Fixed

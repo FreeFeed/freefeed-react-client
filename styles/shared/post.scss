@@ -512,6 +512,10 @@ $post-line-height: rem(20px);
     margin: 0 !important;
   }
 
+  iframe.embedly-card {
+    color-scheme: normal;
+  }
+
   .video-preview {
     max-width: 450px;
 
