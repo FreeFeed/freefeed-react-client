@@ -23,7 +23,10 @@ export const ButtonLink = memo(
 export function useKeyboardEvents(onClick) {
   return useMemo(
     () => ({
-      onClick,
+      onClick: (event) => {
+        event.target.blur();
+        onClick(event);
+      },
       onKeyDown: (event) => {
         if (event.keyCode === 32) {
           event.preventDefault();

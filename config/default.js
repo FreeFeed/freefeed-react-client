@@ -32,7 +32,18 @@ export default {
 
   attachments: { maxCount: 20 },
 
-  textFormatter: { tldList: TLDs },
+  textFormatter: {
+    tldList: TLDs,
+    /**
+     * The format is:
+     * [
+     *  { title: "Telegram", linkTpl: "https://t.me/{}", shortCodes: ["tg", "telegram"] },
+     *  { title: "Twitter", linkTpl: "https://twitter.com/{}", shortCodes: ["tw", "twitter"] },
+     *  ...
+     * ]
+     */
+    foreignMentionServices: [],
+  },
 
   sentry: {
     publicDSN: null,
@@ -57,6 +68,7 @@ export default {
       homeFeedSort: ACTIVITY,
       homeFeedMode: HOMEFEED_MODE_CLASSIC,
       homefeed: { hideUsers: [] },
+      hidesInNonHomeFeeds: false,
       pinnedGroups: [],
       hideUnreadNotifications: false,
       timeDisplay: {

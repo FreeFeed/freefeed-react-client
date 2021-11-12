@@ -1,13 +1,13 @@
 /* global CONFIG */
 import { isValidElement, cloneElement, Component } from 'react';
 import { Link } from 'react-router';
-import { Mention, Email, HashTag } from 'social-text-tokenizer';
+import { Mention, Email, HashTag, ForeignMention } from 'social-text-tokenizer';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
 import { faFilm as faVideo } from '@fortawesome/free-solid-svg-icons';
 import { faInstagram, faYoutube, faVimeo } from '@fortawesome/free-brands-svg-icons';
 import classnames from 'classnames';
 
-import { Arrows, Link as TLink, parseText } from '../utils/parse-text';
+import { Arrows, Link as TLink, parseText, shortCodeToService } from '../utils/parse-text';
 import { highlightString } from '../utils/search-highlighter';
 import { FRIENDFEED_POST } from '../utils/link-types';
 import { getMediaType } from './media-viewer';
@@ -115,6 +115,14 @@ export default class Linkify extends Component {
         return anchorEl(token.href, token.shorten(MAX_URL_LENGTH));
       }
 
+      if (token instanceof ForeignMention) {
+        const srv = shortCodeToService[token.service];
+        if (srv) {
+          const url = srv.linkTpl.replace(/{}/g, token.username);
+          return anchorEl(url, token.text, `${srv.title} link`);
+        }
+      }
+
       return token.text;
     });
   };
@@ -192,9 +200,9 @@ function showMediaWithKey(showMedia) {
 }
 
 function anchorElWithKey(key) {
-  return function (href, content) {
+  return function (href, content, title = null) {
     return (
-      <a href={href} target="_blank" dir="ltr" key={key}>
+      <a href={href} target="_blank" dir="ltr" key={key} title={title}>
         {content}
       </a>
     );
@@ -202,9 +210,9 @@ function anchorElWithKey(key) {
 }
 
 function linkElWithKey(key) {
-  return function (to, content) {
+  return function (to, content, title = null) {
     return (
-      <Link to={to} dir="ltr" key={key}>
+      <Link to={to} dir="ltr" key={key} title={title}>
         {content}
       </Link>
     );

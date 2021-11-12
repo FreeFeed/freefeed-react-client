@@ -2,13 +2,7 @@ import { memo, useCallback } from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import { Link, withRouter } from 'react-router';
 
-import {
-  createPost,
-  resetPostCreateForm,
-  expandSendTo,
-  toggleHiddenPosts,
-  home,
-} from '../redux/action-creators';
+import { createPost, resetPostCreateForm, expandSendTo, home } from '../redux/action-creators';
 import { pluralForm } from '../utils';
 import { postActions } from './select-utils';
 import CreatePost from './create-post';
@@ -113,7 +107,6 @@ function selectActions(dispatch) {
       dispatch(createPost(feeds, postText, attachmentIds, more)),
     resetPostCreateForm: (...args) => dispatch(resetPostCreateForm(...args)),
     expandSendTo: () => dispatch(expandSendTo()),
-    toggleHiddenPosts: () => dispatch(toggleHiddenPosts()),
   };
 }
 
