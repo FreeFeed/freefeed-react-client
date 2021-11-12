@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['stylelint-prettier/recommended', 'stylelint-config-recommended-scss'],
+  extends: ['stylelint-config-standard-scss', 'stylelint-prettier/recommended'],
   rules: {
     'no-descending-specificity': null,
     'selector-pseudo-class-no-unknown': [true, { ignorePseudoClasses: ['global'] }],
