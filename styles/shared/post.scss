@@ -141,7 +141,6 @@ $post-line-height: rem(20px);
 
   @media (max-width: 500px) {
     display: block;
-    margin: 0;
   }
 }
 
@@ -161,12 +160,6 @@ $post-line-height: rem(20px);
     display: inline-block;
     width: 1em;
     text-align: center;
-  }
-
-  @media (max-width: 500px) {
-    &:first-child::before {
-      display: none;
-    }
   }
 }
 
