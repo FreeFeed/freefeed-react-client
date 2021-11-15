@@ -3,14 +3,13 @@
 .dropzone {
   display: none;
 }
+
 .dragover .dropzone {
   display: flex;
   align-items: center;
   justify-content: center;
-
   position: absolute;
   z-index: 1000;
-
   width: 100.16%;
   height: 105px;
   min-height: 0;
@@ -18,7 +17,6 @@
   border: 5px dotted #ccc;
   background-color: #eee;
   margin-left: -1px;
-
   font-size: 16px;
 
   .dz-message {
@@ -37,6 +35,7 @@
           #{"-" + $vendor + "-" + $prop}: #{$value};
         }
       }
+
       // Dump regular property anyway
       #{$prop}: #{$value};
     }
@@ -45,18 +44,16 @@
   .dz-preview {
     position: relative;
     display: inline-block;
-
     vertical-align: top;
-
     margin: 0 10px 10px 0;
     min-height: 100px;
-
     border: 1px solid silver;
     padding: 1px;
 
     &:hover {
       // Making sure that always the hovered preview element is on top
       z-index: 1000;
+
       .dz-details {
         opacity: 1;
       }
@@ -82,7 +79,8 @@
       .dz-image {
         border-radius: $image-border-radius;
         background: #eee;
-        //background: linear-gradient(to bottom, #eee, #ddd);
+
+        // background: linear-gradient(to bottom, #eee, #ddd);
       }
 
       .dz-details {
@@ -106,13 +104,10 @@
       $background-color: #444;
 
       z-index: 20;
-
       position: absolute;
       top: 0;
       left: 0;
-
       opacity: 0;
-
       font-size: 13px;
       min-width: 100%;
       max-width: 100%;
@@ -144,6 +139,7 @@
           span {
             border: 1px solid transparent;
           }
+
           overflow: hidden;
           text-overflow: ellipsis;
         }
@@ -196,6 +192,7 @@
           )
         );
       }
+
       .dz-error-message {
         display: block;
       }
@@ -207,16 +204,14 @@
       $image-width: 54px;
 
       pointer-events: none;
-
       opacity: 0;
       z-index: 500;
-
       position: absolute;
       display: block;
       top: 50%;
       left: 50%;
-      margin-left: -($image-width/2);
-      margin-top: -($image-height/2);
+      margin-left: -($image-width / 2);
+      margin-top: -($image-height / 2);
 
       svg {
         display: block;
@@ -256,24 +251,19 @@
     .dz-progress {
       opacity: 1;
       z-index: 1000;
-
       pointer-events: none;
       position: absolute;
       height: 16px;
       left: 50%;
       top: 50%;
       margin-top: -8px;
-
       width: 80px;
       margin-left: -40px;
-
       background: rgba(255, 255, 255, 0.9);
 
       // Fix for chrome bug: https://code.google.com/p/chromium/issues/detail?id=157218
       -webkit-transform: scale(1);
-
       border-radius: 4px;
-
       overflow: hidden;
 
       .dz-upload {
@@ -293,6 +283,7 @@
 
     .dz-error-message {
       $color: rgb(190, 38, 38);
+
       display: none;
       font-size: 12px;
       width: $image-size;

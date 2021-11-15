@@ -33,9 +33,10 @@
       $increment: 360 / $loops;
       $half: round($loops / 2);
       @for $i from 0 through $loops {
-        .progress-#{$i*$step} {
+        .progress-#{$i * $step} {
           @if $i < $half {
             $nextdeg: 90deg + ($increment * $i);
+
             background-image: linear-gradient(
                 90deg,
                 $progressBackgroundColor 50%,
@@ -50,6 +51,7 @@
               );
           } @else {
             $nextdeg: -90deg + ($increment * ($i - $half));
+
             background-image: linear-gradient(
                 $nextdeg,
                 $progressCircleColor 50%,

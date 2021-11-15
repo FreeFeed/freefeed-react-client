@@ -41,9 +41,11 @@
     &:empty {
       display: none;
     }
+
     &::before {
       content: '(';
     }
+
     &::after {
       content: ')';
     }
@@ -54,6 +56,7 @@
 @media (max-width: 991px) {
   .sidebar {
     --appear-time: 0.2s;
+
     position: fixed;
     top: 0;
     left: 0;
@@ -62,7 +65,6 @@
     overflow: hidden;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 100;
-
     visibility: hidden;
     opacity: 0;
     transition: visibility 0s var(--appear-time), opacity var(--appear-time);
@@ -93,7 +95,6 @@
 
     // To prevent accidental click during the transition
     pointer-events: none;
-
     transform: translateX(100%);
     transition: transform var(--appear-time), pointer-events 0s;
 
@@ -121,7 +122,6 @@
   position: absolute;
   top: rem(20px);
   right: rem(15px);
-
   width: rem(40px);
   height: rem(40px);
   font-size: rem(19px);

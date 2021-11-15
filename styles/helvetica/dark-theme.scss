@@ -112,7 +112,7 @@ body,
     border-bottom-color: $separator-color;
   }
 
-  .feed-comment-dot:after {
+  .feed-comment-dot::after {
     background-color: $text-color-darker;
   }
 
@@ -244,9 +244,11 @@ body,
       .description {
         color: $text-color;
       }
+
       .relationship-status {
         color: $text-color;
       }
+
       .feed-status {
         color: $text-color;
       }
@@ -355,10 +357,12 @@ body,
   .actions-panel {
     background-color: $bg-color-lighter;
     color: $text-color-lighter;
+
     .mention-actions,
     .mention-action {
       background-color: $bg-color-lighter;
     }
+
     .likes-panel {
       background-color: $bg-color-lightest;
     }

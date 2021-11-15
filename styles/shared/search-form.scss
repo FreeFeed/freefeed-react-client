@@ -4,17 +4,20 @@
     margin-top: 15px;
   }
   @media (min-width: 992px) {
-    margin: 28px 0 20px 0;
+    margin: 28px 0 20px;
   }
+
   float: right;
   width: 100%;
   display: flex;
+
   .search-input {
     flex: 1;
     margin-top: 4px;
     margin-right: 5px;
     border: none;
     border-bottom: 1px #dadada solid;
+
     &:focus {
       outline: none;
     }
