@@ -37,7 +37,6 @@
     background-color: #fff;
     border-top-right-radius: 2px;
     border-top-left-radius: 2px;
-
     font-size: rem(13px) !important;
     line-height: rem(17px);
 
@@ -74,13 +73,16 @@
       color: #666;
       font-style: italic;
     }
+
     .relationship-status {
       font-size: rem(13px);
       color: #666;
     }
+
     .status-icon {
       min-width: rem(13px);
     }
+
     .feed-status {
       color: #666;
 
@@ -122,7 +124,6 @@
     background-color: #f4f4f4;
     border-bottom-right-radius: 2px;
     border-bottom-left-radius: 2px;
-
     color: #666;
     font-size: rem(13px) !important;
     line-height: rem(17px);
@@ -131,6 +132,7 @@
       &::before {
         content: ' - ';
       }
+
       &:first-child::before {
         content: none;
       }

@@ -1,4 +1,5 @@
 @import './functions.scss';
+
 // Header
 
 .site-logo {
@@ -16,6 +17,7 @@
 .site-logo-link {
   color: #222;
   text-decoration: none;
+
   &:active,
   &:focus,
   &:hover,
@@ -27,6 +29,7 @@
 
 @mixin beta-color {
   color: #f55 !important;
+
   &:hover,
   &:focus {
     color: #f55 !important;
@@ -35,6 +38,7 @@
 
 .site-logo-subheading {
   @include beta-color;
+
   font-size: 45%;
   text-transform: lowercase;
   margin-left: 0.2em;
@@ -43,6 +47,7 @@
 
 .bug-report-link {
   @include beta-color;
+
   position: fixed;
   right: 0;
   bottom: 0;
@@ -62,7 +67,6 @@
 
 .mobile-shortcuts {
   margin: 0 15px rem(20px) calc(15px - 1em);
-
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;

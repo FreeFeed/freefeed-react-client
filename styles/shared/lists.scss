@@ -1,6 +1,6 @@
 ul.tile-list {
   margin: 0;
-  padding: 20px 0 0 0;
+  padding: 20px 0 0;
 
   li {
     width: 110px;
@@ -31,6 +31,7 @@ ul.tile-list {
         color: #555599;
       }
     }
+
     .user-ismutual {
       font-size: 11px;
       font-variant: small-caps;
@@ -50,7 +51,7 @@ ul.tile-list {
     height: 160px;
   }
 
-  @include clearfix();
+  @include clearfix;
 }
 
 .list-controls {
@@ -58,6 +59,7 @@ ul.tile-list {
     text-align: right;
     float: right;
   }
+
   .filter-controls {
     float: left;
   }

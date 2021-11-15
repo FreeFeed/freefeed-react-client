@@ -1,15 +1,18 @@
 .pswp__zoom-wrap {
   text-align: center;
-  &:before {
+
+  &::before {
     content: '';
     display: inline-block;
     height: 100%;
     vertical-align: middle;
   }
 }
+
 .pswp__caption a {
   color: white;
 }
+
 .wrapper {
   line-height: 0;
   width: 100%;
@@ -21,12 +24,14 @@
   text-align: left;
   z-index: 1045;
 }
+
 .video-wrapper {
   position: relative;
   padding-bottom: 56.25%; /* 16:9 */
   padding-top: 25px;
   height: 0;
   width: 100%;
+
   iframe {
     position: absolute;
     top: 0;
@@ -35,17 +40,21 @@
     height: 100%;
   }
 }
+
 video {
   width: 100% !important;
   height: auto !important;
 }
+
 .media-link {
   .icon-bond {
     white-space: nowrap;
-    &:after {
+
+    &::after {
       content: '\FEFF';
     }
   }
+
   .media-icon {
     margin: 0 4px 0 2px;
     display: inline-block;
