@@ -15,12 +15,14 @@
 // User profile, group profile
 .box-header-empty {
   @extend .box-header;
+
   background-color: #fff;
 }
 
 // Timeline header
 .box-header-timeline {
   @extend .box-header;
+
   font-size: 170%;
   font-weight: 700;
   margin-bottom: rem(7px);
@@ -28,6 +30,7 @@
   @media (max-width: 991px) {
     margin-left: 0;
   }
+
   padding-bottom: rem(2px);
 
   .sidelinks {
@@ -58,12 +61,14 @@
   @media (max-width: 991px) {
     margin-left: 0;
   }
+
   padding: rem(5px) rem(10px);
 }
 
 // Sidebar Friend block header
 .box-header-friends {
   @extend .box-header;
+
   font-weight: bold;
   font-size: rem(15px);
 }
@@ -71,6 +76,7 @@
 // Sidebar Group block header
 .box-header-groups {
   @extend .box-header;
+
   font-weight: bold;
   font-size: rem(15px);
 }
@@ -86,12 +92,14 @@
 // Sidebar FreeFeed block header
 .box-header-freefeed {
   @extend .box-header;
+
   font-weight: bold;
   font-size: rem(15px);
 }
 
 .box-header-memories {
   @extend .box-header;
+
   font-weight: bold;
   font-size: rem(15px);
 }
@@ -101,16 +109,19 @@
   .box-body {
     padding: 0 0 0 rem(11px);
     @media (max-width: 991px) {
-      padding: 0 0 0 0;
+      padding: 0;
     }
+
     background-color: #fff;
     @include clearfix;
   }
+
   .box-footer {
     padding: rem(5px) 0 rem(5px) rem(11px);
     @media (max-width: 991px) {
       padding: rem(15px) 0 0 0;
     }
+
     font-size: rem(11px);
     background-color: #fff;
   }
@@ -122,6 +133,7 @@
     font-size: rem(15px);
     padding: rem(10px) 0 rem(3px) 0;
     background-color: #fff;
+
     a {
       color: #0000cc;
       text-decoration: none;
@@ -141,6 +153,7 @@
         padding-bottom: rem(3px);
         white-space: nowrap;
         @include clearfix;
+
         a {
           color: #000;
           font-size: rem(15px);
@@ -161,7 +174,8 @@
         white-space: nowrap;
         margin-left: -$dot-width;
         margin-right: $dot-width;
-        &:before {
+
+        &::before {
           content: '•';
           display: inline-block;
           width: $dot-width;
@@ -169,13 +183,14 @@
         }
       }
     }
+
     .updated-ago {
       display: block;
       font-size: rem(11px);
     }
 
     .pinned {
-      .updated-ago:after {
+      .updated-ago::after {
         content: ' (pinned)';
       }
 
@@ -186,9 +201,11 @@
       }
     }
   }
+
   .box-footer {
     padding: rem(5px) 0 rem(10px) 0;
     font-size: rem(11px);
+
     a {
       color: #000;
     }

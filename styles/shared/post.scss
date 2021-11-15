@@ -81,7 +81,7 @@ $post-line-height: rem(20px);
           bottom: 0;
           right: 0;
           background-color: white;
-          padding: 0 4px 0 4px;
+          padding: 0 4px;
         }
       }
 
@@ -155,6 +155,7 @@ $post-line-height: rem(20px);
   &:empty {
     display: none;
   }
+
   &::before {
     content: ' - ';
     display: inline-block;
@@ -175,6 +176,7 @@ $post-line-height: rem(20px);
 
 .post-hide-throbber {
   margin-left: 5px;
+
   &:empty {
     display: none;
   }
@@ -244,7 +246,7 @@ $post-line-height: rem(20px);
   position: relative; // necessary for proper width of dropzone inside this container
 
   // Clearfix (http://www.cssmojo.com/latest_new_clearfix_so_far/)
-  &:after {
+  &::after {
     content: '';
     display: table;
     clear: both;
@@ -323,6 +325,7 @@ $post-line-height: rem(20px);
         margin: 0 rem(5px) 0 rem(1px);
         vertical-align: middle;
       }
+
       .post-edit-more-labeltext {
         font-weight: normal;
         vertical-align: middle;
@@ -401,14 +404,17 @@ $post-line-height: rem(20px);
   border-bottom: 1px solid #fff;
   margin: -1px -1em 5px;
   border-radius: 5px;
-  &.be-fe-folded-text-para:after {
-    background: linear-gradient(to bottom, hsla(0, 0%, 93%, 0), hsla(0, 0%, 93%, 0.007));
+
+  &.be-fe-folded-text-para::after {
+    background: linear-gradient(to bottom, hsla(0deg, 0%, 93%, 0), hsla(0deg, 0%, 93%, 0.007));
   }
+
   &.be-fe-folded-text-read-more {
-    background: linear-gradient(to right, hsla(0, 0%, 93%, 0), #eee 3.5em);
+    background: linear-gradient(to right, hsla(0deg, 0%, 93%, 0), #eee 3.5em);
   }
-  &.be-fe-folded-text:after {
-    background: linear-gradient(to bottom, hsla(0, 0%, 93%, 0), hsla(0, 0%, 93%, 0.007));
+
+  &.be-fe-folded-text::after {
+    background: linear-gradient(to bottom, hsla(0deg, 0%, 93%, 0), hsla(0deg, 0%, 93%, 0.007));
   }
 
   .expand-panel {
@@ -478,6 +484,7 @@ $post-line-height: rem(20px);
         @mixin grad($color) {
           $gradArgs: rgba($color, 0) 0%, rgba($color, 0.2) 25%, rgba($color, 0.8) 75%,
             rgba($color, 1) 100%;
+
           background: -webkit-linear-gradient($gradArgs);
           background: -o-linear-gradient($gradArgs);
           background: linear-gradient($gradArgs);
@@ -493,6 +500,7 @@ $post-line-height: rem(20px);
 
     .preview-expand {
       margin-top: rem(8px);
+
       & > .preview-expand-icon {
         opacity: 0.5;
         cursor: pointer;
@@ -608,19 +616,21 @@ $post-line-height: rem(20px);
     background-position: center;
     background-repeat: no-repeat;
     z-index: 1;
-    background-image: url(https://www.google.com/drive/images/drive/logo-drive.png);
+    background-image: url('https://www.google.com/drive/images/drive/logo-drive.png');
 
     &.document {
       background-size: 50%;
-      background-image: url(https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_document_x64.png);
+      background-image: url('https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_document_x64.png');
     }
+
     &.spreadsheets {
       background-size: 50%;
-      background-image: url(https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_spreadsheet_x64.png);
+      background-image: url('https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_spreadsheet_x64.png');
     }
+
     &.presentation {
       background-size: 50%;
-      background-image: url(https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_presentation_x64.png);
+      background-image: url('https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_presentation_x64.png');
     }
   }
 
@@ -641,10 +651,10 @@ $post-line-height: rem(20px);
 
   .wikipedia-preview {
     border: 1px solid #ccc;
-    padding: 10px 10px 0 10px;
+    padding: 10px 10px 0;
     overflow: hidden;
     box-sizing: border-box;
-    background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Wikipedia-W-bold-in-square.svg/512px-Wikipedia-W-bold-in-square.svg.png);
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Wikipedia-W-bold-in-square.svg/512px-Wikipedia-W-bold-in-square.svg.png');
     background-position: top right 5px;
     background-size: 32px;
     background-repeat: no-repeat;
@@ -682,6 +692,7 @@ $post-line-height: rem(20px);
     content: '';
     display: block;
     width: 100%;
+
     // Assuming that aspect ratio is constant
     padding-bottom: 200%;
   }
@@ -700,11 +711,13 @@ $post-line-height: rem(20px);
   font-size: 85%;
   opacity: 0;
   visibility: hidden;
+
   // transition: opacity 0.25s, visibility 0s 0.25s;
 }
 
 .submit-mode-hint--visible {
   opacity: 0.7;
   visibility: visible;
+
   // transition: opacity 0.25s, visibility 0s;
 }

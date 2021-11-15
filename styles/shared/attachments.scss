@@ -17,7 +17,7 @@
   }
 
   // Clearfix (http://www.cssmojo.com/latest_new_clearfix_so_far/)
-  &:after {
+  &::after {
     content: '';
     display: table;
     clear: both;
@@ -109,14 +109,14 @@
     display: inline-block;
 
     // fa-chevron-circle-right
-    &:before {
+    &::before {
       content: '\f138';
     }
   }
 
   &.has-surplus.expanded .toggle-surplus {
     // fa-chevron-circle-left
-    &:before {
+    &::before {
       content: '\f137';
     }
   }

@@ -7,10 +7,12 @@
   $width-unit: 'px',
   $full-width: '100vw'
 ) {
+  /* stylelint-disable scss/operator-no-newline-after */
   @return clamp(
     #{$min-width-val + $val-unit},
     #{$min-width-val + $val-unit} + #{$max-width-val - $min-width-val} * #{'('} #{$full-width} - #{$min-width +
       $width-unit}#{')'} / ($max-width - $min-width),
     #{$max-width-val + $val-unit}
   );
+  /* stylelint-enable */
 }

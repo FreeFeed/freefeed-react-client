@@ -1,10 +1,12 @@
 .expandable {
   overflow-y: hidden;
   position: relative;
+
   &.expanded {
     overflow-y: visible;
     max-height: max-content;
   }
+
   .expand-panel {
     position: absolute;
     z-index: 1;
@@ -13,12 +15,15 @@
     right: 0;
     background-color: white;
     line-height: rem(20px);
+
     .expand-button {
       font-size: rem(16px);
       color: #555599;
+
       i {
         cursor: pointer;
       }
+
       .expand-icon {
         opacity: 0.6;
         vertical-align: rem(-2px);

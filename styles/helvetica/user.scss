@@ -46,7 +46,6 @@
     margin-top: 14px;
     border-top: 1px solid #eee;
     padding-top: 4px;
-
     text-align: left;
 
     .profile-stats-item {
@@ -75,11 +74,13 @@
   li {
     display: inline-block;
     white-space: nowrap;
+
     &::before {
       content: '\2022';
       color: #999;
       margin: 0 0.3em;
     }
+
     &:first-child::before {
       content: none;
     }

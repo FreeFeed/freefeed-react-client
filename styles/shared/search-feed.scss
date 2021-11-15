@@ -2,19 +2,24 @@
   @media (min-width: 992px) {
     margin-left: 10px;
   }
+
   background-color: #f2f2f2;
   padding: 15px 10px;
+
   .search-memo-header {
     margin-bottom: 15px;
     font-size: 18px;
   }
+
   .search-operator {
     margin-bottom: 5px;
+
     .operator {
       display: inline-block;
       font-weight: bold;
       width: 120px;
     }
+
     .example {
       font-style: italic;
     }
