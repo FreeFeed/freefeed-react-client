@@ -21,6 +21,6 @@ jobs:
             yarn build-prod
             cp _dist/index.html _dist/200.html
             rm _dist/stats.json
-            echo "{}" > _dist/config.json
+            echo \"{}\" > _dist/config.json
       - name: Get the preview_url
         run: echo "url => ${{ steps.preview_step.outputs.preview_url }}"
