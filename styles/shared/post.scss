@@ -97,6 +97,10 @@ $post-line-height: rem(20px);
         cursor: pointer;
       }
 
+      .post-footer-backlink-icon {
+        transform: scaleY(-1);
+      }
+
       .post-private-icon {
         font-size: rem(13px);
         vertical-align: 0;

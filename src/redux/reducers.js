@@ -359,11 +359,12 @@ const NO_ERROR = {
 const POST_SAVE_ERROR = 'Something went wrong while editing the post...';
 
 const initPostViewState = (post) => {
-  const { id, omittedLikes } = post;
+  const { id, omittedLikes, backlinksCount = 0 } = post;
 
   return {
     id,
     omittedLikes,
+    backlinksCount,
     isEditing: false,
     isCommenting: false,
     commentText: '',
