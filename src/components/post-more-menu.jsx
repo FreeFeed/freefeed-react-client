@@ -1,4 +1,4 @@
-import { forwardRef, useLayoutEffect, useState, useMemo } from 'react';
+import { forwardRef, useLayoutEffect, useState, useMemo, useCallback } from 'react';
 import { Link } from 'react-router';
 import cn from 'classnames';
 import {
@@ -6,6 +6,7 @@ import {
   faLink,
   faEdit,
   faBookmark as faBookmarkSolid,
+  faSignOutAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faClock,
@@ -15,8 +16,10 @@ import {
 } from '@fortawesome/free-regular-svg-icons';
 import { noop } from 'lodash';
 
+import { useDispatch } from 'react-redux';
 import { andJoin } from '../utils/and-join';
 import { copyURL } from '../utils/copy-url';
+import { leaveDirect } from '../redux/action-creators';
 import { ButtonLink } from './button-link';
 import { Throbber } from './throbber';
 import { Icon } from './fontawesome-icons';
@@ -28,6 +31,7 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
   {
     user,
     post: {
+      id: postId,
       isEditable = false,
       canBeRemovedFrom = [],
       isModeratable = false,
@@ -38,6 +42,8 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
       updatedAt,
       isSaved = false,
       savePostStatus = {},
+      createdBy: postCreatedBy,
+      isDirect = false,
     },
     toggleEditingPost,
     toggleModeratingComments,
@@ -52,7 +58,16 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
   },
   ref,
 ) {
+  const dispatch = useDispatch();
+  const doLeaveDirect = useCallback(
+    () =>
+      confirm('Are you sure you want to leave this conversation and loose access to this post?') &&
+      dispatch(leaveDirect(postId)),
+    [postId],
+  );
+
   const amIAuthenticated = !!user.id;
+  const isOwnPost = amIAuthenticated && postCreatedBy?.id === user.id;
 
   const deleteLines = useMemo(() => {
     const result = [];
@@ -131,6 +146,18 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
                 />
               )}
             </Iconic>
+          </ButtonLink>
+        </div>
+      ),
+    ],
+    [
+      isDirect && !isOwnPost && (
+        <div className={styles.item} key="leave-direct">
+          <ButtonLink
+            className={cn(styles.link, styles.danger)}
+            onClick={doAndClose(doLeaveDirect)}
+          >
+            <Iconic icon={faSignOutAlt}>Leave conversation</Iconic>
           </ButtonLink>
         </div>
       ),
