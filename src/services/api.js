@@ -736,3 +736,7 @@ export function listAuthSessions() {
 export function closeAuthSessions(ids) {
   return fetch(`${apiRoot}/v1/session/list`, postRequestOptions('PATCH', { close: ids }));
 }
+
+export function leaveDirect(postId) {
+  return fetch(`${apiRoot}/v2/posts/${postId}/leave`, postRequestOptions());
+}
