@@ -93,6 +93,10 @@ $post-line-height: rem(20px);
     .post-footer {
       display: flex;
 
+      & + .post-footer {
+        margin-top: rem(8px);
+      }
+
       .post-lock-icon {
         cursor: pointer;
       }
