@@ -1,0 +1,23 @@
+.spacer {
+  color: #aaa;
+  font-style: italic;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  position: relative;
+
+  :global(.dark-theme) & {
+    color: #666;
+  }
+}
+
+.icon {
+  position: absolute;
+  top: 0;
+  left: 0.6px;
+  width: 14px;
+  height: 14px;
+}
+
+.body {
+  margin-left: 20px;
+}

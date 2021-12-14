@@ -1,24 +1,13 @@
 import { forwardRef, useLayoutEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router';
 import cn from 'classnames';
-import {
-  faExclamationTriangle,
-  faLink,
-  faEdit,
-  faBookmark as faBookmarkSolid,
-} from '@fortawesome/free-solid-svg-icons';
-import {
-  faClock,
-  faCommentDots,
-  faTrashAlt,
-  faBookmark,
-} from '@fortawesome/free-regular-svg-icons';
+import { faLink, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faCommentDots, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { noop } from 'lodash';
 
 import { andJoin } from '../utils/and-join';
 import { copyURL } from '../utils/copy-url';
 import { ButtonLink } from './button-link';
-import { Throbber } from './throbber';
 import { Icon } from './fontawesome-icons';
 import TimeDisplay from './time-display';
 
@@ -26,7 +15,6 @@ import styles from './dropdown-menu.module.scss';
 
 export const PostMoreMenu = forwardRef(function PostMoreMenu(
   {
-    user,
     post: {
       isEditable = false,
       canBeRemovedFrom = [],
@@ -36,8 +24,6 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
       commentsDisabled = false,
       createdAt,
       updatedAt,
-      isSaved = false,
-      savePostStatus = {},
     },
     toggleEditingPost,
     toggleModeratingComments,
@@ -47,13 +33,11 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
     perGroupDeleteEnabled = false,
     doAndClose,
     permalink,
-    toggleSave,
+    // toggleSave,
     fixed = false,
   },
   ref,
 ) {
-  const amIAuthenticated = !!user.id;
-
   const deleteLines = useMemo(() => {
     const result = [];
     // Not owned post
@@ -116,25 +100,6 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
         </ButtonLink>
       </div>
     )),
-    [
-      amIAuthenticated && (
-        <div className={styles.item} key="save-post">
-          <ButtonLink className={styles.link} onClick={doAndClose(toggleSave)}>
-            <Iconic icon={isSaved ? faBookmarkSolid : faBookmark}>
-              {isSaved ? 'Un-save' : 'Save'} post
-              {savePostStatus.loading && <Throbber />}
-              {savePostStatus.error && (
-                <Icon
-                  icon={faExclamationTriangle}
-                  className="post-like-fail"
-                  title={savePostStatus.errorText}
-                />
-              )}
-            </Iconic>
-          </ButtonLink>
-        </div>
-      ),
-    ],
     [
       <div key="created-on" className={cn(styles.item, styles.content)}>
         <Iconic icon={faClock}>

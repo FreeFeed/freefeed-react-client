@@ -5,8 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.104.0] - Not released
+## Experimental
 ### Added
+- Native player for video-files
+- Hides in non-Home feeds
 - Backlinks indication under the post (in form of "N references to this post" link)
 
 ## [1.103.1] - 2021-11-12

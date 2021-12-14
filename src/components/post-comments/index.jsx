@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { createRef, Component } from 'react';
+import { createRef, Fragment, Component } from 'react';
 
 import { preventDefault, pluralForm } from '../../utils';
 import { safeScrollBy } from '../../services/unscroll';
@@ -11,6 +11,7 @@ import { SignInLink } from '../sign-in-link';
 import { CollapseComments } from './collapse-comments';
 import ExpandComments from './expand-comments';
 import { LoadingComments } from './loading-comments';
+import { CommentSpacer } from './comment-spacer';
 
 const foldConf = CONFIG.commentsFolding;
 
@@ -69,21 +70,35 @@ export default class PostComments extends Component {
 
   renderAddingComment() {
     const { props } = this;
+    const { post } = props;
+
+    const now = new Date();
+    let spacer = null;
+
+    if (post.comments?.length > 0) {
+      const lastComment = post.comments[post.comments.length - 1];
+      spacer = this.renderCommentSpacer(now, lastComment.createdAt, true);
+    } else {
+      spacer = this.renderCommentSpacer(now, post.createdAt, true);
+    }
+
     return (
-      <PostComment
-        id={props.post.id}
-        postId={props.post.id}
-        key={`${props.post.id}-comment-adding`}
-        ref={this.addingCommentForm}
-        isEditing={true}
-        editText={props.post.newCommentText}
-        saveEditingComment={props.addComment}
-        toggleEditingComment={props.toggleCommenting}
-        isSaving={props.post.isSavingComment}
-        isSinglePost={props.post.isSinglePost}
-        currentUser={props.post.user}
-        isAddingComment={true}
-      />
+      <Fragment key={`${props.post.id}-comment-adding`}>
+        {spacer}
+        <PostComment
+          id={props.post.id}
+          postId={props.post.id}
+          ref={this.addingCommentForm}
+          isEditing={true}
+          editText={props.post.newCommentText}
+          saveEditingComment={props.addComment}
+          toggleEditingComment={props.toggleCommenting}
+          isSaving={props.post.isSavingComment}
+          isSinglePost={props.post.isSinglePost}
+          currentUser={props.post.user}
+          isAddingComment={true}
+        />
+      </Fragment>
     );
   }
 
@@ -146,36 +161,80 @@ export default class PostComments extends Component {
     return !post.commentsDisabled || post.isEditable || post.isModeratable;
   }
 
-  renderComment = (comment, index = 0) => {
+  renderCommentSpacer = (from, to, isAboveCommentForm = false) => {
+    if (!from || !to) {
+      return null;
+    }
+
+    const { timeDifferenceForSpacer } = this.props.user?.frontendPreferences || {};
+
+    if (!timeDifferenceForSpacer) {
+      return null;
+    }
+
+    const delta = +from - +to;
+
+    if (delta < timeDifferenceForSpacer) {
+      return null;
+    }
+
+    return <CommentSpacer from={from} to={to} isAboveCommentForm={isAboveCommentForm} />;
+  };
+
+  renderComment = (comment, index = 0, array = []) => {
     const { props } = this;
+
+    if (!comment) {
+      return null;
+    }
+
+    let spacer = null;
+
+    if (index > 0) {
+      const previousComment = array[index - 1];
+      const thisCommentDate = comment.createdAt;
+      const previousCommentDate = previousComment.createdAt;
+
+      spacer = this.renderCommentSpacer(thisCommentDate, previousCommentDate);
+    }
+
+    const postComment = (
+      <PostComment
+        key={comment.id}
+        {...comment}
+        postId={props.post.id}
+        omitBubble={comment.omitBubble && !!index}
+        entryUrl={props.entryUrl}
+        isSinglePost={this.props.isSinglePost}
+        mentionCommentAuthor={this.mentionCommentAuthor}
+        replyWithArrows={this.replyWithArrows}
+        backwardIdx={this.backwardIdx}
+        isModeratingComments={props.post.isModeratingComments}
+        {...props.commentEdit}
+        authorHighlightHandlers={this.authorHighlightHandlers}
+        arrowsHighlightHandlers={this.arrowsHighlightHandlers}
+        showMedia={this.props.showMedia}
+        readMoreStyle={props.readMoreStyle}
+        highlightTerms={props.highlightTerms}
+        currentUser={props.post.user}
+        forceAbsTimestamps={props.forceAbsTimestamps}
+        highlighted={
+          comment.user?.username === this.state.highlightedAuthor ||
+          comment.id === this.state.highlightedCommentId
+        }
+        canAddComment={this.canAddComment()}
+      />
+    );
+
+    if (!spacer) {
+      return postComment;
+    }
+
     return (
-      comment && (
-        <PostComment
-          key={comment.id}
-          {...comment}
-          postId={props.post.id}
-          omitBubble={comment.omitBubble && !!index}
-          entryUrl={props.entryUrl}
-          isSinglePost={this.props.isSinglePost}
-          mentionCommentAuthor={this.mentionCommentAuthor}
-          replyWithArrows={this.replyWithArrows}
-          backwardIdx={this.backwardIdx}
-          isModeratingComments={props.post.isModeratingComments}
-          {...props.commentEdit}
-          authorHighlightHandlers={this.authorHighlightHandlers}
-          arrowsHighlightHandlers={this.arrowsHighlightHandlers}
-          showMedia={this.props.showMedia}
-          readMoreStyle={props.readMoreStyle}
-          highlightTerms={props.highlightTerms}
-          currentUser={props.post.user}
-          forceAbsTimestamps={props.forceAbsTimestamps}
-          highlighted={
-            comment.user?.username === this.state.highlightedAuthor ||
-            comment.id === this.state.highlightedCommentId
-          }
-          canAddComment={this.canAddComment()}
-        />
-      )
+      <Fragment key={comment.id}>
+        {spacer}
+        {postComment}
+      </Fragment>
     );
   };
 
@@ -354,6 +413,9 @@ export default class PostComments extends Component {
       }
     }
 
+    const firstCommentSpacer =
+      comments.length > 0 ? this.renderCommentSpacer(comments[0].createdAt, post.createdAt) : null;
+
     return (
       <div
         className="comments"
@@ -362,6 +424,7 @@ export default class PostComments extends Component {
         aria-label={pluralForm(comments.length + post.omittedComments, 'comment')}
       >
         <ErrorBoundary>
+          {firstCommentSpacer}
           {[firstComment, foldControl, ...tailComments]}
           {this.renderAddComment()}
         </ErrorBoundary>
