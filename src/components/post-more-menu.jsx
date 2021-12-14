@@ -61,8 +61,9 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
   const dispatch = useDispatch();
   const doLeaveDirect = useCallback(
     () =>
-      confirm('Are you sure you want to leave this conversation and loose access to this post?') &&
-      dispatch(leaveDirect(postId)),
+      confirm(
+        "Are you sure you want to leave this conversation? You won't be able to read it unless the author invites you back again.",
+      ) && dispatch(leaveDirect(postId)),
     [postId],
   );
 
