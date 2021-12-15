@@ -13,7 +13,7 @@ import {
   faGlobeAmericas,
   faAngleDoubleRight,
   faPaperclip,
-  faReply,
+  faShare,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { pluralForm } from '../utils';
@@ -686,7 +686,7 @@ class Post extends Component {
               {props.backlinksCount > 0 && (
                 <div className="post-footer">
                   <div className="post-footer-icon">
-                    <Icon icon={faReply} className="post-footer-backlink-icon" />
+                    <Icon icon={faShare} className="post-footer-backlink-icon" />
                   </div>
                   <span className="post-footer-content">
                     <Link href={`/search?q=${encodeURIComponent(props.id)}`}>
