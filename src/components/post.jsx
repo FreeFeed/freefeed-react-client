@@ -433,7 +433,11 @@ class Post extends Component {
       (r) => r !== props.createdBy.username,
     );
     const recipientsLabel =
-      recipientsWithoutAuthor.length > 0 ? `to ${recipientsWithoutAuthor.join(', ')}` : false;
+      recipientsWithoutAuthor.length > 0
+        ? `to ${recipientsWithoutAuthor.join(', ')}`
+        : props.isDirect
+        ? 'to nobody'
+        : false;
 
     const commentsAndLikesLabel = `with ${pluralForm(
       props.omittedComments + props.comments.length,
@@ -492,7 +496,7 @@ class Post extends Component {
               ) : (
                 <div className="post-header">
                   <UserName className="post-author" user={props.createdBy} />
-                  {recipients.length > 0 ? ' to ' : false}
+                  {recipients.length > 0 ? ' to ' : props.isDirect ? ' to nobody ' : false}
                   {recipients}
                   {this.props.isInHomeFeed ? (
                     <PostVia post={this.props} me={this.props.user} />
