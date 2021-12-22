@@ -75,93 +75,96 @@ exports[`Post Renders a post and doesn't blow up 1`] = `
       />
       <div
         aria-label="Post footer"
-        class="post-footer"
         role="region"
       >
         <div
-          class="post-footer-icon"
+          class="post-footer"
         >
-          <svg
-            class="post-lock-icon post-public-icon fa-icon fa-icon-fas-globe-americas"
-            role="button"
-            xmlns="http://www.w3.org/2000/svg"
+          <div
+            class="post-footer-icon"
           >
-            <title>
-              This entry is public
-            </title>
-            <use
-              xlink:href="#fa-icon-fas-globe-americas"
-            />
-          </svg>
-        </div>
-        <div
-          class="post-footer-content"
-        >
-          <span
-            class="post-footer-block"
+            <svg
+              class="post-lock-icon post-public-icon fa-icon fa-icon-fas-globe-americas"
+              role="button"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>
+                This entry is public
+              </title>
+              <use
+                xlink:href="#fa-icon-fas-globe-americas"
+              />
+            </svg>
+          </div>
+          <div
+            class="post-footer-content"
           >
             <span
-              class="post-footer-item"
+              class="post-footer-block"
             >
-              <a
-                class="post-timestamp"
+              <span
+                class="post-footer-item"
               >
-                <time
-                  datetime="2021-03-14T03:23:59.035Z"
-                  title="Mar 14, 2021 03:23"
+                <a
+                  class="post-timestamp"
                 >
-                  Mar 14, 2021
-                </time>
-              </a>
-            </span>
-          </span>
-          <span
-            class="post-footer-block"
-            role="region"
-          >
-            <span
-              class="post-footer-item"
-            >
-              <a
-                aria-disabled="false"
-                class="post-action"
-                role="button"
-                tabindex="0"
-              >
-                Comment
-              </a>
+                  <time
+                    datetime="2021-03-14T03:23:59.035Z"
+                    title="Mar 14, 2021 03:23"
+                  >
+                    Mar 14, 2021
+                  </time>
+                </a>
+              </span>
             </span>
             <span
-              class="post-footer-item"
+              class="post-footer-block"
+              role="region"
             >
-              <a
-                aria-disabled="false"
-                class="post-action"
-                role="button"
-                tabindex="0"
+              <span
+                class="post-footer-item"
               >
-                Like
-              </a>
-            </span>
-            <span
-              class="post-footer-item"
-            >
-              <a
-                aria-disabled="false"
-                aria-expanded="false"
-                aria-haspopup="true"
-                class="post-action"
-                role="button"
-                tabindex="0"
-              >
-                <span
-                  class="root"
+                <a
+                  aria-disabled="false"
+                  class="post-action"
+                  role="button"
+                  tabindex="0"
                 >
-                  More
-                </span>
-              </a>
+                  Comment
+                </a>
+              </span>
+              <span
+                class="post-footer-item"
+              >
+                <a
+                  aria-disabled="false"
+                  class="post-action"
+                  role="button"
+                  tabindex="0"
+                >
+                  Like
+                </a>
+              </span>
+              <span
+                class="post-footer-item"
+              >
+                <a
+                  aria-disabled="false"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class="post-action"
+                  role="button"
+                  tabindex="0"
+                >
+                  <span
+                    class="root"
+                  >
+                    More
+                  </span>
+                </a>
+              </span>
             </span>
-          </span>
+          </div>
         </div>
       </div>
       <div />
