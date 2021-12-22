@@ -1,5 +1,6 @@
 /* global CONFIG */
 import { useMemo, useEffect } from 'react';
+import { Link } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, useField } from 'react-final-form-hooks';
 import { without, uniq } from 'lodash';
@@ -133,7 +134,7 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4 id="home">Your Home feed content</h4>
+        <h4 id="home">Your Home feed</h4>
 
         <div className="form-group">
           <div className="radio">
@@ -156,7 +157,12 @@ export default function AppearanceForm() {
               Also your friends&#x2019; activity in groups you are not subscribed to
             </label>
           </div>
+        </div>
+      </section>
 
+      <section className={settingsStyles.formSection}>
+        <h4 id="hide-list">Hidden content</h4>
+        <div className="form-group">
           <p>Apply posts and users hides:</p>
           <div className="form-group">
             <div className="radio">
@@ -184,6 +190,10 @@ export default function AppearanceForm() {
               {...hiddenUsers.input}
             />
             <p className="help-block">Comma-separated list of usernames and group names</p>
+            <p className="help-block">
+              To view the “Blocked users” list, visit{' '}
+              <Link to="/friends?show=blocked">this page</Link>.
+            </p>
           </div>
         </div>
       </section>
