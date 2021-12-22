@@ -1,6 +1,6 @@
 {
   "name": "reactive-pepyatka",
-  "version": "1.103.0",
+  "version": "1.104.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
@@ -156,6 +156,7 @@
     "_webpack": "webpack --config webpack.config.babel.js --output-path ./_dist",
     "_webpack:bookmarklet": "webpack --config webpack.bookmarklet.config.babel.js --output-path ./_dist",
     "analyze-webpack": "webpack-bundle-analyzer _dist/stats.json",
+    "create_config_json": "echo \"{}\" > ./_dist/config.json",
     "postinstall": "husky install"
   },
   "author": "FreeFeed contributors",

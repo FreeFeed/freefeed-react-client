@@ -159,3 +159,4 @@ export const SET_BETA_CHANNEL = 'SET_BETA_CHANNEL';
 export const APP_VERSION = 'APP_VERSION';
 export const OPEN_SIDEBAR = 'OPEN_SIDEBAR';
 export const SET_SUBMIT_MODE = 'SET_SUBMIT_MODE';
+export const LEAVE_DIRECT = 'LEAVE_DIRECT';

@@ -252,6 +252,16 @@ export function feedViewState(state = initFeed, action) {
         entries: _.without(state.entries, action.postId),
       };
     }
+    case response(ActionTypes.LEAVE_DIRECT): {
+      const postId = action.request;
+      if (!state.entries.includes(postId)) {
+        return state;
+      }
+      return {
+        ...state,
+        entries: _.without(state.entries, postId),
+      };
+    }
     case response(ActionTypes.CREATE_POST): {
       const postId = action.payload.posts.id;
       if (state.entries.includes(postId)) {
