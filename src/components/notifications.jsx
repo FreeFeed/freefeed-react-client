@@ -143,6 +143,22 @@ const notificationTemplates = {
   group_subscription_request_revoked: (event) => (
     <Linkify>{`@${event.createdUser.username} revoked subscription request to @${event.group.username}`}</Linkify>
   ),
+  direct_left: (event) =>
+    event.created_user_id === event.receiver.id ? (
+      <div>
+        You left a direct message created by <Linkify>{`@${event.postAuthor.username}`}</Linkify>
+      </div>
+    ) : event.post_author_id === event.receiver.id ? (
+      <div>
+        <Linkify>{`@${event.createdUser.username}`}</Linkify> left a {directPostLink(event)} created
+        by you
+      </div>
+    ) : (
+      <div>
+        <Linkify>{`@${event.createdUser.username}`}</Linkify> left a {directPostLink(event)} created
+        by <Linkify>{`@${event.postAuthor.username}`}</Linkify>
+      </div>
+    ),
   direct: (event) => (
     <div>
       {`You received a `}
@@ -340,6 +356,7 @@ const mapStateToProps = (state) => {
         postAuthor: state.users[event.post_author_id],
         post: state.posts[event.post_id] || mock,
         comment: state.comments[event.comment_id] || mock,
+        receiver: state.user,
       };
     }),
   };

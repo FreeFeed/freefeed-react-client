@@ -1,4 +1,5 @@
 import { useMemo, useCallback } from 'react';
+import { Link } from 'react-router';
 import cn from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -61,6 +62,11 @@ export function Blocked() {
       ) : (
         <p>You have no blocked users.</p>
       )}
+
+      <p>
+        Alternatively, you can hide posts from users or groups in the{' '}
+        <Link to="/settings/appearance#hide-list">Appearance settings</Link>.
+      </p>
     </>
   );
 }

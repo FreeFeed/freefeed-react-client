@@ -1186,3 +1186,11 @@ export function setSubmitMode(mode) {
     payload: mode,
   };
 }
+
+export function leaveDirect(postId) {
+  return {
+    type: ActionTypes.LEAVE_DIRECT,
+    apiRequest: Api.leaveDirect,
+    payload: postId,
+  };
+}
