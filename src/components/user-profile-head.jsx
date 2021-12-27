@@ -331,32 +331,12 @@ export const UserProfileHead = withRouter(
         {currentUser && !isCurrentUser && (
           <>
             {inSubscriptions && (
-              <div className={styles.lists}>
-                {!inHomeFeedsStatus.success ? (
-                  'Loading lists...'
-                ) : (
-                  <>
-                    {activeHomeFeeds.length === 0 ? (
-                      'In no lists'
-                    ) : (
-                      <>
-                        {activeHomeFeeds.length === 1 ? 'In list:' : 'In lists:'}{' '}
-                        {activeHomeFeeds.map((h, i) => (
-                          <span key={h.id}>
-                            {i > 0 && ', '}
-                            <HomeFeedLink feed={h} />
-                          </span>
-                        ))}
-                      </>
-                    )}{' '}
-                    (
-                    <ButtonLink ref={subscrFormPivotRef} onClick={subscrFormToggle}>
-                      edit
-                    </ButtonLink>
-                    )
-                  </>
-                )}
-              </div>
+              <InListsIndicator
+                inHomeFeedsStatus={inHomeFeedsStatus}
+                activeHomeFeeds={activeHomeFeeds}
+                subscrFormPivotRef={subscrFormPivotRef}
+                subscrFormToggle={subscrFormToggle}
+              />
             )}
             <div className={styles.actions}>
               {isBanned ? (
@@ -521,6 +501,37 @@ export const UserProfileHead = withRouter(
     );
   }),
 );
+
+function InListsIndicator({
+  inHomeFeedsStatus,
+  activeHomeFeeds,
+  subscrFormPivotRef,
+  subscrFormToggle,
+}) {
+  if (!inHomeFeedsStatus.success) {
+    return <div className={styles.lists}>Loading lists...</div>;
+  }
+  return (
+    <div className={styles.lists}>
+      {activeHomeFeeds.length === 0 ? (
+        'In no lists'
+      ) : (
+        <>
+          {activeHomeFeeds.length === 1 ? 'In list:' : 'In lists:'}{' '}
+          {activeHomeFeeds.map((h, i) => (
+            <span key={h.id}>
+              {i > 0 && ', '}
+              <HomeFeedLink feed={h} />
+            </span>
+          ))}
+        </>
+      )}{' '}
+      <ButtonLink ref={subscrFormPivotRef} onClick={subscrFormToggle}>
+        edit
+      </ButtonLink>
+    </div>
+  );
+}
 
 function StatLink({ value, title, linkTo, canFollow, className }) {
   let content;
