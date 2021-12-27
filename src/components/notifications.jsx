@@ -148,10 +148,15 @@ const notificationTemplates = {
       <div>
         You left a direct message created by <Linkify>{`@${event.postAuthor.username}`}</Linkify>
       </div>
+    ) : event.post_author_id === event.receiver.id ? (
+      <div>
+        <Linkify>{`@${event.createdUser.username}`}</Linkify> left a {directPostLink(event)} created
+        by you
+      </div>
     ) : (
       <div>
-        <Linkify>{`@${event.postAuthor.username}`}</Linkify> left a {directPostLink(event)} created
-        by <Linkify>{`@${event.createdUser.username}`}</Linkify>
+        <Linkify>{`@${event.createdUser.username}`}</Linkify> left a {directPostLink(event)} created
+        by <Linkify>{`@${event.postAuthor.username}`}</Linkify>
       </div>
     ),
   direct: (event) => (
