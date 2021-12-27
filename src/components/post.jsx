@@ -36,6 +36,7 @@ import Expandable from './expandable';
 import PieceOfText from './piece-of-text';
 import Dropzone from './dropzone';
 import PostMoreLink from './post-more-link';
+import PostLikeLink from './post-like-link';
 import TimeDisplay from './time-display';
 import LinkPreview from './link-preview/preview';
 import SendTo from './send-to';
@@ -379,24 +380,13 @@ class Post extends Component {
     const didILikePost = _.find(props.usersLikedPost, { id: props.user.id });
     const likeLink =
       amIAuthenticated && !props.isEditable ? (
-        <>
-          {props.likeError ? (
-            <Icon icon={faExclamationTriangle} className="post-like-fail" title={props.likeError} />
-          ) : null}
-          <ButtonLink
-            className="post-action"
-            onClick={didILikePost ? this.unlikePost : this.likePost}
-          >
-            {didILikePost ? 'Un-like' : 'Like'}
-          </ButtonLink>
-          {props.isLiking ? (
-            <span className="post-like-throbber">
-              <Throbber />
-            </span>
-          ) : (
-            false
-          )}
-        </>
+        <PostLikeLink
+          onLikePost={this.likePost}
+          onUnlikePost={this.unlikePost}
+          didILikePost={didILikePost}
+          likeError={props.likeError}
+          isLiking={props.isLiking}
+        />
       ) : (
         false
       );
