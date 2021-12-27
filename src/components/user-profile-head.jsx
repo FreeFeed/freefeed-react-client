@@ -239,59 +239,14 @@ export const UserProfileHead = withRouter(
           </div>
           <div>
             <PrivacyIndicator user={user} />
-            <span className={styles.infoStatusSpan}>
-              {/* Relationship */}
-              {isCurrentUser ? (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faSmile} />
-                  </span>
-                  It&#x2019;s you!
-                </>
-              ) : isBanned ? (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faBan} />
-                  </span>
-                  You&#x2019;ve blocked this user
-                </>
-              ) : inSubscriptions && inSubscribers ? (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faCheckCircle} />
-                  </span>
-                  Mutually subscribed
-                </>
-              ) : isCurrentUserAdmin ? (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faCheckSquare} />
-                  </span>
-                  You are an admin
-                </>
-              ) : inSubscriptions && user.type === 'user' ? (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faCheckCircle} />
-                  </span>
-                  You are subscribed
-                </>
-              ) : inSubscriptions && user.type === 'group' ? (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faCheckSquare} />
-                  </span>
-                  You are a member
-                </>
-              ) : inSubscribers ? (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faCheckCircleO} />
-                  </span>
-                  Subscribed to you
-                </>
-              ) : null}
-            </span>
+            <RelationshipIndicator
+              user={user}
+              isCurrentUser={isCurrentUser}
+              isBanned={isBanned}
+              inSubscriptions={inSubscriptions}
+              inSubscribers={inSubscribers}
+              isCurrentUserAdmin={isCurrentUserAdmin}
+            />
           </div>
         </div>
         <div className={styles.description}>
@@ -526,6 +481,49 @@ function InListsIndicator({
         edit
       </ButtonLink>
     </div>
+  );
+}
+
+function RelationshipIndicator({
+  user,
+  isCurrentUser,
+  isBanned,
+  inSubscriptions,
+  inSubscribers,
+  isCurrentUserAdmin,
+}) {
+  let icon;
+  let label;
+
+  if (isCurrentUser) {
+    icon = faSmile;
+    label = 'It’s you!';
+  } else if (isBanned) {
+    icon = faBan;
+    label = 'You’ve blocked this user';
+  } else if (inSubscriptions && inSubscribers) {
+    icon = faCheckCircle;
+    label = 'Mutually subscribed';
+  } else if (isCurrentUserAdmin) {
+    icon = faCheckSquare;
+    label = 'You are an admin';
+  } else if (inSubscriptions) {
+    icon = faCheckCircle;
+    label = `You are ${user.type === 'user' ? 'subscribed' : 'a member'}`;
+  } else if (inSubscribers) {
+    icon = faCheckCircleO;
+    label = 'Subscribed to you';
+  } else {
+    return null;
+  }
+
+  return (
+    <span className={styles.infoStatusSpan}>
+      <span className={styles.infoIcon}>
+        <Icon icon={icon} />
+      </span>
+      {label}
+    </span>
   );
 }
 
