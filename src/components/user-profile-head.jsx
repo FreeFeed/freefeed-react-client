@@ -238,38 +238,7 @@ export const UserProfileHead = withRouter(
             {user.username}
           </div>
           <div>
-            {/* Privacy */}
-            <span className={styles.infoStatusSpan}>
-              {user.isGone ? (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faUserSlash} />
-                  </span>
-                  Deleted {user.type}
-                </>
-              ) : user.isPrivate === '1' ? (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faLock} />
-                  </span>
-                  Private {user.type === 'user' ? 'feed' : 'group'}
-                </>
-              ) : user.isProtected === '1' ? (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faUserFriends} />
-                  </span>
-                  Protected {user.type === 'user' ? 'feed' : 'group'}
-                </>
-              ) : (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faGlobeAmericas} />
-                  </span>
-                  Public {user.type === 'user' ? 'feed' : 'group'}
-                </>
-              )}
-            </span>
+            <PrivacyIndicator user={user} />
             <span className={styles.infoStatusSpan}>
               {/* Relationship */}
               {isCurrentUser ? (
@@ -501,6 +470,33 @@ export const UserProfileHead = withRouter(
     );
   }),
 );
+
+function PrivacyIndicator({ user }) {
+  const userOrGroup = user.type === 'user' ? 'feed' : 'group';
+
+  let icon = faGlobeAmericas;
+  let label = `Public ${userOrGroup}`;
+
+  if (user.isGone) {
+    icon = faUserSlash;
+    label = 'Deleted user';
+  } else if (user.isPrivate === '1') {
+    icon = faLock;
+    label = `Private ${userOrGroup}`;
+  } else if (user.isProtected === '1') {
+    icon = faUserFriends;
+    label = `Protected ${userOrGroup}`;
+  }
+
+  return (
+    <span className={styles.infoStatusSpan}>
+      <span className={styles.infoIcon}>
+        <Icon icon={icon} />
+      </span>
+      {label}
+    </span>
+  );
+}
 
 function InListsIndicator({
   inHomeFeedsStatus,
