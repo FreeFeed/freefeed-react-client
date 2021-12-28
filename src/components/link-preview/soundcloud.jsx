@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as Sentry from '@sentry/react';
 
-import cachedFetch from './cached-fetch';
+import cachedFetch from './helpers/cached-fetch';
 
 const SOUNDCLOUD_SONG_RE = /^https:\/\/soundcloud\.com\/([^/]+)\/([^/]+)$/;
 const SOUNDCLOUD_AUTHOR_RE = /^https:\/\/soundcloud\.com\/([^/]+)$/;

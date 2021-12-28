@@ -1,8 +1,5 @@
 import { Component } from 'react';
 
-import { contentResized } from './scroll-helpers/events';
-import ScrollSafe from './scroll-helpers/scroll-safe';
-
 const GOOGLE_DOCS_RE =
   /^https?:\/\/(?:docs\.google\.com\/(document|spreadsheets|presentation)\/d\/|(drive)\.google\.com\/(?:file\/d\/|open\?id=))([\w-]+)/i;
 
@@ -20,7 +17,7 @@ const initialState = {
   isError: false,
 };
 
-class GoogleDocsPreview extends Component {
+export default class GoogleDocsPreview extends Component {
   state = { ...initialState };
 
   updatePreview(url) {
@@ -45,10 +42,6 @@ class GoogleDocsPreview extends Component {
       this.setState({ ...initialState });
       this.updatePreview(newProps.url);
     }
-  }
-
-  componentDidUpdate() {
-    contentResized(this);
   }
 
   render() {
@@ -78,8 +71,6 @@ class GoogleDocsPreview extends Component {
     );
   }
 }
-
-export default ScrollSafe(GoogleDocsPreview, { trackResize: false, foldable: false });
 
 function zoomRate(type) {
   if (type === 'document') {

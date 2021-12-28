@@ -2,45 +2,27 @@
 
 exports[`LinkPreview Does show an Embedly preview for some random website if embedly is allowed 1`] = `
 <DocumentFragment>
-  <div>
+  <div
+    class="folder-container"
+  >
     <div
-      class="folder-container"
+      class="content-wrapper"
+      style="height: 1px;"
     >
-      <div
-        class="content-wrapper"
-        style="height: 1px;"
-      >
-        <div>
-          <div
-            style="position: relative; overflow: hidden;"
-          >
-            <div
-              class="embedly-preview link-preview-content"
-              data-url="https://example.com"
-              style="height: 0px;"
-            >
-              <a
-                data-card-align="left"
-                data-card-controls="0"
-                data-card-recommend="0"
-                data-card-theme="light"
-                data-card-width="400px"
-                href="https://example.com"
-              />
-            </div>
-            <div
-              style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: scroll; pointer-events: none; z-index: -1; opacity: 0;"
-            >
-              <div />
-            </div>
-            <div
-              style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: scroll; pointer-events: none; z-index: -1; opacity: 0;"
-            >
-              <div
-                style="width: 200%; height: 200%;"
-              />
-            </div>
-          </div>
+      <div>
+        <div
+          class="embedly-preview link-preview-content"
+          data-url="https://example.com"
+          style="height: 0px;"
+        >
+          <a
+            data-card-align="left"
+            data-card-controls="0"
+            data-card-recommend="0"
+            data-card-theme="light"
+            data-card-width="400px"
+            href="https://example.com"
+          />
         </div>
       </div>
     </div>
@@ -67,20 +49,18 @@ exports[`LinkPreview Doesn't show a video preview if network request has failed 
 
 exports[`LinkPreview Shows a Google Docs preview 1`] = `
 <DocumentFragment>
-  <div>
+  <div
+    class="google-docs-preview link-preview-content"
+  >
     <div
-      class="google-docs-preview link-preview-content"
-    >
-      <div
-        class="google-docs-label document"
-      />
-      <a
-        class="google-docs-inner"
-        href="https://docs.google.com/document/d/1GbH0-Tc0Rs-T18JRA3Y--uOo_-lzzzTiCbYCHvs6K_4/edit?usp=sharing"
-        style="background-size: 120%; padding-bottom: 45.45454545454545%;"
-        target="_blank"
-      />
-    </div>
+      class="google-docs-label document"
+    />
+    <a
+      class="google-docs-inner"
+      href="https://docs.google.com/document/d/1GbH0-Tc0Rs-T18JRA3Y--uOo_-lzzzTiCbYCHvs6K_4/edit?usp=sharing"
+      style="background-size: 120%; padding-bottom: 45.45454545454545%;"
+      target="_blank"
+    />
   </div>
 </DocumentFragment>
 `;
@@ -131,43 +111,25 @@ exports[`LinkPreview Shows a Spotify preview 1`] = `
 
 exports[`LinkPreview Shows a Telegram preview 1`] = `
 <DocumentFragment>
-  <div>
+  <div
+    class="folder-container"
+  >
     <div
-      class="folder-container"
+      class="content-wrapper"
+      style="height: 1px;"
     >
-      <div
-        class="content-wrapper"
-        style="height: 1px;"
-      >
-        <div>
-          <div
-            style="position: relative; overflow: hidden;"
-          >
-            <div
-              class="telegram-preview link-preview-content"
-            >
-              <iframe
-                class="telegram-iframe"
-                data-url="https://t.me/meowdobot/0000"
-                frameborder="0"
-                scrolling="no"
-                src="https://t.me/meowdobot/0000?embed=1"
-                style="height: 0px;"
-              />
-            </div>
-            <div
-              style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: scroll; pointer-events: none; z-index: -1; opacity: 0;"
-            >
-              <div />
-            </div>
-            <div
-              style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: scroll; pointer-events: none; z-index: -1; opacity: 0;"
-            >
-              <div
-                style="width: 200%; height: 200%;"
-              />
-            </div>
-          </div>
+      <div>
+        <div
+          class="telegram-preview link-preview-content"
+        >
+          <iframe
+            class="telegram-iframe"
+            data-url="https://t.me/meowdobot/0000"
+            frameborder="0"
+            scrolling="no"
+            src="https://t.me/meowdobot/0000?embed=1"
+            style="height: 0px;"
+          />
         </div>
       </div>
     </div>
@@ -191,43 +153,25 @@ exports[`LinkPreview Shows a Tiktok preview 1`] = `
 
 exports[`LinkPreview Shows a Twitter preview 1`] = `
 <DocumentFragment>
-  <div>
+  <div
+    class="folder-container"
+  >
     <div
-      class="folder-container"
+      class="content-wrapper"
+      style="height: 1px;"
     >
-      <div
-        class="content-wrapper"
-        style="height: 1px;"
-      >
-        <div>
-          <div
-            style="position: relative; overflow: hidden;"
-          >
-            <div
-              class="tweet-preview link-preview-content"
-              style="height: 0px;"
-            >
-              <iframe
-                class="twitter-iframe"
-                frameborder="0"
-                scrolling="no"
-                src="https://platform.twitter.com/embed/index.html?dnt=true&embedId=twitter-widget-0&id=1368867769211514881&theme=light"
-                style="height: 0px;"
-              />
-            </div>
-            <div
-              style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: scroll; pointer-events: none; z-index: -1; opacity: 0;"
-            >
-              <div />
-            </div>
-            <div
-              style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: scroll; pointer-events: none; z-index: -1; opacity: 0;"
-            >
-              <div
-                style="width: 200%; height: 200%;"
-              />
-            </div>
-          </div>
+      <div>
+        <div
+          class="tweet-preview link-preview-content"
+          style="height: 0px;"
+        >
+          <iframe
+            class="twitter-iframe"
+            frameborder="0"
+            scrolling="no"
+            src="https://platform.twitter.com/embed/index.html?dnt=true&embedId=twitter-widget-0&id=1368867769211514881&theme=light"
+            style="height: 0px;"
+          />
         </div>
       </div>
     </div>
@@ -532,43 +476,25 @@ exports[`LinkPreview Shows an Apple Music preview 1`] = `
 
 exports[`LinkPreview Shows an Instagram preview 1`] = `
 <DocumentFragment>
-  <div>
+  <div
+    class="folder-container"
+  >
     <div
-      class="folder-container"
+      class="content-wrapper"
+      style="height: 1px;"
     >
-      <div
-        class="content-wrapper"
-        style="height: 1px;"
-      >
-        <div>
-          <div
-            style="position: relative; overflow: hidden;"
-          >
-            <div
-              class="instagram-preview link-preview-content"
-            >
-              <iframe
-                class="instagram-iframe"
-                data-url="https://www.instagram.com/p/CMH88yIDA-J/"
-                frameborder="0"
-                scrolling="no"
-                src="https://www.instagram.com/p/CMH88yIDA-J/embed/captioned/"
-                style="height: 0px;"
-              />
-            </div>
-            <div
-              style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: scroll; pointer-events: none; z-index: -1; opacity: 0;"
-            >
-              <div />
-            </div>
-            <div
-              style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: scroll; pointer-events: none; z-index: -1; opacity: 0;"
-            >
-              <div
-                style="width: 200%; height: 200%;"
-              />
-            </div>
-          </div>
+      <div>
+        <div
+          class="instagram-preview link-preview-content"
+        >
+          <iframe
+            class="instagram-iframe"
+            data-url="https://www.instagram.com/p/CMH88yIDA-J/"
+            frameborder="0"
+            scrolling="no"
+            src="https://www.instagram.com/p/CMH88yIDA-J/embed/captioned/"
+            style="height: 0px;"
+          />
         </div>
       </div>
     </div>

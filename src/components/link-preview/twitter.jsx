@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 
 import { darkTheme } from '../select-utils';
 import { withEventListener } from '../hooks/sub-unsub';
-import ScrollSafe from './scroll-helpers/scroll-safe';
-import * as heightCache from './scroll-helpers/size-cache';
+import * as heightCache from './helpers/size-cache';
+import FoldableContent from './helpers/foldable-content';
 
 const TWEET_RE = /^https?:\/\/twitter\.com\/[^/]+\/status\/(\d+)/i;
 
@@ -13,7 +13,7 @@ export function canShowURL(url) {
   return TWEET_RE.test(url);
 }
 
-export default ScrollSafe(function TwitterPreview({ url }) {
+export default function TwitterPreview({ url }) {
   const isDarkTheme = useSelector((state) => darkTheme(state));
   const tweetId = useMemo(() => TWEET_RE.exec(url)?.[1], [url]);
   const embedURL = useMemo(
@@ -46,15 +46,17 @@ export default ScrollSafe(function TwitterPreview({ url }) {
   );
 
   return (
-    <div className="tweet-preview link-preview-content" style={{ height: `${height}px` }}>
-      <iframe
-        key={embedURL}
-        src={embedURL}
-        frameBorder="0"
-        scrolling="no"
-        className="twitter-iframe"
-        style={{ height: `${height}px` }}
-      />
-    </div>
+    <FoldableContent>
+      <div className="tweet-preview link-preview-content" style={{ height: `${height}px` }}>
+        <iframe
+          key={embedURL}
+          src={embedURL}
+          frameBorder="0"
+          scrolling="no"
+          className="twitter-iframe"
+          style={{ height: `${height}px` }}
+        />
+      </div>
+    </FoldableContent>
   );
-});
+}

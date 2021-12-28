@@ -6,8 +6,8 @@ import { faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from 'react-redux';
 
 import { Icon } from '../fontawesome-icons';
-import cachedFetch from './cached-fetch';
-import * as aspectRatio from './scroll-helpers/size-cache';
+import cachedFetch from './helpers/cached-fetch';
+import * as aspectRatio from './helpers/size-cache';
 
 const YOUTUBE_VIDEO_RE =
   /^https?:\/\/(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?(?:v=|.+&v=)))([\w-]+)/i;

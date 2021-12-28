@@ -1,8 +1,8 @@
 import { Component } from 'react';
 import _ from 'lodash';
 
-import ScrollSafe from './scroll-helpers/scroll-safe';
-import * as aspectRatio from './scroll-helpers/size-cache';
+import * as aspectRatio from './helpers/size-cache';
+import FoldableContent from './helpers/foldable-content';
 
 const INSTAGRAM_RE = /^https?:\/\/(?:www\.)?instagram\.com\/(?:p|tv)\/([\w-]+)/i;
 
@@ -12,7 +12,7 @@ export function canShowURL(url) {
 
 const initialState = { isPrivate: false };
 
-class InstagramPreview extends Component {
+export default class InstagramPreview extends Component {
   iframe = null;
   setIframe = (el) => (this.iframe = el);
 
@@ -45,22 +45,22 @@ class InstagramPreview extends Component {
       return null;
     }
     return (
-      <div className="instagram-preview link-preview-content">
-        <iframe
-          ref={this.setIframe}
-          src={`https://www.instagram.com/p/${id}/embed/captioned/`}
-          data-url={this.props.url}
-          onLoad={this.onIFrameLoad}
-          frameBorder="0"
-          scrolling="no"
-          className="instagram-iframe"
-        />
-      </div>
+      <FoldableContent>
+        <div className="instagram-preview link-preview-content">
+          <iframe
+            ref={this.setIframe}
+            src={`https://www.instagram.com/p/${id}/embed/captioned/`}
+            data-url={this.props.url}
+            onLoad={this.onIFrameLoad}
+            frameBorder="0"
+            scrolling="no"
+            className="instagram-iframe"
+          />
+        </div>
+      </FoldableContent>
     );
   }
 }
-
-export default ScrollSafe(InstagramPreview);
 
 const startEventListening = _.once(() => window.addEventListener('message', onMessage));
 
