@@ -30,13 +30,12 @@ import { ButtonLink } from './button-link';
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
 import PostLikes from './post-likes';
-import PostVia from './post-via';
-import UserName from './user-name';
 import Expandable from './expandable';
 import PieceOfText from './piece-of-text';
 import Dropzone from './dropzone';
 import PostMoreLink from './post-more-link';
 import PostLikeLink from './post-like-link';
+import PostHeader from './post-header';
 import TimeDisplay from './time-display';
 import LinkPreview from './link-preview/preview';
 import SendTo from './send-to';
@@ -382,39 +381,6 @@ class Post extends Component {
       'nsfw-post': props.isNSFW,
     });
 
-    const recipientCustomDisplay = function (recipient) {
-      if (recipient.id !== props.createdBy.id) {
-        return false;
-      }
-
-      const lastCharacter = recipient.username[recipient.username.length - 1];
-      const suffix = lastCharacter === 's' ? '\u2019 feed' : '\u2019s feed';
-
-      return `${recipient.username}${suffix}`;
-    };
-
-    let { recipients } = props;
-    // Check if the post has been only submitted to one recipient
-    // and if we can omit it
-    if (recipients.length === 1) {
-      // If the post is in user/group feed (one-source list), we should omit
-      // the only recipient, since it would be that feed.
-      if (recipients[0].id === props.createdBy.id) {
-        // When in a many-sources list (Home, Direct messages, My discussions),
-        // we should omit the only recipient if it's the author's feed.
-        recipients = [];
-      }
-    }
-    recipients = recipients.map((recipient, index) => (
-      <span key={index}>
-        <UserName className="post-recipient" user={recipient}>
-          {recipientCustomDisplay(recipient)}
-        </UserName>
-        {index < props.recipients.length - 2 ? ', ' : false}
-        {index === props.recipients.length - 2 ? ' and ' : false}
-      </span>
-    ));
-
     const canonicalPostURI = canonicalURI(props);
 
     const { isPrivate, isProtected } = this.getPostPrivacy();
@@ -503,16 +469,15 @@ class Post extends Component {
                   <div className="post-privacy-warning">{this.state.privacyWarning}</div>
                 </div>
               ) : (
-                <div className="post-header">
-                  <UserName className="post-author" user={props.createdBy} />
-                  {recipients.length > 0 ? ' to ' : props.isDirect ? ' to nobody ' : false}
-                  {recipients}
-                  {this.props.isInHomeFeed ? (
-                    <PostVia post={this.props} me={this.props.user} />
-                  ) : (
-                    false
-                  )}
-                </div>
+                <PostHeader
+                  createdBy={props.createdBy}
+                  isDirect={props.isDirect}
+                  user={this.props.user}
+                  isInHomeFeed={this.props.isInHomeFeed}
+                  recipients={props.recipients}
+                  comments={props.comments}
+                  usersLikedPost={props.usersLikedPost}
+                />
               )}
               {props.isEditing ? (
                 <div className="post-editor">
