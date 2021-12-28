@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import _ from 'lodash';
 
 import * as aspectRatio from './helpers/size-cache';
@@ -10,56 +10,48 @@ export function canShowURL(url) {
   return INSTAGRAM_RE.test(url);
 }
 
-const initialState = { isPrivate: false };
+export default function InstagramPreview({ url }) {
+  const [, id] = INSTAGRAM_RE.exec(url);
 
-export default class InstagramPreview extends Component {
-  iframe = null;
-  setIframe = (el) => (this.iframe = el);
+  const iframeRef = useRef(null);
+  const [isPrivate, setIsPrivate] = useState(false);
 
-  state = { ...initialState };
-
-  onIFrameLoad = () =>
-    setTimeout(() => {
-      if (this.iframe && !this.iframe.dataset['loaded']) {
-        this.setState({ isPrivate: true });
-        aspectRatio.set(this.props.url, 0);
+  const onIFrameLoad = useCallback(() => {
+    const t = setTimeout(() => {
+      if (iframeRef.current && !iframeRef.current.dataset['loaded']) {
+        setIsPrivate(true);
+        aspectRatio.set(url, 0);
       }
     }, 1000);
+    return () => clearTimeout(t);
+  }, [url]);
 
-  componentDidMount() {
+  useEffect(() => {
     startEventListening();
     // set default frame height
-    const r = aspectRatio.get(this.props.url, 470 / 400);
-    this.iframe.style.height = `${this.iframe.offsetWidth * r}px`;
+    const r = aspectRatio.get(url, 470 / 400);
+    iframeRef.current.style.height = `${iframeRef.current.offsetWidth * r}px`;
+  }, [url]);
+
+  if (isPrivate) {
+    return null;
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (this.props.url !== nextProps.url) {
-      this.setState({ ...initialState });
-    }
-  }
-
-  render() {
-    const [, id] = INSTAGRAM_RE.exec(this.props.url);
-    if (this.state.isPrivate) {
-      return null;
-    }
-    return (
-      <FoldableContent>
-        <div className="instagram-preview link-preview-content">
-          <iframe
-            ref={this.setIframe}
-            src={`https://www.instagram.com/p/${id}/embed/captioned/`}
-            data-url={this.props.url}
-            onLoad={this.onIFrameLoad}
-            frameBorder="0"
-            scrolling="no"
-            className="instagram-iframe"
-          />
-        </div>
-      </FoldableContent>
-    );
-  }
+  return (
+    <FoldableContent>
+      <div className="instagram-preview link-preview-content">
+        <iframe
+          ref={iframeRef}
+          src={`https://www.instagram.com/p/${id}/embed/captioned/`}
+          data-url={url}
+          onLoad={onIFrameLoad}
+          frameBorder="0"
+          scrolling="no"
+          className="instagram-iframe"
+        />
+      </div>
+    </FoldableContent>
+  );
 }
 
 const startEventListening = _.once(() => window.addEventListener('message', onMessage));

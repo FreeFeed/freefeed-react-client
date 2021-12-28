@@ -1,5 +1,4 @@
-import PropTypes from 'prop-types';
-import { Component } from 'react';
+import { useEffect } from 'react';
 import { once } from 'lodash';
 
 import * as heightCache from './helpers/size-cache';
@@ -11,31 +10,24 @@ export function canShowURL(url) {
   return TG_POST_RE.test(url);
 }
 
-export default class TelegramPreview extends Component {
-  static propTypes = { url: PropTypes.string.isRequired };
+export default function TelegramPreview({ url }) {
+  useEffect(() => void startEventListening(), []);
+  const [baseURL] = url.match(TG_POST_RE);
 
-  componentDidMount() {
-    startEventListening();
-  }
-
-  render() {
-    const { url } = this.props;
-    const [baseURL] = url.match(TG_POST_RE);
-    return (
-      <FoldableContent>
-        <div className="telegram-preview link-preview-content">
-          <iframe
-            src={`${baseURL}?embed=1`}
-            data-url={baseURL}
-            frameBorder="0"
-            scrolling="no"
-            className="telegram-iframe"
-            style={{ height: heightCache.get(baseURL, 0) }}
-          />
-        </div>
-      </FoldableContent>
-    );
-  }
+  return (
+    <FoldableContent>
+      <div className="telegram-preview link-preview-content">
+        <iframe
+          src={`${baseURL}?embed=1`}
+          data-url={baseURL}
+          frameBorder="0"
+          scrolling="no"
+          className="telegram-iframe"
+          style={{ height: heightCache.get(baseURL, 0) }}
+        />
+      </div>
+    </FoldableContent>
+  );
 }
 
 const startEventListening = once(() => window.addEventListener('message', onMessage));
