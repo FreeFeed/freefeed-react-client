@@ -319,6 +319,58 @@ class Post extends Component {
     );
   }
 
+  getAriaLabels = () => {
+    const {
+      isSinglePost,
+      isDirect,
+      recipientNames,
+      createdBy,
+      omittedComments,
+      comments,
+      likes,
+      isNSFW,
+      createdAt,
+    } = this.props;
+
+    const { isPrivate, isProtected } = this.getPostPrivacy();
+
+    const role = `article${isSinglePost ? '' : ' listitem'}`;
+
+    const postTypeLabel = isDirect
+      ? 'Direct message'
+      : isPrivate
+      ? 'Private post'
+      : isProtected
+      ? 'Protected post'
+      : 'Public post';
+
+    const recipientsWithoutAuthor = recipientNames.filter((r) => r !== createdBy.username);
+    const recipientsLabel =
+      recipientsWithoutAuthor.length > 0
+        ? `to ${recipientsWithoutAuthor.join(', ')}`
+        : isDirect
+        ? 'to nobody'
+        : false;
+
+    const commentsAndLikesLabel = `with ${pluralForm(
+      omittedComments + comments.length,
+      'comment',
+    )} and ${pluralForm(likes.length, 'like')}`;
+
+    const postLabel = [
+      isNSFW ? 'Not safe for work' : false,
+      postTypeLabel,
+      `by ${createdBy.username}`,
+      recipientsLabel,
+      commentsAndLikesLabel,
+      `written on ${dateFormat(new Date(+createdAt), 'PPP')}`,
+    ]
+      .filter(Boolean)
+      .join(' ');
+
+    return { role, postLabel };
+  };
+
   render() {
     const { props } = this;
 
@@ -410,41 +462,7 @@ class Post extends Component {
       (attachment) => attachment.mediaType === 'image',
     );
 
-    const role = `article${props.isSinglePost ? '' : ' listitem'}`;
-
-    const postTypeLabel = props.isDirect
-      ? 'Direct message'
-      : isPrivate
-      ? 'Private post'
-      : isProtected
-      ? 'Protected post'
-      : 'Public post';
-
-    const recipientsWithoutAuthor = props.recipientNames.filter(
-      (r) => r !== props.createdBy.username,
-    );
-    const recipientsLabel =
-      recipientsWithoutAuthor.length > 0
-        ? `to ${recipientsWithoutAuthor.join(', ')}`
-        : props.isDirect
-        ? 'to nobody'
-        : false;
-
-    const commentsAndLikesLabel = `with ${pluralForm(
-      props.omittedComments + props.comments.length,
-      'comment',
-    )} and ${pluralForm(props.likes.length, 'like')}`;
-
-    const postLabel = [
-      props.isNSFW ? 'Not safe for work' : false,
-      postTypeLabel,
-      `by ${props.createdBy.username}`,
-      recipientsLabel,
-      commentsAndLikesLabel,
-      `written on ${dateFormat(new Date(+props.createdAt), 'PPP')}`,
-    ]
-      .filter(Boolean)
-      .join(' ');
+    const { role, postLabel } = this.getAriaLabels();
 
     return (
       <div
