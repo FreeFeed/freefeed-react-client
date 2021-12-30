@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Backlinks indication under the post (in form of "N references to this post" link)
 - Allow users to leave the direct message (except the author of the message)
 - GitHub workflow for creating PR preview on surge.sh
+- Internal bugs related to the showing of direct post destination feeds during
+  and after editing
 
 ## [1.103.1] - 2021-11-12
 ### Fixed

@@ -1134,7 +1134,8 @@ export function subscriptions(state = {}, action) {
     case response(ActionTypes.WHO_AM_I):
     case response(ActionTypes.GET_SINGLE_POST):
     case response(ActionTypes.COMPLETE_POST_COMMENTS):
-    case response(ActionTypes.CREATE_POST): {
+    case response(ActionTypes.CREATE_POST):
+    case response(ActionTypes.SAVE_EDITING_POST): {
       return mergeByIds(state, action.payload.subscriptions);
     }
     case ActionTypes.REALTIME_POST_NEW: {
