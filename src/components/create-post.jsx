@@ -9,7 +9,7 @@ import { makeJpegIfNeeded } from '../utils/jpeg-if-needed';
 import { SubmitModeHint } from './submit-mode-hint';
 import SendTo from './send-to';
 import Dropzone from './dropzone';
-import PostAttachments from './post-attachments';
+import PostAttachments from './post/post-attachments';
 import ErrorBoundary from './error-boundary';
 import { Throbber } from './throbber';
 import { Icon } from './fontawesome-icons';

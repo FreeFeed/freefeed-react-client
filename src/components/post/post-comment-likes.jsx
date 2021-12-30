@@ -1,10 +1,11 @@
-import { pluralForm } from '../utils';
-import { useCommentLikers } from './comment-likers';
-import { OverlayPopup } from './overlay-popup';
-import { Throbber } from './throbber';
-import UserName from './user-name';
+import { pluralForm } from '../../utils';
+import { useCommentLikers } from '../comment-likers';
+import { OverlayPopup } from '../overlay-popup';
+import { Throbber } from '../throbber';
+import UserName from '../user-name';
+import { UserPicture } from '../user-picture';
+
 import styles from './post-comment-likes.module.scss';
-import { UserPicture } from './user-picture';
 
 export function PostCommentLikes({ id, close }) {
   const { status, likers } = useCommentLikers(id);

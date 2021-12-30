@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
-import { handleLeftClick, pluralForm } from '../../utils';
-import { Throbber } from '../throbber';
-import ErrorBoundary from '../error-boundary';
-import { ButtonLink } from '../button-link';
+
+import { handleLeftClick, pluralForm } from '../../../utils';
+import { Throbber } from '../../throbber';
+import ErrorBoundary from '../../error-boundary';
+import { ButtonLink } from '../../button-link';
 
 export default function ExpandComments({
   onExpand,

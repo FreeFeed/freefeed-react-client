@@ -4,11 +4,11 @@ import unexpectedReact from 'unexpected-react';
 
 import flatten from 'lodash/flatten';
 
-import PostComments from '../../../src/components/post-comments';
-import PostComment from '../../../src/components/post-comment';
 import ErrorBoundary from '../../../src/components/error-boundary';
-import ExpandComments from '../../../src/components/post-comments/expand-comments';
-import { LoadingComments } from '../../../src/components/post-comments/loading-comments';
+import PostComments from '../../../src/components/post/post-comments';
+import PostComment from '../../../src/components/post/post-comment';
+import ExpandComments from '../../../src/components/post/post-comments/expand-comments';
+import { LoadingComments } from '../../../src/components/post/post-comments/loading-comments';
 import { SignInLink } from '../../../src/components/sign-in-link';
 
 const expect = unexpected.clone().use(unexpectedReact);

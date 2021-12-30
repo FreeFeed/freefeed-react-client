@@ -1,15 +1,16 @@
 import { memo, useCallback, useEffect } from 'react';
 import { Portal } from 'react-portal';
-import { intentToScroll } from '../services/unscroll';
+import { intentToScroll } from '../../services/unscroll';
 
-import { ButtonLink } from './button-link';
-import { useBool } from './hooks/bool';
-import { CLOSE_ON_CLICK_OUTSIDE } from './hooks/drop-down';
-import { useDropDownKbd } from './hooks/drop-down-kbd';
-import { useMediaQuery } from './hooks/media-query';
+import { ButtonLink } from '../button-link';
+import { useBool } from '../hooks/bool';
+import { CLOSE_ON_CLICK_OUTSIDE } from '../hooks/drop-down';
+import { useDropDownKbd } from '../hooks/drop-down-kbd';
+import { useMediaQuery } from '../hooks/media-query';
+import { MoreWithTriangle } from '../more-with-triangle';
+
 import { PostCommentLikes } from './post-comment-likes';
 import { PostCommentMoreMenu } from './post-comment-more-menu';
-import { MoreWithTriangle } from './more-with-triangle';
 
 export const PostCommentMore = memo(function PostCommentMore({
   className,

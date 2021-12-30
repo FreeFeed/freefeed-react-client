@@ -6,11 +6,11 @@ import unexpectedReact from 'unexpected-react';
 import unexpectedSinon from 'unexpected-sinon';
 import { spy } from 'sinon';
 import ErrorBoundary from '../../../src/components/error-boundary';
-import PostComment from '../../../src/components/post-comment';
-import PostComments from '../../../src/components/post-comments';
-import { CollapseComments } from '../../../src/components/post-comments/collapse-comments';
-import ExpandComments from '../../../src/components/post-comments/expand-comments';
-import { LoadingComments } from '../../../src/components/post-comments/loading-comments';
+import PostComment from '../../../src/components/post/post-comment';
+import PostComments from '../../../src/components/post/post-comments';
+import { CollapseComments } from '../../../src/components/post/post-comments/collapse-comments';
+import ExpandComments from '../../../src/components/post/post-comments/expand-comments';
+import { LoadingComments } from '../../../src/components/post/post-comments/loading-comments';
 
 const expect = unexpected.clone().use(unexpectedReact).use(unexpectedSinon);
 

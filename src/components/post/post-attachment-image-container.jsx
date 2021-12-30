@@ -1,11 +1,12 @@
 import pt from 'prop-types';
 import { Component } from 'react';
 import classnames from 'classnames';
-
 import { faChevronCircleRight } from '@fortawesome/free-solid-svg-icons';
+
+import { Icon } from '../fontawesome-icons';
+import { lazyComponent } from '../lazy-component';
+
 import ImageAttachment from './post-attachment-image';
-import { Icon } from './fontawesome-icons';
-import { lazyComponent } from './lazy-component';
 
 const bordersSize = 4;
 const spaceSize = 8;

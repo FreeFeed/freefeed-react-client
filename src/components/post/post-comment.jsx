@@ -4,25 +4,26 @@ import { Link } from 'react-router';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
-import { preventDefault, confirmFirst } from '../utils';
+import { preventDefault, confirmFirst } from '../../utils';
 import {
   READMORE_STYLE_COMPACT,
   COMMENT_HIDDEN_BANNED,
   COMMENT_VISIBLE,
-} from '../utils/frontend-preferences-options';
-import { commentReadmoreConfig } from '../utils/readmore-config';
-import { defaultCommentState } from '../redux/reducers/comment-edit';
+} from '../../utils/frontend-preferences-options';
+import { commentReadmoreConfig } from '../../utils/readmore-config';
+import { defaultCommentState } from '../../redux/reducers/comment-edit';
 
-import { safeScrollTo } from '../services/unscroll';
-import PieceOfText from './piece-of-text';
-import Expandable from './expandable';
-import UserName from './user-name';
-import TimeDisplay from './time-display';
-import CommentIcon, { JustCommentIcon } from './comment-icon';
-import { CommentEditForm } from './comment-edit-form';
-import { ButtonLink } from './button-link';
+import { safeScrollTo } from '../../services/unscroll';
+import PieceOfText from '../piece-of-text';
+import Expandable from '../expandable';
+import UserName from '../user-name';
+import TimeDisplay from '../time-display';
+import CommentIcon, { JustCommentIcon } from '../comment-icon';
+import { CommentEditForm } from '../comment-edit-form';
+import { ButtonLink } from '../button-link';
+import { Separated } from '../separated';
+
 import { PostCommentMore } from './post-comment-more';
-import { Separated } from './separated';
 
 class PostComment extends Component {
   commentContainer;

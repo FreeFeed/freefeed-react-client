@@ -1,8 +1,8 @@
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
-import { Icon } from './fontawesome-icons';
-import { Throbber } from './throbber';
-import { ButtonLink } from './button-link';
+import { Icon } from '../fontawesome-icons';
+import { Throbber } from '../throbber';
+import { ButtonLink } from '../button-link';
 
 const PostLikeLink = (props) => {
   const { didILikePost, likeError, onLikePost, onUnlikePost, isLiking } = props;

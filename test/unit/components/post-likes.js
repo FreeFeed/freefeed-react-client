@@ -4,7 +4,7 @@ import expect from 'unexpected';
 import ShallowRenderer from 'react-test-renderer/shallow';
 import clone from 'lodash/clone';
 
-import PostLikes from '../../../src/components/post-likes';
+import PostLikes from '../../../src/components/post/post-likes';
 
 describe('<PostLikes>', () => {
   const _likes = [];

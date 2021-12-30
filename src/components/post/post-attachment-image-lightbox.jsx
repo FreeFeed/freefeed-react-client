@@ -2,7 +2,8 @@ import pt from 'prop-types';
 import { Component } from 'react';
 import { PhotoSwipe } from 'react-photoswipe';
 import Mousetrap from 'mousetrap';
-import { pinnedElements, unscrollTo } from '../services/unscroll';
+
+import { pinnedElements, unscrollTo } from '../../services/unscroll';
 
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
 const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
