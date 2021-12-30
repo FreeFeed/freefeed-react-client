@@ -511,7 +511,8 @@ function isInvitation({ locationBeforeTransitions }) {
 export const redirectionMiddleware = (store) => (next) => (action) => {
   //go to home if single post has been removed
   if (
-    action.type === response(ActionTypes.DELETE_POST) &&
+    (action.type === response(ActionTypes.DELETE_POST) ||
+      action.type === response(ActionTypes.LEAVE_DIRECT)) &&
     !action.payload.postStillAvailable &&
     store.getState().singlePostId
   ) {
