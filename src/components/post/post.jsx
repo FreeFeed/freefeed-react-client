@@ -16,36 +16,37 @@ import {
   faShare,
 } from '@fortawesome/free-solid-svg-icons';
 
-import { pluralForm } from '../utils';
-import { getFirstLinkToEmbed } from '../utils/parse-text';
-import { canonicalURI } from '../utils/canonical-uri';
-import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
-import { postReadmoreConfig } from '../utils/readmore-config';
-import { savePost, hideByName, unhideNames } from '../redux/action-creators';
-import { initialAsyncState } from '../redux/async-helpers';
-import { makeJpegIfNeeded } from '../utils/jpeg-if-needed';
-import { Throbber } from './throbber';
-import { ButtonLink } from './button-link';
+import { pluralForm } from '../../utils';
+import { getFirstLinkToEmbed } from '../../utils/parse-text';
+import { canonicalURI } from '../../utils/canonical-uri';
+import { READMORE_STYLE_COMPACT } from '../../utils/frontend-preferences-options';
+import { postReadmoreConfig } from '../../utils/readmore-config';
+import { savePost, hideByName, unhideNames } from '../../redux/action-creators';
+import { initialAsyncState } from '../../redux/async-helpers';
+import { makeJpegIfNeeded } from '../../utils/jpeg-if-needed';
 
-import PostAttachments from './post-attachments';
-import PostComments from './post-comments';
-import PostLikes from './post-likes';
-import Expandable from './expandable';
-import PieceOfText from './piece-of-text';
-import Dropzone from './dropzone';
+import { Throbber } from '../throbber';
+import { ButtonLink } from '../button-link';
+import Expandable from '../expandable';
+import PieceOfText from '../piece-of-text';
+import Dropzone from '../dropzone';
+import TimeDisplay from '../time-display';
+import LinkPreview from '../link-preview/preview';
+import SendTo from '../send-to';
+import ErrorBoundary from '../error-boundary';
+import { destinationsPrivacy } from '../select-utils';
+import { Icon } from '../fontawesome-icons';
+import { UserPicture } from '../user-picture';
+import { SubmitModeHint } from '../submit-mode-hint';
+import { SubmittableTextarea } from '../submittable-textarea';
+
+import { UnhideOptions, HideLink } from './post-hides-ui';
 import PostMoreLink from './post-more-link';
 import PostLikeLink from './post-like-link';
 import PostHeader from './post-header';
-import TimeDisplay from './time-display';
-import LinkPreview from './link-preview/preview';
-import SendTo from './send-to';
-import ErrorBoundary from './error-boundary';
-import { destinationsPrivacy } from './select-utils';
-import { Icon } from './fontawesome-icons';
-import { UnhideOptions, HideLink } from './post-hides-ui';
-import { UserPicture } from './user-picture';
-import { SubmitModeHint } from './submit-mode-hint';
-import { SubmittableTextarea } from './submittable-textarea';
+import PostAttachments from './post-attachments';
+import PostComments from './post-comments';
+import PostLikes from './post-likes';
 
 const attachmentsMaxCount = CONFIG.attachments.maxCount;
 

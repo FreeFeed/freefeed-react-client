@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { DISCUSSIONS, GET_EVERYTHING, GET_SUMMARY, HOME, HOME_AUX } from '../redux/action-types';
 import { toggleHiddenPosts } from '../redux/action-creators';
 import ErrorBoundary from './error-boundary';
-import Post from './post';
+import Post from './post/post';
+import { PostRecentlyHidden } from './post/post-hides-ui';
 import { joinPostData } from './select-utils';
-import { PostRecentlyHidden } from './post-hides-ui';
 import { isMediaAttachment } from './media-viewer';
 
 const HiddenEntriesToggle = (props) => {

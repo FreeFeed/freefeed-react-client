@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
 import _ from 'lodash';
-import UserName from './user-name';
+import UserName from '../user-name';
 
 // props types
 const userType = PropTypes.shape({

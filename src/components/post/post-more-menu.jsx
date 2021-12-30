@@ -15,17 +15,17 @@ import {
   faBookmark,
 } from '@fortawesome/free-regular-svg-icons';
 import { noop } from 'lodash';
-
 import { useDispatch } from 'react-redux';
-import { andJoin } from '../utils/and-join';
-import { copyURL } from '../utils/copy-url';
-import { leaveDirect } from '../redux/action-creators';
-import { ButtonLink } from './button-link';
-import { Throbber } from './throbber';
-import { Icon } from './fontawesome-icons';
-import TimeDisplay from './time-display';
 
-import styles from './dropdown-menu.module.scss';
+import { andJoin } from '../../utils/and-join';
+import { copyURL } from '../../utils/copy-url';
+import { leaveDirect } from '../../redux/action-creators';
+import { ButtonLink } from '../button-link';
+import { Throbber } from '../throbber';
+import { Icon } from '../fontawesome-icons';
+import TimeDisplay from '../time-display';
+
+import styles from '../dropdown-menu.module.scss';
 
 export const PostMoreMenu = forwardRef(function PostMoreMenu(
   {

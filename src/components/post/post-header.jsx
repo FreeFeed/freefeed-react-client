@@ -1,4 +1,4 @@
-import UserName from './user-name';
+import UserName from '../user-name';
 import PostVia from './post-via';
 
 const PostHeader = (props) => {

@@ -1,8 +1,9 @@
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
-import { preventDefault, pluralForm } from '../utils';
-import UserName from './user-name';
-import ErrorBoundary from './error-boundary';
-import { Icon } from './fontawesome-icons';
+
+import { preventDefault, pluralForm } from '../../utils';
+import UserName from '../user-name';
+import ErrorBoundary from '../error-boundary';
+import { Icon } from '../fontawesome-icons';
 
 const renderLike = (item, i, items) => (
   <li key={item.id} className="post-like">

@@ -8,7 +8,7 @@ import { canonicalURI } from '../utils/canonical-uri';
 import { joinPostData, postActions } from './select-utils';
 import UserName from './user-name';
 
-import Post from './post';
+import Post from './post/post';
 import { SignInLink } from './sign-in-link';
 
 class SinglePostHandler extends Component {

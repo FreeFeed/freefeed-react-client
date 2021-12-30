@@ -1,7 +1,6 @@
 import { forwardRef, useLayoutEffect, useState } from 'react';
 import { Link } from 'react-router';
 import cn from 'classnames';
-
 import { noop } from 'lodash';
 import { useSelector } from 'react-redux';
 import {
@@ -13,14 +12,15 @@ import {
   faUserFriends,
 } from '@fortawesome/free-solid-svg-icons';
 import { faHeart, faClock, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
-import { pluralForm } from '../utils';
-import { copyURL } from '../utils/copy-url';
-import { andJoin } from '../utils/and-join';
-import { ButtonLink } from './button-link';
-import styles from './dropdown-menu.module.scss';
-import TimeDisplay from './time-display';
-import { useCommentLikers } from './comment-likers';
-import { Icon } from './fontawesome-icons';
+
+import { pluralForm } from '../../utils';
+import { copyURL } from '../../utils/copy-url';
+import { andJoin } from '../../utils/and-join';
+import { ButtonLink } from '../button-link';
+import TimeDisplay from '../time-display';
+import { useCommentLikers } from '../comment-likers';
+import { Icon } from '../fontawesome-icons';
+import styles from '../dropdown-menu.module.scss';
 
 export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
   {

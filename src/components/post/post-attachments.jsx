@@ -1,7 +1,8 @@
+import ErrorBoundary from '../error-boundary';
+
 import ImageAttachmentsContainer from './post-attachment-image-container';
 import AudioAttachment from './post-attachment-audio';
 import GeneralAttachment from './post-attachment-general';
-import ErrorBoundary from './error-boundary';
 
 export default (props) => {
   const attachments = props.attachments || [];
