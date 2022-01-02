@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 import { Helmet } from 'react-helmet';
 import cn from 'classnames';
 
-import { faCaretDown, faUserFriends } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faUserFriends, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { getAllGroups } from '../redux/action-creators';
 import { Icon } from './fontawesome-icons';
 
@@ -70,6 +70,7 @@ const sortFields = {
 function GroupsList({ pageSize, routerReplace }) {
   const location = useSelector((state) => state.routing.locationBeforeTransitions);
   const { groups, withProtected } = useSelector((state) => state.allGroups);
+  const user = useSelector((state) => state.user);
 
   const [nameFilter, setNameFilter] = useState(location.query.q || '');
 
@@ -122,6 +123,11 @@ function GroupsList({ pageSize, routerReplace }) {
         </p>
       )}
       <p>
+        Checkmark icon <Icon className="text-muted small" icon={faCheck} /> in Subscribers column
+        indicates that you already are subscribed to that group. Values in Authors variety column
+        show how many different authors wrote to a group in the last few months.
+      </p>
+      <p>
         <label htmlFor="groups-name-filter">Filter by username or display name</label>
       </p>
       <p className="form-inline">
@@ -139,7 +145,6 @@ function GroupsList({ pageSize, routerReplace }) {
           </button>
         )}
       </p>
-      <p>Click on the column headers to change table sorting order.</p>
 
       <HorScrollable>
         <table className={styles.table}>
@@ -150,10 +155,14 @@ function GroupsList({ pageSize, routerReplace }) {
                 Subscribers
               </SortHeader>
               <SortHeader mode={SORT_BY_POSTS} currentMode={sort}>
-                Posts per month
+                Posts
+                <br />
+                per month
               </SortHeader>
               <SortHeader mode={SORT_BY_VARIETY} currentMode={sort}>
-                Authors variety
+                Authors
+                <br />
+                variety
               </SortHeader>
               <SortHeader mode={SORT_BY_DATE} currentMode={sort}>
                 Created
@@ -161,9 +170,10 @@ function GroupsList({ pageSize, routerReplace }) {
             </tr>
           </thead>
           <tbody>
-            {groupsOnPage.map((g) => (
-              <GroupRow key={g.id} g={g} />
-            ))}
+            {groupsOnPage.map((g) => {
+              const isSubscribed = user.subscriptions.includes(g.id);
+              return <GroupRow key={g.id} g={g} isSubscribed={isSubscribed} />;
+            })}
           </tbody>
         </table>
       </HorScrollable>
@@ -196,16 +206,14 @@ function SortHeader({ children, mode, currentMode }) {
       )}
     >
       <Link to={linkToSort(mode, location)}>
-        <div>
-          {children}
-          <Icon icon={faCaretDown} className={styles.caret} />
-        </div>
+        {children}
+        <Icon icon={faCaretDown} className={styles.caret} />
       </Link>
     </th>
   );
 }
 
-const GroupRow = memo(function GroupRow({ g }) {
+const GroupRow = memo(function GroupRow({ g, isSubscribed }) {
   const u = useSelector((state) => state.users[g.id]);
   return (
     <tr className={styles.groupRow}>
@@ -221,7 +229,14 @@ const GroupRow = memo(function GroupRow({ g }) {
           )}
         </div>
       </td>
-      <td>{g.subscribers}</td>
+      <td>
+        {isSubscribed ? (
+          <Icon className="text-muted small" icon={faCheck} title="You are subscribed" />
+        ) : (
+          false
+        )}{' '}
+        {g.subscribers}
+      </td>
       <td>{g.postsByMonth === 0 ? '< 1' : Math.ceil(g.postsByMonth)}</td>
       <td>{Math.round(g.authorsVariety * 100)}%</td>
       <td>
