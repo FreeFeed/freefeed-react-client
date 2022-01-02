@@ -156,7 +156,7 @@ function GroupsList({ pageSize, routerReplace }) {
                 Authors variety
               </SortHeader>
               <SortHeader mode={SORT_BY_DATE} currentMode={sort}>
-                Creation date
+                Created
               </SortHeader>
             </tr>
           </thead>
@@ -191,7 +191,7 @@ function SortHeader({ children, mode, currentMode }) {
     <th
       className={cn(
         styles.sortableHeader,
-        mode === currentMode && styles.inactive,
+        mode !== currentMode && styles.inactive,
         styles[`${mode}Column`],
       )}
     >
@@ -215,8 +215,8 @@ const GroupRow = memo(function GroupRow({ g }) {
           <UserName user={u}>{u.username}</UserName>
           {u.username !== u.screenName && <div className="small">{u.screenName}</div>}
           {u.isProtected === '1' && (
-            <div className="muted-text small">
-              <Icon icon={faUserFriends} title="Protected group" />
+            <div className="text-muted small">
+              <Icon icon={faUserFriends} /> Protected group
             </div>
           )}
         </div>
