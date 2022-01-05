@@ -2,11 +2,12 @@ import { useCallback, useRef, useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { intersection } from 'lodash';
 import { faTimes, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import { unhidePost, hideByName, removeRecentlyHiddenPost } from '../redux/action-creators';
-import { initialAsyncState } from '../redux/async-helpers';
-import { safeScrollBy } from '../services/unscroll';
-import { Icon } from './fontawesome-icons';
-import { Throbber } from './throbber';
+
+import { unhidePost, hideByName, removeRecentlyHiddenPost } from '../../redux/action-creators';
+import { initialAsyncState } from '../../redux/async-helpers';
+import { safeScrollBy } from '../../services/unscroll';
+import { Icon } from '../fontawesome-icons';
+import { Throbber } from '../throbber';
 
 export function PostRecentlyHidden({ id, initialTopOffset, isHidden, recipientNames }) {
   const dispatch = useDispatch();

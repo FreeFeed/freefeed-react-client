@@ -6,6 +6,7 @@
 
   &:hover {
     background-color: #ffc;
+
     :global(.dark-theme) & {
       background-color: $bg-color-lighter;
     }
@@ -14,6 +15,7 @@
   a {
     color: inherit;
     text-decoration: none;
+
     :global(.dark-theme) & {
       color: $text-color;
     }
@@ -36,20 +38,23 @@
 }
 
 .mainColumn {
-  width: 180px;
+  width: 200px;
 }
 
 .subscribersColumn {
   width: 110px;
 }
+
 .postsColumn {
   width: 140px;
 }
+
 .varietyColumn {
   width: 130px;
 }
+
 .dateColumn {
-  width: 120px;
+  width: 100px;
 }
 
 .groupRow {
@@ -58,6 +63,7 @@
     padding-left: 1em;
     border-bottom: 1px solid #ccc;
     text-align: right;
+
     &:first-child {
       padding-left: 0;
       text-align: left;
@@ -76,6 +82,7 @@
     padding-left: 1em;
     border-bottom: 2px solid #ccc;
     text-align: right;
+
     &:first-child {
       padding-left: 0;
       text-align: left;

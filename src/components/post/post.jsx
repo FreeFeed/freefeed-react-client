@@ -13,38 +13,40 @@ import {
   faGlobeAmericas,
   faAngleDoubleRight,
   faPaperclip,
+  faShare,
 } from '@fortawesome/free-solid-svg-icons';
 
-import { pluralForm } from '../utils';
-import { getFirstLinkToEmbed } from '../utils/parse-text';
-import { canonicalURI } from '../utils/canonical-uri';
-import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
-import { postReadmoreConfig } from '../utils/readmore-config';
-import { savePost, hideByName, unhideNames } from '../redux/action-creators';
-import { initialAsyncState } from '../redux/async-helpers';
-import { makeJpegIfNeeded } from '../utils/jpeg-if-needed';
-import { Throbber } from './throbber';
-import { ButtonLink } from './button-link';
+import { pluralForm } from '../../utils';
+import { getFirstLinkToEmbed } from '../../utils/parse-text';
+import { canonicalURI } from '../../utils/canonical-uri';
+import { READMORE_STYLE_COMPACT } from '../../utils/frontend-preferences-options';
+import { postReadmoreConfig } from '../../utils/readmore-config';
+import { savePost, hideByName, unhideNames } from '../../redux/action-creators';
+import { initialAsyncState } from '../../redux/async-helpers';
+import { makeJpegIfNeeded } from '../../utils/jpeg-if-needed';
 
+import { Throbber } from '../throbber';
+import { ButtonLink } from '../button-link';
+import Expandable from '../expandable';
+import PieceOfText from '../piece-of-text';
+import Dropzone from '../dropzone';
+import TimeDisplay from '../time-display';
+import LinkPreview from '../link-preview/preview';
+import SendTo from '../send-to';
+import ErrorBoundary from '../error-boundary';
+import { destinationsPrivacy } from '../select-utils';
+import { Icon } from '../fontawesome-icons';
+import { UserPicture } from '../user-picture';
+import { SubmitModeHint } from '../submit-mode-hint';
+import { SubmittableTextarea } from '../submittable-textarea';
+
+import { UnhideOptions, HideLink } from './post-hides-ui';
+import PostMoreLink from './post-more-link';
+import PostLikeLink from './post-like-link';
+import PostHeader from './post-header';
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
 import PostLikes from './post-likes';
-import PostVia from './post-via';
-import UserName from './user-name';
-import Expandable from './expandable';
-import PieceOfText from './piece-of-text';
-import Dropzone from './dropzone';
-import PostMoreLink from './post-more-link';
-import TimeDisplay from './time-display';
-import LinkPreview from './link-preview/preview';
-import SendTo from './send-to';
-import ErrorBoundary from './error-boundary';
-import { destinationsPrivacy } from './select-utils';
-import { Icon } from './fontawesome-icons';
-import { UnhideOptions, HideLink } from './post-hides-ui';
-import { UserPicture } from './user-picture';
-import { SubmitModeHint } from './submit-mode-hint';
-import { SubmittableTextarea } from './submittable-textarea';
 
 const attachmentsMaxCount = CONFIG.attachments.maxCount;
 
@@ -317,6 +319,58 @@ class Post extends Component {
     );
   }
 
+  getAriaLabels = () => {
+    const {
+      isSinglePost,
+      isDirect,
+      recipientNames,
+      createdBy,
+      omittedComments,
+      comments,
+      likes,
+      isNSFW,
+      createdAt,
+    } = this.props;
+
+    const { isPrivate, isProtected } = this.getPostPrivacy();
+
+    const role = `article${isSinglePost ? '' : ' listitem'}`;
+
+    const postTypeLabel = isDirect
+      ? 'Direct message'
+      : isPrivate
+      ? 'Private post'
+      : isProtected
+      ? 'Protected post'
+      : 'Public post';
+
+    const recipientsWithoutAuthor = recipientNames.filter((r) => r !== createdBy.username);
+    const recipientsLabel =
+      recipientsWithoutAuthor.length > 0
+        ? `to ${recipientsWithoutAuthor.join(', ')}`
+        : isDirect
+        ? 'to nobody'
+        : false;
+
+    const commentsAndLikesLabel = `with ${pluralForm(
+      omittedComments + comments.length,
+      'comment',
+    )} and ${pluralForm(likes.length, 'like')}`;
+
+    const postLabel = [
+      isNSFW ? 'Not safe for work' : false,
+      postTypeLabel,
+      `by ${createdBy.username}`,
+      recipientsLabel,
+      commentsAndLikesLabel,
+      `written on ${dateFormat(new Date(+createdAt), 'PPP')}`,
+    ]
+      .filter(Boolean)
+      .join(' ');
+
+    return { role, postLabel };
+  };
+
   render() {
     const { props } = this;
 
@@ -327,39 +381,6 @@ class Post extends Component {
       'direct-post': props.isDirect,
       'nsfw-post': props.isNSFW,
     });
-
-    const recipientCustomDisplay = function (recipient) {
-      if (recipient.id !== props.createdBy.id) {
-        return false;
-      }
-
-      const lastCharacter = recipient.username[recipient.username.length - 1];
-      const suffix = lastCharacter === 's' ? '\u2019 feed' : '\u2019s feed';
-
-      return `${recipient.username}${suffix}`;
-    };
-
-    let { recipients } = props;
-    // Check if the post has been only submitted to one recipient
-    // and if we can omit it
-    if (recipients.length === 1) {
-      // If the post is in user/group feed (one-source list), we should omit
-      // the only recipient, since it would be that feed.
-      if (recipients[0].id === props.createdBy.id) {
-        // When in a many-sources list (Home, Direct messages, My discussions),
-        // we should omit the only recipient if it's the author's feed.
-        recipients = [];
-      }
-    }
-    recipients = recipients.map((recipient, index) => (
-      <span key={index}>
-        <UserName className="post-recipient" user={recipient}>
-          {recipientCustomDisplay(recipient)}
-        </UserName>
-        {index < props.recipients.length - 2 ? ', ' : false}
-        {index === props.recipients.length - 2 ? ' and ' : false}
-      </span>
-    ));
 
     const canonicalPostURI = canonicalURI(props);
 
@@ -378,24 +399,13 @@ class Post extends Component {
     const didILikePost = _.find(props.usersLikedPost, { id: props.user.id });
     const likeLink =
       amIAuthenticated && !props.isEditable ? (
-        <>
-          {props.likeError ? (
-            <Icon icon={faExclamationTriangle} className="post-like-fail" title={props.likeError} />
-          ) : null}
-          <ButtonLink
-            className="post-action"
-            onClick={didILikePost ? this.unlikePost : this.likePost}
-          >
-            {didILikePost ? 'Un-like' : 'Like'}
-          </ButtonLink>
-          {props.isLiking ? (
-            <span className="post-like-throbber">
-              <Throbber />
-            </span>
-          ) : (
-            false
-          )}
-        </>
+        <PostLikeLink
+          onLikePost={this.likePost}
+          onUnlikePost={this.unlikePost}
+          didILikePost={didILikePost}
+          likeError={props.likeError}
+          isLiking={props.isLiking}
+        />
       ) : (
         false
       );
@@ -419,37 +429,7 @@ class Post extends Component {
       (attachment) => attachment.mediaType === 'image',
     );
 
-    const role = `article${props.isSinglePost ? '' : ' listitem'}`;
-
-    const postTypeLabel = props.isDirect
-      ? 'Direct message'
-      : isPrivate
-      ? 'Private post'
-      : isProtected
-      ? 'Protected post'
-      : 'Public post';
-
-    const recipientsWithoutAuthor = props.recipientNames.filter(
-      (r) => r !== props.createdBy.username,
-    );
-    const recipientsLabel =
-      recipientsWithoutAuthor.length > 0 ? `to ${recipientsWithoutAuthor.join(', ')}` : false;
-
-    const commentsAndLikesLabel = `with ${pluralForm(
-      props.omittedComments + props.comments.length,
-      'comment',
-    )} and ${pluralForm(props.likes.length, 'like')}`;
-
-    const postLabel = [
-      props.isNSFW ? 'Not safe for work' : false,
-      postTypeLabel,
-      `by ${props.createdBy.username}`,
-      recipientsLabel,
-      commentsAndLikesLabel,
-      `written on ${dateFormat(new Date(+props.createdAt), 'PPP')}`,
-    ]
-      .filter(Boolean)
-      .join(' ');
+    const { role, postLabel } = this.getAriaLabels();
 
     return (
       <div
@@ -490,16 +470,15 @@ class Post extends Component {
                   <div className="post-privacy-warning">{this.state.privacyWarning}</div>
                 </div>
               ) : (
-                <div className="post-header">
-                  <UserName className="post-author" user={props.createdBy} />
-                  {recipients.length > 0 ? ' to ' : false}
-                  {recipients}
-                  {this.props.isInHomeFeed ? (
-                    <PostVia post={this.props} me={this.props.user} />
-                  ) : (
-                    false
-                  )}
-                </div>
+                <PostHeader
+                  createdBy={props.createdBy}
+                  isDirect={props.isDirect}
+                  user={this.props.user}
+                  isInHomeFeed={this.props.isInHomeFeed}
+                  recipients={props.recipients}
+                  comments={props.comments}
+                  usersLikedPost={props.usersLikedPost}
+                />
               )}
               {props.isEditing ? (
                 <div className="post-editor">
@@ -614,72 +593,86 @@ class Post extends Component {
 
             <div className="dropzone-previews" />
 
-            <div className="post-footer" role="region" aria-label="Post footer">
-              <div className="post-footer-icon">
-                {isPrivate ? (
-                  <Icon
-                    icon={faLock}
-                    className="post-lock-icon post-private-icon"
-                    title="This entry is private"
-                    onClick={this.toggleTimestamps}
-                    role="button"
-                  />
-                ) : isProtected ? (
-                  <Icon
-                    icon={faUserFriends}
-                    className="post-lock-icon post-protected-icon"
-                    title={`This entry is only visible to ${CONFIG.siteTitle} users`}
-                    onClick={this.toggleTimestamps}
-                    role="button"
-                  />
-                ) : (
-                  <Icon
-                    icon={faGlobeAmericas}
-                    className="post-lock-icon post-public-icon"
-                    title="This entry is public"
-                    onClick={this.toggleTimestamps}
-                    role="button"
-                  />
-                )}
-              </div>
-              <div className="post-footer-content">
-                <span className="post-footer-block">
-                  <span className="post-footer-item">
-                    {props.isDirect && (
-                      <Icon
-                        icon={faAngleDoubleRight}
-                        className="post-direct-icon"
-                        title="This is a direct message"
-                      />
+            <div role="region" aria-label="Post footer">
+              <div className="post-footer">
+                <div className="post-footer-icon">
+                  {isPrivate ? (
+                    <Icon
+                      icon={faLock}
+                      className="post-lock-icon post-private-icon"
+                      title="This entry is private"
+                      onClick={this.toggleTimestamps}
+                      role="button"
+                    />
+                  ) : isProtected ? (
+                    <Icon
+                      icon={faUserFriends}
+                      className="post-lock-icon post-protected-icon"
+                      title={`This entry is only visible to ${CONFIG.siteTitle} users`}
+                      onClick={this.toggleTimestamps}
+                      role="button"
+                    />
+                  ) : (
+                    <Icon
+                      icon={faGlobeAmericas}
+                      className="post-lock-icon post-public-icon"
+                      title="This entry is public"
+                      onClick={this.toggleTimestamps}
+                      role="button"
+                    />
+                  )}
+                </div>
+                <div className="post-footer-content">
+                  <span className="post-footer-block">
+                    <span className="post-footer-item">
+                      {props.isDirect && (
+                        <Icon
+                          icon={faAngleDoubleRight}
+                          className="post-direct-icon"
+                          title="This is a direct message"
+                        />
+                      )}
+                      <Link to={canonicalPostURI} className="post-timestamp">
+                        <TimeDisplay
+                          timeStamp={+props.createdAt}
+                          absolute={this.state.forceAbsTimestamps || null}
+                        />
+                      </Link>
+                    </span>
+                    {props.commentsDisabled && (
+                      <span className="post-footer-item">
+                        <i>
+                          {props.isEditable || props.isModeratable
+                            ? 'Comments disabled (not for you)'
+                            : 'Comments disabled'}
+                        </i>
+                      </span>
                     )}
-                    <Link to={canonicalPostURI} className="post-timestamp">
-                      <TimeDisplay
-                        timeStamp={+props.createdAt}
-                        absolute={this.state.forceAbsTimestamps || null}
-                      />
+                  </span>
+                  <span className="post-footer-block" role="region">
+                    <span className="post-footer-item">{commentLink}</span>
+                    <span className="post-footer-item">{likeLink}</span>
+                    {props.hideEnabled && (
+                      <span className="post-footer-item" ref={this.hideLink}>
+                        {this.renderHideLink()}
+                      </span>
+                    )}
+                    <span className="post-footer-item">{moreLink}</span>
+                  </span>
+                </div>
+              </div>
+              {props.backlinksCount > 0 && (
+                <div className="post-footer">
+                  <div className="post-footer-icon">
+                    <Icon icon={faShare} className="post-footer-backlink-icon" />
+                  </div>
+                  <span className="post-footer-content">
+                    <Link href={`/search?q=${encodeURIComponent(props.id)}`}>
+                      {pluralForm(props.backlinksCount, 'reference')} to this post
                     </Link>
                   </span>
-                  {props.commentsDisabled && (
-                    <span className="post-footer-item">
-                      <i>
-                        {props.isEditable || props.isModeratable
-                          ? 'Comments disabled (not for you)'
-                          : 'Comments disabled'}
-                      </i>
-                    </span>
-                  )}
-                </span>
-                <span className="post-footer-block" role="region">
-                  <span className="post-footer-item">{commentLink}</span>
-                  <span className="post-footer-item">{likeLink}</span>
-                  {props.hideEnabled && (
-                    <span className="post-footer-item" ref={this.hideLink}>
-                      {this.renderHideLink()}
-                    </span>
-                  )}
-                  <span className="post-footer-item">{moreLink}</span>
-                </span>
-              </div>
+                </div>
+              )}
             </div>
 
             {this.state.unHideOpened && (

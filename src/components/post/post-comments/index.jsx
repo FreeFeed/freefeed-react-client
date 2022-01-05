@@ -1,13 +1,14 @@
 /* global CONFIG */
 import { createRef, Component } from 'react';
 
-import { preventDefault, pluralForm } from '../../utils';
-import { safeScrollBy } from '../../services/unscroll';
+import { preventDefault, pluralForm } from '../../../utils';
+import { safeScrollBy } from '../../../services/unscroll';
+import ErrorBoundary from '../../error-boundary';
+import { Icon } from '../../fontawesome-icons';
+import { faCommentPlus } from '../../fontawesome-custom-icons';
+import { SignInLink } from '../../sign-in-link';
+
 import PostComment from '../post-comment';
-import ErrorBoundary from '../error-boundary';
-import { Icon } from '../fontawesome-icons';
-import { faCommentPlus } from '../fontawesome-custom-icons';
-import { SignInLink } from '../sign-in-link';
 import { CollapseComments } from './collapse-comments';
 import ExpandComments from './expand-comments';
 import { LoadingComments } from './loading-comments';

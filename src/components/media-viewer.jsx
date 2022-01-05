@@ -11,14 +11,17 @@ import {
   getEmbedInfo as getInstagramEmbedInfo,
 } from './link-preview/instagram';
 
-const ImageAttachmentsLightbox = lazyComponent(() => import('./post-attachment-image-lightbox'), {
-  fallback: (
-    <div className="lightbox-loading">
-      <span>Loading lightbox...</span>
-    </div>
-  ),
-  errorMessage: "Couldn't load lightbox component",
-});
+const ImageAttachmentsLightbox = lazyComponent(
+  () => import('./post/post-attachment-image-lightbox'),
+  {
+    fallback: (
+      <div className="lightbox-loading">
+        <span>Loading lightbox...</span>
+      </div>
+    ),
+    errorMessage: "Couldn't load lightbox component",
+  },
+);
 
 export const getMediaType = (url) => {
   if (url.match(/\.(jpg|png|jpeg|webp|gif)(\?|$|#)/i)) {

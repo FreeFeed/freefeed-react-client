@@ -238,91 +238,15 @@ export const UserProfileHead = withRouter(
             {user.username}
           </div>
           <div>
-            {/* Privacy */}
-            <span className={styles.infoStatusSpan}>
-              {user.isGone ? (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faUserSlash} />
-                  </span>
-                  Deleted {user.type}
-                </>
-              ) : user.isPrivate === '1' ? (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faLock} />
-                  </span>
-                  Private {user.type === 'user' ? 'feed' : 'group'}
-                </>
-              ) : user.isProtected === '1' ? (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faUserFriends} />
-                  </span>
-                  Protected {user.type === 'user' ? 'feed' : 'group'}
-                </>
-              ) : (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faGlobeAmericas} />
-                  </span>
-                  Public {user.type === 'user' ? 'feed' : 'group'}
-                </>
-              )}
-            </span>
-            <span className={styles.infoStatusSpan}>
-              {/* Relationship */}
-              {isCurrentUser ? (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faSmile} />
-                  </span>
-                  It&#x2019;s you!
-                </>
-              ) : isBanned ? (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faBan} />
-                  </span>
-                  You&#x2019;ve blocked this user
-                </>
-              ) : inSubscriptions && inSubscribers ? (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faCheckCircle} />
-                  </span>
-                  Mutually subscribed
-                </>
-              ) : isCurrentUserAdmin ? (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faCheckSquare} />
-                  </span>
-                  You are an admin
-                </>
-              ) : inSubscriptions && user.type === 'user' ? (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faCheckCircle} />
-                  </span>
-                  You are subscribed
-                </>
-              ) : inSubscriptions && user.type === 'group' ? (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faCheckSquare} />
-                  </span>
-                  You are a member
-                </>
-              ) : inSubscribers ? (
-                <>
-                  <span className={styles.infoIcon}>
-                    <Icon icon={faCheckCircleO} />
-                  </span>
-                  Subscribed to you
-                </>
-              ) : null}
-            </span>
+            <PrivacyIndicator user={user} />
+            <RelationshipIndicator
+              user={user}
+              isCurrentUser={isCurrentUser}
+              isBanned={isBanned}
+              inSubscriptions={inSubscriptions}
+              inSubscribers={inSubscribers}
+              isCurrentUserAdmin={isCurrentUserAdmin}
+            />
           </div>
         </div>
         <div className={styles.description}>
@@ -331,32 +255,12 @@ export const UserProfileHead = withRouter(
         {currentUser && !isCurrentUser && (
           <>
             {inSubscriptions && (
-              <div className={styles.lists}>
-                {!inHomeFeedsStatus.success ? (
-                  'Loading lists...'
-                ) : (
-                  <>
-                    {activeHomeFeeds.length === 0 ? (
-                      'In no lists'
-                    ) : (
-                      <>
-                        {activeHomeFeeds.length === 1 ? 'In list:' : 'In lists:'}{' '}
-                        {activeHomeFeeds.map((h, i) => (
-                          <span key={h.id}>
-                            {i > 0 && ', '}
-                            <HomeFeedLink feed={h} />
-                          </span>
-                        ))}
-                      </>
-                    )}{' '}
-                    (
-                    <ButtonLink ref={subscrFormPivotRef} onClick={subscrFormToggle}>
-                      edit
-                    </ButtonLink>
-                    )
-                  </>
-                )}
-              </div>
+              <InListsIndicator
+                inHomeFeedsStatus={inHomeFeedsStatus}
+                activeHomeFeeds={activeHomeFeeds}
+                subscrFormPivotRef={subscrFormPivotRef}
+                subscrFormToggle={subscrFormToggle}
+              />
             )}
             <div className={styles.actions}>
               {isBanned ? (
@@ -521,6 +425,107 @@ export const UserProfileHead = withRouter(
     );
   }),
 );
+
+function PrivacyIndicator({ user }) {
+  const userOrGroup = user.type === 'user' ? 'feed' : 'group';
+
+  let icon = faGlobeAmericas;
+  let label = `Public ${userOrGroup}`;
+
+  if (user.isGone) {
+    icon = faUserSlash;
+    label = 'Deleted user';
+  } else if (user.isPrivate === '1') {
+    icon = faLock;
+    label = `Private ${userOrGroup}`;
+  } else if (user.isProtected === '1') {
+    icon = faUserFriends;
+    label = `Protected ${userOrGroup}`;
+  }
+
+  return (
+    <span className={styles.infoStatusSpan}>
+      <span className={styles.infoIcon}>
+        <Icon icon={icon} />
+      </span>
+      {label}
+    </span>
+  );
+}
+
+function InListsIndicator({
+  inHomeFeedsStatus,
+  activeHomeFeeds,
+  subscrFormPivotRef,
+  subscrFormToggle,
+}) {
+  if (!inHomeFeedsStatus.success) {
+    return <div className={styles.lists}>Loading lists...</div>;
+  }
+  return (
+    <div className={styles.lists}>
+      {activeHomeFeeds.length === 0 ? (
+        'In no lists'
+      ) : (
+        <>
+          {activeHomeFeeds.length === 1 ? 'In list:' : 'In lists:'}{' '}
+          {activeHomeFeeds.map((h, i) => (
+            <span key={h.id}>
+              {i > 0 && ', '}
+              <HomeFeedLink feed={h} />
+            </span>
+          ))}
+        </>
+      )}{' '}
+      <ButtonLink ref={subscrFormPivotRef} onClick={subscrFormToggle}>
+        edit
+      </ButtonLink>
+    </div>
+  );
+}
+
+function RelationshipIndicator({
+  user,
+  isCurrentUser,
+  isBanned,
+  inSubscriptions,
+  inSubscribers,
+  isCurrentUserAdmin,
+}) {
+  let icon;
+  let label;
+
+  if (isCurrentUser) {
+    icon = faSmile;
+    label = 'It’s you!';
+  } else if (isBanned) {
+    icon = faBan;
+    label = 'You’ve blocked this user';
+  } else if (inSubscriptions && inSubscribers) {
+    icon = faCheckCircle;
+    label = 'Mutually subscribed';
+  } else if (isCurrentUserAdmin) {
+    icon = faCheckSquare;
+    label = 'You are an admin';
+  } else if (inSubscriptions) {
+    icon = faCheckCircle;
+    label = `You are ${user.type === 'user' ? 'subscribed' : 'a member'}`;
+  } else if (inSubscribers) {
+    icon = faCheckCircleO;
+    label = 'Subscribed to you';
+  } else {
+    return null;
+  }
+
+  return (
+    <span className={styles.infoStatusSpan}>
+      <span className={styles.infoIcon}>
+        <Icon icon={icon} />
+      </span>
+      {label}
+    </span>
+  );
+}
 
 function StatLink({ value, title, linkTo, canFollow, className }) {
   let content;

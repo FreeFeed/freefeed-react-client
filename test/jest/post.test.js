@@ -5,11 +5,11 @@ import '@testing-library/jest-dom/extend-expect';
 import { createStore } from 'redux';
 import * as reactRedux from 'react-redux';
 
-jest.mock('../../src/components/post-comments', () => ({ comments }) => {
+jest.mock('../../src/components/post/post-comments', () => ({ comments }) => {
   return <div>{comments.length > 0 ? `Mocked ${comments.length} comments ` : ''}</div>;
 });
 
-jest.mock('../../src/components/post-attachments', () => ({ attachments }) => {
+jest.mock('../../src/components/post/post-attachments', () => ({ attachments }) => {
   return <div>{attachments.length > 0 ? `Mocked ${attachments.length} attachments` : ''}</div>;
 });
 
@@ -22,7 +22,7 @@ jest.mock('../../src/components/lazy-component', () => ({
     },
 }));
 
-import Post from '../../src/components/post';
+import Post from '../../src/components/post/post';
 import { successAsyncState } from '../../src/redux/async-helpers';
 
 const AUTHOR = {

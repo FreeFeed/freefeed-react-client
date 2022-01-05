@@ -2,10 +2,10 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import * as reactRedux from 'react-redux';
 
-import cachedFetch from '../../src/components/link-preview/cached-fetch';
+import cachedFetch from '../../src/components/link-preview/helpers/cached-fetch';
 import LinkPreview from '../../src/components/link-preview/preview';
 
-jest.mock('../../src/components/link-preview/cached-fetch');
+jest.mock('../../src/components/link-preview/helpers/cached-fetch');
 
 const renderLinkPreview = (props = {}) => {
   const defaultProps = { allowEmbedly: false };

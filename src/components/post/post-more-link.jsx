@@ -1,17 +1,18 @@
 import { useCallback, useEffect } from 'react';
 import { Portal } from 'react-portal';
-import { intentToScroll } from '../services/unscroll';
 
-import { confirmFirst } from '../utils';
-import { canonicalURI } from '../utils/canonical-uri';
-import { CLOSE_ON_CLICK_OUTSIDE } from './hooks/drop-down';
-import { useDropDownKbd } from './hooks/drop-down-kbd';
-import { useMediaQuery } from './hooks/media-query';
-import { useServerInfo } from './hooks/server-info';
+import { intentToScroll } from '../../services/unscroll';
+import { confirmFirst } from '../../utils';
+import { canonicalURI } from '../../utils/canonical-uri';
+import { CLOSE_ON_CLICK_OUTSIDE } from '../hooks/drop-down';
+import { useDropDownKbd } from '../hooks/drop-down-kbd';
+import { useMediaQuery } from '../hooks/media-query';
+import { useServerInfo } from '../hooks/server-info';
+import { MoreWithTriangle } from '../more-with-triangle';
+import { TimedMessage } from '../timed-message';
+import { ButtonLink } from '../button-link';
+
 import { PostMoreMenu } from './post-more-menu';
-import { MoreWithTriangle } from './more-with-triangle';
-import { TimedMessage } from './timed-message';
-import { ButtonLink } from './button-link';
 
 export default function PostMoreLink({ post, user, ...props }) {
   const fixedMenu = useMediaQuery('(max-width: 450px)');

@@ -69,16 +69,14 @@ class SendTo extends Component {
         defaultFeeds.push(props.defaultFeed);
       }
     }
-    const values = options.filter((opt) => defaultFeeds.includes(opt.value));
-    if (values.length === 0 && defaultFeeds.length > 0) {
-      values.push(...defaultFeeds.map((f) => ({ label: f, value: f })));
-    }
+    let values = [];
     if (props.isDirects && props.isEditing) {
-      // freeze default values
-      for (const val of values) {
-        if (defaultFeeds.includes(val.value)) {
-          val.clearableValue = false;
-        }
+      // Set and freeze default values
+      values.push(...defaultFeeds.map((f) => ({ label: f, value: f, clearableValue: false })));
+    } else {
+      values = options.filter((opt) => defaultFeeds.includes(opt.value));
+      if (values.length === 0 && defaultFeeds.length > 0) {
+        values.push(...defaultFeeds.map((f) => ({ label: f, value: f })));
       }
     }
     return {

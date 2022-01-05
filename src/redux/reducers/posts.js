@@ -419,6 +419,7 @@ export function posts(state = {}, action) {
           updatedAt: action.post.updatedAt,
           attachments: action.post.attachments || [],
           postedTo: action.post.postedTo,
+          backlinksCount: action.post.backlinksCount,
         },
       };
     }

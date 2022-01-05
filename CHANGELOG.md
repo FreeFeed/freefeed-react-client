@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.104.0] - Not released
+### Added
+- Backlinks indication under the post (in form of "N references to this post" link)
+- Allow users to leave the direct message (except the author of the message)
+- GitHub workflow for creating PR preview on surge.sh
+- Internal bugs related to the showing of direct post destination feeds during
+  and after editing
+
+### Changed
+- The link preview components was refactored to use the modern web APIs and the
+  modern React practices.
+
 ## [1.103.1] - 2021-11-12
 ### Fixed
 - Accept Apple-music urls without ?l= parameter

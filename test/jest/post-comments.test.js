@@ -5,7 +5,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { createStore } from 'redux';
 import * as reactRedux from 'react-redux';
 
-import PostComments from '../../src/components/post-comments';
+import PostComments from '../../src/components/post/post-comments';
 
 const AUTHOR = {
   id: 'user-id',
