@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Internal bugs related to the showing of direct post destination feeds during
   and after editing
 
+### Changed
+- The link preview components was refactored to use the modern web APIs and the
+  modern React practices.
+
 ## [1.103.1] - 2021-11-12
 ### Fixed
 - Accept Apple-music urls without ?l= parameter

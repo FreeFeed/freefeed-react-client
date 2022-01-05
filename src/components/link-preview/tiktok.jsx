@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as Sentry from '@sentry/react';
 
-import cachedFetch from './cached-fetch';
+import cachedFetch from './helpers/cached-fetch';
 
 const TIKTOK_VIDEO_RE = /^https?:\/\/(?:www\.)?tiktok\.com\/@.+?\/video\/(\d+)/i;
 const TIKTOK_SHORT_VIDEO_RE = /^https?:\/\/vm\.tiktok\.com\/(\w+)/i;

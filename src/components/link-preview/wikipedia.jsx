@@ -1,8 +1,8 @@
 import { memo, useState, useEffect, useMemo, useRef } from 'react';
 
-import cachedFetch from './cached-fetch';
-import FoldableContent from './scroll-helpers/foldable-content';
-import * as heightCache from './scroll-helpers/size-cache';
+import cachedFetch from './helpers/cached-fetch';
+import FoldableContent from './helpers/foldable-content';
+import * as heightCache from './helpers/size-cache';
 
 const WIKIPEDIA_RE = /^https?:\/\/(\w+)\.(?:m\.)?wikipedia\.org\/wiki\/([^/]+)/i;
 

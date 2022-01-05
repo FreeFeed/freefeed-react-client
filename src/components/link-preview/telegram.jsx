@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types';
-import { Component } from 'react';
+import { useEffect } from 'react';
 import { once } from 'lodash';
 
-import ScrollSafe from './scroll-helpers/scroll-safe';
-import * as heightCache from './scroll-helpers/size-cache';
+import * as heightCache from './helpers/size-cache';
+import FoldableContent from './helpers/foldable-content';
 
 const TG_POST_RE = /^https:\/\/t\.me\/[a-zA-Z]\w+\/(\d+)/;
 
@@ -11,17 +10,12 @@ export function canShowURL(url) {
   return TG_POST_RE.test(url);
 }
 
-class TelegramPreview extends Component {
-  static propTypes = { url: PropTypes.string.isRequired };
+export default function TelegramPreview({ url }) {
+  useEffect(() => void startEventListening(), []);
+  const [baseURL] = url.match(TG_POST_RE);
 
-  componentDidMount() {
-    startEventListening();
-  }
-
-  render() {
-    const { url } = this.props;
-    const [baseURL] = url.match(TG_POST_RE);
-    return (
+  return (
+    <FoldableContent>
       <div className="telegram-preview link-preview-content">
         <iframe
           src={`${baseURL}?embed=1`}
@@ -32,11 +26,9 @@ class TelegramPreview extends Component {
           style={{ height: heightCache.get(baseURL, 0) }}
         />
       </div>
-    );
-  }
+    </FoldableContent>
+  );
 }
-
-export default ScrollSafe(TelegramPreview);
 
 const startEventListening = once(() => window.addEventListener('message', onMessage));
 
