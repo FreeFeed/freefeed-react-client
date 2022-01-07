@@ -1,19 +1,8 @@
 import { forwardRef, useLayoutEffect, useState, useMemo, useCallback } from 'react';
 import { Link } from 'react-router';
 import cn from 'classnames';
-import {
-  faExclamationTriangle,
-  faLink,
-  faEdit,
-  faBookmark as faBookmarkSolid,
-  faSignOutAlt,
-} from '@fortawesome/free-solid-svg-icons';
-import {
-  faClock,
-  faCommentDots,
-  faTrashAlt,
-  faBookmark,
-} from '@fortawesome/free-regular-svg-icons';
+import { faLink, faEdit, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faCommentDots, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { noop } from 'lodash';
 import { useDispatch } from 'react-redux';
 
@@ -21,7 +10,6 @@ import { andJoin } from '../../utils/and-join';
 import { copyURL } from '../../utils/copy-url';
 import { leaveDirect } from '../../redux/action-creators';
 import { ButtonLink } from '../button-link';
-import { Throbber } from '../throbber';
 import { Icon } from '../fontawesome-icons';
 import TimeDisplay from '../time-display';
 
@@ -40,8 +28,6 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
       commentsDisabled = false,
       createdAt,
       updatedAt,
-      isSaved = false,
-      savePostStatus = {},
       createdBy: postCreatedBy,
       isDirect = false,
     },
@@ -53,7 +39,6 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
     perGroupDeleteEnabled = false,
     doAndClose,
     permalink,
-    toggleSave,
     fixed = false,
   },
   ref,
@@ -132,25 +117,7 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
         </ButtonLink>
       </div>
     )),
-    [
-      amIAuthenticated && (
-        <div className={styles.item} key="save-post">
-          <ButtonLink className={styles.link} onClick={doAndClose(toggleSave)}>
-            <Iconic icon={isSaved ? faBookmarkSolid : faBookmark}>
-              {isSaved ? 'Un-save' : 'Save'} post
-              {savePostStatus.loading && <Throbber />}
-              {savePostStatus.error && (
-                <Icon
-                  icon={faExclamationTriangle}
-                  className="post-like-fail"
-                  title={savePostStatus.errorText}
-                />
-              )}
-            </Iconic>
-          </ButtonLink>
-        </div>
-      ),
-    ],
+
     [
       isDirect && !isOwnPost && (
         <div className={styles.item} key="leave-direct">

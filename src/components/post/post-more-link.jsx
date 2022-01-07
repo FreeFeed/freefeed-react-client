@@ -9,7 +9,6 @@ import { useDropDownKbd } from '../hooks/drop-down-kbd';
 import { useMediaQuery } from '../hooks/media-query';
 import { useServerInfo } from '../hooks/server-info';
 import { MoreWithTriangle } from '../more-with-triangle';
-import { TimedMessage } from '../timed-message';
 import { ButtonLink } from '../button-link';
 
 import { PostMoreMenu } from './post-more-menu';
@@ -33,19 +32,6 @@ export default function PostMoreLink({ post, user, ...props }) {
   const perGroupDeleteEnabled = serverInfoStatus.success && serverInfo.features.perGroupsPostDelete;
 
   const canonicalPostURI = canonicalURI(post);
-
-  const { isSaved, savePostStatus } = post;
-
-  let label = 'More';
-  if (savePostStatus.loading) {
-    label = isSaved ? 'Un-saving...' : 'Saving...';
-  }
-  if (savePostStatus.success) {
-    label = <TimedMessage message={isSaved ? 'Saved!' : 'Un-saved!'}>More</TimedMessage>;
-  }
-  if (savePostStatus.error) {
-    label = <TimedMessage message="Error!">More</TimedMessage>;
-  }
 
   useEffect(() => {
     if (fixedMenu && opened) {
@@ -71,7 +57,7 @@ export default function PostMoreLink({ post, user, ...props }) {
         aria-haspopup
         aria-expanded={opened}
       >
-        <MoreWithTriangle>{label}</MoreWithTriangle>
+        <MoreWithTriangle>More</MoreWithTriangle>
       </ButtonLink>
       {opened && (
         <Portal>
