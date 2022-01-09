@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Show "you are subscribed" checkmark in "all groups" list
 
+### Changed
+- Increase p-break height in posts
+- Remove extra whitespace around post actions list
+
 ## [1.105.1] - 2022-01-05
 ### Added
 - Display an indicator between comments that are more than 6 days apart
