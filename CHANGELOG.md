@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Native player for video-files
 
+### Changed
+- Take Save out of "more" menu
+
 ## [1.105.1] - 2022-01-05
 ### Added
 - Display an indicator between comments that are more than 6 days apart
