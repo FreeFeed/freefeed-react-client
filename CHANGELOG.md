@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.106.0] - Not released
+### Added
+- Show "you are subscribed" checkmark in "all groups" list
+
 ## [1.105.1] - 2022-01-05
 ### Added
 - Display an indicator between comments that are more than 6 days apart
