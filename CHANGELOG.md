@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Take Save out of "more" menu
 - Increase p-break height in posts
+- Remove extra whitespace around post actions list
 
 ## [1.105.1] - 2022-01-05
 ### Added

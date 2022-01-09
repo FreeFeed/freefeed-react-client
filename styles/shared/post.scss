@@ -158,6 +158,7 @@ $post-line-height: rem(20px);
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
+  vertical-align: bottom;
 
   &:empty {
     display: none;
