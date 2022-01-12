@@ -44,6 +44,64 @@ import styles from './user-profile-head.module.scss';
 import { UserSubscriptionEditPopup } from './user-subscription-edit-popup';
 import { HomeFeedLink } from './home-feed-link';
 
+const UserStats = ({ user, canFollowStatLinks }) => {
+  const isNotGroup = user.type === 'user';
+
+  const { username } = user;
+
+  const subscriptions = parseInt(user.statistics.subscriptions);
+  const subscribers = parseInt(user.statistics.subscribers);
+  const comments = parseInt(user.statistics.comments);
+  const likes = parseInt(user.statistics.likes);
+
+  return (
+    <div className={styles.stats}>
+      {!user.isGone && user.statistics && (
+        <ul className={styles.statsItems}>
+          {isNotGroup && (
+            <StatLink
+              value={subscriptions}
+              title="subscription"
+              linkTo={`/${username}/subscriptions`}
+              canFollow={canFollowStatLinks}
+            />
+          )}
+
+          <StatLink
+            value={subscribers}
+            title="subscriber"
+            linkTo={`/${username}/subscribers`}
+            canFollow={canFollowStatLinks}
+          />
+
+          {isNotGroup && (
+            <>
+              <StatLink
+                title="All posts"
+                linkTo={`/search?q=${encodeURIComponent(`from:${username}`)}`}
+                canFollow={canFollowStatLinks}
+                className={styles.allPosts}
+              />
+              <StatLink
+                value={comments}
+                title="comment"
+                linkTo={`/${username}/comments`}
+                canFollow={canFollowStatLinks}
+              />
+              <StatLink
+                value={likes}
+                title="like"
+                linkTo={`/${username}/likes`}
+                canFollow={canFollowStatLinks}
+              />
+            </>
+          )}
+        </ul>
+      )}
+    </div>
+  );
+};
+
 export const UserProfileHead = withRouter(
   withKey(({ router }) => router.params.userName)(function UserProfileHead({ router }) {
     const username = router.params.userName.toLowerCase();
@@ -368,49 +426,9 @@ export const UserProfileHead = withRouter(
             </div>
           </>
         )}
-        <div className={styles.stats}>
-          {!user.isGone && user.statistics && (
-            <ul className={styles.statsItems}>
-              {user.type === 'user' && (
-                <StatLink
-                  value={parseInt(user.statistics.subscriptions)}
-                  title="subscription"
-                  linkTo={`/${user.username}/subscriptions`}
-                  canFollow={canFollowStatLinks}
-                />
-              )}
-              <StatLink
-                value={parseInt(user.statistics.subscribers)}
-                title="subscriber"
-                linkTo={`/${user.username}/subscribers`}
-                canFollow={canFollowStatLinks}
-              />
 
-              {user.type === 'user' && (
-                <>
-                  <StatLink
-                    title="All posts"
-                    linkTo={`/search?q=${encodeURIComponent(`from:${user.username}`)}`}
-                    canFollow={canFollowStatLinks}
-                    className={styles.allPosts}
-                  />
-                  <StatLink
-                    value={parseInt(user.statistics.comments)}
-                    title="comment"
-                    linkTo={`/${user.username}/comments`}
-                    canFollow={canFollowStatLinks}
-                  />
-                  <StatLink
-                    value={parseInt(user.statistics.likes)}
-                    title="like"
-                    linkTo={`/${user.username}/likes`}
-                    canFollow={canFollowStatLinks}
-                  />
-                </>
-              )}
-            </ul>
-          )}
-        </div>
+        <UserStats user={user} canFollowStatLinks={canFollowStatLinks} />
+
         {subscrFormOpened && (
           <Portal>
             <UserSubscriptionEditPopup
