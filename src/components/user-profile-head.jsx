@@ -224,6 +224,8 @@ export const UserProfileHead = withRouter(
       );
     }
 
+    const isAuthenticated = !!currentUser;
+
     return (
       <div className={styles.profile} role="region">
         <div className={styles.avatar}>
@@ -252,7 +254,7 @@ export const UserProfileHead = withRouter(
         <div className={styles.description}>
           <PieceOfText text={user.description} isExpanded={true} showMedia={doShowMedia} />
         </div>
-        {currentUser && !isCurrentUser && (
+        {isAuthenticated && !isCurrentUser && (
           <>
             {inSubscriptions && (
               <InListsIndicator
