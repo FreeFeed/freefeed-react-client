@@ -64,7 +64,7 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
       confirm(
         "Are you sure you want to leave this conversation? You won't be able to read it unless the author invites you back again.",
       ) && dispatch(leaveDirect(postId)),
-    [postId],
+    [dispatch, postId],
   );
 
   const amIAuthenticated = !!user.id;
