@@ -5,7 +5,7 @@ import { useField, useForm } from 'react-final-form-hooks';
 import { updateUser } from '../../../redux/action-creators';
 import { Throbber } from '../../throbber';
 import { PreventPageLeaving } from '../../prevent-page-leaving';
-import { RadioInput } from '../../form-utils';
+import { RadioInput, CheckboxInput } from '../../form-utils';
 import settingsStyles from '../settings.module.scss';
 
 const PUBLIC = 'public',
@@ -31,6 +31,7 @@ export default (function PrivacyForm() {
 
   const privacy = useField('privacy', form.form);
   const acceptDirectsFrom = useField('acceptDirectsFrom', form.form);
+  const sanitizeMediaMetadata = useField('sanitizeMediaMetadata', form.form);
 
   return (
     <form onSubmit={form.handleSubmit}>
@@ -80,6 +81,19 @@ export default (function PrivacyForm() {
         </div>
       </section>
 
+      <section className={settingsStyles.formSection}>
+        <h4 id="files">Your files</h4>
+
+        <div className="form-group">
+          <div className="checkbox">
+            <label>
+              <CheckboxInput field={sanitizeMediaMetadata} />
+              Remove geolocation and other sensitive metadata from photos and videos you post
+            </label>
+          </div>
+        </div>
+      </section>
+
       <div className="form-group">
         <button
           className="btn btn-primary"
@@ -108,6 +122,7 @@ function initialValues(userData) {
   return {
     privacy: privacyFlagsToString(userData),
     acceptDirectsFrom: userData.preferences?.acceptDirectsFrom,
+    sanitizeMediaMetadata: userData.preferences?.sanitizeMediaMetadata || false,
   };
 }
 
@@ -117,6 +132,7 @@ function onSubmit(id, dispatch) {
     dispatch(
       updateUser(id, undefined, undefined, isPrivate, isProtected, undefined, undefined, {
         acceptDirectsFrom: values.acceptDirectsFrom,
+        sanitizeMediaMetadata: values.sanitizeMediaMetadata,
       }),
     );
   };
