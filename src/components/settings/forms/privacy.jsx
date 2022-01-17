@@ -88,7 +88,7 @@ export default (function PrivacyForm() {
           <div className="checkbox">
             <label>
               <CheckboxInput field={sanitizeMediaMetadata} />
-              Remove geolocation and other sensitive metadata from photos and videos you post
+              Remove geolocation and other sensitive metadata from photos and videos you upload
             </label>
           </div>
         </div>
@@ -121,8 +121,8 @@ export default (function PrivacyForm() {
 function initialValues(userData) {
   return {
     privacy: privacyFlagsToString(userData),
-    acceptDirectsFrom: userData.preferences?.acceptDirectsFrom,
-    sanitizeMediaMetadata: userData.preferences?.sanitizeMediaMetadata || false,
+    acceptDirectsFrom: userData.preferences.acceptDirectsFrom,
+    sanitizeMediaMetadata: userData.preferences.sanitizeMediaMetadata,
   };
 }
 
