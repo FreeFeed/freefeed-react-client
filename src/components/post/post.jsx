@@ -371,16 +371,8 @@ class Post extends Component {
     return { role, postLabel };
   };
 
-  render() {
+  renderPostActions() {
     const { props } = this;
-
-    const postClass = classnames({
-      post: true,
-      'single-post': props.isSinglePost,
-      'timeline-post': !props.isSinglePost,
-      'direct-post': props.isDirect,
-      'nsfw-post': props.isNSFW,
-    });
 
     const canonicalPostURI = canonicalURI(props);
 
@@ -423,6 +415,104 @@ class Post extends Component {
         toggleSave={this.toggleSave}
       />
     );
+
+    return (
+      <div role="region" aria-label="Post footer">
+        <div className="post-footer">
+          <div className="post-footer-icon">
+            {isPrivate ? (
+              <Icon
+                icon={faLock}
+                className="post-lock-icon post-private-icon"
+                title="This entry is private"
+                onClick={this.toggleTimestamps}
+                role="button"
+              />
+            ) : isProtected ? (
+              <Icon
+                icon={faUserFriends}
+                className="post-lock-icon post-protected-icon"
+                title={`This entry is only visible to ${CONFIG.siteTitle} users`}
+                onClick={this.toggleTimestamps}
+                role="button"
+              />
+            ) : (
+              <Icon
+                icon={faGlobeAmericas}
+                className="post-lock-icon post-public-icon"
+                title="This entry is public"
+                onClick={this.toggleTimestamps}
+                role="button"
+              />
+            )}
+          </div>
+          <div className="post-footer-content">
+            <span className="post-footer-block">
+              <span className="post-footer-item">
+                {props.isDirect && (
+                  <Icon
+                    icon={faAngleDoubleRight}
+                    className="post-direct-icon"
+                    title="This is a direct message"
+                  />
+                )}
+                <Link to={canonicalPostURI} className="post-timestamp">
+                  <TimeDisplay
+                    timeStamp={+props.createdAt}
+                    absolute={this.state.forceAbsTimestamps || null}
+                  />
+                </Link>
+              </span>
+              {props.commentsDisabled && (
+                <span className="post-footer-item">
+                  <i>
+                    {props.isEditable || props.isModeratable
+                      ? 'Comments disabled (not for you)'
+                      : 'Comments disabled'}
+                  </i>
+                </span>
+              )}
+            </span>
+            <span className="post-footer-block" role="region">
+              <span className="post-footer-item">{commentLink}</span>
+              <span className="post-footer-item">{likeLink}</span>
+              {props.hideEnabled && (
+                <span className="post-footer-item" ref={this.hideLink}>
+                  {this.renderHideLink()}
+                </span>
+              )}
+              <span className="post-footer-item">{moreLink}</span>
+            </span>
+          </div>
+        </div>
+        {props.backlinksCount > 0 && (
+          <div className="post-footer">
+            <div className="post-footer-icon">
+              <Icon icon={faShare} className="post-footer-backlink-icon" />
+            </div>
+            <span className="post-footer-content">
+              <Link href={`/search?q=${encodeURIComponent(props.id)}`}>
+                {pluralForm(props.backlinksCount, 'reference')} to this post
+              </Link>
+            </span>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  render() {
+    const { props } = this;
+
+    const postClass = classnames({
+      post: true,
+      'single-post': props.isSinglePost,
+      'timeline-post': !props.isSinglePost,
+      'direct-post': props.isDirect,
+      'nsfw-post': props.isNSFW,
+    });
+
+    const canonicalPostURI = canonicalURI(props);
 
     const linkToEmbed = getFirstLinkToEmbed(props.body);
     const noImageAttachments = !this.attachments.some(
@@ -593,87 +683,7 @@ class Post extends Component {
 
             <div className="dropzone-previews" />
 
-            <div role="region" aria-label="Post footer">
-              <div className="post-footer">
-                <div className="post-footer-icon">
-                  {isPrivate ? (
-                    <Icon
-                      icon={faLock}
-                      className="post-lock-icon post-private-icon"
-                      title="This entry is private"
-                      onClick={this.toggleTimestamps}
-                      role="button"
-                    />
-                  ) : isProtected ? (
-                    <Icon
-                      icon={faUserFriends}
-                      className="post-lock-icon post-protected-icon"
-                      title={`This entry is only visible to ${CONFIG.siteTitle} users`}
-                      onClick={this.toggleTimestamps}
-                      role="button"
-                    />
-                  ) : (
-                    <Icon
-                      icon={faGlobeAmericas}
-                      className="post-lock-icon post-public-icon"
-                      title="This entry is public"
-                      onClick={this.toggleTimestamps}
-                      role="button"
-                    />
-                  )}
-                </div>
-                <div className="post-footer-content">
-                  <span className="post-footer-block">
-                    <span className="post-footer-item">
-                      {props.isDirect && (
-                        <Icon
-                          icon={faAngleDoubleRight}
-                          className="post-direct-icon"
-                          title="This is a direct message"
-                        />
-                      )}
-                      <Link to={canonicalPostURI} className="post-timestamp">
-                        <TimeDisplay
-                          timeStamp={+props.createdAt}
-                          absolute={this.state.forceAbsTimestamps || null}
-                        />
-                      </Link>
-                    </span>
-                    {props.commentsDisabled && (
-                      <span className="post-footer-item">
-                        <i>
-                          {props.isEditable || props.isModeratable
-                            ? 'Comments disabled (not for you)'
-                            : 'Comments disabled'}
-                        </i>
-                      </span>
-                    )}
-                  </span>
-                  <span className="post-footer-block" role="region">
-                    <span className="post-footer-item">{commentLink}</span>
-                    <span className="post-footer-item">{likeLink}</span>
-                    {props.hideEnabled && (
-                      <span className="post-footer-item" ref={this.hideLink}>
-                        {this.renderHideLink()}
-                      </span>
-                    )}
-                    <span className="post-footer-item">{moreLink}</span>
-                  </span>
-                </div>
-              </div>
-              {props.backlinksCount > 0 && (
-                <div className="post-footer">
-                  <div className="post-footer-icon">
-                    <Icon icon={faShare} className="post-footer-backlink-icon" />
-                  </div>
-                  <span className="post-footer-content">
-                    <Link href={`/search?q=${encodeURIComponent(props.id)}`}>
-                      {pluralForm(props.backlinksCount, 'reference')} to this post
-                    </Link>
-                  </span>
-                </div>
-              )}
-            </div>
+            {this.renderPostActions()}
 
             {this.state.unHideOpened && (
               <UnhideOptions
