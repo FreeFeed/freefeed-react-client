@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - New flag on the "Privacy" Settings page: "Remove geolocation and other
   sensitive metadata from photos and videos you post".
+- Show "you are subscribed" checkmark in "all groups" list
+
+### Changed
+- Increase p-break height in posts
+- Remove extra whitespace around post actions list
 
 ## [1.105.1] - 2022-01-05
 ### Added

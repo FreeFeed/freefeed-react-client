@@ -154,6 +154,7 @@ $post-line-height: rem(20px);
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
+  vertical-align: bottom;
 
   &:empty {
     display: none;
@@ -236,6 +237,10 @@ $post-line-height: rem(20px);
 // paragraph breaks
 .p-break {
   height: 0.35em;
+
+  .post-text & {
+    height: 0.65em;
+  }
 }
 
 // Used in both create-post and edit-post

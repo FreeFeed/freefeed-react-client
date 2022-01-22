@@ -22,6 +22,11 @@
   }
 }
 
+.caret {
+  margin-right: -14px;
+  margin-top: 1px;
+}
+
 .inactive {
   .caret {
     opacity: 0.33;
@@ -38,7 +43,7 @@
 }
 
 .mainColumn {
-  width: 200px;
+  width: 250px;
 }
 
 .subscribersColumn {
@@ -46,27 +51,31 @@
 }
 
 .postsColumn {
-  width: 140px;
+  width: 110px;
 }
 
 .varietyColumn {
-  width: 130px;
+  width: 100px;
 }
 
 .dateColumn {
-  width: 100px;
+  width: 110px;
 }
 
 .groupRow {
   td {
-    padding: 0.66em 0;
-    padding-left: 1em;
+    padding: 0.66em 1em;
     border-bottom: 1px solid #ccc;
     text-align: right;
 
     &:first-child {
       padding-left: 0;
+      padding-right: 0;
       text-align: left;
+    }
+
+    &:last-child {
+      padding-right: 0;
     }
 
     :global(.dark-theme) & {
@@ -77,11 +86,11 @@
 
 .headersRow {
   th {
-    vertical-align: top;
-    padding: 0.5em 0;
-    padding-left: 1em;
+    vertical-align: bottom;
+    padding: 0.5em 1em;
     border-bottom: 2px solid #ccc;
     text-align: right;
+    line-height: 1.2em;
 
     &:first-child {
       padding-left: 0;
