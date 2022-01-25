@@ -21,6 +21,12 @@ export default memo(function SignInPage() {
   const user = useSelector((state) => state.user || null);
   const isLoggedIn = user?.id && user?.type === 'user';
 
+  const textSignUp = (
+    <Link to={`/signup${window.location.search}`} style={{ textDecoration: 'underline' }}>
+      Fill a sign up form
+    </Link>
+  );
+
   return (
     <div className="box">
       <div className="box-header-timeline" role="heading">
@@ -44,21 +50,13 @@ export default memo(function SignInPage() {
           {providers.length > 0 ? (
             <>
               <p>
-                <Link to="/signup" style={{ textDecoration: 'underline' }}>
-                  Fill a sign up form
-                </Link>{' '}
-                to create an account manually or just click on one of the social network buttons
-                above.
+                {textSignUp} to create an account manually or just click on one of the social
+                network buttons above.
               </p>
               <p>We will create an account for you based on the data from the social network.</p>
             </>
           ) : (
-            <p>
-              <Link to="/signup" style={{ textDecoration: 'underline' }}>
-                Fill a sign up form
-              </Link>{' '}
-              to create an account.
-            </p>
+            <p>{textSignUp} to create an account.</p>
           )}
         </div>
       </div>
