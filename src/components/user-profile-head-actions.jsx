@@ -8,6 +8,7 @@ import { Icon } from './fontawesome-icons';
 
 import styles from './user-profile-head.module.scss';
 
+// eslint-disable-next-line complexity
 export function UserProfileHeadActions(props) {
   const {
     user,

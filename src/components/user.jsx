@@ -107,6 +107,7 @@ const UserHandler = (props) => {
   );
 };
 
+// eslint-disable-next-line complexity
 function selectState(state, ownProps) {
   const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
   const anonymous = !authenticated;
