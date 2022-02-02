@@ -114,14 +114,15 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
       ),
       (isEditable || isModeratable) && (
         <div className={styles.item} key="toggle-comments">
-          <ButtonLink
-            className={styles.link}
-            onClick={commentsDisabled ? doAndClose(enableComments) : doAndClose(disableComments)}
-          >
-            <Iconic icon={faCommentDots}>
-              {commentsDisabled ? 'Enable comments' : 'Disable comments'}
-            </Iconic>
-          </ButtonLink>
+          {commentsDisabled ? (
+            <ButtonLink className={styles.link} onClick={doAndClose(enableComments)}>
+              <Iconic icon={faCommentDots}>Enable comments</Iconic>
+            </ButtonLink>
+          ) : (
+            <ButtonLink className={styles.link} onClick={doAndClose(disableComments)}>
+              <Iconic icon={faCommentDots}>Disable comments</Iconic>
+            </ButtonLink>
+          )}
         </div>
       ),
     ],
