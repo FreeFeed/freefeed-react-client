@@ -5,6 +5,7 @@ import { pluralForm } from '../utils';
 import CreatePost from './create-post';
 import ErrorBoundary from './error-boundary';
 import { UserProfileHead } from './user-profile-head';
+import { SubscriptionRequestsAlert } from './susbscription-requests-alert';
 
 export default function UserProfile(props) {
   const authenticated = useSelector((state) => state.authenticated);
@@ -16,9 +17,10 @@ export default function UserProfile(props) {
   return (
     <div>
       <ErrorBoundary>
-        <UserProfileHead />
+        {props.isItMe && !props.isLoading ? <SubscriptionRequestsAlert /> : false}
+
         {groupRequestsCount > 0 && (
-          <p className="alert alert-info">
+          <p className="subscriptions-request-alert">
             <span className="message">
               You have{' '}
               <Link to="/groups">{pluralForm(groupRequestsCount, 'subscription request')}</Link> to
@@ -26,6 +28,8 @@ export default function UserProfile(props) {
             </span>
           </p>
         )}
+
+        <UserProfileHead />
 
         {props.canIPostHere && (
           <CreatePost

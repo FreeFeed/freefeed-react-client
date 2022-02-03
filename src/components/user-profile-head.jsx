@@ -13,11 +13,7 @@ import {
   faCheckSquare,
   faUserSlash,
 } from '@fortawesome/free-solid-svg-icons';
-import {
-  faSmile,
-  faCheckCircle as faCheckCircleO,
-  faClock,
-} from '@fortawesome/free-regular-svg-icons';
+import { faSmile, faCheckCircle as faCheckCircleO } from '@fortawesome/free-regular-svg-icons';
 
 import { pluralForm } from '../utils';
 import { initialAsyncState } from '../redux/async-helpers';
@@ -43,6 +39,65 @@ import { useDropDown, BOTTOM_RIGHT, CLOSE_ON_CLICK_OUTSIDE } from './hooks/drop-
 import styles from './user-profile-head.module.scss';
 import { UserSubscriptionEditPopup } from './user-subscription-edit-popup';
 import { HomeFeedLink } from './home-feed-link';
+import { UserProfileHeadActions } from './user-profile-head-actions';
+
+const UserStats = ({ user, canFollowStatLinks }) => {
+  const isNotGroup = user.type === 'user';
+
+  const { username } = user;
+
+  const subscriptions = parseInt(user.statistics.subscriptions);
+  const subscribers = parseInt(user.statistics.subscribers);
+  const comments = parseInt(user.statistics.comments);
+  const likes = parseInt(user.statistics.likes);
+
+  return (
+    <div className={styles.stats}>
+      {!user.isGone && user.statistics && (
+        <ul className={styles.statsItems}>
+          {isNotGroup && (
+            <StatLink
+              value={subscriptions}
+              title="subscription"
+              linkTo={`/${username}/subscriptions`}
+              canFollow={canFollowStatLinks}
+            />
+          )}
+
+          <StatLink
+            value={subscribers}
+            title="subscriber"
+            linkTo={`/${username}/subscribers`}
+            canFollow={canFollowStatLinks}
+          />
+
+          {isNotGroup && (
+            <>
+              <StatLink
+                title="All posts"
+                linkTo={`/search?q=${encodeURIComponent(`from:${username}`)}`}
+                canFollow={canFollowStatLinks}
+                className={styles.allPosts}
+              />
+              <StatLink
+                value={comments}
+                title="comment"
+                linkTo={`/${username}/comments`}
+                canFollow={canFollowStatLinks}
+              />
+              <StatLink
+                value={likes}
+                title="like"
+                linkTo={`/${username}/likes`}
+                canFollow={canFollowStatLinks}
+              />
+            </>
+          )}
+        </ul>
+      )}
+    </div>
+  );
+};
 
 export const UserProfileHead = withRouter(
   withKey(({ router }) => router.params.userName)(function UserProfileHead({ router }) {
@@ -224,6 +279,8 @@ export const UserProfileHead = withRouter(
       );
     }
 
+    const isAuthenticated = !!currentUser;
+
     return (
       <div className={styles.profile} role="region">
         <div className={styles.avatar}>
@@ -252,7 +309,7 @@ export const UserProfileHead = withRouter(
         <div className={styles.description}>
           <PieceOfText text={user.description} isExpanded={true} showMedia={doShowMedia} />
         </div>
-        {currentUser && !isCurrentUser && (
+        {isAuthenticated && !isCurrentUser && (
           <>
             {inSubscriptions && (
               <InListsIndicator
@@ -262,101 +319,26 @@ export const UserProfileHead = withRouter(
                 subscrFormToggle={subscrFormToggle}
               />
             )}
-            <div className={styles.actions}>
-              {isBanned ? (
-                // User is banned so the only action is to unban
-                <ul className={styles.actionsList}>
-                  <li>
-                    <ActionLink {...toggleBanned}>Unblock</ActionLink>
-                  </li>
-                </ul>
-              ) : (
-                <>
-                  {/*
-                   * Left block is for main/positive actions:
-                   * Subscribe/Unsubscribe, Send request, Direct message (for users)
-                   */}
-                  <ul className={styles.actionsList}>
-                    {inSubscriptions && !isCurrentUserAdmin && (
-                      <li>
-                        <ActionLink {...doUnsubscribe}>Unsubscribe</ActionLink>
-                      </li>
-                    )}
-                    {!user.isGone && !inSubscriptions && user.isPrivate === '0' && (
-                      <li>
-                        <ButtonLink ref={subscrFormPivotRef} onClick={subscrFormToggle}>
-                          Subscribe
-                        </ButtonLink>
-                      </li>
-                    )}
-                    {!user.isGone && !inSubscriptions && user.isPrivate === '1' && (
-                      <li>
-                        {requestSent ? (
-                          <>
-                            <Icon icon={faClock} /> Request sent (
-                            <ActionLink {...doRevokeRequest}>revoke</ActionLink>)
-                          </>
-                        ) : (
-                          <ButtonLink ref={subscrFormPivotRef} onClick={subscrFormToggle}>
-                            Request a subscription
-                          </ButtonLink>
-                        )}
-                      </li>
-                    )}
-                    {user.type === 'user' && acceptsDirects && (
-                      <li>
-                        <Link to={`/filter/direct?to=${user.username}`}>Direct message</Link>
-                      </li>
-                    )}
-                    {isCurrentUserAdmin && (
-                      <>
-                        <li>
-                          <Link to={`/${user.username}/settings`}>Group settings</Link>
-                        </li>
-                        <li>
-                          <Link to={`/${user.username}/manage-subscribers`}>Manage members</Link>
-                        </li>
-                      </>
-                    )}
-                  </ul>
-                  {/*
-                   * Right block is for secondary or negative actions:
-                   * Ban (for users), Hide in Home, Unsubscribe from me, Pin/unpin group
-                   */}
-                  <ul className={cn(styles.actionsList, styles.actionsListRight)}>
-                    {inSubscribers && currentUser.isPrivate === '1' && (
-                      <li>
-                        <ActionLink {...unsubFromMe}>Remove from subscribers</ActionLink>
-                      </li>
-                    )}
-                    {!user.isGone && user.type === 'group' && inSubscriptions && (
-                      <>
-                        <li>
-                          <Link to={`/filter/direct?invite=${user.username}`}>Invite</Link>
-                        </li>
-                        <li>
-                          <ActionLink {...togglePinned}>
-                            {isPinned ? 'Unpin from sidebar' : 'Pin to sidebar'}
-                          </ActionLink>
-                        </li>
-                      </>
-                    )}
-                    {!user.isGone && (
-                      <li>
-                        <ActionLink {...toggleHidden}>
-                          {isHidden ? 'Unhide' : 'Hide'} in Home
-                        </ActionLink>
-                      </li>
-                    )}
-                    {user.type === 'user' && !inSubscriptions && (
-                      <li>
-                        <ActionLink {...toggleBanned}>Block user</ActionLink>
-                      </li>
-                    )}
-                  </ul>
-                </>
-              )}
-            </div>
+            <UserProfileHeadActions
+              user={user}
+              currentUser={currentUser}
+              isBanned={isBanned}
+              toggleBanned={toggleBanned}
+              inSubscriptions={inSubscriptions}
+              isCurrentUserAdmin={isCurrentUserAdmin}
+              doUnsubscribe={doUnsubscribe}
+              subscrFormPivotRef={subscrFormPivotRef}
+              subscrFormToggle={subscrFormToggle}
+              requestSent={requestSent}
+              doRevokeRequest={doRevokeRequest}
+              acceptsDirects={acceptsDirects}
+              inSubscribers={inSubscribers}
+              unsubFromMe={unsubFromMe}
+              togglePinned={togglePinned}
+              isPinned={isPinned}
+              toggleHidden={toggleHidden}
+              isHidden={isHidden}
+            />
             <div className={styles.errorsList}>
               {actionErrors.map((error, i) => (
                 <p className="alert alert-danger" role="alert" key={i}>
@@ -366,49 +348,9 @@ export const UserProfileHead = withRouter(
             </div>
           </>
         )}
-        <div className={styles.stats}>
-          {!user.isGone && user.statistics && (
-            <ul className={styles.statsItems}>
-              {user.type === 'user' && (
-                <StatLink
-                  value={parseInt(user.statistics.subscriptions)}
-                  title="subscription"
-                  linkTo={`/${user.username}/subscriptions`}
-                  canFollow={canFollowStatLinks}
-                />
-              )}
-              <StatLink
-                value={parseInt(user.statistics.subscribers)}
-                title="subscriber"
-                linkTo={`/${user.username}/subscribers`}
-                canFollow={canFollowStatLinks}
-              />
 
-              {user.type === 'user' && (
-                <>
-                  <StatLink
-                    title="All posts"
-                    linkTo={`/search?q=${encodeURIComponent(`from:${user.username}`)}`}
-                    canFollow={canFollowStatLinks}
-                    className={styles.allPosts}
-                  />
-                  <StatLink
-                    value={parseInt(user.statistics.comments)}
-                    title="comment"
-                    linkTo={`/${user.username}/comments`}
-                    canFollow={canFollowStatLinks}
-                  />
-                  <StatLink
-                    value={parseInt(user.statistics.likes)}
-                    title="like"
-                    linkTo={`/${user.username}/likes`}
-                    canFollow={canFollowStatLinks}
-                  />
-                </>
-              )}
-            </ul>
-          )}
-        </div>
+        <UserStats user={user} canFollowStatLinks={canFollowStatLinks} />
+
         {subscrFormOpened && (
           <Portal>
             <UserSubscriptionEditPopup
@@ -551,15 +493,4 @@ function StatLink({ value, title, linkTo, canFollow, className }) {
   }
 
   return <li className={cn(styles.statlink, className)}>{content}</li>;
-}
-
-function ActionLink({ onClick, status = null, children }) {
-  return (
-    <>
-      {status?.loading && <Throbber className={styles.actionLinkThrobber} />}
-      <ButtonLink onClick={onClick} disabled={status?.loading}>
-        {children}
-      </ButtonLink>
-    </>
-  );
 }
