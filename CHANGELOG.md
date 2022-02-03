@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.107.0] - Not released
 
+## [1.106.1] - 2022-02-03
+### Fixed
+- Re-release. 1.106.0 has incorrect merge.
+
 ## [1.106.0] - 2022-02-03
 ### Added
 - New flag on the "Privacy" Settings page: "Remove geolocation and other
