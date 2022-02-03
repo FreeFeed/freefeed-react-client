@@ -11,8 +11,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Take Save out of "more" menu
+
+## [1.106.0] - 2022-02-03
+### Added
+- New flag on the "Privacy" Settings page: "Remove geolocation and other
+  sensitive metadata from photos and videos you post".
+- Show "you are subscribed" checkmark in "all groups" list
+- Display subscription requests alert box on user's profile feed
+- "You are subscribed" checkmark in the "All groups" page
+
+### Changed
 - Increase p-break height in posts
 - Remove extra whitespace around post actions list
+
+### Fixed
+- Keep "back=" in URL when linking from "Sign in" to "Sign up"
 
 ## [1.105.1] - 2022-01-05
 ### Added
