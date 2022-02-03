@@ -64,7 +64,7 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
       confirm(
         "Are you sure you want to leave this conversation? You won't be able to read it unless the author invites you back again.",
       ) && dispatch(leaveDirect(postId)),
-    [postId],
+    [dispatch, postId],
   );
 
   const amIAuthenticated = !!user.id;
@@ -114,14 +114,15 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
       ),
       (isEditable || isModeratable) && (
         <div className={styles.item} key="toggle-comments">
-          <ButtonLink
-            className={styles.link}
-            onClick={commentsDisabled ? doAndClose(enableComments) : doAndClose(disableComments)}
-          >
-            <Iconic icon={faCommentDots}>
-              {commentsDisabled ? 'Enable comments' : 'Disable comments'}
-            </Iconic>
-          </ButtonLink>
+          {commentsDisabled ? (
+            <ButtonLink className={styles.link} onClick={doAndClose(enableComments)}>
+              <Iconic icon={faCommentDots}>Enable comments</Iconic>
+            </ButtonLink>
+          ) : (
+            <ButtonLink className={styles.link} onClick={doAndClose(disableComments)}>
+              <Iconic icon={faCommentDots}>Disable comments</Iconic>
+            </ButtonLink>
+          )}
         </div>
       ),
     ],

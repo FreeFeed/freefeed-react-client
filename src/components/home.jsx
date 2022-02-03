@@ -1,15 +1,15 @@
-import { memo, useCallback } from 'react';
+import { useCallback } from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
-import { Link, withRouter } from 'react-router';
+import { withRouter } from 'react-router';
 
 import { createPost, resetPostCreateForm, expandSendTo, home } from '../redux/action-creators';
-import { pluralForm } from '../utils';
 import { postActions } from './select-utils';
 import CreatePost from './create-post';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
 import FeedOptionsSwitch from './feed-options-switch';
 import Welcome from './welcome';
+import { SubscriptionRequestsAlert } from './susbscription-requests-alert';
 import ErrorBoundary from './error-boundary';
 import { ButtonLink } from './button-link';
 import { useBool } from './hooks/bool';
@@ -71,7 +71,7 @@ const FeedHandler = (props) => {
         </div>
         {isEditing && <ListEditor listId={feedId} close={closeEditor} />}
 
-        <SubscrRequests />
+        <SubscriptionRequestsAlert className="box-message" />
 
         <PaginatedView firstPageHead={createPostComponent} {...props}>
           <Feed {...props} isInHomeFeed={!props.feedIsLoading} />
@@ -111,44 +111,6 @@ function selectActions(dispatch) {
 }
 
 export default connect(selectState, selectActions)(FeedHandler);
-
-export const SubscrRequests = memo(function SubscrRequests() {
-  const userRequestsCount = useSelector((state) => state.userRequestsCount);
-  const groupRequestsCount = useSelector((state) => state.groupRequestsCount);
-
-  const uLink = userRequestsCount && (
-    <Link key="uLink" to="/friends?show=requests">
-      {pluralForm(userRequestsCount, 'subscription request')}
-    </Link>
-  );
-
-  const gLink = groupRequestsCount && (
-    <Link key="gLink" to="/friends?show=requests">
-      {pluralForm(groupRequestsCount, 'group subscription request')}
-    </Link>
-  );
-
-  const links = [uLink, gLink].filter(Boolean);
-  if (links.length === 0) {
-    return null;
-  }
-
-  return (
-    <div className="box-message alert alert-info">
-      <span className="message">
-        <span>
-          <span>You have </span>
-          {links.map((link, i) => (
-            <span key={link.key}>
-              {i > 0 && ' and '}
-              {link}
-            </span>
-          ))}
-        </span>
-      </span>
-    </div>
-  );
-});
 
 export const TopHomeSelector = withRouter(function TopHomeSelector({ router, id, feedLabelId }) {
   const homeFeeds = useSelector((state) => state.homeFeeds);

@@ -202,101 +202,134 @@ function playerURLFromVimeo(url, withoutAutoplay) {
   return playerUrl.toString();
 }
 
-export async function getVideoInfo(url, withoutAutoplay) {
-  switch (getVideoType(url)) {
-    case T_YOUTUBE_VIDEO: {
-      const videoID = getVideoId(url);
-      return {
-        byline: `Open on YouTube`,
-        aspectRatio: aspectRatio.set(url, 9 / 16),
-        previewURL: `https://img.youtube.com/vi/${videoID}/hqdefault.jpg`,
-        playerURL: `https://www.youtube.com/embed/${videoID}?rel=0&fs=1${
-          withoutAutoplay ? '' : '&autoplay=1'
-        }&start=${youtubeStartTime(url)}`,
-      };
-    }
-    case T_VIMEO_VIDEO: {
-      const data = await cachedFetch(
-        `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(url)}`,
-      );
-      if (data.error) {
-        return { error: data.error };
-      }
-      if (!('title' in data)) {
-        return { error: data.error ? data.error : 'error loading data' };
-      }
+function getYoutubeVideoInfo(url, withoutAutoplay) {
+  const videoID = getVideoId(url);
 
-      const playerURL = playerURLFromVimeo(url, withoutAutoplay);
-      return {
-        byline: `${data.title} by ${data.author_name}`,
-        aspectRatio: aspectRatio.set(url, data.height / data.width),
-        previewURL: data.thumbnail_url.replace(/\d+x\d+/, '450'),
-        playerURL,
-      };
-    }
-    case T_COUB_VIDEO: {
-      const data = await cachedFetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`);
-      if (data.error) {
-        return { error: data.error };
-      }
-      if (!('title' in data)) {
-        return { error: data.error ? data.error : 'error loading data' };
-      }
-      return {
-        byline: `${data.title} by ${data.author_name}`,
-        aspectRatio: aspectRatio.set(url, data.height / data.width),
-        previewURL: data.thumbnail_url,
-        playerURL: `https://coub.com/embed/${getVideoId(url)}${
-          withoutAutoplay ? '' : '?autostart=true'
-        }`,
-      };
-    }
-    case T_IMGUR_VIDEO: {
-      const id = getVideoId(url);
-      const previewURL = `https://i.imgur.com/${id}h.jpg`;
-      try {
-        const img = await loadImage(previewURL);
-        return {
-          byline: 'View at Imgur',
-          previewURL,
-          aspectRatio: aspectRatio.set(url, img.height / img.width),
-          videoURL: `https://i.imgur.com/${id}.mp4`,
-        };
-      } catch (e) {
-        return { error: e.message };
-      }
-    }
-    case T_GFYCAT: {
-      const id = getVideoId(url);
-      const data = await cachedFetch(`https://api.gfycat.com/v1/gfycats/${encodeURIComponent(id)}`);
-      if (!data.gfyItem) {
-        return { error: data.message || data.errorMessage || 'invalid gfycat API response' };
-      }
-      return {
-        byline: `${data.gfyItem.title} at Gfycat`,
-        previewURL: data.gfyItem.mobilePosterUrl,
-        aspectRatio: aspectRatio.set(url, data.gfyItem.height / data.gfyItem.width),
-        videoURL: data.gfyItem.mobileUrl,
-      };
-    }
-    case T_GIPHY: {
-      const data = await cachedFetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`);
-      if (data.error) {
-        return { error: data.error };
-      }
-      if (!('title' in data)) {
-        return { error: data.error ? data.error : 'error loading data' };
-      }
-      return {
-        byline: `${data.title} by ${data.author_name}`,
-        aspectRatio: aspectRatio.set(url, data.height / data.width),
-        previewURL: data.media_url,
-        mediaURL: data.media_url,
-        width: data.width,
-        height: data.height,
-      };
-    }
+  return {
+    byline: `Open on YouTube`,
+    aspectRatio: aspectRatio.set(url, 9 / 16),
+    previewURL: `https://img.youtube.com/vi/${videoID}/hqdefault.jpg`,
+    playerURL: `https://www.youtube.com/embed/${videoID}?rel=0&fs=1${
+      withoutAutoplay ? '' : '&autoplay=1'
+    }&start=${youtubeStartTime(url)}`,
+  };
+}
+
+async function getVimeoVideoInfo(url, withoutAutoplay) {
+  const data = await cachedFetch(
+    `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(url)}`,
+  );
+
+  if (data.error) {
+    return { error: data.error };
   }
+
+  if (!('title' in data)) {
+    return { error: data.error ? data.error : 'error loading data' };
+  }
+
+  const playerURL = playerURLFromVimeo(url, withoutAutoplay);
+
+  return {
+    byline: `${data.title} by ${data.author_name}`,
+    aspectRatio: aspectRatio.set(url, data.height / data.width),
+    previewURL: data.thumbnail_url.replace(/\d+x\d+/, '450'),
+    playerURL,
+  };
+}
+
+async function getCoubVideoInfo(url, withoutAutoplay) {
+  const data = await cachedFetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`);
+
+  if (data.error) {
+    return { error: data.error };
+  }
+
+  if (!('title' in data)) {
+    return { error: data.error ? data.error : 'error loading data' };
+  }
+
+  return {
+    byline: `${data.title} by ${data.author_name}`,
+    aspectRatio: aspectRatio.set(url, data.height / data.width),
+    previewURL: data.thumbnail_url,
+    playerURL: `https://coub.com/embed/${getVideoId(url)}${
+      withoutAutoplay ? '' : '?autostart=true'
+    }`,
+  };
+}
+
+async function getImgurVideoInfo(url) {
+  const id = getVideoId(url);
+  const previewURL = `https://i.imgur.com/${id}h.jpg`;
+
+  try {
+    const img = await loadImage(previewURL);
+
+    return {
+      byline: 'View at Imgur',
+      previewURL,
+      aspectRatio: aspectRatio.set(url, img.height / img.width),
+      videoURL: `https://i.imgur.com/${id}.mp4`,
+    };
+  } catch (e) {
+    return { error: e.message };
+  }
+}
+
+async function getGfycatVideoInfo(url) {
+  const id = getVideoId(url);
+  const data = await cachedFetch(`https://api.gfycat.com/v1/gfycats/${encodeURIComponent(id)}`);
+
+  if (!data.gfyItem) {
+    return { error: data.message || data.errorMessage || 'invalid gfycat API response' };
+  }
+
+  return {
+    byline: `${data.gfyItem.title} at Gfycat`,
+    previewURL: data.gfyItem.mobilePosterUrl,
+    aspectRatio: aspectRatio.set(url, data.gfyItem.height / data.gfyItem.width),
+    videoURL: data.gfyItem.mobileUrl,
+  };
+}
+
+async function getGiphyVideoInfo(url) {
+  const data = await cachedFetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`);
+
+  if (data.error) {
+    return { error: data.error };
+  }
+
+  if (!('title' in data)) {
+    return { error: data.error ? data.error : 'error loading data' };
+  }
+
+  return {
+    byline: `${data.title} by ${data.author_name}`,
+    aspectRatio: aspectRatio.set(url, data.height / data.width),
+    previewURL: data.media_url,
+    mediaURL: data.media_url,
+    width: data.width,
+    height: data.height,
+  };
+}
+
+const videoHandlers = {
+  T_YOUTUBE_VIDEO: getYoutubeVideoInfo,
+  T_VIMEO_VIDEO: getVimeoVideoInfo,
+  T_COUB_VIDEO: getCoubVideoInfo,
+  T_IMGUR_VIDEO: getImgurVideoInfo,
+  T_GFYCAT: getGfycatVideoInfo,
+  T_GIPHY: getGiphyVideoInfo,
+};
+
+export async function getVideoInfo(url, withoutAutoplay) {
+  const videoType = getVideoType(url);
+
+  if (videoType in videoHandlers) {
+    return videoHandlers[videoType](url, withoutAutoplay);
+  }
+
   return { error: 'unknown video type' };
 }
 

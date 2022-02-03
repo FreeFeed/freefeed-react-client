@@ -11,7 +11,8 @@ import { HomeFeedLink, homeFeedURI } from './home-feed-link';
 import PaginatedView from './paginated-view';
 import Feed from './feed';
 import { postActions } from './select-utils';
-import { SubscrRequests, TopHomeSelector } from './home';
+import { TopHomeSelector } from './home';
+import { SubscriptionRequestsAlert } from './susbscription-requests-alert';
 import { lazyComponent } from './lazy-component';
 import { useBool } from './hooks/bool';
 import { ButtonLink } from './button-link';
@@ -149,7 +150,7 @@ export function HomeAux({ router }) {
         </div>
         {isEditing && <ListEditor listId={feed.id} close={closeEditor} />}
 
-        <SubscrRequests />
+        <SubscriptionRequestsAlert className="box-message" />
 
         <PaginatedView>
           <FeedWithProps

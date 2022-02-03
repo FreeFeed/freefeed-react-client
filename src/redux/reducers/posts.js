@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import { without } from 'lodash';
 import { postParser } from '../../utils';
 import { isFeedResponse } from '../action-helpers';
