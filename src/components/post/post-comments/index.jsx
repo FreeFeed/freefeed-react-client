@@ -6,11 +6,11 @@ import { safeScrollBy } from '../../../services/unscroll';
 import ErrorBoundary from '../../error-boundary';
 import { Icon } from '../../fontawesome-icons';
 import { faCommentPlus } from '../../fontawesome-custom-icons';
-import { SignInLink } from '../../sign-in-link';
 
 import PostComment from '../post-comment';
 import { CollapseComments } from './collapse-comments';
 import ExpandComments from './expand-comments';
+import { SignInToAddComment } from './sign-in-to-add-comment';
 import { LoadingComments } from './loading-comments';
 import { CommentSpacer } from './comment-spacer';
 
@@ -275,18 +275,7 @@ export default class PostComments extends Component {
       return false;
     }
     if (!user.id) {
-      return post.isCommenting ? (
-        <div className="comment">
-          <span className="comment-icon fa-stack">
-            <Icon icon={faCommentPlus} />
-          </span>
-          <span>
-            <SignInLink>Sign In</SignInLink> to add comment
-          </span>
-        </div>
-      ) : (
-        false
-      );
+      return <SignInToAddComment />;
     }
     return post.isCommenting ? this.renderAddingComment() : this.renderAddCommentLink();
   }
