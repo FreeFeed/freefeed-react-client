@@ -1194,3 +1194,17 @@ export function leaveDirect(postId) {
     payload: postId,
   };
 }
+
+export function getAttachmentsStats() {
+  return {
+    type: ActionTypes.GET_ATTACHMENTS_STATS,
+    apiRequest: Api.getAttachmentsStats,
+  };
+}
+
+export function sanitizeMedia() {
+  return {
+    type: ActionTypes.SANITIZE_MEDIA,
+    apiRequest: Api.sanitizeMedia,
+  };
+}

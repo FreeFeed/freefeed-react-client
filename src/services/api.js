@@ -740,3 +740,11 @@ export function closeAuthSessions(ids) {
 export function leaveDirect(postId) {
   return fetch(`${apiRoot}/v2/posts/${postId}/leave`, postRequestOptions());
 }
+
+export function getAttachmentsStats() {
+  return fetch(`${apiRoot}/v2/attachments/my/stats`, getRequestOptions());
+}
+
+export function sanitizeMedia() {
+  return fetch(`${apiRoot}/v2/attachments/my/sanitize`, postRequestOptions());
+}

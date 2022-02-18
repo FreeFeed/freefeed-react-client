@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.107.0] - Not released
+### Added
+- New "Sanitize media files" page (/settings/sanitize-media) which allows to
+  remove sensitive metadata from the existing media files.
 
 ## [1.106.1] - 2022-02-03
 ### Fixed

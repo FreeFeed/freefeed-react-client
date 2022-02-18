@@ -2034,3 +2034,9 @@ export function submitMode(state = loadSubmitMode(), action) {
   }
   return state;
 }
+
+export {
+  attachmentsStats,
+  attachmentsStatsStatus,
+  sanitizeMediaStatus,
+} from './reducers/my-attachments';
