@@ -42,7 +42,8 @@ function SuccessContent({ attStats }) {
     preferences: { sanitizeMediaMetadata },
   } = useSelector((state) => state.user);
 
-  const toProcess = attStats.attachments.total - attStats.attachments.sanitized;
+  const { total, sanitized } = attStats.attachments;
+  const toProcess = total - sanitized;
 
   return (
     <>
@@ -55,8 +56,7 @@ function SuccessContent({ attStats }) {
         </p>
         {sanitizeMediaMetadata ? (
           <p>
-            The option which makes sure that NEW files are automatically sanitized is enabled for
-            your account
+            New files that you upload are sanitized automatically
             {toProcess > 0 ? (
               <>
                 , but you have <strong>{toProcess}</strong>{' '}
@@ -69,9 +69,8 @@ function SuccessContent({ attStats }) {
           </p>
         ) : (
           <p>
-            The option which makes sure that NEW files are automatically sanitized is disabled for
-            your account, you can enable it at the <Link to="/settings/privacy#files">Privacy</Link>{' '}
-            page.
+            New files that you upload are <strong>not</strong> sanitized automatically. You can
+            change this at the <Link to="/settings/privacy#files">Privacy</Link> page.
             {toProcess > 0 && (
               <>
                 {' '}
@@ -82,13 +81,15 @@ function SuccessContent({ attStats }) {
           </p>
         )}
       </section>
-      <section className={styles.formSection}>
-        {attStats.sanitizeTask || toProcess > 0 ? (
-          <SanitizeTask task={attStats.sanitizeTask} />
-        ) : (
-          <p>All your files are sanitized. You don&#x2019;t need to take any action now.</p>
-        )}
-      </section>
+      {(attStats.sanitizeTask || total > 0) && (
+        <section className={styles.formSection}>
+          {attStats.sanitizeTask || toProcess > 0 ? (
+            <SanitizeTask task={attStats.sanitizeTask} />
+          ) : (
+            <p>All your files are sanitized. You don&#x2019;t need to take any action now.</p>
+          )}
+        </section>
+      )}
     </>
   );
 }
@@ -102,7 +103,7 @@ function SanitizeTask({ task }) {
   if (task) {
     return (
       <p>
-        <Icon icon={faClock} /> The sanitation process was started at{' '}
+        <Icon icon={faClock} /> The sanitization process was started at{' '}
         <TimeDisplay timeStamp={task?.createdAt || 0} absolute />. It may take some time to
         complete.
       </p>

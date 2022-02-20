@@ -94,7 +94,7 @@ export default (function PrivacyForm() {
           </div>
         </div>
         <p className="text-muted">
-          Process the previously uploaded files <Link to="/settings/sanitize-media">here</Link>.
+          Sanitize previously uploaded files <Link to="/settings/sanitize-media">here</Link>.
         </p>
       </section>
 
