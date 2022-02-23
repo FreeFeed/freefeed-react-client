@@ -111,7 +111,8 @@ html(lang='en')
 
     script.
       (function(w,d){
-        var PRIVACY_COOKIE_NAME = 'privacy'
+        var PRIVACY_COOKIE_NAME = 'privacy';
+        var PRIVACY_COOKIE_DAYS = 730;
         function parseCookies() {
           return (d.cookie || '').split(';').reduce(function(res, cookieStr){
             var cookieData = cookieStr.trim().split('=')
@@ -146,7 +147,7 @@ html(lang='en')
           acceptButton.innerText = 'Accept'
           acceptButton.classList.add('privacy-button')
           acceptButton.addEventListener('click', function(){
-            setCookie(PRIVACY_COOKIE_NAME, 'true',  730)
+            setCookie(PRIVACY_COOKIE_NAME, 'true',  PRIVACY_COOKIE_DAYS)
             document.body.removeChild(privacyPopup)
           })
           privacyPopup.appendChild(privacyText)
@@ -156,6 +157,8 @@ html(lang='en')
         var privacyCookie = getCookie(PRIVACY_COOKIE_NAME)
         if (!privacyCookie) {
           showPrivacyPopup()
+        } else {
+          setCookie(PRIVACY_COOKIE_NAME, 'true',  PRIVACY_COOKIE_DAYS)
         }
       })(window, document);
 
