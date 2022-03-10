@@ -1,9 +1,8 @@
 /* global CONFIG */
 import { useEffect, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, withRouter } from 'react-router';
+import { withRouter } from 'react-router';
 import { Portal } from 'react-portal';
-import cn from 'classnames';
 import {
   faGlobeAmericas,
   faUserFriends,
@@ -15,7 +14,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faSmile, faCheckCircle as faCheckCircleO } from '@fortawesome/free-regular-svg-icons';
 
-import { pluralForm } from '../utils';
 import { initialAsyncState } from '../redux/async-helpers';
 import {
   getUserInfo,
@@ -40,64 +38,7 @@ import styles from './user-profile-head.module.scss';
 import { UserSubscriptionEditPopup } from './user-subscription-edit-popup';
 import { HomeFeedLink } from './home-feed-link';
 import { UserProfileHeadActions } from './user-profile-head-actions';
-
-const UserStats = ({ user, canFollowStatLinks }) => {
-  const isNotGroup = user.type === 'user';
-
-  const { username } = user;
-
-  const subscriptions = parseInt(user.statistics.subscriptions);
-  const subscribers = parseInt(user.statistics.subscribers);
-  const comments = parseInt(user.statistics.comments);
-  const likes = parseInt(user.statistics.likes);
-
-  return (
-    <div className={styles.stats}>
-      {!user.isGone && user.statistics && (
-        <ul className={styles.statsItems}>
-          {isNotGroup && (
-            <StatLink
-              value={subscriptions}
-              title="subscription"
-              linkTo={`/${username}/subscriptions`}
-              canFollow={canFollowStatLinks}
-            />
-          )}
-
-          <StatLink
-            value={subscribers}
-            title="subscriber"
-            linkTo={`/${username}/subscribers`}
-            canFollow={canFollowStatLinks}
-          />
-
-          {isNotGroup && (
-            <>
-              <StatLink
-                title="All posts"
-                linkTo={`/search?q=${encodeURIComponent(`from:${username}`)}`}
-                canFollow={canFollowStatLinks}
-                className={styles.allPosts}
-              />
-              <StatLink
-                value={comments}
-                title="comment"
-                linkTo={`/${username}/comments`}
-                canFollow={canFollowStatLinks}
-              />
-              <StatLink
-                value={likes}
-                title="like"
-                linkTo={`/${username}/likes`}
-                canFollow={canFollowStatLinks}
-              />
-            </>
-          )}
-        </ul>
-      )}
-    </div>
-  );
-};
+import { UserProfileHeadStats } from './user-profile-head-stats';
 
 export const UserProfileHead = withRouter(
   withKey(({ router }) => router.params.userName)(function UserProfileHead({ router }) {
@@ -349,7 +290,7 @@ export const UserProfileHead = withRouter(
           </>
         )}
 
-        <UserStats user={user} canFollowStatLinks={canFollowStatLinks} />
+        <UserProfileHeadStats user={user} canFollowStatLinks={canFollowStatLinks} />
 
         {subscrFormOpened && (
           <Portal>
@@ -467,30 +408,4 @@ function RelationshipIndicator({
       {label}
     </span>
   );
-}
-
-function StatLink({ value, title, linkTo, canFollow, className }) {
-  let content;
-
-  if (typeof value === 'undefined') {
-    content = title;
-  } else if (typeof value === 'number') {
-    if (value < 0) {
-      return null;
-    }
-
-    content = pluralForm(value, title);
-  }
-
-  if (canFollow) {
-    content = (
-      <Link to={linkTo} className={styles.statlinkText}>
-        {content}
-      </Link>
-    );
-  } else {
-    content = <span className={styles.statlinkText}>{content}</span>;
-  }
-
-  return <li className={cn(styles.statlink, className)}>{content}</li>;
 }
