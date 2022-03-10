@@ -1,63 +1,97 @@
+import { useState, useCallback } from 'react';
 import { Link } from 'react-router';
 import cn from 'classnames';
 
 import { pluralForm } from '../utils';
 import styles from './user-profile-head.module.scss';
+import TimeDisplay from './time-display';
 
 export const UserProfileHeadStats = ({ user, canFollowStatLinks }) => {
-  const isNotGroup = user.type === 'user';
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleDetails = useCallback(() => setIsOpen(!isOpen), [isOpen]);
 
-  const { username } = user;
+  if (user.isGone || !user.statistics) {
+    return null;
+  }
 
-  const subscriptions = parseInt(user.statistics.subscriptions);
-  const subscribers = parseInt(user.statistics.subscribers);
-  const comments = parseInt(user.statistics.comments);
-  const likes = parseInt(user.statistics.likes);
+  const { username, createdAt, statistics, type } = user;
+  const isUser = type === 'user';
 
-  return (
-    <div className={styles.stats}>
-      {!user.isGone && user.statistics && (
+  const subscriptions = parseInt(statistics.subscriptions);
+  const subscribers = parseInt(statistics.subscribers);
+  const comments = parseInt(statistics.comments);
+  const likes = parseInt(statistics.likes);
+
+  if (!isUser) {
+    return (
+      <div className={styles.stats}>
         <ul className={styles.statsItems}>
-          {isNotGroup && (
-            <StatLink
-              value={subscriptions}
-              title="subscription"
-              linkTo={`/${username}/subscriptions`}
-              canFollow={canFollowStatLinks}
-            />
-          )}
-
           <StatLink
             value={subscribers}
             title="subscriber"
             linkTo={`/${username}/subscribers`}
             canFollow={canFollowStatLinks}
           />
-
-          {isNotGroup && (
-            <>
-              <StatLink
-                title="All posts"
-                linkTo={`/search?q=${encodeURIComponent(`from:${username}`)}`}
-                canFollow={canFollowStatLinks}
-                className={styles.allPosts}
-              />
-              <StatLink
-                value={comments}
-                title="comment"
-                linkTo={`/${username}/comments`}
-                canFollow={canFollowStatLinks}
-              />
-              <StatLink
-                value={likes}
-                title="like"
-                linkTo={`/${username}/likes`}
-                canFollow={canFollowStatLinks}
-              />
-            </>
-          )}
         </ul>
-      )}
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.stats}>
+      <ul className={styles.statsItems}>
+        <StatLink
+          value={subscriptions}
+          title="subscription"
+          linkTo={`/${username}/subscriptions`}
+          canFollow={canFollowStatLinks}
+        />
+        <StatLink
+          value={subscribers}
+          title="subscriber"
+          linkTo={`/${username}/subscribers`}
+          canFollow={canFollowStatLinks}
+        />
+        {isOpen ? (
+          <>
+            <StatLink
+              title="All posts"
+              linkTo={`/search?q=${encodeURIComponent(`from:${username}`)}`}
+              canFollow={canFollowStatLinks}
+              className={styles.allPosts}
+            />
+            <StatLink
+              value={comments}
+              title="comment"
+              linkTo={`/${username}/comments`}
+              canFollow={canFollowStatLinks}
+            />
+            <StatLink
+              value={likes}
+              title="like"
+              linkTo={`/${username}/likes`}
+              canFollow={canFollowStatLinks}
+            />
+            <li className={styles.statlink}>
+              <span className={styles.statlinkText}>
+                <span className={styles.registeredOn}>Since</span>{' '}
+                <TimeDisplay inline timeStamp={parseInt(createdAt)} />
+              </span>
+            </li>
+            <li className={styles.statlink}>
+              <Link className={styles.moreDetails} onClick={toggleDetails}>
+                Less details
+              </Link>
+            </li>
+          </>
+        ) : (
+          <li className={styles.statlink}>
+            <Link className={styles.moreDetails} onClick={toggleDetails}>
+              More details...
+            </Link>
+          </li>
+        )}
+      </ul>
     </div>
   );
 };
