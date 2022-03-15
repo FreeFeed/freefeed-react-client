@@ -8,12 +8,12 @@ $actions-padding: 0.75em;
   --text-dim-color: #777;
 
   display: grid;
-  grid-template-columns: min-content 1fr min-content;
+  grid-template-columns: min-content 1fr 140px;
   grid-template-rows: min-content 1fr;
   grid-template-areas:
     'avatar info stats'
     'avatar description stats'
-    'lists lists lists'
+    'lists lists stats'
     'actions actions actions'
     'errors errors errors';
   grid-gap: 0 1em;
@@ -143,6 +143,11 @@ $actions-padding: 0.75em;
 
     .allPosts {
       margin-top: 0;
+      text-transform: lowercase;
+    }
+
+    .registeredOn,
+    .moreDetails {
       text-transform: lowercase;
     }
   }
