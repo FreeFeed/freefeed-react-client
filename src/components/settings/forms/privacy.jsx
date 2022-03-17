@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useField, useForm } from 'react-final-form-hooks';
+import { Link } from 'react-router';
 
 import { updateUser } from '../../../redux/action-creators';
 import { Throbber } from '../../throbber';
@@ -92,6 +93,9 @@ export default (function PrivacyForm() {
             </label>
           </div>
         </div>
+        <p className="text-muted">
+          Process the previously uploaded files <Link to="/settings/sanitize-media">here</Link>.
+        </p>
       </section>
 
       <div className="form-group">

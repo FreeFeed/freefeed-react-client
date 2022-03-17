@@ -2036,3 +2036,9 @@ export function submitMode(state = loadSubmitMode(), action) {
 }
 
 export { bannedUsernames } from './reducers/banned';
+
+export {
+  attachmentsStats,
+  attachmentsStatsStatus,
+  sanitizeMediaStatus,
+} from './reducers/my-attachments';
