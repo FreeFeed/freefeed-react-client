@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   with reply to blocked user'). Comments authored by the current user are always
   visible.
 
+### Removed
+- Do not try to preview shorten TikTok URLs in posts.
+
 ## [1.106.1] - 2022-02-03
 ### Fixed
 - Re-release. 1.106.0 has incorrect merge.

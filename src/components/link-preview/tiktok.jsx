@@ -4,10 +4,9 @@ import * as Sentry from '@sentry/react';
 import cachedFetch from './helpers/cached-fetch';
 
 const TIKTOK_VIDEO_RE = /^https?:\/\/(?:www\.)?tiktok\.com\/@.+?\/video\/(\d+)/i;
-const TIKTOK_SHORT_VIDEO_RE = /^https?:\/\/vm\.tiktok\.com\/(\w+)/i;
 
 export function canShowURL(url) {
-  return TIKTOK_VIDEO_RE.test(url) || TIKTOK_SHORT_VIDEO_RE.test(url);
+  return TIKTOK_VIDEO_RE.test(url);
 }
 
 export default function TikTokVideoPreview({ url }) {
