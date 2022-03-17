@@ -81,6 +81,7 @@ export default function AppearanceForm() {
   const omitBubbles = useField('omitBubbles', form.form);
   const highlightComments = useField('highlightComments', form.form);
   const hideBannedComments = useField('hideBannedComments', form.form);
+  const hideRepliesToBanned = useField('hideRepliesToBanned', form.form);
   const allowLinksPreview = useField('allowLinksPreview', form.form);
   const hideNSFWContent = useField('hideNSFWContent', form.form);
   const commentsTimestamps = useField('commentsTimestamps', form.form);
@@ -342,15 +343,24 @@ export default function AppearanceForm() {
 
           <div className="checkbox">
             <label>
+              <CheckboxInput field={commentsTimestamps} />
+              Show timestamps for comments
+            </label>
+          </div>
+        </div>
+        <h5>Comments from blocked users:</h5>
+        <div className="form-group">
+          <div className="checkbox">
+            <label>
               <CheckboxInput field={hideBannedComments} />
-              Hide comments from blocked users (don&#x2019;t show placeholder)
+              Hide comments from blocked users (don&#x2019;t even show placeholder)
             </label>
           </div>
 
           <div className="checkbox">
             <label>
-              <CheckboxInput field={commentsTimestamps} />
-              Show timestamps for comments
+              <CheckboxInput field={hideRepliesToBanned} />
+              Hide text of replies to blocked users (show placeholders instead)
             </label>
           </div>
         </div>
@@ -466,6 +476,7 @@ function initialValues({
   submitMode,
   uiScale,
 }) {
+  console.log(frontend.comments);
   return {
     useYou: frontend.displayNames.useYou,
     displayNames: frontend.displayNames.displayOption.toString(),
@@ -475,6 +486,7 @@ function initialValues({
     omitBubbles: frontend.comments.omitRepeatedBubbles,
     highlightComments: frontend.comments.highlightComments,
     hideBannedComments: backend?.hideCommentsOfTypes.includes(COMMENT_HIDDEN_BANNED),
+    hideRepliesToBanned: frontend.comments.hideRepliesToBanned,
     allowLinksPreview: frontend.allowLinksPreview,
     hideNSFWContent: !isNSFWVisible,
     commentsTimestamps: frontend.comments.showTimestamps,
@@ -522,6 +534,7 @@ function prefUpdaters(values) {
           omitRepeatedBubbles: values.omitBubbles,
           highlightComments: values.highlightComments,
           showTimestamps: values.commentsTimestamps,
+          hideRepliesToBanned: values.hideRepliesToBanned,
         },
         allowLinksPreview: values.allowLinksPreview,
         timeDisplay: {
