@@ -865,6 +865,7 @@ export const initialWhoamiMiddleware = (store) => (next) => (action) => {
   if (action.type === response(ActionTypes.INITIAL_WHO_AM_I)) {
     // Fire the WHO_AM_I response first to properly fill state by current user data
     store.dispatch({ ...action, type: response(ActionTypes.WHO_AM_I) });
+    setTimeout(() => store.dispatch(ActionCreators.blockedByMe()), 0);
   }
   next(action);
 };
