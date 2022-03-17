@@ -2034,3 +2034,5 @@ export function submitMode(state = loadSubmitMode(), action) {
   }
   return state;
 }
+
+export { bannedUsernames } from './reducers/banned';

@@ -64,6 +64,7 @@ export default {
         omitRepeatedBubbles: true,
         highlightComments: true,
         showTimestamps: false,
+        hideRepliesToBanned: false,
       },
       allowLinksPreview: false,
       readMoreStyle: 'modern',
