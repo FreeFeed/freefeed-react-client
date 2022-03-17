@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.107.0] - Not released
+### Added
+- New frontend setting: comments.hideRepliesToBanned (false by default, can be
+  adjusted on Settings / Appearance page). If it is set to true, comments that
+  starts with a @-mention of banned user are replaced by placeholder ('Comment
+  with reply to blocked user'). Comments authored by the current user are always
+  visible.
 
 ## [1.106.1] - 2022-02-03
 ### Fixed
