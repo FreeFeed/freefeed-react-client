@@ -32,6 +32,12 @@ export const UserProfileHeadStats = ({ user, canFollowStatLinks }) => {
             linkTo={`/${username}/subscribers`}
             canFollow={canFollowStatLinks}
           />
+          <li className={styles.statlink}>
+            <span className={styles.statlinkText}>
+              <span className={styles.registeredOn}>Since</span>{' '}
+              <TimeDisplay inline timeStamp={parseInt(createdAt)} absolute dateOnly />
+            </span>
+          </li>
         </ul>
       </div>
     );
