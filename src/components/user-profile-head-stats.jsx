@@ -1,4 +1,3 @@
-import { useState, useCallback } from 'react';
 import { Link } from 'react-router';
 import cn from 'classnames';
 
@@ -7,9 +6,6 @@ import styles from './user-profile-head.module.scss';
 import TimeDisplay from './time-display';
 
 export const UserProfileHeadStats = ({ user, canFollowStatLinks }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const toggleDetails = useCallback(() => setIsOpen(!isOpen), [isOpen]);
-
   if (user.isGone || !user.statistics) {
     return null;
   }
@@ -58,45 +54,30 @@ export const UserProfileHeadStats = ({ user, canFollowStatLinks }) => {
           linkTo={`/${username}/subscribers`}
           canFollow={canFollowStatLinks}
         />
-        {isOpen ? (
-          <>
-            <StatLink
-              title="All posts"
-              linkTo={`/search?q=${encodeURIComponent(`from:${username}`)}`}
-              canFollow={canFollowStatLinks}
-              className={styles.allPosts}
-            />
-            <StatLink
-              value={comments}
-              title="comment"
-              linkTo={`/${username}/comments`}
-              canFollow={canFollowStatLinks}
-            />
-            <StatLink
-              value={likes}
-              title="like"
-              linkTo={`/${username}/likes`}
-              canFollow={canFollowStatLinks}
-            />
-            <li className={styles.statlink}>
-              <span className={styles.statlinkText}>
-                <span className={styles.registeredOn}>Since</span>{' '}
-                <TimeDisplay inline timeStamp={parseInt(createdAt)} />
-              </span>
-            </li>
-            <li className={styles.statlink}>
-              <Link className={styles.moreDetails} onClick={toggleDetails}>
-                Less details
-              </Link>
-            </li>
-          </>
-        ) : (
-          <li className={styles.statlink}>
-            <Link className={styles.moreDetails} onClick={toggleDetails}>
-              More details...
-            </Link>
-          </li>
-        )}
+        <StatLink
+          title="All posts"
+          linkTo={`/search?q=${encodeURIComponent(`from:${username}`)}`}
+          canFollow={canFollowStatLinks}
+          className={styles.allPosts}
+        />
+        <StatLink
+          value={comments}
+          title="comment"
+          linkTo={`/${username}/comments`}
+          canFollow={canFollowStatLinks}
+        />
+        <StatLink
+          value={likes}
+          title="like"
+          linkTo={`/${username}/likes`}
+          canFollow={canFollowStatLinks}
+        />
+        <li className={styles.statlink}>
+          <span className={styles.statlinkText}>
+            <span className={styles.registeredOn}>Since</span>{' '}
+            <TimeDisplay inline timeStamp={parseInt(createdAt)} absolute dateOnly />
+          </span>
+        </li>
       </ul>
     </div>
   );
