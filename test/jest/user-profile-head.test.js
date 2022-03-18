@@ -26,6 +26,7 @@ const defaultState = {
     frontendPreferences: {
       homefeed: { hideUsers: [] },
       pinnedGroups: [],
+      timeDisplay: {},
     },
   },
   users: {
@@ -46,6 +47,8 @@ const defaultState = {
         likes: 4,
         comments: 5,
       },
+      createdAt: '1430708710865',
+      updatedAt: '1647366122559',
     },
   },
   directsReceivers: {
@@ -148,7 +151,6 @@ describe('UserProfileHead', () => {
   it("Correctly displays user's private status", () => {
     const fakeState = {
       ...defaultState,
-      user: {},
       users: {
         [UID]: {
           ...defaultState.users[UID],
@@ -165,7 +167,6 @@ describe('UserProfileHead', () => {
   it("Correctly displays user's protected status", () => {
     const fakeState = {
       ...defaultState,
-      user: {},
       users: {
         [UID]: {
           ...defaultState.users[UID],
