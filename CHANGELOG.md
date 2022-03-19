@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Experimental
 ### Added
 - Native player for video-files
+- New frontend setting: comments.hideRepliesToBanned (false by default, can be
+  adjusted on Settings / Appearance page). If it is set to true, comments that
+  starts with a @-mention of banned user are replaced by placeholder ('Comment
+  with reply to blocked user'). Comments authored by the current user are always
+  visible.
 
 ### Changed
 - Take Save out of "more" menu
