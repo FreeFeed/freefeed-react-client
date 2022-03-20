@@ -476,7 +476,6 @@ function initialValues({
   submitMode,
   uiScale,
 }) {
-  console.log(frontend.comments);
   return {
     useYou: frontend.displayNames.useYou,
     displayNames: frontend.displayNames.displayOption.toString(),
