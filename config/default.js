@@ -111,6 +111,9 @@ export default {
     minFolded: 3,
   },
 
+  // if false, new users are public by default
+  newUsersProtected: false,
+
   registrationsLimit: {
     emailFormIframeSrc: null,
   },

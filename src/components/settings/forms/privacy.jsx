@@ -1,3 +1,4 @@
+/* global CONFIG */
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useField, useForm } from 'react-final-form-hooks';
@@ -45,12 +46,14 @@ export default (function PrivacyForm() {
             <label>
               <RadioInput field={privacy} value={PUBLIC} />
               Public &mdash; anyone can see your posts
+              {CONFIG.newUsersProtected ? '' : <em> (default)</em>}
             </label>
           </div>
           <div className="radio">
             <label>
               <RadioInput field={privacy} value={PROTECTED} />
               Protected &mdash; anonymous users and search engines cannot see your posts
+              {CONFIG.newUsersProtected ? <em> (default)</em> : ''}
             </label>
           </div>
           <div className="radio">
