@@ -49,6 +49,7 @@ export default function ChangePasswordForm() {
           autoComplete="new-password"
           {...password.input}
         />
+        <p className="help-block">At least {CONFIG.minPasswordLength} characters</p>
         {errorMessage(password, true)}
       </div>
 

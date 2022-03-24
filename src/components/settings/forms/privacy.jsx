@@ -1,6 +1,8 @@
+/* global CONFIG */
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useField, useForm } from 'react-final-form-hooks';
+import { Link } from 'react-router';
 
 import { updateUser } from '../../../redux/action-creators';
 import { Throbber } from '../../throbber';
@@ -45,12 +47,14 @@ export default (function PrivacyForm() {
             <label>
               <RadioInput field={privacy} value={PUBLIC} />
               Public &mdash; anyone can see your posts
+              {CONFIG.newUsersProtected ? '' : <em> (default)</em>}
             </label>
           </div>
           <div className="radio">
             <label>
               <RadioInput field={privacy} value={PROTECTED} />
               Protected &mdash; anonymous users and search engines cannot see your posts
+              {CONFIG.newUsersProtected ? <em> (default)</em> : ''}
             </label>
           </div>
           <div className="radio">
@@ -92,6 +96,9 @@ export default (function PrivacyForm() {
             </label>
           </div>
         </div>
+        <p className="text-muted">
+          Sanitize previously uploaded files <Link to="/settings/sanitize-media">here</Link>.
+        </p>
       </section>
 
       <div className="form-group">

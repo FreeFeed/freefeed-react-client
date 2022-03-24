@@ -4,7 +4,7 @@ require('./config/lib/loader-node');
 
 module.exports = {
   extends: ['eslint:recommended', 'plugin:promise/recommended', 'plugin:prettier/recommended'],
-  parser: '@babel/eslint-parser',
+  parser: '@babel/eslint-parser/experimental-worker',
   plugins: [
     'babel',
     'import',

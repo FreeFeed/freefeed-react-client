@@ -8,14 +8,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Experimental
 ### Added
 - Native player for video-files
+
+### Changed
+- Take Save out of "more" menu
+
+## [1.107.0] - 2022-03-24
+### Fixed
+- Update "privacy" cookie if it is already set. It should prevent 2-weeks cookie
+  expiration in Safari.
+- Add extra space between username and "is not in any of your friend lists"
+  message.
+
+### Added
+- New "Sanitize media files" page (/settings/sanitize-media) which allows to
+  remove sensitive metadata from the existing media files.
 - New frontend setting: comments.hideRepliesToBanned (false by default, can be
   adjusted on Settings / Appearance page). If it is set to true, comments that
   starts with a @-mention of banned user are replaced by placeholder ('Comment
   with reply to blocked user'). Comments authored by the current user are always
   visible.
 
-### Changed
-- Take Save out of "more" menu
+### Removed
+- Do not try to preview shorten TikTok URLs in posts.
 
 ## [1.106.1] - 2022-02-03
 ### Fixed

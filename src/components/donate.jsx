@@ -61,7 +61,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
                 expenses such as banking and accounting fees, and expenses for development of new
                 features. We also use the term &quot;reserve fund&quot; to describe the amount of
                 money that we need to run FreeFeed for a year, including hosting and administration
-                expenses. As of February of 2021, this amount is 1700 EUR.
+                expenses. As of February of 2022, this amount is 1300 EUR.
               </p>
               <p>
                 Funding statuses show how well the monthly donations we receive match our monthly
@@ -103,7 +103,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
 
         {cfg.paymentMethods.liberaPayProject && (
           <>
-            <h4>The easy way (all cards, 20% commission fee)</h4>
+            <h4>The easy way (all cards, ~7% commission fee)</h4>
 
             <form
               method="get"
@@ -239,7 +239,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
                 организационные расходы (банк, бухгалтер) и расходы на разработку новых
                 возможностей. Кроме того, есть понятие “резервный фонд”, который содержит
                 достаточное количество денег, чтобы оплачивать год хостинга и организационных
-                расходов. На февраль 2021 года резервный фонд составляет 1700 евро.
+                расходов. На февраль 2022 года резервный фонд составляет 1300 евро.
               </p>
               <p>
                 Уровни финансирования показывают, насколько собираемые ежемесячно средства позволяют
@@ -280,7 +280,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
 
         {cfg.paymentMethods.liberaPayProject && (
           <>
-            <h4>Простой способ (принимает все карты, комиссии ~20%)</h4>
+            <h4>Простой способ (принимает все карты, комиссии ~7%)</h4>
 
             <form
               method="get"
