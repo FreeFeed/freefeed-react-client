@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.108.0] - Not released
 
+## [1.107.1] - 2022-03-24
+### Changed
+- Show registration date in Profiles and Groups
+
 ## [1.107.0] - 2022-03-24
 ### Fixed
 - Update "privacy" cookie if it is already set. It should prevent 2-weeks cookie
