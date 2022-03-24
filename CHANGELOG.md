@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Update "privacy" cookie if it is already set. It should prevent 2-weeks cookie
   expiration in Safari.
+- Add extra space between username and "is not in any of your friend lists"
+  message.
 
 ### Added
 - New "Sanitize media files" page (/settings/sanitize-media) which allows to
