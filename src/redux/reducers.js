@@ -1234,12 +1234,12 @@ export function boxHeader(state = '', action) {
       return `Search`;
     }
     case request(ActionTypes.MEMORIES): {
-      return `Memories: posts from ${formatDateFromShortString(action.payload.from)} and earlier`;
+      return `Memories: posts from ${formatDateFromShortString(action.payload.from)} and older`;
     }
     case request(ActionTypes.GET_USER_MEMORIES): {
       return `${action.payload.username} memories: posts from ${formatDateFromShortString(
         action.payload.from,
-      )} and earlier`;
+      )} and older`;
     }
     case request(ActionTypes.GET_BEST_OF): {
       return `Best Of ${CONFIG.siteTitle}`;
@@ -2034,3 +2034,11 @@ export function submitMode(state = loadSubmitMode(), action) {
   }
   return state;
 }
+
+export { bannedUsernames } from './reducers/banned';
+
+export {
+  attachmentsStats,
+  attachmentsStatsStatus,
+  sanitizeMediaStatus,
+} from './reducers/my-attachments';

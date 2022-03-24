@@ -64,6 +64,7 @@ export default {
         omitRepeatedBubbles: true,
         highlightComments: true,
         showTimestamps: false,
+        hideRepliesToBanned: false,
       },
       allowLinksPreview: false,
       readMoreStyle: 'modern',
@@ -110,6 +111,9 @@ export default {
     // A minimum number of omitted comments (server-side constant)
     minFolded: 3,
   },
+
+  // if false, new users are public by default
+  newUsersProtected: false,
 
   registrationsLimit: {
     emailFormIframeSrc: null,

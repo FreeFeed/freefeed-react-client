@@ -8,7 +8,6 @@ import { preventDefault, confirmFirst } from '../../utils';
 import {
   READMORE_STYLE_COMPACT,
   COMMENT_HIDDEN_BANNED,
-  COMMENT_VISIBLE,
 } from '../../utils/frontend-preferences-options';
 import { commentReadmoreConfig } from '../../utils/readmore-config';
 import { defaultCommentState } from '../../redux/reducers/comment-edit';
@@ -86,6 +85,20 @@ class PostComment extends Component {
     this.commentForm = el;
   };
 
+  isHidden() {
+    return !!this.props.hideType || this.props.isReplyToBanned;
+  }
+
+  hiddenBody() {
+    if (this.props.hideType === COMMENT_HIDDEN_BANNED) {
+      return 'Comment from blocked user';
+    }
+    if (this.props.isReplyToBanned) {
+      return 'Comment with reply to blocked user';
+    }
+    return this.props.body;
+  }
+
   handleEditOrCancel = preventDefault(() => this.props.toggleEditingComment(this.props.id));
 
   handleDeleteComment = confirmFirst(() =>
@@ -108,8 +121,8 @@ class PostComment extends Component {
     const ownComment = this.props.currentUser.id === this.props.user?.id;
     return {
       ownComment,
-      canLike: !ownComment && this.props.hideType === COMMENT_VISIBLE,
-      canReply: this.props.hideType === COMMENT_VISIBLE && this.props.canAddComment,
+      canLike: !ownComment && !this.isHidden(),
+      canReply: !this.isHidden() && this.props.canAddComment,
       canDelete: this.props.isEditable || this.props.isDeletable,
     };
   }
@@ -127,12 +140,16 @@ class PostComment extends Component {
     const { canLike, canReply, canDelete, ownComment } = this.possibleActions();
     return (
       <span
-        aria-label={this.props.user ? `Comment by ${this.props.user.username}` : `Hidden comment`}
+        aria-label={
+          this.props.user && !this.isHidden()
+            ? `Comment by ${this.props.user.username}`
+            : `Hidden comment`
+        }
         className="comment-tail"
       >
         {' - '}
         <Separated separator=" - ">
-          {this.props.user && (
+          {this.props.user && !this.isHidden() && (
             <span className="comment-tail__item">
               <UserName user={this.props.user} userHover={this.props.authorHighlightHandlers} />
             </span>
@@ -203,14 +220,10 @@ class PostComment extends Component {
   renderBody() {
     const commentTail = this.commentTail();
 
-    if (this.props.hideType) {
-      let { body } = this.props;
-      if (this.props.hideType === COMMENT_HIDDEN_BANNED) {
-        body = 'Comment from blocked user';
-      }
+    if (this.isHidden()) {
       return (
         <div className="comment-body">
-          <span className="comment-text">{body}</span>
+          <span className="comment-text">{this.hiddenBody()}</span>
           {commentTail}
         </div>
       );
@@ -257,7 +270,7 @@ class PostComment extends Component {
 
   renderCommentIcon() {
     const { props } = this;
-    if (props.hideType) {
+    if (this.isHidden()) {
       return false;
     }
 
@@ -284,7 +297,7 @@ class PostComment extends Component {
       highlighted:
         (this.props.highlightComments && this.props.highlighted) || this.state.moreMenuOpened,
       'omit-bubble': this.props.omitBubble,
-      'is-hidden': !!this.props.hideType,
+      'is-hidden': this.isHidden(),
       'highlight-from-url': this.props.highlightedFromUrl,
       'my-comment':
         this.props.currentUser &&
@@ -312,12 +325,23 @@ function selectState(state, ownProps) {
     state.user.frontendPreferences?.comments?.showTimestamps ||
     CONFIG.frontendPreferences.defaultValues.comments.showTimestamps;
   const { highlightComments } = state.user.frontendPreferences.comments;
+  const isReplyToBanned = (() => {
+    if (
+      !state.user.frontendPreferences?.comments.hideRepliesToBanned ||
+      ownProps.createdBy === state.user.id
+    ) {
+      return false;
+    }
+    const m = ownProps.body?.match(/^@([a-z\d]+)/i);
+    return m && state.bannedUsernames.includes(m[1].toLowerCase());
+  })();
   return {
     ...editState,
     showTimestamps,
     highlightComments,
     isEditing: ownProps.isEditing || editState.isEditing,
     submitMode: state.submitMode,
+    isReplyToBanned,
   };
 }
 

@@ -57,6 +57,11 @@ exports[`SignInPage Renders sign-in settings page 1`] = `
             type="password"
             value=""
           />
+          <p
+            class="help-block"
+          >
+            At least 9 characters
+          </p>
         </div>
         <div
           class="form-group"

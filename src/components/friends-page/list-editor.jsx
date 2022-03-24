@@ -126,10 +126,12 @@ export const ListEditor = memo(function ListEditor({
       .sort((a, z) => a.username.localeCompare(z.username));
   }, [nameFilter, preparedUsers, showMode]);
 
-  const homeless = useMemo(
-    () => preparedUsers.filter((u) => u.homeless && !u.selected),
-    [preparedUsers],
-  );
+  const homelessNames = useMemo(() => {
+    const names = preparedUsers
+      .filter((u) => u.homeless && !u.selected)
+      .map((u) => `@${u.username}`);
+    return names.length < 5 ? names : [...names.slice(0, 3), `${names.length - 3} more users`];
+  }, [preparedUsers]);
   const returnListId = useRef(list?.id);
 
   // Handle submit
@@ -283,15 +285,10 @@ export const ListEditor = memo(function ListEditor({
               {submitStatus.errorText}
             </p>
           )}
-          {homeless.length > 0 && (
+          {homelessNames.length > 0 && (
             <div className={cn(styles.submitWarning, 'text-muted')}>
-              <Icon icon={faExclamationTriangle} />{' '}
-              {homeless.length < 5
-                ? andJoin(homeless.map((u) => `@${u.username}`))
-                : `${homeless.slice(0, 3).map((u) => `@${u.username}`)} and ${
-                    homeless.length - 3
-                  } more users `}
-              {homeless.length === 1 ? 'is' : 'are'} not in any of your friend lists.
+              <Icon icon={faExclamationTriangle} /> {andJoin(homelessNames)}{' '}
+              {homelessNames.length === 1 ? 'is' : 'are'} not in any of your friend lists.
             </div>
           )}
         </footer>

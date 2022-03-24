@@ -53,6 +53,7 @@ const onSubmit =
       username: values.username.trim(),
       screenName: values.screenname.trim(),
       email: values.email.trim(),
+      isProtected: Boolean(CONFIG.newUsersProtected),
     };
 
     if (externalProfileKey && values.connectExtProfile) {
