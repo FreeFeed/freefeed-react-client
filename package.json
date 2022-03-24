@@ -108,7 +108,7 @@
     "node-sass": "~6.0.1",
     "npm-run-all": "~4.1.5",
     "null-loader": "~4.0.1",
-    "prettier": "~2.6.0",
+    "prettier": "~2.5.1",
     "pug": "~3.0.2",
     "pug-loader": "~2.4.0",
     "react-hot-loader": "~4.13.0",
