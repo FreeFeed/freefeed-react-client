@@ -165,5 +165,5 @@
     "url": "https://github.com/FreeFeed/freefeed-react-client.git"
   },
   "license": "MIT",
-  "packageManager": "yarn@3.1.1"
+  "packageManager": "yarn@3.2.0"
 }
