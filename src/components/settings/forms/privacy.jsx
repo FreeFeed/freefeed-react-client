@@ -2,12 +2,15 @@
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useField, useForm } from 'react-final-form-hooks';
+import { faLock, faUserFriends, faGlobeAmericas } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router';
 
 import { updateUser } from '../../../redux/action-creators';
 import { Throbber } from '../../throbber';
 import { PreventPageLeaving } from '../../prevent-page-leaving';
 import { RadioInput, CheckboxInput } from '../../form-utils';
+import { Icon } from '../../fontawesome-icons';
+
 import settingsStyles from '../settings.module.scss';
 
 const PUBLIC = 'public',
@@ -40,30 +43,37 @@ export default (function PrivacyForm() {
       <PreventPageLeaving prevent={form.dirty} />
 
       <section className={settingsStyles.formSection}>
-        <h4 id="feed-visibility">Your feed visibility</h4>
+        <h4 id="feed-visibility">Your account is:</h4>
 
         <div className="form-group">
           <div className="radio">
             <label>
               <RadioInput field={privacy} value={PUBLIC} />
-              Public &mdash; anyone can see your posts
+              <Icon className={settingsStyles.privacyIcon} icon={faGlobeAmericas} /> Public &mdash;
+              anyone can read your posts
               {CONFIG.newUsersProtected ? '' : <em> (default)</em>}
             </label>
           </div>
           <div className="radio">
             <label>
               <RadioInput field={privacy} value={PROTECTED} />
-              Protected &mdash; anonymous users and search engines cannot see your posts
+              <Icon className={settingsStyles.privacyIcon} icon={faUserFriends} /> Protected &mdash;
+              only registered users can read your posts
               {CONFIG.newUsersProtected ? <em> (default)</em> : ''}
             </label>
           </div>
           <div className="radio">
             <label>
               <RadioInput field={privacy} value={PRIVATE} />
-              Private &mdash; only people you approve can see your posts
+              <Icon className={settingsStyles.privacyIcon} icon={faLock} /> Private &mdash; only
+              registered users you approve to be your subscribers can read your posts
             </label>
           </div>
         </div>
+        <p>
+          Note: your posts are always protected from search engines. Your posts to public groups are
+          considered public.
+        </p>
       </section>
 
       <section className={settingsStyles.formSection}>
