@@ -186,6 +186,26 @@ exports[`UserProfileHead Correctly displays that we are mutually subscribed 1`] 
             4 likes
           </a>
         </li>
+        <li
+          class="statlink"
+        >
+          <span
+            class="statlinkText"
+          >
+            <span
+              class="registeredOn"
+            >
+              Since
+            </span>
+             
+            <time
+              datetime="2015-05-04T03:05:10.865Z"
+              title="May 4, 2015"
+            >
+              May 4, 2015
+            </time>
+          </span>
+        </li>
       </ul>
     </div>
   </div>
@@ -362,6 +382,26 @@ exports[`UserProfileHead Renders my own header and doesn't blow up 1`] = `
           >
             4 likes
           </a>
+        </li>
+        <li
+          class="statlink"
+        >
+          <span
+            class="statlinkText"
+          >
+            <span
+              class="registeredOn"
+            >
+              Since
+            </span>
+             
+            <time
+              datetime="2015-05-04T03:05:10.865Z"
+              title="May 4, 2015"
+            >
+              May 4, 2015
+            </time>
+          </span>
         </li>
       </ul>
     </div>
