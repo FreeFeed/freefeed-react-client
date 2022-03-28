@@ -184,7 +184,7 @@ export default memo(function SignupForm({ invitationId = null, lang = 'en' }) {
           {username.meta.error && <p className="help-block">{username.meta.error}</p>}
         </div>
         <div className={groupErrClass(screenname)}>
-          <label htmlFor="screenname-input">{enRu('Screen Name', 'Имя')}</label>
+          <label htmlFor="screenname-input">{enRu('Display name', 'Имя')}</label>
           <input
             id="screenname-input"
             className="form-control narrow-input"

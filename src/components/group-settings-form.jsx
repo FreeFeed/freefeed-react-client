@@ -164,7 +164,7 @@ function validate(values) {
   errors.screenName = shouldBe(
     /^.{3,25}$/i.test(values.screenName.trim()),
     <>
-      {values.screenName.trim()} is not a valid displayname.
+      {values.screenName.trim()} is not a valid display name.
       <br /> The length should be from 3 to 25 characters.
     </>,
   );
