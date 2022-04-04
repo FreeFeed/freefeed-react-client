@@ -49,9 +49,9 @@ export default function AppearanceForm() {
     if (!hash) {
       return;
     }
-    const anchor = encodeURIComponent(hash.slice(1));
+    const anchor = decodeURIComponent(hash.slice(1));
     // eslint-disable-next-line unicorn/prefer-query-selector
-    const element = document.getElementById(`${anchor}`);
+    const element = document.getElementById(anchor);
 
     if (element) {
       const { top } = element.getBoundingClientRect();
