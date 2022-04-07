@@ -147,6 +147,7 @@ export const tileUserListFactory = (config) => (props) => {
         'profilePictureUrl',
         'profilePictureLargeUrl',
         'profilePictureMediumUrl',
+        'isGone',
       ]),
       largePicture: config.size === 'large',
       ...pickActions(config.type, props),
