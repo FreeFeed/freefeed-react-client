@@ -1964,7 +1964,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sinonjs/fake-timers@npm:>=5":
+"@sinonjs/fake-timers@npm:>=5, @sinonjs/fake-timers@npm:^9.0.0":
   version: 9.1.1
   resolution: "@sinonjs/fake-timers@npm:9.1.1"
   dependencies:
@@ -1973,7 +1973,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sinonjs/fake-timers@npm:^8.0.1, @sinonjs/fake-timers@npm:^8.1.0":
+"@sinonjs/fake-timers@npm:^8.0.1":
   version: 8.1.0
   resolution: "@sinonjs/fake-timers@npm:8.1.0"
   dependencies:
@@ -1982,7 +1982,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sinonjs/samsam@npm:^6.0.2":
+"@sinonjs/samsam@npm:^6.1.1":
   version: 6.1.1
   resolution: "@sinonjs/samsam@npm:6.1.1"
   dependencies:
@@ -6092,10 +6092,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"filesize@npm:~6.4.0":
-  version: 6.4.0
-  resolution: "filesize@npm:6.4.0"
-  checksum: 83619b0a656225e84ba9a73271b80091629c0e88c2936c1ebd36fff96fb0e2fbae0273c2caccd522c02bc1a32ad9eba869c28c6b2c36e06187d25fd298c3dfe8
+"filesize@npm:~8.0.7":
+  version: 8.0.7
+  resolution: "filesize@npm:8.0.7"
+  checksum: 8603d27c5287b984cb100733640645e078f5f5ad65c6d913173e01fb99e09b0747828498fd86647685ccecb69be31f3587b9739ab1e50732116b2374aff4cbf9
   languageName: node
   linkType: hard
 
@@ -6218,20 +6218,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"focus-trap-react@npm:~8.7.1":
-  version: 8.7.1
-  resolution: "focus-trap-react@npm:8.7.1"
+"focus-trap-react@npm:~8.9.2":
+  version: 8.9.2
+  resolution: "focus-trap-react@npm:8.9.2"
   dependencies:
-    focus-trap: ^6.6.1
+    focus-trap: ^6.7.3
   peerDependencies:
-    prop-types: ^15.7.2
+    prop-types: ^15.8.1
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
-  checksum: 4e5da3a9b5c8eefff569cde14adab040c7b3bcdf296977801b5b5fdf0290b7f968a5b44f2eea150e472128f7a8b2d3947dfd53029145e4731e4d9710e9a28b39
+  checksum: 31e2e4e0ee618baa03b3958b1940188c182a0624b471edbeb10ef85c62e2d08e9a9e1865c5f31378fd9385ba9bb411f83331c0b74763f7298bb2c51a3324febb
   languageName: node
   linkType: hard
 
-"focus-trap@npm:^6.6.1":
+"focus-trap@npm:^6.7.3":
   version: 6.7.3
   resolution: "focus-trap@npm:6.7.3"
   dependencies:
@@ -8787,7 +8787,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lru-cache@npm:^6.0.0, lru-cache@npm:~6.0.0":
+"lru-cache@npm:^6.0.0":
   version: 6.0.0
   resolution: "lru-cache@npm:6.0.0"
   dependencies:
@@ -8796,7 +8796,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lru-cache@npm:^7.4.0, lru-cache@npm:^7.7.1":
+"lru-cache@npm:^7.4.0, lru-cache@npm:^7.7.1, lru-cache@npm:~7.8.0":
   version: 7.8.0
   resolution: "lru-cache@npm:7.8.0"
   checksum: 7cc046276b668e7b59c10f7f25049d89315cd22fb5205c0eb476583ba29b8542955189452dc8655a771e1a91f6056ddcb29daf4ac35197f77b3ce9a0041d54c9
@@ -8951,10 +8951,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"memoize-one@npm:~5.2.1":
-  version: 5.2.1
-  resolution: "memoize-one@npm:5.2.1"
-  checksum: a3cba7b824ebcf24cdfcd234aa7f86f3ad6394b8d9be4c96ff756dafb8b51c7f71320785fbc2304f1af48a0467cbbd2a409efc9333025700ed523f254cb52e3d
+"memoize-one@npm:~6.0.0":
+  version: 6.0.0
+  resolution: "memoize-one@npm:6.0.0"
+  checksum: f185ea69f7cceae5d1cb596266dcffccf545e8e7b4106ec6aa93b71ab9d16460dd118ac8b12982c55f6d6322fcc1485de139df07eacffaae94888b9b3ad7675f
   languageName: node
   linkType: hard
 
@@ -9418,7 +9418,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nise@npm:^5.1.0":
+"nise@npm:^5.1.1":
   version: 5.1.1
   resolution: "nise@npm:5.1.1"
   dependencies:
@@ -11471,9 +11471,9 @@ __metadata:
     eslint-plugin-you-dont-need-lodash-underscore: ~6.12.0
     eslint-webpack-plugin: ~3.1.1
     file-loader: ~6.2.0
-    filesize: ~6.4.0
+    filesize: ~8.0.7
     final-form: ~4.20.6
-    focus-trap-react: ~8.7.1
+    focus-trap-react: ~8.9.2
     focus-visible: ~5.2.0
     html-webpack-plugin: ~5.5.0
     husky: ~6.0.0
@@ -11484,8 +11484,8 @@ __metadata:
     lint-staged: ~11.2.6
     local-storage-fallback: ~4.1.2
     lodash: ~4.17.21
-    lru-cache: ~6.0.0
-    memoize-one: ~5.2.1
+    lru-cache: ~7.8.0
+    memoize-one: ~6.0.0
     mini-css-extract-plugin: ~2.6.0
     mocha: ~9.2.2
     mochapack: ~2.1.4
@@ -11523,8 +11523,8 @@ __metadata:
     rimraf: ~3.0.2
     sass-loader: ~12.6.0
     semver: ~7.3.6
-    sinon: ~12.0.1
-    snarkdown: ~1.2.2
+    sinon: ~13.0.1
+    snarkdown: ~2.0.0
     social-text-tokenizer: ~2.2.0
     socket.io-client: ~2.3.1
     style-loader: ~3.3.1
@@ -11535,7 +11535,7 @@ __metadata:
     stylelint-scss: ~4.2.0
     tabbable: ~5.2.1
     terser-webpack-plugin: ~5.3.1
-    ua-parser-js: ~0.7.31
+    ua-parser-js: ~1.0.2
     unexpected: ~12.0.4
     unexpected-react: ~6.0.2
     unexpected-sinon: ~11.0.1
@@ -12461,17 +12461,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sinon@npm:~12.0.1":
-  version: 12.0.1
-  resolution: "sinon@npm:12.0.1"
+"sinon@npm:~13.0.1":
+  version: 13.0.1
+  resolution: "sinon@npm:13.0.1"
   dependencies:
     "@sinonjs/commons": ^1.8.3
-    "@sinonjs/fake-timers": ^8.1.0
-    "@sinonjs/samsam": ^6.0.2
+    "@sinonjs/fake-timers": ^9.0.0
+    "@sinonjs/samsam": ^6.1.1
     diff: ^5.0.0
-    nise: ^5.1.0
+    nise: ^5.1.1
     supports-color: ^7.2.0
-  checksum: a264310c28df43e923a6e223c719953b7bd829b8e2fee7fe8b40154647e350b6bb4c18009be6f193e50892687f8e8c5d987d666fc3f6e4e78a9f807211ea365f
+  checksum: d0d90fdc5aea4170b9cbebaf0e2f6cb04c0feeadc4f5d1dfe1eaf22162637840dd3c989c5386a904b8995f44a9ca6bab61bd1bfac40e425112737f5b12b2a2a1
   languageName: node
   linkType: hard
 
@@ -12536,10 +12536,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"snarkdown@npm:~1.2.2":
-  version: 1.2.2
-  resolution: "snarkdown@npm:1.2.2"
-  checksum: 0e64abee157ce03a64c5ec4f251186d58429204f864920dcdcdf9b359d3f07355ade9e1e38b2c30a18fc3fb56e7d656ca0b7dfbc94109009120948166928d0b9
+"snarkdown@npm:~2.0.0":
+  version: 2.0.0
+  resolution: "snarkdown@npm:2.0.0"
+  checksum: e92bb254aad8c50da610e2f5f770360542b8412cb1dd6512aaf1f213322f474acd71c882d557cfadb54c34dd1041ee8677bc44061568d60df7cee54134e047e5
   languageName: node
   linkType: hard
 
@@ -13640,10 +13640,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ua-parser-js@npm:^0.7.18, ua-parser-js@npm:~0.7.31":
+"ua-parser-js@npm:^0.7.18":
   version: 0.7.31
   resolution: "ua-parser-js@npm:0.7.31"
   checksum: e2f8324a83d1715601576af85b2b6c03890699aaa7272950fc77ea925c70c5e4f75060ae147dc92124e49f7f0e3d6dd2b0a91e7f40d267e92df8894be967ba8b
+  languageName: node
+  linkType: hard
+
+"ua-parser-js@npm:~1.0.2":
+  version: 1.0.2
+  resolution: "ua-parser-js@npm:1.0.2"
+  checksum: ff7f6d79a9c1a38aa85a0e751040fc7e17a0b621bda876838d14ebe55aca4e50e68da0350f181e58801c2d8a35e7db4e12473776e558910c4b7cabcec96aa3bf
   languageName: node
   linkType: hard
 
