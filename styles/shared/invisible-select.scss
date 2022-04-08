@@ -1,3 +1,5 @@
+@import '../helvetica/dark-vars.scss';
+
 .invisibleSelect {
   position: relative;
   display: inline-block;
@@ -19,7 +21,23 @@
   }
 
   &__label {
-    border-bottom: 1px dashed;
+    background-color: #eee;
+    padding: 0 0.35em;
+    border-radius: 0.5em;
+
+    .dark-theme & {
+      background-color: $bg-color-lightest;
+    }
+  }
+
+  &:hover &__label {
+    color: #fff;
+    background-color: #333;
+
+    .dark-theme & {
+      color: $bg-color;
+      background-color: $text-color;
+    }
   }
 
   &__caret {
@@ -36,5 +54,6 @@
 .invisibleSelect--withCaret {
   .invisibleSelect__label {
     border-bottom: none;
+    padding-right: 0.15em;
   }
 }
