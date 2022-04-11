@@ -106,7 +106,10 @@ class PostComment extends Component {
   );
 
   arrowHoverHandlers = {
-    hover: (arrows) => this.props.arrowsHighlightHandlers.hover(this.props.id, arrows),
+    hover: (e) => {
+      const arrows = parseInt(e.target.dataset['arrows'] || '');
+      this.props.arrowsHighlightHandlers.hover(this.props.id, arrows);
+    },
     leave: () => this.props.arrowsHighlightHandlers.leave(),
   };
 
