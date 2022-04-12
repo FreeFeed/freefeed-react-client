@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useRef } from 'react';
+import { useCallback, useMemo, useEffect, useRef } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
@@ -12,16 +12,18 @@ import {
 import { commentReadmoreConfig } from '../../utils/readmore-config';
 import Expandable from '../expandable';
 import PieceOfText from '../piece-of-text';
+import { Separated } from '../separated';
+import TimeDisplay from '../time-display';
 import UserName from '../user-name';
 
 import styles from './post-comment-preview.module.scss';
 
-export function PostCommentPreview({ postId, seqNumber, postUrl, close }) {
+export function PostCommentPreview({ postId, seqNumber, postUrl, close, onCommentLinkClick }) {
   const dispatch = useDispatch();
   const allComments = useSelector((state) => state.comments);
   const allUsers = useSelector((state) => state.users);
   const getCommentStatuses = useSelector((state) => state.getCommentStatuses);
-  const readMoreStyle = useSelector((state) => state.user.frontendPreferences.readMoreStyle);
+  const frontPreferences = useSelector((state) => state.user.frontendPreferences);
 
   const comment = useMemo(
     () => Object.values(allComments).find((c) => c.postId === postId && c.seqNumber === seqNumber),
@@ -36,6 +38,7 @@ export function PostCommentPreview({ postId, seqNumber, postUrl, close }) {
     return comment?.body;
   }, [comment]);
 
+  // Request a comment if it is not available
   const getCommentStatus = getCommentStatuses[`${postId}#${seqNumber}`] || initialAsyncState;
   useEffect(() => {
     if (!comment && getCommentStatus.initial) {
@@ -43,6 +46,7 @@ export function PostCommentPreview({ postId, seqNumber, postUrl, close }) {
     }
   }, [comment, dispatch, getCommentStatus.initial, postId, seqNumber]);
 
+  // Close on click outside
   const boxRef = useRef();
   useEffect(() => {
     const box = boxRef.current;
@@ -52,10 +56,31 @@ export function PostCommentPreview({ postId, seqNumber, postUrl, close }) {
     return () => document.body.removeEventListener('click', h);
   }, [close]);
 
+  const onClick = useCallback(
+    (e) => {
+      comment && onCommentLinkClick(e, comment.id);
+      close();
+    },
+    [close, comment, onCommentLinkClick],
+  );
+
   const commentTail = (
     <span className="comment-tail">
-      {' '}
-      - <UserName user={author} />
+      <Separated separator=" - ">
+        <></>
+        {author && <UserName user={author} />}
+        {comment && frontPreferences.comments.showTimestamps && (
+          <span className="comment-tail__item">
+            <Link
+              to={`${postUrl}#comment-${comment.id}`}
+              className="comment-tail__timestamp"
+              onClick={onClick}
+            >
+              <TimeDisplay timeStamp={+comment.createdAt} inline />
+            </Link>
+          </span>
+        )}
+      </Separated>
     </span>
   );
 
@@ -64,7 +89,7 @@ export function PostCommentPreview({ postId, seqNumber, postUrl, close }) {
       {comment ? (
         <>
           <Expandable
-            expanded={readMoreStyle === READMORE_STYLE_COMPACT}
+            expanded={frontPreferences.readMoreStyle === READMORE_STYLE_COMPACT}
             config={commentReadmoreConfig}
             bonusInfo={commentTail}
           >
@@ -72,7 +97,7 @@ export function PostCommentPreview({ postId, seqNumber, postUrl, close }) {
             {commentTail}
           </Expandable>
           <div className={styles['actions']}>
-            <Link to={`${postUrl}#comment-${comment?.id}`} onClick={close}>
+            <Link to={`${postUrl}#comment-${comment?.id}`} onClick={onClick}>
               Go to comment
             </Link>
           </div>

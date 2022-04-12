@@ -1,7 +1,7 @@
 /* global CONFIG */
 import { createRef, Fragment, Component } from 'react';
 
-import { preventDefault, pluralForm } from '../../../utils';
+import { preventDefault, pluralForm, handleLeftClick } from '../../../utils';
 import { safeScrollBy } from '../../../services/unscroll';
 import ErrorBoundary from '../../error-boundary';
 import { Icon } from '../../fontawesome-icons';
@@ -27,6 +27,7 @@ export default class PostComments extends Component {
 
   addingCommentForm = createRef();
   rootEl = createRef();
+  visibleCommentIds = createRef([]);
 
   constructor(props) {
     super(props);
@@ -162,6 +163,18 @@ export default class PostComments extends Component {
     return !post.commentsDisabled || post.isEditable || post.isModeratable;
   }
 
+  onCommentLinkClick = (event, commentId) => {
+    if (this.props.isSinglePost) {
+      return;
+    }
+    handleLeftClick(() => {
+      this.setState({ highlightedCommentId: commentId });
+      if (!this.visibleCommentIds.current.includes(commentId)) {
+        this.expandComments();
+      }
+    })(event);
+  };
+
   renderCommentSpacer = (from, to, isAboveCommentForm = false) => {
     if (!from || !to) {
       return null;
@@ -188,6 +201,8 @@ export default class PostComments extends Component {
     if (!comment) {
       return null;
     }
+
+    this.visibleCommentIds.current.push(comment.id);
 
     let spacer = null;
 
@@ -224,6 +239,7 @@ export default class PostComments extends Component {
           comment.id === this.state.highlightedCommentId
         }
         canAddComment={this.canAddComment()}
+        onCommentLinkClick={this.onCommentLinkClick}
       />
     );
 
@@ -314,6 +330,7 @@ export default class PostComments extends Component {
     let firstComment = null;
     let foldControl = null;
     let tailComments = [];
+    this.visibleCommentIds.current = [];
 
     if (post.omittedComments === 0) {
       // All comments are available

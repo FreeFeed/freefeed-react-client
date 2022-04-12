@@ -322,6 +322,7 @@ class PostComment extends Component {
           seqNumber={this.state.previewSeqNumber}
           postUrl={this.props.entryUrl}
           close={this.closePreview}
+          onCommentLinkClick={this.props.onCommentLinkClick}
         />
       )
     );
