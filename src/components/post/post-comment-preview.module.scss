@@ -38,3 +38,15 @@
   margin-top: 0.66em;
   margin-bottom: 0.33em;
 }
+
+.error {
+  color: #900;
+
+  :global(.dark-theme) & {
+    color: $link-color-dim;
+  }
+}
+
+.loading {
+  font-style: italic;
+}
