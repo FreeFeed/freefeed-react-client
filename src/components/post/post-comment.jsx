@@ -23,12 +23,13 @@ import { ButtonLink } from '../button-link';
 import { Separated } from '../separated';
 
 import { PostCommentMore } from './post-comment-more';
+import { PostCommentPreview } from './post-comment-preview';
 
 class PostComment extends Component {
   commentContainer;
   commentForm;
 
-  state = { moreMenuOpened: false };
+  state = { moreMenuOpened: false, previewVisible: false, previewSeqNumber: 0 };
 
   scrollToComment = () => {
     if (this.commentContainer) {
@@ -115,6 +116,24 @@ class PostComment extends Component {
 
   like = () => this.props.likeComment(this.props.id);
   unlike = () => this.props.unlikeComment(this.props.id);
+
+  closePreview = () => this.state.previewVisible && this.setState({ previewVisible: false });
+
+  arrowClick = (e) => {
+    if (this.state.previewVisible) {
+      this.closePreview();
+      return;
+    }
+    const arrows = parseInt(e.target.dataset['arrows'] || '');
+    const previewSeqNumber = this.props.seqNumber - arrows;
+    if (previewSeqNumber <= 0) {
+      return;
+    }
+    this.setState({
+      previewVisible: true,
+      previewSeqNumber,
+    });
+  };
 
   possibleActions() {
     if (!this.props.currentUser.id) {
@@ -263,6 +282,7 @@ class PostComment extends Component {
             highlightTerms={this.props.highlightTerms}
             userHover={this.props.authorHighlightHandlers}
             arrowHover={this.arrowHoverHandlers}
+            arrowClick={this.arrowClick}
             showMedia={this.props.showMedia}
           />
           {commentTail}
@@ -294,6 +314,19 @@ class PostComment extends Component {
     );
   }
 
+  renderPreview() {
+    return (
+      this.state.previewVisible && (
+        <PostCommentPreview
+          postId={this.props.postId}
+          seqNumber={this.state.previewSeqNumber}
+          postUrl={this.props.entryUrl}
+          close={this.closePreview}
+        />
+      )
+    );
+  }
+
   render() {
     const className = classnames({
       comment: true,
@@ -317,6 +350,7 @@ class PostComment extends Component {
       >
         {this.renderCommentIcon()}
         {this.renderBody()}
+        {this.renderPreview()}
       </div>
     );
   }

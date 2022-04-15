@@ -18,12 +18,14 @@ import ErrorBoundary from './error-boundary';
 
 const MAX_URL_LENGTH = 50;
 const { searchEngine } = CONFIG.search;
+const noop = () => {};
 
 export default function Linkify({
   children,
   showMedia,
   userHover,
-  arrowHover,
+  arrowHover = noop,
+  arrowClick,
   highlightTerms: hl = [],
 }) {
   const attachmentsRef = useRef([]);
@@ -34,13 +36,14 @@ export default function Linkify({
       showMedia,
       userHover,
       arrowHover,
+      arrowClick,
       attachmentsRef,
     });
     if (hl.length > 0) {
       fm = processStrings(fm, (str) => highlightString(str, hl), ['button']);
     }
     return fm;
-  }, [arrowHover, children, hl, showMedia, userHover]);
+  }, [arrowClick, arrowHover, children, hl, showMedia, userHover]);
 
   return (
     <span className="Linkify" dir="auto" role="region">
@@ -73,7 +76,7 @@ function processStrings(children, processor, excludeTags = [], params = {}) {
   return children;
 }
 
-function parseString(text, { userHover, arrowHover, showMedia, attachmentsRef }) {
+function parseString(text, { userHover, arrowHover, arrowClick, showMedia, attachmentsRef }) {
   if (text === '') {
     return [];
   }
@@ -115,6 +118,7 @@ function parseString(text, { userHover, arrowHover, showMedia, attachmentsRef })
           data-arrows={token.level}
           onMouseEnter={arrowHover.hover}
           onMouseLeave={arrowHover.leave}
+          onClick={arrowClick}
           key={key}
         >
           {token.text}
