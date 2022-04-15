@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
 import { getCommentByNumber } from '../../redux/action-creators';
 import { initialAsyncState } from '../../redux/async-helpers';
+import { intentToScroll } from '../../services/unscroll';
 import {
   COMMENT_HIDDEN_BANNED,
   READMORE_STYLE_COMPACT,
@@ -24,6 +25,8 @@ export function PostCommentPreview({ postId, seqNumber, postUrl, close, onCommen
   const allUsers = useSelector((state) => state.users);
   const getCommentStatuses = useSelector((state) => state.getCommentStatuses);
   const frontPreferences = useSelector((state) => state.user.frontendPreferences);
+
+  const boxRef = useRef();
 
   const comment = useMemo(
     () => Object.values(allComments).find((c) => c.postId === postId && c.seqNumber === seqNumber),
@@ -47,7 +50,6 @@ export function PostCommentPreview({ postId, seqNumber, postUrl, close, onCommen
   }, [comment, dispatch, getCommentStatus.initial, postId, seqNumber]);
 
   // Close on click outside
-  const boxRef = useRef();
   useEffect(() => {
     const box = boxRef.current;
     const h = (e) => e.target.isConnected && !box.contains(e.target) && close();
@@ -63,6 +65,18 @@ export function PostCommentPreview({ postId, seqNumber, postUrl, close, onCommen
     },
     [close, comment, onCommentLinkClick],
   );
+
+  useEffect(() => {
+    const minBottom = 100;
+    const { bottom } = boxRef.current.getBoundingClientRect();
+    if (bottom < minBottom) {
+      intentToScroll();
+      window.scrollBy({
+        top: bottom - minBottom,
+        behavior: 'smooth',
+      });
+    }
+  }, []);
 
   const commentTail = (
     <span className="comment-tail">
