@@ -95,6 +95,7 @@ const renderPostComments = (props = {}, options = {}) => {
     isLoadingComments: false,
     addComment: () => {},
     toggleCommenting: () => {},
+    nowDate: new Date('2022-01-01'),
   };
 
   const rendered = render(

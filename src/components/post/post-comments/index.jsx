@@ -78,7 +78,7 @@ export default class PostComments extends Component {
     const { props } = this;
     const { post } = props;
 
-    const now = new Date();
+    const now = props.nowDate || new Date();
     let spacer = null;
 
     if (post.comments?.length > 0) {
