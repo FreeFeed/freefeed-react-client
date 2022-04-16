@@ -12,7 +12,7 @@ import {
 import { commentReadmoreConfig } from '../../utils/readmore-config';
 import { defaultCommentState } from '../../redux/reducers/comment-edit';
 
-import { safeScrollTo } from '../../services/unscroll';
+import { intentToScroll } from '../../services/unscroll';
 import PieceOfText from '../piece-of-text';
 import Expandable from '../expandable';
 import UserName from '../user-name';
@@ -43,19 +43,25 @@ class PostComment extends Component {
       const middleScreenPosition =
         window.pageYOffset + (rect.top + rect.bottom) / 2 - window.innerHeight / 2;
       if (rect.top < 0 || rect.bottom > window.innerHeight) {
-        safeScrollTo(0, middleScreenPosition);
+        intentToScroll();
+        window.scrollTo({
+          top: middleScreenPosition,
+          behavior: 'smooth',
+        });
       }
     }
   };
 
   componentDidMount() {
-    if (this.props.highlightedFromUrl) {
+    if (this.props.highlightedFromUrl || this.props.focused) {
       setTimeout(this.scrollToComment, 0);
     }
   }
 
   componentDidUpdate(prevProps) {
-    if (!prevProps.highlightedFromUrl && this.props.highlightedFromUrl) {
+    const prev = prevProps.highlightedFromUrl || prevProps.focused;
+    const curr = this.props.highlightedFromUrl || this.props.focused;
+    if (!prev && curr) {
       setTimeout(this.scrollToComment, 0);
     }
   }

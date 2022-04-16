@@ -16,6 +16,8 @@ import { CommentSpacer } from './comment-spacer';
 
 const foldConf = CONFIG.commentsFolding;
 
+const focusTimeout = 8000;
+
 export default class PostComments extends Component {
   static defaultProps = {
     user: {},
@@ -28,6 +30,7 @@ export default class PostComments extends Component {
   addingCommentForm = createRef();
   rootEl = createRef();
   visibleCommentIds = createRef([]);
+  unfocusTimer = createRef(0);
 
   constructor(props) {
     super(props);
@@ -36,6 +39,7 @@ export default class PostComments extends Component {
       folded: !props.preopened,
       highlightedAuthor: null,
       highlightedCommentId: null,
+      focusedCommentId: null,
     };
   }
 
@@ -163,17 +167,21 @@ export default class PostComments extends Component {
     return !post.commentsDisabled || post.isEditable || post.isModeratable;
   }
 
-  onCommentLinkClick = (event, commentId) => {
-    if (this.props.isSinglePost) {
-      return;
+  onCommentLinkClick = handleLeftClick((e, commentId) => {
+    this.setState({ focusedCommentId: commentId });
+    clearTimeout(this.unfocusTimer.current);
+    this.unfocusTimer.current = setTimeout(
+      () => this.setState({ focusedCommentId: null }),
+      focusTimeout,
+    );
+    if (!this.visibleCommentIds.current.includes(commentId)) {
+      this.expandComments();
     }
-    handleLeftClick(() => {
-      this.setState({ highlightedCommentId: commentId });
-      if (!this.visibleCommentIds.current.includes(commentId)) {
-        this.expandComments();
-      }
-    })(event);
-  };
+  });
+
+  componentWillUnmount() {
+    clearTimeout(this.unfocusTimer.current);
+  }
 
   renderCommentSpacer = (from, to, isAboveCommentForm = false) => {
     if (!from || !to) {
@@ -236,8 +244,10 @@ export default class PostComments extends Component {
         forceAbsTimestamps={props.forceAbsTimestamps}
         highlighted={
           comment.user?.username === this.state.highlightedAuthor ||
-          comment.id === this.state.highlightedCommentId
+          comment.id === this.state.highlightedCommentId ||
+          comment.id === this.state.focusedCommentId
         }
+        focused={comment.id === this.state.focusedCommentId}
         canAddComment={this.canAddComment()}
         onCommentLinkClick={this.onCommentLinkClick}
       />

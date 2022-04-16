@@ -101,7 +101,7 @@ export function preventDefault(realFunction) {
 }
 
 export function handleLeftClick(handler) {
-  return (event) => {
+  return (event, ...rest) => {
     if (
       event.type === 'click' &&
       (event.button !== 0 || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey)
@@ -109,7 +109,7 @@ export function handleLeftClick(handler) {
       return;
     }
     event.preventDefault();
-    handler(event);
+    handler(event, ...rest);
   };
 }
 
