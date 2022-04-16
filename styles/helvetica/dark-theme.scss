@@ -209,12 +209,6 @@ body,
     background-color: $bg-highlight-color;
   }
 
-  .comment.highlighted::before,
-  .comment.highlighted .expand-panel,
-  .comment.highlight-from-url::before {
-    background-color: $bg-color-lightest;
-  }
-
   .feed-options-switch .dropdown .spacer {
     background-color: $separator-color;
   }
