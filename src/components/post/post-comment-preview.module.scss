@@ -10,7 +10,7 @@
 
   position: absolute;
   z-index: 2;
-  bottom: 100%;
+  bottom: calc(100% - var(--arr-top));
   left: rem(19px);
   right: rem(19px);
   padding: rem(6px) rem(12px);
@@ -24,7 +24,9 @@
 
     content: '';
     position: absolute;
-    left: rem(30px);
+
+    // The #{} syntax is ugly but necessary to fight against Sass heuristics
+    left: #{m}in(#{m}ax(rem(14px), var(--arr-left)), #{100%} - rem(14px));
     top: 100%;
     width: $sz;
     height: $sz;

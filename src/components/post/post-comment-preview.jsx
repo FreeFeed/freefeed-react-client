@@ -19,7 +19,15 @@ import UserName from '../user-name';
 
 import styles from './post-comment-preview.module.scss';
 
-export function PostCommentPreview({ postId, seqNumber, postUrl, close, onCommentLinkClick }) {
+export function PostCommentPreview({
+  postId,
+  seqNumber,
+  postUrl,
+  close,
+  onCommentLinkClick,
+  arrowsLeft = 0,
+  arrowsTop = 0,
+}) {
   const dispatch = useDispatch();
   const allComments = useSelector((state) => state.comments);
   const allUsers = useSelector((state) => state.users);
@@ -78,6 +86,14 @@ export function PostCommentPreview({ postId, seqNumber, postUrl, close, onCommen
     }
   }, []);
 
+  const style = useMemo(
+    () => ({
+      '--arr-left': `${arrowsLeft}px`,
+      '--arr-top': `${arrowsTop}px`,
+    }),
+    [arrowsLeft, arrowsTop],
+  );
+
   const commentTail = (
     <span className="comment-tail">
       <Separated separator=" - ">
@@ -99,7 +115,7 @@ export function PostCommentPreview({ postId, seqNumber, postUrl, close, onCommen
   );
 
   return (
-    <div ref={boxRef} className={styles['box']}>
+    <div ref={boxRef} className={styles['box']} style={style}>
       {comment ? (
         <>
           <Expandable

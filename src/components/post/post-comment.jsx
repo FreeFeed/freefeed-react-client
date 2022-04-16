@@ -29,7 +29,13 @@ class PostComment extends Component {
   commentContainer;
   commentForm;
 
-  state = { moreMenuOpened: false, previewVisible: false, previewSeqNumber: 0 };
+  state = {
+    moreMenuOpened: false,
+    previewVisible: false,
+    previewSeqNumber: 0,
+    previewLeft: 0,
+    previewTop: 0,
+  };
 
   scrollToComment = () => {
     if (this.commentContainer) {
@@ -124,14 +130,25 @@ class PostComment extends Component {
       this.closePreview();
       return;
     }
-    const arrows = parseInt(e.target.dataset['arrows'] || '');
+
+    const arrowsEl = e.currentTarget;
+
+    const arrows = parseInt(arrowsEl.dataset['arrows'] || '');
     const previewSeqNumber = this.props.seqNumber - arrows;
     if (previewSeqNumber <= 0) {
       return;
     }
+
+    const arrowsRect = arrowsEl.getBoundingClientRect();
+    const commentRect = this.commentContainer
+      .querySelector('.comment-body')
+      .getBoundingClientRect();
+
     this.setState({
       previewVisible: true,
       previewSeqNumber,
+      previewLeft: arrowsRect.left + arrowsRect.width / 2 - commentRect.left,
+      previewTop: arrowsRect.top - commentRect.top,
     });
   };
 
@@ -323,6 +340,8 @@ class PostComment extends Component {
           postUrl={this.props.entryUrl}
           close={this.closePreview}
           onCommentLinkClick={this.props.onCommentLinkClick}
+          arrowsLeft={this.state.previewLeft}
+          arrowsTop={this.state.previewTop}
         />
       )
     );
