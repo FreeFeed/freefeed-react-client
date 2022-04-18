@@ -181,6 +181,7 @@ export default class PieceOfText extends Component {
       <Linkify
         userHover={this.props.userHover}
         arrowHover={this.props.arrowHover}
+        arrowClick={this.props.arrowClick}
         highlightTerms={this.props.highlightTerms}
         showMedia={this.props.showMedia}
       >

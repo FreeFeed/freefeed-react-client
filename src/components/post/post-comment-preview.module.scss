@@ -1,0 +1,54 @@
+@import '../../../styles/shared/mixins';
+@import '../../../styles/helvetica/dark-vars.scss';
+
+.box {
+  --bg-color: #fff;
+
+  :global(.dark-theme) & {
+    --bg-color: #{$bg-color-lightest};
+  }
+
+  position: absolute;
+  z-index: 2;
+  bottom: calc(100% - var(--arr-top));
+  left: rem(19px);
+  right: rem(19px);
+  padding: rem(6px) rem(12px);
+  margin-bottom: rem(10px);
+  border-radius: rem(4px);
+  background-color: var(--bg-color);
+  box-shadow: 0 3px 9px 2px rgba(0, 0, 0, 0.25), 0 -3px 9px 0 rgba(0, 0, 0, 0.1);
+
+  &::after {
+    $sz: rem(16px);
+
+    content: '';
+    position: absolute;
+
+    // The #{} syntax is ugly but necessary to fight against Sass heuristics
+    left: #{m}in(#{m}ax(rem(14px), var(--arr-left)), #{100%} - rem(14px));
+    top: 100%;
+    width: $sz;
+    height: $sz;
+    background-color: var(--bg-color);
+    transform: translate(-50%, -50%) rotate(45deg);
+    box-shadow: 3px 3px 4px -2px rgba(0, 0, 0, 0.25);
+  }
+}
+
+.actions {
+  margin-top: 0.66em;
+  margin-bottom: 0.33em;
+}
+
+.error {
+  color: #900;
+
+  :global(.dark-theme) & {
+    color: $link-color-dim;
+  }
+}
+
+.loading {
+  font-style: italic;
+}

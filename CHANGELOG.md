@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 ### Added
+- Click on the ^^^-reference shows a preview of the referenced comment
 - Native player for video-files
 
 ### Changed

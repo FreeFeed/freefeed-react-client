@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { isValidElement, cloneElement, Component } from 'react';
+import { isValidElement, cloneElement, useMemo, useRef, useCallback } from 'react';
 import { Link } from 'react-router';
 import { Mention, Email, HashTag, ForeignMention } from 'social-text-tokenizer';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
@@ -18,185 +18,209 @@ import ErrorBoundary from './error-boundary';
 
 const MAX_URL_LENGTH = 50;
 const { searchEngine } = CONFIG.search;
+const noop = () => {};
 
-export default class Linkify extends Component {
-  parseCounter = 0;
+export default function Linkify({
+  children,
+  showMedia,
+  userHover,
+  arrowHover = noop,
+  arrowClick,
+  highlightTerms: hl = [],
+}) {
+  const attachmentsRef = useRef([]);
 
-  processStrings(children, processor, excludeTags, mediaEl) {
-    if (typeof children === 'string') {
-      return processor(children, mediaEl);
-    } else if (isValidElement(children) && !excludeTags.includes(children.type)) {
-      return cloneElement(
-        children,
-        {},
-        this.processStrings(children.props.children, processor, excludeTags, mediaEl),
-      );
-    } else if (Array.isArray(children)) {
-      return children.map((ch) => this.processStrings(ch, processor, excludeTags, mediaEl));
+  const formatted = useMemo(() => {
+    // attachmentsRef.current.length = 0;
+    let fm = processStrings(children, parseString, ['a', 'button', UserName], {
+      showMedia,
+      userHover,
+      arrowHover,
+      arrowClick,
+      attachmentsRef,
+    });
+    if (hl.length > 0) {
+      fm = processStrings(fm, (str) => highlightString(str, hl), ['button']);
     }
-    return children;
+    return fm;
+  }, [arrowClick, arrowHover, children, hl, showMedia, userHover]);
+
+  return (
+    <span className="Linkify" dir="auto" role="region">
+      <ErrorBoundary>{formatted}</ErrorBoundary>
+    </span>
+  );
+}
+
+/**
+ * Recursive process text content of React children
+ *
+ * @param {import('react').ReactChildren | import('react').ReactNode} children
+ * @param {(text: string, params: object) => string} processor
+ * @param {string[]} excludeTags
+ * @param {object} params
+ * @returns {import('react').ReactNode[]}
+ */
+function processStrings(children, processor, excludeTags = [], params = {}) {
+  if (typeof children === 'string') {
+    return processor(children, params);
+  } else if (isValidElement(children) && !excludeTags.includes(children.type)) {
+    return cloneElement(
+      children,
+      {},
+      processStrings(children.props.children, processor, excludeTags, params),
+    );
+  } else if (Array.isArray(children)) {
+    return children.map((ch) => processStrings(ch, processor, excludeTags, params));
+  }
+  return children;
+}
+
+function parseString(text, { userHover, arrowHover, arrowClick, showMedia, attachmentsRef }) {
+  if (text === '') {
+    return [];
   }
 
-  parseString = (text, mediaEl) => {
-    if (text === '') {
-      return [];
+  return parseText(text).map((token, i) => {
+    const key = i;
+
+    const anchorEl = anchorElWithKey(key);
+    const linkEl = linkElWithKey(key);
+
+    if (token instanceof Mention) {
+      return (
+        <UserName
+          user={{ username: token.text.slice(1).toLowerCase() }}
+          userHover={userHover}
+          key={key}
+        >
+          {token.text}
+        </UserName>
+      );
     }
 
-    return parseText(text).map((token, i) => {
-      const key = i;
+    if (token instanceof Email) {
+      return anchorEl(`mailto:${token.text}`, token.pretty);
+    }
 
-      const anchorEl = anchorElWithKey(key);
-      const linkEl = linkElWithKey(key);
-
-      if (token instanceof Mention) {
-        return (
-          <UserName
-            user={{ username: token.text.slice(1).toLowerCase() }}
-            userHover={this.props.userHover}
-            key={key}
-          >
-            {token.text}
-          </UserName>
-        );
+    if (token instanceof HashTag) {
+      if (searchEngine) {
+        return anchorEl(searchEngine + encodeURIComponent(token.text), token.text);
       }
 
-      if (token instanceof Email) {
-        return anchorEl(`mailto:${token.text}`, token.pretty);
-      }
+      return linkEl({ pathname: '/search', query: { q: token.text } }, <bdi>{token.text}</bdi>);
+    }
 
-      if (token instanceof HashTag) {
-        if (searchEngine) {
-          return anchorEl(searchEngine + encodeURIComponent(token.text), token.text);
-        }
-
-        return linkEl({ pathname: '/search', query: { q: token.text } }, <bdi>{token.text}</bdi>);
-      }
-
-      if (token instanceof Arrows && this.props.arrowHover) {
-        return (
-          <span
-            className="arrow-span"
-            // eslint-disable-next-line react/jsx-no-bind
-            onMouseEnter={() => this.props.arrowHover.hover(token.level)}
-            onMouseLeave={this.props.arrowHover.leave}
-            key={key}
-          >
-            {token.text}
-          </span>
-        );
-      }
-
-      if (token instanceof TLink) {
-        if (token.isLocal) {
-          let m, text;
-          // Special shortening of post links
-          if ((m = /^[^/]+\/[\w-]+\/[\da-f]{8}-/.exec(token.pretty))) {
-            text = `${m[0]}\u2026`;
-          } else {
-            text = token.shorten(MAX_URL_LENGTH);
-          }
-          return linkEl(token.localURI, text);
-        }
-
-        if (token.href.match(FRIENDFEED_POST)) {
-          return linkEl(
-            { pathname: '/archivePost', query: { url: token.href } },
-            token.shorten(MAX_URL_LENGTH),
-          );
-        }
-
-        if (this.props.showMedia) {
-          const mediaType = getMediaType(token.href);
-          if (mediaType) {
-            return mediaEl(token.href, token.shorten(MAX_URL_LENGTH), mediaType);
-          }
-        }
-
-        return anchorEl(token.href, token.shorten(MAX_URL_LENGTH));
-      }
-
-      if (token instanceof ForeignMention) {
-        const srv = shortCodeToService[token.service];
-        if (srv) {
-          const url = srv.linkTpl.replace(/{}/g, token.username);
-          return anchorEl(url, token.text, `${srv.title} link`);
-        }
-      }
-
-      return token.text;
-    });
-  };
-
-  render() {
-    this.parseCounter = 0;
-    const hl = this.props.highlightTerms;
-    const mediaEl = showMediaWithKey(this.props.showMedia);
-    const parsed = this.processStrings(
-      this.props.children,
-      this.parseString,
-      ['a', 'button', UserName],
-      mediaEl,
-    );
-    if (!hl || hl.length === 0) {
+    if (token instanceof Arrows && arrowHover) {
       return (
-        <span className="Linkify" dir="auto" role="region">
-          <ErrorBoundary>{parsed}</ErrorBoundary>
+        <span
+          className="arrow-span"
+          data-arrows={token.level}
+          onMouseEnter={arrowHover.hover}
+          onMouseLeave={arrowHover.leave}
+          onClick={arrowClick}
+          key={key}
+        >
+          {token.text}
         </span>
       );
     }
-    const highlighted = this.processStrings(
-      parsed,
-      (str) => highlightString(str, hl),
-      ['button'],
-      mediaEl,
-    );
-    return (
-      <span className="Linkify" dir="auto" role="region">
-        <ErrorBoundary>{highlighted}</ErrorBoundary>
-      </span>
-    );
-  }
+
+    if (token instanceof TLink) {
+      if (token.isLocal) {
+        let m, text;
+        // Special shortening of post links
+        if ((m = /^[^/]+\/[\w-]+\/[\da-f]{8}-/.exec(token.pretty))) {
+          text = `${m[0]}\u2026`;
+        } else {
+          text = token.shorten(MAX_URL_LENGTH);
+        }
+        return linkEl(token.localURI, text);
+      }
+
+      if (token.href.match(FRIENDFEED_POST)) {
+        return linkEl(
+          { pathname: '/archivePost', query: { url: token.href } },
+          token.shorten(MAX_URL_LENGTH),
+        );
+      }
+
+      if (showMedia) {
+        const mediaType = getMediaType(token.href);
+        if (mediaType) {
+          return (
+            <MediaOpener
+              key={key}
+              url={token.href}
+              mediaType={mediaType}
+              attachmentsRef={attachmentsRef}
+              showMedia={showMedia}
+            >
+              {token.shorten(MAX_URL_LENGTH)}
+            </MediaOpener>
+          );
+        }
+      }
+
+      return anchorEl(token.href, token.shorten(MAX_URL_LENGTH));
+    }
+
+    if (token instanceof ForeignMention) {
+      const srv = shortCodeToService[token.service];
+      if (srv) {
+        const url = srv.linkTpl.replace(/{}/g, token.username);
+        return anchorEl(url, token.text, `${srv.title} link`);
+      }
+    }
+
+    return token.text;
+  });
 }
 
-function showMediaWithKey(showMedia) {
-  const attachments = [];
-  const handleOpenMedia = (index) => (e) => {
-    if (e.button !== 0 || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) {
-      return;
-    }
-    e.preventDefault();
-    showMedia({ attachments, index });
-  };
+function MediaOpener({ url, mediaType, attachmentsRef, showMedia, children }) {
+  const media = useMemo(() => {
+    const m = { url, id: 'comment', mediaType };
+    attachmentsRef.current.push(m);
+    return m;
+  }, [attachmentsRef, mediaType, url]);
 
-  return function (media, content, mediaType) {
-    attachments.push({ url: media, id: 'comment', mediaType });
-    const mediaIcon =
-      {
-        instagram: faInstagram,
-        T_YOUTUBE_VIDEO: faYoutube,
-        T_VIMEO_VIDEO: faVimeo,
-        image: faImage,
-      }[mediaType] || faVideo;
+  const openMedia = useCallback(
+    (e) => {
+      if (e.button !== 0 || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) {
+        return;
+      }
+      e.preventDefault();
+      showMedia({
+        attachments: attachmentsRef.current,
+        index: attachmentsRef.current.indexOf(media),
+      });
+    },
+    [attachmentsRef, media, showMedia],
+  );
 
-    return (
-      <a
-        href={media}
-        target="_blank"
-        dir="ltr"
-        onClick={handleOpenMedia(attachments.length - 1)}
-        key={`media${attachments.length}`}
-        className={classnames('media-link', mediaType)}
-        title="Click to view in Lightbox"
-      >
-        {mediaIcon && (
-          <span className="icon-bond">
-            <Icon icon={mediaIcon} className="media-icon" key={`icon${attachments.length}`} />
-          </span>
-        )}
-        {content}
-      </a>
-    );
-  };
+  const mediaIcon =
+    {
+      instagram: faInstagram,
+      T_YOUTUBE_VIDEO: faYoutube,
+      T_VIMEO_VIDEO: faVimeo,
+      image: faImage,
+    }[mediaType] || faVideo;
+
+  return (
+    <a
+      href={url}
+      target="_blank"
+      dir="ltr"
+      onClick={openMedia}
+      className={classnames('media-link', mediaType)}
+      title="Click to view in Lightbox"
+    >
+      <span className="icon-bond">
+        <Icon icon={mediaIcon} className="media-icon" />
+      </span>
+      {children}
+    </a>
+  );
 }
 
 function anchorElWithKey(key) {

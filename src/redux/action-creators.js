@@ -1208,3 +1208,11 @@ export function sanitizeMedia() {
     apiRequest: Api.sanitizeMedia,
   };
 }
+
+export function getCommentByNumber(postId, seqNumber) {
+  return {
+    type: ActionTypes.GET_COMMENT_BY_NUMBER,
+    apiRequest: Api.getCommentByNumber,
+    payload: { postId, seqNumber },
+  };
+}
