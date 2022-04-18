@@ -7,12 +7,10 @@
 }
 
 .comment {
-  --bg-color: white;
   --highlight-color: #d9ebff;
   --url-highlight-color: #ffffbb;
 
   .dark-theme & {
-    --bg-color: #{$bg-color};
     --highlight-color: #{$bg-color-lightest};
     --url-highlight-color: #{$bg-color-lightest};
   }
