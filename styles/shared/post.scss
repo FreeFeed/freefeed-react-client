@@ -146,6 +146,10 @@ $post-line-height: rem(20px);
   margin-left: -1em;
   margin-right: 1em;
   max-width: 100%;
+
+  @media (max-width: 500px) {
+    display: block;
+  }
 }
 
 .post-footer-item {
