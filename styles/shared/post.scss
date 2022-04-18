@@ -1,3 +1,5 @@
+@import '../helvetica/dark-vars.scss';
+
 $post-line-height: rem(20px);
 
 .post .expandable.folded {
@@ -16,6 +18,14 @@ $post-line-height: rem(20px);
   border-bottom: 1px solid #eee;
   line-height: rem(19px);
   position: relative;
+
+  --bg-color: white;
+
+  .dark-theme & {
+    --bg-color: #{$bg-color};
+  }
+
+  background-color: var(--bg-color);
 
   a {
     color: #555599;
@@ -396,7 +406,12 @@ $post-line-height: rem(20px);
 }
 
 .timeline-post.direct-post {
-  background-color: #eee;
+  --bg-color: #eee;
+
+  .dark-theme & {
+    --bg-color: #{$bg-color-lighter};
+  }
+
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 48 48'><path fill='%23ffffff' d='M40 8H8c-2.21 0-3.98 1.79-3.98 4L4 36c0 2.21 1.79 4 4 4h32c2.21 0 4-1.79 4-4V12c0-2.21-1.79-4-4-4zm0 8L24 26 8 16v-4l16 10 16-10v4z'/></svg>");
   background-repeat: no-repeat;
   background-position: top right;
@@ -417,10 +432,6 @@ $post-line-height: rem(20px);
 
   &.be-fe-folded-text::after {
     background: linear-gradient(to bottom, hsla(0deg, 0%, 93%, 0), hsla(0deg, 0%, 93%, 0.007));
-  }
-
-  .expand-panel {
-    background-color: #eee;
   }
 }
 
