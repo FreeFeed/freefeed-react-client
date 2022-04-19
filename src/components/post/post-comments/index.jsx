@@ -167,13 +167,24 @@ export default class PostComments extends Component {
     return !post.commentsDisabled || post.isEditable || post.isModeratable;
   }
 
-  onCommentLinkClick = handleLeftClick((e, commentId) => {
-    this.setState({ focusedCommentId: commentId });
+  setFocusedComment(/** @type {string|null} */ id) {
+    this.setState({ focusedCommentId: id });
     clearTimeout(this.unfocusTimer.current);
-    this.unfocusTimer.current = setTimeout(
-      () => this.setState({ focusedCommentId: null }),
-      focusTimeout,
-    );
+    if (id !== null) {
+      this.unfocusTimer.current = setTimeout(
+        () => this.setState({ focusedCommentId: null }),
+        focusTimeout,
+      );
+    }
+  }
+
+  onCommentLinkClick = handleLeftClick((e, commentId) => {
+    if (commentId !== this.state.focusedCommentId) {
+      this.setFocusedComment(commentId);
+    } else {
+      this.setFocusedComment(null);
+      setTimeout(() => this.setFocusedComment(commentId), 0);
+    }
     if (!this.visibleCommentIds.current.includes(commentId)) {
       this.expandComments();
     }
