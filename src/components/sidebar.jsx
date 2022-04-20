@@ -2,7 +2,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { Link } from 'react-router';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import format from 'date-fns/format';
 import cn from 'classnames';
 
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -27,6 +26,7 @@ import { DonationWidget } from './donation-widget';
 import { useMediaQuery } from './hooks/media-query';
 import { useResizing } from './hooks/resizing';
 import { Icon } from './fontawesome-icons';
+import { SideBarMemories } from './sidebar-memories';
 
 function LoggedInBlock({ user, signOut }) {
   const signOutStatus = useSelector((state) => state.signOutStatus);
@@ -172,32 +172,6 @@ const SideBarFreeFeed = () => (
     </div>
   </div>
 );
-
-const SideBarMemories = () => {
-  const today = new Date();
-  const todayString = format(today, 'MMdd');
-  const lastYear = today.getFullYear() - 1;
-
-  const yearLinks = [];
-  for (let year = lastYear; year >= 2005; year--) {
-    yearLinks.push(
-      <Link key={year} to={`/memories/${year}${todayString}`}>
-        {year}
-      </Link>,
-    );
-  }
-
-  return (
-    <div className="box" role="navigation">
-      <div className="box-header-memories" role="heading">
-        Memories of {format(today, 'MMMM\u00A0d')}
-      </div>
-      <div className="box-body">
-        <div className="year-links-row">{yearLinks}</div>
-      </div>
-    </div>
-  );
-};
 
 const SideBarGroups = () => {
   return (

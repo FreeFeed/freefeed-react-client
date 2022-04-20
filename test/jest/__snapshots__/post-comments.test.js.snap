@@ -280,6 +280,7 @@ exports[`PostComments Renders post comments and doesn't blow up 1`] = `
           >
             <span
               class="arrow-span"
+              data-arrows="1"
             >
               ^
             </span>

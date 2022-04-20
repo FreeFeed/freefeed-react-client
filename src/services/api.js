@@ -748,3 +748,7 @@ export function getAttachmentsStats() {
 export function sanitizeMedia() {
   return fetch(`${apiRoot}/v2/attachments/my/sanitize`, postRequestOptions());
 }
+
+export function getCommentByNumber({ postId, seqNumber }) {
+  return fetch(`${apiRoot}/v2/posts/${postId}/comments/${seqNumber}`, getRequestOptions());
+}

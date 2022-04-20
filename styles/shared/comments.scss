@@ -7,8 +7,28 @@
 }
 
 .comment {
+  --highlight-color: #d9ebff;
+  --url-highlight-color: #ffffbb;
+
+  .dark-theme & {
+    --highlight-color: #{$bg-color-lightest};
+    --url-highlight-color: #{$bg-color-lightest};
+  }
+
+  &.highlighted {
+    --bg-color: var(--highlight-color);
+  }
+
+  &.highlight-from-url {
+    --bg-color: var(--url-highlight-color);
+  }
+
   margin-top: rem(8px);
   position: relative;
+  background-color: var(--bg-color);
+  box-shadow: 0 0 0 3px var(--bg-color);
+  border-radius: 1px;
+  transition: background-color 0.2s, box-shadow 0.2s;
 
   .comment-body {
     word-wrap: break-word;
@@ -71,34 +91,13 @@
   }
 
   .expandable .expand-panel {
+    background-color: var(--bg-color);
     line-height: rem(18px);
 
     .expand-button {
       margin-left: 0;
       font-size: rem(14px);
     }
-  }
-
-  &.highlighted::before,
-  &.highlight-from-url::before {
-    $border-width: rem(3px);
-
-    content: '';
-    position: absolute;
-    top: -$border-width;
-    left: -$border-width;
-    right: -$border-width;
-    bottom: -$border-width;
-    border-radius: $border-width;
-  }
-
-  &.highlighted::before,
-  &.highlighted .expand-panel {
-    background-color: #d9ebff;
-  }
-
-  &.highlight-from-url::before {
-    background-color: #ffffbb;
   }
 
   &.is-hidden,

@@ -1,7 +1,7 @@
 /* global CONFIG */
 import { createRef, Fragment, Component } from 'react';
 
-import { preventDefault, pluralForm } from '../../../utils';
+import { preventDefault, pluralForm, handleLeftClick } from '../../../utils';
 import { safeScrollBy } from '../../../services/unscroll';
 import ErrorBoundary from '../../error-boundary';
 import { Icon } from '../../fontawesome-icons';
@@ -16,6 +16,8 @@ import { CommentSpacer } from './comment-spacer';
 
 const foldConf = CONFIG.commentsFolding;
 
+const focusTimeout = 8000;
+
 export default class PostComments extends Component {
   static defaultProps = {
     user: {},
@@ -27,6 +29,8 @@ export default class PostComments extends Component {
 
   addingCommentForm = createRef();
   rootEl = createRef();
+  visibleCommentIds = createRef([]);
+  unfocusTimer = createRef(0);
 
   constructor(props) {
     super(props);
@@ -35,6 +39,7 @@ export default class PostComments extends Component {
       folded: !props.preopened,
       highlightedAuthor: null,
       highlightedCommentId: null,
+      focusedCommentId: null,
     };
   }
 
@@ -73,7 +78,7 @@ export default class PostComments extends Component {
     const { props } = this;
     const { post } = props;
 
-    const now = new Date();
+    const now = props.nowDate || new Date();
     let spacer = null;
 
     if (post.comments?.length > 0) {
@@ -162,6 +167,33 @@ export default class PostComments extends Component {
     return !post.commentsDisabled || post.isEditable || post.isModeratable;
   }
 
+  setFocusedComment(/** @type {string|null} */ id) {
+    this.setState({ focusedCommentId: id });
+    clearTimeout(this.unfocusTimer.current);
+    if (id !== null) {
+      this.unfocusTimer.current = setTimeout(
+        () => this.setState({ focusedCommentId: null }),
+        focusTimeout,
+      );
+    }
+  }
+
+  onCommentLinkClick = handleLeftClick((e, commentId) => {
+    if (commentId !== this.state.focusedCommentId) {
+      this.setFocusedComment(commentId);
+    } else {
+      this.setFocusedComment(null);
+      setTimeout(() => this.setFocusedComment(commentId), 0);
+    }
+    if (!this.visibleCommentIds.current.includes(commentId)) {
+      this.expandComments();
+    }
+  });
+
+  componentWillUnmount() {
+    clearTimeout(this.unfocusTimer.current);
+  }
+
   renderCommentSpacer = (from, to, isAboveCommentForm = false) => {
     if (!from || !to) {
       return null;
@@ -188,6 +220,8 @@ export default class PostComments extends Component {
     if (!comment) {
       return null;
     }
+
+    this.visibleCommentIds.current.push(comment.id);
 
     let spacer = null;
 
@@ -221,9 +255,12 @@ export default class PostComments extends Component {
         forceAbsTimestamps={props.forceAbsTimestamps}
         highlighted={
           comment.user?.username === this.state.highlightedAuthor ||
-          comment.id === this.state.highlightedCommentId
+          comment.id === this.state.highlightedCommentId ||
+          comment.id === this.state.focusedCommentId
         }
+        focused={comment.id === this.state.focusedCommentId}
         canAddComment={this.canAddComment()}
+        onCommentLinkClick={this.onCommentLinkClick}
       />
     );
 
@@ -314,6 +351,7 @@ export default class PostComments extends Component {
     let firstComment = null;
     let foldControl = null;
     let tailComments = [];
+    this.visibleCommentIds.current = [];
 
     if (post.omittedComments === 0) {
       // All comments are available

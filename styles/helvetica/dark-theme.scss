@@ -17,7 +17,6 @@ body,
   .search-form .search-input,
   .content .box-body,
   .content .box-footer,
-  .expandable .expand-panel,
   .list-group-item,
   .panel {
     background-color: $bg-color;
@@ -28,8 +27,6 @@ body,
   select[name='os0'],
   .color-scheme-selector select,
   .search-memo,
-  .timeline-post.direct-post,
-  .timeline-post.direct-post .expand-panel,
   .feed-options-switch .dropdown,
   .loader-container .loader-overlay,
   .breadcrumb {
@@ -207,12 +204,6 @@ body,
   .feed-options-switch .dropdown .drop-option:hover {
     color: $text-color-lighter;
     background-color: $bg-highlight-color;
-  }
-
-  .comment.highlighted::before,
-  .comment.highlighted .expand-panel,
-  .comment.highlight-from-url::before {
-    background-color: $bg-color-lightest;
   }
 
   .feed-options-switch .dropdown .spacer {

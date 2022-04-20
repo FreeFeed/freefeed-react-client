@@ -38,7 +38,7 @@ export default function ProfileForm() {
         <label htmlFor="screenname-input">Display name</label>
         <input
           id="screenname-input"
-          className="form-control wider-input"
+          className="form-control narrow-input"
           type="text"
           autoComplete="name"
           {...screenName.input}
@@ -50,7 +50,7 @@ export default function ProfileForm() {
         <label htmlFor="email-input">Email</label>
         <input
           id="email-input"
-          className="form-control narrow-input"
+          className="form-control wider-input"
           type="email"
           autoComplete="email"
           inputMode="email"
@@ -106,7 +106,7 @@ function validate(values) {
   errors.screenName = shouldBe(
     /^.{3,25}$/i.test(values.screenName.trim()),
     <>
-      {values.screenName.trim()} is not a valid displayname.
+      {values.screenName.trim()} is not a valid display name.
       <br /> The length should be from 3 to 25 characters.
     </>,
   );
