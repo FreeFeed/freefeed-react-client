@@ -34,7 +34,7 @@ const baseConfig = {
   },
   resolve: {
     extensions: ['.js', '.json', '.jsx'],
-    fallback: { querystring: false, url: false },
+    fallback: { querystring: require.resolve('querystring'), url: require.resolve('url') },
   },
   plugins: skipFalsy([
     new webpack.LoaderOptionsPlugin({ debug: opts.dev }),
