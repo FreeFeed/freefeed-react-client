@@ -36,6 +36,15 @@
   }
 }
 
+.hidden-text {
+  font-style: italic;
+  color: #999;
+
+  .dark-theme & {
+    color: $text-color-darker;
+  }
+}
+
 .actions {
   margin-top: 0.66em;
   margin-bottom: 0.33em;

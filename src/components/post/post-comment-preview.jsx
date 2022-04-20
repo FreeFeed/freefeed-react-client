@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useEffect, useRef } from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
+
 import { getCommentByNumber } from '../../redux/action-creators';
 import { initialAsyncState } from '../../redux/async-helpers';
 import { intentToScroll } from '../../services/unscroll';
@@ -118,14 +118,18 @@ export function PostCommentPreview({
     <div ref={boxRef} className={styles['box']} style={style}>
       {comment ? (
         <>
-          <Expandable
-            expanded={frontPreferences.readMoreStyle === READMORE_STYLE_COMPACT}
-            config={commentReadmoreConfig}
-            bonusInfo={commentTail}
-          >
-            <PieceOfText text={commentBody} />
-            {commentTail}
-          </Expandable>
+          {comment.hideType ? (
+            <span className={styles['hidden-text']}>{commentBody}</span>
+          ) : (
+            <Expandable
+              expanded={frontPreferences.readMoreStyle === READMORE_STYLE_COMPACT}
+              config={commentReadmoreConfig}
+              bonusInfo={commentTail}
+            >
+              <PieceOfText text={commentBody} />
+              {commentTail}
+            </Expandable>
+          )}
           <div className={styles['actions']}>
             <Link to={`${postUrl}#comment-${comment?.id}`} onClick={onClick}>
               Go to comment
