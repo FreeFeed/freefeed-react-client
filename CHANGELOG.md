@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.109.0] - Not released
 
+## [1.108.2] - 2022-04-20
+### Fixed
+- Restored "url" and "querystring" polyfills required by webpack.
+
 ## [1.108.1] - 2022-04-20
 ### Fixed
 - Restore use of IEC-units for file-sizes.
