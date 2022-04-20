@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.109.0] - Not released
 
+## [1.108.1] - 2022-04-20
+### Fixed
+- Restore use of IEC-units for file-sizes.
+
 ## [1.108.0] - 2022-04-20
 ### Added
 - Links to the user/group memories in the sidebar of the user/group-related

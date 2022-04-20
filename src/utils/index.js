@@ -157,7 +157,7 @@ export function getSummaryPeriod(days) {
 }
 
 export function formatFileSize(fileSize) {
-  return filesize(fileSize, { standard: 'iec', round: 1 });
+  return filesize(fileSize, { base: 2, standard: 'iec', round: 1 });
 }
 
 export function htmlSafe(str) {
