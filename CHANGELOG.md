@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Links to the user/group memories in the sidebar of the user/group-related
   pages
+- Click on the ^^^-reference shows a preview of the referenced comment
 
 ### Fixed
 - Remove usage of "screen name" in favor of "display name" in UI

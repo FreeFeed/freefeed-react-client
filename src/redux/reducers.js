@@ -715,6 +715,16 @@ export function comments(state = {}, action) {
     case response(ActionTypes.SHOW_MORE_LIKES_ASYNC): {
       return updateCommentData(state, action);
     }
+    case response(ActionTypes.GET_COMMENT_BY_NUMBER): {
+      return {
+        ...state,
+        [action.payload.comments.id]: {
+          ...state[action.payload.comments.id],
+          ...action.payload.comments,
+          isExpanded: true,
+        },
+      };
+    }
     case response(ActionTypes.SAVE_EDITING_COMMENT): {
       return {
         ...state,
@@ -897,6 +907,9 @@ export function users(state = {}, action) {
       return mergeAccounts([action.payload.users, ...action.payload.subscribers]);
     }
     case response(ActionTypes.GET_USER_INFO): {
+      return mergeAccounts([action.payload.users, ...action.payload.admins], { update: true });
+    }
+    case response(ActionTypes.GET_COMMENT_BY_NUMBER): {
       return mergeAccounts([action.payload.users, ...action.payload.admins], { update: true });
     }
     case response(ActionTypes.CREATE_GROUP): {
@@ -2042,3 +2055,8 @@ export {
   attachmentsStatsStatus,
   sanitizeMediaStatus,
 } from './reducers/my-attachments';
+
+export const getCommentStatuses = asyncStatesMap(ActionTypes.GET_COMMENT_BY_NUMBER, {
+  getKey: keyFromRequestPayload((p) => `${p.postId}#${p.seqNumber}`),
+  cleanOnSuccess: true,
+});

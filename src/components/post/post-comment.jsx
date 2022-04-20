@@ -12,7 +12,7 @@ import {
 import { commentReadmoreConfig } from '../../utils/readmore-config';
 import { defaultCommentState } from '../../redux/reducers/comment-edit';
 
-import { safeScrollTo } from '../../services/unscroll';
+import { intentToScroll } from '../../services/unscroll';
 import PieceOfText from '../piece-of-text';
 import Expandable from '../expandable';
 import UserName from '../user-name';
@@ -23,12 +23,19 @@ import { ButtonLink } from '../button-link';
 import { Separated } from '../separated';
 
 import { PostCommentMore } from './post-comment-more';
+import { PostCommentPreview } from './post-comment-preview';
 
 class PostComment extends Component {
   commentContainer;
   commentForm;
 
-  state = { moreMenuOpened: false };
+  state = {
+    moreMenuOpened: false,
+    previewVisible: false,
+    previewSeqNumber: 0,
+    previewLeft: 0,
+    previewTop: 0,
+  };
 
   scrollToComment = () => {
     if (this.commentContainer) {
@@ -36,19 +43,25 @@ class PostComment extends Component {
       const middleScreenPosition =
         window.pageYOffset + (rect.top + rect.bottom) / 2 - window.innerHeight / 2;
       if (rect.top < 0 || rect.bottom > window.innerHeight) {
-        safeScrollTo(0, middleScreenPosition);
+        intentToScroll();
+        window.scrollTo({
+          top: middleScreenPosition,
+          behavior: 'smooth',
+        });
       }
     }
   };
 
   componentDidMount() {
-    if (this.props.highlightedFromUrl) {
+    if (this.props.highlightedFromUrl || this.props.focused) {
       setTimeout(this.scrollToComment, 0);
     }
   }
 
   componentDidUpdate(prevProps) {
-    if (!prevProps.highlightedFromUrl && this.props.highlightedFromUrl) {
+    const prev = prevProps.highlightedFromUrl || prevProps.focused;
+    const curr = this.props.highlightedFromUrl || this.props.focused;
+    if (!prev && curr) {
       setTimeout(this.scrollToComment, 0);
     }
   }
@@ -106,12 +119,44 @@ class PostComment extends Component {
   );
 
   arrowHoverHandlers = {
-    hover: (arrows) => this.props.arrowsHighlightHandlers.hover(this.props.id, arrows),
+    hover: (e) => {
+      const arrows = parseInt(e.target.dataset['arrows'] || '');
+      this.props.arrowsHighlightHandlers.hover(this.props.id, arrows);
+    },
     leave: () => this.props.arrowsHighlightHandlers.leave(),
   };
 
   like = () => this.props.likeComment(this.props.id);
   unlike = () => this.props.unlikeComment(this.props.id);
+
+  closePreview = () => this.state.previewVisible && this.setState({ previewVisible: false });
+
+  arrowClick = (e) => {
+    if (this.state.previewVisible) {
+      this.closePreview();
+      return;
+    }
+
+    const arrowsEl = e.currentTarget;
+
+    const arrows = parseInt(arrowsEl.dataset['arrows'] || '');
+    const previewSeqNumber = this.props.seqNumber - arrows;
+    if (previewSeqNumber <= 0) {
+      return;
+    }
+
+    const arrowsRect = arrowsEl.getBoundingClientRect();
+    const commentRect = this.commentContainer
+      .querySelector('.comment-body')
+      .getBoundingClientRect();
+
+    this.setState({
+      previewVisible: true,
+      previewSeqNumber,
+      previewLeft: arrowsRect.left + arrowsRect.width / 2 - commentRect.left,
+      previewTop: arrowsRect.top - commentRect.top,
+    });
+  };
 
   possibleActions() {
     if (!this.props.currentUser.id) {
@@ -260,6 +305,7 @@ class PostComment extends Component {
             highlightTerms={this.props.highlightTerms}
             userHover={this.props.authorHighlightHandlers}
             arrowHover={this.arrowHoverHandlers}
+            arrowClick={this.arrowClick}
             showMedia={this.props.showMedia}
           />
           {commentTail}
@@ -291,6 +337,22 @@ class PostComment extends Component {
     );
   }
 
+  renderPreview() {
+    return (
+      this.state.previewVisible && (
+        <PostCommentPreview
+          postId={this.props.postId}
+          seqNumber={this.state.previewSeqNumber}
+          postUrl={this.props.entryUrl}
+          close={this.closePreview}
+          onCommentLinkClick={this.props.onCommentLinkClick}
+          arrowsLeft={this.state.previewLeft}
+          arrowsTop={this.state.previewTop}
+        />
+      )
+    );
+  }
+
   render() {
     const className = classnames({
       comment: true,
@@ -314,6 +376,7 @@ class PostComment extends Component {
       >
         {this.renderCommentIcon()}
         {this.renderBody()}
+        {this.renderPreview()}
       </div>
     );
   }
