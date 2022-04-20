@@ -7,11 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 ### Added
-- Click on the ^^^-reference shows a preview of the referenced comment
 - Native player for video-files
 
 ### Changed
 - Take Save out of "more" menu
+
+## [1.108.0] - 2022-04-20
+### Added
+- Links to the user/group memories in the sidebar of the user/group-related
+  pages
+- Click on the ^^^-reference shows a preview of the referenced comment
+
+### Fixed
+- Remove usage of "screen name" in favor of "display name" in UI
+
+### Changed
+- Improve texts for account privacy settings
 
 ## [1.107.1] - 2022-03-24
 ### Changed

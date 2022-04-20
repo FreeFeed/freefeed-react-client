@@ -32,7 +32,10 @@ const baseConfig = {
     // see https://github.com/webpack-contrib/worker-loader/issues/166
     globalObject: 'this',
   },
-  resolve: { extensions: ['.js', '.json', '.jsx'] },
+  resolve: {
+    extensions: ['.js', '.json', '.jsx'],
+    fallback: { querystring: false, url: false },
+  },
   plugins: skipFalsy([
     new webpack.LoaderOptionsPlugin({ debug: opts.dev }),
     new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop'),
