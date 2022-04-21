@@ -50,17 +50,17 @@ describe('SignInPage', () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it('Updates user password', () => {
+  it('Updates user password', async () => {
     const currentPassword = 'current';
     const newPassword = 'newpassword123';
 
     const updatePasswordMock = jest.spyOn(actionCreators, 'updatePassword');
     renderSignInPage();
 
-    userEvent.type(screen.getByLabelText('Current password'), currentPassword);
-    userEvent.type(screen.getByLabelText('New password'), newPassword);
-    userEvent.type(screen.getByLabelText('Confirm password'), newPassword);
-    userEvent.click(screen.getByText('Update password'));
+    await userEvent.type(screen.getByLabelText('Current password'), currentPassword);
+    await userEvent.type(screen.getByLabelText('New password'), newPassword);
+    await userEvent.type(screen.getByLabelText('Confirm password'), newPassword);
+    await userEvent.click(screen.getByText('Update password'));
     expect(updatePasswordMock).toHaveBeenCalledTimes(1);
     expect(updatePasswordMock).toHaveBeenCalledWith({
       currentPassword,
