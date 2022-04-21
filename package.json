@@ -147,7 +147,7 @@
     "test": "run-s \"test-just --recursive test/unit\" \"test-jest\"",
     "test-jest": "cross-env TZ=utc jest",
     "test-just": "cross-env NODE_ENV=development mochapack --webpack-config webpack.config.tests.babel.js",
-    "lint": "eslint --ext .js --ext .jsx src test",
+    "lint": "eslint --ext .js --ext .jsx .",
     "checks": "run-p --aggregate-output -c test lint stylelint",
     "dev-server": "cross-env DEV=1 LIVERELOAD=1 webpack serve --config webpack.config.babel.js --port 3333 --host 0.0.0.0 --hot",
     "clean": "rimraf ./_dist",
