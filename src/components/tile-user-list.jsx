@@ -66,10 +66,16 @@ class UserTile extends PureComponent {
 
         {type == WITH_REMOVE_AND_MAKE_ADMIN_HANDLES ? (
           <div className="user-actions">
-            <a onClick={this.handlePromoteClick} title="Promote user to admin">
-              Promote
-            </a>
-            <span> - </span>
+            {!user.isGone ? (
+              <>
+                <a onClick={this.handlePromoteClick} title="Promote user to admin">
+                  Promote
+                </a>
+                <span> - </span>
+              </>
+            ) : (
+              false
+            )}
             <a onClick={this.handleUnsubscribeClick} title="Unsubscribe user from the group">
               Unsub
             </a>
@@ -144,6 +150,7 @@ export const tileUserListFactory = (config) => (props) => {
         'screenName',
         'username',
         'isMutual',
+        'isGone',
         'profilePictureUrl',
         'profilePictureLargeUrl',
         'profilePictureMediumUrl',
