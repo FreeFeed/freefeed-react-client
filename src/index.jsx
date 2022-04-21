@@ -69,8 +69,15 @@ const inviteActions = () => {
 };
 
 // needed to display mutual friends
-const subscribersSubscriptionsActions = (next) => {
+const subscribersSubscriptionsActions = (next, replace) => {
   const { userName } = next.params;
+
+  if (userName === store.getState().user.username) {
+    const route = next.routes[next.routes.length - 1];
+    replace(`/friends?show=${route.name}`);
+    return;
+  }
+
   store.dispatch(ActionCreators.subscribers(userName));
   store.dispatch(ActionCreators.subscriptions(userName));
 };
