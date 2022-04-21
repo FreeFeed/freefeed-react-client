@@ -186,12 +186,12 @@ describe('Post', () => {
     expect(screen.getByLabelText(/Link preview/)).toBeInTheDocument();
   });
 
-  it('Renders a post as public and toggles timestamps if post visibility icon is clicked', () => {
+  it('Renders a post as public and toggles timestamps if post visibility icon is clicked', async () => {
     renderPost();
     expect(screen.getByLabelText(/Public post/)).toBeInTheDocument();
     expect(screen.getByTitle(/This entry is public/, { role: 'button' })).toBeInTheDocument();
     expect(screen.getByText('Mar 14, 2021')).toBeInTheDocument();
-    userEvent.click(screen.getByTitle(/This entry is public/, { role: 'button' }));
+    await userEvent.click(screen.getByTitle(/This entry is public/, { role: 'button' }));
     expect(screen.getByText('Mar 14, 2021 03:23')).toBeInTheDocument();
   });
 
@@ -248,11 +248,11 @@ describe('Post', () => {
     expect(screen.getByTitle(/This is a direct message/)).toBeInTheDocument();
   });
 
-  it('Renders a comment button which opens the comment form if this is not a single post', () => {
+  it('Renders a comment button which opens the comment form if this is not a single post', async () => {
     const toggleCommenting = jest.fn();
     renderPost({ toggleCommenting, isSinglePost: false });
     expect(screen.getByText('Comment', { role: 'button' })).toBeInTheDocument();
-    userEvent.click(screen.getByText('Comment', { role: 'button' }));
+    await userEvent.click(screen.getByText('Comment', { role: 'button' }));
     expect(toggleCommenting).toHaveBeenCalledWith('post-id');
   });
 
@@ -268,16 +268,16 @@ describe('Post', () => {
     expect(screen.getByText('Comments disabled (not for you)')).toBeInTheDocument();
   });
 
-  it('Renders a like button which likes the post', () => {
+  it('Renders a like button which likes the post', async () => {
     const someOtherUser = { id: 'other-id' };
     const likePost = jest.fn();
     renderPost({ likePost, isEditable: false, user: someOtherUser });
     expect(screen.getByText('Like', { role: 'button' })).toBeInTheDocument();
-    userEvent.click(screen.getByText('Like', { role: 'button' }));
+    await userEvent.click(screen.getByText('Like', { role: 'button' }));
     expect(likePost).toHaveBeenCalledWith('post-id', 'other-id');
   });
 
-  it('Renders an un-like button which un-likes the post if this post is already liked', () => {
+  it('Renders an un-like button which un-likes the post if this post is already liked', async () => {
     const someOtherUser = { id: 'other-id' };
     const unlikePost = jest.fn();
     renderPost({
@@ -287,7 +287,7 @@ describe('Post', () => {
       user: someOtherUser,
     });
     expect(screen.getByText('Un-like', { role: 'button' })).toBeInTheDocument();
-    userEvent.click(screen.getByText('Un-like', { role: 'button' }));
+    await userEvent.click(screen.getByText('Un-like', { role: 'button' }));
     expect(unlikePost).toHaveBeenCalledWith('post-id', 'other-id');
   });
 
@@ -297,7 +297,7 @@ describe('Post', () => {
     expect(screen.queryByText('Un-like', { role: 'button' })).not.toBeInTheDocument();
   });
 
-  it('Renders a more button if this is a post that I can edit (e.g. my own post) which toggles a "more action" menu', () => {
+  it('Renders a more button if this is a post that I can edit (e.g. my own post) which toggles a "more action" menu', async () => {
     const confirmMock = jest.spyOn(global, 'confirm').mockReturnValueOnce(true);
 
     const toggleEditingPost = jest.fn();
@@ -315,29 +315,29 @@ describe('Post', () => {
     });
     expect(screen.getByText(/More/, { role: 'button' })).toBeInTheDocument();
 
-    userEvent.click(screen.getByText(/More/, { role: 'button' }));
+    await userEvent.click(screen.getByText(/More/, { role: 'button' }));
     expect(screen.getByText('Edit', { role: 'button' })).toBeInTheDocument();
-    userEvent.click(screen.getByText('Edit', { role: 'button' }));
+    await userEvent.click(screen.getByText('Edit', { role: 'button' }));
     expect(toggleEditingPost).toHaveBeenCalledWith('post-id');
 
-    userEvent.click(screen.getByText(/More/, { role: 'button' }));
+    await userEvent.click(screen.getByText(/More/, { role: 'button' }));
     expect(screen.getByText('Moderate comments', { role: 'button' })).toBeInTheDocument();
-    userEvent.click(screen.getByText('Moderate comments', { role: 'button' }));
+    await userEvent.click(screen.getByText('Moderate comments', { role: 'button' }));
     expect(toggleModeratingComments).toHaveBeenCalledWith('post-id');
 
-    userEvent.click(screen.getByText(/More/, { role: 'button' }));
+    await userEvent.click(screen.getByText(/More/, { role: 'button' }));
     expect(screen.getByText('Disable comments', { role: 'button' })).toBeInTheDocument();
-    userEvent.click(screen.getByText('Disable comments', { role: 'button' }));
+    await userEvent.click(screen.getByText('Disable comments', { role: 'button' }));
     expect(disableComments).toHaveBeenCalledWith('post-id');
 
-    userEvent.click(screen.getByText(/More/, { role: 'button' }));
+    await userEvent.click(screen.getByText(/More/, { role: 'button' }));
     expect(screen.getByText('Delete', { role: 'button' })).toBeInTheDocument();
-    userEvent.click(screen.getByText('Delete', { role: 'button' }));
+    await userEvent.click(screen.getByText('Delete', { role: 'button' }));
     expect(confirmMock).toHaveBeenCalledWith('Are you sure?');
     expect(deletePost).toHaveBeenCalledWith('post-id', []);
   });
 
-  it('Renders a more button if this is a post that I can moderati (e.g. post in my groups) which toggles a "more action" menu', () => {
+  it('Renders a more button if this is a post that I can moderati (e.g. post in my groups) which toggles a "more action" menu', async () => {
     const confirmMock = jest.spyOn(global, 'confirm').mockReturnValueOnce(true);
 
     const toggleEditingPost = jest.fn();
@@ -355,15 +355,15 @@ describe('Post', () => {
       deletePost,
     });
     expect(screen.getByText(/More/, { role: 'button' })).toBeInTheDocument();
-    userEvent.click(screen.getByText(/More/, { role: 'button' }));
+    await userEvent.click(screen.getByText(/More/, { role: 'button' }));
 
     expect(screen.getByText('Remove from @celestials', { role: 'button' })).toBeInTheDocument();
-    userEvent.click(screen.getByText(/Remove/, { role: 'button' }));
+    await userEvent.click(screen.getByText(/Remove/, { role: 'button' }));
     expect(confirmMock).toHaveBeenCalledWith('Are you sure?');
     expect(deletePost).toHaveBeenCalledWith('post-id', ['celestials']);
   });
 
-  it('Lets me enable comments under my post if they are disabled', () => {
+  it('Lets me enable comments under my post if they are disabled', async () => {
     const enableComments = jest.fn();
     renderPost({
       isEditable: true,
@@ -371,14 +371,14 @@ describe('Post', () => {
       enableComments,
     });
     expect(screen.getByText(/More/, { role: 'button' })).toBeInTheDocument();
-    userEvent.click(screen.getByText(/More/, { role: 'button' }));
+    await userEvent.click(screen.getByText(/More/, { role: 'button' }));
 
     expect(screen.getByText('Enable comments', { role: 'button' })).toBeInTheDocument();
-    userEvent.click(screen.getByText('Enable comments', { role: 'button' }));
+    await userEvent.click(screen.getByText('Enable comments', { role: 'button' }));
     expect(enableComments).toHaveBeenCalledWith('post-id');
   });
 
-  it('Renders a hide button which hides the post', () => {
+  it('Renders a hide button which hides the post', async () => {
     const someOtherUser = { id: 'other-id' };
     const hidePost = jest.fn();
     renderPost({
@@ -389,11 +389,11 @@ describe('Post', () => {
       hidePost,
     });
     expect(screen.getByText('Hide', { role: 'button' })).toBeInTheDocument();
-    userEvent.click(screen.getByText('Hide', { role: 'button' }));
+    await userEvent.click(screen.getByText('Hide', { role: 'button' }));
     expect(hidePost).toHaveBeenCalledWith('post-id');
   });
 
-  it('Renders a un-hide button which unhides the post', () => {
+  it('Renders a un-hide button which unhides the post', async () => {
     const someOtherUser = { id: 'other-id' };
     const unhidePost = jest.fn();
     renderPost({
@@ -405,25 +405,25 @@ describe('Post', () => {
       unhidePost,
     });
     expect(screen.getByText('Un-hide', { role: 'button' })).toBeInTheDocument();
-    userEvent.click(screen.getByText('Un-hide', { role: 'button' }));
+    await userEvent.click(screen.getByText('Un-hide', { role: 'button' }));
     expect(unhidePost).toHaveBeenCalledWith('post-id');
   });
 
-  it('Renders a textarea with post text when editing the post', () => {
+  it('Renders a textarea with post text when editing the post', async () => {
     const cancelEditingPost = jest.fn();
     const { rerender } = renderPost({ isEditable: true, cancelEditingPost });
 
-    userEvent.click(screen.getByText(/More/, { role: 'button' }));
-    userEvent.click(screen.getByText('Edit', { role: 'button' }));
+    await userEvent.click(screen.getByText(/More/, { role: 'button' }));
+    await userEvent.click(screen.getByText('Edit', { role: 'button' }));
     rerender({ isEditing: true, isEditable: true, cancelEditingPost });
 
     expect(screen.getByLabelText('Post body')).toMatchSnapshot();
 
-    userEvent.click(screen.getByText('Cancel'));
+    await userEvent.click(screen.getByText('Cancel'));
     expect(cancelEditingPost).toHaveBeenCalledWith('post-id');
   });
 
-  it('Lets me edit text of my post by typing with Shift+Enter when "submitMode" is "enter"', () => {
+  it('Lets me edit text of my post by typing with Shift+Enter when "submitMode" is "enter"', async () => {
     const saveEditingPost = jest.fn();
     renderPost({
       isEditing: true,
@@ -431,7 +431,7 @@ describe('Post', () => {
       saveEditingPost,
     });
 
-    userEvent.type(screen.getByRole('textbox'), 'Hello,{shift}{enter}{/shift}World!{enter}');
+    await userEvent.type(screen.getByRole('textbox'), 'Hello,{shift>}{enter}{/shift}World!{enter}');
     expect(screen.getByRole('textbox')).toHaveValue('Hello,\nWorld!');
     expect(saveEditingPost).toHaveBeenCalledWith('post-id', {
       attachments: [],
@@ -440,7 +440,7 @@ describe('Post', () => {
     });
   });
 
-  it('Lets me edit text of my post by typing with Alt+Enter when "submitMode" is "enter"', () => {
+  it('Lets me edit text of my post by typing with Alt+Enter when "submitMode" is "enter"', async () => {
     const saveEditingPost = jest.fn();
     renderPost({
       isEditing: true,
@@ -448,7 +448,7 @@ describe('Post', () => {
       saveEditingPost,
     });
 
-    userEvent.type(screen.getByRole('textbox'), 'Hello,{alt}{enter}{/alt}World!{enter}');
+    await userEvent.type(screen.getByRole('textbox'), 'Hello,{alt>}{enter}{/alt}World!{enter}');
     expect(screen.getByRole('textbox')).toHaveValue('Hello,\nWorld!');
     expect(saveEditingPost).toHaveBeenCalledWith('post-id', {
       attachments: [],
@@ -457,7 +457,7 @@ describe('Post', () => {
     });
   });
 
-  it('Lets me submit text of my post by Ctrl+Enter typing when "submitMode" is "ctrl+enter"', () => {
+  it('Lets me submit text of my post by Ctrl+Enter typing when "submitMode" is "ctrl+enter"', async () => {
     const saveEditingPost = jest.fn();
     renderPost(
       {
@@ -468,7 +468,10 @@ describe('Post', () => {
       { submitMode: 'ctrl+enter' },
     );
 
-    userEvent.type(screen.getByRole('textbox'), 'Hello,{enter}World!{ctrl}{enter}{/ctrl}');
+    await userEvent.type(
+      screen.getByRole('textbox'),
+      'Hello,{enter}World!{control>}{enter}{/control}',
+    );
     expect(screen.getByRole('textbox')).toHaveValue('Hello,\nWorld!');
     expect(saveEditingPost).toHaveBeenCalledWith('post-id', {
       attachments: [],
@@ -477,7 +480,7 @@ describe('Post', () => {
     });
   });
 
-  it('Lets me submit text of my post by Meta+Enter typing when "submitMode" is "ctrl+enter"', () => {
+  it('Lets me submit text of my post by Meta+Enter typing when "submitMode" is "ctrl+enter"', async () => {
     const saveEditingPost = jest.fn();
     renderPost(
       {
@@ -488,7 +491,7 @@ describe('Post', () => {
       { submitMode: 'ctrl+enter' },
     );
 
-    userEvent.type(screen.getByRole('textbox'), 'Hello,{enter}World!{meta}{enter}{/meta}');
+    await userEvent.type(screen.getByRole('textbox'), 'Hello,{enter}World!{meta>}{enter}{/meta}');
     expect(screen.getByRole('textbox')).toHaveValue('Hello,\nWorld!');
     expect(saveEditingPost).toHaveBeenCalledWith('post-id', {
       attachments: [],

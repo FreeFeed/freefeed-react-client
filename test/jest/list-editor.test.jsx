@@ -77,21 +77,21 @@ describe('ListEditor', () => {
     expect(listEditor).toMatchSnapshot();
   });
 
-  it('Add a user to the list by clicking on it', () => {
+  it('Add a user to the list by clicking on it', async () => {
     renderListEditor();
-    userEvent.click(screen.getByText(/Not in the list/));
+    await userEvent.click(screen.getByText(/Not in the list/));
     expect(screen.getByText('Homeless')).toBeDefined();
     expect(screen.getByText('In Some Other List')).toBeDefined();
     expect(screen.getByText(/not in any of your friend lists/)).toBeDefined();
     expect(screen.queryByText('In list')).toBeNull();
-    userEvent.click(screen.getByText('Homeless'));
+    await userEvent.click(screen.getByText('Homeless'));
     expect(screen.queryByText('Homeless')).toBeNull();
     expect(screen.queryByText(/not in any of your friend lists/)).toBeNull();
   });
 
-  it('Searches for users', () => {
+  it('Searches for users', async () => {
     renderListEditor();
-    userEvent.type(screen.getByRole('searchbox'), 'LIST');
+    await userEvent.type(screen.getByRole('searchbox'), 'LIST');
     expect(screen.getByRole('list')).toMatchSnapshot();
   });
 });
