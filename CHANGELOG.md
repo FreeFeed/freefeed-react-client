@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.109] - Not released
+### Changed
+- The 'Subscribe' and 'Request a subscription' links no longer open the home
+  feed selection window. The subscription is always made to the main Home feed,
+  and then the user can change the feed.
+
 ## [1.108.2] - 2022-04-20
 ### Fixed
 - Restored "url" and "querystring" polyfills required by webpack.
