@@ -1,5 +1,5 @@
 /* global CONFIG */
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Router, Route, IndexRoute, browserHistory, Redirect } from 'react-router';
 import { Provider, useSelector } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
@@ -362,11 +362,10 @@ function App() {
   );
 }
 
-ReactDOM.render(
+createRoot(document.querySelector('#app')).render(
   <Provider store={store}>
     <App />
   </Provider>,
-  document.querySelector('#app'),
 );
 
 function checkPath(Component, checker) {
