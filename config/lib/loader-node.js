@@ -8,6 +8,6 @@ global.CONFIG = base;
 try {
   const content = readFileSync(path.join(__dirname, '../local.json'), { encoding: 'utf-8' });
   global.CONFIG = merge(base, JSON.parse(content));
-} catch (err) {
+} catch {
   // do nothing
 }
