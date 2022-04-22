@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - The `/CURRENT_USERNAME/subscribers` and `/CURRENT_USERNAME/subscriptions`
   addresses now redirects to the corresponding tabs of the `/friends` page.
+- The 'Subscribe' and 'Request a subscription' links no longer open the home
+  feed selection window. The subscription is always made to the main Home feed,
+  and then the user can change the feed.
 
 ## [1.108.2] - 2022-04-20
 ### Fixed

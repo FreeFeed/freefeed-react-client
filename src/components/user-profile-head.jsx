@@ -26,6 +26,8 @@ import {
   unsubscribeFromMe,
   listHomeFeeds,
   revokeSentRequest,
+  sendSubscriptionRequest,
+  subscribe,
 } from '../redux/action-creators';
 import { withKey } from './with-key';
 import { UserPicture } from './user-picture';
@@ -107,6 +109,19 @@ export const UserProfileHead = withRouter(
 
     // Actions & statuses
     const doShowMedia = useCallback((arg) => dispatch(showMedia(arg)), [dispatch]);
+
+    const doSubscribe = {
+      onClick: useCallback(() => dispatch(subscribe(user)), [dispatch, user]),
+      status:
+        useSelector((state) => state.userActionsStatuses.subscribing)[user?.username] ||
+        initialAsyncState,
+    };
+    const doSendSubscriptionRequest = {
+      onClick: useCallback(() => dispatch(sendSubscriptionRequest(user)), [dispatch, user]),
+      status:
+        useSelector((state) => state.userActionsStatuses.subscribing)[user?.username] ||
+        initialAsyncState,
+    };
 
     const doUnsubscribe = {
       onClick: useCallback(() => {
@@ -268,8 +283,8 @@ export const UserProfileHead = withRouter(
               inSubscriptions={inSubscriptions}
               isCurrentUserAdmin={isCurrentUserAdmin}
               doUnsubscribe={doUnsubscribe}
-              subscrFormPivotRef={subscrFormPivotRef}
-              subscrFormToggle={subscrFormToggle}
+              doSubscribe={doSubscribe}
+              doSendSubscriptionRequest={doSendSubscriptionRequest}
               requestSent={requestSent}
               doRevokeRequest={doRevokeRequest}
               acceptsDirects={acceptsDirects}
