@@ -35,7 +35,9 @@ const validate =
     if (USERNAME_STOP_LIST.has(values.username.trim())) {
       errors.username = 'Reserved username. Please select another one.';
     }
-    errors.screenname = shouldBe(/^.{3,25}$/i.test(values.screenname.trim()));
+    errors.screenname = values.screenname
+      ? shouldBe(/^.{3,25}$/i.test(values.screenname.trim()))
+      : undefined;
     errors.email = shouldBe(isEmail(values.email.trim()));
     errors.password = shouldBe(
       (withExtProfile && values.connectExtProfile) ||
@@ -49,9 +51,11 @@ const validate =
 const onSubmit =
   ({ dispatch, externalProfileKey, withCaptcha, invitationId, profilePictureURL }) =>
   (values) => {
+    const username = values.username.trim();
+    const screenName = values.screenname.trim() || username;
     const reqData = {
-      username: values.username.trim(),
-      screenName: values.screenname.trim(),
+      username,
+      screenName,
       email: values.email.trim(),
       isProtected: Boolean(CONFIG.newUsersProtected),
     };
@@ -184,7 +188,10 @@ export default memo(function SignupForm({ invitationId = null, lang = 'en' }) {
           {username.meta.error && <p className="help-block">{username.meta.error}</p>}
         </div>
         <div className={groupErrClass(screenname)}>
-          <label htmlFor="screenname-input">{enRu('Display name', 'Имя')}</label>
+          <label htmlFor="screenname-input">
+            {enRu('Display name', 'Имя')}{' '}
+            <em className="form-label-optional">({enRu('optional', 'необязательно')})</em>
+          </label>
           <input
             id="screenname-input"
             className="form-control narrow-input"
@@ -193,7 +200,12 @@ export default memo(function SignupForm({ invitationId = null, lang = 'en' }) {
             autoComplete="name"
             {...screenname.input}
           />
-          <p className="help-block">{enRu('From 3 to 25 characters', 'От 3 до 25 символов')}</p>
+          <p className="help-block">
+            {enRu(
+              'For example, your name and surname. From 3 to 25 characters',
+              'Например, ваши имя и фамилия. От 3 до 25 символов',
+            )}
+          </p>
         </div>
         <div className={groupErrClass(email)}>
           <label htmlFor="email-input">Email</label>
