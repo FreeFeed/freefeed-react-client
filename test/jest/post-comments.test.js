@@ -118,7 +118,7 @@ describe('PostComments', () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it('Renders omitted comments and expands them', () => {
+  it('Renders omitted comments and expands them', async () => {
     const showMoreComments = jest.fn();
     const { rerender } = renderPostComments({
       post: {
@@ -130,7 +130,7 @@ describe('PostComments', () => {
       showMoreComments,
     });
     expect(screen.getByLabelText(/15 comments/)).toBeInTheDocument();
-    userEvent.click(screen.getByText('12 more comments with 34 likes', { role: 'button' }));
+    await userEvent.click(screen.getByText('12 more comments with 34 likes', { role: 'button' }));
     expect(showMoreComments).toHaveBeenCalledWith('post-id');
 
     expect(screen.queryByLabelText('Loading comments...')).not.toBeInTheDocument();
@@ -147,7 +147,7 @@ describe('PostComments', () => {
     expect(screen.queryByLabelText('Loading comments...')).toBeInTheDocument();
   });
 
-  it('Renders add comment link which toggles comment form', () => {
+  it('Renders add comment link which toggles comment form', async () => {
     const toggleCommenting = jest.fn();
     renderPostComments({
       user: VIEWER,
@@ -158,14 +158,14 @@ describe('PostComments', () => {
       },
       toggleCommenting,
     });
-    userEvent.click(screen.getByText('Add comment', { role: 'button' }));
+    await userEvent.click(screen.getByText('Add comment', { role: 'button' }));
     expect(toggleCommenting).toHaveBeenCalledWith('post-id');
   });
 
-  it('Highlights a comment when arrow is hovered', () => {
+  it('Highlights a comment when arrow is hovered', async () => {
     renderPostComments();
     expect(document.querySelectorAll('.highlighted').length).toBe(0);
-    userEvent.hover(screen.getByText('^'));
+    await userEvent.hover(screen.getByText('^'));
     expect(document.querySelectorAll('.highlighted').length).toBe(1);
     expect(document.querySelector('.highlighted').getAttribute('data-author')).toBe('other');
   });

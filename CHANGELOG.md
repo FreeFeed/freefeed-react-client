@@ -12,6 +12,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Take Save out of "more" menu
 
+## [1.109.0] - 2022-05-12
+### Fixed
+- On the "Manage Subscribers" group's page, the list of administrators changed
+  as the cursor moved over the group members.
+- Do not show "Promote" button for deleted users.
+- Restore style of the homefeed-dropdown.
+
+### Changed
+- The `/CURRENT_USERNAME/subscribers` and `/CURRENT_USERNAME/subscriptions`
+  addresses now redirects to the corresponding tabs of the `/friends` page.
+- The 'Subscribe' and 'Request a subscription' links no longer open the home
+  feed selection window. The subscription is always made to the main Home feed,
+  and then the user can change the feed.
+
 ## [1.108.2] - 2022-04-20
 ### Fixed
 - Restored "url" and "querystring" polyfills required by webpack.

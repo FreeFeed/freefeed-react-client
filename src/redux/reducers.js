@@ -1693,18 +1693,38 @@ export function frontendRealtimePreferencesForm(state = initialRealtimeSettings,
   return state;
 }
 
-export function groupAdmins(state = [], action) {
+const defaultGroupAdmins = {};
+export function groupAdmins(state = defaultGroupAdmins, action) {
   switch (action.type) {
+    case LOCATION_CHANGE: {
+      // Reset on location change
+      return defaultGroupAdmins;
+    }
     case response(ActionTypes.GET_USER_INFO): {
-      return (action.payload.admins || []).map(userParser);
+      const { users: user, admins = [] } = action.payload;
+      if (user.type === 'group') {
+        return { ...state, [user.username]: admins.map(userParser) };
+      }
+      break;
     }
     case response(ActionTypes.MAKE_GROUP_ADMIN): {
-      const { user } = action.request;
-      return [...state, user].map(userParser);
+      const { groupName, user } = action.request;
+      const prevList = state[groupName];
+      if (!prevList || prevList.find((u) => u.id === user.id)) {
+        break;
+      }
+      return { ...state, [groupName]: [...prevList, userParser(user)] };
     }
     case response(ActionTypes.UNADMIN_GROUP_ADMIN): {
-      const { user } = action.request;
-      return state.filter((u) => u.username !== user.username);
+      const { groupName, user } = action.request;
+      const prevList = state[groupName];
+      if (!prevList || !prevList.find((u) => u.id === user.id)) {
+        break;
+      }
+      return {
+        ...state,
+        [groupName]: prevList.filter((u) => u.username !== user.username),
+      };
     }
   }
 

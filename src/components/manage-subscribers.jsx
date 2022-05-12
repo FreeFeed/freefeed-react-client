@@ -85,8 +85,9 @@ class ManageSubscribersHandler extends PureComponent {
   }
 }
 function selectState(state, ownProps) {
-  const { boxHeader, groupAdmins, user } = state;
+  const { boxHeader, groupAdmins: allGroupAdmins, user } = state;
   const groupName = ownProps.params.userName;
+  const groupAdmins = allGroupAdmins[groupName] || [];
   const usersWhoAreNotAdmins = _.filter(state.usernameSubscribers.payload, (user) => {
     return groupAdmins.find((u) => u.username == user.username) == null;
   });

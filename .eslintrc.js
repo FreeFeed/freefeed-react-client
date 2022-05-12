@@ -43,6 +43,7 @@ module.exports = {
       version: 'detect',
     },
   },
+  ignorePatterns: ['/_dist/'],
   rules: {
     complexity: ['warn', { max: 20 }],
     curly: 2,
