@@ -4,6 +4,8 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CSSMinimizer from 'css-minimizer-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import Terser from 'terser-webpack-plugin';
+// The copy-webpack-plugin type declaration has no default export
+// eslint-disable-next-line import/default
 import CopyPlugin from 'copy-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
@@ -59,11 +61,12 @@ const config = {
       filename: opts.dev ? '[name]-dev.css' : '[name]-[contenthash].css',
     }),
     new CopyPlugin({
-      patterns: [
-        { from: 'assets/images/favicon.*', to: '' },
-        { from: 'assets/images/ios/*.png', to: '' },
-        { from: 'assets/ext-auth/auth-return.html', to: '' },
-      ],
+      patterns: skipFalsy([
+        'assets/images/favicon.*',
+        'assets/images/ios/*.png',
+        'assets/ext-auth/auth-return.html',
+        opts.dev && { from: 'config.json', noErrorOnMissing: true },
+      ]),
     }),
     !opts.dev &&
       new BundleAnalyzerPlugin({

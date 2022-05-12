@@ -1,4 +1,4 @@
-import { KEY_RETURN } from 'keycode-js';
+import { CODE_ENTER } from 'keycode-js';
 import { forwardRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Textarea from 'react-textarea-autosize';
@@ -21,7 +21,7 @@ export const SubmittableTextarea = forwardRef(function SubmittableTextarea(
   useEffect(() => {
     const el = ref.current;
     const h = (event) => {
-      if (event.keyCode !== KEY_RETURN) {
+      if (event.key !== CODE_ENTER) {
         return;
       }
 

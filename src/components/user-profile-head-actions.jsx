@@ -9,28 +9,26 @@ import { Icon } from './fontawesome-icons';
 import styles from './user-profile-head.module.scss';
 
 // eslint-disable-next-line complexity
-export function UserProfileHeadActions(props) {
-  const {
-    user,
-    currentUser,
-    isBanned,
-    toggleBanned,
-    inSubscriptions,
-    isCurrentUserAdmin,
-    doUnsubscribe,
-    subscrFormPivotRef,
-    subscrFormToggle,
-    requestSent,
-    doRevokeRequest,
-    acceptsDirects,
-    inSubscribers,
-    unsubFromMe,
-    togglePinned,
-    isPinned,
-    toggleHidden,
-    isHidden,
-  } = props;
-
+export function UserProfileHeadActions({
+  user,
+  currentUser,
+  isBanned,
+  toggleBanned,
+  inSubscriptions,
+  isCurrentUserAdmin,
+  doUnsubscribe,
+  doSubscribe,
+  doSendSubscriptionRequest,
+  requestSent,
+  doRevokeRequest,
+  acceptsDirects,
+  inSubscribers,
+  unsubFromMe,
+  togglePinned,
+  isPinned,
+  toggleHidden,
+  isHidden,
+}) {
   return (
     <div className={styles.actions}>
       {isBanned ? (
@@ -54,9 +52,7 @@ export function UserProfileHeadActions(props) {
             )}
             {!user.isGone && !inSubscriptions && user.isPrivate === '0' && (
               <li>
-                <ButtonLink ref={subscrFormPivotRef} onClick={subscrFormToggle}>
-                  Subscribe
-                </ButtonLink>
+                <ActionLink {...doSubscribe}>Subscribe</ActionLink>
               </li>
             )}
             {!user.isGone && !inSubscriptions && user.isPrivate === '1' && (
@@ -67,9 +63,7 @@ export function UserProfileHeadActions(props) {
                     <ActionLink {...doRevokeRequest}>revoke</ActionLink>)
                   </>
                 ) : (
-                  <ButtonLink ref={subscrFormPivotRef} onClick={subscrFormToggle}>
-                    Request a subscription
-                  </ButtonLink>
+                  <ActionLink {...doSendSubscriptionRequest}>Request a subscription</ActionLink>
                 )}
               </li>
             )}
