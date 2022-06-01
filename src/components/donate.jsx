@@ -189,7 +189,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
             <h4>The Russian way (2% commission fee)</h4>
             <form
               method="get"
-              action={`https://yasobe.ru/na/${cfg.paymentMethods.yasobeRuProject}`}
+              action={`https://sobe.ru/na/${cfg.paymentMethods.yasobeRuProject}`}
               target="_blank"
             >
               <p>
@@ -365,7 +365,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
             <h4>ЮMoney (комиссия ~2%)</h4>
             <form
               method="get"
-              action={`https://yasobe.ru/na/${cfg.paymentMethods.yasobeRuProject}`}
+              action={`https://sobe.ru/na/${cfg.paymentMethods.yasobeRuProject}`}
               target="_blank"
             >
               <p>
