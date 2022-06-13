@@ -17,7 +17,6 @@ import {
 import { noop } from 'lodash';
 import { useDispatch } from 'react-redux';
 
-import { andJoin } from '../../utils/and-join';
 import { copyURL } from '../../utils/copy-url';
 import { leaveDirect } from '../../redux/action-creators';
 import { ButtonLink } from '../button-link';
@@ -50,7 +49,6 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
     enableComments,
     disableComments,
     deletePost,
-    perGroupDeleteEnabled = false,
     doAndClose,
     permalink,
     toggleSave,
@@ -73,26 +71,16 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
   const deleteLines = useMemo(() => {
     const result = [];
     // Not owned post
-    if (!isEditable) {
-      // Can we remove post from the single group?
-      if (perGroupDeleteEnabled) {
-        if (!isDeletable || canBeRemovedFrom.length > 1) {
-          for (const group of canBeRemovedFrom) {
-            result.push({ text: `Remove from @${group}`, onClick: deletePost(group) });
-          }
-        }
-      } else if (!isDeletable) {
-        result.push({
-          text: `Remove from ${andJoin(canBeRemovedFrom.map((g) => `@${g}`))}`,
-          onClick: deletePost(),
-        });
+    if (!isEditable && (!isDeletable || canBeRemovedFrom.length > 1)) {
+      for (const group of canBeRemovedFrom) {
+        result.push({ text: `Remove from @${group}`, onClick: deletePost(group) });
       }
     }
     if (isDeletable) {
       result.push({ text: 'Delete', onClick: deletePost() });
     }
     return result;
-  }, [isEditable, isDeletable, canBeRemovedFrom, perGroupDeleteEnabled, deletePost]);
+  }, [isEditable, isDeletable, canBeRemovedFrom, deletePost]);
 
   const menuGroups = [
     [
