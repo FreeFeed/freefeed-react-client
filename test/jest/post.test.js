@@ -23,7 +23,6 @@ jest.mock('../../src/components/lazy-component', () => ({
 }));
 
 import Post from '../../src/components/post/post';
-import { successAsyncState } from '../../src/redux/async-helpers';
 
 const AUTHOR = {
   id: 'author-id',
@@ -45,8 +44,6 @@ const defaultState = {
   user: VIEWER,
   postHideStatuses: {},
   sendTo: { feeds: [{ id: 'feed-id', user: AUTHOR }] },
-  serverInfoStatus: successAsyncState,
-  serverInfo: { features: { perGroupsPostDelete: true } },
   submitMode: 'enter',
 };
 

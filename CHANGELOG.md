@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Take Save out of "more" menu
 
+## [1.110.0] - 2022-06-29
+### Fixed
+- The erroneous "Remove from" items has been removed from the post's "More" menu
+- Fixed domain-name in donate link
+
 ## [1.109.0] - 2022-05-12
 ### Fixed
 - On the "Manage Subscribers" group's page, the list of administrators changed
