@@ -7,7 +7,6 @@ import { canonicalURI } from '../../utils/canonical-uri';
 import { CLOSE_ON_CLICK_OUTSIDE } from '../hooks/drop-down';
 import { useDropDownKbd } from '../hooks/drop-down-kbd';
 import { useMediaQuery } from '../hooks/media-query';
-import { useServerInfo } from '../hooks/server-info';
 import { MoreWithTriangle } from '../more-with-triangle';
 import { TimedMessage } from '../timed-message';
 import { ButtonLink } from '../button-link';
@@ -21,7 +20,6 @@ export default function PostMoreLink({ post, user, ...props }) {
     closeOn: CLOSE_ON_CLICK_OUTSIDE,
     fixed: fixedMenu,
   });
-  const [serverInfo, serverInfoStatus] = useServerInfo();
 
   const doAndClose = useCallback((h) => h && ((...args) => (h(...args), toggle())), [toggle]);
 
@@ -29,8 +27,6 @@ export default function PostMoreLink({ post, user, ...props }) {
     (...feedNames) => confirmFirst(props.deletePost(...feedNames)),
     [props],
   );
-
-  const perGroupDeleteEnabled = serverInfoStatus.success && serverInfo.features.perGroupsPostDelete;
 
   const canonicalPostURI = canonicalURI(post);
 
@@ -84,7 +80,6 @@ export default function PostMoreLink({ post, user, ...props }) {
             enableComments={props.enableComments}
             disableComments={props.disableComments}
             deletePost={deletePost}
-            perGroupDeleteEnabled={perGroupDeleteEnabled}
             doAndClose={doAndClose}
             permalink={canonicalPostURI}
             toggleSave={props.toggleSave}

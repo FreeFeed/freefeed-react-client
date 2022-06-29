@@ -48,7 +48,6 @@ const renderPostMoreMenu = (props = {}) => {
     enableComments: () => {},
     disableComments: () => {},
     deletePost: () => {},
-    perGroupDeleteEnabled: true,
     doAndClose: () => {},
     permalink: 'https://freefeed.net/post123',
     toggleSave: () => {},
