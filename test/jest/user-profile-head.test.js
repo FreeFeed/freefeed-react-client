@@ -348,13 +348,13 @@ describe('UserProfileHead', () => {
       },
     };
     useSelectorMock.mockImplementation((selector) => selector(fakeState));
-    const unhideMock = jest.spyOn(actionCreators, 'hideByName');
+    const unhideMock = jest.spyOn(actionCreators, 'hidePostsByCriterion');
 
     renderUserProfileHead();
     expect(screen.getByText('Unhide in Home')).toBeDefined();
     fireEvent.click(screen.getByText('Unhide in Home'));
     expect(unhideMock).toHaveBeenCalledTimes(1);
-    expect(unhideMock).toHaveBeenCalledWith(USERNAME, null, false);
+    expect(unhideMock).toHaveBeenCalledWith({ type: 'USERNAME', value: USERNAME }, null, false);
     expect(useDispatchMock).toHaveBeenCalledTimes(1);
   });
 

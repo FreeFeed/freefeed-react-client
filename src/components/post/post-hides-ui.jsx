@@ -1,21 +1,31 @@
 import { useCallback, useRef, useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { intersection } from 'lodash';
 import { faTimes, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
-import { unhidePost, hideByName, removeRecentlyHiddenPost } from '../../redux/action-creators';
+import {
+  unhidePost,
+  removeRecentlyHiddenPost,
+  hidePostsByCriterion,
+} from '../../redux/action-creators';
 import { initialAsyncState } from '../../redux/async-helpers';
 import { safeScrollBy } from '../../services/unscroll';
 import { Icon } from '../fontawesome-icons';
 import { Throbber } from '../throbber';
+import { hasCriterion, USERNAME } from '../../utils/hide-criteria';
 
-export function PostRecentlyHidden({ id, initialTopOffset, isHidden, recipientNames }) {
+export function PostRecentlyHidden({
+  id,
+  initialTopOffset,
+  isHidden,
+  availableHideCriteria,
+  hiddenByCriteria,
+}) {
   const dispatch = useDispatch();
-  const hiddenUserNames = useSelector((state) => state.hiddenUserNames);
+
   const hideStatus = useSelector((state) => state.postHideStatuses[id] || initialAsyncState);
   const doUnhidePost = useCallback(() => dispatch(unhidePost(id)), [dispatch, id]);
-  const doHideByName = useCallback(
-    (name, hide) => () => dispatch(hideByName(name, id, hide)),
+  const doHideByCriterion = useCallback(
+    (criterion, hide) => () => dispatch(hidePostsByCriterion(criterion, id, hide)),
     [dispatch, id],
   );
   const doRemove = useCallback(() => dispatch(removeRecentlyHiddenPost(id)), [dispatch, id]);
@@ -28,7 +38,12 @@ export function PostRecentlyHidden({ id, initialTopOffset, isHidden, recipientNa
     safeScrollBy(0, firstLineOffset - initialTopOffset);
   }, [initialTopOffset]);
 
-  const oneHiddenName = intersection(recipientNames, hiddenUserNames).length === 1;
+  const oneCriterion = hiddenByCriteria?.length === 1;
+  const hideReason = oneCriterion
+    ? hiddenByCriteria[0].type === USERNAME
+      ? 'its source is hidden'
+      : 'it has a hidden hashtag'
+    : 'of some hide criteria';
 
   return (
     <div className="post recently-hidden-post">
@@ -42,10 +57,7 @@ export function PostRecentlyHidden({ id, initialTopOffset, isHidden, recipientNa
               Post hidden from your Home feed - <a onClick={doUnhidePost}>Un-hide</a>
             </>
           ) : (
-            <>
-              Post still not visible because{' '}
-              {oneHiddenName ? 'its source is hidden' : 'of some hidden sources'}:
-            </>
+            <>Post still not visible because {hideReason}:</>
           )}
 
           {hideStatus.loading && (
@@ -62,12 +74,13 @@ export function PostRecentlyHidden({ id, initialTopOffset, isHidden, recipientNa
           )}
         </p>
 
-        {recipientNames.map((name) => {
-          const hidden = hiddenUserNames.includes(name);
+        {availableHideCriteria.map((crit) => {
+          const hidden = hasCriterion(hiddenByCriteria || [], crit);
           return (
-            <p key={name}>
-              <a onClick={doHideByName(name, !hidden)}>
-                {hidden ? 'Show' : 'Hide all'} posts from @{name}
+            <p key={`${crit.type}:${crit.value}`}>
+              <a onClick={doHideByCriterion(crit, !hidden)}>
+                {hidden ? 'Show' : 'Hide all'} posts{' '}
+                {crit.type === USERNAME ? `from @${crit.value}` : `with ${crit.value}`}
               </a>
             </p>
           );
@@ -79,7 +92,7 @@ export function PostRecentlyHidden({ id, initialTopOffset, isHidden, recipientNa
 
 export function HideLink({
   isHidden,
-  hiddenByNames,
+  hiddenByCriteria,
   unHideOpened,
   toggleUnHide,
   handleHideClick,
@@ -87,7 +100,7 @@ export function HideLink({
 }) {
   let text = '';
   let handler = null;
-  if (!isHidden && !hiddenByNames) {
+  if (!isHidden && !hiddenByCriteria) {
     // Post is not hidden
     text = 'Hide';
     handler = handleHideClick;
@@ -95,11 +108,12 @@ export function HideLink({
     // Unhide options are opened
     text = 'Un-hide (collapse)';
     handler = toggleUnHide;
-  } else if (hiddenByNames && hiddenByNames.length === 1) {
-    // Post is hidden by one (!) username
-    text = `Show posts from @${hiddenByNames[0]}`;
+  } else if (hiddenByCriteria?.length === 1) {
+    // Post is hidden by one (!) criterion
+    const [crit] = hiddenByCriteria;
+    text = `Show posts ${crit.type === USERNAME ? `from @${crit.value}` : `with ${crit.value}`}`;
     handler = handleFullUnhide;
-  } else if (isHidden && !hiddenByNames) {
+  } else if (isHidden && !hiddenByCriteria) {
     // Post is only hidden individually
     text = 'Un-hide';
     handler = handleHideClick;
@@ -116,28 +130,39 @@ export function HideLink({
   );
 }
 
-export function UnhideOptions({ isHidden, hiddenByNames, handleUnhideByName, handleFullUnhide }) {
+export function UnhideOptions({
+  isHidden,
+  hiddenByCriteria,
+  handleUnhideByCriteria,
+  handleFullUnhide,
+}) {
   const lines = [];
   if (isHidden) {
     let title = 'Un-hide this post';
-    if (hiddenByNames) {
-      if (hiddenByNames.length === 1) {
-        title += ' and show its source';
+    if (hiddenByCriteria) {
+      if (hiddenByCriteria.length === 1) {
+        const [crit] = hiddenByCriteria;
+        title += ` and show its ${crit.type === USERNAME ? 'source' : 'hashtag'}`;
       } else {
-        title += ' and show all its sources';
+        title += ' and show all its sources/hashtags';
       }
     }
     // eslint-disable-next-line react/jsx-key
     lines.push(['_post', <a onClick={handleFullUnhide}>{title}</a>]);
   }
 
-  if (hiddenByNames) {
+  if (hiddenByCriteria) {
     lines.push(
-      ...hiddenByNames.map((name) => [
-        `@${name}`,
-        // eslint-disable-next-line react/jsx-key
-        <a onClick={handleUnhideByName(name)}>Show posts from @{name}</a>,
-      ]),
+      ...hiddenByCriteria.map((crit) => {
+        const text = `Show posts ${
+          crit.type === USERNAME ? `from @${crit.value}` : `with ${crit.value}`
+        }`;
+        return [
+          `${crit.type}:${crit.value}`,
+          // eslint-disable-next-line react/jsx-key
+          <a onClick={handleUnhideByCriteria(crit)}>{text}</a>,
+        ];
+      }),
     );
   }
 
