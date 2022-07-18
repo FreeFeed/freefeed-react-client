@@ -999,19 +999,19 @@ export function signInViaExternalProvider(provider, popup) {
   };
 }
 
-export function hideByName(username, postId, hide) {
+export function hidePostsByCriterion(criterion, postId, doHide) {
   return {
-    type: ActionTypes.HIDE_BY_NAME,
-    apiRequest: Api.hideByName,
-    payload: { username, postId, hide },
+    type: ActionTypes.HIDE_BY_CRITERION,
+    apiRequest: Api.hidePostsByCriterion,
+    payload: { postId, criterion, doHide },
   };
 }
 
-export function unhideNames(usernames, postId) {
+export function unhidePostsByCriteria(criteria, postId) {
   return {
-    type: ActionTypes.UNHIDE_NAMES,
-    apiRequest: Api.unHideNames,
-    payload: { usernames, postId },
+    type: ActionTypes.UNHIDE_CRITERIA,
+    apiRequest: Api.unhidePostsByCriteria,
+    payload: { postId, criteria },
   };
 }
 

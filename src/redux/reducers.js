@@ -15,6 +15,7 @@ import {
   loadUIScale,
   loadSubmitMode,
 } from '../services/appearance';
+import { prefsToCriteria } from '../utils/hide-criteria';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
 import { mergeByIds, patchObjectByKey, setOnLocationChange, setOnLogOut } from './reducers/helpers';
@@ -1969,6 +1970,19 @@ export function hiddenUserNames(state = [], action) {
       action.payload.users,
       ['frontendPreferences', CONFIG.frontendPreferences.clientId, 'homefeed', 'hideUsers'],
       CONFIG.frontendPreferences.defaultValues.homefeed.hideUsers,
+    );
+  }
+  return state;
+}
+
+export function postHideCriteria(state = [], action) {
+  if (ActionHelpers.isUserChangeResponse(action)) {
+    return prefsToCriteria(
+      _.get(
+        action.payload.users,
+        ['frontendPreferences', CONFIG.frontendPreferences.clientId, 'homefeed'],
+        CONFIG.frontendPreferences.defaultValues.homefeed,
+      ),
     );
   }
   return state;
