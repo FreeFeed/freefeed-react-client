@@ -1,6 +1,7 @@
 /* global CONFIG */
 import filesize from 'filesize';
 import _ from 'lodash';
+import { hashTags as tokenizeHashtags } from 'social-text-tokenizer';
 
 import defaultUserpicPath from '../../assets/images/default-userpic.svg';
 
@@ -90,6 +91,8 @@ export function postParser(post) {
     savePostStatus: initialAsyncState,
     // After what comment the omittedComments span is started?
     omittedCommentsOffset: post.omittedComments > 0 ? 1 : 0,
+    // All hashtags used in the post body
+    hashtags: tokenizeHashtags()(post.body || '').map((t) => t.text),
   };
 }
 
