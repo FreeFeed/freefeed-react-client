@@ -3,8 +3,9 @@ import { useMemo, useEffect } from 'react';
 import { Link } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, useField } from 'react-final-form-hooks';
-import { without, uniq } from 'lodash';
+import { without, uniq, uniqWith } from 'lodash';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { hashTags as findHashTags } from 'social-text-tokenizer';
 import {
   DISPLAYNAMES_DISPLAYNAME,
   DISPLAYNAMES_BOTH,
@@ -33,6 +34,12 @@ import { Icon } from '../../fontawesome-icons';
 import { RadioInput, CheckboxInput } from '../../form-utils';
 import TimeDisplay from '../../time-display';
 import { doSequence } from '../../../redux/async-helpers';
+import {
+  criteriaToPrefs,
+  HASHTAG,
+  isEqual as criteriaIsEqual,
+  USERNAME,
+} from '../../../utils/hide-criteria';
 import styles from './forms.module.scss';
 
 export default function AppearanceForm() {
@@ -79,6 +86,7 @@ export default function AppearanceForm() {
   const displayNames = useField('displayNames', form.form);
   const homeFeedMode = useField('homeFeedMode', form.form);
   const hiddenUsers = useField('hiddenUsers', form.form);
+  const hiddenTags = useField('hiddenTags', form.form);
   const readMoreStyle = useField('readMoreStyle', form.form);
   const omitBubbles = useField('omitBubbles', form.form);
   const highlightComments = useField('highlightComments', form.form);
@@ -197,6 +205,17 @@ export default function AppearanceForm() {
               To view the “Blocked users” list, visit{' '}
               <Link to="/friends?show=blocked">this page</Link>.
             </p>
+          </div>
+
+          <div className="form-group">
+            Hide posts with these hashtags in your Home feed:
+            <br />
+            <textarea
+              className={`form-control wider-input ${styles.hiddenUsers}`}
+              name="hiddenTags"
+              {...hiddenTags.input}
+            />
+            <p className="help-block">Comma-separated list of hashtags</p>
           </div>
         </div>
       </section>
@@ -483,6 +502,7 @@ function initialValues({
     displayNames: frontend.displayNames.displayOption.toString(),
     homeFeedMode: frontend.homeFeedMode,
     hiddenUsers: frontend.homefeed.hideUsers.join(', '),
+    hiddenTags: frontend.homefeed.hideTags.join(', '),
     readMoreStyle: frontend.readMoreStyle,
     omitBubbles: frontend.comments.omitRepeatedBubbles,
     highlightComments: frontend.comments.highlightComments,
@@ -515,6 +535,16 @@ function onSubmit(dispatch) {
 }
 
 function prefUpdaters(values) {
+  const hashtagsToHide = findHashTags()(values.hiddenTags).map((t) => t.text);
+  const usernamesToHide = values.hiddenUsers.toLowerCase().match(/[\w-]+/g) || [];
+
+  const hideCriteria = uniqWith(
+    [
+      ...hashtagsToHide.map((value) => ({ type: HASHTAG, value })),
+      ...usernamesToHide.map((value) => ({ type: USERNAME, value })),
+    ],
+    criteriaIsEqual,
+  );
   return {
     updateFrontendPrefs(prefs) {
       return {
@@ -526,7 +556,7 @@ function prefUpdaters(values) {
         homeFeedMode: values.homeFeedMode,
         homefeed: {
           ...prefs.homefeed,
-          hideUsers: values.hiddenUsers.toLowerCase().match(/[\w-]+/g) || [],
+          ...criteriaToPrefs(hideCriteria),
         },
         hidesInNonHomeFeeds: values.hidesInNonHomeFeeds === '1',
         readMoreStyle: values.readMoreStyle,
