@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.111.0] - Not released
+### Added
+- It is now possible to hide posts by hashtags! Also, the underlying algorithm
+  allows to add other types of hiding criteria in the future.
+
 ## [1.110.0] - 2022-06-29
 ### Fixed
 - The erroneous "Remove from" items has been removed from the post's "More" menu
