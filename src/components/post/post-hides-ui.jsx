@@ -2,6 +2,7 @@ import { useCallback, useRef, useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { faTimes, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
+import { uniqWith } from 'lodash';
 import {
   unhidePost,
   removeRecentlyHiddenPost,
@@ -11,7 +12,7 @@ import { initialAsyncState } from '../../redux/async-helpers';
 import { safeScrollBy } from '../../services/unscroll';
 import { Icon } from '../fontawesome-icons';
 import { Throbber } from '../throbber';
-import { hasCriterion, USERNAME } from '../../utils/hide-criteria';
+import { hasCriterion, isEqual, USERNAME } from '../../utils/hide-criteria';
 
 export function PostRecentlyHidden({
   id,
@@ -74,7 +75,7 @@ export function PostRecentlyHidden({
           )}
         </p>
 
-        {availableHideCriteria.map((crit) => {
+        {uniqWith(availableHideCriteria, isEqual).map((crit) => {
           const hidden = hasCriterion(hiddenByCriteria || [], crit);
           return (
             <p key={`${crit.type}:${crit.value}`}>
