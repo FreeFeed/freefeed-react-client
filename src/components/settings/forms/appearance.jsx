@@ -215,7 +215,7 @@ export default function AppearanceForm() {
               name="hiddenTags"
               {...hiddenTags.input}
             />
-            <p className="help-block">Comma-separated list of hashtags</p>
+            <p className="help-block">Comma-separated list of hashtags e.g. #tag1, #tag2</p>
           </div>
         </div>
       </section>
