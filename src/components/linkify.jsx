@@ -46,9 +46,9 @@ export default function Linkify({
   }, [arrowClick, arrowHover, children, hl, showMedia, userHover]);
 
   return (
-    <span className="Linkify" dir="auto" role="region">
+    <div className="Linkify" dir="auto" role="region">
       <ErrorBoundary>{formatted}</ErrorBoundary>
-    </span>
+    </div>
   );
 }
 
