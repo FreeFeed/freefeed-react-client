@@ -14,6 +14,7 @@ const post = {
   id: '1',
   comments: [comment1.id, comment2.id, comment3.id],
   postedTo: [],
+  hashtags: [],
 };
 
 const composeState = ({ subsequentComments, setting, omittedComments = 0, withDelay = false }) => {

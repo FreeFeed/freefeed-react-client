@@ -1,4 +1,4 @@
-import { intersection, intersectionBy, uniq } from 'lodash';
+import { intersectionBy, uniq } from 'lodash';
 import { hashTags } from 'social-text-tokenizer';
 import * as Sentry from '@sentry/react';
 
@@ -36,10 +36,11 @@ import {
   unlikeComment,
   getCommentLikes,
   deleteComment,
-  hideByName,
+  hidePostsByCriterion,
 } from '../redux/action-creators';
 import { SCHEME_DARK, SCHEME_SYSTEM } from '../services/appearance';
 import { defaultCommentState } from '../redux/reducers/comment-edit';
+import { commonCriteria, HASHTAG, USERNAME } from '../utils/hide-criteria';
 
 const MAX_LIKES = 4;
 
@@ -102,7 +103,11 @@ export const joinPostData = (state) => (postId) => {
     }
     return a.localeCompare(b);
   });
-  const hiddenByNames = intersection(recipientNames, state.hiddenUserNames);
+  const availableHideCriteria = [
+    ...recipientNames.map((value) => ({ type: USERNAME, value })),
+    ...post.hashtags.map((value) => ({ type: HASHTAG, value })),
+  ];
+  const hiddenByCriteria = commonCriteria(availableHideCriteria, state.postHideCriteria);
 
   const isEditable = post.createdBy === user.id;
   const canBeRemovedFrom = (
@@ -192,7 +197,8 @@ export const joinPostData = (state) => (postId) => {
     allowLinksPreview,
     readMoreStyle,
     recipientNames,
-    hiddenByNames: hiddenByNames.length > 0 ? hiddenByNames : null,
+    availableHideCriteria,
+    hiddenByCriteria: hiddenByCriteria.length > 0 ? hiddenByCriteria : null,
     isNSFW,
   };
 };
@@ -237,7 +243,8 @@ export function userActions(dispatch) {
     subscribe: (username) => dispatch(subscribe(username)),
     unsubscribe: (username) => dispatch(unsubscribe(username)),
     sendSubscriptionRequest: (username) => dispatch(sendSubscriptionRequest(username)),
-    hideByName: (username, hide) => dispatch(hideByName(username, null, hide)),
+    hideByName: (username, hide) =>
+      dispatch(hidePostsByCriterion({ type: USERNAME, value: username }, null, hide)),
   };
 }
 

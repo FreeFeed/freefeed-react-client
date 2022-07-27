@@ -78,29 +78,30 @@ export function asyncState(actionTypes, nextReducer = null) {
 
 /**
  * The simplest implementation of getKey function
- * that uses the keyNameOrNames field of 'payload' (for
+ * that uses the keySelector over 'payload' (for
  * requests and resets) or 'request' (for responses
  * and fails).
  *
- * The keyNameOrNames can be a string or a hash of {BASE_ACTION_TYPE: keyName}
+ * The keySelector can be a string or function, or a hash of string/function: {BASE_ACTION_TYPE: keySelector}
  *
- * @param {string|object} keyNameOrNames
+ * @typedef {string | (payload: any) => any} Selector
+ * @param {Selector | {[baseActionType: string]: Selector}} keyNameOrNames
  */
-export function getKeyBy(keyNameOrNames) {
+export function getKeyBy(keySelector) {
   return (action) => {
-    const keyName =
-      typeof keyNameOrNames === 'string'
-        ? keyNameOrNames
-        : keyNameOrNames[baseType(action.type)] || keyNameOrNames['default'];
+    const selector =
+      typeof keySelector === 'object'
+        ? keySelector[baseType(action.type)] || keySelector['default']
+        : keySelector;
 
     switch (asyncPhase(action.type)) {
       case RESET_PHASE:
       case REQUEST_PHASE:
-        return action.payload[keyName];
+        return typeof selector === 'string' ? action.payload[selector] : selector(action.payload);
       case PROGRESS_PHASE:
       case RESPONSE_PHASE:
       case FAIL_PHASE:
-        return action.request[keyName];
+        return typeof selector === 'string' ? action.request[selector] : selector(action.request);
     }
   };
 }

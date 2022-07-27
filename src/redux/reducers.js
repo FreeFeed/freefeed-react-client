@@ -15,6 +15,7 @@ import {
   loadUIScale,
   loadSubmitMode,
 } from '../services/appearance';
+import { prefsToCriteria } from '../utils/hide-criteria';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
 import { mergeByIds, patchObjectByKey, setOnLocationChange, setOnLogOut } from './reducers/helpers';
@@ -325,7 +326,7 @@ export function feedViewState(state = initFeed, action) {
     }
 
     // Hide by username
-    case response(ActionTypes.HIDE_BY_NAME): {
+    case response(ActionTypes.HIDE_BY_CRITERION): {
       const { postId, hide } = action.request;
       if (postId) {
         if (hide && !state.recentlyHiddenEntries[postId]) {
@@ -663,8 +664,8 @@ export const postHideStatuses = asyncStatesMap(
   [
     ActionTypes.HIDE_POST,
     ActionTypes.UNHIDE_POST,
-    ActionTypes.HIDE_BY_NAME,
-    ActionTypes.UNHIDE_NAMES,
+    ActionTypes.HIDE_BY_CRITERION,
+    ActionTypes.UNHIDE_CRITERIA,
   ],
   { getKey: getKeyBy('postId'), cleanOnSuccess: true },
 );
@@ -1743,7 +1744,9 @@ const userActionsStatusesStatusMaps = combineReducers({
   ),
   blocking: asyncStatesMap([ActionTypes.BAN, ActionTypes.UNBAN], { getKey: getKeyBy('username') }),
   pinned: asyncStatesMap([ActionTypes.TOGGLE_PINNED_GROUP]), // by user id!
-  hiding: asyncStatesMap([ActionTypes.HIDE_BY_NAME], { getKey: getKeyBy('username') }),
+  hiding: asyncStatesMap([ActionTypes.HIDE_BY_CRITERION], {
+    getKey: getKeyBy(({ criterion: c }) => `${c.type}:${c.value}`),
+  }),
   unsubscribingFromMe: asyncStatesMap([ActionTypes.UNSUBSCRIBE_FROM_ME], {
     getKey: getKeyBy('username'),
   }),
@@ -1963,12 +1966,14 @@ export { appTokens } from './reducers/app-tokens';
 export { serverInfo, serverInfoStatus } from './reducers/server-info';
 export { extAuth } from './reducers/ext-auth.js';
 
-export function hiddenUserNames(state = [], action) {
+export function postHideCriteria(state = [], action) {
   if (ActionHelpers.isUserChangeResponse(action)) {
-    return _.get(
-      action.payload.users,
-      ['frontendPreferences', CONFIG.frontendPreferences.clientId, 'homefeed', 'hideUsers'],
-      CONFIG.frontendPreferences.defaultValues.homefeed.hideUsers,
+    return prefsToCriteria(
+      _.get(
+        action.payload.users,
+        ['frontendPreferences', CONFIG.frontendPreferences.clientId, 'homefeed'],
+        CONFIG.frontendPreferences.defaultValues.homefeed,
+      ),
     );
   }
   return state;

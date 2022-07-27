@@ -21,6 +21,7 @@ describe('comments-related data', () => {
       commentsDisabled: false,
       savePostStatus: initialAsyncState,
       omittedCommentsOffset: 0,
+      hashtags: [],
     };
 
     it(`should parse post without comments`, () => {
@@ -46,6 +47,19 @@ describe('comments-related data', () => {
         omittedComments: 3,
         omittedCommentsOffset: 1,
       });
+    });
+
+    it(`should parse post with hashtags`, () => {
+      expect(
+        postParser({ id: 'post', body: 'Hello #wórld!', comments: [], omittedComments: 0 }),
+        'to equal',
+        {
+          ...emptyPostState,
+          body: 'Hello #wórld!',
+          id: 'post',
+          hashtags: ['#wórld'],
+        },
+      );
     });
   });
 

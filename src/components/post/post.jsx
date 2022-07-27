@@ -21,7 +21,7 @@ import { getFirstLinkToEmbed } from '../../utils/parse-text';
 import { canonicalURI } from '../../utils/canonical-uri';
 import { READMORE_STYLE_COMPACT } from '../../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../../utils/readmore-config';
-import { savePost, hideByName, unhideNames } from '../../redux/action-creators';
+import { savePost, hidePostsByCriterion, unhidePostsByCriteria } from '../../redux/action-creators';
 import { initialAsyncState } from '../../redux/async-helpers';
 import { makeJpegIfNeeded } from '../../utils/jpeg-if-needed';
 
@@ -140,12 +140,12 @@ class Post extends Component {
   handleFullUnhide = () => {
     const { props } = this;
     props.isHidden && props.unhidePost(props.id);
-    // Unhide all post recipients
-    props.unhideNames(props.recipientNames, props.id);
+    // Unhide all post criteria
+    props.unhidePostsByCriteria(props.availableHideCriteria, props.id);
   };
 
-  handleHideByName = (username) => () => this.props.hideByName(username, this.props.id, true);
-  handleUnhideByName = (username) => () => this.props.hideByName(username, this.props.id, false);
+  handleUnhideByCriteria = (crit) => () =>
+    this.props.hidePostsByCriterion(crit, this.props.id, false);
 
   toggleUnHide = () => this.setState({ unHideOpened: !this.state.unHideOpened });
 
@@ -297,7 +297,7 @@ class Post extends Component {
       <>
         <HideLink
           isHidden={props.isHidden}
-          hiddenByNames={props.hiddenByNames}
+          hiddenByCriteria={props.hiddenByCriteria}
           unHideOpened={this.state.unHideOpened}
           toggleUnHide={this.toggleUnHide}
           handleHideClick={this.handleHideClick}
@@ -706,8 +706,8 @@ class Post extends Component {
             {this.state.unHideOpened && (
               <UnhideOptions
                 isHidden={props.isHidden}
-                hiddenByNames={props.hiddenByNames}
-                handleUnhideByName={this.handleUnhideByName}
+                hiddenByCriteria={props.hiddenByCriteria}
+                handleUnhideByCriteria={this.handleUnhideByCriteria}
                 handleFullUnhide={this.handleFullUnhide}
               />
             )}
@@ -752,4 +752,6 @@ function selectState(state, ownProps) {
   };
 }
 
-export default connect(selectState, { savePost, hideByName, unhideNames })(Post);
+export default connect(selectState, { savePost, hidePostsByCriterion, unhidePostsByCriteria })(
+  Post,
+);
