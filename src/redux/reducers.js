@@ -1968,13 +1968,10 @@ export { extAuth } from './reducers/ext-auth.js';
 
 export function postHideCriteria(state = [], action) {
   if (ActionHelpers.isUserChangeResponse(action)) {
-    return prefsToCriteria(
-      _.get(
-        action.payload.users,
-        ['frontendPreferences', CONFIG.frontendPreferences.clientId, 'homefeed'],
-        CONFIG.frontendPreferences.defaultValues.homefeed,
-      ),
-    );
+    const fromAction =
+      action.payload.users.frontendPreferences[CONFIG.frontendPreferences.clientId]?.homefeed || {};
+    const fromConfig = CONFIG.frontendPreferences.defaultValues.homefeed;
+    return prefsToCriteria({ ...fromConfig, ...fromAction });
   }
   return state;
 }
