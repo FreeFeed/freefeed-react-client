@@ -387,7 +387,7 @@ class Post extends Component {
           <ButtonLink className="post-action" onClick={this.handleCommentClick}>
             <Icon icon={faComment} className="comment-icon" />
           </ButtonLink>
-          <div>{props.comments.length + props.omittedComments}</div>
+          <div className="post-footer-counter">{props.comments.length + props.omittedComments}</div>
         </div>
       );
 

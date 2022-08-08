@@ -59,6 +59,7 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
     'non-likable': !canLike,
     liked: likes > 0,
   });
+  const likeCounter = likes ? likes : 0;
 
   const bubbleProps = { id: `comment-${id}`, onClick: bubbleClick };
 
@@ -66,19 +67,6 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
     <div className="comment-likes-container" {...touchHandlers}>
       {/* Heart & likes count */}
       <div className={heartClass}>
-        {likes ? (
-          <div
-            className="comment-count"
-            onClick={likesListToggle}
-            ref={countRef}
-            role="button"
-            aria-label={pluralForm(likes, 'comment like')}
-          >
-            {likes}
-          </div>
-        ) : (
-          false
-        )}
         {canLike ? (
           <div
             className="comment-heart"
@@ -105,6 +93,15 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
             <Icon icon={faHeart} className="icon" title="Your own comment" />
           </div>
         )}
+        <div
+          className="comment-count"
+          onClick={likesListToggle}
+          ref={countRef}
+          role="button"
+          aria-label={pluralForm(likes, 'comment like')}
+        >
+          {likeCounter}
+        </div>
       </div>
       {/* Bubble icon */}
       <TimeDisplay className="comment-time" timeStamp={+createdAt} absolute>

@@ -69,10 +69,13 @@ export default class PostVia extends Component {
 
     return (
       <div className="post-via-sources">
-        via {textPrefix}
+        <div className="via-text-prefix"> via {textPrefix} </div>
         {users.map((u, i) => (
-          <div key={`via-${u.username}`}>
-            {i || textPrefix ? (!foldedCount && i === users.length - 1 ? ' and ' : ', ') : false}
+          <div className="via-text-prefix" key={`via-${u.username}`}>
+            <div className="via-text-prefix">
+              {' '}
+              {i || textPrefix ? (!foldedCount && i === users.length - 1 ? ' and ' : ', ') : false}
+            </div>
             <UserName user={u} />
           </div>
         ))}

@@ -209,6 +209,18 @@ $post-line-height: rem(20px);
   display: flex;
 }
 
+.post-footer-like {
+  display: flex;
+}
+
+.post-footer-repost {
+  margin-left: rem(10px);
+}
+
+.post-footer-counter {
+  margin-left: rem(10px);
+}
+
 .post-footer-item {
   // display: inline-block;
   // white-space: nowrap;
@@ -495,6 +507,11 @@ $post-line-height: rem(20px);
   display: flex;
   font-size: rem(10px);
   line-height: rem(10px);
+  align-items: center;
+}
+
+.via-text-prefix {
+  display: flex;
   align-items: center;
 }
 

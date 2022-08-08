@@ -87,7 +87,7 @@ export default function UserName({
   const linkCn = classNames(className, isGone ? 'user-is-gone' : false);
   return (
     <ErrorBoundary>
-      <span
+      <div
         className="user-name-wrapper"
         ref={pivotRef}
         onMouseEnter={onEnter}
@@ -95,7 +95,7 @@ export default function UserName({
       >
         <Link to={`/${username}`} className={linkCn} onClick={onClick} onTouchEnd={onTouchEnd}>
           {children ? (
-            <span dir="ltr">{children}</span>
+            <div dir="ltr">{children}</div>
           ) : (
             <UserDisplayName
               username={username}
@@ -108,7 +108,7 @@ export default function UserName({
             />
           )}
         </Link>
-      </span>
+      </div>
       {opened && (
         <Portal>
           <UserCard username={username} forwardedRef={menuRef} pivotRef={pivotRef} />

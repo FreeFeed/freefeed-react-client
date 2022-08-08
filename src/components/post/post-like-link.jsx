@@ -35,7 +35,7 @@ const PostLikeLink = (props) => {
           <Throbber />
         </div>
       ) : null}
-      {likes}
+      <div className="post-footer-counter">{likes}</div>
     </div>
   );
 };
