@@ -204,16 +204,6 @@ class PostComment extends Component {
               <UserName user={this.props.user} userHover={this.props.authorHighlightHandlers} />
               <div className="comment-tail__item comment-tail__actions">
                 <Separated separator="">
-                  {this.props.isEditable && (
-                    <div className="comment-tail__action">
-                      <ButtonLink
-                        className="comment-tail__action-link"
-                        onClick={this.handleEditOrCancel}
-                      >
-                        edit
-                      </ButtonLink>
-                    </div>
-                  )}
                   {canDelete && this.props.isModeratingComments && (
                     <div className="comment-tail__action">
                       <ButtonLink
