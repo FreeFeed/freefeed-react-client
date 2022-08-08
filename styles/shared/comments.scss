@@ -32,7 +32,8 @@
   border-radius: 1px;
   opacity: 0.8;
   transition: background-color 0.2s, box-shadow 0.2s;
-  border-top: 1px solid rgba(238, 238, 238, 0.72);
+  // border-top: 1px solid rgba(238, 238, 238, 0.72);
+  // border-top: 1px solid rgba(117, 117, 117, 0.4);
 
   .comment-body {
     display: flex;
@@ -153,6 +154,27 @@
   &__action-link--delete {
     color: var(--danger-color) !important;
   }
+}
+
+.more-comments-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.more-comments-wrapper::before,
+.more-comments-wrapper::after {
+  content: '';
+  flex: 1 1;
+  border-bottom: 1px solid rgba(117, 117, 117, 0.4);
+  margin: auto;
+}
+
+.more-comments-wrapper::before {
+  margin-right: 10px;
+}
+
+.more-comments-wrapper::after {
+  margin-left: 10px;
 }
 
 .feed-comment-dot {
