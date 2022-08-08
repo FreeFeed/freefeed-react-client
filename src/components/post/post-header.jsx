@@ -55,13 +55,13 @@ const PostHeader = (props) => {
   const recipientsToRender = omitRecipients
     ? false
     : recipients.map((recipient, index) => (
-        <span key={index}>
+        <div key={index}>
           <UserName className="post-recipient" user={recipient}>
             {recipientCustomDisplay(recipient)}
           </UserName>
           {index < recipients.length - 2 ? ', ' : false}
           {index === recipients.length - 2 ? ' and ' : false}
-        </span>
+        </div>
       ));
 
   return (
@@ -77,9 +77,9 @@ const PostHeader = (props) => {
         <Link to={canonicalPostURI} className="post-timestamp">
           <TimeDisplay timeStamp={+post.createdAt} absolute={forceAbsTimestamps} />
         </Link>
+        {recipientsToRender.length > 0 ? ' to ' : isDirect ? ' to nobody ' : false}
+        {recipientsToRender}
       </div>
-      {recipientsToRender.length > 0 ? ' to ' : isDirect ? ' to nobody ' : false}
-      {recipientsToRender}
       {isInHomeFeed ? (
         <PostVia post={{ createdBy, recipients, comments, usersLikedPost }} me={user} />
       ) : (
