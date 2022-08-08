@@ -12,7 +12,7 @@ const PostLikeLink = (props) => {
       {likeError ? (
         <Icon icon={faExclamationTriangle} className="post-like-fail" title={likeError} />
       ) : null}
-      {isEditable ? (
+      {!isEditable ? (
         <ButtonLink className="post-action" onClick={didILikePost ? onUnlikePost : onLikePost}>
           {didILikePost ? (
             <Icon icon={faHeart} className="icon red" />
