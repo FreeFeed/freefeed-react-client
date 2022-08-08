@@ -1,4 +1,5 @@
 import { faExclamationTriangle, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as faHeartO } from '@fortawesome/free-regular-svg-icons';
 
 import { Icon } from '../fontawesome-icons';
 import { Throbber } from '../throbber';
@@ -17,7 +18,7 @@ const PostLikeLink = (props) => {
           {didILikePost ? (
             <Icon icon={faHeart} className="icon red" />
           ) : (
-            <Icon icon={faHeart} className="icon" />
+            <Icon icon={faHeartO} className="icon" />
           )}
         </ButtonLink>
       ) : (

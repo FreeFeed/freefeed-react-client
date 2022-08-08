@@ -10,6 +10,8 @@
   --highlight-color: #d9ebff;
   --url-highlight-color: #ffffbb;
 
+  margin-left: 1.1875rem;
+
   .dark-theme & {
     --highlight-color: #{$bg-color-lightest};
     --url-highlight-color: #{$bg-color-lightest};
@@ -31,9 +33,12 @@
   transition: background-color 0.2s, box-shadow 0.2s;
 
   .comment-body {
+    display: flex;
     word-wrap: break-word;
-    margin-left: rem(19px);
+
+    // margin-left: rem(19px);
     position: relative; // to overflow the comment highlight
+    flex-direction: column;
   }
 
   .comment-textarea {
@@ -125,6 +130,8 @@
   }
 
   color: var(--gray-color);
+  display: flex;
+  justify-content: space-between;
 
   &__actions {
     white-space: nowrap;
@@ -213,6 +220,10 @@
   .dark-theme .direct-post & {
     box-shadow: 0 0 4px 8px scale-color($bg-color-lighter, $alpha: -10%);
   }
+}
+
+.comment-tail__item {
+  display: flex;
 }
 
 .comments-folder--after {

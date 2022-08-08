@@ -86,15 +86,23 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
             role="button"
             aria-label={hasOwnLike ? 'Un-like this comment' : 'Like this comment'}
           >
-            <Icon
-              icon={faHeart}
-              className={cn('icon', hasOwnLike ? 'liked' : false)}
-              title={hasOwnLike ? 'Un-like' : 'Like'}
-            />
+            {hasOwnLike ? (
+              <Icon
+                icon={faHeart}
+                className={cn('icon', 'liked')}
+                title={hasOwnLike ? 'Un-like' : 'Like'}
+              />
+            ) : (
+              <Icon
+                icon={faHeartO}
+                className={cn('icon')}
+                title={hasOwnLike ? 'Un-like' : 'Like'}
+              />
+            )}
           </div>
         ) : (
           <div className="comment-heart">
-            <Icon icon={faHeartO} className="icon" title="Your own comment" />
+            <Icon icon={faHeart} className="icon" title="Your own comment" />
           </div>
         )}
       </div>

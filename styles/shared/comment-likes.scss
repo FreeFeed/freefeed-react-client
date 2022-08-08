@@ -1,17 +1,23 @@
 .comment-likes-container {
   display: flex;
+  justify-content: space-evenly;
 
   @media (max-width: 768px) {
     .comment-likes.has-my-like + .comment-time,
     .comment-likes.liked + .comment-time {
-      display: none;
+      // display: none;
+      // color: red;
+    }
+
+    .comment-likes.has-my-like {
+      color: red;
     }
   }
 }
 
 @media (max-width: 768px) {
   .comment-likes-container .comment-likes:not(.has-my-like, .liked) {
-    display: none;
+    // display: none;
   }
 }
 
@@ -47,18 +53,20 @@
 }
 
 .comment-likes {
-  display: inline-flex;
-  align-items: flex-end;
-  flex-shrink: 0;
-  flex-basis: auto;
-  margin-right: rem(2px);
-  margin-top: rem(1px);
+  // display: inline-flex;
+  // align-items: flex-end;
+  // flex-shrink: 0;
+  // flex-basis: auto;
+  // margin-right: rem(2px);
+  // margin-top: rem(1px);
+  display: flex;
+  justify-content: flex-start;
   @media (min-width: 769px) {
-    margin-right: rem(6px);
+    // margin-right: rem(6px);
   }
 
   &:not(.liked) {
-    opacity: 0;
+    // opacity: 0;
     transition: opacity 0.25s;
   }
 
@@ -66,7 +74,7 @@
     flex-shrink: 0;
     flex-basis: auto;
     position: relative;
-    font-size: rem(10px);
+    font-size: rem(15px);
 
     .icon.liked {
       animation: 0.3s like;
@@ -80,7 +88,7 @@
   }
 
   .icon {
-    color: #ffb914;
+    // color: red;
     transition: transform 0.25s;
     cursor: pointer;
   }
@@ -98,12 +106,12 @@
   }
 
   .comment-count {
-    min-width: rem(15px);
-    text-align: right;
+    // min-width: rem(15px);
+    // text-align: right;
     cursor: pointer;
-    margin-right: rem(2px);
+    // margin-right: rem(2px);
     @media (min-width: 769px) {
-      margin-right: rem(6px);
+      // margin-right: rem(6px);
     }
 
     &:hover,

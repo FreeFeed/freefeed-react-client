@@ -15,13 +15,14 @@ import { defaultCommentState } from '../../redux/reducers/comment-edit';
 import { intentToScroll } from '../../services/unscroll';
 import PieceOfText from '../piece-of-text';
 import Expandable from '../expandable';
-import UserName from '../user-name';
 import TimeDisplay from '../time-display';
 import CommentIcon, { JustCommentIcon } from '../comment-icon';
 import { CommentEditForm } from '../comment-edit-form';
 import { ButtonLink } from '../button-link';
 import { Separated } from '../separated';
 
+import { UserPicture } from '../user-picture';
+import UserName from '../user-name';
 import { PostCommentMore } from './post-comment-more';
 import { PostCommentPreview } from './post-comment-preview';
 
@@ -184,7 +185,7 @@ class PostComment extends Component {
   commentTail() {
     const { canLike, canReply, canDelete, ownComment } = this.possibleActions();
     return (
-      <span
+      <div
         aria-label={
           this.props.user && !this.isHidden()
             ? `Comment by ${this.props.user.username}`
@@ -192,73 +193,77 @@ class PostComment extends Component {
         }
         className="comment-tail"
       >
-        {' - '}
-        <Separated separator=" - ">
+        <Separated separator="">
           {this.props.user && !this.isHidden() && (
-            <span className="comment-tail__item">
+            <div className="comment-tail__item">
+              <UserPicture
+                user={this.props.user}
+                userHover={this.props.authorHighlightHandlers}
+                small="true"
+              />
               <UserName user={this.props.user} userHover={this.props.authorHighlightHandlers} />
-            </span>
+              <div className="comment-tail__item comment-tail__actions">
+                <Separated separator="">
+                  {this.props.isEditable && (
+                    <div className="comment-tail__action">
+                      <ButtonLink
+                        className="comment-tail__action-link"
+                        onClick={this.handleEditOrCancel}
+                      >
+                        edit
+                      </ButtonLink>
+                    </div>
+                  )}
+                  {canDelete && this.props.isModeratingComments && (
+                    <div className="comment-tail__action">
+                      <ButtonLink
+                        className="comment-tail__action-link comment-tail__action-link--delete"
+                        onClick={this.handleDeleteComment}
+                      >
+                        delete
+                      </ButtonLink>
+                    </div>
+                  )}
+                </Separated>
+                {(this.props.showTimestamps || this.props.forceAbsTimestamps) && (
+                  <div className="comment-tail__item">
+                    <Link
+                      to={`${this.props.entryUrl}#comment-${this.props.id}`}
+                      className="comment-tail__timestamp"
+                    >
+                      <TimeDisplay
+                        timeStamp={+this.props.createdAt}
+                        inline
+                        absolute={this.props.forceAbsTimestamps}
+                      />
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </div>
           )}
-          <span className="comment-tail__item comment-tail__actions">
-            <Separated separator=" | ">
-              {this.props.isEditable && (
-                <span className="comment-tail__action">
-                  <ButtonLink
-                    className="comment-tail__action-link"
-                    onClick={this.handleEditOrCancel}
-                  >
-                    edit
-                  </ButtonLink>
-                </span>
-              )}
-              {canDelete && this.props.isModeratingComments && (
-                <span className="comment-tail__action">
-                  <ButtonLink
-                    className="comment-tail__action-link comment-tail__action-link--delete"
-                    onClick={this.handleDeleteComment}
-                  >
-                    delete
-                  </ButtonLink>
-                </span>
-              )}
-              <span className="comment-tail__action">
-                <PostCommentMore
-                  className="comment-tail__action-link comment-tail__action-link--more"
-                  id={this.props.id}
-                  authorUsername={this.props.user?.username}
-                  doEdit={this.props.isEditable && this.handleEditOrCancel}
-                  doDelete={canDelete && ownComment && this.handleDeleteComment}
-                  doReply={canReply && this.reply}
-                  doMention={canReply && this.mention}
-                  doLike={canLike && !this.props.hasOwnLike && this.like}
-                  doUnlike={canLike && this.props.hasOwnLike && this.unlike}
-                  getBackwardIdx={this.backwardIdx}
-                  createdAt={this.props.createdAt}
-                  updatedAt={this.props.updatedAt}
-                  permalink={`${this.props.entryUrl}#comment-${this.props.id}`}
-                  likesCount={this.props.likes}
-                  setMenuOpener={this.setMoreMenuOpener}
-                  onMenuOpened={this.onMoreMenuOpened}
-                />
-              </span>
-            </Separated>
-          </span>
-          {(this.props.showTimestamps || this.props.forceAbsTimestamps) && (
-            <span className="comment-tail__item">
-              <Link
-                to={`${this.props.entryUrl}#comment-${this.props.id}`}
-                className="comment-tail__timestamp"
-              >
-                <TimeDisplay
-                  timeStamp={+this.props.createdAt}
-                  inline
-                  absolute={this.props.forceAbsTimestamps}
-                />
-              </Link>
-            </span>
-          )}
+          <div className="comment-tail__action">
+            <PostCommentMore
+              className="comment-tail__action-link comment-tail__action-link--more"
+              id={this.props.id}
+              authorUsername={this.props.user?.username}
+              doEdit={this.props.isEditable && this.handleEditOrCancel}
+              doDelete={canDelete && ownComment && this.handleDeleteComment}
+              doReply={canReply && this.reply}
+              doMention={canReply && this.mention}
+              doLike={canLike && !this.props.hasOwnLike && this.like}
+              doUnlike={canLike && this.props.hasOwnLike && this.unlike}
+              getBackwardIdx={this.backwardIdx}
+              createdAt={this.props.createdAt}
+              updatedAt={this.props.updatedAt}
+              permalink={`${this.props.entryUrl}#comment-${this.props.id}`}
+              likesCount={this.props.likes}
+              setMenuOpener={this.setMoreMenuOpener}
+              onMenuOpened={this.onMoreMenuOpened}
+            />
+          </div>
         </Separated>
-      </span>
+      </div>
     );
   }
 
@@ -268,7 +273,7 @@ class PostComment extends Component {
     if (this.isHidden()) {
       return (
         <div className="comment-body">
-          <span className="comment-text">{this.hiddenBody()}</span>
+          <div className="comment-text">{this.hiddenBody()}</div>
           {commentTail}
         </div>
       );
@@ -290,6 +295,7 @@ class PostComment extends Component {
 
     return (
       <div className="comment-body">
+        {commentTail}
         <Expandable
           expanded={
             this.props.readMoreStyle === READMORE_STYLE_COMPACT ||
@@ -308,7 +314,6 @@ class PostComment extends Component {
             arrowClick={this.arrowClick}
             showMedia={this.props.showMedia}
           />
-          {commentTail}
         </Expandable>
       </div>
     );

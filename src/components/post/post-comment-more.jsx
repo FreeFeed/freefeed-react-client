@@ -9,6 +9,8 @@ import { useDropDownKbd } from '../hooks/drop-down-kbd';
 import { useMediaQuery } from '../hooks/media-query';
 import { MoreWithTriangle } from '../more-with-triangle';
 
+import { faEllipsis } from '../fontawesome-custom-icons';
+import { Icon } from '../fontawesome-icons';
 import { PostCommentLikes } from './post-comment-likes';
 import { PostCommentMoreMenu } from './post-comment-more-menu';
 
@@ -72,7 +74,9 @@ export const PostCommentMore = memo(function PostCommentMore({
         aria-haspopup
         aria-expanded={opened}
       >
-        <MoreWithTriangle>more</MoreWithTriangle>
+        <MoreWithTriangle>
+          <Icon icon={faEllipsis} className="more-icon" />
+        </MoreWithTriangle>
       </ButtonLink>
       {opened && (
         <Portal>
