@@ -10,7 +10,7 @@ const renderLike = (item) => (
     {item.id !== 'more-likes' ? (
       <UserPicture user={item} className="more-post-likes-link" small="true" />
     ) : (
-      <a className="more-post-likes-link" onClick={preventDefault(item.showMoreLikes)}>
+      <a className="more-post-likes-link show-more" onClick={preventDefault(item.showMoreLikes)}>
         {item.omittedLikes}
       </a>
     )}

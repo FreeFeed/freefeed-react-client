@@ -1,6 +1,7 @@
 .post-likes {
-  padding-top: rem(8px);
+  padding: rem(4px) 0;
   border-top: 1px solid rgba(117, 117, 117, 0.4);
+  border-bottom: 1px solid rgba(117, 117, 117, 0.4);
   display: flex;
   align-items: center;
 
@@ -11,14 +12,14 @@
   }
 }
 
-li.post-like:last-child {
-  padding: 0 0.3rem;
-}
-
 .more-post-likes-link {
   border-radius: 50%;
   width: 50%;
   height: 50%;
+}
+
+.show-more {
+  margin: 0 rem(14px);
 }
 
 .post-likes-list {
@@ -26,11 +27,12 @@ li.post-like:last-child {
   flex-wrap: wrap;
   list-style: none;
   padding: 0;
-  margin: 0 rem(4px) 0 rem(4px);
+  margin: 0 rem(1px);
   align-items: center;
 
   .post-like {
-    display: inline;
+    display: flex;
+    margin-left: -10px;
   }
 
   .throbber {
