@@ -563,6 +563,8 @@ $post-line-height: rem(20px);
 
   .embedly-card {
     overflow: hidden;
+    display: flex;
+    justify-content: center;
   }
 
   .embedly-card-hug {
