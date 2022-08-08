@@ -1,6 +1,7 @@
 .comment-likes-container {
   display: flex;
   justify-content: space-evenly;
+  margin: 0.5rem 0;
 
   @media (max-width: 768px) {
     .comment-likes.has-my-like + .comment-time,
@@ -109,6 +110,7 @@
     // min-width: rem(15px);
     // text-align: right;
     cursor: pointer;
+
     // margin-right: rem(2px);
     @media (min-width: 769px) {
       // margin-right: rem(6px);

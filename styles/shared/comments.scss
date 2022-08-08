@@ -30,7 +30,9 @@
   background-color: var(--bg-color);
   box-shadow: 0 0 0 3px var(--bg-color);
   border-radius: 1px;
+  opacity: 0.8;
   transition: background-color 0.2s, box-shadow 0.2s;
+  border-top: 1px solid rgba(238, 238, 238, 0.72);
 
   .comment-body {
     display: flex;
@@ -224,6 +226,7 @@
 
 .comment-tail__item {
   display: flex;
+  align-items: center;
 }
 
 .comments-folder--after {

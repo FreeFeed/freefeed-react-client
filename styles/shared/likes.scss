@@ -1,11 +1,18 @@
 .post-likes {
-  margin-top: rem(8px);
+  padding-top: rem(8px);
+  border-top: 1px solid #eee;
+  display: flex;
+  align-items: center;
 
   .icon {
-    margin-top: rem(2px);
-    float: left;
+    // margin-top: rem(2px);
+    // float: left;
     color: #ffb914;
   }
+}
+
+li.post-like:last-child {
+  padding: 0 0.3rem;
 }
 
 .more-post-likes-link {
@@ -19,7 +26,8 @@
   flex-wrap: wrap;
   list-style: none;
   padding: 0;
-  margin: 0 rem(4px) 0 rem(19px);
+  margin: 0 rem(4px) 0 rem(4px);
+  align-items: center;
 
   .post-like {
     display: inline;

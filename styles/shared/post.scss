@@ -14,7 +14,8 @@ $post-line-height: rem(20px);
 
 .post {
   padding-top: rem(14px);
-  padding-bottom: rem(14px);
+
+  // padding-bottom: rem(14px);
   border-bottom: 1px solid #eee;
   line-height: rem(19px);
   position: relative;
@@ -179,6 +180,7 @@ $post-line-height: rem(20px);
   display: flex;
   width: 100%;
   justify-content: space-around;
+  margin: 0.5rem 0;
 
   // display: inline-block;
   // margin-left: -1em;
