@@ -129,10 +129,6 @@ $post-line-height: rem(20px);
         cursor: pointer;
       }
 
-      .post-footer-backlink-icon {
-        transform: scaleY(-1);
-      }
-
       .post-private-icon {
         font-size: rem(13px);
         vertical-align: 0;
@@ -179,6 +175,11 @@ $post-line-height: rem(20px);
 
 .red {
   color: red;
+}
+
+.larger {
+  width: 1.3em;
+  height: 1.3em;
 }
 
 .post-footer-content {

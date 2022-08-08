@@ -385,7 +385,7 @@ class Post extends Component {
       (!props.commentsDisabled || props.isEditable || props.isModeratable) && (
         <div className="post-footer-comment">
           <ButtonLink className="post-action" onClick={this.handleCommentClick}>
-            <Icon icon={faComment} className="comment-icon" />
+            <Icon icon={faComment} className="comment-icon larger" />
           </ButtonLink>
           <div className="post-footer-counter">{props.comments.length + props.omittedComments}</div>
         </div>

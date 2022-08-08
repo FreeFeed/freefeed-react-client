@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { intersection } from 'lodash';
 import { faTimes, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
+import { faFlag } from '@fortawesome/free-regular-svg-icons';
 import { unhidePost, hideByName, removeRecentlyHiddenPost } from '../../redux/action-creators';
 import { initialAsyncState } from '../../redux/async-helpers';
 import { safeScrollBy } from '../../services/unscroll';
@@ -89,7 +90,7 @@ export function HideLink({
   let handler = null;
   if (!isHidden && !hiddenByNames) {
     // Post is not hidden
-    text = 'Hide';
+    text = <Icon icon={faFlag} className="post-footer-backlink-icon larger" />;
     handler = handleHideClick;
   } else if (unHideOpened) {
     // Unhide options are opened

@@ -11,22 +11,22 @@ const PostLikeLink = (props) => {
   return (
     <div className="post-footer-like">
       {likeError ? (
-        <Icon icon={faExclamationTriangle} className="post-like-fail" title={likeError} />
+        <Icon icon={faExclamationTriangle} className="post-like-fail larger" title={likeError} />
       ) : null}
       {!isEditable ? (
         <ButtonLink className="post-action" onClick={didILikePost ? onUnlikePost : onLikePost}>
           {didILikePost ? (
-            <Icon icon={faHeart} className="icon red" />
+            <Icon icon={faHeart} className="icon red larger" />
           ) : (
-            <Icon icon={faHeartO} className="icon" />
+            <Icon icon={faHeartO} className="icon larger" />
           )}
         </ButtonLink>
       ) : (
         <ButtonLink className="post-action">
           {didILikePost ? (
-            <Icon icon={faHeart} className="icon red" />
+            <Icon icon={faHeart} className="icon red larger" />
           ) : (
-            <Icon icon={faHeartO} className="icon" />
+            <Icon icon={faHeartO} className="icon larger" />
           )}
         </ButtonLink>
       )}
