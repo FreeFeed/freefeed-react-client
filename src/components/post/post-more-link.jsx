@@ -11,6 +11,8 @@ import { MoreWithTriangle } from '../more-with-triangle';
 import { TimedMessage } from '../timed-message';
 import { ButtonLink } from '../button-link';
 
+import { Icon } from '../fontawesome-icons';
+import { faEllipsis } from '../fontawesome-custom-icons';
 import { PostMoreMenu } from './post-more-menu';
 
 export default function PostMoreLink({ post, user, ...props }) {
@@ -32,15 +34,23 @@ export default function PostMoreLink({ post, user, ...props }) {
 
   const { isSaved, savePostStatus } = post;
 
-  let label = 'More';
+  let label = <Icon icon={faEllipsis} className="more-icon" />;
   if (savePostStatus.loading) {
     label = isSaved ? 'Un-saving...' : 'Saving...';
   }
   if (savePostStatus.success) {
-    label = <TimedMessage message={isSaved ? 'Saved!' : 'Un-saved!'}>More</TimedMessage>;
+    label = (
+      <TimedMessage message={isSaved ? 'Saved!' : 'Un-saved!'}>
+        <Icon icon={faEllipsis} className="more-icon" />
+      </TimedMessage>
+    );
   }
   if (savePostStatus.error) {
-    label = <TimedMessage message="Error!">More</TimedMessage>;
+    label = (
+      <TimedMessage message="Error!">
+        <Icon icon={faEllipsis} className="more-icon" />
+      </TimedMessage>
+    );
   }
 
   useEffect(() => {

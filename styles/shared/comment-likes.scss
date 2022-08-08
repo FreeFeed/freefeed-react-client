@@ -1,12 +1,5 @@
 .comment-likes-container {
-  position: absolute;
-  top: rem(1px);
-  left: rem(-15px);
-  width: rem(34px);
-  height: rem(18px);
   display: flex;
-  justify-content: flex-end;
-  padding-right: rem(2px);
 
   @media (max-width: 768px) {
     .comment-likes.has-my-like + .comment-time,

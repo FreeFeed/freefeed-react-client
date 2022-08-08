@@ -8,6 +8,10 @@
   }
 }
 
+.display-name {
+  display: flex;
+}
+
 .user-card {
   position: absolute;
   z-index: 10000;

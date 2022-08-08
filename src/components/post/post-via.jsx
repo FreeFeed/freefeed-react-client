@@ -68,26 +68,26 @@ export default class PostVia extends Component {
     }
 
     return (
-      <span className="post-via-sources">
+      <div className="post-via-sources">
         via {textPrefix}
         {users.map((u, i) => (
-          <span key={`via-${u.username}`}>
+          <div key={`via-${u.username}`}>
             {i || textPrefix ? (!foldedCount && i === users.length - 1 ? ' and ' : ', ') : false}
             <UserName user={u} />
-          </span>
+          </div>
         ))}
         {foldedCount ? (
-          <span>
+          <div>
             {' '}
             and{' '}
             <a className="post-via-more" onClick={this.expand}>
               {foldedCount} more
             </a>
-          </span>
+          </div>
         ) : (
           false
         )}
-      </span>
+      </div>
     );
   }
 }

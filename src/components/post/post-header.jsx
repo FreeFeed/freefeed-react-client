@@ -1,8 +1,31 @@
+import { Link } from 'react-router';
 import UserName from '../user-name';
+import TimeDisplay from '../time-display';
+import { canonicalURI } from '../../utils/canonical-uri';
 import PostVia from './post-via';
+import PostMoreLink from './post-more-link';
 
 const PostHeader = (props) => {
-  const { recipients, createdBy, comments, usersLikedPost, isDirect, user, isInHomeFeed } = props;
+  const {
+    recipients,
+    createdBy,
+    comments,
+    usersLikedPost,
+    isDirect,
+    user,
+    isInHomeFeed,
+    post,
+    toggleEditingPost,
+    toggleModeratingComments,
+    disableComments,
+    enableComments,
+    deletePost,
+    toggleSave,
+    isPrivate,
+    isProtected,
+    siteTitle,
+    forceAbsTimestamps,
+  } = props;
 
   const recipientCustomDisplay = function (recipient) {
     if (recipient.id !== createdBy.id) {
@@ -28,7 +51,7 @@ const PostHeader = (props) => {
       omitRecipients = true;
     }
   }
-
+  const canonicalPostURI = canonicalURI(post);
   const recipientsToRender = omitRecipients
     ? false
     : recipients.map((recipient, index) => (
@@ -43,7 +66,18 @@ const PostHeader = (props) => {
 
   return (
     <div className="post-header">
-      <UserName className="post-author" user={createdBy} />
+      <div className="left-username">
+        <UserName
+          className="post-author"
+          user={createdBy}
+          isPrivate={isPrivate}
+          isProtected={isProtected}
+          siteTitle={siteTitle}
+        />
+        <Link to={canonicalPostURI} className="post-timestamp">
+          <TimeDisplay timeStamp={+post.createdAt} absolute={forceAbsTimestamps} />
+        </Link>
+      </div>
       {recipientsToRender.length > 0 ? ' to ' : isDirect ? ' to nobody ' : false}
       {recipientsToRender}
       {isInHomeFeed ? (
@@ -51,6 +85,18 @@ const PostHeader = (props) => {
       ) : (
         false
       )}
+      <div className="more">
+        <PostMoreLink
+          user={user}
+          post={post}
+          toggleEditingPost={toggleEditingPost}
+          toggleModeratingComments={toggleModeratingComments}
+          disableComments={disableComments}
+          enableComments={enableComments}
+          deletePost={deletePost}
+          toggleSave={toggleSave}
+        />
+      </div>
     </div>
   );
 };

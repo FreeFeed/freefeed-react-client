@@ -1,21 +1,19 @@
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 import { preventDefault, pluralForm } from '../../utils';
-import UserName from '../user-name';
 import ErrorBoundary from '../error-boundary';
 import { Icon } from '../fontawesome-icons';
+import { UserPicture } from '../user-picture';
 
-const renderLike = (item, i, items) => (
+const renderLike = (item) => (
   <li key={item.id} className="post-like">
     {item.id !== 'more-likes' ? (
-      <UserName user={item} />
+      <UserPicture user={item} className="more-post-likes-link" small="true" />
     ) : (
       <a className="more-post-likes-link" onClick={preventDefault(item.showMoreLikes)}>
-        {item.omittedLikes} other people
+        {item.omittedLikes}
       </a>
     )}
-
-    {i < items.length - 2 ? ', ' : i === items.length - 2 ? ' and ' : ' liked this '}
   </li>
 );
 

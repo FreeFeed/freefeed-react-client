@@ -13,3 +13,4 @@
 .module-cache
 .history
 .DS_Store
+.idea/

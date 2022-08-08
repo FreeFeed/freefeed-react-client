@@ -88,6 +88,7 @@ body,
   .comment-likes .comment-count,
   .post .post-body .post-footer .post-timestamp,
   .post-footer,
+  .post-timestamp,
   .text-muted,
   .post .comment-timestamp a,
   .breadcrumb > .active {
@@ -113,10 +114,14 @@ body,
     background-color: $text-color-darker;
   }
 
+  .post-timestamp a {
+    color: $text-color-lighter;
+  }
+
   a,
   a:hover,
   a:focus,
-  .post .post-header a,
+  // .post .post-header a,
   .post .post-body .post-text a {
     color: $link-color;
   }

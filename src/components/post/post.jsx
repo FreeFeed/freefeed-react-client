@@ -8,14 +8,14 @@ import dateFormat from 'date-fns/format';
 import * as Sentry from '@sentry/react';
 import {
   faExclamationTriangle,
-  faLock,
-  faUserFriends,
-  faGlobeAmericas,
-  faAngleDoubleRight,
+  // faLock,
+  // faUserFriends,
+  // faGlobeAmericas,
+  // faAngleDoublexRight,
   faPaperclip,
-  faShare,
 } from '@fortawesome/free-solid-svg-icons';
 
+import { faComment } from '@fortawesome/free-regular-svg-icons';
 import { pluralForm } from '../../utils';
 import { getFirstLinkToEmbed } from '../../utils/parse-text';
 import { canonicalURI } from '../../utils/canonical-uri';
@@ -30,7 +30,7 @@ import { ButtonLink } from '../button-link';
 import Expandable from '../expandable';
 import PieceOfText from '../piece-of-text';
 import Dropzone from '../dropzone';
-import TimeDisplay from '../time-display';
+// import TimeDisplay from '../time-display';
 import LinkPreview from '../link-preview/preview';
 import SendTo from '../send-to';
 import ErrorBoundary from '../error-boundary';
@@ -41,12 +41,13 @@ import { SubmitModeHint } from '../submit-mode-hint';
 import { SubmittableTextarea } from '../submittable-textarea';
 
 import { UnhideOptions, HideLink } from './post-hides-ui';
-import PostMoreLink from './post-more-link';
+// import PostMoreLink from './post-more-link';
 import PostLikeLink from './post-like-link';
 import PostHeader from './post-header';
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
 import PostLikes from './post-likes';
+import PostRepostLink from './post-repost-link';
 
 const attachmentsMaxCount = CONFIG.attachments.maxCount;
 
@@ -304,9 +305,9 @@ class Post extends Component {
           handleFullUnhide={this.handleFullUnhide}
         />
         {props.hideStatus.loading && (
-          <span className="post-hide-throbber">
+          <div className="post-hide-throbber">
             <Throbber />
-          </span>
+          </div>
         )}
         {props.hideStatus.error && (
           <Icon
@@ -374,135 +375,95 @@ class Post extends Component {
   renderPostActions() {
     const { props } = this;
 
-    const canonicalPostURI = canonicalURI(props);
+    // const canonicalPostURI = canonicalURI(props);
 
-    const { isPrivate, isProtected } = this.getPostPrivacy();
+    // const { isPrivate, isProtected } = this.getPostPrivacy();
 
     const amIAuthenticated = !!props.user.id;
 
     const commentLink = amIAuthenticated &&
       (!props.commentsDisabled || props.isEditable || props.isModeratable) && (
-        <ButtonLink className="post-action" onClick={this.handleCommentClick}>
-          Comment
-        </ButtonLink>
+        <div className="post-footer-comment">
+          <ButtonLink className="post-action" onClick={this.handleCommentClick}>
+            <Icon icon={faComment} className="comment-icon" />
+          </ButtonLink>
+          <div>{props.comments.length}</div>
+        </div>
       );
 
     // "Like" / "Un-like"
     const didILikePost = _.find(props.usersLikedPost, { id: props.user.id });
-    const likeLink =
-      amIAuthenticated && !props.isEditable ? (
-        <PostLikeLink
-          onLikePost={this.likePost}
-          onUnlikePost={this.unlikePost}
-          didILikePost={didILikePost}
-          likeError={props.likeError}
-          isLiking={props.isLiking}
-        />
-      ) : (
-        false
-      );
-
-    // "More" menu
-    const moreLink = (
-      <PostMoreLink
-        user={props.user}
-        post={props}
-        toggleEditingPost={this.toggleEditingPost}
-        toggleModeratingComments={this.toggleModeratingComments}
-        disableComments={this.disableComments}
-        enableComments={this.enableComments}
-        deletePost={this.handleDeletePost}
-        toggleSave={this.toggleSave}
+    console.log(props.likes);
+    const likeLink = amIAuthenticated ? (
+      <PostLikeLink
+        onLikePost={this.likePost}
+        onUnlikePost={this.unlikePost}
+        didILikePost={didILikePost}
+        likeError={props.likeError}
+        isLiking={props.isLiking}
+        likes={props.likes.length + props.omittedLikes}
+        isEditable={props.isEditable}
       />
+    ) : (
+      false
     );
+    const repostLink = <PostRepostLink backlinksCount={props.backlinksCount} id={props.id} />;
+
+    // // "More" menu
+    // const moreLink = (
+    //   <PostMoreLink
+    //     user={props.user}
+    //     post={props}
+    //     toggleEditingPost={this.toggleEditingPost}
+    //     toggleModeratingComments={this.toggleModeratingComments}
+    //     disableComments={this.disableComments}
+    //     enableComments={this.enableComments}
+    //     deletePost={this.handleDeletePost}
+    //     toggleSave={this.toggleSave}
+    //   />
+    // );
 
     return (
-      <div role="region" aria-label="Post footer">
-        <div className="post-footer">
-          <div className="post-footer-icon">
-            {isPrivate ? (
-              <Icon
-                icon={faLock}
-                className="post-lock-icon post-private-icon"
-                title="This entry is private"
-                onClick={this.toggleTimestamps}
-                role="button"
-              />
-            ) : isProtected ? (
-              <Icon
-                icon={faUserFriends}
-                className="post-lock-icon post-protected-icon"
-                title={`This entry is only visible to ${CONFIG.siteTitle} users`}
-                onClick={this.toggleTimestamps}
-                role="button"
-              />
-            ) : (
-              <Icon
-                icon={faGlobeAmericas}
-                className="post-lock-icon post-public-icon"
-                title="This entry is public"
-                onClick={this.toggleTimestamps}
-                role="button"
-              />
-            )}
-          </div>
-          <div className="post-footer-content">
-            <span className="post-footer-block">
-              <span className="post-footer-item">
-                {props.isDirect && (
-                  <Icon
-                    icon={faAngleDoubleRight}
-                    className="post-direct-icon"
-                    title="This is a direct message"
-                  />
-                )}
-                <Link to={canonicalPostURI} className="post-timestamp">
-                  <TimeDisplay
-                    timeStamp={+props.createdAt}
-                    absolute={this.state.forceAbsTimestamps || null}
-                  />
-                </Link>
-              </span>
-              {props.commentsDisabled && (
-                <span className="post-footer-item">
-                  <i>
-                    {props.isEditable || props.isModeratable
-                      ? 'Comments disabled (not for you)'
-                      : 'Comments disabled'}
-                  </i>
-                </span>
-              )}
-            </span>
-            <span className="post-footer-block" role="region">
-              <span className="post-footer-item">{commentLink}</span>
-              <span className="post-footer-item">{likeLink}</span>
-              {props.hideEnabled && (
-                <span className="post-footer-item" ref={this.hideLink}>
-                  {this.renderHideLink()}
-                </span>
-              )}
-              <span className="post-footer-item">{moreLink}</span>
-            </span>
-          </div>
-        </div>
-        {props.backlinksCount > 0 && (
-          <div className="post-footer">
-            <div className="post-footer-icon">
-              <Icon icon={faShare} className="post-footer-backlink-icon" />
+      <div role="region" aria-label="Post footer" className="post-footer">
+        {/*<div className="post-footer-content">*/}
+        {/*<div className="post-footer-block">*/}
+        {/*  /!*<div className="post-footer-item">*!/*/}
+        {/*  /!*  {props.isDirect && (*!/*/}
+        {/*  /!*    <Icon*!/*/}
+        {/*  /!*      icon={faAngleDoubleRight}*!/*/}
+        {/*  /!*      className="post-direct-icon"*!/*/}
+        {/*  /!*      title="This is a direct message"*!/*/}
+        {/*  /!*    />*!/*/}
+        {/*  /!*  )}*!/*/}
+        {/*  /!*</div>*!/*/}
+        {/*  {props.commentsDisabled && (*/}
+        {/*    <div className="post-footer-item">*/}
+        {/*      <i>*/}
+        {/*        {props.isEditable || props.isModeratable*/}
+        {/*          ? 'Comments disabled (not for you)'*/}
+        {/*          : 'Comments disabled'}*/}
+        {/*      </i>*/}
+        {/*    </div>*/}
+        {/*  )}*/}
+        {/*</div>*/}
+        <div className="post-footer-block" role="region">
+          {commentLink}
+          {likeLink}
+          {repostLink}
+          {props.hideEnabled && (
+            <div className="post-footer-item" ref={this.hideLink}>
+              {this.renderHideLink()}
             </div>
-            <span className="post-footer-content">
-              <Link href={`/search?q=${encodeURIComponent(props.id)}`}>
-                {pluralForm(props.backlinksCount, 'reference')} to this post
-              </Link>
-            </span>
-          </div>
-        )}
+          )}
+        </div>
+        {/*</div>*/}
       </div>
     );
   }
 
   render() {
     const { props } = this;
+    const { isPrivate, isProtected } = this.getPostPrivacy();
 
     const postClass = classnames({
       post: true,
@@ -568,6 +529,17 @@ class Post extends Component {
                   recipients={props.recipients}
                   comments={props.comments}
                   usersLikedPost={props.usersLikedPost}
+                  post={props}
+                  toggleEditingPost={this.toggleEditingPost}
+                  toggleModeratingComments={this.toggleModeratingComments}
+                  disableComments={this.disableComments}
+                  enableComments={this.enableComments}
+                  deletePost={this.handleDeletePost}
+                  toggleSave={this.toggleSave}
+                  isPrivate={isPrivate}
+                  isProtected={isProtected}
+                  siteTitle={CONFIG.siteTitle}
+                  forceAbsTimestamps={this.state.forceAbsTimestamps || null}
                 />
               )}
               {props.isEditing ? (

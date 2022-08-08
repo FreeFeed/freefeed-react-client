@@ -374,9 +374,9 @@ class PostComment extends Component {
         ref={this.registerCommentContainer}
         role="comment listitem"
       >
-        {this.renderCommentIcon()}
         {this.renderBody()}
         {this.renderPreview()}
+        {this.renderCommentIcon()}
       </div>
     );
   }

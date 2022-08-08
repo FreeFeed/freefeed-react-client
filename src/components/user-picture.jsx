@@ -6,6 +6,7 @@ import styles from './user-picture.module.scss';
 export function UserPicture({
   user = null,
   large = false,
+  small = false,
   inline = false,
   loading,
   withLink = true,
@@ -19,10 +20,11 @@ export function UserPicture({
         user.profilePictureUrl ||
         (large ? user.profilePictureLargeUrl : user.profilePictureMediumUrl)
       }
-      width={large ? 75 : 50}
-      height={large ? 75 : 50}
+      width={small ? 25 : large ? 75 : 50}
+      height={small ? 25 : large ? 75 : 50}
       alt={`Profile picture of ${user.username}`}
       loading={loading}
+      className={className}
     />
   ) : (
     fallback
@@ -31,6 +33,7 @@ export function UserPicture({
   const clazzName = cn(
     styles.picture,
     large && styles.pictureLarge,
+    small && styles.pictureSmall,
     inline && styles.pictureInline,
     !user && styles.pictureEmpty,
     className,

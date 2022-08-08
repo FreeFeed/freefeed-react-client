@@ -48,10 +48,22 @@ $post-line-height: rem(20px);
     font-size: rem(15px);
     line-height: rem(20px);
     margin-bottom: rem(2px);
+    display: flex;
+    justify-content: space-between;
+
+    .post-timestamp {
+      margin-left: 0.2rem;
+      color: #666;
+    }
 
     a {
       font-weight: bold;
       color: #000088;
+
+      .post-timestamp {
+        margin-left: 0.2rem;
+        color: #666;
+      }
     }
 
     .post-recipient {
@@ -143,39 +155,56 @@ $post-line-height: rem(20px);
 }
 
 .post-footer-icon {
-  width: rem(19px);
-  flex: 0 0 auto;
+  // width: rem(19px);
+  // flex: 0 0 auto;
+  margin-left: 0.3rem;
+}
+
+.left-username {
+  display: flex;
+}
+
+.red {
+  color: red;
 }
 
 .post-footer-content {
-  overflow: hidden;
+  display: flex;
+  // overflow: hidden;
 }
 
 .post-footer-block {
-  display: inline-block;
-  margin-left: -1em;
-  margin-right: 1em;
-  max-width: 100%;
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  // display: inline-block;
+  // margin-left: -1em;
+  // margin-right: 1em;
+  // max-width: 100%;
+}
+
+.post-footer-comment {
+  display: flex;
 }
 
 .post-footer-item {
-  display: inline-block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-  vertical-align: bottom;
+  // display: inline-block;
+  // white-space: nowrap;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  // max-width: 100%;
+  // vertical-align: bottom;
 
-  &:empty {
-    display: none;
-  }
+  // &:empty {
+  //   display: none;
+  // }
 
-  &::before {
-    content: ' - ';
-    display: inline-block;
-    width: 1em;
-    text-align: center;
-  }
+  // &::before {
+  //  content: ' - ';
+  //  display: inline-block;
+  //  width: 1em;
+  //  text-align: center;
+  // }
 }
 
 .post-like-throbber {
@@ -441,8 +470,8 @@ $post-line-height: rem(20px);
 }
 
 .post-via-sources {
+  display: flex;
   font-size: rem(12px);
-  margin-left: 0.4em;
   line-height: rem(16px);
 }
 

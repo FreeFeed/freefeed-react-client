@@ -16,6 +16,9 @@ export default function UserName({
   children,
   className,
   noUserCard = false,
+  isPrivate,
+  isProtected,
+  siteTitle,
 }) {
   const myUsername = useSelector((state) => state.user.username);
   const prefs = useSelector((state) => state.user.frontendPreferences.displayNames);
@@ -81,9 +84,7 @@ export default function UserName({
       menuEl.removeEventListener('mouseleave', onLeave);
     };
   }, [opened, onEnter, onLeave, menuRef]);
-
   const linkCn = classNames(className, isGone ? 'user-is-gone' : false);
-
   return (
     <ErrorBoundary>
       <span
@@ -101,6 +102,9 @@ export default function UserName({
               screenName={screenName}
               myUsername={myUsername}
               prefs={prefs}
+              isPrivate={isPrivate}
+              isProtected={isProtected}
+              siteTitle={siteTitle}
             />
           )}
         </Link>

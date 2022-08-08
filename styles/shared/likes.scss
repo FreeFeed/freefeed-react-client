@@ -8,7 +8,15 @@
   }
 }
 
+.more-post-likes-link {
+  border-radius: 50%;
+  width: 50%;
+  height: 50%;
+}
+
 .post-likes-list {
+  display: flex;
+  flex-wrap: wrap;
   list-style: none;
   padding: 0;
   margin: 0 rem(4px) 0 rem(19px);
