@@ -26,7 +26,7 @@ const PostLikeLink = (props) => {
           {didILikePost ? (
             <Icon icon={faHeart} className="icon red" />
           ) : (
-            <Icon icon={faHeart} className="icon" />
+            <Icon icon={faHeartO} className="icon" />
           )}
         </ButtonLink>
       )}
