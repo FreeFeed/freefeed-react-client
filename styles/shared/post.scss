@@ -51,6 +51,7 @@ $post-line-height: rem(20px);
     margin-bottom: rem(2px);
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
     .post-timestamp {
       margin-left: 0.2rem;
@@ -164,6 +165,7 @@ $post-line-height: rem(20px);
 .left-username {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .red {
