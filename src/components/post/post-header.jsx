@@ -55,7 +55,7 @@ const PostHeader = (props) => {
   const recipientsToRender = omitRecipients
     ? false
     : recipients.map((recipient, index) => (
-        <div key={index}>
+        <div className="post-recipient" key={index}>
           <UserName className="post-recipient" user={recipient}>
             {recipientCustomDisplay(recipient)}
           </UserName>
@@ -67,24 +67,29 @@ const PostHeader = (props) => {
   return (
     <div className="post-header">
       <div className="left-username">
-        <UserName
-          className="post-author"
-          user={createdBy}
-          isPrivate={isPrivate}
-          isProtected={isProtected}
-          siteTitle={siteTitle}
-        />
-        <Link to={canonicalPostURI} className="post-timestamp">
-          <TimeDisplay timeStamp={+post.createdAt} absolute={forceAbsTimestamps} />
-        </Link>
-        {recipientsToRender.length > 0 ? ' to ' : isDirect ? ' to nobody ' : false}
-        {recipientsToRender}
+        {isInHomeFeed ? (
+          <PostVia post={{ createdBy, recipients, comments, usersLikedPost }} me={user} />
+        ) : (
+          false
+        )}
+        <div className="username-time">
+          <UserName
+            className="post-author"
+            user={createdBy}
+            isPrivate={isPrivate}
+            isProtected={isProtected}
+            siteTitle={siteTitle}
+          />
+          <Link to={canonicalPostURI} className="post-timestamp">
+            <TimeDisplay timeStamp={+post.createdAt} absolute={forceAbsTimestamps} />
+          </Link>
+        </div>
+        <div className="recipients">
+          {recipientsToRender.length > 0 ? ' ' : isDirect ? ' ' : false}
+          {recipientsToRender}
+        </div>
       </div>
-      {isInHomeFeed ? (
-        <PostVia post={{ createdBy, recipients, comments, usersLikedPost }} me={user} />
-      ) : (
-        false
-      )}
+
       <div className="more">
         <PostMoreLink
           user={user}
