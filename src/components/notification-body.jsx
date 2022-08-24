@@ -48,5 +48,3 @@ export function SinglePost({id = null}) {
     return null
   }
 }
-
-
