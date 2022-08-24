@@ -5,7 +5,7 @@ import { getSinglePostBody, getSingleComment} from '../redux/action-creators';
 
 /**
  * @param {string} id
- */
+*/
 
 export function getCommentBody(id) {
   const dispatch = useDispatch();
