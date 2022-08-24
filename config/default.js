@@ -6,7 +6,7 @@ const DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24;
 
 export default {
   api: {
-    root: 'https://candy.freefeed.net',
+    root: 'https://freefeed.net',
   },
 
   siteTitle: 'FreeFeed',

@@ -18,7 +18,7 @@ $post-line-height: rem(20px);
   border-bottom: 1px solid #eee;
   line-height: rem(19px);
   position: relative;
-
+  min-height: 80px;
   --bg-color: white;
 
   .dark-theme & {
@@ -56,6 +56,10 @@ $post-line-height: rem(20px);
 
     .post-recipient {
       font-weight: 500;
+    }
+    .post-notif {
+      margin-top: rem(5px);
+      margin-bottom: rem(5px);
     }
   }
 
@@ -140,6 +144,10 @@ $post-line-height: rem(20px);
       }
     }
   }
+}
+
+.notif-time-date{
+  margin-top: 12px;    
 }
 
 .post-footer-icon {

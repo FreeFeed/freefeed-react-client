@@ -11,6 +11,7 @@ import {
   DISABLE_COMMENTS,
   ENABLE_COMMENTS,
   GET_SINGLE_POST,
+  GET_SINGLE_POST_BODY,
   HIDE_POST,
   LIKE_POST,
   LIKE_POST_OPTIMISTIC,
@@ -54,6 +55,16 @@ export function posts(state = {}, action) {
   state = savePostStatusesReducer(state, action);
 
   switch (action.type) {
+    case response(GET_SINGLE_POST_BODY): {
+      return {
+        ...state,
+        [action.payload.posts.id]: {
+          ...state[action.payload.posts.id],
+          ...action.payload.posts,
+          isExpanded: true,
+        },
+      };
+    }
     case response(SHOW_MORE_COMMENTS): {
       const post = state[action.payload.posts.id];
       if (!post) {

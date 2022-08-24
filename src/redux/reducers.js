@@ -725,6 +725,16 @@ export function comments(state = {}, action) {
         },
       };
     }
+    case response(ActionTypes.GET_SINGLE_COMMENT): {
+      return {
+        ...state,
+        [action.payload.comments.id]: {
+          ...state[action.payload.comments.id],
+          ...action.payload.comments,
+          isExpanded: true,
+        },
+      };
+    }
     case response(ActionTypes.SAVE_EDITING_COMMENT): {
       return {
         ...state,

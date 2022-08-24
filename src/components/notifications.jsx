@@ -2,13 +2,18 @@
 import { useMemo } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { Link } from 'react-router';
+import {
+  faClock,
+} from '@fortawesome/free-solid-svg-icons';
 
 import { Throbber } from './throbber';
 import Linkify from './linkify';
 import TimeDisplay from './time-display';
 import PaginatedView from './paginated-view';
 import ErrorBoundary from './error-boundary';
-import UserName from './user-name';
+import { UserPicture } from './user-picture';
+import { Icon } from './fontawesome-icons';
+import { SingleComment, SinglePost } from './notification-body';
 import { SignInLink } from './sign-in-link';
 
 const getAuthorName = ({ postAuthor, createdUser, group }) => {
@@ -42,6 +47,7 @@ const commentLink = (event, text = 'comment') =>
   ) : (
     text
   );
+
 const backlinkLink = (event) =>
   event.target_comment_id ? (
     <Link to={`/post/${event.target_post_id}#comment-${event.target_comment_id}`}>comment</Link>
@@ -53,138 +59,230 @@ const backlinkLink = (event) =>
 
 const notificationTemplates = {
   subscription_request_revoked: (event) => (
-    <Linkify>{`@${event.createdUser.username} revoked subscription request to you`}</Linkify>
+    <div>
+      <Link to={`/${event.createdUser.username}`}>{event.createdUser.screenName}</Link>
+      {' revoked subscription request to you'}
+    </div>
   ),
 
   mention_in_post: (event) => (
     <div>
-      <Linkify>{`@${event.createdUser.username} mentioned you in the `}</Linkify>
+      <Link to={`/${event.createdUser.username}`}>{event.createdUser.screenName}</Link>
+      {' mentioned you in the '}
       {postLink(event)}
       <Linkify>{` ${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify>
+      <SinglePost id={event.post_id} />
     </div>
   ),
   mention_in_comment: (event) => (
     <div>
-      <Linkify>{`@${event.createdUser.username} mentioned you in a `}</Linkify>
+      <Link to={`/${event.createdUser.username}`}>{event.createdUser.screenName}</Link>
+      {' mentioned you in a '}
       {commentLink(event, 'comment')}
       {` to the `}
       {postLink(event)}
-      <Linkify>{`${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify>
+      <Linkify>{` ${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify>
+      <SingleComment id={event.comment_id} />
     </div>
   ),
   mention_comment_to: (event) => (
     <div>
-      <Linkify>{`@${event.createdUser.username} `}</Linkify>
+      <Link to={`/${event.createdUser.username}`}>{event.createdUser.screenName}</Link>{' '}
       {commentLink(event, 'replied')}
       {` to you in the `}
       {postLink(event)}
-      <Linkify>{` ${event.group.username ? `[in @${event.group.username}]` : ''}`}</Linkify>
+      <Linkify>{` ${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify>
+      <SingleComment id={event.comment_id} />
     </div>
   ),
   backlink_in_comment: (event) => (
     <div>
-      <Linkify>{`@${event.createdUser.username}`}</Linkify> mentioned your {backlinkLink(event)} in
-      a {commentLink(event, 'comment')}
+      <Link to={`/${event.createdUser.username}`}>{event.createdUser.screenName}</Link>
+      {' mentioned your '}
+      {backlinkLink(event)} in a {commentLink(event, 'comment')}
       {` to the `}
       {postLink(event)}
-      <Linkify>{`${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify>
+      <Linkify>{` ${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify>
+      <SingleComment id={event.comment_id} />
     </div>
   ),
   backlink_in_post: (event) => (
     <div>
-      <Linkify>{`@${event.createdUser.username}`}</Linkify> mentioned your {backlinkLink(event)} in
-      the {postLink(event)}
-      <Linkify>{`${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify>
+      <Link to={`/${event.createdUser.username}`}>{event.createdUser.screenName}</Link>
+      {' mentioned your '}
+      {backlinkLink(event)} in the {postLink(event)}
+      <Linkify>{` ${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify>
+      <SinglePost id={event.post_id} />
     </div>
   ),
-  banned_user: (event) => <Linkify>{`You blocked @${event.affectedUser.username}`}</Linkify>,
-  unbanned_user: (event) => <Linkify>{`You unblocked @${event.affectedUser.username}`}</Linkify>,
+  banned_user: (event) => (
+    <div>
+      {'You blocked '}
+      <Link to={`/${event.affectedUser.username}`}>{event.affectedUser.screenName}</Link>
+    </div>
+  ),
+  unbanned_user: (event) => (
+    <div>
+      {'You unblocked '}
+      <Link to={`/${event.affectedUser.username}`}>{event.affectedUser.screenName}</Link>
+    </div>
+  ),
   subscription_requested: (event) => (
     <div>
-      <UserName user={event.createdUser}>@{event.createdUser.username}</UserName> sent you a
-      subscription request <ReviewRequestLink from={event.createdUser} />
+      <Link to={`/${event.createdUser.username}`}>{event.createdUser.screenName}</Link>
+      {' sent you a subscription request '}
+      <ReviewRequestLink from={event.createdUser} />
     </div>
   ),
   user_subscribed: (event) => (
-    <Linkify>{`@${event.createdUser.username} subscribed to your feed`}</Linkify>
+    <div>
+      <Link to={`/${event.createdUser.username}`}>{event.createdUser.screenName}</Link>
+      {' subscribed to your feed'}
+    </div>
   ),
   user_unsubscribed: (event) => (
-    <Linkify>{`@${event.createdUser.username} unsubscribed from your feed`}</Linkify>
+    <div>
+      <Link to={`/${event.createdUser.username}`}>{event.createdUser.screenName}</Link>
+      {' unsubscribed from your feed'}
+    </div>
   ),
   subscription_request_approved: (event) => (
-    <Linkify>{`Your subscription request to @${event.createdUser.username} was approved`}</Linkify>
+    <div>
+      {'Your subscription request to '}
+      <Link to={`/${event.createdUser.username}`}>{event.createdUser.screenName}</Link>
+      {' was approved'}
+    </div>
   ),
   subscription_request_rejected: (event) => (
-    <Linkify>{`Your subscription request to @${event.createdUser.username} was rejected`}</Linkify>
+    <div>
+      {'Your subscription request to '}
+      <Link to={`/${event.createdUser.username}`}>{event.createdUser.screenName}</Link>
+      {' was rejected'}
+    </div>
   ),
-  group_created: (event) => <Linkify>{`You created a group @${event.group.username}`}</Linkify>,
+  group_created: (event) => (
+    <div>
+      {'You created a group '}
+      <Link to={`/${event.group.username}`}>{event.group.screenName}</Link>
+    </div>
+  ),
   group_subscription_requested: (event) => (
     <div>
-      <UserName user={event.createdUser}>@{event.createdUser.username}</UserName> sent a request to
-      join <UserName user={event.group}>@{event.group.username}</UserName> that you admin{' '}
-      <ReviewRequestLink from={event.createdUser} group={event.group} />
+      <Link to={`/${event.createdUser.username}`}>{event.createdUser.screenName}</Link>
+      {' sent a request to join '}
+      <Link to={`/${event.group.username}`}>{event.group.screenName}</Link>
+      {' that you admin'} <ReviewRequestLink from={event.createdUser} group={event.group} />
     </div>
   ),
   group_admin_promoted: (event) => (
-    <Linkify>{`@${event.createdUser.username} promoted @${event.affectedUser.username} to admin in the group @${event.group.username}`}</Linkify>
+    <div>
+      <Link to={`/${event.createdUser.username}`}>{event.createdUser.screenName}</Link>
+      {' promoted '}
+      <Link to={`/${event.affectedUser.username}`}>{event.affectedUser.screenName}</Link>
+      {' to admin in the group '}
+      <Link to={`/${event.group.username}`}>{event.group.screenName}</Link>
+    </div>
   ),
   group_admin_demoted: (event) => (
-    <Linkify>{`@${event.createdUser.username} revoked admin privileges from @${event.affectedUser.username} in group @${event.group.username}`}</Linkify>
+    <div>
+      <Link to={`/${event.createdUser.username}`}>{event.createdUser.screenName}</Link>
+      {' revoked admin privileges from '}
+      <Link to={`/${event.affectedUser.username}`}>{event.affectedUser.screenName}</Link>
+      {' in group '}
+      <Link to={`/${event.group.username}`}>{event.group.screenName}</Link>
+    </div>
   ),
   managed_group_subscription_approved: (event) => (
-    <Linkify>{`@${event.affectedUser.username} request to join @${event.group.username} was approved by @${event.createdUser.username}`}</Linkify>
+    <div>
+      <Link to={`/${event.affectedUser.username}`}>{event.affectedUser.screenName}</Link>
+      {' request to join '}
+      <Link to={`/${event.group.username}`}>{event.group.screenName}</Link>
+      {' was approved by '}
+      <Link to={`/${event.createdUser.username}`}>{event.createdUser.screenName}</Link>
+    </div>
   ),
   managed_group_subscription_rejected: (event) => (
-    <Linkify>{`@${event.affectedUser.username} request to join @${event.group.username} was rejected`}</Linkify>
+    <div>
+      <Link to={`/${event.affectedUser.username}`}>{event.affectedUser.screenName}</Link>
+      {' request to join '}
+      <Link to={`/${event.group.username}`}>{event.group.screenName}</Link>
+      {' was rejected'}
+    </div>
   ),
   group_subscription_approved: (event) => (
-    <Linkify>{`Your request to join group @${event.group.username} was approved`}</Linkify>
+    <div>
+      {'Your request to join group '}
+      <Link to={`/${event.group.username}`}>{event.group.screenName}</Link>
+      {' was approved'}
+    </div>
   ),
   group_subscription_request_revoked: (event) => (
-    <Linkify>{`@${event.createdUser.username} revoked subscription request to @${event.group.username}`}</Linkify>
+    <div>
+      <Link to={`/${event.createdUser.username}`}>{event.createdUser.screenName}</Link>
+      {' revoked subscription request to '}
+      <Link to={`/${event.group.username}`}>{event.group.screenName}</Link>
+    </div>
   ),
   direct_left: (event) =>
     event.created_user_id === event.receiver.id ? (
       <div>
-        You left a direct message created by <Linkify>{`@${event.postAuthor.username}`}</Linkify>
+        {'You left a direct message created by '}
+        <Link to={`/${event.postAuthor.username}`}>{event.postAuthor.screenName}</Link>
       </div>
     ) : event.post_author_id === event.receiver.id ? (
       <div>
-        <Linkify>{`@${event.createdUser.username}`}</Linkify> left a {directPostLink(event)} created
-        by you
+        <Link to={`/${event.createdUser.username}`}>{event.createdUser.screenName}</Link>
+        {' left a '} {directPostLink(event)} {' created by you'}
       </div>
     ) : (
       <div>
-        <Linkify>{`@${event.createdUser.username}`}</Linkify> left a {directPostLink(event)} created
-        by <Linkify>{`@${event.postAuthor.username}`}</Linkify>
+        <Link to={`/${event.createdUser.username}`}>{event.createdUser.screenName}</Link>
+        {' left a '} {directPostLink(event)} {' created by '}
+        <Link to={`/${event.postAuthor.username}`}>{event.postAuthor.screenName}</Link>
       </div>
     ),
   direct: (event) => (
     <div>
       {`You received a `}
       {directPostLink(event)}
-      <Linkify>{` from @${event.createdUser.username}`}</Linkify>
+      {` from `}
+      <Link to={`/${event.createdUser.username}`}>{event.createdUser.screenName}</Link>
+      <SinglePost id={event.post_id} />
     </div>
   ),
   direct_comment: (event) => (
     <div>
       {commentLink(event, 'New comment')}
-      {` was posted to a `}
+      {' was posted to a '}
       {directPostLink(event)}
-      <Linkify>{` from @${event.createdUser.username}`}</Linkify>
+      {' from '}
+      <Link to={event.createdUser.username}>{event.createdUser.screenName}</Link>
+      <SingleComment id={event.comment_id} />
     </div>
   ),
   group_subscription_rejected: (event) => (
-    <Linkify>{`Your request to join group @${event.group.username} was rejected`}</Linkify>
+    <div>
+      {'Your request to join group '}{' '}
+      <Link to={`/${event.group.username}`}>{event.group.screenName}</Link> {' was rejected'}
+    </div>
   ),
   group_subscribed: (event) => (
-    <Linkify>{`@${event.createdUser.username} subscribed to @${event.group.username}`}</Linkify>
+    <div>
+      <Link to={event.createdUser.username}>{event.createdUser.screenName}</Link>
+      {' subscribed to '} <Link to={`/${event.group.username}`}>{event.group.screenName}</Link>
+    </div>
   ),
   group_unsubscribed: (event) => (
-    <Linkify>{`@${event.createdUser.username} unsubscribed from @${event.group.username}`}</Linkify>
+    <div>
+      <Link to={event.createdUser.username}>{event.createdUser.screenName}</Link>
+      {' unsubscribed from '} <Link to={`/${event.group.username}`}>{event.group.screenName}</Link>
+    </div>
   ),
   invitation_used: (event) => (
-    <Linkify>{`@${event.createdUser.username} has joined ${CONFIG.siteTitle} using your invitation`}</Linkify>
+    <div>
+      <Link to={event.createdUser.username}>{event.createdUser.screenName}</Link>
+      {' has joined '} ${CONFIG.siteTitle} {' using your invitation '}
+    </div>
   ),
 
   banned_by_user: () => `Notification shouldn't be shown`,
@@ -192,31 +290,54 @@ const notificationTemplates = {
 
   comment_moderated: (event) => (
     <div>
-      <Linkify>{`@${event.createdUser.username} has deleted your comment to the `}</Linkify>
+      <Link to={event.createdUser.username}>{event.createdUser.screenName}</Link>{' '}
+      {' has deleted your comment to the '}
       {postLink(event)}
-      {event.group_id ? <Linkify>{` in the group @${event.group.username}`}</Linkify> : null}
+      {event.group_id ? (
+        <span>
+          {' in the group '}
+          <Link to={`/${event.group.username}`}>{event.group.screenName}</Link>
+        </span>
+      ) : null}
     </div>
   ),
   comment_moderated_by_another_admin: (event) => (
     <div>
-      <Linkify>{`@${event.createdUser.username} has removed a comment from @${event.affectedUser.username} to the `}</Linkify>
+      <Link to={event.createdUser.username}>{event.createdUser.screenName}</Link>{' '}
+      {' has removed a comment from '}{' '}
+      <Link to={`/${event.affectedUser.username}`}>{event.affectedUser.screenName}</Link>{' '}
+      {' to the '}
       {postLink(event)}
-      <Linkify>{` in the group @${event.group.username}`}</Linkify>
+      {' in the group '}
+      <Link to={`/${event.group.username}`}>{event.group.screenName}</Link>
     </div>
   ),
   post_moderated: (event) => (
     <div>
-      <Linkify>{`@${event.createdUser.username} has removed your `}</Linkify>
+      <Link to={event.createdUser.username}>{event.createdUser.screenName}</Link>{' '}
+      {' has removed your '}
       {event.post_id ? postLink(event) : 'post'}
-      {event.group_id ? <Linkify>{` from the group @${event.group.username}`}</Linkify> : null}
+      {event.group_id ? (
+        <span>
+          {' from the group '}
+          <Link to={`/${event.group.username}`}>{event.group.screenName}</Link>
+        </span>
+      ) : null}
     </div>
   ),
   post_moderated_by_another_admin: (event) => (
     <div>
-      <Linkify>{`@${event.createdUser.username} has removed the `}</Linkify>
+      <Link to={event.createdUser.username}>{event.createdUser.screenName}</Link>{' '}
+      {' has removed the '}
       {event.post_id ? postLink(event) : 'post'}
-      <Linkify>{` from @${event.affectedUser.username} `}</Linkify>
-      {event.group_id ? <Linkify>{` from the group @${event.group.username}`}</Linkify> : null}
+      {' from '}
+      <Link to={`/${event.affectedUser.username}`}>{event.affectedUser.screenName}</Link>
+      {event.group_id ? (
+        <span>
+          {` from the group `}
+          <Link to={`/${event.group.username}`}>{event.group.screenName}</Link>
+        </span>
+      ) : null}
     </div>
   ),
 };
@@ -259,9 +380,17 @@ const nop = () => false;
 
 const Notification = ({ event_type, ...props }) => {
   return (
-    <div key={props.id} className={`single-notification ${notificationClasses[event_type] || ''}`}>
-      {(notificationTemplates[event_type] || nop)(props)}
-      <TimeDisplay timeStamp={props.date} />
+    <div key={props.id} className={`post timeline-post ${notificationClasses[event_type] || ''}`}>
+      <div className="post-userpic">
+        <UserPicture user={props.createdUser} loading="lazy" className="post-userpic-img" />
+      </div>
+      <div className="post-body" role="region" aria-label="Post body">
+        <div class="post-header">{(notificationTemplates[event_type] || nop)(props)}</div>
+      </div>
+      <div className="notif-time-date post-body">
+        <Icon icon={faClock}/>{' '}
+        <TimeDisplay timeStamp={props.date} />
+      </div>
     </div>
   );
 };
