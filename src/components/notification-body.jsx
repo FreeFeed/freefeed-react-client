@@ -12,7 +12,8 @@ export function getCommentBody(id) {
   useEffect(() => void dispatch(getSingleComment(id)), [dispatch, id]);
   return useSelector((state) => {
     return {
-      cmBody: state.comments[id]
+      cmBody: state.comments[id],
+      ownUsername: state.user.username,
     };  
   }); 
 }
@@ -22,17 +23,18 @@ export function getPostBody(id) {
   useEffect(() => void dispatch(getSinglePostBody(id)), [dispatch, id]);
   return useSelector((state) => {
     return {
-      psBody: state.posts[id]
+      psBody: state.posts[id],
+      ownUsername: state.user.username,
     };  
   });
 }
 
 export function SingleComment({id = null}) {
   if (id) {
-    const { cmBody } = getCommentBody(id);
+    const { cmBody, ownUsername } = getCommentBody(id);
     var commentBody = {};
     Object.assign(commentBody, cmBody);
-    return <div class="post-notif"><span dir="auto" class="Linkify" role="region">{commentBody.body?.replace(/@[a-zA-Z0-9_]+/g, '')}</span></div>
+    return <div class="post-notif"><span dir="auto" class="Linkify" role="region">{commentBody.body?.replace('@' + ownUsername, '')}</span></div>
   } else {
     return null
   } 
@@ -40,10 +42,10 @@ export function SingleComment({id = null}) {
 
 export function SinglePost({id = null}) {
   if (id) {
-    const { psBody } = getPostBody(id);
+    const { psBody, ownUsername } = getPostBody(id);
     var postBody = {};
     Object.assign(postBody, psBody);
-    return <div class="post-notif"><span dir="auto" class="Linkify" role="region">{postBody.body?.replace(/@[a-zA-Z0-9_]+/g, '')}</span></div>
+    return <div class="post-notif"><span dir="auto" class="Linkify" role="region">{postBody.body?.replace('@' + ownUsername, '')}</span></div>
   } else {
     return null
   }
