@@ -2,7 +2,6 @@
 import { useMemo } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { Link } from 'react-router';
-import { faClock } from '@fortawesome/free-solid-svg-icons';
 
 import { Throbber } from './throbber';
 import Linkify from './linkify';
@@ -11,7 +10,6 @@ import PaginatedView from './paginated-view';
 import ErrorBoundary from './error-boundary';
 import { UserPicture } from './user-picture';
 import UserName from './user-name';
-import { Icon } from './fontawesome-icons';
 import { SingleComment, SinglePost } from './notification-body';
 import { SignInLink } from './sign-in-link';
 
@@ -380,7 +378,7 @@ const Notification = ({ event_type, ...props }) => {
         <div className="post-header">{(notificationTemplates[event_type] || nop)(props)}</div>
       </div>
       <div className="notif-time-date post-body">
-        <Icon icon={faClock} /> <TimeDisplay timeStamp={props.date} />
+        <TimeDisplay timeStamp={props.date} />
       </div>
     </div>
   );
