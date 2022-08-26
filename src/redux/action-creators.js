@@ -1222,7 +1222,7 @@ export function getSingleComment(commentId) {
     type: ActionTypes.GET_SINGLE_COMMENT,
     apiRequest: Api.getSingleComment,
     nonAuthRequest: true,
-    payload: { commentId }
+    payload: { commentId },
   };
 }
 

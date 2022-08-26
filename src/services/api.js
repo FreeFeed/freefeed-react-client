@@ -366,8 +366,6 @@ export function getUserInfo({ username }) {
   return fetch(`${apiRoot}/v1/users/${username}`, getRequestOptions());
 }
 
-
-
 export function createGroup(groupSettings) {
   return fetch(`${apiRoot}/v1/groups`, postRequestOptions('POST', { group: groupSettings }));
 }

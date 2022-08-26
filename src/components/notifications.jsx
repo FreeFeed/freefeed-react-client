@@ -2,9 +2,7 @@
 import { useMemo } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { Link } from 'react-router';
-import {
-  faClock,
-} from '@fortawesome/free-solid-svg-icons';
+import { faClock } from '@fortawesome/free-solid-svg-icons';
 
 import { Throbber } from './throbber';
 import Linkify from './linkify';
@@ -88,8 +86,7 @@ const notificationTemplates = {
   ),
   mention_comment_to: (event) => (
     <div>
-      <UserName user={event.createdUser} />{' '}
-      {commentLink(event, 'replied')}
+      <UserName user={event.createdUser} /> {commentLink(event, 'replied')}
       {` to you in the `}
       {postLink(event)}
       <Linkify>{` ${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify>
@@ -263,8 +260,7 @@ const notificationTemplates = {
   ),
   group_subscription_rejected: (event) => (
     <div>
-      {'Your request to join group '}{' '}
-      <UserName user={event.group} /> {' was rejected'}
+      {'Your request to join group '} <UserName user={event.group} /> {' was rejected'}
     </div>
   ),
   group_subscribed: (event) => (
@@ -291,8 +287,7 @@ const notificationTemplates = {
 
   comment_moderated: (event) => (
     <div>
-      <UserName user={event.createdUser} />{' '}
-      {' has deleted your comment to the '}
+      <UserName user={event.createdUser} /> {' has deleted your comment to the '}
       {postLink(event)}
       {event.group_id ? (
         <span>
@@ -304,10 +299,8 @@ const notificationTemplates = {
   ),
   comment_moderated_by_another_admin: (event) => (
     <div>
-      <UserName user={event.createdUser} />{' '}
-      {' has removed a comment from '}{' '}
-      <UserName user={event.affectedUser} />{' '}
-      {' to the '}
+      <UserName user={event.createdUser} /> {' has removed a comment from '}{' '}
+      <UserName user={event.affectedUser} /> {' to the '}
       {postLink(event)}
       {' in the group '}
       <UserName user={event.group} />
@@ -315,8 +308,7 @@ const notificationTemplates = {
   ),
   post_moderated: (event) => (
     <div>
-      <UserName user={event.createdUser} />{' '}
-      {' has removed your '}
+      <UserName user={event.createdUser} /> {' has removed your '}
       {event.post_id ? postLink(event) : 'post'}
       {event.group_id ? (
         <span>
@@ -328,8 +320,7 @@ const notificationTemplates = {
   ),
   post_moderated_by_another_admin: (event) => (
     <div>
-      <UserName user={event.createdUser} />{' '}
-      {' has removed the '}
+      <UserName user={event.createdUser} /> {' has removed the '}
       {event.post_id ? postLink(event) : 'post'}
       {' from '}
       <UserName user={event.affectedUser} />
@@ -386,11 +377,10 @@ const Notification = ({ event_type, ...props }) => {
         <UserPicture user={props.createdUser} loading="lazy" className="post-userpic-img" />
       </div>
       <div className="post-body" role="region" aria-label="Post body">
-        <div class="post-header">{(notificationTemplates[event_type] || nop)(props)}</div>
+        <div className="post-header">{(notificationTemplates[event_type] || nop)(props)}</div>
       </div>
       <div className="notif-time-date post-body">
-        <Icon icon={faClock}/>{' '}
-        <TimeDisplay timeStamp={props.date} />
+        <Icon icon={faClock} /> <TimeDisplay timeStamp={props.date} />
       </div>
     </div>
   );
