@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector} from 'react-redux';
+import PieceOfText from './piece-of-text';
 
 import { getSinglePostBody, getSingleComment} from '../redux/action-creators';
 
@@ -13,7 +14,6 @@ export function getCommentBody(id) {
   return useSelector((state) => {
     return {
       cmBody: state.comments[id],
-      ownUsername: state.user.username,
     };  
   }); 
 }
@@ -24,17 +24,16 @@ export function getPostBody(id) {
   return useSelector((state) => {
     return {
       psBody: state.posts[id],
-      ownUsername: state.user.username,
     };  
   });
 }
 
 export function SingleComment({id = null}) {
   if (id) {
-    const { cmBody, ownUsername } = getCommentBody(id);
+    const { cmBody } = getCommentBody(id);
     var commentBody = {};
     Object.assign(commentBody, cmBody);
-    return <div class="post-notif"><span dir="auto" class="Linkify" role="region">{commentBody.body?.replace('@' + ownUsername, '')}</span></div>
+    return <div class="Linkify post-notif" dir="auto" role="region"><PieceOfText text={commentBody.body} /></div>
   } else {
     return null
   } 
@@ -42,10 +41,10 @@ export function SingleComment({id = null}) {
 
 export function SinglePost({id = null}) {
   if (id) {
-    const { psBody, ownUsername } = getPostBody(id);
+    const { psBody } = getPostBody(id);
     var postBody = {};
     Object.assign(postBody, psBody);
-    return <div class="post-notif"><span dir="auto" class="Linkify" role="region">{postBody.body?.replace('@' + ownUsername, '')}</span></div>
+    return <div class="Linkify post-notif" dir="auto" role="region"><PieceOfText text={postBody.body} /></div>
   } else {
     return null
   }
