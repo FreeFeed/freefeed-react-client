@@ -7,7 +7,7 @@ import PieceOfText from './piece-of-text';
  * @param {string} id
  */
 
-export function getCommentBody(id) {
+export function GetCommentBody(id) {
   const dispatch = useDispatch();
   useEffect(() => void dispatch(getSingleComment(id)), [dispatch, id]);
   return useSelector((state) => {
@@ -17,7 +17,7 @@ export function getCommentBody(id) {
   });
 }
 
-export function getPostBody(id) {
+export function GetPostBody(id) {
   const dispatch = useDispatch();
   useEffect(() => void dispatch(getSinglePostBody(id)), [dispatch, id]);
   return useSelector((state) => {
@@ -29,11 +29,11 @@ export function getPostBody(id) {
 
 export function SingleComment({ id = null }) {
   if (id) {
-    const { cmBody } = getCommentBody(id);
+    const { cmBody } = GetCommentBody(id);
     const commentBody = {};
     Object.assign(commentBody, cmBody);
     return (
-      <div className="Linkify post-notif" dir="auto" role="region">
+      <div className="Linkify comment" dir="auto" role="region">
         <PieceOfText text={commentBody.body} />
       </div>
     );
@@ -43,11 +43,11 @@ export function SingleComment({ id = null }) {
 
 export function SinglePost({ id = null }) {
   if (id) {
-    const { psBody } = getPostBody(id);
+    const { psBody } = GetPostBody(id);
     const postBody = {};
     Object.assign(postBody, psBody);
     return (
-      <div className="Linkify post-notif" dir="auto" role="region">
+      <div className="Linkify comment" dir="auto" role="region">
         <PieceOfText text={postBody.body} />
       </div>
     );

@@ -19,6 +19,7 @@ $post-line-height: rem(20px);
   line-height: rem(19px);
   position: relative;
   min-height: 80px;
+
   --bg-color: white;
 
   .dark-theme & {
@@ -39,6 +40,7 @@ $post-line-height: rem(20px);
 
   .post-userpic {
     float: left;
+
     @media (max-width: 767px) {
       margin: 0 rem(10px) 3px 0;
     }
@@ -57,14 +59,11 @@ $post-line-height: rem(20px);
     .post-recipient {
       font-weight: 500;
     }
-    .post-notif {
-      margin-top: rem(5px);
-      margin-bottom: rem(5px);
-    }
   }
 
   .post-body {
     margin-left: 63px;
+
     @media (max-width: 767px) {
       margin-left: 0;
     }
@@ -76,6 +75,7 @@ $post-line-height: rem(20px);
     .post-text {
       margin-bottom: rem(8px);
       word-wrap: break-word;
+
       @media (max-width: 767px) {
         min-height: rem(31px);
       }
@@ -146,8 +146,8 @@ $post-line-height: rem(20px);
   }
 }
 
-.notif-time-date{
-  margin-top: 12px;    
+.notif-time-date {
+  margin-top: rem(10px);
 }
 
 .post-footer-icon {
@@ -398,6 +398,7 @@ $post-line-height: rem(20px);
 
   .post-body {
     margin-left: 88px;
+
     @media (max-width: 767px) {
       margin-left: 0;
     }
