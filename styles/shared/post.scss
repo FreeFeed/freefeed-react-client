@@ -59,6 +59,12 @@ $post-line-height: rem(20px);
     .post-recipient {
       font-weight: 500;
     }
+
+    .notif-body {
+      font-size: rem(14px);
+      margin-top: rem(5px);
+      position: relative;
+    }
   }
 
   .post-body {

@@ -33,7 +33,7 @@ export function SingleComment({ id = null }) {
     const commentBody = {};
     Object.assign(commentBody, cmBody);
     return (
-      <div className="Linkify comment" dir="auto" role="region">
+      <div className="Linkify notif-body" dir="auto" role="region">
         <PieceOfText text={commentBody.body} />
       </div>
     );
@@ -47,7 +47,7 @@ export function SinglePost({ id = null }) {
     const postBody = {};
     Object.assign(postBody, psBody);
     return (
-      <div className="Linkify comment" dir="auto" role="region">
+      <div className="Linkify notif-body" dir="auto" role="region">
         <PieceOfText text={postBody.body} />
       </div>
     );
