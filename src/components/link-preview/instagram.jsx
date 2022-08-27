@@ -4,7 +4,7 @@ import _ from 'lodash';
 import * as aspectRatio from './helpers/size-cache';
 import FoldableContent from './helpers/foldable-content';
 
-const INSTAGRAM_RE = /^https?:\/\/(?:www\.)?instagram\.com\/(?:p|tv)\/([\w-]+)/i;
+const INSTAGRAM_RE = /^https?:\/\/(?:www\.)?instagram\.com\/(?:p|tv|reel)\/([\w-]+)/i;
 
 export function canShowURL(url) {
   return INSTAGRAM_RE.test(url);
