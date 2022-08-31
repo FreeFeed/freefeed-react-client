@@ -7,7 +7,12 @@ import VideoAttachment from './post-attachment-video';
 
 const looksLikeAVideoFile = (attachment) => {
   const lowercaseFileName = attachment.fileName.toLowerCase();
-  return lowercaseFileName.endsWith('.mov') || lowercaseFileName.endsWith('.mp4');
+  return (
+    lowercaseFileName.endsWith('.mov') ||
+    lowercaseFileName.endsWith('.mp4') ||
+    lowercaseFileName.endsWith('.webm') ||
+    lowercaseFileName.endsWith('.ogg')
+  );
 };
 
 export default (props) => {
