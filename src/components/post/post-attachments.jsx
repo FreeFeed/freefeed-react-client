@@ -3,11 +3,33 @@ import ErrorBoundary from '../error-boundary';
 import ImageAttachmentsContainer from './post-attachment-image-container';
 import AudioAttachment from './post-attachment-audio';
 import GeneralAttachment from './post-attachment-general';
+import VideoAttachment from './post-attachment-video';
+
+const looksLikeAVideoFile = (attachment) => {
+  const lowercaseFileName = attachment.fileName.toLowerCase();
+  return lowercaseFileName.endsWith('.mov') || lowercaseFileName.endsWith('.mp4');
+};
 
 export default (props) => {
   const attachments = props.attachments || [];
 
-  const imageAttachments = attachments.filter((attachment) => attachment.mediaType === 'image');
+  const imageAttachments = [];
+  const audioAttachments = [];
+  const videoAttachments = [];
+  const generalAttachments = [];
+
+  attachments.forEach((attachment) => {
+    if (attachment.mediaType === 'image') {
+      imageAttachments.push(attachment);
+    } else if (attachment.mediaType === 'audio') {
+      audioAttachments.push(attachment);
+    } else if (attachment.mediaType === 'general' && looksLikeAVideoFile(attachment)) {
+      videoAttachments.push(attachment);
+    } else {
+      generalAttachments.push(attachment);
+    }
+  });
+
   const imageAttachmentsContainer =
     imageAttachments.length > 0 ? (
       <ImageAttachmentsContainer
@@ -23,7 +45,6 @@ export default (props) => {
       false
     );
 
-  const audioAttachments = attachments.filter((attachment) => attachment.mediaType === 'audio');
   const audioAttachmentsNodes = audioAttachments.map((attachment) => (
     <AudioAttachment
       key={attachment.id}
@@ -39,7 +60,21 @@ export default (props) => {
       false
     );
 
-  const generalAttachments = attachments.filter((attachment) => attachment.mediaType === 'general');
+  const videoAttachmentsNodes = videoAttachments.map((attachment) => (
+    <VideoAttachment
+      key={attachment.id}
+      isEditing={props.isEditing}
+      removeAttachment={props.removeAttachment}
+      {...attachment}
+    />
+  ));
+  const videoAttachmentsContainer =
+    videoAttachments.length > 0 ? (
+      <div className="video-attachments">{videoAttachmentsNodes}</div>
+    ) : (
+      false
+    );
+
   const generalAttachmentsNodes = generalAttachments.map((attachment) => (
     <GeneralAttachment
       key={attachment.id}
@@ -60,6 +95,7 @@ export default (props) => {
       <ErrorBoundary>
         {imageAttachmentsContainer}
         {audioAttachmentsContainer}
+        {videoAttachmentsContainer}
         {generalAttachmentsContainer}
       </ErrorBoundary>
     </div>
