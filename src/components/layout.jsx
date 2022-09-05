@@ -3,11 +3,12 @@ import { Component, Suspense } from 'react';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import classnames from 'classnames';
-import { faBug } from '@fortawesome/free-solid-svg-icons';
+import { faBug, faBell, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router';
 
 import { signOut, home } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
+import { faMessage, faHouse } from './fontawesome-custom-icons';
 import Footer from './footer';
 import Sidebar from './sidebar';
 import LoaderContainer from './loader-container';
@@ -157,23 +158,35 @@ class Layout extends Component {
 
           {props.authenticated && (
             <div className="row">
-              <div className="mobile-shortcuts hidden-md hidden-lg" role="navigation">
-                <Link className="mobile-shortcut-link" to="/filter/discussions">
-                  Discussions
-                </Link>
-                <Link className="mobile-shortcut-link" to="/filter/notifications">
-                  Notifications
-                  {props.user.unreadNotificationsNumber > 0 &&
-                    !props.user.frontendPreferences.hideUnreadNotifications &&
-                    ` (${props.user.unreadNotificationsNumber})`}
-                </Link>
-                <Link className="mobile-shortcut-link" to="/filter/direct">
-                  Directs
-                  {props.user.unreadDirectsNumber > 0 && ` (${props.user.unreadDirectsNumber})`}
-                </Link>
-                <Link className="mobile-shortcut-link" to={`/${props.user.username}`}>
-                  My feed
-                </Link>
+              <div className="bottom-navbar hidden-md hidden-lg" role="navigation">
+                <div className="bottom-navbar-row">
+                  <Link to={`/`}>
+                    <Icon icon={faHouse} />
+                  </Link>
+                </div>
+                <div className="bottom-navbar-row">
+                  <Link to="/filter/notifications">
+                    <Icon icon={faBell} />
+                    <sup>
+                      {props.user.unreadNotificationsNumber > 0 &&
+                        !props.user.frontendPreferences.hideUnreadNotifications &&
+                        ` (${props.user.unreadNotificationsNumber})`}
+                    </sup>
+                  </Link>
+                </div>
+                <div className="bottom-navbar-row">
+                  <Link to="/filter/direct">
+                    <Icon icon={faMessage} />
+                    <sup>
+                      {props.user.unreadDirectsNumber > 0 && ` (${props.user.unreadDirectsNumber})`}
+                    </sup>
+                  </Link>
+                </div>
+                <div className="bottom-navbar-row">
+                  <Link to={`/${props.user.username}`}>
+                    <Icon icon={faUser} />
+                  </Link>
+                </div>
               </div>
             </div>
           )}
