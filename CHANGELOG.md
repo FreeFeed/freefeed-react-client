@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Experimental
 ### Added
 - Native player for video-files
+
+## [1.111.0] - 2022-09-07
+### Added
+- Instagram Reels are supported by native previews.
+  First contribution by [Mohammad Jafari](https://github.com/MMDJafari/). Thanks!
 - It is now possible to hide posts by hashtags! Also, the underlying algorithm
   allows to add other types of hiding criteria in the future.
 

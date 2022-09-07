@@ -119,7 +119,7 @@ module.exports = {
     'react/no-string-refs': 2,
     'react/no-typos': 2,
     'react/no-unescaped-entities': 2,
-    'react/no-unknown-property': 2,
+    'react/no-unknown-property': [2, { ignore: ['focusable', 'viewBox'] }],
     'react/self-closing-comp': 2,
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
