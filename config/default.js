@@ -70,7 +70,7 @@ export default {
       readMoreStyle: 'modern',
       homeFeedSort: ACTIVITY,
       homeFeedMode: HOMEFEED_MODE_CLASSIC,
-      homefeed: { hideUsers: [] },
+      homefeed: { hideUsers: [], hideTags: [] },
       hidesInNonHomeFeeds: false,
       pinnedGroups: [],
       hideUnreadNotifications: false,
