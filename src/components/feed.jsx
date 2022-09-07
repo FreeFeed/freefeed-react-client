@@ -109,7 +109,7 @@ class Feed extends PureComponent {
   }
 }
 
-const postIsHidden = (post) => !!(post.isHidden || post.hiddenByNames);
+const postIsHidden = (post) => !!(post.isHidden || post.hiddenByCriteria);
 
 export default connect(
   (state) => {
@@ -151,14 +151,17 @@ function FeedEntry({ post, section, ...props }) {
   const onPostUnmount = useCallback((offset) => setHideLinkTopOffset(offset), []);
 
   const isRecentlyHidden =
-    props.separateHiddenEntries && (post.isHidden || post.hiddenByNames) && section === 'visible';
+    props.separateHiddenEntries &&
+    (post.isHidden || post.hiddenByCriteria) &&
+    section === 'visible';
 
   return isRecentlyHidden ? (
     <PostRecentlyHidden
       id={post.id}
       initialTopOffset={hideLinkTopOffset}
       isHidden={post.isHidden}
-      recipientNames={post.recipientNames}
+      availableHideCriteria={post.availableHideCriteria}
+      hiddenByCriteria={post.hiddenByCriteria}
     />
   ) : (
     <Post

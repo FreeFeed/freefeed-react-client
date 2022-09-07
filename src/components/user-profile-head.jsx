@@ -19,7 +19,7 @@ import {
   getUserInfo,
   showMedia,
   togglePinnedGroup,
-  hideByName,
+  hidePostsByCriterion,
   unsubscribe,
   ban,
   unban,
@@ -29,6 +29,7 @@ import {
   sendSubscriptionRequest,
   subscribe,
 } from '../redux/action-creators';
+import { USERNAME } from '../utils/hide-criteria';
 import { withKey } from './with-key';
 import { UserPicture } from './user-picture';
 import { Throbber } from './throbber';
@@ -153,8 +154,10 @@ export const UserProfileHead = withRouter(
     };
     const toggleHidden = {
       onClick: useCallback(
-        () => dispatch(hideByName(user?.username, null, !isHidden)),
-        [dispatch, isHidden, user?.username],
+        () =>
+          user &&
+          dispatch(hidePostsByCriterion({ type: USERNAME, value: user.username }, null, !isHidden)),
+        [dispatch, isHidden, user],
       ),
       status: useSelector(
         (state) => state.userActionsStatuses.hiding[user?.username] || initialAsyncState,

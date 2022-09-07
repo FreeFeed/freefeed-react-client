@@ -5,6 +5,12 @@ import _ from 'lodash';
 import { getDateForMemoriesRequest } from '../utils/get-date-from-short-string';
 import { userParser } from '../utils';
 import { UPDATE_SUBSCRIPTION, SUBSCRIBE, SEND_SUBSCRIPTION_REQUEST } from '../redux/action-types';
+import {
+  addCriterion,
+  criteriaToPrefs,
+  prefsToCriteria,
+  removeCriteria,
+} from '../utils/hide-criteria';
 import { getToken } from './auth';
 import { popupAsPromise } from './popup';
 
@@ -551,41 +557,38 @@ export async function performExtAuth({ provider, popup, mode }) {
   return finishResp;
 }
 
-export function hideByName({
-  username, // username to hide/unhide
-  hide, // 'true' to hide or 'false' to unhide
-}) {
+export function hidePostsByCriterion({ criterion, doHide }) {
   return updateActualPreferences({
-    updateFrontendPrefs(frontendPrefs) {
-      const hiddenNames = _.get(frontendPrefs, 'homefeed.hideUsers', []);
-      if (hide === hiddenNames.includes(username)) {
-        // User is already hidden/unhidden
-        return null;
+    updateFrontendPrefs(prefs) {
+      let criteria = prefsToCriteria(prefs.homefeed);
+      if (doHide) {
+        criteria = addCriterion(criteria, criterion);
+      } else {
+        criteria = removeCriteria(criteria, criterion);
       }
-
-      return _.set(
-        frontendPrefs,
-        'homefeed.hideUsers',
-        hide ? [...hiddenNames, username] : _.without(hiddenNames, username),
-      );
+      return {
+        ...prefs,
+        homefeed: {
+          ...prefs.homefeed,
+          ...criteriaToPrefs(criteria),
+        },
+      };
     },
   });
 }
 
-export function unHideNames({ usernames: usernamesToUnhide }) {
+export function unhidePostsByCriteria({ criteria: toRemove }) {
   return updateActualPreferences({
-    updateFrontendPrefs(frontendPrefs) {
-      const hiddenNames = _.get(frontendPrefs, 'homefeed.hideUsers', []);
-      if (_.intersection(hiddenNames, usernamesToUnhide).length === 0) {
-        // Nothing to unhide
-        return null;
-      }
-
-      return _.set(
-        frontendPrefs,
-        'homefeed.hideUsers',
-        _.difference(hiddenNames, usernamesToUnhide),
-      );
+    updateFrontendPrefs(prefs) {
+      let criteria = prefsToCriteria(prefs.homefeed);
+      criteria = removeCriteria(criteria, toRemove);
+      return {
+        ...prefs,
+        homefeed: {
+          ...prefs.homefeed,
+          ...criteriaToPrefs(criteria),
+        },
+      };
     },
   });
 }
