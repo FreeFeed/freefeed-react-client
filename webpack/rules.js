@@ -77,7 +77,7 @@ class RuleGenerator {
       loader: 'babel-loader',
       options: {
         babelrc: false,
-        targets: { node: '12' },
+        targets: { node: '14' },
         presets: [
           [
             '@babel/react',
