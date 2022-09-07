@@ -5,14 +5,35 @@ import AudioAttachment from './post-attachment-audio';
 import GeneralAttachment from './post-attachment-general';
 import VideoAttachment from './post-attachment-video';
 
+const videoTypes = {
+  mov: 'video/quicktime',
+  mp4: 'video/mp4; codecs="avc1.42E01E"',
+  ogg: 'video/ogg; codecs="theora"',
+  webm: 'video/webm; codecs="vp8, vorbis"',
+};
+
+// find video-types which browser supports
+let video = document.createElement('video');
+const supportedVideoTypes = [];
+Object.keys(videoTypes).forEach((extension) => {
+  const mime = videoTypes[extension];
+
+  if (video.canPlayType(mime) !== '') {
+    supportedVideoTypes.push(extension);
+  }
+});
+video = null;
+
 const looksLikeAVideoFile = (attachment) => {
   const lowercaseFileName = attachment.fileName.toLowerCase();
-  return (
-    lowercaseFileName.endsWith('.mov') ||
-    lowercaseFileName.endsWith('.mp4') ||
-    lowercaseFileName.endsWith('.webm') ||
-    lowercaseFileName.endsWith('.ogg')
-  );
+
+  for (const extension of supportedVideoTypes) {
+    if (lowercaseFileName.endsWith(`.${extension}`)) {
+      return true;
+    }
+  }
+
+  return false;
 };
 
 export default (props) => {
