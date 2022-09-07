@@ -4693,23 +4693,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-loader@npm:~5.2.7":
-  version: 5.2.7
-  resolution: "css-loader@npm:5.2.7"
+"css-loader@npm:~6.7.1":
+  version: 6.7.1
+  resolution: "css-loader@npm:6.7.1"
   dependencies:
     icss-utils: ^5.1.0
-    loader-utils: ^2.0.0
-    postcss: ^8.2.15
+    postcss: ^8.4.7
     postcss-modules-extract-imports: ^3.0.0
     postcss-modules-local-by-default: ^4.0.0
     postcss-modules-scope: ^3.0.0
     postcss-modules-values: ^4.0.0
-    postcss-value-parser: ^4.1.0
-    schema-utils: ^3.0.0
+    postcss-value-parser: ^4.2.0
     semver: ^7.3.5
   peerDependencies:
-    webpack: ^4.27.0 || ^5.0.0
-  checksum: fb0742b30ac0919f94b99a323bdefe6d48ae46d66c7d966aae59031350532f368f8bba5951fcd268f2e053c5e6e4655551076268e9073ccb58e453f98ae58f8e
+    webpack: ^5.0.0
+  checksum: 170fdbc630a05a43679ef60fa97694766b568dbde37adccc0faafa964fc675f08b976bc68837bb73b61d60240e8d2cbcbf51540fe94ebc9dafc56e7c46ba5527
   languageName: node
   linkType: hard
 
@@ -10884,7 +10882,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.2.14, postcss@npm:^8.2.15, postcss@npm:^8.4.13, postcss@npm:^8.4.16":
+"postcss@npm:^8.2.14, postcss@npm:^8.4.13, postcss@npm:^8.4.16, postcss@npm:^8.4.7":
   version: 8.4.16
   resolution: "postcss@npm:8.4.16"
   dependencies:
@@ -11732,7 +11730,7 @@ __metadata:
     copy-webpack-plugin: ~11.0.0
     core-js: ~3.25.0
     cross-env: ~7.0.3
-    css-loader: ~5.2.7
+    css-loader: ~6.7.1
     css-minimizer-webpack-plugin: ~4.0.0
     custom-event: ~1.0.1
     date-fns: ~2.29.2
@@ -11801,7 +11799,7 @@ __metadata:
     regenerator-runtime: ~0.13.9
     resolve-url-loader: ~5.0.0
     rimraf: ~3.0.2
-    sass-loader: ~12.6.0
+    sass-loader: ~13.0.2
     sinon: ~13.0.2
     snarkdown: ~2.0.0
     social-text-tokenizer: ~2.2.0
@@ -12437,9 +12435,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass-loader@npm:~12.6.0":
-  version: 12.6.0
-  resolution: "sass-loader@npm:12.6.0"
+"sass-loader@npm:~13.0.2":
+  version: 13.0.2
+  resolution: "sass-loader@npm:13.0.2"
   dependencies:
     klona: ^2.0.4
     neo-async: ^2.6.2
@@ -12458,7 +12456,7 @@ __metadata:
       optional: true
     sass-embedded:
       optional: true
-  checksum: 5d73a428588150f704016aa27397941bb9246cecd2ee083b573e95d969fc080ac6a16f2fe1cc64aca08f6e70da6f3c586ee68f0efc9f527fecc360e5f1c299ec
+  checksum: 6306712cc75bd4b4260ce67178778c92110089485f358b5956b6b12aba15a55e5c7287154daaf8b32678891df915b7bcda7356991afe8bf08ca7356ed30eb448
   languageName: node
   linkType: hard
 
