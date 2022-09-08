@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Native player for video-files
 
+## [1.111.1] - 2022-09-08
+### Fixed
+- Restore Vazir font (new css-loader didn't load it in 1.111.0)
+
 ## [1.111.0] - 2022-09-07
 ### Added
 - Instagram Reels are supported by native previews.
