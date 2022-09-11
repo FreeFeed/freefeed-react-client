@@ -181,9 +181,9 @@ class RuleGenerator {
 
     return {
       test: /photoswipe.+\.(png|svg|gif)$/,
-      loader: `file-loader`,
-      options: {
-        name: `assets/images/photoswipe/${fileName}`,
+      type: 'asset/resource',
+      generator: {
+        filename: `assets/images/photoswipe/${fileName}`,
       },
     };
   }
