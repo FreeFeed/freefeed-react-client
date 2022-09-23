@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Native player for video-files
 
+## [1.111.2] - 2022-09-23
+### Fixed
+- Fix broken PhotoSwipe icons
+
 ## [1.111.1] - 2022-09-08
 ### Fixed
 - Restore Vazir font (new css-loader didn't load it in 1.111.0)
