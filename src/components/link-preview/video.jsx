@@ -10,7 +10,7 @@ import cachedFetch from './helpers/cached-fetch';
 import * as aspectRatio from './helpers/size-cache';
 
 const YOUTUBE_VIDEO_RE =
-  /^https?:\/\/(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?(?:v=|.+&v=)))([\w-]+)/i;
+  /^https?:\/\/(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|shorts\/|v\/|watch\?(?:v=|.+&v=)))([\w-]+)/i;
 const VIMEO_VIDEO_RE = /^https?:\/\/vimeo\.com\/(\d+)(?:\/([a-z\d]+))?/i;
 const COUB_VIDEO_RE = /^https?:\/\/coub\.com\/view\/([a-z\d]+)/i;
 const IMGUR_VIDEO_RE = /^https?:\/\/i\.imgur\.com\/([a-z\d]+)\.(gifv|mp4)/i;
