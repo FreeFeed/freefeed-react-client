@@ -55,18 +55,25 @@ const getEmbeddableItem = async (url, withoutAutoplay) => {
     }
 
     let playerHTML = null;
-    const w = 800;
-    const h = info.aspectRatio ? Math.round(w * info.aspectRatio) : 450;
-    const wrapperPadding = info.aspectRatio ? `${info.aspectRatio * 100}%` : null;
+    let w = 800;
+    let h = 450;
+    if (info.aspectRatio) {
+      if (info.aspectRatio <= 1) {
+        h = Math.round(w * info.aspectRatio);
+      } else {
+        h = 800;
+        w = Math.round(h / info.aspectRatio);
+      }
+    }
 
     if (info.html) {
-      playerHTML = `<div class="wrapper"><div class="video-wrapper" style="padding-bottom: ${wrapperPadding}">${info.html}</div></div>`;
+      playerHTML = `<div class="media-wrapper">${info.html}</div>`;
     } else {
       let player = null;
       if (info.playerURL) {
         player = (
           <iframe
-            className="pswp__video"
+            className="pswp__video media-content"
             src={info.playerURL}
             frameBorder="0"
             allowFullScreen={true}
@@ -88,13 +95,7 @@ const getEmbeddableItem = async (url, withoutAutoplay) => {
       }
 
       if (player) {
-        playerHTML = renderToString(
-          <div className="wrapper">
-            <div className="video-wrapper" style={{ paddingBottom: wrapperPadding }}>
-              {player}
-            </div>
-          </div>,
-        );
+        playerHTML = renderToString(<div className="media-wrapper">{player}</div>);
       }
     }
 
