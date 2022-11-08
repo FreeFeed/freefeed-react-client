@@ -1076,7 +1076,7 @@ export function user(state = initUser(), action) {
     }
     case ActionTypes.REALTIME_INCOMING_EVENT: {
       if (action.payload.event === 'event:new') {
-        const { Notifications, users } = action.payload.data;
+        const { Notifications, users, groups } = action.payload.data;
         for (const note of Notifications) {
           if (note.event_type === 'subscription_request_approved') {
             const user = users.find((u) => u.id === note.created_user_id);
@@ -1087,6 +1087,18 @@ export function user(state = initUser(), action) {
                 pendingSubscriptionRequests: _.without(
                   state.pendingSubscriptionRequests || [],
                   user.id,
+                ),
+              };
+            }
+          } else if (note.event_type === 'group_subscription_approved') {
+            const group = groups.find((g) => g.id === note.group_id);
+            if (!(group.id in state.subscriptions)) {
+              return {
+                ...state,
+                subscriptions: [...state.subscriptions, group.id],
+                pendingSubscriptionRequests: _.without(
+                  state.pendingSubscriptionRequests || [],
+                  group.id,
                 ),
               };
             }
