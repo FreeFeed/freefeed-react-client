@@ -1074,6 +1074,27 @@ export function user(state = initUser(), action) {
         },
       };
     }
+    case ActionTypes.REALTIME_INCOMING_EVENT: {
+      if (action.payload.event === 'event:new') {
+        const { Notifications, users } = action.payload.data;
+        for (const note of Notifications) {
+          if (note.event_type === 'subscription_request_approved') {
+            const user = users.find((u) => u.id === note.created_user_id);
+            if (!(user.id in state.subscriptions)) {
+              return {
+                ...state,
+                subscriptions: [...state.subscriptions, user.id],
+                pendingSubscriptionRequests: _.without(
+                  state.pendingSubscriptionRequests || [],
+                  user.id,
+                ),
+              };
+            }
+          }
+        }
+      }
+      return state;
+    }
     case ActionTypes.REALTIME_GLOBAL_USER_UPDATE: {
       const userId = action.user.id;
       if (state.id === userId) {
