@@ -1092,7 +1092,7 @@ export function user(state = initUser(), action) {
             }
           } else if (note.event_type === 'group_subscription_approved') {
             const group = groups.find((g) => g.id === note.group_id);
-            if (!(group.id in state.subscriptions)) {
+            if (!state.subscriptions.includes(group.id)) {
               return {
                 ...state,
                 subscriptions: [...state.subscriptions, group.id],
@@ -1115,7 +1115,7 @@ export function user(state = initUser(), action) {
             if (state.subscriptionRequests.includes(user.id)) {
               return {
                 ...state,
-                subscriptionRequests: _.without(state.subscriptionRequests || [], user.id),
+                subscriptionRequests: _.without(state.subscriptionRequests, user.id),
               };
             }
           }
