@@ -18,7 +18,7 @@ export function AppUpdated() {
   return (
     <div className={styles.bar}>
       <div className={styles.indicator}>
-        There’s a new update for {CONFIG.siteTitle} available!{' '}
+        There’s an update for {CONFIG.siteTitle}!{' '}
         <ButtonLink className={styles.refresh} onClick={reloadPage}>
           Refresh the page
         </ButtonLink>{' '}
