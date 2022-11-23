@@ -100,8 +100,8 @@
     }
   }
 
-  &.is-hidden,
-  &.is-loading {
+  &.comment-is-hidden,
+  &.comment-is-loading {
     $hidden-color: #999;
 
     .comment-text {
