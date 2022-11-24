@@ -14,7 +14,6 @@ exports[`SubsList Renders a list of subscribers 1`] = `
       Section
     </h4>
     <div>
-      <h3 />
       <ul
         class="tile-list with-actions"
       >
