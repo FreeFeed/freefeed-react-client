@@ -158,12 +158,18 @@ function selectState(state, ownProps) {
     (!anonymous || foundUser.isProtected === '0') &&
     (foundUser.isPrivate === '0' || statusExtension.subscribed || statusExtension.isItMe);
 
-  const canIPostToGroup =
+  const shouldIPostToGroup =
     statusExtension.subscribed && (foundUser.isRestricted === '0' || amIGroupAdmin);
+
+  const canIPostToGroup = statusExtension.subscribed && foundUser.youCan.includes('post');
 
   statusExtension.canIPostHere =
     statusExtension.isUserFound &&
     ((statusExtension.isItMe && isItPostsPage) || (foundUser.type === 'group' && canIPostToGroup));
+
+  if (shouldIPostToGroup && foundUser.theyDid.includes('block')) {
+    statusExtension.whyCannotPost = 'You are blocked in this group';
+  }
 
   const viewUser = { ...foundUser, ...statusExtension };
 

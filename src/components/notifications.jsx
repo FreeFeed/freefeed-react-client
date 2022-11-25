@@ -219,7 +219,34 @@ const notificationTemplates = {
       {event.group_id ? <Linkify>{` from the group @${event.group.username}`}</Linkify> : null}
     </div>
   ),
+
+  blocked_in_group: (event) => {
+    let adminHTML = 'Admin';
+
+    if (event.created_user_id) {
+      adminHTML =
+        event.recipient_user_id === event.created_user_id ? 'You' : `@${event.creator.username}`;
+    }
+
+    const victimHTML =
+      event.recipient_user_id === event.affected_user_id
+        ? 'you'
+        : `@${event.affectedUser.username}`;
+    const groupLink = `@${event.group.username}`;
+
+    const action = event.event_type === 'blocked_in_group' ? 'blocked' : 'unblocked';
+
+    return (
+      <div>
+        <Linkify>
+          {adminHTML} {action} {victimHTML} in group {groupLink}
+        </Linkify>
+      </div>
+    );
+  },
 };
+
+notificationTemplates.unblocked_in_group = notificationTemplates.blocked_in_group;
 
 const notificationClasses = {
   mention_in_post: 'mention',
@@ -257,10 +284,13 @@ const notificationClasses = {
 
 const nop = () => false;
 
-const Notification = ({ event_type, ...props }) => {
+const Notification = (props) => {
   return (
-    <div key={props.id} className={`single-notification ${notificationClasses[event_type] || ''}`}>
-      {(notificationTemplates[event_type] || nop)(props)}
+    <div
+      key={props.id}
+      className={`single-notification ${notificationClasses[props.event_type] || ''}`}
+    >
+      {(notificationTemplates[props.event_type] || nop)(props)}
       <TimeDisplay timeStamp={props.date} />
     </div>
   );

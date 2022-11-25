@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { confirmFirst } from '../utils';
 import UserName from './user-name';
 import { UserPicture } from './user-picture';
+import { Separated } from './separated';
 
 class UserTile extends PureComponent {
   handleAcceptClick = () => {
@@ -39,6 +40,8 @@ class UserTile extends PureComponent {
 
   render() {
     const { type, user } = this.props;
+
+    const actions = (user.actions || []).map((a) => ({ ...a, handler: () => a.handler(user) }));
 
     return (
       <li key={user.id}>
@@ -103,6 +106,18 @@ class UserTile extends PureComponent {
         ) : (
           false
         )}
+
+        {actions.length > 0 && (
+          <div className="user-actions">
+            <Separated separator=" - ">
+              {actions.map((a) => (
+                <a onClick={a.handler} key={a.title}>
+                  {a.title}
+                </a>
+              ))}
+            </Separated>
+          </div>
+        )}
       </li>
     );
   }
@@ -120,6 +135,9 @@ export const WITH_REVOKE_SENT_REQUEST = 'WITH_REVOKE_SENT_REQUEST';
 export const WITH_MUTUALS = 'WITH_MUTUALS';
 
 function pickActions(type, props) {
+  if (props.actions) {
+    return { actions: props.actions };
+  }
   switch (type) {
     case WITH_REQUEST_HANDLES: {
       return _.pick(props, ['acceptRequest', 'rejectRequest']);
@@ -138,45 +156,47 @@ function pickActions(type, props) {
   return {};
 }
 
-export const tileUserListFactory = (config) => (props) => {
-  if (!props.users || props.users.length === 0) {
-    return false;
-  }
+export const tileUserListFactory =
+  (config = {}) =>
+  (props) => {
+    if (!props.users || props.users.length === 0) {
+      return false;
+    }
 
-  const usersData = props.users.map((user) => {
-    return {
-      ..._.pick(user, [
-        'id',
-        'screenName',
-        'username',
-        'isMutual',
-        'isGone',
-        'profilePictureUrl',
-        'profilePictureLargeUrl',
-        'profilePictureMediumUrl',
-      ]),
-      largePicture: config.size === 'large',
-      ...pickActions(config.type, props),
-    };
-  });
+    const usersData = props.users.map((user) => {
+      return {
+        ..._.pick(user, [
+          'id',
+          'screenName',
+          'username',
+          'isMutual',
+          'isGone',
+          'profilePictureUrl',
+          'profilePictureLargeUrl',
+          'profilePictureMediumUrl',
+        ]),
+        largePicture: config.size === 'large',
+        ...pickActions(config.type, props),
+      };
+    });
 
-  const users = usersData.map(renderUsers(config.type));
+    const users = usersData.map(renderUsers(config.type));
 
-  const listClasses = classnames({
-    'tile-list': true,
-    'large-pics': config.size === 'large',
-    'with-actions': config.type !== PLAIN,
-  });
+    const listClasses = classnames({
+      'tile-list': true,
+      'large-pics': config.size === 'large',
+      'with-actions': config.type !== PLAIN,
+    });
 
-  const header =
-    props.header && config.displayQuantity
-      ? `${props.header} (${props.users.length})`
-      : props.header;
+    const header =
+      props.header && config.displayQuantity
+        ? `${props.header} (${props.users.length})`
+        : props.header;
 
-  return (
-    <div>
-      <h3>{header}</h3>
-      <ul className={listClasses}>{users}</ul>
-    </div>
-  );
-};
+    return (
+      <div>
+        {header && <h3>{header}</h3>}
+        <ul className={listClasses}>{users}</ul>
+      </div>
+    );
+  };

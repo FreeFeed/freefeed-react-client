@@ -927,7 +927,10 @@ export function users(state = {}, action) {
     case response(ActionTypes.SHOW_MORE_LIKES_ASYNC):
     case response(ActionTypes.GET_SINGLE_POST):
     case response(ActionTypes.COMPLETE_POST_COMMENTS):
-    case response(ActionTypes.GET_ALL_SUBSCRIPTIONS): {
+    case response(ActionTypes.GET_ALL_SUBSCRIPTIONS):
+    case response(ActionTypes.GET_GROUP_BLOCKED_USERS):
+    case response(ActionTypes.BLOCK_USER_IN_GROUP):
+    case response(ActionTypes.UNBLOCK_USER_IN_GROUP): {
       return mergeAccounts([
         ...action.payload.users,
         ...(action.payload.subscribers || []),
@@ -2179,3 +2182,33 @@ export const getCommentStatuses = asyncStatesMap(ActionTypes.GET_COMMENT_BY_NUMB
   getKey: keyFromRequestPayload((p) => `${p.postId}#${p.seqNumber}`),
   cleanOnSuccess: true,
 });
+
+export const groupBlockedUsersStatus = asyncState(
+  ActionTypes.GET_GROUP_BLOCKED_USERS,
+  setOnLocationChange(initialAsyncState),
+);
+
+const groupBlockedUsersDefaults = [];
+export function groupBlockedUsers(state = groupBlockedUsersDefaults, action) {
+  switch (action.type) {
+    case response(ActionTypes.GET_GROUP_BLOCKED_USERS):
+    case response(ActionTypes.BLOCK_USER_IN_GROUP):
+    case response(ActionTypes.UNBLOCK_USER_IN_GROUP): {
+      return action.payload.blockedUsers;
+    }
+    case LOCATION_CHANGE: {
+      return groupBlockedUsersDefaults;
+    }
+  }
+  return state;
+}
+
+export const blockUserInGroupStatus = asyncState(
+  ActionTypes.BLOCK_USER_IN_GROUP,
+  setOnLocationChange(initialAsyncState),
+);
+
+export const unblockUserInGroupStatus = asyncState(
+  ActionTypes.UNBLOCK_USER_IN_GROUP,
+  setOnLocationChange(initialAsyncState),
+);
