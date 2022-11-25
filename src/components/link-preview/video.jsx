@@ -10,7 +10,7 @@ import cachedFetch from './helpers/cached-fetch';
 import * as aspectRatio from './helpers/size-cache';
 
 const YOUTUBE_VIDEO_RE =
-  /^https?:\/\/(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?(?:v=|.+&v=)))([\w-]+)/i;
+  /^https?:\/\/(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|shorts\/|v\/|watch\?(?:v=|.+&v=)))([\w-]+)/i;
 const VIMEO_VIDEO_RE = /^https?:\/\/vimeo\.com\/(\d+)(?:\/([a-z\d]+))?/i;
 const COUB_VIDEO_RE = /^https?:\/\/coub\.com\/view\/([a-z\d]+)/i;
 const IMGUR_VIDEO_RE = /^https?:\/\/i\.imgur\.com\/([a-z\d]+)\.(gifv|mp4)/i;
@@ -164,7 +164,7 @@ function getVideoId(url) {
 
 function getDefaultAspectRatio(url) {
   if (YOUTUBE_VIDEO_RE.test(url)) {
-    return 9 / 16;
+    return isYoutubeShort(url) ? 16 / 9 : 9 / 16;
   }
   if (VIMEO_VIDEO_RE.test(url)) {
     return 9 / 16;
@@ -207,7 +207,7 @@ function getYoutubeVideoInfo(url, withoutAutoplay) {
 
   return {
     byline: `Open on YouTube`,
-    aspectRatio: aspectRatio.set(url, 9 / 16),
+    aspectRatio: aspectRatio.set(url, isYoutubeShort(url) ? 16 / 9 : 9 / 16),
     previewURL: `https://img.youtube.com/vi/${videoID}/hqdefault.jpg`,
     playerURL: `https://www.youtube.com/embed/${videoID}?rel=0&fs=1${
       withoutAutoplay ? '' : '&autoplay=1'
@@ -386,4 +386,8 @@ function loadImage(url) {
     img.onerror = () => reject(new Error('Cannot load image'));
     img.src = url;
   });
+}
+
+function isYoutubeShort(url) {
+  return url.includes('/shorts/');
 }

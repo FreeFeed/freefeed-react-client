@@ -755,3 +755,15 @@ export function sanitizeMedia() {
 export function getCommentByNumber({ postId, seqNumber }) {
   return fetch(`${apiRoot}/v2/posts/${postId}/comments/${seqNumber}`, getRequestOptions());
 }
+
+export function getGroupBlockedUsers({ groupName }) {
+  return fetch(`${apiRoot}/v2/groups/${groupName}/blockedUsers`, getRequestOptions());
+}
+
+export function blockUserInGroup({ groupName, username }) {
+  return fetch(`${apiRoot}/v2/groups/${groupName}/block/${username}`, postRequestOptions());
+}
+
+export function unblockUserInGroup({ groupName, username }) {
+  return fetch(`${apiRoot}/v2/groups/${groupName}/unblock/${username}`, postRequestOptions());
+}

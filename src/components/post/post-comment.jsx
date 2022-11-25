@@ -359,7 +359,7 @@ class PostComment extends Component {
       highlighted:
         (this.props.highlightComments && this.props.highlighted) || this.state.moreMenuOpened,
       'omit-bubble': this.props.omitBubble,
-      'is-hidden': this.isHidden(),
+      'comment-is-hidden': this.isHidden(),
       'highlight-from-url': this.props.highlightedFromUrl,
       'my-comment':
         this.props.currentUser &&
