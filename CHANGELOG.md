@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Group administrators can now block users in their managed groups. A blocked
   user cannot post to the group, but can read and comment if the group is not
   private.
+- Video attachments now have a player, when browser supports them
 - YouTube shorts now supported in media viewer
 
 ### Fixed
