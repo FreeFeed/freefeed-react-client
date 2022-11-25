@@ -1216,3 +1216,27 @@ export function getCommentByNumber(postId, seqNumber) {
     payload: { postId, seqNumber },
   };
 }
+
+export function getGroupBlockedUsers(groupName) {
+  return {
+    type: ActionTypes.GET_GROUP_BLOCKED_USERS,
+    apiRequest: Api.getGroupBlockedUsers,
+    payload: { groupName },
+  };
+}
+
+export function blockUserInGroup(groupName, username) {
+  return {
+    type: ActionTypes.BLOCK_USER_IN_GROUP,
+    apiRequest: Api.blockUserInGroup,
+    payload: { groupName, username },
+  };
+}
+
+export function unblockUserInGroup(groupName, username) {
+  return {
+    type: ActionTypes.UNBLOCK_USER_IN_GROUP,
+    apiRequest: Api.unblockUserInGroup,
+    payload: { groupName, username },
+  };
+}

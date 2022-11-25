@@ -927,7 +927,10 @@ export function users(state = {}, action) {
     case response(ActionTypes.SHOW_MORE_LIKES_ASYNC):
     case response(ActionTypes.GET_SINGLE_POST):
     case response(ActionTypes.COMPLETE_POST_COMMENTS):
-    case response(ActionTypes.GET_ALL_SUBSCRIPTIONS): {
+    case response(ActionTypes.GET_ALL_SUBSCRIPTIONS):
+    case response(ActionTypes.GET_GROUP_BLOCKED_USERS):
+    case response(ActionTypes.BLOCK_USER_IN_GROUP):
+    case response(ActionTypes.UNBLOCK_USER_IN_GROUP): {
       return mergeAccounts([
         ...action.payload.users,
         ...(action.payload.subscribers || []),
@@ -1073,6 +1076,55 @@ export function user(state = initUser(), action) {
           },
         },
       };
+    }
+    case ActionTypes.REALTIME_INCOMING_EVENT: {
+      if (action.payload.event === 'event:new') {
+        const { Notifications, users, groups } = action.payload.data;
+        for (const note of Notifications) {
+          if (note.event_type === 'subscription_request_approved') {
+            const user = users.find((u) => u.id === note.created_user_id);
+            if (!(user.id in state.subscriptions)) {
+              return {
+                ...state,
+                subscriptions: [...state.subscriptions, user.id],
+                pendingSubscriptionRequests: _.without(
+                  state.pendingSubscriptionRequests || [],
+                  user.id,
+                ),
+              };
+            }
+          } else if (note.event_type === 'group_subscription_approved') {
+            const group = groups.find((g) => g.id === note.group_id);
+            if (!state.subscriptions.includes(group.id)) {
+              return {
+                ...state,
+                subscriptions: [...state.subscriptions, group.id],
+                pendingSubscriptionRequests: _.without(
+                  state.pendingSubscriptionRequests || [],
+                  group.id,
+                ),
+              };
+            }
+          } else if (note.event_type === 'subscription_requested') {
+            const user = users.find((u) => u.id === note.created_user_id);
+            if (!state.subscriptionRequests.includes(user.id)) {
+              return {
+                ...state,
+                subscriptionRequests: [...state.subscriptionRequests, user.id],
+              };
+            }
+          } else if (note.event_type === 'subscription_request_revoked') {
+            const user = users.find((u) => u.id === note.created_user_id);
+            if (state.subscriptionRequests.includes(user.id)) {
+              return {
+                ...state,
+                subscriptionRequests: _.without(state.subscriptionRequests, user.id),
+              };
+            }
+          }
+        }
+      }
+      return state;
     }
     case ActionTypes.REALTIME_GLOBAL_USER_UPDATE: {
       const userId = action.user.id;
@@ -1573,6 +1625,38 @@ export function managedGroups(state = [], action) {
       }
       return state;
     }
+    case ActionTypes.REALTIME_INCOMING_EVENT: {
+      if (action.payload.event === 'event:new') {
+        const { Notifications, users, groups } = action.payload.data;
+        for (const note of Notifications) {
+          const user = users.find((u) => u.id === note.created_user_id);
+          const group = groups.find((g) => g.id === note.group_id);
+          switch (note.event_type) {
+            case 'group_subscription_requested': {
+              if (!state.find((g) => g.id === group.id).requests.some((u) => u.id === user.id)) {
+                const newState = _.cloneDeep(state);
+                newState.find((g) => g.id === group.id).requests.push(user);
+                return newState;
+              }
+              return state;
+            }
+            case 'group_subscription_request_revoked': {
+              if (state.find((g) => g.id === group.id).requests.some((u) => u.id === user.id)) {
+                return _.cloneDeep(state).map((g) => {
+                  if (g.id === group.id) {
+                    g.requests = g.requests.filter((u) => u.id !== user.id);
+                    return g;
+                  }
+                  return g;
+                });
+              }
+              return state;
+            }
+          }
+        }
+      }
+      return state;
+    }
     case ActionTypes.UNAUTHENTICATED: {
       return [];
     }
@@ -1604,6 +1688,22 @@ export function userRequests(state = [], action) {
     case response(ActionTypes.REJECT_USER_REQUEST): {
       const { username } = action.request;
       return state.filter((user) => user.username !== username);
+    }
+    case ActionTypes.REALTIME_INCOMING_EVENT: {
+      if (action.payload.event === 'event:new') {
+        const { Notifications, users } = action.payload.data;
+        for (const note of Notifications) {
+          const user = users.find((u) => u.id === note.created_user_id);
+          if (note.event_type === 'subscription_requested') {
+            if (!state.some((u) => u.id === user.id)) {
+              return [...state, user];
+            }
+          } else if (note.event_type === 'subscription_request_revoked') {
+            return state.filter((u) => u.id !== user.id);
+          }
+        }
+      }
+      return state;
     }
   }
 
@@ -2082,3 +2182,33 @@ export const getCommentStatuses = asyncStatesMap(ActionTypes.GET_COMMENT_BY_NUMB
   getKey: keyFromRequestPayload((p) => `${p.postId}#${p.seqNumber}`),
   cleanOnSuccess: true,
 });
+
+export const groupBlockedUsersStatus = asyncState(
+  ActionTypes.GET_GROUP_BLOCKED_USERS,
+  setOnLocationChange(initialAsyncState),
+);
+
+const groupBlockedUsersDefaults = [];
+export function groupBlockedUsers(state = groupBlockedUsersDefaults, action) {
+  switch (action.type) {
+    case response(ActionTypes.GET_GROUP_BLOCKED_USERS):
+    case response(ActionTypes.BLOCK_USER_IN_GROUP):
+    case response(ActionTypes.UNBLOCK_USER_IN_GROUP): {
+      return action.payload.blockedUsers;
+    }
+    case LOCATION_CHANGE: {
+      return groupBlockedUsersDefaults;
+    }
+  }
+  return state;
+}
+
+export const blockUserInGroupStatus = asyncState(
+  ActionTypes.BLOCK_USER_IN_GROUP,
+  setOnLocationChange(initialAsyncState),
+);
+
+export const unblockUserInGroupStatus = asyncState(
+  ActionTypes.UNBLOCK_USER_IN_GROUP,
+  setOnLocationChange(initialAsyncState),
+);

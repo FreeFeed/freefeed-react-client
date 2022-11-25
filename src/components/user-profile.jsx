@@ -44,6 +44,8 @@ export default function UserProfile(props) {
           />
         )}
 
+        {props.whyCannotPost && <p className="alert alert-warning">{props.whyCannotPost}</p>}
+
         {authenticated && !props.canIPostHere && props.isRestricted === '1' && (
           <div className="create-post create-post-restricted">
             Only administrators can post to this group.
