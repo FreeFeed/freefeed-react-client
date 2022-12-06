@@ -447,16 +447,17 @@ export function signUp(signUpData) {
   };
 }
 
-export function updateUser(
+export function updateUser({
   id,
   screenName,
   email,
+  emailVerificationCode,
   isPrivate,
   isProtected,
   description,
   frontendPrefs,
   backendPrefs,
-) {
+}) {
   return {
     type: ActionTypes.UPDATE_USER,
     apiRequest: Api.updateUser,
@@ -464,6 +465,7 @@ export function updateUser(
       id,
       screenName,
       email,
+      emailVerificationCode,
       isPrivate,
       isProtected,
       description,
