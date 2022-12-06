@@ -1240,3 +1240,12 @@ export function unblockUserInGroup(groupName, username) {
     payload: { groupName, username },
   };
 }
+
+export function sendVerificationCode(email) {
+  return {
+    type: ActionTypes.SEND_VERIFICATION_CODE,
+    apiRequest: Api.sendVerificationCode,
+    nonAuthRequest: true,
+    payload: { email },
+  };
+}
