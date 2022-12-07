@@ -121,10 +121,7 @@ const ExtAuthSignup = memo(function ExtAuthSignup() {
       )}
       {result.status === 'user-exists' && (
         <div className="alert alert-warning" role="alert">
-          <p>
-            There is already a {CONFIG.siteTitle} account with the address{' '}
-            <strong>{result.profile.email}</strong>.
-          </p>
+          <p>There is already a {CONFIG.siteTitle} account with this email address.</p>
           <p>
             If this is you, you should <SignInLink back="/">sign in</SignInLink> with your
             username/email and password or in any other way allowed for your account.
