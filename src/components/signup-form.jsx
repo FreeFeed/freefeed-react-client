@@ -32,7 +32,7 @@ const validate =
     withExtProfile = true,
     withCaptcha = true,
     emailVerificationEnabled = false,
-    initialEmail,
+    initialEmail = '',
   } = {}) =>
   (values) => {
     // Use '' to mark field as erroneous but not set a error message
