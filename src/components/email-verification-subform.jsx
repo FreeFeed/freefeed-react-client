@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { sendVerificationCode } from '../redux/action-creators';
 import { groupErrClass } from './form-utils';
@@ -15,10 +15,12 @@ export function EmailVerificationSubform({ emailField, codeField, create = false
     verificationEnabled && emailField.meta.dirty && !emailField.meta.invalid,
   );
 
-  const sendEmailCode = useCallback(
-    () => dispatch(sendVerificationCode(emailField.input.value)),
-    [dispatch, emailField.input.value],
-  );
+  const [lastSentTo, setLastSentTo] = useState('');
+
+  const sendEmailCode = useCallback(() => {
+    dispatch(sendVerificationCode(emailField.input.value));
+    setLastSentTo(emailField.input.value);
+  }, [dispatch, emailField.input.value]);
 
   return (
     shouldVerify && (
@@ -38,10 +40,15 @@ export function EmailVerificationSubform({ emailField, codeField, create = false
         </p>
         {sendStatus.success && (
           <p className="text-success">
-            Code was sent, please check your mailbox (and, probably, the Spam folder)
+            Code was sent to <strong>{lastSentTo}</strong>, please check your mailbox (and,
+            probably, the Spam folder)
           </p>
         )}
-        {sendStatus.error && <p className="text-danger">{sendStatus.errorText}</p>}
+        {sendStatus.error && (
+          <p className="text-danger">
+            Error sending to <strong>{lastSentTo}</strong>: {sendStatus.errorText}
+          </p>
+        )}
         <p className={groupErrClass(codeField, true)}>
           <input
             id="emailCode-input"
