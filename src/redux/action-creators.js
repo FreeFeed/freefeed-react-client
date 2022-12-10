@@ -1243,11 +1243,11 @@ export function unblockUserInGroup(groupName, username) {
   };
 }
 
-export function sendVerificationCode(email) {
+export function sendVerificationCode(email, mode) {
   return {
     type: ActionTypes.SEND_VERIFICATION_CODE,
     apiRequest: Api.sendVerificationCode,
     nonAuthRequest: true,
-    payload: { email },
+    payload: { email, mode },
   };
 }

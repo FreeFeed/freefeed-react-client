@@ -18,9 +18,9 @@ export function EmailVerificationSubform({ emailField, codeField, create = false
   const [lastSentTo, setLastSentTo] = useState('');
 
   const sendEmailCode = useCallback(() => {
-    dispatch(sendVerificationCode(emailField.input.value));
+    dispatch(sendVerificationCode(emailField.input.value, create ? 'sign-up' : 'update'));
     setLastSentTo(emailField.input.value);
-  }, [dispatch, emailField.input.value]);
+  }, [create, dispatch, emailField.input.value]);
 
   return (
     shouldVerify && (
@@ -38,6 +38,11 @@ export function EmailVerificationSubform({ emailField, codeField, create = false
           </button>{' '}
           and enter the code we will send to <strong>{emailField.input.value}</strong>.
         </p>
+        {sendStatus.loading && (
+          <p className="text-info">
+            Sending code to <strong>{lastSentTo}</strong>...
+          </p>
+        )}
         {sendStatus.success && (
           <p className="text-success">
             Code was sent to <strong>{lastSentTo}</strong>, please check your mailbox (and,

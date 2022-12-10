@@ -772,6 +772,6 @@ export function unblockUserInGroup({ groupName, username }) {
   return fetch(`${apiRoot}/v2/groups/${groupName}/unblock/${username}`, postRequestOptions());
 }
 
-export function sendVerificationCode({ email }) {
-  return fetch(`${apiRoot}/v2/users/verifyEmail`, postRequestOptions('POST', { email }));
+export function sendVerificationCode({ email, mode }) {
+  return fetch(`${apiRoot}/v2/users/verifyEmail`, postRequestOptions('POST', { email, mode }));
 }
