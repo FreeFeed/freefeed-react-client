@@ -36,7 +36,7 @@ export function EmailVerificationSubform({ emailField, codeField, create = false
           >
             Send Code
           </button>{' '}
-          and enter the code we will send to <strong>{emailField.input.value}</strong>.
+          and enter the code that we will send to <strong>{emailField.input.value}</strong>.
         </p>
         {sendStatus.loading && (
           <p className="text-info">
