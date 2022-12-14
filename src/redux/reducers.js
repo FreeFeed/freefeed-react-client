@@ -15,6 +15,7 @@ import {
   loadUIScale,
   loadSubmitMode,
 } from '../services/appearance';
+import { prefsToCriteria } from '../utils/hide-criteria';
 import * as ActionTypes from './action-types';
 import * as ActionHelpers from './action-helpers';
 import { mergeByIds, patchObjectByKey, setOnLocationChange, setOnLogOut } from './reducers/helpers';
@@ -325,7 +326,7 @@ export function feedViewState(state = initFeed, action) {
     }
 
     // Hide by username
-    case response(ActionTypes.HIDE_BY_NAME): {
+    case response(ActionTypes.HIDE_BY_CRITERION): {
       const { postId, hide } = action.request;
       if (postId) {
         if (hide && !state.recentlyHiddenEntries[postId]) {
@@ -663,8 +664,8 @@ export const postHideStatuses = asyncStatesMap(
   [
     ActionTypes.HIDE_POST,
     ActionTypes.UNHIDE_POST,
-    ActionTypes.HIDE_BY_NAME,
-    ActionTypes.UNHIDE_NAMES,
+    ActionTypes.HIDE_BY_CRITERION,
+    ActionTypes.UNHIDE_CRITERIA,
   ],
   { getKey: getKeyBy('postId'), cleanOnSuccess: true },
 );
@@ -716,16 +717,6 @@ export function comments(state = {}, action) {
       return updateCommentData(state, action);
     }
     case response(ActionTypes.GET_COMMENT_BY_NUMBER): {
-      return {
-        ...state,
-        [action.payload.comments.id]: {
-          ...state[action.payload.comments.id],
-          ...action.payload.comments,
-          isExpanded: true,
-        },
-      };
-    }
-    case response(ActionTypes.GET_SINGLE_COMMENT): {
       return {
         ...state,
         [action.payload.comments.id]: {
@@ -936,7 +927,10 @@ export function users(state = {}, action) {
     case response(ActionTypes.SHOW_MORE_LIKES_ASYNC):
     case response(ActionTypes.GET_SINGLE_POST):
     case response(ActionTypes.COMPLETE_POST_COMMENTS):
-    case response(ActionTypes.GET_ALL_SUBSCRIPTIONS): {
+    case response(ActionTypes.GET_ALL_SUBSCRIPTIONS):
+    case response(ActionTypes.GET_GROUP_BLOCKED_USERS):
+    case response(ActionTypes.BLOCK_USER_IN_GROUP):
+    case response(ActionTypes.UNBLOCK_USER_IN_GROUP): {
       return mergeAccounts([
         ...action.payload.users,
         ...(action.payload.subscribers || []),
@@ -1082,6 +1076,55 @@ export function user(state = initUser(), action) {
           },
         },
       };
+    }
+    case ActionTypes.REALTIME_INCOMING_EVENT: {
+      if (action.payload.event === 'event:new') {
+        const { Notifications, users, groups } = action.payload.data;
+        for (const note of Notifications) {
+          if (note.event_type === 'subscription_request_approved') {
+            const user = users.find((u) => u.id === note.created_user_id);
+            if (!(user.id in state.subscriptions)) {
+              return {
+                ...state,
+                subscriptions: [...state.subscriptions, user.id],
+                pendingSubscriptionRequests: _.without(
+                  state.pendingSubscriptionRequests || [],
+                  user.id,
+                ),
+              };
+            }
+          } else if (note.event_type === 'group_subscription_approved') {
+            const group = groups.find((g) => g.id === note.group_id);
+            if (!state.subscriptions.includes(group.id)) {
+              return {
+                ...state,
+                subscriptions: [...state.subscriptions, group.id],
+                pendingSubscriptionRequests: _.without(
+                  state.pendingSubscriptionRequests || [],
+                  group.id,
+                ),
+              };
+            }
+          } else if (note.event_type === 'subscription_requested') {
+            const user = users.find((u) => u.id === note.created_user_id);
+            if (!state.subscriptionRequests.includes(user.id)) {
+              return {
+                ...state,
+                subscriptionRequests: [...state.subscriptionRequests, user.id],
+              };
+            }
+          } else if (note.event_type === 'subscription_request_revoked') {
+            const user = users.find((u) => u.id === note.created_user_id);
+            if (state.subscriptionRequests.includes(user.id)) {
+              return {
+                ...state,
+                subscriptionRequests: _.without(state.subscriptionRequests, user.id),
+              };
+            }
+          }
+        }
+      }
+      return state;
     }
     case ActionTypes.REALTIME_GLOBAL_USER_UPDATE: {
       const userId = action.user.id;
@@ -1582,6 +1625,38 @@ export function managedGroups(state = [], action) {
       }
       return state;
     }
+    case ActionTypes.REALTIME_INCOMING_EVENT: {
+      if (action.payload.event === 'event:new') {
+        const { Notifications, users, groups } = action.payload.data;
+        for (const note of Notifications) {
+          const user = users.find((u) => u.id === note.created_user_id);
+          const group = groups.find((g) => g.id === note.group_id);
+          switch (note.event_type) {
+            case 'group_subscription_requested': {
+              if (!state.find((g) => g.id === group.id).requests.some((u) => u.id === user.id)) {
+                const newState = _.cloneDeep(state);
+                newState.find((g) => g.id === group.id).requests.push(user);
+                return newState;
+              }
+              return state;
+            }
+            case 'group_subscription_request_revoked': {
+              if (state.find((g) => g.id === group.id).requests.some((u) => u.id === user.id)) {
+                return _.cloneDeep(state).map((g) => {
+                  if (g.id === group.id) {
+                    g.requests = g.requests.filter((u) => u.id !== user.id);
+                    return g;
+                  }
+                  return g;
+                });
+              }
+              return state;
+            }
+          }
+        }
+      }
+      return state;
+    }
     case ActionTypes.UNAUTHENTICATED: {
       return [];
     }
@@ -1613,6 +1688,22 @@ export function userRequests(state = [], action) {
     case response(ActionTypes.REJECT_USER_REQUEST): {
       const { username } = action.request;
       return state.filter((user) => user.username !== username);
+    }
+    case ActionTypes.REALTIME_INCOMING_EVENT: {
+      if (action.payload.event === 'event:new') {
+        const { Notifications, users } = action.payload.data;
+        for (const note of Notifications) {
+          const user = users.find((u) => u.id === note.created_user_id);
+          if (note.event_type === 'subscription_requested') {
+            if (!state.some((u) => u.id === user.id)) {
+              return [...state, user];
+            }
+          } else if (note.event_type === 'subscription_request_revoked') {
+            return state.filter((u) => u.id !== user.id);
+          }
+        }
+      }
+      return state;
     }
   }
 
@@ -1753,7 +1844,9 @@ const userActionsStatusesStatusMaps = combineReducers({
   ),
   blocking: asyncStatesMap([ActionTypes.BAN, ActionTypes.UNBAN], { getKey: getKeyBy('username') }),
   pinned: asyncStatesMap([ActionTypes.TOGGLE_PINNED_GROUP]), // by user id!
-  hiding: asyncStatesMap([ActionTypes.HIDE_BY_NAME], { getKey: getKeyBy('username') }),
+  hiding: asyncStatesMap([ActionTypes.HIDE_BY_CRITERION], {
+    getKey: getKeyBy(({ criterion: c }) => `${c.type}:${c.value}`),
+  }),
   unsubscribingFromMe: asyncStatesMap([ActionTypes.UNSUBSCRIBE_FROM_ME], {
     getKey: getKeyBy('username'),
   }),
@@ -1973,13 +2066,12 @@ export { appTokens } from './reducers/app-tokens';
 export { serverInfo, serverInfoStatus } from './reducers/server-info';
 export { extAuth } from './reducers/ext-auth.js';
 
-export function hiddenUserNames(state = [], action) {
+export function postHideCriteria(state = [], action) {
   if (ActionHelpers.isUserChangeResponse(action)) {
-    return _.get(
-      action.payload.users,
-      ['frontendPreferences', CONFIG.frontendPreferences.clientId, 'homefeed', 'hideUsers'],
-      CONFIG.frontendPreferences.defaultValues.homefeed.hideUsers,
-    );
+    const fromAction =
+      action.payload.users.frontendPreferences[CONFIG.frontendPreferences.clientId]?.homefeed || {};
+    const fromConfig = CONFIG.frontendPreferences.defaultValues.homefeed;
+    return prefsToCriteria({ ...fromConfig, ...fromAction });
   }
   return state;
 }
@@ -2090,3 +2182,38 @@ export const getCommentStatuses = asyncStatesMap(ActionTypes.GET_COMMENT_BY_NUMB
   getKey: keyFromRequestPayload((p) => `${p.postId}#${p.seqNumber}`),
   cleanOnSuccess: true,
 });
+
+export const groupBlockedUsersStatus = asyncState(
+  ActionTypes.GET_GROUP_BLOCKED_USERS,
+  setOnLocationChange(initialAsyncState),
+);
+
+const groupBlockedUsersDefaults = [];
+export function groupBlockedUsers(state = groupBlockedUsersDefaults, action) {
+  switch (action.type) {
+    case response(ActionTypes.GET_GROUP_BLOCKED_USERS):
+    case response(ActionTypes.BLOCK_USER_IN_GROUP):
+    case response(ActionTypes.UNBLOCK_USER_IN_GROUP): {
+      return action.payload.blockedUsers;
+    }
+    case LOCATION_CHANGE: {
+      return groupBlockedUsersDefaults;
+    }
+  }
+  return state;
+}
+
+export const blockUserInGroupStatus = asyncState(
+  ActionTypes.BLOCK_USER_IN_GROUP,
+  setOnLocationChange(initialAsyncState),
+);
+
+export const unblockUserInGroupStatus = asyncState(
+  ActionTypes.UNBLOCK_USER_IN_GROUP,
+  setOnLocationChange(initialAsyncState),
+);
+
+export const sendVerificationCodeStatus = asyncState(
+  ActionTypes.SEND_VERIFICATION_CODE,
+  setOnLocationChange(initialAsyncState),
+);

@@ -5,7 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.110.0] - Not released
+## [1.113] - Not released
+### Added
+- Email verification support. If verification is supported by server, the new
+  field (Verification code) is appear in Sign Up and Profile forms. When user
+  sets up or updates email address, they should receive verification code on it
+  and enter that code to the form.
+
+## [1.112] - 2022-11-25
+### Added
+- Group administrators can now block users in their managed groups. A blocked
+  user cannot post to the group, but can read and comment if the group is not
+  private.
+- Video attachments now have a player, when browser supports them
+- YouTube shorts now supported in media viewer
+
+### Fixed
+- No refresh needed to view private users and groups after subscription approved
+- No refresh needed to interact with new subscription requests
+- Hidden comment class name updated to avoid interference with Firefox builtin extension style
+
+## [1.111.2] - 2022-09-23
+### Fixed
+- Fix broken PhotoSwipe icons
+
+## [1.111.1] - 2022-09-08
+### Fixed
+- Restore Vazir font (new css-loader didn't load it in 1.111.0)
+
+## [1.111.0] - 2022-09-07
+### Added
+- Instagram Reels are supported by native previews.
+  First contribution by [Mohammad Jafari](https://github.com/MMDJafari/). Thanks!
+- It is now possible to hide posts by hashtags! Also, the underlying algorithm
+  allows to add other types of hiding criteria in the future.
+
+## [1.110.0] - 2022-06-29
 ### Fixed
 - The erroneous "Remove from" items has been removed from the post's "More" menu
 - Fixed domain-name in donate link

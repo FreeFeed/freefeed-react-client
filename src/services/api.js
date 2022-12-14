@@ -5,6 +5,12 @@ import _ from 'lodash';
 import { getDateForMemoriesRequest } from '../utils/get-date-from-short-string';
 import { userParser } from '../utils';
 import { UPDATE_SUBSCRIPTION, SUBSCRIBE, SEND_SUBSCRIPTION_REQUEST } from '../redux/action-types';
+import {
+  addCriterion,
+  criteriaToPrefs,
+  prefsToCriteria,
+  removeCriteria,
+} from '../utils/hide-criteria';
 import { getToken } from './auth';
 import { popupAsPromise } from './popup';
 
@@ -268,6 +274,7 @@ export function updateUser({
   id,
   screenName,
   email,
+  emailVerificationCode,
   isPrivate,
   isProtected,
   description,
@@ -281,7 +288,10 @@ export function updateUser({
   if (backendPrefs) {
     user.preferences = backendPrefs;
   }
-  return fetch(`${apiRoot}/v1/users/${id}`, postRequestOptions('PUT', { user }));
+  return fetch(
+    `${apiRoot}/v1/users/${id}`,
+    postRequestOptions('PUT', { user, emailVerificationCode }),
+  );
 }
 
 export function updateUserPreferences({ userId, frontendPrefs, backendPrefs }) {
@@ -551,41 +561,38 @@ export async function performExtAuth({ provider, popup, mode }) {
   return finishResp;
 }
 
-export function hideByName({
-  username, // username to hide/unhide
-  hide, // 'true' to hide or 'false' to unhide
-}) {
+export function hidePostsByCriterion({ criterion, doHide }) {
   return updateActualPreferences({
-    updateFrontendPrefs(frontendPrefs) {
-      const hiddenNames = _.get(frontendPrefs, 'homefeed.hideUsers', []);
-      if (hide === hiddenNames.includes(username)) {
-        // User is already hidden/unhidden
-        return null;
+    updateFrontendPrefs(prefs) {
+      let criteria = prefsToCriteria(prefs.homefeed);
+      if (doHide) {
+        criteria = addCriterion(criteria, criterion);
+      } else {
+        criteria = removeCriteria(criteria, criterion);
       }
-
-      return _.set(
-        frontendPrefs,
-        'homefeed.hideUsers',
-        hide ? [...hiddenNames, username] : _.without(hiddenNames, username),
-      );
+      return {
+        ...prefs,
+        homefeed: {
+          ...prefs.homefeed,
+          ...criteriaToPrefs(criteria),
+        },
+      };
     },
   });
 }
 
-export function unHideNames({ usernames: usernamesToUnhide }) {
+export function unhidePostsByCriteria({ criteria: toRemove }) {
   return updateActualPreferences({
-    updateFrontendPrefs(frontendPrefs) {
-      const hiddenNames = _.get(frontendPrefs, 'homefeed.hideUsers', []);
-      if (_.intersection(hiddenNames, usernamesToUnhide).length === 0) {
-        // Nothing to unhide
-        return null;
-      }
-
-      return _.set(
-        frontendPrefs,
-        'homefeed.hideUsers',
-        _.difference(hiddenNames, usernamesToUnhide),
-      );
+    updateFrontendPrefs(prefs) {
+      let criteria = prefsToCriteria(prefs.homefeed);
+      criteria = removeCriteria(criteria, toRemove);
+      return {
+        ...prefs,
+        homefeed: {
+          ...prefs.homefeed,
+          ...criteriaToPrefs(criteria),
+        },
+      };
     },
   });
 }
@@ -753,6 +760,18 @@ export function getCommentByNumber({ postId, seqNumber }) {
   return fetch(`${apiRoot}/v2/posts/${postId}/comments/${seqNumber}`, getRequestOptions());
 }
 
-export function getSingleComment({ commentId }) {
-  return fetch(`${apiRoot}/v1/comments/${commentId}`, getRequestOptions());
+export function getGroupBlockedUsers({ groupName }) {
+  return fetch(`${apiRoot}/v2/groups/${groupName}/blockedUsers`, getRequestOptions());
+}
+
+export function blockUserInGroup({ groupName, username }) {
+  return fetch(`${apiRoot}/v2/groups/${groupName}/block/${username}`, postRequestOptions());
+}
+
+export function unblockUserInGroup({ groupName, username }) {
+  return fetch(`${apiRoot}/v2/groups/${groupName}/unblock/${username}`, postRequestOptions());
+}
+
+export function sendVerificationCode({ email, mode }) {
+  return fetch(`${apiRoot}/v2/users/verifyEmail`, postRequestOptions('POST', { email, mode }));
 }

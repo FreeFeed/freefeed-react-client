@@ -184,8 +184,7 @@ const ExtAuthSignIn = memo(function ExtAuthSignIn() {
       {result.status === 'user-exists' && (
         <div className="alert alert-warning" role="alert">
           <p>
-            There is a {CONFIG.siteTitle} account with the email address{' '}
-            <strong>{result.profile.email}</strong>, but your account{' '}
+            There is a {CONFIG.siteTitle} account with this email address, but your account{' '}
             <strong>
               {providerTitle(resultProfileProvider, { withText: false })} {result.profile.name}
             </strong>{' '}

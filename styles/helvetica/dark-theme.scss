@@ -425,27 +425,4 @@ body,
       color: initial !important;
     }
   }
-  
-  .bottom-navbar {
-    background-color: #202020;
-
-    a:link {
-      color: $link-color-dim;
-    }
-
-    a:visited {
-      color: $link-color-dim;
-    }
-
-    a:hover {
-      color: $link-color-dim;
-    }
-  }
-  
-  .subscriptions-request-alert {
-    border: 1px solid $text-color;
-    color: $text-color;
-    background-color: $bg-color-lighter;
-    ;
-  }
 }

@@ -18,7 +18,6 @@ $post-line-height: rem(20px);
   border-bottom: 1px solid #eee;
   line-height: rem(19px);
   position: relative;
-  min-height: 80px;
 
   --bg-color: white;
 
@@ -40,7 +39,6 @@ $post-line-height: rem(20px);
 
   .post-userpic {
     float: left;
-
     @media (max-width: 767px) {
       margin: 0 rem(10px) 3px 0;
     }
@@ -59,17 +57,10 @@ $post-line-height: rem(20px);
     .post-recipient {
       font-weight: 500;
     }
-
-    .notif-body {
-      font-size: rem(14px);
-      margin-top: rem(10px);
-      position: relative;
-    }
   }
 
   .post-body {
     margin-left: 63px;
-
     @media (max-width: 767px) {
       margin-left: 0;
     }
@@ -81,7 +72,6 @@ $post-line-height: rem(20px);
     .post-text {
       margin-bottom: rem(8px);
       word-wrap: break-word;
-
       @media (max-width: 767px) {
         min-height: rem(31px);
       }
@@ -150,10 +140,6 @@ $post-line-height: rem(20px);
       }
     }
   }
-}
-
-.notif-time-date {
-  margin-top: rem(10px);
 }
 
 .post-footer-icon {
@@ -404,7 +390,6 @@ $post-line-height: rem(20px);
 
   .post-body {
     margin-left: 88px;
-
     @media (max-width: 767px) {
       margin-left: 0;
     }

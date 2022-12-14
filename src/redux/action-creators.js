@@ -447,16 +447,17 @@ export function signUp(signUpData) {
   };
 }
 
-export function updateUser(
+export function updateUser({
   id,
   screenName,
   email,
+  emailVerificationCode,
   isPrivate,
   isProtected,
   description,
   frontendPrefs,
   backendPrefs,
-) {
+}) {
   return {
     type: ActionTypes.UPDATE_USER,
     apiRequest: Api.updateUser,
@@ -464,6 +465,7 @@ export function updateUser(
       id,
       screenName,
       email,
+      emailVerificationCode,
       isPrivate,
       isProtected,
       description,
@@ -999,19 +1001,19 @@ export function signInViaExternalProvider(provider, popup) {
   };
 }
 
-export function hideByName(username, postId, hide) {
+export function hidePostsByCriterion(criterion, postId, doHide) {
   return {
-    type: ActionTypes.HIDE_BY_NAME,
-    apiRequest: Api.hideByName,
-    payload: { username, postId, hide },
+    type: ActionTypes.HIDE_BY_CRITERION,
+    apiRequest: Api.hidePostsByCriterion,
+    payload: { postId, criterion, doHide },
   };
 }
 
-export function unhideNames(usernames, postId) {
+export function unhidePostsByCriteria(criteria, postId) {
   return {
-    type: ActionTypes.UNHIDE_NAMES,
-    apiRequest: Api.unHideNames,
-    payload: { usernames, postId },
+    type: ActionTypes.UNHIDE_CRITERIA,
+    apiRequest: Api.unhidePostsByCriteria,
+    payload: { postId, criteria },
   };
 }
 
@@ -1217,20 +1219,35 @@ export function getCommentByNumber(postId, seqNumber) {
   };
 }
 
-export function getSingleComment(commentId) {
+export function getGroupBlockedUsers(groupName) {
   return {
-    type: ActionTypes.GET_SINGLE_COMMENT,
-    apiRequest: Api.getSingleComment,
-    nonAuthRequest: true,
-    payload: { commentId },
+    type: ActionTypes.GET_GROUP_BLOCKED_USERS,
+    apiRequest: Api.getGroupBlockedUsers,
+    payload: { groupName },
   };
 }
 
-export function getSinglePostBody(postId) {
+export function blockUserInGroup(groupName, username) {
   return {
-    type: ActionTypes.GET_SINGLE_POST_BODY,
-    apiRequest: Api.getPost,
+    type: ActionTypes.BLOCK_USER_IN_GROUP,
+    apiRequest: Api.blockUserInGroup,
+    payload: { groupName, username },
+  };
+}
+
+export function unblockUserInGroup(groupName, username) {
+  return {
+    type: ActionTypes.UNBLOCK_USER_IN_GROUP,
+    apiRequest: Api.unblockUserInGroup,
+    payload: { groupName, username },
+  };
+}
+
+export function sendVerificationCode(email, mode) {
+  return {
+    type: ActionTypes.SEND_VERIFICATION_CODE,
+    apiRequest: Api.sendVerificationCode,
     nonAuthRequest: true,
-    payload: { postId },
+    payload: { email, mode },
   };
 }
