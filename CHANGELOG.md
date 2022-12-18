@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   sets up or updates email address, they should receive verification code on it
   and enter that code to the form.
 
+### Changed
+- "Everything", "Search" and "Best of" pages are not available for
+  non-authorized users.
+
 ## [1.112] - 2022-11-25
 ### Added
 - Group administrators can now block users in their managed groups. A blocked

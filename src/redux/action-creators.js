@@ -779,7 +779,6 @@ export function getSearch(search, offset) {
   return {
     type: ActionTypes.GET_SEARCH,
     apiRequest: Api.getSearch,
-    nonAuthRequest: true,
     payload: { search, offset },
   };
 }
@@ -788,7 +787,6 @@ export function getBestOf(offset) {
   return {
     type: ActionTypes.GET_BEST_OF,
     apiRequest: Api.getBestOf,
-    nonAuthRequest: true,
     payload: { offset },
   };
 }
@@ -797,7 +795,6 @@ export function getEverything(offset) {
   return {
     type: ActionTypes.GET_EVERYTHING,
     apiRequest: Api.getEverything,
-    nonAuthRequest: true,
     payload: { offset },
   };
 }
