@@ -1,4 +1,4 @@
-FROM node:14 as builder
+FROM node:18 as builder
 
 RUN apt-get update && \
     apt-get install -y \
