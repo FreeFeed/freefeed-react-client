@@ -134,7 +134,7 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
     >
       {searchExpanded ? (
         <div className={styles.searchExpandedCont}>
-          {searchForm}
+          {authenticated && searchForm}
           {sidebarButton}
         </div>
       ) : (
@@ -150,9 +150,9 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
             )}
           </h1>
           <div className={styles.activeElements}>
-            {!collapsibleSearchForm && searchForm}
+            {authenticated && !collapsibleSearchForm && searchForm}
             <span className={styles.buttons}>
-              {collapsibleSearchForm && (
+              {authenticated && collapsibleSearchForm && (
                 <button
                   type="button"
                   aria-label="Open search form"
