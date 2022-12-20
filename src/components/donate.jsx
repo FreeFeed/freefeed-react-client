@@ -7,7 +7,7 @@ import { useDonationStatus } from './hooks/donation-status';
 import { useBool } from './hooks/bool';
 import { ButtonLink } from './button-link';
 import { Icon } from './fontawesome-icons';
-import { faLiberaPay, faYooMoney } from './fontawesome-custom-icons';
+import { faLiberaPay, faYooMoney, faBoosty } from './fontawesome-custom-icons';
 
 const cfg = CONFIG.donations;
 
@@ -184,6 +184,25 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
           Legal address: <code>Harjumaa, Tallinn linn, Mingi tn 5-25/26, 13424</code>
         </p>
 
+        {cfg.paymentMethods.boostyProject && (
+          <>
+            <h4>The Russian way (~12% commission fee)</h4>
+            <form
+              method="get"
+              action={`https://boosty.to/${cfg.paymentMethods.boostyProject}`}
+              target="_blank"
+            >
+              <p>
+                You can make a recurrent or one-time donation with your russian card:
+                <br />
+                <button type="submit">
+                  <Icon icon={faBoosty} /> Support with Boosty
+                </button>
+              </p>
+            </form>
+          </>
+        )}
+
         {cfg.paymentMethods.yasobeRuProject && (
           <>
             <h4>The Russian way (2% commission fee)</h4>
@@ -280,7 +299,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
 
         {cfg.paymentMethods.liberaPayProject && (
           <>
-            <h4>Простой способ (принимает все карты, комиссии ~7%)</h4>
+            <h4>Простой способ вне РФ (принимает все карты, кроме российских, комиссии ~7%)</h4>
 
             <form
               method="get"
@@ -345,7 +364,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
           </>
         )}
 
-        <h4>Прямой платеж (комиссии зависят от вашего банка)</h4>
+        <h4>Прямой платеж вне РФ (комиссии зависят от вашего банка)</h4>
         <p>
           Вы можете настроить регулярные ежемесячные платежи в вашем интернет-банке.
           <br />
@@ -359,6 +378,26 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
           <br />
           Адрес получателя: <code>Harjumaa, Tallinn linn, Mingi tn 5-25/26, 13424</code>
         </p>
+
+        {cfg.paymentMethods.boostyProject && (
+          <>
+            <h4>Boosty - подходит для РФ (комиссия ~12%)</h4>
+            <form
+              method="get"
+              action={`https://boosty.to/${cfg.paymentMethods.boostyProject}`}
+              target="_blank"
+            >
+              <p>
+                Вы можете сделать регулярный или единоразовый платеж с помощью русской платежной
+                карточки:
+                <br />
+                <button type="submit">
+                  <Icon icon={faBoosty} /> Поддержать на Boosty
+                </button>
+              </p>
+            </form>
+          </>
+        )}
 
         {cfg.paymentMethods.yasobeRuProject && (
           <>
