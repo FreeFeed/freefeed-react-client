@@ -388,7 +388,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
               target="_blank"
             >
               <p>
-                Вы можете сделать регулярный или единоразовый платеж с помощью русской платежной
+                Вы можете сделать регулярный или единоразовый платеж с помощью российской платежной
                 карточки:
                 <br />
                 <button type="submit">
