@@ -11,10 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   field (Verification code) is appear in Sign Up and Profile forms. When user
   sets up or updates email address, they should receive verification code on it
   and enter that code to the form.
+- NodeJS 18.x is supported now
 
 ### Changed
 - "Everything", "Search" and "Best of" pages are not available for
   non-authorized users.
+- Updated texts about donations to FreeFeed MTÜ
 
 ## [1.112] - 2022-11-25
 ### Added
