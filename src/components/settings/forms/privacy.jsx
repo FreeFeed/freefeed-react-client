@@ -147,9 +147,14 @@ function onSubmit(id, dispatch) {
   return (values) => {
     const { isPrivate, isProtected } = privacyStringToFlags(values.privacy);
     dispatch(
-      updateUser(id, undefined, undefined, isPrivate, isProtected, undefined, undefined, {
-        acceptDirectsFrom: values.acceptDirectsFrom,
-        sanitizeMediaMetadata: values.sanitizeMediaMetadata,
+      updateUser({
+        id,
+        isPrivate,
+        isProtected,
+        backendPrefs: {
+          acceptDirectsFrom: values.acceptDirectsFrom,
+          sanitizeMediaMetadata: values.sanitizeMediaMetadata,
+        },
       }),
     );
   };

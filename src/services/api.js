@@ -274,6 +274,7 @@ export function updateUser({
   id,
   screenName,
   email,
+  emailVerificationCode,
   isPrivate,
   isProtected,
   description,
@@ -287,7 +288,10 @@ export function updateUser({
   if (backendPrefs) {
     user.preferences = backendPrefs;
   }
-  return fetch(`${apiRoot}/v1/users/${id}`, postRequestOptions('PUT', { user }));
+  return fetch(
+    `${apiRoot}/v1/users/${id}`,
+    postRequestOptions('PUT', { user, emailVerificationCode }),
+  );
 }
 
 export function updateUserPreferences({ userId, frontendPrefs, backendPrefs }) {
@@ -766,4 +770,8 @@ export function blockUserInGroup({ groupName, username }) {
 
 export function unblockUserInGroup({ groupName, username }) {
   return fetch(`${apiRoot}/v2/groups/${groupName}/unblock/${username}`, postRequestOptions());
+}
+
+export function sendVerificationCode({ email, mode }) {
+  return fetch(`${apiRoot}/v2/users/verifyEmail`, postRequestOptions('POST', { email, mode }));
 }

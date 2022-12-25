@@ -38,7 +38,7 @@ class RuleGenerator {
                 {
                   modules: false,
                   useBuiltIns: 'entry',
-                  corejs: '3.25',
+                  corejs: '3.26',
                 },
               ],
             ]),

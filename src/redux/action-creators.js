@@ -447,16 +447,17 @@ export function signUp(signUpData) {
   };
 }
 
-export function updateUser(
+export function updateUser({
   id,
   screenName,
   email,
+  emailVerificationCode,
   isPrivate,
   isProtected,
   description,
   frontendPrefs,
   backendPrefs,
-) {
+}) {
   return {
     type: ActionTypes.UPDATE_USER,
     apiRequest: Api.updateUser,
@@ -464,6 +465,7 @@ export function updateUser(
       id,
       screenName,
       email,
+      emailVerificationCode,
       isPrivate,
       isProtected,
       description,
@@ -777,7 +779,6 @@ export function getSearch(search, offset) {
   return {
     type: ActionTypes.GET_SEARCH,
     apiRequest: Api.getSearch,
-    nonAuthRequest: true,
     payload: { search, offset },
   };
 }
@@ -786,7 +787,6 @@ export function getBestOf(offset) {
   return {
     type: ActionTypes.GET_BEST_OF,
     apiRequest: Api.getBestOf,
-    nonAuthRequest: true,
     payload: { offset },
   };
 }
@@ -795,7 +795,6 @@ export function getEverything(offset) {
   return {
     type: ActionTypes.GET_EVERYTHING,
     apiRequest: Api.getEverything,
-    nonAuthRequest: true,
     payload: { offset },
   };
 }
@@ -1238,5 +1237,14 @@ export function unblockUserInGroup(groupName, username) {
     type: ActionTypes.UNBLOCK_USER_IN_GROUP,
     apiRequest: Api.unblockUserInGroup,
     payload: { groupName, username },
+  };
+}
+
+export function sendVerificationCode(email, mode) {
+  return {
+    type: ActionTypes.SEND_VERIFICATION_CODE,
+    apiRequest: Api.sendVerificationCode,
+    nonAuthRequest: true,
+    payload: { email, mode },
   };
 }

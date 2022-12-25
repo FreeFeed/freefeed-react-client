@@ -10,6 +10,8 @@ import { signUp } from '../redux/action-creators';
 import { FieldsetWrapper } from './fieldset-wrapper';
 import { providerTitle, useExtAuthProviders } from './ext-auth-helpers';
 import { Throbber } from './throbber';
+import { useServerInfo } from './hooks/server-info';
+import { EmailVerificationSubform } from './email-verification-subform';
 
 const captchaKey = CONFIG.captcha.siteKey;
 
@@ -17,6 +19,7 @@ const initialValues = (extProfile) => ({
   username: extProfile.username || '',
   screenname: extProfile.name || '',
   email: extProfile.email || '',
+  emailCode: '',
   password: '',
   captcha: null,
   subscribe: true,
@@ -25,7 +28,12 @@ const initialValues = (extProfile) => ({
 });
 
 const validate =
-  ({ withExtProfile = true, withCaptcha = true } = {}) =>
+  ({
+    withExtProfile = true,
+    withCaptcha = true,
+    emailVerificationEnabled = false,
+    initialEmail = '',
+  } = {}) =>
   (values) => {
     // Use '' to mark field as erroneous but not set a error message
     const shouldBe = (test, message = '') => (test ? undefined : message);
@@ -36,7 +44,12 @@ const validate =
       errors.username = 'Reserved username. Please select another one.';
     }
     errors.screenname = shouldBe(/^.{3,25}$/i.test(values.screenname.trim()));
-    errors.email = shouldBe(isEmail(values.email.trim()));
+    errors.email = shouldBe(isEmail(values.email.trim()), 'Invalid email');
+
+    if (emailVerificationEnabled && values.email.trim() !== initialEmail.trim()) {
+      errors.emailCode = shouldBe(values.emailCode.replace(/\W+/g, '').length >= 6, 'Invalid code');
+    }
+
     errors.password = shouldBe(
       (withExtProfile && values.connectExtProfile) ||
         values.password.trim().length >= CONFIG.minPasswordLength,
@@ -54,6 +67,7 @@ const onSubmit =
       screenName: values.screenname.trim(),
       email: values.email.trim(),
       isProtected: Boolean(CONFIG.newUsersProtected),
+      emailVerificationCode: values.emailCode,
     };
 
     if (externalProfileKey && values.connectExtProfile) {
@@ -91,6 +105,9 @@ export default memo(function SignupForm({ invitationId = null, lang = 'en' }) {
   });
   const [providers] = useExtAuthProviders();
 
+  const [serverInfo, serverInfoStatus] = useServerInfo();
+  const emailVerificationEnabled = serverInfoStatus.success && serverInfo.emailVerificationEnabled;
+
   const extProfileProvider = useMemo(
     () => providers.find((p) => p.id === extProfile?.provider),
     [extProfile, providers],
@@ -105,17 +122,23 @@ export default memo(function SignupForm({ invitationId = null, lang = 'en' }) {
           withCaptcha: !!captchaKey,
           externalProfileKey: extProfile && extProfile.key,
           profilePictureURL: extProfile && extProfile.pictureURL,
+          initialEmail: extProfile?.email || '',
         }),
-        validate: validate({ withExtProfile: !!extProfile, withCaptcha: !!captchaKey }),
+        validate: validate({
+          withExtProfile: !!extProfile,
+          withCaptcha: !!captchaKey,
+          emailVerificationEnabled,
+        }),
         initialValues: initialValues(extProfile || {}),
       }),
-      [dispatch, extProfile, invitationId],
+      [dispatch, emailVerificationEnabled, extProfile, invitationId],
     ),
   );
 
   const username = useField('username', form.form);
   const screenname = useField('screenname', form.form);
   const email = useField('email', form.form);
+  const emailCode = useField('emailCode', form.form);
   const password = useField('password', form.form);
   const captcha = useField('captcha', form.form);
   const subscribe = useField('subscribe', form.form);
@@ -206,6 +229,8 @@ export default memo(function SignupForm({ invitationId = null, lang = 'en' }) {
             {...email.input}
           />
         </div>
+
+        <EmailVerificationSubform emailField={email} codeField={emailCode} create />
 
         {showPassword && (
           <div className={groupErrClass(password)}>

@@ -2212,3 +2212,8 @@ export const unblockUserInGroupStatus = asyncState(
   ActionTypes.UNBLOCK_USER_IN_GROUP,
   setOnLocationChange(initialAsyncState),
 );
+
+export const sendVerificationCodeStatus = asyncState(
+  ActionTypes.SEND_VERIFICATION_CODE,
+  setOnLocationChange(initialAsyncState),
+);
