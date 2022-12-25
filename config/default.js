@@ -175,6 +175,8 @@ export default {
       liberaPayProject: null,
       // yasobe.ru project name
       yasobeRuProject: null,
+      // boosty project name
+      boostyProject: null,
     },
   },
 };

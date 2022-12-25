@@ -10,6 +10,7 @@ import { useSearchQuery } from './hooks/search-query';
 import { useBool } from './hooks/bool';
 import { ButtonLink } from './button-link';
 import { Icon } from './fontawesome-icons';
+import { SignInLink } from './sign-in-link';
 
 const SearchFormAdvanced = lazyComponent(
   () => import('./search-form-advanced').then((m) => ({ default: m.SearchFormAdvanced })),
@@ -23,11 +24,27 @@ function FeedHandler(props) {
   const queryString = useSearchQuery();
   const pageIsLoading = useSelector((state) => state.routeLoadingState);
   const [advFormVisible, setAdvFormVisible] = useBool(!queryString);
+  const authenticated = useSelector((state) => state.authenticated);
 
   useEffect(
     () => void (pageIsLoading && setAdvFormVisible(false)),
     [pageIsLoading, setAdvFormVisible],
   );
+
+  if (!authenticated) {
+    return (
+      <div className="box">
+        <div className="box-header-timeline" role="heading">
+          Search
+        </div>
+        <div className="box-body" style={{ marginTop: '1em' }}>
+          <p>
+            Please <SignInLink>Sign In</SignInLink> to use the search.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="box">

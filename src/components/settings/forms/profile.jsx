@@ -8,26 +8,32 @@ import { Throbber } from '../../throbber';
 import { updateUser } from '../../../redux/action-creators';
 import { PreventPageLeaving } from '../../prevent-page-leaving';
 import { shouldBe, errorMessage, groupErrClass } from '../../form-utils';
+import { useServerInfo } from '../../hooks/server-info';
+import { EmailVerificationSubform } from '../../email-verification-subform';
 import styles from './forms.module.scss';
 
 export default function ProfileForm() {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user);
   const formStatus = useSelector((state) => state.settingsForms.updateProfileStatus);
+  const [serverInfo, serverInfoStatus] = useServerInfo();
+
+  const emailVerificationEnabled = serverInfoStatus.success && serverInfo.emailVerificationEnabled;
 
   const form = useForm(
     useMemo(
       () => ({
-        validate,
+        validate: validate({ emailVerificationEnabled, initialEmail: userData.email }),
         initialValues: initialValues(userData),
         onSubmit: onSubmit(userData.id, dispatch),
       }),
-      [dispatch, userData],
+      [dispatch, emailVerificationEnabled, userData],
     ),
   );
 
   const screenName = useField('screenName', form.form);
   const email = useField('email', form.form);
+  const emailCode = useField('emailCode', form.form);
   const description = useField('description', form.form);
 
   return (
@@ -58,6 +64,8 @@ export default function ProfileForm() {
         />
         {errorMessage(email)}
       </div>
+
+      <EmailVerificationSubform emailField={email} codeField={emailCode} />
 
       <div className={groupErrClass(description)}>
         <label htmlFor="description-input">About you</label>
@@ -97,37 +105,44 @@ function initialValues(userData) {
   return {
     screenName: userData.screenName || '',
     email: userData.email || '',
+    emailCode: '',
     description: userData.description || '',
   };
 }
 
-function validate(values) {
-  const errors = {};
-  errors.screenName = shouldBe(
-    /^.{3,25}$/i.test(values.screenName.trim()),
-    <>
-      {values.screenName.trim()} is not a valid display name.
-      <br /> The length should be from 3 to 25 characters.
-    </>,
-  );
-  errors.email = shouldBe(
-    values.email.trim() === '' || isEmail(values.email.trim()),
-    'Invalid email',
-  );
-  return errors;
+function validate({ emailVerificationEnabled = false, initialEmail } = {}) {
+  return (values) => {
+    const errors = {};
+    errors.screenName = shouldBe(
+      /^.{3,25}$/i.test(values.screenName.trim()),
+      <>
+        {values.screenName.trim()} is not a valid display name.
+        <br /> The length should be from 3 to 25 characters.
+      </>,
+    );
+    errors.email = shouldBe(
+      values.email.trim() === '' || isEmail(values.email.trim()),
+      'Invalid email',
+    );
+
+    if (emailVerificationEnabled && values.email.trim() !== initialEmail.trim()) {
+      errors.emailCode = shouldBe(values.emailCode.replace(/\W+/g, '').length >= 6, 'Invalid code');
+    }
+
+    return errors;
+  };
 }
 
 function onSubmit(id, dispatch) {
   return (values) => {
     dispatch(
-      updateUser(
+      updateUser({
         id,
-        values.screenName.trim(),
-        values.email.trim(),
-        undefined,
-        undefined,
-        values.description.trim(), // frontendPreferences should not updates
-      ),
+        screenName: values.screenName.trim(),
+        email: values.email.trim(),
+        emailVerificationCode: values.emailCode,
+        description: values.description.trim(),
+      }),
     );
   };
 }
