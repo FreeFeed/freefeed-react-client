@@ -471,6 +471,10 @@ export function archiveStartRestoration(params) {
   return fetch(`${apiRoot}/v2/archives/restoration`, postRequestOptions('POST', params));
 }
 
+export function getInvitationsInfo() {
+  return fetch(`${apiRoot}/v2/invitations/info`, getRequestOptions());
+}
+
 export function createFreefeedInvitation(params) {
   return fetch(`${apiRoot}/v2/invitations`, postRequestOptions('POST', params));
 }

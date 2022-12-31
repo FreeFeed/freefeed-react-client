@@ -66,6 +66,7 @@ const manageSubscribersActions = (next) => {
 const inviteActions = () => {
   const { username } = store.getState().user;
   store.dispatch(ActionCreators.subscriptions(username));
+  store.dispatch(ActionCreators.getInvitationsInfo());
 };
 
 // needed to display mutual friends

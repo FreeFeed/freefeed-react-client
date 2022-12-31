@@ -2217,3 +2217,15 @@ export const sendVerificationCodeStatus = asyncState(
   ActionTypes.SEND_VERIFICATION_CODE,
   setOnLocationChange(initialAsyncState),
 );
+
+export const invitationsInfoStatus = asyncState(
+  ActionTypes.GET_INVITATIONS_INFO,
+  setOnLocationChange(initialAsyncState),
+);
+
+export const invitationsInfo = fromResponse(
+  ActionTypes.GET_INVITATIONS_INFO,
+  (action) => action.payload,
+  null,
+  setOnLocationChange(initialAsyncState),
+);
