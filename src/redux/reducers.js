@@ -142,20 +142,16 @@ export function resetPassForm(state = defaultPassFormState, action) {
   return state;
 }
 
-export function currentInvitation(state = DEFAULT_FORM_STATE, action) {
-  switch (action.type) {
-    case request(ActionTypes.GET_INVITATION): {
-      return { ...state, loading: true };
-    }
-    case response(ActionTypes.GET_INVITATION): {
-      return { ...state, loading: false, success: true, invitation: action.payload.invitation };
-    }
-    case fail(ActionTypes.GET_INVITATION): {
-      return { ...state, loading: false, error: true, errorText: action.payload.err };
-    }
+export const currentInvitationStatus = asyncState(ActionTypes.GET_INVITATION, (state, action) => {
+  if (action.type === response(ActionTypes.SIGN_UP)) {
+    return initialAsyncState;
   }
   return state;
-}
+});
+export const currentInvitation = fromResponse(
+  ActionTypes.GET_INVITATION,
+  (action) => action.payload.invitation,
+);
 
 const CREATE_POST_ERROR = 'Something went wrong while creating the post...';
 

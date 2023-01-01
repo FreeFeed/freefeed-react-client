@@ -294,7 +294,6 @@ function App() {
           name="signupByInvitation"
           path="/invited/:invitationId"
           component={SignupByInvitation}
-          onEnter={boundRouteActions('signupByInvitation')}
         />
         <Route
           name="userFeed"
