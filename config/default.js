@@ -119,6 +119,10 @@ export default {
     emailFormIframeSrc: null,
   },
 
+  registrationsByInvite: {
+    formIframeSrc: null,
+  },
+
   analytics: {
     google: null,
   },
