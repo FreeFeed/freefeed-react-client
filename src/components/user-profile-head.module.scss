@@ -10,6 +10,7 @@ $actions-padding: 0.75em;
   display: grid;
   grid-template-columns: min-content 1fr min-content;
   grid-template-rows: min-content 1fr;
+  /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
   grid-template-areas:
     'avatar info stats'
     'avatar description stats'
@@ -147,6 +148,7 @@ $actions-padding: 0.75em;
     }
 
     .registeredOn,
+    .invitedBy,
     .moreDetails {
       text-transform: lowercase;
     }
@@ -155,10 +157,8 @@ $actions-padding: 0.75em;
 
 .actions {
   grid-area: actions;
-
   display: flex;
   justify-content: space-between;
-
   margin-top: 1em;
   padding-top: $actions-padding;
   border-top: 1px solid var(--separator-color);
@@ -176,7 +176,6 @@ $actions-padding: 0.75em;
   list-style-type: none;
   margin: 0;
   padding: 0;
-
   overflow: hidden;
   display: flex;
   flex-wrap: wrap;
@@ -220,6 +219,7 @@ $actions-padding: 0.75em;
     &::before {
       content: none;
     }
+
     &::after {
       content: '-';
     }

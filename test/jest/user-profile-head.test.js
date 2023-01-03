@@ -67,6 +67,7 @@ const defaultState = {
     unsubscribingFromMe: {},
   },
   updateUsersSubscriptionStates: {},
+  invitedByMap: {},
 };
 
 const renderUserProfileHead = (props = {}) => {

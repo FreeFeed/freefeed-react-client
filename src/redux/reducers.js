@@ -2225,3 +2225,13 @@ export const invitationsInfo = fromResponse(
   null,
   setOnLocationChange(initialAsyncState),
 );
+
+const invitedByInitial = {};
+export function invitedByMap(state = invitedByInitial, action) {
+  if (action.type === response(ActionTypes.GET_USER_INFO)) {
+    return { ...state, [action.request.username]: action.payload.invitedBy };
+  } else if (action.type === LOCATION_CHANGE) {
+    return invitedByInitial;
+  }
+  return state;
+}
