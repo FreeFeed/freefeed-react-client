@@ -912,6 +912,10 @@ export function users(state = {}, action) {
     case response(ActionTypes.CREATE_GROUP): {
       return mergeAccounts([action.payload.groups]);
     }
+    case response(ActionTypes.DISABLE_BANS_IN_GROUP):
+    case response(ActionTypes.ENABLE_BANS_IN_GROUP): {
+      return mergeAccounts([action.payload.users, ...action.payload.admins], { update: true });
+    }
     case response(ActionTypes.UPDATE_GROUP): {
       return mergeAccounts([action.payload.groups], { update: true });
     }
