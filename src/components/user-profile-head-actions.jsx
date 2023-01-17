@@ -7,6 +7,7 @@ import { ButtonLink } from './button-link';
 import { Icon } from './fontawesome-icons';
 
 import styles from './user-profile-head.module.scss';
+import { BanDialog } from './ban-dialog';
 
 // eslint-disable-next-line complexity
 export function UserProfileHeadActions({
@@ -112,7 +113,13 @@ export function UserProfileHeadActions({
             )}
             {user.type === 'user' && !inSubscriptions && (
               <li>
-                <ActionLink {...toggleBanned}>Block user</ActionLink>
+                <BanDialog user={user}>
+                  {(onClick) => (
+                    <ActionLink onClick={onClick} status={toggleBanned.status}>
+                      Block user
+                    </ActionLink>
+                  )}
+                </BanDialog>
               </li>
             )}
           </ul>
