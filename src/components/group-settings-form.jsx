@@ -4,12 +4,12 @@ import { useField, useForm } from 'react-final-form-hooks';
 import { useSelector, useDispatch } from 'react-redux';
 import { find } from 'lodash';
 
-import { updateGroup } from '../redux/action-creators';
-import { initialAsyncState } from '../redux/async-helpers';
+import { disableBansInGroup, enableBansInGroup, updateGroup } from '../redux/action-creators';
+import { doSequence, initialAsyncState } from '../redux/async-helpers';
 import { PreventPageLeaving } from './prevent-page-leaving';
 import { Throbber } from './throbber';
 import { privacyFlagsToString, privacyStringToFlags } from './settings/forms/privacy';
-import { shouldBe, errorMessage, groupErrClass, RadioInput } from './form-utils';
+import { shouldBe, errorMessage, groupErrClass, RadioInput, CheckboxInput } from './form-utils';
 import styles from './settings/forms/forms.module.scss';
 import settingsStyles from './settings/settings.module.scss';
 
@@ -29,7 +29,7 @@ export default function GroupSettingsForm({ username }) {
       () => ({
         validate,
         initialValues: initialValues(group),
-        onSubmit: onSubmit(group.id, dispatch),
+        onSubmit: onSubmit(group, dispatch),
       }),
       [dispatch, group],
     ),
@@ -39,6 +39,7 @@ export default function GroupSettingsForm({ username }) {
   const description = useField('description', form.form);
   const privacy = useField('privacy', form.form);
   const restrictness = useField('restrictness', form.form);
+  const showBanned = useField('showBanned', form.form);
 
   const showPrivacyWarning = useMemo(
     () => privacy.input.value !== PRIVATE && group.isPrivate === '1',
@@ -124,6 +125,21 @@ export default function GroupSettingsForm({ username }) {
             </label>
           </div>
         </div>
+
+        <div className="form-group">
+          <p>
+            <strong>Blocked users</strong>
+          </p>
+          <div className="checkbox">
+            <label>
+              <CheckboxInput field={showBanned} />
+              Show posts from users you have blocked and who have blocked you
+            </label>
+            <span className="help-block">
+              This setting works only for you, not for the other members of the group.
+            </span>
+          </div>
+        </div>
       </section>
 
       <div className="form-group">
@@ -156,6 +172,7 @@ function initialValues(group) {
     description: group.description || '',
     privacy: privacyFlagsToString(group),
     restrictness: group.isRestricted,
+    showBanned: group.youCan.includes('undisable_bans'),
   };
 }
 
@@ -171,15 +188,21 @@ function validate(values) {
   return errors;
 }
 
-function onSubmit(id, dispatch) {
+function onSubmit(group, dispatch) {
   return (values) => {
-    dispatch(
-      updateGroup(id, {
-        screenName: values.screenName.trim(),
-        description: values.description.trim(),
-        ...privacyStringToFlags(values.privacy),
-        isRestricted: values.restrictness,
-      }),
+    const updateBans = values.showBanned ? disableBansInGroup : enableBansInGroup;
+
+    doSequence(dispatch)(
+      (dispatch) =>
+        dispatch(
+          updateGroup(group.id, {
+            screenName: values.screenName.trim(),
+            description: values.description.trim(),
+            ...privacyStringToFlags(values.privacy),
+            isRestricted: values.restrictness,
+          }),
+        ),
+      (dispatch) => dispatch(updateBans(group.username)),
     );
   };
 }
