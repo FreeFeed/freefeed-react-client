@@ -989,3 +989,32 @@ export const appVersionMiddleware = (store) => {
 
   return (next) => (action) => next(action);
 };
+
+export const reloadFeedMiddleware = (store) => (next) => (action) => {
+  const res = next(action);
+  const { users, feedViewState } = store.getState();
+  if (
+    // If we on the 'Posts' 'page
+    feedViewState.feedRequestType === ActionTypes.GET_USER_FEED &&
+    feedViewState.timeline.name === 'Posts'
+  ) {
+    const feedOwner = users[feedViewState.timeline.user];
+    if (
+      // Enable/disable bans in group
+      (isResponseOf(action, ActionTypes.DISABLE_BANS_IN_GROUP, ActionTypes.ENABLE_BANS_IN_GROUP) &&
+        feedOwner.username === action.request.groupName) ||
+      // Ban/unban user
+      (isResponseOf(action, ActionTypes.BAN, ActionTypes.UNBAN) &&
+        feedOwner.username === action.request.username)
+    ) {
+      // Re-request this page
+      browserHistory.push(`/${feedOwner.username}`);
+    }
+  }
+
+  return res;
+};
+
+function isResponseOf(action, ...baseTypes) {
+  return baseTypes.map(response).includes(action.type);
+}
