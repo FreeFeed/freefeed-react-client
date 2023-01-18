@@ -8,6 +8,7 @@ import { Icon } from './fontawesome-icons';
 
 import styles from './user-profile-head.module.scss';
 import { BanDialog } from './ban-dialog';
+import { DisableBansDialog } from './disable-bans-dialog';
 
 // eslint-disable-next-line complexity
 export function UserProfileHeadActions({
@@ -28,6 +29,7 @@ export function UserProfileHeadActions({
   togglePinned,
   isPinned,
   toggleHidden,
+  toggleShowBans,
   isHidden,
 }) {
   return (
@@ -120,6 +122,22 @@ export function UserProfileHeadActions({
                     </ActionLink>
                   )}
                 </BanDialog>
+              </li>
+            )}
+            {user.youCan.includes('disable_bans') && (
+              <li>
+                <DisableBansDialog group={user} isAdmin={isCurrentUserAdmin}>
+                  {(onClick) => (
+                    <ActionLink {...toggleShowBans} onClick={onClick}>
+                      Disable blocking in group
+                    </ActionLink>
+                  )}
+                </DisableBansDialog>
+              </li>
+            )}
+            {user.youCan.includes('undisable_bans') && (
+              <li>
+                <ActionLink {...toggleShowBans}>Enable blocking in group</ActionLink>
               </li>
             )}
           </ul>

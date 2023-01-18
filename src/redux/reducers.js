@@ -1842,7 +1842,15 @@ const userActionsStatusesStatusMaps = combineReducers({
     ],
     { getKey: getKeyBy('username') },
   ),
-  blocking: asyncStatesMap([ActionTypes.BAN, ActionTypes.UNBAN], { getKey: getKeyBy('username') }),
+  blocking: asyncStatesMap(
+    [
+      ActionTypes.BAN,
+      ActionTypes.UNBAN,
+      ActionTypes.DISABLE_BANS_IN_GROUP,
+      ActionTypes.ENABLE_BANS_IN_GROUP,
+    ],
+    { getKey: getKeyBy('username') },
+  ),
   pinned: asyncStatesMap([ActionTypes.TOGGLE_PINNED_GROUP]), // by user id!
   hiding: asyncStatesMap([ActionTypes.HIDE_BY_CRITERION], {
     getKey: getKeyBy(({ criterion: c }) => `${c.type}:${c.value}`),
