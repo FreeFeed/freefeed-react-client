@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Take Save out of "more" menu
 
+## [1.114] - 2023-01-19
+### Added
+- Invite-only registration support. Updated invite creation, invite use and sign
+  up forms. There is new section in config, _registrationsByInvite_, with the
+  _formIframeSrc_ field. It allows to define URL of some external form for
+  manual registration requests.
+
+### Changed
+- TikTok previews now display as static images and load a full-featured embed
+  only after a click.
+
 ## [1.113] - 2022-12-25
 ### Added
 - Email verification support. If verification is supported by server, the new

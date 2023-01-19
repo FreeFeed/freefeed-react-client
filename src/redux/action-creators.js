@@ -1248,3 +1248,11 @@ export function sendVerificationCode(email, mode) {
     payload: { email, mode },
   };
 }
+
+export function getInvitationsInfo() {
+  return {
+    type: ActionTypes.GET_INVITATIONS_INFO,
+    apiRequest: Api.getInvitationsInfo,
+    payload: {},
+  };
+}

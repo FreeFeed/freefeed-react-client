@@ -700,26 +700,50 @@ $post-line-height: rem(20px);
 
   .tiktok-video-preview {
     position: relative;
-    width: 300px;
+    width: 325px;
     max-width: 100%;
     margin-bottom: 10px;
   }
 
-  .tiktok-video-preview::before {
-    content: '';
-    display: block;
+  .tiktok-static-btn {
+    overflow: hidden;
     width: 100%;
+    background-color: transparent;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    display: flex;
+  }
 
-    // Assuming that aspect ratio is constant
-    padding-bottom: 200%;
+  .tiktok-static-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .tiktok-static-play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 64px;
+    font-size: 100px;
+    color: #fff;
+    opacity: 0.66;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    transition: opacity 0.3s;
+  }
+
+  .tiktok-static-btn:hover .tiktok-static-play-icon {
+    opacity: 1;
   }
 
   .tiktok-video-iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
-    height: 100%;
   }
 }
 
