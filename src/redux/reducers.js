@@ -142,20 +142,16 @@ export function resetPassForm(state = defaultPassFormState, action) {
   return state;
 }
 
-export function currentInvitation(state = DEFAULT_FORM_STATE, action) {
-  switch (action.type) {
-    case request(ActionTypes.GET_INVITATION): {
-      return { ...state, loading: true };
-    }
-    case response(ActionTypes.GET_INVITATION): {
-      return { ...state, loading: false, success: true, invitation: action.payload.invitation };
-    }
-    case fail(ActionTypes.GET_INVITATION): {
-      return { ...state, loading: false, error: true, errorText: action.payload.err };
-    }
+export const currentInvitationStatus = asyncState(ActionTypes.GET_INVITATION, (state, action) => {
+  if (action.type === response(ActionTypes.SIGN_UP)) {
+    return initialAsyncState;
   }
   return state;
-}
+});
+export const currentInvitation = fromResponse(
+  ActionTypes.GET_INVITATION,
+  (action) => action.payload.invitation,
+);
 
 const CREATE_POST_ERROR = 'Something went wrong while creating the post...';
 
@@ -2217,3 +2213,25 @@ export const sendVerificationCodeStatus = asyncState(
   ActionTypes.SEND_VERIFICATION_CODE,
   setOnLocationChange(initialAsyncState),
 );
+
+export const invitationsInfoStatus = asyncState(
+  ActionTypes.GET_INVITATIONS_INFO,
+  setOnLocationChange(initialAsyncState),
+);
+
+export const invitationsInfo = fromResponse(
+  ActionTypes.GET_INVITATIONS_INFO,
+  (action) => action.payload,
+  null,
+  setOnLocationChange(initialAsyncState),
+);
+
+const invitedByInitial = {};
+export function invitedByMap(state = invitedByInitial, action) {
+  if (action.type === response(ActionTypes.GET_USER_INFO)) {
+    return { ...state, [action.request.username]: action.payload.invitedBy };
+  } else if (action.type === LOCATION_CHANGE) {
+    return invitedByInitial;
+  }
+  return state;
+}
