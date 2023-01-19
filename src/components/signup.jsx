@@ -70,8 +70,11 @@ export default memo(function Signup() {
                     </p>
                     {withInviteForm && (
                       <p>
-                        If you don&#x2019;t know anyone, fill out a simple form and we&#x2019;ll
-                        review your request.
+                        If you don&#x2019;t know anyone,{' '}
+                        <a href={formSrc} target="_blank">
+                          <strong>fill out a simple form</strong>
+                        </a>{' '}
+                        and we&#x2019;ll review your request.
                       </p>
                     )}
                   </>
