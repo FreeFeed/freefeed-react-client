@@ -10,7 +10,7 @@ import UserName from './user-name';
 export const UserProfileHeadStats = ({ user, canFollowStatLinks }) => {
   const invitedBy = useSelector((state) => state.invitedByMap[user.username]);
 
-  if (user.isGone || !user.statistics) {
+  if (!user.statistics) {
     return null;
   }
 
@@ -21,6 +21,29 @@ export const UserProfileHeadStats = ({ user, canFollowStatLinks }) => {
   const subscribers = parseInt(statistics.subscribers);
   const comments = parseInt(statistics.comments);
   const likes = parseInt(statistics.likes);
+
+  if (user.isGone) {
+    return (
+      <div className={styles.stats}>
+        <ul className={styles.statsItems}>
+          <li className={styles.statlink}>
+            <span className={styles.statlinkText}>
+              <span className={styles.registeredOn}>Since</span>{' '}
+              <TimeDisplay inline timeStamp={parseInt(createdAt)} absolute dateOnly />
+            </span>
+          </li>
+          {invitedBy && (
+            <li className={styles.statlink}>
+              <span className={styles.statlinkText}>
+                <span className={styles.invitedBy}>Invited by</span> @
+                <UserName user={{ username: invitedBy }} />
+              </span>
+            </li>
+          )}
+        </ul>
+      </div>
+    );
+  }
 
   if (!isUser) {
     return (
