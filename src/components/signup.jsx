@@ -15,26 +15,44 @@ import UserName from './user-name';
 
 export default memo(function Signup() {
   const [serverInfo, serverInfoStatus] = useServerInfo();
-  const registrationOpen = !serverInfoStatus.success || serverInfo.registrationOpen;
   const withForm = !!CONFIG.registrationsLimit.emailFormIframeSrc;
+  const withInviteForm = !!CONFIG.registrationsByInvite.formIframeSrc;
+  const formSrc =
+    CONFIG.registrationsByInvite.formIframeSrc || CONFIG.registrationsLimit.emailFormIframeSrc;
 
   const user = useSelector((state) => state.user || null);
   const isLoggedIn = user?.id && user?.type === 'user';
+  const showSignUpForm =
+    serverInfoStatus.success &&
+    serverInfo.registrationOpen &&
+    !serverInfo.registrationRequiresInvite;
+
+  if (!serverInfoStatus.success) {
+    return (
+      <div className="box">
+        <div className="box-header-timeline" role="heading" />
+        <div className="box-body">
+          {serverInfoStatus.loading && <p>Loading...</p>}
+          {serverInfoStatus.error && (
+            <p className="alert alert-danger">{serverInfoStatus.errorText}</p>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="box">
-      <div className="box-header-timeline" role="heading">
-        Hello
-      </div>
+      <div className="box-header-timeline" role="heading" />
       <div className="box-body">
-        {isLoggedIn ? (
+        {isLoggedIn && (
           <p>
             You are already signed up as <UserName user={user}>{user.screenName}</UserName>.
           </p>
-        ) : null}
+        )}
         <div className="col-md-12">
           <h2 className="p-signin-header">Sign up</h2>
-          {registrationOpen ? (
+          {showSignUpForm ? (
             <>
               <CookiesBanner />
               <SignupForm />
@@ -43,21 +61,42 @@ export default memo(function Signup() {
           ) : (
             <>
               <div className="alert alert-warning" role="alert">
-                <p>
-                  Unfortunately we are not accepting new user registrations at this time, but we
-                  plan to be open for registration shortly.
-                </p>
-                {withForm && (
-                  <p>
-                    Please provide your email address to be notified when {CONFIG.siteTitle} is open
-                    for registration.
-                  </p>
+                {serverInfo.registrationRequiresInvite ? (
+                  <>
+                    <p>
+                      Right now, registration is only available via invitation links from existing
+                      FreeFeed users. Please ask someone you know at FreeFeed to send you such a
+                      link.
+                    </p>
+                    {withInviteForm && (
+                      <p>
+                        If you don&#x2019;t know anyone,{' '}
+                        <a href={formSrc} target="_blank">
+                          <strong>fill out a simple form</strong>
+                        </a>{' '}
+                        and we&#x2019;ll review your request.
+                      </p>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <p>
+                      Unfortunately we are not accepting new user registrations at this time, but we
+                      plan to be open for registration shortly.
+                    </p>
+                    {withForm && (
+                      <p>
+                        Please provide your email address to be notified when {CONFIG.siteTitle} is
+                        open for registration.
+                      </p>
+                    )}
+                  </>
                 )}
               </div>
               {withForm && (
                 <p>
                   <iframe
-                    src={CONFIG.registrationsLimit.emailFormIframeSrc}
+                    src={formSrc}
                     width="100%"
                     height="550"
                     frameBorder="0"
