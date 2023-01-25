@@ -38,7 +38,7 @@ import { destinationsPrivacy } from '../select-utils';
 import { Icon } from '../fontawesome-icons';
 import { UserPicture } from '../user-picture';
 import { SubmitModeHint } from '../submit-mode-hint';
-import { SubmittableTextarea } from '../submittable-textarea';
+import { SubmittableTextarea } from '../mention-textarea';
 
 import { UnhideOptions, HideLink } from './post-hides-ui';
 import PostMoreLink from './post-more-link';
@@ -175,7 +175,7 @@ class Post extends Component {
   };
 
   handlePostTextChange = (e) => {
-    this.setState({ editingText: e.target.value });
+    this.setState({ editingText: e });
   };
 
   toggleEditingPost = () => {

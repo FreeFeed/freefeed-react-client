@@ -1,0 +1,100 @@
+@import '../../styles/shared/mixins';
+@import '../../styles/helvetica/dark-vars.scss';
+
+.mentionContainer {
+  content: '';
+  position: absolute;
+  z-index: 20000;
+  margin-top: 30px;
+}
+
+.mentionCorner {
+  $sz: rem(14px);
+
+  content: '';
+  position: absolute;
+  z-index: 20001;
+  width: $sz;
+  height: $sz;
+  margin-top: 30px;
+  background-color: #edf1f5;
+  transform: translate(-50%, -50%) rotate(45deg);
+  box-shadow: -7px -5px 9px -1px rgba(0, 0, 0, 0.25);
+
+  :global(.dark-theme) & {
+    background-color: $bg-color-lightest;
+  }
+}
+
+.mentionItems {
+  position: absolute;
+  border-radius: 0.5rem;
+  text-align: center;
+  box-shadow: 0 3px 9px 2px rgba(0, 0, 0, 0.25);
+  background-color: #edf1f5;
+
+  :global(.dark-theme) & {
+    background-color: $bg-color-lightest;
+  }
+}
+
+.mentionItemsbody {
+  max-width: 300px;
+  max-height: 150px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  display: grid;
+  grid-gap: 2px;
+  overflow-y: auto;
+}
+
+.mentionItemsbody::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #d9edf7;
+
+  :global(.dark-theme) & {
+    background-color: mix(hsl(0deg, 0, 70%), hsl(40deg, 100%, 55%), 75%);
+  }
+}
+
+.mentionItemsbody::-webkit-scrollbar {
+  width: 5px;
+  background-color: hsl(0deg, 0, 70%);
+}
+
+.mentionItemsbody::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #54a5f0;
+
+  :global(.dark-theme) & {
+    background-color: mix(hsl(220deg, 9%, 10%), hsl(40deg, 100%, 55%), 25%);
+  }
+}
+
+.mentionItemsbodycontent {
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 10fr 1fr;
+  font-size: 14px;
+  grid-gap: 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.activeMention {
+  padding: 10px 0 10px 10px;
+  display: grid;
+  grid-template-columns: 10fr 1fr;
+  font-size: 14px;
+  grid-gap: 10px;
+  cursor: pointer;
+  border-radius: 15px;
+  border: 2px solid #54a5f0;
+  background-color: #d9edf7;
+
+  :global(.dark-theme) & {
+    background-color: $bg-color-lighter;
+    border: 2px solid mix(hsl(220deg, 9%, 10%), hsl(40deg, 100%, 55%), 70%);
+  }
+}

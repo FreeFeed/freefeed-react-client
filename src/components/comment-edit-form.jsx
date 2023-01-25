@@ -12,7 +12,7 @@ import { ButtonLink } from './button-link';
 import { useUploader, useFileChooser } from './hooks/uploads';
 import { Icon } from './fontawesome-icons';
 import { SubmitModeHint } from './submit-mode-hint';
-import { SubmittableTextarea } from './submittable-textarea';
+import { SubmittableTextarea } from './mention-textarea';
 
 export const CommentEditForm = forwardRef(function CommentEditForm(
   {
@@ -27,7 +27,7 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
 ) {
   const input = useRef(null);
   const [text, setText] = useState(initialText);
-  const onChange = useCallback((e) => setText(e.target.value), []);
+  const onChange = useCallback((e) => setText(e), []);
   const canSubmit = useMemo(
     () => !submitStatus.loading && text.trim() !== '',
     [submitStatus.loading, text],
