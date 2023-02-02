@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.115] - Not released
 ### Added
+- Confirmation with short info on click on every "Block user" button.
+- Disabling bans in groups:
+  - Checkbox in group settings (for administrators) to disable/enable bans in
+    groups;
+  - Add "Disable/Enable blocking in group" buttons on group page;
+  - Group group-related actions in drop-down menu in group profile;
+  - New events on Notifications page.
+### Fixed
+- Reload user/group feed after ban/unban and enable/disable bans in group.
 - Show creation time and inviting user in gone user profile.
 
 ## [1.114] - 2023-01-19

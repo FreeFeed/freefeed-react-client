@@ -2,11 +2,18 @@ import { Link } from 'react-router';
 import cn from 'classnames';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 
+import { Portal } from 'react-portal';
+import menuStyles from './dropdown-menu.module.scss';
 import { Throbber } from './throbber';
 import { ButtonLink } from './button-link';
 import { Icon } from './fontawesome-icons';
 
 import styles from './user-profile-head.module.scss';
+import { BanDialog } from './ban-dialog';
+import { DisableBansDialog } from './disable-bans-dialog';
+import { useDropDownKbd } from './hooks/drop-down-kbd';
+import { CLOSE_ON_ANY_CLICK, BOTTOM_LEFT } from './hooks/drop-down';
+import { MoreWithTriangle } from './more-with-triangle';
 
 // eslint-disable-next-line complexity
 export function UserProfileHeadActions({
@@ -27,6 +34,7 @@ export function UserProfileHeadActions({
   togglePinned,
   isPinned,
   toggleHidden,
+  toggleShowBans,
   isHidden,
 }) {
   return (
@@ -87,48 +95,113 @@ export function UserProfileHeadActions({
            * Right block is for secondary or negative actions:
            * Ban (for users), Hide in Home, Unsubscribe from me, Pin/unpin group
            */}
-          <ul className={cn(styles.actionsList, styles.actionsListRight)}>
-            {inSubscribers && currentUser.isPrivate === '1' && (
-              <li>
-                <ActionLink {...unsubFromMe}>Remove from subscribers</ActionLink>
-              </li>
-            )}
-            {!user.isGone && user.type === 'group' && inSubscriptions && (
-              <>
+          {user.type === 'user' ? (
+            <ul className={cn(styles.actionsList, styles.actionsListRight)}>
+              {inSubscribers && currentUser.isPrivate === '1' && (
                 <li>
-                  <Link to={`/filter/direct?invite=${user.username}`}>Invite</Link>
+                  <ActionLink {...unsubFromMe}>Remove from subscribers</ActionLink>
                 </li>
+              )}
+              {!user.isGone && (
                 <li>
-                  <ActionLink {...togglePinned}>
-                    {isPinned ? 'Unpin from sidebar' : 'Pin to sidebar'}
-                  </ActionLink>
+                  <ActionLink {...toggleHidden}>{isHidden ? 'Unhide' : 'Hide'} in Home</ActionLink>
                 </li>
-              </>
-            )}
-            {!user.isGone && (
-              <li>
-                <ActionLink {...toggleHidden}>{isHidden ? 'Unhide' : 'Hide'} in Home</ActionLink>
-              </li>
-            )}
-            {user.type === 'user' && !inSubscriptions && (
-              <li>
-                <ActionLink {...toggleBanned}>Block user</ActionLink>
-              </li>
-            )}
-          </ul>
+              )}
+              {!inSubscriptions && (
+                <li>
+                  <BanDialog user={user}>
+                    {(onClick) => (
+                      <ActionLink onClick={onClick} status={toggleBanned.status}>
+                        Block user
+                      </ActionLink>
+                    )}
+                  </BanDialog>
+                </li>
+              )}
+            </ul>
+          ) : (
+            <DisableBansDialog group={user} isAdmin={isCurrentUserAdmin}>
+              {(onDisableBansClick) => (
+                <GroupActions>
+                  {(ref) => (
+                    <ul ref={ref} className={menuStyles.list}>
+                      {!user.isGone && inSubscriptions && (
+                        <>
+                          <li className={menuStyles.item}>
+                            <Link
+                              className={menuStyles.link}
+                              to={`/filter/direct?invite=${user.username}`}
+                            >
+                              Invite
+                            </Link>
+                          </li>
+                          <li className={menuStyles.item}>
+                            <ActionLink className={menuStyles.link} {...togglePinned}>
+                              {isPinned ? 'Unpin from sidebar' : 'Pin to sidebar'}
+                            </ActionLink>
+                          </li>
+                        </>
+                      )}
+                      {!user.isGone && (
+                        <li className={menuStyles.item}>
+                          <ActionLink className={menuStyles.link} {...toggleHidden}>
+                            {isHidden ? 'Unhide' : 'Hide'} in Home
+                          </ActionLink>
+                        </li>
+                      )}
+                      {user.youCan.includes('disable_bans') && (
+                        <li className={menuStyles.item}>
+                          <ActionLink
+                            className={menuStyles.link}
+                            {...toggleShowBans}
+                            onClick={onDisableBansClick}
+                          >
+                            Disable blocking in group
+                          </ActionLink>
+                        </li>
+                      )}
+                      {user.youCan.includes('undisable_bans') && (
+                        <li className={menuStyles.item}>
+                          <ActionLink className={menuStyles.link} {...toggleShowBans}>
+                            Enable blocking in group
+                          </ActionLink>
+                        </li>
+                      )}
+                    </ul>
+                  )}
+                </GroupActions>
+              )}
+            </DisableBansDialog>
+          )}
         </>
       )}
     </div>
   );
 }
 
-function ActionLink({ onClick, status = null, children }) {
+function ActionLink({ onClick, status = null, className, children }) {
   return (
     <>
       {status?.loading && <Throbber className={styles.actionLinkThrobber} />}
-      <ButtonLink onClick={onClick} disabled={status?.loading}>
+      <ButtonLink onClick={onClick} disabled={status?.loading} className={className}>
         {children}
       </ButtonLink>
+    </>
+  );
+}
+
+function GroupActions({ children }) {
+  const { opened, toggle, pivotRef, menuRef } = useDropDownKbd({
+    closeOn: CLOSE_ON_ANY_CLICK,
+    position: BOTTOM_LEFT,
+  });
+
+  return (
+    <>
+      <ButtonLink ref={pivotRef} onClick={toggle} aria-haspopup aria-expanded={opened}>
+        <MoreWithTriangle>Group actions</MoreWithTriangle>
+      </ButtonLink>
+      {opened && <Portal>{children(menuRef)}</Portal>}
     </>
   );
 }

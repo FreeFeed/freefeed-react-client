@@ -7,9 +7,7 @@ $zIndex: 10;
   top: 0.5em;
   left: 0;
   min-width: 10em;
-
   z-index: $zIndex;
-
   list-style: none;
   padding: 0;
   margin: 0;
@@ -44,12 +42,12 @@ $zIndex: 10;
   @media (max-width: 450px) {
     left: 0;
     width: 100%;
-    box-shadow: 0px 20px 40px 20px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 20px 40px 20px rgba(0, 0, 0, 0.7);
   }
 
   @media (prefers-reduced-motion: no-preference) {
     transition: transform 0.2s, opacity 0.2s;
-    transform: translateY(0px);
+    transform: translateY(0);
     opacity: 1;
 
     &.initial {
@@ -76,8 +74,8 @@ $zIndex: 10;
   display: block;
   text-decoration: none !important;
   padding: 0.5em 0.66em;
-
   color: inherit;
+
   :global(.dark-theme) & {
     color: inherit;
   }
@@ -85,6 +83,7 @@ $zIndex: 10;
   .list:not(.focusList) &:hover,
   &:focus {
     color: inherit !important;
+
     :global(.dark-theme) & {
       color: inherit !important;
     }
@@ -137,7 +136,6 @@ $zIndex: 10;
 
   &::before {
     content: '';
-
     display: block;
     height: 1px;
     margin: 0 0.66em 0.33em;
@@ -188,9 +186,10 @@ $zIndex: 10;
 .iconicIcon {
   flex: 0 0 1.5em;
   display: flex;
-  height: 1.42857em;
+  height: 1.4286em;
   align-items: center;
   color: #999;
+
   :global(.dark-theme) & {
     color: $text-color-darker;
   }

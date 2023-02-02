@@ -49,6 +49,7 @@ const defaultState = {
       },
       createdAt: '1430708710865',
       updatedAt: '1647366122559',
+      youCan: [],
     },
   },
   directsReceivers: {
@@ -249,7 +250,7 @@ describe('UserProfileHead', () => {
     );
     expect(kickMock).toHaveBeenCalledTimes(1);
     expect(kickMock).toHaveBeenCalledWith(fakeState.users[UID]);
-    expect(useDispatchMock).toHaveBeenCalledTimes(1);
+    expect(useDispatchMock).toHaveBeenCalledTimes(2);
   });
 
   it('Correctly displays that I can send a subscription request', () => {
@@ -304,7 +305,7 @@ describe('UserProfileHead', () => {
     expect(confirmMock).toHaveBeenCalledWith('Are you sure you want to revoke this request?');
     expect(revokeMock).toHaveBeenCalledTimes(1);
     expect(revokeMock).toHaveBeenCalledWith(fakeState.users[UID]);
-    expect(useDispatchMock).toHaveBeenCalledTimes(1);
+    expect(useDispatchMock).toHaveBeenCalledTimes(2);
   });
 
   it('Correctly displays that I am subscribed to them and lets me unsubscribe', () => {
@@ -356,7 +357,7 @@ describe('UserProfileHead', () => {
     fireEvent.click(screen.getByText('Unhide in Home'));
     expect(unhideMock).toHaveBeenCalledTimes(1);
     expect(unhideMock).toHaveBeenCalledWith({ type: 'USERNAME', value: USERNAME }, null, false);
-    expect(useDispatchMock).toHaveBeenCalledTimes(1);
+    expect(useDispatchMock).toHaveBeenCalledTimes(2);
   });
 
   it('Correctly displays that user is in some of my lists', () => {
@@ -412,12 +413,13 @@ describe('UserProfileHead', () => {
     renderUserProfileHead();
     expect(screen.getByText('Public group')).toBeDefined();
     expect(screen.getByText('You are a member')).toBeDefined();
+    fireEvent.click(screen.getByText('Group actions'));
     expect(screen.getByText('Invite')).toBeDefined();
     expect(screen.getByText('Pin to sidebar')).toBeDefined();
-    fireEvent.click(screen.getByText('Pin to sidebar'));
+    fireEvent.keyDown(screen.getByText('Pin to sidebar'), { keyCode: 13 });
     expect(pinMock).toHaveBeenCalledTimes(1);
     expect(pinMock).toHaveBeenCalledWith(UID);
-    expect(useDispatchMock).toHaveBeenCalledTimes(1);
+    expect(useDispatchMock).toHaveBeenCalledTimes(2);
   });
 
   it('Renders a group header if I am an admin', () => {

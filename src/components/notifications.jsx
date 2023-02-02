@@ -244,6 +244,30 @@ const notificationTemplates = {
       </div>
     );
   },
+
+  bans_in_group_disabled: (event) => {
+    const isSelf = event.recipient_user_id === event.created_user_id;
+    const html = `${isSelf ? 'You' : `@${event.creator.username}`} disabled bans ${
+      isSelf ? 'for yourself' : 'for you'
+    } in group @${event.group.username}`;
+    return (
+      <div>
+        <Linkify>{html}</Linkify>
+      </div>
+    );
+  },
+
+  bans_in_group_enabled: (event) => {
+    const isSelf = event.recipient_user_id === event.created_user_id;
+    const html = `${isSelf ? 'You' : `@${event.creator.username}`} enabled bans ${
+      isSelf ? 'for yourself' : 'for you'
+    } in group @${event.group.username}`;
+    return (
+      <div>
+        <Linkify>{html}</Linkify>
+      </div>
+    );
+  },
 };
 
 notificationTemplates.unblocked_in_group = notificationTemplates.blocked_in_group;
