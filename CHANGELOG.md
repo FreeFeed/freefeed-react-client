@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - New events on Notifications page.
 ### Fixed
 - Reload user/group feed after ban/unban and enable/disable bans in group.
+- Show creation time and inviting user in gone user profile.
 
 ## [1.114] - 2023-01-19
 ### Added
