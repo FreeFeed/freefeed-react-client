@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { useMemo, useCallback, useState, useRef, useEffect, forwardRef } from 'react';
+import { useMemo, useCallback, useState, useRef, useEffect, forwardRef, useContext } from 'react';
 import cn from 'classnames';
 
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
@@ -13,6 +13,7 @@ import { useUploader, useFileChooser } from './hooks/uploads';
 import { Icon } from './fontawesome-icons';
 import { SubmitModeHint } from './submit-mode-hint';
 import { SubmittableTextarea } from './submittable-textarea';
+import { PostContext } from './post/post-context';
 
 export const CommentEditForm = forwardRef(function CommentEditForm(
   {
@@ -25,6 +26,7 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
   },
   fwdRef,
 ) {
+  const { setInput } = useContext(PostContext);
   const input = useRef(null);
   const [text, setText] = useState(initialText);
   const onChange = useCallback((e) => setText(e.target.value), []);
@@ -61,6 +63,13 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
       input.current.blur();
     }
   }, [isPersistent, submitStatus.initial]);
+
+  // Set input context if persistent form
+  useEffect(() => {
+    if (isPersistent) {
+      setInput(input.current);
+    }
+  }, [isPersistent, input, setInput]);
 
   const insText = (insertion) => {
     const [text, selStart, selEnd] = insertText(
