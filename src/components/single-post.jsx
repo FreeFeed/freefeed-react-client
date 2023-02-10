@@ -10,6 +10,7 @@ import UserName from './user-name';
 
 import Post from './post/post';
 import { SignInLink } from './sign-in-link';
+import { PostContextProvider } from './post/post-context';
 
 class SinglePostHandler extends Component {
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -42,29 +43,31 @@ class SinglePostHandler extends Component {
 
     if (post) {
       postBody = (
-        <Post
-          {...post}
-          key={post.id}
-          isCommenting={true}
-          isSinglePost={true}
-          user={props.user}
-          showMoreComments={props.showMoreComments}
-          showMoreLikes={props.showMoreLikes}
-          toggleEditingPost={props.toggleEditingPost}
-          cancelEditingPost={props.cancelEditingPost}
-          saveEditingPost={props.saveEditingPost}
-          deletePost={props.deletePost}
-          addAttachmentResponse={props.addAttachmentResponse}
-          showMedia={props.showMedia}
-          toggleCommenting={props.toggleCommenting}
-          addComment={props.addComment}
-          likePost={props.likePost}
-          unlikePost={props.unlikePost}
-          toggleModeratingComments={props.toggleModeratingComments}
-          disableComments={props.disableComments}
-          enableComments={props.enableComments}
-          commentEdit={props.commentEdit}
-        />
+        <PostContextProvider>
+          <Post
+            {...post}
+            key={post.id}
+            isCommenting={true}
+            isSinglePost={true}
+            user={props.user}
+            showMoreComments={props.showMoreComments}
+            showMoreLikes={props.showMoreLikes}
+            toggleEditingPost={props.toggleEditingPost}
+            cancelEditingPost={props.cancelEditingPost}
+            saveEditingPost={props.saveEditingPost}
+            deletePost={props.deletePost}
+            addAttachmentResponse={props.addAttachmentResponse}
+            showMedia={props.showMedia}
+            toggleCommenting={props.toggleCommenting}
+            addComment={props.addComment}
+            likePost={props.likePost}
+            unlikePost={props.unlikePost}
+            toggleModeratingComments={props.toggleModeratingComments}
+            disableComments={props.disableComments}
+            enableComments={props.enableComments}
+            commentEdit={props.commentEdit}
+          />
+        </PostContextProvider>
       );
     }
 

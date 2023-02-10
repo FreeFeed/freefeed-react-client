@@ -1,0 +1,28 @@
+.container {
+  --gap: 1.5em;
+
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  max-width: 100%;
+  padding: var(--gap);
+}
+
+.header {
+  flex: none;
+  margin-bottom: var(--gap);
+}
+
+.header h3 {
+  margin: 0;
+}
+
+.body {
+  max-height: 50vh;
+  overflow: auto;
+}
+
+.footer {
+  flex: none;
+  margin-top: var(--gap);
+}

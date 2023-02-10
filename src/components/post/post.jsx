@@ -47,6 +47,7 @@ import PostHeader from './post-header';
 import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
 import PostLikes from './post-likes';
+import { PostContext } from './post-context';
 
 const attachmentsMaxCount = CONFIG.attachments.maxCount;
 
@@ -119,6 +120,7 @@ class Post extends Component {
 
   handleCommentClick = () => {
     if (this.props.isSinglePost) {
+      this.context.input?.focus();
       return;
     }
 
@@ -741,6 +743,8 @@ class Post extends Component {
     );
   }
 }
+
+Post.contextType = PostContext;
 
 function selectState(state, ownProps) {
   return {

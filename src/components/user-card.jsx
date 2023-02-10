@@ -11,6 +11,7 @@ import UserRelationshipStatus from './user-relationships-status';
 import ErrorBoundary from './error-boundary';
 import { userActions, canAcceptDirects } from './select-utils';
 import { UserPicture } from './user-picture';
+import { BanDialog } from './ban-dialog';
 
 class UserCard extends Component {
   constructor(props) {
@@ -55,11 +56,6 @@ class UserCard extends Component {
       user: { username },
     } = this.props;
     this.props.hideByName(username, !hidden);
-  };
-
-  handleBlockClick = () => {
-    const { id, username } = this.props.user;
-    this.props.ban({ id, username });
   };
 
   handleUnblockClick = () => {
@@ -179,7 +175,9 @@ class UserCard extends Component {
 
               {props.user.type !== 'group' && !props.subscribed ? (
                 <span className="user-card-action">
-                  <a onClick={this.handleBlockClick}>Block</a>
+                  <BanDialog user={props.user}>
+                    {(onClick) => <a onClick={onClick}>Block</a>}
+                  </BanDialog>
                 </span>
               ) : props.amIGroupAdmin ? (
                 <span className="user-card-action">
