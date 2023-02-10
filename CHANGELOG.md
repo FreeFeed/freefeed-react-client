@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Reload user/group feed after ban/unban and enable/disable bans in group.
 - Show creation time and inviting user in gone user profile.
+- Click on main comment link on a single post page now moves focus to the comment form
 
 ## [1.114] - 2023-01-19
 ### Added
@@ -209,7 +210,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.102.2] - 2021-10-17
 ### Fixed
-- Re-release. 1.102.1 did not include proper version information. 
+- Re-release. 1.102.1 did not include proper version information.
 
 ## [1.102.1] - 2021-10-17
 ### Fixed
@@ -244,14 +245,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.101.2] - 2021-10-07
 ### Fixed
-- Re-release. 1.101.1 did not include proper version information. 
+- Re-release. 1.101.1 did not include proper version information.
 
 ## [1.101.1] - 2021-10-07
 ### Fixed
 - In the old days, users could create groups with groupnames up to 27 characters
   long. Now the client router supports these names.
 
-## [1.101.0] - 2021-09-19 
+## [1.101.0] - 2021-09-19
 ### Added
 - User can adjust the site font size in settings' Appearance tab. This setting
   is saved locally in web browser and can be different for each browser and each
@@ -523,7 +524,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   devices in same network.
 - Tweaked contrast of spoiler-tags (they're WCAG compatible now)
 - Don't close clikes-panel on click inside of it (still close it on click outside)
-- Wait up to 250ms after click to show fully rendered clikes panel. Show throbber if data is not ready after that 
+- Wait up to 250ms after click to show fully rendered clikes panel. Show throbber if data is not ready after that
 
 ## [1.89.3] - 2020-12-18
 ### Fixed
