@@ -912,6 +912,10 @@ export function users(state = {}, action) {
     case response(ActionTypes.CREATE_GROUP): {
       return mergeAccounts([action.payload.groups]);
     }
+    case response(ActionTypes.DISABLE_BANS_IN_GROUP):
+    case response(ActionTypes.ENABLE_BANS_IN_GROUP): {
+      return mergeAccounts([action.payload.users, ...action.payload.admins], { update: true });
+    }
     case response(ActionTypes.UPDATE_GROUP): {
       return mergeAccounts([action.payload.groups], { update: true });
     }
@@ -1838,7 +1842,15 @@ const userActionsStatusesStatusMaps = combineReducers({
     ],
     { getKey: getKeyBy('username') },
   ),
-  blocking: asyncStatesMap([ActionTypes.BAN, ActionTypes.UNBAN], { getKey: getKeyBy('username') }),
+  blocking: asyncStatesMap(
+    [
+      ActionTypes.BAN,
+      ActionTypes.UNBAN,
+      ActionTypes.DISABLE_BANS_IN_GROUP,
+      ActionTypes.ENABLE_BANS_IN_GROUP,
+    ],
+    { getKey: getKeyBy('username') },
+  ),
   pinned: asyncStatesMap([ActionTypes.TOGGLE_PINNED_GROUP]), // by user id!
   hiding: asyncStatesMap([ActionTypes.HIDE_BY_CRITERION], {
     getKey: getKeyBy(({ criterion: c }) => `${c.type}:${c.value}`),
