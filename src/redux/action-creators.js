@@ -1248,3 +1248,27 @@ export function sendVerificationCode(email, mode) {
     payload: { email, mode },
   };
 }
+
+export function getInvitationsInfo() {
+  return {
+    type: ActionTypes.GET_INVITATIONS_INFO,
+    apiRequest: Api.getInvitationsInfo,
+    payload: {},
+  };
+}
+
+export function disableBansInGroup(groupName) {
+  return {
+    apiRequest: Api.disableBansInGroup,
+    type: ActionTypes.DISABLE_BANS_IN_GROUP,
+    payload: { groupName },
+  };
+}
+
+export function enableBansInGroup(groupName) {
+  return {
+    apiRequest: Api.enableBansInGroup,
+    type: ActionTypes.ENABLE_BANS_IN_GROUP,
+    payload: { groupName },
+  };
+}

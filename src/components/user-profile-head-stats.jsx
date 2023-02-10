@@ -1,12 +1,16 @@
 import { Link } from 'react-router';
 import cn from 'classnames';
 
+import { useSelector } from 'react-redux';
 import { pluralForm } from '../utils';
 import styles from './user-profile-head.module.scss';
 import TimeDisplay from './time-display';
+import UserName from './user-name';
 
 export const UserProfileHeadStats = ({ user, canFollowStatLinks }) => {
-  if (user.isGone || !user.statistics) {
+  const invitedBy = useSelector((state) => state.invitedByMap[user.username]);
+
+  if (!user.statistics) {
     return null;
   }
 
@@ -17,6 +21,29 @@ export const UserProfileHeadStats = ({ user, canFollowStatLinks }) => {
   const subscribers = parseInt(statistics.subscribers);
   const comments = parseInt(statistics.comments);
   const likes = parseInt(statistics.likes);
+
+  if (user.isGone) {
+    return (
+      <div className={styles.stats}>
+        <ul className={styles.statsItems}>
+          <li className={styles.statlink}>
+            <span className={styles.statlinkText}>
+              <span className={styles.registeredOn}>Since</span>{' '}
+              <TimeDisplay inline timeStamp={parseInt(createdAt)} absolute dateOnly />
+            </span>
+          </li>
+          {invitedBy && (
+            <li className={styles.statlink}>
+              <span className={styles.statlinkText}>
+                <span className={styles.invitedBy}>Invited by</span> @
+                <UserName user={{ username: invitedBy }} />
+              </span>
+            </li>
+          )}
+        </ul>
+      </div>
+    );
+  }
 
   if (!isUser) {
     return (
@@ -78,6 +105,14 @@ export const UserProfileHeadStats = ({ user, canFollowStatLinks }) => {
             <TimeDisplay inline timeStamp={parseInt(createdAt)} absolute dateOnly />
           </span>
         </li>
+        {invitedBy && (
+          <li className={styles.statlink}>
+            <span className={styles.statlinkText}>
+              <span className={styles.invitedBy}>Invited by</span> @
+              <UserName user={{ username: invitedBy }} />
+            </span>
+          </li>
+        )}
       </ul>
     </div>
   );

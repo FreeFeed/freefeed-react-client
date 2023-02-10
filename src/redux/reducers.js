@@ -142,20 +142,16 @@ export function resetPassForm(state = defaultPassFormState, action) {
   return state;
 }
 
-export function currentInvitation(state = DEFAULT_FORM_STATE, action) {
-  switch (action.type) {
-    case request(ActionTypes.GET_INVITATION): {
-      return { ...state, loading: true };
-    }
-    case response(ActionTypes.GET_INVITATION): {
-      return { ...state, loading: false, success: true, invitation: action.payload.invitation };
-    }
-    case fail(ActionTypes.GET_INVITATION): {
-      return { ...state, loading: false, error: true, errorText: action.payload.err };
-    }
+export const currentInvitationStatus = asyncState(ActionTypes.GET_INVITATION, (state, action) => {
+  if (action.type === response(ActionTypes.SIGN_UP)) {
+    return initialAsyncState;
   }
   return state;
-}
+});
+export const currentInvitation = fromResponse(
+  ActionTypes.GET_INVITATION,
+  (action) => action.payload.invitation,
+);
 
 const CREATE_POST_ERROR = 'Something went wrong while creating the post...';
 
@@ -915,6 +911,10 @@ export function users(state = {}, action) {
     }
     case response(ActionTypes.CREATE_GROUP): {
       return mergeAccounts([action.payload.groups]);
+    }
+    case response(ActionTypes.DISABLE_BANS_IN_GROUP):
+    case response(ActionTypes.ENABLE_BANS_IN_GROUP): {
+      return mergeAccounts([action.payload.users, ...action.payload.admins], { update: true });
     }
     case response(ActionTypes.UPDATE_GROUP): {
       return mergeAccounts([action.payload.groups], { update: true });
@@ -1842,7 +1842,15 @@ const userActionsStatusesStatusMaps = combineReducers({
     ],
     { getKey: getKeyBy('username') },
   ),
-  blocking: asyncStatesMap([ActionTypes.BAN, ActionTypes.UNBAN], { getKey: getKeyBy('username') }),
+  blocking: asyncStatesMap(
+    [
+      ActionTypes.BAN,
+      ActionTypes.UNBAN,
+      ActionTypes.DISABLE_BANS_IN_GROUP,
+      ActionTypes.ENABLE_BANS_IN_GROUP,
+    ],
+    { getKey: getKeyBy('username') },
+  ),
   pinned: asyncStatesMap([ActionTypes.TOGGLE_PINNED_GROUP]), // by user id!
   hiding: asyncStatesMap([ActionTypes.HIDE_BY_CRITERION], {
     getKey: getKeyBy(({ criterion: c }) => `${c.type}:${c.value}`),
@@ -2217,3 +2225,25 @@ export const sendVerificationCodeStatus = asyncState(
   ActionTypes.SEND_VERIFICATION_CODE,
   setOnLocationChange(initialAsyncState),
 );
+
+export const invitationsInfoStatus = asyncState(
+  ActionTypes.GET_INVITATIONS_INFO,
+  setOnLocationChange(initialAsyncState),
+);
+
+export const invitationsInfo = fromResponse(
+  ActionTypes.GET_INVITATIONS_INFO,
+  (action) => action.payload,
+  null,
+  setOnLocationChange(initialAsyncState),
+);
+
+const invitedByInitial = {};
+export function invitedByMap(state = invitedByInitial, action) {
+  if (action.type === response(ActionTypes.GET_USER_INFO)) {
+    return { ...state, [action.request.username]: action.payload.invitedBy };
+  } else if (action.type === LOCATION_CHANGE) {
+    return invitedByInitial;
+  }
+  return state;
+}

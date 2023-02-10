@@ -14,6 +14,18 @@ export const INVITATION_LANGUAGE_OPTIONS = {
   ENGLISH: 'en',
 };
 
+function Layout({ children }) {
+  return (
+    <div className="box">
+      <div className="box-header-timeline" role="heading">
+        Invite to {CONFIG.siteTitle}
+      </div>
+      <div className="box-body">{children}</div>
+      <div className="box-footer" />
+    </div>
+  );
+}
+
 class InvitationCreationForm extends Component {
   state = {
     message: '',
@@ -41,113 +53,142 @@ class InvitationCreationForm extends Component {
         </div>
       );
     }
-    const { userFeeds, groupFeeds, user, form, baseLocation } = this.props;
-    return (
-      <div className="box">
-        <div className="box-header-timeline" role="heading">
-          Invite to {CONFIG.siteTitle}
-        </div>
-        <div className="box-body">
-          <form onSubmit={preventDefault(this.createInvitation)}>
-            <div>Suggested users</div>
-            <SendTo
-              ref={this.saveUsersSelectRef}
-              alwaysShowSelect={true}
-              feeds={userFeeds}
-              defaultFeed={user && user.username}
-              user={user}
-              excludeMyFeed={true}
-              disableAutoFocus={true}
-              onChange={this.suggestedSubscriptionsChanged}
-            />
-            <div>Suggested groups</div>
-            <SendTo
-              ref={this.saveGroupsSelectRef}
-              alwaysShowSelect={true}
-              feeds={groupFeeds}
-              user={user}
-              excludeMyFeed={true}
-              disableAutoFocus={true}
-              onChange={this.suggestedSubscriptionsChanged}
-            />
-            <div>Invitation page language</div>
-            <div className="radio">
-              <label>
-                <input
-                  type="radio"
-                  name="invitationLanguage"
-                  value={INVITATION_LANGUAGE_OPTIONS.RUSSIAN}
-                  checked={this.state.lang === INVITATION_LANGUAGE_OPTIONS.RUSSIAN}
-                  onChange={this.changeInvitationLanguage}
-                />
-                Russian
-              </label>
-            </div>
-            <div className="radio">
-              <label>
-                <input
-                  type="radio"
-                  name="invitationLanguage"
-                  value={INVITATION_LANGUAGE_OPTIONS.ENGLISH}
-                  checked={this.state.lang === INVITATION_LANGUAGE_OPTIONS.ENGLISH}
-                  onChange={this.changeInvitationLanguage}
-                />
-                English
-              </label>
-            </div>
+    const {
+      userFeeds,
+      groupFeeds,
+      user,
+      form,
+      baseLocation,
+      invitationsInfoStatus,
+      invitationsInfo,
+    } = this.props;
 
-            <div className="checkbox">
-              <label>
-                <input
-                  type="checkbox"
-                  name="one-time"
-                  value="0"
-                  checked={this.state.singleUse}
-                  onChange={this.toggleOneTime}
-                />
-                One-time use invite
-              </label>
-            </div>
-            <div className="form-group">
-              <label htmlFor="invite-message">Personal message</label>
-              <Textarea
-                id="invite-message"
-                className="form-control"
-                value={this.state.message}
-                onChange={this.onInvitationTextChange}
-                minRows={3}
-                maxRows={10}
+    if (invitationsInfoStatus.initial || invitationsInfoStatus.loading) {
+      return (
+        <Layout>
+          <p>Loading...</p>
+        </Layout>
+      );
+    }
+    if (invitationsInfoStatus.error) {
+      return (
+        <Layout>
+          <p className="alert alert-danger">
+            Data loading error: {invitationsInfoStatus.errorText}
+          </p>
+        </Layout>
+      );
+    }
+
+    if (!invitationsInfo.canCreateNew) {
+      return (
+        <Layout>
+          <p className="alert alert-warning">{invitationsInfo.reasonNotCreate.message}</p>
+        </Layout>
+      );
+    }
+
+    return (
+      <Layout>
+        <form onSubmit={preventDefault(this.createInvitation)}>
+          <div>Suggested users</div>
+          <SendTo
+            ref={this.saveUsersSelectRef}
+            alwaysShowSelect={true}
+            feeds={userFeeds}
+            defaultFeed={user && user.username}
+            user={user}
+            excludeMyFeed={true}
+            disableAutoFocus={true}
+            onChange={this.suggestedSubscriptionsChanged}
+          />
+          <div>Suggested groups</div>
+          <SendTo
+            ref={this.saveGroupsSelectRef}
+            alwaysShowSelect={true}
+            feeds={groupFeeds}
+            user={user}
+            excludeMyFeed={true}
+            disableAutoFocus={true}
+            onChange={this.suggestedSubscriptionsChanged}
+          />
+          <div>Invitation page language</div>
+          <div className="radio">
+            <label>
+              <input
+                type="radio"
+                name="invitationLanguage"
+                value={INVITATION_LANGUAGE_OPTIONS.RUSSIAN}
+                checked={this.state.lang === INVITATION_LANGUAGE_OPTIONS.RUSSIAN}
+                onChange={this.changeInvitationLanguage}
               />
-            </div>
-            <p>
-              <button className="btn btn-default" type="submit">
-                Create invitation
-              </button>
-              {form.isSaving && (
-                <span className="settings-throbber">
-                  <Throbber />
-                </span>
-              )}
-            </p>
-            {form.success ? (
-              <div className="alert alert-info" role="alert">
-                Created invitation:&nbsp;
-                <a
-                  target="_blank"
-                  href={`${baseLocation}/invited/${form.invitationId}`}
-                >{`${baseLocation}/invited/${form.invitationId}`}</a>
-              </div>
-            ) : form.error ? (
-              <div className="alert alert-danger" role="alert">
-                {form.errorText}
-              </div>
-            ) : (
-              false
+              Russian
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <input
+                type="radio"
+                name="invitationLanguage"
+                value={INVITATION_LANGUAGE_OPTIONS.ENGLISH}
+                checked={this.state.lang === INVITATION_LANGUAGE_OPTIONS.ENGLISH}
+                onChange={this.changeInvitationLanguage}
+              />
+              English
+            </label>
+          </div>
+
+          <div className="checkbox">
+            <label>
+              <input
+                type="checkbox"
+                name="one-time"
+                value="0"
+                disabled={invitationsInfo.singleUseOnly}
+                checked={this.state.singleUse || invitationsInfo.singleUseOnly}
+                onChange={this.toggleOneTime}
+              />
+              One-time use invite
+            </label>
+          </div>
+          <div className="form-group">
+            <label htmlFor="invite-message">Personal message</label>
+            <Textarea
+              id="invite-message"
+              className="form-control"
+              value={this.state.message}
+              onChange={this.onInvitationTextChange}
+              minRows={3}
+              maxRows={10}
+            />
+          </div>
+          <p>
+            <button className="btn btn-default" type="submit">
+              Create invitation
+            </button>
+            {form.isSaving && (
+              <span className="settings-throbber">
+                <Throbber />
+              </span>
             )}
-          </form>
-        </div>
-        <div className="box-footer" />
-      </div>
+          </p>
+          {form.success ? (
+            <div className="alert alert-info" role="alert">
+              Created invitation:&nbsp;
+              <a
+                target="_blank"
+                href={`${baseLocation}/invited/${form.invitationId}`}
+              >{`${baseLocation}/invited/${form.invitationId}`}</a>
+            </div>
+          ) : form.error ? (
+            <div className="alert alert-danger" role="alert">
+              {form.errorText}
+            </div>
+          ) : (
+            false
+          )}
+        </form>
+      </Layout>
     );
   }
 
@@ -170,8 +211,8 @@ class InvitationCreationForm extends Component {
     const { message, lang } = this.state;
     const customMessage = clearMessageFromUsersAndGroups(message, this.state.suggestions);
     const suggestions = {
-      users: this.userFeedsSelector.values,
-      groups: this.groupFeedsSelector.values,
+      users: this.userFeedsSelector?.values || [this.props.user.username],
+      groups: this.groupFeedsSelector?.values || [],
     };
     const descriptions = patchDescriptions(
       this.props.feedsDescriptions,
@@ -193,15 +234,23 @@ class InvitationCreationForm extends Component {
   };
 
   createInvitation = () => {
-    const { message, lang, singleUse } = this.state;
+    const { message, lang } = this.state;
     const users = this.userFeedsSelector.values;
     const groups = this.groupFeedsSelector.values;
+    const singleUse = this.props.invitationsInfo.singleUseOnly || this.state.singleUse;
     this.props.createInvitation(message, lang, singleUse, users, groups);
   };
 }
 
 function mapStateToProps(state) {
-  const { authenticated, user, createInvitationForm, usernameSubscriptions } = state;
+  const {
+    authenticated,
+    user,
+    createInvitationForm,
+    usernameSubscriptions,
+    invitationsInfoStatus,
+    invitationsInfo,
+  } = state;
   const userFeeds = [user]
     .concat(usernameSubscriptions.payload.filter((u) => u.type === 'user'))
     .map((user) => ({ id: user.id, user }));
@@ -217,6 +266,8 @@ function mapStateToProps(state) {
     groupFeeds,
     feedsDescriptions,
     form: createInvitationForm,
+    invitationsInfoStatus,
+    invitationsInfo,
   };
 }
 

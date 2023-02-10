@@ -24,6 +24,7 @@ import {
   betaChannelMiddleware,
   commentsCompleteMiddleware,
   appVersionMiddleware,
+  reloadFeedMiddleware,
 } from './middlewares';
 
 import * as reducers from './reducers';
@@ -53,6 +54,7 @@ const middleware = [
   betaChannelMiddleware,
   commentsCompleteMiddleware,
   appVersionMiddleware,
+  reloadFeedMiddleware,
 ];
 
 const enhancers = [applyMiddleware(...middleware)];
