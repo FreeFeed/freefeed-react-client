@@ -280,6 +280,7 @@ class PostComment extends Component {
           ref={this.registerCommentForm}
           initialText={this.props.isAddingComment ? this.props.editText : this.props.body}
           isPersistent={this.props.isSinglePost && this.props.isAddingComment}
+          isAddingComment={this.props.isAddingComment}
           onSubmit={this.saveComment}
           onCancel={this.handleEditOrCancel}
           submitStatus={this.props.saveStatus}

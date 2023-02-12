@@ -20,6 +20,8 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
     initialText = '',
     // Persistent form is always on page so we don't need to show Cancel button
     isPersistent = false,
+    // Adding new comment form
+    isAddingComment = false,
     onSubmit = () => {},
     onCancel = () => {},
     submitStatus = initialAsyncState,
@@ -66,10 +68,10 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
 
   // Set input context if persistent form
   useEffect(() => {
-    if (isPersistent) {
+    if (isAddingComment) {
       setInput(input.current);
     }
-  }, [isPersistent, input, setInput]);
+  }, [setInput, isAddingComment]);
 
   const insText = (insertion) => {
     const [text, selStart, selEnd] = insertText(

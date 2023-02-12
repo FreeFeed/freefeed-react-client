@@ -119,12 +119,11 @@ class Post extends Component {
   attLoadingCompleted = () => this.setState({ attLoading: false });
 
   handleCommentClick = () => {
-    if (this.props.isSinglePost) {
+    if (this.props.isCommenting) {
       this.context.input?.focus();
-      return;
+    } else {
+      this.props.toggleCommenting(this.props.id);
     }
-
-    this.props.toggleCommenting(this.props.id);
   };
 
   handleDeletePost =
