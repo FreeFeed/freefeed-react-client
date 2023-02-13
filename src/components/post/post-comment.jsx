@@ -348,6 +348,7 @@ class PostComment extends Component {
           onCommentLinkClick={this.props.onCommentLinkClick}
           arrowsLeft={this.state.previewLeft}
           arrowsTop={this.state.previewTop}
+          showMedia={this.props.showMedia}
         />
       )
     );
