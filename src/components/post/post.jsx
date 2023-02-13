@@ -121,6 +121,7 @@ class Post extends Component {
 
   handleCommentClick = () => {
     if (this.props.isCommenting) {
+      this.context.input?.scrollIntoView({ block: 'center', behavior: 'smooth' });
       this.context.input?.focus();
     } else {
       prepareAsyncFocus();
