@@ -8,6 +8,7 @@ import Post from './post/post';
 import { PostRecentlyHidden } from './post/post-hides-ui';
 import { joinPostData } from './select-utils';
 import { isMediaAttachment } from './media-viewer';
+import { PostContextProvider } from './post/post-context';
 
 const HiddenEntriesToggle = (props) => {
   const entriesForm = props.count > 1 ? 'entries' : 'entry';
@@ -164,32 +165,34 @@ function FeedEntry({ post, section, ...props }) {
       hiddenByCriteria={post.hiddenByCriteria}
     />
   ) : (
-    <Post
-      {...post}
-      user={props.user}
-      isInHomeFeed={props.isInHomeFeed}
-      isInUserFeed={props.isInUserFeed}
-      showMoreComments={props.showMoreComments}
-      showMoreLikes={props.showMoreLikes}
-      toggleEditingPost={props.toggleEditingPost}
-      cancelEditingPost={props.cancelEditingPost}
-      saveEditingPost={props.saveEditingPost}
-      deletePost={props.deletePost}
-      addAttachmentResponse={props.addAttachmentResponse}
-      showMedia={props.showMedia}
-      toggleCommenting={props.toggleCommenting}
-      addComment={props.addComment}
-      likePost={props.likePost}
-      unlikePost={props.unlikePost}
-      hidePost={props.hidePost}
-      unhidePost={props.unhidePost}
-      toggleModeratingComments={props.toggleModeratingComments}
-      disableComments={props.disableComments}
-      enableComments={props.enableComments}
-      commentEdit={props.commentEdit}
-      highlightTerms={props.highlightTerms}
-      setFinalHideLinkOffset={onPostUnmount}
-      hideEnabled={props.separateHiddenEntries}
-    />
+    <PostContextProvider>
+      <Post
+        {...post}
+        user={props.user}
+        isInHomeFeed={props.isInHomeFeed}
+        isInUserFeed={props.isInUserFeed}
+        showMoreComments={props.showMoreComments}
+        showMoreLikes={props.showMoreLikes}
+        toggleEditingPost={props.toggleEditingPost}
+        cancelEditingPost={props.cancelEditingPost}
+        saveEditingPost={props.saveEditingPost}
+        deletePost={props.deletePost}
+        addAttachmentResponse={props.addAttachmentResponse}
+        showMedia={props.showMedia}
+        toggleCommenting={props.toggleCommenting}
+        addComment={props.addComment}
+        likePost={props.likePost}
+        unlikePost={props.unlikePost}
+        hidePost={props.hidePost}
+        unhidePost={props.unhidePost}
+        toggleModeratingComments={props.toggleModeratingComments}
+        disableComments={props.disableComments}
+        enableComments={props.enableComments}
+        commentEdit={props.commentEdit}
+        highlightTerms={props.highlightTerms}
+        setFinalHideLinkOffset={onPostUnmount}
+        hideEnabled={props.separateHiddenEntries}
+      />
+    </PostContextProvider>
   );
 }

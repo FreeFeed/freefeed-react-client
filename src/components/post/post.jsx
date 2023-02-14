@@ -40,6 +40,7 @@ import { UserPicture } from '../user-picture';
 import { SubmitModeHint } from '../submit-mode-hint';
 import { SubmittableTextarea } from '../submittable-textarea';
 
+import { prepareAsyncFocus } from '../../utils/prepare-async-focus';
 import { UnhideOptions, HideLink } from './post-hides-ui';
 import PostMoreLink from './post-more-link';
 import PostLikeLink from './post-like-link';
@@ -119,12 +120,13 @@ class Post extends Component {
   attLoadingCompleted = () => this.setState({ attLoading: false });
 
   handleCommentClick = () => {
-    if (this.props.isSinglePost) {
+    if (this.props.isCommenting) {
+      this.context.input?.scrollIntoView({ block: 'center', behavior: 'smooth' });
       this.context.input?.focus();
-      return;
+    } else {
+      prepareAsyncFocus();
+      this.props.toggleCommenting(this.props.id);
     }
-
-    this.props.toggleCommenting(this.props.id);
   };
 
   handleDeletePost =
