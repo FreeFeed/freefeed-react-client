@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.116] - Not released
+### Fixed
+- The "Add comment" input on iOS in the feed view is now correctly focused
+  after creation.
+- Broken lightbox view from the comment preview modal window.
+### Changed
+- The "Comment" link now always opened and focus the "Add comment" input.
+  Previously, a second click closed the input field.
+
 ## [1.115] - 2023-02-10
 ### Added
 - Confirmation with short info on click on every "Block user" button.
