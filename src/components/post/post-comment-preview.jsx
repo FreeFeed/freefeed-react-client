@@ -27,6 +27,7 @@ export function PostCommentPreview({
   onCommentLinkClick,
   arrowsLeft = 0,
   arrowsTop = 0,
+  showMedia,
 }) {
   const dispatch = useDispatch();
   const allComments = useSelector((state) => state.comments);
@@ -126,7 +127,7 @@ export function PostCommentPreview({
               config={commentReadmoreConfig}
               bonusInfo={commentTail}
             >
-              <PieceOfText text={commentBody} />
+              <PieceOfText text={commentBody} showMedia={showMedia} />
               {commentTail}
             </Expandable>
           )}
