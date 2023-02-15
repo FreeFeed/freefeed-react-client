@@ -9,6 +9,7 @@ import PaginatedView from './paginated-view';
 import ErrorBoundary from './error-boundary';
 import UserName from './user-name';
 import { SignInLink } from './sign-in-link';
+import { UserPicture } from './user-picture';
 
 const getAuthorName = ({ postAuthor, createdUser, group }) => {
   if (group && group.username) {
@@ -351,19 +352,37 @@ const notificationClasses = {
 
 const nop = () => false;
 
-const Notification = (event) => {
-  return (
-    <div
-      key={event.id}
-      className={`single-notification ${notificationClasses[event.event_type] || ''}`}
-    >
-      {(notificationTemplates[event.event_type] || nop)(event)}
-      <div>
-        <TimeDisplay timeStamp={event.date} />
-      </div>
+function userPictureSource(event) {
+  if (
+    ['bans_in_group_disabled', 'bans_in_group_enabled', 'group_created'].includes(
+      event.event_type,
+    ) &&
+    event.recipient_user_id === event.created_user_id
+  ) {
+    return event.group;
+  }
+  if (['banned_user', 'unbanned_user'].includes(event.event_type)) {
+    return event.affectedUser;
+  }
+  return event.createdUser;
+}
+
+const Notification = (event) => (
+  <div
+    key={event.id}
+    className={`single-notification ${notificationClasses[event.event_type] || ''}`}
+  >
+    <div className="single-notification__picture">
+      <UserPicture user={userPictureSource(event)} loading="lazy" />
     </div>
-  );
-};
+    <div className="single-notification__headline">
+      {(notificationTemplates[event.event_type] || nop)(event)}
+    </div>
+    <div className="single-notification__date">
+      <TimeDisplay timeStamp={event.date} />
+    </div>
+  </div>
+);
 
 const isFilterActive = (filterName, filter) => filter && filter.includes(filterName);
 
