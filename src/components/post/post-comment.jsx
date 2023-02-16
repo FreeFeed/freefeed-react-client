@@ -165,7 +165,6 @@ class PostComment extends Component {
     }
     const ownComment = this.props.currentUser.id === this.props.user?.id;
     return {
-      ownComment,
       canLike: !ownComment && !this.isHidden(),
       canReply: !this.isHidden() && this.props.canAddComment,
       canDelete: this.props.isEditable || this.props.isDeletable,
@@ -182,7 +181,7 @@ class PostComment extends Component {
   onMoreMenuOpened = (moreMenuOpened) => this.setState({ moreMenuOpened });
 
   commentTail() {
-    const { canLike, canReply, canDelete, ownComment } = this.possibleActions();
+    const { canLike, canReply, canDelete } = this.possibleActions();
     return (
       <span
         aria-label={
@@ -227,7 +226,7 @@ class PostComment extends Component {
                   id={this.props.id}
                   authorUsername={this.props.user?.username}
                   doEdit={this.props.isEditable && this.handleEditOrCancel}
-                  doDelete={canDelete && ownComment && this.handleDeleteComment}
+                  doDelete={canDelete && this.handleDeleteComment}
                   doReply={canReply && this.reply}
                   doMention={canReply && this.mention}
                   doLike={canLike && !this.props.hasOwnLike && this.like}
