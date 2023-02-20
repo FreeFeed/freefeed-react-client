@@ -1,8 +1,12 @@
 /* global CONFIG */
-import { useMemo } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { useCallback, useEffect, useMemo } from 'react';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
+import { uniq } from 'lodash';
+import { getCommentsByIds, getPostsByIds, showMedia } from '../redux/action-creators';
+import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
+import { postReadmoreConfig } from '../utils/readmore-config';
 import { Throbber } from './throbber';
 import TimeDisplay from './time-display';
 import PaginatedView from './paginated-view';
@@ -10,6 +14,8 @@ import ErrorBoundary from './error-boundary';
 import UserName from './user-name';
 import { SignInLink } from './sign-in-link';
 import { UserPicture } from './user-picture';
+import PieceOfText from './piece-of-text';
+import Expandable from './expandable';
 
 const getAuthorName = ({ postAuthor, createdUser, group }) => {
   if (group && group.username) {
@@ -367,94 +373,156 @@ function userPictureSource(event) {
   return event.createdUser;
 }
 
-const Notification = (event) => (
-  <div
-    key={event.id}
-    className={`single-notification ${notificationClasses[event.event_type] || ''}`}
-  >
-    <div className="single-notification__picture">
-      <UserPicture user={userPictureSource(event)} loading="lazy" />
+function mainEventLink(event) {
+  if (event.comment_id) {
+    return generateCommentUrl(event);
+  } else if (event.post_id) {
+    return generatePostUrl(event);
+  }
+  return null;
+}
+
+function Notification({ event }) {
+  const dispatch = useDispatch();
+  const allPosts = useSelector((state) => state.posts);
+  const allComments = useSelector((state) => state.comments);
+  const readMoreStyle = useSelector((state) => state.user.frontendPreferences.readMoreStyle);
+  const doShowMedia = useCallback((...args) => dispatch(showMedia(...args)), [dispatch]);
+  const shouldBeContent = event.comment_id || event.post_id;
+  const content =
+    shouldBeContent &&
+    (
+      (event.comment_id && allComments[event.comment_id]) ||
+      (event.post_id && allPosts[event.post_id])
+    )?.body;
+  const mainLink = mainEventLink(event);
+  return (
+    <div className={`single-notification ${notificationClasses[event.event_type] || ''}`}>
+      <div className="single-notification__picture">
+        <UserPicture user={userPictureSource(event)} loading="lazy" />
+      </div>
+      <div className="single-notification__headline">
+        {(notificationTemplates[event.event_type] || nop)(event)}
+      </div>
+      <div className="single-notification__content">
+        {content ? (
+          <Expandable
+            expanded={readMoreStyle === READMORE_STYLE_COMPACT}
+            config={postReadmoreConfig}
+          >
+            <PieceOfText text={content} readMoreStyle={readMoreStyle} showMedia={doShowMedia} />
+          </Expandable>
+        ) : shouldBeContent ? (
+          <em>Text not available</em>
+        ) : null}
+      </div>
+      <div className="single-notification__date">
+        {mainLink ? (
+          <Link to={mainLink}>
+            <TimeDisplay timeStamp={event.date} />
+          </Link>
+        ) : (
+          <TimeDisplay timeStamp={event.date} />
+        )}
+      </div>
     </div>
-    <div className="single-notification__headline">
-      {(notificationTemplates[event.event_type] || nop)(event)}
-    </div>
-    <div className="single-notification__date">
-      <TimeDisplay timeStamp={event.date} />
-    </div>
-  </div>
-);
+  );
+}
 
 const isFilterActive = (filterName, filter) => filter && filter.includes(filterName);
 
-const Notifications = (props) => (
-  <div className="box notifications">
-    <ErrorBoundary>
-      <div className="box-header-timeline" role="heading">
-        Notifications
-        {props.isLoading && (
-          <span className="notifications-throbber">
-            <Throbber />
-          </span>
-        )}
-      </div>
-      <div className="filter">
-        <div>Show: </div>
-        <Link
-          className={!props.location.query.filter ? 'active' : ''}
-          to={{ pathname: props.location.pathname, query: {} }}
-        >
-          Everything
-        </Link>
-        <Link
-          className={isFilterActive('mentions', props.location.query.filter) ? 'active' : ''}
-          to={{ pathname: props.location.pathname, query: { filter: 'mentions' } }}
-        >
-          Mentions
-        </Link>
-        <Link
-          className={isFilterActive('subscriptions', props.location.query.filter) ? 'active' : ''}
-          to={{ pathname: props.location.pathname, query: { filter: 'subscriptions' } }}
-        >
-          Subscriptions
-        </Link>
-        <Link
-          className={isFilterActive('groups', props.location.query.filter) ? 'active' : ''}
-          to={{ pathname: props.location.pathname, query: { filter: 'groups' } }}
-        >
-          Groups
-        </Link>
-        <Link
-          className={isFilterActive('directs', props.location.query.filter) ? 'active' : ''}
-          to={{ pathname: props.location.pathname, query: { filter: 'directs' } }}
-        >
-          Direct messages
-        </Link>
-        <Link
-          className={isFilterActive('bans', props.location.query.filter) ? 'active' : ''}
-          to={{ pathname: props.location.pathname, query: { filter: 'bans' } }}
-        >
-          Bans
-        </Link>
-      </div>
-      {props.authenticated ? (
-        <PaginatedView routes={props.routes} location={props.location}>
-          <div className="notification-list">
-            {props.loading
-              ? 'Loading'
-              : props.events.length > 0
-              ? props.events.map(Notification)
-              : 'No notifications yet'}
-          </div>
-        </PaginatedView>
-      ) : (
-        <div className="alert alert-danger" role="alert">
-          You must <SignInLink>sign in</SignInLink> or <Link to="/signup">sign up</Link> before
-          visiting this page.
+function Notifications(props) {
+  const dispatch = useDispatch();
+  const postIds = useMemo(
+    () =>
+      uniq(props.events.map((event) => !event.comment_id && event.post_id).filter(Boolean)).sort(),
+    [props.events],
+  );
+  const commentIds = useMemo(
+    () => uniq(props.events.map((event) => event.comment_id).filter(Boolean)).sort(),
+    [props.events],
+  );
+
+  useEffect(() => {
+    postIds.length > 0 && dispatch(getPostsByIds(postIds));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, postIds.join(',')]);
+
+  useEffect(() => {
+    commentIds.length > 0 && dispatch(getCommentsByIds(commentIds));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, commentIds.join(',')]);
+
+  return (
+    <div className="box notifications">
+      <ErrorBoundary>
+        <div className="box-header-timeline" role="heading">
+          Notifications
+          {props.isLoading && (
+            <span className="notifications-throbber">
+              <Throbber />
+            </span>
+          )}
         </div>
-      )}
-    </ErrorBoundary>
-  </div>
-);
+        <div className="filter">
+          <div>Show: </div>
+          <Link
+            className={!props.location.query.filter ? 'active' : ''}
+            to={{ pathname: props.location.pathname, query: {} }}
+          >
+            Everything
+          </Link>
+          <Link
+            className={isFilterActive('mentions', props.location.query.filter) ? 'active' : ''}
+            to={{ pathname: props.location.pathname, query: { filter: 'mentions' } }}
+          >
+            Mentions
+          </Link>
+          <Link
+            className={isFilterActive('subscriptions', props.location.query.filter) ? 'active' : ''}
+            to={{ pathname: props.location.pathname, query: { filter: 'subscriptions' } }}
+          >
+            Subscriptions
+          </Link>
+          <Link
+            className={isFilterActive('groups', props.location.query.filter) ? 'active' : ''}
+            to={{ pathname: props.location.pathname, query: { filter: 'groups' } }}
+          >
+            Groups
+          </Link>
+          <Link
+            className={isFilterActive('directs', props.location.query.filter) ? 'active' : ''}
+            to={{ pathname: props.location.pathname, query: { filter: 'directs' } }}
+          >
+            Direct messages
+          </Link>
+          <Link
+            className={isFilterActive('bans', props.location.query.filter) ? 'active' : ''}
+            to={{ pathname: props.location.pathname, query: { filter: 'bans' } }}
+          >
+            Bans
+          </Link>
+        </div>
+        {props.authenticated ? (
+          <PaginatedView routes={props.routes} location={props.location}>
+            <div className="notification-list">
+              {props.loading
+                ? 'Loading'
+                : props.events.length > 0
+                ? props.events.map((e) => <Notification event={e} key={e.id} />)
+                : 'No notifications yet'}
+            </div>
+          </PaginatedView>
+        ) : (
+          <div className="alert alert-danger" role="alert">
+            You must <SignInLink>sign in</SignInLink> or <Link to="/signup">sign up</Link> before
+            visiting this page.
+          </div>
+        )}
+      </ErrorBoundary>
+    </div>
+  );
+}
 
 const mock = {};
 

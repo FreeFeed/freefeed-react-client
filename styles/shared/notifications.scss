@@ -34,6 +34,7 @@
     grid-template-columns: min-content 1fr;
     grid-template-areas:
       'picture headline'
+      'picture content'
       'picture date';
     margin-bottom: 1em;
     padding-bottom: 1em;
@@ -53,9 +54,24 @@
       grid-area: headline;
     }
 
+    &__content {
+      grid-area: content;
+      margin-top: 0.33em;
+      padding-left: 0.66em;
+      border-left: 0.3em solid #eee;
+
+      .dark-theme & {
+        border-left-color: $separator-color;
+      }
+
+      &:empty {
+        display: none;
+      }
+    }
+
     &__date {
       grid-area: date;
-      margin-top: 1em;
+      margin-top: 0.66em;
       color: #666;
 
       .dark-theme & {
