@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.116] - Not released
+### Added
+- Rich event preview on Notifications page. Every event now has a user picture
+  and text of comment or post (if this event is comment- or post-related).
+
 ## [1.115.2] - 2023-02-21
 ### Fixed
 - Incorrect "Block user" popup display on user card.
