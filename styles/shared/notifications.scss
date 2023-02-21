@@ -40,6 +40,13 @@
     padding-bottom: 1em;
     border-bottom: 1px solid #eee;
 
+    @media (max-width: 450px) {
+      grid-template-areas:
+        'picture headline'
+        'content content'
+        'date date';
+    }
+
     .dark-theme & {
       border-bottom-color: $separator-color;
     }
@@ -48,6 +55,10 @@
       grid-area: picture;
       display: flex;
       margin-right: 1em;
+
+      @media (max-width: 450px) {
+        margin-right: 0.5em;
+      }
     }
 
     &__headline {
@@ -59,6 +70,10 @@
       margin-top: 0.33em;
       padding-left: 0.66em;
       border-left: 0.3em solid #eee;
+
+      @media (max-width: 450px) {
+        margin-top: 0.66em;
+      }
 
       .dark-theme & {
         border-left-color: $separator-color;
