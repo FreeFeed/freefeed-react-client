@@ -372,6 +372,18 @@ ReactDOM.render(
   document.querySelector('#app'),
 );
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .register(`${location.origin}/service-worker.js`)
+    // eslint-disable-next-line promise/always-return
+    .then((reg) => {
+      console.log('Service worker registered.', reg);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
 function checkPath(Component, checker) {
   return (props) => {
     return checker(props) ? <Component {...props} /> : <NotFound {...props} />;
