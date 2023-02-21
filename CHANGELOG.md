@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Experimental
 ### Changed
 - Take Save out of "more" menu
+### Added
+- Rich event preview on Notifications page. Every event now has a user picture
+  and text of comment or post (if this event is comment- or post-related).
 
 ## [1.115.2] - 2023-02-21
 ### Fixed

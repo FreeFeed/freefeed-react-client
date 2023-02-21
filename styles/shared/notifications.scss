@@ -30,8 +30,53 @@
   }
 
   .single-notification {
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    grid-template-areas:
+      'picture headline'
+      'picture content'
+      'picture date';
+    margin-bottom: 1em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid #eee;
+
+    .dark-theme & {
+      border-bottom-color: $separator-color;
+    }
+
+    &__picture {
+      grid-area: picture;
+      display: flex;
+      margin-right: 1em;
+    }
+
+    &__headline {
+      grid-area: headline;
+    }
+
+    &__content {
+      grid-area: content;
+      margin-top: 0.33em;
+      padding-left: 0.66em;
+      border-left: 0.3em solid #eee;
+
+      .dark-theme & {
+        border-left-color: $separator-color;
+      }
+
+      &:empty {
+        display: none;
+      }
+    }
+
+    &__date {
+      grid-area: date;
+      margin-top: 0.66em;
+      color: #666;
+
+      .dark-theme & {
+        color: $text-color-lighter;
+      }
+    }
   }
 }
