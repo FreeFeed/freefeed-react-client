@@ -9,11 +9,11 @@ import { ButtonLink } from './button-link';
 import { Icon } from './fontawesome-icons';
 
 import styles from './user-profile-head.module.scss';
-import { BanDialog } from './ban-dialog';
-import { DisableBansDialog } from './disable-bans-dialog';
 import { useDropDownKbd } from './hooks/drop-down-kbd';
 import { CLOSE_ON_ANY_CLICK, BOTTOM_LEFT } from './hooks/drop-down';
 import { MoreWithTriangle } from './more-with-triangle';
+import { useShowBanDialog } from './dialog/ban-dialog';
+import { useShowDisableBansDialog } from './dialog/disable-bans-dialog';
 
 // eslint-disable-next-line complexity
 export function UserProfileHeadActions({
@@ -37,6 +37,9 @@ export function UserProfileHeadActions({
   toggleShowBans,
   isHidden,
 }) {
+  const showBanDialog = useShowBanDialog(user);
+  const showDisableBansDialog = useShowDisableBansDialog(user, isCurrentUserAdmin);
+
   return (
     <div className={styles.actions}>
       {isBanned ? (
@@ -109,69 +112,61 @@ export function UserProfileHeadActions({
               )}
               {!inSubscriptions && (
                 <li>
-                  <BanDialog user={user}>
-                    {(onClick) => (
-                      <ActionLink onClick={onClick} status={toggleBanned.status}>
-                        Block user
-                      </ActionLink>
-                    )}
-                  </BanDialog>
+                  <ActionLink onClick={showBanDialog} status={toggleBanned.status}>
+                    Block user
+                  </ActionLink>
                 </li>
               )}
             </ul>
           ) : (
-            <DisableBansDialog group={user} isAdmin={isCurrentUserAdmin}>
-              {(onDisableBansClick) => (
-                <GroupActions>
-                  {(ref) => (
-                    <ul ref={ref} className={menuStyles.list}>
-                      {!user.isGone && inSubscriptions && (
-                        <>
-                          <li className={menuStyles.item}>
-                            <Link
-                              className={menuStyles.link}
-                              to={`/filter/direct?invite=${user.username}`}
-                            >
-                              Invite
-                            </Link>
-                          </li>
-                          <li className={menuStyles.item}>
-                            <ActionLink className={menuStyles.link} {...togglePinned}>
-                              {isPinned ? 'Unpin from sidebar' : 'Pin to sidebar'}
-                            </ActionLink>
-                          </li>
-                        </>
-                      )}
-                      {!user.isGone && (
-                        <li className={menuStyles.item}>
-                          <ActionLink className={menuStyles.link} {...toggleHidden}>
-                            {isHidden ? 'Unhide' : 'Hide'} in Home
-                          </ActionLink>
-                        </li>
-                      )}
-                      {user.youCan.includes('disable_bans') && (
-                        <li className={menuStyles.item}>
-                          <ActionLink
-                            className={menuStyles.link}
-                            {...toggleShowBans}
-                            onClick={onDisableBansClick}
-                          >
-                            Disable blocking in group
-                          </ActionLink>
-                        </li>
-                      )}
-                      {user.youCan.includes('undisable_bans') && (
-                        <li className={menuStyles.item}>
-                          <ActionLink className={menuStyles.link} {...toggleShowBans}>
-                            Enable blocking in group
-                          </ActionLink>
-                        </li>
-                      )}
-                    </ul>
+            <GroupActions>
+              {(ref) => (
+                <ul ref={ref} className={menuStyles.list}>
+                  {!user.isGone && inSubscriptions && (
+                    <>
+                      <li className={menuStyles.item}>
+                        <Link
+                          className={menuStyles.link}
+                          to={`/filter/direct?invite=${user.username}`}
+                        >
+                          Invite
+                        </Link>
+                      </li>
+                      <li className={menuStyles.item}>
+                        <ActionLink className={menuStyles.link} {...togglePinned}>
+                          {isPinned ? 'Unpin from sidebar' : 'Pin to sidebar'}
+                        </ActionLink>
+                      </li>
+                    </>
                   )}
-                </GroupActions>
+                  {!user.isGone && (
+                    <li className={menuStyles.item}>
+                      <ActionLink className={menuStyles.link} {...toggleHidden}>
+                        {isHidden ? 'Unhide' : 'Hide'} in Home
+                      </ActionLink>
+                    </li>
+                  )}
+                  {user.youCan.includes('disable_bans') && (
+                    <li className={menuStyles.item}>
+                      <ActionLink
+                        className={menuStyles.link}
+                        {...toggleShowBans}
+                        onClick={showDisableBansDialog}
+                      >
+                        Disable blocking in group
+                      </ActionLink>
+                    </li>
+                  )}
+                  {user.youCan.includes('undisable_bans') && (
+                    <li className={menuStyles.item}>
+                      <ActionLink className={menuStyles.link} {...toggleShowBans}>
+                        Enable blocking in group
+                      </ActionLink>
+                    </li>
+                  )}
+                </ul>
               )}
-            </DisableBansDialog>
+            </GroupActions>
           )}
         </>
       )}

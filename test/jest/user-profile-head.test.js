@@ -200,7 +200,7 @@ describe('UserProfileHead', () => {
     fireEvent.click(screen.getByText('Unblock'));
     expect(unbanMock).toHaveBeenCalledTimes(1);
     expect(unbanMock).toHaveBeenCalledWith(fakeState.users[UID]);
-    expect(useDispatchMock).toHaveBeenCalledTimes(1);
+    expect(useDispatchMock).toHaveBeenCalledTimes(3);
   });
 
   it('Correctly displays that we are mutually subscribed', () => {
@@ -250,7 +250,7 @@ describe('UserProfileHead', () => {
     );
     expect(kickMock).toHaveBeenCalledTimes(1);
     expect(kickMock).toHaveBeenCalledWith(fakeState.users[UID]);
-    expect(useDispatchMock).toHaveBeenCalledTimes(2);
+    expect(useDispatchMock).toHaveBeenCalledTimes(3);
   });
 
   it('Correctly displays that I can send a subscription request', () => {
@@ -305,7 +305,7 @@ describe('UserProfileHead', () => {
     expect(confirmMock).toHaveBeenCalledWith('Are you sure you want to revoke this request?');
     expect(revokeMock).toHaveBeenCalledTimes(1);
     expect(revokeMock).toHaveBeenCalledWith(fakeState.users[UID]);
-    expect(useDispatchMock).toHaveBeenCalledTimes(2);
+    expect(useDispatchMock).toHaveBeenCalledTimes(3);
   });
 
   it('Correctly displays that I am subscribed to them and lets me unsubscribe', () => {
@@ -331,7 +331,7 @@ describe('UserProfileHead', () => {
     );
     expect(unsubscribeMock).toHaveBeenCalledTimes(1);
     expect(unsubscribeMock).toHaveBeenCalledWith(fakeState.users[UID]);
-    expect(useDispatchMock).toHaveBeenCalledTimes(1);
+    expect(useDispatchMock).toHaveBeenCalledTimes(3);
   });
 
   it("Correctly displays user's hidden status and lets me unhide them", () => {
@@ -357,7 +357,7 @@ describe('UserProfileHead', () => {
     fireEvent.click(screen.getByText('Unhide in Home'));
     expect(unhideMock).toHaveBeenCalledTimes(1);
     expect(unhideMock).toHaveBeenCalledWith({ type: 'USERNAME', value: USERNAME }, null, false);
-    expect(useDispatchMock).toHaveBeenCalledTimes(2);
+    expect(useDispatchMock).toHaveBeenCalledTimes(3);
   });
 
   it('Correctly displays that user is in some of my lists', () => {
@@ -419,7 +419,7 @@ describe('UserProfileHead', () => {
     fireEvent.keyDown(screen.getByText('Pin to sidebar'), { keyCode: 13 });
     expect(pinMock).toHaveBeenCalledTimes(1);
     expect(pinMock).toHaveBeenCalledWith(UID);
-    expect(useDispatchMock).toHaveBeenCalledTimes(2);
+    expect(useDispatchMock).toHaveBeenCalledTimes(3);
   });
 
   it('Renders a group header if I am an admin', () => {
