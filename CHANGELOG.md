@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.116] - Not released
 ### Fixed
 - Incorrect "Block user" popup display on user card.
+- "Add comment" link doesn't properly focus input on iOS.
 
 ## [1.115.1] - 2023-02-14
 ### Fixed
