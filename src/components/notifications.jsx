@@ -4,6 +4,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
 import { uniq } from 'lodash';
+import { faBell } from '@fortawesome/free-regular-svg-icons';
 import { getCommentsByIds, getPostsByIds, showMedia } from '../redux/action-creators';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
@@ -16,6 +17,7 @@ import { SignInLink } from './sign-in-link';
 import { UserPicture } from './user-picture';
 import PieceOfText from './piece-of-text';
 import Expandable from './expandable';
+import { Icon } from './fontawesome-icons';
 
 const getAuthorName = ({ postAuthor, createdUser, group }) => {
   if (group && group.username) {
@@ -417,6 +419,7 @@ function Notification({ event }) {
         ) : null}
       </div>
       <div className="single-notification__date">
+        <Icon icon={faBell} className="single-notification__date-icon" />
         {mainLink ? (
           <Link to={mainLink}>
             <TimeDisplay timeStamp={event.date} />

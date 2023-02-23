@@ -68,7 +68,7 @@
     &__content {
       grid-area: content;
       margin-top: 0.33em;
-      padding-left: 0.66em;
+      padding-left: 0.9em;
       border-left: 0.3em solid #eee;
 
       @media (max-width: 450px) {
@@ -76,7 +76,9 @@
       }
 
       .dark-theme & {
-        border-left-color: $separator-color;
+        --bg-color: #{$bg-color};
+
+        border-left-color: #444444;
       }
 
       &:empty {
@@ -88,10 +90,18 @@
       grid-area: date;
       margin-top: 0.66em;
       color: #666;
+      display: flex;
+      align-items: center;
 
       .dark-theme & {
         color: $text-color-lighter;
       }
+    }
+
+    &__date-icon {
+      flex: none;
+      margin-right: 2.6px;
+      opacity: 0.8;
     }
   }
 }
