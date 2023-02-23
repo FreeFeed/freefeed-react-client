@@ -90,10 +90,18 @@
       grid-area: date;
       margin-top: 0.66em;
       color: #666;
+      display: flex;
+      align-items: center;
 
       .dark-theme & {
         color: $text-color-lighter;
       }
+    }
+
+    &__date-icon {
+      flex: none;
+      margin-right: 2.6px;
+      opacity: 0.8;
     }
   }
 }
