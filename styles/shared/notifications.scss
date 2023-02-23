@@ -68,7 +68,7 @@
     &__content {
       grid-area: content;
       margin-top: 0.33em;
-      padding-left: 0.66em;
+      padding-left: 0.9em;
       border-left: 0.3em solid #eee;
 
       @media (max-width: 450px) {
@@ -76,7 +76,9 @@
       }
 
       .dark-theme & {
-        border-left-color: $separator-color;
+        --bg-color: #{$bg-color};
+
+        border-left-color: #444444;
       }
 
       &:empty {
