@@ -66,6 +66,7 @@
         document.getElementsByTagName('h4')[0].innerHTML=''
     }
     function reloadPage(){
+        clearInterval(start);
         location.reload();
     }
     function checkOnline() {
@@ -74,7 +75,11 @@
             setTimeout(reloadPage,1000);
         }
     }
-    setInterval(checkOnline, 1000)
+    function start(){
+        setInterval(checkOnline, 1000);
+    }
+
+    start();
 </script>
 </body>
 
