@@ -54,7 +54,7 @@
     &__picture {
       grid-area: picture;
       display: flex;
-      margin-right: 1em;
+      margin-right: 0.75em;
 
       @media (max-width: 450px) {
         margin-right: 0.5em;

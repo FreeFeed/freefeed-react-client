@@ -401,7 +401,7 @@ function Notification({ event }) {
   return (
     <div className={`single-notification ${notificationClasses[event.event_type] || ''}`}>
       <div className="single-notification__picture">
-        <UserPicture user={userPictureSource(event)} loading="lazy" />
+        <UserPicture user={userPictureSource(event)} size={40} loading="lazy" />
       </div>
       <div className="single-notification__headline">
         {(notificationTemplates[event.event_type] || nop)(event)}
