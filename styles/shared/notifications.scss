@@ -42,9 +42,9 @@
 
     @media (max-width: 450px) {
       grid-template-areas:
+        'picture date'
         'picture headline'
-        'content content'
-        'date date';
+        'content content';
     }
 
     .dark-theme & {
@@ -69,9 +69,11 @@
       grid-area: content;
       margin-top: 0.33em;
       padding-left: 0.9em;
+      margin-left: 0.3em;
       border-left: 0.3em solid #eee;
 
       @media (max-width: 450px) {
+        margin-left: 0;
         margin-top: 0.66em;
       }
 
@@ -88,13 +90,18 @@
 
     &__date {
       grid-area: date;
-      margin-top: 0.66em;
+      margin-top: 0.5em;
       color: #666;
       display: flex;
       align-items: center;
 
       .dark-theme & {
         color: $text-color-lighter;
+      }
+
+      @media (max-width: 450px) {
+        margin-top: 0;
+        margin-bottom: 0.2em;
       }
     }
 
