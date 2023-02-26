@@ -23,12 +23,6 @@
   }
 }
 
-.pictureLarge {
-  width: 75px;
-  height: 75px;
-  font-size: 27px;
-}
-
 .pictureInline {
   width: 1em;
   height: 1em;
@@ -37,6 +31,7 @@
 
 .pictureEmpty {
   background-color: rgba(0, 0, 0, 0.1);
+
   :global(.dark-theme) & {
     background-color: rgba(255, 255, 255, 0.1);
   }
@@ -53,6 +48,7 @@
   border: 1px solid rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
   border-radius: 2px;
+
   :global(.dark-theme) & {
     border-color: rgba(255, 255, 255, 0.2);
   }
