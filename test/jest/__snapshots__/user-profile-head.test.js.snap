@@ -10,7 +10,8 @@ exports[`UserProfileHead Correctly displays that we are mutually subscribed 1`] 
       class="avatar"
     >
       <a
-        class="picture pictureLarge"
+        class="picture"
+        style="--userpic-size: 75px;"
       >
         <img
           alt="Profile picture of freefeed"
@@ -222,7 +223,8 @@ exports[`UserProfileHead Renders an error message if user is not found 1`] = `
       class="avatar"
     >
       <div
-        class="picture pictureLarge pictureEmpty"
+        class="picture pictureEmpty"
+        style="--userpic-size: 75px;"
       >
         +_+
       </div>
@@ -250,7 +252,8 @@ exports[`UserProfileHead Renders my own header and doesn't blow up 1`] = `
       class="avatar"
     >
       <a
-        class="picture pictureLarge"
+        class="picture"
+        style="--userpic-size: 75px;"
       >
         <img
           alt="Profile picture of freefeed"
@@ -419,7 +422,8 @@ exports[`UserProfileHead Renders nothing if user is not loaded yet 1`] = `
       class="avatar"
     >
       <div
-        class="picture pictureLarge pictureEmpty"
+        class="picture pictureEmpty"
+        style="--userpic-size: 75px;"
       >
         ...
       </div>
