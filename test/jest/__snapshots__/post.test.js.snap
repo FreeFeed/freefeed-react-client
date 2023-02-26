@@ -15,7 +15,8 @@ exports[`Post Renders a post and doesn't blow up 1`] = `
         class="post-userpic"
       >
         <a
-          class="picture pictureLarge post-userpic-img"
+          class="picture post-userpic-img"
+          style="--userpic-size: 75px;"
         >
           <img
             alt="Profile picture of author"
