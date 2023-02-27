@@ -18,6 +18,7 @@ import { UserPicture } from './user-picture';
 import PieceOfText from './piece-of-text';
 import Expandable from './expandable';
 import { Icon } from './fontawesome-icons';
+import { useBool } from './hooks/bool';
 
 const getAuthorName = ({ postAuthor, createdUser, group }) => {
   if (group && group.username) {
@@ -390,6 +391,7 @@ function Notification({ event }) {
   const allComments = useSelector((state) => state.comments);
   const readMoreStyle = useSelector((state) => state.user.frontendPreferences.readMoreStyle);
   const doShowMedia = useCallback((...args) => dispatch(showMedia(...args)), [dispatch]);
+  const [absTimestamps, toggleAbsTimestamps] = useBool(false);
   const shouldBeContent = event.comment_id || event.post_id;
   const content =
     shouldBeContent &&
@@ -419,13 +421,17 @@ function Notification({ event }) {
         ) : null}
       </div>
       <div className="single-notification__date">
-        <Icon icon={faBell} className="single-notification__date-icon" />
+        <Icon
+          icon={faBell}
+          className="single-notification__date-icon"
+          onClick={toggleAbsTimestamps}
+        />
         {mainLink ? (
           <Link to={mainLink}>
-            <TimeDisplay timeStamp={event.date} />
+            <TimeDisplay timeStamp={event.date} absolute={absTimestamps || null} />
           </Link>
         ) : (
-          <TimeDisplay timeStamp={event.date} />
+          <TimeDisplay timeStamp={event.date} absolute={absTimestamps || null} />
         )}
       </div>
     </div>
