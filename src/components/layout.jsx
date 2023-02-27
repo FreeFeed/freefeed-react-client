@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { faBug } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router';
 
-import { signOut, home } from '../redux/action-creators';
+import { signOut, home, setCurrentRoute } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
 import Footer from './footer';
 import Sidebar from './sidebar';
@@ -123,11 +123,32 @@ class Layout extends Component {
     }
   }
 
+  _prevRoute = null;
+  updateCurrentRoute() {
+    const { router } = this.props;
+    const route = router.routes[router.routes.length - 1];
+    if (route === this._prevRoute) {
+      return;
+    }
+    this._prevRoute = route;
+    this.props.setCurrentRoute({
+      name: route.name,
+      path: route.path,
+      params: router.params,
+    });
+  }
+
   componentDidMount() {
     window.addEventListener('dragenter', this.handleDragEnter);
     window.addEventListener('dragleave', this.handleDragLeave);
     window.addEventListener('dragover', this.handleDragOver);
     window.addEventListener('drop', this.handleDrop);
+
+    this.updateCurrentRoute();
+  }
+
+  componentDidUpdate() {
+    this.updateCurrentRoute();
   }
 
   componentWillUnmount() {
@@ -218,6 +239,7 @@ function mapDispatchToProps(dispatch) {
   return {
     signOut: () => dispatch(signOut()),
     home: () => dispatch(home()),
+    setCurrentRoute: (payload) => dispatch(setCurrentRoute(payload)),
   };
 }
 
