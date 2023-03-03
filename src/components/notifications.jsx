@@ -395,10 +395,7 @@ function Notification({ event }) {
   const shouldBeContent = event.comment_id || event.post_id;
   const content =
     shouldBeContent &&
-    (
-      (event.comment_id && allComments[event.comment_id]) ||
-      (event.post_id && allPosts[event.post_id])
-    )?.body;
+    (event.comment_id ? allComments[event.comment_id] : allPosts[event.post_id])?.body;
   const mainLink = mainEventLink(event);
   return (
     <div className={`single-notification ${notificationClasses[event.event_type] || ''}`}>
