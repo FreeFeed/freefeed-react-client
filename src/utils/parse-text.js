@@ -12,6 +12,7 @@ import {
   Arrows as TArrows,
 } from 'social-text-tokenizer';
 
+import { byRegexp, wordAdjacentChars } from 'social-text-tokenizer/cjs/lib';
 import {
   tokenizerStartSpoiler,
   tokenizerEndSpoiler,
@@ -28,17 +29,22 @@ export class Link extends TLink {
   localDomains = [];
   hostname = null;
   path = '/';
+  link;
 
   constructor(link, localDomains) {
     super(link.offset, link.text);
-
+    this.link = link;
     this.localDomains = localDomains;
 
-    const m = this.href.match(/^https?:\/\/([^/]+)(.*)/i);
+    const m = this.link.href.match(/^https?:\/\/([^/]+)(.*)/i);
     if (m) {
       this.hostname = m[1].toLowerCase();
       this.path = m[2] || '/';
     }
+  }
+
+  get href() {
+    return this.link.href;
   }
 
   get isLocal() {
@@ -126,6 +132,33 @@ const validateSpoilerTags = (tokenizer) => {
   };
 };
 
+export class RedditLink extends TLink {
+  get href() {
+    let path = this.text;
+    if (!path.startsWith('/')) {
+      path = `/${path}`;
+    }
+    return `https://www.reddit.com${path}`;
+  }
+}
+
+const redditLinks = () => {
+  const beforeChars = new RegExp(`[${wordAdjacentChars}]`);
+  const afterChars = new RegExp(`[${wordAdjacentChars.clone().removeChars('/')}]`);
+  return byRegexp(/\/?r\/[A-Za-z\d]\w{1,20}/g, (offset, text, match) => {
+    const charBefore = match.input.charAt(offset - 1);
+    const charAfter = match.input.charAt(offset + text.length);
+    if (charBefore !== '' && !beforeChars.test(charBefore)) {
+      return null;
+    }
+    if (charAfter !== '' && !afterChars.test(charAfter)) {
+      return null;
+    }
+
+    return new RedditLink(offset, text);
+  });
+};
+
 const tokenize = withText(
   validateSpoilerTags(
     combine(
@@ -134,6 +167,7 @@ const tokenize = withText(
       mentions(),
       foreignMentions(),
       links({ tldRe }),
+      redditLinks(),
       arrows(/\u2191+|\^([1-9]\d*|\^*)/g),
       tokenizerStartSpoiler,
       tokenizerEndSpoiler,
