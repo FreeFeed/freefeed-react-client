@@ -5,7 +5,6 @@ import { Link } from 'react-router';
 import classnames from 'classnames';
 import _ from 'lodash';
 import dateFormat from 'date-fns/format';
-import * as Sentry from '@sentry/react';
 import {
   faExclamationTriangle,
   faLock,
@@ -23,7 +22,6 @@ import { READMORE_STYLE_COMPACT } from '../../utils/frontend-preferences-options
 import { postReadmoreConfig } from '../../utils/readmore-config';
 import { savePost, hidePostsByCriterion, unhidePostsByCriteria } from '../../redux/action-creators';
 import { initialAsyncState } from '../../redux/async-helpers';
-import { makeJpegIfNeeded } from '../../utils/jpeg-if-needed';
 
 import { Throbber } from '../throbber';
 import { ButtonLink } from '../button-link';
@@ -38,9 +36,9 @@ import { destinationsPrivacy } from '../select-utils';
 import { Icon } from '../fontawesome-icons';
 import { UserPicture } from '../user-picture';
 import { SubmitModeHint } from '../submit-mode-hint';
-import { SubmittableTextarea } from '../submittable-textarea';
 
 import { prepareAsyncFocus } from '../../utils/prepare-async-focus';
+import { SmartTextarea } from '../smart-textarea';
 import { UnhideOptions, HideLink } from './post-hides-ui';
 import PostMoreLink from './post-more-link';
 import PostLikeLink from './post-like-link';
@@ -72,28 +70,8 @@ class Post extends Component {
     this.dropzoneObject = d;
   };
 
-  handlePaste = (e) => {
-    if (e.clipboardData) {
-      const { items } = e.clipboardData;
-      if (items) {
-        for (const item of items) {
-          if (item.type.includes('image/')) {
-            const blob = item.getAsFile();
-            if (!blob.name) {
-              blob.name = 'image.png';
-            }
-            makeJpegIfNeeded(blob)
-              .then((blob) => this.dropzoneObject.addFile(blob))
-              .catch((error) => {
-                Sentry.captureException(error, {
-                  level: 'error',
-                  tags: { area: 'upload' },
-                });
-              });
-          }
-        }
-      }
-    }
+  handleFile = (file) => {
+    this.dropzoneObject.addFile(file);
   };
 
   removeAttachment = (attachmentId) => {
@@ -178,8 +156,8 @@ class Post extends Component {
     this.props.enableComments(this.props.id);
   };
 
-  handlePostTextChange = (e) => {
-    this.setState({ editingText: e.target.value });
+  handlePostTextChange = (editingText) => {
+    this.setState({ editingText });
   };
 
   toggleEditingPost = () => {
@@ -584,13 +562,13 @@ class Post extends Component {
                   />
 
                   <div>
-                    <SubmittableTextarea
+                    <SmartTextarea
                       className="post-textarea"
                       ref={this.textareaRef}
                       value={this.state.editingText}
                       onSubmit={this.handleSubmit}
-                      onChange={this.handlePostTextChange}
-                      onPaste={this.handlePaste}
+                      onText={this.handlePostTextChange}
+                      onFile={this.handleFile}
                       autoFocus={true}
                       minRows={2}
                       maxRows={10}
