@@ -73,7 +73,7 @@ const UserLink = ({ user, recipient = null, atStart = false, fallback = 'Some us
 const postInGroup = (event) => (
   <>
     {postLink(event)}
-    {event.group.username && (
+    {event.group && (
       <>
         {' '}
         [in <UserLink user={event.group} />]
@@ -373,7 +373,13 @@ function userPictureSource(event) {
   if (['banned_user', 'unbanned_user'].includes(event.event_type)) {
     return event.affectedUser;
   }
-  return event.createdUser;
+  return [
+    event.createdUser,
+    event.group,
+    event.postAuthor,
+    event.affectedUser,
+    event.receiver,
+  ].find(Boolean);
 }
 
 function mainEventLink(event) {
@@ -530,8 +536,6 @@ function Notifications(props) {
   );
 }
 
-const mock = {};
-
 const mapStateToProps = (state) => {
   return {
     isLoading: state.notifications.loading,
@@ -541,13 +545,11 @@ const mapStateToProps = (state) => {
       return {
         ...event,
         createdUser:
-          state.users[event.created_user_id] || state.subscribers[event.created_user_id] || mock,
+          state.users[event.created_user_id] || state.subscribers[event.created_user_id] || null,
         affectedUser:
-          state.users[event.affected_user_id] || state.subscribers[event.affected_user_id] || mock,
-        group: state.users[event.group_id] || mock,
-        postAuthor: state.users[event.post_author_id],
-        post: state.posts[event.post_id] || mock,
-        comment: state.comments[event.comment_id] || mock,
+          state.users[event.affected_user_id] || state.subscribers[event.affected_user_id] || null,
+        group: state.users[event.group_id] || null,
+        postAuthor: state.users[event.post_author_id] || null,
         receiver: state.user,
       };
     }),
