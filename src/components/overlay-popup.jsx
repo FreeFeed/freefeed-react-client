@@ -39,8 +39,17 @@ export function OverlayPopup({
 
   // Turn off body scrolling while the popup is opened
   useEffect(() => {
+    const prevWidth = document.body.clientWidth;
     document.body.classList.add('body--no-scroll');
-    return () => document.body.classList.remove('body--no-scroll');
+    document.body.style.setProperty(
+      '--scrollbar-width',
+      `${(document.body.clientWidth - prevWidth).toString(10)}px`,
+    );
+
+    return () => {
+      document.body.classList.remove('body--no-scroll');
+      document.body.style.removeProperty('--scrollbar-width');
+    };
   }, []);
 
   return (
