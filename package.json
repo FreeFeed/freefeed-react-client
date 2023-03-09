@@ -1,6 +1,6 @@
 {
   "name": "reactive-pepyatka",
-  "version": "1.115.2",
+  "version": "1.116.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
@@ -42,7 +42,7 @@
     "recharts": "~2.1.16",
     "redux": "~4.1.2",
     "snarkdown": "~2.0.0",
-    "social-text-tokenizer": "~2.2.0",
+    "social-text-tokenizer": "~2.5.0",
     "socket.io-client": "~2.3.1",
     "tabbable": "~5.2.1",
     "ua-parser-js": "~1.0.33",

@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Rich event preview on Notifications page. Every event now has a user picture
   and text of comment or post (if this event is comment- or post-related).
+- Reddit's `r/subreddit` and `/r/subreddit` addresses are now auto-linked.
+### Changed
+- "Delete" item of the "More" menu is visible to the user for every comment in user’s own post
+- "Delete" item of the "More" menu is visible to a group admin for every comment
 
 ## [1.115.2] - 2023-02-21
 ### Fixed

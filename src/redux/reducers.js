@@ -2248,3 +2248,17 @@ export function invitedByMap(state = invitedByInitial, action) {
   }
   return state;
 }
+
+export function currentRoute(
+  state = {
+    name: '',
+    path: '',
+    params: {},
+  },
+  action,
+) {
+  if (action.type === ActionTypes.SET_CURRENT_ROUTE) {
+    return action.payload;
+  }
+  return state;
+}
