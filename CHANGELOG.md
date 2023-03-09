@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.116] - Not released
 ### Added
 - Reddit's `r/subreddit` and `/r/subreddit` addresses are now auto-linked.
+### Changed
+- "Delete" item of the "More" menu is visible to the user for every comment in user’s own post
+- "Delete" item of the "More" menu is visible to a group admin for every comment
 
 ## [1.115.2] - 2023-02-21
 ### Fixed
