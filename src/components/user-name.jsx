@@ -107,7 +107,12 @@ export default function UserName({
       </span>
       {opened && (
         <Portal>
-          <UserCard username={username} forwardedRef={menuRef} pivotRef={pivotRef} />
+          <UserCard
+            username={username}
+            forwardedRef={menuRef}
+            pivotRef={pivotRef}
+            setOpened={setOpened}
+          />
         </Portal>
       )}
     </ErrorBoundary>

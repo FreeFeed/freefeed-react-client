@@ -1,4 +1,4 @@
-import { Component, createRef } from 'react';
+import { Component, createRef, useCallback } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -11,7 +11,7 @@ import UserRelationshipStatus from './user-relationships-status';
 import ErrorBoundary from './error-boundary';
 import { userActions, canAcceptDirects } from './select-utils';
 import { UserPicture } from './user-picture';
-import { BanDialog } from './ban-dialog';
+import { useShowBanDialog } from './dialog/ban-dialog';
 
 class UserCard extends Component {
   constructor(props) {
@@ -175,9 +175,7 @@ class UserCard extends Component {
 
               {props.user.type !== 'group' && !props.subscribed ? (
                 <span className="user-card-action">
-                  <BanDialog user={props.user}>
-                    {(onClick) => <a onClick={onClick}>Block</a>}
-                  </BanDialog>
+                  <BlockLink user={props.user} setOpened={props.setOpened} />
                 </span>
               ) : props.amIGroupAdmin ? (
                 <span className="user-card-action">
@@ -264,4 +262,13 @@ function updateArrowPosition(leader, follower, arrow) {
   arrow.style.left = `${arrowX}px`;
 
   return true;
+}
+
+function BlockLink({ user, setOpened }) {
+  const showBanDialog = useShowBanDialog(user);
+  const onClick = useCallback(
+    () => (showBanDialog(), setOpened(false)),
+    [setOpened, showBanDialog],
+  );
+  return <a onClick={onClick}>Block</a>;
 }

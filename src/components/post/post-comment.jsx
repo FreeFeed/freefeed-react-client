@@ -392,6 +392,7 @@ function selectState(state, ownProps) {
   const isReplyToBanned = (() => {
     if (
       !state.user.frontendPreferences?.comments.hideRepliesToBanned ||
+      isBansDisabled(ownProps.postId, state) ||
       ownProps.createdBy === state.user.id
     ) {
       return false;
@@ -410,3 +411,10 @@ function selectState(state, ownProps) {
 }
 
 export default connect(selectState, null, null, { forwardRef: true })(PostComment);
+
+function isBansDisabled(postId, state) {
+  return (state.posts[postId]?.postedTo || [])
+    .map((feedId) => state.subscriptions[feedId].user)
+    .map((userId) => state.users[userId])
+    .some((u) => u.youCan.includes('undisable_bans'));
+}

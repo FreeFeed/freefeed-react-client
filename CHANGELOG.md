@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - "Delete" item of the "More" menu is visible to the user for every comment in user’s own post
 - "Delete" item of the "More" menu is visible to a group admin for every comment
+
+## [1.115.2] - 2023-02-21
+### Fixed
+- Incorrect "Block user" popup display on user card.
+- "Add comment" link doesn't properly focus input on iOS.
+
 ## [1.115.1] - 2023-02-14
 ### Fixed
 - The "Add comment" input on iOS in the feed view is now correctly focused

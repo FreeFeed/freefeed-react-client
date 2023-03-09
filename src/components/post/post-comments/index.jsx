@@ -9,6 +9,7 @@ import { faCommentPlus } from '../../fontawesome-custom-icons';
 import { SignInLink } from '../../sign-in-link';
 
 import PostComment from '../post-comment';
+import { prepareAsyncFocus } from '../../../utils/prepare-async-focus';
 import { CollapseComments } from './collapse-comments';
 import ExpandComments from './expand-comments';
 import { LoadingComments } from './loading-comments';
@@ -114,7 +115,7 @@ export default class PostComments extends Component {
       props.post.commentsDisabled && (props.post.isEditable || props.post.isModeratable);
     const toggleCommenting = props.post.isSinglePost
       ? () => {}
-      : () => props.toggleCommenting(props.post.id);
+      : () => (prepareAsyncFocus(), props.toggleCommenting(props.post.id));
 
     if (props.comments.length > 2 && !props.post.omittedComments) {
       return (

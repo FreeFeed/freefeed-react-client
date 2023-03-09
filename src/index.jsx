@@ -43,6 +43,7 @@ import { initUnscroll, safeScrollTo } from './services/unscroll';
 import { lazyRetry } from './utils/retry-promise';
 import { HomeAux } from './components/home-aux';
 import { NotFound } from './components/not-found';
+import { DialogProvider } from './components/dialog/context';
 
 // Set initial history state.
 // Without this, there can be problems with third-party
@@ -364,7 +365,9 @@ function App() {
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <DialogProvider>
+      <App />
+    </DialogProvider>
   </Provider>,
   document.querySelector('#app'),
 );

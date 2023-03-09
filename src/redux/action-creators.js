@@ -1272,3 +1272,10 @@ export function enableBansInGroup(groupName) {
     payload: { groupName },
   };
 }
+
+export function setCurrentRoute(payload) {
+  return {
+    type: ActionTypes.SET_CURRENT_ROUTE,
+    payload,
+  };
+}
