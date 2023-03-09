@@ -82,7 +82,7 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
           </ButtonLink>
         </div>
       ),
-      doDelete && (
+      doDelete && authorUsername === myUsername && (
         <div key="delete" className={styles.item}>
           <ButtonLink onClick={doDelete} className={styles.link}>
             <Iconic icon={faTrashAlt}>Delete this comment</Iconic>
@@ -102,6 +102,15 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
         <div key="reply" className={styles.item}>
           <ButtonLink onClick={doReply} className={styles.link}>
             <Iconic icon={faAngleUp}>Reply with {arrows}</Iconic>
+          </ButtonLink>
+        </div>
+      ),
+    ],
+    [
+      doDelete && authorUsername !== myUsername && (
+        <div key="delete" className={styles.item}>
+          <ButtonLink onClick={doDelete} className={styles.link}>
+            <Iconic icon={faTrashAlt}>Delete this comment</Iconic>
           </ButtonLink>
         </div>
       ),
