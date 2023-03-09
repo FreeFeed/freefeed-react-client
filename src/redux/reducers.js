@@ -153,38 +153,11 @@ export const currentInvitation = fromResponse(
   (action) => action.payload.invitation,
 );
 
-const CREATE_POST_ERROR = 'Something went wrong while creating the post...';
-
-export function createPostViewState(state = {}, action) {
-  switch (action.type) {
-    case response(ActionTypes.CREATE_POST): {
-      return {
-        isError: false,
-        errorString: '',
-        isPending: false,
-        lastPostId: action.payload.posts.id,
-      };
-    }
-    case request(ActionTypes.CREATE_POST): {
-      return {
-        isError: false,
-        errorString: '',
-        isPending: true,
-      };
-    }
-    case fail(ActionTypes.CREATE_POST): {
-      return {
-        isError: true,
-        errorString: action.payload.err || CREATE_POST_ERROR,
-        isPending: false,
-      };
-    }
-    case ActionTypes.RESET_POST_CREATE_FORM: {
-      return {};
-    }
-  }
-  return state;
-}
+export const createPostStatus = asyncState(ActionTypes.CREATE_POST);
+export const lastCreatedPostId = fromResponse(
+  ActionTypes.CREATE_POST,
+  (action) => action.payload.posts.id,
+);
 
 const initFeed = {
   entries: [],

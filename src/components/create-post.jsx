@@ -1,274 +1,271 @@
 /* global CONFIG */
-import { Component, createRef } from 'react';
-import _ from 'lodash';
-
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
-import { preventDefault } from '../utils';
-import { SubmitModeHint } from './submit-mode-hint';
-import SendTo from './send-to';
-import Dropzone from './dropzone';
-import PostAttachments from './post/post-attachments';
-import ErrorBoundary from './error-boundary';
-import { Throbber } from './throbber';
-import { Icon } from './fontawesome-icons';
+import { uniq } from 'lodash';
+import { useCallback, useMemo, useRef, useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { createPost, resetPostCreateForm } from '../redux/action-creators';
 import { ButtonLink } from './button-link';
+import Dropzone from './dropzone';
+import ErrorBoundary from './error-boundary';
+import { Icon } from './fontawesome-icons';
 import { MoreWithTriangle } from './more-with-triangle';
+import PostAttachments from './post/post-attachments';
+import SendTo from './send-to';
 import { SmartTextarea } from './smart-textarea';
+import { SubmitModeHint } from './submit-mode-hint';
+import { Throbber } from './throbber';
 
 const attachmentsMaxCount = CONFIG.attachments.maxCount;
 
-const getDefaultState = (invitation = '') => ({
-  isFormEmpty: true,
-  isMoreOpen: false,
-  postText: invitation,
-  commentsDisabled: false,
-  attLoading: false,
-  attachments: [],
-  dropzoneDisabled: false,
-});
+export default function CreatePost({ sendTo, expandSendTo, user, showMedia, isDirects }) {
+  const dispatch = useDispatch();
+  const createPostStatus = useSelector((state) => state.createPostStatus);
 
-export default class CreatePost extends Component {
-  selectFeeds;
+  const selectFeeds = useRef();
+  const textareaRef = useRef();
+  const [dropzoneObject, setDropzoneObject] = useState(null);
 
-  constructor(props) {
-    super(props);
-    this.state = getDefaultState(props.sendTo.invitation);
-    this.textareaRef = createRef();
-  }
+  // State
+  const [dropzoneDisabled, setDropzoneDisabled] = useState(false);
+  const [commentsDisabled, setCommentsDisabled] = useState(false);
+  const [isMoreOpen, setIsMoreOpen] = useState(false);
+  const [isFormEmpty, setIsFormEmpty] = useState(true);
+  const [attLoading, setAttLoading] = useState(false);
+  const [postText, setPostText] = useState(sendTo.invitation || '');
+  const [attachments, setAttachments] = useState([]);
 
-  createPost = () => {
-    // Get all the values
-    const feeds = this.selectFeeds.values;
-    const { postText, attachments } = this.state;
-    const attachmentIds = attachments.map((attachment) => attachment.id);
-    const more = { commentsDisabled: this.state.commentsDisabled };
+  const handleFile = useCallback((file) => dropzoneObject.addFile(file), [dropzoneObject]);
 
-    // Send to the server
-    this.props.createPost(feeds, postText, attachmentIds, more);
-  };
+  const handleAddAttachmentResponse = useCallback(
+    (att) => {
+      if (attachments.length >= attachmentsMaxCount) {
+        return;
+      }
 
-  componentDidUpdate(prevProps) {
-    const wasPostJustSaved =
-      prevProps.createPostViewState.isPending && !this.props.createPostViewState.isPending;
-    const wasThereNoError = !this.props.createPostViewState.isError;
-    const shouldClear = wasPostJustSaved && wasThereNoError;
-    if (shouldClear) {
-      this.clearForm();
-    }
-    if (prevProps.sendTo.invitation !== this.props.sendTo.invitation) {
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ postText: this.props.sendTo.invitation });
-    }
-  }
+      const newAttachments = [...attachments, att];
+      const dropzoneDisabled = newAttachments.length >= attachmentsMaxCount;
 
-  //
-  // Handling attachments
+      if (dropzoneDisabled && !dropzoneDisabled) {
+        dropzoneObject.removeAllFiles(true);
+        dropzoneObject.disable();
+      }
 
-  handleDropzoneInit = (d) => {
-    this.dropzoneObject = d;
-  };
+      setAttachments(newAttachments);
+      setDropzoneDisabled(dropzoneDisabled);
 
-  handleFile = (file) => {
-    this.dropzoneObject.addFile(file);
-  };
+      expandSendTo();
+    },
+    [attachments, dropzoneObject, expandSendTo],
+  );
 
-  clearForm = () => {
-    this.selectFeeds && this.selectFeeds.reset();
-    this.setState(getDefaultState());
-    this.removeFocusFromTextarea();
-  };
+  const removeAttachment = useCallback(
+    (attachmentId) => {
+      const newAttachments = attachments.filter((a) => a.id !== attachmentId);
+      const newDropzoneDisabled = newAttachments.length >= attachmentsMaxCount;
 
-  removeAttachment = (attachmentId) => {
-    const attachments = this.state.attachments.filter((a) => a.id !== attachmentId);
-    const dropzoneDisabled = attachments.length >= attachmentsMaxCount;
+      if (!newDropzoneDisabled && dropzoneDisabled) {
+        dropzoneObject.enable();
+      }
 
-    if (!dropzoneDisabled && this.state.dropzoneDisabled) {
-      this.dropzoneObject.enable();
-    }
+      setAttachments(newAttachments);
+      setDropzoneDisabled(newDropzoneDisabled);
+    },
+    [attachments, dropzoneDisabled, dropzoneObject],
+  );
 
-    this.setState({ attachments, dropzoneDisabled });
-  };
+  const reorderImageAttachments = useCallback(
+    (attachmentIds) => {
+      const oldIds = attachments.map((a) => a.id);
+      const newIds = uniq(attachmentIds.concat(oldIds));
+      const newAttachments = newIds
+        .map((id) => attachments.find((a) => a.id === id))
+        .filter(Boolean);
+      setAttachments(newAttachments);
+    },
+    [attachments],
+  );
 
-  reorderImageAttachments = (attachmentIds) => {
-    const oldIds = this.state.attachments.map((a) => a.id);
-    const newIds = _.uniq(attachmentIds.concat(oldIds));
-    const attachments = newIds
-      .map((id) => this.state.attachments.find((a) => a.id === id))
-      .filter(Boolean);
-    this.setState({ attachments });
-  };
+  const attLoadingStarted = useCallback(() => setAttLoading(true), []);
+  const attLoadingCompleted = useCallback(() => setAttLoading(false), []);
 
-  checkCreatePostAvailability = () => {
-    const isFormEmpty =
-      this.state.postText.trim() === '' || !this.selectFeeds || this.selectFeeds.values === 0;
-
-    this.setState({ isFormEmpty });
-  };
-
-  onPostTextChange = (postText) => {
-    this.setState({ postText }, this.checkCreatePostAvailability);
-  };
-
-  attLoadingStarted = () => this.setState({ attLoading: true });
-  attLoadingCompleted = () => this.setState({ attLoading: false });
-
-  checkSave = () => this.canSubmitForm() && this.createPost();
-
-  removeFocusFromTextarea = () => {
-    this.textareaRef.current?.blur();
-  };
-
-  toggleMore = () => {
-    this.setState({ isMoreOpen: !this.state.isMoreOpen });
-  };
-
-  componentWillUnmount() {
-    this.props.resetPostCreateForm();
-  }
-
-  handleAddAttachmentResponse = (att) => {
-    if (this.state.attachments.length >= attachmentsMaxCount) {
-      return;
-    }
-
-    const attachments = [...this.state.attachments, att];
-    const dropzoneDisabled = attachments.length >= attachmentsMaxCount;
-
-    if (dropzoneDisabled && !this.state.dropzoneDisabled) {
-      this.dropzoneObject.removeAllFiles(true);
-      this.dropzoneObject.disable();
-    }
-
-    this.setState({ attachments, dropzoneDisabled });
-    this.props.expandSendTo();
-  };
-
-  handleChangeOfMoreCheckbox = (e) => {
-    this.setState({ commentsDisabled: e.target.checked });
-  };
-
-  registerSelectFeeds = (el) => (this.selectFeeds = el);
-
-  canSubmitForm = () => {
+  const canSubmitForm = useMemo(() => {
     return (
-      (!this.state.isFormEmpty || this.state.attachments.length > 0) &&
-      !this.state.attLoading &&
-      !this.props.createPostViewState.isPending &&
-      this.selectFeeds &&
-      this.selectFeeds.values.length > 0 &&
-      !this.selectFeeds.isIncorrectDestinations
+      (!isFormEmpty || attachments.length > 0) &&
+      !attLoading &&
+      !createPostStatus.loading &&
+      selectFeeds.current &&
+      selectFeeds.current.values.length > 0 &&
+      !selectFeeds.current.isIncorrectDestinations
     );
-  };
+  }, [attLoading, attachments.length, createPostStatus.loading, isFormEmpty]);
 
-  render() {
-    return (
-      <div className="create-post post-editor" role="form" aria-label="Write a post">
-        <ErrorBoundary>
-          <div>
-            {this.props.sendTo.expanded && (
-              <SendTo
-                ref={this.registerSelectFeeds}
-                defaultFeed={this.props.sendTo.defaultFeed}
-                isDirects={this.props.isDirects}
-                user={this.props.user}
-                onChange={this.checkCreatePostAvailability}
-              />
-            )}
+  const doCreatePost = useCallback(
+    (e) => {
+      if (!canSubmitForm) {
+        return;
+      }
 
-            <Dropzone
-              onInit={this.handleDropzoneInit}
-              addAttachmentResponse={this.handleAddAttachmentResponse}
-              onSending={this.attLoadingStarted}
-              onQueueComplete={this.attLoadingCompleted}
+      if (e && e.preventDefault) {
+        e.preventDefault();
+      }
+
+      // Get all the values
+      const feeds = selectFeeds.current.values;
+      const attachmentIds = attachments.map((attachment) => attachment.id);
+      const more = { commentsDisabled };
+
+      // Send to the server
+      dispatch(createPost(feeds, postText, attachmentIds, more));
+    },
+    [attachments, canSubmitForm, commentsDisabled, dispatch, postText],
+  );
+
+  const toggleMore = useCallback(() => setIsMoreOpen((x) => !x), []);
+  const handleChangeOfMoreCheckbox = useCallback((e) => setCommentsDisabled(e.target.checked), []);
+
+  const checkCreatePostAvailability = useCallback(
+    () =>
+      setIsFormEmpty(
+        postText.trim() === '' || !selectFeeds.current || selectFeeds.current.values.length === 0,
+      ),
+    [postText],
+  );
+
+  const onPostTextChange = useCallback(
+    (text) => {
+      setPostText(text);
+      checkCreatePostAvailability();
+    },
+    [checkCreatePostAvailability],
+  );
+
+  useEffect(() => {
+    // Reset form on success
+    if (createPostStatus.success) {
+      selectFeeds.current?.reset();
+      textareaRef.current?.blur();
+
+      // Set default state
+      setDropzoneDisabled(false);
+      setCommentsDisabled(false);
+      setIsMoreOpen(false);
+      setIsFormEmpty(true);
+      setAttLoading(false);
+      setPostText(sendTo.invitation || '');
+      setAttachments([]);
+    }
+  }, [createPostStatus.success, dispatch, sendTo.invitation]);
+
+  // Reset on unmount
+  useEffect(() => () => dispatch(resetPostCreateForm()), [dispatch]);
+
+  return (
+    <div className="create-post post-editor" role="form" aria-label="Write a post">
+      <ErrorBoundary>
+        <div>
+          {sendTo.expanded && (
+            <SendTo
+              ref={selectFeeds}
+              defaultFeed={sendTo.defaultFeed}
+              isDirects={isDirects}
+              user={user}
+              onChange={checkCreatePostAvailability}
             />
-
-            <SmartTextarea
-              ref={this.textareaRef}
-              className="post-textarea"
-              value={this.state.postText}
-              onText={this.onPostTextChange}
-              onFocus={this.props.expandSendTo}
-              onSubmit={this.checkSave}
-              onFile={this.handleFile}
-              minRows={3}
-              maxRows={10}
-              maxLength={CONFIG.maxLength.post}
-              dir={'auto'}
-            />
-          </div>
-
-          <div className="post-edit-actions">
-            <div className="post-edit-options">
-              <span
-                className="post-edit-attachments dropzone-trigger"
-                disabled={this.state.dropzoneDisabled}
-                role="button"
-              >
-                <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
-              </span>
-
-              <ButtonLink className="post-edit-more-trigger" onClick={this.toggleMore}>
-                <MoreWithTriangle />
-              </ButtonLink>
-
-              {this.state.isMoreOpen ? (
-                <div className="post-edit-more">
-                  <label>
-                    <input
-                      className="post-edit-more-checkbox"
-                      type="checkbox"
-                      value={this.state.commentsDisabled}
-                      onChange={this.handleChangeOfMoreCheckbox}
-                    />
-                    <span className="post-edit-more-labeltext">Comments disabled</span>
-                  </label>
-                </div>
-              ) : (
-                false
-              )}
-            </div>
-
-            <SubmitModeHint input={this.textareaRef} className="post-edit-hint" />
-
-            <div className="post-edit-buttons">
-              {this.props.createPostViewState.isPending && (
-                <span className="throbber">
-                  <Throbber />
-                </span>
-              )}
-              <button
-                className="btn btn-default btn-xs"
-                onClick={preventDefault(this.createPost)}
-                disabled={!this.canSubmitForm()}
-              >
-                Post
-              </button>
-            </div>
-          </div>
-
-          {this.state.dropzoneDisabled && (
-            <div className="alert alert-warning">
-              The maximum number of attached files ({attachmentsMaxCount}) has been reached
-            </div>
           )}
 
-          {this.props.createPostViewState.isError ? (
-            <div className="alert alert-danger">{this.props.createPostViewState.errorString}</div>
-          ) : (
-            false
-          )}
-
-          <PostAttachments
-            attachments={this.state.attachments}
-            isEditing={true}
-            removeAttachment={this.removeAttachment}
-            reorderImageAttachments={this.reorderImageAttachments}
-            showMedia={this.props.showMedia}
+          <Dropzone
+            onInit={setDropzoneObject}
+            addAttachmentResponse={handleAddAttachmentResponse}
+            onSending={attLoadingStarted}
+            onQueueComplete={attLoadingCompleted}
           />
 
-          <div className="dropzone-previews" />
-        </ErrorBoundary>
-      </div>
-    );
-  }
+          <SmartTextarea
+            ref={textareaRef}
+            className="post-textarea"
+            value={postText}
+            onText={onPostTextChange}
+            onFocus={expandSendTo}
+            onSubmit={doCreatePost}
+            onFile={handleFile}
+            minRows={3}
+            maxRows={10}
+            maxLength={CONFIG.maxLength.post}
+            dir={'auto'}
+          />
+        </div>
+
+        <div className="post-edit-actions">
+          <div className="post-edit-options">
+            <span
+              className="post-edit-attachments dropzone-trigger"
+              disabled={dropzoneDisabled}
+              role="button"
+            >
+              <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
+            </span>
+
+            <ButtonLink className="post-edit-more-trigger" onClick={toggleMore}>
+              <MoreWithTriangle />
+            </ButtonLink>
+
+            {isMoreOpen ? (
+              <div className="post-edit-more">
+                <label>
+                  <input
+                    className="post-edit-more-checkbox"
+                    type="checkbox"
+                    value={commentsDisabled}
+                    onChange={handleChangeOfMoreCheckbox}
+                  />
+                  <span className="post-edit-more-labeltext">Comments disabled</span>
+                </label>
+              </div>
+            ) : (
+              false
+            )}
+          </div>
+
+          <SubmitModeHint input={textareaRef} className="post-edit-hint" />
+
+          <div className="post-edit-buttons">
+            {createPostStatus.loading && (
+              <span className="throbber">
+                <Throbber />
+              </span>
+            )}
+            <button
+              className="btn btn-default btn-xs"
+              onClick={doCreatePost}
+              disabled={!canSubmitForm}
+            >
+              Post
+            </button>
+          </div>
+        </div>
+
+        {dropzoneDisabled && (
+          <div className="alert alert-warning">
+            The maximum number of attached files ({attachmentsMaxCount}) has been reached
+          </div>
+        )}
+
+        {createPostStatus.error ? (
+          <div className="alert alert-danger">{createPostStatus.errorText}</div>
+        ) : (
+          false
+        )}
+
+        <PostAttachments
+          attachments={attachments}
+          isEditing={true}
+          removeAttachment={removeAttachment}
+          reorderImageAttachments={reorderImageAttachments}
+          showMedia={showMedia}
+        />
+
+        <div className="dropzone-previews" />
+      </ErrorBoundary>
+    </div>
+  );
 }

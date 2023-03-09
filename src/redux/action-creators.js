@@ -689,7 +689,7 @@ export function rejectUserRequest(username) {
 }
 
 export function resetPostCreateForm() {
-  return { type: ActionTypes.RESET_POST_CREATE_FORM };
+  return { type: reset(ActionTypes.CREATE_POST) };
 }
 
 export function resetGroupCreateForm() {
