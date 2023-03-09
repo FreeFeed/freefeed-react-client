@@ -30,6 +30,7 @@ import {
   UNSUBSCRIBE_FROM_ME,
   LIST_HOME_FEEDS,
   BLOCKED_BY_ME,
+  GET_POSTS_BY_IDS,
 } from './action-types';
 import { request, response, fail, baseType } from './async-helpers';
 
@@ -52,6 +53,7 @@ export const feedGeneratingActions = [
   GET_USER_SUMMARY,
   MEMORIES,
   GET_USER_MEMORIES,
+  GET_POSTS_BY_IDS,
 ];
 const userFeedGeneratingActions = [
   GET_USER_FEED,

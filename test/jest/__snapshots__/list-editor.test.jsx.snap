@@ -89,6 +89,7 @@ exports[`ListEditor Renders a list and doesn't blow up 1`] = `
         >
           <div
             class="picture"
+            style="--userpic-size: 50px;"
           >
             <img
               alt="Profile picture of group"
@@ -118,6 +119,7 @@ exports[`ListEditor Renders a list and doesn't blow up 1`] = `
         >
           <div
             class="picture"
+            style="--userpic-size: 50px;"
           >
             <img
               alt="Profile picture of homeless"
@@ -163,6 +165,7 @@ exports[`ListEditor Renders a list and doesn't blow up 1`] = `
         >
           <div
             class="picture"
+            style="--userpic-size: 50px;"
           >
             <img
               alt="Profile picture of in-list-1"
@@ -192,6 +195,7 @@ exports[`ListEditor Renders a list and doesn't blow up 1`] = `
         >
           <div
             class="picture"
+            style="--userpic-size: 50px;"
           >
             <img
               alt="Profile picture of in-list-2"
@@ -221,6 +225,7 @@ exports[`ListEditor Renders a list and doesn't blow up 1`] = `
         >
           <div
             class="picture"
+            style="--userpic-size: 50px;"
           >
             <img
               alt="Profile picture of not-in-list"
@@ -304,6 +309,7 @@ exports[`ListEditor Searches for users 1`] = `
   >
     <div
       class="picture"
+      style="--userpic-size: 50px;"
     >
       <img
         alt="Profile picture of in-list-1"
@@ -345,6 +351,7 @@ exports[`ListEditor Searches for users 1`] = `
   >
     <div
       class="picture"
+      style="--userpic-size: 50px;"
     >
       <img
         alt="Profile picture of in-list-2"
@@ -386,6 +393,7 @@ exports[`ListEditor Searches for users 1`] = `
   >
     <div
       class="picture"
+      style="--userpic-size: 50px;"
     >
       <img
         alt="Profile picture of not-in-list"

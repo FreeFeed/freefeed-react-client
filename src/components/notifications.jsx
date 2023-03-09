@@ -1,15 +1,24 @@
 /* global CONFIG */
-import { useMemo } from 'react';
-import { connect, useSelector } from 'react-redux';
+import { useCallback, useEffect, useMemo } from 'react';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
+import { uniq } from 'lodash';
+import { faBell } from '@fortawesome/free-regular-svg-icons';
+import { getCommentsByIds, getPostsByIds, showMedia } from '../redux/action-creators';
+import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
+import { postReadmoreConfig } from '../utils/readmore-config';
 import { Throbber } from './throbber';
-import Linkify from './linkify';
 import TimeDisplay from './time-display';
 import PaginatedView from './paginated-view';
 import ErrorBoundary from './error-boundary';
 import UserName from './user-name';
 import { SignInLink } from './sign-in-link';
+import { UserPicture } from './user-picture';
+import PieceOfText from './piece-of-text';
+import Expandable from './expandable';
+import { Icon } from './fontawesome-icons';
+import { useBool } from './hooks/bool';
 
 const getAuthorName = ({ postAuthor, createdUser, group }) => {
   if (group && group.username) {
@@ -24,8 +33,8 @@ const getAuthorName = ({ postAuthor, createdUser, group }) => {
 const generatePostUrl = ({ post_id, ...event }) => `/${getAuthorName(event)}/${post_id}`;
 const generateCommentUrl = ({ post_id, comment_id, ...event }) =>
   `/${getAuthorName(event)}/${post_id}#comment-${comment_id}`;
-const postLink = (event) =>
-  event.post_id ? <Link to={generatePostUrl(event)}>post</Link> : 'deleted post';
+const postLink = (event, fallback = 'deleted post') =>
+  event.post_id ? <Link to={generatePostUrl(event)}>post</Link> : fallback;
 const directPostLink = (event) =>
   event.post_id ? (
     <Link to={generatePostUrl(event)}>direct message</Link>
@@ -51,223 +60,267 @@ const backlinkLink = (event) =>
     'deleted entry'
   );
 
+const UserLink = ({ user, recipient = null, atStart = false, fallback = 'Some user' }) => {
+  if (!user) {
+    return atStart ? fallback : fallback.toLowerCase();
+  }
+  if (user.id === recipient?.id) {
+    return atStart ? 'You' : 'you';
+  }
+  return <UserName user={user}>@{user.username}</UserName>;
+};
+
+const postInGroup = (event) => (
+  <>
+    {postLink(event)}
+    {event.group.username && (
+      <>
+        {' '}
+        [in <UserLink user={event.group} />]
+      </>
+    )}
+  </>
+);
+
 const notificationTemplates = {
   subscription_request_revoked: (event) => (
-    <Linkify>{`@${event.createdUser.username} revoked subscription request to you`}</Linkify>
+    <>
+      <UserLink div user={event.createdUser} /> revoked subscription request to you
+    </>
   ),
 
   mention_in_post: (event) => (
-    <div>
-      <Linkify>{`@${event.createdUser.username} mentioned you in the `}</Linkify>
-      {postLink(event)}
-      <Linkify>{` ${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify>
-    </div>
+    <>
+      <UserLink atStart user={event.createdUser} /> mentioned you in the {postInGroup(event)}
+    </>
   ),
   mention_in_comment: (event) => (
-    <div>
-      <Linkify>{`@${event.createdUser.username} mentioned you in a `}</Linkify>
-      {commentLink(event, 'comment')}
-      {` to the `}
-      {postLink(event)}
-      <Linkify>{`${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify>
-    </div>
+    <>
+      <UserLink atStart user={event.createdUser} /> mentioned you in a{' '}
+      {commentLink(event, 'comment')} to the {postInGroup(event)}
+    </>
   ),
   mention_comment_to: (event) => (
-    <div>
-      <Linkify>{`@${event.createdUser.username} `}</Linkify>
-      {commentLink(event, 'replied')}
-      {` to you in the `}
-      {postLink(event)}
-      <Linkify>{` ${event.group.username ? `[in @${event.group.username}]` : ''}`}</Linkify>
-    </div>
+    <>
+      <UserLink atStart user={event.createdUser} /> {commentLink(event, 'replied')} to you in the{' '}
+      {postInGroup(event)}
+    </>
   ),
   backlink_in_comment: (event) => (
-    <div>
-      <Linkify>{`@${event.createdUser.username}`}</Linkify> mentioned your {backlinkLink(event)} in
-      a {commentLink(event, 'comment')}
-      {` to the `}
-      {postLink(event)}
-      <Linkify>{`${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify>
-    </div>
+    <>
+      <UserLink atStart user={event.createdUser} /> mentioned your {backlinkLink(event)} in a{' '}
+      {commentLink(event, 'comment')} to the {postInGroup(event)}
+    </>
   ),
   backlink_in_post: (event) => (
-    <div>
-      <Linkify>{`@${event.createdUser.username}`}</Linkify> mentioned your {backlinkLink(event)} in
-      the {postLink(event)}
-      <Linkify>{`${event.group.username ? ` [in @${event.group.username}]` : ''}`}</Linkify>
-    </div>
+    <>
+      <UserLink atStart user={event.createdUser} /> mentioned your {backlinkLink(event)} in the{' '}
+      {postInGroup(event)}
+    </>
   ),
-  banned_user: (event) => <Linkify>{`You blocked @${event.affectedUser.username}`}</Linkify>,
-  unbanned_user: (event) => <Linkify>{`You unblocked @${event.affectedUser.username}`}</Linkify>,
+  banned_user: (event) => (
+    <>
+      You blocked <UserLink user={event.affectedUser} />
+    </>
+  ),
+  unbanned_user: (event) => (
+    <>
+      You unblocked <UserLink user={event.affectedUser} />
+    </>
+  ),
   subscription_requested: (event) => (
-    <div>
-      <UserName user={event.createdUser}>@{event.createdUser.username}</UserName> sent you a
-      subscription request <ReviewRequestLink from={event.createdUser} />
-    </div>
+    <>
+      <UserName atStart user={event.createdUser}>
+        @{event.createdUser.username}
+      </UserName>{' '}
+      sent you a subscription request <ReviewRequestLink from={event.createdUser} />
+    </>
   ),
   user_subscribed: (event) => (
-    <Linkify>{`@${event.createdUser.username} subscribed to your feed`}</Linkify>
+    <>
+      <UserLink atStart user={event.createdUser} /> subscribed to your feed
+    </>
   ),
   user_unsubscribed: (event) => (
-    <Linkify>{`@${event.createdUser.username} unsubscribed from your feed`}</Linkify>
+    <>
+      <UserLink atStart user={event.createdUser} /> unsubscribed from your feed
+    </>
   ),
   subscription_request_approved: (event) => (
-    <Linkify>{`Your subscription request to @${event.createdUser.username} was approved`}</Linkify>
+    <>
+      Your subscription request to <UserLink user={event.createdUser} /> was approved
+    </>
   ),
   subscription_request_rejected: (event) => (
-    <Linkify>{`Your subscription request to @${event.createdUser.username} was rejected`}</Linkify>
+    <>
+      Your subscription request to <UserLink user={event.createdUser} /> was rejected
+    </>
   ),
-  group_created: (event) => <Linkify>{`You created a group @${event.group.username}`}</Linkify>,
+  group_created: (event) => (
+    <>
+      You created a group <UserLink user={event.group} />
+    </>
+  ),
   group_subscription_requested: (event) => (
-    <div>
-      <UserName user={event.createdUser}>@{event.createdUser.username}</UserName> sent a request to
-      join <UserName user={event.group}>@{event.group.username}</UserName> that you admin{' '}
+    <>
+      <UserLink atStart user={event.createdUser} /> sent a request to join{' '}
+      <UserLink user={event.group} /> that you admin{' '}
       <ReviewRequestLink from={event.createdUser} group={event.group} />
-    </div>
+    </>
   ),
   group_admin_promoted: (event) => (
-    <Linkify>{`@${event.createdUser.username} promoted @${event.affectedUser.username} to admin in the group @${event.group.username}`}</Linkify>
+    <>
+      <UserLink atStart user={event.createdUser} /> promoted <UserLink user={event.affectedUser} />{' '}
+      to admin in the group <UserLink user={event.group} />
+    </>
   ),
   group_admin_demoted: (event) => (
-    <Linkify>{`@${event.createdUser.username} revoked admin privileges from @${event.affectedUser.username} in group @${event.group.username}`}</Linkify>
+    <>
+      <UserLink atStart user={event.createdUser} /> revoked admin privileges from{' '}
+      <UserLink user={event.affectedUser} /> in group <UserLink user={event.group} />
+    </>
   ),
   managed_group_subscription_approved: (event) => (
-    <Linkify>{`@${event.affectedUser.username} request to join @${event.group.username} was approved by @${event.createdUser.username}`}</Linkify>
+    <>
+      <UserLink atStart user={event.affectedUser} /> request to join <UserLink user={event.group} />{' '}
+      was approved by <UserLink user={event.createdUser} />
+    </>
   ),
   managed_group_subscription_rejected: (event) => (
-    <Linkify>{`@${event.affectedUser.username} request to join @${event.group.username} was rejected`}</Linkify>
+    <>
+      <UserLink atStart user={event.affectedUser} /> request to join <UserLink user={event.group} />{' '}
+      was rejected by <UserLink user={event.createdUser} />
+    </>
   ),
   group_subscription_approved: (event) => (
-    <Linkify>{`Your request to join group @${event.group.username} was approved`}</Linkify>
+    <>
+      Your request to join group <UserLink user={event.group} /> was approved
+    </>
   ),
   group_subscription_request_revoked: (event) => (
-    <Linkify>{`@${event.createdUser.username} revoked subscription request to @${event.group.username}`}</Linkify>
+    <>
+      <UserLink atStart user={event.createdUser} /> revoked subscription request to{' '}
+      <UserLink user={event.group} />
+    </>
   ),
   direct_left: (event) =>
     event.created_user_id === event.receiver.id ? (
-      <div>
-        You left a direct message created by <Linkify>{`@${event.postAuthor.username}`}</Linkify>
-      </div>
+      <>
+        You left a direct message created by <UserLink user={event.postAuthor} />
+      </>
     ) : event.post_author_id === event.receiver.id ? (
-      <div>
-        <Linkify>{`@${event.createdUser.username}`}</Linkify> left a {directPostLink(event)} created
-        by you
-      </div>
+      <>
+        <UserLink atStart user={event.createdUser} /> left a {directPostLink(event)} created by you
+      </>
     ) : (
-      <div>
-        <Linkify>{`@${event.createdUser.username}`}</Linkify> left a {directPostLink(event)} created
-        by <Linkify>{`@${event.postAuthor.username}`}</Linkify>
-      </div>
+      <>
+        <UserLink atStart user={event.createdUser} /> left a {directPostLink(event)} created by{' '}
+        <UserLink user={event.postAuthor} />
+      </>
     ),
   direct: (event) => (
-    <div>
-      {`You received a `}
-      {directPostLink(event)}
-      <Linkify>{` from @${event.createdUser.username}`}</Linkify>
-    </div>
+    <>
+      You received a {directPostLink(event)} from <UserLink user={event.createdUser} />
+    </>
   ),
   direct_comment: (event) => (
-    <div>
-      {commentLink(event, 'New comment')}
-      {` was posted to a `}
-      {directPostLink(event)}
-      <Linkify>{` from @${event.createdUser.username}`}</Linkify>
-    </div>
+    <>
+      {commentLink(event, 'New comment')} was posted to a {directPostLink(event)} from{' '}
+      <UserLink user={event.createdUser} />
+    </>
   ),
   group_subscription_rejected: (event) => (
-    <Linkify>{`Your request to join group @${event.group.username} was rejected`}</Linkify>
+    <>
+      Your request to join group <UserLink user={event.group} /> was rejected
+    </>
   ),
   group_subscribed: (event) => (
-    <Linkify>{`@${event.createdUser.username} subscribed to @${event.group.username}`}</Linkify>
+    <>
+      <UserLink atStart user={event.createdUser} /> subscribed to <UserLink user={event.group} />
+    </>
   ),
   group_unsubscribed: (event) => (
-    <Linkify>{`@${event.createdUser.username} unsubscribed from @${event.group.username}`}</Linkify>
+    <>
+      <UserLink atStart user={event.createdUser} /> unsubscribed from{' '}
+      <UserLink user={event.group} />
+    </>
   ),
   invitation_used: (event) => (
-    <Linkify>{`@${event.createdUser.username} has joined ${CONFIG.siteTitle} using your invitation`}</Linkify>
+    <>
+      <UserLink atStart user={event.createdUser} /> has joined ${CONFIG.siteTitle} using your
+      invitation
+    </>
   ),
 
   banned_by_user: () => `Notification shouldn't be shown`,
   unbanned_by_user: () => `Notification shouldn't be shown`,
 
   comment_moderated: (event) => (
-    <div>
-      <Linkify>{`@${event.createdUser.username} has deleted your comment to the `}</Linkify>
-      {postLink(event)}
-      {event.group_id ? <Linkify>{` in the group @${event.group.username}`}</Linkify> : null}
-    </div>
+    <>
+      <UserLink atStart user={event.createdUser} fallback="Group admin" /> has deleted your comment
+      to the {postInGroup(event)}
+    </>
   ),
   comment_moderated_by_another_admin: (event) => (
-    <div>
-      <Linkify>{`@${event.createdUser.username} has removed a comment from @${event.affectedUser.username} to the `}</Linkify>
-      {postLink(event)}
-      <Linkify>{` in the group @${event.group.username}`}</Linkify>
-    </div>
+    <>
+      <UserLink atStart user={event.createdUser} fallback="Group admin" /> has removed a comment
+      from <UserLink user={event.affectedUser} /> to the {postInGroup(event)}
+    </>
   ),
   post_moderated: (event) => (
-    <div>
-      <Linkify>{`@${event.createdUser.username} has removed your `}</Linkify>
-      {event.post_id ? postLink(event) : 'post'}
-      {event.group_id ? <Linkify>{` from the group @${event.group.username}`}</Linkify> : null}
-    </div>
+    <>
+      <UserLink atStart user={event.createdUser} fallback="Group admin" /> has removed your{' '}
+      {postLink(event, 'post')}
+      {event.group_id && (
+        <>
+          {' '}
+          from the group <UserLink user={event.group} />
+        </>
+      )}
+    </>
   ),
   post_moderated_by_another_admin: (event) => (
-    <div>
-      <Linkify>{`@${event.createdUser.username} has removed the `}</Linkify>
-      {event.post_id ? postLink(event) : 'post'}
-      <Linkify>{` from @${event.affectedUser.username} `}</Linkify>
-      {event.group_id ? <Linkify>{` from the group @${event.group.username}`}</Linkify> : null}
-    </div>
+    <>
+      <UserLink atStart user={event.createdUser} /> has removed the {postLink(event, 'post')}
+      {postLink(event, 'post')} from <UserLink user={event.affectedUser} />
+      {event.group_id && (
+        <>
+          {' '}
+          from the group <UserLink user={event.group} />
+        </>
+      )}
+    </>
   ),
 
-  blocked_in_group: (event) => {
-    let adminHTML = 'Admin';
+  blocked_in_group: (event) => (
+    <>
+      <UserLink
+        atStart
+        user={event.createdUser}
+        recipient={event.receiver}
+        fallback="Group admin"
+      />{' '}
+      {event.event_type === 'blocked_in_group' ? 'blocked' : 'unblocked'}{' '}
+      <UserLink user={event.affectedUser} recipient={event.receiver} /> in group{' '}
+      <UserLink user={event.group} />
+    </>
+  ),
 
-    if (event.created_user_id) {
-      adminHTML =
-        event.recipient_user_id === event.created_user_id ? 'You' : `@${event.creator.username}`;
-    }
+  bans_in_group_disabled: (event) => (
+    <>
+      <UserLink atStart user={event.createdUser} recipient={event.receiver} /> disabled bans{' '}
+      {event.recipient_user_id === event.created_user_id ? 'for yourself' : 'for you'} in group{' '}
+      <UserLink user={event.group} />
+    </>
+  ),
 
-    const victimHTML =
-      event.recipient_user_id === event.affected_user_id
-        ? 'you'
-        : `@${event.affectedUser.username}`;
-    const groupLink = `@${event.group.username}`;
-
-    const action = event.event_type === 'blocked_in_group' ? 'blocked' : 'unblocked';
-
-    return (
-      <div>
-        <Linkify>
-          {adminHTML} {action} {victimHTML} in group {groupLink}
-        </Linkify>
-      </div>
-    );
-  },
-
-  bans_in_group_disabled: (event) => {
-    const isSelf = event.recipient_user_id === event.created_user_id;
-    const html = `${isSelf ? 'You' : `@${event.creator.username}`} disabled bans ${
-      isSelf ? 'for yourself' : 'for you'
-    } in group @${event.group.username}`;
-    return (
-      <div>
-        <Linkify>{html}</Linkify>
-      </div>
-    );
-  },
-
-  bans_in_group_enabled: (event) => {
-    const isSelf = event.recipient_user_id === event.created_user_id;
-    const html = `${isSelf ? 'You' : `@${event.creator.username}`} enabled bans ${
-      isSelf ? 'for yourself' : 'for you'
-    } in group @${event.group.username}`;
-    return (
-      <div>
-        <Linkify>{html}</Linkify>
-      </div>
-    );
-  },
+  bans_in_group_enabled: (event) => (
+    <>
+      <UserLink atStart user={event.createdUser} recipient={event.receiver} /> enabled bans{' '}
+      {event.recipient_user_id === event.created_user_id ? 'for yourself' : 'for you'} in group{' '}
+      <UserLink user={event.group} />
+    </>
+  ),
 };
 
 notificationTemplates.unblocked_in_group = notificationTemplates.blocked_in_group;
@@ -308,89 +361,174 @@ const notificationClasses = {
 
 const nop = () => false;
 
-const Notification = (props) => {
+function userPictureSource(event) {
+  if (
+    ['bans_in_group_disabled', 'bans_in_group_enabled', 'group_created'].includes(
+      event.event_type,
+    ) &&
+    event.recipient_user_id === event.created_user_id
+  ) {
+    return event.group;
+  }
+  if (['banned_user', 'unbanned_user'].includes(event.event_type)) {
+    return event.affectedUser;
+  }
+  return event.createdUser;
+}
+
+function mainEventLink(event) {
+  if (event.comment_id) {
+    return generateCommentUrl(event);
+  } else if (event.post_id) {
+    return generatePostUrl(event);
+  }
+  return null;
+}
+
+function Notification({ event }) {
+  const dispatch = useDispatch();
+  const allPosts = useSelector((state) => state.posts);
+  const allComments = useSelector((state) => state.comments);
+  const readMoreStyle = useSelector((state) => state.user.frontendPreferences.readMoreStyle);
+  const doShowMedia = useCallback((...args) => dispatch(showMedia(...args)), [dispatch]);
+  const [absTimestamps, toggleAbsTimestamps] = useBool(false);
+  const shouldBeContent = event.comment_id || event.post_id;
+  const content =
+    shouldBeContent &&
+    (event.comment_id ? allComments[event.comment_id] : allPosts[event.post_id])?.body;
+  const mainLink = mainEventLink(event);
   return (
-    <div
-      key={props.id}
-      className={`single-notification ${notificationClasses[props.event_type] || ''}`}
-    >
-      {(notificationTemplates[props.event_type] || nop)(props)}
-      <TimeDisplay timeStamp={props.date} />
+    <div className={`single-notification ${notificationClasses[event.event_type] || ''}`}>
+      <div className="single-notification__picture">
+        <UserPicture user={userPictureSource(event)} size={40} loading="lazy" />
+      </div>
+      <div className="single-notification__headline">
+        {(notificationTemplates[event.event_type] || nop)(event)}
+      </div>
+      <div className="single-notification__content">
+        {content ? (
+          <Expandable
+            expanded={readMoreStyle === READMORE_STYLE_COMPACT}
+            config={postReadmoreConfig}
+          >
+            <PieceOfText text={content} readMoreStyle={readMoreStyle} showMedia={doShowMedia} />
+          </Expandable>
+        ) : shouldBeContent ? (
+          <em>Text not available</em>
+        ) : null}
+      </div>
+      <div className="single-notification__date">
+        <Icon
+          icon={faBell}
+          className="single-notification__date-icon"
+          onClick={toggleAbsTimestamps}
+        />
+        {mainLink ? (
+          <Link to={mainLink}>
+            <TimeDisplay timeStamp={event.date} absolute={absTimestamps || null} />
+          </Link>
+        ) : (
+          <TimeDisplay timeStamp={event.date} absolute={absTimestamps || null} />
+        )}
+      </div>
     </div>
   );
-};
+}
 
 const isFilterActive = (filterName, filter) => filter && filter.includes(filterName);
 
-const Notifications = (props) => (
-  <div className="box notifications">
-    <ErrorBoundary>
-      <div className="box-header-timeline" role="heading">
-        Notifications
-        {props.isLoading && (
-          <span className="notifications-throbber">
-            <Throbber />
-          </span>
-        )}
-      </div>
-      <div className="filter">
-        <div>Show: </div>
-        <Link
-          className={!props.location.query.filter ? 'active' : ''}
-          to={{ pathname: props.location.pathname, query: {} }}
-        >
-          Everything
-        </Link>
-        <Link
-          className={isFilterActive('mentions', props.location.query.filter) ? 'active' : ''}
-          to={{ pathname: props.location.pathname, query: { filter: 'mentions' } }}
-        >
-          Mentions
-        </Link>
-        <Link
-          className={isFilterActive('subscriptions', props.location.query.filter) ? 'active' : ''}
-          to={{ pathname: props.location.pathname, query: { filter: 'subscriptions' } }}
-        >
-          Subscriptions
-        </Link>
-        <Link
-          className={isFilterActive('groups', props.location.query.filter) ? 'active' : ''}
-          to={{ pathname: props.location.pathname, query: { filter: 'groups' } }}
-        >
-          Groups
-        </Link>
-        <Link
-          className={isFilterActive('directs', props.location.query.filter) ? 'active' : ''}
-          to={{ pathname: props.location.pathname, query: { filter: 'directs' } }}
-        >
-          Direct messages
-        </Link>
-        <Link
-          className={isFilterActive('bans', props.location.query.filter) ? 'active' : ''}
-          to={{ pathname: props.location.pathname, query: { filter: 'bans' } }}
-        >
-          Bans
-        </Link>
-      </div>
-      {props.authenticated ? (
-        <PaginatedView routes={props.routes} location={props.location}>
-          <div className="notification-list">
-            {props.loading
-              ? 'Loading'
-              : props.events.length > 0
-              ? props.events.map(Notification)
-              : 'No notifications yet'}
-          </div>
-        </PaginatedView>
-      ) : (
-        <div className="alert alert-danger" role="alert">
-          You must <SignInLink>sign in</SignInLink> or <Link to="/signup">sign up</Link> before
-          visiting this page.
+function Notifications(props) {
+  const dispatch = useDispatch();
+  const postIds = useMemo(
+    () =>
+      uniq(props.events.map((event) => !event.comment_id && event.post_id).filter(Boolean)).sort(),
+    [props.events],
+  );
+  const commentIds = useMemo(
+    () => uniq(props.events.map((event) => event.comment_id).filter(Boolean)).sort(),
+    [props.events],
+  );
+
+  useEffect(() => {
+    postIds.length > 0 && dispatch(getPostsByIds(postIds));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, postIds.join(',')]);
+
+  useEffect(() => {
+    commentIds.length > 0 && dispatch(getCommentsByIds(commentIds));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, commentIds.join(',')]);
+
+  return (
+    <div className="box notifications">
+      <ErrorBoundary>
+        <div className="box-header-timeline" role="heading">
+          Notifications
+          {props.isLoading && (
+            <span className="notifications-throbber">
+              <Throbber />
+            </span>
+          )}
         </div>
-      )}
-    </ErrorBoundary>
-  </div>
-);
+        <div className="filter">
+          <div>Show: </div>
+          <Link
+            className={!props.location.query.filter ? 'active' : ''}
+            to={{ pathname: props.location.pathname, query: {} }}
+          >
+            Everything
+          </Link>
+          <Link
+            className={isFilterActive('mentions', props.location.query.filter) ? 'active' : ''}
+            to={{ pathname: props.location.pathname, query: { filter: 'mentions' } }}
+          >
+            Mentions
+          </Link>
+          <Link
+            className={isFilterActive('subscriptions', props.location.query.filter) ? 'active' : ''}
+            to={{ pathname: props.location.pathname, query: { filter: 'subscriptions' } }}
+          >
+            Subscriptions
+          </Link>
+          <Link
+            className={isFilterActive('groups', props.location.query.filter) ? 'active' : ''}
+            to={{ pathname: props.location.pathname, query: { filter: 'groups' } }}
+          >
+            Groups
+          </Link>
+          <Link
+            className={isFilterActive('directs', props.location.query.filter) ? 'active' : ''}
+            to={{ pathname: props.location.pathname, query: { filter: 'directs' } }}
+          >
+            Direct messages
+          </Link>
+          <Link
+            className={isFilterActive('bans', props.location.query.filter) ? 'active' : ''}
+            to={{ pathname: props.location.pathname, query: { filter: 'bans' } }}
+          >
+            Bans
+          </Link>
+        </div>
+        {props.authenticated ? (
+          <PaginatedView routes={props.routes} location={props.location}>
+            <div className="notification-list">
+              {props.loading
+                ? 'Loading'
+                : props.events.length > 0
+                ? props.events.map((e) => <Notification event={e} key={e.id} />)
+                : 'No notifications yet'}
+            </div>
+          </PaginatedView>
+        ) : (
+          <div className="alert alert-danger" role="alert">
+            You must <SignInLink>sign in</SignInLink> or <Link to="/signup">sign up</Link> before
+            visiting this page.
+          </div>
+        )}
+      </ErrorBoundary>
+    </div>
+  );
+}
 
 const mock = {};
 

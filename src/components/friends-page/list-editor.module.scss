@@ -74,7 +74,7 @@
 
 .cellSelected,
 .cellSelected:hover {
-  background: hsl(200, 70%, 90%);
+  background: hsl(200deg, 70%, 90%);
 
   :global(.dark-theme) & {
     color: $text-color-lighter;
