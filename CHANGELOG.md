@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.116] - Not released
+### Added
+- Reddit's `r/subreddit` and `/r/subreddit` addresses are now auto-linked.
 ### Changed
 - "Delete" item of the "More" menu is visible to the user for every comment in user’s own post
 - "Delete" item of the "More" menu is visible to a group admin for every comment
