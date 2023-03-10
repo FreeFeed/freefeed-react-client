@@ -992,23 +992,22 @@ export const appVersionMiddleware = (store) => {
 
 export const reloadFeedMiddleware = (store) => (next) => (action) => {
   const res = next(action);
-  const { users, feedViewState } = store.getState();
+  const { currentRoute } = store.getState();
   if (
     // If we on the 'Posts' 'page
-    feedViewState.feedRequestType === ActionTypes.GET_USER_FEED &&
-    feedViewState.timeline.name === 'Posts'
+    currentRoute.name === 'userFeed'
   ) {
-    const feedOwner = users[feedViewState.timeline.user];
+    const { userName } = currentRoute.params;
     if (
       // Enable/disable bans in group
       (isResponseOf(action, ActionTypes.DISABLE_BANS_IN_GROUP, ActionTypes.ENABLE_BANS_IN_GROUP) &&
-        feedOwner.username === action.request.groupName) ||
+        userName === action.request.groupName) ||
       // Ban/unban user
       (isResponseOf(action, ActionTypes.BAN, ActionTypes.UNBAN) &&
-        feedOwner.username === action.request.username)
+        userName === action.request.username)
     ) {
       // Re-request this page
-      browserHistory.push(`/${feedOwner.username}`);
+      browserHistory.push(`/${userName}`);
     }
   }
 

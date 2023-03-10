@@ -1288,3 +1288,10 @@ export function getCommentsByIds(commentIds) {
     payload: { commentIds },
   };
 }
+
+export function setCurrentRoute(payload) {
+  return {
+    type: ActionTypes.SET_CURRENT_ROUTE,
+    payload,
+  };
+}
