@@ -23,6 +23,7 @@ exports[`SubsList Renders a list of subscribers 1`] = `
           >
             <a
               class="picture"
+              style="--userpic-size: 50px;"
             >
               <img
                 alt="Profile picture of user1"
@@ -57,6 +58,7 @@ exports[`SubsList Renders a list of subscribers 1`] = `
           >
             <a
               class="picture"
+              style="--userpic-size: 50px;"
             >
               <img
                 alt="Profile picture of user2"

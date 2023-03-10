@@ -709,7 +709,8 @@ export function comments(state = {}, action) {
     case response(ActionTypes.SHOW_MORE_COMMENTS):
     case response(ActionTypes.COMPLETE_POST_COMMENTS):
     case response(ActionTypes.GET_SINGLE_POST):
-    case response(ActionTypes.SHOW_MORE_LIKES_ASYNC): {
+    case response(ActionTypes.SHOW_MORE_LIKES_ASYNC):
+    case response(ActionTypes.GET_COMMENTS_BY_IDS): {
       return updateCommentData(state, action);
     }
     case response(ActionTypes.GET_COMMENT_BY_NUMBER): {
@@ -2244,6 +2245,20 @@ export function invitedByMap(state = invitedByInitial, action) {
     return { ...state, [action.request.username]: action.payload.invitedBy };
   } else if (action.type === LOCATION_CHANGE) {
     return invitedByInitial;
+  }
+  return state;
+}
+
+export function currentRoute(
+  state = {
+    name: '',
+    path: '',
+    params: {},
+  },
+  action,
+) {
+  if (action.type === ActionTypes.SET_CURRENT_ROUTE) {
+    return action.payload;
   }
   return state;
 }

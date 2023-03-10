@@ -1272,3 +1272,26 @@ export function enableBansInGroup(groupName) {
     payload: { groupName },
   };
 }
+
+export function getPostsByIds(postIds) {
+  return {
+    apiRequest: Api.getPostsByIds,
+    type: ActionTypes.GET_POSTS_BY_IDS,
+    payload: { postIds },
+  };
+}
+
+export function getCommentsByIds(commentIds) {
+  return {
+    apiRequest: Api.getCommentsByIds,
+    type: ActionTypes.GET_COMMENTS_BY_IDS,
+    payload: { commentIds },
+  };
+}
+
+export function setCurrentRoute(payload) {
+  return {
+    type: ActionTypes.SET_CURRENT_ROUTE,
+    payload,
+  };
+}

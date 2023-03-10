@@ -1,6 +1,6 @@
 import { Token } from 'social-text-tokenizer';
 
-import byRegexp, { makeToken } from 'social-text-tokenizer/build/cjs/lib/byRegexp';
+import { byRegexp, makeToken } from 'social-text-tokenizer/cjs/lib';
 
 const startSpoilerRegex = /<(spoiler|спойлер)>/gi;
 const endSpoilerRegex = /<\/(spoiler|спойлер)>/gi;
