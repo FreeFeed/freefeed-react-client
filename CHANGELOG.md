@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Take Save out of "more" menu
 
+## [1.116.1] - 2023-03-11
+### Fixed
+- Minor bugs
+
 ## [1.116] - 2023-03-10
 ### Added
 - Rich event preview on Notifications page. Every event now has a user picture

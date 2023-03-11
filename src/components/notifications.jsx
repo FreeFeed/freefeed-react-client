@@ -247,7 +247,7 @@ const notificationTemplates = {
   ),
   invitation_used: (event) => (
     <>
-      <UserLink atStart user={event.createdUser} /> has joined ${CONFIG.siteTitle} using your
+      <UserLink atStart user={event.createdUser} /> has joined {CONFIG.siteTitle} using your
       invitation
     </>
   ),

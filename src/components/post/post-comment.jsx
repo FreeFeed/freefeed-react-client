@@ -414,7 +414,7 @@ export default connect(selectState, null, null, { forwardRef: true })(PostCommen
 
 function isBansDisabled(postId, state) {
   return (state.posts[postId]?.postedTo || [])
-    .map((feedId) => state.subscriptions[feedId].user)
-    .map((userId) => state.users[userId])
-    .some((u) => u.youCan.includes('undisable_bans'));
+    .map((feedId) => state.subscriptions[feedId]?.user)
+    .map((userId) => state.subscribers[userId] || state.users[userId])
+    .some((u) => u?.youCan.includes('undisable_bans'));
 }
