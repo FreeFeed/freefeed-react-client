@@ -38,7 +38,8 @@ export function PostCommentPreview({
   const boxRef = useRef();
 
   const comment = useMemo(
-    () => Object.values(allComments).find((c) => c.postId === postId && c.seqNumber === seqNumber),
+    () =>
+      Object.values(allComments).find((c) => c?.postId === postId && c?.seqNumber === seqNumber),
     [allComments, postId, seqNumber],
   );
   const author = allUsers[comment?.createdBy];
