@@ -7,11 +7,13 @@ import { initialAsyncState } from '../redux/async-helpers';
 import { Throbber } from './throbber';
 import { PreventPageLeaving } from './prevent-page-leaving';
 import { ButtonLink } from './button-link';
-import { useUploader, useFileChooser } from './hooks/uploads';
 import { Icon } from './fontawesome-icons';
 import { SubmitModeHint } from './submit-mode-hint';
 import { PostContext } from './post/post-context';
 import { SmartTextarea } from './smart-textarea';
+import { useUploader } from './uploader/uploader';
+import { useFileChooser } from './uploader/file-chooser';
+import { UploadProgress } from './uploader/progress';
 
 export function CommentEditForm({
   initialText = '',
@@ -68,16 +70,12 @@ export function CommentEditForm({
   }, [setInput, isAddingComment]);
 
   // Uploading files
-  const {
-    loading: filesLoading,
-    uploadProgressUI,
-    uploadFile,
-  } = useUploader({
+  const { isUploading, uploadFile, uploadProgressProps } = useUploader({
     onSuccess: useCallback((att) => input.current?.insertText(att.url), []),
   });
-  const chooseFiles = useFileChooser({ onChoose: uploadFile, multiple: true });
+  const chooseFiles = useFileChooser(uploadFile, { multiple: true });
 
-  const disabled = !canSubmit || submitStatus.loading || filesLoading;
+  const disabled = !canSubmit || submitStatus.loading || isUploading;
 
   return (
     <div className="comment-body" role="form">
@@ -141,7 +139,7 @@ export function CommentEditForm({
         {submitStatus.loading && <Throbber className="comment-throbber" />}
         {submitStatus.error && <span className="comment-error">{submitStatus.errorText}</span>}
       </div>
-      {uploadProgressUI}
+      <UploadProgress {...uploadProgressProps} />
     </div>
   );
 }
