@@ -6,7 +6,7 @@ import { preventDefault } from '../utils';
 import { Throbber } from './throbber';
 import SendTo from './send-to';
 import { Icon } from './fontawesome-icons';
-import { SubmittableTextarea } from './submittable-textarea';
+import { SmartTextarea } from './smart-textarea';
 
 class LinkedImage extends PureComponent {
   handleClick = () => {
@@ -128,7 +128,7 @@ export default class CreateBookmarkletPost extends Component {
           onChange={this.checkCreatePostAvailability}
         />
 
-        <SubmittableTextarea
+        <SmartTextarea
           component={'textarea'}
           className="post-textarea"
           ref={this.registerPostText}
@@ -153,7 +153,7 @@ export default class CreateBookmarkletPost extends Component {
           <Icon icon={faComment} className="comment-icon" />
 
           <div className="comment-body">
-            <SubmittableTextarea
+            <SmartTextarea
               component={'textarea'}
               className="comment-textarea"
               ref={this.registerCommentText}

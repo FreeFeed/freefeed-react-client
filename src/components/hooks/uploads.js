@@ -1,15 +1,12 @@
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import * as Sentry from '@sentry/react';
 
 import { createAttachment } from '../../redux/action-creators';
-import { makeJpegIfNeeded } from '../../utils/jpeg-if-needed';
 import { UploadProgress } from '../upload-progress';
-import { useEventListener } from './sub-unsub';
 
 let nextUploadId = 1;
 
-export function useUploader({ dropTargetRef, pasteTargetRef, onSuccess }) {
+export function useUploader({ onSuccess }) {
   const dispatch = useDispatch();
   const [uploadIds, setUploadIds] = useState([]);
   const doneUploads = useRef([]);
@@ -49,66 +46,10 @@ export function useUploader({ dropTargetRef, pasteTargetRef, onSuccess }) {
     [uploadIds, statuses],
   );
 
-  // Events
-
-  const [draggingOver, setDraggingOver] = useState(false);
-  const onDragEnter = useCallback((e) => containsFiles(e) && setDraggingOver(true), []);
-  const onDragLeave = useCallback(() => setDraggingOver(false), []);
-  const onDragOver = useCallback((e) => containsFiles(e) && e.preventDefault(), []);
-  const onDrop = useCallback(
-    (e) => {
-      setDraggingOver(false);
-      if (containsFiles(e)) {
-        e.preventDefault();
-        for (let i = 0; i < e.dataTransfer.files.length; i++) {
-          uploadFile(e.dataTransfer.files[i]);
-        }
-      }
-    },
-    [uploadFile],
-  );
-  const onPaste = useCallback(
-    (e) => {
-      if (!e.clipboardData?.items) {
-        return;
-      }
-
-      const { items } = e.clipboardData;
-      let withImages = false;
-      for (const item of items) {
-        if (item.type.indexOf('image/') !== 0) {
-          continue;
-        }
-        withImages = true;
-
-        const blob = item.getAsFile();
-        if (!blob.name) {
-          blob.name = 'image.png';
-        }
-        makeJpegIfNeeded(blob)
-          .then(uploadFile)
-          .catch((error) => {
-            Sentry.captureException(error, {
-              level: 'error',
-              tags: { area: 'upload' },
-            });
-          });
-      }
-      withImages && e.preventDefault();
-    },
-    [uploadFile],
-  );
-
-  useEventListener(dropTargetRef, 'dragenter', onDragEnter);
-  useEventListener(dropTargetRef, 'dragleave', onDragLeave);
-  useEventListener(dropTargetRef, 'dragover', onDragOver);
-  useEventListener(dropTargetRef, 'drop', onDrop);
-  useEventListener(pasteTargetRef, 'paste', onPaste);
-
   // Uploader UI
   const uploadProgressUI = <UploadProgress uploadIds={unfinishedIds} />;
 
-  return { uploadFile, loading, draggingOver, uploadProgressUI };
+  return { uploadFile, loading, uploadProgressUI };
 }
 
 export function useFileChooser({ onChoose, accept, multiple }) {
@@ -132,17 +73,4 @@ export function useFileChooser({ onChoose, accept, multiple }) {
 
   const choose = useCallback(() => fileInput.click(), [fileInput]);
   return choose;
-}
-
-function containsFiles(dndEvent) {
-  if (dndEvent.dataTransfer && dndEvent.dataTransfer.types) {
-    // Event.dataTransfer.types is DOMStringList (not Array) in Firefox,
-    // so we can't just use indexOf().
-    for (let i = 0; i < dndEvent.dataTransfer.types.length; i++) {
-      if (dndEvent.dataTransfer.types[i] === 'Files') {
-        return true;
-      }
-    }
-  }
-  return false;
 }

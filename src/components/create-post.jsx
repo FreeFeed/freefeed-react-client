@@ -1,11 +1,9 @@
 /* global CONFIG */
 import { Component, createRef } from 'react';
 import _ from 'lodash';
-import * as Sentry from '@sentry/react';
 
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { preventDefault } from '../utils';
-import { makeJpegIfNeeded } from '../utils/jpeg-if-needed';
 import { SubmitModeHint } from './submit-mode-hint';
 import SendTo from './send-to';
 import Dropzone from './dropzone';
@@ -15,7 +13,7 @@ import { Throbber } from './throbber';
 import { Icon } from './fontawesome-icons';
 import { ButtonLink } from './button-link';
 import { MoreWithTriangle } from './more-with-triangle';
-import { SubmittableTextarea } from './submittable-textarea';
+import { SmartTextarea } from './smart-textarea';
 
 const attachmentsMaxCount = CONFIG.attachments.maxCount;
 
@@ -70,28 +68,8 @@ export default class CreatePost extends Component {
     this.dropzoneObject = d;
   };
 
-  handlePaste = (e) => {
-    if (e.clipboardData) {
-      const { items } = e.clipboardData;
-      if (items) {
-        for (const item of items) {
-          if (item.type.includes('image/')) {
-            const blob = item.getAsFile();
-            if (!blob.name) {
-              blob.name = 'image.png';
-            }
-            makeJpegIfNeeded(blob)
-              .then((blob) => this.dropzoneObject.addFile(blob))
-              .catch((error) => {
-                Sentry.captureException(error, {
-                  level: 'error',
-                  tags: { area: 'upload' },
-                });
-              });
-          }
-        }
-      }
-    }
+  handleFile = (file) => {
+    this.dropzoneObject.addFile(file);
   };
 
   clearForm = () => {
@@ -127,8 +105,8 @@ export default class CreatePost extends Component {
     this.setState({ isFormEmpty });
   };
 
-  onPostTextChange = (e) => {
-    this.setState({ postText: e.target.value }, this.checkCreatePostAvailability);
+  onPostTextChange = (postText) => {
+    this.setState({ postText }, this.checkCreatePostAvailability);
   };
 
   attLoadingStarted = () => this.setState({ attLoading: true });
@@ -204,14 +182,14 @@ export default class CreatePost extends Component {
               onQueueComplete={this.attLoadingCompleted}
             />
 
-            <SubmittableTextarea
+            <SmartTextarea
               ref={this.textareaRef}
               className="post-textarea"
               value={this.state.postText}
-              onChange={this.onPostTextChange}
+              onText={this.onPostTextChange}
               onFocus={this.props.expandSendTo}
               onSubmit={this.checkSave}
-              onPaste={this.handlePaste}
+              onFile={this.handleFile}
               minRows={3}
               maxRows={10}
               maxLength={CONFIG.maxLength.post}

@@ -27,7 +27,6 @@ import { PostCommentPreview } from './post-comment-preview';
 
 class PostComment extends Component {
   commentContainer;
-  commentForm;
 
   state = {
     moreMenuOpened: false,
@@ -76,10 +75,6 @@ class PostComment extends Component {
 
   saveComment = (text) => this.props.saveEditingComment(this.props.id, text);
 
-  insertText(insertion) {
-    this.commentForm && this.commentForm.insertText(insertion);
-  }
-
   toggleLike = () => {
     return this.props.hasOwnLike
       ? this.props.unlikeComment(this.props.id)
@@ -92,10 +87,6 @@ class PostComment extends Component {
 
   registerCommentContainer = (el) => {
     this.commentContainer = el;
-  };
-
-  registerCommentForm = (el) => {
-    this.commentForm = el;
   };
 
   isHidden() {
@@ -276,7 +267,6 @@ class PostComment extends Component {
     if (this.props.isEditing) {
       return (
         <CommentEditForm
-          ref={this.registerCommentForm}
           initialText={this.props.isAddingComment ? this.props.editText : this.props.body}
           isPersistent={this.props.isSinglePost && this.props.isAddingComment}
           isAddingComment={this.props.isAddingComment}

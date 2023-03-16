@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.117] - Not released
+### Changed
+- The internal SubmittableTextarea component replaced by new SmartTextarea. The
+  SmartTextarea allows to:
+  - submit text by Enter of Ctrl/Cmd+Enter;
+  - handle files paste and drag-n-drop;
+  - insert text to the cursor position using 'insertText' instance method;
+  - use 'onText' attribute to handle updated text (it is necessary for
+    'insertText' updates, which doesn't trigger onChange).
+  
+  This component handles all tasks related to creating/editing posts and
+  comments in a unified way.
+
 ## [1.116.1] - 2023-03-11
 ### Fixed
 - Minor bugs
