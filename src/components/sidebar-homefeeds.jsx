@@ -24,6 +24,7 @@ export const SidebarHomeFeeds = memo(function SidebarHomeFeeds({ homeFeedsCount 
     () =>
       void import(/* webpackPrefetch: true */ 'react-sortablejs').then(
         (m) => setSortable(() => m.ReactSortable),
+        // eslint-disable-next-line no-console
         (err) => console.warn(`Cannot load 'react-sortablejs'`, err),
       ),
     [],

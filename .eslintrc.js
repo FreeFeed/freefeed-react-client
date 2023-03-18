@@ -73,6 +73,7 @@ module.exports = {
       CONFIG.eslint.linebreakStyle || (process.platform === 'win32' ? 'windows' : 'unix'),
     ],
     'max-statements-per-line': [2, { max: 1 }],
+    'no-console': 1,
     'no-debugger': 2,
     'no-duplicate-imports': 2,
     'no-else-return': 2,

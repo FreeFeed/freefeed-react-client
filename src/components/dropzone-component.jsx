@@ -70,6 +70,7 @@ const dropzoneEventHandlers = (props) => ({
   error(file, message, xhrs) {
     if (typeof message === 'object' && 'err' in message) {
       let { err } = message;
+      // eslint-disable-next-line no-console
       console.error('File upload failed', file.name, err);
       err = err.replace(/[\r\n].*/g, ''); // First line of multiline message
       if (err.length > 150) {
