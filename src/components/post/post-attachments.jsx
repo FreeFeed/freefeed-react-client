@@ -1,5 +1,8 @@
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useCallback } from 'react';
 import ErrorBoundary from '../error-boundary';
 
+import { showMedia } from '../../redux/action-creators';
 import ImageAttachmentsContainer from './post-attachment-image-container';
 import AudioAttachment from './post-attachment-audio';
 import GeneralAttachment from './post-attachment-general';
@@ -36,8 +39,14 @@ const looksLikeAVideoFile = (attachment) => {
   return false;
 };
 
-export default (props) => {
-  const attachments = props.attachments || [];
+export default function PostAttachments(props) {
+  const attachments = useSelector(
+    (state) => (props.attachmentIds || []).map((id) => state.attachments[id]),
+    shallowEqual,
+  );
+
+  const dispatch = useDispatch();
+  const doShowMedia = useCallback((...args) => dispatch(showMedia(...args)), [dispatch]);
 
   const imageAttachments = [];
   const audioAttachments = [];
@@ -61,7 +70,7 @@ export default (props) => {
       <ImageAttachmentsContainer
         isEditing={props.isEditing}
         isSinglePost={props.isSinglePost}
-        showMedia={props.showMedia}
+        showMedia={doShowMedia}
         removeAttachment={props.removeAttachment}
         reorderImageAttachments={props.reorderImageAttachments}
         attachments={imageAttachments}
@@ -128,4 +137,4 @@ export default (props) => {
   ) : (
     false
   );
-};
+}

@@ -48,8 +48,10 @@ export const ommitBubblesThreshold = 600 * 1000; // 10 min
 
 const tokenizeHashtags = hashTags();
 
+const emptyArray = Object.freeze([]);
+
 const emptyLikes = Object.freeze({
-  likes: Object.freeze([]),
+  likes: emptyArray,
 });
 
 const selectCommentLikes = ({ commentLikes, users }, commentId) => {
@@ -125,9 +127,7 @@ export const joinPostData = (state) => (postId) => {
       tokenizeHashtags(text).some((t) => t.text.toLowerCase() === '#nsfw'),
     );
 
-  const attachments = (post.attachments || []).map(
-    (attachmentId) => state.attachments[attachmentId],
-  );
+  const attachments = post.attachments || emptyArray;
   const postViewState = state.postsViewState[post.id];
   const { omitRepeatedBubbles } = state.user.frontendPreferences.comments;
   const hashedCommentId = getCommentId(state.routing.locationBeforeTransitions.hash);

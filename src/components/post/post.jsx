@@ -636,7 +636,7 @@ class Post extends Component {
           <div className="post-body">
             <PostAttachments
               postId={props.id}
-              attachments={this.attachments}
+              attachmentIds={this.attachments}
               isEditing={props.isEditing}
               isSinglePost={props.isSinglePost}
               showMedia={this.props.showMedia}
