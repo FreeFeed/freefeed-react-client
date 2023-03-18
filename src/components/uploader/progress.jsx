@@ -5,13 +5,19 @@ import { faExclamationTriangle, faTimesCircle } from '@fortawesome/free-solid-sv
 import { createAttachment, resetAttachmentUpload } from '../../redux/action-creators';
 import { ButtonLink } from '../button-link';
 import { Icon } from '../fontawesome-icons';
+import { initialAsyncState } from '../../redux/async-helpers';
 import style from './progress.module.scss';
 
 export function UploadProgress({ uploadIds, statuses, unfinishedFiles }) {
   return (
     <div className={style.container}>
       {[...uploadIds].map((id) => (
-        <ProgressRow key={id} id={id} status={statuses[id]} file={unfinishedFiles.get(id)} />
+        <ProgressRow
+          key={id}
+          id={id}
+          status={statuses[id] ?? initialAsyncState}
+          file={unfinishedFiles.get(id)}
+        />
       ))}
     </div>
   );

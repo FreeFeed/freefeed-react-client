@@ -660,6 +660,7 @@ export function attachments(state = {}, action) {
       }
       return state;
     }
+    case response(ActionTypes.CREATE_ATTACHMENT):
     case ActionTypes.ADD_ATTACHMENT_RESPONSE: {
       return {
         ...state,
