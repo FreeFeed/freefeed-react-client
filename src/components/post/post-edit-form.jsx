@@ -146,7 +146,7 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
         <div className="post-edit-actions">
           <div className="post-edit-options">
             <span
-              className="post-edit-attachments dropzone-trigger"
+              className="post-edit-attachments"
               disabled={!canUploadMore}
               role="button"
               onClick={chooseFiles}

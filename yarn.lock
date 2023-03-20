@@ -5390,13 +5390,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dropzone@npm:^5.4.0":
-  version: 5.9.3
-  resolution: "dropzone@npm:5.9.3"
-  checksum: 7fe7e32ff188ab38bb3ddd468938ef78c158ce4cada8b2184cdd78a1d52fd961af56f1f0bec11a7881aab6d43d7fc9f9a6dc6addbfbea93c1ad784dbc6444e4d
-  languageName: node
-  linkType: hard
-
 "duplexer@npm:^0.1.1, duplexer@npm:^0.1.2":
   version: 0.1.2
   resolution: "duplexer@npm:0.1.2"
@@ -6202,13 +6195,6 @@ __metadata:
     utils-merge: 1.0.1
     vary: ~1.1.2
   checksum: 3c4b9b076879442f6b968fe53d85d9f1eeacbb4f4c41e5f16cc36d77ce39a2b0d81b3f250514982110d815b2f7173f5561367f9110fcc541f9371948e8c8b037
-  languageName: node
-  linkType: hard
-
-"extend@npm:^3.0.1":
-  version: 3.0.2
-  resolution: "extend@npm:3.0.2"
-  checksum: a50a8309ca65ea5d426382ff09f33586527882cf532931cb08ca786ea3146c0553310bda688710ff61d7668eba9f96b923fe1420cdf56a2c3eaf30fcab87b515
   languageName: node
   linkType: hard
 
@@ -11435,19 +11421,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dropzone-component@npm:~3.2.0":
-  version: 3.2.0
-  resolution: "react-dropzone-component@npm:3.2.0"
-  dependencies:
-    dropzone: ^5.4.0
-    extend: ^3.0.1
-  peerDependencies:
-    react: ">15.0.1"
-    react-dom: ">15.0.1"
-  checksum: 0fee16f37e7aae08f658a6efba82a11f9809aa8fb930be36ca8eee09568f4995785bdbaba66088c01c92fc2f8ae64fd946ef4a0ca0d23a8adaf7ce30aab4a2c6
-  languageName: node
-  linkType: hard
-
 "react-error-boundary@npm:^3.1.0":
   version: 3.1.4
   resolution: "react-error-boundary@npm:3.1.4"
@@ -11871,7 +11844,6 @@ __metadata:
     querystring: ~0.2.1
     react: ~17.0.2
     react-dom: ~17.0.2
-    react-dropzone-component: ~3.2.0
     react-final-form-hooks: ~2.0.2
     react-google-recaptcha: ~2.1.0
     react-helmet: ~6.1.0
