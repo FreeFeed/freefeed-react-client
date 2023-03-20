@@ -332,6 +332,12 @@ export function feedViewState(state = initFeed, action) {
   return state;
 }
 
+export const saveEditingPostStatuses = asyncStatesMap(
+  ActionTypes.SAVE_EDITING_POST,
+  { getKey: getKeyBy('postId'), cleanOnSuccess: true },
+  setOnLocationChange({}),
+);
+
 const NO_ERROR = {
   isError: false,
   errorString: '',
