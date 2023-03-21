@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.117] - Not released
 ### Changed
+- The Dropzone library has been replaced with a custom file uploader.
+  Attachments for posts and comments are now uploaded uniformly. The CreatePost
+  and PostEditForm components have been redesigned to utilize the new uploader.
 - The internal SubmittableTextarea component replaced by new SmartTextarea. The
   SmartTextarea allows to:
   - submit text by Enter of Ctrl/Cmd+Enter;
