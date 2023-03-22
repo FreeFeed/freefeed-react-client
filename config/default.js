@@ -32,8 +32,6 @@ export default {
     'gamma.freefeed.net',
   ],
 
-  attachments: { maxCount: 20 },
-
   textFormatter: {
     tldList: TLDs,
     /**

@@ -1,4 +1,3 @@
-/* global CONFIG */
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { useCallback, useMemo, useRef, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,12 +16,17 @@ import { UploadProgress } from './uploader/progress';
 import { PreventPageLeaving } from './prevent-page-leaving';
 import PostAttachments from './post/post-attachments';
 import { useBool } from './hooks/bool';
+import { useServerValue } from './hooks/server-info';
 
-const attachmentsMaxCount = CONFIG.attachments.maxCount;
+const selectMaxFilesCount = (serverInfo) => serverInfo.attachments.maxCountPerPost;
+const selectMaxPostLength = (serverInfo) => serverInfo.maxTextLength.post;
 
 export default function CreatePost({ sendTo, expandSendTo, user, isDirects }) {
   const dispatch = useDispatch();
   const createPostStatus = useSelector((state) => state.createPostStatus);
+
+  const maxFilesCount = useServerValue(selectMaxFilesCount, Infinity);
+  const maxPostLength = useServerValue(selectMaxPostLength, 1e3);
 
   const textareaRef = useRef();
 
@@ -47,14 +51,17 @@ export default function CreatePost({ sendTo, expandSendTo, user, isDirects }) {
     clearUploads,
     uploadProgressProps,
     postAttachmentsProps,
-  } = useUploader({ maxCount: attachmentsMaxCount });
+  } = useUploader({ maxCount: maxFilesCount });
 
   // Expand SendTo if we have some files
   useEffect(() => void (fileIds.length > 0 && expandSendTo()), [expandSendTo, fileIds.length]);
 
   const doChooseFiles = useFileChooser(uploadFile, { multiple: true });
 
-  const canUploadMore = useMemo(() => fileIds.length < attachmentsMaxCount, [fileIds.length]);
+  const canUploadMore = useMemo(
+    () => fileIds.length < maxFilesCount,
+    [fileIds.length, maxFilesCount],
+  );
 
   const chooseFiles = useCallback(
     () => canUploadMore && doChooseFiles(),
@@ -137,7 +144,7 @@ export default function CreatePost({ sendTo, expandSendTo, user, isDirects }) {
             onFile={uploadFile}
             minRows={3}
             maxRows={10}
-            maxLength={CONFIG.maxLength.post}
+            maxLength={maxPostLength}
             dir={'auto'}
           />
         </div>
@@ -194,7 +201,7 @@ export default function CreatePost({ sendTo, expandSendTo, user, isDirects }) {
 
         {!canUploadMore && (
           <div className="alert alert-warning">
-            The maximum number of attached files ({attachmentsMaxCount}) has been reached
+            The maximum number of attached files ({maxFilesCount}) has been reached
           </div>
         )}
 

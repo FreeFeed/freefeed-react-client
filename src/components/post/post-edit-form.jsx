@@ -1,4 +1,3 @@
-/* global CONFIG */
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
@@ -13,13 +12,18 @@ import { useFileChooser } from '../uploader/file-chooser';
 import { useUploader } from '../uploader/uploader';
 import { UploadProgress } from '../uploader/progress';
 import { destinationsPrivacy } from '../select-utils';
+import { useServerValue } from '../hooks/server-info';
 import PostAttachments from './post-attachments';
 
-const attachmentsMaxCount = CONFIG.attachments.maxCount;
+const selectMaxFilesCount = (serverInfo) => serverInfo.attachments.maxCountPerPost;
+const selectMaxPostLength = (serverInfo) => serverInfo.maxTextLength.post;
 
 export function PostEditForm({ id, isDirect, recipients, createdBy, body, attachments }) {
   const dispatch = useDispatch();
   const saveState = useSelector((state) => state.saveEditingPostStatuses[id] ?? initialAsyncState);
+
+  const maxFilesCount = useServerValue(selectMaxFilesCount, Infinity);
+  const maxPostLength = useServerValue(selectMaxPostLength, 1e3);
 
   const [feedsSelector, setFeedsSelector] = useState(null);
   const [feeds, setFeeds] = useState([]);
@@ -30,11 +34,14 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
 
   // Uploading files
   const { isUploading, fileIds, uploadFile, uploadProgressProps, postAttachmentsProps } =
-    useUploader({ maxCount: attachmentsMaxCount, fileIds: attachments });
+    useUploader({ maxCount: maxFilesCount, fileIds: attachments });
 
   const doChooseFiles = useFileChooser(uploadFile, { multiple: true });
 
-  const canUploadMore = useMemo(() => fileIds.length < attachmentsMaxCount, [fileIds.length]);
+  const canUploadMore = useMemo(
+    () => fileIds.length < maxFilesCount,
+    [fileIds.length, maxFilesCount],
+  );
 
   const chooseFiles = useCallback(
     () => canUploadMore && doChooseFiles(),
@@ -138,7 +145,7 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
             autoFocus={true}
             minRows={2}
             maxRows={10}
-            maxLength={CONFIG.maxLength.post}
+            maxLength={maxPostLength}
             dir="auto"
           />
         </div>
@@ -178,7 +185,7 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
 
         {!canUploadMore && (
           <div className="alert alert-warning">
-            The maximum number of attached files ({attachmentsMaxCount}) has been reached
+            The maximum number of attached files ({maxFilesCount}) has been reached
           </div>
         )}
         {saveState.error && (
