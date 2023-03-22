@@ -118,8 +118,21 @@ export default function CreatePost({ sendTo, expandSendTo, user, isDirects }) {
     }
   }, []);
 
+  const containerRef = useRef();
+  useEffect(() => {
+    const h = () => import('react-select');
+    const el = containerRef.current;
+    el.addEventListener('click', h, { once: true });
+    return () => el.removeEventListener('click', h, { once: true });
+  }, []);
+
   return (
-    <div className="create-post post-editor" role="form" aria-label="Write a post">
+    <div
+      className="create-post post-editor"
+      role="form"
+      aria-label="Write a post"
+      ref={containerRef}
+    >
       <ErrorBoundary>
         <PreventPageLeaving prevent={isFormDirty} />
         <div>
