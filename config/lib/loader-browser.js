@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { merge } from './merge';
 
 window.CONFIG = window.CONFIG || {};

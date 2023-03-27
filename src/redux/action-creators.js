@@ -1,7 +1,7 @@
 import * as Api from '../services/api';
 import * as ActionTypes from './action-types';
 import { reset } from './action-helpers';
-import { response } from './async-helpers';
+import { fail, response } from './async-helpers';
 
 export function unauthenticated(payload) {
   return {
@@ -689,7 +689,7 @@ export function rejectUserRequest(username) {
 }
 
 export function resetPostCreateForm() {
-  return { type: ActionTypes.RESET_POST_CREATE_FORM };
+  return { type: reset(ActionTypes.CREATE_POST) };
 }
 
 export function resetGroupCreateForm() {
@@ -1120,6 +1120,15 @@ export function resetAttachmentUpload(uploadId) {
   return {
     type: reset(ActionTypes.CREATE_ATTACHMENT),
     payload: { uploadId },
+  };
+}
+
+// Emulate the upload failure
+export function setUploadError(uploadId, fileName, err) {
+  return {
+    type: fail(ActionTypes.CREATE_ATTACHMENT),
+    request: { uploadId, name: fileName },
+    payload: { err },
   };
 }
 

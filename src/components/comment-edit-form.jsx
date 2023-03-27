@@ -1,37 +1,33 @@
 /* global CONFIG */
-import { useMemo, useCallback, useState, useRef, useEffect, forwardRef, useContext } from 'react';
+import { useMemo, useCallback, useState, useRef, useEffect, useContext } from 'react';
 import cn from 'classnames';
 
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { initialAsyncState } from '../redux/async-helpers';
-import { insertText } from '../utils/insert-text';
 import { Throbber } from './throbber';
-import { useForwardedRef } from './hooks/forward-ref';
 import { PreventPageLeaving } from './prevent-page-leaving';
 import { ButtonLink } from './button-link';
-import { useUploader, useFileChooser } from './hooks/uploads';
 import { Icon } from './fontawesome-icons';
 import { SubmitModeHint } from './submit-mode-hint';
-import { SubmittableTextarea } from './submittable-textarea';
 import { PostContext } from './post/post-context';
+import { SmartTextarea } from './smart-textarea';
+import { useUploader } from './uploader/uploader';
+import { useFileChooser } from './uploader/file-chooser';
+import { UploadProgress } from './uploader/progress';
 
-export const CommentEditForm = forwardRef(function CommentEditForm(
-  {
-    initialText = '',
-    // Persistent form is always on page so we don't need to show Cancel button
-    isPersistent = false,
-    // Adding new comment form
-    isAddingComment = false,
-    onSubmit = () => {},
-    onCancel = () => {},
-    submitStatus = initialAsyncState,
-  },
-  fwdRef,
-) {
+export function CommentEditForm({
+  initialText = '',
+  // Persistent form is always on page so we don't need to show Cancel button
+  isPersistent = false,
+  // Adding new comment form
+  isAddingComment = false,
+  onSubmit = () => {},
+  onCancel = () => {},
+  submitStatus = initialAsyncState,
+}) {
   const { setInput } = useContext(PostContext);
   const input = useRef(null);
   const [text, setText] = useState(initialText);
-  const onChange = useCallback((e) => setText(e.target.value), []);
   const canSubmit = useMemo(
     () => !submitStatus.loading && text.trim() !== '',
     [submitStatus.loading, text],
@@ -73,49 +69,26 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
     }
   }, [setInput, isAddingComment]);
 
-  const insText = (insertion) => {
-    const [text, selStart, selEnd] = insertText(
-      insertion,
-      input.current.value,
-      input.current.selectionStart,
-      input.current.selectionEnd,
-    );
-    // Pre-fill the input value to keep the cursor/selection
-    // position after React update cycle
-    input.current.value = text;
-    input.current.setSelectionRange(selStart, selEnd);
-    input.current.focus();
-    setText(input.current.value);
-  };
-
-  // Expose the insertText method for the parent components
-  useForwardedRef(fwdRef, { insertText: insText });
-
   // Uploading files
-  const {
-    draggingOver,
-    loading: filesLoading,
-    uploadProgressUI,
-    uploadFile,
-  } = useUploader({
-    dropTargetRef: input,
-    pasteTargetRef: input,
-    onSuccess: useCallback((att) => insText(att.url), []),
+  const { isUploading, uploadFile, uploadProgressProps } = useUploader({
+    onSuccess: useCallback((att) => input.current?.insertText(att.url), []),
   });
-  const chooseFiles = useFileChooser({ onChoose: uploadFile, multiple: true });
+  const chooseFiles = useFileChooser(uploadFile, { multiple: true });
 
-  const disabled = !canSubmit || submitStatus.loading || filesLoading;
+  const disabled = !canSubmit || submitStatus.loading || isUploading;
 
   return (
     <div className="comment-body" role="form">
       <PreventPageLeaving prevent={canSubmit || submitStatus.loading} />
       <div>
-        <SubmittableTextarea
+        <SmartTextarea
           ref={input}
-          className={cn('comment-textarea', draggingOver && 'comment-textarea__dragged')}
+          className="comment-textarea"
+          dragOverClassName="comment-textarea__dragged"
           value={text}
           onFocus={onFocus}
-          onChange={onChange}
+          onText={setText}
+          onFile={uploadFile}
           onSubmit={handleSubmit}
           minRows={2}
           maxRows={10}
@@ -166,7 +139,7 @@ export const CommentEditForm = forwardRef(function CommentEditForm(
         {submitStatus.loading && <Throbber className="comment-throbber" />}
         {submitStatus.error && <span className="comment-error">{submitStatus.errorText}</span>}
       </div>
-      {uploadProgressUI}
+      <UploadProgress {...uploadProgressProps} />
     </div>
   );
-});
+}

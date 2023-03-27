@@ -1,11 +1,20 @@
 /* global describe, it, expect */
 import { render } from '@testing-library/react';
 
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 import PostAttachments from '../../src/components/post/post-attachments';
 
-const renderPostAttachments = (props = {}) => {
-  return render(<PostAttachments {...props} />);
-};
+function renderPostAttachments(attachments = []) {
+  const state = { attachments: attachments.reduce((p, a) => ({ ...p, [a.id]: a }), {}) };
+  const dummyReducer = (state) => state;
+  const store = createStore(dummyReducer, state);
+  return render(
+    <Provider store={store}>
+      <PostAttachments attachmentIds={attachments.map((a) => a.id)} />
+    </Provider>,
+  );
+}
 
 describe('PostAttachments', () => {
   it('Renders an empty attachments container', () => {
@@ -74,9 +83,7 @@ describe('PostAttachments', () => {
       url: 'https://media/rfc.pdf',
     };
 
-    const { asFragment } = renderPostAttachments({
-      attachments: [video1, image1, general1, image2, audio1],
-    });
+    const { asFragment } = renderPostAttachments([video1, image1, general1, image2, audio1]);
     expect(asFragment()).toMatchSnapshot();
   });
 });

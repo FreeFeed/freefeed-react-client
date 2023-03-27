@@ -99,7 +99,8 @@ class Layout extends Component {
 
         {props.authenticated ? (
           <CreateBookmarkletPost
-            createPostViewState={props.createPostViewState}
+            createPostStatus={props.createPostStatus}
+            lastCreatedPostId={props.lastCreatedPostId}
             sendTo={props.sendTo}
             user={props.user}
             postText={`${props.location.query.title} - ${props.location.query.url}`}
@@ -122,14 +123,15 @@ class Layout extends Component {
 }
 
 function selectState(state) {
-  const { authenticated, createPostViewState, user, submitMode } = state;
+  const { authenticated, createPostStatus, lastCreatedPostId, user, submitMode } = state;
   const sendTo = { ...state.sendTo, defaultFeed: user.username };
 
   return {
     authenticated,
     user,
     sendTo,
-    createPostViewState,
+    createPostStatus,
+    lastCreatedPostId,
     submitMode,
   };
 }

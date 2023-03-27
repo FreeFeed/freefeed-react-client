@@ -169,12 +169,11 @@ export function HomeAux({ router }) {
 }
 
 function selectState(state) {
-  const { authenticated, createPostViewState, timelines, user, routeLoadingState } = state;
+  const { authenticated, timelines, user, routeLoadingState } = state;
 
   return {
     user,
     authenticated,
-    createPostViewState,
     timelines,
     feedIsLoading: routeLoadingState,
   };

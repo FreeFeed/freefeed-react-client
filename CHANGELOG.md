@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Experimental
 ### Changed
 - Take Save out of "more" menu
+- The Dropzone library has been replaced with a custom file uploader.
+  Attachments for posts and comments are now uploaded uniformly. The CreatePost
+  and PostEditForm components have been redesigned to utilize the new uploader.
+- The internal SubmittableTextarea component replaced by new SmartTextarea. The
+  SmartTextarea allows to:
+  - submit text by Enter of Ctrl/Cmd+Enter;
+  - handle files paste and drag-n-drop;
+  - insert text to the cursor position using 'insertText' instance method;
+  - use 'onText' attribute to handle updated text (it is necessary for
+    'insertText' updates, which doesn't trigger onChange).
+  
+  This component handles all tasks related to creating/editing posts and
+  comments in a unified way.
 
 ## [1.116.1] - 2023-03-11
 ### Fixed
