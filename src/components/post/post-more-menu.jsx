@@ -88,10 +88,10 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
 
   const menuGroups = [
     [
-      !isOwnPost && (
-        <div className={styles.item} key="mention-username">
+      amIAuthenticated && !isOwnPost && (!commentsDisabled || isModeratable) && (
+        <div className={styles.item} key="mention-author">
           <ButtonLink onClick={doAndForceClose(doMention)} className={styles.link}>
-            <Iconic icon={faAt}>Mention @{postCreatedBy.username}</Iconic>
+            <Iconic icon={faAt}>Mention @{postCreatedBy?.username}</Iconic>
           </ButtonLink>
         </div>
       ),

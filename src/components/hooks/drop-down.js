@@ -18,7 +18,7 @@ export function useDropDown({
 
   const [opened, setOpened] = useState(false);
   const toggle = useCallback(() => setOpened((x) => !x), []);
-  const close = useCallback(() => setOpened(false), []);
+  const forceClose = useCallback(() => setOpened(false), []);
 
   // Close menu on any click on page
   useEffect(() => {
@@ -51,7 +51,7 @@ export function useDropDown({
 
   useLayoutEffect(updPosition);
 
-  return { pivotRef, menuRef, opened, setOpened, toggle, close };
+  return { pivotRef, menuRef, opened, setOpened, toggle, forceClose };
 }
 
 function updatePosition(leader, follower, { screenEdgeGap, position, fixed = false }) {

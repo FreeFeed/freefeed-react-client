@@ -49,8 +49,10 @@ const renderPostMoreMenu = (props = {}) => {
     disableComments: () => {},
     deletePost: () => {},
     doAndClose: () => {},
+    doAndForceClose: () => {},
     permalink: 'https://freefeed.net/post123',
     toggleSave: () => {},
+    doMention: () => {},
   };
 
   return render(

@@ -60,7 +60,8 @@ class Post extends Component {
       text && this.context.input?.insertText(text);
     } else {
       prepareAsyncFocus();
-      this.props.toggleCommenting(this.props.id, text);
+      (!text && this.props.toggleCommenting(this.props.id)) ||
+        this.props.toggleCommenting(this.props.id, text);
     }
   };
 
