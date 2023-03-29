@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.117] - Not released
+### Added
+- New "Mention @username" item has been included to the post's dropdown menu. By
+  clicking on it, you can start a new comment and mention the person who created
+  the post or add their @username to the comment you are currently editing.
+
 ### Changed
 - The Dropzone library has been replaced with a custom file uploader.
   Attachments for posts and comments are now uploaded uniformly. The CreatePost
@@ -17,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - insert text to the cursor position using 'insertText' instance method;
   - use 'onText' attribute to handle updated text (it is necessary for
     'insertText' updates, which doesn't trigger onChange).
-  
+
   This component handles all tasks related to creating/editing posts and
   comments in a unified way.
 

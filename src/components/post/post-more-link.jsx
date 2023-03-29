@@ -16,12 +16,13 @@ import { PostMoreMenu } from './post-more-menu';
 export default function PostMoreLink({ post, user, ...props }) {
   const fixedMenu = useMediaQuery('(max-width: 450px)');
 
-  const { pivotRef, menuRef, opened, toggle } = useDropDownKbd({
+  const { pivotRef, menuRef, opened, toggle, close } = useDropDownKbd({
     closeOn: CLOSE_ON_CLICK_OUTSIDE,
     fixed: fixedMenu,
   });
 
   const doAndClose = useCallback((h) => h && ((...args) => (h(...args), toggle())), [toggle]);
+  const doAndForceClose = useCallback((h) => h && ((...args) => (h(...args), close())), [close]);
 
   const deletePost = useCallback(
     (...feedNames) => confirmFirst(props.deletePost(...feedNames)),
@@ -81,9 +82,11 @@ export default function PostMoreLink({ post, user, ...props }) {
             disableComments={props.disableComments}
             deletePost={deletePost}
             doAndClose={doAndClose}
+            doAndForceClose={doAndForceClose}
             permalink={canonicalPostURI}
             toggleSave={props.toggleSave}
             fixed={fixedMenu}
+            doMention={props.handleMentionAuthor}
           />
         </Portal>
       )}
