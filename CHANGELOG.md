@@ -7,9 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.117] - Not released
 ### Added
-- New "Mention @username" item has been included to the post's dropdown menu. By
-  clicking on it, you can start a new comment and mention the person who created
-  the post or add their @username to the comment you are currently editing.
+- A new "Mention @username" item has been added to the post's dropdown menu.
+  By clicking on it, you can start a new comment and mention the person who
+  created the post, or add their @username to the comment you have already started creating.
 
 ### Changed
 - The Dropzone library has been replaced with a custom file uploader.
