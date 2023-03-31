@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A new "Mention @username" item has been added to the post's dropdown menu.
   By clicking on it, you can start a new comment and mention the person who
   created the post, or add their @username to the comment you have already started creating.
-
+- Vimeo on demand links support
 ### Changed
 - The Dropzone library has been replaced with a custom file uploader.
   Attachments for posts and comments are now uploaded uniformly. The CreatePost
