@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.118] - Not released
+
 ## [1.117] - 2023-03-31
 ### Added
 - A new "Mention @username" item has been added to the post's dropdown menu.
