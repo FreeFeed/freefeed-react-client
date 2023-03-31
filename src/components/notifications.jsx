@@ -391,6 +391,22 @@ function mainEventLink(event) {
   return null;
 }
 
+function getContentSource(event) {
+  switch (event.event_type) {
+    case 'mention_in_comment':
+    case 'mention_comment_to':
+    case 'backlink_in_comment':
+    case 'direct_comment':
+      return 'comment';
+  }
+  if (event.comment_id) {
+    return 'comment';
+  } else if (event.post_id) {
+    return 'post';
+  }
+  return null;
+}
+
 function Notification({ event }) {
   const dispatch = useDispatch();
   const allPosts = useSelector((state) => state.posts);
@@ -398,10 +414,13 @@ function Notification({ event }) {
   const readMoreStyle = useSelector((state) => state.user.frontendPreferences.readMoreStyle);
   const doShowMedia = useCallback((...args) => dispatch(showMedia(...args)), [dispatch]);
   const [absTimestamps, toggleAbsTimestamps] = useBool(false);
-  const shouldBeContent = event.comment_id || event.post_id;
+  const contentSource = getContentSource(event);
   const content =
-    shouldBeContent &&
-    (event.comment_id ? allComments[event.comment_id] : allPosts[event.post_id])?.body;
+    contentSource === 'post'
+      ? allPosts[event.post_id]?.body
+      : contentSource === 'comment'
+      ? allComments[event.comment_id]?.body
+      : null;
   const mainLink = mainEventLink(event);
   return (
     <div className={`single-notification ${notificationClasses[event.event_type] || ''}`}>
@@ -419,7 +438,7 @@ function Notification({ event }) {
           >
             <PieceOfText text={content} readMoreStyle={readMoreStyle} showMedia={doShowMedia} />
           </Expandable>
-        ) : shouldBeContent ? (
+        ) : contentSource ? (
           <em>Text not available</em>
         ) : null}
       </div>
