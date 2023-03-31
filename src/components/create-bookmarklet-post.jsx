@@ -6,7 +6,7 @@ import { preventDefault } from '../utils';
 import { Throbber } from './throbber';
 import SendTo from './send-to';
 import { Icon } from './fontawesome-icons';
-import { SubmittableTextarea } from './submittable-textarea';
+import { SmartTextarea } from './smart-textarea';
 
 class LinkedImage extends PureComponent {
   handleClick = () => {
@@ -47,7 +47,7 @@ export default class CreateBookmarkletPost extends Component {
   };
 
   checkSave = () =>
-    !this.state.isFormEmpty && !this.props.createPostViewState.isPending && this.submitForm();
+    !this.state.isFormEmpty && !this.props.createPostStatus.loading && this.submitForm();
 
   submitForm = () => {
     // Get all the values
@@ -63,8 +63,8 @@ export default class CreateBookmarkletPost extends Component {
   UNSAFE_componentWillReceiveProps(newProps) {
     // If it was successful saving, clear the form
     const wasCommentJustSaved =
-      this.props.createPostViewState.isPending && !newProps.createPostViewState.isPending;
-    const wasThereNoError = !newProps.createPostViewState.isError;
+      this.props.createPostStatus.loading && !newProps.createPostStatus.loading;
+    const wasThereNoError = !newProps.createPostStatus.error;
 
     if (wasCommentJustSaved && wasThereNoError) {
       this.setState({ isPostSaved: true });
@@ -94,7 +94,7 @@ export default class CreateBookmarkletPost extends Component {
 
   render() {
     if (this.state.isPostSaved) {
-      const postUrl = `/${this.props.user.username}/${this.props.createPostViewState.lastPostId}`;
+      const postUrl = `/${this.props.user.username}/${this.props.lastCreatedPostId}`;
       return (
         <div className="brand-new-post">
           Done! Check out
@@ -112,10 +112,9 @@ export default class CreateBookmarkletPost extends Component {
 
     return (
       <div className="create-post post-editor expanded" role="form">
-        {this.props.createPostViewState.isError ? (
+        {this.props.createPostStatus.error ? (
           <div className="post-error alert alert-danger" role="alert">
-            Post has not been saved. Server response:{' '}
-            {`"${this.props.createPostViewState.errorString}"`}
+            Post has not been saved. Server response: {`"${this.props.createPostStatus.errorText}"`}
           </div>
         ) : (
           false
@@ -128,7 +127,7 @@ export default class CreateBookmarkletPost extends Component {
           onChange={this.checkCreatePostAvailability}
         />
 
-        <SubmittableTextarea
+        <SmartTextarea
           component={'textarea'}
           className="post-textarea"
           ref={this.registerPostText}
@@ -153,7 +152,7 @@ export default class CreateBookmarkletPost extends Component {
           <Icon icon={faComment} className="comment-icon" />
 
           <div className="comment-body">
-            <SubmittableTextarea
+            <SmartTextarea
               component={'textarea'}
               className="comment-textarea"
               ref={this.registerCommentText}
@@ -167,7 +166,7 @@ export default class CreateBookmarkletPost extends Component {
         </div>
 
         <div className="post-edit-actions">
-          {this.props.createPostViewState.isPending ? (
+          {this.props.createPostStatus.loading ? (
             <span className="post-edit-throbber">
               <Throbber />
             </span>
@@ -178,7 +177,7 @@ export default class CreateBookmarkletPost extends Component {
           <button
             className="btn btn-default"
             onClick={preventDefault(this.submitForm)}
-            disabled={this.state.isFormEmpty || this.props.createPostViewState.isPending}
+            disabled={this.state.isFormEmpty || this.props.createPostStatus.loading}
           >
             Post
           </button>

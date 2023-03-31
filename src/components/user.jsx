@@ -91,7 +91,6 @@ const UserHandler = (props) => {
             user={props.user}
             sendTo={props.sendTo}
             expandSendTo={props.expandSendTo}
-            createPostViewState={props.createPostViewState}
             createPost={props.createPost}
             resetPostCreateForm={props.resetPostCreateForm}
             addAttachmentResponse={props.addAttachmentResponse}
@@ -109,7 +108,7 @@ const UserHandler = (props) => {
 
 // eslint-disable-next-line complexity
 function selectState(state, ownProps) {
-  const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
+  const { authenticated, boxHeader, timelines, user } = state;
   const anonymous = !authenticated;
 
   const foundUser =
@@ -186,7 +185,6 @@ function selectState(state, ownProps) {
   return {
     user,
     timelines,
-    createPostViewState,
     boxHeader,
     showSummaryHeader,
     viewUser,

@@ -6,6 +6,7 @@ import { createStore } from 'redux';
 import * as reactRedux from 'react-redux';
 
 import PostComments from '../../src/components/post/post-comments';
+import { initialAsyncState } from '../../src/redux/async-helpers';
 
 // mock icon component to make snapshots smaller
 jest.mock('../../src/components/fontawesome-icons', () => ({
@@ -79,6 +80,7 @@ const defaultState = {
     [COMMENT2.id]: COMMENT2,
     [COMMENT3.id]: COMMENT3,
   },
+  serverInfoStatus: initialAsyncState,
 };
 
 const renderPostComments = (props = {}, options = {}) => {

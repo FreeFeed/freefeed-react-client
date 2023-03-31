@@ -4,13 +4,14 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { createStore } from 'redux';
 import * as reactRedux from 'react-redux';
+import * as actionCreators from '../../src/redux/action-creators';
 
 jest.mock('../../src/components/post/post-comments', () => ({ comments }) => {
   return <div>{comments.length > 0 ? `Mocked ${comments.length} comments ` : ''}</div>;
 });
 
-jest.mock('../../src/components/post/post-attachments', () => ({ attachments }) => {
-  return <div>{attachments.length > 0 ? `Mocked ${attachments.length} attachments` : ''}</div>;
+jest.mock('../../src/components/post/post-attachments', () => ({ attachmentIds }) => {
+  return <div>{attachmentIds.length > 0 ? `Mocked ${attachmentIds.length} attachments` : ''}</div>;
 });
 
 // https://github.com/facebook/jest/issues/8769#issuecomment-812824244
@@ -23,6 +24,7 @@ jest.mock('../../src/components/lazy-component', () => ({
 }));
 
 import Post from '../../src/components/post/post';
+import { initialAsyncState } from '../../src/redux/async-helpers';
 
 const AUTHOR = {
   id: 'author-id',
@@ -43,8 +45,15 @@ const VIEWER = {
 const defaultState = {
   user: VIEWER,
   postHideStatuses: {},
+  saveEditingPostStatuses: {},
   sendTo: { feeds: [{ id: 'feed-id', user: AUTHOR }] },
   submitMode: 'enter',
+  serverInfoStatus: initialAsyncState,
+  users: {},
+  attachments: {
+    a1: { id: 'a1', mediaType: 'image' },
+    a2: { id: 'a2' },
+  },
 };
 
 const renderPost = (props = {}, options = {}) => {
@@ -150,7 +159,7 @@ describe('Post', () => {
 
   it('Displays post attachments', () => {
     renderPost({
-      attachments: [{ id: 'a1' }, { id: 'a2' }],
+      attachments: ['a1', 'a2'],
     });
     expect(screen.getByText('Mocked 2 attachments')).toBeInTheDocument();
   });
@@ -158,7 +167,7 @@ describe('Post', () => {
   it('Displays NSFW warning for a NSFW post with image attachments', () => {
     renderPost({
       isNSFW: true,
-      attachments: [{ id: 'a1', mediaType: 'image' }, { id: 'a2' }],
+      attachments: ['a1', 'a2'],
     });
     expect(screen.getByLabelText(/Not safe for work Public post/)).toHaveTextContent(
       /Turn the NSFW filter off to enable previews for sensitive content/,
@@ -407,12 +416,12 @@ describe('Post', () => {
   });
 
   it('Renders a textarea with post text when editing the post', async () => {
-    const cancelEditingPost = jest.fn();
-    const { rerender } = renderPost({ isEditable: true, cancelEditingPost });
+    const cancelEditingPost = jest.spyOn(actionCreators, 'cancelEditingPost');
+    const { rerender } = renderPost({ isEditable: true });
 
     await userEvent.click(screen.getByText(/More/, { role: 'button' }));
     await userEvent.click(screen.getByText('Edit', { role: 'button' }));
-    rerender({ isEditing: true, isEditable: true, cancelEditingPost });
+    rerender({ isEditing: true, isEditable: true });
 
     expect(screen.getByLabelText('Post body')).toMatchSnapshot();
 
@@ -421,11 +430,11 @@ describe('Post', () => {
   });
 
   it('Lets me edit text of my post by typing with Shift+Enter when "submitMode" is "enter"', async () => {
-    const saveEditingPost = jest.fn();
+    const saveEditingPost = jest.spyOn(actionCreators, 'saveEditingPost');
     renderPost({
       isEditing: true,
       isEditable: true,
-      saveEditingPost,
+      body: '',
     });
 
     await userEvent.type(screen.getByRole('textbox'), 'Hello,{shift>}{enter}{/shift}World!{enter}');
@@ -438,11 +447,11 @@ describe('Post', () => {
   });
 
   it('Lets me edit text of my post by typing with Alt+Enter when "submitMode" is "enter"', async () => {
-    const saveEditingPost = jest.fn();
+    const saveEditingPost = jest.spyOn(actionCreators, 'saveEditingPost');
     renderPost({
       isEditing: true,
       isEditable: true,
-      saveEditingPost,
+      body: '',
     });
 
     await userEvent.type(screen.getByRole('textbox'), 'Hello,{alt>}{enter}{/alt}World!{enter}');
@@ -455,12 +464,12 @@ describe('Post', () => {
   });
 
   it('Lets me submit text of my post by Ctrl+Enter typing when "submitMode" is "ctrl+enter"', async () => {
-    const saveEditingPost = jest.fn();
+    const saveEditingPost = jest.spyOn(actionCreators, 'saveEditingPost');
     renderPost(
       {
         isEditing: true,
         isEditable: true,
-        saveEditingPost,
+        body: '',
       },
       { submitMode: 'ctrl+enter' },
     );
@@ -478,12 +487,12 @@ describe('Post', () => {
   });
 
   it('Lets me submit text of my post by Meta+Enter typing when "submitMode" is "ctrl+enter"', async () => {
-    const saveEditingPost = jest.fn();
+    const saveEditingPost = jest.spyOn(actionCreators, 'saveEditingPost');
     renderPost(
       {
         isEditing: true,
         isEditable: true,
-        saveEditingPost,
+        body: '',
       },
       { submitMode: 'ctrl+enter' },
     );

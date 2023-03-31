@@ -10,7 +10,7 @@ export const lazyComponent =
     const Lazy = useMemo(() => lazyRetry(() => loader(props)), []);
     return (
       <ErrorBoundary message={errorMessage}>
-        <Suspense fallback={<Delayed>{fallback}</Delayed>} delay={delay}>
+        <Suspense fallback={<Delayed delay={delay}>{fallback}</Delayed>}>
           <Lazy {...props} />
         </Suspense>
       </ErrorBoundary>

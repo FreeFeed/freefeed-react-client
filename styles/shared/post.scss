@@ -255,8 +255,6 @@ $post-line-height: rem(20px);
 
 // Used in both create-post and edit-post
 .post-editor {
-  position: relative; // necessary for proper width of dropzone inside this container
-
   // Clearfix (http://www.cssmojo.com/latest_new_clearfix_so_far/)
   &::after {
     content: '';
@@ -266,6 +264,10 @@ $post-line-height: rem(20px);
 
   .post-textarea {
     @include editarea;
+  }
+
+  .post-textarea__dragged {
+    background: #eee;
   }
 
   .post-edit-actions {

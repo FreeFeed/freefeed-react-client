@@ -17,6 +17,9 @@
  * 1 sec.
  */
 export function prepareAsyncFocus() {
+  if (process.env.NODE_ENV === 'test') {
+    return;
+  }
   const input = document.createElement('input');
   input.type = 'text';
   input.className = 'sr-only';

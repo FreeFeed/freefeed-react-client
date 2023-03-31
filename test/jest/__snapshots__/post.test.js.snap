@@ -65,15 +65,12 @@ exports[`Post Renders a post and doesn't blow up 1`] = `
             </span>
           </span>
         </div>
+        <div />
       </div>
     </div>
     <div
       class="post-body"
     >
-      <div />
-      <div
-        class="dropzone-previews"
-      />
       <div
         aria-label="Post footer"
         role="region"
@@ -189,7 +186,7 @@ exports[`Post Renders a textarea with post text when editing the post 1`] = `
       <div>
         <div>
           <div>
-            Loading selector...
+             Loading selector...
           </div>
         </div>
       </div>
@@ -202,13 +199,10 @@ exports[`Post Renders a textarea with post text when editing the post 1`] = `
     class="post-editor"
   >
     <div>
-      Cannot load Dropzone component
-    </div>
-    <div>
       <textarea
         class="post-textarea"
         dir="auto"
-        maxlength="3000"
+        maxlength="1000"
       >
         Line 1
 Line 2
@@ -221,7 +215,7 @@ Line 2
         class="post-edit-options"
       >
         <span
-          class="post-edit-attachments dropzone-trigger"
+          class="post-edit-attachments"
           role="button"
         >
           <svg
@@ -257,6 +251,10 @@ Line 2
         </button>
       </div>
     </div>
+    <div
+      class="container"
+    />
+    <div />
   </div>
 </div>
 `;

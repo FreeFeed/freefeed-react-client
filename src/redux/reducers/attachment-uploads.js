@@ -1,7 +1,7 @@
 import { LOCATION_CHANGE } from 'react-router-redux';
 
 import { CREATE_ATTACHMENT, UNAUTHENTICATED } from '../action-types';
-import { asyncStatesMap, getKeyBy, response, request, reset } from '../async-helpers';
+import { asyncStatesMap, getKeyBy, response, request, reset, fail } from '../async-helpers';
 
 const getKey = getKeyBy('uploadId');
 
@@ -17,6 +17,17 @@ export function attachmentUploads(state = defaultState, action) {
         [id]: {
           ...state[id],
           name: action.payload.name,
+          attachment: null,
+        },
+      };
+    }
+    case fail(CREATE_ATTACHMENT): {
+      const id = getKey(action);
+      return {
+        ...state,
+        [id]: {
+          ...state[id],
+          name: action.request.name,
           attachment: null,
         },
       };

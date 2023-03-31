@@ -7,6 +7,7 @@ import {
   faEdit,
   faBookmark as faBookmarkSolid,
   faSignOutAlt,
+  faAt,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faClock,
@@ -26,6 +27,7 @@ import TimeDisplay from '../time-display';
 
 import styles from '../dropdown-menu.module.scss';
 
+// eslint-disable-next-line complexity
 export const PostMoreMenu = forwardRef(function PostMoreMenu(
   {
     user,
@@ -50,9 +52,11 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
     disableComments,
     deletePost,
     doAndClose,
+    doAndForceClose,
     permalink,
     toggleSave,
     fixed = false,
+    doMention,
   },
   ref,
 ) {
@@ -83,6 +87,15 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
   }, [isEditable, isDeletable, canBeRemovedFrom, deletePost]);
 
   const menuGroups = [
+    [
+      amIAuthenticated && !isOwnPost && (!commentsDisabled || isModeratable) && (
+        <div className={styles.item} key="mention-author">
+          <ButtonLink onClick={doAndForceClose(doMention)} className={styles.link}>
+            <Iconic icon={faAt}>Mention @{postCreatedBy?.username}</Iconic>
+          </ButtonLink>
+        </div>
+      ),
+    ],
     [
       isEditable && (
         <div className={styles.item} key="edit-post">

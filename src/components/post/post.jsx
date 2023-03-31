@@ -5,14 +5,12 @@ import { Link } from 'react-router';
 import classnames from 'classnames';
 import _ from 'lodash';
 import dateFormat from 'date-fns/format';
-import * as Sentry from '@sentry/react';
 import {
   faExclamationTriangle,
   faLock,
   faUserFriends,
   faGlobeAmericas,
   faAngleDoubleRight,
-  faPaperclip,
   faShare,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -23,22 +21,16 @@ import { READMORE_STYLE_COMPACT } from '../../utils/frontend-preferences-options
 import { postReadmoreConfig } from '../../utils/readmore-config';
 import { savePost, hidePostsByCriterion, unhidePostsByCriteria } from '../../redux/action-creators';
 import { initialAsyncState } from '../../redux/async-helpers';
-import { makeJpegIfNeeded } from '../../utils/jpeg-if-needed';
 
 import { Throbber } from '../throbber';
 import { ButtonLink } from '../button-link';
 import Expandable from '../expandable';
 import PieceOfText from '../piece-of-text';
-import Dropzone from '../dropzone';
 import TimeDisplay from '../time-display';
 import LinkPreview from '../link-preview/preview';
-import SendTo from '../send-to';
 import ErrorBoundary from '../error-boundary';
-import { destinationsPrivacy } from '../select-utils';
 import { Icon } from '../fontawesome-icons';
 import { UserPicture } from '../user-picture';
-import { SubmitModeHint } from '../submit-mode-hint';
-import { SubmittableTextarea } from '../submittable-textarea';
 
 import { prepareAsyncFocus } from '../../utils/prepare-async-focus';
 import { UnhideOptions, HideLink } from './post-hides-ui';
@@ -49,8 +41,7 @@ import PostAttachments from './post-attachments';
 import PostComments from './post-comments';
 import PostLikes from './post-likes';
 import { PostContext } from './post-context';
-
-const attachmentsMaxCount = CONFIG.attachments.maxCount;
+import { PostEditForm } from './post-edit-form';
 
 class Post extends Component {
   selectFeeds;
@@ -59,74 +50,28 @@ class Post extends Component {
 
   state = {
     forceAbsTimestamps: false,
-    privacyWarning: null,
-    attLoading: false,
-    emptyDestinations: false,
-    editingText: '',
-    editingAttachments: [],
-    dropzoneDisabled: false,
     unHideOpened: false,
   };
 
-  handleDropzoneInit = (d) => {
-    this.dropzoneObject = d;
-  };
-
-  handlePaste = (e) => {
-    if (e.clipboardData) {
-      const { items } = e.clipboardData;
-      if (items) {
-        for (const item of items) {
-          if (item.type.includes('image/')) {
-            const blob = item.getAsFile();
-            if (!blob.name) {
-              blob.name = 'image.png';
-            }
-            makeJpegIfNeeded(blob)
-              .then((blob) => this.dropzoneObject.addFile(blob))
-              .catch((error) => {
-                Sentry.captureException(error, {
-                  level: 'error',
-                  tags: { area: 'upload' },
-                });
-              });
-          }
-        }
-      }
-    }
-  };
-
-  removeAttachment = (attachmentId) => {
-    const editingAttachments = this.state.editingAttachments.filter((a) => a.id !== attachmentId);
-    const dropzoneDisabled = editingAttachments.length >= attachmentsMaxCount;
-
-    if (!dropzoneDisabled && this.state.dropzoneDisabled) {
-      this.dropzoneObject.enable();
-    }
-
-    this.setState({ editingAttachments, dropzoneDisabled });
-  };
-
-  reorderImageAttachments = (attachmentIds) => {
-    const oldIds = this.state.editingAttachments.map((a) => a.id);
-    const newIds = _.uniq(attachmentIds.concat(oldIds));
-    const editingAttachments = newIds
-      .map((id) => this.state.editingAttachments.find((a) => a.id === id))
-      .filter(Boolean);
-    this.setState({ editingAttachments });
-  };
-
-  attLoadingStarted = () => this.setState({ attLoading: true });
-  attLoadingCompleted = () => this.setState({ attLoading: false });
-
-  handleCommentClick = () => {
+  _handleUniversalComment = (text) => {
     if (this.props.isCommenting) {
       this.context.input?.scrollIntoView({ block: 'center', behavior: 'smooth' });
       this.context.input?.focus();
+      text && this.context.input?.insertText(text);
     } else {
       prepareAsyncFocus();
-      this.props.toggleCommenting(this.props.id);
+      (!text && this.props.toggleCommenting(this.props.id)) ||
+        this.props.toggleCommenting(this.props.id, text);
     }
+  };
+
+  handleMentionAuthorClick = () => {
+    const username = this.props.createdBy?.username;
+    username && this._handleUniversalComment(`@${username} `);
+  };
+
+  handleCommentClick = () => {
+    this._handleUniversalComment();
   };
 
   handleDeletePost =
@@ -178,94 +123,12 @@ class Post extends Component {
     this.props.enableComments(this.props.id);
   };
 
-  handlePostTextChange = (e) => {
-    this.setState({ editingText: e.target.value });
-  };
-
   toggleEditingPost = () => {
-    if (!this.props.isEditing) {
-      this.setState({
-        editingText: this.props.body,
-        editingAttachments: [...this.props.attachments],
-      });
-    }
     this.props.toggleEditingPost(this.props.id);
-  };
-
-  cancelEditingPost = () => {
-    this.props.cancelEditingPost(this.props.id);
-  };
-
-  saveEditingPost = () => {
-    const { props, state } = this;
-
-    if (props.isSaving) {
-      return;
-    }
-
-    const reqBody = {
-      body: state.editingText,
-      attachments: state.editingAttachments.map((a) => a.id),
-    };
-    if (this.selectFeeds) {
-      reqBody.feeds = this.selectFeeds.values;
-    }
-    props.saveEditingPost(props.id, reqBody);
-  };
-
-  handleSubmit = () => this.canSubmitForm() && this.saveEditingPost();
-
-  handleAttachmentResponse = (att) => {
-    if (this.state.editingAttachments.length >= attachmentsMaxCount) {
-      return;
-    }
-
-    const editingAttachments = [...this.state.editingAttachments, att];
-    const dropzoneDisabled = editingAttachments.length >= attachmentsMaxCount;
-
-    if (dropzoneDisabled && !this.state.dropzoneDisabled) {
-      this.dropzoneObject.removeAllFiles(true);
-      this.dropzoneObject.disable();
-    }
-
-    this.props.addAttachmentResponse(this.props.id, att);
-    this.setState({ editingAttachments, dropzoneDisabled });
   };
 
   toggleTimestamps = () => {
     this.setState({ forceAbsTimestamps: !this.state.forceAbsTimestamps });
-  };
-
-  registerSelectFeeds = (el) => {
-    this.selectFeeds = el;
-    this.setState({ privacyWarning: null });
-  };
-
-  onDestsChange = (destNames) => {
-    this.setState({ emptyDestinations: destNames.length === 0 });
-    if (this.props.isDirect) {
-      return;
-    }
-    const postPrivacy = this.getPostPrivacy();
-    const destPrivacy = this.props.destinationsPrivacy(destNames);
-    if (
-      (postPrivacy.isPrivate && !destPrivacy.isPrivate) ||
-      (postPrivacy.isProtected && !destPrivacy.isProtected)
-    ) {
-      const pp = postPrivacy.isPrivate
-        ? 'private'
-        : postPrivacy.isProtected
-        ? 'protected'
-        : 'public';
-      const dp = destPrivacy.isPrivate
-        ? 'private'
-        : destPrivacy.isProtected
-        ? 'protected'
-        : 'public';
-      this.setState({ privacyWarning: `This action will make this ${pp} post ${dp}.` });
-    } else {
-      this.setState({ privacyWarning: null });
-    }
   };
 
   getPostPrivacy() {
@@ -275,19 +138,6 @@ class Post extends Component {
     const isPrivate = !authorOrGroupsRecipients.some((r) => r.isPrivate === '0');
     const isProtected = isPrivate || !authorOrGroupsRecipients.some((r) => r.isProtected === '0');
     return { isPrivate, isProtected };
-  }
-
-  canSubmitForm() {
-    const { editingText, attLoading, emptyDestinations } = this.state;
-    return (
-      (editingText.trim() !== '' || this.state.editingAttachments.length > 0) &&
-      !attLoading &&
-      !emptyDestinations
-    );
-  }
-
-  get attachments() {
-    return this.props.isEditing ? this.state.editingAttachments : this.props.attachments;
   }
 
   componentWillUnmount() {
@@ -417,6 +267,7 @@ class Post extends Component {
         enableComments={this.enableComments}
         deletePost={this.handleDeletePost}
         toggleSave={this.toggleSave}
+        handleMentionAuthor={this.handleMentionAuthorClick}
       />
     );
 
@@ -519,9 +370,6 @@ class Post extends Component {
     const canonicalPostURI = canonicalURI(props);
 
     const linkToEmbed = getFirstLinkToEmbed(props.body);
-    const noImageAttachments = !this.attachments.some(
-      (attachment) => attachment.mediaType === 'image',
-    );
 
     const { role, postLabel } = this.getAriaLabels();
 
@@ -551,142 +399,60 @@ class Post extends Component {
             </div>
             <div className="post-body" role="region" aria-label="Post body">
               {props.isEditing ? (
-                <div>
-                  <SendTo
-                    ref={this.registerSelectFeeds}
-                    defaultFeed={props.recipients.map((r) => r.username)}
-                    isDirects={props.isDirect}
-                    isEditing={true}
-                    disableAutoFocus={true}
-                    user={props.createdBy}
-                    onChange={this.onDestsChange}
-                  />
-                  <div className="post-privacy-warning">{this.state.privacyWarning}</div>
-                </div>
+                <PostEditForm {...props} />
               ) : (
-                <PostHeader
-                  createdBy={props.createdBy}
-                  isDirect={props.isDirect}
-                  user={this.props.user}
-                  isInHomeFeed={this.props.isInHomeFeed}
-                  recipients={props.recipients}
-                  comments={props.comments}
-                  usersLikedPost={props.usersLikedPost}
-                />
-              )}
-              {props.isEditing ? (
-                <div className="post-editor">
-                  <Dropzone
-                    onInit={this.handleDropzoneInit}
-                    addAttachmentResponse={this.handleAttachmentResponse}
-                    onSending={this.attLoadingStarted}
-                    onQueueComplete={this.attLoadingCompleted}
+                <>
+                  <PostHeader
+                    createdBy={props.createdBy}
+                    isDirect={props.isDirect}
+                    user={this.props.user}
+                    isInHomeFeed={this.props.isInHomeFeed}
+                    recipients={props.recipients}
+                    comments={props.comments}
+                    usersLikedPost={props.usersLikedPost}
                   />
-
-                  <div>
-                    <SubmittableTextarea
-                      className="post-textarea"
-                      ref={this.textareaRef}
-                      value={this.state.editingText}
-                      onSubmit={this.handleSubmit}
-                      onChange={this.handlePostTextChange}
-                      onPaste={this.handlePaste}
-                      autoFocus={true}
-                      minRows={2}
-                      maxRows={10}
-                      maxLength={CONFIG.maxLength.post}
-                      dir={'auto'}
+                  <div className="post-text">
+                    <PieceOfText
+                      text={props.body}
+                      readMoreStyle={props.readMoreStyle}
+                      highlightTerms={props.highlightTerms}
+                      showMedia={this.props.showMedia}
                     />
                   </div>
-
-                  <div className="post-edit-actions">
-                    <div className="post-edit-options">
-                      <span
-                        className="post-edit-attachments dropzone-trigger"
-                        disabled={this.state.dropzoneDisabled}
-                        role="button"
-                      >
-                        <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
-                      </span>
-                    </div>
-
-                    <SubmitModeHint input={this.textareaRef} className="post-edit-hint" />
-
-                    <div className="post-edit-buttons">
-                      {props.isSaving && (
-                        <span className="post-edit-throbber">
-                          <Throbber />
-                        </span>
-                      )}
-                      <a className="post-cancel" onClick={this.cancelEditingPost}>
-                        Cancel
-                      </a>
-                      <button
-                        className="btn btn-default btn-xs"
-                        onClick={this.saveEditingPost}
-                        disabled={!this.canSubmitForm()}
-                      >
-                        Update
-                      </button>
-                    </div>
-                  </div>
-
-                  {this.state.dropzoneDisabled && (
-                    <div className="alert alert-warning">
-                      The maximum number of attached files ({attachmentsMaxCount}) has been reached
-                    </div>
-                  )}
-                  {props.isError ? (
-                    <div className="post-error alert alert-danger">{props.errorString}</div>
-                  ) : (
-                    false
-                  )}
-                </div>
-              ) : (
-                <div className="post-text">
-                  <PieceOfText
-                    text={props.body}
-                    readMoreStyle={props.readMoreStyle}
-                    highlightTerms={props.highlightTerms}
+                  <PostAttachments
+                    postId={props.id}
+                    attachmentIds={this.props.attachments}
+                    isEditing={false}
+                    isSinglePost={props.isSinglePost}
                     showMedia={this.props.showMedia}
+                    removeAttachment={this.removeAttachment}
+                    reorderImageAttachments={this.reorderImageAttachments}
                   />
-                </div>
+                  {!this.props.noImageAttachments && props.isNSFW && (
+                    <div className="nsfw-bar">
+                      Turn the <Link to="/settings/appearance#nsfw">NSFW filter</Link> off to enable
+                      previews for sensitive content
+                    </div>
+                  )}
+
+                  {this.props.noImageAttachments &&
+                    linkToEmbed &&
+                    (props.isNSFW ? (
+                      <div className="nsfw-bar">
+                        Turn the <Link to="/settings/appearance#nsfw">NSFW filter</Link> off to
+                        enable previews for sensitive content
+                      </div>
+                    ) : (
+                      <div className="link-preview" role="region" aria-label="Link preview">
+                        <LinkPreview url={linkToEmbed} allowEmbedly={props.allowLinksPreview} />
+                      </div>
+                    ))}
+                </>
               )}
             </div>
           </Expandable>
 
           <div className="post-body">
-            <PostAttachments
-              postId={props.id}
-              attachments={this.attachments}
-              isEditing={props.isEditing}
-              isSinglePost={props.isSinglePost}
-              showMedia={this.props.showMedia}
-              removeAttachment={this.removeAttachment}
-              reorderImageAttachments={this.reorderImageAttachments}
-            />
-            {!noImageAttachments && props.isNSFW && (
-              <div className="nsfw-bar">
-                Turn the <Link to="/settings/appearance#nsfw">NSFW filter</Link> off to enable
-                previews for sensitive content
-              </div>
-            )}
-
-            {noImageAttachments &&
-              linkToEmbed &&
-              (props.isNSFW ? (
-                <div className="nsfw-bar">
-                  Turn the <Link to="/settings/appearance#nsfw">NSFW filter</Link> off to enable
-                  previews for sensitive content
-                </div>
-              ) : (
-                <div className="link-preview" role="region" aria-label="Link preview">
-                  <LinkPreview url={linkToEmbed} allowEmbedly={props.allowLinksPreview} />
-                </div>
-              ))}
-
-            <div className="dropzone-previews" />
-
             {this.renderPostActions()}
 
             {this.state.unHideOpened && (
@@ -731,12 +497,14 @@ class Post extends Component {
 Post.contextType = PostContext;
 
 function selectState(state, ownProps) {
+  const noImageAttachments = !ownProps.attachments.some(
+    (id) => state.attachments[id]?.mediaType === 'image',
+  );
+
   return {
-    destinationsPrivacy: ownProps.isEditing
-      ? (destNames) => destinationsPrivacy(destNames, state)
-      : null,
     hideStatus: state.postHideStatuses[ownProps.id] || initialAsyncState,
     submitMode: state.submitMode,
+    noImageAttachments,
   };
 }
 
