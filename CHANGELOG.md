@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.117] - Not released
 
+### Added
+- Vimeo on demand links support
+
 ## [1.116.1] - 2023-03-11
 ### Fixed
 - Minor bugs
