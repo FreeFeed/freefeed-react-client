@@ -5,6 +5,7 @@ import propTypes from 'prop-types';
 import { faUsers, faHome } from '@fortawesome/free-solid-svg-icons';
 import { Icon } from './fontawesome-icons';
 import { lazyComponent } from './lazy-component';
+import { Throbber } from './throbber';
 
 const MY_FEED_LABEL = 'My feed';
 
@@ -14,8 +15,13 @@ const Select = lazyComponent(
     return fixedOptions ? m : { default: m.Creatable };
   },
   {
-    fallback: <div>Loading selector...</div>,
+    fallback: (
+      <div>
+        <Throbber delay={0} /> Loading selector...
+      </div>
+    ),
     errorMessage: "Couldn't load the selector",
+    delay: 0,
   },
 );
 

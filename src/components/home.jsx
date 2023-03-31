@@ -44,7 +44,6 @@ const FeedHandler = (props) => {
 
   const createPostComponent = (
     <CreatePost
-      createPostViewState={props.createPostViewState}
       sendTo={props.sendTo}
       user={props.user}
       createPost={props.createPost}
@@ -84,7 +83,7 @@ const FeedHandler = (props) => {
 };
 
 function selectState(state) {
-  const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
+  const { authenticated, boxHeader, timelines, user } = state;
 
   const sendTo = { ...state.sendTo, defaultFeed: user.username };
   const feedIsLoading = state.routeLoadingState;
@@ -92,7 +91,6 @@ function selectState(state) {
   return {
     user,
     authenticated,
-    createPostViewState,
     timelines,
     boxHeader,
     sendTo,

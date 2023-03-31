@@ -1,7 +1,8 @@
-@import '../../styles/helvetica/dark-vars.scss';
+@import '../../../styles/helvetica/dark-vars.scss';
 
 .container {
   margin-top: 0.5em;
+  margin-bottom: 1em;
 
   --progress-bg: #eee;
   --progress-color: #090;
@@ -14,6 +15,10 @@
   }
 }
 
+.container:empty {
+  display: none;
+}
+
 .row {
   border-bottom: 2px solid var(--progress-bg);
   position: relative;
@@ -21,6 +26,8 @@
 }
 
 .rowError {
+  --progress-color: var(--error-color);
+
   border-bottom-color: transparent;
 }
 

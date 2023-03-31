@@ -289,6 +289,7 @@ export const authMiddleware = (store) => {
     ) {
       if (action.type === fail(ActionTypes.SIGN_OUT)) {
         // Unauthorize even if error
+        // eslint-disable-next-line no-console
         console.warn(`Error signing out: ${action.payload.err}`);
       }
       const res = next(action);
@@ -980,6 +981,7 @@ export const appVersionMiddleware = (store) => {
       .then(
         (res) => res.ok && store.dispatch(ActionCreators.setAppVersion(res.headers.get(header))),
       )
+      // eslint-disable-next-line no-console
       .catch((err) => console.warn(`Cannot fetch '${url}': ${err}`));
 
     setTimeout(checkVersion, intervalSec * 1000);

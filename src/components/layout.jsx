@@ -107,7 +107,7 @@ class Layout extends Component {
     }
   }
 
-  // Prevent browser from loading the file if user drops it outside of a dropzone
+  // Prevent browser from loading the file if user drops it outside of a drop zone
   // (both `handleDragOver` and `handleDrop` are necessary)
   handleDragOver(e) {
     if (this.containsFiles(e)) {

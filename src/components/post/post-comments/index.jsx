@@ -10,6 +10,7 @@ import { SignInLink } from '../../sign-in-link';
 
 import PostComment from '../post-comment';
 import { prepareAsyncFocus } from '../../../utils/prepare-async-focus';
+import { PostContext } from '../post-context';
 import { CollapseComments } from './collapse-comments';
 import ExpandComments from './expand-comments';
 import { LoadingComments } from './loading-comments';
@@ -28,7 +29,6 @@ export default class PostComments extends Component {
     preopened: false,
   };
 
-  addingCommentForm = createRef();
   rootEl = createRef();
   visibleCommentIds = createRef([]);
   unfocusTimer = createRef(0);
@@ -69,9 +69,10 @@ export default class PostComments extends Component {
     const { post, toggleCommenting } = this.props;
 
     if (!post.isCommenting && !post.isSinglePost) {
+      prepareAsyncFocus();
       toggleCommenting(post.id, `${answerText} `);
     } else {
-      this.addingCommentForm.current && this.addingCommentForm.current.insertText(answerText);
+      this.context.input?.insertText(answerText);
     }
   }
 
@@ -95,7 +96,6 @@ export default class PostComments extends Component {
         <PostComment
           id={props.post.id}
           postId={props.post.id}
-          ref={this.addingCommentForm}
           isEditing={true}
           editText={props.post.newCommentText}
           saveEditingComment={props.addComment}
@@ -472,3 +472,5 @@ export default class PostComments extends Component {
     );
   }
 }
+
+PostComments.contextType = PostContext;

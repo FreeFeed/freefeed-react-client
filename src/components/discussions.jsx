@@ -12,7 +12,6 @@ import ErrorBoundary from './error-boundary';
 const FeedHandler = (props) => {
   const createPostComponent = (
     <CreatePost
-      createPostViewState={props.createPostViewState}
       sendTo={props.sendTo}
       user={props.user}
       isDirects={props.isDirects}
@@ -49,7 +48,7 @@ const FeedHandler = (props) => {
 };
 
 function selectState(state) {
-  const { authenticated, boxHeader, createPostViewState, timelines, user } = state;
+  const { authenticated, boxHeader, timelines, user } = state;
   const isDirects = state.routing.locationBeforeTransitions.pathname.includes('direct');
   const isSaves = state.routing.locationBeforeTransitions.pathname.includes('saves');
   const defaultFeed =
@@ -63,7 +62,6 @@ function selectState(state) {
   return {
     user,
     authenticated,
-    createPostViewState,
     timelines,
     boxHeader,
     sendTo,

@@ -398,6 +398,9 @@ exports[`PostComments Renders post comments and doesn't blow up 1`] = `
             fontawesome-icon paperclip
           </a>
         </div>
+        <div
+          class="container"
+        />
       </div>
     </div>
   </div>
