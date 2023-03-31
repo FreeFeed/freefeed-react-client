@@ -269,35 +269,6 @@ exports[`PostMoreMenu Renders a More menu for a logged-in reader 1`] = `
       class="group"
     >
       <div
-        class="item"
-      >
-        <a
-          aria-disabled="false"
-          class="link"
-          role="button"
-          tabindex="0"
-        >
-          <span
-            class="iconic"
-          >
-            <span
-              class="iconicIcon"
-            >
-              fontawesome icon bookmark
-            </span>
-            <span
-              class="iconicContent"
-            >
-              Save post
-            </span>
-          </span>
-        </a>
-      </div>
-    </div>
-    <div
-      class="group"
-    >
-      <div
         class="item content"
       >
         <span
