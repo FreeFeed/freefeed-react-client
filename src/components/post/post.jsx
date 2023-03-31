@@ -53,14 +53,25 @@ class Post extends Component {
     unHideOpened: false,
   };
 
-  handleCommentClick = () => {
+  _handleUniversalComment = (text) => {
     if (this.props.isCommenting) {
       this.context.input?.scrollIntoView({ block: 'center', behavior: 'smooth' });
       this.context.input?.focus();
+      text && this.context.input?.insertText(text);
     } else {
       prepareAsyncFocus();
-      this.props.toggleCommenting(this.props.id);
+      (!text && this.props.toggleCommenting(this.props.id)) ||
+        this.props.toggleCommenting(this.props.id, text);
     }
+  };
+
+  handleMentionAuthorClick = () => {
+    const username = this.props.createdBy?.username;
+    username && this._handleUniversalComment(`@${username} `);
+  };
+
+  handleCommentClick = () => {
+    this._handleUniversalComment();
   };
 
   handleDeletePost =
@@ -256,6 +267,7 @@ class Post extends Component {
         enableComments={this.enableComments}
         deletePost={this.handleDeletePost}
         toggleSave={this.toggleSave}
+        handleMentionAuthor={this.handleMentionAuthorClick}
       />
     );
 

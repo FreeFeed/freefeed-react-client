@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.117] - Not released
 ### Added
+- A new "Mention @username" item has been added to the post's dropdown menu.
+  By clicking on it, you can start a new comment and mention the person who
+  created the post, or add their @username to the comment you have already started creating.
 - Vimeo on demand links support
 ### Changed
 - The Dropzone library has been replaced with a custom file uploader.
@@ -19,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - insert text to the cursor position using 'insertText' instance method;
   - use 'onText' attribute to handle updated text (it is necessary for
     'insertText' updates, which doesn't trigger onChange).
-  
+
   This component handles all tasks related to creating/editing posts and
   comments in a unified way.
 

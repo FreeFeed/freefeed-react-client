@@ -24,6 +24,35 @@ exports[`PostMoreMenu Renders a More menu for a group moderator 1`] = `
             <span
               class="iconicIcon"
             >
+              fontawesome icon at
+            </span>
+            <span
+              class="iconicContent"
+            >
+              Mention @author
+            </span>
+          </span>
+        </a>
+      </div>
+    </div>
+    <div
+      class="group"
+    >
+      <div
+        class="item"
+      >
+        <a
+          aria-disabled="false"
+          class="link"
+          role="button"
+          tabindex="0"
+        >
+          <span
+            class="iconic"
+          >
+            <span
+              class="iconicIcon"
+            >
               fontawesome icon comment-dots
             </span>
             <span
@@ -236,6 +265,35 @@ exports[`PostMoreMenu Renders a More menu for a logged-in reader 1`] = `
     class="list focusList"
     style="min-width: 18em;"
   >
+    <div
+      class="group"
+    >
+      <div
+        class="item"
+      >
+        <a
+          aria-disabled="false"
+          class="link"
+          role="button"
+          tabindex="0"
+        >
+          <span
+            class="iconic"
+          >
+            <span
+              class="iconicIcon"
+            >
+              fontawesome icon at
+            </span>
+            <span
+              class="iconicContent"
+            >
+              Mention @author
+            </span>
+          </span>
+        </a>
+      </div>
+    </div>
     <div
       class="group"
     >

@@ -17,6 +17,12 @@ const VIEWER = {
   },
 };
 
+const AUTHOR = {
+  ...VIEWER,
+  id: 'user-id2',
+  username: 'author',
+};
+
 const POST = {
   id: 'post123',
   isEditable: false,
@@ -29,6 +35,8 @@ const POST = {
   updatedAt: '1629668999999',
   isSaved: false,
   savePostStatus: {},
+  createdBy: AUTHOR,
+  isDirect: false,
 };
 
 const defaultState = {
@@ -49,8 +57,10 @@ const renderPostMoreMenu = (props = {}) => {
     disableComments: () => {},
     deletePost: () => {},
     doAndClose: () => {},
+    doAndForceClose: () => {},
     permalink: 'https://freefeed.net/post123',
     toggleSave: () => {},
+    doMention: () => {},
   };
 
   return render(
@@ -91,6 +101,7 @@ describe('PostMoreMenu', () => {
         ...POST,
         isEditable: true,
         isDeletable: true,
+        createdBy: VIEWER,
       },
     });
 
