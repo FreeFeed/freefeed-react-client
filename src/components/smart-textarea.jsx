@@ -173,7 +173,7 @@ function useFile(onFile, ref) {
         }
         const blob = it.getAsFile();
         // Is it a screenshot paste?
-        if (!blob.name || (blob.name === 'image.png' && blob.lastModified === Date.now())) {
+        if (!blob.name || (blob.name === 'image.png' && Date.now() - blob.lastModified < 1000)) {
           if (!blob.name) {
             blob.name = 'image.png';
           }
