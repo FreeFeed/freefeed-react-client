@@ -419,6 +419,14 @@ class Post extends Component {
                       showMedia={this.props.showMedia}
                     />
                   </div>
+                </>
+              )}
+            </div>
+          </Expandable>
+          {!props.isEditing && (
+            <>
+              {this.props.attachments.length > 0 && (
+                <div className="post-body" role="region" aria-label="Post attachments">
                   <PostAttachments
                     postId={props.id}
                     attachmentIds={this.props.attachments}
@@ -434,23 +442,25 @@ class Post extends Component {
                       previews for sensitive content
                     </div>
                   )}
-
-                  {this.props.noImageAttachments &&
-                    linkToEmbed &&
-                    (props.isNSFW ? (
-                      <div className="nsfw-bar">
-                        Turn the <Link to="/settings/appearance#nsfw">NSFW filter</Link> off to
-                        enable previews for sensitive content
-                      </div>
-                    ) : (
-                      <div className="link-preview" role="region" aria-label="Link preview">
-                        <LinkPreview url={linkToEmbed} allowEmbedly={props.allowLinksPreview} />
-                      </div>
-                    ))}
-                </>
+                </div>
               )}
-            </div>
-          </Expandable>
+
+              {linkToEmbed && this.props.noImageAttachments && (
+                <div className="post-body">
+                  {props.isNSFW ? (
+                    <div className="nsfw-bar">
+                      Turn the <Link to="/settings/appearance#nsfw">NSFW filter</Link> off to enable
+                      previews for sensitive content
+                    </div>
+                  ) : (
+                    <div className="link-preview" role="region" aria-label="Link preview">
+                      <LinkPreview url={linkToEmbed} allowEmbedly={props.allowLinksPreview} />
+                    </div>
+                  )}
+                </div>
+              )}
+            </>
+          )}
 
           <div className="post-body">
             {this.renderPostActions()}
