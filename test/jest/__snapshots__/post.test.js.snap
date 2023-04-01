@@ -65,7 +65,6 @@ exports[`Post Renders a post and doesn't blow up 1`] = `
             </span>
           </span>
         </div>
-        <div />
       </div>
     </div>
     <div
