@@ -10,7 +10,6 @@ const { env } = process;
 const opts = {
   dstDir: env.DST_DIR || path.join(__dirname, '..', '_dist'),
   dev: strToBool(env.DEV, true),
-  livereload: strToBool(env.LIVERELOAD, false),
   hot: process.argv.includes('--hot'),
   port: env.PORT || '8080',
 };
