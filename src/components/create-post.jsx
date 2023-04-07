@@ -1,6 +1,7 @@
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { useCallback, useMemo, useRef, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import cn from 'classnames';
 import { createPost, resetPostCreateForm } from '../redux/action-creators';
 import { ButtonLink } from './button-link';
 import ErrorBoundary from './error-boundary';
@@ -164,14 +165,13 @@ export default function CreatePost({ sendTo, expandSendTo, isDirects }) {
 
         <div className="post-edit-actions">
           <div className="post-edit-options">
-            <span
+            <ButtonLink
               className="post-edit-attachments"
               disabled={!canUploadMore}
-              role="button"
               onClick={chooseFiles}
             >
               <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
-            </span>
+            </ButtonLink>
 
             <ButtonLink className="post-edit-more-trigger" onClick={toggleIsMoreOpen}>
               <MoreWithTriangle />
@@ -203,9 +203,9 @@ export default function CreatePost({ sendTo, expandSendTo, isDirects }) {
               </span>
             )}
             <button
-              className="btn btn-default btn-xs"
               onClick={doCreatePost}
-              disabled={!canSubmitForm}
+              className={cn('btn btn-default btn-xs', !canSubmitForm && 'disabled')}
+              aria-disabled={!canSubmitForm}
             >
               Post
             </button>
