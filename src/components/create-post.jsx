@@ -164,6 +164,21 @@ export default function CreatePost({ sendTo, expandSendTo, isDirects }) {
         </div>
 
         <div className="post-edit-actions">
+          <div className="post-edit-buttons">
+            {createPostStatus.loading && (
+              <span className="throbber">
+                <Throbber />
+              </span>
+            )}
+            <button
+              onClick={doCreatePost}
+              className={cn('btn btn-default btn-xs', !canSubmitForm && 'disabled')}
+              aria-disabled={!canSubmitForm}
+            >
+              Post
+            </button>
+          </div>
+
           <div className="post-edit-options">
             <ButtonLink
               className="post-edit-attachments"
@@ -195,21 +210,6 @@ export default function CreatePost({ sendTo, expandSendTo, isDirects }) {
           </div>
 
           <SubmitModeHint input={textareaRef} className="post-edit-hint" />
-
-          <div className="post-edit-buttons">
-            {createPostStatus.loading && (
-              <span className="throbber">
-                <Throbber />
-              </span>
-            )}
-            <button
-              onClick={doCreatePost}
-              className={cn('btn btn-default btn-xs', !canSubmitForm && 'disabled')}
-              aria-disabled={!canSubmitForm}
-            >
-              Post
-            </button>
-          </div>
         </div>
 
         {!canUploadMore && (

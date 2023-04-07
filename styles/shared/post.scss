@@ -304,6 +304,7 @@ $post-line-height: rem(20px);
     justify-content: flex-end;
     align-items: center;
     align-self: start;
+    flex-direction: row-reverse;
   }
 
   .post-edit-options {

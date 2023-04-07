@@ -14,6 +14,7 @@ import { destinationsPrivacy } from '../select-utils';
 import { useServerValue } from '../hooks/server-info';
 import { Selector } from '../feeds-selector/selector';
 import { EDIT_DIRECT, EDIT_REGULAR } from '../feeds-selector/constants';
+import { ButtonLink } from '../button-link';
 import PostAttachments from './post-attachments';
 
 const selectMaxFilesCount = (serverInfo) => serverInfo.attachments.maxCountPerPost;
@@ -135,28 +136,7 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
         </div>
 
         <div className="post-edit-actions">
-          <div className="post-edit-options">
-            <span
-              className="post-edit-attachments"
-              disabled={!canUploadMore}
-              role="button"
-              onClick={chooseFiles}
-            >
-              <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
-            </span>
-          </div>
-
-          <SubmitModeHint input={textareaRef} className="post-edit-hint" />
-
           <div className="post-edit-buttons">
-            {saveState.loading && (
-              <span className="post-edit-throbber">
-                <Throbber />
-              </span>
-            )}
-            <a className="post-cancel" onClick={handleCancel}>
-              Cancel
-            </a>
             <button
               className="btn btn-default btn-xs"
               onClick={handleSubmit}
@@ -164,7 +144,27 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
             >
               Update
             </button>
+            <ButtonLink className="post-cancel" onClick={handleCancel}>
+              Cancel
+            </ButtonLink>
+            {saveState.loading && (
+              <span className="post-edit-throbber">
+                <Throbber />
+              </span>
+            )}
           </div>
+          <div className="post-edit-options">
+            <ButtonLink
+              className="post-edit-attachments"
+              disabled={!canUploadMore}
+              role="button"
+              onClick={chooseFiles}
+            >
+              <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
+            </ButtonLink>
+          </div>
+
+          <SubmitModeHint input={textareaRef} className="post-edit-hint" />
         </div>
 
         {!canUploadMore && (
