@@ -68,7 +68,8 @@ export function Selector({ className, mode, feedNames, fixedFeedNames = [], onCh
     return [...regularOptions, ...directOptions];
   }, [groupOptions, isDirect, meOption, mode, userOptions]);
 
-  const [showStatic, toggleSelector] = useBool(isEditing(mode) || values.length > 0);
+  const startStatic = useMemo(() => isEditing(mode) || values.length > 0, [mode, values.length]);
+  const [showStatic, toggleSelector] = useBool(startStatic);
 
   const handleChange = useCallback(
     (opts, action) => {
@@ -107,6 +108,9 @@ export function Selector({ className, mode, feedNames, fixedFeedNames = [], onCh
             }
             isMulti={true}
             isClearable={false}
+            autoFocus={startStatic}
+            closeMenuOnSelect={true}
+            openMenuOnFocus={!isEditing(mode)}
             options={options}
             value={values}
             styles={selStyles}

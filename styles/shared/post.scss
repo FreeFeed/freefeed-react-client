@@ -312,6 +312,7 @@ $post-line-height: rem(20px);
     .post-edit-attachments {
       cursor: pointer;
       white-space: nowrap;
+      color: inherit;
 
       &:hover span:last-child {
         text-decoration: underline;
