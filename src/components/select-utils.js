@@ -262,7 +262,7 @@ export function canAcceptDirects(user, state) {
     return;
   }
 
-  const { user: me, usersNotFound, directsReceivers } = state;
+  const { user: me, usersNotFound } = state;
 
   if (
     !me.id ||
@@ -273,12 +273,7 @@ export function canAcceptDirects(user, state) {
     return false;
   }
 
-  // If user subscribed to us
-  if (me.subscribers.some((s) => s.username === user.username)) {
-    return true;
-  }
-
-  return directsReceivers[user.username];
+  return user.youCan.includes('dm');
 }
 
 /**
