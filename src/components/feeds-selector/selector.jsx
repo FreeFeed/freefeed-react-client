@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import CreatableSelect from 'react-select/creatable';
 import { ButtonLink } from '../button-link';
 import { useBool } from '../hooks/bool';
@@ -19,8 +19,16 @@ import {
 import styles from './selector.module.scss';
 import { SelectorError } from './error';
 
-export function Selector({ className, mode, feedNames, fixedFeedNames = [], onChange, onError }) {
-  const { values, meOption, groupOptions, userOptions } = useSelectedOptions(
+export function Selector({
+  className,
+  mode,
+  feedNames,
+  fixedFeedNames = [],
+  onChange,
+  onError,
+  onPrivacyLevel,
+}) {
+  const { values, meOption, groupOptions, userOptions, privacyLevel } = useSelectedOptions(
     feedNames,
     fixedFeedNames,
   );
@@ -80,6 +88,8 @@ export function Selector({ className, mode, feedNames, fixedFeedNames = [], onCh
     },
     [onChange],
   );
+
+  useEffect(() => onPrivacyLevel?.(privacyLevel), [onPrivacyLevel, privacyLevel]);
 
   return (
     <div className={styles['container']}>

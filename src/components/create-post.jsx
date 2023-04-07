@@ -1,4 +1,9 @@
-import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
+import {
+  faGlobeAmericas,
+  faLock,
+  faPaperclip,
+  faUserFriends,
+} from '@fortawesome/free-solid-svg-icons';
 import { useCallback, useMemo, useRef, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
@@ -129,6 +134,36 @@ export default function CreatePost({ sendTo, expandSendTo, isDirects }) {
   }, []);
   */
 
+  const [privacyLevel, setPrivacyLevel] = useState('');
+
+  const privacyIcon = useMemo(
+    () =>
+      privacyLevel === 'private' ? (
+        <Icon icon={faLock} />
+      ) : privacyLevel === 'protected' ? (
+        <Icon icon={faUserFriends} />
+      ) : privacyLevel === 'public' ? (
+        <Icon icon={faGlobeAmericas} />
+      ) : privacyLevel === 'direct' ? (
+        <Icon icon={faLock} />
+      ) : null,
+    [privacyLevel],
+  );
+
+  const privacyTitle = useMemo(
+    () =>
+      privacyLevel === 'private'
+        ? 'Create private post'
+        : privacyLevel === 'protected'
+        ? 'Create protected post'
+        : privacyLevel === 'public'
+        ? 'Create public post'
+        : privacyLevel === 'direct'
+        ? 'Create direct message'
+        : null,
+    [privacyLevel],
+  );
+
   return (
     <div
       className="create-post post-editor"
@@ -145,6 +180,7 @@ export default function CreatePost({ sendTo, expandSendTo, isDirects }) {
               feedNames={feeds}
               onChange={setFeeds}
               onError={setHasFeedsError}
+              onPrivacyLevel={setPrivacyLevel}
             />
           )}
           <SmartTextarea
@@ -174,7 +210,9 @@ export default function CreatePost({ sendTo, expandSendTo, isDirects }) {
               onClick={doCreatePost}
               className={cn('btn btn-default btn-xs', !canSubmitForm && 'disabled')}
               aria-disabled={!canSubmitForm}
+              title={privacyTitle}
             >
+              <span className="post-submit-icon">{canSubmitForm && privacyIcon}</span>
               Post
             </button>
           </div>

@@ -349,6 +349,15 @@ $post-line-height: rem(20px);
     }
   }
 
+  .post-submit-icon {
+    margin-right: rem(4px);
+    opacity: 0.8;
+
+    &:empty {
+      display: none;
+    }
+  }
+
   .post-cancel {
     margin-right: rem(10px);
   }
