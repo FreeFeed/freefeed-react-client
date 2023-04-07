@@ -49,11 +49,8 @@ const defaultState = {
       },
       createdAt: '1430708710865',
       updatedAt: '1647366122559',
-      youCan: [],
+      youCan: ['dm'],
     },
-  },
-  directsReceivers: {
-    [USERNAME]: true,
   },
   usersNotFound: [],
   usersInHomeFeeds: {},
@@ -267,7 +264,6 @@ describe('UserProfileHead', () => {
           isPrivate: '1',
         },
       },
-      directsReceivers: [],
     };
     useSelectorMock.mockImplementation((selector) => selector(fakeState));
 
