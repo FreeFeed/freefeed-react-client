@@ -68,7 +68,7 @@ export function Selector({ className, mode, feedNames, fixedFeedNames = [], onCh
     return [...regularOptions, ...directOptions];
   }, [groupOptions, isDirect, meOption, mode, userOptions]);
 
-  const [showStatic, toggleSelector] = useBool(values.length > 0);
+  const [showStatic, toggleSelector] = useBool(isEditing(mode) || values.length > 0);
 
   const handleChange = useCallback(
     (opts, action) => {
@@ -86,6 +86,7 @@ export function Selector({ className, mode, feedNames, fixedFeedNames = [], onCh
         {showStatic ? (
           <>
             <span className={styles['box-item']}>To:</span>
+            {values.length === 0 && <span className={styles['nobody']}>nobody</span>}
             {values.map((opt) => (
               <DisplayOption
                 key={opt.value}
