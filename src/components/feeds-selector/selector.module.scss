@@ -1,0 +1,87 @@
+@import '../../../styles/helvetica/dark-vars.scss';
+
+.container {
+  --selector-color-danger: #de350b;
+  --selector-color-danger-light: #ffbdad;
+  --selector-color-neutral0: hsl(0deg, 0%, 100%);
+  --selector-color-neutral5: hsl(0deg, 0%, 95%);
+  --selector-color-neutral10: hsl(0deg, 0%, 90%);
+  --selector-color-neutral20: hsl(0deg, 0%, 80%);
+  --selector-color-neutral30: hsl(0deg, 0%, 70%);
+  --selector-color-neutral40: hsl(0deg, 0%, 60%);
+  --selector-color-neutral50: hsl(0deg, 0%, 50%);
+  --selector-color-neutral60: hsl(0deg, 0%, 40%);
+  --selector-color-neutral70: hsl(0deg, 0%, 30%);
+  --selector-color-neutral80: hsl(0deg, 0%, 20%);
+  --selector-color-neutral90: hsl(0deg, 0%, 10%);
+  --selector-color-primary: hsl(210deg, 100%, 57%); // was: #2684ff;
+  --selector-color-primary75: hsl(210deg, 100%, 65%); // was: #4c9aff;
+  --selector-color-primary50: hsl(210deg, 100%, 85%); // was: #b2d4ff;
+  --selector-color-primary25: hsl(210deg, 100%, 96%); // was: #deebff;
+  --selector-color-value: hsl(240deg, 30%, 50%);
+
+  :global(.dark-theme) & {
+    --selector-color-danger: #de350b;
+    --selector-color-danger-light: #ffbdad;
+    --selector-color-neutral0: #{mix($bg-color-lighter, #fff, 100%)};
+    --selector-color-neutral5: #{mix($bg-color-lighter, #fff, 95%)};
+    --selector-color-neutral10: #{mix($bg-color-lighter, #fff, 90%)};
+    --selector-color-neutral20: #{mix($bg-color-lighter, #fff, 80%)};
+    --selector-color-neutral30: #{mix($bg-color-lighter, #fff, 70%)};
+    --selector-color-neutral40: #{mix($bg-color-lighter, #fff, 60%)};
+    --selector-color-neutral50: #{mix($bg-color-lighter, #fff, 50%)};
+    --selector-color-neutral60: #{mix($bg-color-lighter, #fff, 40%)};
+    --selector-color-neutral70: #{mix($bg-color-lighter, #fff, 30%)};
+    --selector-color-neutral80: #{mix($bg-color-lighter, #fff, 20%)};
+    --selector-color-neutral90: #{mix($bg-color-lighter, #fff, 10%)};
+    --selector-color-primary: #{mix($accent-color, $bg-color-lighter, 100%)};
+    --selector-color-primary75: #{mix($accent-color, $bg-color-lighter, 80%)};
+    --selector-color-primary50: #{mix($accent-color, $bg-color-lighter, 50%)};
+    --selector-color-primary25: #{mix($accent-color, $bg-color-lighter, 20%)};
+    --selector-color-value: #{mix($text-color-lighter, $accent-color, 70%)};
+  }
+}
+
+.selector {
+  flex: 1;
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.box-item {
+  flex: none;
+
+  &:not(:first-child) {
+    margin-left: 0.4em;
+  }
+}
+
+.dest-item {
+  background-color: rgba(0, 126, 255, 0.08);
+  border-radius: 2px;
+  border: 1px solid rgba(0, 126, 255, 0.24);
+  color: #555599;
+  display: inline-flex;
+  height: 24px;
+  font-size: 0.9em;
+  line-height: 1;
+  align-items: center;
+  padding: 0.2em 0.4em;
+}
+
+.dest-icon {
+  opacity: 0.8;
+  margin-right: 0.25em;
+}
+
+:global(.fa-icon-fas-user).dest-icon {
+  transform: scale(0.8);
+}
+
+.alert {
+  margin-bottom: 6px;
+}

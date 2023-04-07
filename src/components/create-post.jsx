@@ -6,7 +6,6 @@ import { ButtonLink } from './button-link';
 import ErrorBoundary from './error-boundary';
 import { Icon } from './fontawesome-icons';
 import { MoreWithTriangle } from './more-with-triangle';
-import SendTo from './send-to';
 import { SmartTextarea } from './smart-textarea';
 import { SubmitModeHint } from './submit-mode-hint';
 import { Throbber } from './throbber';
@@ -17,11 +16,13 @@ import { PreventPageLeaving } from './prevent-page-leaving';
 import PostAttachments from './post/post-attachments';
 import { useBool } from './hooks/bool';
 import { useServerValue } from './hooks/server-info';
+import { Selector } from './feeds-selector/selector';
+import { CREATE_DIRECT, CREATE_REGULAR } from './feeds-selector/constants';
 
 const selectMaxFilesCount = (serverInfo) => serverInfo.attachments.maxCountPerPost;
 const selectMaxPostLength = (serverInfo) => serverInfo.maxTextLength.post;
 
-export default function CreatePost({ sendTo, expandSendTo, user, isDirects }) {
+export default function CreatePost({ sendTo, expandSendTo, isDirects }) {
   const dispatch = useDispatch();
   const createPostStatus = useSelector((state) => state.createPostStatus);
 
@@ -34,8 +35,19 @@ export default function CreatePost({ sendTo, expandSendTo, user, isDirects }) {
   const [commentsDisabled, toggleCommentsDisabled] = useBool(false);
   const [isMoreOpen, toggleIsMoreOpen] = useBool(false);
   const [postText, setPostText] = useState(sendTo.invitation || '');
-  const [feedsSelector, setFeedsSelector] = useState(null);
-  const [feeds, setFeeds] = useState([]);
+
+  const defaultFeedNames = useMemo(() => {
+    if (Array.isArray(sendTo.defaultFeed)) {
+      return sendTo.defaultFeed;
+    } else if (sendTo.defaultFeed) {
+      return [sendTo.defaultFeed];
+    }
+    return [];
+  }, [sendTo.defaultFeed]);
+
+  const [feeds, setFeeds] = useState(defaultFeedNames);
+
+  useEffect(() => setFeeds(defaultFeedNames), [defaultFeedNames, sendTo.expanded]);
 
   const resetLocalState = useCallback(() => {
     toggleCommentsDisabled(false);
@@ -73,14 +85,11 @@ export default function CreatePost({ sendTo, expandSendTo, user, isDirects }) {
     [fileIds.length, isUploading, postText],
   );
 
+  const [hasFeedsError, setHasFeedsError] = useState(false);
+
   const canSubmitForm = useMemo(() => {
-    return (
-      isFormDirty &&
-      !createPostStatus.loading &&
-      feeds.length > 0 &&
-      !feedsSelector?.isIncorrectDestinations
-    );
-  }, [createPostStatus.loading, feeds.length, feedsSelector?.isIncorrectDestinations, isFormDirty]);
+    return isFormDirty && !createPostStatus.loading && feeds.length > 0 && !hasFeedsError;
+  }, [createPostStatus.loading, feeds.length, hasFeedsError, isFormDirty]);
 
   const doCreatePost = useCallback(
     (e) => {
@@ -98,33 +107,26 @@ export default function CreatePost({ sendTo, expandSendTo, user, isDirects }) {
   useEffect(() => {
     // Reset form on success
     if (createPostStatus.success) {
-      feedsSelector?.reset();
       textareaRef.current?.blur();
       clearUploads();
       resetLocalState();
+      setFeeds(defaultFeedNames);
       dispatch(resetPostCreateForm());
     }
-  }, [clearUploads, createPostStatus.success, dispatch, feedsSelector, resetLocalState]);
+  }, [clearUploads, createPostStatus.success, defaultFeedNames, dispatch, resetLocalState]);
 
   // Reset async status on unmount
   useEffect(() => () => dispatch(resetPostCreateForm()), [dispatch]);
 
-  const registerFeedSelector = useCallback((ref) => {
-    setFeedsSelector(ref);
-    if (ref) {
-      setFeeds(ref.values.slice());
-    } else {
-      setFeeds([]);
-    }
-  }, []);
-
   const containerRef = useRef();
+  /*
   useEffect(() => {
-    const h = () => import('react-select');
+    const h = () => import('react-select/creatable');
     const el = containerRef.current;
     el.addEventListener('click', h, { once: true });
     return () => el.removeEventListener('click', h, { once: true });
   }, []);
+  */
 
   return (
     <div
@@ -137,15 +139,13 @@ export default function CreatePost({ sendTo, expandSendTo, user, isDirects }) {
         <PreventPageLeaving prevent={isFormDirty} />
         <div>
           {sendTo.expanded && (
-            <SendTo
-              ref={registerFeedSelector}
-              defaultFeed={sendTo.defaultFeed}
-              isDirects={isDirects}
-              user={user}
+            <Selector
+              mode={isDirects ? CREATE_DIRECT : CREATE_REGULAR}
+              feedNames={feeds}
               onChange={setFeeds}
+              onError={setHasFeedsError}
             />
           )}
-
           <SmartTextarea
             ref={textareaRef}
             className="post-textarea"
