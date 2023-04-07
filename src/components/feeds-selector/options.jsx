@@ -154,9 +154,27 @@ export function useSelectedOptions(usernames, fixedFeedNames) {
       .forEach((username) => dispatch(getUserInfo(username)));
   }, [dispatch, userInfoStatuses, values]);
 
+  const privacyLevel = useMemo(() => {
+    if (values.every((v) => v.type === ACC_USER)) {
+      return 'direct';
+    }
+    if (values.some((v) => v.type !== ACC_GROUP && v.type !== ACC_ME)) {
+      return '';
+    }
+    for (const { value: username } of values) {
+      const acc = usersByName.get(username);
+      if (acc.isProtected === '0') {
+        return 'public';
+      } else if (acc.isPrivate === '0') {
+        return 'protected';
+      }
+    }
+    return 'private';
+  }, [usersByName, values]);
+
   const meOption = useMemo(() => toOption(me, me), [me]);
 
-  return { values, meOption, groupOptions, userOptions };
+  return { values, meOption, groupOptions, userOptions, privacyLevel };
 }
 
 const collator = new Intl.Collator(undefined, { sensitivity: 'base', ignorePunctuation: true });
