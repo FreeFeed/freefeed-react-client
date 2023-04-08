@@ -125,14 +125,13 @@ export default function CreatePost({ sendTo, expandSendTo, isDirects }) {
   useEffect(() => () => dispatch(resetPostCreateForm()), [dispatch]);
 
   const containerRef = useRef();
-  /*
+
   useEffect(() => {
     const h = () => import('react-select/creatable');
     const el = containerRef.current;
     el.addEventListener('click', h, { once: true });
     return () => el.removeEventListener('click', h, { once: true });
   }, []);
-  */
 
   const [privacyLevel, setPrivacyLevel] = useState('');
 
