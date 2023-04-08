@@ -188,7 +188,7 @@ function compareOptions(a, b) {
   return collator.compare(a.label, b.label);
 }
 
-function toOption(user, me) {
+export function toOption(user, me) {
   const isMe = user.username === me.username;
   return {
     label: isMe
