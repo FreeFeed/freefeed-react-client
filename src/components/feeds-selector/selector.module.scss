@@ -1,6 +1,6 @@
 @import '../../../styles/helvetica/dark-vars.scss';
 
-.container {
+.selector {
   --selector-color-danger: #de350b;
   --selector-color-danger-light: #ffbdad;
   --selector-color-neutral0: hsl(0deg, 0%, 100%);
@@ -40,9 +40,7 @@
     --selector-color-primary25: #{mix($accent-color, $bg-color-lighter, 20%)};
     --selector-color-value: #{mix($text-color-lighter, $accent-color, 70%)};
   }
-}
 
-.selector {
   flex: 1;
 }
 
