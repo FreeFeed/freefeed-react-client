@@ -4,7 +4,6 @@ export const EDIT_REGULAR = 'PREFER_REGULAR';
 // Weak requirements: post can change it's type before creation
 export const CREATE_DIRECT = 'DIRECT';
 export const CREATE_REGULAR = 'REGULAR';
-// TODO Invitation form?
 
 export function isEditing(mode) {
   return mode === EDIT_DIRECT || mode === EDIT_REGULAR;
