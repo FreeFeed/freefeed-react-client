@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import { lazyComponent } from '../lazy-component';
 import { Throbber } from '../throbber';
 import styles from './selector.module.scss';
@@ -27,7 +28,7 @@ export function AccountsSelector({ isCreatable = true, ...props }) {
   const Select = isCreatable ? CreatableSelect : FixedSelect;
   return (
     <Select
-      className={styles['selector']}
+      className={cn(styles['selector'], styles['palette'])}
       theme={selTheme}
       isMulti={true}
       isClearable={false}
