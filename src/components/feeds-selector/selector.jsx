@@ -93,7 +93,10 @@ export function Selector({
 
   return (
     <div className={styles['container']}>
-      <div className={cn(className, styles['box'])} aria-label="Choose post destination">
+      <div
+        className={cn(className, styles['box'], styles['palette'])}
+        aria-label="Choose post destination"
+      >
         {showStatic ? (
           <>
             <span className={styles['box-item']}>To:</span>

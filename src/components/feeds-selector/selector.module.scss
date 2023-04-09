@@ -1,6 +1,6 @@
 @import '../../../styles/helvetica/dark-vars.scss';
 
-.selector {
+.palette {
   --selector-color-danger: #de350b;
   --selector-color-danger-light: #ffbdad;
   --selector-color-neutral0: hsl(0deg, 0%, 100%);
@@ -40,7 +40,9 @@
     --selector-color-primary25: #{mix($accent-color, $bg-color-lighter, 20%)};
     --selector-color-value: #{mix($text-color-lighter, $accent-color, 70%)};
   }
+}
 
+.selector {
   flex: 1;
 }
 
@@ -64,16 +66,16 @@
 }
 
 .dest-item {
-  background-color: rgba(0, 126, 255, 0.08);
   border-radius: 2px;
-  border: 1px solid rgba(0, 126, 255, 0.24);
-  color: #555599;
   display: inline-flex;
   height: 24px;
   font-size: 0.9em;
   line-height: 1;
   align-items: center;
   padding: 0.2em 0.4em;
+  background-color: var(--selector-color-primary25);
+  color: var(--selector-color-value);
+  border: 1px solid var(--selector-color-primary50);
 }
 
 .dest-icon {
