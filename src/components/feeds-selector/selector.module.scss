@@ -83,6 +83,13 @@
   margin-right: 0.25em;
 }
 
+.dest-screenName {
+  margin-left: 1em;
+  opacity: 0.5;
+  font-size: 0.9em;
+  letter-spacing: 0.03em;
+}
+
 :global(.fa-icon-fas-user).dest-icon {
   transform: scale(0.8);
 }

@@ -46,11 +46,20 @@ const typeOrder = {
   [ACC_NOT_FOUND]: 7,
 };
 
-export function DisplayOption({ option, className }) {
+export function DisplayOption({ option, context, className }) {
   return (
     <span className={className} title={`@${option.value}`}>
       {option.type && <Icon className={styles['dest-icon']} icon={typeIcon[option.type]} />}
-      {option.label}
+      {option.type === ACC_ME ? (
+        MY_FEED_LABEL
+      ) : (
+        <>
+          {option.value}
+          {context === 'menu' && option.label !== option.value && (
+            <span className={styles['dest-screenName']}>{option.label}</span>
+          )}
+        </>
+      )}
     </span>
   );
 }
@@ -191,11 +200,7 @@ function compareOptions(a, b) {
 export function toOption(user, me) {
   const isMe = user.username === me.username;
   return {
-    label: isMe
-      ? MY_FEED_LABEL
-      : user.type === 'group'
-      ? user.screenName || user.username
-      : user.username,
+    label: user.screenName || user.username,
     value: user.username,
     type: isMe ? ACC_ME : user.type === 'group' ? ACC_GROUP : ACC_USER,
   };
