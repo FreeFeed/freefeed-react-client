@@ -99,6 +99,6 @@ function isValidNewOption(label) {
   return /^[a-z\d]{3,25}$/i.test(label.trim());
 }
 
-function formatOptionLabel(option) {
-  return <DisplayOption option={option} />;
+function formatOptionLabel(option, { context }) {
+  return <DisplayOption option={option} context={context} />;
 }
