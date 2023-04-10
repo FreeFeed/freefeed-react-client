@@ -49,7 +49,7 @@ const defaultState = {
       },
       createdAt: '1430708710865',
       updatedAt: '1647366122559',
-      youCan: ['dm'],
+      youCan: [],
     },
   },
   usersNotFound: [],
@@ -210,6 +210,7 @@ describe('UserProfileHead', () => {
         subscribers: [{ id: UID }],
         subscriptions: [UID],
       },
+      users: { [UID]: { ...defaultState.users[UID], youCan: ['dm', 'unsubscribe'] } },
     };
     useSelectorMock.mockImplementation((selector) => selector(fakeState));
 
