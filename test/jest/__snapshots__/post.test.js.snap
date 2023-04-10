@@ -179,15 +179,44 @@ exports[`Post Renders a textarea with post text when editing the post 1`] = `
 >
   <div>
     <div
-      aria-label="Choose post destination"
-      class="send-to"
+      class="container"
     >
-      <div>
-        <div>
-          <div>
-             Loading selector...
-          </div>
-        </div>
+      <div
+        aria-label="Choose post destination"
+        class="box palette"
+      >
+        <span
+          class="box-item"
+        >
+          To:
+        </span>
+        <span
+          class="box-item dest-item"
+          title="@author"
+        >
+          <svg
+            aria-hidden="true"
+            class="dest-icon fa-icon fa-icon-fas-home"
+            focusable="false"
+            role="img"
+            viewBox="0 0 576 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z"
+              fill="currentColor"
+            />
+          </svg>
+          My feed
+        </span>
+        <a
+          aria-disabled="false"
+          class="box-item"
+          role="button"
+          tabindex="0"
+        >
+          Add/Edit
+        </a>
       </div>
     </div>
     <div
@@ -211,11 +240,30 @@ Line 2
       class="post-edit-actions"
     >
       <div
+        class="post-edit-buttons"
+      >
+        <button
+          class="btn btn-default btn-xs"
+        >
+          Update
+        </button>
+        <a
+          aria-disabled="false"
+          class="post-cancel"
+          role="button"
+          tabindex="0"
+        >
+          Cancel
+        </a>
+      </div>
+      <div
         class="post-edit-options"
       >
-        <span
+        <a
+          aria-disabled="false"
           class="post-edit-attachments"
           role="button"
+          tabindex="0"
         >
           <svg
             class="upload-icon fa-icon fa-icon-fas-paperclip"
@@ -226,7 +274,7 @@ Line 2
             />
           </svg>
            Add photos or files
-        </span>
+        </a>
       </div>
       <span
         class="post-edit-hint submit-mode-hint submit-mode-hint--visible"
@@ -235,20 +283,6 @@ Line 2
         to submit
         )
       </span>
-      <div
-        class="post-edit-buttons"
-      >
-        <a
-          class="post-cancel"
-        >
-          Cancel
-        </a>
-        <button
-          class="btn btn-default btn-xs"
-        >
-          Update
-        </button>
-      </div>
     </div>
     <div
       class="container"
