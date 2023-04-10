@@ -8,7 +8,6 @@ import { formatPattern } from 'react-router/es/PatternUtils';
 import {
   createPost,
   resetPostCreateForm,
-  expandSendTo,
   getUserInfo,
   togglePinnedGroup,
 } from '../redux/action-creators';
@@ -90,7 +89,6 @@ const UserHandler = (props) => {
             {...props.userActions}
             user={props.user}
             sendTo={props.sendTo}
-            expandSendTo={props.expandSendTo}
             createPost={props.createPost}
             resetPostCreateForm={props.resetPostCreateForm}
             addAttachmentResponse={props.addAttachmentResponse}
@@ -195,7 +193,6 @@ function selectActions(dispatch) {
     createPost: (feeds, postText, attachmentIds, more) =>
       dispatch(createPost(feeds, postText, attachmentIds, more)),
     resetPostCreateForm: (...args) => dispatch(resetPostCreateForm(...args)),
-    expandSendTo: () => dispatch(expandSendTo()),
     userActions: userActions(dispatch),
     getUserInfo: (username) => dispatch(getUserInfo(username)),
     togglePinnedGroup: ({ id }) => dispatch(togglePinnedGroup(id)),
