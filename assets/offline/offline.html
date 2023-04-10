@@ -61,25 +61,35 @@
     <h4>Your device may be offline or our servers may be experiencing problems.</h4>
 </div>
 <script>
-    function backOnline(){
-        document.getElementsByTagName('h1')[0].innerHTML='Back Online!'
-        document.getElementsByTagName('h4')[0].innerHTML=''
-    }
-    function reloadPage(){
-        clearInterval(start);
-        location.reload();
-    }
-    function checkOnline() {
-        if(navigator.onLine){
-            backOnline();
-            setTimeout(reloadPage,1000);
-        }
-    }
-    function start(){
-        setInterval(checkOnline, 1000);
-    }
+    const OFFLINE_MESSAGE = 'Connection error';
+    const BACK_ONLINE_MESSAGE = 'Back online!';
+    const ERROR_DESCRIPTION = 'Your device may be offline or our servers may be experiencing problems.';
 
-    start();
+    const h1Element = document.getElementsByTagName('h1')[0];
+    const h4Element = document.getElementsByTagName('h4')[0];
+
+    const backOnline = () => {
+        h1Element.innerHTML = BACK_ONLINE_MESSAGE;
+        h4Element.innerHTML = '';
+    };
+
+    const reloadPage = () => {
+        clearInterval(checkOnlineInterval);
+        location.reload();
+    };
+
+    const checkOnlineStatus = () => {
+        const online = navigator.onLine;
+        if (online) {
+            backOnline();
+            setTimeout(reloadPage, 1000);
+        } else {
+            h1Element.innerHTML = OFFLINE_MESSAGE;
+            h4Element.innerHTML = ERROR_DESCRIPTION;
+        }
+    };
+
+    let checkOnlineInterval = setInterval(checkOnlineStatus, 1000);
 </script>
 </body>
 
