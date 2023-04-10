@@ -28,7 +28,7 @@ import { CREATE_DIRECT, CREATE_REGULAR } from './feeds-selector/constants';
 const selectMaxFilesCount = (serverInfo) => serverInfo.attachments.maxCountPerPost;
 const selectMaxPostLength = (serverInfo) => serverInfo.maxTextLength.post;
 
-export default function CreatePost({ sendTo, expandSendTo, isDirects }) {
+export default function CreatePost({ sendTo, isDirects }) {
   const dispatch = useDispatch();
   const createPostStatus = useSelector((state) => state.createPostStatus);
 
@@ -41,6 +41,7 @@ export default function CreatePost({ sendTo, expandSendTo, isDirects }) {
   const [commentsDisabled, toggleCommentsDisabled] = useBool(false);
   const [isMoreOpen, toggleIsMoreOpen] = useBool(false);
   const [postText, setPostText] = useState(sendTo.invitation || '');
+  const [selectorVisible, setSelectorVisible, expandSendTo] = useBool(isDirects);
 
   const defaultFeedNames = useMemo(() => {
     if (Array.isArray(sendTo.defaultFeed)) {
@@ -53,13 +54,14 @@ export default function CreatePost({ sendTo, expandSendTo, isDirects }) {
 
   const [feeds, setFeeds] = useState(defaultFeedNames);
 
-  useEffect(() => setFeeds(defaultFeedNames), [defaultFeedNames, sendTo.expanded]);
+  useEffect(() => setFeeds(defaultFeedNames), [defaultFeedNames, selectorVisible]);
 
   const resetLocalState = useCallback(() => {
     toggleCommentsDisabled(false);
     toggleIsMoreOpen(false);
     setPostText(sendTo.invitation || '');
-  }, [sendTo.invitation, toggleCommentsDisabled, toggleIsMoreOpen]);
+    setSelectorVisible(isDirects);
+  }, [isDirects, sendTo.invitation, setSelectorVisible, toggleCommentsDisabled, toggleIsMoreOpen]);
 
   // Uploading files
   const {
@@ -173,7 +175,7 @@ export default function CreatePost({ sendTo, expandSendTo, isDirects }) {
       <ErrorBoundary>
         <PreventPageLeaving prevent={isFormDirty} />
         <div>
-          {sendTo.expanded && (
+          {selectorVisible && (
             <Selector
               mode={isDirects ? CREATE_DIRECT : CREATE_REGULAR}
               feedNames={feeds}

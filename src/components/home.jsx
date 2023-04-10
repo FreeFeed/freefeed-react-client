@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router';
 
-import { createPost, resetPostCreateForm, expandSendTo, home } from '../redux/action-creators';
+import { createPost, resetPostCreateForm, home } from '../redux/action-creators';
 import { postActions } from './select-utils';
 import CreatePost from './create-post';
 import Feed from './feed';
@@ -48,7 +48,6 @@ const FeedHandler = (props) => {
       user={props.user}
       createPost={props.createPost}
       resetPostCreateForm={props.resetPostCreateForm}
-      expandSendTo={props.expandSendTo}
       addAttachmentResponse={props.addAttachmentResponse}
       showMedia={props.showMedia}
     />
@@ -104,7 +103,6 @@ function selectActions(dispatch) {
     createPost: (feeds, postText, attachmentIds, more) =>
       dispatch(createPost(feeds, postText, attachmentIds, more)),
     resetPostCreateForm: (...args) => dispatch(resetPostCreateForm(...args)),
-    expandSendTo: () => dispatch(expandSendTo()),
   };
 }
 

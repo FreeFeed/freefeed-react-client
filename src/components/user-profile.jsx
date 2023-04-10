@@ -37,7 +37,6 @@ export default function UserProfile(props) {
             user={props.user}
             createPost={props.createPost}
             resetPostCreateForm={props.resetPostCreateForm}
-            expandSendTo={props.expandSendTo}
             addAttachmentResponse={props.addAttachmentResponse}
             showMedia={props.showMedia}
           />
