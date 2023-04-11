@@ -56,7 +56,7 @@ export function SelectorError({ values, isDirect, isEditing, onError }) {
       <span key="all-groups">
         You can&#x2019;t send direct message to groups (
         <CommaAndSeparated>
-          {badGroups.map((a) => (
+          {allGroups.map((a) => (
             <strong key={a.value}>{a.label}</strong>
           ))}
         </CommaAndSeparated>
