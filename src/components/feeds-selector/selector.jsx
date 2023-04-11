@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { ButtonLink } from '../button-link';
 import { useBool } from '../hooks/bool';
 import { DisplayOption, useSelectedOptions } from './options';
@@ -20,16 +20,8 @@ import styles from './selector.module.scss';
 import { SelectorError } from './error';
 import { AccountsSelector } from './accounts-selector';
 
-export function Selector({
-  className,
-  mode,
-  feedNames,
-  fixedFeedNames = [],
-  onChange,
-  onError,
-  onPrivacyLevel,
-}) {
-  const { values, meOption, groupOptions, userOptions, privacyLevel } = useSelectedOptions(
+export function Selector({ className, mode, feedNames, fixedFeedNames = [], onChange, onError }) {
+  const { values, meOption, groupOptions, userOptions } = useSelectedOptions(
     feedNames,
     fixedFeedNames,
   );
@@ -91,8 +83,6 @@ export function Selector({
     },
     [onChange],
   );
-
-  useEffect(() => onPrivacyLevel?.(privacyLevel), [onPrivacyLevel, privacyLevel]);
 
   return (
     <div className={styles['container']}>

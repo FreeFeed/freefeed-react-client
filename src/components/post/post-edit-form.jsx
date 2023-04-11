@@ -1,4 +1,9 @@
-import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
+import {
+  faGlobeAmericas,
+  faLock,
+  faPaperclip,
+  faUserFriends,
+} from '@fortawesome/free-solid-svg-icons';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { Icon } from '../fontawesome-icons';
@@ -15,6 +20,7 @@ import { useServerValue } from '../hooks/server-info';
 import { Selector } from '../feeds-selector/selector';
 import { EDIT_DIRECT, EDIT_REGULAR } from '../feeds-selector/constants';
 import { ButtonLink } from '../button-link';
+import { usePrivacyCheck } from '../feeds-selector/privacy-check';
 import PostAttachments from './post-attachments';
 
 const selectMaxFilesCount = (serverInfo) => serverInfo.attachments.maxCountPerPost;
@@ -106,6 +112,36 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
 
   const handleCancel = useCallback(() => dispatch(cancelEditingPost(id)), [dispatch, id]);
 
+  const [privacyLevel] = usePrivacyCheck(feeds);
+
+  const privacyIcon = useMemo(
+    () =>
+      privacyLevel === 'private' ? (
+        <Icon icon={faLock} />
+      ) : privacyLevel === 'protected' ? (
+        <Icon icon={faUserFriends} />
+      ) : privacyLevel === 'public' ? (
+        <Icon icon={faGlobeAmericas} />
+      ) : privacyLevel === 'direct' ? (
+        <Icon icon={faLock} />
+      ) : null,
+    [privacyLevel],
+  );
+
+  const privacyTitle = useMemo(
+    () =>
+      privacyLevel === 'private'
+        ? 'Update private post'
+        : privacyLevel === 'protected'
+        ? 'Update protected post'
+        : privacyLevel === 'public'
+        ? 'Update public post'
+        : privacyLevel === 'direct'
+        ? 'Update direct message'
+        : null,
+    [privacyLevel],
+  );
+
   return (
     <>
       <div>
@@ -141,7 +177,9 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
               className="btn btn-default btn-xs"
               onClick={handleSubmit}
               disabled={!canSubmitForm}
+              title={privacyTitle}
             >
+              <span className="post-submit-icon">{privacyIcon}</span>
               Update
             </button>
             <ButtonLink className="post-cancel" onClick={handleCancel}>

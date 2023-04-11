@@ -57,7 +57,7 @@ export function SelectorError({ values, isDirect, isEditing, onError }) {
         You can&#x2019;t send direct message to groups (
         <CommaAndSeparated>
           {allGroups.map((a) => (
-            <strong key={a.value}>{a.label}</strong>
+            <strong key={a.value}>@{a.value}</strong>
           ))}
         </CommaAndSeparated>
         ).
@@ -85,10 +85,10 @@ export function SelectorError({ values, isDirect, isEditing, onError }) {
         You are not a member of the{' '}
         <CommaAndSeparated>
           {badGroups.map((a) => (
-            <strong key={a.value}>{a.label}</strong>
+            <strong key={a.value}>@{a.value}</strong>
           ))}
         </CommaAndSeparated>{' '}
-        {pluralForm(badGroups.length, 'group')}.
+        {pluralForm(badGroups.length, 'group', null, 'w')}.
       </span>,
     );
   }
@@ -99,7 +99,7 @@ export function SelectorError({ values, isDirect, isEditing, onError }) {
         You can&#x2019;t create regular post with a direct receivers (
         <CommaAndSeparated>
           {allUsers.map((a) => (
-            <strong key={a.value}>{a.label}</strong>
+            <strong key={a.value}>@{a.value}</strong>
           ))}
         </CommaAndSeparated>
         ).
