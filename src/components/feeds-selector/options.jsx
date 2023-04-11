@@ -3,9 +3,9 @@ import {
   faQuestion,
   faSpinner,
   faUser,
-  faUsers,
   faUserSlash,
-  faUsersSlash,
+  //  faUsers,
+  //  faUsersSlash,
 } from '@fortawesome/free-solid-svg-icons';
 import { uniq } from 'lodash';
 import { useEffect, useMemo } from 'react';
@@ -28,9 +28,9 @@ import {
 
 const typeIcon = {
   [ACC_ME]: faHome,
-  [ACC_GROUP]: faUsers,
+  //  [ACC_GROUP]: faUsers,
+  //  [ACC_BAD_GROUP]: faUsersSlash,
   [ACC_USER]: faUser,
-  [ACC_BAD_GROUP]: faUsersSlash,
   [ACC_BAD_USER]: faUserSlash,
   [ACC_UNKNOWN]: faSpinner,
   [ACC_NOT_FOUND]: faQuestion,
@@ -49,7 +49,9 @@ const typeOrder = {
 export function DisplayOption({ option, context, className }) {
   return (
     <span className={className} title={`@${option.value}`}>
-      {option.type && <Icon className={styles['dest-icon']} icon={typeIcon[option.type]} />}
+      {typeIcon[option.type] && (
+        <Icon className={styles['dest-icon']} icon={typeIcon[option.type]} />
+      )}
       {option.type === ACC_ME ? (
         MY_FEED_LABEL
       ) : (
@@ -163,27 +165,9 @@ export function useSelectedOptions(usernames, fixedFeedNames) {
       .forEach((username) => dispatch(getUserInfo(username)));
   }, [dispatch, userInfoStatuses, values]);
 
-  const privacyLevel = useMemo(() => {
-    if (values.every((v) => v.type === ACC_USER)) {
-      return 'direct';
-    }
-    if (values.some((v) => v.type !== ACC_GROUP && v.type !== ACC_ME)) {
-      return '';
-    }
-    for (const { value: username } of values) {
-      const acc = usersByName.get(username);
-      if (acc.isProtected === '0') {
-        return 'public';
-      } else if (acc.isPrivate === '0') {
-        return 'protected';
-      }
-    }
-    return 'private';
-  }, [usersByName, values]);
-
   const meOption = useMemo(() => toOption(me, me), [me]);
 
-  return { values, meOption, groupOptions, userOptions, privacyLevel };
+  return { values, meOption, groupOptions, userOptions };
 }
 
 const collator = new Intl.Collator(undefined, { sensitivity: 'base', ignorePunctuation: true });

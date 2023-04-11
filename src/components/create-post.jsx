@@ -24,6 +24,8 @@ import { useBool } from './hooks/bool';
 import { useServerValue } from './hooks/server-info';
 import { Selector } from './feeds-selector/selector';
 import { CREATE_DIRECT, CREATE_REGULAR } from './feeds-selector/constants';
+import { CommaAndSeparated } from './separated';
+import { usePrivacyCheck } from './feeds-selector/privacy-check';
 
 const selectMaxFilesCount = (serverInfo) => serverInfo.attachments.maxCountPerPost;
 const selectMaxPostLength = (serverInfo) => serverInfo.maxTextLength.post;
@@ -135,7 +137,7 @@ export default function CreatePost({ sendTo, isDirects }) {
     return () => el.removeEventListener('click', h, { once: true });
   }, []);
 
-  const [privacyLevel, setPrivacyLevel] = useState('');
+  const [privacyLevel, privacyProblems] = usePrivacyCheck(feeds);
 
   const privacyIcon = useMemo(
     () =>
@@ -181,7 +183,6 @@ export default function CreatePost({ sendTo, isDirects }) {
               feedNames={feeds}
               onChange={setFeeds}
               onError={setHasFeedsError}
-              onPrivacyLevel={setPrivacyLevel}
             />
           )}
           <SmartTextarea
@@ -213,7 +214,7 @@ export default function CreatePost({ sendTo, isDirects }) {
               aria-disabled={!canSubmitForm}
               title={privacyTitle}
             >
-              <span className="post-submit-icon">{canSubmitForm && privacyIcon}</span>
+              <span className="post-submit-icon">{privacyIcon}</span>
               Post
             </button>
           </div>
@@ -250,6 +251,19 @@ export default function CreatePost({ sendTo, isDirects }) {
 
           <SubmitModeHint input={textareaRef} className="post-edit-hint" />
         </div>
+
+        {privacyProblems.length > 0 && (
+          <div className="alert alert-warning">
+            You have specified some <strong>{privacyLevel}</strong> feeds as a destination. This
+            will make this post <strong>{privacyLevel}</strong> and ignore stricter privacy settings
+            of{' '}
+            <CommaAndSeparated>
+              {privacyProblems.map((p) => (
+                <strong key={p}>@{p}</strong>
+              ))}
+            </CommaAndSeparated>
+          </div>
+        )}
 
         {!canUploadMore && (
           <div className="alert alert-warning">
