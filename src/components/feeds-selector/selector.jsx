@@ -14,6 +14,7 @@ import {
   EDIT_REGULAR,
   ACC_BAD_GROUP,
   ACC_BAD_USER,
+  ACC_ME,
 } from './constants';
 import styles from './selector.module.scss';
 import { SelectorError } from './error';
@@ -37,10 +38,12 @@ export function Selector({
     if (mode === EDIT_REGULAR || mode === EDIT_DIRECT) {
       return mode === EDIT_DIRECT;
     }
-    const hasGroup = values.some((v) => v.type === ACC_GROUP || v.type === ACC_BAD_GROUP);
+    const hasGroupOrHome = values.some(
+      (v) => v.type === ACC_GROUP || v.type === ACC_BAD_GROUP || v.type === ACC_ME,
+    );
     const hasUser = values.some((v) => v.type === ACC_USER || v.type === ACC_BAD_USER);
 
-    if (hasGroup) {
+    if (hasGroupOrHome) {
       return false;
     } else if (hasUser) {
       return true;
