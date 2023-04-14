@@ -121,7 +121,7 @@ export function Selector({ className, mode, feedNames, fixedFeedNames = [], onCh
       </div>
       <SelectorError
         values={values}
-        isDirect={isDirect || mode === CREATE_DIRECT}
+        isDirect={isDirect !== null ? isDirect : mode === CREATE_DIRECT}
         onError={onError}
         isEditing={isEditing(mode)}
       />
