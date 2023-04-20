@@ -7,6 +7,8 @@ import {
   direct,
   getSummary,
   getMemories,
+  getCalendarYearDays,
+  getCalendarDatePosts,
 
   // Public (content depends on URL params)
   getUserInfo,
@@ -61,6 +63,9 @@ export const routeActions = {
   post: (next) => getSinglePost(next.params.postId),
   notifications: (next) => getNotifications(getOffset(next), next.location.query.filter),
   archivePost: (next) => getPostIdByOldName(getPostName(next.location.query.url)),
+  calendarYear: (next) => getCalendarYearDays(getUserName(next), next.params.year),
+  calendarDate: (next) =>
+    getCalendarDatePosts(getUserName(next), next.params.year, next.params.mmdd, getOffset(next)),
 };
 
 export const bindRouteActions = (dispatch) => (route) => (next) =>

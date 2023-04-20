@@ -1,0 +1,75 @@
+.yearList {
+}
+
+.yearNav {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3em;
+
+  .currentYear {
+    font-size: 150%;
+  }
+}
+
+.monthsGrid {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.month {
+  flex-basis: 30%;
+  margin-bottom: 3em;
+  min-width: 200px;
+}
+
+.monthName {
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 0.3em;
+}
+
+.monthDays {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.day {
+  display: block;
+  width: 14%;
+  text-align: center;
+  color: #999;
+}
+
+.dayOffset0 {
+  margin-left: 84%;
+} // Sunday
+
+.dayOffset1 {
+} // Monday
+
+.dayOffset2 {
+  margin-left: 14%;
+} // Tuesday
+
+.dayOffset3 {
+  margin-left: 28%;
+} // Wednesday
+
+.dayOffset4 {
+  margin-left: 42%;
+} // Thursday
+
+.dayOffset5 {
+  margin-left: 56%;
+} // Friday
+
+.dayOffset6 {
+  margin-left: 70%;
+} // Saturday
+
+.dayWithPosts {
+  font-weight: bold;
+}

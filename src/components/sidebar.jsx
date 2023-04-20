@@ -104,6 +104,9 @@ const SideBarFriends = ({ user }) => {
                 Notifications {notificationsCountBadge}
               </Link>
             </li>
+            <li className="p-calendar">
+              <Link to={`${user.username}/calendar`}>Calendar</Link>
+            </li>
           </ul>
         </div>
 

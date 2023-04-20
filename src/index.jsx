@@ -28,6 +28,8 @@ import SearchFeed from './components/search-feed';
 import PlainFeed from './components/plain-feed';
 import ManageSubscribers from './components/manage-subscribers';
 import Bookmarklet from './components/bookmarklet';
+import CalendarYear from './components/calendar/calendar-year';
+import CalendarDate from './components/calendar/calendar-date';
 import SignupByInvitation from './components/signup-by-invitation';
 import { settingsRoute } from './components/settings/routes';
 
@@ -57,6 +59,8 @@ browserHistory.replace({
 const boundRouteActions = bindRouteActions(store.dispatch);
 
 const history = syncHistoryWithStore(browserHistory, store);
+
+const thisYear = new Date().getFullYear();
 
 const manageSubscribersActions = (next) => {
   const { userName } = next.params;
@@ -314,6 +318,19 @@ function App() {
           component={checkPath(PlainFeed, isMemoriesPath)}
           {...generateRouteHooks(boundRouteActions('userMemories'))}
         />
+        <Redirect from="/:userName/calendar" to={`/:userName/calendar/${thisYear}`} />
+        <Route
+          name="userCalendarYear"
+          path="/:userName/calendar/:year"
+          component={checkPath(CalendarYear, isCalendarYearPath)}
+          {...generateRouteHooks(boundRouteActions('calendarYear'))}
+        />
+        <Route
+          name="userCalendarDate"
+          path="/:userName/calendar/:year/:mmdd"
+          component={checkPath(CalendarDate, isCalendarDatePath)}
+          {...generateRouteHooks(boundRouteActions('calendarDate'))}
+        />
         <Route
           name="userSummary"
           path="/:userName/summary(/:days)"
@@ -394,7 +411,25 @@ function isAccountPath({ params: { userName } }) {
 }
 
 function isMemoriesPath({ params: { userName, from } }) {
-  const kindaValidDate = /^(19|20|21)\d{6}$/i.test(from);
+  const kindaValidDate = /^20\d\d(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])$/i.test(from);
   const validUsername = typeof userName === 'undefined' || isAccountPath({ params: { userName } });
   return kindaValidDate && validUsername;
+}
+
+const isValidCalendarYear = (year) => {
+  const yearAsInt = parseInt(year, 10);
+  const FRIENDFEED_LAUNCH_YEAR = 2007;
+  const validYear = yearAsInt >= FRIENDFEED_LAUNCH_YEAR && yearAsInt <= thisYear;
+  return validYear;
+};
+
+function isCalendarYearPath({ params: { userName, year } }) {
+  const validUsername = typeof userName === 'undefined' || isAccountPath({ params: { userName } });
+  return isValidCalendarYear(year) && validUsername;
+}
+
+function isCalendarDatePath({ params: { userName, year, mmdd } }) {
+  const validMMDD = /^(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])$/i.test(mmdd);
+  const validUsername = typeof userName === 'undefined' || isAccountPath({ params: { userName } });
+  return isValidCalendarYear(year) && validMMDD && validUsername;
 }

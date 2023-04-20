@@ -34,12 +34,13 @@ const postRequestOptions = (method = 'POST', body = {}) => ({
   body: JSON.stringify(body),
 });
 
-const feedQueryString = ({ offset, sortChronologically, homeFeedMode, from }) =>
+const feedQueryString = ({ offset, sortChronologically, homeFeedMode, from, tz }) =>
   [
     offset && `offset=${offset}`,
     sortChronologically && `sort=created`,
     homeFeedMode && `homefeed-mode=${encodeURIComponent(homeFeedMode)}`,
     from && `created-before=${getDateForMemoriesRequest(from).toISOString()}`,
+    tz && `tz=${tz}`,
   ]
     .filter(Boolean)
     .join('&');
@@ -360,6 +361,21 @@ export function getUserLikes({ username, ...params }) {
 export function getUserMemories({ username, ...params }) {
   return fetch(
     `${apiRoot}/v2/timelines/${username}?${feedQueryString(params)}&sort=created`,
+    getRequestOptions(),
+  );
+}
+
+export function getCalendarYearDays({ username, year, ...params }) {
+  console.log('params', params);
+  return fetch(
+    `${apiRoot}/v2/calendar/${username}/year/${year}?${feedQueryString(params)}`,
+    getRequestOptions(),
+  );
+}
+
+export function getCalendarDatePosts({ username, date, ...params }) {
+  return fetch(
+    `${apiRoot}/v2/calendar/${username}/date/${date}?${feedQueryString(params)}`,
     getRequestOptions(),
   );
 }

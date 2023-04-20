@@ -1255,6 +1255,15 @@ export function routeLoadingState(state = false, action) {
   ) {
     return false;
   }
+  if (action.type == request(ActionTypes.CALENDAR_YEAR_DAYS)) {
+    return true;
+  }
+  if (
+    action.type == response(ActionTypes.CALENDAR_YEAR_DAYS) ||
+    action.type == fail(ActionTypes.CALENDAR_YEAR_DAYS)
+  ) {
+    return false;
+  }
   switch (action.type) {
     case ActionTypes.UNAUTHENTICATED: {
       return false;
@@ -2242,3 +2251,10 @@ export function currentRoute(
   }
   return state;
 }
+
+export const calendarYearDays = fromResponse(
+  ActionTypes.CALENDAR_YEAR_DAYS,
+  (action) => action.payload,
+  null,
+  setOnLocationChange(initialAsyncState),
+);

@@ -79,6 +79,34 @@ export function getMemories(_from, offset = 0) {
   };
 }
 
+export function getCalendarYearDays(username, year) {
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  console.log('tz', tz);
+  return {
+    type: ActionTypes.CALENDAR_YEAR_DAYS,
+    apiRequest: Api.getCalendarYearDays,
+    payload: {
+      username,
+      year,
+      tz,
+    },
+  };
+}
+
+export function getCalendarDatePosts(username, year, mmdd, offset = 0) {
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  return {
+    type: ActionTypes.CALENDAR_DATE_POSTS,
+    apiRequest: Api.getCalendarDatePosts,
+    payload: {
+      username,
+      date: `${year}-${mmdd.slice(0, 2)}-${mmdd.slice(2, 4)}`,
+      offset,
+      tz,
+    },
+  };
+}
+
 export function discussions(offset = 0) {
   return {
     type: ActionTypes.DISCUSSIONS,
