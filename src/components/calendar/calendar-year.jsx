@@ -55,6 +55,12 @@ function CalendarYear(props) {
     'December',
   ];
 
+  const weekdays = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map((d, i) => (
+    <span key={i} className={styles.day}>
+      {d}
+    </span>
+  ));
+
   return (
     <div className="box">
       <div className="box-header-timeline" role="heading">
@@ -84,10 +90,12 @@ function CalendarYear(props) {
           <div className={styles.monthsGrid}>
             {[...Array(12)].map((_, m) => {
               const days = [...Array(daysInMonth(year, m))].map((_, i) => i + 1);
+              const firstDayOfWeek = dayOfWeek(year, m, 1);
 
               return (
                 <div key={m} className={styles.month}>
                   <div className={styles.monthName}>{monthNames[m]}</div>
+                  <div className={styles.weekDays}>{weekdays}</div>
                   <div className={styles.monthDays}>
                     {days.map((d) => {
                       const mm = String(m + 1).padStart(2, '0');
@@ -99,7 +107,7 @@ function CalendarYear(props) {
                           key={d}
                           className={cx(
                             styles.day,
-                            d === 1 ? styles[`dayOffset${dayOfWeek(year, m, d)}`] : false,
+                            d === 1 ? styles[`dayOffset${firstDayOfWeek}`] : false,
                           )}
                         >
                           {postsOnThisDay ? (

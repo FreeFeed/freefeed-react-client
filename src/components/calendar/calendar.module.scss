@@ -1,4 +1,5 @@
 .yearList {
+  //
 }
 
 .yearNav {
@@ -14,8 +15,7 @@
 .monthsGrid {
   display: flex;
   justify-content: space-around;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
 }
 
 .month {
@@ -30,45 +30,62 @@
   margin-bottom: 0.3em;
 }
 
+.weekDays {
+  margin: 6px 0;
+  font-style: italic;
+  font-size: 11px;
+}
+
+.weekDays,
 .monthDays {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
+  color: #999;
 }
 
 .day {
   display: block;
   width: 14%;
   text-align: center;
-  color: #999;
+
+  .weekDays & {
+    color: #bbb;
+  }
 }
 
 .dayOffset0 {
+  // Sunday
   margin-left: 84%;
-} // Sunday
+}
 
 .dayOffset1 {
-} // Monday
+  // Monday
+}
 
 .dayOffset2 {
+  // Tuesday
   margin-left: 14%;
-} // Tuesday
+}
 
 .dayOffset3 {
+  // Wednesday
   margin-left: 28%;
-} // Wednesday
+}
 
 .dayOffset4 {
+  // Thursday
   margin-left: 42%;
-} // Thursday
+}
 
 .dayOffset5 {
+  // Friday
   margin-left: 56%;
-} // Friday
+}
 
 .dayOffset6 {
+  // Saturday
   margin-left: 70%;
-} // Saturday
+}
 
 .dayWithPosts {
   font-weight: bold;
