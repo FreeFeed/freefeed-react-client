@@ -366,16 +366,21 @@ export function getUserMemories({ username, ...params }) {
 }
 
 export function getCalendarYearDays({ username, year, ...params }) {
-  console.log('params', params);
   return fetch(
-    `${apiRoot}/v2/calendar/${username}/year/${year}?${feedQueryString(params)}`,
+    `${apiRoot}/v2/calendar/${username}/${year}?${feedQueryString(params)}`,
+    getRequestOptions(),
+  );
+}
+export function getCalendarMonthDays({ username, year, month, ...params }) {
+  return fetch(
+    `${apiRoot}/v2/calendar/${username}/${year}/${month}?${feedQueryString(params)}`,
     getRequestOptions(),
   );
 }
 
-export function getCalendarDatePosts({ username, date, ...params }) {
+export function getCalendarDatePosts({ username, year, month, day, ...params }) {
   return fetch(
-    `${apiRoot}/v2/calendar/${username}/date/${date}?${feedQueryString(params)}`,
+    `${apiRoot}/v2/calendar/${username}/${year}/${month}/${day}?${feedQueryString(params)}`,
     getRequestOptions(),
   );
 }

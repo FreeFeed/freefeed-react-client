@@ -8,6 +8,7 @@ import {
   getSummary,
   getMemories,
   getCalendarYearDays,
+  getCalendarMonthDays,
   getCalendarDatePosts,
 
   // Public (content depends on URL params)
@@ -64,8 +65,16 @@ export const routeActions = {
   notifications: (next) => getNotifications(getOffset(next), next.location.query.filter),
   archivePost: (next) => getPostIdByOldName(getPostName(next.location.query.url)),
   calendarYear: (next) => getCalendarYearDays(getUserName(next), next.params.year),
+  calendarMonth: (next) =>
+    getCalendarMonthDays(getUserName(next), next.params.year, next.params.month),
   calendarDate: (next) =>
-    getCalendarDatePosts(getUserName(next), next.params.year, next.params.mmdd, getOffset(next)),
+    getCalendarDatePosts(
+      getUserName(next),
+      next.params.year,
+      next.params.month,
+      next.params.day,
+      getOffset(next),
+    ),
 };
 
 export const bindRouteActions = (dispatch) => (route) => (next) =>

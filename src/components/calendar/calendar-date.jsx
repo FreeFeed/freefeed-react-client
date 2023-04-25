@@ -9,7 +9,7 @@ import PaginatedView from '../paginated-view';
 function CalendarYear(props) {
   const {
     isLoading,
-    params: { userName, year, mmdd },
+    params: { userName, year, month, day },
     authenticated,
     user,
   } = props;
@@ -29,9 +29,7 @@ function CalendarYear(props) {
     );
   }
 
-  const month = parseInt(mmdd.slice(0, 2), 10) - 1;
-  const day = parseInt(mmdd.slice(2, 4), 10);
-  const thisDate = new Date(year, month, day);
+  const thisDate = new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10));
 
   const readableDate = thisDate.toLocaleDateString('en-GB', {
     day: 'numeric',
@@ -68,8 +66,6 @@ function mapStateToProps(state) {
   const offset = +location.query.offset || 0;
   const { isLastPage } = feedViewState;
   const entries = feedViewState.entries.map(joinPostData(state));
-
-  console.log('state', state);
 
   return { isLoading, user, authenticated, entries, location, offset, isLastPage };
 }

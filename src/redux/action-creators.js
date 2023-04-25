@@ -81,7 +81,6 @@ export function getMemories(_from, offset = 0) {
 
 export function getCalendarYearDays(username, year) {
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  console.log('tz', tz);
   return {
     type: ActionTypes.CALENDAR_YEAR_DAYS,
     apiRequest: Api.getCalendarYearDays,
@@ -93,14 +92,30 @@ export function getCalendarYearDays(username, year) {
   };
 }
 
-export function getCalendarDatePosts(username, year, mmdd, offset = 0) {
+export function getCalendarMonthDays(username, year, month) {
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  return {
+    type: ActionTypes.CALENDAR_MONTH_DAYS,
+    apiRequest: Api.getCalendarMonthDays,
+    payload: {
+      username,
+      year,
+      month,
+      tz,
+    },
+  };
+}
+
+export function getCalendarDatePosts(username, year, month, day, offset = 0) {
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
   return {
     type: ActionTypes.CALENDAR_DATE_POSTS,
     apiRequest: Api.getCalendarDatePosts,
     payload: {
       username,
-      date: `${year}-${mmdd.slice(0, 2)}-${mmdd.slice(2, 4)}`,
+      year,
+      month,
+      day,
       offset,
       tz,
     },

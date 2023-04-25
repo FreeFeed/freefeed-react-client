@@ -1246,21 +1246,20 @@ export function routeLoadingState(state = false, action) {
   if (ActionHelpers.isFeedResponse(action) || ActionHelpers.isFeedFail(action)) {
     return false;
   }
-  if (action.type == request(ActionTypes.GET_SINGLE_POST)) {
+  if (
+    action.type == request(ActionTypes.GET_SINGLE_POST) ||
+    action.type == request(ActionTypes.CALENDAR_YEAR_DAYS) ||
+    action.type == request(ActionTypes.CALENDAR_MONTH_DAYS)
+  ) {
     return true;
   }
   if (
     action.type == response(ActionTypes.GET_SINGLE_POST) ||
-    action.type == fail(ActionTypes.GET_SINGLE_POST)
-  ) {
-    return false;
-  }
-  if (action.type == request(ActionTypes.CALENDAR_YEAR_DAYS)) {
-    return true;
-  }
-  if (
+    action.type == fail(ActionTypes.GET_SINGLE_POST) ||
     action.type == response(ActionTypes.CALENDAR_YEAR_DAYS) ||
-    action.type == fail(ActionTypes.CALENDAR_YEAR_DAYS)
+    action.type == fail(ActionTypes.CALENDAR_YEAR_DAYS) ||
+    action.type == response(ActionTypes.CALENDAR_MONTH_DAYS) ||
+    action.type == fail(ActionTypes.CALENDAR_MONTH_DAYS)
   ) {
     return false;
   }
@@ -2254,6 +2253,13 @@ export function currentRoute(
 
 export const calendarYearDays = fromResponse(
   ActionTypes.CALENDAR_YEAR_DAYS,
+  (action) => action.payload,
+  null,
+  setOnLocationChange(initialAsyncState),
+);
+
+export const calendarMonthDays = fromResponse(
+  ActionTypes.CALENDAR_MONTH_DAYS,
   (action) => action.payload,
   null,
   setOnLocationChange(initialAsyncState),

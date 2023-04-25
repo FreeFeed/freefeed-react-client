@@ -7,6 +7,7 @@ export const HOME = 'HOME';
 export const HOME_AUX = 'HOME_AUX';
 export const MEMORIES = 'MEMORIES';
 export const CALENDAR_YEAR_DAYS = 'CALENDAR_YEAR_DAYS';
+export const CALENDAR_MONTH_DAYS = 'CALENDAR_MONTH_DAYS';
 export const CALENDAR_DATE_POSTS = 'CALENDAR_DATE_POSTS';
 export const DISCUSSIONS = 'DISCUSSIONS';
 export const SAVES = 'SAVES';

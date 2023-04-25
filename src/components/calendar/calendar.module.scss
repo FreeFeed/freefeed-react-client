@@ -2,13 +2,27 @@
   //
 }
 
-.yearNav {
+.calendarNav {
   display: flex;
-  justify-content: space-between;
   margin-bottom: 3em;
 
-  .currentYear {
+  .prevDate,
+  .currentDate,
+  .nextDate {
+    flex: 1;
+  }
+
+  .prevDate {
+    text-align: left;
+  }
+
+  .currentDate {
+    text-align: center;
     font-size: 150%;
+  }
+
+  .nextDate {
+    text-align: right;
   }
 }
 
@@ -16,12 +30,6 @@
   display: flex;
   justify-content: space-around;
   flex-flow: row wrap;
-}
-
-.month {
-  flex-basis: 30%;
-  margin-bottom: 3em;
-  min-width: 200px;
 }
 
 .monthName {
@@ -45,11 +53,46 @@
 
 .day {
   display: block;
-  width: 14%;
   text-align: center;
+}
 
-  .weekDays & {
+.dayWithPosts {
+  font-weight: bold;
+}
+
+.month {
+  flex-basis: 30%;
+  margin-bottom: 3em;
+  min-width: 200px;
+
+  .day {
+    width: 14%;
+  }
+
+  .weekDays {
     color: #bbb;
+  }
+}
+
+.daysList {
+  .day {
+    margin-bottom: 4px;
+    display: flex;
+  }
+
+  .dayName {
+    text-align: right;
+    flex: 1;
+    padding-right: 8px;
+  }
+
+  .dayPosts {
+    text-align: left;
+    flex: 1;
+  }
+
+  .emptyDay {
+    color: #999;
   }
 }
 
@@ -85,8 +128,4 @@
 .dayOffset6 {
   // Saturday
   margin-left: 70%;
-}
-
-.dayWithPosts {
-  font-weight: bold;
 }

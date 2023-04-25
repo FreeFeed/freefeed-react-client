@@ -29,6 +29,7 @@ import PlainFeed from './components/plain-feed';
 import ManageSubscribers from './components/manage-subscribers';
 import Bookmarklet from './components/bookmarklet';
 import CalendarYear from './components/calendar/calendar-year';
+import CalendarMonth from './components/calendar/calendar-month';
 import CalendarDate from './components/calendar/calendar-date';
 import SignupByInvitation from './components/signup-by-invitation';
 import { settingsRoute } from './components/settings/routes';
@@ -318,6 +319,7 @@ function App() {
           component={checkPath(PlainFeed, isMemoriesPath)}
           {...generateRouteHooks(boundRouteActions('userMemories'))}
         />
+
         <Redirect from="/:userName/calendar" to={`/:userName/calendar/${thisYear}`} />
         <Route
           name="userCalendarYear"
@@ -326,11 +328,18 @@ function App() {
           {...generateRouteHooks(boundRouteActions('calendarYear'))}
         />
         <Route
+          name="userCalendarMonth"
+          path="/:userName/calendar/:year/:month"
+          component={checkPath(CalendarMonth, isCalendarMonthPath)}
+          {...generateRouteHooks(boundRouteActions('calendarMonth'))}
+        />
+        <Route
           name="userCalendarDate"
-          path="/:userName/calendar/:year/:mmdd"
+          path="/:userName/calendar/:year/:month/:day"
           component={checkPath(CalendarDate, isCalendarDatePath)}
           {...generateRouteHooks(boundRouteActions('calendarDate'))}
         />
+
         <Route
           name="userSummary"
           path="/:userName/summary(/:days)"
@@ -419,8 +428,17 @@ function isMemoriesPath({ params: { userName, from } }) {
 const isValidCalendarYear = (year) => {
   const yearAsInt = parseInt(year, 10);
   const FRIENDFEED_LAUNCH_YEAR = 2007;
-  const validYear = yearAsInt >= FRIENDFEED_LAUNCH_YEAR && yearAsInt <= thisYear;
-  return validYear;
+  return yearAsInt >= FRIENDFEED_LAUNCH_YEAR && yearAsInt <= thisYear;
+};
+
+const isValidMonth = (month) => {
+  const monthAsInt = parseInt(month, 10);
+  return monthAsInt >= 1 && monthAsInt <= 12;
+};
+
+const isValidDay = (day) => {
+  const dayAsInt = parseInt(day, 10);
+  return dayAsInt >= 1 && dayAsInt <= 31;
 };
 
 function isCalendarYearPath({ params: { userName, year } }) {
@@ -428,8 +446,12 @@ function isCalendarYearPath({ params: { userName, year } }) {
   return isValidCalendarYear(year) && validUsername;
 }
 
-function isCalendarDatePath({ params: { userName, year, mmdd } }) {
-  const validMMDD = /^(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])$/i.test(mmdd);
+function isCalendarMonthPath({ params: { userName, year, month } }) {
   const validUsername = typeof userName === 'undefined' || isAccountPath({ params: { userName } });
-  return isValidCalendarYear(year) && validMMDD && validUsername;
+  return isValidCalendarYear(year) && isValidMonth(month) && validUsername;
+}
+
+function isCalendarDatePath({ params: { userName, year, month, day } }) {
+  const validUsername = typeof userName === 'undefined' || isAccountPath({ params: { userName } });
+  return isValidCalendarYear(year) && isValidMonth(month) && isValidDay(day) && validUsername;
 }
