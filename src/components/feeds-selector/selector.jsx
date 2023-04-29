@@ -84,6 +84,11 @@ export function Selector({ className, mode, feedNames, fixedFeedNames = [], onCh
     [onChange],
   );
 
+  const formatCreateLabel = useCallback(
+    (label) => (isDirect ? `Add @${label} as recipient` : `Post to @${label}`),
+    [isDirect],
+  );
+
   return (
     <div className={styles['container']}>
       <div
@@ -128,8 +133,4 @@ export function Selector({ className, mode, feedNames, fixedFeedNames = [], onCh
       />
     </div>
   );
-}
-
-function formatCreateLabel(label) {
-  return `Send direct message to @${label}`;
 }
