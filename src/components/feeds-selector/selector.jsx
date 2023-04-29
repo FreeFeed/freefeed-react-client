@@ -54,7 +54,7 @@ export function Selector({ className, mode, feedNames, fixedFeedNames = [], onCh
     const regularOptions = [
       meOption,
       {
-        label: 'Groups',
+        label: 'Groups you’re in',
         options: groupOptions,
       },
     ];
