@@ -1,8 +1,11 @@
 import {
+  faGlobeAmericas,
   faHome,
+  faLock,
   faQuestion,
   faSpinner,
   faUser,
+  faUserFriends,
   faUserSlash,
   //  faUsers,
   //  faUsersSlash,
@@ -10,10 +13,12 @@ import {
 import { uniq } from 'lodash';
 import { useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import cn from 'classnames';
 import { Icon } from '../fontawesome-icons';
 
 // Local styles
 import { getUserInfo } from '../../redux/action-creators';
+import { getPrivacy } from '../../utils/get-privacy';
 import styles from './selector.module.scss';
 import {
   ACC_ME,
@@ -36,6 +41,13 @@ const typeIcon = {
   [ACC_NOT_FOUND]: faQuestion,
 };
 
+const privacyIcon = {
+  public: faGlobeAmericas,
+  protected: faUserFriends,
+  private: faLock,
+  user: faUser,
+};
+
 const typeOrder = {
   [ACC_ME]: 1,
   [ACC_GROUP]: 2,
@@ -48,9 +60,13 @@ const typeOrder = {
 
 export function DisplayOption({ option, context, className }) {
   return (
-    <span className={className} title={`@${option.value}`}>
-      {typeIcon[option.type] && (
-        <Icon className={styles['dest-icon']} icon={typeIcon[option.type]} />
+    <span className={cn(className, styles[`opt-ctx--${context}`])} title={`@${option.value}`}>
+      {option.type === ACC_ME || option.type === ACC_GROUP ? (
+        <Icon className={styles['dest-icon']} icon={privacyIcon[option.privacy]} />
+      ) : (
+        typeIcon[option.type] && (
+          <Icon className={styles['dest-icon']} icon={typeIcon[option.type]} />
+        )
       )}
       {option.type === ACC_ME ? (
         MY_FEED_LABEL
@@ -123,12 +139,13 @@ export function useSelectedOptions(usernames, fixedFeedNames) {
             label: name,
             value: name,
             type: ACC_UNKNOWN,
+            privacy: 'user',
             isFixed: fixedFeedNames.includes(name),
           };
 
           if (name === me.username) {
             // It's me!
-            return { ...props, label: MY_FEED_LABEL, type: ACC_ME };
+            return { ...props, label: MY_FEED_LABEL, type: ACC_ME, privacy: getPrivacy(me) };
           }
 
           const acc = usersByName.get(name);
@@ -137,6 +154,7 @@ export function useSelectedOptions(usernames, fixedFeedNames) {
               ...props,
               label: acc.screenName,
               type: acc.youCan.includes('post') ? ACC_GROUP : ACC_BAD_GROUP,
+              privacy: getPrivacy(acc),
             };
           } else if (acc?.type === 'user') {
             return {
@@ -153,7 +171,7 @@ export function useSelectedOptions(usernames, fixedFeedNames) {
           return props;
         })
         .sort(compareOptions),
-    [fixedFeedNames, me.username, usernames, usersByName, notFoundUsers],
+    [usernames, fixedFeedNames, me, usersByName, notFoundUsers],
   );
 
   // Load missing accounts
@@ -170,7 +188,6 @@ export function useSelectedOptions(usernames, fixedFeedNames) {
   return { values, meOption, groupOptions, userOptions };
 }
 
-const collator = new Intl.Collator(undefined, { sensitivity: 'base', ignorePunctuation: true });
 function compareOptions(a, b) {
   if (a.isFixed !== b.isFixed) {
     return a.isFixed ? -1 : 1;
@@ -178,7 +195,7 @@ function compareOptions(a, b) {
   if (a.type !== b.type) {
     return typeOrder[a.type] - typeOrder[b.type];
   }
-  return collator.compare(a.label, b.label);
+  return a.value.localeCompare(b.value);
 }
 
 export function toOption(user, me) {
@@ -187,5 +204,6 @@ export function toOption(user, me) {
     label: user.screenName || user.username,
     value: user.username,
     type: isMe ? ACC_ME : user.type === 'group' ? ACC_GROUP : ACC_USER,
+    privacy: user.type === 'group' || isMe ? getPrivacy(user) : 'user',
   };
 }

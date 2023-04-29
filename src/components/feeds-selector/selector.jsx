@@ -99,6 +99,7 @@ export function Selector({ className, mode, feedNames, fixedFeedNames = [], onCh
                 key={opt.value}
                 className={cn(styles['box-item'], styles['dest-item'])}
                 option={opt}
+                context="value"
               />
             ))}
             <ButtonLink className={styles['box-item']} onClick={toggleSelector}>
