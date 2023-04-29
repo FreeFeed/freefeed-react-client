@@ -1,8 +1,10 @@
 import cn from 'classnames';
+import { createFilter } from 'react-select';
 import { lazyComponent } from '../lazy-component';
 import { Throbber } from '../throbber';
 import styles from './selector.module.scss';
 import { DisplayOption } from './options';
+import { kbdVariants } from './kbd-layouts';
 
 function Fallback() {
   return (
@@ -36,9 +38,25 @@ export function AccountsSelector({ isCreatable = true, ...props }) {
       styles={selStyles}
       formatOptionLabel={formatOptionLabel}
       isValidNewOption={isValidNewOption}
+      filterOption={customFilter}
       {...props}
     />
   );
+}
+
+const nativeFilter = createFilter();
+
+function customFilter(option, input) {
+  if (!input) {
+    return true;
+  }
+  for (const variant of kbdVariants(input)) {
+    const ok = nativeFilter(option, variant);
+    if (ok) {
+      return true;
+    }
+  }
+  return false;
 }
 
 const selTheme = (theme) => ({
