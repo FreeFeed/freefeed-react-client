@@ -79,8 +79,12 @@
 }
 
 .dest-icon {
-  opacity: 0.8;
-  margin-right: 0.25em;
+  opacity: 0.5;
+  margin-right: 0.4em;
+}
+
+.opt-ctx--value .dest-icon {
+  opacity: 0.85;
 }
 
 .dest-screenName {
