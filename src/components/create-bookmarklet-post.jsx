@@ -4,7 +4,7 @@ import { PureComponent, Component } from 'react';
 import { faComment } from '@fortawesome/free-regular-svg-icons';
 import { preventDefault } from '../utils';
 import { Throbber } from './throbber';
-import SendTo from './send-to';
+import { Selector } from './feeds-selector/selector';
 import { Icon } from './fontawesome-icons';
 import { SmartTextarea } from './smart-textarea';
 
@@ -26,35 +26,31 @@ class LinkedImage extends PureComponent {
 }
 
 export default class CreateBookmarkletPost extends Component {
-  commentText;
-  postText;
-  selectFeeds;
-
   constructor(props) {
     super(props);
 
     this.state = {
-      isFormEmpty: false,
       isPostSaved: false,
+      feedNames: [this.props.user.username],
+      feedsHasError: false,
+      postText: this.props.postText,
+      commentText: this.props.commentText,
     };
   }
 
-  checkCreatePostAvailability = () => {
-    const isPostTextEmpty = this.postText.value == '' || /^\s+$/.test(this.postText.value);
-    const isFormEmpty = isPostTextEmpty || this.selectFeeds.values == 0;
+  setFeedNames = (feedNames) => this.setState({ feedNames });
+  setFeedsHasError = (feedsHasError) => this.setState({ feedsHasError });
+  onPostTextChange = (e) => this.setState({ postText: e.target.value });
+  onCommentTextChange = (e) => this.setState({ commentText: e.target.value });
 
-    this.setState({ isFormEmpty });
-  };
+  canSubmit = () => this.state.postText.trim() !== '' && !this.state.feedsHasError;
 
-  checkSave = () =>
-    !this.state.isFormEmpty && !this.props.createPostStatus.loading && this.submitForm();
+  checkSave = () => this.canSubmit() && !this.props.createPostStatus.loading && this.submitForm();
 
   submitForm = () => {
     // Get all the values
-    const feeds = this.selectFeeds.values;
-    const postText = this.postText.value;
     const { imageUrls } = this.props;
-    const commentText = this.commentText.value;
+    const { feedNames: feeds, postText, commentText } = this.state;
 
     // Send to the server
     this.props.createPost(feeds, postText, imageUrls, commentText);
@@ -81,16 +77,6 @@ export default class CreateBookmarkletPost extends Component {
   componentDidUpdate() {
     window.parent.postMessage(window.document.documentElement.offsetHeight, '*');
   }
-
-  registerCommentText = (el) => {
-    this.commentText = el;
-  };
-
-  registerPostText = (el) => {
-    this.postText = el;
-  };
-
-  registerSelectFeeds = (el) => (this.selectFeeds = el);
 
   render() {
     if (this.state.isPostSaved) {
@@ -120,20 +106,20 @@ export default class CreateBookmarkletPost extends Component {
           false
         )}
 
-        <SendTo
-          ref={this.registerSelectFeeds}
-          defaultFeed={this.props.sendTo.defaultFeed}
-          user={this.props.user}
-          onChange={this.checkCreatePostAvailability}
+        <Selector
+          className="bookmarklet__selector"
+          feedNames={this.state.feedNames}
+          onChange={this.setFeedNames}
+          onError={this.setFeedsHasError}
         />
 
         <SmartTextarea
           component={'textarea'}
           className="post-textarea"
           ref={this.registerPostText}
-          defaultValue={this.props.postText}
+          value={this.state.postText}
+          onChange={this.onPostTextChange}
           onSubmit={this.checkSave}
-          onChange={this.checkCreatePostAvailability}
           rows={3}
           maxLength={CONFIG.maxLength.post}
         />
@@ -156,9 +142,9 @@ export default class CreateBookmarkletPost extends Component {
               component={'textarea'}
               className="comment-textarea"
               ref={this.registerCommentText}
-              defaultValue={this.props.commentText}
+              value={this.state.commentText}
+              onChange={this.onCommentTextChange}
               onSubmit={this.checkSave}
-              onChange={this.checkCreatePostAvailability}
               rows={4}
               maxLength={CONFIG.maxLength.comment}
             />
@@ -177,7 +163,7 @@ export default class CreateBookmarkletPost extends Component {
           <button
             className="btn btn-default"
             onClick={preventDefault(this.submitForm)}
-            disabled={this.state.isFormEmpty || this.props.createPostStatus.loading}
+            disabled={!this.canSubmit() || this.props.createPostStatus.loading}
           >
             Post
           </button>

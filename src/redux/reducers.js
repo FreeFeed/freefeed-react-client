@@ -846,30 +846,6 @@ export function userPastNames(state = {}, action) {
   return state;
 }
 
-/**
- * state is a map [username => status]
- * status is boolean (user can or canot receive directs from us)
- */
-export function directsReceivers(state = {}, action) {
-  switch (action.type) {
-    case response(ActionTypes.GET_USER_INFO): {
-      const {
-        payload: {
-          users: { username },
-          acceptsDirects,
-        },
-      } = action;
-      if (state[username] !== acceptsDirects) {
-        return {
-          ...state,
-          [username]: acceptsDirects,
-        };
-      }
-    }
-  }
-  return state;
-}
-
 export function users(state = {}, action) {
   const mergeAccounts = (accounts, options = {}) =>
     mergeByIds(state, (accounts || []).map(userParser), options);
@@ -1328,89 +1304,6 @@ export function singlePostId(state = null, action) {
   if (action.type == request(ActionTypes.GET_SINGLE_POST)) {
     return action.payload.postId;
   }
-  return state;
-}
-
-function getValidRecipients(state) {
-  const subscriptions = _.map(state.subscriptions || [], (rs) => {
-    const sub = _.find(state.subscriptions || [], { id: rs.id });
-    let user = null;
-    if (sub && sub.name == 'Posts') {
-      user = _.find(state.subscribers || [], { id: sub.user });
-    }
-    if (user) {
-      return { id: rs.id, user };
-    }
-  }).filter(Boolean);
-
-  const canPostToGroup = function (subUser) {
-    return subUser.isRestricted === '0' || (subUser.administrators || []).includes(state.users.id);
-  };
-
-  const canSendDirect = function (subUser) {
-    return _.findIndex(state.users.subscribers || [], { id: subUser.id }) > -1;
-  };
-
-  const validRecipients = _.filter(subscriptions, (sub) => {
-    return (
-      (sub.user.type === 'group' && canPostToGroup(sub.user)) ||
-      (sub.user.type === 'user' && canSendDirect(sub.user))
-    );
-  });
-
-  return validRecipients;
-}
-
-const INITIAL_SEND_TO_STATE = { expanded: false, feeds: [] };
-
-function getHiddenSendTo(state) {
-  return {
-    expanded: false,
-    feeds: state.feeds,
-  };
-}
-
-export function sendTo(state = INITIAL_SEND_TO_STATE, action) {
-  if (ActionHelpers.isFeedRequest(action)) {
-    return getHiddenSendTo(state);
-  }
-
-  switch (action.type) {
-    case response(ActionTypes.WHO_AM_I): {
-      return {
-        expanded: state.expanded,
-        feeds: getValidRecipients(action.payload),
-      };
-    }
-    case ActionTypes.EXPAND_SEND_TO: {
-      return {
-        ...state,
-        expanded: true,
-      };
-    }
-    case response(ActionTypes.CREATE_POST): {
-      return {
-        ...state,
-        expanded: false,
-      };
-    }
-    case response(ActionTypes.CREATE_GROUP): {
-      const groupId = action.payload.groups.id;
-      const group = userParser(action.payload.groups);
-      return {
-        ...state,
-        feeds: [...state.feeds, { id: groupId, user: group }],
-      };
-    }
-    case response(ActionTypes.SUBSCRIBE):
-    case response(ActionTypes.UNSUBSCRIBE): {
-      return {
-        ...state,
-        feeds: getValidRecipients(action.payload),
-      };
-    }
-  }
-
   return state;
 }
 
