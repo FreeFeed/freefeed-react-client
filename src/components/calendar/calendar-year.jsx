@@ -1,10 +1,8 @@
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import cx from 'classnames';
 
-import { pad, monthNames, dayOfWeek, daysInMonth } from '../../utils/calendar-utils';
 import { Throbber } from '../throbber';
 import CalendarHeaderNav from './calendar-header-nav';
+import MonthDaysGrid from './month-days-grid';
 
 import styles from './calendar.module.scss';
 
@@ -32,11 +30,7 @@ function CalendarYear(props) {
     );
   }
 
-  const weekdays = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map((d, i) => (
-    <span key={i} className={styles.day}>
-      {d}
-    </span>
-  ));
+  const yearAsInt = parseInt(year, 10);
 
   return (
     <div className="box">
@@ -54,45 +48,14 @@ function CalendarYear(props) {
         {calendarDaysMap ? (
           <div className={styles.monthsGrid}>
             {[...Array(12)].map((_, m) => {
-              const days = [...Array(daysInMonth(year, m))].map((_, i) => i + 1);
-              const firstDayOfWeek = dayOfWeek(year, m, 1);
-              const mm = pad(m + 1);
-
               return (
-                <div key={m} className={styles.month}>
-                  <div className={styles.monthName}>
-                    <Link to={`/${userName}/calendar/${year}/${mm}`}>{monthNames[m]}</Link>
-                  </div>
-                  <div className={styles.weekDays}>{weekdays}</div>
-                  <div className={styles.monthDays}>
-                    {days.map((d) => {
-                      const dd = pad(d);
-                      const dayId = `${year}-${mm}-${dd}`;
-                      const postsOnThisDay = calendarDaysMap[dayId] || 0;
-
-                      return (
-                        <span
-                          key={d}
-                          className={cx(
-                            styles.day,
-                            d === 1 ? styles[`dayOffset${firstDayOfWeek}`] : false,
-                          )}
-                        >
-                          {postsOnThisDay ? (
-                            <Link
-                              to={`/${userName}/calendar/${year}/${mm}/${dd}`}
-                              className={styles.dayWithPosts}
-                            >
-                              {d}
-                            </Link>
-                          ) : (
-                            d
-                          )}
-                        </span>
-                      );
-                    })}
-                  </div>
-                </div>
+                <MonthDaysGrid
+                  key={m}
+                  username={userName}
+                  year={year}
+                  month={m}
+                  postCounts={calendarDaysMap}
+                />
               );
             })}
           </div>

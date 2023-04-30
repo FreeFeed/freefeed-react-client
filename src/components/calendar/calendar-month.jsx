@@ -1,11 +1,9 @@
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import cx from 'classnames';
 
-import { pad, monthNames, dayOfWeek, daysInMonth } from '../../utils/calendar-utils';
-import { pluralForm } from '../../utils';
 import { Throbber } from '../throbber';
 import CalendarHeaderNav from './calendar-header-nav';
+import MonthDaysGrid from './month-days-grid';
 
 import styles from './calendar.module.scss';
 
@@ -13,6 +11,7 @@ function CalendarMonth(props) {
   const {
     isLoading,
     calendarDaysMap,
+    calendarMonthDays,
     params: { userName, year, month },
     authenticated,
     user,
@@ -34,10 +33,6 @@ function CalendarMonth(props) {
   }
 
   const monthAsInt = parseInt(month, 10);
-  const mm = pad(monthAsInt);
-  const monthName = monthNames[monthAsInt - 1];
-  const days = [...Array(daysInMonth(year, monthAsInt - 1))].map((_, i) => i + 1);
-  const firstDayOfWeek = dayOfWeek(year, monthAsInt - 1, 1);
 
   return (
     <div className="box">
@@ -56,33 +51,15 @@ function CalendarMonth(props) {
         <CalendarHeaderNav username={userName} year={year} month={month} />
 
         {calendarDaysMap ? (
-          <div className={styles.daysList}>
-            {days.map((d) => {
-              const dd = pad(d);
-              const dayId = `${year}-${mm}-${dd}`;
-              const postsOnThisDay = calendarDaysMap[dayId] || 0;
-
-              return (
-                <span key={d} className={styles.day}>
-                  <span className={styles.dayName}>
-                    {(d + firstDayOfWeek) % 7 === 1 ? 'Sunday, ' : ''} {d} {monthName}:
-                  </span>
-                  <span className={cx(styles.dayPosts, postsOnThisDay ? false : styles.emptyDay)}>
-                    {postsOnThisDay ? (
-                      <Link
-                        to={`/${userName}/calendar/${year}/${mm}/${dd}`}
-                        className={styles.dayWithPosts}
-                      >
-                        {pluralForm(postsOnThisDay, 'post')}
-                      </Link>
-                    ) : (
-                      'no posts'
-                    )}
-                  </span>
-                </span>
-              );
-            })}
-          </div>
+          <MonthDaysGrid
+            username={userName}
+            year={year}
+            month={monthAsInt - 1}
+            postCounts={calendarDaysMap}
+            hideMonthName
+            withCounts
+            className={styles.singleMonth}
+          />
         ) : (
           false
         )}
