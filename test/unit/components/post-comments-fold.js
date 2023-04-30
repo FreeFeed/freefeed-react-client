@@ -8,6 +8,7 @@ import { spy } from 'sinon';
 import ErrorBoundary from '../../../src/components/error-boundary';
 import PostComment from '../../../src/components/post/post-comment';
 import PostComments from '../../../src/components/post/post-comments';
+import { SignInToAddComment } from '../../../src/components/post/post-comments/sign-in-to-add-comment';
 import { CollapseComments } from '../../../src/components/post/post-comments/collapse-comments';
 import ExpandComments from '../../../src/components/post/post-comments/expand-comments';
 import { LoadingComments } from '../../../src/components/post/post-comments/loading-comments';
@@ -42,7 +43,9 @@ describe('<PostComments>', () => {
         'when rendered',
         'to have exactly rendered',
         <div className="comments" role="list" aria-label="0 comments">
-          <ErrorBoundary />
+          <ErrorBoundary>
+            <SignInToAddComment />
+          </ErrorBoundary>
         </div>,
       );
     });
@@ -60,6 +63,7 @@ describe('<PostComments>', () => {
         'to have rendered with all children',
         <div className="comments" role="list">
           <PostComment />
+          <SignInToAddComment />
         </div>,
       );
     });
@@ -78,6 +82,7 @@ describe('<PostComments>', () => {
         <div className="comments" role="list">
           <PostComment />
           <PostComment />
+          <SignInToAddComment />
         </div>,
       );
     });
@@ -97,6 +102,7 @@ describe('<PostComments>', () => {
           <PostComment />
           <PostComment />
           <PostComment />
+          <SignInToAddComment />
         </div>,
       );
     });
@@ -120,6 +126,7 @@ describe('<PostComments>', () => {
         'to have rendered with all children',
         <div className="comments" role="list">
           {genCommentElements(nComments)}
+          <SignInToAddComment />
         </div>,
       );
     });
@@ -146,6 +153,7 @@ describe('<PostComments>', () => {
           <PostComment />
           <ExpandComments omittedComments={minFoldedComments} omittedCommentLikes={5} />
           {genCommentElements(commentsAfterFold)}
+          <SignInToAddComment />
         </div>,
       );
     });
@@ -170,6 +178,7 @@ describe('<PostComments>', () => {
         'to have rendered with all children',
         <div className="comments" role="list">
           {genCommentElements(nComments)}
+          <SignInToAddComment />
         </div>,
       );
     });
@@ -196,6 +205,7 @@ describe('<PostComments>', () => {
           <PostComment />
           <ExpandComments omittedComments={2} />
           <PostComment />
+          <SignInToAddComment />
         </div>,
       );
     });
@@ -220,6 +230,7 @@ describe('<PostComments>', () => {
           <PostComment />
           <ExpandComments omittedComments={post.omittedComments} />
           {genCommentElements(commentsAfterFold)}
+          <SignInToAddComment />
         </div>,
       );
     });
@@ -238,6 +249,7 @@ describe('<PostComments>', () => {
           <PostComment />
           <ExpandComments omittedComments={3} omittedCommentLikes={7} />
           {genCommentElements(2)}
+          <SignInToAddComment />
         </div>,
       );
     });
@@ -258,6 +270,7 @@ describe('<PostComments>', () => {
           <LoadingComments />
           <ExpandComments omittedComments={p.omittedComments} />
           <PostComment />
+          <SignInToAddComment />
         </div>,
       );
     });
@@ -277,6 +290,7 @@ describe('<PostComments>', () => {
           <PostComment />
           <ExpandComments omittedComments={post.omittedComments} />
           <LoadingComments />
+          <SignInToAddComment />
         </div>,
       );
     });
@@ -298,6 +312,7 @@ describe('<PostComments>', () => {
           <PostComment />
           <ExpandComments omittedComments={post.omittedComments + extraComments} />
           {genCommentElements(commentsAfterFold)}
+          <SignInToAddComment />
         </div>,
       );
     });
@@ -333,6 +348,7 @@ describe('<PostComments>', () => {
           'to have rendered with all children',
           <div className="comments" role="list">
             {genCommentElements(nComments)}
+            <SignInToAddComment />
           </div>,
         );
       });
@@ -360,6 +376,7 @@ describe('<PostComments>', () => {
             {genCommentElements(1)}
             <CollapseComments />
             {genCommentElements(nComments - 1)}
+            <SignInToAddComment />
           </div>,
         );
         expect(
@@ -373,6 +390,7 @@ describe('<PostComments>', () => {
             {genCommentElements(1)}
             <ExpandComments omittedComments={nComments - commentsAfterFold - 1} />
             {genCommentElements(commentsAfterFold)}
+            <SignInToAddComment />
           </div>,
         );
       });
@@ -417,6 +435,7 @@ describe('<PostComments>', () => {
             {genCommentElements(1)}
             <ExpandComments omittedComments={post.omittedComments + extraCommentsAfterFold} />
             {genCommentElements(commentsAfterFold)}
+            <SignInToAddComment />
           </div>,
         );
         expect(expandSpy, 'to have a call satisfying', { args: [post.id] });
@@ -446,6 +465,7 @@ describe('<PostComments>', () => {
             <PostComment isEditing={true} />
             <ExpandComments omittedComments={3} />
             {genCommentElements(2)}
+            <SignInToAddComment />
           </div>,
         );
       });
@@ -466,6 +486,7 @@ describe('<PostComments>', () => {
           'to have rendered with all children',
           <div className="comments" role="list">
             {genCommentElements(7, [3])}
+            <SignInToAddComment />
           </div>,
         );
       });
@@ -490,6 +511,7 @@ describe('<PostComments>', () => {
             <PostComment isEditing={true} />
             <ExpandComments omittedComments={4} />
             {genCommentElements(4, [0, 2])}
+            <SignInToAddComment />
           </div>,
         );
       });
@@ -520,6 +542,7 @@ describe('<PostComments>', () => {
             <PostComment isEditing={true} />
             <ExpandComments omittedComments={4} />
             {genCommentElements(2)}
+            <SignInToAddComment />
           </div>,
         );
       });
@@ -543,6 +566,7 @@ describe('<PostComments>', () => {
             <PostComment isEditing={true} />
             <ExpandComments omittedComments={2} />
             {genCommentElements(4, [0])}
+            <SignInToAddComment />
           </div>,
         );
       });
@@ -561,6 +585,7 @@ describe('<PostComments>', () => {
             <LoadingComments />
             <ExpandComments omittedComments={3} />
             {genCommentElements(4, [0])}
+            <SignInToAddComment />
           </div>,
         );
       });

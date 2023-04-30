@@ -8,8 +8,8 @@ import ErrorBoundary from '../../../src/components/error-boundary';
 import PostComments from '../../../src/components/post/post-comments';
 import PostComment from '../../../src/components/post/post-comment';
 import ExpandComments from '../../../src/components/post/post-comments/expand-comments';
+import { SignInToAddComment } from '../../../src/components/post/post-comments/sign-in-to-add-comment';
 import { LoadingComments } from '../../../src/components/post/post-comments/loading-comments';
-import { SignInLink } from '../../../src/components/sign-in-link';
 
 const expect = unexpected.clone().use(unexpectedReact);
 
@@ -34,6 +34,7 @@ describe('<PostComments>', () => {
         <PostComment />
         <ExpandComments />
         <LoadingComments />
+        <SignInToAddComment />
       </div>,
     );
   });
@@ -52,7 +53,9 @@ describe('<PostComments>', () => {
       'when rendered',
       'to have rendered with all children',
       <div className="comments">
-        <ErrorBoundary />
+        <ErrorBoundary>
+          <SignInToAddComment />
+        </ErrorBoundary>
       </div>,
     );
 
@@ -62,6 +65,7 @@ describe('<PostComments>', () => {
       'to have rendered with all children',
       <div>
         <PostComment />
+        <SignInToAddComment />
       </div>,
     );
 
@@ -181,7 +185,7 @@ describe('<PostComments>', () => {
     );
   });
 
-  it('should render "Sign In" link if post is commented and user is anonymous', () => {
+  it('should render "Sign in" link and user is anonymous', () => {
     const post = {
       omittedComments: 1,
       omittedCommentsOffset: 1,
@@ -198,16 +202,24 @@ describe('<PostComments>', () => {
     expect(
       <PostComments comments={[]} post={post} user={{}} />,
       'when rendered',
-      'not to contain',
-      <SignInLink>Sign In</SignInLink>,
-    );
-
-    post.isCommenting = true;
-    expect(
-      <PostComments comments={[]} post={post} user={{}} />,
-      'when rendered',
       'to contain',
-      <SignInLink>Sign In</SignInLink>,
+      <SignInToAddComment />,
+    );
+  });
+
+  it('should not render "Sign in" link if user is logged in', () => {
+    const post = {
+      omittedComments: 1,
+      omittedCommentsOffset: 1,
+      isCommenting: false,
+      createdBy: { username: '' },
+      user: {},
+    };
+    expect(
+      <PostComments comments={[]} post={post} user={{ id: 'some-user' }} />,
+      'when rendered',
+      'not to contain',
+      <SignInToAddComment />,
     );
   });
 });
