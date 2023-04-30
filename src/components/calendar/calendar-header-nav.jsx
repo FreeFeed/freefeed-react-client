@@ -1,34 +1,21 @@
 import { Link } from 'react-router';
+import parse from 'date-fns/parse';
+import format from 'date-fns/format';
 
-import { MIN_DATE, MAX_DATE, pad, monthNames } from '../../utils/calendar-utils';
+import { MIN_DATE, MAX_DATE } from '../../utils/calendar-utils';
 
 import styles from './calendar.module.scss';
 
 function getDateLink(date, mode) {
-  const bits = [date.getFullYear()];
-  if (mode !== 'year') {
-    bits.push(pad(date.getMonth() + 1));
-  }
-  if (mode === 'day') {
-    bits.push(pad(date.getDate()));
-  }
-  return bits.join('/');
+  return format(date, mode === 'year' ? 'yyyy' : mode === 'month' ? 'yyyy/MM' : 'yyyy/MM/dd');
 }
 
 function getDateLabel(date, mode) {
-  const bits = [date.getFullYear()];
-  if (mode !== 'year') {
-    bits.push(monthNames[date.getMonth()]);
-  }
-  if (mode === 'day') {
-    bits.push(pad(date.getDate()));
-  }
-  return bits.reverse().join(' ');
+  return format(date, mode === 'year' ? 'yyyy' : mode === 'month' ? 'MMMM yyyy' : 'd MMMM yyyy');
 }
 
 function parseDateString(string) {
-  const [yyyy, mm, dd] = string.split('-');
-  return new Date(parseInt(yyyy, 10), parseInt(mm, 10) - 1, parseInt(dd, 10));
+  return parse(string, 'yyyy-MM-dd', new Date());
 }
 
 function CalendarHeaderNav(props) {
