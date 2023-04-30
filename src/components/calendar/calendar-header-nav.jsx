@@ -4,51 +4,65 @@ import { MIN_DATE, MAX_DATE, pad, monthNames } from '../../utils/calendar-utils'
 
 import styles from './calendar.module.scss';
 
-function CalendarHeaderNav(props) {
-  const { username, year, month } = props;
-
-  const yearAsInt = parseInt(year, 10);
-  const monthAsInt = parseInt(month, 10) || 1; // 1-indexed
-
-  let prevDate, prevLink, prevLabel, thisDate, thisLabel, nextDate, nextLink, nextLabel;
-
-  if (month) {
-    // navigating months
-    thisDate = new Date(yearAsInt, monthAsInt - 1, 1);
-    thisLabel = `${monthNames[thisDate.getMonth()]} ${thisDate.getFullYear()}`;
-
-    prevDate = new Date(yearAsInt, monthAsInt - 2, 1);
-    prevLink = `/${username}/calendar/${prevDate.getFullYear()}/${pad(prevDate.getMonth() + 1)}`;
-    prevLabel = `← ${monthNames[prevDate.getMonth()]} ${prevDate.getFullYear()}`;
-
-    nextDate = new Date(yearAsInt, monthAsInt, 1);
-    nextLink = `/${username}/calendar/${nextDate.getFullYear()}/${pad(nextDate.getMonth() + 1)}`;
-    nextLabel = `${monthNames[nextDate.getMonth()]} ${nextDate.getFullYear()} →`;
-  } else {
-    // navigating years
-    thisDate = new Date(yearAsInt, 0, 1);
-    thisLabel = thisDate.getFullYear();
-
-    prevDate = new Date(yearAsInt - 1, 0, 1);
-    prevLink = `/${username}/calendar/${prevDate.getFullYear()}`;
-    prevLabel = `← ${prevDate.getFullYear()}`;
-
-    nextDate = new Date(yearAsInt + 1, 0, 1);
-    nextLink = `/${username}/calendar/${nextDate.getFullYear()}`;
-    nextLabel = `${nextDate.getFullYear()} →`;
+function getDateLink(date, mode) {
+  const bits = [date.getFullYear()];
+  if (mode !== 'year') {
+    bits.push(pad(date.getMonth() + 1));
   }
+  if (mode === 'day') {
+    bits.push(pad(date.getDate()));
+  }
+  return bits.join('/');
+}
 
-  const canShowPrevLink = prevDate >= MIN_DATE;
-  const canShowNextLink = nextDate <= MAX_DATE;
+function getDateLabel(date, mode) {
+  const bits = [date.getFullYear()];
+  if (mode !== 'year') {
+    bits.push(monthNames[date.getMonth()]);
+  }
+  if (mode === 'day') {
+    bits.push(pad(date.getDate()));
+  }
+  return bits.reverse().join(' ');
+}
+
+function parseDateString(string) {
+  const [yyyy, mm, dd] = string.split('-');
+  return new Date(parseInt(yyyy, 10), parseInt(mm, 10) - 1, parseInt(dd, 10));
+}
+
+function CalendarHeaderNav(props) {
+  const {
+    username,
+    mode,
+    currentDate: currentDateString,
+    nextDate: nextDateString,
+    previousDate: previousDateString,
+  } = props;
+
+  const currentDate = parseDateString(currentDateString);
+  const nextDate = nextDateString ? parseDateString(nextDateString) : null;
+  const previousDate = previousDateString ? parseDateString(previousDateString) : null;
+
+  const canShowPrevLink = previousDate && previousDate >= MIN_DATE;
+  const canShowNextLink = nextDate && nextDate <= MAX_DATE;
 
   return (
     <div className={styles.calendarNav}>
       <span className={styles.prevDate}>
-        {canShowPrevLink ? <Link to={prevLink}>{prevLabel}</Link> : prevLabel}
+        {canShowPrevLink ? (
+          <Link to={`/${username}/calendar/${getDateLink(previousDate, mode)}`}>
+            ← {getDateLabel(previousDate, mode)}
+          </Link>
+        ) : null}
       </span>
-      <strong className={styles.currentDate}>{thisLabel}</strong>
+      <strong className={styles.currentDate}>{getDateLabel(currentDate, mode)}</strong>
       <span className={styles.nextDate}>
-        {canShowNextLink ? <Link to={nextLink}>{nextLabel}</Link> : nextLabel}
+        {canShowNextLink ? (
+          <Link to={`/${username}/calendar/${getDateLink(nextDate, mode)}`}>
+            {getDateLabel(nextDate, mode)} →
+          </Link>
+        ) : null}
       </span>
     </div>
   );

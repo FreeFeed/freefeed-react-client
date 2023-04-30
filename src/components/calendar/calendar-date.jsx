@@ -5,6 +5,7 @@ import { joinPostData, postActions } from '../select-utils';
 import { Throbber } from '../throbber';
 import Feed from '../feed';
 import PaginatedView from '../paginated-view';
+import CalendarHeaderNav from './calendar-header-nav';
 
 function CalendarYear(props) {
   const {
@@ -12,6 +13,8 @@ function CalendarYear(props) {
     params: { userName, year, month, day },
     authenticated,
     user,
+    nextDay,
+    previousDay,
   } = props;
 
   if (!authenticated || !user || user.username !== userName) {
@@ -29,18 +32,10 @@ function CalendarYear(props) {
     );
   }
 
-  const thisDate = new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10));
-
-  const readableDate = thisDate.toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-
   return (
     <div className="box">
       <div className="box-header-timeline" role="heading">
-        {readableDate}{' '}
+        Calendar
         {isLoading && (
           <span className="throbber">
             <Throbber />
@@ -52,6 +47,13 @@ function CalendarYear(props) {
       </div>
 
       <div className="box-body">
+        <CalendarHeaderNav
+          username={userName}
+          currentDate={`${year}-${month}-${day}`}
+          mode="day"
+          previousDate={previousDay}
+          nextDate={nextDay}
+        />
         <PaginatedView {...props}>
           <Feed {...props} />
         </PaginatedView>
@@ -64,10 +66,20 @@ function mapStateToProps(state) {
   const { routeLoadingState: isLoading, authenticated, user, routing, feedViewState } = state;
   const location = routing.locationBeforeTransitions;
   const offset = +location.query.offset || 0;
-  const { isLastPage } = feedViewState;
+  const { isLastPage, nextDay, previousDay } = feedViewState;
   const entries = feedViewState.entries.map(joinPostData(state));
 
-  return { isLoading, user, authenticated, entries, location, offset, isLastPage };
+  return {
+    isLoading,
+    user,
+    authenticated,
+    entries,
+    location,
+    offset,
+    isLastPage,
+    nextDay,
+    previousDay,
+  };
 }
 
 function mapActionsToDispatch(dispatch) {

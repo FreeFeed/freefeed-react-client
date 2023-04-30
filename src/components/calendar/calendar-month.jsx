@@ -47,8 +47,14 @@ function CalendarMonth(props) {
           <Link to={`/${userName}/calendar/${year}`}>Back to {year}</Link>
         </div>
       </div>
-      <div className="box-body" style={{ marginTop: '1em' }}>
-        <CalendarHeaderNav username={userName} year={year} month={month} />
+      <div className="box-body">
+        <CalendarHeaderNav
+          username={userName}
+          mode="month"
+          currentDate={`${year}-${month}-01`}
+          previousDate={calendarMonthDays?.previousDay}
+          nextDate={calendarMonthDays?.nextDay}
+        />
 
         {calendarDaysMap ? (
           <MonthDaysGrid

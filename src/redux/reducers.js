@@ -183,8 +183,17 @@ export function feedViewState(state = initFeed, action) {
       : null;
     const feedRequestType = baseType(action.type);
 
+    const extras =
+      baseType(action.type) === ActionTypes.CALENDAR_DATE_POSTS
+        ? {
+            previousDay: action.payload.previousDay,
+            nextDay: action.payload.nextDay,
+          }
+        : {};
+
     return {
       ...initFeed,
+      ...extras,
       entries,
       recentlyHiddenEntries,
       timeline,

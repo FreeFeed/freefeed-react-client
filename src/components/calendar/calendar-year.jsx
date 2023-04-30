@@ -42,8 +42,14 @@ function CalendarYear(props) {
           </span>
         )}
       </div>
-      <div className="box-body" style={{ marginTop: '1em' }}>
-        <CalendarHeaderNav username={userName} year={year} />
+      <div className="box-body">
+        <CalendarHeaderNav
+          username={userName}
+          mode="year"
+          currentDate={`${yearAsInt}-01-01`}
+          previousDate={`${yearAsInt - 1}-01-01`}
+          nextDate={`${yearAsInt + 1}-01-01`}
+        />
 
         {calendarDaysMap ? (
           <div className={styles.monthsGrid}>
