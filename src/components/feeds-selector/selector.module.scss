@@ -83,7 +83,18 @@
   margin-right: 0.4em;
 }
 
-.opt-ctx--value .dest-icon {
+.option {
+  display: flex;
+  justify-content: space-between;
+}
+
+.option__link {
+  color: currentColor;
+  opacity: 0.75;
+  font-size: 0.8em;
+}
+
+.option-ctx--value .dest-icon {
   opacity: 0.85;
 }
 
