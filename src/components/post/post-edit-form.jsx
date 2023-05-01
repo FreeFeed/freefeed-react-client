@@ -176,8 +176,9 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
             <button
               className="btn btn-default btn-xs"
               onClick={handleSubmit}
-              disabled={!canSubmitForm}
+              aria-disabled={!canSubmitForm}
               title={privacyTitle}
+              aria-label={privacyTitle}
             >
               <span className="post-submit-icon">{privacyIcon}</span>
               Update
