@@ -141,7 +141,7 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
             value={postText}
             onSubmit={handleSubmit}
             onText={setPostText}
-            onFile={chooseFiles}
+            onFile={uploadFile}
             autoFocus={true}
             minRows={2}
             maxRows={10}
