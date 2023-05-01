@@ -48,7 +48,7 @@ export function SelectorError({ values, isDirect, isEditing, onError }) {
   }
 
   if (isDirect && hasMyFeed) {
-    errors.push(<span key="self">You can&#x2019;t send direct message to yourself.</span>);
+    errors.push(<span key="self">You can&#x2019;t send a direct message to yourself.</span>);
   }
 
   if (isDirect && allGroups.length > 0) {
@@ -94,17 +94,7 @@ export function SelectorError({ values, isDirect, isEditing, onError }) {
   }
 
   if (!isDirect && allUsers.length > 0) {
-    errors.push(
-      <span key="bad-users">
-        You can&#x2019;t create regular post with a direct receivers (
-        <CommaAndSeparated>
-          {allUsers.map((a) => (
-            <strong key={a.value}>@{a.value}</strong>
-          ))}
-        </CommaAndSeparated>
-        ).
-      </span>,
-    );
+    errors.push(<span key="bad-users">You can&#x2019;t mix feeds and users as destinations.</span>);
   }
 
   if (!isDirect && values.length === 0) {
