@@ -201,24 +201,20 @@ exports[`Post Renders a textarea with post text when editing the post 1`] = `
           To:
         </span>
         <span
-          class="box-item dest-item opt-ctx--value"
+          class="box-item dest-item option option-ctx--value"
           title="@author"
         >
-          <svg
-            class="dest-icon fa-icon fa-icon-fas-globe-americas"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <use
-              xlink:href="#fa-icon-fas-globe-americas"
-            />
-          </svg>
-          My feed
-          <a
-            href="/author"
-            target="_blank"
-          >
-            Go
-          </a>
+          <span>
+            <svg
+              class="dest-icon fa-icon fa-icon-fas-globe-americas"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <use
+                xlink:href="#fa-icon-fas-globe-americas"
+              />
+            </svg>
+            My feed
+          </span>
         </span>
         <a
           aria-disabled="false"

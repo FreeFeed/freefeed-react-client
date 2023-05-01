@@ -7,6 +7,7 @@ import {
   faUser,
   faUserFriends,
   faUserSlash,
+  faExternalLinkAlt,
   //  faUsers,
   //  faUsersSlash,
 } from '@fortawesome/free-solid-svg-icons';
@@ -60,23 +61,33 @@ const typeOrder = {
 
 export function DisplayOption({ option, context, className }) {
   return (
-    <span className={cn(className, styles[`opt-ctx--${context}`])} title={`@${option.value}`}>
-      {option.type === ACC_ME || option.type === ACC_GROUP ? (
-        <Icon className={styles['dest-icon']} icon={privacyIcon[option.privacy]} />
-      ) : (
-        typeIcon[option.type] && (
-          <Icon className={styles['dest-icon']} icon={typeIcon[option.type]} />
-        )
-      )}
-      {option.type === ACC_ME ? (
-        MY_FEED_LABEL
-      ) : (
-        <>
-          {option.value}
-          {context === 'menu' && option.label !== option.value && (
-            <span className={styles['dest-screenName']}>{option.label}</span>
-          )}
-        </>
+    <span
+      className={cn(className, styles[`option`], styles[`option-ctx--${context}`])}
+      title={`@${option.value}`}
+    >
+      <span>
+        {option.type === ACC_ME || option.type === ACC_GROUP ? (
+          <Icon className={styles['dest-icon']} icon={privacyIcon[option.privacy]} />
+        ) : (
+          typeIcon[option.type] && (
+            <Icon className={styles['dest-icon']} icon={typeIcon[option.type]} />
+          )
+        )}
+        {option.type === ACC_ME ? (
+          MY_FEED_LABEL
+        ) : (
+          <>
+            {option.value}
+            {context === 'menu' && option.label !== option.value && (
+              <span className={styles['dest-screenName']}>{option.label}</span>
+            )}
+          </>
+        )}
+      </span>
+      {context === 'menu' && (
+        <a href={`/${option.value}`} target="_blank" className={styles[`option__link`]}>
+          <Icon className={styles['dest-icon']} icon={faExternalLinkAlt} />
+        </a>
       )}
     </span>
   );
