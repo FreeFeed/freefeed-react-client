@@ -213,6 +213,7 @@ export default function CreatePost({ sendTo, isDirects }) {
               className={cn('btn btn-default btn-xs', !canSubmitForm && 'disabled')}
               aria-disabled={!canSubmitForm}
               title={privacyTitle}
+              aria-label={privacyTitle}
             >
               <span className="post-submit-icon">{privacyIcon}</span>
               Post
