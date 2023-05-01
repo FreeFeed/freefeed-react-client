@@ -213,6 +213,12 @@ exports[`Post Renders a textarea with post text when editing the post 1`] = `
             />
           </svg>
           My feed
+          <a
+            href="/author"
+            target="_blank"
+          >
+            Go
+          </a>
         </span>
         <a
           aria-disabled="false"
@@ -248,6 +254,8 @@ Line 2
         class="post-edit-buttons"
       >
         <button
+          aria-disabled="false"
+          aria-label="Update public post"
           class="btn btn-default btn-xs"
           title="Update public post"
         >
