@@ -213,6 +213,7 @@ export default function CreatePost({ sendTo, isDirects }) {
               className={cn('btn btn-default btn-xs', !canSubmitForm && 'disabled')}
               aria-disabled={!canSubmitForm}
               title={privacyTitle}
+              aria-label={privacyTitle}
             >
               <span className="post-submit-icon">{privacyIcon}</span>
               Post
@@ -254,9 +255,8 @@ export default function CreatePost({ sendTo, isDirects }) {
 
         {privacyProblems.length > 0 && (
           <div className="alert alert-warning">
-            You have specified some <strong>{privacyLevel}</strong> feeds as a destination. This
-            will make this post <strong>{privacyLevel}</strong> and ignore stricter privacy settings
-            of{' '}
+            You have selected a <strong>{privacyLevel}</strong> feed as a destination. This will
+            make this post <strong>{privacyLevel}</strong> and ignore stricter privacy settings of{' '}
             <CommaAndSeparated>
               {privacyProblems.map((p) => (
                 <strong key={p}>@{p}</strong>

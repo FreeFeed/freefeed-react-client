@@ -59,36 +59,38 @@ function customFilter(option, input) {
   return false;
 }
 
+const themeColors = {
+  danger: 'var(--selector-color-danger)',
+  dangerLight: 'var(--selector-color-danger-light)',
+  neutral0: 'var(--selector-color-neutral0)',
+  neutral5: 'var(--selector-color-neutral5)',
+  neutral10: 'var(--selector-color-neutral10)',
+  neutral20: 'var(--selector-color-neutral20)',
+  neutral30: 'var(--selector-color-neutral30)',
+  neutral40: 'var(--selector-color-neutral40)',
+  neutral50: 'var(--selector-color-neutral50)',
+  neutral60: 'var(--selector-color-neutral60)',
+  neutral70: 'var(--selector-color-neutral70)',
+  neutral80: 'var(--selector-color-neutral80)',
+  neutral90: 'var(--selector-color-neutral90)',
+  primary: 'var(--selector-color-primary)',
+  primary25: 'var(--selector-color-primary25)',
+  primary50: 'var(--selector-color-primary50)',
+  primary75: 'var(--selector-color-primary75)',
+};
+
 const selTheme = (theme) => ({
   ...theme,
   borderRadius: 0,
-  colors: {
-    danger: 'var(--selector-color-danger)',
-    dangerLight: 'var(--selector-color-danger-light)',
-    neutral0: 'var(--selector-color-neutral0)',
-    neutral5: 'var(--selector-color-neutral5)',
-    neutral10: 'var(--selector-color-neutral10)',
-    neutral20: 'var(--selector-color-neutral20)',
-    neutral30: 'var(--selector-color-neutral30)',
-    neutral40: 'var(--selector-color-neutral40)',
-    neutral50: 'var(--selector-color-neutral50)',
-    neutral60: 'var(--selector-color-neutral60)',
-    neutral70: 'var(--selector-color-neutral70)',
-    neutral80: 'var(--selector-color-neutral80)',
-    neutral90: 'var(--selector-color-neutral90)',
-    primary: 'var(--selector-color-primary)',
-    primary25: 'var(--selector-color-primary25)',
-    primary50: 'var(--selector-color-primary50)',
-    primary75: 'var(--selector-color-primary75)',
-  },
+  colors: themeColors,
 });
 
 const selStyles = {
   control: (base, state) => ({
     ...base,
     boxShadow: 'none',
-    '&:hover': { borderColor: 'var(--selector-color-neutral60)' },
-    borderColor: state.isFocused ? 'var(--selector-color-neutral60)' : base.borderColor,
+    '&:hover': { borderColor: themeColors.neutral60 },
+    borderColor: state.isFocused ? themeColors.neutral60 : base.borderColor,
   }),
   multiValueLabel: (base, state) => {
     const s = { ...base, color: 'currentColor' };
@@ -97,7 +99,7 @@ const selStyles = {
   multiValueRemove: (base, state) => {
     const s = {
       ...base,
-      borderLeft: '1px solid var(--selector-color-primary50)',
+      borderLeft: `1px solid ${themeColors.primary50}`,
       marginLeft: '4px',
     };
     return state.data.isFixed ? { ...s, display: 'none' } : s;
@@ -105,10 +107,10 @@ const selStyles = {
   indicatorSeparator: (base) => ({ ...base, display: 'none' }),
   multiValue: (base) => ({
     ...base,
-    backgroundColor: 'var(--selector-color-primary25)',
-    color: 'var(--selector-color-value)',
+    backgroundColor: themeColors.primary25,
+    color: themeColors.primary,
     borderRadius: '2px',
-    border: '1px solid var(--selector-color-primary50)',
+    border: `1px solid ${themeColors.primary50}`,
   }),
 };
 
