@@ -77,6 +77,7 @@ const themeColors = {
   primary25: 'var(--selector-color-primary25)',
   primary50: 'var(--selector-color-primary50)',
   primary75: 'var(--selector-color-primary75)',
+  value: 'var(--selector-color-value)',
 };
 
 const selTheme = (theme) => ({
@@ -108,7 +109,7 @@ const selStyles = {
   multiValue: (base) => ({
     ...base,
     backgroundColor: themeColors.primary25,
-    color: themeColors.primary,
+    color: themeColors.value,
     borderRadius: '2px',
     border: `1px solid ${themeColors.primary50}`,
   }),
