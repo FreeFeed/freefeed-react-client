@@ -24,7 +24,7 @@ const ImageAttachmentsLightbox = lazyComponent(
 );
 
 export const getMediaType = (url) => {
-  if (url.match(/\.(jpg|png|jpeg|webp|gif)(\?|$|#)/i)) {
+  if (new URL(url).pathname.match(/\.(jpg|png|jpeg|webp|gif)$/i)) {
     return 'image';
   } else if (isInstagram(url)) {
     return 'instagram';

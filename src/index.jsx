@@ -28,8 +28,12 @@ import SearchFeed from './components/search-feed';
 import PlainFeed from './components/plain-feed';
 import ManageSubscribers from './components/manage-subscribers';
 import Bookmarklet from './components/bookmarklet';
+import CalendarYear from './components/calendar/calendar-year';
+import CalendarMonth from './components/calendar/calendar-month';
+import CalendarDate from './components/calendar/calendar-date';
 import SignupByInvitation from './components/signup-by-invitation';
 import { settingsRoute } from './components/settings/routes';
+import { CALENDAR_START_YEAR } from './utils/calendar-utils';
 
 Sentry.init({
   dsn: CONFIG.sentry.publicDSN,
@@ -57,6 +61,8 @@ browserHistory.replace({
 const boundRouteActions = bindRouteActions(store.dispatch);
 
 const history = syncHistoryWithStore(browserHistory, store);
+
+const thisYear = new Date().getFullYear();
 
 const manageSubscribersActions = (next) => {
   const { userName } = next.params;
@@ -314,6 +320,27 @@ function App() {
           component={checkPath(PlainFeed, isMemoriesPath)}
           {...generateRouteHooks(boundRouteActions('userMemories'))}
         />
+
+        <Redirect from="/:userName/calendar" to={`/:userName/calendar/${thisYear}`} />
+        <Route
+          name="userCalendarYear"
+          path="/:userName/calendar/:year"
+          component={checkPath(CalendarYear, isCalendarYearPath)}
+          {...generateRouteHooks(boundRouteActions('calendarYear'))}
+        />
+        <Route
+          name="userCalendarMonth"
+          path="/:userName/calendar/:year/:month"
+          component={checkPath(CalendarMonth, isCalendarMonthPath)}
+          {...generateRouteHooks(boundRouteActions('calendarMonth'))}
+        />
+        <Route
+          name="userCalendarDate"
+          path="/:userName/calendar/:year/:month/:day"
+          component={checkPath(CalendarDate, isCalendarDatePath)}
+          {...generateRouteHooks(boundRouteActions('calendarDate'))}
+        />
+
         <Route
           name="userSummary"
           path="/:userName/summary(/:days)"
@@ -394,7 +421,37 @@ function isAccountPath({ params: { userName } }) {
 }
 
 function isMemoriesPath({ params: { userName, from } }) {
-  const kindaValidDate = /^(19|20|21)\d{6}$/i.test(from);
+  const kindaValidDate = /^20\d\d(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])$/i.test(from);
   const validUsername = typeof userName === 'undefined' || isAccountPath({ params: { userName } });
   return kindaValidDate && validUsername;
+}
+
+const isValidCalendarYear = (year) => {
+  const yearAsInt = parseInt(year, 10);
+  return yearAsInt >= CALENDAR_START_YEAR && yearAsInt <= thisYear;
+};
+
+const isValidMonth = (month) => {
+  const monthAsInt = parseInt(month, 10);
+  return monthAsInt >= 1 && monthAsInt <= 12;
+};
+
+const isValidDay = (day) => {
+  const dayAsInt = parseInt(day, 10);
+  return dayAsInt >= 1 && dayAsInt <= 31;
+};
+
+function isCalendarYearPath({ params: { userName, year } }) {
+  const validUsername = typeof userName === 'undefined' || isAccountPath({ params: { userName } });
+  return isValidCalendarYear(year) && validUsername;
+}
+
+function isCalendarMonthPath({ params: { userName, year, month } }) {
+  const validUsername = typeof userName === 'undefined' || isAccountPath({ params: { userName } });
+  return isValidCalendarYear(year) && isValidMonth(month) && validUsername;
+}
+
+function isCalendarDatePath({ params: { userName, year, month, day } }) {
+  const validUsername = typeof userName === 'undefined' || isAccountPath({ params: { userName } });
+  return isValidCalendarYear(year) && isValidMonth(month) && isValidDay(day) && validUsername;
 }

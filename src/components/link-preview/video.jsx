@@ -17,6 +17,7 @@ const IMGUR_VIDEO_RE = /^https?:\/\/i\.imgur\.com\/([a-z\d]+)\.(gifv|mp4)/i;
 const GFYCAT_RE =
   /^https?:\/\/(?:[a-z]+\.)?gfycat\.com\/(?:[^/]{0,3}\/)?((?:[A-Z][a-z]+){3}|[a-z]{16,})/;
 const GIPHY_RE = /^https?:\/\/giphy.com\/gifs\/.+?-([a-zA-Z\d]+)($|\/|\?)/;
+const APARAT_RE = /^https:\/\/?(?:www\.)?aparat\.com\/v\/([^/]+)/i;
 
 const T_YOUTUBE_VIDEO = 'T_YOUTUBE_VIDEO';
 const T_VIMEO_VIDEO = 'T_VIMEO_VIDEO';
@@ -24,6 +25,7 @@ const T_COUB_VIDEO = 'T_COUB_VIDEO';
 const T_IMGUR_VIDEO = 'T_IMGUR_VIDEO';
 const T_GFYCAT = 'T_GFYCAT';
 const T_GIPHY = 'T_GIPHY';
+const T_APARAT = 'T_APARAT';
 
 export function canShowURL(url) {
   return getVideoType(url) !== null;
@@ -136,6 +138,9 @@ export function getVideoType(url) {
   if (GIPHY_RE.test(url)) {
     return T_GIPHY;
   }
+  if (APARAT_RE.test(url)) {
+    return T_APARAT;
+  }
   return null;
 }
 
@@ -159,6 +164,9 @@ function getVideoId(url) {
   if ((m = GIPHY_RE.exec(url))) {
     return m[1];
   }
+  if ((m = APARAT_RE.exec(url))) {
+    return m[1];
+  }
   return null;
 }
 
@@ -179,6 +187,9 @@ function getDefaultAspectRatio(url) {
     return 9 / 16;
   }
   if (GIPHY_RE.test(url)) {
+    return 9 / 16;
+  }
+  if (APARAT_RE.test(url)) {
     return 9 / 16;
   }
   return null;
@@ -314,6 +325,29 @@ async function getGiphyVideoInfo(url) {
   };
 }
 
+async function getAparatVideoInfo(url) {
+  const data = await cachedFetch(
+    `https://corsproxy.io/?${encodeURIComponent(
+      `https://www.aparat.com/oembed?url=${encodeURIComponent(url)}`,
+    )}`,
+  );
+
+  if (data.error) {
+    return { error: data.error };
+  }
+
+  if (!('title' in data)) {
+    return { error: data.error ? data.error : 'error loading data' };
+  }
+
+  return {
+    byline: `${data.title} by ${data.author_name}`,
+    aspectRatio: aspectRatio.set(url, data.height / data.width),
+    previewURL: data.thumbnail_url,
+    playerURL: `https://www.aparat.com/video/video/embed/videohash/${getVideoId(url)}/vt/frame`,
+  };
+}
+
 const videoHandlers = {
   T_YOUTUBE_VIDEO: getYoutubeVideoInfo,
   T_VIMEO_VIDEO: getVimeoVideoInfo,
@@ -321,6 +355,7 @@ const videoHandlers = {
   T_IMGUR_VIDEO: getImgurVideoInfo,
   T_GFYCAT: getGfycatVideoInfo,
   T_GIPHY: getGiphyVideoInfo,
+  T_APARAT: getAparatVideoInfo,
 };
 
 export async function getVideoInfo(url, withoutAutoplay) {

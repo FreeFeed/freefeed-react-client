@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Minor attachment-related issues:
   - More reliably detect screenshot paste,
   - Proper pass the file name to attachment creation method.
+- An error inserting pictures when editing a post
+- Support for Aparat.com video hosting
 
 ## [1.117.1] - 2023-04-01
 ### Fixed
