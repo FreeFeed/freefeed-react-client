@@ -726,10 +726,9 @@ export function resumeMe({ resumeToken }) {
   return fetch(`${apiRoot}/v1/users/resume-me`, postRequestOptions('POST', { resumeToken }));
 }
 
-export function createAttachment({ file }, { onProgress = () => null } = {}) {
+export function createAttachment({ file, name }, { onProgress = () => null } = {}) {
   const formData = new FormData();
-  formData.append('file', file);
-
+  formData.append('file', file, name);
   return new Promise((resolve, reject) => {
     // Use XHR here to control the upload progress
     const req = new XMLHttpRequest();
