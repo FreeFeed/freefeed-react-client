@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.118] - Not released
 ### Fixed
 - An error inserting pictures when editing a post
+- Support for Aparat.com video hosting
 
 ## [1.117.1] - 2023-04-01
 ### Fixed
