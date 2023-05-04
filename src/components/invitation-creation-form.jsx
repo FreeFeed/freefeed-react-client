@@ -3,11 +3,14 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Textarea from 'react-textarea-autosize';
+import memoize from 'memoize-one';
 import { preventDefault } from '../utils';
 import { createFreefeedInvitation } from '../redux/action-creators';
-import SendTo from './send-to';
 import { Throbber } from './throbber';
 import { SignInLink } from './sign-in-link';
+import { toOption } from './feeds-selector/options';
+import { ACC_ME, ACC_USER } from './feeds-selector/constants';
+import { AccountsSelector } from './feeds-selector/accounts-selector';
 
 export const INVITATION_LANGUAGE_OPTIONS = {
   RUSSIAN: 'ru',
@@ -39,6 +42,13 @@ class InvitationCreationForm extends Component {
 
   componentDidMount() {
     this.props.authenticated && this.suggestedSubscriptionsChanged();
+    this.props.authenticated &&
+      this.setState({
+        suggestions: {
+          users: toOptions([this.props], this.props.user),
+          groups: [],
+        },
+      });
   }
 
   render() {
@@ -62,6 +72,8 @@ class InvitationCreationForm extends Component {
       invitationsInfoStatus,
       invitationsInfo,
     } = this.props;
+    const userOptions = usersToOptions(userFeeds, user);
+    const groupsOptions = groupsToOptions(groupFeeds, user);
 
     if (invitationsInfoStatus.initial || invitationsInfoStatus.loading) {
       return (
@@ -92,26 +104,21 @@ class InvitationCreationForm extends Component {
       <Layout>
         <form onSubmit={preventDefault(this.createInvitation)}>
           <div>Suggested users</div>
-          <SendTo
-            ref={this.saveUsersSelectRef}
-            alwaysShowSelect={true}
-            feeds={userFeeds}
-            defaultFeed={user && user.username}
-            user={user}
-            excludeMyFeed={true}
-            disableAutoFocus={true}
-            onChange={this.suggestedSubscriptionsChanged}
+          <AccountsSelector
+            options={userOptions}
+            value={this.state.suggestions.users}
+            onChange={this.onUsersChanged}
+            placeholder="Select users..."
           />
+          <br />
           <div>Suggested groups</div>
-          <SendTo
-            ref={this.saveGroupsSelectRef}
-            alwaysShowSelect={true}
-            feeds={groupFeeds}
-            user={user}
-            excludeMyFeed={true}
-            disableAutoFocus={true}
-            onChange={this.suggestedSubscriptionsChanged}
+          <AccountsSelector
+            options={groupsOptions}
+            value={this.state.suggestions.groups}
+            onChange={this.onGroupsChanged}
+            placeholder="Select groups..."
           />
+          <br />
           <div>Invitation page language</div>
           <div className="radio">
             <label>
@@ -137,7 +144,6 @@ class InvitationCreationForm extends Component {
               English
             </label>
           </div>
-
           <div className="checkbox">
             <label>
               <input
@@ -194,14 +200,24 @@ class InvitationCreationForm extends Component {
 
   onInvitationTextChange = ({ target }) => this.setState({ message: target.value });
 
-  saveUsersSelectRef = (_u) => (this.userFeedsSelector = _u);
-
-  saveGroupsSelectRef = (_g) => (this.groupFeedsSelector = _g);
-
   changeInvitationLanguage = ({ target }) =>
     this.setState({ lang: target.value }, this.suggestedSubscriptionsChanged);
 
   toggleOneTime = ({ target }) => this.setState({ singleUse: target.checked });
+
+  onUsersChanged = (users) => {
+    this.setState(
+      (s) => ({ suggestions: { ...s.suggestions, users } }),
+      this.suggestedSubscriptionsChanged,
+    );
+  };
+
+  onGroupsChanged = (groups) => {
+    this.setState(
+      (s) => ({ suggestions: { ...s.suggestions, groups } }),
+      this.suggestedSubscriptionsChanged,
+    );
+  };
 
   suggestedSubscriptionsChanged = () => {
     const { users: userDescriptions, groups: groupDescriptions } = selectUsersAndGroupsFromText(
@@ -211,8 +227,8 @@ class InvitationCreationForm extends Component {
     const { message, lang } = this.state;
     const customMessage = clearMessageFromUsersAndGroups(message, this.state.suggestions);
     const suggestions = {
-      users: this.userFeedsSelector?.values || [this.props.user.username],
-      groups: this.groupFeedsSelector?.values || [],
+      users: toValues(this.state.suggestions.users),
+      groups: toValues(this.state.suggestions.groups),
     };
     const descriptions = patchDescriptions(
       this.props.feedsDescriptions,
@@ -230,13 +246,13 @@ class InvitationCreationForm extends Component {
     const newMessage = `${customMessage}${customMessage && suggestionsText ? '\n\n' : ''}${
       suggestionsText || ''
     }`;
-    this.setState({ message: newMessage, suggestions });
+    this.setState({ message: newMessage });
   };
 
   createInvitation = () => {
-    const { message, lang } = this.state;
-    const users = this.userFeedsSelector.values;
-    const groups = this.groupFeedsSelector.values;
+    const { message, lang, suggestions } = this.state;
+    const users = toValues(suggestions.users);
+    const groups = toValues(suggestions.groups);
     const singleUse = this.props.invitationsInfo.singleUseOnly || this.state.singleUse;
     this.props.createInvitation(message, lang, singleUse, users, groups);
   };
@@ -353,12 +369,16 @@ function findDescription(username, descriptions) {
 }
 
 function selectUsersAndGroupsFromText(message, { users, groups }) {
-  const usernameRegexp = formatAllUsernameRegexp(users, groups);
+  const userNames = users.map((u) => u.value);
+  const groupNames = groups.map((u) => u.value);
+  const usernameRegexp = formatAllUsernameRegexp(userNames, groupNames);
   const usersAndGroupsMentions = message.match(usernameRegexp) || [];
   return {
-    users: usersAndGroupsMentions.filter((str) => users.some((user) => str.indexOf(user) === 1)),
+    users: usersAndGroupsMentions.filter((str) =>
+      userNames.some((user) => str.indexOf(user) === 1),
+    ),
     groups: usersAndGroupsMentions.filter((str) =>
-      groups.some((group) => str.indexOf(group) === 1),
+      groupNames.some((group) => str.indexOf(group) === 1),
     ),
   };
 }
@@ -402,3 +422,18 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(InvitationCreationForm);
+
+const toOptions = (feeds, me) =>
+  feeds.map((f) => {
+    const opt = toOption(f.user, me);
+    if (opt.type === ACC_ME) {
+      opt.type = ACC_USER;
+      opt.label = opt.value;
+    }
+    return opt;
+  });
+
+const usersToOptions = memoize(toOptions);
+const groupsToOptions = memoize(toOptions);
+
+const toValues = (options) => options.map((o) => o.value);

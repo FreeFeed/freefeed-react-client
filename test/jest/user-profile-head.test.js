@@ -52,9 +52,6 @@ const defaultState = {
       youCan: [],
     },
   },
-  directsReceivers: {
-    [USERNAME]: true,
-  },
   usersNotFound: [],
   usersInHomeFeeds: {},
   usersInHomeFeedsStates: {},
@@ -213,6 +210,7 @@ describe('UserProfileHead', () => {
         subscribers: [{ id: UID }],
         subscriptions: [UID],
       },
+      users: { [UID]: { ...defaultState.users[UID], youCan: ['dm', 'unsubscribe'] } },
     };
     useSelectorMock.mockImplementation((selector) => selector(fakeState));
 
@@ -267,7 +265,6 @@ describe('UserProfileHead', () => {
           isPrivate: '1',
         },
       },
-      directsReceivers: [],
     };
     useSelectorMock.mockImplementation((selector) => selector(fakeState));
 

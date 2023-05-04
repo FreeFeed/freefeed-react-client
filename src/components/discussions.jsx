@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { createPost, resetPostCreateForm, expandSendTo } from '../redux/action-creators';
+import { createPost, resetPostCreateForm } from '../redux/action-creators';
 import formatInvitation from '../utils/format-invitation';
 import { postActions } from './select-utils';
 
@@ -17,7 +17,6 @@ const FeedHandler = (props) => {
       isDirects={props.isDirects}
       createPost={props.createPost}
       resetPostCreateForm={props.resetPostCreateForm}
-      expandSendTo={props.expandSendTo}
       addAttachmentResponse={props.addAttachmentResponse}
       showMedia={props.showMedia}
     />
@@ -54,10 +53,7 @@ function selectState(state) {
   const defaultFeed =
     state.routing.locationBeforeTransitions.query.to || (!isDirects && user.username) || undefined;
   const invitation = formatInvitation(state.routing.locationBeforeTransitions.query.invite);
-  const sendTo = { ...state.sendTo, defaultFeed, invitation };
-  if (isDirects) {
-    sendTo.expanded = true;
-  }
+  const sendTo = { defaultFeed, invitation };
 
   return {
     user,
@@ -76,7 +72,6 @@ function selectActions(dispatch) {
     createPost: (feeds, postText, attachmentIds, more) =>
       dispatch(createPost(feeds, postText, attachmentIds, more)),
     resetPostCreateForm: (...args) => dispatch(resetPostCreateForm(...args)),
-    expandSendTo: () => dispatch(expandSendTo()),
   };
 }
 
