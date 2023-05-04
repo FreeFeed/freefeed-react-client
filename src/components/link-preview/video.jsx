@@ -11,6 +11,9 @@ import * as aspectRatio from './helpers/size-cache';
 
 const YOUTUBE_VIDEO_RE =
   /^https?:\/\/(?:www\.|m\.|music\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|shorts\/|v\/|watch\?(?:v=|.+&v=)))([\w-]+)/i;
+const YOUTUBE_PLAYLIST_RE =
+  /^https?:\/\/(?:www\.|m\.|music\.)?(?:youtu\.be\/|youtube\.com\/)playlist\?list=([\w-]+)/i;
+
 const VIMEO_VIDEO_RE = /^https?:\/\/vimeo\.com\/(?:ondemand\/[^/]+\/)?(\d+)(?:\/([a-z\d]+))?/i;
 const COUB_VIDEO_RE = /^https?:\/\/coub\.com\/view\/([a-z\d]+)/i;
 const IMGUR_VIDEO_RE = /^https?:\/\/i\.imgur\.com\/([a-z\d]+)\.(gifv|mp4)/i;
@@ -54,11 +57,14 @@ export default memo(function VideoPreview({ url }) {
     const width = 450 * Math.sqrt(9 / 16 / r);
     previewStyle.paddingBottom = `${100 * r}%`;
 
-    const canShowPlayer = info && (info.videoURL || info.playerURL);
+    const canShowPlayer = info && (info.videoURL || info.playerURL || info.html);
 
     let player = null;
     if (canShowPlayer) {
-      if (info.playerURL) {
+      if (info.html) {
+        // eslint-disable-next-line react/no-danger
+        player = <div dangerouslySetInnerHTML={{ __html: info.html }} />;
+      } else if (info.playerURL) {
         player = (
           <iframe
             src={info.playerURL}
@@ -120,7 +126,7 @@ export default memo(function VideoPreview({ url }) {
 // Helpers
 
 export function getVideoType(url) {
-  if (YOUTUBE_VIDEO_RE.test(url)) {
+  if (YOUTUBE_VIDEO_RE.test(url) || YOUTUBE_PLAYLIST_RE.test(url)) {
     return T_YOUTUBE_VIDEO;
   }
   if (VIMEO_VIDEO_RE.test(url)) {
@@ -224,14 +230,23 @@ async function getYoutubeVideoInfo(url, withoutAutoplay) {
 
   // const videoID = getVideoId(url);
   const [, embedUrl] = data.html.match(/src="([^"]+)"/);
-  const autoplayParam = withoutAutoplay ? '' : '&autoplay=1';
 
-  return {
+  const info = {
     byline: `${data.title} on YouTube`,
     aspectRatio: aspectRatio.set(url, isYoutubeShort(url) ? 16 / 9 : 9 / 16),
     previewURL: data.thumbnail_url,
-    playerURL: `${embedUrl}?rel=0&fs=1${autoplayParam}&start=${youtubeStartTime(url)}`,
   };
+
+  if (data.html.match(/videoseries/)) {
+    info.html = data.html
+      .replace(/width="\d+"/, `width="${data.thumbnail_width}"`)
+      .replace(/height="\d+"/, `height="${data.thumbnail_height}"`);
+  } else {
+    const autoplayParam = withoutAutoplay ? '' : '&autoplay=1';
+    info.playerURL = `${embedUrl}?rel=0&fs=1${autoplayParam}&start=${youtubeStartTime(url)}`;
+  }
+
+  return info;
 }
 
 async function getVimeoVideoInfo(url, withoutAutoplay) {
