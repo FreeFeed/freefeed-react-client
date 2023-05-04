@@ -13,7 +13,7 @@ import {
 } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
 import { initialAsyncState } from '../redux/async-helpers';
-import { postActions, userActions, canAcceptDirects } from './select-utils';
+import { postActions, userActions } from './select-utils';
 import FeedOptionsSwitch from './feed-options-switch';
 import Breadcrumbs from './breadcrumbs';
 import ErrorBoundary from './error-boundary';
@@ -142,7 +142,7 @@ function selectState(state, ownProps) {
     blocked: authenticated && foundUser && user.banIds.includes(foundUser.id),
     hasRequestBeenSent:
       authenticated && foundUser && (user.pendingSubscriptionRequests || []).includes(foundUser.id),
-    canAcceptDirects: canAcceptDirects(foundUser, state),
+    canAcceptDirects: foundUser?.youCan.includes('dm') ?? false,
     pinned:
       authenticated &&
       foundUser &&
