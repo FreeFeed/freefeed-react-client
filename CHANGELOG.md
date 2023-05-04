@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.118] - Not released
 ### Added
 - Support for Aparat.com video hosting
+- Support for songs on music.youtube.com
+
 ### Changed
 - Updated feed selector component:
   - The react-select library has been updated from v1 to v5
@@ -23,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - The feed selector shows group privacy icons.
     - A warning is shown if the post is published in groups with different
       privacy levels.
+
 ### Fixed
 - Minor attachment-related issues:
   - More reliably detect screenshot paste,
