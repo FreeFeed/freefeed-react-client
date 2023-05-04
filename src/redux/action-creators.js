@@ -633,10 +633,6 @@ export function getUserMemories(username, from, offset = 0) {
   };
 }
 
-export function expandSendTo() {
-  return { type: ActionTypes.EXPAND_SEND_TO };
-}
-
 export function toggleHiddenPosts() {
   return { type: ActionTypes.TOGGLE_HIDDEN_POSTS };
 }

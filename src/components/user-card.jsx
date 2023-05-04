@@ -20,8 +20,7 @@ class UserCard extends Component {
     this.arrowRef = createRef();
 
     // Load this user's info if it's not in the store already
-    // or we have not its 'acceptsDirects' field
-    if (!props.user.id || props.canAcceptDirects === undefined) {
+    if (!props.user.id) {
       setTimeout(() => props.getUserInfo(props.username), 0);
     }
   }

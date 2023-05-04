@@ -43,13 +43,13 @@ const VIEWER = {
 };
 
 const defaultState = {
-  user: VIEWER,
+  user: { ...VIEWER, subscriptions: [] },
   postHideStatuses: {},
   saveEditingPostStatuses: {},
-  sendTo: { feeds: [{ id: 'feed-id', user: AUTHOR }] },
   submitMode: 'enter',
   serverInfoStatus: initialAsyncState,
-  users: {},
+  users: { [AUTHOR.id]: AUTHOR },
+  usersNotFound: [],
   attachments: {
     a1: { id: 'a1', mediaType: 'image' },
     a2: { id: 'a2' },

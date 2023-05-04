@@ -304,6 +304,7 @@ $post-line-height: rem(20px);
     justify-content: flex-end;
     align-items: center;
     align-self: start;
+    flex-direction: row-reverse;
   }
 
   .post-edit-options {
@@ -312,6 +313,7 @@ $post-line-height: rem(20px);
     .post-edit-attachments {
       cursor: pointer;
       white-space: nowrap;
+      color: inherit;
 
       &:hover span:last-child {
         text-decoration: underline;
@@ -344,6 +346,15 @@ $post-line-height: rem(20px);
         font-weight: normal;
         vertical-align: middle;
       }
+    }
+  }
+
+  .post-submit-icon {
+    margin-right: rem(4px);
+    opacity: 0.8;
+
+    &:empty {
+      display: none;
     }
   }
 
