@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Support for Aparat.com video hosting
 - Support for songs on music.youtube.com
+- Calender view
 
 ### Changed
 - Updated feed selector component:
