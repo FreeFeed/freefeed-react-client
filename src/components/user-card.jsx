@@ -9,7 +9,7 @@ import { Throbber } from './throbber';
 import UserFeedStatus from './user-feed-status';
 import UserRelationshipStatus from './user-relationships-status';
 import ErrorBoundary from './error-boundary';
-import { userActions, canAcceptDirects } from './select-utils';
+import { userActions } from './select-utils';
 import { UserPicture } from './user-picture';
 import { useShowBanDialog } from './dialog/ban-dialog';
 
@@ -225,7 +225,7 @@ const mapStateToProps = (state, ownProps) => {
     blocked: (me.banIds || []).includes(user.id),
     hidden: me.frontendPreferences.homefeed.hideUsers.includes(user.username),
     amIGroupAdmin: user.type === 'group' && (user.administrators || []).includes(me.id),
-    canAcceptDirects: canAcceptDirects(user, state),
+    canAcceptDirects: user.youCan?.includes('dm') ?? false,
     subscribingStatus: state.userActionsStatuses.subscribing[user.username] || initialAsyncState,
     blockingStatus: state.userActionsStatuses.blocking[user.username] || initialAsyncState,
   };
