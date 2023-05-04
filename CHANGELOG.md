@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Proper pass the file name to attachment creation method.
 - An error inserting pictures when editing a post
 - Support for Aparat.com video hosting
+- Added calendar view
 
 ## [1.117.1] - 2023-04-01
 ### Fixed
