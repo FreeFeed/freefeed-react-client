@@ -213,16 +213,24 @@ function playerURLFromVimeo(url, withoutAutoplay) {
   return playerUrl.toString();
 }
 
-function getYoutubeVideoInfo(url, withoutAutoplay) {
-  const videoID = getVideoId(url);
+async function getYoutubeVideoInfo(url, withoutAutoplay) {
+  const data = await cachedFetch(
+    `https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(url)}`,
+  );
+
+  if (data.error) {
+    return { error: data.error };
+  }
+
+  // const videoID = getVideoId(url);
+  const [, embedUrl] = data.html.match(/src="([^"]+)"/);
+  const autoplayParam = withoutAutoplay ? '' : '&autoplay=1';
 
   return {
-    byline: `Open on YouTube`,
+    byline: `${data.title} on YouTube`,
     aspectRatio: aspectRatio.set(url, isYoutubeShort(url) ? 16 / 9 : 9 / 16),
-    previewURL: `https://img.youtube.com/vi/${videoID}/hqdefault.jpg`,
-    playerURL: `https://www.youtube.com/embed/${videoID}?rel=0&fs=1${
-      withoutAutoplay ? '' : '&autoplay=1'
-    }&start=${youtubeStartTime(url)}`,
+    previewURL: data.thumbnail_url,
+    playerURL: `${embedUrl}?rel=0&fs=1${autoplayParam}&start=${youtubeStartTime(url)}`,
   };
 }
 
