@@ -2,7 +2,7 @@ const cache = {};
 
 export default async function cachedFetch(url) {
   if (!(url in cache)) {
-    const resp = await fetch(url);
+    const resp = await fetch(url, { mode: 'cors' });
     if (!resp.ok) {
       cache[url] = { error: `HTTP error: ${resp.status} ${resp.statusText}` };
     } else {
