@@ -242,8 +242,15 @@ async function getYoutubeVideoInfo(url, withoutAutoplay) {
       .replace(/width="\d+"/, `width="${data.thumbnail_width}"`)
       .replace(/height="\d+"/, `height="${data.thumbnail_height}"`);
   } else {
-    const autoplayParam = withoutAutoplay ? '' : '&autoplay=1';
-    info.playerURL = `${embedUrl}?rel=0&fs=1${autoplayParam}&start=${youtubeStartTime(url)}`;
+    const u = new URL(embedUrl);
+    u.searchParams.append('rel', '0');
+    u.searchParams.append('fs', '1');
+    if (!withoutAutoplay) {
+      u.searchParams.append('autoplay', '1');
+    }
+    u.searchParams.append('start', youtubeStartTime(url));
+
+    info.playerURL = u.toString();
   }
 
   return info;
