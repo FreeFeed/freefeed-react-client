@@ -481,6 +481,7 @@ exports[`LinkPreview Shows a video preview for Youtube 2`] = `
       style="padding-bottom: 56.25%; background-image: url(https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg);"
     >
       <iframe
+        allow="autoplay"
         allowfullscreen=""
         aria-label="Video player"
         frameborder="0"
