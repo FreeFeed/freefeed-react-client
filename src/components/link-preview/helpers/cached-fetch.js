@@ -1,13 +1,13 @@
-const cache = {};
+const cache = new Map();
 
 export default async function cachedFetch(url) {
-  if (!(url in cache)) {
-    const resp = await fetch(url);
+  if (!cache.has(url)) {
+    const resp = await fetch(url, { mode: 'cors' });
     if (!resp.ok) {
-      cache[url] = { error: `HTTP error: ${resp.status} ${resp.statusText}` };
+      cache.set(url, { error: `HTTP error: ${resp.status} ${resp.statusText}` });
     } else {
-      cache[url] = await resp.json();
+      cache.set(url, await resp.json());
     }
   }
-  return cache[url];
+  return cache.get(url);
 }

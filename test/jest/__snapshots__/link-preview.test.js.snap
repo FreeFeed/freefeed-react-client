@@ -438,7 +438,7 @@ exports[`LinkPreview Shows a video preview for Youtube 1`] = `
     <div
       aria-label="Video preview"
       class="static-preview"
-      style="padding-bottom: 56.25%; background-image: url(https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg);"
+      style="padding-bottom: 56.25%; background-image: url(https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg);"
     >
       <svg
         aria-hidden="true"
@@ -460,9 +460,9 @@ exports[`LinkPreview Shows a video preview for Youtube 1`] = `
       <a
         href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=123"
         target="_blank"
-        title="Open on YouTube"
+        title="Rick Astley - Never Gonna Give You Up (Official Music Video) on YouTube"
       >
-        Open on YouTube
+        Rick Astley - Never Gonna Give You Up (Official Music Video) on YouTube
       </a>
     </div>
   </div>
@@ -478,13 +478,14 @@ exports[`LinkPreview Shows a video preview for Youtube 2`] = `
     <div
       aria-label="Video preview"
       class="static-preview"
-      style="padding-bottom: 56.25%; background-image: url(https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg);"
+      style="padding-bottom: 56.25%; background-image: url(https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg);"
     >
       <iframe
+        allow="autoplay"
         allowfullscreen=""
         aria-label="Video player"
         frameborder="0"
-        src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&fs=1&autoplay=1&start=123"
+        src="https://www.youtube.com/embed/dQw4w9WgXcQ?feature=oembed&rel=0&fs=1&autoplay=1&start=123"
       />
     </div>
     <div
@@ -493,9 +494,9 @@ exports[`LinkPreview Shows a video preview for Youtube 2`] = `
       <a
         href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=123"
         target="_blank"
-        title="Open on YouTube"
+        title="Rick Astley - Never Gonna Give You Up (Official Music Video) on YouTube"
       >
-        Open on YouTube
+        Rick Astley - Never Gonna Give You Up (Official Music Video) on YouTube
       </a>
     </div>
   </div>

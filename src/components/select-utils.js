@@ -249,34 +249,6 @@ export function userActions(dispatch) {
 }
 
 /**
- * Returns true/false if this user can (not) accept
- * direct message from us. Returns undefined if this
- * information isn't loaded yet.
- *
- * @param {object} user
- * @param {object} state
- * @returns {boolean|undefined}
- */
-export function canAcceptDirects(user, state) {
-  if (!user || !user.username) {
-    return;
-  }
-
-  const { user: me, usersNotFound } = state;
-
-  if (
-    !me.id ||
-    user.type === 'group' ||
-    me.username === user.username ||
-    usersNotFound.includes(user.username)
-  ) {
-    return false;
-  }
-
-  return user.youCan.includes('dm');
-}
-
-/**
  * Returns privacy flags of non-direct post posted to the given
  * destinations. Destinations should be a current users feed or groups.
  *

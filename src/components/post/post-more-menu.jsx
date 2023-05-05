@@ -5,6 +5,7 @@ import { faLink, faEdit, faSignOutAlt, faAt } from '@fortawesome/free-solid-svg-
 import { faClock, faCommentDots, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { noop } from 'lodash';
 import { useDispatch } from 'react-redux';
+import format from 'date-fns/format';
 
 import { copyURL } from '../../utils/copy-url';
 import { leaveDirect } from '../../redux/action-creators';
@@ -134,7 +135,19 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
     [
       <div key="created-on" className={cn(styles.item, styles.content)}>
         <Iconic icon={faClock}>
-          Created on <TimeDisplay timeStamp={+createdAt} inline absolute />
+          Created on{' '}
+          {isOwnPost ? (
+            <Link
+              to={`/${postCreatedBy?.username}/calendar/${format(
+                new Date(+createdAt),
+                'yyyy/MM/dd',
+              )}`}
+            >
+              <TimeDisplay timeStamp={+createdAt} inline absolute />
+            </Link>
+          ) : (
+            <TimeDisplay timeStamp={+createdAt} inline absolute />
+          )}
         </Iconic>
       </div>,
       updatedAt - createdAt > 120000 && (

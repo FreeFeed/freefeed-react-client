@@ -31,6 +31,7 @@ import {
   LIST_HOME_FEEDS,
   BLOCKED_BY_ME,
   GET_POSTS_BY_IDS,
+  CALENDAR_DATE_POSTS,
 } from './action-types';
 import { request, response, fail, baseType } from './async-helpers';
 
@@ -54,6 +55,7 @@ export const feedGeneratingActions = [
   MEMORIES,
   GET_USER_MEMORIES,
   GET_POSTS_BY_IDS,
+  CALENDAR_DATE_POSTS,
 ];
 const userFeedGeneratingActions = [
   GET_USER_FEED,
@@ -61,6 +63,7 @@ const userFeedGeneratingActions = [
   GET_USER_LIKES,
   GET_USER_SUMMARY,
   GET_USER_MEMORIES,
+  CALENDAR_DATE_POSTS,
 ];
 
 export const isFeedGeneratingAction = (action) => feedGeneratingActions.includes(action.type);

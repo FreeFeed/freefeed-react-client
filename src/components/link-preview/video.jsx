@@ -10,13 +10,17 @@ import cachedFetch from './helpers/cached-fetch';
 import * as aspectRatio from './helpers/size-cache';
 
 const YOUTUBE_VIDEO_RE =
-  /^https?:\/\/(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|shorts\/|v\/|watch\?(?:v=|.+&v=)))([\w-]+)/i;
+  /^https?:\/\/(?:www\.|m\.|music\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|shorts\/|v\/|watch\?(?:v=|.+&v=)))([\w-]+)/i;
+const YOUTUBE_PLAYLIST_RE =
+  /^https?:\/\/(?:www\.|m\.|music\.)?(?:youtu\.be\/|youtube\.com\/)playlist\?list=([\w-]+)/i;
+
 const VIMEO_VIDEO_RE = /^https?:\/\/vimeo\.com\/(?:ondemand\/[^/]+\/)?(\d+)(?:\/([a-z\d]+))?/i;
 const COUB_VIDEO_RE = /^https?:\/\/coub\.com\/view\/([a-z\d]+)/i;
 const IMGUR_VIDEO_RE = /^https?:\/\/i\.imgur\.com\/([a-z\d]+)\.(gifv|mp4)/i;
 const GFYCAT_RE =
   /^https?:\/\/(?:[a-z]+\.)?gfycat\.com\/(?:[^/]{0,3}\/)?((?:[A-Z][a-z]+){3}|[a-z]{16,})/;
 const GIPHY_RE = /^https?:\/\/giphy.com\/gifs\/.+?-([a-zA-Z\d]+)($|\/|\?)/;
+const APARAT_RE = /^https:\/\/?(?:www\.)?aparat\.com\/v\/([^/]+)/i;
 
 const T_YOUTUBE_VIDEO = 'T_YOUTUBE_VIDEO';
 const T_VIMEO_VIDEO = 'T_VIMEO_VIDEO';
@@ -24,6 +28,7 @@ const T_COUB_VIDEO = 'T_COUB_VIDEO';
 const T_IMGUR_VIDEO = 'T_IMGUR_VIDEO';
 const T_GFYCAT = 'T_GFYCAT';
 const T_GIPHY = 'T_GIPHY';
+const T_APARAT = 'T_APARAT';
 
 export function canShowURL(url) {
   return getVideoType(url) !== null;
@@ -52,16 +57,20 @@ export default memo(function VideoPreview({ url }) {
     const width = 450 * Math.sqrt(9 / 16 / r);
     previewStyle.paddingBottom = `${100 * r}%`;
 
-    const canShowPlayer = info && (info.videoURL || info.playerURL);
+    const canShowPlayer = info && (info.videoURL || info.playerURL || info.html);
 
     let player = null;
     if (canShowPlayer) {
-      if (info.playerURL) {
+      if (info.html) {
+        // eslint-disable-next-line react/no-danger
+        player = <div dangerouslySetInnerHTML={{ __html: info.html }} />;
+      } else if (info.playerURL) {
         player = (
           <iframe
             src={info.playerURL}
             frameBorder="0"
             allowFullScreen={true}
+            allow="autoplay"
             aria-label="Video player"
           />
         );
@@ -118,7 +127,7 @@ export default memo(function VideoPreview({ url }) {
 // Helpers
 
 export function getVideoType(url) {
-  if (YOUTUBE_VIDEO_RE.test(url)) {
+  if (YOUTUBE_VIDEO_RE.test(url) || YOUTUBE_PLAYLIST_RE.test(url)) {
     return T_YOUTUBE_VIDEO;
   }
   if (VIMEO_VIDEO_RE.test(url)) {
@@ -135,6 +144,9 @@ export function getVideoType(url) {
   }
   if (GIPHY_RE.test(url)) {
     return T_GIPHY;
+  }
+  if (APARAT_RE.test(url)) {
+    return T_APARAT;
   }
   return null;
 }
@@ -159,6 +171,9 @@ function getVideoId(url) {
   if ((m = GIPHY_RE.exec(url))) {
     return m[1];
   }
+  if ((m = APARAT_RE.exec(url))) {
+    return m[1];
+  }
   return null;
 }
 
@@ -179,6 +194,9 @@ function getDefaultAspectRatio(url) {
     return 9 / 16;
   }
   if (GIPHY_RE.test(url)) {
+    return 9 / 16;
+  }
+  if (APARAT_RE.test(url)) {
     return 9 / 16;
   }
   return null;
@@ -202,17 +220,41 @@ function playerURLFromVimeo(url, withoutAutoplay) {
   return playerUrl.toString();
 }
 
-function getYoutubeVideoInfo(url, withoutAutoplay) {
-  const videoID = getVideoId(url);
+async function getYoutubeVideoInfo(url, withoutAutoplay) {
+  const data = await cachedFetch(
+    `https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(url)}`,
+  );
 
-  return {
-    byline: `Open on YouTube`,
+  if (data.error) {
+    return { error: data.error };
+  }
+
+  // const videoID = getVideoId(url);
+  const [, embedUrl] = data.html.match(/src="([^"]+)"/);
+
+  const info = {
+    byline: `${data.title} on YouTube`,
     aspectRatio: aspectRatio.set(url, isYoutubeShort(url) ? 16 / 9 : 9 / 16),
-    previewURL: `https://img.youtube.com/vi/${videoID}/hqdefault.jpg`,
-    playerURL: `https://www.youtube.com/embed/${videoID}?rel=0&fs=1${
-      withoutAutoplay ? '' : '&autoplay=1'
-    }&start=${youtubeStartTime(url)}`,
+    previewURL: data.thumbnail_url,
   };
+
+  if (data.html.match(/videoseries/)) {
+    info.html = data.html
+      .replace(/width="\d+"/, `width="${data.thumbnail_width}"`)
+      .replace(/height="\d+"/, `height="${data.thumbnail_height}"`);
+  } else {
+    const u = new URL(embedUrl);
+    u.searchParams.append('rel', '0');
+    u.searchParams.append('fs', '1');
+    if (!withoutAutoplay) {
+      u.searchParams.append('autoplay', '1');
+    }
+    u.searchParams.append('start', youtubeStartTime(url));
+
+    info.playerURL = u.toString();
+  }
+
+  return info;
 }
 
 async function getVimeoVideoInfo(url, withoutAutoplay) {
@@ -314,6 +356,29 @@ async function getGiphyVideoInfo(url) {
   };
 }
 
+async function getAparatVideoInfo(url) {
+  const data = await cachedFetch(
+    `https://corsproxy.io/?${encodeURIComponent(
+      `https://www.aparat.com/oembed?url=${encodeURIComponent(url)}`,
+    )}`,
+  );
+
+  if (data.error) {
+    return { error: data.error };
+  }
+
+  if (!('title' in data)) {
+    return { error: data.error ? data.error : 'error loading data' };
+  }
+
+  return {
+    byline: `${data.title} by ${data.author_name}`,
+    aspectRatio: aspectRatio.set(url, data.height / data.width),
+    previewURL: data.thumbnail_url,
+    playerURL: `https://www.aparat.com/video/video/embed/videohash/${getVideoId(url)}/vt/frame`,
+  };
+}
+
 const videoHandlers = {
   T_YOUTUBE_VIDEO: getYoutubeVideoInfo,
   T_VIMEO_VIDEO: getVimeoVideoInfo,
@@ -321,6 +386,7 @@ const videoHandlers = {
   T_IMGUR_VIDEO: getImgurVideoInfo,
   T_GFYCAT: getGfycatVideoInfo,
   T_GIPHY: getGiphyVideoInfo,
+  T_APARAT: getAparatVideoInfo,
 };
 
 export async function getVideoInfo(url, withoutAutoplay) {
