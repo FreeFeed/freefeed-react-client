@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import parse from 'date-fns/parse';
 import format from 'date-fns/format';
 
-import { MIN_DATE, MAX_DATE } from '../../utils/calendar-utils';
+import { MAX_DATE } from '../../utils/calendar-utils';
 
 import styles from './calendar.module.scss';
 
@@ -25,7 +25,12 @@ function CalendarHeaderNav(props) {
     currentDate: currentDateString,
     nextDate: nextDateString,
     previousDate: previousDateString,
+    createdAt,
   } = props;
+
+  const createdAtDate = new Date(Number(createdAt));
+  const minYear = createdAtDate.getFullYear();
+  const MIN_DATE = new Date(minYear, 0, 1);
 
   const currentDate = parseDateString(currentDateString);
   const nextDate = nextDateString ? parseDateString(nextDateString) : null;

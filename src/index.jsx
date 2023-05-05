@@ -33,7 +33,6 @@ import CalendarMonth from './components/calendar/calendar-month';
 import CalendarDate from './components/calendar/calendar-date';
 import SignupByInvitation from './components/signup-by-invitation';
 import { settingsRoute } from './components/settings/routes';
-import { CALENDAR_START_YEAR } from './utils/calendar-utils';
 
 Sentry.init({
   dsn: CONFIG.sentry.publicDSN,
@@ -428,7 +427,7 @@ function isMemoriesPath({ params: { userName, from } }) {
 
 const isValidCalendarYear = (year) => {
   const yearAsInt = parseInt(year, 10);
-  return yearAsInt >= CALENDAR_START_YEAR && yearAsInt <= thisYear;
+  return yearAsInt <= thisYear;
 };
 
 const isValidMonth = (month) => {
