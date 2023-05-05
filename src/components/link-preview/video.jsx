@@ -70,6 +70,7 @@ export default memo(function VideoPreview({ url }) {
             src={info.playerURL}
             frameBorder="0"
             allowFullScreen={true}
+            allow="autoplay"
             aria-label="Video player"
           />
         );
