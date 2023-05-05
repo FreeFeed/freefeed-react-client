@@ -1,0 +1,121 @@
+.calendarNav {
+  display: flex;
+  margin-bottom: 14px;
+
+  .prevDate,
+  .currentDate,
+  .nextDate {
+    flex: 1;
+  }
+
+  .prevDate {
+    text-align: left;
+  }
+
+  .currentDate {
+    text-align: center;
+    font-size: 150%;
+  }
+
+  .nextDate {
+    text-align: right;
+  }
+}
+
+.monthsGrid {
+  display: flex;
+  justify-content: space-around;
+  flex-flow: row wrap;
+}
+
+.month {
+  flex-basis: 30%;
+  margin-bottom: 3em;
+  min-width: 200px;
+}
+
+.monthName {
+  text-align: center;
+  margin-bottom: 0.3em;
+}
+
+.weekDays {
+  margin: 6px 0;
+  font-style: italic;
+  font-size: 11px;
+  color: #bbb;
+}
+
+.weekDays,
+.monthDays {
+  display: flex;
+  flex-flow: row wrap;
+  color: #999;
+}
+
+.day {
+  width: 14%;
+  display: block;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.dayWithPosts {
+  font-weight: bold;
+  display: block;
+}
+
+.postCount {
+  font-weight: normal;
+  display: block;
+  text-align: center;
+  font-size: 13px;
+  border-top: 1px solid #eee;
+}
+
+.monthWithPostCounts {
+  //
+}
+
+.dayOffset0 {
+  // Sunday
+  margin-left: 84%;
+}
+
+.dayOffset1 {
+  // Monday
+}
+
+.dayOffset2 {
+  // Tuesday
+  margin-left: 14%;
+}
+
+.dayOffset3 {
+  // Wednesday
+  margin-left: 28%;
+}
+
+.dayOffset4 {
+  // Thursday
+  margin-left: 42%;
+}
+
+.dayOffset5 {
+  // Friday
+  margin-left: 56%;
+}
+
+.dayOffset6 {
+  // Saturday
+  margin-left: 70%;
+}
+
+.singleMonth {
+  margin-top: 50px;
+
+  .day {
+    font-size: 16px;
+    height: 64px;
+  }
+}

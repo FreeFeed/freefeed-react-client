@@ -1,8 +1,12 @@
-import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
+import {
+  faGlobeAmericas,
+  faLock,
+  faPaperclip,
+  faUserFriends,
+} from '@fortawesome/free-solid-svg-icons';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { Icon } from '../fontawesome-icons';
-import SendTo from '../send-to';
 import { SmartTextarea } from '../smart-textarea';
 import { SubmitModeHint } from '../submit-mode-hint';
 import { Throbber } from '../throbber';
@@ -13,6 +17,10 @@ import { useUploader } from '../uploader/uploader';
 import { UploadProgress } from '../uploader/progress';
 import { destinationsPrivacy } from '../select-utils';
 import { useServerValue } from '../hooks/server-info';
+import { Selector } from '../feeds-selector/selector';
+import { EDIT_DIRECT, EDIT_REGULAR } from '../feeds-selector/constants';
+import { ButtonLink } from '../button-link';
+import { usePrivacyCheck } from '../feeds-selector/privacy-check';
 import PostAttachments from './post-attachments';
 
 const selectMaxFilesCount = (serverInfo) => serverInfo.attachments.maxCountPerPost;
@@ -25,8 +33,8 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
   const maxFilesCount = useServerValue(selectMaxFilesCount, Infinity);
   const maxPostLength = useServerValue(selectMaxPostLength, 1e3);
 
-  const [feedsSelector, setFeedsSelector] = useState(null);
-  const [feeds, setFeeds] = useState([]);
+  const recipientNames = useMemo(() => recipients.map((r) => r.username), [recipients]);
+  const [feeds, setFeeds] = useState(recipientNames);
   const [postText, setPostText] = useState(body);
   const [privacyWarning, setPrivacyWarning] = useState(null);
 
@@ -48,14 +56,7 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
     [canUploadMore, doChooseFiles],
   );
 
-  const registerFeedSelector = useCallback((ref) => {
-    setFeedsSelector(ref);
-    if (ref) {
-      setFeeds(ref.values.slice());
-    } else {
-      setFeeds([]);
-    }
-  }, []);
+  const [hasFeedsError, setHasFeedsError] = useState(false);
 
   // It's a hack and should be replaced with a proper code with privacy checking
   const store = useStore();
@@ -89,19 +90,11 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
   const canSubmitForm = useMemo(() => {
     return (
       (postText.trim() !== '' || fileIds.length > 0) &&
-      feeds.length > 0 &&
-      !feedsSelector?.isIncorrectDestinations &&
+      !hasFeedsError &&
       !saveState.loading &&
       !isUploading
     );
-  }, [
-    postText,
-    fileIds.length,
-    feeds.length,
-    feedsSelector?.isIncorrectDestinations,
-    saveState.loading,
-    isUploading,
-  ]);
+  }, [postText, fileIds.length, hasFeedsError, saveState.loading, isUploading]);
 
   const handleSubmit = useCallback(() => {
     if (!canSubmitForm) {
@@ -119,17 +112,45 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
 
   const handleCancel = useCallback(() => dispatch(cancelEditingPost(id)), [dispatch, id]);
 
+  const [privacyLevel] = usePrivacyCheck(feeds);
+
+  const privacyIcon = useMemo(
+    () =>
+      privacyLevel === 'private' ? (
+        <Icon icon={faLock} />
+      ) : privacyLevel === 'protected' ? (
+        <Icon icon={faUserFriends} />
+      ) : privacyLevel === 'public' ? (
+        <Icon icon={faGlobeAmericas} />
+      ) : privacyLevel === 'direct' ? (
+        <Icon icon={faLock} />
+      ) : null,
+    [privacyLevel],
+  );
+
+  const privacyTitle = useMemo(
+    () =>
+      privacyLevel === 'private'
+        ? 'Update private post'
+        : privacyLevel === 'protected'
+        ? 'Update protected post'
+        : privacyLevel === 'public'
+        ? 'Update public post'
+        : privacyLevel === 'direct'
+        ? 'Update direct message'
+        : null,
+    [privacyLevel],
+  );
+
   return (
     <>
       <div>
-        <SendTo
-          ref={registerFeedSelector}
-          defaultFeed={recipients.map((r) => r.username)}
-          isDirects={isDirect}
-          isEditing={true}
-          disableAutoFocus={true}
-          user={createdBy}
+        <Selector
+          mode={isDirect ? EDIT_DIRECT : EDIT_REGULAR}
+          feedNames={feeds}
+          fixedFeedNames={isDirect ? recipientNames : []}
           onChange={setFeeds}
+          onError={setHasFeedsError}
         />
         <div className="post-privacy-warning">{privacyWarning}</div>
       </div>
@@ -141,7 +162,7 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
             value={postText}
             onSubmit={handleSubmit}
             onText={setPostText}
-            onFile={chooseFiles}
+            onFile={uploadFile}
             autoFocus={true}
             minRows={2}
             maxRows={10}
@@ -151,36 +172,38 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
         </div>
 
         <div className="post-edit-actions">
+          <div className="post-edit-buttons">
+            <button
+              className="btn btn-default btn-xs"
+              onClick={handleSubmit}
+              aria-disabled={!canSubmitForm}
+              title={privacyTitle}
+              aria-label={privacyTitle}
+            >
+              <span className="post-submit-icon">{privacyIcon}</span>
+              Update
+            </button>
+            <ButtonLink className="post-cancel" onClick={handleCancel}>
+              Cancel
+            </ButtonLink>
+            {saveState.loading && (
+              <span className="post-edit-throbber">
+                <Throbber />
+              </span>
+            )}
+          </div>
           <div className="post-edit-options">
-            <span
+            <ButtonLink
               className="post-edit-attachments"
               disabled={!canUploadMore}
               role="button"
               onClick={chooseFiles}
             >
               <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files
-            </span>
+            </ButtonLink>
           </div>
 
           <SubmitModeHint input={textareaRef} className="post-edit-hint" />
-
-          <div className="post-edit-buttons">
-            {saveState.loading && (
-              <span className="post-edit-throbber">
-                <Throbber />
-              </span>
-            )}
-            <a className="post-cancel" onClick={handleCancel}>
-              Cancel
-            </a>
-            <button
-              className="btn btn-default btn-xs"
-              onClick={handleSubmit}
-              disabled={!canSubmitForm}
-            >
-              Update
-            </button>
-          </div>
         </div>
 
         {!canUploadMore && (

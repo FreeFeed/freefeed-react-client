@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.118] - Not released
+### Added
+- Support for Aparat.com video hosting
+- Support for songs on music.youtube.com
+- Support for YouTube playlists
+- Calender view
+
+### Changed
+- Updated feed selector component:
+  - The react-select library has been updated from v1 to v5
+  - It is possible to create posts in non-private groups without being a member
+    of them. A post creation form is available on the pages of such groups.
+  - All post creation and editing form controls are now accessible from the
+    keyboard.
+  - The feed selector can search by username and screenname. Search with an
+    incorrect keyboard layout is possible (English, Russian and Ukrainian
+    layouts are supported).
+  - Privacy indication is improved:
+    - The "Post" button shows the privacy icon of the post being created.
+    - The feed selector shows group privacy icons.
+    - A warning is shown if the post is published in groups with different
+      privacy levels.
+
+### Fixed
+- Minor attachment-related issues:
+  - More reliably detect screenshot paste,
+  - Proper pass the file name to attachment creation method.
+- An error inserting pictures when editing a post
+- Titles of YouTube videos are properly displayed now
+
 ## [1.117.1] - 2023-04-01
 ### Fixed
 - Hiding attachments under the 'read more' fold

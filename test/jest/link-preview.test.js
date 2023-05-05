@@ -44,6 +44,21 @@ describe('LinkPreview', () => {
 
   it('Shows a video preview for Youtube', async () => {
     useSelectorMock.mockReturnValue(false);
+    cachedFetch.mockResolvedValue({
+      title: 'Rick Astley - Never Gonna Give You Up (Official Music Video)',
+      author_name: 'Rick Astley',
+      author_url: 'https://www.youtube.com/@RickAstleyYT',
+      type: 'video',
+      height: 113,
+      width: 200,
+      version: '1.0',
+      provider_name: 'YouTube',
+      provider_url: 'https://www.youtube.com/',
+      thumbnail_height: 360,
+      thumbnail_width: 480,
+      thumbnail_url: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg',
+      html: '<iframe width="200" height="113" src="https://www.youtube.com/embed/dQw4w9WgXcQ?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen title="Rick Astley - Never Gonna Give You Up (Official Music Video)"></iframe>',
+    });
 
     const { asFragment } = renderLinkPreview({
       url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=123',

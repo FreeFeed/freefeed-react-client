@@ -23,7 +23,7 @@ const config = {
     config: skipFalsy(['./config/lib/loader-browser.js']),
   },
   target: 'web',
-  devServer: { historyApiFallback: true },
+  devServer: { client: { overlay: false }, historyApiFallback: true },
   module: {
     rules: skipFalsy([
       opts.dev && rules.eslint,

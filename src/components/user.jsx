@@ -8,13 +8,12 @@ import { formatPattern } from 'react-router/es/PatternUtils';
 import {
   createPost,
   resetPostCreateForm,
-  expandSendTo,
   getUserInfo,
   togglePinnedGroup,
 } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
 import { initialAsyncState } from '../redux/async-helpers';
-import { postActions, userActions, canAcceptDirects } from './select-utils';
+import { postActions, userActions } from './select-utils';
 import FeedOptionsSwitch from './feed-options-switch';
 import Breadcrumbs from './breadcrumbs';
 import ErrorBoundary from './error-boundary';
@@ -90,7 +89,6 @@ const UserHandler = (props) => {
             {...props.userActions}
             user={props.user}
             sendTo={props.sendTo}
-            expandSendTo={props.expandSendTo}
             createPost={props.createPost}
             resetPostCreateForm={props.resetPostCreateForm}
             addAttachmentResponse={props.addAttachmentResponse}
@@ -144,7 +142,7 @@ function selectState(state, ownProps) {
     blocked: authenticated && foundUser && user.banIds.includes(foundUser.id),
     hasRequestBeenSent:
       authenticated && foundUser && (user.pendingSubscriptionRequests || []).includes(foundUser.id),
-    canAcceptDirects: canAcceptDirects(foundUser, state),
+    canAcceptDirects: foundUser?.youCan.includes('dm') ?? false,
     pinned:
       authenticated &&
       foundUser &&
@@ -160,11 +158,7 @@ function selectState(state, ownProps) {
   const shouldIPostToGroup =
     statusExtension.subscribed && (foundUser.isRestricted === '0' || amIGroupAdmin);
 
-  const canIPostToGroup = statusExtension.subscribed && foundUser.youCan.includes('post');
-
-  statusExtension.canIPostHere =
-    statusExtension.isUserFound &&
-    ((statusExtension.isItMe && isItPostsPage) || (foundUser.type === 'group' && canIPostToGroup));
+  statusExtension.canIPostHere = foundUser?.youCan.includes('post') ?? false;
 
   if (shouldIPostToGroup && foundUser.theyDid.includes('block')) {
     statusExtension.whyCannotPost = 'You are blocked in this group';
@@ -199,7 +193,6 @@ function selectActions(dispatch) {
     createPost: (feeds, postText, attachmentIds, more) =>
       dispatch(createPost(feeds, postText, attachmentIds, more)),
     resetPostCreateForm: (...args) => dispatch(resetPostCreateForm(...args)),
-    expandSendTo: () => dispatch(expandSendTo()),
     userActions: userActions(dispatch),
     getUserInfo: (username) => dispatch(getUserInfo(username)),
     togglePinnedGroup: ({ id }) => dispatch(togglePinnedGroup(id)),

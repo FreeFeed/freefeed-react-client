@@ -58,7 +58,7 @@ export const UserProfileHead = withRouter(
     const user = useSelector((state) =>
       Object.values(state.users).find((u) => u.username === username),
     );
-    const acceptsDirects = useSelector((state) => state.directsReceivers[username]);
+    const acceptsDirects = user?.youCan.includes('dm');
     const isNotFound = useSelector((state) => state.usersNotFound.includes(username));
 
     const allHomeFeeds = useSelector((state) => state.homeFeeds);

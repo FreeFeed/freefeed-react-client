@@ -9,17 +9,17 @@ scrolling.on(START, () => unscrollDebug('Scrolling started'));
 scrolling.on(FINISH, () => unscrollDebug('Scrolling finished'));
 
 export function initUnscroll() {
-  window.addEventListener('scroll', scrolling.trigger);
-  window.addEventListener('resize', scrolling.trigger);
-  window.addEventListener('focusin', scrolling.trigger);
-  window.addEventListener('focusout', scrolling.trigger);
+  window.addEventListener('scroll', scrolling.trigger, { passive: true });
+  window.addEventListener('resize', scrolling.trigger, { passive: true });
+  window.addEventListener('focusin', scrolling.trigger, { passive: true });
+  window.addEventListener('focusout', scrolling.trigger, { passive: true });
 
-  window.addEventListener('mousemove', userInteraction.trigger);
-  window.addEventListener('mousedown', userInteraction.trigger);
-  window.addEventListener('mouseup', userInteraction.trigger);
-  window.addEventListener('touchmove', userInteraction.trigger);
-  window.addEventListener('touchstart', userInteraction.trigger);
-  window.addEventListener('touchend', userInteraction.trigger);
+  window.addEventListener('mousemove', userInteraction.trigger, { passive: true });
+  window.addEventListener('mousedown', userInteraction.trigger, { passive: true });
+  window.addEventListener('mouseup', userInteraction.trigger, { passive: true });
+  window.addEventListener('touchmove', userInteraction.trigger, { passive: true });
+  window.addEventListener('touchstart', userInteraction.trigger, { passive: true });
+  window.addEventListener('touchend', userInteraction.trigger, { passive: true });
 
   window.MutationObserver &&
     new window.MutationObserver(unscroll).observe(document.querySelector('#app'), {

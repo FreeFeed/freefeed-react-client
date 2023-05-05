@@ -554,11 +554,6 @@ export const markDirectsAsReadMiddleware = (store) => (next) => (action) => {
     // needed to mark all directs as read
     store.dispatch(ActionCreators.markAllDirectsAsRead());
   }
-  if (action.type === response(ActionTypes.DIRECT)) {
-    if (store.getState().routing.locationBeforeTransitions.query.to) {
-      store.dispatch(ActionCreators.expandSendTo());
-    }
-  }
   next(action);
 };
 
