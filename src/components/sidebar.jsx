@@ -105,7 +105,7 @@ const SideBarFriends = ({ user }) => {
               </Link>
             </li>
             <li className="p-calendar">
-              <Link to={`${user.username}/calendar`} className="with-label--new">
+              <Link to={`/${user.username}/calendar`} className="with-label--new">
                 Calendar
               </Link>
             </li>
