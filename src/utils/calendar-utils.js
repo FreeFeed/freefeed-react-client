@@ -1,6 +1,4 @@
 const now = new Date();
-export const CALENDAR_START_YEAR = 2000;
-export const MIN_DATE = new Date(CALENDAR_START_YEAR, 0, 1);
 export const MAX_DATE = new Date(now.getFullYear(), 11, 31);
 
 export const monthNames = [

@@ -49,6 +49,7 @@ function CalendarYear(props) {
           currentDate={`${yearAsInt}-01-01`}
           previousDate={`${yearAsInt - 1}-01-01`}
           nextDate={`${yearAsInt + 1}-01-01`}
+          createdAt={user.createdAt}
         />
 
         {calendarDaysMap ? (
