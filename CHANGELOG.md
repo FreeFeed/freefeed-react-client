@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Use explicit import() statements in the index.jsx
   - Use relative css imports for styles from node_modules
   - Update stylelint calls and fix styles issues
+- All "a" links without the "href" attribute and some other pseudo-buttons have
+  been replaced by the ButtonLink component. This improves the keyboard
+  accessibility of the site because ButtonLink is able to focus and click from
+  the keyboard.
 
 ## [1.118] - 2023-05-05
 ### Added

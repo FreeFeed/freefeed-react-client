@@ -14,7 +14,10 @@ exports[`PieceOfText > Renders a short piece of text 1`] = `
     </span>
      
     <a
+      aria-disabled="false"
       class="read-more"
+      role="button"
+      tabindex="0"
     >
       Expand
     </a>
@@ -64,7 +67,10 @@ exports[`PieceOfText > Renders a very long piece of text 1`] = `
     </span>
      
     <a
+      aria-disabled="false"
       class="read-more"
+      role="button"
+      tabindex="0"
     >
       Read more
     </a>

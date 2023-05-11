@@ -12,6 +12,7 @@ import ErrorBoundary from './error-boundary';
 import { userActions } from './select-utils';
 import { UserPicture } from './user-picture';
 import { useShowBanDialog } from './dialog/ban-dialog';
+import { ButtonLink } from './button-link';
 
 class UserCard extends Component {
   constructor(props) {
@@ -159,7 +160,7 @@ class UserCard extends Component {
               {props.blocked ? (
                 <div className="user-card-actions">
                   <span>Blocked user - </span>
-                  <a onClick={this.handleUnblockClick}>Un-block</a>
+                  <ButtonLink onClick={this.handleUnblockClick}>Un-block</ButtonLink>
                 </div>
               ) : !props.isItMe ? (
                 <div className="user-card-actions">
@@ -183,9 +184,9 @@ class UserCard extends Component {
 
                   {!props.user.isGone && (
                     <span className="user-card-action">
-                      <a onClick={this.handleShowOrHideClick}>
+                      <ButtonLink onClick={this.handleShowOrHideClick}>
                         {props.hidden ? 'Show' : 'Hide'} posts
-                      </a>
+                      </ButtonLink>
                     </span>
                   )}
                 </div>
@@ -270,5 +271,5 @@ function BlockLink({ user, setOpened }) {
     () => (showBanDialog(), setOpened(false)),
     [setOpened, showBanDialog],
   );
-  return <a onClick={onClick}>Block</a>;
+  return <ButtonLink onClick={onClick}>Block</ButtonLink>;
 }
