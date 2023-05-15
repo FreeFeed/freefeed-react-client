@@ -91,6 +91,10 @@ export function getUserFeed({ username, ...params }) {
   );
 }
 
+export function getUserStats({ username }) {
+  return fetch(`${apiRoot}/v2/users/${username}/statistics`, getRequestOptions());
+}
+
 export function getNotifications({ offset, filter }) {
   return fetch(
     `${apiRoot}/v2/notifications?offset=${offset}&filter=${filter}`,

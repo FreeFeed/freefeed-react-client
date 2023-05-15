@@ -166,7 +166,7 @@ exports[`UserProfileHead > Correctly displays that we are mutually subscribed 1`
           <a
             class="statlinkText"
           >
-            All posts
+            3 posts
           </a>
         </li>
         <li
@@ -365,7 +365,7 @@ exports[`UserProfileHead > Renders my own header and doesn't blow up 1`] = `
           <a
             class="statlinkText"
           >
-            All posts
+            3 posts
           </a>
         </li>
         <li

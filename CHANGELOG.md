@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Use explicit import() statements in the index.jsx
   - Use relative css imports for styles from node_modules
   - Update stylelint calls and fix styles issues
+- The users and groups pages now shows dynamically calculated statistics.
 
 ## [1.118] - 2023-05-05
 ### Added
