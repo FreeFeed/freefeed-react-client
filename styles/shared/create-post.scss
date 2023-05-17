@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 .create-post {
   padding-bottom: 14px;
   border-bottom: 1px solid #eee;
@@ -29,9 +31,9 @@
 
       // Mixin for progress-% classes
       $step: 1; // step of % for created classes
-      $loops: round(100 / $step);
-      $increment: 360 / $loops;
-      $half: round($loops / 2);
+      $loops: math.div(100, $step);
+      $increment: math.div(360, $loops);
+      $half: math.div($loops, 2);
       @for $i from 0 through $loops {
         .progress-#{$i * $step} {
           @if $i < $half {
