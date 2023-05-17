@@ -151,7 +151,7 @@
     "dev-server": "cross-env DEV=1 webpack serve --config webpack.config.babel.js --port 3333 --host 0.0.0.0 --hot",
     "clean": "rimraf ./_dist",
     "prettier": "prettier -c \"src/**/*\"",
-    "stylelint": "stylelint --config stylelint.config.js \"styles/**/*.scss\"",
+    "stylelint": "stylelint \"**/*.scss\" --config stylelint.config.js",
     "build-prod": "cross-env NODE_ENV=production DEV=0 run-s clean _webpack _webpack:bookmarklet",
     "build-dev": "cross-env NODE_ENV=development DEV=1 run-s clean _webpack",
     "_webpack": "webpack --config webpack.config.babel.js --output-path ./_dist",

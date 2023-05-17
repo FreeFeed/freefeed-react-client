@@ -38,7 +38,6 @@ $without-sidebar: '(max-width: 991px)';
   flex: 1;
   margin: 0;
   white-space: nowrap;
-
   font-size: 36px; // fluid's fallback size
   font-size: fluid(28, 320, 36, 600);
 }
@@ -50,6 +49,7 @@ $without-sidebar: '(max-width: 991px)';
 
 .searchForm {
   @include with-gap;
+
   display: flex;
   flex: 0 1 100%;
   position: relative;
@@ -58,9 +58,11 @@ $without-sidebar: '(max-width: 991px)';
   .fullMode & {
     max-width: 380px;
   }
+
   .compactMode & {
     max-width: 280px;
   }
+
   .collapsibleMode & {
     max-width: 100%;
   }
@@ -96,8 +98,8 @@ $without-sidebar: '(max-width: 991px)';
   background-color: transparent;
   border: none;
   border-bottom: 1px solid #999; // TODO dark theme
-
   padding-right: 8px;
+
   &:focus {
     padding-right: 24px;
   }
@@ -105,9 +107,11 @@ $without-sidebar: '(max-width: 991px)';
   .fullMode & {
     padding-left: 8px;
   }
+
   .compactMode & {
     padding-left: 30px;
   }
+
   .collapsibleMode & {
     padding-left: 30px;
   }
@@ -120,6 +124,7 @@ $without-sidebar: '(max-width: 991px)';
 
   &:active {
     background-color: #ddd;
+
     :global(.dark-theme) & {
       background-color: $bg-color-lightest;
     }
@@ -136,6 +141,7 @@ $without-sidebar: '(max-width: 991px)';
 
 .activeElements {
   @include with-gap;
+
   display: flex;
   flex: 2;
   justify-content: flex-end;
@@ -162,7 +168,6 @@ $without-sidebar: '(max-width: 991px)';
   background: none;
   color: inherit !important;
   text-decoration: none !important;
-
   display: inline-flex;
   padding: 0;
   align-items: center;
@@ -187,9 +192,9 @@ $without-sidebar: '(max-width: 991px)';
   font-size: 15px;
   width: 24px;
   height: 32px;
-
   opacity: 0.4;
   transition: opacity 0.3s;
+
   &:hover {
     opacity: 0.8;
   }
