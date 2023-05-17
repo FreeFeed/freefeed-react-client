@@ -77,6 +77,36 @@ class UserCard extends Component {
     id && this.props.userCardClosing(id);
   }
 
+  renderSubscribeBlock() {
+    const { props } = this;
+
+    if (props.subscribed) {
+      return (
+        <span className="user-card-action">
+          <a onClick={this.handleUnsubscribeClick}>Unsubscribe</a>
+        </span>
+      );
+    } else if (!props.user.isGone) {
+      if (props.user.isPrivate === '1') {
+        if (props.hasRequestBeenSent) {
+          return <span className="user-card-action">Subscription request sent</span>;
+        }
+        return (
+          <span className="user-card-action">
+            <a onClick={this.handleRequestSubscriptionClick}>Request a subscription</a>
+          </span>
+        );
+      }
+      return (
+        <span className="user-card-action">
+          <a onClick={this.handleSubscribeClick}>Subscribe</a>
+        </span>
+      );
+    }
+
+    return null;
+  }
+
   render() {
     const { props } = this;
 
@@ -138,30 +168,7 @@ class UserCard extends Component {
                       <Link to={`/filter/direct?to=${props.user.username}`}>Direct message</Link>
                     </span>
                   )}
-                  {do {
-                    if (props.subscribed) {
-                      <span className="user-card-action">
-                        <a onClick={this.handleUnsubscribeClick}>Unsubscribe</a>
-                      </span>;
-                    } else if (!props.user.isGone) {
-                      if (props.user.isPrivate === '1') {
-                        if (props.hasRequestBeenSent) {
-                          <span className="user-card-action">Subscription request sent</span>;
-                        } else {
-                          <span className="user-card-action">
-                            <a onClick={this.handleRequestSubscriptionClick}>
-                              Request a subscription
-                            </a>
-                          </span>;
-                        }
-                      } else {
-                        <span className="user-card-action">
-                          <a onClick={this.handleSubscribeClick}>Subscribe</a>
-                        </span>;
-                      }
-                    }
-                  }}
-
+                  {this.renderSubscribeBlock()}
                   {props.user.type !== 'group' && !props.subscribed ? (
                     <span className="user-card-action">
                       <BlockLink user={props.user} setOpened={props.setOpened} />
