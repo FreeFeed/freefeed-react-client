@@ -5,7 +5,7 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import { combineReducers } from 'redux';
 
 import { userParser, getSummaryPeriod } from '../utils';
-import { parseQuery } from '../utils/search-highlighter';
+import { parseQuery } from '../utils/search-highlighter-lib';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
 import * as FeedOptions from '../utils/feed-options';
 import {
