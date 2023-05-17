@@ -101,10 +101,8 @@ const generateRouteHooks = (callback) => ({
   onChange: (_, next) => callback(next),
 });
 
-// For some reason, the import() argument must have an explicit string type.
-// See https://github.com/webpack/webpack/issues/4921#issuecomment-357147299
-const lazyLoad = (path, importName = 'default') =>
-  lazyRetry(() => import(`${path}`).then((m) => ({ default: m[importName] })));
+const lazyLoad = (loader, importName = 'default') =>
+  lazyRetry(() => loader().then((m) => ({ default: m[importName] })));
 
 function InitialLayout({ children }) {
   return (
@@ -162,57 +160,57 @@ function App() {
         <Route path="about">
           <IndexRoute
             name="about"
-            component={lazyLoad('./components/about')}
+            component={lazyLoad(() => import('./components/about'))}
             onEnter={enterStaticPage('About')}
           />
           <Route
             path="terms"
-            component={lazyLoad('./components/terms')}
+            component={lazyLoad(() => import('./components/terms'))}
             onEnter={enterStaticPage('Terms')}
           />
           <Route
             path="privacy"
-            component={lazyLoad('./components/privacy')}
+            component={lazyLoad(() => import('./components/privacy'))}
             onEnter={enterStaticPage('Privacy')}
           />
           <Route
             path="stats"
-            component={lazyLoad('./components/stats')}
+            component={lazyLoad(() => import('./components/stats'))}
             onEnter={enterStaticPage('Stats')}
           />
           <Route
             path="donate"
-            component={lazyLoad('./components/donate')}
+            component={lazyLoad(() => import('./components/donate'))}
             onEnter={enterStaticPage('Donate')}
           />
         </Route>
         <Route
           path="dev"
-          component={lazyLoad('./components/dev')}
+          component={lazyLoad(() => import('./components/dev'))}
           onEnter={enterStaticPage('Developers')}
         />
         <Route
           path="signin"
-          component={lazyLoad('./components/signin')}
+          component={lazyLoad(() => import('./components/signin'))}
           onEnter={enterStaticPage('Sign in')}
         />
         <Route
           path="signup"
-          component={lazyLoad('./components/signup')}
+          component={lazyLoad(() => import('./components/signup'))}
           onEnter={enterStaticPage('Sign up')}
         />
-        <Route path="restore" component={lazyLoad('./components/restore-password')} />
-        <Route path="reset" component={lazyLoad('./components/reset-password')} />
+        <Route path="restore" component={lazyLoad(() => import('./components/restore-password'))} />
+        <Route path="reset" component={lazyLoad(() => import('./components/reset-password'))} />
         {settingsRoute('settings')}
         <Route
           path="settings/archive"
-          component={lazyLoad('./components/archive')}
+          component={lazyLoad(() => import('./components/archive'))}
           onEnter={enterStaticPage('Restore from FriendFeed.com Archives')}
         />
         <Route
           name="groupSettings"
           path="/:userName/settings"
-          component={lazyLoad('./components/group-settings')}
+          component={lazyLoad(() => import('./components/group-settings'))}
           {...generateRouteHooks(boundRouteActions('getUserInfo'))}
         />
         <Route
@@ -248,7 +246,7 @@ function App() {
         <Route
           name="notifications"
           path="filter/notifications"
-          component={lazyLoad('./components/notifications')}
+          component={lazyLoad(() => import('./components/notifications'))}
           {...generateRouteHooks(boundRouteActions('notifications'))}
         />
         <Route
@@ -272,29 +270,29 @@ function App() {
         <Route
           name="all-groups"
           path="/all-groups"
-          component={lazyLoad('./components/all-groups')}
+          component={lazyLoad(() => import('./components/all-groups'))}
         />
         <Route
           name="friends"
           path="/friends"
-          component={lazyLoad('./components/friends-page', 'Friends')}
+          component={lazyLoad(() => import('./components/friends-page'), 'Friends')}
         />
         <Route
           name="groupCreate"
           path="/groups/create"
-          component={lazyLoad('./components/group-create')}
+          component={lazyLoad(() => import('./components/group-create'))}
           onEnter={enterStaticPage('Create a group')}
         />
         <Route
           name="archivePost"
           path="/archivePost"
-          component={lazyLoad('./components/archive-post')}
+          component={lazyLoad(() => import('./components/archive-post'))}
           {...generateRouteHooks(boundRouteActions('archivePost'))}
         />
         <Route
           name="createInvitation"
           path="/invite"
-          component={lazyLoad('./components/invitation-creation-form')}
+          component={lazyLoad(() => import('./components/invitation-creation-form'))}
           onEnter={inviteActions}
         />
         <Route
