@@ -112,32 +112,28 @@ const SideBarFriends = ({ user }) => {
           </ul>
         </div>
 
-        {do {
-          if (homeFeedsCount === 1) {
-            <div className="box-footer">
-              <Link to={`/friends`}>Browse/edit friends and lists</Link>
-            </div>;
-          }
-        }}
+        {homeFeedsCount === 1 && (
+          <div className="box-footer">
+            <Link to={`/friends`}>Browse/edit friends and lists</Link>
+          </div>
+        )}
       </div>
 
-      {do {
-        if (homeFeedsCount > 1) {
-          <div className="box" role="navigation">
-            <div className="box-header-friends" role="heading">
-              <Link to="/friends">Friend lists</Link>
-            </div>
+      {homeFeedsCount > 1 && (
+        <div className="box" role="navigation">
+          <div className="box-header-friends" role="heading">
+            <Link to="/friends">Friend lists</Link>
+          </div>
 
-            <div className="box-body">
-              <SidebarHomeFeeds homeFeedsCount={homeFeedsCount} />
-            </div>
+          <div className="box-body">
+            <SidebarHomeFeeds homeFeedsCount={homeFeedsCount} />
+          </div>
 
-            <div className="box-footer">
-              <Link to={`/friends`}>Browse/edit friends and lists</Link>
-            </div>
-          </div>;
-        }
-      }}
+          <div className="box-footer">
+            <Link to={`/friends`}>Browse/edit friends and lists</Link>
+          </div>
+        </div>
+      )}
     </>
   );
 };

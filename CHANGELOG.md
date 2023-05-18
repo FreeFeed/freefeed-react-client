@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.119] - Not released
+### Changed
+- Multiple cosmetic corrections preparing the transition to Vite as a builder:
+  - Use Dart Sass instead of node-sass
+  - Use math.div instead of "/" in SCSS files
+  - Rename files uses JSX syntax from .js to .jsx
+  - Remove non-standard do {} syntax
+  - Use explicit import() statements in the index.jsx
+  - Use relative css imports for styles from node_modules
+  - Update stylelint calls and fix styles issues
 
 ## [1.118] - 2023-05-05
 ### Added

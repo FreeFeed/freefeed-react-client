@@ -11,6 +11,7 @@
 
 .chosen {
   background-color: #eee;
+
   .dark-theme & {
     background-color: $bg-color-lightest;
   }
@@ -23,6 +24,7 @@
 
 .handle {
   --opacity: 0.4;
+
   :global(.dark-theme) & {
     --opacity: 0.6;
   }

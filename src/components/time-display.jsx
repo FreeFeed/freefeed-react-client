@@ -123,13 +123,10 @@ export function formatDistance(date, now = new Date(), { amPm = false, inline = 
   const days = differenceInDays(now, dateNoon);
 
   if (days <= 1) {
-    const prefix = do {
-      if (days === 1) {
-        inline ? 'yest. ' : 'Yesterday at ';
-      } else {
-        inline ? 'today ' : 'Today at ';
-      }
-    };
+    const today = inline ? 'today ' : 'Today at ';
+    const yesterday = inline ? 'yest. ' : 'Yesterday at ';
+    const prefix = days === 1 ? yesterday : today;
+
     return prefix + format(date, amPm ? 'h:mm aaaa' : 'H:mm');
   }
   if (days < 4) {

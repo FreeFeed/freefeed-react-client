@@ -4,8 +4,10 @@
   position: relative;
 
   --shadow-color: #fff;
+
   // We need this instead of just 'transparent' because of Safari
   --shadow-transparent-color: rgba(255, 255, 255, 0);
+
   :global(.dark-theme) & {
     --shadow-color: #{$bg-color};
     --shadow-transparent-color: #{rgba($bg-color, 0)};
