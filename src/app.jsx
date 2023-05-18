@@ -35,13 +35,6 @@ import SignupByInvitation from './components/signup-by-invitation';
 import { settingsRoute } from './components/settings/routes';
 import { CALENDAR_START_YEAR } from './utils/calendar-utils';
 
-Sentry.init({
-  dsn: CONFIG.sentry.publicDSN,
-  autoSessionTracking: false,
-});
-
-const store = configureStore();
-
 import { bindRouteActions } from './redux/route-actions';
 import { initUnscroll, safeScrollTo } from './services/unscroll';
 import { lazyRetry } from './utils/retry-promise';
@@ -49,52 +42,80 @@ import { HomeAux } from './components/home-aux';
 import { NotFound } from './components/not-found';
 import { DialogProvider } from './components/dialog/context';
 
-// Set initial history state.
-// Without this, there can be problems with third-party
-// modules using history API (specifically, PhotoSwipe).
-browserHistory.replace({
-  pathname: location.pathname,
-  search: location.search,
-  hash: location.hash,
-});
-
-const boundRouteActions = bindRouteActions(store.dispatch);
-
-const history = syncHistoryWithStore(browserHistory, store);
-
 const thisYear = new Date().getFullYear();
 
-const manageSubscribersActions = (next) => {
-  const { userName } = next.params;
-  store.dispatch(ActionCreators.getUserInfo(userName));
-  store.dispatch(ActionCreators.subscribers(userName));
-};
+let boundRouteActions;
+let manageSubscribersActions;
+let inviteActions;
+let subscribersSubscriptionsActions;
+let enterStaticPage;
 
-const inviteActions = () => {
-  const { username } = store.getState().user;
-  store.dispatch(ActionCreators.subscriptions(username));
-  store.dispatch(ActionCreators.getInvitationsInfo());
-};
+export function initApp() {
+  Sentry.init({
+    dsn: CONFIG.sentry.publicDSN,
+    autoSessionTracking: false,
+  });
 
-// needed to display mutual friends
-const subscribersSubscriptionsActions = (next, replace) => {
-  const { userName } = next.params;
+  const store = configureStore();
 
-  if (userName === store.getState().user.username) {
-    const route = next.routes[next.routes.length - 1];
-    replace(`/friends?show=${route.name}`);
-    return;
-  }
+  // Set initial history state.
+  // Without this, there can be problems with third-party
+  // modules using history API (specifically, PhotoSwipe).
+  browserHistory.replace({
+    pathname: location.pathname,
+    search: location.search,
+    hash: location.hash,
+  });
 
-  store.dispatch(ActionCreators.subscribers(userName));
-  store.dispatch(ActionCreators.subscriptions(userName));
-};
+  boundRouteActions = bindRouteActions(store.dispatch);
 
-const enterStaticPage = (title) => () => {
-  store.dispatch(ActionCreators.staticPage(title));
-};
+  const history = syncHistoryWithStore(browserHistory, store);
 
-history.listen(() => safeScrollTo(0, 0));
+  manageSubscribersActions = (next) => {
+    const { userName } = next.params;
+    store.dispatch(ActionCreators.getUserInfo(userName));
+    store.dispatch(ActionCreators.subscribers(userName));
+  };
+
+  inviteActions = () => {
+    const { username } = store.getState().user;
+    store.dispatch(ActionCreators.subscriptions(username));
+    store.dispatch(ActionCreators.getInvitationsInfo());
+  };
+
+  // needed to display mutual friends
+  subscribersSubscriptionsActions = (next, replace) => {
+    const { userName } = next.params;
+
+    if (userName === store.getState().user.username) {
+      const route = next.routes[next.routes.length - 1];
+      replace(`/friends?show=${route.name}`);
+      return;
+    }
+
+    store.dispatch(ActionCreators.subscribers(userName));
+    store.dispatch(ActionCreators.subscriptions(userName));
+  };
+
+  enterStaticPage = (title) => () => {
+    store.dispatch(ActionCreators.staticPage(title));
+  };
+
+  history.listen(() => safeScrollTo(0, 0));
+
+  initUnscroll();
+  // Fetch server info on application start
+  setTimeout(() => store.dispatch(ActionCreators.getServerInfo()), 0);
+
+  ReactDOM.render(
+    <Provider store={store}>
+      <DialogProvider>
+        <App />
+      </DialogProvider>
+    </Provider>,
+    document.querySelector('#app'),
+  );
+}
 
 const generateRouteHooks = (callback) => ({
   onEnter: callback,
@@ -121,10 +142,6 @@ function InitialLayout({ children }) {
   );
 }
 
-initUnscroll();
-// Fetch server info on application start
-setTimeout(() => store.dispatch(ActionCreators.getServerInfo()), 0);
-
 function App() {
   const initialized = useSelector((state) => state.initialized);
   if (initialized.initial || initialized.loading) {
@@ -147,7 +164,7 @@ function App() {
   }
 
   return (
-    <Router history={history}>
+    <Router history={browserHistory}>
       <Route name="bookmarklet" path="/bookmarklet" component={Bookmarklet} />
 
       <Route path="/" component={Layout}>
@@ -387,15 +404,6 @@ function App() {
     </Router>
   );
 }
-
-ReactDOM.render(
-  <Provider store={store}>
-    <DialogProvider>
-      <App />
-    </DialogProvider>
-  </Provider>,
-  document.querySelector('#app'),
-);
 
 function checkPath(Component, checker) {
   return (props) => {
