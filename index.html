@@ -17,9 +17,47 @@
     <!--#endif -->
 
     <title>FreeFeed</title>
+    <link rel="preload" href="/config.json" as="fetch" />
+
+    <noscript>
+      <style>
+        .js-only {
+          display: none;
+        }
+      </style>
+    </noscript>
+
+    <link rel="stylesheet" href="/styles/startup.scss">
     <script type="module" src="/src/index.js"></script>
   </head>
-  <body class="initial">
-    <div id="app"></div>
+  <body>
+    <script>
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark-theme');
+      }
+    </script>
+    <div id="app" class="startup">
+      <h1 class="startup__logo-box">
+        <a href="/" class="startup__logo-link">FreeFeed</a>
+      </h1>
+      <div class="startup__info">
+        <p class="js-only startup__loading">Loading...</p>
+        <noscript>
+          <div class="startup__alert">
+            <p>Javascript is disabled!</p>
+            <p>
+              Looks like you have JavaScript disabled in your browser. Please enable it to enjoy our
+              service.
+            </p>
+          </div>
+        </noscript>
+        <div class="startup__alert startup__error">
+          <p class="startup__error-text">Something went wrong!</p>
+          <p>
+            Try to <button onclick="location.reload(true)">reload</button> this page or contact support.
+          </p>
+        </div>
+  </div>
+    </div>
   </body>
 </html>

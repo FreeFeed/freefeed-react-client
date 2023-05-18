@@ -6,10 +6,10 @@ import { initApp } from './app';
   try {
     await loadConfig();
   } catch (err) {
-    document.write(`<pre>${err.message}
-
-Try to <button onclick="location.reload(true)">reload</button> this page or contact support.`);
-    window.stop();
+    const startupBlock = document.querySelector('.startup');
+    const startupErrorText = document.querySelector('.startup__error-text');
+    startupErrorText.textContent = err.message;
+    startupBlock.classList.add('startup--has-error');
     return;
   }
 

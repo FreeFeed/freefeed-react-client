@@ -107,13 +107,17 @@ export function initApp() {
   // Fetch server info on application start
   setTimeout(() => store.dispatch(ActionCreators.getServerInfo()), 0);
 
+  const appRoot = document.querySelector('#app');
+  appRoot.innerHTML = '';
+  appRoot.className = '';
+
   ReactDOM.render(
     <Provider store={store}>
       <DialogProvider>
         <App />
       </DialogProvider>
     </Provider>,
-    document.querySelector('#app'),
+    appRoot,
   );
 }
 
