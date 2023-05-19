@@ -145,7 +145,7 @@
   },
   "scripts": {
     "vite:dev": "vite",
-    "vite:build": "vite build",
+    "vite:build": "vite build && vite -c vite.bookmarklet.config.js build",
     "vite:preview": "vite preview",
     "start": "run-s dev-server",
     "test": "run-s \"test-just --recursive test/unit\" \"test-jest\"",
