@@ -1,4 +1,4 @@
-import { describe, it } from 'mocha';
+import { describe, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 import unexpected from 'unexpected';
 import unexpectedReact from 'unexpected-react';

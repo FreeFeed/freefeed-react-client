@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { describe, it } from 'mocha';
+import { describe, it } from 'vitest';
 import { createRenderer } from 'react-test-renderer/shallow';
 import unexpected from 'unexpected';
 import unexpectedReact from 'unexpected-react';
