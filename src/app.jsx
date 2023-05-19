@@ -41,6 +41,8 @@ import { lazyRetry } from './utils/retry-promise';
 import { HomeAux } from './components/home-aux';
 import { NotFound } from './components/not-found';
 import { DialogProvider } from './components/dialog/context';
+import { lazyComponent } from './components/lazy-component';
+import { getCookie, setCookie } from './utils';
 
 const thisYear = new Date().getFullYear();
 
@@ -49,6 +51,10 @@ let manageSubscribersActions;
 let inviteActions;
 let subscribersSubscriptionsActions;
 let enterStaticPage;
+
+const PrivacyPopup = lazyComponent(() => import('./components/privacy-popup'), {
+  errorMessage: "Couldn't load cookie banner",
+});
 
 export function initApp() {
   Sentry.init({
@@ -111,10 +117,23 @@ export function initApp() {
   appRoot.innerHTML = '';
   appRoot.className = '';
 
+  const PRIVACY_COOKIE_NAME = 'privacy';
+  const PRIVACY_COOKIE_DAYS = 730;
+
+  const hasPrivacyCookie = !!getCookie(PRIVACY_COOKIE_NAME);
+
+  if (hasPrivacyCookie) {
+    // Refresh cookie
+    setCookie(PRIVACY_COOKIE_NAME, 'true', PRIVACY_COOKIE_DAYS, '/');
+  }
+
   ReactDOM.render(
     <Provider store={store}>
       <DialogProvider>
         <App />
+        {!hasPrivacyCookie && (
+          <PrivacyPopup name={PRIVACY_COOKIE_NAME} days={PRIVACY_COOKIE_DAYS} />
+        )}
       </DialogProvider>
     </Provider>,
     appRoot,
