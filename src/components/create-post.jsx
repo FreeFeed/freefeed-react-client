@@ -131,7 +131,7 @@ export default function CreatePost({ sendTo, isDirects }) {
   const containerRef = useRef();
 
   useEffect(() => {
-    const h = () => import('react-select/creatable');
+    const h = () => Promise.all([import('react-select/creatable'), import('react-select')]);
     const el = containerRef.current;
     el.addEventListener('click', h, { once: true });
     return () => el.removeEventListener('click', h, { once: true });
