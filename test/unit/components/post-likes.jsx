@@ -2,7 +2,7 @@ import { describe, it } from 'vitest';
 import expect from 'unexpected';
 
 import ShallowRenderer from 'react-test-renderer/shallow';
-import clone from 'lodash/clone';
+import { clone } from 'lodash-es';
 
 import PostLikes from '../../../src/components/post/post-likes';
 

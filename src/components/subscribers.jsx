@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 
 import { getUserInfo } from '../redux/action-creators';
 import SubsList from './subs-list';

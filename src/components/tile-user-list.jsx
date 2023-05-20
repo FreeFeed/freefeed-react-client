@@ -1,6 +1,6 @@
 import { PureComponent } from 'react';
 import classnames from 'classnames';
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 
 import { confirmFirst } from '../utils';
 import UserName from './user-name';

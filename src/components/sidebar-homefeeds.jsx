@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { faGripVertical } from '@fortawesome/free-solid-svg-icons';
 import cn from 'classnames';
 
-import { noop } from 'lodash';
+import { noop } from 'lodash-es';
 import { KEY_DOWN, KEY_UP } from 'keycode-js';
 import { reorderHomeFeeds } from '../redux/action-creators';
 import { HomeFeedLink } from './home-feed-link';

@@ -15,7 +15,7 @@ import {
   faTrashAlt,
   faBookmark,
 } from '@fortawesome/free-regular-svg-icons';
-import { noop } from 'lodash';
+import { noop } from 'lodash-es';
 import { useDispatch } from 'react-redux';
 import format from 'date-fns/format';
 

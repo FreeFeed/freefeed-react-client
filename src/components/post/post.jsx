@@ -3,7 +3,7 @@ import { createRef, Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import classnames from 'classnames';
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 import dateFormat from 'date-fns/format';
 import {
   faExclamationTriangle,

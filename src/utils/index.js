@@ -1,6 +1,6 @@
 /* global CONFIG */
 import filesize from 'filesize';
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 import { hashTags as tokenizeHashtags } from 'social-text-tokenizer';
 
 import defaultUserpicPath from '../../assets/images/default-userpic.svg';

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { uniq, without } from 'lodash';
+import { uniq, without } from 'lodash-es';
 
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { getAppTokensScopes } from '../../../redux/action-creators';

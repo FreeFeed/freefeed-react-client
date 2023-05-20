@@ -1,4 +1,4 @@
-import { intersectionBy, uniq } from 'lodash';
+import { intersectionBy, uniq } from 'lodash-es';
 import { hashTags } from 'social-text-tokenizer';
 import * as Sentry from '@sentry/react';
 

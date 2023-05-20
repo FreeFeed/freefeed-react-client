@@ -2,7 +2,7 @@ import { describe, it } from 'vitest';
 import unexpected from 'unexpected';
 import unexpectedReact from 'unexpected-react';
 
-import flatten from 'lodash/flatten';
+import { flatten } from 'lodash-es';
 
 import ErrorBoundary from '../../../src/components/error-boundary';
 import PostComments from '../../../src/components/post/post-comments';

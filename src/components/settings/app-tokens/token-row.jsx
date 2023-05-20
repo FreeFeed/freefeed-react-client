@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
-import { trim } from 'lodash';
+import { trim } from 'lodash-es';
 import { faRedo, faExclamationTriangle, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import {

@@ -1,4 +1,4 @@
-import { pick } from 'lodash';
+import { pick } from 'lodash-es';
 import { GET_USER_INFO, REALTIME_GLOBAL_USER_UPDATE } from '../action-types';
 import {
   asyncPhase,

@@ -4,7 +4,7 @@ import { parse as queryParse } from 'querystring';
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Link } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { trim } from 'lodash';
+import { trim } from 'lodash-es';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';

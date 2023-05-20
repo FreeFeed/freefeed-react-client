@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 import { stemmer as enStemmer } from 'porter-stemmer';
 import ruStemmer from './ru-stemmer';
 

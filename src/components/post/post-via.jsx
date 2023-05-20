@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 import UserName from '../user-name';
 
 // props types

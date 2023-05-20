@@ -1,6 +1,6 @@
 import { useCallback, forwardRef, memo } from 'react';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
-import { pick } from 'lodash';
+import { pick } from 'lodash-es';
 import cn from 'classnames';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartO, faComment } from '@fortawesome/free-regular-svg-icons';

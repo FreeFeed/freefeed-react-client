@@ -11,7 +11,7 @@ import {
   //  faUsers,
   //  faUsersSlash,
 } from '@fortawesome/free-solid-svg-icons';
-import { uniq } from 'lodash';
+import { uniq } from 'lodash-es';
 import { useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';

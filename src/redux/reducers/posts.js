@@ -1,5 +1,5 @@
 /* eslint-disable complexity */
-import { without } from 'lodash';
+import { without } from 'lodash-es';
 import { postParser } from '../../utils';
 import { isFeedResponse } from '../action-helpers';
 import {

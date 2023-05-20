@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 
 import SubsList from './subs-list';
 

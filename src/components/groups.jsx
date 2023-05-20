@@ -1,7 +1,7 @@
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 
 import { pluralForm } from '../utils';
 

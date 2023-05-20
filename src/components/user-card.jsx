@@ -1,7 +1,7 @@
 import { Component, createRef, useCallback } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 
 import { getUserInfo, userCardClosing } from '../redux/action-creators';
 import { initialAsyncState } from '../redux/async-helpers';
