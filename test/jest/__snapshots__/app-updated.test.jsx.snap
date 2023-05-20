@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AppUpdated Renders if there is an update 1`] = `
+exports[`AppUpdated > Renders if there is an update 1`] = `
 <DocumentFragment>
   <div
     class="bar"

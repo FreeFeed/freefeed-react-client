@@ -1,11 +1,11 @@
-/* global jest, describe, it, expect */
+/* global vi, describe, it, expect */
 import { render } from '@testing-library/react';
 import { createStore } from 'redux';
 import * as reactRedux from 'react-redux';
 
 import { PostMoreMenu } from '../../src/components/post/post-more-menu';
 
-jest.mock('../../src/components/fontawesome-icons', () => ({
+vi.mock('../../src/components/fontawesome-icons', () => ({
   Icon: ({ icon }) => `fontawesome icon ${icon.iconName}`, // mocking out icon to make snapshots smaller
 }));
 

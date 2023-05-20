@@ -1,4 +1,4 @@
-/* global describe, it, expect, jest, beforeEach */
+/* global describe, it, expect, vi, beforeEach */
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as reactRedux from 'react-redux';
@@ -6,7 +6,7 @@ import * as reactRedux from 'react-redux';
 import SignInPage from '../../src/components/settings/sign-in';
 import * as actionCreators from '../../src/redux/action-creators';
 
-jest.mock('../../src/components/prevent-page-leaving', () => {
+vi.mock('../../src/components/prevent-page-leaving', () => {
   return {
     PreventPageLeaving: () => null,
   };
@@ -35,8 +35,8 @@ const renderSignInPage = (props = {}) => {
 };
 
 describe('SignInPage', () => {
-  const useSelectorMock = jest.spyOn(reactRedux, 'useSelector');
-  const useDispatchMock = jest.spyOn(reactRedux, 'useDispatch');
+  const useSelectorMock = vi.spyOn(reactRedux, 'useSelector');
+  const useDispatchMock = vi.spyOn(reactRedux, 'useDispatch');
 
   beforeEach(() => {
     useSelectorMock.mockClear();
@@ -54,7 +54,7 @@ describe('SignInPage', () => {
     const currentPassword = 'current';
     const newPassword = 'newpassword123';
 
-    const updatePasswordMock = jest.spyOn(actionCreators, 'updatePassword');
+    const updatePasswordMock = vi.spyOn(actionCreators, 'updatePassword');
     renderSignInPage();
 
     await userEvent.type(screen.getByLabelText('Current password'), currentPassword);

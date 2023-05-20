@@ -1,4 +1,4 @@
-/* global describe, it, expect, jest */
+/* global describe, it, expect, vi */
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
@@ -9,12 +9,12 @@ import PostComments from '../../src/components/post/post-comments';
 import { initialAsyncState } from '../../src/redux/async-helpers';
 
 // mock icon component to make snapshots smaller
-jest.mock('../../src/components/fontawesome-icons', () => ({
+vi.mock('../../src/components/fontawesome-icons', () => ({
   Icon: ({ icon }) => `fontawesome-icon ${icon.iconName}`,
 }));
 
 // mock it out because I don't want to deal with it
-jest.mock('../../src/components/prevent-page-leaving', () => ({
+vi.mock('../../src/components/prevent-page-leaving', () => ({
   PreventPageLeaving: () => '',
 }));
 
@@ -121,7 +121,7 @@ describe('PostComments', () => {
   });
 
   it('Renders omitted comments and expands them', async () => {
-    const showMoreComments = jest.fn();
+    const showMoreComments = vi.fn();
     const { rerender } = renderPostComments({
       post: {
         ...POST,
@@ -150,7 +150,7 @@ describe('PostComments', () => {
   });
 
   it('Renders add comment link which toggles comment form', async () => {
-    const toggleCommenting = jest.fn();
+    const toggleCommenting = vi.fn();
     renderPostComments({
       user: VIEWER,
       post: {

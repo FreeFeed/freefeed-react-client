@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`UserRelationshipStatus Shows that I am a group admin 1`] = `
+exports[`UserRelationshipStatus > Shows that I am a group admin 1`] = `
 <DocumentFragment>
   <span>
     <span>
@@ -23,7 +23,7 @@ exports[`UserRelationshipStatus Shows that I am a group admin 1`] = `
 </DocumentFragment>
 `;
 
-exports[`UserRelationshipStatus Shows that I am a group member 1`] = `
+exports[`UserRelationshipStatus > Shows that I am a group member 1`] = `
 <DocumentFragment>
   <span>
     <span>
@@ -46,7 +46,7 @@ exports[`UserRelationshipStatus Shows that I am a group member 1`] = `
 </DocumentFragment>
 `;
 
-exports[`UserRelationshipStatus Shows that I am subscribed to them 1`] = `
+exports[`UserRelationshipStatus > Shows that I am subscribed to them 1`] = `
 <DocumentFragment>
   <span>
     <span>
@@ -69,7 +69,7 @@ exports[`UserRelationshipStatus Shows that I am subscribed to them 1`] = `
 </DocumentFragment>
 `;
 
-exports[`UserRelationshipStatus Shows that I have blocked them 1`] = `
+exports[`UserRelationshipStatus > Shows that I have blocked them 1`] = `
 <DocumentFragment>
   <span>
     <span>
@@ -92,7 +92,7 @@ exports[`UserRelationshipStatus Shows that I have blocked them 1`] = `
 </DocumentFragment>
 `;
 
-exports[`UserRelationshipStatus Shows that I have sent them a subscription request 1`] = `
+exports[`UserRelationshipStatus > Shows that I have sent them a subscription request 1`] = `
 <DocumentFragment>
   <span>
     <span>
@@ -115,7 +115,7 @@ exports[`UserRelationshipStatus Shows that I have sent them a subscription reque
 </DocumentFragment>
 `;
 
-exports[`UserRelationshipStatus Shows that they are subscribed to me 1`] = `
+exports[`UserRelationshipStatus > Shows that they are subscribed to me 1`] = `
 <DocumentFragment>
   <span>
     <span>
@@ -138,7 +138,7 @@ exports[`UserRelationshipStatus Shows that they are subscribed to me 1`] = `
 </DocumentFragment>
 `;
 
-exports[`UserRelationshipStatus Shows that they have blocked me 1`] = `
+exports[`UserRelationshipStatus > Shows that they have blocked me 1`] = `
 <DocumentFragment>
   <span>
     <span>
@@ -161,7 +161,7 @@ exports[`UserRelationshipStatus Shows that they have blocked me 1`] = `
 </DocumentFragment>
 `;
 
-exports[`UserRelationshipStatus Shows that we are mutually subscribed 1`] = `
+exports[`UserRelationshipStatus > Shows that we are mutually subscribed 1`] = `
 <DocumentFragment>
   <span>
     <span>

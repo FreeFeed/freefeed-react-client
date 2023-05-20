@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`UserDisplayName It's-a me! 1`] = `
+exports[`UserDisplayName > It's-a me! 1`] = `
 <DocumentFragment>
   <span
     dir="ltr"
@@ -10,7 +10,7 @@ exports[`UserDisplayName It's-a me! 1`] = `
 </DocumentFragment>
 `;
 
-exports[`UserDisplayName Shows both username and screenname 1`] = `
+exports[`UserDisplayName > Shows both username and screenname 1`] = `
 <DocumentFragment>
   <span
     dir="auto"
@@ -25,7 +25,7 @@ exports[`UserDisplayName Shows both username and screenname 1`] = `
 </DocumentFragment>
 `;
 
-exports[`UserDisplayName Shows only screenname 1`] = `
+exports[`UserDisplayName > Shows only screenname 1`] = `
 <DocumentFragment>
   <span
     dir="auto"
@@ -35,7 +35,7 @@ exports[`UserDisplayName Shows only screenname 1`] = `
 </DocumentFragment>
 `;
 
-exports[`UserDisplayName Shows only username 1`] = `
+exports[`UserDisplayName > Shows only username 1`] = `
 <DocumentFragment>
   <span
     dir="ltr"

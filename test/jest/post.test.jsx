@@ -1,4 +1,4 @@
-/* global describe, it, expect, jest */
+/* global describe, it, expect, vi */
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
@@ -6,16 +6,22 @@ import { createStore } from 'redux';
 import * as reactRedux from 'react-redux';
 import * as actionCreators from '../../src/redux/action-creators';
 
-jest.mock('../../src/components/post/post-comments', () => ({ comments }) => {
-  return <div>{comments.length > 0 ? `Mocked ${comments.length} comments ` : ''}</div>;
-});
+vi.mock('../../src/components/post/post-comments', () => ({
+  default: ({ comments }) => {
+    return <div>{comments.length > 0 ? `Mocked ${comments.length} comments ` : ''}</div>;
+  },
+}));
 
-jest.mock('../../src/components/post/post-attachments', () => ({ attachmentIds }) => {
-  return <div>{attachmentIds.length > 0 ? `Mocked ${attachmentIds.length} attachments` : ''}</div>;
-});
+vi.mock('../../src/components/post/post-attachments', () => ({
+  default: ({ attachmentIds }) => {
+    return (
+      <div>{attachmentIds.length > 0 ? `Mocked ${attachmentIds.length} attachments` : ''}</div>
+    );
+  },
+}));
 
 // https://github.com/facebook/jest/issues/8769#issuecomment-812824244
-jest.mock('../../src/components/lazy-component', () => ({
+vi.mock('../../src/components/lazy-component', () => ({
   lazyComponent:
     (loader, { fallback, errorMessage }) =>
     () => {
@@ -255,7 +261,7 @@ describe('Post', () => {
   });
 
   it('Renders a comment button which opens the comment form if this is not a single post', async () => {
-    const toggleCommenting = jest.fn();
+    const toggleCommenting = vi.fn();
     renderPost({ toggleCommenting, isSinglePost: false });
     expect(screen.getByText('Comment', { role: 'button' })).toBeInTheDocument();
     await userEvent.click(screen.getByText('Comment', { role: 'button' }));
@@ -276,7 +282,7 @@ describe('Post', () => {
 
   it('Renders a like button which likes the post', async () => {
     const someOtherUser = { id: 'other-id' };
-    const likePost = jest.fn();
+    const likePost = vi.fn();
     renderPost({ likePost, isEditable: false, user: someOtherUser });
     expect(screen.getByText('Like', { role: 'button' })).toBeInTheDocument();
     await userEvent.click(screen.getByText('Like', { role: 'button' }));
@@ -285,7 +291,7 @@ describe('Post', () => {
 
   it('Renders an un-like button which un-likes the post if this post is already liked', async () => {
     const someOtherUser = { id: 'other-id' };
-    const unlikePost = jest.fn();
+    const unlikePost = vi.fn();
     renderPost({
       unlikePost,
       isEditable: false,
@@ -304,12 +310,12 @@ describe('Post', () => {
   });
 
   it('Renders a more button if this is a post that I can edit (e.g. my own post) which toggles a "more action" menu', async () => {
-    const confirmMock = jest.spyOn(global, 'confirm').mockReturnValueOnce(true);
+    const confirmMock = vi.spyOn(global, 'confirm').mockReturnValueOnce(true);
 
-    const toggleEditingPost = jest.fn();
-    const toggleModeratingComments = jest.fn();
-    const disableComments = jest.fn();
-    const deletePost = jest.fn();
+    const toggleEditingPost = vi.fn();
+    const toggleModeratingComments = vi.fn();
+    const disableComments = vi.fn();
+    const deletePost = vi.fn();
     renderPost({
       isEditable: true,
       isModeratable: true,
@@ -344,12 +350,12 @@ describe('Post', () => {
   });
 
   it('Renders a more button if this is a post that I can moderati (e.g. post in my groups) which toggles a "more action" menu', async () => {
-    const confirmMock = jest.spyOn(global, 'confirm').mockReturnValueOnce(true);
+    const confirmMock = vi.spyOn(global, 'confirm').mockReturnValueOnce(true);
 
-    const toggleEditingPost = jest.fn();
-    const toggleModeratingComments = jest.fn();
-    const disableComments = jest.fn();
-    const deletePost = jest.fn();
+    const toggleEditingPost = vi.fn();
+    const toggleModeratingComments = vi.fn();
+    const disableComments = vi.fn();
+    const deletePost = vi.fn();
     renderPost({
       isEditable: false,
       isModeratable: true,
@@ -370,7 +376,7 @@ describe('Post', () => {
   });
 
   it('Lets me enable comments under my post if they are disabled', async () => {
-    const enableComments = jest.fn();
+    const enableComments = vi.fn();
     renderPost({
       isEditable: true,
       commentsDisabled: true,
@@ -386,7 +392,7 @@ describe('Post', () => {
 
   it('Renders a hide button which hides the post', async () => {
     const someOtherUser = { id: 'other-id' };
-    const hidePost = jest.fn();
+    const hidePost = vi.fn();
     renderPost({
       user: someOtherUser,
       isInHomeFeed: true,
@@ -401,7 +407,7 @@ describe('Post', () => {
 
   it('Renders a un-hide button which unhides the post', async () => {
     const someOtherUser = { id: 'other-id' };
-    const unhidePost = jest.fn();
+    const unhidePost = vi.fn();
     renderPost({
       user: someOtherUser,
       isInHomeFeed: true,
@@ -416,7 +422,7 @@ describe('Post', () => {
   });
 
   it('Renders a textarea with post text when editing the post', async () => {
-    const cancelEditingPost = jest.spyOn(actionCreators, 'cancelEditingPost');
+    const cancelEditingPost = vi.spyOn(actionCreators, 'cancelEditingPost');
     const { rerender } = renderPost({ isEditable: true });
 
     await userEvent.click(screen.getByText(/More/, { role: 'button' }));
@@ -430,7 +436,7 @@ describe('Post', () => {
   });
 
   it('Lets me edit text of my post by typing with Shift+Enter when "submitMode" is "enter"', async () => {
-    const saveEditingPost = jest.spyOn(actionCreators, 'saveEditingPost');
+    const saveEditingPost = vi.spyOn(actionCreators, 'saveEditingPost');
     renderPost({
       isEditing: true,
       isEditable: true,
@@ -447,7 +453,7 @@ describe('Post', () => {
   });
 
   it('Lets me edit text of my post by typing with Alt+Enter when "submitMode" is "enter"', async () => {
-    const saveEditingPost = jest.spyOn(actionCreators, 'saveEditingPost');
+    const saveEditingPost = vi.spyOn(actionCreators, 'saveEditingPost');
     renderPost({
       isEditing: true,
       isEditable: true,
@@ -464,7 +470,7 @@ describe('Post', () => {
   });
 
   it('Lets me submit text of my post by Ctrl+Enter typing when "submitMode" is "ctrl+enter"', async () => {
-    const saveEditingPost = jest.spyOn(actionCreators, 'saveEditingPost');
+    const saveEditingPost = vi.spyOn(actionCreators, 'saveEditingPost');
     renderPost(
       {
         isEditing: true,
@@ -487,7 +493,7 @@ describe('Post', () => {
   });
 
   it('Lets me submit text of my post by Meta+Enter typing when "submitMode" is "ctrl+enter"', async () => {
-    const saveEditingPost = jest.spyOn(actionCreators, 'saveEditingPost');
+    const saveEditingPost = vi.spyOn(actionCreators, 'saveEditingPost');
     renderPost(
       {
         isEditing: true,

@@ -1,4 +1,4 @@
-/* global describe, it, expect, jest, beforeEach */
+/* global describe, it, expect, vi, beforeEach */
 import { render, screen, fireEvent } from '@testing-library/react';
 import * as reactRedux from 'react-redux';
 
@@ -84,8 +84,8 @@ const renderUserProfileHead = (props = {}) => {
 };
 
 describe('UserProfileHead', () => {
-  const useSelectorMock = jest.spyOn(reactRedux, 'useSelector');
-  const useDispatchMock = jest.spyOn(reactRedux, 'useDispatch');
+  const useSelectorMock = vi.spyOn(reactRedux, 'useSelector');
+  const useDispatchMock = vi.spyOn(reactRedux, 'useDispatch');
 
   beforeEach(() => {
     useSelectorMock.mockClear();
@@ -190,7 +190,7 @@ describe('UserProfileHead', () => {
       },
     };
     useSelectorMock.mockImplementation((selector) => selector(fakeState));
-    const unbanMock = jest.spyOn(actionCreators, 'unban');
+    const unbanMock = vi.spyOn(actionCreators, 'unban');
 
     renderUserProfileHead();
     expect(screen.getByText('You’ve blocked this user')).toBeDefined();
@@ -230,8 +230,8 @@ describe('UserProfileHead', () => {
       },
     };
     useSelectorMock.mockImplementation((selector) => selector(fakeState));
-    const kickMock = jest.spyOn(actionCreators, 'unsubscribeFromMe');
-    const confirmMock = jest.spyOn(global, 'confirm').mockReturnValueOnce(true);
+    const kickMock = vi.spyOn(actionCreators, 'unsubscribeFromMe');
+    const confirmMock = vi.spyOn(global, 'confirm').mockReturnValueOnce(true);
 
     renderUserProfileHead();
     expect(screen.getByText('Subscribed to you')).toBeDefined();
@@ -292,8 +292,8 @@ describe('UserProfileHead', () => {
       },
     };
     useSelectorMock.mockImplementation((selector) => selector(fakeState));
-    const revokeMock = jest.spyOn(actionCreators, 'revokeSentRequest');
-    const confirmMock = jest.spyOn(global, 'confirm').mockReturnValueOnce(true);
+    const revokeMock = vi.spyOn(actionCreators, 'revokeSentRequest');
+    const confirmMock = vi.spyOn(global, 'confirm').mockReturnValueOnce(true);
 
     renderUserProfileHead();
     expect(screen.getByText('revoke')).toBeDefined();
@@ -316,8 +316,8 @@ describe('UserProfileHead', () => {
       },
     };
     useSelectorMock.mockImplementation((selector) => selector(fakeState));
-    const unsubscribeMock = jest.spyOn(actionCreators, 'unsubscribe');
-    const confirmMock = jest.spyOn(global, 'confirm').mockReturnValueOnce(true);
+    const unsubscribeMock = vi.spyOn(actionCreators, 'unsubscribe');
+    const confirmMock = vi.spyOn(global, 'confirm').mockReturnValueOnce(true);
 
     renderUserProfileHead();
     expect(screen.getByText('You are subscribed')).toBeDefined();
@@ -347,7 +347,7 @@ describe('UserProfileHead', () => {
       },
     };
     useSelectorMock.mockImplementation((selector) => selector(fakeState));
-    const unhideMock = jest.spyOn(actionCreators, 'hidePostsByCriterion');
+    const unhideMock = vi.spyOn(actionCreators, 'hidePostsByCriterion');
 
     renderUserProfileHead();
     expect(screen.getByText('Unhide in Home')).toBeDefined();
@@ -405,7 +405,7 @@ describe('UserProfileHead', () => {
       },
     };
     useSelectorMock.mockImplementation((selector) => selector(fakeState));
-    const pinMock = jest.spyOn(actionCreators, 'togglePinnedGroup');
+    const pinMock = vi.spyOn(actionCreators, 'togglePinnedGroup');
 
     renderUserProfileHead();
     expect(screen.getByText('Public group')).toBeDefined();

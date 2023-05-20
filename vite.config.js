@@ -1,22 +1,27 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
-import defaultConfig from './config/default';
 
-export default defineConfig(({ mode }) => {
-  return {
-    plugins: [react()],
-    build: { outDir: '_dist' },
-    define: {
-      'process.env.TZ': JSON.stringify('UTC'),
-      'process.env.NODE_ENV': JSON.stringify(
-        process.env.NODE_ENV === 'production' ? 'production' : 'development',
-      ),
-      ...(mode === 'test'
-        ? { CONFIG: JSON.stringify(defaultConfig) }
-        : { 'process.platform': JSON.stringify('web') }),
+export default defineConfig(({ mode }) => ({
+  plugins: [react()],
+  build: { outDir: '_dist' },
+  define:
+    mode !== 'test'
+      ? {
+          'process.platform': JSON.stringify('web'),
+          'process.env.NODE_ENV': JSON.stringify(mode),
+        }
+      : {},
+  test: {
+    include: ['test/unit/**/*.{js,jsx}', 'test/jest/**/*.test.{js,jsx}'],
+    singleThread: true,
+    globals: true,
+    clearMocks: true,
+    environment: 'jsdom',
+    setupFiles: './test/vitest-setup.js',
+    css: {
+      modules: {
+        classNameStrategy: 'non-scoped',
+      },
     },
-    test: {
-      include: ['**/*.js'],
-    },
-  };
-});
+  },
+}));

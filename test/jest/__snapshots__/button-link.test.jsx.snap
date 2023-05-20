@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ButtonLink Doesn't work if disabled 1`] = `
+exports[`ButtonLink > Doesn't work if disabled 1`] = `
 <DocumentFragment>
   <a
     aria-disabled="true"
@@ -12,7 +12,7 @@ exports[`ButtonLink Doesn't work if disabled 1`] = `
 </DocumentFragment>
 `;
 
-exports[`ButtonLink Works correctly 1`] = `
+exports[`ButtonLink > Works correctly 1`] = `
 <DocumentFragment>
   <a
     aria-disabled="false"

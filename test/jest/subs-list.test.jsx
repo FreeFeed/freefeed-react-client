@@ -1,4 +1,4 @@
-/* global jest, describe, it, expect */
+/* global vi, describe, it, expect */
 import { render } from '@testing-library/react';
 import * as reactRedux from 'react-redux';
 
@@ -12,7 +12,7 @@ const defaultState = {
 
 describe('SubsList', () => {
   it('Renders a list of subscribers', () => {
-    const useSelectorMock = jest.spyOn(reactRedux, 'useSelector');
+    const useSelectorMock = vi.spyOn(reactRedux, 'useSelector');
     useSelectorMock.mockImplementation((selector) => selector(defaultState));
 
     const { asFragment } = render(

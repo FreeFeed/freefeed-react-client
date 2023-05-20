@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`LinkPreview Does show an Embedly preview for some random website if embedly is allowed 1`] = `
+exports[`LinkPreview > Does show an Embedly preview for some random website if embedly is allowed 1`] = `
 <DocumentFragment>
   <div
     class="folder-container"
@@ -30,13 +30,13 @@ exports[`LinkPreview Does show an Embedly preview for some random website if emb
 </DocumentFragment>
 `;
 
-exports[`LinkPreview Doesn't show a preview for freefeed.net 1`] = `<DocumentFragment />`;
+exports[`LinkPreview > Doesn't show a preview for freefeed.net 1`] = `<DocumentFragment />`;
 
-exports[`LinkPreview Doesn't show a preview for reddit.com 1`] = `<DocumentFragment />`;
+exports[`LinkPreview > Doesn't show a preview for reddit.com 1`] = `<DocumentFragment />`;
 
-exports[`LinkPreview Doesn't show a preview for some random website 1`] = `<DocumentFragment />`;
+exports[`LinkPreview > Doesn't show a preview for some random website 1`] = `<DocumentFragment />`;
 
-exports[`LinkPreview Doesn't show a video preview if network request has failed 1`] = `
+exports[`LinkPreview > Doesn't show a video preview if network request has failed 1`] = `
 <DocumentFragment>
   <div
     class="video-preview link-preview-content load-error"
@@ -47,7 +47,7 @@ exports[`LinkPreview Doesn't show a video preview if network request has failed 
 </DocumentFragment>
 `;
 
-exports[`LinkPreview Shows a Google Docs preview 1`] = `
+exports[`LinkPreview > Shows a Google Docs preview 1`] = `
 <DocumentFragment>
   <div
     class="google-docs-preview link-preview-content"
@@ -65,7 +65,7 @@ exports[`LinkPreview Shows a Google Docs preview 1`] = `
 </DocumentFragment>
 `;
 
-exports[`LinkPreview Shows a Soundcloud preview 1`] = `
+exports[`LinkPreview > Shows a Soundcloud preview 1`] = `
 <DocumentFragment>
   <div
     class="soundcloud-preview link-preview-content"
@@ -92,7 +92,7 @@ exports[`LinkPreview Shows a Soundcloud preview 1`] = `
 </DocumentFragment>
 `;
 
-exports[`LinkPreview Shows a Spotify preview 1`] = `
+exports[`LinkPreview > Shows a Spotify preview 1`] = `
 <DocumentFragment>
   <div
     class="spotify-preview link-preview-content"
@@ -109,7 +109,7 @@ exports[`LinkPreview Shows a Spotify preview 1`] = `
 </DocumentFragment>
 `;
 
-exports[`LinkPreview Shows a Telegram preview 1`] = `
+exports[`LinkPreview > Shows a Telegram preview 1`] = `
 <DocumentFragment>
   <div
     class="folder-container"
@@ -137,7 +137,7 @@ exports[`LinkPreview Shows a Telegram preview 1`] = `
 </DocumentFragment>
 `;
 
-exports[`LinkPreview Shows a Tiktok preview 1`] = `
+exports[`LinkPreview > Shows a Tiktok preview 1`] = `
 <DocumentFragment>
   <div
     class="folder-container"
@@ -196,7 +196,7 @@ exports[`LinkPreview Shows a Tiktok preview 1`] = `
 </DocumentFragment>
 `;
 
-exports[`LinkPreview Shows a Twitter preview 1`] = `
+exports[`LinkPreview > Shows a Twitter preview 1`] = `
 <DocumentFragment>
   <div
     class="folder-container"
@@ -224,7 +224,7 @@ exports[`LinkPreview Shows a Twitter preview 1`] = `
 </DocumentFragment>
 `;
 
-exports[`LinkPreview Shows a Wikipedia preview 1`] = `
+exports[`LinkPreview > Shows a Wikipedia preview 1`] = `
 <DocumentFragment>
   <div
     class="link-preview-content"
@@ -270,7 +270,7 @@ exports[`LinkPreview Shows a Wikipedia preview 1`] = `
 </DocumentFragment>
 `;
 
-exports[`LinkPreview Shows a Yandex Music preview 1`] = `
+exports[`LinkPreview > Shows a Yandex Music preview 1`] = `
 <DocumentFragment>
   <iframe
     class="yandex-music-preview link-preview-content"
@@ -283,7 +283,7 @@ exports[`LinkPreview Shows a Yandex Music preview 1`] = `
 </DocumentFragment>
 `;
 
-exports[`LinkPreview Shows a video preview for Coub 1`] = `
+exports[`LinkPreview > Shows a video preview for Coub 1`] = `
 <DocumentFragment>
   <div
     class="video-preview link-preview-content"
@@ -323,7 +323,7 @@ exports[`LinkPreview Shows a video preview for Coub 1`] = `
 </DocumentFragment>
 `;
 
-exports[`LinkPreview Shows a video preview for Gfycat 1`] = `
+exports[`LinkPreview > Shows a video preview for Gfycat 1`] = `
 <DocumentFragment>
   <div
     class="video-preview link-preview-content"
@@ -363,7 +363,7 @@ exports[`LinkPreview Shows a video preview for Gfycat 1`] = `
 </DocumentFragment>
 `;
 
-exports[`LinkPreview Shows a video preview for Giphy 1`] = `
+exports[`LinkPreview > Shows a video preview for Giphy 1`] = `
 <DocumentFragment>
   <div
     class="video-preview link-preview-content"
@@ -389,7 +389,7 @@ exports[`LinkPreview Shows a video preview for Giphy 1`] = `
 </DocumentFragment>
 `;
 
-exports[`LinkPreview Shows a video preview for Vimeo 1`] = `
+exports[`LinkPreview > Shows a video preview for Vimeo 1`] = `
 <DocumentFragment>
   <div
     class="video-preview link-preview-content"
@@ -429,7 +429,7 @@ exports[`LinkPreview Shows a video preview for Vimeo 1`] = `
 </DocumentFragment>
 `;
 
-exports[`LinkPreview Shows a video preview for Youtube 1`] = `
+exports[`LinkPreview > Shows a video preview for Youtube 1`] = `
 <DocumentFragment>
   <div
     class="video-preview link-preview-content"
@@ -469,7 +469,7 @@ exports[`LinkPreview Shows a video preview for Youtube 1`] = `
 </DocumentFragment>
 `;
 
-exports[`LinkPreview Shows a video preview for Youtube 2`] = `
+exports[`LinkPreview > Shows a video preview for Youtube 2`] = `
 <DocumentFragment>
   <div
     class="video-preview link-preview-content"
@@ -503,7 +503,7 @@ exports[`LinkPreview Shows a video preview for Youtube 2`] = `
 </DocumentFragment>
 `;
 
-exports[`LinkPreview Shows an Apple Music preview 1`] = `
+exports[`LinkPreview > Shows an Apple Music preview 1`] = `
 <DocumentFragment>
   <div
     class="apple-music-preview link-preview-content"
@@ -520,7 +520,7 @@ exports[`LinkPreview Shows an Apple Music preview 1`] = `
 </DocumentFragment>
 `;
 
-exports[`LinkPreview Shows an Instagram preview 1`] = `
+exports[`LinkPreview > Shows an Instagram preview 1`] = `
 <DocumentFragment>
   <div
     class="folder-container"

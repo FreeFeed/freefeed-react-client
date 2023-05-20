@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Post Renders a post and doesn't blow up 1`] = `
+exports[`Post > Renders a post and doesn't blow up 1`] = `
 <DocumentFragment>
   <div
     aria-label="Public post by author with 0 comments and 0 likes written on March 14th, 2021"
@@ -171,7 +171,7 @@ exports[`Post Renders a post and doesn't blow up 1`] = `
 </DocumentFragment>
 `;
 
-exports[`Post Renders a textarea with post text when editing the post 1`] = `
+exports[`Post > Renders a textarea with post text when editing the post 1`] = `
 <div
   aria-label="Post body"
   class="post-body"

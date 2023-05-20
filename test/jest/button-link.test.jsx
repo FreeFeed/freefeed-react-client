@@ -1,10 +1,10 @@
-/* global jest, describe, it, expect */
+/* global vi, describe, it, expect */
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ButtonLink } from '../../src/components/button-link';
 
 describe('ButtonLink', () => {
   it('Works correctly', () => {
-    const onClick = jest.fn();
+    const onClick = vi.fn();
     const { asFragment } = render(
       <ButtonLink id="some-id" className="some-class" onClick={onClick}>
         Click me!
@@ -28,7 +28,7 @@ describe('ButtonLink', () => {
   });
 
   it("Doesn't work if disabled", () => {
-    const onClick = jest.fn();
+    const onClick = vi.fn();
     const { asFragment } = render(
       <ButtonLink disabled onClick={onClick}>
         Click me!

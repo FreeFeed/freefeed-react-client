@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Spoiler Renders correctly 1`] = `
+exports[`Spoiler > Renders correctly 1`] = `
 <DocumentFragment>
   <span
     class="spoiler-hidden"
@@ -11,7 +11,7 @@ exports[`Spoiler Renders correctly 1`] = `
 </DocumentFragment>
 `;
 
-exports[`Spoiler Renders correctly 2`] = `
+exports[`Spoiler > Renders correctly 2`] = `
 <DocumentFragment>
   <span
     class="spoiler-visible"

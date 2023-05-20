@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Throbber Renders in big size 1`] = `
+exports[`Throbber > Renders in big size 1`] = `
 <DocumentFragment>
   <canvas
     aria-busy="true"
@@ -15,7 +15,7 @@ exports[`Throbber Renders in big size 1`] = `
 </DocumentFragment>
 `;
 
-exports[`Throbber Renders in small size 1`] = `
+exports[`Throbber > Renders in small size 1`] = `
 <DocumentFragment>
   <canvas
     aria-busy="true"

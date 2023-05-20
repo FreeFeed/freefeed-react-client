@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`UserProfileHead Correctly displays that we are mutually subscribed 1`] = `
+exports[`UserProfileHead > Correctly displays that we are mutually subscribed 1`] = `
 <DocumentFragment>
   <div
     class="profile"
@@ -213,7 +213,7 @@ exports[`UserProfileHead Correctly displays that we are mutually subscribed 1`] 
 </DocumentFragment>
 `;
 
-exports[`UserProfileHead Renders an error message if user is not found 1`] = `
+exports[`UserProfileHead > Renders an error message if user is not found 1`] = `
 <DocumentFragment>
   <div
     class="profile"
@@ -242,7 +242,7 @@ exports[`UserProfileHead Renders an error message if user is not found 1`] = `
 </DocumentFragment>
 `;
 
-exports[`UserProfileHead Renders my own header and doesn't blow up 1`] = `
+exports[`UserProfileHead > Renders my own header and doesn't blow up 1`] = `
 <DocumentFragment>
   <div
     class="profile"
@@ -412,7 +412,7 @@ exports[`UserProfileHead Renders my own header and doesn't blow up 1`] = `
 </DocumentFragment>
 `;
 
-exports[`UserProfileHead Renders nothing if user is not loaded yet 1`] = `
+exports[`UserProfileHead > Renders nothing if user is not loaded yet 1`] = `
 <DocumentFragment>
   <div
     class="profile"

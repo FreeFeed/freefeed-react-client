@@ -1,11 +1,11 @@
-/* global describe, it, expect, jest, beforeEach */
+/* global describe, it, expect, vi, beforeEach */
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import * as reactRedux from 'react-redux';
 
 import cachedFetch from '../../src/components/link-preview/helpers/cached-fetch';
 import LinkPreview from '../../src/components/link-preview/preview';
 
-jest.mock('../../src/components/link-preview/helpers/cached-fetch');
+vi.mock('../../src/components/link-preview/helpers/cached-fetch');
 
 const renderLinkPreview = (props = {}) => {
   const defaultProps = { allowEmbedly: false };
@@ -13,7 +13,7 @@ const renderLinkPreview = (props = {}) => {
 };
 
 describe('LinkPreview', () => {
-  const useSelectorMock = jest.spyOn(reactRedux, 'useSelector');
+  const useSelectorMock = vi.spyOn(reactRedux, 'useSelector');
 
   beforeEach(() => {
     useSelectorMock.mockClear();
