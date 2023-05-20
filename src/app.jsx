@@ -18,20 +18,10 @@ import * as ActionCreators from './redux/action-creators';
 import Layout from './components/layout';
 import Home from './components/home';
 import Discussions from './components/discussions';
-import Summary from './components/summary';
 import SinglePost from './components/single-post';
 import User from './components/user';
-import Subscribers from './components/subscribers';
-import Subscriptions from './components/subscriptions';
-import Groups from './components/groups';
 import SearchFeed from './components/search-feed';
 import PlainFeed from './components/plain-feed';
-import ManageSubscribers from './components/manage-subscribers';
-import Bookmarklet from './components/bookmarklet';
-import CalendarYear from './components/calendar/calendar-year';
-import CalendarMonth from './components/calendar/calendar-month';
-import CalendarDate from './components/calendar/calendar-date';
-import SignupByInvitation from './components/signup-by-invitation';
 import { settingsRoute } from './components/settings/routes';
 import { CALENDAR_START_YEAR } from './utils/calendar-utils';
 
@@ -164,6 +154,17 @@ function InitialLayout({ children }) {
     </div>
   );
 }
+
+const CalendarYear = lazyLoad(() => import('./components/calendar/calendar-year'));
+const CalendarMonth = lazyLoad(() => import('./components/calendar/calendar-month'));
+const CalendarDate = lazyLoad(() => import('./components/calendar/calendar-date'));
+const SignupByInvitation = lazyLoad(() => import('./components/signup-by-invitation'));
+const Bookmarklet = lazyLoad(() => import('./components/bookmarklet'));
+const ManageSubscribers = lazyLoad(() => import('./components/manage-subscribers'));
+const Subscribers = lazyLoad(() => import('./components/subscribers'));
+const Subscriptions = lazyLoad(() => import('./components/subscriptions'));
+const Summary = lazyLoad(() => import('./components/summary'));
+const Groups = lazyLoad(() => import('./components/groups'));
 
 function App() {
   const initialized = useSelector((state) => state.initialized);
