@@ -1,7 +1,3 @@
-/* global CONFIG */
-require('@babel/register');
-require('./config/lib/loader-node');
-
 module.exports = {
   extends: ['eslint:recommended', 'plugin:promise/recommended', 'plugin:prettier/recommended'],
   parser: '@babel/eslint-parser/experimental-worker',
@@ -21,9 +17,8 @@ module.exports = {
     es6: true,
   },
   parserOptions: {
+    requireConfigFile: false,
     babelOptions: {
-      configFile: './.babelrc',
-      plugins: ['@babel/syntax-do-expressions'],
       presets: [['@babel/react', { runtime: 'automatic' }]],
     },
     ecmaVersion: 2019,
@@ -64,14 +59,9 @@ module.exports = {
     'import/no-self-import': 2,
 
     indent: 'off',
-    // By default the eslint-linebreak-style directive requires "windows" linebreaks
-    // on Windows platform and "unix" linebreaks otherwise.
-    // You can override this behavior by setting the eslint.linebreakStyle config
-    // parameter explicitly to "windows" or "unix".
-    'linebreak-style': [
-      2,
-      CONFIG.eslint.linebreakStyle || (process.platform === 'win32' ? 'windows' : 'unix'),
-    ],
+    // This eslint-linebreak-style directive requires "windows" linebreaks on
+    // Windows platform and "unix" linebreaks otherwise.
+    'linebreak-style': [2, process.platform === 'win32' ? 'windows' : 'unix'],
     'max-statements-per-line': [2, { max: 1 }],
     'no-console': 1,
     'no-debugger': 2,
