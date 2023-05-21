@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import classnames from 'classnames';
 import * as _ from 'lodash-es';
-import dateFormat from 'date-fns/format';
 import {
   faExclamationTriangle,
   faLock,
@@ -33,6 +32,7 @@ import { Icon } from '../fontawesome-icons';
 import { UserPicture } from '../user-picture';
 
 import { prepareAsyncFocus } from '../../utils/prepare-async-focus';
+import { format } from '../../utils/date-format';
 import { UnhideOptions, HideLink } from './post-hides-ui';
 import PostMoreLink from './post-more-link';
 import PostLikeLink from './post-like-link';
@@ -217,7 +217,7 @@ class Post extends Component {
       `by ${createdBy.username}`,
       recipientsLabel,
       commentsAndLikesLabel,
-      `written on ${dateFormat(new Date(+createdAt), 'PPP')}`,
+      `written on ${format(new Date(+createdAt), 'MMMM do, yyyy')}`,
     ]
       .filter(Boolean)
       .join(' ');
