@@ -16,6 +16,8 @@ export default defineConfig(({ mode }) => ({
     outDir: '_dist',
     sourcemap: true,
   },
+  server: { host: true, port: 3333 },
+  preview: { host: true, port: 4444 },
   define:
     mode !== 'test'
       ? {
