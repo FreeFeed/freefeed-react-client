@@ -391,13 +391,17 @@ function App() {
   );
 }
 
+const appRoot = document.querySelector('#app');
+appRoot.className = '';
+appRoot.innerHTML = '';
+
 ReactDOM.render(
   <Provider store={store}>
     <DialogProvider>
       <App />
     </DialogProvider>
   </Provider>,
-  document.querySelector('#app'),
+  appRoot,
 );
 
 function checkPath(Component, checker) {
