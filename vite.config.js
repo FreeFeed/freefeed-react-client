@@ -1,11 +1,11 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
-import VitePluginInjectPreload from 'vite-plugin-inject-preload';
+import injectPreload from 'vite-plugin-inject-preload';
 
 export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
-    VitePluginInjectPreload({
+    injectPreload({
       files: [
         { match: /\/app-\w+\.js$/, attributes: { rel: 'modulepreload' } },
         { match: /\/app-\w+\.css$/ },
