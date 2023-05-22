@@ -40,6 +40,19 @@
     </noscript>
 
     <link rel="stylesheet" href="/styles/startup.scss" />
+    <script>
+      {
+        // Google Analytics stub
+        window['GoogleAnalyticsObject'] = 'ga';
+        const ga = (window['ga'] =
+          window['ga'] ||
+          function (...args) {
+            ga.q = ga.q || [];
+            ga.q.push(args);
+          });
+        ga.l = 1 * new Date();
+      }
+    </script>
     <script type="module" src="/src/index.js"></script>
   </head>
   <body>

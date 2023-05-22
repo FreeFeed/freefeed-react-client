@@ -15,6 +15,7 @@ import '../styles/helvetica/dark-theme.scss';
 import configureStore from './redux/configure-store';
 import * as ActionCreators from './redux/action-creators';
 
+// Statically linked pages
 import Layout from './components/layout';
 import Home from './components/home';
 import Discussions from './components/discussions';
@@ -25,118 +26,86 @@ import PlainFeed from './components/plain-feed';
 import { settingsRoute } from './components/settings/routes';
 import { CALENDAR_START_YEAR } from './utils/calendar-utils';
 
+const lazyLoad = (loader, importName = 'default') =>
+  lazyRetry(() => loader().then((m) => ({ default: m[importName] })));
+
+// Dynamically linked pages
+const CalendarYear = lazyLoad(() => import('./components/calendar/calendar-year'));
+const CalendarMonth = lazyLoad(() => import('./components/calendar/calendar-month'));
+const CalendarDate = lazyLoad(() => import('./components/calendar/calendar-date'));
+const SignupByInvitation = lazyLoad(() => import('./components/signup-by-invitation'));
+const Bookmarklet = lazyLoad(() => import('./components/bookmarklet'));
+const ManageSubscribers = lazyLoad(() => import('./components/manage-subscribers'));
+const Subscribers = lazyLoad(() => import('./components/subscribers'));
+const Subscriptions = lazyLoad(() => import('./components/subscriptions'));
+const Summary = lazyLoad(() => import('./components/summary'));
+const Groups = lazyLoad(() => import('./components/groups'));
+
+Sentry.init({
+  dsn: CONFIG.sentry.publicDSN,
+  autoSessionTracking: false,
+});
+
+const store = configureStore();
+
 import { bindRouteActions } from './redux/route-actions';
 import { initUnscroll, safeScrollTo } from './services/unscroll';
 import { lazyRetry } from './utils/retry-promise';
 import { HomeAux } from './components/home-aux';
 import { NotFound } from './components/not-found';
 import { DialogProvider } from './components/dialog/context';
-import { lazyComponent } from './components/lazy-component';
-import { getCookie, setCookie } from './utils';
+
+// Set initial history state.
+// Without this, there can be problems with third-party
+// modules using history API (specifically, PhotoSwipe).
+browserHistory.replace({
+  pathname: location.pathname,
+  search: location.search,
+  hash: location.hash,
+});
+
+const boundRouteActions = bindRouteActions(store.dispatch);
+
+const history = syncHistoryWithStore(browserHistory, store);
 
 const thisYear = new Date().getFullYear();
 
-let boundRouteActions;
-let manageSubscribersActions;
-let inviteActions;
-let subscribersSubscriptionsActions;
-let enterStaticPage;
+const manageSubscribersActions = (next) => {
+  const { userName } = next.params;
+  store.dispatch(ActionCreators.getUserInfo(userName));
+  store.dispatch(ActionCreators.subscribers(userName));
+};
 
-const PrivacyPopup = lazyComponent(() => import('./components/privacy-popup'), {
-  errorMessage: "Couldn't load cookie banner",
-});
+const inviteActions = () => {
+  const { username } = store.getState().user;
+  store.dispatch(ActionCreators.subscriptions(username));
+  store.dispatch(ActionCreators.getInvitationsInfo());
+};
 
-export function initApp() {
-  Sentry.init({
-    dsn: CONFIG.sentry.publicDSN,
-    autoSessionTracking: false,
-  });
+// needed to display mutual friends
+const subscribersSubscriptionsActions = (next, replace) => {
+  const { userName } = next.params;
 
-  const store = configureStore();
-
-  // Set initial history state.
-  // Without this, there can be problems with third-party
-  // modules using history API (specifically, PhotoSwipe).
-  browserHistory.replace({
-    pathname: location.pathname,
-    search: location.search,
-    hash: location.hash,
-  });
-
-  boundRouteActions = bindRouteActions(store.dispatch);
-
-  const history = syncHistoryWithStore(browserHistory, store);
-
-  manageSubscribersActions = (next) => {
-    const { userName } = next.params;
-    store.dispatch(ActionCreators.getUserInfo(userName));
-    store.dispatch(ActionCreators.subscribers(userName));
-  };
-
-  inviteActions = () => {
-    const { username } = store.getState().user;
-    store.dispatch(ActionCreators.subscriptions(username));
-    store.dispatch(ActionCreators.getInvitationsInfo());
-  };
-
-  // needed to display mutual friends
-  subscribersSubscriptionsActions = (next, replace) => {
-    const { userName } = next.params;
-
-    if (userName === store.getState().user.username) {
-      const route = next.routes[next.routes.length - 1];
-      replace(`/friends?show=${route.name}`);
-      return;
-    }
-
-    store.dispatch(ActionCreators.subscribers(userName));
-    store.dispatch(ActionCreators.subscriptions(userName));
-  };
-
-  enterStaticPage = (title) => () => {
-    store.dispatch(ActionCreators.staticPage(title));
-  };
-
-  history.listen(() => safeScrollTo(0, 0));
-
-  initUnscroll();
-  // Fetch server info on application start
-  setTimeout(() => store.dispatch(ActionCreators.getServerInfo()), 0);
-
-  const appRoot = document.querySelector('#app');
-  appRoot.innerHTML = '';
-  appRoot.className = '';
-
-  const PRIVACY_COOKIE_NAME = 'privacy';
-  const PRIVACY_COOKIE_DAYS = 730;
-
-  const hasPrivacyCookie = !!getCookie(PRIVACY_COOKIE_NAME);
-
-  if (hasPrivacyCookie) {
-    // Refresh cookie
-    setCookie(PRIVACY_COOKIE_NAME, 'true', PRIVACY_COOKIE_DAYS, '/');
+  if (userName === store.getState().user.username) {
+    const route = next.routes[next.routes.length - 1];
+    replace(`/friends?show=${route.name}`);
+    return;
   }
 
-  ReactDOM.render(
-    <Provider store={store}>
-      <DialogProvider>
-        <App />
-        {!hasPrivacyCookie && (
-          <PrivacyPopup name={PRIVACY_COOKIE_NAME} days={PRIVACY_COOKIE_DAYS} />
-        )}
-      </DialogProvider>
-    </Provider>,
-    appRoot,
-  );
-}
+  store.dispatch(ActionCreators.subscribers(userName));
+  store.dispatch(ActionCreators.subscriptions(userName));
+};
+
+const enterStaticPage = (title) => () => {
+  store.dispatch(ActionCreators.staticPage(title));
+};
+
+history.listen(() => safeScrollTo(0, 0));
 
 const generateRouteHooks = (callback) => ({
   onEnter: callback,
   onChange: (_, next) => callback(next),
 });
-
-const lazyLoad = (loader, importName = 'default') =>
-  lazyRetry(() => loader().then((m) => ({ default: m[importName] })));
 
 function InitialLayout({ children }) {
   return (
@@ -155,16 +124,9 @@ function InitialLayout({ children }) {
   );
 }
 
-const CalendarYear = lazyLoad(() => import('./components/calendar/calendar-year'));
-const CalendarMonth = lazyLoad(() => import('./components/calendar/calendar-month'));
-const CalendarDate = lazyLoad(() => import('./components/calendar/calendar-date'));
-const SignupByInvitation = lazyLoad(() => import('./components/signup-by-invitation'));
-const Bookmarklet = lazyLoad(() => import('./components/bookmarklet'));
-const ManageSubscribers = lazyLoad(() => import('./components/manage-subscribers'));
-const Subscribers = lazyLoad(() => import('./components/subscribers'));
-const Subscriptions = lazyLoad(() => import('./components/subscriptions'));
-const Summary = lazyLoad(() => import('./components/summary'));
-const Groups = lazyLoad(() => import('./components/groups'));
+initUnscroll();
+// Fetch server info on application start
+setTimeout(() => store.dispatch(ActionCreators.getServerInfo()), 0);
 
 function App() {
   const initialized = useSelector((state) => state.initialized);
@@ -429,6 +391,15 @@ function App() {
   );
 }
 
+ReactDOM.render(
+  <Provider store={store}>
+    <DialogProvider>
+      <App />
+    </DialogProvider>
+  </Provider>,
+  document.querySelector('#app'),
+);
+
 function checkPath(Component, checker) {
   return (props) => {
     return checker(props) ? <Component {...props} /> : <NotFound {...props} />;
@@ -437,7 +408,7 @@ function checkPath(Component, checker) {
 
 function isPostPath({ params: { postId, userName } }) {
   // The FreeFeed's usernames can have up to 25 characters length now, but some
-  // old grops can have up to 27 characters in username
+  // old groups can have up to 27 characters in username
   return (
     /^[a-z\d-]{3,30}$/i.test(userName) &&
     /^[a-f\d]{8}-[a-f\d]{4}-4[a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i.test(postId)
