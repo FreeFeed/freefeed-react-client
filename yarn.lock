@@ -5511,7 +5511,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mime-types@npm:^2.1.12":
+"mime-types@npm:^2.1.12, mime-types@npm:^2.1.35":
   version: 2.1.35
   resolution: "mime-types@npm:2.1.35"
   dependencies:
@@ -6897,6 +6897,7 @@ __metadata:
     validator: ~13.7.0
     vazir-font: ~30.1.0
     vite: ~4.3.7
+    vite-plugin-inject-preload: ~1.3.1
     vitest: ~0.31.1
     whatwg-fetch: ~3.6.2
   languageName: unknown
@@ -8709,6 +8710,17 @@ __metadata:
   bin:
     vite-node: vite-node.mjs
   checksum: f70ffa3f6dcb4937cdc99f59bf360d42de83c556ba9a19eb1c3504ef20db4c1d1afa644d9a8e63240e851c0c95773b64c526bdb3eb4794b5e941ddcd57124aa9
+  languageName: node
+  linkType: hard
+
+"vite-plugin-inject-preload@npm:~1.3.1":
+  version: 1.3.1
+  resolution: "vite-plugin-inject-preload@npm:1.3.1"
+  dependencies:
+    mime-types: ^2.1.35
+  peerDependencies:
+    vite: ^3.0.0 || ^4.0.0
+  checksum: 99b3ea92fc530ede56df81d375624aa4ae7e0b40006b49ee82b0b721b56c306209059eef45d26b8bfcb7b2334f0b4065535a2a4d11b147eed1a5f1e9c88616b0
   languageName: node
   linkType: hard
 
