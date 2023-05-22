@@ -12,7 +12,10 @@ export default defineConfig(({ mode }) => ({
       ],
     }),
   ],
-  build: { outDir: '_dist' },
+  build: {
+    outDir: '_dist',
+    sourcemap: true,
+  },
   define:
     mode !== 'test'
       ? {
