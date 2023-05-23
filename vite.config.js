@@ -3,7 +3,6 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import injectPreload from 'vite-plugin-inject-preload';
 import generateFile from 'vite-plugin-generate-file';
-import compression from 'vite-plugin-compression';
 import pkg from './package.json';
 
 export default defineConfig(({ mode }) => ({
@@ -28,11 +27,6 @@ export default defineConfig(({ mode }) => ({
         },
       },
     ]),
-    compression({
-      verbose: false,
-      algorithm: 'brotliCompress',
-      ext: '.gz',
-    }),
   ],
   build: {
     outDir: '_dist',
