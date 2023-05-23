@@ -5,12 +5,31 @@ import injectPreload from 'vite-plugin-inject-preload';
 import generateFile from 'vite-plugin-generate-file';
 import pkg from './package.json';
 
+// Move the listed node modules into separate named chunks. Format: module name
+// - chunk name.
+const vendorChunks = [
+  // react
+  ['react', 'react'],
+  ['react-dom', 'react'],
+  // react-router
+  ['react-router', 'react-router'],
+  ['react-router-redux', 'react-router'],
+  // libs
+  ['lodash-es', 'libs'],
+  ['date-fns', 'libs'],
+  ['socket.io-client', 'libs'],
+  // analytics
+  ['autotrack', 'analytics'],
+  ['@sentry/react', 'analytics'],
+];
+
 export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     injectPreload({
       files: [
         { match: /\/app-\w+\.js$/, attributes: { rel: 'modulepreload' } },
+        { match: /\/vendor-.+?\.js$/, attributes: { rel: 'modulepreload' } },
         { match: /\/app-\w+\.css$/ },
       ],
     }),
@@ -31,6 +50,17 @@ export default defineConfig(({ mode }) => ({
   build: {
     outDir: '_dist',
     sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          for (const [module, chunk] of vendorChunks) {
+            if (id.includes(`/node_modules/${module}/`)) {
+              return `vendor-${chunk}`;
+            }
+          }
+        },
+      },
+    },
   },
   server: { host: true, port: 3333 },
   preview: { host: true, port: 4444 },
