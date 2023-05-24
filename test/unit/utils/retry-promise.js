@@ -1,4 +1,4 @@
-import { describe, it, before, after } from 'mocha';
+import { describe, it, beforeAll, afterAll } from 'vitest';
 import unexpected from 'unexpected';
 import unexpectedSinon from 'unexpected-sinon';
 import { spy, stub, useFakeTimers } from 'sinon';
@@ -13,8 +13,8 @@ const retry = (fn) => retryIt(fn, 5, 1000);
 
 describe('retry', () => {
   let clock;
-  before(() => (clock = useFakeTimers()));
-  after(() => clock.restore());
+  beforeAll(() => (clock = useFakeTimers()));
+  afterAll(() => clock.restore());
 
   it('should return first result if function succeeds', async () => {
     const fn = stub().returns(Promise.resolve(42));

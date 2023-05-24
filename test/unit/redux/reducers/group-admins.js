@@ -1,4 +1,4 @@
-import { describe, it, before } from 'mocha';
+import { describe, it, beforeAll } from 'vitest';
 import expect from 'unexpected';
 import {
   GET_USER_INFO,
@@ -13,7 +13,7 @@ import { userParser } from '../../../../src/utils';
 describe('Group admins', () => {
   let zeroState, filledState, fillAction;
 
-  before(() => {
+  beforeAll(() => {
     zeroState = groupAdmins(undefined, { type: 'init' });
     fillAction = {
       type: response(GET_USER_INFO),

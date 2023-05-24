@@ -1,6 +1,6 @@
 /* global CONFIG */
 /* eslint-disable complexity */
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { combineReducers } from 'redux';
 

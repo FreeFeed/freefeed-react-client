@@ -1,4 +1,4 @@
-import { describe, it } from 'mocha';
+import { describe, it } from 'vitest';
 import expect from 'unexpected';
 
 import { joinPostData, ommitBubblesThreshold } from '../../../src/components/select-utils';

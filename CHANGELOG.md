@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.119] - Not released
 ### Changed
+- Use Vite as builder and Vitest as test runner. We no longer need Webpack,
+  Mocha, Jest, and (mostly) Babel! Also:
+  - 'lodash' replaced with 'lodash-es' for better tree shaking
+  - Rare used pages, components and libraries now loaded asynchronously
 - Multiple cosmetic corrections preparing the transition to Vite as a builder:
   - Use Dart Sass instead of node-sass
   - Use math.div instead of "/" in SCSS files

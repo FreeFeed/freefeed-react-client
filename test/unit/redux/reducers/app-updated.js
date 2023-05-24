@@ -1,4 +1,4 @@
-import { describe, it } from 'mocha';
+import { describe, it } from 'vitest';
 import expect from 'unexpected';
 import { setAppVersion } from '../../../../src/redux/action-creators';
 import { appUpdated } from '../../../../src/redux/reducers';

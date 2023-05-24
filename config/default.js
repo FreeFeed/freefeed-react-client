@@ -135,14 +135,6 @@ export default {
     cookieValue: '1',
   },
 
-  eslint: {
-    // By default the eslint-linebreak-style directive requires "windows" linebreaks
-    // on Windows platform and "unix" linebreaks otherwise.
-    // You can override this behavior by setting this parameter explicitly
-    // to "windows" or "unix".
-    linebreakStyle: null,
-  },
-
   maxLength: {
     post: 3000,
     comment: 3000,

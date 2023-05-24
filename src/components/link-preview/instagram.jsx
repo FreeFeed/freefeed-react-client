@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 
 import * as aspectRatio from './helpers/size-cache';
 import FoldableContent from './helpers/foldable-content';

@@ -1,6 +1,6 @@
 /* global CONFIG */
 import { browserHistory } from 'react-router';
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 import * as Sentry from '@sentry/react';
 
 import { getPost } from '../services/api';

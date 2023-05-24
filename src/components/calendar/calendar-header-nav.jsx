@@ -1,9 +1,8 @@
 import { Link } from 'react-router';
-import parse from 'date-fns/parse';
-import format from 'date-fns/format';
 
 import { MIN_DATE, MAX_DATE } from '../../utils/calendar-utils';
 
+import { format } from '../../utils/date-format';
 import styles from './calendar.module.scss';
 
 function getDateLink(date, mode) {
@@ -15,7 +14,7 @@ function getDateLabel(date, mode) {
 }
 
 function parseDateString(string) {
-  return parse(string, 'yyyy-MM-dd', new Date());
+  return new Date(string);
 }
 
 function CalendarHeaderNav(props) {

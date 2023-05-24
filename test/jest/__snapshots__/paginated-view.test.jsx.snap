@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`PaginatedView Renders paginated view with links to newer and older entries 1`] = `
+exports[`PaginatedView > Renders paginated view with links to newer and older entries 1`] = `
 <DocumentFragment>
   <div
     class="box-body"
@@ -50,7 +50,7 @@ exports[`PaginatedView Renders paginated view with links to newer and older entr
 </DocumentFragment>
 `;
 
-exports[`PaginatedView Renders user summary links 1`] = `
+exports[`PaginatedView > Renders user summary links 1`] = `
 <h4
   class="user-subheader"
 >

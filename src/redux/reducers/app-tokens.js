@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { omit, without } from 'lodash';
+import { omit, without } from 'lodash-es';
 
 import { fail, response, request } from '../action-helpers';
 import {

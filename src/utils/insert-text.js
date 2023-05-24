@@ -1,4 +1,4 @@
-import { escapeRegExp } from 'lodash';
+import { escapeRegExp } from 'lodash-es';
 
 /**
  * This function inserts 'insertion' into the initial 'text'

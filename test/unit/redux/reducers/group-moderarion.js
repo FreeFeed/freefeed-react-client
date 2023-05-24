@@ -1,4 +1,4 @@
-import { describe, it, beforeEach } from 'mocha';
+import { describe, it, beforeEach } from 'vitest';
 import expect from 'unexpected';
 
 import { feedViewState, posts } from '../../../../src/redux/reducers';

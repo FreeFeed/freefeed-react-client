@@ -2,7 +2,7 @@
 import { useMemo } from 'react';
 import { useField, useForm } from 'react-final-form-hooks';
 import { useSelector, useDispatch } from 'react-redux';
-import { find } from 'lodash';
+import { find } from 'lodash-es';
 
 import { disableBansInGroup, enableBansInGroup, updateGroup } from '../redux/action-creators';
 import { doSequence, initialAsyncState } from '../redux/async-helpers';

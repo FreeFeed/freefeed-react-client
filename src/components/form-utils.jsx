@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { without } from 'lodash';
+import { without } from 'lodash-es';
 
 // Helpers for use with react-final-form-hooks
 

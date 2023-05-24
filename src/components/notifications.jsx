@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
-import { uniq } from 'lodash';
+import { uniq } from 'lodash-es';
 import { faBell } from '@fortawesome/free-regular-svg-icons';
 import { getCommentsByIds, getPostsByIds, showMedia } from '../redux/action-creators';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';

@@ -2,7 +2,7 @@ import { useCallback, useRef, useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { faTimes, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
-import { uniqWith } from 'lodash';
+import { uniqWith } from 'lodash-es';
 import {
   unhidePost,
   removeRecentlyHiddenPost,
