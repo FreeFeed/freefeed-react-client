@@ -196,7 +196,6 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
             <ButtonLink
               className="post-edit-attachments"
               disabled={!canUploadMore}
-              role="button"
               onClick={chooseFiles}
             >
               <Icon icon={faPaperclip} className="upload-icon" /> Add photos or files

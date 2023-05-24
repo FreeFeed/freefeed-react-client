@@ -81,8 +81,10 @@ exports[`Post > Renders a post and doesn't blow up 1`] = `
             class="post-footer-icon"
           >
             <svg
+              aria-disabled="false"
               class="post-lock-icon post-public-icon fa-icon fa-icon-fas-globe-americas"
               role="button"
+              tabindex="0"
               xmlns="http://www.w3.org/2000/svg"
             >
               <title>

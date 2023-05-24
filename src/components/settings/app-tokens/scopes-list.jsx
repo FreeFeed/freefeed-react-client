@@ -5,6 +5,7 @@ import snarkdown from 'snarkdown';
 import { faCaretRight, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { getAppTokensScopes } from '../../../redux/action-creators';
 import { Icon } from '../../fontawesome-icons';
+import { ButtonLink } from '../../button-link';
 import { descriptions } from './scopes-descriptions';
 import styles from './scopes-list.module.scss';
 import { withLayout } from './layout';
@@ -69,9 +70,9 @@ function APIList({ children }) {
   return (
     <div className={styles.apiList}>
       <div>
-        <a onClick={toggle}>
+        <ButtonLink onClick={toggle}>
           <Icon icon={opened ? faCaretDown : faCaretRight} /> Allowed API methods
-        </a>{' '}
+        </ButtonLink>{' '}
         (for developers)
       </div>
       {opened && <div className={styles.apiListMethods}>{children}</div>}

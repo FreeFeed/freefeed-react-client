@@ -5,6 +5,7 @@ import { uniq, without } from 'lodash-es';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { getAppTokensScopes } from '../../../redux/action-creators';
 import { Icon } from '../../fontawesome-icons';
+import { ButtonLink } from '../../button-link';
 
 export const initialFormData = {
   title: '',
@@ -119,9 +120,9 @@ export default function TokenForm({ initialData = initialFormData, onChange }) {
         </>
       ) : (
         <div className="form-group help-block">
-          <a onClick={showRestrictionsClick}>
+          <ButtonLink onClick={showRestrictionsClick}>
             <Icon icon={faCaretRight} /> Set additional restrictions
-          </a>{' '}
+          </ButtonLink>{' '}
           (optional)
         </div>
       )}

@@ -4,15 +4,16 @@ import { preventDefault, pluralForm } from '../../utils';
 import UserName from '../user-name';
 import ErrorBoundary from '../error-boundary';
 import { Icon } from '../fontawesome-icons';
+import { ButtonLink } from '../button-link';
 
 const renderLike = (item, i, items) => (
   <li key={item.id} className="post-like">
     {item.id !== 'more-likes' ? (
       <UserName user={item} />
     ) : (
-      <a className="more-post-likes-link" onClick={preventDefault(item.showMoreLikes)}>
+      <ButtonLink className="more-post-likes-link" onClick={preventDefault(item.showMoreLikes)}>
         {item.omittedLikes} other people
-      </a>
+      </ButtonLink>
     )}
 
     {i < items.length - 2 ? ', ' : i === items.length - 2 ? ' and ' : ' liked this '}

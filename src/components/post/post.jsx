@@ -276,28 +276,28 @@ class Post extends Component {
         <div className="post-footer">
           <div className="post-footer-icon">
             {isPrivate ? (
-              <Icon
+              <ButtonLink
+                tag={Icon}
                 icon={faLock}
                 className="post-lock-icon post-private-icon"
                 title="This entry is private"
                 onClick={this.toggleTimestamps}
-                role="button"
               />
             ) : isProtected ? (
-              <Icon
+              <ButtonLink
+                tag={Icon}
                 icon={faUserFriends}
                 className="post-lock-icon post-protected-icon"
                 title={`This entry is only visible to ${CONFIG.siteTitle} users`}
                 onClick={this.toggleTimestamps}
-                role="button"
               />
             ) : (
-              <Icon
+              <ButtonLink
+                tag={Icon}
                 icon={faGlobeAmericas}
                 className="post-lock-icon post-public-icon"
                 title="This entry is public"
                 onClick={this.toggleTimestamps}
-                role="button"
               />
             )}
           </div>

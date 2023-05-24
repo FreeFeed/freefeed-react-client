@@ -5,6 +5,7 @@ import unexpectedReact from 'unexpected-react';
 import PieceOfText from '../../../src/components/piece-of-text';
 import Spoiler from '../../../src/components/spoiler';
 import Linkify from '../../../src/components/linkify';
+import { ButtonLink } from '../../../src/components/button-link';
 
 const expect = unexpected.clone().use(unexpectedReact);
 
@@ -19,7 +20,7 @@ describe('<PieceOfText>', () => {
       'to have rendered with all children',
       <Linkify>
         <span>First paragraph Second paragraph, first line Second paragraph, second line</span>{' '}
-        <a className="read-more">Expand</a>
+        <ButtonLink className="read-more">Expand</ButtonLink>
       </Linkify>,
     );
 
@@ -60,7 +61,7 @@ describe('<PieceOfText>', () => {
           ПЕРВАЯ 516 И жить торопится и чувствовать спешит. К. 562 Вяземский. I. {`"`}Мой дядя
           самых...
         </span>{' '}
-        <a className="read-more">Read more</a>
+        <ButtonLink className="read-more">Read more</ButtonLink>
       </Linkify>,
     );
 

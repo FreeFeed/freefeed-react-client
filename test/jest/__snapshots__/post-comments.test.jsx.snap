@@ -34,9 +34,11 @@ exports[`PostComments > Renders post comments and doesn't blow up 1`] = `
           class="comment-likes"
         >
           <div
+            aria-disabled="false"
             aria-label="Like this comment"
             class="comment-heart"
             role="button"
+            tabindex="0"
           >
             fontawesome-icon heart
           </div>
@@ -123,9 +125,11 @@ exports[`PostComments > Renders post comments and doesn't blow up 1`] = `
           class="comment-likes"
         >
           <div
+            aria-disabled="false"
             aria-label="Like this comment"
             class="comment-heart"
             role="button"
+            tabindex="0"
           >
             fontawesome-icon heart
           </div>
@@ -249,9 +253,11 @@ exports[`PostComments > Renders post comments and doesn't blow up 1`] = `
           class="comment-likes"
         >
           <div
+            aria-disabled="false"
             aria-label="Like this comment"
             class="comment-heart"
             role="button"
+            tabindex="0"
           >
             fontawesome-icon heart
           </div>

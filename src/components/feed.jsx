@@ -9,6 +9,7 @@ import { PostRecentlyHidden } from './post/post-hides-ui';
 import { joinPostData } from './select-utils';
 import { isMediaAttachment } from './media-viewer';
 import { PostContextProvider } from './post/post-context';
+import { ButtonLink } from './button-link';
 
 const HiddenEntriesToggle = (props) => {
   const entriesForm = props.count > 1 ? 'entries' : 'entry';
@@ -22,7 +23,7 @@ const HiddenEntriesToggle = (props) => {
 
   return (
     <div className="hidden-posts-toggle">
-      <a onClick={props.toggle}>{label}</a>
+      <ButtonLink onClick={props.toggle}>{label}</ButtonLink>
     </div>
   );
 };
