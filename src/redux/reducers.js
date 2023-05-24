@@ -2166,3 +2166,5 @@ export const calendarMonthDays = fromResponse(
   null,
   setOnLocationChange(initialAsyncState),
 );
+
+export { userStatsStatus, userStats } from './reducers/dynamic-user-stats';

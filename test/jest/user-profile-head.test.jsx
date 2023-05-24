@@ -4,6 +4,7 @@ import * as reactRedux from 'react-redux';
 
 import { UserProfileHead } from '../../src/components/user-profile-head';
 import * as actionCreators from '../../src/redux/action-creators';
+import { successAsyncState } from '../../src/redux/async-helpers';
 
 const USERNAME = 'freefeed';
 const UID = 'f8e1e978-4df8-4160-b3da-99b8d49da2f8';
@@ -40,13 +41,6 @@ const defaultState = {
       isProtected: '0',
       type: 'user',
       description: 'IMMA CHARGIN MAH LAZER',
-      statistics: {
-        subscribers: 1,
-        subscriptions: 2,
-        posts: 3,
-        likes: 4,
-        comments: 5,
-      },
       createdAt: '1430708710865',
       updatedAt: '1647366122559',
       youCan: [],
@@ -66,6 +60,14 @@ const defaultState = {
   },
   updateUsersSubscriptionStates: {},
   invitedByMap: {},
+  userStatsStatus: successAsyncState,
+  userStats: {
+    subscribers: 1,
+    subscriptions: 2,
+    posts: 3,
+    likes: 4,
+    comments: 5,
+  },
 };
 
 const renderUserProfileHead = (props = {}) => {
