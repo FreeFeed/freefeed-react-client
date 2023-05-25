@@ -335,6 +335,7 @@ class PostComment extends Component {
           seqNumber={this.state.previewSeqNumber}
           postUrl={this.props.entryUrl}
           close={this.closePreview}
+          arrowsHighlightHandlers={this.props.arrowsHighlightHandlers}
           onCommentLinkClick={this.props.onCommentLinkClick}
           arrowsLeft={this.state.previewLeft}
           arrowsTop={this.state.previewTop}

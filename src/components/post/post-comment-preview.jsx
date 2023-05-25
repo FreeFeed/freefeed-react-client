@@ -25,6 +25,7 @@ export function PostCommentPreview({
   postUrl,
   close,
   onCommentLinkClick,
+  arrowsHighlightHandlers,
   arrowsLeft = 0,
   arrowsTop = 0,
   showMedia,
@@ -43,6 +44,17 @@ export function PostCommentPreview({
     [allComments, postId, seqNumber],
   );
   const author = allUsers[comment?.createdBy];
+
+  const arrowHoverHandlers = useMemo(
+    () => ({
+      hover: (e) => {
+        const arrows = parseInt(e.target.dataset['arrows'] || '');
+        arrowsHighlightHandlers.hover(comment?.id, arrows);
+      },
+      leave: () => arrowsHighlightHandlers.leave(),
+    }),
+    [arrowsHighlightHandlers, comment?.id],
+  );
 
   const commentBody = useMemo(() => {
     if (comment?.hideType === COMMENT_HIDDEN_BANNED) {
@@ -128,7 +140,11 @@ export function PostCommentPreview({
               config={commentReadmoreConfig}
               bonusInfo={commentTail}
             >
-              <PieceOfText text={commentBody} showMedia={showMedia} />
+              <PieceOfText
+                text={commentBody}
+                showMedia={showMedia}
+                arrowHover={arrowHoverHandlers}
+              />
               {commentTail}
             </Expandable>
           )}
