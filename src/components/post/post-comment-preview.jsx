@@ -1,4 +1,5 @@
-import { useCallback, useMemo, useEffect, useRef } from 'react';
+import cn from 'classnames';
+import { useCallback, useMemo, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
@@ -21,7 +22,7 @@ import styles from './post-comment-preview.module.scss';
 
 export function PostCommentPreview({
   postId,
-  seqNumber,
+  seqNumber: initialSeqNumber,
   postUrl,
   close,
   onCommentLinkClick,
@@ -35,6 +36,8 @@ export function PostCommentPreview({
   const allUsers = useSelector((state) => state.users);
   const getCommentStatuses = useSelector((state) => state.getCommentStatuses);
   const frontPreferences = useSelector((state) => state.user.frontendPreferences);
+  const [seqNumber, setSeqNumber] = useState(initialSeqNumber);
+  const [isDeepPreview, setIsDeepPreview] = useState(false);
 
   const boxRef = useRef();
 
@@ -54,6 +57,20 @@ export function PostCommentPreview({
       leave: () => arrowsHighlightHandlers.leave(),
     }),
     [arrowsHighlightHandlers, comment?.id],
+  );
+
+  const onArrowClick = useCallback(
+    (e) => {
+      const arrowsEl = e.currentTarget;
+
+      const arrows = parseInt(arrowsEl.dataset['arrows'] || '');
+      const previewSeqNumber = seqNumber - arrows;
+      if (previewSeqNumber > 0) {
+        setSeqNumber(previewSeqNumber);
+        setIsDeepPreview(true);
+      }
+    },
+    [seqNumber],
   );
 
   const commentBody = useMemo(() => {
@@ -129,7 +146,11 @@ export function PostCommentPreview({
   );
 
   return (
-    <div ref={boxRef} className={styles['box']} style={style}>
+    <div
+      ref={boxRef}
+      className={cn(styles['box'], isDeepPreview && styles['box--deep'])}
+      style={style}
+    >
       {comment ? (
         <>
           {comment.hideType ? (
@@ -144,6 +165,7 @@ export function PostCommentPreview({
                 text={commentBody}
                 showMedia={showMedia}
                 arrowHover={arrowHoverHandlers}
+                arrowClick={onArrowClick}
               />
               {commentTail}
             </Expandable>
