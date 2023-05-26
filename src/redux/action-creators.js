@@ -155,6 +155,15 @@ export function getUserFeed(username, offset = 0) {
   };
 }
 
+export function getUserStats(username) {
+  return {
+    type: ActionTypes.GET_USER_STATS,
+    apiRequest: Api.getUserStats,
+    nonAuthRequest: true,
+    payload: { username },
+  };
+}
+
 export function getNotifications(offset = 0, filter = '') {
   return {
     type: ActionTypes.GET_NOTIFICATIONS,

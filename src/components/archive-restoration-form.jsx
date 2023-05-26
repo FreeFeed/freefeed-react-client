@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import { Icon } from './fontawesome-icons';
 

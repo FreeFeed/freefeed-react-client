@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 import UserName from '../user-name';
+import { ButtonLink } from '../button-link';
 
 // props types
 const userType = PropTypes.shape({
@@ -80,9 +81,9 @@ export default class PostVia extends Component {
           <span>
             {' '}
             and{' '}
-            <a className="post-via-more" onClick={this.expand}>
+            <ButtonLink className="post-via-more" onClick={this.expand}>
               {foldedCount} more
-            </a>
+            </ButtonLink>
           </span>
         ) : (
           false

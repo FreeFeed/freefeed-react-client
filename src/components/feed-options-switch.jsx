@@ -21,6 +21,7 @@ import { faEllipsis } from './fontawesome-custom-icons';
 import menuStyles from './dropdown-menu.module.scss';
 import styles from './feed-options-switch.module.scss';
 import { useDropDown, BOTTOM_LEFT } from './hooks/drop-down';
+import { ButtonLink } from './button-link';
 
 export default function FeedOptionsSwitch() {
   const { pivotRef, menuRef, opened, toggle } = useDropDown({ position: BOTTOM_LEFT });
@@ -61,8 +62,10 @@ export default function FeedOptionsSwitch() {
   }, [dispatch, frontendPreferences, userId]);
 
   return (
-    <div className={styles.switchIcon} role="button" aria-label="Feed ordering options">
-      <Icon icon={faEllipsis} className="dots-icon" onClick={toggle} ref={pivotRef} />
+    <>
+      <ButtonLink className={styles.switchIcon} aria-label="Feed ordering options" onClick={toggle}>
+        <Icon icon={faEllipsis} className="dots-icon" ref={pivotRef} />
+      </ButtonLink>
       {opened && (
         <Portal>
           <ul className={menuStyles.list} ref={menuRef}>
@@ -98,7 +101,7 @@ export default function FeedOptionsSwitch() {
           </ul>
         </Portal>
       )}
-    </div>
+    </>
   );
 }
 
@@ -112,10 +115,10 @@ function DropOption({ children, value, current, clickHandler, checkbox = false }
 
   return (
     <li className={menuStyles.item}>
-      <a className={className} onClick={onClick}>
+      <ButtonLink className={className} onClick={onClick}>
         <Icon className={styles.icon} icon={value === current ? iconOn : iconOff} />
         {children}
-      </a>
+      </ButtonLink>
     </li>
   );
 }

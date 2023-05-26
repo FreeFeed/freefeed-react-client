@@ -1,4 +1,4 @@
-import { describe, it } from 'mocha';
+import { describe, it } from 'vitest';
 import expect from 'unexpected';
 import { Link as TLink } from 'social-text-tokenizer';
 

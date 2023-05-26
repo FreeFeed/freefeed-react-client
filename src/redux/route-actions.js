@@ -24,6 +24,7 @@ import {
   getNotifications,
   getPostIdByOldName,
   getUserSummary,
+  getUserStats,
 } from './action-creators';
 
 //query params are strings, so + hack to convert to number
@@ -57,7 +58,10 @@ export const routeActions = {
   best_of: (next) => getBestOf(getOffset(next)),
   everything: (next) => getEverything(getOffset(next)),
   getUserInfo: (next) => getUserInfo(getUserName(next)),
-  userFeed: (next) => getUserFeed(next.params.userName, getOffset(next)),
+  userFeed: (next) => [
+    getUserFeed(next.params.userName, getOffset(next)),
+    getUserStats(next.params.userName),
+  ],
   userComments: (next) => getUserComments(next.params.userName, getOffset(next)),
   userLikes: (next) => getUserLikes(next.params.userName, getOffset(next)),
   userSummary: (next) => getUserSummary(next.params.userName, next.params.days),
@@ -77,5 +81,11 @@ export const routeActions = {
     ),
 };
 
-export const bindRouteActions = (dispatch) => (route) => (next) =>
-  dispatch(routeActions[route](next));
+export const bindRouteActions = (dispatch) => (route) => (next) => {
+  const actions = routeActions[route](next);
+  if (Array.isArray(actions)) {
+    actions.map(dispatch);
+  } else {
+    dispatch(actions);
+  }
+};

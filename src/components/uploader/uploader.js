@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { uniq } from 'lodash';
+import { uniq } from 'lodash-es';
 import { createAttachment, setUploadError } from '../../redux/action-creators';
 import { useServerValue } from '../hooks/server-info';
 import { useBool } from '../hooks/bool';

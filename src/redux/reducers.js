@@ -1,11 +1,11 @@
 /* global CONFIG */
 /* eslint-disable complexity */
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { combineReducers } from 'redux';
 
 import { userParser, getSummaryPeriod } from '../utils';
-import { parseQuery } from '../utils/search-highlighter';
+import { parseQuery } from '../utils/search-highlighter-lib';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
 import * as FeedOptions from '../utils/feed-options';
 import {
@@ -2166,3 +2166,5 @@ export const calendarMonthDays = fromResponse(
   null,
   setOnLocationChange(initialAsyncState),
 );
+
+export { userStatsStatus, userStats } from './reducers/dynamic-user-stats';

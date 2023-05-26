@@ -2,7 +2,7 @@ import { useCallback, useRef, useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { faTimes, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
-import { uniqWith } from 'lodash';
+import { uniqWith } from 'lodash-es';
 import {
   unhidePost,
   removeRecentlyHiddenPost,
@@ -13,6 +13,7 @@ import { safeScrollBy } from '../../services/unscroll';
 import { Icon } from '../fontawesome-icons';
 import { Throbber } from '../throbber';
 import { hasCriterion, isEqual, USERNAME } from '../../utils/hide-criteria';
+import { ButtonLink } from '../button-link';
 
 export function PostRecentlyHidden({
   id,
@@ -49,13 +50,18 @@ export function PostRecentlyHidden({
   return (
     <div className="post recently-hidden-post">
       <div className="post-body">
-        <a className="recently-hidden-post__close" onClick={doRemove} title="Remove this block">
+        <ButtonLink
+          className="recently-hidden-post__close"
+          onClick={doRemove}
+          title="Remove this block"
+        >
           <Icon icon={faTimes} />
-        </a>
+        </ButtonLink>
         <p ref={firstLine}>
           {isHidden ? (
             <>
-              Post hidden from your Home feed - <a onClick={doUnhidePost}>Un-hide</a>
+              Post hidden from your Home feed -{' '}
+              <ButtonLink onClick={doUnhidePost}>Un-hide</ButtonLink>
             </>
           ) : (
             <>Post still not visible because {hideReason}:</>
@@ -79,10 +85,10 @@ export function PostRecentlyHidden({
           const hidden = hasCriterion(hiddenByCriteria || [], crit);
           return (
             <p key={`${crit.type}:${crit.value}`}>
-              <a onClick={doHideByCriterion(crit, !hidden)}>
+              <ButtonLink onClick={doHideByCriterion(crit, !hidden)}>
                 {hidden ? 'Show' : 'Hide all'} posts{' '}
                 {crit.type === USERNAME ? `from @${crit.value}` : `with ${crit.value}`}
-              </a>
+              </ButtonLink>
             </p>
           );
         })}
@@ -125,9 +131,9 @@ export function HideLink({
   }
 
   return (
-    <a className="post-action" onClick={handler} role="button">
+    <ButtonLink className="post-action" onClick={handler}>
       {text}
-    </a>
+    </ButtonLink>
   );
 }
 
@@ -149,7 +155,7 @@ export function UnhideOptions({
       }
     }
     // eslint-disable-next-line react/jsx-key
-    lines.push(['_post', <a onClick={handleFullUnhide}>{title}</a>]);
+    lines.push(['_post', <ButtonLink onClick={handleFullUnhide}>{title}</ButtonLink>]);
   }
 
   if (hiddenByCriteria) {
@@ -161,7 +167,7 @@ export function UnhideOptions({
         return [
           `${crit.type}:${crit.value}`,
           // eslint-disable-next-line react/jsx-key
-          <a onClick={handleUnhideByCriteria(crit)}>{text}</a>,
+          <ButtonLink onClick={handleUnhideByCriteria(crit)}>{text}</ButtonLink>,
         ];
       }),
     );

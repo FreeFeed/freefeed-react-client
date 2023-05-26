@@ -3,15 +3,12 @@ import { useEffect, memo } from 'react';
 import { useSelector } from 'react-redux';
 import pt from 'prop-types';
 
-import parseISO from 'date-fns/parseISO';
 import toDate from 'date-fns/toDate';
-import format from 'date-fns/format';
 import addMilliseconds from 'date-fns/addMilliseconds';
-import differenceInMinutes from 'date-fns/differenceInMinutes';
-import differenceInDays from 'date-fns/differenceInDays';
 import startOfDay from 'date-fns/startOfDay';
 import addMinutes from 'date-fns/addMinutes';
 
+import { format } from '../utils/date-format';
 import { useBool } from './hooks/bool';
 import { withListener } from './hooks/sub-unsub';
 
@@ -53,7 +50,7 @@ const TimeDisplay = memo(function TimeDisplay({
   const showAmPm = typeof amPm === 'boolean' ? amPm : prefsAmPm;
   const showAbsolute = typeof absolute === 'boolean' ? absolute : prefsAbsolute;
 
-  const time = typeof timeStamp === 'number' ? toDate(timeStamp) : parseISO(timeStamp);
+  const time = typeof timeStamp === 'number' ? toDate(timeStamp) : new Date(timeStamp);
   /**
    * TEST ENVIRONMENT ONLY HACK
    *
@@ -102,7 +99,7 @@ export default TimeDisplay;
  * Date difference formatter
  */
 export function formatDistance(date, now = new Date(), { amPm = false, inline = false } = {}) {
-  const minutes = differenceInMinutes(now, date);
+  const minutes = Math.floor((now - date) / (1000 * 60));
   if (minutes < 1) {
     return inline ? 'just now' : 'Just now';
   }
@@ -120,16 +117,13 @@ export function formatDistance(date, now = new Date(), { amPm = false, inline = 
   }
 
   const dateNoon = startOfDay(date);
-  const days = differenceInDays(now, dateNoon);
+  const days = Math.floor((now - dateNoon) / (1000 * 3600 * 24));
 
   if (days <= 1) {
-    const prefix = do {
-      if (days === 1) {
-        inline ? 'yest. ' : 'Yesterday at ';
-      } else {
-        inline ? 'today ' : 'Today at ';
-      }
-    };
+    const today = inline ? 'today ' : 'Today at ';
+    const yesterday = inline ? 'yest. ' : 'Yesterday at ';
+    const prefix = days === 1 ? yesterday : today;
+
     return prefix + format(date, amPm ? 'h:mm aaaa' : 'H:mm');
   }
   if (days < 4) {

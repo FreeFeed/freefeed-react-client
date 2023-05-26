@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { once } from 'lodash';
+import { once } from 'lodash-es';
 
 import * as heightCache from './helpers/size-cache';
 import FoldableContent from './helpers/foldable-content';

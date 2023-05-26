@@ -3,7 +3,7 @@ import { useMemo, useEffect } from 'react';
 import { Link } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, useField } from 'react-final-form-hooks';
-import { without, uniq, uniqWith } from 'lodash';
+import { without, uniq, uniqWith } from 'lodash-es';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { hashTags as findHashTags } from 'social-text-tokenizer';
 import {

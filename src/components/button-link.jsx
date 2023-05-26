@@ -2,13 +2,16 @@ import { useCallback, memo, forwardRef, useMemo } from 'react';
 
 // Inspired by https://www.w3.org/TR/wai-aria-practices/examples/button/button.html
 export const ButtonLink = memo(
-  forwardRef(function ButtonLink({ onClick: click, disabled = false, ...props }, ref) {
+  forwardRef(function ButtonLink(
+    { tag: Tag = 'a', onClick: click, disabled = false, ...props },
+    ref,
+  ) {
     const kbdHandlers = useKeyboardEvents(
       useCallback((event) => disabled || click(event), [click, disabled]),
     );
 
     return (
-      <a
+      <Tag
         role="button"
         aria-disabled={disabled}
         tabIndex={0}
@@ -19,6 +22,8 @@ export const ButtonLink = memo(
     );
   }),
 );
+
+ButtonLink.displayName = 'ButtonLink';
 
 export function useKeyboardEvents(onClick) {
   return useMemo(

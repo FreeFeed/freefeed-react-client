@@ -8,6 +8,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Experimental
 
 
+## [1.119] - Not released
+### Added
+- Show the next comment in the same comment preview panel when clicking on the
+  "^^" in the comment preview.
+### Changed
+- Use Vite as builder and Vitest as test runner. We no longer need Webpack,
+  Mocha, Jest, and (mostly) Babel! Also:
+  - 'lodash' replaced with 'lodash-es' for better tree shaking
+  - Rare used pages, components and libraries now loaded asynchronously
+- Multiple cosmetic corrections preparing the transition to Vite as a builder:
+  - Use Dart Sass instead of node-sass
+  - Use math.div instead of "/" in SCSS files
+  - Rename files uses JSX syntax from .js to .jsx
+  - Remove non-standard do {} syntax
+  - Use explicit import() statements in the index.jsx
+  - Use relative css imports for styles from node_modules
+  - Update stylelint calls and fix styles issues
+- The users and groups pages now shows dynamically calculated statistics.
+- All "a" links without the "href" attribute and some other pseudo-buttons have
+  been replaced by the ButtonLink component. This improves the keyboard
+  accessibility of the site because ButtonLink is able to focus and click from
+  the keyboard.
+
 ## [1.118] - 2023-05-05
 ### Added
 - Support for Aparat.com video hosting

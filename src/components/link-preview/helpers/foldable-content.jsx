@@ -3,6 +3,7 @@ import { faMinusSquare, faPlusSquare } from '@fortawesome/free-regular-svg-icons
 import classnames from 'classnames';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Icon } from '../../fontawesome-icons';
+import { ButtonLink } from '../../button-link';
 
 const resizeHandlers = new Map();
 
@@ -61,7 +62,7 @@ export default function FoldableContent({ maxUnfoldedHeight = 550, foldedHeight 
             className="preview-expand-icon"
             onClick={toggleExpanded}
           />{' '}
-          <a onClick={toggleExpanded}>{expanded ? 'Fold' : 'Expand'} preview</a>
+          <ButtonLink onClick={toggleExpanded}>{expanded ? 'Fold' : 'Expand'} preview</ButtonLink>
         </div>
       )}
     </div>

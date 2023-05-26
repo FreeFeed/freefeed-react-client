@@ -1,6 +1,6 @@
 $icon-font-path: '../../assets/fonts/bootstrap/';
 
-@import './vazir';
+@import './vazir.scss';
 
 // override default bootstrap fonts
 $font-family-sans-serif: Vazir, 'Helvetica Neue', Helvetica, Arial, sans-serif !default;

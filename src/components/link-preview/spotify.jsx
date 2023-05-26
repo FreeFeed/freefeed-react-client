@@ -15,21 +15,20 @@ export function canShowURL(url) {
 }
 
 export default function SpotifyPreview({ url }) {
-  const embedUrl = do {
-    if (url.match(PLAYLIST_RE)) {
-      url.replace(PLAYLIST_RE, 'https://open.spotify.com/embed/playlist/$1');
-    } else if (url.match(TRACK_RE)) {
-      url.replace(TRACK_RE, 'https://open.spotify.com/embed/track/$1');
-    } else if (url.match(ALBUM_RE)) {
-      url.replace(ALBUM_RE, 'https://open.spotify.com/embed/album/$1');
-    } else if (url.match(ARTIST_RE)) {
-      url.replace(ARTIST_RE, 'https://open.spotify.com/embed/artist/$1');
-    } else if (url.match(EMBED_RE)) {
-      url;
-    } else {
-      return false;
-    }
-  };
+  let embedUrl;
+  if (url.match(PLAYLIST_RE)) {
+    embedUrl = url.replace(PLAYLIST_RE, 'https://open.spotify.com/embed/playlist/$1');
+  } else if (url.match(TRACK_RE)) {
+    embedUrl = url.replace(TRACK_RE, 'https://open.spotify.com/embed/track/$1');
+  } else if (url.match(ALBUM_RE)) {
+    embedUrl = url.replace(ALBUM_RE, 'https://open.spotify.com/embed/album/$1');
+  } else if (url.match(ARTIST_RE)) {
+    embedUrl = url.replace(ARTIST_RE, 'https://open.spotify.com/embed/artist/$1');
+  } else if (url.match(EMBED_RE)) {
+    embedUrl = url;
+  } else {
+    embedUrl = false;
+  }
 
   return (
     <div className="spotify-preview link-preview-content">

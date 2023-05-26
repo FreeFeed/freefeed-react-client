@@ -1,4 +1,4 @@
-import { describe, it } from 'mocha';
+import { describe, it } from 'vitest';
 import expect from 'unexpected';
 
 import { merge } from '../../../config/lib/merge';

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
-import { trim } from 'lodash';
+import { trim } from 'lodash-es';
 import { faRedo, faExclamationTriangle, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -12,6 +12,7 @@ import {
 } from '../../../redux/action-creators';
 import { Icon } from '../../fontawesome-icons';
 import TimeDisplay from '../../time-display';
+import { ButtonLink } from '../../button-link';
 import { TextCopier } from './text-copier';
 
 import styles from './token-row.module.scss';
@@ -72,7 +73,7 @@ export default function TokenRow({ id }) {
       </div>
 
       <p>
-        <strong>{token.title}</strong> (<a onClick={onEdit}>rename</a>)
+        <strong>{token.title}</strong> (<ButtonLink onClick={onEdit}>rename</ButtonLink>)
       </p>
       <div className="small text-muted">
         <p className={styles.allowsBlock}>{scopesTexts.join(', ')}</p>

@@ -10,9 +10,9 @@ import {
   Tooltip,
 } from 'recharts';
 
-import format from 'date-fns/format';
 import startOfYesterday from 'date-fns/startOfYesterday';
 import subYears from 'date-fns/subYears';
+import { format } from '../utils/date-format';
 
 function StatsChart({ type, title }) {
   const [data, setData] = useState(null);

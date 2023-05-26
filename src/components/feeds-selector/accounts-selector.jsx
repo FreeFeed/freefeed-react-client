@@ -1,5 +1,4 @@
 import cn from 'classnames';
-import { createFilter } from 'react-select';
 import { lazyComponent } from '../lazy-component';
 import { Throbber } from '../throbber';
 import styles from './selector.module.scss';
@@ -14,17 +13,36 @@ function Fallback() {
   );
 }
 
-const FixedSelect = lazyComponent(() => import('react-select'), {
-  fallback: <Fallback />,
-  errorMessage: "Couldn't load selector",
-  delay: 0,
-});
+let nativeFilter = () => false;
 
-const CreatableSelect = lazyComponent(() => import('react-select/creatable'), {
-  fallback: <Fallback />,
-  errorMessage: "Couldn't load selector",
-  delay: 0,
-});
+const FixedSelect = lazyComponent(
+  async () => {
+    const m = await import('react-select');
+    nativeFilter = m.createFilter();
+    return m;
+  },
+  {
+    fallback: <Fallback />,
+    errorMessage: "Couldn't load selector",
+    delay: 0,
+  },
+);
+
+const CreatableSelect = lazyComponent(
+  async () => {
+    const [mCreatable, m] = await Promise.all([
+      import('react-select/creatable'),
+      import('react-select'),
+    ]);
+    nativeFilter = m.createFilter();
+    return mCreatable;
+  },
+  {
+    fallback: <Fallback />,
+    errorMessage: "Couldn't load selector",
+    delay: 0,
+  },
+);
 
 export function AccountsSelector({ isCreatable = true, ...props }) {
   const Select = isCreatable ? CreatableSelect : FixedSelect;
@@ -43,8 +61,6 @@ export function AccountsSelector({ isCreatable = true, ...props }) {
     />
   );
 }
-
-const nativeFilter = createFilter();
 
 function customFilter(option, input) {
   if (!input) {

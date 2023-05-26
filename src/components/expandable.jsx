@@ -5,6 +5,7 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { Icon } from './fontawesome-icons';
 
 import ErrorBoundary from './error-boundary';
+import { ButtonLink } from './button-link';
 
 const DEFAULT_MAX_LINES = 8;
 const DEFAULT_ABOVE_FOLD_LINES = 5;
@@ -42,9 +43,9 @@ export default class Expandable extends Component {
           {!expanded && (
             <div className="expand-panel">
               <div className="expand-button">
-                <i onClick={this.userExpand} role="button" aria-hidden>
+                <ButtonLink tag="i" onClick={this.userExpand} aria-hidden>
                   <Icon icon={faChevronDown} className="expand-icon" /> Read more
-                </i>{' '}
+                </ButtonLink>{' '}
                 {this.props.bonusInfo}
               </div>
             </div>

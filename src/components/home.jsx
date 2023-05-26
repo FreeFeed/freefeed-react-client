@@ -8,7 +8,6 @@ import CreatePost from './create-post';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
 import FeedOptionsSwitch from './feed-options-switch';
-import Welcome from './welcome';
 import { SubscriptionRequestsAlert } from './susbscription-requests-alert';
 import ErrorBoundary from './error-boundary';
 import { ButtonLink } from './button-link';
@@ -22,6 +21,11 @@ const ListEditor = lazyComponent(
   () => import('./friends-page/list-editor').then((m) => ({ default: m.ListEditor })),
   { fallback: <p>Loading list editor...</p>, errorMessage: "Couldn't load list editor" },
 );
+
+const Welcome = lazyComponent(() => import('./welcome'), {
+  fallback: <p>Loading page...</p>,
+  errorMessage: "Couldn't load page",
+});
 
 const FeedHandler = (props) => {
   const dispatch = useDispatch();

@@ -1,4 +1,4 @@
-/* global jest, expect, describe, it, beforeEach */
+/* global vi, expect, describe, it, beforeEach */
 import { renderHook } from '@testing-library/react-hooks';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
@@ -17,7 +17,7 @@ const reducer = combineReducers({
 });
 
 describe('useDonationStatus hook', () => {
-  const actionSpy = jest.fn();
+  const actionSpy = vi.fn();
   const testReducer = (state, action) => {
     if (action.type === CLEAR_STATE) {
       state = undefined;

@@ -2,8 +2,9 @@ import { Link } from 'react-router';
 import cx from 'classnames';
 
 import { pluralForm } from '../../utils';
-import { pad, dayOfWeek, daysInMonth, monthNames } from '../../utils/calendar-utils';
+import { pad, dayOfWeek, daysInMonth } from '../../utils/calendar-utils';
 
+import { monthNames } from '../../utils/date-format';
 import styles from './calendar.module.scss';
 
 export default function MonthDaysGrid(props) {

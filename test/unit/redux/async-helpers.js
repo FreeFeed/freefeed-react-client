@@ -1,4 +1,4 @@
-import { describe, it, before } from 'mocha';
+import { describe, it, beforeAll } from 'vitest';
 import expect from 'unexpected';
 
 import {
@@ -57,7 +57,7 @@ describe('Async helpers', () => {
   describe('asyncState reducer', () => {
     const actionType = 'TEST';
     let reducer;
-    before(() => {
+    beforeAll(() => {
       reducer = asyncState(actionType, (state, action) => {
         if (action.type === 'WHAT') {
           return 42;
@@ -122,7 +122,7 @@ describe('Async helpers', () => {
     describe('with default parameters and nextReducer', () => {
       const actionType = 'TEST';
       let reducer;
-      before(() => {
+      beforeAll(() => {
         reducer = asyncStatesMap(actionType, {}, (state, action) => {
           if (action.type === 'WHAT') {
             return 42;
@@ -173,7 +173,7 @@ describe('Async helpers', () => {
     describe('with keyMustExist', () => {
       const actionType = 'TEST';
       let reducer;
-      before(() => {
+      beforeAll(() => {
         reducer = asyncStatesMap(actionType, { keyMustExist: true });
       });
 
@@ -201,7 +201,7 @@ describe('Async helpers', () => {
     describe('with applyState function', () => {
       const actionType = 'TEST';
       let reducer;
-      before(() => {
+      beforeAll(() => {
         reducer = asyncStatesMap(actionType, {
           applyState: (prev = { foo: 42 }, async) => ({ ...prev, async }),
         });

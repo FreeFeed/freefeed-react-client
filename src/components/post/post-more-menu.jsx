@@ -3,9 +3,8 @@ import { Link } from 'react-router';
 import cn from 'classnames';
 import { faLink, faEdit, faSignOutAlt, faAt } from '@fortawesome/free-solid-svg-icons';
 import { faClock, faCommentDots, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
-import { noop } from 'lodash';
+import { noop } from 'lodash-es';
 import { useDispatch } from 'react-redux';
-import format from 'date-fns/format';
 
 import { copyURL } from '../../utils/copy-url';
 import { leaveDirect } from '../../redux/action-creators';
@@ -14,6 +13,7 @@ import { Icon } from '../fontawesome-icons';
 import TimeDisplay from '../time-display';
 
 import styles from '../dropdown-menu.module.scss';
+import { format } from '../../utils/date-format';
 
 // eslint-disable-next-line complexity
 export const PostMoreMenu = forwardRef(function PostMoreMenu(

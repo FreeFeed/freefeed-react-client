@@ -1,7 +1,7 @@
 import { Component, createRef, useCallback } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 
 import { getUserInfo, userCardClosing } from '../redux/action-creators';
 import { initialAsyncState } from '../redux/async-helpers';
@@ -12,6 +12,7 @@ import ErrorBoundary from './error-boundary';
 import { userActions } from './select-utils';
 import { UserPicture } from './user-picture';
 import { useShowBanDialog } from './dialog/ban-dialog';
+import { ButtonLink } from './button-link';
 
 class UserCard extends Component {
   constructor(props) {
@@ -77,6 +78,36 @@ class UserCard extends Component {
     id && this.props.userCardClosing(id);
   }
 
+  renderSubscribeBlock() {
+    const { props } = this;
+
+    if (props.subscribed) {
+      return (
+        <span className="user-card-action">
+          <a onClick={this.handleUnsubscribeClick}>Unsubscribe</a>
+        </span>
+      );
+    } else if (!props.user.isGone) {
+      if (props.user.isPrivate === '1') {
+        if (props.hasRequestBeenSent) {
+          return <span className="user-card-action">Subscription request sent</span>;
+        }
+        return (
+          <span className="user-card-action">
+            <a onClick={this.handleRequestSubscriptionClick}>Request a subscription</a>
+          </span>
+        );
+      }
+      return (
+        <span className="user-card-action">
+          <a onClick={this.handleSubscribeClick}>Subscribe</a>
+        </span>
+      );
+    }
+
+    return null;
+  }
+
   render() {
     const { props } = this;
 
@@ -129,7 +160,7 @@ class UserCard extends Component {
               {props.blocked ? (
                 <div className="user-card-actions">
                   <span>Blocked user - </span>
-                  <a onClick={this.handleUnblockClick}>Un-block</a>
+                  <ButtonLink onClick={this.handleUnblockClick}>Un-block</ButtonLink>
                 </div>
               ) : !props.isItMe ? (
                 <div className="user-card-actions">
@@ -138,30 +169,7 @@ class UserCard extends Component {
                       <Link to={`/filter/direct?to=${props.user.username}`}>Direct message</Link>
                     </span>
                   )}
-                  {do {
-                    if (props.subscribed) {
-                      <span className="user-card-action">
-                        <a onClick={this.handleUnsubscribeClick}>Unsubscribe</a>
-                      </span>;
-                    } else if (!props.user.isGone) {
-                      if (props.user.isPrivate === '1') {
-                        if (props.hasRequestBeenSent) {
-                          <span className="user-card-action">Subscription request sent</span>;
-                        } else {
-                          <span className="user-card-action">
-                            <a onClick={this.handleRequestSubscriptionClick}>
-                              Request a subscription
-                            </a>
-                          </span>;
-                        }
-                      } else {
-                        <span className="user-card-action">
-                          <a onClick={this.handleSubscribeClick}>Subscribe</a>
-                        </span>;
-                      }
-                    }
-                  }}
-
+                  {this.renderSubscribeBlock()}
                   {props.user.type !== 'group' && !props.subscribed ? (
                     <span className="user-card-action">
                       <BlockLink user={props.user} setOpened={props.setOpened} />
@@ -176,9 +184,9 @@ class UserCard extends Component {
 
                   {!props.user.isGone && (
                     <span className="user-card-action">
-                      <a onClick={this.handleShowOrHideClick}>
+                      <ButtonLink onClick={this.handleShowOrHideClick}>
                         {props.hidden ? 'Show' : 'Hide'} posts
-                      </a>
+                      </ButtonLink>
                     </span>
                   )}
                 </div>
@@ -263,5 +271,5 @@ function BlockLink({ user, setOpened }) {
     () => (showBanDialog(), setOpened(false)),
     [setOpened, showBanDialog],
   );
-  return <a onClick={onClick}>Block</a>;
+  return <ButtonLink onClick={onClick}>Block</ButtonLink>;
 }
