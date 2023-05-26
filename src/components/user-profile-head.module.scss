@@ -247,3 +247,11 @@ $actions-padding: 0.75em;
     display: none;
   }
 }
+
+.leftPad {
+  visibility: hidden;
+
+  @media (max-width: 600px) {
+    display: none;
+  }
+}

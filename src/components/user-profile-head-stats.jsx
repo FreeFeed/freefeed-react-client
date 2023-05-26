@@ -3,6 +3,7 @@ import cn from 'classnames';
 
 import { useSelector } from 'react-redux';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { useMemo } from 'react';
 import { pluralForm } from '../utils';
 import styles from './user-profile-head.module.scss';
 import TimeDisplay from './time-display';
@@ -17,6 +18,21 @@ export const UserProfileHeadStats = ({ user, canFollowStatLinks }) => {
   const waiting = useWaiting(1000);
 
   const { username, createdAt, type } = user;
+
+  // Longest (in decimal digits) value of stats
+  const maxDigits = useMemo(
+    () =>
+      loadStatus.success
+        ? Object.keys(statistics).reduce((acc, key) => {
+            if (statistics[key] === null) {
+              return acc;
+            }
+            const len = statistics[key].toString(10).length;
+            return Math.max(len, acc);
+          }, 0)
+        : 0,
+    [loadStatus.success, statistics],
+  );
 
   return (
     <div className={styles.stats}>
@@ -34,12 +50,14 @@ export const UserProfileHeadStats = ({ user, canFollowStatLinks }) => {
               title="subscription"
               linkTo={`/${username}/subscriptions`}
               canFollow={canFollowStatLinks}
+              maxDigits={maxDigits}
             />
             <StatLink
               value={statistics.subscribers}
               title="subscriber"
               linkTo={`/${username}/subscribers`}
               canFollow={canFollowStatLinks}
+              maxDigits={maxDigits}
             />
             <StatLink
               value={statistics.posts}
@@ -51,18 +69,21 @@ export const UserProfileHeadStats = ({ user, canFollowStatLinks }) => {
               }
               canFollow={canFollowStatLinks}
               className={type === 'user' && styles.allPosts}
+              maxDigits={maxDigits}
             />
             <StatLink
               value={statistics.comments}
               title="comment"
               linkTo={`/${username}/comments`}
               canFollow={canFollowStatLinks}
+              maxDigits={maxDigits}
             />
             <StatLink
               value={statistics.likes}
               title="like"
               linkTo={`/${username}/likes`}
               canFollow={canFollowStatLinks}
+              maxDigits={maxDigits}
             />
           </>
         )}
@@ -85,12 +106,27 @@ export const UserProfileHeadStats = ({ user, canFollowStatLinks }) => {
   );
 };
 
-function StatLink({ value, title, linkTo, canFollow, className }) {
+function StatLink({ value, title, linkTo, canFollow, className, maxDigits }) {
   if (value === null) {
     return null;
   }
 
-  let content = pluralForm(value, title);
+  const sValue = value.toString(10);
+  const rValue = (
+    <>
+      {maxDigits > sValue.length && (
+        <span aria-hidden={true} className={styles.leftPad}>
+          {'0'.repeat(maxDigits - sValue.length)}
+        </span>
+      )}
+      {sValue}
+    </>
+  );
+  let content = (
+    <>
+      {rValue} {pluralForm(value, title, null, 'w')}
+    </>
+  );
 
   if (canFollow) {
     content = (
