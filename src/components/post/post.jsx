@@ -346,7 +346,7 @@ class Post extends Component {
               <Icon icon={faShare} className="post-footer-backlink-icon" />
             </div>
             <span className="post-footer-content">
-              <Link href={`/search?q=${encodeURIComponent(props.id)}`}>
+              <Link to={`/search?q=${encodeURIComponent(props.id)}`}>
                 {pluralForm(props.backlinksCount, 'reference')} to this post
               </Link>
             </span>
