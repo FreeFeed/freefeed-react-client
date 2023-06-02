@@ -29,6 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the keyboard.
 ### Fixed
 - The backlink click now doesn't reload a full page.
+- On iOS, the feed selector doesn't focus properly after clicking the Add/Edit
+  button.
 
 ## [1.118] - 2023-05-05
 ### Added
