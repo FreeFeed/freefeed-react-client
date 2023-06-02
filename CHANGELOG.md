@@ -7,8 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
-
-## [1.119] - Not released
+## [1.119] - 2023-06-02
 ### Added
 - Show the next comment in the same comment preview panel when clicking on the
   "^^" in the comment preview.
@@ -30,6 +29,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   been replaced by the ButtonLink component. This improves the keyboard
   accessibility of the site because ButtonLink is able to focus and click from
   the keyboard.
+### Fixed
+- The backlink click now doesn't reload a full page.
+- On iOS, the feed selector doesn't focus properly after clicking the Add/Edit
+  button.
 
 ## [1.118] - 2023-05-05
 ### Added

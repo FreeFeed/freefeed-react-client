@@ -1,7 +1,7 @@
 import cn from 'classnames';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { ButtonLink } from '../button-link';
-import { useBool } from '../hooks/bool';
+import { prepareAsyncFocus } from '../../utils/prepare-async-focus';
 import { DisplayOption, useSelectedOptions } from './options';
 
 // Local styles
@@ -72,7 +72,12 @@ export function Selector({ className, mode, feedNames, fixedFeedNames = [], onCh
   }, [groupOptions, isDirect, meOption, mode, userOptions]);
 
   const startStatic = useMemo(() => isEditing(mode) || values.length > 0, [mode, values.length]);
-  const [showStatic, toggleSelector] = useBool(startStatic);
+  const [showStatic, setShowStatic] = useState(startStatic);
+
+  const toggleSelector = useCallback(() => {
+    prepareAsyncFocus();
+    setShowStatic(false);
+  }, []);
 
   const handleChange = useCallback(
     (opts, action) => {
