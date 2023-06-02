@@ -3,8 +3,7 @@ import { createRef, Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import classnames from 'classnames';
-import _ from 'lodash';
-import dateFormat from 'date-fns/format';
+import * as _ from 'lodash-es';
 import {
   faExclamationTriangle,
   faLock,
@@ -33,6 +32,7 @@ import { Icon } from '../fontawesome-icons';
 import { UserPicture } from '../user-picture';
 
 import { prepareAsyncFocus } from '../../utils/prepare-async-focus';
+import { format } from '../../utils/date-format';
 import { UnhideOptions, HideLink } from './post-hides-ui';
 import PostMoreLink from './post-more-link';
 import PostLikeLink from './post-like-link';
@@ -217,7 +217,7 @@ class Post extends Component {
       `by ${createdBy.username}`,
       recipientsLabel,
       commentsAndLikesLabel,
-      `written on ${dateFormat(new Date(+createdAt), 'PPP')}`,
+      `written on ${format(new Date(+createdAt), 'MMMM do, yyyy')}`,
     ]
       .filter(Boolean)
       .join(' ');
@@ -276,28 +276,28 @@ class Post extends Component {
         <div className="post-footer">
           <div className="post-footer-icon">
             {isPrivate ? (
-              <Icon
+              <ButtonLink
+                tag={Icon}
                 icon={faLock}
                 className="post-lock-icon post-private-icon"
                 title="This entry is private"
                 onClick={this.toggleTimestamps}
-                role="button"
               />
             ) : isProtected ? (
-              <Icon
+              <ButtonLink
+                tag={Icon}
                 icon={faUserFriends}
                 className="post-lock-icon post-protected-icon"
                 title={`This entry is only visible to ${CONFIG.siteTitle} users`}
                 onClick={this.toggleTimestamps}
-                role="button"
               />
             ) : (
-              <Icon
+              <ButtonLink
+                tag={Icon}
                 icon={faGlobeAmericas}
                 className="post-lock-icon post-public-icon"
                 title="This entry is public"
                 onClick={this.toggleTimestamps}
-                role="button"
               />
             )}
           </div>
@@ -346,7 +346,7 @@ class Post extends Component {
               <Icon icon={faShare} className="post-footer-backlink-icon" />
             </div>
             <span className="post-footer-content">
-              <Link href={`/search?q=${encodeURIComponent(props.id)}`}>
+              <Link to={`/search?q=${encodeURIComponent(props.id)}`}>
                 {pluralForm(props.backlinksCount, 'reference')} to this post
               </Link>
             </span>

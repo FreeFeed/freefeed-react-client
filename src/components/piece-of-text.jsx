@@ -7,6 +7,7 @@ import { parseText } from '../utils/parse-text';
 
 import Spoiler from './spoiler';
 import Linkify from './linkify';
+import { ButtonLink } from './button-link';
 
 // Texts longer than thresholdTextLength should be cut to shortenedTextLength
 const thresholdTextLength = 800;
@@ -85,9 +86,9 @@ const getCollapsedText = (text, expandText) => {
         {normalizedText}
       </span>,
       ' ',
-      <a key="read-more" className="read-more" onClick={expandText}>
+      <ButtonLink key="read-more" className="read-more" onClick={expandText}>
         Expand
-      </a>,
+      </ButtonLink>,
     ];
   }
 
@@ -99,9 +100,9 @@ const getCollapsedText = (text, expandText) => {
       {shortenedText}
     </span>,
     ' ',
-    <a key="read-more" className="read-more" onClick={expandText}>
+    <ButtonLink key="read-more" className="read-more" onClick={expandText}>
       Read more
-    </a>,
+    </ButtonLink>,
   ];
 };
 

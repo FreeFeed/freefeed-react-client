@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import * as Sentry from '@sentry/react';
 import { faPlayCircle } from '@fortawesome/free-solid-svg-icons';
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 import { Icon } from '../fontawesome-icons';
 import * as aspectRatio from './helpers/size-cache';
 import cachedFetch from './helpers/cached-fetch';

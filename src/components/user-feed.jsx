@@ -22,8 +22,8 @@ class UserFeed extends Component {
     const isBlocked = viewUser.blocked;
     const isPrivate = viewUser.isPrivate === '1' && !viewUser.subscribed && !viewUser.isItMe;
     const possiblyBlocked =
+      viewUser.type === 'user' &&
       viewUser.isPrivate === '0' &&
-      viewUser.statistics.posts !== '0' &&
       (!('offset' in query) || query.offset === '0');
 
     const emptyFeedMessage = possiblyBlocked && (

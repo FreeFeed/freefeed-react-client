@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 // Single side border-radius
 
 @mixin border-top-radius($radius) {
@@ -80,7 +82,7 @@
 
 // Converts px to rem units
 @function remValue($size) {
-  @return $size / 16px;
+  @return math.div($size, 16px);
 }
 
 @function rem($size) {

@@ -1,11 +1,12 @@
 import { PureComponent } from 'react';
 import classnames from 'classnames';
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 
 import { confirmFirst } from '../utils';
 import UserName from './user-name';
 import { UserPicture } from './user-picture';
 import { Separated } from './separated';
+import { ButtonLink } from './button-link';
 
 class UserTile extends PureComponent {
   handleAcceptClick = () => {
@@ -59,9 +60,9 @@ class UserTile extends PureComponent {
 
         {type == WITH_REQUEST_HANDLES ? (
           <div className="user-actions">
-            <a onClick={this.handleAcceptClick}>Accept</a>
+            <ButtonLink onClick={this.handleAcceptClick}>Accept</ButtonLink>
             <span> - </span>
-            <a onClick={this.handleRejectClick}>Reject</a>
+            <ButtonLink onClick={this.handleRejectClick}>Reject</ButtonLink>
           </div>
         ) : (
           false
@@ -71,17 +72,20 @@ class UserTile extends PureComponent {
           <div className="user-actions">
             {!user.isGone ? (
               <>
-                <a onClick={this.handlePromoteClick} title="Promote user to admin">
+                <ButtonLink onClick={this.handlePromoteClick} title="Promote user to admin">
                   Promote
-                </a>
+                </ButtonLink>
                 <span> - </span>
               </>
             ) : (
               false
             )}
-            <a onClick={this.handleUnsubscribeClick} title="Unsubscribe user from the group">
+            <ButtonLink
+              onClick={this.handleUnsubscribeClick}
+              title="Unsubscribe user from the group"
+            >
               Unsub
-            </a>
+            </ButtonLink>
           </div>
         ) : (
           false
@@ -89,9 +93,9 @@ class UserTile extends PureComponent {
 
         {type == WITH_REMOVE_ADMIN_RIGHTS ? (
           <div className="user-actions">
-            <a onClick={this.handleDemoteClick} title="Demote user from admin">
+            <ButtonLink onClick={this.handleDemoteClick} title="Demote user from admin">
               Demote
-            </a>
+            </ButtonLink>
           </div>
         ) : (
           false
@@ -99,9 +103,9 @@ class UserTile extends PureComponent {
 
         {type == WITH_REVOKE_SENT_REQUEST ? (
           <div className="user-actions">
-            <a onClick={this.handleRevokeClick} title="Revoke sent request">
+            <ButtonLink onClick={this.handleRevokeClick} title="Revoke sent request">
               Revoke
-            </a>
+            </ButtonLink>
           </div>
         ) : (
           false
@@ -111,9 +115,9 @@ class UserTile extends PureComponent {
           <div className="user-actions">
             <Separated separator=" - ">
               {actions.map((a) => (
-                <a onClick={a.handler} key={a.title}>
+                <ButtonLink onClick={a.handler} key={a.title}>
                   {a.title}
-                </a>
+                </ButtonLink>
               ))}
             </Separated>
           </div>

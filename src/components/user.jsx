@@ -2,7 +2,7 @@
 import { useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 import { formatPattern } from 'react-router/es/PatternUtils';
 
 import {

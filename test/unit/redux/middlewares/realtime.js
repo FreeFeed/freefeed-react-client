@@ -1,8 +1,8 @@
-import { describe, it, beforeEach } from 'mocha';
+import { describe, it, beforeEach } from 'vitest';
 import unexpected from 'unexpected';
 import unexpectedSinon from 'unexpected-sinon';
 import { spy, stub } from 'sinon';
-import { noop } from 'lodash';
+import { noop } from 'lodash-es';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 
 import { createRealtimeMiddleware } from '../../../../src/redux/middlewares';

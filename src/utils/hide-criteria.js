@@ -1,4 +1,4 @@
-import { differenceWith, intersectionWith } from 'lodash';
+import { differenceWith, intersectionWith } from 'lodash-es';
 import { normalizeHashtag } from './norm-hashtags';
 
 // A post in the home feed can be hidden by criteria of several types

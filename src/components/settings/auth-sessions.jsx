@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
 import uaParser from 'ua-parser-js';
-import { without } from 'lodash';
+import { without } from 'lodash-es';
 import cn from 'classnames';
 
 import { faBan } from '@fortawesome/free-solid-svg-icons';

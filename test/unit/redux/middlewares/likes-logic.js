@@ -1,4 +1,4 @@
-import { describe, it, beforeEach } from 'mocha';
+import { describe, it, beforeEach } from 'vitest';
 import unexpected from 'unexpected';
 import unexpectedSinon from 'unexpected-sinon';
 import { spy } from 'sinon';

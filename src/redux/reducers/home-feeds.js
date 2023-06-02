@@ -1,4 +1,4 @@
-import { pick, without } from 'lodash';
+import { pick, without } from 'lodash-es';
 
 import {
   response,

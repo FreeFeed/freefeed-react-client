@@ -1,6 +1,6 @@
 import { useCallback, forwardRef, memo } from 'react';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
-import { pick } from 'lodash';
+import { pick } from 'lodash-es';
 import cn from 'classnames';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartO, faComment } from '@fortawesome/free-regular-svg-icons';
@@ -16,6 +16,7 @@ import { Throbber } from './throbber';
 import { useWaiting } from './hooks/waiting';
 import { useCommentLikers } from './comment-likers';
 import { useLongTapHandlers } from './hooks/long-tap';
+import { ButtonLink } from './button-link';
 
 // Do not show clikes list for this interval if data is not available yet
 const CLIKES_LIST_DELAY = 250;
@@ -67,23 +68,23 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
       {/* Heart & likes count */}
       <div className={heartClass}>
         {likes ? (
-          <div
+          <ButtonLink
+            tag="div"
             className="comment-count"
             onClick={likesListToggle}
             ref={countRef}
-            role="button"
             aria-label={pluralForm(likes, 'comment like')}
           >
             {likes}
-          </div>
+          </ButtonLink>
         ) : (
           false
         )}
         {canLike ? (
-          <div
+          <ButtonLink
+            tag="div"
             className="comment-heart"
             onClick={heartClick}
-            role="button"
             aria-label={hasOwnLike ? 'Un-like this comment' : 'Like this comment'}
           >
             <Icon
@@ -91,7 +92,7 @@ export default memo(function CommentIcon({ id, omitBubble = false, reply, mentio
               className={cn('icon', hasOwnLike ? 'liked' : false)}
               title={hasOwnLike ? 'Un-like' : 'Like'}
             />
-          </div>
+          </ButtonLink>
         ) : (
           <div className="comment-heart">
             <Icon icon={faHeartO} className="icon" title="Your own comment" />

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+
+    <!-- Support for FB OpenGraph and Twitter -->
+    <!--#if expr="${request_uri} = /^\/([a-zA-Z0-9]+)\/([a-fA-F0-9\-]{36})/" -->
+    <!--#set var="post_id" value="$2" -->
+    <!--#include virtual="/v2/posts-opengraph/${post_id}" -->
+    <!--#endif -->
+
+    <!-- RSS autodiscovery -->
+    <!--#if expr="${request_uri} = /^\/([a-zA-Z0-9]+)/" -->
+    <!--#set var="username" value="$1" -->
+    <!--#include virtual="/v2/timelines-metatags/${username}" -->
+    <!--#endif -->
+
+    <title>FreeFeed</title>
+
+    <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" sizes="512x512" href="/assets/images/ios/icon_512_512.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="/assets/images/ios/icon_256_256.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="/assets/images/ios/icon_192_192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/ios/icon_180_180.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/images/ios/icon_152_152.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/assets/images/ios/icon_144_144.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/assets/images/ios/icon_120_120.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/images/ios/icon_114_114.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/images/ios/icon_76_76.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/images/ios/icon_72_72.png" />
+
+    <noscript>
+      <style>
+        .js-only {
+          display: none;
+        }
+      </style>
+    </noscript>
+
+    <link rel="stylesheet" href="/styles/startup.scss" />
+    <script>
+      {
+        // Google Analytics stub
+        window['GoogleAnalyticsObject'] = 'ga';
+        const ga = (window['ga'] =
+          window['ga'] ||
+          function (...args) {
+            ga.q = ga.q || [];
+            ga.q.push(args);
+          });
+        ga.l = 1 * new Date();
+      }
+    </script>
+    <script type="module" src="/src/index.js"></script>
+  </head>
+  <body>
+    <script>
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark-theme');
+      }
+    </script>
+    <div id="app" class="startup">
+      <h1 class="startup__logo-box">
+        <a href="/" class="startup__logo-link">FreeFeed</a>
+      </h1>
+      <div class="startup__info">
+        <p class="js-only startup__loading">Loading...</p>
+        <noscript>
+          <div class="startup__alert">
+            <p>Javascript is disabled!</p>
+            <p>
+              Looks like you have JavaScript disabled in your browser. Please enable it to enjoy our
+              service.
+            </p>
+          </div>
+        </noscript>
+        <div class="startup__alert startup__error">
+          <p class="startup__error-text">Something went wrong!</p>
+          <p>
+            Try to <button onclick="location.reload(true)">reload</button> this page or contact
+            support.
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

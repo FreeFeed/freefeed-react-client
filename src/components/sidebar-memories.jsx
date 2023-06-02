@@ -1,6 +1,6 @@
-import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { Link, withRouter } from 'react-router';
+import { format } from '../utils/date-format';
 
 const userRouteNames = new Set([
   'userFeed',

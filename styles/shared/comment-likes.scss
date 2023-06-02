@@ -64,9 +64,12 @@
     margin-right: rem(6px);
   }
 
-  &:not(.liked) {
-    opacity: 0;
-    transition: opacity 0.25s;
+  opacity: 0;
+  transition: opacity 0.2s;
+
+  &.liked,
+  &:focus-within {
+    opacity: 1;
   }
 
   .comment-heart {

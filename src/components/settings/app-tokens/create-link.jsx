@@ -2,7 +2,7 @@ import { stringify } from 'querystring';
 
 import { useState, useCallback } from 'react';
 import { Link } from 'react-router';
-import { trim } from 'lodash';
+import { trim } from 'lodash-es';
 
 import { faAngleRight, faLaptop } from '@fortawesome/free-solid-svg-icons';
 import { Icon } from '../../fontawesome-icons';

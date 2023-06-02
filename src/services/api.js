@@ -1,6 +1,6 @@
 /* global CONFIG */
 import { parse as qsParse } from 'querystring';
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 
 import { getDateForMemoriesRequest } from '../utils/get-date-from-short-string';
 import { userParser } from '../utils';
@@ -89,6 +89,10 @@ export function getUserFeed({ username, ...params }) {
     `${apiRoot}/v2/timelines/${username}?${feedQueryString(params)}`,
     getRequestOptions(),
   );
+}
+
+export function getUserStats({ username }) {
+  return fetch(`${apiRoot}/v2/users/${username}/statistics`, getRequestOptions());
 }
 
 export function getNotifications({ offset, filter }) {

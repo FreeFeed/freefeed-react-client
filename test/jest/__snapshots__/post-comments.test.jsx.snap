@@ -1,0 +1,414 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`PostComments > Renders post comments and doesn't blow up 1`] = `
+<DocumentFragment>
+  <div
+    aria-label="3 comments"
+    class="comments"
+    role="list"
+  >
+    <div
+      aria-hidden="true"
+      class="spacer"
+    >
+      <div
+        class="icon"
+      >
+        fontawesome-icon clock
+      </div>
+      <div
+        class="body"
+      >
+        over 3 years later
+      </div>
+    </div>
+    <div
+      class="comment my-comment"
+      data-author="author"
+      role="comment listitem"
+    >
+      <div
+        class="comment-likes-container"
+      >
+        <div
+          class="comment-likes"
+        >
+          <div
+            aria-disabled="false"
+            aria-label="Like this comment"
+            class="comment-heart"
+            role="button"
+            tabindex="0"
+          >
+            fontawesome-icon heart
+          </div>
+        </div>
+        <time
+          class="comment-time"
+          datetime="2021-04-06T14:40:00.000Z"
+          title="Apr 6, 2021"
+        >
+          fontawesome-icon comment
+        </time>
+      </div>
+      <div
+        class="comment-body"
+      >
+        <div
+          class="expandable expanded"
+        >
+          <span
+            class="Linkify"
+            dir="auto"
+            role="region"
+          >
+            Comment 1 body
+          </span>
+          <span
+            aria-label="Comment by author"
+            class="comment-tail"
+          >
+             - 
+            <span
+              class="comment-tail__item"
+            >
+              <span
+                class="user-name-wrapper"
+              >
+                <a
+                  class=""
+                >
+                  <span
+                    dir="ltr"
+                  >
+                    You
+                  </span>
+                </a>
+              </span>
+            </span>
+             - 
+            <span
+              class="comment-tail__item comment-tail__actions"
+            >
+              <span
+                class="comment-tail__action"
+              >
+                <a
+                  aria-disabled="false"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class="comment-tail__action-link comment-tail__action-link--more"
+                  role="button"
+                  tabindex="0"
+                >
+                  <span
+                    class="root"
+                  >
+                    more
+                  </span>
+                </a>
+              </span>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="comment omit-bubble"
+      data-author="other"
+      role="comment listitem"
+    >
+      <div
+        class="comment-likes-container"
+      >
+        <div
+          class="comment-likes"
+        >
+          <div
+            aria-disabled="false"
+            aria-label="Like this comment"
+            class="comment-heart"
+            role="button"
+            tabindex="0"
+          >
+            fontawesome-icon heart
+          </div>
+        </div>
+        <time
+          class="comment-time"
+          datetime="2021-04-07T07:20:00.000Z"
+          title="Apr 7, 2021"
+        >
+          <span
+            class="comment-icon feed-comment-dot"
+            id="comment-comment2"
+          />
+        </time>
+      </div>
+      <div
+        class="comment-body"
+      >
+        <div
+          class="expandable expanded"
+        >
+          <span
+            class="Linkify"
+            dir="auto"
+            role="region"
+          >
+            <span>
+              <span
+                class="user-name-wrapper"
+              >
+                <a
+                  class=""
+                >
+                  <span
+                    dir="ltr"
+                  >
+                    @author
+                  </span>
+                </a>
+              </span>
+               comment 2
+            </span>
+            <br />
+            <span>
+              Multilinebody
+            </span>
+          </span>
+          <span
+            aria-label="Comment by other"
+            class="comment-tail"
+          >
+             - 
+            <span
+              class="comment-tail__item"
+            >
+              <span
+                class="user-name-wrapper"
+              >
+                <a
+                  class=""
+                >
+                  <span
+                    dir="ltr"
+                  >
+                    other
+                  </span>
+                </a>
+              </span>
+            </span>
+             - 
+            <span
+              class="comment-tail__item comment-tail__actions"
+            >
+              <span
+                class="comment-tail__action"
+              >
+                <a
+                  aria-disabled="false"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class="comment-tail__action-link comment-tail__action-link--more"
+                  role="button"
+                  tabindex="0"
+                >
+                  <span
+                    class="root"
+                  >
+                    more
+                  </span>
+                </a>
+              </span>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      class="spacer"
+    >
+      <div
+        class="icon"
+      >
+        fontawesome-icon clock
+      </div>
+      <div
+        class="body"
+      >
+        5 months later
+      </div>
+    </div>
+    <div
+      class="comment omit-bubble my-comment"
+      data-author="author"
+      role="comment listitem"
+    >
+      <div
+        class="comment-likes-container"
+      >
+        <div
+          class="comment-likes"
+        >
+          <div
+            aria-disabled="false"
+            aria-label="Like this comment"
+            class="comment-heart"
+            role="button"
+            tabindex="0"
+          >
+            fontawesome-icon heart
+          </div>
+        </div>
+        <time
+          class="comment-time"
+          datetime="2021-08-26T17:46:40.000Z"
+          title="Aug 26, 2021"
+        >
+          <span
+            class="comment-icon feed-comment-dot"
+            id="comment-comment3"
+          />
+        </time>
+      </div>
+      <div
+        class="comment-body"
+      >
+        <div
+          class="expandable expanded"
+        >
+          <span
+            class="Linkify"
+            dir="auto"
+            role="region"
+          >
+            <span
+              class="arrow-span"
+              data-arrows="1"
+            >
+              ^
+            </span>
+             response to comment 2
+          </span>
+          <span
+            aria-label="Comment by author"
+            class="comment-tail"
+          >
+             - 
+            <span
+              class="comment-tail__item"
+            >
+              <span
+                class="user-name-wrapper"
+              >
+                <a
+                  class=""
+                >
+                  <span
+                    dir="ltr"
+                  >
+                    You
+                  </span>
+                </a>
+              </span>
+            </span>
+             - 
+            <span
+              class="comment-tail__item comment-tail__actions"
+            >
+              <span
+                class="comment-tail__action"
+              >
+                <a
+                  aria-disabled="false"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class="comment-tail__action-link comment-tail__action-link--more"
+                  role="button"
+                  tabindex="0"
+                >
+                  <span
+                    class="root"
+                  >
+                    more
+                  </span>
+                </a>
+              </span>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      class="spacer"
+    >
+      <div
+        class="icon"
+      >
+        fontawesome-icon clock
+      </div>
+      <div
+        class="body"
+      >
+        over 4 years passed
+      </div>
+    </div>
+    <div
+      class="comment"
+      data-author=""
+      role="comment listitem"
+    >
+      <div
+        class="comment-likes-container"
+      >
+        <span
+          class="comment-time"
+        >
+          fontawesome-icon comment
+        </span>
+      </div>
+      <div
+        class="comment-body"
+        role="form"
+      >
+        <div>
+          <textarea
+            class="comment-textarea"
+            dir="auto"
+            maxlength="3000"
+          />
+        </div>
+        <div>
+          <button
+            aria-disabled="true"
+            aria-label="Submit disabled (textarea is empty)"
+            class="btn btn-default btn-xs comment-post disabled"
+          >
+            Comment
+          </button>
+          <span
+            class="submit-mode-hint"
+          >
+            (Enter for new line)
+          </span>
+          <a
+            aria-disabled="false"
+            class="comment-file-button iconic-button"
+            role="button"
+            tabindex="0"
+            title="Add photo or file"
+          >
+            fontawesome-icon paperclip
+          </a>
+        </div>
+        <div
+          class="container"
+        />
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

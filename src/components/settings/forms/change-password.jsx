@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { Link } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm, useField } from 'react-final-form-hooks';
-import { mapValues } from 'lodash';
+import { mapValues } from 'lodash-es';
 
 import { updatePassword } from '../../../redux/action-creators';
 import { Throbber } from '../../throbber';

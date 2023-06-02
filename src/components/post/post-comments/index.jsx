@@ -11,6 +11,7 @@ import { SignInLink } from '../../sign-in-link';
 import PostComment from '../post-comment';
 import { prepareAsyncFocus } from '../../../utils/prepare-async-focus';
 import { PostContext } from '../post-context';
+import { ButtonLink } from '../../button-link';
 import { CollapseComments } from './collapse-comments';
 import ExpandComments from './expand-comments';
 import { LoadingComments } from './loading-comments';
@@ -120,16 +121,12 @@ export default class PostComments extends Component {
     if (props.comments.length > 2 && !props.post.omittedComments) {
       return (
         <div className="comment">
-          <a
-            className="comment-icon fa-stack"
-            onClick={preventDefault(toggleCommenting)}
-            role="button"
-          >
+          <span className="comment-icon fa-stack">
             <Icon icon={faCommentPlus} />
-          </a>
-          <a className="add-comment-link" onClick={preventDefault(toggleCommenting)} role="button">
+          </span>
+          <ButtonLink className="add-comment-link" onClick={preventDefault(toggleCommenting)}>
             Add comment
-          </a>
+          </ButtonLink>
           {disabledForOthers ? <i> - disabled for others</i> : false}
         </div>
       );

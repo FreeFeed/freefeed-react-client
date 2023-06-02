@@ -2,7 +2,7 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import _ from 'lodash';
+import * as _ from 'lodash-es';
 import memoize from 'memoize-one';
 
 import {

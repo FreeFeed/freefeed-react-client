@@ -1,0 +1,22 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Spoiler > Renders correctly 1`] = `
+<DocumentFragment>
+  <span
+    class="spoiler-hidden"
+    title="This is a spoiler. Click to reveal its contents."
+  >
+    Aeris dies
+  </span>
+</DocumentFragment>
+`;
+
+exports[`Spoiler > Renders correctly 2`] = `
+<DocumentFragment>
+  <span
+    class="spoiler-visible"
+  >
+    Aeris dies
+  </span>
+</DocumentFragment>
+`;

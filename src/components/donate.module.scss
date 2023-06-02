@@ -11,13 +11,13 @@ $color-low: #fdfa77;
 $color-very-low: #fcb169;
 $color-critical: #fa6b4b;
 
-@mixin linkColor($baseColor) {
+@mixin link-color($baseColor) {
   background-color: $baseColor;
-  border-color: mix($baseColor, #000, 90);
+  border-color: mix($baseColor, #000, 90%);
 
   :global(.dark-theme) & {
     background-color: change-color($baseColor, $alpha: 0.4);
-    border-color: change-color(mix($baseColor, #000, 90), $alpha: 0.4);
+    border-color: change-color(mix($baseColor, #000, 90%), $alpha: 0.4);
   }
 }
 
@@ -29,23 +29,27 @@ $color-critical: #fa6b4b;
   padding: 0.2em 0.6em;
   border-radius: 0.2em;
   border: 1px solid;
-  @include linkColor($color-undef);
+  @include link-color($color-undef);
 
   &[data-status='Very good'],
   &[data-status='Good'] {
-    @include linkColor($color-good);
+    @include link-color($color-good);
   }
+
   &[data-status='OK'] {
-    @include linkColor($color-ok);
+    @include link-color($color-ok);
   }
+
   &[data-status='Low'] {
-    @include linkColor($color-low);
+    @include link-color($color-low);
   }
+
   &[data-status='Very low'] {
-    @include linkColor($color-very-low);
+    @include link-color($color-very-low);
   }
+
   &[data-status='Critical'] {
-    @include linkColor($color-critical);
+    @include link-color($color-critical);
   }
 }
 

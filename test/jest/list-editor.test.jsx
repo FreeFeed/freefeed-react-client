@@ -1,4 +1,4 @@
-/* global describe, it, expect, jest, beforeEach */
+/* global describe, it, expect, vi, beforeEach */
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
@@ -61,8 +61,8 @@ const renderListEditor = (props = {}, options = {}) => {
 };
 
 describe('ListEditor', () => {
-  const useSelectorMock = jest.spyOn(reactRedux, 'useSelector');
-  const useDispatchMock = jest.spyOn(reactRedux, 'useDispatch');
+  const useSelectorMock = vi.spyOn(reactRedux, 'useSelector');
+  const useDispatchMock = vi.spyOn(reactRedux, 'useDispatch');
 
   beforeEach(() => {
     useSelectorMock.mockClear();
