@@ -71,11 +71,12 @@ body {
   display: block;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+// Dark theme
+html.dark-theme {
+  color-scheme: dark;
+}
 
+.dark-theme {
   body {
     background-color: #17191c;
   }
