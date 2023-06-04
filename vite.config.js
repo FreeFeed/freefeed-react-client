@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react-swc';
 import injectPreload from 'vite-plugin-inject-preload';
 import generateFile from 'vite-plugin-generate-file';
 import pkg from './package.json';
-import { injectInlineScripts } from './src/vite/inject-inline-scripts';
+import { injectInlineResources } from './src/vite/inject-inline-resources';
 
 // Move the listed node modules into separate named chunks. Format: module name
 // - chunk name.
@@ -34,7 +34,7 @@ export default defineConfig(({ mode }) => ({
         { match: /\/app-\w+\.css$/ },
       ],
     }),
-    injectInlineScripts(),
+    injectInlineResources(),
     mode === 'production' &&
       generateFile([
         {
