@@ -39,28 +39,15 @@
       </style>
     </noscript>
 
-    <link rel="stylesheet" href="/styles/startup.scss" />
-    <script>
-      {
-        // Google Analytics stub
-        window['GoogleAnalyticsObject'] = 'ga';
-        const ga = (window['ga'] =
-          window['ga'] ||
-          function (...args) {
-            ga.q = ga.q || [];
-            ga.q.push(args);
-          });
-        ga.l = 1 * new Date();
-      }
+    <script id="config-patch" type="application/json">
+      <!--#block name="config-patch-stub" -->null<!--# endblock -->
+      <!--#include virtual="/config.json" stub="config-patch-stub" -->
     </script>
+    <script type="inline" src="./src/startup.js"></script>
+    <link rel="stylesheet" href="/styles/startup.scss" />
     <script type="module" src="/src/index.js"></script>
   </head>
   <body>
-    <script>
-      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.documentElement.classList.add('dark-theme');
-      }
-    </script>
     <div id="app" class="startup">
       <h1 class="startup__logo-box">
         <a href="/" class="startup__logo-link">FreeFeed</a>

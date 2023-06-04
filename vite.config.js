@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react-swc';
 import injectPreload from 'vite-plugin-inject-preload';
 import generateFile from 'vite-plugin-generate-file';
 import pkg from './package.json';
+import { injectInlineScripts } from './src/vite/inject-inline-scripts';
 
 // Move the listed node modules into separate named chunks. Format: module name
 // - chunk name.
@@ -33,19 +34,21 @@ export default defineConfig(({ mode }) => ({
         { match: /\/app-\w+\.css$/ },
       ],
     }),
-    generateFile([
-      {
-        type: 'template',
-        output: 'version.txt',
-        template: 'src/version.ejs',
-        data: {
-          name: pkg.name,
-          version: pkg.version,
-          date: new Date().toISOString(),
-          commitHash: execSync('git rev-parse --short HEAD').toString().trim(),
+    injectInlineScripts(),
+    mode === 'production' &&
+      generateFile([
+        {
+          type: 'template',
+          output: 'version.txt',
+          template: 'src/version.ejs',
+          data: {
+            name: pkg.name,
+            version: pkg.version,
+            date: new Date().toISOString(),
+            commitHash: execSync('git rev-parse --short HEAD').toString().trim(),
+          },
         },
-      },
-    ]),
+      ]),
   ],
   build: {
     outDir: '_dist',

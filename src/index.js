@@ -2,10 +2,12 @@ import { loadConfig } from '../config/lib/loader-async';
 
 (async () => {
   try {
-    const scriptRoot = document.currentScript
-      ? document.currentScript.src.replace(/\/[^/]+$/, '')
-      : '';
-    await loadConfig(`${scriptRoot}/config.json`);
+    if (!window.CONFIG_PATCH) {
+      const scriptRoot = document.currentScript
+        ? document.currentScript.src.replace(/\/[^/]+$/, '')
+        : '';
+      await loadConfig(`${scriptRoot}/config.json`);
+    }
 
     const { ga, CONFIG } = window;
     if (CONFIG.analytics.google) {
