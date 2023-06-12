@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the blinking when the page loads.
 ### Fixed
 - Initial layout styles, to prevent jerking while loading
+- Added support for legacy browsers, that doesn't support modern ES features
 
 ## [1.119] - 2023-06-02
 ### Added
