@@ -1,8 +1,9 @@
 import { execSync } from 'child_process';
-import { defineConfig } from 'vite';
+import legacy from '@vitejs/plugin-legacy';
 import react from '@vitejs/plugin-react-swc';
-import injectPreload from 'vite-plugin-inject-preload';
+import { defineConfig } from 'vite';
 import generateFile from 'vite-plugin-generate-file';
+import injectPreload from 'vite-plugin-inject-preload';
 import pkg from './package.json';
 import { injectInlineResources } from './src/vite/inject-inline-resources';
 
@@ -26,6 +27,7 @@ const vendorChunks = [
 
 export default defineConfig(({ mode }) => ({
   plugins: [
+    !process.env.MODERN && legacy(),
     react(),
     injectPreload({
       files: [
