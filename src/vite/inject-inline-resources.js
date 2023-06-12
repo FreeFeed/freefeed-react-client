@@ -1,6 +1,6 @@
-import { join, dirname } from 'path';
+import { dirname, join } from 'path';
+import { build } from 'esbuild';
 import { HTMLElement, parse as parseHTML } from 'node-html-parser';
-import { build } from 'vite';
 
 /**
  * Injects into HTML page all scripts with type="inject" (as IIFE) and all
@@ -14,32 +14,25 @@ export function injectInlineResources() {
     /** @type import("vite").IndexHtmlTransformHook */
     async transformIndexHtml(html, context) {
       const doc = parseHTML(html, { comment: true });
-      const syncScripts = doc.querySelectorAll('script[src][type="inject"]');
-      for (const script of syncScripts) {
+
+      // Inject scripts
+      const inlineScripts = doc.querySelectorAll('script[type="inline"]');
+      for (const script of inlineScripts) {
         const scriptSrc = join(dirname(context.filename), script.getAttribute('src'));
-        const res = await build({
-          plugins: [],
-          build: {
-            sourcemap: false,
-            lib: {
-              entry: scriptSrc,
-              formats: ['iife'],
-              name: 'startup',
-              fileName: 'assets/[name]-[hash]',
-            },
-            rollupOptions: {
-              output: { inlineDynamicImports: false },
-            },
-          },
+        const result = await build({
+          entryPoints: [scriptSrc],
+          bundle: true,
+          minify: true,
+          format: 'iife',
+          target: ['es2015'],
+          write: false,
         });
-
-        const result = res[0].output.find((e) => e.isEntry);
-
-        script.removeAttribute('src');
-        script.removeAttribute('type');
-        script.textContent = result.code;
+        const inlineScript = new HTMLElement('script', {});
+        inlineScript.textContent = result.outputFiles[0].text.trim();
+        script.replaceWith(inlineScript);
       }
 
+      // Inject styles
       const styles = doc.querySelectorAll('link[rel="stylesheet"]');
       for (const style of styles) {
         const src = style.getAttribute('href').replace(/^\//, '');
