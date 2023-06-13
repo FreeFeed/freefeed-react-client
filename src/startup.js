@@ -1,13 +1,14 @@
+// This file is compiled separately. It is inserted directly into index.html.
 import base from '../config/default';
 import { merge } from '../config/lib/merge';
 window.CONFIG = base;
-window.CONFIG_PATCH = null;
+window.CUSTOM_CONFIG = null;
 
-const configPatchElement = document.querySelector('#config-patch');
+const configPatchElement = document.querySelector('#custom-config');
 if (configPatchElement) {
   try {
-    window.CONFIG_PATCH = JSON.parse(configPatchElement.textContent);
-    window.CONFIG = merge(window.CONFIG, window.CONFIG_PATCH);
+    window.CUSTOM_CONFIG = JSON.parse(configPatchElement.textContent);
+    window.CONFIG = merge(window.CONFIG, window.CUSTOM_CONFIG);
   } catch {
     // pass
   }

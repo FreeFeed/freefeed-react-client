@@ -2,7 +2,7 @@ import { loadConfig } from '../config/lib/loader-async';
 
 (async () => {
   try {
-    if (!window.CONFIG_PATCH) {
+    if (!window.CUSTOM_CONFIG) {
       const scriptRoot = document.currentScript
         ? document.currentScript.src.replace(/\/[^/]+$/, '')
         : '';
