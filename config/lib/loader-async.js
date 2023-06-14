@@ -1,7 +1,4 @@
-import base from '../default';
 import { merge } from './merge';
-
-window.CONFIG = base;
 
 export async function loadConfig(path) {
   const resp = await fetch(path, {

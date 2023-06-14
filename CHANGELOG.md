@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.120] - Not released
+### Changed
+- The start script that initiates the configuration and sets the color scheme is
+  now injected into the HTML code. The custom configuration is also injected
+  using SSI, if possible. This allows instant access to the configuration,
+  without an additional HTTP request, and allows the correct color scheme to be
+  applied before the document body starts rendering. This, in turn, gets rid of
+  the blinking when the page loads.
+### Fixed
+- Initial layout styles, to prevent jerking while loading
+- Added support for legacy browsers, that doesn't support modern ES features
+
 ## [1.119] - 2023-06-02
 ### Added
 - Show the next comment in the same comment preview panel when clicking on the

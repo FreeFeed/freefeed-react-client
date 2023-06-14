@@ -1,9 +1,12 @@
+@import './helvetica/functions.scss';
+
 * {
   box-sizing: border-box;
 }
 
 html {
   color-scheme: light;
+  overflow-y: scroll;
 }
 
 body {
@@ -20,10 +23,16 @@ body {
   max-width: 970px;
   padding-inline: 25px;
   margin-inline: auto;
+
+  @media (max-width: 992px) {
+    max-width: 750px;
+    padding-inline: 15px;
+  }
 }
 
 .startup__logo-box {
   font-size: 36px;
+  font-size: fluid(28, 320, 36, 600);
   line-height: 40px;
   font-weight: 500;
   margin-top: 1.25rem;
@@ -62,11 +71,12 @@ body {
   display: block;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+// Dark theme
+html.dark-theme {
+  color-scheme: dark;
+}
 
+.dark-theme {
   body {
     background-color: #17191c;
   }
