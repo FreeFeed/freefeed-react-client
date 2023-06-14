@@ -11,7 +11,7 @@
   @return clamp(
     #{$min-width-val + $val-unit},
     #{$min-width-val + $val-unit} + #{$max-width-val - $min-width-val} * #{'('} #{$full-width} - #{$min-width +
-      $width-unit}#{')'} / ($max-width - $min-width),
+      $width-unit}#{')'} / (#{$max-width - $min-width}),
     #{$max-width-val + $val-unit}
   );
   /* stylelint-enable */

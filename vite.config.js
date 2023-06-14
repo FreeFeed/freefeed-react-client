@@ -1,9 +1,11 @@
 import { execSync } from 'child_process';
-import { defineConfig } from 'vite';
+import legacy from '@vitejs/plugin-legacy';
 import react from '@vitejs/plugin-react-swc';
-import injectPreload from 'vite-plugin-inject-preload';
+import { defineConfig } from 'vite';
 import generateFile from 'vite-plugin-generate-file';
+import injectPreload from 'vite-plugin-inject-preload';
 import pkg from './package.json';
+import { injectInlineResources } from './src/vite/inject-inline-resources';
 
 // Move the listed node modules into separate named chunks. Format: module name
 // - chunk name.
@@ -25,6 +27,7 @@ const vendorChunks = [
 
 export default defineConfig(({ mode }) => ({
   plugins: [
+    !process.env.MODERN && legacy(),
     react(),
     injectPreload({
       files: [
@@ -33,19 +36,21 @@ export default defineConfig(({ mode }) => ({
         { match: /\/app-\w+\.css$/ },
       ],
     }),
-    generateFile([
-      {
-        type: 'template',
-        output: 'version.txt',
-        template: 'src/version.ejs',
-        data: {
-          name: pkg.name,
-          version: pkg.version,
-          date: new Date().toISOString(),
-          commitHash: execSync('git rev-parse --short HEAD').toString().trim(),
+    injectInlineResources(),
+    mode === 'production' &&
+      generateFile([
+        {
+          type: 'template',
+          output: 'version.txt',
+          template: 'src/version.ejs',
+          data: {
+            name: pkg.name,
+            version: pkg.version,
+            date: new Date().toISOString(),
+            commitHash: execSync('git rev-parse --short HEAD').toString().trim(),
+          },
         },
-      },
-    ]),
+      ]),
   ],
   build: {
     outDir: '_dist',

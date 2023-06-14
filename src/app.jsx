@@ -109,17 +109,13 @@ const generateRouteHooks = (callback) => ({
 
 function InitialLayout({ children }) {
   return (
-    <div className="container">
-      <div className="row header-row">
-        <div className="col-md-4">
-          <div className="header">
-            <h1 className="title">
-              <a href="/">{CONFIG.siteTitle}</a>
-            </h1>
-            <div className="jsonly">{children}</div>
-          </div>
-        </div>
-      </div>
+    <div className="startup">
+      <h1 className="startup__logo-box">
+        <a href="/" className="startup__logo-link">
+          {CONFIG.siteTitle}
+        </a>
+      </h1>
+      <div className="initial-layout__content">{children}</div>
     </div>
   );
 }
