@@ -59,6 +59,7 @@ exports[`ListEditor > Renders a list and doesn't blow up 1`] = `
       <input
         class="form-control input-sm filterInput"
         name="nameFilter"
+        role="searchbox"
         type="search"
         value=""
       />
