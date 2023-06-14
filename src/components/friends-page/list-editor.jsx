@@ -231,6 +231,7 @@ export const ListEditor = memo(function ListEditor({
             Filter by name:{' '}
             <input
               type="search"
+              role="searchbox"
               name="nameFilter"
               autoFocus={!!list}
               value={nameFilter}
