@@ -14,9 +14,19 @@ if (configPatchElement) {
   }
 }
 
+/** @type {Storage | null}*/
+let storage = localStorage;
+try {
+  localStorage.setItem('__test', '1');
+  localStorage.removeItem('__test');
+} catch {
+  // localStorage is not supported (incognito mode?)
+  storage = null;
+}
+
 // Dark/light themes
 try {
-  const colorScheme = localStorage.getItem(window.CONFIG.appearance.colorSchemeStorageKey);
+  const colorScheme = storage?.getItem(window.CONFIG.appearance.colorSchemeStorageKey);
   if (
     colorScheme === 'dark' ||
     (colorScheme !== 'light' && window.matchMedia?.('(prefers-color-scheme: dark)').matches)

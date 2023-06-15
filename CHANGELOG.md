@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.120.1] - 2023-06-15
+### Changed
+- Deprecated 'vazir-font' package replaced with 'vazirmatn'
+### Fixed
+- Startup styles are applied only to the initial state of the page and do not
+  interfere with application styles.
+
 ## [1.120] - 2023-06-14
 ### Changed
 - The start script that initiates the configuration and sets the color scheme is

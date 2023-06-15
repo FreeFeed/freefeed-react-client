@@ -1,14 +1,11 @@
-$vazirRoot: '../../node_modules/vazir-font/dist/UI';
+$vazirRoot: '../../node_modules/vazirmatn/fonts/webfonts';
 
 @font-face {
   unicode-range: U+0600-06ff;
   font-family: Vazir;
   font-style: normal;
   font-weight: 900;
-  src: url('#{$vazirRoot}/Vazir-Black-UI.eot');
-  src: url('#{$vazirRoot}/Vazir-Black-UI.woff2') format('woff2'),
-    url('#{$vazirRoot}/Vazir-Black-UI.woff') format('woff'),
-    url('#{$vazirRoot}/Vazir-Black-UI.ttf') format('truetype');
+  src: url('#{$vazirRoot}/Vazirmatn-Black.woff2') format('woff2');
 }
 
 @font-face {
@@ -16,10 +13,7 @@ $vazirRoot: '../../node_modules/vazir-font/dist/UI';
   font-family: Vazir;
   font-style: normal;
   font-weight: bold;
-  src: url('#{$vazirRoot}/Vazir-Bold-UI.eot');
-  src: url('#{$vazirRoot}/Vazir-Bold-UI.woff2') format('woff2'),
-    url('#{$vazirRoot}/Vazir-Bold-UI.woff') format('woff'),
-    url('#{$vazirRoot}/Vazir-Bold-UI.ttf') format('truetype');
+  src: url('#{$vazirRoot}/Vazirmatn-Bold.woff2') format('woff2');
 }
 
 @font-face {
@@ -27,10 +21,7 @@ $vazirRoot: '../../node_modules/vazir-font/dist/UI';
   font-family: Vazir;
   font-style: normal;
   font-weight: 500;
-  src: url('#{$vazirRoot}/Vazir-Medium-UI.eot');
-  src: url('#{$vazirRoot}/Vazir-Medium-UI.woff2') format('woff2'),
-    url('#{$vazirRoot}/Vazir-Medium-UI.woff') format('woff'),
-    url('#{$vazirRoot}/Vazir-Medium-UI.ttf') format('truetype');
+  src: url('#{$vazirRoot}/Vazirmatn-Medium.woff2') format('woff2');
 }
 
 @font-face {
@@ -38,10 +29,7 @@ $vazirRoot: '../../node_modules/vazir-font/dist/UI';
   font-family: Vazir;
   font-style: normal;
   font-weight: 300;
-  src: url('#{$vazirRoot}/Vazir-Light-UI.eot');
-  src: url('#{$vazirRoot}/Vazir-Light-UI.woff2') format('woff2'),
-    url('#{$vazirRoot}/Vazir-Light-UI.woff') format('woff'),
-    url('#{$vazirRoot}/Vazir-Light-UI.ttf') format('truetype');
+  src: url('#{$vazirRoot}/Vazirmatn-Light.woff2') format('woff2');
 }
 
 @font-face {
@@ -49,10 +37,7 @@ $vazirRoot: '../../node_modules/vazir-font/dist/UI';
   font-family: Vazir;
   font-style: normal;
   font-weight: 200;
-  src: url('#{$vazirRoot}/Vazir-Thin-UI.eot');
-  src: url('#{$vazirRoot}/Vazir-Thin-UI.woff2') format('woff2'),
-    url('#{$vazirRoot}/Vazir-Thin-UI.woff') format('woff'),
-    url('#{$vazirRoot}/Vazir-Thin-UI.ttf') format('truetype');
+  src: url('#{$vazirRoot}/Vazirmatn-Thin.woff2') format('woff2');
 }
 
 @font-face {
@@ -60,8 +45,5 @@ $vazirRoot: '../../node_modules/vazir-font/dist/UI';
   font-family: Vazir;
   font-style: normal;
   font-weight: normal;
-  src: url('#{$vazirRoot}/Vazir-Regular-UI.eot');
-  src: url('#{$vazirRoot}/Vazir-Regular-UI.woff2') format('woff2'),
-    url('#{$vazirRoot}/Vazir-Regular-UI.woff') format('woff'),
-    url('#{$vazirRoot}/Vazir-Regular-UI.ttf') format('truetype');
+  src: url('#{$vazirRoot}/Vazirmatn-Regular.woff2') format('woff2');
 }

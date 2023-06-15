@@ -1,4 +1,12 @@
+/**
+ * The contents of this file are included in the index.html page. This file is
+ * also dynamically loaded after the application is initialized, due to the
+ * nature of the Vite.
+ */
+
 @import './helvetica/functions.scss';
+@import './shared/mixins';
+@import './helvetica/dark-vars.scss';
 
 * {
   box-sizing: border-box;
@@ -9,9 +17,9 @@ html {
   overflow-y: scroll;
 }
 
-body {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 14px;
+body.initial {
+  font-family: Vazir, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: rem(14px);
   line-height: 1.4286;
   margin: 0;
   background-color: white;
@@ -77,12 +85,12 @@ html.dark-theme {
 }
 
 .dark-theme {
-  body {
-    background-color: #17191c;
+  body.initial {
+    background-color: $bg-color;
   }
 
   .startup {
-    color: hsl(0deg, 0%, 70%);
+    color: $text-color;
   }
 
   .startup__alert {

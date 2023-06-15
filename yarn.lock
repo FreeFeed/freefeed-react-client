@@ -8437,7 +8437,7 @@ __metadata:
     url: ~0.11.1
     use-subscription: ~1.5.1
     validator: ~13.7.0
-    vazir-font: ~30.1.0
+    vazirmatn: ^33.0.3
     vite: ~4.3.9
     vite-plugin-compression: ~0.5.1
     vite-plugin-generate-file: ~0.0.4
@@ -10333,10 +10333,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vazir-font@npm:~30.1.0":
-  version: 30.1.0
-  resolution: "vazir-font@npm:30.1.0"
-  checksum: e412acde8b1966fdccd4ef454a5ce7c02394edee2ba02f478e0585260617c664b2ec6e3cebe58d7eca913968529011079898d126cbc6eb7777065bb3e4b301b8
+"vazirmatn@npm:^33.0.3":
+  version: 33.0.3
+  resolution: "vazirmatn@npm:33.0.3"
+  checksum: 4e7709bba8d982e54861eda1fa25ff02c2d1b0b8fa38397d4fdc2f60f63b87e3b2361a1ad01794dd4a2df4615b4ff1bb42496af00f596f365c4e70b3748f827e
   languageName: node
   linkType: hard
 
