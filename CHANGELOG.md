@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.121] - Not released
+### Changed
+- Deprecated 'vazir-font' package replaced with 'vazirmatn'
+### Fixed
+- Startup styles are applied only to the initial state of the page and do not
+  interfere with application styles.
+
 ## [1.120] - 2023-06-14
 ### Changed
 - The start script that initiates the configuration and sets the color scheme is

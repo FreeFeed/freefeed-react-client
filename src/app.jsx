@@ -1,5 +1,6 @@
 /* global CONFIG */
 import ReactDOM from 'react-dom';
+import { useEffect } from 'react';
 import { Router, Route, IndexRoute, browserHistory, Redirect } from 'react-router';
 import { Provider, useSelector } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
@@ -108,6 +109,11 @@ const generateRouteHooks = (callback) => ({
 });
 
 function InitialLayout({ children }) {
+  useEffect(() => {
+    document.body.classList.add('initial');
+    return () => document.body.classList.remove('initial');
+  }, []);
+
   return (
     <div className="startup">
       <h1 className="startup__logo-box">
