@@ -403,9 +403,11 @@ function InListsIndicator({
           ))}
         </>
       )}{' '}
+      (
       <ButtonLink ref={subscrFormPivotRef} onClick={subscrFormToggle}>
         edit
       </ButtonLink>
+      )
     </div>
   );
 }
