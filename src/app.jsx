@@ -1,6 +1,6 @@
 /* global CONFIG */
 import ReactDOM from 'react-dom';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { Router, Route, IndexRoute, browserHistory, Redirect } from 'react-router';
 import { Provider, useSelector } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
@@ -35,7 +35,7 @@ const CalendarYear = lazyLoad(() => import('./components/calendar/calendar-year'
 const CalendarMonth = lazyLoad(() => import('./components/calendar/calendar-month'));
 const CalendarDate = lazyLoad(() => import('./components/calendar/calendar-date'));
 const SignupByInvitation = lazyLoad(() => import('./components/signup-by-invitation'));
-const Bookmarklet = lazyLoad(() => import('./components/bookmarklet'));
+const BookmarkletComponent = lazyLoad(() => import('./components/bookmarklet'));
 const ManageSubscribers = lazyLoad(() => import('./components/manage-subscribers'));
 const Subscribers = lazyLoad(() => import('./components/subscribers'));
 const Subscriptions = lazyLoad(() => import('./components/subscriptions'));
@@ -123,6 +123,14 @@ function InitialLayout({ children }) {
       </h1>
       <div className="initial-layout__content">{children}</div>
     </div>
+  );
+}
+
+function Bookmarklet(props) {
+  return (
+    <Suspense fallback="Loading bookmarklet">
+      <BookmarkletComponent {...props} />
+    </Suspense>
   );
 }
 

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.120.2] - 2023-06-22
+### Fixed
+- Bookmarklet did not open
+  - Bookmarklet component is now wrapped in Suspense because it is loaded
+    dynamically
+- UserSubscriptionEditPopup did not open when one clicked the 'edit' button
+  - Fixed import of UserSubscriptionEditPopup component
+  - The component returned by the 'lazyComponent' helper now receives a
+    reference
+
 ## [1.120.1] - 2023-06-15
 ### Changed
 - Deprecated 'vazir-font' package replaced with 'vazirmatn'

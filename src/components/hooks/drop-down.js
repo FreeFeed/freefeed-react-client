@@ -27,7 +27,7 @@ export function useDropDown({
         if (closeOn === CLOSE_ON_ANY_CLICK) {
           setTimeout(() => setOpened(false), 0);
         } else if (closeOn === CLOSE_ON_CLICK_OUTSIDE) {
-          if (!menuRef.current.contains(target)) {
+          if (!menuRef.current?.contains(target)) {
             setTimeout(() => setOpened(false), 0);
           }
         }
@@ -43,10 +43,11 @@ export function useDropDown({
   const updPosition = useCallback(
     () =>
       void (
+        opened &&
         updatePosition(pivotRef.current, menuRef.current, { screenEdgeGap, position, fixed }) &&
         requestAnimationFrame(updPosition)
       ),
-    [position, screenEdgeGap, fixed],
+    [opened, screenEdgeGap, position, fixed],
   );
 
   useLayoutEffect(updPosition);
@@ -56,12 +57,12 @@ export function useDropDown({
 
 function updatePosition(leader, follower, { screenEdgeGap, position, fixed = false }) {
   if (!leader || !follower) {
-    return false;
+    return true;
   }
 
   if (fixed) {
     follower.style.transform = ``;
-    return;
+    return false;
   }
 
   const leaderBounds = leader.getBoundingClientRect();

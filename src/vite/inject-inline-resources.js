@@ -32,13 +32,15 @@ export function injectInlineResources() {
         script.replaceWith(inlineScript);
       }
 
-      // Inject styles
-      const styles = doc.querySelectorAll('link[rel="stylesheet"]');
-      for (const style of styles) {
-        const src = style.getAttribute('href').replace(/^\//, '');
-        const inlineStyle = new HTMLElement('style', {});
-        inlineStyle.textContent = context.bundle[src].source;
-        style.replaceWith(inlineStyle);
+      // Inject styles (only in production build mode, so we have context.bundle)
+      if (context.bundle) {
+        const styles = doc.querySelectorAll('link[rel="stylesheet"]');
+        for (const style of styles) {
+          const src = style.getAttribute('href').replace(/^\//, '');
+          const inlineStyle = new HTMLElement('style', {});
+          inlineStyle.textContent = context.bundle[src].source;
+          style.replaceWith(inlineStyle);
+        }
       }
 
       return doc.toString();

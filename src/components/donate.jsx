@@ -1,4 +1,5 @@
 /* global CONFIG */
+import cn from 'classnames';
 import { Link } from 'react-router';
 import { faPaypal } from '@fortawesome/free-brands-svg-icons';
 
@@ -110,7 +111,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
               action={`https://liberapay.com/${cfg.paymentMethods.liberaPayProject}/donate`}
               target="_blank"
             >
-              <button type="submit">
+              <button className="btn btn-default" type="submit">
                 <Icon icon={faLiberaPay} /> Pay with LiberaPay
               </button>
             </form>
@@ -130,7 +131,11 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
                 />
                 <input type="hidden" name="currency_code" value="EUR" />
                 <input type="hidden" name="on0" value="Pick monthly donation amount" />
-                <select name="os0" style={{ marginBottom: '0.5em' }}>
+                <select
+                  className={cn('form-control', styles.select)}
+                  name="os0"
+                  style={{ marginBottom: '0.5em' }}
+                >
                   <option value="Entry Level Supporter">€5.00 EUR / month</option>
                   <option value="Basic Level Supporter">€10.00 EUR / month</option>
                   <option value="Standard Level Supporter">€15.00 EUR / month</option>
@@ -140,8 +145,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
                   <option value="Master Donator">€75.00 EUR / month</option>
                   <option value="Chuck Norris">€100.00 EUR / month</option>
                 </select>
-                <br />
-                <button type="submit">
+                <button className="btn btn-default" type="submit">
                   <Icon icon={faPaypal} /> Pay with PayPal
                 </button>
               </p>
@@ -161,7 +165,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
               <p>
                 Alternatively, you can make a one-time PayPal donation:
                 <br />
-                <button type="submit">
+                <button className="btn btn-default" type="submit">
                   <Icon icon={faPaypal} /> Pay with PayPal
                 </button>
               </p>
@@ -195,7 +199,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
               <p>
                 You can make a recurrent or one-time donation with your russian card:
                 <br />
-                <button type="submit">
+                <button className="btn btn-default" type="submit">
                   <Icon icon={faBoosty} /> Support with Boosty
                 </button>
               </p>
@@ -214,7 +218,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
               <p>
                 You can make a one-time payment with your card or YooMoney wallet:
                 <br />
-                <button type="submit">
+                <button className="btn btn-default" type="submit">
                   <Icon icon={faYooMoney} /> Pay with YooMoney
                 </button>
               </p>
@@ -306,7 +310,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
               action={`https://liberapay.com/${cfg.paymentMethods.liberaPayProject}/donate`}
               target="_blank"
             >
-              <button type="submit">
+              <button className="btn btn-default" type="submit">
                 <Icon icon={faLiberaPay} /> Pay with LiberaPay
               </button>
             </form>
@@ -325,7 +329,11 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
                   value={cfg.paymentMethods.payPalRegularButtonId}
                 />
                 <input type="hidden" name="currency_code" value="EUR" />
-                <select name="os0" style={{ marginBottom: '0.5em' }}>
+                <select
+                  className={cn('form-control', styles.select)}
+                  name="os0"
+                  style={{ marginBottom: '0.5em' }}
+                >
                   <option value="Entry Level Supporter">€5.00 EUR / month</option>
                   <option value="Basic Level Supporter">€10.00 EUR / month</option>
                   <option value="Standard Level Supporter">€15.00 EUR / month</option>
@@ -335,8 +343,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
                   <option value="Master Donator">€75.00 EUR / month</option>
                   <option value="Chuck Norris">€100.00 EUR / month</option>
                 </select>
-                <br />
-                <button type="submit">
+                <button className="btn btn-default" type="submit">
                   <Icon icon={faPaypal} /> Заплатить через PayPal
                 </button>
               </p>
@@ -356,7 +363,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
               <p>
                 Или вы можете сделать единовременный взнос:
                 <br />
-                <button type="submit">
+                <button className="btn btn-default" type="submit">
                   <Icon icon={faPaypal} /> Заплатить через PayPal
                 </button>
               </p>
@@ -391,7 +398,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
                 Вы можете сделать регулярный или единоразовый платеж с помощью российской платежной
                 карточки:
                 <br />
-                <button type="submit">
+                <button className="btn btn-default" type="submit">
                   <Icon icon={faBoosty} /> Поддержать на Boosty
                 </button>
               </p>
@@ -411,7 +418,7 @@ export default function Donate({ donationAccountName = cfg.statusAccount }) {
                 Вы можете сделать единоразовый платеж с помощью платежной карточки или кошелька
                 ЮMoney:
                 <br />
-                <button type="submit">
+                <button className="btn btn-default" type="submit">
                   <Icon icon={faYooMoney} /> Сделать взнос через ЮMoney
                 </button>
               </p>
