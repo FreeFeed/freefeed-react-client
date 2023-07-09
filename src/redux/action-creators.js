@@ -1352,3 +1352,18 @@ export function setCurrentRoute(payload) {
     payload,
   };
 }
+
+export function translateText({ type, id, lang }) {
+  return {
+    apiRequest: Api.translateText,
+    type: ActionTypes.TRANSLATE_TEXT,
+    payload: { type, id, lang },
+  };
+}
+
+export function resetTranslation({ type, id }) {
+  return {
+    type: reset(ActionTypes.TRANSLATE_TEXT),
+    payload: { type, id },
+  };
+}
