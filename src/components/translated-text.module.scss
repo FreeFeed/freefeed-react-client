@@ -1,0 +1,30 @@
+@import '../../../styles/shared/mixins';
+@import '../../../styles/helvetica/dark-vars.scss';
+
+.box {
+  margin-top: 0.66em;
+}
+
+.status {
+  font-size: rem(14px);
+  line-height: 1.625em;
+  margin-bottom: 0.33em;
+  color: #666;
+
+  :global(.dark-theme) & {
+    color: $text-color-darker;
+  }
+}
+
+.statusError {
+  color: #900;
+
+  :global(.dark-theme) & {
+    color: #{$link-color-dim};
+  }
+}
+
+.icon {
+  display: inline-block;
+  width: rem(19px);
+}
