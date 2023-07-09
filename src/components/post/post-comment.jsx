@@ -22,6 +22,7 @@ import { CommentEditForm } from '../comment-edit-form';
 import { ButtonLink } from '../button-link';
 import { Separated } from '../separated';
 
+import { TranslatedText } from '../translated-text';
 import { PostCommentMore } from './post-comment-more';
 import { PostCommentPreview } from './post-comment-preview';
 
@@ -229,6 +230,7 @@ class PostComment extends Component {
                   likesCount={this.props.likes}
                   setMenuOpener={this.setMoreMenuOpener}
                   onMenuOpened={this.onMoreMenuOpened}
+                  isHidden={this.isHidden()}
                 />
               </span>
             </Separated>
@@ -293,6 +295,14 @@ class PostComment extends Component {
             text={this.props.body}
             readMoreStyle={this.props.readMoreStyle}
             highlightTerms={this.props.highlightTerms}
+            userHover={this.props.authorHighlightHandlers}
+            arrowHover={this.arrowHoverHandlers}
+            arrowClick={this.arrowClick}
+            showMedia={this.props.showMedia}
+          />
+          <TranslatedText
+            type="comment"
+            id={this.props.id}
             userHover={this.props.authorHighlightHandlers}
             arrowHover={this.arrowHoverHandlers}
             arrowClick={this.arrowClick}
