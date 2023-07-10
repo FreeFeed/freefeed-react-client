@@ -108,6 +108,8 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
           </ButtonLink>
         </div>
       ),
+    ],
+    [
       !isHidden && (
         <MenuItemTranslate key="translate" type="comment" id={id} doAndClose={doAndClose} />
       ),

@@ -138,7 +138,6 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
       </div>
     )),
     [
-      <MenuItemTranslate key="translate" type="post" id={postId} doAndClose={doAndClose} />,
       amIAuthenticated && (
         <div className={styles.item} key="save-post">
           <ButtonLink className={styles.link} onClick={doAndClose(toggleSave)}>
@@ -156,6 +155,7 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
           </ButtonLink>
         </div>
       ),
+      <MenuItemTranslate key="translate" type="post" id={postId} doAndClose={doAndClose} />,
     ],
     [
       isDirect && !isOwnPost && (
