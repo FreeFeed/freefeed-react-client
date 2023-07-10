@@ -4,6 +4,7 @@ import { createStore } from 'redux';
 import * as reactRedux from 'react-redux';
 
 import { PostMoreMenu } from '../../src/components/post/post-more-menu';
+import { initialAsyncState } from '../../src/redux/async-helpers';
 
 vi.mock('../../src/components/fontawesome-icons', () => ({
   Icon: ({ icon }) => `fontawesome icon ${icon.iconName}`, // mocking out icon to make snapshots smaller
@@ -41,6 +42,7 @@ const POST = {
 
 const defaultState = {
   user: VIEWER,
+  serverInfoStatus: initialAsyncState,
 };
 
 const renderPostMoreMenu = (props = {}) => {
