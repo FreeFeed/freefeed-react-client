@@ -1,10 +1,6 @@
 .arrow-span {
-  background-color: #eee;
+  background-color: var(--arrow-color, #eee);
   border-radius: 0.25em;
   cursor: pointer;
   padding: 0 0.2em;
-
-  .direct-post & {
-    background-color: #fff;
-  }
 }

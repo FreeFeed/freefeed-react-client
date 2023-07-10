@@ -2,6 +2,7 @@ import ISO6391 from 'iso-639-1';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 import { useCallback } from 'react';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { initialAsyncState } from '../redux/async-helpers';
 import { resetTranslation } from '../redux/action-creators';
 import { useServerValue } from './hooks/server-info';
@@ -25,20 +26,30 @@ export function TranslatedText({ type, id, userHover, arrowHover, arrowClick, sh
     return null;
   }
   if (status.loading) {
-    return <Layout status={`Translating using ${serviceTitle}...`} />;
+    return (
+      <Layout
+        status={`Translating using ${serviceTitle}...`}
+        inComment={type === 'comment'}
+        reset={reset}
+      />
+    );
   }
   if (status.error) {
-    return <Layout isError status={`Translation error: ${status.errorText}`} />;
+    return (
+      <Layout
+        isError
+        status={`Translation error: ${status.errorText}`}
+        inComment={type === 'comment'}
+        reset={reset}
+      />
+    );
   }
 
   return (
     <Layout
-      status={
-        <>
-          Translated from {ISO6391.getName(result.detectedLang)} using {serviceTitle} (
-          <ButtonLink onClick={reset}>hide</ButtonLink>):
-        </>
-      }
+      status={`Translated from ${ISO6391.getName(result.detectedLang)} using ${serviceTitle}:`}
+      inComment={type === 'comment'}
+      reset={reset}
     >
       <PieceOfText
         text={result.translatedText}
@@ -51,14 +62,17 @@ export function TranslatedText({ type, id, userHover, arrowHover, arrowClick, sh
   );
 }
 
-function Layout({ status, isError = false, children }) {
+function Layout({ status, isError = false, inComment = false, reset, children }) {
   return (
-    <div className={style.box}>
+    <div className={cn(style.box, inComment && style.inComment)}>
       <div className={cn(style.status, isError && style.statusError)}>
         <span className={style.icon}>
           <Icon icon={faTranslate} />
         </span>
-        {status}
+        <span className={style.statusText}>{status}</span>
+        <ButtonLink onClick={reset} aria-label="Close" className={style.closeIcon}>
+          <Icon icon={faTimes} />
+        </ButtonLink>
       </div>
       <div>{children}</div>
     </div>
