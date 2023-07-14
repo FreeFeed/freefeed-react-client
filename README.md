@@ -10,7 +10,7 @@ We use [yarn](https://yarnpkg.com/) as dependency manager (instead of npm) so yo
 
 Run `yarn start`. By default it will use our staging backend [candy.freefeed.net](https://candy.freefeed.net).
 
-Alternatively, you can install [freefeed-server](https://github.com/FreeFeed/freefeed-server) and create `config/local.json` file with URL of local backend:
+Alternatively, you can install [freefeed-server](https://github.com/FreeFeed/freefeed-server) and create `config.json` file with URL of local backend:
 ```
 {
   "api": {
@@ -19,12 +19,12 @@ Alternatively, you can install [freefeed-server](https://github.com/FreeFeed/fre
 }
 ```
 
-You can also use custom local configuration file or additional environment variables to override default settings. FreeFeed uses the [config](https://github.com/lorenwest/node-config) npm module to manage the configuration. Please read it documentation to learn how add custom settings.
+You can also override any other configuration values. See [config/README.md](config/README.md) for details.
 
 ## Sanity checks
 
 1. `yarn test` will build test-suite and run the tests
-1. `yarn lint` will check if sourcecode complies to the coding guidelines
+1. `yarn lint` will check if source code complies to the coding guidelines
 
 ## Build a production version
 
