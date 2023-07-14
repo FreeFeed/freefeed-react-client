@@ -6288,6 +6288,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"iso-639-1@npm:~2.1.15":
+  version: 2.1.15
+  resolution: "iso-639-1@npm:2.1.15"
+  checksum: a201530819d33e9ce077b02c786d67b35be5d823be27b5aacc18d880e580e559e39ec5055f8e2abcdc210f46618a643bf3c74e6fe6e8255fe62059682750e595
+  languageName: node
+  linkType: hard
+
 "isomorphic-fetch@npm:^2.1.1":
   version: 2.2.1
   resolution: "isomorphic-fetch@npm:2.2.1"
@@ -8387,6 +8394,7 @@ __metadata:
     focus-trap-react: ~8.9.2
     focus-visible: ~5.2.0
     husky: ~8.0.3
+    iso-639-1: ~2.1.15
     jsdom: ~22.0.0
     keycode-js: ~3.1.0
     lint-staged: ~12.4.3

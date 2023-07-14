@@ -819,3 +819,9 @@ export function getPostsByIds({ postIds }) {
 export function getCommentsByIds({ commentIds }) {
   return fetch(`${apiRoot}/v2/comments/byIds`, postRequestOptions('POST', { commentIds }));
 }
+
+export function translateText({ type, id, lang }) {
+  const part = type === 'post' ? 'posts' : 'comments';
+  const qs = lang ? `?lang=${lang}` : '';
+  return fetch(`${apiRoot}/v2/${part}/${id}/translated-body${qs}`, getRequestOptions());
+}
