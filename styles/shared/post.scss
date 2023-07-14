@@ -525,7 +525,7 @@ $post-line-height: rem(20px);
     }
 
     .preview-expand {
-      margin-top: rem(8px);
+      margin-block: rem(8px);
 
       & > .preview-expand-icon {
         opacity: 0.5;
