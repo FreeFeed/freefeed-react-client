@@ -17,7 +17,10 @@ export function MenuItemTranslate({ type, id, doAndClose }) {
   const targetLang = useMemo(() => {
     let code = user.frontendPreferences.translateToLang;
     if (!code) {
-      code = navigator.language.slice(0, 2);
+      code = navigator.language?.slice(0, 2) ?? '';
+    }
+    if (!ISO6391.validate(code)) {
+      code = 'en';
     }
     return { code, name: ISO6391.getName(code) };
   }, [user.frontendPreferences.translateToLang]);

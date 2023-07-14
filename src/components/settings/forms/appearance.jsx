@@ -461,7 +461,8 @@ export default function AppearanceForm() {
           <p>
             <select className="form-control" {...translateToLang.input}>
               <option value="">
-                Use browser language (currently {ISO6391.getName(navigator.language.slice(0, 2))})
+                Use browser language (currently{' '}
+                {ISO6391.getName(navigator.language?.slice(0, 2) ?? '') || 'Unknown'})
               </option>
               {allLanguages.map((lang) => (
                 <option key={lang.code} value={lang.code}>
