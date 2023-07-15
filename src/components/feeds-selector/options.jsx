@@ -212,7 +212,7 @@ function compareOptions(a, b) {
 export function toOption(user, me) {
   const isMe = user.username === me.username;
   return {
-    label: user.screenName || user.username,
+    label: isMe ? MY_FEED_LABEL : user.screenName || user.username,
     value: user.username,
     type: isMe ? ACC_ME : user.type === 'group' ? ACC_GROUP : ACC_USER,
     privacy: user.type === 'group' || isMe ? getPrivacy(user) : 'user',

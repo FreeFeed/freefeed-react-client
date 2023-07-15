@@ -418,6 +418,9 @@ exports[`PostMoreMenu > Renders a More menu for a logged-out visitor 1`] = `
   >
     <div
       class="group"
+    />
+    <div
+      class="group"
     >
       <div
         class="item content"

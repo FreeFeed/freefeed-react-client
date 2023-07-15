@@ -81,6 +81,8 @@ const defaultState = {
     [COMMENT3.id]: COMMENT3,
   },
   serverInfoStatus: initialAsyncState,
+  translationStates: {},
+  translationResults: {},
 };
 
 const renderPostComments = (props = {}, options = {}) => {
