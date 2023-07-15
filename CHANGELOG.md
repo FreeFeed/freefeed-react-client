@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the "More" menu for comments/posts.
 ### Fixed
 - User can now search for "My feed" in feeds selector
+- Increased margin under the "Expand preview" button
 
 ## [1.120.2] - 2023-06-22
 ### Fixed
