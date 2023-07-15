@@ -23,6 +23,7 @@ import { ButtonLink } from '../button-link';
 import { Separated } from '../separated';
 
 import { TranslatedText } from '../translated-text';
+import { initialAsyncState } from '../../redux/async-helpers';
 import { PostCommentMore } from './post-comment-more';
 import { PostCommentPreview } from './post-comment-preview';
 
@@ -286,7 +287,8 @@ class PostComment extends Component {
           expanded={
             this.props.readMoreStyle === READMORE_STYLE_COMPACT ||
             this.props.isSinglePost ||
-            this.props.isExpanded
+            this.props.isExpanded ||
+            !this.props.translateStatus.initial
           }
           bonusInfo={commentTail}
           config={commentReadmoreConfig}
@@ -386,6 +388,7 @@ class PostComment extends Component {
 
 function selectState(state, ownProps) {
   const editState = state.commentEditState[ownProps.id] || defaultCommentState;
+  const translateStatus = state.translationStates[`comment:${ownProps.id}`] || initialAsyncState;
   const showTimestamps =
     state.user.frontendPreferences?.comments?.showTimestamps ||
     CONFIG.frontendPreferences.defaultValues.comments.showTimestamps;
@@ -408,6 +411,7 @@ function selectState(state, ownProps) {
     isEditing: ownProps.isEditing || editState.isEditing,
     submitMode: state.submitMode,
     isReplyToBanned,
+    translateStatus,
   };
 }
 
