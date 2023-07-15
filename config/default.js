@@ -77,6 +77,7 @@ export default {
         amPm: false,
       },
       timeDifferenceForSpacer: DAY_IN_MILLISECONDS * 6,
+      translateToLang: '', // Empty string means browser default language
     },
     defaultOverrides: {
       /**

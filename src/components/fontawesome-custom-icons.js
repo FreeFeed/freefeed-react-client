@@ -100,3 +100,22 @@ export const faBoosty = {
       `20.13 40 10.87 40h-.2Z`,
   ],
 };
+
+/**
+ * "Translate" icon from Material Symbols
+ * https://developers.google.com/fonts/docs/material_symbols#getting_material_symbols
+ */
+export const faTranslate = {
+  iconName: 'translate',
+  prefix: 'fas',
+  icon: [
+    960,
+    960,
+    [],
+    '',
+    `M475 880l181-480h82l186 480h-87l-41-126h-192l-47 126h-82zm151-196h142l-70-194h-2l-70 ` +
+      `194zm-466 76-55-55 204-204q-38-44-67.5-88.5t-51.5-92.5h87q17 33 37.5 62.5t46.5 60.5q45-47 ` +
+      `75-97.5t51-105.5h-447v-80h280v-80h80v80h280v80h-113q-22 69-58.5 135.5t-89.5 126.5l98 ` +
+      `99-30 81-127-122-200 200z`,
+  ],
+};

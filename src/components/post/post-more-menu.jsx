@@ -9,11 +9,12 @@ import { useDispatch } from 'react-redux';
 import { copyURL } from '../../utils/copy-url';
 import { leaveDirect } from '../../redux/action-creators';
 import { ButtonLink } from '../button-link';
-import { Icon } from '../fontawesome-icons';
 import TimeDisplay from '../time-display';
 
 import styles from '../dropdown-menu.module.scss';
 import { format } from '../../utils/date-format';
+import { MenuItemIconic as Iconic } from './menu-item-iconic';
+import { MenuItemTranslate } from './menu-item-translate';
 
 // eslint-disable-next-line complexity
 export const PostMoreMenu = forwardRef(function PostMoreMenu(
@@ -119,7 +120,7 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
         </ButtonLink>
       </div>
     )),
-
+    [<MenuItemTranslate key="translate" type="post" id={postId} doAndClose={doAndClose} />],
     [
       isDirect && !isOwnPost && (
         <div className={styles.item} key="leave-direct">
@@ -207,14 +208,3 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
     </>
   );
 });
-
-function Iconic({ icon, centered = false, children }) {
-  return (
-    <span className={cn(styles.iconic, centered && styles.iconicCentered)}>
-      <span className={styles.iconicIcon}>
-        <Icon icon={icon} />
-      </span>
-      <span className={styles.iconicContent}>{children}</span>
-    </span>
-  );
-}

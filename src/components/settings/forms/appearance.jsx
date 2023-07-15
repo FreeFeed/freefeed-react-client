@@ -6,6 +6,7 @@ import { useForm, useField } from 'react-final-form-hooks';
 import { without, uniq, uniqWith } from 'lodash-es';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { hashTags as findHashTags } from 'social-text-tokenizer';
+import ISO6391 from 'iso-639-1';
 import {
   DISPLAYNAMES_DISPLAYNAME,
   DISPLAYNAMES_BOTH,
@@ -40,7 +41,14 @@ import {
   isEqual as criteriaIsEqual,
   USERNAME,
 } from '../../../utils/hide-criteria';
+import { useServerValue } from '../../hooks/server-info';
 import styles from './forms.module.scss';
+
+const selectTranslationEnabled = (serverInfo) => serverInfo.textTranslation.enabled;
+
+const allLanguages = ISO6391.getAllCodes()
+  .map((code) => ({ code, name: ISO6391.getName(code) }))
+  .sort((a, b) => a.name.localeCompare(b.name));
 
 export default function AppearanceForm() {
   const dispatch = useDispatch();
@@ -50,6 +58,7 @@ export default function AppearanceForm() {
   const uiScale = useSelector((state) => state.uiScale);
   const submitMode = useSelector((state) => state.submitMode);
   const formStatus = useSelector((state) => state.settingsForms.displayPrefsStatus);
+  const translationEnabled = useServerValue(selectTranslationEnabled, false);
 
   useEffect(() => {
     const { hash } = window.location;
@@ -101,6 +110,7 @@ export default function AppearanceForm() {
   const uiScaleField = useField('uiScale', form.form);
   const submitModeF = useField('submitMode', form.form);
   const hidesInNonHomeFeeds = useField('hidesInNonHomeFeeds', form.form);
+  const translateToLang = useField('translateToLang', form.form);
 
   return (
     <form onSubmit={form.handleSubmit}>
@@ -441,6 +451,29 @@ export default function AppearanceForm() {
         </div>
       </section>
 
+      {translationEnabled && (
+        <section className={settingsStyles.formSection}>
+          <h4 id="translation">Text translation</h4>
+          <p>
+            Choose a language to translate posts and comments into. To translate, click
+            &quot;Translate&quot; in the &quot;More&quot; menu of the post/comment.
+          </p>
+          <p>
+            <select className="form-control" {...translateToLang.input}>
+              <option value="">
+                Use browser language (currently{' '}
+                {ISO6391.getName(navigator.language?.slice(0, 2) ?? '') || 'Unknown'})
+              </option>
+              {allLanguages.map((lang) => (
+                <option key={lang.code} value={lang.code}>
+                  {lang.name}
+                </option>
+              ))}
+            </select>
+          </p>
+        </section>
+      )}
+
       {CONFIG.betaChannel.enabled && (
         <section className={settingsStyles.formSection}>
           <h4 id="beta">Beta version</h4>
@@ -518,6 +551,7 @@ function initialValues({
     uiScale,
     submitMode,
     hidesInNonHomeFeeds: frontend.hidesInNonHomeFeeds ? '1' : '0',
+    translateToLang: frontend.translateToLang,
   };
 }
 
@@ -573,6 +607,7 @@ function prefUpdaters(values) {
           amPm: values.timeAmPm === '1',
           absolute: values.timeAbsolute === '1',
         },
+        translateToLang: values.translateToLang,
       };
     },
 

@@ -33,6 +33,7 @@ import { UserPicture } from '../user-picture';
 
 import { prepareAsyncFocus } from '../../utils/prepare-async-focus';
 import { format } from '../../utils/date-format';
+import { TranslatedText } from '../translated-text';
 import { UnhideOptions, HideLink } from './post-hides-ui';
 import PostMoreLink from './post-more-link';
 import PostLikeLink from './post-like-link';
@@ -436,6 +437,7 @@ class Post extends Component {
                       highlightTerms={props.highlightTerms}
                       showMedia={this.props.showMedia}
                     />
+                    <TranslatedText type="post" id={props.id} showMedia={this.props.showMedia} />
                   </div>
                 </>
               )}
