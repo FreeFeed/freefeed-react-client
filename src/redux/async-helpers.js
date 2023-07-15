@@ -84,8 +84,8 @@ export function asyncState(actionTypes, nextReducer = null) {
  *
  * The keySelector can be a string or function, or a hash of string/function: {BASE_ACTION_TYPE: keySelector}
  *
- * @typedef {string | (payload: any) => any} Selector
- * @param {Selector | {[baseActionType: string]: Selector}} keyNameOrNames
+ * @typedef {string | (payload: any) => string} Selector
+ * @param {Selector | {[baseActionType: string]: Selector}} keySelector
  */
 export function getKeyBy(keySelector) {
   return (action) => {
@@ -172,6 +172,49 @@ export function asyncStatesMap(
     }
 
     return { ...state, [key]: applyState(state[key], subState) };
+  };
+}
+
+/**
+ * Reducer that represents a map of asynchronous actions results.
+ *
+ * The map keys are produced from actions via the *getKey* function. If the result
+ * of getKey is falsy, the result is not written.
+ * The *applyState* function allows non-trivial modifications of the existing state.
+ * If action is not the response of actionTypes async actions then the *nextReducer*
+ * is called if present.
+ *
+ * @param {string|string[]} actionTypes
+ * @param {function} transformer
+ * @param {object} params
+ * @param {function|null} nextReducer
+ */
+export function asyncResultsMap(
+  actionTypes,
+  {
+    getKey = getKeyBy('id'),
+    applyState = (prev, s) => s,
+    transformer = ({ payload }) => payload,
+  } = {},
+  nextReducer = null,
+) {
+  if (!Array.isArray(actionTypes)) {
+    actionTypes = [actionTypes];
+  }
+
+  const responseTypes = new Set(actionTypes.map((t) => response(baseType(t))));
+
+  return (state = {}, action) => {
+    if (!responseTypes.has(action.type)) {
+      return nextReducer ? nextReducer(state, action) : state;
+    }
+
+    const key = getKey(action);
+    if (!key) {
+      return state;
+    }
+
+    return { ...state, [key]: applyState(state[key], transformer(action)) };
   };
 }
 

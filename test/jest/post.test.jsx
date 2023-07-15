@@ -60,6 +60,8 @@ const defaultState = {
     a1: { id: 'a1', mediaType: 'image' },
     a2: { id: 'a2' },
   },
+  translationStates: {},
+  translationResults: {},
 };
 
 const renderPost = (props = {}, options = {}) => {

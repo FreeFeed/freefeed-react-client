@@ -18,6 +18,7 @@
     "final-form": "~4.20.9",
     "focus-trap-react": "~8.9.2",
     "focus-visible": "~5.2.0",
+    "iso-639-1": "~2.1.15",
     "keycode-js": "~3.1.0",
     "local-storage-fallback": "~4.1.2",
     "lodash-es": "~4.17.21",
