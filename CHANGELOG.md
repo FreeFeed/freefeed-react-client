@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.121.1] - 2023-07-15
+### Fixed
+- Expand texts of translated posts/comments
+
 ## [1.121] - 2023-07-15
 ### Added
 - Ability to translate the text of comments and posts (if supported by the

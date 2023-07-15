@@ -404,7 +404,8 @@ class Post extends Component {
             expanded={
               props.isEditing ||
               props.isSinglePost ||
-              props.readMoreStyle === READMORE_STYLE_COMPACT
+              props.readMoreStyle === READMORE_STYLE_COMPACT ||
+              !props.translateStatus.initial
             }
             config={postReadmoreConfig}
           >
@@ -533,6 +534,7 @@ function selectState(state, ownProps) {
 
   return {
     hideStatus: state.postHideStatuses[ownProps.id] || initialAsyncState,
+    translateStatus: state.translationStates[`post:${ownProps.id}`] || initialAsyncState,
     submitMode: state.submitMode,
     noImageAttachments,
   };
