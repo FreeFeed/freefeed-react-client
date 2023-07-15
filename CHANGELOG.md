@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   server). Users can set their language for translation in the preferences (the
   browser language is used by default). There is a new "Translate to..." item in
   the "More" menu for comments/posts.
+### Fixed
+- User can now search for "My feed" in feeds selector
 
 ## [1.120.2] - 2023-06-22
 ### Fixed
