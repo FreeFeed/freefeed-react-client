@@ -1,0 +1,65 @@
+@import '../../styles/shared/mixins';
+@import '../../styles/helvetica/dark-vars.scss';
+
+.box {
+  margin-top: 0.5em;
+  padding: 0.5em;
+  background-color: #eee;
+  border-radius: 3px;
+
+  --arrow-color: #fff;
+
+  :global(.dark-theme) & {
+    --arrow-color: #{$bg-color-lightest};
+
+    background-color: $bg-color-lighter;
+  }
+}
+
+.status {
+  font-size: rem(14px);
+  line-height: 1.625em;
+  margin-bottom: 0.167em;
+  color: #666;
+  display: flex;
+
+  .inComment & {
+    font-size: rem(13px);
+    color: #888;
+  }
+
+  :global(.dark-theme) & {
+    color: $text-color-darker;
+  }
+}
+
+.statusError {
+  color: #900;
+
+  :global(.dark-theme) & {
+    color: #{$link-color-dim};
+  }
+}
+
+.icon {
+  display: inline-block;
+  flex: 0 0 rem(19px);
+}
+
+.closeIcon {
+  flex: none;
+  width: 1.5em;
+  height: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666 !important;
+
+  :global(.dark-theme) & {
+    color: $text-color-darker !important;
+  }
+}
+
+.statusText {
+  flex: 1;
+}
