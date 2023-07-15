@@ -52,6 +52,7 @@ export function TranslatedText({ type, id, userHover, arrowHover, arrowClick, sh
       reset={reset}
     >
       <PieceOfText
+        isExpanded
         text={result.translatedText}
         userHover={userHover}
         arrowHover={arrowHover}
