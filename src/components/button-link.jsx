@@ -29,7 +29,7 @@ export function useKeyboardEvents(onClick) {
   return useMemo(
     () => ({
       onClick: (event) => {
-        event.target.blur();
+        event.currentTarget.blur();
         onClick(event);
       },
       onKeyDown: (event) => {
