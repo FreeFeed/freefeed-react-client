@@ -19,6 +19,7 @@ import TimeDisplay from '../time-display';
 import UserName from '../user-name';
 
 import styles from './post-comment-preview.module.scss';
+import { CommentProvider } from './comment-provider';
 
 export function PostCommentPreview({
   postId,
@@ -152,7 +153,7 @@ export function PostCommentPreview({
       style={style}
     >
       {comment ? (
-        <>
+        <CommentProvider id={comment.id}>
           {comment.hideType ? (
             <span className={styles['hidden-text']}>{commentBody}</span>
           ) : (
@@ -175,7 +176,7 @@ export function PostCommentPreview({
               Go to comment
             </Link>
           </div>
-        </>
+        </CommentProvider>
       ) : getCommentStatus.error ? (
         <div className={styles['error']}>Error: {getCommentStatus.errorText}</div>
       ) : (

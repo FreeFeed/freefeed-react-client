@@ -26,6 +26,7 @@ import { TranslatedText } from '../translated-text';
 import { initialAsyncState } from '../../redux/async-helpers';
 import { PostCommentMore } from './post-comment-more';
 import { PostCommentPreview } from './post-comment-preview';
+import { CommentProvider } from './comment-provider';
 
 class PostComment extends Component {
   commentContainer;
@@ -283,35 +284,37 @@ class PostComment extends Component {
 
     return (
       <div className="comment-body">
-        <Expandable
-          expanded={
-            this.props.readMoreStyle === READMORE_STYLE_COMPACT ||
-            this.props.isSinglePost ||
-            this.props.isExpanded ||
-            !this.props.translateStatus.initial
-          }
-          bonusInfo={commentTail}
-          config={commentReadmoreConfig}
-        >
-          <PieceOfText
-            text={this.props.body}
-            readMoreStyle={this.props.readMoreStyle}
-            highlightTerms={this.props.highlightTerms}
-            userHover={this.props.authorHighlightHandlers}
-            arrowHover={this.arrowHoverHandlers}
-            arrowClick={this.arrowClick}
-            showMedia={this.props.showMedia}
-          />
-          <TranslatedText
-            type="comment"
-            id={this.props.id}
-            userHover={this.props.authorHighlightHandlers}
-            arrowHover={this.arrowHoverHandlers}
-            arrowClick={this.arrowClick}
-            showMedia={this.props.showMedia}
-          />
-          {commentTail}
-        </Expandable>
+        <CommentProvider id={this.props.id}>
+          <Expandable
+            expanded={
+              this.props.readMoreStyle === READMORE_STYLE_COMPACT ||
+              this.props.isSinglePost ||
+              this.props.isExpanded ||
+              !this.props.translateStatus.initial
+            }
+            bonusInfo={commentTail}
+            config={commentReadmoreConfig}
+          >
+            <PieceOfText
+              text={this.props.body}
+              readMoreStyle={this.props.readMoreStyle}
+              highlightTerms={this.props.highlightTerms}
+              userHover={this.props.authorHighlightHandlers}
+              arrowHover={this.arrowHoverHandlers}
+              arrowClick={this.arrowClick}
+              showMedia={this.props.showMedia}
+            />
+            <TranslatedText
+              type="comment"
+              id={this.props.id}
+              userHover={this.props.authorHighlightHandlers}
+              arrowHover={this.arrowHoverHandlers}
+              arrowClick={this.arrowClick}
+              showMedia={this.props.showMedia}
+            />
+            {commentTail}
+          </Expandable>
+        </CommentProvider>
       </div>
     );
   }
