@@ -26,7 +26,7 @@ import { TranslatedText } from '../translated-text';
 import { initialAsyncState } from '../../redux/async-helpers';
 import { PostCommentMore } from './post-comment-more';
 import { PostCommentPreview } from './post-comment-preview';
-import { CommentProvider } from './comment-provider';
+import { CommentProvider } from './post-comment-provider';
 
 class PostComment extends Component {
   commentContainer;

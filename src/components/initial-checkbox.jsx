@@ -6,14 +6,36 @@ import { initialAsyncState } from '../redux/async-helpers';
 import { isChecked, setCheckState } from '../utils/initial-checkbox';
 import style from './initial-checkbox.module.scss';
 import { Throbber } from './throbber';
-import { useComment } from './post/comment-ctx';
+import { useComment, usePost } from './post/post-comment-ctx';
 
 export function InitialCheckbox({ checked }) {
+  const post = usePost();
   const comment = useComment();
+  const myId = useSelector((state) => state.user.id);
+
+  const isActive = post.createdBy === comment?.createdBy && post.createdBy === myId;
+
+  return (
+    <>
+      {isActive ? (
+        <ActiveCheckbox comment={comment} checked={checked} />
+      ) : (
+        <span className={style.textBox}>
+          [
+          <span aria-hidden={!checked} className={cn(!checked && style.hidden)}>
+            ✔
+          </span>
+          ]
+        </span>
+      )}{' '}
+    </>
+  );
+}
+
+function ActiveCheckbox({ comment, checked }) {
   const updateStatus = useSelector(
     (state) => state.commentEditState[comment?.id]?.saveStatus ?? initialAsyncState,
   );
-  const myId = useSelector((state) => state.user.id);
   const dispatch = useDispatch();
   const onClick = useCallback(
     (e) => {
@@ -32,27 +54,15 @@ export function InitialCheckbox({ checked }) {
   );
 
   return (
-    <>
-      {myId && myId === comment?.createdBy ? (
-        <span className={style.box}>
-          {updateStatus.loading && <Throbber className={style.throbber} delay={0} />}
-          <input
-            type="checkbox"
-            readOnly
-            checked={checked}
-            className={cn(style.chk, updateStatus.loading && style.hidden)}
-            onClick={onClick}
-          />
-        </span>
-      ) : (
-        <span className={style.textBox}>
-          [
-          <span aria-hidden={!checked} className={cn(!checked && style.hidden)}>
-            ✔
-          </span>
-          ]
-        </span>
-      )}{' '}
-    </>
+    <span className={style.box}>
+      {updateStatus.loading && <Throbber className={style.throbber} delay={0} />}
+      <input
+        type="checkbox"
+        readOnly
+        checked={checked}
+        className={cn(style.chk, updateStatus.loading && style.hidden)}
+        onClick={onClick}
+      />
+    </span>
   );
 }

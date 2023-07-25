@@ -19,7 +19,7 @@ import TimeDisplay from '../time-display';
 import UserName from '../user-name';
 
 import styles from './post-comment-preview.module.scss';
-import { CommentProvider } from './comment-provider';
+import { CommentProvider } from './post-comment-provider';
 
 export function PostCommentPreview({
   postId,
