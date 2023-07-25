@@ -137,6 +137,8 @@ const splitIntoSpoilerBlocks = (input) => {
         spoilerText = '';
       } else if (isInSpoiler) {
         spoilerText += token.text;
+      } else if (typeof newNodes[newNodes.length - 1] === 'string') {
+        newNodes[newNodes.length - 1] += token.text;
       } else {
         newNodes.push(token.text);
       }

@@ -19,6 +19,7 @@ import {
   StartSpoiler,
   EndSpoiler,
 } from './spoiler-tokens';
+import { checkboxParser } from './initial-checkbox';
 
 const {
   textFormatter: { tldList, foreignMentionServices },
@@ -171,6 +172,7 @@ const tokenize = withText(
       arrows(/\u2191+|\^([1-9]\d*|\^*)/g),
       tokenizerStartSpoiler,
       tokenizerEndSpoiler,
+      checkboxParser,
     ),
   ),
 );

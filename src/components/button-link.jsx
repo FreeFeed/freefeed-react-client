@@ -29,7 +29,13 @@ export function useKeyboardEvents(onClick) {
   return useMemo(
     () => ({
       onClick: (event) => {
-        event.target.blur();
+        /**
+         * This line is crashes in jsdom environment with message
+         * [TypeError: Failed to execute 'contains' on 'Node': parameter 1 is not of type 'Node'.]
+         */
+        if (process.env.NODE_ENV !== 'test') {
+          event.currentTarget.blur();
+        }
         onClick(event);
       },
       onKeyDown: (event) => {

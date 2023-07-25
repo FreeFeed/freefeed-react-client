@@ -14,7 +14,12 @@ function getDateLabel(date, mode) {
 }
 
 function parseDateString(string) {
-  return new Date(string);
+  const [yyyy, MM, dd] = string.split('-');
+  const d = new Date();
+  d.setFullYear(parseInt(yyyy, 10));
+  d.setMonth(parseInt(MM, 10) - 1);
+  d.setDate(parseInt(dd, 10));
+  return d;
 }
 
 function CalendarHeaderNav(props) {
