@@ -11,9 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   or "[x]" (one can use other symbols in parentheses as well: [v], [*], [🗸], or
   Russian "Ha").
   
-  If the current user matches the author of the post and comment, an interactive
-  checkbox is displayed at the beginning of the text. When the user clicks the
-  checkbox, the comment text changes to reflect the checkbox state.
+  If the current user matches the author of the comment, an interactive checkbox
+  is displayed at the beginning of the text. When the user clicks the checkbox,
+  the comment text changes to reflect the checkbox state.
 
   For other users, a fixed-width text representation of the checkbox is shown:
   "[ ]" or "[🗸]".

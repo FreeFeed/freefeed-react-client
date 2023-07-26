@@ -6,14 +6,13 @@ import { initialAsyncState } from '../redux/async-helpers';
 import { checkMark, isChecked, setCheckState } from '../utils/initial-checkbox';
 import style from './initial-checkbox.module.scss';
 import { Throbber } from './throbber';
-import { useComment, usePost } from './post/post-comment-ctx';
+import { useComment } from './post/post-comment-ctx';
 
 export function InitialCheckbox({ checked }) {
-  const post = usePost();
   const comment = useComment();
   const myId = useSelector((state) => state.user.id);
 
-  const isActive = post.createdBy === comment?.createdBy && post.createdBy === myId;
+  const isActive = myId && comment?.createdBy === myId;
 
   return (
     <>
