@@ -1,10 +1,13 @@
 import { Token } from 'social-text-tokenizer';
 
 /**
+ * U+2713 Check Mark (🗸)
  * U+2714 Heavy Check Mark (✔)
  * U+0445 Cyrillic Small Letter Ha (х)
  */
-const checkBoxRe = /^\[(?:\s*|[xv*\u2714\u0445])]/i;
+const checkBoxRe = /^\[(?:\s*|[xv*\u2713\u2714\u0445])]/i;
+
+export const checkMark = '\u2713';
 
 /**
  * @param {string} text
@@ -46,5 +49,5 @@ export function isChecked(text) {
  * @returns {string}
  */
 export function setCheckState(text, newState) {
-  return `[${newState ? '\u2714' : ' '}] ${text.replace(checkBoxRe, '').trim()}`;
+  return `[${newState ? checkMark : ' '}] ${text.replace(checkBoxRe, '').trim()}`;
 }

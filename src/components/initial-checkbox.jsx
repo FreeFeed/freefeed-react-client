@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveEditingComment } from '../redux/action-creators';
 import { initialAsyncState } from '../redux/async-helpers';
-import { isChecked, setCheckState } from '../utils/initial-checkbox';
+import { checkMark, isChecked, setCheckState } from '../utils/initial-checkbox';
 import style from './initial-checkbox.module.scss';
 import { Throbber } from './throbber';
 import { useComment, usePost } from './post/post-comment-ctx';
@@ -23,7 +23,7 @@ export function InitialCheckbox({ checked }) {
         <span className={style.textBox}>
           [
           <span aria-hidden={!checked} className={cn(!checked && style.hidden)}>
-            ✔
+            {checkMark}
           </span>
           ]
         </span>

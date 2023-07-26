@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.122] - Not released
 ### Added
 - Comments can now be used as checklists if the comment text starts with "[ ]"
-  or "[x]" (one can use other symbols in parentheses as well: [v], [*], [✔], or
+  or "[x]" (one can use other symbols in parentheses as well: [v], [*], [🗸], or
   Russian "Ha").
   
   If the current user matches the author of the post and comment, an interactive
@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   checkbox, the comment text changes to reflect the checkbox state.
 
   For other users, a fixed-width text representation of the checkbox is shown:
-  "[ ]" or "[✔]".
+  "[ ]" or "[🗸]".
 
 ## [1.121.1] - 2023-07-15
 ### Fixed
