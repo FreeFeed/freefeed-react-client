@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { once } from 'lodash-es';
+import { useSelector } from 'react-redux';
 
+import { darkTheme } from '../select-utils';
 import * as heightCache from './helpers/size-cache';
 import FoldableContent from './helpers/foldable-content';
 
@@ -12,13 +14,14 @@ export function canShowURL(url) {
 
 export default function TelegramPreview({ url }) {
   useEffect(() => void startEventListening(), []);
+  const isDarkTheme = useSelector(darkTheme);
   const [baseURL] = url.match(TG_POST_RE);
 
   return (
     <FoldableContent>
       <div className="telegram-preview link-preview-content">
         <iframe
-          src={`${baseURL}?embed=1`}
+          src={`${baseURL}?embed=1&dark=${isDarkTheme ? '1' : '0'}`}
           data-url={baseURL}
           frameBorder="0"
           scrolling="no"
