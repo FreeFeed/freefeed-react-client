@@ -2,7 +2,6 @@ input[type='checkbox'].chk {
   margin: 0;
   width: 1.1em;
   height: 1.1em;
-  vertical-align: text-bottom;
   cursor: pointer;
 
   &:focus-visible {
@@ -13,6 +12,7 @@ input[type='checkbox'].chk {
 .box {
   position: relative;
   margin-inline-end: 0.15em;
+  vertical-align: middle;
 }
 
 .throbber {
