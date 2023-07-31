@@ -11,7 +11,7 @@ import ErrorBoundary from './error-boundary';
 import { FieldsetWrapper } from './fieldset-wrapper';
 import { Throbber } from './throbber';
 import { providerTitle, useExtAuthProviders } from './ext-auth-helpers';
-import { CookiesBanner } from './cookies-banner';
+import { CookiesWarning } from './cookies-warning';
 import { ExtAuthButtons } from './ext-auth-buttons';
 import UserName from './user-name';
 
@@ -40,7 +40,7 @@ export default memo(function SignInPage() {
         ) : null}
         <div className="col-md-12">
           <h2 className="p-signin-header">Sign in</h2>
-          <CookiesBanner />
+          <CookiesWarning />
           <ErrorBoundary>
             <SignInForm />
             <ResumeForm />
