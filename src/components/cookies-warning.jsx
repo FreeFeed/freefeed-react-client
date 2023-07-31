@@ -2,7 +2,7 @@ import { useSubscription } from 'use-subscription';
 
 import { cookiesEnabled } from '../services/feat-detection';
 
-export function CookiesBanner() {
+export function CookiesWarning() {
   const enabled = useSubscription(cookiesEnabledSub);
 
   return (

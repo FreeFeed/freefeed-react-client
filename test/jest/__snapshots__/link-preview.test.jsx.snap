@@ -127,7 +127,7 @@ exports[`LinkPreview > Shows a Telegram preview 1`] = `
             data-url="https://t.me/meowdobot/0000"
             frameborder="0"
             scrolling="no"
-            src="https://t.me/meowdobot/0000?embed=1"
+            src="https://t.me/meowdobot/0000?embed=1&dark=0"
             style="height: 0px;"
           />
         </div>

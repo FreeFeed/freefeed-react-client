@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Experimental
+
+## [1.122.0] - 2023-07-31
 ### Added
 - Comments can now be used as checklists if the comment text starts with "[ ]"
   or "[x]" (one can use other symbols in parentheses as well: [v], [*], [🗸], or
@@ -17,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
   For other users, a fixed-width text representation of the checkbox is shown:
   "[ ]" or "[🗸]".
+### Fixed
+- Telegram previews now supports dark theme
 
 ## [1.121.1] - 2023-07-15
 ### Fixed
