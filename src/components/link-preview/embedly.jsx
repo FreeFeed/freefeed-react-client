@@ -35,19 +35,19 @@ export default memo(function EmbedlyPreview({ url }) {
   );
 });
 
-let embedlyInitialized = false;
 function initEmbedly() {
-  if (embedlyInitialized) {
-    return;
-  }
-  embedlyInitialized = true;
-
   const id = 'embedly-platform';
   if (document.querySelector(`#${id}`)) {
     return;
   }
   window.embedly =
-    window.embedly || ((...args) => (window.embedly.q = window.embedly.q || []).push(args));
+    window.embedly ||
+    // We have to use the classic 'function()' here (rather than an arrow
+    // function) because of the way Embedly detects the type of this variable.
+    function (...args) {
+      (window.embedly.q = window.embedly.q || []).push(args);
+    };
+
   const script = document.createElement('script');
   script.id = id;
   script.async = true;

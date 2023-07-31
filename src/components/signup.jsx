@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 
 import { signedIn } from '../redux/action-creators';
 import SignupForm from './signup-form';
-import { CookiesBanner } from './cookies-banner';
+import { CookiesWarning } from './cookies-warning';
 import { useExtAuthProviders, providerTitle } from './ext-auth-helpers';
 import { ExtAuthButtons, SIGN_UP } from './ext-auth-buttons';
 import { useServerInfo } from './hooks/server-info';
@@ -54,7 +54,7 @@ export default memo(function Signup() {
           <h2 className="p-signin-header">Sign up</h2>
           {showSignUpForm ? (
             <>
-              <CookiesBanner />
+              <CookiesWarning />
               <SignupForm />
               <ExtAuthSignup />
             </>
