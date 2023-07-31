@@ -10,11 +10,13 @@ import classnames from 'classnames';
 import { Arrows, Link as TLink, parseText, shortCodeToService } from '../utils/parse-text';
 import { highlightString } from '../utils/search-highlighter';
 import { FRIENDFEED_POST } from '../utils/link-types';
+import { InitialCheckbox as InitialCheckboxToken } from '../utils/initial-checkbox';
 import { getMediaType } from './media-viewer';
 
 import { Icon } from './fontawesome-icons';
 import UserName from './user-name';
 import ErrorBoundary from './error-boundary';
+import { InitialCheckbox } from './initial-checkbox';
 
 const MAX_URL_LENGTH = 50;
 const { searchEngine } = CONFIG.search;
@@ -62,6 +64,7 @@ export default function Linkify({
  * @returns {import('react').ReactNode[]}
  */
 function processStrings(children, processor, excludeTags = [], params = {}) {
+  params.throughIndex = params.throughIndex ?? -1;
   if (typeof children === 'string') {
     return processor(children, params);
   } else if (isValidElement(children) && !excludeTags.includes(children.type)) {
@@ -76,13 +79,14 @@ function processStrings(children, processor, excludeTags = [], params = {}) {
   return children;
 }
 
-function parseString(text, { userHover, arrowHover, arrowClick, showMedia, attachmentsRef }) {
+function parseString(text, params) {
   if (text === '') {
     return [];
   }
-
-  return parseText(text).map((token, i) => {
-    const key = i;
+  const { userHover, arrowHover, arrowClick, showMedia, attachmentsRef } = params;
+  return parseText(text).map((token) => {
+    params.throughIndex++;
+    const key = params.throughIndex;
 
     const anchorEl = anchorElWithKey(key);
     const linkEl = linkElWithKey(key);
@@ -171,6 +175,11 @@ function parseString(text, { userHover, arrowHover, arrowClick, showMedia, attac
         const url = srv.linkTpl.replace(/{}/g, token.username);
         return anchorEl(url, token.text, `${srv.title} link`);
       }
+    }
+
+    // Render checkbox only at first token
+    if (params.throughIndex === 0 && token instanceof InitialCheckboxToken) {
+      return <InitialCheckbox key="comment-checkbox" checked={token.checked} />;
     }
 
     return token.text;

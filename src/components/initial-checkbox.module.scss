@@ -1,0 +1,31 @@
+input[type='checkbox'].chk {
+  margin: 0;
+  width: 1.1em;
+  height: 1.1em;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline-offset: 2px;
+  }
+}
+
+.box {
+  position: relative;
+  margin-inline-end: 0.15em;
+  vertical-align: middle;
+}
+
+.throbber {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.textBox {
+  white-space: nowrap;
+}
