@@ -10,16 +10,18 @@ import {
   arrows,
   Link as TLink,
   Arrows as TArrows,
+  Token,
 } from 'social-text-tokenizer';
 
 import { byRegexp, wordAdjacentChars } from 'social-text-tokenizer/cjs/lib';
-import {
-  tokenizerStartSpoiler,
-  tokenizerEndSpoiler,
-  StartSpoiler,
-  EndSpoiler,
-} from './spoiler-tokens';
 import { checkboxParser } from './initial-checkbox';
+import {
+  EndSpoiler,
+  StartSpoiler,
+  tokenizerEndSpoiler,
+  tokenizerStartSpoiler,
+  validateSpoilerTags,
+} from './spoiler-tokens';
 
 const {
   textFormatter: { tldList, foreignMentionServices },
@@ -98,41 +100,6 @@ const tldRe = [...tldList]
   })
   .join('|');
 
-// Make sure that the list of tokens contains only
-// valid pairs of StartSpoiler/EndSpoiler tokens
-const validateSpoilerTags = (tokenizer) => {
-  return function (text) {
-    const validated = [];
-    let startSpoilerIndex = -1;
-    const tokens = tokenizer(text);
-
-    tokens.forEach((token, i) => {
-      if (token instanceof StartSpoiler) {
-        if (startSpoilerIndex !== -1) {
-          // previous StartSpoiler is invalid
-          validated[startSpoilerIndex] = null;
-        }
-        startSpoilerIndex = i;
-        validated.push(token);
-      } else if (token instanceof EndSpoiler) {
-        if (startSpoilerIndex !== -1) {
-          startSpoilerIndex = -1;
-          validated.push(token);
-        }
-      } else {
-        validated.push(token);
-      }
-    });
-
-    if (startSpoilerIndex !== -1) {
-      // un-closed StartSpoiler
-      validated[startSpoilerIndex] = null;
-    }
-
-    return validated.filter(Boolean);
-  };
-};
-
 export class RedditLink extends TLink {
   get href() {
     let path = this.text;
@@ -160,6 +127,22 @@ const redditLinks = () => {
   });
 };
 
+export class LineBreak extends Token {}
+export class ParagraphBreak extends Token {}
+
+/**
+ * @param {string} text
+ * @returns {(LineBreak | ParagraphBreak)[]}
+ */
+export function lineBreaks(text) {
+  return [...text.matchAll(/[^\S\n]*\n\s*/g)].map((m) => {
+    if (m[0].indexOf('\n') === m[0].lastIndexOf('\n')) {
+      return new LineBreak(m.index, m[0]);
+    }
+    return new ParagraphBreak(m.index, m[0]);
+  });
+}
+
 const tokenize = withText(
   validateSpoilerTags(
     combine(
@@ -173,6 +156,7 @@ const tokenize = withText(
       tokenizerStartSpoiler,
       tokenizerEndSpoiler,
       checkboxParser,
+      lineBreaks,
     ),
   ),
 );
