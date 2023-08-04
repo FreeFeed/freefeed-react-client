@@ -6,6 +6,8 @@ import PieceOfText from '../../../src/components/piece-of-text';
 import Spoiler from '../../../src/components/spoiler';
 import Linkify from '../../../src/components/linkify';
 import { ButtonLink } from '../../../src/components/button-link';
+import { Anchor } from '../../../src/components/linkify-links';
+import ErrorBoundary from '../../../src/components/error-boundary';
 
 const expect = unexpected.clone().use(unexpectedReact);
 
@@ -28,17 +30,7 @@ describe('<PieceOfText>', () => {
       <PieceOfText text={text} isExpanded />,
       'when rendered',
       'to have rendered with all children',
-      <Linkify>
-        <span>First paragraph</span>
-        <div className="p-break">
-          <br />
-        </div>
-        <span>
-          <span>Second paragraph, first line</span>
-          <br />
-          <span>Second paragraph, second line</span>
-        </span>
-      </Linkify>,
+      <Linkify>{text.trim()}</Linkify>,
     );
   });
 
@@ -100,16 +92,20 @@ describe('<PieceOfText>', () => {
       '123 <spoiler> <spoiler>456</spoiler> 789 <спойлер>https://example.com</спойлер> 123';
 
     expect(
-      <PieceOfText text={text} />,
+      <Linkify>{text}</Linkify>,
       'when rendered',
       'to have rendered with all children',
-      <Linkify>
-        123 &lt;spoiler&gt; &lt;spoiler&gt;
-        <Spoiler>456</Spoiler>
-        &lt;/spoiler&gt; 789 &lt;спойлер&gt;
-        <Spoiler>https://example.com</Spoiler>
-        &lt;/спойлер&gt; 123
-      </Linkify>,
+      <span>
+        <ErrorBoundary>
+          {'123 <spoiler> <spoiler>'}
+          <Spoiler>456</Spoiler>
+          {'</spoiler> 789 <спойлер>'}
+          <Spoiler>
+            <Anchor href="https://example.com/">example.com</Anchor>
+          </Spoiler>
+          {'</спойлер> 123'}
+        </ErrorBoundary>
+      </span>,
     );
   });
 });
