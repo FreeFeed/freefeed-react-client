@@ -8,6 +8,7 @@ import AudioAttachment from './post-attachment-audio';
 import GeneralAttachment from './post-attachment-general';
 import VideoAttachment from './post-attachment-video';
 
+/*
 const videoTypes = {
   mov: 'video/quicktime',
   mp4: 'video/mp4; codecs="avc1.42E01E"',
@@ -26,6 +27,10 @@ Object.keys(videoTypes).forEach((extension) => {
   }
 });
 video = null;
+*/
+
+// Nov video support for now
+const supportedVideoTypes = [];
 
 const looksLikeAVideoFile = (attachment) => {
   const lowercaseFileName = attachment.fileName.toLowerCase();

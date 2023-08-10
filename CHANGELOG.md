@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.122.1] - 2023-08-10
+### Changed
+- Disable player for video attachments until we can deal with the increased
+  traffic from them.
+
 ## [1.122.0] - 2023-07-31
 ### Added
 - Comments can now be used as checklists if the comment text starts with "[ ]"
