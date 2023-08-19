@@ -30,9 +30,12 @@ const getAuthorName = ({ postAuthor, createdUser, group }) => {
   return createdUser.username;
 };
 
-const generatePostUrl = ({ post_id, ...event }) => `/${getAuthorName(event)}/${post_id}`;
-const generateCommentUrl = ({ post_id, comment_id, ...event }) =>
-  `/${getAuthorName(event)}/${post_id}#comment-${comment_id}`;
+const generatePostUrl = ({ post_id, shortPostId, ...event }) =>
+  `/${getAuthorName(event)}/${shortPostId ?? post_id}`;
+const generateCommentUrl = ({ post_id, comment_id, shortPostId, shortCommentId, ...event }) =>
+  `/${getAuthorName(event)}/${shortPostId ?? post_id}#${
+    shortCommentId ? shortCommentId : `comment-${comment_id}`
+  }`;
 const postLink = (event, fallback = 'deleted post') =>
   event.post_id ? <Link to={generatePostUrl(event)}>post</Link> : fallback;
 const directPostLink = (event) =>
@@ -421,14 +424,22 @@ function Notification({ event }) {
       : contentSource === 'comment'
       ? allComments[event.comment_id]?.body
       : null;
-  const mainLink = mainEventLink(event);
+  const eventWithShortIds = useMemo(
+    () => ({
+      ...event,
+      shortPostId: allPosts[event.post_id]?.shortId,
+      shortCommentId: allComments[event.comment_id]?.shortId,
+    }),
+    [allComments, allPosts, event],
+  );
+  const mainLink = mainEventLink(eventWithShortIds);
   return (
     <div className={`single-notification ${notificationClasses[event.event_type] || ''}`}>
       <div className="single-notification__picture">
         <UserPicture user={userPictureSource(event)} size={40} loading="lazy" />
       </div>
       <div className="single-notification__headline">
-        {(notificationTemplates[event.event_type] || nop)(event)}
+        {(notificationTemplates[event.event_type] || nop)(eventWithShortIds)}
       </div>
       <div className="single-notification__content">
         {content ? (
