@@ -228,7 +228,7 @@ class PostComment extends Component {
                   getBackwardIdx={this.backwardIdx}
                   createdAt={this.props.createdAt}
                   updatedAt={this.props.updatedAt}
-                  permalink={`${this.props.entryUrl}#comment-${this.props.id}`}
+                  permalink={`${this.props.entryUrl}#${this.props.shortId}`}
                   likesCount={this.props.likes}
                   setMenuOpener={this.setMoreMenuOpener}
                   onMenuOpened={this.onMoreMenuOpened}
@@ -240,7 +240,7 @@ class PostComment extends Component {
           {(this.props.showTimestamps || this.props.forceAbsTimestamps) && (
             <span className="comment-tail__item">
               <Link
-                to={`${this.props.entryUrl}#comment-${this.props.id}`}
+                to={`${this.props.entryUrl}#${this.props.shortId}`}
                 className="comment-tail__timestamp"
               >
                 <TimeDisplay

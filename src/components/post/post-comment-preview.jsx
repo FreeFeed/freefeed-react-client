@@ -134,7 +134,7 @@ export function PostCommentPreview({
         {comment && frontPreferences.comments.showTimestamps && (
           <span className="comment-tail__item">
             <Link
-              to={`${postUrl}#comment-${comment.id}`}
+              to={`${postUrl}#${comment.shortId}`}
               className="comment-tail__timestamp"
               onClick={onClick}
             >
@@ -172,7 +172,7 @@ export function PostCommentPreview({
             </Expandable>
           )}
           <div className={styles['actions']}>
-            <Link to={`${postUrl}#comment-${comment?.id}`} onClick={onClick}>
+            <Link to={`${postUrl}#${comment?.shortId}`} onClick={onClick}>
               Go to comment
             </Link>
           </div>
