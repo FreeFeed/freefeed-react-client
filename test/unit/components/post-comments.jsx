@@ -13,7 +13,7 @@ import { SignInLink } from '../../../src/components/sign-in-link';
 
 const expect = unexpected.clone().use(unexpectedReact);
 
-const generateArray = (n) => [...Array(n).keys()].map(() => ({}));
+const generateArray = (n) => [...Array(n).keys()].map((i) => ({ id: i }));
 const commentArrays = generateArray(5).map((_, index) => generateArray(index));
 
 describe('<PostComments>', () => {
@@ -27,7 +27,7 @@ describe('<PostComments>', () => {
     };
 
     expect(
-      <PostComments comments={[{}]} post={post} />,
+      <PostComments comments={[{ id: '1' }]} post={post} />,
       'when rendered',
       'to have rendered with all children',
       <div>
@@ -57,7 +57,7 @@ describe('<PostComments>', () => {
     );
 
     expect(
-      <PostComments comments={[{}]} post={post} />,
+      <PostComments comments={[{ id: '1' }]} post={post} />,
       'when rendered',
       'to have rendered with all children',
       <div>
@@ -66,7 +66,7 @@ describe('<PostComments>', () => {
     );
 
     const root = await expect(
-      <PostComments comments={[{}, {}, {}, {}]} post={post} />,
+      <PostComments comments={[{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }]} post={post} />,
       'when rendered',
       'queried for',
       <div className="comments" />,
@@ -88,7 +88,7 @@ describe('<PostComments>', () => {
     };
 
     expect(
-      <PostComments comments={[{}, {}]} post={post} />,
+      <PostComments comments={[{ id: '1' }, { id: '2' }]} post={post} />,
       'when rendered',
       'to contain',
       <ExpandComments omittedComments={2} />,

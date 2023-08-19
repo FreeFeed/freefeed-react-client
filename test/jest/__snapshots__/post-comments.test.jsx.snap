@@ -156,26 +156,22 @@ exports[`PostComments > Renders post comments and doesn't blow up 1`] = `
             dir="auto"
             role="region"
           >
-            <span>
-              <span
-                class="user-name-wrapper"
+            <span
+              class="user-name-wrapper"
+            >
+              <a
+                class=""
               >
-                <a
-                  class=""
+                <span
+                  dir="ltr"
                 >
-                  <span
-                    dir="ltr"
-                  >
-                    @author
-                  </span>
-                </a>
-              </span>
-               comment 2
+                  @author
+                </span>
+              </a>
             </span>
+             comment 2 
             <br />
-            <span>
-              Multilinebody
-            </span>
+            Multilinebody
           </span>
           <span
             aria-label="Comment by other"
