@@ -5,5 +5,5 @@ export function canonicalURI(post) {
   if (post.recipients.length > 0 && !post.recipients.some((r) => r.type === 'user')) {
     urlName = post.recipients[0].username;
   }
-  return `/${encodeURIComponent(urlName)}/${encodeURIComponent(post.id)}`;
+  return `/${encodeURIComponent(urlName)}/${encodeURIComponent(post.shortId)}`;
 }
