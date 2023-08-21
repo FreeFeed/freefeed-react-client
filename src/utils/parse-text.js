@@ -125,7 +125,7 @@ export class RedditLink extends TLink {
 }
 
 const redditLinks = () => {
-  const beforeChars = new RegExp(`[${wordAdjacentChars}]`);
+  const beforeChars = new RegExp(`[${wordAdjacentChars.clone().removeChars('/')}]`);
   const afterChars = new RegExp(`[${wordAdjacentChars.clone().removeChars('/')}]`);
   return byRegexp(/\/?r\/[A-Za-z\d]\w{1,20}/g, (offset, text, match) => {
     const charBefore = match.input.charAt(offset - 1);
@@ -142,7 +142,7 @@ const redditLinks = () => {
 };
 
 const shortLinks = () => {
-  const beforeChars = new RegExp(`[${wordAdjacentChars}]`);
+  const beforeChars = new RegExp(`[${wordAdjacentChars.clone().removeChars('/')}]`);
   const afterChars = new RegExp(`[${wordAdjacentChars.clone().removeChars('/')}]`);
   return byRegexp(shortLinkRe, (offset, text, match) => {
     const charBefore = match.input.charAt(offset - 1);
