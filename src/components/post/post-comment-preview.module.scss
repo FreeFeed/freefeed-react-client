@@ -27,7 +27,7 @@
     position: absolute;
 
     // The #{} syntax is ugly but necessary to fight against Sass heuristics
-    left: #{m}in(#{m}ax(rem(14px), var(--arr-left)), #{100%} - rem(14px));
+    left: #{clamp }(rem(14px), var(--arr-left), #{'100% - '} rem(14px));
     top: 100%;
     width: $sz;
     height: $sz;
