@@ -54,7 +54,7 @@ export class Link extends TLink {
   }
 
   get pretty() {
-    if (this.isShort) {
+    if (this.isShort || (this.isLocal && shortLinkExactRe.test(this.path))) {
       return this.path;
     }
     return super.pretty;
