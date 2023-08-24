@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.123.0] - Not released
+### Added
+- Links to posts and comments are now shorter: e.g. `/user/4a39b8` (a post) or
+  `/groupname/f482e5#ad2b` (a comment).
+  - All public URLs and links to posts and comments are now in short format.
+  - Addresses of posts and comments with leading slash (`/user/...`) are now
+    parses in texts as active links.
+  - Old-fashion links, with long UIDs, are still fully supported.
+
 ### Changed
 - Spoiler tag can now contain line feeds. In addition, user text formatting
   utilizes simpler HTML, with fewer wrappers. Visually, the output for the user

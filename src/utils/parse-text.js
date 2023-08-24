@@ -28,29 +28,43 @@ const {
   siteDomains,
 } = CONFIG;
 
+const shortLinkRe = /\/[a-z\d-]{3,35}\/[\da-f]{6,10}(?:#[\da-f]{4,6})?/gi;
+const shortLinkExactRe = /^\/[a-z\d-]{3,35}\/[\da-f]{6,10}(?:#[\da-f]{4,6})?$/i;
+
 export class Link extends TLink {
   localDomains = [];
   hostname = null;
   path = '/';
   link;
+  isShort = false;
 
   constructor(link, localDomains) {
     super(link.offset, link.text);
     this.link = link;
     this.localDomains = localDomains;
+    this.isShort = shortLinkExactRe.test(link.text);
 
-    const m = this.link.href.match(/^https?:\/\/([^/]+)(.*)/i);
+    const m = this.href.match(/^https?:\/\/([^/]+)(.*)/i);
     if (m) {
       this.hostname = m[1].toLowerCase();
       this.path = m[2] || '/';
+    } else if (this.isShort) {
+      this.path = link.text;
     }
   }
 
-  get href() {
-    return this.link.href;
+  get pretty() {
+    if (this.isShort || (this.isLocal && shortLinkExactRe.test(this.path))) {
+      return this.path;
+    }
+    return super.pretty;
   }
 
   get isLocal() {
+    // Short links are always local
+    if (this.isShort) {
+      return true;
+    }
     const p = this.localDomains.indexOf(this.hostname);
     if (p === -1) {
       return false;
@@ -61,7 +75,7 @@ export class Link extends TLink {
     }
 
     // Other domains in localDomains list are alternative frontends or mirrors.
-    // Such links should be treated as remote if theay lead to the domain root.
+    // Such links should be treated as remote if they lead to the domain root.
     return this.path !== '/';
   }
 
@@ -111,7 +125,7 @@ export class RedditLink extends TLink {
 }
 
 const redditLinks = () => {
-  const beforeChars = new RegExp(`[${wordAdjacentChars}]`);
+  const beforeChars = new RegExp(`[${wordAdjacentChars.clone().removeChars('/')}]`);
   const afterChars = new RegExp(`[${wordAdjacentChars.clone().removeChars('/')}]`);
   return byRegexp(/\/?r\/[A-Za-z\d]\w{1,20}/g, (offset, text, match) => {
     const charBefore = match.input.charAt(offset - 1);
@@ -124,6 +138,23 @@ const redditLinks = () => {
     }
 
     return new RedditLink(offset, text);
+  });
+};
+
+const shortLinks = () => {
+  const beforeChars = new RegExp(`[${wordAdjacentChars.clone().removeChars('/')}]`);
+  const afterChars = new RegExp(`[${wordAdjacentChars.clone().removeChars('/')}]`);
+  return byRegexp(shortLinkRe, (offset, text, match) => {
+    const charBefore = match.input.charAt(offset - 1);
+    const charAfter = match.input.charAt(offset + text.length);
+    if (charBefore !== '' && !beforeChars.test(charBefore)) {
+      return null;
+    }
+    if (charAfter !== '' && !afterChars.test(charAfter)) {
+      return null;
+    }
+
+    return new TLink(offset, text);
   });
 };
 
@@ -151,6 +182,7 @@ const tokenize = withText(
       mentions(),
       foreignMentions(),
       links({ tldRe }),
+      shortLinks(),
       redditLinks(),
       arrows(/\u2191+|\^([1-9]\d*|\^*)/g),
       tokenizerStartSpoiler,

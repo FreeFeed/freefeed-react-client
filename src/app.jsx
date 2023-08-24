@@ -425,7 +425,8 @@ function isPostPath({ params: { postId, userName } }) {
   // old groups can have up to 27 characters in username
   return (
     /^[a-z\d-]{3,30}$/i.test(userName) &&
-    /^[a-f\d]{8}-[a-f\d]{4}-4[a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i.test(postId)
+    (/^[a-f\d]{8}-[a-f\d]{4}-4[a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i.test(postId) ||
+      /^[a-f\d]{6,10}$/i.test(postId)) // Short post ID
   );
 }
 
