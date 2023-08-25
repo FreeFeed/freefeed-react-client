@@ -68,7 +68,7 @@ exports[`PostComments > Renders post comments and doesn't blow up 1`] = `
             aria-label="Comment by author"
             class="comment-tail"
           >
-             - 
+             - 
             <span
               class="comment-tail__item"
             >
@@ -181,7 +181,7 @@ exports[`PostComments > Renders post comments and doesn't blow up 1`] = `
             aria-label="Comment by other"
             class="comment-tail"
           >
-             - 
+             - 
             <span
               class="comment-tail__item"
             >
@@ -296,7 +296,7 @@ exports[`PostComments > Renders post comments and doesn't blow up 1`] = `
             aria-label="Comment by author"
             class="comment-tail"
           >
-             - 
+             - 
             <span
               class="comment-tail__item"
             >

@@ -185,7 +185,7 @@ class PostComment extends Component {
         }
         className="comment-tail"
       >
-        {' - '}
+        &nbsp;-&nbsp;
         <Separated separator=" - ">
           {this.props.user && !this.isHidden() && (
             <span className="comment-tail__item">
