@@ -1367,3 +1367,11 @@ export function resetTranslation({ type, id }) {
     payload: { type, id },
   };
 }
+
+export function getBacklinks(postId, offset) {
+  return {
+    type: ActionTypes.GET_BACKLINKS,
+    apiRequest: Api.getBacklinks,
+    payload: { postId, offset },
+  };
+}
