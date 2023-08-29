@@ -24,12 +24,18 @@ const ImageAttachmentsLightbox = lazyComponent(
 );
 
 export const getMediaType = (url) => {
-  if (new URL(url).pathname.match(/\.(jpg|png|jpeg|webp|gif)$/i)) {
-    return 'image';
-  } else if (isInstagram(url)) {
-    return 'instagram';
+  try {
+    if (new URL(url).pathname.match(/\.(jpg|png|jpeg|webp|gif)$/i)) {
+      return 'image';
+    } else if (isInstagram(url)) {
+      return 'instagram';
+    }
+    return getVideoType(url);
+  } catch {
+    // For some URLs in user input. the 'new URL' may throw error. Just return
+    // null (unknown type) in this case.
+    return null;
   }
-  return getVideoType(url);
 };
 
 export const isMediaAttachment = (attachments) => {
