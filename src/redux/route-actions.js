@@ -25,6 +25,7 @@ import {
   getPostIdByOldName,
   getUserSummary,
   getUserStats,
+  getBacklinks,
 } from './action-creators';
 
 //query params are strings, so + hack to convert to number
@@ -79,6 +80,7 @@ export const routeActions = {
       next.params.day,
       getOffset(next),
     ),
+  backlinks: (next) => getBacklinks(next.params.postId, getOffset(next)),
 };
 
 export const bindRouteActions = (dispatch) => (route) => (next) => {
