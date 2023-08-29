@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Addresses of posts and comments with leading slash (`/user/...`) are now
     parses in texts as active links.
   - Old-fashion links, with long UIDs, are still fully supported.
+- New page(s) `/:userName/:postId/backlinks` that displays posts that link to
+  this post. This replaces the old way of displaying backlinks, which used
+  search.
 
 ### Changed
 - Spoiler tag can now contain line feeds. In addition, user text formatting
