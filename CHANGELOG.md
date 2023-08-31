@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Spoiler tag can now contain line feeds. In addition, user text formatting
   utilizes simpler HTML, with fewer wrappers. Visually, the output for the user
   is not changed (except for line translations in spoilers).
+- Text checkboxes are not processed in a special way if there is more than one
+  of them in the text.
 
 ## [1.122.1] - 2023-08-10
 ### Changed
