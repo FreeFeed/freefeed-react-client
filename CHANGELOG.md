@@ -19,6 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   utilizes simpler HTML, with fewer wrappers. Visually, the output for the user
   is not changed (except for line translations in spoilers).
 
+### Fixed
+- The default font set no longer includes the Helvetica family when the client
+  platform is Windows. Helvetica is not a native font in Windows, and the
+  manually installed version of the font may be incomplete (for example, not
+  contain Cyrillic).
+
 ## [1.122.1] - 2023-08-10
 ### Changed
 - Disable player for video attachments until we can deal with the increased
