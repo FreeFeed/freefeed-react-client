@@ -4,7 +4,13 @@ $icon-font-path: '../../assets/fonts/bootstrap/';
 
 // override default bootstrap fonts
 $font-family-sans-serif: Vazir, 'Helvetica Neue', Helvetica, Arial, sans-serif !default;
+$font-family-sans-serif-windows: Vazir, Arial, sans-serif !default;
 $font-family-serif: Vazir, Georgia, 'Times New Roman', Times, serif !default;
 $font-family-monospace: Vazir, Menlo, Monaco, Consolas, 'Courier New', monospace !default;
 
 @import 'bootstrap/bootstrap.3.3.4.scss';
+
+.windows-platform body {
+  // Use special fonts set for Windows platform
+  font-family: $font-family-sans-serif-windows;
+}
