@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     parses in texts as active links.
   - Old-fashion links, with long UIDs, are still fully supported.
 
+- Updated TWEET_RE regex to support matching x.com in addition to twitter.com.
+
 ### Changed
 - Spoiler tag can now contain line feeds. In addition, user text formatting
   utilizes simpler HTML, with fewer wrappers. Visually, the output for the user
