@@ -7,7 +7,7 @@ import { withEventListener } from '../hooks/sub-unsub';
 import * as heightCache from './helpers/size-cache';
 import FoldableContent from './helpers/foldable-content';
 
-const TWEET_RE = /^https?:\/\/twitter\.com\/[^/]+\/status\/(\d+)/i;
+const TWEET_RE = /^https?:\/\/(?:twitter|x)\.com\/[^/]+\/status\/(\d+)/i;
 
 export function canShowURL(url) {
   return TWEET_RE.test(url);
