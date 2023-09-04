@@ -825,3 +825,7 @@ export function translateText({ type, id, lang }) {
   const qs = lang ? `?lang=${lang}` : '';
   return fetch(`${apiRoot}/v2/${part}/${id}/translated-body${qs}`, getRequestOptions());
 }
+
+export function getBacklinks({ postId, offset = 0 }) {
+  return fetch(`${apiRoot}/v2/posts/${postId}/backlinks?offset=${offset}`, getRequestOptions());
+}

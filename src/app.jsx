@@ -41,6 +41,7 @@ const Subscribers = lazyLoad(() => import('./components/subscribers'));
 const Subscriptions = lazyLoad(() => import('./components/subscriptions'));
 const Summary = lazyLoad(() => import('./components/summary'));
 const Groups = lazyLoad(() => import('./components/groups'));
+const BacklinksFeed = lazyLoad(() => import('./components/backlinks-feed'));
 
 Sentry.init({
   dsn: CONFIG.sentry.publicDSN,
@@ -394,6 +395,12 @@ function App() {
           path="/:userName/:postId"
           component={checkPath(SinglePost, isPostPath)}
           {...generateRouteHooks(boundRouteActions('post'))}
+        />
+        <Route
+          name="backlinks"
+          path="/:userName/:postId/backlinks"
+          component={checkPath(BacklinksFeed, isPostPath)}
+          {...generateRouteHooks(boundRouteActions('backlinks'))}
         />
         <Route name="404" path="*" component={NotFound} />
       </Route>

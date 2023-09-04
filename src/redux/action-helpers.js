@@ -32,6 +32,7 @@ import {
   BLOCKED_BY_ME,
   GET_POSTS_BY_IDS,
   CALENDAR_DATE_POSTS,
+  GET_BACKLINKS,
 } from './action-types';
 import { request, response, fail, baseType } from './async-helpers';
 
@@ -56,6 +57,7 @@ export const feedGeneratingActions = [
   GET_USER_MEMORIES,
   GET_POSTS_BY_IDS,
   CALENDAR_DATE_POSTS,
+  GET_BACKLINKS,
 ];
 const userFeedGeneratingActions = [
   GET_USER_FEED,
