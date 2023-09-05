@@ -41,6 +41,7 @@ const Subscribers = lazyLoad(() => import('./components/subscribers'));
 const Subscriptions = lazyLoad(() => import('./components/subscriptions'));
 const Summary = lazyLoad(() => import('./components/summary'));
 const Groups = lazyLoad(() => import('./components/groups'));
+const BacklinksFeed = lazyLoad(() => import('./components/backlinks-feed'));
 
 Sentry.init({
   dsn: CONFIG.sentry.publicDSN,
@@ -395,6 +396,12 @@ function App() {
           component={checkPath(SinglePost, isPostPath)}
           {...generateRouteHooks(boundRouteActions('post'))}
         />
+        <Route
+          name="backlinks"
+          path="/:userName/:postId/backlinks"
+          component={checkPath(BacklinksFeed, isPostPath)}
+          {...generateRouteHooks(boundRouteActions('backlinks'))}
+        />
         <Route name="404" path="*" component={NotFound} />
       </Route>
     </Router>
@@ -425,7 +432,8 @@ function isPostPath({ params: { postId, userName } }) {
   // old groups can have up to 27 characters in username
   return (
     /^[a-z\d-]{3,30}$/i.test(userName) &&
-    /^[a-f\d]{8}-[a-f\d]{4}-4[a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i.test(postId)
+    (/^[a-f\d]{8}-[a-f\d]{4}-4[a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i.test(postId) ||
+      /^[a-f\d]{6,10}$/i.test(postId)) // Short post ID
   );
 }
 

@@ -48,3 +48,10 @@ try {
     });
   ga.l = 1 * new Date();
 }
+
+// Windows platform detection
+{
+  const platform = navigator.userAgentData?.platform;
+  const isWindows = platform ? platform === 'Windows' : navigator.userAgent.includes('Win');
+  document.documentElement.classList.toggle('windows-platform', isWindows);
+}

@@ -13,7 +13,7 @@ overridden in runtime by the patch file described below.
 The _config.json_ should be placed in web root near the _index.html_.
 
 This file, if exists, is merged with the default configuration in runtime (when
-site is opened in the browser). It allow site administrator to change some
+site is opened in the browser). It allows site administrator to change some
 configuration parameters without recompiling all the code.
 
 You can also use this file with the development server. Just place a

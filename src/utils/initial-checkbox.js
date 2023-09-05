@@ -5,7 +5,7 @@ import { Token } from 'social-text-tokenizer';
  * U+2714 Heavy Check Mark (✔)
  * U+0445 Cyrillic Small Letter Ha (х)
  */
-const checkBoxRe = /^\[(?:\s*|[xv*\u2713\u2714\u0445])]/i;
+const checkBoxRe = /\[(?:\s*|[xv*\u2713\u2714\u0445])]/gi;
 
 export const checkMark = '\u2713';
 
@@ -14,7 +14,7 @@ export const checkMark = '\u2713';
  * @returns {boolean}
  */
 export function hasCheckbox(text) {
-  return checkBoxRe.test(text);
+  return checkboxParser(text).length > 0;
 }
 
 export class InitialCheckbox extends Token {
@@ -31,8 +31,11 @@ export class InitialCheckbox extends Token {
  * @returns {Token[]}
  */
 export function checkboxParser(text) {
-  const m = checkBoxRe.exec(text);
-  return m ? [new InitialCheckbox(0, m[0])] : [];
+  const matches = [...text.matchAll(checkBoxRe)];
+  if (matches.length !== 1 || matches[0].index !== 0) {
+    return [];
+  }
+  return [new InitialCheckbox(0, matches[0][0])];
 }
 
 /**
@@ -49,5 +52,6 @@ export function isChecked(text) {
  * @returns {string}
  */
 export function setCheckState(text, newState) {
-  return `[${newState ? checkMark : ' '}] ${text.replace(checkBoxRe, '').trim()}`;
+  const [t] = checkboxParser(text);
+  return `[${newState ? checkMark : ' '}] ${text.slice(t.offset + t.text.length).trim()}`;
 }

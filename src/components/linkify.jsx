@@ -1,32 +1,21 @@
-/* global CONFIG */
-import { isValidElement, cloneElement, useMemo, useRef, useCallback } from 'react';
-import { Link } from 'react-router';
-import { Mention, Email, HashTag, ForeignMention } from 'social-text-tokenizer';
-import { faImage } from '@fortawesome/free-regular-svg-icons';
-import { faFilm as faVideo } from '@fortawesome/free-solid-svg-icons';
-import { faInstagram, faYoutube, faVimeo } from '@fortawesome/free-brands-svg-icons';
-import classnames from 'classnames';
+import cn from 'classnames';
+import { cloneElement, isValidElement, useMemo, useRef } from 'react';
 
-import { Arrows, Link as TLink, parseText, shortCodeToService } from '../utils/parse-text';
+import { parseText } from '../utils/parse-text';
 import { highlightString } from '../utils/search-highlighter';
-import { FRIENDFEED_POST } from '../utils/link-types';
-import { InitialCheckbox as InitialCheckboxToken } from '../utils/initial-checkbox';
-import { getMediaType } from './media-viewer';
+import { EndSpoiler, StartSpoiler } from '../utils/spoiler-tokens';
 
-import { Icon } from './fontawesome-icons';
-import UserName from './user-name';
 import ErrorBoundary from './error-boundary';
-import { InitialCheckbox } from './initial-checkbox';
-
-const MAX_URL_LENGTH = 50;
-const { searchEngine } = CONFIG.search;
-const noop = () => {};
+import { tokenToElement } from './linkify-elements';
+import Spoiler from './spoiler';
+import UserName from './user-name';
 
 export default function Linkify({
   children,
+  className,
   showMedia,
   userHover,
-  arrowHover = noop,
+  arrowHover,
   arrowClick,
   highlightTerms: hl = [],
 }) {
@@ -48,7 +37,7 @@ export default function Linkify({
   }, [arrowClick, arrowHover, children, hl, showMedia, userHover]);
 
   return (
-    <span className="Linkify" dir="auto" role="region">
+    <span className={cn('Linkify', className)} dir="auto" role="region">
       <ErrorBoundary>{formatted}</ErrorBoundary>
     </span>
   );
@@ -64,7 +53,6 @@ export default function Linkify({
  * @returns {import('react').ReactNode[]}
  */
 function processStrings(children, processor, excludeTags = [], params = {}) {
-  params.throughIndex = params.throughIndex ?? -1;
   if (typeof children === 'string') {
     return processor(children, params);
   } else if (isValidElement(children) && !excludeTags.includes(children.type)) {
@@ -83,171 +71,26 @@ function parseString(text, params) {
   if (text === '') {
     return [];
   }
-  const { userHover, arrowHover, arrowClick, showMedia, attachmentsRef } = params;
-  return parseText(text).map((token) => {
-    params.throughIndex++;
-    const key = params.throughIndex;
 
-    const anchorEl = anchorElWithKey(key);
-    const linkEl = linkElWithKey(key);
+  const tokens = parseText(text);
+  const spoilerContent = [];
+  const resultContent = [];
+  let result = resultContent;
 
-    if (token instanceof Mention) {
-      return (
-        <UserName
-          user={{ username: token.text.slice(1).toLowerCase() }}
-          userHover={userHover}
-          key={key}
-        >
-          {token.text}
-        </UserName>
-      );
+  for (const [index, token] of tokens.entries()) {
+    if (token instanceof StartSpoiler) {
+      result.push(tokenToElement(token, index, params));
+      result = spoilerContent;
+    } else if (token instanceof EndSpoiler) {
+      const content = [...spoilerContent];
+      spoilerContent.length = 0;
+      result = resultContent;
+
+      result.push(<Spoiler key={index}>{content}</Spoiler>);
+      result.push(tokenToElement(token, index, params));
+    } else {
+      result.push(tokenToElement(token, index, params));
     }
-
-    if (token instanceof Email) {
-      return anchorEl(`mailto:${token.text}`, token.pretty);
-    }
-
-    if (token instanceof HashTag) {
-      if (searchEngine) {
-        return anchorEl(searchEngine + encodeURIComponent(token.text), token.text);
-      }
-
-      return linkEl({ pathname: '/search', query: { q: token.text } }, <bdi>{token.text}</bdi>);
-    }
-
-    if (token instanceof Arrows && arrowHover) {
-      return (
-        <span
-          className="arrow-span"
-          data-arrows={token.level}
-          onMouseEnter={arrowHover.hover}
-          onMouseLeave={arrowHover.leave}
-          onClick={arrowClick}
-          key={key}
-        >
-          {token.text}
-        </span>
-      );
-    }
-
-    if (token instanceof TLink) {
-      if (token.isLocal) {
-        let m, text;
-        // Special shortening of post links
-        if ((m = /^[^/]+\/[\w-]+\/[\da-f]{8}-/.exec(token.pretty))) {
-          text = `${m[0]}\u2026`;
-        } else {
-          text = token.shorten(MAX_URL_LENGTH);
-        }
-        return linkEl(token.localURI, text);
-      }
-
-      if (token.href.match(FRIENDFEED_POST)) {
-        return linkEl(
-          { pathname: '/archivePost', query: { url: token.href } },
-          token.shorten(MAX_URL_LENGTH),
-        );
-      }
-
-      if (showMedia) {
-        const mediaType = getMediaType(token.href);
-        if (mediaType) {
-          return (
-            <MediaOpener
-              key={key}
-              url={token.href}
-              mediaType={mediaType}
-              attachmentsRef={attachmentsRef}
-              showMedia={showMedia}
-            >
-              {token.shorten(MAX_URL_LENGTH)}
-            </MediaOpener>
-          );
-        }
-      }
-
-      return anchorEl(token.href, token.shorten(MAX_URL_LENGTH));
-    }
-
-    if (token instanceof ForeignMention) {
-      const srv = shortCodeToService[token.service];
-      if (srv) {
-        const url = srv.linkTpl.replace(/{}/g, token.username);
-        return anchorEl(url, token.text, `${srv.title} link`);
-      }
-    }
-
-    // Render checkbox only at first token
-    if (params.throughIndex === 0 && token instanceof InitialCheckboxToken) {
-      return <InitialCheckbox key="comment-checkbox" checked={token.checked} />;
-    }
-
-    return token.text;
-  });
-}
-
-function MediaOpener({ url, mediaType, attachmentsRef, showMedia, children }) {
-  const media = useMemo(() => {
-    const m = { url, id: 'comment', mediaType };
-    attachmentsRef.current.push(m);
-    return m;
-  }, [attachmentsRef, mediaType, url]);
-
-  const openMedia = useCallback(
-    (e) => {
-      if (e.button !== 0 || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) {
-        return;
-      }
-      e.preventDefault();
-      showMedia({
-        attachments: attachmentsRef.current,
-        index: attachmentsRef.current.indexOf(media),
-      });
-    },
-    [attachmentsRef, media, showMedia],
-  );
-
-  const mediaIcon =
-    {
-      instagram: faInstagram,
-      T_YOUTUBE_VIDEO: faYoutube,
-      T_VIMEO_VIDEO: faVimeo,
-      image: faImage,
-    }[mediaType] || faVideo;
-
-  return (
-    <a
-      href={url}
-      target="_blank"
-      dir="ltr"
-      onClick={openMedia}
-      className={classnames('media-link', mediaType)}
-      title="Click to view in Lightbox"
-    >
-      <span className="icon-bond">
-        <Icon icon={mediaIcon} className="media-icon" />
-      </span>
-      {children}
-    </a>
-  );
-}
-
-function anchorElWithKey(key) {
-  return function (href, content, title = null) {
-    return (
-      <a href={href} target="_blank" dir="ltr" key={key} title={title}>
-        {content}
-      </a>
-    );
-  };
-}
-
-function linkElWithKey(key) {
-  return function (to, content, title = null) {
-    return (
-      <Link to={to} dir="ltr" key={key} title={title}>
-        {content}
-      </Link>
-    );
-  };
+  }
+  return resultContent;
 }

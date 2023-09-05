@@ -1,11 +1,10 @@
-import { cloneElement, isValidElement, Component } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
-import { READMORE_STYLE_COMFORT } from '../utils/frontend-preferences-options';
+import {
+  READMORE_STYLE_COMFORT,
+  READMORE_STYLE_COMPACT,
+} from '../utils/frontend-preferences-options';
 
-import { StartSpoiler, EndSpoiler } from '../utils/spoiler-tokens';
-import { parseText } from '../utils/parse-text';
-
-import Spoiler from './spoiler';
 import Linkify from './linkify';
 import { ButtonLink } from './button-link';
 
@@ -18,13 +17,6 @@ const thresholdTextLines = 5;
 
 // Suffix to add to the shortened text
 const suffix = '...';
-
-// Separator element for "paragraphs"
-const paragraphBreak = (
-  <div className="p-break">
-    <br />
-  </div>
-);
 
 // Shorten text without cutting words
 const shortenText = (text, maxLength) => {
@@ -43,31 +35,6 @@ const shortenText = (text, maxLength) => {
 
   const newText = text.slice(0, Math.max(0, cutIndex));
   return newText + suffix;
-};
-
-// Inject an element between every element in array.
-// It's similar to array.join(separator), but returns an array, not a string.
-const injectSeparator = (array, separator) => {
-  if (array.length < 2) {
-    return array;
-  }
-
-  const result = [];
-
-  array.forEach((item, i) => {
-    result.push(<span key={`item-${i}`}>{item}</span>);
-    result.push(cloneElement(separator, { key: `separator-${i}` }, separator.props.children));
-  });
-
-  result.pop();
-
-  return result;
-};
-
-// Replace single newlines with <br/> and trim every line
-const brAndTrim = (text) => {
-  const lines = text.split(/\n/g).map((line) => line.trim());
-  return injectSeparator(lines, <br />);
 };
 
 const getCollapsedText = (text, expandText) => {
@@ -107,89 +74,42 @@ const getCollapsedText = (text, expandText) => {
 };
 
 const getExpandedText = (text) => {
-  const trimmedText = text.trim();
-
-  if (!/\n/.test(trimmedText)) {
-    return trimmedText;
-  }
-
-  const paragraphs = trimmedText.split(/\n\s*\n/g).map(brAndTrim);
-
-  return injectSeparator(paragraphs, paragraphBreak);
+  return text.trim();
 };
 
-const splitIntoSpoilerBlocks = (input) => {
-  if (typeof input === 'string') {
-    const tokens = parseText(input);
+export default function PieceOfText({
+  text = '',
+  isExpanded: passedIsExpanded = false,
+  readMoreStyle,
+  userHover,
+  arrowHover,
+  arrowClick,
+  highlightTerms,
+  showMedia,
+}) {
+  const [isExpanded, setIsExpanded] = useState(
+    () => passedIsExpanded || readMoreStyle === READMORE_STYLE_COMFORT,
+  );
 
-    const newNodes = [];
-    let isInSpoiler = false;
-    let spoilerText = '';
+  const expandText = useCallback(() => setIsExpanded(true), []);
 
-    tokens.forEach((token) => {
-      if (token instanceof StartSpoiler) {
-        newNodes.push(token.text);
-        isInSpoiler = true;
-      } else if (token instanceof EndSpoiler) {
-        const spoilerNode = <Spoiler key={`spoiler-${token.offset}`}>{spoilerText}</Spoiler>;
-        newNodes.push(spoilerNode, token.text);
-        isInSpoiler = false;
-        spoilerText = '';
-      } else if (isInSpoiler) {
-        spoilerText += token.text;
-      } else if (typeof newNodes[newNodes.length - 1] === 'string') {
-        newNodes[newNodes.length - 1] += token.text;
-      } else {
-        newNodes.push(token.text);
-      }
-    });
+  const textToRender = useMemo(
+    () => (isExpanded ? getExpandedText(text) : getCollapsedText(text, expandText)),
+    [expandText, isExpanded, text],
+  );
 
-    return newNodes;
-  }
+  const noBreaks = readMoreStyle === READMORE_STYLE_COMPACT && !isExpanded;
 
-  if (Array.isArray(input)) {
-    return input.map(splitIntoSpoilerBlocks);
-  }
-
-  if (isValidElement(input)) {
-    return cloneElement(input, {}, splitIntoSpoilerBlocks(input.props.children));
-  }
-};
-
-export default class PieceOfText extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isExpanded: !!props.isExpanded || props.readMoreStyle === READMORE_STYLE_COMFORT,
-    };
-  }
-
-  expandText() {
-    this.setState({ isExpanded: true });
-  }
-
-  render() {
-    if (!this.props.text) {
-      return <span />;
-    }
-
-    const text = splitIntoSpoilerBlocks(
-      this.state.isExpanded
-        ? getExpandedText(this.props.text)
-        : getCollapsedText(this.props.text, this.expandText.bind(this)),
-    );
-
-    return (
-      <Linkify
-        userHover={this.props.userHover}
-        arrowHover={this.props.arrowHover}
-        arrowClick={this.props.arrowClick}
-        highlightTerms={this.props.highlightTerms}
-        showMedia={this.props.showMedia}
-      >
-        {text}
-      </Linkify>
-    );
-  }
+  return (
+    <Linkify
+      className={noBreaks && 'text-no-breaks'}
+      userHover={userHover}
+      arrowHover={arrowHover}
+      arrowClick={arrowClick}
+      highlightTerms={highlightTerms}
+      showMedia={showMedia}
+    >
+      {textToRender}
+    </Linkify>
+  );
 }
