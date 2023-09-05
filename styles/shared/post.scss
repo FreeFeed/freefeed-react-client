@@ -250,11 +250,20 @@ $post-line-height: rem(20px);
 
 // paragraph breaks
 .p-break {
+  display: block;
   height: 0.35em;
 
   .post-text & {
     height: 0.65em;
   }
+
+  .text-no-breaks & {
+    display: inline;
+  }
+}
+
+.text-no-breaks br {
+  display: none;
 }
 
 // Used in both create-post and edit-post

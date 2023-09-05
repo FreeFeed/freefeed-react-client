@@ -56,13 +56,9 @@ exports[`Post > Renders a post and doesn't blow up 1`] = `
             dir="auto"
             role="region"
           >
-            <span>
-              Line 1
-            </span>
+            Line 1 
             <br />
-            <span>
-              Line 2
-            </span>
+            Line 2
           </span>
         </div>
       </div>

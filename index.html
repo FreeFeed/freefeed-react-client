@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
 
     <!-- Support for FB OpenGraph and Twitter -->
-    <!--#if expr="${request_uri} = /^\/([a-zA-Z0-9]+)\/([a-fA-F0-9\-]{36})/" -->
+    <!--#if expr="${request_uri} = /^\/([a-zA-Z0-9]+)\/([a-fA-F0-9\-]{36}|[a-fA-F0-9]{4,6})/" -->
     <!--#set var="post_id" value="$2" -->
     <!--#include virtual="/v2/posts-opengraph/${post_id}" -->
     <!--#endif -->

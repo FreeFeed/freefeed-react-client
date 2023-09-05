@@ -32,23 +32,17 @@ exports[`PieceOfText > Renders a short piece of text 2`] = `
     dir="auto"
     role="region"
   >
-    <span>
-      First paragraph
-    </span>
-    <div
+    First paragraph
+    <span
       class="p-break"
     >
       <br />
-    </div>
-    <span>
-      <span>
-        Second paragraph, first line
-      </span>
+       
       <br />
-      <span>
-        Second paragraph, second line
-      </span>
     </span>
+    Second paragraph, first line 
+    <br />
+    Second paragraph, second line
   </span>
 </DocumentFragment>
 `;
@@ -92,7 +86,11 @@ exports[`PieceOfText > Renders a very long piece of text 2`] = `
 
 exports[`PieceOfText > Renders an empty span if empty 1`] = `
 <DocumentFragment>
-  <span />
+  <span
+    class="Linkify"
+    dir="auto"
+    role="region"
+  />
 </DocumentFragment>
 `;
 

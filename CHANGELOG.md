@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.123.0] - 2023-09-05
+### Added
+- Links to posts and comments are now shorter: e.g. `/user/4a39b8` (a post) or
+  `/groupname/f482e5#ad2b` (a comment).
+  - All public URLs and links to posts and comments are now in short format.
+  - Addresses of posts and comments with leading slash (`/user/...`) are now
+    parses in texts as active links.
+  - Old-fashion links, with long UIDs, are still fully supported.
+- New page(s) `/:userName/:postId/backlinks` that displays posts that link to
+  this post. This replaces the old way of displaying backlinks, which used
+  search.
+
+### Changed
+- Spoiler tag can now contain line feeds. In addition, user text formatting
+  utilizes simpler HTML, with fewer wrappers. Visually, the output for the user
+  is not changed (except for line translations in spoilers).
+- Text checkboxes are not processed in a special way if there is more than one
+  of them in the text.
+
+### Fixed
+- The default font set no longer includes the Helvetica family when the client
+  platform is Windows. Helvetica is not a native font in Windows, and the
+  manually installed version of the font may be incomplete (for example, not
+  contain Cyrillic).
+- Updated TWEET_RE regex to support matching x.com in addition to twitter.com.
+
 ## [1.122.1] - 2023-08-10
 ### Changed
 - Disable player for video attachments until we can deal with the increased

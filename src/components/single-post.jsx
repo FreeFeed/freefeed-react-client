@@ -14,8 +14,8 @@ import { PostContextProvider } from './post/post-context';
 
 class SinglePostHandler extends Component {
   UNSAFE_componentWillReceiveProps(nextProps) {
-    const { post, router } = nextProps;
-    if (!post) {
+    const { post, router, routeLoadingState } = nextProps;
+    if (!post || routeLoadingState) {
       return;
     }
     const { pathname, search, hash } = router.location;
@@ -84,13 +84,13 @@ class SinglePostHandler extends Component {
 }
 
 function selectState(state) {
-  const { boxHeader, user } = state;
+  const { boxHeader, user, routeLoadingState } = state;
 
   const post = joinPostData(state)(state.singlePostId);
   const viewState = state.postsViewState[state.singlePostId];
   const errorString = viewState ? viewState.errorString || 'Unknown error' : null;
 
-  return { post, user, boxHeader, errorString };
+  return { post, user, boxHeader, errorString, routeLoadingState };
 }
 
 function selectActions(dispatch) {

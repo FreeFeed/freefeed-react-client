@@ -66,7 +66,7 @@ const getCommentId = (hash) => {
   if (!hash) {
     return '';
   }
-  return hash.replace('#comment-', '');
+  return hash.startsWith('#comment-') ? hash.replace('#comment-', '') : hash.replace('#', '');
 };
 
 export const joinPostData = (state) => (postId) => {
@@ -161,7 +161,7 @@ export const joinPostData = (state) => (postId) => {
         isEditable: user.id === comment.createdBy,
         isDeletable: isModeratable || isModeratable,
         likesList: selectCommentLikes(state, commentId),
-        highlightedFromUrl: commentId === hashedCommentId,
+        highlightedFromUrl: commentId === hashedCommentId || comment.shortId === hashedCommentId,
       };
     })
     .filter(Boolean);
