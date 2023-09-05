@@ -17,8 +17,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   this post. This replaces the old way of displaying backlinks, which used
   search.
 
-- Updated TWEET_RE regex to support matching x.com in addition to twitter.com.
-
 ### Changed
 - Spoiler tag can now contain line feeds. In addition, user text formatting
   utilizes simpler HTML, with fewer wrappers. Visually, the output for the user
@@ -31,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   platform is Windows. Helvetica is not a native font in Windows, and the
   manually installed version of the font may be incomplete (for example, not
   contain Cyrillic).
+- Updated TWEET_RE regex to support matching x.com in addition to twitter.com.
 
 ## [1.122.1] - 2023-08-10
 ### Changed
