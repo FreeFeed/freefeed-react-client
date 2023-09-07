@@ -1321,6 +1321,9 @@ export function singlePostId(state = null, action) {
   if (action.type == response(ActionTypes.GET_SINGLE_POST)) {
     return action.payload.posts.id;
   }
+  if (action.type == fail(ActionTypes.GET_SINGLE_POST)) {
+    return action.request.postId;
+  }
   return state;
 }
 
