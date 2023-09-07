@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.123.1] - 2023-09-07
+### Fixed
+- The non-existent post page did not display the correct error message.
+
 ## [1.123.0] - 2023-09-05
 ### Added
 - Links to posts and comments are now shorter: e.g. `/user/4a39b8` (a post) or
