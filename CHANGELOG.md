@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.123.2] - 2023-09-10
+### Fixed
+- Post actions didn't work on the post backlinks page.
+
 ## [1.123.1] - 2023-09-07
 ### Fixed
 - The non-existent post page did not display the correct error message.

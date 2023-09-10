@@ -1,11 +1,12 @@
 import { Link } from 'react-router';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useMemo } from 'react';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
-import { joinPostData } from './select-utils';
+import { joinPostData, postActions } from './select-utils';
 
 export default function BacklinksFeed(props) {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const isLoading = useSelector((state) => state.routeLoadingState);
   const entries = useSelector((state) => state.feedViewState.entries.map(joinPostData(state)));
@@ -13,6 +14,7 @@ export default function BacklinksFeed(props) {
     () => `/${props.params.userName}/${props.params.postId}`,
     [props.params.postId, props.params.userName],
   );
+  const feedProps = useMemo(() => postActions(dispatch), [dispatch]);
 
   return (
     <div className="box">
@@ -22,7 +24,7 @@ export default function BacklinksFeed(props) {
       {!isLoading &&
         (entries.length > 0 ? (
           <PaginatedView {...props}>
-            <Feed user={user} />
+            <Feed user={user} {...feedProps} />
           </PaginatedView>
         ) : (
           <div className="box-body">
