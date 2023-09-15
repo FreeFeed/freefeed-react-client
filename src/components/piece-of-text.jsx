@@ -98,7 +98,11 @@ export default function PieceOfText({
     [expandText, isExpanded, text],
   );
 
-  const noBreaks = readMoreStyle === READMORE_STYLE_COMPACT && !isExpanded;
+  const noBreaks =
+    readMoreStyle === READMORE_STYLE_COMPACT &&
+    // If textToRender is not a string, it includes an Expand button, so we
+    // shouldn't show line breaks.
+    typeof textToRender !== 'string';
 
   return (
     <Linkify
