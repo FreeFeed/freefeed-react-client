@@ -53,6 +53,10 @@ export class Link extends TLink {
     }
   }
 
+  get href() {
+    return this.link.href;
+  }
+
   get pretty() {
     if (this.isShort || (this.isLocal && shortLinkExactRe.test(this.path))) {
       return this.path;

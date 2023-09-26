@@ -2,7 +2,7 @@ import { describe, it } from 'vitest';
 import expect from 'unexpected';
 import { Link as TLink } from 'social-text-tokenizer';
 
-import { Link, getFirstLinkToEmbed } from '../../../src/utils/parse-text';
+import { Link, RedditLink, getFirstLinkToEmbed } from '../../../src/utils/parse-text';
 
 const localDomains = ['freefeed.net', 'omega.freefeed.net'];
 
@@ -41,6 +41,11 @@ describe('parse-text', () => {
       const link = new Link(new TLink(0, 'https://omega.freefeed.net/hello'), localDomains);
       expect(link.isLocal, 'to be true');
       expect(link.localURI, 'to be', '/hello');
+    });
+
+    it('should has correct href property for Reddit link', () => {
+      const link = new Link(new RedditLink(0, 'r/foo'), localDomains);
+      expect(link.href, 'to be', 'https://www.reddit.com/r/foo');
     });
   });
 
