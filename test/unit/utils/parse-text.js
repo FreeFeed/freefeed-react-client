@@ -8,13 +8,13 @@ const localDomains = ['freefeed.net', 'omega.freefeed.net'];
 
 describe('parse-text', () => {
   describe('Link class', () => {
-    it('should has thruthy isLocal property for local link', () => {
+    it('should has truthy isLocal property for local link', () => {
       const link = new Link(new TLink(0, 'https://freefeed.net/some/path'), localDomains);
       expect(link.isLocal, 'to be true');
       expect(link.localURI, 'to be', '/some/path');
     });
 
-    it('should has thruthy isLocal property for local link with mixed-case URL', () => {
+    it('should has truthy isLocal property for local link with mixed-case URL', () => {
       const link = new Link(new TLink(0, 'hTTps://FreeFeed.net/some/path'), localDomains);
       expect(link.isLocal, 'to be true');
       expect(link.localURI, 'to be', '/some/path');
@@ -26,7 +26,7 @@ describe('parse-text', () => {
       expect(link.localURI, 'to be', '/FreeFeed');
     });
 
-    it('should has thruthy isLocal property for link to the root of main domain', () => {
+    it('should has truthy isLocal property for link to the root of main domain', () => {
       const link = new Link(new TLink(0, 'https://freefeed.net'), localDomains);
       expect(link.isLocal, 'to be true');
       expect(link.localURI, 'to be', '/');
@@ -37,7 +37,7 @@ describe('parse-text', () => {
       expect(link.isLocal, 'to be false');
     });
 
-    it('should has thruthy isLocal property for link to the non-root of alternative domain', () => {
+    it('should has truthy isLocal property for link to the non-root of alternative domain', () => {
       const link = new Link(new TLink(0, 'https://omega.freefeed.net/hello'), localDomains);
       expect(link.isLocal, 'to be true');
       expect(link.localURI, 'to be', '/hello');
