@@ -3,8 +3,8 @@ import { cloneElement, isValidElement, useMemo, useRef } from 'react';
 
 import { parseText } from '../utils/parse-text';
 import { highlightString } from '../utils/search-highlighter';
-import { EndSpoiler, StartSpoiler } from '../utils/spoiler-tokens';
 
+import { SPOILER_END, SPOILER_START } from '../utils/spoiler-tokens';
 import ErrorBoundary from './error-boundary';
 import { tokenToElement } from './linkify-elements';
 import Spoiler from './spoiler';
@@ -46,7 +46,7 @@ export default function Linkify({
 /**
  * Recursive process text content of React children
  *
- * @param {import('react').ReactChildren | import('react').ReactNode} children
+ * @param {import('react').Children | import('react').ReactNode} children
  * @param {(text: string, params: object) => string} processor
  * @param {string[]} excludeTags
  * @param {object} params
@@ -78,10 +78,10 @@ function parseString(text, params) {
   let result = resultContent;
 
   for (const [index, token] of tokens.entries()) {
-    if (token instanceof StartSpoiler) {
+    if (token.type === SPOILER_START) {
       result.push(tokenToElement(token, index, params));
       result = spoilerContent;
-    } else if (token instanceof EndSpoiler) {
+    } else if (token.type === SPOILER_END) {
       const content = [...spoilerContent];
       spoilerContent.length = 0;
       result = resultContent;
