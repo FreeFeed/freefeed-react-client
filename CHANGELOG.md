@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - The feed selector ('To:' line) is now always visible in the post creation
   form.
+- The "Edit list" link is no longer shown next to the Home or friend list page
+  title. It has been moved to the "•••" menu on the right side of the list
+  header.
 
 ## [1.123.3] - 2023-09-15
 ### Fixed
