@@ -58,8 +58,9 @@ class Feed extends PureComponent {
   };
 
   render() {
-    const getEntryComponent = (section) => (post) =>
-      <FeedEntry key={post.id} {...{ post, section, ...this.props, showMedia: this.showMedia }} />;
+    const getEntryComponent = (section) => (post) => (
+      <FeedEntry key={post.id} {...{ post, section, ...this.props, showMedia: this.showMedia }} />
+    );
 
     const {
       emptyFeed,
