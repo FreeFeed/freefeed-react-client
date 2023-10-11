@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Reddit r/-links were displayed incorrectly.
+- During direct message editing, there is no access check of the existing
+  recipients (even if some of them are gone). This check is unnecessary because
+  the message author cannot remove the existing recipients anyway.
 
 ## [1.123.3] - 2023-09-15
 ### Fixed
