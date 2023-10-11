@@ -9,6 +9,7 @@ import {
   faCircle,
 } from '@fortawesome/free-regular-svg-icons';
 import { Portal } from 'react-portal';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import * as FeedOptions from '../utils/feed-options';
 import {
   toggleRealtime,
@@ -23,7 +24,7 @@ import styles from './feed-options-switch.module.scss';
 import { useDropDown, BOTTOM_LEFT } from './hooks/drop-down';
 import { ButtonLink } from './button-link';
 
-export default function FeedOptionsSwitch() {
+export default function FeedOptionsSwitch({ editHomeList }) {
   const { pivotRef, menuRef, opened, toggle } = useDropDown({ position: BOTTOM_LEFT });
 
   const dispatch = useDispatch();
@@ -69,6 +70,16 @@ export default function FeedOptionsSwitch() {
       {opened && (
         <Portal>
           <ul className={menuStyles.list} ref={menuRef}>
+            {editHomeList && (
+              <>
+                <DropOption value={'x'} current={''} clickHandler={editHomeList} icon={faEdit}>
+                  Edit list
+                </DropOption>
+                <li className={menuStyles.item}>
+                  <div className={menuStyles.spacer} />
+                </li>
+              </>
+            )}
             <DropOption
               value={FeedOptions.ACTIVITY}
               current={feedViewOptions.sort}
@@ -105,13 +116,13 @@ export default function FeedOptionsSwitch() {
   );
 }
 
-function DropOption({ children, value, current, clickHandler, checkbox = false }) {
+function DropOption({ children, value, current, clickHandler, checkbox = false, icon = null }) {
   const onClick = useCallback(() => clickHandler(value), [clickHandler, value]);
 
   const className = cn(menuStyles.link, { [styles.active]: value === current });
 
-  const iconOn = checkbox ? faCheckSquare : faDotCircle;
-  const iconOff = checkbox ? faSquare : faCircle;
+  const iconOn = icon ?? (checkbox ? faCheckSquare : faDotCircle);
+  const iconOff = icon ?? (checkbox ? faSquare : faCircle);
 
   return (
     <li className={menuStyles.item}>

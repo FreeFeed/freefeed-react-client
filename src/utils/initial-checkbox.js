@@ -1,4 +1,4 @@
-import { Token } from 'social-text-tokenizer';
+import { makeToken, reTokenizer } from 'social-text-tokenizer/utils';
 
 /**
  * U+2713 Check Mark (🗸)
@@ -8,6 +8,7 @@ import { Token } from 'social-text-tokenizer';
 const checkBoxRe = /\[(?:\s*|[xv*\u2713\u2714\u0445])]/gi;
 
 export const checkMark = '\u2713';
+export const INITIAL_CHECKBOX = 'INITIAL_CHECKBOX';
 
 /**
  * @param {string} text
@@ -17,25 +18,16 @@ export function hasCheckbox(text) {
   return checkboxParser(text).length > 0;
 }
 
-export class InitialCheckbox extends Token {
-  /**
-   * @returns {boolean}
-   */
-  get checked() {
-    return isChecked(this.text);
-  }
-}
-
 /**
  * @param {string} text
  * @returns {Token[]}
  */
 export function checkboxParser(text) {
-  const matches = [...text.matchAll(checkBoxRe)];
-  if (matches.length !== 1 || matches[0].index !== 0) {
-    return [];
+  const matches = reTokenizer(checkBoxRe, makeToken(INITIAL_CHECKBOX))(text);
+  if (matches.length === 1 && matches[0].index === 0) {
+    return [matches[0]];
   }
-  return [new InitialCheckbox(0, matches[0][0])];
+  return [];
 }
 
 /**

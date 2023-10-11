@@ -140,12 +140,9 @@ export function HomeAux({ router }) {
       <Helmet title={`${feed.title} - ${CONFIG.siteTitle}`} defer={false} />
       <ErrorBoundary>
         <div className="box-header-timeline" role="heading" aria-labelledby="feed-name">
-          <TopHomeSelector id={feed.id} feedLabelId="feed-name" />{' '}
-          <small>
-            (<ButtonLink onClick={showEditor}>Edit list</ButtonLink>)
-          </small>
+          <TopHomeSelector id={feed.id} feedLabelId="feed-name" />
           <div className="pull-right">
-            <FeedOptionsSwitch />
+            <FeedOptionsSwitch editHomeList={showEditor} />
           </div>
         </div>
         {isEditing && <ListEditor listId={feed.id} close={closeEditor} />}

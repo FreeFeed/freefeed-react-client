@@ -13,6 +13,9 @@ import {
 import styles from './selector.module.scss';
 
 export function SelectorError({ values, isDirect, isEditing, onError }) {
+  // We cannot modify the fixed values, so there is no point in reporting errors
+  // related to them
+  values = values.filter((v) => !v.isFixed);
   const [hasMyFeed, missing, badUsers, badGroups, allUsers, allGroups] = useMemo(
     () => [
       values.some((a) => a.type === ACC_ME),
