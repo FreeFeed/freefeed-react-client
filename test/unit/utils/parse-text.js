@@ -1,47 +1,40 @@
 import { describe, it } from 'vitest';
 import expect from 'unexpected';
-import { Link as TLink } from 'social-text-tokenizer';
 
-import { Link, getFirstLinkToEmbed } from '../../../src/utils/parse-text';
+import { getFirstLinkToEmbed, isLocalLink, redditLinkHref } from '../../../src/utils/parse-text';
 
 const localDomains = ['freefeed.net', 'omega.freefeed.net'];
 
 describe('parse-text', () => {
-  describe('Link class', () => {
-    it('should has thruthy isLocal property for local link', () => {
-      const link = new Link(new TLink(0, 'https://freefeed.net/some/path'), localDomains);
-      expect(link.isLocal, 'to be true');
-      expect(link.localURI, 'to be', '/some/path');
-    });
+  describe('isLocalLink', () => {
+    const testData = [
+      { url: 'https://freefeed.net/some/path', result: true },
+      { url: 'hTTps://FreeFeed.net/some/path', result: true },
+      { url: 'https://github.com/FreeFeed', result: false },
+      { url: 'https://freefeed.net', result: true },
+      { url: 'https://omega.freefeed.net', result: false },
+      { url: 'https://omega.freefeed.net/', result: false },
+      { url: 'https://omega.freefeed.net/hello', result: true },
+    ];
 
-    it('should has thruthy isLocal property for local link with mixed-case URL', () => {
-      const link = new Link(new TLink(0, 'hTTps://FreeFeed.net/some/path'), localDomains);
-      expect(link.isLocal, 'to be true');
-      expect(link.localURI, 'to be', '/some/path');
-    });
+    for (const { url, result } of testData) {
+      it(`should detect the ${result ? 'local' : 'remote'} link ${JSON.stringify(url)}`, () => {
+        expect(isLocalLink(url, localDomains), 'to be', result);
+      });
+    }
+  });
 
-    it('should has falsy isLocal property for remote link', () => {
-      const link = new Link(new TLink(0, 'https://github.com/FreeFeed'), localDomains);
-      expect(link.isLocal, 'to be false');
-      expect(link.localURI, 'to be', '/FreeFeed');
-    });
+  describe('redditLinkHref', () => {
+    const testData = [
+      { text: 'r/foo', result: 'https://www.reddit.com/r/foo' },
+      { text: '/r/bar', result: 'https://www.reddit.com/r/bar' },
+    ];
 
-    it('should has thruthy isLocal property for link to the root of main domain', () => {
-      const link = new Link(new TLink(0, 'https://freefeed.net'), localDomains);
-      expect(link.isLocal, 'to be true');
-      expect(link.localURI, 'to be', '/');
-    });
-
-    it('should has falsy isLocal property for link to the root of alternative domain', () => {
-      const link = new Link(new TLink(0, 'https://omega.freefeed.net'), localDomains);
-      expect(link.isLocal, 'to be false');
-    });
-
-    it('should has thruthy isLocal property for link to the non-root of alternative domain', () => {
-      const link = new Link(new TLink(0, 'https://omega.freefeed.net/hello'), localDomains);
-      expect(link.isLocal, 'to be true');
-      expect(link.localURI, 'to be', '/hello');
-    });
+    for (const { text, result } of testData) {
+      it(`should has correct href for Reddit link ${JSON.stringify(text)}`, () => {
+        expect(redditLinkHref(text), 'to be', result);
+      });
+    }
   });
 
   describe('Get first link to embed', () => {

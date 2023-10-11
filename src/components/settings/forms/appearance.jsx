@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm, useField } from 'react-final-form-hooks';
 import { without, uniq, uniqWith } from 'lodash-es';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import { hashTags as findHashTags } from 'social-text-tokenizer';
+import { hashtags as findHashTags } from 'social-text-tokenizer';
 import ISO6391 from 'iso-639-1';
 import {
   DISPLAYNAMES_DISPLAYNAME,
