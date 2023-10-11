@@ -77,20 +77,19 @@
 
 .is-focused:not(.is-open) > .Select-control {
   border-color: #007eff;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 3px rgba(0, 126, 255, 0.1);
+  box-shadow:
+    inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 0 3px rgba(0, 126, 255, 0.1);
 }
 
 .Select-placeholder,
 :not(.Select--multi) > .Select-control .Select-value {
-  bottom: 0;
+  inset: 0;
   color: #aaa;
-  left: 0;
   line-height: 34px;
   padding-left: 10px;
   padding-right: 10px;
   position: absolute;
-  right: 0;
-  top: 0;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -237,6 +236,7 @@
 .Select-arrow-zone:hover > .Select-arrow {
   border-top-color: #666;
 }
+
 @-webkit-keyframes Select-animation-fadeIn {
   from {
     opacity: 0;
@@ -246,6 +246,7 @@
     opacity: 1;
   }
 }
+
 @keyframes Select-animation-fadeIn {
   from {
     opacity: 0;
@@ -389,11 +390,13 @@
 .Select--multi.is-disabled .Select-value-icon:active {
   background-color: #fcfcfc;
 }
+
 @keyframes Select-animation-spin {
   to {
     transform: rotate(1turn);
   }
 }
+
 @-webkit-keyframes Select-animation-spin {
   to {
     -webkit-transform: rotate(1turn);

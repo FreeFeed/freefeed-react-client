@@ -27,6 +27,7 @@
   font-weight: 700;
   margin-bottom: rem(7px);
   margin-left: rem(10px);
+
   @media (max-width: 991px) {
     margin-left: 0;
   }
@@ -58,6 +59,7 @@
 
 .box-message {
   margin: 0 0 rem(5px) rem(10px);
+
   @media (max-width: 991px) {
     margin-left: 0;
   }
@@ -108,16 +110,19 @@
 .content {
   .box-body {
     padding: 0 0 0 rem(11px);
+
     @media (max-width: 991px) {
       padding: 0;
     }
 
     background-color: #fff;
+
     @include clearfix;
   }
 
   .box-footer {
     padding: rem(5px) 0 rem(5px) rem(11px);
+
     @media (max-width: 991px) {
       padding: rem(15px) 0 0 0;
     }
@@ -142,6 +147,7 @@
         text-decoration: underline;
       }
     }
+
     @include clearfix;
 
     ul {
@@ -152,6 +158,7 @@
       li {
         padding-bottom: rem(3px);
         white-space: nowrap;
+
         @include clearfix;
 
         a {

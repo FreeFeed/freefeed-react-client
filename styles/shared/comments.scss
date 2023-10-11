@@ -28,7 +28,9 @@
   background-color: var(--bg-color);
   box-shadow: 0 0 0 3px var(--bg-color);
   border-radius: 1px;
-  transition: background-color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    box-shadow 0.2s;
 
   .comment-body {
     word-wrap: break-word;
