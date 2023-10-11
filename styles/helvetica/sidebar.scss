@@ -67,12 +67,16 @@
     z-index: 100;
     visibility: hidden;
     opacity: 0;
-    transition: visibility 0s var(--appear-time), opacity var(--appear-time);
+    transition:
+      visibility 0s var(--appear-time),
+      opacity var(--appear-time);
 
     &--opened {
       visibility: visible;
       opacity: 1;
-      transition: visibility 0s, opacity var(--appear-time);
+      transition:
+        visibility 0s,
+        opacity var(--appear-time);
     }
 
     &--no-transitions,
@@ -96,7 +100,9 @@
     // To prevent accidental click during the transition
     pointer-events: none;
     transform: translateX(100%);
-    transition: transform var(--appear-time), pointer-events 0s;
+    transition:
+      transform var(--appear-time),
+      pointer-events 0s;
 
     .dark-theme & {
       background-color: $bg-color;
@@ -131,6 +137,7 @@
   @media (min-width: 992px) {
     display: none;
   }
+
   @media (max-width: 991px) {
     display: block;
   }

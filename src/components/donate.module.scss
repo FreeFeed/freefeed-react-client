@@ -29,6 +29,7 @@ $color-critical: #fa6b4b;
   padding: 0.2em 0.6em;
   border-radius: 0.2em;
   border: 1px solid;
+
   @include link-color($color-undef);
 
   &[data-status='Very good'],

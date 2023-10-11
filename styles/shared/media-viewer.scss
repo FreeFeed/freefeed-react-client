@@ -15,10 +15,7 @@
 
 .media-wrapper {
   position: absolute;
-  top: 40px;
-  left: 40px;
-  right: 40px;
-  bottom: 60px;
+  inset: 40px 40px 60px;
   display: flex;
   justify-content: center;
   align-items: center;
