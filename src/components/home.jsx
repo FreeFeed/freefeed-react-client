@@ -10,7 +10,6 @@ import PaginatedView from './paginated-view';
 import FeedOptionsSwitch from './feed-options-switch';
 import { SubscriptionRequestsAlert } from './susbscription-requests-alert';
 import ErrorBoundary from './error-boundary';
-import { ButtonLink } from './button-link';
 import { useBool } from './hooks/bool';
 import { lazyComponent } from './lazy-component';
 import { InvisibleSelect } from './invisible-select';
@@ -62,13 +61,8 @@ const FeedHandler = (props) => {
       <ErrorBoundary>
         <div className="box-header-timeline" role="heading" aria-labelledby="feed-name">
           <TopHomeSelector id={feedId} feedLabelId="feed-name" />{' '}
-          {feedId && (
-            <small>
-              (<ButtonLink onClick={showEditor}>Edit list</ButtonLink>)
-            </small>
-          )}
           <div className="pull-right">
-            <FeedOptionsSwitch />
+            <FeedOptionsSwitch editHomeList={feedId ? showEditor : null} />
           </div>
         </div>
         {isEditing && <ListEditor listId={feedId} close={closeEditor} />}

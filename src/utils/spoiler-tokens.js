@@ -1,33 +1,37 @@
-import { Token } from 'social-text-tokenizer';
+import { reTokenizer, makeToken } from 'social-text-tokenizer/utils';
+/**
+ * @typedef {import('social-text-tokenizer').Tokenizer} Tokenizer
+ */
 
-import { byRegexp, makeToken } from 'social-text-tokenizer/cjs/lib';
+export const SPOILER_START = 'SPOILER_START';
+export const SPOILER_END = 'SPOILER_END';
 
-const startSpoilerRegex = /<(spoiler|спойлер)>/gi;
-const endSpoilerRegex = /<\/(spoiler|спойлер)>/gi;
+export const spoilerTags = reTokenizer(/<(\/)?(?:spoiler|спойлер)>/gi, (offset, text, match) =>
+  makeToken(match[1] ? SPOILER_END : SPOILER_START)(offset, text),
+);
 
-class StartSpoiler extends Token {}
-class EndSpoiler extends Token {}
-
-const tokenizerStartSpoiler = byRegexp(startSpoilerRegex, makeToken(StartSpoiler));
-const tokenizerEndSpoiler = byRegexp(endSpoilerRegex, makeToken(EndSpoiler));
-
-// Make sure that the list of tokens contains only
-// valid pairs of StartSpoiler/EndSpoiler tokens
-const validateSpoilerTags = (tokenizer) => {
+/**
+ * Make sure that the list of tokens contains only valid pairs of
+ * StartSpoiler/EndSpoiler tokens
+ *
+ * @param {Tokenizer} tokenizer
+ * @returns {Tokenizer}
+ */
+export function validateSpoilerTags(tokenizer) {
   return function (text) {
     const validated = [];
     let startSpoilerIndex = -1;
     const tokens = tokenizer(text);
 
-    tokens.forEach((token, i) => {
-      if (token instanceof StartSpoiler) {
+    for (const [i, token] of tokens.entries()) {
+      if (token.type === SPOILER_START) {
         if (startSpoilerIndex !== -1) {
           // previous StartSpoiler is invalid
           validated[startSpoilerIndex] = null;
         }
         startSpoilerIndex = i;
         validated.push(token);
-      } else if (token instanceof EndSpoiler) {
+      } else if (token.type === SPOILER_END) {
         if (startSpoilerIndex !== -1) {
           startSpoilerIndex = -1;
           validated.push(token);
@@ -35,7 +39,7 @@ const validateSpoilerTags = (tokenizer) => {
       } else {
         validated.push(token);
       }
-    });
+    }
 
     if (startSpoilerIndex !== -1) {
       // un-closed StartSpoiler
@@ -44,12 +48,4 @@ const validateSpoilerTags = (tokenizer) => {
 
     return validated.filter(Boolean);
   };
-};
-
-export {
-  tokenizerStartSpoiler,
-  tokenizerEndSpoiler,
-  StartSpoiler,
-  EndSpoiler,
-  validateSpoilerTags,
-};
+}
