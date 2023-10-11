@@ -6,7 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.124.0] - Not released
+### Changed
+- Upgrade 'social-text-tokenizer' (the post/comment texts parser) to the version
+  3.0.
+
 ### Fixed
+- Reddit r/-links were displayed incorrectly.
 - During direct message editing, there is no access check of the existing
   recipients (even if some of them are gone). This check is unnecessary because
   the message author cannot remove the existing recipients anyway.

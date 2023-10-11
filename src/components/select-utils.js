@@ -1,5 +1,5 @@
 import { intersectionBy, uniq } from 'lodash-es';
-import { hashTags } from 'social-text-tokenizer';
+import { hashtags } from 'social-text-tokenizer';
 import * as Sentry from '@sentry/react';
 
 import {
@@ -46,7 +46,7 @@ const MAX_LIKES = 4;
 
 export const ommitBubblesThreshold = 600 * 1000; // 10 min
 
-const tokenizeHashtags = hashTags();
+const tokenizeHashtags = hashtags();
 
 const emptyArray = Object.freeze([]);
 
