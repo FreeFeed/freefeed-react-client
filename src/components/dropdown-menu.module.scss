@@ -13,7 +13,9 @@ $zIndex: 10;
   margin: 0;
   color: #000;
   background-color: #fefefe;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.29);
+  box-shadow:
+    0 0 4px rgba(0, 0, 0, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.29);
 
   :global(.dark-theme) & {
     color: $text-color;
@@ -46,7 +48,9 @@ $zIndex: 10;
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    transition: transform 0.2s, opacity 0.2s;
+    transition:
+      transform 0.2s,
+      opacity 0.2s;
     transform: translateY(0);
     opacity: 1;
 

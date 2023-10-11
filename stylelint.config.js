@@ -7,6 +7,7 @@ module.exports = {
     'selector-class-pattern': null,
     'selector-id-pattern': null,
     'scss/dollar-variable-pattern': null,
+    'scss/dollar-variable-colon-space-after': null,
     'scss/at-function-pattern': null,
     'keyframes-name-pattern': null,
     'value-keyword-case': null,
@@ -26,5 +27,6 @@ module.exports = {
 
     'color-function-notation': [null, 'TODO: check it later'],
     'scss/no-global-function-names': [null, 'TODO: check it later'],
+    'media-feature-range-notation': [null, 'TODO: check it later'],
   },
 };

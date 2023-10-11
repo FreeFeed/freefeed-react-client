@@ -20,6 +20,7 @@ $without-sidebar: '(max-width: 991px)';
   margin-top: 20px;
   margin-bottom: 20px;
   position: relative;
+
   @include with-gap;
 
   @media #{$with-sidebar} {
@@ -27,6 +28,7 @@ $without-sidebar: '(max-width: 991px)';
     margin-right: 10px;
     width: 688px;
   }
+
   @media #{$without-sidebar} {
     margin-left: 0;
     margin-right: 0;

@@ -34,6 +34,7 @@
       $loops: math.div(100, $step);
       $increment: math.div(360, $loops);
       $half: math.div($loops, 2);
+
       @for $i from 0 through $loops {
         .progress-#{$i * $step} {
           @if $i < $half {

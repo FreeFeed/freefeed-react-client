@@ -60,6 +60,7 @@
   flex-basis: auto;
   margin-right: rem(2px);
   margin-top: rem(1px);
+
   @media (min-width: 769px) {
     margin-right: rem(6px);
   }
@@ -82,6 +83,7 @@
       animation: 0.3s like;
     }
   }
+
   @media (min-width: 769px) {
     .comment-heart:hover .icon {
       transform: scale(1.3);
@@ -112,6 +114,7 @@
     text-align: right;
     cursor: pointer;
     margin-right: rem(2px);
+
     @media (min-width: 769px) {
       margin-right: rem(6px);
     }
@@ -203,10 +206,7 @@
 
 .actions-overlay {
   position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  inset: 0;
   z-index: 2;
   background-color: rgba(153, 153, 153, 0.7);
   animation: 0.2s show;
