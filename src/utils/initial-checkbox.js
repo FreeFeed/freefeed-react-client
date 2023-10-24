@@ -24,7 +24,7 @@ export function hasCheckbox(text) {
  */
 export function checkboxParser(text) {
   const matches = reTokenizer(checkBoxRe, makeToken(INITIAL_CHECKBOX))(text);
-  if (matches.length === 1 && matches[0].index === 0) {
+  if (matches.length === 1 && matches[0].offset === 0) {
     return [matches[0]];
   }
   return [];
@@ -35,6 +35,8 @@ export function checkboxParser(text) {
  * @returns {boolean}
  */
 export function isChecked(text) {
+  // Check if the second character is a space or a ']'. The first character is
+  // always a '['.
   return !/[\s\]]/.test(text[1]);
 }
 
@@ -45,5 +47,8 @@ export function isChecked(text) {
  */
 export function setCheckState(text, newState) {
   const [t] = checkboxParser(text);
+  if (!t) {
+    return text;
+  }
   return `[${newState ? checkMark : ' '}] ${text.slice(t.offset + t.text.length).trim()}`;
 }
