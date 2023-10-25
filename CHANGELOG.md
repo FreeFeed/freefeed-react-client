@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.124.2] - 2023-10-25
+### Fixed
+- Checkboxes in texts was broken during the 'social-text-tokenizer' upgrade.
+
 ## [1.124.1] - 2023-10-11
 ### Fixed
 - Some SASS issues.
