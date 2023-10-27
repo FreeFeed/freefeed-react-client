@@ -4,6 +4,9 @@ export default function OpenGraphPreview({ url }) {
   const [data, setData] = useState(null);
 
   useEffect(() => {
+    if (url.startsWith(window.location.origin)) {
+      return;
+    }
     async function fetchData() {
       const response = await fetch(url);
       const html = await response.text();
