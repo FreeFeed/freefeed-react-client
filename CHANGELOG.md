@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.125.0] - Not released
+### Added
+- Add OpenGraphPreview component and integrate into LinkPreview
+  - Add OpenGraphPreview component to fetch and parse Open Graph metadata from pages
+  - Integrated OpenGraphPreview into LinkPreview to show open graph preview if no other specific preview available for a URL
+  - Created thoughtful styling for the OpenGraphPreview for a clean, polished, and readable design
+  - OpenGraphPreview provides a fallback preview option for sites that implement Open Graph metadata
+  - Parsing logic simplified using DOMParser and meta tag selectors
+
+### Changed
+- Update LinkPreview component to check for Open Graph data and show OpenGraphPreview
 
 ## [1.124.2] - 2023-10-25
 ### Fixed

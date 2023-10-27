@@ -772,6 +772,48 @@ $post-line-height: rem(20px);
   .tiktok-video-iframe {
     width: 100%;
   }
+
+  .opengraph-preview {
+    max-width: 500px;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #f8f8f8;
+    border: 1px solid #555;
+    .dark-theme & {
+      background-color: #222;
+    }
+  }
+
+  .opengraph-image {
+    max-width: 100%;
+    max-height: 300px;
+  }
+
+  .opengraph-title {
+    font-size: 1.2em;
+    margin-top: 0.5em;
+    color: #111;
+    .dark-theme & {
+      color: #d9d9d9;
+    }
+  }
+
+  .opengraph-description {
+    font-size: 1em;
+    margin-top: 0.5em;
+    color: #333;
+    .dark-theme & {
+      color: #a9a9a9;
+    }
+  }
+
+  .opengraph-source {
+    font-size: 1em;
+    margin-top: 0.5em;
+    color: #777;
+  }
 }
 
 .submit-mode-hint {
