@@ -515,42 +515,22 @@ function Notifications(props) {
         </div>
         <div className="filter">
           <div>Show: </div>
-          <Link
-            className={!props.location.query.filter ? 'active' : ''}
-            to={{ pathname: props.location.pathname, query: {} }}
-          >
-            Everything
-          </Link>
-          <Link
-            className={isFilterActive('mentions', props.location.query.filter) ? 'active' : ''}
-            to={{ pathname: props.location.pathname, query: { filter: 'mentions' } }}
-          >
+          <EventGroupLink location={props.location}>Everything</EventGroupLink>
+          <EventGroupLink location={props.location} name="mentions">
             Mentions
-          </Link>
-          <Link
-            className={isFilterActive('subscriptions', props.location.query.filter) ? 'active' : ''}
-            to={{ pathname: props.location.pathname, query: { filter: 'subscriptions' } }}
-          >
+          </EventGroupLink>
+          <EventGroupLink location={props.location} name="subscriptions">
             Subscriptions
-          </Link>
-          <Link
-            className={isFilterActive('groups', props.location.query.filter) ? 'active' : ''}
-            to={{ pathname: props.location.pathname, query: { filter: 'groups' } }}
-          >
+          </EventGroupLink>
+          <EventGroupLink location={props.location} name="groups">
             Groups
-          </Link>
-          <Link
-            className={isFilterActive('directs', props.location.query.filter) ? 'active' : ''}
-            to={{ pathname: props.location.pathname, query: { filter: 'directs' } }}
-          >
+          </EventGroupLink>
+          <EventGroupLink location={props.location} name="directs">
             Direct messages
-          </Link>
-          <Link
-            className={isFilterActive('bans', props.location.query.filter) ? 'active' : ''}
-            to={{ pathname: props.location.pathname, query: { filter: 'bans' } }}
-          >
+          </EventGroupLink>
+          <EventGroupLink location={props.location} name="bans">
             Bans
-          </Link>
+          </EventGroupLink>
         </div>
         {props.authenticated ? (
           <PaginatedView routes={props.routes} location={props.location}>
@@ -617,5 +597,15 @@ function ReviewRequestLink({ from, group = null }) {
         Review
       </Link>
     </>
+  );
+}
+
+function EventGroupLink({ location: { pathname, query }, name = null, children }) {
+  const isActive = name ? isFilterActive(name, query.filter) : !query.filter;
+  const to = useMemo(() => ({ pathname, query: name ? { filter: name } : {} }), [pathname, name]);
+  return (
+    <Link className={isActive ? 'active' : ''} to={to}>
+      {children}
+    </Link>
   );
 }
