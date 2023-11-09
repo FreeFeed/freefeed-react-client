@@ -519,6 +519,9 @@ function Notifications(props) {
           <EventGroupLink location={props.location} name="mentions">
             Mentions
           </EventGroupLink>
+          <EventGroupLink location={props.location} name="comments">
+            Comments
+          </EventGroupLink>
           <EventGroupLink location={props.location} name="subscriptions">
             Subscriptions
           </EventGroupLink>
