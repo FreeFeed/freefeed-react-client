@@ -232,6 +232,12 @@ const notificationTemplates = {
       <UserLink user={event.createdUser} />
     </>
   ),
+  post_comment: (event) => (
+    <>
+      {commentLink(event, 'New comment')} was posted to a {postLink(event)} from{' '}
+      <UserLink user={event.createdUser} />
+    </>
+  ),
   group_subscription_rejected: (event) => (
     <>
       Your request to join group <UserLink user={event.group} /> was rejected
@@ -400,6 +406,7 @@ function getContentSource(event) {
     case 'mention_comment_to':
     case 'backlink_in_comment':
     case 'direct_comment':
+    case 'post_comment':
       return 'comment';
   }
   if (event.comment_id) {
