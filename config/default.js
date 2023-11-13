@@ -174,4 +174,12 @@ export default {
       boostyProject: null,
     },
   },
+
+  privacyControlGroups: {
+    hidePosts: true, // Hide posts on these groups pages
+    groups: {
+      // Define groups like this:
+      // 'public-groupname': { label: 'Makes post public', privacy: 'public' }
+    },
+  },
 };
