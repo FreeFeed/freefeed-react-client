@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import * as _ from 'lodash-es';
@@ -19,6 +19,7 @@ import Breadcrumbs from './breadcrumbs';
 import ErrorBoundary from './error-boundary';
 import UserProfile from './user-profile';
 import UserFeed from './user-feed';
+import { ButtonLink } from './button-link';
 
 const UserHandler = (props) => {
   // Redirect to canonical username in URI (/uSErNAme/likes?offset=30 → /username/likes?offset=30)
@@ -44,6 +45,17 @@ const UserHandler = (props) => {
     props.viewUser.isLoading,
     props.viewUser.username,
   ]);
+
+  const [forceShowContent, setForceShowContent] = useState(false);
+  const displayPosts = useCallback(() => setForceShowContent(true), []);
+
+  const allowToPost =
+    !CONFIG.privacyControlGroups.hidePosts ||
+    !CONFIG.privacyControlGroups.groups[props.viewUser.username];
+  const showContent =
+    forceShowContent ||
+    !CONFIG.privacyControlGroups.hidePosts ||
+    !CONFIG.privacyControlGroups.groups[props.viewUser.username];
 
   const nameForTitle = useMemo(
     () =>
@@ -87,6 +99,7 @@ const UserHandler = (props) => {
           <UserProfile
             {...props.viewUser}
             {...props.userActions}
+            canIPostHere={props.canIPostHere && allowToPost}
             user={props.user}
             sendTo={props.sendTo}
             createPost={props.createPost}
@@ -98,7 +111,21 @@ const UserHandler = (props) => {
           />
         </div>
 
-        <UserFeed {...props} />
+        {showContent ? (
+          <UserFeed {...props} />
+        ) : (
+          <div className="alert alert-warning">
+            <p>
+              You are on the <strong>{props.viewUser.username}</strong> group page. This is a
+              technical group, it just helps to customize the visibility of posts in other feeds.
+            </p>
+            <p>
+              The posts in this group itself are fairly random and not organized around any
+              particular topic. Still want to see them?{' '}
+              <ButtonLink onClick={displayPosts}>Yes, show me posts</ButtonLink>
+            </p>
+          </div>
+        )}
       </ErrorBoundary>
     </div>
   );
