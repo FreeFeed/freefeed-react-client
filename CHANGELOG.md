@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.125.0] - Not released
+### Added
+- The site administrator can now define a list of "privacy control groups" in
+  the config (the _privacyControlGroups_ entry). These groups will be always
+  shown in the feed selector of new or existing posts. The pages of such groups
+  do not show posts by default, and such groups cannot be subscribed to.
 
 ## [1.124.2] - 2023-10-25
 ### Fixed
