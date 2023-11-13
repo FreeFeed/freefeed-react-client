@@ -128,7 +128,7 @@ export default function GroupSettingsForm({ username }) {
 
         <div className="form-group">
           <p>
-            <strong>Blocked users</strong>
+            <strong>Blocked content</strong>
           </p>
           <div className="checkbox">
             <label>
