@@ -14,6 +14,7 @@ import {
   HIDE_POST,
   LIKE_POST,
   LIKE_POST_OPTIMISTIC,
+  NOTIFY_OF_ALL_COMMENTS,
   REALTIME_COMMENT_DESTROY,
   REALTIME_COMMENT_NEW,
   REALTIME_COMMENT_UPDATE,
@@ -398,10 +399,9 @@ export function posts(state = {}, action) {
         },
       };
     }
-    case response(CREATE_POST): {
-      return updatePostData(state, action);
-    }
-    case response(GET_SINGLE_POST): {
+    case response(CREATE_POST):
+    case response(GET_SINGLE_POST):
+    case response(NOTIFY_OF_ALL_COMMENTS): {
       return updatePostData(state, action);
     }
     case REALTIME_POST_NEW: {

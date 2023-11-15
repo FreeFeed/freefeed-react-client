@@ -29,6 +29,7 @@ import styles from '../dropdown-menu.module.scss';
 import { format } from '../../utils/date-format';
 import { MenuItemIconic as Iconic } from './menu-item-iconic';
 import { MenuItemTranslate } from './menu-item-translate';
+import { MenuItemNotifyOfAllComments } from './menu-item-notify-on-all-comments';
 
 // eslint-disable-next-line complexity
 export const PostMoreMenu = forwardRef(function PostMoreMenu(
@@ -155,6 +156,11 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
           </ButtonLink>
         </div>
       ),
+      <MenuItemNotifyOfAllComments
+        key="notify-of-all-comments"
+        postId={postId}
+        doAndClose={doAndClose}
+      />,
       <MenuItemTranslate key="translate" type="post" id={postId} doAndClose={doAndClose} />,
     ],
     [
