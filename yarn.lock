@@ -8907,7 +8907,6 @@ __metadata:
     vite: ~5.0.0
     vite-plugin-compression: ~0.5.1
     vite-plugin-generate-file: ~0.1.1
-    vite-plugin-inject-preload: ~1.3.3
     vitest: ~0.34.6
     whatwg-fetch: ~3.6.19
   languageName: unknown
@@ -11061,17 +11060,6 @@ __metadata:
     mime-types: ^2.1.35
     picocolors: ^1.0.0
   checksum: e5c30c4e07bd879f9ce5cf032f411a7c40230dad2b1e281ed239288998a2227ec36eeadfee6d91c5e7b9fc3194bfef04610f7d06feb58b3ca1c268283ea28953
-  languageName: node
-  linkType: hard
-
-"vite-plugin-inject-preload@npm:~1.3.3":
-  version: 1.3.3
-  resolution: "vite-plugin-inject-preload@npm:1.3.3"
-  dependencies:
-    mime-types: ^2.1.35
-  peerDependencies:
-    vite: ^3.0.0 || ^4.0.0
-  checksum: 751e12b56cdb5625b728b5b2a19a818b02da206ca65e2138e1c8fab44ee5522ccdfa1117f37569f553942dd0ad3c740fa32dcf6ec78404976aa8cb4c526aa4ba
   languageName: node
   linkType: hard
 
