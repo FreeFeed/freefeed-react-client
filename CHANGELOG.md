@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.125.0] - Not released
+### Changed
+- The wording "Disable blocked contingent..." (in the context of groups) has
+  been replaced by "Show blocked content..." as more clear.
 
 ## [1.124.2] - 2023-10-25
 ### Fixed

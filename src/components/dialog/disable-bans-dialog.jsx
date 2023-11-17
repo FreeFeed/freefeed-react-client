@@ -12,12 +12,12 @@ export function useShowDisableBansDialog(group, isAdmin) {
   return useShowDialog(
     useMemo(
       () => ({
-        title: `Disable blocking in ${uname}`,
-        actionLabel: `Disable blocking`,
+        title: `Show blocked content in ${uname}`,
+        actionLabel: `Show blocked content`,
         action,
         body: (
           <>
-            <p>You are going to disable blocking in {uname}. What does this mean?</p>
+            <p>You are going to show blocked content in {uname}. What does this mean?</p>
             <ul>
               <li>
                 <p>You will see all the posts of your blocked users in {uname}.</p>
@@ -36,7 +36,7 @@ export function useShowDisableBansDialog(group, isAdmin) {
                 </li>
               )}
             </ul>
-            <p>You can enable blocks in {uname} at any time.</p>
+            <p>You can hide back blocked content in {uname} at any time.</p>
           </>
         ),
       }),
