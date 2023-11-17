@@ -1,3 +1,4 @@
+/* global CONFIG */
 import { Component, createRef, useCallback } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
@@ -81,6 +82,10 @@ class UserCard extends Component {
   renderSubscribeBlock() {
     const { props } = this;
 
+    const allowToSubscribe =
+      !CONFIG.privacyControlGroups.disableSubscriptions ||
+      !CONFIG.privacyControlGroups.groups[props.user.username];
+
     if (props.subscribed) {
       return (
         <span className="user-card-action">
@@ -98,11 +103,13 @@ class UserCard extends Component {
           </span>
         );
       }
-      return (
-        <span className="user-card-action">
-          <a onClick={this.handleSubscribeClick}>Subscribe</a>
-        </span>
-      );
+      if (allowToSubscribe) {
+        return (
+          <span className="user-card-action">
+            <a onClick={this.handleSubscribeClick}>Subscribe</a>
+          </span>
+        );
+      }
     }
 
     return null;
