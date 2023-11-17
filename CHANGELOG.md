@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.125.0] - Not released
+### Added
+- Support for the new "Notify of new comments" feature:
+  - User can now turn on/off notification for new comments on the specific post
+    via the "More" menu item;
+  - User can now turn on/off notification for new comments on their own posts;
+  - The new "Comments" tab has been added to the "Notifications" page.
 ### Changed
 - The wording "Disable blocked contingent..." (in the context of groups) has
   been replaced by "Show blocked content..." as more clear.

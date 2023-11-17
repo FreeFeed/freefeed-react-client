@@ -829,3 +829,10 @@ export function translateText({ type, id, lang }) {
 export function getBacklinks({ postId, offset = 0 }) {
   return fetch(`${apiRoot}/v2/posts/${postId}/backlinks?offset=${offset}`, getRequestOptions());
 }
+
+export function notifyOfAllComments({ postId, enabled }) {
+  return fetch(
+    `${apiRoot}/v2/posts/${postId}/notifyOfAllComments`,
+    postRequestOptions('POST', { enabled }),
+  );
+}

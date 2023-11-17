@@ -43,6 +43,7 @@ const POST = {
 const defaultState = {
   user: VIEWER,
   serverInfoStatus: initialAsyncState,
+  posts: {},
 };
 
 const renderPostMoreMenu = (props = {}) => {

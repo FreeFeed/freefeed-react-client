@@ -31,10 +31,28 @@ export default function NotificationsForm() {
   const sendNotificationsDigest = useField('sendNotificationsDigest', form.form);
   const sendDailyBestOfDigest = useField('sendDailyBestOfDigest', form.form);
   const sendWeeklyBestOfDigest = useField('sendWeeklyBestOfDigest', form.form);
+  const notifyOfCommentsOnMyPosts = useField('notifyOfCommentsOnMyPosts', form.form);
 
   return (
     <form onSubmit={form.handleSubmit}>
       <PreventPageLeaving prevent={form.dirty} />
+
+      <section className={settingsStyles.formSection}>
+        <h4 id="notifications">Comments on my posts</h4>
+
+        <div className="form-group">
+          <div className="checkbox">
+            <label>
+              <CheckboxInput field={notifyOfCommentsOnMyPosts} />
+              Notify me about all new comments on my posts
+            </label>
+          </div>
+          <p className="help-block">
+            You will still be able to turn off notifications for a specific post using the More
+            menu.
+          </p>
+        </div>
+      </section>
 
       <section className={settingsStyles.formSection}>
         <h4 id="notifications">Unread notifications</h4>
@@ -108,6 +126,7 @@ function initialValues({ frontendPreferences, preferences }) {
     sendNotificationsDigest: preferences.sendNotificationsDigest,
     sendDailyBestOfDigest: preferences.sendDailyBestOfDigest,
     sendWeeklyBestOfDigest: preferences.sendWeeklyBestOfDigest,
+    notifyOfCommentsOnMyPosts: preferences.notifyOfCommentsOnMyPosts,
   };
 }
 
@@ -117,6 +136,7 @@ function onSubmit(userData, dispatch) {
     sendNotificationsDigest,
     sendDailyBestOfDigest,
     sendWeeklyBestOfDigest,
+    notifyOfCommentsOnMyPosts,
   }) =>
     doSequence(dispatch)(
       (dispatch) =>
@@ -133,6 +153,7 @@ function onSubmit(userData, dispatch) {
             sendNotificationsDigest,
             sendDailyBestOfDigest,
             sendWeeklyBestOfDigest,
+            notifyOfCommentsOnMyPosts,
           }),
         );
       },
