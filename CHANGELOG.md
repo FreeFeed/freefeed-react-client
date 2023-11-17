@@ -7,10 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.125.0] - Not released
 ### Added
-- Support for the new "Notify to all comments" feature:
-  - User can now turn on/off notification for all comments on the specific post
+- Support for the new "Notify of new comments" feature:
+  - User can now turn on/off notification for new comments on the specific post
     via the "More" menu item;
-  - User can now turn on/off notification for all comments on their own posts;
+  - User can now turn on/off notification for new comments on their own posts;
   - The new "Comments" tab has been added to the "Notifications" page.
 
 ## [1.124.2] - 2023-10-25

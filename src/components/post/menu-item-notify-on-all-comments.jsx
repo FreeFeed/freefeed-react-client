@@ -21,7 +21,7 @@ export function MenuItemNotifyOfAllComments({ postId, doAndClose }) {
       <div className={styles.item} key="translate">
         <ButtonLink className={styles.link} onClick={doAndClose(toggleNotifications)}>
           <MenuItemIconic icon={isEnabled ? faBellSlash : faBell}>
-            {isEnabled ? 'Don\u2019t notify' : 'Notify'} of all comments
+            {isEnabled ? 'Don\u2019t notify' : 'Notify'} of new comments
           </MenuItemIconic>
         </ButtonLink>
       </div>
