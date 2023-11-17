@@ -1375,3 +1375,11 @@ export function getBacklinks(postId, offset) {
     payload: { postId, offset },
   };
 }
+
+export function notifyOfAllComments(postId, enabled) {
+  return {
+    type: ActionTypes.NOTIFY_OF_ALL_COMMENTS,
+    apiRequest: Api.notifyOfAllComments,
+    payload: { postId, enabled },
+  };
+}
