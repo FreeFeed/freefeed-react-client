@@ -110,8 +110,8 @@
   },
   "scripts": {
     "start": "vite",
-    "build-prod": "vite build && vite -c vite.bookmarklet.config.js build",
-    "build-modern": "cross-env MODERN=1 vite build && vite -c vite.bookmarklet.config.js build",
+    "build-prod": "vite build && vite -c vite.bookmarklet.config.mjs build",
+    "build-modern": "cross-env MODERN=1 vite build && vite -c vite.bookmarklet.config.mjs build",
     "preview": "vite preview",
     "test": "cross-env TZ=utc vitest run",
     "lint": "eslint --ext .js --ext .jsx .",
