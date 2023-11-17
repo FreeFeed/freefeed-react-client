@@ -282,6 +282,10 @@ const notificationTemplates = {
       {postLink(event)}
     </>
   ),
+  post_comments_subscribe: (event) => <>You have subscribed to comments on {postLink(event)}</>,
+  post_comments_unsubscribe: (event) => (
+    <>You have unsubscribed from comments on {postLink(event)}</>
+  ),
   group_subscription_rejected: (event) => (
     <>
       Your request to join group <UserLink user={event.group} /> was rejected
@@ -425,6 +429,9 @@ function userPictureSource(event) {
   }
   if (['banned_user', 'unbanned_user'].includes(event.event_type)) {
     return event.affectedUser;
+  }
+  if (['post_comments_subscribe', 'post_comments_unsubscribe'].includes(event.event_type)) {
+    return [event.postAuthor, event.receiver].find(Boolean);
   }
   return [
     event.createdUser,
