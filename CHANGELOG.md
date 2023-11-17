@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     via the "More" menu item;
   - User can now turn on/off notification for new comments on their own posts;
   - The new "Comments" tab has been added to the "Notifications" page.
+### Changed
+- The wording "Disable blocked contingent..." (in the context of groups) has
+  been replaced by "Show blocked content..." as more clear.
 
 ## [1.124.2] - 2023-10-25
 ### Fixed

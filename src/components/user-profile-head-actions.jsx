@@ -153,14 +153,14 @@ export function UserProfileHeadActions({
                         {...toggleShowBans}
                         onClick={showDisableBansDialog}
                       >
-                        Disable blocking in group
+                        Show blocked content&hellip;
                       </ActionLink>
                     </li>
                   )}
                   {user.youCan.includes('undisable_bans') && (
                     <li className={menuStyles.item}>
                       <ActionLink className={menuStyles.link} {...toggleShowBans}>
-                        Enable blocking in group
+                        Don&#x2019;t show blocked content
                       </ActionLink>
                     </li>
                   )}
