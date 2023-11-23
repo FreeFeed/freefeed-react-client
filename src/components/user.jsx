@@ -56,6 +56,7 @@ const UserHandler = (props) => {
     forceShowContent ||
     !CONFIG.privacyControlGroups.hidePosts ||
     !CONFIG.privacyControlGroups.groups[props.viewUser.username];
+  const controlledPrivacy = CONFIG.privacyControlGroups.groups[props.viewUser.username]?.privacy;
 
   const nameForTitle = useMemo(
     () =>
@@ -116,12 +117,16 @@ const UserHandler = (props) => {
         ) : (
           <div className="alert alert-warning">
             <p>
-              You are on the <strong>{props.viewUser.username}</strong> group page. This is a
-              technical group, it just helps to customize the visibility of posts in other feeds.
+              This is a <strong>{props.viewUser.username}</strong> group page. This is a special
+              group that is used for changing the visibility of posts in other feeds to “
+              {controlledPrivacy}”.
             </p>
             <p>
-              The posts in this group itself are fairly random and not organized around any
-              particular topic. Still want to see them?{' '}
+              The posts in this group itself are random and are not organized around any specific
+              topic.
+            </p>
+            <p>
+              Do you still want to see them?{' '}
               <ButtonLink onClick={displayPosts}>Yes, show me posts</ButtonLink>
             </p>
           </div>
