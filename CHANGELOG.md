@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.125.0] - 2023-11-24
+### Added
+- The site administrator can now define a list of "privacy control groups" in
+  the config (the _privacyControlGroups_ entry). These groups will be always
+  shown in the feed selector of new or existing posts. The pages of such groups
+  do not show posts by default, and such groups cannot be subscribed to.
+- Support for the new "Notify of new comments" feature:
+  - User can now turn on/off notification for new comments on the specific post
+    via the "More" menu item;
+  - User can now turn on/off notification for new comments on their own posts;
+  - The new "Comments" tab has been added to the "Notifications" page.
+### Changed
+- The wording "Disable blocked contingent..." (in the context of groups) has
+  been replaced by "Show blocked content..." as more clear.
+
 ## [1.124.2] - 2023-10-25
 ### Fixed
 - Checkboxes in texts was broken during the 'social-text-tokenizer' upgrade.

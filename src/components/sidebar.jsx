@@ -277,8 +277,8 @@ const SideBarAppearance = connect(
                 {value === SCHEME_LIGHT
                   ? 'default'
                   : value === SCHEME_SYSTEM
-                  ? 'as in your OS'
-                  : null}
+                    ? 'as in your OS'
+                    : null}
               </span>
             </div>
           </li>

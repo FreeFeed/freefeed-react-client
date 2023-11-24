@@ -265,8 +265,8 @@ export const ListEditor = memo(function ListEditor({
                 ? `Saving changes...`
                 : `Save changes`
               : submitStatus.loading
-              ? 'Creating list...'
-              : 'Create list'}
+                ? 'Creating list...'
+                : 'Create list'}
           </button>
           <button className="btn btn-link" type="reset" onClick={doCancel}>
             Cancel

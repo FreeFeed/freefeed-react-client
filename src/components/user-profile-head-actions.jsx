@@ -1,3 +1,4 @@
+/* global CONFIG */
 import { Link } from 'react-router';
 import cn from 'classnames';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
@@ -40,6 +41,10 @@ export function UserProfileHeadActions({
   const showBanDialog = useShowBanDialog(user);
   const showDisableBansDialog = useShowDisableBansDialog(user, isCurrentUserAdmin);
 
+  const allowToSubscribe =
+    !CONFIG.privacyControlGroups.disableSubscriptions ||
+    !CONFIG.privacyControlGroups.groups[user.username];
+
   return (
     <div className={styles.actions}>
       {isBanned ? (
@@ -61,7 +66,7 @@ export function UserProfileHeadActions({
                 <ActionLink {...doUnsubscribe}>Unsubscribe</ActionLink>
               </li>
             )}
-            {!user.isGone && !inSubscriptions && user.isPrivate === '0' && (
+            {!user.isGone && !inSubscriptions && user.isPrivate === '0' && allowToSubscribe && (
               <li>
                 <ActionLink {...doSubscribe}>Subscribe</ActionLink>
               </li>
@@ -153,14 +158,14 @@ export function UserProfileHeadActions({
                         {...toggleShowBans}
                         onClick={showDisableBansDialog}
                       >
-                        Disable blocking in group
+                        Show blocked content&hellip;
                       </ActionLink>
                     </li>
                   )}
                   {user.youCan.includes('undisable_bans') && (
                     <li className={menuStyles.item}>
                       <ActionLink className={menuStyles.link} {...toggleShowBans}>
-                        Enable blocking in group
+                        Don&#x2019;t show blocked content
                       </ActionLink>
                     </li>
                   )}

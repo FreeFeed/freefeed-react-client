@@ -3,9 +3,9 @@ import legacy from '@vitejs/plugin-legacy';
 import react from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
 import generateFile from 'vite-plugin-generate-file';
-import injectPreload from 'vite-plugin-inject-preload';
 import pkg from './package.json';
 import { injectInlineResources } from './src/vite/inject-inline-resources';
+import { injectPreload } from './src/vite/inject-preload';
 
 // Move the listed node modules into separate named chunks. Format: module name
 // - chunk name.
@@ -31,9 +31,15 @@ export default defineConfig(({ mode }) => ({
     react(),
     injectPreload({
       files: [
-        { match: /\/app-\w+\.js$/, attributes: { rel: 'modulepreload' } },
-        { match: /\/vendor-.+?\.js$/, attributes: { rel: 'modulepreload' } },
-        { match: /\/app-\w+\.css$/ },
+        {
+          match: /\/app-\w+\.js$/,
+          attributes: { rel: 'modulepreload', type: 'application/javascript', as: 'script' },
+        },
+        {
+          match: /\/vendor-.+?\.js$/,
+          attributes: { rel: 'modulepreload', type: 'application/javascript', as: 'script' },
+        },
+        { match: /\/app-\w+\.css$/, attributes: { type: 'text/css', as: 'style' } },
       ],
     }),
     injectInlineResources(),

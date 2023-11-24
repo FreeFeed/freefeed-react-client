@@ -1,3 +1,4 @@
+/* global CONFIG */
 import {
   faGlobeAmericas,
   faHome,
@@ -8,10 +9,8 @@ import {
   faUserFriends,
   faUserSlash,
   faExternalLinkAlt,
-  //  faUsers,
-  //  faUsersSlash,
 } from '@fortawesome/free-solid-svg-icons';
-import { uniq } from 'lodash-es';
+import { uniq, uniqBy } from 'lodash-es';
 import { useEffect, useMemo } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
@@ -121,10 +120,15 @@ export function useSelectedOptions(usernames, fixedFeedNames) {
 
   const groupOptions = useMemo(
     () =>
-      mySubscriptions
-        .filter((u) => u?.type === 'group' && u.youCan.includes('post'))
-        .map((u) => toOption(u, me))
-        .sort(compareOptions),
+      uniqBy(
+        [
+          ...privacyControlOptions(),
+          ...mySubscriptions
+            .filter((u) => u?.type === 'group' && u.youCan.includes('post'))
+            .map((u) => toOption(u, me)),
+        ],
+        'value',
+      ).sort(compareOptions),
     [me, mySubscriptions],
   );
 
@@ -217,4 +221,15 @@ export function toOption(user, me) {
     type: isMe ? ACC_ME : user.type === 'group' ? ACC_GROUP : ACC_USER,
     privacy: user.type === 'group' || isMe ? getPrivacy(user) : 'user',
   };
+}
+
+function privacyControlOptions() {
+  return [...Object.entries(CONFIG.privacyControlGroups.groups)].map(
+    ([value, { label, privacy }]) => ({
+      label,
+      value,
+      privacy,
+      type: ACC_GROUP,
+    }),
+  );
 }

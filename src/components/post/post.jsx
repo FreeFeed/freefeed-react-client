@@ -195,18 +195,18 @@ class Post extends Component {
     const postTypeLabel = isDirect
       ? 'Direct message'
       : isPrivate
-      ? 'Private post'
-      : isProtected
-      ? 'Protected post'
-      : 'Public post';
+        ? 'Private post'
+        : isProtected
+          ? 'Protected post'
+          : 'Public post';
 
     const recipientsWithoutAuthor = recipientNames.filter((r) => r !== createdBy.username);
     const recipientsLabel =
       recipientsWithoutAuthor.length > 0
         ? `to ${recipientsWithoutAuthor.join(', ')}`
         : isDirect
-        ? 'to nobody'
-        : false;
+          ? 'to nobody'
+          : false;
 
     const commentsAndLikesLabel = `with ${pluralForm(
       omittedComments + comments.length,
