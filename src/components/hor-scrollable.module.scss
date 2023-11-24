@@ -16,8 +16,7 @@
 
 .content {
   width: 100%;
-  overflow-y: visible;
-  overflow-x: auto;
+  overflow: auto visible;
 }
 
 .container::before,

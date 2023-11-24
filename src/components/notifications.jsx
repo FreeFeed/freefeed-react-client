@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { useCallback, useEffect, useMemo } from 'react';
+import { isValidElement, useCallback, useEffect, useMemo } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
@@ -36,8 +36,30 @@ const generateCommentUrl = ({ post_id, comment_id, shortPostId, shortCommentId, 
   `/${getAuthorName(event)}/${shortPostId ?? post_id}#${
     shortCommentId ? shortCommentId : `comment-${comment_id}`
   }`;
-const postLink = (event, fallback = 'deleted post') =>
-  event.post_id ? <Link to={generatePostUrl(event)}>post</Link> : fallback;
+const postLink = (
+  event,
+  { isDirect = false, fallback = isDirect ? 'deleted post' : 'deleted direct message' } = {},
+) => {
+  let author = event.post_id
+    ? UserLink({
+        user: event.postAuthor,
+        recipient: event.receiver,
+        subject: event.createdUser,
+        possessive: true,
+      })
+    : null;
+  if (isValidElement(author)) {
+    author = <>the {author}</>;
+  }
+  return event.post_id ? (
+    <>
+      {author} <Link to={generatePostUrl(event)}>{isDirect ? 'direct message' : 'post'}</Link>
+    </>
+  ) : (
+    fallback
+  );
+};
+
 const directPostLink = (event) =>
   event.post_id ? (
     <Link to={generatePostUrl(event)}>direct message</Link>
@@ -63,14 +85,36 @@ const backlinkLink = (event) =>
     'deleted entry'
   );
 
-const UserLink = ({ user, recipient = null, atStart = false, fallback = 'Some user' }) => {
+const UserLink = ({
+  user,
+  recipient = null,
+  subject = null,
+  atStart = false,
+  possessive = false,
+  fallback = 'Some user',
+}) => {
   if (!user) {
     return atStart ? fallback : fallback.toLowerCase();
   }
   if (user.id === recipient?.id) {
+    if (possessive) {
+      return atStart ? 'Your' : 'your';
+    }
     return atStart ? 'You' : 'you';
   }
-  return <UserName user={user}>@{user.username}</UserName>;
+  if (user.id === subject?.id) {
+    if (possessive) {
+      return atStart ? 'Their' : 'their';
+    }
+    return atStart ? 'They' : 'they';
+  }
+  const tail = possessive ? (user.username.endsWith('s') ? '\u2019' : '\u2019s') : '';
+  return (
+    <>
+      <UserName user={user}>@{user.username}</UserName>
+      {tail}
+    </>
+  );
 };
 
 const postInGroup = (event) => (
@@ -94,30 +138,30 @@ const notificationTemplates = {
 
   mention_in_post: (event) => (
     <>
-      <UserLink atStart user={event.createdUser} /> mentioned you in the {postInGroup(event)}
+      <UserLink atStart user={event.createdUser} /> mentioned you in {postInGroup(event)}
     </>
   ),
   mention_in_comment: (event) => (
     <>
       <UserLink atStart user={event.createdUser} /> mentioned you in a{' '}
-      {commentLink(event, 'comment')} to the {postInGroup(event)}
+      {commentLink(event, 'comment')} to {postInGroup(event)}
     </>
   ),
   mention_comment_to: (event) => (
     <>
-      <UserLink atStart user={event.createdUser} /> {commentLink(event, 'replied')} to you in the{' '}
+      <UserLink atStart user={event.createdUser} /> {commentLink(event, 'replied')} in{' '}
       {postInGroup(event)}
     </>
   ),
   backlink_in_comment: (event) => (
     <>
       <UserLink atStart user={event.createdUser} /> mentioned your {backlinkLink(event)} in a{' '}
-      {commentLink(event, 'comment')} to the {postInGroup(event)}
+      {commentLink(event, 'comment')} to {postInGroup(event)}
     </>
   ),
   backlink_in_post: (event) => (
     <>
-      <UserLink atStart user={event.createdUser} /> mentioned your {backlinkLink(event)} in the{' '}
+      <UserLink atStart user={event.createdUser} /> mentioned your {backlinkLink(event)} in{' '}
       {postInGroup(event)}
     </>
   ),
@@ -223,14 +267,24 @@ const notificationTemplates = {
     ),
   direct: (event) => (
     <>
-      You received a {directPostLink(event)} from <UserLink user={event.createdUser} />
+      <UserLink user={event.createdUser} atStart /> sent you a {directPostLink(event)}
     </>
   ),
   direct_comment: (event) => (
     <>
-      {commentLink(event, 'New comment')} was posted to a {directPostLink(event)} from{' '}
-      <UserLink user={event.createdUser} />
+      <UserLink user={event.createdUser} /> added a {commentLink(event, 'new comment')} to{' '}
+      {postLink(event, { isDirect: true })}
     </>
+  ),
+  post_comment: (event) => (
+    <>
+      <UserLink user={event.createdUser} /> added a {commentLink(event, 'new comment')} to{' '}
+      {postLink(event)}
+    </>
+  ),
+  post_comments_subscribe: (event) => <>You have subscribed to comments on {postLink(event)}</>,
+  post_comments_unsubscribe: (event) => (
+    <>You have unsubscribed from comments on {postLink(event)}</>
   ),
   group_subscription_rejected: (event) => (
     <>
@@ -261,19 +315,19 @@ const notificationTemplates = {
   comment_moderated: (event) => (
     <>
       <UserLink atStart user={event.createdUser} fallback="Group admin" /> has deleted your comment
-      to the {postInGroup(event)}
+      to {postInGroup(event)}
     </>
   ),
   comment_moderated_by_another_admin: (event) => (
     <>
       <UserLink atStart user={event.createdUser} fallback="Group admin" /> has removed a comment
-      from <UserLink user={event.affectedUser} /> to the {postInGroup(event)}
+      from <UserLink user={event.affectedUser} /> to {postInGroup(event)}
     </>
   ),
   post_moderated: (event) => (
     <>
-      <UserLink atStart user={event.createdUser} fallback="Group admin" /> has removed your{' '}
-      {postLink(event, 'post')}
+      <UserLink atStart user={event.createdUser} fallback="Group admin" /> has removed{' '}
+      {postLink(event, { fallback: 'your post' })}
       {event.group_id && (
         <>
           {' '}
@@ -284,8 +338,8 @@ const notificationTemplates = {
   ),
   post_moderated_by_another_admin: (event) => (
     <>
-      <UserLink atStart user={event.createdUser} /> has removed the {postLink(event, 'post')}
-      {postLink(event, 'post')} from <UserLink user={event.affectedUser} />
+      <UserLink atStart user={event.createdUser} /> has removed{' '}
+      {postLink(event, { fallback: 'the post' })} from <UserLink user={event.affectedUser} />
       {event.group_id && (
         <>
           {' '}
@@ -376,6 +430,9 @@ function userPictureSource(event) {
   if (['banned_user', 'unbanned_user'].includes(event.event_type)) {
     return event.affectedUser;
   }
+  if (['post_comments_subscribe', 'post_comments_unsubscribe'].includes(event.event_type)) {
+    return [event.postAuthor, event.receiver].find(Boolean);
+  }
   return [
     event.createdUser,
     event.group,
@@ -400,6 +457,7 @@ function getContentSource(event) {
     case 'mention_comment_to':
     case 'backlink_in_comment':
     case 'direct_comment':
+    case 'post_comment':
       return 'comment';
   }
   if (event.comment_id) {
@@ -422,8 +480,8 @@ function Notification({ event }) {
     contentSource === 'post'
       ? allPosts[event.post_id]?.body
       : contentSource === 'comment'
-      ? allComments[event.comment_id]?.body
-      : null;
+        ? allComments[event.comment_id]?.body
+        : null;
   const eventWithShortIds = useMemo(
     () => ({
       ...event,
@@ -508,42 +566,25 @@ function Notifications(props) {
         </div>
         <div className="filter">
           <div>Show: </div>
-          <Link
-            className={!props.location.query.filter ? 'active' : ''}
-            to={{ pathname: props.location.pathname, query: {} }}
-          >
-            Everything
-          </Link>
-          <Link
-            className={isFilterActive('mentions', props.location.query.filter) ? 'active' : ''}
-            to={{ pathname: props.location.pathname, query: { filter: 'mentions' } }}
-          >
+          <EventGroupLink location={props.location}>Everything</EventGroupLink>
+          <EventGroupLink location={props.location} name="mentions">
             Mentions
-          </Link>
-          <Link
-            className={isFilterActive('subscriptions', props.location.query.filter) ? 'active' : ''}
-            to={{ pathname: props.location.pathname, query: { filter: 'subscriptions' } }}
-          >
+          </EventGroupLink>
+          <EventGroupLink location={props.location} name="comments">
+            Comments
+          </EventGroupLink>
+          <EventGroupLink location={props.location} name="subscriptions">
             Subscriptions
-          </Link>
-          <Link
-            className={isFilterActive('groups', props.location.query.filter) ? 'active' : ''}
-            to={{ pathname: props.location.pathname, query: { filter: 'groups' } }}
-          >
+          </EventGroupLink>
+          <EventGroupLink location={props.location} name="groups">
             Groups
-          </Link>
-          <Link
-            className={isFilterActive('directs', props.location.query.filter) ? 'active' : ''}
-            to={{ pathname: props.location.pathname, query: { filter: 'directs' } }}
-          >
+          </EventGroupLink>
+          <EventGroupLink location={props.location} name="directs">
             Direct messages
-          </Link>
-          <Link
-            className={isFilterActive('bans', props.location.query.filter) ? 'active' : ''}
-            to={{ pathname: props.location.pathname, query: { filter: 'bans' } }}
-          >
+          </EventGroupLink>
+          <EventGroupLink location={props.location} name="bans">
             Bans
-          </Link>
+          </EventGroupLink>
         </div>
         {props.authenticated ? (
           <PaginatedView routes={props.routes} location={props.location}>
@@ -551,8 +592,8 @@ function Notifications(props) {
               {props.loading
                 ? 'Loading'
                 : props.events.length > 0
-                ? props.events.map((e) => <Notification event={e} key={e.id} />)
-                : 'No notifications yet'}
+                  ? props.events.map((e) => <Notification event={e} key={e.id} />)
+                  : 'No notifications yet'}
             </div>
           </PaginatedView>
         ) : (
@@ -610,5 +651,15 @@ function ReviewRequestLink({ from, group = null }) {
         Review
       </Link>
     </>
+  );
+}
+
+function EventGroupLink({ location: { pathname, query }, name = null, children }) {
+  const isActive = name ? isFilterActive(name, query.filter) : !query.filter;
+  const to = useMemo(() => ({ pathname, query: name ? { filter: name } : {} }), [pathname, name]);
+  return (
+    <Link className={isActive ? 'active' : ''} to={to}>
+      {children}
+    </Link>
   );
 }

@@ -62,6 +62,7 @@ const defaultState = {
   },
   translationStates: {},
   translationResults: {},
+  posts: {},
 };
 
 const renderPost = (props = {}, options = {}) => {
