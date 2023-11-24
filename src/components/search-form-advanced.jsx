@@ -206,8 +206,8 @@ function generateQuery(values) {
     values.inBody && !values.inComments
       ? SCOPE_BODY
       : !values.inBody && values.inComments
-      ? SCOPE_COMMENTS
-      : SCOPE_ALL;
+        ? SCOPE_COMMENTS
+        : SCOPE_ALL;
 
   const parts = [];
   scope === SCOPE_BODY && parts.push('in-body:');

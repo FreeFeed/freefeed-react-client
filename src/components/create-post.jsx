@@ -154,12 +154,12 @@ export default function CreatePost({ sendTo, isDirects }) {
       privacyLevel === 'private'
         ? 'Create private post'
         : privacyLevel === 'protected'
-        ? 'Create protected post'
-        : privacyLevel === 'public'
-        ? 'Create public post'
-        : privacyLevel === 'direct'
-        ? 'Create direct message'
-        : null,
+          ? 'Create protected post'
+          : privacyLevel === 'public'
+            ? 'Create public post'
+            : privacyLevel === 'direct'
+              ? 'Create direct message'
+              : null,
     [privacyLevel],
   );
 

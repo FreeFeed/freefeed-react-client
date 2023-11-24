@@ -480,8 +480,8 @@ function Notification({ event }) {
     contentSource === 'post'
       ? allPosts[event.post_id]?.body
       : contentSource === 'comment'
-      ? allComments[event.comment_id]?.body
-      : null;
+        ? allComments[event.comment_id]?.body
+        : null;
   const eventWithShortIds = useMemo(
     () => ({
       ...event,
@@ -592,8 +592,8 @@ function Notifications(props) {
               {props.loading
                 ? 'Loading'
                 : props.events.length > 0
-                ? props.events.map((e) => <Notification event={e} key={e.id} />)
-                : 'No notifications yet'}
+                  ? props.events.map((e) => <Notification event={e} key={e.id} />)
+                  : 'No notifications yet'}
             </div>
           </PaginatedView>
         ) : (

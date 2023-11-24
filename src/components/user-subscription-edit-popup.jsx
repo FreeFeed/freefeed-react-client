@@ -102,12 +102,12 @@ export const UserSubscriptionEditPopup = forwardRef(function UserSubscriptionEdi
           ? 'Sending request…'
           : 'Send request'
         : subscribe
-        ? status.loading
-          ? 'Subscribing…'
-          : 'Subscribe'
-        : status.loading
-        ? 'Updating…'
-        : 'Update',
+          ? status.loading
+            ? 'Subscribing…'
+            : 'Subscribe'
+          : status.loading
+            ? 'Updating…'
+            : 'Update',
     [subscribe, sendRequest, status.loading],
   );
 

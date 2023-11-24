@@ -39,13 +39,13 @@ class PostAttachmentImage extends PureComponent {
       width: props.imageSizes.t
         ? props.imageSizes.t.w
         : props.imageSizes.o
-        ? props.imageSizes.o.w
-        : undefined,
+          ? props.imageSizes.o.w
+          : undefined,
       height: props.imageSizes.t
         ? props.imageSizes.t.h
         : props.imageSizes.o
-        ? props.imageSizes.o.h
-        : undefined,
+          ? props.imageSizes.o.h
+          : undefined,
     };
 
     return (
