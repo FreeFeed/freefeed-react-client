@@ -100,7 +100,7 @@ const UserHandler = (props) => {
           <UserProfile
             {...props.viewUser}
             {...props.userActions}
-            canIPostHere={props.canIPostHere && allowToPost}
+            canIPostHere={props.viewUser.canIPostHere && allowToPost}
             user={props.user}
             sendTo={props.sendTo}
             createPost={props.createPost}
