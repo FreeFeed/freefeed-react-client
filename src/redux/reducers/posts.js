@@ -421,6 +421,7 @@ export function posts(state = {}, action) {
           attachments: action.post.attachments || [],
           postedTo: action.post.postedTo,
           backlinksCount: action.post.backlinksCount,
+          notifyOfAllComments: action.post.notifyOfAllComments,
         },
       };
     }
