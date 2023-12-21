@@ -1,6 +1,6 @@
 /* global describe, it, expect, vi, beforeEach */
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 import * as reactRedux from 'react-redux';
 
 import SignInPage from '../../src/components/settings/sign-in';

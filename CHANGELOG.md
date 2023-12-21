@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.126.0] - 2023-12-21
+### Added
+- User can now turn on/off notifications for new comments on the posts they
+  commented on.
+
 ## [1.125.1] - 2023-11-24
 ### Fixed
 - Missing post submission form on group pages.

@@ -38,7 +38,7 @@ const generateCommentUrl = ({ post_id, comment_id, shortPostId, shortCommentId, 
   }`;
 const postLink = (
   event,
-  { isDirect = false, fallback = isDirect ? 'deleted post' : 'deleted direct message' } = {},
+  { isDirect = false, fallback = isDirect ? 'deleted direct message' : 'deleted post' } = {},
 ) => {
   let author = event.post_id
     ? UserLink({
