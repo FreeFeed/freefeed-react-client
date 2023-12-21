@@ -400,9 +400,21 @@ export function posts(state = {}, action) {
       };
     }
     case response(CREATE_POST):
-    case response(GET_SINGLE_POST):
-    case response(NOTIFY_OF_ALL_COMMENTS): {
+    case response(GET_SINGLE_POST): {
       return updatePostData(state, action);
+    }
+    case response(NOTIFY_OF_ALL_COMMENTS): {
+      const post = state[action.request.postId];
+      const payloadPost = action.payload.posts;
+      return post
+        ? {
+            ...state,
+            [post.id]: {
+              ...post,
+              notifyOfAllComments: payloadPost.notifyOfAllComments,
+            },
+          }
+        : state;
     }
     case REALTIME_POST_NEW: {
       return { ...state, [action.post.id]: postParser(action.post) };
@@ -421,6 +433,7 @@ export function posts(state = {}, action) {
           attachments: action.post.attachments || [],
           postedTo: action.post.postedTo,
           backlinksCount: action.post.backlinksCount,
+          notifyOfAllComments: action.post.notifyOfAllComments,
         },
       };
     }

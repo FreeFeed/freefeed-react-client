@@ -32,6 +32,7 @@ export default function NotificationsForm() {
   const sendDailyBestOfDigest = useField('sendDailyBestOfDigest', form.form);
   const sendWeeklyBestOfDigest = useField('sendWeeklyBestOfDigest', form.form);
   const notifyOfCommentsOnMyPosts = useField('notifyOfCommentsOnMyPosts', form.form);
+  const notifyOfCommentsOnCommentedPosts = useField('notifyOfCommentsOnCommentedPosts', form.form);
 
   return (
     <form onSubmit={form.handleSubmit}>
@@ -45,6 +46,12 @@ export default function NotificationsForm() {
             <label>
               <CheckboxInput field={notifyOfCommentsOnMyPosts} />
               Notify me about all new comments on my posts
+            </label>
+          </div>
+          <div className="checkbox">
+            <label>
+              <CheckboxInput field={notifyOfCommentsOnCommentedPosts} />
+              Notify me about all new comments on posts I comment on
             </label>
           </div>
           <p className="help-block">
@@ -127,6 +134,7 @@ function initialValues({ frontendPreferences, preferences }) {
     sendDailyBestOfDigest: preferences.sendDailyBestOfDigest,
     sendWeeklyBestOfDigest: preferences.sendWeeklyBestOfDigest,
     notifyOfCommentsOnMyPosts: preferences.notifyOfCommentsOnMyPosts,
+    notifyOfCommentsOnCommentedPosts: preferences.notifyOfCommentsOnCommentedPosts,
   };
 }
 
@@ -137,6 +145,7 @@ function onSubmit(userData, dispatch) {
     sendDailyBestOfDigest,
     sendWeeklyBestOfDigest,
     notifyOfCommentsOnMyPosts,
+    notifyOfCommentsOnCommentedPosts,
   }) =>
     doSequence(dispatch)(
       (dispatch) =>
@@ -154,6 +163,7 @@ function onSubmit(userData, dispatch) {
             sendDailyBestOfDigest,
             sendWeeklyBestOfDigest,
             notifyOfCommentsOnMyPosts,
+            notifyOfCommentsOnCommentedPosts,
           }),
         );
       },
