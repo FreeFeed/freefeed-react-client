@@ -3,10 +3,10 @@ import { useEffect, memo } from 'react';
 import { useSelector } from 'react-redux';
 import pt from 'prop-types';
 
-import toDate from 'date-fns/toDate';
-import addMilliseconds from 'date-fns/addMilliseconds';
-import startOfDay from 'date-fns/startOfDay';
-import addMinutes from 'date-fns/addMinutes';
+import { toDate } from 'date-fns/toDate';
+import { addMilliseconds } from 'date-fns/addMilliseconds';
+import { startOfDay } from 'date-fns/startOfDay';
+import { addMinutes } from 'date-fns/addMinutes';
 
 import { format } from '../utils/date-format';
 import { useBool } from './hooks/bool';
