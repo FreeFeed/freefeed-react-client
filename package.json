@@ -100,7 +100,7 @@
     "vite": "~5.0.10",
     "vite-plugin-compression": "~0.5.1",
     "vite-plugin-generate-file": "~0.1.1",
-    "vitest": "~0.34.6"
+    "vitest": "~1.1.0"
   },
   "resolutions": {
     "debug": "~4.3.4",
