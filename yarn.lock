@@ -6301,10 +6301,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"iso-639-1@npm:~2.1.15":
-  version: 2.1.15
-  resolution: "iso-639-1@npm:2.1.15"
-  checksum: 91499b0f9d870f5d2b5706c266c22b6ea0420feb1be3f6d8cff6a2ce3a3ed8aadc996b665a195fec5b007656869c5c461185279da57dab96985177194fb46b6b
+"iso-639-1@npm:~3.1.0":
+  version: 3.1.0
+  resolution: "iso-639-1@npm:3.1.0"
+  checksum: 741bf03a58d54562ccd8b1a05d1c739fff74a90a731300586db162862c38031fed8560f52fab113fde52d7b55e1905ae00ef4c5888fb6173cf81d5b5be4c37bc
   languageName: node
   linkType: hard
 
@@ -6800,7 +6800,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lru-cache@npm:^10.0.1, lru-cache@npm:^9.1.1 || ^10.0.0":
+"lru-cache@npm:^10.0.1, lru-cache@npm:^9.1.1 || ^10.0.0, lru-cache@npm:~10.1.0":
   version: 10.1.0
   resolution: "lru-cache@npm:10.1.0"
   checksum: 778bc8b2626daccd75f24c4b4d10632496e21ba064b126f526c626fbdbc5b28c472013fccd45d7646b9e1ef052444824854aed617b59cd570d01a8b7d651fc1e
@@ -6822,13 +6822,6 @@ __metadata:
   dependencies:
     yallist: "npm:^4.0.0"
   checksum: cb53e582785c48187d7a188d3379c181b5ca2a9c78d2bce3e7dee36f32761d1c42983da3fe12b55cb74e1779fa94cdc2e5367c028a9b35317184ede0c07a30a9
-  languageName: node
-  linkType: hard
-
-"lru-cache@npm:~7.14.1":
-  version: 7.14.1
-  resolution: "lru-cache@npm:7.14.1"
-  checksum: d54e01ae3bedbd7bb0562fe48e61e509c86102bcc2c8babba1ba5498a6859a796adc697fa917459a455969a45c7d8645b29d938c0142b97fa3b5fb9c234d2390
   languageName: node
   linkType: hard
 
@@ -8326,13 +8319,13 @@ __metadata:
     focus-trap-react: "npm:~8.9.2"
     focus-visible: "npm:~5.2.0"
     husky: "npm:~8.0.3"
-    iso-639-1: "npm:~2.1.15"
+    iso-639-1: "npm:~3.1.0"
     jsdom: "npm:~23.0.1"
     keycode-js: "npm:~3.1.0"
     lint-staged: "npm:~12.4.3"
     local-storage-fallback: "npm:~4.1.2"
     lodash-es: "npm:~4.17.21"
-    lru-cache: "npm:~7.14.1"
+    lru-cache: "npm:~10.1.0"
     memoize-one: "npm:~6.0.0"
     mousetrap: "npm:~1.6.5"
     node-html-parser: "npm:~6.1.12"
