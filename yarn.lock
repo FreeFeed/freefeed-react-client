@@ -5141,10 +5141,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"filesize@npm:~8.0.7":
-  version: 8.0.7
-  resolution: "filesize@npm:8.0.7"
-  checksum: 82072d94816484df5365d4d5acbb2327a65dc49704c64e403e8c40d8acb7364de1cf1e65cb512c77a15d353870f73e4fed46dad5c6153d0618d9ce7a64d09cfc
+"filesize@npm:~10.1.0":
+  version: 10.1.0
+  resolution: "filesize@npm:10.1.0"
+  checksum: 4439d2d81ecd98503367cc6d2083ea94de0859a35953325d94f95c4a18302a333a77b80b5421bc9dc663cf9fb2fc1193f15963da4fd0dab3d49168902588a790
   languageName: node
   linkType: hard
 
@@ -8323,7 +8323,7 @@ __metadata:
     eslint-plugin-unicorn: "npm:~50.0.1"
     eslint-plugin-you-dont-need-lodash-underscore: "npm:~6.13.0"
     events: "npm:~3.3.0"
-    filesize: "npm:~8.0.7"
+    filesize: "npm:~10.1.0"
     final-form: "npm:~4.20.10"
     focus-trap-react: "npm:~8.9.2"
     focus-visible: "npm:~5.2.0"

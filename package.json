@@ -14,7 +14,7 @@
     "date-fns": "~2.30.0",
     "debug": "~4.3.4",
     "events": "~3.3.0",
-    "filesize": "~8.0.7",
+    "filesize": "~10.1.0",
     "final-form": "~4.20.10",
     "focus-trap-react": "~8.9.2",
     "focus-visible": "~5.2.0",
