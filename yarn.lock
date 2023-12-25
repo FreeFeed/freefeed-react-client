@@ -2661,13 +2661,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/sortablejs@npm:^1.10.0":
-  version: 1.15.7
-  resolution: "@types/sortablejs@npm:1.15.7"
-  checksum: 28c58d502fe66d272372b6692d62718a9581fe20dfe0447bb787d069d9eebc1ec8d6ba43d6fe6b94f248f0e2e0fc77b1a4e60ce38a43009ccde14a7a375eb3df
-  languageName: node
-  linkType: hard
-
 "@ungap/structured-clone@npm:^1.2.0":
   version: 1.2.0
   resolution: "@ungap/structured-clone@npm:1.2.0"
@@ -3538,7 +3531,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:^2.2.3, classnames@npm:^2.2.6, classnames@npm:~2.3.3":
+"classnames@npm:2.3.1":
+  version: 2.3.1
+  resolution: "classnames@npm:2.3.1"
+  checksum: e3b832219042802464e648c41c2e8be96c2c64d2522cfa22fbb5ec088418406c61ab351a682c077c07f691c8b00c9f0ee7939b20fabc6c23da69063252a4ab89
+  languageName: node
+  linkType: hard
+
+"classnames@npm:^2.2.3, classnames@npm:~2.3.3":
   version: 2.3.3
   resolution: "classnames@npm:2.3.3"
   checksum: 4e945bed777a8103994c14675c9236c984a0b1365ae4a10b4c1b177c88f37d20038b4aadc88e1d138d7a88fd453064bf546ef80f1dd4f5ec128c7445992564de
@@ -8002,7 +8002,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-async-script@npm:^1.1.1":
+"react-async-script@npm:^1.2.0":
   version: 1.2.0
   resolution: "react-async-script@npm:1.2.0"
   dependencies:
@@ -8056,15 +8056,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-google-recaptcha@npm:~2.1.0":
-  version: 2.1.0
-  resolution: "react-google-recaptcha@npm:2.1.0"
+"react-google-recaptcha@npm:~3.1.0":
+  version: 3.1.0
+  resolution: "react-google-recaptcha@npm:3.1.0"
   dependencies:
     prop-types: "npm:^15.5.0"
-    react-async-script: "npm:^1.1.1"
+    react-async-script: "npm:^1.2.0"
   peerDependencies:
     react: ">=16.4.1"
-  checksum: c2f38cedd50ee90711e510cbc5c57e2810a9c5aa3c8508415fae635f9f66ad0ef571da30770b87bb6ab21dd9b5ccd69622624691ec2f26cdfc5f480d0e11d24b
+  checksum: 5ecaa6b88f238defd939012cb2671b4cbda59fe03f059158994b8c5215db482412e905eae6a67d23cef220d77cfe0430ab91ce7849d476515cda72f3a8a0a746
   languageName: node
   linkType: hard
 
@@ -8245,18 +8245,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-sortablejs@npm:~2.0.11":
-  version: 2.0.11
-  resolution: "react-sortablejs@npm:2.0.11"
+"react-sortablejs@npm:~6.1.4":
+  version: 6.1.4
+  resolution: "react-sortablejs@npm:6.1.4"
   dependencies:
-    "@types/sortablejs": "npm:^1.10.0"
-    classnames: "npm:^2.2.6"
-    sortablejs: "npm:1.10.1"
-    tiny-invariant: "npm:^1.0.6"
+    classnames: "npm:2.3.1"
+    tiny-invariant: "npm:1.2.0"
   peerDependencies:
-    react: ^16.9.0
-    react-dom: ^16.9.0
-  checksum: 9ffaa14c8112d775320d6dec954752d1e05b8dcd70134b406a0c1f5a83d7fc887a867202b1be672135927457402556a4a43a57e5751ff0c8514d02d7ddf92093
+    "@types/sortablejs": 1
+    react: ">=16.9.0"
+    react-dom: ">=16.9.0"
+    sortablejs: 1
+  checksum: 72a3e5676d40c4c1d9912d624051caedc95c0d4f0aeb0682d5b803fb0303cecb3fe6ac1faf3e8658b0723bab7934f59196b9722fe2a2ad72454f7fcb947937bd
   languageName: node
   linkType: hard
 
@@ -8387,7 +8387,7 @@ __metadata:
     react: "npm:~17.0.2"
     react-dom: "npm:~17.0.2"
     react-final-form-hooks: "npm:~2.0.2"
-    react-google-recaptcha: "npm:~2.1.0"
+    react-google-recaptcha: "npm:~3.1.0"
     react-helmet: "npm:~6.1.0"
     react-photoswipe: "npm:~1.3.0"
     react-portal: "npm:~4.2.2"
@@ -8395,7 +8395,7 @@ __metadata:
     react-router: "npm:~3.2.6"
     react-router-redux: "npm:~4.0.8"
     react-select: "npm:~5.8.0"
-    react-sortablejs: "npm:~2.0.11"
+    react-sortablejs: "npm:~6.1.4"
     react-test-renderer: "npm:~17.0.2"
     react-textarea-autosize: "npm:~8.5.3"
     recharts: "npm:~2.10.3"
@@ -8406,6 +8406,7 @@ __metadata:
     snarkdown: "npm:~2.0.0"
     social-text-tokenizer: "npm:~3.0.0"
     socket.io-client: "npm:~2.3.1"
+    sortablejs: "npm:~1.15.1"
     stylelint: "npm:~16.1.0"
     stylelint-config-prettier: "npm:~9.0.5"
     stylelint-config-standard-scss: "npm:~12.0.0"
@@ -9229,10 +9230,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sortablejs@npm:1.10.1":
-  version: 1.10.1
-  resolution: "sortablejs@npm:1.10.1"
-  checksum: 87f32c7f0e2f2141c6c2752e904abd900428d438fdf62b02be707f58f91e4ac9fe5f57840fdafe3ed0395ce42a6e09a489d935bb37769ba22959ca0c752040a3
+"sortablejs@npm:~1.15.1":
+  version: 1.15.1
+  resolution: "sortablejs@npm:1.15.1"
+  checksum: 851debae91d9f93f41ce705490999ab9fc0fa46bd08d9132647041a31bf8a3e1cd55a0629f9b16ca21879fb478b10e1ce9fa3bae61d540223ac1d3d774e300c4
   languageName: node
   linkType: hard
 
@@ -9823,7 +9824,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tiny-invariant@npm:^1.0.6, tiny-invariant@npm:^1.3.1":
+"tiny-invariant@npm:1.2.0":
+  version: 1.2.0
+  resolution: "tiny-invariant@npm:1.2.0"
+  checksum: a7dd29c5256fdc4901e3adadaa203da62bd23c6a79830f7aa99ea2df5e2e82f84051550dcafb82af18b2d61d75dcc17993f01f938e9ad8f20cf4c514fff88d47
+  languageName: node
+  linkType: hard
+
+"tiny-invariant@npm:^1.3.1":
   version: 1.3.1
   resolution: "tiny-invariant@npm:1.3.1"
   checksum: 5b87c1d52847d9452b60d0dcb77011b459044e0361ca8253bfe7b43d6288106e12af926adb709a6fc28900e3864349b91dad9a4ac93c39aa15f360b26c2ff4db

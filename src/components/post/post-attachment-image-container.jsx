@@ -12,13 +12,10 @@ const bordersSize = 4;
 const spaceSize = 8;
 const arrowSize = 24;
 
-const Sortable = lazyComponent(
-  () => import('react-sortablejs').then((m) => ({ default: m.ReactSortable })),
-  {
-    fallback: <div>Loading component...</div>,
-    errorMessage: "Couldn't load Sortable component",
-  },
-);
+const Sortable = lazyComponent(() => import('../react-sortable'), {
+  fallback: <div>Loading component...</div>,
+  errorMessage: "Couldn't load Sortable component",
+});
 
 export default class ImageAttachmentsContainer extends Component {
   static propTypes = {
