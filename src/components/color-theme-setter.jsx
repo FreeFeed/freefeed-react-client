@@ -7,7 +7,10 @@ import { darkTheme as selectDarkTheme } from './select-utils';
 export function ColorSchemeSetter() {
   const darkTheme = useSelector(selectDarkTheme);
 
-  useEffect(() => document.documentElement.classList.toggle('dark-theme', darkTheme), [darkTheme]);
+  useEffect(
+    () => void document.documentElement.classList.toggle('dark-theme', darkTheme),
+    [darkTheme],
+  );
 
   return (
     <Helmet defer={false}>
