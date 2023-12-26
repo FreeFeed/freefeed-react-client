@@ -1,6 +1,6 @@
 /* global CONFIG */
 import { memo, useEffect, useCallback, useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 
 import { faTimes, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -20,10 +20,12 @@ export default function ExtAuthForm() {
   const [providers] = useExtAuthProviders();
   const serverInfoStatus = useSelector((state) => state.serverInfoStatus);
   const existingProfilesStatus = useSelector((state) => state.extAuth.profilesStatus);
-  const existingProfiles = useSelector(({ extAuth: { profiles, providers } }) =>
-    profiles
-      .filter((p) => providers.some((xp) => xp.id === p.provider))
-      .map((p) => ({ ...p, provider: providers.find((xp) => xp.id === p.provider) })),
+  const existingProfiles = useSelector(
+    ({ extAuth: { profiles, providers } }) =>
+      profiles
+        .filter((p) => providers.some((xp) => xp.id === p.provider))
+        .map((p) => ({ ...p, provider: providers.find((xp) => xp.id === p.provider) })),
+    shallowEqual,
   );
 
   const loadStatus = useMemo(

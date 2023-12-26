@@ -56,6 +56,8 @@ const UserSubscriptionEditPopup = lazyComponent(
   },
 );
 
+const emptyArray = [];
+
 export const UserProfileHead = withRouter(
   withKey(({ router }) => router.params.userName)(function UserProfileHead({ router }) {
     const username = router.params.userName.toLowerCase();
@@ -74,7 +76,7 @@ export const UserProfileHead = withRouter(
 
     const allHomeFeeds = useSelector((state) => state.homeFeeds);
     const allHomeFeedsStatus = useSelector((state) => state.homeFeedsStatus);
-    const inHomeFeeds = useSelector((state) => state.usersInHomeFeeds[user?.id] || []);
+    const inHomeFeeds = useSelector((state) => state.usersInHomeFeeds[user?.id] || emptyArray);
     const activeHomeFeeds = allHomeFeeds.filter((h) => inHomeFeeds.includes(h.id));
 
     const inHomeFeedsStatus = useSelector(

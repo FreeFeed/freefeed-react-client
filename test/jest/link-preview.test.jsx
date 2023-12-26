@@ -1,24 +1,23 @@
-/* global describe, it, expect, vi, beforeEach */
+/* global describe, it, expect, vi */
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import * as reactRedux from 'react-redux';
 
 import cachedFetch from '../../src/components/link-preview/helpers/cached-fetch';
 import LinkPreview from '../../src/components/link-preview/preview';
+import { StateProvider } from './state-provider';
 
 vi.mock('../../src/components/link-preview/helpers/cached-fetch');
 
 const renderLinkPreview = (props = {}) => {
   const defaultProps = { allowEmbedly: false };
-  return render(<LinkPreview {...defaultProps} {...props} />);
+  const state = { routeLoadingState: false };
+  return render(
+    <StateProvider state={state}>
+      <LinkPreview {...defaultProps} {...props} />
+    </StateProvider>,
+  );
 };
 
 describe('LinkPreview', () => {
-  const useSelectorMock = vi.spyOn(reactRedux, 'useSelector');
-
-  beforeEach(() => {
-    useSelectorMock.mockClear();
-  });
-
   it("Doesn't show a preview for freefeed.net", () => {
     const { asFragment } = renderLinkPreview({ url: 'https://freefeed.net/support' });
     expect(asFragment()).toMatchSnapshot();
@@ -35,7 +34,6 @@ describe('LinkPreview', () => {
   });
 
   it('Does show an Embedly preview for some random website if embedly is allowed', () => {
-    useSelectorMock.mockReturnValue(false);
     const script = document.createElement('script');
     document.body.appendChild(script);
     const { asFragment } = renderLinkPreview({ url: 'https://example.com', allowEmbedly: true });
@@ -43,7 +41,6 @@ describe('LinkPreview', () => {
   });
 
   it('Shows a video preview for Youtube', async () => {
-    useSelectorMock.mockReturnValue(false);
     cachedFetch.mockResolvedValue({
       title: 'Rick Astley - Never Gonna Give You Up (Official Music Video)',
       author_name: 'Rick Astley',
@@ -73,7 +70,6 @@ describe('LinkPreview', () => {
   });
 
   it('Shows a video preview for Vimeo', async () => {
-    useSelectorMock.mockReturnValue(false);
     cachedFetch.mockResolvedValue({
       title: 'Allir \u00FAr!',
       author_name: 'Novaisland',
@@ -91,7 +87,6 @@ describe('LinkPreview', () => {
   });
 
   it("Doesn't show a video preview if network request has failed", async () => {
-    useSelectorMock.mockReturnValue(false);
     cachedFetch.mockResolvedValue({
       error: `HTTP error: 404 Not Found`,
     });
@@ -105,7 +100,6 @@ describe('LinkPreview', () => {
   });
 
   it('Shows a video preview for Coub', async () => {
-    useSelectorMock.mockReturnValue(false);
     cachedFetch.mockResolvedValue({
       title: 'Russian Duck Army',
       author_name: 'Cat in chief',
@@ -124,7 +118,6 @@ describe('LinkPreview', () => {
   });
 
   it('Shows a video preview for Gfycat', async () => {
-    useSelectorMock.mockReturnValue(false);
     cachedFetch.mockResolvedValue({
       gfyItem: {
         height: 570,
@@ -144,7 +137,6 @@ describe('LinkPreview', () => {
   });
 
   it('Shows a video preview for Giphy', async () => {
-    useSelectorMock.mockReturnValue(false);
     cachedFetch.mockResolvedValue({
       author_name: 'The Tonight Show Starring Jimmy Fallon',
       title:

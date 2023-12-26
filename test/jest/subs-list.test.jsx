@@ -1,8 +1,8 @@
-/* global vi, describe, it, expect */
+/* global describe, it, expect */
 import { render } from '@testing-library/react';
-import * as reactRedux from 'react-redux';
 
 import SubsList from '../../src/components/subs-list';
+import { StateProvider } from './state-provider';
 
 const defaultState = {
   user: {
@@ -12,35 +12,34 @@ const defaultState = {
 
 describe('SubsList', () => {
   it('Renders a list of subscribers', () => {
-    const useSelectorMock = vi.spyOn(reactRedux, 'useSelector');
-    useSelectorMock.mockImplementation((selector) => selector(defaultState));
-
     const { asFragment } = render(
-      <SubsList
-        title="Subscribers"
-        listSections={[
-          {
-            title: 'Section',
-            users: [
-              {
-                id: 'u1',
-                screenName: 'User 1',
-                username: 'user1',
-                isMutual: true,
-                profilePictureUrl: 'pic1.jpg',
-              },
-              {
-                id: 'u2',
-                screenName: 'User 2',
-                username: 'user2',
-                isMutual: false,
-                profilePictureUrl: 'pic2.jpg',
-              },
-            ],
-          },
-        ]}
-        showSectionsTitles
-      />,
+      <StateProvider state={defaultState}>
+        <SubsList
+          title="Subscribers"
+          listSections={[
+            {
+              title: 'Section',
+              users: [
+                {
+                  id: 'u1',
+                  screenName: 'User 1',
+                  username: 'user1',
+                  isMutual: true,
+                  profilePictureUrl: 'pic1.jpg',
+                },
+                {
+                  id: 'u2',
+                  screenName: 'User 2',
+                  username: 'user2',
+                  isMutual: false,
+                  profilePictureUrl: 'pic2.jpg',
+                },
+              ],
+            },
+          ]}
+          showSectionsTitles
+        />
+      </StateProvider>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
