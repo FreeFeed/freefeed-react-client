@@ -3533,10 +3533,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:^2.2.3, classnames@npm:~2.3.3":
+"classnames@npm:^2.2.3":
   version: 2.3.3
   resolution: "classnames@npm:2.3.3"
   checksum: 4e945bed777a8103994c14675c9236c984a0b1365ae4a10b4c1b177c88f37d20038b4aadc88e1d138d7a88fd453064bf546ef80f1dd4f5ec128c7445992564de
+  languageName: node
+  linkType: hard
+
+"classnames@npm:~2.4.0":
+  version: 2.4.0
+  resolution: "classnames@npm:2.4.0"
+  checksum: 059c2c7e58ef69d6e9fc0f9861d22e94af9a7e73256c42fc539698472cb37e4dcef861acb9820bd2852a13767e62705d80a0aa399201cc1917556a2d9dfcdc5a
   languageName: node
   linkType: hard
 
@@ -8352,7 +8359,7 @@ __metadata:
     "@vitejs/plugin-legacy": "npm:~5.2.0"
     "@vitejs/plugin-react-swc": "npm:^3.5.0"
     autotrack: "npm:~2.4.1"
-    classnames: "npm:~2.3.3"
+    classnames: "npm:~2.4.0"
     cross-env: "npm:~7.0.3"
     custom-event: "npm:~1.0.1"
     date-fns: "npm:~3.0.6"
