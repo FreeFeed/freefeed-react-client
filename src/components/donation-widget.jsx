@@ -17,23 +17,23 @@ export function DonationWidget({ accountName = CONFIG.donations.statusAccount })
       <div className="box-header-groups" role="heading">
         Donate
       </div>
-      <div className={cn('box-body', styles.body)}>
-        <p className={styles.statusPara}>
+      <div className={cn('box-body', styles.widgetBody)}>
+        <p>
           Current funding status:{' '}
           <Link
             to="/about/donate"
-            className={cn(styles.statusLink, styles.statusLinkInSidebar)}
+            className={cn(styles.widgetStatusLink, styles.widgetStatusLinkInSidebar)}
             data-status={statusText}
           >
             {statusText}
           </Link>
         </p>
         <p>
-          <Link to="/about/donate" className={styles.donateLink}>
+          <Link to="/about/donate" className={styles.widgetDonateLink}>
             Donate to {CONFIG.siteTitle}
           </Link>
         </p>
-        <p>Your regular donations pay for hosting and keep FreeFeed running.</p>
+        <p>Your regular donations pay for hosting and keep {CONFIG.siteTitle} running.</p>
       </div>
     </div>
   );
