@@ -22,13 +22,13 @@ const GFYCAT_RE =
 const GIPHY_RE = /^https?:\/\/giphy.com\/gifs\/.+?-([a-zA-Z\d]+)($|\/|\?)/;
 const APARAT_RE = /^https:\/\/?(?:www\.)?aparat\.com\/v\/([^/]+)/i;
 
-const T_YOUTUBE_VIDEO = 'T_YOUTUBE_VIDEO';
-const T_VIMEO_VIDEO = 'T_VIMEO_VIDEO';
-const T_COUB_VIDEO = 'T_COUB_VIDEO';
-const T_IMGUR_VIDEO = 'T_IMGUR_VIDEO';
-const T_GFYCAT = 'T_GFYCAT';
-const T_GIPHY = 'T_GIPHY';
-const T_APARAT = 'T_APARAT';
+export const T_YOUTUBE_VIDEO = 'T_YOUTUBE_VIDEO';
+export const T_VIMEO_VIDEO = 'T_VIMEO_VIDEO';
+export const T_COUB_VIDEO = 'T_COUB_VIDEO';
+export const T_IMGUR_VIDEO = 'T_IMGUR_VIDEO';
+export const T_GFYCAT = 'T_GFYCAT';
+export const T_GIPHY = 'T_GIPHY';
+export const T_APARAT = 'T_APARAT';
 
 export function canShowURL(url) {
   return getVideoType(url) !== null;
@@ -249,6 +249,7 @@ async function getYoutubeVideoInfo(url, withoutAutoplay) {
     if (!withoutAutoplay) {
       u.searchParams.append('autoplay', '1');
     }
+    u.searchParams.append('enablejsapi', '1');
     u.searchParams.append('start', youtubeStartTime(url));
 
     info.playerURL = u.toString();

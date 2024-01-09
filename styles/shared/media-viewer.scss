@@ -1,27 +1,4 @@
-.pswp__zoom-wrap {
-  text-align: center;
-
-  &::before {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-  }
-}
-
-.pswp__caption a {
-  color: white;
-}
-
-.media-wrapper {
-  position: absolute;
-  inset: 40px 40px 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-video {
+video:not(.pswp-media__embed) {
   width: 100% !important;
   height: auto !important;
 }
@@ -45,4 +22,39 @@ video {
       margin-right: 3px;
     }
   }
+}
+
+.pswp-media__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.pswp-media__content {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.pswp-media__title {
+  flex: 0;
+  color: white;
+
+  & > a,
+  & > a:hover,
+  & > a:focus {
+    color: inherit;
+  }
+}
+
+.pswp-media__embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
