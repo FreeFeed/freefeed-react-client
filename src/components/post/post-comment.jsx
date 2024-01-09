@@ -302,7 +302,6 @@ class PostComment extends Component {
               userHover={this.props.authorHighlightHandlers}
               arrowHover={this.arrowHoverHandlers}
               arrowClick={this.arrowClick}
-              showMedia={this.props.showMedia}
             />
             <TranslatedText
               type="comment"
@@ -310,7 +309,6 @@ class PostComment extends Component {
               userHover={this.props.authorHighlightHandlers}
               arrowHover={this.arrowHoverHandlers}
               arrowClick={this.arrowClick}
-              showMedia={this.props.showMedia}
             />
             {commentTail}
           </Expandable>
@@ -354,7 +352,6 @@ class PostComment extends Component {
           onCommentLinkClick={this.props.onCommentLinkClick}
           arrowsLeft={this.state.previewLeft}
           arrowsTop={this.state.previewTop}
-          showMedia={this.props.showMedia}
         />
       )
     );

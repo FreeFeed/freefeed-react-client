@@ -13,7 +13,6 @@ import UserName from './user-name';
 export default function Linkify({
   children,
   className,
-  showMedia,
   userHover,
   arrowHover,
   arrowClick,
@@ -24,7 +23,6 @@ export default function Linkify({
   const formatted = useMemo(() => {
     // attachmentsRef.current.length = 0;
     let fm = processStrings(children, parseString, ['a', 'button', UserName], {
-      showMedia,
       userHover,
       arrowHover,
       arrowClick,
@@ -34,7 +32,7 @@ export default function Linkify({
       fm = processStrings(fm, (str) => highlightString(str, hl), ['button']);
     }
     return fm;
-  }, [arrowClick, arrowHover, children, hl, showMedia, userHover]);
+  }, [arrowClick, arrowHover, children, hl, userHover]);
 
   return (
     <span className={cn('Linkify', className)} dir="auto" role="region">

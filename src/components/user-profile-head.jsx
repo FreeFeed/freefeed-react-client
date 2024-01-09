@@ -17,7 +17,6 @@ import { faSmile, faCheckCircle as faCheckCircleO } from '@fortawesome/free-regu
 import { initialAsyncState } from '../redux/async-helpers';
 import {
   getUserInfo,
-  showMedia,
   togglePinnedGroup,
   hidePostsByCriterion,
   unsubscribe,
@@ -124,8 +123,6 @@ export const UserProfileHead = withRouter(
       user && !isBanned && (isCurrentUser || user.isPrivate === '0' || inSubscriptions);
 
     // Actions & statuses
-    const doShowMedia = useCallback((arg) => dispatch(showMedia(arg)), [dispatch]);
-
     const doSubscribe = {
       onClick: useCallback(() => dispatch(subscribe(user)), [dispatch, user]),
       status:
@@ -292,7 +289,7 @@ export const UserProfileHead = withRouter(
           </div>
         </div>
         <div className={styles.description}>
-          <PieceOfText text={user.description} isExpanded={true} showMedia={doShowMedia} />
+          <PieceOfText text={user.description} isExpanded={true} />
         </div>
         {isAuthenticated && !isCurrentUser && (
           <>

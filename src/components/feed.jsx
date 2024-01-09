@@ -7,7 +7,6 @@ import ErrorBoundary from './error-boundary';
 import Post from './post/post';
 import { PostRecentlyHidden } from './post/post-hides-ui';
 import { joinPostData } from './select-utils';
-import { isMediaAttachment } from './media-viewer';
 import { PostContextProvider } from './post/post-context';
 import { ButtonLink } from './button-link';
 
@@ -29,37 +28,9 @@ const HiddenEntriesToggle = (props) => {
 };
 
 class Feed extends PureComponent {
-  showMedia = (params) => {
-    const { props } = this;
-
-    props.showMedia({
-      ...params,
-      navigate: params.withoutNavigation
-        ? null
-        : (postId, where) => {
-            for (
-              let i = 0, l = props.visiblePosts.length, step = 1, match = false;
-              i >= 0 && i < l;
-              i += step
-            ) {
-              const item = props.visiblePosts[i];
-              if (match) {
-                if (isMediaAttachment(item.attachments)) {
-                  return item;
-                }
-              } else if (item.id === postId) {
-                match = true;
-                step = where < 0 ? -1 : 1;
-              }
-            }
-            return null;
-          },
-    });
-  };
-
   render() {
     const getEntryComponent = (section) => (post) => (
-      <FeedEntry key={post.id} {...{ post, section, ...this.props, showMedia: this.showMedia }} />
+      <FeedEntry key={post.id} {...{ post, section, ...this.props }} />
     );
 
     const {
@@ -180,7 +151,6 @@ function FeedEntry({ post, section, ...props }) {
         saveEditingPost={props.saveEditingPost}
         deletePost={props.deletePost}
         addAttachmentResponse={props.addAttachmentResponse}
-        showMedia={props.showMedia}
         toggleCommenting={props.toggleCommenting}
         addComment={props.addComment}
         likePost={props.likePost}

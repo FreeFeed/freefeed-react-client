@@ -420,9 +420,8 @@ class Post extends Component {
                         text={props.body}
                         readMoreStyle={props.readMoreStyle}
                         highlightTerms={props.highlightTerms}
-                        showMedia={this.props.showMedia}
                       />
-                      <TranslatedText type="post" id={props.id} showMedia={this.props.showMedia} />
+                      <TranslatedText type="post" id={props.id} />
                     </div>
                   </>
                 )}
@@ -437,7 +436,6 @@ class Post extends Component {
                       attachmentIds={this.props.attachments}
                       isEditing={false}
                       isSinglePost={props.isSinglePost}
-                      showMedia={this.props.showMedia}
                       removeAttachment={this.removeAttachment}
                       reorderImageAttachments={this.reorderImageAttachments}
                     />
@@ -492,7 +490,6 @@ class Post extends Component {
                 addComment={props.addComment}
                 toggleCommenting={props.toggleCommenting}
                 showMoreComments={props.showMoreComments}
-                showMedia={props.showMedia}
                 commentEdit={props.commentEdit}
                 readMoreStyle={props.readMoreStyle}
                 entryUrl={canonicalPostURI}

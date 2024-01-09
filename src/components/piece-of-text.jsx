@@ -85,7 +85,6 @@ export default function PieceOfText({
   arrowHover,
   arrowClick,
   highlightTerms,
-  showMedia,
 }) {
   const [isExpanded, setIsExpanded] = useState(
     () => passedIsExpanded || readMoreStyle === READMORE_STYLE_COMFORT,
@@ -111,7 +110,6 @@ export default function PieceOfText({
       arrowHover={arrowHover}
       arrowClick={arrowClick}
       highlightTerms={highlightTerms}
-      showMedia={showMedia}
     >
       {textToRender}
     </Linkify>

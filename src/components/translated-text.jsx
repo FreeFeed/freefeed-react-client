@@ -14,7 +14,7 @@ import style from './translated-text.module.scss';
 
 const selectTranslationService = (serverInfo) => serverInfo.textTranslation.serviceTitle;
 
-export function TranslatedText({ type, id, userHover, arrowHover, arrowClick, showMedia }) {
+export function TranslatedText({ type, id, userHover, arrowHover, arrowClick }) {
   const key = `${type}:${id}`;
   const dispatch = useDispatch();
   const status = useSelector((store) => store.translationStates[key] ?? initialAsyncState);
@@ -57,7 +57,6 @@ export function TranslatedText({ type, id, userHover, arrowHover, arrowClick, sh
         userHover={userHover}
         arrowHover={arrowHover}
         arrowClick={arrowClick}
-        showMedia={showMedia}
       />
     </Layout>
   );
