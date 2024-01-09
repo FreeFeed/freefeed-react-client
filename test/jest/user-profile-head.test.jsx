@@ -1,10 +1,20 @@
 /* global describe, it, expect, vi, beforeEach */
 import { render, screen, fireEvent } from '@testing-library/react';
-import * as reactRedux from 'react-redux';
 
+import { applyMiddleware } from 'redux';
 import { UserProfileHead } from '../../src/components/user-profile-head';
 import * as actionCreators from '../../src/redux/action-creators';
 import { successAsyncState } from '../../src/redux/async-helpers';
+import {
+  HIDE_BY_CRITERION,
+  REVOKE_USER_REQUEST,
+  TOGGLE_PINNED_GROUP,
+  UNBAN,
+  UNSUBSCRIBE,
+  UNSUBSCRIBE_FROM_ME,
+} from '../../src/redux/action-types';
+import { USERNAME as CRIT_USERNAME } from '../../src/utils/hide-criteria';
+import { StateProvider } from './state-provider';
 
 const USERNAME = 'freefeed';
 const UID = 'f8e1e978-4df8-4160-b3da-99b8d49da2f8';
@@ -70,7 +80,7 @@ const defaultState = {
   },
 };
 
-const renderUserProfileHead = (props = {}) => {
+const renderUserProfileHead = (state = defaultState, dispatchSpy) => {
   const fakeRouter = {
     params: { userName: USERNAME },
     push: () => {},
@@ -82,22 +92,28 @@ const renderUserProfileHead = (props = {}) => {
     isActive: () => {},
   };
   const defaultProps = { router: fakeRouter };
-  return render(<UserProfileHead {...defaultProps} {...props} />);
+
+  const enhancer = applyMiddleware(() => (next) => (action) => {
+    dispatchSpy?.(action);
+    return next(action);
+  });
+
+  return render(
+    <StateProvider state={state} enhancer={enhancer}>
+      <UserProfileHead {...defaultProps} />
+    </StateProvider>,
+  );
 };
 
 describe('UserProfileHead', () => {
-  const useSelectorMock = vi.spyOn(reactRedux, 'useSelector');
-  const useDispatchMock = vi.spyOn(reactRedux, 'useDispatch');
+  const dispatchSpy = vi.fn();
 
   beforeEach(() => {
-    useSelectorMock.mockClear();
-    useDispatchMock.mockClear();
-    useSelectorMock.mockImplementation((selector) => selector(defaultState));
-    useDispatchMock.mockImplementation(() => () => {});
+    dispatchSpy.mockClear();
   });
 
   it("Renders my own header and doesn't blow up", () => {
-    const { asFragment } = renderUserProfileHead();
+    const { asFragment } = renderUserProfileHead(defaultState);
     expect(asFragment()).toMatchSnapshot();
   });
 
@@ -111,9 +127,8 @@ describe('UserProfileHead', () => {
         },
       },
     };
-    useSelectorMock.mockImplementation((selector) => selector(fakeState));
 
-    const { asFragment } = renderUserProfileHead();
+    const { asFragment } = renderUserProfileHead(fakeState);
     expect(asFragment()).toMatchSnapshot();
   });
 
@@ -127,9 +142,8 @@ describe('UserProfileHead', () => {
         },
       },
     };
-    useSelectorMock.mockImplementation((selector) => selector(fakeState));
 
-    const { asFragment } = renderUserProfileHead();
+    const { asFragment } = renderUserProfileHead(fakeState);
     expect(asFragment()).toMatchSnapshot();
   });
 
@@ -143,9 +157,8 @@ describe('UserProfileHead', () => {
         },
       },
     };
-    useSelectorMock.mockImplementation((selector) => selector(fakeState));
 
-    renderUserProfileHead();
+    renderUserProfileHead(fakeState);
     expect(screen.getByText('Deleted user')).toBeDefined();
   });
 
@@ -159,9 +172,8 @@ describe('UserProfileHead', () => {
         },
       },
     };
-    useSelectorMock.mockImplementation((selector) => selector(fakeState));
 
-    renderUserProfileHead();
+    renderUserProfileHead(fakeState);
     expect(screen.getByText('Private feed')).toBeDefined();
   });
 
@@ -175,9 +187,8 @@ describe('UserProfileHead', () => {
         },
       },
     };
-    useSelectorMock.mockImplementation((selector) => selector(fakeState));
 
-    renderUserProfileHead();
+    renderUserProfileHead(fakeState);
     expect(screen.getByText('Protected feed')).toBeDefined();
   });
 
@@ -191,15 +202,14 @@ describe('UserProfileHead', () => {
         banIds: [UID],
       },
     };
-    useSelectorMock.mockImplementation((selector) => selector(fakeState));
     const unbanMock = vi.spyOn(actionCreators, 'unban');
 
-    renderUserProfileHead();
+    renderUserProfileHead(fakeState, dispatchSpy);
     expect(screen.getByText('You’ve blocked this user')).toBeDefined();
     fireEvent.click(screen.getByText('Unblock'));
     expect(unbanMock).toHaveBeenCalledTimes(1);
     expect(unbanMock).toHaveBeenCalledWith(fakeState.users[UID]);
-    expect(useDispatchMock).toHaveBeenCalledTimes(3);
+    expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({ type: UNBAN }));
   });
 
   it('Correctly displays that we are mutually subscribed', () => {
@@ -214,9 +224,8 @@ describe('UserProfileHead', () => {
       },
       users: { [UID]: { ...defaultState.users[UID], youCan: ['dm', 'unsubscribe'] } },
     };
-    useSelectorMock.mockImplementation((selector) => selector(fakeState));
 
-    const { asFragment } = renderUserProfileHead();
+    const { asFragment } = renderUserProfileHead(fakeState);
     expect(asFragment()).toMatchSnapshot();
   });
 
@@ -231,11 +240,10 @@ describe('UserProfileHead', () => {
         isPrivate: '1',
       },
     };
-    useSelectorMock.mockImplementation((selector) => selector(fakeState));
     const kickMock = vi.spyOn(actionCreators, 'unsubscribeFromMe');
     const confirmMock = vi.spyOn(global, 'confirm').mockReturnValueOnce(true);
 
-    renderUserProfileHead();
+    renderUserProfileHead(fakeState, dispatchSpy);
     expect(screen.getByText('Subscribed to you')).toBeDefined();
     expect(screen.getByText('Subscribe')).toBeDefined();
     // fireEvent.click(screen.getByText('Subscribe'));
@@ -250,7 +258,9 @@ describe('UserProfileHead', () => {
     );
     expect(kickMock).toHaveBeenCalledTimes(1);
     expect(kickMock).toHaveBeenCalledWith(fakeState.users[UID]);
-    expect(useDispatchMock).toHaveBeenCalledTimes(3);
+    expect(dispatchSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ type: UNSUBSCRIBE_FROM_ME }),
+    );
   });
 
   it('Correctly displays that I can send a subscription request', () => {
@@ -268,9 +278,8 @@ describe('UserProfileHead', () => {
         },
       },
     };
-    useSelectorMock.mockImplementation((selector) => selector(fakeState));
 
-    renderUserProfileHead();
+    renderUserProfileHead(fakeState);
     expect(screen.getByText('Request a subscription')).toBeDefined();
     // fireEvent.click(screen.getByText('Request a subscription'));
     // same as above
@@ -293,18 +302,19 @@ describe('UserProfileHead', () => {
         },
       },
     };
-    useSelectorMock.mockImplementation((selector) => selector(fakeState));
     const revokeMock = vi.spyOn(actionCreators, 'revokeSentRequest');
     const confirmMock = vi.spyOn(global, 'confirm').mockReturnValueOnce(true);
 
-    renderUserProfileHead();
+    renderUserProfileHead(fakeState, dispatchSpy);
     expect(screen.getByText('revoke')).toBeDefined();
     fireEvent.click(screen.getByText('revoke'));
     expect(confirmMock).toHaveBeenCalledTimes(1);
     expect(confirmMock).toHaveBeenCalledWith('Are you sure you want to revoke this request?');
     expect(revokeMock).toHaveBeenCalledTimes(1);
     expect(revokeMock).toHaveBeenCalledWith(fakeState.users[UID]);
-    expect(useDispatchMock).toHaveBeenCalledTimes(3);
+    expect(dispatchSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ type: REVOKE_USER_REQUEST }),
+    );
   });
 
   it('Correctly displays that I am subscribed to them and lets me unsubscribe', () => {
@@ -317,11 +327,10 @@ describe('UserProfileHead', () => {
         subscriptions: [UID],
       },
     };
-    useSelectorMock.mockImplementation((selector) => selector(fakeState));
     const unsubscribeMock = vi.spyOn(actionCreators, 'unsubscribe');
     const confirmMock = vi.spyOn(global, 'confirm').mockReturnValueOnce(true);
 
-    renderUserProfileHead();
+    renderUserProfileHead(fakeState, dispatchSpy);
     expect(screen.getByText('You are subscribed')).toBeDefined();
     fireEvent.click(screen.getByText('Unsubscribe'));
     expect(confirmMock).toHaveBeenCalledTimes(1);
@@ -330,7 +339,7 @@ describe('UserProfileHead', () => {
     );
     expect(unsubscribeMock).toHaveBeenCalledTimes(1);
     expect(unsubscribeMock).toHaveBeenCalledWith(fakeState.users[UID]);
-    expect(useDispatchMock).toHaveBeenCalledTimes(3);
+    expect(dispatchSpy).toHaveBeenCalledWith(expect.objectContaining({ type: UNSUBSCRIBE }));
   });
 
   it("Correctly displays user's hidden status and lets me unhide them", () => {
@@ -348,15 +357,26 @@ describe('UserProfileHead', () => {
         },
       },
     };
-    useSelectorMock.mockImplementation((selector) => selector(fakeState));
     const unhideMock = vi.spyOn(actionCreators, 'hidePostsByCriterion');
 
-    renderUserProfileHead();
+    renderUserProfileHead(fakeState, dispatchSpy);
     expect(screen.getByText('Unhide in Home')).toBeDefined();
     fireEvent.click(screen.getByText('Unhide in Home'));
     expect(unhideMock).toHaveBeenCalledTimes(1);
     expect(unhideMock).toHaveBeenCalledWith({ type: 'USERNAME', value: USERNAME }, null, false);
-    expect(useDispatchMock).toHaveBeenCalledTimes(3);
+    expect(dispatchSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: HIDE_BY_CRITERION,
+        payload: {
+          criterion: {
+            type: CRIT_USERNAME,
+            value: USERNAME,
+          },
+          doHide: false,
+          postId: null,
+        },
+      }),
+    );
   });
 
   it('Correctly displays that user is in some of my lists', () => {
@@ -382,9 +402,8 @@ describe('UserProfileHead', () => {
         { id: 'home', title: 'Home feed', isInherent: true },
       ],
     };
-    useSelectorMock.mockImplementation((selector) => selector(fakeState));
 
-    renderUserProfileHead();
+    renderUserProfileHead(fakeState);
     expect(screen.getByText('Feed 1')).toBeDefined();
     expect(screen.queryByText('Feed 2')).toBeNull();
     expect(screen.getByText('Home feed')).toBeDefined();
@@ -406,10 +425,9 @@ describe('UserProfileHead', () => {
         },
       },
     };
-    useSelectorMock.mockImplementation((selector) => selector(fakeState));
     const pinMock = vi.spyOn(actionCreators, 'togglePinnedGroup');
 
-    renderUserProfileHead();
+    renderUserProfileHead(fakeState, dispatchSpy);
     expect(screen.getByText('Public group')).toBeDefined();
     expect(screen.getByText('You are a member')).toBeDefined();
     fireEvent.click(screen.getByText('Group actions'));
@@ -418,7 +436,12 @@ describe('UserProfileHead', () => {
     fireEvent.keyDown(screen.getByText('Pin to sidebar'), { keyCode: 13 });
     expect(pinMock).toHaveBeenCalledTimes(1);
     expect(pinMock).toHaveBeenCalledWith(UID);
-    expect(useDispatchMock).toHaveBeenCalledTimes(3);
+    expect(dispatchSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: TOGGLE_PINNED_GROUP,
+        payload: { id: UID },
+      }),
+    );
   });
 
   it('Renders a group header if I am an admin', () => {
@@ -439,9 +462,8 @@ describe('UserProfileHead', () => {
         },
       },
     };
-    useSelectorMock.mockImplementation((selector) => selector(fakeState));
 
-    renderUserProfileHead();
+    renderUserProfileHead(fakeState);
     expect(screen.getByText('Private group')).toBeDefined();
     expect(screen.getByText('You are an admin')).toBeDefined();
     expect(screen.getByText('Group settings')).toBeDefined();

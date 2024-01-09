@@ -1,11 +1,9 @@
-/* global describe, it, expect, vi, beforeEach */
+/* global describe, it, expect */
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import '@testing-library/jest-dom/extend-expect';
-import { createStore } from 'redux';
-import * as reactRedux from 'react-redux';
 
 import { ListEditor } from '../../src/components/friends-page/list-editor';
+import { StateProvider } from './state-provider';
 
 const LIST_ID = 'list-id';
 
@@ -37,19 +35,15 @@ const defaultState = {
 };
 
 const renderListEditor = (props = {}, options = {}) => {
-  const { Provider } = reactRedux;
-  const dummyReducer = (state) => state;
-  const store = createStore(dummyReducer, defaultState);
-
   const defaultProps = {
     listId: LIST_ID,
     closeEditor: () => {},
   };
 
   const rendered = render(
-    <Provider store={store}>
+    <StateProvider state={defaultState}>
       <ListEditor {...defaultProps} {...props} />
-    </Provider>,
+    </StateProvider>,
     options,
   );
 
@@ -61,16 +55,6 @@ const renderListEditor = (props = {}, options = {}) => {
 };
 
 describe('ListEditor', () => {
-  const useSelectorMock = vi.spyOn(reactRedux, 'useSelector');
-  const useDispatchMock = vi.spyOn(reactRedux, 'useDispatch');
-
-  beforeEach(() => {
-    useSelectorMock.mockClear();
-    useDispatchMock.mockClear();
-    useSelectorMock.mockImplementation((selector) => selector(defaultState));
-    useDispatchMock.mockImplementation(() => () => {});
-  });
-
   it("Renders a list and doesn't blow up", () => {
     renderListEditor();
     const listEditor = screen.getByTestId('list-editor');

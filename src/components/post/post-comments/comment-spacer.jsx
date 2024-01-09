@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
-import formatDistance from 'date-fns/formatDistance';
+import { formatDistance } from 'date-fns/formatDistance';
 
 import { Icon } from '../../fontawesome-icons';
 

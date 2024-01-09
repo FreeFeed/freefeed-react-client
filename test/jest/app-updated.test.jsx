@@ -1,8 +1,8 @@
-/* global vi, describe, it, expect */
+/* global  describe, it, expect */
 import { render } from '@testing-library/react';
-import * as reactRedux from 'react-redux';
 
 import { AppUpdated } from '../../src/components/app-updated';
+import { StateProvider } from './state-provider';
 
 const defaultState = {
   appUpdated: {
@@ -12,10 +12,11 @@ const defaultState = {
 
 describe('AppUpdated', () => {
   it('Renders if there is an update', () => {
-    const useSelectorMock = vi.spyOn(reactRedux, 'useSelector');
-    useSelectorMock.mockImplementation((selector) => selector(defaultState));
-
-    const { asFragment } = render(<AppUpdated />);
+    const { asFragment } = render(
+      <StateProvider state={defaultState}>
+        <AppUpdated />
+      </StateProvider>,
+    );
     expect(asFragment()).toMatchSnapshot();
   });
 });
