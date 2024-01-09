@@ -12,7 +12,10 @@ export function openLightbox(index, dataSource) {
 }
 
 function initLightbox() {
-  const lightbox = new PhotoSwipeLightbox({ pswpModule: () => import('photoswipe') });
+  const lightbox = new PhotoSwipeLightbox({
+    clickToCloseNonZoomable: false,
+    pswpModule: () => import('photoswipe'),
+  });
 
   // Add filters for the correct open/close animation
   lightbox.addFilter('placeholderSrc', (placeholderSrc, content) => {
