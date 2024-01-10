@@ -3,6 +3,7 @@
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import Mousetrap from 'mousetrap';
 import 'photoswipe/photoswipe.css';
+import '../../styles/shared/lighbox.scss';
 
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
 const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
