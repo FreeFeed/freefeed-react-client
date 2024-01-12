@@ -37,3 +37,17 @@
 .pswp__img {
   cursor: default;
 }
+
+.pswp__button--zoom {
+  order: 1;
+}
+
+.pswp__button--fs {
+  font-size: 20px;
+  color: #fff;
+  order: 2;
+}
+
+.pswp__button--close {
+  order: 3;
+}
