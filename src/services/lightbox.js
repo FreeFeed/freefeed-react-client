@@ -12,6 +12,7 @@ import { Icon } from '../components/fontawesome-icons';
 
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
 const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
+const fullScreenHotKeys = ['f', 'а'];
 
 export function openLightbox(index, dataSource) {
   initLightbox().loadAndOpen(index, dataSource);
@@ -90,10 +91,12 @@ function initLightbox() {
   lightbox.on('beforeOpen', () => {
     Mousetrap.bind(prevHotKeys, () => lightbox.pswp.prev());
     Mousetrap.bind(nextHotKeys, () => lightbox.pswp.next());
+    Mousetrap.bind(fullScreenHotKeys, () => document.querySelector('.pswp__button--fs')?.click());
   });
   lightbox.on('destroy', () => {
     Mousetrap.unbind(prevHotKeys);
     Mousetrap.unbind(nextHotKeys);
+    Mousetrap.unbind(fullScreenHotKeys);
   });
 
   // Fix dimensions for images without known width/height
