@@ -51,3 +51,17 @@
 .pswp__button--close {
   order: 3;
 }
+
+#pswp__icn-fullscreen-close {
+  display: none;
+}
+
+.pswp__fullscreen-mode {
+  #pswp__icn-fullscreen-close {
+    display: block;
+  }
+
+  #pswp__icn-fullscreen-open {
+    display: none;
+  }
+}

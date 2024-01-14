@@ -4,11 +4,7 @@ import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import Mousetrap from 'mousetrap';
 import 'photoswipe/photoswipe.css';
 import '../../styles/shared/lighbox.scss';
-import { renderToString } from 'react-dom/server';
-import { createElement } from 'react';
-import { faCompress, faExpand } from '@fortawesome/free-solid-svg-icons';
 import { getFullscreenAPI } from '../utils/fullscreen';
-import { Icon } from '../components/fontawesome-icons';
 
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
 const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
@@ -20,8 +16,16 @@ export function openLightbox(index, dataSource) {
 
 const fsApi = getFullscreenAPI();
 
-const expandIconHTML = renderToString(createElement(Icon, { icon: faExpand }));
-const compressIconHTML = renderToString(createElement(Icon, { icon: faCompress }));
+// @see https://github.com/dimsemenov/PhotoSwipe/issues/1759#issue-914638063
+const fullscreenIconsHtml = `<svg aria-hidden="true" class="pswp__icn" viewBox="0 0 32 32" width="32" height="32">
+<!-- duplicate the paths for adding strokes -->
+<use class="pswp__icn-shadow" xlink:href="#pswp__icn-fullscreen-close"/>
+<use class="pswp__icn-shadow" xlink:href="#pswp__icn-fullscreen-open"/>
+<!-- toggle full-screen mode icon path (id="pswp__icn-fullscreen-open") -->
+<path d="M8 8v6.047h2.834v-3.213h3.213V8h-3.213zm9.953 0v2.834h3.213v3.213H24V8h-2.834zM8 17.953V24h6.047v-2.834h-3.213v-3.213zm13.166 0v3.213h-3.213V24H24v-6.047z" id="pswp__icn-fullscreen-open"/>
+<!-- exit full-screen mode icon path (id="pswp__icn-fullscreen-close") -->
+<path d="M11.213 8v3.213H8v2.834h6.047V8zm6.74 0v6.047H24v-2.834h-3.213V8zM8 17.953v2.834h3.213V24h2.834v-6.047h-2.834zm9.953 0V24h2.834v-3.213H24v-2.834h-3.213z" id="pswp__icn-fullscreen-close"/>
+</svg>`;
 
 function initLightbox() {
   const lightbox = new PhotoSwipeLightbox({
@@ -39,7 +43,7 @@ function initLightbox() {
       ariaLabel: 'Full screen',
       order: 9,
       isButton: true,
-      html: expandIconHTML,
+      html: fullscreenIconsHtml,
       onClick: () => {
         if (fsApi.isFullscreen()) {
           fsApi.exit();
@@ -49,10 +53,8 @@ function initLightbox() {
       },
     });
 
-    const h = () => {
-      const btn = document.querySelector('.pswp__button--fs');
-      btn.innerHTML = fsApi.isFullscreen() ? compressIconHTML : expandIconHTML;
-    };
+    const h = () =>
+      document.documentElement.classList.toggle('pswp__fullscreen-mode', !!fsApi.isFullscreen());
 
     document.addEventListener(fsApi.changeEvent, h);
     lightbox.on('destroy', () => document.removeEventListener(fsApi.changeEvent, h));
