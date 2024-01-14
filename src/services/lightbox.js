@@ -72,6 +72,9 @@ function initLightbox() {
 
   lightbox.on('bindEvents', () => {
     const h = (e) => {
+      if (e.ctrlKey || e.metaKey) {
+        return;
+      }
       e.preventDefault();
       lightbox.pswp.close();
     };
