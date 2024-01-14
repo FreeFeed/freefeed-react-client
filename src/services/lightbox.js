@@ -70,6 +70,19 @@ function initLightbox() {
     lightbox.on('close', () => fsApi.isFullscreen() && fsApi.exit());
   });
 
+  lightbox.on('bindEvents', () => {
+    const h = (e) => {
+      e.preventDefault();
+      lightbox.pswp.close();
+    };
+    window.addEventListener('scroll', h, { passive: false });
+    document.addEventListener('wheel', h, { passive: false });
+    lightbox.on('destroy', () => {
+      window.removeEventListener('scroll', h, { passive: false });
+      document.removeEventListener('wheel', h, { passive: false });
+    });
+  });
+
   // Add filters for the correct open/close animation
   lightbox.addFilter('placeholderSrc', (placeholderSrc, content) => {
     const thumb = document.getElementById(content.data.pid);
