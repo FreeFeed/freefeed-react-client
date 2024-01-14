@@ -30,6 +30,15 @@ const fullscreenIconsHtml = `<svg aria-hidden="true" class="pswp__icn" viewBox="
 function initLightbox() {
   const lightbox = new PhotoSwipeLightbox({
     clickToCloseNonZoomable: false,
+    tapAction(_, event) {
+      // Close lightbox on background tap
+      if (event.target.classList.contains('pswp__item')) {
+        this.close();
+      } else {
+        // Toggle controls (default behavior)
+        this.element?.classList.toggle('pswp--ui-visible');
+      }
+    },
     pswpModule: () => import('photoswipe'),
   });
 
