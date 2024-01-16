@@ -57,6 +57,15 @@ import { HomeAux } from './components/home-aux';
 import { NotFound } from './components/not-found';
 import { DialogProvider } from './components/dialog/context';
 
+// Set initial history state.
+// Without this, there can be problems with third-party
+// modules using history API (specifically, PhotoSwipe).
+browserHistory.replace({
+  pathname: location.pathname,
+  search: location.search,
+  hash: location.hash,
+});
+
 const boundRouteActions = bindRouteActions(store.dispatch);
 
 const history = syncHistoryWithStore(browserHistory, store);
