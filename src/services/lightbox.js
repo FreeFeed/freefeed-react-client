@@ -39,6 +39,8 @@ function initLightbox() {
         this.element?.classList.toggle('pswp--ui-visible');
       }
     },
+    secondaryZoomLevel: 1,
+    maxZoomLevel: 2,
     pswpModule: () => import('photoswipe'),
   });
 
