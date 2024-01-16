@@ -166,34 +166,14 @@ async function getEmbeddableItem(url, mediaType, isActiveSlide) {
       onDeactivate = (element) => element.querySelector('video').pause();
     }
     if (mediaType === T_YOUTUBE_VIDEO) {
-      // Youtube iframe initialization takes a lot of time, so we need to
-      // complex logic here
       onActivate = function (element) {
-        this.__active = true;
         const iframe = element.querySelector('iframe');
-        const retry = (timeout) =>
-          setTimeout(() => this.__active && onActivate.call(this, element), timeout);
-        if (iframe.contentWindow) {
-          // Iframe is ready
-          if (!iframe.contentDocument) {
-            // Document is inaccessible (so it has another domain). We can try to
-            // play.
-            iframe.contentWindow.postMessage(
-              JSON.stringify({ event: 'command', func: 'playVideo' }),
-              'https://www.youtube.com',
-            );
-          }
-          // Even if we trigger postMessage above, the full Youtube code may not
-          // be loaded yet, so just repeat trying every 2 seconds, until the
-          // slide is active.
-          retry(2000);
-        } else {
-          // Iframe is not even initialized yet.
-          retry(200);
-        }
+        iframe.contentWindow?.postMessage(
+          JSON.stringify({ event: 'command', func: 'playVideo' }),
+          'https://www.youtube.com',
+        );
       };
       onDeactivate = function (element) {
-        this.__active = false;
         const iframe = element.querySelector('iframe');
         iframe.contentWindow?.postMessage(
           JSON.stringify({ event: 'command', func: 'pauseVideo' }),
