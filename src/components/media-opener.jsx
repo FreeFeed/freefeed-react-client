@@ -45,7 +45,7 @@ export function MediaOpener({ url, mediaType, attachmentsRef, children }) {
         openLightbox(
           index,
           await Promise.all(
-            attachmentsRef.current.map(async ({ url, mediaType }) => {
+            attachmentsRef.current.map(async ({ url, mediaType }, idx) => {
               if (mediaType === 'image') {
                 return {
                   // Convert dropbox page URL to image URL
@@ -59,7 +59,7 @@ export function MediaOpener({ url, mediaType, attachmentsRef, children }) {
                   autoSize: true,
                 };
               }
-              return await getEmbeddableItem(url, mediaType);
+              return await getEmbeddableItem(url, mediaType, idx === index);
             }),
           ),
         );
@@ -93,12 +93,13 @@ export function MediaOpener({ url, mediaType, attachmentsRef, children }) {
   );
 }
 
-async function getEmbeddableItem(url, mediaType) {
+async function getEmbeddableItem(url, mediaType, isActiveSlide) {
   let info = null;
   if (isInstagram(url)) {
     info = getInstagramEmbedInfo(url);
   } else {
-    info = await getVideoInfo(url, true);
+    // Autoplay Youtube video on active slide
+    info = await getVideoInfo(url, !(isActiveSlide && mediaType === T_YOUTUBE_VIDEO));
   }
 
   if (info) {
