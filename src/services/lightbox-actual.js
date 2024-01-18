@@ -6,6 +6,7 @@ import pswpModule from 'photoswipe';
 import 'photoswipe/photoswipe.css';
 import '../../styles/shared/lighbox.scss';
 import { getFullscreenAPI } from '../utils/fullscreen';
+import { pinnedElements, unscrollTo } from './unscroll';
 
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
 const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
@@ -148,6 +149,19 @@ function initLightbox() {
   lightbox.on('contentDeactivate', ({ content }) => {
     const { data, element } = content;
     data.onDeactivate?.call(data, element);
+  });
+
+  // Compensate unwanted scroll after closing lightbox, which happens in some
+  // mobile browsers.
+  let pinnedEls = [];
+  lightbox.on('close', () => {
+    pinnedElements.capture();
+    pinnedEls = [...pinnedElements];
+  });
+  lightbox.on('destroy', () => {
+    const h = () => unscrollTo(pinnedEls);
+    window.addEventListener('scroll', h, { once: true });
+    setTimeout(() => window.removeEventListener('scroll', h, { once: true }), 500);
   });
 
   // Init
