@@ -1,10 +1,10 @@
-/* global describe, it, expect, vi, beforeEach */
+/* global describe, it, expect, vi */
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import * as reactRedux from 'react-redux';
 
 import SignInPage from '../../src/components/settings/sign-in';
 import * as actionCreators from '../../src/redux/action-creators';
+import { StateProvider } from './state-provider';
 
 vi.mock('../../src/components/prevent-page-leaving', () => {
   return {
@@ -29,22 +29,15 @@ const defaultState = {
   },
 };
 
-const renderSignInPage = (props = {}) => {
-  const defaultProps = {};
-  return render(<SignInPage {...defaultProps} {...props} />);
+const renderSignInPage = (state = defaultState) => {
+  return render(
+    <StateProvider state={state}>
+      <SignInPage />
+    </StateProvider>,
+  );
 };
 
 describe('SignInPage', () => {
-  const useSelectorMock = vi.spyOn(reactRedux, 'useSelector');
-  const useDispatchMock = vi.spyOn(reactRedux, 'useDispatch');
-
-  beforeEach(() => {
-    useSelectorMock.mockClear();
-    useDispatchMock.mockClear();
-    useSelectorMock.mockImplementation((selector) => selector(defaultState));
-    useDispatchMock.mockImplementation(() => () => {});
-  });
-
   it('Renders sign-in settings page', () => {
     const { asFragment } = renderSignInPage();
     expect(asFragment()).toMatchSnapshot();

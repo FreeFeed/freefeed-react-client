@@ -52,9 +52,10 @@ export function OverlayPopup({
     };
   }, []);
 
+  // Turn FocusTrap off in 'test' mode
   return (
     <Portal>
-      <FocusTrap>
+      <FocusTrap active={process.env.NODE_ENV !== 'test'}>
         <div className={styles.popup} ref={panel}>
           <div className={styles.content} ref={content}>
             {close && (

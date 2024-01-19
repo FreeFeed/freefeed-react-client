@@ -246,7 +246,6 @@ export default class PostComments extends Component {
         {...props.commentEdit}
         authorHighlightHandlers={this.authorHighlightHandlers}
         arrowsHighlightHandlers={this.arrowsHighlightHandlers}
-        showMedia={this.props.showMedia}
         readMoreStyle={props.readMoreStyle}
         highlightTerms={props.highlightTerms}
         currentUser={props.post.user}

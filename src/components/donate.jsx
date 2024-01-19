@@ -1,7 +1,9 @@
 /* global CONFIG */
-import cn from 'classnames';
+import classnames from 'classnames';
+import { useState } from 'react';
 import { Link } from 'react-router';
 import { faPaypal } from '@fortawesome/free-brands-svg-icons';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './donate.module.scss';
 import { useDonationStatus } from './hooks/donation-status';
@@ -12,421 +14,587 @@ import { faLiberaPay, faYooMoney, faBoosty } from './fontawesome-custom-icons';
 
 const cfg = CONFIG.donations;
 
+const LANGUAGES = [
+  { id: 'en', label: 'In English' },
+  { id: 'ru', label: 'По-русски' },
+];
+
+// eslint-disable-next-line complexity
 export default function Donate({ donationAccountName = cfg.statusAccount }) {
   const statusText = useDonationStatus(donationAccountName);
-  const [rusDetailsOpened, rusDetailsToggle] = useBool(false);
-  const [engDetailsOpened, engDetailsToggle] = useBool(false);
+  const [fundingStatusDetailsOpened, fundingStatusDetailsToggle] = useBool(false);
+
+  const [lang, setLang] = useState(LANGUAGES[0].id);
 
   return (
     <div className="box">
       <div className="box-header-timeline" />
       <div className="box-body">
-        <h3>Donate to FreeFeed</h3>
+        <div className={styles.languages}>
+          {LANGUAGES.map((l) => {
+            const onClick = () => setLang(l.id);
+            const cn = classnames(styles.lang, lang === l.id ? styles.active : false);
+            return (
+              // eslint-disable-next-line react/jsx-no-bind
+              <span key={l.id} className={cn} onClick={onClick}>
+                {l.label}
+              </span>
+            );
+          })}
+        </div>
 
-        <p>
-          <a href="#russian">🇷🇺 Прочесть по-русски</a>
-        </p>
+        <section className={styles.main} lang={lang}>
+          {lang === 'en' ? (
+            <>
+              <h3 className={styles.header}>Donate to FreeFeed</h3>
+              <p>
+                FreeFeed is funded by voluntary donations from its users. These donations are the
+                only source of income for FreeFeed as it has no sponsors and doesn&apos;t run ads.
+                FreeFeed uses this money to pay for its hosting, development, and administration.
+              </p>
+              <ul>
+                {cfg.reportsAccount && (
+                  <li>
+                    <Link to={`/${cfg.reportsAccount}`}>
+                      Read annual funding and expenses reports
+                    </Link>
+                  </li>
+                )}
+                <li>
+                  <a
+                    href="https://ariregister.rik.ee/eng/company/80385994/FreeFeednet-MT%C3%9C?lang=en"
+                    target="_blank"
+                    rel="noreferrer noopwener"
+                  >
+                    Read about FreeFeed.net MTÜ
+                  </a>
+                  , the non-profit organisation that maintains FreeFeed.net
+                </li>
 
-        <p>
-          <Link to="/about">FreeFeed</Link> is a small-scale social network and a blogging platform.
-          It is maintained by a non-profit organization FreeFeed MTU and is funded by voluntary
-          donations from its users. These donations are the only source of income for FreeFeed as it
-          has no sponsors and doesn&apos;t run ads.
-        </p>
+                {statusText && (
+                  <li>
+                    <p className={styles.currentFundingStatus}>
+                      Current funding status:{' '}
+                      <span className={styles.widgetStatusLink} data-status={statusText}>
+                        {statusText}
+                      </span>{' '}
+                      &mdash;{' '}
+                      <ButtonLink onClick={fundingStatusDetailsToggle} className={styles.huh}>
+                        What does this mean?
+                        {fundingStatusDetailsOpened && ' (click to collapse)'}
+                      </ButtonLink>
+                    </p>
+                    <section
+                      className={styles.statusDetailsBox}
+                      hidden={!fundingStatusDetailsOpened}
+                    >
+                      <p>
+                        Our expenses fall into three main categories: hosting expenses,
+                        administration expenses such as banking and accounting fees, and expenses
+                        for development of new features. We also use the term &quot;reserve
+                        fund&quot; to describe the amount of money that we need to run FreeFeed for
+                        a year, including hosting and administration expenses. As of February of
+                        2022, this amount is 1300 EUR.
+                      </p>
+                      <p>
+                        Funding statuses show how well the monthly donations we receive match our
+                        monthly expenses.
+                      </p>
+                      <ul className={styles.listOfFundingStatuses}>
+                        <li>
+                          <strong>Very good</strong> means that we&apos;ve met our reserve fund
+                          goal. We had enough donations last month to cover monthly hosting fees,
+                          and at least 800 EUR extra to pay for the development of new features.
+                        </li>
+                        <li>
+                          <strong>Good</strong> means that we&apos;ve met our reserve fund goal. We
+                          had enough donations last month to cover monthly hosting fees, and at
+                          least 400 EUR extra to pay for the development of new features.
+                        </li>
+                        <li>
+                          <strong>OK</strong> means that we&apos;ve met our reserve fund goal. We
+                          had enough donations last month to cover monthly hosting fees, and we had
+                          about 200 EUR extra. This is not enough to pay for the development of new
+                          features this month, but we can save up and do it later.
+                        </li>
+                        <li>
+                          <strong>Low</strong> means that we&apos;ve met our reserve fund goal, we
+                          had enough donations last month to cover monthly hosting fees, but we
+                          cannot afford to paying for anything else.
+                        </li>
+                        <li>
+                          <strong>Very low</strong> means that we&apos;ve met our reserve fund goal,
+                          but we did not have enough donations last month to cover monthly hosting
+                          fees. This means we are using our reserves, or will have to start using
+                          them soon.
+                        </li>
+                        <li>
+                          <strong>Critical</strong> means that we only have enough money left in our
+                          reserves to run FreeFeed for a few months, and our future is at risk.
+                        </li>
+                      </ul>
+                    </section>
+                  </li>
+                )}
+              </ul>
 
-        {cfg.reportsAccount && (
-          <p>
-            <Link to={`/${cfg.reportsAccount}`}>See funding and expenses reports</Link>
-          </p>
-        )}
+              <p className={styles.plea}>
+                Your support is vital for FreeFeed. You can support us by making a one-time or a
+                recurring monthly donation. Thank you!{' '}
+                <Icon icon={faHeart} className={styles.like} />
+              </p>
 
-        <p>
-          All hosting expenses are covered by donations only. You can help us pay for hosting by
-          setting up a monthly donation.
-        </p>
+              <div className={styles.donationMethods}>
+                {cfg.paymentMethods.liberaPayProject && (
+                  <div
+                    className={classnames(styles.donationMethodBox, styles.importantDonationMethod)}
+                  >
+                    <h4>Liberapay</h4>
 
-        {statusText && (
-          <>
-            <p>
-              Current funding status:{' '}
-              <span className={styles.statusLink} data-status={statusText}>
-                {statusText}
-              </span>{' '}
-              <ButtonLink onClick={engDetailsToggle}>
-                What does it mean?{engDetailsOpened && ' (collapse)'}
-              </ButtonLink>
-            </p>
-            <section className={styles.statusDetails} hidden={!engDetailsOpened}>
-              <p>
-                FreeFeed expenses fall into three main categories: hosting expenses, administration
-                expenses such as banking and accounting fees, and expenses for development of new
-                features. We also use the term &quot;reserve fund&quot; to describe the amount of
-                money that we need to run FreeFeed for a year, including hosting and administration
-                expenses. As of February of 2022, this amount is 1300 EUR.
-              </p>
-              <p>
-                Funding statuses show how well the monthly donations we receive match our monthly
-                expenses.
-              </p>
-              <p>
-                <strong>Very good</strong> means that we&apos;ve met our reserve fund goal. We had
-                enough donations last month to cover monthly hosting fees, and at least 800 EUR
-                extra to pay for the development of new features.
-              </p>
-              <p>
-                <strong>Good</strong> means that we&apos;ve met our reserve fund goal. We had enough
-                donations last month to cover monthly hosting fees, and at least 400 EUR extra to
-                pay for the development of new features.
-              </p>
-              <p>
-                <strong>OK</strong> means that we&apos;ve met our reserve fund goal. We had enough
-                donations last month to cover monthly hosting fees, and we had about 200 EUR extra.
-                This is not enough to pay for the development of new features this month, but we can
-                save up and do it later.
-              </p>
-              <p>
-                <strong>Low</strong> means that we&apos;ve met our reserve fund goal, we had enough
-                donations last month to cover monthly hosting fees, but we cannot afford to paying
-                for anything else.
-              </p>
-              <p>
-                <strong>Very low</strong> means that we&apos;ve met our reserve fund goal, but we
-                did not have enough donations last month to cover monthly hosting fees. This means
-                we are using our reserves, or will have to start using them soon.
-              </p>
-              <p>
-                <strong>Critical</strong> means that we only have enough money left in our reserves
-                to run FreeFeed for a few months, and our future is at risk.
-              </p>
-            </section>
-          </>
-        )}
+                    <p className={styles.donationMethodHint}>
+                      One-time or recurring donations via most credit and debit cards. Liberapay
+                      does not take a cut of donations. Fees depend on donation amount and schedule
+                    </p>
 
-        {cfg.paymentMethods.liberaPayProject && (
-          <>
-            <h4>The easy way (all cards, ~7% commission fee)</h4>
+                    <form
+                      method="get"
+                      action={`https://liberapay.com/${cfg.paymentMethods.liberaPayProject}/donate`}
+                      target="_blank"
+                    >
+                      <button className="btn btn-primary" type="submit">
+                        <Icon icon={faLiberaPay} /> Donate with Liberapay
+                      </button>
+                    </form>
+                  </div>
+                )}
 
-            <form
-              method="get"
-              action={`https://liberapay.com/${cfg.paymentMethods.liberaPayProject}/donate`}
-              target="_blank"
-            >
-              <button className="btn btn-default" type="submit">
-                <Icon icon={faLiberaPay} /> Pay with LiberaPay
-              </button>
-            </form>
-          </>
-        )}
+                {(cfg.paymentMethods.payPalRegularButtonId ||
+                  cfg.paymentMethods.payPalOneTimeButtonId) && (
+                  <div className={styles.donationMethodBox}>
+                    <h4>Paypal</h4>
+                    {cfg.paymentMethods.payPalRegularButtonId && (
+                      <>
+                        <p className={styles.donationMethodHint}>Recurring donation</p>
+                        <form
+                          action="https://www.paypal.com/cgi-bin/webscr"
+                          method="post"
+                          target="_blank"
+                        >
+                          <input type="hidden" name="cmd" value="_s-xclick" />
+                          <input
+                            type="hidden"
+                            name="hosted_button_id"
+                            value={cfg.paymentMethods.payPalRegularButtonId}
+                          />
+                          <input type="hidden" name="currency_code" value="EUR" />
+                          <input type="hidden" name="on0" value="Pick monthly donation amount" />
+                          <select
+                            className="form-control"
+                            name="os0"
+                            style={{ marginBottom: '0.5em' }}
+                          >
+                            <option value="Entry Level Supporter">€5.00 EUR / month</option>
+                            <option value="Basic Level Supporter">€10.00 EUR / month</option>
+                            <option value="Standard Level Supporter">€15.00 EUR / month</option>
+                            <option value="Pro Supporter">€20.00 EUR / month</option>
+                            <option value="Master Supporter">€30.00 EUR / month</option>
+                            <option value="Honorable Supporter">€50.00 EUR / month</option>
+                            <option value="Master Donator">€75.00 EUR / month</option>
+                            <option value="Chuck Norris">€100.00 EUR / month</option>
+                          </select>
+                          <button className="btn btn-primary" type="submit">
+                            <Icon icon={faPaypal} /> Donate with PayPal
+                          </button>
+                        </form>
+                      </>
+                    )}
 
-        {cfg.paymentMethods.payPalRegularButtonId && (
-          <>
-            <h4>The Paypal way (7% commission fee)</h4>
-            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-              <p>
-                <input type="hidden" name="cmd" value="_s-xclick" />
-                <input
-                  type="hidden"
-                  name="hosted_button_id"
-                  value={cfg.paymentMethods.payPalRegularButtonId}
-                />
-                <input type="hidden" name="currency_code" value="EUR" />
-                <input type="hidden" name="on0" value="Pick monthly donation amount" />
-                <select
-                  className={cn('form-control', styles.select)}
-                  name="os0"
-                  style={{ marginBottom: '0.5em' }}
+                    {cfg.paymentMethods.payPalOneTimeButtonId && (
+                      <>
+                        <p className={styles.donationMethodHint}>One-time donation</p>
+                        <form
+                          action="https://www.paypal.com/cgi-bin/webscr"
+                          method="post"
+                          target="_blank"
+                        >
+                          <input type="hidden" name="cmd" value="_s-xclick" />
+                          <input
+                            type="hidden"
+                            name="hosted_button_id"
+                            value={cfg.paymentMethods.payPalOneTimeButtonId}
+                          />
+                          <button className="btn btn-primary" type="submit">
+                            <Icon icon={faPaypal} /> Donate with PayPal
+                          </button>
+                        </form>
+                      </>
+                    )}
+                  </div>
+                )}
+
+                {cfg.paymentMethods.boostyProject && (
+                  <div className={styles.donationMethodBox}>
+                    <h4>Boosty</h4>
+                    <p className={styles.donationMethodHint}>
+                      Supports Russian credit cards, YooMoney, QIWI, VK Pay. Fees depend on donation
+                      currency and payment method
+                    </p>
+                    <form
+                      method="get"
+                      action={`https://boosty.to/${cfg.paymentMethods.boostyProject}`}
+                      target="_blank"
+                    >
+                      <button className="btn btn-primary" type="submit">
+                        <Icon icon={faBoosty} /> Donate with Boosty
+                      </button>
+                    </form>
+                  </div>
+                )}
+
+                {cfg.paymentMethods.yasobeRuProject && (
+                  <div className={styles.donationMethodBox}>
+                    <h4>YooMoney</h4>
+                    <p className={styles.donationMethodHint}>
+                      You can make a one-time payment with your card or YooMoney wallet
+                    </p>
+                    <form
+                      method="get"
+                      action={`https://sobe.ru/na/${cfg.paymentMethods.yasobeRuProject}`}
+                      target="_blank"
+                    >
+                      <button className="btn btn-default" type="submit">
+                        <Icon icon={faYooMoney} /> Donate with YooMoney
+                      </button>
+                    </form>
+                  </div>
+                )}
+
+                <div
+                  className={classnames(styles.donationMethodBox, styles.importantDonationMethod)}
                 >
-                  <option value="Entry Level Supporter">€5.00 EUR / month</option>
-                  <option value="Basic Level Supporter">€10.00 EUR / month</option>
-                  <option value="Standard Level Supporter">€15.00 EUR / month</option>
-                  <option value="Pro Supporter">€20.00 EUR / month</option>
-                  <option value="Master Supporter">€30.00 EUR / month</option>
-                  <option value="Honorable Supporter">€50.00 EUR / month</option>
-                  <option value="Master Donator">€75.00 EUR / month</option>
-                  <option value="Chuck Norris">€100.00 EUR / month</option>
-                </select>
-                <button className="btn btn-default" type="submit">
-                  <Icon icon={faPaypal} /> Pay with PayPal
-                </button>
-              </p>
-            </form>
-          </>
-        )}
+                  <h4>Bank transfer</h4>
+                  <p className={styles.donationMethodHint}>
+                    You can send a donation from your bank account by a wire transfer. Processing
+                    fees are set by your bank
+                  </p>
+                  <table className={styles.wireTable}>
+                    <tr>
+                      <td>Recipient:</td>
+                      <td>
+                        <code>FREEFEED.NET MTÜ</code>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>IBAN:</td>
+                      <td>
+                        <code>EE982200221062037450</code>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>SWIFT:</td>
+                      <td>
+                        <code>HABAEE2X</code>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Address:</td>
+                      <td>
+                        <code>Estonia, Harjumaa, Tallinn linn, Mingi tn 5-25/26, 13424</code>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Details:</td>
+                      <td>
+                        <code>Donation</code> (if applicable)
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
 
-        {cfg.paymentMethods.payPalOneTimeButtonId && (
-          <>
-            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-              <input type="hidden" name="cmd" value="_s-xclick" />
-              <input
-                type="hidden"
-                name="hosted_button_id"
-                value={cfg.paymentMethods.payPalOneTimeButtonId}
-              />
+              <div className={styles.urBest}>
+                You are the best <Icon icon={faHeart} className={styles.like} />
+                <Icon icon={faHeart} className={styles.likeRed} />
+              </div>
+            </>
+          ) : null}
+
+          {lang === 'ru' ? (
+            <>
+              <h3 className={styles.header}>Помочь Фрифиду</h3>
               <p>
-                Alternatively, you can make a one-time PayPal donation:
-                <br />
-                <button className="btn btn-default" type="submit">
-                  <Icon icon={faPaypal} /> Pay with PayPal
-                </button>
+                Фрифид финансируется за счёт добровольных пожертвований от пользователей. Эти
+                пожертвования являются единственным источником дохода Фрифида, поскольку у него нет
+                спонсоров и на нём нет рекламы. Фрифид использует эти деньги для оплаты хостинга,
+                разработки и административных расходов.
               </p>
-            </form>
-          </>
-        )}
+              <ul>
+                {cfg.reportsAccount && (
+                  <li>
+                    <Link to={`/${cfg.reportsAccount}`}>
+                      Читать годовые отчёты о расходах и собираемых средствах
+                    </Link>
+                  </li>
+                )}
+                <li>
+                  <a
+                    href="https://ariregister.rik.ee/eng/company/80385994/FreeFeednet-MT%C3%9C?lang=en"
+                    target="_blank"
+                    rel="noreferrer noopwener"
+                  >
+                    Читать о FreeFeed.net MTÜ
+                  </a>
+                  , некоммерческой организации волонтёров, поддерживающих FreeFeed.net
+                </li>
 
-        <h4>The responsible way (commission fees depend on your bank)</h4>
-        <p>
-          You can set up recurring monthly donation through your internet bank account.
-          <br />
-          Payment details:
-          <br />
-          Organization name: <code>FREEFEED.NET MTÜ</code>
-          <br />
-          IBAN: <code>EE982200221062037450</code>
-          <br />
-          SWIFT Code: <code>HABAEE2X</code>
-          <br />
-          Legal address: <code>Harjumaa, Tallinn linn, Mingi tn 5-25/26, 13424</code>
-        </p>
+                {statusText && (
+                  <li>
+                    <p className={styles.currentFundingStatus}>
+                      Текущее состояние финансов:{' '}
+                      <span className={styles.widgetStatusLink} data-status={statusText}>
+                        {statusText}
+                      </span>{' '}
+                      &mdash;{' '}
+                      <ButtonLink onClick={fundingStatusDetailsToggle} className={styles.huh}>
+                        Что это значит?
+                        {fundingStatusDetailsOpened && ' (закрыть)'}
+                      </ButtonLink>
+                    </p>
+                    <section
+                      className={styles.statusDetailsBox}
+                      hidden={!fundingStatusDetailsOpened}
+                    >
+                      <p>
+                        Расходы FreeFeed сводятся к трем основным категориям: затраты на хостинг,
+                        организационные расходы (банк, бухгалтер) и расходы на разработку новых
+                        возможностей. Кроме того, есть понятие “резервный фонд”, который содержит
+                        достаточное количество денег, чтобы оплачивать год хостинга и
+                        организационных расходов. На февраль 2022 года резервный фонд составляет
+                        1300 евро.
+                      </p>
+                      <p>
+                        Уровни финансирования показывают, насколько собираемые ежемесячно средства
+                        позволяют оплачивать эти статьи расходов.
+                      </p>
+                      <ul className={styles.listOfFundingStatuses}>
+                        <li>
+                          <strong>Very good</strong> означает, что резервный фонд заполнен,
+                          собираемых денег достаточно для оплаты хостинга и ещё как минимум 800 евро
+                          остается для оплаты разработки новых возможностей.
+                        </li>
+                        <li>
+                          <strong>Good</strong> означает, что резервный фонд заполнен, собираемых
+                          денег достаточно для оплаты хостинга и ещё как минимум 400 евро остается
+                          для оплаты разработки новых возможностей.
+                        </li>
+                        <li>
+                          <strong>OK</strong> означает, что резервный фонд заполнен, собираемых
+                          денег достаточно для оплаты хостинга и ещё остается около 200 евро. На
+                          оплату разработки новых возможностей в этом месяце этого не хватит, но
+                          можно накопить и потом потратить на разработку.
+                        </li>
+                        <li>
+                          <strong>Low</strong> означает, что резервный фонд заполнен, собираемых
+                          денег достаточно для оплаты хостинга и только.
+                        </li>
+                        <li>
+                          <strong>Very low</strong> означает, что резервный фонд заполнен, но
+                          собираемых ежемесячно денег недостаточно для оплаты хостинга. Это значит,
+                          что мы тратим или скоро начнем тратить резервный фонд.
+                        </li>
+                        <li>
+                          <strong>Critical</strong> означает, что в резервном фонде осталось денег
+                          на несколько месяцев, и дальнейшее существование FreeFeed под угрозой.
+                        </li>
+                      </ul>
+                    </section>
+                  </li>
+                )}
+              </ul>
 
-        {cfg.paymentMethods.boostyProject && (
-          <>
-            <h4>The Russian way (~12% commission fee)</h4>
-            <form
-              method="get"
-              action={`https://boosty.to/${cfg.paymentMethods.boostyProject}`}
-              target="_blank"
-            >
-              <p>
-                You can make a recurrent or one-time donation with your russian card:
-                <br />
-                <button className="btn btn-default" type="submit">
-                  <Icon icon={faBoosty} /> Support with Boosty
-                </button>
+              <p className={styles.plea}>
+                Фрифиду необходима ваша поддержка. Вы можете помочь нам единоразовыми или
+                регулярными пожертвованиями. Спасибо!{' '}
+                <Icon icon={faHeart} className={styles.like} />
               </p>
-            </form>
-          </>
-        )}
 
-        {cfg.paymentMethods.yasobeRuProject && (
-          <>
-            <h4>The Russian way (2% commission fee)</h4>
-            <form
-              method="get"
-              action={`https://sobe.ru/na/${cfg.paymentMethods.yasobeRuProject}`}
-              target="_blank"
-            >
-              <p>
-                You can make a one-time payment with your card or YooMoney wallet:
-                <br />
-                <button className="btn btn-default" type="submit">
-                  <Icon icon={faYooMoney} /> Pay with YooMoney
-                </button>
-              </p>
-            </form>
-          </>
-        )}
+              <div className={styles.donationMethods}>
+                {cfg.paymentMethods.liberaPayProject && (
+                  <div
+                    className={classnames(styles.donationMethodBox, styles.importantDonationMethod)}
+                  >
+                    <h4>Liberapay</h4>
 
-        <p>Thank you!</p>
+                    <p className={styles.donationMethodHint}>
+                      Одноразовые или регулярные пожертвования с большинства кредитных или дебитовых
+                      карт. Liberapay не зарабатывает на платёжах. Размер комиссии зависит от суммы
+                      и графика платежей
+                    </p>
 
-        <h3 id="russian">Помочь Фрифиду</h3>
+                    <form
+                      method="get"
+                      action={`https://liberapay.com/${cfg.paymentMethods.liberaPayProject}/donate`}
+                      target="_blank"
+                    >
+                      <button className="btn btn-primary" type="submit">
+                        <Icon icon={faLiberaPay} /> Пожертвовать через Liberapay
+                      </button>
+                    </form>
+                  </div>
+                )}
 
-        <p>
-          <Link to="/about">FreeFeed</Link> - это небольшая социальная сеть и блог-платформа без
-          рекламы и цензуры. Она создана и поддерживается некоммерческой организацией волонтеров
-          FreeFeed MTU на средства, которые добровольно жертвуют пользователи — это единственный
-          источник денег, у нас нет спонсоров и рекламы.
-        </p>
+                {(cfg.paymentMethods.payPalRegularButtonId ||
+                  cfg.paymentMethods.payPalOneTimeButtonId) && (
+                  <div className={styles.donationMethodBox}>
+                    <h4>Paypal</h4>
+                    {cfg.paymentMethods.payPalRegularButtonId && (
+                      <>
+                        <p className={styles.donationMethodHint}>Регулярные пожертвования</p>
+                        <form
+                          action="https://www.paypal.com/cgi-bin/webscr"
+                          method="post"
+                          target="_blank"
+                        >
+                          <input type="hidden" name="cmd" value="_s-xclick" />
+                          <input
+                            type="hidden"
+                            name="hosted_button_id"
+                            value={cfg.paymentMethods.payPalRegularButtonId}
+                          />
+                          <input type="hidden" name="currency_code" value="EUR" />
+                          <input type="hidden" name="on0" value="Pick monthly donation amount" />
+                          <select
+                            className="form-control"
+                            name="os0"
+                            style={{ marginBottom: '0.5em' }}
+                          >
+                            <option value="Entry Level Supporter">€5.00 EUR / мес</option>
+                            <option value="Basic Level Supporter">€10.00 EUR / мес</option>
+                            <option value="Standard Level Supporter">€15.00 EUR / мес</option>
+                            <option value="Pro Supporter">€20.00 EUR / мес</option>
+                            <option value="Master Supporter">€30.00 EUR / мес</option>
+                            <option value="Honorable Supporter">€50.00 EUR / мес</option>
+                            <option value="Master Donator">€75.00 EUR / мес</option>
+                            <option value="Chuck Norris">€100.00 EUR / мес</option>
+                          </select>
+                          <button className="btn btn-primary" type="submit">
+                            <Icon icon={faPaypal} /> Пожертвовать через PayPal
+                          </button>
+                        </form>
+                      </>
+                    )}
 
-        {cfg.reportsAccount && (
-          <p>
-            <Link to={`/${cfg.reportsAccount}`}>Отчеты о расходах и собираемых средствах</Link>
-          </p>
-        )}
+                    {cfg.paymentMethods.payPalOneTimeButtonId && (
+                      <>
+                        <p className={styles.donationMethodHint}>Единоразовое пожертвование</p>
+                        <form
+                          action="https://www.paypal.com/cgi-bin/webscr"
+                          method="post"
+                          target="_blank"
+                        >
+                          <input type="hidden" name="cmd" value="_s-xclick" />
+                          <input
+                            type="hidden"
+                            name="hosted_button_id"
+                            value={cfg.paymentMethods.payPalOneTimeButtonId}
+                          />
+                          <button className="btn btn-primary" type="submit">
+                            <Icon icon={faPaypal} /> Пожертвовать через PayPal
+                          </button>
+                        </form>
+                      </>
+                    )}
+                  </div>
+                )}
 
-        <p>Вы можете помочь нам, настроив автоматический ежемесячный платёж</p>
+                {cfg.paymentMethods.boostyProject && (
+                  <div className={styles.donationMethodBox}>
+                    <h4>Boosty</h4>
+                    <p className={styles.donationMethodHint}>
+                      Подходит для российских кредитных карт, YooMoney, QIWI, VK Pay. Комиссия
+                      зависит от размера и метода платежа
+                    </p>
+                    <form
+                      method="get"
+                      action={`https://boosty.to/${cfg.paymentMethods.boostyProject}`}
+                      target="_blank"
+                    >
+                      <button className="btn btn-primary" type="submit">
+                        <Icon icon={faBoosty} /> Пожертвовать через Boosty
+                      </button>
+                    </form>
+                  </div>
+                )}
 
-        {statusText && (
-          <>
-            <p>
-              Текущее состояние финансов:{' '}
-              <span className={styles.statusLink} data-status={statusText}>
-                {statusText}
-              </span>{' '}
-              <ButtonLink onClick={rusDetailsToggle}>
-                Что это значит?{rusDetailsOpened && ' (закрыть)'}
-              </ButtonLink>
-            </p>
-            <section className={styles.statusDetails} hidden={!rusDetailsOpened}>
-              <p>
-                Расходы FreeFeed сводятся к трем основным категориям: затраты на хостинг,
-                организационные расходы (банк, бухгалтер) и расходы на разработку новых
-                возможностей. Кроме того, есть понятие “резервный фонд”, который содержит
-                достаточное количество денег, чтобы оплачивать год хостинга и организационных
-                расходов. На февраль 2022 года резервный фонд составляет 1300 евро.
-              </p>
-              <p>
-                Уровни финансирования показывают, насколько собираемые ежемесячно средства позволяют
-                оплачивать эти статьи расходов.
-              </p>
-              <p>
-                <strong>Very good</strong> означает, что резервный фонд заполнен, собираемых денег
-                достаточно для оплаты хостинга и ещё как минимум 800 евро остается для оплаты
-                разработки новых возможностей.
-              </p>
-              <p>
-                <strong>Good</strong> означает, что резервный фонд заполнен, собираемых денег
-                достаточно для оплаты хостинга и ещё как минимум 400 евро остается для оплаты
-                разработки новых возможностей.
-              </p>
-              <p>
-                <strong>OK</strong> означает, что резервный фонд заполнен, собираемых денег
-                достаточно для оплаты хостинга и ещё остается около 200 евро. На оплату разработки
-                новых возможностей в этом месяце этого не хватит, но можно накопить и потом
-                потратить на разработку.
-              </p>
-              <p>
-                <strong>Low</strong> означает, что резервный фонд заполнен, собираемых денег
-                достаточно для оплаты хостинга и только.
-              </p>
-              <p>
-                <strong>Very low</strong> означает, что резервный фонд заполнен, но собираемых
-                ежемесячно денег недостаточно для оплаты хостинга. Это значит, что мы тратим или
-                скоро начнем тратить резервный фонд.
-              </p>
-              <p>
-                <strong>Critical</strong> означает, что в резервном фонде осталось денег на
-                несколько месяцев, и дальнейшее существование FreeFeed под угрозой.
-              </p>
-            </section>
-          </>
-        )}
+                {cfg.paymentMethods.yasobeRuProject && (
+                  <div className={styles.donationMethodBox}>
+                    <h4>YooMoney</h4>
+                    <p className={styles.donationMethodHint}>
+                      Вы можете сделать единоразовый платеж с помощью платежной карточки или
+                      кошелька YooMoney
+                    </p>
+                    <form
+                      method="get"
+                      action={`https://sobe.ru/na/${cfg.paymentMethods.yasobeRuProject}`}
+                      target="_blank"
+                    >
+                      <button className="btn btn-default" type="submit">
+                        <Icon icon={faYooMoney} /> Пожертвовать через YooMoney
+                      </button>
+                    </form>
+                  </div>
+                )}
 
-        {cfg.paymentMethods.liberaPayProject && (
-          <>
-            <h4>Простой способ вне РФ (принимает все карты, кроме российских, комиссии ~7%)</h4>
-
-            <form
-              method="get"
-              action={`https://liberapay.com/${cfg.paymentMethods.liberaPayProject}/donate`}
-              target="_blank"
-            >
-              <button className="btn btn-default" type="submit">
-                <Icon icon={faLiberaPay} /> Pay with LiberaPay
-              </button>
-            </form>
-          </>
-        )}
-
-        {cfg.paymentMethods.payPalRegularButtonId && (
-          <>
-            <h4>Paypal (комиссия ~7%)</h4>
-            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-              <p>
-                <input type="hidden" name="cmd" value="_s-xclick" />
-                <input
-                  type="hidden"
-                  name="hosted_button_id"
-                  value={cfg.paymentMethods.payPalRegularButtonId}
-                />
-                <input type="hidden" name="currency_code" value="EUR" />
-                <select
-                  className={cn('form-control', styles.select)}
-                  name="os0"
-                  style={{ marginBottom: '0.5em' }}
+                <div
+                  className={classnames(styles.donationMethodBox, styles.importantDonationMethod)}
                 >
-                  <option value="Entry Level Supporter">€5.00 EUR / month</option>
-                  <option value="Basic Level Supporter">€10.00 EUR / month</option>
-                  <option value="Standard Level Supporter">€15.00 EUR / month</option>
-                  <option value="Pro Supporter">€20.00 EUR / month</option>
-                  <option value="Master Supporter">€30.00 EUR / month</option>
-                  <option value="Honorable Supporter">€50.00 EUR / month</option>
-                  <option value="Master Donator">€75.00 EUR / month</option>
-                  <option value="Chuck Norris">€100.00 EUR / month</option>
-                </select>
-                <button className="btn btn-default" type="submit">
-                  <Icon icon={faPaypal} /> Заплатить через PayPal
-                </button>
-              </p>
-            </form>
-          </>
-        )}
+                  <h4>Прямой платеж (вне РФ)</h4>
+                  <p className={styles.donationMethodHint}>
+                    Вы можете сделать пожертвование банковским переводом. Комиссия за обработку
+                    перевода устанавливается вашим банком
+                  </p>
+                  <table className={styles.wireTable}>
+                    <tr>
+                      <td>Получатель:</td>
+                      <td>
+                        <code>FREEFEED.NET MTÜ</code>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>IBAN:</td>
+                      <td>
+                        <code>EE982200221062037450</code>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Код SWIFT:</td>
+                      <td>
+                        <code>HABAEE2X</code>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Адрес:</td>
+                      <td>
+                        <code>Estonia, Harjumaa, Tallinn linn, Mingi tn 5-25/26, 13424</code>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Назначение&nbsp;платежа:</td>
+                      <td>
+                        <code>Donation</code> (если нужно указывать)
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
 
-        {cfg.paymentMethods.payPalOneTimeButtonId && (
-          <>
-            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-              <input type="hidden" name="cmd" value="_s-xclick" />
-              <input
-                type="hidden"
-                name="hosted_button_id"
-                value={cfg.paymentMethods.payPalOneTimeButtonId}
-              />
-              <p>
-                Или вы можете сделать единовременный взнос:
-                <br />
-                <button className="btn btn-default" type="submit">
-                  <Icon icon={faPaypal} /> Заплатить через PayPal
-                </button>
-              </p>
-            </form>
-          </>
-        )}
-
-        <h4>Прямой платеж вне РФ (комиссии зависят от вашего банка)</h4>
-        <p>
-          Вы можете настроить регулярные ежемесячные платежи в вашем интернет-банке.
-          <br />
-          Реквизиты:
-          <br />
-          Получатель платежа: <code>FREEFEED.NET MTÜ</code>
-          <br />
-          IBAN: <code>EE982200221062037450</code>
-          <br />
-          Код SWIFT: <code>HABAEE2X</code>
-          <br />
-          Адрес получателя: <code>Harjumaa, Tallinn linn, Mingi tn 5-25/26, 13424</code>
-        </p>
-
-        {cfg.paymentMethods.boostyProject && (
-          <>
-            <h4>Boosty - подходит для РФ (комиссия ~12%)</h4>
-            <form
-              method="get"
-              action={`https://boosty.to/${cfg.paymentMethods.boostyProject}`}
-              target="_blank"
-            >
-              <p>
-                Вы можете сделать регулярный или единоразовый платеж с помощью российской платежной
-                карточки:
-                <br />
-                <button className="btn btn-default" type="submit">
-                  <Icon icon={faBoosty} /> Поддержать на Boosty
-                </button>
-              </p>
-            </form>
-          </>
-        )}
-
-        {cfg.paymentMethods.yasobeRuProject && (
-          <>
-            <h4>ЮMoney (комиссия ~2%)</h4>
-            <form
-              method="get"
-              action={`https://sobe.ru/na/${cfg.paymentMethods.yasobeRuProject}`}
-              target="_blank"
-            >
-              <p>
-                Вы можете сделать единоразовый платеж с помощью платежной карточки или кошелька
-                ЮMoney:
-                <br />
-                <button className="btn btn-default" type="submit">
-                  <Icon icon={faYooMoney} /> Сделать взнос через ЮMoney
-                </button>
-              </p>
-            </form>
-          </>
-        )}
-
-        <p>Спасибо!</p>
+              <div className={styles.urBest}>
+                Вы лучше всех <Icon icon={faHeart} className={styles.like} />
+                <Icon icon={faHeart} className={styles.likeRed} />
+              </div>
+            </>
+          ) : null}
+        </section>
       </div>
     </div>
   );

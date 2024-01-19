@@ -84,7 +84,7 @@ export default defineConfig(({ mode }) => ({
       : {},
   test: {
     include: ['test/unit/**/*.{js,jsx}', 'test/jest/**/*.test.{js,jsx}'],
-    singleThread: true,
+    poolOptions: { threads: { singleThread: true } },
     globals: true,
     clearMocks: true,
     environment: 'jsdom',

@@ -1,6 +1,5 @@
 /* global describe, it, expect */
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import { createStore } from 'redux';
 import * as reactRedux from 'react-redux';
 

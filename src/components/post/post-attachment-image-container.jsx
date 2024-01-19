@@ -5,20 +5,17 @@ import { faChevronCircleRight } from '@fortawesome/free-solid-svg-icons';
 
 import { Icon } from '../fontawesome-icons';
 import { lazyComponent } from '../lazy-component';
-
+import { openLightbox } from '../../services/lightbox';
 import ImageAttachment from './post-attachment-image';
 
 const bordersSize = 4;
 const spaceSize = 8;
 const arrowSize = 24;
 
-const Sortable = lazyComponent(
-  () => import('react-sortablejs').then((m) => ({ default: m.ReactSortable })),
-  {
-    fallback: <div>Loading component...</div>,
-    errorMessage: "Couldn't load Sortable component",
-  },
-);
+const Sortable = lazyComponent(() => import('../react-sortable'), {
+  fallback: <div>Loading component...</div>,
+  errorMessage: "Couldn't load Sortable component",
+});
 
 export default class ImageAttachmentsContainer extends Component {
   static propTypes = {
@@ -68,34 +65,22 @@ export default class ImageAttachmentsContainer extends Component {
         return;
       }
       e.preventDefault();
-      this.props.showMedia({
-        postId: this.props.postId,
-        attachments: this.props.attachments,
-        index,
-        thumbnail: this.getThumbnail,
-        withoutNavigation: this.props.isEditing,
-      });
+      openLightbox(index, this.getPswpItems(), e.target);
     };
   }
 
-  getLightboxItems() {
+  getPswpItems() {
     return this.props.attachments.map((a) => ({
       src: a.url,
-      w: (a.imageSizes && a.imageSizes.o && a.imageSizes.o.w) || 0,
-      h: (a.imageSizes && a.imageSizes.o && a.imageSizes.o.h) || 0,
-      pid: a.id.slice(0, 8),
+      width: (a.imageSizes && a.imageSizes.o && a.imageSizes.o.w) || 0,
+      height: (a.imageSizes && a.imageSizes.o && a.imageSizes.o.h) || 0,
+      pid: this.getPictureId(a),
     }));
   }
 
-  getThumbnail = (index) => {
-    if (index >= 0 && this.container) {
-      const thumbs = this.container.querySelectorAll('.attachment img');
-      if (index < thumbs.length) {
-        return thumbs[index];
-      }
-    }
-    return null;
-  };
+  getPictureId(a) {
+    return `${this.props.postId?.slice(0, 8) ?? 'new-post'}-${a.id.slice(0, 8)}`;
+  }
 
   componentDidMount() {
     if (!this.props.isSinglePost && this.props.attachments.length > 1) {
@@ -146,6 +131,7 @@ export default class ImageAttachmentsContainer extends Component {
         handleClick={this.handleClickThumbnail(i)}
         removeAttachment={this.props.removeAttachment}
         isHidden={showFolded && i > lastVisibleIndex}
+        pictureId={this.getPictureId(a)}
         {...a}
       />
     ));

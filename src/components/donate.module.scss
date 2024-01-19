@@ -1,6 +1,145 @@
 @import '../../styles/shared/mixins';
 
-.body {
+.languages {
+  margin: 0;
+  padding: 0;
+  text-align: right;
+}
+
+.lang {
+  display: inline-block;
+  padding: 5px 10px;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
+
+.active {
+  font-weight: bold;
+  background-color: #eee;
+  text-decoration: none;
+
+  :global(.dark-theme) & {
+    background-color: #666;
+    color: #000;
+  }
+}
+
+.main {
+  font-size: 16px;
+  margin: 0;
+}
+
+.header {
+  line-height: 30px;
+  font-size: 28px;
+  font-weight: normal;
+  margin: 10px 0 20px;
+}
+
+.huh {
+  font-size: smaller;
+  font-style: italic;
+}
+
+.currentFundingStatus {
+  display: block;
+}
+
+.statusDetailsBox {
+  padding: 0.6em 1.5em;
+  border: 1px solid #eee;
+  background-color: #fafafa;
+  border-radius: 2px;
+  font-size: 0.9em;
+  line-height: 1.2em;
+  margin-bottom: 2em;
+}
+
+.listOfFundingStatuses {
+  padding-left: 2em;
+}
+
+.plea {
+  margin-top: 2em;
+}
+
+.like {
+  color: #f9b616;
+  font-size: 14px;
+  position: relative;
+  top: -0.5px;
+}
+
+.donationMethods {
+  display: flex;
+  gap: 1em;
+  flex-flow: row wrap;
+  margin-top: 2em;
+}
+
+.donationMethodBox {
+  border: 5px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 0.5em 1.7em 1.1em;
+  flex: 1;
+  flex-basis: 45%;
+  min-height: 11em;
+
+  @media (max-width: 600px) {
+    flex-basis: auto;
+  }
+
+  h4 {
+    font-weight: 600;
+  }
+}
+
+.importantDonationMethod {
+  flex-basis: 100%;
+}
+
+.donationMethodHint {
+  margin-top: 1em;
+  font-size: 0.9em;
+  line-height: 1.1em;
+}
+
+.wireTable {
+  td:first-child {
+    text-align: right;
+    padding-right: 5px;
+  }
+}
+
+.urBest {
+  margin-top: 30em;
+  text-align: center;
+  color: #cacaca;
+  font-weight: 400;
+  font-style: italic;
+  position: relative;
+
+  .like {
+    top: 1px;
+    font-size: 15px;
+    transform: rotate(-10deg);
+    z-index: 1;
+  }
+
+  .likeRed {
+    transform: rotate(10deg);
+    color: #e66;
+    font-size: 15px;
+    position: relative;
+    top: -2.5px;
+    left: -10px;
+  }
+}
+
+.widgetBody {
   font-size: rem(12px) !important;
 }
 
@@ -21,7 +160,7 @@ $color-critical: #fa6b4b;
   }
 }
 
-.statusLink {
+.widgetStatusLink {
   color: inherit !important;
   font-size: rem(14px);
   font-weight: bold;
@@ -54,7 +193,7 @@ $color-critical: #fa6b4b;
   }
 }
 
-.statusLinkInSidebar {
+.widgetStatusLinkInSidebar {
   &[data-status='OK'],
   &[data-status='Low'],
   &[data-status='Very low'],
@@ -67,17 +206,8 @@ $color-critical: #fa6b4b;
   }
 }
 
-.donateLink {
+.widgetDonateLink {
   color: inherit !important;
   font-weight: bold;
   text-decoration: underline !important;
-}
-
-.statusDetails {
-  padding-left: 1em;
-  border-left: 1px solid;
-}
-
-.select {
-  max-width: 20em;
 }

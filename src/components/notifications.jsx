@@ -1,11 +1,11 @@
 /* global CONFIG */
-import { isValidElement, useCallback, useEffect, useMemo } from 'react';
+import { isValidElement, useEffect, useMemo } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
 import { uniq } from 'lodash-es';
 import { faBell } from '@fortawesome/free-regular-svg-icons';
-import { getCommentsByIds, getPostsByIds, showMedia } from '../redux/action-creators';
+import { getCommentsByIds, getPostsByIds } from '../redux/action-creators';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../utils/readmore-config';
 import { Throbber } from './throbber';
@@ -469,11 +469,9 @@ function getContentSource(event) {
 }
 
 function Notification({ event }) {
-  const dispatch = useDispatch();
   const allPosts = useSelector((state) => state.posts);
   const allComments = useSelector((state) => state.comments);
   const readMoreStyle = useSelector((state) => state.user.frontendPreferences.readMoreStyle);
-  const doShowMedia = useCallback((...args) => dispatch(showMedia(...args)), [dispatch]);
   const [absTimestamps, toggleAbsTimestamps] = useBool(false);
   const contentSource = getContentSource(event);
   const content =
@@ -505,7 +503,7 @@ function Notification({ event }) {
             expanded={readMoreStyle === READMORE_STYLE_COMPACT}
             config={postReadmoreConfig}
           >
-            <PieceOfText text={content} readMoreStyle={readMoreStyle} showMedia={doShowMedia} />
+            <PieceOfText text={content} readMoreStyle={readMoreStyle} />
           </Expandable>
         ) : contentSource ? (
           <em>Text not available</em>

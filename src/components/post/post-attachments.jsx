@@ -1,8 +1,6 @@
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { useCallback } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 import ErrorBoundary from '../error-boundary';
 
-import { showMedia } from '../../redux/action-creators';
 import ImageAttachmentsContainer from './post-attachment-image-container';
 import AudioAttachment from './post-attachment-audio';
 import GeneralAttachment from './post-attachment-general';
@@ -29,7 +27,7 @@ Object.keys(videoTypes).forEach((extension) => {
 video = null;
 */
 
-// Nov video support for now
+// No video support for now
 const supportedVideoTypes = [];
 
 const looksLikeAVideoFile = (attachment) => {
@@ -49,9 +47,6 @@ export default function PostAttachments(props) {
     (state) => (props.attachmentIds || []).map((id) => state.attachments[id]),
     shallowEqual,
   );
-
-  const dispatch = useDispatch();
-  const doShowMedia = useCallback((...args) => dispatch(showMedia(...args)), [dispatch]);
 
   const imageAttachments = [];
   const audioAttachments = [];
@@ -75,7 +70,6 @@ export default function PostAttachments(props) {
       <ImageAttachmentsContainer
         isEditing={props.isEditing}
         isSinglePost={props.isSinglePost}
-        showMedia={doShowMedia}
         removeAttachment={props.removeAttachment}
         reorderImageAttachments={props.reorderImageAttachments}
         attachments={imageAttachments}
