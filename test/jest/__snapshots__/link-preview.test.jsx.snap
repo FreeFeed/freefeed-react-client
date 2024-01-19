@@ -485,7 +485,7 @@ exports[`LinkPreview > Shows a video preview for Youtube 2`] = `
         allowfullscreen=""
         aria-label="Video player"
         frameborder="0"
-        src="https://www.youtube.com/embed/dQw4w9WgXcQ?feature=oembed&rel=0&fs=1&autoplay=1&start=123"
+        src="https://www.youtube.com/embed/dQw4w9WgXcQ?feature=oembed&rel=0&fs=1&autoplay=1&enablejsapi=1&start=123"
       />
     </div>
     <div

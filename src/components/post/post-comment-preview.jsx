@@ -30,7 +30,6 @@ export function PostCommentPreview({
   arrowsHighlightHandlers,
   arrowsLeft = 0,
   arrowsTop = 0,
-  showMedia,
 }) {
   const dispatch = useDispatch();
   const allComments = useSelector((state) => state.comments);
@@ -164,7 +163,6 @@ export function PostCommentPreview({
             >
               <PieceOfText
                 text={commentBody}
-                showMedia={showMedia}
                 arrowHover={arrowHoverHandlers}
                 arrowClick={onArrowClick}
               />

@@ -431,13 +431,6 @@ export function addAttachmentResponse(postId, attachments) {
   };
 }
 
-export function showMedia(payload) {
-  return {
-    type: ActionTypes.SHOW_MEDIA,
-    payload,
-  };
-}
-
 export function signIn(username, password) {
   return {
     type: ActionTypes.SIGN_IN,

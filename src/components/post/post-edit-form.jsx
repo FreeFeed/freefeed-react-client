@@ -215,7 +215,7 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
         )}
 
         <UploadProgress {...uploadProgressProps} />
-        <PostAttachments {...postAttachmentsProps} />
+        <PostAttachments {...postAttachmentsProps} postId={id} />
       </div>
     </>
   );
