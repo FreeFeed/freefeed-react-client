@@ -10,8 +10,8 @@ import {
   Tooltip,
 } from 'recharts';
 
-import startOfYesterday from 'date-fns/startOfYesterday';
-import subYears from 'date-fns/subYears';
+import { startOfYesterday } from 'date-fns/startOfYesterday';
+import { subYears } from 'date-fns/subYears';
 import { format } from '../utils/date-format';
 
 function StatsChart({ type, title }) {

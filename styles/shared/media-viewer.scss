@@ -1,27 +1,4 @@
-.pswp__zoom-wrap {
-  text-align: center;
-
-  &::before {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-  }
-}
-
-.pswp__caption a {
-  color: white;
-}
-
-.media-wrapper {
-  position: absolute;
-  inset: 40px 40px 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-video {
+video:not(.pswp-media__embed) {
   width: 100% !important;
   height: auto !important;
 }

@@ -18,8 +18,7 @@ import {
 } from '../utils/parse-text';
 import { INITIAL_CHECKBOX, isChecked } from '../utils/initial-checkbox';
 import UserName from './user-name';
-import { getMediaType } from './media-viewer';
-import { MediaOpener } from './media-opener';
+import { MediaOpener, getMediaType } from './media-opener';
 import { InitialCheckbox } from './initial-checkbox';
 import { Anchor, Link } from './linkify-links';
 
@@ -170,21 +169,18 @@ function renderLink(token, key, params) {
     );
   }
 
-  if (params.showMedia) {
-    const mediaType = getMediaType(href);
-    if (mediaType) {
-      return (
-        <MediaOpener
-          key={key}
-          url={href}
-          mediaType={mediaType}
-          attachmentsRef={params.attachmentsRef}
-          showMedia={params.showMedia}
-        >
-          {prettyLink(token.text, MAX_URL_LENGTH)}
-        </MediaOpener>
-      );
-    }
+  const mediaType = getMediaType(href);
+  if (mediaType) {
+    return (
+      <MediaOpener
+        key={key}
+        url={href}
+        mediaType={mediaType}
+        attachmentsRef={params.attachmentsRef}
+      >
+        {prettyLink(token.text, MAX_URL_LENGTH)}
+      </MediaOpener>
+    );
   }
 
   return (

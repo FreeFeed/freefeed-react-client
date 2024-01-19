@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.127.0] - 2024-01-19
+### Changed
+- Use the latest (v5) version of PhotoSwipe library.
+
 ## [1.126.0] - 2023-12-21
 ### Added
 - User can now turn on/off notifications for new comments on the posts they

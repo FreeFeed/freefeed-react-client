@@ -1,5 +1,5 @@
 /* global CONFIG */
-import filesize from 'filesize';
+import { filesize } from 'filesize';
 import * as _ from 'lodash-es';
 import { hashtags as tokenizeHashtags } from 'social-text-tokenizer';
 

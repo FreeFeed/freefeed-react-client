@@ -108,7 +108,6 @@ const UserHandler = (props) => {
             addAttachmentResponse={props.addAttachmentResponse}
             getUserInfo={props.getUserInfo}
             togglePinnedGroup={props.togglePinnedGroup}
-            showMedia={props.showMedia}
           />
         </div>
 

@@ -17,7 +17,6 @@ import { faSmile, faCheckCircle as faCheckCircleO } from '@fortawesome/free-regu
 import { initialAsyncState } from '../redux/async-helpers';
 import {
   getUserInfo,
-  showMedia,
   togglePinnedGroup,
   hidePostsByCriterion,
   unsubscribe,
@@ -56,6 +55,8 @@ const UserSubscriptionEditPopup = lazyComponent(
   },
 );
 
+const emptyArray = [];
+
 export const UserProfileHead = withRouter(
   withKey(({ router }) => router.params.userName)(function UserProfileHead({ router }) {
     const username = router.params.userName.toLowerCase();
@@ -74,7 +75,7 @@ export const UserProfileHead = withRouter(
 
     const allHomeFeeds = useSelector((state) => state.homeFeeds);
     const allHomeFeedsStatus = useSelector((state) => state.homeFeedsStatus);
-    const inHomeFeeds = useSelector((state) => state.usersInHomeFeeds[user?.id] || []);
+    const inHomeFeeds = useSelector((state) => state.usersInHomeFeeds[user?.id] || emptyArray);
     const activeHomeFeeds = allHomeFeeds.filter((h) => inHomeFeeds.includes(h.id));
 
     const inHomeFeedsStatus = useSelector(
@@ -122,8 +123,6 @@ export const UserProfileHead = withRouter(
       user && !isBanned && (isCurrentUser || user.isPrivate === '0' || inSubscriptions);
 
     // Actions & statuses
-    const doShowMedia = useCallback((arg) => dispatch(showMedia(arg)), [dispatch]);
-
     const doSubscribe = {
       onClick: useCallback(() => dispatch(subscribe(user)), [dispatch, user]),
       status:
@@ -290,7 +289,7 @@ export const UserProfileHead = withRouter(
           </div>
         </div>
         <div className={styles.description}>
-          <PieceOfText text={user.description} isExpanded={true} showMedia={doShowMedia} />
+          <PieceOfText text={user.description} isExpanded={true} />
         </div>
         {isAuthenticated && !isCurrentUser && (
           <>
