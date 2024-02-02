@@ -328,7 +328,6 @@ exports[`ListEditor > Searches for users 1`] = `
         >
           list
         </mark>
-        
       </div>
       <div
         class="username"
@@ -412,7 +411,6 @@ exports[`ListEditor > Searches for users 1`] = `
         >
           List
         </mark>
-        
       </div>
       <div
         class="username"
@@ -424,7 +422,6 @@ exports[`ListEditor > Searches for users 1`] = `
         >
           list
         </mark>
-        
       </div>
     </div>
   </li>

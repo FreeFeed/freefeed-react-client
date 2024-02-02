@@ -54,8 +54,8 @@ export function MediaOpener({ url, mediaType, attachmentsRef, children }) {
                     'https://dl.dropboxusercontent.com/s/',
                   ),
                   type: 'image',
-                  width: 100,
-                  height: 100,
+                  width: 1,
+                  height: 1,
                   autoSize: true,
                 };
               }
