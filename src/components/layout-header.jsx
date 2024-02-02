@@ -29,7 +29,11 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
   const compactSearchForm = !fullSearchForm;
   const collapsibleSearchForm = isNarrowScreen && (!onSearchPage || searchExpanded);
 
-  useEffect(() => !collapsibleSearchForm && setSearchExpanded(false), [collapsibleSearchForm]);
+  useEffect(() => {
+    if (!collapsibleSearchForm) {
+      setSearchExpanded(false);
+    }
+  }, [collapsibleSearchForm]);
 
   const openSearchForm = useCallback(() => setSearchExpanded(true), []);
   const closeSearchForm = useCallback(() => setSearchExpanded(false), []);

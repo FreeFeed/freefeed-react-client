@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.128.0] - Not released
+### Changed
+- Upgrade React to v18
+- Users can now scale the site with a pinch gesture on mobile devices.
+- The lightbox code now detects image sizes faster when showing images from text
+  links. User doesn't see a small 100x100 preview anymore.
+
 ## [1.127.0] - 2024-01-19
 ### Changed
 - Use the latest (v5) version of PhotoSwipe library.

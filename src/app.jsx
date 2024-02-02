@@ -1,5 +1,5 @@
 /* global CONFIG */
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Suspense, useEffect } from 'react';
 import { Router, Route, IndexRoute, browserHistory, Redirect } from 'react-router';
 import { Provider, useSelector } from 'react-redux';
@@ -411,14 +411,12 @@ function App() {
 const appRoot = document.querySelector('#app');
 appRoot.className = '';
 appRoot.innerHTML = '';
-
-ReactDOM.render(
+createRoot(appRoot).render(
   <Provider store={store}>
     <DialogProvider>
       <App />
     </DialogProvider>
   </Provider>,
-  appRoot,
 );
 
 function checkPath(Component, checker) {
