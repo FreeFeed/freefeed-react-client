@@ -171,12 +171,30 @@ function initLightbox() {
 
 function whenImageAndPswpLoaded(src, lightbox, action) {
   const image = new Image();
-  image.addEventListener('load', () => {
+  image.src = src;
+  whenImageLoaded(image, () => {
     if (lightbox.pswp) {
       action(image, lightbox.pswp);
     } else {
       lightbox.on('afterInit', () => action(image, lightbox.pswp));
     }
   });
-  image.src = src;
+}
+
+/**
+ * Image has not "metadataloaded" event, and the "load" event fires only when
+ * the whole image is loaded. So, to obtain the image dimensions faster, we need
+ * to periodically check if the image.width is defined (not zero). When it is,
+ * we have the image dimensions, even if the whole image is not loaded yet.
+ *
+ * @param {Image} image
+ * @param {Function} action
+ */
+function whenImageLoaded(image, action) {
+  const interval = 100; // ms
+  if (image.complete || image.width > 0) {
+    action();
+  } else {
+    setTimeout(() => whenImageLoaded(image, action), interval);
+  }
 }

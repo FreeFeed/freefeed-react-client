@@ -14,7 +14,11 @@ export function BlockInGroupForm({ groupName }) {
     [dispatch, groupName, text],
   );
 
-  useEffect(() => status.success && setText(''), [status.success]);
+  useEffect(() => {
+    if (status.success) {
+      setText('');
+    }
+  }, [status.success]);
 
   return (
     <form onSubmit={onSubmit}>
