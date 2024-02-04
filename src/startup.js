@@ -49,9 +49,23 @@ try {
   ga.l = 1 * new Date();
 }
 
-// Windows platform detection
+// Platform specific tuning
 {
-  const platform = navigator.userAgentData?.platform;
+  const platform = navigator.userAgentData?.platform ?? navigator.platform;
   const isWindows = platform ? platform === 'Windows' : navigator.userAgent.includes('Win');
+  const isIos =
+    !isWindows &&
+    ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(
+      platform,
+    );
+
+  // Set Windows platform class
   document.documentElement.classList.toggle('windows-platform', isWindows);
+
+  // Remove 'maximum-scale=1' on non-iOS platforms to allow pinch zoom
+  if (!isIos) {
+    document
+      .querySelector('meta[name="viewport"]')
+      ?.setAttribute('content', 'width=device-width,initial-scale=1');
+  }
 }

@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.128.0] - Not released
+### Fixed
+- Return the 'maximum-scale=1' back to the "viewport" meta tag, but remove it on
+  non-iOS platforms. This allows to zoom in page on all platforms, but prevents
+  the unwanted auto-zoom on iOS.
 
 ## [1.127.1] - 2024-02-02
 ### Changed
