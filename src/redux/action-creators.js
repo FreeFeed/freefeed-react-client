@@ -1173,6 +1173,13 @@ export function setUploadError(uploadId, fileName, err) {
   };
 }
 
+export function setAttachment(attachment) {
+  return {
+    type: ActionTypes.SET_ATTACHMENT,
+    payload: { attachments: attachment },
+  };
+}
+
 export function signOut() {
   return {
     type: ActionTypes.SIGN_OUT,
