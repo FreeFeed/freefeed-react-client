@@ -76,7 +76,7 @@ export default function CreatePost({ sendTo, isDirects }) {
     clearUploads,
     uploadProgressProps,
     postAttachmentsProps,
-  } = useUploader({ maxCount: maxFilesCount });
+  } = useUploader({ maxCount: maxFilesCount, draftKey });
 
   const doChooseFiles = useFileChooser(uploadFile, { multiple: true });
 

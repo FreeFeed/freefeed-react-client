@@ -44,7 +44,7 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
 
   // Uploading files
   const { isUploading, fileIds, uploadFile, uploadProgressProps, postAttachmentsProps } =
-    useUploader({ maxCount: maxFilesCount, fileIds: attachments });
+    useUploader({ maxCount: maxFilesCount, fileIds: attachments, draftKey });
 
   const doChooseFiles = useFileChooser(uploadFile, { multiple: true });
 

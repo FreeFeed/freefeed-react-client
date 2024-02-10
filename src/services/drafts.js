@@ -7,7 +7,7 @@ import { setDelayedAction } from './drafts-throttling';
 
 /**
  * @typedef {{ id: string }} File
- * @typedef {{ text?: string, feeds?: string[], files?: File[] }} DraftData
+ * @typedef {{ text?: string, feeds?: string[], files?: File[], fileIds?: string[] }} DraftData
  * @typedef {(key?: string) => void} UpdateHandler
  */
 
@@ -36,13 +36,17 @@ export function getDraft(key) {
 }
 
 /**
- * @template {keyof DraftData} F
+ * @template {Exclude<keyof DraftData, 'fileIds'>} F
  * @param {string} key
  * @param {F} field
  * @param {Exclude<DraftData[F], undefined>} value
  */
 export function setDraftField(key, field, value) {
-  setDraftData(key, { ...getDraft(key), [field]: value });
+  const newData = { ...getDraft(key), [field]: value };
+  if (field === 'files') {
+    fillFileIds(newData);
+  }
+  setDraftData(key, newData);
 }
 
 /**
@@ -64,6 +68,8 @@ export function deleteEmptyDraft(key) {
   }
 }
 
+let draftLoadedResolve;
+const draftLoaded = new Promise((resolve) => (draftLoadedResolve = resolve));
 export function initDrafts() {
   for (const [storeKey, value] of Object.entries(storage)) {
     if (!isDraftKey(storeKey)) {
@@ -72,11 +78,14 @@ export function initDrafts() {
     try {
       /** @type {DraftData} */
       const draft = JSON.parse(value);
+      fillFileIds(draft);
       allDrafts.set(trimDraftPrefix(storeKey), draft);
     } catch {
       // It happens...
     }
   }
+
+  draftLoadedResolve();
 
   globalThis.addEventListener?.('storage', (event) => {
     if (event.key === null) {
@@ -90,7 +99,9 @@ export function initDrafts() {
     }
     const key = trimDraftPrefix(event.key);
     try {
-      setDraftData(key, JSON.parse(event.newValue ?? 'null'), { external: true });
+      const draft = JSON.parse(event.newValue ?? 'null');
+      fillFileIds(draft);
+      setDraftData(key, draft, { external: true });
       triggerUpdate(key);
     } catch {
       // It happens...
@@ -102,24 +113,27 @@ export function initDrafts() {
  * @param {import("redux").Store} store
  */
 export function loadDraftsToStore(store) {
-  /** @type {Map<string, File>} */
-  const allFiles = new Map();
+  // eslint-disable-next-line promise/catch-or-return
+  draftLoaded.then(() => {
+    /** @type {Map<string, File>} */
+    const allFiles = new Map();
 
-  for (const draft of allDrafts.values()) {
-    if (!draft.files) {
-      continue;
+    for (const draft of allDrafts.values()) {
+      if (!draft.files) {
+        continue;
+      }
+      for (const f of draft.files) {
+        allFiles.set(f.id, f);
+      }
     }
-    for (const f of draft.files) {
-      allFiles.set(f.id, f);
-    }
-  }
 
-  setTimeout(() => {
     // Put found files to the redux store
     for (const file of allFiles.values()) {
       store.dispatch(setAttachment(file));
     }
-  }, 0);
+
+    return;
+  });
 
   // Update attachments in store on external draft update
   subscribeToDrafts((key) => {
@@ -224,4 +238,18 @@ function isUnchangedData(data1, data2) {
  */
 function isEmptyData(data) {
   return !data || (!data.text?.trim() && !data.files?.length && !data.feeds?.length);
+}
+
+/**
+ * @param {DraftData|null} data
+ */
+function fillFileIds(data) {
+  if (!data) {
+    return;
+  }
+  if (data.files) {
+    data.fileIds = data.files.map((f) => f.id);
+  } else {
+    delete data.fileIds;
+  }
 }
