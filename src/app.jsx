@@ -56,6 +56,7 @@ import { lazyRetry } from './utils/retry-promise';
 import { HomeAux } from './components/home-aux';
 import { NotFound } from './components/not-found';
 import { DialogProvider } from './components/dialog/context';
+import { initDrafts } from './services/drafts';
 
 // Set initial history state.
 // Without this, there can be problems with third-party
@@ -136,6 +137,8 @@ function Bookmarklet(props) {
 }
 
 initUnscroll();
+initDrafts();
+
 // Fetch server info on application start
 setTimeout(() => store.dispatch(ActionCreators.getServerInfo()), 0);
 

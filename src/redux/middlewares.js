@@ -26,6 +26,7 @@ import {
 import { scrollingOrInteraction, unscroll } from '../services/unscroll';
 import { inactivityOf } from '../utils/event-sequences';
 import { authDebug } from '../utils/debug';
+import { loadDraftsToStore } from '../services/drafts';
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import {
@@ -1009,6 +1010,11 @@ export const reloadFeedMiddleware = (store) => (next) => (action) => {
   }
 
   return res;
+};
+
+export const draftsMiddleware = (store) => {
+  loadDraftsToStore(store);
+  return (next) => (action) => next(action);
 };
 
 function isResponseOf(action, ...baseTypes) {

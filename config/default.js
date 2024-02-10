@@ -183,4 +183,8 @@ export default {
       // 'public-groupname': { label: 'Makes post public', privacy: 'public' }
     },
   },
+
+  drafts: {
+    storagePrefix: 'draft:',
+  },
 };
