@@ -47,6 +47,7 @@ const FeedHandler = (props) => {
 
   const createPostComponent = (
     <CreatePost
+      key={'home'}
       sendTo={props.sendTo}
       user={props.user}
       createPost={props.createPost}

@@ -33,6 +33,7 @@ export default function UserProfile(props) {
 
         {props.canIPostHere && (
           <CreatePost
+            key={`profile:${props.username}`}
             sendTo={props.sendTo}
             user={props.user}
             createPost={props.createPost}

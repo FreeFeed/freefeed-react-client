@@ -14,8 +14,6 @@ import { setDelayedAction } from './drafts-throttling';
 // @ts-ignore
 const KEY_PREFIX = CONFIG.drafts.storagePrefix;
 
-export const NEW_POST_KEY = 'post:new';
-
 /**
  * @param {string} key
  * @returns {DraftData|undefined}
@@ -39,6 +37,18 @@ export function setDraftField(key, field, value) {
  */
 export function deleteDraft(key) {
   setDraftData(key, null);
+}
+
+/**
+ * Remove draft if it has no meaningful data
+ *
+ * @param {string} key
+ */
+export function deleteEmptyDraft(key) {
+  const data = getDraft(key);
+  if (data && !data.text?.trim() && !data.files?.length) {
+    deleteDraft(key);
+  }
 }
 
 export function initDrafts() {
