@@ -36,6 +36,14 @@ export function getDraft(key) {
 }
 
 /**
+ * @param {string} key
+ * @returns {boolean}
+ */
+export function hasDraft(key) {
+  return allDrafts.has(key);
+}
+
+/**
  * @template {Exclude<keyof DraftData, 'fileIds'>} F
  * @param {string} key
  * @param {F} field

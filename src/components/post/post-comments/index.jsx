@@ -12,6 +12,8 @@ import PostComment from '../post-comment';
 import { prepareAsyncFocus } from '../../../utils/prepare-async-focus';
 import { PostContext } from '../post-context';
 import { ButtonLink } from '../../button-link';
+import { DraftIndicator } from '../draft-indicator';
+import { hasDraft, newCommentDraftKey, subscribeToDrafts } from '../../../services/drafts';
 import { CollapseComments } from './collapse-comments';
 import ExpandComments from './expand-comments';
 import { LoadingComments } from './loading-comments';
@@ -42,7 +44,15 @@ export default class PostComments extends Component {
       highlightedAuthor: null,
       highlightedCommentId: null,
       focusedCommentId: null,
+      hasNewCommentDraft: hasDraft(newCommentDraftKey(props.post.id)),
     };
+  }
+
+  unsubscribeFromDrafts = () => {};
+  componentDidMount() {
+    this.unsubscribeFromDrafts = subscribeToDrafts(() =>
+      this.setState({ hasNewCommentDraft: hasDraft(newCommentDraftKey(this.props.post.id)) }),
+    );
   }
 
   mentionCommentAuthor = (commentId) => {
@@ -118,15 +128,25 @@ export default class PostComments extends Component {
       ? () => {}
       : () => (prepareAsyncFocus(), props.toggleCommenting(props.post.id));
 
-    if (props.comments.length > 2 && !props.post.omittedComments) {
+    if (
+      this.state.hasNewCommentDraft ||
+      (props.comments.length > 2 && !props.post.omittedComments)
+    ) {
       return (
         <div className="comment">
           <span className="comment-icon fa-stack">
             <Icon icon={faCommentPlus} />
           </span>
-          <ButtonLink className="add-comment-link" onClick={preventDefault(toggleCommenting)}>
-            Add comment
-          </ButtonLink>
+
+          <DraftIndicator
+            draftKey={newCommentDraftKey(props.post.id)}
+            onClick={preventDefault(toggleCommenting)}
+            fallback={
+              <ButtonLink className="add-comment-link" onClick={preventDefault(toggleCommenting)}>
+                Add comment
+              </ButtonLink>
+            }
+          />
           {disabledForOthers ? <i> - disabled for others</i> : false}
         </div>
       );
@@ -190,6 +210,7 @@ export default class PostComments extends Component {
 
   componentWillUnmount() {
     clearTimeout(this.unfocusTimer.current);
+    this.unsubscribeFromDrafts();
   }
 
   renderCommentSpacer = (from, to, isAboveCommentForm = false) => {

@@ -34,6 +34,7 @@ import { UserPicture } from '../user-picture';
 import { prepareAsyncFocus } from '../../utils/prepare-async-focus';
 import { format } from '../../utils/date-format';
 import { TranslatedText } from '../translated-text';
+import { editPostDraftKey } from '../../services/drafts';
 import { UnhideOptions, HideLink } from './post-hides-ui';
 import PostMoreLink from './post-more-link';
 import PostLikeLink from './post-like-link';
@@ -44,6 +45,7 @@ import PostLikes from './post-likes';
 import { PostContext } from './post-context';
 import { PostEditForm } from './post-edit-form';
 import { PostProvider } from './post-comment-provider';
+import { DraftIndicator } from './draft-indicator';
 
 class Post extends Component {
   selectFeeds;
@@ -338,6 +340,12 @@ class Post extends Component {
                   {this.renderHideLink()}
                 </span>
               )}
+              <span className="post-footer-item">
+                <DraftIndicator
+                  draftKey={editPostDraftKey(this.props.id)}
+                  onClick={this.toggleEditingPost}
+                />
+              </span>
               <span className="post-footer-item">{moreLink}</span>
             </span>
           </div>

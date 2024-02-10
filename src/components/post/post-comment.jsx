@@ -28,6 +28,7 @@ import { editCommentDraftKey, newCommentDraftKey } from '../../services/drafts';
 import { PostCommentMore } from './post-comment-more';
 import { PostCommentPreview } from './post-comment-preview';
 import { CommentProvider } from './post-comment-provider';
+import { DraftIndicator } from './draft-indicator';
 
 class PostComment extends Component {
   commentContainer;
@@ -203,12 +204,20 @@ class PostComment extends Component {
             <Separated separator=" | ">
               {this.props.isEditable && (
                 <span className="comment-tail__action">
-                  <ButtonLink
-                    className="comment-tail__action-link"
+                  <DraftIndicator
+                    draftKey={editCommentDraftKey(this.props.id)}
                     onClick={this.handleEditOrCancel}
+                    fallback={
+                      <ButtonLink
+                        className="comment-tail__action-link"
+                        onClick={this.handleEditOrCancel}
+                      >
+                        edit
+                      </ButtonLink>
+                    }
                   >
-                    edit
-                  </ButtonLink>
+                    continue editing
+                  </DraftIndicator>
                 </span>
               )}
               {canDelete && this.props.isModeratingComments && (
