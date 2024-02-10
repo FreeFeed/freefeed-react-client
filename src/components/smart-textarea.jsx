@@ -39,6 +39,8 @@ export const SmartTextarea = forwardRef(function SmartTextarea(
     // Class name when textarea is not in focus
     inactiveClassName,
     draftKey,
+    // Value to reset to when draft disappears
+    defaultValue = '',
     ...props
   },
   fwdRef,
@@ -87,9 +89,9 @@ export const SmartTextarea = forwardRef(function SmartTextarea(
       return;
     }
     return subscribeToDrafts(() => {
-      onText(getDraft(draftKey)?.text ?? '');
+      onText(getDraft(draftKey)?.text ?? defaultValue);
     });
-  }, [draftKey, onText]);
+  }, [defaultValue, draftKey, onText]);
 
   const handleChange = useCallback(
     (e) => {

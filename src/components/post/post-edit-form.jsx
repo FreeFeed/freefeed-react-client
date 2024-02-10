@@ -167,6 +167,7 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
             inactiveClassName="textarea-inactive"
             ref={textareaRef}
             value={postText}
+            defaultValue={body}
             onSubmit={handleSubmit}
             onText={setPostText}
             onFile={uploadFile}

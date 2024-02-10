@@ -191,6 +191,7 @@ export default function CreatePost({ sendTo, isDirects }) {
             dragOverClassName="post-textarea__dragged"
             inactiveClassName="textarea-inactive"
             value={postText}
+            defaultValue={sendTo.invitation || ''}
             onText={setPostText}
             onSubmit={doCreatePost}
             onFile={uploadFile}

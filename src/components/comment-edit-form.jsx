@@ -100,6 +100,7 @@ export function CommentEditForm({
           dragOverClassName="comment-textarea__dragged"
           inactiveClassName="textarea-inactive"
           value={text}
+          defaultValue={initialText}
           onFocus={onFocus}
           onText={setText}
           onFile={uploadFile}
