@@ -8,7 +8,7 @@ import { useCallback, useMemo, useRef, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 import { createPost, resetPostCreateForm } from '../redux/action-creators';
-import { deleteEmptyDraft, getDraft } from '../services/drafts';
+import { deleteEmptyDraft, getDraft, newPostDraftKey } from '../services/drafts';
 import { ButtonLink } from './button-link';
 import ErrorBoundary from './error-boundary';
 import { Icon } from './fontawesome-icons';
@@ -30,7 +30,7 @@ import { usePrivacyCheck } from './feeds-selector/privacy-check';
 const selectMaxFilesCount = (serverInfo) => serverInfo.attachments.maxCountPerPost;
 const selectMaxPostLength = (serverInfo) => serverInfo.maxTextLength.post;
 
-const draftKey = 'post:new';
+const draftKey = newPostDraftKey();
 
 export default function CreatePost({ sendTo, isDirects }) {
   // Cleaning up new post draft before the first render

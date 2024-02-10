@@ -24,6 +24,7 @@ import { Separated } from '../separated';
 
 import { TranslatedText } from '../translated-text';
 import { initialAsyncState } from '../../redux/async-helpers';
+import { editCommentDraftKey, newCommentDraftKey } from '../../services/drafts';
 import { PostCommentMore } from './post-comment-more';
 import { PostCommentPreview } from './post-comment-preview';
 import { CommentProvider } from './post-comment-provider';
@@ -176,8 +177,8 @@ class PostComment extends Component {
 
   getDraftKey() {
     return this.props.isAddingComment
-      ? `comment:new:${this.props.postId}`
-      : `comment:${this.props.id}`;
+      ? newCommentDraftKey(this.props.postId)
+      : editCommentDraftKey(this.props.id);
   }
 
   commentTail() {

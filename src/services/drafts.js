@@ -14,6 +14,19 @@ import { setDelayedAction } from './drafts-throttling';
 // @ts-ignore
 const KEY_PREFIX = CONFIG.drafts.storagePrefix;
 
+export function newPostDraftKey() {
+  return 'post:new';
+}
+export function newCommentDraftKey(/** @type {string} */ postId) {
+  return `comment:new:${postId}`;
+}
+export function editPostDraftKey(/** @type {string} */ postId) {
+  return `post:${postId}`;
+}
+export function editCommentDraftKey(/** @type {string} */ commentId) {
+  return `comment:${commentId}`;
+}
+
 /**
  * @param {string} key
  * @returns {DraftData|undefined}
