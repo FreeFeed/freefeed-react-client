@@ -36,7 +36,7 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
   const maxPostLength = useServerValue(selectMaxPostLength, 1e3);
 
   const recipientNames = useMemo(() => recipients.map((r) => r.username), [recipients]);
-  const [feeds, setFeeds] = useState(recipientNames);
+  const [feeds, setFeeds] = useState(() => getDraft(draftKey)?.feeds ?? recipientNames);
   const [postText, setPostText] = useState(() => getDraft(draftKey)?.text ?? body);
   const [privacyWarning, setPrivacyWarning] = useState(null);
 
@@ -153,9 +153,11 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
         <Selector
           mode={isDirect ? EDIT_DIRECT : EDIT_REGULAR}
           feedNames={feeds}
+          defaultFeedNames={recipientNames}
           fixedFeedNames={isDirect ? recipientNames : []}
           onChange={setFeeds}
           onError={setHasFeedsError}
+          draftKey={draftKey}
         />
         <div className="post-privacy-warning">{privacyWarning}</div>
       </div>

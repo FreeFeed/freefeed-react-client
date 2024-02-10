@@ -60,10 +60,7 @@ export default function CreatePost({ sendTo, isDirects }) {
     return [];
   }, [sendTo.defaultFeed]);
 
-  const [feeds, setFeeds] = useState(defaultFeedNames);
-
-  // Update feed selector on new page
-  useEffect(() => setFeeds(defaultFeedNames), [defaultFeedNames]);
+  const [feeds, setFeeds] = useState(() => getDraft(draftKey)?.feeds ?? defaultFeedNames);
 
   const resetLocalState = useCallback(() => {
     toggleCommentsDisabled(false);
@@ -182,8 +179,10 @@ export default function CreatePost({ sendTo, isDirects }) {
           <Selector
             mode={isDirects ? CREATE_DIRECT : CREATE_REGULAR}
             feedNames={feeds}
+            defaultFeedNames={defaultFeedNames}
             onChange={setFeeds}
             onError={setHasFeedsError}
+            draftKey={draftKey}
           />
           <SmartTextarea
             ref={textareaRef}
