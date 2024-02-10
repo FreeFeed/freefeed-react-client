@@ -27,6 +27,7 @@ import { scrollingOrInteraction, unscroll } from '../services/unscroll';
 import { inactivityOf } from '../utils/event-sequences';
 import { authDebug } from '../utils/debug';
 import {
+  deleteAllDrafts,
   deleteDraft,
   editCommentDraftKey,
   editPostDraftKey,
@@ -1024,6 +1025,7 @@ export const draftsMiddleware = (store) => {
 
   return (next) => (action) => {
     switch (action.type) {
+      // Delete drafts on successful form submit
       case response(ActionTypes.CREATE_POST): {
         deleteDraft(newPostDraftKey());
         break;

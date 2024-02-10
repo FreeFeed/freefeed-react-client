@@ -76,6 +76,16 @@ export function deleteEmptyDraft(key) {
   }
 }
 
+export function deleteAllDrafts() {
+  for (const storeKey of Object.keys(storage)) {
+    if (!isDraftKey(storeKey)) {
+      continue;
+    }
+    storage.removeItem(storeKey);
+  }
+  allDrafts.clear();
+}
+
 let draftLoadedResolve;
 const draftLoaded = new Promise((resolve) => (draftLoadedResolve = resolve));
 export function initDrafts() {
