@@ -174,6 +174,12 @@ class PostComment extends Component {
 
   onMoreMenuOpened = (moreMenuOpened) => this.setState({ moreMenuOpened });
 
+  getDraftKey() {
+    return this.props.isAddingComment
+      ? `comment:new:${this.props.postId}`
+      : `comment:${this.props.id}`;
+  }
+
   commentTail() {
     const { canLike, canReply, canDelete } = this.possibleActions();
     return (
@@ -278,6 +284,7 @@ class PostComment extends Component {
           onCancel={this.handleEditOrCancel}
           submitStatus={this.props.saveStatus}
           submitMode={this.props.submitMode}
+          draftKey={this.getDraftKey()}
         />
       );
     }
