@@ -8,7 +8,7 @@ import { useCallback, useMemo, useRef, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 import { createPost, resetPostCreateForm } from '../redux/action-creators';
-import { deleteEmptyDraft } from '../services/drafts';
+import { deleteEmptyDraft, getDraft } from '../services/drafts';
 import { ButtonLink } from './button-link';
 import ErrorBoundary from './error-boundary';
 import { Icon } from './fontawesome-icons';
@@ -19,7 +19,6 @@ import { Throbber } from './throbber';
 import { useFileChooser } from './uploader/file-chooser';
 import { useUploader } from './uploader/uploader';
 import { UploadProgress } from './uploader/progress';
-import { PreventPageLeaving } from './prevent-page-leaving';
 import PostAttachments from './post/post-attachments';
 import { useBool } from './hooks/bool';
 import { useServerValue } from './hooks/server-info';
@@ -48,7 +47,9 @@ export default function CreatePost({ sendTo, isDirects }) {
   // Local state
   const [commentsDisabled, toggleCommentsDisabled] = useBool(false);
   const [isMoreOpen, toggleIsMoreOpen] = useBool(false);
-  const [postText, setPostText] = useState(sendTo.invitation || '');
+  const [postText, setPostText] = useState(
+    () => getDraft(draftKey)?.text ?? (sendTo.invitation || ''),
+  );
 
   const defaultFeedNames = useMemo(() => {
     if (Array.isArray(sendTo.defaultFeed)) {
@@ -177,7 +178,6 @@ export default function CreatePost({ sendTo, isDirects }) {
       ref={containerRef}
     >
       <ErrorBoundary>
-        <PreventPageLeaving prevent={isFormDirty} />
         <div>
           <Selector
             mode={isDirects ? CREATE_DIRECT : CREATE_REGULAR}
@@ -189,6 +189,7 @@ export default function CreatePost({ sendTo, isDirects }) {
             ref={textareaRef}
             className="post-textarea"
             dragOverClassName="post-textarea__dragged"
+            inactiveClassName="textarea-inactive"
             value={postText}
             onText={setPostText}
             onSubmit={doCreatePost}
@@ -197,6 +198,7 @@ export default function CreatePost({ sendTo, isDirects }) {
             maxRows={10}
             maxLength={maxPostLength}
             dir={'auto'}
+            draftKey={draftKey}
           />
         </div>
 
