@@ -6,6 +6,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
+import { difference } from 'lodash-es';
 import { Icon } from '../fontawesome-icons';
 import { SmartTextarea } from '../smart-textarea';
 import { SubmitModeHint } from '../submit-mode-hint';
@@ -113,9 +114,12 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
   }, [canSubmitForm, dispatch, feeds, fileIds, id, postText]);
 
   const handleCancel = useCallback(() => {
+    if ((postText !== body || !isSameIds(fileIds, attachments)) && !confirm('Discard changes?')) {
+      return;
+    }
     dispatch(cancelEditingPost(id));
     deleteDraft(draftKey);
-  }, [dispatch, draftKey, id]);
+  }, [attachments, body, dispatch, draftKey, fileIds, id, postText]);
 
   const [privacyLevel] = usePrivacyCheck(feeds);
 
@@ -239,4 +243,11 @@ function getPostPrivacy(recipients, createdBy) {
   const isPrivate = !authorOrGroupsRecipients.some((r) => r.isPrivate === '0');
   const isProtected = isPrivate || !authorOrGroupsRecipients.some((r) => r.isProtected === '0');
   return { isPrivate, isProtected };
+}
+
+function isSameIds(ids1, ids2) {
+  if (ids1.length !== ids2.length) {
+    return false;
+  }
+  return difference(ids1, ids2).length === 0;
 }

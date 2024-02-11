@@ -38,10 +38,13 @@ export function CommentEditForm({
 
   const doCancel = useCallback(
     (e) => {
+      if (text !== initialText && !confirm('Discard changes?')) {
+        return;
+      }
       onCancel(e);
       deleteDraft(draftKey);
     },
-    [draftKey, onCancel],
+    [draftKey, initialText, onCancel, text],
   );
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
