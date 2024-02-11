@@ -5,6 +5,12 @@ import { isEqual } from 'lodash-es';
 import { setAttachment } from '../redux/action-creators';
 import { setDelayedAction } from './drafts-throttling';
 
+/**
+ * @typedef {{ id: string }} File
+ * @typedef {{ text?: string, feeds?: string[], files?: File[] }} DraftData
+ * @typedef {(key?: string) => void} UpdateHandler
+ */
+
 // @ts-ignore
 const KEY_PREFIX = CONFIG.drafts.storagePrefix;
 
