@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.128.0] - Not released
+### Added
+- Drafts. When a user creates/edits a post or comment, the entered text is
+  automatically saved to localStorage. This prevents accidental loss of content
+  in case of a bad connection or browser closure. For posts, saved drafts also
+  contain attachments and feed name information.
+  
+  Draft data automatically synchronized between the browser tabs, but not
+  between the other user's devices.
+
+  Drafts are deleted when a post/comment form has been successfully submitted or
+  explicitly canceled by the user. When the user signs out, all draft data is
+  deleted.
 
 ## [1.127.3] - 2024-02-14
 ### Fixed
