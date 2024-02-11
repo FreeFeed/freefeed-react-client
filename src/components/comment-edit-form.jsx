@@ -70,7 +70,6 @@ export function CommentEditForm({
       wasSubmitted.current = true;
     }
     if (isPersistent && submitStatus.initial && wasSubmitted.current) {
-      deleteDraft(draftKey);
       setText('');
       wasSubmitted.current = false;
       input.current.blur();

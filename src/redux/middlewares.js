@@ -26,7 +26,14 @@ import {
 import { scrollingOrInteraction, unscroll } from '../services/unscroll';
 import { inactivityOf } from '../utils/event-sequences';
 import { authDebug } from '../utils/debug';
-import { loadDraftsToStore } from '../services/drafts';
+import {
+  deleteDraft,
+  editCommentDraftKey,
+  editPostDraftKey,
+  loadDraftsToStore,
+  newCommentDraftKey,
+  newPostDraftKey,
+} from '../services/drafts';
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import {
@@ -1014,7 +1021,44 @@ export const reloadFeedMiddleware = (store) => (next) => (action) => {
 
 export const draftsMiddleware = (store) => {
   loadDraftsToStore(store);
-  return (next) => (action) => next(action);
+
+  return (next) => (action) => {
+    switch (action.type) {
+      case response(ActionTypes.CREATE_POST): {
+        deleteDraft(newPostDraftKey());
+        break;
+      }
+      case response(ActionTypes.ADD_COMMENT): {
+        deleteDraft(newCommentDraftKey(action.request.postId));
+        break;
+      }
+      case response(ActionTypes.SAVE_EDITING_POST): {
+        deleteDraft(editPostDraftKey(action.payload.posts.id));
+        break;
+      }
+      case response(ActionTypes.SAVE_EDITING_COMMENT): {
+        deleteDraft(editCommentDraftKey(action.payload.comments.id));
+        break;
+      }
+
+      // Delete drafts on post/comment deletion
+      case response(ActionTypes.DELETE_POST): {
+        deleteDraft(editPostDraftKey(action.request.postId));
+        break;
+      }
+      case response(ActionTypes.DELETE_COMMENT): {
+        deleteDraft(editCommentDraftKey(action.request.commentId));
+        break;
+      }
+
+      // Clear all drafts on log out
+      case ActionTypes.UNAUTHENTICATED: {
+        deleteAllDrafts();
+        break;
+      }
+    }
+    return next(action);
+  };
 };
 
 function isResponseOf(action, ...baseTypes) {
