@@ -86,9 +86,25 @@ export function deleteAllDrafts() {
   allDrafts.clear();
 }
 
-let draftLoadedResolve;
-const draftLoaded = new Promise((resolve) => (draftLoadedResolve = resolve));
-export function initDrafts() {
+/**
+ * @param {import("redux").Store} store
+ */
+export function initializeDrafts(store) {
+  // Check the saved user ID
+  const userId = store.getState().user?.id;
+  if (!userId) {
+    return;
+  }
+  const userKey = `${KEY_PREFIX}userId`;
+  const savedUserId = storage.getItem(userKey);
+  if (savedUserId !== userId) {
+    deleteAllDrafts();
+    storage.setItem(userKey, userId);
+  }
+
+  // Read saved drafts
+  /** @type {Map<string, File>} */
+  const allFiles = new Map();
   for (const [storeKey, value] of Object.entries(storage)) {
     if (!isDraftKey(storeKey)) {
       continue;
@@ -98,13 +114,20 @@ export function initDrafts() {
       const draft = JSON.parse(value);
       fillFileIds(draft);
       allDrafts.set(trimDraftPrefix(storeKey), draft);
+      for (const f of draft.files ?? []) {
+        allFiles.set(f.id, f);
+      }
     } catch {
-      // It happens...
+      // It may happen
     }
   }
 
-  draftLoadedResolve();
+  // Put found files to the redux store
+  for (const file of allFiles.values()) {
+    store.dispatch(setAttachment(file));
+  }
 
+  // Subscribe to the storage events
   globalThis.addEventListener?.('storage', (event) => {
     if (event.key === null) {
       // Storage was clear()'ed
@@ -122,35 +145,8 @@ export function initDrafts() {
       setDraftData(key, draft, { external: true });
       triggerUpdate(key);
     } catch {
-      // It happens...
+      // It may happen
     }
-  });
-}
-
-/**
- * @param {import("redux").Store} store
- */
-export function loadDraftsToStore(store) {
-  // eslint-disable-next-line promise/catch-or-return
-  draftLoaded.then(() => {
-    /** @type {Map<string, File>} */
-    const allFiles = new Map();
-
-    for (const draft of allDrafts.values()) {
-      if (!draft.files) {
-        continue;
-      }
-      for (const f of draft.files) {
-        allFiles.set(f.id, f);
-      }
-    }
-
-    // Put found files to the redux store
-    for (const file of allFiles.values()) {
-      store.dispatch(setAttachment(file));
-    }
-
-    return;
   });
 
   // Update attachments in store on external draft update
@@ -158,11 +154,7 @@ export function loadDraftsToStore(store) {
     if (!key) {
       return;
     }
-    const files = getDraft(key)?.files;
-    if (!files) {
-      return;
-    }
-    for (const file of files) {
+    for (const file of getDraft(key)?.files ?? []) {
       store.dispatch(setAttachment(file));
     }
   });

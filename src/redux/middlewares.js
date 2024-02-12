@@ -31,7 +31,7 @@ import {
   deleteDraft,
   editCommentDraftKey,
   editPostDraftKey,
-  loadDraftsToStore,
+  initializeDrafts,
   newCommentDraftKey,
   newPostDraftKey,
 } from '../services/drafts';
@@ -1021,10 +1021,14 @@ export const reloadFeedMiddleware = (store) => (next) => (action) => {
 };
 
 export const draftsMiddleware = (store) => {
-  loadDraftsToStore(store);
-
   return (next) => (action) => {
     switch (action.type) {
+      // Load drafts on page load or sign up
+      case response(ActionTypes.INITIAL_WHO_AM_I): {
+        initializeDrafts(store);
+        break;
+      }
+
       // Delete drafts on successful form submit
       case response(ActionTypes.CREATE_POST): {
         deleteDraft(newPostDraftKey());
