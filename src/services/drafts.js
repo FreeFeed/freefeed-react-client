@@ -20,6 +20,8 @@ const KEY_PREFIX = CONFIG.drafts.storagePrefix;
 // eslint-disable-next-line prefer-destructuring
 const maxDraftAge = CONFIG.drafts.maxDraftAge;
 
+let savingEnabled = true;
+
 export function newPostDraftKey(/** @type {string} */ feedName) {
   return `post:new:${feedName}`;
 }
@@ -82,6 +84,19 @@ export function deleteEmptyDraft(key) {
   }
 }
 
+/**
+ * @param {string} userId
+ * @param {boolean} enabled
+ */
+export function setSavingEnabled(userId, enabled) {
+  savingEnabled = enabled;
+  if (savingEnabled) {
+    storage.setItem(`${KEY_PREFIX}userId`, userId);
+  } else {
+    deleteAllDrafts();
+  }
+}
+
 export function deleteAllDrafts() {
   for (const storeKey of Object.keys(storage)) {
     if (!isDraftKey(storeKey)) {
@@ -96,16 +111,20 @@ export function deleteAllDrafts() {
  * @param {import("redux").Store} store
  */
 export function initializeDrafts(store) {
+  const { user } = store.getState();
+
   // Check the saved user ID
-  const userId = store.getState().user?.id;
+  const userId = user?.id;
   if (!userId) {
     return;
   }
+  savingEnabled = user.frontendPreferences.saveDrafts;
+
   const userKey = `${KEY_PREFIX}userId`;
   const savedUserId = storage.getItem(userKey);
-  if (savedUserId !== userId) {
+  if (!savingEnabled || savedUserId !== userId) {
     deleteAllDrafts();
-    storage.setItem(userKey, userId);
+    savingEnabled && storage.setItem(userKey, userId);
   }
 
   // Read saved drafts
@@ -192,6 +211,7 @@ function setDraftData(key, data, { external = false } = {}) {
     // @ts-expect-error 'data' is not null here
     allDrafts.set(key, data);
     !external &&
+      savingEnabled &&
       setDelayedAction(key, () =>
         storage.setItem(KEY_PREFIX + key, JSON.stringify(omit(data, 'fileIds'))),
       );
