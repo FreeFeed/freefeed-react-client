@@ -30,9 +30,9 @@ import { usePrivacyCheck } from './feeds-selector/privacy-check';
 const selectMaxFilesCount = (serverInfo) => serverInfo.attachments.maxCountPerPost;
 const selectMaxPostLength = (serverInfo) => serverInfo.maxTextLength.post;
 
-const draftKey = newPostDraftKey();
-
 export default function CreatePost({ sendTo, isDirects }) {
+  const draftKey = newPostDraftKey(sendTo.defaultFeed ?? '-');
+
   // Cleaning up new post draft before the first render
   useMemo(() => deleteEmptyDraft(draftKey), []);
 

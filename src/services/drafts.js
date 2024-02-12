@@ -20,8 +20,8 @@ const KEY_PREFIX = CONFIG.drafts.storagePrefix;
 // eslint-disable-next-line prefer-destructuring
 const maxDraftAge = CONFIG.drafts.maxDraftAge;
 
-export function newPostDraftKey() {
-  return 'post:new';
+export function newPostDraftKey(/** @type {string} */ feedName) {
+  return `post:new:${feedName}`;
 }
 export function newCommentDraftKey(/** @type {string} */ postId) {
   return `comment:new:${postId}`;
