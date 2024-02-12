@@ -1,7 +1,7 @@
 // @ts-check
 /* global CONFIG */
 import storage from 'local-storage-fallback';
-import { isEqual } from 'lodash-es';
+import { isEqual, omit } from 'lodash-es';
 import { setAttachment } from '../redux/action-creators';
 import { setDelayedAction } from './drafts-throttling';
 
@@ -184,7 +184,9 @@ function setDraftData(key, data, { external = false } = {}) {
     // @ts-expect-error 'data' is not null here
     allDrafts.set(key, data);
     !external &&
-      setDelayedAction(key, () => storage.setItem(KEY_PREFIX + key, JSON.stringify(data)));
+      setDelayedAction(key, () =>
+        storage.setItem(KEY_PREFIX + key, JSON.stringify(omit(data, 'fileIds'))),
+      );
   }
 }
 
@@ -200,7 +202,7 @@ export function subscribeToDrafts(listener) {
 }
 
 /**
- * In-memory copy of relevant localStorage keys
+ * In-memory copy of relevant localStorage data
  *
  * @type {Map<string, DraftData>}
  */
