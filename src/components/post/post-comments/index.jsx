@@ -146,7 +146,9 @@ export default class PostComments extends Component {
                 Add comment
               </ButtonLink>
             }
-          />
+          >
+            Continue adding comment
+          </DraftIndicator>
           {disabledForOthers ? <i> - disabled for others</i> : false}
         </div>
       );

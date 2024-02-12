@@ -13,7 +13,11 @@ export function DraftIndicator({
 
   if (draftExists) {
     return (
-      <ButtonLink className={style.indicator} onClick={onClick}>
+      <ButtonLink
+        className={style.indicator}
+        onClick={onClick}
+        title="Continue writing your saved draft"
+      >
         {children}
       </ButtonLink>
     );
