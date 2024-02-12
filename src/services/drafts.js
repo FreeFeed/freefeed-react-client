@@ -7,12 +7,18 @@ import { setDelayedAction } from './drafts-throttling';
 
 /**
  * @typedef {{ id: string }} File
- * @typedef {{ text?: string, feeds?: string[], files?: File[], fileIds?: string[] }} DraftData
+ * @typedef {{ text?: string, feeds?: string[], files?: File[], fileIds?: string[], ts: number }} DraftData
  * @typedef {(key?: string) => void} UpdateHandler
  */
 
+/** @type {string} */
 // @ts-ignore
 const KEY_PREFIX = CONFIG.drafts.storagePrefix;
+
+/** @type {number} */
+// @ts-ignore
+// eslint-disable-next-line prefer-destructuring
+const maxDraftAge = CONFIG.drafts.maxDraftAge;
 
 export function newPostDraftKey() {
   return 'post:new';
@@ -44,13 +50,13 @@ export function hasDraft(key) {
 }
 
 /**
- * @template {Exclude<keyof DraftData, 'fileIds'>} F
+ * @template {Exclude<keyof DraftData, 'fileIds'|'ts'>} F
  * @param {string} key
  * @param {F} field
  * @param {Exclude<DraftData[F], undefined>} value
  */
 export function setDraftField(key, field, value) {
-  const newData = { ...getDraft(key), [field]: value };
+  const newData = { ...getDraft(key), [field]: value, ts: Date.now() };
   if (field === 'files') {
     fillFileIds(newData);
   }
@@ -158,6 +164,16 @@ export function initializeDrafts(store) {
       store.dispatch(setAttachment(file));
     }
   });
+
+  // Set the cleanup action
+  setInterval(() => {
+    const cutTime = Date.now() - maxDraftAge;
+    for (const [key, data] of allDrafts) {
+      if (data.ts < cutTime) {
+        deleteDraft(key);
+      }
+    }
+  }, 60000);
 }
 
 /**

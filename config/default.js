@@ -186,5 +186,6 @@ export default {
 
   drafts: {
     storagePrefix: 'draft:',
+    maxDraftAge: 7 * DAY_IN_MILLISECONDS,
   },
 };
