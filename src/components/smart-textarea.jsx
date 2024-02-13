@@ -36,7 +36,7 @@ export const SmartTextarea = forwardRef(function SmartTextarea(
     component: Component = TextareaAutosize,
     className,
     dragOverClassName,
-    // Class name when textarea is not in focus
+    // Class name before the first focus
     inactiveClassName,
     draftKey,
     // Value to reset to when draft disappears
@@ -48,18 +48,13 @@ export const SmartTextarea = forwardRef(function SmartTextarea(
   const ref = useForwardedRef(fwdRef, {});
   useSubmit(onSubmit, ref);
   const draggingOver = useFile(onFile, ref);
-  const [inFocus, setInFocus] = useState(Boolean(props.autoFocus));
+  const [wasFocused, setWasFocused] = useState(Boolean(props.autoFocus));
 
   useEffect(() => {
     const input = ref.current;
-    const onFocus = () => setInFocus(true);
-    const onBlur = () => setInFocus(false);
+    const onFocus = () => setWasFocused(true);
     input.addEventListener('focus', onFocus);
-    input.addEventListener('blur', onBlur);
-    return () => {
-      input.removeEventListener('focus', onFocus);
-      input.removeEventListener('blur', onBlur);
-    };
+    return () => input.removeEventListener('focus', onFocus);
   }, [ref]);
 
   ref.current.insertText = useCallback(
@@ -107,7 +102,7 @@ export const SmartTextarea = forwardRef(function SmartTextarea(
   return (
     <Component
       ref={ref}
-      className={cn(className, draggingOver && dragOverClassName, !inFocus && inactiveClassName)}
+      className={cn(className, draggingOver && dragOverClassName, !wasFocused && inactiveClassName)}
       onChange={handleChange}
       {...props}
     />

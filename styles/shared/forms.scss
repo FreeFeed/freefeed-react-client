@@ -104,11 +104,9 @@ label.option-box {
 }
 
 .textarea-inactive {
-  color: #999;
+  color: #888;
 
   .dark-theme & {
     color: #{$text-color-darker};
   }
-
-  transition: color 0.5s 3s;
 }
