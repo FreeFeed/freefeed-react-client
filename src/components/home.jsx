@@ -45,16 +45,7 @@ const FeedHandler = (props) => {
     );
   }
 
-  const createPostComponent = (
-    <CreatePost
-      key={'home'}
-      sendTo={props.sendTo}
-      user={props.user}
-      createPost={props.createPost}
-      resetPostCreateForm={props.resetPostCreateForm}
-      addAttachmentResponse={props.addAttachmentResponse}
-    />
-  );
+  const createPostComponent = <CreatePost key={'home'} sendTo={props.sendTo} />;
 
   return (
     <div className="box">

@@ -22,17 +22,23 @@ const maxDraftAge = CONFIG.drafts.maxDraftAge;
 
 let savingEnabled = true;
 
-export function newPostDraftKey(/** @type {string} */ feedName) {
-  return `post:new:${feedName}`;
+export function newPostURI(/** @type {string} */ path) {
+  return `new-post:${path}`;
 }
-export function newCommentDraftKey(/** @type {string} */ postId) {
-  return `comment:new:${postId}`;
+
+export function existingPostURI(/** @type {string} */ postShortId) {
+  return `post:/post/${postShortId}`;
 }
-export function editPostDraftKey(/** @type {string} */ postId) {
-  return `post:${postId}`;
+
+export function newCommentURI(/** @type {string} */ postShortId) {
+  return `new-comment:/post/${postShortId}`;
 }
-export function editCommentDraftKey(/** @type {string} */ commentId) {
-  return `comment:${commentId}`;
+
+export function existingCommentURI(
+  /** @type {string} */ postShortId,
+  /** @type {string} */ commentShortId,
+) {
+  return `comment:/post/${postShortId}#${commentShortId}`;
 }
 
 /**

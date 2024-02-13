@@ -34,7 +34,7 @@ import { UserPicture } from '../user-picture';
 import { prepareAsyncFocus } from '../../utils/prepare-async-focus';
 import { format } from '../../utils/date-format';
 import { TranslatedText } from '../translated-text';
-import { editPostDraftKey } from '../../services/drafts';
+import { existingPostURI } from '../../services/drafts';
 import { UnhideOptions, HideLink } from './post-hides-ui';
 import PostMoreLink from './post-more-link';
 import PostLikeLink from './post-like-link';
@@ -342,7 +342,7 @@ class Post extends Component {
               )}
               <span className="post-footer-item">
                 <DraftIndicator
-                  draftKey={editPostDraftKey(this.props.id)}
+                  draftKey={existingPostURI(this.props.shortId)}
                   onClick={this.toggleEditingPost}
                 />
               </span>

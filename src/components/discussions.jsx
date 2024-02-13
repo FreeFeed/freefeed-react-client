@@ -14,11 +14,7 @@ const FeedHandler = (props) => {
     <CreatePost
       key={props.isDirects ? 'directs' : 'discussions'}
       sendTo={props.sendTo}
-      user={props.user}
       isDirects={props.isDirects}
-      createPost={props.createPost}
-      resetPostCreateForm={props.resetPostCreateForm}
-      addAttachmentResponse={props.addAttachmentResponse}
     />
   );
 

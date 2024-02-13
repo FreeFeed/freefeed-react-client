@@ -31,7 +31,7 @@ vi.mock('../../src/components/lazy-component', () => ({
 
 import Post from '../../src/components/post/post';
 import { initialAsyncState } from '../../src/redux/async-helpers';
-import { deleteDraft, editPostDraftKey } from '../../src/services/drafts';
+import { deleteDraft, existingPostURI } from '../../src/services/drafts';
 
 const AUTHOR = {
   id: 'author-id',
@@ -71,11 +71,13 @@ const renderPost = (props = {}, options = {}) => {
   const dummyReducer = (state) => state;
   const store = createStore(dummyReducer, {
     ...defaultState,
+    posts: { 'post-id': { id: 'post-id', shortId: 'post-id' } },
     submitMode: options.submitMode || 'enter',
   });
 
   const defaultProps = {
     id: 'post-id',
+    shortId: 'post-id',
     body: 'Line 1\nLine 2',
     createdAt: '1615692239035',
     updatedAt: '1615692257002',
@@ -441,7 +443,7 @@ describe('Post', () => {
 
   describe('Post text editing', () => {
     beforeEach(() => {
-      deleteDraft(editPostDraftKey('post-id'));
+      deleteDraft(existingPostURI('post-id'));
     });
 
     it('Lets me edit text of my post by typing with Shift+Enter when "submitMode" is "enter"', async () => {
@@ -461,6 +463,7 @@ describe('Post', () => {
         attachments: [],
         body: 'Hello,\nWorld!',
         feeds: ['author'],
+        draftKey: existingPostURI('post-id'),
       });
     });
 
@@ -478,6 +481,7 @@ describe('Post', () => {
         attachments: [],
         body: 'Hello,\nWorld!',
         feeds: ['author'],
+        draftKey: existingPostURI('post-id'),
       });
     });
 
@@ -501,6 +505,7 @@ describe('Post', () => {
         attachments: [],
         body: 'Hello,\nWorld!',
         feeds: ['author'],
+        draftKey: existingPostURI('post-id'),
       });
     });
 
@@ -521,6 +526,7 @@ describe('Post', () => {
         attachments: [],
         body: 'Hello,\nWorld!',
         feeds: ['author'],
+        draftKey: existingPostURI('post-id'),
       });
     });
   });

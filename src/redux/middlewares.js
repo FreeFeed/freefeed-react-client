@@ -26,15 +26,7 @@ import {
 import { scrollingOrInteraction, unscroll } from '../services/unscroll';
 import { inactivityOf } from '../utils/event-sequences';
 import { authDebug } from '../utils/debug';
-import {
-  deleteAllDrafts,
-  deleteDraft,
-  editCommentDraftKey,
-  editPostDraftKey,
-  initializeDrafts,
-  newCommentDraftKey,
-  newPostDraftKey,
-} from '../services/drafts';
+import { deleteAllDrafts, deleteDraft, initializeDrafts } from '../services/drafts';
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import {
@@ -1031,29 +1023,21 @@ export const draftsMiddleware = (store) => {
 
       // Delete drafts on successful form submit
       case response(ActionTypes.CREATE_POST): {
-        deleteDraft(newPostDraftKey());
+        deleteDraft(action.request.more.draftKey);
         break;
       }
       case response(ActionTypes.ADD_COMMENT): {
-        deleteDraft(newCommentDraftKey(action.request.postId));
+        const { draftKey } = action.request;
+        draftKey && deleteDraft(draftKey);
         break;
       }
       case response(ActionTypes.SAVE_EDITING_POST): {
-        deleteDraft(editPostDraftKey(action.payload.posts.id));
+        deleteDraft(action.request.newPost.draftKey);
         break;
       }
       case response(ActionTypes.SAVE_EDITING_COMMENT): {
-        deleteDraft(editCommentDraftKey(action.payload.comments.id));
-        break;
-      }
-
-      // Delete drafts on post/comment deletion
-      case response(ActionTypes.DELETE_POST): {
-        deleteDraft(editPostDraftKey(action.request.postId));
-        break;
-      }
-      case response(ActionTypes.DELETE_COMMENT): {
-        deleteDraft(editCommentDraftKey(action.request.commentId));
+        const { draftKey } = action.request;
+        draftKey && deleteDraft(draftKey);
         break;
       }
 

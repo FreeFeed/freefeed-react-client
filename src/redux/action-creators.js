@@ -253,14 +253,11 @@ export function toggleCommenting(postId, newCommentText = '') {
   };
 }
 
-export function addComment(postId, commentText) {
+export function addComment(postId, commentText, draftKey) {
   return {
     type: ActionTypes.ADD_COMMENT,
     apiRequest: Api.addComment,
-    payload: {
-      postId,
-      commentText,
-    },
+    payload: { postId, commentText, draftKey },
   };
 }
 
@@ -367,11 +364,11 @@ export function toggleEditingComment(commentId) {
   };
 }
 
-export function saveEditingComment(commentId, newCommentBody) {
+export function saveEditingComment(commentId, newCommentBody, draftKey) {
   return {
     type: ActionTypes.SAVE_EDITING_COMMENT,
     apiRequest: Api.updateComment,
-    payload: { commentId, newCommentBody },
+    payload: { commentId, newCommentBody, draftKey },
   };
 }
 

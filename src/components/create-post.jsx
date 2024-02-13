@@ -8,7 +8,7 @@ import { useCallback, useMemo, useRef, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 import { createPost, resetPostCreateForm } from '../redux/action-creators';
-import { deleteEmptyDraft, getDraft, newPostDraftKey } from '../services/drafts';
+import { deleteEmptyDraft, getDraft, newPostURI } from '../services/drafts';
 import { ButtonLink } from './button-link';
 import ErrorBoundary from './error-boundary';
 import { Icon } from './fontawesome-icons';
@@ -31,10 +31,13 @@ const selectMaxFilesCount = (serverInfo) => serverInfo.attachments.maxCountPerPo
 const selectMaxPostLength = (serverInfo) => serverInfo.maxTextLength.post;
 
 export default function CreatePost({ sendTo, isDirects }) {
-  const draftKey = newPostDraftKey(sendTo.defaultFeed ?? '-');
+  const draftKey = useSelector((state) => {
+    const loc = state.routing.locationBeforeTransitions;
+    return newPostURI(loc.pathname + loc.search);
+  });
 
   // Cleaning up new post draft before the first render
-  useMemo(() => deleteEmptyDraft(draftKey), []);
+  useMemo(() => deleteEmptyDraft(draftKey), [draftKey]);
 
   const dispatch = useDispatch();
   const createPostStatus = useSelector((state) => state.createPostStatus);
@@ -104,9 +107,10 @@ export default function CreatePost({ sendTo, isDirects }) {
   const doCreatePost = useCallback(
     (e) => {
       e?.preventDefault?.();
-      canSubmitForm && dispatch(createPost(feeds, postText, fileIds, { commentsDisabled }));
+      canSubmitForm &&
+        dispatch(createPost(feeds, postText, fileIds, { commentsDisabled, draftKey }));
     },
-    [fileIds, canSubmitForm, commentsDisabled, dispatch, feeds, postText],
+    [canSubmitForm, dispatch, feeds, postText, fileIds, commentsDisabled, draftKey],
   );
 
   const handleCommentsDisable = useCallback(

@@ -22,15 +22,15 @@ import { Selector } from '../feeds-selector/selector';
 import { EDIT_DIRECT, EDIT_REGULAR } from '../feeds-selector/constants';
 import { ButtonLink } from '../button-link';
 import { usePrivacyCheck } from '../feeds-selector/privacy-check';
-import { deleteDraft, editPostDraftKey, getDraft } from '../../services/drafts';
+import { deleteDraft, existingPostURI, getDraft } from '../../services/drafts';
 import PostAttachments from './post-attachments';
 
 const selectMaxFilesCount = (serverInfo) => serverInfo.attachments.maxCountPerPost;
 const selectMaxPostLength = (serverInfo) => serverInfo.maxTextLength.post;
 
 export function PostEditForm({ id, isDirect, recipients, createdBy, body, attachments }) {
-  const draftKey = editPostDraftKey(id);
   const dispatch = useDispatch();
+  const draftKey = useSelector((state) => existingPostURI(state.posts[id].shortId));
   const saveState = useSelector((state) => state.saveEditingPostStatuses[id] ?? initialAsyncState);
 
   const maxFilesCount = useServerValue(selectMaxFilesCount, Infinity);
@@ -109,9 +109,10 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
         body: postText,
         attachments: fileIds,
         feeds,
+        draftKey,
       }),
     );
-  }, [canSubmitForm, dispatch, feeds, fileIds, id, postText]);
+  }, [canSubmitForm, dispatch, draftKey, feeds, fileIds, id, postText]);
 
   const handleCancel = useCallback(() => {
     if ((postText !== body || !isSameIds(fileIds, attachments)) && !confirm('Discard changes?')) {

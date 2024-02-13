@@ -13,7 +13,7 @@ import { prepareAsyncFocus } from '../../../utils/prepare-async-focus';
 import { PostContext } from '../post-context';
 import { ButtonLink } from '../../button-link';
 import { DraftIndicator } from '../draft-indicator';
-import { hasDraft, newCommentDraftKey, subscribeToDrafts } from '../../../services/drafts';
+import { hasDraft, newCommentURI, subscribeToDrafts } from '../../../services/drafts';
 import { CollapseComments } from './collapse-comments';
 import ExpandComments from './expand-comments';
 import { LoadingComments } from './loading-comments';
@@ -44,14 +44,14 @@ export default class PostComments extends Component {
       highlightedAuthor: null,
       highlightedCommentId: null,
       focusedCommentId: null,
-      hasNewCommentDraft: hasDraft(newCommentDraftKey(props.post.id)),
+      hasNewCommentDraft: hasDraft(newCommentURI(props.post.shortId)),
     };
   }
 
   unsubscribeFromDrafts = () => {};
   componentDidMount() {
     this.unsubscribeFromDrafts = subscribeToDrafts(() =>
-      this.setState({ hasNewCommentDraft: hasDraft(newCommentDraftKey(this.props.post.id)) }),
+      this.setState({ hasNewCommentDraft: hasDraft(newCommentURI(this.props.post.shortId)) }),
     );
   }
 
@@ -139,7 +139,7 @@ export default class PostComments extends Component {
           </span>
 
           <DraftIndicator
-            draftKey={newCommentDraftKey(props.post.id)}
+            draftKey={newCommentURI(props.post.shortId)}
             onClick={preventDefault(toggleCommenting)}
             fallback={
               <ButtonLink className="add-comment-link" onClick={preventDefault(toggleCommenting)}>
