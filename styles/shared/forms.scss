@@ -107,6 +107,6 @@ label.option-box {
   color: #888;
 
   .dark-theme & {
-    color: #{$text-color-darker};
+    color: #{$text-color-darker} !important;
   }
 }
