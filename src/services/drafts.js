@@ -14,6 +14,7 @@ import { setDelayedAction } from './drafts-throttling';
 /** @type {string} */
 // @ts-ignore
 const KEY_PREFIX = CONFIG.drafts.storagePrefix;
+const USER_ID_KEY = `${KEY_PREFIX}userId`;
 
 /** @type {number} */
 // @ts-ignore
@@ -97,19 +98,23 @@ export function deleteEmptyDraft(key) {
 export function setSavingEnabled(userId, enabled) {
   savingEnabled = enabled;
   if (savingEnabled) {
-    storage.setItem(`${KEY_PREFIX}userId`, userId);
+    storage.setItem(USER_ID_KEY, userId);
   } else {
-    deleteAllDrafts();
+    clearDraftsStorage();
   }
 }
 
-export function deleteAllDrafts() {
+function clearDraftsStorage() {
   for (const storeKey of Object.keys(storage)) {
     if (!isDraftKey(storeKey)) {
       continue;
     }
     storage.removeItem(storeKey);
   }
+}
+
+export function deleteAllDrafts() {
+  clearDraftsStorage();
   allDrafts.clear();
 }
 
@@ -126,11 +131,10 @@ export function initializeDrafts(store) {
   }
   savingEnabled = user.frontendPreferences.saveDrafts;
 
-  const userKey = `${KEY_PREFIX}userId`;
-  const savedUserId = storage.getItem(userKey);
+  const savedUserId = storage.getItem(USER_ID_KEY);
   if (!savingEnabled || savedUserId !== userId) {
-    deleteAllDrafts();
-    savingEnabled && storage.setItem(userKey, userId);
+    clearDraftsStorage();
+    savingEnabled && storage.setItem(USER_ID_KEY, userId);
   }
 
   // Read saved drafts
