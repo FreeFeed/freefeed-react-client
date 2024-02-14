@@ -4,6 +4,7 @@ import storage from 'local-storage-fallback';
 import { isEqual, omit } from 'lodash-es';
 import { setAttachment } from '../redux/action-creators';
 import { setDelayedAction } from './drafts-throttling';
+import { EventEmitter } from './drafts-events';
 
 /**
  * @typedef {{ id: string }} File
@@ -167,7 +168,8 @@ export function initializeDrafts(store) {
     if (event.key === null) {
       // Storage was clear()'ed
       allDrafts.clear();
-      triggerUpdate();
+      // eslint-disable-next-line unicorn/no-useless-undefined
+      externalUpdates.emit(undefined);
       return;
     }
     if (!isDraftKey(event.key)) {
@@ -178,7 +180,7 @@ export function initializeDrafts(store) {
       const draft = JSON.parse(event.newValue ?? 'null');
       fillFileIds(draft);
       setDraftData(key, draft, { external: true });
-      triggerUpdate(key);
+      externalUpdates.emit(key);
     } catch {
       // It may happen
     }
@@ -228,6 +230,9 @@ function setDraftData(key, data, { external = false } = {}) {
   }
 }
 
+/** @type {EventEmitter<string | undefined>} */
+const externalUpdates = new EventEmitter();
+
 /**
  * Subscribe to drafts update
  *
@@ -235,8 +240,7 @@ function setDraftData(key, data, { external = false } = {}) {
  * @returns {() => void} - unsubscribe function
  */
 export function subscribeToDrafts(listener) {
-  updateHandlers.add(listener);
-  return () => updateHandlers.delete(listener);
+  return externalUpdates.subscribe(listener);
 }
 
 /**
@@ -245,22 +249,6 @@ export function subscribeToDrafts(listener) {
  * @type {Map<string, DraftData>}
  */
 const allDrafts = new Map();
-
-/**
- * Listeners to drafts updates
- *
- * @type {Set<UpdateHandler>}
- */
-const updateHandlers = new Set();
-
-/**
- * @param {string} [key]
- */
-function triggerUpdate(key) {
-  for (const handler of updateHandlers) {
-    handler(key);
-  }
-}
 
 /**
  * @param {unknown} storageKey
