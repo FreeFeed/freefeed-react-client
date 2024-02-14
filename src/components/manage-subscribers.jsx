@@ -50,7 +50,8 @@ function ManageSubscribersHandler({ user: currentUser, groupName, amIAdmin, ...p
   );
 
   useEffect(
-    () => amIAdmin && blockedUsersStatus.initial && dispatch(getGroupBlockedUsers(groupName)),
+    () =>
+      void (amIAdmin && blockedUsersStatus.initial && dispatch(getGroupBlockedUsers(groupName))),
     [amIAdmin, blockedUsersStatus.initial, dispatch, groupName],
   );
 
