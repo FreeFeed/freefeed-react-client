@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.127.3] - 2024-02-14
+### Fixed
+- Incorrect use of 'useEffect' causing a crash on the 'Manage Group Subscribers'
+  page.
+
 ## [1.127.2] - 2024-02-04
 ### Fixed
 - Return the 'maximum-scale=1' back to the "viewport" meta tag, but remove it on
