@@ -429,4 +429,8 @@ body,
     color: $text-color;
     background-color: $bg-color-lighter;
   }
+
+  blockquote {
+    border-left-color: $bg-color-lightest;
+  }
 }
