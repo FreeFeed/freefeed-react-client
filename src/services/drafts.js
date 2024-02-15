@@ -170,6 +170,7 @@ export function initializeDrafts(store) {
       allDrafts.clear();
       // eslint-disable-next-line unicorn/no-useless-undefined
       externalUpdates.emit(undefined);
+      allUpdates.emit();
       return;
     }
     if (!isDraftKey(event.key)) {
@@ -180,7 +181,6 @@ export function initializeDrafts(store) {
       const draft = JSON.parse(event.newValue ?? 'null');
       fillFileIds(draft);
       setDraftData(key, draft, { external: true });
-      externalUpdates.emit(key);
     } catch {
       // It may happen
     }
@@ -227,14 +227,20 @@ function setDraftData(key, data, { external = false } = {}) {
       setDelayedAction(key, () =>
         storage.setItem(KEY_PREFIX + key, JSON.stringify(omit(data, 'fileIds'))),
       );
+    if (external) {
+      externalUpdates.emit(key);
+    }
   }
+  allUpdates.emit();
 }
 
 /** @type {EventEmitter<string | undefined>} */
 const externalUpdates = new EventEmitter();
+/** @type {EventEmitter<void>} */
+const allUpdates = new EventEmitter();
 
 /**
- * Subscribe to drafts update
+ * Subscribe to external drafts updates
  *
  * @param {UpdateHandler} listener
  * @returns {() => void} - unsubscribe function
@@ -244,11 +250,36 @@ export function subscribeToDrafts(listener) {
 }
 
 /**
+ * Subscribe to all drafts updates
+ *
+ * @param {() => void} listener
+ * @returns {() => void} - unsubscribe function
+ */
+export function subscribeToDraftChanges(listener) {
+  return allUpdates.subscribe(listener);
+}
+
+/**
  * In-memory copy of relevant localStorage data
  *
  * @type {Map<string, DraftData>}
  */
 const allDrafts = new Map();
+
+/**
+ * @param {number} cutTimeout
+ * @returns {number}
+ */
+export function countDrafts(cutTimeout) {
+  const cutTime = Date.now() - cutTimeout;
+  let count = 0;
+  for (const draft of allDrafts.values()) {
+    if (draft.ts < cutTime) {
+      count++;
+    }
+  }
+  return count;
+}
 
 /**
  * @param {unknown} storageKey
