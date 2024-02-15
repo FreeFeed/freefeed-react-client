@@ -265,6 +265,11 @@ function App() {
           {...generateRouteHooks(boundRouteActions('notifications'))}
         />
         <Route
+          name="drafts"
+          path="filter/drafts"
+          component={lazyLoad(() => import('./components/drafts-page'))}
+        />
+        <Route
           name="best_of"
           path="filter/best_of"
           component={PlainFeed}

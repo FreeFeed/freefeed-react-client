@@ -282,6 +282,18 @@ export function countDrafts(cutTimeout) {
 }
 
 /**
+ * @type {[string, DraftData][]|null}
+ */
+let draftsDump = null;
+subscribeToDraftChanges(() => (draftsDump = null));
+export function getAllDrafts() {
+  if (!draftsDump) {
+    draftsDump = [...allDrafts.entries()].sort((a, b) => b[1].ts - a[1].ts);
+  }
+  return draftsDump;
+}
+
+/**
  * @param {unknown} storageKey
  * @returns {boolean}
  */
