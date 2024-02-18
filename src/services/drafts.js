@@ -70,6 +70,7 @@ export function setDraftField(key, field, value) {
   if (field === 'files') {
     fillFileIds(newData);
   }
+  setActiveDraft(key);
   setDraftData(key, newData);
 }
 
@@ -81,6 +82,33 @@ export function deleteDraft(key) {
 }
 
 /**
+ * @param {string|null} key
+ */
+export function doneEditing(key) {
+  if (!key || activeDraft?.key === key) {
+    setActiveDraft(null);
+  }
+  allUpdates.emit();
+}
+
+/**
+ * @param {string} key
+ */
+export function doneEditingAndDeleteDraft(key) {
+  setDraftData(key, null);
+  doneEditing(key);
+}
+
+/**
+ * @param {string} key
+ */
+export function doneEditingIfEmpty(key) {
+  if (!hasDraft(key)) {
+    doneEditing(key);
+  }
+}
+
+/**
  * Remove draft if it has no meaningful data
  *
  * @param {string} key
@@ -89,6 +117,22 @@ export function deleteEmptyDraft(key) {
   const data = getDraft(key);
   if (data && !data.text?.trim() && !data.files?.length) {
     deleteDraft(key);
+  }
+}
+
+/** @type {{key: string, countable: boolean}|null} */
+let activeDraft = null;
+/**
+ * @param {string|null} key
+ */
+function setActiveDraft(key) {
+  if (key === activeDraft?.key) {
+    return;
+  }
+  if (key === null) {
+    activeDraft = null;
+  } else {
+    activeDraft = { key, countable: allDrafts.has(key) };
   }
 }
 
@@ -117,6 +161,8 @@ function clearDraftsStorage() {
 export function deleteAllDrafts() {
   clearDraftsStorage();
   allDrafts.clear();
+  setActiveDraft(null);
+  allUpdates.emit();
 }
 
 /**
@@ -267,16 +313,18 @@ export function subscribeToDraftChanges(listener) {
 const allDrafts = new Map();
 
 /**
- * @param {number} cutTimeout
  * @returns {number}
  */
-export function countDrafts(cutTimeout) {
-  const cutTime = Date.now() - cutTimeout;
+export function countDrafts() {
   let count = 0;
-  for (const draft of allDrafts.values()) {
-    if (draft.ts < cutTime) {
-      count++;
+  for (const key of allDrafts.keys()) {
+    if (activeDraft?.key === key && !activeDraft.countable) {
+      continue;
     }
+    count++;
+  }
+  if (activeDraft?.countable && !allDrafts.has(activeDraft.key)) {
+    count++;
   }
   return count;
 }

@@ -8,7 +8,7 @@ import { captureException } from '@sentry/react';
 import { submittingByEnter } from '../services/appearance';
 import { makeJpegIfNeeded } from '../utils/jpeg-if-needed';
 import { insertText } from '../utils/insert-text';
-import { getDraft, setDraftField, subscribeToDrafts } from '../services/drafts';
+import { doneEditingIfEmpty, getDraft, setDraftField, subscribeToDrafts } from '../services/drafts';
 import { useForwardedRef } from './hooks/forward-ref';
 import { useEventListener } from './hooks/sub-unsub';
 
@@ -41,6 +41,7 @@ export const SmartTextarea = forwardRef(function SmartTextarea(
     draftKey,
     // Value to reset to when draft disappears
     defaultValue = '',
+    cancelEmptyDraftOnBlur = false,
     ...props
   },
   fwdRef,
@@ -53,9 +54,14 @@ export const SmartTextarea = forwardRef(function SmartTextarea(
   useEffect(() => {
     const input = ref.current;
     const onFocus = () => setWasFocused(true);
+    const onBlur = () => cancelEmptyDraftOnBlur && draftKey && doneEditingIfEmpty(draftKey);
     input.addEventListener('focus', onFocus);
-    return () => input.removeEventListener('focus', onFocus);
-  }, [ref]);
+    input.addEventListener('blur', onBlur);
+    return () => {
+      input.removeEventListener('focus', onFocus);
+      input.removeEventListener('blur', onBlur);
+    };
+  }, [cancelEmptyDraftOnBlur, draftKey, ref]);
 
   ref.current.insertText = useCallback(
     (insertion) => {

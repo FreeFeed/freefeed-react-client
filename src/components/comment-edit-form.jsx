@@ -4,7 +4,7 @@ import cn from 'classnames';
 
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { initialAsyncState } from '../redux/async-helpers';
-import { deleteDraft, getDraft } from '../services/drafts';
+import { doneEditingAndDeleteDraft, getDraft } from '../services/drafts';
 import { Throbber } from './throbber';
 import { ButtonLink } from './button-link';
 import { Icon } from './fontawesome-icons';
@@ -42,7 +42,7 @@ export function CommentEditForm({
         return;
       }
       onCancel(e);
-      deleteDraft(draftKey);
+      doneEditingAndDeleteDraft(draftKey);
     },
     [draftKey, initialText, onCancel, text],
   );
@@ -114,6 +114,7 @@ export function CommentEditForm({
           readOnly={submitStatus.loading}
           dir={'auto'}
           draftKey={draftKey}
+          cancelEmptyDraftOnBlur={isPersistent}
         />
       </div>
       <div>

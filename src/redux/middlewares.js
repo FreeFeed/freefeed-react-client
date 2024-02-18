@@ -3,6 +3,7 @@ import { browserHistory } from 'react-router';
 import * as _ from 'lodash-es';
 import * as Sentry from '@sentry/react';
 
+import { LOCATION_CHANGE } from 'react-router-redux';
 import { getPost } from '../services/api';
 import { getToken, setToken } from '../services/auth';
 import { Connection } from '../services/realtime';
@@ -26,7 +27,12 @@ import {
 import { scrollingOrInteraction, unscroll } from '../services/unscroll';
 import { inactivityOf } from '../utils/event-sequences';
 import { authDebug } from '../utils/debug';
-import { deleteAllDrafts, deleteDraft, initializeDrafts } from '../services/drafts';
+import {
+  deleteAllDrafts,
+  doneEditing,
+  doneEditingAndDeleteDraft,
+  initializeDrafts,
+} from '../services/drafts';
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import {
@@ -1023,21 +1029,27 @@ export const draftsMiddleware = (store) => {
 
       // Delete drafts on successful form submit
       case response(ActionTypes.CREATE_POST): {
-        deleteDraft(action.request.more.draftKey);
+        doneEditingAndDeleteDraft(action.request.more.draftKey);
         break;
       }
       case response(ActionTypes.ADD_COMMENT): {
         const { draftKey } = action.request;
-        draftKey && deleteDraft(draftKey);
+        draftKey && doneEditingAndDeleteDraft(draftKey);
         break;
       }
       case response(ActionTypes.SAVE_EDITING_POST): {
-        deleteDraft(action.request.newPost.draftKey);
+        doneEditingAndDeleteDraft(action.request.newPost.draftKey);
         break;
       }
       case response(ActionTypes.SAVE_EDITING_COMMENT): {
         const { draftKey } = action.request;
-        draftKey && deleteDraft(draftKey);
+        draftKey && doneEditingAndDeleteDraft(draftKey);
+        break;
+      }
+
+      // Reset active draft on navigation
+      case LOCATION_CHANGE: {
+        doneEditing(null);
         break;
       }
 

@@ -22,7 +22,7 @@ import { Selector } from '../feeds-selector/selector';
 import { EDIT_DIRECT, EDIT_REGULAR } from '../feeds-selector/constants';
 import { ButtonLink } from '../button-link';
 import { usePrivacyCheck } from '../feeds-selector/privacy-check';
-import { deleteDraft, existingPostURI, getDraft } from '../../services/drafts';
+import { doneEditingAndDeleteDraft, existingPostURI, getDraft } from '../../services/drafts';
 import PostAttachments from './post-attachments';
 
 const selectMaxFilesCount = (serverInfo) => serverInfo.attachments.maxCountPerPost;
@@ -119,7 +119,7 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
       return;
     }
     dispatch(cancelEditingPost(id));
-    deleteDraft(draftKey);
+    doneEditingAndDeleteDraft(draftKey);
   }, [attachments, body, dispatch, draftKey, fileIds, id, postText]);
 
   const [privacyLevel] = usePrivacyCheck(feeds);

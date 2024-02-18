@@ -203,6 +203,7 @@ export default function CreatePost({ sendTo, isDirects }) {
             maxLength={maxPostLength}
             dir={'auto'}
             draftKey={draftKey}
+            cancelEmptyDraftOnBlur
           />
         </div>
 
