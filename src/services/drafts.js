@@ -273,9 +273,9 @@ function setDraftData(key, data, { external = false } = {}) {
       setDelayedAction(key, () =>
         storage.setItem(KEY_PREFIX + key, JSON.stringify(omit(data, 'fileIds'))),
       );
-    if (external) {
-      externalUpdates.emit(key);
-    }
+  }
+  if (external) {
+    externalUpdates.emit(key);
   }
   allUpdates.emit();
 }
