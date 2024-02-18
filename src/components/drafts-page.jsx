@@ -1,9 +1,19 @@
 import { Link } from 'react-router';
 import { useCallback, useMemo, useSyncExternalStore } from 'react';
+import { faComment, faEdit } from '@fortawesome/free-regular-svg-icons';
+import { useSelector } from 'react-redux';
 import { deleteDraft, getAllDrafts, subscribeToDraftChanges } from '../services/drafts';
 import { pluralForm } from '../utils';
+import { postReadmoreConfig } from '../utils/readmore-config';
+import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import ErrorBoundary from './error-boundary';
 import TimeDisplay from './time-display';
+import PieceOfText from './piece-of-text';
+import { Icon } from './fontawesome-icons';
+import { useBool } from './hooks/bool';
+import { UserPicture } from './user-picture';
+import { faCommentPlus } from './fontawesome-custom-icons';
+import Expandable from './expandable';
 
 export default function DraftsPage() {
   const allDrafts = useSyncExternalStore(subscribeToDraftChanges, getAllDrafts);
@@ -41,17 +51,24 @@ function DraftEntry({ draftKey, data }) {
   const typeTitle = useMemo(() => {
     switch (type) {
       case 'new-post':
-        return 'New post';
+        return 'creating a new post';
       case 'new-comment':
-        return 'New comment';
+        return 'creating a new comment';
       case 'post':
-        return 'Editing post';
+        return 'editing a post';
       case 'comment':
-        return 'Editing comment';
+        return 'editing a comment';
       default:
         type;
     }
   }, [type]);
+
+  const commentIcon = type === 'comment' ? faComment : faCommentPlus;
+
+  const isPost = type.includes('post');
+
+  const user = useSelector((state) => state.user);
+  const readMoreStyle = useSelector((state) => state.user.frontendPreferences.readMoreStyle);
 
   const onDelete = useCallback(() => {
     if (!confirm('Discard unsaved changes?')) {
@@ -61,21 +78,42 @@ function DraftEntry({ draftKey, data }) {
     deleteDraft(draftKey);
   }, [draftKey]);
 
+  const [absTimestamps, toggleAbsTimestamps] = useBool(false);
+
   return (
-    <div>
-      <p>
-        <Link to={uri}>
-          {typeTitle} <TimeDisplay timeStamp={data.ts} inline />
-        </Link>
-        <button className="btn btn-default btn-sm pull-right" type="button" onClick={onDelete}>
+    <div className="single-event">
+      <div className="single-event__picture">
+        {isPost ? (
+          <UserPicture user={user} size={40} loading="lazy" />
+        ) : (
+          <Icon className="single-event__picture-icon" icon={commentIcon} />
+        )}
+      </div>
+      <div className="single-event__headline">
+        <Link to={uri}>You&#x2019;re {typeTitle}</Link>
+        {data.files?.length > 0 && <em> with {pluralForm(data.files.length, 'file')}</em>}
+        <button className="btn btn-default btn-xs pull-right" type="button" onClick={onDelete}>
           Delete
         </button>
-      </p>
-      <blockquote>
-        {data.text || <em className="text-muted">no text</em>}
-        {data.files?.length > 0 && <footer>and {pluralForm(data.files.length, 'file')}</footer>}
-      </blockquote>
-      <hr />
+      </div>
+      <div className="single-event__content">
+        {data.text ? (
+          <Expandable
+            expanded={readMoreStyle === READMORE_STYLE_COMPACT}
+            config={postReadmoreConfig}
+          >
+            <PieceOfText text={data.text} readMoreStyle={readMoreStyle} />
+          </Expandable>
+        ) : (
+          <em className="text-muted">no text</em>
+        )}
+      </div>
+      <div className="single-event__date">
+        <Icon icon={faEdit} className="single-event__date-icon" onClick={toggleAbsTimestamps} />
+        <Link to={uri}>
+          <TimeDisplay timeStamp={data.ts} absolute={absTimestamps || null} />
+        </Link>
+      </div>
     </div>
   );
 }

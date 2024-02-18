@@ -24,10 +24,17 @@
     grid-area: picture;
     display: flex;
     margin-right: 0.75em;
+    width: 40px;
 
     @media (max-width: 450px) {
       margin-right: 0.5em;
     }
+  }
+
+  &__picture-icon {
+    opacity: 0.3;
+    width: 32px;
+    height: 32px;
   }
 
   &__headline {
