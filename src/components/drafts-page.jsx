@@ -47,28 +47,48 @@ export default function DraftsPage() {
 }
 
 function DraftEntry({ draftKey, data }) {
+  const user = useSelector((state) => state.user);
+  const readMoreStyle = useSelector((state) => state.user.frontendPreferences.readMoreStyle);
+
   const [type, uri] = draftKey.split(':');
   const typeTitle = useMemo(() => {
     switch (type) {
       case 'new-post':
-        return 'creating a new post';
-      case 'new-comment':
+        if (uri === '/') {
+          return 'creating a new post at Home';
+        } else if (uri === '/filter/discussions') {
+          return 'creating a new post in Discussions';
+        } else if (uri === `/${user.username}`) {
+          return 'creating a new post in your feed';
+        } else if (uri.startsWith('/filter/direct')) {
+          let newPostPlace = 'creating a direct message';
+          if (data.feeds) {
+            newPostPlace += ` to ${data.feeds.join(', ')}`;
+          } else if (uri.includes('?to=')) {
+            newPostPlace += ` to ${uri.slice('/filter/direct?to='.length)}`;
+          }
+          return newPostPlace;
+        } else if (data.feeds) {
+          return `creating a new post to ${data.feeds.join(', ')}`;
+        }
+        return `creating a new post at ${uri}`;
+      case 'new-comment': {
         return 'creating a new comment';
-      case 'post':
+      }
+      case 'post': {
         return 'editing a post';
-      case 'comment':
+      }
+      case 'comment': {
         return 'editing a comment';
+      }
       default:
         type;
     }
-  }, [type]);
+  }, [data.feeds, type, uri, user.username]);
 
   const commentIcon = type === 'comment' ? faComment : faCommentPlus;
 
   const isPost = type.includes('post');
-
-  const user = useSelector((state) => state.user);
-  const readMoreStyle = useSelector((state) => state.user.frontendPreferences.readMoreStyle);
 
   const onDelete = useCallback(() => {
     if (!confirm('Discard unsaved changes?')) {
