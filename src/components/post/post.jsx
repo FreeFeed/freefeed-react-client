@@ -341,10 +341,12 @@ class Post extends Component {
                 </span>
               )}
               <span className="post-footer-item">
-                <DraftIndicator
-                  draftKey={existingPostURI(this.props.shortId)}
-                  onClick={this.toggleEditingPost}
-                />
+                {!props.isEditing && (
+                  <DraftIndicator
+                    draftKey={existingPostURI(this.props.shortId)}
+                    onClick={this.toggleEditingPost}
+                  />
+                )}
               </span>
               <span className="post-footer-item">{moreLink}</span>
             </span>
