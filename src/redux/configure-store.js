@@ -25,6 +25,7 @@ import {
   commentsCompleteMiddleware,
   appVersionMiddleware,
   reloadFeedMiddleware,
+  draftsMiddleware,
 } from './middlewares';
 
 import * as reducers from './reducers';
@@ -55,6 +56,7 @@ const middleware = [
   commentsCompleteMiddleware,
   appVersionMiddleware,
   reloadFeedMiddleware,
+  draftsMiddleware,
 ];
 
 const enhancers = [applyMiddleware(...middleware)];

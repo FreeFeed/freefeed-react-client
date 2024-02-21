@@ -5,13 +5,15 @@ import { useField, useForm } from 'react-final-form-hooks';
 import { faLock, faUserFriends, faGlobeAmericas } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router';
 
-import { updateUser } from '../../../redux/action-creators';
+import { updateActualUserPreferences, updateUser } from '../../../redux/action-creators';
 import { Throbber } from '../../throbber';
 import { PreventPageLeaving } from '../../prevent-page-leaving';
 import { RadioInput, CheckboxInput } from '../../form-utils';
 import { Icon } from '../../fontawesome-icons';
 
 import settingsStyles from '../settings.module.scss';
+import { doSequence } from '../../../redux/async-helpers';
+import { setSavingEnabled } from '../../../services/drafts';
 
 const PUBLIC = 'public',
   PROTECTED = 'protected',
@@ -37,6 +39,7 @@ export default (function PrivacyForm() {
   const privacy = useField('privacy', form.form);
   const acceptDirectsFrom = useField('acceptDirectsFrom', form.form);
   const sanitizeMediaMetadata = useField('sanitizeMediaMetadata', form.form);
+  const saveDrafts = useField('saveDrafts', form.form);
 
   return (
     <form onSubmit={form.handleSubmit}>
@@ -111,6 +114,23 @@ export default (function PrivacyForm() {
         </p>
       </section>
 
+      <section className={settingsStyles.formSection}>
+        <h4 id="drafts">Drafts</h4>
+
+        <div className="form-group">
+          <div className="checkbox">
+            <label>
+              <CheckboxInput field={saveDrafts} />
+              Save unfinished posts and comments drafts to your browser&#x2019;s local storage.
+            </label>
+          </div>
+        </div>
+        <p className="text-muted">
+          If you disable saving, drafts will still work, but will not be saved to persistent storage
+          and will be lost when you close or reload the browser tab.
+        </p>
+      </section>
+
       <div className="form-group">
         <button
           className="btn btn-primary"
@@ -140,22 +160,26 @@ function initialValues(userData) {
     privacy: privacyFlagsToString(userData),
     acceptDirectsFrom: userData.preferences.acceptDirectsFrom,
     sanitizeMediaMetadata: userData.preferences.sanitizeMediaMetadata,
+    saveDrafts: userData.frontendPreferences.saveDrafts,
   };
 }
 
 function onSubmit(id, dispatch) {
   return (values) => {
     const { isPrivate, isProtected } = privacyStringToFlags(values.privacy);
-    dispatch(
-      updateUser({
-        id,
-        isPrivate,
-        isProtected,
-        backendPrefs: {
-          acceptDirectsFrom: values.acceptDirectsFrom,
-          sanitizeMediaMetadata: values.sanitizeMediaMetadata,
-        },
-      }),
+    doSequence(dispatch)(
+      (dispatch) => dispatch(updateUser({ id, isPrivate, isProtected })),
+      (dispatch) =>
+        dispatch(
+          updateActualUserPreferences({
+            updateFrontendPrefs: () => ({ saveDrafts: values.saveDrafts }),
+            updateBackendPrefs: () => ({
+              acceptDirectsFrom: values.acceptDirectsFrom,
+              sanitizeMediaMetadata: values.sanitizeMediaMetadata,
+            }),
+          }),
+        ),
+      () => setSavingEnabled(id, values.saveDrafts),
     );
   };
 }

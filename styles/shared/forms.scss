@@ -1,5 +1,4 @@
-// @import "../common/select2/4.0.0-rc.2/theme/classic/_defaults";
-// @import "../common/select2/4.0.0-rc.2/theme/classic/_multiple.scss";
+@import '../helvetica/dark-vars.scss';
 
 .send-to {
   padding-bottom: 6px;
@@ -102,4 +101,12 @@ label.option-box {
 
 .signup-userpic.disabled {
   opacity: 0.5;
+}
+
+.textarea-inactive {
+  color: #888;
+
+  .dark-theme & {
+    color: #{$text-color-darker} !important;
+  }
 }

@@ -1,0 +1,13 @@
+@import '../../../styles/helvetica/dark-vars.scss';
+
+.indicator {
+  background-color: #fcf8e3;
+
+  :global(.dark-theme) & {
+    background-color: #{$bg-highlight-color};
+  }
+
+  color: inherit !important;
+  border-radius: 0.2em;
+  padding-inline: 0.2em;
+}

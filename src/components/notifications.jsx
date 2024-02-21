@@ -490,14 +490,14 @@ function Notification({ event }) {
   );
   const mainLink = mainEventLink(eventWithShortIds);
   return (
-    <div className={`single-notification ${notificationClasses[event.event_type] || ''}`}>
-      <div className="single-notification__picture">
+    <div className={`single-event ${notificationClasses[event.event_type] || ''}`}>
+      <div className="single-event__picture">
         <UserPicture user={userPictureSource(event)} size={40} loading="lazy" />
       </div>
-      <div className="single-notification__headline">
+      <div className="single-event__headline">
         {(notificationTemplates[event.event_type] || nop)(eventWithShortIds)}
       </div>
-      <div className="single-notification__content">
+      <div className="single-event__content">
         {content ? (
           <Expandable
             expanded={readMoreStyle === READMORE_STYLE_COMPACT}
@@ -509,12 +509,8 @@ function Notification({ event }) {
           <em>Text not available</em>
         ) : null}
       </div>
-      <div className="single-notification__date">
-        <Icon
-          icon={faBell}
-          className="single-notification__date-icon"
-          onClick={toggleAbsTimestamps}
-        />
+      <div className="single-event__date">
+        <Icon icon={faBell} className="single-event__date-icon" onClick={toggleAbsTimestamps} />
         {mainLink ? (
           <Link to={mainLink}>
             <TimeDisplay timeStamp={event.date} absolute={absTimestamps || null} />
