@@ -83,6 +83,10 @@ $post-line-height: rem(20px);
       font-size: rem(16px);
       line-height: $post-line-height;
 
+      &.rtl {
+        text-align: right;
+      }
+
       &.modern {
         max-height: 5 * $post-line-height;
         overflow-y: hidden;
@@ -427,6 +431,9 @@ $post-line-height: rem(20px);
 
       font-size: rem(21px);
       line-height: rem(26px);
+      &.rtl {
+        text-align: right;
+      }
     }
   }
 }
