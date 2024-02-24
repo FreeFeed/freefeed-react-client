@@ -368,10 +368,8 @@ class Post extends Component {
     );
   }
   getTextAlignText = (char) => {
-    const rtlChars =
-      '\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFBC1\uFBD3-\uFD3D\uFD50-\uFD8F\uFD92-\uFDC7\uFDF0-\uFDFD\uFE70-\uFE74\uFE76-\uFEFC';
-    const rtlRegex = new RegExp(`[${rtlChars}]`);
-    return rtlRegex.test(char);
+    const persianRegex = /[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF]/g;
+    return persianRegex.test(char);
   };
 
   render() {
@@ -390,7 +388,7 @@ class Post extends Component {
     const linkToEmbed = getFirstLinkToEmbed(props.body);
 
     const { role, postLabel } = this.getAriaLabels();
-    const postText = this.getTextAlignText(props.body.charAt(0)) ? 'post-text rtl' : 'post-text';
+    const postText = this.getTextAlignText(props.body) ? 'post-text rtl' : 'post-text';
 
     return (
       <PostProvider id={this.props.id}>
