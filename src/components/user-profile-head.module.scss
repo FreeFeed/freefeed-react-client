@@ -99,8 +99,16 @@ $actions-padding: 0.75em;
   grid-area: description;
   margin-top: 0.66em;
 
+  &.rtl {
+    text-align: right;
+  }
+
   &:empty {
     display: none;
+  }
+
+  &:global(.Linkify) {
+    display: block;
   }
 }
 
