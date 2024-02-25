@@ -14,7 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import { pluralForm } from '../../utils';
-import { getFirstLinkToEmbed } from '../../utils/parse-text';
+import { getFirstLinkToEmbed, getTextAlign } from '../../utils/parse-text';
 import { canonicalURI } from '../../utils/canonical-uri';
 import { READMORE_STYLE_COMPACT } from '../../utils/frontend-preferences-options';
 import { postReadmoreConfig } from '../../utils/readmore-config';
@@ -367,10 +367,6 @@ class Post extends Component {
       </div>
     );
   }
-  getTextAlignText = (char) => {
-    const persianRegex = /[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF]/g;
-    return persianRegex.test(char);
-  };
 
   render() {
     const { props } = this;
@@ -388,7 +384,7 @@ class Post extends Component {
     const linkToEmbed = getFirstLinkToEmbed(props.body);
 
     const { role, postLabel } = this.getAriaLabels();
-    const postText = this.getTextAlignText(props.body) ? 'post-text rtl' : 'post-text';
+    const postText = getTextAlign(props.body) ? 'post-text rtl' : 'post-text';
 
     return (
       <PostProvider id={this.props.id}>
