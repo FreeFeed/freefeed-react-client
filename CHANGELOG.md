@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.128.0] - Not released
 ### Fixed
 - Fix lightbox for some old attachments that have no sizes in API responses.
+- Fix the text direction for Persian language content.
 ### Added
 - Drafts. When a user creates/edits a post or comment, the entered text is
   automatically saved to localStorage. This prevents accidental loss of content
