@@ -107,7 +107,7 @@ $actions-padding: 0.75em;
     display: none;
   }
 
-  &:global(.Linkify) {
+  & :global(.Linkify) {
     display: block;
   }
 }
