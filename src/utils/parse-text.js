@@ -1,14 +1,14 @@
 /* global CONFIG */
 import {
-  withTexts,
-  combine,
-  hashtags,
-  emails,
-  mentions,
-  foreignMentions,
-  links,
   arrows,
+  combine,
+  emails,
+  foreignMentions,
+  hashtags,
   LINK,
+  links,
+  mentions,
+  withTexts,
 } from 'social-text-tokenizer';
 
 import { linkHref } from 'social-text-tokenizer/prettifiers';
@@ -174,4 +174,9 @@ for (const srv of foreignMentionServices) {
   for (const code of srv.shortCodes) {
     shortCodeToService[code] = srv;
   }
+}
+
+export function getTextAlign(char) {
+  const persianRegex = /[\u0600-\u065F\u066A-\u06EF\u06FA-\u06FF]/g;
+  return persianRegex.test(char);
 }

@@ -31,6 +31,7 @@ import {
   enableBansInGroup,
 } from '../redux/action-creators';
 import { USERNAME } from '../utils/hide-criteria';
+import { getTextAlign } from '../utils/parse-text';
 import { withKey } from './with-key';
 import { UserPicture } from './user-picture';
 import { Throbber } from './throbber';
@@ -263,6 +264,8 @@ export const UserProfileHead = withRouter(
 
     const isAuthenticated = !!currentUser;
 
+    const postText = `${styles.description}${getTextAlign(user.description) ? ` ${styles.rtl}` : ''}`;
+
     return (
       <div className={styles.profile} role="region">
         <div className={styles.avatar}>
@@ -288,7 +291,7 @@ export const UserProfileHead = withRouter(
             />
           </div>
         </div>
-        <div className={styles.description}>
+        <div className={postText}>
           <PieceOfText text={user.description} isExpanded={true} />
         </div>
         {isAuthenticated && !isCurrentUser && (
