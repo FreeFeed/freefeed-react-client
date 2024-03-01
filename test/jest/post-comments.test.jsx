@@ -62,6 +62,7 @@ const COMMENT3 = {
 
 const POST = {
   id: 'post-id',
+  shortId: 'post-id',
   omittedComments: 0,
   omittedCommentsOffset: 0,
   omittedCommentLikes: 0,
@@ -82,6 +83,7 @@ const defaultState = {
   serverInfoStatus: initialAsyncState,
   translationStates: {},
   translationResults: {},
+  posts: { [POST.id]: POST },
 };
 
 const renderPostComments = (props = {}, options = {}) => {

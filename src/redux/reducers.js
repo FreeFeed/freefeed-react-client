@@ -676,10 +676,17 @@ export function attachments(state = {}, action) {
       return state;
     }
     case response(ActionTypes.CREATE_ATTACHMENT):
+    case ActionTypes.SET_ATTACHMENT:
     case ActionTypes.ADD_ATTACHMENT_RESPONSE: {
+      const attObj = action.payload.attachments;
+      // Attachment objects don't change over time, so we don't need to update
+      // them.
+      if (state[attObj.id]) {
+        return state;
+      }
       return {
         ...state,
-        [action.payload.attachments.id]: action.payload.attachments,
+        [attObj.id]: attObj,
       };
     }
   }

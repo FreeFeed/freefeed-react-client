@@ -1,7 +1,8 @@
 import cn from 'classnames';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ButtonLink } from '../button-link';
 import { prepareAsyncFocus } from '../../utils/prepare-async-focus';
+import { getDraft, setDraftField, subscribeToDrafts } from '../../services/drafts';
 import { DisplayOption, useSelectedOptions } from './options';
 
 // Local styles
@@ -20,7 +21,17 @@ import styles from './selector.module.scss';
 import { SelectorError } from './error';
 import { AccountsSelector } from './accounts-selector';
 
-export function Selector({ className, mode, feedNames, fixedFeedNames = [], onChange, onError }) {
+export function Selector({
+  className,
+  mode,
+  feedNames,
+  // Feed names to reset to when draft disappears
+  defaultFeedNames,
+  fixedFeedNames = [],
+  onChange,
+  onError,
+  draftKey,
+}) {
   const { values, meOption, groupOptions, userOptions } = useSelectedOptions(
     feedNames,
     fixedFeedNames,
@@ -84,10 +95,24 @@ export function Selector({ className, mode, feedNames, fixedFeedNames = [], onCh
       if (action.removedValue?.isFixed) {
         return;
       }
-      onChange(opts.map((o) => o.value));
+      const feedNames = opts.map((o) => o.value);
+      onChange(feedNames);
+      if (draftKey) {
+        setDraftField(draftKey, 'feeds', feedNames);
+      }
     },
-    [onChange],
+    [draftKey, onChange],
   );
+
+  useEffect(() => {
+    if (!draftKey) {
+      return;
+    }
+    return subscribeToDrafts(() => {
+      const feeds = getDraft(draftKey)?.feeds ?? defaultFeedNames;
+      feeds && onChange(feeds);
+    });
+  }, [defaultFeedNames, draftKey, onChange]);
 
   const formatCreateLabel = useCallback(
     (label) => (isDirect ? `Add @${label} as recipient` : `Post to @${label}`),

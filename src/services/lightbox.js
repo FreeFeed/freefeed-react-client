@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-/* global globalThis */
 
 let firstOpen = true;
 export function openLightbox(index, dataSource) {

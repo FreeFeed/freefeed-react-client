@@ -136,6 +136,7 @@ function Bookmarklet(props) {
 }
 
 initUnscroll();
+
 // Fetch server info on application start
 setTimeout(() => store.dispatch(ActionCreators.getServerInfo()), 0);
 
@@ -262,6 +263,11 @@ function App() {
           path="filter/notifications"
           component={lazyLoad(() => import('./components/notifications'))}
           {...generateRouteHooks(boundRouteActions('notifications'))}
+        />
+        <Route
+          name="drafts"
+          path="filter/drafts"
+          component={lazyLoad(() => import('./components/drafts-page'))}
         />
         <Route
           name="best_of"

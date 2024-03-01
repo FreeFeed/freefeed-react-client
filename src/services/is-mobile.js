@@ -1,5 +1,3 @@
-/* global globalThis */
-
 export function detectMobile({ userAgentData, userAgent } = { userAgentData: { mobile: false } }) {
   if (userAgentData) {
     return userAgentData.mobile;

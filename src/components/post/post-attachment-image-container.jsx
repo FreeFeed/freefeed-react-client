@@ -72,9 +72,10 @@ export default class ImageAttachmentsContainer extends Component {
   getPswpItems() {
     return this.props.attachments.map((a) => ({
       src: a.url,
-      width: (a.imageSizes && a.imageSizes.o && a.imageSizes.o.w) || 0,
-      height: (a.imageSizes && a.imageSizes.o && a.imageSizes.o.h) || 0,
+      width: a.imageSizes?.o?.w ?? 1,
+      height: a.imageSizes?.o?.h ?? 1,
       pid: this.getPictureId(a),
+      autoSize: !a.imageSizes?.o?.w,
     }));
   }
 

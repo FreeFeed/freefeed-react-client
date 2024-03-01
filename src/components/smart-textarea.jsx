@@ -1,6 +1,6 @@
 import cn from 'classnames';
 import { CODE_ENTER } from 'keycode-js';
-import { forwardRef, useCallback, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -8,6 +8,7 @@ import { captureException } from '@sentry/react';
 import { submittingByEnter } from '../services/appearance';
 import { makeJpegIfNeeded } from '../utils/jpeg-if-needed';
 import { insertText } from '../utils/insert-text';
+import { doneEditingIfEmpty, getDraft, setDraftField, subscribeToDrafts } from '../services/drafts';
 import { useForwardedRef } from './hooks/forward-ref';
 import { useEventListener } from './hooks/sub-unsub';
 
@@ -35,6 +36,12 @@ export const SmartTextarea = forwardRef(function SmartTextarea(
     component: Component = TextareaAutosize,
     className,
     dragOverClassName,
+    // Class name before the first focus
+    inactiveClassName,
+    draftKey,
+    // Value to reset to when draft disappears
+    defaultValue = '',
+    cancelEmptyDraftOnBlur = false,
     ...props
   },
   fwdRef,
@@ -42,6 +49,19 @@ export const SmartTextarea = forwardRef(function SmartTextarea(
   const ref = useForwardedRef(fwdRef, {});
   useSubmit(onSubmit, ref);
   const draggingOver = useFile(onFile, ref);
+  const [wasFocused, setWasFocused] = useState(Boolean(props.autoFocus));
+
+  useEffect(() => {
+    const input = ref.current;
+    const onFocus = () => setWasFocused(true);
+    const onBlur = () => cancelEmptyDraftOnBlur && draftKey && doneEditingIfEmpty(draftKey);
+    input.addEventListener('focus', onFocus);
+    input.addEventListener('blur', onBlur);
+    return () => {
+      input.removeEventListener('focus', onFocus);
+      input.removeEventListener('blur', onBlur);
+    };
+  }, [cancelEmptyDraftOnBlur, draftKey, ref]);
 
   ref.current.insertText = useCallback(
     (insertion) => {
@@ -58,22 +78,37 @@ export const SmartTextarea = forwardRef(function SmartTextarea(
       input.setSelectionRange(selStart, selEnd);
       input.focus();
       onText?.(input.value);
+      if (draftKey) {
+        setDraftField(draftKey, 'text', input.value);
+      }
     },
-    [onText, ref],
+    [draftKey, onText, ref],
   );
+
+  useEffect(() => {
+    if (!draftKey && !onText) {
+      return;
+    }
+    return subscribeToDrafts(() => {
+      onText(getDraft(draftKey)?.text ?? defaultValue);
+    });
+  }, [defaultValue, draftKey, onText]);
 
   const handleChange = useCallback(
     (e) => {
       onChange?.(e);
       onText?.(e.target.value);
+      if (draftKey) {
+        setDraftField(draftKey, 'text', e.target.value);
+      }
     },
-    [onChange, onText],
+    [draftKey, onChange, onText],
   );
 
   return (
     <Component
       ref={ref}
-      className={cn(className, draggingOver && dragOverClassName)}
+      className={cn(className, draggingOver && dragOverClassName, !wasFocused && inactiveClassName)}
       onChange={handleChange}
       {...props}
     />
