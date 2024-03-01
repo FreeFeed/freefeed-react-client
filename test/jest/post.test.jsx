@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { createStore } from 'redux';
 import * as reactRedux from 'react-redux';
+import { beforeEach } from 'vitest';
 import * as actionCreators from '../../src/redux/action-creators';
 
 vi.mock('../../src/components/post/post-comments', () => ({
@@ -30,6 +31,7 @@ vi.mock('../../src/components/lazy-component', () => ({
 
 import Post from '../../src/components/post/post';
 import { initialAsyncState } from '../../src/redux/async-helpers';
+import { deleteDraft, existingPostURI } from '../../src/services/drafts';
 
 const AUTHOR = {
   id: 'author-id',
@@ -69,11 +71,13 @@ const renderPost = (props = {}, options = {}) => {
   const dummyReducer = (state) => state;
   const store = createStore(dummyReducer, {
     ...defaultState,
+    posts: { 'post-id': { id: 'post-id', shortId: 'post-id' } },
     submitMode: options.submitMode || 'enter',
   });
 
   const defaultProps = {
     id: 'post-id',
+    shortId: 'post-id',
     body: 'Line 1\nLine 2',
     createdAt: '1615692239035',
     updatedAt: '1615692257002',
@@ -437,80 +441,93 @@ describe('Post', () => {
     expect(cancelEditingPost).toHaveBeenCalledWith('post-id');
   });
 
-  it('Lets me edit text of my post by typing with Shift+Enter when "submitMode" is "enter"', async () => {
-    const saveEditingPost = vi.spyOn(actionCreators, 'saveEditingPost');
-    renderPost({
-      isEditing: true,
-      isEditable: true,
-      body: '',
+  describe('Post text editing', () => {
+    beforeEach(() => {
+      deleteDraft(existingPostURI('post-id'));
     });
 
-    await userEvent.type(screen.getByRole('textbox'), 'Hello,{shift>}{enter}{/shift}World!{enter}');
-    expect(screen.getByRole('textbox')).toHaveValue('Hello,\nWorld!');
-    expect(saveEditingPost).toHaveBeenCalledWith('post-id', {
-      attachments: [],
-      body: 'Hello,\nWorld!',
-      feeds: ['author'],
-    });
-  });
-
-  it('Lets me edit text of my post by typing with Alt+Enter when "submitMode" is "enter"', async () => {
-    const saveEditingPost = vi.spyOn(actionCreators, 'saveEditingPost');
-    renderPost({
-      isEditing: true,
-      isEditable: true,
-      body: '',
-    });
-
-    await userEvent.type(screen.getByRole('textbox'), 'Hello,{alt>}{enter}{/alt}World!{enter}');
-    expect(screen.getByRole('textbox')).toHaveValue('Hello,\nWorld!');
-    expect(saveEditingPost).toHaveBeenCalledWith('post-id', {
-      attachments: [],
-      body: 'Hello,\nWorld!',
-      feeds: ['author'],
-    });
-  });
-
-  it('Lets me submit text of my post by Ctrl+Enter typing when "submitMode" is "ctrl+enter"', async () => {
-    const saveEditingPost = vi.spyOn(actionCreators, 'saveEditingPost');
-    renderPost(
-      {
+    it('Lets me edit text of my post by typing with Shift+Enter when "submitMode" is "enter"', async () => {
+      const saveEditingPost = vi.spyOn(actionCreators, 'saveEditingPost');
+      renderPost({
         isEditing: true,
         isEditable: true,
         body: '',
-      },
-      { submitMode: 'ctrl+enter' },
-    );
+      });
 
-    await userEvent.type(
-      screen.getByRole('textbox'),
-      'Hello,{enter}World!{control>}{enter}{/control}',
-    );
-    expect(screen.getByRole('textbox')).toHaveValue('Hello,\nWorld!');
-    expect(saveEditingPost).toHaveBeenCalledWith('post-id', {
-      attachments: [],
-      body: 'Hello,\nWorld!',
-      feeds: ['author'],
+      await userEvent.type(
+        screen.getByRole('textbox'),
+        'Hello,{shift>}{enter}{/shift}World!{enter}',
+      );
+      expect(screen.getByRole('textbox')).toHaveValue('Hello,\nWorld!');
+      expect(saveEditingPost).toHaveBeenCalledWith('post-id', {
+        attachments: [],
+        body: 'Hello,\nWorld!',
+        feeds: ['author'],
+        draftKey: existingPostURI('post-id'),
+      });
     });
-  });
 
-  it('Lets me submit text of my post by Meta+Enter typing when "submitMode" is "ctrl+enter"', async () => {
-    const saveEditingPost = vi.spyOn(actionCreators, 'saveEditingPost');
-    renderPost(
-      {
+    it('Lets me edit text of my post by typing with Alt+Enter when "submitMode" is "enter"', async () => {
+      const saveEditingPost = vi.spyOn(actionCreators, 'saveEditingPost');
+      renderPost({
         isEditing: true,
         isEditable: true,
         body: '',
-      },
-      { submitMode: 'ctrl+enter' },
-    );
+      });
 
-    await userEvent.type(screen.getByRole('textbox'), 'Hello,{enter}World!{meta>}{enter}{/meta}');
-    expect(screen.getByRole('textbox')).toHaveValue('Hello,\nWorld!');
-    expect(saveEditingPost).toHaveBeenCalledWith('post-id', {
-      attachments: [],
-      body: 'Hello,\nWorld!',
-      feeds: ['author'],
+      await userEvent.type(screen.getByRole('textbox'), 'Hello,{alt>}{enter}{/alt}World!{enter}');
+      expect(screen.getByRole('textbox')).toHaveValue('Hello,\nWorld!');
+      expect(saveEditingPost).toHaveBeenCalledWith('post-id', {
+        attachments: [],
+        body: 'Hello,\nWorld!',
+        feeds: ['author'],
+        draftKey: existingPostURI('post-id'),
+      });
+    });
+
+    it('Lets me submit text of my post by Ctrl+Enter typing when "submitMode" is "ctrl+enter"', async () => {
+      const saveEditingPost = vi.spyOn(actionCreators, 'saveEditingPost');
+      renderPost(
+        {
+          isEditing: true,
+          isEditable: true,
+          body: '',
+        },
+        { submitMode: 'ctrl+enter' },
+      );
+
+      await userEvent.type(
+        screen.getByRole('textbox'),
+        'Hello,{enter}World!{control>}{enter}{/control}',
+      );
+      expect(screen.getByRole('textbox')).toHaveValue('Hello,\nWorld!');
+      expect(saveEditingPost).toHaveBeenCalledWith('post-id', {
+        attachments: [],
+        body: 'Hello,\nWorld!',
+        feeds: ['author'],
+        draftKey: existingPostURI('post-id'),
+      });
+    });
+
+    it('Lets me submit text of my post by Meta+Enter typing when "submitMode" is "ctrl+enter"', async () => {
+      const saveEditingPost = vi.spyOn(actionCreators, 'saveEditingPost');
+      renderPost(
+        {
+          isEditing: true,
+          isEditable: true,
+          body: '',
+        },
+        { submitMode: 'ctrl+enter' },
+      );
+
+      await userEvent.type(screen.getByRole('textbox'), 'Hello,{enter}World!{meta>}{enter}{/meta}');
+      expect(screen.getByRole('textbox')).toHaveValue('Hello,\nWorld!');
+      expect(saveEditingPost).toHaveBeenCalledWith('post-id', {
+        attachments: [],
+        body: 'Hello,\nWorld!',
+        feeds: ['author'],
+        draftKey: existingPostURI('post-id'),
+      });
     });
   });
 });

@@ -1,4 +1,3 @@
-/* global globalThis */
 import { faMinusSquare, faPlusSquare } from '@fortawesome/free-regular-svg-icons';
 import classnames from 'classnames';
 import { useCallback, useEffect, useRef, useState } from 'react';

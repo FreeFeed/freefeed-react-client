@@ -4,8 +4,8 @@ import cn from 'classnames';
 
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { initialAsyncState } from '../redux/async-helpers';
+import { doneEditingAndDeleteDraft, getDraft } from '../services/drafts';
 import { Throbber } from './throbber';
-import { PreventPageLeaving } from './prevent-page-leaving';
 import { ButtonLink } from './button-link';
 import { Icon } from './fontawesome-icons';
 import { SubmitModeHint } from './submit-mode-hint';
@@ -24,16 +24,28 @@ export function CommentEditForm({
   onSubmit = () => {},
   onCancel = () => {},
   submitStatus = initialAsyncState,
+  draftKey,
 }) {
   const { setInput } = useContext(PostContext);
   const input = useRef(null);
-  const [text, setText] = useState(initialText);
+  const [text, setText] = useState(() => getDraft(draftKey)?.text ?? initialText);
   const canSubmit = useMemo(
     () => !submitStatus.loading && text.trim() !== '',
     [submitStatus.loading, text],
   );
 
   const doSubmit = useCallback(() => canSubmit && onSubmit(text), [canSubmit, onSubmit, text]);
+
+  const doCancel = useCallback(
+    (e) => {
+      if (text !== initialText && !confirm('Discard changes?')) {
+        return;
+      }
+      onCancel(e);
+      doneEditingAndDeleteDraft(draftKey);
+    },
+    [draftKey, initialText, onCancel, text],
+  );
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleSubmit = useCallback(
@@ -55,12 +67,17 @@ export function CommentEditForm({
   useEffect(() => void (isPersistent || input.current.focus()), [isPersistent]);
 
   // Clean text after the persistent form submit
+  const wasSubmitted = useRef(false);
   useEffect(() => {
-    if (submitStatus.initial && isPersistent) {
+    if (submitStatus.loading) {
+      wasSubmitted.current = true;
+    }
+    if (isPersistent && submitStatus.initial && wasSubmitted.current) {
       setText('');
+      wasSubmitted.current = false;
       input.current.blur();
     }
-  }, [isPersistent, submitStatus.initial]);
+  }, [draftKey, isPersistent, submitStatus.initial, submitStatus.loading]);
 
   // Set input context if persistent form
   useEffect(() => {
@@ -79,13 +96,14 @@ export function CommentEditForm({
 
   return (
     <div className="comment-body" role="form">
-      <PreventPageLeaving prevent={canSubmit || submitStatus.loading} />
       <div>
         <SmartTextarea
           ref={input}
           className="comment-textarea"
           dragOverClassName="comment-textarea__dragged"
+          inactiveClassName="textarea-inactive"
           value={text}
+          defaultValue={initialText}
           onFocus={onFocus}
           onText={setText}
           onFile={uploadFile}
@@ -95,6 +113,8 @@ export function CommentEditForm({
           maxLength={CONFIG.maxLength.comment}
           readOnly={submitStatus.loading}
           dir={'auto'}
+          draftKey={draftKey}
+          cancelEmptyDraftOnBlur={isPersistent}
         />
       </div>
       <div>
@@ -118,7 +138,7 @@ export function CommentEditForm({
         {!isPersistent && (
           <ButtonLink
             className="comment-cancel"
-            onClick={onCancel}
+            onClick={doCancel}
             aria-disabled={submitStatus.loading}
             aria-label={submitStatus.loading ? 'Cancel disabled (submitting)' : null}
           >

@@ -47,7 +47,7 @@ function ActiveCheckbox({ comment, checked }) {
         return;
       }
       const updatedBody = setCheckState(comment.body, newState);
-      dispatch(saveEditingComment(comment?.id, updatedBody));
+      dispatch(saveEditingComment(comment?.id, updatedBody, null));
     },
     [comment?.body, comment?.id, dispatch],
   );

@@ -6,6 +6,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
+import { difference } from 'lodash-es';
 import { Icon } from '../fontawesome-icons';
 import { SmartTextarea } from '../smart-textarea';
 import { SubmitModeHint } from '../submit-mode-hint';
@@ -21,6 +22,7 @@ import { Selector } from '../feeds-selector/selector';
 import { EDIT_DIRECT, EDIT_REGULAR } from '../feeds-selector/constants';
 import { ButtonLink } from '../button-link';
 import { usePrivacyCheck } from '../feeds-selector/privacy-check';
+import { doneEditingAndDeleteDraft, existingPostURI, getDraft } from '../../services/drafts';
 import PostAttachments from './post-attachments';
 
 const selectMaxFilesCount = (serverInfo) => serverInfo.attachments.maxCountPerPost;
@@ -28,21 +30,22 @@ const selectMaxPostLength = (serverInfo) => serverInfo.maxTextLength.post;
 
 export function PostEditForm({ id, isDirect, recipients, createdBy, body, attachments }) {
   const dispatch = useDispatch();
+  const draftKey = useSelector((state) => existingPostURI(state.posts[id].shortId));
   const saveState = useSelector((state) => state.saveEditingPostStatuses[id] ?? initialAsyncState);
 
   const maxFilesCount = useServerValue(selectMaxFilesCount, Infinity);
   const maxPostLength = useServerValue(selectMaxPostLength, 1e3);
 
   const recipientNames = useMemo(() => recipients.map((r) => r.username), [recipients]);
-  const [feeds, setFeeds] = useState(recipientNames);
-  const [postText, setPostText] = useState(body);
+  const [feeds, setFeeds] = useState(() => getDraft(draftKey)?.feeds ?? recipientNames);
+  const [postText, setPostText] = useState(() => getDraft(draftKey)?.text ?? body);
   const [privacyWarning, setPrivacyWarning] = useState(null);
 
   const textareaRef = useRef();
 
   // Uploading files
   const { isUploading, fileIds, uploadFile, uploadProgressProps, postAttachmentsProps } =
-    useUploader({ maxCount: maxFilesCount, fileIds: attachments });
+    useUploader({ maxCount: maxFilesCount, fileIds: attachments, draftKey });
 
   const doChooseFiles = useFileChooser(uploadFile, { multiple: true });
 
@@ -106,11 +109,18 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
         body: postText,
         attachments: fileIds,
         feeds,
+        draftKey,
       }),
     );
-  }, [canSubmitForm, dispatch, feeds, fileIds, id, postText]);
+  }, [canSubmitForm, dispatch, draftKey, feeds, fileIds, id, postText]);
 
-  const handleCancel = useCallback(() => dispatch(cancelEditingPost(id)), [dispatch, id]);
+  const handleCancel = useCallback(() => {
+    if ((postText !== body || !isSameIds(fileIds, attachments)) && !confirm('Discard changes?')) {
+      return;
+    }
+    dispatch(cancelEditingPost(id));
+    doneEditingAndDeleteDraft(draftKey);
+  }, [attachments, body, dispatch, draftKey, fileIds, id, postText]);
 
   const [privacyLevel] = usePrivacyCheck(feeds);
 
@@ -148,9 +158,11 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
         <Selector
           mode={isDirect ? EDIT_DIRECT : EDIT_REGULAR}
           feedNames={feeds}
+          defaultFeedNames={recipientNames}
           fixedFeedNames={isDirect ? recipientNames : []}
           onChange={setFeeds}
           onError={setHasFeedsError}
+          draftKey={draftKey}
         />
         <div className="post-privacy-warning">{privacyWarning}</div>
       </div>
@@ -158,8 +170,11 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
         <div>
           <SmartTextarea
             className="post-textarea"
+            dragOverClassName="post-textarea__dragged"
+            inactiveClassName="textarea-inactive"
             ref={textareaRef}
             value={postText}
+            defaultValue={body}
             onSubmit={handleSubmit}
             onText={setPostText}
             onFile={uploadFile}
@@ -168,6 +183,7 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
             maxRows={10}
             maxLength={maxPostLength}
             dir="auto"
+            draftKey={draftKey}
           />
         </div>
 
@@ -228,4 +244,11 @@ function getPostPrivacy(recipients, createdBy) {
   const isPrivate = !authorOrGroupsRecipients.some((r) => r.isPrivate === '0');
   const isProtected = isPrivate || !authorOrGroupsRecipients.some((r) => r.isProtected === '0');
   return { isPrivate, isProtected };
+}
+
+function isSameIds(ids1, ids2) {
+  if (ids1.length !== ids2.length) {
+    return false;
+  }
+  return difference(ids1, ids2).length === 0;
 }

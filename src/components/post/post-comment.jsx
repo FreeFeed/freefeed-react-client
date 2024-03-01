@@ -24,9 +24,11 @@ import { Separated } from '../separated';
 
 import { TranslatedText } from '../translated-text';
 import { initialAsyncState } from '../../redux/async-helpers';
+import { existingCommentURI, newCommentURI } from '../../services/drafts';
 import { PostCommentMore } from './post-comment-more';
 import { PostCommentPreview } from './post-comment-preview';
 import { CommentProvider } from './post-comment-provider';
+import { DraftIndicator } from './draft-indicator';
 
 class PostComment extends Component {
   commentContainer;
@@ -76,7 +78,7 @@ class PostComment extends Component {
   mention = () => this.props.mentionCommentAuthor(this.props.id);
   backwardIdx = () => this.props.backwardIdx(this.props.id);
 
-  saveComment = (text) => this.props.saveEditingComment(this.props.id, text);
+  saveComment = (text) => this.props.saveEditingComment(this.props.id, text, this.props.draftKey);
 
   toggleLike = () => {
     return this.props.hasOwnLike
@@ -196,12 +198,20 @@ class PostComment extends Component {
             <Separated separator=" | ">
               {this.props.isEditable && (
                 <span className="comment-tail__action">
-                  <ButtonLink
-                    className="comment-tail__action-link"
+                  <DraftIndicator
+                    draftKey={this.props.draftKey}
                     onClick={this.handleEditOrCancel}
+                    fallback={
+                      <ButtonLink
+                        className="comment-tail__action-link"
+                        onClick={this.handleEditOrCancel}
+                      >
+                        edit
+                      </ButtonLink>
+                    }
                   >
-                    edit
-                  </ButtonLink>
+                    continue editing
+                  </DraftIndicator>
                 </span>
               )}
               {canDelete && this.props.isModeratingComments && (
@@ -278,6 +288,7 @@ class PostComment extends Component {
           onCancel={this.handleEditOrCancel}
           submitStatus={this.props.saveStatus}
           submitMode={this.props.submitMode}
+          draftKey={this.props.draftKey}
         />
       );
     }
@@ -404,6 +415,11 @@ function selectState(state, ownProps) {
     const m = ownProps.body?.match(/^@([a-z\d]+)/i);
     return m && state.bannedUsernames.includes(m[1].toLowerCase());
   })();
+
+  const draftKey = ownProps.isAddingComment
+    ? newCommentURI(state.posts[ownProps.postId].shortId)
+    : existingCommentURI(state.posts[ownProps.postId].shortId, ownProps.shortId);
+
   return {
     ...editState,
     showTimestamps,
@@ -412,6 +428,7 @@ function selectState(state, ownProps) {
     submitMode: state.submitMode,
     isReplyToBanned,
     translateStatus,
+    draftKey,
   };
 }
 
