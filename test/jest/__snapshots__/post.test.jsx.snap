@@ -142,9 +142,6 @@ exports[`Post > Renders a post and doesn't blow up 1`] = `
               </span>
               <span
                 class="post-footer-item"
-              />
-              <span
-                class="post-footer-item"
               >
                 <a
                   class="post-action"
@@ -153,6 +150,9 @@ exports[`Post > Renders a post and doesn't blow up 1`] = `
                   Save
                 </a>
               </span>
+              <span
+                class="post-footer-item"
+              />
               <span
                 class="post-footer-item"
               >
