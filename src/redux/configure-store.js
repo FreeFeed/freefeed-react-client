@@ -26,6 +26,7 @@ import {
   appVersionMiddleware,
   reloadFeedMiddleware,
   draftsMiddleware,
+  resetPasswordCompleteMiddleware,
 } from './middlewares';
 
 import * as reducers from './reducers';
@@ -50,6 +51,7 @@ const middleware = [
   realtimeMiddleware,
   appearanceMiddleware,
   initialWhoamiMiddleware,
+  resetPasswordCompleteMiddleware,
   subscriptionMiddleware,
   onResponseMiddleware,
   betaChannelMiddleware,

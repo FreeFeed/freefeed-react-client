@@ -873,6 +873,13 @@ export const initialWhoamiMiddleware = (store) => (next) => (action) => {
   next(action);
 };
 
+export const resetPasswordCompleteMiddleware = () => (next) => (action) => {
+  if (action.type === response(ActionTypes.RESET_PASSWORD)) {
+    browserHistory.push('/signin');
+  }
+  next(action);
+};
+
 /**
  * Completes incomplete post comments states
  *
