@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.128.1] - 2024-03-18
+### Fixed
+- Youtube returns a 401 response for videos that are not allowed to be embedded.
+  These videos used to cause an error, now they are displayed as previews.
+
 ## [1.128.0] - 2024-03-01
 ### Fixed
 - Fix lightbox for some old attachments that have no sizes in API responses.
