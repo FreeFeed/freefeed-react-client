@@ -225,6 +225,18 @@ async function getYoutubeVideoInfo(url, withoutAutoplay) {
     `https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(url)}`,
   );
 
+  // Youtube returns 401 for non-embeddable videos
+  if (data.httpStatus === 401) {
+    const id = getVideoId(url);
+    // Fill data object with some default values
+    delete data.error;
+    data.html = `src="https://www.youtube.com/embed/${encodeURIComponent(id)}"`;
+    data.title = '[Unaccessible]';
+    data.thumbnail_url = `https://i.ytimg.com/vi/${encodeURIComponent(id)}/hqdefault.jpg`;
+    data.thumbnail_width = 480;
+    data.thumbnail_height = 360;
+  }
+
   if (data.error) {
     return { error: data.error };
   }
