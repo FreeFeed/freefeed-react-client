@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.129.0] - Not released
+### Fixed
+- Youtube returns a 401 response for videos that are not allowed to be embedded.
+  These videos used to cause an error, now they are displayed as previews.
 
 ## [1.128.0] - 2024-03-01
 ### Fixed
