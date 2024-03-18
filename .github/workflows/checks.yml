@@ -9,19 +9,27 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18, 20]
+        node-version: [18, 20, 21]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
 
-      - name: Install dependencies, run TSC and ESLint
+      - name: Install dependencies
         run: yarn install --immutable
 
-      - name: run checks
-        run: yarn checks
+      - name: run StyleLint
+        run: yarn stylelint
+
+      - name: run ESLint
+        if: success() || failure()
+        run: yarn eslint
+
+      - name: run Tests
+        if: success() || failure()
+        run: yarn test
