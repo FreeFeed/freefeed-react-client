@@ -7,6 +7,19 @@
   max-height: 100%;
 }
 
+.pswp-media__container--error {
+  height: 100vh;
+  justify-content: center;
+}
+
+.pswp-media__error-message {
+  color: coral;
+
+  &::before {
+    content: '⚠ ';
+  }
+}
+
 .pswp-media__content {
   flex: 1;
   position: relative;

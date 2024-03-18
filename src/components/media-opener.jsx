@@ -102,6 +102,15 @@ async function getEmbeddableItem(url, mediaType, isActiveSlide) {
     info = await getVideoInfo(url, !(isActiveSlide && mediaType === T_YOUTUBE_VIDEO));
   }
 
+  if (info.error) {
+    return {
+      type: 'html',
+      html: `<div class="pswp-media__container pswp-media__container--error">
+        <div class="pswp-media__error-message">${info.error}</div>
+      </div>`,
+    };
+  }
+
   if (info) {
     if (info.mediaURL) {
       return {
