@@ -26,6 +26,7 @@ import {
   updateActualUserPreferences,
   setNSFWVisibility,
   setBetaChannel,
+  setOrbit,
   setUIScale,
   setSubmitMode,
 } from '../../../redux/action-creators';
@@ -55,6 +56,7 @@ export default function AppearanceForm() {
   const userData = useSelector((state) => state.user);
   const isNSFWVisible = useSelector((state) => state.isNSFWVisible);
   const isBetaChannel = useSelector((state) => state.betaChannel);
+  const isOrbitDisabled = useSelector((state) => state.isOrbitDisabled);
   const uiScale = useSelector((state) => state.uiScale);
   const submitMode = useSelector((state) => state.submitMode);
   const formStatus = useSelector((state) => state.settingsForms.displayPrefsStatus);
@@ -82,12 +84,13 @@ export default function AppearanceForm() {
           ...userData,
           isNSFWVisible,
           isBetaChannel,
+          isOrbitDisabled,
           uiScale,
           submitMode,
         }),
         onSubmit: onSubmit(dispatch),
       }),
-      [dispatch, isNSFWVisible, userData, isBetaChannel, uiScale, submitMode],
+      [dispatch, isNSFWVisible, userData, isBetaChannel, isOrbitDisabled, uiScale, submitMode],
     ),
   );
 
@@ -103,6 +106,7 @@ export default function AppearanceForm() {
   const hideRepliesToBanned = useField('hideRepliesToBanned', form.form);
   const allowLinksPreview = useField('allowLinksPreview', form.form);
   const hideNSFWContent = useField('hideNSFWContent', form.form);
+  const isOrbitDisabledField = useField('isOrbitDisabledField', form.form);
   const commentsTimestamps = useField('commentsTimestamps', form.form);
   const timeAmPm = useField('timeAmPm', form.form);
   const timeAbsolute = useField('timeAbsolute', form.form);
@@ -111,6 +115,8 @@ export default function AppearanceForm() {
   const submitModeF = useField('submitMode', form.form);
   const hidesInNonHomeFeeds = useField('hidesInNonHomeFeeds', form.form);
   const translateToLang = useField('translateToLang', form.form);
+
+  const isTheRightDate = new Date().toISOString().slice(0, 10) === CONFIG.orbitDate;
 
   return (
     <form onSubmit={form.handleSubmit}>
@@ -498,6 +504,19 @@ export default function AppearanceForm() {
         </section>
       )}
 
+      {isTheRightDate && (
+        <section className={settingsStyles.formSection}>
+          <h4 id="orbit">👁👄👁</h4>
+
+          <div className="checkbox">
+            <label>
+              <CheckboxInput field={isOrbitDisabledField} />
+              Do not read other people&apos;s minds!
+            </label>
+          </div>
+        </section>
+      )}
+
       <div className="form-group">
         <button
           className="btn btn-primary"
@@ -529,6 +548,7 @@ function initialValues({
   isBetaChannel,
   submitMode,
   uiScale,
+  isOrbitDisabled,
 }) {
   return {
     useYou: frontend.displayNames.useYou,
@@ -547,6 +567,7 @@ function initialValues({
     timeAmPm: frontend.timeDisplay.amPm ? '1' : '0',
     timeAbsolute: frontend.timeDisplay.absolute ? '1' : '0',
     enableBeta: isBetaChannel,
+    isOrbitDisabledField: isOrbitDisabled,
     useCtrlEnter: frontend.submitByEnter ? '0' : '1',
     uiScale,
     submitMode,
@@ -562,6 +583,7 @@ function onSubmit(dispatch) {
       (dispatch) => {
         dispatch(setNSFWVisibility(!values.hideNSFWContent));
         dispatch(setBetaChannel(values.enableBeta));
+        dispatch(setOrbit(values.isOrbitDisabledField));
         dispatch(setUIScale(values.uiScale));
         dispatch(setSubmitMode(values.submitMode));
       },

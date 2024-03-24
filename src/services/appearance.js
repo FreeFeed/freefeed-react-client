@@ -7,6 +7,7 @@ export const {
   nsfwVisibilityStorageKey,
   uiScaleStorageKey,
   submitModeStorageKey,
+  orbitStorageKey,
 } = CONFIG.appearance;
 
 export const SCHEME_LIGHT = 'light';
@@ -52,6 +53,19 @@ export function saveNSFWVisibility(visible) {
   } else {
     // Default value
     storage.removeItem(nsfwVisibilityStorageKey);
+  }
+}
+
+export function loadOrbitDisabled() {
+  return !!storage.getItem(orbitStorageKey);
+}
+
+export function saveOrbitDisabled(disable) {
+  if (disable) {
+    storage.setItem(orbitStorageKey, '1');
+  } else {
+    // Default value
+    storage.removeItem(orbitStorageKey);
   }
 }
 

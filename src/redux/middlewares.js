@@ -19,6 +19,7 @@ import {
   SCHEME_DARK,
   SCHEME_NO_PREFERENCE,
   saveNSFWVisibility,
+  saveOrbitDisabled,
   saveUIScale,
   loadUIScale,
   uiScaleStorageKey,
@@ -346,6 +347,10 @@ export const appearanceMiddleware = (store) => {
     }
     if (action.type === ActionTypes.SET_NSFW_VISIBILITY) {
       saveNSFWVisibility(action.payload);
+      return;
+    }
+    if (action.type === ActionTypes.SET_ORBIT) {
+      saveOrbitDisabled(action.payload);
       return;
     }
     if (action.type === ActionTypes.SET_UI_SCALE) {
