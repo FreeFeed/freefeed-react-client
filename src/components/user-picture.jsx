@@ -41,7 +41,7 @@ export function UserPicture({
   );
 
   return (
-    <Orbit text={user?.description}>
+    <Orbit text={user?.description} size={size}>
       {withLink && user?.username ? (
         <Link to={`/${user.username}`} className={clazzName} style={style} {...restProps}>
           {content}
