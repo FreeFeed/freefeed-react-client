@@ -1,5 +1,6 @@
 /* global CONFIG */
 import { useSelector } from 'react-redux';
+import { format } from '../utils/date-format';
 
 import styles from './orbit.module.scss';
 
@@ -9,7 +10,7 @@ export function Orbit({ text, size, children }) {
   const emojis = text?.match(regex) || [];
   const emojisToRender = emojis.slice(0, 10);
 
-  const isTheRightDate = new Date().toISOString().slice(0, 10) === CONFIG.orbitDate;
+  const isTheRightDate = format(new Date(), 'yyyy-MM-dd') === CONFIG.orbitDate;
   const isOrbitDisabled = useSelector((state) => state.isOrbitDisabled);
 
   if (!isTheRightDate || isOrbitDisabled || emojisToRender.length === 0) {

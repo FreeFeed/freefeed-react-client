@@ -43,6 +43,7 @@ import {
   USERNAME,
 } from '../../../utils/hide-criteria';
 import { useServerValue } from '../../hooks/server-info';
+import { format } from '../../../utils/date-format';
 import styles from './forms.module.scss';
 
 const selectTranslationEnabled = (serverInfo) => serverInfo.textTranslation.enabled;
@@ -116,7 +117,7 @@ export default function AppearanceForm() {
   const hidesInNonHomeFeeds = useField('hidesInNonHomeFeeds', form.form);
   const translateToLang = useField('translateToLang', form.form);
 
-  const isTheRightDate = new Date().toISOString().slice(0, 10) === CONFIG.orbitDate;
+  const isTheRightDate = format(new Date(), 'yyyy-MM-dd') === CONFIG.orbitDate;
 
   return (
     <form onSubmit={form.handleSubmit}>
