@@ -113,6 +113,10 @@ export default {
     minToCollapse: 12,
     // A minimum number of omitted comments (server-side constant)
     minFolded: 3,
+    // A minimum number of omitted comments when the stepped folding is appear
+    minToSteppedFold: 30,
+    // A value of the stepped folding
+    foldStep: 10,
   },
 
   // if false, new users are public by default
