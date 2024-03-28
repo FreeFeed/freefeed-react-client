@@ -1219,6 +1219,13 @@ export function setBetaChannel(enabled) {
   };
 }
 
+export function setOrbit(disabled) {
+  return {
+    type: ActionTypes.SET_ORBIT,
+    payload: disabled,
+  };
+}
+
 export function setAppVersion(version) {
   return {
     type: ActionTypes.APP_VERSION,

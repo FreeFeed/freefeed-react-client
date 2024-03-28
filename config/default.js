@@ -101,7 +101,10 @@ export default {
     nsfwVisibilityStorageKey: 'show-nsfw',
     uiScaleStorageKey: 'ui-scale',
     submitModeStorageKey: 'submit-mode',
+    orbitStorageKey: 'orbit-disabled',
   },
+
+  orbitDate: '2024-04-01',
 
   commentsFolding: {
     // Show a maximum of two comments after the fold
