@@ -2,6 +2,7 @@ import cn from 'classnames';
 import { Link } from 'react-router';
 
 import { useMemo } from 'react';
+import { Orbit } from './orbit';
 import styles from './user-picture.module.scss';
 
 export function UserPicture({
@@ -39,13 +40,17 @@ export function UserPicture({
     className,
   );
 
-  return withLink && user?.username ? (
-    <Link to={`/${user.username}`} className={clazzName} style={style} {...restProps}>
-      {content}
-    </Link>
-  ) : (
-    <div className={clazzName} style={style} {...restProps}>
-      {content}
-    </div>
+  return (
+    <Orbit text={user?.description} size={size}>
+      {withLink && user?.username ? (
+        <Link to={`/${user.username}`} className={clazzName} style={style} {...restProps}>
+          {content}
+        </Link>
+      ) : (
+        <div className={clazzName} style={style} {...restProps}>
+          {content}
+        </div>
+      )}
+    </Orbit>
   );
 }

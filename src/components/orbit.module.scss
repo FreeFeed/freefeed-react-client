@@ -1,0 +1,67 @@
+$emojiWidth: 15px;
+
+.root {
+  position: relative;
+
+  --orbit-height: 20px;
+  --orbit-width: 75px;
+  --delay: 0s;
+  --duration: 1s;
+}
+
+.children {
+  position: relative;
+  z-index: 2;
+}
+
+.emojis {
+  position: absolute;
+  inset: 0;
+}
+
+.ellipticOuter {
+  animation:
+    calc(var(--duration)) infinite ease-in-out calc(var(--delay)) alternate-reverse leftright,
+    calc(var(--duration)) infinite steps(2, start) calc(var(--delay) + var(--duration) / 2)
+      alternate-reverse frontback;
+  will-change: transform;
+  position: absolute;
+}
+
+.ellipticInner {
+  animation: calc(var(--duration)) infinite calc(var(--delay) + var(--duration) / 2) ease-in-out
+    alternate updown;
+  will-change: transform;
+  width: $emojiWidth;
+  height: $emojiWidth;
+}
+
+@keyframes frontback {
+  0% {
+    z-index: 5;
+  }
+
+  100% {
+    z-index: 1;
+  }
+}
+
+@keyframes leftright {
+  from {
+    transform: translateX(-$emojiWidth);
+  }
+
+  to {
+    transform: translateX(var(--orbit-width));
+  }
+}
+
+@keyframes updown {
+  from {
+    transform: translateY(-5px);
+  }
+
+  to {
+    transform: translateY(var(--orbit-height)) rotate(0.5turn);
+  }
+}

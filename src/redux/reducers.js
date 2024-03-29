@@ -14,6 +14,7 @@ import {
   loadNSFWVisibility,
   loadUIScale,
   loadSubmitMode,
+  loadOrbitDisabled,
 } from '../services/appearance';
 import { prefsToCriteria } from '../utils/hide-criteria';
 import * as ActionTypes from './action-types';
@@ -1951,6 +1952,13 @@ export function userColorScheme(state = loadColorScheme(), action) {
 
 export function isNSFWVisible(state = loadNSFWVisibility(), action) {
   if (action.type === ActionTypes.SET_NSFW_VISIBILITY) {
+    return action.payload;
+  }
+  return state;
+}
+
+export function isOrbitDisabled(state = loadOrbitDisabled(), action) {
+  if (action.type === ActionTypes.SET_ORBIT) {
     return action.payload;
   }
   return state;
