@@ -3,6 +3,7 @@ import { useMemo, useCallback, useState, useRef, useEffect, useContext } from 'r
 import cn from 'classnames';
 
 import { faPaperclip } from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from 'react-redux';
 import { initialAsyncState } from '../redux/async-helpers';
 import { doneEditingAndDeleteDraft, getDraft } from '../services/drafts';
 import { Throbber } from './throbber';
@@ -14,6 +15,7 @@ import { SmartTextarea } from './smart-textarea';
 import { useUploader } from './uploader/uploader';
 import { useFileChooser } from './uploader/file-chooser';
 import { UploadProgress } from './uploader/progress';
+import { PreventPageLeaving } from './prevent-page-leaving';
 
 export function CommentEditForm({
   initialText = '',
@@ -26,6 +28,7 @@ export function CommentEditForm({
   submitStatus = initialAsyncState,
   draftKey,
 }) {
+  const frontendPreferences = useSelector((state) => state.user.frontendPreferences);
   const { setInput } = useContext(PostContext);
   const input = useRef(null);
   const [text, setText] = useState(() => getDraft(draftKey)?.text ?? initialText);
@@ -99,6 +102,9 @@ export function CommentEditForm({
 
   return (
     <div className="comment-body" role="form">
+      <PreventPageLeaving
+        prevent={!frontendPreferences.saveDrafts && (canSubmit || submitStatus.loading)}
+      />
       <div>
         <SmartTextarea
           ref={input}

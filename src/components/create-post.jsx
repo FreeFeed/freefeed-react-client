@@ -27,6 +27,7 @@ import { Selector } from './feeds-selector/selector';
 import { CREATE_DIRECT, CREATE_REGULAR } from './feeds-selector/constants';
 import { CommaAndSeparated } from './separated';
 import { usePrivacyCheck } from './feeds-selector/privacy-check';
+import { PreventPageLeaving } from './prevent-page-leaving';
 
 const selectMaxFilesCount = (serverInfo) => serverInfo.attachments.maxCountPerPost;
 const selectMaxPostLength = (serverInfo) => serverInfo.maxTextLength.post;
@@ -36,6 +37,7 @@ export default function CreatePost({ sendTo, isDirects }) {
     const loc = state.routing.locationBeforeTransitions;
     return newPostURI(loc.pathname + loc.search);
   });
+  const frontendPreferences = useSelector((state) => state.user.frontendPreferences);
 
   // Cleaning up new post draft before the first render
   useMemo(() => deleteEmptyDraft(draftKey), [draftKey]);
@@ -196,6 +198,7 @@ export default function CreatePost({ sendTo, isDirects }) {
       ref={containerRef}
     >
       <ErrorBoundary>
+        <PreventPageLeaving prevent={!frontendPreferences.saveDrafts && isFormDirty} />
         <div>
           <Selector
             mode={isDirects ? CREATE_DIRECT : CREATE_REGULAR}
