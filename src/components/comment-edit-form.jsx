@@ -38,7 +38,7 @@ export function CommentEditForm({
 
   const doCancel = useCallback(
     (e) => {
-      if (text !== initialText && !confirm('Discard changes?')) {
+      if (text.trim() !== initialText.trim() && !confirm('Discard changes?')) {
         return;
       }
       onCancel(e);
