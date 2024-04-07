@@ -7,8 +7,9 @@ import {
 import { useCallback, useMemo, useRef, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
+import { xor } from 'lodash-es';
 import { createPost, resetPostCreateForm } from '../redux/action-creators';
-import { deleteEmptyDraft, getDraft, newPostURI } from '../services/drafts';
+import { deleteDraft, deleteEmptyDraft, getDraft, newPostURI } from '../services/drafts';
 import { ButtonLink } from './button-link';
 import ErrorBoundary from './error-boundary';
 import { Icon } from './fontawesome-icons';
@@ -98,6 +99,25 @@ export default function CreatePost({ sendTo, isDirects }) {
     [fileIds.length, isUploading, postText],
   );
 
+  const resetForm = useCallback(() => {
+    clearUploads();
+    resetLocalState();
+    setFeeds(defaultFeedNames);
+    dispatch(resetPostCreateForm());
+  }, [clearUploads, defaultFeedNames, dispatch, resetLocalState]);
+
+  const canClearForm = useMemo(
+    () => isFormDirty || !isArrayEquals(defaultFeedNames, feeds),
+    [defaultFeedNames, feeds, isFormDirty],
+  );
+
+  const clearForm = useCallback(() => {
+    if (canClearForm && confirm('Discard changes?')) {
+      resetForm();
+      deleteDraft(draftKey);
+    }
+  }, [canClearForm, draftKey, resetForm]);
+
   const [hasFeedsError, setHasFeedsError] = useState(false);
 
   const canSubmitForm = useMemo(() => {
@@ -122,12 +142,9 @@ export default function CreatePost({ sendTo, isDirects }) {
     // Reset form on success
     if (createPostStatus.success) {
       textareaRef.current?.blur();
-      clearUploads();
-      resetLocalState();
-      setFeeds(defaultFeedNames);
-      dispatch(resetPostCreateForm());
+      resetForm();
     }
-  }, [clearUploads, createPostStatus.success, defaultFeedNames, dispatch, resetLocalState]);
+  }, [createPostStatus.success, resetForm]);
 
   // Reset async status on unmount
   useEffect(() => () => dispatch(resetPostCreateForm()), [dispatch]);
@@ -224,6 +241,14 @@ export default function CreatePost({ sendTo, isDirects }) {
               <span className="post-submit-icon">{privacyIcon}</span>
               Post
             </button>
+            <ButtonLink
+              className="post-cancel"
+              disabled={!canClearForm || createPostStatus.loading}
+              aria-label={createPostStatus.loading ? 'Clear disabled (submitting)' : null}
+              onClick={clearForm}
+            >
+              Clear
+            </ButtonLink>
           </div>
 
           <div className="post-edit-options">
@@ -288,4 +313,8 @@ export default function CreatePost({ sendTo, isDirects }) {
       </ErrorBoundary>
     </div>
   );
+}
+
+function isArrayEquals(a, b) {
+  return xor(a, b).length === 0;
 }
