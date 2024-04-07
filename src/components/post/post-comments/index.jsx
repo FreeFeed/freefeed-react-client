@@ -2,7 +2,7 @@
 import { createRef, Fragment, Component } from 'react';
 
 import { preventDefault, pluralForm, handleLeftClick } from '../../../utils';
-import { safeScrollBy } from '../../../services/unscroll';
+import { intentToScroll, safeScrollBy } from '../../../services/unscroll';
 import ErrorBoundary from '../../error-boundary';
 import { Icon } from '../../fontawesome-icons';
 import { faCommentPlus } from '../../fontawesome-custom-icons';
@@ -37,6 +37,8 @@ export default class PostComments extends Component {
   rootEl = createRef();
   visibleCommentIds = createRef([]);
   unfocusTimer = createRef(0);
+
+  commentAfterFoldId = null;
 
   constructor(props) {
     super(props);
@@ -309,8 +311,12 @@ export default class PostComments extends Component {
     this.setState({ folded: true, addedToTail: 0 });
   };
 
+  /** @type {string|null} */
+  fixedCommentId = null;
+
   expandComments = (count = 0) => {
     if (count > 0) {
+      this.fixedCommentId = this.commentAfterFoldId;
       this.setState({ folded: true, addedToTail: this.state.addedToTail + count });
     } else {
       this.setState({ folded: false, addedToTail: 0 });
@@ -320,7 +326,53 @@ export default class PostComments extends Component {
     }
   };
 
-  componentDidUpdate(prevProps, prevState) {
+  getSnapshotBeforeUpdate() {
+    if (!this.fixedCommentId) {
+      return null;
+    }
+
+    const { fixedCommentId } = this;
+
+    const el = this.rootEl.current.querySelector(`#c-${fixedCommentId}`);
+    if (!el) {
+      return null;
+    }
+    const { top } = el.getBoundingClientRect();
+    intentToScroll();
+    return () => {
+      if (fixedCommentId === this.commentAfterFoldId) {
+        return;
+      }
+
+      this.fixedCommentId = null;
+      const el = this.rootEl.current.querySelector(`#c-${fixedCommentId}`);
+      if (!el) {
+        return;
+      }
+      const newTop = el.getBoundingClientRect().top;
+      safeScrollBy(0, newTop - top);
+      // Compensate scroll again, after the full render
+      setTimeout(() => safeScrollBy(0, el.getBoundingClientRect().top - top), 0);
+
+      // Unfold animation
+      {
+        let commentEl = el;
+        if (commentEl) {
+          for (let i = 0; i < this.props.foldStep; i++) {
+            commentEl = commentEl.previousElementSibling;
+            if (!commentEl || !commentEl.matches('.comment')) {
+              break;
+            }
+            commentEl.classList.add('just-unfolded');
+            commentEl.offsetHeight; // to commit DOM changes
+            commentEl.classList.remove('just-unfolded');
+          }
+        }
+      }
+    };
+  }
+
+  componentDidUpdate(prevProps, prevState, actionAfterUpdate) {
     if (this.state.folded && !prevState.folded) {
       const linkEl = this.rootEl.current.querySelector('.more-comments-wrapper');
       if (!linkEl) {
@@ -331,6 +383,7 @@ export default class PostComments extends Component {
         safeScrollBy(0, top);
       }
     }
+    actionAfterUpdate?.();
   }
 
   renderAddComment() {
@@ -493,6 +546,8 @@ export default class PostComments extends Component {
 
     const firstCommentSpacer =
       comments.length > 0 ? this.renderCommentSpacer(comments[0].createdAt, post.createdAt) : null;
+
+    this.commentAfterFoldId = tailComments[0]?.props.id ?? null;
 
     return (
       <div
