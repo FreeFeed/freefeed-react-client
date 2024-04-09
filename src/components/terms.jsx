@@ -36,13 +36,12 @@ const Terms = () => (
 
       <p>
         Without advance notice and at any time, we may, for violations of these Terms or for any
-        other reason we choose: (1) suspend your access to all or any part of the Service, (2) suspend 
-        or terminate your Account, and/or (3) remove any of your User Content from the Service.
+        other reason we choose: (1) suspend your access to all or any part of the Service, (2)
+        suspend or terminate your Account, and/or (3) remove any of your User Content from the
+        Service.
       </p>
 
-      <p>
-        FreeFeed reserves the right to refuse service to anyone for any reason at any time.
-      </p>
+      <p>FreeFeed reserves the right to refuse service to anyone for any reason at any time.</p>
 
       <h3>Content</h3>
 
