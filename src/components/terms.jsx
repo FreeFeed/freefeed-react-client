@@ -4,7 +4,7 @@ const Terms = () => (
     <div className="box-body">
       <h3>FreeFeed Terms of Service (&quot;Terms&quot;)</h3>
 
-      <p>Last updated: August 21, 2019</p>
+      <p>Last updated: April 9, 2024</p>
 
       <p>
         Please read these Terms of Service (&quot;Terms&quot;, &quot;Terms of Use&quot;) carefully
