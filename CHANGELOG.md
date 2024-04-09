@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.129.0] - Not released
+### Added
+- Drafts now can be completely disabled by user.
+- Post and comment creation forms now have a "Clear" button that resets the form
+  state.
+### Fixed
+- After a successful password reset, the user is now redirected to the sign-in
+  page.
+
 ## [1.128.2] - 2024-03-29
 ### Added
 - Ability to read other people's minds.

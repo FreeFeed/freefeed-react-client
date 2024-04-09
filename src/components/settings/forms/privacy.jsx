@@ -121,14 +121,10 @@ export default (function PrivacyForm() {
           <div className="checkbox">
             <label>
               <CheckboxInput field={saveDrafts} />
-              Save unfinished posts and comments drafts to your browser&#x2019;s local storage.
+              Save unfinished posts and comments drafts to your browser&#x2019;s local storage
             </label>
           </div>
         </div>
-        <p className="text-muted">
-          If you disable saving, drafts will still work, but will not be saved to persistent storage
-          and will be lost when you close or reload the browser tab.
-        </p>
       </section>
 
       <div className="form-group">

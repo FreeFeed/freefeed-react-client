@@ -259,7 +259,7 @@ export function initializeDrafts(store) {
  * @param {{external?: boolean}} options
  */
 function setDraftData(key, data, { external = false } = {}) {
-  if (isUnchangedData(data, getDraft(key) ?? null)) {
+  if (!savingEnabled || isUnchangedData(data, getDraft(key) ?? null)) {
     return;
   }
   if (isEmptyData(data)) {
