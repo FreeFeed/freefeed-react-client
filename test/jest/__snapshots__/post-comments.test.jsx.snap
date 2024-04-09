@@ -385,6 +385,14 @@ exports[`PostComments > Renders post comments and doesn't blow up 1`] = `
           >
             Comment
           </button>
+          <a
+            aria-disabled="false"
+            class="comment-cancel"
+            role="button"
+            tabindex="0"
+          >
+            Clear
+          </a>
           <span
             class="submit-mode-hint"
           >
