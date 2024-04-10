@@ -244,14 +244,16 @@ export default function CreatePost({ sendTo, isDirects }) {
               <span className="post-submit-icon">{privacyIcon}</span>
               Post
             </button>
-            <ButtonLink
-              className="post-cancel"
-              disabled={!canClearForm || createPostStatus.loading}
-              aria-label={createPostStatus.loading ? 'Clear disabled (submitting)' : null}
-              onClick={clearForm}
-            >
-              Clear
-            </ButtonLink>
+            {canClearForm && (
+              <ButtonLink
+                className="post-cancel"
+                disabled={createPostStatus.loading}
+                aria-label={createPostStatus.loading ? 'Clear disabled (submitting)' : null}
+                onClick={clearForm}
+              >
+                Clear
+              </ButtonLink>
+            )}
           </div>
 
           <div className="post-edit-options">

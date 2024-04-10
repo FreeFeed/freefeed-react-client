@@ -39,9 +39,11 @@ export function CommentEditForm({
 
   const doSubmit = useCallback(() => canSubmit && onSubmit(text), [canSubmit, onSubmit, text]);
 
+  const isTextUpdated = useMemo(() => text.trim() !== initialText.trim(), [initialText, text]);
+
   const doCancel = useCallback(
     (e) => {
-      if (text.trim() !== initialText.trim() && !confirm('Discard changes?')) {
+      if (!isTextUpdated || !confirm('Discard changes?')) {
         return;
       }
       if (isPersistent) {
@@ -50,7 +52,7 @@ export function CommentEditForm({
       onCancel(e);
       doneEditingAndDeleteDraft(draftKey);
     },
-    [draftKey, initialText, isPersistent, onCancel, text],
+    [isTextUpdated, draftKey, initialText, isPersistent, onCancel],
   );
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -144,14 +146,16 @@ export function CommentEditForm({
           Comment
         </button>
 
-        <ButtonLink
-          className="comment-cancel"
-          onClick={doCancel}
-          aria-disabled={submitStatus.loading}
-          aria-label={submitStatus.loading ? 'Cancel disabled (submitting)' : null}
-        >
-          {isPersistent ? 'Clear' : 'Cancel'}
-        </ButtonLink>
+        {(!isPersistent || isTextUpdated) && (
+          <ButtonLink
+            className="comment-cancel"
+            onClick={doCancel}
+            disabled={!isTextUpdated || submitStatus.loading}
+            aria-label={submitStatus.loading ? 'Cancel disabled (submitting)' : null}
+          >
+            {isPersistent ? 'Clear' : 'Cancel'}
+          </ButtonLink>
+        )}
 
         <SubmitModeHint input={input} />
 
