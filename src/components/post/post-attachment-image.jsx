@@ -1,14 +1,32 @@
-import { PureComponent } from 'react';
+import { PureComponent, createRef } from 'react';
 import classnames from 'classnames';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import { formatFileSize } from '../../utils';
 import { Icon } from '../fontawesome-icons';
 
+const NSFW_PREVIEW_AREA = 20;
+
 class PostAttachmentImage extends PureComponent {
+  canvasRef = createRef(null);
+
   handleRemoveImage = () => {
     this.props.removeAttachment(this.props.id);
   };
+
+  componentDidMount() {
+    const nsfwCanvas = this.canvasRef.current;
+    if (!nsfwCanvas) {
+      return;
+    }
+    const ctx = nsfwCanvas.getContext('2d');
+    ctx.fillStyle = '#cccccc';
+    ctx.fillRect(0, 0, nsfwCanvas.width, nsfwCanvas.height);
+    const img = new Image();
+    img.onload = () =>
+      nsfwCanvas.isConnected && ctx.drawImage(img, 0, 0, nsfwCanvas.width, nsfwCanvas.height);
+    img.src = this.props.imageSizes.t?.url ?? this.props.thumbnailUrl;
+  }
 
   render() {
     const { props } = this;
@@ -49,6 +67,10 @@ class PostAttachmentImage extends PureComponent {
           : undefined,
     };
 
+    const area = imageAttributes.width * imageAttributes.height;
+    const canvasWidth = Math.round(imageAttributes.width * Math.sqrt(NSFW_PREVIEW_AREA / area));
+    const canvasHeight = Math.round(imageAttributes.height * Math.sqrt(NSFW_PREVIEW_AREA / area));
+
     return (
       <div
         className={classnames({ attachment: true, hidden: props.isHidden })}
@@ -63,7 +85,17 @@ class PostAttachmentImage extends PureComponent {
           className="image-attachment-link"
         >
           {props.thumbnailUrl ? (
-            <img className="image-attachment-img" {...imageAttributes} />
+            <>
+              {props.isNSFW && (
+                <canvas
+                  ref={this.canvasRef}
+                  className="image-attachment-nsfw-canvas"
+                  width={canvasWidth}
+                  height={canvasHeight}
+                />
+              )}
+              <img className="image-attachment-img" {...imageAttributes} />
+            </>
           ) : (
             props.id
           )}

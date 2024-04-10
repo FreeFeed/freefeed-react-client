@@ -22,6 +22,7 @@ export default class ImageAttachmentsContainer extends Component {
     attachments: pt.array.isRequired,
     isSinglePost: pt.bool,
     isEditing: pt.bool,
+    isNSFW: pt.bool,
     removeAttachment: pt.func,
     reorderImageAttachments: pt.func,
     postId: pt.string,
@@ -133,6 +134,7 @@ export default class ImageAttachmentsContainer extends Component {
         removeAttachment={this.props.removeAttachment}
         isHidden={showFolded && i > lastVisibleIndex}
         pictureId={this.getPictureId(a)}
+        isNSFW={this.props.isNSFW}
         {...a}
       />
     ));
