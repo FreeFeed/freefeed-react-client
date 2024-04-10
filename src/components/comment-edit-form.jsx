@@ -43,7 +43,7 @@ export function CommentEditForm({
 
   const doCancel = useCallback(
     (e) => {
-      if (!isTextUpdated || !confirm('Discard changes?')) {
+      if (isTextUpdated && !confirm('Discard changes?')) {
         return;
       }
       if (isPersistent) {
@@ -150,7 +150,7 @@ export function CommentEditForm({
           <ButtonLink
             className="comment-cancel"
             onClick={doCancel}
-            disabled={!isTextUpdated || submitStatus.loading}
+            disabled={submitStatus.loading}
             aria-label={submitStatus.loading ? 'Cancel disabled (submitting)' : null}
           >
             {isPersistent ? 'Clear' : 'Cancel'}
