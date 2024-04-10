@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.129.1] - 2024-04-10
+### Fixed
+- Don't show the "Clear" button on empty forms.
+
 ## [1.129.0] - 2024-04-09
 ### Added
 - Drafts now can be completely disabled by user.
