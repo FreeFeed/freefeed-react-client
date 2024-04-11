@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { preventDefault, confirmFirst } from '../../utils';
 import {
   READMORE_STYLE_COMPACT,
-  COMMENT_HIDDEN_BANNED,
+  HIDDEN_AUTHOR_BANNED,
 } from '../../utils/frontend-preferences-options';
 import { commentReadmoreConfig } from '../../utils/readmore-config';
 import { defaultCommentState } from '../../redux/reducers/comment-edit';
@@ -99,7 +99,7 @@ class PostComment extends Component {
   }
 
   hiddenBody() {
-    if (this.props.hideType === COMMENT_HIDDEN_BANNED) {
+    if (this.props.hideType === HIDDEN_AUTHOR_BANNED) {
       return 'Comment from blocked user';
     }
     if (this.props.isReplyToBanned) {
