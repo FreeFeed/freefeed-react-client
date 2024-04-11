@@ -95,7 +95,7 @@ class PostComment extends Component {
   };
 
   isHidden() {
-    return !!this.props.hideType || this.props.isReplyToBanned;
+    return !!this.props.hideType || !!this.props._hideType || this.props.isReplyToBanned;
   }
 
   hiddenBody() {
