@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.129.3] - 2024-04-12
+### Changed
+- Use blurred low-res preview of NSFW images instead of solid gray panels.
+
 ## [1.129.2] - 2024-04-10
 ### Fixed
 - Fix the comment form's "Cancel" button behavior in the feed.
