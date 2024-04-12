@@ -1,6 +1,6 @@
 {
   "name": "reactive-pepyatka",
-  "version": "1.129.3",
+  "version": "1.130.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
