@@ -114,7 +114,7 @@ export default {
     // A minimum number of omitted comments (server-side constant)
     minFolded: 3,
     // A minimum number of omitted comments when the stepped folding is appear
-    minToSteppedFold: 30,
+    minToSteppedFold: 15,
     // A value of the stepped folding
     foldStep: 10,
   },
