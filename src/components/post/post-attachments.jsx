@@ -68,6 +68,7 @@ export default function PostAttachments(props) {
   const imageAttachmentsContainer =
     imageAttachments.length > 0 ? (
       <ImageAttachmentsContainer
+        isNSFW={props.isNSFW}
         isEditing={props.isEditing}
         isSinglePost={props.isSinglePost}
         removeAttachment={props.removeAttachment}

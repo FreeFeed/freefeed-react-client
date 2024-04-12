@@ -445,6 +445,7 @@ class Post extends Component {
                       postId={props.id}
                       attachmentIds={this.props.attachments}
                       isEditing={false}
+                      isNSFW={props.isNSFW}
                       isSinglePost={props.isSinglePost}
                       removeAttachment={this.removeAttachment}
                       reorderImageAttachments={this.reorderImageAttachments}
