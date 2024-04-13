@@ -126,6 +126,7 @@
     transform: translateY(16px);
     opacity: 0.5;
     transition: all 0s;
+    will-change: transform;
   }
 }
 
