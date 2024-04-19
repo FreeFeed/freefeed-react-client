@@ -388,7 +388,6 @@ class PostComment extends Component {
         data-author={this.props.user && !this.props.isEditing ? this.props.user.username : ''}
         ref={this.registerCommentContainer}
         role="comment listitem"
-        id={this.props.id ? `c-${this.props.id}` : null}
       >
         {this.renderCommentIcon()}
         {this.renderBody()}
