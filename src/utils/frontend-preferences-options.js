@@ -7,5 +7,6 @@ export const READMORE_STYLE_COMFORT = 'modern';
 // Comment hide types
 export const COMMENT_VISIBLE = 0;
 export const COMMENT_DELETED = 1;
-export const COMMENT_HIDDEN_BANNED = 2;
+export const HIDDEN_AUTHOR_BANNED = 2;
+export const HIDDEN_VIEWER_BANNED = 4;
 export const COMMENT_HIDDEN_ARCHIVED = 3;

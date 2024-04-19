@@ -20,18 +20,16 @@ export function useShowDisableBansDialog(group, isAdmin) {
             <p>You are going to show blocked content in {uname}. What does this mean?</p>
             <ul>
               <li>
-                <p>You will see all the posts of your blocked users in {uname}.</p>
-              </li>
-              <li>
                 <p>
-                  You will see comments and likes from your blocked users under posts in {uname}.
+                  You will see all the content (posts, comments and likes) of your blocked users in{' '}
+                  {uname}.
                 </p>
               </li>
               {isAdmin && (
                 <li>
                   <p>
-                    <strong>As an administrator</strong>, you will also see all the posts in {uname}{' '}
-                    of the users who have blocked you.
+                    <strong>As an administrator</strong>, you will also see all all the content in{' '}
+                    {uname} of the users who have blocked you.
                   </p>
                 </li>
               )}
