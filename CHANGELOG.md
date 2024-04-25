@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.130.0] - Not released
+### Added
+- Support for symmetric bans: comments of users, who have banned the viewer, are
+  hidden for the viewer.
 
 ## [1.129.2] - 2024-04-10
 ### Fixed
