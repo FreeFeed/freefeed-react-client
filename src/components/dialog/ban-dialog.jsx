@@ -20,12 +20,9 @@ export function useShowBanDialog(user) {
             <p>You are going to block {uname}. What does this mean?</p>
             <ul>
               <li>
-                <p>You and {uname} will not see each other&#x2019;s posts.</p>
-              </li>
-              <li>
                 <p>
-                  You will not see the {uname}&#x2019;s comments and likes, while {uname} will be
-                  able to see your comments in other people&#x2019;s posts.
+                  You and {uname} will not see each other&#x2019;s content (posts, comments and
+                  likes).
                 </p>
               </li>
               <li>
@@ -38,11 +35,12 @@ export function useShowBanDialog(user) {
               <strong>Blocks in groups</strong>
             </p>
             <p>
-              You can disable blocking in selected groups, in those groups you will see all posts
-              and comments of those you have blocked.
+              You can decide to see the blocked content in selected groups, in those groups you will
+              see all the content of those you have blocked.
             </p>
             <p>
-              If {uname} is an admin of some group, he will be able to see your posts in that group.
+              If {uname} is an admin of some group, he will be able to see your content in that
+              group.
             </p>
           </div>
         ),
