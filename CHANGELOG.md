@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.130.0] - 2024-04-26
+### Added
+- Support for symmetric bans: comments of users, who have banned the viewer, are
+  hidden for the viewer.
+
 ## [1.129.3] - 2024-04-12
 ### Changed
 - Use blurred low-res preview of NSFW images instead of solid gray panels.

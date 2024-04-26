@@ -153,7 +153,7 @@ export function PostCommentPreview({
     >
       {comment ? (
         <CommentProvider id={comment.id}>
-          {comment.hideType || comment._hideType ? (
+          {comment.hideType ? (
             <span className={styles['hidden-text']}>{commentBody}</span>
           ) : (
             <Expandable
