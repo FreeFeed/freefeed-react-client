@@ -7,7 +7,7 @@ import { getCommentByNumber } from '../../redux/action-creators';
 import { initialAsyncState } from '../../redux/async-helpers';
 import { intentToScroll } from '../../services/unscroll';
 import {
-  COMMENT_HIDDEN_BANNED,
+  HIDDEN_AUTHOR_BANNED,
   READMORE_STYLE_COMPACT,
 } from '../../utils/frontend-preferences-options';
 
@@ -74,7 +74,7 @@ export function PostCommentPreview({
   );
 
   const commentBody = useMemo(() => {
-    if (comment?.hideType === COMMENT_HIDDEN_BANNED) {
+    if (comment?.hideType === HIDDEN_AUTHOR_BANNED) {
       return 'Comment from blocked user';
     }
     return comment?.body;

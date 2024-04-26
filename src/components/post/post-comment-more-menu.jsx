@@ -69,7 +69,7 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
           </ButtonLink>
         </div>
       ),
-      likersText && (
+      !isHidden && likersText && (
         <div key="likes" className={styles.item}>
           <ButtonLink className={styles.link} onClick={doShowLikes}>
             <Iconic icon={faUserFriends}>{likersText}</Iconic>

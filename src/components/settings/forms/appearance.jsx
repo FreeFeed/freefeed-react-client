@@ -3,7 +3,7 @@ import { useMemo, useEffect } from 'react';
 import { Link } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, useField } from 'react-final-form-hooks';
-import { without, uniq, uniqWith } from 'lodash-es';
+import { without, uniqWith } from 'lodash-es';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { hashtags as findHashTags } from 'social-text-tokenizer';
 import ISO6391 from 'iso-639-1';
@@ -13,7 +13,8 @@ import {
   DISPLAYNAMES_USERNAME,
   READMORE_STYLE_COMPACT,
   READMORE_STYLE_COMFORT,
-  COMMENT_HIDDEN_BANNED,
+  HIDDEN_AUTHOR_BANNED,
+  HIDDEN_VIEWER_BANNED,
 } from '../../../utils/frontend-preferences-options';
 import {
   HOMEFEED_MODE_FRIENDS_ONLY,
@@ -104,6 +105,7 @@ export default function AppearanceForm() {
   const omitBubbles = useField('omitBubbles', form.form);
   const highlightComments = useField('highlightComments', form.form);
   const hideBannedComments = useField('hideBannedComments', form.form);
+  const hideCommentsBansYou = useField('hideCommentsBansYou', form.form);
   const hideRepliesToBanned = useField('hideRepliesToBanned', form.form);
   const allowLinksPreview = useField('allowLinksPreview', form.form);
   const hideNSFWContent = useField('hideNSFWContent', form.form);
@@ -386,19 +388,28 @@ export default function AppearanceForm() {
             </label>
           </div>
         </div>
-        <h5>Comments from blocked users:</h5>
+        <h5>Completely hide (don&#x2019;t even show the placeholder):</h5>
         <div className="form-group">
           <div className="checkbox">
             <label>
               <CheckboxInput field={hideBannedComments} />
-              Hide comments from blocked users (don&#x2019;t even show placeholder)
+              Comments from users you have blocked
             </label>
           </div>
+          <div className="checkbox">
+            <label>
+              <CheckboxInput field={hideCommentsBansYou} />
+              Comments from users who have blocked you
+            </label>
+          </div>
+        </div>
 
+        <h5>Show placeholders instead of:</h5>
+        <div className="form-group">
           <div className="checkbox">
             <label>
               <CheckboxInput field={hideRepliesToBanned} />
-              Hide text of replies to blocked users (show placeholders instead)
+              Text of replies to blocked users
             </label>
           </div>
         </div>
@@ -560,7 +571,8 @@ function initialValues({
     readMoreStyle: frontend.readMoreStyle,
     omitBubbles: frontend.comments.omitRepeatedBubbles,
     highlightComments: frontend.comments.highlightComments,
-    hideBannedComments: backend?.hideCommentsOfTypes.includes(COMMENT_HIDDEN_BANNED),
+    hideBannedComments: backend?.hideCommentsOfTypes.includes(HIDDEN_AUTHOR_BANNED),
+    hideCommentsBansYou: backend?.hideCommentsOfTypes.includes(HIDDEN_VIEWER_BANNED),
     hideRepliesToBanned: frontend.comments.hideRepliesToBanned,
     allowLinksPreview: frontend.allowLinksPreview,
     hideNSFWContent: !isNSFWVisible,
@@ -635,11 +647,14 @@ function prefUpdaters(values) {
     },
 
     updateBackendPrefs({ hideCommentsOfTypes }) {
-      return {
-        hideCommentsOfTypes: values.hideBannedComments
-          ? uniq([...hideCommentsOfTypes, COMMENT_HIDDEN_BANNED])
-          : without(hideCommentsOfTypes, COMMENT_HIDDEN_BANNED),
-      };
+      hideCommentsOfTypes = without(
+        hideCommentsOfTypes,
+        HIDDEN_AUTHOR_BANNED,
+        HIDDEN_VIEWER_BANNED,
+      );
+      values.hideBannedComments && hideCommentsOfTypes.push(HIDDEN_AUTHOR_BANNED);
+      values.hideCommentsBansYou && hideCommentsOfTypes.push(HIDDEN_VIEWER_BANNED);
+      return { hideCommentsOfTypes };
     },
   };
 }
