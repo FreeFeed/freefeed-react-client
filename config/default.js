@@ -116,7 +116,7 @@ export default {
     // A minimum number of omitted comments when the stepped folding is appear
     minToSteppedFold: 15,
     // A value of the stepped folding
-    foldStep: 10,
+    foldStep: 5,
   },
 
   // if false, new users are public by default
