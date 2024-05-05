@@ -77,15 +77,20 @@
     white-space: nowrap;
   }
 
+  &.more-comments-wrapper {
+    position: relative;
+    margin-left: rem(16px);
+  }
+
   .more-comments-throbber {
-    display: inline-block;
+    position: absolute;
+    left: rem(-16px);
     width: rem(16px);
-    margin-left: rem(-1px);
-    margin-right: rem(4px);
   }
 
   .more-comments-link {
     font-style: italic;
+    white-space: nowrap;
   }
 
   .add-comment-link {

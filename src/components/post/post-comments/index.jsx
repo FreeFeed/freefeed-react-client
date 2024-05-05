@@ -29,6 +29,8 @@ export default class PostComments extends Component {
     commentsAfterFold: foldConf.afterFold,
     minFoldedComments: foldConf.minFolded,
     minToCollapse: foldConf.minToCollapse,
+    minToSteppedFold: foldConf.minToSteppedFold,
+    foldStep: foldConf.foldStep,
     preopened: false,
   };
 
@@ -41,6 +43,7 @@ export default class PostComments extends Component {
 
     this.state = {
       folded: !props.preopened,
+      addedToTail: 0,
       highlightedAuthor: null,
       highlightedCommentId: null,
       focusedCommentId: null,
@@ -303,11 +306,15 @@ export default class PostComments extends Component {
       alert('Please finish editing first');
       return;
     }
-    this.setState({ folded: true });
+    this.setState({ folded: true, addedToTail: 0 });
   };
 
-  expandComments = () => {
-    this.setState({ folded: false });
+  expandComments = (count = 0) => {
+    if (count > 0) {
+      this.setState({ folded: true, addedToTail: this.state.addedToTail + count });
+    } else {
+      this.setState({ folded: false, addedToTail: 0 });
+    }
     if (this.props.post.omittedComments > 0) {
       this.props.showMoreComments(this.props.post.id);
     }
@@ -362,14 +369,16 @@ export default class PostComments extends Component {
     /**
      * We have three logical blocks of comments:
      * 1. The first comment;
-     * 2. ExpandComments or CollapseComments element;
-     * 3. The tail comments.
+     * 2. ExpandComments element;
+     * 3. CollapseComments element;
+     * 4. The tail comments.
      *
      * Any of these blocks can be empty.
      */
 
     let firstComment = null;
-    let foldControl = null;
+    let expandControl = null;
+    let collapseControl = null;
     let tailComments = [];
     this.visibleCommentIds.current = [];
 
@@ -381,7 +390,7 @@ export default class PostComments extends Component {
         comments.length < 1 + minFoldedComments + commentsAfterFold // There are too few comments to fold
       ) {
         if (!isSinglePost && comments.length >= minToCollapse) {
-          foldControl = (
+          collapseControl = (
             <CollapseComments
               key="fold-link"
               onCollapse={this.collapseComments}
@@ -396,7 +405,8 @@ export default class PostComments extends Component {
           comments
             .slice(1) // Ignore the first comment editing state
             .findIndex((c) => c.isEditing) + 1;
-        let firstAfterFoldIdx = comments.length - commentsAfterFold;
+        const totalAfterFold = commentsAfterFold + this.state.addedToTail;
+        let firstAfterFoldIdx = comments.length - totalAfterFold;
         if (firstEditingIdx > 0 && firstAfterFoldIdx > firstEditingIdx) {
           firstAfterFoldIdx = firstEditingIdx;
         }
@@ -404,7 +414,7 @@ export default class PostComments extends Component {
         if (foldedCount < minFoldedComments) {
           // Too few comments under the fold, show them all
           if (!isSinglePost && comments.length >= minToCollapse) {
-            foldControl = (
+            collapseControl = (
               <CollapseComments
                 key="fold-link"
                 onCollapse={this.collapseComments}
@@ -418,7 +428,7 @@ export default class PostComments extends Component {
           const foldedCommentLikes = comments
             .slice(1, firstAfterFoldIdx)
             .reduce((a, c) => a + c.likes, 0);
-          foldControl = (
+          expandControl = (
             <ExpandComments
               key="expand-comments"
               onExpand={this.expandComments}
@@ -427,6 +437,15 @@ export default class PostComments extends Component {
               omittedCommentLikes={foldedCommentLikes}
             />
           );
+          if (totalAfterFold >= minToCollapse) {
+            collapseControl = (
+              <CollapseComments
+                key="fold-link"
+                onCollapse={this.collapseComments}
+                commentsAfterFold={commentsAfterFold}
+              />
+            );
+          }
           firstComment = this.renderComment(comments[0]);
           tailComments = comments.slice(firstAfterFoldIdx).map(this.renderComment);
         }
@@ -451,7 +470,7 @@ export default class PostComments extends Component {
           .slice(post.omittedCommentsOffset, firstAfterFoldIdx)
           .reduce((a, c) => a + c.likes, 0);
 
-      foldControl = (
+      expandControl = (
         <ExpandComments
           key="expand-comments"
           onExpand={this.expandComments}
@@ -484,7 +503,7 @@ export default class PostComments extends Component {
       >
         <ErrorBoundary>
           {firstCommentSpacer}
-          {[firstComment, foldControl, ...tailComments]}
+          {[firstComment, expandControl, collapseControl, ...tailComments]}
           {this.renderAddComment()}
         </ErrorBoundary>
       </div>
