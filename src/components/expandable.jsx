@@ -1,5 +1,4 @@
-import { Component } from 'react';
-import ReactDOM from 'react-dom';
+import { Component, createRef } from 'react';
 import classnames from 'classnames';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { Icon } from './fontawesome-icons';
@@ -12,6 +11,8 @@ const DEFAULT_ABOVE_FOLD_LINES = 5;
 const DEFAULT_KEY = 'default';
 
 export default class Expandable extends Component {
+  root = createRef(null);
+
   constructor(props) {
     super(props);
     this.state = {
@@ -37,7 +38,7 @@ export default class Expandable extends Component {
     const cn = classnames(['expandable', { expanded, folded: !expanded }]);
     const style = { maxHeight: expanded ? '' : `${this.state.maxHeight}px` };
     return (
-      <div className={cn} style={style}>
+      <div className={cn} style={style} ref={this.root}>
         <ErrorBoundary>
           {this.props.children}
           {!expanded && (
@@ -61,7 +62,7 @@ export default class Expandable extends Component {
 
   rewrap() {
     const { maxLines, aboveFoldLines } = chooseLineCounts(this.props.config, window.innerWidth);
-    const node = ReactDOM.findDOMNode(this);
+    const node = this.root.current;
     const lines = gatherContentLines(node, '.Linkify', '.p-break');
     const shouldExpand = lines.length <= (maxLines || DEFAULT_MAX_LINES);
     const [readMorePanel] = node.querySelectorAll('.expand-panel');

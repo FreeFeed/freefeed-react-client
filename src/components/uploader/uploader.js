@@ -27,31 +27,15 @@ export function useUploader({
   const [, forceUpdate] = useBool();
 
   // Attachments management
-  const [fileIds, _setFileIds] = useState(() => getDraft(draftKey)?.fileIds ?? initialFileIds);
-
-  const updateFileIds = useCallback(
-    (action) => {
-      const nextIds = action(fileIds);
-      _setFileIds(nextIds);
-      if (draftKey) {
-        const st = store.getState();
-        setDraftField(
-          draftKey,
-          'files',
-          nextIds.map((id) => st.attachments[id]),
-        );
-      }
-    },
-    [draftKey, fileIds, store],
-  );
+  const [fileIds, setFileIds] = useState(() => getDraft(draftKey)?.fileIds ?? initialFileIds);
 
   const removeFile = useCallback(
-    (idToRemove) => updateFileIds((ids) => ids.filter((id) => id !== idToRemove)),
-    [updateFileIds],
+    (idToRemove) => setFileIds((ids) => ids.filter((id) => id !== idToRemove)),
+    [],
   );
   const reorderFiles = useCallback(
-    (reorderedIds) => updateFileIds((oldIds) => uniq(reorderedIds.concat(oldIds))),
-    [updateFileIds],
+    (reorderedIds) => setFileIds((oldIds) => uniq(reorderedIds.concat(oldIds))),
+    [],
   );
 
   useEffect(() => {
@@ -60,9 +44,21 @@ export function useUploader({
     }
     return subscribeToDrafts(() => {
       const fileIds = getDraft(draftKey)?.fileIds ?? initialFileIds;
-      _setFileIds(fileIds);
+      setFileIds(fileIds);
     });
   }, [draftKey, initialFileIds]);
+
+  useEffect(() => {
+    if (!draftKey) {
+      return;
+    }
+    const st = store.getState();
+    setDraftField(
+      draftKey,
+      'files',
+      fileIds.map((id) => st.attachments[id]),
+    );
+  }, [draftKey, fileIds, store]);
 
   const isUploading = useMemo(
     () => [...uploadIds].some((id) => statuses[id]?.loading),
@@ -116,11 +112,11 @@ export function useUploader({
     for (const id of uploadIds) {
       if (statuses[id]?.success && unfinishedFiles.has(id)) {
         unfinishedFiles.delete(id);
-        updateFileIds((ids) => [...ids, allUploads[id].attachment.id]);
+        setFileIds((ids) => [...ids, allUploads[id].attachment.id]);
         onSuccess?.(allUploads[id].attachment, id);
       }
     }
-  }, [allUploads, onSuccess, statuses, unfinishedFiles, updateFileIds, uploadIds]);
+  }, [allUploads, onSuccess, statuses, unfinishedFiles, uploadIds]);
 
   const uploadProgressProps = useMemo(
     () => ({ uploadIds, statuses, unfinishedFiles }),
@@ -140,8 +136,8 @@ export function useUploader({
   const clearUploads = useCallback(() => {
     uploadIds.clear();
     unfinishedFiles.clear();
-    updateFileIds(() => initialFileIds);
-  }, [initialFileIds, unfinishedFiles, updateFileIds, uploadIds]);
+    setFileIds(initialFileIds);
+  }, [initialFileIds, unfinishedFiles, uploadIds]);
 
   return {
     isUploading,

@@ -124,7 +124,7 @@
     padding: rem(5px) 0 rem(5px) rem(11px);
 
     @media (max-width: 991px) {
-      padding: rem(15px) 0 0 0;
+      padding: rem(15px) 0 0;
     }
 
     font-size: rem(11px);
@@ -136,7 +136,7 @@
   .box-body {
     font-family: Vazir, Arial, sans-serif;
     font-size: rem(15px);
-    padding: rem(10px) 0 rem(3px) 0;
+    padding: rem(10px) 0 rem(3px);
     background-color: #fff;
 
     a {
@@ -210,7 +210,7 @@
   }
 
   .box-footer {
-    padding: rem(5px) 0 rem(10px) 0;
+    padding: rem(5px) 0 rem(10px);
     font-size: rem(11px);
 
     a {
