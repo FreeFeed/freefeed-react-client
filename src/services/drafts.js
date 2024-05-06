@@ -2,6 +2,7 @@
 /* global CONFIG */
 import storage from 'local-storage-fallback';
 import { isEqual, omit } from 'lodash-es';
+import { shallowEqual } from 'react-redux';
 import { setAttachment } from '../redux/action-creators';
 import { setDelayedAction } from './drafts-throttling';
 import { EventEmitter } from './drafts-events';
@@ -66,9 +67,14 @@ export function hasDraft(key) {
  * @param {Exclude<DraftData[F], undefined>} value
  */
 export function setDraftField(key, field, value) {
-  const newData = { ...getDraft(key), [field]: value, ts: Date.now() };
+  const oldData = getDraft(key);
+  const newData = { ...oldData, [field]: value, ts: Date.now() };
   if (field === 'files') {
     fillFileIds(newData);
+    if (shallowEqual(oldData?.fileIds, newData.fileIds)) {
+      setActiveDraft(key);
+      return;
+    }
   }
   setActiveDraft(key);
   setDraftData(key, newData);
