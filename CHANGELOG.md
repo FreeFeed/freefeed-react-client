@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.131.1] - 2024-05-06
+### Fixed
+- Fixed a draft fileIds synchronization bug.
+
 ## [1.131.0] - 2024-05-05
 ### Added
 - Allow to unfold comments step by step on the home and feed pages.
