@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.132.0] - Not released
+### Fixed
+- Programmatic insertion into the comment text area is now debounced with a
+  timeout of 100ms. It prevents races when multiple files are uploaded at the
+  same time.
+- Very long words now breaks up in the comment preview and at the Notifications
+  page.
+
 ## [1.131.1] - 2024-05-06
 ### Fixed
 - Fixed a draft fileIds synchronization bug.
