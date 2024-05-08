@@ -1,6 +1,6 @@
 import cn from 'classnames';
 import { CODE_ENTER } from 'keycode-js';
-import { forwardRef, useCallback, useEffect, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -63,27 +63,7 @@ export const SmartTextarea = forwardRef(function SmartTextarea(
     };
   }, [cancelEmptyDraftOnBlur, draftKey, ref]);
 
-  ref.current.insertText = useCallback(
-    (insertion) => {
-      const input = ref.current;
-      const [text, selStart, selEnd] = insertText(
-        insertion,
-        input.value,
-        input.selectionStart,
-        input.selectionEnd,
-      );
-      // Pre-fill the input value to keep the cursor/selection
-      // position after React update cycle
-      input.value = text;
-      input.setSelectionRange(selStart, selEnd);
-      input.focus();
-      onText?.(input.value);
-      if (draftKey) {
-        setDraftField(draftKey, 'text', input.value);
-      }
-    },
-    [draftKey, onText, ref],
-  );
+  ref.current.insertText = useDebouncedInsert(100, ref, onText, draftKey);
 
   useEffect(() => {
     if (!draftKey && !onText) {
@@ -260,4 +240,45 @@ function containsFiles(dndEvent) {
     }
   }
   return false;
+}
+
+function useDebouncedInsert(interval, inputRef, onText, draftKey) {
+  const queue = useRef([]);
+  const timer = useRef(0);
+
+  useEffect(() => () => clearTimeout(timer.current), []);
+
+  const insertQueue = useCallback(() => {
+    const toInsert = queue.current.join(' ');
+    if (toInsert === '') {
+      return;
+    }
+    queue.current.length = 0;
+
+    const input = inputRef.current;
+    const [text, selStart, selEnd] = insertText(
+      toInsert,
+      input.value,
+      input.selectionStart,
+      input.selectionEnd,
+    );
+    // Pre-fill the input value to keep the cursor/selection
+    // position after React update cycle
+    input.value = text;
+    input.setSelectionRange(selStart, selEnd);
+    input.focus();
+    onText?.(input.value);
+    if (draftKey) {
+      setDraftField(draftKey, 'text', input.value);
+    }
+  }, [draftKey, inputRef, onText]);
+
+  return useCallback(
+    (insertion) => {
+      queue.current.push(insertion);
+      clearTimeout(timer.current);
+      timer.current = setTimeout(insertQueue, interval);
+    },
+    [insertQueue, interval],
+  );
 }
