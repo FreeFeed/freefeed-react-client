@@ -47,6 +47,7 @@
     padding-left: 0.9em;
     margin-left: 0.3em;
     border-left: 0.3em solid #eee;
+    overflow-wrap: break-word;
 
     @media (max-width: 450px) {
       margin-left: 0;

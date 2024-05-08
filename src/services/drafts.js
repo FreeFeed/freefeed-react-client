@@ -2,7 +2,6 @@
 /* global CONFIG */
 import storage from 'local-storage-fallback';
 import { isEqual, omit } from 'lodash-es';
-import { shallowEqual } from 'react-redux';
 import { setAttachment } from '../redux/action-creators';
 import { setDelayedAction } from './drafts-throttling';
 import { EventEmitter } from './drafts-events';
@@ -71,10 +70,6 @@ export function setDraftField(key, field, value) {
   const newData = { ...oldData, [field]: value, ts: Date.now() };
   if (field === 'files') {
     fillFileIds(newData);
-    if (shallowEqual(oldData?.fileIds, newData.fileIds)) {
-      setActiveDraft(key);
-      return;
-    }
   }
   setActiveDraft(key);
   setDraftData(key, newData);
@@ -370,7 +365,7 @@ function trimDraftPrefix(storageKey) {
  * @returns {boolean}
  */
 function isUnchangedData(data1, data2) {
-  return data2 === data1 || isEqual(data1, data2);
+  return data2 === data1 || isEqual(omit(data1, 'ts'), omit(data2, 'ts'));
 }
 
 /**
