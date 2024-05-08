@@ -365,7 +365,7 @@ function trimDraftPrefix(storageKey) {
  * @returns {boolean}
  */
 function isUnchangedData(data1, data2) {
-  return data2 === data1 || isEqual(omit(data1, 'ts'), omit(data2, 'ts'));
+  return data2 === data1 || isEqual(omit(data1, ['ts', 'files']), omit(data2, ['ts', 'files']));
 }
 
 /**

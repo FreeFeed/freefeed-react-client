@@ -28,14 +28,19 @@ export function useUploader({
 
   // Attachments management
   const [fileIds, setFileIds] = useState(() => getDraft(draftKey)?.fileIds ?? initialFileIds);
+  const updatedLocally = useRef(false);
+  const setFileIdsLocally = useCallback((arg) => {
+    setFileIds(arg);
+    updatedLocally.current = true;
+  }, []);
 
   const removeFile = useCallback(
-    (idToRemove) => setFileIds((ids) => ids.filter((id) => id !== idToRemove)),
-    [],
+    (idToRemove) => setFileIdsLocally((ids) => ids.filter((id) => id !== idToRemove)),
+    [setFileIdsLocally],
   );
   const reorderFiles = useCallback(
-    (reorderedIds) => setFileIds((oldIds) => uniq(reorderedIds.concat(oldIds))),
-    [],
+    (reorderedIds) => setFileIdsLocally((oldIds) => uniq(reorderedIds.concat(oldIds))),
+    [setFileIdsLocally],
   );
 
   useEffect(() => {
@@ -49,9 +54,10 @@ export function useUploader({
   }, [draftKey, initialFileIds]);
 
   useEffect(() => {
-    if (!draftKey) {
+    if (!draftKey || !updatedLocally.current) {
       return;
     }
+    updatedLocally.current = false;
     const st = store.getState();
     setDraftField(
       draftKey,
@@ -112,11 +118,11 @@ export function useUploader({
     for (const id of uploadIds) {
       if (statuses[id]?.success && unfinishedFiles.has(id)) {
         unfinishedFiles.delete(id);
-        setFileIds((ids) => [...ids, allUploads[id].attachment.id]);
+        setFileIdsLocally((ids) => [...ids, allUploads[id].attachment.id]);
         onSuccess?.(allUploads[id].attachment, id);
       }
     }
-  }, [allUploads, onSuccess, statuses, unfinishedFiles, uploadIds]);
+  }, [allUploads, onSuccess, setFileIdsLocally, statuses, unfinishedFiles, uploadIds]);
 
   const uploadProgressProps = useMemo(
     () => ({ uploadIds, statuses, unfinishedFiles }),
@@ -136,8 +142,8 @@ export function useUploader({
   const clearUploads = useCallback(() => {
     uploadIds.clear();
     unfinishedFiles.clear();
-    setFileIds(initialFileIds);
-  }, [initialFileIds, unfinishedFiles, uploadIds]);
+    setFileIdsLocally(initialFileIds);
+  }, [initialFileIds, setFileIdsLocally, unfinishedFiles, uploadIds]);
 
   return {
     isUploading,
