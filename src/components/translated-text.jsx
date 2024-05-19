@@ -1,16 +1,12 @@
 import ISO6391 from 'iso-639-1';
 import { useDispatch, useSelector } from 'react-redux';
-import cn from 'classnames';
 import { useCallback } from 'react';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { initialAsyncState } from '../redux/async-helpers';
 import { resetTranslation } from '../redux/action-creators';
 import { useServerValue } from './hooks/server-info';
 import PieceOfText from './piece-of-text';
-import { Icon } from './fontawesome-icons';
 import { faTranslate } from './fontawesome-custom-icons';
-import { ButtonLink } from './button-link';
-import style from './translated-text.module.scss';
+import { AlternativeText } from './alternative-text';
 
 const selectTranslationService = (serverInfo) => serverInfo.textTranslation.serviceTitle;
 
@@ -27,29 +23,31 @@ export function TranslatedText({ type, id, userHover, arrowHover, arrowClick }) 
   }
   if (status.loading) {
     return (
-      <Layout
+      <AlternativeText
+        icon={faTranslate}
         status={`Translating using ${serviceTitle}...`}
         inComment={type === 'comment'}
-        reset={reset}
+        close={reset}
       />
     );
   }
   if (status.error) {
     return (
-      <Layout
-        isError
+      <AlternativeText
+        icon={faTranslate}
         status={`Translation error: ${status.errorText}`}
         inComment={type === 'comment'}
-        reset={reset}
+        close={reset}
       />
     );
   }
 
   return (
-    <Layout
+    <AlternativeText
+      icon={faTranslate}
       status={`Translated from ${ISO6391.getName(result.detectedLang)} using ${serviceTitle}:`}
       inComment={type === 'comment'}
-      reset={reset}
+      close={reset}
     >
       <PieceOfText
         isExpanded
@@ -58,23 +56,6 @@ export function TranslatedText({ type, id, userHover, arrowHover, arrowClick }) 
         arrowHover={arrowHover}
         arrowClick={arrowClick}
       />
-    </Layout>
-  );
-}
-
-function Layout({ status, isError = false, inComment = false, reset, children }) {
-  return (
-    <div className={cn(style.box, inComment && style.inComment)}>
-      <div className={cn(style.status, isError && style.statusError)}>
-        <span className={style.icon}>
-          <Icon icon={faTranslate} />
-        </span>
-        <span className={style.statusText}>{status}</span>
-        <ButtonLink onClick={reset} aria-label="Close" className={style.closeIcon}>
-          <Icon icon={faTimes} />
-        </ButtonLink>
-      </div>
-      <div>{children}</div>
-    </div>
+    </AlternativeText>
   );
 }
