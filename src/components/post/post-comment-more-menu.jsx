@@ -48,7 +48,7 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
   },
   menuRef,
 ) {
-  const { status, likers } = useCommentLikers(id);
+  const { status, likers } = useCommentLikers(id, isHidden);
   const myUsername = useSelector((state) => state.user.username);
   const bIdx = getBackwardIdx();
   const arrows = bIdx <= 4 ? '^'.repeat(bIdx) : `^${bIdx}`;
