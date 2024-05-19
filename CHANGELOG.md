@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.132.0] - Not released
+### Added
+- Ability to "unlock" and preview comments from the banned users and with reply
+  to the banned users.
 
 ## [1.131.3] - 2024-05-08
 ### Fixed
