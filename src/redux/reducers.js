@@ -2181,3 +2181,5 @@ export const calendarMonthDays = fromResponse(
 export { userStatsStatus, userStats } from './reducers/dynamic-user-stats';
 
 export { translationStates, translationResults } from './reducers/translation';
+
+export { unlockedCommentStates, unlockedComments } from './reducers/unlocked-comments';

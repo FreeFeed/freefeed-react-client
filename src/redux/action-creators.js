@@ -1387,3 +1387,11 @@ export function notifyOfAllComments(postId, enabled) {
     payload: { postId, enabled },
   };
 }
+
+export function unlockComment(id) {
+  return {
+    type: ActionTypes.UNLOCK_COMMENT,
+    apiRequest: Api.unlockComment,
+    payload: { id },
+  };
+}
