@@ -29,8 +29,6 @@ export default class PostComments extends Component {
     commentsAfterFold: foldConf.afterFold,
     minFoldedComments: foldConf.minFolded,
     minToCollapse: foldConf.minToCollapse,
-    minToSteppedFold: foldConf.minToSteppedFold,
-    foldStep: foldConf.foldStep,
     preopened: false,
   };
 
@@ -310,13 +308,25 @@ export default class PostComments extends Component {
   };
 
   expandComments = (count = 0) => {
+    const { post, commentsAfterFold, showMoreComments, comments } = this.props;
     if (count > 0) {
+      if (post.omittedComments > 0) {
+        // Correction for the case when the server is configured to return less
+        // than 'commentsAfterFold' after a fold. We should correct the number
+        // of comments to be opened, otherwise more comments will be opened than
+        // necessary.
+        //
+        // The "comments.length - post.omittedCommentsOffset" is the server's
+        // number of comments after the fold. The "commentsAfterFold" is the
+        // client's desired number of comments after the fold.
+        count += comments.length - post.omittedCommentsOffset - commentsAfterFold;
+      }
       this.setState({ folded: true, addedToTail: this.state.addedToTail + count });
     } else {
       this.setState({ folded: false, addedToTail: 0 });
     }
-    if (this.props.post.omittedComments > 0) {
-      this.props.showMoreComments(this.props.post.id);
+    if (post.omittedComments > 0) {
+      showMoreComments(this.props.post.id);
     }
   };
 
