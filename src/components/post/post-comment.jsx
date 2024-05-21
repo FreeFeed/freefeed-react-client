@@ -5,7 +5,10 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 
 import { preventDefault, confirmFirst } from '../../utils';
-import { READMORE_STYLE_COMPACT } from '../../utils/frontend-preferences-options';
+import {
+  HIDDEN_AUTHOR_BANNED,
+  READMORE_STYLE_COMPACT,
+} from '../../utils/frontend-preferences-options';
 import { commentReadmoreConfig } from '../../utils/readmore-config';
 import { defaultCommentState } from '../../redux/reducers/comment-edit';
 
@@ -22,6 +25,7 @@ import { Separated } from '../separated';
 import { TranslatedText } from '../translated-text';
 import { initialAsyncState } from '../../redux/async-helpers';
 import { existingCommentURI, newCommentURI } from '../../services/drafts';
+import { UnlockedHiddenComment } from '../unlocked-hidden-comment';
 import { PostCommentMore } from './post-comment-more';
 import { PostCommentPreview } from './post-comment-preview';
 import { CommentProvider } from './post-comment-provider';
@@ -36,6 +40,7 @@ class PostComment extends Component {
     previewSeqNumber: 0,
     previewLeft: 0,
     previewTop: 0,
+    unlockHidden: false,
   };
 
   scrollToComment = () => {
@@ -158,8 +163,12 @@ class PostComment extends Component {
       canLike: !ownComment && !this.isHidden(),
       canReply: !this.isHidden() && this.props.canAddComment,
       canDelete: this.props.isEditable || this.props.isDeletable,
+      canUnlock: this.props.hideType === HIDDEN_AUTHOR_BANNED || this.props.isReplyToBanned,
     };
   }
+
+  unlockHidden = () => this.setState({ unlockHidden: true });
+  lockHidden = () => this.setState({ unlockHidden: false });
 
   // We use this strange data structure because there can be more than one
   // PostCommentMore element created in the comment (see Expandable/bonusInfo).
@@ -171,7 +180,7 @@ class PostComment extends Component {
   onMoreMenuOpened = (moreMenuOpened) => this.setState({ moreMenuOpened });
 
   commentTail() {
-    const { canLike, canReply, canDelete } = this.possibleActions();
+    const { canLike, canReply, canDelete, canUnlock } = this.possibleActions();
     return (
       <span
         aria-label={
@@ -229,6 +238,7 @@ class PostComment extends Component {
                   doMention={canReply && this.mention}
                   doLike={canLike && !this.props.hasOwnLike && this.like}
                   doUnlike={canLike && this.props.hasOwnLike && this.unlike}
+                  doUnlock={canUnlock && this.unlockHidden}
                   getBackwardIdx={this.backwardIdx}
                   createdAt={this.props.createdAt}
                   updatedAt={this.props.updatedAt}
@@ -266,6 +276,15 @@ class PostComment extends Component {
     if (this.isHidden()) {
       return (
         <div className="comment-body">
+          {this.state.unlockHidden && (
+            <UnlockedHiddenComment
+              id={this.props.id}
+              userHover={this.props.authorHighlightHandlers}
+              arrowHover={this.arrowHoverHandlers}
+              arrowClick={this.arrowClick}
+              close={this.lockHidden}
+            />
+          )}
           <span className="comment-text">{this.hiddenBody()}</span>
           {commentTail}
         </div>
