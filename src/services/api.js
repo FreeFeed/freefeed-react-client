@@ -820,6 +820,10 @@ export function getCommentsByIds({ commentIds }) {
   return fetch(`${apiRoot}/v2/comments/byIds`, postRequestOptions('POST', { commentIds }));
 }
 
+export function unlockComment({ id }) {
+  return fetch(`${apiRoot}/v2/comments/${id}?unlock-banned`, getRequestOptions());
+}
+
 export function translateText({ type, id, lang }) {
   const part = type === 'post' ? 'posts' : 'comments';
   const qs = lang ? `?lang=${lang}` : '';

@@ -9,6 +9,7 @@ import {
   faEdit,
   faHeartBroken,
   faLink,
+  faLockOpen,
   faUserFriends,
 } from '@fortawesome/free-solid-svg-icons';
 import { faHeart, faClock, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
@@ -35,6 +36,7 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
     doLike,
     doUnlike,
     doShowLikes,
+    doUnlock,
     getBackwardIdx,
     createdAt,
     updatedAt,
@@ -46,7 +48,7 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
   },
   menuRef,
 ) {
-  const { status, likers } = useCommentLikers(id);
+  const { status, likers } = useCommentLikers(id, isHidden);
   const myUsername = useSelector((state) => state.user.username);
   const bIdx = getBackwardIdx();
   const arrows = bIdx <= 4 ? '^'.repeat(bIdx) : `^${bIdx}`;
@@ -112,6 +114,13 @@ export const PostCommentMoreMenu = forwardRef(function PostCommentMore(
     [
       !isHidden && (
         <MenuItemTranslate key="translate" type="comment" id={id} doAndClose={doAndClose} />
+      ),
+      doUnlock && (
+        <div key="unlock" className={styles.item}>
+          <ButtonLink onClick={doUnlock} className={styles.link}>
+            <Iconic icon={faLockOpen}>Show comment</Iconic>
+          </ButtonLink>
+        </div>
       ),
     ],
     [
