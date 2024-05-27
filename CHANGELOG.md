@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.132.0] - 2024-05-27
+### Added
+- Ability to "unlock" and preview comments from the banned users and with reply
+  to the banned users.
+### Fixed
+- Fixed a bug where the first partial opening of comments ("show last N") would
+  open one extra comment.
+
 ## [1.131.3] - 2024-05-08
 ### Fixed
 - Separate local and remote file list changes in the file uploader (finish the
