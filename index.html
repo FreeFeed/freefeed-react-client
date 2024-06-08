@@ -5,18 +5,19 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
 
     <!-- Support for FB OpenGraph and Twitter -->
-    <!--#if expr="${request_uri} = /^\/([a-zA-Z0-9]+)\/([a-fA-F0-9\-]{36}|[a-fA-F0-9]{4,6})/" -->
+    <!--#if expr="${request_uri} = /^\/([a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)\/([a-fA-F0-9\-]{36}|[a-fA-F0-9]{4,6})/" -->
     <!--#set var="post_id" value="$2" -->
     <!--#include virtual="/v2/posts-opengraph/${post_id}" -->
     <!--#endif -->
 
     <!-- RSS autodiscovery -->
-    <!--#if expr="${request_uri} = /^\/([a-zA-Z0-9]+)/" -->
+    <!--#if expr="${request_uri} = /^\/([a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)/" -->
     <!--#set var="username" value="$1" -->
     <!--#include virtual="/v2/timelines-metatags/${username}" -->
     <!--#endif -->
 
     <title>FreeFeed</title>
+    <meta name="description" content="FreeFeed is a small and free social network, that enables you to discover and discuss the interesting stuff your friends find on the web">
 
     <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon" />
     <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml" />

@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.133.0] - Not released
+### Added
+- Add a "description" meta-tag to the index.html.
+### Fixed
+- Update SSI patterns in index.html to support dashes in groupnames.
 
 ## [1.132.0] - 2024-05-27
 ### Added
