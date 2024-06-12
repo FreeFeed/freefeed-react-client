@@ -23,6 +23,7 @@ import { EDIT_DIRECT, EDIT_REGULAR } from '../feeds-selector/constants';
 import { ButtonLink } from '../button-link';
 import { usePrivacyCheck } from '../feeds-selector/privacy-check';
 import { doneEditingAndDeleteDraft, existingPostURI, getDraft } from '../../services/drafts';
+import { Autocomplete } from '../autocomplete/autocomplete';
 import PostAttachments from './post-attachments';
 
 const selectMaxFilesCount = (serverInfo) => serverInfo.attachments.maxCountPerPost;
@@ -185,6 +186,7 @@ export function PostEditForm({ id, isDirect, recipients, createdBy, body, attach
             dir="auto"
             draftKey={draftKey}
           />
+          <Autocomplete inputRef={textareaRef} />
         </div>
 
         <div className="post-edit-actions">
