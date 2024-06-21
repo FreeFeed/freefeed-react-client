@@ -146,6 +146,8 @@ export default class ImageAttachmentsContainer extends Component {
             list={this.props.attachments}
             setList={this.setSortedList}
             filter=".remove-attachment"
+            /* Bug on iOS, see https://github.com/SortableJS/react-sortablejs/issues/270 */
+            preventOnFilter={false}
           >
             {allImages}
           </Sortable>

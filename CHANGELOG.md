@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add a "description" meta-tag to the index.html.
 ### Fixed
 - Update SSI patterns in index.html to support dashes in groupnames.
+- Bug on iOS that blocks deletion of post's attachments.
 
 ## [1.132.0] - 2024-05-27
 ### Added
