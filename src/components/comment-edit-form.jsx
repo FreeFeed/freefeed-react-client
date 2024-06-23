@@ -128,7 +128,7 @@ export function CommentEditForm({
           draftKey={draftKey}
           cancelEmptyDraftOnBlur={isPersistent}
         />
-        <Autocomplete inputRef={input} />
+        <Autocomplete inputRef={input} context="comment" />
       </div>
       <div>
         <button

@@ -6,20 +6,30 @@ import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import { Finder } from '../../utils/sparse-match';
 import { UserPicture } from '../user-picture';
 import { Icon } from '../fontawesome-icons';
+import { usePostId } from '../post/post-comment-ctx';
 import style from './autocomplete.module.scss';
 import { HighlightText } from './highlight-text';
+import {
+  getAllGroups,
+  getAllUsers,
+  getMyFriends,
+  getMyGroups,
+  getMySubscribers,
+  getPostParticipants,
+  getRankedNames,
+} from './ranked-names';
 
-export function Selector({ query, events, onSelect }) {
-  const [usernames, accountsMap] = useAccountsMap();
+export function Selector({ query, events, onSelect, context }) {
+  const [usernames, accountsMap, compare] = useAccountsMap({ context });
 
   const matches = useMemo(() => {
-    const finder = new Finder(query, 5);
+    const finder = new Finder(query, 5, compare);
     for (const username of usernames) {
       finder.add(username);
     }
 
     return finder.results();
-  }, [query, usernames]);
+  }, [compare, query, usernames]);
 
   const [cursor, setCursor] = useState(0);
   useEffect(() => setCursor(0), [matches]);
@@ -80,23 +90,54 @@ function Item({ account, match, isCurrent, onClick }) {
   );
 }
 
-function useAccountsMap() {
+function useAccountsMap({ context }) {
   const store = useStore();
+  const postId = usePostId();
 
   return useMemo(() => {
     const state = store.getState();
     const accountsMap = new Map();
+    let rankedNames;
+
+    if (context === 'comment') {
+      const post = state.posts[postId];
+      rankedNames = getRankedNames(
+        post && getPostParticipants(post, state),
+        getMyFriends(state),
+        getMyGroups(state),
+        getMySubscribers(state),
+        getAllUsers(state),
+        getAllGroups(state),
+      );
+    } else {
+      rankedNames = getRankedNames(
+        getMyFriends(state),
+        getMyGroups(state),
+        getMySubscribers(state),
+        getAllUsers(state),
+        getAllGroups(state),
+      );
+    }
+
+    function compare(a, b) {
+      const aRank = a.rank + 10 / (1 + (rankedNames.get(a.text) ?? 0));
+      const bRank = b.rank + 10 / (1 + (rankedNames.get(b.text) ?? 0));
+      if (aRank === bRank) {
+        return a.text.localeCompare(b.text);
+      }
+      return bRank - aRank;
+    }
+
     const allAccounts = [
       ...Object.values(state.users),
-      ...Object.values(state.subscriptions),
       ...Object.values(state.subscribers),
-      ...state.managedGroups,
+      ...state.user.subscribers,
     ];
 
     for (const account of allAccounts) {
       account.username && accountsMap.set(account.username, account);
     }
 
-    return [[...accountsMap.keys()], accountsMap];
-  }, [store]);
+    return [[...accountsMap.keys()], accountsMap, compare];
+  }, [context, postId, store]);
 }

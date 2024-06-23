@@ -4,7 +4,7 @@ import { EventEmitter } from '../../services/drafts-events';
 import style from './autocomplete.module.scss';
 import { Selector } from './selector';
 
-export function Autocomplete({ inputRef }) {
+export function Autocomplete({ inputRef, context }) {
   const [query, setQuery] = useState(/** @type {string|null}*/ null);
 
   const events = useMemo(() => new EventEmitter(), []);
@@ -62,7 +62,7 @@ export function Autocomplete({ inputRef }) {
   if (query) {
     return (
       <div className={style.wrapper}>
-        <Selector query={query} events={events} onSelect={onSelectHandler} />
+        <Selector query={query} events={events} onSelect={onSelectHandler} context={context} />
       </div>
     );
   }

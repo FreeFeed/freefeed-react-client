@@ -8,8 +8,9 @@ export class Finder {
    *
    * @param {string} query
    * @param {number} count
+   * @param {(a: Ranked, b: Ranked) => number} compare
    */
-  constructor(query, count) {
+  constructor(query, count, compare) {
     this._topN = new TopN(count, compare);
     this.query = query;
   }
