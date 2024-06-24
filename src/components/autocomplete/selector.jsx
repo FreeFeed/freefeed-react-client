@@ -6,7 +6,8 @@ import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import { Finder } from '../../utils/sparse-match';
 import { UserPicture } from '../user-picture';
 import { Icon } from '../fontawesome-icons';
-import { usePostId } from '../post/post-comment-ctx';
+import { usePost } from '../post/post-comment-ctx';
+import { showMoreComments } from '../../redux/action-creators';
 import style from './autocomplete.module.scss';
 import { HighlightText } from './highlight-text';
 import {
@@ -92,7 +93,17 @@ function Item({ account, match, isCurrent, onClick }) {
 
 function useAccountsMap({ context }) {
   const store = useStore();
-  const postId = usePostId();
+  const post = usePost();
+
+  useEffect(() => {
+    if (context !== 'comment' || !post) {
+      return;
+    }
+    const postState = store.getState().postsViewState[post?.id];
+    if (post?.omittedComments > 0 && !postState?.loadingComments) {
+      store.dispatch(showMoreComments(post.id));
+    }
+  }, [context, post, store]);
 
   return useMemo(() => {
     const state = store.getState();
@@ -100,7 +111,6 @@ function useAccountsMap({ context }) {
     let rankedNames;
 
     if (context === 'comment') {
-      const post = state.posts[postId];
       rankedNames = getRankedNames(
         post && getPostParticipants(post, state),
         getMyFriends(state),
@@ -139,5 +149,5 @@ function useAccountsMap({ context }) {
     }
 
     return [[...accountsMap.keys()], accountsMap, compare];
-  }, [context, postId, store]);
+  }, [context, post, store]);
 }
