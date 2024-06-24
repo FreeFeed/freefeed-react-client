@@ -840,3 +840,10 @@ export function notifyOfAllComments({ postId, enabled }) {
     postRequestOptions('POST', { enabled }),
   );
 }
+
+export function getMatchedUsers({ query }) {
+  return fetch(
+    `${apiPrefix}/users/sparseMatches?qs=${encodeURIComponent(query)}`,
+    getRequestOptions(),
+  );
+}

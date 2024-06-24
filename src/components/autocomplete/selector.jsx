@@ -1,13 +1,13 @@
-import { useStore } from 'react-redux';
+import { useDispatch, useStore } from 'react-redux';
 import cn from 'classnames';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useEvent } from 'react-use-event-hook';
 import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import { Finder } from '../../utils/sparse-match';
 import { UserPicture } from '../user-picture';
 import { Icon } from '../fontawesome-icons';
 import { usePost } from '../post/post-comment-ctx';
-import { showMoreComments } from '../../redux/action-creators';
+import { getMatchedUsers, showMoreComments } from '../../redux/action-creators';
 import style from './autocomplete.module.scss';
 import { HighlightText } from './highlight-text';
 import {
@@ -21,7 +21,19 @@ import {
 } from './ranked-names';
 
 export function Selector({ query, events, onSelect, context }) {
+  const dispatch = useDispatch();
   const [usernames, accountsMap, compare] = useAccountsMap({ context });
+
+  // Request all users/groups when query longer than 2 chars
+  const lastQuery = useRef('');
+  useEffect(() => {
+    const lc = lastQuery.current;
+    if (query.length < 2 || (lc && query.slice(0, lc.length) === lc)) {
+      return;
+    }
+    lastQuery.current = query;
+    dispatch(getMatchedUsers(query));
+  }, [dispatch, query]);
 
   const matches = useMemo(() => {
     const finder = new Finder(query, 5, compare);
