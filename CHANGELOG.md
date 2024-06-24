@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.133.0] - Not released
 ### Added
 - Add a "description" meta-tag to the index.html.
+- Autocomplete for the user/group names in the post and comment inputs. When the
+  user types "@" and some text afterwards, the matched users/groups are shown
+  beneath the text input.
 ### Changed
 - Switch to V3 server API (with _omittedCommentsOffset_ field and two comments
   after the fold).
