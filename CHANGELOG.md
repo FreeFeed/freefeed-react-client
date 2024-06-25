@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.133.0] - Not released
+### Added
+- Add a "description" meta-tag to the index.html.
+### Changed
+- Switch to V3 server API (with _omittedCommentsOffset_ field and two comments
+  after the fold).
+### Fixed
+- Update SSI patterns in index.html to support dashes in groupnames.
+
 ## [1.132.0] - 2024-05-27
 ### Added
 - Ability to "unlock" and preview comments from the banned users and with reply
