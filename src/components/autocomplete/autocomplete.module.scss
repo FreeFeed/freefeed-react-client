@@ -1,3 +1,5 @@
+@import '../../../styles/helvetica/dark-vars.scss';
+
 .wrapper {
   position: relative;
 }
@@ -20,12 +22,21 @@
     opacity: 0;
     translate: 0 -1em;
   }
+
+  :global(.dark-theme) & {
+    background-color: $bg-color-lighter;
+    border: 1px solid $bg-color-lightest;
+  }
 }
 
 .selector mark {
   padding: 0;
   font-weight: bold;
   background-color: transparent;
+
+  :global(.dark-theme) & {
+    color: $text-color-lighter;
+  }
 }
 
 .list {
@@ -44,6 +55,10 @@
 .itemCurrent,
 .item:hover {
   background-color: #eee;
+
+  :global(.dark-theme) & {
+    background-color: $bg-highlight-color;
+  }
 }
 
 .itemImage {
