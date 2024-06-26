@@ -8512,6 +8512,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-use-event-hook@npm:~0.9.6":
+  version: 0.9.6
+  resolution: "react-use-event-hook@npm:0.9.6"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 10c0/693e546060e242586a5133d29fd323d767b75c703159f29ea048a296b4ef1088c108c729dfcf9331cae8a473a7795f786ee09bf4498859f576f4bc07060cbe01
+  languageName: node
+  linkType: hard
+
 "react@npm:~18.3.1":
   version: 18.3.1
   resolution: "react@npm:18.3.1"
@@ -8592,6 +8601,7 @@ __metadata:
     react-sortablejs: "npm:~6.1.4"
     react-test-renderer: "npm:~18.3.1"
     react-textarea-autosize: "npm:~8.5.3"
+    react-use-event-hook: "npm:~0.9.6"
     recharts: "npm:~2.12.7"
     redux: "npm:~5.0.1"
     rimraf: "npm:~5.0.7"

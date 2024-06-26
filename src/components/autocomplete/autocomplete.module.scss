@@ -1,0 +1,61 @@
+.wrapper {
+  position: relative;
+}
+
+.selector {
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  transition:
+    opacity 0.2s,
+    translate 0.2s;
+
+  @starting-style {
+    opacity: 0;
+    translate: 0 -1em;
+  }
+}
+
+.selector mark {
+  padding: 0;
+  font-weight: bold;
+  background-color: transparent;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item {
+  padding: 0.5em;
+  cursor: pointer;
+  display: flex;
+  gap: 0.5em;
+}
+
+.itemCurrent,
+.item:hover {
+  background-color: #eee;
+}
+
+.itemImage {
+  flex: none;
+}
+
+.screenName {
+  margin-left: 1em;
+  color: #999;
+}
+
+.groupIcon {
+  color: #aaa;
+  margin-right: 0.4em;
+}

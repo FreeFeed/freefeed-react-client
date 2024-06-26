@@ -1395,3 +1395,11 @@ export function unlockComment(id) {
     payload: { id },
   };
 }
+
+export function getMatchedUsers(query) {
+  return {
+    type: ActionTypes.GET_MATCHED_USERS,
+    apiRequest: Api.getMatchedUsers,
+    payload: { query },
+  };
+}

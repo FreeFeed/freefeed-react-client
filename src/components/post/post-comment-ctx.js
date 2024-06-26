@@ -16,7 +16,11 @@ export function useComment() {
  */
 export const postIdContext = createContext(null);
 
+export function usePostId() {
+  return useContext(postIdContext);
+}
+
 export function usePost() {
-  const id = useContext(postIdContext);
+  const id = usePostId();
   return useSelector((state) => state.posts[id] ?? null);
 }
