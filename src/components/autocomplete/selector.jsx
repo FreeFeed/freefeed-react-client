@@ -56,6 +56,7 @@ export function Selector({ query, events, onSelect, context }) {
         setCursor((c) => (c - 1 + matches.length) % matches.length);
         break;
       case 'Enter':
+      case 'Tab':
         onSelect(matches[cursor].text);
         break;
     }
