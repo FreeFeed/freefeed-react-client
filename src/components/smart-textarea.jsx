@@ -63,7 +63,13 @@ export const SmartTextarea = forwardRef(function SmartTextarea(
     };
   }, [cancelEmptyDraftOnBlur, draftKey, ref]);
 
-  ref.current.insertText = useDebouncedInsert(100, ref, onText, draftKey);
+  // Public component methods
+  ref.current.insertText = useDebouncedInsert(100, ref);
+  ref.current.updateStates = useCallback(() => {
+    const text = ref.current.value;
+    onText?.(text);
+    draftKey && setDraftField(draftKey, 'text', text);
+  }, [draftKey, onText, ref]);
 
   useEffect(() => {
     if (!draftKey && !onText) {
@@ -242,7 +248,7 @@ function containsFiles(dndEvent) {
   return false;
 }
 
-function useDebouncedInsert(interval, inputRef, onText, draftKey) {
+function useDebouncedInsert(interval, inputRef) {
   const queue = useRef([]);
   const timer = useRef(0);
 
@@ -267,11 +273,8 @@ function useDebouncedInsert(interval, inputRef, onText, draftKey) {
     input.value = text;
     input.setSelectionRange(selStart, selEnd);
     input.focus();
-    onText?.(input.value);
-    if (draftKey) {
-      setDraftField(draftKey, 'text', input.value);
-    }
-  }, [draftKey, inputRef, onText]);
+    input.updateStates();
+  }, [inputRef]);
 
   return useCallback(
     (insertion) => {
