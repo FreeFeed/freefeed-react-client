@@ -10,7 +10,10 @@ export function Autocomplete({ inputRef, context }) {
   const events = useMemo(() => new EventEmitter(), []);
 
   const keyHandler = useEvent((/** @type {KeyboardEvent}*/ e) => {
-    if (query !== null && (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter')) {
+    if (
+      query !== null &&
+      (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter' || e.key === 'Tab')
+    ) {
       e.preventDefault();
       e.stopPropagation();
       events.emit(e.key);
