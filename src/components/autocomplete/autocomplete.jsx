@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useEvent } from 'react-use-event-hook';
 import { EventEmitter } from '../../services/drafts-events';
+import { setReactInputValue } from '../../utils/set-react-input-value';
 import style from './autocomplete.module.scss';
 import { Selector } from './selector';
 
@@ -126,9 +127,8 @@ function replaceQuery(input, replacement) {
 
   const before = input.value.slice(0, matchPos[0]);
   const after = input.value.slice(matchPos[1]);
-  input.value = before + replacement + (after || ' ');
+  const newValue = before + replacement + (after || ' ');
   const newCaretPos = matchPos[0] + replacement.length + 1;
+  setReactInputValue(input, newValue);
   input.setSelectionRange(newCaretPos, newCaretPos);
-
-  input.dispatchEvent(new Event('input', { bubbles: true }));
 }
