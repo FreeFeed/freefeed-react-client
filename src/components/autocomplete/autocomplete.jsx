@@ -131,4 +131,5 @@ function replaceQuery(input, replacement) {
   input.setSelectionRange(newCaretPos, newCaretPos);
 
   input.dispatchEvent(new Event('input', { bubbles: true }));
+  input.updateStates?.();
 }
