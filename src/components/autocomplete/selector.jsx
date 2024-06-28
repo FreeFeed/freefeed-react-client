@@ -123,23 +123,21 @@ function useAccountsMap({ context }) {
     const accountsMap = new Map();
     let rankedNames;
 
+    const defaultRankings = [
+      getMyFriends(state),
+      getMyGroups(state),
+      getMySubscribers(state),
+      getAllUsers(state),
+      getAllGroups(state),
+    ];
+
     if (context === 'comment') {
-      rankedNames = getRankedNames(
-        post && getPostParticipants(post, state),
-        getMyFriends(state),
-        getMyGroups(state),
-        getMySubscribers(state),
-        getAllUsers(state),
-        getAllGroups(state),
-      );
+      rankedNames = getRankedNames(post && getPostParticipants(post, state), ...defaultRankings);
+    } else if (context === 'search') {
+      rankedNames = getRankedNames(new Set(['me']), ...defaultRankings);
+      accountsMap.set('me', { ...state.users[state.user.id], username: 'me' });
     } else {
-      rankedNames = getRankedNames(
-        getMyFriends(state),
-        getMyGroups(state),
-        getMySubscribers(state),
-        getAllUsers(state),
-        getAllGroups(state),
-      );
+      rankedNames = getRankedNames(...defaultRankings);
     }
 
     function compare(a, b) {

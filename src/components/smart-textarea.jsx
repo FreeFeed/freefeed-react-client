@@ -9,6 +9,7 @@ import { submittingByEnter } from '../services/appearance';
 import { makeJpegIfNeeded } from '../utils/jpeg-if-needed';
 import { insertText } from '../utils/insert-text';
 import { doneEditingIfEmpty, getDraft, setDraftField, subscribeToDrafts } from '../services/drafts';
+import { setReactInputValue } from '../utils/set-react-input-value';
 import { useForwardedRef } from './hooks/forward-ref';
 import { useEventListener } from './hooks/sub-unsub';
 
@@ -63,13 +64,8 @@ export const SmartTextarea = forwardRef(function SmartTextarea(
     };
   }, [cancelEmptyDraftOnBlur, draftKey, ref]);
 
-  // Public component methods
+  // Public component method
   ref.current.insertText = useDebouncedInsert(100, ref);
-  ref.current.updateStates = useCallback(() => {
-    const text = ref.current.value;
-    onText?.(text);
-    draftKey && setDraftField(draftKey, 'text', text);
-  }, [draftKey, onText, ref]);
 
   useEffect(() => {
     if (!draftKey && !onText) {
@@ -270,10 +266,9 @@ function useDebouncedInsert(interval, inputRef) {
     );
     // Pre-fill the input value to keep the cursor/selection
     // position after React update cycle
-    input.value = text;
+    setReactInputValue(input, text);
     input.setSelectionRange(selStart, selEnd);
     input.focus();
-    input.updateStates();
   }, [inputRef]);
 
   return useCallback(
