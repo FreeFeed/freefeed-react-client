@@ -5,7 +5,11 @@ import { setReactInputValue } from '../../utils/set-react-input-value';
 import style from './autocomplete.module.scss';
 import { Selector } from './selector';
 
-export function Autocomplete({ inputRef, context }) {
+// There should be no alphanumeric characters right before the "@" (to exclude
+// email-like strings)
+const defaultAnchor = /(?<![a-z\d])@/gi;
+
+export function Autocomplete({ inputRef, context, anchor = defaultAnchor }) {
   const [query, setQuery] = useState(/** @type {string|null}*/ null);
 
   const events = useMemo(() => new EventEmitter(), []);
@@ -33,7 +37,7 @@ export function Autocomplete({ inputRef, context }) {
       if (e.type === 'selectionchange' && document.activeElement !== input) {
         return;
       }
-      const matchPos = getQueryPosition(input);
+      const matchPos = getQueryPosition(input, anchor);
       setQuery(matchPos ? input.value.slice(matchPos[0], matchPos[1]) : null);
     };
 
@@ -59,9 +63,9 @@ export function Autocomplete({ inputRef, context }) {
       document.removeEventListener('selectionchange', inputHandler);
       input.removeEventListener('keydown', keyHandler, { capture: true });
     };
-  }, [inputRef, keyHandler]);
+  }, [anchor, inputRef, keyHandler]);
 
-  const onSelectHandler = useEvent((text) => replaceQuery(inputRef.current, text));
+  const onSelectHandler = useEvent((text) => replaceQuery(inputRef.current, text, anchor));
 
   if (query) {
     return (
@@ -90,27 +94,32 @@ export function Autocomplete({ inputRef, context }) {
  * @param {HTMLInputElement|HTMLTextAreaElement} input
  * @returns {[number, number]|null}
  */
-function getQueryPosition({ value, selectionStart }) {
+function getQueryPosition({ value, selectionStart }, anchor) {
   if (!selectionStart) {
     return null;
   }
-  const found = value.lastIndexOf('@', selectionStart - 1);
+
+  anchor.lastIndex = 0;
+
+  let found = -1;
+  while (anchor.exec(value) !== null) {
+    if (anchor.lastIndex > selectionStart) {
+      break;
+    }
+    found = anchor.lastIndex;
+  }
+
   if (found === -1) {
     return null;
   }
-  // There should be no alphanumeric characters right before the "@" (to exclude
-  // email-like strings)
-  if (found > 0 && /[a-z\d]/i.test(value[found - 1])) {
-    return null;
-  }
 
-  const match = value.slice(found + 1).match(/^[a-z\d-]+/i)?.[0];
+  const match = value.slice(found).match(/^[a-z\d-]+/i)?.[0];
   // Check that the caret is inside the match or is at its edge
-  if (!match || match.length <= selectionStart - found - 2) {
+  if (!match || match.length <= selectionStart - found - 1) {
     return null;
   }
 
-  return [found + 1, found + 1 + match.length];
+  return [found, found + match.length];
 }
 
 /**
@@ -119,8 +128,8 @@ function getQueryPosition({ value, selectionStart }) {
  * @param {string} replacement
  * @returns {void}
  */
-function replaceQuery(input, replacement) {
-  const matchPos = getQueryPosition(input);
+function replaceQuery(input, replacement, anchor) {
+  const matchPos = getQueryPosition(input, anchor);
   if (!matchPos) {
     return;
   }
