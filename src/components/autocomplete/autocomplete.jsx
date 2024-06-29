@@ -43,9 +43,9 @@ export function Autocomplete({ inputRef, context, anchor = defaultAnchor }) {
 
     // Clears the query after 100ms of no focus. This delay allows to click on
     // the selector by mouse.
-    const timer = 0;
+    let timer = 0;
     const focusHandler = () => clearTimeout(timer);
-    const blurHandler = () => setTimeout(() => setQuery(null), 100);
+    const blurHandler = () => (timer = setTimeout(() => setQuery(null), 500));
 
     input.addEventListener('blur', blurHandler);
     input.addEventListener('focus', focusHandler);
