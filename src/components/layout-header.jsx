@@ -13,7 +13,7 @@ import styles from './layout-header.module.scss';
 import { SignInLink } from './sign-in-link';
 import { Autocomplete } from './autocomplete/autocomplete';
 
-const autocompleteAnchor = /(?<![a-z\d])@|((from|to|author|by|in|commented-?by|liked-?by):)/gi;
+const autocompleteAnchor = /(^|[^a-z\d])@|((from|to|author|by|in|commented-?by|liked-?by):)/gi;
 
 export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
   const dispatch = useDispatch();

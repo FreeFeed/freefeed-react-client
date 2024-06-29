@@ -7,7 +7,7 @@ import { Selector } from './selector';
 
 // There should be no alphanumeric characters right before the "@" (to exclude
 // email-like strings)
-const defaultAnchor = /(?<![a-z\d])@/gi;
+const defaultAnchor = /(^|[^a-z\d])@/gi;
 
 export function Autocomplete({ inputRef, context, anchor = defaultAnchor }) {
   const [query, setQuery] = useState(/** @type {string|null}*/ null);
