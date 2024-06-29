@@ -7,7 +7,7 @@ import { Selector } from './selector';
 
 // There should be no alphanumeric characters right before the "@" (to exclude
 // email-like strings)
-const defaultAnchor = /(?<![a-z\d])@/gi;
+const defaultAnchor = /(^|[^a-z\d])@/gi;
 
 export function Autocomplete({ inputRef, context, anchor = defaultAnchor }) {
   const [query, setQuery] = useState(/** @type {string|null}*/ null);
@@ -43,9 +43,9 @@ export function Autocomplete({ inputRef, context, anchor = defaultAnchor }) {
 
     // Clears the query after 100ms of no focus. This delay allows to click on
     // the selector by mouse.
-    const timer = 0;
+    let timer = 0;
     const focusHandler = () => clearTimeout(timer);
-    const blurHandler = () => setTimeout(() => setQuery(null), 100);
+    const blurHandler = () => (timer = setTimeout(() => setQuery(null), 500));
 
     input.addEventListener('blur', blurHandler);
     input.addEventListener('focus', focusHandler);
