@@ -139,5 +139,6 @@ function replaceQuery(input, replacement, anchor) {
   const newValue = before + replacement + (after || ' ');
   const newCaretPos = matchPos[0] + replacement.length + 1;
   setReactInputValue(input, newValue);
+  input.focus();
   input.setSelectionRange(newCaretPos, newCaretPos);
 }
