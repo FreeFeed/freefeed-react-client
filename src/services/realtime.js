@@ -7,6 +7,7 @@ import {
   realtimeSubscriptionDebug as subscriptionDebug,
 } from '../utils/debug';
 import { getToken } from './auth';
+import { apiVersion } from './api-version';
 
 const bindSocketLog = (socket) => (eventName) =>
   socket.on(eventName, (data) => socketDebug(`got event: ${eventName}`, data));
@@ -19,7 +20,7 @@ export class Connection {
   socket;
 
   constructor() {
-    this.socket = improveSocket(io(`${CONFIG.api.root}/`));
+    this.socket = improveSocket(io(`${CONFIG.api.root}/`, { query: { apiVersion } }));
     bindSocketActionsLog(this.socket)(eventsToLog);
   }
 

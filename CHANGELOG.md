@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.133.0] - Not released
 ### Added
 - Add a "description" meta-tag to the index.html.
+### Changed
+- Switch to V3 server API (with _omittedCommentsOffset_ field and two comments
+  after the fold).
 ### Fixed
 - Update SSI patterns in index.html to support dashes in groupnames.
 - Bug on iOS that blocks deletion of post's attachments.

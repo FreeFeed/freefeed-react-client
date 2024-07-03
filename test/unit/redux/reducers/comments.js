@@ -25,33 +25,61 @@ describe('comments-related data', () => {
     };
 
     it(`should parse post without comments`, () => {
-      expect(postParser({ id: 'post', comments: [], omittedComments: 0 }), 'to equal', {
-        ...emptyPostState,
-        id: 'post',
-      });
+      expect(
+        postParser({ id: 'post', comments: [], omittedComments: 0, omittedCommentsOffset: 0 }),
+        'to equal',
+        {
+          ...emptyPostState,
+          id: 'post',
+        },
+      );
     });
 
     it(`should parse post with unfolded comments`, () => {
-      expect(postParser({ id: 'post', comments: ['c1', 'c2'], omittedComments: 0 }), 'to equal', {
-        ...emptyPostState,
-        id: 'post',
-        comments: ['c1', 'c2'],
-      });
+      expect(
+        postParser({
+          id: 'post',
+          comments: ['c1', 'c2'],
+          omittedComments: 0,
+          omittedCommentsOffset: 0,
+        }),
+        'to equal',
+        {
+          ...emptyPostState,
+          id: 'post',
+          comments: ['c1', 'c2'],
+        },
+      );
     });
 
     it(`should parse post with folded comments`, () => {
-      expect(postParser({ id: 'post', comments: ['c1', 'c2'], omittedComments: 3 }), 'to equal', {
-        ...emptyPostState,
-        id: 'post',
-        comments: ['c1', 'c2'],
-        omittedComments: 3,
-        omittedCommentsOffset: 1,
-      });
+      expect(
+        postParser({
+          id: 'post',
+          comments: ['c1', 'c2'],
+          omittedComments: 3,
+          omittedCommentsOffset: 1,
+        }),
+        'to equal',
+        {
+          ...emptyPostState,
+          id: 'post',
+          comments: ['c1', 'c2'],
+          omittedComments: 3,
+          omittedCommentsOffset: 1,
+        },
+      );
     });
 
     it(`should parse post with hashtags`, () => {
       expect(
-        postParser({ id: 'post', body: 'Hello #wórld!', comments: [], omittedComments: 0 }),
+        postParser({
+          id: 'post',
+          body: 'Hello #wórld!',
+          comments: [],
+          omittedComments: 0,
+          omittedCommentsOffset: 0,
+        }),
         'to equal',
         {
           ...emptyPostState,
@@ -69,18 +97,21 @@ describe('comments-related data', () => {
         id: 'post0',
         comments: [],
         omittedComments: 0,
+        omittedCommentsOffset: 0,
         omittedCommentLikes: 0,
       }),
       post1: postParser({
         id: 'post1',
         comments: ['comm11', 'comm12'],
         omittedComments: 0,
+        omittedCommentsOffset: 0,
         omittedCommentLikes: 0,
       }),
       post2: postParser({
         id: 'post2',
         comments: ['comm21', 'comm22'],
         omittedComments: 2,
+        omittedCommentsOffset: 1,
         omittedCommentLikes: 2,
       }),
     };
@@ -352,7 +383,7 @@ describe('comments-related data', () => {
     describe('SHOW_MORE_COMMENTS', () => {
       const action = (postId, comments) => ({
         type: response(SHOW_MORE_COMMENTS),
-        payload: { posts: { id: postId, comments, omittedComments: 0 } },
+        payload: { posts: { id: postId, comments, omittedComments: 0, omittedCommentsOffset: 0 } },
       });
 
       it('should expand comments of post2', () => {
@@ -390,7 +421,14 @@ describe('comments-related data', () => {
     describe('COMPLETE_POST_COMMENTS', () => {
       const action = (postId, comments, omittedComments) => ({
         type: response(COMPLETE_POST_COMMENTS),
-        payload: { posts: { id: postId, comments, omittedComments } },
+        payload: {
+          posts: {
+            id: postId,
+            comments,
+            omittedComments,
+            omittedCommentsOffset: omittedComments ? 1 : 0,
+          },
+        },
       });
 
       it(`should complete a missing first comment`, () => {

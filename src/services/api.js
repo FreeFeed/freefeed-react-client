@@ -13,9 +13,12 @@ import {
 } from '../utils/hide-criteria';
 import { getToken } from './auth';
 import { popupAsPromise } from './popup';
+import { apiVersion } from './api-version';
 
 const apiRoot = CONFIG.api.root;
 const frontendPrefsId = CONFIG.frontendPreferences.clientId;
+
+const apiPrefix = `${apiRoot}/v${apiVersion}`;
 
 const getRequestOptions = () => ({
   headers: {
@@ -46,60 +49,57 @@ const feedQueryString = ({ offset, sortChronologically, homeFeedMode, from, tz }
     .join('&');
 
 export function getWhoAmI() {
-  return fetch(`${apiRoot}/v2/users/whoami`, getRequestOptions());
+  return fetch(`${apiPrefix}/users/whoami`, getRequestOptions());
 }
 
 export function getHome({ feedId, ...params }) {
   return fetch(
-    `${apiRoot}/v2/timelines/home${feedId ? `/${feedId}/posts` : ''}?${feedQueryString(params)}`,
+    `${apiPrefix}/timelines/home${feedId ? `/${feedId}/posts` : ''}?${feedQueryString(params)}`,
     getRequestOptions(),
   );
 }
 
 export function getMemories(params) {
   return fetch(
-    `${apiRoot}/v2/timelines/home?${feedQueryString(params)}&sort=created`,
+    `${apiPrefix}/timelines/home?${feedQueryString(params)}&sort=created`,
     getRequestOptions(),
   );
 }
 
 export function getDiscussions(params) {
   return fetch(
-    `${apiRoot}/v2/timelines/filter/discussions?with-my-posts=yes&${feedQueryString(params)}`,
+    `${apiPrefix}/timelines/filter/discussions?with-my-posts=yes&${feedQueryString(params)}`,
     getRequestOptions(),
   );
 }
 
 export function getSaves(params) {
   return fetch(
-    `${apiRoot}/v2/timelines/filter/saves?${feedQueryString(params)}`,
+    `${apiPrefix}/timelines/filter/saves?${feedQueryString(params)}`,
     getRequestOptions(),
   );
 }
 
 export function getDirect(params) {
   return fetch(
-    `${apiRoot}/v2/timelines/filter/directs?${feedQueryString(params)}`,
+    `${apiPrefix}/timelines/filter/directs?${feedQueryString(params)}`,
     getRequestOptions(),
   );
 }
 
 export function getUserFeed({ username, ...params }) {
   return fetch(
-    `${apiRoot}/v2/timelines/${username}?${feedQueryString(params)}`,
+    `${apiPrefix}/timelines/${username}?${feedQueryString(params)}`,
     getRequestOptions(),
   );
 }
 
 export function getUserStats({ username }) {
-  return fetch(`${apiRoot}/v2/users/${username}/statistics`, getRequestOptions());
+  return fetch(`${apiPrefix}/users/${username}/statistics`, getRequestOptions());
 }
 
 export function getNotifications({ offset, filter }) {
-  return fetch(
-    `${apiRoot}/v2/notifications?offset=${offset}&filter=${filter}`,
-    getRequestOptions(),
-  );
+  return fetch(`${apiPrefix}/notifications?offset=${offset}&filter=${filter}`, getRequestOptions());
 }
 
 export function getLikesOnly({ postId, commentsExpanded }) {
@@ -112,21 +112,21 @@ export function getLikesOnly({ postId, commentsExpanded }) {
 
 export function getPost({ postId, maxComments = '', maxLikes = '' }) {
   return fetch(
-    `${apiRoot}/v2/posts/${postId}?maxComments=${maxComments}&maxLikes=${maxLikes}`,
+    `${apiPrefix}/posts/${postId}?maxComments=${maxComments}&maxLikes=${maxLikes}`,
     getRequestOptions(),
   );
 }
 
 export function getPostIdByOldName({ oldName }) {
   return fetch(
-    `${apiRoot}/v2/archives/post-by-old-name/${encodeURIComponent(oldName)}`,
+    `${apiPrefix}/archives/post-by-old-name/${encodeURIComponent(oldName)}`,
     getRequestOptions(),
   );
 }
 
 export function createPost({ feeds, postText, attachmentIds, more }) {
   return fetch(
-    `${apiRoot}/v2/posts`,
+    `${apiPrefix}/posts`,
     postRequestOptions('POST', {
       post: {
         body: postText,
@@ -142,7 +142,7 @@ export function createPost({ feeds, postText, attachmentIds, more }) {
 
 export function createBookmarkletPost({ feeds, postText, imageUrls, commentText }) {
   return fetch(
-    `${apiRoot}/v2/bookmarklet`,
+    `${apiPrefix}/bookmarklet`,
     postRequestOptions('POST', {
       title: postText,
       images: imageUrls,
@@ -153,7 +153,7 @@ export function createBookmarkletPost({ feeds, postText, imageUrls, commentText 
 }
 
 export function updatePost({ postId, newPost }) {
-  return fetch(`${apiRoot}/v2/posts/${postId}`, postRequestOptions('PUT', { post: newPost }));
+  return fetch(`${apiPrefix}/posts/${postId}`, postRequestOptions('PUT', { post: newPost }));
 }
 
 export function deletePost({ postId, fromFeeds = [] }) {
@@ -161,61 +161,61 @@ export function deletePost({ postId, fromFeeds = [] }) {
   for (const feed of fromFeeds) {
     sp.append('fromFeed', feed);
   }
-  return fetch(`${apiRoot}/v2/posts/${postId}?${sp.toString()}`, postRequestOptions('DELETE'));
+  return fetch(`${apiPrefix}/posts/${postId}?${sp.toString()}`, postRequestOptions('DELETE'));
 }
 
 export function addComment({ postId, commentText }) {
   return fetch(
-    `${apiRoot}/v2/comments`,
+    `${apiPrefix}/comments`,
     postRequestOptions('POST', { comment: { body: commentText, postId } }),
   );
 }
 
 export function updateComment({ commentId, newCommentBody }) {
   return fetch(
-    `${apiRoot}/v2/comments/${commentId}`,
+    `${apiPrefix}/comments/${commentId}`,
     postRequestOptions('PUT', { comment: { body: newCommentBody } }),
   );
 }
 
 export function likeComment({ commentId }) {
-  return fetch(`${apiRoot}/v2/comments/${commentId}/like`, postRequestOptions());
+  return fetch(`${apiPrefix}/comments/${commentId}/like`, postRequestOptions());
 }
 
 export function unlikeComment({ commentId }) {
-  return fetch(`${apiRoot}/v2/comments/${commentId}/unlike`, postRequestOptions());
+  return fetch(`${apiPrefix}/comments/${commentId}/unlike`, postRequestOptions());
 }
 
 export function getCommentLikes({ commentId }) {
-  return fetch(`${apiRoot}/v2/comments/${commentId}/likes`, getRequestOptions());
+  return fetch(`${apiPrefix}/comments/${commentId}/likes`, getRequestOptions());
 }
 
 export function deleteComment({ commentId }) {
-  return fetch(`${apiRoot}/v2/comments/${commentId}`, postRequestOptions('DELETE'));
+  return fetch(`${apiPrefix}/comments/${commentId}`, postRequestOptions('DELETE'));
 }
 
 export function likePost({ postId }) {
-  return fetch(`${apiRoot}/v2/posts/${postId}/like`, postRequestOptions());
+  return fetch(`${apiPrefix}/posts/${postId}/like`, postRequestOptions());
 }
 
 export function unlikePost({ postId }) {
-  return fetch(`${apiRoot}/v2/posts/${postId}/unlike`, postRequestOptions());
+  return fetch(`${apiPrefix}/posts/${postId}/unlike`, postRequestOptions());
 }
 
 export function hidePost({ postId }) {
-  return fetch(`${apiRoot}/v2/posts/${postId}/hide`, postRequestOptions());
+  return fetch(`${apiPrefix}/posts/${postId}/hide`, postRequestOptions());
 }
 
 export function unhidePost({ postId }) {
-  return fetch(`${apiRoot}/v2/posts/${postId}/unhide`, postRequestOptions());
+  return fetch(`${apiPrefix}/posts/${postId}/unhide`, postRequestOptions());
 }
 
 export function disableComments({ postId }) {
-  return fetch(`${apiRoot}/v2/posts/${postId}/disableComments`, postRequestOptions());
+  return fetch(`${apiPrefix}/posts/${postId}/disableComments`, postRequestOptions());
 }
 
 export function enableComments({ postId }) {
-  return fetch(`${apiRoot}/v2/posts/${postId}/enableComments`, postRequestOptions());
+  return fetch(`${apiPrefix}/posts/${postId}/enableComments`, postRequestOptions());
 }
 
 const encodeBody = (body) =>
@@ -224,7 +224,7 @@ const encodeBody = (body) =>
 export function signIn({ username, password }) {
   const encodedBody = encodeBody({ username, password });
 
-  return fetch(`${apiRoot}/v2/session`, {
+  return fetch(`${apiPrefix}/session`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -236,7 +236,7 @@ export function signIn({ username, password }) {
 
 export function restorePassword({ mail }) {
   const encodedBody = encodeBody({ email: mail });
-  return fetch(`${apiRoot}/v2/passwords`, {
+  return fetch(`${apiPrefix}/passwords`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -253,7 +253,7 @@ export function resetPassword({ password, token }) {
   };
 
   const encodedBody = encodeBody(params);
-  return fetch(`${apiRoot}/v2/passwords/${token}`, {
+  return fetch(`${apiPrefix}/passwords/${token}`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -264,15 +264,15 @@ export function resetPassword({ password, token }) {
 }
 
 export function signUp(postData) {
-  return fetch(`${apiRoot}/v2/users`, postRequestOptions('POST', postData));
+  return fetch(`${apiPrefix}/users`, postRequestOptions('POST', postData));
 }
 
 export function markAllDirectsAsRead() {
-  return fetch(`${apiRoot}/v2/users/markAllDirectsAsRead`, getRequestOptions());
+  return fetch(`${apiPrefix}/users/markAllDirectsAsRead`, getRequestOptions());
 }
 
 export function markAllNotificationsAsRead() {
-  return fetch(`${apiRoot}/v2/users/markAllNotificationsAsRead`, postRequestOptions());
+  return fetch(`${apiPrefix}/users/markAllNotificationsAsRead`, postRequestOptions());
 }
 
 export function updateUser({
@@ -294,7 +294,7 @@ export function updateUser({
     user.preferences = backendPrefs;
   }
   return fetch(
-    `${apiRoot}/v2/users/${id}`,
+    `${apiPrefix}/users/${id}`,
     postRequestOptions('PUT', { user, emailVerificationCode }),
   );
 }
@@ -307,13 +307,13 @@ export function updateUserPreferences({ userId, frontendPrefs, backendPrefs }) {
   if (backendPrefs) {
     user.preferences = backendPrefs;
   }
-  return fetch(`${apiRoot}/v2/users/${userId}`, postRequestOptions('PUT', { user }));
+  return fetch(`${apiPrefix}/users/${userId}`, postRequestOptions('PUT', { user }));
 }
 
 export function updatePassword({ currentPassword, password, passwordConfirmation }) {
   const encodedBody = encodeBody({ currentPassword, password, passwordConfirmation });
 
-  return fetch(`${apiRoot}/v2/users/updatePassword`, {
+  return fetch(`${apiPrefix}/users/updatePassword`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
@@ -328,7 +328,7 @@ export function updateUserPicture({ picture }) {
   const data = new FormData();
   data.append('file', picture);
 
-  return fetch(`${apiRoot}/v2/users/updateProfilePicture`, {
+  return fetch(`${apiPrefix}/users/updateProfilePicture`, {
     method: 'POST',
     headers: { 'X-Authentication-Token': getToken() },
     body: data,
@@ -338,7 +338,7 @@ export function updateUserPicture({ picture }) {
 const userAction =
   (action) =>
   ({ username, ...rest }) => {
-    return fetch(`${apiRoot}/v2/users/${username}/${action}`, postRequestOptions('POST', rest));
+    return fetch(`${apiPrefix}/users/${username}/${action}`, postRequestOptions('POST', rest));
   };
 
 export const ban = userAction('ban');
@@ -350,70 +350,70 @@ export const unsubscribeFromMe = userAction('unsubscribeFromMe');
 
 export function getUserComments({ username, ...params }) {
   return fetch(
-    `${apiRoot}/v2/timelines/${username}/comments?${feedQueryString(params)}`,
+    `${apiPrefix}/timelines/${username}/comments?${feedQueryString(params)}`,
     getRequestOptions(),
   );
 }
 
 export function getUserLikes({ username, ...params }) {
   return fetch(
-    `${apiRoot}/v2/timelines/${username}/likes?${feedQueryString(params)}`,
+    `${apiPrefix}/timelines/${username}/likes?${feedQueryString(params)}`,
     getRequestOptions(),
   );
 }
 
 export function getUserMemories({ username, ...params }) {
   return fetch(
-    `${apiRoot}/v2/timelines/${username}?${feedQueryString(params)}&sort=created`,
+    `${apiPrefix}/timelines/${username}?${feedQueryString(params)}&sort=created`,
     getRequestOptions(),
   );
 }
 
 export function getCalendarYearDays({ username, year, ...params }) {
   return fetch(
-    `${apiRoot}/v2/calendar/${username}/${year}?${feedQueryString(params)}`,
+    `${apiPrefix}/calendar/${username}/${year}?${feedQueryString(params)}`,
     getRequestOptions(),
   );
 }
 export function getCalendarMonthDays({ username, year, month, ...params }) {
   return fetch(
-    `${apiRoot}/v2/calendar/${username}/${year}/${month}?${feedQueryString(params)}`,
+    `${apiPrefix}/calendar/${username}/${year}/${month}?${feedQueryString(params)}`,
     getRequestOptions(),
   );
 }
 
 export function getCalendarDatePosts({ username, year, month, day, ...params }) {
   return fetch(
-    `${apiRoot}/v2/calendar/${username}/${year}/${month}/${day}?${feedQueryString(params)}`,
+    `${apiPrefix}/calendar/${username}/${year}/${month}/${day}?${feedQueryString(params)}`,
     getRequestOptions(),
   );
 }
 
 export function getSubscribers({ username }) {
-  return fetch(`${apiRoot}/v2/users/${username}/subscribers`, getRequestOptions());
+  return fetch(`${apiPrefix}/users/${username}/subscribers`, getRequestOptions());
 }
 
 export function getSubscriptions({ username }) {
-  return fetch(`${apiRoot}/v2/users/${username}/subscriptions`, getRequestOptions());
+  return fetch(`${apiPrefix}/users/${username}/subscriptions`, getRequestOptions());
 }
 
 export function getUserInfo({ username }) {
-  return fetch(`${apiRoot}/v2/users/${username}`, getRequestOptions());
+  return fetch(`${apiPrefix}/users/${username}`, getRequestOptions());
 }
 
 export function createGroup(groupSettings) {
-  return fetch(`${apiRoot}/v2/groups`, postRequestOptions('POST', { group: groupSettings }));
+  return fetch(`${apiPrefix}/groups`, postRequestOptions('POST', { group: groupSettings }));
 }
 
 export function updateGroup({ id, groupSettings }) {
-  return fetch(`${apiRoot}/v2/users/${id}`, postRequestOptions('PUT', { user: groupSettings }));
+  return fetch(`${apiPrefix}/users/${id}`, postRequestOptions('PUT', { user: groupSettings }));
 }
 
 export function updateGroupPicture({ groupName, file }) {
   const data = new FormData();
   data.append('file', file);
 
-  return fetch(`${apiRoot}/v2/groups/${groupName}/updateProfilePicture`, {
+  return fetch(`${apiPrefix}/groups/${groupName}/updateProfilePicture`, {
     method: 'POST',
     headers: { 'X-Authentication-Token': getToken() },
     body: data,
@@ -421,135 +421,135 @@ export function updateGroupPicture({ groupName, file }) {
 }
 
 export function acceptGroupRequest({ groupName, userName }) {
-  return fetch(`${apiRoot}/v2/groups/${groupName}/acceptRequest/${userName}`, postRequestOptions());
+  return fetch(`${apiPrefix}/groups/${groupName}/acceptRequest/${userName}`, postRequestOptions());
 }
 
 export function rejectGroupRequest({ groupName, userName }) {
-  return fetch(`${apiRoot}/v2/groups/${groupName}/rejectRequest/${userName}`, postRequestOptions());
+  return fetch(`${apiPrefix}/groups/${groupName}/rejectRequest/${userName}`, postRequestOptions());
 }
 
 export function acceptUserRequest({ username }) {
-  return fetch(`${apiRoot}/v2/users/acceptRequest/${username}`, postRequestOptions());
+  return fetch(`${apiPrefix}/users/acceptRequest/${username}`, postRequestOptions());
 }
 
 export function rejectUserRequest({ username }) {
-  return fetch(`${apiRoot}/v2/users/rejectRequest/${username}`, postRequestOptions());
+  return fetch(`${apiPrefix}/users/rejectRequest/${username}`, postRequestOptions());
 }
 
 export function unsubscribeFromGroup({ groupName, userName }) {
   return fetch(
-    `${apiRoot}/v2/groups/${groupName}/unsubscribeFromGroup/${userName}`,
+    `${apiPrefix}/groups/${groupName}/unsubscribeFromGroup/${userName}`,
     postRequestOptions(),
   );
 }
 
 export function makeGroupAdmin({ groupName, user }) {
   return fetch(
-    `${apiRoot}/v2/groups/${groupName}/subscribers/${user.username}/admin`,
+    `${apiPrefix}/groups/${groupName}/subscribers/${user.username}/admin`,
     postRequestOptions(),
   );
 }
 
 export function unadminGroupAdmin({ groupName, user }) {
   return fetch(
-    `${apiRoot}/v2/groups/${groupName}/subscribers/${user.username}/unadmin`,
+    `${apiPrefix}/groups/${groupName}/subscribers/${user.username}/unadmin`,
     postRequestOptions(),
   );
 }
 
 export function revokeSentRequest({ username }) {
-  return fetch(`${apiRoot}/v2/requests/${username}/revoke`, postRequestOptions());
+  return fetch(`${apiPrefix}/requests/${username}/revoke`, postRequestOptions());
 }
 
 export function getBlockedByMe() {
-  return fetch(`${apiRoot}/v2/users/blockedByMe`, getRequestOptions());
+  return fetch(`${apiPrefix}/users/blockedByMe`, getRequestOptions());
 }
 
 export function getSummary({ days }) {
-  return fetch(`${apiRoot}/v2/summary/${days}`, getRequestOptions());
+  return fetch(`${apiPrefix}/summary/${days}`, getRequestOptions());
 }
 
 export function getUserSummary({ username, days }) {
-  return fetch(`${apiRoot}/v2/summary/${username}/${days}`, getRequestOptions());
+  return fetch(`${apiPrefix}/summary/${username}/${days}`, getRequestOptions());
 }
 
 export function getSearch({ search = '', offset = 0 }) {
   return fetch(
-    `${apiRoot}/v2/search?qs=${encodeURIComponent(search)}&offset=${offset}`,
+    `${apiPrefix}/search?qs=${encodeURIComponent(search)}&offset=${offset}`,
     getRequestOptions(),
   );
 }
 
 export function getBestOf({ offset = 0 }) {
-  return fetch(`${apiRoot}/v2/bestof?offset=${offset}`, getRequestOptions());
+  return fetch(`${apiPrefix}/bestof?offset=${offset}`, getRequestOptions());
 }
 
 export function getEverything(params) {
-  return fetch(`${apiRoot}/v2/everything?${feedQueryString(params)}`, getRequestOptions());
+  return fetch(`${apiPrefix}/everything?${feedQueryString(params)}`, getRequestOptions());
 }
 
 export function archiveRestoreActivity() {
-  return fetch(`${apiRoot}/v2/archives/activities`, postRequestOptions('PUT', { restore: true }));
+  return fetch(`${apiPrefix}/archives/activities`, postRequestOptions('PUT', { restore: true }));
 }
 
 export function archiveStartRestoration(params) {
-  return fetch(`${apiRoot}/v2/archives/restoration`, postRequestOptions('POST', params));
+  return fetch(`${apiPrefix}/archives/restoration`, postRequestOptions('POST', params));
 }
 
 export function getInvitationsInfo() {
-  return fetch(`${apiRoot}/v2/invitations/info`, getRequestOptions());
+  return fetch(`${apiPrefix}/invitations/info`, getRequestOptions());
 }
 
 export function createFreefeedInvitation(params) {
-  return fetch(`${apiRoot}/v2/invitations`, postRequestOptions('POST', params));
+  return fetch(`${apiPrefix}/invitations`, postRequestOptions('POST', params));
 }
 
 export function getInvitation({ invitationId }) {
-  return fetch(`${apiRoot}/v2/invitations/${invitationId}`, getRequestOptions());
+  return fetch(`${apiPrefix}/invitations/${invitationId}`, getRequestOptions());
 }
 
 export function getAppTokens() {
-  return fetch(`${apiRoot}/v2/app-tokens`, getRequestOptions());
+  return fetch(`${apiPrefix}/app-tokens`, getRequestOptions());
 }
 
 export function getAppTokensScopes() {
-  return fetch(`${apiRoot}/v2/app-tokens/scopes`, getRequestOptions());
+  return fetch(`${apiPrefix}/app-tokens/scopes`, getRequestOptions());
 }
 
 export function createAppToken(params) {
-  return fetch(`${apiRoot}/v2/app-tokens`, postRequestOptions('POST', params));
+  return fetch(`${apiPrefix}/app-tokens`, postRequestOptions('POST', params));
 }
 
 export function reissueAppToken(tokenId) {
-  return fetch(`${apiRoot}/v2/app-tokens/${tokenId}/reissue`, postRequestOptions());
+  return fetch(`${apiPrefix}/app-tokens/${tokenId}/reissue`, postRequestOptions());
 }
 
 export function deleteAppToken(tokenId) {
-  return fetch(`${apiRoot}/v2/app-tokens/${tokenId}`, postRequestOptions('DELETE'));
+  return fetch(`${apiPrefix}/app-tokens/${tokenId}`, postRequestOptions('DELETE'));
 }
 
 export function updateAppToken({ tokenId, ...params }) {
-  return fetch(`${apiRoot}/v2/app-tokens/${tokenId}`, postRequestOptions('PUT', params));
+  return fetch(`${apiPrefix}/app-tokens/${tokenId}`, postRequestOptions('PUT', params));
 }
 
 export function savePost({ postId }) {
-  return fetch(`${apiRoot}/v2/posts/${postId}/save`, postRequestOptions());
+  return fetch(`${apiPrefix}/posts/${postId}/save`, postRequestOptions());
 }
 
 export function unsavePost({ postId }) {
-  return fetch(`${apiRoot}/v2/posts/${postId}/save`, postRequestOptions('DELETE'));
+  return fetch(`${apiPrefix}/posts/${postId}/save`, postRequestOptions('DELETE'));
 }
 
 export function getServerInfo() {
-  return fetch(`${apiRoot}/v2/server-info`, getRequestOptions());
+  return fetch(`${apiPrefix}/server-info`, getRequestOptions());
 }
 
 export function getExtAuthProfiles() {
-  return fetch(`${apiRoot}/v2/ext-auth/profiles`, getRequestOptions());
+  return fetch(`${apiPrefix}/ext-auth/profiles`, getRequestOptions());
 }
 
 export function unlinkExternalProfile({ id }) {
-  return fetch(`${apiRoot}/v2/ext-auth/profiles/${id}`, postRequestOptions('DELETE'));
+  return fetch(`${apiPrefix}/ext-auth/profiles/${id}`, postRequestOptions('DELETE'));
 }
 
 export async function performExtAuth({ provider, popup, mode }) {
@@ -557,7 +557,7 @@ export async function performExtAuth({ provider, popup, mode }) {
     popupAsPromise(popup),
     (async () => {
       const startResp = await fetch(
-        `${apiRoot}/v2/ext-auth/auth-start`,
+        `${apiPrefix}/ext-auth/auth-start`,
         postRequestOptions('POST', {
           provider,
           mode,
@@ -579,7 +579,7 @@ export async function performExtAuth({ provider, popup, mode }) {
   const query = qsParse(search.slice(1));
 
   const finishResp = await fetch(
-    `${apiRoot}/v2/ext-auth/auth-finish`,
+    `${apiPrefix}/ext-auth/auth-finish`,
     postRequestOptions('POST', { provider, query }),
   ).then((r) => r.json());
 
@@ -627,7 +627,7 @@ export function unhidePostsByCriteria({ criteria: toRemove }) {
 }
 
 export function getAllGroups() {
-  return fetch(`${apiRoot}/v2/allGroups`, getRequestOptions());
+  return fetch(`${apiPrefix}/allGroups`, getRequestOptions());
 }
 
 export async function updateActualPreferences({
@@ -678,22 +678,22 @@ export async function togglePinnedGroup({ id: groupId }) {
 }
 
 export function listHomeFeeds() {
-  return fetch(`${apiRoot}/v2/timelines/home/list`, getRequestOptions());
+  return fetch(`${apiPrefix}/timelines/home/list`, getRequestOptions());
 }
 
 export function createHomeFeed({ title, subscribedTo = [] }) {
-  return fetch(`${apiRoot}/v2/timelines/home`, postRequestOptions('POST', { title, subscribedTo }));
+  return fetch(`${apiPrefix}/timelines/home`, postRequestOptions('POST', { title, subscribedTo }));
 }
 
 export function updateHomeFeed({ feedId, title, subscribedTo }) {
   return fetch(
-    `${apiRoot}/v2/timelines/home/${feedId}`,
+    `${apiPrefix}/timelines/home/${feedId}`,
     postRequestOptions('PATCH', { title, subscribedTo }),
   );
 }
 
 export function deleteHomeFeed({ feedId }) {
-  return fetch(`${apiRoot}/v2/timelines/home/${feedId}`, postRequestOptions('DELETE'));
+  return fetch(`${apiPrefix}/timelines/home/${feedId}`, postRequestOptions('DELETE'));
 }
 
 export async function subscribeWithHomeFeeds({
@@ -709,25 +709,25 @@ export async function subscribeWithHomeFeeds({
   }
 
   return fetch(
-    `${apiRoot}/v2/users/${username}/subscribe`,
+    `${apiPrefix}/users/${username}/subscribe`,
     postRequestOptions('PUT', { homeFeeds }),
   );
 }
 
 export function getAllSubscriptions() {
-  return fetch(`${apiRoot}/v2/timelines/home/subscriptions`, getRequestOptions());
+  return fetch(`${apiPrefix}/timelines/home/subscriptions`, getRequestOptions());
 }
 
 export function reorderHomeFeeds({ feedIds }) {
-  return fetch(`${apiRoot}/v2/timelines/home`, postRequestOptions('PATCH', { reorder: feedIds }));
+  return fetch(`${apiPrefix}/timelines/home`, postRequestOptions('PATCH', { reorder: feedIds }));
 }
 
 export function suspendMe({ password }) {
-  return fetch(`${apiRoot}/v2/users/suspend-me`, postRequestOptions('POST', { password }));
+  return fetch(`${apiPrefix}/users/suspend-me`, postRequestOptions('POST', { password }));
 }
 
 export function resumeMe({ resumeToken }) {
-  return fetch(`${apiRoot}/v2/users/resume-me`, postRequestOptions('POST', { resumeToken }));
+  return fetch(`${apiPrefix}/users/resume-me`, postRequestOptions('POST', { resumeToken }));
 }
 
 export function createAttachment({ file, name }, { onProgress = () => null } = {}) {
@@ -747,7 +747,7 @@ export function createAttachment({ file, name }, { onProgress = () => null } = {
     req.onerror = () => reject({ err: 'Network error' });
     req.upload.onprogress = (e) => onProgress(e.loaded / e.total);
 
-    req.open('POST', `${apiRoot}/v2/attachments`);
+    req.open('POST', `${apiPrefix}/attachments`);
     req.responseType = 'json';
     req.setRequestHeader('Accept', 'application/json');
     getToken() && req.setRequestHeader('Authorization', `Bearer ${getToken()}`);
@@ -757,86 +757,86 @@ export function createAttachment({ file, name }, { onProgress = () => null } = {
 }
 
 export function signOut() {
-  return fetch(`${apiRoot}/v2/session`, postRequestOptions('DELETE'));
+  return fetch(`${apiPrefix}/session`, postRequestOptions('DELETE'));
 }
 
 export function reissueAuthSession() {
-  return fetch(`${apiRoot}/v2/session/reissue`, postRequestOptions('POST'));
+  return fetch(`${apiPrefix}/session/reissue`, postRequestOptions('POST'));
 }
 
 export function listAuthSessions() {
-  return fetch(`${apiRoot}/v2/session/list`, getRequestOptions());
+  return fetch(`${apiPrefix}/session/list`, getRequestOptions());
 }
 
 export function closeAuthSessions(ids) {
-  return fetch(`${apiRoot}/v2/session/list`, postRequestOptions('PATCH', { close: ids }));
+  return fetch(`${apiPrefix}/session/list`, postRequestOptions('PATCH', { close: ids }));
 }
 
 export function leaveDirect(postId) {
-  return fetch(`${apiRoot}/v2/posts/${postId}/leave`, postRequestOptions());
+  return fetch(`${apiPrefix}/posts/${postId}/leave`, postRequestOptions());
 }
 
 export function getAttachmentsStats() {
-  return fetch(`${apiRoot}/v2/attachments/my/stats`, getRequestOptions());
+  return fetch(`${apiPrefix}/attachments/my/stats`, getRequestOptions());
 }
 
 export function sanitizeMedia() {
-  return fetch(`${apiRoot}/v2/attachments/my/sanitize`, postRequestOptions());
+  return fetch(`${apiPrefix}/attachments/my/sanitize`, postRequestOptions());
 }
 
 export function getCommentByNumber({ postId, seqNumber }) {
-  return fetch(`${apiRoot}/v2/posts/${postId}/comments/${seqNumber}`, getRequestOptions());
+  return fetch(`${apiPrefix}/posts/${postId}/comments/${seqNumber}`, getRequestOptions());
 }
 
 export function getGroupBlockedUsers({ groupName }) {
-  return fetch(`${apiRoot}/v2/groups/${groupName}/blockedUsers`, getRequestOptions());
+  return fetch(`${apiPrefix}/groups/${groupName}/blockedUsers`, getRequestOptions());
 }
 
 export function blockUserInGroup({ groupName, username }) {
-  return fetch(`${apiRoot}/v2/groups/${groupName}/block/${username}`, postRequestOptions());
+  return fetch(`${apiPrefix}/groups/${groupName}/block/${username}`, postRequestOptions());
 }
 
 export function unblockUserInGroup({ groupName, username }) {
-  return fetch(`${apiRoot}/v2/groups/${groupName}/unblock/${username}`, postRequestOptions());
+  return fetch(`${apiPrefix}/groups/${groupName}/unblock/${username}`, postRequestOptions());
 }
 
 export function sendVerificationCode({ email, mode }) {
-  return fetch(`${apiRoot}/v2/users/verifyEmail`, postRequestOptions('POST', { email, mode }));
+  return fetch(`${apiPrefix}/users/verifyEmail`, postRequestOptions('POST', { email, mode }));
 }
 
 export function disableBansInGroup({ groupName }) {
-  return fetch(`${apiRoot}/v2/groups/${groupName}/disableBans`, postRequestOptions());
+  return fetch(`${apiPrefix}/groups/${groupName}/disableBans`, postRequestOptions());
 }
 
 export function enableBansInGroup({ groupName }) {
-  return fetch(`${apiRoot}/v2/groups/${groupName}/enableBans`, postRequestOptions());
+  return fetch(`${apiPrefix}/groups/${groupName}/enableBans`, postRequestOptions());
 }
 
 export function getPostsByIds({ postIds }) {
-  return fetch(`${apiRoot}/v2/posts/byIds`, postRequestOptions('POST', { postIds }));
+  return fetch(`${apiPrefix}/posts/byIds`, postRequestOptions('POST', { postIds }));
 }
 
 export function getCommentsByIds({ commentIds }) {
-  return fetch(`${apiRoot}/v2/comments/byIds`, postRequestOptions('POST', { commentIds }));
+  return fetch(`${apiPrefix}/comments/byIds`, postRequestOptions('POST', { commentIds }));
 }
 
 export function unlockComment({ id }) {
-  return fetch(`${apiRoot}/v2/comments/${id}?unlock-banned`, getRequestOptions());
+  return fetch(`${apiPrefix}/comments/${id}?unlock-banned`, getRequestOptions());
 }
 
 export function translateText({ type, id, lang }) {
   const part = type === 'post' ? 'posts' : 'comments';
   const qs = lang ? `?lang=${lang}` : '';
-  return fetch(`${apiRoot}/v2/${part}/${id}/translated-body${qs}`, getRequestOptions());
+  return fetch(`${apiPrefix}/${part}/${id}/translated-body${qs}`, getRequestOptions());
 }
 
 export function getBacklinks({ postId, offset = 0 }) {
-  return fetch(`${apiRoot}/v2/posts/${postId}/backlinks?offset=${offset}`, getRequestOptions());
+  return fetch(`${apiPrefix}/posts/${postId}/backlinks?offset=${offset}`, getRequestOptions());
 }
 
 export function notifyOfAllComments({ postId, enabled }) {
   return fetch(
-    `${apiRoot}/v2/posts/${postId}/notifyOfAllComments`,
+    `${apiPrefix}/posts/${postId}/notifyOfAllComments`,
     postRequestOptions('POST', { enabled }),
   );
 }

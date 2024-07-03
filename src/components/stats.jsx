@@ -13,6 +13,7 @@ import {
 import { startOfYesterday } from 'date-fns/startOfYesterday';
 import { subYears } from 'date-fns/subYears';
 import { format } from '../utils/date-format';
+import { apiVersion } from '../services/api-version';
 
 function StatsChart({ type, title }) {
   const [data, setData] = useState(null);
@@ -21,7 +22,7 @@ function StatsChart({ type, title }) {
       const to_date = format(startOfYesterday(), `yyyy-MM-dd`); // Yesterday
       const from_date = format(subYears(new Date(), 1), `yyyy-MM-dd`); // Stats for 1 year
 
-      const url = `${CONFIG.api.root}/v2/stats?data=${type}&start_date=${from_date}&end_date=${to_date}`;
+      const url = `${CONFIG.api.root}/v${apiVersion}/stats?data=${type}&start_date=${from_date}&end_date=${to_date}`;
 
       try {
         const response = await fetch(url);
