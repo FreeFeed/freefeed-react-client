@@ -932,7 +932,8 @@ export function users(state = {}, action) {
     case ActionTypes.REALTIME_USER_UPDATE: {
       return mergeAccounts(action.updatedGroups || [], { insert: true, update: true });
     }
-    case response(ActionTypes.GET_ALL_GROUPS): {
+    case response(ActionTypes.GET_ALL_GROUPS):
+    case response(ActionTypes.GET_MATCHED_USERS): {
       return mergeAccounts(action.payload.users);
     }
     case response(ActionTypes.BLOCKED_BY_ME): {

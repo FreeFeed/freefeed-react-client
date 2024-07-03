@@ -40,6 +40,7 @@
     "react-select": "~5.8.0",
     "react-sortablejs": "~6.1.4",
     "react-textarea-autosize": "~8.5.3",
+    "react-use-event-hook": "~0.9.6",
     "recharts": "~2.12.7",
     "redux": "~5.0.1",
     "snarkdown": "~2.0.0",

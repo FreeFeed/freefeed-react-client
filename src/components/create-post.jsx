@@ -28,6 +28,7 @@ import { CREATE_DIRECT, CREATE_REGULAR } from './feeds-selector/constants';
 import { CommaAndSeparated } from './separated';
 import { usePrivacyCheck } from './feeds-selector/privacy-check';
 import { PreventPageLeaving } from './prevent-page-leaving';
+import { Autocomplete } from './autocomplete/autocomplete';
 
 const selectMaxFilesCount = (serverInfo) => serverInfo.attachments.maxCountPerPost;
 const selectMaxPostLength = (serverInfo) => serverInfo.maxTextLength.post;
@@ -225,6 +226,7 @@ export default function CreatePost({ sendTo, isDirects }) {
             draftKey={draftKey}
             cancelEmptyDraftOnBlur
           />
+          <Autocomplete inputRef={textareaRef} />
         </div>
 
         <div className="post-edit-actions">

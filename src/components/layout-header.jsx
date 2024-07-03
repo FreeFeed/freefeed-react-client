@@ -11,6 +11,9 @@ import { Icon } from './fontawesome-icons';
 import { useMediaQuery } from './hooks/media-query';
 import styles from './layout-header.module.scss';
 import { SignInLink } from './sign-in-link';
+import { Autocomplete } from './autocomplete/autocomplete';
+
+const autocompleteAnchor = /(^|[^a-z\d])@|((from|to|author|by|in|commented-?by|liked-?by):)/gi;
 
 export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
   const dispatch = useDispatch();
@@ -73,18 +76,23 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
   const searchForm = (
     <form className={styles.searchForm} action="/search" onSubmit={onSubmit}>
       <span className={styles.searchInputContainer} {...focusHandlers} tabIndex={0}>
-        <input
-          className={styles.searchInput}
-          type="text"
-          name="q"
-          ref={input}
-          placeholder="Search request"
-          autoFocus={collapsibleSearchForm}
-          value={query}
-          onChange={onQueryChange}
-          onKeyDown={onKeyDown}
-          tabIndex={-1}
-        />
+        <span className={styles.searchInputBox}>
+          <input
+            className={styles.searchInput}
+            type="text"
+            name="q"
+            ref={input}
+            placeholder="Search request"
+            autoFocus={collapsibleSearchForm}
+            value={query}
+            onChange={onQueryChange}
+            onKeyDown={onKeyDown}
+            tabIndex={-1}
+          />
+          <div className={styles.autocompleteBox}>
+            <Autocomplete inputRef={input} context="search" anchor={autocompleteAnchor} />
+          </div>
+        </span>
         {compactSearchForm && <Icon icon={faSearch} className={styles.searchIcon} />}
         <button
           type="button"
