@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
-## [1.133.0] - Not released
+## [1.133.0] - 2024-07-04
 ### Added
 - Add a "description" meta-tag to the index.html.
 - Autocomplete for the user/group names in the post and comment inputs. When the
@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   after the fold).
 ### Fixed
 - Update SSI patterns in index.html to support dashes in groupnames.
+- Bug on iOS that blocks deletion of post's attachments.
 
 ## [1.132.0] - 2024-05-27
 ### Added

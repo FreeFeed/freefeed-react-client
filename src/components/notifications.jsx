@@ -331,7 +331,7 @@ const notificationTemplates = {
       {event.group_id && (
         <>
           {' '}
-          from the group <UserLink user={event.group} />
+          from the <UserLink user={event.group} /> group
         </>
       )}
     </>
@@ -339,11 +339,11 @@ const notificationTemplates = {
   post_moderated_by_another_admin: (event) => (
     <>
       <UserLink atStart user={event.createdUser} /> has removed{' '}
-      {postLink(event, { fallback: 'the post' })} from <UserLink user={event.affectedUser} />
+      {postLink(event, { fallback: 'the post' })}
       {event.group_id && (
         <>
           {' '}
-          from the group <UserLink user={event.group} />
+          from the <UserLink user={event.group} /> group
         </>
       )}
     </>
