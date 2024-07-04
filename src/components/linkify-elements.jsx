@@ -15,6 +15,8 @@ import {
   redditLinkHref,
   SHORT_LINK,
   isShortLink,
+  CODE_INLINE,
+  trimBackticks,
 } from '../utils/parse-text';
 import { INITIAL_CHECKBOX, isChecked } from '../utils/initial-checkbox';
 import UserName from './user-name';
@@ -136,6 +138,9 @@ export function tokenToElement(token, key, params) {
 
     case INITIAL_CHECKBOX:
       return <InitialCheckbox key={key} checked={isChecked(token.text)} />;
+
+    case CODE_INLINE:
+      return <code key={key}>{trimBackticks(token.text)}</code>;
   }
   return token.text;
 }

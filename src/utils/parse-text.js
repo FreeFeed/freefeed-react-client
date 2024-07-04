@@ -98,6 +98,7 @@ export const LINE_BREAK = 'LINE_BREAK';
 export const PARAGRAPH_BREAK = 'PARAGRAPH_BREAK';
 export const REDDIT_LINK = 'REDDIT_LINK';
 export const SHORT_LINK = 'SHORT_LINK';
+export const CODE_INLINE = 'CODE_INLINE';
 
 const redditLinks = withFilters(
   reTokenizer(/\/?r\/[A-Za-z\d]\w{1,20}/g, makeToken(REDDIT_LINK)),
@@ -125,6 +126,14 @@ export const lineBreaks = reTokenizer(/[^\S\n]*\n\s*/g, (offset, text) => {
   return makeToken(PARAGRAPH_BREAK)(offset, text);
 });
 
+export const trimBackticks = (code) => code.replace(/^`+/, '').replace(/`+$/, '');
+
+export const codeInline = withFilters(
+  reTokenizer(/``.+?``|`[^`]+`/g, makeToken(CODE_INLINE)),
+  withCharsBefore(wordAdjacentChars.withoutChars('`').withChars('-')),
+  withCharsAfter(wordAdjacentChars.withoutChars('`').withChars('-')),
+);
+
 export const parseText = withTexts(
   validateSpoilerTags(
     combine(
@@ -139,6 +148,7 @@ export const parseText = withTexts(
       spoilerTags,
       checkboxParser,
       lineBreaks,
+      codeInline,
     ),
   ),
 );
