@@ -13,6 +13,7 @@ import {
 } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';
 import { initialAsyncState } from '../redux/async-helpers';
+import { apiVersion } from '../services/api-version';
 import { postActions, userActions } from './select-utils';
 import FeedOptionsSwitch from './feed-options-switch';
 import Breadcrumbs from './breadcrumbs';
@@ -79,7 +80,7 @@ const UserHandler = (props) => {
                   ? `Posts of ${props.viewUser.username}`
                   : `Posts in group ${props.viewUser.username}`
               }
-              href={`${CONFIG.api.root}/v2/timelines-rss/${props.viewUser.username}`}
+              href={`${CONFIG.api.root}/v${apiVersion}/timelines-rss/${props.viewUser.username}`}
             />
             <title>
               {nameForTitle} - {CONFIG.siteTitle}

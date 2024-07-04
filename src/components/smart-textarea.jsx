@@ -9,6 +9,7 @@ import { submittingByEnter } from '../services/appearance';
 import { makeJpegIfNeeded } from '../utils/jpeg-if-needed';
 import { insertText } from '../utils/insert-text';
 import { doneEditingIfEmpty, getDraft, setDraftField, subscribeToDrafts } from '../services/drafts';
+import { setReactInputValue } from '../utils/set-react-input-value';
 import { useForwardedRef } from './hooks/forward-ref';
 import { useEventListener } from './hooks/sub-unsub';
 
@@ -63,7 +64,8 @@ export const SmartTextarea = forwardRef(function SmartTextarea(
     };
   }, [cancelEmptyDraftOnBlur, draftKey, ref]);
 
-  ref.current.insertText = useDebouncedInsert(100, ref, onText, draftKey);
+  // Public component method
+  ref.current.insertText = useDebouncedInsert(100, ref);
 
   useEffect(() => {
     if (!draftKey && !onText) {
@@ -242,7 +244,7 @@ function containsFiles(dndEvent) {
   return false;
 }
 
-function useDebouncedInsert(interval, inputRef, onText, draftKey) {
+function useDebouncedInsert(interval, inputRef) {
   const queue = useRef([]);
   const timer = useRef(0);
 
@@ -264,14 +266,10 @@ function useDebouncedInsert(interval, inputRef, onText, draftKey) {
     );
     // Pre-fill the input value to keep the cursor/selection
     // position after React update cycle
-    input.value = text;
+    setReactInputValue(input, text);
     input.setSelectionRange(selStart, selEnd);
     input.focus();
-    onText?.(input.value);
-    if (draftKey) {
-      setDraftField(draftKey, 'text', input.value);
-    }
-  }, [draftKey, inputRef, onText]);
+  }, [inputRef]);
 
   return useCallback(
     (insertion) => {

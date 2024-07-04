@@ -95,6 +95,19 @@ $without-sidebar: '(max-width: 991px)';
   }
 }
 
+.searchInputBox {
+  display: flex;
+  flex: 1;
+  position: relative;
+}
+
+.autocompleteBox {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
 .searchInput {
   width: 100%;
   background-color: transparent;

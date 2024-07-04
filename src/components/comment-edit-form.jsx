@@ -16,6 +16,7 @@ import { useUploader } from './uploader/uploader';
 import { useFileChooser } from './uploader/file-chooser';
 import { UploadProgress } from './uploader/progress';
 import { PreventPageLeaving } from './prevent-page-leaving';
+import { Autocomplete } from './autocomplete/autocomplete';
 
 export function CommentEditForm({
   initialText = '',
@@ -127,6 +128,7 @@ export function CommentEditForm({
           draftKey={draftKey}
           cancelEmptyDraftOnBlur={isPersistent}
         />
+        <Autocomplete inputRef={input} context="comment" />
       </div>
       <div>
         <button
