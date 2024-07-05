@@ -49,4 +49,12 @@ describe('PieceOfText', () => {
 
     expect(asFragment()).toMatchSnapshot();
   });
+
+  it('Renders text with inline code', () => {
+    const code =
+      '`1+1=2; foo(); @mention \n user@example.com \n\n #hashtag \n ^ \n\n <spoiler>https://example.com`';
+    const { asFragment } = render(<PieceOfText text={code} />);
+
+    expect(asFragment()).toMatchSnapshot();
+  });
 });

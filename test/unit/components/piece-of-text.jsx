@@ -108,4 +108,22 @@ describe('<PieceOfText>', () => {
       </span>,
     );
   });
+
+  it('should correctly process texts with inline code', () => {
+    const code =
+      '1+1=2; foo(); @mention \n user@example.com \n\n #hashtag \n ^ \n\n <spoiler>https://example.com';
+    const text = `Here is the code \`${code}\`. </spoiler> Read it carefully`;
+    expect(
+      <Linkify>{text}</Linkify>, //<PieceOfText text={text} readMoreStyle={READMORE_STYLE_COMFORT} />,
+      'when rendered',
+      'to have rendered with all children',
+      <span>
+        <ErrorBoundary>
+          {'Here is the code '}
+          <code>{code}</code>
+          {'. </spoiler> Read it carefully'}
+        </ErrorBoundary>
+      </span>,
+    );
+  });
 });
