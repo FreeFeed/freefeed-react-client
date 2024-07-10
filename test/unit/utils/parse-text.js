@@ -67,7 +67,7 @@ describe('parse-text', () => {
       );
     });
 
-    it('should not return links inside spoilders', () => {
+    it('should not return links inside spoilers', () => {
       expect(
         getFirstLinkToEmbed('abc <spoiler>https://link1.com</spoiler> https://link2.com def'),
         'to be',
