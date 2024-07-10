@@ -261,6 +261,13 @@ $post-line-height: rem(20px);
   }
 }
 
+// Inline code elements
+code.inline-code {
+  color: unset;
+  background-color: unset;
+  padding: unset;
+}
+
 .text-no-breaks br {
   display: none;
 }

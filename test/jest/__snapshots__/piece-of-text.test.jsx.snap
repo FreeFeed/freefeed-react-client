@@ -94,6 +94,51 @@ exports[`PieceOfText > Renders an empty span if empty 1`] = `
 </DocumentFragment>
 `;
 
+exports[`PieceOfText > Renders text with code block 1`] = `
+<DocumentFragment>
+  <span
+    class="Linkify"
+    dir="auto"
+    role="region"
+  >
+    <span
+      dir="auto"
+    >
+      <span
+        class="p-break"
+      >
+        <br />
+         
+        <br />
+      </span>
+      <pre
+        class="codeBlock"
+      >
+        <code>
+          \`\`\` 1+1=2; foo(); @mention user@example.com #hashtag ^ &lt;spoiler&gt;https://example.com \`\`\`
+        </code>
+      </pre>
+      <span
+        class="p-break"
+      >
+        <br />
+         
+        <br />
+      </span>
+    </span>
+     
+    <a
+      aria-disabled="false"
+      class="read-more"
+      role="button"
+      tabindex="0"
+    >
+      Expand
+    </a>
+  </span>
+</DocumentFragment>
+`;
+
 exports[`PieceOfText > Renders text with inline code 1`] = `
 <DocumentFragment>
   <span
@@ -104,8 +149,10 @@ exports[`PieceOfText > Renders text with inline code 1`] = `
     <span
       dir="auto"
     >
-      <code>
-        1+1=2; foo(); @mention user@example.com #hashtag ^ &lt;spoiler&gt;https://example.com
+      <code
+        class="inline-code"
+      >
+        \`1+1=2; foo(); @mention user@example.com #hashtag ^ &lt;spoiler&gt;https://example.com\`
       </code>
     </span>
      

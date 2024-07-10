@@ -16,13 +16,14 @@ import {
   SHORT_LINK,
   isShortLink,
   CODE_INLINE,
-  trimBackticks,
+  CODE_BLOCK,
 } from '../utils/parse-text';
 import { INITIAL_CHECKBOX, isChecked } from '../utils/initial-checkbox';
 import UserName from './user-name';
 import { MediaOpener, getMediaType } from './media-opener';
 import { InitialCheckbox } from './initial-checkbox';
 import { Anchor, Link } from './linkify-links';
+import CodeBlock from './code-block';
 
 const { searchEngine } = CONFIG.search;
 const MAX_URL_LENGTH = 50;
@@ -140,7 +141,14 @@ export function tokenToElement(token, key, params) {
       return <InitialCheckbox key={key} checked={isChecked(token.text)} />;
 
     case CODE_INLINE:
-      return <code key={key}>{trimBackticks(token.text)}</code>;
+      return (
+        <code key={key} className="inline-code">
+          {token.text}
+        </code>
+      );
+
+    case CODE_BLOCK:
+      return <CodeBlock key={key} text={token.text} />;
   }
   return token.text;
 }
