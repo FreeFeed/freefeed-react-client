@@ -266,6 +266,10 @@ code.inline-code {
   color: unset;
   background-color: unset;
   padding: unset;
+
+  .dark-theme & {
+    background-color: unset;
+  }
 }
 
 .text-no-breaks br {

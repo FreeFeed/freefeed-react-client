@@ -8,4 +8,8 @@
   border: none;
   position: relative;
   margin: unset;
+
+  :global(.dark-theme) & code {
+    background-color: unset;
+  }
 }
