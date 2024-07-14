@@ -111,9 +111,8 @@ describe('<PieceOfText>', () => {
   });
 
   it('should correctly process texts with inline code', () => {
-    const code =
-      '`1+1=2; foo(); @mention user@example.com #hashtag ^ <spoiler>https://example.com`';
-    const text = `Here is the code ${code}. </spoiler> Read it carefully`;
+    const code = '1+1=2; foo(); @mention user@example.com #hashtag ^ <spoiler>https://example.com';
+    const text = `Here is the code \`${code}\`. </spoiler> Read it carefully`;
     expect(
       <Linkify>{text}</Linkify>,
       'when rendered',
@@ -121,7 +120,11 @@ describe('<PieceOfText>', () => {
       <span>
         <ErrorBoundary>
           {'Here is the code '}
-          <code>{code}</code>
+          <code>
+            <span className="code--backticks">`</span>
+            {code}
+            <span className="code--backticks">`</span>
+          </code>
           {'. </spoiler> Read it carefully'}
         </ErrorBoundary>
       </span>,

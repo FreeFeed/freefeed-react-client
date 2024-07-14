@@ -112,7 +112,12 @@ exports[`PieceOfText > Renders text with code block 1`] = `
       class="codeBlock"
     >
       <code>
-        \`\`\`
+        <span
+          class="code--backticks"
+        >
+          \`\`\`
+        </span>
+        
 1+1=2;
 foo();
 @mention 
@@ -122,16 +127,14 @@ user@example.com
 ^ 
 
 &lt;spoiler&gt;https://example.com
-\`\`\`
+
+        <span
+          class="code--backticks"
+        >
+          \`\`\`
+        </span>
       </code>
     </pre>
-    <span
-      class="p-break"
-    >
-      <br />
-       
-      <br />
-    </span>
   </span>
 </DocumentFragment>
 `;
@@ -149,7 +152,17 @@ exports[`PieceOfText > Renders text with inline code 1`] = `
       <code
         class="inline-code"
       >
-        \`1+1=2; foo(); @mention user@example.com #hashtag ^ &lt;spoiler&gt;https://example.com\`
+        <span
+          class="code--backticks"
+        >
+          \`
+        </span>
+        1+1=2; foo(); @mention user@example.com #hashtag ^ &lt;spoiler&gt;https://example.com
+        <span
+          class="code--backticks"
+        >
+          \`
+        </span>
       </code>
     </span>
      

@@ -140,12 +140,16 @@ export function tokenToElement(token, key, params) {
     case INITIAL_CHECKBOX:
       return <InitialCheckbox key={key} checked={isChecked(token.text)} />;
 
-    case CODE_INLINE:
+    case CODE_INLINE: {
+      const [, start, text, end] = /^(`+)(.*)(\1)$/.exec(token.text);
       return (
         <code key={key} className="inline-code">
-          {token.text}
+          <span className="code--backticks">{start}</span>
+          {text}
+          <span className="code--backticks">{end}</span>
         </code>
       );
+    }
 
     case CODE_BLOCK:
       return <CodeBlock key={key} text={token.text} />;
