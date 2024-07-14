@@ -130,8 +130,8 @@ describe('<PieceOfText>', () => {
 
   it('should correctly process texts with code blocks', () => {
     const codeBlock =
-      '```1+1=2; foo(); @mention \n user@example.com \n\n #hashtag \n ^ \n\n <spoiler>https://example.com```';
-    const text = `Here is the code block\n ${codeBlock}.\n</spoiler> Read it carefully`;
+      '```\n1+1=2; foo(); @mention \n user@example.com \n\n #hashtag \n ^ \n\n <spoiler>https://example.com\n```';
+    const text = `Here is the code block\n ${codeBlock}\n</spoiler> Read it carefully`;
     expect(
       <Linkify>{text}</Linkify>,
       'when rendered',
@@ -144,7 +144,6 @@ describe('<PieceOfText>', () => {
             <br />
           </no-display-name>
           <CodeBlock text={codeBlock} />
-          {'.'}
           <no-display-name>
             {' '}
             <br />

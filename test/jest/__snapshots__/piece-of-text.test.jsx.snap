@@ -102,39 +102,36 @@ exports[`PieceOfText > Renders text with code block 1`] = `
     role="region"
   >
     <span
-      dir="auto"
+      class="p-break"
     >
-      <span
-        class="p-break"
-      >
-        <br />
-         
-        <br />
-      </span>
-      <pre
-        class="codeBlock"
-      >
-        <code>
-          \`\`\` 1+1=2; foo(); @mention user@example.com #hashtag ^ &lt;spoiler&gt;https://example.com \`\`\`
-        </code>
-      </pre>
-      <span
-        class="p-break"
-      >
-        <br />
-         
-        <br />
-      </span>
+      <br />
+       
+      <br />
     </span>
-     
-    <a
-      aria-disabled="false"
-      class="read-more"
-      role="button"
-      tabindex="0"
+    <pre
+      class="codeBlock"
     >
-      Expand
-    </a>
+      <code>
+        \`\`\`
+1+1=2;
+foo();
+@mention 
+user@example.com 
+
+#hashtag 
+^ 
+
+&lt;spoiler&gt;https://example.com
+\`\`\`
+      </code>
+    </pre>
+    <span
+      class="p-break"
+    >
+      <br />
+       
+      <br />
+    </span>
   </span>
 </DocumentFragment>
 `;

@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest';
 import expect from 'unexpected';
 
+import { makeToken } from 'social-text-tokenizer/utils';
 import {
   getFirstLinkToEmbed,
   isLocalLink,
@@ -249,147 +250,35 @@ III\`baz()\`.
   });
 
   describe('codeBlocks tokenizer', () => {
-    it('should decode code block in triple backticks surrounded by spaces/punctuation or text start/end', () => {
-      const testData = [
-        {
-          text: '```code```',
-          found: [{ code: '```code```', offset: 0 }],
-        },
-        {
-          text: '``` ```',
-          found: [{ code: '``` ```', offset: 0 }],
-        },
-        {
-          text: 'here it is: ```\nfoo()\n``` - an example of function call in JS',
-          found: [{ code: '```\nfoo()\n```', offset: 12 }],
-        },
-        {
-          text: '```\nfoo()\n``` is an example of function call in JS',
-          found: [{ code: '```\nfoo()\n```', offset: 0 }],
-        },
-        {
-          text: 'here is an example of function call in JS: ```\nfoo()\n```',
-          found: [{ code: '```\nfoo()\n```', offset: 43 }],
-        },
-        {
-          text: 'here it is: ```\nfoo()\n```-an example of function call in JS',
-          found: [{ code: '```\nfoo()\n```', offset: 12 }],
-        },
-        {
-          text: 'here is an example of function call in JS >```\nfoo()\n```!',
-          found: [{ code: '```\nfoo()\n```', offset: 43 }],
-        },
-        {
-          text: `
-here is the list of function calls:
-- \`\`\`foo()\`\`\`;
-\t\`\`\`bar()\`\`\`,
--\`\`\`baz()\`\`\`.
-`,
-          found: [
-            { code: '```foo()```', offset: 39 },
-            { code: '```bar()```', offset: 53 },
-            { code: '```baz()```', offset: 67 },
-          ],
-        },
-        {
-          text: '(```code```)',
-          found: [{ code: '```code```', offset: 1 }],
-        },
-        {
-          text: '[```code```]',
-          found: [{ code: '```code```', offset: 1 }],
-        },
-        {
-          text: '{```code```}',
-          found: [{ code: '```code```', offset: 1 }],
-        },
-        {
-          text: '```code\\``` text```',
-          found: [{ code: '```code\\```', offset: 0 }],
-        },
-      ];
-
-      for (const { text, found } of testData) {
-        expect(
-          codeBlocks(text),
-          'to equal',
-          found.map(({ code, offset }) => ({
-            type: CODE_BLOCK,
-            offset,
-            text: code,
-          })),
-        );
-      }
-    });
-
-    it('should not decode regular text without backticks as code block', () => {
-      expect(codeBlocks('there are no code blocks here'), 'to be empty');
-    });
-
-    it('should not decode code blocks in triple backticks not surrounded by spaces/punctuation or text start/end', () => {
-      const testData = [
-        'here it is```foo()``` - is not a correct code block',
-        '#```foo()``` is not a correct example of code block',
-        'here is not a correct example of code block```foo()```',
-        `
-here is the list of incorrect examples of code blocks:
-1\`\`\`foo()\`\`\`;
-b\`\`\`bar()\`\`\`,
-III\`\`\`baz()\`\`\`.
-@\`\`\`bazar()\`\`\`.
-`,
-      ];
-
-      for (const text of testData) {
-        expect(codeBlocks(text), 'to be empty');
-      }
-    });
-
-    it('should not decode empty code block', () => {
-      expect(codeBlocks('there is no code >``````< here'), 'to be empty');
-    });
-
-    it('should not decode unbalanced backticks', () => {
-      const testData = ['not-a```code', 'not a co```de, a```nd this one```'];
-
-      for (const text of testData) {
-        expect(codeBlocks(text), 'to be empty');
-      }
-    });
-
-    it('should not decode triple backticks inside of code blocks', () => {
-      expect(
-        codeBlocks('``` triple backticks ``` inside code block should not be decoded```'),
-        'to equal',
-        [
-          {
-            type: CODE_BLOCK,
-            offset: 0,
-            text: '``` triple backticks ```',
-          },
-        ],
-      );
-    });
-
-    it('should not decode nested code blocks', () => {
-      expect(
-        codeBlocks('``` code blocks should not have ``` nested ``` code blocks```'),
-        'to equal',
-        [
-          {
-            type: CODE_BLOCK,
-            offset: 0,
-            text: '``` code blocks should not have ```',
-          },
-          {
-            type: CODE_BLOCK,
-            offset: 43,
-            text: '``` code blocks```',
-          },
-        ],
-      );
-    });
+    const t = makeToken(CODE_BLOCK);
+    // prettier-ignore
+    const testData = [
+      { text: '```\nfoo()\n```', found: [t(0, '```\nfoo()\n```')] },
+      { text: 'code:\n```\nfoo()\n```\nand text', found: [t(6, '```\nfoo()\n```')] },
+      { text: ' ```js\nfoo()\n ```  ', found: [t(1, '```js\nfoo()\n ```')] },
+      { text: ' ``` js and more \nfoo()\n ```  ', found: [t(1, '``` js and more \nfoo()\n ```')] },
+      { text: 'text ```js\nfoo()\n ```  ', found: [] },
+      { text: '```js\nfoo()\n ``` tail', found: [] },
+      // Two backticks
+      { text: '``\nfoo()\n``', found: [] },
+      // Unbalanced backticks
+      { text: '```\nfoo()\n````', found: [] },
+      { text: '````\nfoo()\n````', found: [t(0, '````\nfoo()\n````')] },
+      // Code blocks inside code blocks
+      { text: '````\n```\nfoo()\n```\n````', found: [t(0, '````\n```\nfoo()\n```\n````')] },
+      { text: '```\n````\nfoo()\n````\n```', found: [t(0, '```\n````\nfoo()\n````\n```')] },
+      // Empty code block
+      { text: '```\n```', found: [t(0, '```\n```')] },
+      // Two code blocks
+      { text: '```\nfoo()\n```\n```\\bar()\n```\n', found: [t(0, '```\nfoo()\n```'), t(14, '```\\bar()\n```')] },
+      // Unfinished code block
+      { text: '```\nfoo()\n```\n\\bar()\n```\n', found: [t(0, '```\nfoo()\n```')] },
+    ];
+    for (const { text, found } of testData) {
+      it(`should decode ${JSON.stringify(text)}`, () => {
+        expect(codeBlocks(text), 'to equal', found);
+      });
+    }
   });
 
   describe('parseText tokenizer', () => {
@@ -478,40 +367,37 @@ III\`\`\`baz()\`\`\`.
 
     describe('code block checks', () => {
       it('should not decode mentions in code blocks', () => {
-        expect(parseText('``` code block @mention qwerty```'), 'to equal', [
-          codeBlockToken('``` code block @mention qwerty```'),
+        expect(parseText('```\ncode block @mention qwerty\n```'), 'to equal', [
+          codeBlockToken('```\ncode block @mention qwerty\n```'),
         ]);
       });
 
       it('should not decode emails in code blocks', () => {
-        expect(parseText('```user@example.com```'), 'to equal', [
-          codeBlockToken('```user@example.com```'),
+        expect(parseText('```\nuser@example.com\n```'), 'to equal', [
+          codeBlockToken('```\nuser@example.com\n```'),
         ]);
       });
 
       it('should not decode hashtags in code blocks', () => {
-        expect(parseText('```#hashtag```'), 'to equal', [codeBlockToken('```#hashtag```')]);
+        expect(parseText('```\n#hashtag\n```'), 'to equal', [codeBlockToken('```\n#hashtag\n```')]);
       });
 
       it('should not decode arrows in code blocks', () => {
-        expect(parseText('text ```^ code ^```'), 'to equal', [
-          {
-            type: 'TEXT',
-            offset: 0,
-            text: 'text ',
-          },
-          codeBlockToken('```^ code ^```', 5),
+        expect(parseText('text\n```\n^ code ^\n```'), 'to equal', [
+          { type: 'TEXT', offset: 0, text: 'text' },
+          { type: 'LINE_BREAK', offset: 4, text: '\n' },
+          codeBlockToken('```\n^ code ^\n```', 5),
         ]);
       });
 
       it('should not decode links in code blocks', () => {
-        expect(parseText('```https://example.com```'), 'to equal', [
-          codeBlockToken('```https://example.com```'),
+        expect(parseText('```\nhttps://example.com\n```'), 'to equal', [
+          codeBlockToken('```\nhttps://example.com\n```'),
         ]);
       });
 
       it('should not decode foreign mentions in code blocks', () => {
-        expect(parseText('```alice@tg```'), 'to equal', [codeBlockToken('```alice@tg```')]);
+        expect(parseText('```\nalice@tg\n```'), 'to equal', [codeBlockToken('```\nalice@tg\n```')]);
       });
 
       it('should not decode line breaks in code blocks', () => {
@@ -525,29 +411,27 @@ III\`\`\`baz()\`\`\`.
 
 
 
-  line\`\`\``;
+  line
+  \`\`\``;
         expect(parseText(multiline), 'to equal', [codeBlockToken(multiline)]);
       });
 
       it('should not decode spoilers in code blocks', () => {
-        expect(parseText('```<spoiler>code</spoiler>```'), 'to equal', [
-          codeBlockToken('```<spoiler>code</spoiler>```'),
+        expect(parseText('```\n<spoiler>code</spoiler>\n```'), 'to equal', [
+          codeBlockToken('```\n<spoiler>code</spoiler>\n```'),
         ]);
       });
 
       it('should not decode spoilers intersecting with code blocks', () => {
-        expect(parseText('``` <spoiler> code ``` </spoiler>'), 'to equal', [
-          codeBlockToken('``` <spoiler> code ```'),
-          {
-            type: 'TEXT',
-            offset: 22,
-            text: ' </spoiler>',
-          },
+        expect(parseText('```\n<spoiler> code\n```\n</spoiler>'), 'to equal', [
+          codeBlockToken('```\n<spoiler> code\n```'),
+          { type: 'LINE_BREAK', offset: 22, text: '\n' },
+          { type: 'TEXT', offset: 23, text: '</spoiler>' },
         ]);
       });
 
       it('should not decode inline code in code blocks', () => {
-        const codeBlock = '```code line 1;\n`inline code`;\ncode line 2; ```';
+        const codeBlock = '```\ncode line 1;\n`inline code`;\ncode line 2;\n```';
         expect(parseText(codeBlock), 'to equal', [codeBlockToken(codeBlock)]);
       });
     });

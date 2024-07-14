@@ -133,10 +133,14 @@ export const codeInline = withFilters(
   withCharsAfter(wordAdjacentChars.withoutChars('`').withChars('-')),
 );
 
+const makeCodeBlock = makeToken(CODE_BLOCK);
 export const codeBlocks = withFilters(
-  reTokenizer(/```.+?```/gs, makeToken(CODE_BLOCK)),
-  withCharsBefore(wordAdjacentChars.withoutChars('`').withChars('-')),
-  withCharsAfter(wordAdjacentChars.withoutChars('`').withChars('-')),
+  reTokenizer(
+    /^(\s*)(`{3,}(?!`)).*?^\s*(\2)[^\S\n]*$/gms,
+    // Trim whitespace before and after the code block. We need this to prevent
+    // collisions with LINE_BREAK and PARAGRAPH_BREAK.
+    (offset, text, match) => makeCodeBlock(offset + match[1].length, text.trim()),
+  ),
 );
 
 export const parseText = withTexts(
