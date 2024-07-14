@@ -78,175 +78,24 @@ describe('parse-text', () => {
   });
 
   describe('codeInline tokenizer', () => {
-    it('should decode inline code in single backticks surrounded by spaces/punctuation or text start/end', () => {
-      const testData = [
-        {
-          text: '`code`',
-          found: [{ code: '`code`', offset: 0 }],
-        },
-        {
-          text: '``code``',
-          found: [{ code: '``code``', offset: 0 }],
-        },
-        {
-          text: '` `',
-          found: [{ code: '` `', offset: 0 }],
-        },
-        {
-          text: 'here it is: `foo()` - an example of function call in JS',
-          found: [{ code: '`foo()`', offset: 12 }],
-        },
-        {
-          text: '`foo()` is an example of function call in JS',
-          found: [{ code: '`foo()`', offset: 0 }],
-        },
-        {
-          text: 'here is an example of function call in JS: `foo()`',
-          found: [{ code: '`foo()`', offset: 43 }],
-        },
-        {
-          text: 'here it is: `foo()   `-an example of function call in JS',
-          found: [{ code: '`foo()   `', offset: 12 }],
-        },
-        {
-          text: 'here is an example of function call in JS >`\tfoo()`!',
-          found: [{ code: '`\tfoo()`', offset: 43 }],
-        },
-        {
-          text: `
-here is the list of function calls:
-- \`foo()\`;
-\t\`bar()\`,
--\`baz()\`.
-`,
-          found: [
-            { code: '`foo()`', offset: 39 },
-            { code: '`bar()`', offset: 49 },
-            { code: '`baz()`', offset: 59 },
-          ],
-        },
-        {
-          text: '(`code`)',
-          found: [{ code: '`code`', offset: 1 }],
-        },
-        {
-          text: '[`code`]',
-          found: [{ code: '`code`', offset: 1 }],
-        },
-        {
-          text: '{`code`}',
-          found: [{ code: '`code`', offset: 1 }],
-        },
-        {
-          text: '`code\\` text`',
-          found: [{ code: '`code\\`', offset: 0 }],
-        },
-        {
-          text: '`code; \n code;` text',
-          found: [{ code: '`code; \n code;`', offset: 0 }],
-        },
-        {
-          text: '``code; \n code;`` text',
-          found: [{ code: '``code; \n code;``', offset: 0 }],
-        },
-      ];
-
-      for (const { text, found } of testData) {
-        expect(
-          codeInline(text),
-          'to equal',
-          found.map(({ code, offset }) => ({
-            type: CODE_INLINE,
-            offset,
-            text: code,
-          })),
-        );
-      }
-    });
-
-    it('should not decode regular text without backticks as inline code', () => {
-      expect(codeInline('there is no code here'), 'to be empty');
-    });
-
-    it('should not decode inline code in single backticks not surrounded by spaces/punctuation or text start/end', () => {
-      const testData = [
-        'here it is`foo()` - is not a correct inline code',
-        '#`foo()` is not a correct example of inline code',
-        'here is not a correct example of inline code`foo()`',
-        `
-here is the list of incorrect examples of inline codes:
-1\`foo()\`;
-b\`bar()\`,
-III\`baz()\`.
-@\`bazar()\`.
-`,
-      ];
-
-      for (const text of testData) {
-        expect(codeInline(text), 'to be empty');
-      }
-    });
-
-    it('should not decode empty inline code', () => {
-      expect(codeInline('there is no code >``< here'), 'to be empty');
-    });
-
-    it('should not decode unbalanced backticks', () => {
-      const testData = ['not-a`code', 'not a co`de, a`nd this one`'];
-
-      for (const text of testData) {
-        expect(codeInline(text), 'to be empty');
-      }
-    });
-
-    it('should not decode single backticks inside of inline code surrounded by backticks', () => {
-      expect(codeInline('`single backtick ` inside code should not be decoded`'), 'to equal', [
-        {
-          type: CODE_INLINE,
-          offset: 0,
-          text: '`single backtick `',
-        },
-      ]);
-    });
-
-    it('should decode single backticks inside of inline code surrounded by double backticks', () => {
-      expect(codeInline('``single backtick ` inside code should be decoded``'), 'to equal', [
-        {
-          type: CODE_INLINE,
-          offset: 0,
-          text: '``single backtick ` inside code should be decoded``',
-        },
-      ]);
-    });
-
-    it('should not decode nested inline code', () => {
-      expect(codeInline('`inline code should not have ` nested ` code blocks`'), 'to equal', [
-        {
-          type: CODE_INLINE,
-          offset: 0,
-          text: '`inline code should not have `',
-        },
-        {
-          type: CODE_INLINE,
-          offset: 38,
-          text: '` code blocks`',
-        },
-      ]);
-    });
-
-    it('should decode nested inline code inside of double backticks', () => {
-      expect(
-        codeInline('``inline code in double backticks can have ` nested ` code blocks``'),
-        'to equal',
-        [
-          {
-            type: CODE_INLINE,
-            offset: 0,
-            text: '``inline code in double backticks can have ` nested ` code blocks``',
-          },
-        ],
-      );
-    });
+    const t = makeToken(CODE_INLINE);
+    // prettier-ignore
+    const testData = [
+      { text: '`code`', found: [t(0, '`code`')] },
+      { text: '``code``', found: [t(0, '``code``')] },
+      { text: '` 2:`` 3:``` `', found: [t(0, '` 2:`` 3:``` `')] },
+      { text: '` 2:`` 3:```', found: [] },
+      { text: '``` 2:`` 1:` ```', found: [t(0, '``` 2:`` 1:` ```')] },
+      { text: ' `code` ', found: [t(1, '`code`')] },
+      { text: ' `co\nde` ', found: [] },
+      { text: ' `code1` `code2` ', found: [t(1, '`code1`'), t(9, '`code2`')] },
+      { text: ' `code1`\n `code2` ', found: [t(1, '`code1`'), t(10, '`code2`')] },
+    ];
+    for (const { text, found } of testData) {
+      it(`should decode ${JSON.stringify(text)}`, () => {
+        expect(codeInline(text), 'to equal', found);
+      });
+    }
   });
 
   describe('codeBlocks tokenizer', () => {
@@ -330,21 +179,6 @@ III\`baz()\`.
 
       it('should not decode foreign mentions in inline code', () => {
         expect(parseText('`alice@tg`'), 'to equal', [inlineCodeToken('`alice@tg`')]);
-      });
-
-      it('should not decode line breaks in inline code', () => {
-        const multiline = '`\nmulti\nline\ninline\ncode\n`';
-        expect(parseText(multiline), 'to equal', [inlineCodeToken(multiline)]);
-      });
-
-      it('should not decode paragraph breaks in inline code', () => {
-        const multiline = `\`
-  multi
-
-
-
-  line\``;
-        expect(parseText(multiline), 'to equal', [inlineCodeToken(multiline)]);
       });
 
       it('should not decode spoilers in inline code', () => {

@@ -127,11 +127,30 @@ export const lineBreaks = reTokenizer(/[^\S\n]*\n\s*/g, (offset, text) => {
   return makeToken(PARAGRAPH_BREAK)(offset, text);
 });
 
-export const codeInline = withFilters(
-  reTokenizer(/``.+?``|`[^`]+`/gs, makeToken(CODE_INLINE)),
-  withCharsBefore(wordAdjacentChars.withoutChars('`').withChars('-')),
-  withCharsAfter(wordAdjacentChars.withoutChars('`').withChars('-')),
-);
+const makeCodeInline = makeToken(CODE_INLINE);
+export function codeInline(text) {
+  const results = [];
+  const ticksRe = /`+/g;
+  let startMatch;
+  while ((startMatch = ticksRe.exec(text)) !== null) {
+    let nextStart = ticksRe.lastIndex;
+    // Look for the next matches
+    let endMatch;
+    while ((endMatch = ticksRe.exec(text)) !== null) {
+      if (startMatch[0] !== endMatch[0]) {
+        continue;
+      }
+      const subText = text.slice(startMatch.index, ticksRe.lastIndex);
+      if (!subText.includes('\n')) {
+        results.push(makeCodeInline(startMatch.index, subText));
+        nextStart = ticksRe.lastIndex;
+        break;
+      }
+    }
+    ticksRe.lastIndex = nextStart;
+  }
+  return results;
+}
 
 const makeCodeBlock = makeToken(CODE_BLOCK);
 export const codeBlocks = withFilters(
