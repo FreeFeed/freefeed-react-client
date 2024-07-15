@@ -1,0 +1,16 @@
+.codeBlock {
+  display: inline;
+  padding: unset;
+  word-break: auto-phrase;
+  white-space: pre-wrap;
+  background-color: transparent;
+  border: none;
+  position: relative;
+  margin: unset;
+  color: inherit;
+  font-size: 100%; // Compensate the Bootstrap font size
+
+  :global(.dark-theme) & code {
+    background-color: unset;
+  }
+}

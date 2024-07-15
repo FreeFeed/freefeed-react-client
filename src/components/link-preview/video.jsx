@@ -231,7 +231,7 @@ async function getYoutubeVideoInfo(url, withoutAutoplay) {
     // Fill data object with some default values
     delete data.error;
     data.html = `src="https://www.youtube.com/embed/${encodeURIComponent(id)}"`;
-    data.title = '[Unaccessible]';
+    data.title = '[Inaccessible]';
     data.thumbnail_url = `https://i.ytimg.com/vi/${encodeURIComponent(id)}/hqdefault.jpg`;
     data.thumbnail_width = 480;
     data.thumbnail_height = 360;

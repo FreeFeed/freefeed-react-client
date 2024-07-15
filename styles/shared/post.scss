@@ -265,6 +265,26 @@ $post-line-height: rem(20px);
   }
 }
 
+// Inline code elements
+code.inline-code {
+  color: unset;
+  background-color: unset;
+  padding: unset;
+  font-size: 100%; // Compensate the Bootstrap font size
+
+  .dark-theme & {
+    background-color: unset;
+  }
+}
+
+.code--backticks {
+  color: #999;
+
+  .dark-theme & {
+    color: $text-color-darker;
+  }
+}
+
 .text-no-breaks br {
   display: none;
 }

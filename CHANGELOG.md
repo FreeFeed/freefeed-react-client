@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.134.0] - 2024-07-15
+### Added
+- Add support for inline code (single backticks) and code blocks (triple backticks)
+  to post/comment text parser.
+### Fixed
+- Autocomplete menu did not update properly after the server autocomplete
+  response.
+
 ## [1.133.0] - 2024-07-04
 ### Added
 - Add a "description" meta-tag to the index.html.
