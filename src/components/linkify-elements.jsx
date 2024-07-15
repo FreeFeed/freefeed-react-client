@@ -141,12 +141,14 @@ export function tokenToElement(token, key, params) {
       return <InitialCheckbox key={key} checked={isChecked(token.text)} />;
 
     case CODE_INLINE: {
-      const [, start, text, end] = /^(`+)(.*)(\1)$/.exec(token.text);
+      // eslint-disable-next-line prefer-destructuring
+      const ticks = token.text.match(/^`+/)[0];
+      const body = token.text.slice(ticks.length, -ticks.length);
       return (
         <code key={key} className="inline-code">
-          <span className="code--backticks">{start}</span>
-          {text}
-          <span className="code--backticks">{end}</span>
+          <span className="code--backticks">{ticks}</span>
+          {body}
+          <span className="code--backticks">{ticks}</span>
         </code>
       );
     }
