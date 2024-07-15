@@ -28,7 +28,7 @@ jobs:
 
       - name: run ESLint
         if: success() || failure()
-        run: yarn eslint
+        run: yarn lint
 
       - name: run Tests
         if: success() || failure()

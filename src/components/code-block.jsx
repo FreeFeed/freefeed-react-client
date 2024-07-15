@@ -6,7 +6,11 @@ import styles from './code-block.module.scss';
 export default function CodeBlock({ text, className = '' }) {
   const clsName = cn(styles.codeBlock, className);
 
-  const [, start, body, end] = /^([^\n]+)(.*?)([^\n]+)$/s.exec(text);
+  const firstNewline = text.indexOf('\n');
+  const lastNewline = text.lastIndexOf('\n');
+  const start = text.slice(0, firstNewline);
+  const body = text.slice(firstNewline, lastNewline + 1);
+  const end = text.slice(lastNewline + 1);
 
   return (
     <>

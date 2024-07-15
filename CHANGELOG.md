@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.134.1] - 2024-07-15
+### Fixed
+- Potentially dangerous RegExp in the code blocks logic.
+
 ## [1.134.0] - 2024-07-15
 ### Added
 - Add support for inline code (single backticks) and code blocks (triple backticks)
