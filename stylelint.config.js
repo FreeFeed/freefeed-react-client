@@ -23,7 +23,7 @@ module.exports = {
     'alpha-value-notation': 'number',
 
     'scss/at-extend-no-missing-placeholder': null,
-    'scss/at-import-partial-extension': null,
+    'scss/load-partial-extension': null,
 
     'color-function-notation': [null, 'TODO: check it later'],
     'scss/no-global-function-names': [null, 'TODO: check it later'],
