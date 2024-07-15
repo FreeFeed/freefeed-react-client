@@ -1,4 +1,4 @@
-import { useDispatch, useStore } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import cn from 'classnames';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useEvent } from 'react-use-event-hook';
@@ -105,6 +105,7 @@ function Item({ account, match, isCurrent, onClick }) {
 }
 
 function useAccountsMap({ context }) {
+  const lastAutocompleteQuery = useSelector((state) => state.lastAutocompleteQuery);
   const store = useStore();
   const post = usePost();
 
@@ -119,6 +120,9 @@ function useAccountsMap({ context }) {
   }, [context, post, store]);
 
   return useMemo(() => {
+    // We need to refresh this on lastAutocompleteQuery change
+    lastAutocompleteQuery;
+
     const state = store.getState();
     const accountsMap = new Map();
     let rankedNames;
@@ -160,5 +164,5 @@ function useAccountsMap({ context }) {
     }
 
     return [[...accountsMap.keys()], accountsMap, compare];
-  }, [context, post, store]);
+  }, [context, post, store, lastAutocompleteQuery]);
 }

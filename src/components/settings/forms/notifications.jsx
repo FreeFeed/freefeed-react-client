@@ -75,6 +75,16 @@ export default function NotificationsForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
+        <h4 id="telegram-bot">Telegram notifications</h4>
+        <p>You can use our Telegram bot to receive notifications and send replies:</p>
+        <p>
+          <a href="https://t.me/FreeFeedTgBot" target="_blank">
+            @FreeFeedTgBot
+          </a>
+        </p>
+      </section>
+
+      <section className={settingsStyles.formSection}>
         <h4 id="email-me">Email me:</h4>
 
         <div className="form-group">

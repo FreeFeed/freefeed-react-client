@@ -2184,3 +2184,10 @@ export { userStatsStatus, userStats } from './reducers/dynamic-user-stats';
 export { translationStates, translationResults } from './reducers/translation';
 
 export { unlockedCommentStates, unlockedComments } from './reducers/unlocked-comments';
+
+export function lastAutocompleteQuery(state = '', action) {
+  if (action.type === response(ActionTypes.GET_MATCHED_USERS)) {
+    return action.request.query;
+  }
+  return state;
+}

@@ -8,6 +8,7 @@ import Linkify from '../../../src/components/linkify';
 import { ButtonLink } from '../../../src/components/button-link';
 import { Anchor } from '../../../src/components/linkify-links';
 import ErrorBoundary from '../../../src/components/error-boundary';
+import CodeBlock from '../../../src/components/code-block';
 
 const expect = unexpected.clone().use(unexpectedReact);
 
@@ -104,6 +105,53 @@ describe('<PieceOfText>', () => {
             <Anchor href="https://example.com/">example.com</Anchor>
           </Spoiler>
           {'</спойлер> 123'}
+        </ErrorBoundary>
+      </span>,
+    );
+  });
+
+  it('should correctly process texts with inline code', () => {
+    const code = '1+1=2; foo(); @mention user@example.com #hashtag ^ <spoiler>https://example.com';
+    const text = `Here is the code \`${code}\`. </spoiler> Read it carefully`;
+    expect(
+      <Linkify>{text}</Linkify>,
+      'when rendered',
+      'to have rendered with all children',
+      <span>
+        <ErrorBoundary>
+          {'Here is the code '}
+          <code>
+            <span className="code--backticks">`</span>
+            {code}
+            <span className="code--backticks">`</span>
+          </code>
+          {'. </spoiler> Read it carefully'}
+        </ErrorBoundary>
+      </span>,
+    );
+  });
+
+  it('should correctly process texts with code blocks', () => {
+    const codeBlock =
+      '```\n1+1=2; foo(); @mention \n user@example.com \n\n #hashtag \n ^ \n\n <spoiler>https://example.com\n```';
+    const text = `Here is the code block\n ${codeBlock}\n</spoiler> Read it carefully`;
+    expect(
+      <Linkify>{text}</Linkify>,
+      'when rendered',
+      'to have rendered with all children',
+      <span>
+        <ErrorBoundary>
+          {'Here is the code block'}
+          <no-display-name>
+            {' '}
+            <br />
+          </no-display-name>
+          <CodeBlock text={codeBlock} />
+          <no-display-name>
+            {' '}
+            <br />
+          </no-display-name>
+          {'</spoiler> Read it carefully'}
         </ErrorBoundary>
       </span>,
     );
