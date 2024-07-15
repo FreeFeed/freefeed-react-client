@@ -49,4 +49,20 @@ describe('PieceOfText', () => {
 
     expect(asFragment()).toMatchSnapshot();
   });
+
+  it('Renders text with inline code', () => {
+    const code =
+      '`1+1=2; foo(); @mention \n user@example.com \n\n #hashtag \n ^ \n\n <spoiler>https://example.com`';
+    const { asFragment } = render(<PieceOfText text={code} />);
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('Renders text with code block', () => {
+    const code =
+      '```\n1+1=2;\nfoo();\n@mention \nuser@example.com \n\n#hashtag \n^ \n\n<spoiler>https://example.com\n```';
+    const { asFragment } = render(<PieceOfText isExpanded text={code} />);
+
+    expect(asFragment()).toMatchSnapshot();
+  });
 });

@@ -15,12 +15,15 @@ import {
   redditLinkHref,
   SHORT_LINK,
   isShortLink,
+  CODE_INLINE,
+  CODE_BLOCK,
 } from '../utils/parse-text';
 import { INITIAL_CHECKBOX, isChecked } from '../utils/initial-checkbox';
 import UserName from './user-name';
 import { MediaOpener, getMediaType } from './media-opener';
 import { InitialCheckbox } from './initial-checkbox';
 import { Anchor, Link } from './linkify-links';
+import CodeBlock from './code-block';
 
 const { searchEngine } = CONFIG.search;
 const MAX_URL_LENGTH = 50;
@@ -136,6 +139,20 @@ export function tokenToElement(token, key, params) {
 
     case INITIAL_CHECKBOX:
       return <InitialCheckbox key={key} checked={isChecked(token.text)} />;
+
+    case CODE_INLINE: {
+      const [, start, text, end] = /^(`+)(.*)(\1)$/.exec(token.text);
+      return (
+        <code key={key} className="inline-code">
+          <span className="code--backticks">{start}</span>
+          {text}
+          <span className="code--backticks">{end}</span>
+        </code>
+      );
+    }
+
+    case CODE_BLOCK:
+      return <CodeBlock key={key} text={token.text} />;
   }
   return token.text;
 }

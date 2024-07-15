@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.134.0] - Not released
+### Added
+- Add support for inline code (single backticks) and code blocks (triple backticks)
+  to post/comment text parser.
 ### Fixed
 - Autocomplete menu did not update properly after the server autocomplete
   response.

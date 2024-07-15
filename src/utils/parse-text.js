@@ -98,6 +98,8 @@ export const LINE_BREAK = 'LINE_BREAK';
 export const PARAGRAPH_BREAK = 'PARAGRAPH_BREAK';
 export const REDDIT_LINK = 'REDDIT_LINK';
 export const SHORT_LINK = 'SHORT_LINK';
+export const CODE_INLINE = 'CODE_INLINE';
+export const CODE_BLOCK = 'CODE_BLOCK';
 
 const redditLinks = withFilters(
   reTokenizer(/\/?r\/[A-Za-z\d]\w{1,20}/g, makeToken(REDDIT_LINK)),
@@ -125,6 +127,41 @@ export const lineBreaks = reTokenizer(/[^\S\n]*\n\s*/g, (offset, text) => {
   return makeToken(PARAGRAPH_BREAK)(offset, text);
 });
 
+const makeCodeInline = makeToken(CODE_INLINE);
+export function codeInline(text) {
+  const results = [];
+  const ticksRe = /`+/g;
+  let startMatch;
+  while ((startMatch = ticksRe.exec(text)) !== null) {
+    let nextStart = ticksRe.lastIndex;
+    // Look for the next matches
+    let endMatch;
+    while ((endMatch = ticksRe.exec(text)) !== null) {
+      if (startMatch[0] !== endMatch[0]) {
+        continue;
+      }
+      const subText = text.slice(startMatch.index, ticksRe.lastIndex);
+      if (!subText.includes('\n')) {
+        results.push(makeCodeInline(startMatch.index, subText));
+        nextStart = ticksRe.lastIndex;
+        break;
+      }
+    }
+    ticksRe.lastIndex = nextStart;
+  }
+  return results;
+}
+
+const makeCodeBlock = makeToken(CODE_BLOCK);
+export const codeBlocks = withFilters(
+  reTokenizer(
+    /^(\s*)(`{3,}(?!`)).*?^\s*(\2)[^\S\n]*$/gms,
+    // Trim whitespace before and after the code block. We need this to prevent
+    // collisions with LINE_BREAK and PARAGRAPH_BREAK.
+    (offset, text, match) => makeCodeBlock(offset + match[1].length, text.trim()),
+  ),
+);
+
 export const parseText = withTexts(
   validateSpoilerTags(
     combine(
@@ -139,6 +176,8 @@ export const parseText = withTexts(
       spoilerTags,
       checkboxParser,
       lineBreaks,
+      codeInline,
+      codeBlocks,
     ),
   ),
 );
