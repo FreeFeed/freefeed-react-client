@@ -143,6 +143,17 @@ $post-line-height: rem(20px);
       }
     }
   }
+
+  .post-expandable-panel {
+    margin-left: 63px;
+    font-size: rem(16px);
+    margin-bottom: 0.5em;
+    line-height: $post-line-height;
+
+    @media (max-width: 767px) {
+      margin-left: 0;
+    }
+  }
 }
 
 .post-footer-icon {

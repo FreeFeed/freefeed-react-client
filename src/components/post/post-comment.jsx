@@ -9,12 +9,10 @@ import {
   HIDDEN_AUTHOR_BANNED,
   READMORE_STYLE_COMPACT,
 } from '../../utils/frontend-preferences-options';
-import { commentReadmoreConfig } from '../../utils/readmore-config';
 import { defaultCommentState } from '../../redux/reducers/comment-edit';
 
 import { intentToScroll } from '../../services/unscroll';
 import PieceOfText from '../piece-of-text';
-import Expandable from '../expandable';
 import UserName from '../user-name';
 import TimeDisplay from '../time-display';
 import CommentIcon, { JustCommentIcon } from '../comment-icon';
@@ -26,6 +24,8 @@ import { TranslatedText } from '../translated-text';
 import { initialAsyncState } from '../../redux/async-helpers';
 import { existingCommentURI, newCommentURI } from '../../services/drafts';
 import { UnlockedHiddenComment } from '../unlocked-hidden-comment';
+import { Expandable } from '../expandable';
+import { commentFoldedArea } from '../expandable-constants';
 import { PostCommentMore } from './post-comment-more';
 import { PostCommentPreview } from './post-comment-preview';
 import { CommentProvider } from './post-comment-provider';
@@ -316,8 +316,8 @@ class PostComment extends Component {
               this.props.isExpanded ||
               !this.props.translateStatus.initial
             }
-            bonusInfo={commentTail}
-            config={commentReadmoreConfig}
+            tail={commentTail}
+            foldedArea={commentFoldedArea}
           >
             <PieceOfText
               text={this.props.body}

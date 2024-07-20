@@ -17,13 +17,11 @@ import { pluralForm } from '../../utils';
 import { getFirstLinkToEmbed } from '../../utils/parse-text';
 import { canonicalURI } from '../../utils/canonical-uri';
 import { READMORE_STYLE_COMPACT } from '../../utils/frontend-preferences-options';
-import { postReadmoreConfig } from '../../utils/readmore-config';
 import { savePost, hidePostsByCriterion, unhidePostsByCriteria } from '../../redux/action-creators';
 import { initialAsyncState } from '../../redux/async-helpers';
 
 import { Throbber } from '../throbber';
 import { ButtonLink } from '../button-link';
-import Expandable from '../expandable';
 import PieceOfText from '../piece-of-text';
 import TimeDisplay from '../time-display';
 import LinkPreview from '../link-preview/preview';
@@ -35,6 +33,7 @@ import { prepareAsyncFocus } from '../../utils/prepare-async-focus';
 import { format } from '../../utils/date-format';
 import { TranslatedText } from '../translated-text';
 import { existingPostURI } from '../../services/drafts';
+import { Expandable } from '../expandable';
 import { UnhideOptions, HideLink } from './post-hides-ui';
 import PostMoreLink from './post-more-link';
 import PostLikeLink from './post-like-link';
@@ -401,7 +400,7 @@ class Post extends Component {
                 props.readMoreStyle === READMORE_STYLE_COMPACT ||
                 !props.translateStatus.initial
               }
-              config={postReadmoreConfig}
+              panelClass={'post-expandable-panel'}
             >
               <div className="post-userpic">
                 <UserPicture

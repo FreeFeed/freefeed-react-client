@@ -11,13 +11,13 @@ import {
   READMORE_STYLE_COMPACT,
 } from '../../utils/frontend-preferences-options';
 
-import { commentReadmoreConfig } from '../../utils/readmore-config';
-import Expandable from '../expandable';
 import PieceOfText from '../piece-of-text';
 import { Separated } from '../separated';
 import TimeDisplay from '../time-display';
 import UserName from '../user-name';
 
+import { commentFoldedArea } from '../expandable-constants';
+import { Expandable } from '../expandable';
 import styles from './post-comment-preview.module.scss';
 import { CommentProvider } from './post-comment-provider';
 
@@ -158,11 +158,12 @@ export function PostCommentPreview({
           ) : (
             <Expandable
               expanded={frontPreferences.readMoreStyle === READMORE_STYLE_COMPACT}
-              config={commentReadmoreConfig}
-              bonusInfo={commentTail}
+              foldedArea={commentFoldedArea}
+              tail={commentTail}
             >
               <PieceOfText
                 text={commentBody}
+                readMoreStyle={frontPreferences.readMoreStyle}
                 arrowHover={arrowHoverHandlers}
                 arrowClick={onArrowClick}
               />
