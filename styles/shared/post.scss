@@ -2,16 +2,6 @@
 
 $post-line-height: rem(20px);
 
-.post .expandable.folded {
-  margin-bottom: rem(8px);
-}
-
-.post .expandable .expand-button {
-  @media (min-width: 768px) {
-    margin-left: 63px;
-  }
-}
-
 .post {
   padding-top: rem(14px);
   padding-bottom: rem(14px);

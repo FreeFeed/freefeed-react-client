@@ -97,16 +97,6 @@
     font-style: italic;
   }
 
-  .expandable .expand-panel {
-    background-color: var(--bg-color);
-    line-height: rem(18px);
-
-    .expand-button {
-      margin-left: 0;
-      font-size: rem(14px);
-    }
-  }
-
   &.comment-is-hidden,
   &.comment-is-loading {
     $hidden-color: #999;
