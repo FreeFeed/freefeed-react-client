@@ -8,9 +8,13 @@
   position: relative;
   margin: unset;
   color: inherit;
-  font-size: 100%; // Compensate the Bootstrap font size
+  font-size: 90%; /* Compensate the Bootstrap font size */
 
   :global(.dark-theme) & code {
     background-color: unset;
   }
+}
+
+pre.codeBlock {
+  line-height: 1;
 }

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.134.2] - 2024-07-20
+### Fixed
+- Style issues for code blocks.
+
 ## [1.134.1] - 2024-07-15
 ### Fixed
 - Potentially dangerous RegExp in the code blocks logic.
