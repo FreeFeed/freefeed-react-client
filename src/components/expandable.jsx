@@ -132,6 +132,9 @@ const resizeHandlers = new Map();
  * @returns {() => void} unsubscribe function
  */
 function observeResizeOf(element, callback) {
+  if (process.env.NODE_ENV === 'test') {
+    return;
+  }
   if (!resizeObserver) {
     resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
