@@ -16,7 +16,6 @@ import { Separated } from '../separated';
 import TimeDisplay from '../time-display';
 import UserName from '../user-name';
 
-import { commentFoldedArea } from '../expandable-constants';
 import { Expandable } from '../expandable';
 import styles from './post-comment-preview.module.scss';
 import { CommentProvider } from './post-comment-provider';
@@ -158,7 +157,7 @@ export function PostCommentPreview({
           ) : (
             <Expandable
               expanded={frontPreferences.readMoreStyle === READMORE_STYLE_COMPACT}
-              foldedArea={commentFoldedArea}
+              contentType="comment"
               tail={commentTail}
             >
               <PieceOfText

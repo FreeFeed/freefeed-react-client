@@ -25,7 +25,6 @@ import { initialAsyncState } from '../../redux/async-helpers';
 import { existingCommentURI, newCommentURI } from '../../services/drafts';
 import { UnlockedHiddenComment } from '../unlocked-hidden-comment';
 import { Expandable } from '../expandable';
-import { commentFoldedArea } from '../expandable-constants';
 import { PostCommentMore } from './post-comment-more';
 import { PostCommentPreview } from './post-comment-preview';
 import { CommentProvider } from './post-comment-provider';
@@ -317,7 +316,7 @@ class PostComment extends Component {
               !this.props.translateStatus.initial
             }
             tail={commentTail}
-            foldedArea={commentFoldedArea}
+            contentType="comment"
           >
             <PieceOfText
               text={this.props.body}

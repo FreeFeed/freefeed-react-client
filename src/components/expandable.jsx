@@ -5,8 +5,18 @@ import { useEvent } from 'react-use-event-hook';
 import { useSelector } from 'react-redux';
 import { ButtonLink } from './button-link';
 import { Icon } from './fontawesome-icons';
-import { postFoldedArea } from './expandable-constants';
 import style from './expandable.module.scss';
+
+// Pixel areas (before the UI scale applied) of the folded text rectangles for
+// posts and comments. The Expandable component reduces the height of the text
+// to approximately match this area.
+
+const foldedAreas = {
+  post: 600 * 130,
+  comment: 500 * 110,
+  postAnonymous: 860 * 130, // No sidebar, so we need more pixels
+  commentAnonymous: 700 * 110,
+};
 
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator?.userAgent ?? '');
 
@@ -15,10 +25,16 @@ export function Expandable({
   expanded: givenExpanded = false,
   tail = null,
   panelClass = null,
-  // See presets in ./expandable-constants.js
-  foldedArea = postFoldedArea,
+  contentType = 'post', // or 'comment'
 }) {
+  const authenticated = useSelector((state) => state.authenticated);
   const uiScale = useSelector((state) => state.uiScale ?? 100) / 100;
+
+  if (contentType !== 'comment' && contentType !== 'post') {
+    throw new Error('Unsupported content type');
+  }
+
+  const foldedArea = foldedAreas[contentType + (authenticated ? '' : 'Anonymous')];
   const scaledFoldedArea = foldedArea * uiScale * uiScale;
   // Don't fold content that is smaller than this
   const scaledMaxUnfoldedArea = scaledFoldedArea * 1.5;
