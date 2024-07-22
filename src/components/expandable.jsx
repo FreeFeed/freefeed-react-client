@@ -1,129 +1,149 @@
-import { Component, createRef } from 'react';
-import classnames from 'classnames';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import cn from 'classnames';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { Icon } from './fontawesome-icons';
-
-import ErrorBoundary from './error-boundary';
+import { useEvent } from 'react-use-event-hook';
+import { useSelector } from 'react-redux';
 import { ButtonLink } from './button-link';
+import { Icon } from './fontawesome-icons';
+import { postFoldedArea } from './expandable-constants';
+import style from './expandable.module.scss';
 
-const DEFAULT_MAX_LINES = 8;
-const DEFAULT_ABOVE_FOLD_LINES = 5;
-const DEFAULT_KEY = 'default';
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator?.userAgent ?? '');
 
-export default class Expandable extends Component {
-  root = createRef(null);
+export function Expandable({
+  children,
+  expanded: givenExpanded = false,
+  tail = null,
+  panelClass = null,
+  // See presets in ./expandable-constants.js
+  foldedArea = postFoldedArea,
+}) {
+  const uiScale = useSelector((state) => state.uiScale ?? 100) / 100;
+  const scaledFoldedArea = foldedArea * uiScale * uiScale;
+  // Don't fold content that is smaller than this
+  const scaledMaxUnfoldedArea = scaledFoldedArea * 1.5;
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      expanded: false,
-      userExpanded: false,
-      maxHeight: 5000,
-    };
-    this.userExpand = this.userExpand.bind(this);
-    this.rewrap = this.rewrap.bind(this);
-  }
+  const content = useRef(null);
+  // Null means content doesn't need to be expandable
+  const [maxHeight, setMaxHeight] = useState(null);
 
-  componentDidMount() {
-    this.rewrap();
-    window.addEventListener('resize', this.rewrap);
-  }
+  const [expandedByUser, setExpandedByUser] = useState(false);
+  const expand = useEvent(() => setExpandedByUser(true));
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.rewrap);
-  }
+  const expanded = expandedByUser || givenExpanded;
+  const clipped = maxHeight !== null && !expanded;
 
-  render() {
-    const expanded = this.state.expanded || this.state.userExpanded || this.props.expanded;
-    const cn = classnames(['expandable', { expanded, folded: !expanded }]);
-    const style = { maxHeight: expanded ? '' : `${this.state.maxHeight}px` };
-    return (
-      <div className={cn} style={style} ref={this.root}>
-        <ErrorBoundary>
-          {this.props.children}
-          {!expanded && (
-            <div className="expand-panel">
-              <div className="expand-button">
-                <ButtonLink tag="i" onClick={this.userExpand} aria-hidden>
-                  <Icon icon={faChevronDown} className="expand-icon" /> Read more
-                </ButtonLink>{' '}
-                {this.props.bonusInfo}
-              </div>
-            </div>
-          )}
-        </ErrorBoundary>
-      </div>
-    );
-  }
-
-  userExpand() {
-    this.setState({ userExpanded: true });
-  }
-
-  rewrap() {
-    const { maxLines, aboveFoldLines } = chooseLineCounts(this.props.config, window.innerWidth);
-    const node = this.root.current;
-    const lines = gatherContentLines(node, '.Linkify', '.p-break');
-    const shouldExpand = lines.length <= (maxLines || DEFAULT_MAX_LINES);
-    const [readMorePanel] = node.querySelectorAll('.expand-panel');
-    const readMorePanelHeight = readMorePanel ? readMorePanel.clientHeight : 0;
-    const foldedLines = aboveFoldLines || maxLines || DEFAULT_ABOVE_FOLD_LINES;
-    const maxHeight = shouldExpand ? '5000' : lines[foldedLines - 1].bottom + readMorePanelHeight;
-    this.setState({ expanded: shouldExpand, maxHeight });
-  }
-}
-
-function gatherContentLines(node, contentSelector, breakSelector) {
-  const [content] = node.querySelectorAll(contentSelector || '.wrapper');
-  if (!content) {
-    return [];
-  }
-  const breaks = [...content.querySelectorAll(breakSelector || '.text')];
-  const rects = [...content.getClientRects()];
-  const breakRects = breaks.map((br) => br.getBoundingClientRect());
-  const breakTops = new Set(breakRects.map((br) => br.top));
-
-  const lines = rects.filter((rect) => {
-    const isRectABreak = breakTops.has(rect.top);
-    return !isRectABreak;
-  });
-
-  const lineRects = lines.reduce((res, { top, bottom, left, right }) => {
-    if (res.length === 0) {
-      res.push({ top, bottom, left, right });
-    } else if (res[res.length - 1].top !== top) {
-      res.push({ top, bottom, left, right });
+  // Update the maxHeight when the content dimensions changes
+  const update = useEvent(({ width, height }) => {
+    if (width * height < scaledMaxUnfoldedArea) {
+      setMaxHeight(null);
     } else {
-      const last = res[res.length - 1];
-      res[res.length - 1].bottom = last.bottom > bottom ? last.bottom : bottom;
-      res[res.length - 1].left = last.left < left ? last.left : left;
-      res[res.length - 1].right = last.right > right ? last.right : right;
+      let targetHeight = scaledFoldedArea / width;
+      targetHeight = align(content.current, targetHeight);
+      if (isSafari) {
+        // Safari has extremely large string heights, so we need to slightly
+        // reduce the clipping.
+        targetHeight -= 4;
+      }
+      setMaxHeight(`${targetHeight}px`);
     }
-    return res;
-  }, []);
-
-  const nodeClientRect = node.getBoundingClientRect();
-
-  return lineRects.map(({ top, bottom, left, right }) => {
-    return {
-      top: top - nodeClientRect.top,
-      bottom: bottom - nodeClientRect.top,
-      left: left - nodeClientRect.left,
-      right: nodeClientRect.right - right,
-    };
   });
+
+  // We use the layout effect just once, to set the initial height without
+  // flickering.
+  useLayoutEffect(
+    () => {
+      if (!expanded) {
+        update(content.current.getBoundingClientRect());
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+
+  // Update the maxHeight when the content resizes
+  useEffect(() => {
+    if (!expanded) {
+      return observeResizeOf(content.current, ({ contentRect }) => update(contentRect));
+    }
+  }, [expanded, update]);
+
+  return (
+    <>
+      <div
+        className={clipped && style.clippedContent}
+        style={{ maxHeight: expanded ? null : maxHeight }}
+      >
+        <div ref={content}>{children}</div>
+      </div>
+      {clipped && (
+        <div className={cn('expand-button', panelClass)}>
+          <ButtonLink className={style.button} tag="i" onClick={expand} aria-hidden>
+            <Icon icon={faChevronDown} className={style.icon} /> Read more
+          </ButtonLink>{' '}
+          {tail}
+        </div>
+      )}
+    </>
+  );
 }
 
-function chooseLineCounts(config = {}, windowWidth) {
-  const breakpoints = Object.keys(config)
-    .filter((key) => key !== DEFAULT_KEY)
-    .map(Number)
-    .sort((a, b) => a - b);
-  const breakpointToUse = breakpoints.find((b) => b >= windowWidth) || DEFAULT_KEY;
-  return (
-    config[breakpointToUse] || {
-      maxLines: DEFAULT_MAX_LINES,
-      aboveFoldLines: DEFAULT_ABOVE_FOLD_LINES,
+/**
+ * Align the given offset to the bottom of the closest text string
+ *
+ * @param {Element} rootElement
+ * @param {number} targetOffset
+ * @returns {number}
+ */
+function align(rootElement, targetOffset) {
+  const { top } = rootElement.getBoundingClientRect();
+
+  // Iterate over all the text nodes
+  const nodeIterator = document.createNodeIterator(rootElement, NodeFilter.SHOW_TEXT);
+  const range = document.createRange();
+  let node;
+  let prev = null;
+  let current = null;
+  mainLoop: while ((node = nodeIterator.nextNode())) {
+    range.selectNode(node);
+    // In every text node we check all the rects
+    for (const { bottom } of range.getClientRects()) {
+      prev = current;
+      current = bottom - top;
+      if (current >= targetOffset) {
+        break mainLoop;
+      }
     }
-  );
+  }
+  if (!prev || !current) {
+    return targetOffset;
+  }
+  return Math.abs(current - targetOffset) < Math.abs(prev - targetOffset) ? current : prev;
+}
+
+let resizeObserver = null;
+const resizeHandlers = new Map();
+
+/**
+ * Subscribe to resize of the given element
+ *
+ * @param {Element} element
+ * @param {(entry: ResizeObserverEntry) => void} callback
+ * @returns {() => void} unsubscribe function
+ */
+function observeResizeOf(element, callback) {
+  if (!resizeObserver) {
+    resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        resizeHandlers.get(entry.target)?.(entry);
+      }
+    });
+  }
+
+  resizeHandlers.set(element, callback);
+  resizeObserver.observe(element);
+  return () => {
+    resizeObserver.unobserve(element);
+    resizeHandlers.delete(element);
+  };
 }
