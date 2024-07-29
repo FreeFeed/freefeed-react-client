@@ -54,62 +54,62 @@ exports[`PostComments > Renders post comments and doesn't blow up 1`] = `
       <div
         class="comment-body"
       >
-        <div
-          class="expandable expanded"
-        >
-          <span
-            class="Linkify"
-            dir="auto"
-            role="region"
-          >
-            Comment 1 body
-          </span>
-          <span
-            aria-label="Comment by author"
-            class="comment-tail"
-          >
-             - 
+        <div>
+          <div>
             <span
-              class="comment-tail__item"
+              class="Linkify"
+              dir="auto"
+              role="region"
             >
+              Comment 1 body
+            </span>
+            <span
+              aria-label="Comment by author"
+              class="comment-tail"
+            >
+               - 
               <span
-                class="user-name-wrapper"
+                class="comment-tail__item"
               >
-                <a
-                  class=""
+                <span
+                  class="user-name-wrapper"
                 >
-                  <span
-                    dir="ltr"
+                  <a
+                    class=""
                   >
-                    You
-                  </span>
-                </a>
+                    <span
+                      dir="ltr"
+                    >
+                      You
+                    </span>
+                  </a>
+                </span>
+              </span>
+               - 
+              <span
+                class="comment-tail__item comment-tail__actions"
+              >
+                <span
+                  class="comment-tail__action"
+                >
+                  <a
+                    aria-disabled="false"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class="comment-tail__action-link comment-tail__action-link--more"
+                    role="button"
+                    tabindex="0"
+                  >
+                    <span
+                      class="root"
+                    >
+                      more
+                    </span>
+                  </a>
+                </span>
               </span>
             </span>
-             - 
-            <span
-              class="comment-tail__item comment-tail__actions"
-            >
-              <span
-                class="comment-tail__action"
-              >
-                <a
-                  aria-disabled="false"
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class="comment-tail__action-link comment-tail__action-link--more"
-                  role="button"
-                  tabindex="0"
-                >
-                  <span
-                    class="root"
-                  >
-                    more
-                  </span>
-                </a>
-              </span>
-            </span>
-          </span>
+          </div>
         </div>
       </div>
     </div>
@@ -148,38 +148,12 @@ exports[`PostComments > Renders post comments and doesn't blow up 1`] = `
       <div
         class="comment-body"
       >
-        <div
-          class="expandable expanded"
-        >
-          <span
-            class="Linkify"
-            dir="auto"
-            role="region"
-          >
+        <div>
+          <div>
             <span
-              class="user-name-wrapper"
-            >
-              <a
-                class=""
-              >
-                <span
-                  dir="ltr"
-                >
-                  @author
-                </span>
-              </a>
-            </span>
-             comment 2 
-            <br />
-            Multilinebody
-          </span>
-          <span
-            aria-label="Comment by other"
-            class="comment-tail"
-          >
-             - 
-            <span
-              class="comment-tail__item"
+              class="Linkify"
+              dir="auto"
+              role="region"
             >
               <span
                 class="user-name-wrapper"
@@ -190,35 +164,61 @@ exports[`PostComments > Renders post comments and doesn't blow up 1`] = `
                   <span
                     dir="ltr"
                   >
-                    other
+                    @author
                   </span>
                 </a>
               </span>
+               comment 2 
+              <br />
+              Multilinebody
             </span>
-             - 
             <span
-              class="comment-tail__item comment-tail__actions"
+              aria-label="Comment by other"
+              class="comment-tail"
             >
+               - 
               <span
-                class="comment-tail__action"
+                class="comment-tail__item"
               >
-                <a
-                  aria-disabled="false"
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class="comment-tail__action-link comment-tail__action-link--more"
-                  role="button"
-                  tabindex="0"
+                <span
+                  class="user-name-wrapper"
                 >
-                  <span
-                    class="root"
+                  <a
+                    class=""
                   >
-                    more
-                  </span>
-                </a>
+                    <span
+                      dir="ltr"
+                    >
+                      other
+                    </span>
+                  </a>
+                </span>
+              </span>
+               - 
+              <span
+                class="comment-tail__item comment-tail__actions"
+              >
+                <span
+                  class="comment-tail__action"
+                >
+                  <a
+                    aria-disabled="false"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class="comment-tail__action-link comment-tail__action-link--more"
+                    role="button"
+                    tabindex="0"
+                  >
+                    <span
+                      class="root"
+                    >
+                      more
+                    </span>
+                  </a>
+                </span>
               </span>
             </span>
-          </span>
+          </div>
         </div>
       </div>
     </div>
@@ -272,68 +272,68 @@ exports[`PostComments > Renders post comments and doesn't blow up 1`] = `
       <div
         class="comment-body"
       >
-        <div
-          class="expandable expanded"
-        >
-          <span
-            class="Linkify"
-            dir="auto"
-            role="region"
-          >
+        <div>
+          <div>
             <span
-              class="arrow-span"
-              data-arrows="1"
-            >
-              ^
-            </span>
-             response to comment 2
-          </span>
-          <span
-            aria-label="Comment by author"
-            class="comment-tail"
-          >
-             - 
-            <span
-              class="comment-tail__item"
+              class="Linkify"
+              dir="auto"
+              role="region"
             >
               <span
-                class="user-name-wrapper"
+                class="arrow-span"
+                data-arrows="1"
               >
-                <a
-                  class=""
-                >
-                  <span
-                    dir="ltr"
-                  >
-                    You
-                  </span>
-                </a>
+                ^
               </span>
+               response to comment 2
             </span>
-             - 
             <span
-              class="comment-tail__item comment-tail__actions"
+              aria-label="Comment by author"
+              class="comment-tail"
             >
+               - 
               <span
-                class="comment-tail__action"
+                class="comment-tail__item"
               >
-                <a
-                  aria-disabled="false"
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class="comment-tail__action-link comment-tail__action-link--more"
-                  role="button"
-                  tabindex="0"
+                <span
+                  class="user-name-wrapper"
                 >
-                  <span
-                    class="root"
+                  <a
+                    class=""
                   >
-                    more
-                  </span>
-                </a>
+                    <span
+                      dir="ltr"
+                    >
+                      You
+                    </span>
+                  </a>
+                </span>
+              </span>
+               - 
+              <span
+                class="comment-tail__item comment-tail__actions"
+              >
+                <span
+                  class="comment-tail__action"
+                >
+                  <a
+                    aria-disabled="false"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class="comment-tail__action-link comment-tail__action-link--more"
+                    role="button"
+                    tabindex="0"
+                  >
+                    <span
+                      class="root"
+                    >
+                      more
+                    </span>
+                  </a>
+                </span>
               </span>
             </span>
-          </span>
+          </div>
         </div>
       </div>
     </div>

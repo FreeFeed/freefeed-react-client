@@ -12,6 +12,9 @@ const defaultAnchor = /(^|[^a-z\d])@/gi;
 export function Autocomplete({ inputRef, context, anchor = defaultAnchor }) {
   const [query, setQuery] = useState(/** @type {string|null}*/ null);
 
+  // Special case for the "@username" in the search bar
+  const [atStart, setAtStart] = useState(false);
+
   const events = useMemo(() => new EventEmitter(), []);
 
   const keyHandler = useEvent((/** @type {KeyboardEvent}*/ e) => {
@@ -39,6 +42,7 @@ export function Autocomplete({ inputRef, context, anchor = defaultAnchor }) {
       }
       const matchPos = getQueryPosition(input, anchor);
       setQuery(matchPos ? input.value.slice(matchPos[0], matchPos[1]) : null);
+      setAtStart(context === 'search' && matchPos?.[0] === 1 && input.value.charAt(0) === '@');
     };
 
     // Clears the query after 100ms of no focus. This delay allows to click on
@@ -63,14 +67,20 @@ export function Autocomplete({ inputRef, context, anchor = defaultAnchor }) {
       document.removeEventListener('selectionchange', inputHandler);
       input.removeEventListener('keydown', keyHandler, { capture: true });
     };
-  }, [anchor, inputRef, keyHandler]);
+  }, [anchor, context, inputRef, keyHandler]);
 
   const onSelectHandler = useEvent((text) => replaceQuery(inputRef.current, text, anchor));
 
   if (query) {
     return (
       <div className={style.wrapper}>
-        <Selector query={query} events={events} onSelect={onSelectHandler} context={context} />
+        <Selector
+          query={query}
+          events={events}
+          onSelect={onSelectHandler}
+          context={context}
+          localLinks={atStart}
+        />
       </div>
     );
   }
