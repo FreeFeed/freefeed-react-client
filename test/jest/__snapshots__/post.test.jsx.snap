@@ -8,58 +8,58 @@ exports[`Post > Renders a post and doesn't blow up 1`] = `
     data-author="author"
     role="article"
   >
-    <div
-      class="expandable expanded"
-    >
-      <div
-        class="post-userpic"
-      >
-        <a
-          class="picture post-userpic-img"
-          style="--userpic-size: 75px;"
-        >
-          <img
-            alt="Profile picture of author"
-            height="75"
-            loading="lazy"
-            width="75"
-          />
-        </a>
-      </div>
-      <div
-        aria-label="Post body"
-        class="post-body"
-        role="region"
-      >
+    <div>
+      <div>
         <div
-          class="post-header"
+          class="post-userpic"
         >
-          <span
-            class="user-name-wrapper"
+          <a
+            class="picture post-userpic-img"
+            style="--userpic-size: 75px;"
           >
-            <a
-              class="post-author"
-            >
-              <span
-                dir="ltr"
-              >
-                You
-              </span>
-            </a>
-          </span>
+            <img
+              alt="Profile picture of author"
+              height="75"
+              loading="lazy"
+              width="75"
+            />
+          </a>
         </div>
         <div
-          class="post-text"
+          aria-label="Post body"
+          class="post-body"
+          role="region"
         >
-          <span
-            class="Linkify"
-            dir="auto"
-            role="region"
+          <div
+            class="post-header"
           >
-            Line 1 
-            <br />
-            Line 2
-          </span>
+            <span
+              class="user-name-wrapper"
+            >
+              <a
+                class="post-author"
+              >
+                <span
+                  dir="ltr"
+                >
+                  You
+                </span>
+              </a>
+            </span>
+          </div>
+          <div
+            class="post-text"
+          >
+            <span
+              class="Linkify"
+              dir="auto"
+              role="region"
+            >
+              Line 1 
+              <br />
+              Line 2
+            </span>
+          </div>
         </div>
       </div>
     </div>

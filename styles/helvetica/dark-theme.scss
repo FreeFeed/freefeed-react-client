@@ -5,8 +5,7 @@ body,
 .search-form .search-button,
 .search-form .search-input,
 .content .box-body,
-.content .box-footer,
-.expandable .expand-panel {
+.content .box-footer {
   transition: background 0.2s;
 }
 
@@ -131,7 +130,6 @@ body,
   }
 
   .post a,
-  .expandable .expand-panel .expand-button,
   .image-attachments .show-more {
     color: $link-color-dim;
   }
