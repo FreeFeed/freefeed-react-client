@@ -87,7 +87,7 @@ export function Expandable({
   return (
     <>
       <div
-        className={clipped && style.clippedContent}
+        className={clipped ? style.clippedContent : null}
         style={{ maxHeight: expanded ? null : maxHeight }}
       >
         <div ref={content}>{children}</div>
