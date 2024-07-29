@@ -2,7 +2,7 @@ import { useDispatch, useSelector, useStore } from 'react-redux';
 import cn from 'classnames';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useEvent } from 'react-use-event-hook';
-import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
+import { faExternalLinkAlt, faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import { Finder } from '../../utils/sparse-match';
 import { UserPicture } from '../user-picture';
 import { Icon } from '../fontawesome-icons';
@@ -87,6 +87,7 @@ export function Selector({ query, events, onSelect, context }) {
 
 function Item({ account, match, isCurrent, onClick }) {
   const clk = useEvent(() => onClick(match.text));
+  const linkClk = useEvent((e) => e.stopPropagation());
 
   return (
     <li className={cn(style.item, isCurrent && style.itemCurrent)} onClick={clk}>
@@ -100,6 +101,9 @@ function Item({ account, match, isCurrent, onClick }) {
           <span className={style.screenName}>{account.screenName}</span>
         )}
       </span>
+      <a href={`/${account.username}`} target="_blank" className={style.itemLink} onClick={linkClk}>
+        <Icon className={style.itemLinkIcon} icon={faExternalLinkAlt} />
+      </a>
     </li>
   );
 }

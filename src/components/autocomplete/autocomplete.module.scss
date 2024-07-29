@@ -65,8 +65,26 @@
   flex: none;
 }
 
+.itemText {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.itemLink {
+  flex: none;
+  color: currentColor;
+  opacity: 0.5;
+  font-size: 0.8em;
+  width: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .screenName {
-  margin-left: 1em;
+  margin-left: 0.5em;
   color: #999;
 }
 
