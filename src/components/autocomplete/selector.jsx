@@ -1,8 +1,9 @@
 import { useDispatch, useSelector, useStore } from 'react-redux';
+import { Link } from 'react-router';
 import cn from 'classnames';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useEvent } from 'react-use-event-hook';
-import { faUserFriends } from '@fortawesome/free-solid-svg-icons';
+import { faExternalLinkAlt, faUserFriends } from '@fortawesome/free-solid-svg-icons';
 import { Finder } from '../../utils/sparse-match';
 import { UserPicture } from '../user-picture';
 import { Icon } from '../fontawesome-icons';
@@ -20,7 +21,7 @@ import {
   getRankedNames,
 } from './ranked-names';
 
-export function Selector({ query, events, onSelect, context }) {
+export function Selector({ query, events, onSelect, context, localLinks = false }) {
   const dispatch = useDispatch();
   const [usernames, accountsMap, compare] = useAccountsMap({ context });
 
@@ -77,6 +78,7 @@ export function Selector({ query, events, onSelect, context }) {
             account={accountsMap.get(match.text)}
             match={match}
             isCurrent={idx === cursor}
+            localLink={localLinks}
             onClick={onSelect}
           />
         ))}
@@ -85,8 +87,9 @@ export function Selector({ query, events, onSelect, context }) {
   );
 }
 
-function Item({ account, match, isCurrent, onClick }) {
+function Item({ account, match, isCurrent, onClick, localLink }) {
   const clk = useEvent(() => onClick(match.text));
+  const linkClk = useEvent((e) => e.stopPropagation());
 
   return (
     <li className={cn(style.item, isCurrent && style.itemCurrent)} onClick={clk}>
@@ -100,6 +103,23 @@ function Item({ account, match, isCurrent, onClick }) {
           <span className={style.screenName}>{account.screenName}</span>
         )}
       </span>
+      {localLink ? (
+        <Link to={`/${account.username}`} className={style.itemLink} onClick={linkClk}>
+          <Icon
+            className={cn(style.itemLinkIcon, style.itemLinkIconLocal)}
+            icon={faExternalLinkAlt}
+          />
+        </Link>
+      ) : (
+        <a
+          href={`/${account.username}`}
+          target="_blank"
+          className={style.itemLink}
+          onClick={linkClk}
+        >
+          <Icon className={style.itemLinkIcon} icon={faExternalLinkAlt} />
+        </a>
+      )}
     </li>
   );
 }

@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.134.3] - 2024-07-29
+### Added
+- The autocomplete menu now has a links to the found users/groups pages. These
+  links opens in a new tab for the most cases. Links opens in the current tab
+  when the user enters the "@username" in the search bar at the beginning of the
+  query.
+### Changed
+- The 'Expandable' component was rewritten using the modern browser APIs. It now
+  properly handles the content updates and does not require the content to be
+  fully inline.
+
 ## [1.134.2] - 2024-07-20
 ### Fixed
 - Style issues for code blocks.

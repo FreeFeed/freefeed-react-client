@@ -4,7 +4,6 @@ import { faComment, faEdit } from '@fortawesome/free-regular-svg-icons';
 import { useSelector } from 'react-redux';
 import { deleteDraft, getAllDrafts, subscribeToDraftChanges } from '../services/drafts';
 import { pluralForm } from '../utils';
-import { postReadmoreConfig } from '../utils/readmore-config';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import ErrorBoundary from './error-boundary';
 import TimeDisplay from './time-display';
@@ -13,7 +12,7 @@ import { Icon } from './fontawesome-icons';
 import { useBool } from './hooks/bool';
 import { UserPicture } from './user-picture';
 import { faCommentPlus } from './fontawesome-custom-icons';
-import Expandable from './expandable';
+import { Expandable } from './expandable';
 
 export default function DraftsPage() {
   const allDrafts = useSyncExternalStore(subscribeToDraftChanges, getAllDrafts);
@@ -118,10 +117,7 @@ function DraftEntry({ draftKey, data }) {
       </div>
       <div className="single-event__content">
         {data.text ? (
-          <Expandable
-            expanded={readMoreStyle === READMORE_STYLE_COMPACT}
-            config={postReadmoreConfig}
-          >
+          <Expandable expanded={readMoreStyle === READMORE_STYLE_COMPACT}>
             <PieceOfText text={data.text} readMoreStyle={readMoreStyle} />
           </Expandable>
         ) : (

@@ -2,16 +2,6 @@
 
 $post-line-height: rem(20px);
 
-.post .expandable.folded {
-  margin-bottom: rem(8px);
-}
-
-.post .expandable .expand-button {
-  @media (min-width: 768px) {
-    margin-left: 63px;
-  }
-}
-
 .post {
   padding-top: rem(14px);
   padding-bottom: rem(14px);
@@ -141,6 +131,17 @@ $post-line-height: rem(20px);
       .post-timestamp {
         color: #666;
       }
+    }
+  }
+
+  .post-expandable-panel {
+    margin-left: 63px;
+    font-size: rem(16px);
+    margin-bottom: 0.5em;
+    line-height: $post-line-height;
+
+    @media (max-width: 767px) {
+      margin-left: 0;
     }
   }
 }
