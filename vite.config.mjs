@@ -42,7 +42,6 @@ export default defineConfig(({ mode }) => ({
         description: 'A small and free social network',
         id: '/?pwa=1',
         start_url: '/',
-        display: 'minimal-ui',
         icons: [
           {
             src: '/assets/images/pwa-64x64.png',
