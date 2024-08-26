@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.134.4] - 2024-08-26
+### Changed
+- The 'Privacy' and 'Terms' pages now renders statically from the Markdown files
+  and available on the `/docs/privacy` and `/docs/terms` paths. It makes them
+  accessible for the checking robots, that cannot execute the JavaScript.
+
 ## [1.134.3] - 2024-07-29
 ### Added
 - The autocomplete menu now has a links to the found users/groups pages. These

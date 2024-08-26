@@ -1,8 +1,13 @@
 import { execSync } from 'child_process';
+import { readFileSync } from 'fs';
+import { parse } from 'path';
+import { Remarkable } from 'remarkable';
 import legacy from '@vitejs/plugin-legacy';
 import react from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
 import generateFile from 'vite-plugin-generate-file';
+import { globSync } from 'glob';
+import matter from 'gray-matter';
 import pkg from './package.json';
 import { injectInlineResources } from './src/vite/inject-inline-resources';
 import { injectPreload } from './src/vite/inject-preload';
@@ -56,6 +61,20 @@ export default defineConfig(({ mode }) => ({
             commitHash: execSync('git rev-parse --short HEAD').toString().trim(),
           },
         },
+        // Doc files from markdown sources
+        ...globSync('./src/docs/texts/*.md').map((file) => {
+          const fileContent = readFileSync(file, 'utf8');
+          const fileData = matter(fileContent);
+          return {
+            type: 'template',
+            output: `docs/${parse(file).name}/index.html`,
+            template: 'src/docs/template.ejs',
+            data: {
+              ...fileData.data,
+              content: new Remarkable().render(fileData.content),
+            },
+          };
+        }),
       ]),
   ],
   build: {
