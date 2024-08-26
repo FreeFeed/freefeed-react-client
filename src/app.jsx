@@ -178,16 +178,8 @@ function App() {
             component={lazyLoad(() => import('./components/about'))}
             onEnter={enterStaticPage('About')}
           />
-          <Route
-            path="terms"
-            component={lazyLoad(() => import('./components/terms'))}
-            onEnter={enterStaticPage('Terms')}
-          />
-          <Route
-            path="privacy"
-            component={lazyLoad(() => import('./components/privacy'))}
-            onEnter={enterStaticPage('Privacy')}
-          />
+          <Route path="terms" component={externalRedirect('/docs/terms')} />
+          <Route path="privacy" component={externalRedirect('/docs/privacy')} />
           <Route
             path="stats"
             component={lazyLoad(() => import('./components/stats'))}
@@ -481,4 +473,12 @@ function isCalendarMonthPath({ params: { userName, year, month } }) {
 function isCalendarDatePath({ params: { userName, year, month, day } }) {
   const validUsername = typeof userName === 'undefined' || isAccountPath({ params: { userName } });
   return isValidCalendarYear(year) && isValidMonth(month) && isValidDay(day) && validUsername;
+}
+
+function externalRedirect(href) {
+  // A functional component that redirects to a given external URL
+  return () => {
+    window.location.replace(href);
+    return null;
+  };
 }
