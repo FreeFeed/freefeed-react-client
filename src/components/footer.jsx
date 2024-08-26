@@ -15,9 +15,9 @@ export default function Footer({ short }) {
           FAQ
         </a>
         {' | '}
-        <Link to="/about/terms">Terms</Link>
+        <a href="/docs/terms">Terms</a>
         {' | '}
-        <Link to="/about/privacy">Privacy</Link>
+        <a href="/docs/privacy">Privacy</a>
         {' | '}
         <Link to="/about/stats">Stats</Link>
         {' | '}
