@@ -1,0 +1,73 @@
+html {
+  background-color: lightgray;
+}
+
+body {
+  margin: 0 auto;
+  padding: 1em;
+  max-width: 750px;
+  line-height: 1.33;
+  font-size: 1.1em;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #fff;
+}
+
+a {
+  color: royalblue;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  text-decoration-color: orange;
+}
+
+.legal-article h1,
+.legal-article h2,
+.legal-article h3,
+.legal-article h4 {
+  font-weight: normal;
+  margin-block: 1em 0;
+}
+
+.legal-article h1 {
+  font-size: 2em;
+}
+
+.legal-article h2 {
+  font-size: 1.5em;
+}
+
+.legal-article p {
+  margin-block: 1em 0;
+}
+
+@counter-style legal {
+  system: cyclic;
+  symbols: a b c d e f g h i j k l m n o p q r s t u v w x y z;
+  prefix: '(';
+  suffix: ') ';
+}
+
+.legal-article p + ol {
+  margin-block-start: 0;
+  list-style-type: lower-alpha;
+  list-style-type: legal;
+  padding-left: 2em;
+}
+
+.legal-article li {
+  margin-block: 0.25em;
+}
+
+.header {
+  font-size: 2em;
+  border-bottom: 1px solid #999;
+  padding-bottom: 0.33em;
+}
+
+.footer {
+  border-top: 1px solid #999;
+  margin-top: 2em;
+  padding-block: 0 3em;
+}

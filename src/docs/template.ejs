@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> / FreeFeed Docs</title>
+    <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml" />
+
+    <link rel="stylesheet" href="/docs/legal.css" />
+  </head>
+  <body>
+    <header class="header">
+      <a href="/">FreeFeed</a> / docs
+    </header>
+    <article class="legal-article">
+      <h1><%= title %></h1>
+      <p>Last updated: <b><%= new Date(updated).toDateString() %></b></p>
+      <%- content %>
+    </article>
+    <footer class="footer">
+      <p>
+        &copy; 2015-<%= new Date().getFullYear() %> FreeFeed MTÜ
+      </p>
+      <p>
+        <a href="mailto:freefeed.net&#64;gmail.com">freefeed.net&#64;gmail.com</a>
+      </p>
+    </footer>
+  </body>
+</html>
