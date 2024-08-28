@@ -3,25 +3,30 @@ import { useSelector } from 'react-redux';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 
 import { useEvent } from 'react-use-event-hook';
+import { useState } from 'react';
 import styles from './app-updated.module.scss';
 import { ButtonLink } from './button-link';
 
 const { intervalSec } = CONFIG.appVersionCheck;
 
 export function AppUpdated() {
-  const updated = useSelector((state) => state.appUpdated.updated);
+  const versionFileUpdated = useSelector((state) => state.appUpdated.updated);
+  const [swRegistered, setSwRegistered] = useState(false);
 
   const {
-    needRefresh: [needRefresh],
+    needRefresh: [workerUpdated],
     updateServiceWorker,
   } = useRegisterSW({
     onRegistered(r) {
-      r && setInterval(() => r.update(), intervalSec * 1000);
+      if (r) {
+        setSwRegistered(true);
+        setInterval(() => r.update(), intervalSec * 1000);
+      }
     },
   });
 
   const reloadPage = useEvent(() => {
-    if (needRefresh) {
+    if (workerUpdated) {
       updateServiceWorker();
       // Sometimes the updateServiceWorker doesn't refresh the page, so reload
       // it manually after some time
@@ -31,11 +36,9 @@ export function AppUpdated() {
     }
   });
 
-  if (!updated && !needRefresh) {
-    return null;
-  }
+  const needRefresh = swRegistered ? workerUpdated : versionFileUpdated;
 
-  return (
+  return needRefresh ? (
     <div className={styles.bar}>
       <div className={styles.indicator}>
         There’s an update for {CONFIG.siteTitle}!{' '}
@@ -45,5 +48,5 @@ export function AppUpdated() {
         when you are ready.
       </div>
     </div>
-  );
+  ) : null;
 }
