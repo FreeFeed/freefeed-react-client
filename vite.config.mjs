@@ -73,8 +73,11 @@ export default defineConfig(({ mode }) => ({
           /^\/(config\.json|version\.txt|robots\.txt)$/,
           /^\/(docs|assets)\//,
         ],
-        // Add 'woff2' to the default 'globPatterns'
-        globPatterns: ['**/*.{js,wasm,css,html,woff2}'],
+        // Add '.woff2' and exclude (!) '.html' from the default 'globPatterns'.
+        // We don't want to cache index.html because of beta/non-beta switching
+        // and the possible config.json inclusion. So we only cache the assets
+        // but not the page itself.
+        globPatterns: ['**/*.{js,wasm,css,woff2}'],
         runtimeCaching: [
           // Cache profile pictures (up to 100 entries)
           {
