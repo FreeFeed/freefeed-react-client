@@ -1,6 +1,6 @@
 {
   "name": "reactive-pepyatka",
-  "version": "1.134.4",
+  "version": "1.135.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
@@ -106,7 +106,9 @@
     "vite": "~5.3.5",
     "vite-plugin-compression": "~0.5.1",
     "vite-plugin-generate-file": "~0.2.0",
-    "vitest": "~2.0.4"
+    "vite-plugin-pwa": "^0.20.1",
+    "vitest": "~2.0.4",
+    "workbox-window": "^7.1.0"
   },
   "scripts": {
     "start": "vite",
