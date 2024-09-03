@@ -70,8 +70,8 @@ export default defineConfig(({ mode }) => ({
         // Don't use 'index.html' fallback for these routes
         navigateFallbackDenylist: [
           /^\/(v\d+|socket\.io|api)\//,
-          /^\/(config\.json|version\.txt)$/,
-          /^\/docs\//,
+          /^\/(config\.json|version\.txt|robots\.txt)$/,
+          /^\/(docs|assets)\//,
         ],
         // Add 'woff2' to the default 'globPatterns'
         globPatterns: ['**/*.{js,wasm,css,html,woff2}'],
