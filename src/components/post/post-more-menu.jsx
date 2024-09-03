@@ -1,28 +1,14 @@
 import { forwardRef, useLayoutEffect, useState, useMemo, useCallback } from 'react';
 import { Link } from 'react-router';
 import cn from 'classnames';
-import {
-  faExclamationTriangle,
-  faLink,
-  faEdit,
-  faBookmark as faBookmarkSolid,
-  faSignOutAlt,
-  faAt,
-} from '@fortawesome/free-solid-svg-icons';
-import {
-  faClock,
-  faCommentDots,
-  faTrashAlt,
-  faBookmark,
-} from '@fortawesome/free-regular-svg-icons';
+import { faLink, faEdit, faSignOutAlt, faAt } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faCommentDots, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { noop } from 'lodash-es';
 import { useDispatch } from 'react-redux';
 
 import { copyURL } from '../../utils/copy-url';
 import { leaveDirect } from '../../redux/action-creators';
 import { ButtonLink } from '../button-link';
-import { Throbber } from '../throbber';
-import { Icon } from '../fontawesome-icons';
 import TimeDisplay from '../time-display';
 
 import styles from '../dropdown-menu.module.scss';
@@ -45,8 +31,6 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
       commentsDisabled = false,
       createdAt,
       updatedAt,
-      isSaved = false,
-      savePostStatus = {},
       createdBy: postCreatedBy,
       isDirect = false,
     },
@@ -58,7 +42,6 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
     doAndClose,
     doAndForceClose,
     permalink,
-    toggleSave,
     fixed = false,
     doMention,
   },
@@ -139,23 +122,6 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
       </div>
     )),
     [
-      amIAuthenticated && (
-        <div className={styles.item} key="save-post">
-          <ButtonLink className={styles.link} onClick={doAndClose(toggleSave)}>
-            <Iconic icon={isSaved ? faBookmarkSolid : faBookmark}>
-              {isSaved ? 'Un-save' : 'Save'} post
-              {savePostStatus.loading && <Throbber />}
-              {savePostStatus.error && (
-                <Icon
-                  icon={faExclamationTriangle}
-                  className="post-like-fail"
-                  title={savePostStatus.errorText}
-                />
-              )}
-            </Iconic>
-          </ButtonLink>
-        </div>
-      ),
       <MenuItemNotifyOfAllComments
         key="notify-of-all-comments"
         postId={postId}
