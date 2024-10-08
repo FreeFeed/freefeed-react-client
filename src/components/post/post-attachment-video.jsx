@@ -1,67 +1,92 @@
-import { PureComponent } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { faFileVideo, faPlayCircle } from '@fortawesome/free-regular-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
+import { useEvent } from 'react-use-event-hook';
 import { formatFileSize } from '../../utils';
 import { ButtonLink } from '../button-link';
 import { Icon } from '../fontawesome-icons';
 
-class VideoAttachment extends PureComponent {
-  state = {
-    isOpen: false,
-  };
+export default function VideoAttachment({
+  id,
+  url,
+  fileName,
+  fileSize,
+  removeAttachment,
+  isEditing,
+}) {
+  const [isOpen, setIsOpen] = useState(false);
 
-  handleClickOnRemoveAttachment = () => {
-    this.props.removeAttachment(this.props.id);
-  };
+  const handleClickOnRemoveAttachment = useEvent(() => removeAttachment(id));
+  const toggleOpen = useEvent(() => setIsOpen(true));
 
-  toggleOpen = () => {
-    this.setState({ isOpen: true });
-  };
+  const formattedFileSize = formatFileSize(fileSize);
+  const title = `${fileName} (${formattedFileSize})`;
 
-  render() {
-    const { props } = this;
-    const { isOpen } = this.state;
-    const formattedFileSize = formatFileSize(props.fileSize);
+  const videoRef = useRef(null);
 
-    const title = `${props.fileName} (${formattedFileSize})`;
+  // Prevent video from playing infinitely (we has this situation once and don't
+  // want it to happen again)
+  useEffect(() => {
+    if (!isOpen || !videoRef.current) {
+      return;
+    }
+    const videoEl = videoRef.current;
 
-    return (
-      <div className="attachment" role="figure" aria-label={`Video attachment ${title}`}>
-        {isOpen ? (
-          <div>
-            <video title={title} autoPlay controls>
-              <source src={props.url} />
-              Your browser does not support HTML5 video tag.
-            </video>
-          </div>
-        ) : (
-          <ButtonLink
-            onClick={this.toggleOpen}
-            className="video-attachment-click-to-play"
-            title="Click to play video"
-          >
-            <Icon icon={faPlayCircle} />
-          </ButtonLink>
-        )}
+    // By default, the video playback should be paused after 5 minutes
+    let maxPlayTime = 300 * 1000;
+    let playTimer = 0;
+    const onPlay = () => {
+      clearTimeout(playTimer);
+      playTimer = setTimeout(() => videoEl.pause(), maxPlayTime);
+    };
+    const onPause = () => clearTimeout(playTimer);
+    const onDurationChange = () => {
+      // Video in playback mode should not be longer than 10 times of the video duration
+      maxPlayTime = videoEl.duration * 10 * 1000;
+    };
+    const { signal, abort } = new AbortController();
+
+    videoEl.addEventListener('durationchange', onDurationChange, { once: true, signal });
+    videoEl.addEventListener('play', onPlay, { signal });
+    videoEl.addEventListener('pause', onPause, { signal });
+    signal.addEventListener('abort', onPause);
+    return () => abort();
+  }, [isOpen]);
+
+  return (
+    <div className="attachment" role="figure" aria-label={`Video attachment ${title}`}>
+      {isOpen ? (
         <div>
-          <a href={props.url} title={title} target="_blank">
-            <Icon icon={faFileVideo} className="attachment-icon" />
-            <span>{title}</span>
-          </a>
-
-          {props.isEditing && (
-            <Icon
-              icon={faTimes}
-              className="remove-attachment"
-              title="Remove video file"
-              onClick={this.handleClickOnRemoveAttachment}
-            />
-          )}
+          <video title={title} autoPlay controls ref={videoRef}>
+            <source src={url} />
+            Your browser does not support HTML5 video tag.
+          </video>
         </div>
-      </div>
-    );
-  }
-}
+      ) : (
+        <ButtonLink
+          onClick={toggleOpen}
+          className="video-attachment-click-to-play"
+          title="Click to play video"
+        >
+          <Icon icon={faPlayCircle} />
+        </ButtonLink>
+      )}
+      <div>
+        <a href={url} title={title} target="_blank">
+          <Icon icon={faFileVideo} className="attachment-icon" />
+          <span>{title}</span>
+        </a>
 
-export default VideoAttachment;
+        {isEditing && (
+          <Icon
+            icon={faTimes}
+            className="remove-attachment"
+            title="Remove video file"
+            onClick={handleClickOnRemoveAttachment}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
