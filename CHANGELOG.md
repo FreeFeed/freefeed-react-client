@@ -5,12 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Experimental
+## [1.135.0] - Not released
 ### Added
 - The PWA manifest and the service worker was added. The service worker caches
   all site assets, including web fonts. It also caches user profile pictures (up
   to 100 entries). The AppUpdated component periodically checks the service
   worker for update.
+### Fixed
+- The SmartTextarea component now handles the 'onPaste' event more precisely.
+  When the clipboard contains the text and the image in the same time, both are
+  pasted.
 
 ## [1.134.4] - 2024-08-26
 ### Changed
