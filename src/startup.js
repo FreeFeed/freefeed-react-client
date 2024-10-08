@@ -1,6 +1,7 @@
 // This file is compiled separately. It is inserted directly into index.html.
 import base from '../config/default';
 import { merge } from '../config/lib/merge';
+import { isIos, isWindows } from './utils/platform-detection';
 window.CONFIG = base;
 window.CUSTOM_CONFIG = null;
 
@@ -50,22 +51,12 @@ try {
 }
 
 // Platform specific tuning
-{
-  const platform = navigator.userAgentData?.platform ?? navigator.platform;
-  const isWindows = platform ? platform === 'Windows' : navigator.userAgent.includes('Win');
-  const isIos =
-    !isWindows &&
-    ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(
-      platform,
-    );
+// Set Windows platform class
+document.documentElement.classList.toggle('windows-platform', isWindows);
 
-  // Set Windows platform class
-  document.documentElement.classList.toggle('windows-platform', isWindows);
-
-  // Remove 'maximum-scale=1' on non-iOS platforms to allow pinch zoom
-  if (!isIos) {
-    document
-      .querySelector('meta[name="viewport"]')
-      ?.setAttribute('content', 'width=device-width,initial-scale=1');
-  }
+// Remove 'maximum-scale=1' on non-iOS platforms to allow pinch zoom
+if (!isIos) {
+  document
+    .querySelector('meta[name="viewport"]')
+    ?.setAttribute('content', 'width=device-width,initial-scale=1');
 }

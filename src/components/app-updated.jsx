@@ -4,6 +4,7 @@ import { useRegisterSW } from 'virtual:pwa-register/react';
 
 import { useEvent } from 'react-use-event-hook';
 import { useState } from 'react';
+import { isIos } from '../utils/platform-detection';
 import styles from './app-updated.module.scss';
 import { ButtonLink } from './button-link';
 
@@ -18,7 +19,9 @@ export function AppUpdated() {
     updateServiceWorker,
   } = useRegisterSW({
     onRegistered(r) {
-      if (r) {
+      // iOS has strange behavior with service workers updates, so we will use
+      // the old-fashion way (via the version file) here
+      if (r && !isIos) {
         setSwRegistered(true);
         setInterval(() => r.update(), intervalSec * 1000);
       }
@@ -26,7 +29,7 @@ export function AppUpdated() {
   });
 
   const reloadPage = useEvent(() => {
-    if (workerUpdated) {
+    if (workerUpdated && !isIos) {
       updateServiceWorker();
       // Sometimes the updateServiceWorker doesn't refresh the page, so reload
       // it manually after some time
