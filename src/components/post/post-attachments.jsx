@@ -6,7 +6,6 @@ import AudioAttachment from './post-attachment-audio';
 import GeneralAttachment from './post-attachment-general';
 import VideoAttachment from './post-attachment-video';
 
-/*
 const videoTypes = {
   mov: 'video/quicktime',
   mp4: 'video/mp4; codecs="avc1.42E01E"',
@@ -16,19 +15,11 @@ const videoTypes = {
 
 // find video-types which browser supports
 let video = document.createElement('video');
-const supportedVideoTypes = [];
-Object.keys(videoTypes).forEach((extension) => {
-  const mime = videoTypes[extension];
+const supportedVideoTypes = Object.entries(videoTypes)
+  .filter(([, mime]) => video.canPlayType(mime) === 'probably')
+  .map(([extension]) => extension);
 
-  if (video.canPlayType(mime) !== '') {
-    supportedVideoTypes.push(extension);
-  }
-});
 video = null;
-*/
-
-// No video support for now
-const supportedVideoTypes = [];
 
 const looksLikeAVideoFile = (attachment) => {
   const lowercaseFileName = attachment.fileName.toLowerCase();
