@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The SmartTextarea component now handles the 'onPaste' event more precisely.
   When the clipboard contains the text and the image in the same time, both are
   pasted.
+- The recipients list of a post was determined incorrectly if some of the post
+  groups were not on the page.
 
 ## [1.134.4] - 2024-08-26
 ### Changed
