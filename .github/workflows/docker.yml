@@ -70,4 +70,3 @@ jobs:
       with:
         url: "https://webhook.freefeed.net/${{ secrets.WEBHOOK_SECRET }}/react-client/beta?version=beta"
         method: GET
-

@@ -5,7 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.135.0] - Not released
+## Experimental
+### Added
+- The PWA manifest and the service worker was added. The service worker caches
+  all site assets, including web fonts. It also caches user profile pictures (up
+  to 100 entries). The AppUpdated component periodically checks the service
+  worker for update.
 
 ## [1.134.4] - 2024-08-26
 ### Changed
@@ -379,6 +384,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   created the post, or add their @username to the comment you have already started creating.
 - Vimeo on demand links support
 ### Changed
+- Take Save out of "more" menu
 - The Dropzone library has been replaced with a custom file uploader.
   Attachments for posts and comments are now uploaded uniformly. The CreatePost
   and PostEditForm components have been redesigned to utilize the new uploader.
@@ -485,6 +491,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   First contribution by [Mohammad Jafari](https://github.com/MMDJafari/). Thanks!
 - It is now possible to hide posts by hashtags! Also, the underlying algorithm
   allows to add other types of hiding criteria in the future.
+
+### Changed
+- Take Save out of "more" menu
 
 ## [1.110.0] - 2022-06-29
 ### Fixed

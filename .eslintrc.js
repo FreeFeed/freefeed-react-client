@@ -53,7 +53,7 @@ module.exports = {
     'import/no-extraneous-dependencies': 2,
     'import/no-named-as-default': 2,
     'import/no-named-as-default-member': 2,
-    'import/no-unresolved': 2,
+    'import/no-unresolved': ['error', { ignore: ['^virtual:'] }],
     'import/order': [
       2,
       { groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'] },
