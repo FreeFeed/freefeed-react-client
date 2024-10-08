@@ -5,6 +5,7 @@
 !/.yarn/sdks
 !/.yarn/versions
 /_dist/
+/dev-dist/
 /config.json
 /coverage
 /node_modules

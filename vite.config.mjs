@@ -6,6 +6,7 @@ import legacy from '@vitejs/plugin-legacy';
 import react from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
 import generateFile from 'vite-plugin-generate-file';
+import { VitePWA } from 'vite-plugin-pwa';
 import { globSync } from 'glob';
 import matter from 'gray-matter';
 import pkg from './package.json';
@@ -32,6 +33,66 @@ const vendorChunks = [
 
 export default defineConfig(({ mode }) => ({
   plugins: [
+    VitePWA({
+      registerType: 'prompt',
+      devOptions: { enabled: true },
+      manifest: {
+        name: 'FreeFeed',
+        short_name: 'FreeFeed',
+        description: 'A small and free social network',
+        id: '/?pwa=1',
+        start_url: '/',
+        icons: [
+          {
+            src: '/assets/images/pwa-64x64.png',
+            sizes: '64x64',
+            type: 'image/png',
+          },
+          {
+            src: '/assets/images/pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+          },
+          {
+            src: '/assets/images/pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+          },
+          {
+            src: '/assets/images/maskable-icon-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
+          },
+        ],
+      },
+      workbox: {
+        // Don't use 'index.html' fallback for these routes
+        navigateFallbackDenylist: [
+          /^\/(v\d+|socket\.io|api)\//,
+          /^\/(config\.json|version\.txt|robots\.txt)$/,
+          /^\/(docs|assets)\//,
+        ],
+        // Add '.woff2' and exclude (!) '.html' from the default 'globPatterns'.
+        // We don't want to cache index.html because of beta/non-beta switching
+        // and the possible config.json inclusion. So we only cache the assets
+        // but not the page itself.
+        globPatterns: ['**/*.{js,wasm,css,woff2}'],
+        runtimeCaching: [
+          // Cache profile pictures (up to 100 entries)
+          {
+            urlPattern: /^https:\/\/(stable-)?media\.freefeed\.net\/profilepics\//,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'profile-pictures',
+              expiration: {
+                maxEntries: 100,
+              },
+            },
+          },
+        ],
+      },
+    }),
     !process.env.MODERN && legacy(),
     react(),
     injectPreload({

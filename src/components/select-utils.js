@@ -90,7 +90,7 @@ export const joinPostData = (state) => (postId) => {
       const isDirectToSelf = userId === post.createdBy && subscriptionType === 'Directs';
       return !isDirectToSelf ? userId : false;
     })
-    .map((userId) => state.subscribers[userId])
+    .map((userId) => state.subscribers[userId] || state.users[userId])
     .filter((user) => user);
 
   // All recipient names and the post's author name.

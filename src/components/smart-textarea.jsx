@@ -178,11 +178,6 @@ function useFile(onFile, ref) {
 
       const items = [...e.clipboardData.items];
 
-      // If there is some plain text in clipboard, use it and don't try to find image
-      if (items.some((it) => it.type.startsWith('text/plain'))) {
-        return;
-      }
-
       const imagePromises = [];
       for (const it of items) {
         if (!it.type.startsWith('image/')) {
@@ -207,9 +202,6 @@ function useFile(onFile, ref) {
           // Probably a regular file copy/paste
           imagePromises.push(Promise.resolve(blob));
         }
-      }
-      if (imagePromises.length > 0) {
-        e.preventDefault();
       }
 
       // Call 'onFile' in order of imagePromises
