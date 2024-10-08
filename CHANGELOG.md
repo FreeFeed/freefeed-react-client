@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.136.0] - Not released
+### Fixed
+- iOS has strange behavior with service workers updates, so use the version file
+  method instead.
 
 ## [1.135.0] - 2024-10-08
 ### Added
