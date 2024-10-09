@@ -14,7 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import { pluralForm } from '../../utils';
-import { getFirstLinkToEmbed } from '../../utils/parse-text';
+import { getFirstLinkToEmbed, getTextAlign } from '../../utils/parse-text';
 import { canonicalURI } from '../../utils/canonical-uri';
 import { READMORE_STYLE_COMPACT } from '../../utils/frontend-preferences-options';
 import { savePost, hidePostsByCriterion, unhidePostsByCriteria } from '../../redux/action-creators';
@@ -401,6 +401,7 @@ class Post extends Component {
     const linkToEmbed = getFirstLinkToEmbed(props.body);
 
     const { role, postLabel } = this.getAriaLabels();
+    const postText = getTextAlign(props.body) ? 'post-text rtl' : 'post-text';
 
     return (
       <PostProvider id={this.props.id}>
@@ -442,7 +443,7 @@ class Post extends Component {
                       comments={props.comments}
                       usersLikedPost={props.usersLikedPost}
                     />
-                    <div className="post-text">
+                    <div className={postText}>
                       <PieceOfText
                         text={props.body}
                         readMoreStyle={props.readMoreStyle}
