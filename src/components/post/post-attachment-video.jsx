@@ -45,13 +45,14 @@ export default function VideoAttachment({
       // Video in playback mode should not be longer than 10 times of the video duration
       maxPlayTime = videoEl.duration * 10 * 1000;
     };
-    const { signal, abort } = new AbortController();
+    const abortController = new AbortController();
+    const { signal } = abortController;
 
     videoEl.addEventListener('durationchange', onDurationChange, { once: true, signal });
     videoEl.addEventListener('play', onPlay, { signal });
     videoEl.addEventListener('pause', onPause, { signal });
     signal.addEventListener('abort', onPause);
-    return () => abort();
+    return () => abortController.abort();
   }, [isOpen]);
 
   return (
