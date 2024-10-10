@@ -30,7 +30,6 @@ export default class CreateBookmarkletPost extends Component {
     super(props);
 
     this.state = {
-      isPostSaved: false,
       feedNames: [this.props.user.username],
       feedsHasError: false,
       postText: this.props.postText,
@@ -56,30 +55,20 @@ export default class CreateBookmarkletPost extends Component {
     this.props.createPost(feeds, postText, imageUrls, commentText);
   };
 
-  UNSAFE_componentWillReceiveProps(newProps) {
-    // If it was successful saving, clear the form
-    const wasCommentJustSaved =
-      this.props.createPostStatus.loading && !newProps.createPostStatus.loading;
-    const wasThereNoError = !newProps.createPostStatus.error;
-
-    if (wasCommentJustSaved && wasThereNoError) {
-      this.setState({ isPostSaved: true });
-    }
-  }
-
   componentWillUnmount() {
     this.props.resetPostCreateForm();
   }
 
-  // When the SendTo became multiline, images choosen or textarea grows bookmarklet height is changed,
-  // but we can't handle this via CSS rules, so use JS to increase iframe size accordingly
-  // Only way to interact with the scripts outside the iframe is postMessage
+  // When the SendTo becomes multiline, images are chosen, or textarea is grows
+  // bookmarklet height is changed, but we can't handle this via CSS rules, so
+  // use JS to increase iframe size accordingly. The only way to interact with
+  // the scripts outside the iframe is postMessage.
   componentDidUpdate() {
     window.parent.postMessage(window.document.documentElement.offsetHeight, '*');
   }
 
   render() {
-    if (this.state.isPostSaved) {
+    if (this.props.createPostStatus.success) {
       const postUrl = `/${this.props.user.username}/${this.props.lastCreatedPostId}`;
       return (
         <div className="brand-new-post">
