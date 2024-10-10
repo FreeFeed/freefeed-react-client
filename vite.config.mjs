@@ -67,12 +67,8 @@ export default defineConfig(({ mode }) => ({
         ],
       },
       workbox: {
-        // Don't use 'index.html' fallback for these routes
-        navigateFallbackDenylist: [
-          /^\/(v\d+|socket\.io|api)\//,
-          /^\/(config\.json|version\.txt|robots\.txt)$/,
-          /^\/(docs|assets)\//,
-        ],
+        // Don't use 'index.html' fallback
+        navigateFallback: null,
         // Add '.woff2' and exclude (!) '.html' from the default 'globPatterns'.
         // We don't want to cache index.html because of beta/non-beta switching
         // and the possible config.json inclusion. So we only cache the assets
