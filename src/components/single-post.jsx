@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { Component, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -12,9 +12,11 @@ import Post from './post/post';
 import { SignInLink } from './sign-in-link';
 import { PostContextProvider } from './post/post-context';
 
-class SinglePostHandler extends Component {
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const { post, router, routeLoadingState } = nextProps;
+function SinglePostHandler(props) {
+  const { post, router, routeLoadingState } = props;
+
+  // Replace URL to the canonical one, if necessary
+  useEffect(() => {
     if (!post || routeLoadingState) {
       return;
     }
@@ -23,63 +25,58 @@ class SinglePostHandler extends Component {
     if (pathname !== canonicalPostURI) {
       router.replace(canonicalPostURI + search + hash);
     }
+  }, [post, routeLoadingState, router]);
+
+  let postBody = <div />;
+
+  if (props.errorString?.includes('You can not see this post')) {
+    return <PrivatePost isAuthorized={!!props.user.id} feedName={props.routeParams?.userName} />;
+  } else if (props.errorString?.includes('Please sign in to view this post')) {
+    return <ProtectedPost />;
+  } else if (props.errorString?.startsWith('404:')) {
+    return <NotFoundPost />;
+  } else if (props.errorString) {
+    postBody = <h2>{props.errorString}</h2>;
   }
 
-  render() {
-    const { props } = this;
-    const { post } = props;
-
-    let postBody = <div />;
-
-    if (props.errorString?.includes('You can not see this post')) {
-      return <PrivatePost isAuthorized={!!props.user.id} feedName={props.routeParams?.userName} />;
-    } else if (props.errorString?.includes('Please sign in to view this post')) {
-      return <ProtectedPost />;
-    } else if (props.errorString?.startsWith('404:')) {
-      return <NotFoundPost />;
-    } else if (props.errorString) {
-      postBody = <h2>{props.errorString}</h2>;
-    }
-
-    if (post) {
-      postBody = (
-        <PostContextProvider>
-          <Post
-            {...post}
-            key={post.id}
-            isCommenting={true}
-            isSinglePost={true}
-            user={props.user}
-            showMoreComments={props.showMoreComments}
-            showMoreLikes={props.showMoreLikes}
-            toggleEditingPost={props.toggleEditingPost}
-            cancelEditingPost={props.cancelEditingPost}
-            saveEditingPost={props.saveEditingPost}
-            deletePost={props.deletePost}
-            addAttachmentResponse={props.addAttachmentResponse}
-            toggleCommenting={props.toggleCommenting}
-            addComment={props.addComment}
-            likePost={props.likePost}
-            unlikePost={props.unlikePost}
-            toggleModeratingComments={props.toggleModeratingComments}
-            disableComments={props.disableComments}
-            enableComments={props.enableComments}
-            commentEdit={props.commentEdit}
-          />
-        </PostContextProvider>
-      );
-    }
-
-    return (
-      <div className="box">
-        <div className="box-header-timeline" role="heading">
-          {props.boxHeader}
-        </div>
-        <div className="box-body">{postBody}</div>
-        <div className="box-footer" />
-      </div>
+  if (props.post) {
+    postBody = (
+      <PostContextProvider>
+        <Post
+          {...post}
+          key={post.id}
+          isCommenting={true}
+          isSinglePost={true}
+          user={props.user}
+          showMoreComments={props.showMoreComments}
+          showMoreLikes={props.showMoreLikes}
+          toggleEditingPost={props.toggleEditingPost}
+          cancelEditingPost={props.cancelEditingPost}
+          saveEditingPost={props.saveEditingPost}
+          deletePost={props.deletePost}
+          addAttachmentResponse={props.addAttachmentResponse}
+          toggleCommenting={props.toggleCommenting}
+          addComment={props.addComment}
+          likePost={props.likePost}
+          unlikePost={props.unlikePost}
+          toggleModeratingComments={props.toggleModeratingComments}
+          disableComments={props.disableComments}
+          enableComments={props.enableComments}
+          commentEdit={props.commentEdit}
+        />
+      </PostContextProvider>
     );
   }
+
+  return (
+    <div className="box">
+      <div className="box-header-timeline" role="heading">
+        {props.boxHeader}
+      </div>
+      <div className="box-body">{postBody}</div>
+      <div className="box-footer" />
+    </div>
+  );
 }
 
 function selectState(state) {
