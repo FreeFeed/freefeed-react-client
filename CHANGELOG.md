@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.136.0] - Not released
+### Fixed
+- Multiple fixes in style handling process:
+  - Bootstrap 3 is now a regular dependency in package.json;
+  - Modern compiler API of Sass is used, see
+    [details](https://sass-lang.com/documentation/breaking-changes/legacy-js-api/#bundlers);
+  - All mixed declarations in .scss files were removed, see
+    [details](https://sass-lang.com/documentation/breaking-changes/mixed-decls/).
 
 ## [1.135.1] - 2024-10-08
 ### Fixed
