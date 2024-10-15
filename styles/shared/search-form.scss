@@ -1,5 +1,8 @@
 .search-form {
   margin-bottom: 15px;
+  float: right;
+  width: 100%;
+  display: flex;
 
   @media (max-width: 768px) {
     margin-top: 15px;
@@ -8,10 +11,6 @@
   @media (min-width: 992px) {
     margin: 28px 0 20px;
   }
-
-  float: right;
-  width: 100%;
-  display: flex;
 
   .search-input {
     flex: 1;
