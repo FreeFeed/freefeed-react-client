@@ -50,12 +50,12 @@ $without-sidebar: '(max-width: 991px)';
 }
 
 .searchForm {
-  @include with-gap;
-
   display: flex;
   flex: 0 1 100%;
   position: relative;
   height: 32px;
+
+  @include with-gap;
 
   .fullMode & {
     max-width: 380px;
@@ -155,13 +155,13 @@ $without-sidebar: '(max-width: 991px)';
 }
 
 .activeElements {
-  @include with-gap;
-
   display: flex;
   flex: 2;
   justify-content: flex-end;
   height: 40px;
   align-items: center;
+
+  @include with-gap;
 
   .collapsibleMode & {
     flex: 0;
@@ -209,12 +209,11 @@ $without-sidebar: '(max-width: 991px)';
   height: 32px;
   opacity: 0.4;
   transition: opacity 0.3s;
+  visibility: hidden;
 
   &:hover {
     opacity: 0.8;
   }
-
-  visibility: hidden;
 
   .searchInputContainer:focus-within & {
     visibility: visible;

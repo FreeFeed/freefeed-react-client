@@ -27,12 +27,11 @@
   font-weight: 700;
   margin-bottom: rem(7px);
   margin-left: rem(10px);
+  padding-bottom: rem(2px);
 
   @media (max-width: 991px) {
     margin-left: 0;
   }
-
-  padding-bottom: rem(2px);
 
   .sidelinks {
     float: right;
@@ -59,12 +58,11 @@
 
 .box-message {
   margin: 0 0 rem(5px) rem(10px);
+  padding: rem(5px) rem(10px);
 
   @media (max-width: 991px) {
     margin-left: 0;
   }
-
-  padding: rem(5px) rem(10px);
 }
 
 // Sidebar Friend block header
@@ -110,25 +108,23 @@
 .content {
   .box-body {
     padding: 0 0 0 rem(11px);
+    background-color: #fff;
+
+    @include clearfix;
 
     @media (max-width: 991px) {
       padding: 0;
     }
-
-    background-color: #fff;
-
-    @include clearfix;
   }
 
   .box-footer {
     padding: rem(5px) 0 rem(5px) rem(11px);
+    font-size: rem(11px);
+    background-color: #fff;
 
     @media (max-width: 991px) {
       padding: rem(15px) 0 0;
     }
-
-    font-size: rem(11px);
-    background-color: #fff;
   }
 }
 
