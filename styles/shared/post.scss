@@ -454,19 +454,6 @@ code.inline-code {
   }
 }
 
-.timeline-post {
-  /**
-   * Render the post's content only when it reaches the viewport.
-   */
-  content-visibility: auto;
-
-  /** 
-   * Empirically determined height for the post's placeholder. It will be
-   * replaced with the actual height of the post when it reaches the viewport.
-   */
-  contain-intrinsic-size: auto calc(440px - min(100vw, 800px) / 6);
-}
-
 .timeline-post.direct-post {
   --bg-color: #eee;
   --arrow-color: #fff;
