@@ -1,16 +1,19 @@
-$icon-font-path: '../../assets/fonts/bootstrap/';
-
+@import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 @import './vazir.scss';
 
-// override default bootstrap fonts
-$font-family-sans-serif: Vazir, 'Helvetica Neue', Helvetica, Arial, sans-serif !default;
-$font-family-sans-serif-windows: Vazir, Arial, sans-serif !default;
-$font-family-serif: Vazir, Georgia, 'Times New Roman', Times, serif !default;
-$font-family-monospace: Vazir, Menlo, Monaco, Consolas, 'Courier New', monospace !default;
-
-@import 'bootstrap/bootstrap.3.3.4.scss';
+// Add Vazir font to the Bootstrap's defaults
+body {
+  font-family: Vazir, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
 
 .windows-platform body {
-  // Use special fonts set for Windows platform
-  font-family: $font-family-sans-serif-windows;
+  // Don't use Helvetica on Windows platform
+  font-family: Vazir, Arial, sans-serif;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: Vazir, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }

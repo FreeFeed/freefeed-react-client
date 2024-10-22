@@ -52,26 +52,24 @@ $post-line-height: rem(20px);
 
   .post-body {
     margin-left: 63px;
+    color: #666;
+    font-size: rem(14px);
+    line-height: rem(19px);
 
     @media (max-width: 767px) {
       margin-left: 0;
     }
 
-    color: #666;
-    font-size: rem(14px);
-    line-height: rem(19px);
-
     .post-text {
       margin-bottom: rem(8px);
       word-wrap: break-word;
+      color: #000;
+      font-size: rem(16px);
+      line-height: $post-line-height;
 
       @media (max-width: 767px) {
         min-height: rem(31px);
       }
-
-      color: #000;
-      font-size: rem(16px);
-      line-height: $post-line-height;
 
       &.modern {
         max-height: 5 * $post-line-height;
@@ -446,14 +444,27 @@ code.inline-code {
     }
 
     .post-text {
+      font-size: rem(21px);
+      line-height: rem(26px);
+
       @media (max-width: 767px) {
         min-height: 50px;
       }
-
-      font-size: rem(21px);
-      line-height: rem(26px);
     }
   }
+}
+
+.timeline-post {
+  /**
+   * Render the post's content only when it reaches the viewport.
+   */
+  content-visibility: auto;
+
+  /** 
+   * Empirically determined height for the post's placeholder. It will be
+   * replaced with the actual height of the post when it reaches the viewport.
+   */
+  contain-intrinsic-size: auto calc(440px - min(100vw, 800px) / 6);
 }
 
 .timeline-post.direct-post {

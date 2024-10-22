@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.135.3] - 2024-10-22
+### Fixed
+- Multiple fixes in style handling process:
+  - Bootstrap 3 is now a regular dependency in package.json;
+  - Modern compiler API of Sass is used, see
+    [details](https://sass-lang.com/documentation/breaking-changes/legacy-js-api/#bundlers);
+  - All mixed declarations in .scss files were removed, see
+    [details](https://sass-lang.com/documentation/breaking-changes/mixed-decls/).
+- The last UNSAFE_* methods were removed from React components.
+
 ## [1.135.1] - 2024-10-08
 ### Fixed
 - iOS has strange behavior with service workers updates, so use the version file

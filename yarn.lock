@@ -3592,6 +3592,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bootstrap@npm:~3.4.1":
+  version: 3.4.1
+  resolution: "bootstrap@npm:3.4.1"
+  checksum: 10c0/3ac443985a432fd77f1d6df2972d8f0a06e93bb0e10893fa890e6503e6d2b36e601f4a9894429223afa867c2232ead1af5c55ded4c23a64dc706ca25e49dc2da
+  languageName: node
+  linkType: hard
+
 "brace-expansion@npm:^1.1.7":
   version: 1.1.11
   resolution: "brace-expansion@npm:1.1.11"
@@ -8747,6 +8754,7 @@ __metadata:
     "@vitejs/plugin-legacy": "npm:~5.4.2"
     "@vitejs/plugin-react-swc": "npm:^3.7.1"
     autotrack: "npm:~2.4.1"
+    bootstrap: "npm:~3.4.1"
     classnames: "npm:~2.5.1"
     cross-env: "npm:~7.0.3"
     custom-event: "npm:~1.0.1"
