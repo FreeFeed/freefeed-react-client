@@ -84,6 +84,7 @@ export const LayoutHeader = withRouter(function LayoutHeader({ router }) {
             ref={input}
             placeholder="Search request"
             autoFocus={collapsibleSearchForm}
+            autoComplete="off"
             value={query}
             onChange={onQueryChange}
             onKeyDown={onKeyDown}
