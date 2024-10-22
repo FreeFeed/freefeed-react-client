@@ -1,6 +1,6 @@
 {
   "name": "reactive-pepyatka",
-  "version": "1.135.2",
+  "version": "1.136.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
@@ -9,6 +9,7 @@
     "@fortawesome/free-solid-svg-icons": "~5.15.4",
     "@sentry/react": "~7.113.0",
     "autotrack": "~2.4.1",
+    "bootstrap": "~3.4.1",
     "classnames": "~2.5.1",
     "custom-event": "~1.0.1",
     "date-fns": "~4.1.0",

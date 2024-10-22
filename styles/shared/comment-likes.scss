@@ -60,13 +60,12 @@
   flex-basis: auto;
   margin-right: rem(2px);
   margin-top: rem(1px);
+  opacity: 0;
+  transition: opacity 0.2s;
 
   @media (min-width: 769px) {
     margin-right: rem(6px);
   }
-
-  opacity: 0;
-  transition: opacity 0.2s;
 
   &.liked,
   &:focus-within {
@@ -114,6 +113,9 @@
     text-align: right;
     cursor: pointer;
     margin-right: rem(2px);
+    font-size: rem(12px);
+    width: rem(7px);
+    color: #898989;
 
     @media (min-width: 769px) {
       margin-right: rem(6px);
@@ -123,10 +125,6 @@
     &:active {
       text-decoration: underline;
     }
-
-    font-size: rem(12px);
-    width: rem(7px);
-    color: #898989;
   }
 
   &.has-my-like {
