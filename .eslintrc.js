@@ -41,7 +41,7 @@ module.exports = {
       version: 'detect',
     },
   },
-  ignorePatterns: ['/_dist/'],
+  ignorePatterns: ['/_dist/', '/dev-dist/'],
   rules: {
     complexity: ['warn', { max: 20 }],
     curly: 2,
