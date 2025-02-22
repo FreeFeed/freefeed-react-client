@@ -6,13 +6,13 @@ import style from './visual.module.scss';
 import { useItemClickHandler, useLightboxItems } from './hooks';
 import {
   fitIntoBox,
-  galleryGap,
   maxEditingPreviewHeight,
   maxEditingPreviewWidth,
   minEditingPreviewHeight,
   minEditingPreviewWidth,
 } from './geometry';
 import { VisualAttachment } from './attachment';
+import { gap } from './gallery';
 
 const Sortable = lazyComponent(() => import('../../../react-sortable'), {
   fallback: <div>Loading component...</div>,
@@ -52,7 +52,7 @@ export function VisualContainerEditable({
   }
 
   return (
-    <div style={{ '--gap': `${galleryGap}px` }}>
+    <div style={{ '--gap': `${gap}px` }}>
       {withSortable ? (
         <Sortable
           className={cn(

@@ -59,9 +59,9 @@ export default memo(function VideoPreview({ url }) {
   ] = useMemo(() => {
     const previewStyle = info ? { backgroundImage: `url(${info.previewURL})` } : {};
 
-    // video will have the same area as 16x9 450px-width rectangle
+    // video will have the same area as 16x9 530px-width rectangle
     const r = info ? info.aspectRatio : aspectRatio.get(url, getDefaultAspectRatio(url));
-    const width = 450 * Math.sqrt(9 / 16 / r);
+    const width = 530 * Math.sqrt(9 / 16 / r);
     previewStyle.paddingBottom = `${100 * r}%`;
 
     const canShowPlayer = info && (info.videoURL || info.playerURL || info.html);

@@ -1,6 +1,5 @@
 import cn from 'classnames';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { clamp } from 'lodash-es';
 import { faChevronCircleLeft, faChevronCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { useEvent } from 'react-use-event-hook';
 import { Icon } from '../../../fontawesome-icons';
@@ -9,13 +8,7 @@ import { safeScrollBy } from '../../../../services/unscroll';
 import style from './visual.module.scss';
 import { VisualAttachment } from './attachment';
 import { useItemClickHandler, useLightboxItems, useWidthOf } from './hooks';
-import {
-  galleryGap,
-  getGallerySizes,
-  getSingleImageSize,
-  maxPreviewAspectRatio,
-  thumbArea,
-} from './geometry';
+import { gap, getGallerySizes, getSingleImageSize } from './gallery';
 
 export function VisualContainerStatic({
   attachments,
@@ -31,15 +24,16 @@ export function VisualContainerStatic({
   const lightboxItems = useLightboxItems(attachments, postId);
   const handleClick = useItemClickHandler(lightboxItems);
 
-  const ratios = attachments.map((a) =>
-    clamp(a.width / a.height, 1 / maxPreviewAspectRatio, maxPreviewAspectRatio),
-  );
+  const sizes = attachments.map((a) => ({
+    width: a.previewWidth ?? a.width,
+    height: a.previewHeight ?? a.height,
+  }));
 
   const singleImage = attachments.length === 1;
 
   const sizeRows = singleImage
     ? [{ items: [getSingleImageSize(attachments[0], containerWidth)], stretched: false }]
-    : getGallerySizes(ratios, containerWidth, thumbArea, galleryGap);
+    : getGallerySizes(sizes, containerWidth);
 
   const needFolding = sizeRows.length > 1 && !isExpanded;
   const [isFolded, setIsFolded] = useState(true);
@@ -123,7 +117,7 @@ export function VisualContainerStatic({
   }
 
   return (
-    <div style={{ '--gap': `${galleryGap}px` }} ref={containerRef}>
+    <div style={{ '--gap': `${gap}px` }} ref={containerRef}>
       <div className={cn(aStyle['container'], style['container--visual'])}>{previews}</div>
     </div>
   );
