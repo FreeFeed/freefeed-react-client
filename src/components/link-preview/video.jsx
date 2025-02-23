@@ -9,6 +9,7 @@ import { useEvent } from 'react-use-event-hook';
 
 import { Icon } from '../fontawesome-icons';
 import { apiVersion } from '../../services/api-version';
+import { singleImagePreviewArea } from '../post/attachments/visual/gallery';
 import cachedFetch from './helpers/cached-fetch';
 import * as aspectRatio from './helpers/size-cache';
 
@@ -48,8 +49,6 @@ export default memo(function VideoPreview({ url }) {
   const [
     // CSS style of video preview
     previewStyle,
-    // Video width
-    width,
     // Can we show player? (metadata is loaded and we can play video)
     canShowPlayer,
     // Can we hide player?
@@ -58,11 +57,13 @@ export default memo(function VideoPreview({ url }) {
     player,
   ] = useMemo(() => {
     const previewStyle = info ? { backgroundImage: `url(${info.previewURL})` } : {};
+    previewStyle.maxWidth = '100%';
+    previewStyle.maxHeight = '330px';
 
     // video will have the same area as 16x9 530px-width rectangle
     const r = info ? info.aspectRatio : aspectRatio.get(url, getDefaultAspectRatio(url));
-    const width = 530 * Math.sqrt(9 / 16 / r);
-    previewStyle.paddingBottom = `${100 * r}%`;
+    previewStyle.aspectRatio = 1 / r;
+    previewStyle.maxWidth = Math.sqrt(singleImagePreviewArea / r);
 
     const canShowPlayer = info && (info.videoURL || info.playerURL || info.html);
     const canHidePlayer = info && info.videoURL;
@@ -95,7 +96,7 @@ export default memo(function VideoPreview({ url }) {
       }
     }
 
-    return [previewStyle, width, canShowPlayer, canHidePlayer, player];
+    return [previewStyle, canShowPlayer, canHidePlayer, player];
   }, [info, url]);
 
   const togglePlayer = useEvent(() =>
@@ -123,7 +124,7 @@ export default memo(function VideoPreview({ url }) {
   }
 
   return (
-    <div className="video-preview link-preview-content" style={{ maxWidth: width }}>
+    <div className="video-preview link-preview-content">
       <div
         className="static-preview"
         style={previewStyle}
