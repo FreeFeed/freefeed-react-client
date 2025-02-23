@@ -7,7 +7,7 @@ import { fitIntoBox } from './geometry';
 export const gap = 8;
 const previewArea = 250 ** 2; // px^2
 export const singleImagePreviewArea = 400 ** 2; // px^2, 16:9 with 300px height
-const maxHeight = 330;
+export const maxHeight = 330;
 const minSize = 40; // Minimum size of image placeholder side
 const maxStretch = 1.5; // Maximum average stretch on a line
 const stretchGap = 20;

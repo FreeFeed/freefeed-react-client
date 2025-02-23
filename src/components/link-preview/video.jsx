@@ -9,7 +9,7 @@ import { useEvent } from 'react-use-event-hook';
 
 import { Icon } from '../fontawesome-icons';
 import { apiVersion } from '../../services/api-version';
-import { singleImagePreviewArea } from '../post/attachments/visual/gallery';
+import { maxHeight, singleImagePreviewArea } from '../post/attachments/visual/gallery';
 import cachedFetch from './helpers/cached-fetch';
 import * as aspectRatio from './helpers/size-cache';
 
@@ -57,13 +57,19 @@ export default memo(function VideoPreview({ url }) {
     player,
   ] = useMemo(() => {
     const previewStyle = info ? { backgroundImage: `url(${info.previewURL})` } : {};
-    previewStyle.maxWidth = '100%';
-    previewStyle.maxHeight = '330px';
 
-    // video will have the same area as 16x9 530px-width rectangle
     const r = info ? info.aspectRatio : aspectRatio.get(url, getDefaultAspectRatio(url));
-    previewStyle.aspectRatio = 1 / r;
-    previewStyle.maxWidth = Math.sqrt(singleImagePreviewArea / r);
+
+    let w = Math.sqrt(singleImagePreviewArea / r);
+    let h = w * r;
+    if (h > maxHeight) {
+      h = maxHeight;
+      w = h / r;
+    }
+
+    previewStyle.maxWidth = w;
+    previewStyle.maxHeight = `${maxHeight}px`;
+    previewStyle.paddingBottom = `${100 * r}%`;
 
     const canShowPlayer = info && (info.videoURL || info.playerURL || info.html);
     const canHidePlayer = info && info.videoURL;
@@ -124,7 +130,7 @@ export default memo(function VideoPreview({ url }) {
   }
 
   return (
-    <div className="video-preview link-preview-content">
+    <div className="video-preview link-preview-content" style={{ maxWidth: previewStyle.maxWidth }}>
       <div
         className="static-preview"
         style={previewStyle}
