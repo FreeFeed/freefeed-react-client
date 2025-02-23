@@ -608,10 +608,10 @@ code.inline-code {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        font-size: 100px;
+        font-size: 60px;
         color: #fff;
         opacity: 0.66;
-        text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.33));
         transition: opacity 0.3s;
       }
 

@@ -3,7 +3,7 @@ import { parse as urlParse } from 'url';
 import { parse as queryParse } from 'querystring';
 
 import { useState, useEffect, useMemo, memo } from 'react';
-import { faPlayCircle } from '@fortawesome/free-solid-svg-icons';
+import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from 'react-redux';
 import { useEvent } from 'react-use-event-hook';
 
@@ -131,7 +131,7 @@ export default memo(function VideoPreview({ url }) {
         onClick={togglePlayer}
         aria-label="Video preview"
       >
-        {player && (playerVisible ? player : <Icon icon={faPlayCircle} className="play-icon" />)}
+        {player && (playerVisible ? player : <Icon icon={faPlay} className="play-icon" />)}
       </div>
       <div className="info">
         <a href={url} target="_blank" title={info?.byline}>

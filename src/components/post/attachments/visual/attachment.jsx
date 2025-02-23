@@ -1,11 +1,12 @@
 import cn from 'classnames';
 import { useEvent } from 'react-use-event-hook';
 import { faPlay, faSpinner, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { attachmentPreviewUrl } from '../../../../services/api';
 import { formatFileSize } from '../../../../utils';
 import { Icon } from '../../../fontawesome-icons';
 import { usePixelRatio } from '../../../hooks/pixel-ratio';
+import { useScreenWidth } from '../../../hooks/screen-width';
 import style from './visual.module.scss';
 import { NsfwCanvas } from './nsfw-canvas';
 import { fitIntoBox } from './geometry';
@@ -16,7 +17,7 @@ export function VisualAttachment({
   pictureId,
   width,
   height,
-  handleClick,
+  handleClick: givenClickHandler,
   removeAttachment,
   isNSFW,
 }) {
@@ -25,41 +26,41 @@ export function VisualAttachment({
 
   const { width: mediaWidth, height: mediaHeight } = fitIntoBox(att, width, height);
 
-  const [prvWidth, setPrvWidth] = useState(mediaWidth);
-  const [prvHeight, setPrvHeight] = useState(mediaHeight);
-
-  useLayoutEffect(() => {
-    // Don't update preview URLs if the size hasn't changed by more than the minimum size difference
-    const minSizeDifference = 40;
-    if (
-      Math.abs(mediaWidth - prvWidth) < minSizeDifference &&
-      Math.abs(mediaHeight - prvHeight) < minSizeDifference
-    ) {
-      return;
-    }
-    setPrvWidth(mediaWidth);
-    setPrvHeight(mediaHeight);
-  }, [prvWidth, prvHeight, mediaWidth, mediaHeight]);
+  // Don't update preview URLs if the size hasn't changed by more than the minimum size difference
+  const [prvWidth, prvHeight] = useDampedSize(mediaWidth, mediaHeight);
 
   const pixRatio = usePixelRatio();
 
-  const [videoPlaying, setVideoPlaying] = useState(false);
+  const { inlinePlaying, isGifLike } = useVideoProps(att, isNSFW, mediaWidth, mediaHeight);
 
   const handleMouseEnter = useEvent((e) => {
-    if (window.matchMedia?.('(hover: hover)').matches) {
+    if (!inlinePlaying && window.matchMedia?.('(hover: hover)').matches) {
       e.target.play();
-      setVideoPlaying(true);
     }
   });
   const handleMouseLeave = useEvent((e) => {
-    if (window.matchMedia?.('(hover: hover)').matches) {
+    if (!inlinePlaying && window.matchMedia?.('(hover: hover)').matches) {
       e.target.pause();
       e.target.currentTime = 0;
-      setVideoPlaying(false);
     }
   });
-  const [currentTime, setCurrentTime] = useState(0);
-  const handleTimeUpdate = useEvent((e) => setCurrentTime(Math.floor(e.target.currentTime)));
+
+  const videoRef = useRef(null);
+  useStopVideo(videoRef, att.mediaType === 'video' && !att.meta?.inProgress);
+  const { videoPlaying, currentTime } = useVideoEvents(videoRef);
+
+  const handleClick = useEvent((e) => {
+    if (inlinePlaying) {
+      if (videoPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      e.preventDefault();
+    } else {
+      givenClickHandler(e);
+    }
+  });
 
   const handleRemove = useEvent((e) => {
     e.stopPropagation();
@@ -70,13 +71,14 @@ export function VisualAttachment({
   const imageSrc = attachmentPreviewUrl(att.id, 'image', pixRatio * prvWidth, pixRatio * prvHeight);
   const videoSrc = attachmentPreviewUrl(att.id, 'video', pixRatio * prvWidth, pixRatio * prvHeight);
 
-  const videoRef = useRef(null);
-  useStopVideo(videoRef, att.mediaType === 'video' && !att.meta?.inProgress);
-
   return (
     <a
       role="figure"
-      className={style['link']}
+      className={cn(
+        style['link'],
+        inlinePlaying && style['link--inline-video'],
+        videoPlaying && style['link--playing'],
+      )}
       href={attachmentPreviewUrl(att.id, 'original')}
       title={nameAndSize}
       onClick={handleClick}
@@ -109,24 +111,24 @@ export function VisualAttachment({
             <>
               <video
                 ref={videoRef}
-                className={cn(style['video'], videoPlaying && style['video--playing'])}
+                className={cn(style['video'])}
                 src={videoSrc}
                 poster={imageSrc}
                 alt={alt}
                 loading="lazy"
                 width={mediaWidth}
                 height={mediaHeight}
-                preload="none"
-                muted
-                loop
+                preload={!inlinePlaying ? 'auto' : 'none'}
+                muted={!inlinePlaying || att.meta?.silent}
+                loop={!inlinePlaying || isGifLike}
+                controls={inlinePlaying}
                 playsInline
                 disablePictureInPicture
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onTimeUpdate={handleTimeUpdate}
               />
-              {att.mediaType === 'video' && (
-                <div className={cn(style['overlay'], style['overlay--info'])}>
+              {!inlinePlaying && (
+                <div className={cn(style['overlay'], style['overlay--time'])}>
                   {att.meta?.animatedImage ? <span>GIF</span> : <Icon icon={faPlay} />}
                   {formatTime(att.duration - currentTime)}
                 </div>
@@ -136,6 +138,7 @@ export function VisualAttachment({
           {isNSFW && !removeAttachment && (
             <NsfwCanvas aspectRatio={prvWidth / prvHeight} src={imageSrc} />
           )}
+          {inlinePlaying && !videoPlaying && <Icon icon={faPlay} className={style['play-icon']} />}
         </>
       )}
       {removeAttachment && (
@@ -156,4 +159,60 @@ function formatTime(duration) {
   const seconds = Math.floor(duration) % 60;
 
   return `${hours ? `${hours.toString()}:` : ''}${hours ? minutes.toString().padStart(2, '0') : minutes.toString()}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function useVideoProps(att, isNSFW, width, height) {
+  const isGifLike =
+    att.mediaType === 'video' &&
+    (att.meta?.animatedImage || (att.meta?.silent && att.duration <= 5));
+
+  const screenWidth = useScreenWidth();
+  const inlinePlaying =
+    att.mediaType === 'video' &&
+    !isGifLike &&
+    !isNSFW &&
+    (width > 0.75 * screenWidth || width * height > 100000);
+
+  return { inlinePlaying, isGifLike };
+}
+
+function useVideoEvents(videoRef) {
+  const [currentTime, setCurrentTime] = useState(0);
+  const [videoPlaying, setVideoPlaying] = useState(false);
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) {
+      return;
+    }
+    const abortController = new AbortController();
+    const { signal } = abortController;
+    el.addEventListener('timeupdate', (e) => setCurrentTime(Math.floor(e.target.currentTime)), {
+      signal,
+    });
+    el.addEventListener('pause', () => setVideoPlaying(false), { signal });
+    el.addEventListener('play', () => setVideoPlaying(true), { signal });
+    el.addEventListener('ended', () => (el.currentTime = 0), { signal });
+
+    return () => abortController.abort();
+  }, [videoRef]);
+  return { currentTime, videoPlaying };
+}
+
+function useDampedSize(mediaWidth, mediaHeight, minDifference = 40) {
+  const [prvWidth, setPrvWidth] = useState(mediaWidth);
+  const [prvHeight, setPrvHeight] = useState(mediaHeight);
+
+  useLayoutEffect(() => {
+    // Don't update preview URLs if the size hasn't changed by more than the minimum size difference
+    if (
+      Math.abs(mediaWidth - prvWidth) < minDifference &&
+      Math.abs(mediaHeight - prvHeight) < minDifference
+    ) {
+      return;
+    }
+    setPrvWidth(mediaWidth);
+    setPrvHeight(mediaHeight);
+  }, [prvWidth, prvHeight, mediaWidth, mediaHeight, minDifference]);
+
+  return [prvWidth, prvHeight];
 }
