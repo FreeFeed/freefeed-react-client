@@ -108,6 +108,15 @@
   }
 }
 
+.video {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.video--playing {
+  opacity: 1;
+}
+
 .processing {
   opacity: 0.8;
   display: flex;

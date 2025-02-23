@@ -43,15 +43,19 @@ export function VisualAttachment({
 
   const pixRatio = usePixelRatio();
 
+  const [videoPlaying, setVideoPlaying] = useState(false);
+
   const handleMouseEnter = useEvent((e) => {
     if (window.matchMedia?.('(hover: hover)').matches) {
       e.target.play();
+      setVideoPlaying(true);
     }
   });
   const handleMouseLeave = useEvent((e) => {
     if (window.matchMedia?.('(hover: hover)').matches) {
       e.target.pause();
       e.target.currentTime = 0;
+      setVideoPlaying(false);
     }
   });
   const [currentTime, setCurrentTime] = useState(0);
@@ -105,7 +109,7 @@ export function VisualAttachment({
             <>
               <video
                 ref={videoRef}
-                className={style['video']}
+                className={cn(style['video'], videoPlaying && style['video--playing'])}
                 src={videoSrc}
                 poster={imageSrc}
                 alt={alt}
