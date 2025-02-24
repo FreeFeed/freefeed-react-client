@@ -21,7 +21,7 @@ exports[`PostAttachments > Displays all post attachment types 1`] = `
             data-pid="new-post-vi1"
             href="https://candy.freefeed.net/v4/attachments/vi1/original?redirect="
             role="figure"
-            style="width: 337px; height: 190px;"
+            style="width: 338.2857142857143px; height: 190px;"
             target="_blank"
             title="sunrise.mp4 (117.7 MiB, 1920×1080px)"
           >
@@ -32,8 +32,8 @@ exports[`PostAttachments > Displays all post attachment types 1`] = `
               height="190"
               id="new-post-vi1"
               loading="lazy"
-              src="https://candy.freefeed.net/v4/attachments/vi1/image?redirect=&width=337&height=190"
-              width="337"
+              src="https://candy.freefeed.net/v4/attachments/vi1/image?redirect=&width=338&height=190"
+              width="338"
             />
             <video
               alt="Video attachment sunrise.mp4"
@@ -43,13 +43,13 @@ exports[`PostAttachments > Displays all post attachment types 1`] = `
               loading="lazy"
               loop=""
               playsinline=""
-              poster="https://candy.freefeed.net/v4/attachments/vi1/image?redirect=&width=337&height=190"
-              preload="none"
-              src="https://candy.freefeed.net/v4/attachments/vi1/video?redirect=&width=337&height=190"
-              width="337"
+              poster="https://candy.freefeed.net/v4/attachments/vi1/image?redirect=&width=338&height=190"
+              preload="auto"
+              src="https://candy.freefeed.net/v4/attachments/vi1/video?redirect=&width=338&height=190"
+              width="338"
             />
             <div
-              class="overlay overlay--info"
+              class="overlay overlay--time"
             >
               <svg
                 aria-hidden="true"
@@ -72,7 +72,7 @@ exports[`PostAttachments > Displays all post attachment types 1`] = `
             data-pid="new-post-im1"
             href="https://candy.freefeed.net/v4/attachments/im1/original?redirect="
             role="figure"
-            style="width: 253px; height: 190px;"
+            style="width: 253.71428571428572px; height: 190px;"
             target="_blank"
             title="CAT.jpg (195.3 KiB, 2000×1500px)"
           >
