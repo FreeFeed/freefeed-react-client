@@ -80,6 +80,19 @@ function getGalleryLine(imageSizes, containerWidth) {
 
     let penalty = Infinity;
     const resultsWidth = getRowWidth(results, height);
+
+    // Special case: the first image is already too wide to fit the container.
+    // We cannot drop it, so treat it as a found result.
+    if (n === 1 && resultsWidth > availableWidth) {
+      const size = fitIntoBox(results[0], availableWidth, maxHeight);
+      size.width = Math.max(size.width, minSize);
+      size.height = Math.max(size.height, minSize);
+      return {
+        items: [size],
+        stretched: true,
+      };
+    }
+
     if (resultsWidth <= availableWidth) {
       const avgArea = (resultsWidth * height) / n;
       penalty =
@@ -113,7 +126,12 @@ function getGalleryLine(imageSizes, containerWidth) {
   // Is it a last line?
   if (results.length === imageSizes.length) {
     const stretch = (itemsWidth * bestHeight) / items.length / previewArea;
-    if (stretch > maxStretch) {
+    if (
+      // Too expanded
+      stretch > maxStretch &&
+      // and not wider than available width
+      itemsWidth <= availableWidth
+    ) {
       const height = bestHeight / Math.sqrt(stretch);
       items = getRowSizes(results, height);
       stretched = false;
@@ -127,6 +145,10 @@ function getGalleryLine(imageSizes, containerWidth) {
 }
 
 /**
+ * Calculate sizes of images in a row with a given maximum height. Images, that
+ * are bigger, are scaled to fit the height, smaller are kept as is. Neither
+ * width nor height of any image can be smaller than minSize.
+ *
  * @param {{width: number, height: number}[]} imageSizes
  * @param {number} height
  * @returns {{width: number, height: number}[]}
@@ -141,6 +163,8 @@ function getRowSizes(imageSizes, height) {
 }
 
 /**
+ * Calculate the total of widths of images in a row.
+ *
  * @param {{width: number, height: number}[]} imageSizes
  * @param {number} height
  * @returns {number}
@@ -149,10 +173,27 @@ function getRowWidth(imageSizes, height) {
   return getRowSizes(imageSizes, height).reduce((sum, it) => sum + it.width, 0);
 }
 
+/**
+ * Find the maximum height for a row when the total width is less or equal to
+ * the _availableWidth_. There can be situations, when the available width is
+ * too small, in which case the function returns minHeight.
+ *
+ * @param {{width: number, height: number}[]} imageSizes
+ * @param {number} availableWidth
+ * @param {number} maxHeight
+ * @param {number} minHeight
+ * @returns {number}
+ */
 function findRowHeight(imageSizes, availableWidth, maxHeight, minHeight) {
   // First try with maxHeight
   if (getRowWidth(imageSizes, maxHeight) <= availableWidth) {
     return maxHeight;
+  }
+
+  // Next try with minHeight
+  if (getRowWidth(imageSizes, minHeight) >= availableWidth) {
+    // If even minHeight is too big, return minHeight.
+    return minHeight;
   }
 
   // Next try with binary search
