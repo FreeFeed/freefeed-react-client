@@ -107,39 +107,37 @@ export function VisualAttachment({
             height={mediaHeight}
             aria-hidden={att.mediaType === 'video'}
           />
-          {att.mediaType === 'video' && (
-            <>
-              <video
-                ref={videoRef}
-                className={cn(style['video'])}
-                src={videoSrc}
-                poster={imageSrc}
-                alt={alt}
-                loading="lazy"
-                width={mediaWidth}
-                height={mediaHeight}
-                preload={!inlinePlaying ? 'auto' : 'none'}
-                muted={!inlinePlaying || att.meta?.silent}
-                loop={!inlinePlaying || isGifLike}
-                controls={inlinePlaying}
-                playsInline
-                disablePictureInPicture
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              />
-              {!inlinePlaying && (
-                <div className={cn(style['overlay'], style['overlay--time'])}>
-                  {att.meta?.animatedImage ? <span>GIF</span> : <Icon icon={faPlay} />}
-                  {formatTime(att.duration - currentTime)}
-                </div>
-              )}
-            </>
+          {att.mediaType === 'video' && !isNSFW && (
+            <video
+              ref={videoRef}
+              className={cn(style['video'])}
+              src={videoSrc}
+              poster={imageSrc}
+              alt={alt}
+              loading="lazy"
+              width={mediaWidth}
+              height={mediaHeight}
+              preload={!inlinePlaying ? 'auto' : 'none'}
+              muted={!inlinePlaying || att.meta?.silent}
+              loop={!inlinePlaying || isGifLike}
+              controls={inlinePlaying}
+              playsInline
+              disablePictureInPicture
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            />
           )}
           {isNSFW && !removeAttachment && (
             <NsfwCanvas aspectRatio={prvWidth / prvHeight} src={imageSrc} />
           )}
           {inlinePlaying && !videoPlaying && <Icon icon={faPlay} className={style['play-icon']} />}
         </>
+      )}
+      {att.mediaType === 'video' && !inlinePlaying && (
+        <div className={cn(style['overlay'], style['overlay--time'])}>
+          {att.meta?.animatedImage ? <span>GIF</span> : <Icon icon={faPlay} />}
+          {formatTime(att.duration - currentTime)}
+        </div>
       )}
       {removeAttachment && (
         <button
