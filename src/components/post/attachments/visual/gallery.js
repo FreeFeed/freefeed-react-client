@@ -9,7 +9,7 @@ const previewArea = 250 ** 2; // px^2
 export const singleImagePreviewArea = 400 ** 2; // px^2, 16:9 with 300px height
 export const maxHeight = 330;
 const minSize = 40; // Minimum size of image placeholder side
-const maxStretch = 1.5; // Maximum average stretch on a line
+const maxStretch = 1.3; // Maximum average stretch of last row
 const stretchGap = 20;
 
 export function getSingleImageSize(att, containerWidth) {
@@ -69,7 +69,7 @@ function getGalleryLine(imageSizes, containerWidth) {
     };
   }
 
-  let bestQuality = Infinity;
+  let minPenalty = Infinity;
   let bestHeight = maxHeight;
   let results;
   for (let n = 1; n <= imageSizes.length; n++) {
@@ -78,17 +78,19 @@ function getGalleryLine(imageSizes, containerWidth) {
 
     const height = findRowHeight(results, availableWidth, maxHeight, minSize);
 
-    let quality = Infinity;
-    const resultsWidth = getRowWidths(results, height);
+    let penalty = Infinity;
+    const resultsWidth = getRowWidth(results, height);
     if (resultsWidth <= availableWidth) {
       const avgArea = (resultsWidth * height) / n;
-      quality =
+      penalty =
+        // Penalty for average area mismatch
         Math.abs(Math.log(avgArea / previewArea)) +
-        Math.abs((resultsWidth - availableWidth) / Math.sqrt(previewArea));
+        // (Big) penalty for width mismatch
+        4 * Math.abs((resultsWidth - availableWidth) / Math.sqrt(previewArea));
     }
 
-    if (quality < bestQuality) {
-      bestQuality = quality;
+    if (penalty < minPenalty) {
+      minPenalty = penalty;
       bestHeight = height;
     } else {
       results.pop();
@@ -97,14 +99,25 @@ function getGalleryLine(imageSizes, containerWidth) {
   }
 
   let items = getRowSizes(results, bestHeight);
-  const width = items.reduce((sum, it) => sum + it.width, 0);
-  let stretched = width > containerWidth - gap * (items.length - 1) - stretchGap;
+  const availableWidth = containerWidth - (items.length - 1) * gap;
+  const itemsWidth = items.reduce((sum, it) => sum + it.width, 0);
+  const wDiff = availableWidth - itemsWidth;
+  let stretched = wDiff < stretchGap;
 
-  const stretch = (width * bestHeight) / items.length / previewArea;
-  if (stretch > maxStretch) {
-    const height = bestHeight / Math.sqrt(stretch);
-    items = getRowSizes(results, height);
-    stretched = false;
+  if (stretched) {
+    for (const it of items) {
+      it.width += (wDiff * it.width) / itemsWidth;
+    }
+  }
+
+  // Is it a last line?
+  if (results.length === imageSizes.length) {
+    const stretch = (itemsWidth * bestHeight) / items.length / previewArea;
+    if (stretch > maxStretch) {
+      const height = bestHeight / Math.sqrt(stretch);
+      items = getRowSizes(results, height);
+      stretched = false;
+    }
   }
 
   return {
@@ -132,13 +145,13 @@ function getRowSizes(imageSizes, height) {
  * @param {number} height
  * @returns {number}
  */
-function getRowWidths(imageSizes, height) {
+function getRowWidth(imageSizes, height) {
   return getRowSizes(imageSizes, height).reduce((sum, it) => sum + it.width, 0);
 }
 
 function findRowHeight(imageSizes, availableWidth, maxHeight, minHeight) {
   // First try with maxHeight
-  if (getRowWidths(imageSizes, maxHeight) <= availableWidth) {
+  if (getRowWidth(imageSizes, maxHeight) <= availableWidth) {
     return maxHeight;
   }
 
@@ -148,7 +161,7 @@ function findRowHeight(imageSizes, availableWidth, maxHeight, minHeight) {
 
   while (low + 1 < high) {
     const mid = Math.floor((low + high) / 2);
-    if (getRowWidths(imageSizes, mid) <= availableWidth) {
+    if (getRowWidth(imageSizes, mid) <= availableWidth) {
       low = mid;
     } else {
       high = mid;
