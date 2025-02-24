@@ -14,6 +14,7 @@
 // Preview rows
 .row {
   display: flex;
+  align-items: center;
   gap: var(--gap, 5px);
   position: relative;
 }
@@ -107,6 +108,16 @@
   }
 }
 
+.video {
+  opacity: 0;
+  transition: opacity 0.2s;
+
+  .link--inline-video &,
+  .link--playing & {
+    opacity: 1;
+  }
+}
+
 .processing {
   opacity: 0.8;
   display: flex;
@@ -142,7 +153,6 @@
   display: flex;
   gap: 0.35em;
   align-items: center;
-  z-index: 1;
 }
 
 .overlay--button {
@@ -156,9 +166,9 @@
   }
 }
 
-.overlay--info {
+.overlay--time {
   bottom: 0.35em;
-  right: 0.35em;
+  left: 0.35em;
   pointer-events: none;
 }
 
@@ -171,6 +181,22 @@
   right: 0.3em;
   padding: 0.2em;
   font-size: 1.2em;
+}
+
+.play-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 60px;
+  color: white;
+  opacity: 0.66;
+  transition: opacity 0.3s;
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.33));
+}
+
+.link:hover .play-icon {
+  opacity: 1;
 }
 
 // NSFW canvas
