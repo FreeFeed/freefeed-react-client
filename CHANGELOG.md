@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Experimental
 
 ## [1.137.0] - Not released
+### Changed
+- Totally new design of post attachments, including larger previews and denser
+  gallery layout.
+- Support for video attachments, asynchronous media processing and the V4 server
+  API.
 ### Fixed
 - File uploader now properly displays the upload progress.
 
