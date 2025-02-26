@@ -70,6 +70,9 @@ export function VisualAttachment({
 
   const imageSrc = attachmentPreviewUrl(att.id, 'image', pixRatio * prvWidth, pixRatio * prvHeight);
   const videoSrc = attachmentPreviewUrl(att.id, 'video', pixRatio * prvWidth, pixRatio * prvHeight);
+  const videoMaxSrc = attachmentPreviewUrl(att.id, 'video');
+
+  useFullscreenVideo(videoRef, videoSrc, videoMaxSrc);
 
   return (
     <a
@@ -213,4 +216,29 @@ function useDampedSize(mediaWidth, mediaHeight, minDifference = 40) {
   }, [prvWidth, prvHeight, mediaWidth, mediaHeight, minDifference]);
 
   return [prvWidth, prvHeight];
+}
+
+function useFullscreenVideo(videoRef, inlineSrc, fullscreenSrc) {
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) {
+      return;
+    }
+    const h = () => {
+      const { paused, currentTime } = el;
+      if (document.fullscreenElement) {
+        el.src = fullscreenSrc;
+      } else {
+        el.src = inlineSrc;
+      }
+      el.load();
+      el.currentTime = currentTime;
+      if (!paused) {
+        el.play();
+      }
+    };
+
+    el.addEventListener('fullscreenchange', h);
+    return () => el.removeEventListener('fullscreenchange', h);
+  }, [fullscreenSrc, inlineSrc, videoRef]);
 }
