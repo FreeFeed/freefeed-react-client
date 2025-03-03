@@ -1,3 +1,4 @@
+/* global CONFIG */
 /* global describe, it, expect */
 import { render } from '@testing-library/react';
 
@@ -5,8 +6,13 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { Attachments } from '../../src/components/post/attachments/attachments';
 
+const frontendPrefsConfig = CONFIG.frontendPreferences;
+
 function renderPostAttachments(attachments = []) {
-  const state = { attachments: attachments.reduce((p, a) => ({ ...p, [a.id]: a }), {}) };
+  const state = {
+    user: { frontendPreferences: frontendPrefsConfig.defaultValues },
+    attachments: attachments.reduce((p, a) => ({ ...p, [a.id]: a }), {}),
+  };
   const dummyReducer = (state) => state;
   const store = createStore(dummyReducer, state);
   return render(

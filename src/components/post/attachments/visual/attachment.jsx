@@ -2,16 +2,23 @@ import cn from 'classnames';
 import { useEvent } from 'react-use-event-hook';
 import { faPlay, faSpinner, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { attachmentPreviewUrl } from '../../../../services/api';
 import { formatFileSize } from '../../../../utils';
 import { Icon } from '../../../fontawesome-icons';
 import { usePixelRatio } from '../../../hooks/pixel-ratio';
 import { useScreenWidth } from '../../../hooks/screen-width';
+import {
+  PREVIEW_ANIMATION_ALWAYS,
+  PREVIEW_ANIMATION_HOVER,
+  PREVIEW_ANIMATION_NONE,
+} from '../../../../utils/feed-options';
 import style from './visual.module.scss';
 import { NsfwCanvas } from './nsfw-canvas';
 import { fitIntoBox } from './geometry';
 import { useStopVideo } from './hooks';
 
+// eslint-disable-next-line complexity
 export function VisualAttachment({
   attachment: att,
   pictureId,
@@ -32,14 +39,23 @@ export function VisualAttachment({
   const pixRatio = usePixelRatio();
 
   const { inlinePlaying, isGifLike } = useVideoProps(att, isNSFW, mediaWidth, mediaHeight);
+  const animationType = useAnimationType(isGifLike);
 
   const handleMouseEnter = useEvent((e) => {
-    if (!inlinePlaying && window.matchMedia?.('(hover: hover)').matches) {
+    if (
+      !inlinePlaying &&
+      window.matchMedia?.('(hover: hover)').matches &&
+      animationType === PREVIEW_ANIMATION_HOVER
+    ) {
       e.target.play();
     }
   });
   const handleMouseLeave = useEvent((e) => {
-    if (!inlinePlaying && window.matchMedia?.('(hover: hover)').matches) {
+    if (
+      !inlinePlaying &&
+      window.matchMedia?.('(hover: hover)').matches &&
+      animationType === PREVIEW_ANIMATION_HOVER
+    ) {
       e.target.pause();
       e.target.currentTime = 0;
     }
@@ -73,6 +89,9 @@ export function VisualAttachment({
   const videoMaxSrc = attachmentPreviewUrl(att.id, 'video');
 
   useFullscreenVideo(videoRef, videoSrc, videoMaxSrc);
+
+  const withVideoPlayer =
+    att.mediaType === 'video' && !isNSFW && animationType !== PREVIEW_ANIMATION_NONE;
 
   return (
     <a
@@ -110,7 +129,7 @@ export function VisualAttachment({
             height={mediaHeight}
             aria-hidden={att.mediaType === 'video'}
           />
-          {att.mediaType === 'video' && !isNSFW && (
+          {withVideoPlayer && (
             <video
               ref={videoRef}
               className={cn(style['video'])}
@@ -123,6 +142,7 @@ export function VisualAttachment({
               preload={!inlinePlaying ? 'auto' : 'none'}
               muted={!inlinePlaying || att.meta?.silent}
               loop={!inlinePlaying || isGifLike}
+              autoPlay={!inlinePlaying && animationType === PREVIEW_ANIMATION_ALWAYS}
               controls={inlinePlaying}
               playsInline
               disablePictureInPicture
@@ -138,8 +158,8 @@ export function VisualAttachment({
       )}
       {att.mediaType === 'video' && !inlinePlaying && (
         <div className={cn(style['overlay'], style['overlay--time'])}>
-          {att.meta?.animatedImage ? <span>GIF</span> : <Icon icon={faPlay} />}
-          {formatTime(att.duration - currentTime)}
+          {isGifLike ? <span>GIF</span> : <Icon icon={faPlay} />}
+          {animationType !== PREVIEW_ANIMATION_ALWAYS && formatTime(att.duration - currentTime)}
         </div>
       )}
       {removeAttachment && (
@@ -241,4 +261,16 @@ function useFullscreenVideo(videoRef, inlineSrc, fullscreenSrc) {
     el.addEventListener('fullscreenchange', h);
     return () => el.removeEventListener('fullscreenchange', h);
   }, [fullscreenSrc, inlineSrc, videoRef]);
+}
+
+function useAnimationType(isGifLike) {
+  const animationPref = useSelector(
+    (state) => state.user.frontendPreferences.previewAnimation[isGifLike ? 'gif' : 'video'],
+  );
+
+  const possibleAnimations = isGifLike
+    ? [PREVIEW_ANIMATION_HOVER, PREVIEW_ANIMATION_ALWAYS]
+    : [PREVIEW_ANIMATION_HOVER];
+
+  return possibleAnimations.includes(animationPref) ? animationPref : PREVIEW_ANIMATION_NONE;
 }
