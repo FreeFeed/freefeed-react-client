@@ -122,8 +122,6 @@ export const asyncMiddleware = (store) => (next) => async (action) => {
     return;
   }
 
-  console.log('asyncMiddleware', action.type);
-
   store.dispatch({ ...action, type: request(action.type), asyncOperation: null });
   try {
     const result = await action.asyncOperation(action.payload, {
