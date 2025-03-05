@@ -6,8 +6,14 @@ import { retry as retryIt } from '../../../src/utils/retry-promise';
 const retry = (fn) => retryIt(fn, 5, 1000);
 
 describe('retry', () => {
-  beforeEach(() => vi.useFakeTimers());
-  afterEach(() => vi.restoreAllMocks());
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+  afterEach(() => {
+    vi.clearAllTimers();
+    vi.restoreAllMocks();
+    vi.useRealTimers();
+  });
 
   it('should return first result if function succeeds', async () => {
     const fn = vi.fn(() => Promise.resolve(42));
@@ -28,7 +34,7 @@ describe('retry', () => {
     });
     const retryFn = retry(fn);
     const start = Date.now();
-    vi.runAllTimers();
+
     const [result] = await Promise.all([retryFn(), vi.runAllTimersAsync()]);
     expect(result).toBe(42);
     expect(fn).toBeCalledTimes(2);
