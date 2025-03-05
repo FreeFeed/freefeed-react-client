@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router';
-import uaParser from 'ua-parser-js';
+import { UAParser } from 'ua-parser-js';
 import { without } from 'lodash-es';
 import cn from 'classnames';
 
@@ -125,7 +125,7 @@ export default withLayout(function AuthSessionsPage() {
 
 function SessionRow({ session, onClick, checked }) {
   const uaString = useMemo(() => {
-    const ua = uaParser(session.lastUserAgent);
+    const ua = UAParser(session.lastUserAgent);
     if (!ua.browser.name) {
       return session.lastUserAgent;
     }
