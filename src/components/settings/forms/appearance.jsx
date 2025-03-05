@@ -20,6 +20,9 @@ import {
   HOMEFEED_MODE_FRIENDS_ONLY,
   HOMEFEED_MODE_CLASSIC,
   HOMEFEED_MODE_FRIENDS_ALL_ACTIVITY,
+  PREVIEW_ANIMATION_NONE,
+  PREVIEW_ANIMATION_HOVER,
+  PREVIEW_ANIMATION_ALWAYS,
 } from '../../../utils/feed-options';
 import { safeScrollTo } from '../../../services/unscroll';
 import { Throbber } from '../../throbber';
@@ -118,6 +121,8 @@ export default function AppearanceForm() {
   const submitModeF = useField('submitMode', form.form);
   const hidesInNonHomeFeeds = useField('hidesInNonHomeFeeds', form.form);
   const translateToLang = useField('translateToLang', form.form);
+  const previewAnimationGif = useField('previewAnimationGif', form.form);
+  const previewAnimationVideo = useField('previewAnimationVideo', form.form);
 
   const isTheRightDate = format(new Date(), 'yyyy-MM-dd') === CONFIG.orbitDate;
 
@@ -416,6 +421,48 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
+        <h4 id="media-previews">Media preview animation</h4>
+
+        <p>Gifs and short animations:</p>
+        <div className="form-group">
+          <div className="radio">
+            <label>
+              <RadioInput field={previewAnimationGif} value={PREVIEW_ANIMATION_NONE} />
+              Never animate
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <RadioInput field={previewAnimationGif} value={PREVIEW_ANIMATION_HOVER} />
+              Animate on hover
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <RadioInput field={previewAnimationGif} value={PREVIEW_ANIMATION_ALWAYS} />
+              Always animate
+            </label>
+          </div>
+        </div>
+
+        <p>Regular video:</p>
+        <div className="form-group">
+          <div className="radio">
+            <label>
+              <RadioInput field={previewAnimationVideo} value={PREVIEW_ANIMATION_NONE} />
+              Never animate
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <RadioInput field={previewAnimationVideo} value={PREVIEW_ANIMATION_HOVER} />
+              Animate on hover
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <section className={settingsStyles.formSection}>
         <h4 id="previews">Link previews</h4>
 
         <div className="form-group">
@@ -586,6 +633,8 @@ function initialValues({
     submitMode,
     hidesInNonHomeFeeds: frontend.hidesInNonHomeFeeds ? '1' : '0',
     translateToLang: frontend.translateToLang,
+    previewAnimationGif: frontend.previewAnimation.gif,
+    previewAnimationVideo: frontend.previewAnimation.video,
   };
 }
 
@@ -643,6 +692,10 @@ function prefUpdaters(values) {
           absolute: values.timeAbsolute === '1',
         },
         translateToLang: values.translateToLang,
+        previewAnimation: {
+          gif: values.previewAnimationGif,
+          video: values.previewAnimationVideo,
+        },
       };
     },
 
