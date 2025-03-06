@@ -1,21 +1,21 @@
-@import '../../../styles/shared/mixins';
-@import '../../../styles/helvetica/dark-vars.scss';
+@use '../../../styles/shared/mixins';
+@use '../../../styles/helvetica/dark-vars.scss';
 
 .box {
   --bg-color: #fff;
 
   :global(.dark-theme) & {
-    --bg-color: #{$bg-color-lightest};
+    --bg-color: #{dark-vars.$bg-color-lightest};
   }
 
   position: absolute;
   z-index: 2;
   bottom: calc(100% - var(--arr-top));
-  left: rem(19px);
-  right: rem(19px);
-  padding: rem(6px) rem(12px);
-  margin-bottom: rem(10px);
-  border-radius: rem(4px);
+  left: mixins.rem(19px);
+  right: mixins.rem(19px);
+  padding: mixins.rem(6px) mixins.rem(12px);
+  margin-bottom: mixins.rem(10px);
+  border-radius: mixins.rem(4px);
   background-color: var(--bg-color);
   box-shadow:
     0 3px 9px 2px rgba(0, 0, 0, 0.25),
@@ -24,13 +24,13 @@
   overflow-wrap: break-word;
 
   &::after {
-    $sz: rem(16px);
+    $sz: mixins.rem(16px);
 
     content: '';
     position: absolute;
 
     // The #{} syntax is ugly but necessary to fight against Sass heuristics
-    left: #{clamp }(rem(14px), var(--arr-left), #{'100% - '} rem(14px));
+    left: #{clamp }(mixins.rem(14px), var(--arr-left), #{'100% - '} mixins.rem(14px));
     top: 100%;
     width: $sz;
     height: $sz;
@@ -53,7 +53,7 @@
   color: #999;
 
   .dark-theme & {
-    color: $text-color-darker;
+    color: dark-vars.$text-color-darker;
   }
 }
 
@@ -66,7 +66,7 @@
   color: #900;
 
   :global(.dark-theme) & {
-    color: $link-color-dim;
+    color: dark-vars.$link-color-dim;
   }
 }
 

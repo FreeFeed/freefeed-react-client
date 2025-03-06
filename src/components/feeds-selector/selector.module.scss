@@ -1,4 +1,5 @@
-@import '../../../styles/helvetica/dark-vars.scss';
+@use 'sass:color';
+@use '../../../styles/helvetica/dark-vars.scss';
 
 .palette {
   --selector-color-danger: #de350b;
@@ -23,22 +24,42 @@
   :global(.dark-theme) & {
     --selector-color-danger: #de350b;
     --selector-color-danger-light: #ffbdad;
-    --selector-color-neutral0: #{mix($bg-color-lighter, #fff, 100%)};
-    --selector-color-neutral5: #{mix($bg-color-lighter, #fff, 95%)};
-    --selector-color-neutral10: #{mix($bg-color-lighter, #fff, 90%)};
-    --selector-color-neutral20: #{mix($bg-color-lighter, #fff, 80%)};
-    --selector-color-neutral30: #{mix($bg-color-lighter, #fff, 70%)};
-    --selector-color-neutral40: #{mix($bg-color-lighter, #fff, 60%)};
-    --selector-color-neutral50: #{mix($bg-color-lighter, #fff, 50%)};
-    --selector-color-neutral60: #{mix($bg-color-lighter, #fff, 40%)};
-    --selector-color-neutral70: #{mix($bg-color-lighter, #fff, 30%)};
-    --selector-color-neutral80: #{mix($bg-color-lighter, #fff, 20%)};
-    --selector-color-neutral90: #{mix($bg-color-lighter, #fff, 10%)};
-    --selector-color-primary: #{mix($accent-color, $bg-color-lighter, 100%)};
-    --selector-color-primary75: #{mix($accent-color, $bg-color-lighter, 80%)};
-    --selector-color-primary50: #{mix($accent-color, $bg-color-lighter, 50%)};
-    --selector-color-primary25: #{mix($accent-color, $bg-color-lighter, 20%)};
-    --selector-color-value: #{mix($text-color-lighter, $accent-color, 70%)};
+    --selector-color-neutral0: #{color.mix(dark-vars.$bg-color-lighter, #fff, 100%)};
+    --selector-color-neutral5: #{color.mix(dark-vars.$bg-color-lighter, #fff, 95%)};
+    --selector-color-neutral10: #{color.mix(dark-vars.$bg-color-lighter, #fff, 90%)};
+    --selector-color-neutral20: #{color.mix(dark-vars.$bg-color-lighter, #fff, 80%)};
+    --selector-color-neutral30: #{color.mix(dark-vars.$bg-color-lighter, #fff, 70%)};
+    --selector-color-neutral40: #{color.mix(dark-vars.$bg-color-lighter, #fff, 60%)};
+    --selector-color-neutral50: #{color.mix(dark-vars.$bg-color-lighter, #fff, 50%)};
+    --selector-color-neutral60: #{color.mix(dark-vars.$bg-color-lighter, #fff, 40%)};
+    --selector-color-neutral70: #{color.mix(dark-vars.$bg-color-lighter, #fff, 30%)};
+    --selector-color-neutral80: #{color.mix(dark-vars.$bg-color-lighter, #fff, 20%)};
+    --selector-color-neutral90: #{color.mix(dark-vars.$bg-color-lighter, #fff, 10%)};
+    --selector-color-primary: #{color.mix(
+        dark-vars.$accent-color,
+        dark-vars.$bg-color-lighter,
+        100%
+      )};
+    --selector-color-primary75: #{color.mix(
+        dark-vars.$accent-color,
+        dark-vars.$bg-color-lighter,
+        80%
+      )};
+    --selector-color-primary50: #{color.mix(
+        dark-vars.$accent-color,
+        dark-vars.$bg-color-lighter,
+        50%
+      )};
+    --selector-color-primary25: #{color.mix(
+        dark-vars.$accent-color,
+        dark-vars.$bg-color-lighter,
+        20%
+      )};
+    --selector-color-value: #{color.mix(
+        dark-vars.$text-color-lighter,
+        dark-vars.$accent-color,
+        70%
+      )};
   }
 }
 

@@ -4,9 +4,9 @@
  * nature of the Vite.
  */
 
-@import './helvetica/functions.scss';
-@import './shared/mixins';
-@import './helvetica/dark-vars.scss';
+@use 'helvetica/functions.scss';
+@use 'shared/mixins';
+@use 'helvetica/dark-vars.scss';
 
 * {
   box-sizing: border-box;
@@ -19,7 +19,7 @@ html {
 
 body.initial {
   font-family: Vazir, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: rem(14px);
+  font-size: mixins.rem(14px);
   line-height: 1.4286;
   margin: 0;
   background-color: white;
@@ -40,7 +40,7 @@ body.initial {
 
 .startup__logo-box {
   font-size: 36px;
-  font-size: fluid(28, 320, 36, 600);
+  font-size: functions.fluid(28, 320, 36, 600);
   line-height: 40px;
   font-weight: 500;
   margin-top: 1.25rem;
@@ -86,11 +86,11 @@ html.dark-theme {
 
 .dark-theme {
   body.initial {
-    background-color: $bg-color;
+    background-color: dark-vars.$bg-color;
   }
 
   .startup {
-    color: $text-color;
+    color: dark-vars.$text-color;
   }
 
   .startup__alert {

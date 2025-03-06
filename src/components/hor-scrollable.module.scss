@@ -1,4 +1,4 @@
-@import '../../styles/helvetica/dark-vars.scss';
+@use '../../styles/helvetica/dark-vars.scss';
 
 .container {
   position: relative;
@@ -9,8 +9,8 @@
   --shadow-transparent-color: rgba(255, 255, 255, 0);
 
   :global(.dark-theme) & {
-    --shadow-color: #{$bg-color};
-    --shadow-transparent-color: #{rgba($bg-color, 0)};
+    --shadow-color: #{dark-vars.$bg-color};
+    --shadow-transparent-color: #{rgba(dark-vars.$bg-color, 0)};
   }
 }
 

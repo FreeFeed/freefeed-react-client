@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   API.
 ### Fixed
 - File uploader now properly displays the upload progress.
+- Updated all SASS imports according to upcoming changes in Dart Sass:
+  https://sass-lang.com/documentation/breaking-changes/import/
 
 ## [1.136.3] - 2025-01-05
 ### Changed

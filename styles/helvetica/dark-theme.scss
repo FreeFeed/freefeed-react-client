@@ -1,4 +1,5 @@
-@import 'dark-vars.scss';
+@use 'sass:color';
+@use 'dark-vars.scss';
 
 body,
 .sidebar .box-body,
@@ -18,7 +19,7 @@ body,
   .content .box-footer,
   .list-group-item,
   .panel {
-    background-color: $bg-color;
+    background-color: dark-vars.$bg-color;
   }
 
   .sidebar a.bookmarklet-button,
@@ -28,20 +29,20 @@ body,
   .feed-options-switch .dropdown,
   .loader-container .loader-overlay,
   .breadcrumb {
-    background-color: $bg-color-lighter;
+    background-color: dark-vars.$bg-color-lighter;
   }
 
   .arrow-span {
-    background-color: $bg-color-lightest;
+    background-color: dark-vars.$bg-color-lightest;
   }
 
   code {
-    color: $text-color-lighter;
-    background-color: $bg-color-lightest;
+    color: dark-vars.$text-color-lighter;
+    background-color: dark-vars.$bg-color-lightest;
   }
 
   .timeline-post.direct-post {
-    border-bottom-color: $bg-color-lighter;
+    border-bottom-color: dark-vars.$bg-color-lighter;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 48 48'><path fill='%23505050' d='M40 8H8c-2.21 0-3.98 1.79-3.98 4L4 36c0 2.21 1.79 4 4 4h32c2.21 0 4-1.79 4-4V12c0-2.21-1.79-4-4-4zm0 8L24 26 8 16v-4l16 10 16-10v4z'/></svg>");
   }
 
@@ -53,7 +54,7 @@ body,
   .panel-default,
   .hidden-posts-toggle,
   hr {
-    border-color: $separator-color;
+    border-color: dark-vars.$separator-color;
   }
 
   body,
@@ -79,7 +80,7 @@ body,
   .profile .description,
   ul.tile-list li .user-name-wrapper > a,
   ul.tile-list li .avatar > a {
-    color: $text-color;
+    color: dark-vars.$text-color;
   }
 
   .sidebar,
@@ -90,7 +91,7 @@ body,
   .text-muted,
   .post .comment-timestamp a,
   .breadcrumb > .active {
-    color: $text-color-darker;
+    color: dark-vars.$text-color-darker;
   }
 
   .profile,
@@ -105,11 +106,11 @@ body,
   .box-header-memories,
   .search-form .search-input,
   .create-post {
-    border-bottom-color: $separator-color;
+    border-bottom-color: dark-vars.$separator-color;
   }
 
   .feed-comment-dot::after {
-    background-color: $text-color-darker;
+    background-color: dark-vars.$text-color-darker;
   }
 
   a,
@@ -117,61 +118,61 @@ body,
   a:focus,
   .post .post-header a,
   .post .post-body .post-text a {
-    color: $link-color;
+    color: dark-vars.$link-color;
   }
 
   .pager li > a:hover,
   .pager li > a:focus {
-    color: $link-color;
-    background-color: $bg-color-lightest;
+    color: dark-vars.$link-color;
+    background-color: dark-vars.$bg-color-lightest;
   }
 
   .post .read-more {
-    color: $link-color !important;
+    color: dark-vars.$link-color !important;
   }
 
   .post a,
   .image-attachments .show-more {
-    color: $link-color-dim;
+    color: dark-vars.$link-color-dim;
   }
 
   .link-preview .folder-container .content-wrapper.folded::after {
     background: linear-gradient(
-      scale-color($bg-color, $alpha: -100%) 0%,
-      scale-color($bg-color, $alpha: -80%) 25%,
-      scale-color($bg-color, $alpha: -20%) 75%,
-      $bg-color
+      color.scale(dark-vars.$bg-color, $alpha: -100%) 0%,
+      color.scale(dark-vars.$bg-color, $alpha: -80%) 25%,
+      color.scale(dark-vars.$bg-color, $alpha: -20%) 75%,
+      dark-vars.$bg-color
     );
   }
 
   .timeline-post.direct-post .link-preview .folder-container .content-wrapper.folded::after {
     background: linear-gradient(
-      scale-color($bg-color-lighter, $alpha: -100%) 0%,
-      scale-color($bg-color-lighter, $alpha: -80%) 25%,
-      scale-color($bg-color-lighter, $alpha: -20%) 75%,
-      $bg-color-lighter
+      color.scale(dark-vars.$bg-color-lighter, $alpha: -100%) 0%,
+      color.scale(dark-vars.$bg-color-lighter, $alpha: -80%) 25%,
+      color.scale(dark-vars.$bg-color-lighter, $alpha: -20%) 75%,
+      dark-vars.$bg-color-lighter
     );
   }
 
   .post-editor .post-textarea,
   .comment .comment-textarea,
   .form-control {
-    background: $bg-color-lighter;
-    border: 1px solid $separator-color;
-    color: $text-color;
+    background: dark-vars.$bg-color-lighter;
+    border: 1px solid dark-vars.$separator-color;
+    color: dark-vars.$text-color;
   }
 
   .comment .comment-textarea__dragged {
-    background: $bg-color-lightest;
+    background: dark-vars.$bg-color-lightest;
   }
 
   .btn-default {
-    color: $text-color;
-    background: $bg-color-lightest;
-    border-color: $separator-color;
+    color: dark-vars.$text-color;
+    background: dark-vars.$bg-color-lightest;
+    border-color: dark-vars.$separator-color;
 
     &:disabled {
-      color: $text-color-darker;
+      color: dark-vars.$text-color-darker;
     }
   }
 
@@ -181,9 +182,9 @@ body,
   .btn-default:active,
   .btn-default.active,
   .open > .btn-default.dropdown-toggle {
-    color: $text-color-lighter;
-    background: $bg-color-lightest;
-    border-color: $text-color-lighter;
+    color: dark-vars.$text-color-lighter;
+    background: dark-vars.$bg-color-lightest;
+    border-color: dark-vars.$text-color-lighter;
   }
 
   .btn-primary,
@@ -192,28 +193,28 @@ body,
   }
 
   .alert-info {
-    color: $text-color-lighter;
-    background: $bg-highlight-color;
-    border-color: $bg-highlight-color;
+    color: dark-vars.$text-color-lighter;
+    background: dark-vars.$bg-highlight-color;
+    border-color: dark-vars.$bg-highlight-color;
   }
 
   .search-highlight,
   .feed-options-switch .dropdown .drop-option:hover {
-    color: $text-color-lighter;
-    background-color: $bg-highlight-color;
+    color: dark-vars.$text-color-lighter;
+    background-color: dark-vars.$bg-highlight-color;
   }
 
   .feed-options-switch .dropdown .spacer {
-    background-color: $separator-color;
+    background-color: dark-vars.$separator-color;
   }
 
   .feed-options-switch .dropdown {
-    color: $text-color-lighter;
+    color: dark-vars.$text-color-lighter;
   }
 
   .user-card {
-    background-color: $bg-color-lighter;
-    color: $text-color;
+    background-color: dark-vars.$bg-color-lighter;
+    color: dark-vars.$text-color;
 
     .user-card-info {
       background-color: inherit;
@@ -221,39 +222,39 @@ body,
 
       .names {
         .display-name {
-          color: $link-color;
+          color: dark-vars.$link-color;
         }
 
         .username {
-          color: $text-color;
+          color: dark-vars.$text-color;
         }
       }
 
       .description {
-        color: $text-color;
+        color: dark-vars.$text-color;
       }
 
       .relationship-status {
-        color: $text-color;
+        color: dark-vars.$text-color;
       }
 
       .feed-status {
-        color: $text-color;
+        color: dark-vars.$text-color;
       }
     }
 
     .user-card-actions {
-      border-top-color: $bg-color-lightest;
-      background-color: $bg-color-lightest;
-      color: $text-color;
+      border-top-color: dark-vars.$bg-color-lightest;
+      background-color: dark-vars.$bg-color-lightest;
+      color: dark-vars.$text-color;
 
       a {
-        color: $link-color !important;
+        color: dark-vars.$link-color !important;
       }
 
       &.user-card-errors {
-        color: $text-color-lighter;
-        background-color: $bg-highlight-color;
+        color: dark-vars.$text-color-lighter;
+        background-color: dark-vars.$bg-highlight-color;
       }
     }
   }
@@ -261,50 +262,50 @@ body,
   // Select-control
 
   .Select-control {
-    background-color: $bg-color-lighter;
-    border-color: $separator-color;
+    background-color: dark-vars.$bg-color-lighter;
+    border-color: dark-vars.$separator-color;
 
     .is-open > & {
-      background-color: $bg-color-lighter;
-      border-color: $text-color-darker;
+      background-color: dark-vars.$bg-color-lighter;
+      border-color: dark-vars.$text-color-darker;
     }
   }
 
   .Select-placeholder,
   :not(.Select--multi) > .Select-control .Select-value {
-    color: $text-color-darker;
+    color: dark-vars.$text-color-darker;
   }
 
   .Select--multi .Select-value,
   .Select-value-label-standalone {
-    color: $text-color;
-    background-color: $bg-color-lightest;
-    border-color: $text-color-darker;
+    color: dark-vars.$text-color;
+    background-color: dark-vars.$bg-color-lightest;
+    border-color: dark-vars.$text-color-darker;
   }
 
   .Select--multi .Select-value-icon {
-    border-color: $text-color-darker;
+    border-color: dark-vars.$text-color-darker;
   }
 
   .Select--multi .Select-value-icon:hover,
   .Select--multi .Select-value-icon:focus {
-    background-color: $bg-color-lightest;
-    color: $text-color-lighter;
+    background-color: dark-vars.$bg-color-lightest;
+    color: dark-vars.$text-color-lighter;
   }
 
   .Select-menu-outer {
-    background-color: $bg-color-lighter;
-    border-color: $separator-color;
+    background-color: dark-vars.$bg-color-lighter;
+    border-color: dark-vars.$separator-color;
   }
 
   .Select-input > input,
   .Select-option {
-    color: $text-color;
+    color: dark-vars.$text-color;
   }
 
   .Select-option.is-focused {
-    background-color: $bg-highlight-color;
-    color: $text-color-lighter;
+    background-color: dark-vars.$bg-highlight-color;
+    color: dark-vars.$text-color-lighter;
   }
 
   // end of Select-control
@@ -315,44 +316,44 @@ body,
   }
 
   .link-preview .video-preview .static-preview .play-icon {
-    color: $text-color;
+    color: dark-vars.$text-color;
   }
 
   .nsfw-bar {
-    color: $text-color-darker;
+    color: dark-vars.$text-color-darker;
   }
 
   .comment-likes-list {
-    background-color: $bg-color-lighter;
-    border-color: $separator-color;
+    background-color: dark-vars.$bg-color-lighter;
+    border-color: dark-vars.$separator-color;
   }
 
   .image-attachments .attachment .remove-attachment {
-    background-color: $bg-color-lightest;
-    color: $text-color;
+    background-color: dark-vars.$bg-color-lightest;
+    color: dark-vars.$text-color;
   }
 
   .panel-default > .panel-heading {
-    background-color: $bg-color-lighter;
-    border-color: $separator-color;
-    color: $text-color;
+    background-color: dark-vars.$bg-color-lighter;
+    border-color: dark-vars.$separator-color;
+    color: dark-vars.$text-color;
   }
 
   .actions-overlay {
-    background-color: scale-color($bg-color, $alpha: -40%);
+    background-color: color.scale(dark-vars.$bg-color, $alpha: -40%);
   }
 
   .actions-panel {
-    background-color: $bg-color-lighter;
-    color: $text-color-lighter;
+    background-color: dark-vars.$bg-color-lighter;
+    color: dark-vars.$text-color-lighter;
 
     .mention-actions,
     .mention-action {
-      background-color: $bg-color-lighter;
+      background-color: dark-vars.$bg-color-lighter;
     }
 
     .likes-panel {
-      background-color: $bg-color-lightest;
+      background-color: dark-vars.$bg-color-lightest;
     }
   }
 
@@ -361,25 +362,25 @@ body,
   }
 
   .alert-success {
-    background-color: mix($bg-color, #dff0d8, 75%);
-    border-color: mix($separator-color, #d6e9c6, 75%);
-    color: mix($text-color, #3c763d, 75%);
+    background-color: color.mix(dark-vars.$bg-color, #dff0d8, 75%);
+    border-color: color.mix(dark-vars.$separator-color, #d6e9c6, 75%);
+    color: color.mix(dark-vars.$text-color, #3c763d, 75%);
   }
 
   .with-label--new::after {
-    background-color: $label-bg-color;
-    color: $label-text-color;
+    background-color: dark-vars.$label-bg-color;
+    color: dark-vars.$label-text-color;
   }
 
   .recently-hidden-post .recently-hidden-post__close:hover {
-    background-color: $bg-color-lighter;
+    background-color: dark-vars.$bg-color-lighter;
   }
 
   .pagination > li > a,
   .pagination > li > span {
-    color: $text-color;
-    background-color: $bg-color;
-    border-color: $text-color-darker;
+    color: dark-vars.$text-color;
+    background-color: dark-vars.$bg-color;
+    border-color: dark-vars.$text-color-darker;
   }
 
   .pagination > .active > a,
@@ -388,30 +389,30 @@ body,
   .pagination > .active > span,
   .pagination > .active > span:hover,
   .pagination > .active > span:focus {
-    color: $text-color-lighter;
-    background-color: $bg-highlight-color;
-    border-color: $bg-highlight-color;
+    color: dark-vars.$text-color-lighter;
+    background-color: dark-vars.$bg-highlight-color;
+    border-color: dark-vars.$bg-highlight-color;
   }
 
   .nav > li > a:hover,
   .nav > li > a:focus {
-    background-color: $bg-color-lighter;
+    background-color: dark-vars.$bg-color-lighter;
   }
 
   .nav-tabs > li > a:hover {
-    border-color: $bg-color-lighter $bg-color-lighter $separator-color;
+    border-color: dark-vars.$bg-color-lighter dark-vars.$bg-color-lighter dark-vars.$separator-color;
   }
 
   .nav-tabs {
-    border-bottom-color: $separator-color;
+    border-bottom-color: dark-vars.$separator-color;
   }
 
   .nav-tabs > li.active > a,
   .nav-tabs > li.active > a:hover,
   .nav-tabs > li.active > a:focus {
-    color: $text-color;
-    background-color: $bg-color;
-    border-color: $separator-color;
+    color: dark-vars.$text-color;
+    background-color: dark-vars.$bg-color;
+    border-color: dark-vars.$separator-color;
     border-bottom-color: transparent;
   }
 
@@ -424,12 +425,12 @@ body,
   }
 
   .subscriptions-request-alert {
-    border: 1px solid $text-color;
-    color: $text-color;
-    background-color: $bg-color-lighter;
+    border: 1px solid dark-vars.$text-color;
+    color: dark-vars.$text-color;
+    background-color: dark-vars.$bg-color-lighter;
   }
 
   blockquote {
-    border-left-color: $bg-color-lightest;
+    border-left-color: dark-vars.$bg-color-lightest;
   }
 }
