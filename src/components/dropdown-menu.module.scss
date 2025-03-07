@@ -1,4 +1,5 @@
-@import '../../styles/helvetica/dark-vars.scss';
+@use 'sass:string';
+@use '../../styles/helvetica/dark-vars.scss';
 
 $zIndex: 10;
 
@@ -18,8 +19,8 @@ $zIndex: 10;
     0 2px 4px rgba(0, 0, 0, 0.29);
 
   :global(.dark-theme) & {
-    color: $text-color;
-    background: $bg-color-lighter;
+    color: dark-vars.$text-color;
+    background: dark-vars.$bg-color-lighter;
   }
 }
 
@@ -34,7 +35,7 @@ $zIndex: 10;
   bottom: 0;
 
   // Support for the iDevices
-  padding-bottom: unquote('env(safe-area-inset-bottom)');
+  padding-bottom: string.unquote('env(safe-area-inset-bottom)');
 
   @media (min-width: 451px) {
     left: 50%;
@@ -70,7 +71,7 @@ $zIndex: 10;
   color: #666;
 
   :global(.dark-theme) & {
-    color: $text-color;
+    color: dark-vars.$text-color;
   }
 }
 
@@ -99,7 +100,7 @@ $zIndex: 10;
       background-color: #eee;
 
       :global(.dark-theme) & {
-        background: $bg-color-lightest;
+        background: dark-vars.$bg-color-lightest;
       }
     }
   }
@@ -115,7 +116,7 @@ $zIndex: 10;
       background-color: #fcc;
 
       :global(.dark-theme) & {
-        background: $bg-highlight-color;
+        background: dark-vars.$bg-highlight-color;
       }
     }
   }
@@ -127,7 +128,7 @@ $zIndex: 10;
   background-color: #ccc;
 
   :global(.dark-theme) & {
-    background-color: $separator-color;
+    background-color: dark-vars.$separator-color;
   }
 }
 
@@ -146,7 +147,7 @@ $zIndex: 10;
     background-color: #ccc;
 
     :global(.dark-theme) & {
-      background-color: $separator-color;
+      background-color: dark-vars.$separator-color;
     }
   }
 
@@ -195,6 +196,6 @@ $zIndex: 10;
   color: #999;
 
   :global(.dark-theme) & {
-    color: $text-color-darker;
+    color: dark-vars.$text-color-darker;
   }
 }

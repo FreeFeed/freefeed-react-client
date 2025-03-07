@@ -1,18 +1,19 @@
-@import './functions.scss';
+@use 'functions.scss';
+@use '../shared/mixins';
 
 // Header
 
 .site-logo {
   @media (max-width: 767px) {
-    font-size: rem(30px);
+    font-size: mixins.rem(30px);
   }
 
   @media (min-width: 768px) {
-    margin-bottom: rem(20px);
+    margin-bottom: mixins.rem(20px);
   }
 
   @media (min-width: 992px) {
-    margin-left: rem(10px);
+    margin-left: mixins.rem(10px);
   }
 }
 
@@ -68,11 +69,11 @@
 }
 
 .mobile-shortcuts {
-  margin: 0 15px rem(20px) calc(15px - 1em);
+  margin: 0 15px mixins.rem(20px) calc(15px - 1em);
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  max-width: rem(450px);
+  max-width: mixins.rem(450px);
 }
 
 .mobile-shortcut-link {
@@ -83,18 +84,18 @@
 
 .signin-link {
   @media (max-width: 767px) {
-    margin-top: rem(30px);
+    margin-top: mixins.rem(30px);
   }
 
   @media (min-width: 768px) {
-    margin-top: rem(34px);
+    margin-top: mixins.rem(34px);
   }
 }
 
 // This is effectively inline version of <h3>, because we cannot use the latter inside of <p>
 .inline-header {
-  font-size: rem(24px);
-  margin: 0 rem(3px);
+  font-size: mixins.rem(24px);
+  margin: 0 mixins.rem(3px);
   white-space: nowrap;
 
   &.line-start {
@@ -102,6 +103,6 @@
   }
 
   @media (max-width: 767px) {
-    font-size: rem(20px);
+    font-size: mixins.rem(20px);
   }
 }

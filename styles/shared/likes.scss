@@ -1,8 +1,10 @@
+@use 'mixins';
+
 .post-likes {
-  margin-top: rem(8px);
+  margin-top: mixins.rem(8px);
 
   .icon {
-    margin-top: rem(2px);
+    margin-top: mixins.rem(2px);
     float: left;
     color: #ffb914;
   }
@@ -11,7 +13,7 @@
 .post-likes-list {
   list-style: none;
   padding: 0;
-  margin: 0 rem(4px) 0 rem(19px);
+  margin: 0 mixins.rem(4px) 0 mixins.rem(19px);
 
   .post-like {
     display: inline;
@@ -22,8 +24,8 @@
 
     .throbber-image {
       position: relative;
-      top: rem(-1px);
-      left: rem(4px);
+      top: mixins.rem(-1px);
+      left: mixins.rem(4px);
     }
   }
 }

@@ -1,8 +1,11 @@
-@import '../helvetica/dark-vars.scss';
+@use 'sass:color';
+@use '../helvetica/dark-vars.scss';
+@use 'forms';
+@use 'mixins';
 
 .comments {
-  font-size: rem(14px);
-  line-height: rem(18px);
+  font-size: mixins.rem(14px);
+  line-height: mixins.rem(18px);
   clear: both;
 }
 
@@ -11,8 +14,8 @@
   --url-highlight-color: #ffffbb;
 
   .dark-theme & {
-    --highlight-color: #{$bg-color-lightest};
-    --url-highlight-color: #{$bg-color-lightest};
+    --highlight-color: #{dark-vars.$bg-color-lightest};
+    --url-highlight-color: #{dark-vars.$bg-color-lightest};
   }
 
   &.highlighted {
@@ -23,7 +26,7 @@
     --bg-color: var(--url-highlight-color);
   }
 
-  margin-top: rem(8px);
+  margin-top: mixins.rem(8px);
   position: relative;
   background-color: var(--bg-color);
   box-shadow: 0 0 0 3px var(--bg-color);
@@ -34,12 +37,12 @@
 
   .comment-body {
     word-wrap: break-word;
-    margin-left: rem(19px);
+    margin-left: mixins.rem(19px);
     position: relative; // to overflow the comment highlight
   }
 
   .comment-textarea {
-    @include editarea;
+    @include forms.editarea;
 
     background: white;
     min-width: 100%;
@@ -50,42 +53,42 @@
   }
 
   .comment-cancel {
-    margin-left: rem(10px);
+    margin-left: mixins.rem(10px);
   }
 
   .comment-throbber {
-    margin-left: rem(10px);
+    margin-left: mixins.rem(10px);
   }
 
   .comment-error {
-    font-size: rem(12px);
+    font-size: mixins.rem(12px);
     color: #ff5a5f;
-    margin-left: rem(5px);
+    margin-left: mixins.rem(5px);
   }
 
   .comment-file-button {
     float: right;
     color: inherit;
-    font-size: rem(15px);
+    font-size: mixins.rem(15px);
     opacity: 0.66;
-    margin-right: rem(-4px);
+    margin-right: mixins.rem(-4px);
   }
 
   .comment-timestamp a {
     color: #999;
-    font-size: rem(12px);
+    font-size: mixins.rem(12px);
     white-space: nowrap;
   }
 
   &.more-comments-wrapper {
     position: relative;
-    margin-left: rem(16px);
+    margin-left: mixins.rem(16px);
   }
 
   .more-comments-throbber {
     position: absolute;
-    left: rem(-16px);
-    width: rem(16px);
+    left: mixins.rem(-16px);
+    width: mixins.rem(16px);
   }
 
   .more-comments-link {
@@ -117,7 +120,7 @@
   --danger-color: #d33;
 
   .dark-theme & {
-    --gray-color: #{$text-color-darker};
+    --gray-color: #{dark-vars.$text-color-darker};
     --danger-color: #d66;
   }
 
@@ -129,7 +132,7 @@
 
   &__timestamp {
     color: var(--gray-color) !important;
-    font-size: rem(12px);
+    font-size: mixins.rem(12px);
     white-space: nowrap;
   }
 
@@ -148,10 +151,10 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: rem(4px);
-    height: rem(4px);
+    width: mixins.rem(4px);
+    height: mixins.rem(4px);
     background-color: #ccc;
-    margin-left: rem(-2px);
+    margin-left: mixins.rem(-2px);
     margin-top: 0;
     border-radius: 50%;
   }
@@ -166,29 +169,29 @@
   top: 0;
   z-index: 2;
   font-style: italic;
-  padding: rem(8px) 0 0 rem(59px);
-  margin-left: rem(-40px);
+  padding: mixins.rem(8px) 0 0 mixins.rem(59px);
+  margin-left: mixins.rem(-40px);
 
   .chevron {
     display: none;
     position: absolute;
-    left: rem(40px);
-    top: rem(9px);
+    left: mixins.rem(40px);
+    top: mixins.rem(9px);
     opacity: 0.3;
   }
 
-  background: scale-color(#fff, $alpha: -10%);
+  background: color.scale(#fff, $alpha: -10%);
 
   .direct-post & {
-    background: scale-color(#eee, $alpha: -10%);
+    background: color.scale(#eee, $alpha: -10%);
   }
 
   .dark-theme & {
-    background-color: scale-color($bg-color, $alpha: -10%);
+    background-color: color.scale(dark-vars.$bg-color, $alpha: -10%);
   }
 
   .dark-theme .direct-post & {
-    background-color: scale-color($bg-color-lighter, $alpha: -10%);
+    background-color: color.scale(dark-vars.$bg-color-lighter, $alpha: -10%);
   }
 }
 
@@ -197,18 +200,18 @@
     display: block;
   }
 
-  box-shadow: 0 0 4px 8px scale-color(#fff, $alpha: -10%);
+  box-shadow: 0 0 4px 8px color.scale(#fff, $alpha: -10%);
 
   .direct-post & {
-    box-shadow: 0 0 4px 8px scale-color(#eee, $alpha: -10%);
+    box-shadow: 0 0 4px 8px color.scale(#eee, $alpha: -10%);
   }
 
   .dark-theme & {
-    box-shadow: 0 0 4px 8px scale-color($bg-color, $alpha: -10%);
+    box-shadow: 0 0 4px 8px color.scale(dark-vars.$bg-color, $alpha: -10%);
   }
 
   .dark-theme .direct-post & {
-    box-shadow: 0 0 4px 8px scale-color($bg-color-lighter, $alpha: -10%);
+    box-shadow: 0 0 4px 8px color.scale(dark-vars.$bg-color-lighter, $alpha: -10%);
   }
 }
 

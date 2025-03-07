@@ -1,9 +1,10 @@
-@import 'dark-vars.scss';
+@use 'dark-vars.scss';
+@use '../shared/mixins';
 
 body {
   background: #fff;
   overflow-anchor: none;
-  font-size: rem(14px);
+  font-size: mixins.rem(14px);
 }
 
 body.transition-active::before {
@@ -22,7 +23,7 @@ body.transition-active.transition-static::before {
 }
 
 div.jsonly > p {
-  padding-left: rem(2px);
+  padding-left: mixins.rem(2px);
 }
 
 @media (min-width: 1200px) {
@@ -45,18 +46,18 @@ a[aria-disabled='true'] {
 }
 
 .settings-error {
-  margin-left: rem(180px);
-  max-width: rem(174px);
+  margin-left: mixins.rem(180px);
+  max-width: mixins.rem(174px);
 }
 
 .header-row {
-  margin-bottom: rem(10px);
+  margin-bottom: mixins.rem(10px);
 }
 
 .footer {
-  font-size: rem(14px);
-  margin-bottom: rem(20px);
-  margin-left: rem(10px);
+  font-size: mixins.rem(14px);
+  margin-bottom: mixins.rem(20px);
+  margin-left: mixins.rem(10px);
 
   @media (max-width: 991px) {
     margin-left: 0;
@@ -95,7 +96,7 @@ a[aria-disabled='true'] {
     background: #ddd;
 
     .dark-theme & {
-      background: $bg-color-lightest;
+      background: dark-vars.$bg-color-lightest;
     }
   }
 }
@@ -107,12 +108,12 @@ html {
 }
 
 p {
-  margin-bottom: rem(10px);
+  margin-bottom: mixins.rem(10px);
 }
 
 h3,
 .h3 {
-  font-size: rem(24px);
+  font-size: mixins.rem(24px);
 }
 
 h1,
@@ -121,13 +122,13 @@ h2,
 .h2,
 h3,
 .h3 {
-  margin-top: rem(20px);
-  margin-bottom: rem(10px);
+  margin-top: mixins.rem(20px);
+  margin-bottom: mixins.rem(10px);
 }
 
 h4,
 .h4 {
-  font-size: rem(18px);
+  font-size: mixins.rem(18px);
 }
 
 h4,
@@ -136,75 +137,75 @@ h5,
 .h5,
 h6,
 .h6 {
-  margin-top: rem(10px);
-  margin-bottom: rem(10px);
+  margin-top: mixins.rem(10px);
+  margin-bottom: mixins.rem(10px);
 }
 
 label {
-  margin-bottom: rem(5px);
+  margin-bottom: mixins.rem(5px);
 }
 
 .btn {
-  padding: rem(6px) rem(12px);
-  font-size: rem(14px);
+  padding: mixins.rem(6px) mixins.rem(12px);
+  font-size: mixins.rem(14px);
 }
 
 .btn-xs,
 .btn-group-xs > .btn {
-  padding: rem(1px) rem(5px);
-  font-size: rem(12px);
+  padding: mixins.rem(1px) mixins.rem(5px);
+  font-size: mixins.rem(12px);
 }
 
 .btn-sm,
 .btn-group-sm > .btn {
-  padding: rem(5px) rem(10px);
-  font-size: rem(12px);
+  padding: mixins.rem(5px) mixins.rem(10px);
+  font-size: mixins.rem(12px);
 }
 
 .form-control {
-  height: rem(34px);
-  padding: rem(6px) rem(12px);
-  font-size: rem(14px);
+  height: mixins.rem(34px);
+  padding: mixins.rem(6px) mixins.rem(12px);
+  font-size: mixins.rem(14px);
 }
 
 .form-group {
-  margin-bottom: rem(15px);
+  margin-bottom: mixins.rem(15px);
 }
 
 .radio,
 .checkbox {
-  margin-top: rem(10px);
-  margin-bottom: rem(10px);
+  margin-top: mixins.rem(10px);
+  margin-bottom: mixins.rem(10px);
 }
 
 .radio label,
 .checkbox label {
-  min-height: rem(20px);
-  padding-left: rem(20px);
+  min-height: mixins.rem(20px);
+  padding-left: mixins.rem(20px);
 }
 
 input[type='radio'],
 input[type='checkbox'] {
-  margin: rem(4px) 0 0;
-  width: rem(13px);
-  height: rem(13px);
+  margin: mixins.rem(4px) 0 0;
+  width: mixins.rem(13px);
+  height: mixins.rem(13px);
 }
 
 .radio input[type='radio'],
 .radio-inline input[type='radio'],
 .checkbox input[type='checkbox'],
 .checkbox-inline input[type='checkbox'] {
-  margin-left: rem(-20px);
+  margin-left: mixins.rem(-20px);
 }
 
 .help-block {
-  margin-top: rem(5px);
-  margin-bottom: rem(10px);
+  margin-top: mixins.rem(5px);
+  margin-bottom: mixins.rem(10px);
 }
 
 ul,
 ol {
-  margin-bottom: rem(10px);
+  margin-bottom: mixins.rem(10px);
 }
 
 /**

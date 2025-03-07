@@ -3,12 +3,13 @@ import { parse as urlParse } from 'url';
 import { parse as queryParse } from 'querystring';
 
 import { useState, useEffect, useMemo, memo } from 'react';
-import { faPlayCircle } from '@fortawesome/free-solid-svg-icons';
+import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from 'react-redux';
 import { useEvent } from 'react-use-event-hook';
 
 import { Icon } from '../fontawesome-icons';
 import { apiVersion } from '../../services/api-version';
+import { maxHeight, singleImagePreviewArea } from '../post/attachments/visual/gallery';
 import cachedFetch from './helpers/cached-fetch';
 import * as aspectRatio from './helpers/size-cache';
 
@@ -48,8 +49,6 @@ export default memo(function VideoPreview({ url }) {
   const [
     // CSS style of video preview
     previewStyle,
-    // Video width
-    width,
     // Can we show player? (metadata is loaded and we can play video)
     canShowPlayer,
     // Can we hide player?
@@ -59,9 +58,17 @@ export default memo(function VideoPreview({ url }) {
   ] = useMemo(() => {
     const previewStyle = info ? { backgroundImage: `url(${info.previewURL})` } : {};
 
-    // video will have the same area as 16x9 450px-width rectangle
     const r = info ? info.aspectRatio : aspectRatio.get(url, getDefaultAspectRatio(url));
-    const width = 450 * Math.sqrt(9 / 16 / r);
+
+    let w = Math.sqrt(singleImagePreviewArea / r);
+    let h = w * r;
+    if (h > maxHeight) {
+      h = maxHeight;
+      w = h / r;
+    }
+
+    previewStyle.maxWidth = w;
+    previewStyle.maxHeight = `${maxHeight}px`;
     previewStyle.paddingBottom = `${100 * r}%`;
 
     const canShowPlayer = info && (info.videoURL || info.playerURL || info.html);
@@ -95,7 +102,7 @@ export default memo(function VideoPreview({ url }) {
       }
     }
 
-    return [previewStyle, width, canShowPlayer, canHidePlayer, player];
+    return [previewStyle, canShowPlayer, canHidePlayer, player];
   }, [info, url]);
 
   const togglePlayer = useEvent(() =>
@@ -123,14 +130,14 @@ export default memo(function VideoPreview({ url }) {
   }
 
   return (
-    <div className="video-preview link-preview-content" style={{ maxWidth: width }}>
+    <div className="video-preview link-preview-content" style={{ maxWidth: previewStyle.maxWidth }}>
       <div
         className="static-preview"
         style={previewStyle}
         onClick={togglePlayer}
         aria-label="Video preview"
       >
-        {player && (playerVisible ? player : <Icon icon={faPlayCircle} className="play-icon" />)}
+        {player && (playerVisible ? player : <Icon icon={faPlay} className="play-icon" />)}
       </div>
       <div className="info">
         <a href={url} target="_blank" title={info?.byline}>

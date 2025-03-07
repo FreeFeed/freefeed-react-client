@@ -40,12 +40,8 @@
           @if $i < $half {
             $nextdeg: 90deg + ($increment * $i);
 
-            background-image: linear-gradient(
-                90deg,
-                $progressBackgroundColor 50%,
-                transparent 50%,
-                transparent
-              ),
+            background-image:
+              linear-gradient(90deg, $progressBackgroundColor 50%, transparent 50%, transparent),
               linear-gradient(
                 $nextdeg,
                 $progressCircleColor 50%,
@@ -55,12 +51,8 @@
           } @else {
             $nextdeg: -90deg + ($increment * ($i - $half));
 
-            background-image: linear-gradient(
-                $nextdeg,
-                $progressCircleColor 50%,
-                transparent 50%,
-                transparent
-              ),
+            background-image:
+              linear-gradient($nextdeg, $progressCircleColor 50%, transparent 50%, transparent),
               linear-gradient(
                 270deg,
                 $progressCircleColor 50%,

@@ -1,4 +1,4 @@
-@import '../../styles/helvetica/dark-vars.scss';
+@use '../../styles/helvetica/dark-vars.scss';
 
 .clippedContent {
   overflow-y: hidden; /* fallback for old Safari */
@@ -9,7 +9,7 @@
   color: #555599;
 
   :global(.dark-theme) & {
-    color: $link-color-dim;
+    color: dark-vars.$link-color-dim;
   }
 }
 

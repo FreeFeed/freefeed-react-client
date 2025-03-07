@@ -1,4 +1,4 @@
-@import '../helvetica/dark-vars.scss';
+@use '../helvetica/dark-vars.scss';
 
 .send-to {
   padding-bottom: 6px;
@@ -107,6 +107,6 @@ label.option-box {
   color: #888;
 
   .dark-theme & {
-    color: #{$text-color-darker} !important;
+    color: #{dark-vars.$text-color-darker} !important;
   }
 }

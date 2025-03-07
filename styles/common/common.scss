@@ -1,5 +1,6 @@
+@use 'sass:meta';
 @import '../../node_modules/bootstrap/dist/css/bootstrap.css';
-@import './vazir.scss';
+@include meta.load-css('vazir.scss');
 
 // Add Vazir font to the Bootstrap's defaults
 body {

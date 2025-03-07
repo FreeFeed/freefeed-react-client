@@ -1,3 +1,5 @@
+@use 'mixins';
+
 .user-name-wrapper {
   position: relative;
   overflow-wrap: break-word;
@@ -13,7 +15,7 @@
   z-index: 10000;
   top: 10px;
   left: 0;
-  width: rem(280px);
+  width: mixins.rem(280px);
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.5);
@@ -32,17 +34,17 @@
   }
 
   .user-card-info {
-    min-height: rem(97px); // 75px + 2px + 20px
-    padding: rem(10px);
+    min-height: mixins.rem(97px); // 75px + 2px + 20px
+    padding: mixins.rem(10px);
     background-color: #fff;
     border-top-right-radius: 2px;
     border-top-left-radius: 2px;
-    font-size: rem(13px) !important;
-    line-height: rem(17px);
+    font-size: mixins.rem(13px) !important;
+    line-height: mixins.rem(17px);
 
     .userpic {
       float: left;
-      margin: 0 rem(10px) rem(10px) 0;
+      margin: 0 mixins.rem(10px) mixins.rem(10px) 0;
 
       &.loading {
         width: 77px;
@@ -52,35 +54,35 @@
     }
 
     .names {
-      min-height: rem(40px);
+      min-height: mixins.rem(40px);
 
       .display-name {
         color: #000088;
         font-weight: bold;
         word-break: break-word;
         display: inline-block;
-        max-width: rem(170px);
+        max-width: mixins.rem(170px);
       }
 
       .username {
         color: #555;
-        font-size: rem(13px);
+        font-size: mixins.rem(13px);
       }
     }
 
     .description {
-      font-size: rem(13px);
+      font-size: mixins.rem(13px);
       color: #666;
       font-style: italic;
     }
 
     .relationship-status {
-      font-size: rem(13px);
+      font-size: mixins.rem(13px);
       color: #666;
     }
 
     .status-icon {
-      min-width: rem(13px);
+      min-width: mixins.rem(13px);
     }
 
     .feed-status {
@@ -90,28 +92,28 @@
         position: relative;
         display: inline-block;
         transform: scale(0.9);
-        min-width: rem(14px);
-        height: rem(10px);
+        min-width: mixins.rem(14px);
+        height: mixins.rem(10px);
 
         .icon-protected-bg {
           font-size: 0.75em;
           top: 1px;
           position: absolute;
           z-index: 12;
-          left: rem(5px);
+          left: mixins.rem(5px);
         }
 
         .icon-protected-shadow {
           font-size: 0.9em;
           position: absolute;
-          left: rem(-1px);
+          left: mixins.rem(-1px);
           z-index: 13;
         }
 
         .icon-protected-fg {
           font-size: 0.9em;
           position: absolute;
-          left: rem(-2px);
+          left: mixins.rem(-2px);
           z-index: 14;
         }
       }
@@ -120,13 +122,13 @@
 
   .user-card-actions {
     border-top: 1px #e4e4e4 solid;
-    padding: rem(5px) rem(10px) rem(6px);
+    padding: mixins.rem(5px) mixins.rem(10px) mixins.rem(6px);
     background-color: #f4f4f4;
     border-bottom-right-radius: 2px;
     border-bottom-left-radius: 2px;
     color: #666;
-    font-size: rem(13px) !important;
-    line-height: rem(17px);
+    font-size: mixins.rem(13px) !important;
+    line-height: mixins.rem(17px);
 
     .user-card-action {
       &::before {

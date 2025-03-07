@@ -1,0 +1,213 @@
+/**
+ * @typedef {{width: number, height: number}[]} GalleryRow
+ */
+
+import { fitIntoBox } from './geometry';
+
+export const gap = 8;
+const previewArea = 250 ** 2; // px^2
+export const singleImagePreviewArea = 400 ** 2; // px^2, 16:9 with 300px height
+export const maxHeight = 330;
+const minSize = 40; // Minimum size of image placeholder side
+const maxStretch = 1.3; // Maximum average stretch of last row
+const stretchGap = 20;
+
+export function getSingleImageSize(att, containerWidth) {
+  const { width, height } = fitIntoBox(att, containerWidth, maxHeight);
+
+  const area = width * height;
+  if (area < singleImagePreviewArea) {
+    return {
+      width: Math.max(width, minSize),
+      height: Math.max(height, minSize),
+    };
+  }
+  const ratio = Math.sqrt(singleImagePreviewArea / area);
+
+  return {
+    width: Math.max(Math.round(width * ratio), minSize),
+    height: Math.max(Math.round(height * ratio), minSize),
+  };
+}
+
+/**
+ * @param {{width: number, height: number}[]} imageSizes
+ * @param {number} containerWidth
+ * @param {number} desiredArea
+ * @returns {GalleryRow}
+ */
+export function getGallerySizes(imageSizes, containerWidth) {
+  let start = 0;
+  const lines = [];
+  while (start < imageSizes.length) {
+    const line = getGalleryLine(imageSizes.slice(start), containerWidth);
+    lines.push(line);
+    if (line.items.length === 0) {
+      // Prevent infinite loop
+      throw new Error('Empty gallery line');
+    }
+    start += line.items.length;
+  }
+  return lines;
+}
+
+/**
+ * @param {{width: number, height: number}[]} imageSizes
+ * @param {number} containerWidth
+ * @param {number} maxHeight
+ * @param {number} gap
+ * @param {number} desiredArea
+ * @returns {GalleryRow}
+ */
+function getGalleryLine(imageSizes, containerWidth) {
+  if (containerWidth < Math.sqrt(previewArea)) {
+    // A very narrow container (or just the first render), leave only the first item
+    const { width, height } = fitIntoBox(imageSizes[0], containerWidth, maxHeight);
+    return {
+      items: [{ width: Math.max(width, minSize), height: Math.max(height, minSize) }],
+      stretched: true,
+    };
+  }
+
+  let minPenalty = Infinity;
+  let bestHeight = maxHeight;
+  let results;
+  for (let n = 1; n <= imageSizes.length; n++) {
+    results = imageSizes.slice(0, n);
+    const availableWidth = containerWidth - (n - 1) * gap;
+
+    const height = findRowHeight(results, availableWidth, maxHeight, minSize);
+
+    let penalty = Infinity;
+    const resultsWidth = getRowWidth(results, height);
+
+    // Special case: the first image is already too wide to fit the container.
+    // We cannot drop it, so treat it as a found result.
+    if (n === 1 && resultsWidth > availableWidth) {
+      const size = fitIntoBox(results[0], availableWidth, maxHeight);
+      size.width = Math.max(size.width, minSize);
+      size.height = Math.max(size.height, minSize);
+      return {
+        items: [size],
+        stretched: true,
+      };
+    }
+
+    if (resultsWidth <= availableWidth) {
+      const avgArea = (resultsWidth * height) / n;
+      penalty =
+        // Penalty for average area mismatch
+        Math.abs(Math.log(avgArea / previewArea)) +
+        // (Big) penalty for width mismatch
+        4 * Math.abs((resultsWidth - availableWidth) / Math.sqrt(previewArea));
+    }
+
+    if (penalty < minPenalty) {
+      minPenalty = penalty;
+      bestHeight = height;
+    } else {
+      results.pop();
+      break;
+    }
+  }
+
+  let items = getRowSizes(results, bestHeight);
+  const availableWidth = containerWidth - (items.length - 1) * gap;
+  const itemsWidth = items.reduce((sum, it) => sum + it.width, 0);
+  const wDiff = availableWidth - itemsWidth;
+  let stretched = wDiff < stretchGap;
+
+  if (stretched) {
+    for (const it of items) {
+      it.width += (wDiff * it.width) / itemsWidth;
+    }
+  }
+
+  // Is it a last line?
+  if (results.length === imageSizes.length) {
+    const stretch = (itemsWidth * bestHeight) / items.length / previewArea;
+    if (
+      // Too expanded
+      stretch > maxStretch &&
+      // and not wider than available width
+      itemsWidth <= availableWidth
+    ) {
+      const height = bestHeight / Math.sqrt(stretch);
+      items = getRowSizes(results, height);
+      stretched = false;
+    }
+  }
+
+  return {
+    items,
+    stretched,
+  };
+}
+
+/**
+ * Calculate sizes of images in a row with a given maximum height. Images, that
+ * are bigger, are scaled to fit the height, smaller are kept as is. Neither
+ * width nor height of any image can be smaller than minSize.
+ *
+ * @param {{width: number, height: number}[]} imageSizes
+ * @param {number} height
+ * @returns {{width: number, height: number}[]}
+ */
+function getRowSizes(imageSizes, height) {
+  return imageSizes.map((it) => {
+    if (it.height <= height) {
+      return { width: Math.max(it.width, minSize), height: Math.max(it.height, minSize) };
+    }
+    return { width: Math.max((it.width * height) / it.height, minSize), height };
+  });
+}
+
+/**
+ * Calculate the total of widths of images in a row.
+ *
+ * @param {{width: number, height: number}[]} imageSizes
+ * @param {number} height
+ * @returns {number}
+ */
+function getRowWidth(imageSizes, height) {
+  return getRowSizes(imageSizes, height).reduce((sum, it) => sum + it.width, 0);
+}
+
+/**
+ * Find the maximum height for a row when the total width is less or equal to
+ * the _availableWidth_. There can be situations, when the available width is
+ * too small, in which case the function returns minHeight.
+ *
+ * @param {{width: number, height: number}[]} imageSizes
+ * @param {number} availableWidth
+ * @param {number} maxHeight
+ * @param {number} minHeight
+ * @returns {number}
+ */
+function findRowHeight(imageSizes, availableWidth, maxHeight, minHeight) {
+  // First try with maxHeight
+  if (getRowWidth(imageSizes, maxHeight) <= availableWidth) {
+    return maxHeight;
+  }
+
+  // Next try with minHeight
+  if (getRowWidth(imageSizes, minHeight) >= availableWidth) {
+    // If even minHeight is too big, return minHeight.
+    return minHeight;
+  }
+
+  // Next try with binary search
+  let low = minHeight;
+  let high = maxHeight;
+
+  while (low + 1 < high) {
+    const mid = Math.floor((low + high) / 2);
+    if (getRowWidth(imageSizes, mid) <= availableWidth) {
+      low = mid;
+    } else {
+      high = mid;
+    }
+  }
+
+  return low;
+}

@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 $bg-color: hsl(220deg, 9%, 10%);
 $bg-color-lighter: hsl(220deg, 6%, 18%);
 $bg-color-lightest: hsl(220deg, 3%, 24%);
@@ -6,8 +8,8 @@ $text-color-lighter: hsl(0deg, 0%, 80%);
 $text-color-darker: hsl(0deg, 0%, 60%);
 $separator-color: hsl(0deg, 0%, 50%);
 $accent-color: hsl(40deg, 100%, 55%);
-$link-color: mix($text-color, $accent-color, 60%);
-$link-color-dim: mix($text-color, $accent-color, 75%);
-$label-bg-color: mix($bg-color, $accent-color, 25%);
+$link-color: color.mix($text-color, $accent-color, 60%);
+$link-color-dim: color.mix($text-color, $accent-color, 75%);
+$label-bg-color: color.mix($bg-color, $accent-color, 25%);
 $label-text-color: hsl(0deg, 0%, 20%);
-$bg-highlight-color: mix($bg-color-lightest, $accent-color, 70%);
+$bg-highlight-color: color.mix($bg-color-lightest, $accent-color, 70%);

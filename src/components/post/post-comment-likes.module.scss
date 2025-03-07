@@ -1,4 +1,4 @@
-@import '../../../styles/helvetica/functions.scss';
+@use '../../../styles/helvetica/functions.scss';
 
 .container {
   display: flex;
@@ -8,7 +8,7 @@
   max-width: 100%;
   padding: 1em;
 
-  --userpic-size: #{fluid(32, 360, 50, 500)};
+  --userpic-size: #{functions.fluid(32, 360, 50, 500)};
 }
 
 .header {

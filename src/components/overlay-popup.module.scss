@@ -1,4 +1,4 @@
-@import '../../styles/helvetica/dark-vars.scss';
+@use '../../styles/helvetica/dark-vars.scss';
 
 .popup {
   position: fixed;
@@ -28,7 +28,7 @@
   position: relative;
 
   :global(.dark-theme) & {
-    background-color: $bg-color-lighter;
+    background-color: dark-vars.$bg-color-lighter;
   }
 }
 
@@ -43,7 +43,7 @@
   background-color: transparent;
 
   :global(.dark-theme) & {
-    color: $text-color-darker;
+    color: dark-vars.$text-color-darker;
   }
 
   &:hover,
@@ -53,8 +53,8 @@
     background-color: #eee;
 
     :global(.dark-theme) & {
-      color: $text-color-lighter;
-      background-color: $bg-color-lighter;
+      color: dark-vars.$text-color-lighter;
+      background-color: dark-vars.$bg-color-lighter;
     }
   }
 }

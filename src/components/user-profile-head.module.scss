@@ -1,5 +1,5 @@
-@import '../../styles/helvetica/dark-vars.scss';
-@import '../../styles/shared/mixins.scss';
+@use '../../styles/helvetica/dark-vars.scss';
+@use '../../styles/shared/mixins.scss';
 
 $actions-padding: 0.75em;
 
@@ -45,9 +45,9 @@ $actions-padding: 0.75em;
   }
 
   :global(.dark-theme) & {
-    --text-color: #{$text-color};
-    --separator-color: #{$separator-color};
-    --text-dim-color: #{$text-color-darker};
+    --text-color: #{dark-vars.$text-color};
+    --separator-color: #{dark-vars.$separator-color};
+    --text-dim-color: #{dark-vars.$text-color-darker};
   }
 }
 
@@ -75,15 +75,15 @@ $actions-padding: 0.75em;
   margin-right: 0.1em;
 
   & :global(.fa-icon) {
-    font-size: rem(13px);
+    font-size: mixins.rem(13px);
   }
 
   & :global(.fa-icon-fas-user-friends) {
-    font-size: rem(14px);
+    font-size: mixins.rem(14px);
   }
 
   & :global(.fa-icon-fas-globe-americas) {
-    vertical-align: rem(-1px);
+    vertical-align: mixins.rem(-1px);
   }
 
   & :global(.fa-icon-fas-lock) {

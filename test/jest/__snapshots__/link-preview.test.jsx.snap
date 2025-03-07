@@ -287,23 +287,23 @@ exports[`LinkPreview > Shows a video preview for Coub 1`] = `
 <DocumentFragment>
   <div
     class="video-preview link-preview-content"
-    style="max-width: 450px;"
+    style="max-width: 533.3333333333334px;"
   >
     <div
       aria-label="Video preview"
       class="static-preview"
-      style="padding-bottom: 56.25%; background-image: url(https://coub-anubis-a.akamaized.net/coub_storage/coub/simple/cw_image/ce289137929/a46bb680bae77df60147a/1441008976_00029.jpg);"
+      style="max-width: 533.3333333333334px; max-height: 330px; padding-bottom: 56.25%; background-image: url(https://coub-anubis-a.akamaized.net/coub_storage/coub/simple/cw_image/ce289137929/a46bb680bae77df60147a/1441008976_00029.jpg);"
     >
       <svg
         aria-hidden="true"
-        class="play-icon fa-icon fa-icon-fas-play-circle"
+        class="play-icon fa-icon fa-icon-fas-play"
         focusable="false"
         role="img"
-        viewBox="0 0 512 512"
+        viewBox="0 0 448 512"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm115.7 272l-176 101c-15.8 8.8-35.7-2.5-35.7-21V152c0-18.4 19.8-29.8 35.7-21l176 107c16.4 9.2 16.4 32.9 0 42z"
+          d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"
           fill="currentColor"
         />
       </svg>
@@ -327,23 +327,23 @@ exports[`LinkPreview > Shows a video preview for Gfycat 1`] = `
 <DocumentFragment>
   <div
     class="video-preview link-preview-content"
-    style="max-width: 357.6237364075618px;"
+    style="max-width: 370.5263157894737px;"
   >
     <div
       aria-label="Video preview"
       class="static-preview"
-      style="padding-bottom: 89.0625%; background-image: url(https://thumbs.gfycat.com/DismalIndolentGalago-mobile.jpg);"
+      style="max-width: 370.5263157894737px; max-height: 330px; padding-bottom: 89.0625%; background-image: url(https://thumbs.gfycat.com/DismalIndolentGalago-mobile.jpg);"
     >
       <svg
         aria-hidden="true"
-        class="play-icon fa-icon fa-icon-fas-play-circle"
+        class="play-icon fa-icon fa-icon-fas-play"
         focusable="false"
         role="img"
-        viewBox="0 0 512 512"
+        viewBox="0 0 448 512"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm115.7 272l-176 101c-15.8 8.8-35.7-2.5-35.7-21V152c0-18.4 19.8-29.8 35.7-21l176 107c16.4 9.2 16.4 32.9 0 42z"
+          d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"
           fill="currentColor"
         />
       </svg>
@@ -367,13 +367,27 @@ exports[`LinkPreview > Shows a video preview for Giphy 1`] = `
 <DocumentFragment>
   <div
     class="video-preview link-preview-content"
-    style="max-width: 399.41527640440853px;"
+    style="max-width: 462.18487394957987px;"
   >
     <div
       aria-label="Video preview"
       class="static-preview"
-      style="padding-bottom: 71.39999999999999%; background-image: url(https://media3.giphy.com/media/ncAcktdglyCuVrKeZG/giphy.gif);"
-    />
+      style="max-width: 462.18487394957987px; max-height: 330px; padding-bottom: 71.39999999999999%; background-image: url(https://i.giphy.com/media/ncAcktdglyCuVrKeZG/giphy_s.gif);"
+    >
+      <svg
+        aria-hidden="true"
+        class="play-icon fa-icon fa-icon-fas-play"
+        focusable="false"
+        role="img"
+        viewBox="0 0 448 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"
+          fill="currentColor"
+        />
+      </svg>
+    </div>
     <div
       class="info"
     >
@@ -393,23 +407,23 @@ exports[`LinkPreview > Shows a video preview for Vimeo 1`] = `
 <DocumentFragment>
   <div
     class="video-preview link-preview-content"
-    style="max-width: 449.6483000635052px;"
+    style="max-width: 532.9165037789691px;"
   >
     <div
       aria-label="Video preview"
       class="static-preview"
-      style="padding-bottom: 56.33802816901409%; background-image: url(https://i.vimeocdn.com/video/988324592_450.jpg);"
+      style="max-width: 532.9165037789691px; max-height: 330px; padding-bottom: 56.33802816901409%; background-image: url(https://i.vimeocdn.com/video/988324592_450.jpg);"
     >
       <svg
         aria-hidden="true"
-        class="play-icon fa-icon fa-icon-fas-play-circle"
+        class="play-icon fa-icon fa-icon-fas-play"
         focusable="false"
         role="img"
-        viewBox="0 0 512 512"
+        viewBox="0 0 448 512"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm115.7 272l-176 101c-15.8 8.8-35.7-2.5-35.7-21V152c0-18.4 19.8-29.8 35.7-21l176 107c16.4 9.2 16.4 32.9 0 42z"
+          d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"
           fill="currentColor"
         />
       </svg>
@@ -433,23 +447,23 @@ exports[`LinkPreview > Shows a video preview for Youtube 1`] = `
 <DocumentFragment>
   <div
     class="video-preview link-preview-content"
-    style="max-width: 450px;"
+    style="max-width: 533.3333333333334px;"
   >
     <div
       aria-label="Video preview"
       class="static-preview"
-      style="padding-bottom: 56.25%; background-image: url(https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg);"
+      style="max-width: 533.3333333333334px; max-height: 330px; padding-bottom: 56.25%; background-image: url(https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg);"
     >
       <svg
         aria-hidden="true"
-        class="play-icon fa-icon fa-icon-fas-play-circle"
+        class="play-icon fa-icon fa-icon-fas-play"
         focusable="false"
         role="img"
-        viewBox="0 0 512 512"
+        viewBox="0 0 448 512"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm115.7 272l-176 101c-15.8 8.8-35.7-2.5-35.7-21V152c0-18.4 19.8-29.8 35.7-21l176 107c16.4 9.2 16.4 32.9 0 42z"
+          d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"
           fill="currentColor"
         />
       </svg>
@@ -473,12 +487,12 @@ exports[`LinkPreview > Shows a video preview for Youtube 2`] = `
 <DocumentFragment>
   <div
     class="video-preview link-preview-content"
-    style="max-width: 450px;"
+    style="max-width: 533.3333333333334px;"
   >
     <div
       aria-label="Video preview"
       class="static-preview"
-      style="padding-bottom: 56.25%; background-image: url(https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg);"
+      style="max-width: 533.3333333333334px; max-height: 330px; padding-bottom: 56.25%; background-image: url(https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg);"
     >
       <iframe
         allow="autoplay"
