@@ -1,10 +1,10 @@
-@import '../../../styles/helvetica/dark-vars.scss';
+@use '../../../styles/helvetica/dark-vars.scss';
 
 .indicator {
   background-color: #fcf8e3;
 
   :global(.dark-theme) & {
-    background-color: #{$bg-highlight-color};
+    background-color: #{dark-vars.$bg-highlight-color};
   }
 
   color: inherit !important;

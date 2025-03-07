@@ -1,5 +1,5 @@
-@import '../../styles/shared/mixins';
-@import '../../styles/helvetica/dark-vars.scss';
+@use '../../styles/shared/mixins';
+@use '../../styles/helvetica/dark-vars.scss';
 
 .box {
   margin-top: 0.5em;
@@ -10,26 +10,26 @@
   --arrow-color: #fff;
 
   :global(.dark-theme) & {
-    --arrow-color: #{$bg-color-lightest};
+    --arrow-color: #{dark-vars.$bg-color-lightest};
 
-    background-color: $bg-color-lighter;
+    background-color: dark-vars.$bg-color-lighter;
   }
 }
 
 .status {
-  font-size: rem(14px);
+  font-size: mixins.rem(14px);
   line-height: 1.625em;
   margin-bottom: 0.167em;
   color: #666;
   display: flex;
 
   .inComment & {
-    font-size: rem(13px);
+    font-size: mixins.rem(13px);
     color: #888;
   }
 
   :global(.dark-theme) & {
-    color: $text-color-darker;
+    color: dark-vars.$text-color-darker;
   }
 }
 
@@ -37,13 +37,13 @@
   color: #900;
 
   :global(.dark-theme) & {
-    color: #{$link-color-dim};
+    color: #{dark-vars.$link-color-dim};
   }
 }
 
 .icon {
   display: inline-block;
-  flex: 0 0 rem(19px);
+  flex: 0 0 mixins.rem(19px);
 }
 
 .closeIcon {
@@ -56,7 +56,7 @@
   color: #666 !important;
 
   :global(.dark-theme) & {
-    color: $text-color-darker !important;
+    color: dark-vars.$text-color-darker !important;
   }
 }
 

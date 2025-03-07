@@ -1,3 +1,5 @@
+@use '../helvetica/dark-vars';
+
 .single-event {
   display: grid;
   grid-template-columns: min-content 1fr;
@@ -17,7 +19,7 @@
   }
 
   .dark-theme & {
-    border-bottom-color: $separator-color;
+    border-bottom-color: dark-vars.$separator-color;
   }
 
   &__picture {
@@ -55,7 +57,7 @@
     }
 
     .dark-theme & {
-      --bg-color: #{$bg-color};
+      --bg-color: #{dark-vars.$bg-color};
 
       border-left-color: #444444;
     }
@@ -73,7 +75,7 @@
     align-items: center;
 
     .dark-theme & {
-      color: $text-color-lighter;
+      color: dark-vars.$text-color-lighter;
     }
 
     @media (max-width: 450px) {

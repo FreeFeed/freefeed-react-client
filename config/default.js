@@ -1,5 +1,10 @@
 import { DISPLAYNAMES_BOTH } from '../src/utils/frontend-preferences-options';
-import { ACTIVITY, HOMEFEED_MODE_CLASSIC } from '../src/utils/feed-options';
+import {
+  ACTIVITY,
+  HOMEFEED_MODE_CLASSIC,
+  PREVIEW_ANIMATION_ALWAYS,
+  PREVIEW_ANIMATION_HOVER,
+} from '../src/utils/feed-options';
 import { TLDs } from './lib/tlds';
 
 const DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24;
@@ -31,6 +36,9 @@ export default {
     'freefeed.net',
     'gamma.freefeed.net',
   ],
+
+  // For links in texts
+  attachmentDomains: ['stable-media.freefeed.net'],
 
   textFormatter: {
     tldList: TLDs,
@@ -79,6 +87,10 @@ export default {
       timeDifferenceForSpacer: DAY_IN_MILLISECONDS * 6,
       translateToLang: '', // Empty string means browser default language
       saveDrafts: true,
+      previewAnimation: {
+        gif: PREVIEW_ANIMATION_ALWAYS,
+        video: PREVIEW_ANIMATION_HOVER,
+      },
     },
     defaultOverrides: {
       /**

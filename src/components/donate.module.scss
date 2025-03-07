@@ -1,4 +1,5 @@
-@import '../../styles/shared/mixins';
+@use 'sass:color';
+@use '../../styles/shared/mixins';
 
 .languages {
   margin: 0;
@@ -140,7 +141,7 @@
 }
 
 .widgetBody {
-  font-size: rem(12px) !important;
+  font-size: mixins.rem(12px) !important;
 }
 
 $color-undef: #ddd;
@@ -152,17 +153,17 @@ $color-critical: #fa6b4b;
 
 @mixin link-color($baseColor) {
   background-color: $baseColor;
-  border-color: mix($baseColor, #000, 90%);
+  border-color: color.mix($baseColor, #000, 90%);
 
   :global(.dark-theme) & {
-    background-color: change-color($baseColor, $alpha: 0.4);
-    border-color: change-color(mix($baseColor, #000, 90%), $alpha: 0.4);
+    background-color: color.change($baseColor, $alpha: 0.4);
+    border-color: color.change(color.mix($baseColor, #000, 90%), $alpha: 0.4);
   }
 }
 
 .widgetStatusLink {
   color: inherit !important;
-  font-size: rem(14px);
+  font-size: mixins.rem(14px);
   font-weight: bold;
   white-space: nowrap;
   padding: 0.2em 0.6em;

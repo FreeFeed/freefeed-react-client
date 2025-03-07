@@ -1,4 +1,4 @@
-@import '../../../styles/helvetica/dark-vars.scss';
+@use '../../../styles/helvetica/dark-vars.scss';
 
 .wrapper {
   position: relative;
@@ -24,8 +24,8 @@
   }
 
   :global(.dark-theme) & {
-    background-color: $bg-color-lighter;
-    border: 1px solid $bg-color-lightest;
+    background-color: dark-vars.$bg-color-lighter;
+    border: 1px solid dark-vars.$bg-color-lightest;
   }
 }
 
@@ -35,7 +35,7 @@
   background-color: transparent;
 
   :global(.dark-theme) & {
-    color: $text-color-lighter;
+    color: dark-vars.$text-color-lighter;
   }
 }
 
@@ -57,7 +57,7 @@
   background-color: #eee;
 
   :global(.dark-theme) & {
-    background-color: $bg-highlight-color;
+    background-color: dark-vars.$bg-highlight-color;
   }
 }
 

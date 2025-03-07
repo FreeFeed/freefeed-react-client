@@ -1,4 +1,5 @@
-@import 'dark-vars.scss';
+@use 'dark-vars.scss';
+@use '../shared/mixins';
 
 .sidebar {
   a {
@@ -9,7 +10,7 @@
     color: #000;
     background-color: #ddd;
     border-radius: 4px;
-    padding: rem(3px) rem(6px);
+    padding: mixins.rem(3px) mixins.rem(6px);
     margin: 0;
     white-space: nowrap;
     text-decoration: none;
@@ -22,11 +23,11 @@
   }
 
   .logged-in {
-    margin-bottom: rem(23px);
+    margin-bottom: mixins.rem(23px);
 
     .avatar {
       float: left;
-      margin-right: rem(8px);
+      margin-right: mixins.rem(8px);
     }
 
     .user .author a {
@@ -35,7 +36,7 @@
   }
 
   .color-scheme-hint {
-    font-size: rem(11px);
+    font-size: mixins.rem(11px);
     white-space: normal;
 
     &:empty {
@@ -92,7 +93,7 @@
     width: 280px;
     height: 100%;
     background-color: #fff;
-    padding: rem(20px) rem(15px);
+    padding: mixins.rem(20px) mixins.rem(15px);
     overflow: hidden;
     overflow-y: auto;
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
@@ -105,7 +106,7 @@
       pointer-events 0s;
 
     .dark-theme & {
-      background-color: $bg-color;
+      background-color: dark-vars.$bg-color;
     }
 
     .sidebar--opened & {
@@ -114,23 +115,23 @@
 
       .dark-theme &,
       .dark-theme & .box-body {
-        background-color: $bg-color-lighter;
+        background-color: dark-vars.$bg-color-lighter;
       }
     }
   }
 
   .logged-in {
-    margin-right: rem(40px);
+    margin-right: mixins.rem(40px);
   }
 }
 
 .sidebar__close-button {
   position: absolute;
-  top: rem(20px);
-  right: rem(15px);
-  width: rem(40px);
-  height: rem(40px);
-  font-size: rem(19px);
+  top: mixins.rem(20px);
+  right: mixins.rem(15px);
+  width: mixins.rem(40px);
+  height: mixins.rem(40px);
+  font-size: mixins.rem(19px);
   border: none;
   background: none;
 
