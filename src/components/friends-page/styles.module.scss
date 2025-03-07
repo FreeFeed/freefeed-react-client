@@ -1,4 +1,4 @@
-@import '../../../styles/shared/mixins';
+@use '../../../styles/shared/mixins';
 
 .topNav {
   margin-top: 2em;
@@ -21,9 +21,9 @@
   min-height: 90px;
   text-align: center;
   word-wrap: break-word;
-  font-size: rem(12px);
-  line-height: rem(16px);
-  margin: 0 rem(6px) rem(20px);
+  font-size: mixins.rem(12px);
+  line-height: mixins.rem(16px);
+  margin: 0 mixins.rem(6px) mixins.rem(20px);
 }
 
 .userCellPlaceholder {
@@ -64,8 +64,8 @@
     right: -0.5em;
     content: '';
     border-radius: 50%;
-    width: rem(6px);
-    height: rem(6px);
+    width: mixins.rem(6px);
+    height: mixins.rem(6px);
     background-color: currentColor;
   }
 }

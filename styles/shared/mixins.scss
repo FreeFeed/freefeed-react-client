@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use 'sass:math';
 
 // Single side border-radius
@@ -80,7 +81,7 @@
   ); // Standard, IE10, Firefox 16+, Opera 12.10+, Safari 7+, Chrome 26+
 
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{ie-hex-str($start-color)}', endColorstr='#{ie-hex-str($end-color)}', GradientType=0); // IE9 and down
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{color.ie-hex-str($start-color)}', endColorstr='#{color.ie-hex-str($end-color)}', GradientType=0); // IE9 and down
 }
 
 // Converts px to rem units

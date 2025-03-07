@@ -1,13 +1,15 @@
+@use '../shared/mixins';
+
 .box {
-  margin-bottom: rem(23px);
+  margin-bottom: mixins.rem(23px);
   border: 0;
-  border-radius: rem(8px);
+  border-radius: mixins.rem(8px);
 }
 
 // --- Block headers ---
 .box-header {
-  line-height: rem(28px);
-  min-height: rem(28px);
+  line-height: mixins.rem(28px);
+  min-height: mixins.rem(28px);
   border-bottom: 2px black solid;
   color: #000;
 }
@@ -25,9 +27,9 @@
 
   font-size: 170%;
   font-weight: 700;
-  margin-bottom: rem(7px);
-  margin-left: rem(10px);
-  padding-bottom: rem(2px);
+  margin-bottom: mixins.rem(7px);
+  margin-left: mixins.rem(10px);
+  padding-bottom: mixins.rem(2px);
 
   @media (max-width: 991px) {
     margin-left: 0;
@@ -35,9 +37,9 @@
 
   .sidelinks {
     float: right;
-    font-size: rem(14px);
+    font-size: mixins.rem(14px);
     font-weight: normal;
-    line-height: rem(28px);
+    line-height: mixins.rem(28px);
 
     @media (max-width: 512px) {
       text-transform: capitalize;
@@ -49,7 +51,7 @@
   }
 
   small {
-    font-size: rem(14px);
+    font-size: mixins.rem(14px);
     font-weight: normal;
     color: #999;
     vertical-align: middle;
@@ -57,8 +59,8 @@
 }
 
 .box-message {
-  margin: 0 0 rem(5px) rem(10px);
-  padding: rem(5px) rem(10px);
+  margin: 0 0 mixins.rem(5px) mixins.rem(10px);
+  padding: mixins.rem(5px) mixins.rem(10px);
 
   @media (max-width: 991px) {
     margin-left: 0;
@@ -70,7 +72,7 @@
   @extend .box-header;
 
   font-weight: bold;
-  font-size: rem(15px);
+  font-size: mixins.rem(15px);
 }
 
 // Sidebar Group block header
@@ -78,15 +80,15 @@
   @extend .box-header;
 
   font-weight: bold;
-  font-size: rem(15px);
+  font-size: mixins.rem(15px);
 }
 
 // Sidebar Group block: additional info in header
 .box-header-info {
-  line-height: rem(28px);
-  padding-top: rem(3px);
+  line-height: mixins.rem(28px);
+  padding-top: mixins.rem(3px);
   float: right;
-  font-size: rem(12px);
+  font-size: mixins.rem(12px);
 }
 
 // Sidebar FreeFeed block header
@@ -94,23 +96,23 @@
   @extend .box-header;
 
   font-weight: bold;
-  font-size: rem(15px);
+  font-size: mixins.rem(15px);
 }
 
 .box-header-memories {
   @extend .box-header;
 
   font-weight: bold;
-  font-size: rem(15px);
+  font-size: mixins.rem(15px);
 }
 
 // Content and footer
 .content {
   .box-body {
-    padding: 0 0 0 rem(11px);
+    padding: 0 0 0 mixins.rem(11px);
     background-color: #fff;
 
-    @include clearfix;
+    @include mixins.clearfix;
 
     @media (max-width: 991px) {
       padding: 0;
@@ -118,12 +120,12 @@
   }
 
   .box-footer {
-    padding: rem(5px) 0 rem(5px) rem(11px);
-    font-size: rem(11px);
+    padding: mixins.rem(5px) 0 mixins.rem(5px) mixins.rem(11px);
+    font-size: mixins.rem(11px);
     background-color: #fff;
 
     @media (max-width: 991px) {
-      padding: rem(15px) 0 0;
+      padding: mixins.rem(15px) 0 0;
     }
   }
 }
@@ -131,8 +133,8 @@
 .sidebar {
   .box-body {
     font-family: Vazir, Arial, sans-serif;
-    font-size: rem(15px);
-    padding: rem(10px) 0 rem(3px);
+    font-size: mixins.rem(15px);
+    padding: mixins.rem(10px) 0 mixins.rem(3px);
     background-color: #fff;
 
     a {
@@ -144,7 +146,7 @@
       }
     }
 
-    @include clearfix;
+    @include mixins.clearfix;
 
     ul {
       list-style: none;
@@ -152,14 +154,14 @@
       padding: 0;
 
       li {
-        padding-bottom: rem(3px);
+        padding-bottom: mixins.rem(3px);
         white-space: nowrap;
 
-        @include clearfix;
+        @include mixins.clearfix;
 
         a {
           color: #000;
-          font-size: rem(15px);
+          font-size: mixins.rem(15px);
         }
       }
     }
@@ -168,7 +170,7 @@
       overflow: hidden;
       display: flex;
       flex-wrap: wrap;
-      font-size: rem(13px);
+      font-size: mixins.rem(13px);
 
       a {
         $dot-width: 1em;
@@ -189,7 +191,7 @@
 
     .updated-ago {
       display: block;
-      font-size: rem(11px);
+      font-size: mixins.rem(11px);
     }
 
     .pinned {
@@ -199,15 +201,15 @@
 
       + :not(.pinned) {
         border-top: 1px solid #eee;
-        margin-top: rem(8px);
-        padding-top: rem(7px);
+        margin-top: mixins.rem(8px);
+        padding-top: mixins.rem(7px);
       }
     }
   }
 
   .box-footer {
-    padding: rem(5px) 0 rem(10px);
-    font-size: rem(11px);
+    padding: mixins.rem(5px) 0 mixins.rem(10px);
+    font-size: mixins.rem(11px);
 
     a {
       color: #000;
@@ -220,9 +222,9 @@
   background-color: #f9cb16;
   color: white;
   display: inline-block;
-  font-size: rem(10px);
-  padding: 0 rem(3px);
-  vertical-align: rem(1px);
+  font-size: mixins.rem(10px);
+  padding: 0 mixins.rem(3px);
+  vertical-align: mixins.rem(1px);
   margin-left: 0.5em;
 }
 

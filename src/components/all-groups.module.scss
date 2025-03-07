@@ -1,4 +1,4 @@
-@import '../../styles/helvetica/dark-vars.scss';
+@use '../../styles/helvetica/dark-vars.scss';
 
 .sortableHeader {
   cursor: pointer;
@@ -8,7 +8,7 @@
     background-color: #ffc;
 
     :global(.dark-theme) & {
-      background-color: $bg-color-lighter;
+      background-color: dark-vars.$bg-color-lighter;
     }
   }
 
@@ -17,7 +17,7 @@
     text-decoration: none;
 
     :global(.dark-theme) & {
-      color: $text-color;
+      color: dark-vars.$text-color;
     }
   }
 }
@@ -79,7 +79,7 @@
     }
 
     :global(.dark-theme) & {
-      border-color: $bg-color-lighter;
+      border-color: dark-vars.$bg-color-lighter;
     }
   }
 }
@@ -98,7 +98,7 @@
     }
 
     :global(.dark-theme) & {
-      border-bottom-color: $bg-color-lighter;
+      border-bottom-color: dark-vars.$bg-color-lighter;
     }
   }
 }

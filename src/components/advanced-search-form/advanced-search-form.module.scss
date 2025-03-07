@@ -1,4 +1,4 @@
-@import '../../../styles/helvetica/dark-vars.scss';
+@use '../../../styles/helvetica/dark-vars.scss';
 
 .form {
   --text-color: #333;
@@ -6,9 +6,9 @@
   --background-color: #fff;
 
   :global(.dark-theme) & {
-    --text-color: #{$text-color};
+    --text-color: #{dark-vars.$text-color};
     --placeholder-color: #777;
-    --background-color: #{$bg-color};
+    --background-color: #{dark-vars.$bg-color};
   }
 
   input::placeholder {

@@ -1,5 +1,5 @@
-@import '../../../styles/shared/mixins';
-@import '../../../styles/helvetica/dark-vars.scss';
+@use '../../../styles/shared/mixins';
+@use '../../../styles/helvetica/dark-vars.scss';
 
 .wrapper {
   display: flex;
@@ -19,7 +19,7 @@
 }
 
 .header h3 {
-  margin-top: rem(3px);
+  margin-top: mixins.rem(3px);
 }
 
 .footer {
@@ -35,8 +35,8 @@
   border-bottom: 1px solid #ccc;
 
   :global(.dark-theme) & {
-    border-top-color: $separator-color;
-    border-bottom-color: $separator-color;
+    border-top-color: dark-vars.$separator-color;
+    border-bottom-color: dark-vars.$separator-color;
   }
 }
 
@@ -49,16 +49,16 @@
 }
 
 .cell {
-  margin: rem(4px);
-  border-radius: rem(4px);
+  margin: mixins.rem(4px);
+  border-radius: mixins.rem(4px);
   width: 200px;
   word-break: break-word;
-  font-size: rem(12px);
+  font-size: mixins.rem(12px);
   display: grid;
   grid-auto-flow: column;
-  gap: rem(4px);
+  gap: mixins.rem(4px);
   grid-template-columns: 0fr 1fr;
-  padding: rem(4px);
+  padding: mixins.rem(4px);
   font-weight: normal;
   cursor: pointer;
   position: relative;
@@ -67,7 +67,7 @@
     background: #eee;
 
     :global(.dark-theme) & {
-      background: $bg-color-lightest;
+      background: dark-vars.$bg-color-lightest;
     }
   }
 }
@@ -77,8 +77,8 @@
   background: hsl(200deg, 70%, 90%);
 
   :global(.dark-theme) & {
-    color: $text-color-lighter;
-    background: $bg-highlight-color;
+    color: dark-vars.$text-color-lighter;
+    background: dark-vars.$bg-highlight-color;
   }
 }
 
@@ -86,7 +86,7 @@
   color: #999;
 
   :global(.dark-theme) & {
-    color: $text-color-darker;
+    color: dark-vars.$text-color-darker;
   }
 }
 
@@ -96,8 +96,8 @@
   background-color: #ff0;
 
   :global(.dark-theme) & {
-    color: $text-color-darker;
-    background-color: $accent-color;
+    color: dark-vars.$text-color-darker;
+    background-color: dark-vars.$accent-color;
   }
 }
 

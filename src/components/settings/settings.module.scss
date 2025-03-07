@@ -1,4 +1,4 @@
-@import '../../../styles/helvetica/dark-vars.scss';
+@use '../../../styles/helvetica/dark-vars.scss';
 
 .sectionIcon {
   font-size: 1.5em;
@@ -26,7 +26,7 @@
 
     :global(.dark-theme) & {
       color: inherit;
-      background-color: $bg-color-lighter;
+      background-color: dark-vars.$bg-color-lighter;
     }
   }
 }
@@ -56,7 +56,7 @@
   margin-right: 0.2em;
 
   :global(.dark-theme) & {
-    color: $text-color-darker;
+    color: dark-vars.$text-color-darker;
   }
 }
 
@@ -82,9 +82,9 @@
   margin-top: 2em;
 
   :global(.dark-theme) & {
-    background: $bg-color-lighter;
-    border: 1px solid $separator-color;
-    color: $text-color;
+    background: dark-vars.$bg-color-lighter;
+    border: 1px solid dark-vars.$separator-color;
+    color: dark-vars.$text-color;
   }
 }
 

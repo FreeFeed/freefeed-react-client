@@ -1,4 +1,4 @@
-@import '../../../../../styles/helvetica/dark-vars.scss';
+@use '../../../../../styles/helvetica/dark-vars.scss';
 
 // Container
 .container--visual {
@@ -49,8 +49,8 @@
   transform: translate(-6px, -50%);
 
   :global(.dark-theme) & {
-    color: $link-color-dim;
-    background-color: $bg-color;
+    color: dark-vars.$link-color-dim;
+    background-color: dark-vars.$bg-color;
   }
 
   .row--stretched & {

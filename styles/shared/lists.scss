@@ -1,3 +1,5 @@
+@use 'mixins';
+
 ul.tile-list {
   margin: 0;
   padding: 20px 0 0;
@@ -51,7 +53,7 @@ ul.tile-list {
     height: 160px;
   }
 
-  @include clearfix;
+  @include mixins.clearfix;
 }
 
 .list-controls {

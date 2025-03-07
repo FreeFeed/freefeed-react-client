@@ -1,5 +1,5 @@
-@import '../../styles/helvetica/dark-vars.scss';
-@import '../../styles/helvetica/functions.scss';
+@use '../../styles/helvetica/dark-vars.scss';
+@use '../../styles/helvetica/functions.scss';
 
 $with-sidebar: '(min-width: 992px)';
 $without-sidebar: '(max-width: 991px)';
@@ -41,7 +41,7 @@ $without-sidebar: '(max-width: 991px)';
   margin: 0;
   white-space: nowrap;
   font-size: 36px; // fluid's fallback size
-  font-size: fluid(28, 320, 36, 600);
+  font-size: functions.fluid(28, 320, 36, 600);
 }
 
 .logoLink {
@@ -77,7 +77,7 @@ $without-sidebar: '(max-width: 991px)';
   background-color: #fff;
 
   :global(.dark-theme) & {
-    background-color: $bg-color;
+    background-color: dark-vars.$bg-color;
   }
 }
 
@@ -149,12 +149,12 @@ $without-sidebar: '(max-width: 991px)';
   }
 
   :global(.dark-theme) & {
-    background-color: $bg-color-lighter;
-    border-color: $separator-color;
+    background-color: dark-vars.$bg-color-lighter;
+    border-color: dark-vars.$separator-color;
   }
 
   :global(.dark-theme) &:is(:hover, :focus) {
-    background-color: $bg-color-lightest;
+    background-color: dark-vars.$bg-color-lightest;
   }
 }
 
@@ -200,7 +200,7 @@ $without-sidebar: '(max-width: 991px)';
     background-color: #ddd;
 
     :global(.dark-theme) & {
-      background-color: $bg-color-lightest;
+      background-color: dark-vars.$bg-color-lightest;
     }
   }
 }

@@ -1,4 +1,4 @@
-@import '../helvetica/dark-vars.scss';
+@use '../helvetica/dark-vars.scss';
 
 .error-boundary {
   display: block;
@@ -9,7 +9,7 @@
   line-height: 16px;
 
   .dark-theme & {
-    color: $text-color;
+    color: dark-vars.$text-color;
   }
 }
 

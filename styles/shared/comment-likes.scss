@@ -1,12 +1,15 @@
+@use 'sass:string';
+@use 'mixins';
+
 .comment-likes-container {
   position: absolute;
-  top: rem(1px);
-  left: rem(-15px);
-  width: rem(34px);
-  height: rem(18px);
+  top: mixins.rem(1px);
+  left: mixins.rem(-15px);
+  width: mixins.rem(34px);
+  height: mixins.rem(18px);
   display: flex;
   justify-content: flex-end;
-  padding-right: rem(2px);
+  padding-right: mixins.rem(2px);
 
   @media (max-width: 768px) {
     .comment-likes.has-my-like + .comment-time,
@@ -23,7 +26,7 @@
 }
 
 .comment-time {
-  margin-right: rem(2px);
+  margin-right: mixins.rem(2px);
   flex-shrink: 0;
   flex-basis: auto;
 }
@@ -37,18 +40,18 @@
   }
 
   &.feed-comment-dot {
-    height: rem(14px);
-    width: rem(14px);
+    height: mixins.rem(14px);
+    width: mixins.rem(14px);
     display: inline-block;
     position: relative;
   }
 
   &.fa-stack {
-    width: rem(14px);
-    margin-top: rem(1px);
-    margin-right: rem(6px);
+    width: mixins.rem(14px);
+    margin-top: mixins.rem(1px);
+    margin-right: mixins.rem(6px);
     line-height: 1em;
-    padding-top: rem(4px);
+    padding-top: mixins.rem(4px);
     color: inherit;
   }
 }
@@ -58,13 +61,13 @@
   align-items: flex-end;
   flex-shrink: 0;
   flex-basis: auto;
-  margin-right: rem(2px);
-  margin-top: rem(1px);
+  margin-right: mixins.rem(2px);
+  margin-top: mixins.rem(1px);
   opacity: 0;
   transition: opacity 0.2s;
 
   @media (min-width: 769px) {
-    margin-right: rem(6px);
+    margin-right: mixins.rem(6px);
   }
 
   &.liked,
@@ -76,7 +79,7 @@
     flex-shrink: 0;
     flex-basis: auto;
     position: relative;
-    font-size: rem(10px);
+    font-size: mixins.rem(10px);
 
     .icon.liked {
       animation: 0.3s like;
@@ -109,16 +112,16 @@
   }
 
   .comment-count {
-    min-width: rem(15px);
+    min-width: mixins.rem(15px);
     text-align: right;
     cursor: pointer;
-    margin-right: rem(2px);
-    font-size: rem(12px);
-    width: rem(7px);
+    margin-right: mixins.rem(2px);
+    font-size: mixins.rem(12px);
+    width: mixins.rem(7px);
     color: #898989;
 
     @media (min-width: 769px) {
-      margin-right: rem(6px);
+      margin-right: mixins.rem(6px);
     }
 
     &:hover,
@@ -143,14 +146,14 @@
   z-index: 2;
   color: #898989;
   border: 1px solid #898989;
-  padding: rem(6px) rem(17px) rem(6px) rem(6px);
+  padding: mixins.rem(6px) mixins.rem(17px) mixins.rem(6px) mixins.rem(6px);
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
   white-space: nowrap;
   text-align: left;
-  max-height: rem(200px);
+  max-height: mixins.rem(200px);
   overflow-y: auto;
-  font-size: rem(12px);
-  line-height: rem(18px);
+  font-size: mixins.rem(12px);
+  line-height: mixins.rem(18px);
 
   a {
     color: #559;
@@ -218,8 +221,8 @@
 }
 
 .actions-panel {
-  margin-left: rem(-15px);
-  margin-right: rem(-15px);
+  margin-left: mixins.rem(-15px);
+  margin-right: mixins.rem(-15px);
   background-color: #fff;
   animation: 0.2s 0.2s slide;
   transform: translateY(100%);
@@ -227,12 +230,12 @@
   padding-bottom: 0.5em;
 
   // Support for the iDevices
-  @supports (padding: unquote('max(0px)')) {
-    padding-bottom: unquote('max(0.5em, env(safe-area-inset-bottom))');
+  @supports (padding: string.unquote('max(0px)')) {
+    padding-bottom: string.unquote('max(0.5em, env(safe-area-inset-bottom))');
   }
 
   @media (min-width: 768px) {
-    margin-left: rem(63px);
+    margin-left: mixins.rem(63px);
   }
 
   .likes-panel {
@@ -240,24 +243,24 @@
     background-color: #ddd;
 
     &.padded {
-      padding-bottom: rem(192px);
+      padding-bottom: mixins.rem(192px);
     }
 
     .arrow {
-      width: rem(35px);
-      padding-top: rem(12px);
-      line-height: rem(24px);
+      width: mixins.rem(35px);
+      padding-top: mixins.rem(12px);
+      line-height: mixins.rem(24px);
       text-align: center;
     }
 
     .likes {
       flex: 1;
-      line-height: rem(24px);
-      padding-top: rem(12px);
-      padding-bottom: rem(12px);
-      font-size: rem(16px);
+      line-height: mixins.rem(24px);
+      padding-top: mixins.rem(12px);
+      padding-bottom: mixins.rem(12px);
+      font-size: mixins.rem(16px);
       margin: 0;
-      padding-right: rem(15px);
+      padding-right: mixins.rem(15px);
       overflow-y: auto;
     }
 
@@ -269,7 +272,7 @@
   .mention-actions {
     width: 100%;
     background-color: white;
-    padding-top: rem(12px);
+    padding-top: mixins.rem(12px);
     transition: transform 0.2s;
     transform: translateY(0);
     position: absolute;
@@ -277,9 +280,9 @@
   }
 
   .mention-action {
-    height: rem(42px);
-    font-size: rem(16px);
-    line-height: rem(42px);
+    height: mixins.rem(42px);
+    font-size: mixins.rem(16px);
+    line-height: mixins.rem(42px);
     width: 100%;
     padding: 0;
     text-align: left;
@@ -297,9 +300,9 @@
 
     .fa-icon {
       position: relative;
-      top: rem(-1px);
-      font-size: rem(14px);
-      width: rem(35px);
+      top: mixins.rem(-1px);
+      font-size: mixins.rem(14px);
+      width: mixins.rem(35px);
       text-align: center;
       opacity: 0.75;
     }
