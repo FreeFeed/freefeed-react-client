@@ -118,7 +118,7 @@ function freefeedAttachmentId(url) {
   }
 }
 
-async function createLightboxItem(url) {
+async function createLightboxItem(url, attempt = 0) {
   const attId = freefeedAttachmentId(url);
   if (attId) {
     // Freefeed attachment
@@ -127,8 +127,13 @@ async function createLightboxItem(url) {
       return null;
     }
     if (att.meta?.inProgress) {
-      // Retry after 5 seconds
-      return new Promise((resolve) => setTimeout(() => resolve(createLightboxItem(url)), 5000));
+      if (attempt > 10) {
+        return null;
+      }
+      // Retry after timeout
+      return new Promise((resolve) =>
+        setTimeout(() => resolve(createLightboxItem(url, attempt + 1)), 5_000 * (attempt + 1)),
+      );
     } else if (att.mediaType === 'image') {
       return {
         type: IMAGE,
