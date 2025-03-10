@@ -7,8 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
-## [1.138.0] - Not released
-
 ## [1.137.0] - 2025-03-07
 ### Changed
 - Totally new design of post attachments, including larger previews and denser
