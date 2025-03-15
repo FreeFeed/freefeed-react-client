@@ -139,7 +139,7 @@ async function createLightboxItem(url, attempt = 0) {
         type: IMAGE,
         mediaType: 'image',
         src: attachmentPreviewUrl(att.id, 'image'),
-        originalSrc: attachmentPreviewUrl(att.id, 'original'),
+        originalSrc: attachmentPreviewUrl(att.id, 'original', null, null, { download: true }),
         width: att.previewWidth ?? att.width,
         height: att.previewHeight ?? att.height,
       };
@@ -149,7 +149,7 @@ async function createLightboxItem(url, attempt = 0) {
         mediaType: 'video',
         videoSrc: attachmentPreviewUrl(att.id, 'video'),
         msrc: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>',
-        originalSrc: attachmentPreviewUrl(att.id, 'original'),
+        originalSrc: attachmentPreviewUrl(att.id, 'original', null, null, { download: true }),
         width: att.previewWidth ?? att.width,
         height: att.previewHeight ?? att.height,
         meta: att.meta ?? {},

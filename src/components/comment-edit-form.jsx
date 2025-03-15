@@ -101,7 +101,7 @@ export function CommentEditForm({
   const onUpload = useEvent((att) => {
     const inProgress = att.meta?.inProgress;
     const previewType = inProgress || att.mediaType === 'general' ? 'original' : att.mediaType;
-    const url = attachmentPreviewUrl(att.id, previewType, null, null, false);
+    const url = attachmentPreviewUrl(att.id, previewType, null, null, { redirect: false });
     fetch(url)
       .then((r) => r.json())
       .then(({ url }) => {

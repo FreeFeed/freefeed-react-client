@@ -85,7 +85,6 @@ function initLightbox() {
       html: downloadIconHtml,
       onInit: (el, pswp) => {
         el.setAttribute('download', ''); // Does not work for cross-origin links:(
-        el.setAttribute('target', '_blank');
         el.setAttribute('rel', 'noopener');
 
         pswp.on('change', () => {
