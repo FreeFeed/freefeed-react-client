@@ -55,7 +55,7 @@ export function useLightboxItems(attachments, postId) {
               meta: a.meta ?? {},
               duration: a.duration ?? 0,
             }),
-        originalSrc: attachmentPreviewUrl(a.id, 'original'),
+        originalSrc: attachmentPreviewUrl(a.id, 'original', null, null, { download: true }),
         width: a.previewWidth ?? a.width,
         height: a.previewHeight ?? a.height,
         pid: `${postId?.slice(0, 8) ?? 'new-post'}-${a.id.slice(0, 8)}`,
