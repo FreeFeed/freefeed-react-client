@@ -790,10 +790,19 @@ export function getAttachmentsInfo(ids) {
   return fetch(`${apiPrefix}/attachments/byIds`, postRequestOptions('POST', { ids }));
 }
 
-export function attachmentPreviewUrl(attId, type, width = null, height = null, redirect = true) {
+export function attachmentPreviewUrl(
+  attId,
+  type,
+  width = null,
+  height = null,
+  { redirect = true, download = false } = {},
+) {
   const url = new URL(`${apiPrefix}/attachments/${attId}/${type}`);
   if (redirect) {
     url.searchParams.set('redirect', '');
+  }
+  if (download) {
+    url.searchParams.set('download', '');
   }
   if (width && height) {
     url.searchParams.set('width', width);
