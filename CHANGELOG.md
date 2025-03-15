@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Experimental
 
+## [1.137.2] - 2025-03-15
+### Changed
+- The "Download" button in the lightbox now actually downloads the image/video
+  (i.e. points to the URL with the 'download' attribute).
+
 ## [1.137.0] - 2025-03-07
 ### Changed
 - Totally new design of post attachments, including larger previews and denser
