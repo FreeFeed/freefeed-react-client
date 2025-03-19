@@ -66,7 +66,7 @@ export function VisualAttachment({
   const { videoPlaying, currentTime } = useVideoEvents(videoRef);
 
   const handleClick = useEvent((e) => {
-    if (inlinePlaying) {
+    if (inlinePlaying && videoRef.current) {
       if (videoPlaying) {
         videoRef.current.pause();
       } else {
@@ -91,7 +91,9 @@ export function VisualAttachment({
   useFullscreenVideo(videoRef, videoSrc, videoMaxSrc);
 
   const withVideoPlayer =
-    att.mediaType === 'video' && !isNSFW && animationType !== PREVIEW_ANIMATION_NONE;
+    att.mediaType === 'video' &&
+    !isNSFW &&
+    (inlinePlaying || animationType !== PREVIEW_ANIMATION_NONE);
 
   return (
     <a
