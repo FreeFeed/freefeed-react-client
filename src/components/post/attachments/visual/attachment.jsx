@@ -187,7 +187,7 @@ function formatTime(duration) {
 function useVideoProps(att, isNSFW, width, height) {
   const isGifLike =
     att.mediaType === 'video' &&
-    (att.meta?.animatedImage || (att.meta?.silent && att.duration <= 5));
+    (att.meta?.animatedImage || (att.meta?.silent && att.duration <= 10));
 
   const screenWidth = useScreenWidth();
   const inlinePlaying =
