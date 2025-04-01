@@ -80,7 +80,7 @@ function parseString(text, params) {
 
   for (const [index, token] of tokens.entries()) {
     if (token.type === SPOILER_START) {
-      result.push(tokenToElement(token, index, params));
+      result.push(tokenToElement(token, index, text, params));
       result = spoilerContent;
     } else if (token.type === SPOILER_END) {
       const content = [...spoilerContent];
@@ -88,9 +88,9 @@ function parseString(text, params) {
       result = resultContent;
 
       result.push(<Spoiler key={index}>{content}</Spoiler>);
-      result.push(tokenToElement(token, index, params));
+      result.push(tokenToElement(token, index, text, params));
     } else {
-      result.push(tokenToElement(token, index, params));
+      result.push(tokenToElement(token, index, text, params));
     }
   }
   return resultContent;
