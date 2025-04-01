@@ -99,9 +99,11 @@ export function VisualAttachment({
     <a
       role="figure"
       className={cn(
-        style['link'],
-        inlinePlaying && style['link--inline-video'],
-        videoPlaying && style['link--playing'],
+        style['attachment'],
+        style[`attachment--${att.mediaType}`],
+        style[`attachment--animation--${animationType}`],
+        inlinePlaying && style['attachment--inline-video'],
+        videoPlaying && style['attachment--playing'],
       )}
       href={attachmentPreviewUrl(att.id, 'original')}
       title={nameAndSize}
@@ -155,12 +157,12 @@ export function VisualAttachment({
           {isNSFW && !removeAttachment && (
             <NsfwCanvas aspectRatio={prvWidth / prvHeight} src={imageSrc} />
           )}
-          {inlinePlaying && !videoPlaying && <Icon icon={faPlay} className={style['play-icon']} />}
+          {att.mediaType === 'video' && <Icon icon={faPlay} className={style['play-icon']} />}
         </>
       )}
       {att.mediaType === 'video' && !inlinePlaying && (
         <div className={cn(style['overlay'], style['overlay--time'])}>
-          {isGifLike ? <span>GIF</span> : <Icon icon={faPlay} />}
+          {isGifLike ? <span>GIF</span> : null}
           {animationType !== PREVIEW_ANIMATION_ALWAYS && formatTime(att.duration - currentTime)}
         </div>
       )}
@@ -187,7 +189,7 @@ function formatTime(duration) {
 function useVideoProps(att, isNSFW, width, height) {
   const isGifLike =
     att.mediaType === 'video' &&
-    (att.meta?.animatedImage || (att.meta?.silent && att.duration <= 5));
+    (att.meta?.animatedImage || (att.meta?.silent && att.duration <= 10));
 
   const screenWidth = useScreenWidth();
   const inlinePlaying =

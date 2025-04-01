@@ -17,7 +17,7 @@ exports[`PostAttachments > Displays all post attachment types 1`] = `
           class="row row--stretched"
         >
           <a
-            class="link"
+            class="attachment attachment--video attachment--animation--hover"
             data-pid="new-post-vi1"
             href="https://candy.freefeed.net/v4/attachments/vi1/original?redirect="
             role="figure"
@@ -48,27 +48,27 @@ exports[`PostAttachments > Displays all post attachment types 1`] = `
               src="https://candy.freefeed.net/v4/attachments/vi1/video?redirect=&width=338&height=190"
               width="338"
             />
+            <svg
+              aria-hidden="true"
+              class="play-icon fa-icon fa-icon-fas-play"
+              focusable="false"
+              role="img"
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"
+                fill="currentColor"
+              />
+            </svg>
             <div
               class="overlay overlay--time"
             >
-              <svg
-                aria-hidden="true"
-                class="fa-icon fa-icon-fas-play"
-                focusable="false"
-                role="img"
-                viewBox="0 0 448 512"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"
-                  fill="currentColor"
-                />
-              </svg>
               2:03
             </div>
           </a>
           <a
-            class="link"
+            class="attachment attachment--image attachment--animation--hover"
             data-pid="new-post-im1"
             href="https://candy.freefeed.net/v4/attachments/im1/original?redirect="
             role="figure"
