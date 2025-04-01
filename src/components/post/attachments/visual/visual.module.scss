@@ -65,7 +65,7 @@
 }
 
 // Link
-.link {
+.attachment {
   color: inherit !important;
   position: relative;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
@@ -88,7 +88,7 @@
   }
 }
 
-.container--sortable .link {
+.container--sortable .attachment {
   cursor: move;
 }
 
@@ -112,8 +112,8 @@
   opacity: 0;
   transition: opacity 0.2s;
 
-  .link--inline-video &,
-  .link--playing & {
+  .attachment--inline-video &,
+  .attachment--playing & {
     opacity: 1;
   }
 }
@@ -188,15 +188,33 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 60px;
   color: white;
   opacity: 0.66;
-  transition: opacity 0.3s;
+  transition: all 0.3s;
   filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.33));
+  font-size: 40px;
+
+  .attachment--inline-video & {
+    font-size: 75px;
+  }
 }
 
-.link:hover .play-icon {
+.attachment:hover .play-icon {
+  transform: translate(-50%, -50%) scale(0.9);
+  opacity: 0.44;
+}
+
+.attachment--inline-video:hover .play-icon {
+  transform: translate(-50%, -50%) scale(1.1);
   opacity: 1;
+}
+
+.attachment--inline-video.attachment--playing .play-icon {
+  display: none;
+}
+
+.attachment--animation--always .play-icon {
+  display: none;
 }
 
 // NSFW canvas
