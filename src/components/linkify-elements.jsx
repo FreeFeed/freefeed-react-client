@@ -31,10 +31,11 @@ const MAX_URL_LENGTH = 50;
 /**
  * @param {import('social-text-tokenizer').Token} token
  * @param {string} key
+ * @param {string} text
  * @param {any} params
  * @returns {React.JSX.Element}
  */
-export function tokenToElement(token, key, params) {
+export function tokenToElement(token, key, text, params) {
   switch (token.type) {
     case MENTION:
       return (
@@ -89,7 +90,7 @@ export function tokenToElement(token, key, params) {
     }
 
     case LINK:
-      return renderLink(token, key);
+      return renderLink(token, key, text);
 
     case SHORT_LINK:
       return (
@@ -159,8 +160,17 @@ export function tokenToElement(token, key, params) {
   return token.text;
 }
 
-function renderLink(token, key) {
+function renderLink(token, key, text) {
   const href = linkHref(token.text);
+  const isBareLink = text.charAt(token.offset - 1) === '!';
+
+  if (isBareLink) {
+    return (
+      <Anchor key={key} href={href}>
+        {prettyLink(token.text, MAX_URL_LENGTH)}
+      </Anchor>
+    );
+  }
 
   if (isLocalLink(token.text)) {
     const localPart = trimOrigin(token.text);
