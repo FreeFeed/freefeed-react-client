@@ -1413,3 +1413,11 @@ export function getMatchedUsers(query, fetchOptions) {
     fetchOptions,
   };
 }
+
+export function undoAction(subject, token) {
+  return {
+    type: ActionTypes.UNDO_ACTION,
+    apiRequest: Api.undoAction,
+    payload: { subject, token },
+  };
+}

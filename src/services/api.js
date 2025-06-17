@@ -878,3 +878,7 @@ export function getMatchedUsers({ query }, fetchOptions = {}) {
     ...fetchOptions,
   });
 }
+
+export function undoAction({ subject, token }) {
+  return fetch(`${apiPrefix}/undo/${subject}`, postRequestOptions('POST', { token }));
+}
