@@ -19,6 +19,7 @@ import { Delayed } from './lazy-component';
 import { AppUpdated } from './app-updated';
 import { LayoutHeader } from './layout-header';
 import { UIScaleSetter } from './ui-scale-setter';
+import { UndoContainer } from './undo/undo-container';
 
 const loadingPageMessage = (
   <Delayed>
@@ -216,6 +217,7 @@ class Layout extends Component {
               <Icon icon={faBug} />
             </a>
           )}
+          <UndoContainer />
         </div>
       </ErrorBoundary>
     );

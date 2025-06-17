@@ -1117,6 +1117,11 @@ export const draftsMiddleware = (store) => {
   };
 };
 
+export function undoMiddleware(store) {
+  setInterval(() => store.dispatch(ActionCreators.undoClean()), 60_000);
+  return (next) => (action) => next(action);
+}
+
 function isResponseOf(action, ...baseTypes) {
   return baseTypes.map(response).includes(action.type);
 }

@@ -1,0 +1,33 @@
+@use '../../../styles/helvetica/dark-vars.scss';
+
+.container {
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.entry {
+  background-color: white;
+  padding: 1em;
+  border-radius: 0.25em;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+
+  :global(.dark-theme) & {
+    background-color: dark-vars.$bg-color-lighter;
+    box-shadow: none;
+    outline: 1px solid dark-vars.$bg-color-lightest;
+  }
+}
+
+.buttonCounter {
+  opacity: 0.5;
+}

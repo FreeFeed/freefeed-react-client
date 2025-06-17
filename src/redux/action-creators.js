@@ -1421,3 +1421,14 @@ export function undoAction(subject, token) {
     payload: { subject, token },
   };
 }
+
+export function undoClean() {
+  return { type: ActionTypes.UNDO_CLEAN };
+}
+
+export function deleteUndoEntry(id) {
+  return {
+    type: ActionTypes.DELETE_UNDO_ENTRY,
+    payload: { id },
+  };
+}

@@ -2186,3 +2186,5 @@ export function lastAutocompleteQuery(state = '', action) {
   }
   return state;
 }
+
+export { undoEntries } from './reducers/undo';
