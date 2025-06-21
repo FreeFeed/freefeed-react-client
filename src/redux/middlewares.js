@@ -747,6 +747,26 @@ const bindHandlers = (store) => ({
       commentId: data.commentId,
       postId: data.postId,
     }),
+  'comment:restore': ({ comments: comment }) => {
+    const { postId, seqNumber } = comment;
+    // We need to prepare data for the 'posts' reducer
+    const state = store.getState();
+    const comments = state.posts[postId]?.comments || [];
+
+    let insertBefore = null;
+    for (const id of comments) {
+      if (state.comments[id].seqNumber > seqNumber) {
+        insertBefore = id;
+        break;
+      }
+    }
+
+    store.dispatch({
+      type: ActionTypes.REALTIME_COMMENT_RESTORE,
+      comment,
+      insertBefore,
+    });
+  },
   'like:new': async (data) => {
     const { postId } = data.meta;
     const iLiked = iLikedPost(store.getState(), postId);
@@ -1119,7 +1139,16 @@ export const draftsMiddleware = (store) => {
 
 export function undoMiddleware(store) {
   setInterval(() => store.dispatch(ActionCreators.undoClean()), 60_000);
-  return (next) => (action) => next(action);
+  const rtHandlers = bindHandlers(store);
+  return (next) => (action) => {
+    if (action.type === response(ActionTypes.UNDO_ACTION)) {
+      if (action.request.subject === 'commentDelete') {
+        // Emulate the realtime 'comment:restore' event
+        rtHandlers['comment:restore'](action.payload);
+      }
+    }
+    return next(action);
+  };
 }
 
 function isResponseOf(action, ...baseTypes) {

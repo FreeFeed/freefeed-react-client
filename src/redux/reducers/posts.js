@@ -17,6 +17,7 @@ import {
   NOTIFY_OF_ALL_COMMENTS,
   REALTIME_COMMENT_DESTROY,
   REALTIME_COMMENT_NEW,
+  REALTIME_COMMENT_RESTORE,
   REALTIME_COMMENT_UPDATE,
   REALTIME_LIKE_NEW,
   REALTIME_LIKE_REMOVE,
@@ -183,6 +184,34 @@ export function posts(state = {}, action) {
         return p;
       });
     }
+
+    case REALTIME_COMMENT_RESTORE: {
+      const { comment, insertBefore } = action;
+      const post = state[comment.postId];
+      if (!post) {
+        return state;
+      }
+      if (post.comments?.includes(comment.id)) {
+        return state;
+      }
+
+      const newComments = [...(post.comments ?? [])];
+      const p = insertBefore ? newComments.indexOf(insertBefore) : -1;
+      if (p >= 0) {
+        newComments.splice(p, 0, comment.id);
+      } else {
+        newComments.push(comment.id);
+      }
+
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
+          comments: newComments,
+        },
+      };
+    }
+
     case response(ADD_COMMENT): {
       const post = state[action.request.postId];
       if (!post || post.comments?.includes(action.payload.comments.id)) {

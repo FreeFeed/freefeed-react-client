@@ -760,6 +760,9 @@ export function comments(state = {}, action) {
       }
       return _.omit(state, action.commentId);
     }
+    case ActionTypes.REALTIME_COMMENT_RESTORE: {
+      return mergeByIds(state, [action.comment]);
+    }
     case response(ActionTypes.ADD_COMMENT): {
       return {
         ...state,
