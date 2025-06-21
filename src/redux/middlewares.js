@@ -679,123 +679,129 @@ const isFirstFriendInteraction = (post, { users }, { subscriptions, comments }) 
 };
 
 const postFetchDelay = 20000; // 20 sec
-const bindHandlers = (store) => ({
-  'user:update': (data) => store.dispatch({ ...data, type: ActionTypes.REALTIME_USER_UPDATE }),
-  'post:new': (data) => {
-    const state = store.getState();
-    const isFeedFirstPage = isFirstPage(state);
-    const isHomeFeed = state.routing.locationBeforeTransitions.pathname === '/';
-    const isMemoriesFeed = isMemories(state);
-    const useRealtimePreference = state.user.frontendPreferences.realtimeActive;
-    const shouldBump =
-      isFeedFirstPage && (!isHomeFeed || (useRealtimePreference && isHomeFeed)) && !isMemoriesFeed;
+const bindHandlers = (store) => {
+  const handlers = {
+    'user:update': (data) => store.dispatch({ ...data, type: ActionTypes.REALTIME_USER_UPDATE }),
+    'post:new': (data) => {
+      const state = store.getState();
+      const isFeedFirstPage = isFirstPage(state);
+      const isHomeFeed = state.routing.locationBeforeTransitions.pathname === '/';
+      const isMemoriesFeed = isMemories(state);
+      const useRealtimePreference = state.user.frontendPreferences.realtimeActive;
+      const shouldBump =
+        isFeedFirstPage &&
+        (!isHomeFeed || (useRealtimePreference && isHomeFeed)) &&
+        !isMemoriesFeed;
 
-    let insertBefore = null;
-    if (shouldBump) {
-      insertBefore = state.feedViewState.entries[0] || null;
-      if (state.feedViewOptions.sort === FeedOptions.CHRONOLOGIC) {
-        for (const postId of state.feedViewState.entries) {
-          if (data.posts.createdAt >= state.posts[postId].createdAt) {
-            insertBefore = postId;
-            break;
+      let insertBefore = null;
+      if (shouldBump) {
+        insertBefore = state.feedViewState.entries[0] || null;
+        if (state.feedViewOptions.sort === FeedOptions.CHRONOLOGIC) {
+          for (const postId of state.feedViewState.entries) {
+            if (data.posts.createdAt >= state.posts[postId].createdAt) {
+              insertBefore = postId;
+              break;
+            }
           }
         }
       }
-    }
 
-    return store.dispatch({
-      ...data,
-      type: ActionTypes.REALTIME_POST_NEW,
-      post: data.posts,
-      shouldBump,
-      insertBefore,
-    });
-  },
-  'post:update': (data) =>
-    store.dispatch({ ...data, type: ActionTypes.REALTIME_POST_UPDATE, post: data.posts }),
-  'post:destroy': (data) =>
-    store.dispatch({ type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId }),
-  'post:hide': (data) =>
-    store.dispatch({ type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId }),
-  'post:unhide': (data) =>
-    store.dispatch({ type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId }),
-  'post:save': (data) =>
-    store.dispatch({
-      type: ActionTypes.REALTIME_POST_SAVE,
-      payload: { postId: data.meta.postId, save: true },
-    }),
-  'post:unsave': (data) =>
-    store.dispatch({
-      type: ActionTypes.REALTIME_POST_SAVE,
-      payload: { postId: data.meta.postId, save: false },
-    }),
-  'comment:new': async (data) => {
-    const { postId } = data.comments;
-    const action = { ...data, type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments };
-    return dispatchWithPost(store, postId, action, () => true, postFetchDelay);
-  },
-  'comment:update': (data) =>
-    store.dispatch({
-      ...data,
-      type: ActionTypes.REALTIME_COMMENT_UPDATE,
-      comment: data.comments,
-      event: 'comment:update',
-    }),
-  'comment:destroy': (data) =>
-    store.dispatch({
-      type: ActionTypes.REALTIME_COMMENT_DESTROY,
-      commentId: data.commentId,
-      postId: data.postId,
-    }),
-  'comment:restore': ({ comments: comment }) => {
-    const { postId, seqNumber } = comment;
-    // We need to prepare data for the 'posts' reducer
-    const state = store.getState();
-    const comments = state.posts[postId]?.comments || [];
+      return store.dispatch({
+        ...data,
+        type: ActionTypes.REALTIME_POST_NEW,
+        post: data.posts,
+        shouldBump,
+        insertBefore,
+      });
+    },
+    'post:update': (data) =>
+      store.dispatch({ ...data, type: ActionTypes.REALTIME_POST_UPDATE, post: data.posts }),
+    'post:destroy': (data) =>
+      store.dispatch({ type: ActionTypes.REALTIME_POST_DESTROY, postId: data.meta.postId }),
+    'post:restore': (data) => handlers['post:new'](data),
+    'post:hide': (data) =>
+      store.dispatch({ type: ActionTypes.REALTIME_POST_HIDE, postId: data.meta.postId }),
+    'post:unhide': (data) =>
+      store.dispatch({ type: ActionTypes.REALTIME_POST_UNHIDE, postId: data.meta.postId }),
+    'post:save': (data) =>
+      store.dispatch({
+        type: ActionTypes.REALTIME_POST_SAVE,
+        payload: { postId: data.meta.postId, save: true },
+      }),
+    'post:unsave': (data) =>
+      store.dispatch({
+        type: ActionTypes.REALTIME_POST_SAVE,
+        payload: { postId: data.meta.postId, save: false },
+      }),
+    'comment:new': async (data) => {
+      const { postId } = data.comments;
+      const action = { ...data, type: ActionTypes.REALTIME_COMMENT_NEW, comment: data.comments };
+      return dispatchWithPost(store, postId, action, () => true, postFetchDelay);
+    },
+    'comment:update': (data) =>
+      store.dispatch({
+        ...data,
+        type: ActionTypes.REALTIME_COMMENT_UPDATE,
+        comment: data.comments,
+        event: 'comment:update',
+      }),
+    'comment:destroy': (data) =>
+      store.dispatch({
+        type: ActionTypes.REALTIME_COMMENT_DESTROY,
+        commentId: data.commentId,
+        postId: data.postId,
+      }),
+    'comment:restore': ({ comments: comment }) => {
+      const { postId, seqNumber } = comment;
+      // We need to prepare data for the 'posts' reducer
+      const state = store.getState();
+      const comments = state.posts[postId]?.comments || [];
 
-    let insertBefore = null;
-    for (const id of comments) {
-      if (state.comments[id].seqNumber > seqNumber) {
-        insertBefore = id;
-        break;
+      let insertBefore = null;
+      for (const id of comments) {
+        if (state.comments[id].seqNumber > seqNumber) {
+          insertBefore = id;
+          break;
+        }
       }
-    }
 
-    store.dispatch({
-      type: ActionTypes.REALTIME_COMMENT_RESTORE,
-      comment,
-      insertBefore,
-    });
-  },
-  'like:new': async (data) => {
-    const { postId } = data.meta;
-    const iLiked = iLikedPost(store.getState(), postId);
-    const action = { type: ActionTypes.REALTIME_LIKE_NEW, postId, users: [data.users], iLiked };
-    return dispatchWithPost(store, postId, action, isFirstFriendInteraction, postFetchDelay);
-  },
-  'like:remove': (data) =>
-    store.dispatch({
-      type: ActionTypes.REALTIME_LIKE_REMOVE,
-      postId: data.meta.postId,
-      userId: data.meta.userId,
-    }),
-  'comment_like:new': (data) =>
-    store.dispatch({
-      type: ActionTypes.REALTIME_COMMENT_UPDATE,
-      comment: data.comments,
-      event: 'comment_like:new',
-    }),
-  'comment_like:remove': (data) =>
-    store.dispatch({
-      type: ActionTypes.REALTIME_COMMENT_UPDATE,
-      comment: data.comments,
-      event: 'comment_like:remove',
-    }),
-  'global:user:update': (data) =>
-    store.dispatch({ type: ActionTypes.REALTIME_GLOBAL_USER_UPDATE, user: data.user }),
-  'attachment:update': (data) =>
-    store.dispatch({ ...data, type: ActionTypes.REALTIME_ATTACHMENT_UPDATE }),
-});
+      store.dispatch({
+        type: ActionTypes.REALTIME_COMMENT_RESTORE,
+        comment,
+        insertBefore,
+      });
+    },
+    'like:new': async (data) => {
+      const { postId } = data.meta;
+      const iLiked = iLikedPost(store.getState(), postId);
+      const action = { type: ActionTypes.REALTIME_LIKE_NEW, postId, users: [data.users], iLiked };
+      return dispatchWithPost(store, postId, action, isFirstFriendInteraction, postFetchDelay);
+    },
+    'like:remove': (data) =>
+      store.dispatch({
+        type: ActionTypes.REALTIME_LIKE_REMOVE,
+        postId: data.meta.postId,
+        userId: data.meta.userId,
+      }),
+    'comment_like:new': (data) =>
+      store.dispatch({
+        type: ActionTypes.REALTIME_COMMENT_UPDATE,
+        comment: data.comments,
+        event: 'comment_like:new',
+      }),
+    'comment_like:remove': (data) =>
+      store.dispatch({
+        type: ActionTypes.REALTIME_COMMENT_UPDATE,
+        comment: data.comments,
+        event: 'comment_like:remove',
+      }),
+    'global:user:update': (data) =>
+      store.dispatch({ type: ActionTypes.REALTIME_GLOBAL_USER_UPDATE, user: data.user }),
+    'attachment:update': (data) =>
+      store.dispatch({ ...data, type: ActionTypes.REALTIME_ATTACHMENT_UPDATE }),
+  };
+  return handlers;
+};
 
 export const realtimeMiddleware = (store) => {
   return createRealtimeMiddleware(
@@ -1164,9 +1170,12 @@ export function undoMiddleware(store) {
     }
 
     if (action.type === response(ActionTypes.UNDO_ACTION)) {
+      // Emulate the realtime events
       if (action.request.subject === 'commentDelete') {
-        // Emulate the realtime 'comment:restore' event
         rtHandlers['comment:restore'](action.payload);
+      }
+      if (action.request.subject === 'postDelete') {
+        rtHandlers['post:restore'](action.payload);
       }
     }
   };

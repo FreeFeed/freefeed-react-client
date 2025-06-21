@@ -214,25 +214,6 @@ export function feedViewState(state = initFeed, action) {
     case response(ActionTypes.GET_NOTIFICATIONS): {
       return { ...state, isLastPage: action.payload.isLastPage };
     }
-    case response(ActionTypes.DELETE_POST): {
-      const { postId } = action.request;
-      if (action.payload.postStillAvailable || !state.entries.includes(postId)) {
-        return state;
-      }
-      return {
-        ...state,
-        entries: _.without(state.entries, postId),
-      };
-    }
-    case ActionTypes.REALTIME_POST_DESTROY: {
-      if (!state.entries.includes(action.postId)) {
-        return state;
-      }
-      return {
-        ...state,
-        entries: _.without(state.entries, action.postId),
-      };
-    }
     case response(ActionTypes.LEAVE_DIRECT): {
       const postId = action.request;
       if (!state.entries.includes(postId)) {
