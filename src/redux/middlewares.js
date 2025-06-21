@@ -569,7 +569,7 @@ export const redirectionMiddleware = (store) => (next) => (action) => {
     !action.payload.postStillAvailable &&
     store.getState().singlePostId
   ) {
-    return browserHistory.push('/');
+    setTimeout(() => browserHistory.push('/'), 0);
   }
 
   if (
