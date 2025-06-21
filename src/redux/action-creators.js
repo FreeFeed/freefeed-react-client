@@ -1422,8 +1422,11 @@ export function undoAction(subject, token) {
   };
 }
 
-export function undoClean() {
-  return { type: ActionTypes.UNDO_CLEAN };
+export function addUndoEntry(payload) {
+  return {
+    type: ActionTypes.ADD_UNDO_ENTRY,
+    payload,
+  };
 }
 
 export function deleteUndoEntry(id) {

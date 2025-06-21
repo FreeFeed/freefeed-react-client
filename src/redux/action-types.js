@@ -186,5 +186,5 @@ export const SET_ORBIT = 'SET_ORBIT';
 export const UNLOCK_COMMENT = 'UNLOCK_COMMENT';
 export const GET_MATCHED_USERS = 'GET_MATCHED_USERS';
 export const UNDO_ACTION = 'UNDO_ACTION';
+export const ADD_UNDO_ENTRY = 'ADD_UNDO_ENTRY';
 export const DELETE_UNDO_ENTRY = 'DELETE_UNDO_ENTRY';
-export const UNDO_CLEAN = 'UNDO_CLEAN';

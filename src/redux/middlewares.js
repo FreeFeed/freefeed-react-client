@@ -1138,19 +1138,55 @@ export const draftsMiddleware = (store) => {
 };
 
 export function undoMiddleware(store) {
-  setInterval(() => store.dispatch(ActionCreators.undoClean()), 60_000);
   const rtHandlers = bindHandlers(store);
   return (next) => (action) => {
+    next(action);
+
+    if (asyncPhase(action.type) === RESPONSE_PHASE && 'undo' in action.payload) {
+      const now = Math.floor(Date.now() / 1000);
+      for (const entry of action.payload.undo) {
+        // Short ID of undo entry
+        const id = djb2(entry.token);
+        store.dispatch(
+          ActionCreators.addUndoEntry({
+            ..._.pick(entry, ['subject', 'token', 'message']),
+            id,
+            created: now,
+            exp: now + entry.expiresInSec,
+          }),
+        );
+
+        setTimeout(
+          () => store.dispatch(ActionCreators.deleteUndoEntry(id)),
+          entry.expiresInSec * 1000,
+        );
+      }
+    }
+
     if (action.type === response(ActionTypes.UNDO_ACTION)) {
       if (action.request.subject === 'commentDelete') {
         // Emulate the realtime 'comment:restore' event
         rtHandlers['comment:restore'](action.payload);
       }
     }
-    return next(action);
   };
 }
 
 function isResponseOf(action, ...baseTypes) {
   return baseTypes.map(response).includes(action.type);
+}
+
+/**
+ * Fast and simple djb2 hash
+ *
+ * @param {string} data
+ * @returns {string}
+ */
+function djb2(data) {
+  let hash = 5381;
+  for (let i = 0; i < data.length; i++) {
+    hash = ((hash << 5) + hash) ^ data.charCodeAt(i);
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash.toString(36);
 }
