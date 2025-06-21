@@ -2,14 +2,16 @@
 
 .container {
   position: fixed;
-  left: 1em;
-  bottom: 1em;
+  left: 0;
+  bottom: 0;
   list-style: none;
-  margin: 0;
+  margin-block: 0.66em;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5em;
+  gap: 0.66em;
+  width: 100%;
+  max-width: 40em;
 }
 
 .entry {
@@ -21,12 +23,17 @@
   display: flex;
   align-items: center;
   gap: 0.5em;
+  margin-inline: 0.66em;
 
   :global(.dark-theme) & {
     background-color: dark-vars.$bg-color-lighter;
     box-shadow: none;
     outline: 1px solid dark-vars.$bg-color-lightest;
   }
+}
+
+.message {
+  flex: 1;
 }
 
 .buttonCounter {

@@ -29,7 +29,7 @@ export function Entry({ entry }) {
     <li className={styles.entry}>
       <div className={styles.message}>{entry.message}</div>
       <div className={styles.button}>
-        <button className="btn btn-default btn-s" onClick={onUndoClick}>
+        <button className="btn btn-primary btn-s" onClick={onUndoClick}>
           Undo <Counter from={entry.created} ttl={ttl} />
         </button>
       </div>
