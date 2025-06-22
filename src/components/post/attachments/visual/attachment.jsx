@@ -17,6 +17,7 @@ import style from './visual.module.scss';
 import { NsfwCanvas } from './nsfw-canvas';
 import { fitIntoBox } from './geometry';
 import { useStopVideo } from './hooks';
+import { isGifLike } from './utils';
 
 // eslint-disable-next-line complexity
 export function VisualAttachment({
@@ -187,9 +188,7 @@ function formatTime(duration) {
 }
 
 function useVideoProps(att, isNSFW, width, height) {
-  const isGifLike =
-    att.mediaType === 'video' &&
-    (att.meta?.animatedImage || (att.meta?.silent && att.duration <= 10));
+  const gifLike = isGifLike(att);
 
   const screenWidth = useScreenWidth();
   const inlinePlaying =
@@ -198,7 +197,7 @@ function useVideoProps(att, isNSFW, width, height) {
     !isNSFW &&
     (width > 0.75 * screenWidth || width * height > 100000);
 
-  return { inlinePlaying, isGifLike };
+  return { inlinePlaying, isGifLike: gifLike };
 }
 
 function useVideoEvents(videoRef) {
