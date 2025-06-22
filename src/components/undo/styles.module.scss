@@ -24,12 +24,27 @@
   align-items: center;
   gap: 0.5em;
   margin-inline: 0.66em;
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity 0.2s,
+    translate 0.2s;
 
   :global(.dark-theme) & {
     background-color: dark-vars.$bg-color-lighter;
     box-shadow: none;
     outline: 1px solid dark-vars.$bg-color-lightest;
   }
+}
+
+.entry--entering {
+  opacity: 0;
+  translate: -4em 0;
+}
+
+.entry--exiting {
+  opacity: 0;
+  translate: 4em 0;
 }
 
 .message {

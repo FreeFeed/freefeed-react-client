@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useState } from 'react';
 import { useEvent } from 'react-use-event-hook';
@@ -9,7 +10,7 @@ import { Counter } from './counter';
 
 const ttl = 60;
 
-export function Entry({ entry }) {
+export function Entry({ entry, animationState }) {
   const dispatch = useDispatch();
   const [expired, setExpired] = useState(false);
   useEffect(() => {
@@ -26,7 +27,7 @@ export function Entry({ entry }) {
   }
 
   return (
-    <li className={styles.entry}>
+    <li className={cn(styles.entry, styles[`entry--${animationState}`])}>
       <div className={styles.message}>{entry.message}</div>
       <div className={styles.button}>
         <button className="btn btn-primary btn-s" onClick={onUndoClick}>
