@@ -127,6 +127,7 @@ function getQueryPosition({ value, selectionStart }, anchor) {
  *
  * @param {HTMLInputElement|HTMLTextAreaElement} input
  * @param {string} replacement
+ * @param {RegExp} anchor
  * @returns {void}
  */
 function replaceQuery(input, replacement, anchor) {
@@ -137,8 +138,11 @@ function replaceQuery(input, replacement, anchor) {
 
   const before = input.value.slice(0, matchPos[0]);
   const after = input.value.slice(matchPos[1]);
-  const newValue = before + replacement + (after || ' ');
-  const newCaretPos = matchPos[0] + replacement.length + 1;
+  if (!/^(?:\p{Z}|\p{P})/u.test(after)) {
+    replacement += ' ';
+  }
+  const newValue = before + replacement + after;
+  const newCaretPos = matchPos[0] + replacement.length;
   setReactInputValue(input, newValue);
   input.focus();
   input.setSelectionRange(newCaretPos, newCaretPos);
