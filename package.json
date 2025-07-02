@@ -57,8 +57,8 @@
     "whatwg-fetch": "~3.6.20"
   },
   "devDependencies": {
-    "@babel/core": "~7.27.7",
-    "@babel/eslint-parser": "~7.27.5",
+    "@babel/core": "~7.28.0",
+    "@babel/eslint-parser": "~7.28.0",
     "@babel/preset-react": "~7.27.1",
     "@gfx/zopfli": "~1.0.15",
     "@testing-library/dom": "~10.4.0",
