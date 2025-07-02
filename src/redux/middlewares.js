@@ -968,7 +968,11 @@ export const commentsCompleteMiddleware = (store) => (next) => (action) => {
     const postId = action.postId || action.request.postId;
     const post = store.getState().posts[postId];
     if (post && post.omittedComments > 0) {
-      if (post.omittedCommentsOffset === 0 || post.comments.length <= post.omittedCommentsOffset) {
+      if (
+        post.omittedCommentsOffset === 0 ||
+        post.comments.length <= post.omittedCommentsOffset ||
+        post.omittedComments === 1
+      ) {
         store.dispatch(ActionCreators.completePostComments(postId));
       }
     }
