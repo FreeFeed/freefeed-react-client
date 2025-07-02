@@ -131,6 +131,10 @@ body,
     color: dark-vars.$link-color !important;
   }
 
+  .btn-link {
+    color: dark-vars.$link-color;
+  }
+
   .post a,
   .image-attachments .show-more {
     color: dark-vars.$link-color-dim;

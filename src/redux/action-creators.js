@@ -1413,3 +1413,25 @@ export function getMatchedUsers(query, fetchOptions) {
     fetchOptions,
   };
 }
+
+export function undoAction(subject, token) {
+  return {
+    type: ActionTypes.UNDO_ACTION,
+    apiRequest: Api.undoAction,
+    payload: { subject, token },
+  };
+}
+
+export function addUndoEntry(payload) {
+  return {
+    type: ActionTypes.ADD_UNDO_ENTRY,
+    payload,
+  };
+}
+
+export function deleteUndoEntry(id) {
+  return {
+    type: ActionTypes.DELETE_UNDO_ENTRY,
+    payload: { id },
+  };
+}

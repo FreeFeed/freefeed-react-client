@@ -20,9 +20,9 @@ describe('Group moderation', () => {
       };
     });
 
-    it('should remove post from feedViewState if it is fully deleted', () => {
+    it('should not remove post from feedViewState if it is fully deleted', () => {
       const newState = feedViewState(state, action);
-      expect(newState.entries, 'to equal', ['post1', 'post3']);
+      expect(newState, 'to equal', state);
     });
 
     it('should not remove post from feedViewState if it is not fully deleted', () => {
