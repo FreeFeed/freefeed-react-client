@@ -147,7 +147,7 @@
   color: #898989;
   border: 1px solid #898989;
   padding: mixins.rem(6px) mixins.rem(17px) mixins.rem(6px) mixins.rem(6px);
-  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 1px 1px 10px rgb(0, 0, 0, 0.3);
   white-space: nowrap;
   text-align: left;
   max-height: mixins.rem(200px);
@@ -209,7 +209,7 @@
   position: fixed;
   inset: 0;
   z-index: 2;
-  background-color: rgba(153, 153, 153, 0.7);
+  background-color: rgb(153, 153, 153, 0.7);
   animation: 0.2s show;
 
   .container {

@@ -58,7 +58,7 @@ exports[`LinkPreview > Shows a Google Docs preview 1`] = `
     <a
       class="google-docs-inner"
       href="https://docs.google.com/document/d/1GbH0-Tc0Rs-T18JRA3Y--uOo_-lzzzTiCbYCHvs6K_4/edit?usp=sharing"
-      style="background-size: 120%; padding-bottom: 45.45454545454545%;"
+      style="background-size: 120%; padding-bottom: 45.45454545454545%; background-position: center 24.199999999999996%;"
       target="_blank"
     />
   </div>
@@ -292,7 +292,7 @@ exports[`LinkPreview > Shows a video preview for Coub 1`] = `
     <div
       aria-label="Video preview"
       class="static-preview"
-      style="max-width: 533.3333333333334px; max-height: 330px; padding-bottom: 56.25%; background-image: url(https://coub-anubis-a.akamaized.net/coub_storage/coub/simple/cw_image/ce289137929/a46bb680bae77df60147a/1441008976_00029.jpg);"
+      style="max-width: 533.3333333333334px; max-height: 330px; padding-bottom: 56.25%; background-image: url("https://coub-anubis-a.akamaized.net/coub_storage/coub/simple/cw_image/ce289137929/a46bb680bae77df60147a/1441008976_00029.jpg");"
     >
       <svg
         aria-hidden="true"
@@ -332,7 +332,7 @@ exports[`LinkPreview > Shows a video preview for Gfycat 1`] = `
     <div
       aria-label="Video preview"
       class="static-preview"
-      style="max-width: 370.5263157894737px; max-height: 330px; padding-bottom: 89.0625%; background-image: url(https://thumbs.gfycat.com/DismalIndolentGalago-mobile.jpg);"
+      style="max-width: 370.5263157894737px; max-height: 330px; padding-bottom: 89.0625%; background-image: url("https://thumbs.gfycat.com/DismalIndolentGalago-mobile.jpg");"
     >
       <svg
         aria-hidden="true"
@@ -372,7 +372,7 @@ exports[`LinkPreview > Shows a video preview for Giphy 1`] = `
     <div
       aria-label="Video preview"
       class="static-preview"
-      style="max-width: 462.18487394957987px; max-height: 330px; padding-bottom: 71.39999999999999%; background-image: url(https://i.giphy.com/media/ncAcktdglyCuVrKeZG/giphy_s.gif);"
+      style="max-width: 462.18487394957987px; max-height: 330px; padding-bottom: 71.39999999999999%; background-image: url("https://i.giphy.com/media/ncAcktdglyCuVrKeZG/giphy_s.gif");"
     >
       <svg
         aria-hidden="true"
@@ -412,7 +412,7 @@ exports[`LinkPreview > Shows a video preview for Vimeo 1`] = `
     <div
       aria-label="Video preview"
       class="static-preview"
-      style="max-width: 532.9165037789691px; max-height: 330px; padding-bottom: 56.33802816901409%; background-image: url(https://i.vimeocdn.com/video/988324592_450.jpg);"
+      style="max-width: 532.9165037789691px; max-height: 330px; padding-bottom: 56.33802816901409%; background-image: url("https://i.vimeocdn.com/video/988324592_450.jpg");"
     >
       <svg
         aria-hidden="true"
@@ -452,7 +452,7 @@ exports[`LinkPreview > Shows a video preview for Youtube 1`] = `
     <div
       aria-label="Video preview"
       class="static-preview"
-      style="max-width: 533.3333333333334px; max-height: 330px; padding-bottom: 56.25%; background-image: url(https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg);"
+      style="max-width: 533.3333333333334px; max-height: 330px; padding-bottom: 56.25%; background-image: url("https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg");"
     >
       <svg
         aria-hidden="true"
@@ -492,7 +492,7 @@ exports[`LinkPreview > Shows a video preview for Youtube 2`] = `
     <div
       aria-label="Video preview"
       class="static-preview"
-      style="max-width: 533.3333333333334px; max-height: 330px; padding-bottom: 56.25%; background-image: url(https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg);"
+      style="max-width: 533.3333333333334px; max-height: 330px; padding-bottom: 56.25%; background-image: url("https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg");"
     >
       <iframe
         allow="autoplay"
