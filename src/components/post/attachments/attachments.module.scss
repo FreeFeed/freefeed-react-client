@@ -39,7 +39,7 @@
 }
 
 .original-link__text {
-  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .original-link__size {
@@ -57,7 +57,7 @@
   padding: 0.2em;
   font-size: 1.2em;
   border-radius: 0.35em;
-  outline: 3px solid rgba(255, 255, 255, 0.5);
+  outline: 3px solid rgb(255, 255, 255, 0.5);
 }
 
 .like-a-video {
@@ -72,7 +72,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 2px;
-  background-color: rgba(128, 128, 128, 0.2);
+  background-color: rgb(128, 128, 128, 0.2);
   font-size: 2em;
 }
 

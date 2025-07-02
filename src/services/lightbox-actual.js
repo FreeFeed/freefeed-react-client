@@ -7,6 +7,7 @@ import pswpModule from 'photoswipe';
 import 'photoswipe/photoswipe.css';
 import '../../styles/shared/lighbox.scss';
 import { getFullscreenAPI } from '../utils/fullscreen';
+import { isGifLike } from '../components/post/attachments/visual/utils';
 import { pinnedElements, unscrollTo } from './unscroll';
 import { handlePip } from './pip-video';
 
@@ -236,11 +237,14 @@ function initLightbox() {
     }
     if (data.type === 'video') {
       handlePip(element);
-      if (data.meta.animatedImage || (data.meta.silent && data.duration <= 5)) {
+      console.log(data);
+      if (isGifLike(data)) {
+        console.log('Gif-like');
         element.muted = true;
         element.loop = true;
         element.controls = false;
       } else if (data.meta.silent) {
+        console.log('Silent');
         element.muted = true;
       }
     }

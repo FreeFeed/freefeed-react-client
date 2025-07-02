@@ -8,6 +8,7 @@ import {
   COMPLETE_POST_COMMENTS,
   CREATE_POST,
   DELETE_COMMENT,
+  DELETE_POST,
   DISABLE_COMMENTS,
   ENABLE_COMMENTS,
   GET_SINGLE_POST,
@@ -17,9 +18,11 @@ import {
   NOTIFY_OF_ALL_COMMENTS,
   REALTIME_COMMENT_DESTROY,
   REALTIME_COMMENT_NEW,
+  REALTIME_COMMENT_RESTORE,
   REALTIME_COMMENT_UPDATE,
   REALTIME_LIKE_NEW,
   REALTIME_LIKE_REMOVE,
+  REALTIME_POST_DESTROY,
   REALTIME_POST_HIDE,
   REALTIME_POST_NEW,
   REALTIME_POST_SAVE,
@@ -183,6 +186,34 @@ export function posts(state = {}, action) {
         return p;
       });
     }
+
+    case REALTIME_COMMENT_RESTORE: {
+      const { comment, insertBefore } = action;
+      const post = state[comment.postId];
+      if (!post) {
+        return state;
+      }
+      if (post.comments?.includes(comment.id)) {
+        return state;
+      }
+
+      const newComments = [...(post.comments ?? [])];
+      const p = insertBefore ? newComments.indexOf(insertBefore) : -1;
+      if (p >= 0) {
+        newComments.splice(p, 0, comment.id);
+      } else {
+        newComments.push(comment.id);
+      }
+
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
+          comments: newComments,
+        },
+      };
+    }
+
     case response(ADD_COMMENT): {
       const post = state[action.request.postId];
       if (!post || post.comments?.includes(action.payload.comments.id)) {
@@ -416,9 +447,26 @@ export function posts(state = {}, action) {
           }
         : state;
     }
+
+    // Post deletion (self-action and realtime)
+    // Don't delete post from state, just mark it as deleted
+    case response(DELETE_POST):
+    case REALTIME_POST_DESTROY: {
+      const postId = action.request?.postId ?? action.postId;
+      const post = state[postId];
+      if (action.payload?.postStillAvailable || !post) {
+        return state;
+      }
+      return {
+        ...state,
+        [postId]: { ...post, deleted: true },
+      };
+    }
+
     case REALTIME_POST_NEW: {
       return { ...state, [action.post.id]: postParser(action.post) };
     }
+
     case REALTIME_POST_UPDATE: {
       const post = state[action.post.id];
       if (!post) {

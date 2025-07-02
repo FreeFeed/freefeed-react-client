@@ -18,7 +18,7 @@
   width: mixins.rem(280px);
   background-color: #fff;
   border-radius: 2px;
-  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 5px 1px rgb(0, 0, 0, 0.5);
   text-align: left;
 
   .user-card__arrow {
@@ -30,7 +30,7 @@
     height: 12px;
     background: inherit;
     transform: rotate(45deg);
-    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 5px 1px rgb(0, 0, 0, 0.5);
   }
 
   .user-card-info {
@@ -59,7 +59,7 @@
       .display-name {
         color: #000088;
         font-weight: bold;
-        word-break: break-word;
+        overflow-wrap: break-word;
         display: inline-block;
         max-width: mixins.rem(170px);
       }
