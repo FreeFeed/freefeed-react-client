@@ -2,7 +2,7 @@
 
 .popup {
   position: fixed;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgb(0, 0, 0, 0.6);
   top: 0;
   left: 0;
   height: 100%;
@@ -14,7 +14,7 @@
   padding-right: var(--scrollbar-width, 0);
 
   :global(.dark-theme) & {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgb(0, 0, 0, 0.8);
   }
 }
 
@@ -22,7 +22,7 @@
   background-color: white;
   overflow: auto;
   border-radius: 4px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 20px rgb(0, 0, 0, 0.6);
   max-height: calc(100% - 2em);
   max-width: calc(100% - 2em);
   position: relative;

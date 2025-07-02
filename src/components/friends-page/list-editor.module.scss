@@ -52,7 +52,7 @@
   margin: mixins.rem(4px);
   border-radius: mixins.rem(4px);
   width: 200px;
-  word-break: break-word;
+  overflow-wrap: break-word;
   font-size: mixins.rem(12px);
   display: grid;
   grid-auto-flow: column;
