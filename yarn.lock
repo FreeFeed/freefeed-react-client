@@ -8307,6 +8307,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"punycode.js@npm:^2.3.1":
+  version: 2.3.1
+  resolution: "punycode.js@npm:2.3.1"
+  checksum: 10c0/1d12c1c0e06127fa5db56bd7fdf698daf9a78104456a6b67326877afc21feaa821257b171539caedd2f0524027fa38e67b13dd094159c8d70b6d26d2bea4dfdb
+  languageName: node
+  linkType: hard
+
 "punycode@npm:^1.4.1":
   version: 1.4.1
   resolution: "punycode@npm:1.4.1"
@@ -8728,7 +8735,7 @@ __metadata:
     sass: "npm:^1.89.2"
     sinon: "npm:~21.0.0"
     snarkdown: "npm:~2.0.0"
-    social-text-tokenizer: "npm:~3.1.0"
+    social-text-tokenizer: "npm:~3.2.2"
     socket.io-client: "npm:~2.3.1"
     sortablejs: "npm:~1.15.6"
     stylelint: "npm:~16.21.0"
@@ -9624,14 +9631,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"social-text-tokenizer@npm:~3.1.0":
-  version: 3.1.0
-  resolution: "social-text-tokenizer@npm:3.1.0"
+"social-text-tokenizer@npm:~3.2.2":
+  version: 3.2.2
+  resolution: "social-text-tokenizer@npm:3.2.2"
   dependencies:
     lodash.escaperegexp: "npm:^4.1.2"
-    punycode: "npm:^2.3.1"
-    tslib: "npm:^2.8.0"
-  checksum: 10c0/5f0a7d9f1188221618f94716e1c8e477b7c1db1db1394ba8cb222a40a980e3344d6b66b65edc24fc7e193b275e41a14e12a110ddef02bb29d0b71abcc4571ae1
+    punycode.js: "npm:^2.3.1"
+    tslib: "npm:^2.8.1"
+  checksum: 10c0/93faef50fcd70d1b04d85b92676cf8d4e754431dd3b7bf8a421ea65db3f1f880988818b336cd11a478632343963f0878964c423f40bcbf31f04b7a34e455e6aa
   languageName: node
   linkType: hard
 
@@ -10502,7 +10509,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.3.0, tslib@npm:^2.8.0":
+"tslib@npm:^2.3.0, tslib@npm:^2.8.1":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10c0/9c4759110a19c53f992d9aae23aac5ced636e99887b51b9e61def52611732872ff7668757d4e4c61f19691e36f4da981cd9485e869b4a7408d689f6bf1f14e62

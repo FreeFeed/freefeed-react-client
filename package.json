@@ -46,7 +46,7 @@
     "recharts": "~3.0.2",
     "redux": "~5.0.1",
     "snarkdown": "~2.0.0",
-    "social-text-tokenizer": "~3.1.0",
+    "social-text-tokenizer": "~3.2.2",
     "socket.io-client": "~2.3.1",
     "sortablejs": "~1.15.6",
     "tabbable": "~6.2.0",
