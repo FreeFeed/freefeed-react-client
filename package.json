@@ -109,7 +109,7 @@
     "vite-plugin-compression": "~0.5.1",
     "vite-plugin-generate-file": "~0.2.0",
     "vite-plugin-pwa": "^0.21.2",
-    "vitest": "~3.0.9",
+    "vitest": "~3.2.4",
     "workbox-window": "^7.3.0"
   },
   "scripts": {
