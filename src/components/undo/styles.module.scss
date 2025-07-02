@@ -1,0 +1,56 @@
+@use '../../../styles/helvetica/dark-vars.scss';
+
+.container {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  list-style: none;
+  margin-block: 0.66em;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.66em;
+  width: 100%;
+  max-width: 40em;
+}
+
+.entry {
+  background-color: #f4f4f4;
+  padding: 1em;
+  border-radius: 0.25em;
+  box-shadow: 0 5px 10px rgb(0, 0, 0, 0.1);
+  outline: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-inline: 0.66em;
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity 0.2s,
+    translate 0.2s;
+
+  :global(.dark-theme) & {
+    background-color: dark-vars.$bg-color-lighter;
+    box-shadow: none;
+    outline: 1px solid dark-vars.$bg-color-lightest;
+  }
+}
+
+.entry--entering {
+  opacity: 0;
+  translate: -4em 0;
+}
+
+.entry--exiting {
+  opacity: 0;
+  translate: 4em 0;
+}
+
+.message {
+  flex: 1;
+}
+
+.buttonCounter {
+  opacity: 0.5;
+}

@@ -70,7 +70,7 @@ const getCommentId = (hash) => {
 
 export const joinPostData = (state) => (postId) => {
   const post = state.posts[postId];
-  if (!post) {
+  if (!post || post.deleted) {
     return;
   }
   const { user } = state;

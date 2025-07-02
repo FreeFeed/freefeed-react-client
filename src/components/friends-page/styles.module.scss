@@ -29,7 +29,7 @@
 .userCellPlaceholder {
   @extend .userCell;
 
-  $border: rgba(0, 0, 0, 0.5);
+  $border: rgb(0, 0, 0, 0.5);
   $bg: #f6fafd;
 
   // Draw square as a userpic placeholder

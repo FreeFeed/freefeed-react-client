@@ -476,15 +476,15 @@ code.inline-code {
   border-radius: 5px;
 
   &.be-fe-folded-text-para::after {
-    background: linear-gradient(to bottom, hsla(0deg, 0%, 93%, 0), hsla(0deg, 0%, 93%, 0.007));
+    background: linear-gradient(to bottom, hsl(0deg, 0%, 93%, 0), hsl(0deg, 0%, 93%, 0.007));
   }
 
   &.be-fe-folded-text-read-more {
-    background: linear-gradient(to right, hsla(0deg, 0%, 93%, 0), #eee 3.5em);
+    background: linear-gradient(to right, hsl(0deg, 0%, 93%, 0), #eee 3.5em);
   }
 
   &.be-fe-folded-text::after {
-    background: linear-gradient(to bottom, hsla(0deg, 0%, 93%, 0), hsla(0deg, 0%, 93%, 0.007));
+    background: linear-gradient(to bottom, hsl(0deg, 0%, 93%, 0), hsl(0deg, 0%, 93%, 0.007));
   }
 }
 
@@ -613,7 +613,7 @@ code.inline-code {
         font-size: 60px;
         color: #fff;
         opacity: 0.66;
-        filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.33));
+        filter: drop-shadow(0 0 10px rgb(0, 0, 0, 0.33));
         transition: opacity 0.3s;
       }
 
@@ -675,7 +675,7 @@ code.inline-code {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color: rgba(160, 160, 160, 0.3);
+    background-color: rgb(160, 160, 160, 0.3);
     background-size: 75%;
     background-position: center;
     background-repeat: no-repeat;
@@ -781,7 +781,7 @@ code.inline-code {
     font-size: 100px;
     color: #fff;
     opacity: 0.66;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 0 10px rgb(0, 0, 0, 0.3);
     transition: opacity 0.3s;
   }
 

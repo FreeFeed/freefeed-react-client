@@ -28,6 +28,7 @@ import {
   draftsMiddleware,
   resetPasswordCompleteMiddleware,
   abortableUploadMiddleware,
+  undoMiddleware,
 } from './middlewares';
 
 import * as reducers from './reducers';
@@ -61,6 +62,7 @@ const middleware = [
   appVersionMiddleware,
   reloadFeedMiddleware,
   draftsMiddleware,
+  undoMiddleware,
 ];
 
 const enhancers = [applyMiddleware(...middleware)];

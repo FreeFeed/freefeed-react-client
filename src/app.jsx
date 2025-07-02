@@ -45,7 +45,7 @@ const BacklinksFeed = lazyLoad(() => import('./components/backlinks-feed'));
 
 Sentry.init({
   dsn: CONFIG.sentry.publicDSN,
-  autoSessionTracking: false,
+  integrations: (integrations) => integrations.filter((i) => i.name !== 'BrowserSession'),
 });
 
 const store = configureStore();

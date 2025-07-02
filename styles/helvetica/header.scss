@@ -55,16 +55,16 @@
   right: 0;
   bottom: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.75);
+  background: rgb(255, 255, 255, 0.75);
   padding: 0.5em;
   padding-bottom: 0.33em;
   padding-left: 0.66em;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 10px rgb(0, 0, 0, 0.3);
   border-top-left-radius: 0.66em;
   font-size: 130%;
 
   .dark-theme & {
-    background: rgba(255, 255, 255, 0.35);
+    background: rgb(255, 255, 255, 0.35);
   }
 }
 
