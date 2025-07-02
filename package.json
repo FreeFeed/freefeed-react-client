@@ -83,7 +83,7 @@
     "eslint-plugin-you-dont-need-lodash-underscore": "~6.14.0",
     "glob": "~11.0.3",
     "gray-matter": "~4.0.3",
-    "husky": "~8.0.3",
+    "husky": "~9.1.7",
     "jsdom": "~26.1.0",
     "lint-staged": "~16.1.2",
     "node-html-parser": "~7.0.1",
@@ -124,7 +124,7 @@
     "prettier": "prettier -c \"src/**/*\"",
     "stylelint": "stylelint \"**/*.scss\" --config stylelint.config.js",
     "create_config_json": "echo \"{}\" > ./_dist/config.json",
-    "postinstall": "husky install"
+    "prepare": "husky"
   },
   "author": "FreeFeed contributors",
   "repository": {
