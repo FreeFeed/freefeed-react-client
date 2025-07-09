@@ -33,6 +33,9 @@ try {
     (colorScheme !== 'light' && window.matchMedia?.('(prefers-color-scheme: dark)').matches)
   ) {
     document.documentElement.classList.add('dark-theme');
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute('content', 'hsl(220, 9%, 10%)');
   }
 } catch {
   // pass
