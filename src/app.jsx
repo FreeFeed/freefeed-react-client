@@ -56,6 +56,7 @@ import { lazyRetry } from './utils/retry-promise';
 import { HomeAux } from './components/home-aux';
 import { NotFound } from './components/not-found';
 import { DialogProvider } from './components/dialog/context';
+import { ColorSchemeSetter } from './components/color-theme-setter';
 
 // Set initial history state.
 // Without this, there can be problems with third-party
@@ -117,6 +118,7 @@ function InitialLayout({ children }) {
 
   return (
     <div className="startup">
+      <ColorSchemeSetter />
       <h1 className="startup__logo-box">
         <a href="/" className="startup__logo-link">
           {CONFIG.siteTitle}
