@@ -88,6 +88,10 @@ $post-line-height: mixins.rem(20px);
         }
       }
 
+      .Linkify {
+        display: block;
+      }
+
       a {
         color: #000088;
       }
