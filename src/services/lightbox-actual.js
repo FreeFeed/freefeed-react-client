@@ -255,7 +255,7 @@ function initLightbox() {
   lightbox.on('contentLoadImage', (e) => {
     const { data, element } = e.content;
     if (data.jpegSrc) {
-      element.addEventListener('contextmenu', () => (element.src = data.jpegSrc), { once: true });
+      onContextMenu(element, () => (element.src = data.jpegSrc));
     }
   });
 
@@ -310,4 +310,31 @@ function whenVideoAndPswpLoaded(video, lightbox, action) {
       lightbox.on('afterInit', () => action(video, lightbox.pswp));
     }
   });
+}
+
+function onContextMenu(element, action) {
+  // We need to apply 'action' when user right-clicks or long-taps on the image.
+  // Normally it is the 'contextmenu' event, but...
+
+  // Desktop browsers allows to intercept 'contextmenu' event
+  element.addEventListener('contextmenu', action, { once: true });
+
+  // Some mobile browsers don't support 'contextmenu' event (iOS), and other
+  // showing context menu _before_ the event is handled. So we need to use some
+  // timey wimey to intercept long taps before the menu is showing.
+  const longTapTime = 300; // ms
+  let timeout = null;
+  const abortController = new AbortController();
+  const { signal } = abortController;
+  const clean = () => {
+    clearTimeout(timeout);
+    abortController.abort();
+  };
+
+  element.addEventListener('touchstart', () => (timeout = setTimeout(action, longTapTime)), {
+    signal,
+  });
+  element.addEventListener('touchend', clean, { signal });
+  element.addEventListener('touchcancel', clean, { signal });
+  element.addEventListener('touchmove', clean, { signal });
 }
