@@ -242,14 +242,11 @@ function initLightbox() {
     }
     if (data.type === 'video') {
       handlePip(element);
-      console.log(data);
       if (isGifLike(data)) {
-        console.log('Gif-like');
         element.muted = true;
         element.loop = true;
         element.controls = false;
       } else if (data.meta.silent) {
-        console.log('Silent');
         element.muted = true;
       }
     }
