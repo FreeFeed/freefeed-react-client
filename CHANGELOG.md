@@ -9,7 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - The "Download" button in the lightbox was not displayed if the browser did not
   support the full-screen API.
-
+- Replace the source of the lightbox image with a JPEG version on 'contextmenu'
+  event. This allows user to save the image in JPEG format using the “Save image
+  as...” browser menu.
 ## [1.138.1] - 2025-07-09
 ### Fixed
 - Set the proper "theme-color" meta tag in the startup script (i.e. as earlier

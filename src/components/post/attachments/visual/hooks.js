@@ -47,7 +47,11 @@ export function useLightboxItems(attachments, postId) {
     () =>
       attachments.map((a) => ({
         ...(a.mediaType === 'image'
-          ? { type: 'image', src: attachmentPreviewUrl(a.id, 'image') }
+          ? {
+              type: 'image',
+              src: attachmentPreviewUrl(a.id, 'image'),
+              jpegSrc: attachmentPreviewUrl(a.id, 'image', null, null, { format: 'jpeg' }),
+            }
           : {
               type: a.meta?.inProgress ? 'in-progress' : 'video',
               videoSrc: attachmentPreviewUrl(a.id, 'video'),

@@ -139,6 +139,7 @@ async function createLightboxItem(url, attempt = 0) {
         type: IMAGE,
         mediaType: 'image',
         src: attachmentPreviewUrl(att.id, 'image'),
+        jpegSrc: attachmentPreviewUrl(att.id, 'image', null, null, { format: 'jpeg' }),
         originalSrc: attachmentPreviewUrl(att.id, 'original', null, null, { download: true }),
         width: att.previewWidth ?? att.width,
         height: att.previewHeight ?? att.height,

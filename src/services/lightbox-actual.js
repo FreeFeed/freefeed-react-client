@@ -255,6 +255,13 @@ function initLightbox() {
     }
   });
 
+  lightbox.on('contentLoadImage', (e) => {
+    const { data, element } = e.content;
+    if (data.jpegSrc) {
+      element.addEventListener('contextmenu', () => (element.src = data.jpegSrc), { once: true });
+    }
+  });
+
   // Init
   lightbox.init();
   return lightbox;

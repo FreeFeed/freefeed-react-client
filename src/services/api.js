@@ -795,7 +795,7 @@ export function attachmentPreviewUrl(
   type,
   width = null,
   height = null,
-  { redirect = true, download = false } = {},
+  { redirect = true, download = false, format = null } = {},
 ) {
   const url = new URL(`${apiPrefix}/attachments/${attId}/${type}`);
   if (redirect) {
@@ -803,6 +803,9 @@ export function attachmentPreviewUrl(
   }
   if (download) {
     url.searchParams.set('download', '');
+  }
+  if (format) {
+    url.searchParams.set('format', format);
   }
   if (width && height) {
     url.searchParams.set('width', width);
