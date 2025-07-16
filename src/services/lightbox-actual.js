@@ -19,7 +19,7 @@ export function openLightbox(index, dataSource) {
   initLightbox().loadAndOpen(index, dataSource);
 }
 
-const fsApi = getFullscreenAPI();
+const fullScreenAPI = getFullscreenAPI();
 
 // @see https://github.com/dimsemenov/PhotoSwipe/issues/1759#issue-914638063
 const fullscreenIconsHtml = `<svg aria-hidden="true" class="pswp__icn" viewBox="0 0 32 32" width="32" height="32">
@@ -58,26 +58,38 @@ function initLightbox() {
 
   new PhotoSwipeVideoPlugin(lightbox, {});
 
-  // Add fullscreen button
-  lightbox.on('uiRegister', () => {
-    if (!fsApi) {
-      return;
-    }
-    lightbox.pswp.ui.registerElement({
-      name: 'fs',
-      ariaLabel: 'Full screen',
-      order: 9,
-      isButton: true,
-      html: fullscreenIconsHtml,
-      onClick: () => {
-        if (fsApi.isFullscreen()) {
-          fsApi.exit();
-        } else {
-          fsApi.request(lightbox.pswp.element);
-        }
-      },
-    });
+  if (fullScreenAPI) {
+    // Add Fullscreen button
+    lightbox.on('uiRegister', () => {
+      lightbox.pswp.ui.registerElement({
+        name: 'fs',
+        ariaLabel: 'Full screen',
+        order: 9,
+        isButton: true,
+        html: fullscreenIconsHtml,
+        onClick: () => {
+          if (fullScreenAPI.isFullscreen()) {
+            fullScreenAPI.exit();
+          } else {
+            fullScreenAPI.request(lightbox.pswp.element);
+          }
+        },
+      });
 
+      const h = () =>
+        document.documentElement.classList.toggle(
+          'pswp__fullscreen-mode',
+          !!fullScreenAPI.isFullscreen(),
+        );
+
+      document.addEventListener(fullScreenAPI.changeEvent, h);
+      lightbox.on('destroy', () => document.removeEventListener(fullScreenAPI.changeEvent, h));
+      lightbox.on('close', () => fullScreenAPI.isFullscreen() && fullScreenAPI.exit());
+    });
+  }
+
+  // Add Download button
+  lightbox.on('uiRegister', () => {
     lightbox.pswp.ui.registerElement({
       name: 'download-button',
       order: 10,
@@ -98,13 +110,6 @@ function initLightbox() {
         });
       },
     });
-
-    const h = () =>
-      document.documentElement.classList.toggle('pswp__fullscreen-mode', !!fsApi.isFullscreen());
-
-    document.addEventListener(fsApi.changeEvent, h);
-    lightbox.on('destroy', () => document.removeEventListener(fsApi.changeEvent, h));
-    lightbox.on('close', () => fsApi.isFullscreen() && fsApi.exit());
   });
 
   lightbox.on('bindEvents', () => {
