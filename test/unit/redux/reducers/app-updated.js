@@ -7,12 +7,12 @@ describe(`appUpdated reducer`, () => {
   const s0 = appUpdated(undefined, { type: 'test/init' });
 
   it(`should return the default state without actions`, () => {
-    expect(s0, 'to satisfy', { version: null, updated: false });
+    expect(s0, 'to satisfy', { version: null, initialVersion: null });
   });
 
   it(`should store the version in the state`, () => {
     const s1 = appUpdated(s0, setAppVersion('v1'));
-    expect(s1, 'to satisfy', { version: 'v1', updated: false });
+    expect(s1, 'to satisfy', { version: 'v1', initialVersion: 'v1' });
   });
 
   it(`should not change store when the version in the same`, () => {
@@ -24,13 +24,13 @@ describe(`appUpdated reducer`, () => {
   it(`should mark version updated when the version in changed`, () => {
     const s1 = appUpdated(s0, setAppVersion('v1'));
     const s2 = appUpdated(s1, setAppVersion('v2'));
-    expect(s2, 'to satisfy', { version: 'v2', updated: true });
+    expect(s2, 'to satisfy', { version: 'v2', initialVersion: 'v1' });
   });
 
   it(`should keep version updated when the changed version is repeated`, () => {
     const s1 = appUpdated(s0, setAppVersion('v1'));
     const s2 = appUpdated(s1, setAppVersion('v2'));
     const s3 = appUpdated(s2, setAppVersion('v2'));
-    expect(s3, 'to satisfy', { version: 'v2', updated: true });
+    expect(s3, 'to satisfy', { version: 'v2', initialVersion: 'v1' });
   });
 });

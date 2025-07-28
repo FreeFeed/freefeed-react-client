@@ -11,8 +11,12 @@ import { ButtonLink } from './button-link';
 const { intervalSec } = CONFIG.appVersionCheck;
 
 export function AppUpdated() {
-  const versionFileUpdated = useSelector((state) => state.appUpdated.updated);
+  const versionFileState = useSelector((state) => state.appUpdated);
   const [swRegistered, setSwRegistered] = useState(false);
+
+  const versionFileUpdated =
+    versionFileState.initialVersion !== null &&
+    versionFileState.initialVersion !== versionFileState.version;
 
   const {
     needRefresh: [workerUpdated],
@@ -40,11 +44,14 @@ export function AppUpdated() {
   });
 
   const needRefresh = swRegistered ? workerUpdated : versionFileUpdated;
+  const addText = swRegistered
+    ? ''
+    : ` (was '${versionFileState.initialVersion}', now '${versionFileState.version}')`;
 
   return needRefresh ? (
     <div className={styles.bar}>
       <div className={styles.indicator}>
-        There’s an update for {CONFIG.siteTitle}!{' '}
+        There’s an update for {CONFIG.siteTitle}!{addText}{' '}
         <ButtonLink className={styles.refresh} onClick={reloadPage}>
           Refresh the page
         </ButtonLink>{' '}
