@@ -189,6 +189,18 @@ function initLightbox() {
     data.onDeactivate?.call(data, element);
   });
 
+  // Disable document scrolling when lightbox is open
+  lightbox.on('beforeOpen', () => {
+    const scrollPosition = document.documentElement.scrollTop;
+    document.documentElement.classList.add('page--pswp-open');
+    // Mobile Firefox sometimes resets scroll when the page becoming
+    // 'overflow-y: hidden;'. Here we try to restore it.
+    document.documentElement.scrollTop = scrollPosition;
+  });
+  lightbox.on('destroy', () => {
+    document.documentElement.classList.remove('page--pswp-open');
+  });
+
   // Compensate unwanted scroll after closing lightbox, which happens in some
   // mobile browsers.
   let pinnedEls = [];
