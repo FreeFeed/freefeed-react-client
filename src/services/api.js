@@ -814,6 +814,17 @@ export function attachmentPreviewUrl(
   return url.toString();
 }
 
+/**
+ * ULR for the right-click save-as browser action
+ */
+export function attachmentSaveAsUrl(attachment) {
+  if (attachment.mediaType === 'image' && !/\.(png|jpe?g|gif)$/i.test(attachment.fileName)) {
+    // Not a common image format, save as JPEG for compatibility
+    return attachmentPreviewUrl(attachment.id, 'image', null, null, { format: 'jpeg' });
+  }
+  return attachmentPreviewUrl(attachment.id, 'original');
+}
+
 export function sanitizeMedia() {
   return fetch(`${apiPrefix}/attachments/my/sanitize`, postRequestOptions());
 }

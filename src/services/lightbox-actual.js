@@ -254,8 +254,8 @@ function initLightbox() {
 
   lightbox.on('contentLoadImage', (e) => {
     const { data, element } = e.content;
-    if (data.jpegSrc) {
-      onContextMenu(element, () => (element.src = data.jpegSrc));
+    if (data.saveAsSrc) {
+      onContextMenu(element, () => (element.src = data.saveAsSrc));
     }
   });
 
