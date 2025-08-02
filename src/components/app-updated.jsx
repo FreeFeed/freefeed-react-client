@@ -48,14 +48,11 @@ export function AppUpdated() {
   });
 
   const needRefresh = swRegistered ? workerUpdated : versionFileUpdated;
-  const addText = swRegistered
-    ? ''
-    : ` (was '${versionFileState.initialVersion}', now '${versionFileState.version}')`;
 
   return needRefresh ? (
     <div className={styles.bar}>
       <div className={styles.indicator}>
-        There’s an update for {CONFIG.siteTitle}!{addText}{' '}
+        There’s an update for {CONFIG.siteTitle}!{' '}
         <ButtonLink className={styles.refresh} onClick={reloadPage}>
           Refresh the page
         </ButtonLink>{' '}

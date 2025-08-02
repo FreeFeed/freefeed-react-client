@@ -8,7 +8,7 @@ exports[`AppUpdated > Renders if there is an update 1`] = `
     <div
       class="indicator"
     >
-      There’s an update for FreeFeed! (was 'old', now 'new') 
+      There’s an update for FreeFeed! 
       <a
         aria-disabled="false"
         class="refresh"
