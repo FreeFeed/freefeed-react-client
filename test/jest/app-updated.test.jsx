@@ -6,7 +6,8 @@ import { StateProvider } from './state-provider';
 
 const defaultState = {
   appUpdated: {
-    updated: true,
+    version: 'new',
+    initialVersion: 'old',
   },
 };
 

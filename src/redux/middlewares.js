@@ -1062,18 +1062,21 @@ export const betaChannelMiddleware = (store) => {
 
 export const appVersionMiddleware = (store) => {
   const { url, header, intervalSec } = CONFIG.appVersionCheck;
-  function checkVersion() {
-    fetch(url, { method: 'HEAD' })
-      .then(
-        (res) => res.ok && store.dispatch(ActionCreators.setAppVersion(res.headers.get(header))),
-      )
+  async function checkVersion() {
+    try {
+      const res = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+      if (res.ok && res.headers.has(header)) {
+        store.dispatch(ActionCreators.setAppVersion(res.headers.get(header)));
+      }
+    } catch (err) {
       // eslint-disable-next-line no-console
-      .catch((err) => console.warn(`Cannot fetch '${url}': ${err}`));
-
-    setTimeout(checkVersion, intervalSec * 1000);
+      console.warn(`Cannot fetch '${url}': ${err}`);
+    }
   }
 
-  url && checkVersion();
+  if (url) {
+    setInterval(checkVersion, intervalSec * 1000);
+  }
 
   return (next) => (action) => next(action);
 };

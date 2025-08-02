@@ -4,15 +4,23 @@ import { useRegisterSW } from 'virtual:pwa-register/react';
 
 import { useEvent } from 'react-use-event-hook';
 import { useState } from 'react';
-import { isIos } from '../utils/platform-detection';
+import { isSafari } from '../utils/platform-detection';
 import styles from './app-updated.module.scss';
 import { ButtonLink } from './button-link';
 
 const { intervalSec } = CONFIG.appVersionCheck;
 
+// Safari has strange behavior with service workers updates, so we will use
+// the old-fashion way (via the version file) here
+const useServiceWorker = !isSafari;
+
 export function AppUpdated() {
-  const versionFileUpdated = useSelector((state) => state.appUpdated.updated);
+  const versionFileState = useSelector((state) => state.appUpdated);
   const [swRegistered, setSwRegistered] = useState(false);
+
+  const versionFileUpdated =
+    versionFileState.initialVersion !== null &&
+    versionFileState.initialVersion !== versionFileState.version;
 
   const {
     needRefresh: [workerUpdated],
@@ -21,7 +29,7 @@ export function AppUpdated() {
     onRegistered(r) {
       // iOS has strange behavior with service workers updates, so we will use
       // the old-fashion way (via the version file) here
-      if (r && !isIos) {
+      if (useServiceWorker && r) {
         setSwRegistered(true);
         setInterval(() => r.update(), intervalSec * 1000);
       }
@@ -29,7 +37,7 @@ export function AppUpdated() {
   });
 
   const reloadPage = useEvent(() => {
-    if (workerUpdated && !isIos) {
+    if (useServiceWorker && workerUpdated) {
       updateServiceWorker();
       // Sometimes the updateServiceWorker doesn't refresh the page, so reload
       // it manually after some time

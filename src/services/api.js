@@ -795,7 +795,7 @@ export function attachmentPreviewUrl(
   type,
   width = null,
   height = null,
-  { redirect = true, download = false } = {},
+  { redirect = true, download = false, format = null } = {},
 ) {
   const url = new URL(`${apiPrefix}/attachments/${attId}/${type}`);
   if (redirect) {
@@ -804,11 +804,25 @@ export function attachmentPreviewUrl(
   if (download) {
     url.searchParams.set('download', '');
   }
+  if (format) {
+    url.searchParams.set('format', format);
+  }
   if (width && height) {
     url.searchParams.set('width', width);
     url.searchParams.set('height', height);
   }
   return url.toString();
+}
+
+/**
+ * ULR for the right-click save-as browser action
+ */
+export function attachmentSaveAsUrl(attachment) {
+  if (attachment.mediaType === 'image' && !/\.(png|jpe?g|gif)$/i.test(attachment.fileName)) {
+    // Not a common image format, save as JPEG for compatibility
+    return attachmentPreviewUrl(attachment.id, 'image', null, null, { format: 'jpeg' });
+  }
+  return attachmentPreviewUrl(attachment.id, 'original');
 }
 
 export function sanitizeMedia() {

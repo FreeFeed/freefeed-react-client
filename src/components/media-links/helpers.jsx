@@ -9,7 +9,7 @@ import {
 import { getVideoInfo, getVideoType, T_VIMEO_VIDEO, T_YOUTUBE_VIDEO } from '../link-preview/video';
 import { isLeftClick } from '../../utils';
 import { openLightbox } from '../../services/lightbox';
-import { attachmentPreviewUrl } from '../../services/api';
+import { attachmentPreviewUrl, attachmentSaveAsUrl } from '../../services/api';
 import { getAttachmentInfo } from '../../services/batch-attachments-info';
 import { pauseYoutubeVideo, playYoutubeVideo } from './youtube-api';
 import { pauseVimeoVideo, playVimeoVideo } from './vimeo-api';
@@ -139,6 +139,7 @@ async function createLightboxItem(url, attempt = 0) {
         type: IMAGE,
         mediaType: 'image',
         src: attachmentPreviewUrl(att.id, 'image'),
+        saveAsSrc: attachmentSaveAsUrl(att),
         originalSrc: attachmentPreviewUrl(att.id, 'original', null, null, { download: true }),
         width: att.previewWidth ?? att.width,
         height: att.previewHeight ?? att.height,

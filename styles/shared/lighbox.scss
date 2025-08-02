@@ -1,4 +1,4 @@
-html:has(.pswp--open) {
+.page--pswp-open {
   // Disable scrolling while lightbox is open
   overflow-y: hidden;
 

@@ -12,6 +12,11 @@ $post-line-height: mixins.rem(20px);
   position: relative;
 
   --bg-color: white;
+  --body-text-direction: ltr;
+
+  &:has(.Linkify:dir(rtl)) {
+    --body-text-direction: rtl;
+  }
 
   .dark-theme & {
     --bg-color: #{dark-vars.$bg-color};
@@ -68,6 +73,7 @@ $post-line-height: mixins.rem(20px);
       color: #000;
       font-size: mixins.rem(16px);
       line-height: $post-line-height;
+      direction: var(--body-text-direction, ltr);
 
       @media (max-width: 767px) {
         min-height: mixins.rem(31px);
@@ -139,6 +145,7 @@ $post-line-height: mixins.rem(20px);
     font-size: mixins.rem(16px);
     margin-bottom: 0.5em;
     line-height: $post-line-height;
+    direction: var(--body-text-direction, ltr);
 
     @media (max-width: 767px) {
       margin-left: 0;
