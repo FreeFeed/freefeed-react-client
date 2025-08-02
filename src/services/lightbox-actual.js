@@ -19,7 +19,7 @@ export function openLightbox(index, dataSource) {
   initLightbox().loadAndOpen(index, dataSource);
 }
 
-const fsApi = getFullscreenAPI();
+const fullScreenAPI = getFullscreenAPI();
 
 // @see https://github.com/dimsemenov/PhotoSwipe/issues/1759#issue-914638063
 const fullscreenIconsHtml = `<svg aria-hidden="true" class="pswp__icn" viewBox="0 0 32 32" width="32" height="32">
@@ -58,26 +58,38 @@ function initLightbox() {
 
   new PhotoSwipeVideoPlugin(lightbox, {});
 
-  // Add fullscreen button
-  lightbox.on('uiRegister', () => {
-    if (!fsApi) {
-      return;
-    }
-    lightbox.pswp.ui.registerElement({
-      name: 'fs',
-      ariaLabel: 'Full screen',
-      order: 9,
-      isButton: true,
-      html: fullscreenIconsHtml,
-      onClick: () => {
-        if (fsApi.isFullscreen()) {
-          fsApi.exit();
-        } else {
-          fsApi.request(lightbox.pswp.element);
-        }
-      },
-    });
+  if (fullScreenAPI) {
+    // Add Fullscreen button
+    lightbox.on('uiRegister', () => {
+      lightbox.pswp.ui.registerElement({
+        name: 'fs',
+        ariaLabel: 'Full screen',
+        order: 9,
+        isButton: true,
+        html: fullscreenIconsHtml,
+        onClick: () => {
+          if (fullScreenAPI.isFullscreen()) {
+            fullScreenAPI.exit();
+          } else {
+            fullScreenAPI.request(lightbox.pswp.element);
+          }
+        },
+      });
 
+      const h = () =>
+        document.documentElement.classList.toggle(
+          'pswp__fullscreen-mode',
+          !!fullScreenAPI.isFullscreen(),
+        );
+
+      document.addEventListener(fullScreenAPI.changeEvent, h);
+      lightbox.on('destroy', () => document.removeEventListener(fullScreenAPI.changeEvent, h));
+      lightbox.on('close', () => fullScreenAPI.isFullscreen() && fullScreenAPI.exit());
+    });
+  }
+
+  // Add Download button
+  lightbox.on('uiRegister', () => {
     lightbox.pswp.ui.registerElement({
       name: 'download-button',
       order: 10,
@@ -98,13 +110,6 @@ function initLightbox() {
         });
       },
     });
-
-    const h = () =>
-      document.documentElement.classList.toggle('pswp__fullscreen-mode', !!fsApi.isFullscreen());
-
-    document.addEventListener(fsApi.changeEvent, h);
-    lightbox.on('destroy', () => document.removeEventListener(fsApi.changeEvent, h));
-    lightbox.on('close', () => fsApi.isFullscreen() && fsApi.exit());
   });
 
   lightbox.on('bindEvents', () => {
@@ -189,6 +194,18 @@ function initLightbox() {
     data.onDeactivate?.call(data, element);
   });
 
+  // Disable document scrolling when lightbox is open
+  lightbox.on('beforeOpen', () => {
+    const scrollPosition = document.documentElement.scrollTop;
+    document.documentElement.classList.add('page--pswp-open');
+    // Mobile Firefox sometimes resets scroll when the page becoming
+    // 'overflow-y: hidden;'. Here we try to restore it.
+    document.documentElement.scrollTop = scrollPosition;
+  });
+  lightbox.on('destroy', () => {
+    document.documentElement.classList.remove('page--pswp-open');
+  });
+
   // Compensate unwanted scroll after closing lightbox, which happens in some
   // mobile browsers.
   let pinnedEls = [];
@@ -237,16 +254,20 @@ function initLightbox() {
     }
     if (data.type === 'video') {
       handlePip(element);
-      console.log(data);
       if (isGifLike(data)) {
-        console.log('Gif-like');
         element.muted = true;
         element.loop = true;
         element.controls = false;
       } else if (data.meta.silent) {
-        console.log('Silent');
         element.muted = true;
       }
+    }
+  });
+
+  lightbox.on('contentLoadImage', (e) => {
+    const { data, element } = e.content;
+    if (data.saveAsSrc) {
+      onContextMenu(element, () => (element.src = data.saveAsSrc));
     }
   });
 
@@ -301,4 +322,31 @@ function whenVideoAndPswpLoaded(video, lightbox, action) {
       lightbox.on('afterInit', () => action(video, lightbox.pswp));
     }
   });
+}
+
+function onContextMenu(element, action) {
+  // We need to apply 'action' when user right-clicks or long-taps on the image.
+  // Normally it is the 'contextmenu' event, but...
+
+  // Desktop browsers allows to intercept 'contextmenu' event
+  element.addEventListener('contextmenu', action, { once: true });
+
+  // Some mobile browsers don't support 'contextmenu' event (iOS), and other
+  // showing context menu _before_ the event is handled. So we need to use some
+  // timey wimey to intercept long taps before the menu is showing.
+  const longTapTime = 300; // ms
+  let timeout = null;
+  const abortController = new AbortController();
+  const { signal } = abortController;
+  const clean = () => {
+    clearTimeout(timeout);
+    abortController.abort();
+  };
+
+  element.addEventListener('touchstart', () => (timeout = setTimeout(action, longTapTime)), {
+    signal,
+  });
+  element.addEventListener('touchend', clean, { signal });
+  element.addEventListener('touchcancel', clean, { signal });
+  element.addEventListener('touchmove', clean, { signal });
 }

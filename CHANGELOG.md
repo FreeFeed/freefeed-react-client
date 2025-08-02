@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.139.0] - Not released
+### Changed
+- The RTL texts of post body and user's self-description are now right-aligned.
+- It is now possible to save the image in portable formats using the “Save image
+  as...” browser menu. The saving version is an original for JPEG/PNG/GIF
+  original image or a big JPEG preview for other formats.
+- Use version text check instead of service worker on iOS and desktop Safari.
+### Fixed
+- The "Download" button in the lightbox was not displayed if the browser did not
+  support the full-screen API.
+- Prevent page scroll on lightbox opening (bug sometimes occurred in mobile and
+  desktop Firefox).
 ## [1.138.1] - 2025-07-09
 ### Fixed
 - Set the proper "theme-color" meta tag in the startup script (i.e. as earlier

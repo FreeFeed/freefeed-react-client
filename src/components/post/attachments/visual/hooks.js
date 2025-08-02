@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useEvent } from 'react-use-event-hook';
-import { attachmentPreviewUrl } from '../../../../services/api';
+import { attachmentPreviewUrl, attachmentSaveAsUrl } from '../../../../services/api';
 import { openLightbox } from '../../../../services/lightbox';
 import { handleLeftClick } from '../../../../utils';
 
@@ -47,7 +47,11 @@ export function useLightboxItems(attachments, postId) {
     () =>
       attachments.map((a) => ({
         ...(a.mediaType === 'image'
-          ? { type: 'image', src: attachmentPreviewUrl(a.id, 'image') }
+          ? {
+              type: 'image',
+              src: attachmentPreviewUrl(a.id, 'image'),
+              saveAsSrc: attachmentSaveAsUrl(a),
+            }
           : {
               type: a.meta?.inProgress ? 'in-progress' : 'video',
               videoSrc: attachmentPreviewUrl(a.id, 'video'),
