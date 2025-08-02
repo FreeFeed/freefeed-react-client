@@ -5,3 +5,4 @@ export const isIos =
   ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(
     platform,
   );
+export const isSafari = isIos || /^((?!chrome|android).)*safari/i.test(navigator?.userAgent ?? '');
