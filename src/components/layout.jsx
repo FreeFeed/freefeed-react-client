@@ -20,6 +20,7 @@ import { AppUpdated } from './app-updated';
 import { LayoutHeader } from './layout-header';
 import { UIScaleSetter } from './ui-scale-setter';
 import { UndoContainer } from './undo/undo-container';
+import { RtlTextSetter } from './rtl-text-setter';
 
 const loadingPageMessage = (
   <Delayed>
@@ -172,6 +173,7 @@ class Layout extends Component {
           <Helmet title={props.title} defer={false} />
           <ColorSchemeSetter />
           <UIScaleSetter />
+          <RtlTextSetter />
           <SVGSymbolDeclarations />
 
           <LayoutHeader />

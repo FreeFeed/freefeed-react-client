@@ -1,0 +1,10 @@
+.toc {
+  columns: 3 12em;
+  padding: 0;
+  margin: 0;
+  margin-left: 1em;
+
+  & li {
+    margin-bottom: 0.33em;
+  }
+}
