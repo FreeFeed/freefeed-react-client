@@ -15,6 +15,8 @@ import { subYears } from 'date-fns/subYears';
 import { format } from '../utils/date-format';
 import { apiVersion } from '../services/api-version';
 
+import './stats.scss';
+
 function StatsChart({ type, title }) {
   const [data, setData] = useState(null);
   useEffect(() => {
