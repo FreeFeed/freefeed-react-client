@@ -15,7 +15,7 @@ $post-line-height: mixins.rem(20px);
   --body-text-direction: ltr;
 
   &:has(.post-text .Linkify:dir(rtl)) {
-    --body-text-direction: rtl;
+    --body-text-direction: var(--default-rtl-direction, rtl);
   }
 
   .dark-theme & {

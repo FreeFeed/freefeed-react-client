@@ -124,6 +124,7 @@ export default function AppearanceForm() {
   const translateToLang = useField('translateToLang', form.form);
   const previewAnimationGif = useField('previewAnimationGif', form.form);
   const previewAnimationVideo = useField('previewAnimationVideo', form.form);
+  const rtlToRight = useField('rtlToRight', form.form);
 
   const isTheRightDate = format(new Date(), 'yyyy-MM-dd') === CONFIG.orbitDate;
 
@@ -380,6 +381,28 @@ export default function AppearanceForm() {
             <Icon icon={faExclamationTriangle} /> This setting is saved locally in your web browser.
             It can be different for each browser and each device that you use.
           </p>
+        </div>
+      </section>
+
+      <section className={settingsStyles.formSection}>
+        <TokAnchor>
+          <h4 id="rtl">Right-to-left texts</h4>
+        </TokAnchor>
+
+        <p>How to to display and align right-to-left (RTL) texts such as Arabic or Hebrew:</p>
+        <div className="form-group">
+          <div className="radio">
+            <label>
+              <RadioInput field={rtlToRight} value="1" />
+              Align RTL post bodies and user descriptions to the right
+            </label>
+          </div>
+          <div className="radio">
+            <label>
+              <RadioInput field={rtlToRight} value="0" />
+              Display RTL texts in the same way as LTRs
+            </label>
+          </div>
         </div>
       </section>
 
@@ -662,6 +685,7 @@ function initialValues({
     translateToLang: frontend.translateToLang,
     previewAnimationGif: frontend.previewAnimation.gif,
     previewAnimationVideo: frontend.previewAnimation.video,
+    rtlToRight: frontend.rtl.rightAlign ? '1' : '0',
   };
 }
 
@@ -722,6 +746,10 @@ function prefUpdaters(values) {
         previewAnimation: {
           gif: values.previewAnimationGif,
           video: values.previewAnimationVideo,
+        },
+        rtl: {
+          ...prefs.rtl,
+          rightAlign: values.rtlToRight === '1',
         },
       };
     },

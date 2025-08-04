@@ -104,7 +104,7 @@ $actions-padding: 0.75em;
   }
 
   &:has(:global(.Linkify:dir(rtl))) {
-    direction: rtl;
+    direction: var(--default-rtl-direction, rtl);
   }
 }
 

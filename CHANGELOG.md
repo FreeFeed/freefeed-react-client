@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.140.0] - Not released
 ### Added
 - Quick Links (TOC) on the Appearance tab of the Settings page.
+- New setting: "Align RTL post bodies and user descriptions to the right"
+  (enabled by default).
 
 ## [1.139.0] - 2025-08-02
 ### Changed

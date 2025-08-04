@@ -91,6 +91,9 @@ export default {
         gif: PREVIEW_ANIMATION_ALWAYS,
         video: PREVIEW_ANIMATION_HOVER,
       },
+      rtl: {
+        rightAlign: true,
+      },
     },
     defaultOverrides: {
       /**
