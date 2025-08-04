@@ -48,6 +48,7 @@ import {
 } from '../../../utils/hide-criteria';
 import { useServerValue } from '../../hooks/server-info';
 import { format } from '../../../utils/date-format';
+import { TokAnchor } from '../toc/anchor';
 import styles from './forms.module.scss';
 
 const selectTranslationEnabled = (serverInfo) => serverInfo.textTranslation.enabled;
@@ -131,7 +132,9 @@ export default function AppearanceForm() {
       <PreventPageLeaving prevent={form.dirty} />
 
       <section className={settingsStyles.formSection}>
-        <h4 id="names">Names</h4>
+        <TokAnchor>
+          <h4 id="names">Names</h4>
+        </TokAnchor>
 
         <div className="form-group">
           <div className="checkbox">
@@ -169,7 +172,9 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4 id="home">Your Home feed</h4>
+        <TokAnchor>
+          <h4 id="home">Your Home feed</h4>
+        </TokAnchor>
 
         <div className="form-group">
           <div className="radio">
@@ -196,7 +201,9 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4 id="hide-list">Hidden content</h4>
+        <TokAnchor>
+          <h4 id="hide-list">Hidden content</h4>
+        </TokAnchor>
         <div className="form-group">
           <p>Apply posts and users hides:</p>
           <div className="form-group">
@@ -245,7 +252,9 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4 id="nsfw">NSFW content</h4>
+        <TokAnchor>
+          <h4 id="nsfw">NSFW content</h4>
+        </TokAnchor>
 
         <div className="form-group">
           <div className="checkbox">
@@ -271,7 +280,9 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4 id="submit-key">Submitting posts and comments</h4>
+        <TokAnchor>
+          <h4 id="submit-key">Submitting posts and comments</h4>
+        </TokAnchor>
         <p>How to submit post or comment forms:</p>
         <div className="form-group">
           <div className="radio">
@@ -315,7 +326,9 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4 id="density">Display density</h4>
+        <TokAnchor>
+          <h4 id="density">Display density</h4>
+        </TokAnchor>
 
         <div className="form-group">
           <div className="radio">
@@ -336,7 +349,9 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4 id="scale">Text scale</h4>
+        <TokAnchor>
+          <h4 id="scale">Text scale</h4>
+        </TokAnchor>
 
         <div className="form-group">
           <p>
@@ -369,7 +384,9 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4 id="comments">Comments</h4>
+        <TokAnchor>
+          <h4 id="comments">Comments</h4>
+        </TokAnchor>
 
         <div className="form-group">
           <div className="checkbox">
@@ -421,7 +438,9 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4 id="media-previews">Media preview animation</h4>
+        <TokAnchor>
+          <h4 id="media-previews">Media preview animation</h4>
+        </TokAnchor>
 
         <p>Gifs and short animations:</p>
         <div className="form-group">
@@ -463,7 +482,9 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4 id="previews">Link previews</h4>
+        <TokAnchor>
+          <h4 id="previews">Link previews</h4>
+        </TokAnchor>
 
         <div className="form-group">
           <div className="checkbox">
@@ -480,7 +501,9 @@ export default function AppearanceForm() {
       </section>
 
       <section className={settingsStyles.formSection}>
-        <h4 id="time">Date and time</h4>
+        <TokAnchor>
+          <h4 id="time">Date and time</h4>
+        </TokAnchor>
         <p>Display accuracy:</p>
         <div className="form-group">
           <div className="radio">
@@ -518,7 +541,9 @@ export default function AppearanceForm() {
 
       {translationEnabled && (
         <section className={settingsStyles.formSection}>
-          <h4 id="translation">Text translation</h4>
+          <TokAnchor>
+            <h4 id="translation">Text translation</h4>
+          </TokAnchor>
           <p>
             Choose a language to translate posts and comments into. To translate, click
             &quot;Translate&quot; in the &quot;More&quot; menu of the post/comment.
@@ -541,7 +566,9 @@ export default function AppearanceForm() {
 
       {CONFIG.betaChannel.enabled && (
         <section className={settingsStyles.formSection}>
-          <h4 id="beta">Beta version</h4>
+          <TokAnchor>
+            <h4 id="beta">Beta version</h4>
+          </TokAnchor>
 
           <div className="checkbox">
             <label>
