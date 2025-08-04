@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 
 import { useMemo } from 'react';
 import { Orbit } from './orbit';

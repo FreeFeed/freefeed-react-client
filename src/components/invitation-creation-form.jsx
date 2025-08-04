@@ -1,7 +1,7 @@
 /* global CONFIG */
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import Textarea from 'react-textarea-autosize';
 import memoize from 'memoize-one';
 import { preventDefault } from '../utils';

@@ -1,4 +1,4 @@
-import { Link as RLink } from 'react-router';
+import { Link as RLink } from 'wouter';
 
 export function Anchor({ href, title, children }) {
   return (

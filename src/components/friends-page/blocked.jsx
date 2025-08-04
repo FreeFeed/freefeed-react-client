@@ -1,5 +1,5 @@
 import { useMemo, useCallback } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import cn from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import { Helmet } from 'react-helmet';

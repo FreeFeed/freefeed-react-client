@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Link, withRouter } from 'react-router';
+import { withRouter } from 'react-router';
+import { Link } from 'wouter';
 import { format } from '../utils/date-format';
 
 const userRouteNames = new Set([

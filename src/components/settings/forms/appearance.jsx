@@ -1,6 +1,6 @@
 /* global CONFIG */
 import { useMemo, useEffect } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, useField } from 'react-final-form-hooks';
 import { without, uniqWith } from 'lodash-es';

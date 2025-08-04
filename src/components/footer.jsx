@@ -1,6 +1,6 @@
 /* global CONFIG */
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 
 export default function Footer({ short }) {
   const authenticated = useSelector((state) => state.authenticated);

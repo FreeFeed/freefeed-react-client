@@ -1,6 +1,6 @@
 /* global CONFIG */
 import { useCallback, useMemo } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import { useSelector, useDispatch } from 'react-redux';
 import * as _ from 'lodash-es';
 

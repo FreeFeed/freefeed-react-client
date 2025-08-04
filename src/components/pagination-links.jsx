@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 
 const PAGE_SIZE = 30;
 

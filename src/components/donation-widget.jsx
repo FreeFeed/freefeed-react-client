@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import cn from 'classnames';
 
 import styles from './donate.module.scss';

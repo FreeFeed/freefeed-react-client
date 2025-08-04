@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import { useForm, useField } from 'react-final-form-hooks';
 import { Throbber } from '../../throbber';
 import {

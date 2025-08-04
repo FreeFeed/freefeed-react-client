@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import cn from 'classnames';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 

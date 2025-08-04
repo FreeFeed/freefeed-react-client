@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 
 import ExtAuthForm from './forms/ext-auth-accounts';
 import ChangePasswordForm from './forms/change-password';

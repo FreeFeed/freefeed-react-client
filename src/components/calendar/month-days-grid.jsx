@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import cx from 'classnames';
 
 import { pluralForm } from '../../utils';

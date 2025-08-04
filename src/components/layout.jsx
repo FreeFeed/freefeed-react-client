@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import classnames from 'classnames';
 import { faBug } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 
 import { signOut, home, setCurrentRoute } from '../redux/action-creators';
 import { getCurrentRouteName } from '../utils';

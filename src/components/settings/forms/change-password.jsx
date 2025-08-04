@@ -1,7 +1,7 @@
 /* global CONFIG */
 import { encode as qsEncode } from 'querystring';
 import { useMemo } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm, useField } from 'react-final-form-hooks';
 import { mapValues } from 'lodash-es';

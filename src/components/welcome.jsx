@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import classnames from 'classnames';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 import logoPath from '../../assets/images/logo.svg';

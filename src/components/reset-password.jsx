@@ -1,6 +1,6 @@
 /* global CONFIG */
 import { Component } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import { connect } from 'react-redux';
 import { resetPassword, resetPasswordValidationFail } from '../redux/action-creators';
 import { preventDefault } from '../utils';

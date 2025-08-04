@@ -1,6 +1,7 @@
 /* global CONFIG */
 import { useMemo, Suspense, useEffect } from 'react';
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
+import { Link } from 'wouter';
 import { Helmet } from 'react-helmet';
 import cn from 'classnames';
 

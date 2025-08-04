@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useField, useForm } from 'react-final-form-hooks';
 import { faLock, faUserFriends, faGlobeAmericas } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 
 import { updateActualUserPreferences, updateUser } from '../../../redux/action-creators';
 import { Throbber } from '../../throbber';

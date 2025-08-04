@@ -1,6 +1,6 @@
 /* global CONFIG */
 import { Component, createRef, useCallback } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import { connect } from 'react-redux';
 import * as _ from 'lodash-es';
 

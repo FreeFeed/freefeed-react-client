@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import { useCallback, useMemo, useSyncExternalStore } from 'react';
 import { faComment, faEdit } from '@fortawesome/free-regular-svg-icons';
 import { useSelector } from 'react-redux';

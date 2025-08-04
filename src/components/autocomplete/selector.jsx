@@ -1,5 +1,5 @@
 import { useDispatch, useSelector, useStore } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import cn from 'classnames';
 import { useEffect, useMemo, useState } from 'react';
 import { useEvent } from 'react-use-event-hook';

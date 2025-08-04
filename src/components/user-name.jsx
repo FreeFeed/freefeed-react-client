@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { Portal } from 'react-portal';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import classNames from 'classnames';
 
 import ErrorBoundary from './error-boundary';

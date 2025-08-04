@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 
 import { pluralForm } from '../utils';
 import CreatePost from './create-post';

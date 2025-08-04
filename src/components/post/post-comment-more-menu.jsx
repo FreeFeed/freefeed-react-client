@@ -1,5 +1,5 @@
 import { forwardRef, useLayoutEffect, useState } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import cn from 'classnames';
 import { noop } from 'lodash-es';
 import { useSelector } from 'react-redux';

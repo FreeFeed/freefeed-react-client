@@ -1,7 +1,7 @@
 /* global CONFIG */
 import { isValidElement, useEffect, useMemo } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 
 import { uniq } from 'lodash-es';
 import { faBell } from '@fortawesome/free-regular-svg-icons';

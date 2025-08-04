@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 
 import { MIN_DATE, MAX_DATE } from '../../utils/calendar-utils';
 

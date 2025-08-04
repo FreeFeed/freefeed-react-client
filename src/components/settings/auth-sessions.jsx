@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import { UAParser } from 'ua-parser-js';
 import { without } from 'lodash-es';
 import cn from 'classnames';

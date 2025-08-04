@@ -1,7 +1,7 @@
 /* global CONFIG */
 import { createRef, Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import classnames from 'classnames';
 import * as _ from 'lodash-es';
 import {

@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import { connect } from 'react-redux';
 
 import { bindRouteActions } from '../redux/route-actions';

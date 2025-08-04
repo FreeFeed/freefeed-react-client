@@ -1,6 +1,6 @@
 /* global CONFIG */
 import { useEffect, useMemo } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 

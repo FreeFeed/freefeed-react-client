@@ -1,5 +1,6 @@
 import cn from 'classnames';
-import { Link, withRouter } from 'react-router';
+import { withRouter } from 'react-router';
+import { Link } from 'wouter';
 import { faSearch, faSlidersH, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useEvent } from 'react-use-event-hook';

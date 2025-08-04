@@ -1,5 +1,5 @@
 import { forwardRef, useLayoutEffect, useState, useMemo, useCallback } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import cn from 'classnames';
 import { faLink, faEdit, faSignOutAlt, faAt } from '@fortawesome/free-solid-svg-icons';
 import { faClock, faCommentDots, faTrashAlt } from '@fortawesome/free-regular-svg-icons';

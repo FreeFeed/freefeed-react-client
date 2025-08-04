@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import cn from 'classnames';
 
 import { useSelector } from 'react-redux';

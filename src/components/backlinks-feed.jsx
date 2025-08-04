@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMemo } from 'react';
 import Feed from './feed';

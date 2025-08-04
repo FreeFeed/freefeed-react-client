@@ -1,6 +1,6 @@
 /* global CONFIG */
 import { useCallback, useEffect, useRef } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 

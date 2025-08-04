@@ -2,7 +2,7 @@
 import { memo, useEffect, useMemo, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { sortBy, range, omit, debounce } from 'lodash-es';
-import { Link } from 'react-router';
+import { Link } from 'wouter';
 import { Helmet } from 'react-helmet';
 import cn from 'classnames';
 
