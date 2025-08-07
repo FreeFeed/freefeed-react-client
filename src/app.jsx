@@ -1,10 +1,10 @@
 /* global CONFIG */
 import { createRoot } from 'react-dom/client';
 import { Suspense, useEffect } from 'react';
-import { Router, Route, IndexRoute, browserHistory, Redirect } from 'react-router';
+// import { Router, Route, IndexRoute, browserHistory, Redirect } from 'react-router';
 import { Provider, useSelector } from 'react-redux';
-import { syncHistoryWithStore } from 'react-router-redux';
 import * as Sentry from '@sentry/react';
+import { Redirect, Router, Switch } from 'wouter';
 import 'focus-visible';
 
 import 'autotrack'; // used by google-analytics in ../index.jade
@@ -57,7 +57,12 @@ import { HomeAux } from './components/home-aux';
 import { NotFound } from './components/not-found';
 import { DialogProvider } from './components/dialog/context';
 import { ColorSchemeSetter } from './components/color-theme-setter';
+import { Route } from './services/wouter/named-route';
+import { historyEventSource } from './services/wouter/history-events';
+import { useWouter } from './services/wouter/with-router';
+import { TestNouter } from './services/nouter/components-test/test-nouter';
 
+/*
 // Set initial history state.
 // Without this, there can be problems with third-party
 // modules using history API (specifically, PhotoSwipe).
@@ -66,10 +71,9 @@ browserHistory.replace({
   search: location.search,
   hash: location.hash,
 });
+*/
 
 const boundRouteActions = bindRouteActions(store.dispatch);
-
-const history = syncHistoryWithStore(browserHistory, store);
 
 const thisYear = new Date().getFullYear();
 
@@ -103,7 +107,7 @@ const enterStaticPage = (title) => () => {
   store.dispatch(ActionCreators.staticPage(title));
 };
 
-history.listen(() => safeScrollTo(0, 0));
+historyEventSource()[1](() => safeScrollTo(0, 0));
 
 const generateRouteHooks = (callback) => ({
   onEnter: callback,
@@ -164,246 +168,271 @@ function App() {
   }
 
   return (
-    <Router history={browserHistory}>
-      <Route name="bookmarklet" path="/bookmarklet" component={Bookmarklet} />
+    <Router>
+      <Switch>
+        <Route name="bookmarklet" path="/bookmarklet" component={Bookmarklet} />
 
-      <Route path="/" component={Layout}>
-        <IndexRoute
-          name="home"
-          component={Home}
-          {...generateRouteHooks(boundRouteActions('home'))}
-        />
-        <Route path="/list/:listId(/:listTitle)" name="homeAux" component={HomeAux} />
-        <Route path="about">
-          <IndexRoute
-            name="about"
-            component={lazyLoad(() => import('./components/about'))}
-            onEnter={enterStaticPage('About')}
-          />
-          <Route path="terms" component={externalRedirect('/docs/terms')} />
-          <Route path="privacy" component={externalRedirect('/docs/privacy')} />
-          <Route
-            path="stats"
-            component={lazyLoad(() => import('./components/stats'))}
-            onEnter={enterStaticPage('Stats')}
-          />
-          <Route
-            path="donate"
-            component={lazyLoad(() => import('./components/donate'))}
-            onEnter={enterStaticPage('Donate')}
-          />
+        <Route path="/" name="root" nest>
+          <Layout>
+            <Switch>
+              <Route
+                path="/"
+                name="home"
+                component={Home}
+                {...generateRouteHooks(boundRouteActions('home'))}
+              />
+              <Route path="/list/:listId/:listTitle?" name="homeAux" component={HomeAux} />
+              <Route path="about" nest>
+                <Switch>
+                  <Route
+                    path="/"
+                    name="about"
+                    component={lazyLoad(() => import('./components/about'))}
+                    onEnter={enterStaticPage('About')}
+                  />
+                  <Route path="terms" component={externalRedirect('/docs/terms')} />
+                  <Route path="privacy" component={externalRedirect('/docs/privacy')} />
+                  <Route
+                    path="stats"
+                    component={lazyLoad(() => import('./components/stats'))}
+                    onEnter={enterStaticPage('Stats')}
+                  />
+                  <Route
+                    path="donate"
+                    component={lazyLoad(() => import('./components/donate'))}
+                    onEnter={enterStaticPage('Donate')}
+                  />
+                </Switch>
+              </Route>
+              <Route
+                path="dev"
+                component={lazyLoad(() => import('./components/dev'))}
+                onEnter={enterStaticPage('Developers')}
+              />
+              <Route
+                path="signin"
+                component={lazyLoad(() => import('./components/signin'))}
+                onEnter={enterStaticPage('Sign in')}
+              />
+              <Route
+                path="signup"
+                component={lazyLoad(() => import('./components/signup'))}
+                onEnter={enterStaticPage('Sign up')}
+              />
+              <Route
+                path="restore"
+                component={lazyLoad(() => import('./components/restore-password'))}
+              />
+              <Route
+                path="reset"
+                component={lazyLoad(() => import('./components/reset-password'))}
+              />
+              {settingsRoute('settings')}
+              <Route
+                path="settings/archive"
+                component={lazyLoad(() => import('./components/archive'))}
+                onEnter={enterStaticPage('Restore from FriendFeed.com Archives')}
+              />
+              <Route
+                name="groupSettings"
+                path="/:userName/settings"
+                component={lazyLoad(() => import('./components/group-settings'))}
+                {...generateRouteHooks(boundRouteActions('getUserInfo'))}
+              />
+              <Route
+                name="discussions"
+                path="filter/discussions"
+                component={Discussions}
+                {...generateRouteHooks(boundRouteActions('discussions'))}
+              />
+              <Route
+                name="saves"
+                path="filter/saves"
+                component={Discussions}
+                {...generateRouteHooks(boundRouteActions('saves'))}
+              />
+              <Route
+                name="summary"
+                path="/summary/:days?"
+                component={Summary}
+                {...generateRouteHooks(boundRouteActions('summary'))}
+              />
+              <Route
+                name="direct"
+                path="filter/direct"
+                component={Discussions}
+                {...generateRouteHooks(boundRouteActions('direct'))}
+              />
+              <Route
+                name="search"
+                path="search"
+                component={SearchFeed}
+                {...generateRouteHooks(boundRouteActions('search'))}
+              />
+              <Route
+                name="notifications"
+                path="filter/notifications"
+                component={lazyLoad(() => import('./components/notifications'))}
+                {...generateRouteHooks(boundRouteActions('notifications'))}
+              />
+              <Route
+                name="drafts"
+                path="filter/drafts"
+                component={lazyLoad(() => import('./components/drafts-page'))}
+              />
+              <Route
+                name="best_of"
+                path="filter/best_of"
+                component={PlainFeed}
+                {...generateRouteHooks(boundRouteActions('best_of'))}
+              />
+              <Route
+                name="everything"
+                path="filter/everything"
+                component={PlainFeed}
+                {...generateRouteHooks(boundRouteActions('everything'))}
+              />
+              <Route
+                name="groups"
+                path="/groups"
+                component={Groups}
+                onEnter={enterStaticPage('Groups')}
+              />
+              <Route
+                name="all-groups"
+                path="/all-groups"
+                component={lazyLoad(() => import('./components/all-groups'))}
+              />
+              <Route
+                name="friends"
+                path="/friends"
+                component={lazyLoad(() => import('./components/friends-page'), 'Friends')}
+              />
+              <Route
+                name="groupCreate"
+                path="/groups/create"
+                component={lazyLoad(() => import('./components/group-create'))}
+                onEnter={enterStaticPage('Create a group')}
+              />
+              <Route
+                name="archivePost"
+                path="/archivePost"
+                component={lazyLoad(() => import('./components/archive-post'))}
+                {...generateRouteHooks(boundRouteActions('archivePost'))}
+              />
+              <Route
+                name="createInvitation"
+                path="/invite"
+                component={lazyLoad(() => import('./components/invitation-creation-form'))}
+                onEnter={inviteActions}
+              />
+              <Route
+                name="signupByInvitation"
+                path="/invited/:invitationId"
+                component={SignupByInvitation}
+              />
+              <Route path="/test-nouter/*?">
+                <TestNouter />
+              </Route>
+              <Route
+                name="userFeed"
+                path="/:userName"
+                component={checkPath(User, isAccountPath)}
+                {...generateRouteHooks(boundRouteActions('userFeed'))}
+              />
+              <Route
+                name="memories"
+                path="/memories/:from"
+                component={checkPath(PlainFeed, isMemoriesPath)}
+                {...generateRouteHooks(boundRouteActions('memories'))}
+              />
+              <Route
+                name="userMemories"
+                path="/:userName/memories/:from"
+                component={checkPath(PlainFeed, isMemoriesPath)}
+                {...generateRouteHooks(boundRouteActions('userMemories'))}
+              />
+
+              <Route path="/:userName/calendar">
+                {({ userName }) => (
+                  <Redirect to={`/${encodeURIComponent(userName)}/calendar/${thisYear}`} />
+                )}
+              </Route>
+              <Route
+                name="userCalendarYear"
+                path="/:userName/calendar/:year"
+                component={checkPath(CalendarYear, isCalendarYearPath)}
+                {...generateRouteHooks(boundRouteActions('calendarYear'))}
+              />
+              <Route
+                name="userCalendarMonth"
+                path="/:userName/calendar/:year/:month"
+                component={checkPath(CalendarMonth, isCalendarMonthPath)}
+                {...generateRouteHooks(boundRouteActions('calendarMonth'))}
+              />
+              <Route
+                name="userCalendarDate"
+                path="/:userName/calendar/:year/:month/:day"
+                component={checkPath(CalendarDate, isCalendarDatePath)}
+                {...generateRouteHooks(boundRouteActions('calendarDate'))}
+              />
+
+              <Route
+                name="userSummary"
+                path="/:userName/summary/:days?"
+                component={User}
+                {...generateRouteHooks(boundRouteActions('userSummary'))}
+              />
+              <Route
+                name="subscribers"
+                path="/:userName/subscribers"
+                component={Subscribers}
+                onEnter={subscribersSubscriptionsActions}
+              />
+              <Route
+                name="subscriptions"
+                path="/:userName/subscriptions"
+                component={Subscriptions}
+                onEnter={subscribersSubscriptionsActions}
+              />
+              <Route
+                name="manage-subscribers"
+                path="/:userName/manage-subscribers"
+                component={ManageSubscribers}
+                onEnter={manageSubscribersActions}
+              />
+              <Route
+                name="userComments"
+                path="/:userName/comments"
+                component={User}
+                {...generateRouteHooks(boundRouteActions('userComments'))}
+              />
+              <Route
+                name="userLikes"
+                path="/:userName/likes"
+                component={User}
+                {...generateRouteHooks(boundRouteActions('userLikes'))}
+              />
+              <Route path="/.well-known/change-password">
+                <Redirect to="/settings/sign-in" />
+              </Route>
+              <Route
+                name="post"
+                path="/:userName/:postId"
+                component={checkPath(SinglePost, isPostPath)}
+                {...generateRouteHooks(boundRouteActions('post'))}
+              />
+              <Route
+                name="backlinks"
+                path="/:userName/:postId/backlinks"
+                component={checkPath(BacklinksFeed, isPostPath)}
+                {...generateRouteHooks(boundRouteActions('backlinks'))}
+              />
+              <Route name="404" component={NotFound} />
+            </Switch>
+          </Layout>
         </Route>
-        <Route
-          path="dev"
-          component={lazyLoad(() => import('./components/dev'))}
-          onEnter={enterStaticPage('Developers')}
-        />
-        <Route
-          path="signin"
-          component={lazyLoad(() => import('./components/signin'))}
-          onEnter={enterStaticPage('Sign in')}
-        />
-        <Route
-          path="signup"
-          component={lazyLoad(() => import('./components/signup'))}
-          onEnter={enterStaticPage('Sign up')}
-        />
-        <Route path="restore" component={lazyLoad(() => import('./components/restore-password'))} />
-        <Route path="reset" component={lazyLoad(() => import('./components/reset-password'))} />
-        {settingsRoute('settings')}
-        <Route
-          path="settings/archive"
-          component={lazyLoad(() => import('./components/archive'))}
-          onEnter={enterStaticPage('Restore from FriendFeed.com Archives')}
-        />
-        <Route
-          name="groupSettings"
-          path="/:userName/settings"
-          component={lazyLoad(() => import('./components/group-settings'))}
-          {...generateRouteHooks(boundRouteActions('getUserInfo'))}
-        />
-        <Route
-          name="discussions"
-          path="filter/discussions"
-          component={Discussions}
-          {...generateRouteHooks(boundRouteActions('discussions'))}
-        />
-        <Route
-          name="saves"
-          path="filter/saves"
-          component={Discussions}
-          {...generateRouteHooks(boundRouteActions('saves'))}
-        />
-        <Route
-          name="summary"
-          path="/summary(/:days)"
-          component={Summary}
-          {...generateRouteHooks(boundRouteActions('summary'))}
-        />
-        <Route
-          name="direct"
-          path="filter/direct"
-          component={Discussions}
-          {...generateRouteHooks(boundRouteActions('direct'))}
-        />
-        <Route
-          name="search"
-          path="search"
-          component={SearchFeed}
-          {...generateRouteHooks(boundRouteActions('search'))}
-        />
-        <Route
-          name="notifications"
-          path="filter/notifications"
-          component={lazyLoad(() => import('./components/notifications'))}
-          {...generateRouteHooks(boundRouteActions('notifications'))}
-        />
-        <Route
-          name="drafts"
-          path="filter/drafts"
-          component={lazyLoad(() => import('./components/drafts-page'))}
-        />
-        <Route
-          name="best_of"
-          path="filter/best_of"
-          component={PlainFeed}
-          {...generateRouteHooks(boundRouteActions('best_of'))}
-        />
-        <Route
-          name="everything"
-          path="filter/everything"
-          component={PlainFeed}
-          {...generateRouteHooks(boundRouteActions('everything'))}
-        />
-        <Route
-          name="groups"
-          path="/groups"
-          component={Groups}
-          onEnter={enterStaticPage('Groups')}
-        />
-        <Route
-          name="all-groups"
-          path="/all-groups"
-          component={lazyLoad(() => import('./components/all-groups'))}
-        />
-        <Route
-          name="friends"
-          path="/friends"
-          component={lazyLoad(() => import('./components/friends-page'), 'Friends')}
-        />
-        <Route
-          name="groupCreate"
-          path="/groups/create"
-          component={lazyLoad(() => import('./components/group-create'))}
-          onEnter={enterStaticPage('Create a group')}
-        />
-        <Route
-          name="archivePost"
-          path="/archivePost"
-          component={lazyLoad(() => import('./components/archive-post'))}
-          {...generateRouteHooks(boundRouteActions('archivePost'))}
-        />
-        <Route
-          name="createInvitation"
-          path="/invite"
-          component={lazyLoad(() => import('./components/invitation-creation-form'))}
-          onEnter={inviteActions}
-        />
-        <Route
-          name="signupByInvitation"
-          path="/invited/:invitationId"
-          component={SignupByInvitation}
-        />
-        <Route
-          name="userFeed"
-          path="/:userName"
-          component={checkPath(User, isAccountPath)}
-          {...generateRouteHooks(boundRouteActions('userFeed'))}
-        />
-        <Route
-          name="memories"
-          path="/memories/:from"
-          component={checkPath(PlainFeed, isMemoriesPath)}
-          {...generateRouteHooks(boundRouteActions('memories'))}
-        />
-        <Route
-          name="userMemories"
-          path="/:userName/memories/:from"
-          component={checkPath(PlainFeed, isMemoriesPath)}
-          {...generateRouteHooks(boundRouteActions('userMemories'))}
-        />
-
-        <Redirect from="/:userName/calendar" to={`/:userName/calendar/${thisYear}`} />
-        <Route
-          name="userCalendarYear"
-          path="/:userName/calendar/:year"
-          component={checkPath(CalendarYear, isCalendarYearPath)}
-          {...generateRouteHooks(boundRouteActions('calendarYear'))}
-        />
-        <Route
-          name="userCalendarMonth"
-          path="/:userName/calendar/:year/:month"
-          component={checkPath(CalendarMonth, isCalendarMonthPath)}
-          {...generateRouteHooks(boundRouteActions('calendarMonth'))}
-        />
-        <Route
-          name="userCalendarDate"
-          path="/:userName/calendar/:year/:month/:day"
-          component={checkPath(CalendarDate, isCalendarDatePath)}
-          {...generateRouteHooks(boundRouteActions('calendarDate'))}
-        />
-
-        <Route
-          name="userSummary"
-          path="/:userName/summary(/:days)"
-          component={User}
-          {...generateRouteHooks(boundRouteActions('userSummary'))}
-        />
-        <Route
-          name="subscribers"
-          path="/:userName/subscribers"
-          component={Subscribers}
-          onEnter={subscribersSubscriptionsActions}
-        />
-        <Route
-          name="subscriptions"
-          path="/:userName/subscriptions"
-          component={Subscriptions}
-          onEnter={subscribersSubscriptionsActions}
-        />
-        <Route
-          name="manage-subscribers"
-          path="/:userName/manage-subscribers"
-          component={ManageSubscribers}
-          onEnter={manageSubscribersActions}
-        />
-        <Route
-          name="userComments"
-          path="/:userName/comments"
-          component={User}
-          {...generateRouteHooks(boundRouteActions('userComments'))}
-        />
-        <Route
-          name="userLikes"
-          path="/:userName/likes"
-          component={User}
-          {...generateRouteHooks(boundRouteActions('userLikes'))}
-        />
-        <Redirect from="/.well-known/change-password" to="/settings/sign-in" />
-        <Route
-          name="post"
-          path="/:userName/:postId"
-          component={checkPath(SinglePost, isPostPath)}
-          {...generateRouteHooks(boundRouteActions('post'))}
-        />
-        <Route
-          name="backlinks"
-          path="/:userName/:postId/backlinks"
-          component={checkPath(BacklinksFeed, isPostPath)}
-          {...generateRouteHooks(boundRouteActions('backlinks'))}
-        />
-        <Route name="404" path="*" component={NotFound} />
-      </Route>
+      </Switch>
     </Router>
   );
 }
@@ -421,7 +450,8 @@ createRoot(appRoot).render(
 
 function checkPath(Component, checker) {
   return (props) => {
-    return checker(props) ? <Component {...props} /> : <NotFound {...props} />;
+    const router = useWouter();
+    return checker(router) ? <Component {...props} /> : <NotFound {...props} />;
   };
 }
 

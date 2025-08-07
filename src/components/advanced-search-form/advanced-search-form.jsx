@@ -1,8 +1,8 @@
 import cn from 'classnames';
-import { browserHistory } from 'react-router';
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import { useEvent } from 'react-use-event-hook';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { useLocation } from 'wouter';
 import { useMediaQuery } from '../hooks/media-query';
 import { ButtonLink } from '../button-link';
 import { Icon } from '../fontawesome-icons';
@@ -74,9 +74,9 @@ export function AdvancedSearchForm() {
       .join(' ');
   }, [inPosts, inComments, query, filters]);
 
-  const onSearch = useEvent(() =>
-    browserHistory.push(`/search?q=${encodeURIComponent(resultingQuery)}`),
-  );
+  const [, navigate] = useLocation();
+
+  const onSearch = useEvent(() => navigate(`/search?q=${encodeURIComponent(resultingQuery)}`));
 
   const onKeyDown = useEvent((e) => {
     if (

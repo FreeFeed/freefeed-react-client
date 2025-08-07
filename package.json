@@ -46,6 +46,7 @@
     "react-use-event-hook": "~0.9.6",
     "recharts": "~3.1.0",
     "redux": "~5.0.1",
+    "regexparam": "~3.0.0",
     "snarkdown": "~2.0.0",
     "social-text-tokenizer": "~3.2.2",
     "socket.io-client": "~2.3.1",

@@ -1,13 +1,8 @@
 import { useEffect } from 'react';
-import { withRouter } from 'react-router';
 
 const warning = 'Do you want to leave this page? Changes you made may not be saved.';
 
-export const PreventPageLeaving = withRouter(function PreventPageLeaving({
-  prevent = false,
-  router,
-  children,
-}) {
+export function PreventPageLeaving({ prevent = false, children }) {
   // Prevent leaving our site
   useEffect(() => {
     if (prevent) {
@@ -18,7 +13,8 @@ export const PreventPageLeaving = withRouter(function PreventPageLeaving({
   }, [prevent]);
 
   // Prevent react-router transition to the other page of our site
-  useEffect(() => router.listenBefore(() => (prevent ? warning : undefined)), [prevent, router]);
+  // TODO WOUTER: implement
+  // useEffect(() => router.listenBefore(() => (prevent ? warning : undefined)), [prevent, router]);
 
   return children || null;
-});
+}

@@ -1,5 +1,5 @@
 /* global CONFIG */
-import { IndexLink, Link } from 'react-router';
+import { Link } from 'wouter';
 import { faBars, faSearch, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 import { useCallback, useState } from 'react';
 import cn from 'classnames';
@@ -70,9 +70,9 @@ export function LayoutHeader() {
       ) : (
         <>
           <h1 className={styles.logo}>
-            <IndexLink className={styles.logoLink} to="/">
+            <Link className={styles.logoLink} to="/">
               {CONFIG.siteTitle}
-            </IndexLink>
+            </Link>
             {CONFIG.betaChannel.enabled && CONFIG.betaChannel.isBeta && (
               <Link to="/settings/appearance#beta" className="site-logo-subheading">
                 {CONFIG.betaChannel.subHeading}

@@ -17,7 +17,9 @@ class UserFeed extends Component {
     const {
       viewUser,
       authenticated,
-      location: { query },
+      router: {
+        location: { query },
+      },
     } = this.props;
     const isBlocked = viewUser.blocked;
     const isPrivate = viewUser.isPrivate === '1' && !viewUser.subscribed && !viewUser.isItMe;

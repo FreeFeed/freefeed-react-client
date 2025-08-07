@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 
 import { canonicalURI } from '../utils/canonical-uri';
+import { useWouter } from '../services/wouter/with-router';
 import { joinPostData, postActions } from './select-utils';
 import UserName from './user-name';
 
@@ -13,7 +14,8 @@ import { SignInLink } from './sign-in-link';
 import { PostContextProvider } from './post/post-context';
 
 function SinglePostHandler(props) {
-  const { post, router, routeLoadingState } = props;
+  const { post, routeLoadingState } = props;
+  const router = useWouter();
 
   // Replace URL to the canonical one, if necessary
   useEffect(() => {
@@ -23,7 +25,7 @@ function SinglePostHandler(props) {
     const { pathname, search, hash } = router.location;
     const canonicalPostURI = canonicalURI(post);
     if (pathname !== canonicalPostURI) {
-      router.replace(canonicalPostURI + search + hash);
+      router.navigate(canonicalPostURI + search + hash, { replace: true });
     }
   }, [post, routeLoadingState, router]);
 

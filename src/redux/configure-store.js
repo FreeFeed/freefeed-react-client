@@ -1,5 +1,5 @@
 import { compose, createStore, applyMiddleware, combineReducers } from 'redux';
-import { routerReducer } from 'react-router-redux';
+import { historyMiddleware, routerReducer } from '../services/wouter/redux-adapter';
 
 import {
   feedViewOptionsMiddleware,
@@ -63,6 +63,7 @@ const middleware = [
   reloadFeedMiddleware,
   draftsMiddleware,
   undoMiddleware,
+  historyMiddleware,
 ];
 
 const enhancers = [applyMiddleware(...middleware)];

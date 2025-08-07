@@ -1,4 +1,4 @@
-import { IndexRoute, Route } from 'react-router';
+import { Route, Switch } from 'wouter';
 
 import { lazyRetry } from '../../utils/retry-promise';
 import { tokensRoute } from './app-tokens/routes';
@@ -15,16 +15,18 @@ const SanitizeMediaPage = lazyRetry(() => import('./sanitize-media'));
 
 export function settingsRoute(rootPath) {
   return (
-    <Route path={rootPath} component={Layout}>
-      <IndexRoute component={ProfilePage} />
-      <Route path="sign-in" component={SignInPage} />
-      <Route path="sign-in/sessions" component={AuthSessionsPage} />
-      <Route path="privacy" component={PrivacyPage} />
-      <Route path="appearance" component={AppearancePage} />
-      <Route path="notifications" component={NotificationsPage} />
-      <Route path="deactivate" component={DeactivatePage} />
-      <Route path="sanitize-media" component={SanitizeMediaPage} />
-      {tokensRoute('app-tokens')}
+    <Route path={rootPath} component={Layout} nest>
+      <Switch>
+        <Route path="/" component={ProfilePage} />
+        <Route path="sign-in" component={SignInPage} />
+        <Route path="sign-in/sessions" component={AuthSessionsPage} />
+        <Route path="privacy" component={PrivacyPage} />
+        <Route path="appearance" component={AppearancePage} />
+        <Route path="notifications" component={NotificationsPage} />
+        <Route path="deactivate" component={DeactivatePage} />
+        <Route path="sanitize-media" component={SanitizeMediaPage} />
+        {tokensRoute('app-tokens')}
+      </Switch>
     </Route>
   );
 }

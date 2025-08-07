@@ -1,11 +1,12 @@
 import cn from 'classnames';
-import { withRouter } from 'react-router';
-import { Link } from 'wouter';
+import { Link, useLocation, useParams } from 'wouter';
 import { faSearch, faSlidersH, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useEvent } from 'react-use-event-hook';
 
 import { KEY_ESCAPE } from 'keycode-js';
+import { useSelector } from 'react-redux';
+import { useWouter } from '../services/wouter/with-router';
 import styles from './layout-header.module.scss';
 import { Icon } from './fontawesome-icons';
 import { Autocomplete } from './autocomplete/autocomplete';
@@ -13,7 +14,7 @@ import { useMediaQuery } from './hooks/media-query';
 
 const autocompleteAnchor = /(^|[^a-z\d])@|((from|to|author|by|in|commented-?by|liked-?by):)/gi;
 
-export const HeaderSearchForm = withRouter(function HeaderSearchForm({ router, closeSearchForm }) {
+export const HeaderSearchForm = function HeaderSearchForm({ closeSearchForm }) {
   const isWideScreen = useMediaQuery('(min-width: 700px)');
   const isNarrowScreen = useMediaQuery('(max-width: 549px)');
 
@@ -24,15 +25,17 @@ export const HeaderSearchForm = withRouter(function HeaderSearchForm({ router, c
   const compactSearchForm = !fullSearchForm;
   const collapsibleSearchForm = isNarrowScreen;
 
-  const initialQuery = useInitialQuery(router);
+  const initialQuery = useInitialQuery();
   const input = useRef(null);
   useEffect(() => void setQuery(initialQuery), [initialQuery]);
+
+  const [, navigate] = useLocation();
 
   const onSubmit = useEvent((e) => {
     e.preventDefault();
     const q = query.trim();
     if (q !== '') {
-      router.push(`/search?q=${encodeURIComponent(q)}`);
+      navigate(`/search?q=${encodeURIComponent(q)}`);
       input.current.blur();
     }
   });
@@ -119,14 +122,16 @@ export const HeaderSearchForm = withRouter(function HeaderSearchForm({ router, c
       )}
     </form>
   );
-});
+};
 
-function useInitialQuery(router) {
+function useInitialQuery() {
+  const { name: routeName } = useWouter();
+  const params = useParams();
+  const loc = useSelector((state) => state.routing.locationBeforeTransitions);
   return useMemo(() => {
-    const route = router.routes[router.routes.length - 1];
-    switch (route.name) {
+    switch (routeName) {
       case 'search':
-        return (router.location.query.q || router.location.query.qs || '').trim();
+        return (loc.query.q || loc.query.qs || '').trim();
       case 'saves':
         return `in-my:saves `;
       case 'discussions':
@@ -134,13 +139,13 @@ function useInitialQuery(router) {
       case 'direct':
         return `in-my:directs `;
       case 'userLikes':
-        return `liked-by:${router.params.userName} `;
+        return `liked-by:${params.userName} `;
       case 'userComments':
-        return `commented-by:${router.params.userName} `;
+        return `commented-by:${params.userName} `;
       case 'userFeed':
-        return `in:${router.params.userName} `;
+        return `in:${params.userName} `;
       default:
         return '';
     }
-  }, [router.routes, router.params, router.location]);
+  }, [loc.query.q, loc.query.qs, params.userName, routeName]);
 }

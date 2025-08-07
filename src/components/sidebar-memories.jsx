@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { withRouter } from 'react-router';
 import { Link } from 'wouter';
 import { format } from '../utils/date-format';
+import { withRouter } from '../services/wouter/with-router';
 
 const userRouteNames = new Set([
   'userFeed',

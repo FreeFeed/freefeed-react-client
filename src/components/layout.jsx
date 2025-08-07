@@ -126,6 +126,7 @@ class Layout extends Component {
 
   _prevRoute = null;
   updateCurrentRoute() {
+    return;
     const { router } = this.props;
     const route = router.routes[router.routes.length - 1];
     if (route === this._prevRoute) {
