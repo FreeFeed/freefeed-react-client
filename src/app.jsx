@@ -204,11 +204,9 @@ function App() {
                   />
                 </Switch>
               </Route>
-              <Route
-                path="dev"
-                component={lazyLoad(() => import('./components/dev'))}
-                onEnter={enterStaticPage('Developers')}
-              />
+              <Route path="dev">
+                <Redirect to="/ffdev" replace />
+              </Route>
               <Route
                 path="signin"
                 component={lazyLoad(() => import('./components/signin'))}
