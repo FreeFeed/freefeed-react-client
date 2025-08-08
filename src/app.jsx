@@ -58,6 +58,7 @@ import { NotFound } from './components/not-found';
 import { DialogProvider } from './components/dialog/context';
 import { ColorSchemeSetter } from './components/color-theme-setter';
 import { Route, Router, Switch, useNouter } from './services/nouter';
+import { syncHistoryWithStore } from './services/nouter/redux';
 
 /*
 // Set initial history state.
@@ -105,7 +106,7 @@ const enterStaticPage = (title) => () => {
 };
 
 const history = createBrowserHistory();
-
+syncHistoryWithStore(history, store);
 history.listen(() => safeScrollTo(0, 0));
 
 const generateRouteHooks = (callback) => ({
