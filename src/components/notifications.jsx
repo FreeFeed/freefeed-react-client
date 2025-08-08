@@ -4,7 +4,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 
 import { uniq } from 'lodash-es';
 import { faBell } from '@fortawesome/free-regular-svg-icons';
-import { Link } from '../services/nouter';
+import { Link, useNouter } from '../services/nouter';
 import { getCommentsByIds, getPostsByIds } from '../redux/action-creators';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { Throbber } from './throbber';
@@ -543,6 +543,8 @@ function Notifications(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, commentIds.join(',')]);
 
+  const { location } = useNouter();
+
   return (
     <div className="box notifications">
       <ErrorBoundary>
@@ -556,28 +558,28 @@ function Notifications(props) {
         </div>
         <div className="filter">
           <div>Show: </div>
-          <EventGroupLink location={props.location}>Everything</EventGroupLink>
-          <EventGroupLink location={props.location} name="mentions">
+          <EventGroupLink location={location}>Everything</EventGroupLink>
+          <EventGroupLink location={location} name="mentions">
             Mentions
           </EventGroupLink>
-          <EventGroupLink location={props.location} name="comments">
+          <EventGroupLink location={location} name="comments">
             Comments
           </EventGroupLink>
-          <EventGroupLink location={props.location} name="subscriptions">
+          <EventGroupLink location={location} name="subscriptions">
             Subscriptions
           </EventGroupLink>
-          <EventGroupLink location={props.location} name="groups">
+          <EventGroupLink location={location} name="groups">
             Groups
           </EventGroupLink>
-          <EventGroupLink location={props.location} name="directs">
+          <EventGroupLink location={location} name="directs">
             Direct messages
           </EventGroupLink>
-          <EventGroupLink location={props.location} name="bans">
+          <EventGroupLink location={location} name="bans">
             Bans
           </EventGroupLink>
         </div>
         {props.authenticated ? (
-          <PaginatedView routes={props.routes} location={props.location}>
+          <PaginatedView routes={props.routes} location={location}>
             <div className="notification-list">
               {props.loading
                 ? 'Loading'
@@ -600,7 +602,6 @@ function Notifications(props) {
 const mapStateToProps = (state) => {
   return {
     isLoading: state.notifications.loading,
-    filter: state.routing.locationBeforeTransitions.query.filter,
     authenticated: state.authenticated,
     events: (state.notifications.events || []).map((event) => {
       return {

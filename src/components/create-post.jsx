@@ -10,6 +10,7 @@ import cn from 'classnames';
 import { xor } from 'lodash-es';
 import { createPost, resetPostCreateForm } from '../redux/action-creators';
 import { deleteDraft, deleteEmptyDraft, getDraft, newPostURI } from '../services/drafts';
+import { useNouter } from '../services/nouter';
 import { ButtonLink } from './button-link';
 import ErrorBoundary from './error-boundary';
 import { Icon } from './fontawesome-icons';
@@ -34,10 +35,9 @@ const selectMaxFilesCount = (serverInfo) => serverInfo.attachments.maxCountPerPo
 const selectMaxPostLength = (serverInfo) => serverInfo.maxTextLength.post;
 
 export default function CreatePost({ sendTo, isDirects }) {
-  const draftKey = useSelector((state) => {
-    const loc = state.routing.locationBeforeTransitions;
-    return newPostURI(loc.pathname + loc.search);
-  });
+  const { location } = useNouter();
+
+  const draftKey = newPostURI(location.pathname + location.search);
   const frontendPreferences = useSelector((state) => state.user.frontendPreferences);
 
   // Cleaning up new post draft before the first render

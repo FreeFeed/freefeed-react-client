@@ -197,7 +197,7 @@ function GroupsList({ pageSize }) {
 }
 
 function SortHeader({ children, mode, currentMode }) {
-  const location = useSelector((state) => state.routing.locationBeforeTransitions);
+  const { location } = useNouter();
   return (
     <th
       className={cn(

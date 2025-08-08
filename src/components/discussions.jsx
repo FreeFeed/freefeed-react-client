@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { createPost, resetPostCreateForm } from '../redux/action-creators';
 import formatInvitation from '../utils/format-invitation';
+import { withNouter } from '../services/nouter';
 import { postActions } from './select-utils';
 
 import CreatePost from './create-post';
@@ -43,12 +44,17 @@ const FeedHandler = (props) => {
 };
 
 function selectState(state) {
-  const { authenticated, boxHeader, timelines, user } = state;
-  const isDirects = state.routing.locationBeforeTransitions.pathname.includes('direct');
-  const isSaves = state.routing.locationBeforeTransitions.pathname.includes('saves');
-  const defaultFeed =
-    state.routing.locationBeforeTransitions.query.to || (!isDirects && user.username) || undefined;
-  const invitation = formatInvitation(state.routing.locationBeforeTransitions.query.invite);
+  const {
+    authenticated,
+    boxHeader,
+    timelines,
+    user,
+    router: { location },
+  } = state;
+  const isDirects = location.pathname.includes('direct');
+  const isSaves = location.pathname.includes('saves');
+  const defaultFeed = location.query.to || (!isDirects && user.username) || undefined;
+  const invitation = formatInvitation(location.query.invite);
   const sendTo = { defaultFeed, invitation };
 
   return {
@@ -71,4 +77,4 @@ function selectActions(dispatch) {
   };
 }
 
-export default connect(selectState, selectActions)(FeedHandler);
+export default withNouter(connect(selectState, selectActions)(FeedHandler));

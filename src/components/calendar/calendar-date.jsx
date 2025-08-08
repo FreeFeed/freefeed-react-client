@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { Link } from '../../services/nouter';
+import { Link, useNouter } from '../../services/nouter';
 import { joinPostData, postActions } from '../select-utils';
 import { Throbber } from '../throbber';
 import Feed from '../feed';
@@ -8,14 +8,11 @@ import PaginatedView from '../paginated-view';
 import CalendarHeaderNav from './calendar-header-nav';
 
 function CalendarYear(props) {
+  const { isLoading, authenticated, user, nextDay, previousDay } = props;
+
   const {
-    isLoading,
     params: { userName, year, month, day },
-    authenticated,
-    user,
-    nextDay,
-    previousDay,
-  } = props;
+  } = useNouter();
 
   if (!authenticated || !user || user.username !== userName) {
     return (
@@ -63,9 +60,7 @@ function CalendarYear(props) {
 }
 
 function mapStateToProps(state) {
-  const { routeLoadingState: isLoading, authenticated, user, routing, feedViewState } = state;
-  const location = routing.locationBeforeTransitions;
-  const offset = +location.query.offset || 0;
+  const { routeLoadingState: isLoading, authenticated, user, feedViewState } = state;
   const { isLastPage, nextDay, previousDay } = feedViewState;
   const entries = feedViewState.entries.map(joinPostData(state));
 
@@ -74,8 +69,6 @@ function mapStateToProps(state) {
     user,
     authenticated,
     entries,
-    location,
-    offset,
     isLastPage,
     nextDay,
     previousDay,

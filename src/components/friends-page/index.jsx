@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
 import { Helmet } from 'react-helmet';
 
-import { Link } from '../../services/nouter';
+import { Link, useNouter } from '../../services/nouter';
 import ErrorBoundary from '../error-boundary';
 import {
   combineAsyncStates,
@@ -24,13 +24,14 @@ import { Requests } from './requests';
 
 const tabIds = ['', 'blocked', 'subscribers', 'requests'];
 
-export const Friends = withLayout(function Friends({ router }) {
+export const Friends = withLayout(function Friends() {
   const dispatch = useDispatch();
   const authenticated = useSelector((state) => state.authenticated);
   const thisUsername = useSelector((state) => state.user.username || null);
-  const currentList = useSelector(
-    (state) => state.routing.locationBeforeTransitions?.query.show || '',
-  );
+
+  const { location, history } = useNouter();
+
+  const currentList = location.query.show || '';
   const homeFeeds = useSelector((state) => state.homeFeeds);
 
   const allSubscriptionsStatus = useSelector((state) => state.allSubscriptionsStatus);
@@ -55,17 +56,20 @@ export const Friends = withLayout(function Friends({ router }) {
   const onListChange = useCallback(
     (newList) => {
       newList !== currentList &&
-        router.push({ ...router.location, query: newList ? { show: newList } : {} });
+        history.push({
+          ...location,
+          search: newList ? new URLSearchParams({ show: newList }).toString() : '',
+        });
     },
-    [currentList, router],
+    [currentList, history, location],
   );
 
   useEffect(() => {
     const validListValues = [...tabIds, ...homeFeeds.map((f) => f.id)];
     if (allSubscriptionsStatus.success && !validListValues.includes(currentList)) {
-      router.replace({ ...router.location, query: {} });
+      history.replace({ ...location, search: '' });
     }
-  }, [allSubscriptionsStatus.success, currentList, router, homeFeeds]);
+  }, [allSubscriptionsStatus.success, currentList, homeFeeds, history, location]);
 
   // Initial data loading
   useEffect(
@@ -174,7 +178,7 @@ function toAsyncStatus({ initial, isPending, errorString }) {
 }
 
 function Tab({ id, activeId, children }) {
-  const location = useSelector((state) => state.routing.locationBeforeTransitions);
+  const { location } = useNouter();
   return (
     <li role="tab presentation" className={cn({ active: id === activeId })}>
       <Link to={{ ...location, query: id ? { show: id } : {} }}>{children}</Link>

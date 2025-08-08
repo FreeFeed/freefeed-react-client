@@ -1,6 +1,5 @@
 /* global CONFIG */
 import { useMemo, Suspense, useEffect } from 'react';
-import { browserHistory } from 'react-router';
 import { Helmet } from 'react-helmet';
 import cn from 'classnames';
 
@@ -13,7 +12,7 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from 'react-redux';
-import { Link } from '../../services/nouter';
+import { Link, useNouter } from '../../services/nouter';
 import { Icon } from '../fontawesome-icons';
 import { Delayed } from '../lazy-component';
 import { Throbber } from '../throbber';
@@ -41,27 +40,28 @@ const loadingPage = (
   </Delayed>
 );
 
-export default function Layout({ children, router }) {
+export default function Layout({ children }) {
   // Do not allow anonymous access
   const authenticated = useSelector((state) => state.authenticated);
+  const { location, history } = useNouter();
   useEffect(
     () =>
       void (
         !authenticated &&
-        browserHistory.push(
+        history.push(
           `/signin?back=${encodeURIComponent(location.pathname + location.search + location.hash)}`,
         )
       ),
-    [authenticated],
+    [authenticated, history, location.hash, location.pathname, location.search],
   );
 
   const activeTab = useMemo(() => {
-    const { pathname } = router.location;
+    const { pathname } = location;
     if (pathname.indexOf(settingsRoot) !== 0) {
       return '';
     }
     return pathname.slice(settingsRoot.length).replace(/^\//, '').split('/')[0];
-  }, [router.location]);
+  }, [location]);
 
   if (!authenticated) {
     // Do not allow anonymous access
