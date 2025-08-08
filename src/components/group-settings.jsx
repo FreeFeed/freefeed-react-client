@@ -4,14 +4,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as _ from 'lodash-es';
 
 import { Helmet } from 'react-helmet';
-import { Link } from '../services/nouter';
+import { Link, useNouter } from '../services/nouter';
 import { updateGroupPicture } from '../redux/action-creators';
 import { initialAsyncState } from '../redux/async-helpers';
 import { PictureEditForm } from './settings/forms/profile-picture';
 import GroupSettingsForm from './group-settings-form';
 import settingsStyles from './settings/settings.module.scss';
 
-export default function GroupSettings({ params: { userName: username } }) {
+export default function GroupSettings() {
+  const {
+    params: { userName: username },
+  } = useNouter();
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.user.id);
   const group = useSelector((state) => _.find(state.users, { username }));

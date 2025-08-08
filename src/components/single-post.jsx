@@ -2,10 +2,9 @@
 import { useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { Link } from '../services/nouter';
+import { Link, useNouter } from '../services/nouter';
 
 import { canonicalURI } from '../utils/canonical-uri';
-import { useWouter } from '../services/wouter/with-router';
 import { joinPostData, postActions } from './select-utils';
 import UserName from './user-name';
 
@@ -15,19 +14,18 @@ import { PostContextProvider } from './post/post-context';
 
 function SinglePostHandler(props) {
   const { post, routeLoadingState } = props;
-  const router = useWouter();
+  const { location, history } = useNouter();
 
   // Replace URL to the canonical one, if necessary
   useEffect(() => {
     if (!post || routeLoadingState) {
       return;
     }
-    const { pathname, search, hash } = router.location;
     const canonicalPostURI = canonicalURI(post);
-    if (pathname !== canonicalPostURI) {
-      router.navigate(canonicalPostURI + search + hash, { replace: true });
+    if (location.pathname !== canonicalPostURI) {
+      history.replace({ ...location, pathname: canonicalPostURI });
     }
-  }, [post, routeLoadingState, router]);
+  }, [history, location, post, routeLoadingState]);
 
   let postBody = <div />;
 

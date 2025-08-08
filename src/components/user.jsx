@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import * as _ from 'lodash-es';
-import { formatPattern } from 'react-router/es/PatternUtils';
+import { inject as injectParams } from 'regexparam';
 
 import {
   createPost,
@@ -14,7 +14,7 @@ import {
 import { getCurrentRouteName } from '../utils';
 import { initialAsyncState } from '../redux/async-helpers';
 import { apiVersion } from '../services/api-version';
-import { withRouter } from '../services/wouter/with-router';
+import { withNouter } from '../services/nouter';
 import { postActions, userActions } from './select-utils';
 import FeedOptionsSwitch from './feed-options-switch';
 import Breadcrumbs from './breadcrumbs';
@@ -30,20 +30,14 @@ const UserHandler = (props) => {
       router: { path, params, location },
       viewUser,
     } = props;
-    console.log('UserHandler', {
-      isLoading: viewUser.isLoading,
-      username: viewUser.username,
-      paramsUsername: params.userName,
-    });
     if (
       !viewUser.isLoading &&
       viewUser.username &&
       params.userName &&
       viewUser.username !== params.userName
     ) {
-      const newPath = formatPattern(path, { ...params, userName: viewUser.username });
-      console.log('Redirecting to', newPath);
-      // props.router.navigate(newPath + location.search, { replace: true });
+      const newPath = injectParams(path, { ...params, userName: viewUser.username });
+      props.router.navigate(newPath + location.search, { replace: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.router, props.viewUser.isLoading, props.viewUser.username]);
@@ -231,4 +225,4 @@ function selectActions(dispatch) {
   };
 }
 
-export default withRouter(connect(selectState, selectActions)(UserHandler));
+export default withNouter(connect(selectState, selectActions)(UserHandler));

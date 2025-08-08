@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import cn from 'classnames';
 
 import { faCaretDown, faUserFriends, faCheck } from '@fortawesome/free-solid-svg-icons';
-import { Link } from '../services/nouter';
+import { Link, useNouter } from '../services/nouter';
 import { getAllGroups } from '../redux/action-creators';
 import { Icon } from './fontawesome-icons';
 
@@ -17,7 +17,7 @@ import styles from './all-groups.module.scss';
 import { UserPicture } from './user-picture';
 import { HorScrollable } from './hor-scrollable';
 
-export default function AllGroups({ router }) {
+export default function AllGroups() {
   const dispatch = useDispatch();
   const status = useSelector((state) => state.allGroupsStatus);
 
@@ -47,7 +47,7 @@ export default function AllGroups({ router }) {
           {status.error && (
             <p className="alert alert-danger">Can not load groups list: {status.errorText}</p>
           )}
-          {status.success && <GroupsList pageSize={50} routerReplace={router.replace} />}
+          {status.success && <GroupsList pageSize={50} />}
         </div>
       </div>
     </div>
@@ -67,8 +67,8 @@ const sortFields = {
   [SORT_BY_DATE]: 'createdAt',
 };
 
-function GroupsList({ pageSize, routerReplace }) {
-  const location = useSelector((state) => state.routing.locationBeforeTransitions);
+function GroupsList({ pageSize }) {
+  const { location, history } = useNouter();
   const { groups, withProtected } = useSelector((state) => state.allGroups);
   const user = useSelector((state) => state.user);
 
@@ -98,7 +98,7 @@ function GroupsList({ pageSize, routerReplace }) {
 
   const clearSearchForm = useCallback(() => setNameFilter(''), []);
 
-  const debuncedReplace = useMemo(() => debounce(routerReplace, 200), [routerReplace]);
+  const debuncedReplace = useMemo(() => debounce(history.replace.bind(history), 200), [history]);
 
   useEffect(() => {
     if (nameFilter !== (location.query.q || '')) {
@@ -106,7 +106,8 @@ function GroupsList({ pageSize, routerReplace }) {
       if (nameFilter !== '') {
         query.q = nameFilter;
       }
-      debuncedReplace({ ...location, query });
+      const search = new URLSearchParams(query).toString();
+      debuncedReplace({ ...location, search });
     }
   }, [debuncedReplace, nameFilter, location]);
 

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import * as _ from 'lodash-es';
-import { Link } from '../services/nouter';
+import { Link, withNouter } from '../services/nouter';
 
 import {
   unsubscribeFromGroup,
@@ -145,7 +145,7 @@ function ManageSubscribersHandler({ user: currentUser, groupName, amIAdmin, ...p
 
 function selectState(state, ownProps) {
   const { boxHeader, groupAdmins: allGroupAdmins, user } = state;
-  const groupName = ownProps.params.userName;
+  const groupName = ownProps.router.params.userName;
   const groupAdmins = allGroupAdmins[groupName] || [];
   const usersWhoAreNotAdmins = _.filter(state.usernameSubscribers.payload, (user) => {
     return groupAdmins.find((u) => u.username == user.username) == null;
@@ -166,4 +166,4 @@ function selectState(state, ownProps) {
   };
 }
 
-export default connect(selectState)(ManageSubscribersHandler);
+export default withNouter(connect(selectState)(ManageSubscribersHandler));

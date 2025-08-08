@@ -2,11 +2,11 @@ import cn from 'classnames';
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import { useEvent } from 'react-use-event-hook';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { useLocation } from 'wouter';
 import { useMediaQuery } from '../hooks/media-query';
 import { ButtonLink } from '../button-link';
 import { Icon } from '../fontawesome-icons';
 import { useSearchQuery } from '../hooks/search-query';
+import { useNouter } from '../../services/nouter';
 import style from './advanced-search-form.module.scss';
 import { BoolInput } from './bool-input';
 import { ChooseInput } from './choose-input';
@@ -74,9 +74,9 @@ export function AdvancedSearchForm() {
       .join(' ');
   }, [inPosts, inComments, query, filters]);
 
-  const [, navigate] = useLocation();
+  const { history } = useNouter();
 
-  const onSearch = useEvent(() => navigate(`/search?q=${encodeURIComponent(resultingQuery)}`));
+  const onSearch = useEvent(() => history.push(`/search?q=${encodeURIComponent(resultingQuery)}`));
 
   const onKeyDown = useEvent((e) => {
     if (

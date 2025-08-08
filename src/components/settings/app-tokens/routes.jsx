@@ -1,4 +1,4 @@
-import { Route, Switch } from 'wouter';
+import { Route, Switch } from '../../../services/nouter';
 import { lazyRetry } from '../../../utils/retry-promise';
 
 const tokensPage = lazyRetry(() => import('./tokens'));

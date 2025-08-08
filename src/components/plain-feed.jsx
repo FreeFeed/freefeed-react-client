@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { useWouter } from '../services/wouter/with-router';
+import { useNouter } from '../services/nouter';
 import { joinPostData, postActions } from './select-utils';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
@@ -8,7 +8,7 @@ import FeedOptionsSwitch from './feed-options-switch';
 import ErrorBoundary from './error-boundary';
 
 function FeedHandler(props) {
-  const { name: routeName } = useWouter();
+  const { name: routeName } = useNouter();
   return (
     <div className="box">
       <ErrorBoundary>

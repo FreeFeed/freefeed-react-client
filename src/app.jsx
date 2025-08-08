@@ -1,10 +1,9 @@
 /* global CONFIG */
 import { createRoot } from 'react-dom/client';
-import { Suspense, useEffect } from 'react';
+import { Suspense, useEffect, useLayoutEffect } from 'react';
 // import { Router, Route, IndexRoute, browserHistory, Redirect } from 'react-router';
 import { Provider, useSelector } from 'react-redux';
 import * as Sentry from '@sentry/react';
-import { Redirect, Router, Switch } from 'wouter';
 import 'focus-visible';
 
 import 'autotrack'; // used by google-analytics in ../index.jade
@@ -13,6 +12,7 @@ import '../styles/common/common.scss';
 import '../styles/helvetica/app.scss';
 import '../styles/helvetica/dark-theme.scss';
 
+import { createBrowserHistory } from 'history';
 import configureStore from './redux/configure-store';
 import * as ActionCreators from './redux/action-creators';
 
@@ -57,10 +57,7 @@ import { HomeAux } from './components/home-aux';
 import { NotFound } from './components/not-found';
 import { DialogProvider } from './components/dialog/context';
 import { ColorSchemeSetter } from './components/color-theme-setter';
-import { Route } from './services/wouter/named-route';
-import { historyEventSource } from './services/wouter/history-events';
-import { useWouter } from './services/wouter/with-router';
-import { TestNouter } from './services/nouter/components-test/test-nouter';
+import { Route, Router, Switch, useNouter } from './services/nouter';
 
 /*
 // Set initial history state.
@@ -107,7 +104,9 @@ const enterStaticPage = (title) => () => {
   store.dispatch(ActionCreators.staticPage(title));
 };
 
-historyEventSource()[1](() => safeScrollTo(0, 0));
+const history = createBrowserHistory();
+
+history.listen(() => safeScrollTo(0, 0));
 
 const generateRouteHooks = (callback) => ({
   onEnter: callback,
@@ -168,7 +167,7 @@ function App() {
   }
 
   return (
-    <Router>
+    <Router history={history}>
       <Switch>
         <Route name="bookmarklet" path="/bookmarklet" component={Bookmarklet} />
 
@@ -331,9 +330,6 @@ function App() {
                 path="/invited/:invitationId"
                 component={SignupByInvitation}
               />
-              <Route path="/test-nouter/*?">
-                <TestNouter />
-              </Route>
               <Route
                 name="userFeed"
                 path="/:userName"
@@ -354,9 +350,7 @@ function App() {
               />
 
               <Route path="/:userName/calendar">
-                {({ userName }) => (
-                  <Redirect to={`/${encodeURIComponent(userName)}/calendar/${thisYear}`} />
-                )}
+                <CalendarRedirect thisYear={thisYear} />
               </Route>
               <Route
                 name="userCalendarYear"
@@ -448,9 +442,22 @@ createRoot(appRoot).render(
   </Provider>,
 );
 
+function Redirect({ to }) {
+  const { history } = useNouter();
+  useLayoutEffect(() => {
+    history.push(to);
+  }, [history, to]);
+  return null;
+}
+
+function CalendarRedirect({ thisYear }) {
+  const { params } = useNouter();
+  return <Redirect to={`/${encodeURIComponent(params.userName)}/calendar/${thisYear}`} />;
+}
+
 function checkPath(Component, checker) {
   return (props) => {
-    const router = useWouter();
+    const router = useNouter();
     return checker(router) ? <Component {...props} /> : <NotFound {...props} />;
   };
 }

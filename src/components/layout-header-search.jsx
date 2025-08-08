@@ -1,12 +1,10 @@
 import cn from 'classnames';
-import { Link, useLocation, useParams } from 'wouter';
 import { faSearch, faSlidersH, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useEvent } from 'react-use-event-hook';
 
 import { KEY_ESCAPE } from 'keycode-js';
-import { useSelector } from 'react-redux';
-import { useWouter } from '../services/wouter/with-router';
+import { Link, useNouter, useResolvedRoutes } from '../services/nouter';
 import styles from './layout-header.module.scss';
 import { Icon } from './fontawesome-icons';
 import { Autocomplete } from './autocomplete/autocomplete';
@@ -29,13 +27,13 @@ export const HeaderSearchForm = function HeaderSearchForm({ closeSearchForm }) {
   const input = useRef(null);
   useEffect(() => void setQuery(initialQuery), [initialQuery]);
 
-  const [, navigate] = useLocation();
+  const { history } = useNouter();
 
   const onSubmit = useEvent((e) => {
     e.preventDefault();
     const q = query.trim();
     if (q !== '') {
-      navigate(`/search?q=${encodeURIComponent(q)}`);
+      history.push(`/search?q=${encodeURIComponent(q)}`);
       input.current.blur();
     }
   });
@@ -125,27 +123,29 @@ export const HeaderSearchForm = function HeaderSearchForm({ closeSearchForm }) {
 };
 
 function useInitialQuery() {
-  const { name: routeName } = useWouter();
-  const params = useParams();
-  const loc = useSelector((state) => state.routing.locationBeforeTransitions);
+  const {
+    location: { query },
+  } = useNouter();
+  const resolvedRoutes = useResolvedRoutes();
   return useMemo(() => {
-    switch (routeName) {
-      case 'search':
-        return (loc.query.q || loc.query.qs || '').trim();
-      case 'saves':
-        return `in-my:saves `;
-      case 'discussions':
-        return `in-my:discussions `;
-      case 'direct':
-        return `in-my:directs `;
-      case 'userLikes':
-        return `liked-by:${params.userName} `;
-      case 'userComments':
-        return `commented-by:${params.userName} `;
-      case 'userFeed':
-        return `in:${params.userName} `;
-      default:
-        return '';
+    for (const { name, params } of resolvedRoutes) {
+      switch (name) {
+        case 'search':
+          return (query.q || query.qs || '').trim();
+        case 'saves':
+          return `in-my:saves `;
+        case 'discussions':
+          return `in-my:discussions `;
+        case 'direct':
+          return `in-my:directs `;
+        case 'userLikes':
+          return `liked-by:${params.userName} `;
+        case 'userComments':
+          return `commented-by:${params.userName} `;
+        case 'userFeed':
+          return `in:${params.userName} `;
+      }
     }
-  }, [loc.query.q, loc.query.qs, params.userName, routeName]);
+    return '';
+  }, [resolvedRoutes, query]);
 }

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Link } from '../services/nouter';
+import { Link, useResolvedRoutes } from '../services/nouter';
 import { format } from '../utils/date-format';
-import { withRouter } from '../services/wouter/with-router';
 
 const userRouteNames = new Set([
   'userFeed',
@@ -12,8 +11,15 @@ const userRouteNames = new Set([
   'post',
 ]);
 
-export const SideBarMemories = withRouter(function SideBarMemories({ router }) {
-  const username = router.routes.find((r) => userRouteNames.has(r.name)) && router.params.userName;
+export function SideBarMemories() {
+  const resolvedRoutes = useResolvedRoutes();
+  let username = null;
+  for (const route of resolvedRoutes) {
+    if (userRouteNames.has(route.name)) {
+      username = route.params.userName;
+      break;
+    }
+  }
 
   // Periodically update the current date value for the long-lived tab case
   const [today, setToday] = useState(new Date());
@@ -47,4 +53,4 @@ export const SideBarMemories = withRouter(function SideBarMemories({ router }) {
       </div>
     </div>
   );
-});
+}
