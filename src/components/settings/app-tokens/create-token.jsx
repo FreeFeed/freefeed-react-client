@@ -2,12 +2,12 @@ import { parse as urlParse } from 'url';
 import { parse as queryParse } from 'querystring';
 
 import { useEffect, useState, useCallback, useMemo } from 'react';
-import { Link } from 'wouter';
 import { useDispatch, useSelector } from 'react-redux';
 import { trim } from 'lodash-es';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
+import { Link } from '../../../services/nouter';
 import { createAppToken, createAppTokenReset } from '../../../redux/action-creators';
 import { Icon } from '../../fontawesome-icons';
 import { TextCopier } from './text-copier';

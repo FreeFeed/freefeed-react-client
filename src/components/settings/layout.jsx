@@ -1,7 +1,6 @@
 /* global CONFIG */
 import { useMemo, Suspense, useEffect } from 'react';
 import { browserHistory } from 'react-router';
-import { Link } from 'wouter';
 import { Helmet } from 'react-helmet';
 import cn from 'classnames';
 
@@ -14,6 +13,7 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from 'react-redux';
+import { Link } from '../../services/nouter';
 import { Icon } from '../fontawesome-icons';
 import { Delayed } from '../lazy-component';
 import { Throbber } from '../throbber';

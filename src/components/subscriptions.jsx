@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { Link } from 'wouter';
 import * as _ from 'lodash-es';
+import { Link } from '../services/nouter';
 
 import SubsList from './subs-list';
 

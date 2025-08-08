@@ -1,4 +1,4 @@
-import { Link } from 'wouter';
+import { Link } from '../../services/nouter';
 
 import ProfileForm from './forms/profile';
 import ProfilePictureForm from './forms/profile-picture';

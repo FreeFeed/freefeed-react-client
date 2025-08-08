@@ -1,12 +1,12 @@
 /* global CONFIG */
 import { useMemo, useEffect } from 'react';
-import { Link } from 'wouter';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, useField } from 'react-final-form-hooks';
 import { without, uniqWith } from 'lodash-es';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { hashtags as findHashTags } from 'social-text-tokenizer';
 import ISO6391 from 'iso-639-1';
+import { Link } from '../../../services/nouter';
 import {
   DISPLAYNAMES_DISPLAYNAME,
   DISPLAYNAMES_BOTH,

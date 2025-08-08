@@ -1,9 +1,9 @@
 import { useDispatch, useSelector, useStore } from 'react-redux';
-import { Link } from 'wouter';
 import cn from 'classnames';
 import { useEffect, useMemo, useState } from 'react';
 import { useEvent } from 'react-use-event-hook';
 import { faExternalLinkAlt, faUserFriends } from '@fortawesome/free-solid-svg-icons';
+import { Link } from '../../services/nouter';
 import { Finder } from '../../utils/sparse-match';
 import { UserPicture } from '../user-picture';
 import { Icon } from '../fontawesome-icons';

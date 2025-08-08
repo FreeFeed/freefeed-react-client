@@ -1,9 +1,9 @@
 /* global CONFIG */
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'wouter';
 import Textarea from 'react-textarea-autosize';
 import memoize from 'memoize-one';
+import { Link } from '../services/nouter';
 import { preventDefault } from '../utils';
 import { createFreefeedInvitation } from '../redux/action-creators';
 import { Throbber } from './throbber';

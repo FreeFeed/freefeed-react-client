@@ -1,6 +1,6 @@
-import { Link } from 'wouter';
 import { connect } from 'react-redux';
 
+import { Link } from '../../services/nouter';
 import { joinPostData, postActions } from '../select-utils';
 import { Throbber } from '../throbber';
 import Feed from '../feed';

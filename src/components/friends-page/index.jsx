@@ -1,10 +1,10 @@
 /* global CONFIG */
 import { useEffect, useMemo, useCallback } from 'react';
-import { Link } from 'wouter';
 import { useSelector, useDispatch } from 'react-redux';
 import cn from 'classnames';
-
 import { Helmet } from 'react-helmet';
+
+import { Link } from '../../services/nouter';
 import ErrorBoundary from '../error-boundary';
 import {
   combineAsyncStates,

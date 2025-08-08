@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
-import { Link } from 'wouter';
+import { Link } from '../services/nouter';
 
 import { pluralForm } from '../utils';
 

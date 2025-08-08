@@ -1,5 +1,4 @@
 import { forwardRef, useLayoutEffect, useState } from 'react';
-import { Link } from 'wouter';
 import cn from 'classnames';
 import { noop } from 'lodash-es';
 import { useSelector } from 'react-redux';
@@ -13,6 +12,7 @@ import {
   faUserFriends,
 } from '@fortawesome/free-solid-svg-icons';
 import { faHeart, faClock, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
+import { Link } from '../../services/nouter';
 
 import { pluralForm } from '../../utils';
 import { copyURL } from '../../utils/copy-url';

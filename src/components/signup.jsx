@@ -2,7 +2,7 @@
 import { encode as qsEncode } from 'querystring';
 import { memo, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'wouter';
+import { Link } from '../services/nouter';
 
 import { signedIn } from '../redux/action-creators';
 import SignupForm from './signup-form';

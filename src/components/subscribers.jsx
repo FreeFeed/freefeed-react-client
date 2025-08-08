@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'wouter';
 import * as _ from 'lodash-es';
+import { Link } from '../services/nouter';
 
 import { getUserInfo } from '../redux/action-creators';
 import SubsList from './subs-list';

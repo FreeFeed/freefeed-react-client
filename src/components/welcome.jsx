@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import classnames from 'classnames';
-import { Link } from 'wouter';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { Link } from '../services/nouter';
 
 import logoPath from '../../assets/images/logo.svg';
 

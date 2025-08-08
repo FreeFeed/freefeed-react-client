@@ -1,4 +1,4 @@
-import { Link } from 'wouter';
+import { Link } from '../services/nouter';
 
 const PAGE_SIZE = 30;
 

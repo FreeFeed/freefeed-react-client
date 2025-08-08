@@ -1,7 +1,7 @@
 /* global CONFIG */
 import { Component } from 'react';
-import { Link } from 'wouter';
 import { connect } from 'react-redux';
+import { Link } from '../services/nouter';
 import { resetPassword, resetPasswordValidationFail } from '../redux/action-creators';
 import { preventDefault } from '../utils';
 import LoaderContainer from './loader-container';

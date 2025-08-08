@@ -1,6 +1,6 @@
 /* global CONFIG */
 import { Component } from 'react';
-import { Link } from 'wouter';
+import { Link } from '../services/nouter';
 
 import { preventDefault } from '../utils';
 import { Throbber } from './throbber';

@@ -1,4 +1,4 @@
-import { Link } from 'wouter';
+import { Link } from '../../services/nouter';
 
 import ExtAuthForm from './forms/ext-auth-accounts';
 import ChangePasswordForm from './forms/change-password';

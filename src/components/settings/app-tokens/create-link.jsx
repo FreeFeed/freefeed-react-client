@@ -1,10 +1,10 @@
 import { stringify } from 'querystring';
 
 import { useState, useCallback } from 'react';
-import { Link } from 'wouter';
 import { trim } from 'lodash-es';
-
 import { faAngleRight, faLaptop } from '@fortawesome/free-solid-svg-icons';
+
+import { Link } from '../../../services/nouter';
 import { Icon } from '../../fontawesome-icons';
 import TokenForm, { initialFormData } from './token-form-fields';
 import { TextCopier } from './text-copier';

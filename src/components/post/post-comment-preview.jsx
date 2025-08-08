@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import { useCallback, useMemo, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'wouter';
+import { Link } from '../../services/nouter';
 
 import { getCommentByNumber } from '../../redux/action-creators';
 import { initialAsyncState } from '../../redux/async-helpers';

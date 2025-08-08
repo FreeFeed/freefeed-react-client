@@ -1,4 +1,4 @@
-import { Link } from 'wouter';
+import { Link } from '../services/nouter';
 
 export function HomeFeedLink({ feed }) {
   return <Link to={homeFeedURI(feed)}>{feed.title}</Link>;

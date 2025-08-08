@@ -2,9 +2,9 @@
 import { encode as qsEncode } from 'querystring';
 import { memo, useEffect, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'wouter';
 import { useForm, useField } from 'react-final-form-hooks';
 import cn from 'classnames';
+import { Link } from '../services/nouter';
 
 import { signIn, signedIn, resumeMe } from '../redux/action-creators';
 import ErrorBoundary from './error-boundary';

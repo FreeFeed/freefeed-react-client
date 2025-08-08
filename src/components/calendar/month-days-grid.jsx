@@ -1,6 +1,6 @@
-import { Link } from 'wouter';
 import cx from 'classnames';
 
+import { Link } from '../../services/nouter';
 import { pluralForm } from '../../utils';
 import { pad, dayOfWeek, daysInMonth } from '../../utils/calendar-utils';
 

@@ -1,7 +1,7 @@
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'wouter';
+import { Link } from '../../services/nouter';
 
 import { getAttachmentsStats, sanitizeMedia } from '../../redux/action-creators';
 import { pluralForm } from '../../utils';

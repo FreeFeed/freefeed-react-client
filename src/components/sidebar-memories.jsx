@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'wouter';
+import { Link } from '../services/nouter';
 import { format } from '../utils/date-format';
 import { withRouter } from '../services/wouter/with-router';
 

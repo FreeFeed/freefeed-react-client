@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { Link } from 'wouter';
 import * as _ from 'lodash-es';
+import { Link } from '../services/nouter';
 
 import {
   unsubscribeFromGroup,

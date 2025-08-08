@@ -1,5 +1,5 @@
-import { Link } from 'wouter';
 import { connect } from 'react-redux';
+import { Link } from '../../services/nouter';
 
 import { Throbber } from '../throbber';
 import CalendarHeaderNav from './calendar-header-nav';

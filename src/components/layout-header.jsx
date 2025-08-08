@@ -1,9 +1,9 @@
 /* global CONFIG */
-import { Link } from 'wouter';
 import { faBars, faSearch, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 import { useCallback, useState } from 'react';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from '../services/nouter';
 
 import { openSidebar } from '../redux/action-creators';
 import { Icon } from './fontawesome-icons';

@@ -1,10 +1,10 @@
 /* global CONFIG */
 import { useCallback, useMemo } from 'react';
-import { Link } from 'wouter';
 import { useSelector, useDispatch } from 'react-redux';
 import * as _ from 'lodash-es';
 
 import { Helmet } from 'react-helmet';
+import { Link } from '../services/nouter';
 import { updateGroupPicture } from '../redux/action-creators';
 import { initialAsyncState } from '../redux/async-helpers';
 import { PictureEditForm } from './settings/forms/profile-picture';

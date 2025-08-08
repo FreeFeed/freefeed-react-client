@@ -1,5 +1,5 @@
-import { Link } from 'wouter';
 import { connect } from 'react-redux';
+import { Link } from '../services/nouter';
 
 import { bindRouteActions } from '../redux/route-actions';
 import { getCurrentRouteName } from '../utils';

@@ -1,6 +1,6 @@
-import { Link } from 'wouter';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMemo } from 'react';
+import { Link } from '../services/nouter';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
 import { joinPostData, postActions } from './select-utils';

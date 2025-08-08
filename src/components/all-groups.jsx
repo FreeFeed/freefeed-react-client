@@ -2,11 +2,11 @@
 import { memo, useEffect, useMemo, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { sortBy, range, omit, debounce } from 'lodash-es';
-import { Link } from 'wouter';
 import { Helmet } from 'react-helmet';
 import cn from 'classnames';
 
 import { faCaretDown, faUserFriends, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { Link } from '../services/nouter';
 import { getAllGroups } from '../redux/action-creators';
 import { Icon } from './fontawesome-icons';
 

@@ -1,8 +1,8 @@
 /* global CONFIG */
 import { useEffect, useMemo } from 'react';
-import { Link } from 'wouter';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import { Link } from '../services/nouter';
 
 import { canonicalURI } from '../utils/canonical-uri';
 import { useWouter } from '../services/wouter/with-router';

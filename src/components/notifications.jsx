@@ -1,10 +1,10 @@
 /* global CONFIG */
 import { isValidElement, useEffect, useMemo } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { Link } from 'wouter';
 
 import { uniq } from 'lodash-es';
 import { faBell } from '@fortawesome/free-regular-svg-icons';
+import { Link } from '../services/nouter';
 import { getCommentsByIds, getPostsByIds } from '../redux/action-creators';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';
 import { Throbber } from './throbber';

@@ -1,10 +1,10 @@
 /* global CONFIG */
 import { useCallback, useEffect, useRef } from 'react';
-import { Link } from 'wouter';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { Link } from '../services/nouter';
 import { htmlSafe } from '../utils';
 import { listHomeFeeds, openSidebar, setUserColorScheme } from '../redux/action-creators';
 import {

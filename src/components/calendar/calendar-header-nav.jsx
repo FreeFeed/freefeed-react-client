@@ -1,4 +1,4 @@
-import { Link } from 'wouter';
+import { Link } from '../../services/nouter';
 
 import { MIN_DATE, MAX_DATE } from '../../utils/calendar-utils';
 

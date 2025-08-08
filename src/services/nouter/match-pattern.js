@@ -9,7 +9,7 @@ export function matchPattern(pattern, path, nest = false) {
 
   const params = {};
   for (const [i, key] of keys.entries()) {
-    params[key.name] = values[i];
+    params[key] = values[i];
   }
 
   return [params, path.slice(matched.length)];
