@@ -76,7 +76,8 @@ export { Link } from './components/link';
  * - pattern: the current route pattern
  * - params: the current params (the union of all params in current and parent
  *   routes)
- * - routes: the array of all matched routes: {name, pattern, params}[]
+ * - routes: the array of matched routes up to the current one: {name, pattern,
+ *   params}[]
  * - path: the rest of the path after the current route
  */
 export { useNouter } from './hooks';
@@ -86,3 +87,21 @@ export { useNouter } from './hooks';
  * `useNouter` hook. It adds the `router` prop with the router state.
  */
 export { withNouter } from './hooks';
+
+/**
+ * `useResolvedRoutes` is a hook that returns the array of resolved routes.
+ * While the `useNouter` hook returns the state of the current route, this hook
+ * returns the state of all routes that were matched. It is a pretty advanced
+ * feature and may be useful when you need to access the full state from the
+ * top-level route. It returns an array of objects with the following
+ * properties:
+ * - id: the route internal id
+ * - name: the route name
+ * - pattern: the route pattern
+ * - params: the route params
+ *
+ * This array is not a 'path' from the router root to the leaf, because there
+ * can be multiple matched leaves in the route tree. Treat it as just a list of
+ * all activated routes.
+ */
+export { useResolvedRoutes } from './hooks';

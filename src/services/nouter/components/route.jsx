@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
-import { NouterProvider, useNouter } from '../hooks';
+import { NouterProvider, useNouter, useRouteRegistration } from '../hooks';
 import { matchPattern } from '../match-pattern';
 
 export function Route({
@@ -33,8 +33,9 @@ export function Route({
   );
 
   const [currentCtx, setCurrentCtx] = useState(null);
-  const lastTrxRef = useRef(null);
+  useRouteRegistration(name, currentCtx?.params, pattern);
 
+  const lastTrxRef = useRef(null);
   useEffect(() => {
     if (currentCtx === newContext) {
       return;
