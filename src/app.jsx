@@ -443,11 +443,11 @@ createRoot(appRoot).render(
   </Provider>,
 );
 
-function Redirect({ to }) {
+function Redirect({ to, replace = false }) {
   const { history } = useNouter();
   useLayoutEffect(() => {
-    history.push(to);
-  }, [history, to]);
+    history[replace ? 'replace' : 'push'](to);
+  }, [history, replace, to]);
   return null;
 }
 
