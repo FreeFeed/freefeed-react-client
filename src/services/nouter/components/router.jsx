@@ -60,7 +60,7 @@ export function Router({ history = createBrowserHistory(), children }) {
       // The rest of the path to parse
       path: location.pathname,
     }),
-    [history, location.hash, location.pathname, location.search],
+    [history, location],
   );
 
   return (
