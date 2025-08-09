@@ -1,7 +1,7 @@
-import { parse as qsParse } from 'querystring';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { createBrowserHistory } from 'history';
 import { NouterProvider, RegisterResolvedRouteProvider } from '../hooks';
+import { withQuery } from '../utils';
 
 /**
  * @param {{
@@ -44,12 +44,11 @@ export function Router({ history = createBrowserHistory(), children }) {
 
   const ctx = useMemo(
     () => ({
-      location: {
+      location: withQuery({
         pathname: location.pathname,
         search: location.search,
         hash: location.hash,
-        query: qsParse(location.search.slice(1)),
-      },
+      }),
       history,
       // Current route props
       name: undefined,

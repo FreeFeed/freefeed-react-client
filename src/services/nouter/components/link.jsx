@@ -1,6 +1,7 @@
 import { useEvent } from 'react-use-event-hook';
 import { forwardRef } from 'react';
 import { useNouter } from '../hooks';
+import { withoutQuery } from '../utils';
 
 export const Link = forwardRef(function Link(
   { to: originalTo, as: As = 'a', onClick: passedOnClick, ...props },
@@ -9,10 +10,8 @@ export const Link = forwardRef(function Link(
   const { history } = useNouter();
 
   let to = originalTo;
-  if (typeof originalTo === 'object' && originalTo !== null && 'query' in originalTo) {
-    to = { ...originalTo };
-    const params = new URLSearchParams(originalTo.query).toString();
-    to.search = params ? `?${params}` : '';
+  if (typeof originalTo === 'object' && originalTo !== null) {
+    to = withoutQuery(originalTo);
   }
 
   const href = history.createHref(to);
