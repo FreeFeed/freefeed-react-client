@@ -29,7 +29,7 @@ export const Friends = withLayout(function Friends() {
   const authenticated = useSelector((state) => state.authenticated);
   const thisUsername = useSelector((state) => state.user.username || null);
 
-  const { location, history } = useNouter();
+  const { location, navigate } = useNouter();
 
   const currentList = location.query.show || '';
   const homeFeeds = useSelector((state) => state.homeFeeds);
@@ -56,20 +56,20 @@ export const Friends = withLayout(function Friends() {
   const onListChange = useCallback(
     (newList) => {
       newList !== currentList &&
-        history.push({
+        navigate({
           ...location,
-          search: newList ? new URLSearchParams({ show: newList }).toString() : '',
+          query: newList ? { show: newList } : {},
         });
     },
-    [currentList, history, location],
+    [currentList, navigate, location],
   );
 
   useEffect(() => {
     const validListValues = [...tabIds, ...homeFeeds.map((f) => f.id)];
     if (allSubscriptionsStatus.success && !validListValues.includes(currentList)) {
-      history.replace({ ...location, search: '' });
+      navigate({ ...location, search: '' }, { replace: true });
     }
-  }, [allSubscriptionsStatus.success, currentList, homeFeeds, history, location]);
+  }, [allSubscriptionsStatus.success, currentList, homeFeeds, navigate, location]);
 
   // Initial data loading
   useEffect(

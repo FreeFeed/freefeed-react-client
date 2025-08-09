@@ -60,17 +60,6 @@ import { DialogProvider } from './components/dialog/context';
 import { ColorSchemeSetter } from './components/color-theme-setter';
 import { Route, Router, Switch, useNouter, useResolvedRoutes } from './services/nouter';
 
-/*
-// Set initial history state.
-// Without this, there can be problems with third-party
-// modules using history API (specifically, PhotoSwipe).
-browserHistory.replace({
-  pathname: location.pathname,
-  search: location.search,
-  hash: location.hash,
-});
-*/
-
 const boundRouteActions = bindRouteActions(store.dispatch);
 
 const thisYear = new Date().getFullYear();
@@ -439,10 +428,10 @@ createRoot(appRoot).render(
 );
 
 function Redirect({ to, replace = false }) {
-  const { history } = useNouter();
+  const { navigate } = useNouter();
   useLayoutEffect(() => {
-    history[replace ? 'replace' : 'push'](to);
-  }, [history, replace, to]);
+    navigate(to, { replace });
+  }, [navigate, replace, to]);
   return null;
 }
 

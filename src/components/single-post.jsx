@@ -14,7 +14,7 @@ import { PostContextProvider } from './post/post-context';
 
 function SinglePostHandler(props) {
   const { post, routeLoadingState } = props;
-  const { location, history } = useNouter();
+  const { location, navigate } = useNouter();
 
   // Replace URL to the canonical one, if necessary
   useEffect(() => {
@@ -23,9 +23,9 @@ function SinglePostHandler(props) {
     }
     const canonicalPostURI = canonicalURI(post);
     if (location.pathname !== canonicalPostURI) {
-      history.replace({ ...location, pathname: canonicalPostURI });
+      navigate({ ...location, pathname: canonicalPostURI }, { replace: true });
     }
-  }, [history, location, post, routeLoadingState]);
+  }, [navigate, location, post, routeLoadingState]);
 
   let postBody = <div />;
 

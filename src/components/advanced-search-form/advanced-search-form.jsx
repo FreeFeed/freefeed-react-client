@@ -74,9 +74,9 @@ export function AdvancedSearchForm() {
       .join(' ');
   }, [inPosts, inComments, query, filters]);
 
-  const { history } = useNouter();
+  const { navigate } = useNouter();
 
-  const onSearch = useEvent(() => history.push(`/search?q=${encodeURIComponent(resultingQuery)}`));
+  const onSearch = useEvent(() => navigate(`/search?q=${encodeURIComponent(resultingQuery)}`));
 
   const onKeyDown = useEvent((e) => {
     if (

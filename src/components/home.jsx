@@ -98,13 +98,13 @@ function selectActions(dispatch) {
 export default connect(selectState, selectActions)(FeedHandler);
 
 export function TopHomeSelector({ id, feedLabelId }) {
-  const { history } = useNouter();
+  const { navigate } = useNouter();
   const homeFeeds = useSelector((state) => state.homeFeeds);
   const narrowScreen = useMediaQuery('(max-width: 991px)');
 
   const onChange = useCallback(
-    (e) => history.push(homeFeedURI(homeFeeds.find((h) => h.id === e.target.value))),
-    [history, homeFeeds],
+    (e) => navigate(homeFeedURI(homeFeeds.find((h) => h.id === e.target.value))),
+    [navigate, homeFeeds],
   );
 
   if (homeFeeds.length === 1) {

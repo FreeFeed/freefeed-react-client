@@ -70,8 +70,12 @@ export { Link } from './components/link';
  *   - search: the current location search
  *   - hash: the current location hash
  *   - query: the parsed `search` string
+ * - navigate: the helper to navigate: (to, {replace = false} = {}) => void. It
+ *   is a wrapper around the `history.push`/`history.replace` functions that
+ *   also accepts a `to` objects with `query` object property.
  * - history: the history object that used by the router (can be used to
- *   navigate)
+ *   advanced navigation)
+ * - id: the current route internal id
  * - name: the current route name
  * - pattern: the current route pattern
  * - params: the current params (the union of all params in current and parent

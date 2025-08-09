@@ -20,10 +20,11 @@ export function withQuery({ search, ...rest }) {
 /**
  * Convert query object to 'search' string
  */
-export function withoutQuery({ query, ...rest }) {
-  if (!query) {
-    return rest;
+export function withoutQuery(loc) {
+  if (typeof loc !== 'object' || loc === null || !('query' in loc)) {
+    return loc;
   }
+  const { query, ...rest } = loc;
   if (Object.keys(query).length === 0) {
     return { ...rest, search: '' };
   }

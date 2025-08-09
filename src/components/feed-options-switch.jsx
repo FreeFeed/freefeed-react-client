@@ -31,7 +31,7 @@ export default function FeedOptionsSwitch({ editHomeList }) {
   const userId = useSelector((state) => state.user.id);
   const frontendPreferences = useSelector((state) => state.user.frontendPreferences);
   const feedViewOptions = useSelector((state) => state.feedViewOptions);
-  const { location, history } = useNouter();
+  const { location, navigate } = useNouter();
   const route = location.pathname;
   const onFirstPage = !location.query.offset;
 
@@ -40,10 +40,10 @@ export default function FeedOptionsSwitch({ editHomeList }) {
       if (feedViewOptions.sort !== sort) {
         dispatch(toggleFeedSort());
         // TODO: remove history magic, depend on feedViewOptions.sort in feeds
-        history.push(route || '/');
+        navigate(route || '/');
       }
     },
-    [dispatch, feedViewOptions.sort, history, route],
+    [dispatch, feedViewOptions.sort, navigate, route],
   );
 
   const toggleRealtimeFlag = useCallback(() => {

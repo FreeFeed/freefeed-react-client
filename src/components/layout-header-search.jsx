@@ -27,13 +27,13 @@ export const HeaderSearchForm = function HeaderSearchForm({ closeSearchForm }) {
   const input = useRef(null);
   useEffect(() => void setQuery(initialQuery), [initialQuery]);
 
-  const { history } = useNouter();
+  const { navigate } = useNouter();
 
   const onSubmit = useEvent((e) => {
     e.preventDefault();
     const q = query.trim();
     if (q !== '') {
-      history.push(`/search?q=${encodeURIComponent(q)}`);
+      navigate({ pathname: '/search', query: { q } });
       input.current.blur();
     }
   });

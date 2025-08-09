@@ -43,16 +43,16 @@ const loadingPage = (
 export default function Layout({ children }) {
   // Do not allow anonymous access
   const authenticated = useSelector((state) => state.authenticated);
-  const { location, history } = useNouter();
+  const { location, navigate } = useNouter();
   useEffect(
     () =>
       void (
         !authenticated &&
-        history.push(
+        navigate(
           `/signin?back=${encodeURIComponent(location.pathname + location.search + location.hash)}`,
         )
       ),
-    [authenticated, history, location.hash, location.pathname, location.search],
+    [authenticated, navigate, location.hash, location.pathname, location.search],
   );
 
   const activeTab = useMemo(() => {

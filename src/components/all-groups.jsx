@@ -68,7 +68,7 @@ const sortFields = {
 };
 
 function GroupsList({ pageSize }) {
-  const { location, history } = useNouter();
+  const { location, navigate } = useNouter();
   const { groups, withProtected } = useSelector((state) => state.allGroups);
   const user = useSelector((state) => state.user);
 
@@ -98,7 +98,10 @@ function GroupsList({ pageSize }) {
 
   const clearSearchForm = useCallback(() => setNameFilter(''), []);
 
-  const debuncedReplace = useMemo(() => debounce(history.replace.bind(history), 200), [history]);
+  const debuncedReplace = useMemo(
+    () => debounce((loc) => navigate(loc, { replace: true }), 200),
+    [navigate],
+  );
 
   useEffect(() => {
     if (nameFilter !== (location.query.q || '')) {
@@ -106,8 +109,7 @@ function GroupsList({ pageSize }) {
       if (nameFilter !== '') {
         query.q = nameFilter;
       }
-      const search = new URLSearchParams(query).toString();
-      debuncedReplace({ ...location, search });
+      debuncedReplace({ ...location, query });
     }
   }, [debuncedReplace, nameFilter, location]);
 

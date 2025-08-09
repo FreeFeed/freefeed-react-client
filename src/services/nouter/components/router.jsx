@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { createBrowserHistory } from 'history';
 import { NouterProvider, RegisterResolvedRouteProvider } from '../hooks';
-import { withQuery } from '../utils';
+import { withoutQuery, withQuery } from '../utils';
 
 /**
  * @param {{
@@ -42,6 +42,11 @@ export function Router({ history = createBrowserHistory(), children }) {
     [registerResolvedRoute, resolvedRoutes],
   );
 
+  const navigate = useCallback(
+    (to, { replace = false } = {}) => history[replace ? 'replace' : 'push'](withoutQuery(to)),
+    [history],
+  );
+
   const ctx = useMemo(
     () => ({
       location: withQuery({
@@ -49,6 +54,7 @@ export function Router({ history = createBrowserHistory(), children }) {
         search: location.search,
         hash: location.hash,
       }),
+      navigate,
       history,
       // Current route props
       name: undefined,
@@ -59,7 +65,9 @@ export function Router({ history = createBrowserHistory(), children }) {
       // The rest of the path to parse
       path: location.pathname,
     }),
-    [history, location],
+    // We MUST use 'location' (not the separate fields like 'location.pathname')
+    // here because we want to update state even if href is the same
+    [history, location, navigate],
   );
 
   return (
