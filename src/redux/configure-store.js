@@ -35,7 +35,7 @@ import * as reducers from './reducers';
 import * as ActionCreators from './action-creators';
 
 //order matters — we need to stop unauthed async fetching before request, see authMiddleware
-const middleware = [
+const middlewares = [
   unscrollMiddleware,
   feedViewOptionsMiddleware,
   authMiddleware,
@@ -65,15 +65,13 @@ const middleware = [
   undoMiddleware,
 ];
 
-const enhancers = [applyMiddleware(...middleware)];
-
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const storeEnhancer = composeEnhancers(...enhancers);
-
-const createStoreWithMiddleware = storeEnhancer(createStore);
 const reducer = combineReducers({ ...reducers, routing: routerReducer });
 
-export default function configureStore(initialState) {
+export default function configureStore(initialState, deps) {
+  const resolvedMiddlewares = middlewares.map((m) => (m.name.endsWith('$Factory') ? m(deps) : m));
+  const storeEnhancer = composeEnhancers(applyMiddleware(...resolvedMiddlewares));
+  const createStoreWithMiddleware = storeEnhancer(createStore);
   const store = createStoreWithMiddleware(reducer, initialState);
 
   // Initial subscription
