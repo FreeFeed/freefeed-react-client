@@ -43,14 +43,11 @@ const FeedHandler = (props) => {
   );
 };
 
-function selectState(state) {
+function selectState(state, ownProps) {
+  const { authenticated, boxHeader, timelines, user } = state;
   const {
-    authenticated,
-    boxHeader,
-    timelines,
-    user,
     router: { location },
-  } = state;
+  } = ownProps;
   const isDirects = location.pathname.includes('direct');
   const isSaves = location.pathname.includes('saves');
   const defaultFeed = location.query.to || (!isDirects && user.username) || undefined;

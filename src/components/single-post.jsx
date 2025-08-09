@@ -14,7 +14,7 @@ import { PostContextProvider } from './post/post-context';
 
 function SinglePostHandler(props) {
   const { post, routeLoadingState } = props;
-  const { location, navigate } = useNouter();
+  const { location, params, navigate } = useNouter();
 
   // Replace URL to the canonical one, if necessary
   useEffect(() => {
@@ -30,7 +30,7 @@ function SinglePostHandler(props) {
   let postBody = <div />;
 
   if (props.errorString?.includes('You can not see this post')) {
-    return <PrivatePost isAuthorized={!!props.user.id} feedName={props.routeParams?.userName} />;
+    return <PrivatePost isAuthorized={!!props.user.id} feedName={params.userName} />;
   } else if (props.errorString?.includes('Please sign in to view this post')) {
     return <ProtectedPost />;
   } else if (props.errorString?.startsWith('404:')) {
