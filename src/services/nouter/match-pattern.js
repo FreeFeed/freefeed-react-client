@@ -9,7 +9,7 @@ export function matchPattern(pattern, path, nest = false) {
 
   const params = {};
   for (const [i, key] of keys.entries()) {
-    params[key] = values[i];
+    params[key] = decodeURIComponent(values[i]);
   }
 
   return [params, path.slice(matched.length)];
