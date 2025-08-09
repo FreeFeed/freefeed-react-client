@@ -2,7 +2,12 @@
 import * as _ from 'lodash-es';
 import * as Sentry from '@sentry/react';
 
-import { LOCATION_CHANGE, LOCATION_PUSH, locationPush } from '../services/nouter/redux';
+import {
+  LOCATION_CHANGE,
+  LOCATION_PUSH,
+  locationChange,
+  locationPush,
+} from '../services/nouter/redux';
 import { getPost } from '../services/api';
 import { getToken, setToken } from '../services/auth';
 import { Connection } from '../services/realtime';
@@ -33,7 +38,7 @@ import {
   doneEditingAndDeleteDraft,
   initializeDrafts,
 } from '../services/drafts';
-import { withQuery } from '../services/nouter/utils';
+import { locationSource, withoutQuery, withQuery } from '../services/nouter/utils';
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import {
@@ -1198,26 +1203,29 @@ export function undoMiddleware(store) {
  */
 export function historyMiddleware$Factory({ history }) {
   return (store) => {
-    function onLocationChange({ location }) {
-      store.dispatch({
-        type: LOCATION_CHANGE,
-        payload: withQuery({
-          pathname: location.pathname,
-          search: location.search,
-          hash: location.hash,
-        }),
-      });
+    const [listen, getLocation] = locationSource(history);
+    function onLocationChange() {
+      const location = getLocation();
+      store.dispatch(
+        locationChange(
+          withQuery({
+            pathname: location.pathname,
+            search: location.search,
+            hash: location.hash,
+          }),
+        ),
+      );
     }
-    history.listen(onLocationChange);
+    listen(onLocationChange);
     // Initial dispatch
-    setTimeout(() => onLocationChange({ location: history.location }), 0);
+    setTimeout(() => onLocationChange(), 0);
 
     return (next) => (action) => {
       // A patch for calling history API via Redux actions. It is necessary for
       // middlewares that want to manage history.
       if (action.type === LOCATION_PUSH) {
         const { to, replace } = action.payload;
-        history[replace ? 'replace' : 'push'](to);
+        history[replace ? 'replace' : 'push'](withoutQuery(to));
       }
       return next(action);
     };

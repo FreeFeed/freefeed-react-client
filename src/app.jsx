@@ -443,9 +443,10 @@ function CalendarRedirect({ thisYear }) {
 function SyncRoutesWithStore() {
   const dispatch = useDispatch();
   const routes = useResolvedRoutes();
-  useLayoutEffect(() => {
-    dispatch(ActionCreators.setResolvedRoutes(routes));
-  }, [dispatch, routes]);
+  useLayoutEffect(
+    () => void dispatch(ActionCreators.setResolvedRoutes(routes)),
+    [dispatch, routes],
+  );
   return null;
 }
 

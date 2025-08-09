@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState, useSyncExternalStore } from 'react';
 import { createBrowserHistory } from 'history';
 import { NouterProvider, RegisterResolvedRouteProvider } from '../hooks';
-import { withoutQuery, withQuery } from '../utils';
+import { isShallowEqual, locationSource, withoutQuery, withQuery } from '../utils';
 
 /**
  * @param {{
@@ -11,14 +11,7 @@ import { withoutQuery, withQuery } from '../utils';
  * @returns
  */
 export function Router({ history = createBrowserHistory(), children }) {
-  const [location, setLocation] = useState(() => history.location);
-  useEffect(
-    () =>
-      history.listen(({ location }) =>
-        setLocation((prev) => (isShallowEqual(prev, location) ? prev : location)),
-      ),
-    [history],
-  );
+  const location = useSyncExternalStore(...locationSource(history));
 
   const [resolvedRoutes, setResolvedRoutes] = useState([]);
 
@@ -48,23 +41,25 @@ export function Router({ history = createBrowserHistory(), children }) {
   );
 
   const ctx = useMemo(
-    () => ({
-      location: withQuery({
-        pathname: location.pathname,
-        search: location.search,
-        hash: location.hash,
-      }),
-      navigate,
-      history,
-      // Current route props
-      name: undefined,
-      pattern: '/',
-      params: {},
-      // All routes in the chain
-      routes: [],
-      // The rest of the path to parse
-      path: location.pathname,
-    }),
+    () => {
+      return {
+        location: withQuery({
+          pathname: location.pathname,
+          search: location.search,
+          hash: location.hash,
+        }),
+        navigate,
+        history,
+        // Current route props
+        name: undefined,
+        pattern: '/',
+        params: {},
+        // All routes in the chain
+        routes: [],
+        // The rest of the path to parse
+        path: location.pathname,
+      };
+    },
     // We MUST use 'location' (not the separate fields like 'location.pathname')
     // here because we want to update state even if href is the same
     [history, location, navigate],
@@ -75,8 +70,4 @@ export function Router({ history = createBrowserHistory(), children }) {
       <NouterProvider value={ctx}>{children}</NouterProvider>
     </RegisterResolvedRouteProvider>
   );
-}
-
-function isShallowEqual(obj1, obj2) {
-  return Object.keys(obj1).every((key) => obj1[key] === obj2[key]);
 }

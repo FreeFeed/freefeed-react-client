@@ -15,3 +15,7 @@ export function routerReducer(state = initialState, { type, payload } = {}) {
 export function locationPush(to, replace = false) {
   return { type: LOCATION_PUSH, payload: { to, replace } };
 }
+
+export function locationChange(location) {
+  return { type: LOCATION_CHANGE, payload: location };
+}
