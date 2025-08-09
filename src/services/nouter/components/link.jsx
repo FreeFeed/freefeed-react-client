@@ -1,5 +1,6 @@
 import { useEvent } from 'react-use-event-hook';
 import { forwardRef } from 'react';
+import { createPath } from 'history';
 import { useNouter } from '../hooks';
 import { withoutQuery } from '../utils';
 
@@ -14,7 +15,7 @@ export const Link = forwardRef(function Link(
     to = withoutQuery(originalTo);
   }
 
-  const href = history.createHref(to);
+  const href = createHref(to);
 
   const onClick = useEvent((e) => {
     passedOnClick?.(e);
@@ -34,7 +35,7 @@ export const Link = forwardRef(function Link(
     }
 
     e.preventDefault();
-    const method = history.createHref(history.location) === href ? 'replace' : 'push';
+    const method = createHref(history.location) === href ? 'replace' : 'push';
     history[method](to);
   });
   return <As ref={ref} {...props} href={href} onClick={onClick} />;
@@ -50,4 +51,8 @@ function isExternalLink(to) {
   } catch {
     return false;
   }
+}
+
+function createHref(to) {
+  return typeof to === 'string' ? to : createPath(to); // eslint-disable-line no-nested-ternary
 }
