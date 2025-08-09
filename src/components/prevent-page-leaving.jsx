@@ -1,20 +1,26 @@
 import { useEffect } from 'react';
+import { useNouter } from '../services/nouter';
 
 const warning = 'Do you want to leave this page? Changes you made may not be saved.';
 
-export function PreventPageLeaving({ prevent = false, children }) {
-  // Prevent leaving our site
+// Prevents leaving this page if `prevent` is true
+export function PreventPageLeaving({ prevent = false }) {
+  const { history } = useNouter();
+
   useEffect(() => {
-    if (prevent) {
-      const handler = (e) => (e.preventDefault(), (e.returnValue = warning));
-      window.addEventListener('beforeunload', handler);
-      return () => window.removeEventListener('beforeunload', handler);
+    if (!prevent) {
+      return;
     }
-  }, [prevent]);
+    const unblock = history.block((tx) => {
+      if (window.confirm(warning)) {
+        // Unblock the navigation.
+        unblock();
+        // Retry the transition.
+        tx.retry();
+      }
+    });
+    return unblock;
+  }, [history, prevent]);
 
-  // Prevent react-router transition to the other page of our site
-  // TODO WOUTER: implement
-  // useEffect(() => router.listenBefore(() => (prevent ? warning : undefined)), [prevent, router]);
-
-  return children || null;
+  return null;
 }
