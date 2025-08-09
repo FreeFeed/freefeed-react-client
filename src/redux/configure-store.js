@@ -29,6 +29,7 @@ import {
   resetPasswordCompleteMiddleware,
   abortableUploadMiddleware,
   undoMiddleware,
+  historyMiddleware$Factory,
 } from './middlewares';
 
 import * as reducers from './reducers';
@@ -63,6 +64,7 @@ const middlewares = [
   reloadFeedMiddleware,
   draftsMiddleware,
   undoMiddleware,
+  historyMiddleware$Factory,
 ];
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

@@ -47,7 +47,9 @@ Sentry.init({
   integrations: (integrations) => integrations.filter((i) => i.name !== 'BrowserSession'),
 });
 
-const store = configureStore();
+const history = createBrowserHistory();
+const store = configureStore(undefined, { history });
+history.listen(() => safeScrollTo(0, 0));
 
 import { bindRouteActions } from './redux/route-actions';
 import { initUnscroll, safeScrollTo } from './services/unscroll';
@@ -57,7 +59,6 @@ import { NotFound } from './components/not-found';
 import { DialogProvider } from './components/dialog/context';
 import { ColorSchemeSetter } from './components/color-theme-setter';
 import { Route, Router, Switch, useNouter, useResolvedRoutes } from './services/nouter';
-import { syncHistoryWithStore } from './services/nouter/redux';
 
 /*
 // Set initial history state.
@@ -103,10 +104,6 @@ const subscribersSubscriptionsActions = (next, replace) => {
 const enterStaticPage = (title) => () => {
   store.dispatch(ActionCreators.staticPage(title));
 };
-
-const history = createBrowserHistory();
-syncHistoryWithStore(history, store);
-history.listen(() => safeScrollTo(0, 0));
 
 const generateRouteHooks = (callback) => ({
   onEnter: callback,
