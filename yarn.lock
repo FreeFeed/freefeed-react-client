@@ -7802,13 +7802,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mitt@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "mitt@npm:3.0.1"
-  checksum: 10c0/3ab4fdecf3be8c5255536faa07064d05caa3dd332bd318ff02e04621f7b3069ca1de9106cfe8e7ced675abfc2bec2ce4c4ef321c4a1bb1fb29df8ae090741913
-  languageName: node
-  linkType: hard
-
 "mkdirp@npm:^3.0.1":
   version: 3.0.1
   resolution: "mkdirp@npm:3.0.1"
@@ -9038,7 +9031,6 @@ __metadata:
     vitest: "npm:~3.2.4"
     whatwg-fetch: "npm:~3.6.20"
     workbox-window: "npm:^7.3.0"
-    wouter: "npm:~3.7.1"
   languageName: unknown
   linkType: soft
 
@@ -9209,7 +9201,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"regexparam@npm:^3.0.0, regexparam@npm:~3.0.0":
+"regexparam@npm:~3.0.0":
   version: 3.0.0
   resolution: "regexparam@npm:3.0.0"
   checksum: 10c0/a6430d7b97d5a7d5518f37a850b6b73aab479029d02f46af4fa0e8e4a1d7aad05b7a0d2d10c86ded21a14d5f0fa4c68525f873a5fca2efeefcccd93c36627459
@@ -11231,7 +11223,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-sync-external-store@npm:^1.0.0, use-sync-external-store@npm:^1.2.2, use-sync-external-store@npm:^1.4.0, use-sync-external-store@npm:^1.5.0":
+"use-sync-external-store@npm:^1.2.2, use-sync-external-store@npm:^1.4.0, use-sync-external-store@npm:^1.5.0":
   version: 1.5.0
   resolution: "use-sync-external-store@npm:1.5.0"
   peerDependencies:
@@ -11937,19 +11929,6 @@ __metadata:
     "@types/trusted-types": "npm:^2.0.2"
     workbox-core: "npm:7.3.0"
   checksum: 10c0/dbda33c4761ec40051cfe6e3f1701b2381b4f3b191f7a249c32f683503ea35cf8b42d1f99df5ba3b693fac78705d8ed0c191488bdd178c525d1291d0161ec8ff
-  languageName: node
-  linkType: hard
-
-"wouter@npm:~3.7.1":
-  version: 3.7.1
-  resolution: "wouter@npm:3.7.1"
-  dependencies:
-    mitt: "npm:^3.0.1"
-    regexparam: "npm:^3.0.0"
-    use-sync-external-store: "npm:^1.0.0"
-  peerDependencies:
-    react: ">=16.8.0"
-  checksum: 10c0/1974f32f425c1cf6412e6946936e37db3a283e6e6965acd336ce04d67bb36fbf2c40fc90a1bc4537930b326e370b5e053437e0f80554cb94d34ec8c354b86693
   languageName: node
   linkType: hard
 

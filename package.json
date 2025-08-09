@@ -56,8 +56,7 @@
     "use-subscription": "~1.11.0",
     "validator": "~13.15.15",
     "vazirmatn": "^33.0.3",
-    "whatwg-fetch": "~3.6.20",
-    "wouter": "~3.7.1"
+    "whatwg-fetch": "~3.6.20"
   },
   "devDependencies": {
     "@babel/core": "~7.28.0",
