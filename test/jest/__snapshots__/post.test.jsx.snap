@@ -15,6 +15,7 @@ exports[`Post > Renders a post and doesn't blow up 1`] = `
         >
           <a
             class="picture post-userpic-img"
+            href="/author"
             style="--userpic-size: 75px;"
           >
             <img
@@ -37,6 +38,7 @@ exports[`Post > Renders a post and doesn't blow up 1`] = `
             >
               <a
                 class="post-author"
+                href="/author"
               >
                 <span
                   dir="ltr"
@@ -101,6 +103,7 @@ exports[`Post > Renders a post and doesn't blow up 1`] = `
               >
                 <a
                   class="post-timestamp"
+                  href="/author/post-id"
                 >
                   <time
                     datetime="2021-03-14T03:23:59.035Z"

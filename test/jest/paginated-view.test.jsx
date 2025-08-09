@@ -2,26 +2,18 @@
 import { render, screen } from '@testing-library/react';
 import { createStore } from 'redux';
 import * as reactRedux from 'react-redux';
+import { createMemoryHistory } from 'history';
 
 import PaginatedView from '../../src/components/paginated-view';
+import { Router } from '../../src/services/nouter';
 
 const defaultState = {
-  routing: {
-    locationBeforeTransitions: {
-      pathname: '/filter/everything',
-      search: '?offset=30',
-      hash: '',
-      action: 'POP',
-      key: 'l5ugbx',
-      query: {
-        offset: '30',
-      },
-    },
-  },
   feedViewState: {
     isLastPage: false,
   },
 };
+
+const history = createMemoryHistory({ initialEntries: ['/filter/everything?offset=30'] });
 
 const renderPaginatedView = (props = {}, options = {}) => {
   const { Provider } = reactRedux;
@@ -33,9 +25,11 @@ const renderPaginatedView = (props = {}, options = {}) => {
   };
 
   const rendered = render(
-    <Provider store={store}>
-      <PaginatedView {...defaultProps} {...props} />
-    </Provider>,
+    <Router history={history}>
+      <Provider store={store}>
+        <PaginatedView {...defaultProps} {...props} />
+      </Provider>
+    </Router>,
     options,
   );
 

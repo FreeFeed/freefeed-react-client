@@ -12,6 +12,7 @@ exports[`PaginatedView > Renders paginated view with links to newer and older en
       <li>
         <a
           class="p-pagination-newer"
+          href="/filter/everything"
         >
           « Newer items
         </a>
@@ -19,6 +20,7 @@ exports[`PaginatedView > Renders paginated view with links to newer and older en
       <li>
         <a
           class="p-pagination-older"
+          href="/filter/everything?offset=60"
         >
           Older items »
         </a>
@@ -34,6 +36,7 @@ exports[`PaginatedView > Renders paginated view with links to newer and older en
       <li>
         <a
           class="p-pagination-newer"
+          href="/filter/everything"
         >
           « Newer items
         </a>
@@ -41,6 +44,7 @@ exports[`PaginatedView > Renders paginated view with links to newer and older en
       <li>
         <a
           class="p-pagination-older"
+          href="/filter/everything?offset=60"
         >
           Older items »
         </a>
@@ -59,7 +63,9 @@ exports[`PaginatedView > Renders user summary links 1`] = `
     class="user-subheader-sidelinks"
   >
     View best of: 
-    <a>
+    <a
+      href="/author/summary/1"
+    >
       day
     </a>
      - 
@@ -67,7 +73,9 @@ exports[`PaginatedView > Renders user summary links 1`] = `
       week
     </b>
      - 
-    <a>
+    <a
+      href="/author/summary/30"
+    >
       month
     </a>
   </div>
