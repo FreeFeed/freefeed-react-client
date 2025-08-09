@@ -38,8 +38,6 @@
     "react-helmet": "~6.1.0",
     "react-portal": "~4.3.0",
     "react-redux": "~9.2.0",
-    "react-router": "~3.2.6",
-    "react-router-redux": "~4.0.8",
     "react-select": "~5.10.2",
     "react-sortablejs": "~6.1.4",
     "react-textarea-autosize": "~8.5.9",
