@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState, useSyncExternalStore } from 'react';
 import { createBrowserHistory } from 'history';
 import { NouterProvider, RegisterResolvedRouteProvider } from '../hooks';
-import { isShallowEqual, locationSource, withoutQuery, withQuery } from '../utils';
+import { createLocationSource, isShallowEqual, withoutQuery, withQuery } from '../utils';
 
 /**
  * @param {{
@@ -11,7 +11,8 @@ import { isShallowEqual, locationSource, withoutQuery, withQuery } from '../util
  * @returns
  */
 export function Router({ history = createBrowserHistory(), children }) {
-  const location = useSyncExternalStore(...locationSource(history));
+  const locationSource = useMemo(() => createLocationSource(history), [history]);
+  const location = useSyncExternalStore(locationSource.subscribe, locationSource.get);
 
   const [resolvedRoutes, setResolvedRoutes] = useState([]);
 

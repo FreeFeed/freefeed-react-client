@@ -38,7 +38,7 @@ import {
   doneEditingAndDeleteDraft,
   initializeDrafts,
 } from '../services/drafts';
-import { locationSource, withoutQuery, withQuery } from '../services/nouter/utils';
+import { createLocationSource, withoutQuery, withQuery } from '../services/nouter/utils';
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import {
@@ -1203,9 +1203,9 @@ export function undoMiddleware(store) {
  */
 export function historyMiddleware$Factory({ history }) {
   return (store) => {
-    const [listen, getLocation] = locationSource(history);
+    const locationSource = createLocationSource(history);
     function onLocationChange() {
-      const location = getLocation();
+      const location = locationSource.get();
       store.dispatch(
         locationChange(
           withQuery({
@@ -1216,7 +1216,7 @@ export function historyMiddleware$Factory({ history }) {
         ),
       );
     }
-    listen(onLocationChange);
+    locationSource.subscribe(onLocationChange);
     // Initial dispatch
     setTimeout(() => onLocationChange(), 0);
 

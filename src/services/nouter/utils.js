@@ -45,20 +45,35 @@ export function isShallowEqual(obj1, obj2) {
   return Object.keys(obj1).every((key) => obj1[key] === obj2[key]);
 }
 
-export function memOne(fn, eq) {
-  let hasPrev = false;
-  let prevResult;
-  return function (...args) {
-    const result = fn(...args);
-    if (hasPrev && (result === prevResult || eq(prevResult, result))) {
-      return prevResult;
-    }
-    hasPrev = true;
-    prevResult = result;
-    return result;
-  };
-}
+/**
+ * Event source for React's `useSyncExternalStore`. Returns a subscribe function
+ * and a getter of the current value. Uses memoization to avoid updates if the
+ * location 'key' hasn't changed.
+ */
+export function createLocationSource(history) {
+  let cached = history.location;
 
-export function locationSource(history) {
-  return [history.listen, memOne(() => history.location, isShallowEqual)];
+  function refresh() {
+    const next = history.location;
+    if (cached.key !== next.key) {
+      cached = next;
+    }
+    return cached;
+  }
+
+  return {
+    get() {
+      return refresh();
+    },
+
+    subscribe(handler) {
+      return history.listen(() => {
+        const before = cached;
+        const after = refresh();
+        if (after !== before) {
+          handler();
+        }
+      });
+    },
+  };
 }
