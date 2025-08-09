@@ -15,6 +15,8 @@ export const Link = forwardRef(function Link(
     to.search = params ? `?${params}` : '';
   }
 
+  const href = history.createHref(to);
+
   const onClick = useEvent((e) => {
     passedOnClick?.(e);
 
@@ -33,9 +35,10 @@ export const Link = forwardRef(function Link(
     }
 
     e.preventDefault();
-    history.push(to);
+    const method = history.createHref(history.location) === href ? 'replace' : 'push';
+    history[method](to);
   });
-  return <As ref={ref} {...props} href={history.createHref(to)} onClick={onClick} />;
+  return <As ref={ref} {...props} href={href} onClick={onClick} />;
 });
 
 function isExternalLink(to) {
