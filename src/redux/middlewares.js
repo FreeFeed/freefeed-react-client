@@ -1,9 +1,8 @@
 /* global CONFIG */
-import { browserHistory } from 'react-router';
 import * as _ from 'lodash-es';
 import * as Sentry from '@sentry/react';
 
-import { LOCATION_CHANGE } from 'react-router-redux';
+import { LOCATION_CHANGE, locationPush } from '../services/nouter/redux';
 import { getPost } from '../services/api';
 import { getToken, setToken } from '../services/auth';
 import { Connection } from '../services/realtime';
@@ -301,11 +300,14 @@ export const authMiddleware = (store) => {
         const { pathname } = window.location;
         if (shouldGoToSignIn(pathname)) {
           store.dispatch(ActionCreators.requireAuthentication());
-          return browserHistory.push(
-            `/signin?back=${encodeURIComponent(
-              location.pathname + location.search + location.hash,
-            )}`,
+          store.dispatch(
+            locationPush(
+              `/signin?back=${encodeURIComponent(
+                location.pathname + location.search + location.hash,
+              )}`,
+            ),
           );
+          return;
         }
       } else {
         location.reload();
@@ -328,7 +330,8 @@ export const authMiddleware = (store) => {
       }
 
       const backTo = store.getState().routing.locationBeforeTransitions.query.back || '/';
-      return browserHistory.push(`${backTo}`);
+      store.dispatch(locationPush(`${backTo}`));
+      return;
     }
 
     if (
@@ -569,18 +572,18 @@ export const redirectionMiddleware = (store) => (next) => (action) => {
     !action.payload.postStillAvailable &&
     store.getState().singlePostId
   ) {
-    setTimeout(() => browserHistory.push('/'), 0);
+    setTimeout(() => store.dispatch(locationPush('/')), 0);
   }
 
   if (
     action.type === response(ActionTypes.UNADMIN_GROUP_ADMIN) &&
     store.getState().user.id === action.request.user.id
   ) {
-    browserHistory.push(`/${action.request.groupName}/subscribers`);
+    store.dispatch(locationPush(`/${action.request.groupName}/subscribers`));
   }
 
   if (action.type === response(ActionTypes.CREATE_POST) && isInvitation(store.getState().routing)) {
-    browserHistory.push('/filter/direct');
+    store.dispatch(locationPush('/filter/direct'));
   }
 
   return next(action);
@@ -946,9 +949,9 @@ export const initialWhoamiMiddleware = (store) => (next) => (action) => {
   next(action);
 };
 
-export const resetPasswordCompleteMiddleware = () => (next) => (action) => {
+export const resetPasswordCompleteMiddleware = (store) => (next) => (action) => {
   if (action.type === response(ActionTypes.RESET_PASSWORD)) {
-    browserHistory.push('/signin');
+    store.dispatch(locationPush('/signin'));
   }
   next(action);
 };
@@ -1098,7 +1101,8 @@ export const reloadFeedMiddleware = (store) => (next) => (action) => {
         userName === action.request.username)
     ) {
       // Re-request this page
-      browserHistory.push(`/${userName}`);
+      console.log('Reloading feed');
+      store.dispatch(locationPush(`/${userName}`));
     }
   }
 
