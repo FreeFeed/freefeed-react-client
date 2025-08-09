@@ -1359,13 +1359,6 @@ export function getCommentsByIds(commentIds) {
   };
 }
 
-export function setCurrentRoute(payload) {
-  return {
-    type: ActionTypes.SET_CURRENT_ROUTE,
-    payload,
-  };
-}
-
 export function translateText({ type, id, lang }) {
   return {
     apiRequest: Api.translateText,
@@ -1433,5 +1426,12 @@ export function deleteUndoEntry(id) {
   return {
     type: ActionTypes.DELETE_UNDO_ENTRY,
     payload: { id },
+  };
+}
+
+export function setResolvedRoutes(routes) {
+  return {
+    type: ActionTypes.SET_RESOLVED_ROUTES,
+    payload: { routes },
   };
 }

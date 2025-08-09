@@ -1,4 +1,4 @@
-import { LOCATION_CHANGE } from 'react-router-redux';
+import { LOCATION_CHANGE } from '../../services/nouter/redux';
 import { UNAUTHENTICATED } from '../action-types';
 
 export function patchObjectByKey(object, key, patcher) {

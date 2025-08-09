@@ -1086,12 +1086,12 @@ export const appVersionMiddleware = (store) => {
 
 export const reloadFeedMiddleware = (store) => (next) => (action) => {
   const res = next(action);
-  const { currentRoute } = store.getState();
-  if (
-    // If we on the 'Posts' 'page
-    currentRoute.name === 'userFeed'
-  ) {
-    const { userName } = currentRoute.params;
+  const { resolvedRoutes } = store.getState();
+
+  // If we on the 'Posts' 'page
+  const userFeedRoute = resolvedRoutes.find((route) => route.name === 'userFeed');
+  if (userFeedRoute) {
+    const { userName } = userFeedRoute.params;
     if (
       // Enable/disable bans in group
       (isResponseOf(action, ActionTypes.DISABLE_BANS_IN_GROUP, ActionTypes.ENABLE_BANS_IN_GROUP) &&

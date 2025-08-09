@@ -11,7 +11,6 @@ import {
   getUserInfo,
   togglePinnedGroup,
 } from '../redux/action-creators';
-import { getCurrentRouteName } from '../utils';
 import { initialAsyncState } from '../redux/async-helpers';
 import { apiVersion } from '../services/api-version';
 import { withNouter } from '../services/nouter';
@@ -147,7 +146,7 @@ function selectState(state, ownProps) {
     foundUser.type === 'group' &&
     (foundUser.administrators || []).includes(state.user.id);
 
-  const currentRouteName = getCurrentRouteName(ownProps.router);
+  const currentRouteName = ownProps.router.name;
   const isItPostsPage = !['userComments', 'userLikes'].includes(currentRouteName);
 
   const statusExtension = {

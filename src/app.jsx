@@ -1,8 +1,7 @@
 /* global CONFIG */
 import { createRoot } from 'react-dom/client';
 import { Suspense, useEffect, useLayoutEffect } from 'react';
-// import { Router, Route, IndexRoute, browserHistory, Redirect } from 'react-router';
-import { Provider, useSelector } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import * as Sentry from '@sentry/react';
 import 'focus-visible';
 
@@ -57,7 +56,7 @@ import { HomeAux } from './components/home-aux';
 import { NotFound } from './components/not-found';
 import { DialogProvider } from './components/dialog/context';
 import { ColorSchemeSetter } from './components/color-theme-setter';
-import { Route, Router, Switch, useNouter } from './services/nouter';
+import { Route, Router, Switch, useNouter, useResolvedRoutes } from './services/nouter';
 import { syncHistoryWithStore } from './services/nouter/redux';
 
 /*
@@ -169,6 +168,7 @@ function App() {
 
   return (
     <Router history={history}>
+      <SyncRoutesWithStore />
       <Switch>
         <Route name="bookmarklet" path="/bookmarklet" component={Bookmarklet} />
 
@@ -452,6 +452,15 @@ function Redirect({ to, replace = false }) {
 function CalendarRedirect({ thisYear }) {
   const { params } = useNouter();
   return <Redirect to={`/${encodeURIComponent(params.userName)}/calendar/${thisYear}`} />;
+}
+
+function SyncRoutesWithStore() {
+  const dispatch = useDispatch();
+  const routes = useResolvedRoutes();
+  useLayoutEffect(() => {
+    dispatch(ActionCreators.setResolvedRoutes(routes));
+  }, [dispatch, routes]);
+  return null;
 }
 
 function checkPath(Component, checker) {
