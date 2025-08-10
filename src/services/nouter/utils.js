@@ -1,3 +1,5 @@
+import { useEffect, useLayoutEffect } from 'react';
+
 /**
  * Add query parameters to the location object
  */
@@ -77,3 +79,6 @@ export function createLocationSource(history) {
     },
   };
 }
+
+export const useIsomorphicLayoutEffect =
+  typeof window !== 'undefined' ? useLayoutEffect : useEffect;

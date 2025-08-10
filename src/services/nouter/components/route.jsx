@@ -1,6 +1,7 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useMemo, useRef, useState } from 'react';
 import { NouterProvider, useNouter, useRouteRegistration } from '../hooks';
 import { matchPattern } from '../match-pattern';
+import { useIsomorphicLayoutEffect } from '../utils';
 
 export function Route({
   path: pattern,
@@ -14,12 +15,18 @@ export function Route({
   beforeChange = onChange, // recommended handler name
 }) {
   const ctx = useNouter();
-  const [params, tail] =
-    useMemo(() => matchPattern(pattern, ctx.path, nest), [pattern, ctx.path, nest]) ?? [];
+  const [params, tail] = useMemo(
+    () => matchPattern(pattern, ctx.path, nest),
+    [pattern, ctx.path, nest],
+  ) ?? [null];
+
+  // If pattern didn't match, don't render anything. Most of the following
+  // computations will be skipped
+  const matched = params !== null;
 
   const newContext = useMemo(
     () =>
-      params
+      matched
         ? {
             ...ctx,
             name,
@@ -28,25 +35,44 @@ export function Route({
             params: { ...ctx.params, ...params },
             routes: [...ctx.routes, { name, pattern, params }],
           }
-        : null,
-    [ctx, name, params, pattern, tail],
+        : ctx,
+    [ctx, matched, name, params, pattern, tail],
   );
 
-  const [currentCtx, setCurrentCtx] = useState(null);
-  useRouteRegistration(name, currentCtx?.params, pattern);
+  const prevCtxRef = useRef(null);
+  const [, setUpdate] = useState(false);
+
+  const prevCtx = prevCtxRef.current;
+  const entering = matched && prevCtx === null;
+  const changing = matched && prevCtx !== null && prevCtx !== newContext;
+  const leaving = !matched && prevCtx !== null;
+
+  let renderCtx = prevCtx;
+  if (entering && !beforeEnter) {
+    renderCtx = prevCtxRef.current = newContext;
+  }
+
+  if (changing && !beforeChange) {
+    renderCtx = prevCtxRef.current = newContext;
+  }
+
+  if (leaving) {
+    // No 'beforeLeave' transition for now
+    renderCtx = prevCtxRef.current = null;
+  }
+
+  useRouteRegistration(name, renderCtx?.params, pattern);
 
   const lastTrxRef = useRef(null);
-  useEffect(() => {
-    if (currentCtx === newContext) {
+  useIsomorphicLayoutEffect(() => {
+    if (!(entering && beforeEnter) && !(changing && beforeChange)) {
       return;
     }
 
-    const promise =
-      currentCtx === null
-        ? Promise.resolve(beforeEnter?.(newContext))
-        : newContext === null
-          ? Promise.resolve() // No 'beforeLeave' transition for now
-          : Promise.resolve(beforeChange?.(currentCtx, newContext));
+    // Either 'entering' or 'changing' is true
+    const promise = entering
+      ? Promise.resolve(beforeEnter?.(newContext))
+      : Promise.resolve(beforeChange?.(prevCtx, newContext));
 
     lastTrxRef.current = promise;
 
@@ -54,8 +80,10 @@ export function Route({
     promise.then(
       () => {
         if (lastTrxRef.current === promise) {
-          setCurrentCtx(newContext);
+          prevCtxRef.current = newContext;
           lastTrxRef.current = null;
+          // Force a re-render
+          setUpdate((v) => !v);
         }
         return null;
       },
@@ -68,14 +96,15 @@ export function Route({
     return () => {
       lastTrxRef.current = null;
     };
-  }, [beforeChange, beforeEnter, currentCtx, newContext]);
+  }, [beforeChange, beforeEnter, changing, entering, newContext, prevCtx]);
 
-  if (!currentCtx) {
+  if (!renderCtx) {
+    // Not matched or waiting for beforeEnter transition
     return null;
   }
 
   return (
-    <NouterProvider value={currentCtx}>
+    <NouterProvider value={renderCtx}>
       <Component>{children}</Component>
     </NouterProvider>
   );
