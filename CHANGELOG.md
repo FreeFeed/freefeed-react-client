@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.140.0] - Not released
+### Changed
+- The 'react-router' was replaced by the custom router (see
+  _src/services/nouter/_). It supports all features of the original react-router
+  v3 we needed and is compatible with the modern React.
 
 ## [1.139.2] - 2025-08-04
 ### Added
