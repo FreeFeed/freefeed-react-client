@@ -11,6 +11,8 @@ import {
   DELETE_POST,
   DISABLE_COMMENTS,
   ENABLE_COMMENTS,
+  PIN_POST,
+  UNPIN_POST,
   GET_SINGLE_POST,
   HIDE_POST,
   LIKE_POST,
@@ -429,6 +431,30 @@ export function posts(state = {}, action) {
           commentsDisabled: false,
         },
       };
+    }
+    case response(PIN_POST): {
+      const post = state[action.request.postId];
+      return post
+        ? {
+            ...state,
+            [post.id]: {
+              ...post,
+              isPinned: true,
+            },
+          }
+        : state;
+    }
+    case response(UNPIN_POST): {
+      const post = state[action.request.postId];
+      return post
+        ? {
+            ...state,
+            [post.id]: {
+              ...post,
+              isPinned: false,
+            },
+          }
+        : state;
     }
     case response(CREATE_POST):
     case response(GET_SINGLE_POST): {

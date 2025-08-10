@@ -86,7 +86,7 @@ class Feed extends PureComponent {
 const postIsHidden = (post) => !!(post.isHidden || post.hiddenByCriteria);
 
 export default connect(
-  (state) => {
+  (state, ownProps) => {
     const { entries, recentlyHiddenEntries, isHiddenRevealed, feedError, feedRequestType } =
       state.feedViewState;
 
@@ -104,6 +104,21 @@ export default connect(
     if (separateHiddenEntries) {
       visiblePosts = allPosts.filter((p) => !postIsHidden(p) || recentlyHiddenEntries[p.id]);
       hiddenPosts = allPosts.filter((p) => postIsHidden(p));
+    }
+
+    // If we're on a user feed, lift pinned posts to the top while preserving
+    // the original order within pinned/non-pinned groups.
+    if (ownProps.isInUserFeed) {
+      const withIndex = visiblePosts.map((p, i) => ({ p, i }));
+      withIndex.sort((a, b) => {
+        const ap = a.p.isPinned ? 1 : 0;
+        const bp = b.p.isPinned ? 1 : 0;
+        if (ap !== bp) {
+          return bp - ap;
+        }
+        return a.i - b.i;
+      });
+      visiblePosts = withIndex.map(({ p }) => p);
     }
 
     return {
@@ -150,6 +165,8 @@ function FeedEntry({ post, section, ...props }) {
         cancelEditingPost={props.cancelEditingPost}
         saveEditingPost={props.saveEditingPost}
         deletePost={props.deletePost}
+        pinPost={props.pinPost}
+        unpinPost={props.unpinPost}
         addAttachmentResponse={props.addAttachmentResponse}
         toggleCommenting={props.toggleCommenting}
         addComment={props.addComment}

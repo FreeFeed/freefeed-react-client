@@ -86,7 +86,7 @@ class UserFeed extends Component {
 
     return (
       <PaginatedView {...this.props}>
-        <Feed {...this.props} emptyFeedMessage={emptyFeedMessage} />
+        <Feed {...this.props} isInUserFeed emptyFeedMessage={emptyFeedMessage} />
       </PaginatedView>
     );
   }

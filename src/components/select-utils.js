@@ -25,6 +25,8 @@ import {
   cancelEditingPost,
   saveEditingPost,
   deletePost,
+  pinPost,
+  unpinPost,
 
   // Comment actions
   toggleCommenting,
@@ -216,6 +218,8 @@ export function postActions(dispatch) {
       dispatch(addComment(postId, commentText, draftKey)),
     likePost: (postId, userId) => dispatch(likePost(postId, userId)),
     unlikePost: (postId, userId) => dispatch(unlikePost(postId, userId)),
+    pinPost: (postId) => dispatch(pinPost(postId)),
+    unpinPost: (postId) => dispatch(unpinPost(postId)),
     hidePost: (postId) => dispatch(hidePost(postId)),
     unhidePost: (postId) => dispatch(unhidePost(postId)),
     toggleModeratingComments: (postId) => dispatch(toggleModeratingComments(postId)),

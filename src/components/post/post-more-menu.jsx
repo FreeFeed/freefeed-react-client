@@ -1,7 +1,7 @@
 import { forwardRef, useLayoutEffect, useState, useMemo, useCallback } from 'react';
 import { Link } from 'react-router';
 import cn from 'classnames';
-import { faLink, faEdit, faSignOutAlt, faAt } from '@fortawesome/free-solid-svg-icons';
+import { faLink, faEdit, faSignOutAlt, faAt, faThumbtack } from '@fortawesome/free-solid-svg-icons';
 import { faClock, faCommentDots, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { noop } from 'lodash-es';
 import { useDispatch } from 'react-redux';
@@ -29,6 +29,7 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
       isDeletable = false,
       isModeratingComments = false,
       commentsDisabled = false,
+      isPinned = false,
       createdAt,
       updatedAt,
       createdBy: postCreatedBy,
@@ -39,6 +40,8 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
     enableComments,
     disableComments,
     deletePost,
+    pinPost,
+    unpinPost,
     doAndClose,
     doAndForceClose,
     permalink,
@@ -84,6 +87,19 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
       ),
     ],
     [
+      isOwnPost && (
+        <div className={styles.item} key="pin-post">
+          {isPinned ? (
+            <ButtonLink className={styles.link} onClick={doAndClose(() => unpinPost(postId))}>
+              <Iconic icon={faThumbtack}>Unpin from profile</Iconic>
+            </ButtonLink>
+          ) : (
+            <ButtonLink className={styles.link} onClick={doAndClose(() => pinPost(postId))}>
+              <Iconic icon={faThumbtack}>Pin to profile</Iconic>
+            </ButtonLink>
+          )}
+        </div>
+      ),
       isEditable && (
         <div className={styles.item} key="edit-post">
           <ButtonLink className={styles.link} onClick={doAndClose(toggleEditingPost)}>

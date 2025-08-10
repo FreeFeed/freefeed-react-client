@@ -27,6 +27,7 @@ import TimeDisplay from '../time-display';
 import LinkPreview from '../link-preview/preview';
 import ErrorBoundary from '../error-boundary';
 import { Icon } from '../fontawesome-icons';
+import { faThumbtack } from '@fortawesome/free-solid-svg-icons';
 import { UserPicture } from '../user-picture';
 
 import { prepareAsyncFocus } from '../../utils/prepare-async-focus';
@@ -286,6 +287,8 @@ class Post extends Component {
         disableComments={this.disableComments}
         enableComments={this.enableComments}
         deletePost={this.handleDeletePost}
+        pinPost={this.props.pinPost}
+        unpinPost={this.props.unpinPost}
         toggleSave={this.toggleSave}
         handleMentionAuthor={this.handleMentionAuthorClick}
       />
@@ -337,6 +340,9 @@ class Post extends Component {
                     absolute={this.state.forceAbsTimestamps || null}
                   />
                 </Link>
+                {props.isPinned && (
+                  <Icon icon={faThumbtack} className="post-pinned-icon" title="Pinned" />
+                )}
               </span>
               {props.commentsDisabled && (
                 <span className="post-footer-item">

@@ -70,6 +70,8 @@ export default function PostMoreLink({ post, user, ...props }) {
             enableComments={props.enableComments}
             disableComments={props.disableComments}
             deletePost={deletePost}
+            pinPost={props.pinPost}
+            unpinPost={props.unpinPost}
             doAndClose={doAndClose}
             doAndForceClose={doAndForceClose}
             permalink={canonicalPostURI}

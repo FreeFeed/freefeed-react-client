@@ -218,6 +218,15 @@ export function enableComments({ postId }) {
   return fetch(`${apiPrefix}/posts/${postId}/enableComments`, postRequestOptions());
 }
 
+// Pin/unpin a post to user's feed (server must support these endpoints)
+export function pinPost({ postId }) {
+  return fetch(`${apiPrefix}/posts/${postId}/pin`, postRequestOptions());
+}
+
+export function unpinPost({ postId }) {
+  return fetch(`${apiPrefix}/posts/${postId}/unpin`, postRequestOptions());
+}
+
 const encodeBody = (body) =>
   _.map(body, (value, key) => `${key}=${encodeURIComponent(value)}`).join('&');
 
