@@ -29,50 +29,50 @@ import {
   resetPasswordCompleteMiddleware,
   abortableUploadMiddleware,
   undoMiddleware,
-  historyMiddleware$Factory,
+  historyMiddlewareFactory,
 } from './middlewares';
 
 import * as reducers from './reducers';
 import * as ActionCreators from './action-creators';
 
-//order matters — we need to stop unauthed async fetching before request, see authMiddleware
-const middlewares = [
-  unscrollMiddleware,
-  feedViewOptionsMiddleware,
-  authMiddleware,
-  apiMiddleware,
-  abortableUploadMiddleware,
-  asyncMiddleware,
-  dataFixMiddleware,
-  likesLogicMiddleware,
-  optimisticLikesMiddleware,
-  userPhotoLogicMiddleware,
-  groupPictureLogicMiddleware,
-  redirectionMiddleware,
-  requestsMiddleware,
-  markDirectsAsReadMiddleware,
-  markNotificationsAsReadMiddleware,
-  realtimeMiddleware,
-  appearanceMiddleware,
-  initialWhoamiMiddleware,
-  resetPasswordCompleteMiddleware,
-  subscriptionMiddleware,
-  onResponseMiddleware,
-  betaChannelMiddleware,
-  commentsCompleteMiddleware,
-  appVersionMiddleware,
-  reloadFeedMiddleware,
-  draftsMiddleware,
-  undoMiddleware,
-  historyMiddleware$Factory,
+// Order matters — we need to stop unauthed async fetching before request, see authMiddleware
+const middlewareFactories = [
+  () => unscrollMiddleware,
+  () => feedViewOptionsMiddleware,
+  () => authMiddleware,
+  () => apiMiddleware,
+  () => abortableUploadMiddleware,
+  () => asyncMiddleware,
+  () => dataFixMiddleware,
+  () => likesLogicMiddleware,
+  () => optimisticLikesMiddleware,
+  () => userPhotoLogicMiddleware,
+  () => groupPictureLogicMiddleware,
+  () => redirectionMiddleware,
+  () => requestsMiddleware,
+  () => markDirectsAsReadMiddleware,
+  () => markNotificationsAsReadMiddleware,
+  () => realtimeMiddleware,
+  () => appearanceMiddleware,
+  () => initialWhoamiMiddleware,
+  () => resetPasswordCompleteMiddleware,
+  () => subscriptionMiddleware,
+  () => onResponseMiddleware,
+  () => betaChannelMiddleware,
+  () => commentsCompleteMiddleware,
+  () => appVersionMiddleware,
+  () => reloadFeedMiddleware,
+  () => draftsMiddleware,
+  () => undoMiddleware,
+  historyMiddlewareFactory,
 ];
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const reducer = combineReducers({ ...reducers, routing: routerReducer });
 
 export default function configureStore(initialState, deps) {
-  const resolvedMiddlewares = middlewares.map((m) => (m.name.endsWith('$Factory') ? m(deps) : m));
-  const storeEnhancer = composeEnhancers(applyMiddleware(...resolvedMiddlewares));
+  const middlewares = middlewareFactories.map((m) => m(deps));
+  const storeEnhancer = composeEnhancers(applyMiddleware(...middlewares));
   const createStoreWithMiddleware = storeEnhancer(createStore);
   const store = createStoreWithMiddleware(reducer, initialState);
 

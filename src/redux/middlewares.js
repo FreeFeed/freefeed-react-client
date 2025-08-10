@@ -1197,11 +1197,7 @@ export function undoMiddleware(store) {
   };
 }
 
-/**
- * The `$Factory` is a special suffix for the factory that allows to pass
- * additional arguments to the middleware.
- */
-export function historyMiddleware$Factory({ history }) {
+export function historyMiddlewareFactory({ history }) {
   return (store) => {
     const locationSource = createLocationSource(history);
     function onLocationChange() {
