@@ -34,6 +34,8 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
       updatedAt,
       createdBy: postCreatedBy,
       isDirect = false,
+      recipients = [],
+      pinnedIn = [],
     },
     toggleEditingPost,
     toggleModeratingComments,
@@ -62,6 +64,20 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
   const amIAuthenticated = !!user.id;
   const isOwnPost = amIAuthenticated && postCreatedBy?.id === user.id;
 
+  // Can pin to author's profile only if the post is actually in author's Posts feed
+  const isInAuthorPosts = recipients.some((r) => r.type === 'user' && r.id === postCreatedBy?.id);
+  // Groups this viewer can administer among post recipients (via recipients' administrators)
+  const eligibleGroups = recipients.filter(
+    (r) => r.type === 'group' && (r.administrators || []).includes(user.id),
+  );
+  const pinTargets = [];
+  if (isOwnPost && isInAuthorPosts) {
+    pinTargets.push({ id: user.id, label: 'profile' });
+  }
+  for (const g of eligibleGroups) {
+    pinTargets.push({ id: g.id, label: `@${g.username}` });
+  }
+
   const deleteLines = useMemo(() => {
     const result = [];
     // Not owned post
@@ -87,17 +103,26 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
       ),
     ],
     [
-      isOwnPost && (
-        <div className={styles.item} key="pin-post">
-          {isPinned ? (
-            <ButtonLink className={styles.link} onClick={doAndClose(() => unpinPost(postId))}>
-              <Iconic icon={faThumbtack}>Unpin from profile</Iconic>
-            </ButtonLink>
-          ) : (
-            <ButtonLink className={styles.link} onClick={doAndClose(() => pinPost(postId))}>
-              <Iconic icon={faThumbtack}>Pin to profile</Iconic>
-            </ButtonLink>
-          )}
+      pinTargets.length > 0 && (
+        <div className={styles.item} key="pin-posts">
+          {pinTargets.map((t) => {
+            const isPinnedHere = pinnedIn?.includes(t.id) || (t.id === user.id && isPinned);
+            return (
+              <ButtonLink
+                key={`pin-${t.id}`}
+                className={styles.link}
+                onClick={
+                  isPinnedHere
+                    ? doAndClose(() => unpinPost(postId, t.id))
+                    : doAndClose(() => pinPost(postId, t.id))
+                }
+              >
+                <Iconic icon={faThumbtack}>
+                  {isPinnedHere ? `Unpin from ${t.label}` : `Pin to ${t.label}`}
+                </Iconic>
+              </ButtonLink>
+            );
+          })}
         </div>
       ),
       isEditable && (

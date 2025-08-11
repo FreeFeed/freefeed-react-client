@@ -357,19 +357,19 @@ export function enableComments(postId) {
   };
 }
 
-export function pinPost(postId) {
+export function pinPost(postId, owner) {
   return {
     type: ActionTypes.PIN_POST,
     apiRequest: Api.pinPost,
-    payload: { postId },
+    payload: { postId, owner },
   };
 }
 
-export function unpinPost(postId) {
+export function unpinPost(postId, owner) {
   return {
     type: ActionTypes.UNPIN_POST,
     apiRequest: Api.unpinPost,
-    payload: { postId },
+    payload: { postId, owner },
   };
 }
 

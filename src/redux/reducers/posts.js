@@ -434,27 +434,50 @@ export function posts(state = {}, action) {
     }
     case response(PIN_POST): {
       const post = state[action.request.postId];
-      return post
-        ? {
-            ...state,
-            [post.id]: {
-              ...post,
-              isPinned: true,
-            },
-          }
-        : state;
+      if (!post) {
+        return state;
+      }
+      const { owner } = action.request;
+      const pinnedIn = [...(post.pinnedIn || [])];
+      if (owner && !pinnedIn.includes(owner)) {
+        pinnedIn.push(owner);
+      }
+      const isPinned = pinnedIn.includes(post.createdBy) || post.isPinned;
+      const pinnedMeta = {
+        ...(post.pinnedMeta || {}),
+        ...(owner ? { [owner]: Date.now() } : {}),
+      };
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
+          pinnedIn,
+          isPinned,
+          pinnedMeta,
+        },
+      };
     }
     case response(UNPIN_POST): {
       const post = state[action.request.postId];
-      return post
-        ? {
-            ...state,
-            [post.id]: {
-              ...post,
-              isPinned: false,
-            },
-          }
-        : state;
+      if (!post) {
+        return state;
+      }
+      const { owner } = action.request;
+      const pinnedIn = (post.pinnedIn || []).filter((id) => id !== owner);
+      const isPinned = pinnedIn.includes(post.createdBy) && post.isPinned;
+      const pinnedMeta = { ...(post.pinnedMeta || {}) };
+      if (owner && pinnedMeta[owner]) {
+        delete pinnedMeta[owner];
+      }
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
+          pinnedIn,
+          isPinned,
+          pinnedMeta,
+        },
+      };
     }
     case response(CREATE_POST):
     case response(GET_SINGLE_POST): {
@@ -498,6 +521,8 @@ export function posts(state = {}, action) {
       if (!post) {
         return state;
       }
+      const pinnedIn = action.post.pinnedIn ?? post.pinnedIn;
+      const isPinned = pinnedIn ? pinnedIn.includes(action.post.createdBy) : post.isPinned;
       return {
         ...state,
         [post.id]: {
@@ -508,6 +533,8 @@ export function posts(state = {}, action) {
           postedTo: action.post.postedTo,
           backlinksCount: action.post.backlinksCount,
           notifyOfAllComments: action.post.notifyOfAllComments,
+          ...(pinnedIn ? { pinnedIn } : {}),
+          ...(isPinned !== undefined ? { isPinned } : {}),
         },
       };
     }

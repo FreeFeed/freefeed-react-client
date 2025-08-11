@@ -11,6 +11,7 @@ import {
   faGlobeAmericas,
   faAngleDoubleRight,
   faShare,
+  faThumbtack,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { pluralForm } from '../../utils';
@@ -27,7 +28,6 @@ import TimeDisplay from '../time-display';
 import LinkPreview from '../link-preview/preview';
 import ErrorBoundary from '../error-boundary';
 import { Icon } from '../fontawesome-icons';
-import { faThumbtack } from '@fortawesome/free-solid-svg-icons';
 import { UserPicture } from '../user-picture';
 
 import { prepareAsyncFocus } from '../../utils/prepare-async-focus';
@@ -51,6 +51,7 @@ class Post extends Component {
   selectFeeds;
   hideLink = createRef();
   textareaRef = createRef();
+  containerRef = createRef();
 
   state = {
     forceAbsTimestamps: false,
@@ -147,6 +148,52 @@ class Post extends Component {
   componentWillUnmount() {
     this.hideLink.current &&
       this.props.setFinalHideLinkOffset(this.hideLink.current.getBoundingClientRect().top);
+  }
+
+  componentDidMount() {
+    if (this.props.justCreated && this.props.currentFeedOwnerId) {
+      const el = this.containerRef.current;
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }
+
+  renderPinIcon(props) {
+    const pinnedIds = props.pinnedIn || [];
+    const owner = this.props.currentFeedOwnerId;
+    const inOwner = owner ? pinnedIds.includes(owner) : false;
+    const anyPinned = pinnedIds.length > 0;
+    if (owner) {
+      if (!inOwner) {
+        return null;
+      }
+    } else if (!anyPinned) {
+      return null;
+    }
+    const names = [];
+    if (pinnedIds.includes(props.createdBy.id)) {
+      names.push(`@${props.createdBy.username}`);
+    }
+    for (const r of props.recipients || []) {
+      if (r.type === 'group' && pinnedIds.includes(r.id)) {
+        names.push(`@${r.username}`);
+      }
+    }
+    let title = 'Pinned';
+    if (owner) {
+      title = owner === props.createdBy.id ? 'Pinned in profile' : 'Pinned in group';
+    } else if (names.length > 0) {
+      title = `Pinned to ${names.join(', ')}`;
+    }
+    return (
+      <Icon
+        icon={faThumbtack}
+        className="post-pinned-icon"
+        title={title}
+        style={{ marginLeft: '0.5em' }}
+      />
+    );
   }
 
   renderHideLink() {
@@ -281,6 +328,7 @@ class Post extends Component {
     const moreLink = (
       <PostMoreLink
         user={props.user}
+        managedGroups={this.props.managedGroups}
         post={props}
         toggleEditingPost={this.toggleEditingPost}
         toggleModeratingComments={this.toggleModeratingComments}
@@ -340,9 +388,7 @@ class Post extends Component {
                     absolute={this.state.forceAbsTimestamps || null}
                   />
                 </Link>
-                {props.isPinned && (
-                  <Icon icon={faThumbtack} className="post-pinned-icon" title="Pinned" />
-                )}
+                {this.renderPinIcon(props)}
               </span>
               {props.commentsDisabled && (
                 <span className="post-footer-item">
@@ -415,6 +461,7 @@ class Post extends Component {
           data-author={props.createdBy.username}
           role={role}
           aria-label={postLabel}
+          ref={this.containerRef}
         >
           <ErrorBoundary>
             <Expandable

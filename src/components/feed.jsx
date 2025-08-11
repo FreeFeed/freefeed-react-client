@@ -86,7 +86,7 @@ class Feed extends PureComponent {
 const postIsHidden = (post) => !!(post.isHidden || post.hiddenByCriteria);
 
 export default connect(
-  (state, ownProps) => {
+  (state) => {
     const { entries, recentlyHiddenEntries, isHiddenRevealed, feedError, feedRequestType } =
       state.feedViewState;
 
@@ -106,15 +106,22 @@ export default connect(
       hiddenPosts = allPosts.filter((p) => postIsHidden(p));
     }
 
-    // If we're on a user feed, lift pinned posts to the top while preserving
-    // the original order within pinned/non-pinned groups.
-    if (ownProps.isInUserFeed) {
+    // Local reorder for current feed: pinned posts (for this owner) first, then others.
+    const owner = state.feedViewState.timeline?.user || null;
+    if (owner) {
       const withIndex = visiblePosts.map((p, i) => ({ p, i }));
       withIndex.sort((a, b) => {
-        const ap = a.p.isPinned ? 1 : 0;
-        const bp = b.p.isPinned ? 1 : 0;
+        const ap = a.p.pinnedIn?.includes(owner) ? 1 : 0;
+        const bp = b.p.pinnedIn?.includes(owner) ? 1 : 0;
         if (ap !== bp) {
-          return bp - ap;
+          return bp - ap; // pinned first
+        }
+        if (ap === 1 && bp === 1) {
+          const ta = a.p.pinnedMeta?.[owner] || 0;
+          const tb = b.p.pinnedMeta?.[owner] || 0;
+          if (ta !== tb) {
+            return ta - tb; // last pinned goes last
+          }
         }
         return a.i - b.i;
       });
@@ -129,6 +136,8 @@ export default connect(
       visiblePosts,
       hiddenPosts,
       feedError,
+      managedGroups: state.managedGroups,
+      currentFeedOwnerId: state.feedViewState.timeline?.user || null,
     };
   },
   { toggleHiddenPosts },
@@ -159,6 +168,7 @@ function FeedEntry({ post, section, ...props }) {
         user={props.user}
         isInHomeFeed={props.isInHomeFeed}
         isInUserFeed={props.isInUserFeed}
+        currentFeedOwnerId={props.currentFeedOwnerId}
         showMoreComments={props.showMoreComments}
         showMoreLikes={props.showMoreLikes}
         toggleEditingPost={props.toggleEditingPost}
