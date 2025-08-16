@@ -160,10 +160,13 @@ class Post extends Component {
   }
 
   renderPinIcon(props) {
-    const pinnedIds = props.pinnedIn || [];
+    const pinEntries = props.pinnedIn || [];
+    const asOwnerIds = pinEntries
+      .map((e) => (typeof e === 'string' ? e : e?.ownerId))
+      .filter(Boolean);
     const owner = this.props.currentFeedOwnerId;
-    const inOwner = owner ? pinnedIds.includes(owner) : false;
-    const anyPinned = pinnedIds.length > 0;
+    const inOwner = owner ? asOwnerIds.includes(owner) : false;
+    const anyPinned = asOwnerIds.length > 0;
     if (owner) {
       if (!inOwner) {
         return null;
@@ -172,11 +175,11 @@ class Post extends Component {
       return null;
     }
     const names = [];
-    if (pinnedIds.includes(props.createdBy.id)) {
+    if (asOwnerIds.includes(props.createdBy.id)) {
       names.push(`@${props.createdBy.username}`);
     }
     for (const r of props.recipients || []) {
-      if (r.type === 'group' && pinnedIds.includes(r.id)) {
+      if (r.type === 'group' && asOwnerIds.includes(r.id)) {
         names.push(`@${r.username}`);
       }
     }

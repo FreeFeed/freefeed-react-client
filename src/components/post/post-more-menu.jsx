@@ -29,7 +29,6 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
       isDeletable = false,
       isModeratingComments = false,
       commentsDisabled = false,
-      isPinned = false,
       createdAt,
       updatedAt,
       createdBy: postCreatedBy,
@@ -113,7 +112,9 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
       pinTargets.length > 0 && (
         <div className={styles.item} key="pin-posts">
           {pinTargets.map((t) => {
-            const isPinnedHere = pinnedIn?.includes(t.id) || (t.id === user.id && isPinned);
+            const isPinnedHere = pinnedIn?.some((e) =>
+              typeof e === 'string' ? e === t.id : e?.ownerId === t.id,
+            );
             return (
               <ButtonLink
                 key={`pin-${t.id}`}

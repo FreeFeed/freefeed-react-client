@@ -439,21 +439,17 @@ export function posts(state = {}, action) {
       }
       const { owner } = action.request;
       const pinnedIn = [...(post.pinnedIn || [])];
-      if (owner && !pinnedIn.includes(owner)) {
-        pinnedIn.push(owner);
+      const hasOwner = owner
+        ? pinnedIn.some((e) => (typeof e === 'string' ? e === owner : e?.ownerId === owner))
+        : false;
+      if (owner && !hasOwner) {
+        pinnedIn.push({ ownerId: owner, pinnedAt: new Date().toISOString(), pinnedBy: null });
       }
-      const isPinned = pinnedIn.includes(post.createdBy) || post.isPinned;
-      const pinnedMeta = {
-        ...(post.pinnedMeta || {}),
-        ...(owner ? { [owner]: Date.now() } : {}),
-      };
       return {
         ...state,
         [post.id]: {
           ...post,
           pinnedIn,
-          isPinned,
-          pinnedMeta,
         },
       };
     }
@@ -463,19 +459,14 @@ export function posts(state = {}, action) {
         return state;
       }
       const { owner } = action.request;
-      const pinnedIn = (post.pinnedIn || []).filter((id) => id !== owner);
-      const isPinned = pinnedIn.includes(post.createdBy) && post.isPinned;
-      const pinnedMeta = { ...(post.pinnedMeta || {}) };
-      if (owner && pinnedMeta[owner]) {
-        delete pinnedMeta[owner];
-      }
+      const pinnedIn = (post.pinnedIn || []).filter((e) =>
+        typeof e === 'string' ? e !== owner : e?.ownerId !== owner,
+      );
       return {
         ...state,
         [post.id]: {
           ...post,
           pinnedIn,
-          isPinned,
-          pinnedMeta,
         },
       };
     }
@@ -522,7 +513,6 @@ export function posts(state = {}, action) {
         return state;
       }
       const pinnedIn = action.post.pinnedIn ?? post.pinnedIn;
-      const isPinned = pinnedIn ? pinnedIn.includes(action.post.createdBy) : post.isPinned;
       return {
         ...state,
         [post.id]: {
@@ -534,7 +524,6 @@ export function posts(state = {}, action) {
           backlinksCount: action.post.backlinksCount,
           notifyOfAllComments: action.post.notifyOfAllComments,
           ...(pinnedIn ? { pinnedIn } : {}),
-          ...(isPinned !== undefined ? { isPinned } : {}),
         },
       };
     }

@@ -111,14 +111,28 @@ export default connect(
     if (owner) {
       const withIndex = visiblePosts.map((p, i) => ({ p, i }));
       withIndex.sort((a, b) => {
-        const ap = a.p.pinnedIn?.includes(owner) ? 1 : 0;
-        const bp = b.p.pinnedIn?.includes(owner) ? 1 : 0;
+        const ap = a.p.pinnedIn?.some((e) =>
+          typeof e === 'string' ? e === owner : e?.ownerId === owner,
+        )
+          ? 1
+          : 0;
+        const bp = b.p.pinnedIn?.some((e) =>
+          typeof e === 'string' ? e === owner : e?.ownerId === owner,
+        )
+          ? 1
+          : 0;
         if (ap !== bp) {
           return bp - ap; // pinned first
         }
         if (ap === 1 && bp === 1) {
-          const ta = a.p.pinnedMeta?.[owner] || 0;
-          const tb = b.p.pinnedMeta?.[owner] || 0;
+          const taStr = a.p.pinnedIn?.find((e) =>
+            typeof e === 'string' ? e === owner : e?.ownerId === owner,
+          )?.pinnedAt;
+          const tbStr = b.p.pinnedIn?.find((e) =>
+            typeof e === 'string' ? e === owner : e?.ownerId === owner,
+          )?.pinnedAt;
+          const ta = taStr ? Date.parse(taStr) : 0;
+          const tb = tbStr ? Date.parse(tbStr) : 0;
           if (ta !== tb) {
             return ta - tb; // last pinned goes last
           }
