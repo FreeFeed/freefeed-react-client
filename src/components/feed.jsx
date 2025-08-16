@@ -108,7 +108,9 @@ export default connect(
 
     // Local reorder for current feed: pinned posts (for this owner) first, then others.
     const owner = state.feedViewState.timeline?.user || null;
-    if (owner) {
+    const timelineName = state.feedViewState.timeline?.name || null;
+    // Only reorder in user/group Posts timelines
+    if (owner && timelineName === 'Posts') {
       const withIndex = visiblePosts.map((p, i) => ({ p, i }));
       withIndex.sort((a, b) => {
         const ap = a.p.pinnedIn?.some((e) =>
