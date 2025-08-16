@@ -103,6 +103,13 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
       ),
     ],
     [
+      isEditable && (
+        <div className={styles.item} key="edit-post">
+          <ButtonLink className={styles.link} onClick={doAndClose(toggleEditingPost)}>
+            <Iconic icon={faEdit}>Edit</Iconic>
+          </ButtonLink>
+        </div>
+      ),
       pinTargets.length > 0 && (
         <div className={styles.item} key="pin-posts">
           {pinTargets.map((t) => {
@@ -123,13 +130,6 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
               </ButtonLink>
             );
           })}
-        </div>
-      ),
-      isEditable && (
-        <div className={styles.item} key="edit-post">
-          <ButtonLink className={styles.link} onClick={doAndClose(toggleEditingPost)}>
-            <Iconic icon={faEdit}>Edit</Iconic>
-          </ButtonLink>
         </div>
       ),
       isModeratable && (
