@@ -24,7 +24,7 @@ export function PostCommentLikes({ id, close }) {
               {likers.map((u) => (
                 <li key={u.id} className={styles.item}>
                   <UserPicture user={u} />
-                  <UserName user={u} noUserCard />
+                  <UserName user={u} userCardMode="none" />
                 </li>
               ))}
             </ul>

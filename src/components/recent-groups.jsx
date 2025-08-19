@@ -6,7 +6,7 @@ import TimeDisplay from './time-display';
 
 const renderRecentGroup = (group, isPinned) => (
   <li className={classnames('p-my-groups-link', isPinned && 'pinned')} key={group.id}>
-    <UserName user={group} noUserCard>
+    <UserName user={group} userCardMode="sidebar-group">
       {group.screenName}
     </UserName>
     <TimeDisplay className="updated-ago" timeStamp={+group.updatedAt} />
