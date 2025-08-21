@@ -208,6 +208,9 @@ export function feedViewState(state = initFeed, action) {
   }
 
   switch (action.type) {
+    case ActionTypes.FEED_REORDER_ENTRIES: {
+      return { ...state, entries: action.payload.entries };
+    }
     case ActionTypes.UNAUTHENTICATED: {
       return initFeed;
     }
@@ -358,6 +361,13 @@ export function postsViewState(state = {}, action) {
     });
   }
   switch (action.type) {
+    case response(ActionTypes.CREATE_POST): {
+      const postId = action.payload.posts.id;
+      return {
+        ...state,
+        [postId]: { ...initPostViewState(action.payload.posts), justCreated: true },
+      };
+    }
     case response(ActionTypes.SHOW_MORE_LIKES_ASYNC): {
       const { id } = action.payload.posts;
       const omittedLikes = 0;
@@ -612,10 +622,6 @@ export function postsViewState(state = {}, action) {
       };
     }
 
-    case response(ActionTypes.CREATE_POST): {
-      const post = action.payload.posts;
-      return { ...state, [post.id]: { ...initPostViewState(post), justCreated: true } };
-    }
     case ActionTypes.UNAUTHENTICATED: {
       return {};
     }

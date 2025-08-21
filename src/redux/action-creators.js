@@ -357,6 +357,22 @@ export function enableComments(postId) {
   };
 }
 
+export function pinPost(postId, owner) {
+  return {
+    type: ActionTypes.PIN_POST,
+    apiRequest: Api.pinPost,
+    payload: { postId, owner },
+  };
+}
+
+export function unpinPost(postId, owner) {
+  return {
+    type: ActionTypes.UNPIN_POST,
+    apiRequest: Api.unpinPost,
+    payload: { postId, owner },
+  };
+}
+
 export function toggleEditingComment(commentId) {
   return {
     type: ActionTypes.TOGGLE_EDITING_COMMENT,

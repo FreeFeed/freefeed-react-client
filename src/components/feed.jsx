@@ -106,6 +106,8 @@ export default connect(
       hiddenPosts = allPosts.filter((p) => postIsHidden(p));
     }
 
+    // Order is managed by Redux (reorderPinnedMiddleware) for Posts timelines
+
     return {
       loading: state.routeLoadingState,
       emptyFeed: entries.length === 0,
@@ -114,6 +116,8 @@ export default connect(
       visiblePosts,
       hiddenPosts,
       feedError,
+      managedGroups: state.managedGroups,
+      currentFeedOwnerId: state.feedViewState.timeline?.user || null,
     };
   },
   { toggleHiddenPosts },
@@ -144,12 +148,15 @@ function FeedEntry({ post, section, ...props }) {
         user={props.user}
         isInHomeFeed={props.isInHomeFeed}
         isInUserFeed={props.isInUserFeed}
+        currentFeedOwnerId={props.currentFeedOwnerId}
         showMoreComments={props.showMoreComments}
         showMoreLikes={props.showMoreLikes}
         toggleEditingPost={props.toggleEditingPost}
         cancelEditingPost={props.cancelEditingPost}
         saveEditingPost={props.saveEditingPost}
         deletePost={props.deletePost}
+        pinPost={props.pinPost}
+        unpinPost={props.unpinPost}
         addAttachmentResponse={props.addAttachmentResponse}
         toggleCommenting={props.toggleCommenting}
         addComment={props.addComment}

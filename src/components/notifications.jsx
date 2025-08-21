@@ -19,22 +19,31 @@ import { Icon } from './fontawesome-icons';
 import { useBool } from './hooks/bool';
 import { Expandable } from './expandable';
 
-const getAuthorName = ({ postAuthor, createdUser, group }) => {
-  if (group && group.username) {
+const getAuthorNameOrNull = ({ postAuthor, createdUser, group, receiver }) => {
+  if (group?.username) {
     return group.username;
   }
-  if (postAuthor && postAuthor.username) {
+  if (postAuthor?.username) {
     return postAuthor.username;
   }
-  return createdUser.username;
+  if (createdUser?.username) {
+    return createdUser.username;
+  }
+  if (receiver?.username) {
+    return receiver.username;
+  }
+  return null;
 };
 
-const generatePostUrl = ({ post_id, shortPostId, ...event }) =>
-  `/${getAuthorName(event)}/${shortPostId ?? post_id}`;
-const generateCommentUrl = ({ post_id, comment_id, shortPostId, shortCommentId, ...event }) =>
-  `/${getAuthorName(event)}/${shortPostId ?? post_id}#${
-    shortCommentId ? shortCommentId : `comment-${comment_id}`
-  }`;
+const generatePostUrl = ({ post_id, shortPostId, ...event }) => {
+  const author = getAuthorNameOrNull(event);
+  return author ? `/${author}/${shortPostId ?? post_id}` : `/post/${post_id}`;
+};
+const generateCommentUrl = ({ post_id, comment_id, shortPostId, shortCommentId, ...event }) => {
+  const author = getAuthorNameOrNull(event);
+  const anchor = shortCommentId ? shortCommentId : `comment-${comment_id}`;
+  return author ? `/${author}/${shortPostId ?? post_id}#${anchor}` : `/post/${post_id}#${anchor}`;
+};
 const postLink = (
   event,
   { isDirect = false, fallback = isDirect ? 'deleted direct message' : 'deleted post' } = {},
@@ -348,6 +357,48 @@ const notificationTemplates = {
     </>
   ),
 
+  post_pinned_in_group: (event) => (
+    <>
+      <UserLink atStart user={event.createdUser} /> pinned{' '}
+      {postLink(event, { fallback: 'your post' })} to <UserLink user={event.group} />
+    </>
+  ),
+  post_unpinned_in_group: (event) => (
+    <>
+      <UserLink atStart user={event.createdUser} /> unpinned{' '}
+      {postLink(event, { fallback: 'your post' })} from <UserLink user={event.group} />
+    </>
+  ),
+
+  post_pinned_in_profile: (event) => {
+    const isSelf = event.receiver?.id && event.receiver.id === event.created_user_id;
+    const postEl = isSelf ? (
+      <Link to={generatePostUrl(event)}>your post</Link>
+    ) : (
+      postLink(event, { fallback: 'your post' })
+    );
+    return (
+      <>
+        {isSelf ? 'You' : <UserLink atStart user={event.createdUser} recipient={event.receiver} />}{' '}
+        pinned {postEl} to profile
+      </>
+    );
+  },
+  post_unpinned_in_profile: (event) => {
+    const isSelf = event.receiver?.id && event.receiver.id === event.created_user_id;
+    const postEl = isSelf ? (
+      <Link to={generatePostUrl(event)}>your post</Link>
+    ) : (
+      postLink(event, { fallback: 'your post' })
+    );
+    return (
+      <>
+        {isSelf ? 'You' : <UserLink atStart user={event.createdUser} recipient={event.receiver} />}{' '}
+        unpinned {postEl} from profile
+      </>
+    );
+  },
+
   blocked_in_group: (event) => (
     <>
       <UserLink
@@ -413,6 +464,8 @@ const notificationClasses = {
   comment_moderated_by_another_admin: 'group',
   post_moderated: 'group',
   post_moderated_by_another_admin: 'group',
+  post_pinned_in_group: 'group',
+  post_unpinned_in_group: 'group',
 };
 
 const nop = () => false;

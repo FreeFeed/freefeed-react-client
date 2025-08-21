@@ -11,6 +11,8 @@ import {
   DELETE_POST,
   DISABLE_COMMENTS,
   ENABLE_COMMENTS,
+  PIN_POST,
+  UNPIN_POST,
   GET_SINGLE_POST,
   HIDE_POST,
   LIKE_POST,
@@ -430,6 +432,44 @@ export function posts(state = {}, action) {
         },
       };
     }
+    case response(PIN_POST): {
+      const post = state[action.request.postId];
+      if (!post) {
+        return state;
+      }
+      const { owner } = action.request;
+      const pinnedIn = [...(post.pinnedIn || [])];
+      const hasOwner = owner
+        ? pinnedIn.some((e) => (typeof e === 'string' ? e === owner : e?.ownerId === owner))
+        : false;
+      if (owner && !hasOwner) {
+        pinnedIn.push({ ownerId: owner, pinnedAt: new Date().toISOString(), pinnedBy: null });
+      }
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
+          pinnedIn,
+        },
+      };
+    }
+    case response(UNPIN_POST): {
+      const post = state[action.request.postId];
+      if (!post) {
+        return state;
+      }
+      const { owner } = action.request;
+      const pinnedIn = (post.pinnedIn || []).filter((e) =>
+        typeof e === 'string' ? e !== owner : e?.ownerId !== owner,
+      );
+      return {
+        ...state,
+        [post.id]: {
+          ...post,
+          pinnedIn,
+        },
+      };
+    }
     case response(CREATE_POST):
     case response(GET_SINGLE_POST): {
       return updatePostData(state, action);
@@ -472,6 +512,7 @@ export function posts(state = {}, action) {
       if (!post) {
         return state;
       }
+      const pinnedIn = action.post.pinnedIn ?? post.pinnedIn;
       return {
         ...state,
         [post.id]: {
@@ -482,6 +523,7 @@ export function posts(state = {}, action) {
           postedTo: action.post.postedTo,
           backlinksCount: action.post.backlinksCount,
           notifyOfAllComments: action.post.notifyOfAllComments,
+          ...(pinnedIn ? { pinnedIn } : {}),
         },
       };
     }

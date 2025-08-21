@@ -11,6 +11,7 @@ import {
   faGlobeAmericas,
   faAngleDoubleRight,
   faShare,
+  faThumbtack,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { pluralForm } from '../../utils';
@@ -50,6 +51,7 @@ class Post extends Component {
   selectFeeds;
   hideLink = createRef();
   textareaRef = createRef();
+  containerRef = createRef();
 
   state = {
     forceAbsTimestamps: false,
@@ -146,6 +148,55 @@ class Post extends Component {
   componentWillUnmount() {
     this.hideLink.current &&
       this.props.setFinalHideLinkOffset(this.hideLink.current.getBoundingClientRect().top);
+  }
+
+  componentDidMount() {
+    if (this.props.justCreated && this.props.currentFeedOwnerId) {
+      const el = this.containerRef.current;
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }
+
+  renderPinIcon(props) {
+    const pinEntries = props.pinnedIn || [];
+    const asOwnerIds = pinEntries
+      .map((e) => (typeof e === 'string' ? e : e?.ownerId))
+      .filter(Boolean);
+    const owner = this.props.currentFeedOwnerId;
+    const inOwner = owner ? asOwnerIds.includes(owner) : false;
+    const anyPinned = asOwnerIds.length > 0;
+    if (owner) {
+      if (!inOwner) {
+        return null;
+      }
+    } else if (!anyPinned) {
+      return null;
+    }
+    const names = [];
+    if (asOwnerIds.includes(props.createdBy.id)) {
+      names.push(`@${props.createdBy.username}`);
+    }
+    for (const r of props.recipients || []) {
+      if (r.type === 'group' && asOwnerIds.includes(r.id)) {
+        names.push(`@${r.username}`);
+      }
+    }
+    let title = 'Pinned';
+    if (owner) {
+      title = owner === props.createdBy.id ? 'Pinned in profile' : 'Pinned in group';
+    } else if (names.length > 0) {
+      title = `Pinned to ${names.join(', ')}`;
+    }
+    return (
+      <Icon
+        icon={faThumbtack}
+        className="post-pinned-icon"
+        title={title}
+        style={{ marginLeft: '0.5em' }}
+      />
+    );
   }
 
   renderHideLink() {
@@ -280,12 +331,15 @@ class Post extends Component {
     const moreLink = (
       <PostMoreLink
         user={props.user}
+        managedGroups={this.props.managedGroups}
         post={props}
         toggleEditingPost={this.toggleEditingPost}
         toggleModeratingComments={this.toggleModeratingComments}
         disableComments={this.disableComments}
         enableComments={this.enableComments}
         deletePost={this.handleDeletePost}
+        pinPost={this.props.pinPost}
+        unpinPost={this.props.unpinPost}
         toggleSave={this.toggleSave}
         handleMentionAuthor={this.handleMentionAuthorClick}
       />
@@ -337,6 +391,7 @@ class Post extends Component {
                     absolute={this.state.forceAbsTimestamps || null}
                   />
                 </Link>
+                {this.renderPinIcon(props)}
               </span>
               {props.commentsDisabled && (
                 <span className="post-footer-item">
@@ -409,6 +464,7 @@ class Post extends Component {
           data-author={props.createdBy.username}
           role={role}
           aria-label={postLabel}
+          ref={this.containerRef}
         >
           <ErrorBoundary>
             <Expandable

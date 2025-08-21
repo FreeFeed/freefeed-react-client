@@ -617,6 +617,126 @@ export const markNotificationsAsReadMiddleware = (store) => (next) => (action) =
   next(action);
 };
 
+// Reorder current feed entries when a post gets (un)pinned in the visible Posts timeline
+export const reorderPinnedMiddleware = (store) => (next) => (action) => {
+  const res = next(action);
+
+  const typesToHandle = new Set([
+    ActionTypes.PIN_POST, // base action from UI
+    ActionTypes.UNPIN_POST,
+    request(ActionTypes.PIN_POST),
+    request(ActionTypes.UNPIN_POST),
+    response(ActionTypes.PIN_POST),
+    response(ActionTypes.UNPIN_POST),
+    ActionTypes.REALTIME_POST_UPDATE,
+  ]);
+  if (!typesToHandle.has(action.type)) {
+    return res;
+  }
+
+  const state = store.getState();
+  const { timeline, entries } = state.feedViewState;
+  if (!timeline || timeline.name !== 'Posts' || !timeline.user) {
+    return res;
+  }
+
+  const ownerId = timeline.user;
+  if (!entries || entries.length === 0) {
+    return res;
+  }
+
+  // Build keyed list with possible optimistic tweak for PIN/UNPIN response
+  const withKeys = entries.map((id, idx) => {
+    const post = state.posts[id];
+    const pinRec = (post?.pinnedIn || []).find((e) =>
+      typeof e === 'string' ? e === ownerId : e?.ownerId === ownerId,
+    );
+    let pinned = Boolean(pinRec);
+    let pinnedAt = pinned ? Date.parse(pinRec.pinnedAt) || 0 : 0;
+
+    const isPinReq =
+      action.type === ActionTypes.PIN_POST || action.type === request(ActionTypes.PIN_POST);
+    const isUnpinReq =
+      action.type === ActionTypes.UNPIN_POST || action.type === request(ActionTypes.UNPIN_POST);
+    const isPinResp = action.type === response(ActionTypes.PIN_POST);
+    const isUnpinResp = action.type === response(ActionTypes.UNPIN_POST);
+    const req = isPinResp || isUnpinResp ? action.request : action.payload;
+
+    if ((isPinResp || isPinReq) && req?.postId === id) {
+      // Ensure immediate reorder even if pinnedIn not yet updated by reducers
+      const targetOwner = req.owner || ownerId;
+      if (targetOwner === ownerId) {
+        pinned = true;
+        pinnedAt = pinnedAt || Date.now();
+      }
+    }
+    if ((isUnpinResp || isUnpinReq) && req?.postId === id) {
+      const targetOwner = req.owner || ownerId;
+      if (targetOwner === ownerId) {
+        pinned = false;
+        pinnedAt = 0;
+      }
+    }
+
+    return { id, idx, pinned, pinnedAt };
+  });
+
+  const sorted = [...withKeys].sort((a, b) => {
+    if (a.pinned !== b.pinned) {
+      return a.pinned ? -1 : 1; // pinned first
+    }
+    if (a.pinned && b.pinned && a.pinnedAt !== b.pinnedAt) {
+      return a.pinnedAt - b.pinnedAt; // older pin first
+    }
+    return a.idx - b.idx; // stable
+  });
+
+  const newEntries = sorted.map((x) => x.id);
+  const changed =
+    newEntries.length !== entries.length || newEntries.some((v, i) => v !== entries[i]);
+  if (changed) {
+    store.dispatch({ type: ActionTypes.FEED_REORDER_ENTRIES, payload: { entries: newEntries } });
+  } else {
+    // Fallback: deterministic move within current feed without relying on pinnedIn
+    const isPinAny =
+      action.type === ActionTypes.PIN_POST ||
+      action.type === request(ActionTypes.PIN_POST) ||
+      action.type === response(ActionTypes.PIN_POST);
+    const isUnpinAny =
+      action.type === ActionTypes.UNPIN_POST ||
+      action.type === request(ActionTypes.UNPIN_POST) ||
+      action.type === response(ActionTypes.UNPIN_POST);
+    if (isPinAny || isUnpinAny) {
+      const isResp =
+        action.type === response(ActionTypes.PIN_POST) ||
+        action.type === response(ActionTypes.UNPIN_POST);
+      const req = isResp ? action.request : action.payload;
+      const targetId = req?.postId;
+      if (targetId && entries.includes(targetId)) {
+        const curr = entries.filter((e) => e !== targetId);
+        const isPinned = (pid) => {
+          const post = state.posts[pid];
+          const rec = (post?.pinnedIn || []).find((e) =>
+            typeof e === 'string' ? e === ownerId : e?.ownerId === ownerId,
+          );
+          return Boolean(rec);
+        };
+        const boundary = curr.findIndex((pid) => !isPinned(pid));
+        const insertAt = boundary < 0 ? curr.length : boundary;
+        const newOrder = [...curr.slice(0, insertAt), targetId, ...curr.slice(insertAt)];
+        if (newOrder.some((v, i) => v !== entries[i])) {
+          store.dispatch({
+            type: ActionTypes.FEED_REORDER_ENTRIES,
+            payload: { entries: newOrder },
+          });
+        }
+      }
+    }
+  }
+
+  return res;
+};
+
 const isFirstPage = (state) => !state.routing.locationBeforeTransitions.query.offset;
 const isMemories = (state) => state.routing.locationBeforeTransitions.pathname.includes('memories');
 
