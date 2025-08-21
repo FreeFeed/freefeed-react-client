@@ -106,43 +106,7 @@ export default connect(
       hiddenPosts = allPosts.filter((p) => postIsHidden(p));
     }
 
-    // Local reorder for current feed: pinned posts (for this owner) first, then others.
-    const owner = state.feedViewState.timeline?.user || null;
-    const timelineName = state.feedViewState.timeline?.name || null;
-    // Only reorder in user/group Posts timelines
-    if (owner && timelineName === 'Posts') {
-      const withIndex = visiblePosts.map((p, i) => ({ p, i }));
-      withIndex.sort((a, b) => {
-        const ap = a.p.pinnedIn?.some((e) =>
-          typeof e === 'string' ? e === owner : e?.ownerId === owner,
-        )
-          ? 1
-          : 0;
-        const bp = b.p.pinnedIn?.some((e) =>
-          typeof e === 'string' ? e === owner : e?.ownerId === owner,
-        )
-          ? 1
-          : 0;
-        if (ap !== bp) {
-          return bp - ap; // pinned first
-        }
-        if (ap === 1 && bp === 1) {
-          const taStr = a.p.pinnedIn?.find((e) =>
-            typeof e === 'string' ? e === owner : e?.ownerId === owner,
-          )?.pinnedAt;
-          const tbStr = b.p.pinnedIn?.find((e) =>
-            typeof e === 'string' ? e === owner : e?.ownerId === owner,
-          )?.pinnedAt;
-          const ta = taStr ? Date.parse(taStr) : 0;
-          const tb = tbStr ? Date.parse(tbStr) : 0;
-          if (ta !== tb) {
-            return ta - tb; // last pinned goes last
-          }
-        }
-        return a.i - b.i;
-      });
-      visiblePosts = withIndex.map(({ p }) => p);
-    }
+    // Order is managed by Redux (reorderPinnedMiddleware) for Posts timelines
 
     return {
       loading: state.routeLoadingState,

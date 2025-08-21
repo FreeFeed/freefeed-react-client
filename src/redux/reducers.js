@@ -208,6 +208,9 @@ export function feedViewState(state = initFeed, action) {
   }
 
   switch (action.type) {
+    case ActionTypes.FEED_REORDER_ENTRIES: {
+      return { ...state, entries: action.payload.entries };
+    }
     case ActionTypes.UNAUTHENTICATED: {
       return initFeed;
     }
