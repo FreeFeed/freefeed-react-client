@@ -77,12 +77,10 @@ const inviteActions = () => {
 };
 
 // needed to display mutual friends
-const subscribersSubscriptionsActions = (next, replace) => {
+const subscribersSubscriptionsActions = (next) => {
   const { userName } = next.params;
 
   if (userName === store.getState().user.username) {
-    const route = next.routes[next.routes.length - 1];
-    replace(`/friends?show=${route.name}`);
     return;
   }
 
@@ -365,15 +363,21 @@ function App() {
               <Route
                 name="subscribers"
                 path="/:userName/subscribers"
-                component={Subscribers}
                 onEnter={subscribersSubscriptionsActions}
-              />
+              >
+                <FriendsPageRedirect>
+                  <Subscribers />
+                </FriendsPageRedirect>
+              </Route>
               <Route
                 name="subscriptions"
                 path="/:userName/subscriptions"
-                component={Subscriptions}
                 onEnter={subscribersSubscriptionsActions}
-              />
+              >
+                <FriendsPageRedirect>
+                  <Subscriptions />
+                </FriendsPageRedirect>
+              </Route>
               <Route
                 name="manage-subscribers"
                 path="/:userName/manage-subscribers"
@@ -438,6 +442,18 @@ function Redirect({ to, replace = false }) {
 function CalendarRedirect({ thisYear }) {
   const { params } = useNouter();
   return <Redirect to={`/${encodeURIComponent(params.userName)}/calendar/${thisYear}`} />;
+}
+
+// Redirects own Subscriptions and Subscribers page to the Friends page
+function FriendsPageRedirect({ children }) {
+  const { params, name } = useNouter();
+  const myUsername = useSelector((state) => state.user.username);
+
+  if (params.userName === myUsername) {
+    return <Redirect to={`/friends?show=${name}`} replace />;
+  }
+
+  return children;
 }
 
 function SyncRoutesWithStore() {

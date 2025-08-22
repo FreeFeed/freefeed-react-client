@@ -67,7 +67,7 @@ export const Friends = withLayout(function Friends() {
   useEffect(() => {
     const validListValues = [...tabIds, ...homeFeeds.map((f) => f.id)];
     if (allSubscriptionsStatus.success && !validListValues.includes(currentList)) {
-      navigate({ ...location, search: '' }, { replace: true });
+      navigate({ ...location, query: {} }, { replace: true });
     }
   }, [allSubscriptionsStatus.success, currentList, homeFeeds, navigate, location]);
 
