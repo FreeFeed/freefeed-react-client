@@ -16,6 +16,7 @@ import {
   LIKE_POST,
   LIKE_POST_OPTIMISTIC,
   NOTIFY_OF_ALL_COMMENTS,
+  PIN_POST,
   REALTIME_COMMENT_DESTROY,
   REALTIME_COMMENT_NEW,
   REALTIME_COMMENT_RESTORE,
@@ -36,6 +37,7 @@ import {
   UNHIDE_POST,
   UNLIKE_POST,
   UNLIKE_POST_OPTIMISTIC,
+  UNPIN_POST,
 } from '../action-types';
 import { asyncStatesMap, fail, getKeyBy, response } from '../async-helpers';
 import { mergeByIds, patchObjectByKey } from './helpers';
@@ -431,7 +433,9 @@ export function posts(state = {}, action) {
       };
     }
     case response(CREATE_POST):
-    case response(GET_SINGLE_POST): {
+    case response(GET_SINGLE_POST):
+    case response(PIN_POST):
+    case response(UNPIN_POST): {
       return updatePostData(state, action);
     }
     case response(NOTIFY_OF_ALL_COMMENTS): {

@@ -187,3 +187,5 @@ export const GET_MATCHED_USERS = 'GET_MATCHED_USERS';
 export const UNDO_ACTION = 'UNDO_ACTION';
 export const ADD_UNDO_ENTRY = 'ADD_UNDO_ENTRY';
 export const DELETE_UNDO_ENTRY = 'DELETE_UNDO_ENTRY';
+export const PIN_POST = 'PIN_POST';
+export const UNPIN_POST = 'UNPIN_POST';
