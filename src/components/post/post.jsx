@@ -11,6 +11,7 @@ import {
   faGlobeAmericas,
   faAngleDoubleRight,
   faShare,
+  faThumbtack,
 } from '@fortawesome/free-solid-svg-icons';
 
 import { pluralForm } from '../../utils';
@@ -146,6 +147,44 @@ class Post extends Component {
   componentWillUnmount() {
     this.hideLink.current &&
       this.props.setFinalHideLinkOffset(this.hideLink.current.getBoundingClientRect().top);
+  }
+
+  renderPinIcon() {
+    if (!this.props.pinnedIn || this.props.pinnedIn.length === 0) {
+      return null;
+    }
+
+    const pinTargetIds = new Set(this.props.pinnedIn.map((e) => e.targetId));
+    const { currentFeedOwnerId } = this.props;
+    const inOwner = currentFeedOwnerId ? pinTargetIds.has(currentFeedOwnerId) : false;
+    if (!inOwner) {
+      return null;
+    }
+
+    const names = [];
+    if (pinTargetIds.has(this.props.createdBy.id)) {
+      names.push(`@${this.props.createdBy.username}`);
+    }
+    for (const r of this.props.recipients || []) {
+      if (r.type === 'group' && pinTargetIds.has(r.id)) {
+        names.push(`@${r.username}`);
+      }
+    }
+    let title = 'Pinned';
+    if (currentFeedOwnerId) {
+      title =
+        currentFeedOwnerId === this.props.createdBy.id ? 'Pinned in profile' : 'Pinned in group';
+    } else if (names.length > 0) {
+      title = `Pinned to ${names.join(', ')}`;
+    }
+    return (
+      <Icon
+        icon={faThumbtack}
+        className="post-pinned-icon"
+        title={title}
+        style={{ marginLeft: '0.5em' }}
+      />
+    );
   }
 
   renderHideLink() {
@@ -338,6 +377,7 @@ class Post extends Component {
                   />
                 </Link>
               </span>
+              {this.renderPinIcon()}
               {props.commentsDisabled && (
                 <span className="post-footer-item">
                   <i>
