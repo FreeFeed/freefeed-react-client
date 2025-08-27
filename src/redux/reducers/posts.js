@@ -486,6 +486,7 @@ export function posts(state = {}, action) {
           postedTo: action.post.postedTo,
           backlinksCount: action.post.backlinksCount,
           notifyOfAllComments: action.post.notifyOfAllComments,
+          pinnedIn: action.post.pinnedIn,
         },
       };
     }
