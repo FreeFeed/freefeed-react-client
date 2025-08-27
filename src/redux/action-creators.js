@@ -1451,3 +1451,10 @@ export function unpinPost(postId, target) {
     payload: { postId, target },
   };
 }
+
+export function reorderFeedEntries(entries) {
+  return {
+    type: ActionTypes.REORDER_FEED_ENTRIES,
+    payload: { entries },
+  };
+}

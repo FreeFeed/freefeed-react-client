@@ -189,3 +189,4 @@ export const ADD_UNDO_ENTRY = 'ADD_UNDO_ENTRY';
 export const DELETE_UNDO_ENTRY = 'DELETE_UNDO_ENTRY';
 export const PIN_POST = 'PIN_POST';
 export const UNPIN_POST = 'UNPIN_POST';
+export const REORDER_FEED_ENTRIES = 'REORDER_FEED_ENTRIES';
