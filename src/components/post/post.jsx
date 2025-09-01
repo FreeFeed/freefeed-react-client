@@ -50,7 +50,7 @@ import { Attachments } from './attachments/attachments';
 class Post extends Component {
   selectFeeds;
   hideLink = createRef();
-  textareaRef = createRef();
+  postRef = createRef();
 
   state = {
     forceAbsTimestamps: false,
@@ -147,6 +147,22 @@ class Post extends Component {
   componentWillUnmount() {
     this.hideLink.current &&
       this.props.setFinalHideLinkOffset(this.hideLink.current.getBoundingClientRect().top);
+  }
+
+  // Scroll the post into view if it was just created
+  wasScrolledIntoView = false;
+  scrollIntoView() {
+    if (this.props.justCreated && this.postRef.current && !this.wasScrolledIntoView) {
+      this.wasScrolledIntoView = true;
+      this.postRef.current.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  }
+
+  componentDidMount() {
+    this.scrollIntoView();
+  }
+  componentDidUpdate() {
+    this.scrollIntoView();
   }
 
   renderPinIcon() {
@@ -445,6 +461,7 @@ class Post extends Component {
     return (
       <PostProvider id={this.props.id}>
         <div
+          ref={this.postRef}
           className={postClass}
           data-author={props.createdBy.username}
           role={role}
