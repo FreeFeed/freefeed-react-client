@@ -319,6 +319,13 @@ export function feedViewState(state = initFeed, action) {
         isHiddenRevealed: !state.isHiddenRevealed,
       };
     }
+
+    case ActionTypes.REORDER_FEED_ENTRIES: {
+      return {
+        ...state,
+        entries: action.payload.entries,
+      };
+    }
   }
   return state;
 }

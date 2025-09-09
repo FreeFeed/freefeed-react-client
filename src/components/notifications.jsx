@@ -377,6 +377,34 @@ const notificationTemplates = {
       <UserLink user={event.group} />
     </>
   ),
+
+  post_pinned_in_profile: (event) => (
+    <>
+      <UserLink atStart user={event.createdUser} recipient={event.receiver} /> pinned{' '}
+      {postLink(event, { fallback: 'your post' })} in profile
+    </>
+  ),
+
+  post_pinned_in_group: (event) => (
+    <>
+      <UserLink atStart user={event.createdUser} recipient={event.receiver} /> pinned{' '}
+      {postLink(event)} in the <UserLink user={event.group} /> group
+    </>
+  ),
+
+  post_unpinned_in_profile: (event) => (
+    <>
+      <UserLink atStart user={event.createdUser} recipient={event.receiver} /> unpinned{' '}
+      {postLink(event, { fallback: 'your post' })} from profile
+    </>
+  ),
+
+  post_unpinned_in_group: (event) => (
+    <>
+      <UserLink atStart user={event.createdUser} recipient={event.receiver} /> unpinned{' '}
+      {postLink(event)} from the <UserLink user={event.group} /> group
+    </>
+  ),
 };
 
 notificationTemplates.unblocked_in_group = notificationTemplates.blocked_in_group;
@@ -413,6 +441,8 @@ const notificationClasses = {
   comment_moderated_by_another_admin: 'group',
   post_moderated: 'group',
   post_moderated_by_another_admin: 'group',
+  post_pinned_in_group: 'group',
+  post_unpinned_in_group: 'group',
 };
 
 const nop = () => false;

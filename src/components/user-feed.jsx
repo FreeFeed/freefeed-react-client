@@ -55,8 +55,9 @@ class UserFeed extends Component {
       );
     }
 
+    let privacyMessage;
     if (isPrivate) {
-      return (
+      privacyMessage = (
         <div className="box-body">
           <p>
             <b>{viewUser.screenName}</b> has a private feed.
@@ -70,7 +71,7 @@ class UserFeed extends Component {
         </div>
       );
     } else if (viewUser.isProtected === '1' && !authenticated) {
-      return (
+      privacyMessage = (
         <div className="box-body">
           <p>
             <b>{viewUser.screenName}</b> has a protected feed. It is only visible to{' '}
@@ -85,9 +86,12 @@ class UserFeed extends Component {
     }
 
     return (
-      <PaginatedView {...this.props}>
-        <Feed {...this.props} emptyFeedMessage={emptyFeedMessage} />
-      </PaginatedView>
+      <>
+        {privacyMessage}
+        <PaginatedView {...this.props}>
+          <Feed {...this.props} emptyFeedMessage={emptyFeedMessage} />
+        </PaginatedView>
+      </>
     );
   }
 }

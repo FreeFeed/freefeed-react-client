@@ -1188,6 +1188,66 @@ export function undoMiddleware(store) {
   };
 }
 
+// Reorder feedViewState.entries so that pinned posts are always at the beginning
+export function reorderPinnedMiddleware(store) {
+  const feedUpdaters = new Set([
+    response(ActionTypes.PIN_POST),
+    response(ActionTypes.UNPIN_POST),
+    response(ActionTypes.CREATE_POST),
+    ActionTypes.REALTIME_POST_NEW,
+    ActionTypes.REALTIME_POST_UPDATE,
+  ]);
+
+  const realtimeBumpers = new Set([
+    ActionTypes.REALTIME_COMMENT_NEW,
+    ActionTypes.REALTIME_LIKE_NEW,
+  ]);
+
+  return (next) => (action) => {
+    const mayNeedReorder =
+      feedUpdaters.has(action.type) || (realtimeBumpers.has(action.type) && action.shouldBump);
+
+    if (!mayNeedReorder) {
+      return next(action);
+    }
+
+    const result = next(action);
+
+    const {
+      posts,
+      feedViewState: { timeline, entries },
+    } = store.getState();
+
+    if (!timeline || timeline.name !== 'Posts' || !timeline.user || entries.length === 0) {
+      return result;
+    }
+
+    const entriesWithPinnedAt = entries.map((postId, index) => {
+      const post = posts[postId];
+      const pin = post.pinnedIn?.find((p) => p.targetId === timeline.user) ?? null;
+      const pinnedAt = pin ? Date.parse(pin.pinnedAt) : Infinity; // All non-pinned posts are at the end (as pinned at Infinity)
+      return { postId, index, pinnedAt };
+    });
+
+    // Sort by .pinnedAt first and .index last
+    entriesWithPinnedAt.sort((a, b) => {
+      if (a.pinnedAt !== b.pinnedAt) {
+        return a.pinnedAt - b.pinnedAt;
+      }
+      return a.index - b.index;
+    });
+
+    const newEntries = entriesWithPinnedAt.map((entry) => entry.postId);
+    const isChanged = newEntries.some((v, i) => v !== entries[i]);
+
+    if (isChanged) {
+      store.dispatch(ActionCreators.reorderFeedEntries(newEntries));
+    }
+
+    return result;
+  };
+}
+
 function isResponseOf(action, ...baseTypes) {
   return baseTypes.map(response).includes(action.type);
 }
