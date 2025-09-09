@@ -29,6 +29,7 @@
   transition:
     opacity 0.2s,
     translate 0.2s;
+  transform: translateZ(0); // prevents Safari from glitching
 
   :global(.dark-theme) & {
     background-color: dark-vars.$bg-color-lighter;
