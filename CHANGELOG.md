@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Pinning posts feature. Users can now pin/unpin posts at the top of their own
   feed or the feed of a group they administer.
 - Youtube Live links preview
+- Information pop-ups on the links in the "Recent Groups" panel. The "Pin" and
+  "Un-Pin" buttons have been added to these pop-ups.
 
 ## [1.139.2] - 2025-08-04
 ### Added
