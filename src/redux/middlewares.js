@@ -1,9 +1,13 @@
 /* global CONFIG */
-import { browserHistory } from 'react-router';
 import * as _ from 'lodash-es';
 import * as Sentry from '@sentry/react';
 
-import { LOCATION_CHANGE } from 'react-router-redux';
+import {
+  LOCATION_CHANGE,
+  LOCATION_PUSH,
+  locationChange,
+  locationPush,
+} from '../services/nouter/redux';
 import { getPost } from '../services/api';
 import { getToken, setToken } from '../services/auth';
 import { Connection } from '../services/realtime';
@@ -34,6 +38,7 @@ import {
   doneEditingAndDeleteDraft,
   initializeDrafts,
 } from '../services/drafts';
+import { createLocationSource, withoutQuery, withQuery } from '../services/nouter/utils';
 import * as ActionCreators from './action-creators';
 import * as ActionTypes from './action-types';
 import {
@@ -301,11 +306,14 @@ export const authMiddleware = (store) => {
         const { pathname } = window.location;
         if (shouldGoToSignIn(pathname)) {
           store.dispatch(ActionCreators.requireAuthentication());
-          return browserHistory.push(
-            `/signin?back=${encodeURIComponent(
-              location.pathname + location.search + location.hash,
-            )}`,
+          store.dispatch(
+            locationPush(
+              `/signin?back=${encodeURIComponent(
+                location.pathname + location.search + location.hash,
+              )}`,
+            ),
           );
+          return;
         }
       } else {
         location.reload();
@@ -328,7 +336,8 @@ export const authMiddleware = (store) => {
       }
 
       const backTo = store.getState().routing.locationBeforeTransitions.query.back || '/';
-      return browserHistory.push(`${backTo}`);
+      store.dispatch(locationPush(`${backTo}`));
+      return;
     }
 
     if (
@@ -569,18 +578,18 @@ export const redirectionMiddleware = (store) => (next) => (action) => {
     !action.payload.postStillAvailable &&
     store.getState().singlePostId
   ) {
-    setTimeout(() => browserHistory.push('/'), 0);
+    setTimeout(() => store.dispatch(locationPush('/')), 0);
   }
 
   if (
     action.type === response(ActionTypes.UNADMIN_GROUP_ADMIN) &&
     store.getState().user.id === action.request.user.id
   ) {
-    browserHistory.push(`/${action.request.groupName}/subscribers`);
+    store.dispatch(locationPush(`/${action.request.groupName}/subscribers`));
   }
 
   if (action.type === response(ActionTypes.CREATE_POST) && isInvitation(store.getState().routing)) {
-    browserHistory.push('/filter/direct');
+    store.dispatch(locationPush('/filter/direct'));
   }
 
   return next(action);
@@ -946,9 +955,9 @@ export const initialWhoamiMiddleware = (store) => (next) => (action) => {
   next(action);
 };
 
-export const resetPasswordCompleteMiddleware = () => (next) => (action) => {
+export const resetPasswordCompleteMiddleware = (store) => (next) => (action) => {
   if (action.type === response(ActionTypes.RESET_PASSWORD)) {
-    browserHistory.push('/signin');
+    store.dispatch(locationPush('/signin'));
   }
   next(action);
 };
@@ -1083,12 +1092,12 @@ export const appVersionMiddleware = (store) => {
 
 export const reloadFeedMiddleware = (store) => (next) => (action) => {
   const res = next(action);
-  const { currentRoute } = store.getState();
-  if (
-    // If we on the 'Posts' 'page
-    currentRoute.name === 'userFeed'
-  ) {
-    const { userName } = currentRoute.params;
+  const { resolvedRoutes } = store.getState();
+
+  // If we on the 'Posts' 'page
+  const userFeedRoute = resolvedRoutes.find((route) => route.name === 'userFeed');
+  if (userFeedRoute) {
+    const { userName } = userFeedRoute.params;
     if (
       // Enable/disable bans in group
       (isResponseOf(action, ActionTypes.DISABLE_BANS_IN_GROUP, ActionTypes.ENABLE_BANS_IN_GROUP) &&
@@ -1098,7 +1107,7 @@ export const reloadFeedMiddleware = (store) => (next) => (action) => {
         userName === action.request.username)
     ) {
       // Re-request this page
-      browserHistory.push(`/${userName}`);
+      store.dispatch(ActionCreators.getUserFeed(userName));
     }
   }
 
@@ -1245,6 +1254,37 @@ export function reorderPinnedMiddleware(store) {
     }
 
     return result;
+  };
+}
+
+export function historyMiddlewareFactory({ history }) {
+  return (store) => {
+    const locationSource = createLocationSource(history);
+    function onLocationChange() {
+      const location = locationSource.get();
+      store.dispatch(
+        locationChange(
+          withQuery({
+            pathname: location.pathname,
+            search: location.search,
+            hash: location.hash,
+          }),
+        ),
+      );
+    }
+    locationSource.subscribe(onLocationChange);
+    // Initial dispatch
+    setTimeout(() => onLocationChange(), 0);
+
+    return (next) => (action) => {
+      // A patch for calling history API via Redux actions. It is necessary for
+      // middlewares that want to manage history.
+      if (action.type === LOCATION_PUSH) {
+        const { to, replace } = action.payload;
+        history[replace ? 'replace' : 'push'](withoutQuery(to));
+      }
+      return next(action);
+    };
   };
 }
 

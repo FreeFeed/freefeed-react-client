@@ -1359,13 +1359,6 @@ export function getCommentsByIds(commentIds) {
   };
 }
 
-export function setCurrentRoute(payload) {
-  return {
-    type: ActionTypes.SET_CURRENT_ROUTE,
-    payload,
-  };
-}
-
 export function translateText({ type, id, lang }) {
   return {
     apiRequest: Api.translateText,
@@ -1456,5 +1449,12 @@ export function reorderFeedEntries(entries) {
   return {
     type: ActionTypes.REORDER_FEED_ENTRIES,
     payload: { entries },
+  };
+}
+
+export function setResolvedRoutes(routes) {
+  return {
+    type: ActionTypes.SET_RESOLVED_ROUTES,
+    payload: { routes },
   };
 }

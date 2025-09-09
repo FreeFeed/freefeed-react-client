@@ -1,9 +1,9 @@
 /* global CONFIG */
 import classnames from 'classnames';
 import { useState } from 'react';
-import { Link } from 'react-router';
 import { faPaypal } from '@fortawesome/free-brands-svg-icons';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { Link } from '../services/nouter';
 
 import styles from './donate.module.scss';
 import { useDonationStatus } from './hooks/donation-status';

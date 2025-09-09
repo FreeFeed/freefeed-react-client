@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { Portal } from 'react-portal';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router';
 import classNames from 'classnames';
+import { Link } from '../services/nouter';
 
 import ErrorBoundary from './error-boundary';
 import { useDropDown, CLOSE_ON_CLICK_OUTSIDE } from './hooks/drop-down';

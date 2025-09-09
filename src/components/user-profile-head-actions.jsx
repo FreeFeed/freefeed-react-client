@@ -1,9 +1,9 @@
 /* global CONFIG */
-import { Link } from 'react-router';
 import cn from 'classnames';
 import { faClock } from '@fortawesome/free-regular-svg-icons';
 
 import { Portal } from 'react-portal';
+import { Link } from '../services/nouter';
 import menuStyles from './dropdown-menu.module.scss';
 import { Throbber } from './throbber';
 import { ButtonLink } from './button-link';

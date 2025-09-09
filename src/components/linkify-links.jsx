@@ -1,4 +1,4 @@
-import { Link as RLink } from 'react-router';
+import { Link as RLink } from '../services/nouter';
 
 export function Anchor({ href, title, children }) {
   return (

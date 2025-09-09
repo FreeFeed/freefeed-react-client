@@ -1,19 +1,18 @@
 import { connect } from 'react-redux';
 
 import { Throbber } from '../throbber';
+import { useNouter } from '../../services/nouter';
 import CalendarHeaderNav from './calendar-header-nav';
 import MonthDaysGrid from './month-days-grid';
 
 import styles from './calendar.module.scss';
 
 function CalendarYear(props) {
+  const { isLoading, calendarDaysMap, authenticated, user } = props;
+
   const {
-    isLoading,
-    calendarDaysMap,
     params: { userName, year },
-    authenticated,
-    user,
-  } = props;
+  } = useNouter();
 
   if (!authenticated || !user || user.username !== userName) {
     return (

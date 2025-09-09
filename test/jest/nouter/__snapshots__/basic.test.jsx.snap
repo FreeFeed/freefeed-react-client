@@ -1,0 +1,65 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Nouter: basic test > should switch between routes > should not show baz page 1`] = `
+<DocumentFragment>
+  <main>
+    <div>
+      Header
+    </div>
+    <div>
+      Page not found
+    </div>
+    <div>
+      Footer
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`Nouter: basic test > should switch between routes > should show bar page 1`] = `
+<DocumentFragment>
+  <main>
+    <div>
+      Header
+    </div>
+    <div>
+      Bar page
+    </div>
+    <div>
+      Footer
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`Nouter: basic test > should switch between routes > should show foo page 1`] = `
+<DocumentFragment>
+  <main>
+    <div>
+      Header
+    </div>
+    <div>
+      Foo page
+    </div>
+    <div>
+      Footer
+    </div>
+  </main>
+</DocumentFragment>
+`;
+
+exports[`Nouter: basic test > should switch between routes > should show index page 1`] = `
+<DocumentFragment>
+  <main>
+    <div>
+      Header
+    </div>
+    <div>
+      Index page
+    </div>
+    <div>
+      Footer
+    </div>
+  </main>
+</DocumentFragment>
+`;

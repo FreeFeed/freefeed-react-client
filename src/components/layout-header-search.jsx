@@ -1,10 +1,10 @@
 import cn from 'classnames';
-import { Link, withRouter } from 'react-router';
 import { faSearch, faSlidersH, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useEvent } from 'react-use-event-hook';
 
 import { KEY_ESCAPE } from 'keycode-js';
+import { Link, useNouter, useResolvedRoutes } from '../services/nouter';
 import styles from './layout-header.module.scss';
 import { Icon } from './fontawesome-icons';
 import { Autocomplete } from './autocomplete/autocomplete';
@@ -12,7 +12,7 @@ import { useMediaQuery } from './hooks/media-query';
 
 const autocompleteAnchor = /(^|[^a-z\d])@|((from|to|author|by|in|commented-?by|liked-?by):)/gi;
 
-export const HeaderSearchForm = withRouter(function HeaderSearchForm({ router, closeSearchForm }) {
+export const HeaderSearchForm = function HeaderSearchForm({ closeSearchForm }) {
   const isWideScreen = useMediaQuery('(min-width: 700px)');
   const isNarrowScreen = useMediaQuery('(max-width: 549px)');
 
@@ -23,15 +23,17 @@ export const HeaderSearchForm = withRouter(function HeaderSearchForm({ router, c
   const compactSearchForm = !fullSearchForm;
   const collapsibleSearchForm = isNarrowScreen;
 
-  const initialQuery = useInitialQuery(router);
+  const initialQuery = useInitialQuery();
   const input = useRef(null);
   useEffect(() => void setQuery(initialQuery), [initialQuery]);
+
+  const { navigate } = useNouter();
 
   const onSubmit = useEvent((e) => {
     e.preventDefault();
     const q = query.trim();
     if (q !== '') {
-      router.push(`/search?q=${encodeURIComponent(q)}`);
+      navigate({ pathname: '/search', query: { q } });
       input.current.blur();
     }
   });
@@ -118,28 +120,32 @@ export const HeaderSearchForm = withRouter(function HeaderSearchForm({ router, c
       )}
     </form>
   );
-});
+};
 
-function useInitialQuery(router) {
+function useInitialQuery() {
+  const {
+    location: { query },
+  } = useNouter();
+  const resolvedRoutes = useResolvedRoutes();
   return useMemo(() => {
-    const route = router.routes[router.routes.length - 1];
-    switch (route.name) {
-      case 'search':
-        return (router.location.query.q || router.location.query.qs || '').trim();
-      case 'saves':
-        return `in-my:saves `;
-      case 'discussions':
-        return `in-my:discussions `;
-      case 'direct':
-        return `in-my:directs `;
-      case 'userLikes':
-        return `liked-by:${router.params.userName} `;
-      case 'userComments':
-        return `commented-by:${router.params.userName} `;
-      case 'userFeed':
-        return `in:${router.params.userName} `;
-      default:
-        return '';
+    for (const { name, params } of resolvedRoutes) {
+      switch (name) {
+        case 'search':
+          return (query.q || query.qs || '').trim();
+        case 'saves':
+          return `in-my:saves `;
+        case 'discussions':
+          return `in-my:discussions `;
+        case 'direct':
+          return `in-my:directs `;
+        case 'userLikes':
+          return `liked-by:${params.userName} `;
+        case 'userComments':
+          return `commented-by:${params.userName} `;
+        case 'userFeed':
+          return `in:${params.userName} `;
+      }
     }
-  }, [router.routes, router.params, router.location]);
+    return '';
+  }, [resolvedRoutes, query]);
 }

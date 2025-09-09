@@ -1,8 +1,10 @@
 import { connect } from 'react-redux';
+import { useNouter } from '../services/nouter';
 
-function ArchivePostHandler({ router, inProgress, success, id }) {
+function ArchivePostHandler({ inProgress, success, id }) {
+  const { location, navigate } = useNouter();
   if (success) {
-    router.replace(`/archive/${encodeURIComponent(id)}`);
+    navigate(`/archive/${encodeURIComponent(id)}`, { replace: true });
     return null;
   }
 
@@ -11,15 +13,15 @@ function ArchivePostHandler({ router, inProgress, success, id }) {
   if (inProgress) {
     postBody = (
       <p>
-        Loading info for <strong>{router.location.query.url}</strong>...
+        Loading info for <strong>{location.query.url}</strong>...
       </p>
     );
   } else {
     postBody = (
       <div>
         <p>
-          It seems that post <strong>{router.location.query.url}</strong> has not yet been restored
-          from the archive.
+          It seems that post <strong>{location.query.url}</strong> has not yet been restored from
+          the archive.
         </p>
         <p>
           You can try to find{' '}
@@ -27,7 +29,7 @@ function ArchivePostHandler({ router, inProgress, success, id }) {
             target="_blank"
             style={{ textDecoration: 'underline' }}
             href={`https://web.archive.org/web/20150410000000/${encodeURIComponent(
-              router.location.query.url,
+              location.query.url,
             )}`}
           >
             copy of this post on archive.org

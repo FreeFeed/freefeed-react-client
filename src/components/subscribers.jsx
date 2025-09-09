@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import * as _ from 'lodash-es';
+import { Link, withNouter } from '../services/nouter';
 
 import { getUserInfo } from '../redux/action-creators';
 import SubsList from './subs-list';
@@ -45,7 +45,7 @@ class SubscribersHandler extends Component {
 function selectState(state, ownProps) {
   const { boxHeader } = state;
   const { errorString, isPending } = state.usernameSubscribers;
-  const username = ownProps.params.userName;
+  const username = ownProps.router.params.userName;
   const amIGroupAdmin = state.managedGroups.find((group) => group.username == username) != null;
 
   const thisUser = Object.values(state.users).find((u) => u.username == username);
@@ -85,4 +85,4 @@ function mapDispatchToProps(dispatch) {
   return { getUserInfo: (username) => dispatch(getUserInfo(username)) };
 }
 
-export default connect(selectState, mapDispatchToProps)(SubscribersHandler);
+export default withNouter(connect(selectState, mapDispatchToProps)(SubscribersHandler));

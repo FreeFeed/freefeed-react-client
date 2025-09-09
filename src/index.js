@@ -27,6 +27,7 @@ import { loadConfig } from '../config/lib/loader-async';
     // Starting app
     await import('./app');
   } catch (err) {
+    console.error(err);
     const startupBlock = document.querySelector('.startup');
     const startupErrorText = document.querySelector('.startup__error-text');
     startupErrorText.textContent = err.message;

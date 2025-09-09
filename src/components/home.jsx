@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
-import { withRouter } from 'react-router';
 
 import { createPost, resetPostCreateForm, home } from '../redux/action-creators';
+import { useNouter } from '../services/nouter';
 import { postActions } from './select-utils';
 import CreatePost from './create-post';
 import Feed from './feed';
@@ -97,13 +97,14 @@ function selectActions(dispatch) {
 
 export default connect(selectState, selectActions)(FeedHandler);
 
-export const TopHomeSelector = withRouter(function TopHomeSelector({ router, id, feedLabelId }) {
+export function TopHomeSelector({ id, feedLabelId }) {
+  const { navigate } = useNouter();
   const homeFeeds = useSelector((state) => state.homeFeeds);
   const narrowScreen = useMediaQuery('(max-width: 991px)');
 
   const onChange = useCallback(
-    (e) => router.push(homeFeedURI(homeFeeds.find((h) => h.id === e.target.value))),
-    [homeFeeds, router],
+    (e) => navigate(homeFeedURI(homeFeeds.find((h) => h.id === e.target.value))),
+    [navigate, homeFeeds],
   );
 
   if (homeFeeds.length === 1) {
@@ -123,4 +124,4 @@ export const TopHomeSelector = withRouter(function TopHomeSelector({ router, id,
       ))}
     </InvisibleSelect>
   );
-});
+}

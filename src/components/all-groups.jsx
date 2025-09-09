@@ -2,11 +2,11 @@
 import { memo, useEffect, useMemo, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { sortBy, range, omit, debounce } from 'lodash-es';
-import { Link } from 'react-router';
 import { Helmet } from 'react-helmet';
 import cn from 'classnames';
 
 import { faCaretDown, faUserFriends, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { Link, useNouter } from '../services/nouter';
 import { getAllGroups } from '../redux/action-creators';
 import { Icon } from './fontawesome-icons';
 
@@ -17,7 +17,7 @@ import styles from './all-groups.module.scss';
 import { UserPicture } from './user-picture';
 import { HorScrollable } from './hor-scrollable';
 
-export default function AllGroups({ router }) {
+export default function AllGroups() {
   const dispatch = useDispatch();
   const status = useSelector((state) => state.allGroupsStatus);
 
@@ -47,7 +47,7 @@ export default function AllGroups({ router }) {
           {status.error && (
             <p className="alert alert-danger">Can not load groups list: {status.errorText}</p>
           )}
-          {status.success && <GroupsList pageSize={50} routerReplace={router.replace} />}
+          {status.success && <GroupsList pageSize={50} />}
         </div>
       </div>
     </div>
@@ -67,8 +67,8 @@ const sortFields = {
   [SORT_BY_DATE]: 'createdAt',
 };
 
-function GroupsList({ pageSize, routerReplace }) {
-  const location = useSelector((state) => state.routing.locationBeforeTransitions);
+function GroupsList({ pageSize }) {
+  const { location, navigate } = useNouter();
   const { groups, withProtected } = useSelector((state) => state.allGroups);
   const user = useSelector((state) => state.user);
 
@@ -98,7 +98,10 @@ function GroupsList({ pageSize, routerReplace }) {
 
   const clearSearchForm = useCallback(() => setNameFilter(''), []);
 
-  const debuncedReplace = useMemo(() => debounce(routerReplace, 200), [routerReplace]);
+  const debuncedReplace = useMemo(
+    () => debounce((loc) => navigate(loc, { replace: true }), 200),
+    [navigate],
+  );
 
   useEffect(() => {
     if (nameFilter !== (location.query.q || '')) {
@@ -196,7 +199,7 @@ function GroupsList({ pageSize, routerReplace }) {
 }
 
 function SortHeader({ children, mode, currentMode }) {
-  const location = useSelector((state) => state.routing.locationBeforeTransitions);
+  const { location } = useNouter();
   return (
     <th
       className={cn(

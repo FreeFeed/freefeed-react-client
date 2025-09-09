@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Youtube Live links preview
 - Information pop-ups on the links in the "Recent Groups" panel. The "Pin" and
   "Un-Pin" buttons have been added to these pop-ups.
+### Changed
+- The 'react-router' was replaced by the custom router (see
+  _src/services/nouter/_). It supports all features of the original react-router
+  v3 we needed and is compatible with the modern React.
 
 ## [1.139.2] - 2025-08-04
 ### Added

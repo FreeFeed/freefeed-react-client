@@ -1,8 +1,8 @@
 /* global CONFIG */
 import { Component, createRef, useCallback } from 'react';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import * as _ from 'lodash-es';
+import { Link } from '../services/nouter';
 
 import { getUserInfo, togglePinnedGroup, userCardClosing } from '../redux/action-creators';
 import { initialAsyncState } from '../redux/async-helpers';

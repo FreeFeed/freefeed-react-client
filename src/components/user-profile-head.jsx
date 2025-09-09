@@ -1,7 +1,6 @@
 /* global CONFIG */
 import { useEffect, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { withRouter } from 'react-router';
 import { Portal } from 'react-portal';
 import {
   faGlobeAmericas,
@@ -31,6 +30,7 @@ import {
   enableBansInGroup,
 } from '../redux/action-creators';
 import { USERNAME } from '../utils/hide-criteria';
+import { withNouter } from '../services/nouter';
 import { withKey } from './with-key';
 import { UserPicture } from './user-picture';
 import { Throbber } from './throbber';
@@ -57,7 +57,7 @@ const UserSubscriptionEditPopup = lazyComponent(
 
 const emptyArray = [];
 
-export const UserProfileHead = withRouter(
+export const UserProfileHead = withNouter(
   withKey(({ router }) => router.params.userName)(function UserProfileHead({ router }) {
     const username = router.params.userName.toLowerCase();
     const dispatch = useDispatch();

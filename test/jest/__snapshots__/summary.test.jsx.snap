@@ -16,7 +16,9 @@ exports[`Summary > Renders summary view with an empty feed 1`] = `
         <span>
           View best of: 
         </span>
-        <a>
+        <a
+          href="/summary/1"
+        >
           day
         </a>
          - 
@@ -24,7 +26,9 @@ exports[`Summary > Renders summary view with an empty feed 1`] = `
           week
         </b>
          - 
-        <a>
+        <a
+          href="/summary/30"
+        >
           month
         </a>
       </div>

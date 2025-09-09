@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from '../services/nouter';
 
 export function SignInLink({ children, back, ...params }) {
   const { pathname, search, hash } = window.location;

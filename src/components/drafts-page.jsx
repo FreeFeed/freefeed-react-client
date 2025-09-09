@@ -1,7 +1,7 @@
-import { Link } from 'react-router';
 import { useCallback, useMemo, useSyncExternalStore } from 'react';
 import { faComment, faEdit } from '@fortawesome/free-regular-svg-icons';
 import { useSelector } from 'react-redux';
+import { Link } from '../services/nouter';
 import { deleteDraft, getAllDrafts, subscribeToDraftChanges } from '../services/drafts';
 import { pluralForm } from '../utils';
 import { READMORE_STYLE_COMPACT } from '../utils/frontend-preferences-options';

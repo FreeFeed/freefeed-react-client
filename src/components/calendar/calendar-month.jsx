@@ -1,5 +1,5 @@
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import { Link, useNouter } from '../../services/nouter';
 
 import { Throbber } from '../throbber';
 import CalendarHeaderNav from './calendar-header-nav';
@@ -8,14 +8,11 @@ import MonthDaysGrid from './month-days-grid';
 import styles from './calendar.module.scss';
 
 function CalendarMonth(props) {
+  const { isLoading, calendarDaysMap, calendarMonthDays, authenticated, user } = props;
+
   const {
-    isLoading,
-    calendarDaysMap,
-    calendarMonthDays,
     params: { userName, year, month },
-    authenticated,
-    user,
-  } = props;
+  } = useNouter();
 
   if (!authenticated || !user || user.username !== userName) {
     return (

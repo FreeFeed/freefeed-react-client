@@ -1,7 +1,7 @@
 /* global CONFIG */
 import { Component } from 'react';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import { Link } from '../services/nouter';
 
 import PaginatedView from './paginated-view';
 import Feed from './feed';
@@ -17,7 +17,9 @@ class UserFeed extends Component {
     const {
       viewUser,
       authenticated,
-      location: { query },
+      router: {
+        location: { query },
+      },
     } = this.props;
     const isBlocked = viewUser.blocked;
     const isPrivate = viewUser.isPrivate === '1' && !viewUser.subscribed && !viewUser.isItMe;

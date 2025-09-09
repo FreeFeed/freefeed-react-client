@@ -19,9 +19,6 @@ const vendorChunks = [
   // react
   ['react', 'react'],
   ['react-dom', 'react'],
-  // react-router
-  ['react-router', 'react-router'],
-  ['react-router-redux', 'react-router'],
   // libs
   ['lodash-es', 'libs'],
   ['date-fns', 'libs'],

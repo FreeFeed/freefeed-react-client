@@ -1,7 +1,6 @@
 /* global CONFIG */
 import { createRef, Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import classnames from 'classnames';
 import * as _ from 'lodash-es';
 import {
@@ -13,6 +12,7 @@ import {
   faShare,
   faThumbtack,
 } from '@fortawesome/free-solid-svg-icons';
+import { Link } from '../../services/nouter';
 
 import { pluralForm } from '../../utils';
 import { getFirstLinkToEmbed } from '../../utils/parse-text';

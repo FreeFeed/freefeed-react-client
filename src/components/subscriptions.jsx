@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import * as _ from 'lodash-es';
+import { Link, withNouter } from '../services/nouter';
 
 import SubsList from './subs-list';
 
@@ -24,7 +24,7 @@ const SubscriptionsHandler = (props) => {
 function selectState(state, ownProps) {
   const { boxHeader } = state;
   const { errorString, isPending } = state.usernameSubscriptions;
-  const username = ownProps.params.userName;
+  const username = ownProps.router.params.userName;
 
   const isMyPage = state.user.username === username;
   const subscribersUsernames =
@@ -45,4 +45,4 @@ function selectState(state, ownProps) {
   return { boxHeader, username, listSections, isPending, errorString };
 }
 
-export default connect(selectState)(SubscriptionsHandler);
+export default withNouter(connect(selectState)(SubscriptionsHandler));
