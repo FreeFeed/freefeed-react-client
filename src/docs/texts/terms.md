@@ -1,6 +1,6 @@
 ---
 title: FreeFeed Terms of Service
-updated: 2024-04-09
+updated: 2025-09-08
 ---
 
 Please read these Terms of Service ("Terms", "Terms of Use") carefully before
@@ -37,6 +37,8 @@ legality, reliability, and appropriateness.
 
 You own all of the content and information you post on the Service, and you can
 control who gets access to it through your privacy settings.
+
+You agree to respect the privacy of other users and not share their non-public content without their prior explicit consent.
 
 With respect to photos, graphics, audio, video and other content you make
 available on the Service, you grant the Service worldwide, royalty-free and
