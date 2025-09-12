@@ -1,9 +1,9 @@
 import { useMemo, useCallback } from 'react';
-import { Link } from 'react-router';
 import cn from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import { Helmet } from 'react-helmet';
 
+import { Link } from '../../services/nouter';
 import { initialAsyncState } from '../../redux/async-helpers';
 import { unban } from '../../redux/action-creators';
 import { UsersList, ErrorIcon } from './ui';

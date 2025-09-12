@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { Portal } from 'react-portal';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router';
 import classNames from 'classnames';
+import { Link } from '../services/nouter';
 
 import ErrorBoundary from './error-boundary';
 import { useDropDown, CLOSE_ON_CLICK_OUTSIDE } from './hooks/drop-down';
@@ -15,7 +15,10 @@ export default function UserName({
   userHover, // { hover, leave },
   children,
   className,
-  noUserCard = false,
+  /**
+   * @type {'general' | 'none' | 'sidebar-group'}
+   */
+  userCardMode = 'general',
 }) {
   const myUsername = useSelector((state) => state.user.username);
   const prefs = useSelector((state) => state.user.frontendPreferences.displayNames);
@@ -39,7 +42,7 @@ export default function UserName({
 
   const onClick = useCallback(
     (e) => {
-      if (noUserCard) {
+      if (userCardMode === 'none') {
         return;
       }
       // Using double check here: media query 'hover' support and the isTouched status
@@ -51,12 +54,12 @@ export default function UserName({
         setTimeout(() => toggle(), 0);
       }
     },
-    [toggle, noUserCard, mouseDevice, hoverSupported],
+    [userCardMode, hoverSupported, mouseDevice, toggle],
   );
 
   const { onEnter, onLeave } = useHover(
     500,
-    useCallback((v) => noUserCard || setOpened(v), [noUserCard, setOpened]),
+    useCallback((v) => userCardMode === 'none' || setOpened(v), [setOpened, userCardMode]),
   );
 
   useEffect(() => {
@@ -112,6 +115,7 @@ export default function UserName({
             forwardedRef={menuRef}
             pivotRef={pivotRef}
             setOpened={setOpened}
+            mode={userCardMode}
           />
         </Portal>
       )}

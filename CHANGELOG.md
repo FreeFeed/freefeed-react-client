@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.140.0] - Not released
+### Added
+- Pinning posts feature. Users can now pin/unpin posts at the top of their own
+  feed or the feed of a group they administer.
+- Youtube Live links preview
+- Information pop-ups on the links in the "Recent Groups" panel. The "Pin" and
+  "Un-Pin" buttons have been added to these pop-ups.
+### Changed
+- The 'react-router' was replaced by the custom router (see
+  _src/services/nouter/_). It supports all features of the original react-router
+  v3 we needed and is compatible with the modern React.
+
 ## [1.139.2] - 2025-08-04
 ### Added
 - Quick Links (TOC) on the Appearance tab of the Settings page.

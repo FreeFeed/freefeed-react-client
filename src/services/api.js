@@ -896,3 +896,11 @@ export function getMatchedUsers({ query }, fetchOptions = {}) {
 export function undoAction({ subject, token }) {
   return fetch(`${apiPrefix}/undo/${subject}`, postRequestOptions('POST', { token }));
 }
+
+export function pinPost({ postId, target }) {
+  return fetch(`${apiPrefix}/posts/${postId}/pin`, postRequestOptions('POST', { target }));
+}
+
+export function unpinPost({ postId, target }) {
+  return fetch(`${apiPrefix}/posts/${postId}/unpin`, postRequestOptions('POST', { target }));
+}

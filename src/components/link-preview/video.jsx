@@ -14,7 +14,7 @@ import cachedFetch from './helpers/cached-fetch';
 import * as aspectRatio from './helpers/size-cache';
 
 const YOUTUBE_VIDEO_RE =
-  /^https?:\/\/(?:www\.|m\.|music\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|shorts\/|v\/|watch\?(?:v=|.+&v=)))([\w-]+)/i;
+  /^https?:\/\/(?:www\.|m\.|music\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|shorts\/|live\/|v\/|watch\?(?:v=|.+&v=)))([\w-]+)/i;
 const YOUTUBE_PLAYLIST_RE =
   /^https?:\/\/(?:www\.|m\.|music\.)?(?:youtu\.be\/|youtube\.com\/)playlist\?list=([\w-]+)/i;
 

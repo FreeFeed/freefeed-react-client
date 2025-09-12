@@ -1,18 +1,19 @@
 import { forwardRef, useLayoutEffect, useState, useMemo, useCallback } from 'react';
-import { Link } from 'react-router';
 import cn from 'classnames';
-import { faLink, faEdit, faSignOutAlt, faAt } from '@fortawesome/free-solid-svg-icons';
+import { faLink, faEdit, faSignOutAlt, faAt, faThumbtack } from '@fortawesome/free-solid-svg-icons';
 import { faClock, faCommentDots, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import { noop } from 'lodash-es';
 import { useDispatch } from 'react-redux';
+import { Link } from '../../services/nouter';
 
 import { copyURL } from '../../utils/copy-url';
-import { leaveDirect } from '../../redux/action-creators';
+import { leaveDirect, pinPost, unpinPost } from '../../redux/action-creators';
 import { ButtonLink } from '../button-link';
 import TimeDisplay from '../time-display';
 
 import styles from '../dropdown-menu.module.scss';
 import { format } from '../../utils/date-format';
+import postMenuStyles from './post-more-menu.module.scss';
 import { MenuItemIconic as Iconic } from './menu-item-iconic';
 import { MenuItemTranslate } from './menu-item-translate';
 import { MenuItemNotifyOfAllComments } from './menu-item-notify-on-all-comments';
@@ -25,6 +26,7 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
       id: postId,
       isEditable = false,
       canBeRemovedFrom = [],
+      managedGroupsInRecipients = [],
       isModeratable = false,
       isDeletable = false,
       isModeratingComments = false,
@@ -33,6 +35,8 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
       updatedAt,
       createdBy: postCreatedBy,
       isDirect = false,
+      recipients = [],
+      pinnedIn = [],
     },
     toggleEditingPost,
     toggleModeratingComments,
@@ -58,6 +62,22 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
 
   const amIAuthenticated = !!user.id;
   const isOwnPost = amIAuthenticated && postCreatedBy?.id === user.id;
+
+  const pinTargets = useMemo(() => {
+    const pinTargets = [];
+
+    // Can pin to author's profile only if the post is actually in author's Posts feed
+    if (isOwnPost && recipients.some((r) => r.id === user.id)) {
+      pinTargets.push({ id: user.id, target: user.username, label: 'profile' });
+    }
+
+    // Groups this viewer can administer among post recipients
+    for (const g of managedGroupsInRecipients) {
+      pinTargets.push({ id: g.id, target: g.username, label: `@${g.username}` });
+    }
+
+    return pinTargets;
+  }, [isOwnPost, managedGroupsInRecipients, recipients, user.id, user.username]);
 
   const deleteLines = useMemo(() => {
     const result = [];
@@ -89,6 +109,26 @@ export const PostMoreMenu = forwardRef(function PostMoreMenu(
           <ButtonLink className={styles.link} onClick={doAndClose(toggleEditingPost)}>
             <Iconic icon={faEdit}>Edit</Iconic>
           </ButtonLink>
+        </div>
+      ),
+      pinTargets.length > 0 && (
+        <div className={styles.item} key="pin-posts">
+          {pinTargets.map((t) => {
+            const isPinnedHere = pinnedIn?.some((e) => e.targetId === t.id);
+            return (
+              <ButtonLink
+                key={`pin-${t.id}`}
+                className={cn(styles.link, isPinnedHere && postMenuStyles.pinned)}
+                onClick={doAndClose(() =>
+                  dispatch((isPinnedHere ? unpinPost : pinPost)(postId, t.target)),
+                )}
+              >
+                <Iconic icon={faThumbtack}>
+                  {isPinnedHere ? `Unpin from ${t.label}` : `Pin to ${t.label}`}
+                </Iconic>
+              </ButtonLink>
+            );
+          })}
         </div>
       ),
       isModeratable && (

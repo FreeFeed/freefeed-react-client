@@ -1,13 +1,13 @@
 /* global CONFIG */
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from '../services/nouter';
 
 export default function Footer({ short }) {
   const authenticated = useSelector((state) => state.authenticated);
   return (
     <footer className="footer">
       <p role="navigation">
-        &copy; FreeFeed 1.139.3 (Sep 9, 2025)
+        &copy; FreeFeed 1.140.0 (Not released)
         <br />
         <Link to="/about">About</Link>
         {' | '}

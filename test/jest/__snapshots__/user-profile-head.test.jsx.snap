@@ -11,6 +11,7 @@ exports[`UserProfileHead > Correctly displays that we are mutually subscribed 1`
     >
       <a
         class="picture"
+        href="/freefeed"
         style="--userpic-size: 75px;"
       >
         <img
@@ -114,7 +115,9 @@ exports[`UserProfileHead > Correctly displays that we are mutually subscribed 1`
           </a>
         </li>
         <li>
-          <a>
+          <a
+            href="/filter/direct?to=freefeed"
+          >
             Direct message
           </a>
         </li>
@@ -147,6 +150,7 @@ exports[`UserProfileHead > Correctly displays that we are mutually subscribed 1`
         >
           <a
             class="statlinkText"
+            href="/freefeed/subscriptions"
           >
             2 subscriptions
           </a>
@@ -156,6 +160,7 @@ exports[`UserProfileHead > Correctly displays that we are mutually subscribed 1`
         >
           <a
             class="statlinkText"
+            href="/freefeed/subscribers"
           >
             1 subscriber
           </a>
@@ -165,6 +170,7 @@ exports[`UserProfileHead > Correctly displays that we are mutually subscribed 1`
         >
           <a
             class="statlinkText"
+            href="/search?q=from%3Afreefeed"
           >
             3 posts
           </a>
@@ -174,6 +180,7 @@ exports[`UserProfileHead > Correctly displays that we are mutually subscribed 1`
         >
           <a
             class="statlinkText"
+            href="/freefeed/comments"
           >
             5 comments
           </a>
@@ -183,6 +190,7 @@ exports[`UserProfileHead > Correctly displays that we are mutually subscribed 1`
         >
           <a
             class="statlinkText"
+            href="/freefeed/likes"
           >
             4 likes
           </a>
@@ -253,6 +261,7 @@ exports[`UserProfileHead > Renders my own header and doesn't blow up 1`] = `
     >
       <a
         class="picture"
+        href="/freefeed"
         style="--userpic-size: 75px;"
       >
         <img
@@ -346,6 +355,7 @@ exports[`UserProfileHead > Renders my own header and doesn't blow up 1`] = `
         >
           <a
             class="statlinkText"
+            href="/freefeed/subscriptions"
           >
             2 subscriptions
           </a>
@@ -355,6 +365,7 @@ exports[`UserProfileHead > Renders my own header and doesn't blow up 1`] = `
         >
           <a
             class="statlinkText"
+            href="/freefeed/subscribers"
           >
             1 subscriber
           </a>
@@ -364,6 +375,7 @@ exports[`UserProfileHead > Renders my own header and doesn't blow up 1`] = `
         >
           <a
             class="statlinkText"
+            href="/search?q=from%3Afreefeed"
           >
             3 posts
           </a>
@@ -373,6 +385,7 @@ exports[`UserProfileHead > Renders my own header and doesn't blow up 1`] = `
         >
           <a
             class="statlinkText"
+            href="/freefeed/comments"
           >
             5 comments
           </a>
@@ -382,6 +395,7 @@ exports[`UserProfileHead > Renders my own header and doesn't blow up 1`] = `
         >
           <a
             class="statlinkText"
+            href="/freefeed/likes"
           >
             4 likes
           </a>

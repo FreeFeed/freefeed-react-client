@@ -130,10 +130,6 @@ export function confirmFirst(realFunction) {
   };
 }
 
-export function getCurrentRouteName(router) {
-  return router && router.routes && router.routes[router.routes.length - 1].name;
-}
-
 export function pluralForm(n, singular, plural = null, format = 'n w') {
   let w;
 

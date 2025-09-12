@@ -1,5 +1,5 @@
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import { Link } from '../services/nouter';
 
 import screenshot from '../../assets/images/screenshot.png';
 import { SignInLink } from './sign-in-link';

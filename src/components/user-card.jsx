@@ -1,10 +1,10 @@
 /* global CONFIG */
 import { Component, createRef, useCallback } from 'react';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import * as _ from 'lodash-es';
+import { Link } from '../services/nouter';
 
-import { getUserInfo, userCardClosing } from '../redux/action-creators';
+import { getUserInfo, togglePinnedGroup, userCardClosing } from '../redux/action-creators';
 import { initialAsyncState } from '../redux/async-helpers';
 import { Throbber } from './throbber';
 import UserFeedStatus from './user-feed-status';
@@ -57,6 +57,10 @@ class UserCard extends Component {
       user: { username },
     } = this.props;
     this.props.hideByName(username, !hidden);
+  };
+
+  handlePinOrUnpinClick = () => {
+    this.props.togglePinnedGroup(this.props.user.id);
   };
 
   handleUnblockClick = () => {
@@ -177,6 +181,15 @@ class UserCard extends Component {
                     </span>
                   )}
                   {this.renderSubscribeBlock()}
+
+                  {props.user.type === 'group' && props.mode === 'sidebar-group' && (
+                    <span className="user-card-action">
+                      <ButtonLink onClick={this.handlePinOrUnpinClick}>
+                        {props.pinned ? 'Un-Pin' : 'Pin'}
+                      </ButtonLink>
+                    </span>
+                  )}
+
                   {props.user.type !== 'group' && !props.subscribed ? (
                     <span className="user-card-action">
                       <BlockLink user={props.user} setOpened={props.setOpened} />
@@ -189,7 +202,7 @@ class UserCard extends Component {
                     false
                   )}
 
-                  {!props.user.isGone && (
+                  {props.mode === 'general' && !props.user.isGone && (
                     <span className="user-card-action">
                       <ButtonLink onClick={this.handleShowOrHideClick}>
                         {props.hidden ? 'Show' : 'Hide'} posts
@@ -221,10 +234,13 @@ const mapStateToProps = (state, ownProps) => {
   }
   const notFound = !user.id && state.usersNotFound.includes(ownProps.username);
 
+  const pinned = user.id && state.recentGroups.find((g) => g.id === user.id)?.isPinned;
+
   return {
     me,
     user,
     notFound,
+    pinned,
     isItMe: me.username === user.username,
     amISubscribedToUser: (me.subscriptions || []).includes(user.id),
     isUserSubscribedToMe: _.findIndex(me.subscribers, { id: user.id }) > -1,
@@ -245,6 +261,7 @@ function mapDispatchToProps(dispatch) {
     ...userActions(dispatch),
     getUserInfo: (username) => dispatch(getUserInfo(username)),
     userCardClosing: (userId) => dispatch(userCardClosing(userId)),
+    togglePinnedGroup: (id) => dispatch(togglePinnedGroup(id)),
   };
 }
 

@@ -1,9 +1,9 @@
-import { Link } from 'react-router';
 import cn from 'classnames';
 
 import { useSelector } from 'react-redux';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { useMemo } from 'react';
+import { Link } from '../services/nouter';
 import { pluralForm } from '../utils';
 import styles from './user-profile-head.module.scss';
 import TimeDisplay from './time-display';

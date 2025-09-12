@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import * as _ from 'lodash-es';
-import { formatPattern } from 'react-router/es/PatternUtils';
+import { inject as injectParams } from 'regexparam';
 
 import {
   createPost,
@@ -11,9 +11,9 @@ import {
   getUserInfo,
   togglePinnedGroup,
 } from '../redux/action-creators';
-import { getCurrentRouteName } from '../utils';
 import { initialAsyncState } from '../redux/async-helpers';
 import { apiVersion } from '../services/api-version';
+import { withNouter } from '../services/nouter';
 import { postActions, userActions } from './select-utils';
 import FeedOptionsSwitch from './feed-options-switch';
 import Breadcrumbs from './breadcrumbs';
@@ -25,27 +25,21 @@ import { ButtonLink } from './button-link';
 const UserHandler = (props) => {
   // Redirect to canonical username in URI (/uSErNAme/likes?offset=30 → /username/likes?offset=30)
   useEffect(() => {
+    const {
+      router: { path, params, location },
+      viewUser,
+    } = props;
     if (
-      !props.viewUser.isLoading &&
-      props.viewUser.username &&
-      props.routeParams.userName &&
-      props.viewUser.username !== props.routeParams.userName
+      !viewUser.isLoading &&
+      viewUser.username &&
+      params.userName &&
+      viewUser.username !== params.userName
     ) {
-      const newPath = formatPattern(props.route.path, {
-        ...props.routeParams,
-        userName: props.viewUser.username,
-      });
-      props.router.replace(newPath + props.location.search);
+      const newPath = injectParams(path, { ...params, userName: viewUser.username });
+      props.router.navigate(newPath + location.search, { replace: true });
     }
-  }, [
-    props.location.search,
-    props.route.path,
-    props.routeParams,
-    props.routeParams.userName,
-    props.router,
-    props.viewUser.isLoading,
-    props.viewUser.username,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.router, props.viewUser.isLoading, props.viewUser.username]);
 
   const [forceShowContent, setForceShowContent] = useState(false);
   const displayPosts = useCallback(() => setForceShowContent(true), []);
@@ -141,11 +135,10 @@ function selectState(state, ownProps) {
   const { authenticated, boxHeader, timelines, user } = state;
   const anonymous = !authenticated;
 
+  const paramsUserName = ownProps.router.params.userName.toLowerCase();
   const foundUser =
     (state.feedViewState.timeline && state.users[state.feedViewState.timeline.user]) ||
-    Object.values(state.users).find(
-      (user) => user.username === ownProps.params.userName.toLowerCase(),
-    );
+    Object.values(state.users).find((user) => user.username === paramsUserName);
 
   const amIGroupAdmin =
     authenticated &&
@@ -153,7 +146,7 @@ function selectState(state, ownProps) {
     foundUser.type === 'group' &&
     (foundUser.administrators || []).includes(state.user.id);
 
-  const currentRouteName = getCurrentRouteName(ownProps);
+  const currentRouteName = ownProps.router.name;
   const isItPostsPage = !['userComments', 'userLikes'].includes(currentRouteName);
 
   const statusExtension = {
@@ -231,4 +224,4 @@ function selectActions(dispatch) {
   };
 }
 
-export default connect(selectState, selectActions)(UserHandler);
+export default withNouter(connect(selectState, selectActions)(UserHandler));

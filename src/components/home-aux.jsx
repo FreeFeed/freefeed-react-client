@@ -4,6 +4,7 @@ import { useSelector, useDispatch, connect } from 'react-redux';
 
 import { Helmet } from 'react-helmet';
 import { listHomeFeeds, homeAux } from '../redux/action-creators';
+import { useNouter } from '../services/nouter';
 import FeedOptionsSwitch from './feed-options-switch';
 import ErrorBoundary from './error-boundary';
 import { Throbber } from './throbber';
@@ -23,16 +24,17 @@ const ListEditor = lazyComponent(
   { fallback: <p>Loading list editor...</p>, errorMessage: "Couldn't load list editor" },
 );
 
-export function HomeAux({ router }) {
+export function HomeAux() {
   const dispatch = useDispatch();
   const authenticated = useSelector((state) => state.authenticated);
   const allHomeFeeds = useSelector((state) => state.homeFeeds);
   const allHomeFeedsStatus = useSelector((state) => state.homeFeedsStatus);
   const sort = useSelector((state) => state.feedViewOptions.sort);
+  const { params, location, navigate } = useNouter();
 
   const feed = useMemo(
-    () => allHomeFeeds.find((f) => f.id.indexOf(router.params.listId) === 0),
-    [allHomeFeeds, router.params.listId],
+    () => allHomeFeeds.find((f) => f.id.indexOf(params.listId) === 0),
+    [allHomeFeeds, params.listId],
   );
 
   const [isEditing, , showEditor, hideEditor] = useBool(false);
@@ -44,17 +46,17 @@ export function HomeAux({ router }) {
         // Cancel pressed
         return;
       }
-      router.replace({ ...router.location, query: {} });
+      navigate({ ...location, query: {} }, { replace: true });
       toggleEdited();
     },
-    [hideEditor, router, toggleEdited],
+    [hideEditor, location, navigate, toggleEdited],
   );
 
   useEffect(() => {
-    if (feed && feed.title !== router.params.listTitle) {
-      router.replace({ ...router.location, pathname: homeFeedURI(feed) });
+    if (feed && feed.title !== params.listTitle) {
+      navigate({ ...location, pathname: homeFeedURI(feed) }, { replace: true });
     }
-  }, [feed, router, router.params.listTitle]);
+  }, [feed, location, navigate, params.listTitle]);
 
   useEffect(
     () => void (authenticated && allHomeFeedsStatus.initial && dispatch(listHomeFeeds())),
@@ -62,9 +64,9 @@ export function HomeAux({ router }) {
   );
 
   useEffect(
-    () => void (feed?.id && dispatch(homeAux(+router.location.query.offset || 0, feed?.id))),
+    () => void (feed?.id && dispatch(homeAux(+location.query.offset || 0, feed?.id))),
     [
-      router.location.query.offset,
+      location.query.offset,
       feed?.id,
       dispatch,
       sort, // We should reload feed if sort changes
@@ -103,7 +105,7 @@ export function HomeAux({ router }) {
     return (
       <div className="box">
         <div className="box-header-timeline" role="heading">
-          {router.params.listTitle}
+          {params.listTitle}
         </div>
         <div className="box-body">
           <p>

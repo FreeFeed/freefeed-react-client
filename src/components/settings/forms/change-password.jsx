@@ -1,10 +1,10 @@
 /* global CONFIG */
 import { encode as qsEncode } from 'querystring';
 import { useMemo } from 'react';
-import { Link } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm, useField } from 'react-final-form-hooks';
 import { mapValues } from 'lodash-es';
+import { Link } from '../../../services/nouter';
 
 import { updatePassword } from '../../../redux/action-creators';
 import { Throbber } from '../../throbber';

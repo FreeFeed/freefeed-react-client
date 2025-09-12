@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { faChevronDown, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
+import { useNouter } from '../services/nouter';
 import { joinPostData, postActions } from './select-utils';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
@@ -24,7 +25,9 @@ const AdvancedSearchForm = lazyComponent(
 );
 
 function FeedHandler(props) {
-  const urlQuery = useSelector((state) => state.routing.locationBeforeTransitions.query);
+  const {
+    location: { query: urlQuery },
+  } = useNouter();
   const queryString = useSearchQuery();
   const preopenAdvancedForm = !queryString || 'advanced' in urlQuery;
 

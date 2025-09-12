@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { browserHistory } from 'react-router';
 import cn from 'classnames';
 import {
   faCheckSquare,
@@ -17,6 +16,7 @@ import {
   home,
   toggleFeedSort,
 } from '../redux/action-creators';
+import { useNouter } from '../services/nouter';
 import { Icon } from './fontawesome-icons';
 import { faEllipsis } from './fontawesome-custom-icons';
 import menuStyles from './dropdown-menu.module.scss';
@@ -31,17 +31,19 @@ export default function FeedOptionsSwitch({ editHomeList }) {
   const userId = useSelector((state) => state.user.id);
   const frontendPreferences = useSelector((state) => state.user.frontendPreferences);
   const feedViewOptions = useSelector((state) => state.feedViewOptions);
-  const route = useSelector((state) => state.routing.locationBeforeTransitions.pathname);
-  const onFirstPage = useSelector((state) => !state.routing.locationBeforeTransitions.query.offset);
+  const { location, navigate } = useNouter();
+  const route = location.pathname;
+  const onFirstPage = !location.query.offset;
 
   const switchSort = useCallback(
     (sort) => {
       if (feedViewOptions.sort !== sort) {
         dispatch(toggleFeedSort());
-        browserHistory.push(route || '/');
+        // TODO: remove history magic, depend on feedViewOptions.sort in feeds
+        navigate(route || '/');
       }
     },
-    [dispatch, feedViewOptions.sort, route],
+    [dispatch, feedViewOptions.sort, navigate, route],
   );
 
   const toggleRealtimeFlag = useCallback(() => {

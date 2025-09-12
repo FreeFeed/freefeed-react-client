@@ -1,8 +1,8 @@
 /* global CONFIG */
 import { useEffect, useMemo } from 'react';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import { Link, useNouter } from '../services/nouter';
 
 import { canonicalURI } from '../utils/canonical-uri';
 import { joinPostData, postActions } from './select-utils';
@@ -13,24 +13,24 @@ import { SignInLink } from './sign-in-link';
 import { PostContextProvider } from './post/post-context';
 
 function SinglePostHandler(props) {
-  const { post, router, routeLoadingState } = props;
+  const { post, routeLoadingState } = props;
+  const { location, params, navigate } = useNouter();
 
   // Replace URL to the canonical one, if necessary
   useEffect(() => {
     if (!post || routeLoadingState) {
       return;
     }
-    const { pathname, search, hash } = router.location;
     const canonicalPostURI = canonicalURI(post);
-    if (pathname !== canonicalPostURI) {
-      router.replace(canonicalPostURI + search + hash);
+    if (location.pathname !== canonicalPostURI) {
+      navigate({ ...location, pathname: canonicalPostURI }, { replace: true });
     }
-  }, [post, routeLoadingState, router]);
+  }, [navigate, location, post, routeLoadingState]);
 
   let postBody = <div />;
 
   if (props.errorString?.includes('You can not see this post')) {
-    return <PrivatePost isAuthorized={!!props.user.id} feedName={props.routeParams?.userName} />;
+    return <PrivatePost isAuthorized={!!props.user.id} feedName={params.userName} />;
   } else if (props.errorString?.includes('Please sign in to view this post')) {
     return <ProtectedPost />;
   } else if (props.errorString?.startsWith('404:')) {

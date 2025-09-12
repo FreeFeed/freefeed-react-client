@@ -1,5 +1,4 @@
-import { LOCATION_CHANGE } from 'react-router-redux';
-
+import { LOCATION_CHANGE } from '../../services/nouter/redux';
 import { CREATE_ATTACHMENT, UNAUTHENTICATED } from '../action-types';
 import { asyncStatesMap, getKeyBy, response, request, reset, fail } from '../async-helpers';
 

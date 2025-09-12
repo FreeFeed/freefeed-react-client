@@ -87,8 +87,14 @@ const postIsHidden = (post) => !!(post.isHidden || post.hiddenByCriteria);
 
 export default connect(
   (state) => {
-    const { entries, recentlyHiddenEntries, isHiddenRevealed, feedError, feedRequestType } =
-      state.feedViewState;
+    const {
+      entries,
+      recentlyHiddenEntries,
+      isHiddenRevealed,
+      feedError,
+      feedRequestType,
+      timeline,
+    } = state.feedViewState;
 
     const allPosts = entries.map(joinPostData(state)).filter(Boolean);
 
@@ -114,6 +120,7 @@ export default connect(
       visiblePosts,
       hiddenPosts,
       feedError,
+      currentFeedOwnerId: timeline?.name === 'Posts' && timeline?.user ? timeline.user : null,
     };
   },
   { toggleHiddenPosts },
@@ -164,6 +171,7 @@ function FeedEntry({ post, section, ...props }) {
         highlightTerms={props.highlightTerms}
         setFinalHideLinkOffset={onPostUnmount}
         hideEnabled={props.separateHiddenEntries}
+        currentFeedOwnerId={props.currentFeedOwnerId}
       />
     </PostContextProvider>
   );
