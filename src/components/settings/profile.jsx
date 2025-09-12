@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from '../../services/nouter';
 
 import ProfileForm from './forms/profile';
 import ProfilePictureForm from './forms/profile-picture';

@@ -1,14 +1,13 @@
-import { useSelector } from 'react-redux';
+import { useNouter } from '../../services/nouter';
 
 /**
  * Returns the current search query on search page
  */
 export function useSearchQuery() {
-  const query = useSelector((state) => {
-    const { pathname, query } = state.routing.locationBeforeTransitions;
-    const q = query.q || query.qs || '';
-    return ((pathname === '/search' && q) || '').trim();
-  });
+  const {
+    location: { pathname, query },
+  } = useNouter();
 
-  return query;
+  const q = query.q || query.qs || '';
+  return ((pathname === '/search' && q) || '').trim();
 }

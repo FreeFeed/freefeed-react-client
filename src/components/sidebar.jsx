@@ -1,10 +1,10 @@
 /* global CONFIG */
 import { useCallback, useEffect, useRef } from 'react';
-import { Link } from 'react-router';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { Link } from '../services/nouter';
 import { htmlSafe } from '../utils';
 import { listHomeFeeds, openSidebar, setUserColorScheme } from '../redux/action-creators';
 import {
@@ -39,7 +39,7 @@ function LoggedInBlock({ user, signOut }) {
 
       <div className="user">
         <div className="author">
-          <UserName user={user} noUserCard>
+          <UserName user={user} userCardMode="none">
             {user.screenName}
           </UserName>
         </div>

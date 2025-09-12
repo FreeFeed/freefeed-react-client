@@ -1,7 +1,7 @@
 import cn from 'classnames';
-import { Link } from 'react-router';
-
 import { useMemo } from 'react';
+import { Link } from '../services/nouter';
+
 import { Orbit } from './orbit';
 import styles from './user-picture.module.scss';
 

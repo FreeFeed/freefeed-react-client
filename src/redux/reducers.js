@@ -1,9 +1,9 @@
 /* global CONFIG */
 /* eslint-disable complexity */
 import * as _ from 'lodash-es';
-import { LOCATION_CHANGE } from 'react-router-redux';
 import { combineReducers } from 'redux';
 
+import { LOCATION_CHANGE } from '../services/nouter/redux';
 import { userParser, getSummaryPeriod } from '../utils';
 import { parseQuery } from '../utils/search-highlighter-lib';
 import { formatDateFromShortString } from '../utils/get-date-from-short-string';
@@ -317,6 +317,13 @@ export function feedViewState(state = initFeed, action) {
       return {
         ...state,
         isHiddenRevealed: !state.isHiddenRevealed,
+      };
+    }
+
+    case ActionTypes.REORDER_FEED_ENTRIES: {
+      return {
+        ...state,
+        entries: action.payload.entries,
       };
     }
   }
@@ -2132,16 +2139,9 @@ export function invitedByMap(state = invitedByInitial, action) {
   return state;
 }
 
-export function currentRoute(
-  state = {
-    name: '',
-    path: '',
-    params: {},
-  },
-  action,
-) {
-  if (action.type === ActionTypes.SET_CURRENT_ROUTE) {
-    return action.payload;
+export function resolvedRoutes(state = [], action) {
+  if (action.type === ActionTypes.SET_RESOLVED_ROUTES) {
+    return action.payload.routes;
   }
   return state;
 }

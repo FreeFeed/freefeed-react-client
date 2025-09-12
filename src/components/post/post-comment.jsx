@@ -1,8 +1,8 @@
 /* global CONFIG */
 import { Component } from 'react';
-import { Link } from 'react-router';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
+import { Link } from '../../services/nouter';
 
 import { preventDefault, confirmFirst } from '../../utils';
 import {

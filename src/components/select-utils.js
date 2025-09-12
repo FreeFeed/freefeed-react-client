@@ -111,9 +111,8 @@ export const joinPostData = (state) => (postId) => {
   const hiddenByCriteria = commonCriteria(availableHideCriteria, state.postHideCriteria);
 
   const isEditable = post.createdBy === user.id;
-  const canBeRemovedFrom = (
-    isEditable ? recipients : intersectionBy(recipients, state.managedGroups, 'id')
-  )
+  const managedGroupsInRecipients = intersectionBy(recipients, state.managedGroups, 'id');
+  const canBeRemovedFrom = (isEditable ? recipients : managedGroupsInRecipients)
     .map((u) => u.username)
     .sort((a, b) => a.localeCompare(b));
   const isModeratable = canBeRemovedFrom.length > 0;
@@ -192,6 +191,7 @@ export const joinPostData = (state) => (postId) => {
     isEditable,
     isModeratable,
     isDeletable,
+    managedGroupsInRecipients,
     canBeRemovedFrom,
     allowLinksPreview,
     readMoreStyle,

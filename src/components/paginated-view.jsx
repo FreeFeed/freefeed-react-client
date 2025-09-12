@@ -1,8 +1,7 @@
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import { Link, withNouter } from '../services/nouter';
 
 import { bindRouteActions } from '../redux/route-actions';
-import { getCurrentRouteName } from '../utils';
 import PaginationLinks from './pagination-links';
 import ErrorBoundary from './error-boundary';
 
@@ -61,13 +60,12 @@ const PaginatedView = (props) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const location = state.routing.locationBeforeTransitions;
+  const { location, params, name: routename } = ownProps.router;
   const offset = +location.query.offset || 0;
-  const routename = getCurrentRouteName(ownProps);
   const { isLastPage } = state.feedViewState;
-  return { location, offset, routename, isLastPage };
+  return { location, params, offset, routename, isLastPage };
 };
 
 const mapDispatchToProps = (dispatch) => ({ routingActions: bindRouteActions(dispatch) });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PaginatedView);
+export default withNouter(connect(mapStateToProps, mapDispatchToProps)(PaginatedView));

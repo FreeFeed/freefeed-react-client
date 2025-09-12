@@ -1,4 +1,4 @@
-import { LOCATION_CHANGE } from 'react-router-redux';
+import { LOCATION_CHANGE } from '../../services/nouter/redux';
 import { initialAsyncState, asyncStatesMap, getKeyBy } from '../async-helpers';
 import {
   SAVE_EDITING_COMMENT,

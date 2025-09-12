@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router';
 import { UAParser } from 'ua-parser-js';
 import { without } from 'lodash-es';
 import cn from 'classnames';
 
 import { faBan } from '@fortawesome/free-solid-svg-icons';
+import { Link } from '../../services/nouter';
 import { closeAuthSessions, listAuthSessions } from '../../redux/action-creators';
 import TimeDisplay from '../time-display';
 

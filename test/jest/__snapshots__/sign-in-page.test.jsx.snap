@@ -94,7 +94,9 @@ exports[`SignInPage > Renders sign-in settings page 1`] = `
         </div>
         <p>
           Or 
-          <a>
+          <a
+            href="/restore?email=email%40example.com"
+          >
             reset your password by email
           </a>
            if you forgot your current password
@@ -108,7 +110,9 @@ exports[`SignInPage > Renders sign-in settings page 1`] = `
         Login sessions
       </h4>
       <p>
-        <a>
+        <a
+          href="/settings/sign-in/sessions"
+        >
           View your login sessions
         </a>
       </p>

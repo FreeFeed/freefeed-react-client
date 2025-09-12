@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from '../services/nouter';
 
 export function HomeFeedLink({ feed }) {
   return <Link to={homeFeedURI(feed)}>{feed.title}</Link>;

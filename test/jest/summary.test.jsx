@@ -4,6 +4,7 @@ import { createStore } from 'redux';
 import * as reactRedux from 'react-redux';
 
 import Summary from '../../src/components/summary';
+import { Router } from '../../src/services/nouter';
 
 const USER = { id: 'user-id', username: 'user', frontendPreferences: {} };
 
@@ -33,9 +34,11 @@ const renderSummary = (props = {}, options = {}) => {
   };
 
   const rendered = render(
-    <Provider store={store}>
-      <Summary {...defaultProps} {...props} />
-    </Provider>,
+    <Router>
+      <Provider store={store}>
+        <Summary {...defaultProps} {...props} />
+      </Provider>
+    </Router>,
     options,
   );
 

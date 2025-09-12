@@ -1,6 +1,6 @@
-import { Link } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMemo } from 'react';
+import { Link, useNouter } from '../services/nouter';
 import Feed from './feed';
 import PaginatedView from './paginated-view';
 import { joinPostData, postActions } from './select-utils';
@@ -10,9 +10,10 @@ export default function BacklinksFeed(props) {
   const user = useSelector((state) => state.user);
   const isLoading = useSelector((state) => state.routeLoadingState);
   const entries = useSelector((state) => state.feedViewState.entries.map(joinPostData(state)));
+  const { params } = useNouter();
   const postLink = useMemo(
-    () => `/${props.params.userName}/${props.params.postId}`,
-    [props.params.postId, props.params.userName],
+    () => `/${params.userName}/${params.postId}`,
+    [params.postId, params.userName],
   );
   const feedProps = useMemo(() => postActions(dispatch), [dispatch]);
 

@@ -1,7 +1,7 @@
 /* global CONFIG */
 import { Component } from 'react';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import { Link } from '../services/nouter';
 
 import PaginatedView from './paginated-view';
 import Feed from './feed';
@@ -17,7 +17,9 @@ class UserFeed extends Component {
     const {
       viewUser,
       authenticated,
-      location: { query },
+      router: {
+        location: { query },
+      },
     } = this.props;
     const isBlocked = viewUser.blocked;
     const isPrivate = viewUser.isPrivate === '1' && !viewUser.subscribed && !viewUser.isItMe;
@@ -55,8 +57,9 @@ class UserFeed extends Component {
       );
     }
 
+    let privacyMessage;
     if (isPrivate) {
-      return (
+      privacyMessage = (
         <div className="box-body">
           <p>
             <b>{viewUser.screenName}</b> has a private feed.
@@ -70,7 +73,7 @@ class UserFeed extends Component {
         </div>
       );
     } else if (viewUser.isProtected === '1' && !authenticated) {
-      return (
+      privacyMessage = (
         <div className="box-body">
           <p>
             <b>{viewUser.screenName}</b> has a protected feed. It is only visible to{' '}
@@ -85,9 +88,12 @@ class UserFeed extends Component {
     }
 
     return (
-      <PaginatedView {...this.props}>
-        <Feed {...this.props} emptyFeedMessage={emptyFeedMessage} />
-      </PaginatedView>
+      <>
+        {privacyMessage}
+        <PaginatedView {...this.props}>
+          <Feed {...this.props} emptyFeedMessage={emptyFeedMessage} />
+        </PaginatedView>
+      </>
     );
   }
 }

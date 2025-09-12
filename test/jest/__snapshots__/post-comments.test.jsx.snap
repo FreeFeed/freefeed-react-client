@@ -76,6 +76,7 @@ exports[`PostComments > Renders post comments and doesn't blow up 1`] = `
                 >
                   <a
                     class=""
+                    href="/author"
                   >
                     <span
                       dir="ltr"
@@ -160,6 +161,7 @@ exports[`PostComments > Renders post comments and doesn't blow up 1`] = `
               >
                 <a
                   class=""
+                  href="/author"
                 >
                   <span
                     dir="ltr"
@@ -185,6 +187,7 @@ exports[`PostComments > Renders post comments and doesn't blow up 1`] = `
                 >
                   <a
                     class=""
+                    href="/other"
                   >
                     <span
                       dir="ltr"
@@ -300,6 +303,7 @@ exports[`PostComments > Renders post comments and doesn't blow up 1`] = `
                 >
                   <a
                     class=""
+                    href="/author"
                   >
                     <span
                       dir="ltr"
