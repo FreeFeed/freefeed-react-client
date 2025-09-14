@@ -26,7 +26,8 @@ const getAuthorName = ({ postAuthor, createdUser, group }) => {
   if (postAuthor && postAuthor.username) {
     return postAuthor.username;
   }
-  return createdUser.username;
+  // There is a possible case when no user is available
+  return createdUser?.username ?? 'unknown';
 };
 
 const generatePostUrl = ({ post_id, shortPostId, ...event }) =>
