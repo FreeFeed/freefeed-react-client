@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { getInvitation } from '../redux/action-creators';
 import { combineAsyncStates } from '../redux/async-helpers';
+import { useNouter } from '../services/nouter';
 import PieceOfText from './piece-of-text';
 import SignupForm from './signup-form';
 import { INVITATION_LANGUAGE_OPTIONS } from './invitation-creation-form';
@@ -68,7 +69,10 @@ const MULTI_USE_DISABLED = {
   ),
 };
 
-export default function SignupByInvitation({ params: { invitationId } }) {
+export default function SignupByInvitation() {
+  const {
+    params: { invitationId },
+  } = useNouter();
   const dispatch = useDispatch();
   const invitationStatus = useSelector((state) => state.currentInvitationStatus);
   const invitation = useSelector((state) => state.currentInvitation);
