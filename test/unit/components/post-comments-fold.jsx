@@ -1,7 +1,6 @@
 /* global CONFIG */
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { act } from 'react';
+import { render, screen, act } from '@testing-library/react';
 import PostComments from '../../../src/components/post/post-comments';
 
 const commentsAfterFold = 2;
