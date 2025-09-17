@@ -28,7 +28,7 @@ describe('<PostComments>', () => {
   });
 
   afterAll(() => {
-    vi.clearAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe('Post without omitted comments', () => {
