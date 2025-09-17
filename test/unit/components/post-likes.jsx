@@ -1,42 +1,45 @@
-import { describe, it } from 'vitest';
-import expect from 'unexpected';
-
-import ShallowRenderer from 'react-test-renderer/shallow';
+/* global describe, it, expect, vi */
+import { render, screen } from '@testing-library/react';
 import { clone } from 'lodash-es';
 
 import PostLikes from '../../../src/components/post/post-likes';
+
+// Mock UserName component, we don't need it in this tests
+vi.mock('../../../src/components/user-name', () => ({
+  __esModule: true,
+  default: ({ user }) => <span>{user.username}</span>,
+}));
 
 describe('<PostLikes>', () => {
   const _likes = [];
 
   for (let i = 1; i <= 6; i++) {
-    _likes.push({ id: `id${i}` });
+    _likes.push({ id: `id${i}`, username: `user${i}` });
 
     const likes = clone(_likes);
     it(`should render ${i} likes if nothing is omitted`, () => {
       const post = { omittedLikes: 0 };
 
-      const renderer = new ShallowRenderer();
-      renderer.render(<PostLikes {...{ likes, post }} />);
+      render(<PostLikes likes={likes} post={post} />);
 
-      const errorBoundary = renderer.getRenderOutput().props.children;
-      expect(errorBoundary.props.children[1].props.children, 'to have length', i);
+      // In the component, each like is rendered as a list item
+      const likeItems = screen.getAllByRole('listitem');
+      expect(likeItems).toHaveLength(i);
     });
   }
 
   it('should render number of omitted likes', () => {
-    const likes = [{ id: 'id0' }];
+    const likes = [{ id: 'id0', username: 'user0' }];
     const post = { omittedLikes: 10 };
 
-    const renderer = new ShallowRenderer();
-    renderer.render(<PostLikes {...{ likes, post }} />);
+    render(<PostLikes likes={likes} post={post} />);
 
-    const errorBoundary = renderer.getRenderOutput().props.children;
-    const likeList = errorBoundary.props.children[1].props.children;
-    const lastLike = likeList[likeList.length - 1];
-    const [ommitedLikesNode] = lastLike.props.children;
-    const [ommitedLikesNumber] = ommitedLikesNode.props.children;
+    // The component should render a link with text like "10 other people"
+    const omittedLikesLink = screen.getByText('10 other people');
+    expect(omittedLikesLink).toBeInTheDocument();
 
-    expect(ommitedLikesNumber, 'to equal', 10);
+    // There should be two list items: one for the visible like, one for the omitted likes link
+    const listItems = screen.getAllByRole('listitem');
+    expect(listItems).toHaveLength(2);
   });
 });
