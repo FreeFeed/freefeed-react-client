@@ -43,7 +43,7 @@ const WelcomePage = () => {
           <p className={styles.p}>
             FreeFeed is a small and free social network. We do not harvest users&apos; personal
             data, nor serve ads. It is an{' '}
-            <a href="https://github.com/FreeFeed" target="_blank">
+            <a href="https://github.com/FreeFeed" target="_blank" rel="noreferrer">
               open-source project
             </a>{' '}
             developed by volunteers and funded by donations from its users.
@@ -97,7 +97,7 @@ const WelcomePage = () => {
           <p className={styles.p}>
             FreeFeed — маленькая бесплатная социальная сеть, которая не продаёт ваши данные и не
             показывает рекламу. Это{' '}
-            <a href="https://github.com/FreeFeed" target="_blank">
+            <a href="https://github.com/FreeFeed" target="_blank" rel="noreferrer">
               проект с открытым исходным кодом
             </a>
             . Его развитием занимаются пользователи-волонтеры за счет пожертвований других

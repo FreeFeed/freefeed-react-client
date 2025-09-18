@@ -74,7 +74,6 @@ export default defineConfig([
 
       'react/prop-types': 'off',
       'react/display-name': 'off',
-      'react/jsx-no-target-blank': 'off', // TODO turn it on
       complexity: ['warn', { max: 20 }],
       'import-x/no-unresolved': ['error', { ignore: ['^virtual:'] }],
       'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],

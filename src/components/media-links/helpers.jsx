@@ -274,7 +274,7 @@ async function getEmbeddableItem(url, mediaType) {
     text = `${text.slice(0, 200)}\u2026`;
   }
   const titleHTML = renderToString(
-    <a href={url} target="_blank">
+    <a href={url} target="_blank" rel="noreferrer">
       {text || url}
     </a>,
   );

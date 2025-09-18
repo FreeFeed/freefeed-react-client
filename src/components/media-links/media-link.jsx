@@ -26,7 +26,7 @@ export function MediaLink({ href: url, children }) {
     : {};
 
   return (
-    <a href={url} target="_blank" dir="ltr" {...mediaProps}>
+    <a href={url} target="_blank" dir="ltr" rel="noreferrer" {...mediaProps}>
       {mediaIcon && (
         <span className="icon-bond">
           <Icon icon={mediaIcon} className="media-icon" />

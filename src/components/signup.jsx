@@ -71,7 +71,7 @@ export default memo(function Signup() {
                     {withInviteForm && (
                       <p>
                         If you don&#x2019;t know anyone,{' '}
-                        <a href={formSrc} target="_blank">
+                        <a href={formSrc} target="_blank" rel="noreferrer">
                           <strong>fill out a simple form</strong>
                         </a>{' '}
                         and we&#x2019;ll review your request.

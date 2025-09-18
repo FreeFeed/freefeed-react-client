@@ -112,6 +112,7 @@ export function VisualAttachment({
       target="_blank"
       data-pid={pictureId}
       style={{ width, height }}
+      rel="noreferrer"
     >
       {att.meta?.inProgress ? (
         <div className={style['processing']}>

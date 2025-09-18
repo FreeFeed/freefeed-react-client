@@ -169,7 +169,11 @@ const SideBarFreeFeed = () => (
         </li>
         <li>
           <Link to="/support">Support</Link> /{' '}
-          <a href="https://github.com/FreeFeed/freefeed-server/wiki/FAQ" target="_blank">
+          <a
+            href="https://github.com/FreeFeed/freefeed-server/wiki/FAQ"
+            target="_blank"
+            rel="noreferrer"
+          >
             FAQ
           </a>
         </li>
