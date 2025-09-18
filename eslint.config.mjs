@@ -23,9 +23,6 @@ export default defineConfig([
       },
     },
     settings: {
-      react: {
-        version: 'detect',
-      },
       'import-x/resolver-next': [createNodeResolver({ extensions: ['.js', '.jsx', '.mjs'] })],
     },
   },
@@ -51,7 +48,15 @@ export default defineConfig([
       'unicorn/prefer-string-starts-ends-with': 'error',
     },
   },
-  react.configs.flat.recommended,
+  {
+    // Merge settings with react plugin configs
+    ...react.configs.flat.recommended,
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
+  },
   react.configs.flat['jsx-runtime'],
   reactHooks.configs['recommended-latest'],
   {
