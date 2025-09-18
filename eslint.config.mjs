@@ -4,6 +4,8 @@ import js from '@eslint/js';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
+import { fixupPluginRules } from '@eslint/compat';
+import youDontNeedLodashUnderscore from 'eslint-plugin-you-dont-need-lodash-underscore';
 
 export default defineConfig([
   {
@@ -11,10 +13,14 @@ export default defineConfig([
   },
   {
     languageOptions: {
-      ...react.configs.flat.recommended.languageOptions,
       globals: {
         ...globals.browser,
         ...globals.node, // for tests
+      },
+    },
+    settings: {
+      react: {
+        version: 'detect',
       },
     },
   },
@@ -24,9 +30,18 @@ export default defineConfig([
   react.configs.flat['jsx-runtime'],
   reactHooks.configs['recommended-latest'],
   {
+    plugins: {
+      'you-dont-need-lodash-underscore': fixupPluginRules(youDontNeedLodashUnderscore),
+    },
+    rules: {
+      ...youDontNeedLodashUnderscore.configs['compatible-warn'].rules,
+    },
+  },
+  {
     rules: {
       'react/prop-types': 'off',
       'react/display-name': 'off',
+      complexity: ['warn', { max: 20 }],
     },
   },
 
