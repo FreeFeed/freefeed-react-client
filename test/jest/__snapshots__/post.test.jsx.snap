@@ -80,6 +80,7 @@ exports[`Post > Renders a post and doesn't blow up 1`] = `
             <svg
               aria-disabled="false"
               class="post-lock-icon post-public-icon fa-icon fa-icon-fas-globe-americas"
+              focusable="false"
               role="button"
               tabindex="0"
               xmlns="http://www.w3.org/2000/svg"
@@ -210,6 +211,7 @@ exports[`Post > Renders a textarea with post text when editing the post 1`] = `
           <span>
             <svg
               class="dest-icon fa-icon fa-icon-fas-globe-americas"
+              focusable="false"
               xmlns="http://www.w3.org/2000/svg"
             >
               <use
@@ -263,6 +265,7 @@ Line 2
           >
             <svg
               class="fa-icon fa-icon-fas-globe-americas"
+              focusable="false"
               xmlns="http://www.w3.org/2000/svg"
             >
               <use
@@ -292,6 +295,7 @@ Line 2
         >
           <svg
             class="upload-icon fa-icon fa-icon-fas-paperclip"
+            focusable="false"
             xmlns="http://www.w3.org/2000/svg"
           >
             <use

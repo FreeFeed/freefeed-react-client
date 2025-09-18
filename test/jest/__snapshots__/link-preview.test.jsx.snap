@@ -58,6 +58,7 @@ exports[`LinkPreview > Shows a Google Docs preview 1`] = `
     <a
       class="google-docs-inner"
       href="https://docs.google.com/document/d/1GbH0-Tc0Rs-T18JRA3Y--uOo_-lzzzTiCbYCHvs6K_4/edit?usp=sharing"
+      rel="noreferrer"
       style="background-size: 120%; padding-bottom: 45.45454545454545%; background-position: center 24.199999999999996%;"
       target="_blank"
     />
@@ -82,6 +83,7 @@ exports[`LinkPreview > Shows a Soundcloud preview 1`] = `
     >
       <a
         href="https://soundcloud.com/smokedpepper/in-dub-we-trust"
+        rel="noreferrer"
         target="_blank"
         title="In Dub We Trust by SmokedPepper"
       >
@@ -183,6 +185,7 @@ exports[`LinkPreview > Shows a Tiktok preview 1`] = `
           >
             <a
               href="https://www.tiktok.com/@nathanevanss/video/6910995345421962498"
+              rel="noreferrer"
               target="_blank"
               title="The Wellerman. #seashanty #sea #shanty #viral #singing #acoustic #pirate #new #original #fyp #foryou #foryoupage #singer #scottishsinger #scottish by N A T H A N E V A N S S"
             >
@@ -242,6 +245,7 @@ exports[`LinkPreview > Shows a Wikipedia preview 1`] = `
           >
             <a
               href="https://ru.wikipedia.org/wiki/%D0%AF%D0%B3%D0%BE%D0%B4%D0%B8%D1%86%D1%8B"
+              rel="noreferrer"
               target="_blank"
             >
               <div>
@@ -313,6 +317,7 @@ exports[`LinkPreview > Shows a video preview for Coub 1`] = `
     >
       <a
         href="https://coub.com/view/7xk9n"
+        rel="noreferrer"
         target="_blank"
         title="Russian Duck Army by Cat in chief"
       >
@@ -353,6 +358,7 @@ exports[`LinkPreview > Shows a video preview for Gfycat 1`] = `
     >
       <a
         href="https://gfycat.com/dismalindolentgalago-dog"
+        rel="noreferrer"
         target="_blank"
         title="Cat has found the squishiest face to knead at Gfycat"
       >
@@ -393,6 +399,7 @@ exports[`LinkPreview > Shows a video preview for Giphy 1`] = `
     >
       <a
         href="https://giphy.com/gifs/fallontonight-jimmy-fallon-tonight-show-ncAcktdglyCuVrKeZG"
+        rel="noreferrer"
         target="_blank"
         title="Jimmy Fallon Christmas GIF by The Tonight Show Starring Jimmy Fallon - Find & Share on GIPHY by The Tonight Show Starring Jimmy Fallon"
       >
@@ -433,6 +440,7 @@ exports[`LinkPreview > Shows a video preview for Vimeo 1`] = `
     >
       <a
         href="https://vimeo.com/475544342"
+        rel="noreferrer"
         target="_blank"
         title="Allir úr! by Novaisland"
       >
@@ -473,6 +481,7 @@ exports[`LinkPreview > Shows a video preview for Youtube 1`] = `
     >
       <a
         href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=123"
+        rel="noreferrer"
         target="_blank"
         title="Rick Astley - Never Gonna Give You Up (Official Music Video) on YouTube"
       >
@@ -507,6 +516,7 @@ exports[`LinkPreview > Shows a video preview for Youtube 2`] = `
     >
       <a
         href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=123"
+        rel="noreferrer"
         target="_blank"
         title="Rick Astley - Never Gonna Give You Up (Official Music Video) on YouTube"
       >

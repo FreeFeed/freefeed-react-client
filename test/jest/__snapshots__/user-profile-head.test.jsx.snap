@@ -50,6 +50,7 @@ exports[`UserProfileHead > Correctly displays that we are mutually subscribed 1`
           >
             <svg
               class="fa-icon fa-icon-fas-globe-americas"
+              focusable="false"
               xmlns="http://www.w3.org/2000/svg"
             >
               <use
@@ -300,6 +301,7 @@ exports[`UserProfileHead > Renders my own header and doesn't blow up 1`] = `
           >
             <svg
               class="fa-icon fa-icon-fas-globe-americas"
+              focusable="false"
               xmlns="http://www.w3.org/2000/svg"
             >
               <use
