@@ -1730,7 +1730,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:9.35.0":
+"@eslint/js@npm:9.35.0, @eslint/js@npm:~9.35.0":
   version: 9.35.0
   resolution: "@eslint/js@npm:9.35.0"
   checksum: 10c0/d40fe38724bc76c085c0b753cdf937fa35c0d6807ae76b2632e3f5f66c3040c91adcf1aff2ce70b4f45752e60629fadc415eeec9af3be3c274bae1cac54b9840
@@ -5897,6 +5897,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"globals@npm:~16.4.0":
+  version: 16.4.0
+  resolution: "globals@npm:16.4.0"
+  checksum: 10c0/a14b447a78b664b42f6d324e8675fcae6fe5e57924fecc1f6328dce08af9b2ca3a3138501e1b1f244a49814a732dc60cfc1aa24e714e0b64ac8bd18910bfac90
+  languageName: node
+  linkType: hard
+
 "globalthis@npm:^1.0.4":
   version: 1.0.4
   resolution: "globalthis@npm:1.0.4"
@@ -8447,6 +8454,7 @@ __metadata:
     "@babel/core": "npm:~7.28.4"
     "@babel/eslint-parser": "npm:~7.28.4"
     "@babel/preset-react": "npm:~7.27.1"
+    "@eslint/js": "npm:~9.35.0"
     "@fortawesome/free-brands-svg-icons": "npm:~5.15.4"
     "@fortawesome/free-regular-svg-icons": "npm:~5.15.4"
     "@fortawesome/free-solid-svg-icons": "npm:~5.15.4"
@@ -8483,6 +8491,7 @@ __metadata:
     focus-trap-react: "npm:~11.0.4"
     focus-visible: "npm:~5.2.1"
     glob: "npm:~11.0.3"
+    globals: "npm:~16.4.0"
     gray-matter: "npm:~4.0.3"
     history: "npm:~5.3.0"
     husky: "npm:~9.1.7"
