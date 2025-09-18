@@ -191,7 +191,7 @@ async function createLightboxItem(url, attempt = 0) {
 }
 
 async function getEmbeddableItem(url, mediaType) {
-  let info = null;
+  let info;
   if (isInstagram(url)) {
     info = getInstagramEmbedInfo(url);
   } else {

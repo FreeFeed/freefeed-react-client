@@ -8,7 +8,7 @@ function ArchivePostHandler({ inProgress, success, id }) {
     return null;
   }
 
-  let postBody = null;
+  let postBody;
 
   if (inProgress) {
     postBody = (

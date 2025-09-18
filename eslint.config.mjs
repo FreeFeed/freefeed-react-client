@@ -71,15 +71,23 @@ export default defineConfig([
     rules: {
       'no-console': 'error',
       'no-constant-condition': 'error',
-
+      complexity: ['warn', { max: 20 }],
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      'no-warning-comments': 'warn',
+      'no-await-in-loop': 'error',
+      'no-duplicate-imports': 'error',
+      'no-template-curly-in-string': 'error',
+      'no-unassigned-vars': 'error',
+      'no-unmodified-loop-condition': 'error',
+      'no-unreachable-loop': 'error',
+      'no-useless-assignment': 'error',
+      'require-atomic-updates': 'error',
       'react/prop-types': 'off',
       'react/display-name': 'off',
-      complexity: ['warn', { max: 20 }],
       'import-x/no-unresolved': ['error', { ignore: ['^virtual:'] }],
-      'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
-      'you-dont-need-lodash-underscore/omit': 'off', // TODO turn it on
-      'you-dont-need-lodash-underscore/uniq': 'off', // TODO turn it on
-      'you-dont-need-lodash-underscore/throttle': 'off', // TODO turn it on
+      'you-dont-need-lodash-underscore/omit': 'off',
+      'you-dont-need-lodash-underscore/uniq': 'off',
+      'you-dont-need-lodash-underscore/throttle': 'off',
     },
   },
 
