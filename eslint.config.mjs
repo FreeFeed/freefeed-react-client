@@ -77,6 +77,10 @@ export default defineConfig([
       'react/jsx-no-target-blank': 'off', // TODO turn it on
       complexity: ['warn', { max: 20 }],
       'import-x/no-unresolved': ['error', { ignore: ['^virtual:'] }],
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      'you-dont-need-lodash-underscore/omit': 'off', // TODO turn it on
+      'you-dont-need-lodash-underscore/uniq': 'off', // TODO turn it on
+      'you-dont-need-lodash-underscore/throttle': 'off', // TODO turn it on
     },
   },
 
