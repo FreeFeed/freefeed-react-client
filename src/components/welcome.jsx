@@ -24,7 +24,6 @@ const WelcomePage = () => {
           const onClick = () => setLang(l.id);
           const cn = classnames(styles.lang, lang === l.id ? styles.active : false);
           return (
-            // eslint-disable-next-line react/jsx-no-bind
             <span key={l.id} className={cn} onClick={onClick}>
               {l.label}
             </span>

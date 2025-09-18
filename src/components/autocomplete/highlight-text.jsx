@@ -1,5 +1,3 @@
-/* eslint-disable prefer-destructuring */
-/* eslint-disable unicorn/no-for-loop */
 export function HighlightText({ text, matches }) {
   if (!text || matches.length === 0) {
     return <>{text}</>;

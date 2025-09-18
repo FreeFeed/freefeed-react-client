@@ -77,7 +77,6 @@ export default memo(function VideoPreview({ url }) {
     let player = null;
     if (canShowPlayer) {
       if (info.html) {
-        // eslint-disable-next-line react/no-danger
         player = <div dangerouslySetInnerHTML={{ __html: info.html }} />;
       } else if (info.playerURL) {
         player = (

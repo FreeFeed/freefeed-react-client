@@ -47,7 +47,6 @@ function bestMatch(text, query) {
     return null;
   }
 
-  // eslint-disable-next-line prefer-destructuring
   let best = variants[0];
   for (let i = 1; i < variants.length; i++) {
     if (compare(variants[i], best) < 0) {

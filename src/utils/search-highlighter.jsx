@@ -13,7 +13,7 @@ export function highlightString(text, terms) {
       const m = re.exec(text);
       if (m && (match === '' || m.index < minPos)) {
         minPos = m.index + (m[1] || '').length;
-        match = m[2]; // eslint-disable-line prefer-destructuring
+        match = m[2];
       }
     });
 

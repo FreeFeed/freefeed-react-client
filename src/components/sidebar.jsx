@@ -212,7 +212,6 @@ const SideBarBookmarklet = () => (
     <div className="box-footer">
       Click and drag{' '}
       <span
-        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: `<a class="bookmarklet-button" href="${htmlSafe(
             bookmarkletHref(),

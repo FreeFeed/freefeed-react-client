@@ -54,5 +54,5 @@ function isExternalLink(to) {
 }
 
 function createHref(to) {
-  return typeof to === 'string' ? to : createPath(to); // eslint-disable-line no-nested-ternary
+  return typeof to === 'string' ? to : createPath(to);
 }

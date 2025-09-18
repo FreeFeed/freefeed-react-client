@@ -45,10 +45,7 @@ export default withLayout('Token access rights', function ScopesList() {
           </div>
           <div className="panel-body">
             {descriptions[scope.name] && (
-              <div
-                // eslint-disable-next-line react/no-danger
-                dangerouslySetInnerHTML={{ __html: snarkdown(descriptions[scope.name]) }}
-              />
+              <div dangerouslySetInnerHTML={{ __html: snarkdown(descriptions[scope.name]) }} />
             )}
             <APIList>
               {scope.routes.map((r, i) => (
