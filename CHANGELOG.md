@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.141.0] - Not released
 ### Changed
-- Migrate to the React 19.
+- Migrate to React 19.
+- Migrate to ESLint 9 with flat config.
 
 ## [1.140.0] - 2025-09-12
 ### Added
