@@ -4,16 +4,18 @@ import { shallowEqual, useSelector } from 'react-redux';
 import UserName from './user-name';
 import TimeDisplay from './time-display';
 
-const renderRecentGroup = (group, isPinned) => (
-  <li className={classnames('p-my-groups-link', isPinned && 'pinned')} key={group.id}>
-    <UserName user={group} userCardMode="sidebar-group">
-      {group.screenName}
-    </UserName>
-    <TimeDisplay className="updated-ago" timeStamp={+group.updatedAt} />
-  </li>
-);
+function RecentGroup({ group, isPinned }) {
+  return (
+    <li className={classnames('p-my-groups-link', isPinned && 'pinned')}>
+      <UserName user={group} userCardMode="sidebar-group">
+        {group.screenName}
+      </UserName>
+      <TimeDisplay className="updated-ago" timeStamp={+group.updatedAt} />
+    </li>
+  );
+}
 
-export default () => {
+export default function RecentGroups() {
   const recentGroups = useSelector(
     (state) => state.recentGroups.map((g) => state.users[g.id]),
     shallowEqual,
@@ -29,7 +31,9 @@ export default () => {
 
   return (
     <ul className="p-my-groups">
-      {recentGroups.map((g) => renderRecentGroup(g, pinnedGroupIds.includes(g.id)))}
+      {recentGroups.map((g) => (
+        <RecentGroup key={g.id} group={g} isPinned={pinnedGroupIds.includes(g.id)} />
+      ))}
     </ul>
   );
-};
+}
