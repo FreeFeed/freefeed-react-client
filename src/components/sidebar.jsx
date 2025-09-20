@@ -318,12 +318,10 @@ export default function SideBar({ user, signOut }) {
 
   const clickToCLose = useCallback(
     (e) => {
-      if (
-        // Click on shadow
-        e.target === e.currentTarget ||
-        // Click on links
-        e.target.closest('a') !== null
-      ) {
+      const clickOnShadow = e.target === e.currentTarget;
+      const clickOnLink = e.target.closest('a');
+      const clickOnGroupLink = e.target.closest('.p-my-groups-link');
+      if (clickOnShadow || (clickOnLink && !clickOnGroupLink)) {
         dispatch(openSidebar(false));
       }
     },
