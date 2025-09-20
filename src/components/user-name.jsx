@@ -8,7 +8,7 @@ import ErrorBoundary from './error-boundary';
 import { useDropDown, CLOSE_ON_CLICK_OUTSIDE } from './hooks/drop-down';
 import { UserDisplayName } from './user-displayname';
 import UserCard from './user-card';
-import { useMediaQueryRef } from './hooks/media-query';
+import { useMediaQuery } from './hooks/media-query';
 
 export default function UserName({
   user: { username, screenName, isGone },
@@ -37,8 +37,9 @@ export default function UserName({
   }, []);
 
   // Some browsers may not support the 'hover' query
-  const hoverSupported = useMediaQueryRef('(hover: hover), (hover: none)');
-  const mouseDevice = useMediaQueryRef('(hover: hover)');
+  const hoverSupported = useMediaQuery('(hover: hover), (hover: none)');
+  const mouseDevice = useMediaQuery('(hover: hover)');
+  const isTouchDevice = hoverSupported && !mouseDevice;
 
   const onClick = useCallback(
     (e) => {
@@ -46,7 +47,7 @@ export default function UserName({
         return;
       }
       // Using double check here: media query 'hover' support and the isTouched status
-      const touch = hoverSupported.current && !mouseDevice.current;
+      const touch = isTouchDevice;
       if (touch || isTouched.current) {
         e.preventDefault();
         // Use setTimeout here because click handlers should be able to close
@@ -54,12 +55,20 @@ export default function UserName({
         setTimeout(() => toggle(), 0);
       }
     },
-    [userCardMode, hoverSupported, mouseDevice, toggle],
+    [userCardMode, isTouchDevice, toggle],
   );
 
   const { onEnter, onLeave } = useHover(
     500,
-    useCallback((v) => userCardMode === 'none' || setOpened(v), [setOpened, userCardMode]),
+    useCallback(
+      (hovered) => {
+        if (userCardMode === 'none' || isTouchDevice) {
+          return;
+        }
+        setOpened(hovered);
+      },
+      [setOpened, userCardMode, isTouchDevice],
+    ),
   );
 
   useEffect(() => {
@@ -134,12 +143,12 @@ function useHover(timeout, setHovered) {
 
   const onEnter = useCallback(() => {
     clearTimeouts();
-    enterTimeout.current = setTimeout(() => setHovered(true), 500);
-  }, [clearTimeouts, setHovered]);
+    enterTimeout.current = setTimeout(() => setHovered(true), timeout);
+  }, [clearTimeouts, setHovered, timeout]);
   const onLeave = useCallback(() => {
     clearTimeouts();
-    leaveTimeout.current = setTimeout(() => setHovered(false), 500);
-  }, [clearTimeouts, setHovered]);
+    leaveTimeout.current = setTimeout(() => setHovered(false), timeout);
+  }, [clearTimeouts, setHovered, timeout]);
 
   useEffect(() => {
     // do nothing. just return cleanup-function
