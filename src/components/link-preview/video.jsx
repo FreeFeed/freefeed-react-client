@@ -77,7 +77,6 @@ export default memo(function VideoPreview({ url }) {
     let player = null;
     if (canShowPlayer) {
       if (info.html) {
-        // eslint-disable-next-line react/no-danger
         player = <div dangerouslySetInnerHTML={{ __html: info.html }} />;
       } else if (info.playerURL) {
         player = (
@@ -140,7 +139,7 @@ export default memo(function VideoPreview({ url }) {
         {player && (playerVisible ? player : <Icon icon={faPlay} className="play-icon" />)}
       </div>
       <div className="info">
-        <a href={url} target="_blank" title={info?.byline}>
+        <a href={url} target="_blank" title={info?.byline} rel="noreferrer">
           {info ? info.byline : 'Loading…'}
         </a>
       </div>

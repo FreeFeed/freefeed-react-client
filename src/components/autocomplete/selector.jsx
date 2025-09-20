@@ -115,6 +115,7 @@ function Item({ account, match, isCurrent, onClick, localLink }) {
           target="_blank"
           className={style.itemLink}
           onClick={linkClk}
+          rel="noreferrer"
         >
           <Icon className={style.itemLinkIcon} icon={faExternalLinkAlt} />
         </a>

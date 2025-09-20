@@ -94,12 +94,16 @@ export function intentToScroll() {
 
 export function safeScrollTo(x, y) {
   scrolling.trigger();
-  window.scrollTo(x, y);
+  if (process.env.NODE_ENV !== 'test') {
+    window.scrollTo(x, y);
+  }
 }
 
 export function safeScrollBy(x, y) {
   scrolling.trigger();
-  window.scrollBy(x, y);
+  if (process.env.NODE_ENV !== 'test') {
+    window.scrollBy(x, y);
+  }
 }
 
 export function unscroll() {
@@ -116,7 +120,9 @@ export function unscrollTo(elements) {
   const { top } = pinned.node.getBoundingClientRect();
   if (top !== pinned.top) {
     unscrollDebug(`⚡ Compensating by ${top - pinned.top}px`);
-    window.scrollBy(0, top - pinned.top);
+    if (process.env.NODE_ENV !== 'test') {
+      window.scrollBy(0, top - pinned.top);
+    }
   }
 }
 

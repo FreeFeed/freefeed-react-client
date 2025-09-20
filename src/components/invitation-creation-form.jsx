@@ -184,6 +184,7 @@ class InvitationCreationForm extends Component {
               <a
                 target="_blank"
                 href={`${baseLocation}/invited/${form.invitationId}`}
+                rel="noreferrer"
               >{`${baseLocation}/invited/${form.invitationId}`}</a>
             </div>
           ) : form.error ? (

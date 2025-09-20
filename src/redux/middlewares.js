@@ -501,7 +501,7 @@ export const optimisticLikesMiddleware = (store) => (next) => (action) => {
         delete cleanLikeErrorTimers[postId];
       }, cleanLikeErrorTimeout);
 
-      const ignore = _.startsWith(action.type, ActionTypes.LIKE_POST)
+      const ignore = action.type.startsWith(ActionTypes.LIKE_POST)
         ? ignoreMyLikes
         : ignoreMyUnlikes;
       if (ignore[postId]) {
@@ -1018,7 +1018,7 @@ export const dataFixMiddleware = (store) => (next) => (action) => {
     action.payload.posts = action.payload.posts || [];
   }
 
-  if (action.payload && action.payload.posts && _.isArray(action.payload.posts)) {
+  if (action.payload && action.payload.posts && Array.isArray(action.payload.posts)) {
     action.payload.posts.forEach(fixPostsData);
   }
 

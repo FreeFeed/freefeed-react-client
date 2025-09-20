@@ -33,7 +33,6 @@ export const SVGSymbolDeclarations = memo(function SVGSymbolDeclarations() {
         <symbol
           key={`icon-${prefix}-${iconName}`}
           aria-hidden="true"
-          focusable="false"
           role="img"
           viewBox={`0 0 ${width} ${height}`}
           id={`fa-icon-${prefix}-${iconName}`}
@@ -55,6 +54,7 @@ export const Icon = memo(
           xmlns="http://www.w3.org/2000/svg"
           className={cn(className, `fa-icon ${id}`)}
           ref={ref}
+          focusable="false"
           {...props}
         >
           {title && <title>{title}</title>}

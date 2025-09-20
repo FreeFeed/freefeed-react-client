@@ -263,6 +263,7 @@ export function AdvancedSearchForm() {
               <a
                 href="https://github.com/FreeFeed/freefeed-server/wiki/FreeFeed-Search"
                 target="_blank"
+                rel="noreferrer"
               >
                 full query syntax
               </a>{' '}

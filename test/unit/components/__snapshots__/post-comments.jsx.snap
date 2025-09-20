@@ -1,0 +1,396 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<PostComments> > should not render omitted number when there're no omitted comments 1`] = `
+<div>
+  <div
+    aria-label="0 comments"
+    class="comments"
+    role="list"
+  />
+</div>
+`;
+
+exports[`<PostComments> > should not render omitted number when there're no omitted comments 2`] = `
+<div>
+  <div
+    aria-label="1 comment"
+    class="comments"
+    role="list"
+  >
+    <div
+      data-testid="post-comment"
+    >
+      {"id":0,"authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PostComments> > should not render omitted number when there're no omitted comments 3`] = `
+<div>
+  <div
+    aria-label="2 comments"
+    class="comments"
+    role="list"
+  >
+    <div
+      data-testid="post-comment"
+    >
+      {"id":0,"authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+    <div
+      data-testid="post-comment"
+    >
+      {"id":1,"authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PostComments> > should not render omitted number when there're no omitted comments 4`] = `
+<div>
+  <div
+    aria-label="3 comments"
+    class="comments"
+    role="list"
+  >
+    <div
+      data-testid="post-comment"
+    >
+      {"id":0,"authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+    <div
+      data-testid="post-comment"
+    >
+      {"id":1,"authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+    <div
+      data-testid="post-comment"
+    >
+      {"id":2,"authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PostComments> > should not render omitted number when there're no omitted comments 5`] = `
+<div>
+  <div
+    aria-label="4 comments"
+    class="comments"
+    role="list"
+  >
+    <div
+      data-testid="post-comment"
+    >
+      {"id":0,"authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+    <div
+      data-testid="post-comment"
+    >
+      {"id":1,"authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+    <div
+      data-testid="post-comment"
+    >
+      {"id":2,"authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+    <div
+      data-testid="post-comment"
+    >
+      {"id":3,"authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PostComments> > should render commenting section only if post is commented 1`] = `
+<div>
+  <div
+    aria-label="1 comment"
+    class="comments"
+    role="list"
+  >
+    <div
+      data-testid="expand-comments"
+    >
+      {"omittedComments":1,"omittedCommentLikes":null}
+    </div>
+    <div
+      data-testid="loading-comments"
+    >
+      {}
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PostComments> > should render commenting section only if post is commented 2`] = `
+<div>
+  <div
+    aria-label="1 comment"
+    class="comments"
+    role="list"
+  >
+    <div
+      data-testid="expand-comments"
+    >
+      {"omittedComments":1,"omittedCommentLikes":null}
+    </div>
+    <div
+      data-testid="loading-comments"
+    >
+      {}
+    </div>
+    <div
+      data-testid="post-comment"
+    >
+      {"isEditing":true,"currentUser":{},"isAddingComment":true}
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PostComments> > should render first comment if there're any comments 1`] = `
+<div>
+  <div
+    aria-label="2 comments"
+    class="comments"
+    role="list"
+  >
+    <div
+      data-testid="post-comment"
+    >
+      {"id":"1","authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+    <div
+      data-testid="expand-comments"
+    >
+      {"omittedComments":1,"omittedCommentLikes":null}
+    </div>
+    <div
+      data-testid="loading-comments"
+    >
+      {}
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PostComments> > should render last comment if there's more than one comment 1`] = `
+<div>
+  <div
+    aria-label="1 comment"
+    class="comments"
+    role="list"
+  >
+    <div
+      data-testid="expand-comments"
+    >
+      {"omittedComments":1,"omittedCommentLikes":null}
+    </div>
+    <div
+      data-testid="loading-comments"
+    >
+      {}
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PostComments> > should render last comment if there's more than one comment 2`] = `
+<div>
+  <div
+    aria-label="2 comments"
+    class="comments"
+    role="list"
+  >
+    <div
+      data-testid="post-comment"
+    >
+      {"id":0,"authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+    <div
+      data-testid="expand-comments"
+    >
+      {"omittedComments":1,"omittedCommentLikes":null}
+    </div>
+    <div
+      data-testid="loading-comments"
+    >
+      {}
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PostComments> > should render last comment if there's more than one comment 3`] = `
+<div>
+  <div
+    aria-label="3 comments"
+    class="comments"
+    role="list"
+  >
+    <div
+      data-testid="post-comment"
+    >
+      {"id":0,"authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+    <div
+      data-testid="expand-comments"
+    >
+      {"omittedComments":1,"omittedCommentLikes":null}
+    </div>
+    <div
+      data-testid="post-comment"
+    >
+      {"id":1,"authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PostComments> > should render last comment if there's more than one comment 4`] = `
+<div>
+  <div
+    aria-label="4 comments"
+    class="comments"
+    role="list"
+  >
+    <div
+      data-testid="post-comment"
+    >
+      {"id":0,"authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+    <div
+      data-testid="expand-comments"
+    >
+      {"omittedComments":1,"omittedCommentLikes":null}
+    </div>
+    <div
+      data-testid="post-comment"
+    >
+      {"id":1,"authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+    <div
+      data-testid="post-comment"
+    >
+      {"id":2,"authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PostComments> > should render last comment if there's more than one comment 5`] = `
+<div>
+  <div
+    aria-label="5 comments"
+    class="comments"
+    role="list"
+  >
+    <div
+      data-testid="post-comment"
+    >
+      {"id":0,"authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+    <div
+      data-testid="expand-comments"
+    >
+      {"omittedComments":2,"omittedCommentLikes":null}
+    </div>
+    <div
+      data-testid="post-comment"
+    >
+      {"id":2,"authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+    <div
+      data-testid="post-comment"
+    >
+      {"id":3,"authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PostComments> > should render omitted number properly 1`] = `
+<div>
+  <div
+    aria-label="4 comments"
+    class="comments"
+    role="list"
+  >
+    <div
+      data-testid="post-comment"
+    >
+      {"id":"1","authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+    <div
+      data-testid="expand-comments"
+    >
+      {"omittedComments":2,"omittedCommentLikes":null}
+    </div>
+    <div
+      data-testid="post-comment"
+    >
+      {"id":"2","authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PostComments> > should render right number of comments 1`] = `
+<div>
+  <div
+    aria-label="0 comments"
+    class="comments"
+    role="list"
+  />
+</div>
+`;
+
+exports[`<PostComments> > should render right number of comments 2`] = `
+<div>
+  <div
+    aria-label="1 comment"
+    class="comments"
+    role="list"
+  >
+    <div
+      data-testid="post-comment"
+    >
+      {"id":"1","authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PostComments> > should render right number of comments 3`] = `
+<div>
+  <div
+    aria-label="4 comments"
+    class="comments"
+    role="list"
+  >
+    <div
+      data-testid="post-comment"
+    >
+      {"id":"1","authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+    <div
+      data-testid="post-comment"
+    >
+      {"id":"2","authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+    <div
+      data-testid="post-comment"
+    >
+      {"id":"3","authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+    <div
+      data-testid="post-comment"
+    >
+      {"id":"4","authorHighlightHandlers":{},"arrowsHighlightHandlers":{},"currentUser":{},"highlighted":false,"focused":false,"canAddComment":true}
+    </div>
+  </div>
+</div>
+`;
