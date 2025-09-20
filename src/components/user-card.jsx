@@ -68,12 +68,17 @@ class UserCard extends Component {
     this.props.unban({ username, id });
   };
 
+  handleCloseClick = () => {
+    this.props.setOpened(false);
+  };
+
   componentDidMount() {
     const updPosition = () =>
       updateArrowPosition(
         this.props.pivotRef.current,
         this.props.forwardedRef.current,
         this.arrowRef.current,
+        () => this.props.setOpened(false),
       ) && requestAnimationFrame(updPosition);
     updPosition();
   }
@@ -144,7 +149,12 @@ class UserCard extends Component {
                 <UserPicture large user={props.user} className="userpic" />
 
                 <div className="names">
-                  <Link to={`/${props.user.username}`} className="display-name" dir="auto">
+                  <Link
+                    to={`/${props.user.username}`}
+                    className="display-name"
+                    dir="auto"
+                    onClick={this.handleCloseClick}
+                  >
                     {props.user.screenName}
                   </Link>
                   <br />
@@ -267,7 +277,7 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserCard);
 
-function updateArrowPosition(leader, follower, arrow) {
+function updateArrowPosition(leader, follower, arrow, closePopup) {
   if (!leader || !follower || !arrow) {
     return false;
   }
@@ -285,6 +295,17 @@ function updateArrowPosition(leader, follower, arrow) {
   }
 
   arrow.style.left = `${arrowX}px`;
+
+  const leaderInViewPort =
+    leaderBounds.top >= 0 &&
+    leaderBounds.bottom <= window.innerHeight &&
+    leaderBounds.left >= 0 &&
+    leaderBounds.right <= window.innerWidth;
+
+  if (!leaderInViewPort) {
+    closePopup();
+    return false;
+  }
 
   return true;
 }
