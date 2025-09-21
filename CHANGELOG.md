@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Migrate to React 19.
 - Migrate to ESLint 9 with flat config.
+- Split giant middlewares file into smaller files.
 
 ## [1.140.0] - 2025-09-12
 ### Added
