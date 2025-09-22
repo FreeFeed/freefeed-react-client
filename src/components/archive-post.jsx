@@ -8,7 +8,7 @@ function ArchivePostHandler({ inProgress, success, id }) {
     return null;
   }
 
-  let postBody = null;
+  let postBody;
 
   if (inProgress) {
     postBody = (
@@ -31,6 +31,7 @@ function ArchivePostHandler({ inProgress, success, id }) {
             href={`https://web.archive.org/web/20150410000000/${encodeURIComponent(
               location.query.url,
             )}`}
+            rel="noreferrer"
           >
             copy of this post on archive.org
           </a>

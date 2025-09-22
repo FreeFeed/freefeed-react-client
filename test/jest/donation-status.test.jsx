@@ -1,5 +1,5 @@
 /* global vi, expect, describe, it, beforeEach */
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 

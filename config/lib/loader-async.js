@@ -6,7 +6,8 @@ export async function loadConfig(path) {
   });
   if (resp.status === 200) {
     try {
-      window.CONFIG = merge(window.CONFIG, await resp.json());
+      const configPatch = await resp.json();
+      window.CONFIG = merge(window.CONFIG, configPatch);
     } catch (e) {
       throw new Error(
         `Error during parsing the ${path}: ${e.message}\nThe server is probably misconfigured.`,

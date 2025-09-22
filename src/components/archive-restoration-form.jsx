@@ -131,7 +131,7 @@ class SourceList extends Component {
     return (
       <span>
         {name}
-        <a href={url} title={url} target="_blank" className="source-link">
+        <a href={url} title={url} target="_blank" className="source-link" rel="noreferrer">
           <Icon icon={faExternalLinkAlt} />
         </a>
       </span>

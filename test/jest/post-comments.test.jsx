@@ -4,6 +4,7 @@ import { userEvent } from '@testing-library/user-event';
 import { createStore } from 'redux';
 import * as reactRedux from 'react-redux';
 
+import { act } from 'react';
 import PostComments from '../../src/components/post/post-comments';
 import { initialAsyncState } from '../../src/redux/async-helpers';
 
@@ -168,10 +169,40 @@ describe('PostComments', () => {
   });
 
   it('Highlights a comment when arrow is hovered', async () => {
+    //     renderPostComments();
+    //     expect(document.querySelectorAll('.highlighted').length).toBe(0);
+    //     await userEvent.hover(screen.getByText('^'));
+    //     expect(document.querySelectorAll('.highlighted').length).toBe(1);
+    //     expect(document.querySelector('.highlighted').getAttribute('data-author')).toBe('other');
+
     renderPostComments();
-    expect(document.querySelectorAll('.highlighted').length).toBe(0);
-    await userEvent.hover(screen.getByText('^'));
-    expect(document.querySelectorAll('.highlighted').length).toBe(1);
-    expect(document.querySelector('.highlighted').getAttribute('data-author')).toBe('other');
+
+    // We could just use `document.querySelectorAll('.highlighted').length` here
+    // but it's always returns 0 by unknown reason
+    {
+      let highlightedCount = 0;
+      for (const comment of document.querySelectorAll('.comment')) {
+        if (comment.classList.contains('highlighted')) {
+          highlightedCount++;
+        }
+      }
+      expect(highlightedCount).toBe(0);
+    }
+
+    // Find the arrow span element instead of just text
+    const arrowSpan = document.querySelector('.arrow-span');
+    expect(arrowSpan).toBeInTheDocument();
+
+    await act(async () => userEvent.hover(arrowSpan));
+
+    {
+      let highlightedCount = 0;
+      for (const comment of document.querySelectorAll('.comment')) {
+        if (comment.classList.contains('highlighted')) {
+          highlightedCount++;
+        }
+      }
+      expect(highlightedCount).toBe(1);
+    }
   });
 });

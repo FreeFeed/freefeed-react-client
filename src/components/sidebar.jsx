@@ -169,7 +169,11 @@ const SideBarFreeFeed = () => (
         </li>
         <li>
           <Link to="/support">Support</Link> /{' '}
-          <a href="https://github.com/FreeFeed/freefeed-server/wiki/FAQ" target="_blank">
+          <a
+            href="https://github.com/FreeFeed/freefeed-server/wiki/FAQ"
+            target="_blank"
+            rel="noreferrer"
+          >
             FAQ
           </a>
         </li>
@@ -212,7 +216,6 @@ const SideBarBookmarklet = () => (
     <div className="box-footer">
       Click and drag{' '}
       <span
-        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
           __html: `<a class="bookmarklet-button" href="${htmlSafe(
             bookmarkletHref(),

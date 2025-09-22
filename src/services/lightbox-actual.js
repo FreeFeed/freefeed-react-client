@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 /* eslint-disable unicorn/prefer-query-selector */
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import PhotoSwipeVideoPlugin from 'photoswipe-video-plugin';

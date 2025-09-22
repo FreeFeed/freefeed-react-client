@@ -105,8 +105,8 @@ export function HideLink({
   handleHideClick,
   handleFullUnhide,
 }) {
-  let text = '';
-  let handler = null;
+  let text;
+  let handler;
   if (!isHidden && !hiddenByCriteria) {
     // Post is not hidden
     text = 'Hide';

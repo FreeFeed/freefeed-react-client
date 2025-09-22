@@ -21,7 +21,6 @@ const supportedVideoTypes = [];
       supportedVideoTypes.push(extension);
     }
   }
-  video = null;
 }
 
 export function GeneralAttachment({ attachment: att, removeAttachment }) {

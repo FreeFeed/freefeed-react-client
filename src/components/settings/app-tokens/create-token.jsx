@@ -3,7 +3,6 @@ import { parse as queryParse } from 'querystring';
 
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { trim } from 'lodash-es';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
@@ -45,7 +44,7 @@ export default withLayout('Generate new token', function CreateToken() {
   const [form, setForm] = useState(initialData);
 
   const canSubmit = useMemo(
-    () => !status.loading && trim(form.title) !== '',
+    () => !status.loading && form.title.trim() !== '',
     [form, status.loading],
   );
 
@@ -57,17 +56,17 @@ export default withLayout('Generate new token', function CreateToken() {
       }
 
       const submitData = {
-        title: trim(form.title),
+        title: form.title.trim(),
         scopes: form.scopes,
         restrictions: { origins: [], netmasks: [] },
       };
 
-      if (trim(form.netmasks)) {
-        submitData.restrictions.netmasks = trim(form.netmasks).split(/\s+/);
+      if (form.netmasks.trim()) {
+        submitData.restrictions.netmasks = form.netmasks.trim().split(/\s+/);
       }
 
-      if (trim(form.origins)) {
-        submitData.restrictions.origins = trim(form.origins).split(/\s+/);
+      if (form.origins.trim()) {
+        submitData.restrictions.origins = form.origins.trim().split(/\s+/);
       }
 
       dispatch(createAppToken(submitData));

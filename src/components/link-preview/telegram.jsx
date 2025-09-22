@@ -40,7 +40,7 @@ function onMessage(e) {
     return;
   }
 
-  let data = null;
+  let data;
   try {
     data = JSON.parse(e.data);
   } catch {

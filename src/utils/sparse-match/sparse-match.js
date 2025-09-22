@@ -29,7 +29,7 @@ export function sparseMatch(text, query, start = 0) {
   const results = [];
   const nextQuery = query.slice(1);
   let idx = start;
-  // eslint-disable-next-line no-constant-condition
+
   while (true) {
     const p = text.indexOf(query[0], idx);
     if (p === -1) {

@@ -78,7 +78,7 @@ export default function NotificationsForm() {
         <h4 id="telegram-bot">Telegram notifications</h4>
         <p>You can use our Telegram bot to receive notifications and send replies:</p>
         <p>
-          <a href="https://t.me/FreeFeedTgBot" target="_blank">
+          <a href="https://t.me/FreeFeedTgBot" target="_blank" rel="noreferrer">
             @FreeFeedTgBot
           </a>
         </p>

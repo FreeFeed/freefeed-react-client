@@ -19,7 +19,7 @@ const USER_ID_KEY = `${KEY_PREFIX}userId`;
 
 /** @type {number} */
 // @ts-ignore
-// eslint-disable-next-line prefer-destructuring
+
 const maxDraftAge = CONFIG.drafts.maxDraftAge;
 
 let savingEnabled = true;

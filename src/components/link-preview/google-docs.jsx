@@ -47,6 +47,7 @@ export default function GoogleDocsPreview({ url }) {
           }%`,
           backgroundPosition: `center ${55 * aspectRatio * (zoomRate(type) - 1)}%`,
         }}
+        rel="noreferrer"
       />
     </div>
   );

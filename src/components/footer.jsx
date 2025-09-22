@@ -7,11 +7,15 @@ export default function Footer({ short }) {
   return (
     <footer className="footer">
       <p role="navigation">
-        &copy; FreeFeed 1.140.2 (Sep 20, 2025)
+        &copy; FreeFeed 1.141.0 (Not released)
         <br />
         <Link to="/about">About</Link>
         {' | '}
-        <a href="https://github.com/FreeFeed/freefeed-server/wiki/FAQ" target="_blank">
+        <a
+          href="https://github.com/FreeFeed/freefeed-server/wiki/FAQ"
+          target="_blank"
+          rel="noreferrer"
+        >
           FAQ
         </a>
         {' | '}
@@ -21,11 +25,11 @@ export default function Footer({ short }) {
         {' | '}
         <Link to="/about/stats">Stats</Link>
         {' | '}
-        <a href="https://status.freefeed.net/" target="_blank">
+        <a href="https://status.freefeed.net/" target="_blank" rel="noreferrer">
           Status
         </a>
         {' | '}
-        <a href="https://github.com/FreeFeed" target="_blank">
+        <a href="https://github.com/FreeFeed" target="_blank" rel="noreferrer">
           GitHub
         </a>
       </p>

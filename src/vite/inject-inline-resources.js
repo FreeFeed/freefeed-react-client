@@ -19,6 +19,7 @@ export function injectInlineResources() {
       const inlineScripts = doc.querySelectorAll('script[type="inline"]');
       for (const script of inlineScripts) {
         const scriptSrc = join(dirname(context.filename), script.getAttribute('src'));
+        // eslint-disable-next-line no-await-in-loop
         const result = await build({
           entryPoints: [scriptSrc],
           bundle: true,

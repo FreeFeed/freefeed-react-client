@@ -93,7 +93,7 @@ export default class PostComments extends Component {
     const { post } = props;
 
     const now = props.nowDate || new Date();
-    let spacer = null;
+    let spacer;
 
     if (post.comments?.length > 0) {
       const lastComment = post.comments[post.comments.length - 1];
@@ -386,10 +386,10 @@ export default class PostComments extends Component {
      * Any of these blocks can be empty.
      */
 
-    let firstComment = null;
+    let firstComment;
+    let tailComments;
     let expandControl = null;
     let collapseControl = null;
-    let tailComments = [];
     this.visibleCommentIds.current = [];
 
     if (post.omittedComments === 0) {
