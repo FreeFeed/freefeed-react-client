@@ -24,7 +24,6 @@ const WelcomePage = () => {
           const onClick = () => setLang(l.id);
           const cn = classnames(styles.lang, lang === l.id ? styles.active : false);
           return (
-            // eslint-disable-next-line react/jsx-no-bind
             <span key={l.id} className={cn} onClick={onClick}>
               {l.label}
             </span>
@@ -44,7 +43,7 @@ const WelcomePage = () => {
           <p className={styles.p}>
             FreeFeed is a small and free social network. We do not harvest users&apos; personal
             data, nor serve ads. It is an{' '}
-            <a href="https://github.com/FreeFeed" target="_blank">
+            <a href="https://github.com/FreeFeed" target="_blank" rel="noreferrer">
               open-source project
             </a>{' '}
             developed by volunteers and funded by donations from its users.
@@ -98,7 +97,7 @@ const WelcomePage = () => {
           <p className={styles.p}>
             FreeFeed — маленькая бесплатная социальная сеть, которая не продаёт ваши данные и не
             показывает рекламу. Это{' '}
-            <a href="https://github.com/FreeFeed" target="_blank">
+            <a href="https://github.com/FreeFeed" target="_blank" rel="noreferrer">
               проект с открытым исходным кодом
             </a>
             . Его развитием занимаются пользователи-волонтеры за счет пожертвований других

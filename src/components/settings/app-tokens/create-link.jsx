@@ -1,7 +1,6 @@
 import { stringify } from 'querystring';
 
 import { useState, useCallback } from 'react';
-import { trim } from 'lodash-es';
 import { faAngleRight, faLaptop } from '@fortawesome/free-solid-svg-icons';
 
 import { Link } from '../../../services/nouter';
@@ -17,20 +16,20 @@ export default withLayout('Create a magic link', function CreateLink() {
   const onReturnURLChange = useCallback((e) => setReturnURL(e.target.value), []);
 
   const linkParams = {};
-  if (trim(form.title) !== '') {
-    linkParams.title = trim(form.title);
+  if (form.title.trim() !== '') {
+    linkParams.title = form.title.trim();
   }
   if (form.scopes.length > 0) {
     linkParams.scopes = form.scopes.join(' ');
   }
-  if (trim(form.netmasks)) {
-    linkParams.netmasks = trim(form.netmasks);
+  if (form.netmasks.trim()) {
+    linkParams.netmasks = form.netmasks.trim();
   }
-  if (trim(form.origins)) {
-    linkParams.origins = trim(form.origins);
+  if (form.origins.trim()) {
+    linkParams.origins = form.origins.trim();
   }
-  if (/^https?:\/\//i.test(trim(returnURL))) {
-    linkParams.return_url = trim(returnURL);
+  if (/^https?:\/\//i.test(returnURL.trim())) {
+    linkParams.return_url = returnURL.trim();
   }
 
   const query = stringify(linkParams);

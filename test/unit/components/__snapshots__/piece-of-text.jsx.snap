@@ -1,0 +1,136 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<PieceOfText> > should correctly process multiline texts (short text with newlines) 1`] = `
+<span
+  class="Linkify"
+  dir="auto"
+  role="region"
+>
+  First paragraph
+  <span
+    class="p-break"
+  >
+    <br />
+     
+    <br />
+  </span>
+  Second paragraph, first line
+   
+  <br />
+  Second paragraph, second line
+</span>
+`;
+
+exports[`<PieceOfText> > should correctly process texts with code blocks 1`] = `
+<div>
+  <span
+    class="Linkify"
+    dir="auto"
+    role="region"
+  >
+    Here is the code block
+     
+    <br />
+    <span
+      class="p-break"
+    >
+      <br />
+       
+      <br />
+    </span>
+    <pre
+      class="codeBlock"
+    >
+      <code>
+        <span
+          class="code--backticks"
+        >
+          \`\`\`
+        </span>
+        
+1+1=2; foo(); @mention 
+ user@example.com 
+
+ #hashtag 
+ ^ 
+
+ &lt;spoiler&gt;https://example.com
+
+        <span
+          class="code--backticks"
+        >
+          \`\`\`
+        </span>
+      </code>
+    </pre>
+     
+    <br />
+    &lt;/spoiler&gt; Read it carefully
+  </span>
+</div>
+`;
+
+exports[`<PieceOfText> > should correctly process texts with inline code 1`] = `
+<div>
+  <span
+    class="Linkify"
+    dir="auto"
+    role="region"
+  >
+    Here is the code 
+    <code
+      class="inline-code"
+    >
+      <span
+        class="code--backticks"
+      >
+        \`
+      </span>
+      1+1=2; foo(); @mention user@example.com #hashtag ^ &lt;spoiler&gt;https://example.com
+      <span
+        class="code--backticks"
+      >
+        \`
+      </span>
+    </code>
+    . &lt;/spoiler&gt; Read it carefully
+  </span>
+</div>
+`;
+
+exports[`<PieceOfText> > should correctly process texts with spoilers 1`] = `
+<div>
+  <span
+    class="Linkify"
+    dir="auto"
+    role="region"
+  >
+    123 &lt;spoiler&gt; 
+    &lt;spoiler&gt;
+    <span
+      class="spoiler-hidden"
+      title="This is a spoiler. Click to reveal its contents."
+    >
+      456
+    </span>
+    &lt;/spoiler&gt;
+     789 
+    &lt;спойлер&gt;
+    <span
+      class="spoiler-hidden"
+      title="This is a spoiler. Click to reveal its contents."
+    >
+      <a
+        dir="ltr"
+        href="https://example.com/"
+        rel="noreferrer"
+        target="_blank"
+      >
+        example.com
+      </a>
+    </span>
+    &lt;/спойлер&gt;
+     123
+  </span>
+</div>
+`;

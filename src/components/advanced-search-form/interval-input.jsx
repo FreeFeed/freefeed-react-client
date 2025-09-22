@@ -14,7 +14,7 @@ export function IntervalInput({ label, filter }) {
   let num = '';
   if (m) {
     op = m[1] || '=';
-    // eslint-disable-next-line prefer-destructuring
+
     num = m[2] || '';
   }
 

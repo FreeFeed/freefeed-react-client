@@ -22,6 +22,7 @@ export function OriginalLink({
           className={style['original-link']}
           href={attachmentPreviewUrl(att.id, 'original')}
           target="_blank"
+          rel="noreferrer"
           {...props}
         >
           <span className={style['original-link__text']}>{children}</span>{' '}

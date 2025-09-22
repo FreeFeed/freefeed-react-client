@@ -191,7 +191,7 @@ async function createLightboxItem(url, attempt = 0) {
 }
 
 async function getEmbeddableItem(url, mediaType) {
-  let info = null;
+  let info;
   if (isInstagram(url)) {
     info = getInstagramEmbedInfo(url);
   } else {
@@ -274,7 +274,7 @@ async function getEmbeddableItem(url, mediaType) {
     text = `${text.slice(0, 200)}\u2026`;
   }
   const titleHTML = renderToString(
-    <a href={url} target="_blank">
+    <a href={url} target="_blank" rel="noreferrer">
       {text || url}
     </a>,
   );

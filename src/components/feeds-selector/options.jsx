@@ -84,7 +84,12 @@ export function DisplayOption({ option, context, className }) {
         )}
       </span>
       {context === 'menu' && (
-        <a href={`/${option.value}`} target="_blank" className={styles[`option__link`]}>
+        <a
+          href={`/${option.value}`}
+          target="_blank"
+          className={styles[`option__link`]}
+          rel="noreferrer"
+        >
           <Icon className={styles['dest-icon']} icon={faExternalLinkAlt} />
         </a>
       )}

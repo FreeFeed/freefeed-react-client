@@ -142,7 +142,6 @@ export function tokenToElement(token, key, text, params) {
       return <InitialCheckbox key={key} checked={isChecked(token.text)} />;
 
     case CODE_INLINE: {
-      // eslint-disable-next-line prefer-destructuring
       const ticks = token.text.match(/^`+/)[0];
       const body = token.text.slice(ticks.length, -ticks.length);
       return (

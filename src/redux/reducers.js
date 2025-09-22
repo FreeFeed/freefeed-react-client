@@ -1523,7 +1523,7 @@ export function managedGroups(state = [], action) {
           switch (note.event_type) {
             case 'group_subscription_requested': {
               if (!state.find((g) => g.id === group.id).requests.some((u) => u.id === user.id)) {
-                const newState = _.cloneDeep(state);
+                const newState = structuredClone(state);
                 newState.find((g) => g.id === group.id).requests.push(user);
                 return newState;
               }
@@ -1531,7 +1531,7 @@ export function managedGroups(state = [], action) {
             }
             case 'group_subscription_request_revoked': {
               if (state.find((g) => g.id === group.id).requests.some((u) => u.id === user.id)) {
-                return _.cloneDeep(state).map((g) => {
+                return structuredClone(state).map((g) => {
                   if (g.id === group.id) {
                     g.requests = g.requests.filter((u) => u.id !== user.id);
                     return g;

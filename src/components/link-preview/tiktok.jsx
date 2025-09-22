@@ -109,7 +109,7 @@ export default function TikTokVideoPreview({ url }) {
         </div>
         {byline && (
           <div className="info">
-            <a href={url} target="_blank" title={byline}>
+            <a href={url} target="_blank" title={byline} rel="noreferrer">
               {byline}
             </a>
           </div>
@@ -126,7 +126,7 @@ function onMessage(e) {
     return;
   }
 
-  let data = null;
+  let data;
   try {
     data = JSON.parse(e.data);
   } catch {

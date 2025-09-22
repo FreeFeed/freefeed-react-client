@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
-import { trim } from 'lodash-es';
 import { faRedo, faExclamationTriangle, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -38,7 +37,7 @@ export default function TokenRow({ id }) {
   );
   const onEdit = useCallback(() => {
     const title = prompt('Enter new token title:', token.title);
-    if (title === null || trim(title) === '') {
+    if (title === null || title.trim() === '') {
       return;
     }
     dispatch(updateAppToken(token.id, { title }));

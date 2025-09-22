@@ -20,6 +20,7 @@ exports[`PostAttachments > Displays all post attachment types 1`] = `
             class="attachment attachment--video attachment--animation--hover"
             data-pid="new-post-vi1"
             href="https://candy.freefeed.net/v4/attachments/vi1/original?redirect="
+            rel="noreferrer"
             role="figure"
             style="width: 338.2857142857143px; height: 190px;"
             target="_blank"
@@ -71,6 +72,7 @@ exports[`PostAttachments > Displays all post attachment types 1`] = `
             class="attachment attachment--image attachment--animation--hover"
             data-pid="new-post-im1"
             href="https://candy.freefeed.net/v4/attachments/im1/original?redirect="
+            rel="noreferrer"
             role="figure"
             style="width: 253.71428571428572px; height: 190px;"
             target="_blank"
@@ -142,6 +144,7 @@ exports[`PostAttachments > Displays all post attachment types 1`] = `
             <a
               class="original-link"
               href="https://candy.freefeed.net/v4/attachments/au1/original?redirect="
+              rel="noreferrer"
               target="_blank"
             >
               <span
@@ -182,6 +185,7 @@ exports[`PostAttachments > Displays all post attachment types 1`] = `
         >
           <svg
             class="original-link__icon fa-icon fa-icon-fas-paperclip"
+            focusable="false"
             xmlns="http://www.w3.org/2000/svg"
           >
             <use
@@ -194,6 +198,7 @@ exports[`PostAttachments > Displays all post attachment types 1`] = `
             <a
               class="original-link"
               href="https://candy.freefeed.net/v4/attachments/ge1/original?redirect="
+              rel="noreferrer"
               target="_blank"
             >
               <span

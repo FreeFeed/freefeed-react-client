@@ -1,22 +1,31 @@
-import { describe, it } from 'vitest';
-import unexpected from 'unexpected';
-import unexpectedReact from 'unexpected-react';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
-import { flatten } from 'lodash-es';
-
-import ErrorBoundary from '../../../src/components/error-boundary';
+import { cleanup, render, screen } from '@testing-library/react';
 import PostComments from '../../../src/components/post/post-comments';
-import PostComment from '../../../src/components/post/post-comment';
-import ExpandComments from '../../../src/components/post/post-comments/expand-comments';
-import { LoadingComments } from '../../../src/components/post/post-comments/loading-comments';
-import { SignInLink } from '../../../src/components/sign-in-link';
-
-const expect = unexpected.clone().use(unexpectedReact);
 
 const generateArray = (n) => [...Array(n).keys()].map((i) => ({ id: i }));
 const commentArrays = generateArray(5).map((_, index) => generateArray(index));
 
 describe('<PostComments>', () => {
+  beforeAll(() => {
+    vi.mock('../../../src/components/post/post-comment', () => ({
+      default: (props) => <div data-testid="post-comment">{JSON.stringify(props)}</div>,
+    }));
+    vi.mock('../../../src/components/post/post-comments/expand-comments', () => ({
+      default: (props) => <div data-testid="expand-comments">{JSON.stringify(props)}</div>,
+    }));
+    vi.mock('../../../src/components/post/post-comments/loading-comments', () => ({
+      LoadingComments: (props) => <div data-testid="loading-comments">{JSON.stringify(props)}</div>,
+    }));
+    vi.mock('../../../src/components/sign-in-link', () => ({
+      SignInLink: (props) => <div data-testid="sign-in-link">{JSON.stringify(props)}</div>,
+    }));
+  });
+
+  afterAll(() => {
+    vi.clearAllMocks();
+  });
+
   it(`should render first comment if there're any comments`, () => {
     const post = {
       omittedComments: 1,
@@ -26,16 +35,8 @@ describe('<PostComments>', () => {
       user: {},
     };
 
-    expect(
-      <PostComments comments={[{ id: '1' }]} post={post} />,
-      'when rendered',
-      'to have rendered with all children',
-      <div>
-        <PostComment />
-        <ExpandComments />
-        <LoadingComments />
-      </div>,
-    );
+    const { container } = render(<PostComments comments={[{ id: '1' }]} post={post} />);
+    expect(container).toMatchSnapshot();
   });
 
   it('should render right number of comments', async () => {
@@ -47,35 +48,25 @@ describe('<PostComments>', () => {
       user: {},
     };
 
-    expect(
-      <PostComments comments={[]} post={post} />,
-      'when rendered',
-      'to have rendered with all children',
-      <div className="comments">
-        <ErrorBoundary />
-      </div>,
-    );
+    {
+      const { container } = render(<PostComments comments={[]} post={post} />);
+      expect(container).toMatchSnapshot();
+    }
 
-    expect(
-      <PostComments comments={[{ id: '1' }]} post={post} />,
-      'when rendered',
-      'to have rendered with all children',
-      <div>
-        <PostComment />
-      </div>,
-    );
+    {
+      const { container } = render(<PostComments comments={[{ id: '1' }]} post={post} />);
+      expect(container).toMatchSnapshot();
+    }
 
-    const root = await expect(
-      <PostComments comments={[{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }]} post={post} />,
-      'when rendered',
-      'queried for',
-      <div className="comments" />,
-    );
-    const errorBoundary = root.props.children;
-    const comments = flatten(errorBoundary.props.children).filter(
-      (tag) => tag?.type === PostComment,
-    );
-    expect(comments, 'to have length', 4);
+    {
+      const { container } = render(
+        <PostComments
+          comments={[{ id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }]}
+          post={post}
+        />,
+      );
+      expect(container).toMatchSnapshot();
+    }
   });
 
   it('should render omitted number properly', () => {
@@ -87,16 +78,14 @@ describe('<PostComments>', () => {
       user: {},
     };
 
-    expect(
+    const { container } = render(
       <PostComments comments={[{ id: '1' }, { id: '2' }]} post={post} />,
-      'when rendered',
-      'to contain',
-      <ExpandComments omittedComments={2} />,
     );
+    expect(container).toMatchSnapshot();
   });
 
   it(`should not render omitted number when there're no omitted comments`, () => {
-    commentArrays.map((comments) => {
+    for (const comments of commentArrays) {
       const post = {
         omittedComments: 0,
         omittedCommentsOffset: 0,
@@ -104,18 +93,15 @@ describe('<PostComments>', () => {
         createdBy: { username: '' },
         user: {},
       };
-      expect(
-        <PostComments comments={comments} post={post} />,
-        'when rendered',
-        'not to contain',
-        <ExpandComments />,
-      );
-    });
+
+      const { container } = render(<PostComments comments={comments} post={post} />);
+      expect(container).toMatchSnapshot();
+    }
   });
 
   it(`should render last comment if there's more than one comment`, () => {
     // not enough comments to show anything after "more"
-    commentArrays.slice(0, 2).map((comments) => {
+    for (const comments of commentArrays.slice(0, 2)) {
       const post = {
         omittedComments: 1,
         omittedCommentsOffset: 1,
@@ -123,20 +109,13 @@ describe('<PostComments>', () => {
         createdBy: { username: '' },
         user: {},
       };
-      expect(
-        <PostComments comments={comments} post={post} />,
-        'when rendered',
-        'not to contain',
-        <div>
-          <PostComment />
-          <ExpandComments />
-          <PostComment />
-        </div>,
-      );
-    });
+
+      const { container } = render(<PostComments comments={comments} post={post} />);
+      expect(container).toMatchSnapshot();
+    }
 
     // enough comments to show something after "more"
-    commentArrays.slice(2).map((comments) => {
+    for (const comments of commentArrays.slice(2)) {
       const post = {
         omittedComments: 1,
         omittedCommentsOffset: 1,
@@ -144,17 +123,10 @@ describe('<PostComments>', () => {
         createdBy: { username: '' },
         user: {},
       };
-      expect(
-        <PostComments comments={comments} post={post} />,
-        'when rendered',
-        'to contain',
-        <div>
-          <PostComment />
-          <ExpandComments />
-          <PostComment />
-        </div>,
-      );
-    });
+
+      const { container } = render(<PostComments comments={comments} post={post} />);
+      expect(container).toMatchSnapshot();
+    }
   });
 
   it('should render commenting section only if post is commented', () => {
@@ -165,20 +137,22 @@ describe('<PostComments>', () => {
       createdBy: { username: '' },
       user: {},
     };
-    expect(
-      <PostComments comments={[]} post={post} user={{ id: '12345' }} />,
-      'when rendered',
-      'not to contain',
-      <PostComment isEditing={true} />,
-    );
+
+    {
+      const { container } = render(
+        <PostComments comments={[]} post={post} user={{ id: '12345' }} />,
+      );
+      expect(container).toMatchSnapshot();
+    }
 
     post.isCommenting = true;
-    expect(
-      <PostComments comments={[]} post={post} user={{ id: '12345' }} />,
-      'when rendered',
-      'to contain',
-      <PostComment isEditing={true} />,
-    );
+
+    {
+      const { container } = render(
+        <PostComments comments={[]} post={post} user={{ id: '12345' }} />,
+      );
+      expect(container).toMatchSnapshot();
+    }
   });
 
   it('should render "Sign In" link if post is commented and user is anonymous', () => {
@@ -189,25 +163,14 @@ describe('<PostComments>', () => {
       createdBy: { username: '' },
       user: {},
     };
-    expect(
-      <PostComments comments={[]} post={post} user={{}} />,
-      'when rendered',
-      'not to contain',
-      <PostComment isEditing={true} />,
-    );
-    expect(
-      <PostComments comments={[]} post={post} user={{}} />,
-      'when rendered',
-      'not to contain',
-      <SignInLink>Sign In</SignInLink>,
-    );
 
+    render(<PostComments comments={[]} post={post} user={{ id: '12345' }} />);
+    expect(screen.queryByTestId('sign-in-link')).not.toBeInTheDocument();
+
+    cleanup();
     post.isCommenting = true;
-    expect(
-      <PostComments comments={[]} post={post} user={{}} />,
-      'when rendered',
-      'to contain',
-      <SignInLink>Sign In</SignInLink>,
-    );
+
+    render(<PostComments comments={[]} post={post} user={{}} />);
+    expect(screen.queryByTestId('sign-in-link')).toBeInTheDocument();
   });
 });

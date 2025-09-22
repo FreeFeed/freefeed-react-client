@@ -105,7 +105,7 @@ export const UserProfileHead = withNouter(
         isHidden: currentUser?.frontendPreferences.homefeed.hideUsers.includes(user?.username),
         isPinned: currentUser?.frontendPreferences.pinnedGroups.includes(user?.id),
       }),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+
       [user, currentUser],
     );
 

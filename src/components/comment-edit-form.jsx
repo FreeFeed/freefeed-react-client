@@ -58,7 +58,6 @@ export function CommentEditForm({
     [isTextUpdated, draftKey, initialText, isPersistent, onCancel],
   );
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleSubmit = useCallback(
     // Need to setText to update text that doSubmit can access
     () => (setText(text), doSubmit()),
