@@ -1,13 +1,13 @@
 /* global CONFIG */
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from '../services/nouter';
+import { Link, withNouter } from '../services/nouter';
 import { resetPassword, resetPasswordValidationFail } from '../redux/action-creators';
 import { preventDefault } from '../utils';
 import LoaderContainer from './loader-container';
 
 function mapStateToProps(state, ownProps) {
-  return { ...state.resetPassForm, token: ownProps.location.query.token };
+  return { ...state.resetPassForm, token: ownProps.router.location.query.token };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -119,4 +119,4 @@ class ResetPassword extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResetPassword);
+export default withNouter(connect(mapStateToProps, mapDispatchToProps)(ResetPassword));
