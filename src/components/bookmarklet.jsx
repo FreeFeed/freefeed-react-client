@@ -13,6 +13,7 @@ import {
 
 import CreateBookmarkletPost from './create-bookmarklet-post';
 import SignIn from './signin';
+import { withNouter } from '../services/nouter';
 
 // Auto-select thumbnails on popular services
 const imagesFromURL = memoize((url) => {
@@ -48,7 +49,7 @@ class Layout extends Component {
    * initial image list by page URL
    */
   get imageUrls() {
-    return this.state.imageUrls || imagesFromURL(this.props.location.query.url);
+    return this.state.imageUrls || imagesFromURL(this.props.router.location.query.url);
   }
 
   // User has selected an image on parent frame
@@ -102,9 +103,9 @@ class Layout extends Component {
             createPostStatus={props.createPostStatus}
             lastCreatedPostId={props.lastCreatedPostId}
             user={props.user}
-            postText={`${props.location.query.title} - ${props.location.query.url}`}
+            postText={`${props.router.location.query.title} - ${props.router.location.query.url}`}
             imageUrls={this.imageUrls}
-            commentText={props.location.query.comment}
+            commentText={props.router.location.query.comment}
             createPost={props.createBookmarkletPost}
             resetPostCreateForm={props.resetPostCreateForm}
             removeImage={this.removeImage}
@@ -139,4 +140,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(selectState, mapDispatchToProps)(Layout);
+export default withNouter(connect(selectState, mapDispatchToProps)(Layout));
