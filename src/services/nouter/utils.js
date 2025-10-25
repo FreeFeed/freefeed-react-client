@@ -16,7 +16,7 @@ export function withQuery({ search, ...rest }) {
       query[key] = value;
     }
   }
-  return { ...rest, query };
+  return { ...rest, search, query };
 }
 
 /**
