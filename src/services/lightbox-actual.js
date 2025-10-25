@@ -7,7 +7,7 @@ import 'photoswipe/photoswipe.css';
 import '../../styles/shared/lighbox.scss';
 import { getFullscreenAPI } from '../utils/fullscreen';
 import { isGifLike } from '../components/post/attachments/visual/utils';
-import { pinnedElements, unscrollTo } from './unscroll';
+import { intentToScroll } from './unscroll';
 import { handlePip } from './pip-video';
 
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
@@ -53,6 +53,7 @@ function initLightbox() {
     secondaryZoomLevel: 1,
     maxZoomLevel: 2,
     pswpModule,
+    returnFocus: false,
   });
 
   new PhotoSwipeVideoPlugin(lightbox, {});
@@ -195,27 +196,14 @@ function initLightbox() {
 
   // Disable document scrolling when lightbox is open
   lightbox.on('beforeOpen', () => {
-    const scrollPosition = document.documentElement.scrollTop;
-    document.documentElement.classList.add('page--pswp-open');
     // Mobile Firefox sometimes resets scroll when the page becoming
     // 'overflow-y: hidden;'. Here we try to restore it.
-    document.documentElement.scrollTop = scrollPosition;
+    preventScroll(() => {
+      document.documentElement.classList.add('page--pswp-open');
+    });
   });
   lightbox.on('destroy', () => {
     document.documentElement.classList.remove('page--pswp-open');
-  });
-
-  // Compensate unwanted scroll after closing lightbox, which happens in some
-  // mobile browsers.
-  let pinnedEls = [];
-  lightbox.on('close', () => {
-    pinnedElements.capture();
-    pinnedEls = [...pinnedElements];
-  });
-  lightbox.on('destroy', () => {
-    const h = () => unscrollTo(pinnedEls);
-    window.addEventListener('scroll', h, { once: true });
-    setTimeout(() => window.removeEventListener('scroll', h, { once: true }), 500);
   });
 
   // Fix dimensions of media without known width/height
@@ -268,6 +256,22 @@ function initLightbox() {
     if (data.saveAsSrc) {
       onContextMenu(element, () => (element.src = data.saveAsSrc));
     }
+  });
+
+  // The 'returnFocus' option manual implementation. Photoswipe just uses
+  // `lastActiveElement.focus()` here, but if the element is partially or fully
+  // out of viewport, the page will scroll to it.
+  let lastActiveElement = null;
+  lightbox.on('beforeOpen', () => {
+    lastActiveElement = document.activeElement;
+  });
+  lightbox.on('destroy', () => {
+    if (!lastActiveElement) {
+      return;
+    }
+    // We need to keep scroll position here. We could use `.focus({ preventScroll: true })`,
+    // but it doesn't work in mobile browsers. So, we manually save the scroll position.
+    preventScroll(() => lastActiveElement.focus());
   });
 
   // Init
@@ -348,4 +352,11 @@ function onContextMenu(element, action) {
   element.addEventListener('touchend', clean, { signal });
   element.addEventListener('touchcancel', clean, { signal });
   element.addEventListener('touchmove', clean, { signal });
+}
+
+function preventScroll(action) {
+  intentToScroll();
+  const scrollPosition = document.documentElement.scrollTop;
+  action();
+  document.documentElement.scrollTop = scrollPosition;
 }

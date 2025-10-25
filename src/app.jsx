@@ -48,8 +48,26 @@ Sentry.init({
 });
 
 const history = createBrowserHistory();
+
+{
+  let lastLocationKey = null;
+  // Scroll to top on navigation events
+  history.listen((e) => {
+    // If location key is the same, then we returned back from the lightbox. The
+    // lightbox uses native pushState/back to close itself by the Back button. In
+    // this case we should not scroll to the top.
+    const locationKey = e.location.key;
+    if (locationKey !== lastLocationKey) {
+      safeScrollTo(0, 0);
+      lastLocationKey = locationKey;
+    }
+  });
+
+  // Initialize history API (assign some key to the current location)
+  history.replace({});
+}
+
 const store = configureStore(undefined, { history });
-history.listen(() => safeScrollTo(0, 0));
 
 import { bindRouteActions } from './redux/route-actions';
 import { initUnscroll, safeScrollTo } from './services/unscroll';
