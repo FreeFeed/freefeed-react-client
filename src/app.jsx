@@ -64,7 +64,12 @@ const history = createBrowserHistory();
   });
 
   // Initialize history API (assign some key to the current location)
-  history.replace({});
+  const loc = history.location;
+  history.replace({
+    pathname: loc.pathname,
+    search: loc.search,
+    hash: loc.hash,
+  });
 }
 
 const store = configureStore(undefined, { history });
