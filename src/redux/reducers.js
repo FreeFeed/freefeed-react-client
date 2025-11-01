@@ -2174,3 +2174,10 @@ export function lastAutocompleteQuery(state = '', action) {
 }
 
 export { undoEntries } from './reducers/undo';
+
+export const foundUsers = fromResponse(
+  ActionTypes.GET_SEARCH,
+  (action) => action.payload.foundUsers,
+  [],
+  setOnLocationChange([]),
+);
