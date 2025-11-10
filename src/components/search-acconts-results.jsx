@@ -5,6 +5,8 @@ import styles from './search-acconts-results.module.scss';
 import UserName from './user-name';
 import { ButtonLink } from './button-link';
 import { useNouter } from '../services/nouter';
+import { Icon } from './fontawesome-icons';
+import { faChevronRight, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
 export function SearchAccountsResults() {
   const foundUserIds = useSelector((state) => state.foundUsers);
@@ -62,6 +64,7 @@ function UsersList({ users, title = 'users' }) {
       {tooManyUsers && (
         <p>
           <ButtonLink onClick={() => setExpanded(!expanded)}>
+            <Icon icon={expanded ? faChevronUp : faChevronRight} />{' '}
             {expanded ? `Show less ${title}` : `Show all ${users.length} ${title}`}
           </ButtonLink>
         </p>
