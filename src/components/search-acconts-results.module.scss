@@ -1,0 +1,28 @@
+.usersBlock {
+  margin-bottom: 1.5em;
+}
+
+.userList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 0.5em;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 0.5em 1em;
+}
+
+.userCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5em;
+}
+
+.userPicture {
+  flex: none;
+}
+
+.userUsername {
+  opacity: 0.66;
+  font-size: 0.8em;
+}
