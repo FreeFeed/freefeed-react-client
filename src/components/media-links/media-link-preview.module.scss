@@ -1,6 +1,7 @@
 .preview {
   height: 4em;
   width: auto;
+  aspect-ratio: clamp(0.8, var(--ar, 1), 1.2);
   object-fit: cover;
   box-shadow: 0 0 0 1px rgb(0, 0, 0, 0.2);
 

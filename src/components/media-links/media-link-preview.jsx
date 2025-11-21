@@ -49,7 +49,7 @@ function FreeFeedMediaPreview({ id }) {
       .then((info) => {
         if (info?.mediaType === 'image' || info?.mediaType === 'video') {
           const height = 120;
-          const width = Math.max(90, (info.width / info.height) * height);
+          const width = Math.round((info.width / info.height) * height);
           setAttrs({
             src: attachmentPreviewUrl(id, 'image', width, height),
             width,
@@ -71,6 +71,7 @@ function FreeFeedMediaPreview({ id }) {
       alt=""
       width={attrs.width}
       height={attrs.height}
+      style={{ '--ar': attrs.width / attrs.height }}
       className={styles.preview}
       loading="lazy"
     />
@@ -83,8 +84,9 @@ function YouTubeMediaPreview({ url }) {
     <img
       src={`https://img.youtube.com/vi/${getVideoId(url)}/default.jpg`}
       alt=""
-      width={60 / aspectRatio}
+      width={Math.round(60 / aspectRatio)}
       height={60}
+      style={{ '--ar': 1 / aspectRatio }}
       className={styles.preview}
       loading="lazy"
     />
