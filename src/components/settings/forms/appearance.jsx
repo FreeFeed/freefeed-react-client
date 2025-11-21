@@ -115,6 +115,7 @@ export default function AppearanceForm() {
   const hideNSFWContent = useField('hideNSFWContent', form.form);
   const isOrbitDisabledField = useField('isOrbitDisabledField', form.form);
   const commentsTimestamps = useField('commentsTimestamps', form.form);
+  const commentsShowMediaPreviews = useField('commentsShowMediaPreviews', form.form);
   const timeAmPm = useField('timeAmPm', form.form);
   const timeAbsolute = useField('timeAbsolute', form.form);
   const enableBeta = useField('enableBeta', form.form);
@@ -432,6 +433,13 @@ export default function AppearanceForm() {
               Show timestamps for comments
             </label>
           </div>
+
+          <div className="checkbox">
+            <label>
+              <CheckboxInput field={commentsShowMediaPreviews} />
+              Show previews of media links in comments
+            </label>
+          </div>
         </div>
         <h5>Completely hide (don&#x2019;t even show the placeholder):</h5>
         <div className="form-group">
@@ -674,6 +682,7 @@ function initialValues({
     allowLinksPreview: frontend.allowLinksPreview,
     hideNSFWContent: !isNSFWVisible,
     commentsTimestamps: frontend.comments.showTimestamps,
+    commentsShowMediaPreviews: frontend.comments.showMediaPreviews,
     timeAmPm: frontend.timeDisplay.amPm ? '1' : '0',
     timeAbsolute: frontend.timeDisplay.absolute ? '1' : '0',
     enableBeta: isBetaChannel,
@@ -735,6 +744,7 @@ function prefUpdaters(values) {
           highlightComments: values.highlightComments,
           showTimestamps: values.commentsTimestamps,
           hideRepliesToBanned: values.hideRepliesToBanned,
+          showMediaPreviews: values.commentsShowMediaPreviews,
         },
         allowLinksPreview: values.allowLinksPreview,
         timeDisplay: {
