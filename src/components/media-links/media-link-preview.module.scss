@@ -1,0 +1,18 @@
+.preview {
+  height: 4em;
+  width: auto;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px rgb(0, 0, 0, 0.2);
+
+  &:hover {
+    box-shadow: 0 0 0 1px rgb(0, 0, 0, 1);
+  }
+
+  :global(.dark-theme) & {
+    box-shadow: 0 0 0 1px rgb(255, 255, 255, 0.2);
+
+    &:hover {
+      box-shadow: 0 0 0 1px rgb(255, 255, 255, 0.8);
+    }
+  }
+}

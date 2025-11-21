@@ -105,7 +105,7 @@ export function createErrorItem(error) {
 
 const freefeedPathRegex = /^\/attachments\/(?:\w+\/)?([\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12})/;
 
-function freefeedAttachmentId(url) {
+export function freefeedAttachmentId(url) {
   try {
     const urlObj = new URL(url);
     if (!CONFIG.attachmentDomains.includes(urlObj.hostname)) {

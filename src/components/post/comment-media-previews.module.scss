@@ -1,0 +1,9 @@
+@use '../../../styles/shared/mixins';
+
+.previews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.33em;
+  margin-left: mixins.rem(19px);
+  margin-top: 0.25em;
+}

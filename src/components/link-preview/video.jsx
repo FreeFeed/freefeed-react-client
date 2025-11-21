@@ -174,7 +174,7 @@ export function getVideoType(url) {
   return null;
 }
 
-function getVideoId(url) {
+export function getVideoId(url) {
   let m;
   if ((m = YOUTUBE_VIDEO_RE.exec(url))) {
     return m[1];
@@ -200,7 +200,7 @@ function getVideoId(url) {
   return null;
 }
 
-function getDefaultAspectRatio(url) {
+export function getDefaultAspectRatio(url) {
   if (YOUTUBE_VIDEO_RE.test(url)) {
     return isYoutubeShort(url) ? 16 / 9 : 9 / 16;
   }
