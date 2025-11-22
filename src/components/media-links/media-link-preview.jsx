@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { freefeedAttachmentId, IMAGE, useMediaLink, VIDEO } from './helpers';
 import { getAttachmentInfo } from '../../services/batch-attachments-info';
 import { attachmentPreviewUrl } from '../../services/api';
@@ -6,7 +6,8 @@ import { getDefaultAspectRatio, getVideoId, T_YOUTUBE_VIDEO } from '../link-prev
 import styles from './media-link-preview.module.scss';
 
 export function MediaLinkPreview({ href: url }) {
-  const [mediaType, handleClick] = useMediaLink(url);
+  const previewId = useId();
+  const [mediaType, handleClick] = useMediaLink(url, { previewId });
 
   if (mediaType !== IMAGE && mediaType !== VIDEO && mediaType !== T_YOUTUBE_VIDEO) {
     return null;
@@ -17,7 +18,7 @@ export function MediaLinkPreview({ href: url }) {
   if (attId) {
     return (
       <a href={url} target="_blank" rel="noreferrer" onClick={handleClick}>
-        <FreeFeedMediaPreview id={attId} />
+        <FreeFeedMediaPreview id={attId} previewId={previewId} />
       </a>
     );
   }
@@ -25,7 +26,7 @@ export function MediaLinkPreview({ href: url }) {
   if (mediaType === T_YOUTUBE_VIDEO) {
     return (
       <a href={url} target="_blank" rel="noreferrer" onClick={handleClick}>
-        <YouTubeMediaPreview url={url} />
+        <YouTubeMediaPreview url={url} previewId={previewId} />
       </a>
     );
   }
@@ -36,12 +37,20 @@ export function MediaLinkPreview({ href: url }) {
 
   return (
     <a href={url} target="_blank" rel="noreferrer" onClick={handleClick}>
-      <img src={url} alt="" width={60} height={60} className={styles.preview} loading="lazy" />
+      <img
+        src={url}
+        alt=""
+        width={60}
+        height={60}
+        className={styles.preview}
+        loading="lazy"
+        id={previewId}
+      />
     </a>
   );
 }
 
-function FreeFeedMediaPreview({ id }) {
+function FreeFeedMediaPreview({ id, previewId }) {
   const [attrs, setAttrs] = useState(null);
 
   useEffect(() => {
@@ -74,11 +83,12 @@ function FreeFeedMediaPreview({ id }) {
       style={{ '--ar': attrs.width / attrs.height }}
       className={styles.preview}
       loading="lazy"
+      id={previewId}
     />
   ) : null;
 }
 
-function YouTubeMediaPreview({ url }) {
+function YouTubeMediaPreview({ url, previewId }) {
   const aspectRatio = getDefaultAspectRatio(url);
   return (
     <img
@@ -89,6 +99,7 @@ function YouTubeMediaPreview({ url }) {
       style={{ '--ar': 1 / aspectRatio }}
       className={styles.preview}
       loading="lazy"
+      id={previewId}
     />
   );
 }
