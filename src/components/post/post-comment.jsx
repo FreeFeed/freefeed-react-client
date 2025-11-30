@@ -29,6 +29,7 @@ import { PostCommentMore } from './post-comment-more';
 import { PostCommentPreview } from './post-comment-preview';
 import { CommentProvider } from './post-comment-provider';
 import { DraftIndicator } from './draft-indicator';
+import { CommentMediaPreviews } from './comment-media-previews';
 
 class PostComment extends Component {
   commentContainer;
@@ -380,6 +381,10 @@ class PostComment extends Component {
     );
   }
 
+  renderMediaPreviews() {
+    return this.props.showMediaPreviews ? <CommentMediaPreviews text={this.props.body} /> : null;
+  }
+
   render() {
     const className = classnames({
       comment: true,
@@ -403,6 +408,7 @@ class PostComment extends Component {
       >
         {this.renderCommentIcon()}
         {this.renderBody()}
+        {this.renderMediaPreviews()}
         {this.renderPreview()}
       </div>
     );
@@ -415,6 +421,9 @@ function selectState(state, ownProps) {
   const showTimestamps =
     state.user.frontendPreferences?.comments?.showTimestamps ||
     CONFIG.frontendPreferences.defaultValues.comments.showTimestamps;
+  const showMediaPreviews =
+    state.user.frontendPreferences?.comments?.showMediaPreviews ||
+    CONFIG.frontendPreferences.defaultValues.comments.showMediaPreviews;
   const { highlightComments } = state.user.frontendPreferences.comments;
   const isReplyToBanned = (() => {
     if (
@@ -435,6 +444,7 @@ function selectState(state, ownProps) {
   return {
     ...editState,
     showTimestamps,
+    showMediaPreviews,
     highlightComments,
     isEditing: ownProps.isEditing || editState.isEditing,
     submitMode: state.submitMode,

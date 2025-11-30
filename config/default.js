@@ -71,6 +71,7 @@ export default {
         highlightComments: true,
         showTimestamps: false,
         hideRepliesToBanned: false,
+        showMediaPreviews: false,
       },
       allowLinksPreview: false,
       readMoreStyle: 'modern',
