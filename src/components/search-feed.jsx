@@ -12,6 +12,7 @@ import { useBool } from './hooks/bool';
 import { ButtonLink } from './button-link';
 import { Icon } from './fontawesome-icons';
 import { SignInLink } from './sign-in-link';
+import { SearchAccountsResults } from './search-acconts-results';
 
 const AdvancedSearchForm = lazyComponent(
   () =>
@@ -83,8 +84,16 @@ function FeedHandler(props) {
         {(!queryString || advFormVisible) && <AdvancedSearchForm />}
         {props.entries.length > 0 && <hr />}
       </div>
+      <SearchAccountsResults />
       {props.entries.length > 0 && (
-        <PaginatedView {...props}>
+        <PaginatedView
+          {...props}
+          firstPageHead={
+            <h4 className="user-subheader" style={{ marginBottom: 0 }}>
+              Found posts
+            </h4>
+          }
+        >
           <Feed {...props} />
         </PaginatedView>
       )}
