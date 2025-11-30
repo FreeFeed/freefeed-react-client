@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.142.0] - Not released
 ### Added
 - Show found users and groups on the search results page.
+- Show previews of media links in comments (disabled by default). Supported link
+  types: FreeFeed images and videos, external images, YouTube videos and shorts.
 
 ## [1.141.3] - 2025-10-28
 ### Fixed

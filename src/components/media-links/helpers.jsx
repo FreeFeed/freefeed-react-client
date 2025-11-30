@@ -16,7 +16,7 @@ import { pauseVimeoVideo, playVimeoVideo } from './vimeo-api';
 
 export const mediaLinksContext = createContext([]);
 
-export function useMediaLink(url) {
+export function useMediaLink(url, { previewId } = {}) {
   const items = useContext(mediaLinksContext);
   const [mediaType, setMediaType] = useState(() => getMediaType(url));
   const index = useMemo(() => {
@@ -29,6 +29,9 @@ export function useMediaLink(url) {
         } else if (item.mediaType) {
           setMediaType(item.mediaType);
         }
+        if (previewId) {
+          item.pid = previewId;
+        }
         items[index] = item;
         return null;
       })
@@ -36,7 +39,7 @@ export function useMediaLink(url) {
     return index;
     // Items are reference-immutable, url is truly immutable
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [previewId]);
 
   const handleClick = useEvent((e) => {
     if (!mediaType || !isLeftClick(e)) {
@@ -105,7 +108,7 @@ export function createErrorItem(error) {
 
 const freefeedPathRegex = /^\/attachments\/(?:\w+\/)?([\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12})/;
 
-function freefeedAttachmentId(url) {
+export function freefeedAttachmentId(url) {
   try {
     const urlObj = new URL(url);
     if (!CONFIG.attachmentDomains.includes(urlObj.hostname)) {
