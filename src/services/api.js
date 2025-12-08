@@ -893,6 +893,13 @@ export function getMatchedUsers({ query }, fetchOptions = {}) {
   });
 }
 
+export function getMatchedHashtags({ query }, fetchOptions = {}) {
+  return fetch(`${apiPrefix}/hashtags/sparseMatches?qs=${encodeURIComponent(query)}`, {
+    ...getRequestOptions(),
+    ...fetchOptions,
+  });
+}
+
 export function undoAction({ subject, token }) {
   return fetch(`${apiPrefix}/undo/${subject}`, postRequestOptions('POST', { token }));
 }

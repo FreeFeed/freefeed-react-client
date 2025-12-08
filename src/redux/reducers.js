@@ -2173,6 +2173,14 @@ export function lastAutocompleteQuery(state = '', action) {
   return state;
 }
 
+const initialHashtagsAutocompleteVariants = [];
+export const hashtagsAutocompleteVariants = fromResponse(
+  ActionTypes.GET_MATCHED_HASHTAGS,
+  (action) => action.payload.hashtags,
+  initialHashtagsAutocompleteVariants,
+  setOnLocationChange(initialHashtagsAutocompleteVariants),
+);
+
 export { undoEntries } from './reducers/undo';
 
 export const foundUsers = fromResponse(
