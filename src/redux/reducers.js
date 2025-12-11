@@ -2173,6 +2173,13 @@ export function lastAutocompleteQuery(state = '', action) {
   return state;
 }
 
+export function lastHashtagsAutocompleteQuery(state = '', action) {
+  if (action.type === response(ActionTypes.GET_MATCHED_HASHTAGS)) {
+    return action.request.query;
+  }
+  return state;
+}
+
 const initialHashtagsAutocompleteVariants = [];
 export const hashtagsAutocompleteVariants = fromResponse(
   ActionTypes.GET_MATCHED_HASHTAGS,
