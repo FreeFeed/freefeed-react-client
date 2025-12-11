@@ -30,6 +30,7 @@ import {
   keyFromRequestPayload,
   baseType,
 } from './async-helpers';
+import { normalizeHashtag } from '../utils/sparse-match/normalize-hashtags.js';
 
 const frontendPrefsConfig = CONFIG.frontendPreferences;
 
@@ -2183,7 +2184,15 @@ export function lastHashtagsAutocompleteQuery(state = '', action) {
 const initialHashtagsAutocompleteVariants = [];
 export const hashtagsAutocompleteVariants = fromResponse(
   ActionTypes.GET_MATCHED_HASHTAGS,
-  (action) => action.payload.hashtags,
+  (action) =>
+    action.payload.hashtags.map((v) => {
+      const norm = normalizeHashtag(v.name);
+      return {
+        ...v,
+        normalized: norm.output,
+        mapping: norm.mapping,
+      };
+    }),
   initialHashtagsAutocompleteVariants,
   setOnLocationChange(initialHashtagsAutocompleteVariants),
 );

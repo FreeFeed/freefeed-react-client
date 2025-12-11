@@ -7,11 +7,12 @@ import { getMatchedHashtags } from '../../redux/action-creators';
 import style from './autocomplete.module.scss';
 import { HighlightText } from './highlight-text';
 import { getRankedNames } from './ranked-names';
+import { normalizeHashtag } from '../../utils/sparse-match/normalize-hashtags';
 
 export function HashtagSelector({ query, events, onSelect }) {
-  query = query.toLowerCase();
+  query = normalizeHashtag(query).output;
   const dispatch = useDispatch();
-  const [hashtags, compare] = useHashtagVariants();
+  const [hashtags, compare, htMap] = useHashtagVariants();
 
   // Request hashtags with debounce to avoid interrupting input events.
   // Skip request if we already have results for a prefix of the current query.
@@ -69,7 +70,7 @@ export function HashtagSelector({ query, events, onSelect }) {
         break;
       case 'Enter':
       case 'Tab':
-        onSelect(matches[cursor]?.text ?? query);
+        onSelect(matches[cursor].text ? htMap.get(matches[cursor].text).name : query);
         break;
     }
   });
@@ -84,22 +85,40 @@ export function HashtagSelector({ query, events, onSelect }) {
     <div className={style.selector}>
       <ul className={style.list}>
         {matches.map((match, idx) => (
-          <Item key={match.text} match={match} isCurrent={idx === cursor} onClick={onSelect} />
+          <Item
+            key={match.text}
+            variant={htMap.get(match.text)}
+            match={match}
+            isCurrent={idx === cursor}
+            onClick={onSelect}
+          />
         ))}
       </ul>
     </div>
   );
 }
 
-function Item({ match, isCurrent, onClick }) {
-  const clk = useEvent(() => onClick(match.text));
+function Item({ variant, match, isCurrent, onClick }) {
+  const clk = useEvent(() => onClick(variant.name));
+
+  // Convert matches from normalized string indices to original string indices
+  const originalMatches = useMemo(() => {
+    const result = [];
+    for (const idx of match.matches) {
+      const mapped = variant.mapping[idx];
+      if (mapped) {
+        result.push(...mapped);
+      }
+    }
+    return result;
+  }, [match.matches, variant.mapping]);
 
   return (
     <li className={cn(style.item, isCurrent && style.itemCurrent)} onClick={clk}>
       <span>#</span>
       <span className={style.itemText}>
         <span className={style.userName}>
-          <HighlightText text={match.text} matches={match.matches} />
+          <HighlightText text={variant.name} matches={originalMatches} />
         </span>
       </span>
     </li>
@@ -116,12 +135,14 @@ function useHashtagVariants() {
 
     const ownHashtags = new Set();
     const otherHashtags = new Set();
+    const hashtagsMap = new Map();
     for (const v of variants) {
       if (v.is_own) {
-        ownHashtags.add(v.name);
+        ownHashtags.add(v.normalized);
       } else {
-        otherHashtags.add(v.name);
+        otherHashtags.add(v.normalized);
       }
+      hashtagsMap.set(v.normalized, v);
     }
 
     const rankedNames = getRankedNames(ownHashtags, otherHashtags);
@@ -135,6 +156,6 @@ function useHashtagVariants() {
       return bRank - aRank;
     }
 
-    return [variants.map((v) => v.name), compare];
+    return [variants.map((v) => v.normalized), compare, hashtagsMap];
   }, [lastQuery, variants]);
 }
