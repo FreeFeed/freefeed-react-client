@@ -7,9 +7,16 @@ import { Selector } from './selector';
 
 // There should be no alphanumeric characters right before the "@" (to exclude
 // email-like strings)
-const defaultAnchor = /(^|[^a-z\d])@/gi;
+const defaultUsernameAnchor = /(^|[^a-z\d])@/gi;
+const defaultHashtagAnchor = /(^|[^a-z\d])#/gi;
 
-export function Autocomplete({ inputRef, context, anchor = defaultAnchor }) {
+export function Autocomplete({
+  inputRef,
+  context,
+  usernameAnchor = defaultUsernameAnchor,
+  hashtagAnchor = defaultHashtagAnchor,
+}) {
+  const [queryType, setQueryType] = useState(/** @type {'username'|'hashtag'|null}*/ null);
   const [query, setQuery] = useState(/** @type {string|null}*/ null);
 
   // Special case for the "@username" in the search bar
@@ -40,7 +47,22 @@ export function Autocomplete({ inputRef, context, anchor = defaultAnchor }) {
       if (e.type === 'selectionchange' && document.activeElement !== input) {
         return;
       }
-      const matchPos = getQueryPosition(input, anchor);
+      let type = null;
+      let matchPos = null;
+      if (usernameAnchor) {
+        matchPos = getQueryPosition(input, usernameAnchor);
+        if (matchPos) {
+          type = 'username';
+        }
+      }
+      if (hashtagAnchor && !type) {
+        matchPos = getQueryPosition(input, hashtagAnchor);
+        if (matchPos) {
+          type = 'hashtag';
+        }
+      }
+
+      setQueryType(type);
       setQuery(matchPos ? input.value.slice(matchPos[0], matchPos[1]) : null);
       setAtStart(context === 'search' && matchPos?.[0] === 1 && input.value.charAt(0) === '@');
     };
@@ -67,15 +89,18 @@ export function Autocomplete({ inputRef, context, anchor = defaultAnchor }) {
       document.removeEventListener('selectionchange', inputHandler);
       input.removeEventListener('keydown', keyHandler, { capture: true });
     };
-  }, [anchor, context, inputRef, keyHandler]);
+  }, [usernameAnchor, context, inputRef, keyHandler, hashtagAnchor]);
 
-  const onSelectHandler = useEvent((text) => replaceQuery(inputRef.current, text, anchor));
+  const onSelectHandler = useEvent((text) =>
+    replaceQuery(inputRef.current, text, queryType === 'username' ? usernameAnchor : hashtagAnchor),
+  );
 
   if (query) {
     return (
       <div className={style.wrapper}>
         <Selector
           query={query}
+          queryType={queryType}
           events={events}
           onSelect={onSelectHandler}
           context={context}
