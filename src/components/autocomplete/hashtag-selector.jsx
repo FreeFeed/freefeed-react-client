@@ -69,7 +69,7 @@ export function HashtagSelector({ query, events, onSelect }) {
         break;
       case 'Enter':
       case 'Tab':
-        onSelect(matches[cursor].text);
+        onSelect(matches[cursor]?.text ?? query);
         break;
     }
   });
