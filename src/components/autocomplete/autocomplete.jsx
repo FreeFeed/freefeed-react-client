@@ -4,12 +4,20 @@ import { EventEmitter } from '../../services/drafts-events';
 import { setReactInputValue } from '../../utils/set-react-input-value';
 import style from './autocomplete.module.scss';
 import { Selector } from './selector';
+import {
+  defaultHashtagAnchor,
+  defaultUsernameAnchor,
+  hashtagPattern,
+  usernamePattern,
+} from './patterns';
 
-// There should be no alphanumeric characters right before the "@" (to exclude
-// email-like strings)
-const defaultAnchor = /(^|[^a-z\d])@/gi;
-
-export function Autocomplete({ inputRef, context, anchor = defaultAnchor }) {
+export function Autocomplete({
+  inputRef,
+  context,
+  usernameAnchor = defaultUsernameAnchor,
+  hashtagAnchor = defaultHashtagAnchor,
+}) {
+  const [queryType, setQueryType] = useState(/** @type {'username'|'hashtag'|null}*/ null);
   const [query, setQuery] = useState(/** @type {string|null}*/ null);
 
   // Special case for the "@username" in the search bar
@@ -40,7 +48,22 @@ export function Autocomplete({ inputRef, context, anchor = defaultAnchor }) {
       if (e.type === 'selectionchange' && document.activeElement !== input) {
         return;
       }
-      const matchPos = getQueryPosition(input, anchor);
+      let type = null;
+      let matchPos = null;
+      if (usernameAnchor) {
+        matchPos = getQueryPosition(input, usernameAnchor, usernamePattern);
+        if (matchPos) {
+          type = 'username';
+        }
+      }
+      if (hashtagAnchor && !type) {
+        matchPos = getQueryPosition(input, hashtagAnchor, hashtagPattern);
+        if (matchPos) {
+          type = 'hashtag';
+        }
+      }
+
+      setQueryType(type);
       setQuery(matchPos ? input.value.slice(matchPos[0], matchPos[1]) : null);
       setAtStart(context === 'search' && matchPos?.[0] === 1 && input.value.charAt(0) === '@');
     };
@@ -67,15 +90,23 @@ export function Autocomplete({ inputRef, context, anchor = defaultAnchor }) {
       document.removeEventListener('selectionchange', inputHandler);
       input.removeEventListener('keydown', keyHandler, { capture: true });
     };
-  }, [anchor, context, inputRef, keyHandler]);
+  }, [usernameAnchor, context, inputRef, keyHandler, hashtagAnchor]);
 
-  const onSelectHandler = useEvent((text) => replaceQuery(inputRef.current, text, anchor));
+  const onSelectHandler = useEvent((text) =>
+    replaceQuery(
+      inputRef.current,
+      text,
+      queryType === 'username' ? usernameAnchor : hashtagAnchor,
+      queryType === 'username' ? usernamePattern : hashtagPattern,
+    ),
+  );
 
   if (query) {
     return (
       <div className={style.wrapper}>
         <Selector
           query={query}
+          queryType={queryType}
           events={events}
           onSelect={onSelectHandler}
           context={context}
@@ -104,7 +135,7 @@ export function Autocomplete({ inputRef, context, anchor = defaultAnchor }) {
  * @param {HTMLInputElement|HTMLTextAreaElement} input
  * @returns {[number, number]|null}
  */
-function getQueryPosition({ value, selectionStart }, anchor) {
+function getQueryPosition({ value, selectionStart }, anchor, pattern) {
   anchor.lastIndex = 0;
   while (anchor.exec(value) !== null) {
     const pos = anchor.lastIndex;
@@ -112,7 +143,7 @@ function getQueryPosition({ value, selectionStart }, anchor) {
       break;
     }
 
-    const match = value.slice(pos).match(/^[a-z\d-]+/i)?.[0];
+    const match = value.slice(pos).match(pattern)?.[0];
     // Check that the caret is inside the match or is at its edge
     if (match && match.length > selectionStart - pos - 1) {
       return [pos, pos + match.length];
@@ -130,8 +161,8 @@ function getQueryPosition({ value, selectionStart }, anchor) {
  * @param {RegExp} anchor
  * @returns {void}
  */
-function replaceQuery(input, replacement, anchor) {
-  const matchPos = getQueryPosition(input, anchor);
+function replaceQuery(input, replacement, anchor, pattern) {
+  const matchPos = getQueryPosition(input, anchor, pattern);
   if (!matchPos) {
     return;
   }

@@ -1407,6 +1407,15 @@ export function getMatchedUsers(query, fetchOptions) {
   };
 }
 
+export function getMatchedHashtags(query, fetchOptions) {
+  return {
+    type: ActionTypes.GET_MATCHED_HASHTAGS,
+    apiRequest: Api.getMatchedHashtags,
+    payload: { query },
+    fetchOptions,
+  };
+}
+
 export function undoAction(subject, token) {
   return {
     type: ActionTypes.UNDO_ACTION,
