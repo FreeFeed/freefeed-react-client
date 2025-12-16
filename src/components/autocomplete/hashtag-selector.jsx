@@ -114,7 +114,7 @@ function Item({ variant, match, isCurrent, onClick }) {
   }, [match.matches, variant.mapping]);
 
   return (
-    <li className={cn(style.item, isCurrent && style.itemCurrent)} onClick={clk}>
+    <li className={cn(style.item, style.itemHashtag, isCurrent && style.itemCurrent)} onClick={clk}>
       <span>#</span>
       <span className={style.itemText}>
         <span className={style.userName}>
