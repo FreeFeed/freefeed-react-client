@@ -17,6 +17,7 @@ $zIndex: 10;
   box-shadow:
     0 0 4px rgb(0, 0, 0, 0.15),
     0 2px 4px rgb(0, 0, 0, 0.29);
+  transform: translateZ(0); // prevents Safari from glitching
 
   :global(.dark-theme) & {
     color: dark-vars.$text-color;
@@ -33,13 +34,11 @@ $zIndex: 10;
   position: fixed;
   top: auto;
   bottom: 0;
-
-  // Support for the iDevices
-  padding-bottom: string.unquote('env(safe-area-inset-bottom)');
+  padding-bottom: string.unquote('env(safe-area-inset-bottom)'); // Support for the iDevices
 
   @media (min-width: 451px) {
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateZ(0);
   }
 
   @media (max-width: 450px) {
@@ -52,11 +51,11 @@ $zIndex: 10;
     transition:
       transform 0.2s,
       opacity 0.2s;
-    transform: translateY(0);
+    transform: translateY(0) translateZ(0);
     opacity: 1;
 
     &.initial {
-      transform: translateY(40px);
+      transform: translateY(40px) translateZ(0);
       opacity: 0.5;
     }
   }

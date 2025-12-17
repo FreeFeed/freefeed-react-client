@@ -30,6 +30,7 @@ import {
   keyFromRequestPayload,
   baseType,
 } from './async-helpers';
+import { normalizeHashtag } from '../utils/sparse-match/normalize-hashtags.js';
 
 const frontendPrefsConfig = CONFIG.frontendPreferences;
 
@@ -2172,6 +2173,29 @@ export function lastAutocompleteQuery(state = '', action) {
   }
   return state;
 }
+
+export function lastHashtagsAutocompleteQuery(state = '', action) {
+  if (action.type === response(ActionTypes.GET_MATCHED_HASHTAGS)) {
+    return action.request.query;
+  }
+  return state;
+}
+
+const initialHashtagsAutocompleteVariants = [];
+export const hashtagsAutocompleteVariants = fromResponse(
+  ActionTypes.GET_MATCHED_HASHTAGS,
+  (action) =>
+    action.payload.hashtags.map((v) => {
+      const norm = normalizeHashtag(v.name);
+      return {
+        ...v,
+        normalized: norm.output,
+        mapping: norm.mapping,
+      };
+    }),
+  initialHashtagsAutocompleteVariants,
+  setOnLocationChange(initialHashtagsAutocompleteVariants),
+);
 
 export { undoEntries } from './reducers/undo';
 
