@@ -18,7 +18,7 @@ export default function PrivacyPage() {
   const formStatus = useSelector((state) => state.settingsForms.deactivateStatus);
 
   const usernameS = useMemo(() => {
-    if (userInfo.username.endsWith('s')) {
+    if (userInfo.username?.endsWith('s')) {
       return `${userInfo.username}\u2019`;
     }
     return `${userInfo.username}\u2019s`;

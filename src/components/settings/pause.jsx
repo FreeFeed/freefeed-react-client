@@ -18,14 +18,14 @@ export default function PausePage() {
   const formStatus = useSelector((state) => state.settingsForms.pauseStatus);
 
   const usernameS = useMemo(() => {
-    if (userInfo.username.endsWith('s')) {
+    if (userInfo.username?.endsWith('s')) {
       return `${userInfo.username}\u2019`;
     }
     return `${userInfo.username}\u2019s`;
   }, [userInfo.username]);
 
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState(userInfo.preferences.pauseMessage || '');
+  const [message, setMessage] = useState(userInfo.preferences?.pauseMessage || '');
   const onPasswordChange = useCallback(({ target }) => setPassword(target.value), []);
   const onMessageChange = useCallback(({ target }) => setMessage(target.value), []);
 
