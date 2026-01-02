@@ -9,6 +9,7 @@ const AppearancePage = lazyRetry(() => import('./appearance'));
 const PrivacyPage = lazyRetry(() => import('./privacy'));
 const NotificationsPage = lazyRetry(() => import('./notififications'));
 const DeactivatePage = lazyRetry(() => import('./deactivate'));
+const PausePage = lazyRetry(() => import('./pause'));
 const AuthSessionsPage = lazyRetry(() => import('./auth-sessions'));
 const SanitizeMediaPage = lazyRetry(() => import('./sanitize-media'));
 
@@ -23,6 +24,7 @@ export function settingsRoute(rootPath) {
         <Route path="appearance" component={AppearancePage} />
         <Route path="notifications" component={NotificationsPage} />
         <Route path="deactivate" component={DeactivatePage} />
+        <Route path="pause" component={PausePage} />
         <Route path="sanitize-media" component={SanitizeMediaPage} />
         {tokensRoute('app-tokens')}
       </Switch>

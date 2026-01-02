@@ -39,8 +39,16 @@ class UserFeed extends Component {
       return (
         <div className="box-body">
           <p className="alert alert-warning">
-            <b>{viewUser.screenName}</b> account has been deleted. This page still exists as a stub
-            for the username, but this {viewUser.type} is not in FreeFeed anymore.
+            {viewUser.goneStatus === 'paused' ? (
+              <>
+                <b>{viewUser.screenName}</b> has paused their account. They may return someday.
+              </>
+            ) : (
+              <>
+                <b>{viewUser.screenName}</b> account has been deleted. This page still exists as a
+                stub for the username, but this {viewUser.type} is not in FreeFeed anymore.
+              </>
+            )}
           </p>
         </div>
       );
