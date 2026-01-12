@@ -39,16 +39,7 @@ class UserFeed extends Component {
       return (
         <div className="box-body">
           <p className="alert alert-warning">
-            {viewUser.goneStatus === 'paused' ? (
-              <>
-                <b>{viewUser.screenName}</b> has paused their account. They may return someday.
-              </>
-            ) : (
-              <>
-                <b>{viewUser.screenName}</b> account has been deleted. This page still exists as a
-                stub for the username, but this {viewUser.type} is not in FreeFeed anymore.
-              </>
-            )}
+            <UserGonePanel user={viewUser} />
           </p>
         </div>
       );
@@ -114,3 +105,30 @@ function select(state) {
 }
 
 export default connect(select)(UserFeed);
+
+function UserGonePanel({ user }) {
+  if (!user.isGone) {
+    return null;
+  }
+  if (user.goneStatus === 'paused') {
+    if (user.description) {
+      return (
+        <>
+          <b>{user.screenName}</b> has paused their account and left a message:{' '}
+          <em>{user.description}</em>
+        </>
+      );
+    }
+    return (
+      <>
+        <b>{user.screenName}</b> has paused their account. They may return someday.
+      </>
+    );
+  }
+  return (
+    <>
+      <b>{user.screenName}</b> account has been deleted. This page still exists as a stub for the
+      username, but this {user.type} is not in FreeFeed anymore.
+    </>
+  );
+}
