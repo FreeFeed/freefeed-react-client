@@ -726,6 +726,10 @@ export function suspendMe({ password }) {
   return fetch(`${apiPrefix}/users/suspend-me`, postRequestOptions('POST', { password }));
 }
 
+export function pauseMe({ password, message }) {
+  return fetch(`${apiPrefix}/users/pause-me`, postRequestOptions('POST', { password, message }));
+}
+
 export function resumeMe({ resumeToken }) {
   return fetch(`${apiPrefix}/users/resume-me`, postRequestOptions('POST', { resumeToken }));
 }

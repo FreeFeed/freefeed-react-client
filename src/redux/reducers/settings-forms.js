@@ -8,6 +8,7 @@ import {
   UPDATE_USER_NOTIFICATION_PREFERENCES,
   DEACTIVATE_USER,
   ACTIVATE_USER,
+  PAUSE_USER,
 } from '../action-types';
 import { initialAsyncState, asyncState } from '../async-helpers';
 import { setOnLocationChange } from './helpers';
@@ -26,5 +27,6 @@ export const settingsForms = combineReducers({
   ),
   privacyStatus: asyncState(UPDATE_USER, setOnLocationChange(initialAsyncState)),
   deactivateStatus: asyncState(DEACTIVATE_USER, setOnLocationChange(initialAsyncState)),
+  pauseStatus: asyncState(PAUSE_USER, setOnLocationChange(initialAsyncState)),
   activateStatus: asyncState(ACTIVATE_USER, setOnLocationChange(initialAsyncState)),
 });
