@@ -289,7 +289,7 @@ export const UserProfileHead = withNouter(
           </div>
         </div>
         <div className={styles.description}>
-          <PieceOfText text={user.description} isExpanded={true} />
+          {user.isGone ? null : <PieceOfText text={user.description} isExpanded={true} />}
         </div>
         {isAuthenticated && !isCurrentUser && (
           <>
