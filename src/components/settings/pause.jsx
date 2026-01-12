@@ -11,9 +11,11 @@ import { Icon } from '../fontawesome-icons';
 import { SettingsPage } from './layout';
 import { pauseMe, unauthenticated } from '../../redux/action-creators';
 import styles from './settings.module.scss';
+import { useNouter } from '../../services/nouter';
 
 export default function PausePage() {
   const dispatch = useDispatch();
+  const { navigate } = useNouter();
   const userInfo = useSelector((state) => state.user);
   const formStatus = useSelector((state) => state.settingsForms.pauseStatus);
 
@@ -39,10 +41,11 @@ export default function PausePage() {
       }
       doSequence(dispatch)(
         (dispatch) => dispatch(pauseMe(password, message.trim())),
+        () => navigate(`/${userInfo.username}`),
         (dispatch) => dispatch(unauthenticated()),
       );
     },
-    [canSubmit, dispatch, password, message],
+    [canSubmit, dispatch, navigate, password, message, userInfo.username],
   );
 
   return (

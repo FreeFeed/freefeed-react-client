@@ -11,9 +11,11 @@ import { Icon } from '../fontawesome-icons';
 import { SettingsPage } from './layout';
 import { suspendMe, unauthenticated } from './../../redux/action-creators';
 import styles from './settings.module.scss';
+import { useNouter } from '../../services/nouter';
 
 export default function PrivacyPage() {
   const dispatch = useDispatch();
+  const { navigate } = useNouter();
   const userInfo = useSelector((state) => state.user);
   const formStatus = useSelector((state) => state.settingsForms.deactivateStatus);
 
@@ -37,10 +39,11 @@ export default function PrivacyPage() {
       }
       doSequence(dispatch)(
         (dispatch) => dispatch(suspendMe(password)),
+        () => navigate(`/${userInfo.username}`),
         (dispatch) => dispatch(unauthenticated()),
       );
     },
-    [canSubmit, dispatch, password],
+    [canSubmit, dispatch, navigate, password, userInfo.username],
   );
 
   return (
