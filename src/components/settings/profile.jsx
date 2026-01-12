@@ -18,7 +18,8 @@ export default function ProfilePage() {
 
       <section className={styles.formSection}>
         <p className="text-muted">
-          You can delete your account <Link to="/settings/deactivate">here</Link>.
+          You can <Link to="/settings/pause">pause</Link> your account or{' '}
+          <Link to="/settings/deactivate">delete</Link> it.
         </p>
       </section>
     </SettingsPage>
