@@ -9,15 +9,15 @@ import { pluralForm } from '../../utils';
 import UserName from '../user-name';
 import { Icon } from '../fontawesome-icons';
 import { SettingsPage } from './layout';
-import { suspendMe, unauthenticated } from './../../redux/action-creators';
+import { pauseMe, unauthenticated } from '../../redux/action-creators';
 import styles from './settings.module.scss';
 import { useNouter } from '../../services/nouter';
 
-export default function PrivacyPage() {
+export default function PausePage() {
   const dispatch = useDispatch();
   const { navigate } = useNouter();
   const userInfo = useSelector((state) => state.user);
-  const formStatus = useSelector((state) => state.settingsForms.deactivateStatus);
+  const formStatus = useSelector((state) => state.settingsForms.pauseStatus);
 
   const usernameS = useMemo(() => {
     if (userInfo.username?.endsWith('s')) {
@@ -27,7 +27,9 @@ export default function PrivacyPage() {
   }, [userInfo.username]);
 
   const [password, setPassword] = useState('');
-  const onChange = useCallback(({ target }) => setPassword(target.value), []);
+  const [message, setMessage] = useState(userInfo.preferences?.pauseMessage || '');
+  const onPasswordChange = useCallback(({ target }) => setPassword(target.value), []);
+  const onMessageChange = useCallback(({ target }) => setMessage(target.value), []);
 
   const canSubmit = useMemo(() => password.trim() !== '', [password]);
   const submit = useCallback(
@@ -38,18 +40,18 @@ export default function PrivacyPage() {
         return;
       }
       doSequence(dispatch)(
-        (dispatch) => dispatch(suspendMe(password)),
+        (dispatch) => dispatch(pauseMe(password, message.trim())),
         () => navigate(`/${userInfo.username}`),
         (dispatch) => dispatch(unauthenticated()),
       );
     },
-    [canSubmit, dispatch, navigate, password, userInfo.username],
+    [canSubmit, dispatch, navigate, password, message, userInfo.username],
   );
 
   return (
-    <SettingsPage title="Delete account">
+    <SettingsPage title="Pause account">
       <section className={styles.formSection}>
-        <p>When an account is deleted, we will also delete:</p>
+        <p>When an account is paused, the following will be hidden:</p>
         <ul>
           <li>All your posts</li>
           <li>All your images and other attachments</li>
@@ -59,16 +61,25 @@ export default function PrivacyPage() {
           Your comments in other user&#x2019;s posts will stay, and your username will be used for
           attribution.
         </p>
-        <p>
-          Once you delete your account, you have 30 days to change your mind and restore your
-          account. After 30 days, your account will be permanently deleted and there will be no way
-          to restore it.
-        </p>
-        <p>We&#x2019;re sorry to see you go.</p>
+        <p>Once you pause your account, you can reactivate it at any time.</p>
       </section>
       <OrphanGroupsWarning />
       <section className={styles.formSection}>
         <form onSubmit={submit}>
+          <div className="form-group">
+            <label htmlFor="message-input">
+              Leave a message to be displayed on your profile (optional):
+            </label>
+            <textarea
+              id="message-input"
+              className="form-control"
+              name="message"
+              rows={3}
+              placeholder="Just taking some time off"
+              value={message}
+              onChange={onMessageChange}
+            ></textarea>
+          </div>
           <div className="form-group">
             <label htmlFor="password-input">Enter @{usernameS} password to proceed:</label>
             <input
@@ -78,12 +89,12 @@ export default function PrivacyPage() {
               name="password"
               autoComplete="current-password"
               value={password}
-              onChange={onChange}
+              onChange={onPasswordChange}
             />
           </div>
           <div className="form-group">
             <button className={cn('btn btn-danger', canSubmit || 'disabled')} type="submit">
-              {formStatus.loading ? 'Deleting account…' : 'Delete my account'}
+              {formStatus.loading ? 'Pausing account…' : 'Pause my account'}
             </button>{' '}
             {formStatus.loading && <Throbber />}
             <p className="help-block">(You will be signed out immediately)</p>
@@ -118,8 +129,8 @@ function OrphanGroupsWarning() {
           <UserName user={g}>{g.screenName}</UserName> in which you are the only administrator.
         </p>
         <p>
-          If you delete your account, this group will become restricted and no one will be able to
-          create posts in it. Please add additional administrators to these groups before you delete
+          If you pause your account, this group will become restricted and no one will be able to
+          create posts in it. Please add additional administrators to these groups before you pause
           your account to prevent that.
         </p>
       </section>
@@ -141,8 +152,8 @@ function OrphanGroupsWarning() {
         ))}
       </ol>
       <p>
-        If you delete your account, these groups will become restricted and no one will be able to
-        create posts in them. Please add additional administrators to these groups before you delete
+        If you pause your account, these groups will become restricted and no one will be able to
+        create posts in them. Please add additional administrators to these groups before you pause
         your account to prevent that.
       </p>
     </section>

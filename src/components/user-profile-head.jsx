@@ -289,7 +289,7 @@ export const UserProfileHead = withNouter(
           </div>
         </div>
         <div className={styles.description}>
-          <PieceOfText text={user.description} isExpanded={true} />
+          {user.isGone ? null : <PieceOfText text={user.description} isExpanded={true} />}
         </div>
         {isAuthenticated && !isCurrentUser && (
           <>
@@ -359,7 +359,7 @@ function PrivacyIndicator({ user }) {
 
   if (user.isGone) {
     icon = faUserSlash;
-    label = 'Deleted user';
+    label = user.goneStatus === 'paused' ? 'Paused user' : 'Deleted user';
   } else if (user.isPrivate === '1') {
     icon = faLock;
     label = `Private ${userOrGroup}`;

@@ -1137,6 +1137,14 @@ export function suspendMe(password) {
   };
 }
 
+export function pauseMe(password, message) {
+  return {
+    type: ActionTypes.PAUSE_USER,
+    apiRequest: Api.pauseMe,
+    payload: { password, message },
+  };
+}
+
 export function resumeMe(resumeToken) {
   return {
     type: ActionTypes.ACTIVATE_USER,

@@ -11,7 +11,8 @@ export default function UserFeedStatus(props) {
     <span>
       {props.isGone ? (
         <span>
-          <Icon icon={faUserSlash} className="status-icon" /> Deleted
+          <Icon icon={faUserSlash} className="status-icon" />{' '}
+          {props.goneStatus === 'paused' ? 'Paused' : 'Deleted'}
         </span>
       ) : props.isPrivate === '1' ? (
         <span>
