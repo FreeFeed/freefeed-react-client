@@ -74,6 +74,7 @@ export default function PausePage() {
               id="message-input"
               className="form-control"
               name="message"
+              autoComplete="off"
               rows={3}
               placeholder="Just taking some time off"
               value={message}
