@@ -117,6 +117,14 @@ function initLightbox() {
       if (e.ctrlKey || e.metaKey) {
         return;
       }
+
+      const currSlide = lightbox.pswp.currSlide;
+      if (currSlide && currSlide.currZoomLevel > currSlide.zoomLevels.initial) {
+        // If the image is zoomed in, do not close the lightbox; wheel will be
+        // used for scrolling/panning the image
+        return;
+      }
+
       e.preventDefault();
       lightbox.pswp.close();
     };
