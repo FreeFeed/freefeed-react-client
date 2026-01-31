@@ -212,4 +212,8 @@ export default {
     storagePrefix: 'draft:',
     maxDraftAge: 7 * DAY_IN_MILLISECONDS,
   },
+
+  feed: {
+    maxEntries: 60, // Prevent the feed from growing indefinitely on long-running sessions
+  },
 };

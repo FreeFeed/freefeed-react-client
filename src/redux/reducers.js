@@ -171,6 +171,20 @@ const initFeed = {
   feedRequestType: null,
 };
 
+/**
+ * Prevent the feed from growing indefinitely
+ *
+ * @param {string[]} entries
+ * @returns {string[]}
+ */
+function limitFeedEntries(entries) {
+  const maxEntries = CONFIG.feed.maxEntries;
+  if (entries.length <= maxEntries) {
+    return entries;
+  }
+  return entries.slice(0, maxEntries);
+}
+
 export function feedViewState(state = initFeed, action) {
   if (ActionHelpers.isFeedRequest(action)) {
     return state;
@@ -232,7 +246,7 @@ export function feedViewState(state = initFeed, action) {
       }
       return {
         ...state,
-        entries: [postId, ...state.entries],
+        entries: limitFeedEntries([postId, ...state.entries]),
       };
     }
     case response(ActionTypes.GET_SINGLE_POST): {
@@ -255,7 +269,7 @@ export function feedViewState(state = initFeed, action) {
         entries = [...entries.slice(0, p), action.post.id, ...entries.slice(p)];
       }
 
-      return { ...state, entries };
+      return { ...state, entries: limitFeedEntries(entries) };
     }
     case ActionTypes.REALTIME_LIKE_NEW:
     case ActionTypes.REALTIME_COMMENT_NEW: {
@@ -263,7 +277,7 @@ export function feedViewState(state = initFeed, action) {
         const postId = action.post.posts.id;
         return {
           ...state,
-          entries: [postId, ...state.entries],
+          entries: limitFeedEntries([postId, ...state.entries]),
         };
       }
       return state;
