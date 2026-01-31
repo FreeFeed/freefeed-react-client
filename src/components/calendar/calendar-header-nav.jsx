@@ -1,3 +1,5 @@
+/* global CONFIG */
+import { Helmet } from 'react-helmet';
 import { Link } from '../../services/nouter';
 
 import { MIN_DATE, MAX_DATE } from '../../utils/calendar-utils';
@@ -30,23 +32,30 @@ function CalendarHeaderNav(props) {
   const canShowNextLink = nextDate && nextDate <= MAX_DATE;
 
   return (
-    <div className={styles.calendarNav}>
-      <span className={styles.prevDate}>
-        {canShowPrevLink ? (
-          <Link to={`/${username}/calendar/${getDateLink(previousDate, mode)}`}>
-            ← {getDateLabel(previousDate, mode)}
-          </Link>
-        ) : null}
-      </span>
-      <strong className={styles.currentDate}>{getDateLabel(currentDate, mode)}</strong>
-      <span className={styles.nextDate}>
-        {canShowNextLink ? (
-          <Link to={`/${username}/calendar/${getDateLink(nextDate, mode)}`}>
-            {getDateLabel(nextDate, mode)} →
-          </Link>
-        ) : null}
-      </span>
-    </div>
+    <>
+      <Helmet
+        title={`${username}\u2019s calendar for ${getDateLabel(currentDate, mode)} - ${CONFIG.siteTitle}`}
+        defer={false}
+      />
+
+      <div className={styles.calendarNav}>
+        <span className={styles.prevDate}>
+          {canShowPrevLink ? (
+            <Link to={`/${username}/calendar/${getDateLink(previousDate, mode)}`}>
+              ← {getDateLabel(previousDate, mode)}
+            </Link>
+          ) : null}
+        </span>
+        <strong className={styles.currentDate}>{getDateLabel(currentDate, mode)}</strong>
+        <span className={styles.nextDate}>
+          {canShowNextLink ? (
+            <Link to={`/${username}/calendar/${getDateLink(nextDate, mode)}`}>
+              {getDateLabel(nextDate, mode)} →
+            </Link>
+          ) : null}
+        </span>
+      </div>
+    </>
   );
 }
 
