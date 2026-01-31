@@ -1,3 +1,5 @@
+/* global CONFIG */
+import { Helmet } from 'react-helmet';
 import { Link } from '../../services/nouter';
 
 import { MIN_DATE, MAX_DATE } from '../../utils/calendar-utils';
@@ -13,15 +15,6 @@ function getDateLabel(date, mode) {
   return format(date, mode === 'year' ? 'yyyy' : mode === 'month' ? 'MMMM yyyy' : 'd MMMM yyyy');
 }
 
-function parseDateString(string) {
-  const [yyyy, MM, dd] = string.split('-');
-  const d = new Date();
-  d.setFullYear(parseInt(yyyy, 10));
-  d.setMonth(parseInt(MM, 10) - 1);
-  d.setDate(parseInt(dd, 10));
-  return d;
-}
-
 function CalendarHeaderNav(props) {
   const {
     username,
@@ -31,31 +24,38 @@ function CalendarHeaderNav(props) {
     previousDate: previousDateString,
   } = props;
 
-  const currentDate = parseDateString(currentDateString);
-  const nextDate = nextDateString ? parseDateString(nextDateString) : null;
-  const previousDate = previousDateString ? parseDateString(previousDateString) : null;
+  const currentDate = new Date(currentDateString);
+  const nextDate = nextDateString ? new Date(nextDateString) : null;
+  const previousDate = previousDateString ? new Date(previousDateString) : null;
 
   const canShowPrevLink = previousDate && previousDate >= MIN_DATE;
   const canShowNextLink = nextDate && nextDate <= MAX_DATE;
 
   return (
-    <div className={styles.calendarNav}>
-      <span className={styles.prevDate}>
-        {canShowPrevLink ? (
-          <Link to={`/${username}/calendar/${getDateLink(previousDate, mode)}`}>
-            ← {getDateLabel(previousDate, mode)}
-          </Link>
-        ) : null}
-      </span>
-      <strong className={styles.currentDate}>{getDateLabel(currentDate, mode)}</strong>
-      <span className={styles.nextDate}>
-        {canShowNextLink ? (
-          <Link to={`/${username}/calendar/${getDateLink(nextDate, mode)}`}>
-            {getDateLabel(nextDate, mode)} →
-          </Link>
-        ) : null}
-      </span>
-    </div>
+    <>
+      <Helmet
+        title={`${username}\u2019s calendar for ${getDateLabel(currentDate, mode)} - ${CONFIG.siteTitle}`}
+        defer={false}
+      />
+
+      <div className={styles.calendarNav}>
+        <span className={styles.prevDate}>
+          {canShowPrevLink ? (
+            <Link to={`/${username}/calendar/${getDateLink(previousDate, mode)}`}>
+              ← {getDateLabel(previousDate, mode)}
+            </Link>
+          ) : null}
+        </span>
+        <strong className={styles.currentDate}>{getDateLabel(currentDate, mode)}</strong>
+        <span className={styles.nextDate}>
+          {canShowNextLink ? (
+            <Link to={`/${username}/calendar/${getDateLink(nextDate, mode)}`}>
+              {getDateLabel(nextDate, mode)} →
+            </Link>
+          ) : null}
+        </span>
+      </div>
+    </>
   );
 }
 
