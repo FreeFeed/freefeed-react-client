@@ -13,15 +13,6 @@ function getDateLabel(date, mode) {
   return format(date, mode === 'year' ? 'yyyy' : mode === 'month' ? 'MMMM yyyy' : 'd MMMM yyyy');
 }
 
-function parseDateString(string) {
-  const [yyyy, MM, dd] = string.split('-');
-  const d = new Date();
-  d.setFullYear(parseInt(yyyy, 10));
-  d.setMonth(parseInt(MM, 10) - 1);
-  d.setDate(parseInt(dd, 10));
-  return d;
-}
-
 function CalendarHeaderNav(props) {
   const {
     username,
@@ -31,9 +22,9 @@ function CalendarHeaderNav(props) {
     previousDate: previousDateString,
   } = props;
 
-  const currentDate = parseDateString(currentDateString);
-  const nextDate = nextDateString ? parseDateString(nextDateString) : null;
-  const previousDate = previousDateString ? parseDateString(previousDateString) : null;
+  const currentDate = new Date(currentDateString);
+  const nextDate = nextDateString ? new Date(nextDateString) : null;
+  const previousDate = previousDateString ? new Date(previousDateString) : null;
 
   const canShowPrevLink = previousDate && previousDate >= MIN_DATE;
   const canShowNextLink = nextDate && nextDate <= MAX_DATE;
