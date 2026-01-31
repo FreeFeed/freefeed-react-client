@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.145.0] - Not released
 ### Fixed
+- Prevent closing lightbox on wheel scroll if the image is zoomed in.
 - Fix data parsing on Calendar pages.
 
 ## [1.144.0] - 2026-01-12
