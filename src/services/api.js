@@ -861,8 +861,15 @@ export function enableBansInGroup({ groupName }) {
   return fetch(`${apiPrefix}/groups/${groupName}/enableBans`, postRequestOptions());
 }
 
-export function getPostsByIds({ postIds }) {
-  return fetch(`${apiPrefix}/posts/byIds`, postRequestOptions('POST', { postIds }));
+export function getPostsByIds({ postIds, allComments, allLikes }) {
+  const q = new URLSearchParams();
+  if (allComments) {
+    q.set('maxComments', 'all');
+  }
+  if (allLikes) {
+    q.set('maxLikes', 'all');
+  }
+  return fetch(`${apiPrefix}/posts/byIds?${q}`, postRequestOptions('POST', { postIds }));
 }
 
 export function getCommentsByIds({ commentIds }) {

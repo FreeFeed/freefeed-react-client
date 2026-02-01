@@ -8,10 +8,12 @@ import { delay } from '../../utils';
 import { inactivityOf } from '../../utils/event-sequences';
 import { ACTIVITY, CHRONOLOGIC } from '../../utils/feed-options';
 import {
+  getPostsByIds,
   realtimeConnected,
   realtimeIncomingEvent,
   realtimeSubscribe,
   realtimeUnsubscribe,
+  whoAmI,
 } from '../action-creators';
 import { isFeedRequest, isFeedResponse, request, response } from '../action-helpers';
 import {
@@ -241,7 +243,11 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers, userActivit
     store.dispatch(realtimeUnsubscribe(...rooms));
   };
 
-  conn.onConnect(() => store.dispatch(realtimeConnected()));
+  let firstConnect = true;
+  conn.onConnect(() => {
+    store.dispatch(realtimeConnected(firstConnect));
+    firstConnect = false;
+  });
 
   conn.onEvent(async (event, data) => {
     await inactivityOf(userActivity);
@@ -268,9 +274,13 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers, userActivit
     if (action.type === REALTIME_CONNECTED) {
       conn
         .reAuthorize()
-        .then(() => {
+        .then(async () => {
           const { realtimeSubscriptions } = store.getState();
-          return conn.subscribeTo(...realtimeSubscriptions);
+          await conn.subscribeTo(...realtimeSubscriptions);
+          if (!action.payload.firstTime) {
+            onReconnect(store);
+          }
+          return;
         })
         .catch((error) => {
           Sentry.captureException(error, {
@@ -349,3 +359,13 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers, userActivit
     return next(action);
   };
 };
+
+/**
+ * Client reconnects to the server after a disconnection
+ */
+function onReconnect(store) {
+  store.dispatch(whoAmI());
+  const state = store.getState();
+  const isSinglePost = !!state.singlePostId;
+  store.dispatch(getPostsByIds(state.feedViewState.entries, { allComments: isSinglePost }));
+}
