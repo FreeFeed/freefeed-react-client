@@ -189,7 +189,10 @@ export function feedViewState(state = initFeed, action) {
   if (ActionHelpers.isFeedRequest(action)) {
     return state;
   }
-  if (ActionHelpers.isFeedResponse(action)) {
+  if (
+    ActionHelpers.isFeedResponse(action) &&
+    baseType(action.type) !== ActionTypes.GET_POSTS_BY_IDS
+  ) {
     const entries = (action.payload.posts || []).map((post) => post.id);
     const recentlyHiddenEntries = {};
     const isHiddenRevealed = false;
@@ -1235,6 +1238,9 @@ export function groupCreateForm(state = {}, action) {
 }
 
 export function routeLoadingState(state = false, action) {
+  if (action.type === request(ActionTypes.GET_POSTS_BY_IDS)) {
+    return false;
+  }
   if (ActionHelpers.isFeedRequest(action)) {
     return true;
   }
@@ -1911,7 +1917,10 @@ export function feedViewOptions(state = getInitialFeedViewOptions(), action) {
     const sort = state.currentFeed === ActionTypes.HOME ? homeFeedSort : state.sort;
     return { ...state, homeFeedSort, sort };
   }
-  if (ActionHelpers.isFeedRequest(action)) {
+  if (
+    ActionHelpers.isFeedRequest(action) &&
+    baseType(action.type) !== ActionTypes.GET_POSTS_BY_IDS
+  ) {
     let { sort } = state;
     if (state.currentFeed !== ActionHelpers.getFeedName(action)) {
       sort = action.type === request(ActionTypes.HOME) ? state.homeFeedSort : FeedOptions.ACTIVITY;
@@ -1922,7 +1931,10 @@ export function feedViewOptions(state = getInitialFeedViewOptions(), action) {
       sort,
     };
   }
-  if (ActionHelpers.isFeedResponse(action)) {
+  if (
+    ActionHelpers.isFeedResponse(action) &&
+    baseType(action.type) !== ActionTypes.GET_POSTS_BY_IDS
+  ) {
     const currentFeedType = action.payload.timelines ? action.payload.timelines.name : null;
     return { ...state, currentFeedType };
   }
