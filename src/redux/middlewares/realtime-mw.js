@@ -366,19 +366,15 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers, userActivit
 function onReconnect(store) {
   store.dispatch(whoAmI());
   const state = store.getState();
-  if (state.singlePostId) {
-    store.dispatch(getPostsByIds([state.singlePostId], { allComments: true }));
-  } else {
-    const withOmittedComments = [];
-    const withoutOmittedComments = [];
-    for (const id of state.feedViewState.entries) {
-      if (state.posts[id].omittedComments > 0) {
-        withOmittedComments.push(id);
-      } else {
-        withoutOmittedComments.push(id);
-      }
+  const withOmittedComments = [];
+  const withoutOmittedComments = [];
+  for (const id of state.feedViewState.entries) {
+    if (state.posts[id].omittedComments > 0) {
+      withOmittedComments.push(id);
+    } else {
+      withoutOmittedComments.push(id);
     }
-    store.dispatch(getPostsByIds(withOmittedComments, { allComments: false }));
-    store.dispatch(getPostsByIds(withoutOmittedComments, { allComments: true }));
   }
+  store.dispatch(getPostsByIds(withOmittedComments, { allComments: false }));
+  store.dispatch(getPostsByIds(withoutOmittedComments, { allComments: true }));
 }
