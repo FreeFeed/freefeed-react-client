@@ -1331,7 +1331,10 @@ export function highlightTerms(state = [], action) {
 }
 
 export function singlePostId(state = null, action) {
-  if (ActionHelpers.isFeedRequest(action)) {
+  if (
+    ActionHelpers.isFeedRequest(action) &&
+    baseType(action.type) !== ActionTypes.GET_POSTS_BY_IDS
+  ) {
     return null;
   }
   if (action.type == response(ActionTypes.GET_SINGLE_POST)) {
