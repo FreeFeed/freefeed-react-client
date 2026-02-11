@@ -222,7 +222,7 @@ export function feedViewState(state = initFeed, action) {
     };
   }
   if (ActionHelpers.isFeedFail(action)) {
-    return { ...initFeed, feedError: action.payload.err };
+    return { ...initFeed, feedError: action.payload.err + ' during ' + baseType(action.type) };
   }
 
   switch (action.type) {
