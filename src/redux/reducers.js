@@ -341,6 +341,23 @@ export function feedViewState(state = initFeed, action) {
         entries: action.payload.entries,
       };
     }
+
+    case response(ActionTypes.REFRESH_VISIBLE_POSTS): {
+      const { postsNotFound } = action.payload;
+
+      // Filter out postsNotFound from entries
+      const filteredEntries = state.entries.filter((postId) => !postsNotFound.includes(postId));
+
+      // If no matching posts, return unchanged state
+      if (filteredEntries.length === state.entries.length) {
+        return state;
+      }
+
+      return {
+        ...state,
+        entries: filteredEntries,
+      };
+    }
   }
   return state;
 }
