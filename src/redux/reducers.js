@@ -189,10 +189,7 @@ export function feedViewState(state = initFeed, action) {
   if (ActionHelpers.isFeedRequest(action)) {
     return state;
   }
-  if (
-    ActionHelpers.isFeedResponse(action) &&
-    baseType(action.type) !== ActionTypes.GET_POSTS_BY_IDS
-  ) {
+  if (ActionHelpers.isFeedResponse(action)) {
     const entries = (action.payload.posts || []).map((post) => post.id);
     const recentlyHiddenEntries = {};
     const isHiddenRevealed = false;
@@ -376,7 +373,7 @@ const initPostViewState = (post) => {
 };
 
 export function postsViewState(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action)) {
+  if (ActionHelpers.isPostsCollectionResponse(action)) {
     return mergeByIds(state, (action.payload.posts || []).map(initPostViewState), {
       insert: true,
       update: true,
@@ -662,7 +659,7 @@ export const postHideStatuses = asyncStatesMap(
 );
 
 export function attachments(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action)) {
+  if (ActionHelpers.isPostsCollectionResponse(action)) {
     return mergeByIds(state, action.payload.attachments, { update: true });
   }
   switch (action.type) {
@@ -700,7 +697,7 @@ function updateCommentData(state, action) {
 }
 
 export function comments(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action)) {
+  if (ActionHelpers.isPostsCollectionResponse(action)) {
     return updateCommentData(state, action);
   }
   switch (action.type) {
@@ -871,7 +868,7 @@ export function users(state = {}, action) {
   const mergeAccounts = (accounts, options = {}) =>
     mergeByIds(state, (accounts || []).map(userParser), options);
 
-  if (ActionHelpers.isFeedResponse(action)) {
+  if (ActionHelpers.isPostsCollectionResponse(action)) {
     return mergeAccounts([...action.payload.users, ...action.payload.subscribers], {
       insert: true,
       update: true,
@@ -948,7 +945,7 @@ export function users(state = {}, action) {
 }
 
 export function subscribers(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action)) {
+  if (ActionHelpers.isPostsCollectionResponse(action)) {
     return mergeByIds(state, (action.payload.subscribers || []).map(userParser), {
       insert: true,
       update: true,
@@ -1173,7 +1170,7 @@ export function timelines(state = {}, action) {
 }
 
 export function subscriptions(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action)) {
+  if (ActionHelpers.isPostsCollectionResponse(action)) {
     return mergeByIds(state, action.payload.subscriptions, { insert: true, update: true });
   }
   switch (action.type) {
@@ -1331,10 +1328,7 @@ export function highlightTerms(state = [], action) {
 }
 
 export function singlePostId(state = null, action) {
-  if (
-    ActionHelpers.isFeedRequest(action) &&
-    baseType(action.type) !== ActionTypes.GET_POSTS_BY_IDS
-  ) {
+  if (ActionHelpers.isFeedRequest(action)) {
     return null;
   }
   if (action.type == response(ActionTypes.GET_SINGLE_POST)) {
@@ -1920,10 +1914,7 @@ export function feedViewOptions(state = getInitialFeedViewOptions(), action) {
     const sort = state.currentFeed === ActionTypes.HOME ? homeFeedSort : state.sort;
     return { ...state, homeFeedSort, sort };
   }
-  if (
-    ActionHelpers.isFeedRequest(action) &&
-    baseType(action.type) !== ActionTypes.GET_POSTS_BY_IDS
-  ) {
+  if (ActionHelpers.isFeedRequest(action)) {
     let { sort } = state;
     if (state.currentFeed !== ActionHelpers.getFeedName(action)) {
       sort = action.type === request(ActionTypes.HOME) ? state.homeFeedSort : FeedOptions.ACTIVITY;
@@ -1934,10 +1925,7 @@ export function feedViewOptions(state = getInitialFeedViewOptions(), action) {
       sort,
     };
   }
-  if (
-    ActionHelpers.isFeedResponse(action) &&
-    baseType(action.type) !== ActionTypes.GET_POSTS_BY_IDS
-  ) {
+  if (ActionHelpers.isFeedResponse(action)) {
     const currentFeedType = action.payload.timelines ? action.payload.timelines.name : null;
     return { ...state, currentFeedType };
   }
