@@ -8,11 +8,11 @@ import { delay } from '../../utils';
 import { inactivityOf } from '../../utils/event-sequences';
 import { ACTIVITY, CHRONOLOGIC } from '../../utils/feed-options';
 import {
-  getPostsByIds,
   realtimeConnected,
   realtimeIncomingEvent,
   realtimeSubscribe,
   realtimeUnsubscribe,
+  refreshVisiblePosts,
   whoAmI,
 } from '../action-creators';
 import { isFeedRequest, isFeedResponse, request, response } from '../action-helpers';
@@ -278,7 +278,8 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers, userActivit
           const { realtimeSubscriptions } = store.getState();
           await conn.subscribeTo(...realtimeSubscriptions);
           if (!action.payload.firstTime) {
-            onReconnect(store);
+            store.dispatch(whoAmI());
+            store.dispatch(refreshVisiblePosts());
           }
           return;
         })
@@ -359,22 +360,3 @@ export const createRealtimeMiddleware = (store, conn, eventHandlers, userActivit
     return next(action);
   };
 };
-
-/**
- * Client reconnects to the server after a disconnection
- */
-function onReconnect(store) {
-  store.dispatch(whoAmI());
-  const state = store.getState();
-  const withOmittedComments = [];
-  const withoutOmittedComments = [];
-  for (const id of state.feedViewState.entries) {
-    if (state.posts[id].omittedComments > 0) {
-      withOmittedComments.push(id);
-    } else {
-      withoutOmittedComments.push(id);
-    }
-  }
-  store.dispatch(getPostsByIds(withOmittedComments, { allComments: false }));
-  store.dispatch(getPostsByIds(withoutOmittedComments, { allComments: true }));
-}
