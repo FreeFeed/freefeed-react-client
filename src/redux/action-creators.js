@@ -1359,6 +1359,14 @@ export function getPostsByIds(postIds, { allComments = false, allLikes = false }
   };
 }
 
+export function refreshVisiblePosts() {
+  // Will be filled by the `refreshVisiblePostsMiddleware`
+  return {
+    type: ActionTypes.REFRESH_VISIBLE_POSTS,
+    payload: {},
+  };
+}
+
 export function getCommentsByIds(commentIds) {
   return {
     apiRequest: Api.getCommentsByIds,
