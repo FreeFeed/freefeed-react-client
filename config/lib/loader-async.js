@@ -11,6 +11,7 @@ export async function loadConfig(path) {
     } catch (e) {
       throw new Error(
         `Error during parsing the ${path}: ${e.message}\nThe server is probably misconfigured.`,
+        { cause: e },
       );
     }
   } else if (resp.status === 0) {
