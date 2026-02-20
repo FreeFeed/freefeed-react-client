@@ -27,3 +27,4 @@ export { subscriptionMiddleware } from './subscription-mw';
 export { undoMiddleware } from './undo-mw';
 export { unscrollMiddleware } from './unscroll-mw';
 export { userPhotoLogicMiddleware } from './user-photo-logic-mw';
+export { refreshVisiblePostsMiddleware } from './refresh-posts-mw';

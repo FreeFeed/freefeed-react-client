@@ -33,6 +33,7 @@ import {
   GET_POSTS_BY_IDS,
   CALENDAR_DATE_POSTS,
   GET_BACKLINKS,
+  REFRESH_VISIBLE_POSTS,
 } from './action-types';
 import { request, response, fail, baseType } from './async-helpers';
 
@@ -55,7 +56,6 @@ export const feedGeneratingActions = [
   GET_USER_SUMMARY,
   MEMORIES,
   GET_USER_MEMORIES,
-  GET_POSTS_BY_IDS,
   CALENDAR_DATE_POSTS,
   GET_BACKLINKS,
 ];
@@ -78,6 +78,15 @@ export const isFeedRequest = (action) => feedRequests.includes(action.type);
 export const isFeedResponse = (action) => feedResponses.includes(action.type);
 export const isFeedFail = (action) => feedFails.includes(action.type);
 const isUserFeedRequest = (action) => userFeedGeneratingActions.map(request).includes(action.type);
+
+const postsCollectionActions = [...feedGeneratingActions, REFRESH_VISIBLE_POSTS, GET_POSTS_BY_IDS];
+export const isPostsCollectionAction = (action) => postsCollectionActions.includes(action.type);
+export const isPostsCollectionRequest = (action) =>
+  postsCollectionActions.map(request).includes(action.type);
+export const isPostsCollectionResponse = (action) =>
+  postsCollectionActions.map(response).includes(action.type);
+export const isPostsCollectionFail = (action) =>
+  postsCollectionActions.map(fail).includes(action.type);
 
 export const userChangeActions = [
   SIGN_UP,

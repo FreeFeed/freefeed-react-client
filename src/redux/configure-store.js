@@ -31,6 +31,7 @@ import {
   undoMiddleware,
   reorderPinnedMiddleware,
   historyMiddlewareFactory,
+  refreshVisiblePostsMiddleware,
 } from './middlewares';
 
 import * as reducers from './reducers';
@@ -43,6 +44,8 @@ const middlewareFactories = [
   () => authMiddleware,
   () => apiMiddleware,
   () => abortableUploadMiddleware,
+  () => refreshVisiblePostsMiddleware,
+  // Place all mw that create asyncOperations above this line
   () => asyncMiddleware,
   () => dataFixMiddleware,
   () => likesLogicMiddleware,

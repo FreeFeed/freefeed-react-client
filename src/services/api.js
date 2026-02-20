@@ -861,8 +861,76 @@ export function enableBansInGroup({ groupName }) {
   return fetch(`${apiPrefix}/groups/${groupName}/enableBans`, postRequestOptions());
 }
 
-export function getPostsByIds({ postIds }) {
-  return fetch(`${apiPrefix}/posts/byIds`, postRequestOptions('POST', { postIds }));
+export function getPostsByIds({ postIds, allComments, allLikes }) {
+  const q = new URLSearchParams();
+  if (allComments) {
+    q.set('maxComments', 'all');
+  }
+  if (allLikes) {
+    q.set('maxLikes', 'all');
+  }
+  return fetch(`${apiPrefix}/posts/byIds?${q}`, postRequestOptions('POST', { postIds }));
+}
+
+/**
+ * Refresh posts with omitted comments and without omitted comments.
+ */
+export async function refreshPosts({ idsWithOmittedComments, idsWithoutOmittedComments }) {
+  const requests = [];
+  if (idsWithOmittedComments.length > 0) {
+    requests.push(
+      getPostsByIds({
+        postIds: idsWithOmittedComments,
+        allComments: false,
+      }),
+    );
+  }
+  if (idsWithoutOmittedComments.length > 0) {
+    requests.push(
+      getPostsByIds({
+        postIds: idsWithoutOmittedComments,
+        allComments: true,
+      }),
+    );
+  }
+  const results = await Promise.all(requests);
+  if (results.some((r) => r.status < 200 || r.status >= 300)) {
+    throw new Error('Failed to refresh posts');
+  }
+  const responses = await Promise.all(results.map((r) => r.json()));
+  /**
+   * Each response is an object with keys like 'posts', 'comments', 'users'
+   * etc. Each key is an array of objects with an 'id' property. The only
+   * exception is a 'postsNotFound' key that is an array of post IDs (strings)
+   * that were not found.
+   *
+   * In this code we compose the union of the responses, using Maps to avoid
+   * duplicates.
+   */
+  const allMaps = {};
+  for (const response of responses) {
+    for (const [key, value] of Object.entries(response)) {
+      if (!allMaps[key]) {
+        allMaps[key] = new Map();
+      }
+      for (const v of value) {
+        if (typeof v === 'string') {
+          allMaps[key].set(v, v);
+        } else {
+          allMaps[key].set(v.id, v);
+        }
+      }
+    }
+  }
+  /**
+   * Now we compose the final result. We should return an object with the same
+   * structure as the responses.
+   */
+  const result = {};
+  for (const [key, value] of Object.entries(allMaps)) {
+    result[key] = Array.from(value.values());
+  }
+  return result;
 }
 
 export function getCommentsByIds({ commentIds }) {
