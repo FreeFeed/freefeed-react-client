@@ -69,7 +69,7 @@ $post-line-height: mixins.rem(20px);
 
     .post-text {
       margin-bottom: mixins.rem(8px);
-      word-wrap: break-word;
+      overflow-wrap: break-word;
       color: #000;
       font-size: mixins.rem(16px);
       line-height: $post-line-height;
