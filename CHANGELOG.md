@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.145.0] - 2026-02-21
+### Added
+- Automatic feed and user data refresh after reconnection. When the real-time
+  connection is restored, the app now automatically reloads all visible posts
+  and the current user information to ensure all data is up-to-date.
+
 ## [1.144.2] - 2026-01-31
 ### Changed
 - Limit feed entries number to 60 (configurable via `CONFIG.feed.maxEntries`) to

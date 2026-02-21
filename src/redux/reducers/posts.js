@@ -1,7 +1,7 @@
 /* eslint-disable complexity */
 import { without } from 'lodash-es';
 import { postParser } from '../../utils';
-import { isFeedResponse } from '../action-helpers';
+import { isPostsCollectionResponse } from '../action-helpers';
 import {
   ADD_COMMENT,
   CLEAN_LIKE_ERROR,
@@ -49,7 +49,7 @@ const savePostStatusesReducer = asyncStatesMap(SAVE_POST, {
 });
 
 export function posts(state = {}, action) {
-  if (isFeedResponse(action)) {
+  if (isPostsCollectionResponse(action)) {
     return mergeByIds(state, (action.payload.posts || []).map(postParser), {
       insert: true,
       update: true,

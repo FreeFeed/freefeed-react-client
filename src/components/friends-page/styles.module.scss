@@ -20,7 +20,7 @@
   width: 110px;
   min-height: 90px;
   text-align: center;
-  word-wrap: break-word;
+  overflow-wrap: break-word;
   font-size: mixins.rem(12px);
   line-height: mixins.rem(16px);
   margin: 0 mixins.rem(6px) mixins.rem(20px);
