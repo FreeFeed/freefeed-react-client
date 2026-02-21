@@ -18,7 +18,7 @@ $actions-padding: 0.75em;
     'lists lists stats'
     'actions actions actions'
     'errors errors errors';
-  grid-gap: 0 1em;
+  gap: 0 1em;
   padding: 0.5em 0 $actions-padding;
   border-bottom: 1px solid var(--separator-color);
   margin-bottom: 1em;

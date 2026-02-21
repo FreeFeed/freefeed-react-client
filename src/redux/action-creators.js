@@ -845,8 +845,8 @@ export function resetArchiveForms() {
   return { type: ActionTypes.RESET_ARCHIVE_FORMS };
 }
 
-export function realtimeConnected() {
-  return { type: ActionTypes.REALTIME_CONNECTED };
+export function realtimeConnected(firstTime) {
+  return { type: ActionTypes.REALTIME_CONNECTED, payload: { firstTime } };
 }
 
 export function realtimeSubscribe(...rooms) {
@@ -1351,11 +1351,19 @@ export function enableBansInGroup(groupName) {
   };
 }
 
-export function getPostsByIds(postIds) {
+export function getPostsByIds(postIds, { allComments = false, allLikes = false } = {}) {
   return {
     apiRequest: Api.getPostsByIds,
     type: ActionTypes.GET_POSTS_BY_IDS,
-    payload: { postIds },
+    payload: { postIds, allComments, allLikes },
+  };
+}
+
+export function refreshVisiblePosts() {
+  // Will be filled by the `refreshVisiblePostsMiddleware`
+  return {
+    type: ActionTypes.REFRESH_VISIBLE_POSTS,
+    payload: {},
   };
 }
 

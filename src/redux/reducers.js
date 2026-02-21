@@ -219,7 +219,7 @@ export function feedViewState(state = initFeed, action) {
     };
   }
   if (ActionHelpers.isFeedFail(action)) {
-    return { ...initFeed, feedError: action.payload.err };
+    return { ...initFeed, feedError: action.payload.err + ' during ' + baseType(action.type) };
   }
 
   switch (action.type) {
@@ -341,6 +341,23 @@ export function feedViewState(state = initFeed, action) {
         entries: action.payload.entries,
       };
     }
+
+    case response(ActionTypes.REFRESH_VISIBLE_POSTS): {
+      const { postsNotFound } = action.payload;
+
+      // Filter out postsNotFound from entries
+      const filteredEntries = state.entries.filter((postId) => !postsNotFound.includes(postId));
+
+      // If no matching posts, return unchanged state
+      if (filteredEntries.length === state.entries.length) {
+        return state;
+      }
+
+      return {
+        ...state,
+        entries: filteredEntries,
+      };
+    }
   }
   return state;
 }
@@ -373,7 +390,7 @@ const initPostViewState = (post) => {
 };
 
 export function postsViewState(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action)) {
+  if (ActionHelpers.isPostsCollectionResponse(action)) {
     return mergeByIds(state, (action.payload.posts || []).map(initPostViewState), {
       insert: true,
       update: true,
@@ -659,7 +676,7 @@ export const postHideStatuses = asyncStatesMap(
 );
 
 export function attachments(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action)) {
+  if (ActionHelpers.isPostsCollectionResponse(action)) {
     return mergeByIds(state, action.payload.attachments, { update: true });
   }
   switch (action.type) {
@@ -697,7 +714,7 @@ function updateCommentData(state, action) {
 }
 
 export function comments(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action)) {
+  if (ActionHelpers.isPostsCollectionResponse(action)) {
     return updateCommentData(state, action);
   }
   switch (action.type) {
@@ -868,7 +885,7 @@ export function users(state = {}, action) {
   const mergeAccounts = (accounts, options = {}) =>
     mergeByIds(state, (accounts || []).map(userParser), options);
 
-  if (ActionHelpers.isFeedResponse(action)) {
+  if (ActionHelpers.isPostsCollectionResponse(action)) {
     return mergeAccounts([...action.payload.users, ...action.payload.subscribers], {
       insert: true,
       update: true,
@@ -945,7 +962,7 @@ export function users(state = {}, action) {
 }
 
 export function subscribers(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action)) {
+  if (ActionHelpers.isPostsCollectionResponse(action)) {
     return mergeByIds(state, (action.payload.subscribers || []).map(userParser), {
       insert: true,
       update: true,
@@ -1170,7 +1187,7 @@ export function timelines(state = {}, action) {
 }
 
 export function subscriptions(state = {}, action) {
-  if (ActionHelpers.isFeedResponse(action)) {
+  if (ActionHelpers.isPostsCollectionResponse(action)) {
     return mergeByIds(state, action.payload.subscriptions, { insert: true, update: true });
   }
   switch (action.type) {
@@ -1235,6 +1252,9 @@ export function groupCreateForm(state = {}, action) {
 }
 
 export function routeLoadingState(state = false, action) {
+  if (action.type === request(ActionTypes.GET_POSTS_BY_IDS)) {
+    return false;
+  }
   if (ActionHelpers.isFeedRequest(action)) {
     return true;
   }

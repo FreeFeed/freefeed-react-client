@@ -36,7 +36,7 @@
     box-shadow 0.2s;
 
   .comment-body {
-    word-wrap: break-word;
+    overflow-wrap: break-word;
     margin-left: mixins.rem(19px);
     position: relative; // to overflow the comment highlight
   }
