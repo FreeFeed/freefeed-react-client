@@ -83,15 +83,7 @@ export const joinPostData = (state) => (postId) => {
   }
 
   // Get the list of post's recipients
-  const recipients = post.postedTo
-    .map((subscriptionId) => {
-      const userId = (state.subscriptions[subscriptionId] || {}).user;
-      const subscriptionType = (state.subscriptions[subscriptionId] || {}).name;
-      const isDirectToSelf = userId === post.createdBy && subscriptionType === 'Directs';
-      return !isDirectToSelf ? userId : false;
-    })
-    .map((userId) => state.subscribers[userId] || state.users[userId])
-    .filter((user) => user);
+  const recipients = getPostRecipients(post, state);
 
   // All recipient names and the post's author name.
   // Sorted alphabetically but author name is always comes first.
@@ -119,11 +111,7 @@ export const joinPostData = (state) => (postId) => {
   // Can the current user fully delete this post?
   const isDeletable = isEditable || canBeRemovedFrom.length === recipients.length;
 
-  const isNSFW =
-    !state.isNSFWVisible &&
-    [post.body, ...recipients.map((r) => r.description)].some((text) =>
-      tokenizeHashtags(text).some((t) => t.text.toLowerCase() === '#nsfw'),
-    );
+  const isNSFW = isPostNSFW(post, state, recipients);
 
   const attachments = post.attachments || emptyArray;
   const postViewState = state.postsViewState[post.id];
@@ -245,6 +233,28 @@ export function userActions(dispatch) {
     hideByName: (username, hide) =>
       dispatch(hidePostsByCriterion({ type: USERNAME, value: username }, null, hide)),
   };
+}
+
+export function getPostRecipients(post, state) {
+  return post.postedTo
+    .map((subscriptionId) => {
+      const userId = (state.subscriptions[subscriptionId] || {}).user;
+      const subscriptionType = (state.subscriptions[subscriptionId] || {}).name;
+      const isDirectToSelf = userId === post.createdBy && subscriptionType === 'Directs';
+      return !isDirectToSelf ? userId : false;
+    })
+    .map((userId) => state.subscribers[userId] || state.users[userId])
+    .filter((user) => user);
+}
+
+export function isPostNSFW(post, state, recipients) {
+  if (state.isNSFWVisible || !post) {
+    return false;
+  }
+  const recips = recipients || getPostRecipients(post, state);
+  return [post.body, ...recips.map((r) => r.description)].some((text) =>
+    tokenizeHashtags(text).some((t) => t.text.toLowerCase() === '#nsfw'),
+  );
 }
 
 /**
