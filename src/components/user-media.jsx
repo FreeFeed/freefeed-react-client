@@ -100,11 +100,11 @@ function useMediaAttachments(foundUser, showNSFW) {
           hasNSFW = true;
         }
         const nsfw = isNSFW && !showNSFW;
-        return (post?.attachments || []).map((attId) => ({ attId, nsfw }));
+        return (post?.attachments || []).map((attId) => ({ postId, attId, nsfw }));
       })
-      .map(({ attId, nsfw }) => {
+      .map(({ postId, attId, nsfw }) => {
         const att = allAttachments[attId];
-        return att ? { ...att, isNSFW: nsfw } : null;
+        return att ? { ...att, isNSFW: nsfw, caption: `Post: ${postId}` } : null;
       })
       .filter((att) => att && (att.mediaType === 'image' || att.mediaType === 'video'));
 

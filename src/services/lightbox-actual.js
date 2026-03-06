@@ -112,6 +112,29 @@ function initLightbox() {
     });
   });
 
+  // Add caption element
+  lightbox.on('uiRegister', () => {
+    lightbox.pswp.ui.registerElement({
+      name: 'custom-caption',
+      order: 9,
+      isButton: false,
+      appendTo: 'root',
+      html: '',
+      onInit: (el, pswp) => {
+        pswp.on('change', () => {
+          const caption = pswp.currSlide.data.caption;
+          if (caption) {
+            el.innerHTML = caption;
+            el.style.display = '';
+          } else {
+            el.innerHTML = '';
+            el.style.display = 'none';
+          }
+        });
+      },
+    });
+  });
+
   lightbox.on('bindEvents', () => {
     const h = (e) => {
       if (e.ctrlKey || e.metaKey) {

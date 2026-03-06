@@ -63,6 +63,7 @@ export function useLightboxItems(attachments, postId) {
         width: a.previewWidth ?? a.width,
         height: a.previewHeight ?? a.height,
         pid: `${postId?.slice(0, 8) ?? 'new-post'}-${a.id.slice(0, 8)}`,
+        ...(a.caption ? { caption: a.caption } : {}),
       })),
     [attachments, postId],
   );

@@ -97,3 +97,17 @@
   align-items: center;
   justify-content: center;
 }
+
+.pswp__custom-caption {
+  position: absolute;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  max-width: min(30rem, 90vw);
+  width: calc(100% - 2rem);
+  padding: 0.25em 0.75em;
+  border-radius: 0.25rem;
+  background: rgb(0, 0, 0, 0.65);
+  color: #fff;
+  text-align: center;
+}
