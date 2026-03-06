@@ -89,7 +89,7 @@ export function VisualContainerStatic({
             removeAttachment={removeAttachment}
             reorderImageAttachments={reorderImageAttachments}
             postId={postId}
-            isNSFW={isNSFW}
+            isNSFW={a.isNSFW ?? isNSFW}
             width={row.items[i].width}
             height={row.items[i].height}
             pictureId={lightboxItems[n + i].pid}
