@@ -5,11 +5,15 @@ import FeedOptionsSwitch from './feed-options-switch';
 import UserProfile from './user-profile';
 import { useNouter } from '../services/nouter';
 import PaginatedView from './paginated-view';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { VisualContainer } from './post/attachments/visual/container';
 import { isPostNSFW } from './select-utils';
 
 const tokenizeHashtags = hashtags();
+
+// Persists showNSFW state across remounts within the same userMedia route.
+// Resets when switching to a different user.
+let nsfwToggleState = { username: null, showNSFW: false };
 
 export default function UserMedia() {
   const { params } = useNouter();
@@ -17,7 +21,16 @@ export default function UserMedia() {
   const foundUser = useSelector((state) =>
     Object.values(state.users).find((u) => u.username === username),
   );
-  const attachments = useMediaAttachments(foundUser);
+
+  if (nsfwToggleState.username !== username) {
+    nsfwToggleState = { username, showNSFW: false };
+  }
+  const [showNSFW, setShowNSFWState] = useState(nsfwToggleState.showNSFW);
+  const setShowNSFW = (value) => {
+    nsfwToggleState.showNSFW = value;
+    setShowNSFWState(value);
+  };
+  const { attachments, hasNSFW } = useMediaAttachments(foundUser, showNSFW);
 
   return (
     <div className="box">
@@ -30,6 +43,18 @@ export default function UserMedia() {
         <Breadcrumbs user={foundUser} breadcrumb="Media" />
         <UserProfile allowToPost={false} noPostLines />
       </div>
+      {hasNSFW && (
+        <div className="box-body">
+          <label>
+            <input
+              type="checkbox"
+              checked={showNSFW}
+              onChange={(e) => setShowNSFW(e.target.checked)}
+            />{' '}
+            Show NSFW media
+          </label>
+        </div>
+      )}
       <PaginatedView>
         <VisualContainer attachments={attachments} isNSFW={false} isExpanded />
       </PaginatedView>
@@ -37,7 +62,7 @@ export default function UserMedia() {
   );
 }
 
-function useMediaAttachments(foundUser) {
+function useMediaAttachments(foundUser, showNSFW) {
   // useStore instead of multiple useSelectors for subscriptions/subscribers/users:
   // isPostNSFW needs these slices, but we don't want to re-render the media
   // gallery every time they change. store.getState() inside useMemo gives us
@@ -66,10 +91,15 @@ function useMediaAttachments(foundUser) {
       }
     }
 
-    return feedPostIds
+    let hasNSFW = false;
+    const attachments = feedPostIds
       .flatMap((postId) => {
         const post = allPosts[postId];
-        const nsfw = nsfwByPostId.get(postId) ?? false;
+        const isNSFW = nsfwByPostId.get(postId) ?? false;
+        if (isNSFW) {
+          hasNSFW = true;
+        }
+        const nsfw = isNSFW && !showNSFW;
         return (post?.attachments || []).map((attId) => ({ attId, nsfw }));
       })
       .map(({ attId, nsfw }) => {
@@ -77,5 +107,7 @@ function useMediaAttachments(foundUser) {
         return att ? { ...att, isNSFW: nsfw } : null;
       })
       .filter((att) => att && (att.mediaType === 'image' || att.mediaType === 'video'));
-  }, [feedPostIds, allPosts, allAttachments, isNSFWVisible, foundUser, store]);
+
+    return { attachments, hasNSFW };
+  }, [feedPostIds, allPosts, allAttachments, isNSFWVisible, showNSFW, foundUser, store]);
 }
