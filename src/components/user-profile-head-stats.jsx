@@ -98,7 +98,7 @@ export const UserProfileHeadStats = ({ user, canFollowStatLinks }) => {
             ) : null}
           </>
         )}
-        <li className={styles.statlink}>
+        <li className={cn(styles.statlink, styles.sinceDate)}>
           <span className={styles.statlinkText}>
             <span className={styles.registeredOn}>Since</span>{' '}
             <TimeDisplay inline timeStamp={parseInt(createdAt)} absolute dateOnly />

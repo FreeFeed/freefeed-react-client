@@ -48,7 +48,7 @@ export default function UserMedia() {
     <div className="box">
       <Helmet>
         <title>
-          {nameForTitle} - All Media - {CONFIG.siteTitle}
+          {nameForTitle} - All media - {CONFIG.siteTitle}
         </title>
       </Helmet>
 
@@ -58,7 +58,7 @@ export default function UserMedia() {
         </div>
       </div>
       <div className="box-body">
-        <Breadcrumbs user={foundUser} breadcrumb="Media" />
+        <Breadcrumbs user={foundUser} breadcrumb="All media" />
         <UserProfile allowToPost={false} noPostLines />
       </div>
       {canViewAccountContent && hasNSFW && (

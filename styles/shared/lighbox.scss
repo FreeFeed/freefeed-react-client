@@ -119,7 +119,9 @@
   text-decoration: none;
   display: block;
 
-  &:hover {
+  &:hover,
+  &:active,
+  &:focus {
     color: #fff;
     text-decoration: underline;
   }
