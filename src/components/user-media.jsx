@@ -22,6 +22,7 @@ export default function UserMedia() {
   const foundUser = useSelector((state) =>
     Object.values(state.users).find((u) => u.username === username),
   );
+  const canViewAccountContent = useCanViewAccountContent(foundUser);
 
   if (nsfwToggleState.username !== username) {
     nsfwToggleState = { username, showNSFW: false };
@@ -44,7 +45,7 @@ export default function UserMedia() {
         <Breadcrumbs user={foundUser} breadcrumb="Media" />
         <UserProfile allowToPost={false} noPostLines />
       </div>
-      {hasNSFW && (
+      {canViewAccountContent && hasNSFW && (
         <div className="box-body">
           <label>
             <input
@@ -56,11 +57,33 @@ export default function UserMedia() {
           </label>
         </div>
       )}
-      <PaginatedView>
-        <VisualContainer attachments={attachments} isNSFW={false} isExpanded />
-      </PaginatedView>
+      {canViewAccountContent ? (
+        <PaginatedView>
+          <VisualContainer attachments={attachments} isNSFW={false} isExpanded />
+        </PaginatedView>
+      ) : (
+        foundUser && (
+          <div className="box-body">
+            <p>Media is not available for this account.</p>
+          </div>
+        )
+      )}
     </div>
   );
+}
+
+// Same logic as in UserProfileHead: don't show media for private/banned accounts
+function useCanViewAccountContent(user) {
+  const currentUser = useSelector((state) => state.user);
+  return useMemo(() => {
+    if (!user) {
+      return false;
+    }
+    const isCurrentUser = currentUser?.id === user.id;
+    const isBanned = currentUser?.banIds?.includes(user.id);
+    const inSubscriptions = currentUser?.subscriptions.includes(user.id);
+    return !isBanned && (isCurrentUser || user.isPrivate === '0' || inSubscriptions);
+  }, [user, currentUser]);
 }
 
 function useMediaAttachments(foundUser, showNSFW) {
