@@ -85,6 +85,9 @@ export const UserProfileHeadStats = ({ user, canFollowStatLinks }) => {
               canFollow={canFollowStatLinks}
               maxDigits={maxDigits}
             />
+            <Link to={`/${username}/media`} className={styles.statlinkText}>
+              Media only
+            </Link>
           </>
         )}
         <li className={styles.statlink}>
