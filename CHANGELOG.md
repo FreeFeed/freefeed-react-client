@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.146.0] - Not released
+### Added
+- "All media" page for users and groups with single gallery of all visual
+  attachments from all page's posts.
+- Lightbox captions on "All media" showing author avatar, username, and a post
+  text excerpt with a link to the original post.
 
 ## [1.145.0] - 2026-02-21
 ### Added
