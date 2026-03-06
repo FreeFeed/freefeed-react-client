@@ -129,6 +129,14 @@ $actions-padding: 0.75em;
   .allPosts {
     margin-top: 0.5em;
   }
+
+  .allMediaLink {
+    padding-left: calc(0.55em * var(--max-digits, 3) - 1.1em);
+
+    @media (max-width: 600px) {
+      padding-left: 0;
+    }
+  }
 }
 
 @media (max-width: 600px) {
