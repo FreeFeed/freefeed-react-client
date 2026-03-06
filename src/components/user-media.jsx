@@ -74,9 +74,15 @@ export default function UserMedia() {
         </div>
       )}
       {canViewAccountContent ? (
-        <PaginatedView>
-          <VisualContainer attachments={attachments} isNSFW={false} isExpanded />
-        </PaginatedView>
+        attachments.length > 0 ? (
+          <PaginatedView>
+            <VisualContainer attachments={attachments} isNSFW={false} isExpanded />
+          </PaginatedView>
+        ) : (
+          <div className="box-body">
+            <p>There is no media in this account.</p>
+          </div>
+        )
       ) : (
         foundUser && (
           <div className="box-body">
