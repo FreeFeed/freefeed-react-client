@@ -132,6 +132,8 @@ function buildCaption(author, post, postId) {
   const body =
     rawBody.length > maxLen ? htmlSafe(rawBody.slice(0, maxLen)) + '\u2026' : htmlSafe(rawBody);
 
+  // The link is intercepted by LightboxLinkInterceptor (in layout.jsx),
+  // which handles SPA navigation instead of a full page reload.
   return (
     `<a href="${postUrl}" class="pswp-caption__link">` +
     `<img src="${htmlSafe(avatarUrl)}" width="20" height="20" class="pswp-caption__avatar" /> ` +
