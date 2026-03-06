@@ -8,6 +8,7 @@ import PaginatedView from './paginated-view';
 import { useMemo, useState } from 'react';
 import { VisualContainer } from './post/attachments/visual/container';
 import { isPostNSFW } from './select-utils';
+import { htmlSafe } from '../utils';
 
 const tokenizeHashtags = hashtags();
 
@@ -104,10 +105,38 @@ function useMediaAttachments(foundUser, showNSFW) {
       })
       .map(({ postId, attId, nsfw }) => {
         const att = allAttachments[attId];
-        return att ? { ...att, isNSFW: nsfw, caption: `Post: ${postId}` } : null;
+        if (!att) {
+          return null;
+        }
+        const post = allPosts[postId];
+        const author = post ? state.users[post.createdBy] : null;
+        const caption = buildCaption(author, post, postId);
+        return { ...att, isNSFW: nsfw, caption };
       })
       .filter((att) => att && (att.mediaType === 'image' || att.mediaType === 'video'));
 
     return { attachments, hasNSFW };
   }, [feedPostIds, allPosts, allAttachments, isNSFWVisible, showNSFW, foundUser, store]);
+}
+
+function buildCaption(author, post, postId) {
+  if (!author || !post) {
+    return '';
+  }
+  const avatarUrl = author.profilePictureMediumUrl || '';
+  const username = htmlSafe(author.username);
+  const postUrl = `/${encodeURIComponent(author.username)}/${encodeURIComponent(postId)}`;
+
+  const maxLen = 150;
+  const rawBody = (post.body || '').replace(/\s+/g, ' ').trim();
+  const body =
+    rawBody.length > maxLen ? htmlSafe(rawBody.slice(0, maxLen)) + '\u2026' : htmlSafe(rawBody);
+
+  return (
+    `<a href="${postUrl}" class="pswp-caption__link">` +
+    `<img src="${htmlSafe(avatarUrl)}" width="20" height="20" class="pswp-caption__avatar" /> ` +
+    `<strong>${username}</strong>` +
+    (body ? `: ${body}` : '') +
+    `</a>`
+  );
 }

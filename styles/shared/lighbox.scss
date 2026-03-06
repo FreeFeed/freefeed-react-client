@@ -111,3 +111,20 @@
   color: #fff;
   text-align: center;
 }
+
+.pswp-caption__link {
+  color: #fff;
+  text-decoration: none;
+
+  &:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+}
+
+.pswp-caption__avatar {
+  border-radius: 50%;
+  vertical-align: middle;
+  width: 1.5em;
+  height: 1.5em;
+}
