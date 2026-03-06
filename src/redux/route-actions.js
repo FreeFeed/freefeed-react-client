@@ -63,6 +63,10 @@ export const routeActions = {
     getUserFeed(next.params.userName, getOffset(next)),
     getUserStats(next.params.userName),
   ],
+  userMedia: (next) => [
+    getSearch(`in:${next.params.userName} has:image,video`, getOffset(next)),
+    getUserStats(next.params.userName),
+  ],
   userComments: (next) => getUserComments(next.params.userName, getOffset(next)),
   userLikes: (next) => getUserLikes(next.params.userName, getOffset(next)),
   userSummary: (next) => getUserSummary(next.params.userName, next.params.days),

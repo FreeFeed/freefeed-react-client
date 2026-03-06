@@ -8,7 +8,7 @@ import ErrorBoundary from './error-boundary';
 import { UserProfileHead } from './user-profile-head';
 import { SubscriptionRequestsAlert } from './susbscription-requests-alert';
 
-export default function UserProfile({ allowToPost }) {
+export default function UserProfile({ allowToPost, noPostLines = false }) {
   const {
     authenticated,
     isLoading,
@@ -36,16 +36,19 @@ export default function UserProfile({ allowToPost }) {
         )}
 
         <UserProfileHead />
+        {!noPostLines ? (
+          <>
+            {canIPostHere && <CreatePost key={`profile:${foundUser.username}`} sendTo={sendTo} />}
 
-        {canIPostHere && <CreatePost key={`profile:${foundUser.username}`} sendTo={sendTo} />}
+            {whyCannotPost && <p className="alert alert-warning">{whyCannotPost}</p>}
 
-        {whyCannotPost && <p className="alert alert-warning">{whyCannotPost}</p>}
-
-        {authenticated && !canIPostHere && foundUser?.isRestricted === '1' && (
-          <div className="create-post create-post-restricted">
-            Only administrators can post to this group.
-          </div>
-        )}
+            {authenticated && !canIPostHere && foundUser?.isRestricted === '1' && (
+              <div className="create-post create-post-restricted">
+                Only administrators can post to this group.
+              </div>
+            )}
+          </>
+        ) : null}
       </ErrorBoundary>
     </div>
   );

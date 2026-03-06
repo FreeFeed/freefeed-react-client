@@ -41,6 +41,7 @@ const Subscriptions = lazyLoad(() => import('./components/subscriptions'));
 const Summary = lazyLoad(() => import('./components/summary'));
 const Groups = lazyLoad(() => import('./components/groups'));
 const BacklinksFeed = lazyLoad(() => import('./components/backlinks-feed'));
+const UserMedia = lazyLoad(() => import('./components/user-media'));
 
 Sentry.init({
   dsn: CONFIG.sentry.publicDSN,
@@ -418,6 +419,12 @@ function App() {
                 path="/:userName/likes"
                 component={User}
                 {...generateRouteHooks(boundRouteActions('userLikes'))}
+              />
+              <Route
+                name="userMedia"
+                path="/:userName/media"
+                component={UserMedia}
+                {...generateRouteHooks(boundRouteActions('userMedia'))}
               />
               <Route path="/.well-known/change-password">
                 <Redirect to="/settings/sign-in" />
