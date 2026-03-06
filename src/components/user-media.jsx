@@ -1,3 +1,4 @@
+/* global CONFIG */
 import { useSelector, useStore } from 'react-redux';
 import { hashtags } from 'social-text-tokenizer';
 import Breadcrumbs from './breadcrumbs';
@@ -9,6 +10,7 @@ import { useMemo, useState } from 'react';
 import { VisualContainer } from './post/attachments/visual/container';
 import { isPostNSFW } from './select-utils';
 import { htmlSafe } from '../utils';
+import { Helmet } from 'react-helmet';
 
 const tokenizeHashtags = hashtags();
 
@@ -34,8 +36,22 @@ export default function UserMedia() {
   };
   const { attachments, hasNSFW } = useMediaAttachments(foundUser, showNSFW);
 
+  const nameForTitle = useMemo(
+    () =>
+      foundUser.username === foundUser.screenName
+        ? foundUser.username
+        : `${foundUser.screenName} (${foundUser.username})`,
+    [foundUser.screenName, foundUser.username],
+  );
+
   return (
     <div className="box">
+      <Helmet>
+        <title>
+          {nameForTitle} - All Media - {CONFIG.siteTitle}
+        </title>
+      </Helmet>
+
       <div className="box-header-timeline" role="heading">
         <div className="pull-right">
           <FeedOptionsSwitch />
