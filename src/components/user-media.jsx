@@ -6,14 +6,17 @@ import FeedOptionsSwitch from './feed-options-switch';
 import UserProfile from './user-profile';
 import { useNouter } from '../services/nouter';
 import PaginatedView from './paginated-view';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { VisualContainer } from './post/attachments/visual/container';
 import { isPostNSFW } from './select-utils';
 import { htmlSafe } from '../utils';
 import { Helmet } from 'react-helmet';
+import { NEEDMORE_EVENT, MOREITEMS_EVENT } from '../services/lightbox-events';
+import { useLightboxItems } from './post/attachments/visual/hooks';
 
 const tokenizeHashtags = hashtags();
-const noLoopOptions = { loop: false };
+const lightboxOptions = { loop: false, pagination: true };
+const PAGE_SIZE = 30;
 
 // Persists showNSFW state across remounts within the same userMedia route.
 // Resets when switching to a different user.
@@ -36,6 +39,7 @@ export default function UserMedia() {
     setShowNSFWState(value);
   };
   const { attachments, hasNSFW } = useMediaAttachments(foundUser, showNSFW);
+  useLightboxPagination(attachments);
 
   const nameForTitle = useMemo(
     () =>
@@ -81,7 +85,7 @@ export default function UserMedia() {
               attachments={attachments}
               isNSFW={false}
               isExpanded
-              lightboxOptions={noLoopOptions}
+              lightboxOptions={lightboxOptions}
             />
           </PaginatedView>
         ) : (
@@ -98,6 +102,58 @@ export default function UserMedia() {
       )}
     </div>
   );
+}
+
+// Enables infinite scroll in the lightbox on the UserMedia page.
+//
+// The lightbox (lightbox-actual.js) and this page communicate via two custom
+// DOM events, without direct dependency on each other:
+//
+// 1. When the user approaches the last slide in the lightbox, it dispatches
+//    NEEDMORE_EVENT. This hook listens for it and navigates to the next page
+//    using `navigate({ replace: true })`. The `replace` flag swaps the lightbox
+//    history marker with the new page URL (see lightbox-actual.js for details).
+//
+// 2. Once React processes the new page data and `useMediaAttachments` produces
+//    a new list of attachments, this hook dispatches MOREITEMS_EVENT with the
+//    lightbox-formatted items and the `isLastPage` flag. The lightbox receives
+//    the event, deduplicates items by `pid`, pushes new ones into its
+//    `dataSource` array, and restores the history marker via `pushState`.
+//
+// This way the lightbox never touches React/Redux, and this page never imports
+// PhotoSwipe — they only share event name constants from lightbox-events.js.
+function useLightboxPagination(attachments) {
+  const { navigate, location } = useNouter();
+  const isLastPage = useSelector((state) => state.feedViewState.isLastPage);
+  const lightboxItems = useLightboxItems(attachments);
+
+  // Listen for "need more" requests from the lightbox
+  useEffect(() => {
+    let loading = false;
+    const handler = () => {
+      if (loading || isLastPage) {
+        return;
+      }
+      loading = true;
+      const offset = (+location.query.offset || 0) + PAGE_SIZE;
+      navigate(
+        { pathname: location.pathname, query: { ...location.query, offset } },
+        { replace: true },
+      );
+    };
+    document.addEventListener(NEEDMORE_EVENT, handler);
+    return () => document.removeEventListener(NEEDMORE_EVENT, handler);
+  }, [navigate, location, isLastPage]);
+
+  // Dispatch new items to the lightbox when attachments change
+  useEffect(() => {
+    if (lightboxItems.length === 0) {
+      return;
+    }
+    document.dispatchEvent(
+      new CustomEvent(MOREITEMS_EVENT, { detail: { items: lightboxItems, isLastPage } }),
+    );
+  }, [lightboxItems, isLastPage]);
 }
 
 // Same logic as in UserProfileHead: don't show media for private/banned accounts

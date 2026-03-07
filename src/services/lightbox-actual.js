@@ -9,6 +9,7 @@ import { getFullscreenAPI } from '../utils/fullscreen';
 import { isGifLike } from '../components/post/attachments/visual/utils';
 import { intentToScroll } from './unscroll';
 import { handlePip } from './pip-video';
+import { NEEDMORE_EVENT, MOREITEMS_EVENT } from './lightbox-events';
 
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
 const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
@@ -38,7 +39,9 @@ const downloadIconHtml = {
   outlineID: 'pswp__icn-download',
 };
 
-function initLightbox({ loop = true } = {}) {
+const paginationThreshold = 3;
+
+function initLightbox({ loop = true, pagination = false } = {}) {
   const lightbox = new PhotoSwipeLightbox({
     clickToCloseNonZoomable: false,
     tapAction(_, event) {
@@ -168,6 +171,11 @@ function initLightbox({ loop = true } = {}) {
   });
 
   // Handle back button
+  // Push a "marker" history entry so pressing Back closes the lightbox.
+  // We preserve the history library's state (which contains the location key)
+  // so that popping this marker doesn't look like a new navigation to the router.
+  const pushMarker = () => history.pushState(window.history.state, '');
+
   let closedByNavigation = false;
   const close = () => {
     lightbox.pswp.close();
@@ -175,7 +183,7 @@ function initLightbox({ loop = true } = {}) {
   };
   lightbox.on('beforeOpen', () => {
     window.addEventListener('popstate', close);
-    history.pushState(null, '');
+    pushMarker();
   });
   lightbox.on('destroy', () => {
     window.removeEventListener('popstate', close);
@@ -183,6 +191,47 @@ function initLightbox({ loop = true } = {}) {
       history.back();
     }
   });
+
+  // Pagination: request more items when approaching the last slide
+  if (pagination) {
+    let isLastPage = false;
+    let needmoreDispatched = false;
+
+    lightbox.on('beforeOpen', () => {
+      const onMoreItems = (e) => {
+        const { items, isLastPage: last } = e.detail;
+        isLastPage = last;
+        needmoreDispatched = false;
+
+        const dataSource = lightbox.pswp.options.dataSource;
+        const existingPids = new Set(dataSource.map((d) => d.pid));
+        const newItems = items.filter((item) => !existingPids.has(item.pid));
+        if (newItems.length > 0) {
+          dataSource.push(...newItems);
+        }
+
+        // Restore the history marker after navigation (replaceState removed it)
+        pushMarker();
+      };
+
+      document.addEventListener(MOREITEMS_EVENT, onMoreItems);
+      lightbox.on('destroy', () => document.removeEventListener(MOREITEMS_EVENT, onMoreItems));
+    });
+
+    lightbox.on('bindEvents', () => {
+      lightbox.pswp.on('change', () => {
+        if (isLastPage || needmoreDispatched) {
+          return;
+        }
+        const total = lightbox.pswp.getNumItems();
+        const curr = lightbox.pswp.currIndex;
+        if (curr >= total - paginationThreshold) {
+          needmoreDispatched = true;
+          document.dispatchEvent(new CustomEvent(NEEDMORE_EVENT));
+        }
+      });
+    });
+  }
 
   // Looking for video in active slide
   let currentVideo = null;
