@@ -13,6 +13,7 @@ import { htmlSafe } from '../utils';
 import { Helmet } from 'react-helmet';
 
 const tokenizeHashtags = hashtags();
+const noLoopOptions = { loop: false };
 
 // Persists showNSFW state across remounts within the same userMedia route.
 // Resets when switching to a different user.
@@ -76,7 +77,12 @@ export default function UserMedia() {
       {canViewAccountContent ? (
         attachments.length > 0 ? (
           <PaginatedView>
-            <VisualContainer attachments={attachments} isNSFW={false} isExpanded />
+            <VisualContainer
+              attachments={attachments}
+              isNSFW={false}
+              isExpanded
+              lightboxOptions={noLoopOptions}
+            />
           </PaginatedView>
         ) : (
           <div className="box-body">

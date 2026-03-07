@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
 
 let firstOpen = true;
-export function openLightbox(index, dataSource) {
+export function openLightbox(index, dataSource, options) {
   if (firstOpen && dataSource[index].src) {
     // Preload image
     new Image().src = dataSource[index].src;
   }
   firstOpen = false;
   import('./lightbox-actual')
-    .then((m) => m.openLightbox(index, dataSource))
+    .then((m) => m.openLightbox(index, dataSource, options))
     .catch((e) => console.error('Could not load lightbox', e));
 }
 

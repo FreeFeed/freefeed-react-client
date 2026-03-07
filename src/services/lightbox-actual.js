@@ -14,8 +14,8 @@ const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
 const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
 const fullScreenHotKeys = ['f', 'а'];
 
-export function openLightbox(index, dataSource) {
-  initLightbox().loadAndOpen(index, dataSource);
+export function openLightbox(index, dataSource, options) {
+  initLightbox(options).loadAndOpen(index, dataSource);
 }
 
 const fullScreenAPI = getFullscreenAPI();
@@ -38,7 +38,7 @@ const downloadIconHtml = {
   outlineID: 'pswp__icn-download',
 };
 
-function initLightbox() {
+function initLightbox({ loop = true } = {}) {
   const lightbox = new PhotoSwipeLightbox({
     clickToCloseNonZoomable: false,
     tapAction(_, event) {
@@ -54,6 +54,7 @@ function initLightbox() {
     maxZoomLevel: 2,
     pswpModule,
     returnFocus: false,
+    loop,
   });
 
   new PhotoSwipeVideoPlugin(lightbox, {});

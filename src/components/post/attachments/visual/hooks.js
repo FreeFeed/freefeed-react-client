@@ -69,13 +69,13 @@ export function useLightboxItems(attachments, postId) {
   );
 }
 
-export function useItemClickHandler(lightboxItems) {
+export function useItemClickHandler(lightboxItems, lightboxOptions) {
   return useEvent(
     handleLeftClick((e) => {
       e.preventDefault();
       const { currentTarget: el } = e;
       const index = lightboxItems.findIndex((i) => i.pid === el.dataset.pid);
-      openLightbox(index, lightboxItems, el.target);
+      openLightbox(index, lightboxItems, lightboxOptions);
     }),
   );
 }
