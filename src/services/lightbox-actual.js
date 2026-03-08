@@ -203,11 +203,16 @@ function initLightbox({ loop = true, pagination = false } = {}) {
         isLastPage = last;
         needmoreDispatched = false;
 
-        const dataSource = lightbox.pswp.options.dataSource;
+        const pswp = lightbox.pswp;
+        const dataSource = pswp.options.dataSource;
         const existingPids = new Set(dataSource.map((d) => d.pid));
         const newItems = items.filter((item) => !existingPids.has(item.pid));
         if (newItems.length > 0) {
+          const firstNewIndex = dataSource.length;
           dataSource.push(...newItems);
+          // refreshSlideContent loads nearby slides and dispatches 'change',
+          // which updates the counter and navigation arrows.
+          pswp.refreshSlideContent(firstNewIndex);
         }
 
         // Restore the history marker after navigation (replaceState removed it)
@@ -218,18 +223,22 @@ function initLightbox({ loop = true, pagination = false } = {}) {
       lightbox.on('destroy', () => document.removeEventListener(MOREITEMS_EVENT, onMoreItems));
     });
 
+    const checkNeedMore = () => {
+      if (isLastPage || needmoreDispatched) {
+        return;
+      }
+      const total = lightbox.pswp.getNumItems();
+      const curr = lightbox.pswp.currIndex;
+      if (curr >= total - paginationThreshold) {
+        needmoreDispatched = true;
+        document.dispatchEvent(new CustomEvent(NEEDMORE_EVENT));
+      }
+    };
+
     lightbox.on('bindEvents', () => {
-      lightbox.pswp.on('change', () => {
-        if (isLastPage || needmoreDispatched) {
-          return;
-        }
-        const total = lightbox.pswp.getNumItems();
-        const curr = lightbox.pswp.currIndex;
-        if (curr >= total - paginationThreshold) {
-          needmoreDispatched = true;
-          document.dispatchEvent(new CustomEvent(NEEDMORE_EVENT));
-        }
-      });
+      lightbox.pswp.on('change', checkNeedMore);
+      // 'change' does not fire on initial open, so check explicitly
+      checkNeedMore();
     });
   }
 
