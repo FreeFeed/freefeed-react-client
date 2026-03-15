@@ -90,9 +90,9 @@ export function getFreefeedPreviewLinkLabels(text) {
     } else if (token.type === SPOILER_END) {
       inSpoiler = false;
     } else if (token.type === 'LINK' && !inSpoiler) {
-      const isAttachment = isAttachmentUrl(token.text);
+      const attId = freefeedAttachmentId(token.text);
       if (
-        isAttachment &&
+        attId &&
         /^https?:\/\//i.test(token.text) &&
         text.charAt(token.offset - 1) !== '!'
       ) {
@@ -101,7 +101,7 @@ export function getFreefeedPreviewLinkLabels(text) {
           type === IMAGE ||
           type === VIDEO ||
           type === T_YOUTUBE_VIDEO ||
-          (isAttachment && type === null);
+          (attId && type === null);
         if (showPreview) {
           labelCounter += 1;
           map.set(index, `frf-image${labelCounter}`);
@@ -154,14 +154,9 @@ export function createErrorItem(error) {
 // Matches /attachments/UUID and /vN/attachments/UUID (e.g. /v4/attachments/xxx)
 const freefeedPathRegex = /\/attachments\/([\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12})/;
 
-/** Returns true if URL path looks like /attachments/UUID (FreeFeed attachment) */
+/** Returns true if URL is a FreeFeed attachment (checks both path and domain) */
 export function isAttachmentUrl(url) {
-  try {
-    const urlObj = new URL(url);
-    return freefeedPathRegex.test(urlObj.pathname);
-  } catch {
-    return false;
-  }
+  return freefeedAttachmentId(url) !== null;
 }
 
 export function freefeedAttachmentId(url) {
