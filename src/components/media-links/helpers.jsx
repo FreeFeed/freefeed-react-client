@@ -7,6 +7,8 @@ import {
   getEmbedInfo as getInstagramEmbedInfo,
 } from '../link-preview/instagram';
 import { getVideoInfo, getVideoType, T_VIMEO_VIDEO, T_YOUTUBE_VIDEO } from '../link-preview/video';
+import { parseText } from '../../utils/parse-text';
+import { SPOILER_END, SPOILER_START } from '../../utils/spoiler-tokens';
 import { isLeftClick } from '../../utils';
 import { openLightbox } from '../../services/lightbox';
 import { attachmentPreviewUrl, attachmentSaveAsUrl } from '../../services/api';
@@ -68,6 +70,49 @@ export const IMAGE = 'image';
 export const VIDEO = 'video';
 export const INSTAGRAM = 'instagram';
 
+/**
+ * Returns Map of token index to short label for Freefeed attachment links that would show preview.
+ * Used to replace long URLs with short labels (frf-image1, frf-image2, ...) in comment text.
+ * @param {string} text
+ * @returns {Map<number, string>}
+ */
+export function getFreefeedPreviewLinkLabels(text) {
+  const map = new Map();
+  if (!text) return map;
+
+  const tokens = parseText(text);
+  let inSpoiler = false;
+  let labelCounter = 0;
+
+  for (const [index, token] of tokens.entries()) {
+    if (token.type === SPOILER_START) {
+      inSpoiler = true;
+    } else if (token.type === SPOILER_END) {
+      inSpoiler = false;
+    } else if (token.type === 'LINK' && !inSpoiler) {
+      const isAttachment = isAttachmentUrl(token.text);
+      if (
+        isAttachment &&
+        /^https?:\/\//i.test(token.text) &&
+        text.charAt(token.offset - 1) !== '!'
+      ) {
+        const type = getMediaType(token.text);
+        const showPreview =
+          type === IMAGE ||
+          type === VIDEO ||
+          type === T_YOUTUBE_VIDEO ||
+          (isAttachment && type === null);
+        if (showPreview) {
+          labelCounter += 1;
+          map.set(index, `frf-image${labelCounter}`);
+        }
+      }
+    }
+  }
+
+  return map;
+}
+
 export function getMediaType(url) {
   try {
     const urlObj = new URL(url);
@@ -106,12 +151,26 @@ export function createErrorItem(error) {
   };
 }
 
-const freefeedPathRegex = /^\/attachments\/(?:\w+\/)?([\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12})/;
+// Matches /attachments/UUID and /vN/attachments/UUID (e.g. /v4/attachments/xxx)
+const freefeedPathRegex = /\/attachments\/([\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12})/;
+
+/** Returns true if URL path looks like /attachments/UUID (FreeFeed attachment) */
+export function isAttachmentUrl(url) {
+  try {
+    const urlObj = new URL(url);
+    return freefeedPathRegex.test(urlObj.pathname);
+  } catch {
+    return false;
+  }
+}
 
 export function freefeedAttachmentId(url) {
   try {
     const urlObj = new URL(url);
-    if (!CONFIG.attachmentDomains.includes(urlObj.hostname)) {
+    const apiHost = new URL(CONFIG.api.root).hostname;
+    const isAllowedHost =
+      CONFIG.attachmentDomains.includes(urlObj.hostname) || urlObj.hostname === apiHost;
+    if (!isAllowedHost) {
       return null;
     }
     const [, id] = freefeedPathRegex.exec(urlObj.pathname) ?? [null, null];

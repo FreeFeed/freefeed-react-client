@@ -18,6 +18,7 @@ export default function Linkify({
   arrowHover,
   arrowClick,
   highlightTerms: hl = [],
+  previewLinkLabelMap,
 }) {
   const attachmentsRef = useRef([]);
 
@@ -28,12 +29,13 @@ export default function Linkify({
       arrowHover,
       arrowClick,
       attachmentsRef,
+      previewLinkLabelMap,
     });
     if (hl.length > 0) {
       fm = processStrings(fm, (str) => highlightString(str, hl), ['button']);
     }
     return fm;
-  }, [arrowClick, arrowHover, children, hl, userHover]);
+  }, [arrowClick, arrowHover, children, hl, previewLinkLabelMap, userHover]);
 
   return (
     <span className={cn('Linkify', className)} dir="auto" role="region">
