@@ -1,9 +1,22 @@
 .preview {
   height: 4em;
   width: auto;
+  /* Default for external images and YouTube: dimensions unknown or limited */
   aspect-ratio: clamp(0.8, var(--ar, 1), 1.2);
   object-fit: cover;
   box-shadow: 0 0 0 1px rgb(0, 0, 0, 0.2);
+
+  /* Freefeed: normal proportions (0.5 ≤ ar ≤ 2) — show full image */
+  &[data-aspect-type='normal'] {
+    aspect-ratio: var(--ar);
+    object-fit: contain;
+  }
+
+  /* Freefeed: extreme proportions (panoramas, vertical strips) — limit preview size */
+  &[data-aspect-type='extreme'] {
+    aspect-ratio: clamp(0.5, var(--ar), 2);
+    object-fit: cover;
+  }
 
   &:hover {
     box-shadow: 0 0 0 1px rgb(0, 0, 0, 1);

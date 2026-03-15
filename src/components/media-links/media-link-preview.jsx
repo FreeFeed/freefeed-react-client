@@ -8,19 +8,19 @@ import styles from './media-link-preview.module.scss';
 export function MediaLinkPreview({ href: url }) {
   const previewId = useId();
   const [mediaType, handleClick] = useMediaLink(url, { previewId });
-
-  if (mediaType !== IMAGE && mediaType !== VIDEO && mediaType !== T_YOUTUBE_VIDEO) {
-    return null;
-  }
-
-  // Freefeed attachment?
   const attId = freefeedAttachmentId(url);
+
+  // Freefeed attachment — render even when mediaType unknown (e.g. /v4/attachments/UUID)
   if (attId) {
     return (
       <a href={url} target="_blank" rel="noreferrer" onClick={handleClick}>
         <FreeFeedMediaPreview id={attId} previewId={previewId} />
       </a>
     );
+  }
+
+  if (mediaType !== IMAGE && mediaType !== VIDEO && mediaType !== T_YOUTUBE_VIDEO) {
+    return null;
   }
 
   if (mediaType === T_YOUTUBE_VIDEO) {
@@ -58,11 +58,17 @@ function FreeFeedMediaPreview({ id, previewId }) {
       .then((info) => {
         if (info?.mediaType === 'image' || info?.mediaType === 'video') {
           const height = 120;
-          const width = Math.round((info.width / info.height) * height);
+          const w = info.width ?? info.imageSizes?.o?.w;
+          const h = info.height ?? info.imageSizes?.o?.h;
+          const width = w && h ? Math.round((w / h) * height) : height;
+          const ar = w && h ? w / h : 1;
+          const aspectType = ar >= 0.5 && ar <= 2 ? 'normal' : 'extreme';
           setAttrs({
             src: attachmentPreviewUrl(id, 'image', width, height),
             width,
             height,
+            ar,
+            aspectType,
           });
         }
         return null;
@@ -80,7 +86,8 @@ function FreeFeedMediaPreview({ id, previewId }) {
       alt=""
       width={attrs.width}
       height={attrs.height}
-      style={{ '--ar': attrs.width / attrs.height }}
+      style={{ '--ar': attrs.ar }}
+      data-aspect-type={attrs.aspectType}
       className={styles.preview}
       loading="lazy"
       id={previewId}
