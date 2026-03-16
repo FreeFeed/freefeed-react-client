@@ -102,19 +102,11 @@ export function getFreefeedPreviewLinkLabels(text, options = {}) {
         /^https?:\/\//i.test(token.text) &&
         text.charAt(token.offset - 1) !== '!'
       ) {
-        const type = getMediaType(token.text);
-        const showPreview =
-          type === IMAGE ||
-          type === VIDEO ||
-          type === T_YOUTUBE_VIDEO ||
-          (attId && type === null);
-        if (showPreview) {
-          if (inSpoiler && shortenInSpoiler) {
-            map.set(index, SPOILER_LINK_LABEL);
-          } else {
-            labelCounter += 1;
-            map.set(index, `frf-image${labelCounter}`);
-          }
+        if (inSpoiler && shortenInSpoiler) {
+          map.set(index, SPOILER_LINK_LABEL);
+        } else {
+          labelCounter += 1;
+          map.set(index, `frf-image${labelCounter}`);
         }
       }
     }
