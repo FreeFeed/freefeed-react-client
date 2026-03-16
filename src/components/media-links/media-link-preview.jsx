@@ -40,8 +40,8 @@ export function MediaLinkPreview({ href: url }) {
       <img
         src={url}
         alt=""
-        width={60}
-        height={60}
+        width={90}
+        height={90}
         className={styles.preview}
         loading="lazy"
         id={previewId}
@@ -57,7 +57,7 @@ function FreeFeedMediaPreview({ id, previewId }) {
     getAttachmentInfo(id)
       .then((info) => {
         if (info?.mediaType === 'image' || info?.mediaType === 'video') {
-          const height = 120;
+          const height = 180;
           const w = info.width ?? info.imageSizes?.o?.w;
           const h = info.height ?? info.imageSizes?.o?.h;
           const width = w && h ? Math.round((w / h) * height) : height;
@@ -101,8 +101,8 @@ function YouTubeMediaPreview({ url, previewId }) {
     <img
       src={`https://img.youtube.com/vi/${getVideoId(url)}/default.jpg`}
       alt=""
-      width={Math.round(60 / aspectRatio)}
-      height={60}
+      width={Math.round(90 / aspectRatio)}
+      height={90}
       style={{ '--ar': 1 / aspectRatio }}
       className={styles.preview}
       loading="lazy"

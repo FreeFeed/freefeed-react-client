@@ -1,5 +1,5 @@
 .preview {
-  height: 4em;
+  height: 6em;
   width: auto;
   /* Default for external images and YouTube: dimensions unknown or limited */
   aspect-ratio: clamp(0.8, var(--ar, 1), 1.2);
