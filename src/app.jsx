@@ -215,11 +215,6 @@ function App() {
                 <Redirect to="/ffdev" replace />
               </Route>
               <Route
-                path="demo/frf-labels"
-                component={lazyLoad(() => import('./components/demo/frf-labels-demo'))}
-                onEnter={enterStaticPage('Demo: frf labels')}
-              />
-              <Route
                 path="signin"
                 component={lazyLoad(() => import('./components/signin'))}
                 onEnter={enterStaticPage('Sign in')}
