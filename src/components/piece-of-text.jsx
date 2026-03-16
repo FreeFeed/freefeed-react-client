@@ -97,6 +97,7 @@ export default function PieceOfText({
   arrowClick,
   highlightTerms,
   showMediaPreviews,
+  shortenInSpoiler = false,
 }) {
   const [isExpanded, setIsExpanded] = useState(
     () => passedIsExpanded || readMoreStyle === READMORE_STYLE_COMFORT,
@@ -112,8 +113,8 @@ export default function PieceOfText({
   const previewLinkLabelMap = useMemo(() => {
     if (!showMediaPreviews) return undefined;
     const textForParsing = getTextFromRenderContent(textToRender);
-    return getFreefeedPreviewLinkLabels(textForParsing);
-  }, [showMediaPreviews, textToRender]);
+    return getFreefeedPreviewLinkLabels(textForParsing, { shortenInSpoiler });
+  }, [showMediaPreviews, shortenInSpoiler, textToRender]);
 
   const noBreaks =
     readMoreStyle === READMORE_STYLE_COMPACT &&

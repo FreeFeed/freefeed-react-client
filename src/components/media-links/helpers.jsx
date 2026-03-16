@@ -70,13 +70,19 @@ export const IMAGE = 'image';
 export const VIDEO = 'video';
 export const INSTAGRAM = 'instagram';
 
+/** Label for attachment links inside spoilers — same style as outside, no numbering */
+export const SPOILER_LINK_LABEL = 'frf-image';
+
 /**
  * Returns Map of token index to short label for Freefeed attachment links that would show preview.
- * Used to replace long URLs with short labels (frf-image1, frf-image2, ...) in comment text.
+ * Outside spoiler: frf-image1, frf-image2, frf-image3, etc.
+ * Inside spoiler (when shortenInSpoiler): same label for all — SPOILER_LINK_LABEL.
  * @param {string} text
+ * @param {{ shortenInSpoiler?: boolean }} [options] - shortenInSpoiler: when true, shorten links inside spoilers too (variant 3)
  * @returns {Map<number, string>}
  */
-export function getFreefeedPreviewLinkLabels(text) {
+export function getFreefeedPreviewLinkLabels(text, options = {}) {
+  const { shortenInSpoiler = false } = options;
   const map = new Map();
   if (!text) return map;
 
@@ -89,7 +95,7 @@ export function getFreefeedPreviewLinkLabels(text) {
       inSpoiler = true;
     } else if (token.type === SPOILER_END) {
       inSpoiler = false;
-    } else if (token.type === 'LINK' && !inSpoiler) {
+    } else if (token.type === 'LINK' && (shortenInSpoiler || !inSpoiler)) {
       const attId = freefeedAttachmentId(token.text);
       if (
         attId &&
@@ -103,8 +109,12 @@ export function getFreefeedPreviewLinkLabels(text) {
           type === T_YOUTUBE_VIDEO ||
           (attId && type === null);
         if (showPreview) {
-          labelCounter += 1;
-          map.set(index, `frf-image${labelCounter}`);
+          if (inSpoiler && shortenInSpoiler) {
+            map.set(index, SPOILER_LINK_LABEL);
+          } else {
+            labelCounter += 1;
+            map.set(index, `frf-image${labelCounter}`);
+          }
         }
       }
     }

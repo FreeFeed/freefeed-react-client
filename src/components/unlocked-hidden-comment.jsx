@@ -79,6 +79,7 @@ function CommentContent({ comment, userHover, arrowHover, arrowClick }) {
           arrowHover={arrowHover}
           arrowClick={arrowClick}
           showMediaPreviews={showMediaPreviews}
+          shortenInSpoiler={true}
         />
         {author && (
           <>

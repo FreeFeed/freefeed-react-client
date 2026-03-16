@@ -327,6 +327,7 @@ class PostComment extends Component {
               arrowHover={this.arrowHoverHandlers}
               arrowClick={this.arrowClick}
               showMediaPreviews={this.props.showMediaPreviews}
+              shortenInSpoiler={true}
             />
             <TranslatedText
               type="comment"
