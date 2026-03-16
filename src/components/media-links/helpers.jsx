@@ -71,15 +71,16 @@ export const IMAGE = 'image';
 export const VIDEO = 'video';
 export const INSTAGRAM = 'instagram';
 
-/** Label for attachment links inside spoilers — same style as outside, no numbering */
-export const SPOILER_LINK_LABEL = 'frf-image';
+/** Default short label for attachment links (used for single image or inside spoilers) */
+export const FRF_IMAGE_LABEL = 'frf-image';
 
 /**
- * Returns Map of token index to short label for Freefeed attachment links that would show preview.
- * Outside spoiler: frf-image1, frf-image2, frf-image3, etc.
- * Inside spoiler (when shortenInSpoiler): same label for all — SPOILER_LINK_LABEL.
+ * Returns Map of token index to short label for Freefeed attachment links.
+ * Outside spoiler: if only 1 image — "frf-image"; if 2+ — "frf-image1", "frf-image2", etc.
+ * Count excludes images inside spoilers.
+ * Inside spoiler (when shortenInSpoiler): "frf-image" for all.
  * @param {string} text
- * @param {{ shortenInSpoiler?: boolean }} [options] - shortenInSpoiler: when true, shorten links inside spoilers too (variant 3)
+ * @param {{ shortenInSpoiler?: boolean }} [options] - shortenInSpoiler: when true, shorten links inside spoilers too
  * @returns {Map<number, string>}
  */
 export function getFreefeedPreviewLinkLabels(text, options = {}) {
@@ -89,26 +90,35 @@ export function getFreefeedPreviewLinkLabels(text, options = {}) {
 
   const tokens = parseText(text);
   let inSpoiler = false;
+
+  const isAttachmentLink = (token) =>
+    token.type === LINK &&
+    freefeedAttachmentId(token.text) &&
+    /^https?:\/\//i.test(token.text) &&
+    text.charAt(token.offset - 1) !== '!';
+
+  let outsideCount = 0;
+  for (const [, token] of tokens.entries()) {
+    if (token.type === SPOILER_START) inSpoiler = true;
+    else if (token.type === SPOILER_END) inSpoiler = false;
+    else if (!inSpoiler && isAttachmentLink(token)) outsideCount += 1;
+  }
+
+  inSpoiler = false;
   let labelCounter = 0;
+  const useNumbering = outsideCount >= 2;
 
   for (const [index, token] of tokens.entries()) {
     if (token.type === SPOILER_START) {
       inSpoiler = true;
     } else if (token.type === SPOILER_END) {
       inSpoiler = false;
-    } else if (token.type === LINK && (shortenInSpoiler || !inSpoiler)) {
-      const attId = freefeedAttachmentId(token.text);
-      if (
-        attId &&
-        /^https?:\/\//i.test(token.text) &&
-        text.charAt(token.offset - 1) !== '!'
-      ) {
-        if (inSpoiler && shortenInSpoiler) {
-          map.set(index, SPOILER_LINK_LABEL);
-        } else {
-          labelCounter += 1;
-          map.set(index, `frf-image${labelCounter}`);
-        }
+    } else if ((shortenInSpoiler || !inSpoiler) && isAttachmentLink(token)) {
+      if (inSpoiler && shortenInSpoiler) {
+        map.set(index, FRF_IMAGE_LABEL);
+      } else {
+        labelCounter += 1;
+        map.set(index, useNumbering ? `frf-image${labelCounter}` : FRF_IMAGE_LABEL);
       }
     }
   }

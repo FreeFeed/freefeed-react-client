@@ -1,4 +1,6 @@
+import { LINK } from 'social-text-tokenizer';
 import { isLocalLink, parseText } from '../../utils/parse-text';
+import { SPOILER_END, SPOILER_START } from '../../utils/spoiler-tokens';
 import ErrorBoundary from '../error-boundary';
 import { T_YOUTUBE_VIDEO } from '../link-preview/video';
 import { getMediaType, IMAGE, VIDEO, isAttachmentUrl } from '../media-links/helpers';
@@ -13,11 +15,11 @@ export function CommentMediaPreviews({ text }) {
 
   let inSpoiler = false;
   for (const [index, token] of tokens.entries()) {
-    if (token.type === 'SPOILER_START') {
+    if (token.type === SPOILER_START) {
       inSpoiler = true;
-    } else if (token.type === 'SPOILER_END') {
+    } else if (token.type === SPOILER_END) {
       inSpoiler = false;
-    } else if (token.type === 'LINK' && !inSpoiler) {
+    } else if (token.type === LINK && !inSpoiler) {
       const isLocal = isLocalLink(token.text);
       const isAttachment = isAttachmentUrl(token.text);
       if (
