@@ -7,6 +7,7 @@ import {
   getEmbedInfo as getInstagramEmbedInfo,
 } from '../link-preview/instagram';
 import { getVideoInfo, getVideoType, T_VIMEO_VIDEO, T_YOUTUBE_VIDEO } from '../link-preview/video';
+import { LINK } from 'social-text-tokenizer';
 import { parseText } from '../../utils/parse-text';
 import { SPOILER_END, SPOILER_START } from '../../utils/spoiler-tokens';
 import { isLeftClick } from '../../utils';
@@ -95,7 +96,7 @@ export function getFreefeedPreviewLinkLabels(text, options = {}) {
       inSpoiler = true;
     } else if (token.type === SPOILER_END) {
       inSpoiler = false;
-    } else if (token.type === 'LINK' && (shortenInSpoiler || !inSpoiler)) {
+    } else if (token.type === LINK && (shortenInSpoiler || !inSpoiler)) {
       const attId = freefeedAttachmentId(token.text);
       if (
         attId &&
@@ -154,19 +155,23 @@ export function createErrorItem(error) {
 }
 
 // Matches /attachments/UUID and /vN/attachments/UUID (e.g. /v4/attachments/xxx)
-const freefeedPathRegex = /\/attachments\/([\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12})/;
+const freefeedPathRegex = /^(?:\/v\d+)?\/attachments\/([\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12})/;
 
 /** Returns true if URL is a FreeFeed attachment (checks both path and domain) */
 export function isAttachmentUrl(url) {
   return freefeedAttachmentId(url) !== null;
 }
 
+let _apiHost = null;
+function getApiHost() {
+  return (_apiHost ??= new URL(CONFIG.api.root).hostname);
+}
+
 export function freefeedAttachmentId(url) {
   try {
     const urlObj = new URL(url);
-    const apiHost = new URL(CONFIG.api.root).hostname;
     const isAllowedHost =
-      CONFIG.attachmentDomains.includes(urlObj.hostname) || urlObj.hostname === apiHost;
+      CONFIG.attachmentDomains.includes(urlObj.hostname) || urlObj.hostname === getApiHost();
     if (!isAllowedHost) {
       return null;
     }

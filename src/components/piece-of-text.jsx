@@ -78,6 +78,12 @@ const getExpandedText = (text) => {
   return text.trim();
 };
 
+/**
+ * Extract the text string from textToRender for label generation.
+ * - Expanded: getExpandedText returns a plain string.
+ * - Collapsed: getCollapsedText returns [<span>{normalizedText}</span>, ' ', <ButtonLink>].
+ *   We extract normalizedText from content[0].props.children.
+ */
 function getTextFromRenderContent(content) {
   if (typeof content === 'string') {
     return content;
