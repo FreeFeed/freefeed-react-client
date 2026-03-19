@@ -71,71 +71,34 @@ export const IMAGE = 'image';
 export const VIDEO = 'video';
 export const INSTAGRAM = 'instagram';
 
-/** Default short label for attachment links (used for single image or inside spoilers) */
-export const FRF_IMAGE_LABEL = 'frf-image';
-
 /**
- * @typedef {'frf-image'|'image'|'uuid'} LabelFormat
- * - 'frf-image': frf-image, frf-image1, frf-image2
- * - 'image': image, image1, image2
- * - 'uuid': first 8 chars of attachment UUID (e.g. 550e8400)
- */
-
-/**
- * Returns Map of token index to short label for Freefeed attachment links.
- * Outside spoiler: if only 1 image — base label; if 2+ — base+number.
- * Count excludes images inside spoilers.
- * Inside spoiler (when shortenInSpoiler): base label for all (or UUID for 'uuid' format).
+ * Returns Map of token index to short label (first 8 chars of UUID) for FreeFeed attachment links.
  * @param {string} text
- * @param {{ shortenInSpoiler?: boolean, labelFormat?: LabelFormat }} [options]
+ * @param {{ shortenInSpoiler?: boolean }} [options]
  * @returns {Map<number, string>}
  */
 export function getFreefeedPreviewLinkLabels(text, options = {}) {
-  const { shortenInSpoiler = false, labelFormat = 'uuid' } = options;
+  const { shortenInSpoiler = false } = options;
   const map = new Map();
   if (!text) return map;
 
   const tokens = parseText(text);
   let inSpoiler = false;
 
-  const isAttachmentLink = (token) =>
-    token.type === LINK &&
-    /^https?:\/\//i.test(token.text) &&
-    text.charAt(token.offset - 1) !== '!' &&
-    freefeedAttachmentId(token.text);
-
-  let outsideCount = 0;
-  for (const [, token] of tokens.entries()) {
-    if (token.type === SPOILER_START) inSpoiler = true;
-    else if (token.type === SPOILER_END) inSpoiler = false;
-    else if (!inSpoiler && isAttachmentLink(token)) outsideCount += 1;
-  }
-
-  const baseLabel = labelFormat === 'image' ? 'image' : FRF_IMAGE_LABEL;
-  const spoilerLabel = labelFormat === 'uuid' ? null : baseLabel;
-  inSpoiler = false;
-  let labelCounter = 0;
-  const useNumbering = outsideCount >= 2;
-
   for (const [index, token] of tokens.entries()) {
     if (token.type === SPOILER_START) {
       inSpoiler = true;
     } else if (token.type === SPOILER_END) {
       inSpoiler = false;
-    } else if ((shortenInSpoiler || !inSpoiler) && isAttachmentLink(token)) {
+    } else if (
+      (shortenInSpoiler || !inSpoiler) &&
+      token.type === LINK &&
+      /^https?:\/\//i.test(token.text) &&
+      text.charAt(token.offset - 1) !== '!'
+    ) {
       const attId = freefeedAttachmentId(token.text);
-      if (inSpoiler && shortenInSpoiler) {
-        const label =
-          labelFormat === 'uuid' ? (attId && attId.slice(0, 8)) : spoilerLabel;
-        if (label) map.set(index, label);
-      } else {
-        labelCounter += 1;
-        if (labelFormat === 'uuid') {
-          const label = attId && attId.slice(0, 8);
-          if (label) map.set(index, label);
-        } else {
-          map.set(index, useNumbering ? `${baseLabel}${labelCounter}` : baseLabel);
-        }
+      if (attId) {
+        map.set(index, attId.slice(0, 8));
       }
     }
   }
