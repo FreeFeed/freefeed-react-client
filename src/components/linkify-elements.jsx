@@ -1,5 +1,6 @@
 /* global CONFIG */
 import { Fragment } from 'react';
+import { faImage } from '@fortawesome/free-regular-svg-icons';
 
 import { ARROWS, EMAIL, FOREIGN_MENTION, HASHTAG, LINK, MENTION } from 'social-text-tokenizer';
 import { emailHref, linkHref, prettyEmail, prettyLink } from 'social-text-tokenizer/prettifiers';
@@ -200,7 +201,7 @@ function renderLink(token, key, text, params = {}) {
   }
 
   return (
-    <MediaLink key={key} href={href}>
+    <MediaLink key={key} href={href} forceIcon={previewLabel ? faImage : undefined}>
       {displayText}
     </MediaLink>
   );
