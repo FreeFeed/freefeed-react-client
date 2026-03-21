@@ -7,6 +7,7 @@ import {
 
 import Linkify from './linkify';
 import { ButtonLink } from './button-link';
+import { getFreefeedPreviewLinkLabels } from './media-links/helpers';
 
 // Texts longer than thresholdTextLength should be cut to shortenedTextLength
 const thresholdTextLength = 800;
@@ -77,6 +78,22 @@ const getExpandedText = (text) => {
   return text.trim();
 };
 
+/**
+ * Extract the text string from textToRender for label generation.
+ * - Expanded: getExpandedText returns a plain string.
+ * - Collapsed: getCollapsedText returns [<span>{normalizedText}</span>, ' ', <ButtonLink>].
+ *   We extract normalizedText from content[0].props.children.
+ */
+function getTextFromRenderContent(content) {
+  if (typeof content === 'string') {
+    return content;
+  }
+  if (Array.isArray(content) && content[0]?.props?.children != null) {
+    return content[0].props.children;
+  }
+  return '';
+}
+
 export default function PieceOfText({
   text = '',
   isExpanded: passedIsExpanded = false,
@@ -85,6 +102,8 @@ export default function PieceOfText({
   arrowHover,
   arrowClick,
   highlightTerms,
+  showMediaPreviews,
+  shortenInSpoiler = false,
 }) {
   const [isExpanded, setIsExpanded] = useState(
     () => passedIsExpanded || readMoreStyle === READMORE_STYLE_COMFORT,
@@ -96,6 +115,12 @@ export default function PieceOfText({
     () => (isExpanded ? getExpandedText(text) : getCollapsedText(text, expandText)),
     [expandText, isExpanded, text],
   );
+
+  const previewLinkLabelMap = useMemo(() => {
+    if (!showMediaPreviews) return undefined;
+    const textForParsing = getTextFromRenderContent(textToRender);
+    return getFreefeedPreviewLinkLabels(textForParsing, { shortenInSpoiler });
+  }, [showMediaPreviews, shortenInSpoiler, textToRender]);
 
   const noBreaks =
     readMoreStyle === READMORE_STYLE_COMPACT &&
@@ -110,6 +135,7 @@ export default function PieceOfText({
       arrowHover={arrowHover}
       arrowClick={arrowClick}
       highlightTerms={highlightTerms}
+      previewLinkLabelMap={previewLinkLabelMap}
     >
       {textToRender}
     </Linkify>
