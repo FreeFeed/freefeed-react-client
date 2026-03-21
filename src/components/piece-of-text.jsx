@@ -117,7 +117,7 @@ export default function PieceOfText({
   );
 
   const previewLinkLabelMap = useMemo(() => {
-    if (!showMediaPreviews) return undefined;
+    if (!showMediaPreviews) return null;
     const textForParsing = getTextFromRenderContent(textToRender);
     return getFreefeedPreviewLinkLabels(textForParsing, { shortenInSpoiler });
   }, [showMediaPreviews, shortenInSpoiler, textToRender]);
