@@ -17,12 +17,13 @@ export function VisualContainerStatic({
   reorderImageAttachments,
   postId,
   isExpanded,
+  lightboxOptions,
 }) {
   const containerRef = useRef(null);
   const containerWidth = useWidthOf(containerRef);
 
   const lightboxItems = useLightboxItems(attachments, postId);
-  const handleClick = useItemClickHandler(lightboxItems);
+  const handleClick = useItemClickHandler(lightboxItems, lightboxOptions);
 
   const sizes = attachments.map((a) => ({
     width: a.previewWidth ?? a.width,
@@ -89,7 +90,7 @@ export function VisualContainerStatic({
             removeAttachment={removeAttachment}
             reorderImageAttachments={reorderImageAttachments}
             postId={postId}
-            isNSFW={isNSFW}
+            isNSFW={a.isNSFW ?? isNSFW}
             width={row.items[i].width}
             height={row.items[i].height}
             pictureId={lightboxItems[n + i].pid}

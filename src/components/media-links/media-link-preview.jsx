@@ -8,19 +8,19 @@ import styles from './media-link-preview.module.scss';
 export function MediaLinkPreview({ href: url }) {
   const previewId = useId();
   const [mediaType, handleClick] = useMediaLink(url, { previewId });
-
-  if (mediaType !== IMAGE && mediaType !== VIDEO && mediaType !== T_YOUTUBE_VIDEO) {
-    return null;
-  }
-
-  // Freefeed attachment?
   const attId = freefeedAttachmentId(url);
+
+  // Freefeed attachment — render even when mediaType unknown (e.g. /v4/attachments/UUID)
   if (attId) {
     return (
       <a href={url} target="_blank" rel="noreferrer" onClick={handleClick}>
         <FreeFeedMediaPreview id={attId} previewId={previewId} />
       </a>
     );
+  }
+
+  if (mediaType !== IMAGE && mediaType !== VIDEO && mediaType !== T_YOUTUBE_VIDEO) {
+    return null;
   }
 
   if (mediaType === T_YOUTUBE_VIDEO) {
@@ -40,8 +40,8 @@ export function MediaLinkPreview({ href: url }) {
       <img
         src={url}
         alt=""
-        width={60}
-        height={60}
+        width={90}
+        height={90}
         className={styles.preview}
         loading="lazy"
         id={previewId}
@@ -57,12 +57,18 @@ function FreeFeedMediaPreview({ id, previewId }) {
     getAttachmentInfo(id)
       .then((info) => {
         if (info?.mediaType === 'image' || info?.mediaType === 'video') {
-          const height = 120;
-          const width = Math.round((info.width / info.height) * height);
+          const height = 180;
+          const w = info.width ?? info.imageSizes?.o?.w;
+          const h = info.height ?? info.imageSizes?.o?.h;
+          const width = w && h ? Math.round((w / h) * height) : height;
+          const ar = w && h ? w / h : 1;
+          const aspectType = ar >= 0.5 && ar <= 2 ? 'normal' : 'extreme';
           setAttrs({
             src: attachmentPreviewUrl(id, 'image', width, height),
             width,
             height,
+            ar,
+            aspectType,
           });
         }
         return null;
@@ -80,7 +86,8 @@ function FreeFeedMediaPreview({ id, previewId }) {
       alt=""
       width={attrs.width}
       height={attrs.height}
-      style={{ '--ar': attrs.width / attrs.height }}
+      style={{ '--ar': attrs.ar }}
+      data-aspect-type={attrs.aspectType}
       className={styles.preview}
       loading="lazy"
       id={previewId}
@@ -94,8 +101,8 @@ function YouTubeMediaPreview({ url, previewId }) {
     <img
       src={`https://img.youtube.com/vi/${getVideoId(url)}/default.jpg`}
       alt=""
-      width={Math.round(60 / aspectRatio)}
-      height={60}
+      width={Math.round(90 / aspectRatio)}
+      height={90}
       style={{ '--ar': 1 / aspectRatio }}
       className={styles.preview}
       loading="lazy"
