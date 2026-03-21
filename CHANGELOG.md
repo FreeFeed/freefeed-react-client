@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   attachments from all page's posts.
 - Lightbox captions on "All media" showing author avatar, username, and a post
   text excerpt with a link to the original post.
+- Short labels for FreeFeed attachment links in comments using first 8
+  characters of attachment UUID.
+
+### Changed
+- Improved aspect ratio display for image and video previews in comments,
+  increased preview size from 4em to 6em.
 
 ## [1.145.0] - 2026-02-21
 ### Added
