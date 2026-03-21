@@ -144,8 +144,9 @@ export function createErrorItem(error) {
   };
 }
 
-// Matches /attachments/UUID and /vN/attachments/UUID (e.g. /v4/attachments/xxx)
-const freefeedPathRegex = /^(?:\/v\d+)?\/attachments\/([\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12})/;
+// Matches /attachments/UUID, /vN/attachments/UUID and /vN/attachments/pX/UUID
+const freefeedPathRegex =
+  /^(?:\/v\d+)?\/attachments(?:\/\w+)?\/([\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12})/;
 
 /** Returns true if URL is a FreeFeed attachment (checks both path and domain) */
 export function isAttachmentUrl(url) {
