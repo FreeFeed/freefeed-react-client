@@ -85,9 +85,20 @@ export const UserProfileHeadStats = ({ user, canFollowStatLinks }) => {
               canFollow={canFollowStatLinks}
               maxDigits={maxDigits}
             />
+            {canFollowStatLinks ? (
+              <li className={styles.statlink}>
+                <Link
+                  to={`/${username}/media`}
+                  className={cn(styles.statlinkText, styles.allMediaLink)}
+                  style={{ '--max-digits': maxDigits }}
+                >
+                  All media
+                </Link>
+              </li>
+            ) : null}
           </>
         )}
-        <li className={styles.statlink}>
+        <li className={cn(styles.statlink, styles.sinceDate)}>
           <span className={styles.statlinkText}>
             <span className={styles.registeredOn}>Since</span>{' '}
             <TimeDisplay inline timeStamp={parseInt(createdAt)} absolute dateOnly />

@@ -199,6 +199,17 @@ exports[`UserProfileHead > Correctly displays that we are mutually subscribed 1`
         <li
           class="statlink"
         >
+          <a
+            class="statlinkText allMediaLink"
+            href="/freefeed/media"
+            style="--max-digits: 1;"
+          >
+            All media
+          </a>
+        </li>
+        <li
+          class="statlink sinceDate"
+        >
           <span
             class="statlinkText"
           >
@@ -404,6 +415,17 @@ exports[`UserProfileHead > Renders my own header and doesn't blow up 1`] = `
         </li>
         <li
           class="statlink"
+        >
+          <a
+            class="statlinkText allMediaLink"
+            href="/freefeed/media"
+            style="--max-digits: 1;"
+          >
+            All media
+          </a>
+        </li>
+        <li
+          class="statlink sinceDate"
         >
           <span
             class="statlinkText"
