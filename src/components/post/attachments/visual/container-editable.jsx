@@ -24,10 +24,11 @@ export function VisualContainerEditable({
   removeAttachment,
   reorderImageAttachments,
   postId,
+  lightboxOptions,
 }) {
   const withSortable = attachments.length > 1;
   const lightboxItems = useLightboxItems(attachments, postId);
-  const handleClick = useItemClickHandler(lightboxItems);
+  const handleClick = useItemClickHandler(lightboxItems, lightboxOptions);
 
   const setSortedList = useEvent((list) => reorderImageAttachments(list.map((a) => a.id)));
 

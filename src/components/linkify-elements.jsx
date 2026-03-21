@@ -1,5 +1,6 @@
 /* global CONFIG */
 import { Fragment } from 'react';
+import { faImage } from '@fortawesome/free-regular-svg-icons';
 
 import { ARROWS, EMAIL, FOREIGN_MENTION, HASHTAG, LINK, MENTION } from 'social-text-tokenizer';
 import { emailHref, linkHref, prettyEmail, prettyLink } from 'social-text-tokenizer/prettifiers';
@@ -90,7 +91,7 @@ export function tokenToElement(token, key, text, params) {
     }
 
     case LINK:
-      return renderLink(token, key, text);
+      return renderLink(token, key, text, params);
 
     case SHORT_LINK:
       return (
@@ -159,32 +160,34 @@ export function tokenToElement(token, key, text, params) {
   return token.text;
 }
 
-function renderLink(token, key, text) {
+function renderLink(token, key, text, params = {}) {
   const href = linkHref(token.text);
   const isBareLink = text.charAt(token.offset - 1) === '!';
+  const previewLabel = params.previewLinkLabelMap?.get(key);
+  const displayText = previewLabel ?? prettyLink(token.text, MAX_URL_LENGTH);
 
   if (isBareLink) {
     return (
       <Anchor key={key} href={href}>
-        {prettyLink(token.text, MAX_URL_LENGTH)}
+        {displayText}
       </Anchor>
     );
   }
 
   if (isLocalLink(token.text)) {
     const localPart = trimOrigin(token.text);
-    let m, text;
+    let m, linkText;
     // Special shortening of post links
     if ((m = /^[^/]+\/[\w-]+\/[\da-f]{8}-/.exec(localPart))) {
-      text = `${m[0]}\u2026`;
+      linkText = `${m[0]}\u2026`;
     } else if (isShortLink(localPart)) {
-      text = localPart;
+      linkText = localPart;
     } else {
-      text = prettyLink(token.text, MAX_URL_LENGTH);
+      linkText = displayText;
     }
     return (
       <Link key={key} to={localPart}>
-        {text}
+        {linkText}
       </Link>
     );
   }
@@ -192,14 +195,14 @@ function renderLink(token, key, text) {
   if (FRIENDFEED_POST.test(href)) {
     return (
       <Link key={key} to={{ pathname: '/archivePost', query: { url: href } }}>
-        {prettyLink(token.text, MAX_URL_LENGTH)}
+        {displayText}
       </Link>
     );
   }
 
   return (
-    <MediaLink key={key} href={href}>
-      {prettyLink(token.text, MAX_URL_LENGTH)}
+    <MediaLink key={key} href={href} forceIcon={previewLabel ? faImage : undefined}>
+      {displayText}
     </MediaLink>
   );
 }

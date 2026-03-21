@@ -5,16 +5,10 @@ import { connect } from 'react-redux';
 import * as _ from 'lodash-es';
 import { inject as injectParams } from 'regexparam';
 
-import {
-  createPost,
-  resetPostCreateForm,
-  getUserInfo,
-  togglePinnedGroup,
-} from '../redux/action-creators';
 import { initialAsyncState } from '../redux/async-helpers';
 import { apiVersion } from '../services/api-version';
 import { withNouter } from '../services/nouter';
-import { postActions, userActions } from './select-utils';
+import { postActions } from './select-utils';
 import FeedOptionsSwitch from './feed-options-switch';
 import Breadcrumbs from './breadcrumbs';
 import ErrorBoundary from './error-boundary';
@@ -92,18 +86,7 @@ const UserHandler = (props) => {
         <div className="box-body">
           {props.breadcrumbs.shouldShowBreadcrumbs ? <Breadcrumbs {...props.breadcrumbs} /> : false}
 
-          <UserProfile
-            {...props.viewUser}
-            {...props.userActions}
-            canIPostHere={props.viewUser.canIPostHere && allowToPost}
-            user={props.user}
-            sendTo={props.sendTo}
-            createPost={props.createPost}
-            resetPostCreateForm={props.resetPostCreateForm}
-            addAttachmentResponse={props.addAttachmentResponse}
-            getUserInfo={props.getUserInfo}
-            togglePinnedGroup={props.togglePinnedGroup}
-          />
+          <UserProfile allowToPost={allowToPost} />
         </div>
 
         {showContent ? (
@@ -197,8 +180,6 @@ function selectState(state, ownProps) {
     breadcrumb: currentRouteName.replace('user', ''),
   };
 
-  const sendTo = { ...state.sendTo, defaultFeed: foundUser ? foundUser.username : null };
-
   const showSummaryHeader = currentRouteName === 'userSummary';
 
   return {
@@ -208,19 +189,12 @@ function selectState(state, ownProps) {
     showSummaryHeader,
     viewUser,
     breadcrumbs,
-    sendTo,
   };
 }
 
 function selectActions(dispatch) {
   return {
     ...postActions(dispatch),
-    createPost: (feeds, postText, attachmentIds, more) =>
-      dispatch(createPost(feeds, postText, attachmentIds, more)),
-    resetPostCreateForm: (...args) => dispatch(resetPostCreateForm(...args)),
-    userActions: userActions(dispatch),
-    getUserInfo: (username) => dispatch(getUserInfo(username)),
-    togglePinnedGroup: ({ id }) => dispatch(togglePinnedGroup(id)),
   };
 }
 

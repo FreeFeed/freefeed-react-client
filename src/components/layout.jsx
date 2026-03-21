@@ -20,6 +20,7 @@ import { LayoutHeader } from './layout-header';
 import { UIScaleSetter } from './ui-scale-setter';
 import { UndoContainer } from './undo/undo-container';
 import { RtlTextSetter } from './rtl-text-setter';
+import { LightboxLinkInterceptor } from './lightbox-link-interceptor';
 
 const loadingPageMessage = (
   <Delayed>
@@ -153,6 +154,7 @@ class Layout extends Component {
           <UIScaleSetter />
           <RtlTextSetter />
           <SVGSymbolDeclarations />
+          <LightboxLinkInterceptor />
 
           <LayoutHeader />
 

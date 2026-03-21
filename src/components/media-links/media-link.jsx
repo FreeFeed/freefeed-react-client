@@ -6,16 +6,18 @@ import { T_VIMEO_VIDEO, T_YOUTUBE_VIDEO } from '../link-preview/video';
 import { Icon } from '../fontawesome-icons';
 import { IMAGE, INSTAGRAM, useMediaLink, VIDEO } from './helpers';
 
-export function MediaLink({ href: url, children }) {
+export function MediaLink({ href: url, children, forceIcon }) {
   const [mediaType, handleClick] = useMediaLink(url);
 
-  const mediaIcon = {
-    [INSTAGRAM]: faInstagram,
-    [T_YOUTUBE_VIDEO]: faYoutube,
-    [T_VIMEO_VIDEO]: faVimeo,
-    [IMAGE]: faImage,
-    [VIDEO]: faFilm,
-  }[mediaType];
+  const mediaIcon =
+    forceIcon ||
+    {
+      [INSTAGRAM]: faInstagram,
+      [T_YOUTUBE_VIDEO]: faYoutube,
+      [T_VIMEO_VIDEO]: faVimeo,
+      [IMAGE]: faImage,
+      [VIDEO]: faFilm,
+    }[mediaType];
 
   const mediaProps = mediaIcon
     ? {

@@ -326,6 +326,8 @@ class PostComment extends Component {
               userHover={this.props.authorHighlightHandlers}
               arrowHover={this.arrowHoverHandlers}
               arrowClick={this.arrowClick}
+              showMediaPreviews={this.props.showMediaPreviews}
+              shortenInSpoiler={true}
             />
             <TranslatedText
               type="comment"
@@ -419,10 +421,10 @@ function selectState(state, ownProps) {
   const editState = state.commentEditState[ownProps.id] || defaultCommentState;
   const translateStatus = state.translationStates[`comment:${ownProps.id}`] || initialAsyncState;
   const showTimestamps =
-    state.user.frontendPreferences?.comments?.showTimestamps ||
+    state.user.frontendPreferences?.comments?.showTimestamps ??
     CONFIG.frontendPreferences.defaultValues.comments.showTimestamps;
   const showMediaPreviews =
-    state.user.frontendPreferences?.comments?.showMediaPreviews ||
+    state.user.frontendPreferences?.comments?.showMediaPreviews ??
     CONFIG.frontendPreferences.defaultValues.comments.showMediaPreviews;
   const { highlightComments } = state.user.frontendPreferences.comments;
   const isReplyToBanned = (() => {
