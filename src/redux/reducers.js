@@ -2239,3 +2239,5 @@ export const foundUsers = fromResponse(
   [],
   setOnLocationChange([]),
 );
+
+export { postPreviewStatuses, postPreviewsData } from './reducers/post-previews';

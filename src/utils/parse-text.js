@@ -16,6 +16,7 @@ import { makeToken, reTokenizer, wordAdjacentChars } from 'social-text-tokenizer
 import { withCharsAfter, withCharsBefore, withFilters } from 'social-text-tokenizer/filters';
 import { checkboxParser } from './initial-checkbox';
 import { SPOILER_END, SPOILER_START, spoilerTags, validateSpoilerTags } from './spoiler-tokens';
+import { isPostLink } from './post-link-utils';
 
 const {
   textFormatter: { tldList, foreignMentionServices },
@@ -197,6 +198,12 @@ export function getFirstLinkToEmbed(text) {
     if (isInSpoiler || token.type !== LINK) {
       return false;
     }
+    // Check if it's a FreeFeed post link (allow these for preview)
+    if (isPostLink(token.text)) {
+      return /^https?:\/\//i.test(token.text) && text.charAt(token.offset - 1) !== '!';
+    }
+
+    // For other links, exclude local links
 
     return (
       !isLocalLink(token.text) &&

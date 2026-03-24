@@ -575,6 +575,15 @@ export function getSinglePost(postId) {
   };
 }
 
+export function getPostForPreview(postId) {
+  return {
+    type: ActionTypes.GET_POST_FOR_PREVIEW,
+    apiRequest: Api.getPost,
+    nonAuthRequest: true,
+    payload: { postId },
+  };
+}
+
 export function getPostIdByOldName(oldName) {
   return {
     type: ActionTypes.GET_POST_ID_BY_OLD_NAME,
