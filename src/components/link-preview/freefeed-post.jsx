@@ -42,11 +42,11 @@ export default memo(function FreeFeedPostPreview({ url }) {
 
   // Get preview status and data from Redux
   const previewStatus = useSelector(
-    (state) => (postId ? state.postPreviewStatuses[postId] : null) || initialAsyncState,
+    (state) => (postId && state.postPreviewStatuses?.[postId]) || initialAsyncState,
   );
-  const postData = useSelector((state) => (postId ? state.postPreviewsData[postId] : null));
+  const postData = useSelector((state) => (postId && state.postPreviewsData?.[postId]) || null);
   const author = useSelector((state) =>
-    postData?.createdBy ? state.users[postData.createdBy] : null,
+    postData?.createdBy && state.users ? state.users[postData.createdBy] : null,
   );
 
   // Load post data if not already loaded/loading

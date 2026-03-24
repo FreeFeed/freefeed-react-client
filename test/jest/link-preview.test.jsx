@@ -259,4 +259,176 @@ describe('LinkPreview', () => {
 
     expect(asFragment()).toMatchSnapshot();
   });
+
+  it('Shows a FreeFeed post preview with short ID', () => {
+    const state = {
+      routeLoadingState: false,
+      user: {
+        id: 'viewer-id',
+        username: 'viewer',
+        frontendPreferences: {
+          displayNames: {},
+          timeDisplay: {},
+        },
+      },
+      postPreviewStatuses: {
+        abc123: { loading: false, success: true, error: false },
+      },
+      postPreviewsData: {
+        abc123: {
+          id: '12345678-1234-4123-8123-123456789abc',
+          body: 'This is a test post with some text content',
+          createdBy: 'user1',
+        },
+      },
+      users: {
+        user1: {
+          id: 'user1',
+          username: 'testuser',
+          screenName: 'Test User',
+          profilePictureMediumUrl: 'https://example.com/avatar.jpg',
+        },
+      },
+    };
+
+    const { asFragment } = render(
+      <StateProvider state={state}>
+        <LinkPreview allowEmbedly={false} url="https://freefeed.net/testuser/abc123" />
+      </StateProvider>,
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('Shows a FreeFeed post preview with UUID', () => {
+    const state = {
+      routeLoadingState: false,
+      user: {
+        id: 'viewer-id',
+        username: 'viewer',
+        frontendPreferences: {
+          displayNames: {},
+          timeDisplay: {},
+        },
+      },
+      postPreviewStatuses: {
+        '12345678-1234-4123-8123-123456789abc': { loading: false, success: true, error: false },
+      },
+      postPreviewsData: {
+        '12345678-1234-4123-8123-123456789abc': {
+          id: '12345678-1234-4123-8123-123456789abc',
+          body: 'Another test post with UUID format',
+          createdBy: 'user2',
+        },
+      },
+      users: {
+        user2: {
+          id: 'user2',
+          username: 'anotheruser',
+          screenName: 'Another User',
+          profilePictureMediumUrl: 'https://example.com/avatar2.jpg',
+        },
+      },
+    };
+
+    const { asFragment } = render(
+      <StateProvider state={state}>
+        <LinkPreview
+          allowEmbedly={false}
+          url="https://freefeed.net/anotheruser/12345678-1234-4123-8123-123456789abc"
+        />
+      </StateProvider>,
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('Shows loading state for FreeFeed post preview', () => {
+    const state = {
+      routeLoadingState: false,
+      postPreviewStatuses: {
+        def456: { loading: true, success: false, error: false },
+      },
+      postPreviewsData: {},
+      users: {},
+    };
+
+    const { asFragment } = render(
+      <StateProvider state={state}>
+        <LinkPreview allowEmbedly={false} url="https://freefeed.net/someuser/def456" />
+      </StateProvider>,
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('Shows error state for unavailable FreeFeed post', () => {
+    const state = {
+      routeLoadingState: false,
+      postPreviewStatuses: {
+        xyz789: { loading: false, success: false, error: true },
+      },
+      postPreviewsData: {},
+      users: {},
+    };
+
+    const { asFragment } = render(
+      <StateProvider state={state}>
+        <LinkPreview allowEmbedly={false} url="https://freefeed.net/someuser/xyz789" />
+      </StateProvider>,
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('Shows FreeFeed post preview with long text', () => {
+    const longText =
+      'This is a very long post that should be truncated. '.repeat(20) +
+      'This text should not be visible in the preview because it exceeds the maximum length.';
+
+    const state = {
+      routeLoadingState: false,
+      user: {
+        id: 'viewer-id',
+        username: 'viewer',
+        frontendPreferences: {
+          displayNames: {},
+          timeDisplay: {},
+        },
+      },
+      postPreviewStatuses: {
+        long123: { loading: false, success: true, error: false },
+      },
+      postPreviewsData: {
+        long123: {
+          id: '12345678-1234-4123-8123-123456789abc',
+          body: longText,
+          createdBy: 'user3',
+        },
+      },
+      users: {
+        user3: {
+          id: 'user3',
+          username: 'longpostuser',
+          screenName: 'Long Post User',
+          profilePictureMediumUrl: 'https://example.com/avatar3.jpg',
+        },
+      },
+    };
+
+    const { asFragment } = render(
+      <StateProvider state={state}>
+        <LinkPreview allowEmbedly={false} url="https://freefeed.net/longpostuser/long123" />
+      </StateProvider>,
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("Doesn't show a preview for FreeFeed post comment link", () => {
+    const { asFragment } = renderLinkPreview({
+      url: 'https://freefeed.net/testuser/abc123#comment-xyz',
+    });
+    expect(asFragment()).toMatchSnapshot();
+  });
 });
