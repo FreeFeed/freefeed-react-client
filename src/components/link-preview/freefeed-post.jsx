@@ -2,8 +2,8 @@ import { memo, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 
-import { parsePostLink } from '../../utils/post-link-utils';
-import { getPostForPreview } from '../../redux/action-creators';
+import { parsePostLink, parseCommentLink } from '../../utils/post-link-utils';
+import { getPostForPreview, getCommentForPreview } from '../../redux/action-creators';
 import { initialAsyncState } from '../../redux/async-helpers';
 import UserName from '../user-name';
 import { UserPicture } from '../user-picture';
@@ -18,6 +18,11 @@ const MAX_TEXT_LENGTH = 600;
 
 export function canShowURL(url) {
   const parsed = parsePostLink(url);
+  return parsed !== null;
+}
+
+export function canShowCommentURL(url) {
+  const parsed = parseCommentLink(url);
   return parsed !== null;
 }
 
@@ -38,57 +43,99 @@ function shortenText(text, maxLength) {
 export default memo(function FreeFeedPostPreview({ url }) {
   const dispatch = useDispatch();
 
-  // Parse the URL to get postId
-  const parsed = useMemo(() => parsePostLink(url), [url]);
+  // Try to parse as comment link first, then as post link
+  const commentParsed = useMemo(() => parseCommentLink(url), [url]);
+  const postParsed = useMemo(() => parsePostLink(url), [url]);
+
+  // Determine if this is a comment or post preview
+  const isComment = commentParsed !== null;
+  const parsed = commentParsed || postParsed;
   const { username, postId } = parsed || {};
+  const commentId = commentParsed?.commentId;
 
-  // Get preview status and data from Redux
-  const previewStatus = useSelector(
-    (state) => (postId && state.postPreviewStatuses?.[postId]) || initialAsyncState,
+  // Build Redux key for comment previews
+  const commentKey = postId && commentId ? `${postId}#${commentId}` : null;
+
+  // Get preview status and data from Redux (different keys for comments vs posts)
+  const postPreviewStatus = useSelector(
+    (state) => (postId && !isComment && state.postPreviewStatuses?.[postId]) || initialAsyncState,
   );
-  const postData = useSelector((state) => (postId && state.postPreviewsData?.[postId]) || null);
+  const postData = useSelector(
+    (state) => (postId && !isComment && state.postPreviewsData?.[postId]) || null,
+  );
+  const commentPreviewStatus = useSelector(
+    (state) => (commentKey && state.commentPreviewStatuses?.[commentKey]) || initialAsyncState,
+  );
+  const commentData = useSelector(
+    (state) => (commentKey && state.commentPreviewsData?.[commentKey]) || null,
+  );
+
+  // Select the appropriate status and data based on type
+  const previewStatus = isComment ? commentPreviewStatus : postPreviewStatus;
+  const previewData = isComment ? commentData : postData;
+
+  // Get author from users store
   const author = useSelector((state) =>
-    postData?.createdBy && state.users ? state.users[postData.createdBy] : null,
+    previewData?.createdBy && state.users ? state.users[previewData.createdBy] : null,
   );
 
-  // Load post data if not already loaded/loading
+  // Load data if not already loaded/loading
   useEffect(() => {
-    if (postId && previewStatus.initial) {
+    if (isComment && commentKey && commentPreviewStatus.initial) {
+      dispatch(getCommentForPreview(postId, commentId));
+    } else if (!isComment && postId && postPreviewStatus.initial) {
       dispatch(getPostForPreview(postId));
     }
-  }, [dispatch, postId, previewStatus.initial]);
+  }, [
+    dispatch,
+    isComment,
+    postId,
+    commentId,
+    commentKey,
+    commentPreviewStatus.initial,
+    postPreviewStatus.initial,
+  ]);
 
   // Early return after all hooks
   if (!parsed) {
     return null;
   }
 
+  // Determine loading/error messages based on type
+  const loadingMessage = isComment ? 'Loading comment preview...' : 'Loading post preview...';
+  const unavailableMessage = isComment
+    ? `Comment isn't available`
+    : `Post /${username}/${postId} isn't available`;
+
   // Show nothing while loading initially
-  if (previewStatus.loading && !postData) {
+  if (previewStatus.loading && !previewData) {
     return (
       <div className="link-preview-content">
-        <div className={cn(styles.preview, styles.loading)}>Loading post preview...</div>
+        <div className={cn(styles.preview, styles.loading)}>{loadingMessage}</div>
       </div>
     );
   }
 
-  // Show error message for inaccessible posts
-  if (previewStatus.error || !postData) {
+  // Show error message for inaccessible content
+  if (previewStatus.error || !previewData) {
     return (
       <div className="link-preview-content">
-        <div className={cn(styles.preview, styles.unavailable)}>
-          Post /{username}/{postId} isn&apos;t available
-        </div>
+        <div className={cn(styles.preview, styles.unavailable)}>{unavailableMessage}</div>
       </div>
     );
   }
 
   // Normalize text: remove line breaks and extra spaces
-  const normalizedText = postData.body.trim().replace(/\s+/g, ' ');
+  const normalizedText = previewData.body.trim().replace(/\s+/g, ' ');
   const displayText = shortenText(normalizedText, MAX_TEXT_LENGTH);
 
-  // Construct post URL
-  const postUrl = author ? `/${author.username}/${postId}` : `/${username}/${postId}`;
+  // Construct target URL (use original url for comments, construct post URL for posts)
+  const targetUrl = isComment
+    ? url
+    : author
+      ? `/${author.username}/${postId}`
+      : `/${username}/${postId}`;
+  const linkText = isComment ? 'Go to the comment' : 'Go to the post';
 
   return (
     <div className="link-preview-content">
@@ -98,11 +145,23 @@ export default memo(function FreeFeedPostPreview({ url }) {
             <div className={styles.header}>
               <UserPicture user={author} size={24} />
               <div>
-                <UserName user={author} className={styles.author} />
-                {', '}
-                <RouterLink to={postUrl} className={styles.dateLink}>
-                  <TimeDisplay timeStamp={+postData.createdAt} inline />
-                </RouterLink>
+                {isComment ? (
+                  <>
+                    Comment from <UserName user={author} className={styles.author} />
+                    {', '}
+                    <RouterLink to={targetUrl} className={styles.dateLink}>
+                      <TimeDisplay timeStamp={+previewData.createdAt} inline />
+                    </RouterLink>
+                  </>
+                ) : (
+                  <>
+                    <UserName user={author} className={styles.author} />
+                    {', '}
+                    <RouterLink to={targetUrl} className={styles.dateLink}>
+                      <TimeDisplay timeStamp={+previewData.createdAt} inline />
+                    </RouterLink>
+                  </>
+                )}
               </div>
             </div>
           )}
@@ -110,7 +169,7 @@ export default memo(function FreeFeedPostPreview({ url }) {
             <Linkify>{displayText}</Linkify>
           </div>
           <div className={styles.link}>
-            <Link to={postUrl}>Go to the post</Link>
+            <Link to={targetUrl}>{linkText}</Link>
           </div>
         </div>
       </FoldableContent>

@@ -1,5 +1,11 @@
 /* global describe, it, expect, beforeEach, afterEach */
-import { isPostLink, parsePostLink, hasCommentHash } from '../../src/utils/post-link-utils';
+import {
+  isPostLink,
+  parsePostLink,
+  hasCommentHash,
+  isCommentLink,
+  parseCommentLink,
+} from '../../src/utils/post-link-utils';
 
 describe('post-link-utils', () => {
   let originalConfig;
@@ -163,6 +169,104 @@ describe('post-link-utils', () => {
       expect(hasCommentHash('not#a#url')).toBe(true);
       expect(hasCommentHash('not a url')).toBe(false);
       expect(hasCommentHash('')).toBe(false);
+    });
+  });
+
+  describe('isCommentLink', () => {
+    it('should recognize short link with short comment ID', () => {
+      expect(isCommentLink('/username/abc123#def456')).toBe(true);
+      expect(isCommentLink('/user-name/abc123#c1d2e3')).toBe(true);
+    });
+
+    it('should recognize short link with legacy comment-UUID format', () => {
+      expect(isCommentLink('/username/abc123#comment-12345678-1234-4123-8123-123456789abc')).toBe(
+        true,
+      );
+    });
+
+    it('should recognize full URL with short comment ID', () => {
+      expect(isCommentLink('https://freefeed.net/username/abc123#def456')).toBe(true);
+      expect(isCommentLink('http://gamma.freefeed.net/user/abc123#c1')).toBe(true);
+    });
+
+    it('should recognize full URL with legacy comment-UUID format', () => {
+      expect(
+        isCommentLink(
+          'https://freefeed.net/username/abc123#comment-12345678-1234-4123-8123-123456789abc',
+        ),
+      ).toBe(true);
+    });
+
+    it('should reject links without hash', () => {
+      expect(isCommentLink('/username/abc123')).toBe(false);
+      expect(isCommentLink('https://freefeed.net/username/abc123')).toBe(false);
+    });
+
+    it('should reject non-local domains', () => {
+      expect(isCommentLink('https://example.com/username/abc123#def456')).toBe(false);
+    });
+
+    it('should reject invalid URLs', () => {
+      expect(isCommentLink('not a url')).toBe(false);
+      expect(isCommentLink('')).toBe(false);
+    });
+  });
+
+  describe('parseCommentLink', () => {
+    it('should parse short link with short comment ID', () => {
+      expect(parseCommentLink('/username/abc123#def456')).toEqual({
+        username: 'username',
+        postId: 'abc123',
+        commentId: 'def456',
+      });
+    });
+
+    it('should parse short link with legacy comment-UUID format', () => {
+      expect(
+        parseCommentLink('/username/abc123#comment-12345678-1234-4123-8123-123456789abc'),
+      ).toEqual({
+        username: 'username',
+        postId: 'abc123',
+        commentId: '12345678-1234-4123-8123-123456789abc',
+      });
+    });
+
+    it('should parse full URL with short comment ID', () => {
+      expect(parseCommentLink('https://freefeed.net/username/abc123#def456')).toEqual({
+        username: 'username',
+        postId: 'abc123',
+        commentId: 'def456',
+      });
+      expect(parseCommentLink('http://gamma.freefeed.net/test-user/abc123#c1')).toEqual({
+        username: 'test-user',
+        postId: 'abc123',
+        commentId: 'c1',
+      });
+    });
+
+    it('should parse full URL with legacy comment-UUID format', () => {
+      expect(
+        parseCommentLink(
+          'https://freefeed.net/username/abc123#comment-12345678-1234-4123-8123-123456789abc',
+        ),
+      ).toEqual({
+        username: 'username',
+        postId: 'abc123',
+        commentId: '12345678-1234-4123-8123-123456789abc',
+      });
+    });
+
+    it('should return null for links without hash', () => {
+      expect(parseCommentLink('/username/abc123')).toBeNull();
+      expect(parseCommentLink('https://freefeed.net/username/abc123')).toBeNull();
+    });
+
+    it('should return null for invalid URLs', () => {
+      expect(parseCommentLink('/ab/abc123#def')).toBeNull(); // invalid username
+      expect(parseCommentLink('/username/abc12#def')).toBeNull(); // invalid postId
+      expect(parseCommentLink('https://example.com/username/abc123#def')).toBeNull();
+      expect(parseCommentLink('not a url')).toBeNull();
+      expect(parseCommentLink('')).toBeNull();
     });
   });
 });

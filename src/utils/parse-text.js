@@ -16,7 +16,7 @@ import { makeToken, reTokenizer, wordAdjacentChars } from 'social-text-tokenizer
 import { withCharsAfter, withCharsBefore, withFilters } from 'social-text-tokenizer/filters';
 import { checkboxParser } from './initial-checkbox';
 import { SPOILER_END, SPOILER_START, spoilerTags, validateSpoilerTags } from './spoiler-tokens';
-import { isPostLink } from './post-link-utils';
+import { isPostLink, isCommentLink } from './post-link-utils';
 
 const {
   textFormatter: { tldList, foreignMentionServices },
@@ -199,10 +199,9 @@ export function getFirstLinkToEmbed(text) {
       return false;
     }
 
-    // Handle SHORT_LINK tokens (local post links like /username/abc123)
+    // Handle SHORT_LINK tokens (local post/comment links like /username/abc123 or /username/abc123#commentId)
     if (token.type === SHORT_LINK) {
-      // Only show preview for short links without comment hash
-      return !token.text.includes('#') && text.charAt(token.offset - 1) !== '!';
+      return text.charAt(token.offset - 1) !== '!';
     }
 
     if (token.type !== LINK) {
@@ -211,6 +210,11 @@ export function getFirstLinkToEmbed(text) {
 
     // Check if it's a FreeFeed post link (allow these for preview)
     if (isPostLink(token.text)) {
+      return /^https?:\/\//i.test(token.text) && text.charAt(token.offset - 1) !== '!';
+    }
+
+    // Check if it's a FreeFeed comment link (allow these for preview)
+    if (isCommentLink(token.text)) {
       return /^https?:\/\//i.test(token.text) && text.charAt(token.offset - 1) !== '!';
     }
 
@@ -227,9 +231,9 @@ export function getFirstLinkToEmbed(text) {
     return;
   }
 
-  // For SHORT_LINK, construct full URL
+  // For SHORT_LINK, return the path directly (parsePostLink/parseCommentLink handle both)
   if (firstLink.type === SHORT_LINK) {
-    return `https://${siteDomains[0]}${firstLink.text}`;
+    return firstLink.text;
   }
 
   return linkHref(firstLink.text);

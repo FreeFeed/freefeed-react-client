@@ -584,6 +584,15 @@ export function getPostForPreview(postId) {
   };
 }
 
+export function getCommentForPreview(postId, commentId) {
+  return {
+    type: ActionTypes.GET_COMMENT_FOR_PREVIEW,
+    apiRequest: Api.getCommentForPreview,
+    nonAuthRequest: true,
+    payload: { postId, commentId },
+  };
+}
+
 export function getPostIdByOldName(oldName) {
   return {
     type: ActionTypes.GET_POST_ID_BY_OLD_NAME,

@@ -117,6 +117,10 @@ export function getPost({ postId, maxComments = '', maxLikes = '' }) {
   );
 }
 
+export function getCommentForPreview({ postId, commentId }) {
+  return fetch(`${apiRoot}/v2/posts/${postId}/comments/id/${commentId}`, getRequestOptions());
+}
+
 export function getPostIdByOldName({ oldName }) {
   return fetch(
     `${apiPrefix}/archives/post-by-old-name/${encodeURIComponent(oldName)}`,

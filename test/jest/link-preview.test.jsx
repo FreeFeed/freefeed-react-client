@@ -278,6 +278,7 @@ describe('LinkPreview', () => {
         abc123: {
           id: '12345678-1234-4123-8123-123456789abc',
           body: 'This is a test post with some text content',
+          createdAt: 1705315800000,
           createdBy: 'user1',
         },
       },
@@ -318,6 +319,7 @@ describe('LinkPreview', () => {
         '12345678-1234-4123-8123-123456789abc': {
           id: '12345678-1234-4123-8123-123456789abc',
           body: 'Another test post with UUID format',
+          createdAt: 1705315800000,
           createdBy: 'user2',
         },
       },
@@ -403,6 +405,7 @@ describe('LinkPreview', () => {
         long123: {
           id: '12345678-1234-4123-8123-123456789abc',
           body: longText,
+          createdAt: 1705315800000,
           createdBy: 'user3',
         },
       },
@@ -429,6 +432,85 @@ describe('LinkPreview', () => {
     const { asFragment } = renderLinkPreview({
       url: 'https://freefeed.net/testuser/abc123#comment-xyz',
     });
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('Shows a FreeFeed comment preview', () => {
+    const state = {
+      routeLoadingState: false,
+      user: {
+        id: 'viewer-id',
+        username: 'viewer',
+        frontendPreferences: {
+          displayNames: {},
+          timeDisplay: {},
+        },
+      },
+      commentPreviewStatuses: {
+        'abc123#c1d2e3': { loading: false, success: true, error: false },
+      },
+      commentPreviewsData: {
+        'abc123#c1d2e3': {
+          id: 'c1d2e3',
+          body: 'This is a test comment with some text content',
+          createdAt: 1705315800000,
+          createdBy: 'user1',
+        },
+      },
+      users: {
+        user1: {
+          id: 'user1',
+          username: 'testuser',
+          screenName: 'Test User',
+          profilePictureMediumUrl: 'https://example.com/avatar.jpg',
+        },
+      },
+    };
+
+    const { asFragment } = render(
+      <StateProvider state={state}>
+        <LinkPreview allowEmbedly={false} url="https://freefeed.net/testuser/abc123#c1d2e3" />
+      </StateProvider>,
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('Shows loading state for FreeFeed comment preview', () => {
+    const state = {
+      routeLoadingState: false,
+      commentPreviewStatuses: {
+        'def456#cmt123': { loading: true, success: false, error: false },
+      },
+      commentPreviewsData: {},
+      users: {},
+    };
+
+    const { asFragment } = render(
+      <StateProvider state={state}>
+        <LinkPreview allowEmbedly={false} url="https://freefeed.net/someuser/def456#cmt123" />
+      </StateProvider>,
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('Shows error state for unavailable FreeFeed comment', () => {
+    const state = {
+      routeLoadingState: false,
+      commentPreviewStatuses: {
+        'xyz789#err123': { loading: false, success: false, error: true },
+      },
+      commentPreviewsData: {},
+      users: {},
+    };
+
+    const { asFragment } = render(
+      <StateProvider state={state}>
+        <LinkPreview allowEmbedly={false} url="https://freefeed.net/someuser/xyz789#err123" />
+      </StateProvider>,
+    );
+
     expect(asFragment()).toMatchSnapshot();
   });
 });

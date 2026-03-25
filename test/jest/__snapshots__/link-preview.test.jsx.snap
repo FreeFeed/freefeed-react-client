@@ -38,7 +38,7 @@ exports[`LinkPreview > Doesn't show a preview for FreeFeed post comment link 1`]
     <div
       class="preview unavailable"
     >
-      Post /testuser/abc123 isn't available
+      Comment isn't available
     </div>
   </div>
 </DocumentFragment>
@@ -62,6 +62,96 @@ exports[`LinkPreview > Doesn't show a video preview if network request has faile
 `;
 
 exports[`LinkPreview > Shows FreeFeed post preview with long text 1`] = `<DocumentFragment />`;
+
+exports[`LinkPreview > Shows a FreeFeed comment preview 1`] = `
+<DocumentFragment>
+  <div
+    class="link-preview-content"
+  >
+    <div
+      class="folder-container"
+    >
+      <div
+        class="content-wrapper"
+        style="height: 1px;"
+      >
+        <div>
+          <div
+            class="preview"
+          >
+            <div
+              class="header"
+            >
+              <a
+                class="picture"
+                href="/testuser"
+                style="--userpic-size: 24px;"
+              >
+                <img
+                  alt="Profile picture of testuser"
+                  height="24"
+                  src="https://example.com/avatar.jpg"
+                  width="24"
+                />
+              </a>
+              <div>
+                Comment from 
+                <span
+                  class="user-name-wrapper"
+                >
+                  <a
+                    class="author"
+                    href="/testuser"
+                  >
+                    <span
+                      dir="auto"
+                    >
+                      Test User
+                    </span>
+                  </a>
+                </span>
+                , 
+                <a
+                  class="dateLink"
+                  href="https://freefeed.net/testuser/abc123#c1d2e3"
+                >
+                  <time
+                    datetime="2024-01-15T10:50:00.000Z"
+                    title="Jan 15, 2024 10:50"
+                  >
+                    Jan 15, 2024
+                  </time>
+                </a>
+              </div>
+            </div>
+            <div
+              class="text"
+            >
+              <span
+                class="Linkify"
+                dir="auto"
+                role="region"
+              >
+                This is a test comment with some text content
+              </span>
+            </div>
+            <div
+              class="link"
+            >
+              <a
+                dir="ltr"
+                href="https://freefeed.net/testuser/abc123#c1d2e3"
+              >
+                Go to the comment
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
 
 exports[`LinkPreview > Shows a FreeFeed post preview with UUID 1`] = `
 <DocumentFragment>
@@ -94,20 +184,34 @@ exports[`LinkPreview > Shows a FreeFeed post preview with UUID 1`] = `
                   width="24"
                 />
               </a>
-              <span
-                class="user-name-wrapper"
-              >
-                <a
-                  class=""
-                  href="/anotheruser"
+              <div>
+                <span
+                  class="user-name-wrapper"
                 >
-                  <span
-                    dir="auto"
+                  <a
+                    class="author"
+                    href="/anotheruser"
                   >
-                    Another User
-                  </span>
+                    <span
+                      dir="auto"
+                    >
+                      Another User
+                    </span>
+                  </a>
+                </span>
+                , 
+                <a
+                  class="dateLink"
+                  href="/anotheruser/12345678-1234-4123-8123-123456789abc"
+                >
+                  <time
+                    datetime="2024-01-15T10:50:00.000Z"
+                    title="Jan 15, 2024 10:50"
+                  >
+                    Jan 15, 2024
+                  </time>
                 </a>
-              </span>
+              </div>
             </div>
             <div
               class="text"
@@ -127,7 +231,7 @@ exports[`LinkPreview > Shows a FreeFeed post preview with UUID 1`] = `
                 dir="ltr"
                 href="/anotheruser/12345678-1234-4123-8123-123456789abc"
               >
-                Go to the post →
+                Go to the post
               </a>
             </div>
           </div>
@@ -169,20 +273,34 @@ exports[`LinkPreview > Shows a FreeFeed post preview with short ID 1`] = `
                   width="24"
                 />
               </a>
-              <span
-                class="user-name-wrapper"
-              >
-                <a
-                  class=""
-                  href="/testuser"
+              <div>
+                <span
+                  class="user-name-wrapper"
                 >
-                  <span
-                    dir="auto"
+                  <a
+                    class="author"
+                    href="/testuser"
                   >
-                    Test User
-                  </span>
+                    <span
+                      dir="auto"
+                    >
+                      Test User
+                    </span>
+                  </a>
+                </span>
+                , 
+                <a
+                  class="dateLink"
+                  href="/testuser/abc123"
+                >
+                  <time
+                    datetime="2024-01-15T10:50:00.000Z"
+                    title="Jan 15, 2024 10:50"
+                  >
+                    Jan 15, 2024
+                  </time>
                 </a>
-              </span>
+              </div>
             </div>
             <div
               class="text"
@@ -202,7 +320,7 @@ exports[`LinkPreview > Shows a FreeFeed post preview with short ID 1`] = `
                 dir="ltr"
                 href="/testuser/abc123"
               >
-                Go to the post →
+                Go to the post
               </a>
             </div>
           </div>
@@ -738,7 +856,23 @@ exports[`LinkPreview > Shows an Instagram preview 1`] = `
 </DocumentFragment>
 `;
 
+exports[`LinkPreview > Shows error state for unavailable FreeFeed comment 1`] = `<DocumentFragment />`;
+
 exports[`LinkPreview > Shows error state for unavailable FreeFeed post 1`] = `<DocumentFragment />`;
+
+exports[`LinkPreview > Shows loading state for FreeFeed comment preview 1`] = `
+<DocumentFragment>
+  <div
+    class="link-preview-content"
+  >
+    <div
+      class="preview loading"
+    >
+      Loading comment preview...
+    </div>
+  </div>
+</DocumentFragment>
+`;
 
 exports[`LinkPreview > Shows loading state for FreeFeed post preview 1`] = `
 <DocumentFragment>

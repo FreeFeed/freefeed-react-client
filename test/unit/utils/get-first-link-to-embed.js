@@ -61,20 +61,36 @@ describe('getFirstLinkToEmbed()', () => {
     expect(result, 'to equal', testLink);
   });
 
-  it('should return full URL for short post link', () => {
+  it('should return short path for short post link', () => {
     const shortLink = '/testuser/abc123';
     const testText = `check this post ${shortLink} ok`;
     const result = getFirstLinkToEmbed(testText);
 
-    expect(result, 'to equal', `https://${siteDomains[0]}${shortLink}`);
+    expect(result, 'to equal', shortLink);
   });
 
-  it('should ignore short link with comment hash', () => {
-    const shortLinkWithHash = '/testuser/abc123#comment-ab12';
-    const testText = `check this comment ${shortLinkWithHash} and ${testLink}`;
+  it('should return short path for short comment link', () => {
+    const shortLinkWithHash = '/testuser/abc123#ab12';
+    const testText = `check this comment ${shortLinkWithHash} ok`;
     const result = getFirstLinkToEmbed(testText);
 
-    expect(result, 'to equal', testLink);
+    expect(result, 'to equal', shortLinkWithHash);
+  });
+
+  it('should return full URL for full comment link', () => {
+    const commentLink = `https://${siteDomains[0]}/testuser/abc123#ab12`;
+    const testText = `check this comment ${commentLink} ok`;
+    const result = getFirstLinkToEmbed(testText);
+
+    expect(result, 'to equal', commentLink);
+  });
+
+  it('should return full URL for full comment link with legacy format', () => {
+    const commentLink = `https://${siteDomains[0]}/testuser/abc123#comment-12345678-1234-4123-8123-123456789abc`;
+    const testText = `check this comment ${commentLink} ok`;
+    const result = getFirstLinkToEmbed(testText);
+
+    expect(result, 'to equal', commentLink);
   });
 
   it('should ignore short link preceded by "!"', () => {
@@ -90,6 +106,6 @@ describe('getFirstLinkToEmbed()', () => {
     const testText = `${shortLink} and ${testLink}`;
     const result = getFirstLinkToEmbed(testText);
 
-    expect(result, 'to equal', `https://${siteDomains[0]}${shortLink}`);
+    expect(result, 'to equal', shortLink);
   });
 });
