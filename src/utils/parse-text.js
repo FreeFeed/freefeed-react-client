@@ -195,9 +195,20 @@ export function getFirstLinkToEmbed(text) {
       isInSpoiler = false;
     }
 
-    if (isInSpoiler || token.type !== LINK) {
+    if (isInSpoiler) {
       return false;
     }
+
+    // Handle SHORT_LINK tokens (local post links like /username/abc123)
+    if (token.type === SHORT_LINK) {
+      // Only show preview for short links without comment hash
+      return !token.text.includes('#') && text.charAt(token.offset - 1) !== '!';
+    }
+
+    if (token.type !== LINK) {
+      return false;
+    }
+
     // Check if it's a FreeFeed post link (allow these for preview)
     if (isPostLink(token.text)) {
       return /^https?:\/\//i.test(token.text) && text.charAt(token.offset - 1) !== '!';
@@ -212,7 +223,16 @@ export function getFirstLinkToEmbed(text) {
     );
   });
 
-  return firstLink ? linkHref(firstLink.text) : undefined;
+  if (!firstLink) {
+    return;
+  }
+
+  // For SHORT_LINK, construct full URL
+  if (firstLink.type === SHORT_LINK) {
+    return `https://${siteDomains[0]}${firstLink.text}`;
+  }
+
+  return linkHref(firstLink.text);
 }
 
 export const shortCodeToService = {};

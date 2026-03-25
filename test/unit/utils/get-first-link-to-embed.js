@@ -60,4 +60,36 @@ describe('getFirstLinkToEmbed()', () => {
 
     expect(result, 'to equal', testLink);
   });
+
+  it('should return full URL for short post link', () => {
+    const shortLink = '/testuser/abc123';
+    const testText = `check this post ${shortLink} ok`;
+    const result = getFirstLinkToEmbed(testText);
+
+    expect(result, 'to equal', `https://${siteDomains[0]}${shortLink}`);
+  });
+
+  it('should ignore short link with comment hash', () => {
+    const shortLinkWithHash = '/testuser/abc123#comment-ab12';
+    const testText = `check this comment ${shortLinkWithHash} and ${testLink}`;
+    const result = getFirstLinkToEmbed(testText);
+
+    expect(result, 'to equal', testLink);
+  });
+
+  it('should ignore short link preceded by "!"', () => {
+    const shortLink = '/testuser/abc123';
+    const testText = `don't embed !${shortLink} but embed ${testLink}`;
+    const result = getFirstLinkToEmbed(testText);
+
+    expect(result, 'to equal', testLink);
+  });
+
+  it('should select short link over regular link when short link comes first', () => {
+    const shortLink = '/testuser/abc123';
+    const testText = `${shortLink} and ${testLink}`;
+    const result = getFirstLinkToEmbed(testText);
+
+    expect(result, 'to equal', `https://${siteDomains[0]}${shortLink}`);
+  });
 });
