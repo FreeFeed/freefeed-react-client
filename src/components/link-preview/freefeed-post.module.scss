@@ -40,17 +40,6 @@
   font-size: 0.9em;
 }
 
-.unavailable {
-  background-color: #fff3cd;
-  color: #856404;
-
-  :global(.dark-theme) & {
-    background-color: dark-vars.$label-bg-color;
-    border-color: dark-vars.$separator-color;
-    color: dark-vars.$accent-color;
-  }
-}
-
 .loading {
   color: #666;
   font-style: italic;
