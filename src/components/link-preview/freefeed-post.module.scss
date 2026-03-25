@@ -20,6 +20,7 @@
   align-items: center;
   gap: 0.5em;
   margin-bottom: 0.5em;
+  font-size: 0.9em;
 
   & a {
     text-decoration: none;
@@ -38,6 +39,10 @@
 
 .link {
   font-size: 0.9em;
+}
+
+.author {
+  font-weight: bold;
 }
 
 .loading {

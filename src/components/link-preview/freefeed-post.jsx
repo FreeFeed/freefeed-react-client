@@ -11,6 +11,8 @@ import Linkify from '../linkify';
 import { Link } from '../linkify-links';
 import FoldableContent from './helpers/foldable-content';
 import styles from './freefeed-post.module.scss';
+import TimeDisplay from '../time-display';
+import { Link as RouterLink } from '../../services/nouter';
 
 const MAX_TEXT_LENGTH = 600;
 
@@ -95,14 +97,20 @@ export default memo(function FreeFeedPostPreview({ url }) {
           {author && (
             <div className={styles.header}>
               <UserPicture user={author} size={24} />
-              <UserName user={author} />
+              <div>
+                <UserName user={author} className={styles.author} />
+                {', '}
+                <RouterLink to={postUrl} className={styles.dateLink}>
+                  <TimeDisplay timeStamp={+postData.createdAt} inline />
+                </RouterLink>
+              </div>
             </div>
           )}
           <div className={styles.text}>
             <Linkify>{displayText}</Linkify>
           </div>
           <div className={styles.link}>
-            <Link to={postUrl}>Go to the post →</Link>
+            <Link to={postUrl}>Go to the post</Link>
           </div>
         </div>
       </FoldableContent>
