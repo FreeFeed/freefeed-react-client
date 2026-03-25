@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.147.0] - Not released
+### Added
+- Post and comment previews for FreeFeed links. When a post contains a link to
+  another FreeFeed post or a specific comment (e.g., `/username/postId` or
+  `/username/postId#commentId`), the app now shows a preview with author info
+  and text excerpt.
 
 ## [1.146.0] - 2026-03-21
 ### Added
