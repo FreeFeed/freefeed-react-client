@@ -25,6 +25,7 @@ import { InitialCheckbox } from './initial-checkbox';
 import { Anchor, Link } from './linkify-links';
 import CodeBlock from './code-block';
 import { MediaLink } from './media-links/media-link';
+import { freefeedAttachmentId } from './media-links/helpers';
 
 const { searchEngine } = CONFIG.search;
 const MAX_URL_LENGTH = 50;
@@ -91,7 +92,7 @@ export function tokenToElement(token, key, text, params) {
     }
 
     case LINK:
-      return renderLink(token, key, text, params);
+      return renderLink(token, key, text);
 
     case SHORT_LINK:
       return (
@@ -160,10 +161,11 @@ export function tokenToElement(token, key, text, params) {
   return token.text;
 }
 
-function renderLink(token, key, text, params = {}) {
+function renderLink(token, key, text) {
   const href = linkHref(token.text);
   const isBareLink = text.charAt(token.offset - 1) === '!';
-  const previewLabel = params.previewLinkLabelMap?.get(key);
+  const attId = freefeedAttachmentId(token.text);
+  const previewLabel = attId ? attId.slice(0, 8) : null;
   const displayText = previewLabel ?? prettyLink(token.text, MAX_URL_LENGTH);
 
   if (isBareLink) {
