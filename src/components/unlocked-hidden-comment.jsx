@@ -1,4 +1,3 @@
-/* global CONFIG */
 import { useDispatch, useSelector } from 'react-redux';
 import { faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
@@ -66,9 +65,6 @@ export function UnlockedHiddenComment({ id, userHover, arrowHover, arrowClick, c
 function CommentContent({ comment, userHover, arrowHover, arrowClick }) {
   const allUsers = useSelector((state) => state.users);
   const author = allUsers[comment?.createdBy];
-  const showMediaPreviews =
-    useSelector((state) => state.user.frontendPreferences?.comments?.showMediaPreviews) ??
-    CONFIG.frontendPreferences.defaultValues.comments.showMediaPreviews;
   return (
     comment && (
       <>
@@ -78,8 +74,6 @@ function CommentContent({ comment, userHover, arrowHover, arrowClick }) {
           userHover={userHover}
           arrowHover={arrowHover}
           arrowClick={arrowClick}
-          showMediaPreviews={showMediaPreviews}
-          shortenInSpoiler={true}
         />
         {author && (
           <>

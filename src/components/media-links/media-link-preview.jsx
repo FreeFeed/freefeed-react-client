@@ -10,17 +10,17 @@ export function MediaLinkPreview({ href: url }) {
   const [mediaType, handleClick] = useMediaLink(url, { previewId });
   const attId = freefeedAttachmentId(url);
 
-  // Freefeed attachment — render even when mediaType unknown (e.g. /v4/attachments/UUID)
+  if (mediaType !== IMAGE && mediaType !== VIDEO && mediaType !== T_YOUTUBE_VIDEO) {
+    return null;
+  }
+
+  // Freefeed attachment
   if (attId) {
     return (
       <a href={url} target="_blank" rel="noreferrer" onClick={handleClick}>
         <FreeFeedMediaPreview id={attId} previewId={previewId} />
       </a>
     );
-  }
-
-  if (mediaType !== IMAGE && mediaType !== VIDEO && mediaType !== T_YOUTUBE_VIDEO) {
-    return null;
   }
 
   if (mediaType === T_YOUTUBE_VIDEO) {

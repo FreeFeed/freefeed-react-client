@@ -1,23 +1,36 @@
 import cn from 'classnames';
 import { faInstagram, faVimeo, faYoutube } from '@fortawesome/free-brands-svg-icons';
-import { faImage } from '@fortawesome/free-regular-svg-icons';
-import { faFilm } from '@fortawesome/free-solid-svg-icons';
+import { faFile, faFilePdf, faImage } from '@fortawesome/free-regular-svg-icons';
+import { faFilm, faMusic } from '@fortawesome/free-solid-svg-icons';
 import { T_VIMEO_VIDEO, T_YOUTUBE_VIDEO } from '../link-preview/video';
 import { Icon } from '../fontawesome-icons';
-import { IMAGE, INSTAGRAM, useMediaLink, VIDEO } from './helpers';
+import { IMAGE, INSTAGRAM, isAttachmentUrl, useMediaLink, VIDEO } from './helpers';
 
-export function MediaLink({ href: url, children, forceIcon }) {
+export function MediaLink({ href: url, children }) {
   const [mediaType, handleClick] = useMediaLink(url);
 
-  const mediaIcon =
-    forceIcon ||
-    {
-      [INSTAGRAM]: faInstagram,
-      [T_YOUTUBE_VIDEO]: faYoutube,
-      [T_VIMEO_VIDEO]: faVimeo,
-      [IMAGE]: faImage,
-      [VIDEO]: faFilm,
-    }[mediaType];
+  let mediaIcon = {
+    [INSTAGRAM]: faInstagram,
+    [T_YOUTUBE_VIDEO]: faYoutube,
+    [T_VIMEO_VIDEO]: faVimeo,
+    [IMAGE]: faImage,
+    [VIDEO]: faFilm,
+  }[mediaType];
+
+  let extension = '';
+  if (!mediaType && isAttachmentUrl(url)) {
+    const urlObj = new URL(url);
+    const lastSegment = urlObj.pathname.split('/').pop();
+    extension = lastSegment.includes('.') ? lastSegment.split('.').pop() : '';
+
+    if (extension === 'mp3' || extension === 'm4a') {
+      mediaIcon = faMusic;
+    } else if (extension === 'pdf') {
+      mediaIcon = faFilePdf;
+    } else {
+      mediaIcon = faFile;
+    }
+  }
 
   const mediaProps = mediaIcon
     ? {
@@ -35,6 +48,7 @@ export function MediaLink({ href: url, children, forceIcon }) {
         </span>
       )}
       {children}
+      {extension && `.${extension}`}
     </a>
   );
 }
