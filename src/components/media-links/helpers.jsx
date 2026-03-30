@@ -7,9 +7,6 @@ import {
   getEmbedInfo as getInstagramEmbedInfo,
 } from '../link-preview/instagram';
 import { getVideoInfo, getVideoType, T_VIMEO_VIDEO, T_YOUTUBE_VIDEO } from '../link-preview/video';
-import { LINK } from 'social-text-tokenizer';
-import { parseText } from '../../utils/parse-text';
-import { SPOILER_END, SPOILER_START } from '../../utils/spoiler-tokens';
 import { isLeftClick } from '../../utils';
 import { openLightbox } from '../../services/lightbox';
 import { attachmentPreviewUrl, attachmentSaveAsUrl } from '../../services/api';
@@ -29,7 +26,10 @@ export function useMediaLink(url, { previewId } = {}) {
       .then((item) => {
         if (!item) {
           setMediaType(null);
-        } else if (item.mediaType) {
+          items[index] = null;
+          return null;
+        }
+        if (item.mediaType) {
           setMediaType(item.mediaType);
         }
         if (previewId) {
@@ -70,41 +70,6 @@ export function useMediaLink(url, { previewId } = {}) {
 export const IMAGE = 'image';
 export const VIDEO = 'video';
 export const INSTAGRAM = 'instagram';
-
-/**
- * Returns Map of token index to short label (first 8 chars of UUID) for FreeFeed attachment links.
- * @param {string} text
- * @param {{ shortenInSpoiler?: boolean }} [options]
- * @returns {Map<number, string>}
- */
-export function getFreefeedPreviewLinkLabels(text, options = {}) {
-  const { shortenInSpoiler = false } = options;
-  const map = new Map();
-  if (!text) return map;
-
-  const tokens = parseText(text);
-  let inSpoiler = false;
-
-  for (const [index, token] of tokens.entries()) {
-    if (token.type === SPOILER_START) {
-      inSpoiler = true;
-    } else if (token.type === SPOILER_END) {
-      inSpoiler = false;
-    } else if (
-      (shortenInSpoiler || !inSpoiler) &&
-      token.type === LINK &&
-      /^https?:\/\//i.test(token.text) &&
-      text.charAt(token.offset - 1) !== '!'
-    ) {
-      const attId = freefeedAttachmentId(token.text);
-      if (attId) {
-        map.set(index, attId.slice(0, 8));
-      }
-    }
-  }
-
-  return map;
-}
 
 export function getMediaType(url) {
   try {
