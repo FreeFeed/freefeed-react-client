@@ -26,7 +26,10 @@ export function useMediaLink(url, { previewId } = {}) {
       .then((item) => {
         if (!item) {
           setMediaType(null);
-        } else if (item.mediaType) {
+          items[index] = null;
+          return null;
+        }
+        if (item.mediaType) {
           setMediaType(item.mediaType);
         }
         if (previewId) {
