@@ -15,44 +15,48 @@ import ErrorBoundary from './error-boundary';
 import UserProfile from './user-profile';
 import UserFeed from './user-feed';
 import { ButtonLink } from './button-link';
+import { useResolvedRoutes } from '../services/nouter/hooks';
 
 const UserHandler = (props) => {
   // Redirect to canonical username in URI (/uSErNAme/likes?offset=30 → /username/likes?offset=30)
+  const resolvedRoutes = useResolvedRoutes();
+  const {
+    router: { params, location, navigate },
+    viewUser,
+  } = props;
   useEffect(() => {
-    const {
-      router: { path, params, location },
-      viewUser,
-    } = props;
     if (
       !viewUser.isLoading &&
       viewUser.username &&
       params.userName &&
       viewUser.username !== params.userName
     ) {
-      const newPath = injectParams(path, { ...params, userName: viewUser.username });
-      props.router.navigate(newPath + location.search, { replace: true });
+      const userRoute = resolvedRoutes.find((route) => route.name === 'userFeed');
+      if (userRoute) {
+        const newPath = injectParams(userRoute.pattern, { ...params, userName: viewUser.username });
+        navigate(newPath + location.search, { replace: true });
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.router, props.viewUser.isLoading, props.viewUser.username]);
+  }, [navigate, location.search, params, viewUser.isLoading, viewUser.username, resolvedRoutes]);
 
   const [forceShowContent, setForceShowContent] = useState(false);
   const displayPosts = useCallback(() => setForceShowContent(true), []);
 
   const allowToPost =
     !CONFIG.privacyControlGroups.hidePosts ||
-    !CONFIG.privacyControlGroups.groups[props.viewUser.username];
+    !CONFIG.privacyControlGroups.groups[viewUser.username];
   const showContent =
     forceShowContent ||
     !CONFIG.privacyControlGroups.hidePosts ||
-    !CONFIG.privacyControlGroups.groups[props.viewUser.username];
-  const controlledPrivacy = CONFIG.privacyControlGroups.groups[props.viewUser.username]?.privacy;
+    !CONFIG.privacyControlGroups.groups[viewUser.username];
+  const controlledPrivacy = CONFIG.privacyControlGroups.groups[viewUser.username]?.privacy;
 
   const nameForTitle = useMemo(
     () =>
-      props.viewUser.username === props.viewUser.screenName
-        ? props.viewUser.username
-        : `${props.viewUser.screenName} (${props.viewUser.username})`,
-    [props.viewUser.screenName, props.viewUser.username],
+      viewUser.username === viewUser.screenName
+        ? viewUser.username
+        : `${viewUser.screenName} (${viewUser.username})`,
+    [viewUser.screenName, viewUser.username],
   );
 
   return (
@@ -64,11 +68,11 @@ const UserHandler = (props) => {
               rel="alternate"
               type="application/rss+xml"
               title={
-                props.viewUser.type === 'user'
-                  ? `Posts of ${props.viewUser.username}`
-                  : `Posts in group ${props.viewUser.username}`
+                viewUser.type === 'user'
+                  ? `Posts of ${viewUser.username}`
+                  : `Posts in group ${viewUser.username}`
               }
-              href={`${CONFIG.api.root}/v${apiVersion}/timelines-rss/${props.viewUser.username}`}
+              href={`${CONFIG.api.root}/v${apiVersion}/timelines-rss/${viewUser.username}`}
             />
             <title>
               {nameForTitle} - {CONFIG.siteTitle}
@@ -94,8 +98,8 @@ const UserHandler = (props) => {
         ) : (
           <div className="alert alert-warning">
             <p>
-              This is a <strong>{props.viewUser.username}</strong> group page. This is a special
-              group that is used for changing the visibility of posts in other feeds to “
+              This is a <strong>{viewUser.username}</strong> group page. This is a special group
+              that is used for changing the visibility of posts in other feeds to “
               {controlledPrivacy}”.
             </p>
             <p>
