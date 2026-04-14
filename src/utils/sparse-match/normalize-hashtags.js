@@ -1,5 +1,3 @@
-const graphemeSegmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
-
 /**
  * During normalization, only alphanumeric characters are left for each
  * grapheme. If a grapheme does not contain any such characters, it is skipped.
@@ -28,7 +26,7 @@ const graphemeSegmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme
 export function normalizeHashtag(input) {
   let output = '';
   const mapping = [];
-  for (const { segment, index } of graphemeSegmenter.segment(input)) {
+  for (const { segment, index } of segmentGraphemes(input)) {
     const letters = segment
       .normalize('NFKD')
       // Preserve cyrillic 'short i' (convert it back to NFC)
@@ -50,4 +48,17 @@ export function normalizeHashtag(input) {
   }
 
   return { output, mapping };
+}
+
+function* segmentGraphemes(input) {
+  if (Intl.Segmenter) {
+    const segmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
+    yield* segmenter.segment(input);
+  } else {
+    // Fallback for Firefox <125: iterate over code units (doesn't handle
+    // composite graphemes)
+    for (const [index, segment] of [...input].entries()) {
+      yield { segment, index };
+    }
+  }
 }
