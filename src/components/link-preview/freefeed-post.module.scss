@@ -1,0 +1,55 @@
+@use '../../../styles/helvetica/dark-vars.scss';
+@use '../../../styles/shared/mixins';
+
+.preview {
+  font-size: 0.95rem;
+  padding: 0.5em;
+  border: 1px solid #ddd;
+  border-radius: 0.2em;
+  background-color: #f9f9f9;
+
+  :global(.dark-theme) & {
+    background-color: dark-vars.$bg-color-lighter;
+    border-color: dark-vars.$separator-color;
+    color: dark-vars.$text-color;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 0.5em;
+  font-size: 0.9em;
+
+  & a {
+    text-decoration: none;
+  }
+}
+
+.text {
+  margin-bottom: 0.5em;
+  line-height: 1.4;
+  color: #333;
+
+  :global(.dark-theme) & {
+    color: dark-vars.$text-color;
+  }
+}
+
+.link {
+  font-size: 0.9em;
+}
+
+.author {
+  font-weight: bold;
+}
+
+.loading {
+  color: #666;
+  font-style: italic;
+
+  :global(.dark-theme) & {
+    color: dark-vars.$text-color-darker;
+  }
+}
