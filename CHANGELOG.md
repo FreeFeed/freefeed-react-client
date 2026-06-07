@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `/username/postId#commentId`), the app now shows a preview with author info
   and text excerpt.
 
+### Fixed
+- Autocomplete dropdown no longer reopens immediately after selecting a suggestion.
+- Trim whitespace from usernames in feeds selector.
+
 ## [1.146.1] - 2026-03-30
 ### Changed
 - Attachment links now always show short UUID label (first 8 chars) and file icons.
