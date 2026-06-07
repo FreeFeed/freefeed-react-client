@@ -105,7 +105,7 @@ export function useSelectedOptions(usernames, fixedFeedNames) {
   const dispatch = useDispatch();
   const userInfoStatuses = useSelector((store) => store.getUserInfoStatuses);
 
-  usernames = useMemo(() => usernames.map((u) => u.toLowerCase()), [usernames]);
+  usernames = useMemo(() => usernames.map((u) => u.toLowerCase().trim()), [usernames]);
 
   const me = useSelector((store) => store.user);
   const mySubscriptions = useSelector(
