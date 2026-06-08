@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useEvent } from 'react-use-event-hook';
 import { EventEmitter } from '../../services/drafts-events';
 import { setReactInputValue } from '../../utils/set-react-input-value';
@@ -24,6 +24,10 @@ export function Autocomplete({
   const [atStart, setAtStart] = useState(false);
 
   const events = useMemo(() => new EventEmitter(), []);
+  // Prevents the autocomplete from reopening immediately after the user selects
+  // a suggestion. The flag is set before replaceQuery() is called and cleared
+  // after a short delay, during which inputHandler ignores all events.
+  const isSelecting = useRef(false);
 
   const keyHandler = useEvent((/** @type {KeyboardEvent}*/ e) => {
     if (
@@ -46,6 +50,9 @@ export function Autocomplete({
 
     const inputHandler = (/** @type {Event} */ e) => {
       if (e.type === 'selectionchange' && document.activeElement !== input) {
+        return;
+      }
+      if (isSelecting.current) {
         return;
       }
       let type = null;
@@ -92,14 +99,19 @@ export function Autocomplete({
     };
   }, [usernameAnchor, context, inputRef, keyHandler, hashtagAnchor]);
 
-  const onSelectHandler = useEvent((text) =>
+  const onSelectHandler = useEvent((text) => {
+    isSelecting.current = true;
+    setTimeout(() => (isSelecting.current = false), 100);
+    // Close the menu immediately; without this, the synthetic 'input' event
+    // dispatched by setReactInputValue() would reopen it before the flag clears.
+    setQuery(null);
     replaceQuery(
       inputRef.current,
       text,
       queryType === 'username' ? usernameAnchor : hashtagAnchor,
       queryType === 'username' ? usernamePattern : hashtagPattern,
-    ),
-  );
+    );
+  });
 
   if (query) {
     return (

@@ -16,6 +16,7 @@ import { makeToken, reTokenizer, wordAdjacentChars } from 'social-text-tokenizer
 import { withCharsAfter, withCharsBefore, withFilters } from 'social-text-tokenizer/filters';
 import { checkboxParser } from './initial-checkbox';
 import { SPOILER_END, SPOILER_START, spoilerTags, validateSpoilerTags } from './spoiler-tokens';
+import { isPostLink, isCommentLink } from './post-link-utils';
 
 const {
   textFormatter: { tldList, foreignMentionServices },
@@ -194,9 +195,30 @@ export function getFirstLinkToEmbed(text) {
       isInSpoiler = false;
     }
 
-    if (isInSpoiler || token.type !== LINK) {
+    if (isInSpoiler) {
       return false;
     }
+
+    // Handle SHORT_LINK tokens (local post/comment links like /username/abc123 or /username/abc123#commentId)
+    if (token.type === SHORT_LINK) {
+      return text.charAt(token.offset - 1) !== '!';
+    }
+
+    if (token.type !== LINK) {
+      return false;
+    }
+
+    // Check if it's a FreeFeed post link (allow these for preview)
+    if (isPostLink(token.text)) {
+      return /^https?:\/\//i.test(token.text) && text.charAt(token.offset - 1) !== '!';
+    }
+
+    // Check if it's a FreeFeed comment link (allow these for preview)
+    if (isCommentLink(token.text)) {
+      return /^https?:\/\//i.test(token.text) && text.charAt(token.offset - 1) !== '!';
+    }
+
+    // For other links, exclude local links
 
     return (
       !isLocalLink(token.text) &&
@@ -205,7 +227,16 @@ export function getFirstLinkToEmbed(text) {
     );
   });
 
-  return firstLink ? linkHref(firstLink.text) : undefined;
+  if (!firstLink) {
+    return;
+  }
+
+  // For SHORT_LINK, return the path directly (parsePostLink/parseCommentLink handle both)
+  if (firstLink.type === SHORT_LINK) {
+    return firstLink.text;
+  }
+
+  return linkHref(firstLink.text);
 }
 
 export const shortCodeToService = {};
