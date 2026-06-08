@@ -681,6 +681,7 @@ export function attachments(state = {}, action) {
   }
   switch (action.type) {
     case response(ActionTypes.GET_SINGLE_POST):
+    case response(ActionTypes.GET_POST_FOR_PREVIEW):
     case response(ActionTypes.COMPLETE_POST_COMMENTS):
     case response(ActionTypes.CREATE_POST): {
       return mergeByIds(state, action.payload.attachments, { update: true });
@@ -721,9 +722,21 @@ export function comments(state = {}, action) {
     case response(ActionTypes.SHOW_MORE_COMMENTS):
     case response(ActionTypes.COMPLETE_POST_COMMENTS):
     case response(ActionTypes.GET_SINGLE_POST):
+    case response(ActionTypes.GET_POST_FOR_PREVIEW):
     case response(ActionTypes.SHOW_MORE_LIKES_ASYNC):
     case response(ActionTypes.GET_COMMENTS_BY_IDS): {
       return updateCommentData(state, action);
+    }
+    case response(ActionTypes.GET_COMMENT_FOR_PREVIEW): {
+      // API returns single comment object, not an array
+      const comment = action.payload.comments;
+      return {
+        ...state,
+        [comment.id]: {
+          ...state[comment.id],
+          ...comment,
+        },
+      };
     }
     case response(ActionTypes.GET_COMMENT_BY_NUMBER): {
       return {
@@ -918,6 +931,8 @@ export function users(state = {}, action) {
     case response(ActionTypes.SHOW_MORE_COMMENTS):
     case response(ActionTypes.SHOW_MORE_LIKES_ASYNC):
     case response(ActionTypes.GET_SINGLE_POST):
+    case response(ActionTypes.GET_POST_FOR_PREVIEW):
+    case response(ActionTypes.GET_COMMENT_FOR_PREVIEW):
     case response(ActionTypes.COMPLETE_POST_COMMENTS):
     case response(ActionTypes.GET_ALL_SUBSCRIPTIONS):
     case response(ActionTypes.GET_GROUP_BLOCKED_USERS):
@@ -979,6 +994,8 @@ export function subscribers(state = {}, action) {
     }
     case response(ActionTypes.WHO_AM_I):
     case response(ActionTypes.GET_SINGLE_POST):
+    case response(ActionTypes.GET_POST_FOR_PREVIEW):
+    case response(ActionTypes.GET_COMMENT_FOR_PREVIEW):
     case response(ActionTypes.COMPLETE_POST_COMMENTS):
     case response(ActionTypes.CREATE_POST): {
       return mergeByIds(state, (action.payload.subscribers || []).map(userParser));
@@ -1193,6 +1210,8 @@ export function subscriptions(state = {}, action) {
   switch (action.type) {
     case response(ActionTypes.WHO_AM_I):
     case response(ActionTypes.GET_SINGLE_POST):
+    case response(ActionTypes.GET_POST_FOR_PREVIEW):
+    case response(ActionTypes.GET_COMMENT_FOR_PREVIEW):
     case response(ActionTypes.COMPLETE_POST_COMMENTS):
     case response(ActionTypes.CREATE_POST):
     case response(ActionTypes.SAVE_EDITING_POST): {
@@ -2239,3 +2258,10 @@ export const foundUsers = fromResponse(
   [],
   setOnLocationChange([]),
 );
+
+export {
+  postPreviewStatuses,
+  postPreviewsData,
+  commentPreviewStatuses,
+  commentPreviewsData,
+} from './reducers/post-previews';

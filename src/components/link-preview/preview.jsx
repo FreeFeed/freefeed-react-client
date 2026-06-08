@@ -11,6 +11,10 @@ import TikTokPreview, { canShowURL as tikTokCanShowURL } from './tiktok';
 import SoundCloudPreview, { canShowURL as soundCloudCanShowURL } from './soundcloud';
 import SpotifyPreview, { canShowURL as spotifyCanShowURL } from './spotify';
 import AppleMusicPreview, { canShowUrl as appleMusicCanShowURL } from './apple-music';
+import FreeFeedPostPreview, {
+  canShowURL as postCanShowURL,
+  canShowCommentURL as commentCanShowURL,
+} from './freefeed-post';
 
 import EmbedlyPreview from './embedly';
 
@@ -18,7 +22,12 @@ export default function LinkPreview({ allowEmbedly, url }) {
   if (noPreviewForURL(url)) {
     return false;
   }
-  if (videoCanShowURL(url)) {
+  // Check comment links first (they have hashes), then post links
+  if (commentCanShowURL(url)) {
+    return <FreeFeedPostPreview url={url} />;
+  } else if (postCanShowURL(url)) {
+    return <FreeFeedPostPreview url={url} />;
+  } else if (videoCanShowURL(url)) {
     return <VideoPreview url={url} />;
   } else if (twitterCanShowURL(url)) {
     return <TwitterPreview url={url} />;
@@ -55,6 +64,11 @@ LinkPreview.propTypes = {
 };
 
 function noPreviewForURL(url) {
+  // Allow FreeFeed post and comment links (they have their own preview)
+  if (postCanShowURL(url) || commentCanShowURL(url)) {
+    return false;
+  }
+
   return (
     /^https:\/\/([^/]+\.)?freefeed\.net([:/]|$)/i.test(url) ||
     /^https:\/\/([^/]+\.)?reddit\.com([:/]|$)/i.test(url) ||
