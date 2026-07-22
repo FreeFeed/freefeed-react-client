@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.148.0] - Not released
 
+### Added
+- Video attachment players now remember the volume setting between views.
+
 ## [1.147.0] - 2026-06-08
 ### Added
 - Post and comment previews for FreeFeed links. When a post contains a link to
