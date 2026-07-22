@@ -4,7 +4,7 @@ import { faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import { attachmentPreviewUrl } from '../../../services/api';
 import { Icon } from '../../fontawesome-icons';
 import style from './attachments.module.scss';
-import { useStopVideo, useStoredVideoVolume } from './visual/hooks';
+import { useStopVideo, useStoredMediaVolume } from './visual/hooks';
 
 export function LikeAVideo({ attachment: att }) {
   const [isOpened, setIsOpened] = useState(false);
@@ -14,7 +14,7 @@ export function LikeAVideo({ attachment: att }) {
   const videoRef = useRef(null);
 
   useStopVideo(videoRef, isOpened);
-  useStoredVideoVolume(videoRef, isOpened);
+  useStoredMediaVolume(videoRef, isOpened);
 
   if (isOpened) {
     return (

@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.148.0] - Not released
 
 ### Added
-- Video attachment players now remember the volume setting between views.
+- Video and audio attachment players now remember their volume settings between views.
 
 ## [1.147.0] - 2026-06-08
 ### Added

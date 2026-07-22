@@ -9,7 +9,7 @@ import { getFullscreenAPI } from '../utils/fullscreen';
 import { isGifLike } from '../components/post/attachments/visual/utils';
 import { intentToScroll } from './unscroll';
 import { handlePip } from './pip-video';
-import { bindVideoVolume } from './video-volume';
+import { bindMediaVolume } from './media-volume';
 import { NEEDMORE_EVENT, MOREITEMS_EVENT } from './lightbox-events';
 
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
@@ -251,7 +251,7 @@ function initLightbox({ loop = true, pagination = false } = {}) {
     currentVideo = content.element.matches('video')
       ? content.element
       : content.element.querySelector('video');
-    unbindVideoVolume = currentVideo ? bindVideoVolume(currentVideo) : null;
+    unbindVideoVolume = currentVideo ? bindMediaVolume(currentVideo) : null;
   });
   lightbox.on('contentDeactivate', () => {
     unbindVideoVolume?.();

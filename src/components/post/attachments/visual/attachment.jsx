@@ -16,7 +16,7 @@ import {
 import style from './visual.module.scss';
 import { NsfwCanvas } from './nsfw-canvas';
 import { fitIntoBox } from './geometry';
-import { useStopVideo, useStoredVideoVolume } from './hooks';
+import { useStopVideo, useStoredMediaVolume } from './hooks';
 import { isGifLike } from './utils';
 
 // eslint-disable-next-line complexity
@@ -64,7 +64,7 @@ export function VisualAttachment({
 
   const videoRef = useRef(null);
   useStopVideo(videoRef, att.mediaType === 'video' && !att.meta?.inProgress);
-  useStoredVideoVolume(videoRef, inlinePlaying && !att.meta?.inProgress);
+  useStoredMediaVolume(videoRef, inlinePlaying && !att.meta?.inProgress);
   const { videoPlaying, currentTime } = useVideoEvents(videoRef);
 
   const handleClick = useEvent((e) => {

@@ -1,11 +1,16 @@
 import cn from 'classnames';
 import { faHeadphones } from '@fortawesome/free-solid-svg-icons';
+import { useRef } from 'react';
 import { attachmentPreviewUrl } from '../../../services/api';
 import { formatFileSize } from '../../../utils';
 import style from './attachments.module.scss';
 import { OriginalLink } from './original-link';
+import { useStoredMediaVolume } from './visual/hooks';
 
 export function AudioAttachment({ attachment: att, removeAttachment }) {
+  const audioRef = useRef(null);
+  useStoredMediaVolume(audioRef);
+
   const formattedFileSize = formatFileSize(att.fileSize);
 
   const title =
@@ -26,6 +31,7 @@ export function AudioAttachment({ attachment: att, removeAttachment }) {
       </OriginalLink>
       <div>
         <audio
+          ref={audioRef}
           className={style['audio__player']}
           src={attachmentPreviewUrl(att.id, 'audio')}
           title={titleAndSize}
