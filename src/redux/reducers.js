@@ -390,6 +390,18 @@ const initPostViewState = (post) => {
 };
 
 export function postsViewState(state = {}, action) {
+  if (action.type === response(ActionTypes.REFRESH_VISIBLE_POSTS)) {
+    // Preserve local UI state when refreshing posts after a realtime reconnect.
+    return mergeByIds(
+      state,
+      (action.payload.posts || []).map(({ id, omittedLikes }) => ({
+        ...state[id],
+        id,
+        omittedLikes,
+      })),
+      { insert: false, update: true },
+    );
+  }
   if (ActionHelpers.isPostsCollectionResponse(action)) {
     return mergeByIds(state, (action.payload.posts || []).map(initPostViewState), {
       insert: true,
