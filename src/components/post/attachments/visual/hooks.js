@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useEvent } from 'react-use-event-hook';
 import { attachmentPreviewUrl, attachmentSaveAsUrl } from '../../../../services/api';
 import { openLightbox } from '../../../../services/lightbox';
+import { bindMediaVolume } from '../../../../services/media-volume';
 import { handleLeftClick } from '../../../../utils';
 
 const resizeHandlers = new Map();
@@ -115,4 +116,14 @@ export function useStopVideo(videoRef, enabled) {
     signal.addEventListener('abort', onPause);
     return () => abortController.abort();
   }, [enabled, videoRef]);
+}
+
+export function useStoredMediaVolume(mediaRef, enabled = true) {
+  useLayoutEffect(() => {
+    if (!enabled || !mediaRef.current) {
+      return;
+    }
+
+    return bindMediaVolume(mediaRef.current);
+  }, [enabled, mediaRef]);
 }
