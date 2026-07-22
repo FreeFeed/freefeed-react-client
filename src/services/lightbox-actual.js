@@ -9,6 +9,7 @@ import { getFullscreenAPI } from '../utils/fullscreen';
 import { isGifLike } from '../components/post/attachments/visual/utils';
 import { intentToScroll } from './unscroll';
 import { handlePip } from './pip-video';
+import { bindMediaVolume } from './media-volume';
 import { NEEDMORE_EVENT, MOREITEMS_EVENT } from './lightbox-events';
 
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
@@ -244,12 +245,17 @@ function initLightbox({ loop = true, pagination = false } = {}) {
 
   // Looking for video in active slide
   let currentVideo = null;
+  let unbindVideoVolume = null;
   lightbox.on('contentActivate', ({ content }) => {
+    unbindVideoVolume?.();
     currentVideo = content.element.matches('video')
       ? content.element
       : content.element.querySelector('video');
+    unbindVideoVolume = currentVideo ? bindMediaVolume(currentVideo) : null;
   });
   lightbox.on('contentDeactivate', () => {
+    unbindVideoVolume?.();
+    unbindVideoVolume = null;
     currentVideo = null;
   });
 
