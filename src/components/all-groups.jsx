@@ -16,6 +16,7 @@ import TimeDisplay from './time-display';
 import styles from './all-groups.module.scss';
 import { UserPicture } from './user-picture';
 import { HorScrollable } from './hor-scrollable';
+import { withIranFlagEmoji } from './iran-flag-emoji';
 
 export default function AllGroups() {
   const dispatch = useDispatch();
@@ -224,7 +225,9 @@ const GroupRow = memo(function GroupRow({ g, isSubscribed }) {
         <UserPicture user={u} className={styles.userpic} />
         <div className={styles.groupInfo}>
           <UserName user={u}>{u.username}</UserName>
-          {u.username !== u.screenName && <div className="small">{u.screenName}</div>}
+          {u.username !== u.screenName && (
+            <div className="small">{withIranFlagEmoji(u.screenName)}</div>
+          )}
           {u.isProtected === '1' && (
             <div className="text-muted small">
               <Icon icon={faUserFriends} /> Protected group

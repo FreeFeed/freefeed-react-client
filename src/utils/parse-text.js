@@ -15,8 +15,11 @@ import { linkHref } from 'social-text-tokenizer/prettifiers';
 import { makeToken, reTokenizer, wordAdjacentChars } from 'social-text-tokenizer/utils';
 import { withCharsAfter, withCharsBefore, withFilters } from 'social-text-tokenizer/filters';
 import { checkboxParser } from './initial-checkbox';
+import { IRAN_FLAG, IRAN_FLAG_EMOJI } from './iran-flag-emoji';
 import { SPOILER_END, SPOILER_START, spoilerTags, validateSpoilerTags } from './spoiler-tokens';
 import { isPostLink, isCommentLink } from './post-link-utils';
+
+export { IRAN_FLAG } from './iran-flag-emoji';
 
 const {
   textFormatter: { tldList, foreignMentionServices },
@@ -121,6 +124,8 @@ const shortLinks = withFilters(
   withCharsAfter(wordAdjacentChars.withoutChars('/')),
 );
 
+const iranFlagEmoji = reTokenizer(new RegExp(IRAN_FLAG_EMOJI, 'gu'), makeToken(IRAN_FLAG));
+
 export const lineBreaks = reTokenizer(/[^\S\n]*\n\s*/g, (offset, text) => {
   if (text.indexOf('\n') === text.lastIndexOf('\n')) {
     return makeToken(LINE_BREAK)(offset, text);
@@ -179,6 +184,7 @@ export const parseText = withTexts(
       lineBreaks,
       codeInline,
       codeBlocks,
+      iranFlagEmoji,
     ),
   ),
 );

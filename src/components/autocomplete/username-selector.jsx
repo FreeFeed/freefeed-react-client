@@ -11,6 +11,7 @@ import { usePost } from '../post/post-comment-ctx';
 import { getMatchedUsers, showMoreComments } from '../../redux/action-creators';
 import style from './autocomplete.module.scss';
 import { HighlightText } from './highlight-text';
+import { withIranFlagEmoji } from '../iran-flag-emoji';
 import {
   getAllGroups,
   getAllUsers,
@@ -99,7 +100,7 @@ function Item({ account, match, isCurrent, onClick, localLink }) {
           <HighlightText text={account.username} matches={match.matches} />
         </span>
         {account.username !== account.screenName && (
-          <span className={style.screenName}>{account.screenName}</span>
+          <span className={style.screenName}>{withIranFlagEmoji(account.screenName)}</span>
         )}
       </span>
       {localLink ? (

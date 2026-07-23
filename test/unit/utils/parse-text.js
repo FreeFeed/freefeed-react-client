@@ -270,4 +270,15 @@ describe('parse-text', () => {
       });
     });
   });
+
+  describe('Iran flag emoji tokenizer', () => {
+    it('should tokenize the Iran flag emoji', () => {
+      const flag = '\u{1F1EE}\u{1F1F7}';
+      expect(parseText(`Hello ${flag} world`), 'to equal', [
+        { type: 'TEXT', offset: 0, text: 'Hello ' },
+        { type: 'IRAN_FLAG', offset: 6, text: flag },
+        { type: 'TEXT', offset: 10, text: ' world' },
+      ]);
+    });
+  });
 });

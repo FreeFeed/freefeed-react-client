@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.148.0] - Not released
 
+### Changed
+- Render the Iran flag emoji (🇮🇷) as the Lion and Sun (Shir-o-Khorshid) flag image.
+
 ## [1.147.1] - 2026-07-22
 ### Added
 - Video and audio attachment players now remember their volume settings between views.

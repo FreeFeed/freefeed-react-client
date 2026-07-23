@@ -6,6 +6,7 @@ import { Link } from '../services/nouter';
 import PaginatedView from './paginated-view';
 import Feed from './feed';
 import { SignInLink } from './sign-in-link';
+import { withIranFlagEmoji } from './iran-flag-emoji';
 
 class UserFeed extends Component {
   render() {
@@ -30,7 +31,7 @@ class UserFeed extends Component {
 
     const emptyFeedMessage = possiblyBlocked && (
       <p>
-        Perhaps <b>{viewUser.screenName}</b> has not written any posts yet
+        Perhaps <b>{withIranFlagEmoji(viewUser.screenName)}</b> has not written any posts yet
         {authenticated ? ' or they have blocked you' : ''}.
       </p>
     );
@@ -49,8 +50,8 @@ class UserFeed extends Component {
       return (
         <div className="box-body">
           <p>
-            You have blocked <b>{viewUser.screenName}</b>, so all of their posts and comments are
-            invisible to you.
+            You have blocked <b>{withIranFlagEmoji(viewUser.screenName)}</b>, so all of their posts
+            and comments are invisible to you.
           </p>
         </div>
       );
@@ -61,12 +62,12 @@ class UserFeed extends Component {
       privacyMessage = (
         <div className="box-body">
           <p>
-            <b>{viewUser.screenName}</b> has a private feed.
+            <b>{withIranFlagEmoji(viewUser.screenName)}</b> has a private feed.
           </p>
           {!authenticated && (
             <p>
               <Link to="/signup">Sign up</Link> (or <SignInLink>sign in</SignInLink>) and request a
-              subscription to see posts from <b>{viewUser.screenName}</b>.
+              subscription to see posts from <b>{withIranFlagEmoji(viewUser.screenName)}</b>.
             </p>
           )}
         </div>
@@ -75,12 +76,12 @@ class UserFeed extends Component {
       privacyMessage = (
         <div className="box-body">
           <p>
-            <b>{viewUser.screenName}</b> has a protected feed. It is only visible to{' '}
-            {CONFIG.siteTitle} users.
+            <b>{withIranFlagEmoji(viewUser.screenName)}</b> has a protected feed. It is only visible
+            to {CONFIG.siteTitle} users.
           </p>
           <p>
             <Link to="/signup">Sign up</Link> or <SignInLink>sign in</SignInLink> to see posts from{' '}
-            <b>{viewUser.screenName}</b>.
+            <b>{withIranFlagEmoji(viewUser.screenName)}</b>.
           </p>
         </div>
       );
@@ -114,21 +115,22 @@ function UserGonePanel({ user }) {
     if (user.description) {
       return (
         <>
-          <b>{user.screenName}</b> has paused their account and left a message:{' '}
-          <em>{user.description}</em>
+          <b>{withIranFlagEmoji(user.screenName)}</b> has paused their account and left a message:{' '}
+          <em>{withIranFlagEmoji(user.description)}</em>
         </>
       );
     }
     return (
       <>
-        <b>{user.screenName}</b> has paused their account. They may return someday.
+        <b>{withIranFlagEmoji(user.screenName)}</b> has paused their account. They may return
+        someday.
       </>
     );
   }
   return (
     <>
-      <b>{user.screenName}</b> account has been deleted. This page still exists as a stub for the
-      username, but this {user.type} is not in FreeFeed anymore.
+      <b>{withIranFlagEmoji(user.screenName)}</b> account has been deleted. This page still exists
+      as a stub for the username, but this {user.type} is not in FreeFeed anymore.
     </>
   );
 }

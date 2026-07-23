@@ -43,6 +43,7 @@ import { HomeFeedLink } from './home-feed-link';
 import { UserProfileHeadActions } from './user-profile-head-actions';
 import { UserProfileHeadStats } from './user-profile-head-stats';
 import { lazyComponent } from './lazy-component';
+import { withIranFlagEmoji } from './iran-flag-emoji';
 
 const UserSubscriptionEditPopup = lazyComponent(
   () =>
@@ -269,7 +270,7 @@ export const UserProfileHead = withNouter(
           <UserPicture user={user} large />
         </div>
         <div className={styles.info}>
-          <div className={styles.screenName}>{user.screenName}</div>
+          <div className={styles.screenName}>{withIranFlagEmoji(user.screenName)}</div>
           <div className={styles.username}>
             <span className={styles.infoIcon} style={{ textAlign: 'right' }}>
               @

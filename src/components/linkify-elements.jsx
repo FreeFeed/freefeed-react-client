@@ -17,6 +17,7 @@ import {
   isShortLink,
   CODE_INLINE,
   CODE_BLOCK,
+  IRAN_FLAG,
 } from '../utils/parse-text';
 import { INITIAL_CHECKBOX, isChecked } from '../utils/initial-checkbox';
 import UserName from './user-name';
@@ -25,6 +26,7 @@ import { Anchor, Link } from './linkify-links';
 import CodeBlock from './code-block';
 import { MediaLink } from './media-links/media-link';
 import { freefeedAttachmentId } from './media-links/helpers';
+import { IranFlagEmoji } from './iran-flag-emoji';
 
 const { searchEngine } = CONFIG.search;
 const MAX_URL_LENGTH = 50;
@@ -156,6 +158,9 @@ export function tokenToElement(token, key, text, params) {
 
     case CODE_BLOCK:
       return <CodeBlock key={key} text={token.text} />;
+
+    case IRAN_FLAG:
+      return <IranFlagEmoji key={key} />;
   }
   return token.text;
 }
