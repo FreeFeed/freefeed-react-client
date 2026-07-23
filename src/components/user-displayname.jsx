@@ -3,7 +3,7 @@ import {
   DISPLAYNAMES_DISPLAYNAME,
   DISPLAYNAMES_USERNAME,
 } from '../utils/frontend-preferences-options';
-import { withIranFlagEmoji } from './iran-flag-emoji';
+import { withCustomEmojis } from './custom-emoji';
 
 export function UserDisplayName({
   username,
@@ -20,9 +20,9 @@ export function UserDisplayName({
   } else if (displayOption === DISPLAYNAMES_BOTH) {
     return (
       <span dir="auto">
-        {withIranFlagEmoji(screenName)} <span dir="ltr">({username})</span>
+        {withCustomEmojis(screenName)} <span dir="ltr">({username})</span>
       </span>
     );
   }
-  return <span dir="auto">{withIranFlagEmoji(screenName)}</span>;
+  return <span dir="auto">{withCustomEmojis(screenName)}</span>;
 }

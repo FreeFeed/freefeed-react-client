@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.148.0] - Not released
 
 ### Changed
-- Render the Iran flag emoji (🇮🇷) as the Lion and Sun (Shir-o-Khorshid) flag image.
+- Support custom emoji image overrides (Iran flag emoji → Lion and Sun / Shir-o-Khorshid).
 
 ## [1.147.1] - 2026-07-22
 ### Added

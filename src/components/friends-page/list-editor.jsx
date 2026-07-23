@@ -17,7 +17,7 @@ import { ButtonLink, useKeyboardEvents } from '../button-link';
 import { Throbber } from '../throbber';
 import { Icon } from '../fontawesome-icons';
 import { OverlayPopup } from '../overlay-popup';
-import { withIranFlagEmoji } from '../iran-flag-emoji';
+import { withCustomEmojis } from '../custom-emoji';
 import styles from './list-editor.module.scss';
 
 const SHOW_ALL_USERS = 'all';
@@ -345,19 +345,19 @@ function hl(text, search) {
   const lowercaseText = text.toLocaleLowerCase();
   const lowercaseSearch = search.toLocaleLowerCase();
   if (lowercaseSearch === '' || !lowercaseText.includes(lowercaseSearch)) {
-    return withIranFlagEmoji(text);
+    return withCustomEmojis(text);
   }
   const result = [];
 
   const highlightFrom = lowercaseText.indexOf(lowercaseSearch);
   const highlightTo = highlightFrom + search.length;
-  result.push(withIranFlagEmoji(text.slice(0, highlightFrom)));
+  result.push(withCustomEmojis(text.slice(0, highlightFrom)));
   result.push(
     <mark className={styles.mark} key={`${text}__${result.length}`}>
-      {withIranFlagEmoji(text.slice(highlightFrom, highlightTo))}
+      {withCustomEmojis(text.slice(highlightFrom, highlightTo))}
     </mark>,
   );
-  result.push(withIranFlagEmoji(text.slice(highlightTo)));
+  result.push(withCustomEmojis(text.slice(highlightTo)));
 
   return result;
 }

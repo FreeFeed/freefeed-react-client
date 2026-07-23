@@ -14,7 +14,7 @@ import { userActions } from './select-utils';
 import { UserPicture } from './user-picture';
 import { useShowBanDialog } from './dialog/ban-dialog';
 import { ButtonLink } from './button-link';
-import { withIranFlagEmoji } from './iran-flag-emoji';
+import { withCustomEmojis } from './custom-emoji';
 
 class UserCard extends Component {
   constructor(props) {
@@ -156,7 +156,7 @@ class UserCard extends Component {
                     dir="auto"
                     onClick={this.handleCloseClick}
                   >
-                    {withIranFlagEmoji(props.user.screenName)}
+                    {withCustomEmojis(props.user.screenName)}
                   </Link>
                   <br />
 

@@ -9,7 +9,7 @@ import { useDropDown, CLOSE_ON_CLICK_OUTSIDE } from './hooks/drop-down';
 import { UserDisplayName } from './user-displayname';
 import UserCard from './user-card';
 import { useMediaQuery } from './hooks/media-query';
-import { withIranFlagEmoji } from './iran-flag-emoji';
+import { withCustomEmojis } from './custom-emoji';
 
 export default function UserName({
   user: { username, screenName, isGone },
@@ -108,7 +108,7 @@ export default function UserName({
         <Link to={`/${username}`} className={linkCn} onClick={onClick} onTouchEnd={onTouchEnd}>
           {children ? (
             <span dir="ltr">
-              {typeof children === 'string' ? withIranFlagEmoji(children) : children}
+              {typeof children === 'string' ? withCustomEmojis(children) : children}
             </span>
           ) : (
             <UserDisplayName

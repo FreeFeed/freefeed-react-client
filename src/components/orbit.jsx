@@ -1,8 +1,8 @@
 /* global CONFIG */
 import { useSelector } from 'react-redux';
 import { format } from '../utils/date-format';
-import { IRAN_FLAG_EMOJI } from '../utils/iran-flag-emoji';
-import { IranFlagEmoji } from './iran-flag-emoji';
+import { emojiOverrideByEmoji } from '../utils/emoji-overrides';
+import { CustomEmoji } from './custom-emoji';
 
 import styles from './orbit.module.scss';
 
@@ -40,7 +40,7 @@ export function Orbit({ text, size, children }) {
               }}
             >
               <div className={styles.ellipticInner}>
-                {e === IRAN_FLAG_EMOJI ? <IranFlagEmoji /> : e}
+                {emojiOverrideByEmoji[e] ? <CustomEmoji emoji={e} /> : e}
               </div>
             </div>
           );
