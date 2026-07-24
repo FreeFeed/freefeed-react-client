@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.148.0] - Not released
 
+### Changed
+- Override the Iran flag emoji (🇮🇷) with the Lion and Sun (Shir-o-Khorshid)
+  glyph via a custom webfont and narrow `unicode-range` (global CSS, no
+  per-component text wrapping).
+
 ## [1.147.1] - 2026-07-22
 ### Added
 - Video and audio attachment players now remember their volume settings between views.

@@ -1,0 +1,17 @@
+// Custom color font that replaces only the Iran flag emoji (🇮🇷)
+// with the Lion and Sun (Shir-o-Khorshid) artwork.
+// Built from Twemoji SVG (CC-BY 4.0) via nanoemoji (COLR/CPAL).
+
+$iranFlagFont: '../../assets/fonts/iran-flag/IranLionAndSunFlag';
+
+@font-face {
+  font-family: IranLionAndSunFlag;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  // Regional indicators I (U+1F1EE) and R (U+1F1F7) that form 🇮🇷
+  unicode-range: U+1F1EE, U+1F1F7;
+  src:
+    url('#{$iranFlagFont}.woff2') format('woff2'),
+    url('#{$iranFlagFont}.ttf') format('truetype');
+}
