@@ -10,6 +10,7 @@ import { tokenToElement } from './linkify-elements';
 import Spoiler from './spoiler';
 import UserName from './user-name';
 import { MediaLinksProvider } from './media-links/provider';
+import { Twemoji } from './twemoji';
 
 export default function Linkify({
   children,
@@ -36,11 +37,11 @@ export default function Linkify({
   }, [arrowClick, arrowHover, children, hl, userHover]);
 
   return (
-    <span className={cn('Linkify', className)} dir="auto" role="region">
+    <Twemoji className={cn('Linkify', className)} dir="auto" role="region">
       <ErrorBoundary>
         <MediaLinksProvider>{formatted}</MediaLinksProvider>
       </ErrorBoundary>
-    </span>
+    </Twemoji>
   );
 }
 

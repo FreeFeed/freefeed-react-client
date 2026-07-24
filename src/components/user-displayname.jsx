@@ -3,7 +3,7 @@ import {
   DISPLAYNAMES_DISPLAYNAME,
   DISPLAYNAMES_USERNAME,
 } from '../utils/frontend-preferences-options';
-import { withCustomEmojis } from './custom-emoji';
+import { Twemoji } from './twemoji';
 
 export function UserDisplayName({
   username,
@@ -19,10 +19,10 @@ export function UserDisplayName({
     return <span dir="ltr">{username}</span>;
   } else if (displayOption === DISPLAYNAMES_BOTH) {
     return (
-      <span dir="auto">
-        {withCustomEmojis(screenName)} <span dir="ltr">({username})</span>
-      </span>
+      <Twemoji dir="auto">
+        {screenName} <span dir="ltr">({username})</span>
+      </Twemoji>
     );
   }
-  return <span dir="auto">{withCustomEmojis(screenName)}</span>;
+  return <Twemoji dir="auto">{screenName}</Twemoji>;
 }

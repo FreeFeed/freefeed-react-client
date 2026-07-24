@@ -9,7 +9,7 @@ import { useDropDown, CLOSE_ON_CLICK_OUTSIDE } from './hooks/drop-down';
 import { UserDisplayName } from './user-displayname';
 import UserCard from './user-card';
 import { useMediaQuery } from './hooks/media-query';
-import { withCustomEmojis } from './custom-emoji';
+import { Twemoji } from './twemoji';
 
 export default function UserName({
   user: { username, screenName, isGone },
@@ -108,7 +108,7 @@ export default function UserName({
         <Link to={`/${username}`} className={linkCn} onClick={onClick} onTouchEnd={onTouchEnd}>
           {children ? (
             <span dir="ltr">
-              {typeof children === 'string' ? withCustomEmojis(children) : children}
+              {typeof children === 'string' ? <Twemoji>{children}</Twemoji> : children}
             </span>
           ) : (
             <UserDisplayName

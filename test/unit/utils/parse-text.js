@@ -270,15 +270,4 @@ describe('parse-text', () => {
       });
     });
   });
-
-  describe('custom emoji tokenizer', () => {
-    it('should tokenize registered custom emojis', () => {
-      const flag = '\u{1F1EE}\u{1F1F7}';
-      expect(parseText(`Hello ${flag} world`), 'to equal', [
-        { type: 'TEXT', offset: 0, text: 'Hello ' },
-        { type: 'CUSTOM_EMOJI', offset: 6, text: flag },
-        { type: 'TEXT', offset: 10, text: ' world' },
-      ]);
-    });
-  });
 });

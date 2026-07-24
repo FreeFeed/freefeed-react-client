@@ -43,7 +43,7 @@ import { HomeFeedLink } from './home-feed-link';
 import { UserProfileHeadActions } from './user-profile-head-actions';
 import { UserProfileHeadStats } from './user-profile-head-stats';
 import { lazyComponent } from './lazy-component';
-import { withCustomEmojis } from './custom-emoji';
+import { Twemoji } from './twemoji';
 
 const UserSubscriptionEditPopup = lazyComponent(
   () =>
@@ -270,7 +270,9 @@ export const UserProfileHead = withNouter(
           <UserPicture user={user} large />
         </div>
         <div className={styles.info}>
-          <div className={styles.screenName}>{withCustomEmojis(user.screenName)}</div>
+          <div className={styles.screenName}>
+            <Twemoji>{user.screenName}</Twemoji>
+          </div>
           <div className={styles.username}>
             <span className={styles.infoIcon} style={{ textAlign: 'right' }}>
               @

@@ -14,7 +14,7 @@ import { userActions } from './select-utils';
 import { UserPicture } from './user-picture';
 import { useShowBanDialog } from './dialog/ban-dialog';
 import { ButtonLink } from './button-link';
-import { withCustomEmojis } from './custom-emoji';
+import { Twemoji } from './twemoji';
 
 class UserCard extends Component {
   constructor(props) {
@@ -156,7 +156,7 @@ class UserCard extends Component {
                     dir="auto"
                     onClick={this.handleCloseClick}
                   >
-                    {withCustomEmojis(props.user.screenName)}
+                    <Twemoji>{props.user.screenName}</Twemoji>
                   </Link>
                   <br />
 

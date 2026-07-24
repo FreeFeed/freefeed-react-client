@@ -16,7 +16,7 @@ import TimeDisplay from './time-display';
 import styles from './all-groups.module.scss';
 import { UserPicture } from './user-picture';
 import { HorScrollable } from './hor-scrollable';
-import { withCustomEmojis } from './custom-emoji';
+import { Twemoji } from './twemoji';
 
 export default function AllGroups() {
   const dispatch = useDispatch();
@@ -226,7 +226,9 @@ const GroupRow = memo(function GroupRow({ g, isSubscribed }) {
         <div className={styles.groupInfo}>
           <UserName user={u}>{u.username}</UserName>
           {u.username !== u.screenName && (
-            <div className="small">{withCustomEmojis(u.screenName)}</div>
+            <div className="small">
+              <Twemoji>{u.screenName}</Twemoji>
+            </div>
           )}
           {u.isProtected === '1' && (
             <div className="text-muted small">

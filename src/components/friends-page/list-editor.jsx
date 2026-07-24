@@ -17,7 +17,7 @@ import { ButtonLink, useKeyboardEvents } from '../button-link';
 import { Throbber } from '../throbber';
 import { Icon } from '../fontawesome-icons';
 import { OverlayPopup } from '../overlay-popup';
-import { withCustomEmojis } from '../custom-emoji';
+import { Twemoji } from '../twemoji';
 import styles from './list-editor.module.scss';
 
 const SHOW_ALL_USERS = 'all';
@@ -327,7 +327,7 @@ const UserCell = memo(function UserCell({ user, onSelect, highlight }) {
     >
       <UserPicture user={user} withLink={false} />
       <div>
-        <div className={styles.screenName}>{hl(user.screenName, highlight)}</div>
+        <Twemoji className={styles.screenName}>{hl(user.screenName, highlight)}</Twemoji>
         <div className={styles.username}>@{hl(user.username, highlight)}</div>
         {user.homeless && (
           <Icon
@@ -345,19 +345,19 @@ function hl(text, search) {
   const lowercaseText = text.toLocaleLowerCase();
   const lowercaseSearch = search.toLocaleLowerCase();
   if (lowercaseSearch === '' || !lowercaseText.includes(lowercaseSearch)) {
-    return withCustomEmojis(text);
+    return text;
   }
   const result = [];
 
   const highlightFrom = lowercaseText.indexOf(lowercaseSearch);
   const highlightTo = highlightFrom + search.length;
-  result.push(withCustomEmojis(text.slice(0, highlightFrom)));
+  result.push(text.slice(0, highlightFrom));
   result.push(
     <mark className={styles.mark} key={`${text}__${result.length}`}>
-      {withCustomEmojis(text.slice(highlightFrom, highlightTo))}
+      {text.slice(highlightFrom, highlightTo)}
     </mark>,
   );
-  result.push(withCustomEmojis(text.slice(highlightTo)));
+  result.push(text.slice(highlightTo));
 
   return result;
 }

@@ -8,6 +8,7 @@
     "@fortawesome/free-regular-svg-icons": "~5.15.4",
     "@fortawesome/free-solid-svg-icons": "~5.15.4",
     "@sentry/react": "~9.34.0",
+    "@twemoji/api": "^17.0.3",
     "autotrack": "~2.4.1",
     "bootstrap": "~3.4.1",
     "classnames": "~2.5.1",

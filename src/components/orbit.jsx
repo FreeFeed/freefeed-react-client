@@ -1,8 +1,6 @@
 /* global CONFIG */
 import { useSelector } from 'react-redux';
 import { format } from '../utils/date-format';
-import { emojiOverrideByEmoji } from '../utils/emoji-overrides';
-import { CustomEmoji } from './custom-emoji';
 
 import styles from './orbit.module.scss';
 
@@ -39,9 +37,7 @@ export function Orbit({ text, size, children }) {
                 '--duration': `${duration}s`,
               }}
             >
-              <div className={styles.ellipticInner}>
-                {emojiOverrideByEmoji[e] ? <CustomEmoji emoji={e} /> : e}
-              </div>
+              <div className={styles.ellipticInner}>{e}</div>
             </div>
           );
         })}
