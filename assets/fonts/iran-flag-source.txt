@@ -1,0 +1,12 @@
+Iran Lion and Sun flag
+======================
+
+Source: https://iranflag.org/downloads/Flag-of-Iran.svg
+Project: https://iranflag.org/
+Retrieved: 2026-07-28
+SHA-256: ef3ba954c3dff7711985d758b5d03456a4e16473ba57829c924c4e7a47d5baff
+
+Iran Flag Project releases its flag designs and graphical assets under the
+Creative Commons CC0 1.0 Universal Public Domain Dedication:
+https://iranflag.org/licensing/
+https://creativecommons.org/publicdomain/zero/1.0/
