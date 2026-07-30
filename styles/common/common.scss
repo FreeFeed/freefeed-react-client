@@ -1,22 +1,23 @@
 @use 'sass:meta';
 @import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 @include meta.load-css('vazir.scss');
+@include meta.load-css('freefeed-flags.scss');
 
-// Add Vazir font to the Bootstrap's defaults
+// Add Vazir and FreeFeed Flags fonts to the Bootstrap's defaults
 body {
-  font-family: Vazir, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'FreeFeed Flags', Vazir, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .windows-platform body {
   // Don't use Helvetica on Windows platform
-  font-family: Vazir, Arial, sans-serif;
+  font-family: 'FreeFeed Flags', Vazir, Arial, sans-serif;
 }
 
 code,
 kbd,
 pre,
 samp {
-  font-family: Vazir, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: 'FreeFeed Flags', Vazir, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 select.form-control {

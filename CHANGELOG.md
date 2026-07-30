@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support of `variant` parameter in attachment preview URLs. For now, we use `hdr` variant 
   to get high dynamic range images (if server supports it).
 
+### Added
+- Bundled [FreeFeed Flags](https://github.com/FreeFeed/freefeed-flags-font) font
+  for consistent flag emoji rendering, with the Iran flag replaced by the Lion
+  and Sun version.
+
 ## [1.147.1] - 2026-07-22
 ### Added
 - Video and audio attachment players now remember their volume settings between views.
