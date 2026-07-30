@@ -50,7 +50,7 @@ export function useLightboxItems(attachments, postId) {
         ...(a.mediaType === 'image'
           ? {
               type: 'image',
-              src: attachmentPreviewUrl(a.id, 'image'),
+              src: attachmentPreviewUrl(a.id, 'image', null, null, { variant: 'hdr' }),
               saveAsSrc: attachmentSaveAsUrl(a),
             }
           : {
