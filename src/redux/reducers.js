@@ -15,6 +15,7 @@ import {
   loadUIScale,
   loadSubmitMode,
   loadOrbitDisabled,
+  loadShowHDRImages,
 } from '../services/appearance';
 import { prefsToCriteria } from '../utils/hide-criteria';
 import * as ActionTypes from './action-types';
@@ -2019,6 +2020,13 @@ export function isOrbitDisabled(state = loadOrbitDisabled(), action) {
 
 export function uiScale(state = loadUIScale(), action) {
   if (action.type === ActionTypes.SET_UI_SCALE) {
+    return action.payload;
+  }
+  return state;
+}
+
+export function showHDRImages(state = loadShowHDRImages(), action) {
+  if (action.type === ActionTypes.SET_HDR_IMAGES) {
     return action.payload;
   }
   return state;

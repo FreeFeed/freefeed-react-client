@@ -61,6 +61,16 @@
 .pswp__img {
   // Override the 'zoom-in' cursor for images that cannot be zoomed in
   cursor: default;
+  dynamic-range-limit: no-limit;
+  transition: dynamic-range-limit 200ms ease-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.pswp__img--sdr {
+  dynamic-range-limit: standard;
 }
 
 .pswp__button--zoom {

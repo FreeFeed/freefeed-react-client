@@ -33,6 +33,7 @@ import {
   setOrbit,
   setUIScale,
   setSubmitMode,
+  setHDRImages,
 } from '../../../redux/action-creators';
 import settingsStyles from '../settings.module.scss';
 import { PreventPageLeaving } from '../../prevent-page-leaving';
@@ -65,6 +66,7 @@ export default function AppearanceForm() {
   const isOrbitDisabled = useSelector((state) => state.isOrbitDisabled);
   const uiScale = useSelector((state) => state.uiScale);
   const submitMode = useSelector((state) => state.submitMode);
+  const isHDRImagesEnabled = useSelector((state) => state.showHDRImages);
   const formStatus = useSelector((state) => state.settingsForms.displayPrefsStatus);
   const translationEnabled = useServerValue(selectTranslationEnabled, false);
 
@@ -93,10 +95,20 @@ export default function AppearanceForm() {
           isOrbitDisabled,
           uiScale,
           submitMode,
+          isHDRImagesEnabled,
         }),
         onSubmit: onSubmit(dispatch),
       }),
-      [dispatch, isNSFWVisible, userData, isBetaChannel, isOrbitDisabled, uiScale, submitMode],
+      [
+        dispatch,
+        isNSFWVisible,
+        userData,
+        isBetaChannel,
+        isOrbitDisabled,
+        uiScale,
+        submitMode,
+        isHDRImagesEnabled,
+      ],
     ),
   );
 
@@ -126,6 +138,7 @@ export default function AppearanceForm() {
   const previewAnimationGif = useField('previewAnimationGif', form.form);
   const previewAnimationVideo = useField('previewAnimationVideo', form.form);
   const rtlToRight = useField('rtlToRight', form.form);
+  const showHDRImages = useField('showHDRImages', form.form);
 
   const isTheRightDate = format(new Date(), 'yyyy-MM-dd') === CONFIG.orbitDate;
 
@@ -470,7 +483,7 @@ export default function AppearanceForm() {
 
       <section className={settingsStyles.formSection}>
         <TokAnchor>
-          <h4 id="media-previews">Media preview animation</h4>
+          <h4 id="media-previews">Media appearance</h4>
         </TokAnchor>
 
         <p>Gifs and short animations:</p>
@@ -507,6 +520,20 @@ export default function AppearanceForm() {
             <label>
               <RadioInput field={previewAnimationVideo} value={PREVIEW_ANIMATION_HOVER} />
               Animate on hover
+            </label>
+          </div>
+        </div>
+
+        <p>HDR images:</p>
+        <div className="form-group">
+          <div className="checkbox">
+            <label>
+              <CheckboxInput field={showHDRImages} />
+              Show HDR images in lightbox (browser must support it)
+              <p className="help-block">
+                <Icon icon={faExclamationTriangle} /> This setting is saved locally in your web
+                browser. It can be different for each browser and each device that you use.
+              </p>
             </label>
           </div>
         </div>
@@ -666,6 +693,7 @@ function initialValues({
   submitMode,
   uiScale,
   isOrbitDisabled,
+  isHDRImagesEnabled,
 }) {
   return {
     useYou: frontend.displayNames.useYou,
@@ -695,6 +723,7 @@ function initialValues({
     previewAnimationGif: frontend.previewAnimation.gif,
     previewAnimationVideo: frontend.previewAnimation.video,
     rtlToRight: frontend.rtl.rightAlign ? '1' : '0',
+    showHDRImages: isHDRImagesEnabled,
   };
 }
 
@@ -708,6 +737,7 @@ function onSubmit(dispatch) {
         dispatch(setOrbit(values.isOrbitDisabledField));
         dispatch(setUIScale(values.uiScale));
         dispatch(setSubmitMode(values.submitMode));
+        dispatch(setHDRImages(values.showHDRImages));
       },
     );
 }
