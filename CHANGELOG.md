@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added the "Show HDR images in lightbox" setting on the Appearance
   settings page. It is enabled by default and saved locally in the browser.
+- Lightbox now opens and closes with a smooth transition between SDR and
+  HDR image rendering, instead of switching abruptly.
 
 ## [1.148.0] - 2026-07-30
 ### Added
