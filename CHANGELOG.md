@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.149.0] - Not released
+### Added
+- Added the "Show HDR images in lightbox" setting on the Appearance
+  settings page. It is enabled by default and saved locally in the browser.
 
 ## [1.148.0] - 2026-07-30
 ### Added

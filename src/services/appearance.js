@@ -8,6 +8,7 @@ export const {
   uiScaleStorageKey,
   submitModeStorageKey,
   orbitStorageKey,
+  hdrImagesStorageKey,
 } = CONFIG.appearance;
 
 export const SCHEME_LIGHT = 'light';
@@ -66,6 +67,20 @@ export function saveOrbitDisabled(disable) {
   } else {
     // Default value
     storage.removeItem(orbitStorageKey);
+  }
+}
+
+export function loadShowHDRImages() {
+  const value = storage.getItem(hdrImagesStorageKey);
+  return value === null ? true : value === '1';
+}
+
+export function saveShowHDRImages(show) {
+  if (!show) {
+    storage.setItem(hdrImagesStorageKey, '0');
+  } else {
+    // Default value
+    storage.removeItem(hdrImagesStorageKey);
   }
 }
 

@@ -118,6 +118,7 @@ export default {
     uiScaleStorageKey: 'ui-scale',
     submitModeStorageKey: 'submit-mode',
     orbitStorageKey: 'orbit-disabled',
+    hdrImagesStorageKey: 'show-hdr-images',
   },
 
   orbitDate: '2024-04-01',
