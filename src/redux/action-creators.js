@@ -951,6 +951,10 @@ export function setUIScale(scale) {
   return { type: ActionTypes.SET_UI_SCALE, payload: scale };
 }
 
+export function setHDRImages(show) {
+  return { type: ActionTypes.SET_HDR_IMAGES, payload: show };
+}
+
 export function getAppTokens() {
   return {
     type: ActionTypes.GET_APP_TOKENS,

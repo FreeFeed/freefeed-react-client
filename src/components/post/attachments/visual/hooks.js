@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useEvent } from 'react-use-event-hook';
 import { attachmentPreviewUrl, attachmentSaveAsUrl } from '../../../../services/api';
 import { openLightbox } from '../../../../services/lightbox';
@@ -44,13 +45,20 @@ function getResizeObserver() {
 }
 
 export function useLightboxItems(attachments, postId) {
+  const showHDRImages = useSelector((state) => state.showHDRImages);
   return useMemo(
     () =>
       attachments.map((a) => ({
         ...(a.mediaType === 'image'
           ? {
               type: 'image',
-              src: attachmentPreviewUrl(a.id, 'image', null, null, { variant: 'hdr' }),
+              src: attachmentPreviewUrl(
+                a.id,
+                'image',
+                null,
+                null,
+                showHDRImages ? { variant: 'hdr' } : {},
+              ),
               saveAsSrc: attachmentSaveAsUrl(a),
             }
           : {
@@ -66,7 +74,7 @@ export function useLightboxItems(attachments, postId) {
         pid: `${postId?.slice(0, 8) ?? 'new-post'}-${a.id.slice(0, 8)}`,
         ...(a.caption ? { caption: a.caption } : {}),
       })),
-    [attachments, postId],
+    [attachments, postId, showHDRImages],
   );
 }
 

@@ -3,18 +3,27 @@ import {
   SCHEME_LIGHT,
   SCHEME_NO_PREFERENCE,
   colorSchemeStorageKey,
+  hdrImagesStorageKey,
   loadColorScheme,
+  loadShowHDRImages,
   loadUIScale,
   saveColorScheme,
   saveNSFWVisibility,
   saveOrbitDisabled,
+  saveShowHDRImages,
   saveSubmitMode,
   saveUIScale,
   systemColorSchemeSupported,
   uiScaleStorageKey,
 } from '../../services/appearance';
-import { setSystemColorScheme, setUIScale, setUserColorScheme } from '../action-creators';
 import {
+  setHDRImages,
+  setSystemColorScheme,
+  setUIScale,
+  setUserColorScheme,
+} from '../action-creators';
+import {
+  SET_HDR_IMAGES,
   SET_NSFW_VISIBILITY,
   SET_ORBIT,
   SET_SUBMIT_MODE,
@@ -30,6 +39,9 @@ export const appearanceMiddleware = (store) => {
       }
       if (e.key === uiScaleStorageKey) {
         store.dispatch(setUIScale(loadUIScale()));
+      }
+      if (e.key === hdrImagesStorageKey) {
+        store.dispatch(setHDRImages(loadShowHDRImages()));
       }
     });
 
@@ -62,6 +74,10 @@ export const appearanceMiddleware = (store) => {
     }
     if (action.type === SET_SUBMIT_MODE) {
       saveSubmitMode(action.payload);
+      return;
+    }
+    if (action.type === SET_HDR_IMAGES) {
+      saveShowHDRImages(action.payload);
       return;
     }
   };

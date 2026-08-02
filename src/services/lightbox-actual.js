@@ -16,6 +16,8 @@ const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
 const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
 const fullScreenHotKeys = ['f', 'а'];
 
+const sdrImageClass = 'pswp__img--sdr';
+
 export function openLightbox(index, dataSource, options) {
   initLightbox(options).loadAndOpen(index, dataSource);
 }
@@ -352,6 +354,43 @@ function initLightbox({ loop = true, pagination = false } = {}) {
     if (data.saveAsSrc) {
       onContextMenu(element, () => (element.src = data.saveAsSrc));
     }
+  });
+
+  // HDR images: by default all images are shown in the wider (HDR) dynamic
+  // range (see 'pswp__img' in lighbox.scss). To make the opening/closing
+  // transitions less jarring, the slide that is being opened starts in SDR
+  // and smoothly transitions to HDR once the opening animation ends.
+  // Symmetrically, the current slide transitions back to SDR as soon as the
+  // closing animation starts. Switching between slides without opening or
+  // closing the lightbox always shows images in HDR, without any transition.
+  let isOpening = false;
+  lightbox.on('beforeOpen', () => {
+    isOpening = true;
+  });
+  lightbox.on('contentActivate', ({ content }) => {
+    if (isOpening && content.isImageContent() && content.element) {
+      content.element.classList.add(sdrImageClass);
+    }
+  });
+  lightbox.on('openingAnimationEnd', () => {
+    isOpening = false;
+    const element = lightbox.pswp?.currSlide?.content.element;
+    if (element?.tagName !== 'IMG') {
+      return;
+    }
+    (async () => {
+      try {
+        await element.decode?.();
+      } catch {
+        // ignore
+      }
+      setTimeout(() => {
+        element.classList.remove(sdrImageClass);
+      }, 0);
+    })();
+  });
+  lightbox.on('closingAnimationStart', () => {
+    lightbox.pswp?.currSlide?.content.element?.classList.add(sdrImageClass);
   });
 
   // The 'returnFocus' option manual implementation. Photoswipe just uses
