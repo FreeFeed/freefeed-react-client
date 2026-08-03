@@ -13,16 +13,18 @@ import { attachmentPreviewUrl, attachmentSaveAsUrl } from '../../services/api';
 import { getAttachmentInfo } from '../../services/batch-attachments-info';
 import { pauseYoutubeVideo, playYoutubeVideo } from './youtube-api';
 import { pauseVimeoVideo, playVimeoVideo } from './vimeo-api';
+import { useSelector } from 'react-redux';
 
 export const mediaLinksContext = createContext([]);
 
 export function useMediaLink(url, { previewId } = {}) {
   const items = useContext(mediaLinksContext);
   const [mediaType, setMediaType] = useState(() => getMediaType(url));
+  const showHDRImages = useSelector((state) => state.showHDRImages);
   const index = useMemo(() => {
     const index = items.length;
     items.push(stubItem);
-    createLightboxItem(url)
+    createLightboxItem(url, showHDRImages)
       .then((item) => {
         if (!item) {
           setMediaType(null);
@@ -138,7 +140,7 @@ export function freefeedAttachmentId(url) {
   }
 }
 
-async function createLightboxItem(url, attempt = 0) {
+async function createLightboxItem(url, showHDRImages, attempt = 0) {
   const attId = freefeedAttachmentId(url);
   if (attId) {
     // Freefeed attachment
@@ -152,13 +154,22 @@ async function createLightboxItem(url, attempt = 0) {
       }
       // Retry after timeout
       return new Promise((resolve) =>
-        setTimeout(() => resolve(createLightboxItem(url, attempt + 1)), 5_000 * (attempt + 1)),
+        setTimeout(
+          () => resolve(createLightboxItem(url, showHDRImages, attempt + 1)),
+          5_000 * (attempt + 1),
+        ),
       );
     } else if (att.mediaType === 'image') {
       return {
         type: IMAGE,
         mediaType: 'image',
-        src: attachmentPreviewUrl(att.id, 'image'),
+        src: attachmentPreviewUrl(
+          att.id,
+          'image',
+          null,
+          null,
+          showHDRImages ? { variant: 'hdr' } : {},
+        ),
         saveAsSrc: attachmentSaveAsUrl(att),
         originalSrc: attachmentPreviewUrl(att.id, 'original', null, null, { download: true }),
         width: att.previewWidth ?? att.width,
