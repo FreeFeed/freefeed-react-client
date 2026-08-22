@@ -7,7 +7,7 @@ export default function Footer({ short }) {
   return (
     <footer className="footer">
       <p role="navigation">
-        &copy; FreeFeed 1.149.0 (Not released)
+        &copy; FreeFeed 1.148.4 (Aug 22, 2026)
         <br />
         <Link to="/about">About</Link>
         {' | '}
