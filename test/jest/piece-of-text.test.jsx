@@ -2,6 +2,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 
 import PieceOfText from '../../src/components/piece-of-text';
+import { StateProvider } from './state-provider';
 
 describe('PieceOfText', () => {
   it('Renders a short piece of text', () => {
@@ -36,9 +37,13 @@ describe('PieceOfText', () => {
 
   it('Renders text with spoilers', () => {
     const { asFragment } = render(
-      <PieceOfText
-        text={'123 <spoiler> <spoiler>456</spoiler> 789 <спойлер>https://example.com</спойлер> 123'}
-      />,
+      <StateProvider state={{ showHDRImages: false }}>
+        <PieceOfText
+          text={
+            '123 <spoiler> <spoiler>456</spoiler> 789 <спойлер>https://example.com</спойлер> 123'
+          }
+        />
+      </StateProvider>,
     );
 
     expect(asFragment()).toMatchSnapshot();
