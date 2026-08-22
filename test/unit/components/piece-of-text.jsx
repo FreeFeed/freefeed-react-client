@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
 import PieceOfText from '../../../src/components/piece-of-text';
 import Linkify from '../../../src/components/linkify';
+import { StateProvider } from '../../jest/state-provider';
 
 describe('<PieceOfText>', () => {
   it('should correctly process multiline texts (short text with newlines)', () => {
@@ -70,7 +71,11 @@ describe('<PieceOfText>', () => {
     const text =
       '123 <spoiler> <spoiler>456</spoiler> 789 <спойлер>https://example.com</спойлер> 123';
 
-    const { container } = render(<Linkify>{text}</Linkify>);
+    const { container } = render(
+      <StateProvider state={{ showHDRImages: false }}>
+        <Linkify>{text}</Linkify>
+      </StateProvider>,
+    );
     expect(container).toMatchSnapshot();
   });
 
