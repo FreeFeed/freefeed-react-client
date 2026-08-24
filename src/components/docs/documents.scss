@@ -2,8 +2,9 @@
 
 // ── CSS custom properties scoped to the documents page ──
 // These are used as fallbacks; dark theme overrides them via .dark-theme
+// Includes mermaid diagram SVG vars (--surface, --accent, --border, etc.)
 
-.documents-page {
+:root {
   --doc-bg: #fff;
   --doc-border: #ddd;
   --doc-border-light: #eee;
@@ -19,23 +20,44 @@
   --doc-code-bg: #f6f8fa;
   --doc-shadow: rgba(0, 0, 0, 0.1);
 
-  .dark-theme & {
-    --doc-bg: #{dark-vars.$bg-color};
-    --doc-border: #{dark-vars.$bg-color-lighter};
-    --doc-border-light: #{dark-vars.$bg-color-lighter};
-    --doc-surface-2: #{dark-vars.$bg-color-lightest};
-    --doc-text: #{dark-vars.$text-color-lighter};
-    --doc-text-muted: #{dark-vars.$text-color-darker};
-    --doc-text-muted-light: #{dark-vars.$text-color};
-    --doc-hover-bg: #{dark-vars.$bg-color-lighter};
-    --doc-hover-outline: #{dark-vars.$text-color-darker};
-    --doc-input-border: #{dark-vars.$text-color-darker};
-    --doc-primary: #{dark-vars.$link-color};
-    --doc-primary-light: #{dark-vars.$bg-color-lightest};
-    --doc-code-bg: #{dark-vars.$bg-color-lighter};
-    --doc-shadow: rgba(0, 0, 0, 0.4);
-  }
+  // Mermaid diagram SVG variables
+  --surface: #fff;
+  --surface-2: #f6f8fa;
+  --border: #ddd;
+  --border-strong: #6b7280;
+  --accent: #4f46e5;
+  --accent-soft: #eef0ff;
+  --text-dim: #888;
+
 }
+
+// Dark overrides — .dark-theme is on <html> element, match directly
+.dark-theme {
+  --doc-bg: #{dark-vars.$bg-color};
+  --doc-border: #{dark-vars.$bg-color-lighter};
+  --doc-border-light: #{dark-vars.$bg-color-lighter};
+  --doc-surface-2: #{dark-vars.$bg-color-lightest};
+  --doc-text: #{dark-vars.$text-color-lighter};
+  --doc-text-muted: #{dark-vars.$text-color-darker};
+  --doc-text-muted-light: #{dark-vars.$text-color};
+  --doc-hover-bg: #{dark-vars.$bg-color-lighter};
+  --doc-hover-outline: #{dark-vars.$text-color-darker};
+  --doc-input-border: #{dark-vars.$text-color-darker};
+  --doc-primary: #{dark-vars.$link-color};
+  --doc-primary-light: #{dark-vars.$bg-color-lightest};
+  --doc-code-bg: #{dark-vars.$bg-color-lighter};
+  --doc-shadow: rgba(0, 0, 0, 0.4);
+
+  // Mermaid diagram SVG variables
+  --surface: #{dark-vars.$bg-color};
+  --surface-2: #{dark-vars.$bg-color-lightest};
+  --border: #{dark-vars.$bg-color-lighter};
+  --border-strong: #{dark-vars.$text-color};
+  --accent: #{dark-vars.$link-color};
+  --accent-soft: #{dark-vars.$bg-color-lightest};
+  --text-dim: #{dark-vars.$text-color-darker};
+ }
+
 
 // ── Page Layout
 .documents-page { min-height: 60vh; display: flex; flex-direction: column; gap: 0; }
@@ -65,7 +87,47 @@
 .doc-view { background: var(--doc-bg); border: 1px solid var(--doc-border); border-radius: 4px; }
 .doc-view-head { padding: 16px 20px; display: flex; align-items: flex-start; gap: 12px; border-bottom: 1px solid var(--doc-border); }
 .doc-view-title { flex: 1; margin: 0; font-size: 26px; font-weight: 700; line-height: 1.3; color: var(--doc-text); }
-.doc-head-title { flex: 1; border: none; font-size: 26px; font-weight: 700; line-height: 1.3; padding: 0; outline: none; background: transparent; color: inherit; width: 100%; }
+
+// ── Code blocks
+.doc-view-body pre {
+  background: var(--doc-code-bg);
+  border: 1px solid var(--doc-border);
+  border-radius: 4px;
+  padding: 12px 16px;
+  overflow-x: auto;
+}
+
+.doc-view-body pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--doc-text);
+}
+
+// Syntax highlighting — light default, overridden in dark
+.doc-view-body .hl-kw   { color: #d73a49; }  // keywords
+.doc-view-body .hl-str  { color: #032f62; }  // strings
+.doc-view-body .hl-com  { color: #6a737d; font-style: italic; }  // comments
+.doc-view-body .hl-num  { color: #005cc5; }  // numbers
+.doc-view-body .hl-bool { color: #d73a49; }  // booleans
+.doc-view-body .hl-fn   { color: #6f42c1; }  // function names
+.doc-view-body .hl-type { color: #005cc5; }  // types
+.doc-view-body .hl-op   { color: #d73a49; }  // operators
+.doc-view-body .hl-tag  { color: #22863a; }  // html tags
+.doc-view-body .hl-attr { color: #6f42c1; }  // html attributes
+
+.dark-theme .doc-view-body .hl-kw   { color: #f97583; }
+.dark-theme .doc-view-body .hl-str  { color: #9ecbff; }
+.dark-theme .doc-view-body .hl-com  { color: #6a737d; font-style: italic; }
+.dark-theme .doc-view-body .hl-num  { color: #79b8ff; }
+.dark-theme .doc-view-body .hl-bool { color: #f97583; }
+.dark-theme .doc-view-body .hl-fn   { color: #b392f0; }
+.dark-theme .doc-view-body .hl-type { color: #79b8ff; }
+.dark-theme .doc-view-body .hl-op   { color: #f97583; }
+.dark-theme .doc-view-body .hl-tag  { color: #85e89d; }
+.dark-theme .doc-view-body .hl-attr { color: #b392f0; }
 .doc-head-title::placeholder { color: var(--doc-text-muted-light); }
 .doc-view-actions { display: flex; gap: 6px; flex-shrink: 0; align-items: center; }
 
