@@ -42,6 +42,14 @@ const downloadIconHtml = {
   outlineID: 'pswp__icn-download',
 };
 
+const pipIconHtml = {
+  isCustomSVG: true,
+  inner:
+    '<path d="M21 3C21.5523 3 22 3.44772 22 4V11H20V5H4V19H10V21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H21ZM21 13C21.5523 13 22 13.4477 22 14V20C22 20.5523 21.5523 21 21 21H13C12.4477 21 12 20.5523 12 20V14C12 13.4477 12.4477 13 13 13H21Z" id="pswp__icn-pip"/>',
+  outlineID: 'pswp__icn-pip',
+  size: 24,
+};
+
 const paginationThreshold = 3;
 
 function initLightbox({ loop = true, pagination = false } = {}) {
@@ -110,6 +118,44 @@ function initLightbox({ loop = true, pagination = false } = {}) {
         pswp.on('change', () => {
           if (pswp.currSlide.data.originalSrc) {
             el.href = pswp.currSlide.data.originalSrc;
+            el.style.display = 'block';
+          } else {
+            el.style.display = 'none';
+          }
+        });
+      },
+    });
+  });
+
+  // Add PiP button
+  lightbox.on('uiRegister', () => {
+    if (!('pictureInPictureEnabled' in document)) {
+      return;
+    }
+    lightbox.pswp.ui.registerElement({
+      name: 'pip-button',
+      order: 11,
+      isButton: true,
+      tagName: 'a',
+      html: pipIconHtml,
+      onInit: (el, pswp) => {
+        el.addEventListener('click', () => {
+          const video = pswp.currSlide.container.querySelector('video');
+          if (!video) {
+            return;
+          }
+          video.addEventListener(
+            'enterpictureinpicture',
+            (e) => {
+              pswp.close();
+              e.target.play();
+            },
+            { once: true },
+          );
+          video.requestPictureInPicture?.();
+        });
+        pswp.on('change', () => {
+          if (pswp.currSlide.data.type === 'video' && !document.pictureInPictureElement) {
             el.style.display = 'block';
           } else {
             el.style.display = 'none';

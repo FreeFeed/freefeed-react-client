@@ -77,6 +77,10 @@
   order: 1;
 }
 
+.pswp__button--pip-button svg {
+  transform: scale(0.75);
+}
+
 .pswp__button--fs {
   font-size: 20px;
   color: #fff;
