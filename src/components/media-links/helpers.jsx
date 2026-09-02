@@ -14,17 +14,23 @@ import { getAttachmentInfo } from '../../services/batch-attachments-info';
 import { pauseYoutubeVideo, playYoutubeVideo } from './youtube-api';
 import { pauseVimeoVideo, playVimeoVideo } from './vimeo-api';
 import { useSelector } from 'react-redux';
+import cachedFetch from '../link-preview/helpers/cached-fetch';
 
 export const mediaLinksContext = createContext([]);
 
 export function useMediaLink(url, { previewId } = {}) {
   const items = useContext(mediaLinksContext);
+  const wikimediaFileName = getWikimediaFileName(url);
   const [mediaType, setMediaType] = useState(() => getMediaType(url));
+  const [previewUrl, setPreviewUrl] = useState(() => (wikimediaFileName ? null : url));
   const showHDRImages = useSelector((state) => state.showHDRImages);
   const index = useMemo(() => {
     const index = items.length;
     items.push(stubItem);
-    createLightboxItem(url, showHDRImages)
+    const itemPromise = wikimediaFileName
+      ? createWikimediaLightboxItem(wikimediaFileName)
+      : createLightboxItem(url, showHDRImages);
+    itemPromise
       .then((item) => {
         if (!item) {
           setMediaType(null);
@@ -33,6 +39,9 @@ export function useMediaLink(url, { previewId } = {}) {
         }
         if (item.mediaType) {
           setMediaType(item.mediaType);
+        }
+        if (item.msrc) {
+          setPreviewUrl(item.msrc);
         }
         if (previewId) {
           item.pid = previewId;
@@ -66,7 +75,7 @@ export function useMediaLink(url, { previewId } = {}) {
 
     openLightbox(newIndex, nonEmptyItems);
   });
-  return [mediaType, handleClick];
+  return [mediaType, handleClick, previewUrl];
 }
 
 export const IMAGE = 'image';
@@ -138,6 +147,51 @@ export function freefeedAttachmentId(url) {
   } catch {
     return null;
   }
+}
+
+function getWikimediaFileName(url) {
+  try {
+    const urlObj = new URL(url);
+    const path = decodeURIComponent(urlObj.pathname);
+    return urlObj.hostname === 'commons.wikimedia.org' &&
+      path.startsWith('/wiki/File:') &&
+      /\.(?:jpe?g|png|gif)$/i.test(path)
+      ? path.slice('/wiki/File:'.length)
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+async function createWikimediaLightboxItem(fileName) {
+  const params = new URLSearchParams({
+    action: 'query',
+    format: 'json',
+    formatversion: '2',
+    origin: '*',
+    prop: 'imageinfo',
+    iiprop: 'url|size',
+    iiurlwidth: '250',
+    titles: `File:${fileName}`,
+  });
+  const data = await cachedFetch(`https://commons.wikimedia.org/w/api.php?${params}`);
+  const info = data?.query?.pages?.[0]?.imageinfo?.[0];
+  if (!info?.url || !info.thumburl) {
+    return null;
+  }
+
+  const originalUrl = new URL(info.url);
+  const thumbUrl = new URL(info.thumburl);
+  originalUrl.search = '';
+  thumbUrl.search = '';
+  return {
+    type: IMAGE,
+    mediaType: IMAGE,
+    src: originalUrl.href,
+    msrc: thumbUrl.href,
+    width: info.width,
+    height: info.height,
+  };
 }
 
 async function createLightboxItem(url, showHDRImages, attempt = 0) {
