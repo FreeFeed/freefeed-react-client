@@ -11,6 +11,8 @@ import { intentToScroll } from './unscroll';
 import { handlePip } from './pip-video';
 import { bindMediaVolume } from './media-volume';
 import { NEEDMORE_EVENT, MOREITEMS_EVENT } from './lightbox-events';
+import { isPiPSupported, isDocumentPiPSupported, openEmbedPiP } from './picture-in-picture';
+import { T_VIMEO_VIDEO, T_YOUTUBE_VIDEO } from '../components/link-preview/video';
 
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
 const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
@@ -141,21 +143,31 @@ function initLightbox({ loop = true, pagination = false } = {}) {
       onInit: (el, pswp) => {
         el.addEventListener('click', () => {
           const video = pswp.currSlide.container.querySelector('video');
-          if (!video) {
+          if (video) {
+            video.addEventListener(
+              'enterpictureinpicture',
+              (e) => {
+                pswp.close();
+                e.target.play();
+              },
+              { once: true },
+            );
+            video.requestPictureInPicture?.();
             return;
           }
-          video.addEventListener(
-            'enterpictureinpicture',
-            (e) => {
-              pswp.close();
-              e.target.play();
-            },
-            { once: true },
-          );
-          video.requestPictureInPicture?.();
+          const embed = pswp.currSlide.container.querySelector('.pswp-media__embed');
+          if (embed) {
+            openEmbedPiP(embed.src, pswp.currSlide.width, pswp.currSlide.height)
+              .then((ok) => void (ok && pswp.close()))
+              .catch(() => void 0);
+          }
         });
         pswp.on('change', () => {
-          if (pswp.currSlide.data.type === 'video' && !document.pictureInPictureElement) {
+          if (
+            (pswp.currSlide.data.type === 'video' && isPiPSupported()) ||
+            ([T_YOUTUBE_VIDEO, T_VIMEO_VIDEO].includes(pswp.currSlide.data.mediaType) &&
+              isDocumentPiPSupported())
+          ) {
             el.style.display = 'block';
           } else {
             el.style.display = 'none';

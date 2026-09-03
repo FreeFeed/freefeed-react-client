@@ -285,6 +285,7 @@ async function getYoutubeVideoInfo(url, withoutAutoplay) {
       u.searchParams.append('autoplay', '1');
     }
     u.searchParams.append('enablejsapi', '1');
+    u.searchParams.append('origin', window.location.origin);
     u.searchParams.append('start', youtubeStartTime(url));
 
     info.playerURL = u.toString();
