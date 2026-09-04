@@ -375,6 +375,7 @@ async function getEmbeddableItem(url, mediaType) {
     width,
     height,
     mediaType,
+    playerURL: info.playerURL,
     onActivate,
     onDeactivate,
   };

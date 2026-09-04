@@ -12,7 +12,6 @@ import { handlePip } from './pip-video';
 import { bindMediaVolume } from './media-volume';
 import { NEEDMORE_EVENT, MOREITEMS_EVENT } from './lightbox-events';
 import { isPiPSupported, isDocumentPiPSupported, openEmbedPiP } from './picture-in-picture';
-import { T_VIMEO_VIDEO, T_YOUTUBE_VIDEO } from '../components/link-preview/video';
 
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
 const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
@@ -165,8 +164,7 @@ function initLightbox({ loop = true, pagination = false } = {}) {
         pswp.on('change', () => {
           if (
             (pswp.currSlide.data.type === 'video' && isPiPSupported()) ||
-            ([T_YOUTUBE_VIDEO, T_VIMEO_VIDEO].includes(pswp.currSlide.data.mediaType) &&
-              isDocumentPiPSupported())
+            (pswp.currSlide.data.playerURL && isDocumentPiPSupported())
           ) {
             el.style.display = 'block';
           } else {

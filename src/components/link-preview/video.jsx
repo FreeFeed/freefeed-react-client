@@ -12,6 +12,8 @@ import { apiVersion } from '../../services/api-version';
 import { maxHeight, singleImagePreviewArea } from '../post/attachments/visual/gallery';
 import cachedFetch from './helpers/cached-fetch';
 import * as aspectRatio from './helpers/size-cache';
+import { faPictureInPicture } from '../fontawesome-custom-icons';
+import { isDocumentPiPSupported, openEmbedPiP } from '../../services/picture-in-picture';
 
 const YOUTUBE_VIDEO_RE =
   /^https?:\/\/(?:www\.|m\.|music\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|shorts\/|live\/|v\/|watch\?(?:v=|.+&v=)))([\w-]+)/i;
@@ -115,6 +117,10 @@ export default memo(function VideoPreview({ url }) {
     }),
   );
 
+  const togglePiP = useEvent(() => {
+    openEmbedPiP(info.playerURL, 1000, 1000 * info.aspectRatio);
+  });
+
   // Load video info
   useEffect(() => void getVideoInfo(url).then(setInfo), [url]);
 
@@ -142,6 +148,11 @@ export default memo(function VideoPreview({ url }) {
         <a href={url} target="_blank" title={info?.byline} rel="noreferrer">
           {info ? info.byline : 'Loading…'}
         </a>
+        {info?.playerURL && isDocumentPiPSupported() && (
+          <button onClick={togglePiP} className="pip-button" title="Open picture-in-picture mode">
+            <Icon icon={faPictureInPicture} className="pip-icon" />
+          </button>
+        )}
       </div>
     </div>
   );
