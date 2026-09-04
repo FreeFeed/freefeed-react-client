@@ -142,16 +142,28 @@ function initLightbox({ loop = true, pagination = false } = {}) {
       onInit: (el, pswp) => {
         el.addEventListener('click', () => {
           const video = pswp.currSlide.container.querySelector('video');
-          if (video) {
-            video.addEventListener(
-              'enterpictureinpicture',
-              (e) => {
+          if (video && video.requestPictureInPicture) {
+            const content = pswp.currSlide.content;
+            const placeholder = document.createComment('');
+            video.replaceWith(placeholder);
+            video.classList.add('pswp__video__pip');
+            document.body.appendChild(video);
+
+            video
+              .requestPictureInPicture()
+              .then(() => {
+                content.element = null;
+                video.addEventListener('leavepictureinpicture', () => video.remove(), {
+                  once: true,
+                });
                 pswp.close();
-                e.target.play();
-              },
-              { once: true },
-            );
-            video.requestPictureInPicture?.();
+                return;
+              })
+              .catch(() => {
+                placeholder.replaceWith(video);
+                video.classList.remove('pswp__video__pip');
+              });
+
             return;
           }
           const embed = pswp.currSlide.container.querySelector('.pswp-media__embed');
