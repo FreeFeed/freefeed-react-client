@@ -15,9 +15,10 @@
     }
   </style>
   <script type="module">
+    const isPiPWindow = globalThis !== parent && parent.location.href === 'about:blank';
     const params = new URLSearchParams(location.search);
     const src = params.get('src');
-    if (src) {
+    if (isPiPWindow && src) {
       const iframe = document.createElement('iframe');
       iframe.referrerPolicy = 'strict-origin-when-cross-origin';
       iframe.allow = 'autoplay; encrypted-media';
