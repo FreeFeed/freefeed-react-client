@@ -8310,7 +8310,7 @@ __metadata:
     sass: "npm:^1.102.0"
     sinon: "npm:~21.0.3"
     snarkdown: "npm:~2.0.0"
-    social-text-tokenizer: "npm:~3.2.3"
+    social-text-tokenizer: "npm:~3.2.4"
     socket.io-client: "npm:~2.3.1"
     sortablejs: "npm:~1.15.7"
     stylelint: "npm:~17.14.1"
@@ -9128,14 +9128,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"social-text-tokenizer@npm:~3.2.3":
-  version: 3.2.3
-  resolution: "social-text-tokenizer@npm:3.2.3"
+"social-text-tokenizer@npm:~3.2.4":
+  version: 3.2.4
+  resolution: "social-text-tokenizer@npm:3.2.4"
   dependencies:
     lodash.escaperegexp: "npm:^4.1.2"
     punycode.js: "npm:^2.3.1"
     tslib: "npm:^2.8.1"
-  checksum: 10c0/7e8bc168123ec6e795d8c62ace76513271acb55a716e4eb0ab798441f38556314e4aa6f4f301404e16452a11aad0af0c57add16f573394daf38ab293cc4e6519
+  checksum: 10c0/094a943fd3d24c45646b7e32446dbca850b7d7063bd4b8779f6fd1869c27df66051e4a436bb1bd3e0fc4dcb69e0e31e396c5188378816e198628a8b79c208d99
   languageName: node
   linkType: hard
 
