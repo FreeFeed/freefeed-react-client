@@ -801,6 +801,34 @@ code.inline-code {
   }
 }
 
+.pdf-preview {
+  border: 1px solid #0006;
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-width: 20em;
+  margin-bottom: 0.5em;
+}
+
+.pdf-preview__image {
+  width: 100%;
+}
+
+.pdf-preview__icon {
+  position: absolute;
+  top: 6px;
+  right: 5px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgb(160, 160, 160, 0.3);
+  background-size: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+  background-image: url('https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_3_pdf_x64.png');
+}
+
 .submit-mode-hint {
   margin: 0 1em;
   font-size: 85%;
