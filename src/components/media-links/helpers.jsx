@@ -323,6 +323,7 @@ async function getEmbeddableItem(url, mediaType) {
         width={width}
         height={height}
         allow="autoplay"
+        referrerPolicy="strict-origin-when-cross-origin"
       />,
     );
   } else if (info.videoURL) {
@@ -374,6 +375,7 @@ async function getEmbeddableItem(url, mediaType) {
     width,
     height,
     mediaType,
+    playerURL: info.playerURL,
     onActivate,
     onDeactivate,
   };

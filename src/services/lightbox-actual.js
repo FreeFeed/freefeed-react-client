@@ -11,6 +11,7 @@ import { intentToScroll } from './unscroll';
 import { handlePip } from './pip-video';
 import { bindMediaVolume } from './media-volume';
 import { NEEDMORE_EVENT, MOREITEMS_EVENT } from './lightbox-events';
+import { isPiPSupported, isDocumentPiPSupported, openEmbedPiP } from './picture-in-picture';
 
 const prevHotKeys = ['a', 'ф', 'h', 'р', '4'];
 const nextHotKeys = ['d', 'в', 'k', 'л', '6'];
@@ -40,6 +41,14 @@ const downloadIconHtml = {
   inner:
     '<path d="M20.5 14.3 17.1 18V10h-2.2v7.9l-3.4-3.6L10 16l6 6.1 6-6.1ZM23 23H9v2h14Z" id="pswp__icn-download"/>',
   outlineID: 'pswp__icn-download',
+};
+
+const pipIconHtml = {
+  isCustomSVG: true,
+  inner:
+    '<path d="M21 3C21.5523 3 22 3.44772 22 4V11H20V5H4V19H10V21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H21ZM21 13C21.5523 13 22 13.4477 22 14V20C22 20.5523 21.5523 21 21 21H13C12.4477 21 12 20.5523 12 20V14C12 13.4477 12.4477 13 13 13H21Z" id="pswp__icn-pip"/>',
+  outlineID: 'pswp__icn-pip',
+  size: 24,
 };
 
 const paginationThreshold = 3;
@@ -110,6 +119,65 @@ function initLightbox({ loop = true, pagination = false } = {}) {
         pswp.on('change', () => {
           if (pswp.currSlide.data.originalSrc) {
             el.href = pswp.currSlide.data.originalSrc;
+            el.style.display = 'block';
+          } else {
+            el.style.display = 'none';
+          }
+        });
+      },
+    });
+  });
+
+  // Add PiP button
+  lightbox.on('uiRegister', () => {
+    if (!('pictureInPictureEnabled' in document)) {
+      return;
+    }
+    lightbox.pswp.ui.registerElement({
+      name: 'pip-button',
+      order: 11,
+      isButton: true,
+      tagName: 'a',
+      html: pipIconHtml,
+      onInit: (el, pswp) => {
+        el.addEventListener('click', () => {
+          const video = pswp.currSlide.container.querySelector('video');
+          if (video && video.requestPictureInPicture) {
+            const content = pswp.currSlide.content;
+            const placeholder = document.createComment('');
+            video.replaceWith(placeholder);
+            video.classList.add('pswp__video__pip');
+            document.body.appendChild(video);
+
+            video
+              .requestPictureInPicture()
+              .then(() => {
+                content.element = null;
+                video.addEventListener('leavepictureinpicture', () => video.remove(), {
+                  once: true,
+                });
+                pswp.close();
+                return;
+              })
+              .catch(() => {
+                placeholder.replaceWith(video);
+                video.classList.remove('pswp__video__pip');
+              });
+
+            return;
+          }
+          const embed = pswp.currSlide.container.querySelector('.pswp-media__embed');
+          if (embed) {
+            openEmbedPiP(embed.src, pswp.currSlide.width, pswp.currSlide.height)
+              .then((ok) => void (ok && pswp.close()))
+              .catch(() => void 0);
+          }
+        });
+        pswp.on('change', () => {
+          if (
+            (pswp.currSlide.data.type === 'video' && isPiPSupported()) ||
+            (pswp.currSlide.data.playerURL && isDocumentPiPSupported())
+          ) {
             el.style.display = 'block';
           } else {
             el.style.display = 'none';
