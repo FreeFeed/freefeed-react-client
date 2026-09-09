@@ -7,7 +7,7 @@ import styles from './media-link-preview.module.scss';
 
 export function MediaLinkPreview({ href: url }) {
   const previewId = useId();
-  const [mediaType, handleClick] = useMediaLink(url, { previewId });
+  const [mediaType, handleClick, previewUrl] = useMediaLink(url, { previewId });
   const attId = freefeedAttachmentId(url);
 
   if (mediaType !== IMAGE && mediaType !== VIDEO && mediaType !== T_YOUTUBE_VIDEO) {
@@ -35,10 +35,14 @@ export function MediaLinkPreview({ href: url }) {
     return null;
   }
 
+  if (!previewUrl) {
+    return null;
+  }
+
   return (
     <a href={url} target="_blank" rel="noreferrer" onClick={handleClick}>
       <img
-        src={url}
+        src={previewUrl}
         alt=""
         width={90}
         height={90}
