@@ -10,7 +10,8 @@ import TelegramPreview, { canShowURL as telegramCanShowURL } from './telegram';
 import TikTokPreview, { canShowURL as tikTokCanShowURL } from './tiktok';
 import SoundCloudPreview, { canShowURL as soundCloudCanShowURL } from './soundcloud';
 import SpotifyPreview, { canShowURL as spotifyCanShowURL } from './spotify';
-import AppleMusicPreview, { canShowUrl as appleMusicCanShowURL } from './apple-music';
+import AppleMusicPreview, { canShowURL as appleMusicCanShowURL } from './apple-music';
+import { PdfPreview, canShowPdf as pdfCanShowURL } from './pdf';
 import FreeFeedPostPreview, {
   canShowURL as postCanShowURL,
   canShowCommentURL as commentCanShowURL,
@@ -49,6 +50,8 @@ export default function LinkPreview({ allowEmbedly, url }) {
     return <SpotifyPreview url={url} />;
   } else if (appleMusicCanShowURL(url)) {
     return <AppleMusicPreview url={url} />;
+  } else if (pdfCanShowURL({ url })) {
+    return <PdfPreview url={url} />;
   }
 
   if (allowEmbedly) {

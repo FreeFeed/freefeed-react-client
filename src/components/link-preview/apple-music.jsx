@@ -4,7 +4,7 @@ const SONG_RE = /https?:\/\/music\.apple\.com\/([a-z]{2})\/album\/([^/]+)\/(\d+)
 const PLAYLIST_RE =
   /https?:\/\/music\.apple\.com\/([a-z]{2})\/playlist\/([^/]+)\/(pl\.\w+)\?l=en.*/;
 
-export function canShowUrl(url) {
+export function canShowURL(url) {
   return (
     url.match(ARTIST_RE) || url.match(ALBUM_RE) || url.match(SONG_RE) || url.match(PLAYLIST_RE)
   );
