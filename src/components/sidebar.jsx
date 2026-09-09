@@ -119,6 +119,9 @@ const SideBarFriends = ({ user }) => {
                 }
               </WithDraftsCount>
             </li>
+            <li className="p-documents">
+              <Link to="/documents">Documents</Link>
+            </li>
           </ul>
         </div>
 
