@@ -10,6 +10,7 @@ import 'autotrack'; // used by google-analytics in ../index.jade
 import '../styles/common/common.scss';
 import '../styles/helvetica/app.scss';
 import '../styles/helvetica/dark-theme.scss';
+import './components/docs/documents.scss';
 
 import { createBrowserHistory } from 'history';
 import configureStore from './redux/configure-store';
@@ -42,6 +43,8 @@ const Summary = lazyLoad(() => import('./components/summary'));
 const Groups = lazyLoad(() => import('./components/groups'));
 const BacklinksFeed = lazyLoad(() => import('./components/backlinks-feed'));
 const UserMedia = lazyLoad(() => import('./components/user-media'));
+const DocumentsPage = lazyLoad(() => import('./components/docs/DocumentsPage'));
+const PublicDocumentView = lazyLoad(() => import('./components/docs/PublicDocumentView'));
 
 Sentry.init({
   dsn: CONFIG.sentry.publicDSN,
@@ -327,6 +330,11 @@ function App() {
                 {...generateRouteHooks(boundRouteActions('archivePost'))}
               />
               <Route
+                name="documents"
+                path="/documents"
+                component={DocumentsPage}
+              />
+              <Route
                 name="createInvitation"
                 path="/invite"
                 component={lazyLoad(() => import('./components/invitation-creation-form'))}
@@ -441,6 +449,9 @@ function App() {
                 component={checkPath(BacklinksFeed, isPostPath)}
                 {...generateRouteHooks(boundRouteActions('backlinks'))}
               />
+              {/* Public document viewer — placed before 404 to prevent /docs/:slug matching /:userName */}
+              <Route name="publicDoc" path="/docs/:username/:slug" component={PublicDocumentView} />
+              <Route name="publicDocFlat" path="/docs/:slug" component={PublicDocumentView} />
               <Route name="404" component={NotFound} />
             </Switch>
           </Layout>
