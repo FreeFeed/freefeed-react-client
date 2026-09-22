@@ -18,8 +18,6 @@ const foldedAreas = {
   commentAnonymous: 700 * 110,
 };
 
-const isSafari = /^((?!chrome|android).)*safari/i.test(navigator?.userAgent ?? '');
-
 export function Expandable({
   children,
   expanded: givenExpanded = false,
@@ -56,11 +54,6 @@ export function Expandable({
     } else {
       let targetHeight = scaledFoldedArea / width;
       targetHeight = align(content.current, targetHeight);
-      if (isSafari) {
-        // Safari has extremely large string heights, so we need to slightly
-        // reduce the clipping.
-        targetHeight -= 4;
-      }
       setMaxHeight(`${targetHeight}px`);
     }
   });
@@ -105,7 +98,13 @@ export function Expandable({
 }
 
 /**
- * Align the given offset to the bottom of the closest text string
+ * Align the given offset to the bottom of the closest text line box
+ *
+ * Text rects cover only the glyph area of the font, which can be smaller or
+ * larger than the line box (it depends on the browser and on the font). So we
+ * extend every rect by the half-leading to get the real line box. Cutting at
+ * the line box bottom keeps the same spacing between the last visible line and
+ * the "Read more" button as between the text lines.
  *
  * @param {Element} rootElement
  * @param {number} targetOffset
@@ -114,27 +113,68 @@ export function Expandable({
 function align(rootElement, targetOffset) {
   const { top } = rootElement.getBoundingClientRect();
 
-  // Iterate over all the text nodes
+  // Iterate over all the text nodes and collect the line boxes
   const nodeIterator = document.createNodeIterator(rootElement, NodeFilter.SHOW_TEXT);
   const range = document.createRange();
+  const lines = [];
   let node;
-  let prev = null;
-  let current = null;
   mainLoop: while ((node = nodeIterator.nextNode())) {
+    const lineHeight = lineHeightOf(node.parentElement);
     range.selectNode(node);
-    // In every text node we check all the rects
-    for (const { bottom } of range.getClientRects()) {
-      prev = current;
-      current = bottom - top;
-      if (current >= targetOffset) {
-        break mainLoop;
+    for (const rect of range.getClientRects()) {
+      if (rect.height === 0) {
+        continue;
+      }
+      // NaN for 'line-height: normal', the rect is the line box in this case
+      const halfLeading = (lineHeight - rect.height) / 2 || 0;
+      const line = {
+        top: rect.top - top - halfLeading,
+        bottom: rect.bottom - top + halfLeading,
+      };
+      const last = lines[lines.length - 1];
+      if (last && isSameLine(last, line)) {
+        last.bottom = Math.max(last.bottom, line.bottom);
+      } else {
+        if (line.top > targetOffset) {
+          break mainLoop;
+        }
+        lines.push(line);
       }
     }
   }
-  if (!prev || !current) {
-    return targetOffset;
+
+  let result = targetOffset;
+  let minDistance = Infinity;
+  for (const { bottom } of lines) {
+    const distance = Math.abs(bottom - targetOffset);
+    if (distance < minDistance) {
+      minDistance = distance;
+      result = bottom;
+    }
   }
-  return Math.abs(current - targetOffset) < Math.abs(prev - targetOffset) ? current : prev;
+  return result;
+}
+
+/**
+ * The line box is not shorter than the line-height of the containing block, even
+ * if the inline element has a smaller one (e.g. inline code with line-height: 1)
+ *
+ * @param {Element} element
+ * @returns {number} NaN for 'line-height: normal'
+ */
+function lineHeightOf(element) {
+  let block = element;
+  while (block.parentElement && getComputedStyle(block).display.startsWith('inline')) {
+    block = block.parentElement;
+  }
+  const own = parseFloat(getComputedStyle(element).lineHeight);
+  const blocks = parseFloat(getComputedStyle(block).lineHeight);
+  return Number.isNaN(blocks) ? own : Math.max(own || 0, blocks);
+}
+
+function isSameLine(a, b) {
+  const middle = (b.top + b.bottom) / 2;
+  return middle > a.top && middle < a.bottom;
 }
 
 let resizeObserver = null;
