@@ -1,6 +1,9 @@
 @use '../../styles/helvetica/dark-vars.scss';
 
 .clippedContent {
+  /* 'overflow: clip' doesn't create a BFC, so without flow-root the margins
+     of the hidden content can leak out (Safari) and push the button down */
+  display: flow-root;
   overflow-y: hidden; /* fallback for old Safari */
   overflow-y: clip;
 }

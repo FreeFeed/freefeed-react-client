@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.149.0] - Not released
+### Fixed
+- "Read more" no longer cuts off the bottom of the last visible line of a
+  folded post or comment (most noticeable on iOS Safari). The gap between the
+  last visible line and "Read more" now matches the normal line spacing.
 
 ## [1.148.5] - 2026-09-09
 ### Added
