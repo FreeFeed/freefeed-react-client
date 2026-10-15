@@ -43,10 +43,10 @@ export default function UserMedia() {
 
   const nameForTitle = useMemo(
     () =>
-      foundUser.username === foundUser.screenName
-        ? foundUser.username
+      !foundUser || foundUser.username === foundUser.screenName
+        ? (foundUser?.username ?? username)
         : `${foundUser.screenName} (${foundUser.username})`,
-    [foundUser.screenName, foundUser.username],
+    [foundUser, username],
   );
 
   return (
@@ -63,7 +63,7 @@ export default function UserMedia() {
         </div>
       </div>
       <div className="box-body">
-        <Breadcrumbs user={foundUser} breadcrumb="All media" />
+        {foundUser && <Breadcrumbs user={foundUser} breadcrumb="All media" />}
         <UserProfile allowToPost={false} noPostLines />
       </div>
       {canViewAccountContent && hasNSFW && (
