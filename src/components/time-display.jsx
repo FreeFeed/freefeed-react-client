@@ -104,7 +104,7 @@ export function formatDistance(date, now = new Date(), { amPm = false, inline = 
     return inline ? 'just now' : 'Just now';
   }
   if (minutes < 60) {
-    return `${Math.floor(minutes)} ${inline ? 'min' : 'minutes'} ago`;
+    return `${minutes} ${inline ? 'min' : minutes === 1 ? 'minute' : 'minutes'} ago`;
   }
   if (minutes < 1.5 * 60) {
     return `1 hour ago`;
