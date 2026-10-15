@@ -26,6 +26,12 @@ describe('<TimeDisplay>', () => {
         description: 'after less than hour',
       },
       {
+        now: '2020-01-01T12:01',
+        date: '2020-01-01T12:00',
+        result: '1 minute ago',
+        description: 'after 1 minute',
+      },
+      {
         now: '2020-01-01T12:59:59',
         date: '2020-01-01T12:00',
         result: '59 minutes ago',
@@ -131,6 +137,13 @@ describe('<TimeDisplay>', () => {
         date: '2020-01-01T12:00',
         result: 'just now',
         description: 'now (inline)',
+        inline: true,
+      },
+      {
+        now: '2020-01-01T12:01',
+        date: '2020-01-01T12:00',
+        result: '1 min ago',
+        description: 'after 1 minute (inline)',
         inline: true,
       },
       {
