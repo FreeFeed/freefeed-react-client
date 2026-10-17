@@ -129,7 +129,7 @@ export function VisualAttachment({
       href={attachmentPreviewUrl(att.id, 'original')}
       // The native tooltip covers the video while it plays on hover
       title={att.mediaType === 'video' ? undefined : nameAndSize}
-      aria-label={nameAndSize}
+      aria-label={att.mediaType === 'video' ? nameAndSize : undefined}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
