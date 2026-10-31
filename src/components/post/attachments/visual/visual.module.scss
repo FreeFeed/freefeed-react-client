@@ -217,6 +217,37 @@
   display: none;
 }
 
+// The video is already playing on hover, so the "play" hint is redundant
+.attachment--animation--hover.attachment--playing:not(.attachment--inline-video) .play-icon {
+  opacity: 0;
+}
+
+.overlay--mute {
+  bottom: 0.35em;
+  right: 0.35em;
+  padding: 0.3em;
+  font-size: 1em;
+  outline-width: 1px;
+}
+
+// Thin playback progress line for the hover preview
+.progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background-color: rgb(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+.progress__bar {
+  height: 100%;
+  background-color: rgb(255, 255, 255, 0.95);
+  box-shadow: 0 0 2px rgb(0, 0, 0, 0.6);
+  transition: width 0.25s linear;
+}
+
 // NSFW canvas
 .nsfw-canvas {
   position: absolute;
