@@ -1,6 +1,12 @@
 import cn from 'classnames';
 import { useEvent } from 'react-use-event-hook';
-import { faPlay, faSpinner, faTimes } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPlay,
+  faSpinner,
+  faTimes,
+  faVolumeMute,
+  faVolumeUp,
+} from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { attachmentPreviewUrl } from '../../../../services/api';
@@ -42,30 +48,43 @@ export function VisualAttachment({
   const { inlinePlaying, isGifLike } = useVideoProps(att, isNSFW, mediaWidth, mediaHeight);
   const animationType = useAnimationType(isGifLike);
 
-  const handleMouseEnter = useEvent((e) => {
-    if (
-      !inlinePlaying &&
-      window.matchMedia?.('(hover: hover)').matches &&
-      animationType === PREVIEW_ANIMATION_HOVER
-    ) {
-      e.target.play();
-    }
-  });
-  const handleMouseLeave = useEvent((e) => {
-    if (
-      !inlinePlaying &&
-      window.matchMedia?.('(hover: hover)').matches &&
-      animationType === PREVIEW_ANIMATION_HOVER
-    ) {
-      e.target.pause();
-      e.target.currentTime = 0;
-    }
-  });
+  const isHoverPreview =
+    !inlinePlaying &&
+    animationType === PREVIEW_ANIMATION_HOVER &&
+    window.matchMedia?.('(hover: hover)').matches;
 
   const videoRef = useRef(null);
   useStopVideo(videoRef, att.mediaType === 'video' && !att.meta?.inProgress);
   useStoredMediaVolume(videoRef, inlinePlaying && !att.meta?.inProgress);
-  const { videoPlaying, currentTime } = useVideoEvents(videoRef);
+  const { videoPlaying, currentTime, progress } = useVideoEvents(videoRef);
+  const [previewMuted, setPreviewMuted] = useState(true);
+
+  // Hover handlers live on the whole attachment (not on the <video>), so
+  // that moving the pointer onto the overlay controls doesn't stop playback.
+  const handleMouseEnter = useEvent(() => {
+    if (isHoverPreview && videoRef.current) {
+      videoRef.current.play();
+    }
+  });
+  const handleMouseLeave = useEvent(() => {
+    const el = videoRef.current;
+    if (isHoverPreview && el) {
+      el.pause();
+      el.currentTime = 0;
+      el.muted = true;
+      setPreviewMuted(true);
+    }
+  });
+
+  const handleToggleMute = useEvent((e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const el = videoRef.current;
+    if (el) {
+      el.muted = !el.muted;
+      setPreviewMuted(el.muted);
+    }
+  });
 
   const handleClick = useEvent((e) => {
     if (inlinePlaying && videoRef.current) {
@@ -108,8 +127,12 @@ export function VisualAttachment({
         videoPlaying && style['attachment--playing'],
       )}
       href={attachmentPreviewUrl(att.id, 'original')}
-      title={nameAndSize}
+      // The native tooltip covers the video while it plays on hover
+      title={att.mediaType === 'video' ? undefined : nameAndSize}
+      aria-label={att.mediaType === 'video' ? nameAndSize : undefined}
       onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       target="_blank"
       data-pid={pictureId}
       style={{ width, height }}
@@ -153,8 +176,6 @@ export function VisualAttachment({
               controls={inlinePlaying}
               playsInline
               disablePictureInPicture
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
             />
           )}
           {isNSFW && !removeAttachment && (
@@ -168,6 +189,23 @@ export function VisualAttachment({
           {isGifLike ? <span>GIF</span> : null}
           {animationType !== PREVIEW_ANIMATION_ALWAYS && formatTime(att.duration - currentTime)}
         </div>
+      )}
+      {withVideoPlayer && isHoverPreview && videoPlaying && (
+        <>
+          {!att.meta?.silent && (
+            <button
+              className={cn(style['overlay'], style['overlay--mute'], style['overlay--button'])}
+              onClick={handleToggleMute}
+              aria-label={previewMuted ? 'Unmute' : 'Mute'}
+              title={previewMuted ? 'Unmute' : 'Mute'}
+            >
+              <Icon icon={previewMuted ? faVolumeMute : faVolumeUp} />
+            </button>
+          )}
+          <div className={style['progress']}>
+            <div className={style['progress__bar']} style={{ width: `${progress * 100}%` }} />
+          </div>
+        </>
       )}
       {removeAttachment && (
         <button
@@ -205,6 +243,7 @@ function useVideoProps(att, isNSFW, width, height) {
 function useVideoEvents(videoRef) {
   const [currentTime, setCurrentTime] = useState(0);
   const [videoPlaying, setVideoPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
   useEffect(() => {
     const el = videoRef.current;
     if (!el) {
@@ -212,16 +251,22 @@ function useVideoEvents(videoRef) {
     }
     const abortController = new AbortController();
     const { signal } = abortController;
-    el.addEventListener('timeupdate', (e) => setCurrentTime(Math.floor(e.target.currentTime)), {
-      signal,
-    });
+    el.addEventListener(
+      'timeupdate',
+      (e) => {
+        const { currentTime, duration } = e.target;
+        setCurrentTime(Math.floor(currentTime));
+        setProgress(duration > 0 ? currentTime / duration : 0);
+      },
+      { signal },
+    );
     el.addEventListener('pause', () => setVideoPlaying(false), { signal });
     el.addEventListener('play', () => setVideoPlaying(true), { signal });
     el.addEventListener('ended', () => (el.currentTime = 0), { signal });
 
     return () => abortController.abort();
   }, [videoRef]);
-  return { currentTime, videoPlaying };
+  return { currentTime, videoPlaying, progress };
 }
 
 function useDampedSize(mediaWidth, mediaHeight, minDifference = 40) {
