@@ -1505,3 +1505,52 @@ export function setResolvedRoutes(routes) {
     payload: { routes },
   };
 }
+
+// ── Documents ───────────────────────────────────────────────────────────────
+
+export function listDocuments({ limit = 50, offset = 0 } = {}) {
+  return {
+    type: ActionTypes.DOCUMENTS_LIST,
+    apiRequest: Api.listDocuments,
+    payload: { limit, offset },
+  };
+}
+
+export function getDocumentTree() {
+  return {
+    type: ActionTypes.DOCUMENTS_TREE,
+    apiRequest: Api.getDocumentTree,
+  };
+}
+
+export function getDocument(docId) {
+  return {
+    type: ActionTypes.DOCUMENT_GET,
+    apiRequest: Api.getDocument,
+    payload: { docId },
+  };
+}
+
+export function createDocument({ title, slug, body, parentId, tags, isPublished }) {
+  return {
+    type: ActionTypes.DOCUMENT_CREATE,
+    apiRequest: Api.createDocument,
+    payload: { title, slug, body, parentId, tags, isPublished },
+  };
+}
+
+export function updateDocument({ docId, title, slug, body, parentId, tags, isPublished }) {
+  return {
+    type: ActionTypes.DOCUMENT_UPDATE,
+    apiRequest: Api.updateDocument,
+    payload: { docId, title, slug, body, parentId, tags, isPublished },
+  };
+}
+
+export function deleteDocument(docId) {
+  return {
+    type: ActionTypes.DOCUMENT_DELETE,
+    apiRequest: Api.deleteDocument,
+    payload: { docId },
+  };
+}
