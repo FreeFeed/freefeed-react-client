@@ -1,5 +1,5 @@
-/* global describe, it, expect, vi */
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+/* global describe, it, expect, vi, afterEach */
+import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 
 import cachedFetch from '../../src/components/link-preview/helpers/cached-fetch';
 import LinkPreview from '../../src/components/link-preview/preview';
@@ -18,6 +18,10 @@ const renderLinkPreview = (props = {}) => {
 };
 
 describe('LinkPreview', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it("Doesn't show a preview for freefeed.net", () => {
     const { asFragment } = renderLinkPreview({ url: 'https://freefeed.net/support' });
     expect(asFragment()).toMatchSnapshot();
@@ -512,5 +516,30 @@ describe('LinkPreview', () => {
     );
 
     expect(asFragment()).toMatchSnapshot();
+  });
+
+  it('Shows a new Instagram preview after the URL of an unavailable post changes', () => {
+    vi.useFakeTimers();
+
+    const state = { routeLoadingState: false };
+    const tree = (url) => (
+      <StateProvider state={state}>
+        <LinkPreview allowEmbedly={false} url={url} />
+      </StateProvider>
+    );
+
+    const { container, rerender } = render(tree('https://www.instagram.com/p/unavailable/'));
+
+    fireEvent.load(container.querySelector('iframe'));
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
+    expect(container.querySelector('iframe')).toBeNull();
+
+    rerender(tree('https://www.instagram.com/p/available/'));
+
+    expect(container.querySelector('iframe').src).toBe(
+      'https://www.instagram.com/p/available/embed/captioned/',
+    );
   });
 });

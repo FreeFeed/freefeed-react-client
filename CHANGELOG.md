@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The supported Node.js versions are now 24 and 26. The primary version is 24,
   and the Docker image is built on it.
 
+### Fixed
+- A post open on screen no longer breaks or shows a stale preview when its
+  author changes the link.
+
 ## [1.148.8] - 2026-10-31
 ### Changed
 - Video previews that play on hover no longer show the "play" triangle or the
