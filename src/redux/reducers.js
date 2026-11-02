@@ -2285,3 +2285,32 @@ export {
   commentPreviewStatuses,
   commentPreviewsData,
 } from './reducers/post-previews';
+
+// ── Documents ────────────────────────────────────────────────────────────
+
+export const documentsList = asyncState(ActionTypes.DOCUMENTS_LIST, (state, action) => {
+  if (baseType(action.type) === ActionTypes.DOCUMENT_DELETE && isAsync(action.type) && action.type.endsWith('response')) {
+    const deletedId = action.payload?.err ? null : action.request?.docId;
+    if (deletedId && Array.isArray(state?.list)) {
+      return { ...state, list: state.list.filter((d) => d.id !== deletedId) };
+    }
+  }
+  return state;
+});
+
+export const documentsListData = fromResponse(ActionTypes.DOCUMENTS_LIST, (action) => action.payload?.documents ?? []);
+
+export const documentGet = asyncState(ActionTypes.DOCUMENT_GET);
+export const documentGetData = fromResponse(ActionTypes.DOCUMENT_GET, (action) => action.payload?.documents ?? null);
+
+export const documentCreate = asyncState(ActionTypes.DOCUMENT_CREATE);
+export const documentCreateData = fromResponse(ActionTypes.DOCUMENT_CREATE, (action) => action.payload?.documents ?? null);
+
+export const documentUpdate = asyncState(ActionTypes.DOCUMENT_UPDATE);
+export const documentUpdateData = fromResponse(ActionTypes.DOCUMENT_UPDATE, (action) => action.payload?.documents ?? null);
+
+export const documentDelete = asyncState(ActionTypes.DOCUMENT_DELETE);
+
+export const documentsTree = asyncState(ActionTypes.DOCUMENTS_TREE);
+export const documentsTreeData = fromResponse(ActionTypes.DOCUMENTS_TREE, (action) => action.payload ?? { tree: [], tags: [] });
+

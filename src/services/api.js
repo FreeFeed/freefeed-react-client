@@ -19,6 +19,7 @@ const apiRoot = CONFIG.api.root;
 const frontendPrefsId = CONFIG.frontendPreferences.clientId;
 
 const apiPrefix = `${apiRoot}/v${apiVersion}`;
+const docsApiPrefix = `${apiRoot}/v5`;
 
 const getRequestOptions = () => ({
   headers: {
@@ -989,4 +990,34 @@ export function pinPost({ postId, target }) {
 
 export function unpinPost({ postId, target }) {
   return fetch(`${apiPrefix}/posts/${postId}/unpin`, postRequestOptions('POST', { target }));
+}
+// ── Documents (v5 API) ──────────────────────────────────────────────────────
+
+export function listDocuments({ limit = 50, offset = 0 } = {}) {
+  return fetch(`${docsApiPrefix}/documents?limit=${limit}&offset=${offset}`, getRequestOptions());
+}
+
+export function getDocumentTree() {
+  return fetch(`${docsApiPrefix}/documents/tree`, getRequestOptions());
+}
+
+export function getDocument({ docId }) {
+  return fetch(`${docsApiPrefix}/documents/${docId}`, getRequestOptions());
+}
+
+export function createDocument({ title, slug, body, parentId, tags, visibility, isPublished }) {
+  return fetch(`${docsApiPrefix}/documents`, postRequestOptions('POST', { title, slug: slug || undefined, body, parentId, tags, visibility, isPublished }));
+}
+
+export function updateDocument({ docId, title, slug, body, parentId, tags, visibility, isPublished }) {
+  return fetch(`${docsApiPrefix}/documents/${docId}`, postRequestOptions('PUT', { title, slug: slug || undefined, body, parentId, tags, visibility, isPublished }));
+}
+
+export function deleteDocument({ docId }) {
+  return fetch(`${docsApiPrefix}/documents/${docId}`, postRequestOptions('DELETE'));
+}
+
+export function getPublicDocument({ slug, username }) {
+  const path = username ? `/docs/${encodeURIComponent(username)}/${encodeURIComponent(slug)}` : `/docs/${encodeURIComponent(slug)}`;
+  return fetch(`${apiRoot}${path}`, getRequestOptions());
 }

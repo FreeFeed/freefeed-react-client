@@ -1,0 +1,202 @@
+@use '../../../styles/helvetica/dark-vars.scss';
+
+// ── CSS custom properties scoped to the documents page ──
+// These are used as fallbacks; dark theme overrides them via .dark-theme
+// Includes mermaid diagram SVG vars (--surface, --accent, --border, etc.)
+
+:root {
+  --doc-bg: #fff;
+  --doc-border: #ddd;
+  --doc-border-light: #eee;
+  --doc-surface-2: #f6f8fa;
+  --doc-text: #333;
+  --doc-text-muted: #888;
+  --doc-text-muted-light: #bbb;
+  --doc-hover-bg: #f4f5f7;
+  --doc-hover-outline: #ccc;
+  --doc-input-border: #ccc;
+  --doc-primary: #1877f2;
+  --doc-primary-light: #e8f0fe;
+  --doc-code-bg: #f6f8fa;
+  --doc-shadow: rgba(0, 0, 0, 0.1);
+
+  // Mermaid diagram SVG variables
+  --surface: #fff;
+  --surface-2: #f6f8fa;
+  --border: #ddd;
+  --border-strong: #6b7280;
+  --accent: #4f46e5;
+  --accent-soft: #eef0ff;
+  --text-dim: #888;
+
+}
+
+// Dark overrides — .dark-theme is on <html> element, match directly
+.dark-theme {
+  --doc-bg: #{dark-vars.$bg-color};
+  --doc-border: #{dark-vars.$bg-color-lighter};
+  --doc-border-light: #{dark-vars.$bg-color-lighter};
+  --doc-surface-2: #{dark-vars.$bg-color-lightest};
+  --doc-text: #{dark-vars.$text-color-lighter};
+  --doc-text-muted: #{dark-vars.$text-color-darker};
+  --doc-text-muted-light: #{dark-vars.$text-color};
+  --doc-hover-bg: #{dark-vars.$bg-color-lighter};
+  --doc-hover-outline: #{dark-vars.$text-color-darker};
+  --doc-input-border: #{dark-vars.$text-color-darker};
+  --doc-primary: #{dark-vars.$link-color};
+  --doc-primary-light: #{dark-vars.$bg-color-lightest};
+  --doc-code-bg: #{dark-vars.$bg-color-lighter};
+  --doc-shadow: rgba(0, 0, 0, 0.4);
+
+  // Mermaid diagram SVG variables
+  --surface: #{dark-vars.$bg-color};
+  --surface-2: #{dark-vars.$bg-color-lightest};
+  --border: #{dark-vars.$bg-color-lighter};
+  --border-strong: #{dark-vars.$text-color};
+  --accent: #{dark-vars.$link-color};
+  --accent-soft: #{dark-vars.$bg-color-lightest};
+  --text-dim: #{dark-vars.$text-color-darker};
+ }
+
+
+// ── Page Layout
+.documents-page { min-height: 60vh; display: flex; flex-direction: column; gap: 0; }
+.documents-page-section { flex: 1; }
+
+// ── Top Bar
+.doc-topbar { position: relative; margin-bottom: 12px; }
+.doc-topbar-row { display: flex; align-items: center; gap: 8px; background: var(--doc-bg); border: 1px solid var(--doc-border); border-radius: 4px; padding: 8px 12px; }
+.doc-topbar-path { flex: 1; font-weight: 600; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--doc-text); }
+.doc-topbar-actions { flex-shrink: 0; }
+
+// ── Tree Panel (dropdown)
+.doc-tree-panel { position: absolute; top: 100%; left: 0; right: 0; z-index: 100; background: var(--doc-bg); border: 1px solid var(--doc-border); border-top: none; border-radius: 0 0 4px 4px; max-height: 50vh; overflow: hidden; box-shadow: 0 4px 12px var(--doc-shadow); }
+.doc-tree-scroll { max-height: 50vh; overflow-y: auto; padding: 4px 0; }
+.doc-tree-loading, .doc-tree-empty { padding: 20px; text-align: center; color: var(--doc-text-muted); }
+.doc-tree-item { display: flex; align-items: flex-start; gap: 0; }
+.doc-tree-toggle { flex-shrink: 0; width: 20px; height: 28px; display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; color: var(--doc-text-muted); font-size: 10px; padding: 0; }
+.doc-tree-toggle:hover { color: var(--doc-text); }
+.doc-tree-toggle-spacer { visibility: hidden; }
+.doc-tree-label { flex: 1; display: flex; align-items: center; gap: 6px; padding: 4px 6px; border: none; background: none; cursor: pointer; border-radius: 3px; font-size: 13px; text-align: left; color: var(--doc-text); min-width: 0; }
+.doc-tree-label:hover { background: var(--doc-hover-bg); }
+.doc-tree-label.active { background: var(--doc-primary-light); font-weight: 600; color: var(--doc-primary); }
+.doc-tree-label-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.doc-tree-tag { font-size: 10px; margin-left: 4px; flex-shrink: 0; }
+
+// ── Document View
+.doc-view { background: var(--doc-bg); border: 1px solid var(--doc-border); border-radius: 4px; }
+.doc-view-head { padding: 16px 20px; display: flex; align-items: flex-start; gap: 12px; border-bottom: 1px solid var(--doc-border); }
+.doc-view-title { flex: 1; margin: 0; font-size: 26px; font-weight: 700; line-height: 1.3; color: var(--doc-text); }
+
+// ── Code blocks
+.doc-view-body pre {
+  background: var(--doc-code-bg);
+  border: 1px solid var(--doc-border);
+  border-radius: 4px;
+  padding: 12px 16px;
+  overflow-x: auto;
+}
+
+.doc-view-body pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--doc-text);
+}
+
+// Syntax highlighting — light default, overridden in dark
+.doc-view-body .hl-kw   { color: #d73a49; }  // keywords
+.doc-view-body .hl-str  { color: #032f62; }  // strings
+.doc-view-body .hl-com  { color: #6a737d; font-style: italic; }  // comments
+.doc-view-body .hl-num  { color: #005cc5; }  // numbers
+.doc-view-body .hl-bool { color: #d73a49; }  // booleans
+.doc-view-body .hl-fn   { color: #6f42c1; }  // function names
+.doc-view-body .hl-type { color: #005cc5; }  // types
+.doc-view-body .hl-op   { color: #d73a49; }  // operators
+.doc-view-body .hl-tag  { color: #22863a; }  // html tags
+.doc-view-body .hl-attr { color: #6f42c1; }  // html attributes
+
+.dark-theme .doc-view-body .hl-kw   { color: #f97583; }
+.dark-theme .doc-view-body .hl-str  { color: #9ecbff; }
+.dark-theme .doc-view-body .hl-com  { color: #6a737d; font-style: italic; }
+.dark-theme .doc-view-body .hl-num  { color: #79b8ff; }
+.dark-theme .doc-view-body .hl-bool { color: #f97583; }
+.dark-theme .doc-view-body .hl-fn   { color: #b392f0; }
+.dark-theme .doc-view-body .hl-type { color: #79b8ff; }
+.dark-theme .doc-view-body .hl-op   { color: #f97583; }
+.dark-theme .doc-view-body .hl-tag  { color: #85e89d; }
+.dark-theme .doc-view-body .hl-attr { color: #b392f0; }
+.doc-head-title::placeholder { color: var(--doc-text-muted-light); }
+.doc-view-actions { display: flex; gap: 6px; flex-shrink: 0; align-items: center; }
+
+// ── Toolbar
+.doc-view-toolbar { display: flex; align-items: center; gap: 4px; padding: 6px 20px; background: var(--doc-surface-2); border-bottom: 1px solid var(--doc-border); flex-wrap: wrap; }
+.doc-view-toolbar .btn-link { font-size: 12px; padding: 2px 6px; }
+.doc-view-toolbar-url { margin-left: auto; font-size: 11px; color: var(--doc-text-muted); max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; direction: rtl; text-align: right; }
+.doc-view-toolbar-url:hover { color: var(--doc-primary); }
+
+// ── Visibility selector
+.doc-vis-select { width: auto; min-width: 90px; font-size: 12px; height: 26px; padding: 2px 6px; margin: 0; }
+
+// ── Timestamps
+.doc-view-meta-line { display: flex; gap: 16px; padding: 4px 20px; font-size: 11px; color: var(--doc-text-muted); border-bottom: 1px solid var(--doc-border-light); }
+.doc-view-ts { white-space: nowrap; }
+
+// ── Settings panel
+.doc-view-settings { border-bottom: 1px solid var(--doc-border); background: var(--doc-surface-2); }
+.doc-view-settings-inner { display: flex; gap: 20px; padding: 12px 20px; flex-wrap: wrap; }
+.doc-setting-group label { font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--doc-text-muted); margin-bottom: 4px; }
+.doc-setting-group .help-block { font-size: 11px; color: var(--doc-text-muted); margin: 4px 0 0; }
+.doc-setting-group .form-control { font-size: 13px; }
+.doc-tags-edit { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.doc-tag-x { background: none; border: none; color: inherit; cursor: pointer; padding: 0 2px; margin-left: 2px; font-size: 14px; line-height: 1; opacity: 0.7; }
+.doc-tag-x:hover { opacity: 1; }
+.doc-tag-add { display: inline-flex; align-items: center; gap: 4px; }
+.doc-tag-add input { width: 120px; }
+
+// ── Tags line
+.doc-view-tags { display: flex; flex-wrap: wrap; gap: 4px; padding: 8px 20px; border-bottom: 1px solid var(--doc-border-light); }
+.doc-view-tags .label { font-size: 11px; }
+
+// ── Block editing
+.doc-view-body { padding: 20px; line-height: 1.7; font-size: 15px; overflow-wrap: break-word; }
+
+// ── Tables
+.doc-block table, .doc-view-body table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+.doc-block th, .doc-block td, .doc-view-body th, .doc-view-body td { border: 1px solid var(--doc-border); padding: 6px 10px; text-align: left; vertical-align: top; }
+.doc-block th, .doc-view-body th { font-weight: 600; background: var(--doc-surface-2); }
+
+// ── Task lists
+.doc-task p { margin: 0; }
+.doc-task { display: flex; align-items: flex-start; gap: 6px; list-style: none; }
+.doc-task-check { flex-shrink: 0; margin-top: 0.4em; }
+ul .doc-task { margin-left: -1.4em; }
+.doc-block { position: relative; cursor: pointer; border-radius: 3px; transition: background 0.1s; min-height: 1.5em; }
+.doc-block:hover { background: var(--doc-hover-bg); outline: 1px dashed var(--doc-hover-outline); }
+.doc-block.doc-block-empty { color: var(--doc-text-muted-light); font-style: italic; padding: 4px 0; }
+.doc-block.doc-block-hr { padding: 8px 0; cursor: pointer; }
+
+// Block is being edited
+.doc-block-editing { cursor: default; margin: 0; padding: 0; outline: 2px solid var(--doc-primary); outline-offset: 1px; border-radius: 3px; }
+
+.doc-block-textarea { width: 100%; border: 1px solid var(--doc-input-border); border-radius: 3px; padding: 8px; font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; font-size: 14px; line-height: 1.5; resize: vertical; min-height: 3em; outline: none; background: var(--doc-bg); color: inherit; box-sizing: border-box; }
+
+// ── Source mode
+.doc-source-textarea { width: 100%; min-height: 40vh; border: 1px solid var(--doc-border); border-radius: 4px; padding: 16px; font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; font-size: 14px; line-height: 1.6; resize: vertical; outline: none; background: var(--doc-code-bg); color: inherit; box-sizing: border-box; tab-size: 2; }
+
+// ── Footer
+.doc-view-footer { padding: 8px 20px 16px; border-top: 1px solid var(--doc-border-light); }
+
+// ── Welcome / empty state
+.documents-welcome { text-align: center; padding: 60px 20px; color: var(--doc-text-muted); background: var(--doc-bg); border: 1px solid var(--doc-border); border-radius: 4px; }
+.documents-welcome h2 { font-size: 28px; margin-bottom: 12px; color: var(--doc-text); }
+.documents-welcome p { font-size: 16px; margin-bottom: 0; }
+.documents-loading { text-align: center; padding: 40px; color: var(--doc-text-muted); }
+
+// ── Inline slug editor
+.doc-slug-inline { display: flex; align-items: center; gap: 2px; font-size: 12px; }
+.doc-slug-label { color: var(--doc-text-muted); white-space: nowrap; font-size: 11px; }
+.doc-slug-input { width: 130px; font-size: 12px; height: 24px; padding: 2px 6px; border: 1px solid var(--doc-input-border); border-radius: 3px; background: var(--doc-bg); color: inherit; outline: none; }
+.doc-slug-input:focus { border-color: var(--doc-primary); }
