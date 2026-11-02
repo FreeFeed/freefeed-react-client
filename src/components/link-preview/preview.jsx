@@ -20,6 +20,15 @@ import FreeFeedPostPreview, {
 import EmbedlyPreview from './embedly';
 
 export default function LinkPreview({ allowEmbedly, url }) {
+  return <LinkPreviewContent key={url} allowEmbedly={allowEmbedly} url={url} />;
+}
+
+LinkPreview.propTypes = {
+  allowEmbedly: PropTypes.bool.isRequired,
+  url: PropTypes.string.isRequired,
+};
+
+function LinkPreviewContent({ allowEmbedly, url }) {
   if (noPreviewForURL(url)) {
     return false;
   }
@@ -60,11 +69,6 @@ export default function LinkPreview({ allowEmbedly, url }) {
 
   return false;
 }
-
-LinkPreview.propTypes = {
-  allowEmbedly: PropTypes.bool.isRequired,
-  url: PropTypes.string.isRequired,
-};
 
 function noPreviewForURL(url) {
   // Allow FreeFeed post and comment links (they have their own preview)
