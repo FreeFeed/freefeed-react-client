@@ -157,7 +157,8 @@ export default defineConfig(({ mode }) => ({
       : {},
   test: {
     include: ['test/unit/**/*.{js,jsx}', 'test/jest/**/*.test.{js,jsx}'],
-    poolOptions: { forks: { singleFork: true } },
+    // Node 26's own localStorage global is undefined and keeps vitest from installing jsdom's.
+    poolOptions: { forks: { singleFork: true, execArgv: ['--no-experimental-webstorage'] } },
     globals: true,
     clearMocks: true,
     environment: 'jsdom',
